@@ -2,36 +2,35 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 package org.jenetics.stat;
 
+import org.apache.commons.math3.distribution.ChiSquaredDistribution;
 import org.testng.Assert;
+
+import org.jenetics.util.StaticObject;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2012-11-30 $</em>
+ * @version <em>$Date: 2013-11-19 $</em>
  */
-public final class StatisticsAssert {
+public final class StatisticsAssert extends StaticObject {
 
-	private StatisticsAssert() {
-	}
+	private StatisticsAssert() {}
 
 	public static <C extends Comparable<? super C>> void assertDistribution(
 		final Histogram<C> histogram,
@@ -41,26 +40,30 @@ public final class StatisticsAssert {
 		final int degreeOfFreedom = histogram.length();
 		assert (degreeOfFreedom > 0);
 
-		final double maxChi = ChiSquare.chi_999(degreeOfFreedom)*2;
+		final double maxChi = chi(0.999, degreeOfFreedom)*2;
 
 		if (χ2 > maxChi) {
 			System.out.println(String.format(
-					"The histogram %s doesn't follow the distribution %s. \n" +
-					"χ2 must be smaller than %f but was %f",
-					histogram, distribution,
-					maxChi, χ2
-				));
+				"The histogram %s doesn't follow the distribution %s. \n" +
+				"χ2 must be smaller than %f but was %f",
+				histogram, distribution,
+				maxChi, χ2
+			));
 		}
 
 		Assert.assertTrue(
 				χ2 <= maxChi,
 				String.format(
-						"The histogram %s doesn't follow the distribution %s. \n" +
-						"χ2 must be smaller than %f but was %f",
-						histogram, distribution,
-						maxChi, χ2
-					)
+					"The histogram %s doesn't follow the distribution %s. \n" +
+					"χ2 must be smaller than %f but was %f",
+					histogram, distribution,
+					maxChi, χ2
+				)
 			);
+	}
+
+	public static double chi(final double p, final int dof) {
+		return new ChiSquaredDistribution(dof).inverseCumulativeProbability(p);
 	}
 
 }

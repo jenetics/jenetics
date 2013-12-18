@@ -2,26 +2,24 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
  */
 package org.jenetics;
 
+import static java.lang.String.format;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
@@ -39,14 +37,14 @@ import javolution.lang.Immutable;
  * <p/><img
  *        src="doc-files/linear-rank-selector.gif"
  *        alt="P(i)=\frac{1}{N}\left(n^{-}+\left(n^{+}-n^{-}\right)\frac{i-1}{N-1}\right)"
- *     />
+ *     >
  * </p>
  *
  * Here <i>n</i><sup><i>-</i></sup>/<i>N</i> is the probability of the worst
  * individual to be	selected and <i>n</i><sup><i>+</i></sup>/<i>N</i> the
  * probability of the best individual to be selected. As the population size is
  * held constant, the conditions <i>n</i><sup><i>+</i></sup> = 2 - <i>n</i><sup><i>-</i></sup>
- * and <i>n</i><sup><i>-</i></sup> >= 0 must be fulfilled. Note that all individuals
+ * and <i>n</i><sup><i>-</i></sup> &gt;= 0 must be fulfilled. Note that all individuals
  * get a different rank, i.e., a different selection probability, even if the
  * have the same fitness value. <p/>
  *
@@ -60,7 +58,7 @@ import javolution.lang.Immutable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-12-05 $</em>
  */
 public final class LinearRankSelector<
 	G extends Gene<?, G>,
@@ -88,9 +86,9 @@ public final class LinearRankSelector<
 	 */
 	public LinearRankSelector(final double nminus) {
 		if (nminus < 0) {
-			throw new IllegalArgumentException(String.format(
-					"nminus is smaller than zero: %s", nminus
-				));
+			throw new IllegalArgumentException(format(
+				"nminus is smaller than zero: %s", nminus
+			));
 		}
 
 		_nminus = nminus;
@@ -145,10 +143,10 @@ public final class LinearRankSelector<
 
 	@Override
 	public String toString() {
-		return String.format(
-				"%s[n-=%f, n+=%f]",
-				getClass().getSimpleName(), _nminus, _nplus
-			);
+		return format(
+			"%s[n-=%f, n+=%f]",
+			getClass().getSimpleName(), _nminus, _nplus
+		);
 	}
 
 }

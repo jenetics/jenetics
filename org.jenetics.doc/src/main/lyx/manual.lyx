@@ -28,8 +28,9 @@
 \definecolor{white}{rgb}{1.0,1.0,1.0}
 %\definecolor{covercolor}{RGB}{220,220,220}
 %\definecolor{covercolor}{RGB}{25,200,255}
-\definecolor{covercolor}{RGB}{202,232,255}
- 
+%\definecolor{covercolor}{RGB}{202,232,255}
+%\definecolor{covercolor}{rgb}{0.00,0.27,0.40}
+\definecolor{covercolor}{rgb}{0.34,0.55,0.66}
 \lstset{ %
   language=java, 
   basicstyle=\footnotesize, 
@@ -169,10 +170,15 @@ height "5pt"
 
 \family sans
 \series bold
+\shape slanted
 \size giant
 \noun on
-Jenetics
+J
+\size huge
+ENETICS
 \series default
+\shape default
+\size giant
 \noun default
 
 \begin_inset VSpace 6mm
@@ -357,7 +363,7 @@ http://jenetics.sourceforge.net/
 \align left
 
 \size small
-@!identifier!@
+@__identifier__@
 \end_layout
 
 \begin_layout Standard
@@ -632,6 +638,42 @@ JDK
 
 \end_inset
 
+ and Gradle
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Gradle
+\end_layout
+
+\end_inset
+
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The used Gradle version is 1.9 and it is downloaded automatically if you
+ build the library with the wrapper script 
+\family typewriter
+./gradlew
+\family default
+: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.gradle.org/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
  to be installed, all other dependencies are available in the package which
  you can download from 
 \begin_inset Flex URL
@@ -640,6 +682,17 @@ status collapsed
 \begin_layout Plain Layout
 
 https://sourceforge.net/projects/jenetics/files/jenetics/
+\end_layout
+
+\end_inset
+
+ or 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://bitbucket.org/fwilhelm/jenetics/downloads
 \end_layout
 
 \end_inset
@@ -695,7 +748,8 @@ height "1pt"
 \begin_layout Plain Layout
 
 \family sans
-This manual is not an introduction or a tutorial for genetic algorithms.
+This manual is not an introduction or a tutorial for genetic algorithms
+ in general.
  It is assumed that the reader has a knowledge about the structure and the
  functionality of genetic algorithms.
  A good GA introduction can be found in 
@@ -712,7 +766,14 @@ key "michalewicz1996genetic"
 
 \end_inset
 
- and 
+, 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Shiffman2012"
+
+\end_inset
+
+ or 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Whitley94agenetic"
@@ -1422,6 +1483,16 @@ name "fig:Genotype-structure"
 \end_inset
 
 Genotype structure
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Genotyp
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -1935,7 +2006,7 @@ status open
 
 \begin_layout Plain Layout
 
-GeneticAlgorithm<Float64Gene, Float64> ga = ...
+final GeneticAlgorithm<Float64Gene, Float64> ga = ...
 \end_layout
 
 \begin_layout Plain Layout
@@ -2040,6 +2111,16 @@ name "fig:Selector-class-diagram"
 Selector
 \family default
  class diagram
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Selector!diagram
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -2651,8 +2732,8 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/graphic/StochasticUniversalSelection.eps
-	width 90text%
+	filename ../resources/graphic/StochasticUniversalSelection.svg
+	width 70text%
 
 \end_inset
 
@@ -2790,6 +2871,16 @@ name "fig:Alterer-class-diagram"
 Alterer
 \family default
  class diagram
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Alterer!diagram
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -3157,10 +3248,20 @@ recombine
 \begin_layout Paragraph
 Single-point crossover
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Single-point crossover
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+Crossover!Single-point crossover
 \end_layout
 
 \end_inset
@@ -3177,8 +3278,8 @@ The single-point crossover changes two children chromosomes by taking two
  However, it produces very slow mixing compared with multi-point crossover
  or uniform crossover.
  For problems where the site position has some intrinsic meaning to the
- problem single-point crossover can lead to smaller disruption than multi-point
- or uniform crossover.
+ problem single-point crossover can lead to smaller disruption than multiple-poi
+nt or uniform crossover.
  
 \end_layout
 
@@ -3191,7 +3292,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/graphic/SinglePointCrossover.eps
+	filename ../resources/graphic/SinglePointCrossover.svg
 	width 75text%
 
 \end_inset
@@ -3203,6 +3304,12 @@ status open
 \begin_inset Caption
 
 \begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Single-point-crossover"
+
+\end_inset
+
 Single-point crossover
 \end_layout
 
@@ -3212,6 +3319,205 @@ Single-point crossover
 \end_layout
 
 \begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Single-point-crossover"
+
+\end_inset
+
+ shows how the 
+\family typewriter
+SinglePointCrossover
+\family default
+ class is performing the crossover for different crossover points---in the
+ given example for the chromosome indexes 
+\begin_inset Formula $0$
+\end_inset
+
+, 
+\begin_inset Formula $1$
+\end_inset
+
+, 
+\begin_inset Formula $3$
+\end_inset
+
+, 
+\begin_inset Formula $6$
+\end_inset
+
+ and 
+\begin_inset Formula $7$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Paragraph
+Multi-point crossover
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Multiple-point crossover
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Crossover!Multiple-point crossover
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If the 
+\family typewriter
+MultiPointCrossover
+\family default
+ class is created with one crossover point, it behaves exactly like the
+ single-point crossover.
+ The following picture shows how the Multi-point crossover works with two
+ crossover points, defined at index 
+\begin_inset Formula $1$
+\end_inset
+
+ and 
+\begin_inset Formula $4$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/2PointCrossover.svg
+	width 75text%
+	clip
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+2-point crossover
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+2-point crossover
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+Crossover!2-point crossover
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:3-point-crossover"
+
+\end_inset
+
+ you can see how the crossover works for an odd number of crossover points.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/3PointCrossover.svg
+	width 75text%
+	clip
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:3-point-crossover"
+
+\end_inset
+
+3-point crossover
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+3-point crossover
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Crossover!3-point crossover
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
 
 \end_layout
 
@@ -3227,6 +3533,16 @@ status collapsed
 
 \begin_layout Plain Layout
 Partially-matched crossover
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Crossover!Partially-matched crossover
 \end_layout
 
 \end_inset
@@ -3296,34 +3612,115 @@ end{multicols}
 
 \begin_layout Standard
 The PMX is similar to the two-point crossover.
- A crossing region is chosen by selecting two crossing points.
+ A crossing region is chosen by selecting two crossing points (see figure
  
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Partially-matched-crossover"
+
+\end_inset
+
+ 
+\emph on
+a
+\emph default
+)).
+ 
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/PMX.svg
+	width 60text%
+	BoundingBox 0bp 0bp 500bp 375bp
+	clip
+	rotateOrigin leftTop
+
+\end_inset
+
+
 \end_layout
 
-\begin_layout LyX-Code
-C1 = 012|345|6789
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Partially-matched-crossover"
+
+\end_inset
+
+Partially-matched crossover
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+Partially-matched crossover
 \end_layout
 
-\begin_layout LyX-Code
-C2 = 987|654|3210
+\end_inset
+
+
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+Crossover!Partially-matched crossover
 \end_layout
 
-\begin_layout Standard
-After performing the crossover we--normally--got two invalid chromosomes.
+\end_inset
+
+.
+ 
+\emph on
+a)
+\emph default
+ shows the original chromosomes, 
+\emph on
+b)
+\emph default
+ the (invalid) chromosomes after crossover and 
+\emph on
+c)
+\emph default
+ the repaired chromosomes.
 \end_layout
 
-\begin_layout LyX-Code
-C1 = 012|654|6789
+\end_inset
+
+
 \end_layout
 
-\begin_layout LyX-Code
-C2 = 987|345|3210
-\end_layout
+\end_inset
 
-\begin_layout Standard
-Chromosome C1 contains the value 6 twice and misses the value 3.
- On the other side chromosome C2 contains the value 3 twice and misses the
- value 6.
+After performing the crossover we--normally--got two invalid chromosomes
+ (figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Partially-matched-crossover"
+
+\end_inset
+
+ 
+\emph on
+b
+\emph default
+)).
+ Chromosome 
+\begin_inset Formula $1$
+\end_inset
+
+ contains the value 6 twice and misses the value 3.
+ On the other side chromosome 
+\begin_inset Formula $2$
+\end_inset
+
+ contains the value 3 twice and misses the value 6.
  We can observe that this crossover is equivalent to the exchange of the
  values 3
 \begin_inset Formula $\rightarrow$
@@ -3339,16 +3736,18 @@ Chromosome C1 contains the value 6 twice and misses the value 3.
 
 4.
  To repair the two chromosomes we have to apply this exchange outside the
- crossing region.
+ crossing region (figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Partially-matched-crossover"
+
+\end_inset
+
  
-\end_layout
-
-\begin_layout LyX-Code
-C1 = 012|654|3789
-\end_layout
-
-\begin_layout LyX-Code
-C2 = 987|345|6210
+\emph on
+b
+\emph default
+)).
 \end_layout
 
 \begin_layout Section
@@ -3467,7 +3866,7 @@ public class Main {
 
 \begin_layout Plain Layout
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -3557,7 +3956,7 @@ public class Main {
 
 \begin_layout Plain Layout
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -3707,7 +4106,7 @@ status open
 
 \begin_layout Plain Layout
 
-try (Concurrency c = Concurrency.start()) {
+try (final Concurrency c = Concurrency.start()) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -4048,7 +4447,7 @@ status open
 
 \begin_layout Plain Layout
 
-GeneticAlgorithm<Float64Gene, Float64> ga = ...
+final GeneticAlgorithm<Float64Gene, Float64> ga = ...
 \end_layout
 
 \begin_layout Plain Layout
@@ -5138,7 +5537,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /home/fwilhelm/Workspace/Development/Projects/Jenetics/org.jenetics.doc/src/main/resources/graphic/BlockSplitting.eps
+	filename ../resources/graphic/BlockSplitting.eps
 	width 80text%
 
 \end_inset
@@ -5233,7 +5632,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /home/fwilhelm/Workspace/Development/Projects/Jenetics/org.jenetics.doc/src/main/resources/graphic/Leapfrog.eps
+	filename ../resources/graphic/Leapfrog.eps
 	width 80text%
 
 \end_inset
@@ -5385,7 +5784,7 @@ public class LCG64ShiftRandom extends Random {
 
 \begin_layout Plain Layout
 
-    public void jump2(final int s);ss
+    public void jump2(final int s);
 \end_layout
 
 \begin_layout Plain Layout
@@ -5545,10 +5944,12 @@ double
 \family default
 ) generation speed for the different PRNG implementations.
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
-Measured on a Intel(R) Core(TM) i5-3427U CPU @ 1.80GHz 
+Measured on a Intel(R) Core(TM) i5-3427U CPU @ 1.80GHz with Java(TM) SE Runtime
+ Environment (build 1.7.0_45-b18)---Java HotSpot(TM) 64-Bit Server VM (build
+ 24.45-b08, mixed mode) 
 \end_layout
 
 \end_inset
@@ -5773,7 +6174,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $223\cdot10^{6}$
+\begin_inset Formula $230\cdot10^{6}$
 \end_inset
 
 
@@ -5785,7 +6186,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $236\cdot10^{6}$
+\begin_inset Formula $247\cdot10^{6}$
 \end_inset
 
 
@@ -5797,7 +6198,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $175\cdot10^{6}$
+\begin_inset Formula $213\cdot10^{6}$
 \end_inset
 
 
@@ -5809,7 +6210,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $182\cdot10^{6}$
+\begin_inset Formula $209\cdot10^{6}$
 \end_inset
 
 
@@ -5863,7 +6264,7 @@ int
 \family default
  values)
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 The 
@@ -5886,7 +6287,7 @@ random
 \family typewriter
 IndexStream
 \family default
- is used for selecting the genes, chromosomes and genotpyes.
+ is used for selecting the genes, chromosomes and genotypes.
 \end_layout
 
 \end_inset
@@ -6097,7 +6498,7 @@ status open
 
 \begin_layout Plain Layout
 
-File file = new File("population.xml");
+final File file = new File("population.xml");
 \end_layout
 
 \begin_layout Plain Layout
@@ -6121,7 +6522,7 @@ Population<Float64Gene,Float64> population =
 
 \begin_layout Plain Layout
 
-    (Population<Float64Gene, Float64)IO.xml.read(file);
+    (Population<Float64Gene, Float64>)IO.xml.read(file);
 \end_layout
 
 \begin_layout Plain Layout
@@ -6359,7 +6760,11 @@ MSeq
 ISeq
 \family default
  are mutable, respectively immutable specializations of the basis interface.
- Creating instances of the Seq interfaces is possible via the 
+ Creating instances of the 
+\family typewriter
+Seq
+\family default
+ interfaces is possible via the 
 \family typewriter
 Array
 \family default
@@ -6379,17 +6784,17 @@ status open
 
 \begin_layout Plain Layout
 
-final Seq<Integer> a1 = new Array<>(1, 2, 3);
+final Seq<Integer> a1 = Array.box(1, 2, 3);
 \end_layout
 
 \begin_layout Plain Layout
 
-final MSeq<Integer> a2 = new Array<>(1, 2, 3);
+final MSeq<Integer> a2 = Array.box(1, 2, 3);
 \end_layout
 
 \begin_layout Plain Layout
 
-final ISeq<Integer> a3 = new Array<>(1, 2, 3).toISeq();
+final ISeq<Integer> a3 = Array.box(1, 2, 3).toISeq();
 \end_layout
 
 \begin_layout Plain Layout
@@ -6563,6 +6968,28 @@ Selector
 Alterer
 \family default
  classes for choosing random genes and/or chromosomes (indices).
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The elements returned by the 
+\emph on
+random
+\emph default
+ 
+\family typewriter
+IndexStream 
+\family default
+are strictly increasing, except the termination element., which is 
+\begin_inset Formula $-1$
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -6732,7 +7159,7 @@ status open
 
 \begin_layout Plain Layout
 
-final Seq<String> data = new Array<>("-10","1","2","3","4","5");
+final Seq<String> data = Array.valueOf("-10","1","2","3","4","5");
 \end_layout
 
 \begin_layout Plain Layout
@@ -6961,7 +7388,7 @@ Gene
 \family typewriter
 getAllele
 \family default
-
+()
 \begin_inset Index idx
 status collapsed
 
@@ -6978,7 +7405,7 @@ newInstance
  method for creating new, random instances of the gene---must be of the
  same type and have the same constraint---and (3) the 
 \family typewriter
-isValid
+isValid()
 \family default
  method which checks if the gene fulfill the expected constraints.
  The gene constraint might be violated after mutation and/or recombination.
@@ -7082,12 +7509,12 @@ status open
 
 \begin_layout Plain Layout
 
-public interface Chromosome<T extends Gene<?, T>>
+public interface Chromosome<G extends Gene<?, G>>
 \end_layout
 
 \begin_layout Plain Layout
 
-	extends Factory<Chromosome<T>>, Iterable<T>, Verifiable, 
+	extends Factory<Chromosome<G>>, Iterable<G>, Verifiable, 
 \end_layout
 
 \begin_layout Plain Layout
@@ -7102,22 +7529,22 @@ public interface Chromosome<T extends Gene<?, T>>
 
 \begin_layout Plain Layout
 
-    public Chromosome<T> newInstance(ISeq<T> genes);
+    public Chromosome<G> newInstance(ISeq<G> genes);
 \end_layout
 
 \begin_layout Plain Layout
 
-    public T getGene();
+    public G getGene();
 \end_layout
 
 \begin_layout Plain Layout
 
-    public T getGene(int index);
+    public G getGene(int index);
 \end_layout
 
 \begin_layout Plain Layout
 
-    public ISeq<T> toSeq();
+    public ISeq<G> toSeq();
 \end_layout
 
 \begin_layout Plain Layout
@@ -7650,7 +8077,7 @@ evaluate
 \family typewriter
 Statistics.Calculator
 \family default
- class return a builder, preconfigured with your actual statistics values,
+ class return a builder, pre-configured with your actual statistics values,
  which will create the actual statistics object.
  This indirection is necessary because the GA is setting additional statistical
  information about killed and invalid individuals to the statistics object.
@@ -8555,12 +8982,86 @@ default
 \end_layout
 
 \begin_layout LyX-Code
-$ hg clone http://hg.code.sf.net/p/jenetics/main <builddir>
+$ hg clone https://fwilhelm@bitbucket.org/fwilhelm/jenetics 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+           <builddir>
 \begin_inset Index idx
 status collapsed
 
 \begin_layout Plain Layout
 Mercurial repository
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Source code
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout LyX-Code
+# or
+\end_layout
+
+\begin_layout LyX-Code
+$ hg clone http://hg.code.sf.net/p/jenetics/main 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+           <builddir>
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Mercurial repository
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Source code
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout LyX-Code
+# or
+\end_layout
+
+\begin_layout LyX-Code
+$ git clone https://github.com/jenetics/jenetics.git 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+           <builddir>
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Git repository
 \end_layout
 
 \end_inset
@@ -8619,7 +9120,7 @@ Build!Gradle
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Gradle
@@ -8636,6 +9137,44 @@ sub
 modules
 \emph default
 ).
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+If you are calling the 
+\family typewriter
+gradlew
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Build!gradlew
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+gradlew
+\end_layout
+
+\end_inset
+
+
+\family default
+ script (instead of 
+\family typewriter
+gradle
+\family default
+), which are part of the downloaded package, the proper Gradle version is
+ automatically downloaded and you don't have to install Gradle explicitly.
+\end_layout
+
+\end_inset
+
  Each 
 \emph on
 sub
@@ -8716,30 +9255,6 @@ module
 tasks
 \emph default
 :
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-\series bold
-pack
-\family default
-\series default
-: Compiles the sources of all modules, creates the JAR files and the Javadoc.
- The build artifacts are copied into the 
-\family typewriter
-<build\SpecialChar \-
-dir>\SpecialChar \slash{}
-build/package directory.
- 
-\family default
-\emph on
-This task is only available in the 
-\family typewriter
-<build\SpecialChar \-
-dir>
-\family default
- directory.
 \end_layout
 
 \begin_layout Itemize
@@ -8839,6 +9354,23 @@ libs
 
 \family typewriter
 \series bold
+packaging
+\family default
+\series default
+: Compiles the sources of all modules, creates the JAR files and the Javadoc
+ and creates a complete library package---the very same which you can download
+ from the home page.
+ The build artifacts are copied into the 
+\family typewriter
+<build\SpecialChar \-
+dir>\SpecialChar \slash{}
+build/package/jenetics-<version> directory.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
 clean
 \family default
 \series default
@@ -8856,7 +9388,7 @@ For
 \family typewriter
 packaging
 \family default
- (building) the source call
+ (building) the source, call
 \end_layout
 
 \begin_layout LyX-Code
@@ -8864,7 +9396,21 @@ $ cd <build-dir>
 \end_layout
 
 \begin_layout LyX-Code
-$ gradle pack
+$ gradle packaging
+\end_layout
+
+\begin_layout Standard
+or
+\end_layout
+
+\begin_layout LyX-Code
+$ ./gradlew packaging
+\end_layout
+
+\begin_layout Standard
+if you don't have the the Gradle build system installed---calling the the
+ Gradle wrapper script will download all needed files and trigger the build
+ task afterwards.
 \end_layout
 
 \begin_layout Paragraph
@@ -8911,7 +9457,7 @@ target "http://www.jetbrains.com/idea/"
 \end_layout
 
 \begin_layout LyX-Code
-$ gradle <eclipse|idea>
+$ ./gradlew <eclipse|idea>
 \end_layout
 
 \begin_layout Standard
@@ -8972,7 +9518,7 @@ Homepage
 \emph on
  
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -8993,7 +9539,7 @@ Download
 \emph on
  
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -9059,7 +9605,7 @@ Version
 \series default
 : 
 \emph on
-6.8
+6.8.1
 \end_layout
 
 \begin_layout Itemize
@@ -9092,11 +9638,113 @@ Download
 \emph on
  
 \begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://testng.org/testng-6.8.1.zip
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+License
+\series default
+: 
+\emph on
+
+\begin_inset CommandInset href
+LatexCommand href
+name "Apache License, Version 2.0"
+target "http://testng.org/license"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Scope
+\series default
+: 
+\emph on
+test
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\series bold
+\emph on
+Apache Commons Math
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+\emph on
+Apache Commons Math
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\series bold
+Version
+\series default
+: 
+\emph on
+3.2
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Homepage
+\series default
+:
+\emph on
+ 
+\begin_inset Flex URL
 status collapsed
 
 \begin_layout Plain Layout
 
-http://testng.org/testng-6.8.zip
+http://commons.apache.org/proper/commons-math/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Download
+\series default
+:
+\emph on
+ 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://tweedo.com/mirror/apache/commons/math/binaries/commons-math3-3.2-bin.zip
 \end_layout
 
 \end_inset
@@ -9158,7 +9806,7 @@ Version
 \series default
 : 
 \emph on
-5.0
+5.0 
 \end_layout
 
 \begin_layout Itemize
@@ -9170,7 +9818,7 @@ Homepage
 \emph on
  
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -9191,7 +9839,7 @@ Download
 \emph on
  
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -9270,7 +9918,11 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 1.2
+: 1.10 (
+\emph on
+or later
+\emph default
+)
 \end_layout
 
 \begin_layout Itemize
@@ -9282,7 +9934,7 @@ Homepage
 \emph on
  
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -9303,11 +9955,11 @@ Download
 \emph on
  
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
-http://services.gradle.org/distributions/gradle-1.2-bin.zip
+http://services.gradle.org/distributions/gradle-1.10-bin.zip
 \end_layout
 
 \end_inset
@@ -9362,13 +10014,90 @@ License
 The library itself is licensed under the 
 \begin_inset CommandInset href
 LatexCommand href
-name "GNU Lesser General Public License"
-target "https://www.gnu.org/licenses/lgpl-2.1.html"
+name "Apache License, Version 2.0"
+target "http://www.apache.org/licenses/LICENSE-2.0.html"
 
 \end_inset
 
- as published by the Free Software Foundation; either version 2.1 of the
- License, or (at your option) any later version.
+.
+\end_layout
+
+\begin_layout LyX-Code
+
+\size footnotesize
+Copyright @__year__@ Franz Wilhelmstötter
+\end_layout
+
+\begin_layout LyX-Code
+
+\size footnotesize
+  
+\end_layout
+
+\begin_layout LyX-Code
+
+\size footnotesize
+Licensed under the Apache License, Version 2.0 (the "License");
+\end_layout
+
+\begin_layout LyX-Code
+
+\size footnotesize
+you may not use this file except in compliance with the License.
+\end_layout
+
+\begin_layout LyX-Code
+
+\size footnotesize
+You may obtain a copy of the License at
+\end_layout
+
+\begin_layout LyX-Code
+
+\size footnotesize
+  
+\end_layout
+
+\begin_layout LyX-Code
+
+\size footnotesize
+   http://www.apache.org/licenses/LICENSE-2.0
+\end_layout
+
+\begin_layout LyX-Code
+
+\size footnotesize
+  
+\end_layout
+
+\begin_layout LyX-Code
+
+\size footnotesize
+Unless required by applicable law or agreed to in writing, software
+\end_layout
+
+\begin_layout LyX-Code
+
+\size footnotesize
+distributed under the License is distributed on an "AS IS" BASIS,
+\end_layout
+
+\begin_layout LyX-Code
+
+\size footnotesize
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+\end_layout
+
+\begin_layout LyX-Code
+
+\size footnotesize
+See the License for the specific language governing permissions and
+\end_layout
+
+\begin_layout LyX-Code
+
+\size footnotesize
+limitations under the License.
 \end_layout
 
 \begin_layout Standard

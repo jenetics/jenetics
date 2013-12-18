@@ -2,48 +2,48 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
  */
 package org.jenetics;
 
+import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
+import static org.jenetics.util.functions.Null;
 import static org.jenetics.util.object.Verify;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
-import static org.jenetics.util.functions.Null;
 
 import java.util.Iterator;
 import java.util.RandomAccess;
+
+import org.jenetics.internal.util.cast;
 
 import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
 
 /**
  * The abstract base implementation of the Chromosome interface. The implementors
- * of this class must assure that the protected member <code>_genes</code> is not
- * <code>null</code> and the length of the <code>genes</code> > 0.
+ * of this class must assure that the protected member {@code _genes} is not
+ * {@code null} and the length of the {@code genes} &gt; 0.
  *
  * @param <G> the gene type.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2013-11-27 $</em>
  */
 public abstract class AbstractChromosome<G extends Gene<?, G>>
 	implements
@@ -74,17 +74,17 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 * @throws IllegalArgumentException if the length of the gene array is
 	 *          smaller than one.
 	 */
-	protected AbstractChromosome(final ISeq<G> genes) {
-		nonNull(genes, "Gene array");
+	protected AbstractChromosome(final ISeq<? extends G> genes) {
+		requireNonNull(genes, "Gene array");
 		assert (genes.indexWhere(Null) == -1) : "Found at least on null gene.";
 
 		if (genes.length() < 1) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"Chromosome length < 1: %d", genes.length()
 			));
 		}
 
-		_genes = genes;
+		_genes = cast.apply(genes);
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	@Override
 	public boolean isValid() {
 		if (_valid == null) {
-			_valid = _genes.forall(Verify);
+			_valid = _genes.forAll(Verify);
 		}
 
 		return _valid;
@@ -122,7 +122,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	}
 
 	/**
-	 * Return the index of the first occurrence of the given <code>gene</code>.
+	 * Return the index of the first occurrence of the given {@code gene}.
 	 *
 	 * @param gene the {@link Gene} to search for.
 	 * @return the index of the searched gene, or -1 if the given gene was not

@@ -2,36 +2,37 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
- * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 package org.jenetics.util;
 
+import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
+
+import java.util.Random;
+
 /**
- * Object with mathematical functions.
+ * This object contains mathematical helper functions.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.1 &mdash; <em>$Date: 2012-12-25 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-12-03 $</em>
  */
 public final class math extends StaticObject {
 	private math() {}
-
 
 	/**
 	 * Add to long values and throws an ArithmeticException in the case of an
@@ -43,25 +44,17 @@ public final class math extends StaticObject {
 	 * @throws ArithmeticException if the summation would lead to an overflow.
 	 */
 	public static long plus(final long a, final long b) {
-		if (a == Long.MIN_VALUE && b == Long.MIN_VALUE) {
-			throw new ArithmeticException(String.format("Overflow: %d + %d", a, b));
-		}
-
 		final long z = a + b;
-		if (a > 0) {
-			if (b > 0 && z < 0) {
-				throw new ArithmeticException(String.format("Overflow: %d + %d", a, b));
-			}
-		} else if (b < 0 && z > 0) {
-			throw new ArithmeticException(String.format("Overflow: %d + %d", a, b));
+		if (((a^z) & (b^z)) < 0) {
+			throw new ArithmeticException(format("Overflow: %d + %d", a, b));
 		}
 
 		return z;
 	}
 
 	/**
-	 * Subtracts to long values and throws an ArithmeticException in the case of an
-	 * overflow.
+	 * Subtracts to long values and throws an ArithmeticException in the case of
+	 * an overflow.
 	 *
 	 * @param a the minuend.
 	 * @param b the subtrahend.
@@ -70,12 +63,8 @@ public final class math extends StaticObject {
 	 */
 	public static long minus(final long a, final long b) {
 		final long z = a - b;
-		if (a > 0) {
-			if (b < 0 && z < 0) {
-				throw new ArithmeticException(String.format("Overflow: %d - %d", a, b));
-			}
-		} else if (b > 0 && z > 0) {
-			throw new ArithmeticException(String.format("Overflow: %d - %d", a, b));
+		if (((a^b) & (a^z)) < 0) {
+			throw new ArithmeticException(format("Overflow: %d - %d", a, b));
 		}
 
 		return z;
@@ -88,21 +77,12 @@ public final class math extends StaticObject {
 	 * @param values the values to sum up.
 	 * @return the sum of the given {@code values}.
 	 * @throws NullPointerException if the given array is {@code null}.
+	 *
+	 * @deprecated Use {@link math.statistics#sum(double[])} instead.
 	 */
+	@Deprecated
 	public static double sum(final double[] values) {
-		double sum = 0.0;
-		double c = 0.0;
-		double y = 0.0;
-		double t = 0.0;
-
-		for (int i = values.length; --i >= 0;) {
-			y = values[i] - c;
-			t = sum + y;
-			c = t - sum - y;
-			sum = t;
-		}
-
-		return sum;
+		return statistics.sum(values);
 	}
 
 	/**
@@ -111,25 +91,25 @@ public final class math extends StaticObject {
 	 * @param values the values to add.
 	 * @return the values sum.
 	 * @throws NullPointerException if the values are null;
+	 *
+	 * @deprecated Use {@link math.statistics#sum(long[])} instead.
 	 */
+	@Deprecated
 	public static long sum(final long[] values) {
-		long sum = 0;
-		for (int i = values.length; --i >= 0;) {
-			sum += values[i];
-		}
-		return sum;
+		return statistics.sum(values);
 	}
 
 	/**
-	 * Normalize the given double array, so that it sum to one. The normalization
-	 * is performed in place and the same {@code values} are returned.
+	 * Normalize the given double array, so that it sum to one. The
+	 * normalization is performed in place and the same {@code values} are
+	 * returned.
 	 *
 	 * @param values the values to normalize.
 	 * @return the {@code values} array.
 	 * @throws NullPointerException if the given double array is {@code null}.
 	 */
 	public static double[] normalize(final double[] values) {
-		final double sum = 1.0/sum(values);
+		final double sum = 1.0/statistics.sum(values);
 		for (int i = values.length; --i >= 0;) {
 			values[i] = values[i]*sum;
 		}
@@ -141,44 +121,30 @@ public final class math extends StaticObject {
 	 * Return the minimum value of the given double array.
 	 *
 	 * @param values the double array.
-	 * @return the minimum value or {@link Double#NaN} if the given array is empty.
+	 * @return the minimum value or {@link Double#NaN} if the given array is
+	 *         empty.
 	 * @throws NullPointerException if the given array is {@code null}.
+	 *
+	 * @deprecated Use {@link math.statistics#min(double[])} instead.
 	 */
+	@Deprecated
 	public static double min(final double[] values) {
-		double min = Double.NaN;
-		if (values.length > 0) {
-			min = values[0];
-
-			for (int i = values.length; --i >= 1;) {
-				if (values[i] < min) {
-					min = values[i];
-				}
-			}
-		}
-
-		return min;
+		return statistics.min(values);
 	}
 
 	/**
 	 * Return the maximum value of the given double array.
 	 *
 	 * @param values the double array.
-	 * @return the maximum value or {@link Double#NaN} if the given array is empty.
+	 * @return the maximum value or {@link Double#NaN} if the given array is
+	 *         empty.
 	 * @throws NullPointerException if the given array is {@code null}.
+	 *
+	 * @deprecated Use {@link math.statistics#max(double[])} instead.
 	 */
+	@Deprecated
 	public static double max(final double[] values) {
-		double max = Double.NaN;
-		if (values.length > 0) {
-			max = values[0];
-
-			for (int i = values.length; --i >= 1;) {
-				if (values[i] > max) {
-					max = values[i];
-				}
-			}
-		}
-
-		return max;
+		return statistics.max(values);
 	}
 
 	/**
@@ -265,7 +231,7 @@ public final class math extends StaticObject {
 
 	static boolean isMultiplicationSave(final int a, final int b) {
 		final long m = (long)a*(long)b;
-		return m >= Integer.MIN_VALUE && m <= Integer.MAX_VALUE;
+		return ((int)m) == m;
 	}
 
 	/**
@@ -333,29 +299,308 @@ public final class math extends StaticObject {
 		return t;
 	}
 
+	/**
+	 * Selects a random subset of size {@code k} from a set of size {@code n}.
+	 *
+	 * @see #subset(int, int[])
+	 *
+	 * @param n the size of the set.
+	 * @param k the size of the subset.
+	 * @throws IllegalArgumentException if {@code n < k}, {@code k == 0} or if
+	 *          {@code n*k} will cause an integer overflow.
+	 * @return the subset array.
+	 */
+	public static int[] subset(final int n, final int k) {
+		return subset(n, k, RandomRegistry.getRandom());
+	}
 
 	/**
-	 * Mathematical functions regarding probabilities.
+	 * Selects a random subset of size {@code k} from a set of size {@code n}.
+	 *
+	 * @see #subset(int, int[], Random)
+	 *
+	 * @param n the size of the set.
+	 * @param k the size of the subset.
+	 * @param random the random number generator used.
+	 * @throws NullPointerException if {@code random} is {@code null}.
+	 * @throws IllegalArgumentException if {@code n < k}, {@code k == 0} or if
+	 *         {@code n*k} will cause an integer overflow.
+	 * @return the subset array.
+	 */
+	public static int[] subset(final int n, final int k, final Random random) {
+		requireNonNull(random, "Random");
+		if (k <= 0) {
+			throw new IllegalArgumentException(format(
+					"Subset size smaller or equal zero: %s", k
+				));
+		}
+		if (n < k) {
+			throw new IllegalArgumentException(format(
+					"n smaller than k: %s < %s.", n, k
+				));
+		}
+
+		final int[] sub = new int[k];
+		subset(n, sub,random);
+		return sub;
+	}
+
+	/**
+	 * <p>
+	 * Selects a random subset of size {@code sub.length} from a set of size
+	 * {@code n}.
+	 * </p>
+	 *
+	 * <p>
+	 * <em>Authors:</em>
+	 * 	 FORTRAN77 original version by Albert Nijenhuis, Herbert Wilf. This
+	 * 	 version based on the  C++ version by John Burkardt.
+	 * </p>
+	 *
+	 * <p><em><a href="https://people.scs.fsu.edu/~burkardt/c_src/subset/subset.html">
+	 *  Reference:</a></em>
+	 * 	 Albert Nijenhuis, Herbert Wilf,
+	 * 	 Combinatorial Algorithms for Computers and Calculators,
+	 * 	 Second Edition,
+	 * 	 Academic Press, 1978,
+	 * 	 ISBN: 0-12-519260-6,
+	 * 	 LC: QA164.N54.
+	 * </p>
+	 *
+	 * @param n the size of the set.
+	 * @param sub the sub set array.
+	 * @throws NullPointerException if {@code sub} is {@code null}.
+	 * @throws IllegalArgumentException if {@code n < sub.length},
+	 *         {@code sub.length == 0} or {@code n*sub.length} will cause an
+	 *         integer overflow.
+	 */
+	public static void subset(final int n, final int sub[]) {
+		subset(n, sub, RandomRegistry.getRandom());
+	}
+
+	/**
+	 * <p>
+	 * Selects a random subset of size {@code sub.length} from a set of size
+	 * {@code n}.
+	 * </p>
+	 *
+	 * <p>
+	 * <em>Authors:</em>
+	 *      FORTRAN77 original version by Albert Nijenhuis, Herbert Wilf. This
+	 *      version based on the  C++ version by John Burkardt.
+	 * </p>
+	 *
+	 * <p><em><a href="https://people.scs.fsu.edu/~burkardt/c_src/subset/subset.html">
+	 *  Reference:</a></em>
+	 *      Albert Nijenhuis, Herbert Wilf,
+	 *      Combinatorial Algorithms for Computers and Calculators,
+	 *      Second Edition,
+	 *      Academic Press, 1978,
+	 *      ISBN: 0-12-519260-6,
+	 *      LC: QA164.N54.
+	 * </p>
+	 *
+	 * @param n the size of the set.
+	 * @param sub the sub set array.
+	 * @param random the random number generator used.
+	 * @throws NullPointerException if {@code sub} or {@code random} is
+	 *         {@code null}.
+	 * @throws IllegalArgumentException if {@code n < sub.length},
+	 *         {@code sub.length == 0} or {@code n*sub.length} will cause an
+	 *         integer overflow.
+	 */
+	public static int[] subset(final int n, final int sub[], final Random random) {
+		requireNonNull(random, "Random");
+		requireNonNull(sub, "Sub set array");
+
+		final int k = sub.length;
+		if (k <= 0) {
+			throw new IllegalArgumentException(format(
+				"Subset size smaller or equal zero: %s", k
+			));
+		}
+		if (n < k) {
+			throw new IllegalArgumentException(format(
+				"n smaller than k: %s < %s.", n, k
+			));
+		}
+		if (!math.isMultiplicationSave(n, k)) {
+			throw new IllegalArgumentException(format(
+				"n*sub.length > Integer.MAX_VALUE (%s*%s = %s > %s)",
+				n, sub.length, (long)n*(long)k, Integer.MAX_VALUE
+			));
+		}
+
+		if (sub.length == n) {
+			for (int i = 0; i < sub.length; ++i) {
+				sub[i] = i;
+			}
+			return sub;
+		}
+
+		for (int i = 0; i < k; ++i) {
+			sub[i] = (i*n)/k;
+		}
+
+		int l = 0;
+		int ix = 0;
+		for (int i = 0; i < k; ++i) {
+			do {
+				ix = nextInt(random, 1, n);
+				l = (ix*k - 1)/n;
+			} while (sub[l] >= ix);
+
+			sub[l] = sub[l] + 1;
+		}
+
+		int m = 0;
+		int ip = 0;
+		int is = k;
+		for (int i = 0; i < k; ++i) {
+			m = sub[i];
+			sub[i] = 0;
+
+			if (m != (i*n)/k) {
+				ip = ip + 1;
+				sub[ip - 1] = m;
+			}
+		}
+
+		int ihi = ip;
+		int ids = 0;
+		for (int i = 1; i <= ihi; ++i) {
+			ip = ihi + 1 - i;
+			l = 1 + (sub[ip - 1]*k - 1)/n;
+			ids = sub[ip - 1] - ((l - 1)*n)/k;
+			sub[ip - 1] = 0;
+			sub[is - 1] = l;
+			is = is - ids;
+		}
+
+		int ir = 0;
+		int m0 = 0;
+		for (int ll = 1; ll <= k; ++ll) {
+			l = k + 1 - ll;
+
+			if (sub[l - 1] != 0) {
+				ir = l;
+				m0 = 1 + ((sub[l - 1] - 1)*n)/k;
+				m = (sub[l-1]*n)/k - m0 + 1;
+			}
+
+			ix = nextInt(random, m0, m0 + m - 1);
+
+			int i = l + 1;
+			while (i <= ir && ix >= sub[i - 1]) {
+				ix = ix + 1;
+				sub[ i- 2] = sub[i - 1];
+				i = i + 1;
+			}
+
+			sub[i - 2] = ix;
+			--m;
+		}
+
+		return sub;
+	}
+
+	private static int nextInt(final Random random, final int a, final int b) {
+		return a == b ? a - 1 : random.nextInt(b - a) + a;
+	}
+
+	/**
+	 * Some helper method concerning statistics.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2012-12-25 $</em>
+	 * @since 1.3
+	 * @version 1.3 &mdash; <em>$Date: 2013-12-03 $</em>
 	 */
-	static final class probability extends StaticObject {
-		private probability() {}
-
-		static final long INT_RANGE = pow(2, 32) - 1;
-
+	public static final class statistics extends StaticObject {
+		private statistics() {}
 
 		/**
-		 * Maps the probability, given in the range {@code [0, 1]}, to an
-		 * integer in the range {@code [Integer.MIN_VALUE, Integer.MAX_VALUE]}.
+		 * Return the minimum value of the given double array.
 		 *
-		 * @param probability the probability to widen.
-		 * @return the widened probability.
+		 * @param values the double array.
+		 * @return the minimum value or {@link Double#NaN} if the given array is
+		 *         empty.
+		 * @throws NullPointerException if the given array is {@code null}.
 		 */
-		static int toInt(final double probability) {
-			return (int)(Math.round(INT_RANGE*probability) + Integer.MIN_VALUE);
+		public static double min(final double[] values) {
+			double min = Double.NaN;
+			if (values.length > 0) {
+				min = values[0];
+
+				for (int i = values.length; --i >= 1;) {
+					if (values[i] < min) {
+						min = values[i];
+					}
+				}
+			}
+
+			return min;
+		}
+
+		/**
+		 * Return the maximum value of the given double array.
+		 *
+		 * @param values the double array.
+		 * @return the maximum value or {@link Double#NaN} if the given array is
+		 *         empty.
+		 * @throws NullPointerException if the given array is {@code null}.
+		 */
+		public static double max(final double[] values) {
+			double max = Double.NaN;
+			if (values.length > 0) {
+				max = values[0];
+
+				for (int i = values.length; --i >= 1;) {
+					if (values[i] > max) {
+						max = values[i];
+					}
+				}
+			}
+
+			return max;
+		}
+
+		/**
+		 * Implementation of the <a href="http://en.wikipedia.org/wiki/Kahan_summation_algorithm">
+		 * Kahan summation algorithm</a>.
+		 *
+		 * @param values the values to sum up.
+		 * @return the sum of the given {@code values}.
+		 * @throws NullPointerException if the given array is {@code null}.
+		 */
+		public static double sum(final double[] values) {
+			double sum = 0.0;
+			double c = 0.0;
+			double y = 0.0;
+			double t = 0.0;
+
+			for (int i = values.length; --i >= 0;) {
+				y = values[i] - c;
+				t = sum + y;
+				c = t - sum - y;
+				sum = t;
+			}
+
+			return sum;
+		}
+
+		/**
+		 * Add the values of the given array.
+		 *
+		 * @param values the values to add.
+		 * @return the values sum.
+		 * @throws NullPointerException if the values are null;
+		 */
+		public static long sum(final long[] values) {
+			long sum = 0;
+			for (int i = values.length; --i >= 0;) {
+				sum += values[i];
+			}
+			return sum;
 		}
 
 	}
@@ -365,10 +610,144 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2012-12-25 $</em>
+	 * @version 1.2 &mdash; <em>$Date: 2013-12-03 $</em>
 	 */
 	public static final class random extends StaticObject {
 		private random() {}
+
+		/**
+		 * Returns a pseudorandom, uniformly distributed int value between min
+		 * and max (min and max included).
+		 *
+		 * @param min lower bound for generated integer
+		 * @param max upper bound for generated integer
+		 * @return a random integer greater than or equal to {@code min} and
+		 *         less than or equal to {@code max}
+		 * @throws IllegalArgumentException if {@code min >= max}
+		 */
+		public static int nextInt(
+			final Random random,
+			final int min, final int max
+		) {
+			if (min >= max) {
+				throw new IllegalArgumentException(format(
+					"Min >= max: %d >= %d", min, max
+				));
+			}
+
+			final int diff = max - min + 1;
+			int result = 0;
+
+			if (diff <= 0) {
+				do {
+					result = random.nextInt();
+				} while (result < min || result > max);
+			} else {
+				result = random.nextInt(diff) + min;
+			}
+
+			return result;
+		}
+
+		/**
+		 * Returns a pseudorandom, uniformly distributed int value between min
+		 * and max (min and max included).
+		 *
+		 * @param min lower bound for generated long integer
+		 * @param max upper bound for generated long integer
+		 * @return a random long integer greater than or equal to {@code min}
+		 *         and less than or equal to {@code max}
+		 * @throws IllegalArgumentException if {@code min >= max}
+		 */
+		public static long nextLong(
+			final Random random,
+			final long min, final long max
+		) {
+			if (min >= max) {
+				throw new IllegalArgumentException(format(
+					"min >= max: %d >= %d.", min, max
+				));
+			}
+
+			final long diff = (max - min) + 1;
+			long result = 0;
+
+			if (diff <= 0) {
+				do {
+					result = random.nextLong();
+				} while (result < min || result > max);
+			} else if (diff < Integer.MAX_VALUE) {
+				result = random.nextInt((int)diff) + min;
+			} else {
+				result = nextLong(random, diff) + min;
+			}
+
+			return result;
+		}
+
+		/**
+		 * Returns a pseudorandom, uniformly distributed int value between 0
+		 * (inclusive) and the specified value (exclusive), drawn from the given
+		 * random number generator's sequence.
+		 *
+		 * @param random the random engine used for creating the random number.
+		 * @param n the bound on the random number to be returned. Must be
+		 *        positive.
+		 * @return the next pseudorandom, uniformly distributed int value
+		 *         between 0 (inclusive) and n (exclusive) from the given random
+		 *         number generator's sequence
+		 * @throws IllegalArgumentException if n is smaller than 1.
+		 */
+		public static long nextLong(final Random random, final long n) {
+			if (n <= 0) {
+				throw new IllegalArgumentException(format(
+					"n is smaller than one: %d", n
+				));
+			}
+
+			long bits;
+			long result;
+			do {
+				bits = random.nextLong() & 0x7fffffffffffffffL;
+				result = bits%n;
+			} while (bits - result + (n - 1) < 0);
+
+			return result;
+		}
+
+		/**
+		 * Returns a pseudorandom, uniformly distributed double value between
+		 * min (inclusively) and max (exclusively).
+		 *
+		 * @param random the random engine used for creating the random number.
+		 * @param min lower bound for generated float value
+		 * @param max upper bound for generated float value
+		 * @return a random float greater than or equal to {@code min} and less
+		 *         than to {@code max}
+		 */
+		public static float nextFloat(
+			final Random random,
+			final float min, final float max
+		) {
+			return random.nextFloat()*(max - min) + min;
+		}
+
+		/**
+		 * Returns a pseudorandom, uniformly distributed double value between
+		 * min (inclusively) and max (exclusively).
+		 *
+		 * @param random the random engine used for creating the random number.
+		 * @param min lower bound for generated double value
+		 * @param max upper bound for generated double value
+		 * @return a random double greater than or equal to {@code min} and less
+		 *         than to {@code max}
+		 */
+		public static double nextDouble(
+			final Random random,
+			final double min, final double max
+		) {
+			return random.nextDouble()*(max - min) + min;
+		}
 
 		/**
 		 * Create a new <em>seed</em> byte array of the given length.
@@ -393,7 +772,8 @@ public final class math extends StaticObject {
 		 *
 		 * @param seed the byte array seed to fill with random bytes.
 		 * @return the given byte array, for method chaining.
-		 * @throws NullPointerException if the {@code seed} array is {@code null}.
+		 * @throws NullPointerException if the {@code seed} array is
+		 *         {@code null}.
 		 */
 		public static byte[] seed(final byte[] seed) {
 			for (int i = 0, len = seed.length; i < len;) {
@@ -455,23 +835,25 @@ public final class math extends StaticObject {
 		 * @return the created seed value.
 		 */
 		public static long seed(final long base) {
-			long seed = base ^ objectHashSeed();
-			seed ^= seed << 17;
-			seed ^= seed >>> 31;
-			seed ^= seed << 8;
-			return seed;
+			return mix(base, objectHashSeed());
 		}
 
+		private static long mix(final long a, final long b) {
+			long c = a^b;
+			c ^= c << 17;
+			c ^= c >>> 31;
+			c ^= c << 8;
+			return c;
+		}
 
 		private static long objectHashSeed() {
-			return ((long)(new Object().hashCode()) << 32) | new Object().hashCode();
+			return ((long)(new Object().hashCode()) << 32) |
+							new Object().hashCode();
 		}
 
 	}
 
-
 }
-
 
 
 

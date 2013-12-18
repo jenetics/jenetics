@@ -2,29 +2,27 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
- * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 package org.jenetics.util;
 
+import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
 
 import java.util.Iterator;
 
@@ -37,7 +35,7 @@ import org.jscience.mathematics.structure.GroupAdditive;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-12-14 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-11-22 $</em>
  */
 public final class accumulators extends StaticObject {
 	private accumulators() {}
@@ -50,6 +48,11 @@ public final class accumulators extends StaticObject {
 
 	/**
 	 * Calculates min value.
+	 *
+	 * <p/>
+	 * <strong>Note that this implementation is not synchronized.</strong> If
+	 * multiple threads access this object concurrently, and at least one of the
+	 * threads modifies it, it must be synchronized externally.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
@@ -73,7 +76,7 @@ public final class accumulators extends StaticObject {
 		 * @throws NullPointerException if {@code min} is {@code null}.
 		 */
 		public Min(final Min<C> min) {
-			nonNull(min, "Min");
+			requireNonNull(min, "Min");
 			_samples = min._samples;
 			_min = min._min;
 		}
@@ -123,7 +126,7 @@ public final class accumulators extends StaticObject {
 
 		@Override
 		public String toString() {
-			return String.format(
+			return format(
 					"%s[samples=%d, min=%s]",
 					getClass().getSimpleName(), getSamples(), getMin()
 				);
@@ -138,6 +141,11 @@ public final class accumulators extends StaticObject {
 
 	/**
 	 * Calculates max value.
+	 *
+	 * <p/>
+	 * <strong>Note that this implementation is not synchronized.</strong> If
+	 * multiple threads access this object concurrently, and at least one of the
+	 * threads modifies it, it must be synchronized externally.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
@@ -161,7 +169,7 @@ public final class accumulators extends StaticObject {
 		 * @throws NullPointerException if {@code max} is {@code null}.
 		 */
 		public Max(final Max<C> max) {
-			nonNull(max, "Max");
+			requireNonNull(max, "Max");
 			_samples = max._samples;
 			_max = max._max;
 		}
@@ -211,7 +219,7 @@ public final class accumulators extends StaticObject {
 
 		@Override
 		public String toString() {
-			return String.format(
+			return format(
 					"%s[samples=%d, max=%s]",
 					getClass().getSimpleName(), getSamples(), getMax()
 				);
@@ -226,6 +234,11 @@ public final class accumulators extends StaticObject {
 
 	/**
 	 * Calculates min and max values.
+	 *
+	 * <p/>
+	 * <strong>Note that this implementation is not synchronized.</strong> If
+	 * multiple threads access this object concurrently, and at least one of the
+	 * threads modifies it, it must be synchronized externally.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
@@ -250,7 +263,7 @@ public final class accumulators extends StaticObject {
 		 * @throws NullPointerException if {@code mm} is {@code null}.
 		 */
 		public MinMax(final MinMax<C> mm) {
-			nonNull(mm, "MinMax");
+			requireNonNull(mm, "MinMax");
 			_samples = mm._samples;
 			_min = mm._min;
 			_max = mm._max;
@@ -316,7 +329,7 @@ public final class accumulators extends StaticObject {
 
 		@Override
 		public String toString() {
-			return String.format(
+			return format(
 					"%s[samples=%d, min=%s, max=%s]",
 					getClass().getSimpleName(), getSamples(), getMin(), getMax()
 				);
@@ -328,6 +341,18 @@ public final class accumulators extends StaticObject {
 		}
 	}
 
+	/**
+	 * Calculates the sum of the accumulated values.
+	 *
+	 * <p/>
+	 * <strong>Note that this implementation is not synchronized.</strong> If
+	 * multiple threads access this object concurrently, and at least one of the
+	 * threads modifies it, it must be synchronized externally.
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since 1.0
+	 * @version 1.0 &ndash; <em>$Revision$</em>
+	 */
 	public static class Sum<G extends GroupAdditive<G>>
 		extends MappedAccumulator<G>
 	{
@@ -437,7 +462,7 @@ public final class accumulators extends StaticObject {
 		final Iterable<? extends T> values,
 		final Accumulator<? super T>... accus
 	) {
-		accumulate(values, new Array<>(accus));
+		accumulate(values, Array.valueOf(accus));
 	}
 
 	/**

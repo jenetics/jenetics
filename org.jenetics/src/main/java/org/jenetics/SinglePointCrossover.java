@@ -2,23 +2,20 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
- * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 package org.jenetics;
 
@@ -39,7 +36,7 @@ import org.jenetics.util.RandomRegistry;
  * them at some randomly chosen site. E.g.
  * </p>
  * <div align="center">
- *	<img src="doc-files/SinglePointCrossover.svg" width="500" >
+ *	<img src="doc-files/SinglePointCrossover.svg" width="400" >
  * </div>
  * <p>
  * If we create a child and its complement we preserving the total number of
@@ -51,11 +48,26 @@ import org.jenetics.util.RandomRegistry;
  * or uniform crossover.
  * </p>
  *
+ * @see MultiPointCrossover
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-17 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-08-30 $</em>
  */
-public class SinglePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
+public class SinglePointCrossover<G extends Gene<?, G>>
+	extends MultiPointCrossover<G>
+{
+
+	/**
+	 * Constructs an alterer with a given recombination probability.
+	 *
+	 * @param probability the crossover probability.
+	 * @throws IllegalArgumentException if the {@code probability} is not in the
+	 *         valid range of {@code [0, 1]}.
+	 */
+	public SinglePointCrossover(final double probability) {
+		super(probability, 1);
+	}
 
 	/**
 	 * Create a new single point crossover object with crossover probability of
@@ -65,27 +77,29 @@ public class SinglePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 		this(0.05);
 	}
 
-	/**
-	 * Constructs an alterer with a given recombination probability.
-	 *
-	 * @param probability the crossover probability.
-	 * @throws IllegalArgumentException if the {@code probability} is not in the
-	 *          valid range of {@code [0, 1]}.
-	 */
-	public SinglePointCrossover(final double probability) {
-		super(probability);
-	}
+
 
 	@Override
 	protected int crossover(final MSeq<G> that, final MSeq<G> other) {
 		assert (that.length() == other.length());
 
 		final Random random = RandomRegistry.getRandom();
-		final int index = random.nextInt(that.length());
+		crossover(that, other, random.nextInt(that.length()));
+		return 2;
+	}
+
+	// Package private for testing purpose.
+	static <T> void crossover(
+		final MSeq<T> that,
+		final MSeq<T> other,
+		final int index
+	) {
+		assert (index >= 0) : format(
+			"Crossover index must be within [0, %d) but was %d",
+			that.length(), index
+		);
 
 		that.swap(index, that.length(), other, index);
-
-		return 2;
 	}
 
 	@Override

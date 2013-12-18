@@ -2,23 +2,20 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 package org.jenetics.util;
 
@@ -41,7 +38,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2012-11-30 $</em>
+ * @version <em>$Date: 2013-10-17 $</em>
  */
 public class ArrayTest extends ObjectTester<Array<Double>> {
 
@@ -72,8 +69,8 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 
 	@Test
 	public void newFromCollection() {
-		final Array<Integer> a1 = new Array<>(1, 2, 3, 4, 5);
-		final Array<Integer> a2 = new Array<>(6, 7, 8, 9, 10, 11, 12, 13);
+		final Array<Integer> a1 = Array.box(1, 2, 3, 4, 5);
+		final Array<Integer> a2 = Array.box(6, 7, 8, 9, 10, 11, 12, 13);
 		final Array<Integer> a3 = a1.add(a2);
 
 		Assert.assertEquals(a3.length(), a1.length() + a2.length());
@@ -84,8 +81,8 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 
 	@Test
 	public void newFromSubArray() {
-		final Array<Integer> a1 = new Array<>(0, 1, 2, 3, 4, 5, 6, 7);
-		final Array<Integer> a2 = new Array<>(6, 7, 8, 9, 10, 11, 12, 13);
+		final Array<Integer> a1 = Array.box(0, 1, 2, 3, 4, 5, 6, 7);
+		final Array<Integer> a2 = Array.box(6, 7, 8, 9, 10, 11, 12, 13);
 		final Array<Integer> a3 = a1.subSeq(0, 6).add(a2);
 
 		Assert.assertEquals(a3.length(), a1.length() + a2.length() - 2);
@@ -96,8 +93,8 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 
 	@Test
 	public void newFromOtherSubArray() {
-		final Array<Integer> a1 = new Array<>(0, 1, 2, 3, 4, 5, 6, 7);
-		final Array<Integer> a2 = new Array<>(6, 7, 8, 9, 10, 11, 12, 13);
+		final Array<Integer> a1 = Array.box(0, 1, 2, 3, 4, 5, 6, 7);
+		final Array<Integer> a2 = Array.box(6, 7, 8, 9, 10, 11, 12, 13);
 		final Array<Integer> a3 = a1.subSeq(1, 6).add(a2);
 
 		Assert.assertEquals(a3.length(), a1.length() + a2.length() - 3);
@@ -108,14 +105,76 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 
 	@Test
 	public void create4() {
-		final Array<Integer> a1 = new Array<>(0, 1, 2, 3, 4, 5, 6, 7);
-		final Array<Integer> a2 = new Array<>(6, 7, 8, 9, 10, 11, 12, 13);
+		final Array<Integer> a1 = Array.box(0, 1, 2, 3, 4, 5, 6, 7);
+		final Array<Integer> a2 = Array.box(6, 7, 8, 9, 10, 11, 12, 13);
 		final Array<Integer> a3 = a1.add(a2.subSeq(2, 7));
 
 		Assert.assertEquals(a3.length(), a1.length() + a2.length() - 3);
 		for (int i = 0; i < a1.length() + a2.length() - 3; ++i) {
 			Assert.assertEquals(a3.get(i), new Integer(i));
 		}
+	}
+
+	@Test
+	public void setAllFromIterable() {
+		final Random random = new LCG64ShiftRandom();
+		final Array<Integer> elements = new Array<>(18181);
+		for (int i = 0; i < elements.length(); ++i) {
+			elements.set(i, random.nextInt());
+		}
+
+		final Array<Integer> array = new Array<>(elements.length());
+		Assert.assertNotEquals(array, elements);
+
+		array.setAll(elements);
+		Assert.assertEquals(array, elements);
+	}
+
+	@Test
+	public void setAllFromIterator() {
+		final Random random = new LCG64ShiftRandom();
+		final Array<Integer> elements = new Array<>(18181);
+		for (int i = 0; i < elements.length(); ++i) {
+			elements.set(i, random.nextInt());
+		}
+
+		final Array<Integer> array = new Array<>(elements.length());
+		Assert.assertNotEquals(array, elements);
+
+		array.setAll(elements.iterator());
+		Assert.assertEquals(array, elements);
+	}
+
+	@Test
+	public void setAllFromObject() {
+		final Random random = new LCG64ShiftRandom();
+		final Integer element = random.nextInt();
+
+		final Array<Integer> elements = new Array<>(18181);
+		for (int i = 0; i < elements.length(); ++i) {
+			elements.set(i, element);
+		}
+
+		final Array<Integer> array = new Array<>(elements.length());
+		Assert.assertNotEquals(array, elements);
+
+		array.setAll(element);
+		Assert.assertEquals(array, elements);
+	}
+
+	@Test
+	public void setAllFromObjectArray() {
+		final Random random = new LCG64ShiftRandom();
+		final Array<Integer> elements = new Array<>(18181);
+		for (int i = 0; i < elements.length(); ++i) {
+			elements.set(i, random.nextInt());
+		}
+
+		final Array<Integer> array = new Array<>(elements.length());
+		Assert.assertNotEquals(array, elements);
+
+		array.setAll(elements.toArray(new Integer[0]));
+		Assert.assertEquals(array, elements);
 	}
 
 	@Test
@@ -130,6 +189,216 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	}
 
 	@Test
+	public void boxBoolean() {
+		final Random random = RandomRegistry.getRandom();
+		final boolean[] array = new boolean[1000];
+		for (int i = 0; i < array.length; ++i) {
+			array[i] = random.nextBoolean();
+		}
+
+		final Array<Boolean> boxed = Array.box(array);
+
+		for (int i = 0; i < array.length; ++i) {
+			Assert.assertEquals(boxed.get(i).booleanValue(), array[i]);
+		}
+	}
+
+	@Test
+	public void boxChar() {
+		final Random random = RandomRegistry.getRandom();
+		final char[] array = new char[1000];
+		for (int i = 0; i < array.length; ++i) {
+			array[i] = (char)random.nextInt();
+		}
+
+		final Array<Character> boxed = Array.box(array);
+
+		for (int i = 0; i < array.length; ++i) {
+			Assert.assertEquals(boxed.get(i).charValue(), array[i]);
+		}
+	}
+
+	@Test
+	public void boxShort() {
+		final Random random = RandomRegistry.getRandom();
+		final short[] array = new short[1000];
+		for (int i = 0; i < array.length; ++i) {
+			array[i] = (short)random.nextInt();
+		}
+
+		final Array<Short> boxed = Array.box(array);
+
+		for (int i = 0; i < array.length; ++i) {
+			Assert.assertEquals(boxed.get(i).shortValue(), array[i]);
+		}
+	}
+
+	@Test
+	public void boxInt() {
+		final Random random = RandomRegistry.getRandom();
+		final int[] array = new int[1000];
+		for (int i = 0; i < array.length; ++i) {
+			array[i] = random.nextInt();
+		}
+
+		final Array<Integer> boxed = Array.box(array);
+
+		for (int i = 0; i < array.length; ++i) {
+			Assert.assertEquals(boxed.get(i).intValue(), array[i]);
+		}
+	}
+
+	@Test
+	public void boxLong() {
+		final Random random = RandomRegistry.getRandom();
+		final long[] array = new long[1000];
+		for (int i = 0; i < array.length; ++i) {
+			array[i] = random.nextLong();
+		}
+
+		final Array<Long> boxed = Array.box(array);
+
+		for (int i = 0; i < array.length; ++i) {
+			Assert.assertEquals(boxed.get(i).longValue(), array[i]);
+		}
+	}
+
+	@Test
+	public void boxFloat() {
+		final Random random = RandomRegistry.getRandom();
+		final float[] array = new float[1000];
+		for (int i = 0; i < array.length; ++i) {
+			array[i] = random.nextFloat();
+		}
+
+		final Array<Float> boxed = Array.box(array);
+
+		for (int i = 0; i < array.length; ++i) {
+			Assert.assertEquals(boxed.get(i).floatValue(), array[i]);
+		}
+	}
+
+	@Test
+	public void boxDouble() {
+		final Random random = RandomRegistry.getRandom();
+		final double[] array = new double[1000];
+		for (int i = 0; i < array.length; ++i) {
+			array[i] = random.nextDouble();
+		}
+
+		final Array<Double> boxed = Array.box(array);
+
+		for (int i = 0; i < array.length; ++i) {
+			Assert.assertEquals(boxed.get(i).doubleValue(), array[i]);
+		}
+	}
+
+	@Test
+	public void unboxBoolean() {
+		final Random random = RandomRegistry.getRandom();
+		final Array<Boolean> array = new Array<>(1000);
+		for (int i = 0; i < array.length(); ++i) {
+			array.set(i, random.nextBoolean());
+		}
+
+		final boolean[] unboxed = Array.unboxBoolean(array);
+
+		for (int i = 0; i < array.length(); ++i) {
+			Assert.assertEquals(unboxed[i], array.get(i).booleanValue());
+		}
+	}
+
+	@Test
+	public void unboxCharacter() {
+		final Random random = RandomRegistry.getRandom();
+		final Array<Character> array = new Array<>(1000);
+		for (int i = 0; i < array.length(); ++i) {
+			array.set(i, (char)random.nextInt());
+		}
+
+		final char[] unboxed = Array.unboxChar(array);
+
+		for (int i = 0; i < array.length(); ++i) {
+			Assert.assertEquals(unboxed[i], array.get(i).charValue());
+		}
+	}
+
+	@Test
+	public void unboxShort() {
+		final Random random = RandomRegistry.getRandom();
+		final Array<Short> array = new Array<>(1000);
+		for (int i = 0; i < array.length(); ++i) {
+			array.set(i, (short)random.nextInt());
+		}
+
+		final short[] unboxed = Array.unboxShort(array);
+
+		for (int i = 0; i < array.length(); ++i) {
+			Assert.assertEquals(unboxed[i], array.get(i).shortValue());
+		}
+	}
+
+	@Test
+	public void unboxInteger() {
+		final Random random = RandomRegistry.getRandom();
+		final Array<Integer> array = new Array<>(1000);
+		for (int i = 0; i < array.length(); ++i) {
+			array.set(i, random.nextInt());
+		}
+
+		final int[] unboxed = Array.unboxInt(array);
+
+		for (int i = 0; i < array.length(); ++i) {
+			Assert.assertEquals(unboxed[i], array.get(i).intValue());
+		}
+	}
+
+	@Test
+	public void unboxLong() {
+		final Random random = RandomRegistry.getRandom();
+		final Array<Long> array = new Array<>(1000);
+		for (int i = 0; i < array.length(); ++i) {
+			array.set(i, random.nextLong());
+		}
+
+		final long[] unboxed = Array.unboxLong(array);
+
+		for (int i = 0; i < array.length(); ++i) {
+			Assert.assertEquals(unboxed[i], array.get(i).longValue());
+		}
+	}
+
+	@Test
+	public void unboxFloat() {
+		final Random random = RandomRegistry.getRandom();
+		final Array<Float> array = new Array<>(1000);
+		for (int i = 0; i < array.length(); ++i) {
+			array.set(i, random.nextFloat());
+		}
+
+		final float[] unboxed = Array.unboxFloat(array);
+
+		for (int i = 0; i < array.length(); ++i) {
+			Assert.assertEquals(unboxed[i], array.get(i).floatValue());
+		}
+	}
+
+	@Test
+	public void unboxDouble() {
+		final Random random = RandomRegistry.getRandom();
+		final Array<Double> array = new Array<>(1000);
+		for (int i = 0; i < array.length(); ++i) {
+			array.set(i, random.nextDouble());
+		}
+
+		final double[] unboxed = Array.unboxDouble(array);
+
+		for (int i = 0; i < array.length(); ++i) {
+			Assert.assertEquals(unboxed[i], array.get(i).doubleValue());
+		}
+	}
+
+	@Test
 	public void sort() {
 		final Array<Integer> integers = new Array<Integer>(10000).fill(Int());
 
@@ -138,7 +407,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 		integers.sort();
 		Assert.assertTrue(arrays.isSorted(integers));
 
-		arrays.shuffle(integers, new Random());
+		shuffling.shuffle(integers, new Random());
 		integers.sort();
 		Assert.assertTrue(arrays.isSorted(integers));
 	}
@@ -213,7 +482,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	}
 
 	@Test
-	public void swap5() {
+	public void swapArray() {
 		final Array<Integer> a1 = new Array<Integer>(50).fill(Int());
 		final Array<Integer> a2 = new Array<Integer>(33).fill(Int());
 
@@ -233,11 +502,31 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	}
 
 	@Test
+	public void swapMSeq() {
+		final Array<Integer> a1 = new Array<Integer>(50).fill(Int());
+		final Array<Integer> a2 = new Array<Integer>(33).fill(Int());
+
+		for (int i = 0; i < a1.length(); ++i) {
+			for (int j = i; j < a1.length(); ++j) {
+				for (int k = 0; k < a2.length() - (j - i); ++k) {
+					final MSeq<Integer> ca1 = a1.copy();
+					final MSeq<Integer> ca2 = a2.copy();
+
+					ca1.swap(i, j, ca2, k);
+
+					Assert.assertEquals(ca1.subSeq(i, j), a2.subSeq(k, k + (j - i)));
+					Assert.assertEquals(ca2.subSeq(k, k + (j - i)), a1.subSeq(i, j));
+				}
+			}
+		}
+	}
+
+	@Test
 	public void asList() {
 		final Array<Integer> integers = new Array<Integer>(1000).fill(Int());
 		Assert.assertTrue(arrays.isSorted(integers));
 
-		arrays.shuffle(integers, new Random());
+		shuffling.shuffle(integers, new Random());
 		Assert.assertFalse(arrays.isSorted(integers));
 
 		Collections.sort(integers.asList());
@@ -327,7 +616,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 		final Array<Integer> array = new Array<Integer>(10).setAll(123);
 		array.toISeq();
 		final AtomicInteger count = new AtomicInteger(0);
-		boolean value = array.forall(new Function<Integer, Boolean>() {
+		boolean value = array.forAll(new Function<Integer, Boolean>() {
 			@Override public Boolean apply(Integer object) {
 				Assert.assertEquals(object, new Integer(123));
 				count.addAndGet(1);
@@ -352,30 +641,30 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 
 	@Test
 	public void append1() {
-		final Array<Integer> a1 = new Array<>(0, 1, 2, 3, 4, 5);
-		final Array<Integer> a2 = new Array<>(6, 7, 8, 9, 10);
+		final Array<Integer> a1 = Array.valueOf(0, 1, 2, 3, 4, 5);
+		final Array<Integer> a2 = Array.valueOf(6, 7, 8, 9, 10);
 		final Array<Integer> a3 = a1.add(a2);
 
 		Assert.assertEquals(a3.length(), 11);
 		Assert.assertEquals(a3,
-				new Array<>(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+				Array.valueOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 			);
 	}
 
 	@Test
 	public void append2() {
-		final Array<Integer> a1 = new Array<>(0, 1, 2, 3, 4, 5);
+		final Array<Integer> a1 = Array.valueOf(0, 1, 2, 3, 4, 5);
 		final Array<Integer> a3 = a1.add(Arrays.asList(6, 7, 8, 9, 10));
 
 		Assert.assertEquals(a3.length(), 11);
 		Assert.assertEquals(a3,
-				new Array<>(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+				Array.valueOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 			);
 	}
 
 	@Test
 	public void append3() {
-		final Array<Integer> a1 = new Array<>(0, 1, 2, 3, 4, 5);
+		final Array<Integer> a1 = Array.valueOf(0, 1, 2, 3, 4, 5);
 		final Array<Integer> a2 = a1.add(6);
 		final Array<Integer> a3 = a1.add(6);
 
@@ -463,7 +752,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	@Test
 	public void iterator() {
 		final List<Integer> list = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 0);
-		final Array<Integer> array = new Array<>(list);
+		final Array<Integer> array = Array.valueOf(list);
 
 		final Iterator<Integer> ai = array.iterator();
 		for (Integer i : list) {
@@ -500,7 +789,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 		for (int i = 0; i < oa.length; ++i) {
 			Assert.assertEquals(oa[i], array.get(i));
 		}
-		Assert.assertEquals(new Array<>(oa), array);
+		Assert.assertEquals(Array.valueOf(oa), array);
 	}
 
 }

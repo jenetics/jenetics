@@ -2,27 +2,25 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
- * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 package org.jenetics;
 
-import static org.jenetics.util.arrays.subset;
+import static java.lang.String.format;
+import static org.jenetics.util.math.subset;
 
 import java.util.Random;
 
@@ -39,10 +37,11 @@ import org.jenetics.util.RandomRegistry;
  * points, and merge those portions of different chromosomes to form new ones.
  * </p>
  * <p>
- * The recombination probability <i>P)r)</i> determines the probability that a given
- * individual (genotype, not gene) of a population is selected for recombination.
- * The (<i>mean</i>) number of changed individuals depend on the concrete
- * implementation and can be vary from <i>P(r)</i>&middot;<i>N<sub>G</sub></i> to
+ * The recombination probability <i>P)r)</i> determines the probability that a
+ * given individual (genotype, not gene) of a population is selected for
+ * recombination. The (<i>mean</i>) number of changed individuals depend on the
+ * concrete implementation and can be vary from
+ * <i>P(r)</i>&middot;<i>N<sub>G</sub></i> to
  * <i>P(r)</i>&middot;<i>N<sub>G</sub></i>&middot;<i>O<sub>R</sub></i>, where
  * <i>O<sub>R</sub></i> is the order of the recombination, which is the number
  * of individuals involved int the {@link #recombine} method.
@@ -50,7 +49,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-12-05 $</em>
  */
 public abstract class Recombinator<G extends Gene<?, G>>
 	extends AbstractAlterer<G>
@@ -63,15 +62,15 @@ public abstract class Recombinator<G extends Gene<?, G>>
 	 *
 	 * @param probability The recombination probability.
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
-	 *          valid range of {@code [0, 1]} or the given {@code order} is smaller
-	 *          than two.
+	 *         valid range of {@code [0, 1]} or the given {@code order} is
+	 *         smaller than two.
 	 */
-	public Recombinator(final double probability, final int order) {
+	protected Recombinator(final double probability, final int order) {
 		super(probability);
 		if (order < 2) {
-			throw new IllegalArgumentException(String.format(
-					"Order must be greater than one, but was %d.", order
-				));
+			throw new IllegalArgumentException(format(
+				"Order must be greater than one, but was %d.", order
+			));
 		}
 		_order = order;
 	}
@@ -93,7 +92,7 @@ public abstract class Recombinator<G extends Gene<?, G>>
 		final Random random = RandomRegistry.getRandom();
 		final int order = Math.min(_order, population.size());
 		final IndexStream stream = IndexStream.Random(
-			population.size(), _probability, random
+			population.size(), _probability
 		);
 
 		int alterations = 0;
@@ -120,10 +119,10 @@ public abstract class Recombinator<G extends Gene<?, G>>
 	 * @return the number of genes that has been altered.
 	 */
 	protected abstract <C extends Comparable<? super C>> int recombine(
-			final Population<G, C> population,
-			final int[] individuals,
-			final int generation
-		);
+		final Population<G, C> population,
+		final int[] individuals,
+		final int generation
+	);
 
 
 }

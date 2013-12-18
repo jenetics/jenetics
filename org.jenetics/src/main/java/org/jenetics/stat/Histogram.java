@@ -2,36 +2,34 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 package org.jenetics.stat;
 
 import static java.lang.Math.max;
 import static java.lang.Math.round;
-import static org.jenetics.util.arrays.foreach;
+import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
+import static org.jenetics.util.arrays.forEach;
 import static org.jenetics.util.functions.DoubleToFloat64;
 import static org.jenetics.util.functions.LongToInteger64;
-import static org.jenetics.util.math.sum;
+import static org.jenetics.util.math.statistics.sum;
 import static org.jenetics.util.object.NonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -65,10 +63,14 @@ import org.jenetics.util.arrays;
  *                  -------+----+----+----+----+----+----+----+----+----+------
  * Histogram index:     0     1    2    3    4    5    6    7    8    9    10
  * </pre>
+ * <p/>
+ * <strong>Note that this implementation is not synchronized.</strong> If
+ * multiple threads access this object concurrently, and at least one of the
+ * threads modifies it, it must be synchronized externally.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-15 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-12-08 $</em>
  */
 public class Histogram<C> extends MappedAccumulator<C> {
 
@@ -92,7 +94,7 @@ public class Histogram<C> extends MappedAccumulator<C> {
 	@SafeVarargs
 	public Histogram(final Comparator<C> comparator, final C... separators) {
 		_separators = check(separators);
-		_comparator = nonNull(comparator, "Comparator");
+		_comparator = requireNonNull(comparator, "Comparator");
 		_histogram = new long[separators.length + 1];
 
 		Arrays.sort(_separators, _comparator);
@@ -112,7 +114,7 @@ public class Histogram<C> extends MappedAccumulator<C> {
 
 	@SuppressWarnings("unchecked")
 	private static <C> C[] check(final C... classes) {
-		foreach(classes, NonNull);
+		forEach(classes, NonNull);
 		if (classes.length == 0) {
 			throw new IllegalArgumentException("Given classes array is empty.");
 		}
@@ -169,13 +171,13 @@ public class Histogram<C> extends MappedAccumulator<C> {
 	public Histogram<C> plus(final Histogram<C> histogram) {
 		if (!_comparator.equals(histogram._comparator)) {
 			throw new IllegalArgumentException(
-					"The histogram comparators are not equals."
-				);
+				"The histogram comparators are not equals."
+			);
 		}
 		if (!Arrays.equals(_separators, histogram._separators)) {
 			throw new IllegalArgumentException(
-					"The histogram separators are not equals."
-				);
+				"The histogram separators are not equals."
+			);
 		}
 
 		final long[] data = new long[_histogram.length];
@@ -215,10 +217,10 @@ public class Histogram<C> extends MappedAccumulator<C> {
 	 * @throws NullPointerException if the given array is {@code null}.
 	 */
 	public long[] getHistogram(final long[] histogram) {
-		nonNull(histogram);
+		requireNonNull(histogram);
 
 		long[] hist = histogram;
-		if (histogram != null && histogram.length >= _histogram.length) {
+		if (histogram.length >= _histogram.length) {
 			System.arraycopy(_histogram, 0, hist, 0, _histogram.length);
 		} else {
 			hist = _histogram.clone();
@@ -361,7 +363,8 @@ public class Histogram<C> extends MappedAccumulator<C> {
 
 	@Override
 	public String toString() {
-		return Arrays.toString(_separators) + "\n" + Arrays.toString(getHistogram()) + "\nSamples: " + _samples;
+		return Arrays.toString(_separators) + "\n" + Arrays.toString(getHistogram()) +
+				"\nSamples: " + _samples;
 	}
 
 	@Override
@@ -383,7 +386,7 @@ public class Histogram<C> extends MappedAccumulator<C> {
 	public static <C extends Comparable<? super C>> Histogram<C> valueOf(
 		final C... separators
 	) {
-		return new Histogram<>(COMPARATOR, separators);
+		return new Histogram<C>(COMPARATOR, separators);
 	}
 
 	@SuppressWarnings({"rawtypes", "unchecked"})
@@ -530,7 +533,7 @@ public class Histogram<C> extends MappedAccumulator<C> {
 		for (int i = 1, n = pts - rest; i < n; ++i) {
 			separators[i - 1] = i*bulk + min;
 		}
-		for (int i = 0, n = rest; i < n; ++i) {
+		for (int i = 0; i < rest; ++i) {
 			separators[separators.length - rest + i] =
 					(pts - rest)*bulk + i*(bulk + 1) + min;
 		}
@@ -544,15 +547,15 @@ public class Histogram<C> extends MappedAccumulator<C> {
 	private static <C extends Comparable<? super C>> void
 	check(final C min, final C max, final int nclasses)
 	{
-		nonNull(min, "Minimum");
-		nonNull(max, "Maximum");
+		requireNonNull(min, "Minimum");
+		requireNonNull(max, "Maximum");
 		if (min.compareTo(max) >= 0) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 					"Min must be smaller than max: %s < %s failed.", min, max
 				));
 		}
 		if (nclasses < 2) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"nclasses should be < 2, but was %s.", nclasses
 			));
 		}

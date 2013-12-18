@@ -2,40 +2,39 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.object.nonNull;
+import static java.lang.String.format;
+import static java.lang.System.arraycopy;
+import static java.util.Arrays.copyOfRange;
+import static java.util.Objects.requireNonNull;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-16 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-12-02 $</em>
  */
 abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	private static final long serialVersionUID = 1L;
@@ -54,12 +53,12 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	 * @param end the end index of the given array (exclusively)
 	 * @throws NullPointerException if the given {@code array} is {@code null}.
 	 * @throws IndexOutOfBoundsException for an illegal start/end point index
-	 *          value ({@code start < 0 || end > array.lenght || start > end}).
+	 *          value ({@code start < 0 || end > array.length || start > end}).
 	 */
 	ArraySeq(final ArrayRef array, final int start, final int end) {
-		nonNull(array, "Array");
+		requireNonNull(array, "Array");
 		if (start < 0 || end > array.length || start > end) {
-			throw new ArrayIndexOutOfBoundsException(String.format(
+			throw new ArrayIndexOutOfBoundsException(format(
 				"Invalid index range: [%d, %s)", start, end
 			));
 		}
@@ -82,41 +81,32 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 
 	@Override
 	public int indexOf(final Object element) {
-		int index = -1;
-
-		if (element == null) {
-			index = indexWhere(new Function<T, Boolean>() {
-				@Override public Boolean apply(final T object) {
-					return object == null ? Boolean.TRUE : Boolean.FALSE;
-				}
-			});
-		} else {
-			index = indexWhere(new Function<T, Boolean>() {
-				@Override public Boolean apply(final T object) {
-					return element.equals(object) ? Boolean.TRUE : Boolean.FALSE;
-				}
-			});
-		}
-
-		return index;
+		return indexOf(element, 0, length());
 	}
 
 	@Override
-	public int lastIndexOf(final Object element) {
-		int index = -1;
+	public int indexOf(final Object element, final int start) {
+		return indexOf(element, start, length());
+	}
 
+	@Override
+	public int indexOf(final Object element, final int start, final int end) {
+		checkIndex(start, end);
+
+		final int n = end + _start;
+		int index = -1;
 		if (element == null) {
-			index = lastIndexWhere(new Function<T, Boolean>() {
-				@Override public Boolean apply(final T object) {
-					return object == null ? Boolean.TRUE : Boolean.FALSE;
+			for (int i = start + _start; i < n && index == -1; ++i) {
+				if (_array.data[i] == null) {
+					index = i - _start;
 				}
-			});
+			}
 		} else {
-			index = lastIndexWhere(new Function<T, Boolean>() {
-				@Override public Boolean apply(final T object) {
-					return element.equals(object) ? Boolean.TRUE : Boolean.FALSE;
+			for (int i = _start + start; i < n && index == -1; ++i) {
+				if (element.equals(_array.data[i])) {
+					index = i - _start;
 				}
-			});
+			}
 		}
 
 		return index;
@@ -124,11 +114,28 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 
 	@Override
 	public int indexWhere(final Function<? super T, Boolean> predicate) {
-		nonNull(predicate, "Predicate");
+		return indexWhere(predicate, 0, length());
+	}
+
+	@Override
+	public int indexWhere(
+		final Function<? super T, Boolean> predicate,
+		final int start
+	) {
+		return indexWhere(predicate, start, length());
+	}
+
+	@Override
+	public int indexWhere(
+		final Function<? super T, Boolean> predicate,
+		final int start,
+		final int end
+	) {
+		requireNonNull(predicate, "Predicate");
 
 		int index = -1;
 
-		for (int i = _start; i < _end && index == -1; ++i) {
+		for (int i = start + _start, n = end + _start; i < n && index == -1; ++i) {
 			@SuppressWarnings("unchecked")
 			final T element = (T)_array.data[i];
 
@@ -141,8 +148,86 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 
 	@Override
+	public int lastIndexOf(final Object element) {
+		return lastIndexOf(element, 0, length());
+	}
+
+	@Override
+	public int lastIndexOf(final Object element, final int end) {
+		return lastIndexOf(element, 0, end);
+	}
+
+	@Override
+	public int lastIndexOf(final Object element, final int start, final int end) {
+		checkIndex(start, end);
+
+		int index = -1;
+
+		if (element == null) {
+			for (int i = end + _start; --i >= start + _start && index == -1;) {
+				if (_array.data[i] == null) {
+					index = i - _start;
+				}
+			}
+		} else {
+			for (int i = end + _start; --i >= start + _start && index == -1;) {
+				if (element.equals(_array.data[i])) {
+					index = i - _start;
+				}
+			}
+		}
+
+		return index;
+	}
+
+	@Override
+	public int lastIndexWhere(final Function<? super T, Boolean> predicate) {
+		return lastIndexWhere(predicate, 0, length());
+	}
+
+	@Override
+	public int lastIndexWhere(
+		final Function<? super T, Boolean> predicate,
+		final int end
+	) {
+		return lastIndexWhere(predicate, 0, end);
+	}
+
+	@Override
+	public int lastIndexWhere(
+		final Function<? super T, Boolean> predicate,
+		final int start,
+		final int end
+	) {
+		requireNonNull(predicate, "Predicate");
+		checkIndex(start, end);
+
+		int index = -1;
+
+		for (int i = end + _start; --i >= start +_start && index == -1;) {
+			@SuppressWarnings("unchecked")
+			final T element = (T)_array.data[i];
+			if (predicate.apply(element) == Boolean.TRUE) {
+				index = i - _start;
+			}
+		}
+
+		return index;
+	}
+
+	/**
+	 * @deprecated Align the naming with the upcoming JDK 1.8 release. Use
+	 *             {@link #forEach(Function)} instead.
+	 */
+	@Deprecated
+	@Override
 	public <R> void foreach(final Function<? super T, ? extends R> function) {
-		nonNull(function, "Function");
+		forEach(function);
+	}
+
+	@Override
+	public <R> void forEach(final Function<? super T, ? extends R> function) {
+		requireNonNull(function, "Function");
 
 		for (int i = _start; i < _end; ++i) {
 			@SuppressWarnings("unchecked")
@@ -151,15 +236,25 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		}
 	}
 
+	/**
+	 * @deprecated Align the naming with the upcoming JDK 1.8 release. Use
+	 *             {@link #forAll(Function)} instead.
+	 */
+	@Deprecated
 	@Override
 	public boolean forall(final Function<? super T, Boolean> predicate) {
-		nonNull(predicate, "Predicate");
+		return forAll(predicate);
+	}
+
+	@Override
+	public boolean forAll(final Function<? super T, Boolean> predicate) {
+		requireNonNull(predicate, "Predicate");
 
 		boolean valid = true;
 		for (int i = _start; i < _end && valid; ++i) {
 			@SuppressWarnings("unchecked")
 			final T element = (T)_array.data[i];
-			valid = predicate.apply(element).booleanValue();
+			valid = predicate.apply(element);
 		}
 		return valid;
 	}
@@ -191,23 +286,6 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	*/
 
 	@Override
-	public int lastIndexWhere(final Function<? super T, Boolean> predicate) {
-		nonNull(predicate, "Predicate");
-
-		int index = -1;
-
-		for (int i = _end - 1; i >= _start && index == -1; --i) {
-			@SuppressWarnings("unchecked")
-			final T element = (T)_array.data[i];
-			if (predicate.apply(element) == Boolean.TRUE) {
-				index = i - _start;
-			}
-		}
-
-		return index;
-	}
-
-	@Override
 	public boolean contains(final Object element) {
 		return indexOf(element) != -1;
 	}
@@ -226,7 +304,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	public <B> Iterator<B> iterator(
 		final Function<? super T, ? extends B> converter
 	) {
-		nonNull(converter, "Converter");
+		requireNonNull(converter, "Converter");
 
 		return new Iterator<B>() {
 			private final Iterator<T> _iterator = iterator();
@@ -249,7 +327,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 			array = _array.data.clone();
 		} else {
 			array = new Object[length()];
-			System.arraycopy(_array.data, _start, array, 0, length());
+			arraycopy(_array.data, _start, array, 0, length());
 		}
 
 		return array;
@@ -260,9 +338,11 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	public T[] toArray(final T[] array) {
 		T[] result = null;
 		if (array.length < length()) {
-			result = (T[])Arrays.copyOfRange(_array.data, _start, _end, array.getClass());
+			result = (T[])copyOfRange(
+				_array.data, _start, _end, array.getClass()
+			);
 		} else {
-			System.arraycopy(_array.data, _start, array, 0, length());
+			arraycopy(_array.data, _start, array, 0, length());
 			if (array.length > length()) {
 				array[length()] = null;
 			}
@@ -279,20 +359,20 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 
 	final void checkIndex(final int index) {
 		if (index < 0 || index >= _length) {
-			throw new ArrayIndexOutOfBoundsException(String.format(
-				"Index %s is out of bounds [0, %s)", index, (_end - _start)
+			throw new ArrayIndexOutOfBoundsException(format(
+				"Index %s is out of bounds [0, %s)", index, length()
 			));
 		}
 	}
 
 	final void checkIndex(final int from, final int to) {
 		if (from > to) {
-			throw new IllegalArgumentException(
+			throw new ArrayIndexOutOfBoundsException(
 				"fromIndex(" + from + ") > toIndex(" + to+ ")"
 			);
 		}
 		if (from < 0 || to > _length) {
-			throw new ArrayIndexOutOfBoundsException(String.format(
+			throw new ArrayIndexOutOfBoundsException(format(
 				"Invalid index range: [%d, %s)", from, to
 			));
 		}
@@ -305,7 +385,8 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return arrays.equals(this, obj);
+		return obj == this ||
+				obj instanceof ArraySeq<?> && arrays.equals(this, obj);
 	}
 
 	@Override

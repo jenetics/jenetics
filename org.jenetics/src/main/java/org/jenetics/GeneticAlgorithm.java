@@ -2,31 +2,29 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
  */
 package org.jenetics;
 
 import static java.lang.Math.round;
-import static org.jenetics.util.arrays.foreach;
+import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
+import static org.jenetics.util.arrays.forEach;
 import static org.jenetics.util.object.NonNull;
 import static org.jenetics.util.object.checkProbability;
-import static org.jenetics.util.object.nonNull;
 
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -42,7 +40,6 @@ import org.jenetics.util.Function;
 import org.jenetics.util.Timer;
 import org.jenetics.util.functions;
 
-
 /**
  * <h3>Getting started</h3>
  *
@@ -53,12 +50,12 @@ import org.jenetics.util.functions;
  *
  * [code]
  * public static void main(final String[] args) {
- *     Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
+ *     final Factory〈Genotype〈BitGene〉〉 gtf = Genotype.valueOf(
  *         BitChromosome.valueOf(10, 0.5)
  *     );
- *     Function<Genotype<BitGene> Float64> ff = ...
- *     GeneticAlgorithm<BitGene, Float64>
- *     ga = new GeneticAlgorithm<>(gtf, ff, Optimize.MAXIMUM)
+ *     final Function〈Genotype〈BitGene〉 Float64〉 ff = ...
+ *     final GeneticAlgorithm〈BitGene, Float64〉
+ *     ga = new GeneticAlgorithm〈〉(gtf, ff, Optimize.MAXIMUM);
  *
  *     ga.setup();
  *     ga.evolve(100);
@@ -66,10 +63,11 @@ import org.jenetics.util.functions;
  * }
  * [/code]
  *
+ * <p>
  * The genotype factory, {@code gtf}, in the example above will create genotypes
  * which consists of one {@link BitChromosome} with length 10. The one to zero
  * probability of the newly created genotypes is set to 0.5. The fitness function
- * is parameterized with a {@link BitGene} and a {@link Float64}. That means
+ * is parametrized with a {@link BitGene} and a {@link Float64}. That means
  * that the fitness function is calculating the fitness value as {@link Float64}.
  * The return type of the fitness function must be at least a {@link Comparable}.
  * The {@code GeneticAlgorithm} object is then created with the genotype factory
@@ -79,17 +77,17 @@ import org.jenetics.util.functions;
  * {@code ga.setup()} call creates the initial population and calculates its
  * fitness value. Then the GA evolves 100 generations ({@code ga.evolve(100)})
  * an prints the best phenotype found so far onto the console.
- * <p/>
+ * </p>
  * In a more advanced setup you may want to change the default mutation and/or
  * selection strategies.
  *
  * [code]
  * public static void main(final String[] args) {
  *     ...
- *     ga.setSelectors(new RouletteWheelSelector<BitGene>());
+ *     ga.setSelectors(new RouletteWheelSelector〈BitGene〉());
  *     ga.setAlterers(
- *         new SinglePointCrossover<BitGene>(0.1),
- *         new Mutator<BitGene>(0.01)
+ *         new SinglePointCrossover〈BitGene〉(0.1),
+ *         new Mutator〈BitGene〉(0.01)
  *     );
  *
  *     ga.setup();
@@ -121,8 +119,8 @@ import org.jenetics.util.functions;
  * IO.xml.write(ga.getPopulation(), file);
  *
  * // Reading the population from disk.
- * Population<Float64Gene,Float64> population =
- *     (Population<Float64Gene, Float64)IO.xml.read(file);
+ * Population〈Float64Gene,Float64〉 population =
+ *     (Population〈Float64Gene, Float64〉)IO.xml.read(file);
  * ga.setPopulation(population);
  * [/code]
  *
@@ -137,7 +135,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-12-05 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,
@@ -166,13 +164,14 @@ public class GeneticAlgorithm<
 	private final Optimize _optimization;
 
 	private final Factory<Genotype<G>> _genotypeFactory;
+	private final Factory<Phenotype<G, C>> _phenotypeFactory;
 	private final Function<Genotype<G>, C> _fitnessFunction;
 	private Function<C, C> _fitnessScaler;
 
 	private double _offspringFraction = DEFAULT_OFFSPRING_FRACTION;
 
 	// Alterers
-	private Alterer<G> _alterer = new CompositeAlterer<>(
+	private Alterer<G> _alterer = CompositeAlterer.valueOf(
 		new SinglePointCrossover<G>(0.1),
 		new Mutator<G>(0.05)
 	);
@@ -198,10 +197,43 @@ public class GeneticAlgorithm<
 	private final Timer _executionTimer = new Timer("Execution time");
 	private final Timer _selectTimer = new Timer("Select time");
 	private final Timer _alterTimer = new Timer("Alter time");
-	private final Timer _combineTimer = new Timer("Combine survivors and offsprings time");
+	private final Timer _combineTimer = new Timer("Combine survivors and offspring time");
 	private final Timer _statisticTimer = new Timer("Statistic time");
 	private final Timer _evaluateTimer = new Timer("Evaluate time");
 
+
+	/**
+	 * Create a new genetic algorithm.
+	 *
+	 * @param genotypeFactory the genotype factory this GA is working with.
+	 * @param fitnessFunction the fitness function this GA is using.
+	 * @param fitnessScaler the fitness scaler this GA is using.
+	 * @param optimization Determine whether this GA maximize or minimize the
+	 *        fitness function.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 */
+	public GeneticAlgorithm(
+		final Factory<Genotype<G>> genotypeFactory,
+		final Function<Genotype<G>, C> fitnessFunction,
+		final Function<C, C> fitnessScaler,
+		final Optimize optimization
+	) {
+		_genotypeFactory = requireNonNull(genotypeFactory, "GenotypeFactory");
+		_fitnessFunction = requireNonNull(fitnessFunction, "FitnessFunction");
+		_fitnessScaler = requireNonNull(fitnessScaler, "FitnessScaler");
+		_optimization = requireNonNull(optimization, "Optimization");
+
+		_phenotypeFactory = new Factory<Phenotype<G, C>>() {
+			@Override public Phenotype<G, C> newInstance() {
+				return Phenotype.valueOf(
+					_genotypeFactory.newInstance(),
+					_fitnessFunction,
+					_fitnessScaler,
+					_generation
+				);
+			}
+		};
+	}
 
 	/**
 	 * Create a new genetic algorithm. By default the GA tries to maximize the
@@ -268,28 +300,6 @@ public class GeneticAlgorithm<
 	}
 
 	/**
-	 * Create a new genetic algorithm.
-	 *
-	 * @param genotypeFactory the genotype factory this GA is working with.
-	 * @param fitnessFunction the fitness function this GA is using.
-	 * @param fitnessScaler the fitness scaler this GA is using.
-	 * @param optimization Determine whether this GA maximize or minimize the
-	 *        fitness function.
-	 * @throws NullPointerException if one of the arguments is {@code null}.
-	 */
-	public GeneticAlgorithm(
-		final Factory<Genotype<G>> genotypeFactory,
-		final Function<Genotype<G>, C> fitnessFunction,
-		final Function<C, C> fitnessScaler,
-		final Optimize optimization
-	) {
-		_genotypeFactory = nonNull(genotypeFactory, "GenotypeFactory");
-		_fitnessFunction = nonNull(fitnessFunction, "FitnessFunction");
-		_fitnessScaler = nonNull(fitnessScaler, "FitnessScaler");
-		_optimization = nonNull(optimization, "Optimization");
-	}
-
-	/**
 	 * Create the initial population of the GA. Subsequent calls to this
 	 * method throw IllegalStateException. If no initial population has been
 	 * set (with {@link #setPopulation(Collection)} or
@@ -301,18 +311,10 @@ public class GeneticAlgorithm<
 		_lock.lock();
 		try {
 			prepareSetup();
-
-			//Initializing/filling up the Population.
-			for (int i = _population.size(); i < _populationSize; ++i) {
-				final Phenotype<G, C> pt = Phenotype.valueOf(
-					_genotypeFactory.newInstance(),
-					_fitnessFunction,
-					_fitnessScaler,
-					_generation
-				);
-				_population.add(pt);
-			}
-
+			_population.fill(
+				_phenotypeFactory,
+				_populationSize - _population.size()
+			);
 			finishSetup();
 		} finally {
 			_lock.unlock();
@@ -320,7 +322,7 @@ public class GeneticAlgorithm<
 	}
 
 	/**
-	 * Setting up the <code>GeneticAlgorithm</code> with the given initial
+	 * Setting up the {@code GeneticAlgorithm} with the given initial
 	 * population. Subsequent calls to this method throw an IllegalStateException.
 	 * This method is similar to the {@link #setGenotypes(Collection)} and
 	 * {@link #setPopulation(Collection)} methods, but this method is required
@@ -486,7 +488,7 @@ public class GeneticAlgorithm<
 	 * @throws NullPointerException if the given predicate is {@code null}.
 	 */
 	public void evolve(final Function<? super Statistics<G, C>, Boolean> until) {
-		nonNull(until, "Termination condition");
+		requireNonNull(until, "Termination condition");
 		while (until.apply(getStatistics())) {
 			evolve();
 		}
@@ -507,14 +509,13 @@ public class GeneticAlgorithm<
 				assert (survivors.size() == numberOfSurvivors);
 				selection.set(0, survivors);
 			}});
-			c.execute(new Runnable() { @Override public void run() {
-				final Population<G, C> offsprings = _offspringSelector.select(
-					_population, numberOfOffspring, _optimization
-				);
 
-				assert (offsprings.size() == numberOfOffspring);
-				selection.set(1, offsprings);
-			}});
+			final Population<G, C> offsprings = _offspringSelector.select(
+				_population, numberOfOffspring, _optimization
+			);
+
+			assert (offsprings.size() == numberOfOffspring);
+			selection.set(1, offsprings);
 		}
 
 		return selection;
@@ -540,13 +541,7 @@ public class GeneticAlgorithm<
 
 					// Sorry, too old or not valid.
 					if (isInvalid) {
-						final Phenotype<G, C> newpt = Phenotype.valueOf(
-								_genotypeFactory.newInstance(),
-								_fitnessFunction,
-								_fitnessScaler,
-								_generation
-							);
-						survivors.set(i, newpt);
+						survivors.set(i, _phenotypeFactory.newInstance());
 					}
 
 					if (isTooOld) {
@@ -558,9 +553,7 @@ public class GeneticAlgorithm<
 			}});
 
 			// In the mean time we can add the offsprings.
-			c.execute(new Runnable() { @Override public void run() {
-				population.addAll(offsprings);
-			}});
+			population.addAll(offsprings);
 		}
 
 		population.addAll(survivors);
@@ -595,16 +588,17 @@ public class GeneticAlgorithm<
 	}
 
 	/**
+	 * <p>
 	 * If you are using the {@code GeneticAlgorithm} in an threaded environment
 	 * and you want to change some of the GAs parameters you can use the returned
 	 * {@link Lock} to synchronize your parameter changes. The GA acquires the
 	 * lock at the begin of the {@link #setup()} and the {@link #evolve()}
 	 * methods and releases it at the end of these methods.
-	 * <p/>
+	 * </p>
 	 * To set one ore more GA parameter you will write code like this:
 	 * [code]
-	 * final GeneticAlgorithm<Float64Gene, Float64> ga = ...
-	 * final Function<GeneticAlgorithm<?, ?>, Boolean> until = ...
+	 * final GeneticAlgorithm〈Float64Gene, Float64〉 ga = ...
+	 * final Function〈GeneticAlgorithm〈?, ?〉, Boolean〉 until = ...
 	 *
 	 * //Starting the GA in separate thread.
 	 * final Thread thread = new Thread(new Runnable() {
@@ -640,8 +634,8 @@ public class GeneticAlgorithm<
 	 * [code]
 	 * ga.getLock().lock();
 	 * try {
-	 *     final Statistics<?, ?> statistics = ga.getStatistic();
-	 *     final Function<?, ?> scaler = ga.getFitnessScaler();
+	 *     final Statistics〈?, ?〉 statistics = ga.getStatistic();
+	 *     final Function〈?, ?〉 scaler = ga.getFitnessScaler();
 	 * } finally {
 	 *     ga.getLock().unlock();
 	 * }
@@ -651,7 +645,7 @@ public class GeneticAlgorithm<
 	 * {@code scaler} where used together within the same {@link #evolve()} step.
 	 *
 	 * @return the lock acquired in the {@link #setup()} and the {@link #evolve()}
-	 * 		  method.
+	 *         method.
 	 */
 	public Lock getLock() {
 		return _lock;
@@ -669,6 +663,7 @@ public class GeneticAlgorithm<
 	}
 
 	/**
+	 * <p>
 	 * Return the used fitness {@link Function} of the GA. The fitness function
 	 * is also an important part when modeling the GA. It takes a genotype as
 	 * argument and returns, at least, a Comparable object as result---the
@@ -676,12 +671,12 @@ public class GeneticAlgorithm<
 	 * to select the offspring- and survivor population. Some selectors have
 	 * stronger requirements to the fitness value than a Comparable, but this
 	 * constraints is checked by the Java type system at compile time.
-	 * <p/>
+	 * </p>
 	 * The following example shows the simplest possible fitness function. It's
 	 * the identity function and returns the allele of an 1x1  float genotype.
 	 * [code]
-	 * class Id implements Function<Genotype<Float64Gene>, Float64> {
-	 *     public Float64 apply(final Genotype<Float64Gene> genotype) {
+	 * class Id implements Function〈Genotype〈Float64Gene〉, Float64〉 {
+	 *     public Float64 apply(final Genotype〈Float64Gene〉 genotype) {
 	 *         return genotype.getGene().getAllele();
 	 *     }
 	 * }
@@ -709,17 +704,19 @@ public class GeneticAlgorithm<
 	 * configuration the raw-fitness is equal to the actual fitness value, that
 	 * means, the used fitness scaler is the identity function.
 	 * [code]
-	 * class Sqrt extends Function<Float64, Float64> {
+	 * class Sqrt extends Function〈Float64, Float64〉 {
 	 *     public Float64 apply(final Float64 value) {
 	 *         return Float64.valueOf(sqrt(value.doubleValue()));
 	 *     }
 	 * }
 	 * [/code]
+	 *
+	 * <p>
 	 * The listing above shows a fitness scaler which reduces the the raw-fitness
 	 * to its square root. This gives weaker individuals a greater changes being
 	 * selected and weakens the influence of super-individuals.
-	 * <p/>
-	 * <b>When using a fitness scaler you have to take care, that your scaler
+	 * </p>
+	 * When using a fitness scaler you have to take care, that your scaler
 	 * doesn't destroy your fitness value. This can be the case when your
 	 * fitness value is negative and your fitness scaler squares the value.
 	 * Trying to find the minimum will not work in this configuration.</b>
@@ -728,7 +725,7 @@ public class GeneticAlgorithm<
 	 * @throws NullPointerException if the scaler is {@code null}.
 	 */
 	public void setFitnessScaler(final Function<C, C> scaler) {
-		_fitnessScaler = nonNull(scaler, "FitnessScaler");
+		_fitnessScaler = requireNonNull(scaler, "FitnessScaler");
 	}
 
 	/**
@@ -823,7 +820,7 @@ public class GeneticAlgorithm<
 	 * @throws NullPointerException, if the given selector is null.
 	 */
 	public void setOffspringSelector(final Selector<G, C> selector) {
-		_offspringSelector = nonNull(selector, "Offspring selector");
+		_offspringSelector = requireNonNull(selector, "Offspring selector");
 	}
 
 	/**
@@ -833,13 +830,13 @@ public class GeneticAlgorithm<
 	 * @throws NullPointerException, if the given selector is null.
 	 */
 	public void setSurvivorSelector(final Selector<G, C> selector) {
-		_survivorSelector = nonNull(selector, "Survivor selector");
+		_survivorSelector = requireNonNull(selector, "Survivor selector");
 	}
 
 	/**
 	 * Set both, the offspring selector and the survivor selector.
 	 *
-	 * @param selector The selector for the offsprings and the survivors.
+	 * @param selector The selector for the offspring and the survivors.
 	 * @throws NullPointerException if the {@code selector} is {@code null}
 	 */
 	public void setSelectors(final Selector<G, C> selector) {
@@ -851,7 +848,8 @@ public class GeneticAlgorithm<
 	 * Set the offspring fraction.
 	 *
 	 * @param offspringFraction The offspring fraction.
-	 * @throws IllegalArgumentException if the offspring fraction is out of range.
+	 * @throws IllegalArgumentException if the offspring fraction is out of
+	 *         range.
 	 */
 	public void setOffspringFraction(final double offspringFraction) {
 		_offspringFraction = checkProbability(offspringFraction);
@@ -864,7 +862,7 @@ public class GeneticAlgorithm<
 	 * @throws NullPointerException if the alterer is null.
 	 */
 	public void setAlterer(final Alterer<G> alterer) {
-		_alterer = nonNull(alterer, "Alterer");
+		_alterer = requireNonNull(alterer, "Alterer");
 	}
 
 	/**
@@ -875,7 +873,7 @@ public class GeneticAlgorithm<
 	 */
 	@SafeVarargs
 	public final void setAlterers(final Alterer<G>... alterers) {
-		setAlterer(new CompositeAlterer<>(alterers));
+		setAlterer(CompositeAlterer.valueOf(alterers));
 	}
 
 	/**
@@ -886,7 +884,7 @@ public class GeneticAlgorithm<
 	 */
 	public void setMaximalPhenotypeAge(final int age) {
 		if (age < 1) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"Phenotype age must be greater than one, but was %s.", age
 			));
 		}
@@ -902,7 +900,7 @@ public class GeneticAlgorithm<
 	 */
 	public void setPopulationSize(final int size) {
 		if (size < 1) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"Population size must be greater than zero, but was %s.", size
 			));
 		}
@@ -919,16 +917,16 @@ public class GeneticAlgorithm<
 	 * @see #setGenotypes(Collection)
 	 * @see #setup(Collection)
 	 * @param population The list of phenotypes to set. The population size is
-	 *        set to <code>phenotype.size()</code>.
+	 *        set to {@code phenotype.size()}.
 	 * @throws NullPointerException if the population, or one of its element, is
 	 *         {@code null}.
 	 * @throws IllegalArgumentException it the population size is smaller than
 	 *         one.
 	 */
 	public void setPopulation(final Collection<Phenotype<G, C>> population) {
-		foreach(population, NonNull);
+		forEach(population, NonNull);
 		if (population.size() < 1) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"Population size must be greater than zero, but was %s.",
 				population.size()
 			));
@@ -937,8 +935,8 @@ public class GeneticAlgorithm<
 		final Population<G, C> pop = new Population<>(population.size());
 		for (Phenotype<G, C> phenotype : population) {
 			pop.add(phenotype.newInstance(
-					_fitnessFunction, _fitnessScaler, _generation
-				));
+				_fitnessFunction, _fitnessScaler, _generation
+			));
 		}
 
 		_population = pop;
@@ -955,14 +953,14 @@ public class GeneticAlgorithm<
 	 * @see #setPopulation(Collection)
 	 * @see #setup(Collection)
 	 * @param genotypes The list of genotypes to set. The population size is set
-	 *        to <code>genotypes.size()</code>.
+	 *        to {@code genotypes.size()}.
 	 * @throws NullPointerException if the population, or one of its elements,
 	 *         is {@code null}s.
 	 * @throws IllegalArgumentException it the population size is smaller than
 	 *         one.
 	 */
 	public void setGenotypes(final Collection<Genotype<G>> genotypes) {
-		foreach(genotypes, NonNull);
+		forEach(genotypes, NonNull);
 		if (genotypes.size() < 1) {
 			throw new IllegalArgumentException(
 				"Genotype size must be greater than zero, but was " +
@@ -1038,8 +1036,10 @@ public class GeneticAlgorithm<
 	 * @throws NullPointerException if the given {@code calculator} is
 	 *         {@code null}.
 	 */
-	public void setStatisticsCalculator(final Statistics.Calculator<G, C> calculator) {
-		_calculator = nonNull(calculator, "Statistic calculator");
+	public void setStatisticsCalculator(
+		final Statistics.Calculator<G, C> calculator
+	) {
+		_calculator = requireNonNull(calculator, "Statistic calculator");
 	}
 
 	/**
@@ -1090,7 +1090,7 @@ public class GeneticAlgorithm<
 			_lock.unlock();
 		}
 
-		return String.format("%4d: (best) %s", generation, phenotype);
+		return format("%4d: (best) %s", generation, phenotype);
 	}
 
 }

@@ -2,32 +2,26 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
- * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 package org.jenetics;
 
-import static java.lang.Math.round;
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
-
-import java.util.Random;
 
 import javolution.text.Text;
 import javolution.text.TextBuilder;
@@ -42,7 +36,7 @@ import org.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-21 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-11-28 $</em>
  */
 public abstract class NumberGene<
 	N extends Number<N>,
@@ -57,26 +51,20 @@ public abstract class NumberGene<
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * The minimum value of this <code>NumberGene</code>. This field is marked
+	 * The minimum value of this {@code NumberGene}. This field is marked
 	 * as transient and must serialized manually by sub classes.
-	 *
-	 * @serial
 	 */
 	protected transient N _min;
 
 	/**
-	 * The maximum value of this <code>NumberGene</code>. This field is marked
+	 * The maximum value of this {@code NumberGene}. This field is marked
 	 * as transient and must serialized manually by sub classes.
-	 *
-	 * @serial
 	 */
 	protected transient N _max;
 
 	/**
-	 * The value of this <code>NumberGene</code>. This field is marked
+	 * The value of this {@code NumberGene}. This field is marked
 	 * as transient and must serialized manually by sub classes.
-	 *
-	 * @serial
 	 */
 	protected transient N _value;
 
@@ -85,10 +73,13 @@ public abstract class NumberGene<
 	protected NumberGene() {
 	}
 
-	@Override
-	public G copy() {
-		return newInstance(_value);
-	}
+	/**
+	 * Boxes a given Java number into the required number object.
+	 *
+	 * @param value the Java number to box.
+	 * @return the boxed number.
+	 */
+	protected abstract N box(final java.lang.Number value);
 
 	/**
 	 * Create a new gene from the given {@code value}.
@@ -98,6 +89,11 @@ public abstract class NumberGene<
 	 */
 	public abstract G newInstance(final N value);
 
+	@Override
+	public G copy() {
+		return newInstance(_value);
+	}
+
 	/**
 	 * Create a new NumberGene with the same limits and the given value.
 	 *
@@ -105,10 +101,12 @@ public abstract class NumberGene<
 	 * @return The new NumberGene.
 	 * @throws NullPointerException if the given {@code value} is {@code null}.
 	 */
-	public abstract G newInstance(final java.lang.Number value);
+	public G newInstance(final java.lang.Number value) {
+		return newInstance(box(value));
+	}
 
 	/**
-	 * Set the <code>NumerGene</code>.
+	 * Set the {@code NumerGene}.
 	 *
 	 * @param value The value of the number gene.
 	 * @param min The allowed min value of the gene.
@@ -116,9 +114,9 @@ public abstract class NumberGene<
 	 * @throws NullPointerException if one of the given number is null.
 	 */
 	protected void set(final N value, final N min, final N max) {
-		_min = nonNull(min, "Min value");
-		_max = nonNull(max, "Max value");
-		_value = nonNull(value, "Gene value");
+		_min = requireNonNull(min, "Min value");
+		_max = requireNonNull(max, "Max value");
+		_value = requireNonNull(value, "Gene value");
 		_valid = _value.compareTo(_min) >= 0 && _value.compareTo(_max) <= 0;
 	}
 
@@ -198,12 +196,12 @@ public abstract class NumberGene<
 
 	/**
 	 * Remind that this method is not consistent with the {@link #equals(Object)}
-	 * method. Since this method only compairs the {@code value} and the
+	 * method. Since this method only compares the {@code value} and the
 	 * {@code equals} method also takes the {@code min} and {@code max} value
 	 * into account.
 	 * [code]
-	 * final NumberGene<?, ?> ng1 = ...
-	 * final NumberGene<?, ?> ng2 = ...
+	 * final NumberGene〈?, ?〉 ng1 = ...
+	 * final NumberGene〈?, ?〉 ng2 = ...
 	 *
 	 * if (ng1.equals(ng2) {
 	 *     // Holds for every ng1 and ng2.
@@ -235,7 +233,9 @@ public abstract class NumberGene<
 		}
 
 		final NumberGene<?, ?> gene = (NumberGene<?, ?>)obj;
-		return eq(_value, gene._value) && eq(_min, gene._min) && eq(_max, gene._max);
+		return eq(_value, gene._value) &&
+				eq(_min, gene._min) &&
+				eq(_max, gene._max);
 	}
 
 	@Override
@@ -243,22 +243,6 @@ public abstract class NumberGene<
 		TextBuilder out = new TextBuilder();
 		out.append("[").append(_value).append("]");
 		return out.toText();
-	}
-
-	static long nextLong(
-		final Random random,
-		final long min,
-		final long max
-	) {
-		return round(random.nextDouble()*(max - min)) + min;
-	}
-
-	static double nextDouble(
-		final Random random,
-		final double min,
-		final double max
-	) {
-		return random.nextDouble()*(max - min) + min;
 	}
 
 }

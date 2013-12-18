@@ -2,23 +2,20 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
  */
 package org.jenetics;
 
@@ -40,7 +37,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-10-12 $</em>
  */
 public abstract class Crossover<G extends Gene<?, G>> extends Recombinator<G> {
 
@@ -51,7 +48,7 @@ public abstract class Crossover<G extends Gene<?, G>> extends Recombinator<G> {
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
 	 *          valid range of {@code [0, 1]}.
 	 */
-	public Crossover(final double probability) {
+	protected Crossover(final double probability) {
 		super(probability, 2);
 	}
 
@@ -71,24 +68,24 @@ public abstract class Crossover<G extends Gene<?, G>> extends Recombinator<G> {
 		//Choosing the Chromosome for crossover.
 		final int chIndex = random.nextInt(gt1.length());
 
-		final MSeq<Chromosome<G>> chromosomes1 = gt1.toSeq().copy();
-		final MSeq<Chromosome<G>> chromosomes2 = gt2.toSeq().copy();
-		final MSeq<G> genes1 = chromosomes1.get(chIndex).toSeq().copy();
-		final MSeq<G> genes2 = chromosomes2.get(chIndex).toSeq().copy();
+		final MSeq<Chromosome<G>> chroms1 = gt1.toSeq().copy();
+		final MSeq<Chromosome<G>> chroms2 = gt2.toSeq().copy();
+		final MSeq<G> genes1 = chroms1.get(chIndex).toSeq().copy();
+		final MSeq<G> genes2 = chroms2.get(chIndex).toSeq().copy();
 
 		crossover(genes1, genes2);
 
-		chromosomes1.set(chIndex, chromosomes1.get(chIndex).newInstance(genes1.toISeq()));
-		chromosomes2.set(chIndex, chromosomes2.get(chIndex).newInstance(genes2.toISeq()));
+		chroms1.set(chIndex, chroms1.get(chIndex).newInstance(genes1.toISeq()));
+		chroms2.set(chIndex, chroms2.get(chIndex).newInstance(genes2.toISeq()));
 
 		//Creating two new Phenotypes and exchanging it with the old.
 		population.set(
 			individuals[0],
-			pt1.newInstance(Genotype.valueOf(chromosomes1.toISeq()), generation)
+			pt1.newInstance(gt1.newInstance(chroms1.toISeq()), generation)
 		);
 		population.set(
 			individuals[1],
-			pt2.newInstance(Genotype.valueOf(chromosomes2.toISeq()), generation)
+			pt2.newInstance(gt1.newInstance(chroms2.toISeq()), generation)
 		);
 
 		return getOrder();

@@ -2,23 +2,20 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
- * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 package org.jenetics;
 
@@ -36,11 +33,12 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.internal.util.cast;
+
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
-import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.bit;
 
 
@@ -50,7 +48,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-16 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2013-12-02 $</em>
  */
 public final class PermutationChromosome<T>
 	extends AbstractChromosome<EnumGene<T>>
@@ -60,7 +58,7 @@ public final class PermutationChromosome<T>
 
 	private ISeq<T> _validAlleles;
 
-	PermutationChromosome(final int length, final ISeq<EnumGene<T>> genes) {
+	PermutationChromosome(final int length, final ISeq<? extends EnumGene<T>> genes) {
 		super(genes);
 		_validAlleles = genes.get(0).getValidAlleles();
 		_valid = true;
@@ -71,13 +69,13 @@ public final class PermutationChromosome<T>
 	 *
 	 * @param validAlleles the valid alleles used for this permutation arrays.
 	 */
-	public PermutationChromosome(final ISeq<T> validAlleles) {
+	public PermutationChromosome(final ISeq<? extends T> validAlleles) {
 		super(
 			new Array<EnumGene<T>>(
 				validAlleles.length()
-			).fill(Gene(validAlleles)).shuffle(RandomRegistry.getRandom()).toISeq()
+			).fill(Gene(validAlleles)).shuffle().toISeq()
 		);
-		_validAlleles = validAlleles;
+		_validAlleles = cast.apply(validAlleles);
 	}
 
 	public ISeq<T> getValidAlleles() {
@@ -116,8 +114,12 @@ public final class PermutationChromosome<T>
 	/**
 	 * Return a more specific view of this chromosome factory.
 	 *
-	 * @return a more specific view of thiw chromosome factory.
+	 * @return a more specific view of this chromosome factory.
+	 *
+	 * @deprecated No longer needed after adding new factory methods to the
+	 *             {@link Array} class.
 	 */
+	@Deprecated
 	@SuppressWarnings("unchecked")
 	public Factory<PermutationChromosome<T>> asFactory() {
 		return (Factory<PermutationChromosome<T>>)(Object)this;
@@ -156,7 +158,7 @@ public final class PermutationChromosome<T>
 
 	@Override
 	public String toString() {
-		StringBuilder out = new StringBuilder();
+		final StringBuilder out = new StringBuilder();
 		out.append(_genes.get(0).getAllele());
 		for (int i = 1; i < length(); ++i) {
 			out.append("|").append(_genes.get(i).getAllele());
@@ -212,7 +214,7 @@ public final class PermutationChromosome<T>
 
 			final ISeq<Object> ialleles = alleles.toISeq();
 
-			final Array<Integer> indexes = new Array<>(
+			final Array<Integer> indexes = Array.valueOf(
 				xml.get(ALLELE_INDEXES, String.class
 			).split(",")).map(StringToInteger);
 

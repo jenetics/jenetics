@@ -2,34 +2,33 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
- * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 package org.jenetics;
 
 import static java.lang.Math.abs;
-import static java.lang.Math.pow;
-import static org.jenetics.util.math.sum;
+import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
+import static org.jenetics.util.math.pow;
 import static org.jenetics.util.math.ulpDistance;
-import static org.jenetics.util.object.nonNull;
+import static org.jenetics.util.math.statistics.sum;
 
 import java.util.Random;
 
+import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
 
 
@@ -48,7 +47,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-11-28 $</em>
  */
 public abstract class ProbabilitySelector<
 	G extends Gene<?, G>,
@@ -56,7 +55,7 @@ public abstract class ProbabilitySelector<
 >
 	implements Selector<G, C>
 {
-	private static final long MAX_ULP_DISTANCE = (long)pow(10, 10);
+	private static final long MAX_ULP_DISTANCE = pow(10, 10);
 
 	protected ProbabilitySelector() {
 	}
@@ -67,10 +66,10 @@ public abstract class ProbabilitySelector<
 		final int count,
 		final Optimize opt
 	) {
-		nonNull(population, "Population");
-		nonNull(opt, "Optimization");
+		requireNonNull(population, "Population");
+		requireNonNull(opt, "Optimization");
 		if (count < 0) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"Selection count must be greater or equal then zero, but was %s.",
 				count
 			));
@@ -85,16 +84,45 @@ public abstract class ProbabilitySelector<
 			assert (sum2one(probabilities)) : "Probabilities doesn't sum to one.";
 
 			incremental(probabilities);
-			final Random random = RandomRegistry.getRandom();
-			for (int i = 0; i < count; ++i) {
-				final double value = random.nextDouble();
-				selection.add(population.get(indexOf(probabilities, value)));
-			}
+			final Factory<Phenotype<G, C>> factory = factory(
+				population, probabilities, RandomRegistry.getRandom()
+			);
 
+			selection.fill(factory, count);
 			assert (count == selection.size());
 		}
 
 		return selection;
+	}
+
+	private static <
+		G extends Gene<?, G>,
+		C extends Comparable<? super C>
+	>
+	Factory<Phenotype<G, C>> factory(
+		final Population<G, C> population,
+		final double[] probabilities,
+		final Random random
+	) {
+		return new Factory<Phenotype<G, C>>() {
+			@Override
+			public Phenotype<G, C> newInstance() {
+				return select(population, probabilities, random);
+			}
+		};
+	}
+
+	private static <
+		G extends Gene<?, G>,
+		C extends Comparable<? super C>
+	>
+	Phenotype<G, C> select(
+		final Population<G, C> population,
+		final double[] probabilities,
+		final Random random
+	) {
+		final double value = random.nextDouble();
+		return population.get(indexOf(probabilities, value));
 	}
 
 	/**
@@ -104,8 +132,8 @@ public abstract class ProbabilitySelector<
 	 * @param population The population.
 	 * @param count The number of phenotypes to select.
 	 * @param opt Determines whether the individuals with higher fitness values
-	 *         or lower fitness values must be selected. This parameter determines
-	 *         whether the GA maximizes or minimizes the fitness function.
+	 *        or lower fitness values must be selected. This parameter determines
+	 *        whether the GA maximizes or minimizes the fitness function.
 	 * @return Probability array.
 	 */
 	protected final double[] probabilities(
@@ -127,11 +155,12 @@ public abstract class ProbabilitySelector<
 	}
 
 	/**
+	 * <p>
 	 * Return an Probability array, which corresponds to the given Population.
 	 * The probability array and the population must have the same size. The
 	 * population is not sorted. If a subclass needs a sorted population, the
 	 * subclass is responsible to sort the population.
-	 * <p/>
+	 * </p>
 	 * The implementor always assumes that higher fitness values are better. The
 	 * base class inverts the probabilities ({@code p = 1.0 - p }) if the GA is
 	 * supposed to minimize the fitness function.
@@ -140,10 +169,10 @@ public abstract class ProbabilitySelector<
 	 * @param count The number of phenotypes to select. <i>This parameter is not
 	 *         needed for most implementations.</i>
 	 * @return Probability array. The returned probability array must have the
-	 *          length {@code population.size()} and <strong>must</strong> sum to
-	 *          one. The returned value is checked with
-	 *          {@code assert(Math.abs(math.sum(probabilities) - 1.0) < 0.0001)}
-	 *          in the base class.
+	 *         length {@code population.size()} and <strong>must</strong> sum to
+	 *         one. The returned value is checked with
+	 *         {@code assert(Math.abs(math.sum(probabilities) - 1.0) < 0.0001)}
+	 *         in the base class.
 	 */
 	protected abstract double[] probabilities(
 		final Population<G, C> population,
@@ -165,7 +194,7 @@ public abstract class ProbabilitySelector<
 	/**
 	 * Perform a binary-search on the summed probability array.
 	 */
-	final static int indexOf(final double[] incremental, final double value) {
+	final static int indexOf(final double[] incremental, final double v) {
 		int imin = 0;
 		int imax = incremental.length;
 
@@ -174,11 +203,11 @@ public abstract class ProbabilitySelector<
 
 			if (imid == 0) {
 				return imid;
-			} else if (incremental[imid] >= value && incremental[imid - 1] < value) {
+			} else if (incremental[imid] >= v && incremental[imid - 1] < v) {
 				return imid;
-			} else if (incremental[imid] <= value) {
+			} else if (incremental[imid] <= v) {
 				imin = imid + 1;
-			} else if (incremental[imid] > value) {
+			} else if (incremental[imid] > v) {
 				imax = imid;
 			}
 		}

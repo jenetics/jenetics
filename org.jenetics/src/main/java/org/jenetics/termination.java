@@ -2,23 +2,20 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 package org.jenetics;
 
@@ -30,7 +27,7 @@ import org.jenetics.util.StaticObject;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-12-14 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-12-02 $</em>
  */
 public final class termination extends StaticObject {
 	private termination() {}
@@ -38,13 +35,13 @@ public final class termination extends StaticObject {
 	static class SteadyFitness<C extends Comparable<? super C>>
 		implements Function<Statistics<?, C>, Boolean>
 	{
-		private final int _genenerations;
+		private final int _generations;
 
 		private C _fitness;
 		private int _stableGenerations = 0;
 
 		public SteadyFitness(final int generations) {
-			_genenerations = generations;
+			_generations = generations;
 		}
 
 		@Override
@@ -57,7 +54,7 @@ public final class termination extends StaticObject {
 			} else {
 				final Optimize opt = statistics.getOptimize();
 				if (opt.compare(_fitness, statistics.getBestFitness()) >= 0) {
-					proceed = ++_stableGenerations <= _genenerations;
+					proceed = ++_stableGenerations <= _generations;
 				} else {
 					_fitness = statistics.getBestFitness();
 					_stableGenerations = 1;
@@ -91,7 +88,9 @@ public final class termination extends StaticObject {
 
 		@Override
 		public Boolean apply(final Statistics<?, ?> statistics) {
-			return statistics.getGeneration() < _generation ? Boolean.TRUE : Boolean.FALSE;
+			return statistics.getGeneration() < _generation ?
+					Boolean.TRUE :
+					Boolean.FALSE;
 		}
 	}
 
@@ -107,7 +106,8 @@ public final class termination extends StaticObject {
 	 * @param generation the maximal GA generation.
 	 * @return the termination predicate.
 	 */
-	public static Function<Statistics<?, ?>, Boolean> Generation(final int generation) {
+	public static Function<Statistics<?, ?>, Boolean>
+	Generation(final int generation) {
 		return new Generation(generation);
 	}
 

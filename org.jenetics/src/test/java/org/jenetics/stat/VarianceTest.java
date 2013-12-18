@@ -2,45 +2,38 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 package org.jenetics.stat;
 
-import java.io.IOException;
 import java.util.Random;
 
+import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.MappedAccumulatorTester;
 import org.jenetics.util.Factory;
+import org.jenetics.util.MappedAccumulatorTester;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.TestDataIterator;
-import org.jenetics.util.TestDataIterator.Data;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2012-11-30 $</em>
+ * @version <em>$Date: 2013-11-18 $</em>
  */
 public class VarianceTest extends MappedAccumulatorTester<Variance<Double>> {
-
-	private final static String DATA = "/org/jenetics/util/statistic-moments.txt";
 
 	private final Factory<Variance<Double>> _factory = new Factory<Variance<Double>>() {
 		@Override
@@ -61,23 +54,19 @@ public class VarianceTest extends MappedAccumulatorTester<Variance<Double>> {
 	}
 
 	@Test
-	public void variance() throws IOException {
-		try (TestDataIterator it = dataIt()) {
-			final Variance<Double> moment = new Variance<>();
-			while (it.hasNext()) {
-				final Data data = it.next();
-				moment.accumulate(data.number);
+	public void variance() {
+		final int length = 100_000;
+		final Random random = new Random(23434);
+		final SummaryStatistics stat = new SummaryStatistics();
+		final Variance<Double> mean = new Variance<>();
 
-				Assert.assertEquals(moment.getMean(), data.mean);
-				Assert.assertEquals(moment.getVariance(), data.variance, 0.000001);
-			}
+		for (int i = 0; i < length; ++i) {
+			final double value = random.nextDouble()*1_000;
+			stat.addValue(value);
+			mean.accumulate(value);
 		}
-	}
 
-	private static TestDataIterator dataIt() throws IOException {
-		return new TestDataIterator(
-			MeanTest.class.getResourceAsStream(DATA), "\\s"
-		);
+		Assert.assertEquals(mean.getVariance(), stat.getVariance(), 0.0000001);
 	}
 
 }

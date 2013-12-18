@@ -2,30 +2,28 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
- *   Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 package org.jenetics;
 
+import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.NonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
 
 import java.util.Deque;
 import java.util.LinkedList;
@@ -42,7 +40,7 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-21 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-09-02 $</em>
  */
 public final class CompositeAlterer<G extends Gene<?, G>>
 	extends AbstractAlterer<G>
@@ -53,104 +51,28 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	/**
 	 * Combine the given alterers.
 	 *
-	 * @param a1 first alterer.
-	 * @param a2 second alterer.
-	 * @throws NullPointerException if one of the alterer is {@code null}.
-	 */
-	public CompositeAlterer(
-		final Alterer<G> a1,
-		final Alterer<G> a2
-	) {
-		this(new Array<>(nonNull(a1), nonNull(a2)));
-	}
-
-	/**
-	 * Combine the given alterers.
-	 *
-	 * @param a1 first alterer.
-	 * @param a2 second alterer.
-	 * @param a3 third alterer.
-	 * @throws NullPointerException if one of the alterer is {@code null}.
-	 */
-	public CompositeAlterer(
-		final Alterer<G> a1,
-		final Alterer<G> a2,
-		final Alterer<G> a3
-	) {
-		this(new Array<>(nonNull(a1), nonNull(a2), nonNull(a3)));
-	}
-
-	/**
-	 * Combine the given alterers.
-	 *
-	 * @param a1 first alterer.
-	 * @param a2 second alterer.
-	 * @param a3 third alterer.
-	 * @param a4 fourth alterer.
-	 * @throws NullPointerException if one of the alterer is {@code null}.
-	 */
-	public CompositeAlterer(
-		final Alterer<G> a1,
-		final Alterer<G> a2,
-		final Alterer<G> a3,
-		final Alterer<G> a4
-	) {
-		this(new Array<>(
-				nonNull(a1),
-				nonNull(a2),
-				nonNull(a3),
-				nonNull(a4)
-			));
-	}
-
-	/**
-	 * Combine the given alterers.
-	 *
-	 * @param a1 first alterer.
-	 * @param a2 second alterer.
-	 * @param a3 third alterer.
-	 * @param a4 fourth alterer.
-	 * @param a5 fifth alterer.
-	 * @throws NullPointerException if one of the alterer is {@code null}.
-	 */
-	public CompositeAlterer(
-		final Alterer<G> a1,
-		final Alterer<G> a2,
-		final Alterer<G> a3,
-		final Alterer<G> a4,
-		final Alterer<G> a5
-	) {
-		this(new Array<>(
-				nonNull(a1),
-				nonNull(a2),
-				nonNull(a3),
-				nonNull(a4),
-				nonNull(a5)
-			));
-	}
-
-	/**
-	 * Combine the given alterers.
-	 *
-	 * @param alterers the alterers to combine.
-	 * @throws NullPointerException if one of the alterers is {@code null}.
-	 */
-	@SafeVarargs
-	public CompositeAlterer(final Alterer<G>... alterers) {
-		this(new Array<>(alterers));
-	}
-
-	/**
-	 * Combine the given alterers.
-	 *
 	 * @param alterers the alterers to combine.
 	 * @throws NullPointerException if one of the alterers is {@code null}.
 	 */
 	public CompositeAlterer(final Seq<Alterer<G>> alterers) {
 		super(1.0);
 
-		alterers.forall(NonNull("Alterer"));
+		alterers.forAll(NonNull("Alterer"));
 		_alterers = normalize(alterers).toISeq();
+	}
+
+	/**
+	 * Combine the given alterers.
+	 *
+	 * @param alterers the alterers to combine.
+	 * @throws NullPointerException if one of the alterers is {@code null}.
+	 *
+	 * @deprecated Use {@link #valueOf(Alterer...)} instead.
+	 */
+	@Deprecated
+	@SafeVarargs
+	public CompositeAlterer(final Alterer<G>... alterers) {
+		this(Array.valueOf(alterers));
 	}
 
 	private static <G extends Gene<?, G>>
@@ -173,17 +95,15 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 			}
 		}
 
-		return new Array<>(normalized);
+		return Array.valueOf(normalized);
 	}
 
 	@Override
-	public <C extends Comparable<? super C>> int alter(
-		final Population<G, C> population,
-		final int generation
-	) {
+	public <C extends Comparable<? super C>>
+	int alter(final Population<G, C> population, final int generation) {
 		final AtomicInteger alterations = new AtomicInteger(0);
 
-		_alterers.foreach(new Function<Alterer<G>, Void>() {
+		_alterers.forEach(new Function<Alterer<G>, Void>() {
 			@Override public Void apply(final Alterer<G> alterer) {
 				alterations.addAndGet(alterer.alter(population, generation));
 				return null;
@@ -201,7 +121,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	 * @throws NullPointerException if the given alterer is {@code null}.
 	 */
 	public CompositeAlterer<G> append(final Alterer<G> alterer) {
-		return new CompositeAlterer<>(this, nonNull(alterer, "Alterer"));
+		return CompositeAlterer.valueOf(this, requireNonNull(alterer, "Alterer"));
 	}
 
 	/**
@@ -210,7 +130,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	 *
 	 * @return the alterers this alterer consists of.
 	 */
-	public Seq<Alterer<G>> getAlterers() {
+	public ISeq<Alterer<G>> getAlterers() {
 		return _alterers;
 	}
 
@@ -234,7 +154,19 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 
 	@Override
 	public String toString() {
-		return String.format("%s[%s]", getClass().getSimpleName(), _alterers);
+		return format("%s[%s]", getClass().getSimpleName(), _alterers);
+	}
+
+	/**
+	 * Combine the given alterers.
+	 *
+	 * @param alterers the alterers to combine.
+	 * @throws NullPointerException if one of the alterers is {@code null}.
+	 */
+	@SafeVarargs
+	public static <G extends Gene<?, G>>
+	CompositeAlterer<G> valueOf(final Alterer<G>... alterers) {
+		return new CompositeAlterer<>(Array.valueOf(alterers));
 	}
 
 	/**
@@ -252,7 +184,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 		final Alterer<T> a1,
 		final Alterer<T> a2
 	) {
-		return new CompositeAlterer<>(a1, a2);
+		return CompositeAlterer.valueOf(a1, a2);
 	}
 }
 
