@@ -19,24 +19,21 @@
  */
 package org.jenetics.stat;
 
-import java.io.IOException;
 import java.util.Random;
 
+import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import org.jenetics.util.Factory;
 import org.jenetics.util.MappedAccumulatorTester;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.TestDataIterator;
-import org.jenetics.util.TestDataIterator.Data;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version <em>$Date$</em>
  */
 public class MeanTest extends MappedAccumulatorTester<Mean<Double>> {
-	private final static String DATA = "/org/jenetics/util/statistic-moments.txt";
 
 	private final Factory<Mean<Double>> _factory = new Factory<Mean<Double>>() {
 		@Override
@@ -57,22 +54,19 @@ public class MeanTest extends MappedAccumulatorTester<Mean<Double>> {
 	}
 
 	@Test
-	public void mean() throws IOException {
-		try (TestDataIterator it = dataIt()) {
-			final Mean<Double> moment = new Mean<>();
-			while (it.hasNext()) {
-				final Data data = it.next();
-				moment.accumulate(data.number);
+	public void mean() {
+		final int length = 100_000;
+		final Random random = new Random(234234);
+		final SummaryStatistics stat = new SummaryStatistics();
+		final Mean<Double> mean = new Mean<>();
 
-				Assert.assertEquals(moment.getMean(), data.mean);
-			}
+		for (int i = 0; i < length; ++i) {
+			final double value = random.nextDouble()*1_000;
+			stat.addValue(value);
+			mean.accumulate(value);
 		}
-	}
 
-	private static TestDataIterator dataIt() throws IOException {
-		return new TestDataIterator(
-			MeanTest.class.getResourceAsStream(DATA), "\\s"
-		);
+		Assert.assertEquals(mean.getMean(), stat.getMean(), 0.0000001);
 	}
 
 }

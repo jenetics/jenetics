@@ -156,11 +156,12 @@ public abstract class ProbabilitySelector<
 	}
 
 	/**
+	 * <p>
 	 * Return an Probability array, which corresponds to the given Population.
 	 * The probability array and the population must have the same size. The
 	 * population is not sorted. If a subclass needs a sorted population, the
 	 * subclass is responsible to sort the population.
-	 * <p/>
+	 * </p>
 	 * The implementor always assumes that higher fitness values are better. The
 	 * base class inverts the probabilities ({@code p = 1.0 - p }) if the GA is
 	 * supposed to minimize the fitness function.

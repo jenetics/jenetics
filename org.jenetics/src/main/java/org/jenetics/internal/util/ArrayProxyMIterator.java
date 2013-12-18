@@ -27,7 +27,7 @@ package org.jenetics.internal.util;
  */
 public class ArrayProxyMIterator<T> extends ArrayProxyIterator<T> {
 
-	public ArrayProxyMIterator(ArrayProxy<T> proxy) {
+	public ArrayProxyMIterator(final ArrayProxy<T> proxy) {
 		super(proxy);
 	}
 

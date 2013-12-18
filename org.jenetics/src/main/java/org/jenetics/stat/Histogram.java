@@ -386,7 +386,7 @@ public class Histogram<C> extends MappedAccumulator<C> {
 	public static <C extends Comparable<? super C>> Histogram<C> valueOf(
 		final C... separators
 	) {
-		return new Histogram<>(COMPARATOR, separators);
+		return new Histogram<C>(COMPARATOR, separators);
 	}
 
 	@SuppressWarnings({"rawtypes", "unchecked"})
@@ -533,7 +533,7 @@ public class Histogram<C> extends MappedAccumulator<C> {
 		for (int i = 1, n = pts - rest; i < n; ++i) {
 			separators[i - 1] = i*bulk + min;
 		}
-		for (int i = 0, n = rest; i < n; ++i) {
+		for (int i = 0; i < rest; ++i) {
 			separators[separators.length - rest + i] =
 					(pts - rest)*bulk + i*(bulk + 1) + min;
 		}

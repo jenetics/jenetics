@@ -40,7 +40,7 @@ import org.jenetics.util.math;
  * <img
  *     src="doc-files/gaussian-mutator-var.gif"
  *     alt="\hat{\sigma }^2 = \left ( \frac{ g_{max} - g_{min} }{4}\right )^2"
- * />
+ * >
  * </p>
  * The new value will be cropped to the gene's boundaries.
  *

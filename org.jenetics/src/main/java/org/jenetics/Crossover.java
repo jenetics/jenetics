@@ -68,24 +68,24 @@ public abstract class Crossover<G extends Gene<?, G>> extends Recombinator<G> {
 		//Choosing the Chromosome for crossover.
 		final int chIndex = random.nextInt(gt1.length());
 
-		final MSeq<Chromosome<G>> chromosomes1 = gt1.toSeq().copy();
-		final MSeq<Chromosome<G>> chromosomes2 = gt2.toSeq().copy();
-		final MSeq<G> genes1 = chromosomes1.get(chIndex).toSeq().copy();
-		final MSeq<G> genes2 = chromosomes2.get(chIndex).toSeq().copy();
+		final MSeq<Chromosome<G>> chroms1 = gt1.toSeq().copy();
+		final MSeq<Chromosome<G>> chroms2 = gt2.toSeq().copy();
+		final MSeq<G> genes1 = chroms1.get(chIndex).toSeq().copy();
+		final MSeq<G> genes2 = chroms2.get(chIndex).toSeq().copy();
 
 		crossover(genes1, genes2);
 
-		chromosomes1.set(chIndex, chromosomes1.get(chIndex).newInstance(genes1.toISeq()));
-		chromosomes2.set(chIndex, chromosomes2.get(chIndex).newInstance(genes2.toISeq()));
+		chroms1.set(chIndex, chroms1.get(chIndex).newInstance(genes1.toISeq()));
+		chroms2.set(chIndex, chroms2.get(chIndex).newInstance(genes2.toISeq()));
 
 		//Creating two new Phenotypes and exchanging it with the old.
 		population.set(
 			individuals[0],
-			pt1.newInstance(gt1.newInstance(chromosomes1.toISeq()), generation)
+			pt1.newInstance(gt1.newInstance(chroms1.toISeq()), generation)
 		);
 		population.set(
 			individuals[1],
-			pt2.newInstance(gt1.newInstance(chromosomes2.toISeq()), generation)
+			pt2.newInstance(gt1.newInstance(chroms2.toISeq()), generation)
 		);
 
 		return getOrder();

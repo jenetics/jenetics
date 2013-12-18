@@ -223,10 +223,7 @@ public class Float64Chromosome
 			}
 		}
 		@Override
-		public void read(
-			final InputElement element,
-			final Float64Chromosome chromosome
-		) {
+		public void read(final InputElement e, final Float64Chromosome c) {
 		}
 	};
 
@@ -261,7 +258,8 @@ public class Float64Chromosome
 		_max = max;
 		final Array<Float64Gene> genes = new Array<>(length);
 		for (int i = 0; i < length; ++i) {
-			genes.set(i, Float64Gene.valueOf(Float64.valueOf(in.readDouble()), min, max));
+			final Float64 value = Float64.valueOf(in.readDouble());
+			genes.set(i, Float64Gene.valueOf(value, min, max));
 		}
 
 		_genes = genes.toISeq();

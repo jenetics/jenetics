@@ -119,19 +119,19 @@ public class NumberStatistics<
 		@Override
 		public NumberStatistics<G, R> build() {
 			return new NumberStatistics<>(
-					_optimize,
-					_generation,
-					_best,
-					_worst,
-					_fitnessMean,
-					_fitnessVariance,
-					_samples,
-					_ageMean,
-					_ageVariance,
-					_standardError,
-					_killed,
-					_invalid
-				);
+				_optimize,
+				_generation,
+				_best,
+				_worst,
+				_fitnessMean,
+				_fitnessVariance,
+				_samples,
+				_ageMean,
+				_ageVariance,
+				_standardError,
+				_killed,
+				_invalid
+			);
 		}
 	}
 
@@ -284,9 +284,7 @@ public class NumberStatistics<
 		}
 
 		@Override
-		public void read(final InputElement xml, final NumberStatistics p)
-			throws XMLStreamException
-		{
+		public void read(final InputElement xml, final NumberStatistics p) {
 		}
 	};
 

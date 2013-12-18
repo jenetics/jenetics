@@ -20,7 +20,6 @@
 package org.jenetics;
 
 import static java.lang.Math.abs;
-import static java.lang.String.format;
 import static org.jenetics.util.math.pow;
 import static org.jenetics.util.math.ulpDistance;
 import static org.jenetics.util.math.statistics.min;
@@ -94,19 +93,12 @@ public class RouletteWheelSelector<
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null || obj.getClass() != getClass()) {
-			return false;
-		}
-
-		return true;
+		return obj == this || obj != null && obj.getClass() == getClass();
 	}
 
 	@Override
 	public String toString() {
-		return format("%s", getClass().getSimpleName());
+		return getClass().getSimpleName();
 	}
 
 }

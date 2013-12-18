@@ -64,7 +64,7 @@ public final class special extends StaticObject {
 	 * TODO: Implement gamma function.
 	 *
 	 * @param x
-	 * @return
+	 * @return the gamma value
 	 */
 	static double Γ(final double x) {
 		return x;

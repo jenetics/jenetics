@@ -17,19 +17,24 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
- 
+package org.jenetics.internal.util;
+
+import org.jenetics.util.ISeq;
+import org.jenetics.util.StaticObject;
+
 /**
+ * Some helper methods for safe cast operations.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.4
- * @version 1.4 &mdash; <em>$Date$</em>
- */ 
- 
-apply plugin: 'java'
-apply plugin: 'groovy'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
+ * @since 1.5
+ * @version 1.5 &mdash; <em>$Date$</em>
+ */
+public class cast extends StaticObject {
+	private cast() {}
 
-dependencies {
-	compile gradleApi()
+	@SuppressWarnings("unchecked")
+	public static <A, B extends A> ISeq<A> apply(final ISeq<B> seq) {
+		return (ISeq<A>)seq;
+	}
+
 }
-

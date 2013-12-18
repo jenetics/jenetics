@@ -27,12 +27,11 @@ import static java.util.Objects.requireNonNull;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date$</em>
+ * @version 1.5 &mdash; <em>$Date$</em>
  */
 public final class ArrayProxyImpl<T> extends ArrayProxy<T> {
 
-	protected Object[] _array;
-
+	Object[] _array;
 	private boolean _sealed = false;
 
 	/**
@@ -58,18 +57,18 @@ public final class ArrayProxyImpl<T> extends ArrayProxy<T> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public T uncheckedOffsetGet(final int absoluteIndex) {
+	public T __get(final int absoluteIndex) {
 		return (T)_array[absoluteIndex];
 	}
 
 	@Override
-	public void uncheckedOffsetSet(final int absoluteIndex, final T value) {
+	public void __set(final int absoluteIndex, final T value) {
 		_array[absoluteIndex] = value;
 	}
 
 	@Override
-	public ArrayProxyImpl<T> sub(final int start, final int end) {
-		return new ArrayProxyImpl<>(_array, start + _start, end + _start);
+	public ArrayProxyImpl<T> slice(final int from, final int until) {
+		return new ArrayProxyImpl<>(_array, from + _start, until + _start);
 	}
 
 	@Override

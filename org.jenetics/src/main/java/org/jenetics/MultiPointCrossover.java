@@ -37,14 +37,14 @@ import org.jenetics.util.math;
  * shows how the {@code MultiPointCrossover} works with two crossover points,
  * defined at index 1 and 4.
  * <p><div align="center">
- *	<img src="doc-files/2PointCrossover.svg" width="400" >
+ *	<img src="doc-files/2PointCrossover.svg" width="400" alt="2-point crossover">
  * </div></p>
  *
  * If the number of crossover points is odd, the crossover looks like in the
  * following figure.
  *
  * <p><div align="center">
- *	<img src="doc-files/3PointCrossover.svg" width="400" >
+ *	<img src="doc-files/3PointCrossover.svg" width="400" alt="3-point crossover">
  * </div></p>
  *
  * @see SinglePointCrossover
@@ -63,7 +63,7 @@ public class MultiPointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 	 * @param probability the recombination probability.
 	 * @param n the number of crossover points.
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
-	 *         valid range of {@code [0, 1]} or {@code n < 1}.
+	 *         valid range of {@code [0, 1]} or {@code n &lt; 1}.
 	 */
 	public MultiPointCrossover(final double probability, final int n) {
 		super(probability);
@@ -91,7 +91,7 @@ public class MultiPointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 	 * 0.05.
 	 *
 	 * @param n the number of crossover points.
-	 * @throws IllegalArgumentException if {@code n < 1}.
+	 * @throws IllegalArgumentException if {@code n &lt; 1}.
 	 */
 	public MultiPointCrossover(final int n) {
 		this(0.05, n);

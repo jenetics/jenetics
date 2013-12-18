@@ -19,8 +19,11 @@
  */
 package org.jenetics.gradle.task;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import org.gradle.api.DefaultTask;
 import org.gradle.api.tasks.InputFile;
@@ -72,9 +75,12 @@ public class Lyx2PDFTask extends DefaultTask {
 			BINARY, "-e", "pdf2", documentName
 		);
 		builder.directory(workingDir);
+		builder.redirectErrorStream(true);
+		getLogger().debug(workingDir + "/" + documentName);
 
 		try {
 			final Process process = builder.start();
+			output(process.getInputStream());
 			_exitValue = process.waitFor();
 			if (_exitValue != 0) {
 				getLogger().lifecycle("Error while generating PDF.");
@@ -82,6 +88,14 @@ public class Lyx2PDFTask extends DefaultTask {
 			}
 		} catch (IOException | InterruptedException e) {
 			throw new TaskExecutionException(this, e);
+		}
+	}
+
+	private void output(final InputStream in) throws IOException {
+		final BufferedReader d = new BufferedReader(new InputStreamReader(in));
+		String line = null;
+		while ((line = d.readLine()) != null) {
+			getLogger().info(line);
 		}
 	}
 
@@ -95,6 +109,7 @@ public class Lyx2PDFTask extends DefaultTask {
 			return false;
 		}
 	}
+
 
 }
 

@@ -17,27 +17,29 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
+package org.jenetics.internal.math;
+
+import org.jenetics.util.StaticObject;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.4
- * @version 1.4 &mdash; <em>$Date$</em>
+ * @since 1.5
+ * @version 1.5 &mdash; <em>$Date$</em>
  */
+public class lcg64shiftrandom extends StaticObject {
+	private lcg64shiftrandom() {}
 
-tasks.withType(AbstractCompile).all { AbstractCompile compile ->
-	def xlintOptions = [
-		'cast',
-		'classfile',
-		'deprecation',
-		'dep-ann',
-		'divzero',
-		'finally',
-		'overrides',
-		'rawtypes',
-		'serial',
-		'try',
-		'unchecked'
-	]
-	
-	compile.options.compilerArgs = ["-Xlint:${xlintOptions.join(',')}"]
+	public static final class State {
+		public long r = 0;
+	}
+
+
+
 }
+
+
+
+
+
+
+

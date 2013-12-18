@@ -17,40 +17,56 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package org.jenetics.internal.util;
 
-import java.io.BufferedOutputStream;
+import static java.lang.String.format;
+
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 
 /**
+ * Class for testing a given random engine using the
+ * <a href="http://www.phy.duke.edu/~rgb/General/dieharder.php">dieharder</a>
+ * test application.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date$</em>
+ * @since 1.5
+ * @version 1.5 &mdash; <em>$Date$</em>
  */
 public final class DieHarder {
 
+	/**
+	 * Writes random numbers to an given data output stream.
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since 1.5
+	 * @version 1.5 &mdash; <em>$Date$</em>
+	 */
 	private static final class Randomizer implements Runnable {
 		private final Random _random;
-		private final DataOutputStream _out;
+		private final OutputStream _out;
 
-		public Randomizer(final Random random, final DataOutputStream out) {
-			_random = random;
-			_out = out;
+		public Randomizer(final Random random, final OutputStream out) {
+			_random = Objects.requireNonNull(random);
+			_out = Objects.requireNonNull(out);
 		}
 
 		@Override
 		public void run() {
 			try {
+				final byte[] data = new byte[4096];
 				while (!Thread.currentThread().isInterrupted()) {
-					for (int i = 0; i < 1000; ++i) {
-						_out.writeInt(_random.nextInt());
-					}
+					_random.nextBytes(data);
+					_out.write(data);
 				}
 			} catch (IOException ignore) {
 			}
@@ -60,7 +76,7 @@ public final class DieHarder {
 
 	public static void main(final String[] args) throws Exception {
 		if ( args.length < 1) {
-			System.out.println("Usage: java org.jenetics.util.DieHarder <random-class-name>");
+			println("Usage: java org.jenetics.internal.util.DieHarder <random-class-name>");
 			return;
 		}
 
@@ -68,7 +84,11 @@ public final class DieHarder {
 		Random random = null;
 		try {
 			random = (Random)Class.forName(randomName).newInstance();
-			printt("Testing: %s", randomName);
+			printt(
+				"Testing: %s (%s)",
+				randomName,
+				new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date())
+			);
 		} catch (Exception e) {
 			System.out.println("Can't create random class " + randomName);
 			return;
@@ -82,16 +102,16 @@ public final class DieHarder {
 		dieharderArgs.add("-g");
 		dieharderArgs.add("200");
 
+		printv();
+
 		final long start = System.currentTimeMillis();
 		final ProcessBuilder builder = new ProcessBuilder(dieharderArgs);
-		//final ProcessBuilder builder = new ProcessBuilder("dieharder", "-a", "-g", "200");
-		//final ProcessBuilder builder = new ProcessBuilder("dieharder", "-d", "1", "-g", "200");
 		final Process dieharder = builder.start();
 
-		final DataOutputStream out = new DataOutputStream(new BufferedOutputStream(
+		final Thread randomizer = new Thread(new Randomizer(
+			random,
 			dieharder.getOutputStream()
 		));
-		final Thread randomizer = new Thread(new Randomizer(random, out));
 		randomizer.start();
 
 		final BufferedReader stdout = new BufferedReader (
@@ -111,11 +131,38 @@ public final class DieHarder {
 	}
 
 	private static void printt(final String title, final Object... args) {
-		System.out.println("#=============================================================================#");
-		System.out.println(String.format(
-			"# %-76s#", String.format(title, args)
-		));
-		System.out.println("#=============================================================================#");
+		println("#=============================================================================#");
+		println("# %-76s#", format(title, args));
+		println("#=============================================================================#");
+	}
+
+	private static void printv() {
+		println("#=============================================================================#");
+		println(
+			"# %-76s#",
+			format("%s %s (%s) ", p("os.name"), p("os.version"), p("os.arch"))
+		);
+		println(
+			"# %-76s#",
+			format("java version \"%s\"", p("java.version"))
+		);
+		println(
+			"# %-76s#",
+			format("%s (build %s)", p("java.runtime.name"), p("java.runtime.version"))
+		);
+		println(
+			"# %-76s#",
+			format("%s (build %s)", p("java.vm.name"), p("java.vm.version"))
+		);
+		println("#=============================================================================#");
+	}
+
+	private static String p(final String name) {
+		return System.getProperty(name);
+	}
+
+	private static void println(final String pattern, final Object... args) {
+		System.out.println(format(pattern, args));
 	}
 
 }

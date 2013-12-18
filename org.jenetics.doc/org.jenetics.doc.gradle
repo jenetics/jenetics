@@ -18,73 +18,14 @@
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 
-import java.text.SimpleDateFormat
-import java.util.Date
-
-import org.apache.tools.ant.filters.ReplaceTokens
-
-import org.jenetics.gradle.task.Lyx2PDFTask
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date$</em>
+ * @version 1.5 &mdash; <em>$Date$</em>
  */
 
-apply from: "${rootDir}/gradle/commons.gradle"
-apply from: "${rootDir}/gradle/packaging.gradle"
+apply plugin: 'packaging'
 
-// The temp build temp directory.
-def buildTempDir = file("${buildDir}/tmp")
-
-task build << {
-	copy {
-		from("${projectDir}/src/main") {
-			include 'lyx/manual.lyx'
-		}
-		into buildTempDir
-		filter(ReplaceTokens, tokens: [
-			__identifier__: identifier,
-			__year__: copyrightYear,
-			__identifier__: manualIdentifier
-		])
-	}
-	copy {
-		from("${projectDir}/src/main") {
-			exclude 'lyx/manual.lyx'
-		}
-		into buildTempDir
-	}
-}
-
-task lyx(type: Lyx2PDFTask) {
-	document = file("${buildTempDir}/lyx/manual.lyx")
-}
-
-lyx << {
-	copy {
-		from "${buildTempDir}/lyx/manual.pdf"
-		into "${buildDir}/doc"
-		rename { String fileName ->
-			fileName.replace('manual.pdf', "manual-${version}.pdf")
-		}
-	}
-}
-
-build.finalizedBy(lyx)
-
-packaging.dependsOn(build)
-packaging << {
-	copy {
-		from("${buildDir}/doc") {
-			include '*.pdf'
-		}
-		into exportDir
-	}
-}
-
-clean << {
-	buildDir.deleteDir()
-}
 
 

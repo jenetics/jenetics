@@ -19,7 +19,7 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.arrays.shuffle;
+import static org.jenetics.util.shuffling.shuffle;
 
 import java.util.Arrays;
 import java.util.Random;

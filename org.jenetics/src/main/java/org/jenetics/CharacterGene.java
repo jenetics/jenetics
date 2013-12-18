@@ -70,14 +70,23 @@ public final class CharacterGene
 
 	@Override
 	public boolean isValid() {
-		if (_valid) {
+		if (_valid == null) {
 			_valid = _validCharacters.contains(_character);
 		}
-		return _valid.booleanValue();
+		return _valid;
 	}
 
 	@Override
 	public Character getAllele() {
+		return _character;
+	}
+
+	/**
+	 * Return the {@code char} value of this character gene.
+	 *
+	 * @return the {@code char} value.
+	 */
+	public char charValue() {
 		return _character;
 	}
 
@@ -288,9 +297,9 @@ public final class CharacterGene
 			throws XMLStreamException
 		{
 			final String validCharacters = xml.getAttribute(
-					VALID_CHARS,
-					DEFAULT_CHARACTERS.toString()
-				);
+				VALID_CHARS,
+				DEFAULT_CHARACTERS.toString()
+			);
 			final String character = xml.getText().toString();
 
 			return CharacterGene.valueOf(

@@ -56,10 +56,10 @@ public class RandomIndexStreamTest {
 			"/org/jenetics/util/IndexStream.Random.dat"
 		);
 
-		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
 		for (String[] line : data) {
+			final Random random = new LCG64ShiftRandom.ThreadSafe(0);
 			final double p = Double.parseDouble(line[0]);
-			final IndexStream stream = IndexStream.Random(1000, p, random);
+			final IndexStream stream = IndexStream.Random(500, p, random);
 
 			for (int i = 1; i < line.length; ++i) {
 				final int index = Integer.parseInt(line[i]);
@@ -169,49 +169,49 @@ public class RandomIndexStreamTest {
 	@DataProvider(name = "probabilities")
 	public Object[][] probabilities() {
 		return new Object[][] {
-				//    n,                p
-				{ new Integer(1115),  new Double(0.015) },
-				{ new Integer(1150),  new Double(0.015) },
-				{ new Integer(1160),  new Double(0.015) },
-				{ new Integer(1170),  new Double(0.015) },
-				{ new Integer(11100), new Double(0.015) },
-				{ new Integer(11200), new Double(0.015) },
-				{ new Integer(11500), new Double(0.015) },
+			//    n,                p
+			{ new Integer(1115),  new Double(0.015) },
+			{ new Integer(1150),  new Double(0.015) },
+			{ new Integer(1160),  new Double(0.015) },
+			{ new Integer(1170),  new Double(0.015) },
+			{ new Integer(11100), new Double(0.015) },
+			{ new Integer(11200), new Double(0.015) },
+			{ new Integer(11500), new Double(0.015) },
 
-				{ new Integer(1115),  new Double(0.15) },
-				{ new Integer(1150),  new Double(0.15) },
-				{ new Integer(1160),  new Double(0.15) },
-				{ new Integer(1170),  new Double(0.15) },
-				{ new Integer(11100), new Double(0.15) },
-				{ new Integer(11200), new Double(0.15) },
-				{ new Integer(11500), new Double(0.15) },
+			{ new Integer(1115),  new Double(0.15) },
+			{ new Integer(1150),  new Double(0.15) },
+			{ new Integer(1160),  new Double(0.15) },
+			{ new Integer(1170),  new Double(0.15) },
+			{ new Integer(11100), new Double(0.15) },
+			{ new Integer(11200), new Double(0.15) },
+			{ new Integer(11500), new Double(0.15) },
 
-				{ new Integer(515),   new Double(0.5) },
-				{ new Integer(1115),  new Double(0.5) },
-				{ new Integer(1150),  new Double(0.5) },
-				{ new Integer(1160),  new Double(0.5) },
-				{ new Integer(1170),  new Double(0.5) },
-				{ new Integer(11100), new Double(0.5) },
-				{ new Integer(11200), new Double(0.5) },
-				{ new Integer(11500), new Double(0.5) },
+			{ new Integer(515),   new Double(0.5) },
+			{ new Integer(1115),  new Double(0.5) },
+			{ new Integer(1150),  new Double(0.5) },
+			{ new Integer(1160),  new Double(0.5) },
+			{ new Integer(1170),  new Double(0.5) },
+			{ new Integer(11100), new Double(0.5) },
+			{ new Integer(11200), new Double(0.5) },
+			{ new Integer(11500), new Double(0.5) },
 
-				{ new Integer(515),   new Double(0.85) },
-				{ new Integer(1115),  new Double(0.85) },
-				{ new Integer(1150),  new Double(0.85) },
-				{ new Integer(1160),  new Double(0.85) },
-				{ new Integer(1170),  new Double(0.85) },
-				{ new Integer(11100), new Double(0.85) },
-				{ new Integer(11200), new Double(0.85) },
-				{ new Integer(11500), new Double(0.85) },
+			{ new Integer(515),   new Double(0.85) },
+			{ new Integer(1115),  new Double(0.85) },
+			{ new Integer(1150),  new Double(0.85) },
+			{ new Integer(1160),  new Double(0.85) },
+			{ new Integer(1170),  new Double(0.85) },
+			{ new Integer(11100), new Double(0.85) },
+			{ new Integer(11200), new Double(0.85) },
+			{ new Integer(11500), new Double(0.85) },
 
-				{ new Integer(515),   new Double(0.99) },
-				{ new Integer(1115),  new Double(0.99) },
-				{ new Integer(1150),  new Double(0.99) },
-				{ new Integer(1160),  new Double(0.99) },
-				{ new Integer(1170),  new Double(0.99) },
-				{ new Integer(11100), new Double(0.99) },
-				{ new Integer(11200), new Double(0.99) },
-				{ new Integer(11500), new Double(0.99) }
+			{ new Integer(515),   new Double(0.99) },
+			{ new Integer(1115),  new Double(0.99) },
+			{ new Integer(1150),  new Double(0.99) },
+			{ new Integer(1160),  new Double(0.99) },
+			{ new Integer(1170),  new Double(0.99) },
+			{ new Integer(11100), new Double(0.99) },
+			{ new Integer(11200), new Double(0.99) },
+			{ new Integer(11500), new Double(0.99) }
 		};
 	}
 
@@ -233,6 +233,26 @@ public class RandomIndexStreamTest {
 
 		};
 	}
+
+
+	public static void main(final String[] args) {
+		final int delta = 500;
+
+		for (int i = 0; i <= delta; ++i) {
+			final double p = (double)(i)/(double)delta;
+			final Random random = new LCG64ShiftRandom.ThreadSafe(0);
+			final IndexStream stream = ReferenceRandomStream(delta, p, random);
+
+			System.out.print(Double.toString(p));
+			System.out.print(",");
+			for (int j = stream.next(); j != -1; j = stream.next()) {
+				System.out.print(j);
+				System.out.print(",");
+			}
+			System.out.println();
+		}
+	}
+
 }
 
 
