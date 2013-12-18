@@ -36,7 +36,7 @@ import org.jenetics.util.accumulators.MinMax;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-08-29 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-12-05 $</em>
  */
 public class NumberStatistics<
 	G extends Gene<?, G>,
@@ -50,7 +50,7 @@ public class NumberStatistics<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-08-29 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-12-05 $</em>
 	 */
 	public static class Builder<
 		G extends Gene<?, G>,
@@ -119,19 +119,19 @@ public class NumberStatistics<
 		@Override
 		public NumberStatistics<G, R> build() {
 			return new NumberStatistics<>(
-					_optimize,
-					_generation,
-					_best,
-					_worst,
-					_fitnessMean,
-					_fitnessVariance,
-					_samples,
-					_ageMean,
-					_ageVariance,
-					_standardError,
-					_killed,
-					_invalid
-				);
+				_optimize,
+				_generation,
+				_best,
+				_worst,
+				_fitnessMean,
+				_fitnessVariance,
+				_samples,
+				_ageMean,
+				_ageVariance,
+				_standardError,
+				_killed,
+				_invalid
+			);
 		}
 	}
 
@@ -284,16 +284,14 @@ public class NumberStatistics<
 		}
 
 		@Override
-		public void read(final InputElement xml, final NumberStatistics p)
-			throws XMLStreamException
-		{
+		public void read(final InputElement xml, final NumberStatistics p) {
 		}
 	};
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-08-29 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-12-05 $</em>
 	 */
 	public static class Calculator<
 		G extends Gene<?, G>,

@@ -54,7 +54,7 @@ import org.jenetics.util.accumulators.MinMax;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-08-30 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-12-05 $</em>
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	implements
@@ -67,7 +67,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-08-30 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-12-05 $</em>
 	 */
 	public static class Builder<
 		G extends Gene<?, G>,
@@ -419,7 +419,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		private static final String AGE_VARIANCE = "age-variance";
 		private static final String BEST_PHENOTYPE = "best-phenotype";
 		private static final String WORST_PHENOTYPE = "worst-phenotype";
-		private static final String STATISITCS_TIME = "statistics-time";
+		private static final String STATISTICS_TIME = "statistics-time";
 		private static final String INVALID = "invalid";
 		private static final String KILLED = "killed";
 
@@ -450,7 +450,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 				killed.intValue(),
 				invalid.intValue()
 			);
-			statistics._time.set(xml.get(STATISITCS_TIME));
+			statistics._time.set(xml.get(STATISTICS_TIME));
 
 			return statistics;
 
@@ -468,7 +468,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			xml.add(Integer64.valueOf(s._killed), KILLED);
 			xml.add(s._best, BEST_PHENOTYPE);
 			xml.add(s._worst, WORST_PHENOTYPE);
-			xml.add(s._time.get(), STATISITCS_TIME);
+			xml.add(s._time.get(), STATISTICS_TIME);
 		}
 		@Override
 		public void read(final InputElement xml, final Statistics p) {
@@ -481,7 +481,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-08-30 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-12-05 $</em>
 	 */
 	public static final class Time implements XMLSerializable {
 		private static final long serialVersionUID = 1L;
@@ -523,7 +523,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			alter = new FinalReference<>(ZERO);
 
 		/**
-		 * Combination time between offsprings and survivors.
+		 * Combination time between offspring and survivors.
 		 * The time can be set only once, otherwise an IllegalArgumentException
 		 * is thrown.
 		 */
@@ -674,7 +674,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-08-30 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-12-05 $</em>
 	 */
 	public static class Calculator<
 		G extends Gene<?, G>,

@@ -21,11 +21,8 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date: 2013-12-09 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-12-18 $</em>
  */
- 
-// The Gradle build project.
-include 'buildSrc'
  
 // The Jenetics projects.
 include 'org.jenetics'
