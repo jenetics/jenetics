@@ -30,8 +30,8 @@ import org.jenetics.gradle.Version
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since @__version__@
- * @version @__version__@ &mdash; <em>$Date: 2013-10-28 $</em>
+ * @since 1.5
+ * @version 1.5 &mdash; <em>$Date: 2013-11-20 $</em>
  */
 class PackagingPlugin implements Plugin<Project> {
 
@@ -84,7 +84,10 @@ class PackagingPlugin implements Plugin<Project> {
 			this
 		)
 
-		if (project.plugins.hasPlugin('java')) {
+		if (project.plugins.hasPlugin('java') &&
+			_project.packaging.jarjar &&
+			_project.name != 'buildSrc')
+		{
 			jarjar()
 		}
 		packaging()
@@ -198,7 +201,7 @@ class PackagingPlugin implements Plugin<Project> {
 		}
 
 		// Copy jar dependencies for java builds.
-		if (_project.plugins.hasPlugin('java')) {
+		if (_project.plugins.hasPlugin('java') && _project.name != 'buildSrc') {
 			_project.tasks.findByPath('build').doLast {
 				// Copy the external jar dependencies.
 				_project.configurations.testRuntime.each { jar ->
@@ -213,14 +216,16 @@ class PackagingPlugin implements Plugin<Project> {
 				}
 			}
 
-			_project.tasks.findByPath('jarjar').doLast {
-				// Copy the build library
-				_project.copy {
-					from("${_project.buildDir}/libs")
-					if (!_project.packaging.jarjar) {
-						exclude '*-jarjar*.jar'
+			if (_project.tasks.findByPath('jarjar') != null) {
+				_project.tasks.findByPath('jarjar').doLast {
+					// Copy the build library
+					_project.copy {
+						from("${_project.buildDir}/libs")
+						if (!_project.packaging.jarjar) {
+							exclude '*-jarjar*.jar'
+						}
+						into _exportLibDir
 					}
-					into _exportLibDir
 				}
 			}
 		}
@@ -341,6 +346,7 @@ class PackagingPluginExtension {
 	String name = 'Jenetics'
 	String author = 'Franz Wilhelmstötter'
 	String url = 'http://jenetics.sourceforge.net'
+	Boolean jar = true
 	Boolean jarjar = true
 	Boolean javadoc = true
 

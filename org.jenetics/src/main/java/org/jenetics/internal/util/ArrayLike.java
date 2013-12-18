@@ -17,19 +17,12 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package org.jenetics.internal.util;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-08-29 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-12-04 $</em>
+ * @since @__version__@
  */
-public class SeedRandom extends Random64 {
-
-	private static final long serialVersionUID = 1L;
-
-	@Override
-	public long nextLong() {
-		return math.random.seed();
-	}
-
+public abstract class ArrayLike<T, R> {
 }

@@ -22,11 +22,10 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version @__version__@ &mdash; <em>$Date: 2013-10-28 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2013-11-19 $</em>
  */
 
-task clean << {
-	buildDir.deleteDir()
-}
+apply plugin: 'packaging'
+
 
 

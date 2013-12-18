@@ -28,8 +28,8 @@ import org.jenetics.gradle.task.Lyx2PDFTask
  * Plugin which adds a build task for creating a PDF file from the lyx sources.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since @__version__@
- * @version @__version__@ &mdash; <em>$Date: 2013-10-29 $</em>
+ * @since 1.5
+ * @version 1.5 &mdash; <em>$Date: 2013-11-20 $</em>
  */
 class LyxPlugin extends JeneticsPlugin {
 
@@ -46,12 +46,15 @@ class LyxPlugin extends JeneticsPlugin {
 	}
 
 	private void applyLyx() {
-		task(BUILD) << {
+		task(BUILD, dependsOn: LYX) << {
+		}
+
+		task('preparyPDFGeneration') << {
 			copy {
-				from("${projectDir}/src/main") {
+				from("${project.projectDir}/src/main") {
 					include 'lyx/manual.lyx'
 				}
-				into temporaryDir
+				into project.build.temporaryDir
 				filter(ReplaceTokens, tokens: [
 					__identifier__: project.identifier,
 					__year__: project.copyrightYear,
@@ -59,19 +62,20 @@ class LyxPlugin extends JeneticsPlugin {
 				])
 			}
 			copy {
-				from("${projectDir}/src/main") {
+				from("${project.projectDir}/src/main") {
 					exclude 'lyx/manual.lyx'
 				}
-				into temporaryDir
+				into project.build.temporaryDir
 			}
 		}
 
-		task(LYX, type: Lyx2PDFTask) {
+		task(LYX, type: Lyx2PDFTask, dependsOn: 'preparyPDFGeneration') {
 			document = new File("${project.build.temporaryDir}/lyx/manual.lyx")
+
 			doLast {
 				copy {
 					from "${project.build.temporaryDir}/lyx/manual.pdf"
-					into "${buildDir}/doc"
+					into "${project.buildDir}/doc"
 					rename { String fileName ->
 						fileName.replace('manual.pdf', "manual-${version}.pdf")
 					}
@@ -79,8 +83,8 @@ class LyxPlugin extends JeneticsPlugin {
 			}
 		}
 
-		project.build.doLast {
-			project.lyx.execute()
+		task('clean') << {
+			project.buildDir.deleteDir()
 		}
 	}
 
