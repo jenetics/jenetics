@@ -38,7 +38,7 @@ import java.util.function.Predicate;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2013-10-04 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-12-18 $</em>
  */
 abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	private static final long serialVersionUID = 1L;
@@ -57,7 +57,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	 * @param end the end index of the given array (exclusively)
 	 * @throws NullPointerException if the given {@code array} is {@code null}.
 	 * @throws IndexOutOfBoundsException for an illegal start/end point index
-	 *          value ({@code start < 0 || end > array.lenght || start > end}).
+	 *          value ({@code start < 0 || end > array.length || start > end}).
 	 */
 	ArraySeq(final ArrayRef array, final int start, final int end) {
 		requireNonNull(array, "Array");

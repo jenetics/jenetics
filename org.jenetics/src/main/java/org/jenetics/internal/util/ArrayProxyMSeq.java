@@ -34,7 +34,7 @@ import org.jenetics.util.MSeq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-10-04 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2013-12-18 $</em>
  */
 public class ArrayProxyMSeq<T> extends ArrayProxySeq<T> implements MSeq<T> {
 
@@ -67,7 +67,7 @@ public class ArrayProxyMSeq<T> extends ArrayProxySeq<T> implements MSeq<T> {
 	public MSeq<T> setAll(final T value) {
 		_proxy.cloneIfSealed();
 		for (int i = _proxy._start; i < _proxy._end; ++i) {
-			_proxy.uncheckedOffsetSet(i, value);
+			_proxy.__set(i, value);
 		}
 		return this;
 	}
@@ -76,7 +76,7 @@ public class ArrayProxyMSeq<T> extends ArrayProxySeq<T> implements MSeq<T> {
 	public MSeq<T> setAll(final Iterator<? extends T> it) {
 		_proxy.cloneIfSealed();
 		for (int i = _proxy._start; i < _proxy._end && it.hasNext(); ++i) {
-			_proxy.uncheckedOffsetSet(i, it.next());
+			_proxy.__set(i, it.next());
 		}
 		return this;
 	}
@@ -98,7 +98,7 @@ public class ArrayProxyMSeq<T> extends ArrayProxySeq<T> implements MSeq<T> {
 	public MSeq<T> fill(final Supplier<? extends T> supplier) {
 		_proxy.cloneIfSealed();
 		for (int i = _proxy._start; i < _proxy._end; ++i) {
-			_proxy.uncheckedOffsetSet(i, supplier.get());
+			_proxy.__set(i, factory.newInstance());
 		}
 		return this;
 	}
@@ -148,12 +148,12 @@ public class ArrayProxyMSeq<T> extends ArrayProxySeq<T> implements MSeq<T> {
 
 	@Override
 	public MSeq<T> subSeq(final int start, final int end) {
-		return new ArrayProxyMSeq<>(_proxy.sub(start, end));
+		return new ArrayProxyMSeq<>(_proxy.slice(start, end));
 	}
 
 	@Override
 	public MSeq<T> subSeq(final int start) {
-		return new ArrayProxyMSeq<>(_proxy.sub(start));
+		return new ArrayProxyMSeq<>(_proxy.slice(start));
 	}
 
 	@Override

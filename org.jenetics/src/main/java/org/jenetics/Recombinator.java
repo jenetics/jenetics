@@ -50,7 +50,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-09-16 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-12-18 $</em>
  */
 public abstract class Recombinator<G extends Gene<?, G>>
 	extends AbstractAlterer<G>
@@ -63,8 +63,8 @@ public abstract class Recombinator<G extends Gene<?, G>>
 	 *
 	 * @param probability The recombination probability.
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
-	 *          valid range of {@code [0, 1]} or the given {@code order} is smaller
-	 *          than two.
+	 *         valid range of {@code [0, 1]} or the given {@code order} is
+	 *         smaller than two.
 	 */
 	protected Recombinator(final double probability, final int order) {
 		super(probability);

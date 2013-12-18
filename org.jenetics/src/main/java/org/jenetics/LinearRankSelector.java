@@ -37,14 +37,14 @@ import javolution.lang.Immutable;
  * <p/><img
  *        src="doc-files/linear-rank-selector.gif"
  *        alt="P(i)=\frac{1}{N}\left(n^{-}+\left(n^{+}-n^{-}\right)\frac{i-1}{N-1}\right)"
- *     />
+ *     >
  * </p>
  *
  * Here <i>n</i><sup><i>-</i></sup>/<i>N</i> is the probability of the worst
  * individual to be	selected and <i>n</i><sup><i>+</i></sup>/<i>N</i> the
  * probability of the best individual to be selected. As the population size is
  * held constant, the conditions <i>n</i><sup><i>+</i></sup> = 2 - <i>n</i><sup><i>-</i></sup>
- * and <i>n</i><sup><i>-</i></sup> >= 0 must be fulfilled. Note that all individuals
+ * and <i>n</i><sup><i>-</i></sup> &gt;= 0 must be fulfilled. Note that all individuals
  * get a different rank, i.e., a different selection probability, even if the
  * have the same fitness value. <p/>
  *
@@ -58,7 +58,7 @@ import javolution.lang.Immutable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-09-08 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-12-18 $</em>
  */
 public final class LinearRankSelector<
 	G extends Gene<?, G>,
@@ -87,8 +87,8 @@ public final class LinearRankSelector<
 	public LinearRankSelector(final double nminus) {
 		if (nminus < 0) {
 			throw new IllegalArgumentException(format(
-					"nminus is smaller than zero: %s", nminus
-				));
+				"nminus is smaller than zero: %s", nminus
+			));
 		}
 
 		_nminus = nminus;

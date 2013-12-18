@@ -23,9 +23,7 @@ import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
-import java.util.AbstractCollection;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -35,12 +33,10 @@ import java.util.ListIterator;
 import java.util.RandomAccess;
 import java.util.function.Supplier;
 
-import javolution.context.ConcurrentContext;
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
-import org.jenetics.util.Concurrency;
 import org.jenetics.util.Copyable;
 import org.jenetics.util.arrays;
 
@@ -54,7 +50,7 @@ import org.jenetics.util.arrays;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-11-01 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2013-12-18 $</em>
  */
 public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	implements
@@ -79,24 +75,24 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *         this list.
 	 * @throws NullPointerException if the specified population is {@code null}.
 	 */
-	public Population(final Collection<? extends Phenotype<G, C>> population) {
+	public Population(final Collection<Phenotype<G, C>> population) {
 		this(new ArrayList<>(population));
 	}
 
 	/**
-	 * Creating a new <code>Population</code> with the pre-allocated population
+	 * Creating a new {@code Population} with the pre-allocated population
 	 * size.
 	 *
 	 * @param size Pre-allocated population size.
 	 * @throws IllegalArgumentException if the specified initial capacity is
-	 *          negative
+	 *         negative
 	 */
 	public Population(final int size) {
 		this(new ArrayList<>(size + 1));
 	}
 
 	/**
-	 * Creating a new <code>Population</code>.
+	 * Creating a new {@code Population}.
 	 */
 	public Population() {
 		this(new ArrayList<>());
@@ -107,7 +103,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @param supplier the {@code Phenotype} supplier.
 	 * @param count the number of individuals to add to this population.
-	 * @return return this population, for command chanining.
+	 * @return return this population, for command chaining.
 	 */
 	public Population<G, C> fill(
 		final Supplier<? extends Phenotype<G, C>> supplier,
@@ -154,10 +150,11 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	}
 
 	/**
-	 * Add <code>Phenotype</code> to the <code>Population</code>.
+	 * Add {@code Phenotype} to the {@code Population}.
 	 *
-	 * @param phenotype <code>Phenotype</code> to be add.
-	 * @throws NullPointerException if the given {@code phenotype} is {@code null}.
+	 * @param phenotype {@code Phenotype} to be add.
+	 * @throws NullPointerException if the given {@code phenotype} is
+	 *         {@code null}.
 	 */
 	@Override
 	public boolean add(final Phenotype<G, C> phenotype) {
@@ -166,11 +163,12 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	}
 
 	/**
-	 * Add <code>Phenotype</code> to the <code>Population</code>.
+	 * Add {@code Phenotype} to the {@code Population}.
 	 *
 	 * @param index Index of the
-	 * @param phenotype <code>Phenotype</code> to be add.
-	 * @throws NullPointerException if the given {@code phenotype} is {@code null}.
+	 * @param phenotype {@code Phenotype} to be add.
+	 * @throws NullPointerException if the given {@code phenotype} is
+	 *         {@code null}.
 	 */
 	@Override
 	public void add(final int index, final Phenotype<G, C> phenotype) {
@@ -194,9 +192,9 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	}
 
 	@Override
-	public Phenotype<G, C> set(final int index, final Phenotype<G, C> phenotype) {
-		requireNonNull(phenotype, "Phenotype");
-		return _population.set(index, phenotype);
+	public Phenotype<G, C> set(final int index, final Phenotype<G, C> pt) {
+		requireNonNull(pt, "Phenotype");
+		return _population.set(index, pt);
 	}
 
 	public void remove(final Phenotype<G, C> phenotype) {
@@ -237,14 +235,14 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	}
 
 
-	private void quicksort(
+	private void quickSort(
 		final int left, final int right,
 		final Comparator<? super C> comparator
 	) {
 		if (right > left) {
 			final int j = partition(left, right, comparator);
-			quicksort(left, j - 1, comparator);
-			quicksort(j + 1, right, comparator);
+			quickSort(left, j - 1, comparator);
+			quickSort(j + 1, right, comparator);
 		}
 	}
 
@@ -391,7 +389,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		final StringBuilder out = new StringBuilder();
 
 		for (Phenotype<?, ?> pt : this) {
-			out.append(pt.toString()).append("\n");
+			out.append(pt).append("\n");
 		}
 
 		return out.toString();
@@ -430,39 +428,6 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		public void read(final InputElement xml, final Population p) {
 		}
 	};
-
-
-	private static final class PhenotypeArray<
-		G extends Gene<?, G>,
-		C extends Comparable<? super C>
-	>
-		extends AbstractCollection<Phenotype<G, C>>
-	{
-
-		final Object[] _array;
-
-		PhenotypeArray(final int size) {
-			_array = new Object[size];
-		}
-
-		@SuppressWarnings("unchecked")
-		@Override
-		public Iterator<Phenotype<G, C>> iterator() {
-			return Arrays.asList((Phenotype<G, C>[])_array).iterator();
-		}
-
-		@Override
-		public int size() {
-			return _array.length;
-		}
-
-		@Override
-		public Object[] toArray() {
-			return _array;
-		}
-
-	}
-
 
 }
 

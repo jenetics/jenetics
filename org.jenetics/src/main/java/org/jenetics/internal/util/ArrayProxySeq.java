@@ -33,7 +33,7 @@ import org.jenetics.util.Seq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-10-04 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2013-12-18 $</em>
  */
 public abstract class ArrayProxySeq<T> implements Seq<T> {
 
@@ -82,7 +82,7 @@ public abstract class ArrayProxySeq<T> implements Seq<T> {
 		requireNonNull(consumer, "The consumer must not be null.");
 
 		for (int i = _proxy._start; i < _proxy._end; ++i) {
-			consumer.accept(_proxy.uncheckedOffsetGet(i));
+			consumer.accept(_proxy.__get(i));
 		}
 	}
 
@@ -92,7 +92,8 @@ public abstract class ArrayProxySeq<T> implements Seq<T> {
 
 		boolean valid = true;
 		for (int i = _proxy._start; i < _proxy._end && valid; ++i) {
-			valid = predicate.test(_proxy.uncheckedOffsetGet(i));
+		for (int i = _proxy._start; i < _proxy._end && valid; ++i) {
+			valid = predicate.test(_proxy.__get(i));
 		}
 		return valid;
 	}
@@ -106,7 +107,7 @@ public abstract class ArrayProxySeq<T> implements Seq<T> {
 			for (int i = start + _proxy._start, n = end + _proxy._start;
 					i < n && index == -1; ++i)
 			{
-				if (_proxy.uncheckedOffsetGet(i) == null) {
+				if (_proxy.__get(i) == null) {
 					index = i - _proxy._start;
 				}
 			}
@@ -114,7 +115,7 @@ public abstract class ArrayProxySeq<T> implements Seq<T> {
 			for (int i = start + _proxy._start, n = end + _proxy._start;
 					i < n && index == -1; ++i)
 			{
-				if (element.equals(_proxy.uncheckedOffsetGet(i))) {
+				if (element.equals(_proxy.__get(i))) {
 					index = i - _proxy._start;
 				}
 			}
@@ -137,7 +138,7 @@ public abstract class ArrayProxySeq<T> implements Seq<T> {
 		for (int i = start + _proxy._start, n = end + _proxy._start;
 				i < n && index == -1; ++i)
 		{
-			if (predicate.test(_proxy.uncheckedOffsetGet(i))) {
+			if (predicate.test(_proxy.__get(i))) {
 				index = i - _proxy._start;
 			}
 		}
@@ -154,7 +155,7 @@ public abstract class ArrayProxySeq<T> implements Seq<T> {
 			for (int i = end + _proxy._start;
 				--i >= start + _proxy._start && index == -1;)
 			{
-				if (_proxy.uncheckedOffsetGet(i) == null) {
+				if (_proxy.__get(i) == null) {
 					index = i - _proxy._start;
 				}
 			}
@@ -162,7 +163,7 @@ public abstract class ArrayProxySeq<T> implements Seq<T> {
 			for (int i = end + _proxy._start;
 				--i >= start + _proxy._start && index == -1;)
 			{
-				if (element.equals(_proxy.uncheckedOffsetGet(i))) {
+				if (element.equals(_proxy.__get(i))) {
 					index = i - _proxy._start;
 				}
 			}
@@ -185,7 +186,7 @@ public abstract class ArrayProxySeq<T> implements Seq<T> {
 		for (int i = end + _proxy._start;
 			--i >= start + _proxy._start && index == -1;)
 		{
-			if (predicate.test(_proxy.uncheckedOffsetGet(i))) {
+			if (predicate.test(_proxy.__get(i))) {
 				index = i - _proxy._start;
 			}
 		}

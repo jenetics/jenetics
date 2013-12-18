@@ -26,11 +26,12 @@ import java.util.function.Function;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
-
+import org.jenetics.util.arrays;
+import org.jenetics.util.shuffling;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-25 $</em>
+ * @version <em>$Date: 2013-12-18 $</em>
  */
 @Suite("Array")
 public class ArrayTest {

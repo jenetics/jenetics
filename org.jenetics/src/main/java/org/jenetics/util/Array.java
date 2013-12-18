@@ -51,7 +51,7 @@ import javolution.util.FastList;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2013-10-17 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-12-18 $</em>
  *
  */
 //@Deprecated
@@ -546,7 +546,7 @@ public final class Array<T>
 	 */
 	public static <T> Array<T> valueOf(final Collection<? extends T> values) {
 		Array<T> array = empty();
-		if (values.size() > 0) {
+		if (!values.isEmpty()) {
 			array = new Array<>(values.size());
 			int index = 0;
 			for (Iterator<? extends T>

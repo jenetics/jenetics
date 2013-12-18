@@ -29,7 +29,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2013-10-24 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-12-18 $</em>
  */
 public final class math extends StaticObject {
 	private math() {}
@@ -330,7 +330,7 @@ public final class math extends StaticObject {
 	 * @param random the random number generator used.
 	 * @throws NullPointerException if {@code random} is {@code null}.
 	 * @throws IllegalArgumentException if {@code n < k}, {@code k == 0} or if
-	 *          {@code n*k} will cause an integer overflow.
+	 *         {@code n*k} will cause an integer overflow.
 	 * @return the subset array.
 	 */
 	public static int[] subset(final int n, final int k, final Random random) {
@@ -377,8 +377,8 @@ public final class math extends StaticObject {
 	 * @param sub the sub set array.
 	 * @throws NullPointerException if {@code sub} is {@code null}.
 	 * @throws IllegalArgumentException if {@code n < sub.length},
-	 *          {@code sub.length == 0} or {@code n*sub.length} will cause an
-	 *          integer overflow.
+	 *         {@code sub.length == 0} or {@code n*sub.length} will cause an
+	 *         integer overflow.
 	 */
 	public static void subset(final int n, final int sub[]) {
 		subset(n, sub, RandomRegistry.getRandom());
@@ -519,7 +519,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.3
-	 * @version 1.3 &mdash; <em>$Date: 2013-10-24 $</em>
+	 * @version 1.3 &mdash; <em>$Date: 2013-12-18 $</em>
 	 */
 	public static final class statistics extends StaticObject {
 		private statistics() {}
@@ -616,7 +616,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.2 &mdash; <em>$Date: 2013-10-24 $</em>
+	 * @version 1.2 &mdash; <em>$Date: 2013-12-18 $</em>
 	 */
 	public static final class random extends StaticObject {
 		private random() {}
@@ -841,11 +841,15 @@ public final class math extends StaticObject {
 		 * @return the created seed value.
 		 */
 		public static long seed(final long base) {
-			long seed = base ^ objectHashSeed();
-			seed ^= seed << 17;
-			seed ^= seed >>> 31;
-			seed ^= seed << 8;
-			return seed;
+			return mix(base, objectHashSeed());
+		}
+
+		private static long mix(final long a, final long b) {
+			long c = a^b;
+			c ^= c << 17;
+			c ^= c >>> 31;
+			c ^= c << 8;
+			return c;
 		}
 
 		private static long objectHashSeed() {

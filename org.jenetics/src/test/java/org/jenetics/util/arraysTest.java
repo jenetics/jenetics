@@ -30,25 +30,9 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-08 $</em>
+ * @version <em>$Date: 2013-12-18 $</em>
  */
 public class arraysTest {
-
-	@Test
-	public void swapObjectArray() {
-		final Integer[] array = new Integer[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-
-		arrays.swap(array, 2, 6);
-
-		Assert.assertEquals(array[2], new Integer(6));
-		Assert.assertEquals(array[6], new Integer(2));
-	}
-
-	@Test(expectedExceptions = NullPointerException.class)
-	public void swapObjectArrayNull() {
-		final Integer[] array = null;
-		arrays.swap(array, 2, 5);
-	}
 
 	@Test
 	public void iselect() {
