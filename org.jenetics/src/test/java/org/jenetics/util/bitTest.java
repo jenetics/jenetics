@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-01 $</em>
+ * @version <em>$Date: 2013-10-24 $</em>
  */
 public class bitTest {
 
@@ -357,7 +357,7 @@ public class bitTest {
 		dataProvider = "indexoutofboundsdata"
 	)
 	public void setOutOfIndex(final Integer length, final Integer index) {
-		final byte[] data = bit.newBitArray(length);
+		final byte[] data = bit.newArray(length);
 		bit.set(data, index, false);
 	}
 
@@ -366,7 +366,7 @@ public class bitTest {
 		dataProvider = "indexoutofboundsdata"
 	)
 	public void getOutOfIndex(final Integer length, final Integer index) {
-		final byte[] data = bit.newBitArray(length);
+		final byte[] data = bit.newArray(length);
 		bit.get(data, index);
 	}
 
