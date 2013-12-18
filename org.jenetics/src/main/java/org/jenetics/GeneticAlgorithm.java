@@ -524,7 +524,7 @@ public class GeneticAlgorithm<
 
 		try (Concurrency c = Concurrency.start()) {
 			// Kill survivors which are to old and replace it with new one.
-			concurrency.execute(() -> {
+			c.execute(() -> {
 				for (int i = 0, n = survivors.size(); i < n; ++i) {
 					final Phenotype<G, C> survivor = survivors.get(i);
 

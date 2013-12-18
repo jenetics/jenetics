@@ -197,13 +197,14 @@ public abstract class IndexStream extends IntStreamAdapter {
 			_random = requireNonNull(random, "Random object must not be null.");
 		}
 
-		++_pos;
 		@Override
 		public final int next() {
 			while (_pos < _n && _random.nextInt() >= _p) {
 				++_pos;
 			}
-			return (_pos < _n - 1) ? ++_pos : -1;
+			++_pos;
+
+			return _pos < _n ? _pos : -1;
 		}
 
 		@Override
@@ -212,7 +213,6 @@ public abstract class IndexStream extends IntStreamAdapter {
 				consumer.accept(i);
 			}
 		}
-		return _pos < _n ? _pos : -1;
 	}
 }
 

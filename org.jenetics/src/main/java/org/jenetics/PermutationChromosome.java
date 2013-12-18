@@ -69,7 +69,7 @@ public final class PermutationChromosome<T>
 	 *
 	 * @param validAlleles the valid alleles used for this permutation arrays.
 	 */
-	public PermutationChromosome(final ISeq<? extends T> validAlleles) {
+	public PermutationChromosome(final ISeq<T> validAlleles) {
 		super(
 			new Array<EnumGene<T>>(
 				validAlleles.length()

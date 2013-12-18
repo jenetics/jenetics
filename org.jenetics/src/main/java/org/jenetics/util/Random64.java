@@ -48,6 +48,8 @@ public abstract class Random64 extends PRNG {
 
 	private static final long serialVersionUID = 1L;
 
+	private static final int LONG_BYTE_SIZE = 8;
+
 	protected Random64(final long seed) {
 		super(seed);
 	}

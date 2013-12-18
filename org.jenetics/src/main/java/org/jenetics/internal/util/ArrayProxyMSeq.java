@@ -98,7 +98,7 @@ public class ArrayProxyMSeq<T> extends ArrayProxySeq<T> implements MSeq<T> {
 	public MSeq<T> fill(final Supplier<? extends T> supplier) {
 		_proxy.cloneIfSealed();
 		for (int i = _proxy._start; i < _proxy._end; ++i) {
-			_proxy.__set(i, factory.newInstance());
+			_proxy.__set(i, supplier.get());
 		}
 		return this;
 	}

@@ -24,6 +24,7 @@ import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.Objects;
+import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Supplier;
 

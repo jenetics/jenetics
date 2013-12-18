@@ -4,6 +4,7 @@ import static java.lang.Math.sin;
 import static java.lang.Math.toRadians;
 
 import java.io.Serializable;
+import java.util.function.Function;
 
 import javax.measure.unit.SI;
 
@@ -15,9 +16,7 @@ import org.jenetics.Float64Gene;
 import org.jenetics.Genotype;
 import org.jenetics.Phenotype;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Function;
 import org.jenetics.util.Timer;
-import org.jenetics.util.functions;
 
 public class arraysTest {
 
@@ -43,7 +42,7 @@ public class arraysTest {
 		new Float64Chromosome(0, 1, 350)
 	);
 	private final Function<Genotype<Float64Gene>, Float64> _ff = new FF();
-	private final Function<Float64, Float64> _scaler = functions.Identity();
+	private final Function<Float64, Float64> _scaler = Function.identity();
 	private final Factory<Phenotype<Float64Gene, Float64>>
 	_factory = new Factory<Phenotype<Float64Gene, Float64>>() {
 		@Override public Phenotype<Float64Gene, Float64> newInstance() {
@@ -64,7 +63,6 @@ public class arraysTest {
 				arrays.fill(data, _factory);
 				timer.stop();
 			}
-			System.out.println(String.format("%d\t%s", i, timer.getTime().doubleValue(SI.SECOND)));
 		}
 
 	}

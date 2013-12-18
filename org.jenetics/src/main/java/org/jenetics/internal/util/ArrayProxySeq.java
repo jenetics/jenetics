@@ -92,7 +92,6 @@ public abstract class ArrayProxySeq<T> implements Seq<T> {
 
 		boolean valid = true;
 		for (int i = _proxy._start; i < _proxy._end && valid; ++i) {
-		for (int i = _proxy._start; i < _proxy._end && valid; ++i) {
 			valid = predicate.test(_proxy.__get(i));
 		}
 		return valid;
