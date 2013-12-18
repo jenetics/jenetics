@@ -38,7 +38,6 @@ rootProject.version = Version.parse(jenetics.version)
 
 apply plugin: 'signing'
 
-
 ext {
 	now = Calendar.getInstance()
 	year = now.get(Calendar.YEAR);
