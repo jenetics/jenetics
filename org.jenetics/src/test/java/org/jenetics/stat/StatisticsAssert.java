@@ -19,16 +19,18 @@
  */
 package org.jenetics.stat;
 
+import org.apache.commons.math3.distribution.ChiSquaredDistribution;
 import org.testng.Assert;
+
+import org.jenetics.util.StaticObject;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version <em>$Date$</em>
  */
-public final class StatisticsAssert {
+public final class StatisticsAssert extends StaticObject {
 
-	private StatisticsAssert() {
-	}
+	private StatisticsAssert() {}
 
 	public static <C extends Comparable<? super C>> void assertDistribution(
 		final Histogram<C> histogram,
@@ -38,26 +40,30 @@ public final class StatisticsAssert {
 		final int degreeOfFreedom = histogram.length();
 		assert (degreeOfFreedom > 0);
 
-		final double maxChi = ChiSquare.chi_999(degreeOfFreedom)*2;
+		final double maxChi = chi(0.999, degreeOfFreedom)*2;
 
 		if (χ2 > maxChi) {
 			System.out.println(String.format(
-					"The histogram %s doesn't follow the distribution %s. \n" +
-					"χ2 must be smaller than %f but was %f",
-					histogram, distribution,
-					maxChi, χ2
-				));
+				"The histogram %s doesn't follow the distribution %s. \n" +
+				"χ2 must be smaller than %f but was %f",
+				histogram, distribution,
+				maxChi, χ2
+			));
 		}
 
 		Assert.assertTrue(
 				χ2 <= maxChi,
 				String.format(
-						"The histogram %s doesn't follow the distribution %s. \n" +
-						"χ2 must be smaller than %f but was %f",
-						histogram, distribution,
-						maxChi, χ2
-					)
+					"The histogram %s doesn't follow the distribution %s. \n" +
+					"χ2 must be smaller than %f but was %f",
+					histogram, distribution,
+					maxChi, χ2
+				)
 			);
+	}
+
+	public static double chi(final double p, final int dof) {
+		return new ChiSquaredDistribution(dof).inverseCumulativeProbability(p);
 	}
 
 }

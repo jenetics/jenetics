@@ -19,25 +19,21 @@
  */
 package org.jenetics.stat;
 
-import java.io.IOException;
 import java.util.Random;
 
+import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import org.jenetics.util.Factory;
 import org.jenetics.util.MappedAccumulatorTester;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.TestDataIterator;
-import org.jenetics.util.TestDataIterator.Data;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version <em>$Date$</em>
  */
 public class VarianceTest extends MappedAccumulatorTester<Variance<Double>> {
-
-	private final static String DATA = "/org/jenetics/util/statistic-moments.txt";
 
 	private final Factory<Variance<Double>> _factory = new Factory<Variance<Double>>() {
 		@Override
@@ -58,23 +54,19 @@ public class VarianceTest extends MappedAccumulatorTester<Variance<Double>> {
 	}
 
 	@Test
-	public void variance() throws IOException {
-		try (TestDataIterator it = dataIt()) {
-			final Variance<Double> moment = new Variance<>();
-			while (it.hasNext()) {
-				final Data data = it.next();
-				moment.accumulate(data.number);
+	public void variance() {
+		final int length = 100_000;
+		final Random random = new Random(23434);
+		final SummaryStatistics stat = new SummaryStatistics();
+		final Variance<Double> mean = new Variance<>();
 
-				Assert.assertEquals(moment.getMean(), data.mean);
-				Assert.assertEquals(moment.getVariance(), data.variance, 0.000001);
-			}
+		for (int i = 0; i < length; ++i) {
+			final double value = random.nextDouble()*1_000;
+			stat.addValue(value);
+			mean.accumulate(value);
 		}
-	}
 
-	private static TestDataIterator dataIt() throws IOException {
-		return new TestDataIterator(
-			MeanTest.class.getResourceAsStream(DATA), "\\s"
-		);
+		Assert.assertEquals(mean.getVariance(), stat.getVariance(), 0.0000001);
 	}
 
 }

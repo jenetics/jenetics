@@ -19,30 +19,28 @@
  */
 
 import java.text.SimpleDateFormat
-import java.util.Date
 import org.apache.tools.ant.filters.ReplaceTokens
 
 import org.jenetics.gradle.PropertiesLoader
 import org.jenetics.gradle.Version
+import org.jenetics.gradle.plugin.SetupPlugin
 import org.jenetics.gradle.task.ChecksumTask
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date$</em>
+ * @version 1.5 &mdash; <em>$Date$</em>
  */
-
-apply plugin: 'signing'
-
-apply from: "${rootDir}/gradle/commons.gradle"
-apply from: "${rootDir}/gradle/packaging.gradle"
-
-
 new PropertiesLoader(ext).load(file('project.properties'))
 new PropertiesLoader(ext).load(file('include.properties'))
 rootProject.version = Version.parse(jenetics.version)
 
+apply plugin: 'signing'
+apply plugin: 'packaging'
+
 ext {
+    javaVersion = '1.7'
+
 	now = Calendar.getInstance()
 	year = now.get(Calendar.YEAR);
 	copyrightYear = "2007-${year}".toString()
@@ -50,15 +48,6 @@ ext {
 	manualDate = (new SimpleDateFormat("yyyy/MM/dd")).format(now.time)
 	manualIdentifier = "${version}---${manualDate}".toString()
 	dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm")
-
-	// Define some 'global' path variables.
-	exportDir = file("${buildDir}/package/${identifier}")
-	exportProjectDir = file("${exportDir}/project")
-	exportProjectLibDir = file("${exportProjectDir}/buildSrc/lib")
-	exportLibDir = file("${exportDir}/lib")
-	exportJavadocDir = file("${exportDir}/javadoc")
-	exportReportDir = file("${exportDir}/report")
-	exportScriptDir = file("${exportDir}/script")
 }
 
 allprojects {
@@ -71,15 +60,19 @@ allprojects {
 	}
 }
 
-subprojects { project ->
-	if (project.plugins.hasPlugin('java')) {
+subprojects { Project prj ->
+	prj.plugins.apply(SetupPlugin.class)
+}
+
+allprojects { Project prj ->
+	if (prj.plugins.hasPlugin('java')) {
 		sourceCompatibility = javaVersion
 		targetCompatibility = javaVersion
 	}
 }
 
 task wrapper(type: Wrapper) {
-	gradleVersion = '1.8'
+	gradleVersion = '1.10'
 }
 
 task alljavadoc(type: Javadoc) {
@@ -100,90 +93,6 @@ task alljavadoc(type: Javadoc) {
 	classpath = files(jeneticsProjects.collect { project ->
 		project.sourceSets.main.compileClasspath
 	})
-}
-
-task packaging(overwrite: true) {
-	inputs.dir file('.')
-	outputs.dir exportDir
-
-	// Create the directory structure.
-	doFirst {
-		exportDir.mkdirs()
-		exportProjectDir.mkdirs()
-		exportProjectLibDir.mkdirs()
-		exportLibDir.mkdirs()
-		exportReportDir.mkdirs()
-		exportJavadocDir.mkdirs()
-		exportScriptDir.mkdirs()
-	}
-
-	doLast  {
-		// Copy the files in the base directory.
-		copy {
-			from('.') {
-				include '*'
-				exclude 'org.*'
-				exclude '.gradle'
-				exclude '.hgignore'
-				exclude '.hgtags'
-				exclude '*.iml'
-				exclude '*.ipr'
-				exclude '*.iws'
-				exclude '.project'
-				exclude '.classpath'
-				exclude '.settings'
-				exclude 'build'
-				exclude 'out'
-			}
-			into exportProjectDir
-			filter(ReplaceTokens, tokens: [
-				__identifier__: identifier,
-				__year__: copyrightYear
-			])
-		}
-		copy {
-			from('.') {
-				include 'gradle/**/*'
-			}
-			into exportProjectDir
-		}
-
-		// Copy 'buildSrc' files.
-		copy {
-			from(project('buildSrc').projectDir) {
-				include '*.gradle'
-				include 'src/**/*.java'
-				include 'src/**/*.gradle'
-				include 'src/**/*.xml'
-				include 'src/**/*.c'
-				include 'src/**/*.cpp'
-				include 'src/**/*.h'
-				include 'src/**/*.hpp'
-				exclude '.gradle'
-			}
-			into file("${exportProjectDir}/buildSrc")
-			filter(ReplaceTokens, tokens: [
-				__identifier__: identifier,
-				__year__: copyrightYear
-			])
-		}
-		copy {
-			from(project('buildSrc').projectDir) {
-				include 'src/**/*.*'
-				include 'lib/**/*'
-				include 'tool/**/*'
-				include 'resources/**/*'
-				exclude 'src/**/*.java'
-				exclude 'src/**/*.gradle'
-				exclude 'src/**/*.xml'
-				exclude 'src/**/*.c'
-				exclude 'src/**/*.cpp'
-				exclude 'src/**/*.h'
-				exclude 'src/**/*.hpp'
-			}
-			into file("${exportProjectDir}/buildSrc")
-		}
-	}
 }
 
 // Create a zip file from the export directory.

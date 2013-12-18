@@ -17,26 +17,12 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
- 
+package org.jenetics.internal.util;
+
 /**
- * Some commone task definitions and configurations.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.2
- * @version 1.4 &mdash; <em>$Date$</em>
+ * @version @__version__@ &mdash; <em>$Date$</em>
+ * @since @__version__@
  */
-
-tasks.withType(Compile) {
-	options.encoding = 'UTF-8'
+public abstract class ArrayLike<T, R> {
 }
- 
-if (tasks.findByPath('clean') == null) {
-	tasks.create('clean') {
-	}
-}
-
-task cleanAll(dependsOn: clean) << {
-	delete("${projectDir}/test-output")
-	delete("${projectDir}/bin")
-}
-

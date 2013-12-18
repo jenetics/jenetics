@@ -47,12 +47,12 @@ public class ArrayProxySeqTest extends SeqTestBase {
 
 		@Override
 		public ISeq<T> subSeq(final int start) {
-			return new ArrayProxyISeq<>(_proxy.sub(start));
+			return new ArrayProxyISeq<>(_proxy.slice(start));
 		}
 
 		@Override
 		public ISeq<T> subSeq(int start, int end) {
-			return new ArrayProxyISeq<>(_proxy.sub(start, end));
+			return new ArrayProxyISeq<>(_proxy.slice(start, end));
 		}
 
 	}

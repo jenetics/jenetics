@@ -25,15 +25,15 @@
  * <a href="http://en.wikipedia.org/wiki/Genetic_algorithm" >Genetic Algorithm</a>
  * (GA) implementation. The project has very few dependencies to other libraries.
  * At runtime it only depends on the <em>Jenetics</em> library.
- * <p/>
+ * <p>
  * The order of the single execution steps of genetic algorithms may slightly
  * differ from implementation to implementation. The following pseudo-code shows
  * the <em>Jenetics</em> genetic algorithm steps.
  *
- * <img width="556" heigth="78" align="BOTTOM" border="0"
- *      src="doc-files/genetic-algorithm.png" />
+ * <img width="556" align="BOTTOM" border="0" alt="Genetic algorithm"
+ *      src="doc-files/genetic-algorithm.png" >
  *
- * <p/>
+ * <p>
  * Line (1) creates the initial population and the line (2) calculates the
  * fitness value of the individuals. (This is done by the
  * {@code GeneticAlgorithm.setup()} method.) Line (4) increases the generation
@@ -46,7 +46,7 @@
  *
  *
  * <h3>Data structures</h3>
- * <p><img alt="Structure Diagram" src="doc-files/StructureClassDiagram.svg" ></img><p/>
+ * <p><img alt="Structure Diagram" src="doc-files/StructureClassDiagram.svg" ></p>
  *
  * The diagram above shows the main data structures of the GA implementation.
  * The {@link org.jenetics.Gene} is the base of the building block. Genes are
@@ -64,12 +64,12 @@
  *
  * [code]
  * public static void main(final String[] args) {
- *     final Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
+ *     final Factory〈Genotype〈BitGene〉〉 gtf = Genotype.valueOf(
  *         BitChromosome.valueOf(10, 0.5)
  *     );
- *     final Function<Genotype<BitGene> Float64> ff = ...
- *     final GeneticAlgorithm<BitGene, Float64>
- *     ga = new GeneticAlgorithm<>(gtf, ff, Optimize.MAXIMUM)
+ *     final Function〈Genotype〈BitGene〉 Float64〉 ff = ...
+ *     final GeneticAlgorithm〈BitGene, Float64〉
+ *     ga = new GeneticAlgorithm〈〉(gtf, ff, Optimize.MAXIMUM)
  *
  *     ga.setup();
  *     ga.evolve(100);
@@ -77,6 +77,7 @@
  * }
  * [/code]
  *
+ * <p>
  * The genotype factory, {@code gtf}, in the example above will create genotypes
  * which consists of one {@code BitChromosome} with length 10. The one to zero
  * probability of the newly created genotypes is set to 0.5. The fitness function
@@ -90,17 +91,17 @@
  * {@code ga.setup()} call creates the initial population and calculates its
  * fitness value. Then the GA evolves 100 generations ({@code ga.evolve(100)})
  * an prints the best phenotype found so far onto the console.
- * <p/>
+ * </p>
  * In a more advanced setup you may want to change the default mutation and/or
  * selection strategies.
  *
  * [code]
  * public static void main(final String[] args) {
  *     ...
- *     ga.setSelectors(new RouletteWheelSelector<BitGene>());
+ *     ga.setSelectors(new RouletteWheelSelector〈BitGene〉());
  *     ga.setAlterers(
- *         new SinglePointCrossover<BitGene>(0.1),
- *         new Mutator<BitGene>(0.01)
+ *         new SinglePointCrossover〈BitGene〉(0.1),
+ *         new Mutator〈BitGene〉(0.01)
  *     );
  *
  *     ga.setup();
@@ -109,13 +110,14 @@
  * }
  * [/code]
  *
+ * <p>
  * The selection strategy for offspring and survivors are set to the
  * roulette-wheel selector. It is also possible to set the selector for
  * offspring and survivors independently with the {@code setOffspringSelector}
  * and {@code setSurvivorSelector} methods. The alterers are concatenated, at
  * first the crossover (with probability 0.1) is performed and then the
  * chromosomes are mutated (with probability 0.01).
- * <p/>
+ * </p>
  *
  * <h3>Serialization</h3>
  *
@@ -132,8 +134,8 @@
  * IO.xml.write(ga.getPopulation(), file);
  *
  * // Reading the population from disk.
- * final Population<Float64Gene,Float64> population =
- *     (Population<Float64Gene, Float64)IO.xml.read(file);
+ * final Population〈Float64Gene,Float64〉 population =
+ *     (Population〈Float64Gene, Float64〉)IO.xml.read(file);
  * ga.setPopulation(population);
  * [/code]
  *
@@ -161,39 +163,33 @@
  * import org.jenetics.util.Function;
  *
  * final class OneCounter
- *     implements Function<Genotype<BitGene>, Integer>
+ *     implements Function〈Genotype〈BitGene〉, Integer〉
  * {
  *     \@Override
- *     public Integer apply(final Genotype<BitGene> genotype) {
- *         int count = 0;
- *         for (BitGene gene : genotype.getChromosome()) {
- *             if (gene.getBit()) {
- *                 ++count;
- *             }
- *         }
- *         return count;
+ *     public Integer apply(final Genotype〈BitGene〉 genotype) {
+ *         return ((BitChromosome)genotype.getChromosome()).bitCount();
  *     }
  * }
  *
  * public class OnesCounting {
  *     public static void main(String[] args) {
- *         final Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
+ *         final Factory〈Genotype〈BitGene〉〉 gtf = Genotype.valueOf(
  *             new BitChromosome(20, 0.15)
  *         );
- *         final Function<Genotype<BitGene>, Integer> ff = new OneCounter();
- *         final GeneticAlgorithm<BitGene, Integer> ga =
- *             new GeneticAlgorithm<>(gtf, ff, Optimize.MAXIMUM);
+ *         final Function〈Genotype〈BitGene〉, Integer〉 ff = new OneCounter();
+ *         final GeneticAlgorithm〈BitGene, Integer〉 ga =
+ *             new GeneticAlgorithm〈〉(gtf, ff, Optimize.MAXIMUM);
  *
  *         ga.setStatisticsCalculator(
- *             new NumberStatistics.Calculator<BitGene, Integer>()
+ *             new NumberStatistics.Calculator〈BitGene, Integer〉()
  *         );
  *         ga.setPopulationSize(50);
  *         ga.setSelectors(
- *             new RouletteWheelSelector<BitGene, Integer>()
+ *             new RouletteWheelSelector〈BitGene, Integer〉()
  *         );
  *         ga.setAlterers(
- *             new Mutator<BitGene>(0.55),
- *             new SinglePointCrossover<BitGene>(0.06)
+ *             new Mutator〈BitGene〉(0.55),
+ *             new SinglePointCrossover〈BitGene〉(0.06)
  *         );
  *
  *         ga.setup();
@@ -241,7 +237,7 @@
  * import org.jenetics.util.Function;
  *
  * class FF
- *     implements Function<Genotype<EnumGene<Integer>>, Float64>
+ *     implements Function〈Genotype〈EnumGene<Integer〉〉, Float64〉
  * {
  *     private final double[][] _adjacence;
  *     public FF(final double[][] adjacence) {
@@ -249,12 +245,12 @@
  *     }
  *
  *     \@Override
- *     public Float64 apply(final Genotype<EnumGene<Integer>> genotype) {
- *         final Chromosome<EnumGene<Integer>> path =
+ *     public Float64 apply(final Genotype〈EnumGene〈Integer〉〉 genotype) {
+ *         final Chromosome〈EnumGene〈Integer〉〉 path =
  *             genotype.getChromosome();
  *
  *         double length = 0.0;
- *         for (int i = 0, n = path.length(); i < n; ++i) {
+ *         for (int i = 0, n = path.length(); i 〈 n; ++i) {
  *             final int from = path.getGene(i).getAllele();
  *             final int to = path.getGene((i + 1)%n).getAllele();
  *             length += _adjacence[from][to];
@@ -268,20 +264,20 @@
  *     public static void main(String[] args) {
  *         final int stops = 20;
  *
- *         final Function<Genotype<EnumGene<Integer>>, Float64> ff =
+ *         final Function〈Genotype〈EnumGene〈Integer〉〉, Float64〉 ff =
  *             new FF(adjacencyMatrix(stops));
- *         final Factory<Genotype<EnumGene<Integer>>> gt = Genotype.valueOf(
+ *         final Factory〈Genotype〈EnumGene〈Integer〉〉〉 gt = Genotype.valueOf(
  *             PermutationChromosome.ofInteger(stops)
  *         );
- *         final GeneticAlgorithm<EnumGene<Integer>, Float64>
- *             ga = new GeneticAlgorithm<>(gt, ff, Optimize.MINIMUM);
+ *         final GeneticAlgorithm〈EnumGene〈Integer〉, Float64〉
+ *             ga = new GeneticAlgorithm〈〉(gt, ff, Optimize.MINIMUM);
  *         ga.setStatisticsCalculator(
- *             new Calculator<EnumGene<Integer>, Float64>()
+ *             new Calculator〈EnumGene〈Integer〉, Float64〉()
  *         );
  *         ga.setPopulationSize(300);
  *         ga.setAlterers(
- *             new SwapMutator<EnumGene<Integer>>(0.2),
- *             new PartiallyMatchedCrossover<Integer>(0.3)
+ *             new SwapMutator〈EnumGene〈Integer〉〉(0.2),
+ *             new PartiallyMatchedCrossover〈Integer〉(0.3)
  *         );
  *
  *         ga.setup();
@@ -292,8 +288,8 @@
  *
  *     private static double[][] adjacencyMatrix(int stops) {
  *         double[][] matrix = new double[stops][stops];
- *         for (int i = 0; i < stops; ++i) {
- *             for (int j = 0; j < stops; ++j) {
+ *         for (int i = 0; i 〈 stops; ++i) {
+ *             for (int j = 0; j 〈 stops; ++j) {
  *                 matrix[i][j] = chord(stops, abs(i - j), RADIUS);
  *             }
  *         }
@@ -308,7 +304,7 @@
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date$</em>
+ * @version 1.5 &mdash; <em>$Date$</em>
  */
 package org.jenetics;
 

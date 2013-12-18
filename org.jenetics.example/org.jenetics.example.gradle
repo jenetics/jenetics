@@ -20,61 +20,41 @@
 
 import org.apache.tools.ant.filters.ReplaceTokens
 
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date$</em>
+ * @version 1.5 &mdash; <em>$Date$</em>
  */
 
-apply plugin: 'osgi'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-
-apply from: "${rootDir}/gradle/commons.gradle"
-apply from: "${rootDir}/gradle/packaging.gradle"
-apply from: "${rootDir}/gradle/xlint.gradle"
-
-jar {
-	manifest {
-		version = version
-		symbolicName = project.name
-		name = project.name
-		instruction 'Export-Package', 'org.jenetics.example'
-		instruction 'Bundle-Vendor', jenetics.author
-		instruction 'Bundle-Description', jenetics.description
-		instruction 'Bundle-DocURL', jenetics.url
-
-		attributes 'Implementation-Title': project.name,
-					'Implementation-Version': version,
-					'Implementation-URL': jenetics.url,
-					'Implementation-Vendor': jenetics.name,
-					'ProjectName': jenetics.name,
-					'Version': version,
-					'Maintainer': jenetics.author
-	}
-}
-
-packaging.dependsOn(build)
-packaging << {
-	// Copy the scripts.
-	copy {
-		from('src/main/scripts') {
-			include '**/*'
-		}
-		into exportScriptDir
-		filter(ReplaceTokens, tokens: [
-			__identifier__: identifier,
-			__year__: copyrightYear,
-			__version__: version
-		])
-	}
-}
-
-clean << {
-	file("${projectDir}/bin").deleteDir()
-}
+apply plugin: 'packaging'
 
 dependencies {
 	compile project(':org.jenetics')
 }
+
+jar.manifest.instruction('Export-Package',
+	'org.jenetics.example'
+)
+
+packaging {
+	name = 'Jenetics examples'
+	author = 'Franz Wilhelmstötter'
+	url = 'http://jenetics.sourceforge.net'
+	jarjar = false
+	javadoc = false
+	
+	doLast {
+		copy {
+			from('src/main/scripts') {
+				include '**/*'
+			}
+			into exportScriptDir
+			filter(ReplaceTokens, tokens: [
+				__identifier__: identifier,
+				__year__: copyrightYear,
+				__version__: version
+			])
+		}
+	}
+}
+
