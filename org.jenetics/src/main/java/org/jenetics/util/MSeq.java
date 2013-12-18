@@ -29,7 +29,7 @@ import java.util.ListIterator;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2013-09-08 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2013-12-18 $</em>
  */
 public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 
@@ -111,9 +111,8 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @param end the end index of {@code this} range, exclusively.
 	 * @param other the other array to swap the elements with.
 	 * @param otherStart the start index of the {@code other} array.
-	 * @throws IndexOutOfBoundsException if {@code start > end}.
-	 * @throws IndexOutOfBoundsException if {@code start < 0 ||
-	 *         end >= this.length() || otherStart < 0 ||
+	 * @throws IndexOutOfBoundsException if {@code start > end} or
+	 *         if {@code start < 0 || end >= this.length() || otherStart < 0 ||
 	 *         otherStart + (end - start) >= other.length()}
 	 */
 	public void swap(

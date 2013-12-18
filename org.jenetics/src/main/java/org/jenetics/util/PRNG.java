@@ -22,11 +22,12 @@ package org.jenetics.util;
 import java.util.Random;
 
 /**
- * Abstract {@Random} class with additional <i>next</i> random number methods.
+ * Abstract {@code Random} class with additional <i>next</i> random number
+ * methods.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 2.0 &mdash; <em>$Date: 2013-09-08 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2013-12-18 $</em>
  */
 abstract class PRNG extends Random {
 
@@ -80,7 +81,6 @@ abstract class PRNG extends Random {
 	public long nextLong(final long min, final long max) {
 		return math.random.nextLong(this, min, max);
 	}
-
 
 	/**
 	 * Returns a pseudorandom, uniformly distributed int value between 0

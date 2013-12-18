@@ -27,17 +27,17 @@ package org.jenetics.util;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2013-09-08 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2013-12-18 $</em>
  */
 public interface Mean<T> {
 
 	/**
-	 * Return the (usually arithmetic) mean value of <code>this</code> and
+	 * Return the (usually arithmetic) mean value of {@code this} and
 	 * {@code that}. For {@link org.jenetics.NumberGene}s the mean is the
 	 * arithmetic mean.
 	 *
 	 * @param that the second value for calculating the mean.
-	 * @return the mean value of <code>this</code> and <code>that</code>.
+	 * @return the mean value of {@code this} and {@code that}.
 	 * @throws NullPointerException if the argument is {@code null}.
 	 */
 	public T mean(final T that);

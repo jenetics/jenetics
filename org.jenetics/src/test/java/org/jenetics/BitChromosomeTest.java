@@ -44,7 +44,7 @@ import org.jenetics.util.bit;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-08 $</em>
+ * @version <em>$Date: 2013-12-18 $</em>
  */
 public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
@@ -189,6 +189,30 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
 		final byte[] sdata = bit.fromByteString(dataString);
 		Assert.assertEquals(sdata, data);
+	}
+
+	@Test
+	public void fromBitSet() {
+		final Random random = new Random();
+		final BitSet bits = new BitSet(2343);
+		for (int i = 0; i < bits.size(); ++i) {
+			bits.set(i, random.nextBoolean());
+		}
+
+		final BitChromosome c = new BitChromosome(bits);
+		Assert.assertEquals(c.toByteArray(), bits.toByteArray());
+	}
+
+	@Test
+	public void fromByteArrayBitSet() {
+		final Random random = new Random();
+		final byte[] bytes = new byte[234];
+		random.nextBytes(bytes);
+
+		final BitSet bits = BitSet.valueOf(bytes);
+		final BitChromosome c = new BitChromosome(bits);
+		Assert.assertEquals(c.toByteArray(), bytes);
+		Assert.assertEquals(bits.toByteArray(), bytes);
 	}
 
 	@Test(dataProvider = "bitCountProbability")

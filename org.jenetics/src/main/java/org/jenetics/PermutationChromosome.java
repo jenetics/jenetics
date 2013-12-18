@@ -33,6 +33,8 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.internal.util.cast;
+
 import org.jenetics.util.Array;
 import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
@@ -45,7 +47,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2013-09-08 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2013-12-18 $</em>
  */
 public final class PermutationChromosome<T>
 	extends AbstractChromosome<EnumGene<T>>
@@ -55,7 +57,7 @@ public final class PermutationChromosome<T>
 
 	private ISeq<T> _validAlleles;
 
-	PermutationChromosome(final int length, final ISeq<EnumGene<T>> genes) {
+	PermutationChromosome(final int length, final ISeq<? extends EnumGene<T>> genes) {
 		super(genes);
 		_validAlleles = genes.get(0).getValidAlleles();
 		_valid = true;
@@ -66,13 +68,13 @@ public final class PermutationChromosome<T>
 	 *
 	 * @param validAlleles the valid alleles used for this permutation arrays.
 	 */
-	public PermutationChromosome(final ISeq<T> validAlleles) {
+	public PermutationChromosome(final ISeq<? extends T> validAlleles) {
 		super(
 			new Array<EnumGene<T>>(
 				validAlleles.length()
 			).fill(Gene(validAlleles)).shuffle().toISeq()
 		);
-		_validAlleles = validAlleles;
+		_validAlleles = cast.apply(validAlleles);
 	}
 
 	public ISeq<T> getValidAlleles() {
@@ -141,7 +143,7 @@ public final class PermutationChromosome<T>
 
 	@Override
 	public String toString() {
-		StringBuilder out = new StringBuilder();
+		final StringBuilder out = new StringBuilder();
 		out.append(_genes.get(0).getAllele());
 		for (int i = 1; i < length(); ++i) {
 			out.append("|").append(_genes.get(i).getAllele());

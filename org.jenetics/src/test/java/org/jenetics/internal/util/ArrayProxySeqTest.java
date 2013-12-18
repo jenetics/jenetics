@@ -26,7 +26,7 @@ import org.jenetics.util.SeqTestBase;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-01 $</em>
+ * @version <em>$Date: 2013-12-03 $</em>
  */
 public class ArrayProxySeqTest extends SeqTestBase {
 
@@ -47,12 +47,12 @@ public class ArrayProxySeqTest extends SeqTestBase {
 
 		@Override
 		public ISeq<T> subSeq(final int start) {
-			return new ArrayProxyISeq<>(_proxy.sub(start));
+			return new ArrayProxyISeq<>(_proxy.slice(start));
 		}
 
 		@Override
 		public ISeq<T> subSeq(int start, int end) {
-			return new ArrayProxyISeq<>(_proxy.sub(start, end));
+			return new ArrayProxyISeq<>(_proxy.slice(start, end));
 		}
 
 	}

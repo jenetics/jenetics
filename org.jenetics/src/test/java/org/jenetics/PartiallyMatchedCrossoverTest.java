@@ -34,12 +34,12 @@ import org.jenetics.stat.Variance;
 import org.jenetics.util.Array;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Range;
-import org.jenetics.util.arrays;
+import org.jenetics.util.shuffling;
 
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-08 $</em>
+ * @version <em>$Date: 2013-12-18 $</em>
  */
 public class PartiallyMatchedCrossoverTest {
 
@@ -56,8 +56,8 @@ public class PartiallyMatchedCrossoverTest {
 		final Array<EnumGene<Integer>> that = alleles.map(EnumGene.ToGene(ialleles));
 		final Array<EnumGene<Integer>> other = alleles.map(EnumGene.ToGene(ialleles));
 
-		arrays.shuffle(that);
-		arrays.shuffle(other);
+		shuffling.shuffle(that);
+		shuffling.shuffle(other);
 
 		final PermutationChromosome<Integer> thatChrom1 = PermutationChromosome.valueOf(that.toISeq());
 		Assert.assertTrue(thatChrom1.isValid(), "thatChrom1 not valid");

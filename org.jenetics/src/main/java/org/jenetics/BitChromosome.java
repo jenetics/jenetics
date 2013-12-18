@@ -40,7 +40,6 @@ import org.jscience.mathematics.number.LargeInteger;
 import org.jscience.mathematics.number.Number;
 
 import org.jenetics.util.ISeq;
-import org.jenetics.util.IndexStream;
 import org.jenetics.util.bit;
 
 /**
@@ -48,7 +47,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.4 &mdash; <em>$Date: 2013-09-08 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2013-12-18 $</em>
  */
 public class BitChromosome extends Number<BitChromosome>
 	implements
@@ -76,26 +75,27 @@ public class BitChromosome extends Number<BitChromosome>
 
 
 	private BitChromosome(final byte[] bits, final int length, final double p) {
-		if (bits.length < bit.toByteLength(length)) {
+		if (bits.length != bit.toByteLength(length)) {
 			throw new IllegalArgumentException(String.format(
-				"The byte array must has at least a length of %d to contain %d bits.",
+				"The byte array must has at least a length of " +
+				"%d to contain %d bits.",
 				bit.toByteLength(length), length
 			));
 		}
 
 		_length = length;
 		_p = checkProbability(p);
-		_genes = bit.newBitArray(length);
+		_genes = bits;
 		_seq = new BitGeneArray(_genes, 0, _length);
-		System.arraycopy(bits, 0, _genes, 0,_genes.length);
 
 	}
 
 	private BitChromosome(final byte[] bits, final int length) {
 		this(
 			bits,
-			length,
-			(double)bit.count(bits)/(double)length
+			length == -1 ? bits.length*8 : length,
+			(double)bit.count(bits)/
+			(double)(length == -1 ? bits.length*8 : length)
 		);
 	}
 
@@ -105,7 +105,7 @@ public class BitChromosome extends Number<BitChromosome>
 	 * @param bits the {@code byte} array.
 	 */
 	public BitChromosome(final byte[] bits) {
-		this(bits, bits.length*8);
+		this(bits.clone(), bits.length*8);
 	}
 
 	/**
@@ -113,18 +113,12 @@ public class BitChromosome extends Number<BitChromosome>
 	 *
 	 * @param length Length of the BitChromosome, number of bits.
 	 * @param p Probability of the TRUEs in the BitChromosome.
-	 * @throws NegativeArraySizeException if the <code>length</code> is smaller
+	 * @throws NegativeArraySizeException if the {@code length} is smaller
 	 *         than one.
-	 * @throws IllegalArgumentException if <code>p</code> is out of range.
+	 * @throws IllegalArgumentException if {@code p} is not a valid probability.
 	 */
 	public BitChromosome(final int length, final double p) {
-		this(bit.newBitArray(length), length, p);
-		checkProbability(p);
-
-		final IndexStream stream = IndexStream.Random(length, p);
-		for (int i = stream.next(); i != -1; i = stream.next()) {
-			set(i, true);
-		}
+		this(bit.newArray(length, p), length, p);
 	}
 
 	/**
@@ -132,7 +126,7 @@ public class BitChromosome extends Number<BitChromosome>
 	 * FALSE in the {@code Chromosome} are equally distributed.
 	 *
 	 * @param length Length of the BitChromosome.
-	 * @throws NegativeArraySizeException if the <code>_length</code> is smaller
+	 * @throws NegativeArraySizeException if the {@code _length} is smaller
 	 *         than one.
 	 */
 	public BitChromosome(final int length) {
@@ -140,53 +134,55 @@ public class BitChromosome extends Number<BitChromosome>
 	}
 
 	/**
-	 * Constructing a new BitChromosome from a given BitSet.
-	 * The BitSet is copied while construction. The length of the constructed
-	 * BitChromosome will be <code>bitSet.length()</code>
-	 * (@see BitSet#length).
-	 *
+	 * @param length Length of the BitChromosome.
 	 * @param bits the bit-set which initializes the chromosome
-	 * @throws NullPointerException if the <code>bitSet</code> is
-	 *         <code>null</code>.
+	 * @throws NegativeArraySizeException if the {@code length} is smaller
+	 *         than one.
+	 * @throws NullPointerException if the {@code bitSet} is
+	 *         {@code null}.
 	 */
-	public BitChromosome (final BitSet bits) {
-		this(bits.length(), bits);
+	public BitChromosome(final int length, final BitSet bits) {
+		this(toByteArray(requireNonNull(bits, "BitSet"), length));
+	}
+
+	private static byte[] toByteArray(final BitSet bits, final int length) {
+		final byte[] bytes = bit.newArray(length);
+		for (int i = 0; i < length; ++i) {
+			if (bits.get(i)) {
+				bit.set(bytes, i);
+			}
+		}
+		return bytes;
 	}
 
 	/**
-	 * @param length Length of the BitChromosome.
+	 * Constructing a new BitChromosome from a given BitSet.
+	 * The BitSet is copied while construction. The length of the constructed
+	 * BitChromosome will be {@code bitSet.length()}
+	 * (@see BitSet#length).
+	 *
 	 * @param bits the bit-set which initializes the chromosome
-	 * @throws NegativeArraySizeException if the <code>length</code> is smaller
-	 *         than one.
-	 * @throws NullPointerException if the <code>bitSet</code> is
-	 *         <code>null</code>.
+	 * @throws NullPointerException if the {@code bitSet} is
+	 *         {@code null}.
 	 */
-	public BitChromosome(final int length, final BitSet bits) {
-		requireNonNull(bits, "BitSet");
-
-		_genes = bit.newBitArray(length);
-		_length = length;
-
-		int ones = 0;
-		for (int i = 0; i < length; ++i) {
-			if (bits.get(i)) {
-				++ones;
-				bit.set(_genes, i, true);
-			} else {
-				bit.set(_genes, i, false);
-			}
-
-		}
-		_p = (double)ones/(double)length;
+	public BitChromosome (final BitSet bits) {
+		this(bits.toByteArray(), -1);
 	}
 
+	/**
+	 * Create a new {@code BitChromosome} from the given large integer value.
+	 *
+	 * @param value the value of the created {@code BitChromosome}
+	 * @throws NullPointerException if the given {@code value} is {@code null}.
+	 */
 	public BitChromosome(final LargeInteger value) {
-		this(bit.toByteArray(value));
+		this(bit.toByteArray(value), -1);
 	}
 
 	/**
 	 * Create a new {@code BitChromosome} from the given character sequence
-	 * containing '0' and '1'.
+	 * containing '0' and '1'; as created with the {@link #toCanonicalString()}
+	 * method.
 	 *
 	 * @param value the input string.
 	 * @throws NullPointerException if the {@code value} is {@code null}.
@@ -194,29 +190,23 @@ public class BitChromosome extends Number<BitChromosome>
 	 *         is zero or contains other characters than '0' or '1'.
 	 */
 	public BitChromosome (final CharSequence value) {
-		this(value.length());
+		this(toByteArray(requireNonNull(value, "Input")), -1);
+	}
 
-		requireNonNull(value, "Input");
-		if (value.length() == 0) {
-			throw new IllegalArgumentException("Length must greater than zero.");
-		}
-
-		int ones = 0;
-		for (int i = 0, n = value.length(); i < n; ++i) {
+	private static byte[] toByteArray(final CharSequence value) {
+		final byte[] bytes = bit.newArray(value.length());
+		for (int i = value.length(); --i >= 0;) {
 			final char c = value.charAt(i);
 			if (c == '1') {
-				++ones;
-				bit.set(_genes, i, true);
-			} else if (c == '0') {
-				bit.set(_genes, i, false);
-			} else {
+				bit.set(bytes, i);
+			} else if (c != '0') {
 				throw new IllegalArgumentException(format(
 					"Illegal character '%s' at position %d", c, i
 				));
 			}
 		}
 
-		_p = (double)ones/(double)value.length();
+		return bytes;
 	}
 
 	private void rangeCheck(final int index) {
@@ -226,10 +216,6 @@ public class BitChromosome extends Number<BitChromosome>
 				"Index: " + index + ", Length: " + _length
 			);
 		}
-	}
-
-	private void set(final int index, final boolean value) {
-		bit.set(_genes, index, value);
 	}
 
 	@Override
@@ -313,8 +299,8 @@ public class BitChromosome extends Number<BitChromosome>
 	 * large integer. The output array is in <i>big-endian</i>
 	 * byte-order: the most significant byte is at the offset position.
 	 *
-	 * <p>Note: This representation is consistent with <code>java.lang.BigInteger
-	 *          </code> byte array representation and can be used for conversion
+	 * <p>Note: This representation is consistent with {@code java.lang.BigInteger
+	 *          } byte array representation and can be used for conversion
 	 *          between the two classes.</p>
 	 *
 	 * @param bytes the bytes to hold the binary representation
@@ -337,6 +323,7 @@ public class BitChromosome extends Number<BitChromosome>
 	/**
 	 * @return a byte array which represents this {@code BitChromosome}. The
 	 *         length of the array is {@code (int)Math.ceil(length()/8.0)}.
+	 *
 	 * @see #toByteArray(byte[])
 	 */
 	public byte[] toByteArray() {
@@ -363,7 +350,7 @@ public class BitChromosome extends Number<BitChromosome>
 		requireNonNull(genes, "Genes");
 
 		final BitChromosome chromosome = new BitChromosome(
-			bit.newBitArray(genes.length()), genes.length()
+			bit.newArray(genes.length()), genes.length()
 		);
 		int ones = 0;
 
@@ -391,7 +378,8 @@ public class BitChromosome extends Number<BitChromosome>
 
 	/**
 	 * Return the BitChromosome as String. A TRUE is represented by a 1 and
-	 * a FALSE by a 0.
+	 * a FALSE by a 0. The returned string can be used to create a new
+	 * chromosome with the {@link #BitChromosome(CharSequence)} constructor.
 	 *
 	 * @return String representation (containing only '1' and '0') of the
 	 *         BitChromosome.

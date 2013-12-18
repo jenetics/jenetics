@@ -49,7 +49,7 @@ import org.jenetics.util.MappedAccumulator;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2013-09-08 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2013-12-18 $</em>
  */
 public class Quantile<N extends Number> extends MappedAccumulator<N> {
 
@@ -311,7 +311,7 @@ public class Quantile<N extends Number> extends MappedAccumulator<N> {
 	@Override
 	public String toString() {
 		return format(
-			"%s[samples=%d, qantile=%f]",
+			"%s[samples=%d, quantile=%f]",
 			getClass().getSimpleName(), getSamples(), getQuantile()
 		);
 	}

@@ -28,7 +28,7 @@ import static org.jenetics.util.object.hashCodeOf;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2013-09-08 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2013-12-18 $</em>
  */
 public abstract class AbstractAlterer<G extends Gene<?, G>>
 	implements Alterer<G>
@@ -39,7 +39,7 @@ public abstract class AbstractAlterer<G extends Gene<?, G>>
 	 *
 	 * @return an alterer which does nothing.
 	 */
-	public static final <G extends Gene<?, G>> Alterer<G> Null() {
+	public static <G extends Gene<?, G>> Alterer<G> Null() {
 		return new Alterer<G>() {
 			@Override
 			public <C extends Comparable<? super C>> int alter(
@@ -56,13 +56,8 @@ public abstract class AbstractAlterer<G extends Gene<?, G>>
 
 			@Override
 			public boolean equals(final Object obj) {
-				if (obj == this) {
-					return true;
-				}
-				if (obj == null) {
-					return false;
-				}
-				return obj.getClass() == getClass();
+				return obj == this ||
+						obj != null && obj.getClass() == getClass();
 			}
 
 			@Override

@@ -34,19 +34,14 @@ import org.testng.Reporter;
 import org.testng.annotations.Test;
 
 import org.jenetics.util.Factory;
-import org.jenetics.util.ForkJoinContext;
 import org.jenetics.util.Function;
 import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-12-09 $</em>
+ * @version <em>$Date: 2013-12-18 $</em>
  */
 public class GeneticAlgorithmTest {
-
-	static {
-		ForkJoinContext.setForkJoinPool(new ForkJoinPool(5));
-	}
 
 	private static class FF
 		implements Function<Genotype<Float64Gene>, Float64>,

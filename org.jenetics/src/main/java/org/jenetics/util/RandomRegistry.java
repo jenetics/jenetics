@@ -60,8 +60,8 @@ import javolution.lang.Reference;
  * <b>Setup of a <i>local</i> PRNG</b><br/>
  *
  * With the help of the {@link LocalContext} from the <a href="http://javolution.org/">
- * javolution</a> project you can temporarily (and locally) change the
- * implementation of the PRNG
+ * Javolution</a> project you can temporarily (and locally) change the
+ * implementation of the PRNG.
  *
  * [code]
  * public class GA {
@@ -91,7 +91,7 @@ import javolution.lang.Reference;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2013-09-08 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2013-12-18 $</em>
  */
 public final class RandomRegistry extends StaticObject {
 	private RandomRegistry() {}

@@ -24,8 +24,11 @@ import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.Objects;
+import java.util.Random;
 
 import javolution.context.ObjectFactory;
+
+import org.jenetics.internal.util.cast;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
@@ -34,22 +37,23 @@ import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
 
 /**
+ * <p>
  * Gene which holds enumerable (countable) genes. Will be used for combinatorial
  * problems in combination with the {@link PermutationChromosome}.
- * <p/>
+ * </p>
  * The following code shows how to create a combinatorial genotype factory which
  * can be used when creating an {@link GeneticAlgorithm} instance.
  * [code]
- * final ISeq<Integer> alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
- * final Factory<Genotype<EnumGene<Integer>>> gtf = Genotype.valueOf(
+ * final ISeq〈Integer〉 alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
+ * final Factory〈Genotype〈EnumGene〈Integer〉〉〉 gtf = Genotype.valueOf(
  *     PermutationChromosome.valueOf(alleles)
  * );
  * [/code]
  *
  * The following code shows the assurances of the {@code EnumGene}.
  * [code]
- * final ISeq<Integer> alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
- * final EnumGene<Integer> gene = EnumGene.valueOf(alleles, 5);
+ * final ISeq〈Integer〉 alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
+ * final EnumGene〈Integer〉 gene = EnumGene.valueOf(alleles, 5);
  *
  * assert(gene.getAlleleIndex() == 5);
  * assert(gene.getAllele() == gene.getValidAlleles().get(5));
@@ -60,7 +64,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2013-09-08 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2013-12-18 $</em>
  */
 public final class EnumGene<A>
 	implements
@@ -116,8 +120,9 @@ public final class EnumGene<A>
 	public EnumGene<A> newInstance() {
 		@SuppressWarnings("unchecked")
 		final EnumGene<A> gene = FACTORY.object();
+		final Random random = RandomRegistry.getRandom();
 
-		gene._alleleIndex = RandomRegistry.getRandom().nextInt(_validAlleles.length());
+		gene._alleleIndex = random.nextInt(_validAlleles.length());
 		gene._validAlleles = _validAlleles;
 		return gene;
 	}
@@ -175,7 +180,7 @@ public final class EnumGene<A>
 		};
 	}
 
-	static <T> Factory<EnumGene<T>> Gene(final ISeq<T> validAlleles) {
+	static <T> Factory<EnumGene<T>> Gene(final ISeq<? extends T> validAlleles) {
 		return new Factory<EnumGene<T>>() {
 			private int _index = 0;
 			@Override
@@ -203,7 +208,7 @@ public final class EnumGene<A>
 	}
 
 	public static <G> EnumGene<G> valueOf(
-		final ISeq<G> validAlleles,
+		final ISeq<? extends G> validAlleles,
 		final int alleleIndex
 	) {
 		if (validAlleles.length() == 0) {
@@ -221,7 +226,7 @@ public final class EnumGene<A>
 		@SuppressWarnings("unchecked")
 		final EnumGene<G> gene = FACTORY.object();
 
-		gene._validAlleles = validAlleles;
+		gene._validAlleles = cast.apply(validAlleles);
 		gene._alleleIndex = alleleIndex;
 		return gene;
 	}

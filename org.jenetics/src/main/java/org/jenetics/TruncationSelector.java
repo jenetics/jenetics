@@ -35,7 +35,7 @@ import static org.jenetics.util.object.hashCodeOf;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2013-09-08 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2013-12-18 $</em>
  */
 public final class TruncationSelector<
 	G extends Gene<?, G>,
@@ -81,7 +81,7 @@ public final class TruncationSelector<
 			));
 		}
 
-		population.sort(opt.<C>descending());
+		population.sortWith(opt.<C>descending());
 		return new Population<>(population.subList(0, count));
 	}
 
@@ -92,10 +92,7 @@ public final class TruncationSelector<
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		return obj instanceof TruncationSelector<?, ?>;
+		return obj == this || obj instanceof TruncationSelector<?, ?>;
 	}
 
 	@Override

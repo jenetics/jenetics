@@ -25,16 +25,16 @@ import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.stat.ChiSquare;
 import org.jenetics.stat.Distribution;
 import org.jenetics.stat.Histogram;
+import org.jenetics.stat.StatisticsAssert;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ObjectTester;
 import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-08 $</em>
+ * @version <em>$Date: 2013-12-18 $</em>
  */
 public abstract class SelectorTester<S extends Selector<Float64Gene, Float64>>
 	extends ObjectTester<S>
@@ -120,7 +120,7 @@ public abstract class SelectorTester<S extends Selector<Float64Gene, Float64>>
 			final int degreeOfFreedom = histogram.length();
 			assert (degreeOfFreedom > 0);
 
-			final double maxChi = ChiSquare.chi_999(degreeOfFreedom)*2;
+			final double maxChi = StatisticsAssert.chi(0.999, degreeOfFreedom)*2;
 
 			if (χ2 > maxChi) {
 				System.out.println(String.format(
