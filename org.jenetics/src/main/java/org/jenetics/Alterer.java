@@ -40,7 +40,7 @@ package org.jenetics;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-12-09 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-12-18 $</em>
  */
 public interface Alterer<G extends Gene<?, G>> {
 
@@ -50,8 +50,7 @@ public interface Alterer<G extends Gene<?, G>> {
 	 * is empty, nothing is altered.
 	 *
 	 * @param population The Population to be altered. If the
-	 *         {@code population} is {@code null} or empty, nothing is
-	 *         altered.
+	 *        {@code population} is {@code null} or empty, nothing is altered.
 	 * @param generation the date of birth (generation) of the altered phenotypes.
 	 * @return the number of genes that has been altered.
 	 * @throws NullPointerException if the given {@code population} is

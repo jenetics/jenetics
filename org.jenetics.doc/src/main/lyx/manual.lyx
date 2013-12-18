@@ -9960,7 +9960,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 1.9 (
+: 1.10 (
 \emph on
 or later
 \emph default
@@ -10001,7 +10001,7 @@ status open
 
 \begin_layout Plain Layout
 
-http://services.gradle.org/distributions/gradle-1.9-bin.zip
+http://services.gradle.org/distributions/gradle-1.10-bin.zip
 \end_layout
 
 \end_inset
