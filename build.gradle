@@ -30,14 +30,13 @@ import org.jenetics.gradle.task.ChecksumTask
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version @__version__@ &mdash; <em>$Date: 2013-12-17 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-12-18 $</em>
  */
 new PropertiesLoader(ext).load(file('project.properties'))
 new PropertiesLoader(ext).load(file('include.properties'))
 rootProject.version = Version.parse(jenetics.version)
 
 apply plugin: 'signing'
-
 
 ext {
 	now = Calendar.getInstance()
