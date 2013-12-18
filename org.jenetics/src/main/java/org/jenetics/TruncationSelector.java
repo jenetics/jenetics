@@ -81,7 +81,7 @@ public final class TruncationSelector<
 			));
 		}
 
-		population.sort(opt.<C>descending());
+		population.sortWith(opt.<C>descending());
 		return new Population<>(population.subList(0, count));
 	}
 
@@ -92,10 +92,7 @@ public final class TruncationSelector<
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		return obj instanceof TruncationSelector<?, ?>;
+		return obj == this || obj instanceof TruncationSelector<?, ?>;
 	}
 
 	@Override

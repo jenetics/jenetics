@@ -66,8 +66,8 @@ public class Integer64Chromosome
 	 *
 	 * @param genes the genes of the new chromosome.
 	 * @throws NullPointerException if the given genes array is {@code null}.
-	 * @throws IllegalArgumentException if the {@code genes.length} is smaller than
-	 *         one.
+	 * @throws IllegalArgumentException if the {@code genes.length} is smaller
+	 *         than one.
 	 */
 	public Integer64Chromosome(final Integer64Gene... genes) {
 		this(Array.valueOf(genes).toISeq());
@@ -164,10 +164,8 @@ public class Integer64Chromosome
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		return obj instanceof Integer64Chromosome && super.equals(obj);
+		return obj == this ||
+				obj instanceof Integer64Chromosome && super.equals(obj);
 	}
 
 	/* *************************************************************************
@@ -241,9 +239,7 @@ public class Integer64Chromosome
 			}
 		}
 		@Override
-		public void read(final InputElement element, final Integer64Chromosome chromosome)
-			throws XMLStreamException
-		{
+		public void read(final InputElement e, final Integer64Chromosome c) {
 		}
 	};
 

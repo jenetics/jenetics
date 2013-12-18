@@ -35,8 +35,8 @@ import org.jenetics.gradle.task.ColorizerTask
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since @__version__@
- * @version @__version__@ &mdash; <em>$Date$</em>
+ * @since 1.5
+ * @version 1.5 &mdash; <em>$Date$</em>
  */
 class SetupPlugin extends JeneticsPlugin {
 
@@ -52,8 +52,7 @@ class SetupPlugin extends JeneticsPlugin {
 		if (hasScalaSources()) {
 			project.plugins.apply(ScalaPlugin)
 			applyJava()
-		}
-		if (hasJavaSources() && !hasScalaSources()) {
+		} else if (hasJavaSources()) {
 			project.plugins.apply(JavaPlugin)
 			applyJava()
 		}
@@ -63,8 +62,6 @@ class SetupPlugin extends JeneticsPlugin {
 		if (hasLyxSources()) {
 			project.plugins.apply(LyxPlugin)
 		}
-
-		project.plugins.apply(PackagingPlugin)
 
 		project.tasks.withType(JavaCompile) { JavaCompile compile ->
 			compile.options.encoding = 'UTF-8'
@@ -79,12 +76,14 @@ class SetupPlugin extends JeneticsPlugin {
 		plugins.apply(IdeaPlugin)
 
 		clean.doLast {
-			file("${projectDir}/test-output").deleteDir()
+			file("${project.projectDir}/test-output").deleteDir()
 		}
 
-		configureOsgi()
-		configureTestReporting()
-		configureJavadoc()
+		if (!isBuildSrc()) {
+			configureOsgi()
+			configureTestReporting()
+			configureJavadoc()
+		}
 	}
 
 	private void configureOsgi() {
@@ -146,8 +145,8 @@ class SetupPlugin extends JeneticsPlugin {
 					'http://jscience.org/api/',
 					'http://javolution.org/target/site/apidocs/'
 				]
-				windowTitle = "Jenetics ${version}"
-				docTitle = "<h1>Jenetics ${version}</h1>"
+				windowTitle = "Jenetics ${project.version}"
+				docTitle = "<h1>Jenetics ${project.version}</h1>"
 				bottom = "&copy; ${copyrightYear} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${dateformat.format(now.time)})</i>"
 				stylesheetFile = project.file("${rootDir}/buildSrc/resources/javadoc/stylesheet.css")
 
@@ -158,6 +157,17 @@ class SetupPlugin extends JeneticsPlugin {
 
 				//group('Core API', ['org.jenetics']).
 				//group('Utilities', ['org.jenetics.util', 'org.jenetics.stat'])
+			}
+
+			// Copy the doc-files.
+			doLast {
+				copy {
+					from('src/main/java') {
+						include 'org/**/doc-files/*.*'
+					}
+					includeEmptyDirs = false
+					into destinationDir.path
+				}
 			}
 		}
 
@@ -179,18 +189,7 @@ class SetupPlugin extends JeneticsPlugin {
 					]
 					classpath = files("${rootDir}/buildSrc/lib/java2html.jar")
 				}
-				copy {
-					from 'src/main/java/org/*/doc-files'
-					into "${destination}/org/*/doc-files"
-				}
-				copy {
-					from 'src/main/java/org/*/stat/doc-files'
-					into "${destination}/org/*/stat/doc-files"
-				}
-				copy {
-					from 'src/main/java/org/*/util/doc-files'
-					into "${destination}/org/*/util/doc-files"
-				}
+
 			}
 		}
 

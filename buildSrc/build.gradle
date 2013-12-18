@@ -17,19 +17,19 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
-
+ 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date$</em>
- */
-public class SeedRandom extends Random64 {
+ * @since 1.4
+ * @version 1.5 &mdash; <em>$Date$</em>
+ */ 
+ 
+apply plugin: 'java'
+apply plugin: 'groovy'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
 
-	private static final long serialVersionUID = 1L;
-
-	@Override
-	public long nextLong() {
-		return math.random.seed();
-	}
-
+project.tasks.withType(JavaCompile) { JavaCompile compile ->
+	sourceCompatibility = 1.7
+	targetCompatibility = 1.7
 }

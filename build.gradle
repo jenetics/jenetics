@@ -19,7 +19,6 @@
  */
 
 import java.text.SimpleDateFormat
-import java.util.Date
 import org.apache.tools.ant.filters.ReplaceTokens
 
 import org.jenetics.gradle.PropertiesLoader
@@ -30,15 +29,18 @@ import org.jenetics.gradle.task.ChecksumTask
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version @__version__@ &mdash; <em>$Date$</em>
+ * @version 1.5 &mdash; <em>$Date$</em>
  */
 new PropertiesLoader(ext).load(file('project.properties'))
 new PropertiesLoader(ext).load(file('include.properties'))
 rootProject.version = Version.parse(jenetics.version)
 
 apply plugin: 'signing'
+apply plugin: 'packaging'
 
 ext {
+    javaVersion = '1.7'
+
 	now = Calendar.getInstance()
 	year = now.get(Calendar.YEAR);
 	copyrightYear = "2007-${year}".toString()
@@ -59,9 +61,7 @@ allprojects {
 }
 
 subprojects { Project prj ->
-	if (prj.name != 'buildSrc') {
-		prj.plugins.apply(SetupPlugin.class)
-	}
+	prj.plugins.apply(SetupPlugin.class)
 }
 
 allprojects { Project prj ->

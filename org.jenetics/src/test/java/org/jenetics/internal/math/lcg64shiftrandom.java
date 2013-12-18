@@ -17,19 +17,29 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
- 
+package org.jenetics.internal.math;
+
+import org.jenetics.util.StaticObject;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.4
- * @version 1.4 &mdash; <em>$Date$</em>
- */ 
- 
-apply plugin: 'java'
-apply plugin: 'groovy'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
+ * @since 1.5
+ * @version 1.5 &mdash; <em>$Date$</em>
+ */
+public class lcg64shiftrandom extends StaticObject {
+	private lcg64shiftrandom() {}
 
-dependencies {
-	compile gradleApi()
+	public static final class State {
+		public long r = 0;
+	}
+
+
+
 }
+
+
+
+
+
+
 

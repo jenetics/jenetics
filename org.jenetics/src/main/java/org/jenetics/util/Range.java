@@ -42,8 +42,8 @@ public class Range<C extends Comparable<? super C>> extends Tuple2<C, C> {
 		super(requireNonNull(min, "Min value"), requireNonNull(max, "Max value"));
 		if (min.compareTo(max) >= 0) {
 			throw new IllegalArgumentException(format(
-					"Min value must be smaller the max value: [%s, %s]", min, max
-				));
+				"Min value must be smaller the max value: [%s, %s]", min, max
+			));
 		}
 	}
 

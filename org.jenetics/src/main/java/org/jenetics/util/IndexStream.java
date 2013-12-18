@@ -112,11 +112,17 @@ public abstract class IndexStream {
 		}
 		if (n <= 0) {
 			throw new IllegalArgumentException(format(
-				"n must be greate than zero: %d", n
+				"n must be greater than zero: %d", n
 			));
 		}
 
-		return new RandomIndexStream(n, p, random);
+		IndexStream stream = new RandomIndexStream(n, p, random);
+		if (Double.compare(p, 0.0) == 0) {
+			stream = new RandomIndexStreamP0();
+		} else if (Double.compare(p, 1.0) == 0) {
+			stream = new RandomIndexStreamP1(n);
+		}
+		return stream;
 	}
 
 }
@@ -124,7 +130,7 @@ public abstract class IndexStream {
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date$</em>
+ * @version 1.5 &mdash; <em>$Date$</em>
  */
 final class RandomIndexStream extends IndexStream {
 	private final int _n;
@@ -144,7 +150,39 @@ final class RandomIndexStream extends IndexStream {
 		while (_pos < _n && _random.nextInt() >= _p) {
 			++_pos;
 		}
-		return (_pos < _n - 1) ? ++_pos : -1;
+		++_pos;
+
+		return _pos < _n ? _pos : -1;
+	}
+}
+
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.5
+ * @version 1.5 &mdash; <em>$Date$</em>
+ */
+final class RandomIndexStreamP0 extends IndexStream {
+	@Override public int next() {
+		return -1;
+	}
+}
+
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.5
+ * @version 1.5 &mdash; <em>$Date$</em>
+ */
+final class RandomIndexStreamP1 extends IndexStream {
+	private final int _n;
+	private int _pos = -1;
+
+	RandomIndexStreamP1(final int n) {
+		_n = n;
+	}
+
+	@Override public int next() {
+		++_pos;
+		return _pos < _n ? _pos : -1;
 	}
 }
 

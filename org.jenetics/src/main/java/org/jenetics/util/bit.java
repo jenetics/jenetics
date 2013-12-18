@@ -38,7 +38,7 @@ import org.jscience.mathematics.number.LargeInteger;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.4 &mdash; <em>$Date$</em>
+ * @version 1.5 &mdash; <em>$Date$</em>
  */
 public final class bit extends StaticObject {
 	private bit() {}
@@ -168,9 +168,8 @@ public final class bit extends StaticObject {
 	 * @param end the end bit index of the {@code data} byte array, exclusively.
 	 * @param otherData the other byte array to swap the elements with.
 	 * @param otherStart the start index of the {@code otherData} byte array.
-	 * @throws IndexOutOfBoundsException if {@code start > end}.
-	 * @throws IndexOutOfBoundsException if {@code start < 0 ||
-	 *         end >= data.length*8 || otherStart < 0 ||
+	 * @throws IndexOutOfBoundsException if {@code start > end} or
+	 *         if {@code start < 0 || end >= data.length*8 || otherStart < 0 ||
 	 *         otherStart + (end - start) >= otherData.length*8}
 	 */
 	public static void swap(
@@ -210,13 +209,13 @@ public final class bit extends StaticObject {
 	}
 
 	/**
-	 * Shifting all bits in the given <code>data</code> array the given
+	 * Shifting all bits in the given {@code data} array the given
 	 * {@code shift} to the right. The bits on the left side are filled with
 	 * zeros.
 	 *
 	 * @param data the data bits to shift.
 	 * @param shift the number of bits to shift.
-	 * @return the given <code>data</code> array.
+	 * @return the given {@code data} array.
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] shiftRight(final byte[] data, final int shift) {
@@ -251,13 +250,13 @@ public final class bit extends StaticObject {
 	}
 
 	/**
-	 * Shifting all bits in the given <code>data</code> array the given
+	 * Shifting all bits in the given {@code data} array the given
 	 * {@code shift} to the left. The bits on the right side are filled with
 	 * zeros.
 	 *
 	 * @param data the data bits to shift.
 	 * @param shift the number of bits to shift.
-	 * @return the given <code>data</code> array.
+	 * @return the given {@code data} array.
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] shiftLeft(final byte[] data, final int shift) {
@@ -292,10 +291,10 @@ public final class bit extends StaticObject {
 	}
 
 	/**
-	 * Increment the given <code>data</code> array.
+	 * Increment the given {@code data} array.
 	 *
-	 * @param data the given <code>data</code> array.
-	 * @return the given <code>data</code> array.
+	 * @param data the given {@code data} array.
+	 * @return the given {@code data} array.
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] increment(final byte[] data) {
@@ -309,10 +308,10 @@ public final class bit extends StaticObject {
 	}
 
 	/**
-	 * Invert the given <code>data</code> array.
+	 * Invert the given {@code data} array.
 	 *
-	 * @param data the given <code>data</code> array.
-	 * @return the given <code>data</code> array.
+	 * @param data the given {@code data} array.
+	 * @return the given {@code data} array.
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] invert(final byte[] data)	{
@@ -323,10 +322,10 @@ public final class bit extends StaticObject {
 	}
 
 	/**
-	 * Make the two's complement of the given <code>data</code> array.
+	 * Make the two's complement of the given {@code data} array.
 	 *
-	 * @param data the given <code>data</code> array.
-	 * @return the given <code>data</code> array.
+	 * @param data the given {@code data} array.
+	 * @return the given {@code data} array.
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] complement(final byte[] data) {
@@ -466,9 +465,63 @@ public final class bit extends StaticObject {
 	 *
 	 * @param length the number of bits, the returned byte array can store.
 	 * @return the new byte array.s
+	 *
+	 * @deprecated Use {@link #newArray(int)} instead.
 	 */
+	@Deprecated
 	public static byte[] newBitArray(final int length) {
+		return newArray(length);
+	}
+
+	/**
+	 * Create a new {@code byte[]} array which can store at least the number
+	 * of bits as defined by the given {@code length} parameter.
+	 *
+	 * @param length the number of bits, the returned byte array can store.
+	 * @return the new byte array.s
+	 */
+	public static byte[] newArray(final int length) {
 		return new byte[toByteLength(length)];
+	}
+
+	/**
+	 * Create a new {@code byte[]} array which can store at least the number
+	 * of bits as defined by the given {@code length} parameter. The returned
+	 * byte array is initialized with ones according to the given ones
+	 * probability {@code p}.
+	 *
+	 * @param length the number of bits, the returned byte array can store.
+	 * @param p the ones probability of the returned byte array.
+	 * @return the new byte array.s
+	 * @throws IllegalArgumentException if {@code p} is not a valid probability.
+	 *
+	 * @deprecated Use {@link #newArray(int, double)} instead.
+	 */
+	@Deprecated
+	public static byte[] newBitArray(final int length, final double p) {
+		return newArray(length, p);
+	}
+
+	/**
+	 * Create a new {@code byte[]} array which can store at least the number
+	 * of bits as defined by the given {@code length} parameter. The returned
+	 * byte array is initialized with ones according to the given ones
+	 * probability {@code p}.
+	 *
+	 * @param length the number of bits, the returned byte array can store.
+	 * @param p the ones probability of the returned byte array.
+	 * @return the new byte array.s
+	 * @throws IllegalArgumentException if {@code p} is not a valid probability.
+	 */
+	public static byte[] newArray(final int length, final double p) {
+		final byte[] bytes = newArray(length);
+
+		final IndexStream stream = IndexStream.Random(length, p);
+		for (int i = stream.next(); i != -1; i = stream.next()) {
+			bytes[i >>> 3] |= 1 << (i & 7);
+		}
+
+		return bytes;
 	}
 
 	/**
@@ -490,7 +543,7 @@ public final class bit extends StaticObject {
 			((long)(data[4] & 255) << 24) +
 			((data[5] & 255) << 16) +
 			((data[6] & 255) <<  8) +
-			((data[7] & 255) <<  0));
+			((data[7] & 255)));
 	}
 
 	static byte[] toBytes(final long value) {
@@ -502,7 +555,7 @@ public final class bit extends StaticObject {
 		bytes[4] = (byte)(value >>> 24);
 		bytes[5] = (byte)(value >>> 16);
 		bytes[6] = (byte)(value >>>  8);
-		bytes[7] = (byte)(value >>>  0);
+		bytes[7] = (byte)(value);
 		return bytes;
 	}
 
@@ -513,10 +566,10 @@ public final class bit extends StaticObject {
 			);
 		}
 
-		data[0 + start] = (byte)((v >>> 24) & 0xFF);
+		data[start]     = (byte)((v >>> 24) & 0xFF);
 		data[1 + start] = (byte)((v >>> 16) & 0xFF);
 		data[2 + start] = (byte)((v >>>  8) & 0xFF);
-		data[3 + start] = (byte)((v >>>  0) & 0xFF);
+		data[3 + start] = (byte)((v)        & 0xFF);
 
 		return data;
 	}
@@ -528,10 +581,10 @@ public final class bit extends StaticObject {
 			);
 		}
 
-		return ((data[0 + start] << 24) +
+		return ((data[start]     << 24) +
 				(data[1 + start] << 16) +
 				(data[2 + start] << 8) +
-				(data[3 + start] << 0));
+				(data[3 + start]));
 	}
 
 }

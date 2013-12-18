@@ -54,7 +54,7 @@ public interface Selector<
 	 *        or lower fitness values must be selected. This parameter determines
 	 *        whether the GA maximizes or minimizes the fitness function.
 	 * @return The selected phenotypes (a new Population).
-	 * @throws NullPointerException if the arguments is <code>null</code>.
+	 * @throws NullPointerException if the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the select count is smaller than zero.
 	 */
 	public Population<G, C> select(

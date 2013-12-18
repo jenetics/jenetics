@@ -252,9 +252,9 @@ public final class functions extends StaticObject {
 			}
 			@Override public String toString() {
 				return format(
-						"%s[%s, %s]",
-						getClass().getSimpleName(), a, b
-					);
+					"%s[%s, %s]",
+					getClass().getSimpleName(), a, b
+				);
 			}
 		};
 	}

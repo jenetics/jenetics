@@ -35,7 +35,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.4 &mdash; <em>$Date$</em>
+ * @version 1.5 &mdash; <em>$Date$</em>
  */
 public final class arrays extends StaticObject {
 	private arrays() {}
@@ -131,7 +131,10 @@ public final class arrays extends StaticObject {
 	 *			<tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
 	 *			<tt>j &gt; a.length</tt>
 	 * @throws NullPointerException if the give array is {@code null}.
+	 *
+	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
 	 */
+	@Deprecated
 	public static <T> void swap(final T[] array, final int i, final int j) {
 		final T old = array[i];
 		array[i] = array[j];
@@ -241,7 +244,10 @@ public final class arrays extends StaticObject {
 	 *
 	 * @param array the {@code array} to randomize.
 	 * @throws NullPointerException if the give array is {@code null}.
+	 *
+	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
 	 */
+	@Deprecated
 	public static <T> T[] shuffle(final T[] array) {
 		return shuffle(array, RandomRegistry.getRandom());
 	}
@@ -256,7 +262,10 @@ public final class arrays extends StaticObject {
 	 * @param <T> the component type of the array to randomize.
 	 * @throws NullPointerException if the give array or the random object is
 	 *         {@code null}.
+	 *
+	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
 	 */
+	@Deprecated
 	public static <T> T[] shuffle(final T[] array, final Random random) {
 		for (int j = array.length - 1; j > 0; --j) {
 			swap(array, j, random.nextInt(j + 1));
@@ -272,7 +281,10 @@ public final class arrays extends StaticObject {
 	 *
 	 * @param array the {@code array} to randomize.
 	 * @throws NullPointerException if the give array is {@code null}.
+	 *
+	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
 	 */
+	@Deprecated
 	public static <T> MSeq<T> shuffle(final MSeq<T> array) {
 		return shuffle(array, RandomRegistry.getRandom());
 	}
@@ -287,7 +299,10 @@ public final class arrays extends StaticObject {
 	 * @param <T> the component type of the array to randomize.
 	 * @throws NullPointerException if the give array or the random object is
 	 *          {@code null}.
+	 *
+	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
 	 */
+	@Deprecated
 	public static <T> MSeq<T> shuffle(final MSeq<T> array, final Random random) {
 		for (int j = array.length() - 1; j > 0; --j) {
 			array.swap(j, random.nextInt(j + 1));
@@ -377,7 +392,10 @@ public final class arrays extends StaticObject {
 	 * @throws IndexOutOfBoundsException if <tt>from &lt; 0</tt> or
 	 *          <tt>to &gt; a.length</tt>
 	 * @throws NullPointerException if the give array is {@code null}.
+	 *
+	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
 	 */
+	@Deprecated
 	public static <T> T[] reverse(final T[] array, final int from, final int to) {
 		rangeCheck(array.length, from, to);
 
@@ -396,11 +414,15 @@ public final class arrays extends StaticObject {
 	 * @param <T> the array type.
 	 * @param array the array to reverse.
 	 * @throws NullPointerException if the give array is {@code null}.
+	 *
+	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
 	 */
+	@Deprecated
 	public static <T> T[] reverse(final T[] array) {
 		return reverse(array, 0, array.length);
 	}
 
+	@Deprecated
 	static void reverse(final byte[] array) {
 		int i = 0;
 		int j = array.length;
@@ -735,7 +757,10 @@ public final class arrays extends StaticObject {
 	 * @throws NullPointerException if the given {@code array} is {@code null}.
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
 	 *          (start < 0 || end > length || start > end)
+	 *
+	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
 	 */
+	@Deprecated
 	public static int indexOf(
 		final Object[] array, final int start, final int end,
 		final Object element
@@ -775,7 +800,10 @@ public final class arrays extends StaticObject {
 	 *          given {@code array}, of -1 if the {@code array} does not contain
 	 *          the element.
 	 * @throws NullPointerException if the given {@code array} is {@code null}.
+	 *
+	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
 	 */
+	@Deprecated
 	public static int indexOf(final Object[] array, final Object element) {
 		return indexOf(array, 0, array.length, element);
 	}
@@ -874,7 +902,7 @@ public final class arrays extends StaticObject {
 	}
 
 	/**
-	 * @deprecated Align the naming with the upcomming JDK 1.8 release. Use
+	 * @deprecated Align the naming with the upcoming JDK 1.8 release. Use
 	 *             {@link #forEach(Iterable, Function)} instead.
 	 */
 	@Deprecated

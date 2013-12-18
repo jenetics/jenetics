@@ -38,7 +38,7 @@ import org.jenetics.util.lists;
 @Suite("Population")
 public class PopulationTest {
 
-	private int SIZE = 1000000;
+	private int SIZE = 1_000_000;
 	private final int LOOPS = 20;
 
 	private final Population<Float64Gene, Float64> _population = newFloat64GenePopulation(

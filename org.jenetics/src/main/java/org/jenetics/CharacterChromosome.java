@@ -214,7 +214,7 @@ public class CharacterChromosome
 	public String toString() {
 		final StringBuilder out = new StringBuilder();
 		for (CharacterGene gene : this) {
-			out.append(gene.toString());
+			out.append(gene);
 		}
 		return out.toString();
 	}
@@ -322,7 +322,7 @@ public class CharacterChromosome
 		final Array<CharacterGene> genes = new Array<>(length);
 		for (int i = 0; i < length; ++i) {
 			final CharacterGene gene = CharacterGene.valueOf(
-				Character.valueOf(in.readChar()),
+				in.readChar(),
 				_validCharacters
 			);
 			genes.set(i, gene);
