@@ -1,6 +1,6 @@
 /*
  * Java Genetic Algorithm Library (@__identifier__@).
- * Copyright (c) @__year__@ Franz WilhelmstÃ¶tter
+ * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import org.jenetics.internal.math.random;
 /**
  * Base class for random generators which create 32 bit random values natively.
  *
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz WilhelmstÃ¶tter</a>
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__version__@
  * @version @__version__@ &mdash; <em>$Date: 2013-12-19 $</em>
  */
