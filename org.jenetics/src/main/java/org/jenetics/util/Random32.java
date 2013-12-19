@@ -15,7 +15,7 @@
  * limitations under the License.
  *
  * Author:
- *    Franz WilhelmstÃ¶tter (franz.wilhelmstoetter@gmx.at)
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 package org.jenetics.util;
 
