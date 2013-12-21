@@ -110,6 +110,7 @@ task zip(type: Zip) {
 	}
 }
 
+/*
 task sha256(type: ChecksumTask) {
 	algorithm = 'SHA-256'
 	inputFile = file("build/distributions/${identifier}.zip")
@@ -126,5 +127,6 @@ signing {
 	//gpg --verify jenetics-1.4.0.zip.asc jenetics-1.4.0.zip
 	sign zip
 }
+*/
 
 
