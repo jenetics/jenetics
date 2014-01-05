@@ -68,7 +68,7 @@ public interface Seq<T> extends Iterable<T> {
 	);
 
 	/**
-	 * @deprecated Align the naming with the upcomming JDK 1.8 release. Use
+	 * @deprecated Align the naming with the upcoming JDK 1.8 release. Use
 	 *             {@link #forEach(Function)} instead.
 	 */
 	@Deprecated
@@ -84,7 +84,7 @@ public interface Seq<T> extends Iterable<T> {
 	public <R> void forEach(final Function<? super T, ? extends R> function);
 
 	/**
-	 * @deprecated Align the naming with the upcomming JDK 1.8 release. Use
+	 * @deprecated Align the naming with the upcoming JDK 1.8 release. Use
 	 *             {@link #forAll(Function)} instead.
 	 */
 	@Deprecated
