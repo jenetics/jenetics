@@ -312,18 +312,8 @@ public abstract class IO {
 		}
 
 		@Override
-		public boolean equals(final Object obj) {
-			return _adoptee.equals(obj);
-		}
-
-		@Override
 		public void flush() throws IOException {
 			_adoptee.flush();
-		}
-
-		@Override
-		public int hashCode() {
-			return _adoptee.hashCode();
 		}
 
 		@Override
