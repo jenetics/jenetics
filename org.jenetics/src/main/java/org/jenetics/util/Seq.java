@@ -33,7 +33,7 @@ import java.util.RandomAccess;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.3 &mdash; <em>$Date: 2013-08-30 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2014-01-05 $</em>
  */
 public interface Seq<T> extends Iterable<T> {
 
@@ -68,7 +68,7 @@ public interface Seq<T> extends Iterable<T> {
 	);
 
 	/**
-	 * @deprecated Align the naming with the upcomming JDK 1.8 release. Use
+	 * @deprecated Align the naming with the upcoming JDK 1.8 release. Use
 	 *             {@link #forEach(Function)} instead.
 	 */
 	@Deprecated
@@ -84,7 +84,7 @@ public interface Seq<T> extends Iterable<T> {
 	public <R> void forEach(final Function<? super T, ? extends R> function);
 
 	/**
-	 * @deprecated Align the naming with the upcomming JDK 1.8 release. Use
+	 * @deprecated Align the naming with the upcoming JDK 1.8 release. Use
 	 *             {@link #forAll(Function)} instead.
 	 */
 	@Deprecated
