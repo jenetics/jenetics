@@ -21,8 +21,6 @@ package org.jenetics.util;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.RandomAccess;
-
 
 /**
  * General interface for a ordered, fixed sized, object sequence.
@@ -311,7 +309,7 @@ public interface Seq<T> extends Iterable<T> {
 	/**
 	 * Returns a fixed-size list backed by the specified sequence. (Changes to
 	 * the returned list "write through" to the array.) The returned list is
-	 * fixed size, serializable and implements {@link RandomAccess}.
+	 * fixed size, serializable and implements {@link java.util.RandomAccess}.
 	 *
 	 * @return a list view of this sequence
 	 */
