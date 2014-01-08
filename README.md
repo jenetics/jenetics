@@ -68,7 +68,6 @@ Gradle has tasks which creates the project file for Eclipse and IntelliJ IDEA. C
 for creating the project files for Eclipse or IntelliJ, respectively.
 
 ## Examples
-
 ### Ones Counting
 
 Ones counting is one of the simplest model-problem and consists of a binary chromosome. The fitness of a `Genotype` is proportional to the number of ones. The fitness `Function` looks like this:
