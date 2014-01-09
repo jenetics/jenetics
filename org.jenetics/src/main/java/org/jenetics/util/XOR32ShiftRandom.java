@@ -30,6 +30,10 @@ public class XOR32ShiftRandom extends Random32 {
 
 	private int _x = (int)math.random.seed();
 
+	private static final int a = 1;
+	private static final int b = 3;
+	private static final int c = 10;
+
 	@Override
 	public int nextInt() {
 		/*
@@ -41,6 +45,10 @@ public class XOR32ShiftRandom extends Random32 {
 		x &= ((1L << 32) - 1);
 		return (int)x;
 		*/
+
+		_x ^= _x << a;
+		_x ^= _x >> b;
+		return _x ^= _x << c;
 
 		//_x ^= (_x << 13);
 		//_x = (_x >> 17);
@@ -55,7 +63,8 @@ public class XOR32ShiftRandom extends Random32 {
 		//return _x ^= _x << 5;
 
 
-		return _x += (_x*_x | 5);
+
+		//return (int)((_x += (_x*_x | 5)) >> 32);
 		//return (int)(_x >> 32);
 		//return (int)math.random.seed();
 	}
