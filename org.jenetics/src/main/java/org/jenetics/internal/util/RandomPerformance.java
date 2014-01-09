@@ -34,17 +34,14 @@ public class RandomPerformance {
 
 
 	public static void main(final String[] args) {
-		final int loops = 100_000_000;
+		final int loops = Integer.MAX_VALUE;//100_000_000;
 
-		//test(new Random(), loops);
-		test(ThreadLocalRandom.current(), loops);
-
-		test(new XOR32ShiftRandom(), loops);
-		test(new XOR32ShiftRandom(), loops);
-		test(new LCG64ShiftRandom(), loops);
-		test(new LCG64ShiftRandom(), loops);
-		test(ThreadLocalRandom.current(), loops);
-		test(ThreadLocalRandom.current(), loops);
+		for (int i = 0; i < 1; ++i) {
+			test(new Random(), loops);
+			test(new XOR32ShiftRandom(), loops);
+			test(new LCG64ShiftRandom(), loops);
+			test(ThreadLocalRandom.current(), loops);
+		}
 	}
 
 	private static void test(final Random random, final int loops) {
