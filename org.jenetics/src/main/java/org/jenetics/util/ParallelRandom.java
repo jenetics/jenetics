@@ -22,7 +22,7 @@ package org.jenetics.util;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__version__@
- * @version @__version__@ &mdash; <em>$Date: 2013-12-19 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-09 $</em>
  */
 public interface ParallelRandom {
 
@@ -38,7 +38,7 @@ public interface ParallelRandom {
 	 * @throws IllegalArgumentException if {@code p < 1 || s >= p}.
 	 */
 	public void split(final int p, final int s);
-	
+
 	/**
 	 * Changes the internal state of the PRNG in such a way that the engine
 	 * <i>jumps</i> 2<sup>s</sup> steps ahead.
@@ -47,7 +47,7 @@ public interface ParallelRandom {
 	 * @throws IllegalArgumentException if {@code s < 0}.
 	 */
 	public void jump2(final int s);
-	
+
 	/**
 	 * Changes the internal state of the PRNG in such a way that the engine
 	 * <i>jumps</i> s steps ahead.
@@ -56,5 +56,54 @@ public interface ParallelRandom {
 	 * @throws IllegalArgumentException if {@code s < 0}.
 	 */
 	public void jump(final long step);
-	
+
+	/*
+	 * Duplicate the java.util.Random interface.
+	 */
+
+	/**
+	 * @see {@link java.util.Random#setSeed(long)}
+	 */
+	public void setSeed(final long seed);
+
+	/**
+	 * @see {@link java.util.Random#nextBytes(byte[])}
+	 */
+	public void nextBytes(final byte[] bytes);
+
+	/**
+	 * @see {@link java.util.Random#nextInt()}
+	 */
+	public int nextInt();
+
+	/**
+	 * @see {@link java.util.Random#nextInt(int)}
+	 */
+	public int nextInt(int n);
+
+	/**
+	 * @see {@link java.util.Random#nextLong()}
+	 */
+	public long nextLong();
+
+	/**
+	 * @see {@link java.util.Random#nextBoolean()}
+	 */
+	public boolean nextBoolean();
+
+	/**
+	 * @see {@link java.util.Random#nextFloat()}
+	 */
+	public float nextFloat();
+
+	/**
+	 * @see {@link java.util.Random#nextDouble()}
+	 */
+	public double nextDouble();
+
+	/**
+	 * @see {@link java.util.Random#nextGaussian()}
+	 */
+	public double nextGaussian();
+
 }
