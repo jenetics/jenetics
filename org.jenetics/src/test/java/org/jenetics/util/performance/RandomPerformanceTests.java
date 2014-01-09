@@ -24,22 +24,22 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.jenetics.util.LCG64ShiftRandom;
-//import org.jenetics.util.XORShiftRandom;
+import org.jenetics.util.XOR32ShiftRandom;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-01 $</em>
+ * @version <em>$Date: 2014-01-09 $</em>
  */
 public class RandomPerformanceTests {
 
 
 	public static void main(final String[] args) {
-		final int loops = Integer.MAX_VALUE;//1_000_000_000;
+		final int loops = 1_000_000_000;
 
-		test(new Random(), loops);
-		test(ThreadLocalRandom.current(), loops);
-		//test(new XORShiftRandom(), loops);
+		//test(new Random(), loops);
+		test(new XOR32ShiftRandom(), loops);
 		test(new LCG64ShiftRandom(), loops);
+		test(ThreadLocalRandom.current(), loops);
 	}
 
 	private static void test(final Random random, final int loops) {
