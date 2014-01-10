@@ -40,7 +40,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5 &mdash; <em>$Date: 2013-11-24 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-01-10 $</em>
  */
 public final class DieHarder {
 
@@ -49,7 +49,7 @@ public final class DieHarder {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.5
-	 * @version 1.5 &mdash; <em>$Date: 2013-11-24 $</em>
+	 * @version 1.5 &mdash; <em>$Date: 2014-01-10 $</em>
 	 */
 	private static final class Randomizer implements Runnable {
 		private final Random _random;
@@ -114,11 +114,19 @@ public final class DieHarder {
 		));
 		randomizer.start();
 
+		int passedTestCounter = 0;
+		int failedTestCounter = 0;
+		int weakTestCounter = 0;
+		
 		final BufferedReader stdout = new BufferedReader (
 			new InputStreamReader(dieharder.getInputStream())
 		);
 		String line = null;
 		while ((line = stdout.readLine()) != null) {
+			if (line.contains("PASSED")) ++passedTestCounter;
+			if (line.contains("FAILED")) ++failedTestCounter;
+			if (line.contains("WEAK")) ++weakTestCounter;
+			
 			System.out.println(line);
 		}
 
@@ -126,6 +134,10 @@ public final class DieHarder {
 		randomizer.interrupt();
 		final long sec = (System.currentTimeMillis() - start)/1000;
 
+		printt(
+			"Summary: PASSED: %d, FAILED: %d, WEAK: %d", 
+			passedTestCounter, failedTestCounter, weakTestCounter
+		);
 		printt("Runtime: %d:%02d:%02d", sec/3600, (sec%3600)/60, (sec%60));
 
 	}
