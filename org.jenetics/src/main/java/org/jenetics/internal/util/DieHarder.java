@@ -119,12 +119,10 @@ public final class DieHarder {
 		randomizer.interrupt();
 		final long sec = (System.currentTimeMillis() - start)/1000;
 
-		/*
 		printt(
-			"Summary: PASSED: %d, FAILED: %d, WEAK: %d",
-			_passedTestCounter, _failedTestCounter, _weakTestCounter
+			"Summary: PASSED: %d, WEAK: %d, FAILED: %d",
+			getPassed(), getWeak(), getFailed()
 		);
-		*/
 		printt("Runtime: %d:%02d:%02d", sec/3600, (sec%3600)/60, (sec%60));
 	}
 
