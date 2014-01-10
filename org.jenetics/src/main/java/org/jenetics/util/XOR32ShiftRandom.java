@@ -19,6 +19,8 @@
  */
 package org.jenetics.util;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -162,12 +164,20 @@ public class XOR32ShiftRandom extends Random32 {
 	private static void test(final Param param)
 		throws IOException, InterruptedException
 	{
-		final Random random = new XOR32ShiftRandom(param);
-		final DieHarder test = new DieHarder(random, DieHarder.DevNull, false);
-		test.run();
-		System.out.println(String.format(
-			"%s --> %s", param, test
+		final File reportFile = new File(
+			"/home/fwilhelm/Temp", String.format(
+			"report_%d_%d_%d", param.a, param.b, param.c
 		));
+
+		try (FileWriter writer = new FileWriter(reportFile)) {
+			final Random random = new XOR32ShiftRandom(param);
+			final DieHarder test = new DieHarder(random, writer, false);
+			test.run();
+			System.out.println(String.format(
+				"%s --> %s", param, test
+			));
+		}
+
 	}
 
 	private static final int[][] BASE_PARAMS = {
