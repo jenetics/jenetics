@@ -44,6 +44,22 @@ import java.util.regex.Pattern;
  * @version 1.5 &mdash; <em>$Date: 2014-01-10 $</em>
  */
 public final class DieHarder {
+
+	public static final Appendable DevNull = new Appendable() {
+		@Override
+		public Appendable append(CharSequence csq) {
+			return this;
+		}
+		@Override
+		public Appendable append(CharSequence csq, int start, int end) {
+			return this;
+		}
+		@Override
+		public Appendable append(char c) {
+			return this;
+		}
+	};
+
 	private final Random _random;
 	private final Appendable _output;
 	private final boolean _verbose;
@@ -70,6 +86,7 @@ public final class DieHarder {
 
 		// Perform all random tests.
 		dieharderArgs.add("-a");
+		//dieharderArgs.add("-d 6");
 
 		printv();
 
@@ -91,7 +108,6 @@ public final class DieHarder {
 			final TestResult result = TestResult.valueOf(line);
 			if (result != null) {
 				_results.add(result);
-				System.out.println(result);
 			}
 
 			if (_verbose) {
@@ -118,6 +134,36 @@ public final class DieHarder {
 
 	public List<TestResult> getResults() {
 		return Collections.unmodifiableList(_results);
+	}
+
+	public int getPassed() {
+		int sum = 0;
+		for (TestResult result : _results) {
+			if (result.assessment == TestResult.Assessment.PASSED) {
+				++sum;
+			}
+		}
+		return sum;
+	}
+
+	public int getWeak() {
+		int sum = 0;
+		for (TestResult result : _results) {
+			if (result.assessment == TestResult.Assessment.WEAK) {
+				++sum;
+			}
+		}
+		return sum;
+	}
+
+	public int getFailed() {
+		int sum = 0;
+		for (TestResult result : _results) {
+			if (result.assessment == TestResult.Assessment.FAILED) {
+				++sum;
+			}
+		}
+		return sum;
 	}
 
 	private void printt(final String title, final Object... args) throws IOException {
@@ -158,6 +204,14 @@ public final class DieHarder {
 		_output.append(System.lineSeparator());
 	}
 
+	@Override
+	public String toString() {
+		return String.format(
+			"p=%d, w=%d, f=%d",
+			getPassed(), getWeak(), getFailed()
+		);
+	}
+
 	/**
 	 * Writes random numbers to an given data output stream.
 	 *
@@ -190,17 +244,6 @@ public final class DieHarder {
 	private static final class TestResult {
 		public static enum Assessment {
 			PASSED, FAILED, WEAK;
-
-			/*
-			private Assessment valueOf(final String name) {
-				switch (name) {
-					case "PASSED": return PASSED;
-					case "FAILED": return FAILED;
-					case "WEAK": return WEAK;
-					default: return null;
-				}
-			}
-			*/
 		}
 
 		public final String testName;
