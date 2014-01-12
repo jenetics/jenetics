@@ -114,55 +114,14 @@ public abstract class IO {
 		public void write(final Object object, final OutputStream out)
 			throws IOException
 		{
-			try {
-				final Class<?> cls = object.getClass();
-				final XmlJavaTypeAdapter a = cls.getAnnotation(XmlJavaTypeAdapter.class);
-				if (a != null) {
-					final XmlAdapter<Object, Object> adapter = a.value().newInstance();
-					JAXB.marshal(adapter.marshal(object), out);
-				} else {
-					JAXB.marshal(object, out);
-				}
-			} catch (Exception e) {
-				throw new IOException(e);
-			}
+			JAXB.marshal(object, out);
 		}
 
 		@Override
 		public <T> T read(final Class<T> type, final InputStream in)
 			throws IOException
 		{
-			try {
-				Class<?> xmlType = type;
-				final XmlJavaTypeAdapter a = type.getAnnotation(XmlJavaTypeAdapter.class);
-				if (a != null) {
-					if (XMLAdapter.class.isAssignableFrom(a.value())) {
-						final XMLAdapter<Object, Object> adapter = (XMLAdapter)a.value().newInstance();
-						final Object obj = JAXB.unmarshal(in, adapter.getValueType());
-						return (T)adapter.unmarshal(obj);
-					}
-				}
-
-				/*
-				final Class<?> cls = object.getClass();
-				final XmlJavaTypeAdapter a = type.getAnnotation(XmlJavaTypeAdapter.class);
-				if (a != null) {
-					final XmlAdapter<Object, Object> adapter = a.value().newInstance();
-					return JAXB.unmarshal(in, type);
-				} else {
-					final Object obj = JAXB.unmarshal(in, type);
-					if (obj instanceof Element) {
-						String typeName = ((Element)obj).getLocalName();
-						Class<T> otype = (Class<T>)Class.forName(typeName);
-						return JAXB.unmarshal(obj.toString(), otype);
-					}
-					return (T)obj;
-				}
-				*/
-				return (T) JAXB.unmarshal(in, type);
-			} catch (Exception e) {
-				throw new IOException(e);
-			}
+			return JAXB.unmarshal(in, type);
 		}
 	};
 
