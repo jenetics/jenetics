@@ -303,7 +303,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 		LocalContext.enter();
 		try {
 			RandomRegistry.setRandom(random);
-			final BitChromosome chromosome = new BitChromosome(4, 0.5);
+			final BitChromosome chromosome = new BitChromosome(500, 0.5);
 
 			IO.jaxb.write(chromosome, System.out);
 		} finally {

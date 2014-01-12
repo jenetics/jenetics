@@ -114,7 +114,18 @@ public abstract class IO {
 		public void write(final Object object, final OutputStream out)
 			throws IOException
 		{
-			JAXB.marshal(object, out);
+			try {
+				final Class<?> cls = object.getClass();
+				final XmlJavaTypeAdapter a = cls.getAnnotation(XmlJavaTypeAdapter.class);
+				if (a != null) {
+					final XmlAdapter<Object, Object> adapter = a.value().newInstance();
+					JAXB.marshal(adapter.marshal(object), out);
+				} else {
+					JAXB.marshal(object, out);
+				}
+			} catch (Exception e) {
+				throw new IOException(e);
+			}
 		}
 
 		@Override
