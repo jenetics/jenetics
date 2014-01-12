@@ -35,8 +35,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlValue;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import javolution.text.Text;
@@ -46,8 +46,6 @@ import javolution.xml.stream.XMLStreamException;
 
 import org.jscience.mathematics.number.LargeInteger;
 import org.jscience.mathematics.number.Number;
-
-import org.jenetics.internal.BitChromosomeXML;
 
 import org.jenetics.util.ISeq;
 import org.jenetics.util.bit;
@@ -59,10 +57,7 @@ import org.jenetics.util.bit;
  * @since 1.0
  * @version @__version__@ &mdash; <em>$Date: 2014-01-12 $</em>
  */
-//@XmlRootElement(name = "org.jenetics.BitChromosome")
-//@XmlType(name = "org.jenetics.BitChromosome")
-//@XmlAccessorType(XmlAccessType.NONE)
-@XmlJavaTypeAdapter(BitChromosomeXML.Adapter.class)
+@XmlJavaTypeAdapter(BitChromosome.XML.Adapter.class)
 public class BitChromosome extends Number<BitChromosome>
 	implements
 		Chromosome<BitGene>,
@@ -232,10 +227,6 @@ public class BitChromosome extends Number<BitChromosome>
 				"Index: " + index + ", Length: " + _length
 			);
 		}
-	}
-
-	public double getOneProbability() {
-		return _p;
 	}
 
 	@Override
@@ -486,12 +477,43 @@ public class BitChromosome extends Number<BitChromosome>
 		return chromosome;
 	}
 
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private void writeObject(final ObjectOutputStream out)
+		throws IOException
+	{
+		out.defaultWriteObject();
+
+		out.writeInt(_length);
+		out.writeDouble(_p);
+		out.writeInt(_genes.length);
+		out.write(_genes);
+	}
+
+	private void readObject(final ObjectInputStream in)
+		throws IOException, ClassNotFoundException
+	{
+		in.defaultReadObject();
+
+		_length = in.readInt();
+		_p = in.readDouble();
+
+		final int bytes = in.readInt();
+		_genes = new byte[bytes];
+		in.readFully(_genes);
+
+		_seq = new BitGeneArray(_genes, 0, _length);
+	}
+
 	/* *************************************************************************
 	 *  XML object serialization
 	 * ************************************************************************/
 
 	static final XMLFormat<BitChromosome>
-	XML = new XMLFormat<BitChromosome>(BitChromosome.class)
+		XML = new XMLFormat<BitChromosome>(BitChromosome.class)
 	{
 		private static final String LENGTH = "length";
 		private static final String PROBABILITY = "probability";
@@ -524,33 +546,38 @@ public class BitChromosome extends Number<BitChromosome>
 	};
 
 	/* *************************************************************************
-	 *  Java object serialization
+	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	private void writeObject(final ObjectOutputStream out)
-		throws IOException
-	{
-		out.defaultWriteObject();
+	@XmlRootElement(name = "org.jenetics.BitChromosome")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	final static class XML {
+		@XmlAttribute int length;
+		@XmlAttribute double probability;
+		@XmlValue String value;
 
-		out.writeInt(_length);
-		out.writeDouble(_p);
-		out.writeInt(_genes.length);
-		out.write(_genes);
-	}
+		public final static class Adapter
+			extends XmlAdapter<XML, BitChromosome>
+		{
+			@Override
+			public XML marshal(final BitChromosome chromosome) {
+				final XML xml = new XML();
+				xml.length = chromosome._length;
+				xml.probability = chromosome._p;
+				xml.value = bit.toByteString(chromosome.toByteArray());
+				return xml;
+			}
 
-	private void readObject(final ObjectInputStream in)
-		throws IOException, ClassNotFoundException
-	{
-		in.defaultReadObject();
-
-		_length = in.readInt();
-		_p = in.readDouble();
-
-		final int bytes = in.readInt();
-		_genes = new byte[bytes];
-		in.readFully(_genes);
-
-		_seq = new BitGeneArray(_genes, 0, _length);
+			@Override
+			public BitChromosome unmarshal(final XML xml) {
+				final BitChromosome chromosome = new BitChromosome(
+					bit.fromByteString(xml.value)
+				);
+				chromosome._p = xml.probability;
+				chromosome._length = xml.length;
+				return chromosome;
+			}
+		}
 	}
 
 }
