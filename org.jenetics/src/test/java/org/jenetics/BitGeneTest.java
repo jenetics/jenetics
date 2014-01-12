@@ -27,8 +27,6 @@ import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import javax.xml.bind.JAXB;
-
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -121,8 +119,6 @@ public class BitGeneTest extends GeneTester<BitGene> {
 		//IO.jaxb.write(BitGene.TRUE, basePath.resolve("BitGene_TRUE.jaxb.xml"));
 		//IO.jaxb.write(BitGene.FALSE, basePath.resolve("BitGene_FALSE.jaxb.xml"));
 
-		GeneHolder holder = new GeneHolder();
-		holder.gene = BitGene.FALSE;
 		IO.jaxb.write(BitGene.FALSE, System.out);
 
 		String resource = "/org/jenetics/BitGene_FALSE.jaxb.xml";
@@ -131,10 +127,6 @@ public class BitGeneTest extends GeneTester<BitGene> {
 
 			Assert.assertEquals(object, BitGene.FALSE);
 		}
-	}
-
-	static class GeneHolder {
-		public BitGene gene;
 	}
 
 }
