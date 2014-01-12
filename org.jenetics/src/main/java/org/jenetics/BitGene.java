@@ -19,6 +19,8 @@
  */
 package org.jenetics;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
@@ -33,6 +35,7 @@ import org.jenetics.util.RandomRegistry;
  * @since 1.0
  * @version 1.4 &mdash; <em>$Date$</em>
  */
+@XmlRootElement
 public enum BitGene
 	implements
 		Gene<Boolean, BitGene>,
