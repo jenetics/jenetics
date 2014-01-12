@@ -94,6 +94,23 @@ public class BitGeneTest extends GeneTester<BitGene> {
 		}
 	}
 
+	@Test
+	public void jaxbSerializationCompatibility() throws IOException {
+		String resource = "/org/jenetics/BitGene_TRUE.jaxb.xml";
+		try (InputStream in = getClass().getResourceAsStream(resource)) {
+			final Object object = IO.jaxb.read(BitGene.class, in);
+
+			Assert.assertEquals(object, BitGene.TRUE);
+		}
+
+		resource = "/org/jenetics/BitGene_FALSE.jaxb.xml";
+		try (InputStream in = getClass().getResourceAsStream(resource)) {
+			final Object object = IO.jaxb.read(BitGene.class, in);
+
+			Assert.assertEquals(object, BitGene.FALSE);
+		}
+	}
+
 
 	public static void main(final String[] args) throws Exception {
 		final Path basePath = Paths.get("/home/fwilhelm/Workspace/Development/Projects/Jenetics/org.jenetics/src/test/resources/org/jenetics/");
@@ -101,12 +118,14 @@ public class BitGeneTest extends GeneTester<BitGene> {
 		//IO.object.write(BitGene.FALSE, basePath.resolve("BitGene_FALSE.object"));
 		//IO.xml.write(BitGene.TRUE, basePath.resolve("BitGene_TRUE.xml"));
 		//IO.xml.write(BitGene.FALSE, basePath.resolve("BitGene_FALSE.xml"));
+		//IO.jaxb.write(BitGene.TRUE, basePath.resolve("BitGene_TRUE.jaxb.xml"));
+		//IO.jaxb.write(BitGene.FALSE, basePath.resolve("BitGene_FALSE.jaxb.xml"));
 
 		GeneHolder holder = new GeneHolder();
 		holder.gene = BitGene.FALSE;
 		IO.jaxb.write(BitGene.FALSE, System.out);
 
-		String resource = "/org/jenetics/BitGene_FALSE.xml";
+		String resource = "/org/jenetics/BitGene_FALSE.jaxb.xml";
 		try (InputStream in = BitGeneTest.class.getResourceAsStream(resource)) {
 			final Object object = IO.jaxb.read(BitGene.class, in);
 
