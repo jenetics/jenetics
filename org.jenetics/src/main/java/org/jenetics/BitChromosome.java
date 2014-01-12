@@ -31,6 +31,14 @@ import java.util.BitSet;
 import java.util.Iterator;
 import java.util.ListIterator;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import javolution.text.Text;
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
@@ -38,6 +46,8 @@ import javolution.xml.stream.XMLStreamException;
 
 import org.jscience.mathematics.number.LargeInteger;
 import org.jscience.mathematics.number.Number;
+
+import org.jenetics.internal.BitChromosomeXML;
 
 import org.jenetics.util.ISeq;
 import org.jenetics.util.bit;
@@ -47,8 +57,12 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.5 &mdash; <em>$Date$</em>
+ * @version @__version__@ &mdash; <em>$Date$</em>
  */
+//@XmlRootElement(name = "org.jenetics.BitChromosome")
+//@XmlType(name = "org.jenetics.BitChromosome")
+//@XmlAccessorType(XmlAccessType.NONE)
+@XmlJavaTypeAdapter(BitChromosomeXML.Adapter.class)
 public class BitChromosome extends Number<BitChromosome>
 	implements
 		Chromosome<BitGene>,
@@ -60,11 +74,13 @@ public class BitChromosome extends Number<BitChromosome>
 	/**
 	 * The one's probability of the randomly generated Chromosome.
 	 */
+	@XmlAttribute(name = "p")
 	protected double _p;
 
 	/**
 	 * The length of the chromosomes (number of bits).
 	 */
+	@XmlAttribute(name = "length")
 	protected int _length;
 
 	/**
@@ -216,6 +232,10 @@ public class BitChromosome extends Number<BitChromosome>
 				"Index: " + index + ", Length: " + _length
 			);
 		}
+	}
+
+	public double getOneProbability() {
+		return _p;
 	}
 
 	@Override
