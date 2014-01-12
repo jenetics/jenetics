@@ -29,9 +29,18 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.nio.file.Path;
 
+import javax.xml.bind.JAXB;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import javolution.xml.XMLObjectReader;
 import javolution.xml.XMLObjectWriter;
 import javolution.xml.stream.XMLStreamException;
+
+import org.w3c.dom.Element;
+
+import org.jenetics.internal.BitGeneXML;
+import org.jenetics.internal.util.XMLAdapter;
 
 /**
  * Class for object serialization. The following example shows how to write and
@@ -50,7 +59,7 @@ import javolution.xml.stream.XMLStreamException;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-01-05 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-01-12 $</em>
  */
 public abstract class IO {
 
@@ -94,6 +103,64 @@ public abstract class IO {
 					reader.reset();
 				}
 			} catch (XMLStreamException e) {
+				throw new IOException(e);
+			}
+		}
+	};
+
+	public static IO jaxb = new IO() {
+
+		@Override
+		public void write(final Object object, final OutputStream out)
+			throws IOException
+		{
+			try {
+				final Class<?> cls = object.getClass();
+				final XmlJavaTypeAdapter a = cls.getAnnotation(XmlJavaTypeAdapter.class);
+				if (a != null) {
+					final XmlAdapter<Object, Object> adapter = a.value().newInstance();
+					JAXB.marshal(adapter.marshal(object), out);
+				} else {
+					JAXB.marshal(object, out);
+				}
+			} catch (Exception e) {
+				throw new IOException(e);
+			}
+		}
+
+		@Override
+		public <T> T read(final Class<T> type, final InputStream in)
+			throws IOException
+		{
+			try {
+				Class<?> xmlType = type;
+				final XmlJavaTypeAdapter a = type.getAnnotation(XmlJavaTypeAdapter.class);
+				if (a != null) {
+					if (XMLAdapter.class.isAssignableFrom(a.value())) {
+						final XMLAdapter<Object, Object> adapter = (XMLAdapter)a.value().newInstance();
+						final Object obj = JAXB.unmarshal(in, adapter.getValueType());
+						return (T)adapter.unmarshal(obj);
+					}
+				}
+
+				/*
+				final Class<?> cls = object.getClass();
+				final XmlJavaTypeAdapter a = type.getAnnotation(XmlJavaTypeAdapter.class);
+				if (a != null) {
+					final XmlAdapter<Object, Object> adapter = a.value().newInstance();
+					return JAXB.unmarshal(in, type);
+				} else {
+					final Object obj = JAXB.unmarshal(in, type);
+					if (obj instanceof Element) {
+						String typeName = ((Element)obj).getLocalName();
+						Class<T> otype = (Class<T>)Class.forName(typeName);
+						return JAXB.unmarshal(obj.toString(), otype);
+					}
+					return (T)obj;
+				}
+				*/
+				return (T) JAXB.unmarshal(in, type);
+			} catch (Exception e) {
 				throw new IOException(e);
 			}
 		}
@@ -296,7 +363,7 @@ public abstract class IO {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version 1.0 &mdash; <em>$Date: 2014-01-05 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2014-01-12 $</em>
 	 */
 	private static final class NonClosableOutputStream extends OutputStream {
 		private final OutputStream _adoptee;
@@ -340,7 +407,7 @@ public abstract class IO {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version 1.0 &mdash; <em>$Date: 2014-01-05 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2014-01-12 $</em>
 	 */
 	private static final class NonClosableInputStream extends InputStream {
 		private final InputStream _adoptee;
