@@ -292,6 +292,26 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 		}
 	}
 
+	@Test
+	public void jaxbSerializationCompatibility() throws IOException {
+		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
+		LocalContext.enter();
+		try {
+			RandomRegistry.setRandom(random);
+			final BitChromosome chromosome = new BitChromosome(5000, 0.5);
+
+			final String resource = "/org/jenetics/BitChromosome.xml";
+			try (InputStream in = getClass().getResourceAsStream(resource)) {
+				final Object object = IO.jaxb.read(BitChromosome.class, in);
+
+				Assert.assertEquals(chromosome, object);
+			}
+		} finally {
+			LocalContext.exit();
+		}
+	}
+
+
 	public static void main(final String[] args) throws Exception {
 		final Path basePath = Paths.get("/home/fwilhelm/Workspace/Development/Projects/Jenetics/org.jenetics/src/test/resources/org/jenetics/");
 		//IO.object.write(BitGene.TRUE, basePath.resolve("BitGene_TRUE.object"));
