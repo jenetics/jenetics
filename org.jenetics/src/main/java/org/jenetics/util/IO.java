@@ -30,6 +30,8 @@ import java.io.OutputStream;
 import java.nio.file.Path;
 
 import javax.xml.bind.JAXB;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -41,6 +43,9 @@ import org.w3c.dom.Element;
 
 import org.jenetics.internal.BitGeneXML;
 import org.jenetics.internal.util.XMLAdapter;
+
+import org.jenetics.BitChromosome;
+import org.jenetics.Genotype;
 
 /**
  * Class for object serialization. The following example shows how to write and
@@ -115,14 +120,22 @@ public abstract class IO {
 			throws IOException
 		{
 			try {
+				final JAXBContext context = JAXBContext.newInstance("org.jenetics");
+				final Marshaller marshaller = context.createMarshaller();
+				marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+
+				//marshaller.marshal(object, out);
+
 				final Class<?> cls = object.getClass();
 				final XmlJavaTypeAdapter a = cls.getAnnotation(XmlJavaTypeAdapter.class);
 				if (a != null) {
 					final XmlAdapter<Object, Object> adapter = a.value().newInstance();
-					JAXB.marshal(adapter.marshal(object), out);
+					marshaller.setAdapter(adapter);
+					marshaller.marshal(adapter.marshal(object), out);
 				} else {
-					JAXB.marshal(object, out);
+					marshaller.marshal(object, out);
 				}
+
 			} catch (Exception e) {
 				throw new IOException(e);
 			}

@@ -47,6 +47,8 @@ import javolution.xml.stream.XMLStreamException;
 import org.jscience.mathematics.number.LargeInteger;
 import org.jscience.mathematics.number.Number;
 
+import org.jenetics.internal.BitChromosomeXML;
+
 import org.jenetics.util.ISeq;
 import org.jenetics.util.bit;
 
@@ -57,7 +59,7 @@ import org.jenetics.util.bit;
  * @since 1.0
  * @version @__version__@ &mdash; <em>$Date$</em>
  */
-@XmlJavaTypeAdapter(BitChromosome.XML.Adapter.class)
+@XmlJavaTypeAdapter(BitChromosomeXML.Adapter.class)
 public class BitChromosome extends Number<BitChromosome>
 	implements
 		Chromosome<BitGene>,
@@ -551,17 +553,17 @@ public class BitChromosome extends Number<BitChromosome>
 
 	@XmlRootElement(name = "org.jenetics.BitChromosome")
 	@XmlAccessorType(XmlAccessType.FIELD)
-	final static class XML {
+	public final static class __XML {
 		@XmlAttribute int length;
 		@XmlAttribute double probability;
 		@XmlValue String value;
 
 		public final static class Adapter
-			extends XmlAdapter<XML, BitChromosome>
+			extends XmlAdapter<__XML, BitChromosome>
 		{
 			@Override
-			public XML marshal(final BitChromosome chromosome) {
-				final XML xml = new XML();
+			public __XML marshal(final BitChromosome chromosome) {
+				final __XML xml = new __XML();
 				xml.length = chromosome._length;
 				xml.probability = chromosome._p;
 				xml.value = bit.toByteString(chromosome.toByteArray());
@@ -569,7 +571,7 @@ public class BitChromosome extends Number<BitChromosome>
 			}
 
 			@Override
-			public BitChromosome unmarshal(final XML xml) {
+			public BitChromosome unmarshal(final __XML xml) {
 				final BitChromosome chromosome = new BitChromosome(
 					bit.fromByteString(xml.value)
 				);
