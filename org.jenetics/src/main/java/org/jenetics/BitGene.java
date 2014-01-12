@@ -36,7 +36,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.4 &mdash; <em>$Date: 2014-01-12 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-12 $</em>
  */
 @XmlRootElement(name = "org.jenetics.BitGene")
 @XmlType(name = "org.jenetics.BitGene")
