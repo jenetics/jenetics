@@ -25,6 +25,8 @@ import static org.testng.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.BitSet;
 import java.util.Random;
 
@@ -44,7 +46,7 @@ import org.jenetics.util.bit;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-10-22 $</em>
+ * @version <em>$Date: 2014-01-12 $</em>
  */
 public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
@@ -290,6 +292,38 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 		}
 	}
 
+	public static void main(final String[] args) throws Exception {
+		final Path basePath = Paths.get("/home/fwilhelm/Workspace/Development/Projects/Jenetics/org.jenetics/src/test/resources/org/jenetics/");
+		//IO.object.write(BitGene.TRUE, basePath.resolve("BitGene_TRUE.object"));
+		//IO.object.write(BitGene.FALSE, basePath.resolve("BitGene_FALSE.object"));
+		//IO.xml.write(BitGene.TRUE, basePath.resolve("BitGene_TRUE.xml"));
+		//IO.xml.write(BitGene.FALSE, basePath.resolve("BitGene_FALSE.xml"));
+
+		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
+		LocalContext.enter();
+		try {
+			RandomRegistry.setRandom(random);
+			final BitChromosome chromosome = new BitChromosome(4, 0.5);
+
+			IO.jaxb.write(chromosome, System.out);
+		} finally {
+			LocalContext.exit();
+		}
+
+/*
+		IO.jaxb.write(BitGene.TRUE, basePath.resolve("BitChromosome.jaxb.xml"));
+		IO.jaxb.write(BitGene.FALSE, basePath.resolve("BitChromosome.jaxb.xml"));
+
+		IO.jaxb.write(BitGene.FALSE, System.out);
+
+		String resource = "/org/jenetics/BitGene_FALSE.jaxb.xml";
+		try (InputStream in = BitGeneTest.class.getResourceAsStream(resource)) {
+			final Object object = IO.jaxb.read(BitGene.class, in);
+
+			Assert.assertEquals(object, BitGene.FALSE);
+		}
+		*/
+	}
 
 }
 
