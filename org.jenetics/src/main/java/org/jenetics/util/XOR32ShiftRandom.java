@@ -37,7 +37,7 @@ import org.jenetics.internal.util.DieHarder;
  * http://www.jstatsoft.org/v08/i14/paper
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-01-10 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-12 $</em>
  * @since @__version__@
  */
 public class XOR32ShiftRandom extends Random32 {
@@ -45,7 +45,7 @@ public class XOR32ShiftRandom extends Random32 {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version @__version__@ &mdash; <em>$Date: 2014-01-10 $</em>
+	 * @version @__version__@ &mdash; <em>$Date: 2014-01-12 $</em>
 	 * @since @__version__@
 	 */
 	public static final class Param {
@@ -166,7 +166,7 @@ public class XOR32ShiftRandom extends Random32 {
 	{
 		final File reportFile = new File(
 			"/home/fwilhelm/Temp", String.format(
-			"report_%d_%d_%d", param.a, param.b, param.c
+			"%s_%d_%d_%d.report", XOR32ShiftRandom.class.getSimpleName(), param.a, param.b, param.c
 		));
 
 		try (FileWriter writer = new FileWriter(reportFile)) {
