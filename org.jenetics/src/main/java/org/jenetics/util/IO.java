@@ -132,6 +132,17 @@ public abstract class IO {
 		public <T> T read(final Class<T> type, final InputStream in)
 			throws IOException
 		{
+//			try {
+//				final XmlJavaTypeAdapter a = type.getAnnotation(XmlJavaTypeAdapter.class);
+//				if (a != null) {
+//					final XmlAdapter<Object, Object> adapter = a.value().newInstance();
+//					JAXB.marshal(adapter.marshal(object), out);
+//				} else {
+//					JAXB.marshal(object, out);
+//				}
+//			} catch (Exception e) {
+//				throw new IOException(e);
+//			}
 			return JAXB.unmarshal(in, type);
 		}
 	};
