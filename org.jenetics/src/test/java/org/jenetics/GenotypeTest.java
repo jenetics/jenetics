@@ -146,16 +146,17 @@ public class GenotypeTest extends ObjectTester<Genotype<Float64Gene>> {
 		try {
 			RandomRegistry.setRandom(random);
 			final BitChromosome chromosome = new BitChromosome(30, 0.5);
-			final Genotype<?> genotype = Genotype.valueOf(chromosome);
+			final Genotype<?> genotype = Genotype.valueOf(chromosome, chromosome);
 
+			/*
 			JAXBContext jc = JAXBContext.newInstance("org.jenetics");
 			Marshaller marshaller = jc.createMarshaller();
 			marshaller.setAdapter(new GenotypeXML.Adapter());
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			marshaller.marshal(genotype, System.out);
+			*/
 
-
-			//IO.jaxb.write(genotype, System.out);
+			IO.jaxb.write(genotype, System.out);
 		} finally {
 			LocalContext.exit();
 		}

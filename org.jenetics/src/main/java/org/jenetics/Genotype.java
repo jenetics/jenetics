@@ -29,12 +29,11 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyAttribute;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlValue;
+import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -45,7 +44,8 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
-import org.jenetics.internal.GenotypeXML;
+import org.jenetics.internal.jaxb.ChromosomeXmlAdapter;
+import org.jenetics.internal.jaxb.adapter;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
@@ -53,7 +53,6 @@ import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Seq;
 import org.jenetics.util.Verifiable;
-import org.jenetics.util.bit;
 
 /**
  * The central class the GA is working with, is the {@code Genotype}. It is the
@@ -83,8 +82,7 @@ import org.jenetics.util.bit;
  * @since 1.0
  * @version 1.0 &mdash; <em>$Date: 2014-01-13 $</em>
  */
-@XmlJavaTypeAdapter(GenotypeXML.Adapter.class)
-//@XmlRootElement(name = "org.jenetics.Genotype")
+@XmlJavaTypeAdapter(Genotype.Model.Adapter.class)
 public final class Genotype<G extends Gene<?, G>>
 	implements
 		Factory<Genotype<G>>,
@@ -384,28 +382,55 @@ public final class Genotype<G extends Gene<?, G>>
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "org.jenetics.Genotype")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	final static class XML {
-		@XmlAttribute
-		int length;
+	private static final String JAXB_TYPE_NAME = "org.jenetics.Genotype";
 
-		@XmlElement(name = "chromosome")
-		List<BitChromosome> chromosomes;
+	@XmlRootElement(name = JAXB_TYPE_NAME)
+	@XmlType(name = JAXB_TYPE_NAME)
+	@XmlAccessorType(XmlAccessType.FIELD)
+	public final static class Model {
+		@XmlAttribute
+		public int length;
+
+		@XmlJavaTypeAdapter(ChromosomeXmlAdapter.class)
+		//@XmlElement(name = "chromosome")
+		@XmlAnyElement
+		public Chromosome chromosomes;
 
 		public final static class Adapter
-			extends XmlAdapter<XML, Genotype<?>>
+			extends XmlAdapter<Model, Genotype<?>>
 		{
 			@Override
-			public XML marshal(final Genotype<?> genotype) {
-				final XML xml = new XML();
-				xml.length = genotype.length();
-				xml.chromosomes = (List<BitChromosome>)(Object)genotype.toSeq().asList();
-				return xml;
+			public Model marshal(final Genotype<?> genotype) throws Exception {
+				final Model model = new Model();
+				model.length = genotype.length();
+				model.chromosomes = genotype.getChromosome();
+
+				/*
+				model.chromosomes = new Object[genotype.length()];
+
+				System.out.println(genotype.getChromosome().getClass());
+				final XmlAdapter<Object, Object> adapter = org.jenetics.internal.jaxb.adapter.xml(
+					genotype.getChromosome()
+				);
+
+				System.out.println(adapter);
+				for (int i = 0; i < model.length; ++i) {
+					model.chromosomes[i] = adapter.marshal(genotype.getChromosome(i));
+				}
+				*/
+
+				/*
+				BitChromosome.Model.Adapter adapter = new BitChromosome.Model.Adapter();
+				for (int i = 0; i < model.length; ++i) {
+					model.chromosomes[i] = adapter.marshal((BitChromosome)genotype.getChromosome(i));
+				}
+				*/
+
+				return model;
 			}
 
 			@Override
-			public Genotype<?> unmarshal(final XML xml) {
+			public Genotype<?> unmarshal(final Model model) {
 				return null;
 			}
 		}

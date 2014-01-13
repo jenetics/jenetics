@@ -36,11 +36,11 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-01-12 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-13 $</em>
  */
 @XmlRootElement(name = "org.jenetics.BitGene")
 @XmlType(name = "org.jenetics.BitGene")
-@XmlEnum ( value = Boolean.class )
+@XmlEnum (value = Boolean.class)
 public enum BitGene
 	implements
 		Gene<Boolean, BitGene>,
