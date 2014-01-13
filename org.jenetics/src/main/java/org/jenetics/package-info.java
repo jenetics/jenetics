@@ -306,14 +306,14 @@
  * @since 1.0
  * @version @__version__@ &mdash; <em>$Date$</em>
  */
-@XmlSchema(
-	namespace = "http://www.jenetics.org/ga",
-	elementFormDefault = XmlNsForm.QUALIFIED
-)
-@XmlJavaTypeAdapters({
-	@XmlJavaTypeAdapter(type = BitChromosome.class, value = BitChromosomeXML.Adapter.class),
-	@XmlJavaTypeAdapter(type = Genotype.class, value = GenotypeXML.Adapter.class)
-})
+//@XmlSchema(
+//	namespace = "http://www.jenetics.org/ga",
+//	elementFormDefault = XmlNsForm.QUALIFIED
+//)
+//@XmlJavaTypeAdapters({
+//	@XmlJavaTypeAdapter(type = BitChromosome.class, value = BitChromosome.Model.Adapter.class),
+//	@XmlJavaTypeAdapter(type = Genotype.class, value = Genotype.Model.Adapter.class)
+//})
 package org.jenetics;
 
 
@@ -321,6 +321,3 @@ import javax.xml.bind.annotation.XmlNsForm;
 import javax.xml.bind.annotation.XmlSchema;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapters;
-
-import org.jenetics.internal.BitChromosomeXML;
-import org.jenetics.internal.GenotypeXML;

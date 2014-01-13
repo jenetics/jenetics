@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -47,8 +48,6 @@ import javolution.xml.stream.XMLStreamException;
 import org.jscience.mathematics.number.LargeInteger;
 import org.jscience.mathematics.number.Number;
 
-import org.jenetics.internal.BitChromosomeXML;
-
 import org.jenetics.util.ISeq;
 import org.jenetics.util.bit;
 
@@ -59,7 +58,7 @@ import org.jenetics.util.bit;
  * @since 1.0
  * @version @__version__@ &mdash; <em>$Date$</em>
  */
-@XmlJavaTypeAdapter(BitChromosomeXML.Adapter.class)
+@XmlJavaTypeAdapter(BitChromosome.Model.Adapter.class)
 public class BitChromosome extends Number<BitChromosome>
 	implements
 		Chromosome<BitGene>,
@@ -71,13 +70,11 @@ public class BitChromosome extends Number<BitChromosome>
 	/**
 	 * The one's probability of the randomly generated Chromosome.
 	 */
-	@XmlAttribute(name = "p")
 	protected double _p;
 
 	/**
 	 * The length of the chromosomes (number of bits).
 	 */
-	@XmlAttribute(name = "length")
 	protected int _length;
 
 	/**
@@ -551,32 +548,35 @@ public class BitChromosome extends Number<BitChromosome>
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "org.jenetics.BitChromosome")
+	private static final String JAXB_TYPE_NAME = "org.jenetics.BitChromosome";
+
+	@XmlRootElement(name = JAXB_TYPE_NAME)
+	@XmlType(name = JAXB_TYPE_NAME)
 	@XmlAccessorType(XmlAccessType.FIELD)
-	public final static class __XML {
+	public final static class Model {
 		@XmlAttribute int length;
 		@XmlAttribute double probability;
 		@XmlValue String value;
 
 		public final static class Adapter
-			extends XmlAdapter<__XML, BitChromosome>
+			extends XmlAdapter<Model, BitChromosome>
 		{
 			@Override
-			public __XML marshal(final BitChromosome chromosome) {
-				final __XML xml = new __XML();
-				xml.length = chromosome._length;
-				xml.probability = chromosome._p;
-				xml.value = bit.toByteString(chromosome.toByteArray());
-				return xml;
+			public Model marshal(final BitChromosome chromosome) {
+				final Model model = new Model();
+				model.length = chromosome._length;
+				model.probability = chromosome._p;
+				model.value = bit.toByteString(chromosome.toByteArray());
+				return model;
 			}
 
 			@Override
-			public BitChromosome unmarshal(final __XML xml) {
+			public BitChromosome unmarshal(final Model model) {
 				final BitChromosome chromosome = new BitChromosome(
-					bit.fromByteString(xml.value)
+					bit.fromByteString(model.value)
 				);
-				chromosome._p = xml.probability;
-				chromosome._length = xml.length;
+				chromosome._p = model.probability;
+				chromosome._length = model.length;
 				return chromosome;
 			}
 		}

@@ -40,7 +40,7 @@ import org.jenetics.util.RandomRegistry;
  */
 @XmlRootElement(name = "org.jenetics.BitGene")
 @XmlType(name = "org.jenetics.BitGene")
-@XmlEnum ( value = Boolean.class )
+@XmlEnum (value = Boolean.class)
 public enum BitGene
 	implements
 		Gene<Boolean, BitGene>,

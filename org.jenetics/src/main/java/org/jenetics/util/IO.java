@@ -120,17 +120,20 @@ public abstract class IO {
 			throws IOException
 		{
 			try {
-				final JAXBContext context = JAXBContext.newInstance("org.jenetics");
+				final JAXBContext context = JAXBContext.newInstance(
+					Genotype.Model.class,
+					//BitChromosome.class,
+					BitChromosome.Model.class
+					//"org.jenetics"
+				);
 				final Marshaller marshaller = context.createMarshaller();
 				marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-
 				//marshaller.marshal(object, out);
 
 				final Class<?> cls = object.getClass();
 				final XmlJavaTypeAdapter a = cls.getAnnotation(XmlJavaTypeAdapter.class);
 				if (a != null) {
 					final XmlAdapter<Object, Object> adapter = a.value().newInstance();
-					marshaller.setAdapter(adapter);
 					marshaller.marshal(adapter.marshal(object), out);
 				} else {
 					marshaller.marshal(object, out);
