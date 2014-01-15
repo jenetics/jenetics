@@ -118,17 +118,14 @@ public abstract class IO {
 				final JAXBContext context = JAXBContext.newInstance("org.jenetics");
 				final Marshaller marshaller = context.createMarshaller();
 				marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-				//marshaller.marshal(object, out);
 
-				final Class<?> cls = object.getClass();
-				final XmlJavaTypeAdapter a = cls.getAnnotation(XmlJavaTypeAdapter.class);
-				if (a != null) {
-					final XmlAdapter<Object, Object> adapter = a.value().newInstance();
+				final XmlAdapter<Object, Object> adapter =
+					org.jenetics.internal.util.jaxb.adapter(object.getClass());
+				if (adapter != null) {
 					marshaller.marshal(adapter.marshal(object), out);
 				} else {
 					marshaller.marshal(object, out);
 				}
-
 			} catch (Exception e) {
 				throw new IOException(e);
 			}
@@ -138,6 +135,12 @@ public abstract class IO {
 		public <T> T read(final Class<T> type, final InputStream in)
 			throws IOException
 		{
+			try {
+				final JAXBContext context = JAXBContext.newInstance("org.jenetics");
+				final Marshaller marshaller = context.createMarshaller();
+			} catch (Exception e) {
+				throw new IOException(e);
+			}
 //			try {
 //				final XmlJavaTypeAdapter a = type.getAnnotation(XmlJavaTypeAdapter.class);
 //				if (a != null) {

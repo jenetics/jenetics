@@ -19,9 +19,14 @@
  */
 package org.jenetics.internal.util;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jenetics.util.StaticObject;
 
@@ -34,12 +39,41 @@ import org.jenetics.util.StaticObject;
 public class jaxb extends StaticObject {
 	private jaxb() {}
 
-	@SuppressWarnings("unchecked")
+	private static final XmlAdapter<Object, Object>
+		ID_XML_ADAPTER = new XmlAdapter<Object, Object>() {
+		@Override public Object unmarshal(final Object value) {
+			return value;
+		}
+		@Override public Object marshal(final Object value) {
+			return value;
+		}
+	};
+
+	private static final Map<Class<?>, XmlAdapter<Object, Object>>
+	xmlAdapterCache = new HashMap<>();
+
+	/**
+	 * Return the
+	 *
+	 * @param cls
+	 * @return
+	 */
 	public static XmlAdapter<Object, Object> adapter(final Class<?> cls) {
+		synchronized (xmlAdapterCache) {
+			if (!xmlAdapterCache.containsKey(cls)) {
+				xmlAdapterCache.put(cls, newXmlAdapter(cls));
+			}
+
+			return xmlAdapterCache.get(cls);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private static XmlAdapter<Object, Object> newXmlAdapter(final Class<?> cls) {
 		final List<Class<?>> classes = reflect.allDeclaredClasses(cls);
 
-		XmlAdapter<Object, Object> adapter = null;
-		for (int i = 0; i < classes.size() && adapter == null; ++i) {
+		XmlAdapter<Object, Object> adapter = ID_XML_ADAPTER;
+		for (int i = 0; i < classes.size() && adapter == ID_XML_ADAPTER; ++i) {
 			if (XmlAdapter.class.isAssignableFrom(classes.get(i))) {
 				try {
 					adapter = (XmlAdapter<Object, Object>)classes.get(i).newInstance();
@@ -52,6 +86,12 @@ public class jaxb extends StaticObject {
 		return adapter;
 	}
 
+
+	public static boolean hasModel(final Class<?> cls) {
+		return cls.isAnnotationPresent(XmlJavaTypeAdapter.class) ||
+				cls.isAnnotationPresent(XmlRootElement.class) ||
+				cls.isAnnotationPresent(XmlType.class);
+	}
 
 
 }

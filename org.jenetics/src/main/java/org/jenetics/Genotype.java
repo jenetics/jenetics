@@ -386,7 +386,7 @@ public final class Genotype<G extends Gene<?, G>>
 	@XmlRootElement(name = JAXB_TYPE_NAME)
 	@XmlType(name = JAXB_TYPE_NAME)
 	@XmlAccessorType(XmlAccessType.FIELD)
-	public final static class Model {
+	final static class Model {
 		@XmlAttribute public int length;
 		@XmlAnyElement public List<Object> chromosomes;
 

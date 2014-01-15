@@ -553,7 +553,7 @@ public class BitChromosome extends Number<BitChromosome>
 	@XmlRootElement(name = "chromosome")
 	@XmlType(name = "chromosome")
 	@XmlAccessorType(XmlAccessType.FIELD)
-	public final static class Model {
+	final static class Model {
 		@XmlAttribute final String type = BitChromosome.class.getCanonicalName();
 		@XmlAttribute int length;
 		@XmlAttribute double probability;
