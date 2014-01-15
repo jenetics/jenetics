@@ -41,7 +41,7 @@ import java.util.regex.Pattern;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5 &mdash; <em>$Date: 2014-01-10 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-01-15 $</em>
  */
 public final class DieHarder {
 
@@ -88,6 +88,12 @@ public final class DieHarder {
 		dieharderArgs.add("-a");
 		//dieharderArgs.add("-d 6");
 
+		printt(
+			"Testing: %s (%s)",
+			_random.getClass().getName(),
+			new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date())
+		);
+		
 		printv();
 
 		final long start = System.currentTimeMillis();
@@ -215,7 +221,7 @@ public final class DieHarder {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.5
-	 * @version 1.5 &mdash; <em>$Date: 2014-01-10 $</em>
+	 * @version 1.5 &mdash; <em>$Date: 2014-01-15 $</em>
 	 */
 	private static final class Randomizer implements Runnable {
 		private final Random _random;
@@ -310,14 +316,7 @@ public final class DieHarder {
 			return;
 		}
 
-		final DieHarder dieHarder = new DieHarder(newInstance(args[0]));
-		dieHarder.printt(
-			"Testing: %s (%s)",
-			dieHarder.getRandom().getClass().getName(),
-			new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date())
-		);
-
-		dieHarder.run();
+		new DieHarder(newInstance(args[0])).run();
 	}
 
 	private static Random newInstance(final String randomName) {
