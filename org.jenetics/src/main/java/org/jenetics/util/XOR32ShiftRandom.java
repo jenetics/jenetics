@@ -22,9 +22,12 @@ package org.jenetics.util;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -80,6 +83,24 @@ public class XOR32ShiftRandom extends Random32 {
 		}
 
 		@Override
+		public int hashCode() {
+			return Arrays.hashCode(new int[]{a, b, c});
+		}
+		
+		@Override
+		public boolean equals(final Object other) {
+			if (this == other) {
+				return true;
+			}
+			if (!(other instanceof Param)) {
+				return false;
+			}
+			
+			final Param param = (Param)other;
+			return a == param.a && b == param.b && c == param.c;
+		}
+		
+		@Override
 		public String toString() {
 			return String.format("Param[%-3d, %-3d, %-3d]", a, b, c);
 		}
@@ -124,23 +145,21 @@ public class XOR32ShiftRandom extends Random32 {
 
 	public static void main(final String[] args) throws Exception {
 		final ExecutorService executor = Executors.newFixedThreadPool(3);
+		final Set<Param> params = new HashSet<>();
 		for (int[] p : BASE_PARAMS) {
-			test(p, executor);
+			params.add(new Param(p[0], p[1], p[2]));
+			params.add(new Param(p[0], p[2], p[1]));
+			params.add(new Param(p[1], p[0], p[2]));
+			params.add(new Param(p[1], p[2], p[0]));
+			params.add(new Param(p[2], p[1], p[0]));
+			params.add(new Param(p[2], p[0], p[1]));
 		}
-	}
-
-	private static void test(final int[] p, final ExecutorService executor)
-		throws InterruptedException, ExecutionException
-	{
-		final List<TestTask> tasks = Arrays.asList(
-			new TestTask(new Param(p[0], p[1], p[2])),
-			new TestTask(new Param(p[0], p[2], p[1])),
-			new TestTask(new Param(p[1], p[0], p[2])),
-			new TestTask(new Param(p[1], p[2], p[0])),
-			new TestTask(new Param(p[2], p[1], p[0])),
-			new TestTask(new Param(p[2], p[0], p[1]))
-		);
-
+		
+		final List<TestTask> tasks = new ArrayList<>();
+		for (Param param : params) {
+			tasks.add(new TestTask(param));
+		}
+		
 		for (Future<?> future : executor.invokeAll(tasks)) {
 			future.get();
 		}
