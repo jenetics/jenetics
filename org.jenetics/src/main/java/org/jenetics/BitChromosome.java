@@ -550,10 +550,11 @@ public class BitChromosome extends Number<BitChromosome>
 
 	private static final String JAXB_TYPE_NAME = "org.jenetics.BitChromosome";
 
-	@XmlRootElement(name = JAXB_TYPE_NAME)
-	@XmlType(name = JAXB_TYPE_NAME)
+	@XmlRootElement(name = "chromosome")
+	@XmlType(name = "chromosome")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	public final static class Model {
+		@XmlAttribute final String type = BitChromosome.class.getCanonicalName();
 		@XmlAttribute int length;
 		@XmlAttribute double probability;
 		@XmlValue String value;

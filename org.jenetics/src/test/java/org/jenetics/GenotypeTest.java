@@ -24,15 +24,10 @@ import static org.testng.Assert.assertFalse;
 
 import java.util.Random;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-
 import javolution.context.LocalContext;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import org.jenetics.internal.GenotypeXML;
 
 import org.jenetics.util.Factory;
 import org.jenetics.util.IO;

@@ -17,11 +17,13 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.jaxb;
+package org.jenetics.internal.util;
+
+import java.util.List;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import org.jenetics.BitChromosome;
+import org.jenetics.util.StaticObject;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz
@@ -29,17 +31,27 @@ import org.jenetics.BitChromosome;
  * @version @__version__@ &mdash; <em>$Date$</em>
  * @since @__version__@
  */
-public class ChromosomeXmlAdapter extends XmlAdapter<Object, Object> {
+public class jaxb extends StaticObject {
+	private jaxb() {}
 
-	@Override
-	public Object marshal(final Object value) throws Exception {
-		XmlAdapter<Object, Object> adapter = (XmlAdapter<Object, Object>)(Object)new BitChromosome.Model.Adapter();
-		return adapter.marshal(value);
+	@SuppressWarnings("unchecked")
+	public static XmlAdapter<Object, Object> adapter(final Class<?> cls) {
+		final List<Class<?>> classes = reflect.allDeclaredClasses(cls);
+
+		XmlAdapter<Object, Object> adapter = null;
+		for (int i = 0; i < classes.size() && adapter == null; ++i) {
+			if (XmlAdapter.class.isAssignableFrom(classes.get(i))) {
+				try {
+					adapter = (XmlAdapter<Object, Object>)classes.get(i).newInstance();
+				} catch (InstantiationException | IllegalAccessException e) {
+					// ignore exception
+				}
+			}
+		}
+
+		return adapter;
 	}
 
-	@Override
-	public Object unmarshal(final Object value) {
-		return value;
-	}
+
 
 }

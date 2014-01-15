@@ -24,6 +24,7 @@ import static org.jenetics.util.object.Verify;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -31,7 +32,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
@@ -44,8 +44,7 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
-import org.jenetics.internal.jaxb.ChromosomeXmlAdapter;
-import org.jenetics.internal.jaxb.adapter;
+import org.jenetics.internal.util.jaxb;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
@@ -388,13 +387,8 @@ public final class Genotype<G extends Gene<?, G>>
 	@XmlType(name = JAXB_TYPE_NAME)
 	@XmlAccessorType(XmlAccessType.FIELD)
 	public final static class Model {
-		@XmlAttribute
-		public int length;
-
-		@XmlJavaTypeAdapter(ChromosomeXmlAdapter.class)
-		//@XmlElement(name = "chromosome")
-		@XmlAnyElement
-		public Chromosome chromosomes;
+		@XmlAttribute public int length;
+		@XmlAnyElement public List<Object> chromosomes;
 
 		public final static class Adapter
 			extends XmlAdapter<Model, Genotype<?>>
@@ -403,28 +397,11 @@ public final class Genotype<G extends Gene<?, G>>
 			public Model marshal(final Genotype<?> genotype) throws Exception {
 				final Model model = new Model();
 				model.length = genotype.length();
-				model.chromosomes = genotype.getChromosome();
+				model.chromosomes = new ArrayList<>();
 
-				/*
-				model.chromosomes = new Object[genotype.length()];
-
-				System.out.println(genotype.getChromosome().getClass());
-				final XmlAdapter<Object, Object> adapter = org.jenetics.internal.jaxb.adapter.xml(
-					genotype.getChromosome()
-				);
-
-				System.out.println(adapter);
-				for (int i = 0; i < model.length; ++i) {
-					model.chromosomes[i] = adapter.marshal(genotype.getChromosome(i));
+				for (Chromosome<?> c : genotype) {
+					model.chromosomes.add(jaxb.adapter(c.getClass()).marshal(c));
 				}
-				*/
-
-				/*
-				BitChromosome.Model.Adapter adapter = new BitChromosome.Model.Adapter();
-				for (int i = 0; i < model.length; ++i) {
-					model.chromosomes[i] = adapter.marshal((BitChromosome)genotype.getChromosome(i));
-				}
-				*/
 
 				return model;
 			}
