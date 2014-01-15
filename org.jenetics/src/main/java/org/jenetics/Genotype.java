@@ -79,7 +79,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date$</em>
+ * @version @__version__@ &mdash; <em>$Date$</em>
  */
 @XmlJavaTypeAdapter(Genotype.Model.Adapter.class)
 public final class Genotype<G extends Gene<?, G>>
@@ -386,40 +386,42 @@ public final class Genotype<G extends Gene<?, G>>
 	@XmlRootElement(name = JAXB_TYPE_NAME)
 	@XmlType(name = JAXB_TYPE_NAME)
 	@XmlAccessorType(XmlAccessType.FIELD)
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	final static class Model {
 		@XmlAttribute public int length;
 		@XmlAttribute public int ngenes;
 		@XmlAnyElement public List<Object> chromosomes;
 
-		@SuppressWarnings("unchecked")
 		public final static class Adapter
-			extends XmlAdapter<Model, Genotype<?>>
+			extends XmlAdapter<Model, Genotype>
 		{
 			@Override
-			public Model marshal(final Genotype<?> genotype) throws Exception {
+			public Model marshal(final Genotype genotype) throws Exception {
 				final Model model = new Model();
 				model.length = genotype.length();
 				model.ngenes = genotype.getNumberOfGenes();
 				model.chromosomes = new ArrayList<>();
 
 				for (Chromosome<?> c : genotype) {
-					model.chromosomes.add(jaxb.adapterFor(c).marshal(c));
+					model.chromosomes.add(jaxb.adaptMarshal(c));
 				}
 
 				return model;
 			}
 
 			@Override
-			public Genotype<?> unmarshal(final Model model) throws Exception {
-				final Array<Chromosome<?>> chromosomes = new Array<>(model.length);
+			public Genotype unmarshal(final Model model) throws Exception {
+				final Array<Chromosome> chromosomes = new Array<>(model.length);
 				for (int i = 0; i < model.length; ++i) {
 					final Object c = model.chromosomes.get(i);
-					chromosomes.set(i,(Chromosome<?>)jaxb.adapterFor(c).unmarshal(c));
+					chromosomes.set(i,(Chromosome)jaxb.adaptUnmarshal(c));
 				}
 
 				return new Genotype(chromosomes.toISeq(), model.ngenes);
 			}
 		}
+
+		static final Adapter ADAPTER = new Adapter();
 	}
 }
 
