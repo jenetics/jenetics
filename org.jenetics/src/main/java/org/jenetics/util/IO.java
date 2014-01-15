@@ -33,14 +33,10 @@ import javax.xml.bind.JAXB;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import javolution.xml.XMLObjectReader;
 import javolution.xml.XMLObjectWriter;
 import javolution.xml.stream.XMLStreamException;
-
-import org.jenetics.BitChromosome;
-import org.jenetics.Genotype;
 
 /**
  * Class for object serialization. The following example shows how to write and
@@ -120,7 +116,7 @@ public abstract class IO {
 				marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 
 				final XmlAdapter<Object, Object> adapter =
-					org.jenetics.internal.util.jaxb.adapter(object.getClass());
+					org.jenetics.internal.util.jaxb.adapterFor(object.getClass());
 				if (adapter != null) {
 					marshaller.marshal(adapter.marshal(object), out);
 				} else {

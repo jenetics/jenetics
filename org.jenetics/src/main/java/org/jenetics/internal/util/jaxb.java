@@ -55,10 +55,13 @@ public class jaxb extends StaticObject {
 	/**
 	 * Return the
 	 *
-	 * @param cls
+	 * @param value
 	 * @return
 	 */
-	public static XmlAdapter<Object, Object> adapter(final Class<?> cls) {
+	public static XmlAdapter<Object, Object> adapterFor(final Object value) {
+		final Class<?> cls = value instanceof Class<?> ?
+								(Class<?>)value : value.getClass();
+
 		synchronized (xmlAdapterCache) {
 			if (!xmlAdapterCache.containsKey(cls)) {
 				xmlAdapterCache.put(cls, newXmlAdapter(cls));
