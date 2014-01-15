@@ -176,6 +176,19 @@ public abstract class ObjectTester<T> {
 		}
 	}
 
+	@Test
+	public void objectSerialize() throws Exception {
+		final Object object = getFactory().newInstance();
+
+		if (object instanceof Serializable) {
+			for (int i = 0; i < 10; ++i) {
+				final Serializable serializable =
+					(Serializable)getFactory().newInstance();
+
+				Serialize.object.test(serializable);
+			}
+		}
+	}
 
 	@Test
 	public void xmlSerialize() throws Exception {
@@ -192,15 +205,15 @@ public abstract class ObjectTester<T> {
 	}
 
 	@Test
-	public void objectSerialize() throws Exception {
+	public void jaxbSerialize() throws Exception {
 		final Object object = getFactory().newInstance();
 
-		if (object instanceof Serializable) {
+		if (object instanceof XMLSerializable) {
 			for (int i = 0; i < 10; ++i) {
-				final Serializable serializable =
-					(Serializable)getFactory().newInstance();
+				final XMLSerializable serializable =
+					(XMLSerializable)getFactory().newInstance();
 
-				Serialize.object.test(serializable);
+				Serialize.xml.test(serializable);
 			}
 		}
 	}
