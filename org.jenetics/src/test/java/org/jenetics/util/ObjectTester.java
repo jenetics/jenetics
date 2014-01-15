@@ -210,7 +210,7 @@ public abstract class ObjectTester<T> {
 	public void jaxbSerialize() throws Exception {
 		final Object object = getFactory().newInstance();
 
-		if (jaxb.hasModel(object.getClass())) {
+		if (jaxb.hasModel(object)) {
 			for (int i = 0; i < 10; ++i) {
 				final Object serializable = getFactory().newInstance();
 

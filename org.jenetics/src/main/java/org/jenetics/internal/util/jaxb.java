@@ -31,14 +31,16 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.jenetics.util.StaticObject;
 
 /**
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz
- *         Wilhelmstötter</a>
+ * JAXB helper methods.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version @__version__@ &mdash; <em>$Date: 2014-01-15 $</em>
  * @since @__version__@
  */
 public class jaxb extends StaticObject {
 	private jaxb() {}
 
+	// Identity XmlAdapter.
 	private static final XmlAdapter<Object, Object>
 		ID_XML_ADAPTER = new XmlAdapter<Object, Object>() {
 		@Override public Object unmarshal(final Object value) {
@@ -53,10 +55,12 @@ public class jaxb extends StaticObject {
 	xmlAdapterCache = new HashMap<>();
 
 	/**
-	 * Return the
+	 * Return the an {@code XmlAdapter} for the given {@code vale}. If no
+	 * adapter could be found, and identity adapter is returned.
 	 *
-	 * @param value
-	 * @return
+	 * @param value the object for which to find an {@code XmlAdapter}
+	 * @return the {@code XmlAdapter} for the given object, or an identity
+	 *         adapter if no one can be found.
 	 */
 	public static XmlAdapter<Object, Object> adapterFor(final Object value) {
 		final Class<?> cls = value instanceof Class<?> ?
@@ -89,8 +93,18 @@ public class jaxb extends StaticObject {
 		return adapter;
 	}
 
+	/**
+	 * Checks, whether the given object is an JAXB model or has an model adapter
+	 * defined.
+	 *
+	 * @param value the object used for the model check.
+	 * @return {@code true} if the given object has/is an JAXB model,
+	 *         {@code false} otherwise.
+	 */
+	public static boolean hasModel(final Object value) {
+		final Class<?> cls = value instanceof Class<?> ?
+								(Class<?>)value : value.getClass();
 
-	public static boolean hasModel(final Class<?> cls) {
 		return cls.isAnnotationPresent(XmlJavaTypeAdapter.class) ||
 				cls.isAnnotationPresent(XmlRootElement.class) ||
 				cls.isAnnotationPresent(XmlType.class);
