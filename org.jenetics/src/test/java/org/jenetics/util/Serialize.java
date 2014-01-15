@@ -27,7 +27,7 @@ import org.testng.Assert;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-08-29 $</em>
+ * @version <em>$Date: 2014-01-15 $</em>
  */
 public class Serialize {
 
@@ -37,9 +37,11 @@ public class Serialize {
 		_io = io;
 	}
 
-	public static Serialize xml = new Serialize(IO.xml);
+	public static final Serialize object = new Serialize(IO.object);
 
-	public static Serialize object = new Serialize(IO.object);
+	public static final Serialize xml = new Serialize(IO.xml);
+
+	public static final Serialize jaxb = new Serialize(IO.jaxb);
 
 	public void test(final Object object) throws IOException {
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -47,7 +49,7 @@ public class Serialize {
 
 		final byte[] data = out.toByteArray();
 		final ByteArrayInputStream in = new ByteArrayInputStream(data);
-		final Object copy = _io.read(Object.class, in);
+		final Object copy = _io.read(in);
 
 		Assert.assertEquals(copy, object);
 	}

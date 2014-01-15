@@ -388,8 +388,10 @@ public final class Genotype<G extends Gene<?, G>>
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
 		@XmlAttribute public int length;
+		@XmlAttribute public int ngenes;
 		@XmlAnyElement public List<Object> chromosomes;
 
+		@SuppressWarnings("unchecked")
 		public final static class Adapter
 			extends XmlAdapter<Model, Genotype<?>>
 		{
@@ -397,18 +399,25 @@ public final class Genotype<G extends Gene<?, G>>
 			public Model marshal(final Genotype<?> genotype) throws Exception {
 				final Model model = new Model();
 				model.length = genotype.length();
+				model.ngenes = genotype.getNumberOfGenes();
 				model.chromosomes = new ArrayList<>();
 
 				for (Chromosome<?> c : genotype) {
-					model.chromosomes.add(jaxb.adapter(c.getClass()).marshal(c));
+					model.chromosomes.add(jaxb.adapterFor(c).marshal(c));
 				}
 
 				return model;
 			}
 
 			@Override
-			public Genotype<?> unmarshal(final Model model) {
-				return null;
+			public Genotype<?> unmarshal(final Model model) throws Exception {
+				final Array<Chromosome<?>> chromosomes = new Array<>(model.length);
+				for (int i = 0; i < model.length; ++i) {
+					final Object c = model.chromosomes.get(i);
+					chromosomes.set(i,(Chromosome<?>)jaxb.adapterFor(c).unmarshal(c));
+				}
+
+				return new Genotype(chromosomes.toISeq(), model.ngenes);
 			}
 		}
 	}

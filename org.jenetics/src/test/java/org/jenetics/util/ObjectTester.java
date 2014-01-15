@@ -34,6 +34,8 @@ import javolution.xml.XMLSerializable;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import org.jenetics.internal.util.jaxb;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version <em>$Date: 2014-01-15 $</em>
@@ -208,12 +210,11 @@ public abstract class ObjectTester<T> {
 	public void jaxbSerialize() throws Exception {
 		final Object object = getFactory().newInstance();
 
-		if (object instanceof XMLSerializable) {
+		if (jaxb.hasModel(object.getClass())) {
 			for (int i = 0; i < 10; ++i) {
-				final XMLSerializable serializable =
-					(XMLSerializable)getFactory().newInstance();
+				final Object serializable = getFactory().newInstance();
 
-				Serialize.xml.test(serializable);
+				Serialize.jaxb.test(serializable);
 			}
 		}
 	}
