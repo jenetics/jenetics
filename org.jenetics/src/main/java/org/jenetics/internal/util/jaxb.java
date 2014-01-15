@@ -94,6 +94,30 @@ public class jaxb extends StaticObject {
 	}
 
 	/**
+	 * Adapts the given object for marshalling, with the {@code XmlAdapter}
+	 * associated with the object.
+	 *
+	 * @param value the object to adapt for marshalling.
+	 * @return the adapted value
+	 * @throws Exception if the adaption fails.
+	 */
+	public static Object adaptMarshal(final Object value) throws Exception {
+		return adapterFor(value).marshal(value);
+	}
+
+	/**
+	 * Adapts the given object for un-marshalling, with the {@code XmlAdapter}
+	 * associated with the object.
+	 *
+	 * @param value the object to adapt for un-marshalling.
+	 * @return the adapted value
+	 * @throws Exception if the adaption fails.
+	 */
+	public static Object adaptUnmarshal(final Object value) throws Exception {
+		return adapterFor(value).unmarshal(value);
+	}
+
+	/**
 	 * Checks, whether the given object is an JAXB model or has an model adapter
 	 * defined.
 	 *

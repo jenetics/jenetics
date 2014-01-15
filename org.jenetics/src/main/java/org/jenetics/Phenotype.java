@@ -23,6 +23,19 @@ import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import javolution.context.ObjectFactory;
 import javolution.lang.Immutable;
 import javolution.lang.Realtime;
@@ -31,6 +44,9 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.internal.util.jaxb;
+
+import org.jenetics.util.Array;
 import org.jenetics.util.Function;
 import org.jenetics.util.Verifiable;
 import org.jenetics.util.functions;
@@ -49,8 +65,9 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-12-06 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-15 $</em>
  */
+@XmlJavaTypeAdapter(Genotype.Model.Adapter.class)
 public final class Phenotype<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
@@ -479,6 +496,49 @@ public final class Phenotype<
 		public void read(final InputElement xml, final Phenotype gt) {
 		}
 	};
+
+		/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
+
+	private static final String JAXB_TYPE_NAME = "org.jenetics.Phenotype";
+
+	@XmlRootElement(name = JAXB_TYPE_NAME)
+	@XmlType(name = JAXB_TYPE_NAME)
+	@XmlAccessorType(XmlAccessType.FIELD)
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	final static class Model {
+		@XmlAttribute public int generation;
+		@XmlElement public Genotype.Model genotype;
+		@XmlAnyElement public Comparable fitness;
+		@XmlAnyElement public Comparable rawFitness;
+
+		public final static class Adapter
+			extends XmlAdapter<Model, Phenotype>
+		{
+			@Override
+			public Model marshal(final Phenotype pt) throws Exception {
+				final Model model = new Model();
+				model.generation = pt.getGeneration();
+				model.genotype = Genotype.Model.ADAPTER.marshal(pt._genotype);
+				model.fitness = pt.getFitness();
+				model.rawFitness = pt.getRawFitness();
+				return model;
+			}
+
+			@Override
+			public Phenotype unmarshal(final Model model) throws Exception {
+				final Phenotype pt = (Phenotype)FACTORY.object();
+				pt._generation = model.generation;
+				pt._genotype = Genotype.Model.ADAPTER.unmarshal(model.genotype);
+				pt._fitness = model.fitness;
+				pt._rawFitness = model.rawFitness;
+				return pt;
+			}
+		}
+
+		final static Adapter ADAPTER = new Adapter();
+	}
 
 }
 
