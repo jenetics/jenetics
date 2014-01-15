@@ -108,7 +108,7 @@ public abstract class IO {
 		}
 	};
 
-	public static IO jaxb = new IO() {
+	public static final IO jaxb = new IO() {
 
 		@Override
 		public void write(final Object object, final OutputStream out)
@@ -159,7 +159,7 @@ public abstract class IO {
 	/**
 	 * IO implementation for "native" <i>Java</i> serialization.
 	 */
-	public static IO object = new IO() {
+	public static final IO object = new IO() {
 
 		@Override
 		public void write(final Object object, final OutputStream out)
