@@ -41,8 +41,8 @@ public class jaxb extends StaticObject {
 	private jaxb() {}
 
 	// Identity XmlAdapter.
-	private static final XmlAdapter<Object, Object>
-		ID_XML_ADAPTER = new XmlAdapter<Object, Object>() {
+	private static final
+	XmlAdapter<Object, Object> ID_XML_ADAPTER = new XmlAdapter<Object, Object>() {
 		@Override public Object unmarshal(final Object value) {
 			return value;
 		}
@@ -64,7 +64,7 @@ public class jaxb extends StaticObject {
 	 */
 	public static XmlAdapter<Object, Object> adapterFor(final Object value) {
 		final Class<?> cls = value instanceof Class<?> ?
-								(Class<?>)value : value.getClass();
+			(Class<?>)value : value.getClass();
 
 		synchronized (xmlAdapterCache) {
 			if (!xmlAdapterCache.containsKey(cls)) {
@@ -127,11 +127,11 @@ public class jaxb extends StaticObject {
 	 */
 	public static boolean hasModel(final Object value) {
 		final Class<?> cls = value instanceof Class<?> ?
-								(Class<?>)value : value.getClass();
+			(Class<?>)value : value.getClass();
 
 		return cls.isAnnotationPresent(XmlJavaTypeAdapter.class) ||
-				cls.isAnnotationPresent(XmlRootElement.class) ||
-				cls.isAnnotationPresent(XmlType.class);
+			cls.isAnnotationPresent(XmlRootElement.class) ||
+			cls.isAnnotationPresent(XmlType.class);
 	}
 
 
