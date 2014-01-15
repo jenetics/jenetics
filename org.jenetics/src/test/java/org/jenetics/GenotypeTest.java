@@ -24,15 +24,10 @@ import static org.testng.Assert.assertFalse;
 
 import java.util.Random;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-
 import javolution.context.LocalContext;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import org.jenetics.internal.GenotypeXML;
 
 import org.jenetics.util.Factory;
 import org.jenetics.util.IO;
@@ -42,7 +37,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-01-13 $</em>
+ * @version <em>$Date: 2014-01-15 $</em>
  */
 public class GenotypeTest extends ObjectTester<Genotype<Float64Gene>> {
 

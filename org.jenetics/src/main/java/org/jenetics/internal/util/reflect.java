@@ -19,15 +19,45 @@
  */
 package org.jenetics.internal.util;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.jenetics.util.StaticObject;
+
 /**
+ * Helper methods concerning Java reflection.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-01-13 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-15 $</em>
  * @since @__version__@
  */
-public class reflect {
+public class reflect extends StaticObject {
+	private reflect() {}
 
-	public static Class<?>[] getDeepDeclaredClasses() {
-		return null;
+	/**
+	 * Return all declared classes of the given class, with arbitrary nested
+	 * level.
+	 *
+	 * @param cls the class for which the declared classes are retrieved.
+	 * @return all nested classes
+	 */
+	public static List<Class<?>> allDeclaredClasses(final Class<?> cls) {
+		final Deque<Class<?>> stack = new LinkedList<>();
+		stack.addFirst(cls);
+
+		final List<Class<?>> result = new ArrayList<>();
+		while (!stack.isEmpty()) {
+			final Class<?>[] classes = stack.pollFirst().getDeclaredClasses();
+			for (final Class<?> c : classes) {
+				result.add(c);
+				stack.addFirst(c);
+			}
+		}
+
+		return Collections.unmodifiableList(result);
 	}
 
 

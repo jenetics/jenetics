@@ -56,7 +56,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-01-13 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-15 $</em>
  */
 @XmlJavaTypeAdapter(BitChromosome.Model.Adapter.class)
 public class BitChromosome extends Number<BitChromosome>
@@ -550,10 +550,11 @@ public class BitChromosome extends Number<BitChromosome>
 
 	private static final String JAXB_TYPE_NAME = "org.jenetics.BitChromosome";
 
-	@XmlRootElement(name = JAXB_TYPE_NAME)
-	@XmlType(name = JAXB_TYPE_NAME)
+	@XmlRootElement(name = "chromosome")
+	@XmlType(name = "chromosome")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	public final static class Model {
+		@XmlAttribute final String type = BitChromosome.class.getCanonicalName();
 		@XmlAttribute int length;
 		@XmlAttribute double probability;
 		@XmlValue String value;

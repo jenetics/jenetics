@@ -39,11 +39,6 @@ import javolution.xml.XMLObjectReader;
 import javolution.xml.XMLObjectWriter;
 import javolution.xml.stream.XMLStreamException;
 
-import org.w3c.dom.Element;
-
-import org.jenetics.internal.BitGeneXML;
-import org.jenetics.internal.util.XMLAdapter;
-
 import org.jenetics.BitChromosome;
 import org.jenetics.Genotype;
 
@@ -64,7 +59,7 @@ import org.jenetics.Genotype;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-01-13 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-01-15 $</em>
  */
 public abstract class IO {
 
@@ -120,12 +115,7 @@ public abstract class IO {
 			throws IOException
 		{
 			try {
-				final JAXBContext context = JAXBContext.newInstance(
-					Genotype.Model.class,
-					//BitChromosome.class,
-					BitChromosome.Model.class
-					//"org.jenetics"
-				);
+				final JAXBContext context = JAXBContext.newInstance("org.jenetics");
 				final Marshaller marshaller = context.createMarshaller();
 				marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 				//marshaller.marshal(object, out);
@@ -360,7 +350,7 @@ public abstract class IO {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version 1.0 &mdash; <em>$Date: 2014-01-13 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2014-01-15 $</em>
 	 */
 	private static final class NonClosableOutputStream extends OutputStream {
 		private final OutputStream _adoptee;
@@ -404,7 +394,7 @@ public abstract class IO {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version 1.0 &mdash; <em>$Date: 2014-01-13 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2014-01-15 $</em>
 	 */
 	private static final class NonClosableInputStream extends InputStream {
 		private final InputStream _adoptee;
