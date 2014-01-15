@@ -37,7 +37,7 @@ import org.jenetics.internal.util.DieHarder;
  * http://www.jstatsoft.org/v08/i14/paper
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-01-14 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-15 $</em>
  * @since @__version__@
  */
 public class XOR32ShiftRandom extends Random32 {
@@ -45,7 +45,7 @@ public class XOR32ShiftRandom extends Random32 {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version @__version__@ &mdash; <em>$Date: 2014-01-14 $</em>
+	 * @version @__version__@ &mdash; <em>$Date: 2014-01-15 $</em>
 	 * @since @__version__@
 	 */
 	public static final class Param {
@@ -123,7 +123,7 @@ public class XOR32ShiftRandom extends Random32 {
 	}
 
 	public static void main(final String[] args) throws Exception {
-		final ExecutorService executor = Executors.newFixedThreadPool(6);
+		final ExecutorService executor = Executors.newFixedThreadPool(3);
 		for (int[] p : BASE_PARAMS) {
 			test(p, executor);
 		}
