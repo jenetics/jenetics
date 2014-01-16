@@ -32,7 +32,7 @@ public class JAXBMarshallingTest {
 
 	@Test
 	public void float64Chromosome() throws Exception {
-		final Float64Chromosome chromosome = new Float64Chromosome(0, 10);
+		final Float64Chromosome chromosome = new Float64Chromosome(0, 10, 5);
 		IO.jaxb.write(chromosome, System.out);
 	}
 

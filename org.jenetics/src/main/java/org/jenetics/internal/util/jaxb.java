@@ -29,6 +29,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.jenetics.util.Function;
 import org.jenetics.util.StaticObject;
 
 /**
@@ -133,6 +134,32 @@ public class jaxb extends StaticObject {
 		return cls.isAnnotationPresent(XmlJavaTypeAdapter.class) ||
 			cls.isAnnotationPresent(XmlRootElement.class) ||
 			cls.isAnnotationPresent(XmlType.class);
+	}
+
+	public static <V, B> Function<B, V> marshaller(final XmlAdapter<V, B> adapter) {
+		return new Function<B, V>() {
+			@Override
+			public V apply(final B value) {
+				try {
+					return adapter.marshal(value);
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+			}
+		};
+	}
+
+	public static <V, B> Function<V, B> unmarshaller(final XmlAdapter<V, B> adapter) {
+		return new Function<V, B>() {
+			@Override
+			public B apply(final V value) {
+				try {
+					return adapter.unmarshal(value);
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+			}
+		};
 	}
 
 	public static <V, B> List<V> marshalMap(

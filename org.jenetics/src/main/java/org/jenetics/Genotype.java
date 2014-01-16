@@ -396,14 +396,11 @@ public final class Genotype<G extends Gene<?, G>>
 			extends XmlAdapter<Model, Genotype>
 		{
 			@Override
-			public Model marshal(final Genotype genotype) throws Exception {
+			public Model marshal(final Genotype gt) throws Exception {
 				final Model model = new Model();
-				model.length = genotype.length();
-				model.ngenes = genotype.getNumberOfGenes();
-				model.chromosomes = jaxb.marshalMap(
-					jaxb.adapterFor(genotype.getChromosome()),
-					genotype.toSeq().asList()
-				);
+				model.length = gt.length();
+				model.ngenes = gt.getNumberOfGenes();
+				model.chromosomes = gt.toSeq().map(jaxb.marshaller(gt.getChromosome())).asList();
 
 				return model;
 			}
