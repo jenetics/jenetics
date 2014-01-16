@@ -61,7 +61,7 @@ import org.jenetics.util.functions;
  * @since 1.0
  * @version @__version__@ &mdash; <em>$Date$</em>
  */
-@XmlJavaTypeAdapter(Genotype.Model.Adapter.class)
+@XmlJavaTypeAdapter(Phenotype.Model.Adapter.class)
 public final class Phenotype<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
@@ -495,10 +495,8 @@ public final class Phenotype<
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	private static final String JAXB_TYPE_NAME = "org.jenetics.Phenotype";
-
-	@XmlRootElement(name = JAXB_TYPE_NAME)
-	@XmlType(name = JAXB_TYPE_NAME)
+	@XmlRootElement(name = "org.jenetics.Phenotype")
+	@XmlType(name = "org.jenetics.Phenotype")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	final static class Model {
@@ -531,7 +529,7 @@ public final class Phenotype<
 			}
 		}
 
-		final static Adapter ADAPTER = new Adapter();
+		final static Adapter Adapter = new Adapter();
 	}
 
 }
