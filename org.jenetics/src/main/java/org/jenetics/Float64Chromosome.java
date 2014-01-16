@@ -19,7 +19,11 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.object.checkProbability;
+import static org.jenetics.Float64Gene.Gene;
+import static org.jenetics.Float64Gene.Value;
+import static org.jenetics.Float64Model.Marshaller;
+import static org.jenetics.Float64Model.Unmarshaller;
+import static org.jenetics.util.functions.compose;
 import static org.jenetics.util.object.hashCodeOf;
 
 import java.io.IOException;
@@ -33,7 +37,6 @@ import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -47,7 +50,6 @@ import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
-import org.jenetics.util.bit;
 
 /**
  * Number chromosome implementation which holds 64 bit floating point numbers.
@@ -307,29 +309,29 @@ public class Float64Chromosome
 			extends XmlAdapter<Model, Float64Chromosome>
 		{
 			@Override
-			public Model marshal(final Float64Chromosome chromosome) throws Exception {
-				final Model model = new Model();
-				model.length = chromosome.length();
-				model.min = chromosome._min.doubleValue();
-				model.max = chromosome._max.doubleValue();
-				model.values = org.jenetics.internal.util.jaxb.marshalMap(
-					Float64Model.ADAPTER,
-					chromosome.toSeq().map(Float64Gene.Value).asList()
-				);
-				return model;
+			public Model marshal(final Float64Chromosome c) throws Exception {
+				final Model m = new Model();
+				m.length = c.length();
+				m.min = c._min.doubleValue();
+				m.max = c._max.doubleValue();
+				m.values = c.toSeq().map(compose(Value, Marshaller)).asList();
+				return m;
 			}
 
 			@Override
 			public Float64Chromosome unmarshal(final Model model) {
-				/*
-				final Float64Chromosome chromosome = new Float64Chromosome(
-					bit.fromByteString(model.value)
-				);
-				chromosome._p = model.probability;
-				chromosome._length = model.length;
+				final Float64 min = Float64.valueOf(model.min);
+				final Float64 max = Float64.valueOf(model.max);
+				final ISeq<Float64Gene> genes = new Array<Float64Model>(model.length)
+					.setAll(model.values)
+					.map(compose(Unmarshaller, Float64Gene.Gene(min, max)))
+					.toISeq();
+
+				final Float64Chromosome chromosome = new Float64Chromosome(genes);
+				chromosome._min = min;
+				chromosome._max = max;
+
 				return chromosome;
-				*/
-				return null;
 			}
 		}
 	}

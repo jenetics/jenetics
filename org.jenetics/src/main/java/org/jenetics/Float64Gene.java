@@ -120,6 +120,18 @@ public final class Float64Gene
 			}
 		};
 
+	static Function<Float64, Float64Gene> Gene(
+		final Float64 min,
+		final Float64 max
+	) {
+		return new Function<Float64, Float64Gene>() {
+			@Override
+			public Float64Gene apply(final Float64 value) {
+				return Float64Gene.valueOf(value, min, max);
+			}
+		};
+	}
+
 	/* *************************************************************************
 	 *  Factory methods
 	 * ************************************************************************/
@@ -301,7 +313,6 @@ public final class Float64Gene
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	/*
 	@XmlRootElement(name = "org.jscience.mathematics.number.Float64")
 	@XmlType(name = "org.jscience.mathematics.number.Float64")
 	@XmlAccessorType(XmlAccessType.FIELD)
@@ -336,7 +347,7 @@ public final class Float64Gene
 		}
 
 	}
-	*/
+
 }
 
 
