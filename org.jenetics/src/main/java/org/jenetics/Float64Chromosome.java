@@ -19,7 +19,6 @@
  */
 package org.jenetics;
 
-import static org.jenetics.Float64Gene.Gene;
 import static org.jenetics.Float64Gene.Value;
 import static org.jenetics.Float64Model.Marshaller;
 import static org.jenetics.Float64Model.Unmarshaller;
@@ -294,10 +293,8 @@ public class Float64Chromosome
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	private static final String JAXB_TYPE_NAME = "org.jenetics.Float64Chromosome";
-
-	@XmlRootElement(name = JAXB_TYPE_NAME)
-	@XmlType(name = JAXB_TYPE_NAME)
+	@XmlRootElement(name = "org.jenetics.Float64Chromosome")
+	@XmlType(name = "org.jenetics.Float64Chromosome")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
 		@XmlAttribute int length;
@@ -309,7 +306,7 @@ public class Float64Chromosome
 			extends XmlAdapter<Model, Float64Chromosome>
 		{
 			@Override
-			public Model marshal(final Float64Chromosome c) throws Exception {
+			public Model marshal(final Float64Chromosome c) {
 				final Model m = new Model();
 				m.length = c.length();
 				m.min = c._min.doubleValue();
