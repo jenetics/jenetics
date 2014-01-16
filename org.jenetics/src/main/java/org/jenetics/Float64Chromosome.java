@@ -19,11 +19,23 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.object.checkProbability;
 import static org.jenetics.util.object.hashCodeOf;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlValue;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
@@ -35,14 +47,16 @@ import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.bit;
 
 /**
  * Number chromosome implementation which holds 64 bit floating point numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-12-05 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-01-16 $</em>
  */
+@XmlJavaTypeAdapter(Float64Chromosome.Model.Adapter.class)
 public class Float64Chromosome
 	extends NumberChromosome<Float64, Float64Gene>
 	implements XMLSerializable
@@ -190,11 +204,49 @@ public class Float64Chromosome
 	}
 
 	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private void writeObject(final ObjectOutputStream out)
+		throws IOException
+	{
+		out.defaultWriteObject();
+
+		out.writeInt(length());
+		out.writeDouble(_min.doubleValue());
+		out.writeDouble(_max.doubleValue());
+
+		for (Float64Gene gene : _genes) {
+			out.writeDouble(gene.doubleValue());
+		}
+	}
+
+	private void readObject(final ObjectInputStream in)
+		throws IOException, ClassNotFoundException
+	{
+		in.defaultReadObject();
+
+		final int length = in.readInt();
+		final Float64 min = Float64.valueOf(in.readDouble());
+		final Float64 max = Float64.valueOf(in.readDouble());
+
+		_min = min;
+		_max = max;
+		final Array<Float64Gene> genes = new Array<>(length);
+		for (int i = 0; i < length; ++i) {
+			final Float64 value = Float64.valueOf(in.readDouble());
+			genes.set(i, Float64Gene.valueOf(value, min, max));
+		}
+
+		_genes = genes.toISeq();
+	}
+
+	/* *************************************************************************
 	 *  XML object serialization
 	 * ************************************************************************/
 
 	static final XMLFormat<Float64Chromosome>
-	XML = new XMLFormat<Float64Chromosome>(Float64Chromosome.class)
+		XML = new XMLFormat<Float64Chromosome>(Float64Chromosome.class)
 	{
 		private static final String LENGTH = "length";
 		private static final String MIN = "min";
@@ -237,42 +289,52 @@ public class Float64Chromosome
 	};
 
 	/* *************************************************************************
-	 *  Java object serialization
+	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	private void writeObject(final ObjectOutputStream out)
-		throws IOException
-	{
-		out.defaultWriteObject();
+	private static final String JAXB_TYPE_NAME = "org.jenetics.Float64Chromosome";
 
-		out.writeInt(length());
-		out.writeDouble(_min.doubleValue());
-		out.writeDouble(_max.doubleValue());
+	@XmlRootElement(name = JAXB_TYPE_NAME)
+	@XmlType(name = JAXB_TYPE_NAME)
+	@XmlAccessorType(XmlAccessType.FIELD)
+	final static class Model {
+		@XmlAttribute int length;
+		@XmlAttribute double min;
+		@XmlAttribute double max;
+		@XmlAnyElement List<Float64Model> values;
 
-		for (Float64Gene gene : _genes) {
-			out.writeDouble(gene.doubleValue());
+		public final static class Adapter
+			extends XmlAdapter<Model, Float64Chromosome>
+		{
+			@Override
+			public Model marshal(final Float64Chromosome chromosome) throws Exception {
+				final Model model = new Model();
+				model.length = chromosome.length();
+				model.min = chromosome._min.doubleValue();
+				model.max = chromosome._max.doubleValue();
+				model.values = org.jenetics.internal.util.jaxb.marshalMap(
+					Float64Model.ADAPTER,
+					chromosome.toSeq().map(Float64Gene.Value).asList()
+				);
+				return model;
+			}
+
+			@Override
+			public Float64Chromosome unmarshal(final Model model) {
+				/*
+				final Float64Chromosome chromosome = new Float64Chromosome(
+					bit.fromByteString(model.value)
+				);
+				chromosome._p = model.probability;
+				chromosome._length = model.length;
+				return chromosome;
+				*/
+				return null;
+			}
 		}
 	}
 
-	private void readObject(final ObjectInputStream in)
-		throws IOException, ClassNotFoundException
-	{
-		in.defaultReadObject();
 
-		final int length = in.readInt();
-		final Float64 min = Float64.valueOf(in.readDouble());
-		final Float64 max = Float64.valueOf(in.readDouble());
-
-		_min = min;
-		_max = max;
-		final Array<Float64Gene> genes = new Array<>(length);
-		for (int i = 0; i < length; ++i) {
-			final Float64 value = Float64.valueOf(in.readDouble());
-			genes.set(i, Float64Gene.valueOf(value, min, max));
-		}
-
-		_genes = genes.toISeq();
-	}
 
 }
 

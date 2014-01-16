@@ -1,3 +1,4 @@
 BitGene
 BitChromosome$Model
+Float64Chromosome$Model
 Genotype$Model

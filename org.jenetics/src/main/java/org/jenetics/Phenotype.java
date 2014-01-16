@@ -65,7 +65,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-01-15 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-16 $</em>
  */
 @XmlJavaTypeAdapter(Genotype.Model.Adapter.class)
 public final class Phenotype<
@@ -497,7 +497,7 @@ public final class Phenotype<
 		}
 	};
 
-		/* *************************************************************************
+	/* *************************************************************************
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
