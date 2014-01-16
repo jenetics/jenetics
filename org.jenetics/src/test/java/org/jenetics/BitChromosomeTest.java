@@ -292,6 +292,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 		}
 	}
 
+	/*
 	@Test
 	public void jaxbSerializationCompatibility() throws IOException {
 		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
@@ -310,6 +311,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 			LocalContext.exit();
 		}
 	}
+	*/
 
 
 	public static void main(final String[] args) throws Exception {

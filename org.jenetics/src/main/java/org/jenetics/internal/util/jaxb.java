@@ -19,7 +19,6 @@
  */
 package org.jenetics.internal.util;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -96,30 +95,6 @@ public class jaxb extends StaticObject {
 	}
 
 	/**
-	 * Adapts the given object for marshalling, with the {@code XmlAdapter}
-	 * associated with the object.
-	 *
-	 * @param value the object to adapt for marshalling.
-	 * @return the adapted value
-	 * @throws Exception if the adaption fails.
-	 */
-	public static Object adaptMarshal(final Object value) throws Exception {
-		return adapterFor(value).marshal(value);
-	}
-
-	/**
-	 * Adapts the given object for un-marshalling, with the {@code XmlAdapter}
-	 * associated with the object.
-	 *
-	 * @param value the object to adapt for un-marshalling.
-	 * @return the adapted value
-	 * @throws Exception if the adaption fails.
-	 */
-	public static Object adaptUnmarshal(final Object value) throws Exception {
-		return adapterFor(value).unmarshal(value);
-	}
-
-	/**
 	 * Checks, whether the given object is an JAXB model or has an model adapter
 	 * defined.
 	 *
@@ -160,32 +135,6 @@ public class jaxb extends StaticObject {
 				}
 			}
 		};
-	}
-
-	public static <V, B> List<V> marshalMap(
-		final XmlAdapter<V, B> adapter,
-		final List<B> values
-	)
-		throws Exception
-	{
-		final List<V> result = new ArrayList<>(values.size());
-		for (B value : values) {
-			result.add(adapter.marshal(value));
-		}
-		return result;
-	}
-
-	public static <V, B> List<B> unmarshalMap(
-		final XmlAdapter<V, B> adapter,
-		final List<V> values
-	)
-		throws Exception
-	{
-		final List<B> result = new ArrayList<>(values.size());
-		for (V value : values) {
-			result.add(adapter.unmarshal(value));
-		}
-		return result;
 	}
 
 }

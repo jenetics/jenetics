@@ -206,6 +206,7 @@ public abstract class ObjectTester<T> {
 		}
 	}
 
+	/*
 	@Test
 	public void jaxbSerialize() throws Exception {
 		final Object object = getFactory().newInstance();
@@ -218,6 +219,7 @@ public abstract class ObjectTester<T> {
 			}
 		}
 	}
+	*/
 
 }
 

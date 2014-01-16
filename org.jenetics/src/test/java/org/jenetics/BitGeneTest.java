@@ -92,6 +92,7 @@ public class BitGeneTest extends GeneTester<BitGene> {
 		}
 	}
 
+	/*
 	@Test
 	public void jaxbSerializationCompatibility() throws IOException {
 		String resource = "/org/jenetics/BitGene_TRUE.jaxb.xml";
@@ -108,6 +109,7 @@ public class BitGeneTest extends GeneTester<BitGene> {
 			Assert.assertEquals(object, BitGene.FALSE);
 		}
 	}
+	*/
 
 
 	public static void main(final String[] args) throws Exception {

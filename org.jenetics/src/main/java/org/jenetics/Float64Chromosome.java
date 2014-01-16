@@ -19,6 +19,7 @@
  */
 package org.jenetics;
 
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.Float64Gene.Value;
 import static org.jenetics.Float64Model.Marshaller;
 import static org.jenetics.Float64Model.Unmarshaller;
@@ -55,7 +56,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date$</em>
+ * @version @__version__@ &mdash; <em>$Date$</em>
  */
 @XmlJavaTypeAdapter(Float64Chromosome.Model.Adapter.class)
 public class Float64Chromosome
@@ -67,6 +68,16 @@ public class Float64Chromosome
 
 	protected Float64Chromosome(final ISeq<Float64Gene> genes) {
 		super(genes);
+	}
+
+	private Float64Chromosome(
+		final ISeq<Float64Gene> genes,
+		final Float64 min,
+		final Float64 max
+	) {
+		this(genes);
+		_min = requireNonNull(min);
+		_max = requireNonNull(max);
 	}
 
 	/**
@@ -319,25 +330,13 @@ public class Float64Chromosome
 			public Float64Chromosome unmarshal(final Model model) {
 				final Float64 min = Float64.valueOf(model.min);
 				final Float64 max = Float64.valueOf(model.max);
-				final ISeq<Float64Gene> genes = new Array<Float64Model>(model.length)
-					.setAll(model.values)
+				final ISeq<Float64Gene> genes = Array.valueOf(model.values)
 					.map(compose(Unmarshaller, Float64Gene.Gene(min, max)))
 					.toISeq();
 
-				final Float64Chromosome chromosome = new Float64Chromosome(genes);
-				chromosome._min = min;
-				chromosome._max = max;
-
-				return chromosome;
+				return new Float64Chromosome(genes, min, max);
 			}
 		}
 	}
 
-
-
 }
-
-
-
-
-
