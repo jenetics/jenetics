@@ -380,10 +380,8 @@ public final class Genotype<G extends Gene<?, G>>
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	private static final String JAXB_TYPE_NAME = "org.jenetics.Genotype";
-
-	@XmlRootElement(name = JAXB_TYPE_NAME)
-	@XmlType(name = JAXB_TYPE_NAME)
+	@XmlRootElement(name = "org.jenetics.Genotype")
+	@XmlType(name = "org.jenetics.Genotype")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	final static class Model {
