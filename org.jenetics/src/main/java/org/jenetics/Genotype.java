@@ -400,24 +400,23 @@ public final class Genotype<G extends Gene<?, G>>
 				final Model model = new Model();
 				model.length = genotype.length();
 				model.ngenes = genotype.getNumberOfGenes();
-				model.chromosomes = new ArrayList<>();
-
-				for (Chromosome<?> c : genotype) {
-					model.chromosomes.add(jaxb.adaptMarshal(c));
-				}
+				model.chromosomes = jaxb.marshalMap(
+					jaxb.adapterFor(genotype.getChromosome()),
+					genotype.toSeq().asList()
+				);
 
 				return model;
 			}
 
 			@Override
 			public Genotype unmarshal(final Model model) throws Exception {
-				final Array<Chromosome> chromosomes = new Array<>(model.length);
-				for (int i = 0; i < model.length; ++i) {
-					final Object c = model.chromosomes.get(i);
-					chromosomes.set(i,(Chromosome)jaxb.adaptUnmarshal(c));
-				}
-
-				return new Genotype(chromosomes.toISeq(), model.ngenes);
+				final Object c = Array.valueOf(
+					jaxb.unmarshalMap(
+						jaxb.adapterFor(model.chromosomes.get(0)),
+						model.chromosomes
+					)
+				);
+				return new Genotype(((Array<Chromosome>)c).toISeq(), model.ngenes);
 			}
 		}
 

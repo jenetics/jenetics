@@ -19,6 +19,7 @@
  */
 package org.jenetics.internal.util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -134,5 +135,30 @@ public class jaxb extends StaticObject {
 			cls.isAnnotationPresent(XmlType.class);
 	}
 
+	public static <V, B> List<V> marshalMap(
+		final XmlAdapter<V, B> adapter,
+		final List<B> values
+	)
+		throws Exception
+	{
+		final List<V> result = new ArrayList<>(values.size());
+		for (B value : values) {
+			result.add(adapter.marshal(value));
+		}
+		return result;
+	}
+
+	public static <V, B> List<B> unmarshalMap(
+		final XmlAdapter<V, B> adapter,
+		final List<V> values
+	)
+		throws Exception
+	{
+		final List<B> result = new ArrayList<>(values.size());
+		for (V value : values) {
+			result.add(adapter.unmarshal(value));
+		}
+		return result;
+	}
 
 }

@@ -24,6 +24,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Random;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+
 import javolution.context.ObjectFactory;
 import javolution.xml.XMLFormat;
 import javolution.xml.stream.XMLStreamException;
@@ -230,13 +237,38 @@ public final class Float64Gene
 		return valueOf(value, min, max);
 	}
 
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private void writeObject(final ObjectOutputStream out)
+		throws IOException
+	{
+		out.defaultWriteObject();
+
+		out.writeDouble(_value.doubleValue());
+		out.writeDouble(_min.doubleValue());
+		out.writeDouble(_max.doubleValue());
+	}
+
+	private void readObject(final ObjectInputStream in)
+		throws IOException, ClassNotFoundException
+	{
+		in.defaultReadObject();
+
+		set(
+			Float64.valueOf(in.readDouble()),
+			Float64.valueOf(in.readDouble()),
+			Float64.valueOf(in.readDouble())
+		);
+	}
 
 	/* *************************************************************************
 	 *  XML object serialization
 	 * ************************************************************************/
 
 	static final XMLFormat<Float64Gene>
-	XML = new XMLFormat<Float64Gene>(Float64Gene.class)
+		XML = new XMLFormat<Float64Gene>(Float64Gene.class)
 	{
 		private static final String MIN = "min";
 		private static final String MAX = "max";
@@ -266,31 +298,45 @@ public final class Float64Gene
 	};
 
 	/* *************************************************************************
-	 *  Java object serialization
+	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	private void writeObject(final ObjectOutputStream out)
-		throws IOException
-	{
-		out.defaultWriteObject();
+	/*
+	@XmlRootElement(name = "org.jscience.mathematics.number.Float64")
+	@XmlType(name = "org.jscience.mathematics.number.Float64")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	final static class Model {
+		@XmlAttribute
+		public double value;
 
-		out.writeDouble(_value.doubleValue());
-		out.writeDouble(_min.doubleValue());
-		out.writeDouble(_max.doubleValue());
+		Model(final double value) {
+			this.value = value;
+		}
+
+		public final static class Adapter
+			extends XmlAdapter<Model, Float64Gene>
+		{
+			private final double _min;
+			private final double _max;
+
+			public Adapter(final double min, final double max) {
+				_min = min;
+				_max = max;
+			}
+
+			@Override
+			public Model marshal(final Float64Gene value) {
+				return new Model(value.doubleValue());
+			}
+
+			@Override
+			public Float64Gene unmarshal(final Model model) {
+				return Float64Gene.valueOf(model.value, _min, _max);
+			}
+		}
+
 	}
-
-	private void readObject(final ObjectInputStream in)
-		throws IOException, ClassNotFoundException
-	{
-		in.defaultReadObject();
-
-		set(
-			Float64.valueOf(in.readDouble()),
-			Float64.valueOf(in.readDouble()),
-			Float64.valueOf(in.readDouble())
-		);
-	}
-
+	*/
 }
 
 
