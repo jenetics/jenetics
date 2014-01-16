@@ -24,7 +24,6 @@ import static org.jenetics.util.object.Verify;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -400,24 +399,30 @@ public final class Genotype<G extends Gene<?, G>>
 				final Model model = new Model();
 				model.length = gt.length();
 				model.ngenes = gt.getNumberOfGenes();
-				model.chromosomes = gt.toSeq().map(jaxb.marshaller(gt.getChromosome())).asList();
+				model.chromosomes = gt.toSeq()
+					.map(Marshaller(gt.getChromosome())).asList();
 
 				return model;
 			}
 
 			@Override
 			public Genotype unmarshal(final Model model) throws Exception {
-				final Object c = Array.valueOf(
-					jaxb.unmarshalMap(
-						jaxb.adapterFor(model.chromosomes.get(0)),
-						model.chromosomes
-					)
-				);
-				return new Genotype(((Array<Chromosome>)c).toISeq(), model.ngenes);
+				final Object chs = Array.valueOf(model.chromosomes)
+					.map(Unmarshaller(model.chromosomes.get(0))).toISeq();
+
+				return new Genotype((ISeq<Chromosome>)chs, model.ngenes);
 			}
 		}
 
-		static final Adapter ADAPTER = new Adapter();
+		static final Adapter Adapter = new Adapter();
+
+		private static Function<Object, Object> Marshaller(final Object c)  {
+			return jaxb.marshaller(jaxb.adapterFor(c));
+		}
+
+		private static Function<Object, Object> Unmarshaller(final Object c)  {
+			return jaxb.unmarshaller(jaxb.adapterFor(c));
+		}
 	}
 }
 

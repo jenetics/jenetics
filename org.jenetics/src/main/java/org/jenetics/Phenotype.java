@@ -23,9 +23,6 @@ import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
@@ -44,9 +41,6 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
-import org.jenetics.internal.util.jaxb;
-
-import org.jenetics.util.Array;
 import org.jenetics.util.Function;
 import org.jenetics.util.Verifiable;
 import org.jenetics.util.functions;
@@ -520,7 +514,7 @@ public final class Phenotype<
 			public Model marshal(final Phenotype pt) throws Exception {
 				final Model model = new Model();
 				model.generation = pt.getGeneration();
-				model.genotype = Genotype.Model.ADAPTER.marshal(pt._genotype);
+				model.genotype = Genotype.Model.Adapter.marshal(pt._genotype);
 				model.fitness = pt.getFitness();
 				model.rawFitness = pt.getRawFitness();
 				return model;
@@ -530,7 +524,7 @@ public final class Phenotype<
 			public Phenotype unmarshal(final Model model) throws Exception {
 				final Phenotype pt = (Phenotype)FACTORY.object();
 				pt._generation = model.generation;
-				pt._genotype = Genotype.Model.ADAPTER.unmarshal(model.genotype);
+				pt._genotype = Genotype.Model.Adapter.unmarshal(model.genotype);
 				pt._fitness = model.fitness;
 				pt._rawFitness = model.rawFitness;
 				return pt;
