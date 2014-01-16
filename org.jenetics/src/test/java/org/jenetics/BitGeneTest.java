@@ -35,7 +35,7 @@ import org.jenetics.util.IO;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-01-12 $</em>
+ * @version <em>$Date: 2014-01-16 $</em>
  */
 public class BitGeneTest extends GeneTester<BitGene> {
 
@@ -92,6 +92,7 @@ public class BitGeneTest extends GeneTester<BitGene> {
 		}
 	}
 
+	/*
 	@Test
 	public void jaxbSerializationCompatibility() throws IOException {
 		String resource = "/org/jenetics/BitGene_TRUE.jaxb.xml";
@@ -108,6 +109,7 @@ public class BitGeneTest extends GeneTester<BitGene> {
 			Assert.assertEquals(object, BitGene.FALSE);
 		}
 	}
+	*/
 
 
 	public static void main(final String[] args) throws Exception {

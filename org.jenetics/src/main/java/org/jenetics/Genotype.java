@@ -423,8 +423,3 @@ public final class Genotype<G extends Gene<?, G>>
 		}
 	}
 }
-
-
-
-
-

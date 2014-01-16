@@ -39,7 +39,7 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-12-05 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-16 $</em>
  */
 public final class Integer64Gene
 	extends NumberGene<Integer64, Integer64Gene>
@@ -104,6 +104,18 @@ public final class Integer64Gene
 				return value._value;
 			}
 		};
+
+	static Function<Integer64, Integer64Gene> Gene(
+		final Integer64 min,
+		final Integer64 max
+	) {
+		return new Function<Integer64, Integer64Gene>() {
+			@Override
+			public Integer64Gene apply(final Integer64 value) {
+				return Integer64Gene.valueOf(value, min, max);
+			}
+		};
+	}
 
 	/* *************************************************************************
 	 *  Factory methods

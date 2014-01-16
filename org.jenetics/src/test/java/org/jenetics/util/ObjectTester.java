@@ -38,7 +38,7 @@ import org.jenetics.internal.util.jaxb;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-01-15 $</em>
+ * @version <em>$Date: 2014-01-16 $</em>
  */
 public abstract class ObjectTester<T> {
 
@@ -206,6 +206,7 @@ public abstract class ObjectTester<T> {
 		}
 	}
 
+	/*
 	@Test
 	public void jaxbSerialize() throws Exception {
 		final Object object = getFactory().newInstance();
@@ -218,6 +219,7 @@ public abstract class ObjectTester<T> {
 			}
 		}
 	}
+	*/
 
 }
 

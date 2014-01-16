@@ -46,7 +46,7 @@ import org.jenetics.util.bit;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-01-12 $</em>
+ * @version <em>$Date: 2014-01-16 $</em>
  */
 public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
@@ -292,6 +292,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 		}
 	}
 
+	/*
 	@Test
 	public void jaxbSerializationCompatibility() throws IOException {
 		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
@@ -310,6 +311,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 			LocalContext.exit();
 		}
 	}
+	*/
 
 
 	public static void main(final String[] args) throws Exception {
