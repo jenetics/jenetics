@@ -1,7 +1,9 @@
+DoubleModel
 Float64Model
 Integer64Model
 
 BitGene
+Float64Gene$Model
 
 BitChromosome$Model
 Float64Chromosome$Model
