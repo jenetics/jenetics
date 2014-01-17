@@ -28,7 +28,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
@@ -339,7 +338,11 @@ public final class Float64Gene
 
 			@Override
 			public Float64Gene unmarshal(final Model m) {
-				return Float64Gene.valueOf(m.value.value, m.min, m.max);
+				return Float64Gene.valueOf(
+					DoubleModel.Adapter.unmarshal(m.value),
+					m.min,
+					m.max
+				);
 			}
 		}
 	}

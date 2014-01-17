@@ -19,6 +19,9 @@
  */
 package org.jenetics;
 
+import static javax.xml.bind.DatatypeConverter.parseDouble;
+import static javax.xml.bind.DatatypeConverter.printDouble;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -41,7 +44,7 @@ import org.jenetics.util.Function;
 final class DoubleModel {
 
 	@XmlAttribute
-	public double value;
+	public String value;
 
 	public final static class Adapter
 		extends XmlAdapter<DoubleModel, Double>
@@ -49,13 +52,13 @@ final class DoubleModel {
 		@Override
 		public DoubleModel marshal(final Double value) {
 			final DoubleModel model = new DoubleModel();
-			model.value = value;
+			model.value = printDouble(value);
 			return model;
 		}
 
 		@Override
 		public Double unmarshal(final DoubleModel model) {
-			return model.value;
+			return parseDouble(model.value);
 		}
 	}
 
