@@ -19,10 +19,13 @@
  */
 package org.jenetics;
 
-import javax.xml.bind.annotation.XmlEnum;
-import javax.xml.bind.annotation.XmlEnumValue;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
@@ -36,11 +39,9 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-01-13 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-17 $</em>
  */
-@XmlRootElement(name = "org.jenetics.BitGene")
-@XmlType(name = "org.jenetics.BitGene")
-@XmlEnum (value = Boolean.class)
+@XmlJavaTypeAdapter(BitGene.Model.Adapter.class)
 public enum BitGene
 	implements
 		Gene<Boolean, BitGene>,
@@ -48,10 +49,7 @@ public enum BitGene
 		XMLSerializable
 {
 
-	@XmlEnumValue("false")
 	FALSE(false),
-
-	@XmlEnumValue("true")
 	TRUE(true);
 
 	private static final long serialVersionUID = 2L;
@@ -171,6 +169,33 @@ public enum BitGene
 		public void read(final InputElement element, final BitGene gene) {
 		}
 	};
+
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
+
+	@XmlRootElement(name = "org.jenetics.BitGene")
+	@XmlType(name = "org.jenetics.BitGene")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	final static class Model {
+		@XmlAttribute public boolean value;
+
+		public final static class Adapter
+			extends XmlAdapter<Model, BitGene>
+		{
+			@Override
+			public Model marshal(final BitGene value) {
+				final Model m = new Model();
+				m.value = value.booleanValue();
+				return m;
+			}
+
+			@Override
+			public BitGene unmarshal(final Model m) {
+				return BitGene.valueOf(m.value);
+			}
+		}
+	}
 
 }
 

@@ -3,7 +3,7 @@ LongModel
 Float64Model
 Integer64Model
 
-BitGene
+BitGene$Model
 Float64Gene$Model
 Integer64Gene$Model
 
