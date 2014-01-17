@@ -66,6 +66,7 @@ public class IOModel<T> {
 		MODELS.add(bitGeneTrue());
 		MODELS.add(bitGeneFalse());
 		MODELS.add(float64Gene());
+		MODELS.add(integer64Gene());
 		MODELS.add(bitChromosomeModel());
 	}
 
@@ -115,6 +116,26 @@ public class IOModel<T> {
 		};
 	}
 
+	public static Factory<IOModel<Integer64Gene>> integer64Gene() {
+		return new Factory<IOModel<Integer64Gene>>() {
+			@Override
+			public IOModel<Integer64Gene> newInstance() {
+				final Random random = new LCG64ShiftRandom(0);
+				LocalContext.enter();
+				try {
+					RandomRegistry.setRandom(random);
+					return new IOModel<>(
+						"Integer64Gene",
+						Integer64Gene.class,
+						Integer64Gene.valueOf(Integer.MIN_VALUE, Integer.MAX_VALUE)
+					);
+				} finally {
+					LocalContext.exit();
+				}
+			}
+		};
+	}
+
 	public static Factory<IOModel<BitChromosome>> bitChromosomeModel() {
 		return new Factory<IOModel<BitChromosome>>() {
 			@Override
@@ -136,7 +157,8 @@ public class IOModel<T> {
 	}
 
 	public static void main(final String[] args) throws Exception {
-		final Object value = float64Gene().newInstance().getModel();
+		//final Object value = float64Gene().newInstance().getModel();
+		final Object value = integer64Gene().newInstance().getModel();
 
 		IO.xml.write(value, System.out);
 		System.out.println();

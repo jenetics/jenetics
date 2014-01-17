@@ -1,9 +1,11 @@
 DoubleModel
+LongModel
 Float64Model
 Integer64Model
 
 BitGene
 Float64Gene$Model
+Integer64Gene$Model
 
 BitChromosome$Model
 Float64Chromosome$Model
