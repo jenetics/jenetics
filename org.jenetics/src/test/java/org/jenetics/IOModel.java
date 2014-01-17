@@ -157,8 +157,10 @@ public class IOModel<T> {
 	}
 
 	public static void main(final String[] args) throws Exception {
+		//final Object value = bitGeneTrue().newInstance().getModel();
+		final Object value = bitGeneFalse().newInstance().getModel();
 		//final Object value = float64Gene().newInstance().getModel();
-		final Object value = integer64Gene().newInstance().getModel();
+		//final Object value = integer64Gene().newInstance().getModel();
 
 		IO.xml.write(value, System.out);
 		System.out.println();
