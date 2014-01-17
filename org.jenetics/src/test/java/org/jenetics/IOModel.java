@@ -96,6 +96,26 @@ public class IOModel<T> {
 		};
 	}
 
+	public static Factory<IOModel<CharacterGene>> characterGene() {
+		return new Factory<IOModel<CharacterGene>>() {
+			@Override
+			public IOModel<CharacterGene> newInstance() {
+				final Random random = new LCG64ShiftRandom(0);
+				LocalContext.enter();
+				try {
+					RandomRegistry.setRandom(random);
+					return new IOModel<>(
+						"Integer64Gene",
+						CharacterGene.class,
+						CharacterGene.valueOf()
+					);
+				} finally {
+					LocalContext.exit();
+				}
+			}
+		};
+	}
+
 	public static Factory<IOModel<Float64Gene>> float64Gene() {
 		return new Factory<IOModel<Float64Gene>>() {
 			@Override
@@ -158,7 +178,8 @@ public class IOModel<T> {
 
 	public static void main(final String[] args) throws Exception {
 		//final Object value = bitGeneTrue().newInstance().getModel();
-		final Object value = bitGeneFalse().newInstance().getModel();
+		//final Object value = bitGeneFalse().newInstance().getModel();
+		final Object value = characterGene().newInstance().getModel();
 		//final Object value = float64Gene().newInstance().getModel();
 		//final Object value = integer64Gene().newInstance().getModel();
 

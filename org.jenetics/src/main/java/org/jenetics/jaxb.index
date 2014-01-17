@@ -4,6 +4,7 @@ Float64Model
 Integer64Model
 
 BitGene$Model
+CharacterGene$Model
 Float64Gene$Model
 Integer64Gene$Model
 
