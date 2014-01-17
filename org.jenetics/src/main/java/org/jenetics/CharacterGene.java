@@ -25,6 +25,15 @@ import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.Random;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlValue;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import javolution.context.ObjectFactory;
 import javolution.lang.Realtime;
 import javolution.text.Text;
@@ -43,8 +52,9 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.5 &mdash; <em>$Date: 2013-12-02 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-01-17 $</em>
  */
+@XmlJavaTypeAdapter(CharacterGene.Model.Adapter.class)
 public final class CharacterGene
 	implements
 		Gene<Character, CharacterGene>,
@@ -331,6 +341,38 @@ public final class CharacterGene
 		}
 	};
 
+
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
+
+	@XmlRootElement(name = "org.jenetics.CharacterGene")
+	@XmlType(name = "org.jenetics.CharacterGene")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	final static class Model {
+		@XmlAttribute(name = "valid-characters") public String validCharacters;
+		@XmlValue public String value;
+
+		public final static class Adapter
+			extends XmlAdapter<Model, CharacterGene>
+		{
+			@Override
+			public Model marshal(final CharacterGene value) {
+				final Model m = new Model();
+				m.validCharacters = value.getValidCharacters().toString();
+				m.value = value.getAllele().toString();
+				return m;
+			}
+
+			@Override
+			public CharacterGene unmarshal(final Model m) {
+				return CharacterGene.valueOf(
+					m.value.charAt(0),
+					new CharSeq(m.validCharacters)
+				);
+			}
+		}
+	}
 
 }
 
