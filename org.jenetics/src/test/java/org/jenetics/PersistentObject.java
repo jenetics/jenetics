@@ -20,8 +20,8 @@
 package org.jenetics;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 import javolution.context.LocalContext;
@@ -37,21 +37,24 @@ import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
 
 /**
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz
- *         Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-01-18 $</em>
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version @__version__@ &mdash; <em>$Date$</em>
  * @since @__version__@
  */
-public class IOModel<T> {
+public class PersistentObject<T> {
 
 	private final String _name;
 	private final Class<T> _type;
-	private final T _model;
+	private final T _object;
 
-	public IOModel(final String name, final Class<T> type, final T model) {
-		_name = name;
+	public PersistentObject(
+		final String name,
+		final Class<T> type,
+		final T object
+	) {
+		_name = Objects.requireNonNull(name);
 		_type = type;
-		_model = model;
+		_object = object;
 	}
 
 	public String getName() {
@@ -62,11 +65,11 @@ public class IOModel<T> {
 		return _type;
 	}
 
-	public T getModel() {
-		return _model;
+	public T getObject() {
+		return _object;
 	}
 
-	public static List<Factory<? extends IOModel<?>>> MODELS = new ArrayList<>();
+	public static List<Factory<? extends PersistentObject<?>>> MODELS = new ArrayList<>();
 	static {
 		MODELS.add(bitGeneTrue());
 		MODELS.add(bitGeneFalse());
@@ -75,11 +78,11 @@ public class IOModel<T> {
 		MODELS.add(bitChromosomeModel());
 	}
 
-	public static Factory<IOModel<BitGene>> bitGeneTrue() {
-		return new Factory<IOModel<BitGene>>() {
+	public static Factory<PersistentObject<BitGene>> bitGeneTrue() {
+		return new Factory<PersistentObject<BitGene>>() {
 			@Override
-			public IOModel<BitGene> newInstance() {
-				return new IOModel<>(
+			public PersistentObject<BitGene> newInstance() {
+				return new PersistentObject<>(
 					"BitGene(True)",
 					BitGene.class,
 					BitGene.TRUE
@@ -88,11 +91,11 @@ public class IOModel<T> {
 		};
 	}
 
-	public static Factory<IOModel<BitGene>> bitGeneFalse() {
-		return new Factory<IOModel<BitGene>>() {
+	public static Factory<PersistentObject<BitGene>> bitGeneFalse() {
+		return new Factory<PersistentObject<BitGene>>() {
 			@Override
-			public IOModel<BitGene> newInstance() {
-				return new IOModel<>(
+			public PersistentObject<BitGene> newInstance() {
+				return new PersistentObject<>(
 					"BitGene(False)",
 					BitGene.class,
 					BitGene.FALSE
@@ -101,15 +104,15 @@ public class IOModel<T> {
 		};
 	}
 
-	public static Factory<IOModel<CharacterGene>> characterGene() {
-		return new Factory<IOModel<CharacterGene>>() {
+	public static Factory<PersistentObject<CharacterGene>> characterGene() {
+		return new Factory<PersistentObject<CharacterGene>>() {
 			@Override
-			public IOModel<CharacterGene> newInstance() {
+			public PersistentObject<CharacterGene> newInstance() {
 				final Random random = new LCG64ShiftRandom(0);
 				LocalContext.enter();
 				try {
 					RandomRegistry.setRandom(random);
-					return new IOModel<>(
+					return new PersistentObject<>(
 						"Integer64Gene",
 						CharacterGene.class,
 						CharacterGene.valueOf()
@@ -121,18 +124,18 @@ public class IOModel<T> {
 		};
 	}
 
-	public static Factory<IOModel<EnumGene>> enumFloat64Gene() {
-		return new Factory<IOModel<EnumGene>>() {
+	public static Factory<PersistentObject<EnumGene>> enumFloat64Gene() {
+		return new Factory<PersistentObject<EnumGene>>() {
 			@SuppressWarnings("unchecked")
 			@Override
-			public IOModel<EnumGene> newInstance() {
+			public PersistentObject<EnumGene> newInstance() {
 				final Random random = new LCG64ShiftRandom(0);
 				LocalContext.enter();
 				try {
 					RandomRegistry.setRandom(random);
 					final ISeq<Float64> alleles =
 						new Array<Float64>(5).fill(float64Factory(random, 0, 10)).toISeq();
-					return new IOModel<EnumGene>(
+					return new PersistentObject<EnumGene>(
 						"EnumGene<Float64>",
 						EnumGene.class,
 						EnumGene.valueOf(alleles)
@@ -144,15 +147,15 @@ public class IOModel<T> {
 		};
 	}
 
-	public static Factory<IOModel<Float64Gene>> float64Gene() {
-		return new Factory<IOModel<Float64Gene>>() {
+	public static Factory<PersistentObject<Float64Gene>> float64Gene() {
+		return new Factory<PersistentObject<Float64Gene>>() {
 			@Override
-			public IOModel<Float64Gene> newInstance() {
+			public PersistentObject<Float64Gene> newInstance() {
 				final Random random = new LCG64ShiftRandom(0);
 				LocalContext.enter();
 				try {
 					RandomRegistry.setRandom(random);
-					return new IOModel<>(
+					return new PersistentObject<>(
 						"Float64Gene",
 						Float64Gene.class,
 						Float64Gene.valueOf(0, 1.0)
@@ -164,15 +167,15 @@ public class IOModel<T> {
 		};
 	}
 
-	public static Factory<IOModel<Integer64Gene>> integer64Gene() {
-		return new Factory<IOModel<Integer64Gene>>() {
+	public static Factory<PersistentObject<Integer64Gene>> integer64Gene() {
+		return new Factory<PersistentObject<Integer64Gene>>() {
 			@Override
-			public IOModel<Integer64Gene> newInstance() {
+			public PersistentObject<Integer64Gene> newInstance() {
 				final Random random = new LCG64ShiftRandom(0);
 				LocalContext.enter();
 				try {
 					RandomRegistry.setRandom(random);
-					return new IOModel<>(
+					return new PersistentObject<>(
 						"Integer64Gene",
 						Integer64Gene.class,
 						Integer64Gene.valueOf(Integer.MIN_VALUE, Integer.MAX_VALUE)
@@ -184,15 +187,15 @@ public class IOModel<T> {
 		};
 	}
 
-	public static Factory<IOModel<BitChromosome>> bitChromosomeModel() {
-		return new Factory<IOModel<BitChromosome>>() {
+	public static Factory<PersistentObject<BitChromosome>> bitChromosomeModel() {
+		return new Factory<PersistentObject<BitChromosome>>() {
 			@Override
-			public IOModel<BitChromosome> newInstance() {
+			public PersistentObject<BitChromosome> newInstance() {
 				final Random random = new LCG64ShiftRandom(0);
 				LocalContext.enter();
 				try {
 					RandomRegistry.setRandom(random);
-					return new IOModel<>(
+					return new PersistentObject<>(
 						"BitChromosome",
 						BitChromosome.class,
 						new BitChromosome(500, 0.5)
@@ -208,7 +211,7 @@ public class IOModel<T> {
 		//final Object value = bitGeneTrue().newInstance().getModel();
 		//final Object value = bitGeneFalse().newInstance().getModel();
 		//final Object value = characterGene().newInstance().getModel();
-		final Object value = enumFloat64Gene().newInstance().getModel();
+		final Object value = enumFloat64Gene().newInstance().getObject();
 		//final Object value = float64Gene().newInstance().getModel();
 		//final Object value = integer64Gene().newInstance().getModel();
 
