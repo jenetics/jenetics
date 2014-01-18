@@ -19,7 +19,10 @@
  */
 package org.jenetics;
 
+import static org.jenetics.internal.math.random.DoubleFactory;
 import static org.jenetics.internal.math.random.Float64Factory;
+import static org.jenetics.internal.math.random.Integer64Factory;
+import static org.jenetics.internal.math.random.LongFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,11 +34,10 @@ import java.util.Random;
 import javolution.context.LocalContext;
 
 import org.jscience.mathematics.number.Float64;
+import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
-import org.jenetics.util.IO;
-import org.jenetics.util.ISeq;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
 
@@ -98,49 +100,39 @@ public class PersistentObject<T> {
 	}
 
 	public static CharacterGene getCharacterGene() {
-		final Random random = new LCG64ShiftRandom(0);
-		LocalContext.enter();
-		try {
-			RandomRegistry.setRandom(random);
-			return CharacterGene.valueOf();
-		} finally {
-			LocalContext.exit();
-		}
+		return CharacterGene.valueOf();
 	}
 
 	public static Integer64Gene getInteger64Gene() {
-		final Random random = new LCG64ShiftRandom(0);
-		LocalContext.enter();
-		try {
-			RandomRegistry.setRandom(random);
-			return Integer64Gene.valueOf(Integer.MAX_VALUE, Integer.MAX_VALUE);
-		} finally {
-			LocalContext.exit();
-		}
+		return Integer64Gene.valueOf(Integer.MAX_VALUE, Integer.MAX_VALUE);
 	}
 
 	public static Float64Gene getFloat64Gene() {
-		final Random random = new LCG64ShiftRandom(0);
-		LocalContext.enter();
-		try {
-			RandomRegistry.setRandom(random);
-			return Float64Gene.valueOf(0, 1.0);
-		} finally {
-			LocalContext.exit();
-		}
+		return Float64Gene.valueOf(0, 1.0);
 	}
 
 	public static EnumGene<Float64> getEnumGeneFloat64() {
-		final Random random = new LCG64ShiftRandom(0);
-		LocalContext.enter();
-		try {
-			RandomRegistry.setRandom(random);
-			return EnumGene.valueOf(
-				new Array<Float64>(5).fill(Float64Factory(random, 0, 10)).toISeq()
-			);
-		} finally {
-			LocalContext.exit();
-		}
+		return EnumGene.valueOf(
+			new Array<Float64>(5).fill(Float64Factory(0, 10)).toISeq()
+		);
+	}
+
+	public static EnumGene<Double> getEnumGeneDouble() {
+		return EnumGene.valueOf(
+			new Array<Double>(5).fill(DoubleFactory(0, 10)).toISeq()
+		);
+	}
+
+	public static EnumGene<Integer64> getEnumGeneInteger64() {
+		return EnumGene.valueOf(
+			new Array<Integer64>(5).fill(Integer64Factory(0, 10)).toISeq()
+		);
+	}
+
+	public static EnumGene<Long> getEnumGeneLong() {
+		return EnumGene.valueOf(
+			new Array<Long>(5).fill(LongFactory(0, 10)).toISeq()
+		);
 	}
 
 	public static Factory<PersistentObject<BitChromosome>> bitChromosomeModel() {

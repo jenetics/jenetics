@@ -20,10 +20,12 @@
 package org.jenetics.internal.math;
 
 import static org.jenetics.util.math.random.nextDouble;
+import static org.jenetics.util.math.random.nextLong;
 
 import java.util.Random;
 
 import org.jscience.mathematics.number.Float64;
+import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
@@ -93,6 +95,51 @@ public final class random extends StaticObject {
 
 	public static Factory<Float64> Float64Factory(final double min, final double max) {
 		return Float64Factory(RandomRegistry.getRandom(), min, max);
+	}
+
+	public static Factory<Double> DoubleFactory(
+		final Random random,
+		final double min, final double max
+	) {
+		return new Factory<Double>() {
+			@Override public Double newInstance() {
+				return nextDouble(random, min, max);
+			}
+		};
+	}
+
+	public static Factory<Double> DoubleFactory(final double min, final double max) {
+		return DoubleFactory(RandomRegistry.getRandom(), min, max);
+	}
+
+	public static Factory<Integer64> Integer64Factory(
+		final Random random,
+		final long min, final long max
+	) {
+		return new Factory<Integer64>() {
+			@Override public Integer64 newInstance() {
+				return Integer64.valueOf(nextLong(random, min, max));
+			}
+		};
+	}
+
+	public static Factory<Integer64> Integer64Factory(final long min, final long max) {
+		return Integer64Factory(RandomRegistry.getRandom(), min, max);
+	}
+
+	public static Factory<Long> LongFactory(
+		final Random random,
+		final long min, final long max
+	) {
+		return new Factory<Long>() {
+			@Override public Long newInstance() {
+				return nextLong(random, min, max);
+			}
+		};
+	}
+
+	public static Factory<Long> LongFactory(final long min, final long max) {
+		return LongFactory(RandomRegistry.getRandom(), min, max);
 	}
 }
 
