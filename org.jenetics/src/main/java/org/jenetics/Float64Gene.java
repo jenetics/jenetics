@@ -40,6 +40,7 @@ import javolution.xml.stream.XMLStreamException;
 import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.structure.GroupMultiplicative;
 
+import org.jenetics.model.DoubleModel;
 import org.jenetics.util.Function;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.math;
@@ -49,7 +50,7 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-01-17 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-18 $</em>
  */
 @XmlJavaTypeAdapter(Float64Gene.Model.Adapter.class)
 public final class Float64Gene

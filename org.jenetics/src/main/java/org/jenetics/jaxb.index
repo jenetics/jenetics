@@ -1,7 +1,7 @@
-DoubleModel
-LongModel
-Float64Model
-Integer64Model
+model$DoubleModel
+model$LongModel
+model$Float64Model
+model$Integer64Model
 
 BitGene$Model
 CharacterGene$Model
@@ -10,5 +10,6 @@ Integer64Gene$Model
 
 BitChromosome$Model
 Float64Chromosome$Model
+
 
 Genotype$Model

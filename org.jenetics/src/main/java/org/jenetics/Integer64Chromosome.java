@@ -21,8 +21,8 @@ package org.jenetics;
 
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.Integer64Gene.Value;
-import static org.jenetics.Integer64Model.Marshaller;
-import static org.jenetics.Integer64Model.Unmarshaller;
+import static org.jenetics.model.Integer64Model.Marshaller;
+import static org.jenetics.model.Integer64Model.Unmarshaller;
 import static org.jenetics.util.functions.compose;
 import static org.jenetics.util.object.hashCodeOf;
 
@@ -46,6 +46,7 @@ import javolution.xml.stream.XMLStreamException;
 
 import org.jscience.mathematics.number.Integer64;
 
+import org.jenetics.model.Integer64Model;
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
@@ -57,7 +58,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-01-16 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-18 $</em>
  */
 @XmlJavaTypeAdapter(Float64Chromosome.Model.Adapter.class)
 public class Integer64Chromosome
