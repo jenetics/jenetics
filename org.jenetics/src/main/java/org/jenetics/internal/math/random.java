@@ -19,6 +19,13 @@
  */
 package org.jenetics.internal.math;
 
+import static org.jenetics.util.math.random.nextDouble;
+
+import java.util.Random;
+
+import org.jscience.mathematics.number.Float64;
+
+import org.jenetics.util.Factory;
 import org.jenetics.util.StaticObject;
 
 /**
@@ -69,6 +76,19 @@ public final class random extends StaticObject {
 
 	public static double toDouble2(final int a, final int b) {
 		return (((long)(a >>> 6) << 26) | (b >>> 6))*0x1.0p-52d;
+	}
+
+
+	public static Factory<Float64> float64Factory(
+		final Random random,
+		final double min, final double max
+	) {
+		return new Factory<Float64>() {
+			@Override
+			public Float64 newInstance() {
+				return Float64.valueOf(nextDouble(random, min, max));
+			}
+		};
 	}
 }
 
