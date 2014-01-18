@@ -27,6 +27,8 @@ import java.util.Objects;
 import java.util.Random;
 
 import javolution.context.ObjectFactory;
+import javolution.xml.XMLFormat;
+import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.internal.util.cast;
 
@@ -64,7 +66,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.5 &mdash; <em>$Date: 2013-12-09 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-01-18 $</em>
  */
 public final class EnumGene<A>
 	implements
@@ -258,6 +260,50 @@ public final class EnumGene<A>
 		return gene;
 	}
 
+
+	/* *************************************************************************
+	 *  XML object serialization
+	 * ************************************************************************/
+
+	@SuppressWarnings({ "unchecked", "rawtypes"})
+	static final XMLFormat<EnumGene>
+		XML = new XMLFormat<EnumGene>(EnumGene.class)
+	{
+		private static final String LENGTH = "length";
+		private static final String CURRENT_ALLELE_INDEX = "current-allele-index";
+
+		@Override
+		public EnumGene newInstance(
+			final Class<EnumGene> cls, final InputElement xml
+		)
+			throws XMLStreamException
+		{
+			final int length = xml.getAttribute(LENGTH, 0);
+			final int index = xml.getAttribute(CURRENT_ALLELE_INDEX, 0);
+			final Array<Object> alleles = new Array<>(length);
+			for (int i = 0; i < length; ++i) {
+				final Object allele = xml.getNext();
+				alleles.set(i, allele);
+			}
+
+			return EnumGene.valueOf(alleles.toISeq(), index);
+		}
+
+		@Override
+		public void write(final EnumGene eg, final OutputElement xml)
+			throws XMLStreamException
+		{
+			xml.setAttribute(LENGTH, eg.getValidAlleles().length());
+			xml.setAttribute(CURRENT_ALLELE_INDEX, eg.getAlleleIndex());
+			for (Object allele : eg.getValidAlleles()) {
+				xml.add(allele);
+			}
+		}
+
+		@Override
+		public void read(final InputElement xml, final EnumGene eg) {
+		}
+	};
 }
 
 

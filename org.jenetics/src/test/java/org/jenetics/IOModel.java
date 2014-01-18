@@ -26,15 +26,20 @@ import java.util.Random;
 
 import javolution.context.LocalContext;
 
+import org.jscience.mathematics.number.Float64;
+
+import static org.jenetics.internal.math.random.float64Factory;
+import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
 import org.jenetics.util.IO;
+import org.jenetics.util.ISeq;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz
  *         Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-01-17 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-18 $</em>
  * @since @__version__@
  */
 public class IOModel<T> {
@@ -116,6 +121,29 @@ public class IOModel<T> {
 		};
 	}
 
+	public static Factory<IOModel<EnumGene>> enumFloat64Gene() {
+		return new Factory<IOModel<EnumGene>>() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public IOModel<EnumGene> newInstance() {
+				final Random random = new LCG64ShiftRandom(0);
+				LocalContext.enter();
+				try {
+					RandomRegistry.setRandom(random);
+					final ISeq<Float64> alleles =
+						new Array<Float64>(5).fill(float64Factory(random, 0, 10)).toISeq();
+					return new IOModel<EnumGene>(
+						"EnumGene<Float64>",
+						EnumGene.class,
+						EnumGene.valueOf(alleles)
+					);
+				} finally {
+					LocalContext.exit();
+				}
+			}
+		};
+	}
+
 	public static Factory<IOModel<Float64Gene>> float64Gene() {
 		return new Factory<IOModel<Float64Gene>>() {
 			@Override
@@ -179,13 +207,14 @@ public class IOModel<T> {
 	public static void main(final String[] args) throws Exception {
 		//final Object value = bitGeneTrue().newInstance().getModel();
 		//final Object value = bitGeneFalse().newInstance().getModel();
-		final Object value = characterGene().newInstance().getModel();
+		//final Object value = characterGene().newInstance().getModel();
+		final Object value = enumFloat64Gene().newInstance().getModel();
 		//final Object value = float64Gene().newInstance().getModel();
 		//final Object value = integer64Gene().newInstance().getModel();
 
 		IO.xml.write(value, System.out);
 		System.out.println();
-		IO.jaxb.write(value, System.out);
+		//IO.jaxb.write(value, System.out);
 	}
 
 }
