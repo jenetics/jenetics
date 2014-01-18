@@ -39,6 +39,7 @@ import javolution.xml.stream.XMLStreamException;
 
 import org.jscience.mathematics.number.Integer64;
 
+import org.jenetics.model.LongModel;
 import org.jenetics.util.Function;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.math;

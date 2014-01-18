@@ -21,11 +21,7 @@ package org.jenetics;
 
 import java.io.Serializable;
 
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
 import javolution.lang.Immutable;
-
-import org.jenetics.internal.util.AnyTypeXMLAdapter;
 
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
@@ -42,7 +38,6 @@ import org.jenetics.util.Verifiable;
  * @since 1.0
  * @version 1.0 &mdash; <em>$Date$</em>
  */
-//@XmlJavaTypeAdapter(AnyTypeXMLAdapter.class)
 public interface Chromosome<G extends Gene<?, G>>
 	extends
 		Verifiable,
