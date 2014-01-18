@@ -50,35 +50,35 @@ final class model extends StaticObject {
 	 * @version @__version__@ &mdash; <em>$Date$</em>
 	 * @since @__version__@
 	 */
-	@XmlRootElement(name = "java.lang.Double")
-	@XmlType(name = "java.lang.Double")
+	@XmlRootElement(name = "java.lang.Integer")
+	@XmlType(name = "java.lang.Integer")
 	@XmlAccessorType(XmlAccessType.FIELD)
-	static final class DoubleModel {
+	final static class IntegerModel {
 
-		@XmlAttribute String value;
+		@XmlAttribute Integer value;
 
 		final static class Adapter
-			extends XmlAdapter<DoubleModel, Double>
+			extends XmlAdapter<IntegerModel, Integer>
 		{
 			@Override
-			public DoubleModel marshal(final Double value) {
-				final DoubleModel model = new DoubleModel();
-				model.value = printDouble(value);
+			public IntegerModel marshal(final Integer value) {
+				final IntegerModel model = new IntegerModel();
+				model.value = value;
 				return model;
 			}
 
 			@Override
-			public Double unmarshal(final DoubleModel model) {
-				return parseDouble(model.value);
+			public Integer unmarshal(final IntegerModel model) {
+				return model.value;
 			}
 		}
 
 		static final Adapter Adapter = new Adapter();
 
-		static final Function<Double, DoubleModel> Marshaller =
+		static final Function<Integer, IntegerModel> Marshaller =
 			jaxb.marshaller(Adapter);
 
-		static final Function<DoubleModel, Double> Unmarshaller =
+		static final Function<IntegerModel, Integer> Unmarshaller =
 			jaxb.unmarshaller(Adapter);
 
 	}
@@ -117,6 +117,44 @@ final class model extends StaticObject {
 			jaxb.marshaller(Adapter);
 
 		static final Function<LongModel, Long> Unmarshaller =
+			jaxb.unmarshaller(Adapter);
+
+	}
+
+	/**
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @version @__version__@ &mdash; <em>$Date$</em>
+	 * @since @__version__@
+	 */
+	@XmlRootElement(name = "java.lang.Double")
+	@XmlType(name = "java.lang.Double")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	static final class DoubleModel {
+
+		@XmlAttribute String value;
+
+		final static class Adapter
+			extends XmlAdapter<DoubleModel, Double>
+		{
+			@Override
+			public DoubleModel marshal(final Double value) {
+				final DoubleModel model = new DoubleModel();
+				model.value = printDouble(value);
+				return model;
+			}
+
+			@Override
+			public Double unmarshal(final DoubleModel model) {
+				return parseDouble(model.value);
+			}
+		}
+
+		static final Adapter Adapter = new Adapter();
+
+		static final Function<Double, DoubleModel> Marshaller =
+			jaxb.marshaller(Adapter);
+
+		static final Function<DoubleModel, Double> Unmarshaller =
 			jaxb.unmarshaller(Adapter);
 
 	}
