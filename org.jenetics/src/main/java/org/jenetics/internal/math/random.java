@@ -26,6 +26,7 @@ import java.util.Random;
 import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.util.Factory;
+import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.StaticObject;
 
 /**
@@ -79,16 +80,19 @@ public final class random extends StaticObject {
 	}
 
 
-	public static Factory<Float64> float64Factory(
+	public static Factory<Float64> Float64Factory(
 		final Random random,
 		final double min, final double max
 	) {
 		return new Factory<Float64>() {
-			@Override
-			public Float64 newInstance() {
+			@Override public Float64 newInstance() {
 				return Float64.valueOf(nextDouble(random, min, max));
 			}
 		};
+	}
+
+	public static Factory<Float64> Float64Factory(final double min, final double max) {
+		return Float64Factory(RandomRegistry.getRandom(), min, max);
 	}
 }
 

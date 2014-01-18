@@ -19,8 +19,12 @@
  */
 package org.jenetics;
 
+import static org.jenetics.internal.math.random.Float64Factory;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 
@@ -28,7 +32,6 @@ import javolution.context.LocalContext;
 
 import org.jscience.mathematics.number.Float64;
 
-import static org.jenetics.internal.math.random.float64Factory;
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
 import org.jenetics.util.IO;
@@ -38,23 +41,23 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date$</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-18 $</em>
  * @since @__version__@
  */
 public class PersistentObject<T> {
 
 	private final String _name;
 	private final Class<T> _type;
-	private final T _object;
+	private final T _value;
 
 	public PersistentObject(
 		final String name,
 		final Class<T> type,
-		final T object
+		final T value
 	) {
 		_name = Objects.requireNonNull(name);
-		_type = type;
-		_object = object;
+		_type = Objects.requireNonNull(type);
+		_value = Objects.requireNonNull(value);
 	}
 
 	public String getName() {
@@ -65,126 +68,79 @@ public class PersistentObject<T> {
 		return _type;
 	}
 
-	public T getObject() {
-		return _object;
+	public T getValue() {
+		return _value;
 	}
 
 	public static List<Factory<? extends PersistentObject<?>>> MODELS = new ArrayList<>();
-	static {
-		MODELS.add(bitGeneTrue());
-		MODELS.add(bitGeneFalse());
+	/*static {
 		MODELS.add(float64Gene());
 		MODELS.add(integer64Gene());
 		MODELS.add(bitChromosomeModel());
+	}*/
+
+	public static List<PersistentObject<?>> VALUES = new ArrayList<>();
+	public static Map<String, PersistentObject<?>> OBJECTS = new HashMap<>();
+	static {
+		VALUES.add(new PersistentObject<>(
+			"BitGene[true]", BitGene.class, BitGene.TRUE
+		));
+		VALUES.add(new PersistentObject<>(
+			"BitGene[false]", BitGene.class, BitGene.FALSE
+		));
+		VALUES.add(new PersistentObject<>(
+			"CharacterGene", CharacterGene.class, getCharacterGene()
+		));
+
+		for (PersistentObject<?> obj :  VALUES) {
+			OBJECTS.put(obj.getName(), obj);
+		}
 	}
 
-	public static Factory<PersistentObject<BitGene>> bitGeneTrue() {
-		return new Factory<PersistentObject<BitGene>>() {
-			@Override
-			public PersistentObject<BitGene> newInstance() {
-				return new PersistentObject<>(
-					"BitGene(True)",
-					BitGene.class,
-					BitGene.TRUE
-				);
-			}
-		};
+	public static CharacterGene getCharacterGene() {
+		final Random random = new LCG64ShiftRandom(0);
+		LocalContext.enter();
+		try {
+			RandomRegistry.setRandom(random);
+			return CharacterGene.valueOf();
+		} finally {
+			LocalContext.exit();
+		}
 	}
 
-	public static Factory<PersistentObject<BitGene>> bitGeneFalse() {
-		return new Factory<PersistentObject<BitGene>>() {
-			@Override
-			public PersistentObject<BitGene> newInstance() {
-				return new PersistentObject<>(
-					"BitGene(False)",
-					BitGene.class,
-					BitGene.FALSE
-				);
-			}
-		};
+	public static Integer64Gene getInteger64Gene() {
+		final Random random = new LCG64ShiftRandom(0);
+		LocalContext.enter();
+		try {
+			RandomRegistry.setRandom(random);
+			return Integer64Gene.valueOf(Integer.MAX_VALUE, Integer.MAX_VALUE);
+		} finally {
+			LocalContext.exit();
+		}
 	}
 
-	public static Factory<PersistentObject<CharacterGene>> characterGene() {
-		return new Factory<PersistentObject<CharacterGene>>() {
-			@Override
-			public PersistentObject<CharacterGene> newInstance() {
-				final Random random = new LCG64ShiftRandom(0);
-				LocalContext.enter();
-				try {
-					RandomRegistry.setRandom(random);
-					return new PersistentObject<>(
-						"Integer64Gene",
-						CharacterGene.class,
-						CharacterGene.valueOf()
-					);
-				} finally {
-					LocalContext.exit();
-				}
-			}
-		};
+	public static Float64Gene getFloat64Gene() {
+		final Random random = new LCG64ShiftRandom(0);
+		LocalContext.enter();
+		try {
+			RandomRegistry.setRandom(random);
+			return Float64Gene.valueOf(0, 1.0);
+		} finally {
+			LocalContext.exit();
+		}
 	}
 
-	public static Factory<PersistentObject<EnumGene>> enumFloat64Gene() {
-		return new Factory<PersistentObject<EnumGene>>() {
-			@SuppressWarnings("unchecked")
-			@Override
-			public PersistentObject<EnumGene> newInstance() {
-				final Random random = new LCG64ShiftRandom(0);
-				LocalContext.enter();
-				try {
-					RandomRegistry.setRandom(random);
-					final ISeq<Float64> alleles =
-						new Array<Float64>(5).fill(float64Factory(random, 0, 10)).toISeq();
-					return new PersistentObject<EnumGene>(
-						"EnumGene<Float64>",
-						EnumGene.class,
-						EnumGene.valueOf(alleles)
-					);
-				} finally {
-					LocalContext.exit();
-				}
-			}
-		};
-	}
-
-	public static Factory<PersistentObject<Float64Gene>> float64Gene() {
-		return new Factory<PersistentObject<Float64Gene>>() {
-			@Override
-			public PersistentObject<Float64Gene> newInstance() {
-				final Random random = new LCG64ShiftRandom(0);
-				LocalContext.enter();
-				try {
-					RandomRegistry.setRandom(random);
-					return new PersistentObject<>(
-						"Float64Gene",
-						Float64Gene.class,
-						Float64Gene.valueOf(0, 1.0)
-					);
-				} finally {
-					LocalContext.exit();
-				}
-			}
-		};
-	}
-
-	public static Factory<PersistentObject<Integer64Gene>> integer64Gene() {
-		return new Factory<PersistentObject<Integer64Gene>>() {
-			@Override
-			public PersistentObject<Integer64Gene> newInstance() {
-				final Random random = new LCG64ShiftRandom(0);
-				LocalContext.enter();
-				try {
-					RandomRegistry.setRandom(random);
-					return new PersistentObject<>(
-						"Integer64Gene",
-						Integer64Gene.class,
-						Integer64Gene.valueOf(Integer.MIN_VALUE, Integer.MAX_VALUE)
-					);
-				} finally {
-					LocalContext.exit();
-				}
-			}
-		};
+	public static EnumGene<Float64> getEnumGeneFloat64() {
+		final Random random = new LCG64ShiftRandom(0);
+		LocalContext.enter();
+		try {
+			RandomRegistry.setRandom(random);
+			return EnumGene.valueOf(
+				new Array<Float64>(5).fill(Float64Factory(random, 0, 10)).toISeq()
+			);
+		} finally {
+			LocalContext.exit();
+		}
 	}
 
 	public static Factory<PersistentObject<BitChromosome>> bitChromosomeModel() {
@@ -208,14 +164,14 @@ public class PersistentObject<T> {
 	}
 
 	public static void main(final String[] args) throws Exception {
-		//final Object value = bitGeneTrue().newInstance().getModel();
-		//final Object value = bitGeneFalse().newInstance().getModel();
+		//final Object value = OBJECTS.get("BitGene[true]").getValue();
+		//final Object value = OBJECTS.get("BitGene[true]").getValue();
 		//final Object value = characterGene().newInstance().getModel();
-		final Object value = enumFloat64Gene().newInstance().getObject();
+		//final Object value = enumFloat64Gene().newInstance().getValue();
 		//final Object value = float64Gene().newInstance().getModel();
 		//final Object value = integer64Gene().newInstance().getModel();
 
-		IO.xml.write(value, System.out);
+		//IO.xml.write(value, System.out);
 		System.out.println();
 		//IO.jaxb.write(value, System.out);
 	}
