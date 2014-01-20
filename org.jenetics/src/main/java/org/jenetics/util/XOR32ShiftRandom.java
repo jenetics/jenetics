@@ -337,8 +337,8 @@ public class XOR32ShiftRandom extends Random32 {
 
 
 	private final Param _param;
-	private final int _seed;
 
+	private int _seed;
 	private int _x = 0;
 
 	public XOR32ShiftRandom(final long seed, final Param param) {
@@ -373,7 +373,8 @@ public class XOR32ShiftRandom extends Random32 {
 
 	@Override
 	public void setSeed(final long seed) {
-		_x = toSafeSeed((int)seed);
+		_seed = toSafeSeed((int)seed);
+		reset();
 	}
 
 	@Override
@@ -558,4 +559,4 @@ Preparing to run test 209.  ntuple = 0
 #=============================================================================#
 # Runtime: 0:40:46                                                            #
 #=============================================================================#
- */
+*/
