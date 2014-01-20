@@ -392,7 +392,27 @@ public class XOR32ShiftRandom extends Random32 {
 
 	@Override
 	public String toString() {
-		return String.format("XOR32ShiftRandom[%s]", _param);
+		return String.format("XOR32ShiftRandom[%s, seed=%d, x=%d]", _param, _seed, _x);
+	}
+
+	@Override
+	public int hashCode() {
+		return Arrays.hashCode(new int[]{_x, _seed, _param.hashCode()});
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null || obj.getClass() != getClass()) {
+			return false;
+		}
+
+		final XOR32ShiftRandom random = (XOR32ShiftRandom)obj;
+		return _x == random._x &&
+			_seed == random._seed &&
+			_param.equals(random._param);
 	}
 
 }
