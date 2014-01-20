@@ -19,6 +19,8 @@
  */
 package org.jenetics.util;
 
+import static java.lang.Math.min;
+
 import java.util.Random;
 
 import org.jenetics.internal.math.random;
@@ -28,7 +30,7 @@ import org.jenetics.internal.math.random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__version__@
- * @version @__version__@ &mdash; <em>$Date: 2013-12-19 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-20 $</em>
  */
 public abstract class Random32 extends PRNG {
 
@@ -49,6 +51,18 @@ public abstract class Random32 extends PRNG {
 	@Override
 	public abstract int nextInt();
 
+	/*
+	@Override
+	public void nextBytes(final byte[] bytes) {
+		for (int i = 0, len = bytes.length; i < len;) {
+			int n = min(len - i, 8);
+
+			for (long x = nextLong(); --n >= 0; x >>= Byte.SIZE) {
+				bytes[8 - i++] = (byte)x;
+			}
+		}
+	}
+	*/
 
 	@Override
 	public long nextLong() {

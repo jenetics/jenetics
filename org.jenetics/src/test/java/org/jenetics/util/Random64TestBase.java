@@ -19,34 +19,27 @@
  */
 package org.jenetics.util;
 
-import org.testng.annotations.DataProvider;
+import java.util.Random;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-01-20 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-20 $</em>
+ * @since @__version__@
  */
-public class LCG64ShiftRandomTest extends Random64TestBase {
+public abstract class Random64TestBase extends RandomTestBase {
 
-	@Override @DataProvider(name = "seededPRNGPair")
-	protected Object[][] getSeededPRNGPair() {
-		final long seed = math.random.seed();
-		return new Object[][]{
-			{new LCG64ShiftRandom(seed), new LCG64ShiftRandom(seed)},
-			{new LCG64ShiftRandom.ThreadSafe(seed), new LCG64ShiftRandom.ThreadSafe(seed)}
-		};
-	}
+	@Test(dataProvider = "seededPRNGPair")
+	public void sameByteLongValueSequence(final Random rand1, final Random rand2) {
+		final byte[] bytes = new byte[8];
+		for (int i = 0; i < 1234; ++i) {
+			rand1.nextBytes(bytes);
+			bit.reverse(bytes);
 
-	@Override @DataProvider(name = "PRNG")
-	protected Object[][] getPRNG() {
-		final long seed = math.random.seed();
-		return new Object[][]{
-			{new LCG64ShiftRandom(seed)},
-			{new LCG64ShiftRandom.ThreadSafe(seed)},
-			{new LCG64ShiftRandom.ThreadLocal().get()}
-		};
+			Assert.assertEquals(bit.toLong(bytes), rand2.nextLong());
+		}
 	}
 
 }
-
-
-

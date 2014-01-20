@@ -38,7 +38,7 @@ import org.jscience.mathematics.number.LargeInteger;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.5 &mdash; <em>$Date: 2013-12-05 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-01-20 $</em>
  */
 public final class bit extends StaticObject {
 	private bit() {}
@@ -557,6 +557,14 @@ public final class bit extends StaticObject {
 		bytes[6] = (byte)(value >>>  8);
 		bytes[7] = (byte)(value);
 		return bytes;
+	}
+
+	static int toInt(final byte[] data) {
+		return
+			(data[0] << 24) +
+			(data[1] << 16) +
+			(data[2] << 8) +
+			(data[3]);
 	}
 
 	static byte[] writeInt(final int v, final byte[] data, final int start) {
