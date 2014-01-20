@@ -22,12 +22,13 @@ package org.jenetics.internal.util;
 import org.jenetics.util.Random64;
 
 /**
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz
- *         Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-01-10 $</em>
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-20 $</em>
  * @since @__version__@
  */
 public class NanoTimeRandom extends Random64 {
+
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	public long nextLong() {
