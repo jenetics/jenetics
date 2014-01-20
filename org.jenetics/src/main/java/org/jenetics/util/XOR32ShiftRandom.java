@@ -19,9 +19,12 @@
  */
 package org.jenetics.util;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -36,7 +39,10 @@ import java.util.concurrent.Future;
 import org.jenetics.internal.util.DieHarder;
 
 /**
- * http://www.jstatsoft.org/v08/i14/paper
+ * Implementation of the XOR shift PRNG.
+ *
+ * @see <a href="http://www.jstatsoft.org/v08/i14/paper">
+ *      Xorshift RNGs, George Marsaglia</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version @__version__@ &mdash; <em>$Date: 2014-01-20 $</em>
@@ -46,13 +52,24 @@ public class XOR32ShiftRandom extends Random32 {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Parameter class for the {@code XOR32ShiftRandom} generator.
-	 * 
+	 * Parameter class for the {@code XOR32ShiftRandom} generator. The three
+	 * integer parameters are used in the PRNG as follows:
+	 *
+	 * [code]
+	 * y ^= y << a;
+	 * y ^= y >> b;
+	 * return y ^= y << c;
+	 * [/code]
+	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version @__version__@ &mdash; <em>$Date: 2014-01-20 $</em>
 	 * @since @__version__@
 	 */
-	public static final class Param {
+	public static final class Param implements Serializable {
+		private static final long serialVersionUID = 1L;
+
+		public static final Param DEFAULT = new Param(1, 2, 3);
+
 		public final int a;
 		public final int b;
 		public final int c;
@@ -73,9 +90,9 @@ public class XOR32ShiftRandom extends Random32 {
 		 * +--------------------------------------------------------------------------------+
 		 * </pre>
 		 *
-		 * @param a
-		 * @param b
-		 * @param c
+		 * @param a first shift parameter
+		 * @param b second shift parameter
+		 * @param c third shift parameter
 		 */
 		public Param(final int a, final int b, final int c) {
 			this.a = a;
@@ -87,7 +104,7 @@ public class XOR32ShiftRandom extends Random32 {
 		public int hashCode() {
 			return Arrays.hashCode(new int[]{a, b, c});
 		}
-		
+
 		@Override
 		public boolean equals(final Object other) {
 			if (this == other) {
@@ -96,28 +113,40 @@ public class XOR32ShiftRandom extends Random32 {
 			if (!(other instanceof Param)) {
 				return false;
 			}
-			
+
 			final Param param = (Param)other;
 			return a == param.a && b == param.b && c == param.c;
 		}
-		
+
 		@Override
 		public String toString() {
-			return String.format("Param[%-3d, %-3d, %-3d]", a, b, c);
+			return String.format("Param[%d, %d, %d]", a, b, c);
 		}
 	}
 
 
 	private final Param _param;
+	private final long _seed;
 
-	private int _x = (int)math.random.seed();
+	private int _x = 0;
+
+	public XOR32ShiftRandom(final long seed, final Param param) {
+		_param = requireNonNull(param, "PRNG param must not be null.");
+		_seed = seed;
+
+		_x = (int)_seed;
+	}
+
+	public XOR32ShiftRandom(final long seed) {
+		this(seed, Param.DEFAULT);
+	}
 
 	public XOR32ShiftRandom(final Param param) {
-		_param = param;
+		this(math.random.seed(), Param.DEFAULT);
 	}
 
 	public XOR32ShiftRandom() {
-		this(new Param(13, 17, 15));
+		this(math.random.seed(), Param.DEFAULT);
 	}
 
 	@Override
@@ -155,12 +184,12 @@ public class XOR32ShiftRandom extends Random32 {
 			params.add(new Param(p[2], p[1], p[0]));
 			params.add(new Param(p[2], p[0], p[1]));
 		}
-		
+
 		final List<TestTask> tasks = new ArrayList<>();
 		for (Param param : params) {
 			tasks.add(new TestTask(param));
 		}
-		
+
 		for (Future<?> future : executor.invokeAll(tasks)) {
 			future.get();
 		}
