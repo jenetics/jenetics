@@ -216,17 +216,85 @@ public class XOR32ShiftRandom extends Random32 {
 		}
 	}
 
+	/**
+	 * This is a <i>thread safe</i> variation of the this PRGN&mdash;by
+	 * synchronizing the random number generation.
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since 1.1
+	 * @version 1.1 &mdash; <em>$Date: 2014-01-20 $</em>
+	 */
+	public static class ThreadSafe extends XOR32ShiftRandom {
+		private static final long serialVersionUID = 1L;
+
+		/**
+		 * Create a new PRNG instance with the given parameter and seed.
+		 *
+		 * @param seed the seed of the PRNG.
+		 * @param param the parameter of the PRNG.
+		 * @throws NullPointerException if the given {@code param} is null.
+		 */
+		public ThreadSafe(final long seed, final Param param) {
+			super(seed, param);
+		}
+
+		/**
+		 * Create a new PRNG instance with {@link Param#DEFAULT} parameter and
+		 * the given seed.
+		 *
+		 * @param seed the seed of the PRNG
+		 */
+		public ThreadSafe(final long seed) {
+			this(seed, Param.DEFAULT);
+		}
+
+		/**
+		 * Create a new PRNG instance with the given parameter and a safe
+		 * default seed.
+		 *
+		 * @param param the PRNG parameter.
+		 * @throws NullPointerException if the given {@code param} is null.
+		 */
+		public ThreadSafe(final Param param) {
+			this(math.random.seed(), param);
+		}
+
+		/**
+		 * Create a new PRNG instance with {@link Param#DEFAULT} parameter and
+		 * a safe seed.
+		 */
+		public ThreadSafe() {
+			this(math.random.seed(), Param.DEFAULT);
+		}
+
+		@Override
+		public synchronized void setSeed(final long seed) {
+			super.setSeed(seed);
+		}
+
+		@Override
+		public synchronized void reset() {
+			super.reset();
+		}
+
+		@Override
+		public synchronized int nextInt() {
+			return super.nextInt();
+		}
+
+	}
+
 
 	private final Param _param;
-	private final long _seed;
+	private final int _seed;
 
 	private int _x = 0;
 
 	public XOR32ShiftRandom(final long seed, final Param param) {
 		_param = requireNonNull(param, "PRNG param must not be null.");
-		_seed = seed;
+		_seed = ((int)seed == 0) ? 2742673 : (int)seed;
 
-		_x = (int)_seed;
+		_x = _seed;
 	}
 
 	public XOR32ShiftRandom(final long seed) {
@@ -239,6 +307,13 @@ public class XOR32ShiftRandom extends Random32 {
 
 	public XOR32ShiftRandom() {
 		this(math.random.seed(), Param.DEFAULT);
+	}
+
+	/**
+	 * Resets the PRNG back to the creation state.
+	 */
+	public void reset() {
+		_x = _seed;
 	}
 
 	@Override
@@ -261,6 +336,11 @@ public class XOR32ShiftRandom extends Random32 {
 		return (int)((_x += (_x*_x | 5)) >> 32);
 	}
 	*/
+
+	@Override
+	public void setSeed(final long seed) {
+		_x = ((int)seed == 0) ? 2742673 : (int)seed;
+	}
 
 	@Override
 	public String toString() {
