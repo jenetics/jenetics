@@ -343,7 +343,7 @@ public class XOR32ShiftRandom extends Random32 {
 
 	public XOR32ShiftRandom(final long seed, final Param param) {
 		_param = requireNonNull(param, "PRNG param must not be null.");
-		_seed = ((int)seed == 0) ? 2742673 : (int)seed;
+		_seed = toSafeSeed((int)seed);
 
 		_x = _seed;
 	}
@@ -360,6 +360,10 @@ public class XOR32ShiftRandom extends Random32 {
 		this(math.random.seed(), Param.DEFAULT);
 	}
 
+	private static int toSafeSeed(final int seed) {
+		return seed == 0 ? 1179196819 : seed;
+	}
+
 	/**
 	 * Resets the PRNG back to the creation state.
 	 */
@@ -369,7 +373,7 @@ public class XOR32ShiftRandom extends Random32 {
 
 	@Override
 	public void setSeed(final long seed) {
-		_x = ((int)seed == 0) ? 2742673 : (int)seed;
+		_x = toSafeSeed((int)seed);
 	}
 
 	@Override
