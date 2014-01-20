@@ -39,15 +39,17 @@ import org.jenetics.internal.util.DieHarder;
  * http://www.jstatsoft.org/v08/i14/paper
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-01-15 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-20 $</em>
  * @since @__version__@
  */
 public class XOR32ShiftRandom extends Random32 {
 	private static final long serialVersionUID = 1L;
 
 	/**
+	 * Parameter class for the {@code XOR32ShiftRandom} generator.
+	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version @__version__@ &mdash; <em>$Date: 2014-01-15 $</em>
+	 * @version @__version__@ &mdash; <em>$Date: 2014-01-20 $</em>
 	 * @since @__version__@
 	 */
 	public static final class Param {
