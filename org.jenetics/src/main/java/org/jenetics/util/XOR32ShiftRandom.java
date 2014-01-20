@@ -216,6 +216,57 @@ public class XOR32ShiftRandom extends Random32 {
 		}
 	}
 
+
+	/**
+	 * This class represents a <i>thread local</i> implementation of the
+	 * {@code XOR32ShiftRandom} PRNG.
+	 *
+	 * It's recommended to initialize the {@code RandomRegistry} the following
+	 * way:
+	 *
+	 * [code]
+	 * // Register the PRNG with the default parameters.
+	 * RandomRegistry.setRandom(new XOR32ShiftRandom.ThreadLocal());
+	 * [/code]
+	 *
+	 * Be aware, that calls of the {@code setSeed(long)} method will throw an
+	 * {@code UnsupportedOperationException} for <i>thread local</i> instances.
+	 * [code]
+	 * RandomRegistry.setRandom(new XOR32ShiftRandom.ThreadLocal());
+	 *
+	 * // Will throw 'UnsupportedOperationException'.
+	 * RandomRegistry.getRandom().setSeed(1234);
+	 * [/code]
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since 1.1
+	 * @version 1.1 &mdash; <em>$Date: 2014-01-20 $</em>
+	 */
+	public static class ThreadLocal
+		extends java.lang.ThreadLocal<XOR32ShiftRandom>
+	{
+		private int _paramIndex = 0;
+
+		/**
+		 * Create a new <i>thread local</i> instance.
+		 */
+		public ThreadLocal() {
+		}
+
+		/**
+		 * Create a new PRNG using different parametrization.
+		 */
+		@Override
+		protected synchronized XOR32ShiftRandom initialValue() {
+			return new XOR32ShiftRandom(math.random.seed(), nextParam());
+		}
+
+		private Param nextParam() {
+			return Param.PARAMS[(_paramIndex++)%Param.PARAMS.length];
+		}
+
+	}
+
 	/**
 	 * This is a <i>thread safe</i> variation of the this PRGN&mdash;by
 	 * synchronizing the random number generation.
@@ -317,6 +368,11 @@ public class XOR32ShiftRandom extends Random32 {
 	}
 
 	@Override
+	public void setSeed(final long seed) {
+		_x = ((int)seed == 0) ? 2742673 : (int)seed;
+	}
+
+	@Override
 	public int nextInt() {
 		_x ^= _x << _param.a; _x ^= _x >> _param.b; return _x ^= _x << _param.c;
 
@@ -328,18 +384,6 @@ public class XOR32ShiftRandom extends Random32 {
 //		_x ^= _x << _param.c; _x ^= _x << _param.a; return _x ^= _x >> _param.b;
 //		_x ^= _x >> _param.a; _x ^= _x >> _param.c; return _x ^= _x << _param.b;
 //		_x ^= _x >> _param.c; _x ^= _x >> _param.a; return _x ^= _x << _param.b;
-	}
-
-	// https://bugs.webkit.org/attachment.cgi?id=191670&action=prettypatch
-	/*
-	int nextInt_1() {
-		return (int)((_x += (_x*_x | 5)) >> 32);
-	}
-	*/
-
-	@Override
-	public void setSeed(final long seed) {
-		_x = ((int)seed == 0) ? 2742673 : (int)seed;
 	}
 
 	@Override
