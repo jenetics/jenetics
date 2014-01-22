@@ -83,6 +83,7 @@ public class PersistentObject<T> {
 	public static List<PersistentObject<?>> VALUES = new ArrayList<>();
 	public static Map<String, PersistentObject<?>> OBJECTS = new HashMap<>();
 	static {
+		Object object = model.DoubleModel.Adapter;
 		VALUES.add(new PersistentObject<>(
 			"BitGene[true]", BitGene.class, BitGene.TRUE
 		));
@@ -97,6 +98,9 @@ public class PersistentObject<T> {
 		));
 		VALUES.add(new PersistentObject<>(
 			"Float64Gene", Float64Gene.class, getFloat64Gene()
+		));
+		VALUES.add(new PersistentObject<>(
+			"EnumGene<Float64>", EnumGene.class, getEnumGeneFloat64()
 		));
 
 		for (PersistentObject<?> obj :  VALUES) {

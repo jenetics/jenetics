@@ -41,6 +41,9 @@ import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.internal.util.jaxb;
 
+import org.jenetics.model;
+
+
 /**
  * Class for object serialization. The following example shows how to write and
  * reload a given population.
@@ -117,6 +120,7 @@ public abstract class IO {
 				final JAXBContext context = JAXBContext.newInstance("org.jenetics");
 				final Marshaller marshaller = context.createMarshaller();
 				marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+				marshaller.setAdapter(new model.ObjectModel.Adapter());
 
 				final XmlAdapter<Object, Object> adapter =
 					org.jenetics.internal.util.jaxb.adapterFor(object);

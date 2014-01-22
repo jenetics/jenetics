@@ -19,12 +19,24 @@
  */
 package org.jenetics;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.bind.*;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.namespace.QName;
+import javax.xml.parsers.*;
+import javax.xml.transform.dom.DOMSource;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.number.Integer64;
@@ -39,7 +51,7 @@ import org.jenetics.util.StaticObject;
  * @version @__version__@ &mdash; <em>$Date$</em>
  * @since @__version__@
  */
-final class model extends StaticObject {
+public final class model extends StaticObject {
 	private model() {}
 
 	/**
@@ -230,6 +242,120 @@ final class model extends StaticObject {
 		static final Function<Integer64Model, Integer64>
 			Unmarshaller = jaxb.unmarshaller(Adapter);
 
+	}
+
+	@XmlRootElement(name = "java.util.List")
+	@XmlType(name = "java.util.List")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	static final class ListModel {
+
+		@XmlElement
+		List<Object> entries = new ArrayList<>();
+
+		static final class Adapter extends XmlAdapter<ListModel, List<Object>> {
+			@Override
+			public ListModel marshal(final List<Object> values) {
+				final ListModel model = new ListModel();
+				for (Object value : values) {
+					model.entries.add(Float64Model.Adapter.marshal((Float64) value));
+				}
+				return model;
+			}
+
+			@Override
+			public List<Object> unmarshal(final ListModel models) {
+				final List<Object> values = new ArrayList<>();
+				for (Object model : models.entries) {
+					values.add(Float64Model.Adapter.unmarshal((Float64Model)model));
+				}
+				return values;
+			}
+		}
+	}
+
+	@XmlJavaTypeAdapter(ObjectModel.Adapter.class)
+	@XmlAccessorType(XmlAccessType.FIELD)
+	public static final class ObjectModel {
+		String name;
+		Object value;
+
+		public static class Adapter extends XmlAdapter<Element, ObjectModel> {
+
+			private ClassLoader classLoader;
+			private DocumentBuilder documentBuilder;
+			private JAXBContext jaxbContext;
+
+			public Adapter() {
+				classLoader = Thread.currentThread().getContextClassLoader();
+			}
+
+			public Adapter(JAXBContext jaxbContext) {
+				this();
+				this.jaxbContext = jaxbContext;
+			}
+
+			private DocumentBuilder getDocumentBuilder() throws Exception {
+				// Lazy load the DocumentBuilder as it is not used for unmarshalling.
+				if (null == documentBuilder) {
+					DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+					documentBuilder = dbf.newDocumentBuilder();
+				}
+				return documentBuilder;
+			}
+
+			private JAXBContext getJAXBContext(Class<?> type) throws Exception {
+				if (null == jaxbContext) {
+					// A JAXBContext was not set, so create a new one based  on the type.
+					return JAXBContext.newInstance(type);
+				}
+				return jaxbContext;
+			}
+
+			@Override
+			public Element marshal(ObjectModel objectModel) throws Exception {
+				if (null == objectModel) {
+					return null;
+				}
+
+				// 1. Build the JAXBElement to wrap the instance of ObjectModel.
+				QName rootElement = new QName(objectModel.name);
+				Object value = objectModel.value;
+				Class<?> type = value.getClass();
+				JAXBElement jaxbElement = new JAXBElement(rootElement, type, value);
+
+				// 2.  Marshal the JAXBElement to a DOM element.
+				Document document = getDocumentBuilder().newDocument();
+				Marshaller marshaller = getJAXBContext(type).createMarshaller();
+				marshaller.marshal(jaxbElement, document);
+				Element element = document.getDocumentElement();
+
+				// 3.  Set the type attribute based on the value's type.
+				element.setAttribute("type", type.getName());
+				return element;
+			}
+
+			@Override
+			public ObjectModel unmarshal(Element element) throws Exception {
+				if (null == element) {
+					return null;
+				}
+
+				// 1. Determine the values type from the type attribute.
+				Class<?> type = classLoader.loadClass(element.getAttribute("type"));
+
+				// 2. Unmarshal the element based on the value's type.
+				DOMSource source = new DOMSource(element);
+				Unmarshaller unmarshaller = getJAXBContext(type).createUnmarshaller();
+				JAXBElement jaxbElement = unmarshaller.unmarshal(source, type);
+
+				// 3. Build the instance of ObjectModel
+				ObjectModel objectModel = new ObjectModel();
+				objectModel.name = element.getLocalName();
+				objectModel.value = jaxbElement.getValue();
+				return objectModel;
+			}
+
+		}
 	}
 
 }
