@@ -23,14 +23,28 @@ import static java.lang.String.format;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlElements;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import javolution.context.ObjectFactory;
 import javolution.xml.XMLFormat;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.internal.util.cast;
+import org.jenetics.internal.util.jaxb;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
@@ -66,7 +80,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.5 &mdash; <em>$Date: 2014-01-18 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-01-22 $</em>
  */
 public final class EnumGene<A>
 	implements
@@ -304,6 +318,56 @@ public final class EnumGene<A>
 		public void read(final InputElement xml, final EnumGene eg) {
 		}
 	};
+
+		/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
+
+	@XmlRootElement(name = "org.jenetics.EnumGene")
+	@XmlType(name = "org.jenetics.EnumGene")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	final static class Model {
+		@XmlAttribute public int length;
+		@XmlAttribute(name = "current-allele-index") public int currentAlleleIndex;
+
+		//@XmlJavaTypeAdapter(model.ListModel.Adapter.class)
+		//@XmlJavaTypeAdapter(model.Float64Model.Adapter.class)
+		@XmlAnyElement
+		public List<model.ObjectModel> alleles;
+
+		public final static class Adapter
+			extends XmlAdapter<Model, EnumGene>
+		{
+			@Override
+			public Model marshal(final EnumGene value) {
+				final Model m = new Model();
+				m.alleles = value.getValidAlleles().asList();
+					//.map(Marshaller(value.getValidAlleles())).asList();
+				m.length = value.getValidAlleles().length();
+				return m;
+			}
+
+			@Override
+			public EnumGene unmarshal(final Model m) {
+				final Object obj = Array.valueOf(m.alleles).toISeq();
+					//.map(Unmarshaller(m.alleles.get(0))).toISeq();
+
+				return EnumGene.valueOf(
+					(ISeq<Chromosome>)obj,
+					m.currentAlleleIndex
+				);
+			}
+
+			private static Function<Object, Object> Marshaller(final Object c)  {
+				return jaxb.marshaller(jaxb.adapterFor(c));
+			}
+
+			private static Function<Object, Object> Unmarshaller(final Object c)  {
+				return jaxb.unmarshaller(jaxb.adapterFor(c));
+			}
+		}
+	}
 }
 
 

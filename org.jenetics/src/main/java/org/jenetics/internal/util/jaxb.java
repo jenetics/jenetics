@@ -28,6 +28,8 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.jscience.mathematics.number.Float64;
+
 import org.jenetics.util.Function;
 import org.jenetics.util.StaticObject;
 
@@ -35,7 +37,7 @@ import org.jenetics.util.StaticObject;
  * JAXB helper methods.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-01-16 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-22 $</em>
  * @since @__version__@
  */
 public class jaxb extends StaticObject {
@@ -52,8 +54,12 @@ public class jaxb extends StaticObject {
 		}
 	};
 
-	private static final Map<Class<?>, XmlAdapter<Object, Object>>
+	private static final Map<Class<?>, XmlAdapter<? extends Object, ? extends Object>>
 	xmlAdapterCache = new HashMap<>();
+
+	public static void addAdapter(final Class<?> type, final XmlAdapter<? extends Object, ? extends Object> adapter) {
+		xmlAdapterCache.put(type, adapter);
+	}
 
 	/**
 	 * Return the an {@code XmlAdapter} for the given {@code vale}. If no
@@ -72,7 +78,7 @@ public class jaxb extends StaticObject {
 				xmlAdapterCache.put(cls, newXmlAdapter(cls));
 			}
 
-			return xmlAdapterCache.get(cls);
+			return (XmlAdapter<Object, Object>)xmlAdapterCache.get(cls);
 		}
 	}
 
