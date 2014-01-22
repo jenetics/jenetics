@@ -22,7 +22,7 @@ package org.jenetics.util;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__version__@
- * @version @__version__@ &mdash; <em>$Date: 2014-01-09 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-22 $</em>
  */
 public interface ParallelRandom {
 
@@ -62,47 +62,47 @@ public interface ParallelRandom {
 	 */
 
 	/**
-	 * @see {@link java.util.Random#setSeed(long)}
+	 * @see java.util.Random#setSeed(long)
 	 */
 	public void setSeed(final long seed);
 
 	/**
-	 * @see {@link java.util.Random#nextBytes(byte[])}
+	 * @see java.util.Random#nextBytes(byte[])
 	 */
 	public void nextBytes(final byte[] bytes);
 
 	/**
-	 * @see {@link java.util.Random#nextInt()}
+	 * @see java.util.Random#nextInt()
 	 */
 	public int nextInt();
 
 	/**
-	 * @see {@link java.util.Random#nextInt(int)}
+	 * @see java.util.Random#nextInt(int)
 	 */
 	public int nextInt(int n);
 
 	/**
-	 * @see {@link java.util.Random#nextLong()}
+	 * @see java.util.Random#nextLong()
 	 */
 	public long nextLong();
 
 	/**
-	 * @see {@link java.util.Random#nextBoolean()}
+	 * @see java.util.Random#nextBoolean()
 	 */
 	public boolean nextBoolean();
 
 	/**
-	 * @see {@link java.util.Random#nextFloat()}
+	 * @see java.util.Random#nextFloat()
 	 */
 	public float nextFloat();
 
 	/**
-	 * @see {@link java.util.Random#nextDouble()}
+	 * @see java.util.Random#nextDouble()
 	 */
 	public double nextDouble();
 
 	/**
-	 * @see {@link java.util.Random#nextGaussian()}
+	 * @see java.util.Random#nextGaussian()
 	 */
 	public double nextGaussian();
 
