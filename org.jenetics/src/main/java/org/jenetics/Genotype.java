@@ -78,7 +78,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-01-16 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-22 $</em>
  */
 @XmlJavaTypeAdapter(Genotype.Model.Adapter.class)
 public final class Genotype<G extends Gene<?, G>>
@@ -398,7 +398,7 @@ public final class Genotype<G extends Gene<?, G>>
 				model.length = gt.length();
 				model.ngenes = gt.getNumberOfGenes();
 				model.chromosomes = gt.toSeq()
-					.map(Marshaller(gt.getChromosome())).asList();
+						.map(Marshaller(gt.getChromosome())).asList();
 
 				return model;
 			}
