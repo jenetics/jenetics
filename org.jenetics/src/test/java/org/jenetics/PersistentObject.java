@@ -92,11 +92,11 @@ public class PersistentObject<T> {
 		VALUES.add(new PersistentObject<>(
 			"CharacterGene", CharacterGene.class, getCharacterGene()
 		));
-		//VALUES.add(new PersistentObject<>(
-		//	"LongModel", model.LongModel.class, new model.LongModel()
-		//));
 		VALUES.add(new PersistentObject<>(
 			"Integer64Gene", Integer64Gene.class, getInteger64Gene()
+		));
+		VALUES.add(new PersistentObject<>(
+			"Float64Gene", Float64Gene.class, getFloat64Gene()
 		));
 
 		for (PersistentObject<?> obj :  VALUES) {
