@@ -398,7 +398,7 @@ public final class Genotype<G extends Gene<?, G>>
 				model.length = gt.length();
 				model.ngenes = gt.getNumberOfGenes();
 				model.chromosomes = gt.toSeq()
-					.map(Marshaller(gt.getChromosome())).asList();
+						.map(Marshaller(gt.getChromosome())).asList();
 
 				return model;
 			}
