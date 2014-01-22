@@ -58,7 +58,7 @@ public class XOR32ShiftRandom extends Random32 {
 		private static final long serialVersionUID = 1L;
 
 		/**
-		 * Contains a list of the parameters with the highest 'dieharder'
+		 * Contains a list of the parameters with the highest <i>dieharder</i>
 		 * scores.
 		 */
 		public static final Param[] PARAMS = {
@@ -177,6 +177,10 @@ public class XOR32ShiftRandom extends Random32 {
 			new Param(5, 27, 25),  // p=90, w=1, f=23
 		};
 
+		/**
+		 * The default parameter used by the PRNG. It's the parameter with the
+		 * best <i>dieharder</i> test result.
+		 */
 		public static final Param DEFAULT = PARAMS[0];
 
 		public final int a;
