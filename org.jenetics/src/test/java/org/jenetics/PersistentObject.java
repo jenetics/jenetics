@@ -43,7 +43,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-01-18 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-22 $</em>
  * @since @__version__@
  */
 public class PersistentObject<T> {
@@ -72,6 +72,11 @@ public class PersistentObject<T> {
 
 	public T getValue() {
 		return _value;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("%s[%s]", getClass().getSimpleName(), getName());
 	}
 
 	public static List<Factory<? extends PersistentObject<?>>> MODELS = new ArrayList<>();
