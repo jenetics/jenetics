@@ -93,7 +93,7 @@ final class model extends StaticObject {
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class LongModel {
 
-		@XmlAttribute Long value;
+		@XmlAttribute public Long value = 0L;
 
 		final static class Adapter
 			extends XmlAdapter<LongModel, Long>

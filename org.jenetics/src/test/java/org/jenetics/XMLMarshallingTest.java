@@ -57,6 +57,7 @@ public class XMLMarshallingTest {
 		write.write(object, out);
 
 		final byte[] data = out.toByteArray();
+		System.out.println(new String(data));
 		final ByteArrayInputStream in = new ByteArrayInputStream(data);
 		final Object copy = read.read(in);
 
