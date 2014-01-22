@@ -188,6 +188,7 @@ public class XOR32ShiftRandom extends Random32 {
 		public final int c;
 
 		/**
+		 * Parameter object for the parameters used by this PRNG.
 		 *
 		 * @param a first shift parameter
 		 * @param b second shift parameter
