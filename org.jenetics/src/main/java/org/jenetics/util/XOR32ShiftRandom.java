@@ -31,7 +31,7 @@ import java.util.Arrays;
  *      Xorshift RNGs, George Marsaglia</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-01-20 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-22 $</em>
  * @since @__version__@
  */
 public class XOR32ShiftRandom extends Random32 {
@@ -42,13 +42,16 @@ public class XOR32ShiftRandom extends Random32 {
 	 * integer parameters are used in the PRNG as follows:
 	 *
 	 * [code]
-	 * y ^= y << a;
-	 * y ^= y >> b;
-	 * return y ^= y << c;
+	 * int y = seed();
+	 * public int nextInt() {
+	 *     y ^= y << a;
+	 *     y ^= y >> b;
+	 *     return y ^= y << c;
+	 * }
 	 * [/code]
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version @__version__@ &mdash; <em>$Date: 2014-01-20 $</em>
+	 * @version @__version__@ &mdash; <em>$Date: 2014-01-22 $</em>
 	 * @since @__version__@
 	 */
 	public static final class Param implements Serializable {
@@ -240,7 +243,7 @@ public class XOR32ShiftRandom extends Random32 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2014-01-20 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2014-01-22 $</em>
 	 */
 	public static class ThreadLocal
 		extends java.lang.ThreadLocal<XOR32ShiftRandom>
@@ -273,7 +276,7 @@ public class XOR32ShiftRandom extends Random32 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2014-01-20 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2014-01-22 $</em>
 	 */
 	public static class ThreadSafe extends XOR32ShiftRandom {
 		private static final long serialVersionUID = 1L;
