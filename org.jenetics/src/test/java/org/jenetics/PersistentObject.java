@@ -79,12 +79,6 @@ public class PersistentObject<T> {
 		return String.format("%s[%s]", getClass().getSimpleName(), getName());
 	}
 
-	public static List<Factory<? extends PersistentObject<?>>> MODELS = new ArrayList<>();
-	/*static {
-		MODELS.add(float64Gene());
-		MODELS.add(integer64Gene());
-		MODELS.add(bitChromosomeModel());
-	}*/
 
 	public static List<PersistentObject<?>> VALUES = new ArrayList<>();
 	public static Map<String, PersistentObject<?>> OBJECTS = new HashMap<>();
@@ -98,6 +92,12 @@ public class PersistentObject<T> {
 		VALUES.add(new PersistentObject<>(
 			"CharacterGene", CharacterGene.class, getCharacterGene()
 		));
+		//VALUES.add(new PersistentObject<>(
+		//	"LongModel", model.LongModel.class, new model.LongModel()
+		//));
+		VALUES.add(new PersistentObject<>(
+			"Integer64Gene", Integer64Gene.class, getInteger64Gene()
+		));
 
 		for (PersistentObject<?> obj :  VALUES) {
 			OBJECTS.put(obj.getName(), obj);
@@ -109,7 +109,7 @@ public class PersistentObject<T> {
 	}
 
 	public static Integer64Gene getInteger64Gene() {
-		return Integer64Gene.valueOf(Integer.MAX_VALUE, Integer.MAX_VALUE);
+		return Integer64Gene.valueOf(Integer.MIN_VALUE, Integer.MAX_VALUE);
 	}
 
 	public static Float64Gene getFloat64Gene() {

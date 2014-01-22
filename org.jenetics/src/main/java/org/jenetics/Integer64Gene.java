@@ -28,6 +28,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
@@ -49,7 +50,7 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-01-18 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-22 $</em>
  */
 @XmlJavaTypeAdapter(Integer64Gene.Model.Adapter.class)
 public final class Integer64Gene
@@ -319,7 +320,10 @@ public final class Integer64Gene
 	final static class Model {
 		@XmlAttribute public long min;
 		@XmlAttribute public long max;
-		@XmlAnyElement public LongModel value;
+
+		@XmlJavaTypeAdapter(LongModel.Adapter.class)
+		@XmlElement(name= "java.lang.Long")
+		public Long value;
 
 		public final static class Adapter
 			extends XmlAdapter<Model, Integer64Gene>
@@ -329,14 +333,14 @@ public final class Integer64Gene
 				final Model m = new Model();
 				m.min = value.getMin().longValue();
 				m.max = value.getMax().longValue();
-				m.value = LongModel.Adapter.marshal(value.longValue());
+				m.value = value.longValue();
 				return m;
 			}
 
 			@Override
 			public Integer64Gene unmarshal(final Model m) {
 				return Integer64Gene.valueOf(
-					LongModel.Adapter.unmarshal(m.value),
+					m.value,
 					m.min,
 					m.max
 				);

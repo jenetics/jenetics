@@ -39,7 +39,7 @@ import org.jenetics.util.StaticObject;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-01-18 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-22 $</em>
  * @since @__version__@
  */
 final class model extends StaticObject {
@@ -47,7 +47,7 @@ final class model extends StaticObject {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version @__version__@ &mdash; <em>$Date: 2014-01-18 $</em>
+	 * @version @__version__@ &mdash; <em>$Date: 2014-01-22 $</em>
 	 * @since @__version__@
 	 */
 	@XmlRootElement(name = "java.lang.Integer")
@@ -85,7 +85,7 @@ final class model extends StaticObject {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version @__version__@ &mdash; <em>$Date: 2014-01-18 $</em>
+	 * @version @__version__@ &mdash; <em>$Date: 2014-01-22 $</em>
 	 * @since @__version__@
 	 */
 	@XmlRootElement(name = "java.lang.Long")
@@ -93,7 +93,7 @@ final class model extends StaticObject {
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class LongModel {
 
-		@XmlAttribute Long value;
+		@XmlAttribute public Long value = 0L;
 
 		final static class Adapter
 			extends XmlAdapter<LongModel, Long>
@@ -123,7 +123,7 @@ final class model extends StaticObject {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version @__version__@ &mdash; <em>$Date: 2014-01-18 $</em>
+	 * @version @__version__@ &mdash; <em>$Date: 2014-01-22 $</em>
 	 * @since @__version__@
 	 */
 	@XmlRootElement(name = "java.lang.Double")
@@ -161,7 +161,7 @@ final class model extends StaticObject {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version @__version__@ &mdash; <em>$Date: 2014-01-18 $</em>
+	 * @version @__version__@ &mdash; <em>$Date: 2014-01-22 $</em>
 	 * @since @__version__@
 	 */
 	@XmlRootElement(name = "org.jscience.mathematics.number.Float64")
@@ -199,7 +199,7 @@ final class model extends StaticObject {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version @__version__@ &mdash; <em>$Date: 2014-01-18 $</em>
+	 * @version @__version__@ &mdash; <em>$Date: 2014-01-22 $</em>
 	 * @since @__version__@
 	 */
 	@XmlRootElement(name = "org.jscience.mathematics.number.Integer64")
