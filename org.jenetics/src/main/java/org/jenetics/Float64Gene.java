@@ -26,8 +26,8 @@ import java.util.Random;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
@@ -50,7 +50,7 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-01-18 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-22 $</em>
  */
 @XmlJavaTypeAdapter(Float64Gene.Model.Adapter.class)
 public final class Float64Gene
@@ -323,7 +323,10 @@ public final class Float64Gene
 	final static class Model {
 		@XmlAttribute public double min;
 		@XmlAttribute public double max;
-		@XmlAnyElement public DoubleModel value;
+
+		@XmlJavaTypeAdapter(DoubleModel.Adapter.class)
+		@XmlElement(name= "java.lang.Double")
+		public Double value;
 
 		public final static class Adapter
 			extends XmlAdapter<Model, Float64Gene>
@@ -333,14 +336,14 @@ public final class Float64Gene
 				final Model m = new Model();
 				m.min = value.getMin().doubleValue();
 				m.max = value.getMax().doubleValue();
-				m.value = DoubleModel.Adapter.marshal(value.doubleValue());
+				m.value = value.doubleValue();
 				return m;
 			}
 
 			@Override
 			public Float64Gene unmarshal(final Model m) {
 				return Float64Gene.valueOf(
-					DoubleModel.Adapter.unmarshal(m.value),
+					m.value,
 					m.min,
 					m.max
 				);

@@ -19,9 +19,6 @@
  */
 package org.jenetics;
 
-import static javax.xml.bind.DatatypeConverter.parseDouble;
-import static javax.xml.bind.DatatypeConverter.printDouble;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -55,7 +52,7 @@ final class model extends StaticObject {
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class IntegerModel {
 
-		@XmlAttribute Integer value;
+		@XmlAttribute int value;
 
 		final static class Adapter
 			extends XmlAdapter<IntegerModel, Integer>
@@ -93,7 +90,7 @@ final class model extends StaticObject {
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class LongModel {
 
-		@XmlAttribute public Long value = 0L;
+		@XmlAttribute long value;
 
 		final static class Adapter
 			extends XmlAdapter<LongModel, Long>
@@ -131,7 +128,7 @@ final class model extends StaticObject {
 	@XmlAccessorType(XmlAccessType.FIELD)
 	static final class DoubleModel {
 
-		@XmlAttribute String value;
+		@XmlAttribute double value;
 
 		final static class Adapter
 			extends XmlAdapter<DoubleModel, Double>
@@ -139,13 +136,13 @@ final class model extends StaticObject {
 			@Override
 			public DoubleModel marshal(final Double value) {
 				final DoubleModel model = new DoubleModel();
-				model.value = printDouble(value);
+				model.value = value;
 				return model;
 			}
 
 			@Override
 			public Double unmarshal(final DoubleModel model) {
-				return parseDouble(model.value);
+				return model.value;
 			}
 		}
 
