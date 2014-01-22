@@ -32,11 +32,14 @@ import java.nio.file.Path;
 import javax.xml.bind.JAXB;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import javolution.xml.XMLObjectReader;
 import javolution.xml.XMLObjectWriter;
 import javolution.xml.stream.XMLStreamException;
+
+import org.jenetics.internal.util.jaxb;
 
 /**
  * Class for object serialization. The following example shows how to write and
@@ -116,7 +119,7 @@ public abstract class IO {
 				marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 
 				final XmlAdapter<Object, Object> adapter =
-					org.jenetics.internal.util.jaxb.adapterFor(object.getClass());
+					org.jenetics.internal.util.jaxb.adapterFor(object);
 				if (adapter != null) {
 					marshaller.marshal(adapter.marshal(object), out);
 				} else {
@@ -133,22 +136,19 @@ public abstract class IO {
 		{
 			try {
 				final JAXBContext context = JAXBContext.newInstance("org.jenetics");
-				final Marshaller marshaller = context.createMarshaller();
+				final Unmarshaller unmarshaller = context.createUnmarshaller();
+				final Object object = unmarshaller.unmarshal(in);
+
+				final XmlAdapter<Object, Object> adapter =
+					org.jenetics.internal.util.jaxb.adapterFor(object);
+				if (adapter != null) {
+					return type.cast(adapter.unmarshal(object));
+				} else {
+					return type.cast(object);
+				}
 			} catch (Exception e) {
 				throw new IOException(e);
 			}
-//			try {
-//				final XmlJavaTypeAdapter a = type.getAnnotation(XmlJavaTypeAdapter.class);
-//				if (a != null) {
-//					final XmlAdapter<Object, Object> adapter = a.value().newInstance();
-//					JAXB.marshal(adapter.marshal(object), out);
-//				} else {
-//					JAXB.marshal(object, out);
-//				}
-//			} catch (Exception e) {
-//				throw new IOException(e);
-//			}
-			return JAXB.unmarshal(in, type);
 		}
 	};
 

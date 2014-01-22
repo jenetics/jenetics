@@ -74,6 +74,11 @@ public class PersistentObject<T> {
 		return _value;
 	}
 
+	@Override
+	public String toString() {
+		return String.format("%s[%s]", getClass().getSimpleName(), getName());
+	}
+
 	public static List<Factory<? extends PersistentObject<?>>> MODELS = new ArrayList<>();
 	/*static {
 		MODELS.add(float64Gene());
