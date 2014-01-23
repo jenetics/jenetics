@@ -118,7 +118,6 @@ public abstract class IO {
 				final Marshaller marshaller =
 					org.jenetics.internal.util.jaxb.CONTEXT.createMarshaller();
 				marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-				//marshaller.setAdapter(new model.ModelAdapter.Adapter());
 
 				final XmlAdapter<Object, Object> adapter =
 					org.jenetics.internal.util.jaxb.adapterFor(object);

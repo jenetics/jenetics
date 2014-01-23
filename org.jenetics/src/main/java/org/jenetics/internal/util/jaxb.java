@@ -26,17 +26,19 @@ import java.util.Map;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.transform.dom.DOMSource;
 
 import org.jscience.mathematics.number.Float64;
+import org.jscience.mathematics.number.Integer64;
 import org.w3c.dom.Element;
 
+import org.jenetics.internal.util.model.DoubleModel;
+import org.jenetics.internal.util.model.Float64Model;
+import org.jenetics.internal.util.model.Integer64Model;
+import org.jenetics.internal.util.model.LongModel;
 import org.jenetics.internal.util.model.ModelType;
+
 import org.jenetics.util.Function;
 import org.jenetics.util.StaticObject;
 
@@ -62,9 +64,8 @@ public class jaxb extends StaticObject {
 		}
 	}
 
-	// Identity XmlAdapter.
-	private static final
-	XmlAdapter<Object, Object> ID_XML_ADAPTER = new XmlAdapter<Object, Object>() {
+	private static final XmlAdapter<Object, Object> IdentityAdapter =
+	new XmlAdapter<Object, Object>() {
 		@Override public Object unmarshal(final Object value) {
 			return value;
 		}
@@ -74,10 +75,16 @@ public class jaxb extends StaticObject {
 	};
 
 	private static final Map<Class<?>, XmlAdapter<? extends Object, ? extends Object>>
-	xmlAdapterCache = new HashMap<>();
+		ADAPTER_CACHE = new HashMap<>();
 	static {
-		xmlAdapterCache.put(Float64.class, model.Float64Model.Adapter);
-		xmlAdapterCache.put(model.Float64Model.class, model.Float64Model.Adapter);
+		ADAPTER_CACHE.put(Long.class, LongModel.Adapter);
+		ADAPTER_CACHE.put(LongModel.class, LongModel.Adapter);
+		ADAPTER_CACHE.put(Integer64.class, Integer64Model.Adapter);
+		ADAPTER_CACHE.put(Integer64Model.class, Integer64Model.Adapter);
+		ADAPTER_CACHE.put(Double.class, DoubleModel.Adapter);
+		ADAPTER_CACHE.put(DoubleModel.class, DoubleModel.Adapter);
+		ADAPTER_CACHE.put(Float64.class, Float64Model.Adapter);
+		ADAPTER_CACHE.put(Float64Model.class, Float64Model.Adapter);
 	}
 
 	/**
@@ -88,34 +95,26 @@ public class jaxb extends StaticObject {
 	 * @return the {@code XmlAdapter} for the given object, or an identity
 	 *         adapter if no one can be found.
 	 */
+	@SuppressWarnings("unchecked")
 	public static XmlAdapter<Object, Object> adapterFor(final Object value) {
 		final Class<?> cls = value instanceof Class<?> ?
 			(Class<?>)value : value.getClass();
 
-		synchronized (xmlAdapterCache) {
-			if (!xmlAdapterCache.containsKey(cls)) {
-				xmlAdapterCache.put(cls, newXmlAdapter(cls));
+		synchronized (ADAPTER_CACHE) {
+			if (!ADAPTER_CACHE.containsKey(cls)) {
+				ADAPTER_CACHE.put(cls, newXmlAdapter(cls));
 			}
 
-			return (XmlAdapter<Object, Object>)xmlAdapterCache.get(cls);
+			return (XmlAdapter<Object, Object>) ADAPTER_CACHE.get(cls);
 		}
-	}
-
-	public static Class<?> modelTypeFor(final Object value) {
-		final Object adapter = adapterFor(value);
-		final ModelType ma = adapter.getClass().getAnnotation(ModelType.class);
-		if (ma != null) {
-			return ma.value();
-		}
-		return value instanceof Class<?> ? (Class<?>)value : value.getClass();
 	}
 
 	@SuppressWarnings("unchecked")
 	private static XmlAdapter<Object, Object> newXmlAdapter(final Class<?> cls) {
 		final List<Class<?>> classes = reflect.allDeclaredClasses(cls);
 
-		XmlAdapter<Object, Object> adapter = ID_XML_ADAPTER;
-		for (int i = 0; i < classes.size() && adapter == ID_XML_ADAPTER; ++i) {
+		XmlAdapter<Object, Object> adapter = IdentityAdapter;
+		for (int i = 0; i < classes.size() && adapter == IdentityAdapter; ++i) {
 			if (XmlAdapter.class.isAssignableFrom(classes.get(i))) {
 				try {
 					adapter = (XmlAdapter<Object, Object>)classes.get(i).newInstance();
@@ -128,21 +127,13 @@ public class jaxb extends StaticObject {
 		return adapter;
 	}
 
-	/**
-	 * Checks, whether the given object is an JAXB model or has an model adapter
-	 * defined.
-	 *
-	 * @param value the object used for the model check.
-	 * @return {@code true} if the given object has/is an JAXB model,
-	 *         {@code false} otherwise.
-	 */
-	public static boolean hasModel(final Object value) {
-		final Class<?> cls = value instanceof Class<?> ?
-			(Class<?>)value : value.getClass();
-
-		return cls.isAnnotationPresent(XmlJavaTypeAdapter.class) ||
-			cls.isAnnotationPresent(XmlRootElement.class) ||
-			cls.isAnnotationPresent(XmlType.class);
+	public static Class<?> modelTypeFor(final Object value) {
+		final Object adapter = adapterFor(value);
+		final ModelType ma = adapter.getClass().getAnnotation(ModelType.class);
+		if (ma != null) {
+			return ma.value();
+		}
+		return value instanceof Class<?> ? (Class<?>)value : value.getClass();
 	}
 
 	public static <V, B> Function<B, V> marshaller(final XmlAdapter<V, B> adapter) {
@@ -171,8 +162,12 @@ public class jaxb extends StaticObject {
 		};
 	}
 
-	public static <V, B> Function<B, V> Marshaller(final Object value) {
-		return (Function<B, V>) marshaller(adapterFor(value));
+	public static Function<Object, Object> Marshaller(final Object value) {
+		return marshaller(adapterFor(value));
+	}
+
+	public static Function<Object, Object> Unmarshaller(final Object c)  {
+		return unmarshaller(jaxb.adapterFor(c));
 	}
 
 	public static final Function<Object, Object> Unmarshaller =

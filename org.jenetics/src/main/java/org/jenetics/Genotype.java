@@ -398,7 +398,7 @@ public final class Genotype<G extends Gene<?, G>>
 				model.length = gt.length();
 				model.ngenes = gt.getNumberOfGenes();
 				model.chromosomes = gt.toSeq()
-						.map(Marshaller(gt.getChromosome())).asList();
+						.map(jaxb.Marshaller(gt.getChromosome())).asList();
 
 				return model;
 			}
@@ -406,20 +406,11 @@ public final class Genotype<G extends Gene<?, G>>
 			@Override
 			public Genotype unmarshal(final Model model) throws Exception {
 				final Object chs = Array.valueOf(model.chromosomes)
-					.map(Unmarshaller(model.chromosomes.get(0))).toISeq();
+					.map(jaxb.Unmarshaller(model.chromosomes.get(0))).toISeq();
 
 				return new Genotype((ISeq<Chromosome>)chs, model.ngenes);
 			}
 		}
 
-		static final Adapter Adapter = new Adapter();
-
-		private static Function<Object, Object> Marshaller(final Object c)  {
-			return jaxb.marshaller(jaxb.adapterFor(c));
-		}
-
-		private static Function<Object, Object> Unmarshaller(final Object c)  {
-			return jaxb.unmarshaller(jaxb.adapterFor(c));
-		}
 	}
 }
