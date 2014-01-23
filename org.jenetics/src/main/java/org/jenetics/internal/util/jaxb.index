@@ -1,4 +1,5 @@
 model$DoubleModel
 model$LongModel
+model$IntegerModel
 model$Float64Model
 model$Integer64Model

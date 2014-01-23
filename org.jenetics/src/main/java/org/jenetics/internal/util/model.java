@@ -211,7 +211,7 @@ public final class model extends StaticObject {
 		public long value;
 
 		@ValueType(Integer64.class)
-		@ModelType(IntegerModel.class)
+		@ModelType(Integer64Model.class)
 		public static final class Adapter
 			extends XmlAdapter<Integer64Model, Integer64>
 		{
