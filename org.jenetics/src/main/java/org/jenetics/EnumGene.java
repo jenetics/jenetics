@@ -324,7 +324,7 @@ public final class EnumGene<A>
 	@XmlRootElement(name = "org.jenetics.EnumGene")
 	@XmlType(name = "org.jenetics.EnumGene")
 	@XmlAccessorType(XmlAccessType.FIELD)
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	final static class Model {
 		@XmlAttribute
 		int length;

@@ -33,11 +33,16 @@ import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.number.Integer64;
 import org.w3c.dom.Element;
 
+import org.jenetics.internal.util.model.ByteModel;
+import org.jenetics.internal.util.model.CharacterModel;
 import org.jenetics.internal.util.model.DoubleModel;
 import org.jenetics.internal.util.model.Float64Model;
+import org.jenetics.internal.util.model.FloatModel;
 import org.jenetics.internal.util.model.Integer64Model;
+import org.jenetics.internal.util.model.IntegerModel;
 import org.jenetics.internal.util.model.LongModel;
 import org.jenetics.internal.util.model.ModelType;
+import org.jenetics.internal.util.model.ShortModel;
 
 import org.jenetics.util.Function;
 import org.jenetics.util.StaticObject;
@@ -77,12 +82,30 @@ public class jaxb extends StaticObject {
 	private static final Map<Class<?>, XmlAdapter<? extends Object, ? extends Object>>
 		ADAPTER_CACHE = new HashMap<>();
 	static {
+		ADAPTER_CACHE.put(Byte.class, ByteModel.Adapter);
+		ADAPTER_CACHE.put(ByteModel.class, ByteModel.Adapter);
+
+		ADAPTER_CACHE.put(Character.class, CharacterModel.Adapter);
+		ADAPTER_CACHE.put(CharacterModel.class, CharacterModel.Adapter);
+
+		ADAPTER_CACHE.put(Short.class, ShortModel.Adapter);
+		ADAPTER_CACHE.put(ShortModel.class, ShortModel.Adapter);
+
+		ADAPTER_CACHE.put(Integer.class, IntegerModel.Adapter);
+		ADAPTER_CACHE.put(IntegerModel.class, IntegerModel.Adapter);
+
 		ADAPTER_CACHE.put(Long.class, LongModel.Adapter);
 		ADAPTER_CACHE.put(LongModel.class, LongModel.Adapter);
-		ADAPTER_CACHE.put(Integer64.class, Integer64Model.Adapter);
-		ADAPTER_CACHE.put(Integer64Model.class, Integer64Model.Adapter);
+
+		ADAPTER_CACHE.put(Float.class, FloatModel.Adapter);
+		ADAPTER_CACHE.put(FloatModel.class, FloatModel.Adapter);
+
 		ADAPTER_CACHE.put(Double.class, DoubleModel.Adapter);
 		ADAPTER_CACHE.put(DoubleModel.class, DoubleModel.Adapter);
+
+		ADAPTER_CACHE.put(Integer64.class, Integer64Model.Adapter);
+		ADAPTER_CACHE.put(Integer64Model.class, Integer64Model.Adapter);
+
 		ADAPTER_CACHE.put(Float64.class, Float64Model.Adapter);
 		ADAPTER_CACHE.put(Float64Model.class, Float64Model.Adapter);
 	}

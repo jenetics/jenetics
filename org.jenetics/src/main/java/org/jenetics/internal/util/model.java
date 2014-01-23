@@ -39,6 +39,9 @@ import org.jenetics.util.Function;
 import org.jenetics.util.StaticObject;
 
 /**
+ * This object contains models for the 7 java primitive types and the integer
+ * and float types of the JScience library.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version @__version__@ &mdash; <em>$Date: 2014-01-23 $</em>
  * @since @__version__@
@@ -56,6 +59,114 @@ public final class model extends StaticObject {
 	@Target(TYPE)
 	public @interface ModelType {
 		Class<?> value();
+	}
+
+	@XmlRootElement(name = "java.lang.Byte")
+	@XmlType(name = "java.lang.Byte")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	public static final class ByteModel {
+
+		@XmlAttribute
+		public byte value;
+
+		@ValueType(Byte.class)
+		@ModelType(ByteModel.class)
+		public static final class Adapter
+			extends XmlAdapter<ByteModel, Byte>
+		{
+			@Override
+			public ByteModel marshal(final Byte value) {
+				final ByteModel model = new ByteModel();
+				model.value = value;
+				return model;
+			}
+
+			@Override
+			public Byte unmarshal(final ByteModel model) {
+				return model.value;
+			}
+		}
+
+		public static final Adapter Adapter = new Adapter();
+
+		public static final Function<Byte, ByteModel> Marshaller =
+			jaxb.marshaller(Adapter);
+
+		public static final Function<ByteModel, Byte> Unmarshaller =
+			jaxb.unmarshaller(Adapter);
+
+	}
+
+	@XmlRootElement(name = "java.lang.Character")
+	@XmlType(name = "java.lang.Character")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	public static final class CharacterModel {
+
+		@XmlAttribute
+		public char value;
+
+		@ValueType(Character.class)
+		@ModelType(CharacterModel.class)
+		public static final class Adapter
+			extends XmlAdapter<CharacterModel, Character>
+		{
+			@Override
+			public CharacterModel marshal(final Character value) {
+				final CharacterModel model = new CharacterModel();
+				model.value = value;
+				return model;
+			}
+
+			@Override
+			public Character unmarshal(final CharacterModel model) {
+				return model.value;
+			}
+		}
+
+		public static final Adapter Adapter = new Adapter();
+
+		public static final Function<Character, CharacterModel> Marshaller =
+			jaxb.marshaller(Adapter);
+
+		public static final Function<CharacterModel, Character> Unmarshaller =
+			jaxb.unmarshaller(Adapter);
+
+	}
+
+	@XmlRootElement(name = "java.lang.Short")
+	@XmlType(name = "java.lang.Short")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	public static final class ShortModel {
+
+		@XmlAttribute
+		public short value;
+
+		@ValueType(Short.class)
+		@ModelType(ShortModel.class)
+		public static final class Adapter
+			extends XmlAdapter<ShortModel, Short>
+		{
+			@Override
+			public ShortModel marshal(final Short value) {
+				final ShortModel model = new ShortModel();
+				model.value = value;
+				return model;
+			}
+
+			@Override
+			public Short unmarshal(final ShortModel model) {
+				return model.value;
+			}
+		}
+
+		public static final Adapter Adapter = new Adapter();
+
+		public static final Function<Short, ShortModel> Marshaller =
+			jaxb.marshaller(Adapter);
+
+		public static final Function<ShortModel, Short> Unmarshaller =
+			jaxb.unmarshaller(Adapter);
+
 	}
 
 	@XmlRootElement(name = "java.lang.Integer")
@@ -130,6 +241,42 @@ public final class model extends StaticObject {
 
 	}
 
+	@XmlRootElement(name = "java.lang.Float")
+	@XmlType(name = "java.lang.Float")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	public static final class FloatModel {
+
+		@XmlAttribute
+		public float value;
+
+		@ValueType(Float.class)
+		@ModelType(FloatModel.class)
+		public static final class Adapter
+			extends XmlAdapter<FloatModel, Float>
+		{
+			@Override
+			public FloatModel marshal(final Float value) {
+				final FloatModel model = new FloatModel();
+				model.value = value;
+				return model;
+			}
+
+			@Override
+			public Float unmarshal(final FloatModel model) {
+				return model.value;
+			}
+		}
+
+		public static final Adapter Adapter = new Adapter();
+
+		public static final Function<Float, FloatModel> Marshaller =
+			jaxb.marshaller(Adapter);
+
+		public static final Function<FloatModel, Float> Unmarshaller =
+			jaxb.unmarshaller(Adapter);
+
+	}
+
 	@XmlRootElement(name = "java.lang.Double")
 	@XmlType(name = "java.lang.Double")
 	@XmlAccessorType(XmlAccessType.FIELD)
@@ -162,42 +309,6 @@ public final class model extends StaticObject {
 			jaxb.marshaller(Adapter);
 
 		public static final Function<DoubleModel, Double> Unmarshaller =
-			jaxb.unmarshaller(Adapter);
-
-	}
-
-	@XmlRootElement(name = "org.jscience.mathematics.number.Float64")
-	@XmlType(name = "org.jscience.mathematics.number.Float64")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	public static final class Float64Model {
-
-		@XmlAttribute
-		public double value;
-
-		@ValueType(Float64.class)
-		@ModelType(Float64Model.class)
-		public static final class Adapter
-			extends XmlAdapter<Float64Model, Float64>
-		{
-			@Override
-			public Float64Model marshal(final Float64 value) {
-				final Float64Model model = new Float64Model();
-				model.value = value.doubleValue();
-				return model;
-			}
-
-			@Override
-			public Float64 unmarshal(final Float64Model model) {
-				return Float64.valueOf(model.value);
-			}
-		}
-
-		public static final Adapter Adapter = new Adapter();
-
-		public static final Function<Float64, Float64Model> Marshaller =
-			jaxb.marshaller(Adapter);
-
-		public static final Function<Float64Model, Float64> Unmarshaller =
 			jaxb.unmarshaller(Adapter);
 
 	}
@@ -235,6 +346,42 @@ public final class model extends StaticObject {
 
 		public static final Function<Integer64Model, Integer64>
 			Unmarshaller = jaxb.unmarshaller(Adapter);
+
+	}
+
+	@XmlRootElement(name = "org.jscience.mathematics.number.Float64")
+	@XmlType(name = "org.jscience.mathematics.number.Float64")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	public static final class Float64Model {
+
+		@XmlAttribute
+		public double value;
+
+		@ValueType(Float64.class)
+		@ModelType(Float64Model.class)
+		public static final class Adapter
+			extends XmlAdapter<Float64Model, Float64>
+		{
+			@Override
+			public Float64Model marshal(final Float64 value) {
+				final Float64Model model = new Float64Model();
+				model.value = value.doubleValue();
+				return model;
+			}
+
+			@Override
+			public Float64 unmarshal(final Float64Model model) {
+				return Float64.valueOf(model.value);
+			}
+		}
+
+		public static final Adapter Adapter = new Adapter();
+
+		public static final Function<Float64, Float64Model> Marshaller =
+			jaxb.marshaller(Adapter);
+
+		public static final Function<Float64Model, Float64> Unmarshaller =
+			jaxb.unmarshaller(Adapter);
 
 	}
 
