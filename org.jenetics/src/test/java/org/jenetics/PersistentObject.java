@@ -40,7 +40,6 @@ import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.model;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -84,7 +83,6 @@ public class PersistentObject<T> {
 	public static List<PersistentObject<?>> VALUES = new ArrayList<>();
 	public static Map<String, PersistentObject<?>> OBJECTS = new HashMap<>();
 	static {
-		Object object = model.DoubleModel.Adapter;
 		VALUES.add(new PersistentObject<>(
 			"BitGene[true]", BitGene.class, BitGene.TRUE
 		));

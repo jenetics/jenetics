@@ -38,6 +38,8 @@ import javolution.xml.XMLObjectReader;
 import javolution.xml.XMLObjectWriter;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.internal.util.model;
+
 
 /**
  * Class for object serialization. The following example shows how to write and
@@ -112,7 +114,7 @@ public abstract class IO {
 			throws IOException
 		{
 			try {
-				final JAXBContext context = JAXBContext.newInstance("org.jenetics");
+				final JAXBContext context = JAXBContext.newInstance("org.jenetics:org.jenetics.util");
 				final Marshaller marshaller = context.createMarshaller();
 				marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 				marshaller.setAdapter(new model.ObjectModel.Adapter());

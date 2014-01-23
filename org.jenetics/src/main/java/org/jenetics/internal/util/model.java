@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package org.jenetics.internal.util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,19 +57,15 @@ import org.jenetics.util.StaticObject;
 public final class model extends StaticObject {
 	private model() {}
 
-	/**
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version @__version__@ &mdash; <em>$Date$</em>
-	 * @since @__version__@
-	 */
+
 	@XmlRootElement(name = "java.lang.Integer")
 	@XmlType(name = "java.lang.Integer")
 	@XmlAccessorType(XmlAccessType.FIELD)
-	final static class IntegerModel {
+	public static final class IntegerModel {
 
 		@XmlAttribute int value;
 
-		final static class Adapter
+		public static final class Adapter
 			extends XmlAdapter<IntegerModel, Integer>
 		{
 			@Override
@@ -85,29 +81,24 @@ public final class model extends StaticObject {
 			}
 		}
 
-		static final Adapter Adapter = new Adapter();
+		public static final Adapter Adapter = new Adapter();
 
-		static final Function<Integer, IntegerModel> Marshaller =
+		public static final Function<Integer, IntegerModel> Marshaller =
 			jaxb.marshaller(Adapter);
 
-		static final Function<IntegerModel, Integer> Unmarshaller =
+		public static final Function<IntegerModel, Integer> Unmarshaller =
 			jaxb.unmarshaller(Adapter);
 
 	}
 
-	/**
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version @__version__@ &mdash; <em>$Date$</em>
-	 * @since @__version__@
-	 */
 	@XmlRootElement(name = "java.lang.Long")
 	@XmlType(name = "java.lang.Long")
 	@XmlAccessorType(XmlAccessType.FIELD)
-	final static class LongModel {
+	public static final class LongModel {
 
 		@XmlAttribute long value;
 
-		final static class Adapter
+		public static final class Adapter
 			extends XmlAdapter<LongModel, Long>
 		{
 			@Override
@@ -123,29 +114,24 @@ public final class model extends StaticObject {
 			}
 		}
 
-		static final Adapter Adapter = new Adapter();
+		public static final Adapter Adapter = new Adapter();
 
-		static final Function<Long, LongModel> Marshaller =
+		public static final Function<Long, LongModel> Marshaller =
 			jaxb.marshaller(Adapter);
 
-		static final Function<LongModel, Long> Unmarshaller =
+		public static final Function<LongModel, Long> Unmarshaller =
 			jaxb.unmarshaller(Adapter);
 
 	}
 
-	/**
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version @__version__@ &mdash; <em>$Date$</em>
-	 * @since @__version__@
-	 */
 	@XmlRootElement(name = "java.lang.Double")
 	@XmlType(name = "java.lang.Double")
 	@XmlAccessorType(XmlAccessType.FIELD)
-	static final class DoubleModel {
+	public static final class DoubleModel {
 
 		@XmlAttribute double value;
 
-		final static class Adapter
+		public static final class Adapter
 			extends XmlAdapter<DoubleModel, Double>
 		{
 			@Override
@@ -161,21 +147,16 @@ public final class model extends StaticObject {
 			}
 		}
 
-		static final Adapter Adapter = new Adapter();
+		public static final Adapter Adapter = new Adapter();
 
-		static final Function<Double, DoubleModel> Marshaller =
+		public static final Function<Double, DoubleModel> Marshaller =
 			jaxb.marshaller(Adapter);
 
-		static final Function<DoubleModel, Double> Unmarshaller =
+		public static final Function<DoubleModel, Double> Unmarshaller =
 			jaxb.unmarshaller(Adapter);
 
 	}
 
-	/**
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version @__version__@ &mdash; <em>$Date$</em>
-	 * @since @__version__@
-	 */
 	@XmlRootElement(name = "org.jscience.mathematics.number.Float64")
 	@XmlType(name = "org.jscience.mathematics.number.Float64")
 	@XmlAccessorType(XmlAccessType.FIELD)
@@ -183,7 +164,7 @@ public final class model extends StaticObject {
 
 		@XmlAttribute double value;
 
-		final static class Adapter
+		public static final class Adapter
 			extends XmlAdapter<Float64Model, Float64>
 		{
 			@Override
@@ -201,27 +182,22 @@ public final class model extends StaticObject {
 
 		public static final Adapter Adapter = new Adapter();
 
-		static final Function<Float64, Float64Model> Marshaller =
+		public static final Function<Float64, Float64Model> Marshaller =
 			jaxb.marshaller(Adapter);
 
-		static final Function<Float64Model, Float64> Unmarshaller =
+		public static final Function<Float64Model, Float64> Unmarshaller =
 			jaxb.unmarshaller(Adapter);
 
 	}
 
-	/**
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version @__version__@ &mdash; <em>$Date$</em>
-	 * @since @__version__@
-	 */
 	@XmlRootElement(name = "org.jscience.mathematics.number.Integer64")
 	@XmlType(name = "org.jscience.mathematics.number.Integer64")
 	@XmlAccessorType(XmlAccessType.FIELD)
-	static final class Integer64Model {
+	public static final class Integer64Model {
 
 		@XmlAttribute long value;
 
-		final static class Adapter
+		public static final class Adapter
 			extends XmlAdapter<Integer64Model, Integer64>
 		{
 			@Override
@@ -237,12 +213,12 @@ public final class model extends StaticObject {
 			}
 		}
 
-		static final Adapter Adapter = new Adapter();
+		public static final Adapter Adapter = new Adapter();
 
-		static final Function<Integer64, Integer64Model>
+		public static final Function<Integer64, Integer64Model>
 			Marshaller = jaxb.marshaller(Adapter);
 
-		static final Function<Integer64Model, Integer64>
+		public static final Function<Integer64Model, Integer64>
 			Unmarshaller = jaxb.unmarshaller(Adapter);
 
 	}
@@ -250,12 +226,12 @@ public final class model extends StaticObject {
 	@XmlRootElement(name = "java.util.List")
 	@XmlType(name = "java.util.List")
 	@XmlAccessorType(XmlAccessType.FIELD)
-	static final class ListModel {
+	public static final class ListModel {
 
 		@XmlElement
 		List<Object> entries = new ArrayList<>();
 
-		static final class Adapter extends XmlAdapter<ListModel, List<Object>> {
+		public static final class Adapter extends XmlAdapter<ListModel, List<Object>> {
 			@Override
 			public ListModel marshal(final List<Object> values) {
 				final ListModel model = new ListModel();

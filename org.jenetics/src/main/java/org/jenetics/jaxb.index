@@ -1,9 +1,3 @@
-model$DoubleModel
-model$LongModel
-model$Float64Model
-model$Integer64Model
-model$ListModel
-
 BitGene$Model
 EnumGene$Model
 CharacterGene$Model
