@@ -31,6 +31,9 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.internal.util.model.ModelType;
+import org.jenetics.internal.util.model.ValueType;
+
 import org.jenetics.util.Function;
 import org.jenetics.util.RandomRegistry;
 
@@ -39,7 +42,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-01-17 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-23 $</em>
  */
 @XmlJavaTypeAdapter(BitGene.Model.Adapter.class)
 public enum BitGene
@@ -178,8 +181,12 @@ public enum BitGene
 	@XmlType(name = "org.jenetics.BitGene")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
-		@XmlAttribute public boolean value;
 
+		@XmlAttribute
+		public boolean value;
+
+		@ValueType(BitGene.class)
+		@ModelType(Model.class)
 		public final static class Adapter
 			extends XmlAdapter<Model, BitGene>
 		{

@@ -40,6 +40,9 @@ import javolution.xml.stream.XMLStreamException;
 import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.internal.util.model.LongModel;
+import org.jenetics.internal.util.model.ModelType;
+import org.jenetics.internal.util.model.ValueType;
+
 import org.jenetics.util.Function;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.math;
@@ -317,13 +320,19 @@ public final class Integer64Gene
 	@XmlType(name = "org.jenetics.Integer64Gene")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
-		@XmlAttribute public long min;
-		@XmlAttribute public long max;
+
+		@XmlAttribute
+		public long min;
+
+		@XmlAttribute
+		public long max;
 
 		@XmlJavaTypeAdapter(LongModel.Adapter.class)
 		@XmlElement(name= "java.lang.Long")
 		public Long value;
 
+		@ValueType(Integer64Gene.class)
+		@ModelType(Model.class)
 		public final static class Adapter
 			extends XmlAdapter<Model, Integer64Gene>
 		{
