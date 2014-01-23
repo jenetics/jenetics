@@ -20,6 +20,8 @@
 package org.jenetics;
 
 import static java.lang.String.format;
+import static org.jenetics.internal.util.jaxb.Marshaller;
+import static org.jenetics.internal.util.jaxb.Unmarshaller;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
@@ -40,7 +42,6 @@ import javolution.xml.XMLFormat;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.internal.util.cast;
-import org.jenetics.internal.util.jaxb;
 import org.jenetics.internal.util.model.ModelType;
 import org.jenetics.internal.util.model.ValueType;
 
@@ -230,8 +231,8 @@ public final class EnumGene<A>
 		return valueOf(Array.valueOf(validAlleles).toISeq(), alleleIndex);
 	}
 
-	public static <G> EnumGene<G> valueOf(
-		final ISeq<? extends G> validAlleles,
+	public static <A> EnumGene<A> valueOf(
+		final ISeq<? extends A> validAlleles,
 		final int alleleIndex
 	) {
 		if (validAlleles.length() == 0) {
@@ -247,7 +248,7 @@ public final class EnumGene<A>
 		}
 
 		@SuppressWarnings("unchecked")
-		final EnumGene<G> gene = FACTORY.object();
+		final EnumGene<A> gene = FACTORY.object();
 
 		gene._validAlleles = cast.apply(validAlleles);
 		gene._alleleIndex = alleleIndex;
@@ -346,17 +347,14 @@ public final class EnumGene<A>
 				m.length = value.getValidAlleles().length();
 				m.currentAlleleIndex = value.getAlleleIndex();
 				m.alleles = value.getValidAlleles()
-					.map(jaxb.Marshaller(value.getValidAlleles().get(0))).asList();
+					.map(Marshaller(value.getValidAlleles().get(0))).asList();
 				return m;
 			}
 
 			@Override
 			public EnumGene unmarshal(final Model m) {
-				final Object obj = Array.valueOf(m.alleles)
-					.map(jaxb.Unmarshaller).toISeq();
-
 				return EnumGene.valueOf(
-					(ISeq<Chromosome>)obj,
+					Array.valueOf(m.alleles).map(Unmarshaller).toISeq(),
 					m.currentAlleleIndex
 				);
 			}
