@@ -19,6 +19,7 @@
  */
 package org.jenetics;
 
+import static org.jenetics.internal.math.random.ByteFactory;
 import static org.jenetics.internal.math.random.DoubleFactory;
 import static org.jenetics.internal.math.random.Float64Factory;
 import static org.jenetics.internal.math.random.Integer64Factory;
@@ -98,6 +99,10 @@ public class PersistentObject<T> {
 		VALUES.add(new PersistentObject<>(
 			"Float64Gene", Float64Gene.class, getFloat64Gene()
 		));
+
+		VALUES.add(new PersistentObject<>(
+			"EnumGene<Byte>", EnumGene.class, getEnumGeneByte()
+		));
 		VALUES.add(new PersistentObject<>(
 			"EnumGene<Float64>", EnumGene.class, getEnumGeneFloat64()
 		));
@@ -106,9 +111,6 @@ public class PersistentObject<T> {
 		));
 		VALUES.add(new PersistentObject<>(
 			"EnumGene<Integer64>", EnumGene.class, getEnumGeneInteger64()
-		));
-		VALUES.add(new PersistentObject<>(
-			"EnumGene<Long>", EnumGene.class, getEnumGeneLong()
 		));
 
 		for (PersistentObject<?> obj :  VALUES) {
@@ -128,6 +130,18 @@ public class PersistentObject<T> {
 		return Float64Gene.valueOf(0, 1.0);
 	}
 
+	public static EnumGene<Byte> getEnumGeneByte() {
+		return EnumGene.valueOf(
+			new Array<Byte>(5).fill(ByteFactory((byte)0, (byte)10)).toISeq()
+		);
+	}
+
+	public static EnumGene<Long> getEnumGeneLong() {
+		return EnumGene.valueOf(
+			new Array<Long>(5).fill(LongFactory(0, 10)).toISeq()
+		);
+	}
+
 	public static EnumGene<Float64> getEnumGeneFloat64() {
 		return EnumGene.valueOf(
 			new Array<Float64>(5).fill(Float64Factory(0, 10)).toISeq()
@@ -143,12 +157,6 @@ public class PersistentObject<T> {
 	public static EnumGene<Integer64> getEnumGeneInteger64() {
 		return EnumGene.valueOf(
 			new Array<Integer64>(5).fill(Integer64Factory(0, 10)).toISeq()
-		);
-	}
-
-	public static EnumGene<Long> getEnumGeneLong() {
-		return EnumGene.valueOf(
-			new Array<Long>(5).fill(LongFactory(0, 10)).toISeq()
 		);
 	}
 

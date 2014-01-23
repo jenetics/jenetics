@@ -20,6 +20,7 @@
 package org.jenetics.internal.math;
 
 import static org.jenetics.util.math.random.nextDouble;
+import static org.jenetics.util.math.random.nextInt;
 import static org.jenetics.util.math.random.nextLong;
 
 import java.util.Random;
@@ -36,7 +37,7 @@ import org.jenetics.util.StaticObject;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2014-01-18 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2014-01-23 $</em>
  */
 public final class random extends StaticObject {
 	private random() {}
@@ -79,6 +80,36 @@ public final class random extends StaticObject {
 
 	public static double toDouble2(final int a, final int b) {
 		return (((long)(a >>> 6) << 26) | (b >>> 6))*0x1.0p-52d;
+	}
+
+	public static Factory<Byte> ByteFactory(
+		final Random random,
+		final byte min, final byte max
+	) {
+		return new Factory<Byte>() {
+			@Override public Byte newInstance() {
+				return (byte)nextInt(random, min, max);
+			}
+		};
+	}
+
+	public static Factory<Byte> ByteFactory(final byte min, final byte max) {
+		return ByteFactory(RandomRegistry.getRandom(), min, max);
+	}
+
+	public static Factory<Long> LongFactory(
+		final Random random,
+		final long min, final long max
+	) {
+		return new Factory<Long>() {
+			@Override public Long newInstance() {
+				return nextLong(random, min, max);
+			}
+		};
+	}
+
+	public static Factory<Long> LongFactory(final long min, final long max) {
+		return LongFactory(RandomRegistry.getRandom(), min, max);
 	}
 
 
@@ -127,20 +158,6 @@ public final class random extends StaticObject {
 		return Integer64Factory(RandomRegistry.getRandom(), min, max);
 	}
 
-	public static Factory<Long> LongFactory(
-		final Random random,
-		final long min, final long max
-	) {
-		return new Factory<Long>() {
-			@Override public Long newInstance() {
-				return nextLong(random, min, max);
-			}
-		};
-	}
-
-	public static Factory<Long> LongFactory(final long min, final long max) {
-		return LongFactory(RandomRegistry.getRandom(), min, max);
-	}
 }
 
 
