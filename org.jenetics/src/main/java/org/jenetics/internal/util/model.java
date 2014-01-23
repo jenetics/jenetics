@@ -19,13 +19,14 @@
  */
 package org.jenetics.internal.util;
 
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -33,30 +34,30 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import javax.xml.namespace.QName;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.dom.DOMSource;
 
 import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.number.Integer64;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
-import org.jenetics.internal.util.jaxb;
 
 import org.jenetics.util.Function;
 import org.jenetics.util.StaticObject;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date$</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-23 $</em>
  * @since @__version__@
  */
 public final class model extends StaticObject {
 	private model() {}
 
+	@Retention(RUNTIME) @Target(TYPE)
+	public @interface ValueType {
+		Class<?> value();
+	}
+
+	@Retention(RUNTIME) @Target(TYPE)
+	public @interface ModelType {
+		Class<?> value();
+	}
 
 	@XmlRootElement(name = "java.lang.Integer")
 	@XmlType(name = "java.lang.Integer")
@@ -164,6 +165,8 @@ public final class model extends StaticObject {
 
 		@XmlAttribute double value;
 
+		@ValueType(Float64.class)
+		@ModelType(Float64Model.class)
 		public static final class Adapter
 			extends XmlAdapter<Float64Model, Float64>
 		{
@@ -252,13 +255,14 @@ public final class model extends StaticObject {
 		}
 	}
 
-	@XmlJavaTypeAdapter(ObjectModel.Adapter.class)
+	/*
+	@XmlJavaTypeAdapter(ModelAdapter.Adapter.class)
 	@XmlAccessorType(XmlAccessType.FIELD)
-	public static final class ObjectModel {
+	public static final class ModelAdapter {
 		String name;
 		Object value;
 
-		public static class Adapter extends XmlAdapter<Element, ObjectModel> {
+		public static class Adapter extends XmlAdapter<Element, ModelAdapter> {
 
 			private ClassLoader classLoader;
 			private DocumentBuilder documentBuilder;
@@ -291,12 +295,12 @@ public final class model extends StaticObject {
 			}
 
 			@Override
-			public Element marshal(ObjectModel objectModel) throws Exception {
+			public Element marshal(ModelAdapter objectModel) throws Exception {
 				if (null == objectModel) {
 					return null;
 				}
 
-				// 1. Build the JAXBElement to wrap the instance of ObjectModel.
+				// 1. Build the JAXBElement to wrap the instance of ModelAdapter.
 				QName rootElement = new QName(objectModel.name);
 				Object value = objectModel.value;
 				Class<?> type = value.getClass();
@@ -314,7 +318,7 @@ public final class model extends StaticObject {
 			}
 
 			@Override
-			public ObjectModel unmarshal(Element element) throws Exception {
+			public ModelAdapter unmarshal(Element element) throws Exception {
 				if (null == element) {
 					return null;
 				}
@@ -327,14 +331,23 @@ public final class model extends StaticObject {
 				Unmarshaller unmarshaller = getJAXBContext(type).createUnmarshaller();
 				JAXBElement jaxbElement = unmarshaller.unmarshal(source, type);
 
-				// 3. Build the instance of ObjectModel
-				ObjectModel objectModel = new ObjectModel();
+				// 3. Build the instance of ModelAdapter
+				ModelAdapter objectModel = new ModelAdapter();
 				objectModel.name = element.getLocalName();
 				objectModel.value = jaxbElement.getValue();
 				return objectModel;
 			}
 
 		}
+
+		public static final Adapter Adapter = new Adapter();
+
+		public static final Function<ModelAdapter, Element>
+			Marshaller = jaxb.marshaller(Adapter);
+
+		public static final Function<Element, ModelAdapter>
+			Unmarshaller = jaxb.unmarshaller(Adapter);
 	}
+	*/
 
 }

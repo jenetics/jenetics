@@ -23,13 +23,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.xml.transform.dom.DOMSource;
 
 import org.jscience.mathematics.number.Float64;
+import org.w3c.dom.Element;
 
+import org.jenetics.internal.util.model.ModelType;
 import org.jenetics.util.Function;
 import org.jenetics.util.StaticObject;
 
@@ -43,6 +50,17 @@ import org.jenetics.util.StaticObject;
 public class jaxb extends StaticObject {
 	private jaxb() {}
 
+	public static final JAXBContext CONTEXT = newContext();
+
+	private static JAXBContext newContext() {
+		try {
+			return JAXBContext.newInstance(
+				"org.jenetics:org.jenetics.internal.util"
+			);
+		} catch (JAXBException e) {
+			throw new AssertionError(e);
+		}
+	}
 
 	// Identity XmlAdapter.
 	private static final
@@ -81,6 +99,15 @@ public class jaxb extends StaticObject {
 
 			return (XmlAdapter<Object, Object>)xmlAdapterCache.get(cls);
 		}
+	}
+
+	public static Class<?> modelTypeFor(final Object value) {
+		final Object adapter = adapterFor(value);
+		final ModelType ma = adapter.getClass().getAnnotation(ModelType.class);
+		if (ma != null) {
+			return ma.value();
+		}
+		return value instanceof Class<?> ? (Class<?>)value : value.getClass();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -147,5 +174,33 @@ public class jaxb extends StaticObject {
 	public static <V, B> Function<B, V> Marshaller(final Object value) {
 		return (Function<B, V>) marshaller(adapterFor(value));
 	}
+
+	public static final Function<Object, Object> Unmarshaller =
+	new Function<Object, Object>() {
+		@Override
+		public Object apply(final Object value) {
+			Object result = value;
+			if (value instanceof Element) {
+				final Element element = (Element)value;
+
+				try {
+					final Class<?> type = modelTypeFor(
+						Class.forName(element.getNodeName())
+					);
+
+					final DOMSource source = new DOMSource(element);
+					final JAXBElement jaxbElement = CONTEXT.createUnmarshaller()
+						.unmarshal(source, type);
+
+					result = jaxb.adapterFor(jaxbElement.getValue())
+						.unmarshal(jaxbElement.getValue());
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+			}
+
+			return result;
+		}
+	};
 
 }
