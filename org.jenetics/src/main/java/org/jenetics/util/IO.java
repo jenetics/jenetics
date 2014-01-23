@@ -29,7 +29,6 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.nio.file.Path;
 
-import javax.xml.bind.JAXB;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
@@ -38,10 +37,6 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javolution.xml.XMLObjectReader;
 import javolution.xml.XMLObjectWriter;
 import javolution.xml.stream.XMLStreamException;
-
-import org.jenetics.internal.util.jaxb;
-
-import org.jenetics.model;
 
 
 /**
