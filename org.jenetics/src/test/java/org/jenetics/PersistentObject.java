@@ -101,6 +101,12 @@ public class PersistentObject<T> {
 		VALUES.add(new PersistentObject<>(
 			"EnumGene<Float64>", EnumGene.class, getEnumGeneFloat64()
 		));
+		VALUES.add(new PersistentObject<>(
+			"EnumGene<Double>", EnumGene.class, getEnumGeneDouble()
+		));
+		VALUES.add(new PersistentObject<>(
+			"EnumGene<Integer64>", EnumGene.class, getEnumGeneInteger64()
+		));
 
 		for (PersistentObject<?> obj :  VALUES) {
 			OBJECTS.put(obj.getName(), obj);
