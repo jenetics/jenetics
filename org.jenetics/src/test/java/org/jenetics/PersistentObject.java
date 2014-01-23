@@ -40,10 +40,11 @@ import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.model;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-01-22 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-23 $</em>
  * @since @__version__@
  */
 public class PersistentObject<T> {

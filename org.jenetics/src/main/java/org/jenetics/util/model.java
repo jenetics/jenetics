@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package org.jenetics.util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +51,7 @@ import org.jenetics.util.StaticObject;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-01-23 $</em>
+ * @version @__version__@ &mdash; <em>$Date$</em>
  * @since @__version__@
  */
 public final class model extends StaticObject {
@@ -59,7 +59,7 @@ public final class model extends StaticObject {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version @__version__@ &mdash; <em>$Date: 2014-01-23 $</em>
+	 * @version @__version__@ &mdash; <em>$Date$</em>
 	 * @since @__version__@
 	 */
 	@XmlRootElement(name = "java.lang.Integer")
@@ -97,7 +97,7 @@ public final class model extends StaticObject {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version @__version__@ &mdash; <em>$Date: 2014-01-23 $</em>
+	 * @version @__version__@ &mdash; <em>$Date$</em>
 	 * @since @__version__@
 	 */
 	@XmlRootElement(name = "java.lang.Long")
@@ -135,7 +135,7 @@ public final class model extends StaticObject {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version @__version__@ &mdash; <em>$Date: 2014-01-23 $</em>
+	 * @version @__version__@ &mdash; <em>$Date$</em>
 	 * @since @__version__@
 	 */
 	@XmlRootElement(name = "java.lang.Double")
@@ -173,7 +173,7 @@ public final class model extends StaticObject {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version @__version__@ &mdash; <em>$Date: 2014-01-23 $</em>
+	 * @version @__version__@ &mdash; <em>$Date$</em>
 	 * @since @__version__@
 	 */
 	@XmlRootElement(name = "org.jscience.mathematics.number.Float64")
@@ -211,7 +211,7 @@ public final class model extends StaticObject {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version @__version__@ &mdash; <em>$Date: 2014-01-23 $</em>
+	 * @version @__version__@ &mdash; <em>$Date$</em>
 	 * @since @__version__@
 	 */
 	@XmlRootElement(name = "org.jscience.mathematics.number.Integer64")

@@ -26,7 +26,6 @@ import java.util.Random;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -40,7 +39,7 @@ import javolution.xml.stream.XMLStreamException;
 
 import org.jscience.mathematics.number.Integer64;
 
-import org.jenetics.model.LongModel;
+import org.jenetics.util.model.LongModel;
 import org.jenetics.util.Function;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.math;
@@ -50,7 +49,7 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-01-22 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-23 $</em>
  */
 @XmlJavaTypeAdapter(Integer64Gene.Model.Adapter.class)
 public final class Integer64Gene
