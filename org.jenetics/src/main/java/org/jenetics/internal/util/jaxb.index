@@ -1,5 +1,10 @@
-model$DoubleModel
-model$LongModel
+model$ByteModel
+model$CharacterModel
+model$ShortModel
 model$IntegerModel
-model$Float64Model
+model$LongModel
+model$FloatModel
+model$DoubleModel
+
 model$Integer64Model
+model$Float64Model
