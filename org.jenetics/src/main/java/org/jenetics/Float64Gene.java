@@ -41,6 +41,8 @@ import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.structure.GroupMultiplicative;
 
 import org.jenetics.internal.util.model.DoubleModel;
+import org.jenetics.internal.util.model.ModelType;
+import org.jenetics.internal.util.model.ValueType;
 
 import org.jenetics.util.Function;
 import org.jenetics.util.RandomRegistry;
@@ -322,13 +324,19 @@ public final class Float64Gene
 	@XmlType(name = "org.jenetics.Float64Gene")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
-		@XmlAttribute public double min;
-		@XmlAttribute public double max;
+
+		@XmlAttribute
+		public double min;
+
+		@XmlAttribute
+		public double max;
 
 		@XmlJavaTypeAdapter(DoubleModel.Adapter.class)
 		@XmlElement(name= "java.lang.Double")
 		public Double value;
 
+		@ValueType(Float64Gene.class)
+		@ModelType(Model.class)
 		public final static class Adapter
 			extends XmlAdapter<Model, Float64Gene>
 		{

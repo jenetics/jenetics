@@ -41,6 +41,9 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.internal.util.model.ModelType;
+import org.jenetics.internal.util.model.ValueType;
+
 import org.jenetics.util.Array;
 import org.jenetics.util.CharSeq;
 import org.jenetics.util.Factory;
@@ -350,9 +353,15 @@ public final class CharacterGene
 	@XmlType(name = "org.jenetics.CharacterGene")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
-		@XmlAttribute(name = "valid-characters") public String validCharacters;
-		@XmlValue public String value;
 
+		@XmlAttribute(name = "valid-characters")
+		public String validCharacters;
+
+		@XmlValue
+		public String value;
+
+		@ValueType(CharacterGene.class)
+		@ModelType(Model.class)
 		public final static class Adapter
 			extends XmlAdapter<Model, CharacterGene>
 		{

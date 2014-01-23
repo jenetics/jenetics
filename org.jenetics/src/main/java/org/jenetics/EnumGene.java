@@ -41,6 +41,8 @@ import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.internal.util.cast;
 import org.jenetics.internal.util.jaxb;
+import org.jenetics.internal.util.model.ModelType;
+import org.jenetics.internal.util.model.ValueType;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
@@ -333,6 +335,8 @@ public final class EnumGene<A>
 		@XmlAnyElement
 		List<Object> alleles;
 
+		@ValueType(EnumGene.class)
+		@ModelType(Model.class)
 		public static final class Adapter
 			extends XmlAdapter<Model, EnumGene>
 		{
