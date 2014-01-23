@@ -334,7 +334,7 @@ public final class EnumGene<A>
 		//@XmlJavaTypeAdapter(model.ListModel.Adapter.class)
 		//@XmlJavaTypeAdapter(model.Float64Model.Adapter.class)
 		@XmlAnyElement
-		public List<model.ObjectModel> alleles;
+		public List<Object> alleles;
 
 		public final static class Adapter
 			extends XmlAdapter<Model, EnumGene>
@@ -342,16 +342,16 @@ public final class EnumGene<A>
 			@Override
 			public Model marshal(final EnumGene value) {
 				final Model m = new Model();
-				m.alleles = value.getValidAlleles().asList();
-					//.map(Marshaller(value.getValidAlleles())).asList();
+				m.alleles = value.getValidAlleles()
+					.map(Marshaller(value.getValidAlleles())).asList();
 				m.length = value.getValidAlleles().length();
 				return m;
 			}
 
 			@Override
 			public EnumGene unmarshal(final Model m) {
-				final Object obj = Array.valueOf(m.alleles).toISeq();
-					//.map(Unmarshaller(m.alleles.get(0))).toISeq();
+				final Object obj = Array.valueOf(m.alleles)
+					.map(Unmarshaller(m.alleles.get(0))).toISeq();
 
 				return EnumGene.valueOf(
 					(ISeq<Chromosome>)obj,

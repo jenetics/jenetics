@@ -43,7 +43,7 @@ public class XMLMarshallingTest {
 		test(object.getValue(), IO.jaxb, IO.xml);
 	}
 
-	@Test(dataProvider = "objects")
+	//@Test(dataProvider = "objects")
 	public void javolutionJAXBCompatibility(final PersistentObject<?> object)
 		throws IOException
 	{
