@@ -38,6 +38,7 @@ import javolution.xml.XMLObjectReader;
 import javolution.xml.XMLObjectWriter;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.internal.util.jaxb;
 import org.jenetics.internal.util.model;
 
 
@@ -114,10 +115,10 @@ public abstract class IO {
 			throws IOException
 		{
 			try {
-				final JAXBContext context = JAXBContext.newInstance("org.jenetics:org.jenetics.util");
-				final Marshaller marshaller = context.createMarshaller();
+				final Marshaller marshaller =
+					org.jenetics.internal.util.jaxb.CONTEXT.createMarshaller();
 				marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-				marshaller.setAdapter(new model.ObjectModel.Adapter());
+				//marshaller.setAdapter(new model.ModelAdapter.Adapter());
 
 				final XmlAdapter<Object, Object> adapter =
 					org.jenetics.internal.util.jaxb.adapterFor(object);
@@ -136,8 +137,8 @@ public abstract class IO {
 			throws IOException
 		{
 			try {
-				final JAXBContext context = JAXBContext.newInstance("org.jenetics");
-				final Unmarshaller unmarshaller = context.createUnmarshaller();
+				final Unmarshaller unmarshaller =
+					org.jenetics.internal.util.jaxb.CONTEXT.createUnmarshaller();
 				final Object object = unmarshaller.unmarshal(in);
 
 				final XmlAdapter<Object, Object> adapter =

@@ -27,6 +27,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
@@ -38,13 +41,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.xml.transform.dom.DOMSource;
 
 import javolution.context.ObjectFactory;
 import javolution.xml.XMLFormat;
 import javolution.xml.stream.XMLStreamException;
 
+import org.w3c.dom.Element;
+
 import org.jenetics.internal.util.cast;
 import org.jenetics.internal.util.jaxb;
+import org.jenetics.internal.util.model;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
@@ -331,8 +338,6 @@ public final class EnumGene<A>
 		@XmlAttribute public int length;
 		@XmlAttribute(name = "current-allele-index") public int currentAlleleIndex;
 
-		//@XmlJavaTypeAdapter(model.ListModel.Adapter.class)
-		//@XmlJavaTypeAdapter(model.Float64Model.Adapter.class)
 		@XmlAnyElement
 		public List<Object> alleles;
 
@@ -342,14 +347,17 @@ public final class EnumGene<A>
 			@Override
 			public Model marshal(final EnumGene value) {
 				final Model m = new Model();
+				m.length = value.getValidAlleles().length();
+				m.currentAlleleIndex = value.getAlleleIndex();
 				m.alleles = value.getValidAlleles()
 					.map(Marshaller(value.getValidAlleles().get(0))).asList();
-				m.length = value.getValidAlleles().length();
 				return m;
 			}
 
 			@Override
 			public EnumGene unmarshal(final Model m) {
+				final Object a = jaxb.adapterFor(m.alleles.get(0));
+				final Object f = Unmarshaller(m.alleles.get(0));
 				final Object obj = Array.valueOf(m.alleles)
 					.map(Unmarshaller(m.alleles.get(0))).toISeq();
 
@@ -364,7 +372,35 @@ public final class EnumGene<A>
 			}
 
 			private static Function<Object, Object> Unmarshaller(final Object c)  {
-				return jaxb.unmarshaller(jaxb.adapterFor(c));
+				return new Function<Object, Object>() {
+					@Override
+					public Object apply(final Object value) {
+						final Element element = (Element)value;
+						final String className = element.getNodeName();
+						final String valueString = element.getAttribute("value");
+
+						try {
+							// 1. Determine the values type from the type attribute.
+							Class<?> type = jaxb.modelTypeFor(Class.forName(className));
+							//Class<?> type = model.Float64Model.class;
+
+							// 2. Unmarshal the element based on the value's type.
+							DOMSource source = new DOMSource(element);
+							final JAXBContext context = JAXBContext.newInstance(
+								"org.jenetics:org.jenetics.internal.util"
+							);
+							Unmarshaller unmarshaller = context.createUnmarshaller();
+							//unmarshaller.setAdapter(model.Float64Model.Adapter);
+							JAXBElement jaxbElement = unmarshaller.unmarshal(source, type);
+							return jaxb.adapterFor(jaxbElement.getValue()).unmarshal(jaxbElement.getValue());
+							//return jaxbElement.getValue();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						return null;
+					}
+				};
+				//return jaxb.unmarshaller(jaxb.adapterFor(c));
 			}
 		}
 	}
