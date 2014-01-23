@@ -59,9 +59,9 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-01-16 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-23 $</em>
  */
-@XmlJavaTypeAdapter(Phenotype.Model.Adapter.class)
+//@XmlJavaTypeAdapter(Phenotype.Model.Adapter.class)
 public final class Phenotype<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
@@ -505,6 +505,7 @@ public final class Phenotype<
 		@XmlAnyElement public Comparable fitness;
 		@XmlAnyElement public Comparable rawFitness;
 
+		/*
 		public final static class Adapter
 			extends XmlAdapter<Model, Phenotype>
 		{
@@ -530,6 +531,7 @@ public final class Phenotype<
 		}
 
 		final static Adapter Adapter = new Adapter();
+		*/
 	}
 
 }
