@@ -176,7 +176,7 @@ public final class model extends StaticObject {
 	@XmlRootElement(name = "org.jscience.mathematics.number.Float64")
 	@XmlType(name = "org.jscience.mathematics.number.Float64")
 	@XmlAccessorType(XmlAccessType.FIELD)
-	static final class Float64Model {
+	public static final class Float64Model {
 
 		@XmlAttribute double value;
 
@@ -196,7 +196,7 @@ public final class model extends StaticObject {
 			}
 		}
 
-		static final Adapter Adapter = new Adapter();
+		public static final Adapter Adapter = new Adapter();
 
 		static final Function<Float64, Float64Model> Marshaller =
 			jaxb.marshaller(Adapter);
