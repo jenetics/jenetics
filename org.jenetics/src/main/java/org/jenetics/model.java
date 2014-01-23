@@ -48,7 +48,7 @@ import org.jenetics.util.StaticObject;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-01-22 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-23 $</em>
  * @since @__version__@
  */
 public final class model extends StaticObject {
@@ -56,7 +56,7 @@ public final class model extends StaticObject {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version @__version__@ &mdash; <em>$Date: 2014-01-22 $</em>
+	 * @version @__version__@ &mdash; <em>$Date: 2014-01-23 $</em>
 	 * @since @__version__@
 	 */
 	@XmlRootElement(name = "java.lang.Integer")
@@ -94,7 +94,7 @@ public final class model extends StaticObject {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version @__version__@ &mdash; <em>$Date: 2014-01-22 $</em>
+	 * @version @__version__@ &mdash; <em>$Date: 2014-01-23 $</em>
 	 * @since @__version__@
 	 */
 	@XmlRootElement(name = "java.lang.Long")
@@ -132,7 +132,7 @@ public final class model extends StaticObject {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version @__version__@ &mdash; <em>$Date: 2014-01-22 $</em>
+	 * @version @__version__@ &mdash; <em>$Date: 2014-01-23 $</em>
 	 * @since @__version__@
 	 */
 	@XmlRootElement(name = "java.lang.Double")
@@ -170,13 +170,13 @@ public final class model extends StaticObject {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version @__version__@ &mdash; <em>$Date: 2014-01-22 $</em>
+	 * @version @__version__@ &mdash; <em>$Date: 2014-01-23 $</em>
 	 * @since @__version__@
 	 */
 	@XmlRootElement(name = "org.jscience.mathematics.number.Float64")
 	@XmlType(name = "org.jscience.mathematics.number.Float64")
 	@XmlAccessorType(XmlAccessType.FIELD)
-	static final class Float64Model {
+	public static final class Float64Model {
 
 		@XmlAttribute double value;
 
@@ -196,7 +196,7 @@ public final class model extends StaticObject {
 			}
 		}
 
-		static final Adapter Adapter = new Adapter();
+		public static final Adapter Adapter = new Adapter();
 
 		static final Function<Float64, Float64Model> Marshaller =
 			jaxb.marshaller(Adapter);
@@ -208,7 +208,7 @@ public final class model extends StaticObject {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version @__version__@ &mdash; <em>$Date: 2014-01-22 $</em>
+	 * @version @__version__@ &mdash; <em>$Date: 2014-01-23 $</em>
 	 * @since @__version__@
 	 */
 	@XmlRootElement(name = "org.jscience.mathematics.number.Integer64")

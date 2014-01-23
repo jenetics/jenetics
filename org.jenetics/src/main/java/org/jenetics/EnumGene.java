@@ -343,7 +343,7 @@ public final class EnumGene<A>
 			public Model marshal(final EnumGene value) {
 				final Model m = new Model();
 				m.alleles = value.getValidAlleles()
-					.map(Marshaller(value.getValidAlleles())).asList();
+					.map(Marshaller(value.getValidAlleles().get(0))).asList();
 				m.length = value.getValidAlleles().length();
 				return m;
 			}

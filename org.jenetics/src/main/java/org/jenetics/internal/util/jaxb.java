@@ -32,6 +32,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jscience.mathematics.number.Float64;
+import org.jenetics.model;
 import org.jenetics.util.Function;
 import org.jenetics.util.StaticObject;
 
@@ -45,6 +46,7 @@ import org.jenetics.util.StaticObject;
 public class jaxb extends StaticObject {
 	private jaxb() {}
 
+	/*
 	static final class model {
 		@XmlRootElement(name = "org.jscience.mathematics.number.Float64")
 		@XmlType(name = "org.jscience.mathematics.number.Float64")
@@ -79,6 +81,7 @@ public class jaxb extends StaticObject {
 
 		}
 	}
+	*/
 	
 	// Identity XmlAdapter.
 	private static final
