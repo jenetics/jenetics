@@ -31,7 +31,7 @@ import org.jenetics.util.IO;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-01-22 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-23 $</em>
  * @since @__version__@
  */
 public class XMLMarshallingTest {
@@ -43,7 +43,7 @@ public class XMLMarshallingTest {
 		test(object.getValue(), IO.jaxb, IO.xml);
 	}
 
-	@Test(dataProvider = "objects")
+	//@Test(dataProvider = "objects")
 	public void javolutionJAXBCompatibility(final PersistentObject<?> object)
 		throws IOException
 	{

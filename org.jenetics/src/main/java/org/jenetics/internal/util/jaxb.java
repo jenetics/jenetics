@@ -23,13 +23,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.util.Function;
 import org.jenetics.util.StaticObject;
 
@@ -37,12 +39,47 @@ import org.jenetics.util.StaticObject;
  * JAXB helper methods.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-01-22 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-23 $</em>
  * @since @__version__@
  */
 public class jaxb extends StaticObject {
 	private jaxb() {}
 
+	static final class model {
+		@XmlRootElement(name = "org.jscience.mathematics.number.Float64")
+		@XmlType(name = "org.jscience.mathematics.number.Float64")
+		@XmlAccessorType(XmlAccessType.FIELD)
+		static final class Float64Model {
+
+			@XmlAttribute double value;
+
+			final static class Adapter
+				extends XmlAdapter<Float64Model, Float64>
+			{
+				@Override
+				public Float64Model marshal(final Float64 value) {
+					final Float64Model model = new Float64Model();
+					model.value = value.doubleValue();
+					return model;
+				}
+
+				@Override
+				public Float64 unmarshal(final Float64Model model) {
+					return Float64.valueOf(model.value);
+				}
+			}
+
+			static final Adapter Adapter = new Adapter();
+
+			static final Function<Float64, Float64Model> Marshaller =
+				jaxb.marshaller(Adapter);
+
+			static final Function<Float64Model, Float64> Unmarshaller =
+				jaxb.unmarshaller(Adapter);
+
+		}
+	}
+	
 	// Identity XmlAdapter.
 	private static final
 	XmlAdapter<Object, Object> ID_XML_ADAPTER = new XmlAdapter<Object, Object>() {
@@ -56,9 +93,9 @@ public class jaxb extends StaticObject {
 
 	private static final Map<Class<?>, XmlAdapter<? extends Object, ? extends Object>>
 	xmlAdapterCache = new HashMap<>();
-
-	public static void addAdapter(final Class<?> type, final XmlAdapter<? extends Object, ? extends Object> adapter) {
-		xmlAdapterCache.put(type, adapter);
+	static {
+		xmlAdapterCache.put(Float64.class, model.Float64Model.Adapter);
+		xmlAdapterCache.put(model.Float64Model.class, model.Float64Model.Adapter);
 	}
 
 	/**
