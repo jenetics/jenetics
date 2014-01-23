@@ -19,8 +19,6 @@
  */
 package org.jenetics.util;
 
-import static java.lang.Math.min;
-
 import java.util.Random;
 
 import org.jenetics.internal.math.random;
@@ -30,7 +28,7 @@ import org.jenetics.internal.math.random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__version__@
- * @version @__version__@ &mdash; <em>$Date: 2014-01-20 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-23 $</em>
  */
 public abstract class Random32 extends PRNG {
 
