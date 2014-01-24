@@ -211,6 +211,11 @@
 			<class name="org.jenetics.TruncationSelectorTest" />
 		</classes>
 	</test>
+    <test name="org.jenetics.util.XMLMarshalling">
+        <classes>
+            <class name="org.jenetics.XMLMarshallingTest" />
+        </classes>
+    </test>
 	<test name="org.jenetics.stat.Accumulators">
 		<classes>
 			<class name="org.jenetics.stat.MeanTest" />
