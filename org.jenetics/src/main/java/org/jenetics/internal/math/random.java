@@ -37,10 +37,16 @@ import org.jenetics.util.StaticObject;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2014-01-23 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2014-01-24 $</em>
  */
 public final class random extends StaticObject {
 	private random() {}
+
+	public static char nextPrintableChar(final Random random) {
+		final int low = 33;
+		final int high = 127;
+		return (char)(random.nextInt(high - low) + low);
+	}
 
 	/*
 	 * Conversion methods used by the 'Random' engine from the JDK.
@@ -96,6 +102,19 @@ public final class random extends StaticObject {
 	public static Factory<Byte> ByteFactory(final byte min, final byte max) {
 		return ByteFactory(RandomRegistry.getRandom(), min, max);
 	}
+
+	public static Factory<Character> CharacterFactory(final Random random) {
+		return new Factory<Character>() {
+			@Override public Character newInstance() {
+				return nextPrintableChar(random);
+			}
+		};
+	}
+
+	public static Factory<Character> CharacterFactory() {
+		return CharacterFactory(RandomRegistry.getRandom());
+	}
+
 
 	public static Factory<Long> LongFactory(
 		final Random random,

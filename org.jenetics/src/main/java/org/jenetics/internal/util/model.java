@@ -43,7 +43,7 @@ import org.jenetics.util.StaticObject;
  * and float types of the JScience library.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-01-23 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-24 $</em>
  * @since @__version__@
  */
 public final class model extends StaticObject {
@@ -103,7 +103,7 @@ public final class model extends StaticObject {
 	public static final class CharacterModel {
 
 		@XmlAttribute
-		public char value;
+		public String value;
 
 		@ValueType(Character.class)
 		@ModelType(CharacterModel.class)
@@ -113,13 +113,13 @@ public final class model extends StaticObject {
 			@Override
 			public CharacterModel marshal(final Character value) {
 				final CharacterModel model = new CharacterModel();
-				model.value = value;
+				model.value = value.toString();
 				return model;
 			}
 
 			@Override
 			public Character unmarshal(final CharacterModel model) {
-				return model.value;
+				return model.value.charAt(0);
 			}
 		}
 
