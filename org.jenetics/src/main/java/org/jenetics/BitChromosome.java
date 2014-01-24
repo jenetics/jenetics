@@ -48,6 +48,9 @@ import javolution.xml.stream.XMLStreamException;
 import org.jscience.mathematics.number.LargeInteger;
 import org.jscience.mathematics.number.Number;
 
+import org.jenetics.internal.util.model.ModelType;
+import org.jenetics.internal.util.model.ValueType;
+
 import org.jenetics.util.ISeq;
 import org.jenetics.util.bit;
 
@@ -548,17 +551,22 @@ public class BitChromosome extends Number<BitChromosome>
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	private static final String JAXB_TYPE_NAME = "org.jenetics.BitChromosome";
-
-	@XmlRootElement(name = JAXB_TYPE_NAME)
-	@XmlType(name = JAXB_TYPE_NAME)
+	@XmlRootElement(name = "org.jenetics.BitChromosome")
+	@XmlType(name = "org.jenetics.BitChromosome")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
-		@XmlAttribute final String type = BitChromosome.class.getCanonicalName();
-		@XmlAttribute int length;
-		@XmlAttribute double probability;
-		@XmlValue String value;
 
+		@XmlAttribute
+		public int length;
+
+		@XmlAttribute
+		public double probability;
+
+		@XmlValue
+		public String value;
+
+		@ValueType(BitChromosome.class)
+		@ModelType(Model.class)
 		public final static class Adapter
 			extends XmlAdapter<Model, BitChromosome>
 		{

@@ -25,6 +25,7 @@ import static org.jenetics.internal.math.random.DoubleFactory;
 import static org.jenetics.internal.math.random.Float64Factory;
 import static org.jenetics.internal.math.random.Integer64Factory;
 import static org.jenetics.internal.math.random.LongFactory;
+import static org.jenetics.internal.math.random.ShortFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -85,37 +86,52 @@ public class PersistentObject<T> {
 	public static List<PersistentObject<?>> VALUES = new ArrayList<>();
 	public static Map<String, PersistentObject<?>> OBJECTS = new HashMap<>();
 	static {
-		VALUES.add(new PersistentObject<>(
-			"BitGene[true]", BitGene.class, BitGene.TRUE
-		));
-		VALUES.add(new PersistentObject<>(
-			"BitGene[false]", BitGene.class, BitGene.FALSE
-		));
-		VALUES.add(new PersistentObject<>(
-			"CharacterGene", CharacterGene.class, getCharacterGene()
-		));
-		VALUES.add(new PersistentObject<>(
-			"Integer64Gene", Integer64Gene.class, getInteger64Gene()
-		));
-		VALUES.add(new PersistentObject<>(
-			"Float64Gene", Float64Gene.class, getFloat64Gene()
-		));
+//		VALUES.add(new PersistentObject<>(
+//			"BitGene[true]", BitGene.class, BitGene.TRUE
+//		));
+//		VALUES.add(new PersistentObject<>(
+//			"BitGene[false]", BitGene.class, BitGene.FALSE
+//		));
+//		VALUES.add(new PersistentObject<>(
+//			"CharacterGene", CharacterGene.class, getCharacterGene()
+//		));
+//		VALUES.add(new PersistentObject<>(
+//			"Integer64Gene", Integer64Gene.class, getInteger64Gene()
+//		));
+//		VALUES.add(new PersistentObject<>(
+//			"Float64Gene", Float64Gene.class, getFloat64Gene()
+//		));
+//
+//		VALUES.add(new PersistentObject<>(
+//			"EnumGene<Byte>", EnumGene.class, getEnumGeneByte()
+//		));
+//		VALUES.add(new PersistentObject<>(
+//			"EnumGene<Character>", EnumGene.class, getEnumGeneCharacter()
+//		));
+//		VALUES.add(new PersistentObject<>(
+//			"EnumGene<Short>", EnumGene.class, getEnumGeneShort()
+//		));
+//		VALUES.add(new PersistentObject<>(
+//			"EnumGene<Float64>", EnumGene.class, getEnumGeneFloat64()
+//		));
+//		VALUES.add(new PersistentObject<>(
+//			"EnumGene<Double>", EnumGene.class, getEnumGeneDouble()
+//		));
+//		VALUES.add(new PersistentObject<>(
+//			"EnumGene<Integer64>", EnumGene.class, getEnumGeneInteger64()
+//		));
+
+		/*
+		 * Chromosomes
+		 */
 
 		VALUES.add(new PersistentObject<>(
-			"EnumGene<Byte>", EnumGene.class, getEnumGeneByte()
+			"BitChromosome", BitChromosome.class, getBitChromosome()
 		));
 		VALUES.add(new PersistentObject<>(
-			"EnumGene<Character>", EnumGene.class, getEnumGeneCharacter()
+			"CharacterChromosome", CharacterChromosome.class, new CharacterChromosome(20)
 		));
-		VALUES.add(new PersistentObject<>(
-			"EnumGene<Float64>", EnumGene.class, getEnumGeneFloat64()
-		));
-		VALUES.add(new PersistentObject<>(
-			"EnumGene<Double>", EnumGene.class, getEnumGeneDouble()
-		));
-		VALUES.add(new PersistentObject<>(
-			"EnumGene<Integer64>", EnumGene.class, getEnumGeneInteger64()
-		));
+
 
 		for (PersistentObject<?> obj :  VALUES) {
 			OBJECTS.put(obj.getName(), obj);
@@ -146,6 +162,12 @@ public class PersistentObject<T> {
 		);
 	}
 
+	public static EnumGene<Short> getEnumGeneShort() {
+		return EnumGene.valueOf(
+			new Array<Short>(5).fill(ShortFactory((short)0, (short)10)).toISeq()
+		);
+	}
+
 	public static EnumGene<Long> getEnumGeneLong() {
 		return EnumGene.valueOf(
 			new Array<Long>(5).fill(LongFactory(0, 10)).toISeq()
@@ -168,6 +190,10 @@ public class PersistentObject<T> {
 		return EnumGene.valueOf(
 			new Array<Integer64>(5).fill(Integer64Factory(0, 10)).toISeq()
 		);
+	}
+
+	public static BitChromosome getBitChromosome() {
+		return new BitChromosome(10, 0.5);
 	}
 
 	public static Factory<PersistentObject<BitChromosome>> bitChromosomeModel() {
