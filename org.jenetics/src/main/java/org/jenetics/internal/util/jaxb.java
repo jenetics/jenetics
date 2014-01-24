@@ -45,6 +45,7 @@ import org.jenetics.internal.util.model.IntegerModel;
 import org.jenetics.internal.util.model.LongModel;
 import org.jenetics.internal.util.model.ModelType;
 import org.jenetics.internal.util.model.ShortModel;
+import org.jenetics.internal.util.model.StringModel;
 import org.jenetics.internal.util.model.ValueType;
 
 import org.jenetics.util.Function;
@@ -105,6 +106,9 @@ public class jaxb extends StaticObject {
 
 		ADAPTER_CACHE.put(Double.class, DoubleModel.Adapter);
 		ADAPTER_CACHE.put(DoubleModel.class, DoubleModel.Adapter);
+
+		ADAPTER_CACHE.put(String.class, StringModel.Adapter);
+		ADAPTER_CACHE.put(StringModel.class, StringModel.Adapter);
 
 		ADAPTER_CACHE.put(Integer64.class, Integer64Model.Adapter);
 		ADAPTER_CACHE.put(Integer64Model.class, Integer64Model.Adapter);
@@ -237,7 +241,9 @@ public class jaxb extends StaticObject {
 		}
 	};
 
-	public static class ElementAdapter extends XmlAdapter<Object, Object> {
+	public static final class JavolutionElementAdapter
+		extends XmlAdapter<Object, Object>
+	{
 
 		@Override
 		public Object unmarshal(final Object v) throws Exception {

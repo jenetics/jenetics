@@ -26,8 +26,11 @@ import static org.jenetics.internal.math.random.Float64Factory;
 import static org.jenetics.internal.math.random.Integer64Factory;
 import static org.jenetics.internal.math.random.LongFactory;
 import static org.jenetics.internal.math.random.ShortFactory;
+import static org.jenetics.internal.math.random.StringFactory;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,13 +41,13 @@ import javolution.context.LocalContext;
 
 import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.number.Integer64;
+import org.jscience.mathematics.number.Real;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.functions;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -114,6 +117,9 @@ public class PersistentObject<T> {
 //			"EnumGene<Short>", EnumGene.class, getEnumGeneShort()
 //		));
 //		VALUES.add(new PersistentObject<>(
+//			"EnumGene<String>", EnumGene.class, getEnumGeneString()
+//		));
+//		VALUES.add(new PersistentObject<>(
 //			"EnumGene<Float64>", EnumGene.class, getEnumGeneFloat64()
 //		));
 //		VALUES.add(new PersistentObject<>(
@@ -160,9 +166,11 @@ public class PersistentObject<T> {
 		final Function<Genotype<Float64Gene>, Comparable> ff = new Function<Genotype<Float64Gene>, Comparable>() {
 			@Override
 			public Comparable apply(Genotype<Float64Gene> value) {
-				return Float64Gene.valueOf(0, 10);
+				//return Float64Gene.valueOf(0, 10);
 				//return "fooasdfadsf";
-				//return Float64.ONE;
+				return 0.0;
+				//return Real.ONE;
+				//return Calendar.getInstance();
 			}
 		};
 
@@ -230,6 +238,12 @@ public class PersistentObject<T> {
 	public static EnumGene<Double> getEnumGeneDouble() {
 		return EnumGene.valueOf(
 			new Array<Double>(5).fill(DoubleFactory(0, 10)).toISeq()
+		);
+	}
+
+	public static EnumGene<String> getEnumGeneString() {
+		return EnumGene.valueOf(
+			new Array<String>(5).fill(StringFactory()).toISeq()
 		);
 	}
 

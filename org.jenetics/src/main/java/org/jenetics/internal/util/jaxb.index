@@ -1,3 +1,4 @@
+model$BooleanModel
 model$ByteModel
 model$CharacterModel
 model$ShortModel
@@ -5,6 +6,7 @@ model$IntegerModel
 model$LongModel
 model$FloatModel
 model$DoubleModel
+model$StringModel
 
 model$Integer64Model
 model$Float64Model
