@@ -386,7 +386,7 @@ public final class Genotype<G extends Gene<?, G>>
 	@XmlType(name = "org.jenetics.Genotype")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	@SuppressWarnings({"unchecked", "rawtypes"})
-	final static class Model {
+	static final class Model {
 
 		@XmlAttribute
 		public int length;
@@ -399,7 +399,7 @@ public final class Genotype<G extends Gene<?, G>>
 
 		@ValueType(Genotype.class)
 		@ModelType(Model.class)
-		public final static class Adapter
+		public static final class Adapter
 			extends XmlAdapter<Model, Genotype>
 		{
 			@Override
@@ -422,5 +422,6 @@ public final class Genotype<G extends Gene<?, G>>
 			}
 		}
 
+		public static final Adapter Adapter = new Adapter();
 	}
 }

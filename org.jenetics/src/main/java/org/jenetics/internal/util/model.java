@@ -385,4 +385,38 @@ public final class model extends StaticObject {
 
 	}
 
+	// <fitness class="org.jscience.mathematics.number.Float64" value="1.0"/>
+
+	@XmlRootElement(name = "org.jenetics.internal.util.model.TypeModel")
+	@XmlType(name = "org.jenetics.internal.util.model.TypeModel")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	public static final class TypeModel {
+
+		@XmlAttribute(name = "class")
+		public String cls;
+
+		@XmlAttribute
+		public String value;
+
+		@ValueType(Object.class)
+		@ModelType(TypeModel.class)
+		public static final class Adapter
+			extends XmlAdapter<TypeModel, Object>
+		{
+			@Override
+			public TypeModel marshal(final Object value) {
+				final TypeModel m = new TypeModel();
+				m.cls = value.getClass().getCanonicalName();
+				m.value = value.toString();
+				return m;
+			}
+
+			@Override
+			public Object unmarshal(final TypeModel model) {
+				return null; //Float64.valueOf(model.value);
+			}
+		}
+
+	}
+
 }
