@@ -115,6 +115,22 @@ public final class random extends StaticObject {
 		return CharacterFactory(RandomRegistry.getRandom());
 	}
 
+	public static Factory<String> StringFactory(final Random random) {
+		return new Factory<String>() {
+			@Override public String newInstance() {
+				final StringBuilder builder = new StringBuilder();
+				for (int i = 0, n = random.nextInt(20) + 5; i < n; ++i) {
+					builder.append(nextPrintableChar(random));
+				}
+				return builder.toString();
+			}
+		};
+	}
+
+	public static Factory<String> StringFactory() {
+		return StringFactory(RandomRegistry.getRandom());
+	}
+
 	public static Factory<Long> LongFactory(
 		final Random random,
 		final long min, final long max

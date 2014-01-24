@@ -39,8 +39,8 @@ import org.jenetics.util.Function;
 import org.jenetics.util.StaticObject;
 
 /**
- * This object contains models for the 7 java primitive types and the integer
- * and float types of the JScience library.
+ * This object contains models for the java primitive/basic types and the
+ * integer and float types of the JScience library.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version @__version__@ &mdash; <em>$Date$</em>
@@ -59,6 +59,46 @@ public final class model extends StaticObject {
 	@Target(TYPE)
 	public @interface ModelType {
 		Class<?> value();
+	}
+
+	/* ************************************************************************
+	 * Java primitive type models.
+	 **************************************************************************/
+
+	@XmlRootElement(name = "java.lang.Boolean")
+	@XmlType(name = "java.lang.Boolean")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	public static final class BooleanModel {
+
+		@XmlAttribute
+		public boolean value;
+
+		@ValueType(Boolean.class)
+		@ModelType(BooleanModel.class)
+		public static final class Adapter
+			extends XmlAdapter<BooleanModel, Boolean>
+		{
+			@Override
+			public BooleanModel marshal(final Boolean value) {
+				final BooleanModel model = new BooleanModel();
+				model.value = value;
+				return model;
+			}
+
+			@Override
+			public Boolean unmarshal(final BooleanModel model) {
+				return model.value;
+			}
+		}
+
+		public static final Adapter Adapter = new Adapter();
+
+		public static final Function<Boolean, BooleanModel> Marshaller =
+			jaxb.marshaller(Adapter);
+
+		public static final Function<BooleanModel, Boolean> Unmarshaller =
+			jaxb.unmarshaller(Adapter);
+
 	}
 
 	@XmlRootElement(name = "java.lang.Byte")
@@ -313,6 +353,47 @@ public final class model extends StaticObject {
 
 	}
 
+	@XmlRootElement(name = "java.lang.String")
+	@XmlType(name = "java.lang.String")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	public static final class StringModel {
+
+		@XmlAttribute
+		public String value;
+
+		@ValueType(String.class)
+		@ModelType(StringModel.class)
+		public static final class Adapter
+			extends XmlAdapter<StringModel, String>
+		{
+			@Override
+			public StringModel marshal(final String value) {
+				final StringModel model = new StringModel();
+				model.value = value;
+				return model;
+			}
+
+			@Override
+			public String unmarshal(final StringModel model) {
+				return model.value;
+			}
+		}
+
+		public static final Adapter Adapter = new Adapter();
+
+		public static final Function<String, StringModel> Marshaller =
+			jaxb.marshaller(Adapter);
+
+		public static final Function<StringModel, String> Unmarshaller =
+			jaxb.unmarshaller(Adapter);
+
+	}
+
+
+	/* ************************************************************************
+	 * JScience primitive type models.
+	 **************************************************************************/
+
 	@XmlRootElement(name = "org.jscience.mathematics.number.Integer64")
 	@XmlType(name = "org.jscience.mathematics.number.Integer64")
 	@XmlAccessorType(XmlAccessType.FIELD)
@@ -382,40 +463,6 @@ public final class model extends StaticObject {
 
 		public static final Function<Float64Model, Float64> Unmarshaller =
 			jaxb.unmarshaller(Adapter);
-
-	}
-
-	// <fitness class="org.jscience.mathematics.number.Float64" value="1.0"/>
-
-	@XmlRootElement(name = "org.jenetics.internal.util.model.TypeModel")
-	@XmlType(name = "org.jenetics.internal.util.model.TypeModel")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	public static final class TypeModel {
-
-		@XmlAttribute(name = "class")
-		public String cls;
-
-		@XmlAttribute
-		public String value;
-
-		@ValueType(Object.class)
-		@ModelType(TypeModel.class)
-		public static final class Adapter
-			extends XmlAdapter<TypeModel, Object>
-		{
-			@Override
-			public TypeModel marshal(final Object value) {
-				final TypeModel m = new TypeModel();
-				m.cls = value.getClass().getCanonicalName();
-				m.value = value.toString();
-				return m;
-			}
-
-			@Override
-			public Object unmarshal(final TypeModel model) {
-				return null; //Float64.valueOf(model.value);
-			}
-		}
 
 	}
 

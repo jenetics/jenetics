@@ -510,11 +510,11 @@ public final class Phenotype<
 		@XmlElement(name = "org.jenetics.Genotype")
 		public Genotype.Model genotype;
 
-		@XmlJavaTypeAdapter(jaxb.ElementAdapter.class)
+		@XmlJavaTypeAdapter(jaxb.JavolutionElementAdapter.class)
 		@XmlElement(name = "fitness")
 		public Object fitness;
 
-		@XmlJavaTypeAdapter(jaxb.ElementAdapter.class)
+		@XmlJavaTypeAdapter(jaxb.JavolutionElementAdapter.class)
 		@XmlElement(name = "raw-fitness")
 		public Object rawFitness;
 
