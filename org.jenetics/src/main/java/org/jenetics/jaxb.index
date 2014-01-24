@@ -5,6 +5,7 @@ Float64Gene$Model
 Integer64Gene$Model
 
 BitChromosome$Model
+CharacterChromosome$Model
 Float64Chromosome$Model
 
 

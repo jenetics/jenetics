@@ -115,7 +115,6 @@ public final class random extends StaticObject {
 		return CharacterFactory(RandomRegistry.getRandom());
 	}
 
-
 	public static Factory<Long> LongFactory(
 		final Random random,
 		final long min, final long max
@@ -127,10 +126,24 @@ public final class random extends StaticObject {
 		};
 	}
 
+	public static Factory<Short> ShortFactory(final short min, final short max) {
+		return ShortFactory(RandomRegistry.getRandom(), min, max);
+	}
+
+	public static Factory<Short> ShortFactory(
+		final Random random,
+		final short min, final short max
+	) {
+		return new Factory<Short>() {
+			@Override public Short newInstance() {
+				return (short)nextInt(random, min, max);
+			}
+		};
+	}
+
 	public static Factory<Long> LongFactory(final long min, final long max) {
 		return LongFactory(RandomRegistry.getRandom(), min, max);
 	}
-
 
 	public static Factory<Float64> Float64Factory(
 		final Random random,
