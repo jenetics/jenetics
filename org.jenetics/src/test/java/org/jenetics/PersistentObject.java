@@ -20,6 +20,7 @@
 package org.jenetics;
 
 import static org.jenetics.internal.math.random.ByteFactory;
+import static org.jenetics.internal.math.random.CharacterFactory;
 import static org.jenetics.internal.math.random.DoubleFactory;
 import static org.jenetics.internal.math.random.Float64Factory;
 import static org.jenetics.internal.math.random.Integer64Factory;
@@ -104,6 +105,9 @@ public class PersistentObject<T> {
 			"EnumGene<Byte>", EnumGene.class, getEnumGeneByte()
 		));
 		VALUES.add(new PersistentObject<>(
+			"EnumGene<Character>", EnumGene.class, getEnumGeneCharacter()
+		));
+		VALUES.add(new PersistentObject<>(
 			"EnumGene<Float64>", EnumGene.class, getEnumGeneFloat64()
 		));
 		VALUES.add(new PersistentObject<>(
@@ -133,6 +137,12 @@ public class PersistentObject<T> {
 	public static EnumGene<Byte> getEnumGeneByte() {
 		return EnumGene.valueOf(
 			new Array<Byte>(5).fill(ByteFactory((byte)0, (byte)10)).toISeq()
+		);
+	}
+
+	public static EnumGene<Character> getEnumGeneCharacter() {
+		return EnumGene.valueOf(
+			new Array<Character>(5).fill(CharacterFactory()).toISeq()
 		);
 	}
 
