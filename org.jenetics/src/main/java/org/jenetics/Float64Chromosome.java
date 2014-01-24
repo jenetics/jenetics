@@ -33,8 +33,8 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
@@ -47,6 +47,8 @@ import javolution.xml.stream.XMLStreamException;
 import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.internal.util.model.Float64Model;
+import org.jenetics.internal.util.model.ModelType;
+import org.jenetics.internal.util.model.ValueType;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
@@ -58,7 +60,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-01-23 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-24 $</em>
  */
 @XmlJavaTypeAdapter(Float64Chromosome.Model.Adapter.class)
 public class Float64Chromosome
@@ -310,11 +312,21 @@ public class Float64Chromosome
 	@XmlType(name = "org.jenetics.Float64Chromosome")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
-		@XmlAttribute int length;
-		@XmlAttribute double min;
-		@XmlAttribute double max;
-		@XmlAnyElement List<Float64Model> values;
 
+		@XmlAttribute
+		public int length;
+
+		@XmlAttribute
+		public double min;
+
+		@XmlAttribute
+		public double max;
+
+		@XmlElement(name = "org.jscience.mathematics.number.Float64")
+		public List<Float64Model> values;
+
+		@ValueType(Float64Chromosome.class)
+		@ModelType(Model.class)
 		public final static class Adapter
 			extends XmlAdapter<Model, Float64Chromosome>
 		{

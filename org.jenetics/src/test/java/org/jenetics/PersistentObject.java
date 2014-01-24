@@ -125,11 +125,14 @@ public class PersistentObject<T> {
 		 * Chromosomes
 		 */
 
+//		VALUES.add(new PersistentObject<>(
+//			"BitChromosome", BitChromosome.class, getBitChromosome()
+//		));
+//		VALUES.add(new PersistentObject<>(
+//			"CharacterChromosome", CharacterChromosome.class, new CharacterChromosome(20)
+//		));
 		VALUES.add(new PersistentObject<>(
-			"BitChromosome", BitChromosome.class, getBitChromosome()
-		));
-		VALUES.add(new PersistentObject<>(
-			"CharacterChromosome", CharacterChromosome.class, new CharacterChromosome(20)
+			"Float64Chromosome", Float64Chromosome.class, new Float64Chromosome(0.0, 1.0, 20)
 		));
 
 
