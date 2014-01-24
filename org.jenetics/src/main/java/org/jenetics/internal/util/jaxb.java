@@ -27,10 +27,12 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 
 import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.number.Integer64;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import org.jenetics.internal.util.model.ByteModel;
@@ -43,6 +45,7 @@ import org.jenetics.internal.util.model.IntegerModel;
 import org.jenetics.internal.util.model.LongModel;
 import org.jenetics.internal.util.model.ModelType;
 import org.jenetics.internal.util.model.ShortModel;
+import org.jenetics.internal.util.model.ValueType;
 
 import org.jenetics.util.Function;
 import org.jenetics.util.StaticObject;
@@ -51,7 +54,7 @@ import org.jenetics.util.StaticObject;
  * JAXB helper methods.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-01-23 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-24 $</em>
  * @since @__version__@
  */
 public class jaxb extends StaticObject {
@@ -128,7 +131,7 @@ public class jaxb extends StaticObject {
 				ADAPTER_CACHE.put(cls, newXmlAdapter(cls));
 			}
 
-			return (XmlAdapter<Object, Object>) ADAPTER_CACHE.get(cls);
+			return (XmlAdapter<Object, Object>)ADAPTER_CACHE.get(cls);
 		}
 	}
 
@@ -157,6 +160,19 @@ public class jaxb extends StaticObject {
 			return ma.value();
 		}
 		return value instanceof Class<?> ? (Class<?>)value : value.getClass();
+	}
+
+	public static Class<?> valueTypeFor(final Object value) {
+		final Object adapter = adapterFor(value);
+		final ValueType ma = adapter.getClass().getAnnotation(ValueType.class);
+		if (ma != null) {
+			return ma.value();
+		}
+		return value instanceof Class<?> ? (Class<?>)value : value.getClass();
+	}
+
+	public static Object marshal(final Object value) throws Exception {
+		return adapterFor(value).marshal(value);
 	}
 
 	public static <V, B> Function<B, V> marshaller(final XmlAdapter<V, B> adapter) {
@@ -220,5 +236,35 @@ public class jaxb extends StaticObject {
 			return result;
 		}
 	};
+
+	public static class ElementAdapter extends XmlAdapter<Object, Object> {
+
+		@Override
+		public Object unmarshal(final Object v) throws Exception {
+			final Element element = (Element)v;
+			final Class<?> type = modelTypeFor(
+				Class.forName(element.getAttribute("class"))
+			);
+
+			final DOMSource source = new DOMSource(element);
+			final JAXBElement jaxbElement = CONTEXT.createUnmarshaller()
+				.unmarshal(source, type);
+
+			return jaxb.adapterFor(jaxbElement.getValue())
+				.unmarshal(jaxbElement.getValue());
+		}
+
+		@Override
+		public Object marshal(final Object v) throws Exception {
+			final DOMResult result = new DOMResult();
+			CONTEXT.createMarshaller().marshal(v, result);
+
+			final Element e = ((Document)result.getNode()).getDocumentElement();
+			final Class<?> type = valueTypeFor(v);
+			e.setAttribute("class", type.getCanonicalName());
+
+			return e;
+		}
+	}
 
 }

@@ -10,3 +10,4 @@ Integer64Chromosome$Model
 Float64Chromosome$Model
 
 Genotype$Model
+Phenotype$Model

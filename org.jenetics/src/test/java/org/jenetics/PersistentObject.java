@@ -41,8 +41,10 @@ import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
+import org.jenetics.util.Function;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.functions;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -143,13 +145,40 @@ public class PersistentObject<T> {
 		 * Genotypes
 		 */
 
+//		VALUES.add(new PersistentObject<>(
+//			"Genotype<Float64Chromosome>", Genotype.class, Genotype.valueOf(
+//			new Float64Chromosome(0.0, 1.0, 5),
+//			new Float64Chromosome(0.0, 2.0, 10),
+//			new Float64Chromosome(0.0, 3.0, 15),
+//			new Float64Chromosome(0.0, 4.0, 3)
+//		)));
+
+		/*
+		 * Phenotypes
+		 */
+
+		final Function<Genotype<Float64Gene>, Comparable> ff = new Function<Genotype<Float64Gene>, Comparable>() {
+			@Override
+			public Comparable apply(Genotype<Float64Gene> value) {
+				return Float64Gene.valueOf(0, 10);
+				//return "fooasdfadsf";
+				//return Float64.ONE;
+			}
+		};
+
 		VALUES.add(new PersistentObject<>(
-			"Genotype<Float64Chromosome>", Genotype.class, Genotype.valueOf(
-			new Float64Chromosome(0.0, 1.0, 5),
-			new Float64Chromosome(0.0, 2.0, 10),
-			new Float64Chromosome(0.0, 3.0, 15),
-			new Float64Chromosome(0.0, 4.0, 3)
-		)));
+			"Phenotype<Float64Chromosome>", Phenotype.class,
+			Phenotype.valueOf(
+				Genotype.valueOf(
+					new Float64Chromosome(0.0, 1.0, 5),
+					new Float64Chromosome(0.0, 2.0, 10),
+					new Float64Chromosome(0.0, 3.0, 15),
+					new Float64Chromosome(0.0, 4.0, 3)
+				),
+				ff,
+				34
+			)
+		));
 
 		for (PersistentObject<?> obj :  VALUES) {
 			OBJECTS.put(obj.getName(), obj);

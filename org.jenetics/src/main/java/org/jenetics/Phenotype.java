@@ -25,7 +25,6 @@ import static org.jenetics.util.object.hashCodeOf;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -40,6 +39,10 @@ import javolution.text.Text;
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
+
+import org.jenetics.internal.util.jaxb;
+import org.jenetics.internal.util.model.ModelType;
+import org.jenetics.internal.util.model.ValueType;
 
 import org.jenetics.util.Function;
 import org.jenetics.util.Verifiable;
@@ -59,7 +62,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-01-23 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-24 $</em>
  */
 //@XmlJavaTypeAdapter(Phenotype.Model.Adapter.class)
 public final class Phenotype<
@@ -500,38 +503,46 @@ public final class Phenotype<
 	@XmlAccessorType(XmlAccessType.FIELD)
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	final static class Model {
-		@XmlAttribute public int generation;
-		@XmlElement public Genotype.Model genotype;
-		@XmlAnyElement public Comparable fitness;
-		@XmlAnyElement public Comparable rawFitness;
 
-		/*
+		@XmlAttribute
+		public int generation;
+
+		@XmlElement(name = "org.jenetics.Genotype")
+		public Genotype.Model genotype;
+
+		@XmlJavaTypeAdapter(jaxb.ElementAdapter.class)
+		@XmlElement(name = "fitness")
+		public Object fitness;
+
+		@XmlJavaTypeAdapter(jaxb.ElementAdapter.class)
+		@XmlElement(name = "raw-fitness")
+		public Object rawFitness;
+
+		@ValueType(Phenotype.class)
+		@ModelType(Model.class)
 		public final static class Adapter
 			extends XmlAdapter<Model, Phenotype>
 		{
 			@Override
 			public Model marshal(final Phenotype pt) throws Exception {
-				final Model model = new Model();
-				model.generation = pt.getGeneration();
-				model.genotype = Genotype.Model.Adapter.marshal(pt._genotype);
-				model.fitness = pt.getFitness();
-				model.rawFitness = pt.getRawFitness();
-				return model;
+				final Model m = new Model();
+				m.generation = pt.getGeneration();
+				m.genotype = Genotype.Model.Adapter.marshal(pt.getGenotype());
+				m.fitness = jaxb.marshal(pt.getFitness());
+				m.rawFitness = jaxb.marshal(pt.getRawFitness());
+				return m;
 			}
 
 			@Override
-			public Phenotype unmarshal(final Model model) throws Exception {
+			public Phenotype unmarshal(final Model m) throws Exception {
 				final Phenotype pt = (Phenotype)FACTORY.object();
-				pt._generation = model.generation;
-				pt._genotype = Genotype.Model.Adapter.unmarshal(model.genotype);
-				pt._fitness = model.fitness;
-				pt._rawFitness = model.rawFitness;
+				pt._generation = m.generation;
+				pt._genotype = Genotype.Model.Adapter.unmarshal(m.genotype);
+				pt._fitness = (Comparable)m.fitness;
+				pt._rawFitness = (Comparable)m.rawFitness;
 				return pt;
 			}
 		}
-
-		final static Adapter Adapter = new Adapter();
-		*/
 	}
 
 }
