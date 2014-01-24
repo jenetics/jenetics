@@ -90,62 +90,38 @@ public class PersistentObject<T> {
 
 	public static List<PersistentObject<?>> VALUES = new ArrayList<>();
 	public static Map<String, PersistentObject<?>> OBJECTS = new HashMap<>();
+
+	private static <T> void put(final String name, final Class<T> type, final T value ) {
+		VALUES.add(new PersistentObject<T>(name, type, value));
+	}
+
 	static {
-//		VALUES.add(new PersistentObject<>(
-//			"BitGene[true]", BitGene.class, BitGene.TRUE
-//		));
-//		VALUES.add(new PersistentObject<>(
-//			"BitGene[false]", BitGene.class, BitGene.FALSE
-//		));
-//		VALUES.add(new PersistentObject<>(
-//			"CharacterGene", CharacterGene.class, getCharacterGene()
-//		));
-//		VALUES.add(new PersistentObject<>(
-//			"Integer64Gene", Integer64Gene.class, getInteger64Gene()
-//		));
-//		VALUES.add(new PersistentObject<>(
-//			"Float64Gene", Float64Gene.class, getFloat64Gene()
-//		));
-//
-//		VALUES.add(new PersistentObject<>(
-//			"EnumGene<Byte>", EnumGene.class, getEnumGeneByte()
-//		));
-//		VALUES.add(new PersistentObject<>(
-//			"EnumGene<Character>", EnumGene.class, getEnumGeneCharacter()
-//		));
-//		VALUES.add(new PersistentObject<>(
-//			"EnumGene<Short>", EnumGene.class, getEnumGeneShort()
-//		));
-//		VALUES.add(new PersistentObject<>(
-//			"EnumGene<String>", EnumGene.class, getEnumGeneString()
-//		));
-//		VALUES.add(new PersistentObject<>(
-//			"EnumGene<Float64>", EnumGene.class, getEnumGeneFloat64()
-//		));
-//		VALUES.add(new PersistentObject<>(
-//			"EnumGene<Double>", EnumGene.class, getEnumGeneDouble()
-//		));
-//		VALUES.add(new PersistentObject<>(
-//			"EnumGene<Integer64>", EnumGene.class, getEnumGeneInteger64()
-//		));
+		put("BitGene[true]", BitGene.class, BitGene.TRUE);
+		put("BitGene[false]", BitGene.class, BitGene.FALSE);
+		put("CharacterGene", CharacterGene.class, getCharacterGene());
+		put("Integer64Gene", Integer64Gene.class, getInteger64Gene());
+		put("Float64Gene", Float64Gene.class, getFloat64Gene());
+
+		put("EnumGene<Byte>", EnumGene.class, getEnumGeneByte());
+		put("EnumGene<Character>", EnumGene.class, getEnumGeneCharacter());
+		put("EnumGene<Short>", EnumGene.class, getEnumGeneShort());
+		put("EnumGene<String>", EnumGene.class, getEnumGeneString());
+		put("EnumGene<Float64>", EnumGene.class, getEnumGeneFloat64());
+		put("EnumGene<Double>", EnumGene.class, getEnumGeneDouble());
+		put("EnumGene<Integer64>", EnumGene.class, getEnumGeneInteger64());
 
 		/*
 		 * Chromosomes
 		 */
 
-//		VALUES.add(new PersistentObject<>(
-//			"BitChromosome", BitChromosome.class, getBitChromosome()
-//		));
-//		VALUES.add(new PersistentObject<>(
-//			"CharacterChromosome", CharacterChromosome.class, new CharacterChromosome(20)
-//		));
-//		VALUES.add(new PersistentObject<>(
-//			"Integer64Chromosome", Integer64Chromosome.class, new Integer64Chromosome(
-//			Integer.MIN_VALUE, Integer.MAX_VALUE, 20)
-//		));
-//		VALUES.add(new PersistentObject<>(
-//			"Float64Chromosome", Float64Chromosome.class, new Float64Chromosome(0.0, 1.0, 20)
-//		));
+		put("BitChromosome", BitChromosome.class, getBitChromosome());
+		put("CharacterChromosome", CharacterChromosome.class, new CharacterChromosome(20));
+		put("Integer64Chromosome", Integer64Chromosome.class,
+			new Integer64Chromosome(Integer.MIN_VALUE, Integer.MAX_VALUE, 20)
+		);
+		put("Float64Chromosome", Float64Chromosome.class,
+			new Float64Chromosome(0.0, 1.0, 20)
+		);
 
 		/*
 		 * Genotypes
