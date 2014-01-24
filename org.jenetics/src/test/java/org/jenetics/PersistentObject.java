@@ -132,8 +132,12 @@ public class PersistentObject<T> {
 //			"CharacterChromosome", CharacterChromosome.class, new CharacterChromosome(20)
 //		));
 		VALUES.add(new PersistentObject<>(
-			"Float64Chromosome", Float64Chromosome.class, new Float64Chromosome(0.0, 1.0, 20)
+			"Integer64Chromosome", Integer64Chromosome.class, new Integer64Chromosome(
+			Integer.MIN_VALUE, Integer.MAX_VALUE, 20)
 		));
+//		VALUES.add(new PersistentObject<>(
+//			"Float64Chromosome", Float64Chromosome.class, new Float64Chromosome(0.0, 1.0, 20)
+//		));
 
 
 		for (PersistentObject<?> obj :  VALUES) {
