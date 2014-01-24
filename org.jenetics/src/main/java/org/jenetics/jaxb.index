@@ -6,7 +6,7 @@ Integer64Gene$Model
 
 BitChromosome$Model
 CharacterChromosome$Model
+Integer64Chromosome$Model
 Float64Chromosome$Model
-
 
 Genotype$Model

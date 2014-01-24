@@ -33,8 +33,8 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
@@ -47,6 +47,8 @@ import javolution.xml.stream.XMLStreamException;
 import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.internal.util.model.Integer64Model;
+import org.jenetics.internal.util.model.ModelType;
+import org.jenetics.internal.util.model.ValueType;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
@@ -312,15 +314,25 @@ public class Integer64Chromosome
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "org.jenetics.Float64Chromosome")
-	@XmlType(name = "org.jenetics.Float64Chromosome")
+	@XmlRootElement(name = "org.jenetics.Integer64Chromosome")
+	@XmlType(name = "org.jenetics.Integer64Chromosome")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
-		@XmlAttribute int length;
-		@XmlAttribute long min;
-		@XmlAttribute long max;
-		@XmlAnyElement List<Integer64Model> values;
 
+		@XmlAttribute
+		public int length;
+
+		@XmlAttribute
+		public long min;
+
+		@XmlAttribute
+		public long max;
+
+		@XmlElement(name = "org.jscience.mathematics.number.Integer64")
+		public List<Integer64Model> values;
+
+		@ValueType(Integer64Chromosome.class)
+		@ModelType(Model.class)
 		public final static class Adapter
 			extends XmlAdapter<Model, Integer64Chromosome>
 		{
