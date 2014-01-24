@@ -44,6 +44,8 @@ import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.internal.util.jaxb;
+import org.jenetics.internal.util.model.ModelType;
+import org.jenetics.internal.util.model.ValueType;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
@@ -78,7 +80,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-01-23 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-24 $</em>
  */
 @XmlJavaTypeAdapter(Genotype.Model.Adapter.class)
 public final class Genotype<G extends Gene<?, G>>
@@ -383,12 +385,20 @@ public final class Genotype<G extends Gene<?, G>>
 	@XmlRootElement(name = "org.jenetics.Genotype")
 	@XmlType(name = "org.jenetics.Genotype")
 	@XmlAccessorType(XmlAccessType.FIELD)
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	final static class Model {
-		@XmlAttribute public int length;
-		@XmlAttribute public int ngenes;
-		@XmlAnyElement public List<Object> chromosomes;
 
+		@XmlAttribute
+		public int length;
+
+		@XmlAttribute
+		public int ngenes;
+
+		@XmlAnyElement
+		public List<Object> chromosomes;
+
+		@ValueType(Genotype.class)
+		@ModelType(Model.class)
 		public final static class Adapter
 			extends XmlAdapter<Model, Genotype>
 		{
@@ -405,10 +415,10 @@ public final class Genotype<G extends Gene<?, G>>
 
 			@Override
 			public Genotype unmarshal(final Model model) throws Exception {
-				final Object chs = Array.valueOf(model.chromosomes)
-					.map(jaxb.Unmarshaller(model.chromosomes.get(0))).toISeq();
+				final ISeq chs = Array.valueOf(model.chromosomes)
+					.map(jaxb.Unmarshaller).toISeq();
 
-				return new Genotype((ISeq<Chromosome>)chs, model.ngenes);
+				return new Genotype(chs, model.ngenes);
 			}
 		}
 

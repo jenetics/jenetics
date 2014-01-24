@@ -131,14 +131,25 @@ public class PersistentObject<T> {
 //		VALUES.add(new PersistentObject<>(
 //			"CharacterChromosome", CharacterChromosome.class, new CharacterChromosome(20)
 //		));
-		VALUES.add(new PersistentObject<>(
-			"Integer64Chromosome", Integer64Chromosome.class, new Integer64Chromosome(
-			Integer.MIN_VALUE, Integer.MAX_VALUE, 20)
-		));
+//		VALUES.add(new PersistentObject<>(
+//			"Integer64Chromosome", Integer64Chromosome.class, new Integer64Chromosome(
+//			Integer.MIN_VALUE, Integer.MAX_VALUE, 20)
+//		));
 //		VALUES.add(new PersistentObject<>(
 //			"Float64Chromosome", Float64Chromosome.class, new Float64Chromosome(0.0, 1.0, 20)
 //		));
 
+		/*
+		 * Genotypes
+		 */
+
+		VALUES.add(new PersistentObject<>(
+			"Genotype<Float64Chromosome>", Genotype.class, Genotype.valueOf(
+			new Float64Chromosome(0.0, 1.0, 5),
+			new Float64Chromosome(0.0, 2.0, 10),
+			new Float64Chromosome(0.0, 3.0, 15),
+			new Float64Chromosome(0.0, 4.0, 3)
+		)));
 
 		for (PersistentObject<?> obj :  VALUES) {
 			OBJECTS.put(obj.getName(), obj);
