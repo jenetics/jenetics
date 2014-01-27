@@ -179,6 +179,10 @@ public class jaxb extends StaticObject {
 		return adapterFor(value).marshal(value);
 	}
 
+	public static Object unmarshal(final Object value) throws Exception {
+		return adapterFor(value).unmarshal(value);
+	}
+
 	public static <V, B> Function<B, V> marshaller(final XmlAdapter<V, B> adapter) {
 		return new Function<B, V>() {
 			@Override

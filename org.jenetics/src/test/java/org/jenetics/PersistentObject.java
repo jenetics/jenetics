@@ -26,6 +26,7 @@ import static org.jenetics.internal.math.random.Float64Factory;
 import static org.jenetics.internal.math.random.Integer64Factory;
 import static org.jenetics.internal.math.random.LongFactory;
 import static org.jenetics.internal.math.random.ShortFactory;
+import static org.jenetics.internal.math.random.IntegerFactory;
 import static org.jenetics.internal.math.random.StringFactory;
 
 import java.util.ArrayList;
@@ -98,16 +99,18 @@ public class PersistentObject<T> {
 	static {
 		put("BitGene[true]", BitGene.class, BitGene.TRUE);
 		put("BitGene[false]", BitGene.class, BitGene.FALSE);
-		put("CharacterGene", CharacterGene.class, getCharacterGene());
+		put("CharacterGene", CharacterGene.class, CharacterGene.valueOf());
 		put("Integer64Gene", Integer64Gene.class, getInteger64Gene());
 		put("Float64Gene", Float64Gene.class, getFloat64Gene());
 
 		put("EnumGene<Byte>", EnumGene.class, getEnumGeneByte());
 		put("EnumGene<Character>", EnumGene.class, getEnumGeneCharacter());
 		put("EnumGene<Short>", EnumGene.class, getEnumGeneShort());
+		put("EnumGene<Integer>", EnumGene.class, getEnumGeneInteger());
+		put("EnumGene<Long>", EnumGene.class, getEnumGeneLong());
+		put("EnumGene<Double>", EnumGene.class, getEnumGeneDouble());
 		put("EnumGene<String>", EnumGene.class, getEnumGeneString());
 		put("EnumGene<Float64>", EnumGene.class, getEnumGeneFloat64());
-		put("EnumGene<Double>", EnumGene.class, getEnumGeneDouble());
 		put("EnumGene<Integer64>", EnumGene.class, getEnumGeneInteger64());
 
 		/*
@@ -199,15 +202,15 @@ public class PersistentObject<T> {
 		);
 	}
 
-	public static EnumGene<Long> getEnumGeneLong() {
+	public static EnumGene<Integer> getEnumGeneInteger() {
 		return EnumGene.valueOf(
-			new Array<Long>(5).fill(LongFactory(0, 10)).toISeq()
+			new Array<Integer>(5).fill(IntegerFactory(0, 10)).toISeq()
 		);
 	}
 
-	public static EnumGene<Float64> getEnumGeneFloat64() {
+	public static EnumGene<Long> getEnumGeneLong() {
 		return EnumGene.valueOf(
-			new Array<Float64>(5).fill(Float64Factory(0, 10)).toISeq()
+			new Array<Long>(5).fill(LongFactory(0, 10)).toISeq()
 		);
 	}
 
@@ -226,6 +229,12 @@ public class PersistentObject<T> {
 	public static EnumGene<Integer64> getEnumGeneInteger64() {
 		return EnumGene.valueOf(
 			new Array<Integer64>(5).fill(Integer64Factory(0, 10)).toISeq()
+		);
+	}
+
+	public static EnumGene<Float64> getEnumGeneFloat64() {
+		return EnumGene.valueOf(
+			new Array<Float64>(5).fill(Float64Factory(0, 10)).toISeq()
 		);
 	}
 

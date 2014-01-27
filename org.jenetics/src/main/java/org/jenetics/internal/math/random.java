@@ -157,6 +157,21 @@ public final class random extends StaticObject {
 		};
 	}
 
+	public static Factory<Integer> IntegerFactory(final int min, final int max) {
+		return IntegerFactory(RandomRegistry.getRandom(), min, max);
+	}
+
+	public static Factory<Integer> IntegerFactory(
+		final Random random,
+		final int min, final int max
+	) {
+		return new Factory<Integer>() {
+			@Override public Integer newInstance() {
+				return nextInt(random, min, max);
+			}
+		};
+	}
+
 	public static Factory<Long> LongFactory(final long min, final long max) {
 		return LongFactory(RandomRegistry.getRandom(), min, max);
 	}
