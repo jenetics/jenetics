@@ -27,10 +27,10 @@ import java.util.Random;
  */
 public class RandomUtils {
 
-	private RandomUtils() {
+	public RandomUtils() {
 	}
 
-	public static String nextString(final int length) {
+	public String nextString(final int length) {
 		final Random random = RandomRegistry.getRandom();
 
 		final StringBuilder chars = new StringBuilder(length);
@@ -40,5 +40,29 @@ public class RandomUtils {
 
 		return chars.toString();
 	}
+
+	public short nextShort() {
+		return (short)RandomRegistry.getRandom().nextInt(Short.MAX_VALUE);
+	}
+
+	public static final Factory<Short> SFact = lambda.factory(
+		new RandomUtils(), "nextShort"
+	);
+
+	public static final Factory<Integer> IFact = lambda.factory(
+		RandomRegistry.getRandom(), "nextInt"
+	);
+
+	public static final Factory<Long> LFact = lambda.factory(
+		RandomRegistry.getRandom(), "nextLong"
+	);
+
+	public static final Factory<Float> FFact = lambda.factory(
+		RandomRegistry.getRandom(), "nextFloat"
+	);
+
+	public static final Factory<Double> DFact = lambda.factory(
+		RandomRegistry.getRandom(), "nextDouble"
+	);
 
 }

@@ -35,7 +35,7 @@ public class TimerTest extends ObjectTester<Timer> {
 		public Timer newInstance() {
 			final Random random = RandomRegistry.getRandom();
 
-			final Timer timer = new Timer(RandomUtils.nextString(random.nextInt(10) + 10));
+			final Timer timer = new Timer(new RandomUtils().nextString(random.nextInt(10) + 10));
 			timer._start = random.nextLong();
 			timer._stop = timer._start + random.nextInt(1000) + 1000;
 			timer._sum = timer._stop - timer._start;
