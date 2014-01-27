@@ -37,7 +37,7 @@ import org.jenetics.util.StaticObject;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2014-01-24 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2014-01-27 $</em>
  */
 public final class random extends StaticObject {
 	private random() {}
@@ -153,6 +153,21 @@ public final class random extends StaticObject {
 		return new Factory<Short>() {
 			@Override public Short newInstance() {
 				return (short)nextInt(random, min, max);
+			}
+		};
+	}
+
+	public static Factory<Integer> IntegerFactory(final int min, final int max) {
+		return IntegerFactory(RandomRegistry.getRandom(), min, max);
+	}
+
+	public static Factory<Integer> IntegerFactory(
+		final Random random,
+		final int min, final int max
+	) {
+		return new Factory<Integer>() {
+			@Override public Integer newInstance() {
+				return nextInt(random, min, max);
 			}
 		};
 	}

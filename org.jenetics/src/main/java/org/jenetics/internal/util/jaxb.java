@@ -55,7 +55,7 @@ import org.jenetics.util.StaticObject;
  * JAXB helper methods.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-01-24 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-27 $</em>
  * @since @__version__@
  */
 public class jaxb extends StaticObject {
@@ -177,6 +177,10 @@ public class jaxb extends StaticObject {
 
 	public static Object marshal(final Object value) throws Exception {
 		return adapterFor(value).marshal(value);
+	}
+
+	public static Object unmarshal(final Object value) throws Exception {
+		return adapterFor(value).unmarshal(value);
 	}
 
 	public static <V, B> Function<B, V> marshaller(final XmlAdapter<V, B> adapter) {
