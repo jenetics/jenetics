@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-08-29 $</em>
+ * @version <em>$Date: 2014-01-27 $</em>
  */
 public class CharSeqTest extends ObjectTester<CharSeq> {
 
@@ -36,7 +36,7 @@ public class CharSeqTest extends ObjectTester<CharSeq> {
 		@Override
 		public CharSeq newInstance() {
 			final Random random = RandomRegistry.getRandom();
-			return new CharSeq(RandomUtils.nextString(random.nextInt(200) + 100));
+			return new CharSeq(new RandomUtils().nextString(random.nextInt(200) + 100));
 		}
 	};
 	@Override

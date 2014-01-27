@@ -21,12 +21,8 @@ package org.jenetics;
 
 import static org.jenetics.internal.math.random.ByteFactory;
 import static org.jenetics.internal.math.random.CharacterFactory;
-import static org.jenetics.internal.math.random.DoubleFactory;
 import static org.jenetics.internal.math.random.Float64Factory;
 import static org.jenetics.internal.math.random.Integer64Factory;
-import static org.jenetics.internal.math.random.LongFactory;
-import static org.jenetics.internal.math.random.ShortFactory;
-import static org.jenetics.internal.math.random.IntegerFactory;
 import static org.jenetics.internal.math.random.StringFactory;
 
 import java.util.ArrayList;
@@ -49,6 +45,9 @@ import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.RandomUtils;
+import org.jenetics.util.lambda;
+import static org.jenetics.util.RandomUtils.*;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -92,37 +91,40 @@ public class PersistentObject<T> {
 	public static List<PersistentObject<?>> VALUES = new ArrayList<>();
 	public static Map<String, PersistentObject<?>> OBJECTS = new HashMap<>();
 
-	private static <T> void put(final String name, final Class<T> type, final T value ) {
-		VALUES.add(new PersistentObject<T>(name, type, value));
+	private static <T> void put(final String name, final T value ) {
+		VALUES.add(new PersistentObject<T>(name, null, value));
 	}
 
 	static {
-		put("BitGene[true]", BitGene.class, BitGene.TRUE);
-		put("BitGene[false]", BitGene.class, BitGene.FALSE);
-		put("CharacterGene", CharacterGene.class, CharacterGene.valueOf());
-		put("Integer64Gene", Integer64Gene.class, getInteger64Gene());
-		put("Float64Gene", Float64Gene.class, getFloat64Gene());
+		final LCG64ShiftRandom random = new LCG64ShiftRandom.ThreadSafe(1010);
+		RandomRegistry.setRandom(random);
 
-		put("EnumGene<Byte>", EnumGene.class, getEnumGeneByte());
-		put("EnumGene<Character>", EnumGene.class, getEnumGeneCharacter());
-		put("EnumGene<Short>", EnumGene.class, getEnumGeneShort());
-		put("EnumGene<Integer>", EnumGene.class, getEnumGeneInteger());
-		put("EnumGene<Long>", EnumGene.class, getEnumGeneLong());
-		put("EnumGene<Double>", EnumGene.class, getEnumGeneDouble());
-		put("EnumGene<String>", EnumGene.class, getEnumGeneString());
-		put("EnumGene<Float64>", EnumGene.class, getEnumGeneFloat64());
-		put("EnumGene<Integer64>", EnumGene.class, getEnumGeneInteger64());
+		put("BitGene[true]", BitGene.TRUE);
+		put("BitGene[false]", BitGene.FALSE);
+		put("CharacterGene", CharacterGene.valueOf());
+		put("Integer64Gene", Integer64Gene.valueOf(Integer.MIN_VALUE, Integer.MAX_VALUE));
+		put("Float64Gene", Float64Gene.valueOf(0, 1.0));
+
+		put("EnumGene<Byte>", getEnumGeneByte());
+		put("EnumGene<Character>", getEnumGeneCharacter());
+		put("EnumGene<Short>", EnumGene.valueOf(new Array<Short>(5).fill(SFact).toISeq()));
+		put("EnumGene<Integer>", EnumGene.valueOf(new Array<Integer>(5).fill(IFact).toISeq()));
+		put("EnumGene<Long>", EnumGene.valueOf(new Array<Long>(5).fill(LFact).toISeq()));
+		put("EnumGene<Double>", EnumGene.valueOf(new Array<Double>(5).fill(DFact).toISeq()));
+		put("EnumGene<String>", getEnumGeneString());
+		put("EnumGene<Float64>", getEnumGeneFloat64());
+		put("EnumGene<Integer64>", getEnumGeneInteger64());
 
 		/*
 		 * Chromosomes
 		 */
 
-		put("BitChromosome", BitChromosome.class, getBitChromosome());
-		put("CharacterChromosome", CharacterChromosome.class, new CharacterChromosome(20));
-		put("Integer64Chromosome", Integer64Chromosome.class,
+		put("BitChromosome", getBitChromosome());
+		put("CharacterChromosome", new CharacterChromosome(20));
+		put("Integer64Chromosome",
 			new Integer64Chromosome(Integer.MIN_VALUE, Integer.MAX_VALUE, 20)
 		);
-		put("Float64Chromosome", Float64Chromosome.class,
+		put("Float64Chromosome",
 			new Float64Chromosome(0.0, 1.0, 20)
 		);
 
@@ -193,30 +195,6 @@ public class PersistentObject<T> {
 	public static EnumGene<Character> getEnumGeneCharacter() {
 		return EnumGene.valueOf(
 			new Array<Character>(5).fill(CharacterFactory()).toISeq()
-		);
-	}
-
-	public static EnumGene<Short> getEnumGeneShort() {
-		return EnumGene.valueOf(
-			new Array<Short>(5).fill(ShortFactory((short)0, (short)10)).toISeq()
-		);
-	}
-
-	public static EnumGene<Integer> getEnumGeneInteger() {
-		return EnumGene.valueOf(
-			new Array<Integer>(5).fill(IntegerFactory(0, 10)).toISeq()
-		);
-	}
-
-	public static EnumGene<Long> getEnumGeneLong() {
-		return EnumGene.valueOf(
-			new Array<Long>(5).fill(LongFactory(0, 10)).toISeq()
-		);
-	}
-
-	public static EnumGene<Double> getEnumGeneDouble() {
-		return EnumGene.valueOf(
-			new Array<Double>(5).fill(DoubleFactory(0, 10)).toISeq()
 		);
 	}
 
