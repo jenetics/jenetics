@@ -109,6 +109,7 @@ public class PersistentObject<T> {
 
 	static {
 		final LCG64ShiftRandom random = new LCG64ShiftRandom.ThreadSafe(1010);
+		final Random originalRandom = RandomRegistry.getRandom();
 		RandomRegistry.setRandom(random);
 
 		/*
@@ -156,6 +157,7 @@ public class PersistentObject<T> {
 		 * Phenotypes
 		 */
 
+		@SuppressWarnings("rawtypes")
 		final Function<Object, Comparable> ff = new Function<Object, Comparable>() {
 			@Override
 			public Comparable apply(Object value) {
@@ -184,6 +186,8 @@ public class PersistentObject<T> {
 		for (PersistentObject<?> obj :  VALUES) {
 			OBJECTS.put(obj.getName(), obj);
 		}
+
+		RandomRegistry.setRandom(originalRandom);
 	}
 
 	public static Factory<PersistentObject<BitChromosome>> bitChromosomeModel() {
