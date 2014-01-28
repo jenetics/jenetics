@@ -19,6 +19,7 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.lambda.factory;
 import static org.jenetics.util.math.random;
 
 import java.util.Random;
@@ -81,50 +82,31 @@ public class RandomUtils {
 	 * Factory instances.
 	 */
 
-	public static final Factory<Boolean> BooleanFactory = lambda.factory(
-		random(), "nextBoolean"
-	);
+	public static final Factory<Boolean> BooleanFactory = factory(random(), "nextBoolean");
 
-	public static final Factory<Byte> ByteFactory = lambda.factory(
-		This, "nextByte"
-	);
+	public static final Factory<Byte> ByteFactory = Factory("nextByte");
 
-	public static final Factory<Character> CharacterFactory = lambda.factory(
-		This, "nextCharacter"
-	);
+	public static final Factory<Character> CharacterFactory = Factory("nextCharacter");
 
-	public static final Factory<Short> ShortFactory = lambda.factory(
-		This, "nextShort"
-	);
+	public static final Factory<Short> ShortFactory = Factory("nextShort");
 
-	public static final Factory<Integer> IntegerFactory = lambda.factory(
-		random(), "nextInt"
-	);
+	public static final Factory<Integer> IntegerFactory = factory(random(), "nextInt");
 
-	public static final Factory<Long> LongFactory = lambda.factory(
-		random(), "nextLong"
-	);
+	public static final Factory<Long> LongFactory = factory(random(), "nextLong");
 
-	public static final Factory<Float> FloatFactory = lambda.factory(
-		random(), "nextFloat"
-	);
+	public static final Factory<Float> FloatFactory = factory(random(), "nextFloat");
 
-	public static final Factory<Double> DoubleFactory = lambda.factory(
-		random(), "nextDouble"
-	);
+	public static final Factory<Double> DoubleFactory = factory(random(), "nextDouble");
 
-	public static final Factory<Integer64> Integer64Factory = lambda.factory(
-		This, "nextInteger64"
-	);
+	public static final Factory<Integer64> Integer64Factory = Factory("nextInteger64");
 
-	public static final Factory<Float64> Float64Factory = lambda.factory(
-		This, "nextFloat64"
-	);
+	public static final Factory<Float64> Float64Factory = Factory("nextFloat64");
 
-	public static final Factory<String> StringFactory = lambda.factory(
-		This, "nextString"
-	);
+	public static final Factory<String> StringFactory = Factory("nextString");
 
+	private static <T> Factory<T> Factory(final String name) {
+		return lambda.factory(This, name);
+	}
 
 	public static <T> ISeq<T> ISeq(final int size, final Factory<T> factory) {
 		return new Array<T>(size).fill(factory).toISeq();
