@@ -31,6 +31,7 @@ import static org.jenetics.util.RandomUtils.IntegerFactory;
 import static org.jenetics.util.RandomUtils.LongFactory;
 import static org.jenetics.util.RandomUtils.ShortFactory;
 import static org.jenetics.util.RandomUtils.StringFactory;
+import static org.jenetics.util.lambda.factory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -184,6 +185,42 @@ public class PersistentObject<T> {
 			}
 		};
 	}
+
+	public static EnumGene<Boolean> nextEnumGeneBoolean() {
+		return EnumGene.valueOf(ISeq(5, BooleanFactory));
+	}
+
+	public static EnumGene<Byte> nextEnumGeneByte() {
+		return EnumGene.valueOf(ISeq(5, ByteFactory));
+	}
+
+	public static EnumGene<Character> nextEnumGeneCharacter() {
+		return EnumGene.valueOf(ISeq(5, CharacterFactory));
+	}
+
+	public static EnumGene<Short> nextEnumGeneShort() {
+		return EnumGene.valueOf(ISeq(5, ShortFactory));
+	}
+
+	public static EnumGene<Integer> nextEnumGeneInteger() {
+		return EnumGene.valueOf(ISeq(5, IntegerFactory));
+	}
+
+	public static EnumGene<Long> nextEnumGeneLong() {
+		return EnumGene.valueOf(ISeq(5, LongFactory));
+	}
+
+	public static EnumGene<Float> nextEnumGeneFloat() {
+		return EnumGene.valueOf(ISeq(5, FloatFactory));
+	}
+
+	public static EnumGene<Double> nextEnumGeneDouble() {
+		return EnumGene.valueOf(ISeq(5, DoubleFactory));
+	}
+
+	public static final Factory<EnumGene<Integer>> EnumGeneIntegerFactory = factory(
+		PersistentObject.class, "nextEnumGeneInteger"
+	);
 
 	public static void main(final String[] args) throws Exception {
 		//final Object value = OBJECTS.get("BitGene[true]").getValue();
