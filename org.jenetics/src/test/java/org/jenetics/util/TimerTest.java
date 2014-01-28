@@ -26,7 +26,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-01-27 $</em>
+ * @version <em>$Date: 2014-01-28 $</em>
  */
 public class TimerTest extends ObjectTester<Timer> {
 
@@ -35,7 +35,7 @@ public class TimerTest extends ObjectTester<Timer> {
 		public Timer newInstance() {
 			final Random random = RandomRegistry.getRandom();
 
-			final Timer timer = new Timer(new RandomUtils().nextString(random.nextInt(10) + 10));
+			final Timer timer = new Timer(RandomUtils.nextString(random.nextInt(10) + 10));
 			timer._start = random.nextLong();
 			timer._stop = timer._start + random.nextInt(1000) + 1000;
 			timer._sum = timer._stop - timer._start;

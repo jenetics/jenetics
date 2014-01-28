@@ -19,15 +19,20 @@
  */
 package org.jenetics;
 
-import static org.jenetics.internal.math.random.ByteFactory;
-import static org.jenetics.internal.math.random.CharacterFactory;
-import static org.jenetics.internal.math.random.Float64Factory;
-import static org.jenetics.internal.math.random.Integer64Factory;
-import static org.jenetics.internal.math.random.StringFactory;
+import static org.jenetics.util.RandomUtils.BooleanFactory;
+import static org.jenetics.util.RandomUtils.ByteFactory;
+import static org.jenetics.util.RandomUtils.CharacterFactory;
+import static org.jenetics.util.RandomUtils.DoubleFactory;
+import static org.jenetics.util.RandomUtils.Float64Factory;
+import static org.jenetics.util.RandomUtils.FloatFactory;
+import static org.jenetics.util.RandomUtils.ISeq;
+import static org.jenetics.util.RandomUtils.Integer64Factory;
+import static org.jenetics.util.RandomUtils.IntegerFactory;
+import static org.jenetics.util.RandomUtils.LongFactory;
+import static org.jenetics.util.RandomUtils.ShortFactory;
+import static org.jenetics.util.RandomUtils.StringFactory;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,46 +41,31 @@ import java.util.Random;
 
 import javolution.context.LocalContext;
 
-import org.jscience.mathematics.number.Float64;
-import org.jscience.mathematics.number.Integer64;
-import org.jscience.mathematics.number.Real;
-
-import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.RandomUtils;
-import org.jenetics.util.lambda;
-import static org.jenetics.util.RandomUtils.*;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-01-27 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-28 $</em>
  * @since @__version__@
  */
 public class PersistentObject<T> {
 
 	private final String _name;
-	private final Class<T> _type;
 	private final T _value;
 
 	public PersistentObject(
 		final String name,
-		final Class<T> type,
 		final T value
 	) {
 		_name = Objects.requireNonNull(name);
-		_type = Objects.requireNonNull(type);
 		_value = Objects.requireNonNull(value);
 	}
 
 	public String getName() {
 		return _name;
-	}
-
-	public Class<T> getType() {
-		return _type;
 	}
 
 	public T getValue() {
@@ -92,7 +82,7 @@ public class PersistentObject<T> {
 	public static Map<String, PersistentObject<?>> OBJECTS = new HashMap<>();
 
 	private static <T> void put(final String name, final T value ) {
-		VALUES.add(new PersistentObject<T>(name, null, value));
+		VALUES.add(new PersistentObject<T>(name, value));
 	}
 
 	static {
@@ -102,24 +92,26 @@ public class PersistentObject<T> {
 		put("BitGene[true]", BitGene.TRUE);
 		put("BitGene[false]", BitGene.FALSE);
 		put("CharacterGene", CharacterGene.valueOf());
-		put("Integer64Gene", Integer64Gene.valueOf(Integer.MIN_VALUE, Integer.MAX_VALUE));
+		put("Integer64Gene", Integer64Gene.valueOf(Long.MIN_VALUE, Long.MAX_VALUE));
 		put("Float64Gene", Float64Gene.valueOf(0, 1.0));
 
-		put("EnumGene<Byte>", getEnumGeneByte());
-		put("EnumGene<Character>", getEnumGeneCharacter());
-		put("EnumGene<Short>", EnumGene.valueOf(new Array<Short>(5).fill(SFact).toISeq()));
-		put("EnumGene<Integer>", EnumGene.valueOf(new Array<Integer>(5).fill(IFact).toISeq()));
-		put("EnumGene<Long>", EnumGene.valueOf(new Array<Long>(5).fill(LFact).toISeq()));
-		put("EnumGene<Double>", EnumGene.valueOf(new Array<Double>(5).fill(DFact).toISeq()));
-		put("EnumGene<String>", getEnumGeneString());
-		put("EnumGene<Float64>", getEnumGeneFloat64());
-		put("EnumGene<Integer64>", getEnumGeneInteger64());
+		put("EnumGene<Boolean>", EnumGene.valueOf(ISeq(5, BooleanFactory)));
+		put("EnumGene<Byte>", EnumGene.valueOf(ISeq(5, ByteFactory)));
+		put("EnumGene<Character>", EnumGene.valueOf(ISeq(5, CharacterFactory)));
+		put("EnumGene<Short>", EnumGene.valueOf(ISeq(5, ShortFactory)));
+		put("EnumGene<Integer>", EnumGene.valueOf(ISeq(5, IntegerFactory)));
+		put("EnumGene<Long>", EnumGene.valueOf(ISeq(5, LongFactory)));
+		put("EnumGene<Float>", EnumGene.valueOf(ISeq(5, FloatFactory)));
+		put("EnumGene<Double>", EnumGene.valueOf(ISeq(5, DoubleFactory)));
+		put("EnumGene<String>", EnumGene.valueOf(ISeq(5, StringFactory)));
+		put("EnumGene<Float64>", EnumGene.valueOf(ISeq(5, Float64Factory)));
+		put("EnumGene<Integer64>", EnumGene.valueOf(ISeq(5, Integer64Factory)));
 
 		/*
 		 * Chromosomes
 		 */
 
-		put("BitChromosome", getBitChromosome());
+		put("BitChromosome", new BitChromosome(10, 0.5));
 		put("CharacterChromosome", new CharacterChromosome(20));
 		put("Integer64Chromosome",
 			new Integer64Chromosome(Integer.MIN_VALUE, Integer.MAX_VALUE, 20)
@@ -156,7 +148,7 @@ public class PersistentObject<T> {
 		};
 
 		VALUES.add(new PersistentObject<>(
-			"Phenotype<Float64Chromosome>", Phenotype.class,
+			"Phenotype<Float64Chromosome>",
 			Phenotype.valueOf(
 				Genotype.valueOf(
 					new Float64Chromosome(0.0, 1.0, 5),
@@ -174,52 +166,6 @@ public class PersistentObject<T> {
 		}
 	}
 
-	public static CharacterGene getCharacterGene() {
-		return CharacterGene.valueOf();
-	}
-
-	public static Integer64Gene getInteger64Gene() {
-		return Integer64Gene.valueOf(Integer.MIN_VALUE, Integer.MAX_VALUE);
-	}
-
-	public static Float64Gene getFloat64Gene() {
-		return Float64Gene.valueOf(0, 1.0);
-	}
-
-	public static EnumGene<Byte> getEnumGeneByte() {
-		return EnumGene.valueOf(
-			new Array<Byte>(5).fill(ByteFactory((byte)0, (byte)10)).toISeq()
-		);
-	}
-
-	public static EnumGene<Character> getEnumGeneCharacter() {
-		return EnumGene.valueOf(
-			new Array<Character>(5).fill(CharacterFactory()).toISeq()
-		);
-	}
-
-	public static EnumGene<String> getEnumGeneString() {
-		return EnumGene.valueOf(
-			new Array<String>(5).fill(StringFactory()).toISeq()
-		);
-	}
-
-	public static EnumGene<Integer64> getEnumGeneInteger64() {
-		return EnumGene.valueOf(
-			new Array<Integer64>(5).fill(Integer64Factory(0, 10)).toISeq()
-		);
-	}
-
-	public static EnumGene<Float64> getEnumGeneFloat64() {
-		return EnumGene.valueOf(
-			new Array<Float64>(5).fill(Float64Factory(0, 10)).toISeq()
-		);
-	}
-
-	public static BitChromosome getBitChromosome() {
-		return new BitChromosome(10, 0.5);
-	}
-
 	public static Factory<PersistentObject<BitChromosome>> bitChromosomeModel() {
 		return new Factory<PersistentObject<BitChromosome>>() {
 			@Override
@@ -230,7 +176,6 @@ public class PersistentObject<T> {
 					RandomRegistry.setRandom(random);
 					return new PersistentObject<>(
 						"BitChromosome",
-						BitChromosome.class,
 						new BitChromosome(500, 0.5)
 					);
 				} finally {
