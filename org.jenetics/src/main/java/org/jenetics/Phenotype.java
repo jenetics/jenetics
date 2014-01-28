@@ -80,7 +80,7 @@ public final class Phenotype<
 	private static final long serialVersionUID = 1L;
 
 	private Genotype<G> _genotype;
-	private Function<Genotype<G>, C> _fitnessFunction;
+	private Function<? super Genotype<G>, C> _fitnessFunction;
 	private Function<C, C> _fitnessScaler;
 
 	private int _generation = 0;
@@ -130,7 +130,7 @@ public final class Phenotype<
 	 *
 	 * @return the fitness function.
 	 */
-	public Function<Genotype<G>, C> getFitnessFunction() {
+	public Function<? super Genotype<G>, C> getFitnessFunction() {
 		return _fitnessFunction;
 	}
 
@@ -410,7 +410,7 @@ public final class Phenotype<
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Phenotype<G, C> valueOf(
 		final Genotype<G> genotype,
-		final Function<Genotype<G>, C> fitnessFunction,
+		final Function<? super Genotype<G>, C> fitnessFunction,
 		final int generation
 	) {
 		return valueOf(genotype, fitnessFunction, functions.<C>Identity(), generation);
@@ -430,7 +430,7 @@ public final class Phenotype<
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Phenotype<G, C> valueOf(
 		final Genotype<G> genotype,
-		final Function<Genotype<G>, C> fitnessFunction,
+		final Function<? super Genotype<G>, C> fitnessFunction,
 		final Function<C, C> fitnessScaler,
 		final int generation
 	) {
