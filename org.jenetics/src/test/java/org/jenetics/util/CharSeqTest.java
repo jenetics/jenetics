@@ -36,7 +36,7 @@ public class CharSeqTest extends ObjectTester<CharSeq> {
 		@Override
 		public CharSeq newInstance() {
 			final Random random = RandomRegistry.getRandom();
-			return new CharSeq(new RandomUtils().nextString(random.nextInt(200) + 100));
+			return new CharSeq(RandomUtils.nextString(random.nextInt(200) + 100));
 		}
 	};
 	@Override

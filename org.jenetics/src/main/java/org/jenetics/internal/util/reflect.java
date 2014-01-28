@@ -84,10 +84,7 @@ public class reflect extends StaticObject {
 	private static boolean equals(final Class<?>[] p1, final Class<?>[] p2) {
 		boolean equals = p1.length == p2.length;
 		for (int i = 0; i < p1.length && equals; ++i) {
-			final Class<?> type1 = p1[i].isPrimitive() ? toClassType(p1[i]) : p1[i];
-			final Class<?> type2 = p2[i].isPrimitive() ? toClassType(p2[i]) : p2[i];
-
-			equals = type1 == type2;
+			equals = toClassType(p1[i]) == toClassType(p2[i]);
 		}
 
 		return equals;

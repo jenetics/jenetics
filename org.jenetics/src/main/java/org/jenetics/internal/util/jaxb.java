@@ -35,6 +35,7 @@ import org.jscience.mathematics.number.Integer64;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import org.jenetics.internal.util.model.BooleanModel;
 import org.jenetics.internal.util.model.ByteModel;
 import org.jenetics.internal.util.model.CharacterModel;
 import org.jenetics.internal.util.model.DoubleModel;
@@ -86,6 +87,9 @@ public class jaxb extends StaticObject {
 	private static final Map<Class<?>, XmlAdapter<? extends Object, ? extends Object>>
 		ADAPTER_CACHE = new HashMap<>();
 	static {
+		ADAPTER_CACHE.put(Boolean.class, BooleanModel.Adapter);
+		ADAPTER_CACHE.put(BooleanModel.class, BooleanModel.Adapter);
+
 		ADAPTER_CACHE.put(Byte.class, ByteModel.Adapter);
 		ADAPTER_CACHE.put(ByteModel.class, ByteModel.Adapter);
 

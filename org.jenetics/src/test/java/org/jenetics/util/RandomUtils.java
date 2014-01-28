@@ -19,7 +19,12 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.math.random;
+
 import java.util.Random;
+
+import org.jscience.mathematics.number.Float64;
+import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -27,42 +32,101 @@ import java.util.Random;
  */
 public class RandomUtils {
 
-	public RandomUtils() {
+	private static final Object This = RandomUtils.class;
+
+	private RandomUtils() {
 	}
 
-	public String nextString(final int length) {
+	private static Random random() {
+		return RandomRegistry.getRandom();
+	}
+
+	public static String nextString(final int length) {
 		final Random random = RandomRegistry.getRandom();
 
 		final StringBuilder chars = new StringBuilder(length);
 		for (int i = 0; i < length; ++i) {
-			chars.append((char)random.nextInt(Short.MAX_VALUE));
+			chars.append(nextCharacter());
 		}
 
 		return chars.toString();
 	}
 
-	public short nextShort() {
-		return (short)RandomRegistry.getRandom().nextInt(Short.MAX_VALUE);
+	public static String nextString() {
+		return nextString(random().nextInt(20) + 5);
 	}
 
-	public static final Factory<Short> SFact = lambda.factory(
-		new RandomUtils(), "nextShort"
+	public static byte nextByte() {
+		return (byte)random.nextInt(random(), Byte.MIN_VALUE, Byte.MAX_VALUE);
+	}
+
+	public static char nextCharacter() {
+		final int surrogateStart = 0xD800;
+		return (char)(random().nextInt(surrogateStart - 1) + 1);
+	}
+
+	public static short nextShort() {
+		return (short)random.nextInt(random(), Short.MIN_VALUE, Short.MAX_VALUE);
+	}
+
+	public static Integer64 nextInteger64() {
+		return Integer64.valueOf(random().nextLong());
+	}
+
+	public static Float64 nextFloat64() {
+		return Float64.valueOf(random().nextDouble());
+	}
+
+	/*
+	 * Factory instances.
+	 */
+
+	public static final Factory<Boolean> BooleanFactory = lambda.factory(
+		random(), "nextBoolean"
 	);
 
-	public static final Factory<Integer> IFact = lambda.factory(
-		RandomRegistry.getRandom(), "nextInt"
+	public static final Factory<Byte> ByteFactory = lambda.factory(
+		This, "nextByte"
 	);
 
-	public static final Factory<Long> LFact = lambda.factory(
-		RandomRegistry.getRandom(), "nextLong"
+	public static final Factory<Character> CharacterFactory = lambda.factory(
+		This, "nextCharacter"
 	);
 
-	public static final Factory<Float> FFact = lambda.factory(
-		RandomRegistry.getRandom(), "nextFloat"
+	public static final Factory<Short> ShortFactory = lambda.factory(
+		This, "nextShort"
 	);
 
-	public static final Factory<Double> DFact = lambda.factory(
-		RandomRegistry.getRandom(), "nextDouble"
+	public static final Factory<Integer> IntegerFactory = lambda.factory(
+		random(), "nextInt"
 	);
 
+	public static final Factory<Long> LongFactory = lambda.factory(
+		random(), "nextLong"
+	);
+
+	public static final Factory<Float> FloatFactory = lambda.factory(
+		random(), "nextFloat"
+	);
+
+	public static final Factory<Double> DoubleFactory = lambda.factory(
+		random(), "nextDouble"
+	);
+
+	public static final Factory<Integer64> Integer64Factory = lambda.factory(
+		This, "nextInteger64"
+	);
+
+	public static final Factory<Float64> Float64Factory = lambda.factory(
+		This, "nextFloat64"
+	);
+
+	public static final Factory<String> StringFactory = lambda.factory(
+		This, "nextString"
+	);
+
+
+	public static <T> ISeq<T> ISeq(final int size, final Factory<T> factory) {
+		return new Array<T>(size).fill(factory).toISeq();
+	}
 }

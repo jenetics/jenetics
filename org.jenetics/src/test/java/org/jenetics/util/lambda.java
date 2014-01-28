@@ -41,7 +41,11 @@ public final class lambda extends StaticObject {
 		final String name,
 		final Object... parameter
 	) {
-		final Class<?> type = object.getClass();
+		final Class<?> type = object instanceof Class<?> ?
+			(Class<?>)object : object.getClass();
+
+		final Object value = object instanceof Class<?> ? null : object;
+
 		final Class<?>[] ptypes = new Class<?>[parameter.length];
 		for (int i = 0; i < ptypes.length; ++i) {
 			ptypes[i] = parameter[i].getClass();
@@ -56,7 +60,7 @@ public final class lambda extends StaticObject {
 		}
 
 		return new FactoryMethod<>(
-			object,
+			value,
 			method,
 			parameter
 		);
