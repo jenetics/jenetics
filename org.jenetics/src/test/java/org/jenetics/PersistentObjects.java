@@ -48,6 +48,7 @@ import org.jscience.mathematics.number.Integer64;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 import org.jenetics.util.IO;
+import org.jenetics.util.ISeq;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
 
@@ -145,6 +146,13 @@ public class PersistentObjects<T> {
 		put("Phenotype<Float64Gene, Double>", nextPhenotypeFloat64GeneDouble());
 		put("Phenotype<Float64Gene, Integer64>", nextPhenotypeFloat64GeneInteger64());
 		put("Phenotype<Float64Gene, Float64>", nextPhenotypeFloat64GeneFloat64());
+
+		/* *********************************************************************
+		 * Populations
+		 **********************************************************************/
+
+		put("Population<Integer64Gene, Integer>", nextPopulationInteger64GeneInteger());
+		put("Population<Float64Gene, Integer>", nextPopulationFloat64GeneInteger());
 	}
 
 	/* *************************************************************************
@@ -328,8 +336,36 @@ public class PersistentObjects<T> {
 	}
 
 	/* *************************************************************************
+	 * Populations
+	 **************************************************************************/
+
+	public static Population<Integer64Gene, Integer> nextPopulationInteger64GeneInteger() {
+		final ISeq<Phenotype<Integer64Gene, Integer>> seq = ISeq(7,
+			PersistentObjects.<Phenotype<Integer64Gene, Integer>>Factory(
+				"nextPhenotypeInteger64GeneInteger"
+			)
+		);
+
+		return new Population<>(seq.asList());
+	}
+
+	public static Population<Float64Gene, Integer> nextPopulationFloat64GeneInteger() {
+		final ISeq<Phenotype<Float64Gene, Integer>> seq = ISeq(7,
+			PersistentObjects.<Phenotype<Float64Gene, Integer>>Factory(
+				"nextPhenotypeFloat64GeneInteger"
+			)
+		);
+
+		return new Population<>(seq.asList());
+	}
+
+	/* *************************************************************************
 	 * Factories
 	 **************************************************************************/
+
+	private static <T> Factory<T> Factory(final String name) {
+		return factory(PersistentObjects.class, name);
+	}
 
 	public static final Factory<BitChromosome> BitChromosomeFactory = factory(
 		PersistentObjects.class, "nextBitChromosome"
