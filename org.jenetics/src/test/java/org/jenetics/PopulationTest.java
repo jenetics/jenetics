@@ -40,7 +40,7 @@ import org.jenetics.util.lists;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-11-25 $</em>
+ * @version <em>$Date: 2014-01-29 $</em>
  */
 public class PopulationTest {
 
@@ -57,7 +57,9 @@ public class PopulationTest {
 
 	private static final Function<Genotype<Float64Gene>, Float64> _cf = new Continous();
 	private static Phenotype<Float64Gene, Float64> pt(double value) {
-		return Phenotype.valueOf(Genotype.valueOf(new Float64Chromosome(Float64Gene.valueOf(value, 0, 10))), _cf, 0);
+		return Phenotype.valueOf(Genotype.valueOf(
+			new Float64Chromosome(Float64Gene.valueOf(value, 0, 10))
+		), _cf, 0).evaluate();
 	}
 
 	@Test
