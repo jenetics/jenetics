@@ -278,7 +278,7 @@ public final class EnumGene<A>
 	 *  XML object serialization
 	 * ************************************************************************/
 
-	@SuppressWarnings({ "unchecked", "rawtypes"})
+	@SuppressWarnings("rawtypes")
 	static final XMLFormat<EnumGene>
 		XML = new XMLFormat<EnumGene>(EnumGene.class)
 	{
