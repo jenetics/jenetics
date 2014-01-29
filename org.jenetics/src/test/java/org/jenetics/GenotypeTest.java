@@ -37,7 +37,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-01-15 $</em>
+ * @version <em>$Date: 2014-01-29 $</em>
  */
 public class GenotypeTest extends ObjectTester<Genotype<Float64Gene>> {
 
@@ -115,15 +115,15 @@ public class GenotypeTest extends ObjectTester<Genotype<Float64Gene>> {
     @Test
     public void newInstance() {
     	final Genotype<Float64Gene> gt1 = Genotype.valueOf(
-    			//Rotation
-    			new Float64Chromosome(Float64Gene.valueOf(-Math.PI, Math.PI)),
+			//Rotation
+			new Float64Chromosome(Float64Gene.valueOf(-Math.PI, Math.PI)),
 
-    			//Translation
-    			new Float64Chromosome(Float64Gene.valueOf(-300, 300), Float64Gene.valueOf(-300, 300)),
+			//Translation
+			new Float64Chromosome(Float64Gene.valueOf(-300, 300), Float64Gene.valueOf(-300, 300)),
 
-    			//Shear
-    			new Float64Chromosome(Float64Gene.valueOf(-0.5, 0.5), Float64Gene.valueOf(-0.5, 0.5))
-    		);
+			//Shear
+			new Float64Chromosome(Float64Gene.valueOf(-0.5, 0.5), Float64Gene.valueOf(-0.5, 0.5))
+		);
 
     	final Genotype<Float64Gene> gt2 = gt1.newInstance();
 

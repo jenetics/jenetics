@@ -62,7 +62,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-01-28 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-29 $</em>
  */
 //@XmlJavaTypeAdapter(Phenotype.Model.Adapter.class)
 public final class Phenotype<
@@ -80,8 +80,8 @@ public final class Phenotype<
 	private static final long serialVersionUID = 1L;
 
 	private Genotype<G> _genotype;
-	private Function<? super Genotype<G>, ? extends C> _fitnessFunction;
-	private Function<? super C, ? extends C> _fitnessScaler;
+	private transient Function<? super Genotype<G>, ? extends C> _fitnessFunction;
+	private transient Function<? super C, ? extends C> _fitnessScaler;
 
 	private int _generation = 0;
 
