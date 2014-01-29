@@ -56,7 +56,7 @@ import org.jenetics.util.StaticObject;
  * JAXB helper methods.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-01-28 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-29 $</em>
  * @since @__version__@
  */
 public class jaxb extends StaticObject {
@@ -223,6 +223,7 @@ public class jaxb extends StaticObject {
 
 	public static final Function<Object, Object> Unmarshaller =
 	new Function<Object, Object>() {
+		@SuppressWarnings("rawtypes")
 		@Override
 		public Object apply(final Object value) {
 			Object result = value;
@@ -252,7 +253,7 @@ public class jaxb extends StaticObject {
 	public static final class JavolutionElementAdapter
 		extends XmlAdapter<Object, Object>
 	{
-
+		@SuppressWarnings("rawtypes")
 		@Override
 		public Object unmarshal(final Object v) throws Exception {
 			final Element element = (Element)v;

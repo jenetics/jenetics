@@ -21,7 +21,6 @@ package org.jenetics.internal.util;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -33,7 +32,7 @@ import org.jenetics.util.StaticObject;
  * Helper methods concerning Java reflection.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-01-28 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-29 $</em>
  * @since @__version__@
  */
 public class reflect extends StaticObject {

@@ -304,20 +304,6 @@
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-01-13 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-29 $</em>
  */
-//@XmlSchema(
-//	namespace = "http://www.jenetics.org/ga",
-//	elementFormDefault = XmlNsForm.QUALIFIED
-//)
-//@XmlJavaTypeAdapters({
-//	@XmlJavaTypeAdapter(type = BitChromosome.class, value = BitChromosome.Model.Adapter.class),
-//	@XmlJavaTypeAdapter(type = Genotype.class, value = Genotype.Model.Adapter.class)
-//})
 package org.jenetics;
-
-
-import javax.xml.bind.annotation.XmlNsForm;
-import javax.xml.bind.annotation.XmlSchema;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapters;

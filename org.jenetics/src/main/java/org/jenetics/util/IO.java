@@ -19,6 +19,9 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.internal.util.jaxb.CONTEXT;
+import static org.jenetics.internal.util.jaxb.adapterFor;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -29,7 +32,6 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.nio.file.Path;
 
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
@@ -37,9 +39,6 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javolution.xml.XMLObjectReader;
 import javolution.xml.XMLObjectWriter;
 import javolution.xml.stream.XMLStreamException;
-
-import org.jenetics.internal.util.jaxb;
-import org.jenetics.internal.util.model;
 
 
 /**
@@ -59,7 +58,7 @@ import org.jenetics.internal.util.model;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-01-23 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-01-29 $</em>
  */
 public abstract class IO {
 
@@ -115,12 +114,10 @@ public abstract class IO {
 			throws IOException
 		{
 			try {
-				final Marshaller marshaller =
-					org.jenetics.internal.util.jaxb.CONTEXT.createMarshaller();
-				marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+				final Marshaller marshaller = CONTEXT.createMarshaller();
+				marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
-				final XmlAdapter<Object, Object> adapter =
-					org.jenetics.internal.util.jaxb.adapterFor(object);
+				final XmlAdapter<Object, Object> adapter = adapterFor(object);
 				if (adapter != null) {
 					marshaller.marshal(adapter.marshal(object), out);
 				} else {
@@ -136,12 +133,10 @@ public abstract class IO {
 			throws IOException
 		{
 			try {
-				final Unmarshaller unmarshaller =
-					org.jenetics.internal.util.jaxb.CONTEXT.createUnmarshaller();
+				final Unmarshaller unmarshaller = CONTEXT.createUnmarshaller();
 				final Object object = unmarshaller.unmarshal(in);
 
-				final XmlAdapter<Object, Object> adapter =
-					org.jenetics.internal.util.jaxb.adapterFor(object);
+				final XmlAdapter<Object, Object> adapter = adapterFor(object);
 				if (adapter != null) {
 					return type.cast(adapter.unmarshal(object));
 				} else {
@@ -350,7 +345,7 @@ public abstract class IO {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version 1.0 &mdash; <em>$Date: 2014-01-23 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2014-01-29 $</em>
 	 */
 	private static final class NonClosableOutputStream extends OutputStream {
 		private final OutputStream _adoptee;
@@ -394,7 +389,7 @@ public abstract class IO {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version 1.0 &mdash; <em>$Date: 2014-01-23 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2014-01-29 $</em>
 	 */
 	private static final class NonClosableInputStream extends InputStream {
 		private final InputStream _adoptee;
