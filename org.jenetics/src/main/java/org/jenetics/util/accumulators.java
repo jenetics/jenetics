@@ -35,7 +35,7 @@ import org.jscience.mathematics.structure.GroupAdditive;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-11-22 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-12-19 $</em>
  */
 public final class accumulators extends StaticObject {
 	private accumulators() {}
@@ -56,7 +56,7 @@ public final class accumulators extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &ndash; <em>$Revision$</em>
+	 * @version 1.0 &ndash; <em>$Date: 2013-12-19 $</em>
 	 */
 	public static final class Min<C extends Comparable<? super C>>
 		extends MappedAccumulator<C>
@@ -149,7 +149,7 @@ public final class accumulators extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &ndash; <em>$Revision$</em>
+	 * @version 1.0 &ndash; <em>$Date: 2013-12-19 $</em>
 	 */
 	public static final class Max<C extends Comparable<? super C>>
 		extends MappedAccumulator<C>
@@ -242,7 +242,7 @@ public final class accumulators extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &ndash; <em>$Revision$</em>
+	 * @version 1.0 &ndash; <em>$Date: 2013-12-19 $</em>
 	 */
 	public static final class MinMax<C extends Comparable<? super C>>
 		extends MappedAccumulator<C>
@@ -351,7 +351,7 @@ public final class accumulators extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &ndash; <em>$Revision$</em>
+	 * @version 1.0 &ndash; <em>$Date: 2013-12-19 $</em>
 	 */
 	public static class Sum<G extends GroupAdditive<G>>
 		extends MappedAccumulator<G>
