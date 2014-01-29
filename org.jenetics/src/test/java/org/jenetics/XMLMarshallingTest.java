@@ -22,6 +22,7 @@ package org.jenetics;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -36,6 +37,8 @@ import org.jenetics.util.IO;
  */
 public class XMLMarshallingTest {
 
+	private static final String RESOURCE_PATTERN = "/org/jenetics/serialization/%s.%s";
+
 	@Test(dataProvider = "objects")
 	public void jaxbJavolutionCompatibility(final PersistentObjects<?> object)
 		throws IOException
@@ -48,6 +51,54 @@ public class XMLMarshallingTest {
 		throws IOException
 	{
 		test(object.getValue(), IO.xml, IO.jaxb);
+	}
+
+	@Test(dataProvider = "objects")
+	public void xmlMarshallingCompatibility(final PersistentObjects<?> object)
+		throws IOException
+	{
+		final String resource = String.format(
+			RESOURCE_PATTERN, object.getName(), "xml"
+		);
+
+		System.out.println(resource);
+		try (InputStream in = getClass().getResourceAsStream(resource)) {
+			final Object o = IO.xml.read(in);
+
+			Assert.assertEquals(o, object.getValue());
+		}
+	}
+
+	@Test(dataProvider = "objects")
+	public void jaxbMarshallingCompatibility(final PersistentObjects<?> object)
+		throws IOException
+	{
+		final String resource = String.format(
+			RESOURCE_PATTERN, object.getName(), "jaxb"
+		);
+
+		System.out.println(resource);
+		try (InputStream in = getClass().getResourceAsStream(resource)) {
+			final Object o = IO.jaxb.read(in);
+
+			Assert.assertEquals(o, object.getValue());
+		}
+	}
+
+	@Test(dataProvider = "objects")
+	public void objectMarshallingCompatibility(final PersistentObjects<?> object)
+		throws IOException
+	{
+		final String resource = String.format(
+			RESOURCE_PATTERN, object.getName(), "object"
+		);
+
+		System.out.println(resource);
+		try (InputStream in = getClass().getResourceAsStream(resource)) {
+			final Object o = IO.object.read(in);
+
+			Assert.assertEquals(o, object.getValue());
+		}
 	}
 
 	private static void test(final Object object, final IO write, final IO read)

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<org.jenetics.EnumGene length="5" allele-index="0">
+    <java.lang.Byte value="16"/>
+    <java.lang.Byte value="70"/>
+    <java.lang.Byte value="122"/>
+    <java.lang.Byte value="-42"/>
+    <java.lang.Byte value="-85"/>
+</org.jenetics.EnumGene>
