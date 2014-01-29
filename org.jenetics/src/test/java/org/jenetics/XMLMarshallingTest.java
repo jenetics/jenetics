@@ -37,14 +37,14 @@ import org.jenetics.util.IO;
 public class XMLMarshallingTest {
 
 	@Test(dataProvider = "objects")
-	public void jaxbJavolutionCompatibility(final PersistentObject<?> object)
+	public void jaxbJavolutionCompatibility(final PersistentObjects<?> object)
 		throws IOException
 	{
 		test(object.getValue(), IO.jaxb, IO.xml);
 	}
 
 	@Test(dataProvider = "objects")
-	public void javolutionJAXBCompatibility(final PersistentObject<?> object)
+	public void javolutionJAXBCompatibility(final PersistentObjects<?> object)
 		throws IOException
 	{
 		test(object.getValue(), IO.xml, IO.jaxb);
@@ -66,9 +66,9 @@ public class XMLMarshallingTest {
 
 	@DataProvider(name = "objects")
 	public Object[][] getObjects() {
-		final Object[][] objects = new Object[PersistentObject.VALUES.size()][1];
+		final Object[][] objects = new Object[PersistentObjects.VALUES.size()][1];
 		for (int i = 0; i < objects.length; ++i) {
-			objects[i] = new Object[]{PersistentObject.VALUES.get(i)};
+			objects[i] = new Object[]{PersistentObjects.VALUES.get(i)};
 		}
 
 		return objects;
