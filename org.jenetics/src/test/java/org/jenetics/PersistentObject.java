@@ -38,7 +38,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Random;
 
 import javolution.context.LocalContext;
 
@@ -91,14 +90,11 @@ public class PersistentObject<T> {
 		VALUES.add(new PersistentObject<T>(name, value));
 	}
 
+	@SuppressWarnings("rawtypes")
 	private static void init() {
-		final LCG64ShiftRandom random = new LCG64ShiftRandom.ThreadSafe(1010);
-		final Random originalRandom = RandomRegistry.getRandom();
-		RandomRegistry.setRandom(random);
-
-		/*
+		/* *********************************************************************
 		 * Genes
-		 */
+		 **********************************************************************/
 
 		put("BitGene[true]", BitGene.TRUE);
 		put("BitGene[false]", BitGene.FALSE);
@@ -118,18 +114,18 @@ public class PersistentObject<T> {
 		put("EnumGene<Float64>", nextEnumGeneFloat64());
 		put("EnumGene<Integer64>", nextEnumGeneInteger64());
 
-		/*
+		/* *********************************************************************
 		 * Chromosomes
-		 */
+		 **********************************************************************/
 
 		put("BitChromosome", nextBitChromosome());
 		put("CharacterChromosome", nextCharacterChromosome());
 		put("Integer64Chromosome", nextInteger64Chromosome());
 		put("Float64Chromosome", nextFloat64Chromosome());
 
-		/*
+		/* *********************************************************************
 		 * Genotypes
-		 */
+		 **********************************************************************/
 
 		put("Genotype<BitGene>", nextGenotypeBitGene());
 		put("Genotype<CharacterGene>", nextGenotypeCharacterGene());
@@ -137,61 +133,25 @@ public class PersistentObject<T> {
 		put("Genotype<Float64Gene>", nextGenotypeFloat64Gene());
 
 
-		/*
+		/* *********************************************************************
 		 * Phenotypes
-		 */
+		 **********************************************************************/
 
-		@SuppressWarnings("rawtypes")
-		final Function<Object, Comparable> ff = new Function<Object, Comparable>() {
-			@Override
-			public Comparable apply(Object value) {
-				//return Float64Gene.valueOf(0, 10);
-				//return "fooasdfadsf";
-				return 0.0;
-				//return Real.ONE;
-				//return Calendar.getInstance();
-			}
-		};
-
-		VALUES.add(new PersistentObject<>(
-			"Phenotype<Float64Chromosome>",
-			Phenotype.valueOf(
-				Genotype.valueOf(
-					new Float64Chromosome(0.0, 1.0, 5),
-					new Float64Chromosome(0.0, 2.0, 10),
-					new Float64Chromosome(0.0, 3.0, 15),
-					new Float64Chromosome(0.0, 4.0, 3)
-				),
-				ff,
-				34
-			)
-		));
-
-		for (PersistentObject<?> obj :  VALUES) {
-			OBJECTS.put(obj.getName(), obj);
-		}
-
-		RandomRegistry.setRandom(originalRandom);
+		put("Phenotype<Integer64Gene, Integer>", nextPhenotypeInteger64GeneInteger());
+		put("Phenotype<Integer64Gene, Long>", nextPhenotypeInteger64GeneLong());
+		put("Phenotype<Integer64Gene, Double>", nextPhenotypeInteger64GeneDouble());
+		put("Phenotype<Integer64Gene, Integer64>", nextPhenotypeInteger64GeneInteger64());
+		put("Phenotype<Integer64Gene, Float64>", nextPhenotypeInteger64GeneFloat64());
+		put("Phenotype<Float64Gene, Integer>", nextPhenotypeFloat64GeneInteger());
+		put("Phenotype<Float64Gene, Long>", nextPhenotypeFloat64GeneLong());
+		put("Phenotype<Float64Gene, Double>", nextPhenotypeFloat64GeneDouble());
+		put("Phenotype<Float64Gene, Integer64>", nextPhenotypeFloat64GeneInteger64());
+		put("Phenotype<Float64Gene, Float64>", nextPhenotypeFloat64GeneFloat64());
 	}
 
-	public static Factory<PersistentObject<BitChromosome>> bitChromosomeModel() {
-		return new Factory<PersistentObject<BitChromosome>>() {
-			@Override
-			public PersistentObject<BitChromosome> newInstance() {
-				final Random random = new LCG64ShiftRandom(0);
-				LocalContext.enter();
-				try {
-					RandomRegistry.setRandom(random);
-					return new PersistentObject<>(
-						"BitChromosome",
-						new BitChromosome(500, 0.5)
-					);
-				} finally {
-					LocalContext.exit();
-				}
-			}
-		};
-	}
+	/* *************************************************************************
+	 * Genes
+	 **************************************************************************/
 
 	public static CharacterGene nextCharacterGene() {
 		return CharacterGene.valueOf();
@@ -249,6 +209,10 @@ public class PersistentObject<T> {
 		return EnumGene.valueOf(ISeq(5, Float64Factory));
 	}
 
+	/* *************************************************************************
+	 * Chromosome
+	 **************************************************************************/
+
 	public static BitChromosome nextBitChromosome() {
 		return new BitChromosome(20, 0.5);
 	}
@@ -281,9 +245,93 @@ public class PersistentObject<T> {
 		return Genotype.valueOf(ISeq(5, Float64ChromosomeFactory));
 	}
 
-	/*
+	/* *************************************************************************
+	 * Phenotypes
+	 **************************************************************************/
+
+	public static Phenotype<Integer64Gene, Integer> nextPhenotypeInteger64GeneInteger() {
+		return Phenotype.valueOf(
+			nextGenotypeInteger64Gene(),
+			FitnessFunction(IntegerFactory.newInstance()),
+			Math.abs(IntegerFactory.newInstance())
+		);
+	}
+
+	public static Phenotype<Integer64Gene, Long> nextPhenotypeInteger64GeneLong() {
+		return Phenotype.valueOf(
+			nextGenotypeInteger64Gene(),
+			FitnessFunction(LongFactory.newInstance()),
+			Math.abs(IntegerFactory.newInstance())
+		);
+	}
+
+	public static Phenotype<Integer64Gene, Double> nextPhenotypeInteger64GeneDouble() {
+		return Phenotype.valueOf(
+			nextGenotypeInteger64Gene(),
+			FitnessFunction(DoubleFactory.newInstance()),
+			Math.abs(IntegerFactory.newInstance())
+		);
+	}
+
+	public static Phenotype<Integer64Gene, Integer64> nextPhenotypeInteger64GeneInteger64() {
+		return Phenotype.valueOf(
+			nextGenotypeInteger64Gene(),
+			FitnessFunction(Integer64Factory.newInstance()),
+			Math.abs(IntegerFactory.newInstance())
+		);
+	}
+
+	public static Phenotype<Integer64Gene, Float64> nextPhenotypeInteger64GeneFloat64() {
+		return Phenotype.valueOf(
+			nextGenotypeInteger64Gene(),
+			FitnessFunction(Float64Factory.newInstance()),
+			Math.abs(IntegerFactory.newInstance())
+		);
+	}
+
+	public static Phenotype<Float64Gene, Integer> nextPhenotypeFloat64GeneInteger() {
+		return Phenotype.valueOf(
+			nextGenotypeFloat64Gene(),
+			FitnessFunction(IntegerFactory.newInstance()),
+			Math.abs(IntegerFactory.newInstance())
+		);
+	}
+
+	public static Phenotype<Float64Gene, Long> nextPhenotypeFloat64GeneLong() {
+		return Phenotype.valueOf(
+			nextGenotypeFloat64Gene(),
+			FitnessFunction(LongFactory.newInstance()),
+			Math.abs(IntegerFactory.newInstance())
+		);
+	}
+
+	public static Phenotype<Float64Gene, Double> nextPhenotypeFloat64GeneDouble() {
+		return Phenotype.valueOf(
+			nextGenotypeFloat64Gene(),
+			FitnessFunction(DoubleFactory.newInstance()),
+			Math.abs(IntegerFactory.newInstance())
+		);
+	}
+
+	public static Phenotype<Float64Gene, Integer64> nextPhenotypeFloat64GeneInteger64() {
+		return Phenotype.valueOf(
+			nextGenotypeFloat64Gene(),
+			FitnessFunction(Integer64Factory.newInstance()),
+			Math.abs(IntegerFactory.newInstance())
+		);
+	}
+
+	public static Phenotype<Float64Gene, Float64> nextPhenotypeFloat64GeneFloat64() {
+		return Phenotype.valueOf(
+			nextGenotypeFloat64Gene(),
+			FitnessFunction(Float64Factory.newInstance()),
+			Math.abs(IntegerFactory.newInstance())
+		);
+	}
+
+	/* *************************************************************************
 	 * Factories
-	 */
+	 **************************************************************************/
 
 	public static final Factory<BitChromosome> BitChromosomeFactory = factory(
 		PersistentObject.class, "nextBitChromosome"
@@ -302,12 +350,24 @@ public class PersistentObject<T> {
 	);
 
 
-	public static final Factory<EnumGene<Integer>> EnumGeneIntegerFactory = factory(
-		PersistentObject.class, "nextEnumGeneInteger"
-	);
+	public static <R extends Comparable<R>> Function<Object, R>
+	FitnessFunction(final R result) {
+		return new Function<Object, R>() {
+			@Override
+			public R apply(final Object value) {
+				return result;
+			}
+		};
+	}
 
 
 	static {
-		init();
+		LocalContext.enter();
+		try {
+			RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadSafe(101010101));
+			init();
+		} finally {
+			LocalContext.exit();
+		}
 	}
 }
