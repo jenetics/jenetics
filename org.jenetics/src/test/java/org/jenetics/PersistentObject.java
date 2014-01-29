@@ -57,22 +57,6 @@ import org.jenetics.util.RandomRegistry;
  */
 public class PersistentObject<T> {
 
-	public static final Factory<BitChromosome> BitChromosomeFactory = factory(
-		PersistentObject.class, "nextBitChromosome"
-	);
-
-	public static final Factory<CharacterChromosome> CharacterChromosomeFactory = factory(
-		PersistentObject.class, "nextCharacterChromosome"
-	);
-
-	public static final Factory<Integer64Chromosome> Integer64ChromosomeFactory = factory(
-		PersistentObject.class, "nextInteger64Chromosome"
-	);
-
-	public static final Factory<Float64Chromosome> Float64ChromosomeFactory = factory(
-		PersistentObject.class, "nextFloat64Chromosome"
-	);
-
 	private final String _name;
 	private final T _value;
 
@@ -107,7 +91,7 @@ public class PersistentObject<T> {
 		VALUES.add(new PersistentObject<T>(name, value));
 	}
 
-	static {
+	private static void init() {
 		final LCG64ShiftRandom random = new LCG64ShiftRandom.ThreadSafe(1010);
 		final Random originalRandom = RandomRegistry.getRandom();
 		RandomRegistry.setRandom(random);
@@ -297,10 +281,33 @@ public class PersistentObject<T> {
 		return Genotype.valueOf(ISeq(5, Float64ChromosomeFactory));
 	}
 
+	/*
+	 * Factories
+	 */
+
+	public static final Factory<BitChromosome> BitChromosomeFactory = factory(
+		PersistentObject.class, "nextBitChromosome"
+	);
+
+	public static final Factory<CharacterChromosome> CharacterChromosomeFactory = factory(
+		PersistentObject.class, "nextCharacterChromosome"
+	);
+
+	public static final Factory<Integer64Chromosome> Integer64ChromosomeFactory = factory(
+		PersistentObject.class, "nextInteger64Chromosome"
+	);
+
+	public static final Factory<Float64Chromosome> Float64ChromosomeFactory = factory(
+		PersistentObject.class, "nextFloat64Chromosome"
+	);
 
 
 	public static final Factory<EnumGene<Integer>> EnumGeneIntegerFactory = factory(
 		PersistentObject.class, "nextEnumGeneInteger"
 	);
 
+
+	static {
+		init();
+	}
 }
