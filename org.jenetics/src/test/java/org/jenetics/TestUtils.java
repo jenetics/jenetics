@@ -135,7 +135,7 @@ class TestUtils {
 			new Population<>(npopulation);
 
 		for (int i = 0; i < npopulation; ++i) {
-			population.add(Phenotype.valueOf(genotype.newInstance(), FF, 0));
+			population.add(Phenotype.valueOf(genotype.newInstance(), FF, 0).evaluate());
 		}
 
 		return population;
@@ -236,7 +236,7 @@ class TestUtils {
 	public static Phenotype<Float64Gene, Float64> newFloat64Phenotype(final double value) {
 		return Phenotype.valueOf(Genotype.valueOf(
 				new Float64Chromosome(Float64Gene.valueOf(value, 0, 10))), FF, 0
-			);
+			).evaluate();
 	}
 
 	public static Phenotype<Float64Gene, Float64> newFloat64Phenotype() {

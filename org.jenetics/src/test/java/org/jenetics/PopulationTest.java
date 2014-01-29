@@ -57,7 +57,9 @@ public class PopulationTest {
 
 	private static final Function<Genotype<Float64Gene>, Float64> _cf = new Continous();
 	private static Phenotype<Float64Gene, Float64> pt(double value) {
-		return Phenotype.valueOf(Genotype.valueOf(new Float64Chromosome(Float64Gene.valueOf(value, 0, 10))), _cf, 0);
+		return Phenotype.valueOf(Genotype.valueOf(
+			new Float64Chromosome(Float64Gene.valueOf(value, 0, 10))
+		), _cf, 0).evaluate();
 	}
 
 	@Test

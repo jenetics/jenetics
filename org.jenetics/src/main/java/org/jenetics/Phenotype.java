@@ -106,12 +106,15 @@ public final class Phenotype<
 	/**
 	 * Evaluates the (raw) fitness values and caches it so the fitness calculation
 	 * is performed only once.
+	 *
+	 * @return this phenotype, for method chaining.
 	 */
-	public void evaluate() {
+	public Phenotype<G, C> evaluate() {
 		if (_rawFitness == null) {
 			_rawFitness = _fitnessFunction.apply(_genotype);
 			_fitness = _fitnessScaler.apply(_rawFitness);
 		}
+		return this;
 	}
 
 	/**
