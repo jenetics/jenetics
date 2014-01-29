@@ -22,8 +22,6 @@ package org.jenetics;
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 import static org.jenetics.util.accumulators.accumulate;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Random;
 
 import javolution.context.LocalContext;
@@ -35,14 +33,12 @@ import org.testng.annotations.Test;
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.UniformDistribution;
 import org.jenetics.stat.Variance;
-import org.jenetics.util.IO;
-import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.accumulators.MinMax;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-01 $</em>
+ * @version <em>$Date: 2014-01-29 $</em>
  */
 public class Integer64ChromosomeTest
 	extends NumberChromosomeTester<Integer64, Integer64Gene>
@@ -112,62 +108,6 @@ public class Integer64ChromosomeTest
 				Integer64Chromosome.Genes.apply(c),
 				c.toSeq()
 			);
-	}
-
-	@Test
-	public void objectSerializationCompatibility() throws IOException {
-		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
-		LocalContext.enter();
-		try {
-			RandomRegistry.setRandom(random);
-			final Object chromosome = new Integer64Chromosome(Integer.MIN_VALUE, Integer.MAX_VALUE, 500);
-
-			final String resource = "/org/jenetics/Integer64Chromosome.object";
-			try (InputStream in = getClass().getResourceAsStream(resource)) {
-				final Object object = IO.object.read(in);
-
-				Assert.assertEquals(object, chromosome);
-			}
-		} finally {
-			LocalContext.exit();
-		}
-	}
-
-	@Test
-	public void xmlSerializationCompatibility() throws IOException {
-		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
-		LocalContext.enter();
-		try {
-			RandomRegistry.setRandom(random);
-			final Object chromosome = new Integer64Chromosome(Integer.MIN_VALUE, Integer.MAX_VALUE, 500);
-
-			final String resource = "/org/jenetics/Integer64Chromosome.xml";
-			try (InputStream in = getClass().getResourceAsStream(resource)) {
-				final Object object = IO.xml.read(in);
-
-				Assert.assertEquals(object, chromosome);
-			}
-		} finally {
-			LocalContext.exit();
-		}
-	}
-
-	private static String Source = "/home/fwilhelm/Workspace/Development/Projects/Jenetics/" +
-			"org.jenetics/src/test/resources/org/jenetics/";
-
-	public static void main(final String[] args) throws Exception {
-		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
-
-		LocalContext.enter();
-		try {
-			RandomRegistry.setRandom(random);
-			Object c = new Integer64Chromosome(Integer.MIN_VALUE, Integer.MAX_VALUE, 500);
-
-			IO.xml.write(c, Source + "Integer64Chromosome.xml");
-			IO.object.write(c, Source + "Integer64Chromosome.object");
-		} finally {
-			LocalContext.exit();
-		}
 	}
 
 }

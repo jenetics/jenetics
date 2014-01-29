@@ -22,20 +22,13 @@ package org.jenetics;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import org.jenetics.util.Factory;
-import org.jenetics.util.IO;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-01-16 $</em>
+ * @version <em>$Date: 2014-01-29 $</em>
  */
 public class BitGeneTest extends GeneTester<BitGene> {
 
@@ -56,79 +49,6 @@ public class BitGeneTest extends GeneTester<BitGene> {
 		assertEquals(BitGene.ZERO.compareTo(BitGene.FALSE), 0);
 		assertTrue(BitGene.FALSE.compareTo(BitGene.ONE) < 0);
 		assertTrue(BitGene.TRUE.compareTo(BitGene.ZERO) > 0);
-	}
-
-	@Test
-	public void objectSerializationCompatibility() throws IOException {
-		String resource = "/org/jenetics/BitGene_TRUE.object";
-		try (InputStream in = getClass().getResourceAsStream(resource)) {
-			final Object object = IO.object.read(in);
-
-			Assert.assertEquals(object, BitGene.TRUE);
-		}
-
-		resource = "/org/jenetics/BitGene_FALSE.object";
-		try (InputStream in = getClass().getResourceAsStream(resource)) {
-			final Object object = IO.object.read(in);
-
-			Assert.assertEquals(object, BitGene.FALSE);
-		}
-	}
-
-	@Test
-	public void xmlSerializationCompatibility() throws IOException {
-		String resource = "/org/jenetics/BitGene_TRUE.xml";
-		try (InputStream in = getClass().getResourceAsStream(resource)) {
-			final Object object = IO.xml.read(in);
-
-			Assert.assertEquals(object, BitGene.TRUE);
-		}
-
-		resource = "/org/jenetics/BitGene_FALSE.xml";
-		try (InputStream in = getClass().getResourceAsStream(resource)) {
-			final Object object = IO.xml.read(in);
-
-			Assert.assertEquals(object, BitGene.FALSE);
-		}
-	}
-
-	/*
-	@Test
-	public void jaxbSerializationCompatibility() throws IOException {
-		String resource = "/org/jenetics/BitGene_TRUE.jaxb.xml";
-		try (InputStream in = getClass().getResourceAsStream(resource)) {
-			final Object object = IO.jaxb.read(BitGene.class, in);
-
-			Assert.assertEquals(object, BitGene.TRUE);
-		}
-
-		resource = "/org/jenetics/BitGene_FALSE.jaxb.xml";
-		try (InputStream in = getClass().getResourceAsStream(resource)) {
-			final Object object = IO.jaxb.read(BitGene.class, in);
-
-			Assert.assertEquals(object, BitGene.FALSE);
-		}
-	}
-	*/
-
-
-	public static void main(final String[] args) throws Exception {
-		final Path basePath = Paths.get("/home/fwilhelm/Workspace/Development/Projects/Jenetics/org.jenetics/src/test/resources/org/jenetics/");
-		//IO.object.write(BitGene.TRUE, basePath.resolve("BitGene_TRUE.object"));
-		//IO.object.write(BitGene.FALSE, basePath.resolve("BitGene_FALSE.object"));
-		//IO.xml.write(BitGene.TRUE, basePath.resolve("BitGene_TRUE.xml"));
-		//IO.xml.write(BitGene.FALSE, basePath.resolve("BitGene_FALSE.xml"));
-		//IO.jaxb.write(BitGene.TRUE, basePath.resolve("BitGene_TRUE.jaxb.xml"));
-		//IO.jaxb.write(BitGene.FALSE, basePath.resolve("BitGene_FALSE.jaxb.xml"));
-
-		IO.jaxb.write(BitGene.FALSE, System.out);
-
-		String resource = "/org/jenetics/BitGene_FALSE.jaxb.xml";
-		try (InputStream in = BitGeneTest.class.getResourceAsStream(resource)) {
-			final Object object = IO.jaxb.read(BitGene.class, in);
-
-			Assert.assertEquals(object, BitGene.FALSE);
-		}
 	}
 
 }
