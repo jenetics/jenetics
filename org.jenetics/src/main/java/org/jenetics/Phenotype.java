@@ -80,8 +80,8 @@ public final class Phenotype<
 	private static final long serialVersionUID = 1L;
 
 	private Genotype<G> _genotype;
-	private Function<? super Genotype<G>, ? extends C> _fitnessFunction;
-	private Function<? super C, ? extends C> _fitnessScaler;
+	private transient Function<? super Genotype<G>, ? extends C> _fitnessFunction;
+	private transient Function<? super C, ? extends C> _fitnessScaler;
 
 	private int _generation = 0;
 

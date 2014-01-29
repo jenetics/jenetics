@@ -33,10 +33,11 @@ import static org.jenetics.util.RandomUtils.ShortFactory;
 import static org.jenetics.util.RandomUtils.StringFactory;
 import static org.jenetics.util.lambda.factory;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import javolution.context.LocalContext;
@@ -46,6 +47,7 @@ import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
+import org.jenetics.util.IO;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
 
@@ -59,10 +61,7 @@ public class PersistentObjects<T> {
 	private final String _name;
 	private final T _value;
 
-	public PersistentObjects(
-		final String name,
-		final T value
-	) {
+	public PersistentObjects(final String name,final T value) {
 		_name = Objects.requireNonNull(name);
 		_value = Objects.requireNonNull(value);
 	}
@@ -80,14 +79,13 @@ public class PersistentObjects<T> {
 		return String.format("%s[%s]", getClass().getSimpleName(), getName());
 	}
 
-
-
+	private static final long SEED = 101010101010101L;
 
 	public static List<PersistentObjects<?>> VALUES = new ArrayList<>();
-	public static Map<String, PersistentObjects<?>> OBJECTS = new HashMap<>();
 
-	private static <T> void put(final String name, final T value ) {
+	private static <T> void put(final String name, final T value) {
 		VALUES.add(new PersistentObjects<T>(name, value));
+		RandomRegistry.getRandom().setSeed(SEED);
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -360,14 +358,35 @@ public class PersistentObjects<T> {
 		};
 	}
 
-
 	static {
 		LocalContext.enter();
 		try {
-			RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadSafe(101010101));
+			RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadSafe(SEED));
 			init();
 		} finally {
 			LocalContext.exit();
+		}
+	}
+
+
+	public static void main(final String[] args) throws Exception {
+		write(IO.jaxb, "jaxb");
+		write(IO.xml, "xml");
+		write(IO.object, "object");
+	}
+
+	private static void write(final IO io, final String suffix) throws IOException {
+		final File baseDir = new File("org.jenetics/src/test/resources/org/jenetics/serialization");
+		if (!baseDir.isDirectory() && !baseDir.mkdirs()) {
+			throw new IOException("Error while creating directory " + baseDir);
+		}
+
+		for (PersistentObjects<?> object : VALUES) {
+			final File file = new File(baseDir, object.getName() + "." + suffix);
+			System.out.println(object.getName());
+			try (FileOutputStream out = new FileOutputStream(file)) {
+				io.write(object.getValue(), out);
+			}
 		}
 	}
 }
