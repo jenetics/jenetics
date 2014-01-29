@@ -51,15 +51,15 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-01-29 $</em>
+ * @version @__version__@ &mdash; <em>$Date$</em>
  * @since @__version__@
  */
-public class PersistentObject<T> {
+public class PersistentObjects<T> {
 
 	private final String _name;
 	private final T _value;
 
-	public PersistentObject(
+	public PersistentObjects(
 		final String name,
 		final T value
 	) {
@@ -83,11 +83,11 @@ public class PersistentObject<T> {
 
 
 
-	public static List<PersistentObject<?>> VALUES = new ArrayList<>();
-	public static Map<String, PersistentObject<?>> OBJECTS = new HashMap<>();
+	public static List<PersistentObjects<?>> VALUES = new ArrayList<>();
+	public static Map<String, PersistentObjects<?>> OBJECTS = new HashMap<>();
 
 	private static <T> void put(final String name, final T value ) {
-		VALUES.add(new PersistentObject<T>(name, value));
+		VALUES.add(new PersistentObjects<T>(name, value));
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -334,19 +334,19 @@ public class PersistentObject<T> {
 	 **************************************************************************/
 
 	public static final Factory<BitChromosome> BitChromosomeFactory = factory(
-		PersistentObject.class, "nextBitChromosome"
+		PersistentObjects.class, "nextBitChromosome"
 	);
 
 	public static final Factory<CharacterChromosome> CharacterChromosomeFactory = factory(
-		PersistentObject.class, "nextCharacterChromosome"
+		PersistentObjects.class, "nextCharacterChromosome"
 	);
 
 	public static final Factory<Integer64Chromosome> Integer64ChromosomeFactory = factory(
-		PersistentObject.class, "nextInteger64Chromosome"
+		PersistentObjects.class, "nextInteger64Chromosome"
 	);
 
 	public static final Factory<Float64Chromosome> Float64ChromosomeFactory = factory(
-		PersistentObject.class, "nextFloat64Chromosome"
+		PersistentObjects.class, "nextFloat64Chromosome"
 	);
 
 
