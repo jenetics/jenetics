@@ -56,6 +56,7 @@ public class RandRegistryTest {
 	@Test(invocationCount = 10)
 	public void concurrentLocalContext() {
 		final Random random = RandRegistry.getRandom();
+		RandRegistry.setRandom(random);
 
 		try (Concurrency c = Concurrency.start()) {
 			for (int i = 0; i < 25; ++i) {
@@ -82,12 +83,21 @@ public class RandRegistryTest {
 					Assert.assertSame(RandRegistry.getRandom(), random2);
 					Assert.assertSame(c2.get(), random2);
 
+					final Random random2_2 = new Random();
+					RandRegistry.setRandom(random2_2);
+					Assert.assertSame(RandRegistry.getRandom(), random2_2);
+
 					final Random random3 = new Random();
 					try (Context<Random> c3 = RandRegistry.with(random3)) {
 						Assert.assertSame(RandRegistry.getRandom(), random3);
 						Assert.assertSame(c3.get(), random3);
 					}
+
+					Assert.assertSame(RandRegistry.getRandom(), random2_2);
+					Assert.assertNotEquals(c.get(), RandRegistry.getRandom());
 				}
+
+				Assert.assertSame(c.get(), RandRegistry.getRandom());
 			}
 		}
 	}
