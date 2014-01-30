@@ -108,10 +108,6 @@ public class RandRegistry {
 			this.thread = thread;
 		}
 
-		Entry(final Random random, final Entry parent) {
-			this(random, parent, null);
-		}
-
 		Entry(final Random random, final Thread thread) {
 			this(random, null, thread);
 		}
