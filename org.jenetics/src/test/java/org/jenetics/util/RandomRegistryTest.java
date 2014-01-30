@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-01 $</em>
+ * @version <em>$Date: 2014-01-30 $</em>
  */
 public class RandomRegistryTest {
 
@@ -87,6 +87,33 @@ public class RandomRegistryTest {
 		}
 
 		Assert.assertSame(RandomRegistry.getRandom(), random);
+	}
+
+	@Test(invocationCount = 10)
+	public void concurrentLocalContext() {
+		try (Concurrency c = Concurrency.start()) {
+			for (int i = 0; i < 25; ++i) {
+				c.execute(new ContextRunnable());
+			}
+		}
+	}
+
+	private static final class ContextRunnable implements Runnable {
+		@Override
+		public void run() {
+			LocalContext.enter();
+			try {
+				final long seed = math.random.seed();
+				final Random random = new Random(seed);
+				RandomRegistry.setRandom(random);
+				Thread.sleep(1); // Just allow context switches.
+				Assert.assertSame(RandomRegistry.getRandom(), random);
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			} finally {
+				LocalContext.exit();
+			}
+		}
 	}
 
 }
