@@ -48,6 +48,12 @@ public class RandRegistryTest {
 
 			Assert.assertSame(RandRegistry.getRandom(), random1);
 			Assert.assertSame(c1.get(), random1);
+
+			final Random random3 = new Random();
+			RandRegistry.setRandom(random3);
+
+			Assert.assertSame(RandRegistry.getRandom(), random3);
+			Assert.assertNotEquals(RandRegistry.getRandom(), c1.get());
 		}
 
 		Assert.assertSame(RandRegistry.getRandom(), random);
@@ -72,7 +78,7 @@ public class RandRegistryTest {
 		public void run() {
 			try (Context<Random> c = RandRegistry.with(new Random())) {
 				try {
-					Thread.sleep(1); // Just allow context switches.
+					Thread.sleep(1);
 				} catch (InterruptedException e) {
 					throw new RuntimeException(e);
 				}

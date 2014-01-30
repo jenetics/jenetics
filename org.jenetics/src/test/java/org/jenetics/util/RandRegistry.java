@@ -36,11 +36,11 @@ public class RandRegistry {
 		new Entry(ThreadLocalRandom.current())
 	);
 
-	static Random getRandom() {
+	public static Random getRandom() {
 		return getEntry().random;
 	}
 
-	static void setRandom(final Random random) {
+	public static void setRandom(final Random random) {
 		setEntry(random);
 	}
 
