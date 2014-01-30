@@ -59,16 +59,16 @@ public class RandRegistry {
 		if (e != null) {
 			ENTRY.set(e.inner(random));
 		} else {
-			ENTRY.set(new Entry(random));
+			ENTRY.set(new Entry(random, Thread.currentThread()));
 		}
 
 		return new Ctx(random);
 	}
 
 	private static final class Ctx implements Context<Random> {
-		final Random _random;
+		private final Random _random;
 
-		public Ctx(Random random) {
+		public Ctx(final Random random) {
 			_random = random;
 		}
 
@@ -79,25 +79,50 @@ public class RandRegistry {
 
 		@Override
 		public void close() {
-			ENTRY.set(ENTRY.get().parent);
+			final Entry e = ENTRY.get();
+			if (e != null) {
+				if (e.thread != Thread.currentThread()) {
+					throw new IllegalStateException(
+						"Random context must be closed by the creating thread."
+					);
+				}
+
+				ENTRY.set(e.parent);
+			} else {
+				throw new IllegalStateException(
+					"Random context has been already close."
+				);
+			}
 		}
 	}
 
 	private static final class Entry {
-		Random random;
-		Entry parent;
+		final Thread thread;
+		final Entry parent;
 
-		Entry(final Random random, final Entry parent) {
+		Random random;
+
+		Entry(final Random random, final Entry parent, final Thread thread) {
 			this.random = random;
 			this.parent = parent;
+			this.thread = thread;
+		}
+
+		Entry(final Random random, final Entry parent) {
+			this(random, parent, null);
+		}
+
+		Entry(final Random random, final Thread thread) {
+			this(random, null, thread);
 		}
 
 		Entry(final Random random) {
-			this(random, null);
+			this(random, null, null);
 		}
 
 		Entry inner(final Random random) {
-			return new Entry(random, this);
+			assert(thread == Thread.currentThread());
+			return new Entry(random, this, thread);
 		}
 	}
 
