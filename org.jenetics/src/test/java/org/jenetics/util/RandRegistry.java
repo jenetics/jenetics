@@ -29,18 +29,35 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class RandRegistry {
 
+	private static final ThreadLocal<Entry> ENTRY = new ThreadLocal<>();
+
 	private static Entry entry = new Entry(ThreadLocalRandom.current());
 
 	static Random getRandom() {
-		return entry.random;
+		return getEntry().random;
 	}
 
 	static void setRandom(final Random random) {
-		entry.random = random;
+		getEntry().random = random;
+	}
+
+	private static Entry getEntry() {
+		Entry e = ENTRY.get();
+		if (e == null) {
+			e = entry;
+		}
+		return e;
 	}
 
 	static Context<Random> with(final Random random) {
-		entry = entry.inner(random);
+		Entry e = ENTRY.get();
+		if (e == null) {
+			e = new Entry(random);
+			ENTRY.set(e);
+		} else {
+			ENTRY.set(e.inner(random));
+		}
+
 		return new Ctx(random);
 	}
 
@@ -58,7 +75,7 @@ public class RandRegistry {
 
 		@Override
 		public void close() {
-			entry = entry.parent;
+			ENTRY.set(ENTRY.get().parent);
 		}
 	}
 
