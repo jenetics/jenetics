@@ -21,6 +21,7 @@ package org.jenetics.util;
 
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -31,31 +32,34 @@ public class RandRegistry {
 
 	private static final ThreadLocal<Entry> ENTRY = new ThreadLocal<>();
 
-	private static Entry entry = new Entry(ThreadLocalRandom.current());
+	private static AtomicReference<Entry> entry = new AtomicReference<>(
+		new Entry(ThreadLocalRandom.current())
+	);
 
 	static Random getRandom() {
 		return getEntry().random;
 	}
 
 	static void setRandom(final Random random) {
-		getEntry().random = random;
+		setEntry(random);
 	}
 
 	private static Entry getEntry() {
-		Entry e = ENTRY.get();
-		if (e == null) {
-			e = entry;
-		}
-		return e;
+		final Entry e = ENTRY.get();
+		return e != null ? e : entry.get();
+	}
+
+	private static void setEntry(final Random random) {
+		final Entry e = ENTRY.get();
+		if (e != null) e.random = random; else entry.set(new Entry(random));
 	}
 
 	static Context<Random> with(final Random random) {
-		Entry e = ENTRY.get();
-		if (e == null) {
-			e = new Entry(random);
-			ENTRY.set(e);
-		} else {
+		final Entry e = ENTRY.get();
+		if (e != null) {
 			ENTRY.set(e.inner(random));
+		} else {
+			ENTRY.set(new Entry(random));
 		}
 
 		return new Ctx(random);
