@@ -89,7 +89,6 @@ public class PersistentObjects<T> {
 		RandomRegistry.getRandom().setSeed(SEED);
 	}
 
-	@SuppressWarnings("rawtypes")
 	private static void init() {
 		/* *********************************************************************
 		 * Genes

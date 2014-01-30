@@ -20,10 +20,10 @@
 package org.jenetics.util;
 
 import static org.jenetics.util.lambda.factory;
-import static org.jenetics.util.math.random;
 
 import java.util.Random;
 
+import org.jenetics.util.math.random;
 import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.number.Integer64;
 
@@ -43,8 +43,6 @@ public class RandomUtils {
 	}
 
 	public static String nextString(final int length) {
-		final Random random = RandomRegistry.getRandom();
-
 		final StringBuilder chars = new StringBuilder(length);
 		for (int i = 0; i < length; ++i) {
 			chars.append(nextCharacter());
