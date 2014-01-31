@@ -32,9 +32,10 @@ import org.jenetics.util.IO;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date$</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-31 $</em>
  * @since @__version__@
  */
+@SuppressWarnings("deprecation")
 public class MarshallingTest {
 
 	private static final String RESOURCE_PATTERN = "/org/jenetics/serialization/%s.%s";

@@ -33,7 +33,7 @@ import org.jenetics.util.IO;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.0 &mdash; <em>$Date: 2013-08-29 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-01-31 $</em>
  */
 public class Serial {
 
@@ -70,7 +70,7 @@ public class Serial {
 		ga.setup();
 		ga.evolve(5);
 
-		IO.xml.write(ga.getPopulation(), new File("/home/fwilhelm/population.xml"));
+		IO.jaxb.write(ga.getPopulation(), new File("/home/fwilhelm/population.xml"));
 
 	}
 

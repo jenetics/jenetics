@@ -58,7 +58,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date$</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-31 $</em>
  * @since @__version__@
  */
 public class PersistentObject<T> {
@@ -459,6 +459,7 @@ public class PersistentObject<T> {
 	}
 
 
+	@SuppressWarnings("deprecation")
 	public static void main(final String[] args) throws Exception {
 		write(IO.jaxb, "jaxb");
 		write(IO.xml, "xml");
