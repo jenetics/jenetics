@@ -58,15 +58,15 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-01-31 $</em>
+ * @version @__version__@ &mdash; <em>$Date$</em>
  * @since @__version__@
  */
-public class PersistentObjects<T> {
+public class PersistentObject<T> {
 
 	private final String _name;
 	private final T _value;
 
-	public PersistentObjects(final String name,final T value) {
+	public PersistentObject(final String name, final T value) {
 		_name = Objects.requireNonNull(name);
 		_value = Objects.requireNonNull(value);
 	}
@@ -86,10 +86,10 @@ public class PersistentObjects<T> {
 
 	private static final long SEED = 101010101010101L;
 
-	public static List<PersistentObjects<?>> VALUES = new ArrayList<>();
+	public static List<PersistentObject<?>> VALUES = new ArrayList<>();
 
 	private static <T> void put(final String name, final T value) {
-		VALUES.add(new PersistentObjects<T>(name, value));
+		VALUES.add(new PersistentObject<T>(name, value));
 		RandomRegistry.getRandom().setSeed(SEED);
 	}
 
@@ -378,7 +378,7 @@ public class PersistentObjects<T> {
 
 	public static Population<Integer64Gene, Integer> nextPopulationInteger64GeneInteger() {
 		final ISeq<Phenotype<Integer64Gene, Integer>> seq = ISeq(7,
-			PersistentObjects.<Phenotype<Integer64Gene, Integer>>Factory(
+			PersistentObject.<Phenotype<Integer64Gene, Integer>>Factory(
 				"nextPhenotypeInteger64GeneInteger"
 			)
 		);
@@ -388,7 +388,7 @@ public class PersistentObjects<T> {
 
 	public static Population<Float64Gene, Integer> nextPopulationFloat64GeneInteger() {
 		final ISeq<Phenotype<Float64Gene, Integer>> seq = ISeq(7,
-			PersistentObjects.<Phenotype<Float64Gene, Integer>>Factory(
+			PersistentObject.<Phenotype<Float64Gene, Integer>>Factory(
 				"nextPhenotypeFloat64GeneInteger"
 			)
 		);
@@ -418,23 +418,23 @@ public class PersistentObjects<T> {
 	 **************************************************************************/
 
 	private static <T> Factory<T> Factory(final String name) {
-		return factory(PersistentObjects.class, name);
+		return factory(PersistentObject.class, name);
 	}
 
 	public static final Factory<BitChromosome> BitChromosomeFactory = factory(
-		PersistentObjects.class, "nextBitChromosome"
+		PersistentObject.class, "nextBitChromosome"
 	);
 
 	public static final Factory<CharacterChromosome> CharacterChromosomeFactory = factory(
-		PersistentObjects.class, "nextCharacterChromosome"
+		PersistentObject.class, "nextCharacterChromosome"
 	);
 
 	public static final Factory<Integer64Chromosome> Integer64ChromosomeFactory = factory(
-		PersistentObjects.class, "nextInteger64Chromosome"
+		PersistentObject.class, "nextInteger64Chromosome"
 	);
 
 	public static final Factory<Float64Chromosome> Float64ChromosomeFactory = factory(
-		PersistentObjects.class, "nextFloat64Chromosome"
+		PersistentObject.class, "nextFloat64Chromosome"
 	);
 
 
@@ -471,7 +471,7 @@ public class PersistentObjects<T> {
 			throw new IOException("Error while creating directory " + baseDir);
 		}
 
-		for (PersistentObjects<?> object : VALUES) {
+		for (PersistentObject<?> object : VALUES) {
 			final File file = new File(baseDir, object.getName() + "." + suffix);
 			System.out.println(object.getName());
 			try (FileOutputStream out = new FileOutputStream(file)) {
