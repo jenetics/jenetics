@@ -24,10 +24,21 @@ package org.jenetics.util;
  * left, the original value is restored.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date$</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-31 $</em>
  * @since @__version__@
  */
 public interface Scoped<T> extends AutoCloseable {
+
+	/**
+	 * Return the scoped object.
+	 *
+	 * @return the scoped object.
+	 */
 	public T get();
+
+	/**
+	 * Closing this scope and restoring the original state.
+	 */
 	public void close();
+
 }
