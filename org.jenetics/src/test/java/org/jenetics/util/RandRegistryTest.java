@@ -21,14 +21,12 @@ package org.jenetics.util;
 
 import java.util.Random;
 
-import javolution.context.LocalContext;
-
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-01-30 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-31 $</em>
  * @since @__version__@
  */
 public class RandRegistryTest {
@@ -38,10 +36,10 @@ public class RandRegistryTest {
 		final Random random = RandRegistry.getRandom();
 
 		final Random random1 = new Random();
-		try (Context<Random> c1 = RandRegistry.with(random1)) {
+		try (Scoped<Random> c1 = RandRegistry.with(random1)) {
 
 			final Random random2 = new Random();
-			try (Context<Random> c2 = RandRegistry.with(random2)) {
+			try (Scoped<Random> c2 = RandRegistry.with(random2)) {
 				Assert.assertSame(RandRegistry.getRandom(), random2);
 				Assert.assertSame(c2.get(), random2);
 			}
@@ -76,7 +74,7 @@ public class RandRegistryTest {
 	private static final class ContextRunnable implements Runnable {
 		@Override
 		public void run() {
-			try (Context<Random> c = RandRegistry.with(new Random())) {
+			try (Scoped<Random> c = RandRegistry.with(new Random())) {
 				try {
 					Thread.sleep(1);
 				} catch (InterruptedException e) {
@@ -85,7 +83,7 @@ public class RandRegistryTest {
 				Assert.assertSame(c.get(), RandRegistry.getRandom());
 
 				final Random random2 = new Random();
-				try (Context<Random> c2 = RandRegistry.with(random2)) {
+				try (Scoped<Random> c2 = RandRegistry.with(random2)) {
 					Assert.assertSame(RandRegistry.getRandom(), random2);
 					Assert.assertSame(c2.get(), random2);
 
@@ -94,7 +92,7 @@ public class RandRegistryTest {
 					Assert.assertSame(RandRegistry.getRandom(), random2_2);
 
 					final Random random3 = new Random();
-					try (Context<Random> c3 = RandRegistry.with(random3)) {
+					try (Scoped<Random> c3 = RandRegistry.with(random3)) {
 						Assert.assertSame(RandRegistry.getRandom(), random3);
 						Assert.assertSame(c3.get(), random3);
 					}
