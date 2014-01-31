@@ -21,10 +21,10 @@ package org.jenetics.util;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date$</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-31 $</em>
  * @since @__version__@
  */
-interface Context<T> extends AutoCloseable {
+public interface Context<T> extends AutoCloseable {
 	public T get();
 	public void close();
 }
