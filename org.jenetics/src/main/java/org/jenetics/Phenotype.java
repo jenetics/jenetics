@@ -62,9 +62,9 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-01-29 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-31 $</em>
  */
-//@XmlJavaTypeAdapter(Phenotype.Model.Adapter.class)
+@XmlJavaTypeAdapter(Phenotype.Model.Adapter.class)
 public final class Phenotype<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
