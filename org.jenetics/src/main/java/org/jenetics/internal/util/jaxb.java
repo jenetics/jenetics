@@ -30,10 +30,11 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 
-import org.jscience.mathematics.number.Float64;
-import org.jscience.mathematics.number.Integer64;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import org.jscience.mathematics.number.Float64;
+import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.internal.util.model.BooleanModel;
 import org.jenetics.internal.util.model.ByteModel;

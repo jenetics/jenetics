@@ -24,12 +24,13 @@ import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 
 import java.util.Random;
 
-import javolution.context.LocalContext;
-
-import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import javolution.context.LocalContext;
+
+import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.NormalDistribution;

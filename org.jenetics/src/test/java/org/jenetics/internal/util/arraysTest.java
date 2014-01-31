@@ -7,8 +7,9 @@ import java.io.Serializable;
 
 import javax.measure.unit.SI;
 
-import org.jscience.mathematics.number.Float64;
 import org.testng.annotations.Test;
+
+import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.Float64Chromosome;
 import org.jenetics.Float64Gene;

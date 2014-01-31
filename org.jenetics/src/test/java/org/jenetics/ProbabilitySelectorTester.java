@@ -25,11 +25,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.lists;

@@ -26,11 +26,12 @@ import static org.testng.Assert.assertTrue;
 import java.util.BitSet;
 import java.util.Random;
 
-import org.jscience.mathematics.number.LargeInteger;
 import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import org.jscience.mathematics.number.LargeInteger;
 
 import org.jenetics.util.Factory;
 import org.jenetics.util.bit;

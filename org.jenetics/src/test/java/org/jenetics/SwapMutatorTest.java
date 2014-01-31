@@ -22,10 +22,11 @@ package org.jenetics;
 //import static org.jenetics.TestUtils.diff;
 import static org.jenetics.TestUtils.newFloat64GenePopulation;
 
-import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import org.jscience.mathematics.number.Float64;
 
 
 /**

@@ -24,10 +24,10 @@ import static org.testng.Assert.assertFalse;
 
 import java.util.Random;
 
-import javolution.context.LocalContext;
-
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import javolution.context.LocalContext;
 
 import org.jenetics.util.Factory;
 import org.jenetics.util.IO;

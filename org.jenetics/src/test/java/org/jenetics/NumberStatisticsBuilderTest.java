@@ -21,10 +21,11 @@ package org.jenetics;
 
 import java.util.Random;
 
+import org.testng.annotations.DataProvider;
+
 import javolution.context.LocalContext;
 
 import org.jscience.mathematics.number.Float64;
-import org.testng.annotations.DataProvider;
 
 import org.jenetics.util.RandomRegistry;
 

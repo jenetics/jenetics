@@ -25,13 +25,13 @@ import java.beans.PropertyDescriptor;
 import java.io.Serializable;
 import java.util.Random;
 
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
 import javolution.context.LocalContext;
 import javolution.lang.Immutable;
 import javolution.lang.Reflection;
 import javolution.lang.Reflection.Method;
-
-import org.testng.Assert;
-import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
