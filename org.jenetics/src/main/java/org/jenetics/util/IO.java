@@ -71,7 +71,12 @@ public abstract class IO {
 
 	/**
 	 * IO implementation for <i>XML</i> serialization.
+	 *
+	 * @deprecated Will be removed when the Javolution is removed. Use the
+	 *             {@link #jaxb} {@code IO} implementation instead, which is
+	 *             compatible to the existing XML marshalling.
 	 */
+	@Deprecated
 	public static final IO xml = new IO() {
 
 		@Override

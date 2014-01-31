@@ -35,6 +35,7 @@ import org.jenetics.util.IO;
  * @version @__version__@ &mdash; <em>$Date$</em>
  * @since @__version__@
  */
+@SuppressWarnings("deprecation")
 public class MarshallingTest {
 
 	private static final String RESOURCE_PATTERN = "/org/jenetics/serialization/%s.%s";

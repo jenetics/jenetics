@@ -459,6 +459,7 @@ public class PersistentObject<T> {
 	}
 
 
+	@SuppressWarnings("deprecation")
 	public static void main(final String[] args) throws Exception {
 		write(IO.jaxb, "jaxb");
 		write(IO.xml, "xml");

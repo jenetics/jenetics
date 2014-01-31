@@ -39,9 +39,7 @@ public class Serialize {
 
 	public static final Serialize object = new Serialize(IO.object);
 
-	public static final Serialize xml = new Serialize(IO.xml);
-
-	public static final Serialize jaxb = new Serialize(IO.jaxb);
+	public static final Serialize xml = new Serialize(IO.jaxb);
 
 	public void test(final Object object) throws IOException {
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();

@@ -46,7 +46,6 @@ import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.stat.Variance;
 import org.jenetics.util.FinalReference;
-import org.jenetics.util.IO;
 import org.jenetics.util.accumulators;
 import org.jenetics.util.accumulators.MinMax;
 
@@ -732,18 +731,6 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			return builder;
 		}
 
-	}
-
-	public static void main(final String[] args) throws Exception {
-		final Time time = new Time();
-		time.alter.set(Measure.valueOf(0.00000023400234, SI.NANO(SI.SECOND)));
-		time.combine.set(Measure.valueOf(234, SI.NANO(SI.SECOND)));
-		time.evaluation.set(Measure.valueOf(234, SI.NANO(SI.SECOND)));
-		time.execution.set(Measure.valueOf(234, SI.NANO(SI.SECOND)));
-		time.selection.set(Measure.valueOf(234, SI.NANO(SI.SECOND)));
-		time.statistics.set(Measure.valueOf(234, SI.NANO(SI.SECOND)));
-
-		IO.xml.write(time, System.out);
 	}
 
 }
