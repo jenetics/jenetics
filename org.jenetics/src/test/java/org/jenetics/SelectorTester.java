@@ -21,9 +21,10 @@ package org.jenetics;
 
 import static org.jenetics.util.accumulators.accumulate;
 
-import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.stat.Distribution;
 import org.jenetics.stat.Histogram;
@@ -34,7 +35,7 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-11-19 $</em>
+ * @version <em>$Date: 2014-01-31 $</em>
  */
 public abstract class SelectorTester<S extends Selector<Float64Gene, Float64>>
 	extends ObjectTester<S>

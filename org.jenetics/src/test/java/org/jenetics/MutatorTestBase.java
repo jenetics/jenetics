@@ -23,10 +23,11 @@ import static org.jenetics.TestUtils.diff;
 import static org.jenetics.TestUtils.newFloat64GenePopulation;
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 
-import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.NormalDistribution;
@@ -35,7 +36,7 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-08-29 $</em>
+ * @version <em>$Date: 2014-01-31 $</em>
  */
 public abstract class MutatorTestBase {
 

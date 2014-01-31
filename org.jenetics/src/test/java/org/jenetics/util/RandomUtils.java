@@ -23,13 +23,14 @@ import static org.jenetics.util.lambda.factory;
 
 import java.util.Random;
 
-import org.jenetics.util.math.random;
 import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.number.Integer64;
 
+import org.jenetics.util.math.random;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-01-30 $</em>
+ * @version <em>$Date: 2014-01-31 $</em>
  */
 public class RandomUtils {
 

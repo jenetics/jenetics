@@ -26,11 +26,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
 import javolution.xml.XMLSerializable;
 
 import org.jscience.mathematics.number.Float64;
-import org.testng.Assert;
-import org.testng.annotations.Test;
 
 import org.jenetics.util.Function;
 import org.jenetics.util.IO;
@@ -40,7 +41,7 @@ import org.jenetics.util.lists;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-01-29 $</em>
+ * @version <em>$Date: 2014-01-31 $</em>
  */
 public class PopulationTest {
 
