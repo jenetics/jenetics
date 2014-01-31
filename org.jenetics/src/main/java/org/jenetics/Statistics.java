@@ -35,6 +35,13 @@ import javax.measure.MeasureFormat;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 import javax.measure.unit.UnitFormat;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import javolution.lang.Immutable;
 import javolution.xml.XMLFormat;
@@ -44,8 +51,12 @@ import javolution.xml.stream.XMLStreamException;
 import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.number.Integer64;
 
+import org.jenetics.internal.util.jaxb;
+import org.jenetics.internal.util.model;
+
 import org.jenetics.stat.Variance;
 import org.jenetics.util.FinalReference;
+import org.jenetics.util.IO;
 import org.jenetics.util.accumulators;
 import org.jenetics.util.accumulators.MinMax;
 
@@ -54,7 +65,7 @@ import org.jenetics.util.accumulators.MinMax;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date$</em>
+ * @version @__version__@ &mdash; <em>$Date$</em>
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	implements
@@ -481,8 +492,9 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date$</em>
+	 * @version @__version__@ &mdash; <em>$Date$</em>
 	 */
+	@XmlJavaTypeAdapter(Statistics.Time.Model.Adapter.class)
 	public static final class Time implements XMLSerializable {
 		private static final long serialVersionUID = 1L;
 
@@ -568,12 +580,12 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			}
 
 			final Statistics.Time time = (Statistics.Time)object;
-			return eq(alter, time.alter) &&
-					eq(combine, time.combine) &&
-					eq(evaluation, time.evaluation) &&
-					eq(execution, time.execution) &&
-					eq(selection, time.selection) &&
-					eq(statistics, time.statistics);
+			return eq(alter.get(), time.alter.get()) &&
+					eq(combine.get(), time.combine.get()) &&
+					eq(evaluation.get(), time.evaluation.get()) &&
+					eq(execution.get(), time.execution.get()) &&
+					eq(selection.get(), time.selection.get()) &&
+					eq(statistics.get(), time.statistics.get());
 		}
 
 		@Override
@@ -648,14 +660,12 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			public void write(final Statistics.Time s, final OutputElement xml)
 				throws XMLStreamException
 			{
-				final MeasureFormat format = getMeasureFormat();
-
-				xml.add(format.format(s.alter.get()), ALTER_TIME);
-				xml.add(format.format(s.combine.get()), COMBINE_TIME);
-				xml.add(format.format(s.evaluation.get()), EVALUATION_TIME);
-				xml.add(format.format(s.execution.get()), EXECUTION_TIME);
-				xml.add(format.format(s.selection.get()), SELECTION_TIME);
-				xml.add(format.format(s.statistics.get()), STATISTICS_TIME);
+				xml.add(fd(s.alter.get()), ALTER_TIME);
+				xml.add(fd(s.combine.get()), COMBINE_TIME);
+				xml.add(fd(s.evaluation.get()), EVALUATION_TIME);
+				xml.add(fd(s.execution.get()), EXECUTION_TIME);
+				xml.add(fd(s.selection.get()), SELECTION_TIME);
+				xml.add(fd(s.statistics.get()), STATISTICS_TIME);
 			}
 			@Override
 			public void read(final InputElement xml, final Statistics.Time p) {
@@ -669,7 +679,84 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 				return MeasureFormat.getInstance(nf, uf);
 			}
 		};
-	}
+
+		/* ********************************************************************
+		 *  XML object serialization
+		 * ********************************************************************/
+		@XmlRootElement(name = "org.jenetics.Statistics.Time")
+		@XmlType(name = "org.jenetics.Statistics.Time")
+		@XmlAccessorType(XmlAccessType.FIELD)
+		static final class Model {
+
+			@XmlJavaTypeAdapter(jaxb.JavolutionElementAdapter.class)
+			@XmlElement(name = "alter-time")
+			public Object alterTime;
+
+			@XmlJavaTypeAdapter(jaxb.JavolutionElementAdapter.class)
+			@XmlElement(name = "combine-time")
+			public Object combineTime;
+
+			@XmlJavaTypeAdapter(jaxb.JavolutionElementAdapter.class)
+			@XmlElement(name = "evaluation-time")
+			public Object evaluationTime;
+
+			@XmlJavaTypeAdapter(jaxb.JavolutionElementAdapter.class)
+			@XmlElement(name = "execution-time")
+			public Object executionTime;
+
+			@XmlJavaTypeAdapter(jaxb.JavolutionElementAdapter.class)
+			@XmlElement(name = "selection-time")
+			public Object selectionTime;
+
+			@XmlJavaTypeAdapter(jaxb.JavolutionElementAdapter.class)
+			@XmlElement(name = "statistics-time")
+			public Object statisticsTime;
+
+			@model.ValueType(Time.class)
+			@model.ModelType(Model.class)
+			public static final class Adapter
+				extends XmlAdapter<Model, Time>
+			{
+				@Override
+				public Model marshal(final Time t) throws Exception {
+					final Model m = new Model();
+					m.alterTime = jaxb.marshal(fd(t.alter.get()));
+					m.combineTime = jaxb.marshal(fd(t.combine.get()));
+					m.evaluationTime = jaxb.marshal(fd(t.evaluation.get()));
+					m.executionTime = jaxb.marshal(fd(t.execution.get()));
+					m.selectionTime = jaxb.marshal(fd(t.selection.get()));
+					m.statisticsTime = jaxb.marshal(fd(t.statistics.get()));
+					return m;
+				}
+
+				@Override
+				public Time unmarshal(final Model m) throws Exception {
+					final Time t = new Time();
+					t.alter.set(pd(m.alterTime.toString()));
+					t.combine.set(pd(m.combineTime.toString()));
+					t.evaluation.set(pd(m.evaluationTime.toString()));
+					t.execution.set(pd(m.executionTime.toString()));
+					t.selection.set(pd(m.selectionTime.toString()));
+					t.statistics.set(pd(m.statisticsTime.toString()));
+					return t;
+				}
+			}
+
+			public static final Adapter Adapter = new Adapter();
+		}
+
+		private static String fd(final Measurable<Duration> duration) {
+			return String.format("%d ns", duration.longValue(SI.NANO(SI.SECOND)));
+		}
+
+		private static Measurable<Duration> pd(final String duration) {
+			return Measure.valueOf(
+				Long.parseLong(duration.split("\\s")[0]),
+				SI.NANO(SI.SECOND)
+			);
+		}
+
+ 	}
 
 
 	/**
@@ -728,6 +815,18 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			return builder;
 		}
 
+	}
+
+	public static void main(final String[] args) throws Exception {
+		final Time time = new Time();
+		time.alter.set(Measure.valueOf(0.00000023400234, SI.NANO(SI.SECOND)));
+		time.combine.set(Measure.valueOf(234, SI.NANO(SI.SECOND)));
+		time.evaluation.set(Measure.valueOf(234, SI.NANO(SI.SECOND)));
+		time.execution.set(Measure.valueOf(234, SI.NANO(SI.SECOND)));
+		time.selection.set(Measure.valueOf(234, SI.NANO(SI.SECOND)));
+		time.statistics.set(Measure.valueOf(234, SI.NANO(SI.SECOND)));
+
+		IO.xml.write(time, System.out);
 	}
 
 }

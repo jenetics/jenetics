@@ -64,7 +64,7 @@ import org.jenetics.util.functions;
  * @since 1.0
  * @version @__version__@ &mdash; <em>$Date$</em>
  */
-//@XmlJavaTypeAdapter(Phenotype.Model.Adapter.class)
+@XmlJavaTypeAdapter(Phenotype.Model.Adapter.class)
 public final class Phenotype<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>

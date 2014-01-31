@@ -39,6 +39,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
+
+import javax.measure.Measure;
+import javax.measure.unit.SI;
 
 import javolution.context.LocalContext;
 
@@ -94,70 +98,73 @@ public class PersistentObjects<T> {
 		 * Genes
 		 **********************************************************************/
 
-		put("BitGene[true]", BitGene.TRUE);
-		put("BitGene[false]", BitGene.FALSE);
-		put("CharacterGene", nextCharacterGene());
-		put("Integer64Gene", nextInteger64Gene());
-		put("Float64Gene", nextFloat64Gene());
+//		put("BitGene[true]", BitGene.TRUE);
+//		put("BitGene[false]", BitGene.FALSE);
+//		put("CharacterGene", nextCharacterGene());
+//		put("Integer64Gene", nextInteger64Gene());
+//		put("Float64Gene", nextFloat64Gene());
+//
+//		put("EnumGene<Boolean>", nextEnumGeneBoolean());
+//		put("EnumGene<Byte>", nextEnumGeneByte());
+//		put("EnumGene<Character>", nextEnumGeneCharacter());
+//		put("EnumGene<Short>", nextEnumGeneShort());
+//		put("EnumGene<Integer>", nextEnumGeneInteger());
+//		put("EnumGene<Long>", nextEnumGeneLong());
+//		put("EnumGene<Float>", nextEnumGeneFloat());
+//		put("EnumGene<Double>", nextEnumGeneDouble());
+//		put("EnumGene<String>", nextEnumGeneString());
+//		put("EnumGene<Float64>", nextEnumGeneFloat64());
+//		put("EnumGene<Integer64>", nextEnumGeneInteger64());
+//
+//		/* *********************************************************************
+//		 * Chromosomes
+//		 **********************************************************************/
+//
+//		put("BitChromosome", nextBitChromosome());
+//		put("CharacterChromosome", nextCharacterChromosome());
+//		put("Integer64Chromosome", nextInteger64Chromosome());
+//		put("Float64Chromosome", nextFloat64Chromosome());
+//
+//		put("PermutationChromosome<Integer>", nextIntegerPermutationChromosome());
+//		put("PermutationChromosome<Double>", nextDoublePermutationChromosome());
+//		put("PermutationChromosome<Float64>", nextFloat64PermutationChromosome());
+//		put("PermutationChromosome<Character>", nextCharacterPermutationChromosome());
+//		put("PermutationChromosome<String>", nextStringPermutationChromosome());
+//
+//		/* *********************************************************************
+//		 * Genotypes
+//		 **********************************************************************/
+//
+//		put("Genotype<BitGene>", nextGenotypeBitGene());
+//		put("Genotype<CharacterGene>", nextGenotypeCharacterGene());
+//		put("Genotype<Integer64Gene>", nextGenotypeInteger64Gene());
+//		put("Genotype<Float64Gene>", nextGenotypeFloat64Gene());
+//
+//
+//		/* *********************************************************************
+//		 * Phenotypes
+//		 **********************************************************************/
+//
+//		put("Phenotype<Integer64Gene, Integer>", nextPhenotypeInteger64GeneInteger());
+//		put("Phenotype<Integer64Gene, Long>", nextPhenotypeInteger64GeneLong());
+//		put("Phenotype<Integer64Gene, Double>", nextPhenotypeInteger64GeneDouble());
+//		put("Phenotype<Integer64Gene, Integer64>", nextPhenotypeInteger64GeneInteger64());
+//		put("Phenotype<Integer64Gene, Float64>", nextPhenotypeInteger64GeneFloat64());
+//		put("Phenotype<Float64Gene, Integer>", nextPhenotypeFloat64GeneInteger());
+//		put("Phenotype<Float64Gene, Long>", nextPhenotypeFloat64GeneLong());
+//		put("Phenotype<Float64Gene, Double>", nextPhenotypeFloat64GeneDouble());
+//		put("Phenotype<Float64Gene, Integer64>", nextPhenotypeFloat64GeneInteger64());
+//		put("Phenotype<Float64Gene, Float64>", nextPhenotypeFloat64GeneFloat64());
+//
+//		/* *********************************************************************
+//		 * Populations
+//		 **********************************************************************/
+//
+//		put("Population<Integer64Gene, Integer>", nextPopulationInteger64GeneInteger());
+//		put("Population<Float64Gene, Integer>", nextPopulationFloat64GeneInteger());
 
-		put("EnumGene<Boolean>", nextEnumGeneBoolean());
-		put("EnumGene<Byte>", nextEnumGeneByte());
-		put("EnumGene<Character>", nextEnumGeneCharacter());
-		put("EnumGene<Short>", nextEnumGeneShort());
-		put("EnumGene<Integer>", nextEnumGeneInteger());
-		put("EnumGene<Long>", nextEnumGeneLong());
-		put("EnumGene<Float>", nextEnumGeneFloat());
-		put("EnumGene<Double>", nextEnumGeneDouble());
-		put("EnumGene<String>", nextEnumGeneString());
-		put("EnumGene<Float64>", nextEnumGeneFloat64());
-		put("EnumGene<Integer64>", nextEnumGeneInteger64());
+		put("Statistics.Time", nextStatisticsTime());
 
-		/* *********************************************************************
-		 * Chromosomes
-		 **********************************************************************/
-
-		put("BitChromosome", nextBitChromosome());
-		put("CharacterChromosome", nextCharacterChromosome());
-		put("Integer64Chromosome", nextInteger64Chromosome());
-		put("Float64Chromosome", nextFloat64Chromosome());
-
-		put("PermutationChromosome<Integer>", nextIntegerPermutationChromosome());
-		put("PermutationChromosome<Double>", nextDoublePermutationChromosome());
-		put("PermutationChromosome<Float64>", nextFloat64PermutationChromosome());
-		put("PermutationChromosome<Character>", nextCharacterPermutationChromosome());
-		put("PermutationChromosome<String>", nextStringPermutationChromosome());
-
-		/* *********************************************************************
-		 * Genotypes
-		 **********************************************************************/
-
-		put("Genotype<BitGene>", nextGenotypeBitGene());
-		put("Genotype<CharacterGene>", nextGenotypeCharacterGene());
-		put("Genotype<Integer64Gene>", nextGenotypeInteger64Gene());
-		put("Genotype<Float64Gene>", nextGenotypeFloat64Gene());
-
-
-		/* *********************************************************************
-		 * Phenotypes
-		 **********************************************************************/
-
-		put("Phenotype<Integer64Gene, Integer>", nextPhenotypeInteger64GeneInteger());
-		put("Phenotype<Integer64Gene, Long>", nextPhenotypeInteger64GeneLong());
-		put("Phenotype<Integer64Gene, Double>", nextPhenotypeInteger64GeneDouble());
-		put("Phenotype<Integer64Gene, Integer64>", nextPhenotypeInteger64GeneInteger64());
-		put("Phenotype<Integer64Gene, Float64>", nextPhenotypeInteger64GeneFloat64());
-		put("Phenotype<Float64Gene, Integer>", nextPhenotypeFloat64GeneInteger());
-		put("Phenotype<Float64Gene, Long>", nextPhenotypeFloat64GeneLong());
-		put("Phenotype<Float64Gene, Double>", nextPhenotypeFloat64GeneDouble());
-		put("Phenotype<Float64Gene, Integer64>", nextPhenotypeFloat64GeneInteger64());
-		put("Phenotype<Float64Gene, Float64>", nextPhenotypeFloat64GeneFloat64());
-
-		/* *********************************************************************
-		 * Populations
-		 **********************************************************************/
-
-		put("Population<Integer64Gene, Integer>", nextPopulationInteger64GeneInteger());
-		put("Population<Float64Gene, Integer>", nextPopulationFloat64GeneInteger());
 	}
 
 	/* *************************************************************************
@@ -387,6 +394,23 @@ public class PersistentObjects<T> {
 		);
 
 		return new Population<>(seq.asList());
+	}
+
+	/* *************************************************************************
+	 * Statistics
+	 **************************************************************************/
+
+	public static Statistics.Time nextStatisticsTime() {
+		final Random random = RandomRegistry.getRandom();
+
+		final Statistics.Time time = new Statistics.Time();
+		time.alter.set(Measure.valueOf(random.nextInt(1233), SI.SECOND));
+		time.combine.set(Measure.valueOf(random.nextInt(1233), SI.MILLI(SI.SECOND)));
+		time.evaluation.set(Measure.valueOf(random.nextInt(1233), SI.MICRO(SI.SECOND)));
+		time.execution.set(Measure.valueOf(random.nextInt(1233), SI.NANO(SI.SECOND)));
+		time.selection.set(Measure.valueOf(random.nextInt(1233), SI.HECTO(SI.SECOND)));
+		time.statistics.set(Measure.valueOf(random.nextInt(1233), SI.KILO(SI.SECOND)));
+		return time;
 	}
 
 	/* *************************************************************************
