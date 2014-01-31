@@ -28,6 +28,17 @@ package org.jenetics.util;
  * @since @__version__@
  */
 public interface Scoped<T> extends AutoCloseable {
+
+	/**
+	 * Return the scoped object.
+	 *
+	 * @return the scoped object.
+	 */
 	public T get();
+
+	/**
+	 * Closing this scope and restoring the original state.
+	 */
 	public void close();
+
 }

@@ -65,7 +65,10 @@ import java.util.concurrent.atomic.AtomicReference;
  *         final LCG64ShiftRandom.ThreadSafe random =
  *             new LCG64ShiftRandom.ThreadSafe(1234)
  *
- *         try (Scoped<Random> c = RandomRegistry.with(random) {
+ *         try (Scoped<Random> scope = RandomRegistry.with(random) {
+ *             // Easy access the random engine of the opened scope.
+ *             assert(scope.get() == random);
+ *
  *             // Only the 'setup' step uses the new PRGN.
  *             ga.setup();
  *         }
@@ -84,7 +87,8 @@ import java.util.concurrent.atomic.AtomicReference;
  * @since 1.0
  * @version @__version__@ &mdash; <em>$Date$</em>
  */
-public class RandRegistry {
+public final class RandRegistry extends StaticObject {
+	private RandRegistry() {}
 
 	private static final ThreadLocal<Entry> THREAD_LOCAL_ENTRY = new ThreadLocal<>();
 
@@ -110,7 +114,13 @@ public class RandRegistry {
 		if (e != null) e.random = random; else ENTRY.set(new Entry(random));
 	}
 
-	static Scoped<Random> with(final Random random) {
+	/**
+	 * Opens a new {@code Scope} with the given random engine.
+	 *
+	 * @param random the PRNG used for the opened scope.
+	 * @return the scope with the given random object.
+	 */
+	public static Scoped<Random> with(final Random random) {
 		final Entry e = THREAD_LOCAL_ENTRY.get();
 		if (e != null) {
 			THREAD_LOCAL_ENTRY.set(e.inner(random));
