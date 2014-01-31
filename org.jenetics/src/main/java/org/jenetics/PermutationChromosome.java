@@ -349,7 +349,8 @@ public final class PermutationChromosome<T>
 			{
 				final ISeq seq = Array.valueOf(model.genes)
 					.map(jaxb.Unmarshaller).toISeq();
-				final Array<Integer> indexes = Array.valueOf(model.indexes.toString().split(","))
+				final Array<Integer> indexes = Array
+					.valueOf(model.indexes.toString().split(","))
 					.map(StringToInteger);
 
 				final Array<Object> genes = new Array<>(seq.length());
