@@ -8,6 +8,7 @@ BitChromosome$Model
 CharacterChromosome$Model
 Integer64Chromosome$Model
 Float64Chromosome$Model
+PermutationChromosome$Model
 
 Genotype$Model
 Phenotype$Model
