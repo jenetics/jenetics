@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<org.jenetics.PermutationChromosome length="15">
+	<java.lang.Double value="0.27251556008507416"/>
+	<java.lang.Double value="0.0031408162290671449"/>
+	<java.lang.Double value="0.43947528327497376"/>
+	<java.lang.Double value="0.10654807463069327"/>
+	<java.lang.Double value="0.19696530915810317"/>
+	<java.lang.Double value="0.74500038380655376"/>
+	<java.lang.Double value="0.55944169692713586"/>
+	<java.lang.Double value="0.02823782430152355"/>
+	<java.lang.Double value="0.57411023150107887"/>
+	<java.lang.Double value="0.45336510413671438"/>
+	<java.lang.Double value="0.81114814180036698"/>
+	<java.lang.Double value="0.5710456351848858"/>
+	<java.lang.Double value="0.30166768355230955"/>
+	<java.lang.Double value="0.5455492865240272"/>
+	<java.lang.Double value="0.21068427527733102"/>
+	<allele-indexes class="java.lang.String" value="13,12,4,6,8,14,7,2,11,5,3,0,9,10,1"/>
+</org.jenetics.PermutationChromosome>
