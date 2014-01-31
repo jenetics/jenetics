@@ -20,11 +20,14 @@
 package org.jenetics.util;
 
 /**
+ * Defines a local scope, where the containing value is valid. When the scope is
+ * left, the original value is restored.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version @__version__@ &mdash; <em>$Date$</em>
  * @since @__version__@
  */
-public interface Context<T> extends AutoCloseable {
+public interface Scoped<T> extends AutoCloseable {
 	public T get();
 	public void close();
 }

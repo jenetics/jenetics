@@ -24,15 +24,71 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
+ * This class holds the {@link Random} engine used for the GA. The
+ * {@code RandomRegistry} is thread safe. The registry is initialized with the
+ * {@link ThreadLocalRandom} PRNG, which has a much better performance behavior
+ * than an instance of the {@code Random} class. Alternatively, you can
+ * initialize the registry with one of the PRNG, which are being part of the
+ * library.
+ * <p/>
+ *
+ * <b>Setup of a <i>global</i> PRNG</b>
+ *
+ * [code]
+ * public class GA {
+ *     public static void main(final String[] args) {
+ *         // Initialize the registry with a ThreadLocal instance of the PRGN.
+ *         // This is the preferred way setting a new PRGN.
+ *         RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
+ *
+ *         // Using a thread safe variant of the PRGN. Leads to slower PRN
+ *         // generation, but gives you the possibility to set a PRNG seed.
+ *         RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadSafe(1234));
+ *
+ *         ...
+ *         final GeneticAlgorithm<Float64Gene, Float64> ga = ...
+ *         ga.evolve(100);
+ *     }
+ * }
+ * [/code]
+ * <p/>
+ *
+ * <b>Setup of a <i>local</i> PRNG</b><br/>
+ *
+ * You can temporarily (and locally) change the implementation of the PRNG.
+ *
+ * [code]
+ * public class GA {
+ *     public static void main(final String[] args) {
+ *         ...
+ *         final GeneticAlgorithm<Float64Gene, Float64> ga = ...
+ *         final LCG64ShiftRandom.ThreadSafe random =
+ *             new LCG64ShiftRandom.ThreadSafe(1234)
+ *
+ *         try (Scoped<Random> c = RandomRegistry.with(random) {
+ *             // Only the 'setup' step uses the new PRGN.
+ *             ga.setup();
+ *         }
+ *
+ *         ga.evolve(100);
+ *     }
+ * }
+ * [/code]
+ * <p/>
+ *
+ * @see Random
+ * @see ThreadLocalRandom
+ * @see LCG64ShiftRandom
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version @__version__@ &mdash; <em>$Date$</em>
- * @since @__version__@
  */
 public class RandRegistry {
 
-	private static final ThreadLocal<Entry> ENTRY = new ThreadLocal<>();
+	private static final ThreadLocal<Entry> THREAD_LOCAL_ENTRY = new ThreadLocal<>();
 
-	private static AtomicReference<Entry> entry = new AtomicReference<>(
+	private static AtomicReference<Entry> ENTRY = new AtomicReference<>(
 		new Entry(ThreadLocalRandom.current())
 	);
 
@@ -45,30 +101,30 @@ public class RandRegistry {
 	}
 
 	private static Entry getEntry() {
-		final Entry e = ENTRY.get();
-		return e != null ? e : entry.get();
+		final Entry e = THREAD_LOCAL_ENTRY.get();
+		return e != null ? e : ENTRY.get();
 	}
 
 	private static void setEntry(final Random random) {
-		final Entry e = ENTRY.get();
-		if (e != null) e.random = random; else entry.set(new Entry(random));
+		final Entry e = THREAD_LOCAL_ENTRY.get();
+		if (e != null) e.random = random; else ENTRY.set(new Entry(random));
 	}
 
-	static Context<Random> with(final Random random) {
-		final Entry e = ENTRY.get();
+	static Scoped<Random> with(final Random random) {
+		final Entry e = THREAD_LOCAL_ENTRY.get();
 		if (e != null) {
-			ENTRY.set(e.inner(random));
+			THREAD_LOCAL_ENTRY.set(e.inner(random));
 		} else {
-			ENTRY.set(new Entry(random, Thread.currentThread()));
+			THREAD_LOCAL_ENTRY.set(new Entry(random, Thread.currentThread()));
 		}
 
-		return new Ctx(random);
+		return new RandomScope(random);
 	}
 
-	private static final class Ctx implements Context<Random> {
+	private static final class RandomScope implements Scoped<Random> {
 		private final Random _random;
 
-		public Ctx(final Random random) {
+		public RandomScope(final Random random) {
 			_random = random;
 		}
 
@@ -79,7 +135,7 @@ public class RandRegistry {
 
 		@Override
 		public void close() {
-			final Entry e = ENTRY.get();
+			final Entry e = THREAD_LOCAL_ENTRY.get();
 			if (e != null) {
 				if (e.thread != Thread.currentThread()) {
 					throw new IllegalStateException(
@@ -87,7 +143,7 @@ public class RandRegistry {
 					);
 				}
 
-				ENTRY.set(e.parent);
+				THREAD_LOCAL_ENTRY.set(e.parent);
 			} else {
 				throw new IllegalStateException(
 					"Random context has been already close."
