@@ -35,13 +35,6 @@ import javax.measure.MeasureFormat;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 import javax.measure.unit.UnitFormat;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import javolution.lang.Immutable;
 import javolution.xml.XMLFormat;
@@ -50,9 +43,6 @@ import javolution.xml.stream.XMLStreamException;
 
 import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.number.Integer64;
-
-import org.jenetics.internal.util.jaxb;
-import org.jenetics.internal.util.model;
 
 import org.jenetics.stat.Variance;
 import org.jenetics.util.FinalReference;
@@ -494,7 +484,6 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 * @since 1.0
 	 * @version @__version__@ &mdash; <em>$Date: 2014-01-31 $</em>
 	 */
-	@XmlJavaTypeAdapter(Statistics.Time.Model.Adapter.class)
 	public static final class Time implements XMLSerializable {
 		private static final long serialVersionUID = 1L;
 
@@ -680,80 +669,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			}
 		};
 
-		/* ********************************************************************
-		 *  XML object serialization
-		 * ********************************************************************/
-		@XmlRootElement(name = "org.jenetics.Statistics.Time")
-		@XmlType(name = "org.jenetics.Statistics.Time")
-		@XmlAccessorType(XmlAccessType.FIELD)
-		static final class Model {
-
-			@XmlJavaTypeAdapter(jaxb.JavolutionElementAdapter.class)
-			@XmlElement(name = "alter-time")
-			public Object alterTime;
-
-			@XmlJavaTypeAdapter(jaxb.JavolutionElementAdapter.class)
-			@XmlElement(name = "combine-time")
-			public Object combineTime;
-
-			@XmlJavaTypeAdapter(jaxb.JavolutionElementAdapter.class)
-			@XmlElement(name = "evaluation-time")
-			public Object evaluationTime;
-
-			@XmlJavaTypeAdapter(jaxb.JavolutionElementAdapter.class)
-			@XmlElement(name = "execution-time")
-			public Object executionTime;
-
-			@XmlJavaTypeAdapter(jaxb.JavolutionElementAdapter.class)
-			@XmlElement(name = "selection-time")
-			public Object selectionTime;
-
-			@XmlJavaTypeAdapter(jaxb.JavolutionElementAdapter.class)
-			@XmlElement(name = "statistics-time")
-			public Object statisticsTime;
-
-			@model.ValueType(Time.class)
-			@model.ModelType(Model.class)
-			public static final class Adapter
-				extends XmlAdapter<Model, Time>
-			{
-				@Override
-				public Model marshal(final Time t) throws Exception {
-					final Model m = new Model();
-					m.alterTime = jaxb.marshal(fd(t.alter.get()));
-					m.combineTime = jaxb.marshal(fd(t.combine.get()));
-					m.evaluationTime = jaxb.marshal(fd(t.evaluation.get()));
-					m.executionTime = jaxb.marshal(fd(t.execution.get()));
-					m.selectionTime = jaxb.marshal(fd(t.selection.get()));
-					m.statisticsTime = jaxb.marshal(fd(t.statistics.get()));
-					return m;
-				}
-
-				@Override
-				public Time unmarshal(final Model m) throws Exception {
-					final Time t = new Time();
-					t.alter.set(pd(m.alterTime.toString()));
-					t.combine.set(pd(m.combineTime.toString()));
-					t.evaluation.set(pd(m.evaluationTime.toString()));
-					t.execution.set(pd(m.executionTime.toString()));
-					t.selection.set(pd(m.selectionTime.toString()));
-					t.statistics.set(pd(m.statisticsTime.toString()));
-					return t;
-				}
-			}
-
-			public static final Adapter Adapter = new Adapter();
-		}
-
 		private static String fd(final Measurable<Duration> duration) {
 			return String.format("%d ns", duration.longValue(SI.NANO(SI.SECOND)));
-		}
-
-		private static Measurable<Duration> pd(final String duration) {
-			return Measure.valueOf(
-				Long.parseLong(duration.split("\\s")[0]),
-				SI.NANO(SI.SECOND)
-			);
 		}
 
  	}

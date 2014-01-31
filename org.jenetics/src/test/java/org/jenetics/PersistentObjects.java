@@ -98,72 +98,72 @@ public class PersistentObjects<T> {
 		 * Genes
 		 **********************************************************************/
 
-//		put("BitGene[true]", BitGene.TRUE);
-//		put("BitGene[false]", BitGene.FALSE);
-//		put("CharacterGene", nextCharacterGene());
-//		put("Integer64Gene", nextInteger64Gene());
-//		put("Float64Gene", nextFloat64Gene());
-//
-//		put("EnumGene<Boolean>", nextEnumGeneBoolean());
-//		put("EnumGene<Byte>", nextEnumGeneByte());
-//		put("EnumGene<Character>", nextEnumGeneCharacter());
-//		put("EnumGene<Short>", nextEnumGeneShort());
-//		put("EnumGene<Integer>", nextEnumGeneInteger());
-//		put("EnumGene<Long>", nextEnumGeneLong());
-//		put("EnumGene<Float>", nextEnumGeneFloat());
-//		put("EnumGene<Double>", nextEnumGeneDouble());
-//		put("EnumGene<String>", nextEnumGeneString());
-//		put("EnumGene<Float64>", nextEnumGeneFloat64());
-//		put("EnumGene<Integer64>", nextEnumGeneInteger64());
-//
-//		/* *********************************************************************
-//		 * Chromosomes
-//		 **********************************************************************/
-//
-//		put("BitChromosome", nextBitChromosome());
-//		put("CharacterChromosome", nextCharacterChromosome());
-//		put("Integer64Chromosome", nextInteger64Chromosome());
-//		put("Float64Chromosome", nextFloat64Chromosome());
-//
-//		put("PermutationChromosome<Integer>", nextIntegerPermutationChromosome());
-//		put("PermutationChromosome<Double>", nextDoublePermutationChromosome());
-//		put("PermutationChromosome<Float64>", nextFloat64PermutationChromosome());
-//		put("PermutationChromosome<Character>", nextCharacterPermutationChromosome());
-//		put("PermutationChromosome<String>", nextStringPermutationChromosome());
-//
-//		/* *********************************************************************
-//		 * Genotypes
-//		 **********************************************************************/
-//
-//		put("Genotype<BitGene>", nextGenotypeBitGene());
-//		put("Genotype<CharacterGene>", nextGenotypeCharacterGene());
-//		put("Genotype<Integer64Gene>", nextGenotypeInteger64Gene());
-//		put("Genotype<Float64Gene>", nextGenotypeFloat64Gene());
-//
-//
-//		/* *********************************************************************
-//		 * Phenotypes
-//		 **********************************************************************/
-//
-//		put("Phenotype<Integer64Gene, Integer>", nextPhenotypeInteger64GeneInteger());
-//		put("Phenotype<Integer64Gene, Long>", nextPhenotypeInteger64GeneLong());
-//		put("Phenotype<Integer64Gene, Double>", nextPhenotypeInteger64GeneDouble());
-//		put("Phenotype<Integer64Gene, Integer64>", nextPhenotypeInteger64GeneInteger64());
-//		put("Phenotype<Integer64Gene, Float64>", nextPhenotypeInteger64GeneFloat64());
-//		put("Phenotype<Float64Gene, Integer>", nextPhenotypeFloat64GeneInteger());
-//		put("Phenotype<Float64Gene, Long>", nextPhenotypeFloat64GeneLong());
-//		put("Phenotype<Float64Gene, Double>", nextPhenotypeFloat64GeneDouble());
-//		put("Phenotype<Float64Gene, Integer64>", nextPhenotypeFloat64GeneInteger64());
-//		put("Phenotype<Float64Gene, Float64>", nextPhenotypeFloat64GeneFloat64());
-//
-//		/* *********************************************************************
-//		 * Populations
-//		 **********************************************************************/
-//
-//		put("Population<Integer64Gene, Integer>", nextPopulationInteger64GeneInteger());
-//		put("Population<Float64Gene, Integer>", nextPopulationFloat64GeneInteger());
+		put("BitGene[true]", BitGene.TRUE);
+		put("BitGene[false]", BitGene.FALSE);
+		put("CharacterGene", nextCharacterGene());
+		put("Integer64Gene", nextInteger64Gene());
+		put("Float64Gene", nextFloat64Gene());
 
-		put("Statistics.Time", nextStatisticsTime());
+		put("EnumGene<Boolean>", nextEnumGeneBoolean());
+		put("EnumGene<Byte>", nextEnumGeneByte());
+		put("EnumGene<Character>", nextEnumGeneCharacter());
+		put("EnumGene<Short>", nextEnumGeneShort());
+		put("EnumGene<Integer>", nextEnumGeneInteger());
+		put("EnumGene<Long>", nextEnumGeneLong());
+		put("EnumGene<Float>", nextEnumGeneFloat());
+		put("EnumGene<Double>", nextEnumGeneDouble());
+		put("EnumGene<String>", nextEnumGeneString());
+		put("EnumGene<Float64>", nextEnumGeneFloat64());
+		put("EnumGene<Integer64>", nextEnumGeneInteger64());
+
+		/* *********************************************************************
+		 * Chromosomes
+		 **********************************************************************/
+
+		put("BitChromosome", nextBitChromosome());
+		put("CharacterChromosome", nextCharacterChromosome());
+		put("Integer64Chromosome", nextInteger64Chromosome());
+		put("Float64Chromosome", nextFloat64Chromosome());
+
+		put("PermutationChromosome<Integer>", nextIntegerPermutationChromosome());
+		put("PermutationChromosome<Double>", nextDoublePermutationChromosome());
+		put("PermutationChromosome<Float64>", nextFloat64PermutationChromosome());
+		put("PermutationChromosome<Character>", nextCharacterPermutationChromosome());
+		put("PermutationChromosome<String>", nextStringPermutationChromosome());
+
+		/* *********************************************************************
+		 * Genotypes
+		 **********************************************************************/
+
+		put("Genotype<BitGene>", nextGenotypeBitGene());
+		put("Genotype<CharacterGene>", nextGenotypeCharacterGene());
+		put("Genotype<Integer64Gene>", nextGenotypeInteger64Gene());
+		put("Genotype<Float64Gene>", nextGenotypeFloat64Gene());
+
+
+		/* *********************************************************************
+		 * Phenotypes
+		 **********************************************************************/
+
+		put("Phenotype<Integer64Gene, Integer>", nextPhenotypeInteger64GeneInteger());
+		put("Phenotype<Integer64Gene, Long>", nextPhenotypeInteger64GeneLong());
+		put("Phenotype<Integer64Gene, Double>", nextPhenotypeInteger64GeneDouble());
+		put("Phenotype<Integer64Gene, Integer64>", nextPhenotypeInteger64GeneInteger64());
+		put("Phenotype<Integer64Gene, Float64>", nextPhenotypeInteger64GeneFloat64());
+		put("Phenotype<Float64Gene, Integer>", nextPhenotypeFloat64GeneInteger());
+		put("Phenotype<Float64Gene, Long>", nextPhenotypeFloat64GeneLong());
+		put("Phenotype<Float64Gene, Double>", nextPhenotypeFloat64GeneDouble());
+		put("Phenotype<Float64Gene, Integer64>", nextPhenotypeFloat64GeneInteger64());
+		put("Phenotype<Float64Gene, Float64>", nextPhenotypeFloat64GeneFloat64());
+
+		/* *********************************************************************
+		 * Populations
+		 **********************************************************************/
+
+		put("Population<Integer64Gene, Integer>", nextPopulationInteger64GeneInteger());
+		put("Population<Float64Gene, Integer>", nextPopulationFloat64GeneInteger());
+
+		//put("Statistics.Time", nextStatisticsTime());
 
 	}
 

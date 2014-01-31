@@ -13,5 +13,3 @@ PermutationChromosome$Model
 Genotype$Model
 Phenotype$Model
 Population$Model
-
-Statistics$Time$Model
