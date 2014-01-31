@@ -35,7 +35,7 @@ import org.jenetics.util.IO;
  * @version @__version__@ &mdash; <em>$Date$</em>
  * @since @__version__@
  */
-public class XMLMarshallingTest {
+public class MarshallingTest {
 
 	private static final String RESOURCE_PATTERN = "/org/jenetics/serialization/%s.%s";
 
@@ -108,7 +108,7 @@ public class XMLMarshallingTest {
 		write.write(object, out);
 
 		final byte[] data = out.toByteArray();
-		System.out.println(new String(data));
+		//System.out.println(new String(data));
 		final ByteArrayInputStream in = new ByteArrayInputStream(data);
 		final Object copy = read.read(in);
 
