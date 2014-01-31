@@ -82,7 +82,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-01-31 $</em>
+ * @version @__version__@ &mdash; <em>$Date$</em>
  */
 public class RandRegistry {
 
