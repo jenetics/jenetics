@@ -121,6 +121,12 @@ public class PersistentObjects<T> {
 		put("Integer64Chromosome", nextInteger64Chromosome());
 		put("Float64Chromosome", nextFloat64Chromosome());
 
+		put("PermutationChromosome<Integer>", nextIntegerPermutationChromosome());
+		put("PermutationChromosome<Double>", nextDoublePermutationChromosome());
+		put("PermutationChromosome<Float64>", nextFloat64PermutationChromosome());
+		put("PermutationChromosome<Character>", nextCharacterPermutationChromosome());
+		put("PermutationChromosome<String>", nextStringPermutationChromosome());
+
 		/* *********************************************************************
 		 * Genotypes
 		 **********************************************************************/
@@ -233,6 +239,31 @@ public class PersistentObjects<T> {
 	public static Float64Chromosome nextFloat64Chromosome() {
 		return new Float64Chromosome(0.0, 1.0, 20);
 	}
+
+	public static PermutationChromosome<Integer> nextIntegerPermutationChromosome() {
+		return PermutationChromosome.ofInteger(15);
+	}
+
+	public static PermutationChromosome<Double> nextDoublePermutationChromosome() {
+		return new PermutationChromosome<>(ISeq(15, DoubleFactory));
+	}
+
+	public static PermutationChromosome<Float64> nextFloat64PermutationChromosome() {
+		return new PermutationChromosome<>(ISeq(15, Float64Factory));
+	}
+
+	public static PermutationChromosome<Character> nextCharacterPermutationChromosome() {
+		return new PermutationChromosome<>(ISeq(15, CharacterFactory));
+	}
+
+	public static PermutationChromosome<String> nextStringPermutationChromosome() {
+		return new PermutationChromosome<>(ISeq(15, StringFactory));
+	}
+
+
+	/* *************************************************************************
+	 * Genotypes
+	 **************************************************************************/
 
 	public static Genotype<BitGene> nextGenotypeBitGene() {
 		return Genotype.valueOf(ISeq(5, BitChromosomeFactory));
