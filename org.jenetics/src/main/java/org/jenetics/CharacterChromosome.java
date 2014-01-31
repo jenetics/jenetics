@@ -54,7 +54,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__value__@ &mdash; <em>$Date: 2014-01-24 $</em>
+ * @version @__value__@ &mdash; <em>$Date: 2014-01-31 $</em>
  */
 public class CharacterChromosome
 	extends
@@ -346,8 +346,6 @@ public class CharacterChromosome
 	/* *************************************************************************
 	 *  JAXB object serialization
 	 * ************************************************************************/
-
-	//<org.jenetics.CharacterChromosome length="20" valid-characters=" !&quot;#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~">U=rq^@54d,m\M7,e,d8`</org.jenetics.CharacterChromosome>
 
 	@XmlRootElement(name = "org.jenetics.CharacterChromosome")
 	@XmlType(name = "org.jenetics.CharacterChromosome")
