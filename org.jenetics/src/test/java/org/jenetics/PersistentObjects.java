@@ -215,7 +215,7 @@ public class PersistentObjects<T> {
 	}
 
 	/* *************************************************************************
-	 * Chromosome
+	 * Chromosomes
 	 **************************************************************************/
 
 	public static BitChromosome nextBitChromosome() {
