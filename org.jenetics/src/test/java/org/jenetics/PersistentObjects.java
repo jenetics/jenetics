@@ -54,7 +54,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-01-30 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-31 $</em>
  * @since @__version__@
  */
 public class PersistentObjects<T> {
@@ -215,7 +215,7 @@ public class PersistentObjects<T> {
 	}
 
 	/* *************************************************************************
-	 * Chromosome
+	 * Chromosomes
 	 **************************************************************************/
 
 	public static BitChromosome nextBitChromosome() {
