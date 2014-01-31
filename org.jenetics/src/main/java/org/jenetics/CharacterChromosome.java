@@ -347,8 +347,6 @@ public class CharacterChromosome
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	//<org.jenetics.CharacterChromosome length="20" valid-characters=" !&quot;#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~">U=rq^@54d,m\M7,e,d8`</org.jenetics.CharacterChromosome>
-
 	@XmlRootElement(name = "org.jenetics.CharacterChromosome")
 	@XmlType(name = "org.jenetics.CharacterChromosome")
 	@XmlAccessorType(XmlAccessType.FIELD)
