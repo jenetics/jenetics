@@ -53,7 +53,7 @@ public class XMLMarshallingTest {
 		test(object.getValue(), IO.xml, IO.jaxb);
 	}
 
-	//@Test(dataProvider = "objects")
+	@Test(dataProvider = "objects")
 	public void xmlMarshallingCompatibility(final PersistentObject<?> object)
 		throws IOException
 	{
@@ -69,7 +69,7 @@ public class XMLMarshallingTest {
 		}
 	}
 
-	//@Test(dataProvider = "objects")
+	@Test(dataProvider = "objects")
 	public void jaxbMarshallingCompatibility(final PersistentObject<?> object)
 		throws IOException
 	{
@@ -85,7 +85,7 @@ public class XMLMarshallingTest {
 		}
 	}
 
-	//@Test(dataProvider = "objects")
+	@Test(dataProvider = "objects")
 	public void objectMarshallingCompatibility(final PersistentObject<?> object)
 		throws IOException
 	{
