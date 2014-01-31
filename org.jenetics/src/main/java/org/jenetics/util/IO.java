@@ -116,6 +116,10 @@ public abstract class IO {
 		}
 	};
 
+	/**
+	 * JAXB implementation for <i>XML</i> serialization. Is compatible to the
+	 * existing, deprecated {@link #xml} marshalling.
+	 */
 	public static final IO jaxb = new IO() {
 
 		@Override
