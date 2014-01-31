@@ -54,7 +54,7 @@ import org.jenetics.util.accumulators.MinMax;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-12-05 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-01-31 $</em>
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	implements
@@ -67,7 +67,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-12-05 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2014-01-31 $</em>
 	 */
 	public static class Builder<
 		G extends Gene<?, G>,
@@ -481,7 +481,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-12-05 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2014-01-31 $</em>
 	 */
 	public static final class Time implements XMLSerializable {
 		private static final long serialVersionUID = 1L;
@@ -595,6 +595,10 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			return out.toString();
 		}
 
+		/* ********************************************************************
+		 *  XML object serialization
+		 * ********************************************************************/
+
 		static final XMLFormat<Statistics.Time> XML =
 			new XMLFormat<Statistics.Time>(Statistics.Time.class)
 		{
@@ -674,7 +678,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-12-05 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2014-01-31 $</em>
 	 */
 	public static class Calculator<
 		G extends Gene<?, G>,
