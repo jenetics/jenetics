@@ -24,7 +24,7 @@ package org.jenetics.util;
  * @version @__version__@ &mdash; <em>$Date$</em>
  * @since @__version__@
  */
-interface Context<T> extends AutoCloseable {
+public interface Context<T> extends AutoCloseable {
 	public T get();
 	public void close();
 }
