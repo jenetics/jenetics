@@ -595,6 +595,10 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			return out.toString();
 		}
 
+		/* ********************************************************************
+		 *  XML object serialization
+		 * ********************************************************************/
+
 		static final XMLFormat<Statistics.Time> XML =
 			new XMLFormat<Statistics.Time>(Statistics.Time.class)
 		{
