@@ -370,10 +370,10 @@ public final class model extends StaticObject {
 		public static final Adapter Adapter = new Adapter();
 
 		public static final Function<Integer64, Integer64Model>
-			Marshaller = jaxb.marshaller(Adapter);
+			Marshaller = jaxb.Marshaller(Adapter);
 
 		public static final Function<Integer64Model, Integer64>
-			Unmarshaller = jaxb.unmarshaller(Adapter);
+			Unmarshaller = jaxb.Unmarshaller(Adapter);
 
 	}
 
@@ -406,10 +406,10 @@ public final class model extends StaticObject {
 		public static final Adapter Adapter = new Adapter();
 
 		public static final Function<Float64, Float64Model> Marshaller =
-			jaxb.marshaller(Adapter);
+			jaxb.Marshaller(Adapter);
 
 		public static final Function<Float64Model, Float64> Unmarshaller =
-			jaxb.unmarshaller(Adapter);
+			jaxb.Unmarshaller(Adapter);
 
 	}
 

@@ -32,7 +32,7 @@ import org.jenetics.util.StaticObject;
  * Helper methods concerning Java reflection.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-01-29 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-02-01 $</em>
  * @since @__version__@
  */
 public class reflect extends StaticObject {
@@ -104,5 +104,8 @@ public class reflect extends StaticObject {
 		}
 	}
 
+	public static Class<?> classOf(final Object value) {
+		return value instanceof Class<?> ? (Class<?>)value : value.getClass();
+	}
 
 }
