@@ -43,7 +43,7 @@ import org.jenetics.util.StaticObject;
  * integer and float types of the JScience library.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-01-24 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-02-01 $</em>
  * @since @__version__@
  */
 public final class model extends StaticObject {
@@ -93,12 +93,6 @@ public final class model extends StaticObject {
 
 		public static final Adapter Adapter = new Adapter();
 
-		public static final Function<Boolean, BooleanModel> Marshaller =
-			jaxb.marshaller(Adapter);
-
-		public static final Function<BooleanModel, Boolean> Unmarshaller =
-			jaxb.unmarshaller(Adapter);
-
 	}
 
 	@XmlRootElement(name = "java.lang.Byte")
@@ -128,12 +122,6 @@ public final class model extends StaticObject {
 		}
 
 		public static final Adapter Adapter = new Adapter();
-
-		public static final Function<Byte, ByteModel> Marshaller =
-			jaxb.marshaller(Adapter);
-
-		public static final Function<ByteModel, Byte> Unmarshaller =
-			jaxb.unmarshaller(Adapter);
 
 	}
 
@@ -165,12 +153,6 @@ public final class model extends StaticObject {
 
 		public static final Adapter Adapter = new Adapter();
 
-		public static final Function<Character, CharacterModel> Marshaller =
-			jaxb.marshaller(Adapter);
-
-		public static final Function<CharacterModel, Character> Unmarshaller =
-			jaxb.unmarshaller(Adapter);
-
 	}
 
 	@XmlRootElement(name = "java.lang.Short")
@@ -200,12 +182,6 @@ public final class model extends StaticObject {
 		}
 
 		public static final Adapter Adapter = new Adapter();
-
-		public static final Function<Short, ShortModel> Marshaller =
-			jaxb.marshaller(Adapter);
-
-		public static final Function<ShortModel, Short> Unmarshaller =
-			jaxb.unmarshaller(Adapter);
 
 	}
 
@@ -237,12 +213,6 @@ public final class model extends StaticObject {
 
 		public static final Adapter Adapter = new Adapter();
 
-		public static final Function<Integer, IntegerModel> Marshaller =
-			jaxb.marshaller(Adapter);
-
-		public static final Function<IntegerModel, Integer> Unmarshaller =
-			jaxb.unmarshaller(Adapter);
-
 	}
 
 	@XmlRootElement(name = "java.lang.Long")
@@ -272,12 +242,6 @@ public final class model extends StaticObject {
 		}
 
 		public static final Adapter Adapter = new Adapter();
-
-		public static final Function<Long, LongModel> Marshaller =
-			jaxb.marshaller(Adapter);
-
-		public static final Function<LongModel, Long> Unmarshaller =
-			jaxb.unmarshaller(Adapter);
 
 	}
 
@@ -309,11 +273,6 @@ public final class model extends StaticObject {
 
 		public static final Adapter Adapter = new Adapter();
 
-		public static final Function<Float, FloatModel> Marshaller =
-			jaxb.marshaller(Adapter);
-
-		public static final Function<FloatModel, Float> Unmarshaller =
-			jaxb.unmarshaller(Adapter);
 
 	}
 
@@ -345,12 +304,6 @@ public final class model extends StaticObject {
 
 		public static final Adapter Adapter = new Adapter();
 
-		public static final Function<Double, DoubleModel> Marshaller =
-			jaxb.marshaller(Adapter);
-
-		public static final Function<DoubleModel, Double> Unmarshaller =
-			jaxb.unmarshaller(Adapter);
-
 	}
 
 	@XmlRootElement(name = "java.lang.String")
@@ -380,12 +333,6 @@ public final class model extends StaticObject {
 		}
 
 		public static final Adapter Adapter = new Adapter();
-
-		public static final Function<String, StringModel> Marshaller =
-			jaxb.marshaller(Adapter);
-
-		public static final Function<StringModel, String> Unmarshaller =
-			jaxb.unmarshaller(Adapter);
 
 	}
 
