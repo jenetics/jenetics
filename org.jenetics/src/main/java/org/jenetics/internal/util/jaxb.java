@@ -19,6 +19,8 @@
  */
 package org.jenetics.internal.util;
 
+import static org.jenetics.internal.util.reflect.classOf;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,6 +89,7 @@ public class jaxb extends StaticObject {
 
 	private static final Map<Class<?>, XmlAdapter<? extends Object, ? extends Object>>
 		ADAPTER_CACHE = new HashMap<>();
+
 	static {
 		ADAPTER_CACHE.put(Boolean.class, BooleanModel.Adapter);
 		ADAPTER_CACHE.put(BooleanModel.class, BooleanModel.Adapter);
@@ -132,8 +135,7 @@ public class jaxb extends StaticObject {
 	 */
 	@SuppressWarnings("unchecked")
 	public static XmlAdapter<Object, Object> adapterFor(final Object value) {
-		final Class<?> cls = value instanceof Class<?> ?
-			(Class<?>)value : value.getClass();
+		final Class<?> cls = classOf(value);
 
 		synchronized (ADAPTER_CACHE) {
 			if (!ADAPTER_CACHE.containsKey(cls)) {
@@ -162,38 +164,71 @@ public class jaxb extends StaticObject {
 		return adapter;
 	}
 
+	/**
+	 * Return the model type (Class<?>) for the given object. If the given
+	 * object is its own model, {@code value.getClass()} is returned.
+	 *
+	 * @param value the object we try to find the model type.
+	 * @return the model type of the given value.
+	 */
 	public static Class<?> modelTypeFor(final Object value) {
+		Class<?> modelType = classOf(value);
+
 		final Object adapter = adapterFor(value);
 		final ModelType ma = adapter.getClass().getAnnotation(ModelType.class);
 		if (ma != null) {
-			return ma.value();
+			modelType = ma.value();
 		}
-		return value instanceof Class<?> ? (Class<?>)value : value.getClass();
+
+		return modelType;
 	}
 
+	/**
+	 * Return the value type (Class<?>) for the given object. If the given
+	 * object is its own value, {@code value.getClass()} is returned.
+	 *
+	 * @param value the object we try to find the value type.
+	 * @return the value type of the given value.
+	 */
 	public static Class<?> valueTypeFor(final Object value) {
+		Class<?> valueType = classOf(value);
+
 		final Object adapter = adapterFor(value);
 		final ValueType ma = adapter.getClass().getAnnotation(ValueType.class);
 		if (ma != null) {
-			return ma.value();
+			valueType = ma.value();
 		}
-		return value instanceof Class<?> ? (Class<?>)value : value.getClass();
+
+		return valueType;
 	}
 
+	/**
+	 * Shorthand for {@code adapterFor(value).marshal(value)}
+	 */
 	public static Object marshal(final Object value) throws Exception {
 		return adapterFor(value).marshal(value);
 	}
 
+	/**
+	 * Shorthand for {@code adapterFor(value).unmarshal(value)}
+	 */
 	public static Object unmarshal(final Object value) throws Exception {
 		return adapterFor(value).unmarshal(value);
 	}
 
-	public static <V, B> Function<B, V> marshaller(final XmlAdapter<V, B> adapter) {
+	/**
+	 * Return a marshaller function from the given
+	 * {@link javax.xml.bind.annotation.adapters.XmlAdapter}.
+	 *
+	 * @param a the adapter used by the marshaller function.
+	 * @return the marshaller function
+	 */
+	public static <V, B> Function<B, V> Marshaller(final XmlAdapter<V, B> a) {
 		return new Function<B, V>() {
 			@Override
 			public V apply(final B value) {
 				try {
-					return adapter.marshal(value);
+					return a.marshal(value);
 				} catch (Exception e) {
 					throw new RuntimeException(e);
 				}
@@ -201,12 +236,19 @@ public class jaxb extends StaticObject {
 		};
 	}
 
-	public static <V, B> Function<V, B> unmarshaller(final XmlAdapter<V, B> adapter) {
+	/**
+	 * Return a unmarshaller function from the given
+	 * {@link javax.xml.bind.annotation.adapters.XmlAdapter}.
+	 *
+	 * @param a the adapter used by the unmarshaller function.
+	 * @return the unmarshaller function
+	 */
+	public static <V, B> Function<V, B> Unmarshaller(final XmlAdapter<V, B> a) {
 		return new Function<V, B>() {
 			@Override
 			public B apply(final V value) {
 				try {
-					return adapter.unmarshal(value);
+					return a.unmarshal(value);
 				} catch (Exception e) {
 					throw new RuntimeException(e);
 				}
@@ -214,14 +256,29 @@ public class jaxb extends StaticObject {
 		};
 	}
 
+	/**
+	 * Return a marshaller function for the given object.
+	 *
+	 * @param value the value to marshal
+	 * @return the marshaller function
+	 */
 	public static Function<Object, Object> Marshaller(final Object value) {
-		return marshaller(adapterFor(value));
+		return Marshaller(adapterFor(value));
 	}
 
-	public static Function<Object, Object> Unmarshaller(final Object c)  {
-		return unmarshaller(jaxb.adapterFor(c));
+	/**
+	 * Return a unmarshaller function for the given object.
+	 *
+	 * @param value the value to unmarshal
+	 * @return the unmarshaller function
+	 */
+	public static Function<Object, Object> Unmarshaller(final Object value)  {
+		return Unmarshaller(jaxb.adapterFor(value));
 	}
 
+	/**
+	 * An generic unmarshaller function.
+	 */
 	public static final Function<Object, Object> Unmarshaller =
 	new Function<Object, Object>() {
 		@SuppressWarnings("rawtypes")

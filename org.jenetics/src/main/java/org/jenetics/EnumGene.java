@@ -20,7 +20,6 @@
 package org.jenetics;
 
 import static java.lang.String.format;
-import static org.jenetics.internal.util.jaxb.Marshaller;
 import static org.jenetics.internal.util.jaxb.Unmarshaller;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
@@ -42,6 +41,7 @@ import javolution.xml.XMLFormat;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.internal.util.cast;
+import org.jenetics.internal.util.jaxb;
 import org.jenetics.internal.util.model.ModelType;
 import org.jenetics.internal.util.model.ValueType;
 
@@ -347,7 +347,7 @@ public final class EnumGene<A>
 				m.length = value.getValidAlleles().length();
 				m.currentAlleleIndex = value.getAlleleIndex();
 				m.alleles = value.getValidAlleles()
-					.map(Marshaller(value.getValidAlleles().get(0))).asList();
+					.map(jaxb.Marshaller(value.getValidAlleles().get(0))).asList();
 				return m;
 			}
 

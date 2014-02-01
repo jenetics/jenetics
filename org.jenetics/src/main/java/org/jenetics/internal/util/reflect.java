@@ -104,5 +104,8 @@ public class reflect extends StaticObject {
 		}
 	}
 
+	public static Class<?> classOf(final Object value) {
+		return value instanceof Class<?> ? (Class<?>)value : value.getClass();
+	}
 
 }
