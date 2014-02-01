@@ -28,10 +28,17 @@ import org.apache.tools.ant.filters.ReplaceTokens
  */
 
 apply plugin: 'packaging'
- 
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
+repositories {
+	mavenCentral ()
+}
+
+
 dependencies {
 	compile Include.JScience
-	
+
 	testCompile Include.Apache.Commons.Math
 	testCompile Include.TestNG
 }
@@ -47,4 +54,29 @@ packaging {
 	author = 'Franz Wilhelmstötter'
 	url = 'http://jenetics.sourceforge.net'
 }
+
+task sourceJar(type: Jar) {
+	classifier "source"
+	from sourceSets.main.allSource
+}
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+		}
+		maven(MavenPublication) {
+			artifact sourceJar {
+				classifier "src"
+				extension "zip"
+			}
+		}
+	}
+	repositories {
+		maven {
+			url "$buildDir/repo"
+		}
+	}
+}
+
 
