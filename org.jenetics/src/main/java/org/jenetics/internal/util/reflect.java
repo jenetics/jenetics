@@ -61,6 +61,15 @@ public class reflect extends StaticObject {
 		return Collections.unmodifiableList(result);
 	}
 
+	/**
+	 * Returns a Method object that reflects the specified public member method
+	 * of the class or interface represented by this Class object.
+	 *
+	 * @param type the class for getting the desired method.
+	 * @param name the method name
+	 * @param parameterTypes the method parameter types.
+	 * @return the method, or {@code null} if no such method can be found.
+	 */
 	public static Method getMethod(
 		final Class<?> type,
 		final String name,
@@ -104,6 +113,14 @@ public class reflect extends StaticObject {
 		}
 	}
 
+	/**
+	 * Return the class of the given value or the value if it is already from
+	 * the type {@code Class}.
+	 *
+	 * @param value the value to get the class from.
+	 * @return the class from the given value, or {@code value} if it is already
+	 *         a {@code Class}.
+	 */
 	public static Class<?> classOf(final Object value) {
 		return value instanceof Class<?> ? (Class<?>)value : value.getClass();
 	}
