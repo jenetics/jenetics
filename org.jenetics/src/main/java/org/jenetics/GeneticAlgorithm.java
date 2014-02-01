@@ -135,7 +135,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-12-05 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-01-28 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,
@@ -165,8 +165,8 @@ public class GeneticAlgorithm<
 
 	private final Factory<Genotype<G>> _genotypeFactory;
 	private final Factory<Phenotype<G, C>> _phenotypeFactory;
-	private final Function<Genotype<G>, C> _fitnessFunction;
-	private Function<C, C> _fitnessScaler;
+	private final Function<? super Genotype<G>, ? extends C> _fitnessFunction;
+	private Function<? super C, ? extends C> _fitnessScaler;
 
 	private double _offspringFraction = DEFAULT_OFFSPRING_FRACTION;
 
@@ -214,8 +214,8 @@ public class GeneticAlgorithm<
 	 */
 	public GeneticAlgorithm(
 		final Factory<Genotype<G>> genotypeFactory,
-		final Function<Genotype<G>, C> fitnessFunction,
-		final Function<C, C> fitnessScaler,
+		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
+		final Function<? super C, ? extends C> fitnessScaler,
 		final Optimize optimization
 	) {
 		_genotypeFactory = requireNonNull(genotypeFactory, "GenotypeFactory");
@@ -245,7 +245,7 @@ public class GeneticAlgorithm<
 	 */
 	public GeneticAlgorithm(
 		final Factory<Genotype<G>> genotypeFactory,
-		final Function<Genotype<G>, C> fitnessFunction
+		final Function<? super Genotype<G>, ? extends C> fitnessFunction
 	) {
 		this(
 			genotypeFactory,
@@ -266,7 +266,7 @@ public class GeneticAlgorithm<
 	 */
 	public GeneticAlgorithm(
 		final Factory<Genotype<G>> genotypeFactory,
-		final Function<Genotype<G>, C> fitnessFunction,
+		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
 		final Optimize optimization
 	) {
 		this(
@@ -288,8 +288,8 @@ public class GeneticAlgorithm<
 	 */
 	public GeneticAlgorithm(
 		final Factory<Genotype<G>> genotypeFactory,
-		final Function<Genotype<G>, C> fitnessFunction,
-		final Function<C, C> fitnessScaler
+		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
+		final Function<? super C, ? extends C> fitnessScaler
 	) {
 		this(
 			genotypeFactory,
@@ -688,7 +688,7 @@ public class GeneticAlgorithm<
 	 *
 	 * @return the used fitness {@link Function} of the GA.
 	 */
-	public Function<Genotype<G>, C> getFitnessFunction() {
+	public Function<? super Genotype<G>, ? extends C> getFitnessFunction() {
 		return _fitnessFunction;
 	}
 
@@ -733,7 +733,7 @@ public class GeneticAlgorithm<
 	 *
 	 * @return the currently used fitness scaler {@link Function} of the GA.
 	 */
-	public Function<C, C> getFitnessScaler() {
+	public Function<? super C, ? extends C> getFitnessScaler() {
 		return _fitnessScaler;
 	}
 
