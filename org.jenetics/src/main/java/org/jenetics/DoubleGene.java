@@ -24,7 +24,7 @@ package org.jenetics;
  * @version @__version__@ &mdash; <em>$Date$</em>
  * @since @__version__@
  */
-public final class DoubleGene implements Gene<Double, DoubleGene> {
+public final class DoubleGene extends Number implements Gene<Double, DoubleGene> {
 
 	private final Double _value;
 	private final Double _min;
@@ -63,5 +63,25 @@ public final class DoubleGene implements Gene<Double, DoubleGene> {
 	@Override
 	public boolean isValid() {
 		return false;
+	}
+
+	@Override
+	public int intValue() {
+		return _value.intValue();
+	}
+
+	@Override
+	public long longValue() {
+		return _value.longValue();
+	}
+
+	@Override
+	public float floatValue() {
+		return _value.floatValue();
+	}
+
+	@Override
+	public double doubleValue() {
+		return _value;
 	}
 }
