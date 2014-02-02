@@ -70,7 +70,7 @@ public class Serial {
 		ga.setup();
 		ga.evolve(5);
 
-		IO.xml.write(ga.getPopulation(), new File("/home/fwilhelm/population.xml"));
+		IO.jaxb.write(ga.getPopulation(), new File("/home/fwilhelm/population.xml"));
 
 	}
 

@@ -304,9 +304,6 @@
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.5 &mdash; <em>$Date$</em>
+ * @version @__version__@ &mdash; <em>$Date$</em>
  */
 package org.jenetics;
-
-
-

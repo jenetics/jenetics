@@ -21,9 +21,10 @@ package org.jenetics;
 
 import static org.jenetics.util.accumulators.accumulate;
 
-import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.stat.Distribution;
 import org.jenetics.stat.Histogram;

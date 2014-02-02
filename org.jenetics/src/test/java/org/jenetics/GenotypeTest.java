@@ -22,11 +22,18 @@ package org.jenetics;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 
+import java.util.Random;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import javolution.context.LocalContext;
+
 import org.jenetics.util.Factory;
+import org.jenetics.util.IO;
+import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.ObjectTester;
+import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -108,15 +115,15 @@ public class GenotypeTest extends ObjectTester<Genotype<Float64Gene>> {
     @Test
     public void newInstance() {
     	final Genotype<Float64Gene> gt1 = Genotype.valueOf(
-    			//Rotation
-    			new Float64Chromosome(Float64Gene.valueOf(-Math.PI, Math.PI)),
+			//Rotation
+			new Float64Chromosome(Float64Gene.valueOf(-Math.PI, Math.PI)),
 
-    			//Translation
-    			new Float64Chromosome(Float64Gene.valueOf(-300, 300), Float64Gene.valueOf(-300, 300)),
+			//Translation
+			new Float64Chromosome(Float64Gene.valueOf(-300, 300), Float64Gene.valueOf(-300, 300)),
 
-    			//Shear
-    			new Float64Chromosome(Float64Gene.valueOf(-0.5, 0.5), Float64Gene.valueOf(-0.5, 0.5))
-    		);
+			//Shear
+			new Float64Chromosome(Float64Gene.valueOf(-0.5, 0.5), Float64Gene.valueOf(-0.5, 0.5))
+		);
 
     	final Genotype<Float64Gene> gt2 = gt1.newInstance();
 
@@ -127,6 +134,28 @@ public class GenotypeTest extends ObjectTester<Genotype<Float64Gene>> {
     		Assert.assertEquals(ch1.length(), ch2.length());
     	}
     }
+
+	public static void main(final String[] args) throws Exception {
+		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
+		LocalContext.enter();
+		try {
+			RandomRegistry.setRandom(random);
+			final BitChromosome chromosome = new BitChromosome(30, 0.5);
+			final Genotype<?> genotype = Genotype.valueOf(chromosome, chromosome);
+
+			/*
+			JAXBContext jc = JAXBContext.newInstance("org.jenetics");
+			Marshaller marshaller = jc.createMarshaller();
+			marshaller.setAdapter(new GenotypeXML.Adapter());
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			marshaller.marshal(genotype, System.out);
+			*/
+
+			IO.jaxb.write(genotype, System.out);
+		} finally {
+			LocalContext.exit();
+		}
+	}
 
 }
 

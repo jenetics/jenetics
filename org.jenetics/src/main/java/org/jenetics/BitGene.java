@@ -19,9 +19,20 @@
  */
 package org.jenetics;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
+
+import org.jenetics.internal.util.model.ModelType;
+import org.jenetics.internal.util.model.ValueType;
 
 import org.jenetics.util.Function;
 import org.jenetics.util.RandomRegistry;
@@ -31,8 +42,9 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.4 &mdash; <em>$Date$</em>
+ * @version @__version__@ &mdash; <em>$Date$</em>
  */
+@XmlJavaTypeAdapter(BitGene.Model.Adapter.class)
 public enum BitGene
 	implements
 		Gene<Boolean, BitGene>,
@@ -160,6 +172,37 @@ public enum BitGene
 		public void read(final InputElement element, final BitGene gene) {
 		}
 	};
+
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
+
+	@XmlRootElement(name = "org.jenetics.BitGene")
+	@XmlType(name = "org.jenetics.BitGene")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	final static class Model {
+
+		@XmlAttribute
+		public boolean value;
+
+		@ValueType(BitGene.class)
+		@ModelType(Model.class)
+		public final static class Adapter
+			extends XmlAdapter<Model, BitGene>
+		{
+			@Override
+			public Model marshal(final BitGene value) {
+				final Model m = new Model();
+				m.value = value.booleanValue();
+				return m;
+			}
+
+			@Override
+			public BitGene unmarshal(final Model m) {
+				return BitGene.valueOf(m.value);
+			}
+		}
+	}
 
 }
 

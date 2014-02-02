@@ -21,8 +21,9 @@ package org.jenetics;
 
 import java.util.Random;
 
-import org.jscience.mathematics.number.Float64;
 import org.testng.annotations.Test;
+
+import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.stat.Distribution;
 import org.jenetics.stat.UniformDistribution;

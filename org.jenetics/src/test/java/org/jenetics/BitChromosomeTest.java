@@ -23,23 +23,17 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.BitSet;
 import java.util.Random;
 
-import javolution.context.LocalContext;
-
-import org.jscience.mathematics.number.LargeInteger;
 import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import org.jscience.mathematics.number.LargeInteger;
+
 import org.jenetics.util.Factory;
-import org.jenetics.util.IO;
-import org.jenetics.util.LCG64ShiftRandom;
-import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.bit;
 
 /**
@@ -246,50 +240,11 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 	}
 
 	@DataProvider(name = "bitCountProbability")
-	public Object[][] getBitcountProbability() {
+	public Object[][] getBitCountProbability() {
 		return new Object[][] {
 			{0.01}, {0.1}, {0.125}, {0.333}, {0.5}, {0.75}, {0.85}, {0.999}
 		};
 	}
-
-	@Test
-	public void objectSerializationCompatibility() throws IOException {
-		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
-		LocalContext.enter();
-		try {
-			RandomRegistry.setRandom(random);
-			final BitChromosome chromosome = new BitChromosome(5000, 0.5);
-
-			final String resource = "/org/jenetics/BitChromosome.object";
-			try (InputStream in = getClass().getResourceAsStream(resource)) {
-				final Object object = IO.object.read(in);
-
-				Assert.assertEquals(chromosome, object);
-			}
-		} finally {
-			LocalContext.exit();
-		}
-	}
-
-	@Test
-	public void xmlSerializationCompatibility() throws IOException {
-		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
-		LocalContext.enter();
-		try {
-			RandomRegistry.setRandom(random);
-			final BitChromosome chromosome = new BitChromosome(5000, 0.5);
-
-			final String resource = "/org/jenetics/BitChromosome.xml";
-			try (InputStream in = getClass().getResourceAsStream(resource)) {
-				final Object object = IO.xml.read(in);
-
-				Assert.assertEquals(chromosome, object);
-			}
-		} finally {
-			LocalContext.exit();
-		}
-	}
-
 
 }
 

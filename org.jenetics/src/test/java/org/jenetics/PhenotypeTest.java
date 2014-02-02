@@ -59,7 +59,11 @@ public class PhenotypeTest extends ObjectTester<Phenotype<Float64Gene, Float64>>
 	private final Factory<Phenotype<Float64Gene, Float64>>
 	_factory = new Factory<Phenotype<Float64Gene, Float64>>() {
 		@Override public Phenotype<Float64Gene, Float64> newInstance() {
-			return Phenotype.valueOf(_genotype.newInstance(), _ff, _scaler, 0);
+			final Phenotype<Float64Gene, Float64> pt = Phenotype.valueOf(
+				_genotype.newInstance(), _ff, _scaler, 0
+			);
+			pt.evaluate();
+			return pt;
 		}
 	};
 

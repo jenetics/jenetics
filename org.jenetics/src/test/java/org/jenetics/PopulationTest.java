@@ -19,22 +19,14 @@
  */
 package org.jenetics;
 
-import static org.jenetics.TestUtils.newFloat64GenePopulation;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.Serializable;
 
-import javolution.xml.XMLSerializable;
-
-import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import org.jscience.mathematics.number.Float64;
+
 import org.jenetics.util.Function;
-import org.jenetics.util.IO;
-import org.jenetics.util.Serialize;
 import org.jenetics.util.lists;
 
 
@@ -44,7 +36,7 @@ import org.jenetics.util.lists;
  */
 public class PopulationTest {
 
-	private static final class Continous
+	private static final class Continuous
 		implements Function<Genotype<Float64Gene>, Float64>,
 					Serializable
 	{
@@ -55,9 +47,11 @@ public class PopulationTest {
 		}
 	}
 
-	private static final Function<Genotype<Float64Gene>, Float64> _cf = new Continous();
+	private static final Function<Genotype<Float64Gene>, Float64> _cf = new Continuous();
 	private static Phenotype<Float64Gene, Float64> pt(double value) {
-		return Phenotype.valueOf(Genotype.valueOf(new Float64Chromosome(Float64Gene.valueOf(value, 0, 10))), _cf, 0);
+		return Phenotype.valueOf(Genotype.valueOf(
+			new Float64Chromosome(Float64Gene.valueOf(value, 0, 10))
+		), _cf, 0).evaluate();
 	}
 
 	@Test
@@ -89,50 +83,6 @@ public class PopulationTest {
 			Float64 second = _cf.apply(population.get(i + 1).getGenotype());
 			Assert.assertTrue(first.compareTo(second) <= 0, first + ">" + second);
 		}
-	}
-
-	@Test
-	public void phenotypeXMLSerialization()
-		throws IOException
-	{
-		final Population<Float64Gene, Float64> population = new Population<>();
-		for (int i = 0; i < 1000; ++i) {
-			population.add(pt(Math.random()*9.0));
-		}
-
-		final ByteArrayOutputStream out = new ByteArrayOutputStream();
-		IO.xml.write(population, out);
-
-		final byte[] data = out.toByteArray();
-
-		final ByteArrayInputStream in = new ByteArrayInputStream(data);
-
-		@SuppressWarnings("unchecked")
-		final Population<Float64Gene, Float64>
-		copy = (Population<Float64Gene, Float64>)IO.xml.read(XMLSerializable.class, in);
-
-		for (int i = 1; i < population.size(); ++i) {
-			Assert.assertSame(
-				copy.get(i - 1).getFitnessFunction(),
-				copy.get(i).getFitnessFunction()
-			);
-			Assert.assertSame(
-				copy.get(i - 1).getFitnessScaler(),
-				copy.get(i).getFitnessScaler()
-			);
-		}
-	}
-
-	@Test
-	public void xmlSerialization() throws IOException {
-		final Population<Float64Gene, Float64> population = newFloat64GenePopulation(23, 34, 123);
-		Serialize.xml.test(population);
-	}
-
-	@Test
-	public void objectSerialization() throws IOException {
-		final Population<Float64Gene, Float64> population = newFloat64GenePopulation(23, 34, 123);
-		Serialize.object.test(population);
 	}
 
 }

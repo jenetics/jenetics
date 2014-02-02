@@ -135,7 +135,7 @@ class TestUtils {
 			new Population<>(npopulation);
 
 		for (int i = 0; i < npopulation; ++i) {
-			population.add(Phenotype.valueOf(genotype.newInstance(), FF, 0));
+			population.add(Phenotype.valueOf(genotype.newInstance(), FF, 0).evaluate());
 		}
 
 		return population;
@@ -209,7 +209,7 @@ class TestUtils {
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
-	private static final class Continous
+	private static final class Continuous
 		implements Function<Genotype<Float64Gene>, Float64>,
 					Serializable
 	{
@@ -224,7 +224,7 @@ class TestUtils {
 	/**
 	 * 'Identity' fitness function.
 	 */
-	public static final Function<Genotype<Float64Gene>, Float64> FF = new Continous();
+	public static final Function<Genotype<Float64Gene>, Float64> FF = new Continuous();
 
 	public static GeneticAlgorithm<Float64Gene, Float64> GA() {
 		return new GeneticAlgorithm<>(
@@ -236,7 +236,7 @@ class TestUtils {
 	public static Phenotype<Float64Gene, Float64> newFloat64Phenotype(final double value) {
 		return Phenotype.valueOf(Genotype.valueOf(
 				new Float64Chromosome(Float64Gene.valueOf(value, 0, 10))), FF, 0
-			);
+			).evaluate();
 	}
 
 	public static Phenotype<Float64Gene, Float64> newFloat64Phenotype() {

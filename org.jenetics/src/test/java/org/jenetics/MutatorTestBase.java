@@ -23,10 +23,11 @@ import static org.jenetics.TestUtils.diff;
 import static org.jenetics.TestUtils.newFloat64GenePopulation;
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 
-import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.NormalDistribution;
