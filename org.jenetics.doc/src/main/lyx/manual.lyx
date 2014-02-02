@@ -6428,18 +6428,6 @@ Phenotype
 Population
 \end_layout
 
-\begin_layout Itemize
-
-\family typewriter
-Statistics
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-NumberStatistics
-\end_layout
-
 \begin_layout Standard
 \begin_inset ERT
 status open
@@ -6469,20 +6457,22 @@ IO
 \family typewriter
 org.jenetics.util
 \family default
- package, supports native Java serialization and XML serialization.
- For XML marshaling 
-\family sans
-\series bold
-\shape smallcaps
-Jenetics
-\family default
-\series default
-\shape default
- internally uses the XML support from the 
+ package, supports native Java serialization and JAXB XML serialization
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The serialization through the XML support from the 
 \emph on
 Javolution
 \emph default
- project.
+ project has been deprecated and will be removed in the next major version.
+ 
+\end_layout
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -6503,7 +6493,7 @@ final File file = new File("population.xml");
 
 \begin_layout Plain Layout
 
-IO.xml.write(ga.getPopulation(), file);
+IO.jaxb.write(ga.getPopulation(), file);
 \end_layout
 
 \begin_layout Plain Layout
@@ -6522,7 +6512,7 @@ Population<Float64Gene,Float64> population =
 
 \begin_layout Plain Layout
 
-    (Population<Float64Gene, Float64>)IO.xml.read(file);
+    (Population<Float64Gene, Float64>)IO.jaxb.read(file);
 \end_layout
 
 \begin_layout Plain Layout
