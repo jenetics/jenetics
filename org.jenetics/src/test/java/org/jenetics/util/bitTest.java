@@ -23,14 +23,15 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Random;
 
-import org.jscience.mathematics.number.LargeInteger;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import org.jscience.mathematics.number.LargeInteger;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-10-24 $</em>
+ * @version <em>$Date: 2014-01-31 $</em>
  */
 public class bitTest {
 

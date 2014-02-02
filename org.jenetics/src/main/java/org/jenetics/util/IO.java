@@ -19,6 +19,9 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.internal.util.jaxb.CONTEXT;
+import static org.jenetics.internal.util.jaxb.adapterFor;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -29,9 +32,18 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.nio.file.Path;
 
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
+
 import javolution.xml.XMLObjectReader;
 import javolution.xml.XMLObjectWriter;
 import javolution.xml.stream.XMLStreamException;
+
 
 /**
  * Class for object serialization. The following example shows how to write and
@@ -50,7 +62,7 @@ import javolution.xml.stream.XMLStreamException;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-01-05 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-01-31 $</em>
  */
 public abstract class IO {
 
@@ -59,7 +71,12 @@ public abstract class IO {
 
 	/**
 	 * IO implementation for <i>XML</i> serialization.
+	 *
+	 * @deprecated Will be removed when the Javolution is removed. Use the
+	 *             {@link #jaxb} {@code IO} implementation instead, which is
+	 *             compatible to the existing XML marshalling.
 	 */
+	@Deprecated
 	public static final IO xml = new IO() {
 
 		@Override
@@ -100,9 +117,66 @@ public abstract class IO {
 	};
 
 	/**
+	 * JAXB implementation for <i>XML</i> serialization. Is compatible to the
+	 * existing, deprecated {@link #xml} marshalling.
+	 */
+	public static final IO jaxb = new IO() {
+
+		@Override
+		public void write(final Object object, final OutputStream out)
+			throws IOException
+		{
+			try {
+				final Marshaller marshaller = CONTEXT.createMarshaller();
+				marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+				final XMLOutputFactory factory = XMLOutputFactory.newInstance();
+				final XMLStreamWriter writer = factory.createXMLStreamWriter(out);
+				try {
+					final XmlAdapter<Object, Object> adapter = adapterFor(object);
+					if (adapter != null) {
+						marshaller.marshal(adapter.marshal(object), writer);
+					} else {
+						marshaller.marshal(object, writer);
+					}
+				} finally {
+					writer.close();
+				}
+			} catch (Exception e) {
+				throw new IOException(e);
+			}
+		}
+
+		@Override
+		public <T> T read(final Class<T> type, final InputStream in)
+			throws IOException
+		{
+			try {
+				final Unmarshaller unmarshaller = CONTEXT.createUnmarshaller();
+
+				final XMLInputFactory factory = XMLInputFactory.newInstance();
+				final XMLStreamReader reader = factory.createXMLStreamReader(in);
+				try {
+					final Object object = unmarshaller.unmarshal(reader);
+					final XmlAdapter<Object, Object> adapter = adapterFor(object);
+					if (adapter != null) {
+						return type.cast(adapter.unmarshal(object));
+					} else {
+						return type.cast(object);
+					}
+				} finally {
+					reader.close();
+				}
+			} catch (Exception e) {
+				throw new IOException(e);
+			}
+		}
+	};
+
+	/**
 	 * IO implementation for "native" <i>Java</i> serialization.
 	 */
-	public static IO object = new IO() {
+	public static final IO object = new IO() {
 
 		@Override
 		public void write(final Object object, final OutputStream out)
@@ -296,7 +370,7 @@ public abstract class IO {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version 1.0 &mdash; <em>$Date: 2014-01-05 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2014-01-31 $</em>
 	 */
 	private static final class NonClosableOutputStream extends OutputStream {
 		private final OutputStream _adoptee;
@@ -340,7 +414,7 @@ public abstract class IO {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version 1.0 &mdash; <em>$Date: 2014-01-05 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2014-01-31 $</em>
 	 */
 	private static final class NonClosableInputStream extends InputStream {
 		private final InputStream _adoptee;

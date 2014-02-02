@@ -21,16 +21,17 @@ package org.jenetics;
 
 import java.util.Random;
 
+import org.testng.annotations.DataProvider;
+
 import javolution.context.LocalContext;
 
 import org.jscience.mathematics.number.Float64;
-import org.testng.annotations.DataProvider;
 
 import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-08-29 $</em>
+ * @version <em>$Date: 2014-01-31 $</em>
  */
 public class NumberStatisticsBuilderTest extends StatisticsBuilderTest {
 
