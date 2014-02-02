@@ -43,8 +43,8 @@ import org.jenetics.util.StaticObject;
  * integer and float types of the JScience library.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-02-01 $</em>
- * @since @__version__@
+ * @version 1.6 &mdash; <em>$Date: 2014-02-02 $</em>
+ * @since 1.6
  */
 public final class model extends StaticObject {
 	private model() {}

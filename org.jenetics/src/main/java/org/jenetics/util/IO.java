@@ -62,7 +62,7 @@ import javolution.xml.stream.XMLStreamException;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-01-31 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-02-02 $</em>
  */
 public abstract class IO {
 
@@ -370,7 +370,7 @@ public abstract class IO {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version 1.0 &mdash; <em>$Date: 2014-01-31 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2014-02-02 $</em>
 	 */
 	private static final class NonClosableOutputStream extends OutputStream {
 		private final OutputStream _adoptee;
@@ -414,7 +414,7 @@ public abstract class IO {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version 1.0 &mdash; <em>$Date: 2014-01-31 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2014-02-02 $</em>
 	 */
 	private static final class NonClosableInputStream extends InputStream {
 		private final InputStream _adoptee;

@@ -61,7 +61,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-01-24 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-02-02 $</em>
  */
 @XmlJavaTypeAdapter(Float64Chromosome.Model.Adapter.class)
 public class Integer64Chromosome

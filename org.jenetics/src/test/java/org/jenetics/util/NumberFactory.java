@@ -23,8 +23,8 @@ import java.util.Random;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-01-27 $</em>
- * @since @__version__@
+ * @version 1.6 &mdash; <em>$Date: 2014-02-02 $</em>
+ * @since 1.6
  */
 public abstract class NumberFactory<N extends Number> {
 
