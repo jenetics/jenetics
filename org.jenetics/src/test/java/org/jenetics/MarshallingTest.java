@@ -32,8 +32,8 @@ import org.jenetics.util.IO;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date$</em>
- * @since @__version__@
+ * @version 1.6 &mdash; <em>$Date$</em>
+ * @since 1.6
  */
 @SuppressWarnings("deprecation")
 public class MarshallingTest {

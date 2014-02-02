@@ -54,7 +54,7 @@ import org.jenetics.util.accumulators.MinMax;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date$</em>
+ * @version 1.6 &mdash; <em>$Date$</em>
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	implements
@@ -481,7 +481,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version @__version__@ &mdash; <em>$Date$</em>
+	 * @version 1.6 &mdash; <em>$Date$</em>
 	 */
 	public static final class Time implements XMLSerializable {
 		private static final long serialVersionUID = 1L;

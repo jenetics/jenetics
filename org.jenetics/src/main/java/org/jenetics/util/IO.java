@@ -62,7 +62,7 @@ import javolution.xml.stream.XMLStreamException;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date$</em>
+ * @version 1.6 &mdash; <em>$Date$</em>
  */
 public abstract class IO {
 
