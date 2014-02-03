@@ -80,7 +80,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-02-02 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-02-03 $</em>
  */
 @XmlJavaTypeAdapter(Genotype.Model.Adapter.class)
 public final class Genotype<G extends Gene<?, G>>
@@ -408,7 +408,7 @@ public final class Genotype<G extends Gene<?, G>>
 				model.length = gt.length();
 				model.ngenes = gt.getNumberOfGenes();
 				model.chromosomes = gt.toSeq()
-						.map(jaxb.Marshaller(gt.getChromosome())).asList();
+					.map(jaxb.Marshaller(gt.getChromosome())).asList();
 
 				return model;
 			}
