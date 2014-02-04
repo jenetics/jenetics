@@ -68,14 +68,14 @@ import javolution.lang.Reference;
  *     public static void main(final String[] args) {
  *         ...
  *         final GeneticAlgorithm<Float64Gene, Float64> ga = ...
+ *         final LCG64ShiftRandom random = new LCG64ShiftRandom(1234)
  *
- *         LocalContext.enter();
- *         try {
- *             RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadSafe(1234));
+ *         try (Scoped<Random> scope = RandomRegistry.with(random) {
+ *             // Easy access the random engine of the opened scope.
+ *             assert(scope.get() == random);
+ *
  *             // Only the 'setup' step uses the new PRGN.
  *             ga.setup();
- *         } finally {
- *             LocalContext.exit(); // Restore the previous random engine.
  *         }
  *
  *         ga.evolve(100);
@@ -84,14 +84,13 @@ import javolution.lang.Reference;
  * [/code]
  * <p/>
  *
- * @see LocalContext
  * @see Random
  * @see ThreadLocalRandom
  * @see LCG64ShiftRandom
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-12-05 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-02-04 $</em>
  */
 public final class RandomRegistry extends StaticObject {
 	private RandomRegistry() {}
@@ -156,6 +155,17 @@ public final class RandomRegistry extends StaticObject {
 		RANDOM.set(TLOCAL_REF);
 	}
 
+	/**
+	 * Opens a new {@code Scope} with the given random engine.
+	 *
+	 * @param random the PRNG used for the opened scope.
+	 * @return the scope with the given random object.
+	 */
+	public static Scoped<Random> with(final Random random) {
+		LocalContext.enter();
+		setRandom(random);
+		return new RandomScope(random);
+	}
 
 	/*
 	 * Some helper Reference classes.
@@ -185,6 +195,24 @@ public final class RandomRegistry extends StaticObject {
 		}
 	}
 
+	private static final class RandomScope implements Scoped<Random> {
+		private final Random _random;
+
+		public RandomScope(final Random random) {
+			_random = random;
+		}
+
+		@Override
+		public Random get() {
+			return _random;
+		}
+
+		@Override
+		public void close() {
+			LocalContext.exit();
+		}
+	}
+	
 }
 
 
