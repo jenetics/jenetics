@@ -62,8 +62,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *     public static void main(final String[] args) {
  *         ...
  *         final GeneticAlgorithm<Float64Gene, Float64> ga = ...
- *         final LCG64ShiftRandom.ThreadSafe random =
- *             new LCG64ShiftRandom.ThreadSafe(1234)
+ *         final LCG64ShiftRandom random = new LCG64ShiftRandom(1234)
  *
  *         try (Scoped<Random> scope = RandomRegistry.with(random) {
  *             // Easy access the random engine of the opened scope.
@@ -85,7 +84,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-01-31 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-02-04 $</em>
  */
 public final class RandRegistry extends StaticObject {
 	private RandRegistry() {}
