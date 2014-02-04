@@ -26,11 +26,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Random;
 
-import javolution.context.LocalContext;
-
-import org.jscience.mathematics.number.Integer64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.UniformDistribution;
@@ -38,6 +37,7 @@ import org.jenetics.stat.Variance;
 import org.jenetics.util.IO;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Scoped;
 import org.jenetics.util.accumulators.MinMax;
 
 /**
@@ -56,10 +56,7 @@ public class Integer64ChromosomeTest
 
 	@Test(invocationCount = 20, successPercentage = 95)
     public void newInstanceDistribution() {
-		LocalContext.enter();
-		try {
-			RandomRegistry.setRandom(new Random(12345));
-
+		try (Scoped<Random> s = RandomRegistry.with(new Random(12345))) {
 			final Integer64 min = Integer64.ZERO;
 			final Integer64 max = Integer64.valueOf(10000000);
 
@@ -81,8 +78,6 @@ public class Integer64ChromosomeTest
 			Assert.assertTrue(mm.getMin().compareTo(0) >= 0);
 			Assert.assertTrue(mm.getMax().compareTo(100) <= 100);
 			assertDistribution(histogram, new UniformDistribution<>(min, max));
-		} finally {
-			LocalContext.exit();
 		}
     }
 
@@ -117,9 +112,7 @@ public class Integer64ChromosomeTest
 	@Test
 	public void objectSerializationCompatibility() throws IOException {
 		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
-		LocalContext.enter();
-		try {
-			RandomRegistry.setRandom(random);
+		try (Scoped<Random> s = RandomRegistry.with(random)) {
 			final Object chromosome = new Integer64Chromosome(Integer.MIN_VALUE, Integer.MAX_VALUE, 500);
 
 			final String resource = "/org/jenetics/Integer64Chromosome.object";
@@ -128,17 +121,13 @@ public class Integer64ChromosomeTest
 
 				Assert.assertEquals(object, chromosome);
 			}
-		} finally {
-			LocalContext.exit();
 		}
 	}
 
 	@Test
 	public void xmlSerializationCompatibility() throws IOException {
 		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
-		LocalContext.enter();
-		try {
-			RandomRegistry.setRandom(random);
+		try (Scoped<Random> s = RandomRegistry.with(random)) {
 			final Object chromosome = new Integer64Chromosome(Integer.MIN_VALUE, Integer.MAX_VALUE, 500);
 
 			final String resource = "/org/jenetics/Integer64Chromosome.xml";
@@ -147,8 +136,6 @@ public class Integer64ChromosomeTest
 
 				Assert.assertEquals(object, chromosome);
 			}
-		} finally {
-			LocalContext.exit();
 		}
 	}
 
@@ -157,16 +144,11 @@ public class Integer64ChromosomeTest
 
 	public static void main(final String[] args) throws Exception {
 		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
-
-		LocalContext.enter();
-		try {
-			RandomRegistry.setRandom(random);
+		try (Scoped<Random> s = RandomRegistry.with(random)) {
 			Object c = new Integer64Chromosome(Integer.MIN_VALUE, Integer.MAX_VALUE, 500);
 
 			IO.xml.write(c, Source + "Integer64Chromosome.xml");
 			IO.object.write(c, Source + "Integer64Chromosome.object");
-		} finally {
-			LocalContext.exit();
 		}
 	}
 

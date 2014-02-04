@@ -27,8 +27,6 @@ import static org.testng.Assert.assertTrue;
 
 import java.util.Random;
 
-import javolution.context.LocalContext;
-
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -37,6 +35,7 @@ import org.jenetics.stat.UniformDistribution;
 import org.jenetics.util.CharSeq;
 import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -51,10 +50,7 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstanceDistribution() {
-		LocalContext.enter();
-		try {
-			RandomRegistry.setRandom(new Random(12345));
-
+		try (Scoped<Random> s = RandomRegistry.with(new Random(12345))) {
 			final CharSeq characters = new CharSeq("0123456789");
 
 			final Factory<CharacterGene> factory = CharacterGene.valueOf(characters);
@@ -72,8 +68,6 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 			}
 
 			assertDistribution(histogram, new UniformDistribution<>(0L, 10L));
-		} finally {
-			LocalContext.exit();
 		}
 	}
 
