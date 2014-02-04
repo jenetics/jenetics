@@ -164,7 +164,7 @@ public final class RandomRegistry extends StaticObject {
 	public static <R extends Random> Scoped<R> with(final R random) {
 		LocalContext.enter();
 		setRandom(random);
-		return new RandomScope<>(random);
+		return new Scope<>(Thread.currentThread(), random);
 	}
 
 	/*
@@ -195,20 +195,27 @@ public final class RandomRegistry extends StaticObject {
 		}
 	}
 
-	private static final class RandomScope<T> implements Scoped<T> {
-		private final T _random;
+	private static final class Scope<R extends Random> implements Scoped<R> {
+		private final Thread _thread;
+		private final R _random;
 
-		public RandomScope(final T random) {
-			_random = random;
+		Scope(final Thread thread, final R random) {
+			_thread = requireNonNull(thread);
+			_random = requireNonNull(random);
 		}
 
 		@Override
-		public T get() {
+		public R get() {
 			return _random;
 		}
 
 		@Override
 		public void close() {
+			if (_thread != Thread.currentThread()) {
+				throw new IllegalStateException(
+					"Try to close scope by a different thread."
+				);
+			}
 			LocalContext.exit();
 		}
 	}
