@@ -161,10 +161,10 @@ public final class RandomRegistry extends StaticObject {
 	 * @param random the PRNG used for the opened scope.
 	 * @return the scope with the given random object.
 	 */
-	public static Scoped<Random> with(final Random random) {
+	public static <R extends Random> Scoped<R> with(final R random) {
 		LocalContext.enter();
 		setRandom(random);
-		return new RandomScope(random);
+		return new RandomScope<>(random);
 	}
 
 	/*
@@ -195,15 +195,15 @@ public final class RandomRegistry extends StaticObject {
 		}
 	}
 
-	private static final class RandomScope implements Scoped<Random> {
-		private final Random _random;
+	private static final class RandomScope<T> implements Scoped<T> {
+		private final T _random;
 
-		public RandomScope(final Random random) {
+		public RandomScope(final T random) {
 			_random = random;
 		}
 
 		@Override
-		public Random get() {
+		public T get() {
 			return _random;
 		}
 
@@ -212,7 +212,7 @@ public final class RandomRegistry extends StaticObject {
 			LocalContext.exit();
 		}
 	}
-	
+
 }
 
 
