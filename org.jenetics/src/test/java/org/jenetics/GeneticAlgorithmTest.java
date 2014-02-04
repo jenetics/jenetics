@@ -25,21 +25,22 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 
-import javolution.context.ConcurrentContext;
-import javolution.context.LocalContext;
-
-import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.Test;
 
+import javolution.context.ConcurrentContext;
+
+import org.jscience.mathematics.number.Float64;
+
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-11-22 $</em>
+ * @version <em>$Date: 2014-02-04 $</em>
  */
 public class GeneticAlgorithmTest {
 
@@ -57,11 +58,9 @@ public class GeneticAlgorithmTest {
 
 	@Test
 	public void optimize() {
-		LocalContext.enter();
-		try {
+		final int concurrency = ConcurrentContext.getConcurrency();
+		try (Scoped<Random> scope = RandomRegistry.with(new Random(12345))) {
 			ConcurrentContext.setConcurrency(0);
-			RandomRegistry.setRandom(new Random(12345));
-
 			final Factory<Genotype<Float64Gene>> factory = Genotype.valueOf(
 				new Float64Chromosome(0, 1)
 			);
@@ -100,7 +99,7 @@ public class GeneticAlgorithmTest {
 //			Assert.assertEquals(s.getBestFitness().doubleValue(), 0.9800565233548408, 0.00000001);
 //			Assert.assertEquals(s.getWorstFitness().doubleValue(), 0.9800565233548408, 0.00000001);
 		} finally {
-			LocalContext.exit();
+			ConcurrentContext.setConcurrency(concurrency);
 		}
 
 	}

@@ -22,12 +22,11 @@ package org.jenetics;
 import java.lang.reflect.Method;
 import java.util.Random;
 
-import javolution.context.LocalContext;
-
-import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Scoped;
@@ -44,7 +43,6 @@ public class StatisticsBuilderTest {
 
 	@DataProvider(name = "properties")
 	public Object[][] builderProperties() {
-		LocalContext.enter();
 		try (Scoped<Random> s = RandomRegistry.with(new Random(123456))) {
 			return new Object[][] {
 				{"generation", Integer.TYPE, s.get().nextInt(1000)},

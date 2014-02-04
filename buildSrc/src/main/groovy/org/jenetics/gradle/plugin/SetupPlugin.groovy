@@ -36,7 +36,7 @@ import org.jenetics.gradle.task.ColorizerTask
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5 &mdash; <em>$Date: 2013-11-20 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-02-04 $</em>
  */
 class SetupPlugin extends JeneticsPlugin {
 
@@ -209,7 +209,7 @@ class SetupPlugin extends JeneticsPlugin {
 		'overrides',
 		'rawtypes',
 		'serial',
-		'try',
+		//'try',
 		'unchecked'
 	]
 
