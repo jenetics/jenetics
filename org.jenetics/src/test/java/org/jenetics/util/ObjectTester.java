@@ -25,33 +25,30 @@ import java.beans.PropertyDescriptor;
 import java.io.Serializable;
 import java.util.Random;
 
-import javolution.context.LocalContext;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
 import javolution.lang.Immutable;
 import javolution.lang.Reflection;
 import javolution.lang.Reflection.Method;
 import javolution.xml.XMLSerializable;
 
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-01 $</em>
+ * @version <em>$Date: 2014-02-04 $</em>
  */
 public abstract class ObjectTester<T> {
 
 	protected abstract Factory<T> getFactory();
 
+	@SuppressWarnings("resource")
 	protected Array<T> newSameObjects(final int nobjects) {
 		final Array<T> objects = new Array<>(nobjects);
 
 		for (int i = 0; i < nobjects; ++i) {
-			LocalContext.enter();
-			try {
-				RandomRegistry.setRandom(new Random(23487589));
+
+			try (Scoped<Random> s = RandomRegistry.with(new Random(23487589))) {
 				objects.set(i, getFactory().newInstance());
-			} finally {
-				LocalContext.exit();
 			}
 		}
 

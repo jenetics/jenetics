@@ -25,8 +25,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Random;
 
-import javolution.context.LocalContext;
-
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -38,10 +36,11 @@ import org.jenetics.util.Factory;
 import org.jenetics.util.IO;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-08-29 $</em>
+ * @version <em>$Date: 2014-02-04 $</em>
  */
 public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 
@@ -54,10 +53,7 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 
 	@Test(invocationCount = 20, successPercentage = 95)
     public void newInstanceDistribution() {
-		LocalContext.enter();
-		try {
-			RandomRegistry.setRandom(new Random(12345));
-
+		try (Scoped<Random> s = RandomRegistry.with(new Random(12345))) {
 			final CharSeq characters = new CharSeq("0123456789");
 			final CharacterChromosome chromosome = new CharacterChromosome(characters, 5000);
 
@@ -68,8 +64,6 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 			}
 
 			assertDistribution(histogram, new UniformDistribution<>(0L, 10L));
-		} finally {
-			LocalContext.exit();
 		}
     }
 
@@ -104,9 +98,7 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 	@Test
 	public void objectSerializationCompatibility() throws IOException {
 		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
-		LocalContext.enter();
-		try {
-			RandomRegistry.setRandom(random);
+		try (Scoped<Random> s = RandomRegistry.with(random)) {
 			final Object chromosome = new CharacterChromosome(1000);
 
 			final String resource = "/org/jenetics/CharacterChromosome.object";
@@ -115,17 +107,13 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 
 				Assert.assertEquals(object, chromosome);
 			}
-		} finally {
-			LocalContext.exit();
 		}
 	}
 
 	@Test
 	public void xmlSerializationCompatibility() throws IOException {
 		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
-		LocalContext.enter();
-		try {
-			RandomRegistry.setRandom(random);
+		try (Scoped<Random> s = RandomRegistry.with(random)) {
 			final Object chromosome = new CharacterChromosome(1000);
 
 			final String resource = "/org/jenetics/CharacterChromosome.xml";
@@ -134,11 +122,8 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 
 				Assert.assertEquals(object, chromosome);
 			}
-		} finally {
-			LocalContext.exit();
 		}
 	}
-
 
 }
 

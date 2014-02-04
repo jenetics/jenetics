@@ -28,23 +28,23 @@ import java.io.InputStream;
 import java.util.BitSet;
 import java.util.Random;
 
-import javolution.context.LocalContext;
-
-import org.jscience.mathematics.number.LargeInteger;
 import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import org.jscience.mathematics.number.LargeInteger;
+
 import org.jenetics.util.Factory;
 import org.jenetics.util.IO;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Scoped;
 import org.jenetics.util.bit;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-10-22 $</em>
+ * @version <em>$Date: 2014-02-04 $</em>
  */
 public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
@@ -255,9 +255,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 	@Test
 	public void objectSerializationCompatibility() throws IOException {
 		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
-		LocalContext.enter();
-		try {
-			RandomRegistry.setRandom(random);
+		try (Scoped<Random> scope = RandomRegistry.with(random)) {
 			final BitChromosome chromosome = new BitChromosome(5000, 0.5);
 
 			final String resource = "/org/jenetics/BitChromosome.object";
@@ -266,17 +264,13 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
 				Assert.assertEquals(chromosome, object);
 			}
-		} finally {
-			LocalContext.exit();
 		}
 	}
 
 	@Test
 	public void xmlSerializationCompatibility() throws IOException {
 		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
-		LocalContext.enter();
-		try {
-			RandomRegistry.setRandom(random);
+		try (Scoped<Random> scope = RandomRegistry.with(random)) {
 			final BitChromosome chromosome = new BitChromosome(5000, 0.5);
 
 			final String resource = "/org/jenetics/BitChromosome.xml";
@@ -285,8 +279,6 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
 				Assert.assertEquals(chromosome, object);
 			}
-		} finally {
-			LocalContext.exit();
 		}
 	}
 
