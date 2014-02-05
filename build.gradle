@@ -29,7 +29,7 @@ import org.jenetics.gradle.task.ChecksumTask
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.5 &mdash; <em>$Date: 2013-12-18 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-02-05 $</em>
  */
 new PropertiesLoader(ext).load(file('project.properties'))
 new PropertiesLoader(ext).load(file('include.properties'))
@@ -110,6 +110,7 @@ task zip(type: Zip) {
 	}
 }
 
+/*
 task sha256(type: ChecksumTask) {
 	algorithm = 'SHA-256'
 	inputFile = file("build/distributions/${identifier}.zip")
@@ -126,5 +127,6 @@ signing {
 	//gpg --verify jenetics-1.4.0.zip.asc jenetics-1.4.0.zip
 	sign zip
 }
+*/
 
 

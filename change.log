@@ -1,9 +1,12 @@
+- Generalize the fitness function to 'Function<? super Genotype<G>, ? extends C>' and the fitness scaler to 'Function<? super C, ? extends C>'.
+
 Jenetics-1.5.0
 - Minor fixes in Gradle build script.
 - Mark some 'arrays' class methods as deprecated.
 - Fix/streamline BitChromosome constructors.
 - Improve Gradle build scripts.
 - Simplify statistics test classes.
+
 
 Jenetics-1.4.1
 - Fix bug in ListIterator implementation of the 'Seq' classes.

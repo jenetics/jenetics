@@ -50,7 +50,7 @@ import javolution.xml.stream.XMLStreamException;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-12-08 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-01-05 $</em>
  */
 public abstract class IO {
 
@@ -296,7 +296,7 @@ public abstract class IO {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version 1.0 &mdash; <em>$Date: 2013-12-08 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2014-01-05 $</em>
 	 */
 	private static final class NonClosableOutputStream extends OutputStream {
 		private final OutputStream _adoptee;
@@ -312,18 +312,8 @@ public abstract class IO {
 		}
 
 		@Override
-		public boolean equals(final Object obj) {
-			return _adoptee.equals(obj);
-		}
-
-		@Override
 		public void flush() throws IOException {
 			_adoptee.flush();
-		}
-
-		@Override
-		public int hashCode() {
-			return _adoptee.hashCode();
 		}
 
 		@Override
@@ -350,7 +340,7 @@ public abstract class IO {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version 1.0 &mdash; <em>$Date: 2013-12-08 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2014-01-05 $</em>
 	 */
 	private static final class NonClosableInputStream extends InputStream {
 		private final InputStream _adoptee;
