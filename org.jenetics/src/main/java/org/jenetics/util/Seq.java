@@ -755,7 +755,7 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	 */
 	@SafeVarargs
 	public static <T> Seq<T> valueOf(final T... values) {
-		return MSeq.valueOf(values).toISeq();
+		return MSeq.<T>valueOf(values.length).setAll(values).toISeq();
 	}
 
 	/**
