@@ -42,7 +42,7 @@ import org.jenetics.internal.util.SeqListIteratorAdapter;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2013-12-18 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-02-05 $</em>
  */
 public interface MSeq<T> extends Seq<T>, ObjIntConsumer<T>, Copyable<MSeq<T>> {
 
@@ -52,7 +52,7 @@ public interface MSeq<T> extends Seq<T>, ObjIntConsumer<T>, Copyable<MSeq<T>> {
 	 * @param index the index of the new value.
 	 * @param value the new value.
 	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         {@code (index < 0 || index >= size())}.
+	 *         <code>(index < 0 || index >= size())</code>.
 	 */
 	public void set(final int index, final T value);
 
