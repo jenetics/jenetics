@@ -41,7 +41,6 @@ public abstract class ObjectTester<T> {
 
 	protected abstract Factory<T> getFactory();
 
-	@SuppressWarnings("resource")
 	protected Array<T> newSameObjects(final int nobjects) {
 		final Array<T> objects = new Array<>(nobjects);
 
