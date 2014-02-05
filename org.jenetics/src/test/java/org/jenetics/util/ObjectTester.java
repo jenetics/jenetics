@@ -35,13 +35,12 @@ import javolution.xml.XMLSerializable;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-04 $</em>
+ * @version <em>$Date: 2014-02-05 $</em>
  */
 public abstract class ObjectTester<T> {
 
 	protected abstract Factory<T> getFactory();
 
-	@SuppressWarnings("resource")
 	protected Array<T> newSameObjects(final int nobjects) {
 		final Array<T> objects = new Array<>(nobjects);
 
