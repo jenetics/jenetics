@@ -81,12 +81,12 @@ public abstract class NumericGene<
 		final N max,
 		final Comparator<N> comparator
 	) {
-		_min = requireNonNull(min, "Min value");
-		_max = requireNonNull(max, "Max value");
-		_value = requireNonNull(value, "Gene value");
+		_min = requireNonNull(min, "Min value not be null.");
+		_max = requireNonNull(max, "Max value must not be null.");
+		_value = requireNonNull(value, "Gene value must not be null.");
+		_comparator = requireNonNull(comparator, "Comparator must not be null.");
 		_valid = comparator.compare(_value, _min) >= 0 &&
 				comparator.compare(_value, _max) <= 0;
-		_comparator = comparator;
 	}
 
 	/**
@@ -146,6 +146,8 @@ public abstract class NumericGene<
 		return this;
 	}
 
+	public abstract G newInstance(final N value);
+
 	@Override
 	public boolean isValid() {
 		return _valid;
@@ -170,7 +172,7 @@ public abstract class NumericGene<
 			return false;
 		}
 
-		final NumberGene<?, ?> gene = (NumberGene<?, ?>)obj;
+		final NumericGene<?, ?> gene = (NumericGene<?, ?>)obj;
 		return eq(_value, gene._value) &&
 			eq(_min, gene._min) &&
 			eq(_max, gene._max);
