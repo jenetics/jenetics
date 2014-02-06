@@ -63,7 +63,7 @@ public abstract class NumericGene<
 	 */
 	protected N _value;
 
-	protected Comparator<N> _comparator;
+	transient Comparator<N> _comparator;
 
 	private boolean _valid = true;
 

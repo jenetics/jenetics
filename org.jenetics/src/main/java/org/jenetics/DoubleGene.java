@@ -21,6 +21,7 @@ package org.jenetics;
 
 import static org.jenetics.util.math.random.nextDouble;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import org.jenetics.util.RandomRegistry;
@@ -36,6 +37,13 @@ public final class DoubleGene extends NumericGene<Double, DoubleGene> {
 
 	private static final long serialVersionUID = 1L;
 
+	private static final Comparator<Double> COMPARATOR = new Comparator<Double>() {
+		@Override
+		public int compare(final Double that, final Double other) {
+			return that.compareTo(other);
+		}
+	};
+
 	/**
 	 * Create a new random {@code DoubleGene} with the given value and the
 	 * given range. If the {@code value} isn't within the interval [min, max),
@@ -48,12 +56,7 @@ public final class DoubleGene extends NumericGene<Double, DoubleGene> {
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public DoubleGene(final Double value, final Double min, final Double max) {
-		super(value, min, max, new Comparator<Double>() {
-			@Override
-			public int compare(final Double that, final Double other) {
-				return that.compareTo(other);
-			}
-		});
+		super(value, min, max, COMPARATOR);
 	}
 
 	/**
