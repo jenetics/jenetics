@@ -19,69 +19,42 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.math.random.nextDouble;
+
+import java.util.Comparator;
+
+import org.jenetics.util.RandomRegistry;
+
 /**
+ * Implementation of the NumericGene which holds a 64 bit floating point number.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-02-02 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-02-06 $</em>
  * @since @__version__@
  */
-public final class DoubleGene extends Number implements Gene<Double, DoubleGene> {
-
-	private final Double _value;
-	private final Double _min;
-	private final Double _max;
-
+public final class DoubleGene extends NumericGene<Double, DoubleGene> {
 
 	public DoubleGene(final Double value, final Double min, final Double max) {
-		_value = value;
-		_min = min;
-		_max = max;
-	}
-
-	public Double getMin() {
-		return _min;
-	}
-
-	public Double getMax() {
-		return _max;
+		super(value, min, max, new Comparator<Double>() {
+			@Override public int compare(final Double that, final Double other) {
+				return that.compareTo(other);
+			}
+		});
 	}
 
 	@Override
-	public Double getAllele() {
-		return _value;
+	public DoubleGene newInstance(final Double value) {
+		return new DoubleGene(value, _min, _max);
 	}
 
 	@Override
 	public DoubleGene newInstance() {
-		return null;
+		return newInstance(nextDouble(RandomRegistry.getRandom(), _min, _max));
 	}
 
 	@Override
-	public Object copy() {
-		return null;
+	public DoubleGene mean(final DoubleGene that) {
+		return newInstance(_value  + (that._value - _value)/2.0);
 	}
 
-	@Override
-	public boolean isValid() {
-		return false;
-	}
-
-	@Override
-	public int intValue() {
-		return _value.intValue();
-	}
-
-	@Override
-	public long longValue() {
-		return _value.longValue();
-	}
-
-	@Override
-	public float floatValue() {
-		return _value.floatValue();
-	}
-
-	@Override
-	public double doubleValue() {
-		return _value;
-	}
 }
