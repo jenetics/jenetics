@@ -65,8 +65,9 @@
 			<class name="org.jenetics.Float64ChromosomeTest" />
 		</classes>
 	</test>
-	<test name="org.jenetics.Float64Gene">
+	<test name="org.jenetics.DoubleGene">
 		<classes>
+            <class name="org.jenetics.DoubleGeneTest" />
 			<class name="org.jenetics.Float64GeneTest" />
 		</classes>
 	</test>
