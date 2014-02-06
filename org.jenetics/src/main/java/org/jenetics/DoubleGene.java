@@ -34,6 +34,8 @@ import org.jenetics.util.RandomRegistry;
  */
 public final class DoubleGene extends NumericGene<Double, DoubleGene> {
 
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Create a new random {@code DoubleGene} with the given value and the
 	 * given range. If the {@code value} isn't within the interval [min, max),
