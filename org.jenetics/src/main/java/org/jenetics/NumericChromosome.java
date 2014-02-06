@@ -25,6 +25,8 @@ import static org.jenetics.util.object.hashCodeOf;
 import org.jenetics.util.ISeq;
 
 /**
+ * Abstract number chromosome.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version @__version__@ &mdash; <em>$Date: 2014-02-06 $</em>
  * @since @__version__@

@@ -36,7 +36,8 @@ public final class DoubleGene extends NumericGene<Double, DoubleGene> {
 
 	public DoubleGene(final Double value, final Double min, final Double max) {
 		super(value, min, max, new Comparator<Double>() {
-			@Override public int compare(final Double that, final Double other) {
+			@Override
+			public int compare(final Double that, final Double other) {
 				return that.compareTo(other);
 			}
 		});
