@@ -86,10 +86,7 @@ public class DoubleChromosome
 	}
 
 	@Override
-	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		return obj instanceof DoubleChromosome && super.equals(obj);
+	public boolean equals(final Object o) {
+		return o == this || o instanceof DoubleChromosome && super.equals(o);
 	}
 }
