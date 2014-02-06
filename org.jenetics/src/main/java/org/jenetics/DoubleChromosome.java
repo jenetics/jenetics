@@ -21,7 +21,7 @@ package org.jenetics;
 
 import static org.jenetics.util.object.hashCodeOf;
 
-import javolution.xml.XMLSerializable;
+import java.io.Serializable;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.ISeq;
@@ -35,7 +35,7 @@ import org.jenetics.util.ISeq;
  */
 public class DoubleChromosome
 	extends NumericChromosome<Double, DoubleGene>
-	implements XMLSerializable
+	implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
