@@ -34,6 +34,17 @@ import org.jenetics.util.RandomRegistry;
  */
 public final class DoubleGene extends NumericGene<Double, DoubleGene> {
 
+	/**
+	 * Create a new random {@code DoubleGene} with the given value and the
+	 * given range. If the {@code value} isn't within the interval [min, max),
+	 * no exception is thrown. In this case the method
+	 * {@link DoubleGene#isValid()} returns {@code false}.
+	 *
+	 * @param value the value of the gene.
+	 * @param min the minimal valid value of this gene (inclusively).
+	 * @param max the maximal valid value of this gene (exclusively).
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 */
 	public DoubleGene(final Double value, final Double min, final Double max) {
 		super(value, min, max, new Comparator<Double>() {
 			@Override
@@ -41,6 +52,18 @@ public final class DoubleGene extends NumericGene<Double, DoubleGene> {
 				return that.compareTo(other);
 			}
 		});
+	}
+
+	/**
+	 * Create a new random {@code DoubleGene}. It is guaranteed that the value
+	 * of the {@code DoubleGene} lies in the interval [min, max).
+	 *
+	 * @param min the minimal valid value of this gene (inclusively).
+	 * @param max the maximal valid value of this gene (exclusively).
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 */
+	public DoubleGene(final Double min, final Double max) {
+		this(nextDouble(RandomRegistry.getRandom(), min, max), min, max);
 	}
 
 	@Override
