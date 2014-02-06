@@ -45,7 +45,7 @@ public class DoubleChromosome
 	}
 
 	/**
-	 * Create a new random DoubleChromosome.
+	 * Create a new random {@code DoubleChromosome}.
 	 *
 	 * @param min the min value of the {@link DoubleGene}s (inclusively).
 	 * @param max the max value of the {@link DoubleGene}s (exclusively).
@@ -53,15 +53,13 @@ public class DoubleChromosome
 	 */
 	public DoubleChromosome(final Double min,final Double max,final int length) {
 		this(
-			new Array<DoubleGene>(length).fill(
-				new DoubleGene(min, max)
-			).toISeq()
+			new Array<DoubleGene>(length).fill(new DoubleGene(min, max)).toISeq()
 		);
 		_valid = true;
 	}
 
 	/**
-	 * Create a new random chromosome of length one.
+	 * Create a new random {@code DoubleChromosome} of length one.
 	 *
 	 * @param min the minimal value of this chromosome (inclusively).
 	 * @param max the maximal value of this chromosome (exclusively).
