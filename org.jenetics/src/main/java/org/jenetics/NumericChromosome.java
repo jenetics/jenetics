@@ -32,7 +32,7 @@ import org.jenetics.util.ISeq;
  * @since @__version__@
  */
 public abstract class NumericChromosome<
-	N extends Number,
+	N extends Number & Comparable<N>,
 	G extends NumericGene<N, G>
 >
 	extends AbstractChromosome<G>
@@ -42,12 +42,12 @@ public abstract class NumericChromosome<
 	/**
 	 * The minimum value of this {@code NumericChromosome}.
 	 */
-	protected transient N _min;
+	protected transient final N _min;
 
 	/**
 	 * The maximum value of this {@code NumericChromosome}.
 	 */
-	protected transient N _max;
+	protected transient final N _max;
 
 	/**
 	 * Create a new chromosome from the given genes array.

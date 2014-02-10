@@ -21,8 +21,6 @@ package org.jenetics;
 
 import static org.jenetics.util.math.random.nextLong;
 
-import java.util.Comparator;
-
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -35,21 +33,20 @@ import org.jenetics.util.RandomRegistry;
 public final class LongGene extends NumericGene<Long, LongGene> {
 
 	private static final long serialVersionUID = 1L;
-
-	private static final Comparator<Long> COMPARATOR = new Comparator<Long>() {
-		@Override
-		public int compare(final Long that, final Long other) {
-			return that.compareTo(other);
-		}
-	};
 	
-	private LongGene(
-		final Long value,
-		final Long min,
-		final Long max,
-		final Comparator<Long> comparator
-	) {
-		super(value, min, max, comparator);
+	/**
+	 * Create a new random {@code LongGene} with the given value and the
+	 * given range. If the {@code value} isn't within the interval [min, max],
+	 * no exception is thrown. In this case the method
+	 * {@link LongGene#isValid()} returns {@code false}.
+	 *
+	 * @param value the value of the gene.
+	 * @param min the minimal valid value of this gene (inclusively).
+	 * @param max the maximal valid value of this gene (inclusively).
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 */
+	public LongGene(final Long value, final Long min, final Long max) {
+		super(value, min, max);
 	}
 	
 	/**
@@ -62,8 +59,8 @@ public final class LongGene extends NumericGene<Long, LongGene> {
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (inclusively).
 	 */
-	public LongGene(final long value, final long min, final long max) {
-		this(value, min, max, COMPARATOR);
+	public static LongGene of(final long value, final long min, final long max) {
+		return new LongGene(value, min, max);
 	}
 
 	/**
@@ -73,13 +70,13 @@ public final class LongGene extends NumericGene<Long, LongGene> {
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (inclusively).
 	 */
-	public LongGene(final long min, final long max) {
-		this(nextLong(RandomRegistry.getRandom(), min, max), min, max);
+	public static LongGene of(final long min, final long max) {
+		return of(nextLong(RandomRegistry.getRandom(), min, max), min, max);
 	}
 
 	@Override
 	public LongGene newInstance(final Long value) {
-		return new LongGene(value, _min, _max, COMPARATOR);
+		return new LongGene(value, _min, _max);
 	}
 
 	@Override

@@ -24,7 +24,6 @@ import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
 import java.io.Serializable;
-import java.util.Comparator;
 
 import org.jenetics.util.Mean;
 
@@ -36,7 +35,7 @@ import org.jenetics.util.Mean;
  * @since @__version__@
  */
 public abstract class NumericGene<
-	N extends Number,
+	N extends Number & Comparable<N>,
 	G extends NumericGene<N, G>
 >
 	extends Number
@@ -63,8 +62,6 @@ public abstract class NumericGene<
 	 */
 	protected final N _value;
 
-	transient final Comparator<N> _comparator;
-
 	private final boolean _valid;
 
 	/**
@@ -75,18 +72,11 @@ public abstract class NumericGene<
 	 * @param max The allows max value of the gene.
 	 * @throws NullPointerException if one of the given arguments is {@code null}.
 	 */
-	protected NumericGene(
-		final N value,
-		final N min,
-		final N max,
-		final Comparator<N> comparator
-	) {
+	protected NumericGene(final N value, final N min, final N max) {
 		_min = requireNonNull(min, "Min value not be null.");
 		_max = requireNonNull(max, "Max value must not be null.");
 		_value = requireNonNull(value, "Gene value must not be null.");
-		_comparator = requireNonNull(comparator, "Comparator must not be null.");
-		_valid = comparator.compare(_value, _min) >= 0 &&
-				comparator.compare(_value, _max) <= 0;
+		_valid = _value.compareTo(_min) >= 0 && _value.compareTo(_max) <= 0;
 	}
 
 	/**
@@ -155,7 +145,7 @@ public abstract class NumericGene<
 
 	@Override
 	public int compareTo(final G other) {
-		return _comparator.compare(_value, other._value);
+		return _value.compareTo(other._value);
 	}
 
 	@Override

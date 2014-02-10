@@ -41,8 +41,7 @@ import org.jenetics.util.RandomRegistry;
  */
 public class LongGeneTest extends NumericGeneTester<Long, LongGene> {
 
-	private final Factory<LongGene>
-	_factory = new LongGene(0L, Long.MAX_VALUE);
+	private final Factory<LongGene> _factory = LongGene.of(0, Long.MAX_VALUE);
 	@Override protected Factory<LongGene> getFactory() {
 		return _factory;
 	}
@@ -55,7 +54,7 @@ public class LongGeneTest extends NumericGeneTester<Long, LongGene> {
 
 			final Long min = 0L;
 			final Long max = (long)Integer.MAX_VALUE;
-			final Factory<LongGene> factory = new LongGene(min, max);
+			final Factory<LongGene> factory = LongGene.of(min, max);
 
 			final Variance<Long> variance = new Variance<>();
 
@@ -104,7 +103,7 @@ public class LongGeneTest extends NumericGeneTester<Long, LongGene> {
 	public void mean() {
 		final long min = -Integer.MAX_VALUE;
 		final long max = Integer.MAX_VALUE;
-		final LongGene template = new LongGene(min, max);
+		final LongGene template = LongGene.of(min, max);
 
 		for (int i = 1; i < 500; ++i) {
 			final LongGene a = template.newInstance(i - 50L);

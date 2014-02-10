@@ -51,7 +51,7 @@ public class LongChromosome
 	 */
 	public LongChromosome(final Long min,final Long max,final int length) {
 		this(
-			new Array<LongGene>(length).fill(new LongGene(min, max)).toISeq()
+			new Array<LongGene>(length).fill(LongGene.of(min, max)).toISeq()
 		);
 		_valid = true;
 	}

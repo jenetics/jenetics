@@ -53,7 +53,7 @@ public class DoubleChromosome
 	 */
 	public DoubleChromosome(final Double min,final Double max,final int length) {
 		this(
-			new Array<DoubleGene>(length).fill(new DoubleGene(min, max)).toISeq()
+			new Array<DoubleGene>(length).fill(DoubleGene.of(min, max)).toISeq()
 		);
 		_valid = true;
 	}

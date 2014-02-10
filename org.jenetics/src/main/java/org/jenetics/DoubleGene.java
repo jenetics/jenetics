@@ -21,8 +21,6 @@ package org.jenetics;
 
 import static org.jenetics.util.math.random.nextDouble;
 
-import java.util.Comparator;
-
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -36,20 +34,19 @@ public final class DoubleGene extends NumericGene<Double, DoubleGene> {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final Comparator<Double> COMPARATOR = new Comparator<Double>() {
-		@Override
-		public int compare(final Double that, final Double other) {
-			return that.compareTo(other);
-		}
-	};
-
-	private DoubleGene(
-		final Double value, 
-		final Double min, 
-		final Double max, 
-		final Comparator<Double> comparator
-	) {
-		super(value, min, max, comparator);
+	/**
+	 * Create a new random {@code DoubleGene} with the given value and the
+	 * given range. If the {@code value} isn't within the interval [min, max),
+	 * no exception is thrown. In this case the method
+	 * {@link DoubleGene#isValid()} returns {@code false}.
+	 *
+	 * @param value the value of the gene.
+	 * @param min the minimal valid value of this gene (inclusively).
+	 * @param max the maximal valid value of this gene (exclusively).
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 */
+	public DoubleGene(final Double value, final Double min, final Double max) {
+		super(value, min, max);
 	}
 	
 	/**
@@ -62,8 +59,8 @@ public final class DoubleGene extends NumericGene<Double, DoubleGene> {
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (exclusively).
 	 */
-	public DoubleGene(final double value, final double min, final double max) {
-		this(value, min, max, COMPARATOR);
+	public static DoubleGene of(final double value, final double min, final double max) {
+		return new DoubleGene(value, min, max);
 	}
 
 	/**
@@ -73,13 +70,13 @@ public final class DoubleGene extends NumericGene<Double, DoubleGene> {
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (exclusively).
 	 */
-	public DoubleGene(final double min, final double max) {
-		this(nextDouble(RandomRegistry.getRandom(), min, max), min, max);
+	public static DoubleGene of(final double min, final double max) {
+		return of(nextDouble(RandomRegistry.getRandom(), min, max), min, max);
 	}
 
 	@Override
 	public DoubleGene newInstance(final Double value) {
-		return new DoubleGene(value, _min, _max, COMPARATOR);
+		return new DoubleGene(value, _min, _max);
 	}
 
 	@Override
