@@ -45,9 +45,10 @@ public class LongChromosome
 	/**
 	 * Create a new random {@code LongChromosome}.
 	 *
-	 * @param min the min value of the {@link DoubleGene}s (inclusively).
-	 * @param max the max value of the {@link DoubleGene}s (inclusively).
+	 * @param min the min value of the {@link LongGene}s (inclusively).
+	 * @param max the max value of the {@link LongGene}s (inclusively).
 	 * @param length the length of the chromosome.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public LongChromosome(final Long min,final Long max,final int length) {
 		this(
@@ -61,9 +62,32 @@ public class LongChromosome
 	 *
 	 * @param min the minimal value of this chromosome (inclusively).
 	 * @param max the maximal value of this chromosome (inclusively).
+	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public LongChromosome(final Long min, final Long max) {
 		this(min, max, 1);
+	}
+	
+	/**
+	 * Create a new random {@code LongChromosome}.
+	 *
+	 * @param min the min value of the {@link LongGene}s (inclusively).
+	 * @param max the max value of the {@link LongGene}s (inclusively).
+	 * @param length the length of the chromosome.
+	 */
+	public static LongChromosome of(final long min, final long max, final int length) {
+		return new LongChromosome(min, max, length);
+	}
+	
+	/**
+	 * Create a new random {@code LongChromosome} of length one.
+	 *
+	 * @param min the minimal value of this chromosome (inclusively).
+	 * @param max the maximal value of this chromosome (inclusively).
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 */
+	public static LongChromosome of(final long min, final long max) {
+		return new LongChromosome(min, max);
 	}
 
 	@Override
