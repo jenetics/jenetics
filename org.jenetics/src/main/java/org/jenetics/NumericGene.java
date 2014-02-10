@@ -51,21 +51,21 @@ public abstract class NumericGene<
 	/**
 	 * The minimum value of this {@code NumericGene}.
 	 */
-	protected N _min;
+	protected final N _min;
 
 	/**
 	 * The maximum value of this {@code NumericGene}.
 	 */
-	protected N _max;
+	protected final N _max;
 
 	/**
 	 * The value of this {@code NumericGene}.
 	 */
-	protected N _value;
+	protected final N _value;
 
-	transient Comparator<N> _comparator;
+	transient final Comparator<N> _comparator;
 
-	private boolean _valid = true;
+	private final boolean _valid;
 
 	/**
 	 * Set the {@code NumericGene}.
