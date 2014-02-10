@@ -28,7 +28,7 @@ import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-02-06 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-02-10 $</em>
  * @since @__version__@
  */
 public class LongChromosome
@@ -51,7 +51,7 @@ public class LongChromosome
 	 */
 	public LongChromosome(final Long min,final Long max,final int length) {
 		this(
-			new Array<LongGene>(length).fill(new LongGene(min, max)).toISeq()
+			new Array<LongGene>(length).fill(LongGene.of(min, max)).toISeq()
 		);
 		_valid = true;
 	}

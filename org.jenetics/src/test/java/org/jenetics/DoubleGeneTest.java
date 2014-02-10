@@ -39,12 +39,12 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-02-06 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-02-10 $</em>
  * @since @__version__@
  */
 public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 
-	private final Factory<DoubleGene> _factory = new DoubleGene(0.0, Double.MAX_VALUE);
+	private final Factory<DoubleGene> _factory = DoubleGene.of(0, Double.MAX_VALUE);
 	@Override protected Factory<DoubleGene> getFactory() {
 		return _factory;
 	}
@@ -57,7 +57,7 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 
 			final double min = 0;
 			final double max = 100;
-			final Factory<DoubleGene> factory = new DoubleGene(min, max);
+			final Factory<DoubleGene> factory = DoubleGene.of(min, max);
 
 			final Variance<Double> variance = new Variance<>();
 
@@ -104,7 +104,7 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 
 	@Test
 	public void doubleGeneIntegerInteger() {
-		DoubleGene gene = new DoubleGene(-10.567, 10.567);
+		DoubleGene gene = DoubleGene.of(-10.567, 10.567);
 		assertEquals(gene.getMin(), -10.567);
 		assertEquals(gene.getMax(), 10.567);
 	}
@@ -113,7 +113,7 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 	public void mean() {
 		final double min = -Double.MAX_VALUE;
 		final double max = Double.MAX_VALUE;
-		final DoubleGene template = new DoubleGene(min, max);
+		final DoubleGene template = DoubleGene.of(min, max);
 
 		for (int i = 1; i < 500; ++i) {
 			final DoubleGene a = template.newInstance(i - 50.0);

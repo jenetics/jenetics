@@ -24,11 +24,11 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-02-06 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-02-10 $</em>
  * @since @__version__@
  */
 public abstract class NumericGeneTester<
-	N extends Number,
+	N extends Number & Comparable<N>,
 	G extends NumericGene<N,G>
 >
 	extends GeneTester<G>
@@ -49,8 +49,8 @@ public abstract class NumericGeneTester<
 		for (int i = 0; i < 100; ++i) {
 			final G gene = getFactory().newInstance();
 
-			Assert.assertTrue(gene._comparator.compare(gene.getNumber(), gene.getMin()) >= 0);
-			Assert.assertTrue(gene._comparator.compare(gene.getNumber(), gene.getMax()) <= 0);
+			Assert.assertTrue(gene.getNumber().compareTo(gene.getMin()) >= 0);
+			Assert.assertTrue(gene.getNumber().compareTo(gene.getMax()) <= 0);
 		}
 	}
 
@@ -60,9 +60,9 @@ public abstract class NumericGeneTester<
 			final G gene1 = getFactory().newInstance();
 			final G gene2 = getFactory().newInstance();
 
-			if (gene1._comparator.compare(gene1.getNumber(), gene2.getNumber()) > 0) {
+			if (gene1.getNumber().compareTo(gene2.getNumber()) > 0) {
 				Assert.assertTrue(gene1.compareTo(gene2) > 0);
-			} else if (gene1._comparator.compare(gene1.getNumber(), gene2.getNumber()) < 0) {
+			} else if (gene1.getNumber().compareTo(gene2.getNumber()) < 0) {
 				Assert.assertTrue(gene1.compareTo(gene2) < 0);
 			} else {
 				Assert.assertTrue(gene1.compareTo(gene2) == 0);
