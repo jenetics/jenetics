@@ -101,9 +101,10 @@
 			<class name="org.jenetics.Integer64ChromosomeTest" />
 		</classes>
 	</test>
-	<test name="org.jenetics.Integer64Gene">
+	<test name="org.jenetics.LongGene">
 		<classes>
 			<class name="org.jenetics.Integer64GeneTest" />
+			<class name="org.jenetics.LongGeneTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.LinearRankSelector">
