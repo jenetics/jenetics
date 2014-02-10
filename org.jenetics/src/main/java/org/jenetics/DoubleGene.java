@@ -21,7 +21,6 @@ package org.jenetics;
 
 import static org.jenetics.util.math.random.nextDouble;
 
-import java.io.Serializable;
 import java.util.Comparator;
 
 import org.jenetics.util.RandomRegistry;
@@ -30,7 +29,7 @@ import org.jenetics.util.RandomRegistry;
  * Implementation of the NumericGene which holds a 64 bit floating point number.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-02-06 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-02-10 $</em>
  * @since @__version__@
  */
 public final class DoubleGene extends NumericGene<Double, DoubleGene> {
@@ -44,6 +43,15 @@ public final class DoubleGene extends NumericGene<Double, DoubleGene> {
 		}
 	};
 
+	private DoubleGene(
+		final Double value, 
+		final Double min, 
+		final Double max, 
+		final Comparator<Double> comparator
+	) {
+		super(value, min, max, comparator);
+	}
+	
 	/**
 	 * Create a new random {@code DoubleGene} with the given value and the
 	 * given range. If the {@code value} isn't within the interval [min, max),
@@ -53,10 +61,9 @@ public final class DoubleGene extends NumericGene<Double, DoubleGene> {
 	 * @param value the value of the gene.
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (exclusively).
-	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	public DoubleGene(final Double value, final Double min, final Double max) {
-		super(value, min, max, COMPARATOR);
+	public DoubleGene(final double value, final double min, final double max) {
+		this(value, min, max, COMPARATOR);
 	}
 
 	/**
@@ -65,15 +72,14 @@ public final class DoubleGene extends NumericGene<Double, DoubleGene> {
 	 *
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (exclusively).
-	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	public DoubleGene(final Double min, final Double max) {
+	public DoubleGene(final double min, final double max) {
 		this(nextDouble(RandomRegistry.getRandom(), min, max), min, max);
 	}
 
 	@Override
 	public DoubleGene newInstance(final Double value) {
-		return new DoubleGene(value, _min, _max);
+		return new DoubleGene(value, _min, _max, COMPARATOR);
 	}
 
 	@Override
