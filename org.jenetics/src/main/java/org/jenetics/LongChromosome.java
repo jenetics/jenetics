@@ -84,7 +84,6 @@ public class LongChromosome
 	 *
 	 * @param min the minimal value of this chromosome (inclusively).
 	 * @param max the maximal value of this chromosome (inclusively).
-	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public static LongChromosome of(final long min, final long max) {
 		return new LongChromosome(min, max);
