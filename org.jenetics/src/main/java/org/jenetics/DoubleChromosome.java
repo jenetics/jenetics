@@ -50,6 +50,7 @@ public class DoubleChromosome
 	 * @param min the min value of the {@link DoubleGene}s (inclusively).
 	 * @param max the max value of the {@link DoubleGene}s (exclusively).
 	 * @param length the length of the chromosome.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public DoubleChromosome(final Double min,final Double max,final int length) {
 		this(
@@ -63,11 +64,33 @@ public class DoubleChromosome
 	 *
 	 * @param min the minimal value of this chromosome (inclusively).
 	 * @param max the maximal value of this chromosome (exclusively).
+	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public DoubleChromosome(final Double min, final Double max) {
 		this(min, max, 1);
 	}
 
+	/**
+	 * Create a new random {@code DoubleChromosome}.
+	 *
+	 * @param min the min value of the {@link DoubleGene}s (inclusively).
+	 * @param max the max value of the {@link DoubleGene}s (exclusively).
+	 * @param length the length of the chromosome.
+	 */
+	public static DoubleChromosome of(final double min, double max, final int length) {
+		return new DoubleChromosome(min, max, length);
+	}
+	
+	/**
+	 * Create a new random {@code DoubleChromosome} of length one.
+	 *
+	 * @param min the minimal value of this chromosome (inclusively).
+	 * @param max the maximal value of this chromosome (exclusively).
+	 */
+	public static DoubleChromosome of(final double min, final double max) {
+		return new DoubleChromosome(min, max);
+	}
+	
 	@Override
 	public DoubleChromosome newInstance(final ISeq<DoubleGene> genes) {
 		return new DoubleChromosome(genes);
