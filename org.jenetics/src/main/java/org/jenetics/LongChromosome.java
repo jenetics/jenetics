@@ -21,6 +21,9 @@ package org.jenetics;
 
 import static org.jenetics.util.object.hashCodeOf;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import org.jenetics.util.Array;
@@ -67,7 +70,7 @@ public class LongChromosome
 	public LongChromosome(final Long min, final Long max) {
 		this(min, max, 1);
 	}
-	
+
 	/**
 	 * Create a new random {@code LongChromosome}.
 	 *
@@ -78,7 +81,7 @@ public class LongChromosome
 	public static LongChromosome of(final long min, final long max, final int length) {
 		return new LongChromosome(min, max, length);
 	}
-	
+
 	/**
 	 * Create a new random {@code LongChromosome} of length one.
 	 *
@@ -107,5 +110,39 @@ public class LongChromosome
 	@Override
 	public boolean equals(final Object o) {
 		return o == this || o instanceof LongChromosome && super.equals(o);
+	}
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private void writeObject(final ObjectOutputStream out)
+		throws IOException
+	{
+		out.defaultWriteObject();
+
+		out.writeInt(length());
+		out.writeLong(_min.longValue());
+		out.writeLong(_max.longValue());
+
+		for (LongGene gene : _genes) {
+			out.writeLong(gene.longValue());
+		}
+	}
+
+	private void readObject(final ObjectInputStream in)
+		throws IOException, ClassNotFoundException
+	{
+		in.defaultReadObject();
+
+		final Array<LongGene> genes = new Array<>(in.readInt());
+		_min = in.readLong();
+		_max = in.readLong();
+
+		for (int i = 0; i < genes.length(); ++i) {
+			genes.set(i, new LongGene(in.readLong(), _min, _max));
+		}
+
+		_genes = genes.toISeq();
 	}
 }
