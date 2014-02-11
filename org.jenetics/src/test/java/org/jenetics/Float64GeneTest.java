@@ -40,8 +40,9 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-01 $</em>
+ * @version <em>$Date: 2014-02-11 $</em>
  */
+@SuppressWarnings("deprecation")
 public class Float64GeneTest extends NumberGeneTester<Float64, Float64Gene> {
 
 	private final Factory<Float64Gene>
