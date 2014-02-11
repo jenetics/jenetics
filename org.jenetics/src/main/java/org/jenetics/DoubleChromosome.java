@@ -56,9 +56,7 @@ public class DoubleChromosome
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public DoubleChromosome(final Double min,final Double max,final int length) {
-		this(
-			new Array<DoubleGene>(length).fill(DoubleGene.of(min, max)).toISeq()
-		);
+		this(DoubleGene.seq(min, max, length));
 		_valid = true;
 	}
 
