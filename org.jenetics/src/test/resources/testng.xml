@@ -20,7 +20,7 @@
  # Author:
  #    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  #
- # Version: <em>$Date: 2014-02-10 $</em>
+ # Version: <em>$Date: 2014-02-11 $</em>
  #
  ###############################################################################
 -->
@@ -60,9 +60,10 @@
 			<class name="org.jenetics.CompositeAltererTest" />
 		</classes>
 	</test>
-	<test name="org.jenetics.Float64Chromosome">
+	<test name="org.jenetics.DoubleChromosome">
 		<classes>
 			<class name="org.jenetics.Float64ChromosomeTest" />
+            <class name="org.jenetics.DoubleChromosomeTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.DoubleGene">
@@ -96,9 +97,10 @@
 			<class name="org.jenetics.GenotypeTest" />
 		</classes>
 	</test>
-	<test name="org.jenetics.Integer64Chromosome">
+	<test name="org.jenetics.LongChromosome">
 		<classes>
 			<class name="org.jenetics.Integer64ChromosomeTest" />
+            <class name="org.jenetics.LongChromosomeTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.LongGene">
