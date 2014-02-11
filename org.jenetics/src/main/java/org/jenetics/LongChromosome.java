@@ -50,7 +50,7 @@ public class LongChromosome
 	 * @param length the length of the chromosome.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	public LongChromosome(final Long min,final Long max,final int length) {
+	public LongChromosome(final Long min, final Long max, final int length) {
 		this(
 			new Array<LongGene>(length).fill(LongGene.of(min, max)).toISeq()
 		);
