@@ -21,6 +21,10 @@ package org.jenetics;
 
 import static org.jenetics.util.math.random.nextLong;
 
+import java.util.Random;
+
+import org.jenetics.util.Array;
+import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -33,7 +37,7 @@ import org.jenetics.util.RandomRegistry;
 public final class LongGene extends NumericGene<Long, LongGene> {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * Create a new random {@code LongGene} with the given value and the
 	 * given range. If the {@code value} isn't within the interval [min, max],
@@ -48,7 +52,7 @@ public final class LongGene extends NumericGene<Long, LongGene> {
 	public LongGene(final Long value, final Long min, final Long max) {
 		super(value, min, max);
 	}
-	
+
 	/**
 	 * Create a new random {@code LongGene} with the given value and the
 	 * given range. If the {@code value} isn't within the interval [min, max],
@@ -72,6 +76,22 @@ public final class LongGene extends NumericGene<Long, LongGene> {
 	 */
 	public static LongGene of(final long min, final long max) {
 		return of(nextLong(RandomRegistry.getRandom(), min, max), min, max);
+	}
+
+	static ISeq<LongGene> seq(
+		final Long minimum,
+		final Long maximum,
+		final int length
+	) {
+		final long min = minimum;
+		final long max = maximum;
+		final Random r = RandomRegistry.getRandom();
+
+		final Array<LongGene> genes = new Array<>(length);
+		for (int i = 0; i < length; ++i) {
+			genes.set(i, new LongGene(nextLong(r, min, max), minimum, maximum));
+		}
+		return genes.toISeq();
 	}
 
 	@Override
