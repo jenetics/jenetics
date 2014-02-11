@@ -21,10 +21,9 @@ package org.jenetics;
 
 import java.util.Random;
 
-import javolution.context.LocalContext;
-
-import org.jscience.mathematics.number.Float64;
 import org.testng.annotations.DataProvider;
+
+import javolution.context.LocalContext;
 
 import org.jenetics.util.RandomRegistry;
 
@@ -36,7 +35,7 @@ public class NumberStatisticsBuilderTest extends StatisticsBuilderTest {
 
 	@Override
 	public Object newBuilder() {
-		return new NumberStatistics.Builder<Float64Gene, Float64>();
+		return new NumberStatistics.Builder<DoubleGene, Double>();
 	}
 
 	@Override
@@ -57,8 +56,8 @@ public class NumberStatisticsBuilderTest extends StatisticsBuilderTest {
 					{"fitnessMean", Double.TYPE, random.nextDouble()},
 					{"fitnessVariance", Double.TYPE, random.nextDouble()},
 					{"standardError", Double.TYPE, random.nextDouble()},
-					{"bestPhenotype", Phenotype.class, TestUtils.newFloat64Phenotype()},
-					{"worstPhenotype", Phenotype.class, TestUtils.newFloat64Phenotype()},
+					{"bestPhenotype", Phenotype.class, TestUtils.newDoublePhenotype()},
+					{"worstPhenotype", Phenotype.class, TestUtils.newDoublePhenotype()},
 					{"optimize", Optimize.class, Optimize.MINIMUM},
 					{"optimize", Optimize.class, Optimize.MAXIMUM}
 			};

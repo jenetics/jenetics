@@ -71,6 +71,10 @@ public class DoubleChromosome
 		this(min, max, 1);
 	}
 
+	public static DoubleChromosome of(final DoubleGene... genes) {
+		return new DoubleChromosome(Array.valueOf(genes).toISeq());
+	}
+
 	/**
 	 * Create a new random {@code DoubleChromosome}.
 	 *

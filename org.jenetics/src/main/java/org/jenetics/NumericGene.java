@@ -35,7 +35,7 @@ import org.jenetics.util.Mean;
  * @since @__version__@
  */
 public abstract class NumericGene<
-	N extends Number & Comparable<N>,
+	N extends Number & Comparable<? super N>,
 	G extends NumericGene<N, G>
 >
 	extends Number
