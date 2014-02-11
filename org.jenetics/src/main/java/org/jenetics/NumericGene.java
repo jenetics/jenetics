@@ -31,11 +31,11 @@ import org.jenetics.util.Mean;
  * Abstract base class for implementing concrete NumericGenes.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-02-10 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-02-11 $</em>
  * @since @__version__@
  */
 public abstract class NumericGene<
-	N extends Number & Comparable<N>,
+	N extends Number & Comparable<? super N>,
 	G extends NumericGene<N, G>
 >
 	extends Number

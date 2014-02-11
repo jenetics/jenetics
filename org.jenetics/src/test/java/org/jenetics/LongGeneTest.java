@@ -37,7 +37,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-10 $</em>
+ * @version <em>$Date: 2014-02-11 $</em>
  */
 public class LongGeneTest extends NumericGeneTester<Long, LongGene> {
 
@@ -85,8 +85,8 @@ public class LongGeneTest extends NumericGeneTester<Long, LongGene> {
 
 	@Test
     public void createNumber() {
-		Integer64Gene gene = Integer64Gene.valueOf(1, 0, 12);
-		Integer64Gene g2 = gene.newInstance(5);
+		LongGene gene = LongGene.of(1, 0, 12);
+		LongGene g2 = gene.newInstance(5L);
 
         assertEquals(g2.getAllele().longValue(), 5);
         assertEquals(g2.getMin().longValue(), 0);
@@ -95,7 +95,7 @@ public class LongGeneTest extends NumericGeneTester<Long, LongGene> {
 
 	@Test
 	public void createInvalidNumber() {
-		final Integer64Gene gene = Integer64Gene.valueOf(0, 1, 2);
+		final LongGene gene = LongGene.of(0, 1, 2);
 		Assert.assertFalse(gene.isValid());
 	}
 

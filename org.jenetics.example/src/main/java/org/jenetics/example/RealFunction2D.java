@@ -21,7 +21,6 @@ package org.jenetics.example;
 
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
-import org.jenetics.GaussianMutator;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.MeanAlterer;

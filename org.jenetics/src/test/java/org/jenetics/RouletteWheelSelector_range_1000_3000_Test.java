@@ -19,8 +19,6 @@
  */
 package org.jenetics;
 
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.stat.Distribution;
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.LinearDistribution;
@@ -28,29 +26,29 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-08-29 $</em>
+ * @version <em>$Date: 2014-02-11 $</em>
  */
 public class RouletteWheelSelector_range_1000_3000_Test extends RouletteWheelSelectorTest {
 
-	private Range<Float64> _domain = new Range<>(Float64.valueOf(1000), Float64.valueOf(3000));
+	private Range<Double> _domain = new Range<>(1000.0, 3000.0);
 
 	@Override
-	protected final Range<Float64> getDomain() {
+	protected final Range<Double> getDomain() {
 		return _domain;
 	}
 
 	@Override
-	protected Distribution<Float64> getDistribution() {
-		double x1 = getDomain().getMin().doubleValue();
-		double x2 = getDomain().getMax().doubleValue();
+	protected Distribution<Double> getDistribution() {
+		double x1 = getDomain().getMin();
+		double x2 = getDomain().getMax();
 		double a = x1*(x2 - x1) + (x2 - x1)*(x2 - x1)/2.0;
 		return new LinearDistribution<>(getDomain(), x1/a);
 	}
 
 	@Override
 	protected double χ2(
-		final Histogram<Float64> histogram,
-		final Distribution<Float64> distribution
+		final Histogram<Double> histogram,
+		final Distribution<Double> distribution
 	) {
 		return histogram.χ2(
 			distribution.getCDF(),
