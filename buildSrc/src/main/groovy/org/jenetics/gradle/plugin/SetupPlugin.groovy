@@ -117,7 +117,9 @@ class SetupPlugin extends JeneticsPlugin {
 				//parallel = 'tests' // 'methods'
 				//threadCount = Runtime.runtime.availableProcessors() + 1
 				//include '**/*Test.class'
-				suites 'src/test/resources/testng.xml'
+				suites project.file(
+                        "${project.projectDir}/src/test/resources/testng.xml"
+                    )
 			}
 		}
 		project.jacocoTestReport {
