@@ -53,8 +53,8 @@ import org.jenetics.util.functions;
  *     final Factory〈Genotype〈BitGene〉〉 gtf = Genotype.valueOf(
  *         BitChromosome.valueOf(10, 0.5)
  *     );
- *     final Function〈Genotype〈BitGene〉 Float64〉 ff = ...
- *     final GeneticAlgorithm〈BitGene, Float64〉
+ *     final Function〈Genotype〈BitGene〉 Double〉 ff = ...
+ *     final GeneticAlgorithm〈BitGene, Double〉
  *     ga = new GeneticAlgorithm〈〉(gtf, ff, Optimize.MAXIMUM);
  *
  *     ga.setup();
@@ -67,8 +67,8 @@ import org.jenetics.util.functions;
  * The genotype factory, {@code gtf}, in the example above will create genotypes
  * which consists of one {@link BitChromosome} with length 10. The one to zero
  * probability of the newly created genotypes is set to 0.5. The fitness function
- * is parametrized with a {@link BitGene} and a {@link Float64}. That means
- * that the fitness function is calculating the fitness value as {@link Float64}.
+ * is parametrized with a {@link BitGene} and a {@link Double}. That means
+ * that the fitness function is calculating the fitness value as {@link Double}.
  * The return type of the fitness function must be at least a {@link Comparable}.
  * The {@code GeneticAlgorithm} object is then created with the genotype factory
  * and the fitness function. In this example the GA tries to maximize the fitness
@@ -119,8 +119,8 @@ import org.jenetics.util.functions;
  * IO.xml.write(ga.getPopulation(), file);
  *
  * // Reading the population from disk.
- * Population〈Float64Gene,Float64〉 population =
- *     (Population〈Float64Gene, Float64〉)IO.xml.read(file);
+ * Population〈DoubleGene, Double〉 population =
+ *     (Population〈DoubleGene, Double〉)IO.xml.read(file);
  * ga.setPopulation(population);
  * [/code]
  *
@@ -135,7 +135,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-01-28 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-02-11 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,
@@ -398,20 +398,20 @@ public class GeneticAlgorithm<
 			//Increment the generation and the generation.
 			++_generation;
 
-			//Select the survivors and the offsprings.
+			//Select the survivors and the offspring.
 			_selectTimer.start();
 			final Array<Population<G, C>> selection = select();
 			final Population<G, C> survivors = selection.get(0);
 			final Population<G, C> offsprings = selection.get(1);
 			_selectTimer.stop();
 
-			//Alter the offsprings (Recombination, Mutation ...).
+			//Alter the offspring (Recombination, Mutation ...).
 			_alterTimer.start();
 			_alterer.alter(offsprings, _generation);
 			_alterTimer.stop();
 
 			// Combining the new population (containing the survivors and the
-			// altered offsprings).
+			// altered offspring).
 			_combineTimer.start();
 			final int killed = _killed.get();
 			final int invalid = _invalid.get();
@@ -597,7 +597,7 @@ public class GeneticAlgorithm<
 	 * </p>
 	 * To set one ore more GA parameter you will write code like this:
 	 * [code]
-	 * final GeneticAlgorithm〈Float64Gene, Float64〉 ga = ...
+	 * final GeneticAlgorithm〈DoubleGene, Double〉 ga = ...
 	 * final Function〈GeneticAlgorithm〈?, ?〉, Boolean〉 until = ...
 	 *
 	 * //Starting the GA in separate thread.
@@ -675,8 +675,8 @@ public class GeneticAlgorithm<
 	 * The following example shows the simplest possible fitness function. It's
 	 * the identity function and returns the allele of an 1x1  float genotype.
 	 * [code]
-	 * class Id implements Function〈Genotype〈Float64Gene〉, Float64〉 {
-	 *     public Float64 apply(final Genotype〈Float64Gene〉 genotype) {
+	 * class Id implements Function〈Genotype〈DoubleGene〉, Double〉 {
+	 *     public Double apply(final Genotype〈DoubleGene〉 genotype) {
 	 *         return genotype.getGene().getAllele();
 	 *     }
 	 * }
@@ -704,9 +704,9 @@ public class GeneticAlgorithm<
 	 * configuration the raw-fitness is equal to the actual fitness value, that
 	 * means, the used fitness scaler is the identity function.
 	 * [code]
-	 * class Sqrt extends Function〈Float64, Float64〉 {
-	 *     public Float64 apply(final Float64 value) {
-	 *         return Float64.valueOf(sqrt(value.doubleValue()));
+	 * class Sqrt extends Function〈Double, Double〉 {
+	 *     public Double apply(final Double value) {
+	 *         return sqrt(value);
 	 *     }
 	 * }
 	 * [/code]
