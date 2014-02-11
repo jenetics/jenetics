@@ -28,7 +28,7 @@ import org.jenetics.util.ISeq;
  * Abstract number chromosome.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-02-10 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-02-11 $</em>
  * @since @__version__@
  */
 public abstract class NumericChromosome<
@@ -42,12 +42,12 @@ public abstract class NumericChromosome<
 	/**
 	 * The minimum value of this {@code NumericChromosome}.
 	 */
-	protected transient final N _min;
+	protected transient N _min;
 
 	/**
 	 * The maximum value of this {@code NumericChromosome}.
 	 */
-	protected transient final N _max;
+	protected transient N _max;
 
 	/**
 	 * Create a new chromosome from the given genes array.

@@ -21,6 +21,9 @@ package org.jenetics;
 
 import static org.jenetics.util.object.hashCodeOf;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import org.jenetics.util.Array;
@@ -30,7 +33,7 @@ import org.jenetics.util.ISeq;
  * Number chromosome implementation which holds 64 bit floating point numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-02-10 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-02-11 $</em>
  * @since @__version__@
  */
 public class DoubleChromosome
@@ -80,7 +83,7 @@ public class DoubleChromosome
 	public static DoubleChromosome of(final double min, double max, final int length) {
 		return new DoubleChromosome(min, max, length);
 	}
-	
+
 	/**
 	 * Create a new random {@code DoubleChromosome} of length one.
 	 *
@@ -90,7 +93,7 @@ public class DoubleChromosome
 	public static DoubleChromosome of(final double min, final double max) {
 		return new DoubleChromosome(min, max);
 	}
-	
+
 	@Override
 	public DoubleChromosome newInstance(final ISeq<DoubleGene> genes) {
 		return new DoubleChromosome(genes);
@@ -109,5 +112,40 @@ public class DoubleChromosome
 	@Override
 	public boolean equals(final Object o) {
 		return o == this || o instanceof DoubleChromosome && super.equals(o);
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private void writeObject(final ObjectOutputStream out)
+		throws IOException
+	{
+		out.defaultWriteObject();
+
+		out.writeInt(length());
+		out.writeDouble(_min.doubleValue());
+		out.writeDouble(_max.doubleValue());
+
+		for (DoubleGene gene : _genes) {
+			out.writeDouble(gene.doubleValue());
+		}
+	}
+
+	private void readObject(final ObjectInputStream in)
+		throws IOException, ClassNotFoundException
+	{
+		in.defaultReadObject();
+
+		final Array<DoubleGene> genes = new Array<>(in.readInt());
+		_min = in.readDouble();
+		_max = in.readDouble();
+
+		for (int i = 0; i < genes.length(); ++i) {
+			genes.set(i, new DoubleGene(in.readDouble(), _min, _max));
+		}
+
+		_genes = genes.toISeq();
 	}
 }
