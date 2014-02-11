@@ -42,12 +42,12 @@ public abstract class NumericChromosome<
 	/**
 	 * The minimum value of this {@code NumericChromosome}.
 	 */
-	protected transient final N _min;
+	protected transient N _min;
 
 	/**
 	 * The maximum value of this {@code NumericChromosome}.
 	 */
-	protected transient final N _max;
+	protected transient N _max;
 
 	/**
 	 * Create a new chromosome from the given genes array.
