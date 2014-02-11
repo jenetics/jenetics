@@ -24,6 +24,7 @@ import static org.jenetics.util.math.random.nextDouble;
 import java.util.Random;
 
 import org.jenetics.util.Array;
+import org.jenetics.util.Builder;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
 
@@ -34,7 +35,10 @@ import org.jenetics.util.RandomRegistry;
  * @version @__version__@ &mdash; <em>$Date: 2014-02-11 $</em>
  * @since @__version__@
  */
-public final class DoubleGene extends NumericGene<Double, DoubleGene> {
+public final class DoubleGene
+	extends NumericGene<Double, DoubleGene>
+	implements Builder<Number, DoubleGene>
+{
 
 	private static final long serialVersionUID = 1L;
 
@@ -95,6 +99,11 @@ public final class DoubleGene extends NumericGene<Double, DoubleGene> {
 	}
 
 	@Override
+	public DoubleGene build(final Number from) {
+		return new DoubleGene(from.doubleValue(), _min, _max);
+	}
+
+	@Override
 	public DoubleGene newInstance(final Double value) {
 		return new DoubleGene(value, _min, _max);
 	}
@@ -106,7 +115,7 @@ public final class DoubleGene extends NumericGene<Double, DoubleGene> {
 
 	@Override
 	public DoubleGene mean(final DoubleGene that) {
-		return newInstance(_value  + (that._value - _value)/2.0);
+		return newInstance(_value + (that._value - _value) / 2.0);
 	}
 
 }

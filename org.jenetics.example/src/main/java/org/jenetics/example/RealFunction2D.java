@@ -25,6 +25,7 @@ import org.jenetics.GaussianMutator;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.MeanAlterer;
+import org.jenetics.NormalMutator;
 import org.jenetics.TournamentSelector;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
@@ -73,7 +74,7 @@ public class RealFunction2D {
 		// This are the alterers you can use for this example, in any combination.
 		ga.setAlterers(
 			new MeanAlterer<DoubleGene>(),
-			new GaussianMutator<DoubleGene>()
+			new NormalMutator<Double, DoubleGene>()
 		);
 
 		ga.setup();

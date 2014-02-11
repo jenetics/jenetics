@@ -24,6 +24,7 @@ import static org.jenetics.util.math.random.nextLong;
 import java.util.Random;
 
 import org.jenetics.util.Array;
+import org.jenetics.util.Builder;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
 
@@ -34,7 +35,10 @@ import org.jenetics.util.RandomRegistry;
  * @version @__version__@ &mdash; <em>$Date: 2014-02-11 $</em>
  * @since @__version__@
  */
-public final class LongGene extends NumericGene<Long, LongGene> {
+public final class LongGene
+	extends NumericGene<Long, LongGene>
+	implements Builder<Number, LongGene>
+{
 
 	private static final long serialVersionUID = 1L;
 
@@ -95,6 +99,11 @@ public final class LongGene extends NumericGene<Long, LongGene> {
 	}
 
 	@Override
+	public LongGene build(final Number from) {
+		return new LongGene(from.longValue(), _min, _max);
+	}
+
+	@Override
 	public LongGene newInstance(final Long value) {
 		return new LongGene(value, _min, _max);
 	}
@@ -106,7 +115,7 @@ public final class LongGene extends NumericGene<Long, LongGene> {
 
 	@Override
 	public LongGene mean(final LongGene that) {
-		return newInstance(_value  + (that._value - _value)/2);
+		return newInstance(_value + (that._value - _value) / 2);
 	}
 
 }
