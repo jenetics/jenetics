@@ -43,7 +43,12 @@ import org.jenetics.util.ISeq;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
  * @version 1.0 &mdash; <em>$Date$</em>
+ *
+ * @deprecated Use {@link org.jenetics.LongChromosome} instead. This classes
+ *             uses the <i>JScience</i> library, which will be removed in the
+ *             next major version.
  */
+@Deprecated
 public class Integer64Chromosome
 	extends NumberChromosome<Integer64, Integer64Gene>
 	implements XMLSerializable

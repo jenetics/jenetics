@@ -42,7 +42,12 @@ import org.jenetics.util.ISeq;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
  * @version 1.0 &mdash; <em>$Date$</em>
+ *
+ * @deprecated Use {@link org.jenetics.DoubleChromosome} instead. This classes
+ *             uses the <i>JScience</i> library, which will be removed in the
+ *             next major version.
  */
+@Deprecated
 public class Float64Chromosome
 	extends NumberChromosome<Float64, Float64Gene>
 	implements XMLSerializable
@@ -183,7 +188,7 @@ public class Float64Chromosome
 	 * Return a {@link Function} which returns the {@link Gene} with the given
 	 * {@code index} from this {@link Chromosome}.
 	 */
-	public static final Function<Chromosome<Float64Gene>, Float64Gene>
+	public static Function<Chromosome<Float64Gene>, Float64Gene>
 	Gene(final int index)
 	{
 		return AbstractChromosome.gene(index);
