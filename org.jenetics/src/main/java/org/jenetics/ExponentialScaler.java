@@ -42,6 +42,7 @@ import org.jenetics.util.Function;
  * @since 1.0
  * @version 1.0 &mdash; <em>$Date$</em>
  */
+@Deprecated
 public final class ExponentialScaler
 	implements
 		Function<Float64, Float64>,
