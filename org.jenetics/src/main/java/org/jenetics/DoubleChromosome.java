@@ -33,7 +33,7 @@ import org.jenetics.util.ISeq;
  * Number chromosome implementation which holds 64 bit floating point numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-02-11 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-02-12 $</em>
  * @since @__version__@
  */
 public class DoubleChromosome
@@ -71,6 +71,14 @@ public class DoubleChromosome
 		this(min, max, 1);
 	}
 
+	/**
+	 * Create a new {@code DoubleChromoosme} with the given genes.
+	 * 
+	 * @param genes the genes of the chromosome.
+	 * @return a new chromosome with the given genes.
+	 * @throws IllegalArgumentException if the length of the genes array is 
+	 *         empty.
+	 */
 	public static DoubleChromosome of(final DoubleGene... genes) {
 		return new DoubleChromosome(Array.valueOf(genes).toISeq());
 	}
