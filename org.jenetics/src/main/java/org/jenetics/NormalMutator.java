@@ -24,9 +24,9 @@ import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.Random;
 
-import org.jenetics.util.Builder;
 import org.jenetics.util.IndexStream;
 import org.jenetics.util.MSeq;
+import org.jenetics.util.Numeric;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.math;
 
@@ -45,12 +45,12 @@ import org.jenetics.util.math;
  *
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-02-11 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-02-12 $</em>
  * @since @__version__@
  */
 public final class NormalMutator<
-	N extends Number & Comparable<N>,
-	G extends NumericGene<N, G> & Builder<Number, G>
+	N extends Number,
+	G extends NumericGene<N, G> & Numeric.Conversion<G>
 >
 	extends Mutator<G>
 {
@@ -82,7 +82,7 @@ public final class NormalMutator<
 			gene.getMax().doubleValue() - gene.getMin().doubleValue()
 		)*0.25;
 
-		return gene.build(math.clamp(
+		return gene.fromNumber(math.clamp(
 			random.nextGaussian() * std + gene.doubleValue(),
 			gene.getMin().doubleValue(),
 			gene.getMax().doubleValue()

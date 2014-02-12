@@ -19,64 +19,45 @@
  */
 package org.jenetics;
 
-import static java.util.Objects.requireNonNull;
-import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
-
-import java.io.Serializable;
-
 import org.jenetics.util.Mean;
+import org.jenetics.util.Numeric;
 
 /**
  * Abstract base class for implementing concrete NumericGenes.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-02-11 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-02-12 $</em>
  * @since @__version__@
  */
-public abstract class NumericGene<
-	N extends Number & Comparable<? super N>,
-	G extends NumericGene<N, G>
->
-	extends Number
-	implements
-		Gene<N, G>,
-		Mean<G>,
-		Comparable<G>,
-		Serializable
+public abstract class NumericGene<N, G extends NumericGene<N, G>>
+	extends BoundedGene<N, G>
+	implements Mean<G>
 {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * The minimum value of this {@code NumericGene}.
-	 */
-	protected final N _min;
+	protected final Numeric<N> _numeric;
 
 	/**
-	 * The maximum value of this {@code NumericGene}.
-	 */
-	protected final N _max;
-
-	/**
-	 * The value of this {@code NumericGene}.
-	 */
-	protected final N _value;
-
-	private final boolean _valid;
-
-	/**
-	 * Set the {@code NumericGene}.
+	 * Create new {@code NumericGene}.
 	 *
-	 * @param value The value of the number gene.
+	 * @param value The value of the gene.
 	 * @param min The allowed min value of the gene.
 	 * @param max The allows max value of the gene.
+	 * @param numeric the comparator used for comparing the alleles.
 	 * @throws NullPointerException if one of the given arguments is {@code null}.
 	 */
-	protected NumericGene(final N value, final N min, final N max) {
-		_min = requireNonNull(min, "Min value not be null.");
-		_max = requireNonNull(max, "Max value must not be null.");
-		_value = requireNonNull(value, "Gene value must not be null.");
-		_valid = _value.compareTo(_min) >= 0 && _value.compareTo(_max) <= 0;
+	protected NumericGene(
+		final N value,
+		final N min,
+		final N max,
+		final Numeric<N> numeric
+	) {
+		super(value, min, max, numeric);
+		_numeric = numeric;
+	}
+
+	public Numeric<N> numeric() {
+		return _numeric;
 	}
 
 	/**
@@ -88,89 +69,75 @@ public abstract class NumericGene<
 		return _value;
 	}
 
-	@Override
-	public N getAllele() {
-		return _value;
+	/**
+	 * Returns the value of the specified gene as an byte. This may involve
+	 * rounding or truncation.
+	 *
+	 * @return the numeric value represented by this object after conversion to
+	 *         type {@code byte}.
+	 */
+	public byte byteValue() {
+		return _numeric.toByteValue(_value);
 	}
 
 	/**
-	 * Return the allowed min value.
+	 * Returns the value of the specified gene as an short. This may involve
+	 * rounding or truncation.
 	 *
-	 * @return The allowed min value.
+	 * @return the numeric value represented by this object after conversion to
+	 *         type {@code short}.
 	 */
-	public N getMin() {
-		return _min;
+	public short shortValue() {
+		return _numeric.toShortValue(_value);
 	}
 
 	/**
-	 * Return the allowed max value.
+	 * Returns the value of the specified gene as an int. This may involve
+	 * rounding or truncation.
 	 *
-	 * @return The allowed max value.
+	 * @return the numeric value represented by this object after conversion to
+	 *         type {@code int}.
 	 */
-	public N getMax() {
-		return _max;
-	}
-
-	@Override
 	public int intValue() {
-		return _value.intValue();
+		return _numeric.toIntValue(_value);
 	}
 
-	@Override
+	/**
+	 * Returns the value of the specified gene as an long. This may involve
+	 * rounding or truncation.
+	 *
+	 * @return the numeric value represented by this object after conversion to
+	 *         type {@code long}.
+	 */
 	public long longValue() {
-		return _value.longValue();
+		return _numeric.toLongValue(_value);
 	}
 
-	@Override
+	/**
+	 * Returns the value of the specified gene as an float. This may involve
+	 * rounding or truncation.
+	 *
+	 * @return the numeric value represented by this object after conversion to
+	 *         type {@code float}.
+	 */
 	public float floatValue() {
-		return _value.floatValue();
+		return _numeric.toFloatValue(_value);
 	}
 
-	@Override
+	/**
+	 * Returns the value of the specified gene as an double. This may involve
+	 * rounding or truncation.
+	 *
+	 * @return the numeric value represented by this object after conversion to
+	 *         type {@code double}.
+	 */
 	public double doubleValue() {
-		return _value.doubleValue();
+		return _numeric.toDoubleValue(_value);
 	}
 
 	@Override
-	public Object copy() {
-		return this;
-	}
-
-	public abstract G newInstance(final N value);
-
-	@Override
-	public boolean isValid() {
-		return _valid;
-	}
-
-	@Override
-	public int compareTo(final G other) {
-		return _value.compareTo(other._value);
-	}
-
-	@Override
-	public int hashCode() {
-		return hashCodeOf(getClass()).and(_value).and(_min).and(_max).value();
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null || obj.getClass() != getClass()) {
-			return false;
-		}
-
-		final NumericGene<?, ?> gene = (NumericGene<?, ?>)obj;
-		return eq(_value, gene._value) &&
-			eq(_min, gene._min) &&
-			eq(_max, gene._max);
-	}
-
-	@Override
-	public String toString() {
-		return String.format("[%s]", _value);
+	public G mean(final G that) {
+		return newInstance(_numeric.mean(_value, that._value));
 	}
 
 }

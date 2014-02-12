@@ -26,18 +26,19 @@ import java.util.Random;
 import org.jenetics.util.Array;
 import org.jenetics.util.Builder;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.Numeric;
 import org.jenetics.util.RandomRegistry;
 
 /**
  * NumericGene implementation which holds a 64 bit integer number.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-02-11 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-02-12 $</em>
  * @since @__version__@
  */
 public final class LongGene
 	extends NumericGene<Long, LongGene>
-	implements Builder<Number, LongGene>
+	//implements Builder<Number, LongGene>
 {
 
 	private static final long serialVersionUID = 1L;
@@ -54,7 +55,7 @@ public final class LongGene
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public LongGene(final Long value, final Long min, final Long max) {
-		super(value, min, max);
+		super(value, min, max, Numeric.LONG);
 	}
 
 	/**
@@ -98,10 +99,12 @@ public final class LongGene
 		return genes.toISeq();
 	}
 
+	/*
 	@Override
 	public LongGene build(final Number from) {
 		return new LongGene(from.longValue(), _min, _max);
 	}
+	*/
 
 	@Override
 	public LongGene newInstance(final Long value) {
@@ -111,11 +114,6 @@ public final class LongGene
 	@Override
 	public LongGene newInstance() {
 		return newInstance(nextLong(RandomRegistry.getRandom(), _min, _max));
-	}
-
-	@Override
-	public LongGene mean(final LongGene that) {
-		return newInstance(_value + (that._value - _value) / 2);
 	}
 
 }
