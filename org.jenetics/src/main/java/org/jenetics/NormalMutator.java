@@ -49,7 +49,8 @@ import org.jenetics.util.math;
  * @since @__version__@
  */
 public final class NormalMutator<
-	G extends NumericGene<? extends Number, G> & Numeric.Conversion<G>
+	N extends Number,
+	G extends NumericGene<N, G> & Numeric.Conversion<G>
 >
 	extends Mutator<G>
 {

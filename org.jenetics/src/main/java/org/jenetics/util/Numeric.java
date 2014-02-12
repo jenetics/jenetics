@@ -21,6 +21,8 @@ package org.jenetics.util;
 
 import java.util.Comparator;
 
+import org.jenetics.util.Numeric.Conversion;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version @__version__@ &mdash; <em>$Date$</em>
@@ -53,7 +55,7 @@ public interface Numeric<N> extends Comparator<N> {
 
 }
 
-final class DoubleNumeric implements Numeric<Double> {
+final class DoubleNumeric implements Numeric<Double>, Numeric.Conversion<Double> {
 
 	@Override
 	public Double abs(final Double x) {
@@ -95,6 +97,15 @@ final class DoubleNumeric implements Numeric<Double> {
 		return x.compareTo(y);
 	}
 
+	@Override
+	public Double fromNumber(final Number value) {
+		return value.doubleValue();
+	}
+
+	@Override
+	public Number toNumber(final Double value) {
+		return value;
+	}
 }
 
 final class LongNumeric implements Numeric<Long> {
