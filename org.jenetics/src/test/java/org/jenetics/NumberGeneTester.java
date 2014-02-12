@@ -20,13 +20,15 @@
 package org.jenetics;
 
 import org.jscience.mathematics.number.Number;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-10 $</em>
+ * @version <em>$Date: 2014-02-12 $</em>
  */
+@SuppressWarnings("deprecation")
 public abstract class NumberGeneTester<N extends Number<N>, G extends NumberGene<N,G>>
 	extends GeneTester<G>
 {
