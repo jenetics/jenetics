@@ -25,6 +25,7 @@ import java.util.Random;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.Mean;
 import org.jenetics.util.Numeric;
 import org.jenetics.util.Numeric.Conversion;
 import org.jenetics.util.RandomRegistry;
@@ -38,7 +39,9 @@ import org.jenetics.util.RandomRegistry;
  */
 public final class DoubleGene
 	extends NumericGene<Double, DoubleGene>
-	implements Conversion<DoubleGene>
+	implements
+		Conversion<DoubleGene>,
+		Mean<DoubleGene>
 {
 
 	private static final long serialVersionUID = 1L;
@@ -100,11 +103,6 @@ public final class DoubleGene
 	}
 
 	@Override
-	public DoubleGene fromNumber(final Number number) {
-		return new DoubleGene(number.doubleValue(), _min, _max);
-	}
-
-	@Override
 	public DoubleGene newInstance(final Double value) {
 		return new DoubleGene(value, _min, _max);
 	}
@@ -112,6 +110,21 @@ public final class DoubleGene
 	@Override
 	public DoubleGene newInstance() {
 		return newInstance(nextDouble(RandomRegistry.getRandom(), _min, _max));
+	}
+
+	@Override
+	public DoubleGene fromNumber(final Number number) {
+		return new DoubleGene(number.doubleValue(), _min, _max);
+	}
+
+	@Override
+	public Double toNumber(final DoubleGene gene) {
+		return gene._value;
+	}
+
+	@Override
+	public DoubleGene mean(final DoubleGene that) {
+		return newInstance(_value + (that._value - _value) / 2.0);
 	}
 
 }

@@ -54,8 +54,8 @@ public class terminationTest {
 	{
 		@Override
 		public Double apply(final Genotype<DoubleGene> genotype) {
-			final double value = genotype.getChromosome().getGene().doubleValue();
-			return Double.valueOf(Math.sin(value));
+			final double value = genotype.getChromosome().getGene().getAllele();
+			return Math.sin(value);
 		}
 	};
 

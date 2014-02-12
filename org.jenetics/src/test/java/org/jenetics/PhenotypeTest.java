@@ -42,7 +42,7 @@ public class PhenotypeTest extends ObjectTester<Phenotype<DoubleGene, Double>> {
 		private static final long serialVersionUID = 2793605351118238308L;
 		@Override public Double apply(final Genotype<DoubleGene> genotype) {
 			final DoubleGene gene = genotype.getChromosome().getGene(0);
-			return sin(toRadians(gene.doubleValue()));
+			return sin(toRadians(gene.getAllele()));
 		}
 	}
 

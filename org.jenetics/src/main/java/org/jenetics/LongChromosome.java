@@ -71,16 +71,16 @@ public class LongChromosome
 
 	/**
 	 * Create a new {@code LongChromoosme} with the given genes.
-	 * 
+	 *
 	 * @param genes the genes of the chromosome.
 	 * @return a new chromosome with the given genes.
-	 * @throws IllegalArgumentException if the length of the genes array is 
+	 * @throws IllegalArgumentException if the length of the genes array is
 	 *         empty.
 	 */
 	public static LongChromosome of(final LongGene... genes) {
 		return new LongChromosome(Array.valueOf(genes).toISeq());
 	}
-	
+
 	/**
 	 * Create a new random {@code LongChromosome}.
 	 *
@@ -136,7 +136,7 @@ public class LongChromosome
 		out.writeLong(_max.longValue());
 
 		for (LongGene gene : _genes) {
-			out.writeLong(gene.longValue());
+			out.writeLong(gene.getAllele().longValue());
 		}
 	}
 

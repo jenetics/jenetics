@@ -42,20 +42,9 @@ public interface Numeric<N> extends Comparator<N> {
 
 	public N mean(final N x, final N y);
 
-	public byte toByteValue(final N x);
-
-	public short toShortValue(final N x);
-
-	public int toIntValue(final N x);
-
-	public long toLongValue(final N x);
-
-	public float toFloatValue(final N x);
-
-	public double toDoubleValue(final N x);
-
 	public static interface Conversion<T> {
 		public T fromNumber(final Number value);
+		public Number toNumber(final T value);
 	}
 
 	public static final Numeric<Double> DOUBLE = new DoubleNumeric();
@@ -64,39 +53,7 @@ public interface Numeric<N> extends Comparator<N> {
 
 }
 
-abstract class NumberNumeric<N extends Number> implements Numeric<N> {
-	@Override
-	public byte toByteValue(final N x) {
-		return x.byteValue();
-	}
-
-	@Override
-	public short toShortValue(final N x) {
-		return x.shortValue();
-	}
-
-	@Override
-	public int toIntValue(final N x) {
-		return x.intValue();
-	}
-
-	@Override
-	public long toLongValue(final N x) {
-		return x.longValue();
-	}
-
-	@Override
-	public float toFloatValue(final N x) {
-		return x.floatValue();
-	}
-
-	@Override
-	public double toDoubleValue(final N x) {
-		return x.doubleValue();
-	}
-}
-
-final class DoubleNumeric extends NumberNumeric<Double> {
+final class DoubleNumeric implements Numeric<Double> {
 
 	@Override
 	public Double abs(final Double x) {
@@ -140,7 +97,7 @@ final class DoubleNumeric extends NumberNumeric<Double> {
 
 }
 
-final class LongNumeric extends NumberNumeric<Long> {
+final class LongNumeric implements Numeric<Long> {
 
 	@Override
 	public Long abs(final Long x) {

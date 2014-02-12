@@ -40,7 +40,7 @@ public class GaussianMutatorTest extends MutatorTestBase {
 
 	@Override
 	public Alterer<DoubleGene> newAlterer(double p) {
-		return new NormalMutator<Double, DoubleGene>(p);
+		return new NormalMutator<DoubleGene>(p);
 	}
 
 	@Test(invocationCount = 20, successPercentage = 95)
@@ -53,13 +53,13 @@ public class GaussianMutatorTest extends MutatorTestBase {
 		final double var = Math.pow((max - min)/4.0, 2);
 
 		final DoubleGene gene = DoubleGene.of(mean, min, max);
-		final NormalMutator<Double, DoubleGene> mutator = new NormalMutator<>();
+		final NormalMutator<DoubleGene> mutator = new NormalMutator<>();
 
 		final Histogram<Double> histogram = Histogram.valueOf(0.0, 10.0, 10);
 		final Variance<Double> variance = new Variance<>();
 
 		for (int i = 0; i < 10000; ++i) {
-			final double value = mutator.mutate(gene, random).doubleValue();
+			final double value = mutator.mutate(gene, random).getAllele();
 
 			histogram.accumulate(value);
 			variance.accumulate(value);

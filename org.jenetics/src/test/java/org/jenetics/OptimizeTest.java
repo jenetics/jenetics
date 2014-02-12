@@ -41,7 +41,7 @@ public class OptimizeTest {
 
 		@Override
 		public Double apply(Genotype<DoubleGene> genotype) {
-			return genotype.getGene().doubleValue();
+			return genotype.getGene().getAllele();
 		}
 	}
 

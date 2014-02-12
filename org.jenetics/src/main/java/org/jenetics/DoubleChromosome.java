@@ -73,10 +73,10 @@ public class DoubleChromosome
 
 	/**
 	 * Create a new {@code DoubleChromoosme} with the given genes.
-	 * 
+	 *
 	 * @param genes the genes of the chromosome.
 	 * @return a new chromosome with the given genes.
-	 * @throws IllegalArgumentException if the length of the genes array is 
+	 * @throws IllegalArgumentException if the length of the genes array is
 	 *         empty.
 	 */
 	public static DoubleChromosome of(final DoubleGene... genes) {
@@ -139,7 +139,7 @@ public class DoubleChromosome
 		out.writeDouble(_max.doubleValue());
 
 		for (DoubleGene gene : _genes) {
-			out.writeDouble(gene.doubleValue());
+			out.writeDouble(gene.getAllele().doubleValue());
 		}
 	}
 
