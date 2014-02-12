@@ -31,8 +31,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.util.Array;
 import org.jenetics.util.Concurrency;
 import org.jenetics.util.Factory;
