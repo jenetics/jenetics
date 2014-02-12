@@ -71,6 +71,14 @@ public class DoubleChromosome
 		this(min, max, 1);
 	}
 
+	/**
+	 * Create a new {@code DoubleChromoosme} with the given genes.
+	 * 
+	 * @param genes the genes of the chromosome.
+	 * @return a new chromosome with the given genes.
+	 * @throws IllegalArgumentException if the length of the genes array is 
+	 *         empty.
+	 */
 	public static DoubleChromosome of(final DoubleGene... genes) {
 		return new DoubleChromosome(Array.valueOf(genes).toISeq());
 	}
