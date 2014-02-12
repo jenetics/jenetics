@@ -38,7 +38,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-11 $</em>
+ * @version <em>$Date: 2014-02-12 $</em>
  */
 public class GeneticAlgorithmTest {
 
@@ -59,7 +59,7 @@ public class GeneticAlgorithmTest {
 		LocalContext.enter();
 		try {
 			ConcurrentContext.setConcurrency(0);
-			RandomRegistry.setRandom(new Random(12345));
+			RandomRegistry.setRandom(new Random(123456));
 
 			final Factory<Genotype<DoubleGene>> factory = Genotype.valueOf(
 				DoubleChromosome.of(0, 1)
@@ -78,26 +78,20 @@ public class GeneticAlgorithmTest {
 
 			Statistics<DoubleGene, Double> s = ga.getBestStatistics();
 			Reporter.log(s.toString());
-			Assert.assertEquals(s.getAgeMean(), 20.775000000000002);
-			Assert.assertEquals(s.getAgeVariance(), 363.4918341708541);
+			Assert.assertEquals(s.getAgeMean(), 21.40500000000002);
+			Assert.assertEquals(s.getAgeVariance(), 648.051231155779);
 			Assert.assertEquals(s.getSamples(), 200);
-			Assert.assertEquals(s.getBestFitness().doubleValue(), 0.997787124427267, 0.00000001);
-			Assert.assertEquals(s.getWorstFitness().doubleValue(), 0.0326815029742894, 0.00000001);
+			Assert.assertEquals(s.getBestFitness().doubleValue(), 0.9955101231254028, 0.00000001);
+			Assert.assertEquals(s.getWorstFitness().doubleValue(), 0.03640144995042627, 0.00000001);
 
 			s = ga.getStatistics();
 			Reporter.log(s.toString());
 
-			Assert.assertEquals(s.getAgeMean(), 23.550000000000008, 0.000001);
-			Assert.assertEquals(s.getAgeVariance(), 76.31909547738691, 0.000001);
+			Assert.assertEquals(s.getAgeMean(), 23.15500000000001, 0.000001);
+			Assert.assertEquals(s.getAgeVariance(), 82.23213567839196, 0.000001);
 			Assert.assertEquals(s.getSamples(), 200);
-			Assert.assertEquals(s.getBestFitness().doubleValue(), 0.997787124427267, 0.00000001);
-			Assert.assertEquals(s.getWorstFitness().doubleValue(), 0.997787124427267, 0.00000001);
-
-//			Assert.assertEquals(s.getAgeMean(), 39.175000000000026, 0.000001);
-//			Assert.assertEquals(s.getAgeVariance(), 366.18530150753793, 0.000001);
-//			Assert.assertEquals(s.getSamples(), 200);
-//			Assert.assertEquals(s.getBestFitness().doubleValue(), 0.9800565233548408, 0.00000001);
-//			Assert.assertEquals(s.getWorstFitness().doubleValue(), 0.9800565233548408, 0.00000001);
+			Assert.assertEquals(s.getBestFitness().doubleValue(), 0.9955101231254028, 0.00000001);
+			Assert.assertEquals(s.getWorstFitness().doubleValue(), 0.9955101231254028, 0.00000001);
 		} finally {
 			LocalContext.exit();
 		}
