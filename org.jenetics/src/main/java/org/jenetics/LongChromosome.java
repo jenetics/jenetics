@@ -31,7 +31,7 @@ import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-02-11 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-02-12 $</em>
  * @since @__version__@
  */
 public class LongChromosome
@@ -69,6 +69,18 @@ public class LongChromosome
 		this(min, max, 1);
 	}
 
+	/**
+	 * Create a new {@code LongChromoosme} with the given genes.
+	 * 
+	 * @param genes the genes of the chromosome.
+	 * @return a new chromosome with the given genes.
+	 * @throws IllegalArgumentException if the length of the genes array is 
+	 *         empty.
+	 */
+	public static LongChromosome of(final LongGene... genes) {
+		return new LongChromosome(Array.valueOf(genes).toISeq());
+	}
+	
 	/**
 	 * Create a new random {@code LongChromosome}.
 	 *
