@@ -24,7 +24,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-02-11 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-02-12 $</em>
  * @since @__version__@
  */
 public abstract class NumericChromosomeTester<
@@ -87,15 +87,15 @@ public abstract class NumericChromosomeTester<
 	public void assertValid(final NumericChromosome<N, G> c) {
 		if (c.isValid()) {
 			for (G gene: c) {
-				Assert.assertTrue(gene.getNumber().compareTo(c.getMin()) >= 0);
-				Assert.assertTrue(gene.getNumber().compareTo(c.getMax()) <= 0);
+				Assert.assertTrue(gene.getAllele().compareTo(c.getMin()) >= 0);
+				Assert.assertTrue(gene.getAllele().compareTo(c.getMax()) <= 0);
 			}
 
 		} else {
 			for (G gene : c) {
 				Assert.assertTrue(
-					gene.getNumber().compareTo(c.getMin()) < 0 ||
-						gene.getNumber().compareTo(c.getMax()) > 0
+					gene.getAllele().compareTo(c.getMin()) < 0 ||
+						gene.getAllele().compareTo(c.getMax()) > 0
 				);
 			}
 		}

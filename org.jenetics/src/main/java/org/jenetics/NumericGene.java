@@ -19,7 +19,6 @@
  */
 package org.jenetics;
 
-import org.jenetics.util.Mean;
 import org.jenetics.util.Numeric;
 
 /**
@@ -31,7 +30,6 @@ import org.jenetics.util.Numeric;
  */
 public abstract class NumericGene<N, G extends NumericGene<N, G>>
 	extends BoundedGene<N, G>
-	implements Mean<G>
 {
 	private static final long serialVersionUID = 1L;
 
@@ -58,86 +56,6 @@ public abstract class NumericGene<N, G extends NumericGene<N, G>>
 
 	public Numeric<N> numeric() {
 		return _numeric;
-	}
-
-	/**
-	 * Return the number value of this gene.
-	 *
-	 * @return the number value of this gene.
-	 */
-	public N getNumber() {
-		return _value;
-	}
-
-	/**
-	 * Returns the value of the specified gene as an byte. This may involve
-	 * rounding or truncation.
-	 *
-	 * @return the numeric value represented by this object after conversion to
-	 *         type {@code byte}.
-	 */
-	public byte byteValue() {
-		return _numeric.toByteValue(_value);
-	}
-
-	/**
-	 * Returns the value of the specified gene as an short. This may involve
-	 * rounding or truncation.
-	 *
-	 * @return the numeric value represented by this object after conversion to
-	 *         type {@code short}.
-	 */
-	public short shortValue() {
-		return _numeric.toShortValue(_value);
-	}
-
-	/**
-	 * Returns the value of the specified gene as an int. This may involve
-	 * rounding or truncation.
-	 *
-	 * @return the numeric value represented by this object after conversion to
-	 *         type {@code int}.
-	 */
-	public int intValue() {
-		return _numeric.toIntValue(_value);
-	}
-
-	/**
-	 * Returns the value of the specified gene as an long. This may involve
-	 * rounding or truncation.
-	 *
-	 * @return the numeric value represented by this object after conversion to
-	 *         type {@code long}.
-	 */
-	public long longValue() {
-		return _numeric.toLongValue(_value);
-	}
-
-	/**
-	 * Returns the value of the specified gene as an float. This may involve
-	 * rounding or truncation.
-	 *
-	 * @return the numeric value represented by this object after conversion to
-	 *         type {@code float}.
-	 */
-	public float floatValue() {
-		return _numeric.toFloatValue(_value);
-	}
-
-	/**
-	 * Returns the value of the specified gene as an double. This may involve
-	 * rounding or truncation.
-	 *
-	 * @return the numeric value represented by this object after conversion to
-	 *         type {@code double}.
-	 */
-	public double doubleValue() {
-		return _numeric.toDoubleValue(_value);
-	}
-
-	@Override
-	public G mean(final G that) {
-		return newInstance(_numeric.mean(_value, that._value));
 	}
 
 }

@@ -29,7 +29,7 @@ import org.jenetics.util.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-11 $</em>
+ * @version <em>$Date: 2014-02-12 $</em>
  */
 public class terminationTest {
 
@@ -54,8 +54,8 @@ public class terminationTest {
 	{
 		@Override
 		public Double apply(final Genotype<DoubleGene> genotype) {
-			final double value = genotype.getChromosome().getGene().doubleValue();
-			return Double.valueOf(Math.sin(value));
+			final double value = genotype.getChromosome().getGene().getAllele();
+			return Math.sin(value);
 		}
 	};
 

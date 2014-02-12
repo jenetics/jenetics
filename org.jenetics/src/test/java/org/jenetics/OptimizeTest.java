@@ -29,7 +29,7 @@ import org.jenetics.util.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-11 $</em>
+ * @version <em>$Date: 2014-02-12 $</em>
  */
 public class OptimizeTest {
 
@@ -41,7 +41,7 @@ public class OptimizeTest {
 
 		@Override
 		public Double apply(Genotype<DoubleGene> genotype) {
-			return genotype.getGene().doubleValue();
+			return genotype.getGene().getAllele();
 		}
 	}
 

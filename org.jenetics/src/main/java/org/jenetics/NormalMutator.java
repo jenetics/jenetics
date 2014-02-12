@@ -49,8 +49,7 @@ import org.jenetics.util.math;
  * @since @__version__@
  */
 public final class NormalMutator<
-	N extends Number,
-	G extends NumericGene<N, G> & Numeric.Conversion<G>
+	G extends NumericGene<? extends Number, G> & Numeric.Conversion<G>
 >
 	extends Mutator<G>
 {
@@ -78,12 +77,13 @@ public final class NormalMutator<
 	}
 
 	G mutate(final G gene, final Random random) {
+
 		final double std = (
 			gene.getMax().doubleValue() - gene.getMin().doubleValue()
 		)*0.25;
 
 		return gene.fromNumber(math.clamp(
-			random.nextGaussian() * std + gene.doubleValue(),
+			random.nextGaussian() * std + gene.toNumber(gene).doubleValue(),
 			gene.getMin().doubleValue(),
 			gene.getMax().doubleValue()
 		));
