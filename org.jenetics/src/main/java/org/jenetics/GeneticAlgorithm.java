@@ -114,11 +114,11 @@ import org.jenetics.util.functions;
  * [code]
  * // Writing the population to disk.
  * final File file = new File("population.xml");
- * IO.xml.write(ga.getPopulation(), file);
+ * IO.jaxb.write(ga.getPopulation(), file);
  *
  * // Reading the population from disk.
  * Population〈DoubleGene, Double〉 population =
- *     (Population〈DoubleGene, Double〉)IO.xml.read(file);
+ *     (Population〈DoubleGene, Double〉)IO.jaxb.read(file);
  * ga.setPopulation(population);
  * [/code]
  *
