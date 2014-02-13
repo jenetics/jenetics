@@ -30,10 +30,10 @@ import org.jenetics.util.Array;
 import org.jenetics.util.ISeq;
 
 /**
- * Number chromosome implementation which holds 64 bit floating point numbers.
+ * Numeric chromosome implementation which holds 64 bit floating point numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-02-12 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-02-13 $</em>
  * @since @__version__@
  */
 public class DoubleChromosome

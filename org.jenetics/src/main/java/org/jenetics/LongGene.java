@@ -105,12 +105,14 @@ public final class LongGene
 
 	@Override
 	public LongGene newInstance() {
-		return newInstance(nextLong(RandomRegistry.getRandom(), _min, _max));
+		return new LongGene(
+			nextLong(RandomRegistry.getRandom(), _min, _max), _min, _max
+		);
 	}
 
 	@Override
 	public LongGene mean(final LongGene that) {
-		return newInstance(_value + (that._value - _value) / 2);
+		return new LongGene(_value + (that._value - _value) / 2, _min, _max);
 	}
 
 }

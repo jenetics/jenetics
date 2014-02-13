@@ -67,7 +67,11 @@ public final class DoubleGene
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (exclusively).
 	 */
-	public static DoubleGene of(final double value, final double min, final double max) {
+	public static DoubleGene of(
+		final double value,
+		final double min,
+		final double max
+	) {
 		return new DoubleGene(value, min, max);
 	}
 
@@ -105,12 +109,14 @@ public final class DoubleGene
 
 	@Override
 	public DoubleGene newInstance() {
-		return newInstance(nextDouble(RandomRegistry.getRandom(), _min, _max));
+		return new DoubleGene(
+			nextDouble(RandomRegistry.getRandom(), _min, _max), _min, _max
+		);
 	}
 
 	@Override
 	public DoubleGene mean(final DoubleGene that) {
-		return newInstance(_value + (that._value - _value) / 2.0);
+		return new DoubleGene(_value + (that._value - _value) / 2.0, _min, _max);
 	}
 
 }
