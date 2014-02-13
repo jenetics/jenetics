@@ -303,7 +303,7 @@ The Traveling Salesman problem is a very good example which shows you how to sol
 				final int to = path.getGene((i + 1)%n).getAllele();
 				length += _adjacence[from][to];
 			}
-			return Double.valueOf(length);
+			return length;
 		}
 	}
 
