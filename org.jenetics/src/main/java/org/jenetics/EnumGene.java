@@ -64,7 +64,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.5 &mdash; <em>$Date: 2013-12-09 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-02-13 $</em>
  */
 public final class EnumGene<A>
 	implements
@@ -103,6 +103,7 @@ public final class EnumGene<A>
 		return _validAlleles.get(_alleleIndex);
 	}
 
+	@Deprecated
 	@Override
 	public EnumGene<A> copy() {
 		final EnumGene<A> gene = new EnumGene<>();

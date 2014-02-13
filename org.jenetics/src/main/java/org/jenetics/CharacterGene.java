@@ -43,7 +43,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.5 &mdash; <em>$Date: 2013-12-02 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-02-13 $</em>
  */
 public final class CharacterGene
 	implements
@@ -111,6 +111,7 @@ public final class CharacterGene
 		return _validCharacters;
 	}
 
+	@Deprecated
 	@Override
 	public CharacterGene copy() {
 		final CharacterGene gene = valueOf(_character, _validCharacters);
