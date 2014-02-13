@@ -1116,12 +1116,12 @@ public static void main(String[] args) {
 
 \begin_layout Plain Layout
 
-    Function<Genotype<BitGene>, Float64> ff = ...
+    Function<Genotype<BitGene>, Double> ff = ...
 \end_layout
 
 \begin_layout Plain Layout
 
-    GeneticAlgorithm<BitGene, Float64> 
+    GeneticAlgorithm<BitGene, Double> 
 \end_layout
 
 \begin_layout Plain Layout
@@ -1198,13 +1198,13 @@ BitGene
 \family default
  and a 
 \family typewriter
-Float64
+Double
 \family default
 .
  That means that the fitness function is calculating the fitness value as
  
 \family typewriter
-Float64
+Double
 \family default
  values.
  The return type of the fitness function must be at least of the type 
@@ -1564,27 +1564,27 @@ status open
 
 \begin_layout Plain Layout
 
-Genotype<Float64Gene> genotype = Genotype.valueOf(
+Genotype<DoubleGene> genotype = Genotype.valueOf(
 \end_layout
 
 \begin_layout Plain Layout
 
-    new Float64Chromosome(0.0, 1.0, 8),
+    DoubleChromosome.of(0.0, 1.0, 8),
 \end_layout
 
 \begin_layout Plain Layout
 
-    new Float64Chromosome(1.0, 2.0, 10),
+    DoubleChromosome.of(1.0, 2.0, 10),
 \end_layout
 
 \begin_layout Plain Layout
 
-    new Float64Chromosome(0.0, 10.0, 9),
+    DoubleChromosome.of(0.0, 10.0, 9),
 \end_layout
 
 \begin_layout Plain Layout
 
-    new Float64Chromosome(0.1, 0.9, 5)
+    DoubleChromosome.of(0.1, 0.9, 5)
 \end_layout
 
 \begin_layout Plain Layout
@@ -1609,7 +1609,7 @@ reference "fig:Genotype-structure"
 .
  In this example the 
 \family typewriter
-Float64Gene
+DoubleGene
 \family default
  has been chosen as gene type.
 \end_layout
@@ -1665,7 +1665,7 @@ status open
 
 \begin_layout Plain Layout
 
-class Id implements Function<Genotype<Float64Gene>, Float64> {
+class Id implements Function<Genotype<DoubleGene>, Double> {
 \end_layout
 
 \begin_layout Plain Layout
@@ -1675,7 +1675,7 @@ class Id implements Function<Genotype<Float64Gene>, Float64> {
 
 \begin_layout Plain Layout
 
-    public Float64 apply(Genotype<Float64Gene> genotype) {
+    public Double apply(Genotype<DoubleGene> genotype) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -1755,7 +1755,7 @@ status open
 
 \begin_layout Plain Layout
 
-class Sqrt extends Function<Float64, Float64> {
+class Sqrt extends Function<Double, Double> {
 \end_layout
 
 \begin_layout Plain Layout
@@ -1765,12 +1765,12 @@ class Sqrt extends Function<Float64, Float64> {
 
 \begin_layout Plain Layout
 
-    public Float64 apply(Float64 value) {
+    public Double apply(final Double value) {
 \end_layout
 
 \begin_layout Plain Layout
 
-        return Float64.valueOf(sqrt(value.doubleValue()));
+        return sqrt(value);
 \end_layout
 
 \begin_layout Plain Layout
@@ -2006,7 +2006,7 @@ status open
 
 \begin_layout Plain Layout
 
-final GeneticAlgorithm<Float64Gene, Float64> ga = ...
+final GeneticAlgorithm<DoubleGene, Double> ga = ...
 \end_layout
 
 \begin_layout Plain Layout
@@ -2021,7 +2021,7 @@ ga.setSurvivorSelector(
 
 \begin_layout Plain Layout
 
-    new RouletteWheelSelector<Float64Gene, Float64>()
+    new RouletteWheelSelector<DoubleGene, Double>()
 \end_layout
 
 \begin_layout Plain Layout
@@ -2036,7 +2036,7 @@ ga.setOffspringSelector(
 
 \begin_layout Plain Layout
 
-    new TournamentSelector<Float64Gene, Float64>()
+    new TournamentSelector<DoubleGene, Double>()
 \end_layout
 
 \begin_layout Plain Layout
@@ -4164,7 +4164,7 @@ status open
 
 \begin_layout Plain Layout
 
-final GeneticAlgorithm<Float64Gene, Float64> ga = ...
+final GeneticAlgorithm<DoubleGene, Double> ga = ...
 \end_layout
 
 \begin_layout Plain Layout
@@ -4356,7 +4356,7 @@ status open
 
 \begin_layout Plain Layout
 
-GeneticAlgorithm<Float64Gene, Float64> ga = ...
+GeneticAlgorithm<DoubleGene, Double> ga = ...
 \end_layout
 
 \begin_layout Plain Layout
@@ -4447,7 +4447,7 @@ status open
 
 \begin_layout Plain Layout
 
-final GeneticAlgorithm<Float64Gene, Float64> ga = ...
+final GeneticAlgorithm<DoubleGene, Double> ga = ...
 \end_layout
 
 \begin_layout Plain Layout
@@ -4457,7 +4457,7 @@ ga.setStatisticsCalculator(
 
 \begin_layout Plain Layout
 
-    new NumberStatistics.Calculator<Float64Gene, Float64>()
+    new NumberStatistics.Calculator<DoubleGene, Double>()
 \end_layout
 
 \begin_layout Plain Layout
@@ -4645,7 +4645,7 @@ status open
 
 \begin_layout Plain Layout
 
-GeneticAlgorithm<Float64Gene, Float64> ga = ...
+GeneticAlgorithm<DoubleGene, Double> ga = ...
 \end_layout
 
 \begin_layout Plain Layout
@@ -4655,7 +4655,7 @@ GeneticAlgorithm<Float64Gene, Float64> ga = ...
 
 \begin_layout Plain Layout
 
-Function<Statistics<Float64Gene, Float64>, Boolean> until = ...
+Function<Statistics<DoubleGene, Double>, Boolean> until = ...
 \end_layout
 
 \begin_layout Plain Layout
@@ -5037,12 +5037,12 @@ status open
 
 \begin_layout Plain Layout
 
-Factory<Genotype<Float64Gene>> factory = Genotype.valueOf(
+Factory<Genotype<DoubleGene>> factory = Genotype.valueOf(
 \end_layout
 
 \begin_layout Plain Layout
 
-    new Float64Chromosome(0.0, 100.0, 10)
+    new DoubleChromosome(0.0, 100.0, 10)
 \end_layout
 
 \begin_layout Plain Layout
@@ -5052,7 +5052,7 @@ Factory<Genotype<Float64Gene>> factory = Genotype.valueOf(
 
 \begin_layout Plain Layout
 
-List<Genotype<Float64Gene>> genotypes = new ArrayList<>();
+List<Genotype<DoubleGene>> genotypes = new ArrayList<>();
 \end_layout
 
 \begin_layout Plain Layout
@@ -5130,12 +5130,12 @@ status open
 
 \begin_layout Plain Layout
 
-Function<Genotype<Float64Gene>> ff = ...
+Function<Genotype<DoubleGene>> ff = ...
 \end_layout
 
 \begin_layout Plain Layout
 
-GeneticAlgorithm<Float64Gene, Float64> ga = new GeneticAlgorithm<>(
+GeneticAlgorithm<DoubleGene, Double> ga = new GeneticAlgorithm<>(
 \end_layout
 
 \begin_layout Plain Layout
@@ -6371,7 +6371,7 @@ EnumGene
 \begin_layout Itemize
 
 \family typewriter
-Float64Gene
+DoubleGene
 \end_layout
 
 \begin_layout Itemize
@@ -6401,7 +6401,7 @@ PermutationChromosome
 \begin_layout Itemize
 
 \family typewriter
-Float64Chromosome
+DoubleChromosome
 \end_layout
 
 \begin_layout Itemize
@@ -6517,12 +6517,12 @@ IO.xml.write(ga.getPopulation(), file);
 
 \begin_layout Plain Layout
 
-Population<Float64Gene,Float64> population = 
+Population<DoubleGene,Double> population = 
 \end_layout
 
 \begin_layout Plain Layout
 
-    (Population<Float64Gene, Float64>)IO.xml.read(file);
+    (Population<DoubleGene, Double>)IO.xml.read(file);
 \end_layout
 
 \begin_layout Plain Layout
@@ -8532,7 +8532,7 @@ The GA works with
 
  
 \family typewriter
-Float64Chromosome
+DoubleChromosome
 \family default
 s whose values are restricted to the range 
 \begin_inset Formula $[0,2\pi]$
@@ -9918,7 +9918,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 1.10 (
+: 1.11 (
 \emph on
 or later
 \emph default
@@ -9959,7 +9959,7 @@ status open
 
 \begin_layout Plain Layout
 
-http://services.gradle.org/distributions/gradle-1.10-bin.zip
+http://services.gradle.org/distributions/gradle-1.11-bin.zip
 \end_layout
 
 \end_inset
