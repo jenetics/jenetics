@@ -30,6 +30,8 @@ import org.jenetics.util.Array;
 import org.jenetics.util.ISeq;
 
 /**
+ * Numeric chromosome implementation which holds 64 bit integer numbers.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version @__version__@ &mdash; <em>$Date$</em>
  * @since @__version__@
@@ -70,7 +72,7 @@ public class LongChromosome
 	}
 
 	/**
-	 * Create a new {@code LongChromoosme} with the given genes.
+	 * Create a new {@code LongChromosome} with the given genes.
 	 *
 	 * @param genes the genes of the chromosome.
 	 * @return a new chromosome with the given genes.
@@ -88,7 +90,11 @@ public class LongChromosome
 	 * @param max the max value of the {@link LongGene}s (inclusively).
 	 * @param length the length of the chromosome.
 	 */
-	public static LongChromosome of(final long min, final long max, final int length) {
+	public static LongChromosome of(
+		final long min,
+		final long max,
+		final int length
+	) {
 		return new LongChromosome(min, max, length);
 	}
 
