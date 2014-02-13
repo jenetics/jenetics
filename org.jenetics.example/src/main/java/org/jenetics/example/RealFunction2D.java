@@ -73,7 +73,7 @@ public class RealFunction2D {
 		// This are the alterers you can use for this example, in any combination.
 		ga.setAlterers(
 			new MeanAlterer<DoubleGene>(),
-			new NormalMutator<Double, DoubleGene>()
+			new NormalMutator<DoubleGene>()
 		);
 
 		ga.setup();

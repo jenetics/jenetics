@@ -19,7 +19,7 @@
  */
 package org.jenetics;
 
-import org.jenetics.util.Numeric;
+import java.util.Comparator;
 
 /**
  * Abstract base class for implementing concrete NumericGenes.
@@ -28,12 +28,13 @@ import org.jenetics.util.Numeric;
  * @version @__version__@ &mdash; <em>$Date$</em>
  * @since @__version__@
  */
-public abstract class NumericGene<N, G extends NumericGene<N, G>>
+public abstract class NumericGene<
+	N extends Number & Comparable<? super N>,
+	G extends NumericGene<N, G>
+>
 	extends BoundedGene<N, G>
 {
 	private static final long serialVersionUID = 1L;
-
-	protected final Numeric<N> _numeric;
 
 	/**
 	 * Create new {@code NumericGene}.
@@ -41,21 +42,80 @@ public abstract class NumericGene<N, G extends NumericGene<N, G>>
 	 * @param value The value of the gene.
 	 * @param min The allowed min value of the gene.
 	 * @param max The allows max value of the gene.
-	 * @param numeric the comparator used for comparing the alleles.
-	 * @throws NullPointerException if one of the given arguments is {@code null}.
+	 * @throws NullPointerException if one of the given arguments is
+	 *         {@code null}.
 	 */
-	protected NumericGene(
-		final N value,
-		final N min,
-		final N max,
-		final Numeric<N> numeric
-	) {
-		super(value, min, max, numeric);
-		_numeric = numeric;
+	protected NumericGene(final N value, final N min, final N max) {
+		super(value, min, max);
 	}
 
-	public Numeric<N> numeric() {
-		return _numeric;
+	@Override
+	public abstract G newInstance(final Number value);
+
+	/**
+	 * Returns the value of the specified gene as an byte. This may involve
+	 * rounding or truncation.
+	 *
+	 * @return the numeric value represented by this object after conversion to
+	 *         type {@code byte}.
+	 */
+	public byte byteValue() {
+		return _value.byteValue();
+	}
+
+	/**
+	 * Returns the value of the specified gene as an short. This may involve
+	 * rounding or truncation.
+	 *
+	 * @return the numeric value represented by this object after conversion to
+	 *         type {@code short}.
+	 */
+	public short shortValue() {
+		return _value.shortValue();
+	}
+
+	/**
+	 * Returns the value of the specified gene as an int. This may involve
+	 * rounding or truncation.
+	 *
+	 * @return the numeric value represented by this object after conversion to
+	 *         type {@code int}.
+	 */
+	public int intValue() {
+		return _value.intValue();
+	}
+
+	/**
+	 * Returns the value of the specified gene as an long. This may involve
+	 * rounding or truncation.
+	 *
+	 * @return the numeric value represented by this object after conversion to
+	 *         type {@code long}.
+	 */
+	public long longValue() {
+		return _value.longValue();
+	}
+
+	/**
+	 * Returns the value of the specified gene as an float. This may involve
+	 * rounding or truncation.
+	 *
+	 * @return the numeric value represented by this object after conversion to
+	 *         type {@code float}.
+	 */
+	public float floatValue() {
+		return _value.floatValue();
+	}
+
+	/**
+	 * Returns the value of the specified gene as an double. This may involve
+	 * rounding or truncation.
+	 *
+	 * @return the numeric value represented by this object after conversion to
+	 *         type {@code double}.
+	 */
+	public double doubleValue() {
+		return _value.doubleValue();
 	}
 
 }

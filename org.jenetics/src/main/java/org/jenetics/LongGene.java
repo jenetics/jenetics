@@ -26,8 +26,6 @@ import java.util.Random;
 import org.jenetics.util.Array;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Mean;
-import org.jenetics.util.Numeric;
-import org.jenetics.util.Numeric.Conversion;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -39,9 +37,7 @@ import org.jenetics.util.RandomRegistry;
  */
 public final class LongGene
 	extends NumericGene<Long, LongGene>
-	implements
-		Conversion<LongGene>,
-		Mean<LongGene>
+	implements Mean<LongGene>
 {
 
 	private static final long serialVersionUID = 1L;
@@ -58,7 +54,7 @@ public final class LongGene
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public LongGene(final Long value, final Long min, final Long max) {
-		super(value, min, max, Numeric.LONG);
+		super(value, min, max);
 	}
 
 	/**
@@ -103,23 +99,13 @@ public final class LongGene
 	}
 
 	@Override
-	public LongGene newInstance(final Long value) {
-		return new LongGene(value, _min, _max);
+	public LongGene newInstance(final Number number) {
+		return new LongGene(number.longValue(), _min, _max);
 	}
 
 	@Override
 	public LongGene newInstance() {
 		return newInstance(nextLong(RandomRegistry.getRandom(), _min, _max));
-	}
-
-	@Override
-	public LongGene fromNumber(final Number value) {
-		return new LongGene(value.longValue(), _min, _max);
-	}
-
-	@Override
-	public Number toNumber(final LongGene gene) {
-		return gene._value;
 	}
 
 	@Override

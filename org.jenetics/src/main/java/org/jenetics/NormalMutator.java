@@ -26,7 +26,6 @@ import java.util.Random;
 
 import org.jenetics.util.IndexStream;
 import org.jenetics.util.MSeq;
-import org.jenetics.util.Numeric;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.math;
 
@@ -48,10 +47,7 @@ import org.jenetics.util.math;
  * @version @__version__@ &mdash; <em>$Date$</em>
  * @since @__version__@
  */
-public final class NormalMutator<
-	N extends Number,
-	G extends NumericGene<N, G> & Numeric.Conversion<G>
->
+public final class NormalMutator<G extends NumericGene<?, G>>
 	extends Mutator<G>
 {
 
@@ -83,8 +79,8 @@ public final class NormalMutator<
 			gene.getMax().doubleValue() - gene.getMin().doubleValue()
 		)*0.25;
 
-		return gene.fromNumber(math.clamp(
-			random.nextGaussian() * std + gene.toNumber(gene).doubleValue(),
+		return gene.newInstance(math.clamp(
+			random.nextGaussian() * std + gene.getAllele().doubleValue(),
 			gene.getMin().doubleValue(),
 			gene.getMax().doubleValue()
 		));

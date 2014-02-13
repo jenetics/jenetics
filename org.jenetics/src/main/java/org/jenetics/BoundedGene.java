@@ -23,38 +23,37 @@ import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
-import java.util.Comparator;
-
 /**
+ * Base class for genes where the alleles are bound by a minimum and a maximum
+ * value.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version @__version__@ &mdash; <em>$Date$</em>
  * @since @__version__@
  */
-public abstract class BoundedGene<A, G extends BoundedGene<A, G>>
+public abstract class BoundedGene<
+	A extends Comparable<? super A>,
+	G extends BoundedGene<A, G>
+>
 	implements
 		Gene<A, G>,
 		Comparable<G>
 {
 
 	/**
-	 * The minimum value of this {@code IntervalGene}.
+	 * The minimum value of this {@code BoundedGene}.
 	 */
 	protected final A _min;
 
 	/**
-	 * The maximum value of this {@code IntervalGene}.
+	 * The maximum value of this {@code BoundedGene}.
 	 */
 	protected final A _max;
 
 	/**
-	 * The value of this {@code IntervalGene}.
+	 * The value of this {@code BoundedGene}.
 	 */
 	protected final A _value;
-
-	/**
-	 * The comparator used for comparing the alleles.
-	 */
-	protected final Comparator<A> _comparator;
 
 	private final boolean _valid;
 
@@ -64,22 +63,17 @@ public abstract class BoundedGene<A, G extends BoundedGene<A, G>>
 	 * @param value The value of the gene.
 	 * @param min The allowed min value of the gene.
 	 * @param max The allows max value of the gene.
-	 * @param comparator the comparator used for comparing the alleles.
 	 * @throws NullPointerException if one of the given arguments is {@code null}.
 	 */
 	protected BoundedGene(
 		final A value,
 		final A min,
-		final A max,
-		final Comparator<A> comparator
+		final A max
 	) {
 		_min = requireNonNull(min, "Min value not be null.");
 		_max = requireNonNull(max, "Max value must not be null.");
 		_value = requireNonNull(value, "Gene value must not be null.");
-		_comparator = requireNonNull(comparator, "Comparator must not be null.");
-
-		_valid = comparator.compare(_value, min) >= 0 &&
-				comparator.compare(_value, max) <= 0;
+		_valid = _value.compareTo(min) >= 0 && _value.compareTo(max) <= 0;
 	}
 
 	@Override
@@ -105,10 +99,7 @@ public abstract class BoundedGene<A, G extends BoundedGene<A, G>>
 		return _max;
 	}
 
-	public Comparator<A> getComparator() {
-		return _comparator;
-	}
-
+	@Deprecated
 	@Override
 	public Object copy() {
 		return this;
@@ -121,9 +112,15 @@ public abstract class BoundedGene<A, G extends BoundedGene<A, G>>
 
 	@Override
 	public int compareTo(final G other) {
-		return _comparator.compare(_value, other._value);
+		return _value.compareTo(other._value);
 	}
 
+	/**
+	 * Create a new gene from the given {@code value} and the current bounds.
+	 *
+	 * @param value the value of the new gene.
+	 * @return a new gene with the given value.
+	 */
 	public abstract G newInstance(final A value);
 
 	@Override

@@ -60,4 +60,13 @@ public interface Gene<A, G extends Gene<A, G>>
 	@Override
 	public G newInstance();
 
+	/**
+	 * @deprecated This method is introduced by the {@link javolution.lang.ValueType}
+	 *             of the <i>Javolution</i> library, which will be removed in
+	 *             the next major version.
+	 */
+	@Deprecated
+	@Override
+	public Object copy();
+
 }
