@@ -114,11 +114,11 @@ import org.jenetics.util.functions;
  * [code]
  * // Writing the population to disk.
  * final File file = new File("population.xml");
- * IO.xml.write(ga.getPopulation(), file);
+ * IO.jaxb.write(ga.getPopulation(), file);
  *
  * // Reading the population from disk.
  * Population〈DoubleGene, Double〉 population =
- *     (Population〈DoubleGene, Double〉)IO.xml.read(file);
+ *     (Population〈DoubleGene, Double〉)IO.jaxb.read(file);
  * ga.setPopulation(population);
  * [/code]
  *
@@ -133,7 +133,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-02-12 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-02-13 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,
