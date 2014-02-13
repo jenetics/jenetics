@@ -26,22 +26,18 @@ import java.util.Random;
 import org.jenetics.util.Array;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Mean;
-import org.jenetics.util.Numeric;
-import org.jenetics.util.Numeric.Conversion;
 import org.jenetics.util.RandomRegistry;
 
 /**
  * Implementation of the NumericGene which holds a 64 bit floating point number.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-02-12 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-02-13 $</em>
  * @since @__version__@
  */
 public final class DoubleGene
 	extends NumericGene<Double, DoubleGene>
-	implements
-		Conversion<DoubleGene>,
-		Mean<DoubleGene>
+	implements Mean<DoubleGene>
 {
 
 	private static final long serialVersionUID = 1L;
@@ -58,7 +54,7 @@ public final class DoubleGene
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public DoubleGene(final Double value, final Double min, final Double max) {
-		super(value, min, max, Numeric.DOUBLE);
+		super(value, min, max);
 	}
 
 	/**
@@ -103,23 +99,13 @@ public final class DoubleGene
 	}
 
 	@Override
-	public DoubleGene newInstance(final Double value) {
-		return new DoubleGene(value, _min, _max);
+	public DoubleGene newInstance(final Number number) {
+		return new DoubleGene(number.doubleValue(), _min, _max);
 	}
 
 	@Override
 	public DoubleGene newInstance() {
 		return newInstance(nextDouble(RandomRegistry.getRandom(), _min, _max));
-	}
-
-	@Override
-	public DoubleGene fromNumber(final Number number) {
-		return new DoubleGene(number.doubleValue(), _min, _max);
-	}
-
-	@Override
-	public Double toNumber(final DoubleGene gene) {
-		return gene._value;
 	}
 
 	@Override
