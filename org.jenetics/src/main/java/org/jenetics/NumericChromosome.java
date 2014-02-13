@@ -19,35 +19,22 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
-
 import org.jenetics.util.ISeq;
 
 /**
- * Abstract number chromosome.
+ * Abstract numeric chromosome.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-02-11 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-02-13 $</em>
  * @since @__version__@
  */
 public abstract class NumericChromosome<
 	N extends Number & Comparable<? super N>,
 	G extends NumericGene<N, G>
 >
-	extends AbstractChromosome<G>
+	extends BoundedChromosome<N, G>
 {
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * The minimum value of this {@code NumericChromosome}.
-	 */
-	protected transient N _min;
-
-	/**
-	 * The maximum value of this {@code NumericChromosome}.
-	 */
-	protected transient N _max;
 
 	/**
 	 * Create a new chromosome from the given genes array.
@@ -59,26 +46,6 @@ public abstract class NumericChromosome<
 	 */
 	protected NumericChromosome(final ISeq<? extends G> genes) {
 		super(genes);
-		_min = genes.get(0)._min;
-		_max = genes.get(0)._max;
-	}
-
-	/**
-	 * Return the minimum value of this {@code NumericChromosome}.
-	 *
-	 * @return the minimum value of this {@code NumericChromosome}.
-	 */
-	public N getMin() {
-		return _min;
-	}
-
-	/**
-	 * Return the maximum value of this {@code NumericChromosome}.
-	 *
-	 * @return the maximum value of this {@code NumericChromosome}.
-	 */
-	public N getMax() {
-		return _max;
 	}
 
 	/**
@@ -219,24 +186,4 @@ public abstract class NumericChromosome<
 		return doubleValue(0);
 	}
 
-	@Override
-	public int hashCode() {
-		return hashCodeOf(getClass()).
-			and(super.hashCode()).
-			and(_min).
-			and(_max).value();
-	}
-
-	@Override
-	public boolean equals(final Object object) {
-		if (object == this) {
-			return true;
-		}
-		if (!(object instanceof NumericChromosome<?, ?>)) {
-			return false;
-		}
-
-		final NumericChromosome<?, ?> nc = (NumericChromosome<?, ?>)object;
-		return eq(_min, nc._min) && eq(_max, nc._max) && super.equals(object);
-	}
 }
