@@ -43,7 +43,7 @@ final class KnapsackFunction
 			}
 		}
 
-		size > _size = 0 : value;
+		return size > _size ? 0 : value;
 	}
 }
 
