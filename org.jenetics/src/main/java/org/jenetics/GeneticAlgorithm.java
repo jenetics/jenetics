@@ -1092,10 +1092,3 @@ public class GeneticAlgorithm<
 	}
 
 }
-
-
-
-
-
-
-
