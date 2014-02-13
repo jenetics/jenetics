@@ -74,7 +74,6 @@ public final class NormalMutator<G extends NumericGene<?, G>>
 	}
 
 	G mutate(final G gene, final Random random) {
-
 		final double std = (
 			gene.getMax().doubleValue() - gene.getMin().doubleValue()
 		)*0.25;
