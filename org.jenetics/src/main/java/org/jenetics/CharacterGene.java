@@ -111,6 +111,7 @@ public final class CharacterGene
 		return _validCharacters;
 	}
 
+	@Deprecated
 	@Override
 	public CharacterGene copy() {
 		final CharacterGene gene = valueOf(_character, _validCharacters);
