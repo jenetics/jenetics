@@ -1,5 +1,3 @@
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;
 import org.jenetics.Chromosome;
@@ -18,7 +16,7 @@ final class Item {
 }
 
 final class KnapsackFunction
-	implements Function<Genotype<BitGene>, Float64>
+	implements Function<Genotype<BitGene>, Double>
 {
 	private final Item[] _items;
 	private final double _size;
@@ -33,7 +31,7 @@ final class KnapsackFunction
 	}
 
 	@Override
-	public Float64 apply(final Genotype<BitGene> genotype) {
+	public Double apply(final Genotype<BitGene> genotype) {
 		final Chromosome<BitGene> ch = genotype.getChromosome();
 
 		double size = 0;
@@ -45,11 +43,7 @@ final class KnapsackFunction
 			}
 		}
 
-		if (size > _size) {
-			return Float64.ZERO;
-		} else {
-			return Float64.valueOf(value);
-		}
+		size > _size = 0 : value;
 	}
 }
 
@@ -72,16 +66,16 @@ public class Knapsack {
 			new BitChromosome(15, 0.5)
 		);
 
-		GeneticAlgorithm<BitGene, Float64> ga = 
+		GeneticAlgorithm<BitGene, Double> ga = 
 			new GeneticAlgorithm<>(genotype, ff);
 		
 		ga.setMaximalPhenotypeAge(30);
 		ga.setPopulationSize(100);
 		ga.setStatisticsCalculator(
-			new NumberStatistics.Calculator<BitGene, Float64>()
+			new NumberStatistics.Calculator<BitGene, Double>()
 		);
 		ga.setSelectors(
-			new RouletteWheelSelector<BitGene, Float64>()
+			new RouletteWheelSelector<BitGene, Double>()
 		);
 		ga.setAlterers(
 			 new Mutator<BitGene>(0.115),
