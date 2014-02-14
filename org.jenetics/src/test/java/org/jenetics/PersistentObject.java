@@ -53,6 +53,7 @@ import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 import org.jenetics.util.IO;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.JSONIO;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
 
@@ -98,70 +99,73 @@ public class PersistentObject<T> {
 		 * Genes
 		 **********************************************************************/
 
-		put("BitGene[true]", BitGene.TRUE);
-		put("BitGene[false]", BitGene.FALSE);
-		put("CharacterGene", nextCharacterGene());
-		put("Integer64Gene", nextInteger64Gene());
-		put("Float64Gene", nextFloat64Gene());
+		put("LongGene", nextLongGene());
+		put("DoubleGene", nextDoubleGene());
 
-		put("EnumGene<Boolean>", nextEnumGeneBoolean());
-		put("EnumGene<Byte>", nextEnumGeneByte());
-		put("EnumGene<Character>", nextEnumGeneCharacter());
-		put("EnumGene<Short>", nextEnumGeneShort());
-		put("EnumGene<Integer>", nextEnumGeneInteger());
-		put("EnumGene<Long>", nextEnumGeneLong());
-		put("EnumGene<Float>", nextEnumGeneFloat());
-		put("EnumGene<Double>", nextEnumGeneDouble());
-		put("EnumGene<String>", nextEnumGeneString());
-		put("EnumGene<Float64>", nextEnumGeneFloat64());
-		put("EnumGene<Integer64>", nextEnumGeneInteger64());
-
-		/* *********************************************************************
-		 * Chromosomes
-		 **********************************************************************/
-
-		put("BitChromosome", nextBitChromosome());
-		put("CharacterChromosome", nextCharacterChromosome());
-		put("Integer64Chromosome", nextInteger64Chromosome());
-		put("Float64Chromosome", nextFloat64Chromosome());
-
-		put("PermutationChromosome<Integer>", nextIntegerPermutationChromosome());
-		put("PermutationChromosome<Double>", nextDoublePermutationChromosome());
-		put("PermutationChromosome<Float64>", nextFloat64PermutationChromosome());
-		put("PermutationChromosome<Character>", nextCharacterPermutationChromosome());
-		put("PermutationChromosome<String>", nextStringPermutationChromosome());
-
-		/* *********************************************************************
-		 * Genotypes
-		 **********************************************************************/
-
-		put("Genotype<BitGene>", nextGenotypeBitGene());
-		put("Genotype<CharacterGene>", nextGenotypeCharacterGene());
-		put("Genotype<Integer64Gene>", nextGenotypeInteger64Gene());
-		put("Genotype<Float64Gene>", nextGenotypeFloat64Gene());
-
-
-		/* *********************************************************************
-		 * Phenotypes
-		 **********************************************************************/
-
-		put("Phenotype<Integer64Gene, Integer>", nextPhenotypeInteger64GeneInteger());
-		put("Phenotype<Integer64Gene, Long>", nextPhenotypeInteger64GeneLong());
-		put("Phenotype<Integer64Gene, Double>", nextPhenotypeInteger64GeneDouble());
-		put("Phenotype<Integer64Gene, Integer64>", nextPhenotypeInteger64GeneInteger64());
-		put("Phenotype<Integer64Gene, Float64>", nextPhenotypeInteger64GeneFloat64());
-		put("Phenotype<Float64Gene, Integer>", nextPhenotypeFloat64GeneInteger());
-		put("Phenotype<Float64Gene, Long>", nextPhenotypeFloat64GeneLong());
-		put("Phenotype<Float64Gene, Double>", nextPhenotypeFloat64GeneDouble());
-		put("Phenotype<Float64Gene, Integer64>", nextPhenotypeFloat64GeneInteger64());
-		put("Phenotype<Float64Gene, Float64>", nextPhenotypeFloat64GeneFloat64());
-
-		/* *********************************************************************
-		 * Populations
-		 **********************************************************************/
-
-		put("Population<Integer64Gene, Integer>", nextPopulationInteger64GeneInteger());
-		put("Population<Float64Gene, Integer>", nextPopulationFloat64GeneInteger());
+//		put("BitGene[true]", BitGene.TRUE);
+//		put("BitGene[false]", BitGene.FALSE);
+//		put("CharacterGene", nextCharacterGene());
+//		put("Integer64Gene", nextInteger64Gene());
+//		put("Float64Gene", nextFloat64Gene());
+//
+//		put("EnumGene<Boolean>", nextEnumGeneBoolean());
+//		put("EnumGene<Byte>", nextEnumGeneByte());
+//		put("EnumGene<Character>", nextEnumGeneCharacter());
+//		put("EnumGene<Short>", nextEnumGeneShort());
+//		put("EnumGene<Integer>", nextEnumGeneInteger());
+//		put("EnumGene<Long>", nextEnumGeneLong());
+//		put("EnumGene<Float>", nextEnumGeneFloat());
+//		put("EnumGene<Double>", nextEnumGeneDouble());
+//		put("EnumGene<String>", nextEnumGeneString());
+//		put("EnumGene<Float64>", nextEnumGeneFloat64());
+//		put("EnumGene<Integer64>", nextEnumGeneInteger64());
+//
+//		/* *********************************************************************
+//		 * Chromosomes
+//		 **********************************************************************/
+//
+//		put("BitChromosome", nextBitChromosome());
+//		put("CharacterChromosome", nextCharacterChromosome());
+//		put("Integer64Chromosome", nextInteger64Chromosome());
+//		put("Float64Chromosome", nextFloat64Chromosome());
+//
+//		put("PermutationChromosome<Integer>", nextIntegerPermutationChromosome());
+//		put("PermutationChromosome<Double>", nextDoublePermutationChromosome());
+//		put("PermutationChromosome<Float64>", nextFloat64PermutationChromosome());
+//		put("PermutationChromosome<Character>", nextCharacterPermutationChromosome());
+//		put("PermutationChromosome<String>", nextStringPermutationChromosome());
+//
+//		/* *********************************************************************
+//		 * Genotypes
+//		 **********************************************************************/
+//
+//		put("Genotype<BitGene>", nextGenotypeBitGene());
+//		put("Genotype<CharacterGene>", nextGenotypeCharacterGene());
+//		put("Genotype<Integer64Gene>", nextGenotypeInteger64Gene());
+//		put("Genotype<Float64Gene>", nextGenotypeFloat64Gene());
+//
+//
+//		/* *********************************************************************
+//		 * Phenotypes
+//		 **********************************************************************/
+//
+//		put("Phenotype<Integer64Gene, Integer>", nextPhenotypeInteger64GeneInteger());
+//		put("Phenotype<Integer64Gene, Long>", nextPhenotypeInteger64GeneLong());
+//		put("Phenotype<Integer64Gene, Double>", nextPhenotypeInteger64GeneDouble());
+//		put("Phenotype<Integer64Gene, Integer64>", nextPhenotypeInteger64GeneInteger64());
+//		put("Phenotype<Integer64Gene, Float64>", nextPhenotypeInteger64GeneFloat64());
+//		put("Phenotype<Float64Gene, Integer>", nextPhenotypeFloat64GeneInteger());
+//		put("Phenotype<Float64Gene, Long>", nextPhenotypeFloat64GeneLong());
+//		put("Phenotype<Float64Gene, Double>", nextPhenotypeFloat64GeneDouble());
+//		put("Phenotype<Float64Gene, Integer64>", nextPhenotypeFloat64GeneInteger64());
+//		put("Phenotype<Float64Gene, Float64>", nextPhenotypeFloat64GeneFloat64());
+//
+//		/* *********************************************************************
+//		 * Populations
+//		 **********************************************************************/
+//
+//		put("Population<Integer64Gene, Integer>", nextPopulationInteger64GeneInteger());
+//		put("Population<Float64Gene, Integer>", nextPopulationFloat64GeneInteger());
 
 		//put("Statistics.Time", nextStatisticsTime());
 
@@ -173,6 +177,14 @@ public class PersistentObject<T> {
 
 	public static CharacterGene nextCharacterGene() {
 		return CharacterGene.valueOf();
+	}
+
+	public static LongGene nextLongGene() {
+		return LongGene.of(Long.MIN_VALUE, Long.MAX_VALUE);
+	}
+
+	public static DoubleGene nextDoubleGene() {
+		return DoubleGene.of(0, 1);
 	}
 
 	public static Integer64Gene nextInteger64Gene() {
@@ -237,6 +249,10 @@ public class PersistentObject<T> {
 
 	public static CharacterChromosome nextCharacterChromosome() {
 		return new CharacterChromosome(20);
+	}
+
+	public static DoubleChromosome nextDoubleChromosome() {
+		return DoubleChromosome.of(0.0, 1.0, 20);
 	}
 
 	public static Integer64Chromosome nextInteger64Chromosome() {
@@ -461,9 +477,14 @@ public class PersistentObject<T> {
 
 	@SuppressWarnings("deprecation")
 	public static void main(final String[] args) throws Exception {
-		write(IO.jaxb, "jaxb");
-		write(IO.xml, "xml");
-		write(IO.object, "object");
+		IO.jaxb.write(nextDoubleChromosome(), System.out);
+		System.out.println();
+		JSONIO.write(nextDoubleChromosome(), System.out);
+		//IO.jaxb.write(nextDoubleGene(), System.out);
+		//IO.object.write(nextLongGene(), System.out);
+		//write(IO.jaxb, "jaxb");
+		//write(IO.xml, "xml");
+		//write(IO.object, "object");
 	}
 
 	private static void write(final IO io, final String suffix) throws IOException {

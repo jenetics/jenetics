@@ -23,6 +23,18 @@ import static org.jenetics.util.math.random.nextLong;
 
 import java.util.Random;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlValue;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import org.jenetics.internal.util.model.ModelType;
+import org.jenetics.internal.util.model.ValueType;
+
 import org.jenetics.util.Array;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Mean;
@@ -35,6 +47,7 @@ import org.jenetics.util.RandomRegistry;
  * @version @__version__@ &mdash; <em>$Date$</em>
  * @since @__version__@
  */
+@XmlJavaTypeAdapter(LongGene.Model.Adapter.class)
 public final class LongGene
 	extends NumericGene<Long, LongGene>
 	implements Mean<LongGene>
@@ -113,6 +126,45 @@ public final class LongGene
 	@Override
 	public LongGene mean(final LongGene that) {
 		return new LongGene(_value + (that._value - _value) / 2, _min, _max);
+	}
+
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
+
+	@XmlRootElement(name = "org.jenetics.LongGene")
+	@XmlType(name = "org.jenetics.LongGene")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	final static class Model {
+
+		@XmlAttribute
+		public long min;
+
+		@XmlAttribute
+		public long max;
+
+		@XmlValue
+		public long value;
+
+		@ValueType(LongGene.class)
+		@ModelType(Model.class)
+		public final static class Adapter
+			extends XmlAdapter<Model, LongGene>
+		{
+			@Override
+			public Model marshal(final LongGene value) {
+				final Model m = new Model();
+				m.min = value.getMin();
+				m.max = value.getMax();
+				m.value = value.getAllele();
+				return m;
+			}
+
+			@Override
+			public LongGene unmarshal(final Model m) {
+				return LongGene.of(m.value, m.min, m.max);
+			}
+		}
 	}
 
 }
