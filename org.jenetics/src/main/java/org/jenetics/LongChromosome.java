@@ -25,8 +25,22 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import org.jenetics.internal.util.model.ModelType;
+import org.jenetics.internal.util.model.ValueType;
 
 import org.jenetics.util.Array;
+import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
 
 /**
@@ -36,6 +50,7 @@ import org.jenetics.util.ISeq;
  * @version @__version__@ &mdash; <em>$Date$</em>
  * @since @__version__@
  */
+@XmlJavaTypeAdapter(LongChromosome.Model.Adapter.class)
 public class LongChromosome
 	extends NumericChromosome<Long, LongGene>
 	implements Serializable
@@ -160,5 +175,69 @@ public class LongChromosome
 		}
 
 		_genes = genes.toISeq();
+	}
+
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
+
+	@XmlRootElement(name = "org.jenetics.LongChromosome")
+	@XmlType(name = "org.jenetics.LongChromosome")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	final static class Model {
+
+		@XmlAttribute
+		public int length;
+
+		@XmlAttribute
+		public long min;
+
+		@XmlAttribute
+		public long max;
+
+		@XmlElement(name = "allele")
+		public List<Long> values;
+
+		@ValueType(LongChromosome.class)
+		@ModelType(Model.class)
+		public final static class Adapter
+			extends XmlAdapter<Model, LongChromosome>
+		{
+			@Override
+			public Model marshal(final LongChromosome c) {
+				final Model m = new Model();
+				m.length = c.length();
+				m.min = c._min;
+				m.max = c._max;
+				m.values = c.toSeq().map(Allele).asList();
+				return m;
+			}
+
+			@Override
+			public LongChromosome unmarshal(final Model model) {
+				final Long min = model.min;
+				final Long max = model.max;
+				return new LongChromosome(
+					Array.valueOf(model.values).map(Gene(min, max)).toISeq()
+				);
+			}
+		}
+	}
+
+	private static final Function<LongGene, Long> Allele =
+		new Function<LongGene, Long>() {
+			@Override
+			public Long apply(LongGene value) {
+				return value.getAllele();
+			}
+		};
+
+	private static Function<Long, LongGene> Gene(final Long min, final Long max) {
+		return new Function<Long, LongGene>() {
+			@Override
+			public LongGene apply(final Long value) {
+				return new LongGene(value, min, max);
+			}
+		};
 	}
 }

@@ -251,6 +251,10 @@ public class PersistentObject<T> {
 		return new CharacterChromosome(20);
 	}
 
+	public static LongChromosome nextLongChromosome() {
+		return LongChromosome.of(Long.MIN_VALUE, Long.MAX_VALUE, 20);
+	}
+
 	public static DoubleChromosome nextDoubleChromosome() {
 		return DoubleChromosome.of(0.0, 1.0, 20);
 	}
@@ -294,6 +298,14 @@ public class PersistentObject<T> {
 
 	public static Genotype<CharacterGene> nextGenotypeCharacterGene() {
 		return Genotype.valueOf(ISeq(5, CharacterChromosomeFactory));
+	}
+
+	public static Genotype<LongGene> nextGenotypeLongGene() {
+		return Genotype.valueOf(ISeq(5, LongChromosomeFactory));
+	}
+
+	public static Genotype<DoubleGene> nextGenotypeDoubleGene() {
+		return Genotype.valueOf(ISeq(5, DoubleChromosomeFactory));
 	}
 
 	public static Genotype<Integer64Gene> nextGenotypeInteger64Gene() {
@@ -445,6 +457,14 @@ public class PersistentObject<T> {
 		PersistentObject.class, "nextCharacterChromosome"
 	);
 
+	public static final Factory<LongChromosome> LongChromosomeFactory = factory(
+		PersistentObject.class, "nextLongChromosome"
+	);
+
+	public static final Factory<DoubleChromosome> DoubleChromosomeFactory = factory(
+		PersistentObject.class, "nextDoubleChromosome"
+	);
+
 	public static final Factory<Integer64Chromosome> Integer64ChromosomeFactory = factory(
 		PersistentObject.class, "nextInteger64Chromosome"
 	);
@@ -477,9 +497,9 @@ public class PersistentObject<T> {
 
 	@SuppressWarnings("deprecation")
 	public static void main(final String[] args) throws Exception {
-		IO.jaxb.write(nextDoubleChromosome(), System.out);
+		IO.jaxb.write(nextGenotypeLongGene(), System.out);
 		System.out.println();
-		JSONIO.write(nextDoubleChromosome(), System.out);
+		JSONIO.write(nextGenotypeLongGene(), System.out);
 		//IO.jaxb.write(nextDoubleGene(), System.out);
 		//IO.object.write(nextLongGene(), System.out);
 		//write(IO.jaxb, "jaxb");
