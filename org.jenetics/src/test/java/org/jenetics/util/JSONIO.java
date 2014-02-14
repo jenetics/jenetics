@@ -101,7 +101,7 @@ public final class JSONIO extends StaticObject {
 		}
 	};
 
-	static String toText(final InputStream in) throws IOException {
+	private static String toText(final InputStream in) throws IOException {
 		try (final Reader r = new InputStreamReader(in);
 			 final BufferedReader br = new BufferedReader(r))
 		{
