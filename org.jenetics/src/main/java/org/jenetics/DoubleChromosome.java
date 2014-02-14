@@ -224,7 +224,7 @@ public class DoubleChromosome
 	private static final Function<DoubleGene, Double> Allele =
 		new Function<DoubleGene, Double>() {
 			@Override
-			public Double apply(DoubleGene value) {
+			public Double apply(final DoubleGene value) {
 				return value.getAllele();
 			}
 		};

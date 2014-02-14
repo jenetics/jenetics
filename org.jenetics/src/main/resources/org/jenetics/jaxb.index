@@ -8,6 +8,7 @@ Integer64Gene$Model
 
 BitChromosome$Model
 CharacterChromosome$Model
+LongChromosome$Model
 DoubleChromosome$Model
 Integer64Chromosome$Model
 Float64Chromosome$Model
