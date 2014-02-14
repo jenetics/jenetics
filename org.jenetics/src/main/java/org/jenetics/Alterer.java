@@ -26,11 +26,11 @@ package org.jenetics;
  * {@link GeneticAlgorithm#setAlterers(Alterer...)} method.
  *
  * [code]
- * final GeneticAlgorithm〈Float64Gene, Float64〉 ga = ...
+ * final GeneticAlgorithm〈DoubleGene, Double〉 ga = ...
  * ga.setAlterers(
- *     new Crossover〈Float64Gene〉(0.1),
- *     new Mutator〈Float64Gene〉(0.05),
- *     new MeanAlterer〈Float64Gene〉(0.2)
+ *     new Crossover〈DoubleGene〉(0.1),
+ *     new Mutator〈DoubleGene〉(0.05),
+ *     new MeanAlterer〈DoubleGene〉(0.2)
  * );
  * [/code]
  *
