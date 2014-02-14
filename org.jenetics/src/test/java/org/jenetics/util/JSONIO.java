@@ -19,6 +19,7 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.internal.util.jaxb.CONTEXT;
 import static org.jenetics.internal.util.jaxb.adapterFor;
 
 import java.io.BufferedReader;
@@ -36,71 +37,71 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.codehaus.jettison.json.JSONObject;
+import org.codehaus.jettison.mapped.Configuration;
 import org.codehaus.jettison.mapped.MappedNamespaceConvention;
 import org.codehaus.jettison.mapped.MappedXMLStreamReader;
 import org.codehaus.jettison.mapped.MappedXMLStreamWriter;
-
-import org.jenetics.internal.util.jaxb;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version @__version__@ &mdash; <em>$Date: 2014-02-14 $</em>
  * @since @__version__@
  */
-public class JSONIO {
+public final class JSONIO extends StaticObject {
+	private JSONIO() {}
 
-	public static void write(final Object object, final OutputStream out)
-		throws IOException
-	{
-		try {
-			final Marshaller marshaller = jaxb.CONTEXT.createMarshaller();
-
-			final XMLStreamWriter writer = new MappedXMLStreamWriter(
-				new MappedNamespaceConvention(),
-				new OutputStreamWriter(out)
-			);
+	public static final IO jettison = new IO() {
+		@Override
+		public void write(Object object, OutputStream out) throws IOException {
 			try {
-				final XmlAdapter<Object, Object> adapter = adapterFor(object);
-				if (adapter != null) {
-					marshaller.marshal(adapter.marshal(object), writer);
-				} else {
-					marshaller.marshal(object, writer);
+				final Marshaller marshaller = CONTEXT.createMarshaller();
+
+				final XMLStreamWriter writer = new MappedXMLStreamWriter(
+					new MappedNamespaceConvention(),
+					new OutputStreamWriter(out)
+				);
+				try {
+					final XmlAdapter<Object, Object> adapter = adapterFor(object);
+					if (adapter != null) {
+						marshaller.marshal(adapter.marshal(object), writer);
+					} else {
+						marshaller.marshal(object, writer);
+					}
+				} finally {
+					writer.close();
 				}
-			} finally {
-				writer.close();
+			} catch (Exception e) {
+				throw new IOException(e);
 			}
-		} catch (Exception e) {
-			throw new IOException(e);
 		}
-	}
 
-	public static <T> T read(final Class<T> type, final InputStream in)
-		throws IOException
-	{
-		try {
-			final Unmarshaller unmarshaller = jaxb.CONTEXT.createUnmarshaller();
-
-			final XMLStreamReader reader = new MappedXMLStreamReader(
-				new JSONObject(toString(in)),
-				new MappedNamespaceConvention()
-			);
+		@Override
+		public <T> T read(Class<T> type, InputStream in) throws IOException {
 			try {
-				final Object object = unmarshaller.unmarshal(reader);
-				final XmlAdapter<Object, Object> adapter = adapterFor(object);
-				if (adapter != null) {
-					return type.cast(adapter.unmarshal(object));
-				} else {
-					return type.cast(object);
-				}
-			} finally {
-				reader.close();
-			}
-		} catch (Exception e) {
-			throw new IOException(e);
-		}
-	}
+				final Unmarshaller unmarshaller = CONTEXT.createUnmarshaller();
 
-	private static String toString(final InputStream in) throws IOException {
+				final XMLStreamReader reader = new MappedXMLStreamReader(
+					new JSONObject(toText(in)),
+					new MappedNamespaceConvention(new Configuration())
+				);
+				try {
+					final Object object = unmarshaller.unmarshal(reader);
+					final XmlAdapter<Object, Object> adapter = adapterFor(object);
+					if (adapter != null) {
+						return type.cast(adapter.unmarshal(object));
+					} else {
+						return type.cast(object);
+					}
+				} finally {
+					reader.close();
+				}
+			} catch (Exception e) {
+				throw new IOException(e);
+			}
+		}
+	};
+
+	static String toText(final InputStream in) throws IOException {
 		try (final Reader r = new InputStreamReader(in);
 			 final BufferedReader br = new BufferedReader(r))
 		{

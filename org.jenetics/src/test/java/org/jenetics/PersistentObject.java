@@ -49,6 +49,7 @@ import javolution.context.LocalContext;
 import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.number.Integer64;
 
+import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 import org.jenetics.util.IO;
@@ -64,12 +65,57 @@ import org.jenetics.util.RandomRegistry;
  */
 public class PersistentObject<T> {
 
+	public static final class Marshalling {
+		public final String name;
+		public final IO io;
+
+		public Marshalling(final String name, final IO io) {
+			this.name = name;
+			this.io = io;
+		}
+
+		public void write(final File dir, final PersistentObject<?> object)
+			throws IOException
+		{
+			final File file = new File(dir, object.getName() + "." + name);
+			System.out.println(String.format("Write '%s'", file));
+			try (FileOutputStream out = new FileOutputStream(file)) {
+				io.write(object.getValue(), out);
+			}
+		}
+
+		public static Marshalling of(final String name) {
+			switch (name) {
+				case "xml": return new Marshalling(name, IO.xml);
+				case "jaxb": return new Marshalling(name, IO.jaxb);
+				case "object": return new Marshalling(name, IO.object);
+				case "json": return new Marshalling(name, JSONIO.jettison);
+				default: throw new IllegalArgumentException(name);
+			}
+		}
+
+		@Override
+		public String toString() {
+			return String.format("IO[%s]", name);
+		}
+	}
+
+	private static final Function<String, Marshalling> ToMarshalling =
+		new Function<String, Marshalling>() {
+			@Override
+			public Marshalling apply(final String value) {
+				return Marshalling.of(value);
+			}
+		};
+
 	private final String _name;
 	private final T _value;
+	private final ISeq<Marshalling> _marshallings;
 
-	public PersistentObject(final String name, final T value) {
+	public PersistentObject(final String name, final T value, final String... ios) {
 		_name = Objects.requireNonNull(name);
 		_value = Objects.requireNonNull(value);
+		_marshallings = Array.valueOf(ios).map(ToMarshalling).toISeq();
 	}
 
 	public String getName() {
@@ -78,6 +124,10 @@ public class PersistentObject<T> {
 
 	public T getValue() {
 		return _value;
+	}
+
+	public ISeq<Marshalling> getMarshallings() {
+		return _marshallings;
 	}
 
 	@Override
@@ -89,8 +139,8 @@ public class PersistentObject<T> {
 
 	public static List<PersistentObject<?>> VALUES = new ArrayList<>();
 
-	private static <T> void put(final String name, final T value) {
-		VALUES.add(new PersistentObject<T>(name, value));
+	private static <T> void put(final String name, final T value, final String... ios) {
+		VALUES.add(new PersistentObject<T>(name, value, ios));
 		RandomRegistry.getRandom().setSeed(SEED);
 	}
 
@@ -99,73 +149,94 @@ public class PersistentObject<T> {
 		 * Genes
 		 **********************************************************************/
 
-		put("LongGene", nextLongGene());
-		put("DoubleGene", nextDoubleGene());
+		final String[] oldIO = {"object", "xml", "jaxb"};
+		final String[] newIO = {"object", "jaxb", "json"};
+		final String[] minIO = {"object", "jaxb"};
 
-//		put("BitGene[true]", BitGene.TRUE);
-//		put("BitGene[false]", BitGene.FALSE);
-//		put("CharacterGene", nextCharacterGene());
-//		put("Integer64Gene", nextInteger64Gene());
-//		put("Float64Gene", nextFloat64Gene());
-//
-//		put("EnumGene<Boolean>", nextEnumGeneBoolean());
-//		put("EnumGene<Byte>", nextEnumGeneByte());
-//		put("EnumGene<Character>", nextEnumGeneCharacter());
-//		put("EnumGene<Short>", nextEnumGeneShort());
-//		put("EnumGene<Integer>", nextEnumGeneInteger());
-//		put("EnumGene<Long>", nextEnumGeneLong());
-//		put("EnumGene<Float>", nextEnumGeneFloat());
-//		put("EnumGene<Double>", nextEnumGeneDouble());
-//		put("EnumGene<String>", nextEnumGeneString());
-//		put("EnumGene<Float64>", nextEnumGeneFloat64());
-//		put("EnumGene<Integer64>", nextEnumGeneInteger64());
-//
-//		/* *********************************************************************
-//		 * Chromosomes
-//		 **********************************************************************/
-//
-//		put("BitChromosome", nextBitChromosome());
-//		put("CharacterChromosome", nextCharacterChromosome());
-//		put("Integer64Chromosome", nextInteger64Chromosome());
-//		put("Float64Chromosome", nextFloat64Chromosome());
-//
-//		put("PermutationChromosome<Integer>", nextIntegerPermutationChromosome());
-//		put("PermutationChromosome<Double>", nextDoublePermutationChromosome());
-//		put("PermutationChromosome<Float64>", nextFloat64PermutationChromosome());
-//		put("PermutationChromosome<Character>", nextCharacterPermutationChromosome());
-//		put("PermutationChromosome<String>", nextStringPermutationChromosome());
-//
-//		/* *********************************************************************
-//		 * Genotypes
-//		 **********************************************************************/
-//
-//		put("Genotype<BitGene>", nextGenotypeBitGene());
-//		put("Genotype<CharacterGene>", nextGenotypeCharacterGene());
-//		put("Genotype<Integer64Gene>", nextGenotypeInteger64Gene());
-//		put("Genotype<Float64Gene>", nextGenotypeFloat64Gene());
-//
-//
-//		/* *********************************************************************
-//		 * Phenotypes
-//		 **********************************************************************/
-//
-//		put("Phenotype<Integer64Gene, Integer>", nextPhenotypeInteger64GeneInteger());
-//		put("Phenotype<Integer64Gene, Long>", nextPhenotypeInteger64GeneLong());
-//		put("Phenotype<Integer64Gene, Double>", nextPhenotypeInteger64GeneDouble());
-//		put("Phenotype<Integer64Gene, Integer64>", nextPhenotypeInteger64GeneInteger64());
-//		put("Phenotype<Integer64Gene, Float64>", nextPhenotypeInteger64GeneFloat64());
-//		put("Phenotype<Float64Gene, Integer>", nextPhenotypeFloat64GeneInteger());
-//		put("Phenotype<Float64Gene, Long>", nextPhenotypeFloat64GeneLong());
-//		put("Phenotype<Float64Gene, Double>", nextPhenotypeFloat64GeneDouble());
-//		put("Phenotype<Float64Gene, Integer64>", nextPhenotypeFloat64GeneInteger64());
-//		put("Phenotype<Float64Gene, Float64>", nextPhenotypeFloat64GeneFloat64());
-//
-//		/* *********************************************************************
-//		 * Populations
-//		 **********************************************************************/
-//
-//		put("Population<Integer64Gene, Integer>", nextPopulationInteger64GeneInteger());
-//		put("Population<Float64Gene, Integer>", nextPopulationFloat64GeneInteger());
+		put("BitGene[true]", BitGene.TRUE, oldIO);
+		put("BitGene[false]", BitGene.FALSE, oldIO);
+		put("CharacterGene", nextCharacterGene(), oldIO);
+		put("LongGene", nextLongGene(), newIO);
+		put("DoubleGene", nextDoubleGene(), newIO);
+		put("Integer64Gene", nextInteger64Gene(), oldIO);
+		put("Float64Gene", nextFloat64Gene(), oldIO);
+
+		put("EnumGene<Boolean>", nextEnumGeneBoolean(), oldIO);
+		put("EnumGene<Byte>", nextEnumGeneByte(), oldIO);
+		put("EnumGene<Character>", nextEnumGeneCharacter(), oldIO);
+		put("EnumGene<Short>", nextEnumGeneShort(), oldIO);
+		put("EnumGene<Integer>", nextEnumGeneInteger(), oldIO);
+		put("EnumGene<Long>", nextEnumGeneLong(), oldIO);
+		put("EnumGene<Float>", nextEnumGeneFloat(), oldIO);
+		put("EnumGene<Double>", nextEnumGeneDouble(), oldIO);
+		put("EnumGene<String>", nextEnumGeneString(), oldIO);
+		put("EnumGene<Float64>", nextEnumGeneFloat64(), oldIO);
+		put("EnumGene<Integer64>", nextEnumGeneInteger64(), oldIO);
+
+		/* *********************************************************************
+		 * Chromosomes
+		 **********************************************************************/
+
+		put("BitChromosome", nextBitChromosome(), oldIO);
+		put("CharacterChromosome", nextCharacterChromosome(), oldIO);
+		put("LongChromosome", nextLongChromosome(), newIO);
+		put("DoubleChromosome", nextDoubleChromosome(), newIO);
+		put("Integer64Chromosome", nextInteger64Chromosome(), oldIO);
+		put("Float64Chromosome", nextFloat64Chromosome(), oldIO);
+
+		put("PermutationChromosome<Integer>", nextIntegerPermutationChromosome(), oldIO);
+		put("PermutationChromosome<Double>", nextDoublePermutationChromosome(), oldIO);
+		put("PermutationChromosome<Float64>", nextFloat64PermutationChromosome(), oldIO);
+		put("PermutationChromosome<Character>", nextCharacterPermutationChromosome(), oldIO);
+		put("PermutationChromosome<String>", nextStringPermutationChromosome(), oldIO);
+
+		/* *********************************************************************
+		 * Genotypes
+		 **********************************************************************/
+
+		put("Genotype<BitGene>", nextGenotypeBitGene(), oldIO);
+		put("Genotype<CharacterGene>", nextGenotypeCharacterGene(), oldIO);
+		put("Genotype<LongGene>", nextGenotypeLongGene(), minIO);
+		put("Genotype<DoubleGene>", nextGenotypeDoubleGene(), minIO);
+		put("Genotype<Integer64Gene>", nextGenotypeInteger64Gene(), oldIO);
+		put("Genotype<Float64Gene>", nextGenotypeFloat64Gene(), oldIO);
+
+
+		/* *********************************************************************
+		 * Phenotypes
+		 **********************************************************************/
+
+		put("Phenotype<Integer64Gene, Integer>", nextPhenotypeInteger64GeneInteger(), oldIO);
+		put("Phenotype<Integer64Gene, Long>", nextPhenotypeInteger64GeneLong(), oldIO);
+		put("Phenotype<Integer64Gene, Double>", nextPhenotypeInteger64GeneDouble(), oldIO);
+
+		put("Phenotype<LongGene, Integer>", nextPhenotypeLongGeneInteger(), minIO);
+		put("Phenotype<LongGene, Long>", nextPhenotypeLongGeneLong(), minIO);
+		put("Phenotype<LongGene, Double>", nextPhenotypeLongGeneDouble(), minIO);
+
+		put("Phenotype<Integer64Gene, Integer64>", nextPhenotypeInteger64GeneInteger64(), oldIO);
+		put("Phenotype<Integer64Gene, Float64>", nextPhenotypeInteger64GeneFloat64(), oldIO);
+
+		put("Phenotype<DoubleGene, Integer>", nextPhenotypeDoubleGeneInteger(), minIO);
+		put("Phenotype<DoubleGene, Long>", nextPhenotypeDoubleGeneLong(), minIO);
+		put("Phenotype<DoubleGene, Double>", nextPhenotypeDoubleGeneDouble(), minIO);
+
+		put("Phenotype<Float64Gene, Integer>", nextPhenotypeFloat64GeneInteger(), oldIO);
+		put("Phenotype<Float64Gene, Long>", nextPhenotypeFloat64GeneLong(), oldIO);
+		put("Phenotype<Float64Gene, Double>", nextPhenotypeFloat64GeneDouble(), oldIO);
+
+		put("Phenotype<Float64Gene, Integer64>", nextPhenotypeFloat64GeneInteger64(), oldIO);
+		put("Phenotype<Float64Gene, Float64>", nextPhenotypeFloat64GeneFloat64(), oldIO);
+
+		/* *********************************************************************
+		 * Populations
+		 **********************************************************************/
+
+		put("Population<Integer64Gene, Integer>", nextPopulationInteger64GeneInteger(), oldIO);
+		put("Population<Float64Gene, Integer>", nextPopulationFloat64GeneInteger(), oldIO);
+
+		put("Population<LongGene, Integer>", nextPopulationLongGeneInteger(), minIO);
+		put("Population<DoubleGene, Integer>", nextPopulationDoubleGeneInteger(), minIO);
 
 		//put("Statistics.Time", nextStatisticsTime());
 
@@ -320,12 +391,60 @@ public class PersistentObject<T> {
 	 * Phenotypes
 	 **************************************************************************/
 
+	public static Phenotype<LongGene, Integer> nextPhenotypeLongGeneInteger() {
+		return Phenotype.valueOf(
+			nextGenotypeLongGene(),
+			FitnessFunction(IntegerFactory.newInstance()),
+			Math.abs(IntegerFactory.newInstance())
+		).evaluate();
+	}
+
+	public static Phenotype<LongGene, Long> nextPhenotypeLongGeneLong() {
+		return Phenotype.valueOf(
+			nextGenotypeLongGene(),
+			FitnessFunction(LongFactory.newInstance()),
+			Math.abs(IntegerFactory.newInstance())
+		).evaluate();
+	}
+
+	public static Phenotype<LongGene, Double> nextPhenotypeLongGeneDouble() {
+		return Phenotype.valueOf(
+			nextGenotypeLongGene(),
+			FitnessFunction(DoubleFactory.newInstance()),
+			Math.abs(IntegerFactory.newInstance())
+		).evaluate();
+	}
+
+	public static Phenotype<DoubleGene, Integer> nextPhenotypeDoubleGeneInteger() {
+		return Phenotype.valueOf(
+			nextGenotypeDoubleGene(),
+			FitnessFunction(IntegerFactory.newInstance()),
+			Math.abs(IntegerFactory.newInstance())
+		).evaluate();
+	}
+
+	public static Phenotype<DoubleGene, Long> nextPhenotypeDoubleGeneLong() {
+		return Phenotype.valueOf(
+			nextGenotypeDoubleGene(),
+			FitnessFunction(LongFactory.newInstance()),
+			Math.abs(IntegerFactory.newInstance())
+		).evaluate();
+	}
+
+	public static Phenotype<DoubleGene, Double> nextPhenotypeDoubleGeneDouble() {
+		return Phenotype.valueOf(
+			nextGenotypeDoubleGene(),
+			FitnessFunction(DoubleFactory.newInstance()),
+			Math.abs(IntegerFactory.newInstance())
+		).evaluate();
+	}
+
 	public static Phenotype<Integer64Gene, Integer> nextPhenotypeInteger64GeneInteger() {
 		return Phenotype.valueOf(
 			nextGenotypeInteger64Gene(),
 			FitnessFunction(IntegerFactory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
-		);
+		).evaluate();
 	}
 
 	public static Phenotype<Integer64Gene, Long> nextPhenotypeInteger64GeneLong() {
@@ -333,7 +452,7 @@ public class PersistentObject<T> {
 			nextGenotypeInteger64Gene(),
 			FitnessFunction(LongFactory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
-		);
+		).evaluate();
 	}
 
 	public static Phenotype<Integer64Gene, Double> nextPhenotypeInteger64GeneDouble() {
@@ -341,7 +460,7 @@ public class PersistentObject<T> {
 			nextGenotypeInteger64Gene(),
 			FitnessFunction(DoubleFactory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
-		);
+		).evaluate();
 	}
 
 	public static Phenotype<Integer64Gene, Integer64> nextPhenotypeInteger64GeneInteger64() {
@@ -349,7 +468,7 @@ public class PersistentObject<T> {
 			nextGenotypeInteger64Gene(),
 			FitnessFunction(Integer64Factory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
-		);
+		).evaluate();
 	}
 
 	public static Phenotype<Integer64Gene, Float64> nextPhenotypeInteger64GeneFloat64() {
@@ -357,7 +476,7 @@ public class PersistentObject<T> {
 			nextGenotypeInteger64Gene(),
 			FitnessFunction(Float64Factory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
-		);
+		).evaluate();
 	}
 
 	public static Phenotype<Float64Gene, Integer> nextPhenotypeFloat64GeneInteger() {
@@ -365,7 +484,7 @@ public class PersistentObject<T> {
 			nextGenotypeFloat64Gene(),
 			FitnessFunction(IntegerFactory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
-		);
+		).evaluate();
 	}
 
 	public static Phenotype<Float64Gene, Long> nextPhenotypeFloat64GeneLong() {
@@ -373,7 +492,7 @@ public class PersistentObject<T> {
 			nextGenotypeFloat64Gene(),
 			FitnessFunction(LongFactory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
-		);
+		).evaluate();
 	}
 
 	public static Phenotype<Float64Gene, Double> nextPhenotypeFloat64GeneDouble() {
@@ -381,7 +500,7 @@ public class PersistentObject<T> {
 			nextGenotypeFloat64Gene(),
 			FitnessFunction(DoubleFactory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
-		);
+		).evaluate();
 	}
 
 	public static Phenotype<Float64Gene, Integer64> nextPhenotypeFloat64GeneInteger64() {
@@ -389,7 +508,7 @@ public class PersistentObject<T> {
 			nextGenotypeFloat64Gene(),
 			FitnessFunction(Integer64Factory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
-		);
+		).evaluate();
 	}
 
 	public static Phenotype<Float64Gene, Float64> nextPhenotypeFloat64GeneFloat64() {
@@ -397,12 +516,32 @@ public class PersistentObject<T> {
 			nextGenotypeFloat64Gene(),
 			FitnessFunction(Float64Factory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
-		);
+		).evaluate();
 	}
 
 	/* *************************************************************************
 	 * Populations
 	 **************************************************************************/
+
+	public static Population<LongGene, Integer> nextPopulationLongGeneInteger() {
+		final ISeq<Phenotype<LongGene, Integer>> seq = ISeq(7,
+			PersistentObject.<Phenotype<LongGene, Integer>>Factory(
+				"nextPhenotypeLongGeneInteger"
+			)
+		);
+
+		return new Population<>(seq.asList());
+	}
+
+	public static Population<DoubleGene, Integer> nextPopulationDoubleGeneInteger() {
+		final ISeq<Phenotype<DoubleGene, Integer>> seq = ISeq(7,
+			PersistentObject.<Phenotype<DoubleGene, Integer>>Factory(
+				"nextPhenotypeDoubleGeneInteger"
+			)
+		);
+
+		return new Population<>(seq.asList());
+	}
 
 	public static Population<Integer64Gene, Integer> nextPopulationInteger64GeneInteger() {
 		final ISeq<Phenotype<Integer64Gene, Integer>> seq = ISeq(7,
@@ -497,28 +636,26 @@ public class PersistentObject<T> {
 
 	@SuppressWarnings("deprecation")
 	public static void main(final String[] args) throws Exception {
-		IO.jaxb.write(nextGenotypeLongGene(), System.out);
-		System.out.println();
-		JSONIO.write(nextGenotypeLongGene(), System.out);
+		//IO.jaxb.write(nextGenotypeFloat64Gene(), System.out);
+		//System.out.println();
+		//JSONIO.jettison.write(nextGenotypeLongGene(), System.out);
 		//IO.jaxb.write(nextDoubleGene(), System.out);
 		//IO.object.write(nextLongGene(), System.out);
-		//write(IO.jaxb, "jaxb");
-		//write(IO.xml, "xml");
-		//write(IO.object, "object");
+
+		write();
 	}
 
-	private static void write(final IO io, final String suffix) throws IOException {
+	private static void write() throws IOException {
 		final File baseDir = new File("org.jenetics/src/test/resources/org/jenetics/serialization");
 		if (!baseDir.isDirectory() && !baseDir.mkdirs()) {
 			throw new IOException("Error while creating directory " + baseDir);
 		}
 
 		for (PersistentObject<?> object : VALUES) {
-			final File file = new File(baseDir, object.getName() + "." + suffix);
-			System.out.println(object.getName());
-			try (FileOutputStream out = new FileOutputStream(file)) {
-				io.write(object.getValue(), out);
+			for (Marshalling marshalling : object.getMarshallings()) {
+				marshalling.write(baseDir, object);
 			}
 		}
 	}
+
 }

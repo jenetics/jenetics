@@ -23,16 +23,20 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import org.jenetics.PersistentObject.Marshalling;
 import org.jenetics.util.IO;
+import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-02-02 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-02-14 $</em>
  * @since 1.6
  */
 @SuppressWarnings("deprecation")
@@ -40,66 +44,18 @@ public class MarshallingTest {
 
 	private static final String RESOURCE_PATTERN = "/org/jenetics/serialization/%s.%s";
 
-	@Test(dataProvider = "objects")
+	@Test(dataProvider = "xmlJavolutionCompatibilityObjects")
 	public void jaxbJavolutionCompatibility(final PersistentObject<?> object)
 		throws IOException
 	{
 		test(object.getValue(), IO.jaxb, IO.xml);
 	}
 
-	@Test(dataProvider = "objects")
+	@Test(dataProvider = "xmlJavolutionCompatibilityObjects")
 	public void javolutionJAXBCompatibility(final PersistentObject<?> object)
 		throws IOException
 	{
 		test(object.getValue(), IO.xml, IO.jaxb);
-	}
-
-	@Test(dataProvider = "objects")
-	public void xmlMarshallingCompatibility(final PersistentObject<?> object)
-		throws IOException
-	{
-		final String resource = String.format(
-			RESOURCE_PATTERN, object.getName(), "xml"
-		);
-
-		System.out.println(resource);
-		try (InputStream in = getClass().getResourceAsStream(resource)) {
-			final Object o = IO.xml.read(in);
-
-			Assert.assertEquals(o, object.getValue());
-		}
-	}
-
-	@Test(dataProvider = "objects")
-	public void jaxbMarshallingCompatibility(final PersistentObject<?> object)
-		throws IOException
-	{
-		final String resource = String.format(
-			RESOURCE_PATTERN, object.getName(), "jaxb"
-		);
-
-		System.out.println(resource);
-		try (InputStream in = getClass().getResourceAsStream(resource)) {
-			final Object o = IO.jaxb.read(in);
-
-			Assert.assertEquals(o, object.getValue());
-		}
-	}
-
-	@Test(dataProvider = "objects")
-	public void objectMarshallingCompatibility(final PersistentObject<?> object)
-		throws IOException
-	{
-		final String resource = String.format(
-			RESOURCE_PATTERN, object.getName(), "object"
-		);
-
-		System.out.println(resource);
-		try (InputStream in = getClass().getResourceAsStream(resource)) {
-			final Object o = IO.object.read(in);
-
-			Assert.assertEquals(o, object.getValue());
-		}
 	}
 
 	private static void test(final Object object, final IO write, final IO read)
@@ -109,20 +65,76 @@ public class MarshallingTest {
 		write.write(object, out);
 
 		final byte[] data = out.toByteArray();
-		//System.out.println(new String(data));
 		final ByteArrayInputStream in = new ByteArrayInputStream(data);
 		final Object copy = read.read(in);
 
 		Assert.assertEquals(copy, object);
 	}
 
-	@DataProvider(name = "objects")
+	@DataProvider(name = "xmlJavolutionCompatibilityObjects")
 	public Object[][] getObjects() {
-		final Object[][] objects = new Object[PersistentObject.VALUES.size()][1];
-		for (int i = 0; i < objects.length; ++i) {
-			objects[i] = new Object[]{PersistentObject.VALUES.get(i)};
+		final List<Object[]> objects = new ArrayList<>();
+		for (PersistentObject<?> po : PersistentObject.VALUES) {
+			if (hasMarshalling(po.getMarshallings(), "xml") &&
+				hasMarshalling(po.getMarshallings(), "jaxb"))
+			{
+				objects.add(new Object[]{po});
+			}
 		}
 
-		return objects;
+		final Object[][] result = new Object[objects.size()][];
+		for (int i = 0; i < result.length; ++i) {
+			result[i] = objects.get(i);
+		}
+
+		return result;
+	}
+
+	private static boolean hasMarshalling(
+		final ISeq<Marshalling> marshallings,
+		final String name
+	) {
+		for (Marshalling m : marshallings) {
+			if (m.name.equals(name)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Test(dataProvider = "persistentObjectMarshallings")
+	public void marshallingCompatibility(
+		final PersistentObject<?> object,
+		final Marshalling marshalling
+	)
+		throws IOException
+	{
+		final String resource = String.format(
+			RESOURCE_PATTERN, object.getName(), marshalling.name
+		);
+
+		System.out.println(resource);
+		try (InputStream in = getClass().getResourceAsStream(resource)) {
+			final Object o = marshalling.io.read(in);
+
+			Assert.assertEquals(o, object.getValue());
+		}
+	}
+
+	@DataProvider(name = "persistentObjectMarshallings")
+	public Object[][] getPersistentObjects() {
+		final List<Object[]> combinations = new ArrayList<>();
+		for (PersistentObject<?> po : PersistentObject.VALUES) {
+			for (Marshalling m : po.getMarshallings()) {
+				combinations.add(new Object[]{po, m});
+			}
+		}
+
+		final Object[][] result = new Object[combinations.size()][];
+		for (int i = 0; i < result.length; ++i) {
+			result[i] = combinations.get(i);
+		}
+
+		return result;
 	}
 }
