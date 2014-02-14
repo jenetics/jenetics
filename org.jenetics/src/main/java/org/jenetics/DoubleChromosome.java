@@ -25,17 +25,32 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import org.jenetics.internal.util.model.ModelType;
+import org.jenetics.internal.util.model.ValueType;
 
 import org.jenetics.util.Array;
+import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
 
 /**
  * Numeric chromosome implementation which holds 64 bit floating point numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-02-13 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-02-14 $</em>
  * @since @__version__@
  */
+@XmlJavaTypeAdapter(DoubleChromosome.Model.Adapter.class)
 public class DoubleChromosome
 	extends NumericChromosome<Double, DoubleGene>
 	implements Serializable
@@ -157,5 +172,69 @@ public class DoubleChromosome
 		}
 
 		_genes = genes.toISeq();
+	}
+
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
+
+	@XmlRootElement(name = "org.jenetics.DoubleChromosome")
+	@XmlType(name = "org.jenetics.DoubleChromosome")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	final static class Model {
+
+		@XmlAttribute
+		public int length;
+
+		@XmlAttribute
+		public double min;
+
+		@XmlAttribute
+		public double max;
+
+		@XmlElement(name = "allele")
+		public List<Double> values;
+
+		@ValueType(DoubleChromosome.class)
+		@ModelType(Model.class)
+		public final static class Adapter
+			extends XmlAdapter<Model, DoubleChromosome>
+		{
+			@Override
+			public Model marshal(final DoubleChromosome c) {
+				final Model m = new Model();
+				m.length = c.length();
+				m.min = c._min;
+				m.max = c._max;
+				m.values = c.toSeq().map(Allele).asList();
+				return m;
+			}
+
+			@Override
+			public DoubleChromosome unmarshal(final Model model) {
+				final Double min = model.min;
+				final Double max = model.max;
+				return new DoubleChromosome(
+					Array.valueOf(model.values).map(Gene(min, max)).toISeq()
+				);
+			}
+		}
+	}
+
+	private static final Function<DoubleGene, Double> Allele =
+		new Function<DoubleGene, Double>() {
+			@Override
+			public Double apply(DoubleGene value) {
+				return value.getAllele();
+			}
+		};
+
+	private static Function<Double, DoubleGene> Gene(final Double min, final Double max) {
+		return new Function<Double, DoubleGene>() {
+			@Override
+			public DoubleGene apply(final Double value) {
+				return new DoubleGene(value, min, max);
+			}
+		};
 	}
 }

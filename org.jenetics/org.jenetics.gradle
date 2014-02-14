@@ -24,7 +24,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.5 &mdash; <em>$Date: 2014-01-29 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-02-14 $</em>
  */
 
 apply plugin: 'packaging'
@@ -40,6 +40,7 @@ dependencies {
 	compile Include.JScience
 
 	testCompile Include.Apache.Commons.Math
+    testCompile Include.Jettison
 	testCompile Include.TestNG
 }
 
