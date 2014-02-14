@@ -41,7 +41,7 @@ random-x86_64
 *.iml
 *.ipr
 *.iws
-.idea
+.idea/*
 classes/*
 
 ## Netbeans
