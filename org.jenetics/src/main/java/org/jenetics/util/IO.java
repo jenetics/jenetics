@@ -35,10 +35,6 @@ import java.nio.file.Path;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
 
 import javolution.xml.XMLObjectReader;
 import javolution.xml.XMLObjectWriter;
@@ -130,18 +126,18 @@ public abstract class IO {
 				final Marshaller marshaller = CONTEXT.createMarshaller();
 				marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
-				final XMLOutputFactory factory = XMLOutputFactory.newInstance();
-				final XMLStreamWriter writer = factory.createXMLStreamWriter(out);
-				try {
+				//final XMLOutputFactory factory = XMLOutputFactory.newInstance();
+				//final XMLStreamWriter writer = factory.createXMLStreamWriter(out);
+				//try {
 					final XmlAdapter<Object, Object> adapter = adapterFor(object);
 					if (adapter != null) {
-						marshaller.marshal(adapter.marshal(object), writer);
+						marshaller.marshal(adapter.marshal(object), out);
 					} else {
-						marshaller.marshal(object, writer);
+						marshaller.marshal(object, out);
 					}
-				} finally {
-					writer.close();
-				}
+				//} finally {
+				//	writer.close();
+				//}
 			} catch (Exception e) {
 				throw new IOException(e);
 			}
@@ -154,19 +150,19 @@ public abstract class IO {
 			try {
 				final Unmarshaller unmarshaller = CONTEXT.createUnmarshaller();
 
-				final XMLInputFactory factory = XMLInputFactory.newInstance();
-				final XMLStreamReader reader = factory.createXMLStreamReader(in);
-				try {
-					final Object object = unmarshaller.unmarshal(reader);
+				//final XMLInputFactory factory = XMLInputFactory.newInstance();
+				//final XMLStreamReader reader = factory.createXMLStreamReader(in);
+				//try {
+					final Object object = unmarshaller.unmarshal(in);
 					final XmlAdapter<Object, Object> adapter = adapterFor(object);
 					if (adapter != null) {
 						return type.cast(adapter.unmarshal(object));
 					} else {
 						return type.cast(object);
 					}
-				} finally {
-					reader.close();
-				}
+				//} finally {
+				//	reader.close();
+				//}
 			} catch (Exception e) {
 				throw new IOException(e);
 			}
