@@ -52,8 +52,13 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-02-02 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-02-14 $</em>
+ *
+ * @deprecated Use {@link org.jenetics.LongGene} instead. This classes
+ *             uses the <i>JScience</i> library, which will be removed in the
+ *             next major version.
  */
+@Deprecated
 @XmlJavaTypeAdapter(Integer64Gene.Model.Adapter.class)
 public final class Integer64Gene
 	extends NumberGene<Integer64, Integer64Gene>

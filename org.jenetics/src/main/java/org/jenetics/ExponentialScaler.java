@@ -40,8 +40,11 @@ import org.jenetics.util.Function;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-11-28 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-02-13 $</em>
+ *
+ * @deprecated Will be removed in next major version.
  */
+@Deprecated
 public final class ExponentialScaler
 	implements
 		Function<Float64, Float64>,

@@ -61,8 +61,13 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-02-02 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-02-14 $</em>
+ *
+ * @deprecated Use {@link org.jenetics.LongChromosome} instead. This classes
+ *             uses the <i>JScience</i> library, which will be removed in the
+ *             next major version.
  */
+@Deprecated
 @XmlJavaTypeAdapter(Float64Chromosome.Model.Adapter.class)
 public class Integer64Chromosome
 	extends NumberChromosome<Integer64, Integer64Gene>

@@ -21,18 +21,16 @@ package org.jenetics;
 
 import org.testng.annotations.Test;
 
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.stat.Distribution;
 import org.jenetics.stat.UniformDistribution;
 import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-01-31 $</em>
+ * @version <em>$Date: 2014-02-14 $</em>
  */
 public class BoltzmannSelectorTest
-	extends ProbabilitySelectorTester<BoltzmannSelector<Float64Gene, Float64>>
+	extends ProbabilitySelectorTester<BoltzmannSelector<DoubleGene, Double>>
 {
 
 	@Override
@@ -41,12 +39,12 @@ public class BoltzmannSelectorTest
 	}
 
 	@Override
-	protected Factory<BoltzmannSelector<Float64Gene, Float64>> getFactory() {
+	protected Factory<BoltzmannSelector<DoubleGene, Double>> getFactory() {
 		return SelectorFactories.BoltzmannSelector;
 	}
 
 	@Override
-	protected Distribution<Float64> getDistribution() {
+	protected Distribution<Double> getDistribution() {
 		return new UniformDistribution<>(getDomain());
 	}
 
