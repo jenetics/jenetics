@@ -28,6 +28,7 @@ import org.jscience.mathematics.number.Number;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version <em>$Date$</em>
  */
+@SuppressWarnings("deprecation")
 public abstract class NumberChromosomeTester<
 	N extends Number<N>,
 	G extends NumberGene<N,G>

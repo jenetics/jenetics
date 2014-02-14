@@ -21,8 +21,6 @@ package org.jenetics;
 
 import org.testng.annotations.Test;
 
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.stat.Distribution;
 import org.jenetics.stat.UniformDistribution;
 import org.jenetics.util.Factory;
@@ -32,7 +30,7 @@ import org.jenetics.util.Factory;
  * @version <em>$Date$</em>
  */
 public class StochasticUniversalSelectorTest
-	extends ProbabilitySelectorTester<StochasticUniversalSelector<Float64Gene,Float64>>
+	extends ProbabilitySelectorTester<StochasticUniversalSelector<DoubleGene,Double>>
 {
 
 	@Override
@@ -40,20 +38,20 @@ public class StochasticUniversalSelectorTest
 		return true;
 	}
 
-	final Factory<StochasticUniversalSelector<Float64Gene,Float64>>
-	_factory = new Factory<StochasticUniversalSelector<Float64Gene,Float64>>() {
+	final Factory<StochasticUniversalSelector<DoubleGene,Double>>
+	_factory = new Factory<StochasticUniversalSelector<DoubleGene,Double>>() {
 		@Override
-		public StochasticUniversalSelector<Float64Gene, Float64> newInstance() {
+		public StochasticUniversalSelector<DoubleGene, Double> newInstance() {
 			return new StochasticUniversalSelector<>();
 		}
 	};
 	@Override
-	protected Factory<StochasticUniversalSelector<Float64Gene, Float64>> getFactory() {
+	protected Factory<StochasticUniversalSelector<DoubleGene, Double>> getFactory() {
 		return _factory;
 	}
 
 	@Override
-	protected Distribution<Float64> getDistribution() {
+	protected Distribution<Double> getDistribution() {
 		return new UniformDistribution<>(getDomain());
 	}
 

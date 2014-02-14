@@ -67,15 +67,15 @@ import org.jenetics.util.Verifiable;
  * for number genes.
  *
  * [code]
- * final Genotype〈Float64Gene〉 genotype = Genotype.valueOf(
- *     new Float64Chromosome(0.0, 1.0, 8),
- *     new Float64Chromosome(1.0, 2.0, 10),
- *     new Float64Chromosome(0.0, 10.0, 9),
- *     new Float64Chromosome(0.1, 0.9, 5)
+ * final Genotype〈DoubleGene〉 genotype = Genotype.valueOf(
+ *     DoubleChromosome.of(0.0, 1.0, 8),
+ *     DoubleChromosome.of(1.0, 2.0, 10),
+ *     DoubleChromosome.of(0.0, 10.0, 9),
+ *     DoubleChromosome.of(0.1, 0.9, 5)
  * );
  * [/code]
  * The code snippet above creates a genotype with the same structure as shown in
- * the figure above. In this example the {@link Float64Gene} has been chosen as
+ * the figure above. In this example the {@link DoubleGene} has been chosen as
  * gene type.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -131,8 +131,8 @@ public final class Genotype<G extends Gene<?, G>>
 	/**
 	 * Return the first chromosome. This is a shortcut for
 	 * [code]
-	 * final Genotype〈Float64Gene〉 gt = ...
-	 * final Chromosome〈Float64Gene〉 chromosome = gt.getChromosome(0);
+	 * final Genotype〈DoubleGene〉 gt = ...
+	 * final Chromosome〈DoubleGene〉 chromosome = gt.getChromosome(0);
 	 * [/code]
 	 *
 	 * @return The first chromosome.
@@ -148,8 +148,8 @@ public final class Genotype<G extends Gene<?, G>>
 	 * Return the first {@link Gene} of the first {@link Chromosome} of this
 	 * {@code Genotype}. This is a shortcut for
 	 * [code]
-	 * final Genotype〈Float64Gene〉 gt = ...
-	 * final Float64Gene gene = gt.getChromosome(0).getGene(0);
+	 * final Genotype〈DoubleGene〉 gt = ...
+	 * final DoubleGene gene = gt.getChromosome(0).getGene(0);
 	 * [/code]
 	 *
 	 * @return the first {@link Gene} of the first {@link Chromosome} of this

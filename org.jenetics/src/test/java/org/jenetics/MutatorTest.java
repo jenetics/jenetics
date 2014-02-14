@@ -26,7 +26,7 @@ package org.jenetics;
 public class MutatorTest extends MutatorTestBase {
 
 	@Override
-	public Alterer<Float64Gene> newAlterer(double p) {
+	public Alterer<DoubleGene> newAlterer(double p) {
 		return new Mutator<>(p);
 	}
 

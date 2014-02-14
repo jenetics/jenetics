@@ -28,8 +28,6 @@ import org.testng.annotations.Test;
 
 import javolution.context.LocalContext;
 
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -39,7 +37,7 @@ import org.jenetics.util.RandomRegistry;
 public class StatisticsBuilderTest {
 
 	public Object newBuilder() {
-		return new Statistics.Builder<Float64Gene, Float64>();
+		return new Statistics.Builder<DoubleGene, Double>();
 	}
 
 	@DataProvider(name = "properties")
@@ -56,8 +54,8 @@ public class StatisticsBuilderTest {
 					{"samples", Integer.TYPE, random.nextInt(1000)},
 					{"ageMean", Double.TYPE, random.nextDouble()},
 					{"ageVariance", Double.TYPE, random.nextDouble()},
-					{"bestPhenotype", Phenotype.class, TestUtils.newFloat64Phenotype()},
-					{"worstPhenotype", Phenotype.class, TestUtils.newFloat64Phenotype()},
+					{"bestPhenotype", Phenotype.class, TestUtils.newDoublePhenotype()},
+					{"worstPhenotype", Phenotype.class, TestUtils.newDoublePhenotype()},
 					{"optimize", Optimize.class, Optimize.MINIMUM},
 					{"optimize", Optimize.class, Optimize.MAXIMUM}
 			};

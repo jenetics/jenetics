@@ -101,6 +101,7 @@ public enum BitGene
 		return true;
 	}
 
+	@Deprecated
 	@Override
 	public BitGene copy() {
 		return this;

@@ -28,7 +28,8 @@ import org.jscience.mathematics.number.Number;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version <em>$Date$</em>
  */
-public abstract class NumberGeneTester<N extends Number<N>,G extends NumberGene<N,G>>
+@SuppressWarnings("deprecation")
+public abstract class NumberGeneTester<N extends Number<N>, G extends NumberGene<N,G>>
 	extends GeneTester<G>
 {
 

@@ -20,7 +20,7 @@
 package org.jenetics;
 
 import static org.jenetics.TestUtils.diff;
-import static org.jenetics.TestUtils.newFloat64GenePopulation;
+import static org.jenetics.TestUtils.newDoubleGenePopulation;
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 
 import org.testng.Assert;
@@ -40,7 +40,7 @@ import org.jenetics.util.Range;
  */
 public abstract class MutatorTestBase {
 
-	public abstract Alterer<Float64Gene> newAlterer(final double p);
+	public abstract Alterer<DoubleGene> newAlterer(final double p);
 
 
 	@Test(dataProvider = "alterCountParameters")
@@ -49,13 +49,13 @@ public abstract class MutatorTestBase {
 		final Integer nchromosomes,
 		final Integer npopulation
 	) {
-		final Population<Float64Gene, Float64> p1 = newFloat64GenePopulation(
+		final Population<DoubleGene, Double> p1 = newDoubleGenePopulation(
 					ngenes, nchromosomes, npopulation
 				);
-		final Population<Float64Gene, Float64> p2 = p1.copy();
+		final Population<DoubleGene, Double> p2 = p1.copy();
 		Assert.assertEquals(p2, p1);
 
-		final Alterer<Float64Gene> mutator = newAlterer(0.01);
+		final Alterer<DoubleGene> mutator = newAlterer(0.01);
 
 		int mutations = mutator.alter(p1, 1);
 		int difference = diff(p1, p2);
@@ -73,12 +73,12 @@ public abstract class MutatorTestBase {
 		final Integer npopulation,
 		final Double p
 	) {
-		final Population<Float64Gene, Float64> population = newFloat64GenePopulation(
+		final Population<DoubleGene, Double> population = newDoubleGenePopulation(
 				ngenes, nchromosomes, npopulation
 			);
 
 		// The mutator to test.
-		final Alterer<Float64Gene> mutator = newAlterer(p);
+		final Alterer<DoubleGene> mutator = newAlterer(p);
 
 		final long nallgenes = ngenes*nchromosomes*npopulation;
 		final long N = 100;

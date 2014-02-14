@@ -19,8 +19,6 @@
  */
 package org.jenetics;
 
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.NumberStatistics.Calculator;
 
 /**
@@ -30,7 +28,7 @@ import org.jenetics.NumberStatistics.Calculator;
 public class NumberStatisticsCalculatorTest extends StatisticsCalculatorTest {
 
 	@Override
-	public Calculator<Float64Gene, Float64> newCalculator() {
+	public Calculator<DoubleGene, Double> newCalculator() {
 		return new Calculator<>();
 	}
 

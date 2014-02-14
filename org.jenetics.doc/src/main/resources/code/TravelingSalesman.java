@@ -15,14 +15,14 @@ import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 
 class FF
-	implements Function<Genotype<EnumGene<Integer>>, Float64>
+	implements Function<Genotype<EnumGene<Integer>>, Double>
 {
 	private final double[][] _adjacence;
 	public FF(final double[][] adjacence) {
 		_adjacence = adjacence;
 	}
 	@Override
-	public Float64 apply(Genotype<EnumGene<Integer>> genotype) {
+	public Double apply(Genotype<EnumGene<Integer>> genotype) {
 		Chromosome<EnumGene<Integer>> path = 
 			genotype.getChromosome();
 
@@ -32,7 +32,7 @@ class FF
 			final int to = path.getGene((i + 1)%n).getAllele();
 			length += _adjacence[from][to];
 		}
-		return Float64.valueOf(length);
+		return length;
 	}
 }
 
@@ -41,15 +41,15 @@ public class TravelingSalesman {
 	public static void main(String[] args) {
 		final int stops = 20;
 
-		Function<Genotype<EnumGene<Integer>>, Float64> ff = 
+		Function<Genotype<EnumGene<Integer>>, Double> ff = 
 			new FF(adjacencyMatrix(stops));
 		Factory<Genotype<EnumGene<Integer>>> gt = Genotype.valueOf(
 			PermutationChromosome.ofInteger(stops)
 		);
-		final GeneticAlgorithm<EnumGene<Integer>, Float64>
+		final GeneticAlgorithm<EnumGene<Integer>, Double>
 			ga = new GeneticAlgorithm<>(gt, ff, Optimize.MINIMUM);
 		ga.setStatisticsCalculator(
-			new Calculator<EnumGene<Integer>, Float64>()
+			new Calculator<EnumGene<Integer>, Double>()
 		);
 		ga.setPopulationSize(300);
 		ga.setAlterers(
