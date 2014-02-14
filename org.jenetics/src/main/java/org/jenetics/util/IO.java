@@ -48,11 +48,11 @@ import javolution.xml.stream.XMLStreamException;
  * [code]
  * // Writing the population to disk.
  * final File file = new File("population.xml");
- * IO.xml.write(ga.getPopulation(), file);
+ * IO.jaxb.write(ga.getPopulation(), file);
  *
  * // Reading the population from disk.
  * final Population<Float64Gene,Float64> population =
- *     (Population<Float64Gene, Float64)IO.xml.read(file);
+ *     (Population<Float64Gene, Float64)IO.jaxb.read(file);
  * ga.setPopulation(population);
  * [/code]
  *
