@@ -55,6 +55,7 @@ public final class JSONIO extends StaticObject {
 		public void write(Object object, OutputStream out) throws IOException {
 			try {
 				final Marshaller marshaller = CONTEXT.createMarshaller();
+				marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
 				final XMLStreamWriter writer = new MappedXMLStreamWriter(
 					new MappedNamespaceConvention(),
