@@ -234,7 +234,7 @@ class TestUtils {
 	public static Phenotype<DoubleGene, Double> newDoublePhenotype(final double value) {
 		return Phenotype.valueOf(Genotype.valueOf(
 				DoubleChromosome.of(DoubleGene.of(value, 0, 10))), FF, 0
-			);
+			).evaluate();
 	}
 
 	public static Phenotype<DoubleGene, Double> newDoublePhenotype() {
