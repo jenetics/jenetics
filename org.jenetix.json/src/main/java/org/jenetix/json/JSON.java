@@ -50,7 +50,7 @@ import org.jenetics.util.StaticObject;
  * @version @__version__@ &mdash; <em>$Date: 2014-02-15 $</em>
  * @since @__version__@
  */
-public class JSON extends StaticObject {
+public final class JSON extends StaticObject {
 	private JSON() {}
 
 	public static final IO json = new IO() {
