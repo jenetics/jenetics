@@ -28,8 +28,8 @@ import static org.jenetics.util.object.hashCodeOf;
  * value.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-02-13 $</em>
- * @since @__version__@
+ * @version 1.6 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @since 1.6
  */
 public abstract class BoundedGene<
 	A extends Comparable<? super A>,
