@@ -19,17 +19,10 @@
  */
 package org.jenetics;
 
-import static org.jenetics.TestUtils.newDoubleGenePopulation;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.Serializable;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import javolution.xml.XMLSerializable;
 
 import org.jenetics.util.Function;
 import org.jenetics.util.lists;

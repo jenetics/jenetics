@@ -59,8 +59,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date$</em>
- * @since 1.6
+ * @version <em>$Date$</em>
  */
 public class PersistentObject<T> {
 

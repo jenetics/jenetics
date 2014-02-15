@@ -29,7 +29,6 @@ import org.testng.annotations.Test;
 
 import org.jenetics.util.accumulators.Max;
 
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version <em>$Date$</em>
