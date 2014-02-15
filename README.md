@@ -384,8 +384,8 @@ Beside the Java coding standards as given in <http://www.oracle.com/technetwork/
 ### 1.6.0
 
 * Preparation work for removing the dependency to the JScience library.
-    ** Add Double/Integer Gene/Chromosome as a replacement for Float64/Integer64 Gene/Chromosome.
-    ** Add JAXB XML serialization as a replacement of the Javolution XML marshalling.
+    * Add Double/Integer Gene/Chromosome as a replacement for Float64/Integer64 Gene/Chromosome.
+    * Add JAXB XML serialization as a replacement of the Javolution XML marshalling.
 
 ## License
 
