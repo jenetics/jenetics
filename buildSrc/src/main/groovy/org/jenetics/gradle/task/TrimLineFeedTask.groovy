@@ -7,6 +7,9 @@ import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
 
 /**
+ * Removes all leading and trailing new lines from a file except one trailing
+ * new line at the end.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.6
  * @version 1.6 &mdash; <em>$Date: 2014-02-15 $</em>
