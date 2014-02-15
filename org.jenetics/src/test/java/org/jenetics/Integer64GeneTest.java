@@ -39,7 +39,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-14 $</em>
+ * @version <em>$Date: 2014-02-15 $</em>
  */
 @SuppressWarnings("deprecation")
 public class Integer64GeneTest extends NumberGeneTester<Integer64, Integer64Gene> {
@@ -150,8 +150,3 @@ public class Integer64GeneTest extends NumberGeneTester<Integer64, Integer64Gene
 	}
 
 }
-
-
-
-
-

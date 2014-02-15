@@ -26,7 +26,7 @@ import org.jenetics.util.StaticObject;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2014-01-29 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2014-02-15 $</em>
  */
 public final class random extends StaticObject {
 	private random() {}
@@ -72,5 +72,3 @@ public final class random extends StaticObject {
 	}
 
 }
-
-

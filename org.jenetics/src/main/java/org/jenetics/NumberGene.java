@@ -36,7 +36,7 @@ import org.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2014-02-11 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2014-02-15 $</em>
  *
  * @deprecated Use {@link org.jenetics.NumericGene} instead. This classes
  *             uses the <i>JScience</i> library, which will be removed in the
@@ -251,9 +251,3 @@ public abstract class NumberGene<
 	}
 
 }
-
-
-
-
-
-

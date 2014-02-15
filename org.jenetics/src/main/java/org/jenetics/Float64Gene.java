@@ -53,7 +53,7 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-02-14 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-02-15 $</em>
  *
  * @deprecated Use {@link org.jenetics.DoubleGene} instead. This classes
  *             uses the <i>JScience</i> library, which will be removed in the
@@ -366,7 +366,3 @@ public final class Float64Gene
 	}
 
 }
-
-
-
-

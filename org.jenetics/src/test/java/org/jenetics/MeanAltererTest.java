@@ -96,7 +96,3 @@ public class MeanAltererTest {
 		return TestUtils.alterProbabilityParameters();
 	}
 }
-
-
-
-

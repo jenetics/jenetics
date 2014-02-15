@@ -354,4 +354,3 @@ class PackagingPluginExtension {
 		_plugin.doLastPackaging(closure)
 	}
 }
-

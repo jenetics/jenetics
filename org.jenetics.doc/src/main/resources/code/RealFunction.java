@@ -46,4 +46,3 @@ public class RealFunction {
 		System.out.println(ga.getBestStatistics());
 	}
 }
-

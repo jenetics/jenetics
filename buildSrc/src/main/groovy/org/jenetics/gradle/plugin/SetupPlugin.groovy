@@ -215,5 +215,3 @@ class SetupPlugin extends JeneticsPlugin {
 	]
 
 }
-
-

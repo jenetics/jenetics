@@ -363,8 +363,3 @@ public final class EnumGene<A>
 		}
 	}
 }
-
-
-
-
-

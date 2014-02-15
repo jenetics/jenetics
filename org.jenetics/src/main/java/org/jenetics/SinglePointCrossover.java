@@ -52,7 +52,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-08-30 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2014-02-15 $</em>
  */
 public class SinglePointCrossover<G extends Gene<?, G>>
 	extends MultiPointCrossover<G>
@@ -125,4 +125,3 @@ public class SinglePointCrossover<G extends Gene<?, G>>
 	}
 
 }
-

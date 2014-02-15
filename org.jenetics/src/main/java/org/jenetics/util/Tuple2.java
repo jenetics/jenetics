@@ -26,7 +26,7 @@ import static org.jenetics.util.object.hashCodeOf;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-08-29 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-02-15 $</em>
  */
 class Tuple2<T1, T2> {
 
@@ -62,5 +62,3 @@ class Tuple2<T1, T2> {
 	}
 
 }
-
-

@@ -34,7 +34,7 @@ import javax.measure.unit.SI;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.3 &mdash; <em>$Date: 2014-01-31 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2014-02-15 $</em>
  */
 public final class object extends StaticObject {
 	private object() {}
@@ -517,5 +517,3 @@ public final class object extends StaticObject {
 	}
 
 }
-
-

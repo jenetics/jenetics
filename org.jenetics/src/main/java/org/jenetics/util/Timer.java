@@ -40,7 +40,7 @@ import javolution.lang.Reusable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-09-01 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-02-15 $</em>
  */
 public final class Timer
 	implements
@@ -232,6 +232,3 @@ public final class Timer
 	}
 
 }
-
-
-

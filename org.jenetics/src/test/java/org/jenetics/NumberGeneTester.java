@@ -26,7 +26,7 @@ import org.jscience.mathematics.number.Number;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-14 $</em>
+ * @version <em>$Date: 2014-02-15 $</em>
  */
 @SuppressWarnings("deprecation")
 public abstract class NumberGeneTester<N extends Number<N>, G extends NumberGene<N,G>>
@@ -182,8 +182,3 @@ public abstract class NumberGeneTester<N extends Number<N>, G extends NumberGene
 	}
 
 }
-
-
-
-
-

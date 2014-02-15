@@ -21,7 +21,7 @@ package org.jenetics;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-11 $</em>
+ * @version <em>$Date: 2014-02-15 $</em>
  */
 public class MutatorTest extends MutatorTestBase {
 
@@ -31,7 +31,3 @@ public class MutatorTest extends MutatorTestBase {
 	}
 
 }
-
-
-
-
