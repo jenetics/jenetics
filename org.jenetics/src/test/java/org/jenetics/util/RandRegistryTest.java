@@ -26,8 +26,8 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-01-31 $</em>
- * @since @__version__@
+ * @version 1.6 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @since 1.6
  */
 public class RandRegistryTest {
 

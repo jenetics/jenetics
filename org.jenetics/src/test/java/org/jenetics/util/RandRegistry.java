@@ -84,7 +84,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date$</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-02-15 $</em>
  */
 public final class RandRegistry extends StaticObject {
 	private RandRegistry() {}
