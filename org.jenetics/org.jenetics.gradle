@@ -40,7 +40,6 @@ dependencies {
 	compile Include.JScience
 
 	testCompile Include.Apache.Commons.Math
-    testCompile Include.Jettison
 	testCompile Include.TestNG
 }
 
