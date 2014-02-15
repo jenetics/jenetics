@@ -18,13 +18,12 @@
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 
-import java.text.SimpleDateFormat
-import org.apache.tools.ant.filters.ReplaceTokens
 
 import org.jenetics.gradle.PropertiesLoader
 import org.jenetics.gradle.Version
 import org.jenetics.gradle.plugin.SetupPlugin
-import org.jenetics.gradle.task.ChecksumTask
+
+import java.text.SimpleDateFormat
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

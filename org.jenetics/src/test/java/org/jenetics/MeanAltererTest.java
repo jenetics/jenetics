@@ -27,8 +27,6 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.NormalDistribution;
 import org.jenetics.stat.Variance;
@@ -36,7 +34,7 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-14 $</em>
+ * @version <em>$Date: 2014-02-15 $</em>
  */
 public class MeanAltererTest {
 

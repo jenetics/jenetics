@@ -25,13 +25,11 @@ import java.util.LinkedList;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.util.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-14 $</em>
+ * @version <em>$Date: 2014-02-15 $</em>
  */
 public class terminationTest {
 

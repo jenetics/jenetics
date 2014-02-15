@@ -19,8 +19,6 @@
  */
 package org.jenetics;
 
-import java.util.Comparator;
-
 /**
  * Abstract base class for implementing concrete NumericGenes.
  *
