@@ -70,7 +70,7 @@ import javolution.lang.Reference;
  *         final GeneticAlgorithm<Float64Gene, Float64> ga = ...
  *         final LCG64ShiftRandom random = new LCG64ShiftRandom(1234)
  *
- *         try (Scoped<Random> scope = RandomRegistry.with(random) {
+ *         try (Scoped<Random> scope = RandomRegistry.scope(random) {
  *             // Easy access the random engine of the opened scope.
  *             assert(scope.get() == random);
  *
@@ -161,7 +161,7 @@ public final class RandomRegistry extends StaticObject {
 	 * @param random the PRNG used for the opened scope.
 	 * @return the scope with the given random object.
 	 */
-	public static <R extends Random> Scoped<R> with(final R random) {
+	public static <R extends Random> Scoped<R> scope(final R random) {
 		LocalContext.enter();
 		setRandom(random);
 		return new Scope<>(Thread.currentThread(), random);

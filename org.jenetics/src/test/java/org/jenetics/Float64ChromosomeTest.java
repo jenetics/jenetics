@@ -53,7 +53,7 @@ public class Float64ChromosomeTest
 
 	@Test(invocationCount = 20, successPercentage = 95)
     public void newInstanceDistribution() {
-		try (Scoped<Random> s = RandomRegistry.with(new Random(12345))) {
+		try (Scoped<Random> s = RandomRegistry.scope(new Random(12345))) {
 			final Float64 min = Float64.ZERO;
 			final Float64 max = Float64.valueOf(100);
 

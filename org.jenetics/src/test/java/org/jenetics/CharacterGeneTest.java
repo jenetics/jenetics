@@ -39,7 +39,7 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-17 $</em>
+ * @version <em>$Date: 2014-02-15 $</em>
  */
 public class CharacterGeneTest extends GeneTester<CharacterGene> {
 
@@ -50,7 +50,7 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstanceDistribution() {
-		try (Scoped<Random> s = RandomRegistry.with(new Random(12345))) {
+		try (Scoped<Random> s = RandomRegistry.scope(new Random(12345))) {
 			final CharSeq characters = new CharSeq("0123456789");
 
 			final Factory<CharacterGene> factory = CharacterGene.valueOf(characters);
