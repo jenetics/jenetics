@@ -20,7 +20,7 @@
  # Author:
  #    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  #
- # Version: <em>$Date: 2014-02-14 $</em>
+ # Version: <em>$Date: 2014-02-15 $</em>
  #
  ###############################################################################
 -->
@@ -309,11 +309,6 @@
 		<classes>
 			<class name="org.jenetics.util.mathRandomTest" />
 			<class name="org.jenetics.util.mathTest" />
-		</classes>
-	</test>
-	<test name="org.jenetics.util.MurmurHashCodeBuilder">
-		<classes>
-			<class name="org.jenetics.util.MurmurHashCodeBuilderTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.util.Random">
