@@ -53,7 +53,7 @@ public class Integer64ChromosomeTest
 
 	@Test(invocationCount = 20, successPercentage = 95)
     public void newInstanceDistribution() {
-		try (Scoped<Random> s = RandomRegistry.with(new Random(12345))) {
+		try (Scoped<Random> s = RandomRegistry.scope(new Random(12345))) {
 			final Integer64 min = Integer64.ZERO;
 			final Integer64 max = Integer64.valueOf(10000000);
 

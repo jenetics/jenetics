@@ -72,7 +72,7 @@ public class SinglePointCrossoverTest {
 		final ISeq<CharacterGene> g2 = new CharacterChromosome(chars, 20).toSeq();
 
 		int rv = 12;
-		try (Scoped<?> s = RandomRegistry.with(new ConstRandom(rv))) {
+		try (Scoped<?> s = RandomRegistry.scope(new ConstRandom(rv))) {
 			final SinglePointCrossover<CharacterGene>
 			crossover = new SinglePointCrossover<>();
 
@@ -86,7 +86,7 @@ public class SinglePointCrossoverTest {
 			Assert.assertNotEquals(g2c, g1);
 
 			rv = 0;
-			try (Scoped<?> s2 = RandomRegistry.with(new ConstRandom(rv))) {
+			try (Scoped<?> s2 = RandomRegistry.scope(new ConstRandom(rv))) {
 				g1c = g1.copy();
 				g2c = g2.copy();
 				crossover.crossover(g1c, g2c);
@@ -96,7 +96,7 @@ public class SinglePointCrossoverTest {
 				Assert.assertEquals(g1c.subSeq(rv), g2.subSeq(rv));
 
 				rv = 1;
-				try (Scoped<?> s3 = RandomRegistry.with(new ConstRandom(rv))) {
+				try (Scoped<?> s3 = RandomRegistry.scope(new ConstRandom(rv))) {
 					g1c = g1.copy();
 					g2c = g2.copy();
 					crossover.crossover(g1c, g2c);
@@ -104,7 +104,7 @@ public class SinglePointCrossoverTest {
 					Assert.assertEquals(g1c.subSeq(rv), g2.subSeq(rv));
 
 					rv = g1.length();
-					try (Scoped<?> s4 = RandomRegistry.with(new ConstRandom(rv))) {
+					try (Scoped<?> s4 = RandomRegistry.scope(new ConstRandom(rv))) {
 						g1c = g1.copy();
 						g2c = g2.copy();
 						crossover.crossover(g1c, g2c);

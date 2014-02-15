@@ -45,7 +45,7 @@ public abstract class ObjectTester<T> {
 
 		for (int i = 0; i < nobjects; ++i) {
 
-			try (Scoped<Random> s = RandomRegistry.with(new Random(23487589))) {
+			try (Scoped<Random> s = RandomRegistry.scope(new Random(23487589))) {
 				objects.set(i, getFactory().newInstance());
 			}
 		}

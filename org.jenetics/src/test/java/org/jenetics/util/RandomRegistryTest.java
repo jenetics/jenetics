@@ -65,9 +65,9 @@ public class RandomRegistryTest {
 		final Random random = RandomRegistry.getRandom();
 
 		final Random random1 = new Random();
-		try (Scoped<Random> s = RandomRegistry.with(random1)) {
+		try (Scoped<Random> s = RandomRegistry.scope(random1)) {
 			final Random random2 = new Random();
-			try (Scoped<Random> s2 = RandomRegistry.with(random2)) {
+			try (Scoped<Random> s2 = RandomRegistry.scope(random2)) {
 				Assert.assertSame(RandomRegistry.getRandom(), random2);
 			}
 
@@ -89,7 +89,7 @@ public class RandomRegistryTest {
 	private static final class ContextRunnable implements Runnable {
 		@Override
 		public void run() {
-			try (Scoped<Random> c = RandomRegistry.with(new Random())) {
+			try (Scoped<Random> c = RandomRegistry.scope(new Random())) {
 				try {
 					Thread.sleep(1);
 				} catch (InterruptedException e) {
@@ -98,7 +98,7 @@ public class RandomRegistryTest {
 				Assert.assertSame(c.get(), RandomRegistry.getRandom());
 
 				final Random random2 = new Random();
-				try (Scoped<Random> c2 = RandomRegistry.with(random2)) {
+				try (Scoped<Random> c2 = RandomRegistry.scope(random2)) {
 					Assert.assertSame(RandomRegistry.getRandom(), random2);
 					Assert.assertSame(c2.get(), random2);
 
@@ -107,7 +107,7 @@ public class RandomRegistryTest {
 					Assert.assertSame(RandomRegistry.getRandom(), random2_2);
 
 					final Random random3 = new Random();
-					try (Scoped<Random> c3 = RandomRegistry.with(random3)) {
+					try (Scoped<Random> c3 = RandomRegistry.scope(random3)) {
 						Assert.assertSame(RandomRegistry.getRandom(), random3);
 						Assert.assertSame(c3.get(), random3);
 					}

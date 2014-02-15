@@ -57,7 +57,7 @@ public class GeneticAlgorithmTest {
 	@Test
 	public void optimize() {
 		final int concurrency = ConcurrentContext.getConcurrency();
-		try (Scoped<Random> scope = RandomRegistry.with(new Random(12345))) {
+		try (Scoped<Random> scope = RandomRegistry.scope(new Random(12345))) {
 			ConcurrentContext.setConcurrency(0);
 			RandomRegistry.setRandom(new Random(123456));
 

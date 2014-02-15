@@ -40,7 +40,7 @@ public class NumberStatisticsBuilderTest extends StatisticsBuilderTest {
 	@Override
 	@DataProvider(name = "properties")
 	public Object[][] builderProperties() {
-		try (Scoped<Random> s= RandomRegistry.with(new Random(12345678))) {
+		try (Scoped<Random> s= RandomRegistry.scope(new Random(12345678))) {
 			return new Object[][] {
 				{"generation", Integer.TYPE, s.get().nextInt(1000)},
 				{"invalid", Integer.TYPE, s.get().nextInt(1000)},
