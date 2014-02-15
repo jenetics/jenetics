@@ -28,10 +28,10 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import javolution.context.LocalContext;
 import javolution.lang.Immutable;
 import javolution.lang.Reflection;
 import javolution.lang.Reflection.Method;
+import javolution.xml.XMLSerializable;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -45,12 +45,9 @@ public abstract class ObjectTester<T> {
 		final Array<T> objects = new Array<>(nobjects);
 
 		for (int i = 0; i < nobjects; ++i) {
-			LocalContext.enter();
-			try {
-				RandomRegistry.setRandom(new Random(23487589));
+
+			try (Scoped<Random> s = RandomRegistry.with(new Random(23487589))) {
 				objects.set(i, getFactory().newInstance());
-			} finally {
-				LocalContext.exit();
 			}
 		}
 

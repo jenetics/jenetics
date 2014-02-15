@@ -4985,15 +4985,7 @@ Random!Registry
 .
  This makes it possible to change the implementation of the random engine
  without changing the client code.
- In interaction with the 
-\family typewriter
-LocalContext
-\family default
- class from the 
-\emph on
-Javolution
-\emph default
- project, the random engine
+ The random engine
 \begin_inset Index idx
 status collapsed
 
@@ -5015,9 +5007,9 @@ Random
  object.
  When entering the 
 \family typewriter
-LocalContext
+Scoped<Random>
 \family default
-, changes to the 
+ context, changes to the 
 \family typewriter
 RandomRegistry
 \family default
@@ -5061,27 +5053,7 @@ List<Genotype<DoubleGene>> genotypes = new ArrayList<>();
 
 \begin_layout Plain Layout
 
-LocalContext.enter();
-\end_layout
-
-\begin_layout Plain Layout
-
-try {
-\end_layout
-
-\begin_layout Plain Layout
-
-    RandomRegistry.setRandom(
-\end_layout
-
-\begin_layout Plain Layout
-
-        new LCG64ShiftRandom.ThreadSafe(12345)
-\end_layout
-
-\begin_layout Plain Layout
-
-    );
+try (Scoped<Random> s = RandomRegistry.with(new Random(123)) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -5097,16 +5069,6 @@ try {
 \begin_layout Plain Layout
 
     }
-\end_layout
-
-\begin_layout Plain Layout
-
-} finally {
-\end_layout
-
-\begin_layout Plain Layout
-
-    LocalContext.exit();
 \end_layout
 
 \begin_layout Plain Layout
@@ -5493,7 +5455,7 @@ Block splitting
 \end_layout
 
 \begin_layout Standard
-With this method esach thread will be assigned a block of random numbers,
+With this method each thread will be assigned a block of random numbers,
  which should be enough for the whole runtime of the process.
  This strategy is used when using the 
 \family typewriter
