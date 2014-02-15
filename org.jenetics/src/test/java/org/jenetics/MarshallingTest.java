@@ -112,7 +112,6 @@ public class MarshallingTest {
 			RESOURCE_PATTERN, object.getName(), marshalling.name
 		);
 
-		System.out.println(resource);
 		try (InputStream in = getClass().getResourceAsStream(resource)) {
 			final Object o = marshalling.io.read(in);
 
