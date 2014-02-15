@@ -379,6 +379,14 @@ Beside the Java coding standards as given in <http://www.oracle.com/technetwork/
 - Variable name for arrays or collections are plural.
 - All helper classes which only contains static methods are lower-case. This  indicates that the given class can not be used as type, because no instance can be created.
 
+## Release notes
+
+### 1.6.0
+
+* Preparation work for removing the dependency to the JScience library.
+    ** Add Double/Integer Gene/Chromosome as a replacement for Float64/Integer64 Gene/Chromosome.
+    ** Add JAXB XML serialization as a replacement of the Javolution XML marshalling.
+
 ## License
 
 The library is licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
