@@ -634,12 +634,6 @@ public class PersistentObject<T> {
 
 	@SuppressWarnings("deprecation")
 	public static void main(final String[] args) throws Exception {
-		//IO.jaxb.write(nextGenotypeFloat64Gene(), System.out);
-		//System.out.println();
-		//JSONIO.jettison.write(nextGenotypeLongGene(), System.out);
-		//IO.jaxb.write(nextDoubleGene(), System.out);
-		//IO.object.write(nextLongGene(), System.out);
-
 		write();
 	}
 
