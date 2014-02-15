@@ -31,7 +31,6 @@ import org.testng.annotations.Test;
 import javolution.lang.Immutable;
 import javolution.lang.Reflection;
 import javolution.lang.Reflection.Method;
-import javolution.xml.XMLSerializable;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
