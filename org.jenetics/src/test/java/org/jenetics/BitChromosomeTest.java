@@ -34,10 +34,6 @@ import org.testng.annotations.Test;
 import org.jscience.mathematics.number.LargeInteger;
 
 import org.jenetics.util.Factory;
-import org.jenetics.util.IO;
-import org.jenetics.util.LCG64ShiftRandom;
-import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Scoped;
 import org.jenetics.util.bit;
 
 /**
