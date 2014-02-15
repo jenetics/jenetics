@@ -40,7 +40,7 @@ import org.gradle.api.plugins.ExtraPropertiesExtension;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date: 2013-09-01 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2014-02-15 $</em>
  */
 public final class PropertiesLoader {
 
@@ -110,5 +110,3 @@ public final class PropertiesLoader {
 	}
 
 }
-
-

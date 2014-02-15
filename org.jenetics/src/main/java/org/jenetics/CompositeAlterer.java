@@ -40,7 +40,7 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-09-02 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2014-02-15 $</em>
  */
 public final class CompositeAlterer<G extends Gene<?, G>>
 	extends AbstractAlterer<G>
@@ -187,10 +187,3 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 		return CompositeAlterer.valueOf(a1, a2);
 	}
 }
-
-
-
-
-
-
-

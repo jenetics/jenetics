@@ -18,18 +18,18 @@
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 
-import java.text.SimpleDateFormat
-import org.apache.tools.ant.filters.ReplaceTokens
 
 import org.jenetics.gradle.PropertiesLoader
 import org.jenetics.gradle.Version
 import org.jenetics.gradle.plugin.SetupPlugin
-import org.jenetics.gradle.task.ChecksumTask
+import org.jenetics.gradle.task.TrimLineFeedTask
+
+import java.text.SimpleDateFormat
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.5 &mdash; <em>$Date: 2013-12-26 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-02-15 $</em>
  */
 new PropertiesLoader(ext).load(file('project.properties'))
 new PropertiesLoader(ext).load(file('include.properties'))
@@ -73,6 +73,13 @@ allprojects { Project prj ->
 
 task wrapper(type: Wrapper) {
 	gradleVersion = '1.10'
+}
+
+task trimLineFeed(type: TrimLineFeedTask) {
+    directory = project.rootDir
+    outputs.upToDateWhen {
+        false
+    }
 }
 
 task alljavadoc(type: Javadoc) {

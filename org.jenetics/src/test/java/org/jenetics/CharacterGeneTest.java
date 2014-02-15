@@ -30,6 +30,8 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import javolution.context.LocalContext;
+
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.UniformDistribution;
 import org.jenetics.util.CharSeq;
@@ -39,7 +41,7 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-04 $</em>
+ * @version <em>$Date: 2014-02-15 $</em>
  */
 public class CharacterGeneTest extends GeneTester<CharacterGene> {
 
@@ -118,7 +120,3 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
     }
 
 }
-
-
-
-

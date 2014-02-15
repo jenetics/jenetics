@@ -42,7 +42,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-08-30 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-02-15 $</em>
  */
 public class TournamentSelector<
 	G extends Gene<?, G>,
@@ -192,8 +192,3 @@ public class TournamentSelector<
 	}
 
 }
-
-
-
-
-

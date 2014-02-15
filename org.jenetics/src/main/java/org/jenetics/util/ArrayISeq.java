@@ -24,7 +24,7 @@ import static java.util.Objects.requireNonNull;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-08-30 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-02-15 $</em>
  */
 class ArrayISeq<T> extends ArraySeq<T> implements ISeq<T> {
 	private static final long serialVersionUID = 1L;
@@ -74,4 +74,3 @@ class ArrayISeq<T> extends ArraySeq<T> implements ISeq<T> {
 	}
 
 }
-

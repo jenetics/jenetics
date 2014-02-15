@@ -19,18 +19,16 @@
  */
 package org.jenetics;
 
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.NumberStatistics.Calculator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-08-29 $</em>
+ * @version <em>$Date: 2014-02-11 $</em>
  */
 public class NumberStatisticsCalculatorTest extends StatisticsCalculatorTest {
 
 	@Override
-	public Calculator<Float64Gene, Float64> newCalculator() {
+	public Calculator<DoubleGene, Double> newCalculator() {
 		return new Calculator<>();
 	}
 

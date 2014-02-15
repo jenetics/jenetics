@@ -1,4 +1,4 @@
-# Jenetics
+# Jenetics (_1.6.0_)
 
 
 Jenetics is an Genetic Algorithm, respectively an Evolutionary Algorithm, library written in Java. It is designed with a clear separation of the several  algorithm concepts, e. g. `Gene`, `Chromosome`, `Genotype`, `Phenotype`, `Population` and  fitness `Function`. Jenetics allows you to minimize or maximize the given fitness  function without tweaking it.
@@ -153,8 +153,6 @@ The given example will print the overall timing statistics onto the console.
 
 In the [knapsack problem](http://en.wikipedia.org/wiki/Knapsack_problem) a set of items, together with their size and value, is given. The task is to select a disjoint subset so that the total size does not exeed the knapsacks size. For the 0/1 knapsack problem we define a `BitChromosome`, one bit for each item. If the ith `BitGene` is set to one the ith item is selected.
 
-	import org.jscience.mathematics.number.Float64;
-
 	import org.jenetics.BitChromosome;
 	import org.jenetics.BitGene;
 	import org.jenetics.Chromosome;
@@ -173,7 +171,7 @@ In the [knapsack problem](http://en.wikipedia.org/wiki/Knapsack_problem) a set o
 	}
 
 	final class KnappsackFunction
-		implements Function<Genotype<BitGene>, Float64>
+		implements Function<Genotype<BitGene>, Double>
 	{
 		private final Item[] _items;
 		private final double _size;
@@ -188,7 +186,7 @@ In the [knapsack problem](http://en.wikipedia.org/wiki/Knapsack_problem) a set o
 		}
 
 		@Override
-		public Float64 apply(final Genotype<BitGene> genotype) {
+		public Double apply(final Genotype<BitGene> genotype) {
 			final Chromosome<BitGene> ch = genotype.getChromosome();
 
 			double size = 0;
@@ -199,12 +197,8 @@ In the [knapsack problem](http://en.wikipedia.org/wiki/Knapsack_problem) a set o
 					value += _items[i].value;
 				}
 			}
-
-			if (size > _size) {
-				return Float64.ZERO;
-			} else {
-				return Float64.valueOf(value);
-			}
+			
+			return size > _size ? 0 : value;
 		}
 	}
 
@@ -227,16 +221,16 @@ In the [knapsack problem](http://en.wikipedia.org/wiki/Knapsack_problem) a set o
 				new BitChromosome(15, 0.5)
 			);
 
-			final GeneticAlgorithm<BitGene, Float64> ga =
+			final GeneticAlgorithm<BitGene, Double> ga =
 				new GeneticAlgorithm<>(genotype, ff);
 
 			ga.setMaximalPhenotypeAge(30);
 			ga.setPopulationSize(100);
 			ga.setStatisticsCalculator(
-				new NumberStatistics.Calculator<BitGene, Float64>()
+				new NumberStatistics.Calculator<BitGene, Double>()
 			);
 			ga.setSelectors(
-				new RouletteWheelSelector<BitGene, Float64>()
+				new RouletteWheelSelector<BitGene, Double>()
 			);
 			ga.setAlterers(
 				new Mutator<BitGene>(0.115),
@@ -292,14 +286,14 @@ The Traveling Salesman problem is a very good example which shows you how to sol
 	import org.jenetics.util.Function;
 
 	class FF
-		implements Function<Genotype<EnumGene<Integer>>, Float64>
+		implements Function<Genotype<EnumGene<Integer>>, Double>
 	{
 		private final double[][] _adjacence;
 		public FF(final double[][] adjacence) {
 			_adjacence = adjacence;
 		}
 		@Override
-		public Float64 apply(Genotype<EnumGene<Integer>> genotype) {
+		public Double apply(Genotype<EnumGene<Integer>> genotype) {
 			final Chromosome<EnumGene<Integer>> path =
 				genotype.getChromosome();
 
@@ -309,7 +303,7 @@ The Traveling Salesman problem is a very good example which shows you how to sol
 				final int to = path.getGene((i + 1)%n).getAllele();
 				length += _adjacence[from][to];
 			}
-			return Float64.valueOf(length);
+			return length;
 		}
 	}
 
@@ -318,15 +312,15 @@ The Traveling Salesman problem is a very good example which shows you how to sol
 		public static void main(String[] args) {
 			final int stops = 20;
 
-			final Function<Genotype<EnumGene<Integer>>, Float64> ff =
+			final Function<Genotype<EnumGene<Integer>>, Double> ff =
 				new FF(adjacencyMatrix(stops));
 			final Factory<Genotype<EnumGene<Integer>>> gt = Genotype.valueOf(
 				PermutationChromosome.ofInteger(stops)
 			);
-			final GeneticAlgorithm<EnumGene<Integer>, Float64>
+			final GeneticAlgorithm<EnumGene<Integer>, Double>
 				ga = new GeneticAlgorithm<>(gt, ff, Optimize.MINIMUM);
 			ga.setStatisticsCalculator(
-				new Calculator<EnumGene<Integer>, Float64>()
+				new Calculator<EnumGene<Integer>, Double>()
 			);
 			ga.setPopulationSize(300);
 			ga.setAlterers(
@@ -385,11 +379,19 @@ Beside the Java coding standards as given in <http://www.oracle.com/technetwork/
 - Variable name for arrays or collections are plural.
 - All helper classes which only contains static methods are lower-case. This  indicates that the given class can not be used as type, because no instance can be created.
 
+## Release notes
+
+### 1.6.0
+
+* Preparation work for removing the dependency to the JScience library.
+    * Add Double/Integer Gene/Chromosome as a replacement for Float64/Integer64 Gene/Chromosome.
+    * Add JAXB XML serialization as a replacement of the Javolution XML marshalling.
+
 ## License
 
 The library is licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
 
-	Copyright 2007-2013 Franz Wilhelmstötter
+	Copyright 2007-2014 Franz Wilhelmstötter
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.

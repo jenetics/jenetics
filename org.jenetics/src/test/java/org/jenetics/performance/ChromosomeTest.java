@@ -19,11 +19,11 @@
  */
 package org.jenetics.performance;
 
-import org.jenetics.Float64Chromosome;
+import org.jenetics.DoubleChromosome;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-08-29 $</em>
+ * @version <em>$Date: 2014-02-11 $</em>
  */
 @Suite("Chromosome")
 public class ChromosomeTest {
@@ -37,8 +37,8 @@ public class ChromosomeTest {
 
 	@Test(1)
 	public TestCase newInstance = new TestCase("newInstance()", LOOPS, SIZE) {
-		private final Float64Chromosome
-		_chromosome = new Float64Chromosome(0, 1, getSize());
+		private final DoubleChromosome
+		_chromosome = DoubleChromosome.of(0, 1, getSize());
 
 		@Override
 		protected void test() {
@@ -48,8 +48,8 @@ public class ChromosomeTest {
 
 	@Test(2)
 	public TestCase newInstnaceISeq = new TestCase("newInstance(ISeq)", LOOPS, SIZE) {
-		private final Float64Chromosome
-		_chromosome = new Float64Chromosome(0, 1, getSize());
+		private final DoubleChromosome
+		_chromosome = DoubleChromosome.of(0, 1, getSize());
 
 		@Override
 		protected void test() {
@@ -59,11 +59,11 @@ public class ChromosomeTest {
 
 	@Test(3)
 	public TestCase isValid = new TestCase("isValid()", LOOPS, SIZE) {
-		private Float64Chromosome _chromosome = new Float64Chromosome(0, 1, getSize());
+		private DoubleChromosome _chromosome = DoubleChromosome.of(0, 1, getSize());
 
 		@Override
 		protected void beforeTest() {
-			_chromosome = new Float64Chromosome(0, 1, getSize());
+			_chromosome = DoubleChromosome.of(0, 1, getSize());
 		}
 
 		@Override

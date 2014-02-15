@@ -35,7 +35,7 @@ import javolution.xml.XMLSerializable;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-05 $</em>
+ * @version <em>$Date: 2014-02-15 $</em>
  */
 public abstract class ObjectTester<T> {
 
@@ -159,7 +159,7 @@ public abstract class ObjectTester<T> {
 		if (a instanceof Copyable<?>) {
 			final Object b = ((Copyable<?>)a).copy();
 			if (a.getClass() == b.getClass()) {
-				Assert.assertFalse(a instanceof Copyable<?> && a instanceof Immutable);
+				Assert.assertFalse(a instanceof Immutable);
 			}
 		}
 
@@ -168,21 +168,6 @@ public abstract class ObjectTester<T> {
 			final BeanInfo info = Introspector.getBeanInfo(a.getClass());
 			for (PropertyDescriptor prop : info.getPropertyDescriptors()) {
 				Assert.assertNull(prop.getWriteMethod());
-			}
-		}
-	}
-
-
-	@Test
-	public void xmlSerialize() throws Exception {
-		final Object object = getFactory().newInstance();
-
-		if (object instanceof XMLSerializable) {
-			for (int i = 0; i < 10; ++i) {
-				final XMLSerializable serializable =
-					(XMLSerializable)getFactory().newInstance();
-
-				Serialize.xml.test(serializable);
 			}
 		}
 	}
@@ -202,10 +187,3 @@ public abstract class ObjectTester<T> {
 	}
 
 }
-
-
-
-
-
-
-

@@ -19,7 +19,6 @@
  */
 package org.jenetics;
 
-import org.jscience.mathematics.number.Float64;
 import org.testng.annotations.Test;
 
 import org.jenetics.stat.Distribution;
@@ -28,23 +27,23 @@ import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-01 $</em>
+ * @version <em>$Date: 2014-02-14 $</em>
  */
 public class MonteCarloSelectorTest
-	extends SelectorTester<MonteCarloSelector<Float64Gene, Float64>>
+	extends SelectorTester<MonteCarloSelector<DoubleGene, Double>>
 {
 
-	final Factory<MonteCarloSelector<Float64Gene, Float64>>
-	_factory = new Factory<MonteCarloSelector<Float64Gene,Float64>>()
+	final Factory<MonteCarloSelector<DoubleGene, Double>>
+	_factory = new Factory<MonteCarloSelector<DoubleGene,Double>>()
 	{
 		@Override
-		public MonteCarloSelector<Float64Gene, Float64> newInstance() {
+		public MonteCarloSelector<DoubleGene, Double> newInstance() {
 			return new MonteCarloSelector<>();
 		}
 	};
 
 	@Override
-	protected Factory<MonteCarloSelector<Float64Gene, Float64>> getFactory() {
+	protected Factory<MonteCarloSelector<DoubleGene, Double>> getFactory() {
 		return _factory;
 	}
 
@@ -54,7 +53,7 @@ public class MonteCarloSelectorTest
 	}
 
 	@Override
-	protected Distribution<Float64> getDistribution() {
+	protected Distribution<Double> getDistribution() {
 		return new UniformDistribution<>(getDomain());
 	}
 

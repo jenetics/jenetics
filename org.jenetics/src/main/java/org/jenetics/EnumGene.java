@@ -20,15 +20,30 @@
 package org.jenetics;
 
 import static java.lang.String.format;
+import static org.jenetics.internal.util.jaxb.Unmarshaller;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+
 import javolution.context.ObjectFactory;
+import javolution.xml.XMLFormat;
+import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.internal.util.cast;
+import org.jenetics.internal.util.jaxb;
+import org.jenetics.internal.util.model.ModelType;
+import org.jenetics.internal.util.model.ValueType;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
@@ -64,7 +79,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.5 &mdash; <em>$Date: 2013-12-09 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-02-15 $</em>
  */
 public final class EnumGene<A>
 	implements
@@ -103,6 +118,7 @@ public final class EnumGene<A>
 		return _validAlleles.get(_alleleIndex);
 	}
 
+	@Deprecated
 	@Override
 	public EnumGene<A> copy() {
 		final EnumGene<A> gene = new EnumGene<>();
@@ -216,8 +232,8 @@ public final class EnumGene<A>
 		return valueOf(Array.valueOf(validAlleles).toISeq(), alleleIndex);
 	}
 
-	public static <G> EnumGene<G> valueOf(
-		final ISeq<? extends G> validAlleles,
+	public static <A> EnumGene<A> valueOf(
+		final ISeq<? extends A> validAlleles,
 		final int alleleIndex
 	) {
 		if (validAlleles.length() == 0) {
@@ -233,7 +249,7 @@ public final class EnumGene<A>
 		}
 
 		@SuppressWarnings("unchecked")
-		final EnumGene<G> gene = FACTORY.object();
+		final EnumGene<A> gene = FACTORY.object();
 
 		gene._validAlleles = cast.apply(validAlleles);
 		gene._alleleIndex = alleleIndex;
@@ -258,9 +274,92 @@ public final class EnumGene<A>
 		return gene;
 	}
 
+
+	/* *************************************************************************
+	 *  XML object serialization
+	 * ************************************************************************/
+
+	@SuppressWarnings("rawtypes")
+	static final XMLFormat<EnumGene>
+		XML = new XMLFormat<EnumGene>(EnumGene.class)
+	{
+		private static final String LENGTH = "length";
+		private static final String CURRENT_ALLELE_INDEX = "allele-index";
+
+		@Override
+		public EnumGene newInstance(
+			final Class<EnumGene> cls, final InputElement xml
+		)
+			throws XMLStreamException
+		{
+			final int length = xml.getAttribute(LENGTH, 0);
+			final int index = xml.getAttribute(CURRENT_ALLELE_INDEX, 0);
+			final Array<Object> alleles = new Array<>(length);
+			for (int i = 0; i < length; ++i) {
+				final Object allele = xml.getNext();
+				alleles.set(i, allele);
+			}
+
+			return EnumGene.valueOf(alleles.toISeq(), index);
+		}
+
+		@Override
+		public void write(final EnumGene eg, final OutputElement xml)
+			throws XMLStreamException
+		{
+			xml.setAttribute(LENGTH, eg.getValidAlleles().length());
+			xml.setAttribute(CURRENT_ALLELE_INDEX, eg.getAlleleIndex());
+			for (Object allele : eg.getValidAlleles()) {
+				xml.add(allele);
+			}
+		}
+
+		@Override
+		public void read(final InputElement xml, final EnumGene eg) {
+		}
+	};
+
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
+
+	@XmlRootElement(name = "org.jenetics.EnumGene")
+	@XmlType(name = "org.jenetics.EnumGene")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	final static class Model {
+		@XmlAttribute
+		int length;
+
+		@XmlAttribute(name = "allele-index")
+		int currentAlleleIndex;
+
+		@XmlAnyElement
+		List<Object> alleles;
+
+		@ValueType(EnumGene.class)
+		@ModelType(Model.class)
+		public static final class Adapter
+			extends XmlAdapter<Model, EnumGene>
+		{
+			@Override
+			public Model marshal(final EnumGene value) {
+				final Model m = new Model();
+				m.length = value.getValidAlleles().length();
+				m.currentAlleleIndex = value.getAlleleIndex();
+				m.alleles = value.getValidAlleles()
+					.map(jaxb.Marshaller(value.getValidAlleles().get(0))).asList();
+				return m;
+			}
+
+			@Override
+			public EnumGene unmarshal(final Model m) {
+				return EnumGene.valueOf(
+					Array.valueOf(m.alleles).map(Unmarshaller).toISeq(),
+					m.currentAlleleIndex
+				);
+			}
+
+		}
+	}
 }
-
-
-
-
-

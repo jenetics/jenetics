@@ -23,8 +23,6 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.BitSet;
 import java.util.Random;
 
@@ -44,7 +42,7 @@ import org.jenetics.util.bit;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-04 $</em>
+ * @version <em>$Date: 2014-02-15 $</em>
  */
 public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
@@ -246,48 +244,10 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 	}
 
 	@DataProvider(name = "bitCountProbability")
-	public Object[][] getBitcountProbability() {
+	public Object[][] getBitCountProbability() {
 		return new Object[][] {
 			{0.01}, {0.1}, {0.125}, {0.333}, {0.5}, {0.75}, {0.85}, {0.999}
 		};
 	}
 
-	@Test
-	public void objectSerializationCompatibility() throws IOException {
-		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
-		try (Scoped<Random> scope = RandomRegistry.with(random)) {
-			final BitChromosome chromosome = new BitChromosome(5000, 0.5);
-
-			final String resource = "/org/jenetics/BitChromosome.object";
-			try (InputStream in = getClass().getResourceAsStream(resource)) {
-				final Object object = IO.object.read(in);
-
-				Assert.assertEquals(chromosome, object);
-			}
-		}
-	}
-
-	@Test
-	public void xmlSerializationCompatibility() throws IOException {
-		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
-		try (Scoped<Random> scope = RandomRegistry.with(random)) {
-			final BitChromosome chromosome = new BitChromosome(5000, 0.5);
-
-			final String resource = "/org/jenetics/BitChromosome.xml";
-			try (InputStream in = getClass().getResourceAsStream(resource)) {
-				final Object object = IO.xml.read(in);
-
-				Assert.assertEquals(chromosome, object);
-			}
-		}
-	}
-
-
 }
-
-
-
-
-
-
-

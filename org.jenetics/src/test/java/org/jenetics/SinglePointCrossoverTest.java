@@ -19,7 +19,7 @@
  */
 package org.jenetics;
 
-import static org.jenetics.TestUtils.newFloat64GenePopulation;
+import static org.jenetics.TestUtils.newDoubleGenePopulation;
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 
 import java.util.Random;
@@ -27,8 +27,6 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.NormalDistribution;
@@ -42,7 +40,7 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-04 $</em>
+ * @version <em>$Date: 2014-02-15 $</em>
  */
 public class SinglePointCrossoverTest {
 
@@ -127,12 +125,12 @@ public class SinglePointCrossoverTest {
 		final Integer npopulation,
 		final Double p
 	) {
-		final Population<Float64Gene, Float64> population = newFloat64GenePopulation(
+		final Population<DoubleGene, Double> population = newDoubleGenePopulation(
 				ngenes, nchromosomes, npopulation
 			);
 
 		// The mutator to test.
-		final SinglePointCrossover<Float64Gene> crossover = new SinglePointCrossover<>(p);
+		final SinglePointCrossover<DoubleGene> crossover = new SinglePointCrossover<>(p);
 
 		final long nallgenes = ngenes*nchromosomes*npopulation;
 		final long N = 200;
@@ -162,21 +160,3 @@ public class SinglePointCrossoverTest {
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
