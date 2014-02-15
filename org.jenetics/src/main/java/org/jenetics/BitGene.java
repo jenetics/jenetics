@@ -126,8 +126,22 @@ public enum BitGene
 	 *
 	 * @param value the value of the returned {@code BitGene}.
 	 * @return the {@code BitGene} for the given {@code boolean} value.
+	 *
+	 * @deprecated Use {@link #of(boolean)} instead.
 	 */
+	@Deprecated
 	public static BitGene valueOf(final boolean value) {
+		return of(value);
+	}
+
+	/**
+	 * Return the corresponding {@code BitGene} for the given {@code boolean}
+	 * value.
+	 *
+	 * @param value the value of the returned {@code BitGene}.
+	 * @return the {@code BitGene} for the given {@code boolean} value.
+	 */
+	public static BitGene of(final boolean value) {
 		return value ? TRUE : FALSE;
 	}
 
