@@ -51,21 +51,3 @@ public final class PerformanceTests {
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -103,8 +103,3 @@ public class objectTest {
 	}
 
 }
-
-
-
-
-

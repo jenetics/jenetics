@@ -385,9 +385,3 @@ public final class CharacterGene
 	}
 
 }
-
-
-
-
-
-

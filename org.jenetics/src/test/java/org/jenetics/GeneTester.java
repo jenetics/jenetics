@@ -73,6 +73,3 @@ public abstract class GeneTester<G extends Gene<?, G>> extends ObjectTester<G> {
 	}
 
 }
-
-
-

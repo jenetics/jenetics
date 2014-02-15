@@ -82,8 +82,3 @@ public class PopulationTest {
 	}
 
 }
-
-
-
-
-

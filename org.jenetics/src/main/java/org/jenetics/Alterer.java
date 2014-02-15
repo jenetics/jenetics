@@ -62,6 +62,3 @@ public interface Alterer<G extends Gene<?, G>> {
 	);
 
 }
-
-
-

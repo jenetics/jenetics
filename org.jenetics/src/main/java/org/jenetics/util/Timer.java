@@ -232,6 +232,3 @@ public final class Timer
 	}
 
 }
-
-
-

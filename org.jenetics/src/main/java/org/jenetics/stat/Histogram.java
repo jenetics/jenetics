@@ -580,13 +580,3 @@ public class Histogram<C> extends MappedAccumulator<C> {
 	}
 
 }
-
-
-
-
-
-
-
-
-
-

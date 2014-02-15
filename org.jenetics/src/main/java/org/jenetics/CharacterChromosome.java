@@ -382,6 +382,3 @@ public class CharacterChromosome
 		}
 	}
 }
-
-
-

@@ -186,7 +186,3 @@ public class GeneticAlgorithmTest {
 	}
 
 }
-
-
-
-

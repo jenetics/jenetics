@@ -76,8 +76,3 @@ public interface ISeq<T>
 	public MSeq<T> copy();
 
 }
-
-
-
-
-

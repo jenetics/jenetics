@@ -187,10 +187,3 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 		return CompositeAlterer.valueOf(a1, a2);
 	}
 }
-
-
-
-
-
-
-

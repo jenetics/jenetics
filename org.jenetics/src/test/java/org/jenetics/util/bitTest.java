@@ -526,10 +526,3 @@ public class bitTest {
 	}
 
 }
-
-
-
-
-
-
-

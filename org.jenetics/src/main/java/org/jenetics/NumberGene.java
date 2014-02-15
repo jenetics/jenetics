@@ -251,9 +251,3 @@ public abstract class NumberGene<
 	}
 
 }
-
-
-
-
-
-

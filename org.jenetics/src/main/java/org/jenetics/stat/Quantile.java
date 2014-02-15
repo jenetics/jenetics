@@ -327,5 +327,3 @@ public class Quantile<N extends Number> extends MappedAccumulator<N> {
 	}
 
 }
-
-

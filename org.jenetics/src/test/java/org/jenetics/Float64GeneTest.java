@@ -192,10 +192,3 @@ public class Float64GeneTest extends NumberGeneTester<Float64, Float64Gene> {
     }
 
 }
-
-
-
-
-
-
-

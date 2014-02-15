@@ -158,8 +158,3 @@ public class GenotypeTest extends ObjectTester<Genotype<DoubleGene>> {
 	}
 
 }
-
-
-
-
-

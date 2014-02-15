@@ -114,9 +114,3 @@ public class Float64ChromosomeTest
 	}
 
 }
-
-
-
-
-
-

@@ -121,5 +121,3 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 	}
 
 }
-
-

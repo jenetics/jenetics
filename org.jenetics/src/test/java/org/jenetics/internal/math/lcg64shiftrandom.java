@@ -35,10 +35,3 @@ public class lcg64shiftrandom extends StaticObject {
 
 
 }
-
-
-
-
-
-
-

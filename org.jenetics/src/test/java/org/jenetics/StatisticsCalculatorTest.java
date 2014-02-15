@@ -100,9 +100,3 @@ public class StatisticsCalculatorTest {
 	}
 
 }
-
-
-
-
-
-

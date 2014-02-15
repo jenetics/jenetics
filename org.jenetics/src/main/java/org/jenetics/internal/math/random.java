@@ -72,5 +72,3 @@ public final class random extends StaticObject {
 	}
 
 }
-
-

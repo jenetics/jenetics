@@ -154,8 +154,3 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 	}
 
 }
-
-
-
-
-

@@ -59,4 +59,3 @@ public class PermutationChromosomeFloat64Test
 	}
 
 }
-

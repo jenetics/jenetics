@@ -129,8 +129,3 @@ public class LongGeneTest extends NumericGeneTester<Long, LongGene> {
 	}
 
 }
-
-
-
-
-

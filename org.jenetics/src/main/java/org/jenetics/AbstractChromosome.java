@@ -200,7 +200,3 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	}
 
 }
-
-
-
-

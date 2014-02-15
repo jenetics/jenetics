@@ -196,6 +196,3 @@ public class HistogramTest
 	}
 
 }
-
-
-

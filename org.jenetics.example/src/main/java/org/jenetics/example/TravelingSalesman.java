@@ -118,8 +118,3 @@ public class TravelingSalesman {
 	}
 	private static double RADIUS = 10.0;
 }
-
-
-
-
-

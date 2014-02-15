@@ -100,7 +100,3 @@ public abstract class Crossover<G extends Gene<?, G>> extends Recombinator<G> {
 
 
 }
-
-
-
-

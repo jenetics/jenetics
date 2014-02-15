@@ -314,25 +314,3 @@ public class MultiPointCrossoverTest {
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

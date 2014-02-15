@@ -150,8 +150,3 @@ public class Integer64GeneTest extends NumberGeneTester<Integer64, Integer64Gene
 	}
 
 }
-
-
-
-
-

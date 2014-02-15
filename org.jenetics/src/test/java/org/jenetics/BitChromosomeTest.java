@@ -247,10 +247,3 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 	}
 
 }
-
-
-
-
-
-
-

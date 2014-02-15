@@ -206,6 +206,3 @@ public enum BitGene
 	}
 
 }
-
-
-

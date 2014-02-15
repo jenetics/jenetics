@@ -120,8 +120,3 @@ public final class GaussianMutator<G extends NumberGene<?, G>>
 	}
 
 }
-
-
-
-
-

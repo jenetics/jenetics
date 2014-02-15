@@ -182,8 +182,3 @@ public abstract class NumberGeneTester<N extends Number<N>, G extends NumberGene
 	}
 
 }
-
-
-
-
-

@@ -139,7 +139,3 @@ public final class BoltzmannSelector<
 	}
 
 }
-
-
-
-

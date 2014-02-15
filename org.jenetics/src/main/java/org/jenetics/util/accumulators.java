@@ -628,5 +628,3 @@ public final class accumulators extends StaticObject {
 	}
 
 }
-
-

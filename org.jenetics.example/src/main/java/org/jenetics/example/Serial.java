@@ -73,7 +73,3 @@ public class Serial {
 	}
 
 }
-
-
-
-

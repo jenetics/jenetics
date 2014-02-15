@@ -59,8 +59,3 @@ public class StatisticsTest extends ObjectTester<Statistics<DoubleGene, Double>>
 	}
 
 }
-
-
-
-
-

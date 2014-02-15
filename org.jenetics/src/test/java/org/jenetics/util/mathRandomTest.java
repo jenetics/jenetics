@@ -178,12 +178,3 @@ public class mathRandomTest {
 	}
 
 }
-
-
-
-
-
-
-
-
-

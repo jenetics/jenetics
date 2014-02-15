@@ -112,8 +112,3 @@ public class OptimizeTest {
 	}
 
 }
-
-
-
-
-

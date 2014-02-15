@@ -56,10 +56,3 @@ public class BoltzmannSelectorTest
 	}
 
 }
-
-
-
-
-
-
-

@@ -199,8 +199,3 @@ public class CharSeqTest extends ObjectTester<CharSeq> {
 	}
 
 }
-
-
-
-
-

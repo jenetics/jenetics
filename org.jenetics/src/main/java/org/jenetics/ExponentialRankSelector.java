@@ -132,6 +132,3 @@ public final class ExponentialRankSelector<
 	}
 
 }
-
-
-

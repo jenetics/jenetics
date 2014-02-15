@@ -90,7 +90,3 @@ public class RandomRegistryTest {
 	}
 
 }
-
-
-
-

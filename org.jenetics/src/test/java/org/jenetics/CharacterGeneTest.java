@@ -124,7 +124,3 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
     }
 
 }
-
-
-
-

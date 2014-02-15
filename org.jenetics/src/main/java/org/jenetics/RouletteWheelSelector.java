@@ -102,8 +102,3 @@ public class RouletteWheelSelector<
 	}
 
 }
-
-
-
-
-

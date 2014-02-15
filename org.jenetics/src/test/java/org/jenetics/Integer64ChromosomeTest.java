@@ -113,7 +113,3 @@ public class Integer64ChromosomeTest
 	}
 
 }
-
-
-
-

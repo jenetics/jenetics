@@ -209,6 +209,3 @@ public abstract class HashCodeBuilder {
 	}
 
 }
-
-
-

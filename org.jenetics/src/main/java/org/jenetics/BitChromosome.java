@@ -592,6 +592,3 @@ public class BitChromosome extends Number<BitChromosome>
 	}
 
 }
-
-
-

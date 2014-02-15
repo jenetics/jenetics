@@ -366,7 +366,3 @@ public final class PermutationChromosome<T>
 	}
 
 }
-
-
-
-

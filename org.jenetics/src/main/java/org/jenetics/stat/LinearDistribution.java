@@ -296,8 +296,3 @@ public class LinearDistribution<
 	}
 
 }
-
-
-
-
-

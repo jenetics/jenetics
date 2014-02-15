@@ -734,6 +734,3 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	}
 
 }
-
-
-

@@ -125,4 +125,3 @@ public class SinglePointCrossover<G extends Gene<?, G>>
 	}
 
 }
-

@@ -190,10 +190,3 @@ public abstract class ObjectTester<T> {
 	}
 
 }
-
-
-
-
-
-
-

@@ -197,7 +197,3 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	}
 
 }
-
-
-
-

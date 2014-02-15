@@ -517,5 +517,3 @@ public final class object extends StaticObject {
 	}
 
 }
-
-

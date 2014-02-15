@@ -113,7 +113,3 @@ public final class FinalReference<T> implements Reference<T>, Serializable {
 	}
 
 }
-
-
-
-

@@ -98,7 +98,3 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 	}
 
 }
-
-
-
-

@@ -139,8 +139,3 @@ public class GATest {
 	};
 
 }
-
-
-
-
-
