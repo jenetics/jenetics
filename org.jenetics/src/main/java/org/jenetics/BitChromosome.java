@@ -59,7 +59,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-02-02 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-02-15 $</em>
  */
 @XmlJavaTypeAdapter(BitChromosome.Model.Adapter.class)
 public class BitChromosome extends Number<BitChromosome>
@@ -592,6 +592,3 @@ public class BitChromosome extends Number<BitChromosome>
 	}
 
 }
-
-
-

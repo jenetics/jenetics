@@ -43,7 +43,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.5 &mdash; <em>$Date: 2013-11-27 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-02-15 $</em>
  */
 public abstract class AbstractChromosome<G extends Gene<?, G>>
 	implements
@@ -200,7 +200,3 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	}
 
 }
-
-
-
-

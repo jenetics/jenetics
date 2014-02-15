@@ -54,14 +54,12 @@ import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 import org.jenetics.util.IO;
 import org.jenetics.util.ISeq;
-import org.jenetics.util.JSONIO;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-02-14 $</em>
- * @since 1.6
+ * @version <em>$Date: 2014-02-15 $</em>
  */
 public class PersistentObject<T> {
 
@@ -89,7 +87,6 @@ public class PersistentObject<T> {
 				case "xml": return new Marshalling(name, IO.xml);
 				case "jaxb": return new Marshalling(name, IO.jaxb);
 				case "object": return new Marshalling(name, IO.object);
-				case "json": return new Marshalling(name, JSONIO.jettison);
 				default: throw new IllegalArgumentException(name);
 			}
 		}
@@ -150,7 +147,7 @@ public class PersistentObject<T> {
 		 **********************************************************************/
 
 		final String[] oldIO = {"object", "xml", "jaxb"};
-		final String[] newIO = {"object", "jaxb", "json"};
+		final String[] newIO = {"object", "jaxb"};
 		final String[] minIO = {"object", "jaxb"};
 
 		put("BitGene[true]", BitGene.TRUE, oldIO);
@@ -636,12 +633,6 @@ public class PersistentObject<T> {
 
 	@SuppressWarnings("deprecation")
 	public static void main(final String[] args) throws Exception {
-		//IO.jaxb.write(nextGenotypeFloat64Gene(), System.out);
-		//System.out.println();
-		//JSONIO.jettison.write(nextGenotypeLongGene(), System.out);
-		//IO.jaxb.write(nextDoubleGene(), System.out);
-		//IO.object.write(nextLongGene(), System.out);
-
 		write();
 	}
 

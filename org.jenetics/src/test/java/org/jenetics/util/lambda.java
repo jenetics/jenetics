@@ -26,8 +26,7 @@ import org.jenetics.internal.util.reflect;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-02-02 $</em>
- * @since 1.6
+ * @version <em>$Date: 2014-02-15 $</em>
  */
 public final class lambda extends StaticObject {
 	private lambda() {}

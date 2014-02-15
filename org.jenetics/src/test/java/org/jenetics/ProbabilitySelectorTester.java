@@ -30,14 +30,12 @@ import org.testng.Reporter;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.lists;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-14 $</em>
+ * @version <em>$Date: 2014-02-15 $</em>
  */
 public abstract class ProbabilitySelectorTester<
 	S extends ProbabilitySelector<DoubleGene, Double>

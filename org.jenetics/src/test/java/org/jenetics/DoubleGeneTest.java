@@ -39,8 +39,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-02-10 $</em>
- * @since @__version__@
+ * @version <em>$Date: 2014-02-15 $</em>
  */
 public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 

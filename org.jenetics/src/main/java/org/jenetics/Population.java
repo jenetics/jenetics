@@ -63,7 +63,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-02-02 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-02-15 $</em>
  */
 @XmlJavaTypeAdapter(Population.Model.Adapter.class)
 public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
@@ -483,7 +483,3 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		public static final Adapter Adapter = new Adapter();
 	}
 }
-
-
-
-

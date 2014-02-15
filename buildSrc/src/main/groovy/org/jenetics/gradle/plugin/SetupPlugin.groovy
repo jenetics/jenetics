@@ -19,8 +19,6 @@
  */
 package org.jenetics.gradle.plugin
 
-import java.text.SimpleDateFormat
-
 import org.gradle.api.Project
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaPlugin
@@ -30,13 +28,14 @@ import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.plugins.ide.eclipse.EclipsePlugin
 import org.gradle.plugins.ide.idea.IdeaPlugin
 import org.gradle.testing.jacoco.plugins.JacocoPlugin
-
 import org.jenetics.gradle.task.ColorizerTask
+
+import java.text.SimpleDateFormat
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5 &mdash; <em>$Date: 2014-02-14 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-02-15 $</em>
  */
 class SetupPlugin extends JeneticsPlugin {
 
@@ -216,5 +215,3 @@ class SetupPlugin extends JeneticsPlugin {
 	]
 
 }
-
-

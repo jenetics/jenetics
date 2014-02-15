@@ -34,7 +34,7 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-13 $</em>
+ * @version <em>$Date: 2014-02-15 $</em>
  */
 public class GaussianMutatorTest extends MutatorTestBase {
 
@@ -70,6 +70,3 @@ public class GaussianMutatorTest extends MutatorTestBase {
 	}
 
 }
-
-
-

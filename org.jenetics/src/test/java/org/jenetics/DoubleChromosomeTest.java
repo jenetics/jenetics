@@ -38,8 +38,7 @@ import org.jenetics.util.accumulators.MinMax;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-02-11 $</em>
- * @since @__version__@
+ * @version <em>$Date: 2014-02-15 $</em>
  */
 public class DoubleChromosomeTest
 	extends NumericChromosomeTester<Double, DoubleGene>
@@ -95,4 +94,3 @@ public class DoubleChromosomeTest
 		};
 
 }
-

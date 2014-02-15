@@ -24,8 +24,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-02-12 $</em>
- * @since @__version__@
+ * @version <em>$Date: 2014-02-15 $</em>
  */
 public abstract class NumericChromosomeTester<
 	N extends Number & Comparable<N>,

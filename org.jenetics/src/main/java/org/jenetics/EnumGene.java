@@ -79,7 +79,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-02-14 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-02-15 $</em>
  */
 public final class EnumGene<A>
 	implements
@@ -363,8 +363,3 @@ public final class EnumGene<A>
 		}
 	}
 }
-
-
-
-
-

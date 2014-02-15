@@ -35,7 +35,7 @@ import org.gradle.api.tasks.TaskExecutionException;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-11-19 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2014-02-15 $</em>
  */
 public class Lyx2PDFTask extends DefaultTask {
 
@@ -112,8 +112,3 @@ public class Lyx2PDFTask extends DefaultTask {
 
 
 }
-
-
-
-
-

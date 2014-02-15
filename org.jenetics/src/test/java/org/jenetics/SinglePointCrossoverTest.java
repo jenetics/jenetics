@@ -41,7 +41,7 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-14 $</em>
+ * @version <em>$Date: 2014-02-15 $</em>
  */
 public class SinglePointCrossoverTest {
 
@@ -162,21 +162,3 @@ public class SinglePointCrossoverTest {
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -28,8 +28,8 @@ import org.jenetics.util.ISeq;
  * Abstract chromosome for {@code BoundedGene}s.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-02-13 $</em>
- * @since @__version__@
+ * @version 1.6 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @since 1.6
  */
 public abstract class BoundedChromosome<
 	A extends Comparable<? super A>,

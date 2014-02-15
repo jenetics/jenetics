@@ -39,7 +39,7 @@ import org.jenetics.util.functions;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.0 &mdash; <em>$Date: 2014-02-11 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-02-15 $</em>
  */
 public class Performance {
 
@@ -90,8 +90,3 @@ public class Performance {
 
 
 }
-
-
-
-
-

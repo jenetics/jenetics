@@ -65,7 +65,7 @@ import org.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-12-02 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-02-15 $</em>
  */
 public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 
@@ -197,7 +197,3 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	}
 
 }
-
-
-
-

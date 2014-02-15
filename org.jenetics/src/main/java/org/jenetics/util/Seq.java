@@ -31,7 +31,7 @@ import java.util.List;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.3 &mdash; <em>$Date: 2014-01-05 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2014-02-15 $</em>
  */
 public interface Seq<T> extends Iterable<T> {
 
@@ -465,9 +465,3 @@ public interface Seq<T> extends Iterable<T> {
 	public String toString(final String separator);
 
 }
-
-
-
-
-
-
