@@ -210,7 +210,7 @@ class SetupPlugin extends JeneticsPlugin {
 		'overrides',
 		'rawtypes',
 		'serial',
-		'try',
+		//'try',
 		'unchecked'
 	]
 
