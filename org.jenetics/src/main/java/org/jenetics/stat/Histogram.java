@@ -514,6 +514,7 @@ public class Histogram<C> extends MappedAccumulator<C> {
 	/**
 	 * @deprecated Use {@link #of(Long, Long, int)} instead.
 	 */
+	@Deprecated
 	public static Histogram<Integer64> valueOf(
 		final Integer64 min,
 		final Integer64 max,
@@ -572,6 +573,7 @@ public class Histogram<C> extends MappedAccumulator<C> {
 	/**
 	 * @deprecated Use {@link #of(Long, Long, int)} instead.
 	 */
+	@Deprecated
 	public static Histogram<Long> valueOf(
 		final Long min,
 		final Long max,
