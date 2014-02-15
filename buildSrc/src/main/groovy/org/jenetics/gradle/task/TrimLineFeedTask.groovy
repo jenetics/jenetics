@@ -1,6 +1,5 @@
 package org.jenetics.gradle.task
 
-import groovy.io.FileType
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
@@ -9,8 +8,8 @@ import org.gradle.api.tasks.TaskAction
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since @__version__@
- * @version @__version__@ &mdash; <em>$Date$</em>
+ * @since 1.6
+ * @version 1.6 &mdash; <em>$Date$</em>
  */
 class TrimLineFeedTask extends DefaultTask {
 
@@ -23,12 +22,12 @@ class TrimLineFeedTask extends DefaultTask {
     @Optional
     public String extensions = '.java:.groovy'
 
-    private int fileCount = 0
-    private int trimmedFileCount = 0
-
     @TaskAction
     public void trim() {
-        String[] patterns = extensions.split(':')
+        int fileCount = 0
+        int trimmedFileCount = 0
+
+        final String[] patterns = extensions.split(':')
         directory.eachDirRecurse { dir ->
             dir.eachFile { file ->
                 if (matches(patterns, file.name)) {
