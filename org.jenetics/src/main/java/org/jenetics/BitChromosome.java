@@ -235,14 +235,14 @@ public class BitChromosome extends Number<BitChromosome>
 	public BitGene getGene() {
 		assert (_genes != null);
 		assert (_genes.length > 0);
-		return BitGene.valueOf(bit.get(_genes, 0));
+		return BitGene.of(bit.get(_genes, 0));
 	}
 
 	@Override
 	public BitGene getGene(final int index) {
 		rangeCheck(index);
 		assert(_genes != null);
-		return BitGene.valueOf(bit.get(_genes, index));
+		return BitGene.of(bit.get(_genes, index));
 	}
 
 	@Override
