@@ -44,8 +44,8 @@ import org.jenetics.util.math;
  *
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date$</em>
- * @since @__version__@
+ * @version 1.6 &mdash; <em>$Date$</em>
+ * @since 1.6
  */
 public final class NormalMutator<G extends NumericGene<?, G>>
 	extends Mutator<G>

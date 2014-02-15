@@ -25,8 +25,8 @@ import org.jenetics.util.ISeq;
  * Abstract numeric chromosome.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date$</em>
- * @since @__version__@
+ * @version 1.6 &mdash; <em>$Date$</em>
+ * @since 1.6
  */
 public abstract class NumericChromosome<
 	N extends Number & Comparable<? super N>,
