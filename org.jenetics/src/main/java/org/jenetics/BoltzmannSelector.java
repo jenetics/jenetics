@@ -71,11 +71,11 @@ public final class BoltzmannSelector<
 	private final double _b;
 
 	/**
-	 * Create a new BolzmanSelector with the given <i>b</i> value. <b>High
+	 * Create a new BoltzmanSelector with the given <i>b</i> value. <b>High
 	 * absolute values of <i>b</i> can create numerical overflows while
 	 * calculating the selection probabilities.</b>
 	 *
-	 * @param b the <i>b</i> value of this BolzmanSelector
+	 * @param b the <i>b</i> value of this BoltzmanSelector
 	 */
 	public BoltzmannSelector(final double b) {
 		_b = b;
@@ -139,7 +139,3 @@ public final class BoltzmannSelector<
 	}
 
 }
-
-
-
-

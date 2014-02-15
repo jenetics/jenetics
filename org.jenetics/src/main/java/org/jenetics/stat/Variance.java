@@ -125,4 +125,3 @@ public class Variance<N extends Number> extends Mean<N> {
 	}
 
 }
-

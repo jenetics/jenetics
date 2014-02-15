@@ -23,8 +23,6 @@ import java.util.Random;
 
 import org.testng.annotations.DataProvider;
 
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Scoped;
 
@@ -36,7 +34,7 @@ public class NumberStatisticsBuilderTest extends StatisticsBuilderTest {
 
 	@Override
 	public Object newBuilder() {
-		return new NumberStatistics.Builder<Float64Gene, Float64>();
+		return new NumberStatistics.Builder<DoubleGene, Double>();
 	}
 
 	@Override
@@ -44,19 +42,19 @@ public class NumberStatisticsBuilderTest extends StatisticsBuilderTest {
 	public Object[][] builderProperties() {
 		try (Scoped<Random> s= RandomRegistry.with(new Random(12345678))) {
 			return new Object[][] {
-				{"generation", Integer.TYPE, s.get().nextInt(1000)},
-				{"invalid", Integer.TYPE, s.get().nextInt(1000)},
-				{"killed", Integer.TYPE, s.get().nextInt(10000)},
-				{"samples", Integer.TYPE, s.get().nextInt(1000)},
-				{"ageMean", Double.TYPE, s.get().nextDouble()},
-				{"ageVariance", Double.TYPE, s.get().nextDouble()},
-				{"fitnessMean", Double.TYPE, s.get().nextDouble()},
-				{"fitnessVariance", Double.TYPE, s.get().nextDouble()},
-				{"standardError", Double.TYPE, s.get().nextDouble()},
-				{"bestPhenotype", Phenotype.class, TestUtils.newFloat64Phenotype()},
-				{"worstPhenotype", Phenotype.class, TestUtils.newFloat64Phenotype()},
-				{"optimize", Optimize.class, Optimize.MINIMUM},
-				{"optimize", Optimize.class, Optimize.MAXIMUM}
+					{"generation", Integer.TYPE, random.nextInt(1000)},
+					{"invalid", Integer.TYPE, random.nextInt(1000)},
+					{"killed", Integer.TYPE, random.nextInt(10000)},
+					{"samples", Integer.TYPE, random.nextInt(1000)},
+					{"ageMean", Double.TYPE, random.nextDouble()},
+					{"ageVariance", Double.TYPE, random.nextDouble()},
+					{"fitnessMean", Double.TYPE, random.nextDouble()},
+					{"fitnessVariance", Double.TYPE, random.nextDouble()},
+					{"standardError", Double.TYPE, random.nextDouble()},
+					{"bestPhenotype", Phenotype.class, TestUtils.newDoublePhenotype()},
+					{"worstPhenotype", Phenotype.class, TestUtils.newDoublePhenotype()},
+					{"optimize", Optimize.class, Optimize.MINIMUM},
+					{"optimize", Optimize.class, Optimize.MAXIMUM}
 			};
 		}
 	}

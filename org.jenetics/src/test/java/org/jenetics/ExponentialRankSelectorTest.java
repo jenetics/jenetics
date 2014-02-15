@@ -19,7 +19,6 @@
  */
 package org.jenetics;
 
-import org.jscience.mathematics.number.Float64;
 import org.testng.annotations.Test;
 
 import org.jenetics.stat.Distribution;
@@ -31,7 +30,7 @@ import org.jenetics.util.Factory;
  * @version <em>$Date$</em>
  */
 public class ExponentialRankSelectorTest
-	extends ProbabilitySelectorTester<ExponentialRankSelector<Float64Gene, Float64>>
+	extends ProbabilitySelectorTester<ExponentialRankSelector<DoubleGene, Double>>
 {
 
 	@Override
@@ -40,12 +39,12 @@ public class ExponentialRankSelectorTest
 	}
 
 	@Override
-	protected Factory<ExponentialRankSelector<Float64Gene, Float64>> getFactory() {
+	protected Factory<ExponentialRankSelector<DoubleGene, Double>> getFactory() {
 		return SelectorFactories.ExponentialRankSelector;
 	}
 
 	@Override
-	protected Distribution<Float64> getDistribution() {
+	protected Distribution<Double> getDistribution() {
 		return new UniformDistribution<>(getDomain());
 	}
 

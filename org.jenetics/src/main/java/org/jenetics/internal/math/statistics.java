@@ -200,15 +200,3 @@ public final class statistics extends StaticObject {
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-

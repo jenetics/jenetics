@@ -360,7 +360,3 @@ public final class CharSeq
 	}
 
 }
-
-
-
-

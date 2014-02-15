@@ -26,8 +26,6 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Scoped;
 
@@ -38,23 +36,23 @@ import org.jenetics.util.Scoped;
 public class StatisticsBuilderTest {
 
 	public Object newBuilder() {
-		return new Statistics.Builder<Float64Gene, Float64>();
+		return new Statistics.Builder<DoubleGene, Double>();
 	}
 
 	@DataProvider(name = "properties")
 	public Object[][] builderProperties() {
 		try (Scoped<Random> s = RandomRegistry.with(new Random(123456))) {
 			return new Object[][] {
-				{"generation", Integer.TYPE, s.get().nextInt(1000)},
-				{"invalid", Integer.TYPE, s.get().nextInt(1000)},
-				{"killed", Integer.TYPE, s.get().nextInt(10000)},
-				{"samples", Integer.TYPE, s.get().nextInt(1000)},
-				{"ageMean", Double.TYPE, s.get().nextDouble()},
-				{"ageVariance", Double.TYPE, s.get().nextDouble()},
-				{"bestPhenotype", Phenotype.class, TestUtils.newFloat64Phenotype()},
-				{"worstPhenotype", Phenotype.class, TestUtils.newFloat64Phenotype()},
-				{"optimize", Optimize.class, Optimize.MINIMUM},
-				{"optimize", Optimize.class, Optimize.MAXIMUM}
+					{"generation", Integer.TYPE, random.nextInt(1000)},
+					{"invalid", Integer.TYPE, random.nextInt(1000)},
+					{"killed", Integer.TYPE, random.nextInt(10000)},
+					{"samples", Integer.TYPE, random.nextInt(1000)},
+					{"ageMean", Double.TYPE, random.nextDouble()},
+					{"ageVariance", Double.TYPE, random.nextDouble()},
+					{"bestPhenotype", Phenotype.class, TestUtils.newDoublePhenotype()},
+					{"worstPhenotype", Phenotype.class, TestUtils.newDoublePhenotype()},
+					{"optimize", Optimize.class, Optimize.MINIMUM},
+					{"optimize", Optimize.class, Optimize.MAXIMUM}
 			};
 		}
 	}

@@ -793,9 +793,3 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	}
 
 }
-
-
-
-
-
-

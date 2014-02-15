@@ -179,13 +179,3 @@ public class MultiPointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 	//}
 
 }
-
-
-
-
-
-
-
-
-
-

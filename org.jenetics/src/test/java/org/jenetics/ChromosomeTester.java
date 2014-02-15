@@ -97,5 +97,3 @@ public abstract class ChromosomeTester<G extends Gene<?, G>>
 	}
 
 }
-
-

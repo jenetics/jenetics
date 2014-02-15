@@ -19,11 +19,10 @@
  */
 package org.jenetics;
 
-import static org.jenetics.TestUtils.newPermutationFloat64GenePopulation;
+import static org.jenetics.TestUtils.newPermutationDoubleGenePopulation;
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 import static org.jenetics.util.factories.Int;
 
-import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -99,12 +98,12 @@ public class PartiallyMatchedCrossoverTest {
 		final Integer npopulation,
 		final Double p
 	) {
-		final Population<EnumGene<Float64>, Float64> population = newPermutationFloat64GenePopulation(
+		final Population<EnumGene<Double>, Double> population = newPermutationDoubleGenePopulation(
 				ngenes, nchromosomes, npopulation
 			);
 
 		// The mutator to test.
-		final PartiallyMatchedCrossover<Float64> crossover = new PartiallyMatchedCrossover<>(p);
+		final PartiallyMatchedCrossover<Double> crossover = new PartiallyMatchedCrossover<>(p);
 
 		final long nallgenes = ngenes*nchromosomes*npopulation;
 		final long N = 100;
@@ -133,12 +132,3 @@ public class PartiallyMatchedCrossoverTest {
 	}
 
 }
-
-
-
-
-
-
-
-
-

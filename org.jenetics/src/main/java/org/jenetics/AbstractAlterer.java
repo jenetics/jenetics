@@ -112,7 +112,3 @@ public abstract class AbstractAlterer<G extends Gene<?, G>>
 		return eq(_probability, alterer._probability);
 	}
 }
-
-
-
-

@@ -258,6 +258,3 @@ public class UniformDistribution<
 	}
 
 }
-
-
-

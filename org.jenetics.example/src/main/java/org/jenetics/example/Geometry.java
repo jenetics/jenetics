@@ -64,11 +64,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.jscience.mathematics.number.Float64;
-
-import org.jenetics.ExponentialScaler;
-import org.jenetics.Float64Chromosome;
-import org.jenetics.Float64Gene;
+import org.jenetics.DoubleChromosome;
+import org.jenetics.DoubleGene;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.MeanAlterer;
@@ -673,7 +670,7 @@ class GeometryController implements StepListener {
 	private final MutationProbabilityRangeModel
 		_mutationProbabilityRangeModel = new MutationProbabilityRangeModel(this);
 
-	private GeneticAlgorithm<Float64Gene, Float64> _ga;
+	private GeneticAlgorithm<DoubleGene, Double> _ga;
 	private AffineTransform _transform;
 	private GA.GAFF _function;
 	private Point2D[] _source;
@@ -684,8 +681,8 @@ class GeometryController implements StepListener {
 
 	private static final long MIN_REPAINT_TIME = 50;
 	private long _lastRepaintTime = 0;
-	private Phenotype<Float64Gene, Float64> _populationBestPhenotype;
-	private Phenotype<Float64Gene, Float64> _gaBestPhenotype;
+	private Phenotype<DoubleGene, Double> _populationBestPhenotype;
+	private Phenotype<DoubleGene, Double> _gaBestPhenotype;
 	private int _generation = 0;
 
 	GeometryController(final Geometry geometry) {
@@ -858,8 +855,8 @@ class GeometryController implements StepListener {
 					_ga.getLock().lock();
 					try {
 						_ga.setAlterers(
-							new Mutator<Float64Gene>(probability),
-							new MeanAlterer<Float64Gene>()
+							new Mutator<DoubleGene>(probability),
+							new MeanAlterer<DoubleGene>()
 						);
 						System.out.println("Mutation probability: " + probability);
 					} finally {
@@ -872,10 +869,10 @@ class GeometryController implements StepListener {
 
 	@Override
 	public void stepped(EventObject event) {
-		final NumberStatistics<Float64Gene, Float64> statistics =
-			(NumberStatistics<Float64Gene, Float64>)_ga.getStatistics();
-		final Phenotype<Float64Gene, Float64> populationBest = statistics.getBestPhenotype();
-		final Phenotype<Float64Gene, Float64> gaBest = _ga.getBestPhenotype();
+		final NumberStatistics<DoubleGene, Double> statistics =
+			(NumberStatistics<DoubleGene, Double>)_ga.getStatistics();
+		final Phenotype<DoubleGene, Double> populationBest = statistics.getBestPhenotype();
+		final Phenotype<DoubleGene, Double> gaBest = _ga.getBestPhenotype();
 		final int generation = _ga.getGeneration();
 
 
@@ -1535,7 +1532,7 @@ interface StepListener extends EventListener {
 class GA {
 
 	static class GAFF
-		implements Function<Genotype<Float64Gene>, Float64>,
+		implements Function<Genotype<DoubleGene>, Double>,
 					Serializable
 	{
 		private static final long serialVersionUID = 1L;
@@ -1553,12 +1550,12 @@ class GA {
 		}
 
 		@Override
-		public Float64 apply(final Genotype<Float64Gene> genotype) {
+		public Double apply(final Genotype<DoubleGene> genotype) {
 			return distance(genotype);
 			//return area(genotype);
 		}
 
-		Float64 distance(final Genotype<Float64Gene> genotype) {
+		Double distance(final Genotype<DoubleGene> genotype) {
 			final AffineTransform transform = _converter.apply(genotype);
 
 			double error = 0;
@@ -1569,10 +1566,10 @@ class GA {
 				error += Math.abs(_source[i].distance(point));
 			}
 
-			return Float64.valueOf(error);
+			return error;
 		}
 
-		Float64 area(final Genotype<Float64Gene> genotype) {
+		Double area(final Genotype<DoubleGene> genotype) {
 			final AffineTransform transform = _converter.apply(genotype);
 
 			final Point2D[] points = new Point2D.Double[_source.length];
@@ -1580,14 +1577,14 @@ class GA {
 				points[i]  = transform.transform(_target[i], null);
 			}
 
-			return Float64.valueOf(GeometryUtils.area(_source, points));
+			return GeometryUtils.area(_source, points);
 		}
 
-		public final Function<Genotype<Float64Gene>, AffineTransform>
-		_converter = new Function<Genotype<Float64Gene>, AffineTransform>() {
+		public final Function<Genotype<DoubleGene>, AffineTransform>
+		_converter = new Function<Genotype<DoubleGene>, AffineTransform>() {
 
 			@Override
-			public AffineTransform apply(final Genotype<Float64Gene> genotype) {
+			public AffineTransform apply(final Genotype<DoubleGene> genotype) {
 				System.out.println(genotype);
 				final double theta = genotype.getChromosome(0).getGene().doubleValue();
 				final double tx = genotype.getChromosome(1).getGene(0).doubleValue();
@@ -1621,16 +1618,16 @@ class GA {
 	private GA() {
 	}
 
-	public static Factory<Genotype<Float64Gene>> getGenotypeFactory() {
+	public static Factory<Genotype<DoubleGene>> getGenotypeFactory() {
 		return Genotype.valueOf(
 			//Rotation
-			new Float64Chromosome(-Math.PI, Math.PI),
+			new DoubleChromosome(-Math.PI, Math.PI),
 
 			//Translation
-			new Float64Chromosome(-300.0, 300.0, 2),
+			new DoubleChromosome(-300.0, 300.0, 2),
 
 			//Shear
-			new Float64Chromosome(-0.5, 0.5, 2)
+			new DoubleChromosome(-0.5, 0.5, 2)
 		);
 	}
 
@@ -1670,27 +1667,29 @@ class GA {
 		return target;
 	}
 
-	public static GeneticAlgorithm<Float64Gene, Float64> getGA(final GAFF function) {
-		final GeneticAlgorithm<Float64Gene, Float64> ga =
+	public static GeneticAlgorithm<DoubleGene, Double> getGA(final GAFF function) {
+		final GeneticAlgorithm<DoubleGene, Double> ga =
 			new GeneticAlgorithm<>(
-				GA.getGenotypeFactory(), function, new ExponentialScaler(2), Optimize.MINIMUM
+				GA.getGenotypeFactory(), function, new Scaler(), Optimize.MINIMUM
 			);
 		ga.setAlterers(
-			new MeanAlterer<Float64Gene>(),
-			new Mutator<Float64Gene>(0.1)
+			new MeanAlterer<DoubleGene>(),
+			new Mutator<DoubleGene>(0.1)
 		);
-		ga.setSelectors(new TournamentSelector<Float64Gene, Float64>(5));
+		ga.setSelectors(new TournamentSelector<DoubleGene, Double>(5));
 		ga.setPopulationSize(25);
 		ga.setMaximalPhenotypeAge(30);
 		ga.setOffspringFraction(0.3);
-		ga.setStatisticsCalculator(new NumberStatistics.Calculator<Float64Gene, Float64>());
+		ga.setStatisticsCalculator(new NumberStatistics.Calculator<DoubleGene, Double>());
 
 		return ga;
 	}
 
+	private static final class Scaler implements Function<Double, Double> {
+		@Override
+		public Double apply(final Double value) {
+			return Math.sqrt(value);
+		}
+	}
+
 }
-
-
-
-
-

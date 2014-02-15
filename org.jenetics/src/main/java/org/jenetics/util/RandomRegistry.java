@@ -221,8 +221,3 @@ public final class RandomRegistry extends StaticObject {
 	}
 
 }
-
-
-
-
-

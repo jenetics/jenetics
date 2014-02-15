@@ -326,9 +326,3 @@ public final class functions extends StaticObject {
 	}
 
 }
-
-
-
-
-
-

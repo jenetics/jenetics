@@ -973,6 +973,3 @@ public final class arrays extends StaticObject {
 	}
 
 }
-
-
-

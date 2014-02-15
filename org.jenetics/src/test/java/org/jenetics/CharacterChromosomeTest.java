@@ -21,20 +21,18 @@ package org.jenetics;
 
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Random;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import javolution.context.LocalContext;
+
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.UniformDistribution;
 import org.jenetics.util.CharSeq;
 import org.jenetics.util.Factory;
-import org.jenetics.util.IO;
-import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Scoped;
 
@@ -95,38 +93,4 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 		};
 	}
 
-	@Test
-	public void objectSerializationCompatibility() throws IOException {
-		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
-		try (Scoped<Random> s = RandomRegistry.with(random)) {
-			final Object chromosome = new CharacterChromosome(1000);
-
-			final String resource = "/org/jenetics/CharacterChromosome.object";
-			try (InputStream in = getClass().getResourceAsStream(resource)) {
-				final Object object = IO.object.read(in);
-
-				Assert.assertEquals(object, chromosome);
-			}
-		}
-	}
-
-	@Test
-	public void xmlSerializationCompatibility() throws IOException {
-		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
-		try (Scoped<Random> s = RandomRegistry.with(random)) {
-			final Object chromosome = new CharacterChromosome(1000);
-
-			final String resource = "/org/jenetics/CharacterChromosome.xml";
-			try (InputStream in = getClass().getResourceAsStream(resource)) {
-				final Object object = IO.xml.read(in);
-
-				Assert.assertEquals(object, chromosome);
-			}
-		}
-	}
-
 }
-
-
-
-

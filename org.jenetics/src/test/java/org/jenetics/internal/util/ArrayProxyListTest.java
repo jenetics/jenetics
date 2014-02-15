@@ -145,24 +145,3 @@ public class ArrayProxyListTest {
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

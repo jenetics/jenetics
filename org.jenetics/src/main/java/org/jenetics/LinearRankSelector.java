@@ -150,5 +150,3 @@ public final class LinearRankSelector<
 	}
 
 }
-
-

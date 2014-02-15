@@ -143,10 +143,3 @@ public class mathTest {
 	}
 
 }
-
-
-
-
-
-
-

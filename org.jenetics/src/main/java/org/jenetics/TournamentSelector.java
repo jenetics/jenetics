@@ -192,8 +192,3 @@ public class TournamentSelector<
 	}
 
 }
-
-
-
-
-

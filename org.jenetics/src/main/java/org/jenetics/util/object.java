@@ -25,6 +25,10 @@ import static java.util.Objects.requireNonNull;
 import java.util.Arrays;
 import java.util.Objects;
 
+import javax.measure.Measurable;
+import javax.measure.quantity.Duration;
+import javax.measure.unit.SI;
+
 /**
  * Some helper methods for creating hash codes and comparing values.
  *
@@ -441,6 +445,14 @@ public final class object extends StaticObject {
 		return (a != null ? a.equals(b) : b == null);
 	}
 
+	public static boolean eq(final Measurable<Duration> a, final Measurable<Duration> b) {
+		if (a == null && b == null) {
+			return true;
+		}
+		return a != null && b != null &&
+			a.longValue(SI.NANO(SI.SECOND)) == b.longValue(SI.NANO(SI.SECOND));
+	}
+
 	/**
 	 * Compares the two given {@code Object} arrays.
 	 *
@@ -505,5 +517,3 @@ public final class object extends StaticObject {
 	}
 
 }
-
-

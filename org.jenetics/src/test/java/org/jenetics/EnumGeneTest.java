@@ -91,7 +91,3 @@ public class EnumGeneTest extends GeneTester<EnumGene<Integer>> {
 	}
 
 }
-
-
-
-

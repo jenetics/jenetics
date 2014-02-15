@@ -174,10 +174,3 @@ public class LCG64ShiftRandomCompatibilityTest {
 
 	}
 }
-
-
-
-
-
-
-

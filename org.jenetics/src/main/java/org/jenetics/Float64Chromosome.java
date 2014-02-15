@@ -19,17 +19,36 @@
  */
 package org.jenetics;
 
+import static java.util.Objects.requireNonNull;
+import static org.jenetics.Float64Gene.Value;
+import static org.jenetics.internal.util.model.Float64Model.Marshaller;
+import static org.jenetics.internal.util.model.Float64Model.Unmarshaller;
+import static org.jenetics.util.functions.compose;
 import static org.jenetics.util.object.hashCodeOf;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jscience.mathematics.number.Float64;
+
+import org.jenetics.internal.util.model.Float64Model;
+import org.jenetics.internal.util.model.ModelType;
+import org.jenetics.internal.util.model.ValueType;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
@@ -41,8 +60,14 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date$</em>
+ * @version 1.6 &mdash; <em>$Date$</em>
+ *
+ * @deprecated Use {@link org.jenetics.DoubleChromosome} instead. This classes
+ *             uses the <i>JScience</i> library, which will be removed in the
+ *             next major version.
  */
+@Deprecated
+@XmlJavaTypeAdapter(Float64Chromosome.Model.Adapter.class)
 public class Float64Chromosome
 	extends NumberChromosome<Float64, Float64Gene>
 	implements XMLSerializable
@@ -52,6 +77,16 @@ public class Float64Chromosome
 
 	protected Float64Chromosome(final ISeq<Float64Gene> genes) {
 		super(genes);
+	}
+
+	private Float64Chromosome(
+		final ISeq<Float64Gene> genes,
+		final Float64 min,
+		final Float64 max
+	) {
+		this(genes);
+		_min = requireNonNull(min);
+		_max = requireNonNull(max);
 	}
 
 	/**
@@ -183,10 +218,48 @@ public class Float64Chromosome
 	 * Return a {@link Function} which returns the {@link Gene} with the given
 	 * {@code index} from this {@link Chromosome}.
 	 */
-	public static final Function<Chromosome<Float64Gene>, Float64Gene>
+	public static Function<Chromosome<Float64Gene>, Float64Gene>
 	Gene(final int index)
 	{
 		return AbstractChromosome.gene(index);
+	}
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private void writeObject(final ObjectOutputStream out)
+		throws IOException
+	{
+		out.defaultWriteObject();
+
+		out.writeInt(length());
+		out.writeDouble(_min.doubleValue());
+		out.writeDouble(_max.doubleValue());
+
+		for (Float64Gene gene : _genes) {
+			out.writeDouble(gene.doubleValue());
+		}
+	}
+
+	private void readObject(final ObjectInputStream in)
+		throws IOException, ClassNotFoundException
+	{
+		in.defaultReadObject();
+
+		final int length = in.readInt();
+		final Float64 min = Float64.valueOf(in.readDouble());
+		final Float64 max = Float64.valueOf(in.readDouble());
+
+		_min = min;
+		_max = max;
+		final Array<Float64Gene> genes = new Array<>(length);
+		for (int i = 0; i < length; ++i) {
+			final Float64 value = Float64.valueOf(in.readDouble());
+			genes.set(i, Float64Gene.valueOf(value, min, max));
+		}
+
+		_genes = genes.toISeq();
 	}
 
 	/* *************************************************************************
@@ -194,7 +267,7 @@ public class Float64Chromosome
 	 * ************************************************************************/
 
 	static final XMLFormat<Float64Chromosome>
-	XML = new XMLFormat<Float64Chromosome>(Float64Chromosome.class)
+		XML = new XMLFormat<Float64Chromosome>(Float64Chromosome.class)
 	{
 		private static final String LENGTH = "length";
 		private static final String MIN = "min";
@@ -237,46 +310,52 @@ public class Float64Chromosome
 	};
 
 	/* *************************************************************************
-	 *  Java object serialization
+	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	private void writeObject(final ObjectOutputStream out)
-		throws IOException
-	{
-		out.defaultWriteObject();
+	@XmlRootElement(name = "org.jenetics.Float64Chromosome")
+	@XmlType(name = "org.jenetics.Float64Chromosome")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	final static class Model {
 
-		out.writeInt(length());
-		out.writeDouble(_min.doubleValue());
-		out.writeDouble(_max.doubleValue());
+		@XmlAttribute
+		public int length;
 
-		for (Float64Gene gene : _genes) {
-			out.writeDouble(gene.doubleValue());
+		@XmlAttribute
+		public double min;
+
+		@XmlAttribute
+		public double max;
+
+		@XmlElement(name = "org.jscience.mathematics.number.Float64")
+		public List<Float64Model> values;
+
+		@ValueType(Float64Chromosome.class)
+		@ModelType(Model.class)
+		public final static class Adapter
+			extends XmlAdapter<Model, Float64Chromosome>
+		{
+			@Override
+			public Model marshal(final Float64Chromosome c) {
+				final Model m = new Model();
+				m.length = c.length();
+				m.min = c._min.doubleValue();
+				m.max = c._max.doubleValue();
+				m.values = c.toSeq().map(compose(Value, Marshaller)).asList();
+				return m;
+			}
+
+			@Override
+			public Float64Chromosome unmarshal(final Model model) {
+				final Float64 min = Float64.valueOf(model.min);
+				final Float64 max = Float64.valueOf(model.max);
+				final ISeq<Float64Gene> genes = Array.valueOf(model.values)
+					.map(compose(Unmarshaller, Float64Gene.Gene(min, max)))
+					.toISeq();
+
+				return new Float64Chromosome(genes, min, max);
+			}
 		}
-	}
-
-	private void readObject(final ObjectInputStream in)
-		throws IOException, ClassNotFoundException
-	{
-		in.defaultReadObject();
-
-		final int length = in.readInt();
-		final Float64 min = Float64.valueOf(in.readDouble());
-		final Float64 max = Float64.valueOf(in.readDouble());
-
-		_min = min;
-		_max = max;
-		final Array<Float64Gene> genes = new Array<>(length);
-		for (int i = 0; i < length; ++i) {
-			final Float64 value = Float64.valueOf(in.readDouble());
-			genes.set(i, Float64Gene.valueOf(value, min, max));
-		}
-
-		_genes = genes.toISeq();
 	}
 
 }
-
-
-
-
-

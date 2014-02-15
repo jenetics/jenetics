@@ -588,7 +588,3 @@ public final class bit extends StaticObject {
 	}
 
 }
-
-
-
-

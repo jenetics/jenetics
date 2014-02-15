@@ -37,7 +37,12 @@ import org.jenetics.util.Mean;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
  * @version 1.2 &mdash; <em>$Date$</em>
+ *
+ * @deprecated Use {@link org.jenetics.NumericGene} instead. This classes
+ *             uses the <i>JScience</i> library, which will be removed in the
+ *             next major version.
  */
+@Deprecated
 public abstract class NumberGene<
 	N extends Number<N>,
 	G extends NumberGene<N, G>
@@ -106,7 +111,7 @@ public abstract class NumberGene<
 	}
 
 	/**
-	 * Set the {@code NumerGene}.
+	 * Set the {@code NumberGene}.
 	 *
 	 * @param value The value of the number gene.
 	 * @param min The allowed min value of the gene.
@@ -246,9 +251,3 @@ public abstract class NumberGene<
 	}
 
 }
-
-
-
-
-
-

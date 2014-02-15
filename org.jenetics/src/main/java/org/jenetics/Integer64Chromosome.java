@@ -19,17 +19,36 @@
  */
 package org.jenetics;
 
+import static java.util.Objects.requireNonNull;
+import static org.jenetics.Integer64Gene.Value;
+import static org.jenetics.internal.util.model.Integer64Model.Marshaller;
+import static org.jenetics.internal.util.model.Integer64Model.Unmarshaller;
+import static org.jenetics.util.functions.compose;
 import static org.jenetics.util.object.hashCodeOf;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jscience.mathematics.number.Integer64;
+
+import org.jenetics.internal.util.model.Integer64Model;
+import org.jenetics.internal.util.model.ModelType;
+import org.jenetics.internal.util.model.ValueType;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
@@ -42,8 +61,14 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date$</em>
+ * @version 1.6 &mdash; <em>$Date$</em>
+ *
+ * @deprecated Use {@link org.jenetics.LongChromosome} instead. This classes
+ *             uses the <i>JScience</i> library, which will be removed in the
+ *             next major version.
  */
+@Deprecated
+@XmlJavaTypeAdapter(Float64Chromosome.Model.Adapter.class)
 public class Integer64Chromosome
 	extends NumberChromosome<Integer64, Integer64Gene>
 	implements XMLSerializable
@@ -59,6 +84,16 @@ public class Integer64Chromosome
 	 */
 	protected Integer64Chromosome(final ISeq<Integer64Gene> genes) {
 		super(genes);
+	}
+
+	private Integer64Chromosome(
+		final ISeq<Integer64Gene> genes,
+		final Integer64 min,
+		final Integer64 max
+	) {
+		this(genes);
+		_min = requireNonNull(min);
+		_max = requireNonNull(max);
 	}
 
 	/**
@@ -197,11 +232,48 @@ public class Integer64Chromosome
 	}
 
 	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private void writeObject(final ObjectOutputStream out)
+		throws IOException
+	{
+		out.defaultWriteObject();
+
+		out.writeInt(length());
+		out.writeLong(_min.longValue());
+		out.writeLong(_max.longValue());
+
+		for (Integer64Gene gene : _genes) {
+			out.writeLong(gene.longValue());
+		}
+	}
+
+	private void readObject(final ObjectInputStream in)
+		throws IOException, ClassNotFoundException
+	{
+		in.defaultReadObject();
+
+		final int length = in.readInt();
+		Integer64 min = Integer64.valueOf(in.readLong());
+		Integer64 max = Integer64.valueOf(in.readLong());
+
+		_min = min;
+		_max = max;
+		final Array<Integer64Gene> genes = new Array<>(length);
+		for (int i = 0; i < length; ++i) {
+			genes.set(i, Integer64Gene.valueOf(Integer64.valueOf(in.readLong()), min, max));
+		}
+
+		_genes = genes.toISeq();
+	}
+
+	/* *************************************************************************
 	 *  XML object serialization
 	 * ************************************************************************/
 
 	static final XMLFormat<Integer64Chromosome>
-	XML = new XMLFormat<Integer64Chromosome>(Integer64Chromosome.class) {
+		XML = new XMLFormat<Integer64Chromosome>(Integer64Chromosome.class) {
 		private static final String LENGTH = "length";
 		private static final String MIN = "min";
 		private static final String MAX = "max";
@@ -244,46 +316,52 @@ public class Integer64Chromosome
 	};
 
 	/* *************************************************************************
-	 *  Java object serialization
+	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	private void writeObject(final ObjectOutputStream out)
-		throws IOException
-	{
-		out.defaultWriteObject();
+	@XmlRootElement(name = "org.jenetics.Integer64Chromosome")
+	@XmlType(name = "org.jenetics.Integer64Chromosome")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	final static class Model {
 
-		out.writeInt(length());
-		out.writeLong(_min.longValue());
-		out.writeLong(_max.longValue());
+		@XmlAttribute
+		public int length;
 
-		for (Integer64Gene gene : _genes) {
-			out.writeLong(gene.longValue());
+		@XmlAttribute
+		public long min;
+
+		@XmlAttribute
+		public long max;
+
+		@XmlElement(name = "org.jscience.mathematics.number.Integer64")
+		public List<Integer64Model> values;
+
+		@ValueType(Integer64Chromosome.class)
+		@ModelType(Model.class)
+		public final static class Adapter
+			extends XmlAdapter<Model, Integer64Chromosome>
+		{
+			@Override
+			public Model marshal(final Integer64Chromosome c) {
+				final Model m = new Model();
+				m.length = c.length();
+				m.min = c._min.longValue();
+				m.max = c._max.longValue();
+				m.values = c.toSeq().map(compose(Value, Marshaller)).asList();
+				return m;
+			}
+
+			@Override
+			public Integer64Chromosome unmarshal(final Model model) {
+				final Integer64 min = Integer64.valueOf(model.min);
+				final Integer64 max = Integer64.valueOf(model.max);
+				final ISeq<Integer64Gene> genes = Array.valueOf(model.values)
+					.map(compose(Unmarshaller, Integer64Gene.Gene(min, max)))
+					.toISeq();
+
+				return new Integer64Chromosome(genes, min, max);
+			}
 		}
-	}
-
-	private void readObject(final ObjectInputStream in)
-		throws IOException, ClassNotFoundException
-	{
-		in.defaultReadObject();
-
-		final int length = in.readInt();
-		Integer64 min = Integer64.valueOf(in.readLong());
-		Integer64 max = Integer64.valueOf(in.readLong());
-
-		_min = min;
-		_max = max;
-		final Array<Integer64Gene> genes = new Array<>(length);
-		for (int i = 0; i < length; ++i) {
-			genes.set(i, Integer64Gene.valueOf(Integer64.valueOf(in.readLong()), min, max));
-		}
-
-		_genes = genes.toISeq();
 	}
 
 }
-
-
-
-
-
-
