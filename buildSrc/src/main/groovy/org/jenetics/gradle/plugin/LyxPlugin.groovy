@@ -21,7 +21,6 @@ package org.jenetics.gradle.plugin
 
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.api.Project
-
 import org.jenetics.gradle.task.Lyx2PDFTask
 
 /**

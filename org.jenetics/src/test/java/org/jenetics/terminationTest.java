@@ -25,8 +25,6 @@ import java.util.LinkedList;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.util.Function;
 
 /**

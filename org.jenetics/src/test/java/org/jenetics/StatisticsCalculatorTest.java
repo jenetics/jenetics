@@ -25,8 +25,6 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.Statistics.Calculator;
 import org.jenetics.stat.Variance;
 import org.jenetics.util.accumulators;
