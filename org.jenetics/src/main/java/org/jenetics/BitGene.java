@@ -214,7 +214,7 @@ public enum BitGene
 
 			@Override
 			public BitGene unmarshal(final Model m) {
-				return BitGene.valueOf(m.value);
+				return BitGene.of(m.value);
 			}
 		}
 	}
