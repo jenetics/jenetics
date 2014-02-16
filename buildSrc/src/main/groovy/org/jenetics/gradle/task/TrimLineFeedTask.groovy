@@ -76,7 +76,7 @@ class TrimLineFeedTask extends DefaultTask {
             file.write(trimmedText)
         }
 
-        equal
+        !equal
     }
 
     private static def matches(final String[] patterns, final String name) {
