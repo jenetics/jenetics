@@ -58,13 +58,13 @@ class TrimLineFeedTask extends DefaultTask {
                     boolean trimmed = trimFile(file)
                     if (trimmed) {
                         trimmedFileCount += 1
-                        getLogger().debug("Trimmed file '$file'")
+                        getLogger().info("Trimmed file '$file'")
                     }
                 }
             }
         }
 
-        getLogger().info("$trimmedFileCount of $fileCount files trimmed.")
+        getLogger().lifecycle("$trimmedFileCount of $fileCount files trimmed.")
     }
 
     private static def trimFile(final File file) {
