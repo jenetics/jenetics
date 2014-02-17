@@ -132,7 +132,7 @@ public class CharacterChromosome
 			new Array<CharacterGene>(genes.length()).fill(new Factory<CharacterGene>() {
 				private int _index = 0;
 				@Override public CharacterGene newInstance() {
-					return CharacterGene.valueOf(
+					return CharacterGene.of(
 						genes.charAt(_index++), validCharacters
 					);
 				}
@@ -329,7 +329,7 @@ public class CharacterChromosome
 
 		final Array<CharacterGene> genes = new Array<>(length);
 		for (int i = 0; i < length; ++i) {
-			final CharacterGene gene = CharacterGene.valueOf(
+			final CharacterGene gene = CharacterGene.of(
 				in.readChar(),
 				_validCharacters
 			);
@@ -363,7 +363,7 @@ public class CharacterChromosome
 			final Array<CharacterGene> array = new Array<>(length);
 			final CharArray values = xml.getText();
 			for (int i = 0; i < length; ++i) {
-				array.set(i, CharacterGene.valueOf(values.charAt(i), validCharacters));
+				array.set(i, CharacterGene.of(values.charAt(i), validCharacters));
 			}
 			return new CharacterChromosome(array.toISeq());
 		}
