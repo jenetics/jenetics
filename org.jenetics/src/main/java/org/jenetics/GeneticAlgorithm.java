@@ -133,7 +133,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-02-13 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-02-17 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,
@@ -223,7 +223,7 @@ public class GeneticAlgorithm<
 
 		_phenotypeFactory = new Factory<Phenotype<G, C>>() {
 			@Override public Phenotype<G, C> newInstance() {
-				return Phenotype.valueOf(
+				return Phenotype.of(
 					_genotypeFactory.newInstance(),
 					_fitnessFunction,
 					_fitnessScaler,
@@ -968,7 +968,7 @@ public class GeneticAlgorithm<
 
 		final Population<G, C> population = new Population<>(genotypes.size());
 		for (Genotype<G> genotype : genotypes) {
-			population.add(Phenotype.valueOf(
+			population.add(Phenotype.of(
 				genotype,
 				_fitnessFunction,
 				_fitnessScaler,

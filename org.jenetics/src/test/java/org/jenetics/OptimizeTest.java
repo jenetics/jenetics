@@ -48,7 +48,7 @@ public class OptimizeTest {
 	private static final FF _ff = new FF();
 
 	private static Phenotype<DoubleGene, Double> pt(double value) {
-		return Phenotype.valueOf(Genotype.of(DoubleChromosome.of(DoubleGene.of(value, 0, 10))), _ff, 0);
+		return Phenotype.of(Genotype.of(DoubleChromosome.of(DoubleGene.of(value, 0, 10))), _ff, 0);
 	}
 
 	@Test
@@ -68,11 +68,11 @@ public class OptimizeTest {
 	@Test
 	public void compare() {
 		final FF ff = new FF();
-		final Phenotype<DoubleGene, Double> pt1 = Phenotype.valueOf(Genotype.of(
+		final Phenotype<DoubleGene, Double> pt1 = Phenotype.of(Genotype.of(
 			DoubleChromosome.of(DoubleGene.of(5, 0, 10))), ff, 0);
-		final Phenotype<DoubleGene, Double> pt2 = Phenotype.valueOf(Genotype.of(
+		final Phenotype<DoubleGene, Double> pt2 = Phenotype.of(Genotype.of(
 			DoubleChromosome.of(DoubleGene.of(7, 0, 10))), ff, 0);
-		final Phenotype<DoubleGene, Double> pt3 = Phenotype.valueOf(Genotype.of(
+		final Phenotype<DoubleGene, Double> pt3 = Phenotype.of(Genotype.of(
 			DoubleChromosome.of(DoubleGene.of(7, 0, 10))), ff, 0);
 
 		Assert.assertTrue(Optimize.MINIMUM.compare(pt1, pt2) > 0);
@@ -84,11 +84,11 @@ public class OptimizeTest {
 	@Test
 	public void best() {
 		final FF ff = new FF();
-		final Phenotype<DoubleGene, Double> pt1 = Phenotype.valueOf(Genotype.of(
+		final Phenotype<DoubleGene, Double> pt1 = Phenotype.of(Genotype.of(
 			DoubleChromosome.of(DoubleGene.of(5, 0, 10))), ff, 0);
-		final Phenotype<DoubleGene, Double> pt2 = Phenotype.valueOf(Genotype.of(
+		final Phenotype<DoubleGene, Double> pt2 = Phenotype.of(Genotype.of(
 			DoubleChromosome.of(DoubleGene.of(7, 0, 10))), ff, 0);
-		final Phenotype<DoubleGene, Double> pt3 = Phenotype.valueOf(Genotype.of(
+		final Phenotype<DoubleGene, Double> pt3 = Phenotype.of(Genotype.of(
 			DoubleChromosome.of(DoubleGene.of(7, 0, 10))), ff, 0);
 
 		Assert.assertSame(Optimize.MINIMUM.best(pt1, pt2), pt1);
@@ -99,11 +99,11 @@ public class OptimizeTest {
 	@Test
 	public void worst() {
 		final FF ff = new FF();
-		final Phenotype<DoubleGene, Double> pt1 = Phenotype.valueOf(Genotype.of(
+		final Phenotype<DoubleGene, Double> pt1 = Phenotype.of(Genotype.of(
 			DoubleChromosome.of(DoubleGene.of(5, 0, 10))), ff, 0);
-		final Phenotype<DoubleGene, Double> pt2 = Phenotype.valueOf(Genotype.of(
+		final Phenotype<DoubleGene, Double> pt2 = Phenotype.of(Genotype.of(
 			DoubleChromosome.of(DoubleGene.of(7, 0, 10))), ff, 0);
-		final Phenotype<DoubleGene, Double> pt3 = Phenotype.valueOf(Genotype.of(
+		final Phenotype<DoubleGene, Double> pt3 = Phenotype.of(Genotype.of(
 			DoubleChromosome.of(DoubleGene.of(7, 0, 10))), ff, 0);
 
 		Assert.assertSame(Optimize.MINIMUM.worst(pt1, pt2), pt2);

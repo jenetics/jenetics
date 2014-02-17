@@ -31,7 +31,7 @@ import org.jenetics.util.lists;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-11 $</em>
+ * @version <em>$Date: 2014-02-17 $</em>
  */
 @Suite("Population")
 public class PopulationTest {
@@ -104,7 +104,7 @@ public class PopulationTest {
 		final Population<DoubleGene, Double>
 		population = new Population<>(npopulation);
 		for (int i = 0; i < npopulation; ++i) {
-			population.add(Phenotype.valueOf(gtb.build(), FF, 0));
+			population.add(Phenotype.of(gtb.build(), FF, 0));
 		}
 
 		return population;

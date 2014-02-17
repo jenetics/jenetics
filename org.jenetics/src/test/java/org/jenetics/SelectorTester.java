@@ -82,7 +82,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 
 		for (int j = 0; j < loops; ++j) {
 			for (int i = 0; i < npopulation; ++i) {
-				population.add(Phenotype.valueOf(gtf.newInstance(), TestUtils.FF, 12));
+				population.add(Phenotype.of(gtf.newInstance(), TestUtils.FF, 12));
 			}
 
 

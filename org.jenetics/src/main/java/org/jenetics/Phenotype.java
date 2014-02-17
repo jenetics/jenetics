@@ -50,19 +50,18 @@ import org.jenetics.util.functions;
 
 
 /**
- * The {@code Phenotype} consists of a {@link Genotype} plus a
- * fitness {@link Function}, where the fitness {@link Function} represents the
+ * The {@code Phenotype} consists of a {@link Genotype} plus a fitness
+ * {@link Function}, where the fitness {@link Function} represents the
  * environment where the {@link Genotype} lives.
  * This class implements the {@link Comparable} interface, to define a natural
  * order between two {@code Phenotype}s. The natural order of the
  * {@code Phenotypes} is defined by its fitness value (given by the
- * fitness {@link Function}.
- * The {@code Phenotype} is immutable and therefore can't be changed after
- * creation.
+ * fitness {@link Function}. The {@code Phenotype} is immutable and therefore
+ * can't be changed after creation.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-02-02 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-02-17 $</em>
  */
 @XmlJavaTypeAdapter(Phenotype.Model.Adapter.class)
 public final class Phenotype<
@@ -256,7 +255,7 @@ public final class Phenotype<
 	 */
 	Phenotype<G, C> newInstance(final Genotype<G> genotype, final int generation) {
 		requireNonNull(genotype, "Genotype");
-		return Phenotype.valueOf(
+		return Phenotype.of(
 			genotype, _fitnessFunction, _fitnessScaler, generation
 		);
 	}
@@ -277,7 +276,7 @@ public final class Phenotype<
 		final Function<? super C, ? extends C> scaler,
 		final int generation
 	) {
-		return valueOf(_genotype, function, scaler, generation);
+		return of(_genotype, function, scaler, generation);
 	}
 
 	/**
@@ -294,7 +293,7 @@ public final class Phenotype<
 		final Function<Genotype<G>, C> function,
 		final int generation
 	) {
-		return valueOf(_genotype, function, functions.<C>Identity(), generation);
+		return of(_genotype, function, functions.<C>Identity(), generation);
 	}
 
 
@@ -401,6 +400,20 @@ public final class Phenotype<
 	}
 
 	/**
+	 * @deprecated Use {@link #of(Genotype, org.jenetics.util.Function, org.jenetics.util.Function, int)}
+	 *             instead.
+	 */
+	@Deprecated
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Phenotype<G, C> valueOf(
+		final Genotype<G> genotype,
+		final Function<? super Genotype<G>, C> fitnessFunction,
+		final int generation
+	) {
+		return of(genotype, fitnessFunction, generation);
+	}
+
+	/**
 	 * The {@code Genotype} is copied to guarantee an immutable class. Only
 	 * the age of the {@code Phenotype} can be incremented.
 	 *
@@ -411,12 +424,27 @@ public final class Phenotype<
 	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Phenotype<G, C> valueOf(
+	Phenotype<G, C> of(
 		final Genotype<G> genotype,
 		final Function<? super Genotype<G>, C> fitnessFunction,
 		final int generation
 	) {
-		return valueOf(genotype, fitnessFunction, functions.<C>Identity(), generation);
+		return of(genotype, fitnessFunction, functions.<C>Identity(), generation);
+	}
+
+	/**
+	 * @deprecated Use {@link #of(Genotype, org.jenetics.util.Function, org.jenetics.util.Function, int)}
+	 *             instead
+	 */
+	@Deprecated
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Phenotype<G, C> valueOf(
+		final Genotype<G> genotype,
+		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
+		final Function<? super C, ? extends C> fitnessScaler,
+		final int generation
+	) {
+		return of(genotype, fitnessFunction, fitnessScaler, generation);
 	}
 
 	/**
@@ -431,7 +459,7 @@ public final class Phenotype<
 	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Phenotype<G, C> valueOf(
+	Phenotype<G, C> of(
 		final Genotype<G> genotype,
 		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
 		final Function<? super C, ? extends C> fitnessScaler,

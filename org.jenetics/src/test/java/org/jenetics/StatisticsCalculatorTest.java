@@ -58,10 +58,10 @@ public class StatisticsCalculatorTest {
 					public Phenotype<DoubleGene, Double> next() {
 						++_pos;
 						final DoubleGene gene = DoubleGene.of(_pos, MIN, MAX);
-						return Phenotype.valueOf(
-								Genotype.of(DoubleChromosome.of(gene)),
-								TestUtils.FF, 0
-							);
+						return Phenotype.of(
+							Genotype.of(DoubleChromosome.of(gene)),
+							TestUtils.FF, 0
+						);
 					}
 
 					@Override

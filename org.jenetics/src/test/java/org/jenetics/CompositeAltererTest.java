@@ -72,7 +72,7 @@ public class CompositeAltererTest {
 		final Population<DoubleGene, Double> population = new Population<>(npopulation);
 
 		for (int i = 0; i < npopulation; ++i) {
-			population.add(Phenotype.valueOf(genotype.newInstance(), TestUtils.FF, 0));
+			population.add(Phenotype.of(genotype.newInstance(), TestUtils.FF, 0));
 		}
 
 		return population;
