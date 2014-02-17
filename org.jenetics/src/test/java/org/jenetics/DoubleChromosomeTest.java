@@ -64,7 +64,7 @@ public class DoubleChromosomeTest
 
 
 			final MinMax<Double> mm = new MinMax<>();
-			final Histogram<Double> histogram = Histogram.valueOf(min, max, 10);
+			final Histogram<Double> histogram = Histogram.of(min, max, 10);
 			final Variance<Double> variance = new Variance<>();
 
 			for (int i = 0; i < 1000; ++i) {

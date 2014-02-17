@@ -55,7 +55,7 @@ public class GaussianMutatorTest extends MutatorTestBase {
 		final DoubleGene gene = DoubleGene.of(mean, min, max);
 		final NormalMutator<DoubleGene> mutator = new NormalMutator<>();
 
-		final Histogram<Double> histogram = Histogram.valueOf(0.0, 10.0, 10);
+		final Histogram<Double> histogram = Histogram.of(0.0, 10.0, 10);
 		final Variance<Double> variance = new Variance<>();
 
 		for (int i = 0; i < 10000; ++i) {

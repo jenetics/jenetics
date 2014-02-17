@@ -38,6 +38,8 @@ public abstract class BoundedChromosome<
 	extends AbstractChromosome<G>
 {
 
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * The minimum value of this {@code BoundedChromosome}.
 	 */

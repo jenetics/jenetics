@@ -60,7 +60,7 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 
 			final Variance<Double> variance = new Variance<>();
 
-			final Histogram<Double> histogram = Histogram.valueOf(min, max, 10);
+			final Histogram<Double> histogram = Histogram.of(min, max, 10);
 
 			final int samples = 100000;
 			for (int i = 0; i < samples; ++i) {

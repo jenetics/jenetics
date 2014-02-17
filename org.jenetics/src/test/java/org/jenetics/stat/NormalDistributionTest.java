@@ -40,7 +40,7 @@ public class NormalDistributionTest {
 	@Test(invocationCount = 10)
 	public void cdfDistribution() {
 		final Random random = RandomRegistry.getRandom();
-		final Histogram<Double> histogram = Histogram.valueOf(0.0, 1000.0, 10);
+		final Histogram<Double> histogram = Histogram.of(0.0, 1000.0, 10);
 		final Variance<Double> variance = new Variance<>();
 
 		final double mean = 500;

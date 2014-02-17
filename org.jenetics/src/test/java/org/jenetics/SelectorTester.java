@@ -68,7 +68,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 
 		final Double min = getDomain().getMin();
 		final Double max = getDomain().getMax();
-		final Histogram<Double> histogram = Histogram.valueOf(min, max, _histogramSize);
+		final Histogram<Double> histogram = Histogram.of(min, max, _histogramSize);
 
 		final Factory<Genotype<DoubleGene>>
 		gtf = Genotype.valueOf(new DoubleChromosome(min, max));

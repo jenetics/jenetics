@@ -40,6 +40,8 @@ public abstract class BoundedGene<
 		Comparable<G>
 {
 
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * The minimum value of this {@code BoundedGene}.
 	 */

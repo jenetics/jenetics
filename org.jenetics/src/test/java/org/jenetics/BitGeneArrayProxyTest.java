@@ -37,7 +37,7 @@ public class BitGeneArrayProxyTest extends ArrayProxyTestBase<BitGene> {
 
 	@Override
 	public BitGene newArrayProxyElement(final Random random) {
-		return BitGene.valueOf(random.nextBoolean());
+		return BitGene.of(random.nextBoolean());
 	}
 
 }

@@ -64,7 +64,7 @@ public class LongChromosomeTest
 
 			final MinMax<Long> mm = new MinMax<>();
 			final Variance<Long> variance = new Variance<>();
-			final Histogram<Long> histogram = Histogram.valueOf(min, max, 10);
+			final Histogram<Long> histogram = Histogram.of(min, max, 10);
 
 			for (int i = 0; i < 1000; ++i) {
 				final LongChromosome chromosome = new LongChromosome(min, max, 500);
