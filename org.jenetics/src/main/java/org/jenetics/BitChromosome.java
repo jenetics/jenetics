@@ -129,7 +129,10 @@ public class BitChromosome extends Number<BitChromosome>
 	 * @throws NegativeArraySizeException if the {@code length} is smaller
 	 *         than one.
 	 * @throws IllegalArgumentException if {@code p} is not a valid probability.
+	 *
+	 * @deprecated Use {@link #of(int, double)} instead.
 	 */
+	@Deprecated
 	public BitChromosome(final int length, final double p) {
 		this(bit.newArray(length, p), length, p);
 	}
@@ -141,7 +144,10 @@ public class BitChromosome extends Number<BitChromosome>
 	 * @param length Length of the BitChromosome.
 	 * @throws NegativeArraySizeException if the {@code _length} is smaller
 	 *         than one.
+	 *
+	 * @deprecated Use {@link #BitChromosome(int)} instead.
 	 */
+	@Deprecated
 	public BitChromosome(final int length) {
 		this(length, 0.5);
 	}
@@ -443,6 +449,31 @@ public class BitChromosome extends Number<BitChromosome>
 	@Override
 	public BitChromosome times(final BitChromosome that) {
 		return new BitChromosome(toLargeInteger().times(that.toLargeInteger()));
+	}
+
+	/**
+	 * Construct a new BitChromosome with the given _length.
+	 *
+	 * @param length Length of the BitChromosome, number of bits.
+	 * @param p Probability of the TRUEs in the BitChromosome.
+	 * @throws NegativeArraySizeException if the {@code length} is smaller
+	 *         than one.
+	 * @throws IllegalArgumentException if {@code p} is not a valid probability.
+	 */
+	public static BitChromosome of(final int length, final double p) {
+		return new BitChromosome(length, p);
+	}
+
+	/**
+	 * Constructing a new BitChromosome with the given _length. The TRUEs and
+	 * FALSE in the {@code Chromosome} are equally distributed.
+	 *
+	 * @param length Length of the BitChromosome.
+	 * @throws NegativeArraySizeException if the {@code _length} is smaller
+	 *         than one.
+	 */
+	public static BitChromosome of(final int length) {
+		return new BitChromosome(length);
 	}
 
 	@Override
