@@ -95,7 +95,7 @@ public class LongChromosome
 	 *         empty.
 	 */
 	public static LongChromosome of(final LongGene... genes) {
-		return new LongChromosome(Array.valueOf(genes).toISeq());
+		return new LongChromosome(Array.of(genes).toISeq());
 	}
 
 	/**
@@ -218,7 +218,7 @@ public class LongChromosome
 				final Long min = model.min;
 				final Long max = model.max;
 				return new LongChromosome(
-					Array.valueOf(model.values).map(Gene(min, max)).toISeq()
+					Array.of(model.values).map(Gene(min, max)).toISeq()
 				);
 			}
 		}

@@ -35,7 +35,7 @@ public class PermutationChromosomeEnumTest
 	private final Factory<Chromosome<EnumGene<PermutationEnum>>>
 	_factory = new Factory<Chromosome<EnumGene<PermutationEnum>>>() {
 		private final ISeq<PermutationEnum> _alleles =
-			Array.valueOf(PermutationEnum.values()).toISeq();
+			Array.of(PermutationEnum.values()).toISeq();
 
 		@Override
 		public PermutationChromosome<PermutationEnum> newInstance() {

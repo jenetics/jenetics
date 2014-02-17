@@ -98,7 +98,7 @@ public class Float64Chromosome
 	 * @throws NullPointerException if the {@code genes} are {@code null}.
 	 */
 	public Float64Chromosome(final Float64Gene... genes) {
-		this(Array.valueOf(genes).toISeq());
+		this(Array.of(genes).toISeq());
 	}
 
 	/**
@@ -349,7 +349,7 @@ public class Float64Chromosome
 			public Float64Chromosome unmarshal(final Model model) {
 				final Float64 min = Float64.valueOf(model.min);
 				final Float64 max = Float64.valueOf(model.max);
-				final ISeq<Float64Gene> genes = Array.valueOf(model.values)
+				final ISeq<Float64Gene> genes = Array.of(model.values)
 					.map(compose(Unmarshaller, Float64Gene.Gene(min, max)))
 					.toISeq();
 

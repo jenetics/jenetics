@@ -72,7 +72,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	@Deprecated
 	@SafeVarargs
 	public CompositeAlterer(final Alterer<G>... alterers) {
-		this(Array.valueOf(alterers));
+		this(Array.of(alterers));
 	}
 
 	private static <G extends Gene<?, G>>
@@ -95,7 +95,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 			}
 		}
 
-		return Array.valueOf(normalized);
+		return Array.of(normalized);
 	}
 
 	@Override
@@ -166,7 +166,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	@SafeVarargs
 	public static <G extends Gene<?, G>>
 	CompositeAlterer<G> valueOf(final Alterer<G>... alterers) {
-		return new CompositeAlterer<>(Array.valueOf(alterers));
+		return new CompositeAlterer<>(Array.of(alterers));
 	}
 
 	/**

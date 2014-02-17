@@ -462,7 +462,7 @@ public final class accumulators extends StaticObject {
 		final Iterable<? extends T> values,
 		final Accumulator<? super T>... accus
 	) {
-		accumulate(values, Array.valueOf(accus));
+		accumulate(values, Array.of(accus));
 	}
 
 	/**

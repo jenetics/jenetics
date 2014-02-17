@@ -229,7 +229,7 @@ public final class EnumGene<A>
 		final G[] validAlleles,
 		final int alleleIndex
 	) {
-		return valueOf(Array.valueOf(validAlleles).toISeq(), alleleIndex);
+		return valueOf(Array.of(validAlleles).toISeq(), alleleIndex);
 	}
 
 	public static <A> EnumGene<A> valueOf(
@@ -257,7 +257,7 @@ public final class EnumGene<A>
 	}
 
 	public static <G> EnumGene<G> valueOf(final G[] validAlleles) {
-		return valueOf(Array.valueOf(validAlleles).toISeq());
+		return valueOf(Array.of(validAlleles).toISeq());
 	}
 
 	public static <G> EnumGene<G> valueOf(final ISeq<G> validAlleles) {
@@ -355,7 +355,7 @@ public final class EnumGene<A>
 			@Override
 			public EnumGene unmarshal(final Model m) {
 				return EnumGene.valueOf(
-					Array.valueOf(m.alleles).map(Unmarshaller).toISeq(),
+					Array.of(m.alleles).map(Unmarshaller).toISeq(),
 					m.currentAlleleIndex
 				);
 			}
