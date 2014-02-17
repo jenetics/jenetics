@@ -265,47 +265,47 @@ public class PersistentObject<T> {
 	}
 
 	public static EnumGene<Boolean> nextEnumGeneBoolean() {
-		return EnumGene.valueOf(ISeq(5, BooleanFactory));
+		return EnumGene.of(ISeq(5, BooleanFactory));
 	}
 
 	public static EnumGene<Byte> nextEnumGeneByte() {
-		return EnumGene.valueOf(ISeq(5, ByteFactory));
+		return EnumGene.of(ISeq(5, ByteFactory));
 	}
 
 	public static EnumGene<Character> nextEnumGeneCharacter() {
-		return EnumGene.valueOf(ISeq(5, CharacterFactory));
+		return EnumGene.of(ISeq(5, CharacterFactory));
 	}
 
 	public static EnumGene<Short> nextEnumGeneShort() {
-		return EnumGene.valueOf(ISeq(5, ShortFactory));
+		return EnumGene.of(ISeq(5, ShortFactory));
 	}
 
 	public static EnumGene<Integer> nextEnumGeneInteger() {
-		return EnumGene.valueOf(ISeq(5, IntegerFactory));
+		return EnumGene.of(ISeq(5, IntegerFactory));
 	}
 
 	public static EnumGene<Long> nextEnumGeneLong() {
-		return EnumGene.valueOf(ISeq(5, LongFactory));
+		return EnumGene.of(ISeq(5, LongFactory));
 	}
 
 	public static EnumGene<Float> nextEnumGeneFloat() {
-		return EnumGene.valueOf(ISeq(5, FloatFactory));
+		return EnumGene.of(ISeq(5, FloatFactory));
 	}
 
 	public static EnumGene<Double> nextEnumGeneDouble() {
-		return EnumGene.valueOf(ISeq(5, DoubleFactory));
+		return EnumGene.of(ISeq(5, DoubleFactory));
 	}
 
 	public static EnumGene<String> nextEnumGeneString() {
-		return EnumGene.valueOf(ISeq(5, StringFactory));
+		return EnumGene.of(ISeq(5, StringFactory));
 	}
 
 	public static EnumGene<Integer64> nextEnumGeneInteger64() {
-		return EnumGene.valueOf(ISeq(5, Integer64Factory));
+		return EnumGene.of(ISeq(5, Integer64Factory));
 	}
 
 	public static EnumGene<Float64> nextEnumGeneFloat64() {
-		return EnumGene.valueOf(ISeq(5, Float64Factory));
+		return EnumGene.of(ISeq(5, Float64Factory));
 	}
 
 	/* *************************************************************************
