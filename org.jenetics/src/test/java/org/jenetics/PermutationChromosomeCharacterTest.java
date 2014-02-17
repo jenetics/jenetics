@@ -32,7 +32,7 @@ public class PermutationChromosomeCharacterTest
 
 	private final Factory<Chromosome<EnumGene<Character>>>
 	_factory = new Factory<Chromosome<EnumGene<Character>>>() {
-		private final CharSeq _alleles = CharSeq.valueOf("a-zA-Z");
+		private final CharSeq _alleles = CharSeq.of("a-zA-Z");
 
 		@Override
 		public PermutationChromosome<Character> newInstance() {
