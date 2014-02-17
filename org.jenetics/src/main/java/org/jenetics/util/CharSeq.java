@@ -46,7 +46,7 @@ import javolution.lang.Immutable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2014-02-17 $</em>
  */
 public final class CharSeq
 	extends AbstractCharSeq
@@ -324,8 +324,16 @@ public final class CharSeq
 	 * @throws PatternSyntaxException if the pattern could not be expanded.
 	 * @throws NullPointerException if the pattern is {@code null}.
 	 */
-	public static CharSeq valueOf(final CharSequence pattern) {
+	public static CharSeq of(final CharSequence pattern) {
 		return new CharSeq(expand(pattern));
+	}
+
+	/**
+	 * @deprecated Use {@link #of(CharSequence)} instead.
+	 */
+	@Deprecated
+	public static CharSeq valueOf(final CharSequence pattern) {
+		return of(pattern);
 	}
 
 	/**
@@ -337,8 +345,16 @@ public final class CharSeq
 	 * @param b the stop character.
 	 * @return the expanded characters.
 	 */
-	public static CharSeq valueOf(final char a, final char b) {
+	public static CharSeq of(final char a, final char b) {
 		return new CharSeq(expand(a, b));
+	}
+
+	/**
+	 * @deprecated Use {@link #of(char, char)} instead.
+	 */
+	@Deprecated
+	public static CharSeq valueOf(final char a, final char b) {
+		return of(a, b);
 	}
 
 	/**

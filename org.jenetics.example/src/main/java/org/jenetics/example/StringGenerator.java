@@ -75,7 +75,7 @@ public class StringGenerator {
 		final String value =
 			"jenetics";
 
-		final CharSeq chars = CharSeq.valueOf("a-z");
+		final CharSeq chars = CharSeq.of("a-z");
 		final Factory<Genotype<CharacterGene>> gtf = Genotype.of(
 			new CharacterChromosome(chars, value.length())
 		);

@@ -40,7 +40,7 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-15 $</em>
+ * @version <em>$Date: 2014-02-17 $</em>
  */
 public class SinglePointCrossoverTest {
 
@@ -66,7 +66,7 @@ public class SinglePointCrossoverTest {
 
 	@Test
 	public void crossover() {
-		final CharSeq chars = CharSeq.valueOf("a-zA-Z");
+		final CharSeq chars = CharSeq.of("a-zA-Z");
 
 		final ISeq<CharacterGene> g1 = new CharacterChromosome(chars, 20).toSeq();
 		final ISeq<CharacterGene> g2 = new CharacterChromosome(chars, 20).toSeq();
