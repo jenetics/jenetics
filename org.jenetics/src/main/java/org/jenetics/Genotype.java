@@ -67,7 +67,7 @@ import org.jenetics.util.Verifiable;
  * for number genes.
  *
  * [code]
- * final Genotype〈DoubleGene〉 genotype = Genotype.valueOf(
+ * final Genotype〈DoubleGene〉 genotype = Genotype.of(
  *     DoubleChromosome.of(0.0, 1.0, 8),
  *     DoubleChromosome.of(1.0, 2.0, 10),
  *     DoubleChromosome.of(0.0, 10.0, 9),
