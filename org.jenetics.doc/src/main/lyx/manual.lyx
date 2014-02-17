@@ -1098,12 +1098,12 @@ public static void main(String[] args) {
 
 \begin_layout Plain Layout
 
-    Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
+    Factory<Genotype<BitGene>> gtf = Genotype.of(
 \end_layout
 
 \begin_layout Plain Layout
 
-        BitChromosome.valueOf(10, 0.5)
+        BitChromosome.of(10, 0.5)
 \end_layout
 
 \begin_layout Plain Layout
@@ -1558,7 +1558,7 @@ status open
 
 \begin_layout Plain Layout
 
-Genotype<DoubleGene> genotype = Genotype.valueOf(
+Genotype<DoubleGene> genotype = Genotype.of(
 \end_layout
 
 \begin_layout Plain Layout
@@ -2421,7 +2421,7 @@ where
 
  as for the naive approach:
 \emph on
-A binary (index) search is performed on the summed probability array.
+ A binary (index) search is performed on the summed probability array.
 \end_layout
 
 \begin_layout Subparagraph
@@ -2457,7 +2457,7 @@ The roulette-wheel selector is also known as fitness proportional selector.
 \begin_inset Formula $f_{i}$
 \end_inset
 
- is used to calculate the selection probability of individua l
+ is used to calculate the selection probability of individual 
 \begin_inset Formula $i$
 \end_inset
 
