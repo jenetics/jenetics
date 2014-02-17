@@ -133,7 +133,7 @@ class TestUtils {
 			new Population<>(npopulation);
 
 		for (int i = 0; i < npopulation; ++i) {
-			population.add(Phenotype.valueOf(genotype.newInstance(), FF, 0).evaluate());
+			population.add(Phenotype.of(genotype.newInstance(), FF, 0).evaluate());
 		}
 
 		return population;
@@ -163,7 +163,7 @@ class TestUtils {
 			new Population<>(npopulation);
 
 		for (int i = 0; i < npopulation; ++i) {
-			population.add(Phenotype.valueOf(genotype.newInstance(), PFF, 0));
+			population.add(Phenotype.of(genotype.newInstance(), PFF, 0));
 		}
 
 		return population;
@@ -232,9 +232,9 @@ class TestUtils {
 
 
 	public static Phenotype<DoubleGene, Double> newDoublePhenotype(final double value) {
-		return Phenotype.valueOf(Genotype.of(
+		return Phenotype.of(Genotype.of(
 			DoubleChromosome.of(DoubleGene.of(value, 0, 10))), FF, 0
-			).evaluate();
+		).evaluate();
 	}
 
 	public static Phenotype<DoubleGene, Double> newDoublePhenotype() {

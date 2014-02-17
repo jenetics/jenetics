@@ -223,7 +223,7 @@ public class GeneticAlgorithm<
 
 		_phenotypeFactory = new Factory<Phenotype<G, C>>() {
 			@Override public Phenotype<G, C> newInstance() {
-				return Phenotype.valueOf(
+				return Phenotype.of(
 					_genotypeFactory.newInstance(),
 					_fitnessFunction,
 					_fitnessScaler,
@@ -968,7 +968,7 @@ public class GeneticAlgorithm<
 
 		final Population<G, C> population = new Population<>(genotypes.size());
 		for (Genotype<G> genotype : genotypes) {
-			population.add(Phenotype.valueOf(
+			population.add(Phenotype.of(
 				genotype,
 				_fitnessFunction,
 				_fitnessScaler,

@@ -65,7 +65,7 @@ public class Performance {
 		final int size = 1000000;
 		final Population<DoubleGene, Double> population = new Population<>(size);
 		for (int i = 0; i < size; ++i) {
-			final Phenotype<DoubleGene, Double> pt = Phenotype.valueOf(
+			final Phenotype<DoubleGene, Double> pt = Phenotype.of(
 				gtf.newInstance(), ff, fs, 0
 			);
 			population.add(pt);

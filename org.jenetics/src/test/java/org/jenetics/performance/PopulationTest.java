@@ -104,7 +104,7 @@ public class PopulationTest {
 		final Population<DoubleGene, Double>
 		population = new Population<>(npopulation);
 		for (int i = 0; i < npopulation; ++i) {
-			population.add(Phenotype.valueOf(gtb.build(), FF, 0));
+			population.add(Phenotype.of(gtb.build(), FF, 0));
 		}
 
 		return population;

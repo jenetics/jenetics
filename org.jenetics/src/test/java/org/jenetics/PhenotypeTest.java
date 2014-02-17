@@ -57,7 +57,7 @@ public class PhenotypeTest extends ObjectTester<Phenotype<DoubleGene, Double>> {
 	private final Factory<Phenotype<DoubleGene, Double>>
 	_factory = new Factory<Phenotype<DoubleGene, Double>>() {
 		@Override public Phenotype<DoubleGene, Double> newInstance() {
-			return Phenotype.valueOf(_genotype.newInstance(), _ff, _scaler, 0).evaluate();
+			return Phenotype.of(_genotype.newInstance(), _ff, _scaler, 0).evaluate();
 		}
 	};
 

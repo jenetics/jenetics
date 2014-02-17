@@ -390,7 +390,7 @@ public class PersistentObject<T> {
 	 **************************************************************************/
 
 	public static Phenotype<LongGene, Integer> nextPhenotypeLongGeneInteger() {
-		return Phenotype.valueOf(
+		return Phenotype.of(
 			nextGenotypeLongGene(),
 			FitnessFunction(IntegerFactory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
@@ -398,7 +398,7 @@ public class PersistentObject<T> {
 	}
 
 	public static Phenotype<LongGene, Long> nextPhenotypeLongGeneLong() {
-		return Phenotype.valueOf(
+		return Phenotype.of(
 			nextGenotypeLongGene(),
 			FitnessFunction(LongFactory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
@@ -406,7 +406,7 @@ public class PersistentObject<T> {
 	}
 
 	public static Phenotype<LongGene, Double> nextPhenotypeLongGeneDouble() {
-		return Phenotype.valueOf(
+		return Phenotype.of(
 			nextGenotypeLongGene(),
 			FitnessFunction(DoubleFactory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
@@ -414,7 +414,7 @@ public class PersistentObject<T> {
 	}
 
 	public static Phenotype<DoubleGene, Integer> nextPhenotypeDoubleGeneInteger() {
-		return Phenotype.valueOf(
+		return Phenotype.of(
 			nextGenotypeDoubleGene(),
 			FitnessFunction(IntegerFactory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
@@ -422,7 +422,7 @@ public class PersistentObject<T> {
 	}
 
 	public static Phenotype<DoubleGene, Long> nextPhenotypeDoubleGeneLong() {
-		return Phenotype.valueOf(
+		return Phenotype.of(
 			nextGenotypeDoubleGene(),
 			FitnessFunction(LongFactory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
@@ -430,7 +430,7 @@ public class PersistentObject<T> {
 	}
 
 	public static Phenotype<DoubleGene, Double> nextPhenotypeDoubleGeneDouble() {
-		return Phenotype.valueOf(
+		return Phenotype.of(
 			nextGenotypeDoubleGene(),
 			FitnessFunction(DoubleFactory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
@@ -438,7 +438,7 @@ public class PersistentObject<T> {
 	}
 
 	public static Phenotype<Integer64Gene, Integer> nextPhenotypeInteger64GeneInteger() {
-		return Phenotype.valueOf(
+		return Phenotype.of(
 			nextGenotypeInteger64Gene(),
 			FitnessFunction(IntegerFactory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
@@ -446,7 +446,7 @@ public class PersistentObject<T> {
 	}
 
 	public static Phenotype<Integer64Gene, Long> nextPhenotypeInteger64GeneLong() {
-		return Phenotype.valueOf(
+		return Phenotype.of(
 			nextGenotypeInteger64Gene(),
 			FitnessFunction(LongFactory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
@@ -454,7 +454,7 @@ public class PersistentObject<T> {
 	}
 
 	public static Phenotype<Integer64Gene, Double> nextPhenotypeInteger64GeneDouble() {
-		return Phenotype.valueOf(
+		return Phenotype.of(
 			nextGenotypeInteger64Gene(),
 			FitnessFunction(DoubleFactory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
@@ -462,7 +462,7 @@ public class PersistentObject<T> {
 	}
 
 	public static Phenotype<Integer64Gene, Integer64> nextPhenotypeInteger64GeneInteger64() {
-		return Phenotype.valueOf(
+		return Phenotype.of(
 			nextGenotypeInteger64Gene(),
 			FitnessFunction(Integer64Factory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
@@ -470,7 +470,7 @@ public class PersistentObject<T> {
 	}
 
 	public static Phenotype<Integer64Gene, Float64> nextPhenotypeInteger64GeneFloat64() {
-		return Phenotype.valueOf(
+		return Phenotype.of(
 			nextGenotypeInteger64Gene(),
 			FitnessFunction(Float64Factory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
@@ -478,7 +478,7 @@ public class PersistentObject<T> {
 	}
 
 	public static Phenotype<Float64Gene, Integer> nextPhenotypeFloat64GeneInteger() {
-		return Phenotype.valueOf(
+		return Phenotype.of(
 			nextGenotypeFloat64Gene(),
 			FitnessFunction(IntegerFactory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
@@ -486,7 +486,7 @@ public class PersistentObject<T> {
 	}
 
 	public static Phenotype<Float64Gene, Long> nextPhenotypeFloat64GeneLong() {
-		return Phenotype.valueOf(
+		return Phenotype.of(
 			nextGenotypeFloat64Gene(),
 			FitnessFunction(LongFactory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
@@ -494,7 +494,7 @@ public class PersistentObject<T> {
 	}
 
 	public static Phenotype<Float64Gene, Double> nextPhenotypeFloat64GeneDouble() {
-		return Phenotype.valueOf(
+		return Phenotype.of(
 			nextGenotypeFloat64Gene(),
 			FitnessFunction(DoubleFactory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
@@ -502,7 +502,7 @@ public class PersistentObject<T> {
 	}
 
 	public static Phenotype<Float64Gene, Integer64> nextPhenotypeFloat64GeneInteger64() {
-		return Phenotype.valueOf(
+		return Phenotype.of(
 			nextGenotypeFloat64Gene(),
 			FitnessFunction(Integer64Factory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
@@ -510,7 +510,7 @@ public class PersistentObject<T> {
 	}
 
 	public static Phenotype<Float64Gene, Float64> nextPhenotypeFloat64GeneFloat64() {
-		return Phenotype.valueOf(
+		return Phenotype.of(
 			nextGenotypeFloat64Gene(),
 			FitnessFunction(Float64Factory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
