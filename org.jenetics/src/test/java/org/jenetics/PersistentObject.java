@@ -362,27 +362,27 @@ public class PersistentObject<T> {
 	 **************************************************************************/
 
 	public static Genotype<BitGene> nextGenotypeBitGene() {
-		return Genotype.valueOf(ISeq(5, BitChromosomeFactory));
+		return Genotype.of(ISeq(5, BitChromosomeFactory));
 	}
 
 	public static Genotype<CharacterGene> nextGenotypeCharacterGene() {
-		return Genotype.valueOf(ISeq(5, CharacterChromosomeFactory));
+		return Genotype.of(ISeq(5, CharacterChromosomeFactory));
 	}
 
 	public static Genotype<LongGene> nextGenotypeLongGene() {
-		return Genotype.valueOf(ISeq(5, LongChromosomeFactory));
+		return Genotype.of(ISeq(5, LongChromosomeFactory));
 	}
 
 	public static Genotype<DoubleGene> nextGenotypeDoubleGene() {
-		return Genotype.valueOf(ISeq(5, DoubleChromosomeFactory));
+		return Genotype.of(ISeq(5, DoubleChromosomeFactory));
 	}
 
 	public static Genotype<Integer64Gene> nextGenotypeInteger64Gene() {
-		return Genotype.valueOf(ISeq(5, Integer64ChromosomeFactory));
+		return Genotype.of(ISeq(5, Integer64ChromosomeFactory));
 	}
 
 	public static Genotype<Float64Gene> nextGenotypeFloat64Gene() {
-		return Genotype.valueOf(ISeq(5, Float64ChromosomeFactory));
+		return Genotype.of(ISeq(5, Float64ChromosomeFactory));
 	}
 
 	/* *************************************************************************

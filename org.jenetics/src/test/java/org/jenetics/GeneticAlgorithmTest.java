@@ -61,7 +61,7 @@ public class GeneticAlgorithmTest {
 			ConcurrentContext.setConcurrency(0);
 			RandomRegistry.setRandom(new Random(123456));
 
-			final Factory<Genotype<DoubleGene>> factory = Genotype.valueOf(
+			final Factory<Genotype<DoubleGene>> factory = Genotype.of(
 				DoubleChromosome.of(0, 1)
 			);
 			final Function<Genotype<DoubleGene>, Double> ff = new FF();
@@ -124,7 +124,7 @@ public class GeneticAlgorithmTest {
 		final ForkJoinPool pool = new ForkJoinPool(10);
 
 		try {
-			final Factory<Genotype<DoubleGene>> factory = Genotype.valueOf(DoubleChromosome.of(-1, 1));
+			final Factory<Genotype<DoubleGene>> factory = Genotype.of(DoubleChromosome.of(-1, 1));
 			final Function<Genotype<DoubleGene>, Double> ff = new FF();
 
 			final GeneticAlgorithm<DoubleGene, Double> ga = new GeneticAlgorithm<>(factory, ff);
@@ -148,7 +148,7 @@ public class GeneticAlgorithmTest {
 		final ExecutorService pool = Executors.newFixedThreadPool(10);
 
 		try {
-			final Factory<Genotype<DoubleGene>> factory = Genotype.valueOf(DoubleChromosome.of(-1, 1));
+			final Factory<Genotype<DoubleGene>> factory = Genotype.of(DoubleChromosome.of(-1, 1));
 			final Function<Genotype<DoubleGene>, Double> ff = new FF();
 
 			final GeneticAlgorithm<DoubleGene, Double> ga = new GeneticAlgorithm<>(factory, ff);
@@ -169,7 +169,7 @@ public class GeneticAlgorithmTest {
 
 	@Test(invocationCount = 10)
 	public void evolveConcurrent() {
-		final Factory<Genotype<DoubleGene>> factory = Genotype.valueOf(DoubleChromosome.of(-1, 1));
+		final Factory<Genotype<DoubleGene>> factory = Genotype.of(DoubleChromosome.of(-1, 1));
 		final Function<Genotype<DoubleGene>, Double> ff = new FF();
 
 		final GeneticAlgorithm<DoubleGene, Double> ga = new GeneticAlgorithm<>(factory, ff);

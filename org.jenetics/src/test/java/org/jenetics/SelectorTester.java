@@ -71,7 +71,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		final Histogram<Double> histogram = Histogram.of(min, max, _histogramSize);
 
 		final Factory<Genotype<DoubleGene>>
-		gtf = Genotype.valueOf(new DoubleChromosome(min, max));
+		gtf = Genotype.of(new DoubleChromosome(min, max));
 
 
 

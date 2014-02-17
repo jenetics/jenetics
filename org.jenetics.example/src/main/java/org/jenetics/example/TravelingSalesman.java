@@ -80,7 +80,7 @@ public class TravelingSalesman {
 		final int stops = 20;
 
 		final Function<Genotype<EnumGene<Integer>>, Double> ff = new FF(adjacencyMatrix(stops));
-		final Factory<Genotype<EnumGene<Integer>>> gtf = Genotype.valueOf(
+		final Factory<Genotype<EnumGene<Integer>>> gtf = Genotype.of(
 			PermutationChromosome.ofInteger(stops)
 		);
 		final GeneticAlgorithm<EnumGene<Integer>, Double>

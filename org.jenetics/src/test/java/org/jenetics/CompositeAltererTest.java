@@ -68,7 +68,7 @@ public class CompositeAltererTest {
 			chromosomes.set(i, DoubleChromosome.of(0, 10, ngenes));
 		}
 
-		final Genotype<DoubleGene> genotype = Genotype.valueOf(chromosomes.toISeq());
+		final Genotype<DoubleGene> genotype = Genotype.of(chromosomes.toISeq());
 		final Population<DoubleGene, Double> population = new Population<>(npopulation);
 
 		for (int i = 0; i < npopulation; ++i) {

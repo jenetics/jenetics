@@ -1619,7 +1619,7 @@ class GA {
 	}
 
 	public static Factory<Genotype<DoubleGene>> getGenotypeFactory() {
-		return Genotype.valueOf(
+		return Genotype.of(
 			//Rotation
 			new DoubleChromosome(-Math.PI, Math.PI),
 

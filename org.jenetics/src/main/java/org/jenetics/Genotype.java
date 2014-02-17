@@ -297,6 +297,16 @@ public final class Genotype<G extends Gene<?, G>>
 		};
 	}
 
+	/**
+	 * @deprecated Use {@link #of(org.jenetics.util.ISeq)} instead.
+	 */
+	@Deprecated
+	public static <G extends Gene<?, G>> Genotype<G> valueOf(
+		final ISeq<? extends Chromosome<G>> chromosomes
+	) {
+		return of(chromosomes);
+	}
+
 
 	/**
 	 * Create a new Genotype from a given array of {@code Chromosomes}.
@@ -307,7 +317,7 @@ public final class Genotype<G extends Gene<?, G>>
 	 *         element.
 	 * @throws IllegalArgumentException if {@code chromosome.length == 0}.
 	 */
-	public static <G extends Gene<?, G>> Genotype<G> valueOf(
+	public static <G extends Gene<?, G>> Genotype<G> of(
 		final ISeq<? extends Chromosome<G>> chromosomes
 	) {
 		requireNonNull(chromosomes, "Chromosomes");
@@ -321,6 +331,17 @@ public final class Genotype<G extends Gene<?, G>>
 	}
 
 	/**
+	 * @deprecated Use {@link #of(Chromosome[])} instead.
+	 */
+	@Deprecated
+	@SafeVarargs
+	public static <G extends Gene<?, G>> Genotype<G> valueOf(
+		final Chromosome<G>... chromosomes
+	) {
+		return of(Array.valueOf(chromosomes).toISeq());
+	}
+
+	/**
 	 * Create a new Genotype from a given array of {@code Chromosomes}.
 	 *
 	 * @param chromosomes The {@code Chromosome} array the {@code Genotype}
@@ -330,10 +351,10 @@ public final class Genotype<G extends Gene<?, G>>
 	 * @throws IllegalArgumentException if {@code chromosome.length == 0}.
 	 */
 	@SafeVarargs
-	public static <G extends Gene<?, G>> Genotype<G> valueOf(
+	public static <G extends Gene<?, G>> Genotype<G> of(
 		final Chromosome<G>... chromosomes
 	) {
-		return valueOf(Array.valueOf(chromosomes).toISeq());
+		return of(Array.valueOf(chromosomes).toISeq());
 	}
 
 	/* *************************************************************************

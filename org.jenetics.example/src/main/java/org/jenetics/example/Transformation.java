@@ -119,10 +119,10 @@ public class Transformation {
 			target[i]  = rotate.inverseTransform(source[i], null);
 		}
 
-		final Factory<Genotype<DoubleGene>> gtf = Genotype.valueOf(
+		final Factory<Genotype<DoubleGene>> gtf = Genotype.of(
 			DoubleChromosome.of(DoubleGene.of(-Math.PI, Math.PI)), //Rotation
 			DoubleChromosome.of(DoubleGene.of(-400, 400), DoubleGene.of(-400, 400)), //Translation
-			DoubleChromosome.of(DoubleGene.of(-400, 400), DoubleGene.of(-400, 400))	//Shear
+			DoubleChromosome.of(DoubleGene.of(-400, 400), DoubleGene.of(-400, 400))    //Shear
 		);
 
 		final FF ff = new FF(source, target);

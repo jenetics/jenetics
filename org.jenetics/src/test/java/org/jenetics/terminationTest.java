@@ -61,7 +61,7 @@ public class terminationTest {
 
 	static GeneticAlgorithm<DoubleGene, Double> GA() {
 		return new GeneticAlgorithm<>(
-				Genotype.valueOf(DoubleChromosome.of(0, 10)), FF
+				Genotype.of(DoubleChromosome.of(0, 10)), FF
 			);
 	}
 

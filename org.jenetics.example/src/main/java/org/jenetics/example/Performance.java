@@ -59,7 +59,7 @@ public class Performance {
 
 	public static void main(String[] args) {
 		final Perf ff = new Perf();
-		final Factory<Genotype<DoubleGene>> gtf = Genotype.valueOf(DoubleChromosome.of(0, 360));
+		final Factory<Genotype<DoubleGene>> gtf = Genotype.of(DoubleChromosome.of(0, 360));
 		final Function<Double, Double> fs = functions.Identity();
 
 		final int size = 1000000;

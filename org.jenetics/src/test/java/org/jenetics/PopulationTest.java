@@ -47,7 +47,7 @@ public class PopulationTest {
 
 	private static final Function<Genotype<DoubleGene>, Double> _cf = new Continous();
 	private static Phenotype<DoubleGene, Double> pt(double value) {
-		return Phenotype.valueOf(Genotype.valueOf(DoubleChromosome.of(DoubleGene.of(value, 0, 10))), _cf, 0);
+		return Phenotype.valueOf(Genotype.of(DoubleChromosome.of(DoubleGene.of(value, 0, 10))), _cf, 0);
 	}
 
 	@Test

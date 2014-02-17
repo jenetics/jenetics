@@ -46,7 +46,7 @@ final class Real
 
 public class RealFunction {
 	public static void main(String[] args) {
-		Factory<Genotype<DoubleGene>> gtf = Genotype.valueOf(
+		Factory<Genotype<DoubleGene>> gtf = Genotype.of(
 			new DoubleChromosome(0.0, 2.0 * PI)
 		);
 		Function<Genotype<DoubleGene>, Double> ff = new Real();
