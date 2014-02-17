@@ -48,6 +48,7 @@ import org.jenetics.util.Array;
 import org.jenetics.util.CharSeq;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
+import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -55,7 +56,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.5 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-02-17 $</em>
  */
 @XmlJavaTypeAdapter(CharacterGene.Model.Adapter.class)
 public final class CharacterGene
@@ -309,6 +310,17 @@ public final class CharacterGene
 		return gene;
 	}
 
+
+	static ISeq<CharacterGene> seq( final CharSeq characters, final int length) {
+		final Random r = RandomRegistry.getRandom();
+
+		final Array<CharacterGene> genes = new Array<>(length);
+		for (int i = 0; i < length; ++i) {
+			final int index = r.nextInt(characters.length());
+			genes.set(i, valueOf(characters.get(index), characters));
+		}
+		return genes.toISeq();
+	}
 
 	/* *************************************************************************
 	 *  XML object serialization
