@@ -128,7 +128,7 @@ public final class CharacterGene
 	@Deprecated
 	@Override
 	public CharacterGene copy() {
-		final CharacterGene gene = valueOf(_character, _validCharacters);
+		final CharacterGene gene = of(_character, _validCharacters);
 		gene._valid = _valid;
 		return gene;
 	}
@@ -221,7 +221,7 @@ public final class CharacterGene
 
 	@Override
 	public CharacterGene newInstance() {
-		return valueOf(_validCharacters);
+		return of(_validCharacters);
 	}
 
 	/**
@@ -235,7 +235,7 @@ public final class CharacterGene
 	 *         {@code null}.
 	 */
 	public CharacterGene newInstance(final Character character) {
-		return valueOf(character, _validCharacters);
+		return of(character, _validCharacters);
 	}
 
 
@@ -260,13 +260,21 @@ public final class CharacterGene
 	 * @throws NullPointerException if the {@code validCharacters} are
 	 *         {@code null}.
 	 */
-	public static CharacterGene valueOf(final CharSeq validCharacters) {
+	public static CharacterGene of(final CharSeq validCharacters) {
 		final Random random = RandomRegistry.getRandom();
 		int pos = random.nextInt(validCharacters.length());
 
-		final CharacterGene gene = valueOf(validCharacters.charAt(pos), validCharacters);
+		final CharacterGene gene = of(validCharacters.charAt(pos), validCharacters);
 		gene._valid = true;
 		return gene;
+	}
+
+	/**
+	 * @deprecated Use {@link #of(org.jenetics.util.CharSeq)} instead.
+	 */
+	@Deprecated
+	public static CharacterGene valueOf(final CharSeq validCharacters) {
+		return of(validCharacters);
 	}
 
 	/**
@@ -279,14 +287,36 @@ public final class CharacterGene
 	 * @throws NullPointerException if the given {@code character} is
 	 *         {@code null}.
 	 */
-	public static CharacterGene valueOf(final Character character) {
-		return valueOf(character, DEFAULT_CHARACTERS);
+	public static CharacterGene of(final Character character) {
+		return of(character, DEFAULT_CHARACTERS);
 	}
 
-	public static CharacterGene valueOf() {
+	/**
+	 * @deprecated Use {@link #of(Character)} instead.
+	 */
+	@Deprecated
+	public static CharacterGene valueOf(final Character character) {
+		return of(character);
+	}
+
+	/**
+	 * Create a new random character gene, chosen from the
+	 * {@link #DEFAULT_CHARACTERS}.
+	 *
+	 * @return a new random character gene.
+	 */
+	public static CharacterGene of() {
 		final Random random = RandomRegistry.getRandom();
 		final int index = random.nextInt(DEFAULT_CHARACTERS.length());
-		return valueOf(DEFAULT_CHARACTERS.charAt(index));
+		return of(DEFAULT_CHARACTERS.charAt(index));
+	}
+
+	/**
+	 * @deprecated Use {@link #of()} instead.
+	 */
+	@Deprecated
+	public static CharacterGene valueOf() {
+		return of();
 	}
 
 	/**
@@ -296,7 +326,7 @@ public final class CharacterGene
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the {@code validCharacters} are empty.
 	 */
-	public static CharacterGene valueOf(
+	public static CharacterGene of(
 		final Character character,
 		final CharSeq validCharacters
 	) {
@@ -310,6 +340,16 @@ public final class CharacterGene
 		return gene;
 	}
 
+	/**
+	 * @deprecated Use {@link #of(Character, org.jenetics.util.CharSeq)} instead.
+	 */
+	@Deprecated
+	public static CharacterGene valueOf(
+		final Character character,
+		final CharSeq validCharacters
+	) {
+		return of(character, validCharacters);
+	}
 
 	static ISeq<CharacterGene> seq( final CharSeq characters, final int length) {
 		final Random r = RandomRegistry.getRandom();
@@ -317,7 +357,7 @@ public final class CharacterGene
 		final Array<CharacterGene> genes = new Array<>(length);
 		for (int i = 0; i < length; ++i) {
 			final int index = r.nextInt(characters.length());
-			genes.set(i, valueOf(characters.get(index), characters));
+			genes.set(i, of(characters.get(index), characters));
 		}
 		return genes.toISeq();
 	}
@@ -343,7 +383,7 @@ public final class CharacterGene
 			);
 			final String character = xml.getText().toString();
 
-			return CharacterGene.valueOf(character.charAt(0), new CharSeq(validCharacters));
+			return CharacterGene.of(character.charAt(0), new CharSeq(validCharacters));
 		}
 		@Override
 		public void write(final CharacterGene gene, final OutputElement xml)
@@ -388,7 +428,7 @@ public final class CharacterGene
 
 			@Override
 			public CharacterGene unmarshal(final Model m) {
-				return CharacterGene.valueOf(
+				return CharacterGene.of(
 					m.value.charAt(0),
 					new CharSeq(m.validCharacters)
 				);

@@ -245,7 +245,7 @@ public class PersistentObject<T> {
 	 **************************************************************************/
 
 	public static CharacterGene nextCharacterGene() {
-		return CharacterGene.valueOf();
+		return CharacterGene.of();
 	}
 
 	public static LongGene nextLongGene() {
