@@ -19,7 +19,7 @@
  */
 package org.jenetics;
 
-import static java.lang.String.format;
+import static org.jenetics.CharacterGene.DEFAULT_CHARACTERS;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
@@ -68,45 +68,6 @@ public class CharacterChromosome
 	private transient CharSeq _validCharacters;
 
 	/**
-	 * Create a new chromosome with the {@link CharacterGene#DEFAULT_CHARACTERS}
-	 * char set as valid characters.
-	 *
-	 * @param length the {@code length} of the new chromosome.
-	 * @throws IllegalArgumentException if the {@code length} is smaller than
-	 *         one.
-	 */
-	public CharacterChromosome(final int length) {
-		super(
-			new Array<CharacterGene>(length).fill(
-				CharacterGene.valueOf(CharacterGene.DEFAULT_CHARACTERS)
-			).toISeq()
-		);
-		_validCharacters = CharacterGene.DEFAULT_CHARACTERS;
-		_valid = true;
-	}
-
-	/**
-	 * Create a new chromosome with the {@code validCharacters} char set as
-	 * valid characters.
-	 *
-	 * @param validCharacters the valid characters for this chromosome.
-	 * @param length the length of the new chromosome.
-	 * @throws NullPointerException if the {@code validCharacters} is
-	 *         {@code null}.
-	 * @throws IllegalArgumentException if the {@code length} is smaller than
-	 *         one.
-	 */
-	public CharacterChromosome(final CharSeq validCharacters, final int length) {
-		super(
-			new Array<CharacterGene>(length).fill(
-				CharacterGene.valueOf(validCharacters)
-			).toISeq()
-		);
-		_validCharacters = validCharacters;
-		_valid = true;
-	}
-
-	/**
 	 * Create a new chromosome from the given {@code genes} array. The genes
 	 * array is copied, so changes to the given genes array doesn't effect the
 	 * genes of this chromosome.
@@ -122,27 +83,58 @@ public class CharacterChromosome
 	}
 
 	/**
+	 * Create a new chromosome with the {@link CharacterGene#DEFAULT_CHARACTERS}
+	 * char set as valid characters.
+	 *
+	 * @param length the {@code length} of the new chromosome.
+	 * @throws IllegalArgumentException if the {@code length} is smaller than
+	 *         one.
+	 *
+	 * @deprecated Use {@link #of(int)} instead.
+	 */
+	@Deprecated
+	public CharacterChromosome(final int length) {
+		this(CharacterGene.seq(DEFAULT_CHARACTERS, length));
+		_valid = true;
+	}
+
+	/**
+	 * Create a new chromosome with the {@code validCharacters} char set as
+	 * valid characters.
+	 *
+	 * @param validCharacters the valid characters for this chromosome.
+	 * @param length the length of the new chromosome.
+	 * @throws NullPointerException if the {@code validCharacters} is
+	 *         {@code null}.
+	 * @throws IllegalArgumentException if the {@code length} is smaller than
+	 *         one.
+	 *
+	 * @deprecated Use {@link #of(org.jenetics.util.CharSeq, int)} instead.
+	 */
+	@Deprecated
+	public CharacterChromosome(final CharSeq validCharacters, final int length) {
+		this(CharacterGene.seq(validCharacters, length));
+		_valid = true;
+	}
+
+	/**
 	 * Create a new chromosome from the given genes (given as string).
 	 *
 	 * @param genes the character genes.
 	 * @param validCharacters the valid characters.
-	 * @throws IllegalArgumentException if not all genes are in the set of valid
-	 *         characters or the genes string is empty.
+	 * @throws IllegalArgumentException if the genes string is empty.
+	 *
+	 * @deprecated Use {@link #of(String, org.jenetics.util.CharSeq)} instead.
 	 */
+	@Deprecated
 	public CharacterChromosome(final String genes, final CharSeq validCharacters) {
 		super(
 			new Array<CharacterGene>(genes.length()).fill(new Factory<CharacterGene>() {
 				private int _index = 0;
-				@Override
-				public CharacterGene newInstance() {
-					final char c = genes.charAt(_index++);
-					if (!validCharacters.contains(c)) {
-						throw new IllegalArgumentException(format(
-								"Character '%s' not in valid characters %s",
-								c, validCharacters
-							));
-					}
-					return CharacterGene.valueOf(c, validCharacters);
+				@Override public CharacterGene newInstance() {
+					return CharacterGene.valueOf(
+						genes.charAt(_index++), validCharacters
+					);
 				}
 			}).toISeq()
 		);
@@ -154,11 +146,13 @@ public class CharacterChromosome
 	 * Create a new chromosome from the given genes (given as string).
 	 *
 	 * @param genes the character genes.
-	 * @throws IllegalArgumentException if not all genes are in the set of valid
-	 *         characters or the genes is an empty string.
+	 * @throws IllegalArgumentException if the genes string is empty.
+	 *
+	 * @deprecated Use {@link #of(String)} instead.
 	 */
+	@Deprecated
 	public CharacterChromosome(final String genes) {
-		this(genes, CharacterGene.DEFAULT_CHARACTERS);
+		this(genes, DEFAULT_CHARACTERS);
 	}
 
 	/**
@@ -230,6 +224,54 @@ public class CharacterChromosome
 		return out.toString();
 	}
 
+
+	/**
+	 * Create a new chromosome with the {@link CharacterGene#DEFAULT_CHARACTERS}
+	 * char set as valid characters.
+	 *
+	 * @param length the {@code length} of the new chromosome.
+	 * @throws IllegalArgumentException if the {@code length} is smaller than
+	 *         one.
+	 */
+	public static CharacterChromosome of(final int length) {
+		return new CharacterChromosome(length);
+	}
+
+	/**
+	 * Create a new chromosome with the {@code validCharacters} char set as
+	 * valid characters.
+	 *
+	 * @param validCharacters the valid characters for this chromosome.
+	 * @param length the length of the new chromosome.
+	 * @throws NullPointerException if the {@code validCharacters} is
+	 *         {@code null}.
+	 * @throws IllegalArgumentException if the {@code length} is smaller than
+	 *         one.
+	 */
+	public static CharacterChromosome of(final CharSeq validCharacters, final int length) {
+		return new CharacterChromosome(validCharacters, length);
+	}
+
+	/**
+	 * Create a new chromosome from the given genes (given as string).
+	 *
+	 * @param genes the character genes.
+	 * @param validCharacters the valid characters.
+	 * @throws IllegalArgumentException if the genes string is empty.
+	 */
+	public static CharacterChromosome of(final String genes, final CharSeq validCharacters) {
+		return new CharacterChromosome(genes, validCharacters);
+	}
+
+	/**
+	 * Create a new chromosome from the given genes (given as string).
+	 *
+	 * @param genes the character genes.
+	 * @throws IllegalArgumentException if the genes string is empty.
+	 */
+	public static CharacterChromosome of(final String genes) {
+		return new CharacterChromosome(genes);
+	}
 
 	/* *************************************************************************
 	 *  Property access methods
