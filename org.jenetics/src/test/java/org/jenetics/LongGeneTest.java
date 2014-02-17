@@ -37,7 +37,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-15 $</em>
+ * @version <em>$Date: 2014-02-17 $</em>
  */
 public class LongGeneTest extends NumericGeneTester<Long, LongGene> {
 
@@ -58,7 +58,7 @@ public class LongGeneTest extends NumericGeneTester<Long, LongGene> {
 
 			final Variance<Long> variance = new Variance<>();
 
-			final Histogram<Long> histogram = Histogram.valueOf(min, max, 10);
+			final Histogram<Long> histogram = Histogram.of(min, max, 10);
 
 			final int samples = 10000;
 			for (int i = 0; i < samples; ++i) {

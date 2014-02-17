@@ -34,7 +34,7 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-15 $</em>
+ * @version <em>$Date: 2014-02-17 $</em>
  */
 public class GaussianMutatorTest extends MutatorTestBase {
 
@@ -55,7 +55,7 @@ public class GaussianMutatorTest extends MutatorTestBase {
 		final DoubleGene gene = DoubleGene.of(mean, min, max);
 		final NormalMutator<DoubleGene> mutator = new NormalMutator<>();
 
-		final Histogram<Double> histogram = Histogram.valueOf(0.0, 10.0, 10);
+		final Histogram<Double> histogram = Histogram.of(0.0, 10.0, 10);
 		final Variance<Double> variance = new Variance<>();
 
 		for (int i = 0; i < 10000; ++i) {

@@ -39,7 +39,7 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-15 $</em>
+ * @version <em>$Date: 2014-02-17 $</em>
  */
 public class CharacterGeneTest extends GeneTester<CharacterGene> {
 
@@ -55,7 +55,7 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 
 			final Factory<CharacterGene> factory = CharacterGene.valueOf(characters);
 
-			final Histogram<Long> histogram = Histogram.valueOf(0L, 10L, 10);
+			final Histogram<Long> histogram = Histogram.of(0L, 10L, 10);
 
 			final int samples = 100000;
 			for (int i = 0; i < samples; ++i) {

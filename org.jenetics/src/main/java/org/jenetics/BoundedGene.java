@@ -28,7 +28,7 @@ import static org.jenetics.util.object.hashCodeOf;
  * value.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-02-17 $</em>
  * @since 1.6
  */
 public abstract class BoundedGene<
@@ -39,6 +39,8 @@ public abstract class BoundedGene<
 		Gene<A, G>,
 		Comparable<G>
 {
+
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * The minimum value of this {@code BoundedGene}.

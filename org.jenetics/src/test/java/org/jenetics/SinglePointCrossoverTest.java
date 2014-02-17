@@ -40,7 +40,7 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-15 $</em>
+ * @version <em>$Date: 2014-02-17 $</em>
  */
 public class SinglePointCrossoverTest {
 
@@ -140,7 +140,7 @@ public class SinglePointCrossoverTest {
 		final long max = nallgenes;
 		final Range<Long> domain = new Range<>(min, max);
 
-		final Histogram<Long> histogram = Histogram.valueOf(min, max, 10);
+		final Histogram<Long> histogram = Histogram.of(min, max, 10);
 		final Variance<Long> variance = new Variance<>();
 
 		for (int i = 0; i < N; ++i) {
