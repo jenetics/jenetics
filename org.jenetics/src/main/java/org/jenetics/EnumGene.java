@@ -60,7 +60,7 @@ import org.jenetics.util.RandomRegistry;
  * can be used when creating an {@link GeneticAlgorithm} instance.
  * [code]
  * final ISeq〈Integer〉 alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
- * final Factory〈Genotype〈EnumGene〈Integer〉〉〉 gtf = Genotype.valueOf(
+ * final Factory〈Genotype〈EnumGene〈Integer〉〉〉 gtf = Genotype.of(
  *     PermutationChromosome.valueOf(alleles)
  * );
  * [/code]
@@ -68,7 +68,7 @@ import org.jenetics.util.RandomRegistry;
  * The following code shows the assurances of the {@code EnumGene}.
  * [code]
  * final ISeq〈Integer〉 alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
- * final EnumGene〈Integer〉 gene = EnumGene.valueOf(alleles, 5);
+ * final EnumGene〈Integer〉 gene = EnumGene.of(alleles, 5);
  *
  * assert(gene.getAlleleIndex() == 5);
  * assert(gene.getAllele() == gene.getValidAlleles().get(5));
@@ -200,7 +200,7 @@ public final class EnumGene<A>
 		return new Function<Integer, EnumGene<T>>() {
 			@Override
 			public EnumGene<T> apply(final Integer index) {
-				return valueOf(validAlleles, index);
+				return of(validAlleles, index);
 			}
 		};
 	}
@@ -210,7 +210,7 @@ public final class EnumGene<A>
 			private int _index = 0;
 			@Override
 			public EnumGene<T> newInstance() {
-				return EnumGene.valueOf(validAlleles, _index++);
+				return EnumGene.of(validAlleles, _index++);
 			}
 		};
 	}
@@ -225,14 +225,17 @@ public final class EnumGene<A>
 		}
 	};
 
-	public static <G> EnumGene<G> valueOf(
-		final G[] validAlleles,
-		final int alleleIndex
-	) {
-		return valueOf(Array.of(validAlleles).toISeq(), alleleIndex);
-	}
-
-	public static <A> EnumGene<A> valueOf(
+	/**
+	 * Create a new enum gene from the given valid genes and the chosen allele
+	 * index.
+	 *
+	 * @param validAlleles the sequence of valid alleles.
+	 * @param alleleIndex the index of the allele for this gene.
+	 * @return a new enum gene
+	 * @throws java.lang.IllegalArgumentException if the give valid alleles
+	 *         sequence is empty of the allele index is out of range.
+	 */
+	public static <A> EnumGene<A> of(
 		final ISeq<? extends A> validAlleles,
 		final int alleleIndex
 	) {
@@ -256,11 +259,55 @@ public final class EnumGene<A>
 		return gene;
 	}
 
-	public static <G> EnumGene<G> valueOf(final G[] validAlleles) {
-		return valueOf(Array.of(validAlleles).toISeq());
+	/**
+	 * @deprecated Use {@link #of(org.jenetics.util.ISeq, int)} instead.
+	 */
+	@Deprecated
+	public static <A> EnumGene<A> valueOf(
+		final ISeq<? extends A> validAlleles,
+		final int alleleIndex
+	) {
+		return of(validAlleles, alleleIndex);
 	}
 
-	public static <G> EnumGene<G> valueOf(final ISeq<G> validAlleles) {
+	/**
+	 * Create a new enum gene from the given valid genes and the chosen allele
+	 * index.
+	 *
+	 * @param validAlleles the array of valid alleles.
+	 * @param alleleIndex the index of the allele for this gene.
+	 * @return a new enum gene
+	 * @throws java.lang.IllegalArgumentException if the give valid alleles
+	 *         array is empty of the allele index is out of range.
+	 */
+	public static <G> EnumGene<G> of(
+		final G[] validAlleles,
+		final int alleleIndex
+	) {
+		return of(Array.of(validAlleles).toISeq(), alleleIndex);
+	}
+
+	/**
+	 * @deprecated Use {@link #of(Object[], int)} instead.
+	 */
+	@Deprecated
+	public static <G> EnumGene<G> valueOf(
+		final G[] validAlleles,
+		final int alleleIndex
+	) {
+		return of(validAlleles, alleleIndex);
+	}
+
+	/**
+	 * Return a new enum gene with an allele randomly chosen from the given
+	 * valid alleles.
+	 *
+	 * @param validAlleles the sequence of valid alleles.
+	 * @return a new enum gene
+	 * @throws java.lang.IllegalArgumentException if the give valid alleles
+	 *         sequence is empty
+	 */
+	public static <G> EnumGene<G> of(final ISeq<G> validAlleles) {
 		if (validAlleles.length() == 0) {
 			throw new IllegalArgumentException(
 				"Array of valid alleles must be greater than zero."
@@ -274,6 +321,34 @@ public final class EnumGene<A>
 		return gene;
 	}
 
+	/**
+	 * @deprecated Use {@link #of(org.jenetics.util.ISeq)} instead.
+	 */
+	@Deprecated
+	public static <G> EnumGene<G> valueOf(final ISeq<G> validAlleles) {
+		return of(validAlleles);
+	}
+
+	/**
+	 * Return a new enum gene with an allele randomly chosen from the given
+	 * valid alleles.
+	 *
+	 * @param validAlleles the array of valid alleles.
+	 * @return a new enum gene
+	 * @throws java.lang.IllegalArgumentException if the give valid alleles
+	 *         array is empty
+	 */
+	public static <G> EnumGene<G> of(final G[] validAlleles) {
+		return of(Array.of(validAlleles).toISeq());
+	}
+
+	/**
+	 * @deprecated Use {@link #of(Object[])} instead.
+	 */
+	@Deprecated
+	public static <G> EnumGene<G> valueOf(final G[] validAlleles) {
+		return of(validAlleles);
+	}
 
 	/* *************************************************************************
 	 *  XML object serialization
@@ -300,7 +375,7 @@ public final class EnumGene<A>
 				alleles.set(i, allele);
 			}
 
-			return EnumGene.valueOf(alleles.toISeq(), index);
+			return EnumGene.of(alleles.toISeq(), index);
 		}
 
 		@Override
@@ -354,7 +429,7 @@ public final class EnumGene<A>
 
 			@Override
 			public EnumGene unmarshal(final Model m) {
-				return EnumGene.valueOf(
+				return EnumGene.of(
 					Array.of(m.alleles).map(Unmarshaller).toISeq(),
 					m.currentAlleleIndex
 				);
