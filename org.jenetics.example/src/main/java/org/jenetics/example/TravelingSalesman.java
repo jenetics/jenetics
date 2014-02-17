@@ -41,7 +41,7 @@ import org.jenetics.util.Function;
  * The classical <a href="http://en.wikipedia.org/wiki/Travelling_salesman_problem">TSP</a>.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.0 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-02-17 $</em>
  */
 public class TravelingSalesman {
 
@@ -80,7 +80,7 @@ public class TravelingSalesman {
 		final int stops = 20;
 
 		final Function<Genotype<EnumGene<Integer>>, Double> ff = new FF(adjacencyMatrix(stops));
-		final Factory<Genotype<EnumGene<Integer>>> gtf = Genotype.valueOf(
+		final Factory<Genotype<EnumGene<Integer>>> gtf = Genotype.of(
 			PermutationChromosome.ofInteger(stops)
 		);
 		final GeneticAlgorithm<EnumGene<Integer>, Double>

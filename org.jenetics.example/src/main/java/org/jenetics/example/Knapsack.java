@@ -90,7 +90,7 @@ public class Knapsack {
 
 	public static void main(String[] argv) throws Exception {
 		final KnapsackFunction ff = FF(15, 100);
-		final Factory<Genotype<BitGene>> genotype = Genotype.valueOf(
+		final Factory<Genotype<BitGene>> genotype = Genotype.of(
 			new BitChromosome(15, 0.5)
 		);
 

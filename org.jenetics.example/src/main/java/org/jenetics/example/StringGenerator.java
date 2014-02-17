@@ -40,7 +40,7 @@ import org.jenetics.util.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.0 &mdash; <em>$Date: 2013-09-02 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-02-17 $</em>
  */
 public class StringGenerator {
 
@@ -76,7 +76,7 @@ public class StringGenerator {
 			"jenetics";
 
 		final CharSeq chars = CharSeq.valueOf("a-z");
-		final Factory<Genotype<CharacterGene>> gtf = Genotype.valueOf(
+		final Factory<Genotype<CharacterGene>> gtf = Genotype.of(
 			new CharacterChromosome(chars, value.length())
 		);
 		final Gen ff = new Gen(value);

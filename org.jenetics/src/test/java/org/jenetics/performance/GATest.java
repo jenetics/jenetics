@@ -37,7 +37,7 @@ import org.jenetics.util.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-15 $</em>
+ * @version <em>$Date: 2014-02-17 $</em>
  */
 @Suite("GA")
 public class GATest {
@@ -114,7 +114,7 @@ public class GATest {
 		_chromosomes = new Array<>(NCHROMOSOMES);
 		{_chromosomes.fill(new CharacterChromosome(NGENES));}
 
-		private final Genotype<CharacterGene> _gt = Genotype.valueOf(_chromosomes.toISeq());
+		private final Genotype<CharacterGene> _gt = Genotype.of(_chromosomes.toISeq());
 
 		private GeneticAlgorithm<CharacterGene, Double> _ga;
 

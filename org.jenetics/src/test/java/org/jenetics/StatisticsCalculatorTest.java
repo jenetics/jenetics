@@ -31,7 +31,7 @@ import org.jenetics.util.accumulators;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-15 $</em>
+ * @version <em>$Date: 2014-02-17 $</em>
  */
 public class StatisticsCalculatorTest {
 
@@ -59,7 +59,7 @@ public class StatisticsCalculatorTest {
 						++_pos;
 						final DoubleGene gene = DoubleGene.of(_pos, MIN, MAX);
 						return Phenotype.valueOf(
-								Genotype.valueOf(DoubleChromosome.of(gene)),
+								Genotype.of(DoubleChromosome.of(gene)),
 								TestUtils.FF, 0
 							);
 					}

@@ -31,7 +31,7 @@ import org.jenetics.util.functions;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-14 $</em>
+ * @version <em>$Date: 2014-02-17 $</em>
  */
 public class PhenotypeTest extends ObjectTester<Phenotype<DoubleGene, Double>> {
 
@@ -46,12 +46,12 @@ public class PhenotypeTest extends ObjectTester<Phenotype<DoubleGene, Double>> {
 		}
 	}
 
-	private final Factory<Genotype<DoubleGene>> _genotype = Genotype.valueOf(
-			DoubleChromosome.of(0, 1, 50),
-			DoubleChromosome.of(0, 1, 500),
-			DoubleChromosome.of(0, 1, 100),
-			DoubleChromosome.of(0, 1, 50)
-		);
+	private final Factory<Genotype<DoubleGene>> _genotype = Genotype.of(
+		DoubleChromosome.of(0, 1, 50),
+		DoubleChromosome.of(0, 1, 500),
+		DoubleChromosome.of(0, 1, 100),
+		DoubleChromosome.of(0, 1, 50)
+	);
 	private final Function<Genotype<DoubleGene>, Double> _ff = new FF();
 	private final Function<Double, Double> _scaler = functions.Identity();
 	private final Factory<Phenotype<DoubleGene, Double>>

@@ -31,7 +31,7 @@ import org.jenetics.util.IO;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.0 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-02-17 $</em>
  */
 public class Serial {
 
@@ -56,12 +56,12 @@ public class Serial {
 	}
 
 	public static void main(final String[] args) throws Exception {
-		final Genotype<DoubleGene> genotype = Genotype.valueOf(
-			    new DoubleChromosome(0.0, 1.0, 8),
-			    new DoubleChromosome(1.0, 2.0, 10),
-			    new DoubleChromosome(0.0, 10.0, 9),
-			    new DoubleChromosome(0.1, 0.9, 5)
-			);
+		final Genotype<DoubleGene> genotype = Genotype.of(
+			new DoubleChromosome(0.0, 1.0, 8),
+			new DoubleChromosome(1.0, 2.0, 10),
+			new DoubleChromosome(0.0, 10.0, 9),
+			new DoubleChromosome(0.1, 0.9, 5)
+		);
 
 		final GeneticAlgorithm<DoubleGene, Double> ga = new GeneticAlgorithm<>(genotype, new Id(), new Scaler());
 		ga.setPopulationSize(5);

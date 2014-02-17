@@ -61,7 +61,7 @@ public class RealFunction2D {
 	}
 
 	public static void main(final String[] args) {
-		final Factory<Genotype<DoubleGene>> gtf = Genotype.valueOf(
+		final Factory<Genotype<DoubleGene>> gtf = Genotype.of(
 			new DoubleChromosome(0.0, 10.0), // x1 in [0, 10]
 			new DoubleChromosome(5.0, 33.0)  // x2 in [5, 33]
 		);

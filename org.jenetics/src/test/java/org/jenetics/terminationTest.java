@@ -29,7 +29,7 @@ import org.jenetics.util.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-15 $</em>
+ * @version <em>$Date: 2014-02-17 $</em>
  */
 public class terminationTest {
 
@@ -61,7 +61,7 @@ public class terminationTest {
 
 	static GeneticAlgorithm<DoubleGene, Double> GA() {
 		return new GeneticAlgorithm<>(
-				Genotype.valueOf(DoubleChromosome.of(0, 10)), FF
+				Genotype.of(DoubleChromosome.of(0, 10)), FF
 			);
 	}
 

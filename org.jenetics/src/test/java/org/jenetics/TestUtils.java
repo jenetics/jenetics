@@ -29,7 +29,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-14 $</em>
+ * @version <em>$Date: 2014-02-17 $</em>
  */
 class TestUtils {
 
@@ -128,7 +128,7 @@ class TestUtils {
 			chromosomes.set(i, DoubleChromosome.of(0, 10, ngenes));
 		}
 
-		final Genotype<DoubleGene> genotype = Genotype.valueOf(chromosomes.toISeq());
+		final Genotype<DoubleGene> genotype = Genotype.of(chromosomes.toISeq());
 		final Population<DoubleGene, Double> population =
 			new Population<>(npopulation);
 
@@ -158,7 +158,7 @@ class TestUtils {
 			chromosomes.set(i, new PermutationChromosome<>(ialleles));
 		}
 
-		final Genotype<EnumGene<Double>> genotype = Genotype.valueOf(chromosomes.toISeq());
+		final Genotype<EnumGene<Double>> genotype = Genotype.of(chromosomes.toISeq());
 		final Population<EnumGene<Double>, Double> population =
 			new Population<>(npopulation);
 
@@ -226,14 +226,14 @@ class TestUtils {
 
 	public static GeneticAlgorithm<DoubleGene, Double> GA() {
 		return new GeneticAlgorithm<>(
-				Genotype.valueOf(DoubleChromosome.of(0, 1)), FF
+				Genotype.of(DoubleChromosome.of(0, 1)), FF
 			);
 	}
 
 
 	public static Phenotype<DoubleGene, Double> newDoublePhenotype(final double value) {
-		return Phenotype.valueOf(Genotype.valueOf(
-				DoubleChromosome.of(DoubleGene.of(value, 0, 10))), FF, 0
+		return Phenotype.valueOf(Genotype.of(
+			DoubleChromosome.of(DoubleGene.of(value, 0, 10))), FF, 0
 			).evaluate();
 	}
 
