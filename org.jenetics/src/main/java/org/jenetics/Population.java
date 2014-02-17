@@ -63,7 +63,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-02-17 $</em>
  */
 @XmlJavaTypeAdapter(Population.Model.Adapter.class)
 public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
@@ -473,7 +473,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 			@Override
 			public Population unmarshal(final Model model) throws Exception {
-				final ISeq pt = Array.valueOf(model.phenotypes)
+				final ISeq pt = Array.of(model.phenotypes)
 					.map(jaxb.Unmarshaller).toISeq();
 
 				return new Population(pt.asList());

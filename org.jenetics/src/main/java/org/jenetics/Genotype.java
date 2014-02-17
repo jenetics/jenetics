@@ -338,7 +338,7 @@ public final class Genotype<G extends Gene<?, G>>
 	public static <G extends Gene<?, G>> Genotype<G> valueOf(
 		final Chromosome<G>... chromosomes
 	) {
-		return of(Array.valueOf(chromosomes).toISeq());
+		return of(Array.of(chromosomes).toISeq());
 	}
 
 	/**
@@ -354,7 +354,7 @@ public final class Genotype<G extends Gene<?, G>>
 	public static <G extends Gene<?, G>> Genotype<G> of(
 		final Chromosome<G>... chromosomes
 	) {
-		return of(Array.valueOf(chromosomes).toISeq());
+		return of(Array.of(chromosomes).toISeq());
 	}
 
 	/* *************************************************************************
@@ -436,7 +436,7 @@ public final class Genotype<G extends Gene<?, G>>
 
 			@Override
 			public Genotype unmarshal(final Model model) throws Exception {
-				final ISeq chs = Array.valueOf(model.chromosomes)
+				final ISeq chs = Array.of(model.chromosomes)
 					.map(jaxb.Unmarshaller).toISeq();
 
 				return new Genotype(chs, model.ngenes);

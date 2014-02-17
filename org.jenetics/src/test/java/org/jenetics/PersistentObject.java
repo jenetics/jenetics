@@ -113,7 +113,7 @@ public class PersistentObject<T> {
 	public PersistentObject(final String name, final T value, final String... ios) {
 		_name = Objects.requireNonNull(name);
 		_value = Objects.requireNonNull(value);
-		_marshallings = Array.valueOf(ios).map(ToMarshalling).toISeq();
+		_marshallings = Array.of(ios).map(ToMarshalling).toISeq();
 	}
 
 	public String getName() {

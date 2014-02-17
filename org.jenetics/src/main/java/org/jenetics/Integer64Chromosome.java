@@ -61,7 +61,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-02-14 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-02-17 $</em>
  *
  * @deprecated Use {@link org.jenetics.LongChromosome} instead. This classes
  *             uses the <i>JScience</i> library, which will be removed in the
@@ -105,7 +105,7 @@ public class Integer64Chromosome
 	 *         than one.
 	 */
 	public Integer64Chromosome(final Integer64Gene... genes) {
-		this(Array.valueOf(genes).toISeq());
+		this(Array.of(genes).toISeq());
 	}
 
 	/**
@@ -355,7 +355,7 @@ public class Integer64Chromosome
 			public Integer64Chromosome unmarshal(final Model model) {
 				final Integer64 min = Integer64.valueOf(model.min);
 				final Integer64 max = Integer64.valueOf(model.max);
-				final ISeq<Integer64Gene> genes = Array.valueOf(model.values)
+				final ISeq<Integer64Gene> genes = Array.of(model.values)
 					.map(compose(Unmarshaller, Integer64Gene.Gene(min, max)))
 					.toISeq();
 

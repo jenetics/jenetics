@@ -61,7 +61,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-02-17 $</em>
  */
 @XmlJavaTypeAdapter(PermutationChromosome.Model.Adapter.class)
 public final class PermutationChromosome<T>
@@ -261,7 +261,7 @@ public final class PermutationChromosome<T>
 
 			final ISeq<Object> ialleles = alleles.toISeq();
 
-			final Array<Integer> indexes = Array.valueOf(
+			final Array<Integer> indexes = Array.of(
 				xml.get(ALLELE_INDEXES, String.class
 				).split(",")).map(StringToInteger);
 
@@ -347,10 +347,10 @@ public final class PermutationChromosome<T>
 			public PermutationChromosome unmarshal(final Model model)
 				throws Exception
 			{
-				final ISeq seq = Array.valueOf(model.genes)
+				final ISeq seq = Array.of(model.genes)
 					.map(jaxb.Unmarshaller).toISeq();
 				final Array<Integer> indexes = Array
-					.valueOf(model.indexes.toString().split(","))
+					.of(model.indexes.toString().split(","))
 					.map(StringToInteger);
 
 				final Array<Object> genes = new Array<>(seq.length());
