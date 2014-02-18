@@ -19,7 +19,9 @@
  */
 package org.jenetics.example;
 
-import org.jscience.mathematics.number.Float64;
+import static org.jenetics.util.math.random.nextDouble;
+
+import java.util.Random;
 
 import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;
@@ -33,14 +35,20 @@ import org.jenetics.SinglePointCrossover;
 import org.jenetics.TournamentSelector;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
+import org.jenetics.util.RandomRegistry;
 
 final class Item {
-	public double size;
-	public double value;
+	public final double size;
+	public final double value;
+
+	Item(final double size, final double value) {
+		this.size = size;
+		this.value = value;
+	}
 }
 
 final class KnapsackFunction
-	implements Function<Genotype<BitGene>, Float64>
+	implements Function<Genotype<BitGene>, Double>
 {
 	private final Item[] _items;
 	private final double _size;
@@ -55,7 +63,7 @@ final class KnapsackFunction
 	}
 
 	@Override
-	public Float64 apply(final Genotype<BitGene> genotype) {
+	public Double apply(final Genotype<BitGene> genotype) {
 		final Chromosome<BitGene> ch = genotype.getChromosome();
 
 		double size = 0;
@@ -67,45 +75,43 @@ final class KnapsackFunction
 			}
 		}
 
-		Float64 result = Float64.ZERO;
-		if (size <= _size) {
-			result = Float64.valueOf(value);
-		}
-		return result;
+		return size <= _size ? value : 0;
 	}
 }
 
 public class Knapsack {
 
 	private static KnapsackFunction FF(final int n, final double size) {
-		Item[] items = new Item[n];
+		final Random random = RandomRegistry.getRandom();
+		final Item[] items = new Item[n];
 		for (int i = 0; i < items.length; ++i) {
-			items[i] = new Item();
-			items[i].size = (Math.random() + 1)*10;
-			items[i].value = (Math.random() + 1)*15;
+			items[i] = new Item(
+				nextDouble(random, 1, 10),
+				nextDouble(random, 1, 15)
+			);
 		}
 
 		return new KnapsackFunction(items, size);
 	}
 
-	public static void main(String[] argv) throws Exception {
+	public static void main(String[] args) throws Exception {
 		final KnapsackFunction ff = FF(15, 100);
 		final Factory<Genotype<BitGene>> genotype = Genotype.of(
 			BitChromosome.of(15, 0.5)
 		);
 
-		final GeneticAlgorithm<BitGene, Float64> ga = new GeneticAlgorithm<>(
+		final GeneticAlgorithm<BitGene, Double> ga = new GeneticAlgorithm<>(
 			genotype, ff
 		);
 		ga.setPopulationSize(500);
 		ga.setStatisticsCalculator(
-			new NumberStatistics.Calculator<BitGene, Float64>()
+			new NumberStatistics.Calculator<BitGene, Double>()
 		);
 		ga.setSurvivorSelector(
-			new TournamentSelector<BitGene, Float64>(5)
+			new TournamentSelector<BitGene, Double>(5)
 		);
 		ga.setOffspringSelector(
-			new RouletteWheelSelector<BitGene, Float64>()
+			new RouletteWheelSelector<BitGene, Double>()
 		);
 		ga.setAlterers(
 			 new Mutator<BitGene>(0.115),
