@@ -57,7 +57,7 @@ final class OneCounter
 public class OnesCounting {
 	public static void main(String[] args) {
 		Factory<Genotype<BitGene>> gtf = Genotype.of(
-			new BitChromosome(20, 0.15)
+			BitChromosome.of(20, 0.15)
 		);
 		Function<Genotype<BitGene>, Integer> ff = new OneCounter();
 		GeneticAlgorithm<BitGene, Integer> ga =

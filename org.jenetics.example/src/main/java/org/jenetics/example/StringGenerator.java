@@ -23,8 +23,6 @@ import java.io.Serializable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.jscience.mathematics.number.Integer64;
-
 import org.jenetics.CharacterChromosome;
 import org.jenetics.CharacterGene;
 import org.jenetics.CompositeAlterer;
@@ -40,12 +38,12 @@ import org.jenetics.util.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.0 &mdash; <em>$Date: 2014-02-17 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-02-18 $</em>
  */
 public class StringGenerator {
 
 	private static class Gen
-		implements Function<Genotype<CharacterGene>, Integer64>,
+		implements Function<Genotype<CharacterGene>, Integer>,
 					Serializable
 	{
 		private static final long serialVersionUID = 1L;
@@ -57,9 +55,9 @@ public class StringGenerator {
 		}
 
 		@Override
-		public Integer64 apply(final Genotype<CharacterGene> genotype) {
+		public Integer apply(final Genotype<CharacterGene> genotype) {
 			final CharacterChromosome chromosome = (CharacterChromosome)genotype.getChromosome();
-			return Integer64.valueOf(value.length() - levenshtein(value, chromosome));
+			return value.length() - levenshtein(value, chromosome);
 		}
 
 		@Override
@@ -77,18 +75,17 @@ public class StringGenerator {
 
 		final CharSeq chars = CharSeq.of("a-z");
 		final Factory<Genotype<CharacterGene>> gtf = Genotype.of(
-			new CharacterChromosome(chars, value.length())
+			CharacterChromosome.of(chars, value.length())
 		);
 		final Gen ff = new Gen(value);
-		final GeneticAlgorithm<CharacterGene, Integer64>
-		ga = new GeneticAlgorithm<>(gtf, ff);
+		final GeneticAlgorithm<CharacterGene, Integer> ga = new GeneticAlgorithm<>(gtf, ff);
 
 		ga.setPopulationSize(500);
 		ga.setSurvivorSelector(
-			new StochasticUniversalSelector<CharacterGene, Integer64>()
+			new StochasticUniversalSelector<CharacterGene, Integer>()
 		);
 		ga.setOffspringSelector(
-			new TournamentSelector<CharacterGene, Integer64>(5)
+			new TournamentSelector<CharacterGene, Integer>(5)
 		);
 		ga.setAlterer(CompositeAlterer.valueOf(
 			new Mutator<CharacterGene>(0.1),

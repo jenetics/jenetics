@@ -37,8 +37,9 @@ import org.jenetics.util.math;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-17 $</em>
+ * @version <em>$Date: 2014-02-18 $</em>
  */
+@SuppressWarnings("deprecation")
 public class MultiPointCrossoverTest {
 
 	@Test(dataProvider = "parameters")
