@@ -112,7 +112,7 @@ public class GATest {
 	) {
 		private final Array<Chromosome<CharacterGene>>
 		_chromosomes = new Array<>(NCHROMOSOMES);
-		{_chromosomes.fill(new CharacterChromosome(NGENES));}
+		{_chromosomes.fill(CharacterChromosome.of(NGENES));}
 
 		private final Genotype<CharacterGene> _gt = Genotype.of(_chromosomes.toISeq());
 

@@ -39,6 +39,7 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version <em>$Date$</em>
  */
+@SuppressWarnings("deprecation")
 public class GenotypeTest extends ObjectTester<Genotype<DoubleGene>> {
 
 
