@@ -313,11 +313,11 @@ public class PersistentObject<T> {
 	 **************************************************************************/
 
 	public static BitChromosome nextBitChromosome() {
-		return new BitChromosome(20, 0.5);
+		return BitChromosome.of(20, 0.5);
 	}
 
 	public static CharacterChromosome nextCharacterChromosome() {
-		return new CharacterChromosome(20);
+		return CharacterChromosome.of(20);
 	}
 
 	public static LongChromosome nextLongChromosome() {
