@@ -59,7 +59,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-17 $</em>
+ * @version <em>$Date: 2014-02-18 $</em>
  */
 @SuppressWarnings("deprecation")
 public class PersistentObject<T> {
@@ -313,11 +313,11 @@ public class PersistentObject<T> {
 	 **************************************************************************/
 
 	public static BitChromosome nextBitChromosome() {
-		return new BitChromosome(20, 0.5);
+		return BitChromosome.of(20, 0.5);
 	}
 
 	public static CharacterChromosome nextCharacterChromosome() {
-		return new CharacterChromosome(20);
+		return CharacterChromosome.of(20);
 	}
 
 	public static LongChromosome nextLongChromosome() {
