@@ -55,9 +55,10 @@ public class StringGenerator {
 		}
 
 		@Override
-		public Integer apply(final Genotype<CharacterGene> genotype) {
-			final CharacterChromosome chromosome = (CharacterChromosome)genotype.getChromosome();
-			return value.length() - levenshtein(value, chromosome);
+		public Integer apply(final Genotype<CharacterGene> gt) {
+			return value.length() - levenshtein(
+				value, (CharacterChromosome)gt.getChromosome()
+			);
 		}
 
 		@Override
@@ -70,8 +71,7 @@ public class StringGenerator {
 		final int maxThreads = Runtime.getRuntime().availableProcessors() + 2;
 		final ExecutorService pool = Executors.newFixedThreadPool(maxThreads);
 
-		final String value =
-			"jenetics";
+		final String value = "jenetics";
 
 		final CharSeq chars = CharSeq.of("a-z");
 		final Factory<Genotype<CharacterGene>> gtf = Genotype.of(
