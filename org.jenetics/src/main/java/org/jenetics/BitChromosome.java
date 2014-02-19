@@ -49,6 +49,7 @@ import javolution.xml.stream.XMLStreamException;
 import org.jscience.mathematics.number.LargeInteger;
 import org.jscience.mathematics.number.Number;
 
+import org.jenetics.internal.util.internalbit;
 import org.jenetics.internal.util.model.ModelType;
 import org.jenetics.internal.util.model.ValueType;
 
@@ -92,7 +93,7 @@ public class BitChromosome extends Number<BitChromosome>
 
 	public BitChromosome(final byte[] bits, final int start, final int end) {
 		_length = min(bits.length >>> 3, end) - start;
-		_genes = bit.copy(bits, start, end);
+		_genes = internalbit.copy(bits, start, end);
 		_seq = new BitGeneArray(_genes, 0, _length);
 	}
 
