@@ -19,6 +19,7 @@
  */
 package org.jenetics;
 
+import static java.lang.Math.min;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.checkProbability;
@@ -59,7 +60,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-02-17 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-02-19 $</em>
  */
 @XmlJavaTypeAdapter(BitChromosome.Model.Adapter.class)
 public class BitChromosome extends Number<BitChromosome>
@@ -84,8 +85,16 @@ public class BitChromosome extends Number<BitChromosome>
 	 * The boolean array which holds the {@link BitGene}s.
 	 */
 	protected byte[] _genes;
+
+	// Wraps the genes byte array into a Seq<BitGene>.
 	private transient BitGeneArray _seq;
 
+
+	public BitChromosome(final byte[] bits, final int start, final int end) {
+		_length = min(bits.length >>> 3, end) - start;
+		_genes = bit.copy(bits, start, end);
+		_seq = new BitGeneArray(_genes, 0, _length);
+	}
 
 	private BitChromosome(final byte[] bits, final int length, final double p) {
 		if (bits.length != bit.toByteLength(length)) {
@@ -122,7 +131,7 @@ public class BitChromosome extends Number<BitChromosome>
 	}
 
 	/**
-	 * Construct a new BitChromosome with the given _length.
+	 * Construct a new BitChromosome with the given length.
 	 *
 	 * @param length Length of the BitChromosome, number of bits.
 	 * @param p Probability of the TRUEs in the BitChromosome.
@@ -145,7 +154,7 @@ public class BitChromosome extends Number<BitChromosome>
 	 * @throws NegativeArraySizeException if the {@code _length} is smaller
 	 *         than one.
 	 *
-	 * @deprecated Use {@link #BitChromosome(int)} instead.
+	 * @deprecated Use {@link #of(int)} instead.
 	 */
 	@Deprecated
 	public BitChromosome(final int length) {

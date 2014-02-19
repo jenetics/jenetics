@@ -38,7 +38,7 @@ import org.jscience.mathematics.number.LargeInteger;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.5 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-02-19 $</em>
  */
 public final class bit extends StaticObject {
 	private bit() {}
@@ -146,6 +146,40 @@ public final class bit extends StaticObject {
 	public static byte[] unset(final byte[] data, final int index) {
 		data[index >>> 3] &= ~(1 << (index & 7));
 		return data;
+	}
+
+	/**
+	 * Copies the specified range of the specified array into a new array.
+	 *
+	 * @param data the bits from which a range is to be copied
+	 * @param start the initial index of the range to be copied, inclusive
+	 * @param end the final index of the range to be copied, exclusive.
+	 * @return a new array containing the specified range from the original array
+	 * @throws java.lang.ArrayIndexOutOfBoundsException if from < 0 or
+	 *         from > data.length*8
+	 * @throws java.lang.IllegalArgumentException if from > to
+	 */
+	public static byte[] copy(final byte[] data, final int start, final int end) {
+		if (start > end) {
+			throw new IllegalArgumentException(String.format(
+				"start > end: %d > %d", start, end
+			));
+		}
+		if (start < 0 || start > data.length*8) {
+			throw new ArrayIndexOutOfBoundsException(String.format(
+				"%d < 0 || %d > %d", start, start, data.length*8
+			));
+		}
+
+		final int toIndex = min(data.length*8, end);
+		final int newLength = toByteLength(toIndex - start);
+		final byte[] copy = new byte[newLength];
+
+		for (int i = 0, n = toIndex - start; i < n; ++i) {
+			set(copy, i, get(data, i + start));
+		}
+
+		return copy;
 	}
 
 	/**
