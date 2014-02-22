@@ -90,35 +90,33 @@ public class BitChromosome extends Number<BitChromosome>
 	// Wraps the genes byte array into a Seq<BitGene>.
 	private transient BitGeneArray _seq;
 
-
-	public BitChromosome(final byte[] bits, final int start, final int end) {
-		_length = min(bits.length >>> 3, end) - start;
-		_genes = internalbit.copy(bits, start, end);
-		_seq = new BitGeneArray(_genes, 0, _length);
-	}
-
+	// Private primary constructor.
 	private BitChromosome(final byte[] bits, final int length, final double p) {
-		if (bits.length != bit.toByteLength(length)) {
-			throw new IllegalArgumentException(String.format(
-				"The byte array must has at least a length of " +
-				"%d to contain %d bits.",
-				bit.toByteLength(length), length
-			));
-		}
-
-		_length = length;
-		_p = checkProbability(p);
 		_genes = bits;
+		_length = length;
+		_p = p;
 		_seq = new BitGeneArray(_genes, 0, _length);
 
 	}
 
-	private BitChromosome(final byte[] bits, final int length) {
+	/**
+	 * Create a new bit chromosome from the given bit (byte) array.
+	 *
+	 * @param bits the bit values of the new chromosome gene.
+	 * @param start the initial (bit) index of the range to be copied, inclusive
+	 * @param end the final (bit) index of the range to be copied, exclusive.
+	 *        (This index may lie outside the array.)
+	 * @throws java.lang.ArrayIndexOutOfBoundsException if start < 0 or
+	 *         start > bits.length*8
+	 * @throws java.lang.IllegalArgumentException if start > end
+	 * @throws java.lang.NullPointerException if the {@code bits} array is
+	 *         {@code null}.
+	 */
+	public BitChromosome(final byte[] bits, final int start, final int end) {
 		this(
-			bits,
-			length == -1 ? bits.length*8 : length,
-			(double)bit.count(bits)/
-			(double)(length == -1 ? bits.length*8 : length)
+			internalbit.copy(bits, start, end),
+			min(bits.length << 3, end) - start,
+			(double)bit.count(bits)/(double)(min(bits.length << 3, end) - start)
 		);
 	}
 
@@ -128,7 +126,7 @@ public class BitChromosome extends Number<BitChromosome>
 	 * @param bits the {@code byte} array.
 	 */
 	public BitChromosome(final byte[] bits) {
-		this(bits.clone(), bits.length*8);
+		this(bits, 0, bits.length << 3);
 	}
 
 	/**
@@ -159,7 +157,7 @@ public class BitChromosome extends Number<BitChromosome>
 	 */
 	@Deprecated
 	public BitChromosome(final int length) {
-		this(length, 0.5);
+		this(bit.newArray(length, 0.5), length, 0.5);
 	}
 
 	/**
@@ -169,7 +167,10 @@ public class BitChromosome extends Number<BitChromosome>
 	 *         than one.
 	 * @throws NullPointerException if the {@code bitSet} is
 	 *         {@code null}.
+	 *
+	 * @deprecated Use {@link #of(java.util.BitSet, int)} instead.
 	 */
+	@Deprecated
 	public BitChromosome(final int length, final BitSet bits) {
 		this(toByteArray(requireNonNull(bits, "BitSet"), length));
 	}
@@ -182,6 +183,15 @@ public class BitChromosome extends Number<BitChromosome>
 			}
 		}
 		return bytes;
+	}
+
+	private BitChromosome(final byte[] bits, final int length) {
+		this(
+			bits,
+			length == -1 ? bits.length*8 : length,
+			(double)bit.count(bits)/
+			(double)(length == -1 ? bits.length*8 : length)
+		);
 	}
 
 	/**
@@ -484,6 +494,26 @@ public class BitChromosome extends Number<BitChromosome>
 	 */
 	public static BitChromosome of(final int length) {
 		return new BitChromosome(length);
+	}
+
+	/**
+	 * @param length length of the BitChromosome.
+	 * @param bits the bit-set which initializes the chromosome
+	 * @throws NegativeArraySizeException if the {@code length} is smaller
+	 *         than one.
+	 * @throws NullPointerException if the {@code bitSet} is
+	 *         {@code null}.
+	 */
+	public static BitChromosome of(final BitSet bits, final int length) {
+		final byte[] bytes = bit.newArray(length);
+		for (int i = 0; i < length; ++i) {
+			if (bits.get(i)) {
+				bit.set(bytes, i);
+			}
+		}
+		final double p = (double)bit.count(bytes)/(double)length;
+
+		return new BitChromosome(bytes, length, p);
 	}
 
 	@Override
