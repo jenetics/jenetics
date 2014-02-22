@@ -27,8 +27,8 @@ import org.jenetics.util.StaticObject;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date$</em>
- * @since @__version__@
+ * @version 1.6 &mdash; <em>$Date$</em>
+ * @since 1.6
  */
 public final class internalbit extends StaticObject {
 	private internalbit() {}
@@ -43,6 +43,8 @@ public final class internalbit extends StaticObject {
 	 * @throws java.lang.ArrayIndexOutOfBoundsException if start < 0 or
 	 *         start > data.length*8
 	 * @throws java.lang.IllegalArgumentException if start > end
+	 * @throws java.lang.NullPointerException if the {@code data} array is
+	 *         {@code null}.
 	 */
 	public static byte[] copy(final byte[] data, final int start, final int end) {
 		if (start > end) {
