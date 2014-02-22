@@ -276,6 +276,11 @@
 			<class name="org.jenetics.internal.math.probabilityTest" />
 		</classes>
 	</test>
+    <test name="org.jenetics.internal.util.internalbit">
+        <classes>
+            <class name="org.jenetics.internal.util.internalbitTest" />
+        </classes>
+    </test>
 	<test name="org.jenetics.util.Array">
 		<classes>
 			<class name="org.jenetics.util.ArraySeqTest" />
