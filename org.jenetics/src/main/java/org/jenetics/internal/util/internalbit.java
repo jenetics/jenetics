@@ -20,10 +20,10 @@
 package org.jenetics.internal.util;
 
 import static java.lang.Math.min;
+import static org.jenetics.util.bit.shiftRight;
 import static org.jenetics.util.bit.toByteLength;
 
 import org.jenetics.util.StaticObject;
-import org.jenetics.util.bit;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -68,7 +68,7 @@ public final class internalbit extends StaticObject {
 			System.arraycopy(data, byteStart, copy, 0, copy.length);
 
 			// Do the remaining bit wise right shift.
-			bit.shiftRight(copy, bitStart);
+			shiftRight(copy, bitStart);
 
 			// Add the 'lost' bits from the next byte, if available.
 			if (data.length > copy.length + byteStart) {
