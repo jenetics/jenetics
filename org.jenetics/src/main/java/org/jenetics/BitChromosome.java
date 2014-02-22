@@ -27,6 +27,7 @@ import static org.jenetics.util.object.hashCodeOf;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.math.BigInteger;
 import java.util.BitSet;
 import java.util.Iterator;
 import java.util.ListIterator;
@@ -60,7 +61,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-02-22 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-02-23 $</em>
  */
 @XmlJavaTypeAdapter(BitChromosome.Model.Adapter.class)
 public class BitChromosome extends Number<BitChromosome>
@@ -201,8 +202,11 @@ public class BitChromosome extends Number<BitChromosome>
 	 *
 	 * @param bits the bit-set which initializes the chromosome
 	 * @throws NullPointerException if the {@code bitSet} is
-	 *         {@code null}.
+	 *        {@code null}.
+	 *
+	 * @deprecated Use {@link #of(java.util.BitSet)} instead.
 	 */
+	@Deprecated
 	public BitChromosome (final BitSet bits) {
 		this(bits.toByteArray(), -1);
 	}
@@ -212,7 +216,10 @@ public class BitChromosome extends Number<BitChromosome>
 	 *
 	 * @param value the value of the created {@code BitChromosome}
 	 * @throws NullPointerException if the given {@code value} is {@code null}.
+	 *
+	 * @deprecated Use {@link #of(java.math.BigInteger)} instead.
 	 */
+	@Deprecated
 	public BitChromosome(final LargeInteger value) {
 		this(bit.toByteArray(value), -1);
 	}
@@ -226,7 +233,10 @@ public class BitChromosome extends Number<BitChromosome>
 	 * @throws NullPointerException if the {@code value} is {@code null}.
 	 * @throws IllegalArgumentException if the length of the character sequence
 	 *         is zero or contains other characters than '0' or '1'.
+	 *
+	 * @deprecated Use {@link #of(CharSequence)} instead.
 	 */
+	@Deprecated
 	public BitChromosome (final CharSequence value) {
 		this(toByteArray(requireNonNull(value, "Input")), -1);
 	}
@@ -327,9 +337,21 @@ public class BitChromosome extends Number<BitChromosome>
 	 * Return the LargeInteger value this BitChromosome represents.
 	 *
 	 * @return LargeInteger value this BitChromosome represents.
+	 *
+	 * @deprecated Use {@link #toBigInteger()} instead.
 	 */
+	@Deprecated
 	public LargeInteger toLargeInteger() {
 		return bit.toLargeInteger(_genes);
+	}
+
+	/**
+	 * Return the {@code BigInteger} value this {@code BitChromosome} represents.
+	 *
+	 * @return {@code BigInteger} value this {@code BitChromosome} represents.
+	 */
+	public BigInteger toBigInteger() {
+		return new BigInteger(_genes);
 	}
 
 	/**
@@ -435,20 +457,24 @@ public class BitChromosome extends Number<BitChromosome>
 		return toLargeInteger().compareTo(that.toLargeInteger());
 	}
 
+	@Deprecated
 	@Override
 	public boolean isLargerThan(final BitChromosome that) {
 		return toLargeInteger().isLargerThan(that.toLargeInteger());
 	}
 
+	@Deprecated
 	public LargeInteger sqrt() {
 		return toLargeInteger().sqrt();
 	}
 
+	@Deprecated
 	@Override
 	public BitChromosome plus(final BitChromosome that) {
 		return new BitChromosome(toLargeInteger().plus(that.toLargeInteger()));
 	}
 
+	@Deprecated
 	@Override
 	public BitChromosome opposite() {
 		return new BitChromosome(toLargeInteger().opposite());
@@ -465,6 +491,7 @@ public class BitChromosome extends Number<BitChromosome>
 		return copy;
 	}
 
+	@Deprecated
 	@Override
 	public BitChromosome times(final BitChromosome that) {
 		return new BitChromosome(toLargeInteger().times(that.toLargeInteger()));
@@ -515,6 +542,44 @@ public class BitChromosome extends Number<BitChromosome>
 		return new BitChromosome(bytes, length, p);
 	}
 
+	/**
+	 * Constructing a new BitChromosome from a given BitSet.
+	 * The BitSet is copied while construction. The length of the constructed
+	 * BitChromosome will be {@code bitSet.length()}
+	 * (@see BitSet#length).
+	 *
+	 * @param bits the bit-set which initializes the chromosome
+	 * @throws NullPointerException if the {@code bitSet} is
+	 *        {@code null}.
+	 */
+	public static BitChromosome of(final BitSet bits) {
+		return new BitChromosome(bits.toByteArray(), -1);
+	}
+
+	/**
+	 * Create a new {@code BitChromosome} from the given big integer value.
+	 *
+	 * @param value the value of the created {@code BitChromosome}
+	 * @throws NullPointerException if the given {@code value} is {@code null}.
+	 */
+	public static BitChromosome of(final BigInteger value) {
+		return new BitChromosome(value.toByteArray(), -1);
+	}
+
+	/**
+	 * Create a new {@code BitChromosome} from the given character sequence
+	 * containing '0' and '1'; as created with the {@link #toCanonicalString()}
+	 * method.
+	 *
+	 * @param value the input string.
+	 * @throws NullPointerException if the {@code value} is {@code null}.
+	 * @throws IllegalArgumentException if the length of the character sequence
+	 *         is zero or contains other characters than '0' or '1'.
+	 */
+	public static BitChromosome of(final CharSequence value) {
+		return new BitChromosome(toByteArray(requireNonNull(value, "Input")), -1);
+	}
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).and(_genes).value();
@@ -537,11 +602,13 @@ public class BitChromosome extends Number<BitChromosome>
 		return equals;
 	}
 
+	@Deprecated
 	@Override
 	public Text toText() {
 		return Text.valueOf(bit.toByteString(toByteArray()));
 	}
 
+	@Deprecated
 	@Override
 	public BitChromosome copy() {
 		final BitChromosome chromosome = new BitChromosome(_length, _p);
