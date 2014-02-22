@@ -399,9 +399,9 @@ public class BitChromosome extends Number<BitChromosome>
 		} else {
 			for (int i = genes.length(); --i >= 0;) {
 				if (genes.get(i).booleanValue()) {
+					bit.set(chromosome._genes, i);
 					++ones;
 				}
-				bit.set(chromosome._genes, i, genes.get(i).booleanValue());
 			}
 		}
 
