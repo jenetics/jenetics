@@ -50,13 +50,13 @@ public final class internalbit extends StaticObject {
 				"start > end: %d > %d", start, end
 			));
 		}
-		if (start < 0 || start > data.length*8) {
+		if (start < 0 || start > data.length << 3) {
 			throw new ArrayIndexOutOfBoundsException(String.format(
 				"%d < 0 || %d > %d", start, start, data.length*8
 			));
 		}
 
-		final int to = min(data.length*8, end);
+		final int to = min(data.length << 3, end);
 		final int byteStart = start >>> 3;
 		final int bitStart = start & 7;
 		final int bitLength = to - start;
