@@ -20,15 +20,14 @@
 package org.jenetics.internal.util;
 
 import static java.lang.Math.min;
-import static org.jenetics.util.bit.get;
-import static org.jenetics.util.bit.set;
 import static org.jenetics.util.bit.toByteLength;
 
 import org.jenetics.util.StaticObject;
+import org.jenetics.util.bit;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-02-19 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-02-22 $</em>
  * @since @__version__@
  */
 public final class internalbit extends StaticObject {
@@ -41,9 +40,9 @@ public final class internalbit extends StaticObject {
 	 * @param start the initial index of the range to be copied, inclusive
 	 * @param end the final index of the range to be copied, exclusive.
 	 * @return a new array containing the specified range from the original array
-	 * @throws java.lang.ArrayIndexOutOfBoundsException if from < 0 or
-	 *         from > data.length*8
-	 * @throws java.lang.IllegalArgumentException if from > to
+	 * @throws java.lang.ArrayIndexOutOfBoundsException if start < 0 or
+	 *         start > data.length*8
+	 * @throws java.lang.IllegalArgumentException if start > end
 	 */
 	public static byte[] copy(final byte[] data, final int start, final int end) {
 		if (start > end) {
@@ -57,12 +56,28 @@ public final class internalbit extends StaticObject {
 			));
 		}
 
-		final int toIndex = min(data.length*8, end);
-		final int newLength = toByteLength(toIndex - start);
-		final byte[] copy = new byte[newLength];
+		final int to = min(data.length*8, end);
+		final int byteStart = start >>> 3;
+		final int bitStart = start & 7;
+		final int bitLength = to - start;
 
-		for (int i = 0, n = toIndex - start; i < n; ++i) {
-			set(copy, i, get(data, i + start));
+		final byte[] copy = new byte[toByteLength(to - start)];
+
+		if (copy.length > 0) {
+			// Perform the byte wise right shift.
+			System.arraycopy(data, byteStart, copy, 0, copy.length);
+
+			// Do the remaining bit wise right shift.
+			bit.shiftRight(copy, bitStart);
+
+			// Add the 'lost' bits from the next byte, if available.
+			if (data.length > copy.length + byteStart) {
+				copy[copy.length - 1] |= (byte)(data[byteStart + copy.length]
+												<< (8 - bitStart));
+			}
+
+			// Trim (delete) the overhanging bits.
+			copy[copy.length - 1] &= 0xFF >>> (copy.length*8 - bitLength);
 		}
 
 		return copy;
