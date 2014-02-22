@@ -23,6 +23,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
+import java.math.BigInteger;
 import java.util.BitSet;
 import java.util.Random;
 
@@ -34,11 +35,12 @@ import org.testng.annotations.Test;
 import org.jscience.mathematics.number.LargeInteger;
 
 import org.jenetics.util.Factory;
+import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.bit;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-18 $</em>
+ * @version <em>$Date: 2014-02-23 $</em>
  */
 @SuppressWarnings("deprecation")
 public class BitChromosomeTest extends ChromosomeTester<BitGene> {
@@ -125,7 +127,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 	}
 
 	@Test
-	public void toBigInteger() {
+	public void toLargeInteger() {
 		BitChromosome c = new BitChromosome(LargeInteger.valueOf(234902));
 
 		LargeInteger i = c.toLargeInteger();
@@ -139,6 +141,15 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 		BitChromosome c2 = new BitChromosome(data);
 		LargeInteger i2 = c2.toLargeInteger();
 		assertEquals(i2, LargeInteger.valueOf(234902));
+	}
+
+	@Test(invocationCount = 5)
+	public void toBigInteger() {
+		final LCG64ShiftRandom random = new LCG64ShiftRandom();
+		final BigInteger value = new BigInteger(1056, random);
+		final BitChromosome chromosome = BitChromosome.of(value);
+
+		assertEquals(chromosome.toBigInteger(), value);
 	}
 
 	@Test
