@@ -22,7 +22,6 @@ package org.jenetics;
 import static java.lang.Math.min;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.util.object.checkProbability;
 import static org.jenetics.util.object.hashCodeOf;
 
 import java.io.IOException;
