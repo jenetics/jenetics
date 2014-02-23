@@ -115,6 +115,17 @@ public enum BitGene
 		return RandomRegistry.getRandom().nextBoolean() ? TRUE : FALSE;
 	}
 
+	/**
+	 * Create a new gene from the given {@code value}..
+	 *
+	 * @since 1.6
+	 * @param value the value of the new gene.
+	 * @return a new gene with the given value.
+	 */
+	public BitGene newInstance(final Boolean value) {
+		return of(value);
+	}
+
 	@Override
 	public String toString() {
 		return Boolean.toString(_value);
