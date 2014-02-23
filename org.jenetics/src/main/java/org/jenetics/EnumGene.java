@@ -79,7 +79,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-02-17 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-02-23 $</em>
  */
 public final class EnumGene<A>
 	implements
@@ -129,7 +129,7 @@ public final class EnumGene<A>
 
 	@Override
 	public boolean isValid() {
-		return true;
+		return _alleleIndex != -1;
 	}
 
 	@Override
@@ -140,6 +140,21 @@ public final class EnumGene<A>
 
 		gene._alleleIndex = random.nextInt(_validAlleles.length());
 		gene._validAlleles = _validAlleles;
+		return gene;
+	}
+
+	/**
+	 * Create a new gene from the given {@code value} and the gene context.
+	 *
+	 * @since 1.6
+	 * @param value the value of the new gene.
+	 * @return a new gene with the given value.
+	 */
+	public EnumGene<A> newInstance(final A value) {
+		final EnumGene<A> gene = FACTORY.object();
+		gene._validAlleles = _validAlleles;
+		gene._alleleIndex = _validAlleles.indexOf(value);
+
 		return gene;
 	}
 
