@@ -352,7 +352,10 @@ public final class accumulators extends StaticObject {
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
 	 * @version 1.0 &ndash; <em>$Date$</em>
+	 *
+	 * @deprecated Will be removed.
 	 */
+	@Deprecated
 	public static class Sum<G extends GroupAdditive<G>>
 		extends MappedAccumulator<G>
 	{
