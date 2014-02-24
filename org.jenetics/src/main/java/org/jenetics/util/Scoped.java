@@ -21,10 +21,19 @@ package org.jenetics.util;
 
 /**
  * Defines a local scope, where the containing value is valid. When the scope is
- * left, the original value is restored.
+ * left, the original value is restored. A <i>scoped</i> value is usually used
+ * within a {@code try} block.
+ * [code]
+ * try (Scoped<Random> s = RandomRegistry.scope(new Random(123))) {
+ *     System.out.println(s.get().nextDouble());
+ * }
+ * [/code]
+ *
+ * In the example above, the new random engine is only used within the defined
+ * scope.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-02-24 $</em>
  * @since 1.6
  */
 public interface Scoped<T> extends AutoCloseable {
