@@ -185,8 +185,23 @@ public final class PermutationChromosome<T>
 	 *
 	 * @param genes the genes of this chromosome.
 	 * @return a new PermutationChromosome from the given genes.
+	 *
+	 * @deprecated Use {@link #of(org.jenetics.util.ISeq)} instead.
 	 */
+	@Deprecated
 	public static <T> PermutationChromosome<T> valueOf(
+		final ISeq<EnumGene<T>> genes
+	) {
+		return new PermutationChromosome<>(genes.length(), genes);
+	}
+
+	/**
+	 * Create a new PermutationChromosome from the given genes.
+	 *
+	 * @param genes the genes of this chromosome.
+	 * @return a new PermutationChromosome from the given genes.
+	 */
+	public static <T> PermutationChromosome<T> of(
 		final ISeq<EnumGene<T>> genes
 	) {
 		return new PermutationChromosome<>(genes.length(), genes);

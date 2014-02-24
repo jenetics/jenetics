@@ -67,7 +67,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	 * @param alterers the alterers to combine.
 	 * @throws NullPointerException if one of the alterers is {@code null}.
 	 *
-	 * @deprecated Use {@link #valueOf(Alterer...)} instead.
+	 * @deprecated Use {@link #of(Alterer...)} instead.
 	 */
 	@Deprecated
 	@SafeVarargs
@@ -162,10 +162,25 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	 *
 	 * @param alterers the alterers to combine.
 	 * @throws NullPointerException if one of the alterers is {@code null}.
+	 *
+	 * @deprecated Use {@link #of(Alterer[])} instead.
 	 */
+	@Deprecated
 	@SafeVarargs
 	public static <G extends Gene<?, G>>
 	CompositeAlterer<G> valueOf(final Alterer<G>... alterers) {
+		return new CompositeAlterer<>(Array.of(alterers));
+	}
+
+	/**
+	 * Combine the given alterers.
+	 *
+	 * @param alterers the alterers to combine.
+	 * @throws NullPointerException if one of the alterers is {@code null}.
+	 */
+	@SafeVarargs
+	public static <G extends Gene<?, G>>
+	CompositeAlterer<G> of(final Alterer<G>... alterers) {
 		return new CompositeAlterer<>(Array.of(alterers));
 	}
 

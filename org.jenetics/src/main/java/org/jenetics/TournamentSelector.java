@@ -176,11 +176,19 @@ public class TournamentSelector<
 		return _sampleSize == selector._sampleSize;
 	}
 
+	/**
+	 * @deprecated Will be removed.
+	 */
+	@Deprecated
 	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
 	TournamentSelector<SG, SC> valueOf(final int sampleSize) {
 		return new TournamentSelector<>(sampleSize);
 	}
 
+	/**
+	 * @deprecated Will be removed.
+	 */
+	@Deprecated
 	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
 	TournamentSelector<SG, SC> valueOf() {
 		return new TournamentSelector<>();

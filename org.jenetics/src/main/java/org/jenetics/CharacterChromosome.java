@@ -76,7 +76,10 @@ public class CharacterChromosome
 	 * @throws NullPointerException if the given gene array is {@code null}.
 	 * @throws IllegalArgumentException if the length of the gene array is
 	 *         smaller than one.
+	 *
+	 * @deprecated Visibility will be changed to {@code protected}.
 	 */
+	@Deprecated
 	public CharacterChromosome(final ISeq<CharacterGene> genes) {
 		super(genes);
 		_validCharacters = genes.get(0).getValidCharacters();
