@@ -151,6 +151,7 @@ public final class EnumGene<A>
 	 * @return a new gene with the given value.
 	 */
 	public EnumGene<A> newInstance(final A value) {
+		@SuppressWarnings("unchecked")
 		final EnumGene<A> gene = FACTORY.object();
 		gene._validAlleles = _validAlleles;
 		gene._alleleIndex = _validAlleles.indexOf(value);
