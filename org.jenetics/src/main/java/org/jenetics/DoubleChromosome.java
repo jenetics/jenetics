@@ -87,7 +87,7 @@ public class DoubleChromosome
 	}
 
 	/**
-	 * Create a new {@code DoubleChromoosme} with the given genes.
+	 * Create a new {@code DoubleChromosome} with the given genes.
 	 *
 	 * @param genes the genes of the chromosome.
 	 * @return a new chromosome with the given genes.
