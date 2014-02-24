@@ -47,7 +47,7 @@ import org.jenetics.util.ISeq;
  * Numeric chromosome implementation which holds 64 bit floating point numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-02-17 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-02-24 $</em>
  * @since 1.6
  */
 @XmlJavaTypeAdapter(DoubleChromosome.Model.Adapter.class)
@@ -87,7 +87,7 @@ public class DoubleChromosome
 	}
 
 	/**
-	 * Create a new {@code DoubleChromoosme} with the given genes.
+	 * Create a new {@code DoubleChromosome} with the given genes.
 	 *
 	 * @param genes the genes of the chromosome.
 	 * @return a new chromosome with the given genes.
