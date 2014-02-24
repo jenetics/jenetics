@@ -54,7 +54,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-02-17 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-02-24 $</em>
  */
 public class CharacterChromosome
 	extends
@@ -76,7 +76,10 @@ public class CharacterChromosome
 	 * @throws NullPointerException if the given gene array is {@code null}.
 	 * @throws IllegalArgumentException if the length of the gene array is
 	 *         smaller than one.
+	 *
+	 * @deprecated Visibility will be changed to {@code protected}.
 	 */
+	@Deprecated
 	public CharacterChromosome(final ISeq<CharacterGene> genes) {
 		super(genes);
 		_validCharacters = genes.get(0).getValidCharacters();

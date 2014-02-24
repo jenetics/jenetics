@@ -48,8 +48,8 @@ import org.jenetics.util.functions;
  *
  * [code]
  * public static void main(final String[] args) {
- *     final Factory〈Genotype〈BitGene〉〉 gtf = Genotype.valueOf(
- *         BitChromosome.valueOf(10, 0.5)
+ *     final Factory〈Genotype〈BitGene〉〉 gtf = Genotype.of(
+ *         BitChromosome.of(10, 0.5)
  *     );
  *     final Function〈Genotype〈BitGene〉 Double〉 ff = ...
  *     final GeneticAlgorithm〈BitGene, Double〉
@@ -133,7 +133,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-02-17 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-02-24 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,

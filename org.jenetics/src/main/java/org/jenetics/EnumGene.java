@@ -61,7 +61,7 @@ import org.jenetics.util.RandomRegistry;
  * [code]
  * final ISeq〈Integer〉 alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
  * final Factory〈Genotype〈EnumGene〈Integer〉〉〉 gtf = Genotype.of(
- *     PermutationChromosome.valueOf(alleles)
+ *     PermutationChromosome.of(alleles)
  * );
  * [/code]
  *
