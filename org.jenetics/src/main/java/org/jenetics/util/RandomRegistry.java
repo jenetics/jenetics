@@ -89,7 +89,7 @@ import javolution.lang.Reference;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-02-22 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-02-24 $</em>
  */
 public final class RandomRegistry extends StaticObject {
 	private RandomRegistry() {}
@@ -157,6 +157,7 @@ public final class RandomRegistry extends StaticObject {
 	/**
 	 * Opens a new {@code Scope} with the given random engine.
 	 *
+	 * @since 1.6
 	 * @param random the PRNG used for the opened scope.
 	 * @return the scope with the given random object.
 	 */
