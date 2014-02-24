@@ -79,7 +79,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-02-23 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-02-24 $</em>
  */
 public final class EnumGene<A>
 	implements
@@ -151,6 +151,7 @@ public final class EnumGene<A>
 	 * @return a new gene with the given value.
 	 */
 	public EnumGene<A> newInstance(final A value) {
+		@SuppressWarnings("unchecked")
 		final EnumGene<A> gene = FACTORY.object();
 		gene._validAlleles = _validAlleles;
 		gene._alleleIndex = _validAlleles.indexOf(value);
