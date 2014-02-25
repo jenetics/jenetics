@@ -33,7 +33,7 @@ public class CompositeAltererTest {
 
 	public Alterer<DoubleGene> newAlterer(double p) {
 		final double p3 = Math.pow(p, 3);
-		return CompositeAlterer.valueOf(
+		return CompositeAlterer.of(
 			new Mutator<DoubleGene>(p3),
 			new Mutator<DoubleGene>(p3),
 			new Mutator<DoubleGene>(p3)
@@ -157,7 +157,7 @@ public class CompositeAltererTest {
 		Assert.assertEquals(alterer.getAlterers().get(1), new NormalMutator<DoubleGene>());
 		Assert.assertEquals(alterer.getAlterers().get(2), new MeanAlterer<DoubleGene>());
 
-		alterer = CompositeAlterer.valueOf(
+		alterer = CompositeAlterer.of(
 			new MeanAlterer<DoubleGene>(),
 			new SwapMutator<DoubleGene>(),
 			alterer,
