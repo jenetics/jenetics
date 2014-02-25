@@ -37,7 +37,7 @@ import org.jenetics.util.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.0 &mdash; <em>$Date: 2014-02-17 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-02-25 $</em>
  */
 public class Transformation {
 
@@ -129,7 +129,7 @@ public class Transformation {
 		final GeneticAlgorithm<DoubleGene, Double> ga = new GeneticAlgorithm<>(gtf, ff);
 
 		ga.setPopulationSize(1000);
-		ga.setAlterer(CompositeAlterer.valueOf(
+		ga.setAlterer(CompositeAlterer.of(
 			new Mutator<DoubleGene>(0.03),
 			new MeanAlterer<DoubleGene>(0.6)
 		));

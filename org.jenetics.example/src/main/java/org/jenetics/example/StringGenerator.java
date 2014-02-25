@@ -38,7 +38,7 @@ import org.jenetics.util.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.0 &mdash; <em>$Date: 2014-02-18 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-02-25 $</em>
  */
 public class StringGenerator {
 
@@ -87,7 +87,7 @@ public class StringGenerator {
 		ga.setOffspringSelector(
 			new TournamentSelector<CharacterGene, Integer>(5)
 		);
-		ga.setAlterer(CompositeAlterer.valueOf(
+		ga.setAlterer(CompositeAlterer.of(
 			new Mutator<CharacterGene>(0.1),
 			new SinglePointCrossover<CharacterGene>(0.5)
 		));
