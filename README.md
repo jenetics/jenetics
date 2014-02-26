@@ -246,20 +246,20 @@ The console out put for the Knapsack GA will look like the listing beneath.
 	+---------------------------------------------------------+
 	|  Population Statistics                                  |
 	+---------------------------------------------------------+
-	|                     Age mean: 1.55000000000             |
-	|                 Age variance: 2.69444444444             |
-	|                      Samples: 100                       |
-	|                 Best fitness: 188.57227213871303        |
-	|                Worst fitness: 0.0                       |
+	|                     Age mean: 1.14800000000             |
+	|                 Age variance: 2.88386372745             |
+	|                      Samples: 500                       |
+	|                 Best fitness: 19                        |
+	|                Worst fitness: 4                         |
 	+---------------------------------------------------------+
 	+---------------------------------------------------------+
 	|  Fitness Statistics                                     |
 	+---------------------------------------------------------+
-	|                 Fitness mean: 157.60654768894           |
-	|             Fitness variance: 1486.23455609328          |
-	|        Fitness error of mean: 15.76065476889            |
+	|                 Fitness mean: 11.00400000000            |
+	|             Fitness variance: 6.28856112224             |
+	|        Fitness error of mean: 0.49211384049             |
 	+---------------------------------------------------------+
-
+	[00001111|11111111|11111011] --> 19
 
 
 ## Traveling Salesman Problem (TSP)
