@@ -50,16 +50,12 @@ final class Item {
 final class KnapsackFunction
 	implements Function<Genotype<BitGene>, Double>
 {
-	private final Item[] _items;
-	private final double _size;
+	private final Item[] items;
+	private final double size;
 
 	public KnapsackFunction(final Item[] items, double size) {
-		_items = items;
-		_size = size;
-	}
-
-	public Item[] getItems() {
-		return _items;
+		this.items = items;
+		this.size = size;
 	}
 
 	@Override
@@ -70,12 +66,12 @@ final class KnapsackFunction
 		double value = 0;
 		for (int i = 0, n = ch.length(); i < n; ++i) {
 			if (ch.getGene(i).getBit()) {
-				size += _items[i].size;
-				value += _items[i].value;
+				size += items[i].size;
+				value += items[i].value;
 			}
 		}
 
-		return size <= _size ? value : 0;
+		return size <= this.size ? value : 0;
 	}
 }
 
