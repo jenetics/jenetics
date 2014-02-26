@@ -68,5 +68,4 @@ public class OnesCounting {
 		System.out.println(ga.getBestStatistics());
 		System.out.println(ga.getBestPhenotype());
 	}
-
 }

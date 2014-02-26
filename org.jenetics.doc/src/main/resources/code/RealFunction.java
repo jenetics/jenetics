@@ -13,29 +13,31 @@ import org.jenetics.Optimize;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 
-final class Real 
-	implements Function<Genotype<DoubleGene>, Double> 
+final class Real
+	implements Function<Genotype<DoubleGene>, Double>
 {
 	@Override
 	public Double apply(Genotype<DoubleGene> genotype) {
 		final double x = genotype.getGene().doubleValue();
-		return Double.valueOf(cos(0.5 + sin(x)) * cos(x));
+		return cos(0.5 + sin(x)) * cos(x);
 	}
 }
 
 public class RealFunction {
 	public static void main(String[] args) {
-		Factory<Genotype<DoubleGene>> gtf = Genotype.valueOf(
-			DoubleChromosome.of(0.0, 2.0 * PI)
+		Factory<Genotype<DoubleGene>> gtf = Genotype.of(
+			new DoubleChromosome(0.0, 2.0 * PI)
 		);
 		Function<Genotype<DoubleGene>, Double> ff = new Real();
-		GeneticAlgorithm<DoubleGene, Double> ga = 
-			new GeneticAlgorithm<>(gtf, ff, Optimize.MINIMUM);
+		GeneticAlgorithm<DoubleGene, Double> ga =
+			new GeneticAlgorithm<>(
+				gtf, ff, Optimize.MINIMUM
+			);
 
 		ga.setStatisticsCalculator(
 			new NumberStatistics.Calculator<DoubleGene, Double>()
 		);
-		ga.setPopulationSize(20);
+		ga.setPopulationSize(500);
 		ga.setAlterers(
 			new Mutator<DoubleGene>(0.03),
 			new MeanAlterer<DoubleGene>(0.6)
@@ -44,5 +46,6 @@ public class RealFunction {
 		ga.setup();
 		ga.evolve(100);
 		System.out.println(ga.getBestStatistics());
+		System.out.println(ga.getBestPhenotype());
 	}
 }
