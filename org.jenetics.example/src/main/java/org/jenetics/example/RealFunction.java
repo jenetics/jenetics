@@ -51,9 +51,9 @@ public class RealFunction {
 		);
 		Function<Genotype<DoubleGene>, Double> ff = new Real();
 		GeneticAlgorithm<DoubleGene, Double> ga =
-		new GeneticAlgorithm<>(
-			gtf, ff, Optimize.MINIMUM
-		);
+			new GeneticAlgorithm<>(
+				gtf, ff, Optimize.MINIMUM
+			);
 
 		ga.setStatisticsCalculator(
 			new NumberStatistics.Calculator<DoubleGene, Double>()
