@@ -14,8 +14,8 @@ final class OneCounter
 	implements Function<Genotype<BitGene>, Integer>
 {
 	@Override
-	public Integer apply(final Genotype<BitGene> genotype) {
-		return ((BitChromosome)genotype.getChromosome()).bitCount();
+	public Integer apply(final Genotype<BitGene> gt) {
+		return ((BitChromosome)gt.getChromosome()).bitCount();
 	}
 }
 
