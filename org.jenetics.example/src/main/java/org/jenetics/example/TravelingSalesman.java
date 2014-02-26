@@ -37,12 +37,6 @@ import org.jenetics.SwapMutator;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 
-/**
- * The classical <a href="http://en.wikipedia.org/wiki/Travelling_salesman_problem">TSP</a>.
- *
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.0 &mdash; <em>$Date$</em>
- */
 public class TravelingSalesman {
 
 	private static class FF
@@ -51,10 +45,10 @@ public class TravelingSalesman {
 	{
 		private static final long serialVersionUID = 1L;
 
-		private final double[][] _adjacence;
+		private final double[][] adjacence;
 
 		public FF(final double[][] adjacence) {
-			_adjacence = adjacence;
+			this.adjacence = adjacence;
 		}
 
 		@Override
@@ -65,7 +59,7 @@ public class TravelingSalesman {
 			for (int i = 0, n = path.length(); i < n; ++i) {
 				final int from = path.getGene(i).getAllele();
 				final int to = path.getGene((i + 1)%n).getAllele();
-				length += _adjacence[from][to];
+				length += adjacence[from][to];
 			}
 			return length;
 		}
