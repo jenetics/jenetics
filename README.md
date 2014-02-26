@@ -279,99 +279,73 @@ The console out put for the Knapsack GA will look like the listing beneath.
 
 The Traveling Salesman problem is a very good example which shows you how to solve combinatorial problems with an GA. Jenetics contains several classes which will work very well with this kind of problems. Wrapping the base type into an `EnumGene` is the first thing to do. In our example, every city has an unique number, that means we are wrapping an Integer into an `EnumGene`. Creating a genotype for integer values is very easy with the factory method of the `PermutationChromosome`. For other data types you have to use one of the constructors of the permutation chromosome. As alterers, we are using a swap-mutator and a partially-matched crossover. These alterers guarantees that no invalid solutions are created—every city exists exactly once in the altered chromosomes.
 
-	import static org.jenetics.util.math.random.nextDouble;
+	import static java.lang.Math.PI;
+	import static java.lang.Math.abs;
+	import static java.lang.Math.sin;
 
-	import java.util.Random;
+	import java.io.Serializable;
 
-	import org.jenetics.BitChromosome;
-	import org.jenetics.BitGene;
 	import org.jenetics.Chromosome;
+	import org.jenetics.EnumGene;
 	import org.jenetics.GeneticAlgorithm;
 	import org.jenetics.Genotype;
-	import org.jenetics.Mutator;
-	import org.jenetics.NumberStatistics;
-	import org.jenetics.RouletteWheelSelector;
-	import org.jenetics.SinglePointCrossover;
-	import org.jenetics.TournamentSelector;
+	import org.jenetics.NumberStatistics.Calculator;
+	import org.jenetics.Optimize;
+	import org.jenetics.PartiallyMatchedCrossover;
+	import org.jenetics.PermutationChromosome;
+	import org.jenetics.SwapMutator;
 	import org.jenetics.util.Factory;
 	import org.jenetics.util.Function;
-	import org.jenetics.util.RandomRegistry;
 
-	final class Item {
-		public final double size;
-		public final double value;
+	public class TravelingSalesman {
 
-		Item(final double size, final double value) {
-			this.size = size;
-			this.value = value;
-		}
-	}
+		private static class FF
+			implements Function<Genotype<EnumGene<Integer>>, Double>,
+						Serializable
+		{
+			private static final long serialVersionUID = 1L;
 
-	final class KnapsackFunction
-		implements Function<Genotype<BitGene>, Double>
-	{
-		private final Item[] items;
-		private final double size;
+			private final double[][] adjacence;
 
-		public KnapsackFunction(final Item[] items, double size) {
-			this.items = items;
-			this.size = size;
-		}
+			public FF(final double[][] adjacence) {
+				this.adjacence = adjacence;
+			}
 
-		@Override
-		public Double apply(final Genotype<BitGene> genotype) {
-			final Chromosome<BitGene> ch = genotype.getChromosome();
+			@Override
+			public Double apply(final Genotype<EnumGene<Integer>> genotype) {
+				final Chromosome<EnumGene<Integer>> path = genotype.getChromosome();
 
-			double size = 0;
-			double value = 0;
-			for (int i = 0, n = ch.length(); i < n; ++i) {
-				if (ch.getGene(i).getBit()) {
-					size += items[i].size;
-					value += items[i].value;
+				double length = 0.0;
+				for (int i = 0, n = path.length(); i < n; ++i) {
+					final int from = path.getGene(i).getAllele();
+					final int to = path.getGene((i + 1)%n).getAllele();
+					length += adjacence[from][to];
 				}
+				return length;
 			}
 
-			return size <= this.size ? value : 0;
-		}
-	}
-
-	public class Knapsack {
-
-		private static KnapsackFunction FF(final int n, final double size) {
-			final Random random = RandomRegistry.getRandom();
-			final Item[] items = new Item[n];
-			for (int i = 0; i < items.length; ++i) {
-				items[i] = new Item(
-					nextDouble(random, 1, 10),
-					nextDouble(random, 1, 15)
-				);
+			@Override
+			public String toString() {
+				return "Point distance";
 			}
-
-			return new KnapsackFunction(items, size);
 		}
 
-		public static void main(String[] args) throws Exception {
-			final KnapsackFunction ff = FF(15, 100);
-			final Factory<Genotype<BitGene>> genotype = Genotype.of(
-				BitChromosome.of(15, 0.5)
-			);
+		public static void main(String[] args) {
+			final int stops = 20;
 
-			final GeneticAlgorithm<BitGene, Double> ga = new GeneticAlgorithm<>(
-				genotype, ff
+			final Function<Genotype<EnumGene<Integer>>, Double> ff = new FF(adjacencyMatrix(stops));
+			final Factory<Genotype<EnumGene<Integer>>> gtf = Genotype.of(
+				PermutationChromosome.ofInteger(stops)
 			);
-			ga.setPopulationSize(500);
+			final GeneticAlgorithm<EnumGene<Integer>, Double>
+				ga = new GeneticAlgorithm<>(gtf, ff, Optimize.MINIMUM);
 			ga.setStatisticsCalculator(
-				new NumberStatistics.Calculator<BitGene, Double>()
-			);
-			ga.setSurvivorSelector(
-				new TournamentSelector<BitGene, Double>(5)
-			);
-			ga.setOffspringSelector(
-				new RouletteWheelSelector<BitGene, Double>()
-			);
+					new Calculator<EnumGene<Integer>, Double>()
+				);
+			ga.setPopulationSize(500);
 			ga.setAlterers(
-				new Mutator<BitGene>(0.115),
-				new SinglePointCrossover<BitGene>(0.16)
+				new SwapMutator<EnumGene<Integer>>(0.2),
+				new PartiallyMatchedCrossover<Integer>(0.3)
 			);
 
 			ga.setup();
@@ -379,6 +353,24 @@ The Traveling Salesman problem is a very good example which shows you how to sol
 			System.out.println(ga.getBestStatistics());
 			System.out.println(ga.getBestPhenotype());
 		}
+
+		/**
+		* All points in the created adjacency matrix lie on a circle. So it is easy
+		* to check the quality of the solution found by the GA.
+		*/
+		private static double[][] adjacencyMatrix(int stops) {
+			double[][] matrix = new double[stops][stops];
+			for (int i = 0; i < stops; ++i) {
+				for (int j = 0; j < stops; ++j) {
+					matrix[i][j] = chord(stops, abs(i - j), RADIUS);
+				}
+			}
+			return matrix;
+		}
+		private static double chord(int stops, int i, double r) {
+			return 2.0*r*abs(sin((PI*i)/stops));
+		}
+		private static double RADIUS = 10.0;
 	}
 
 
@@ -387,20 +379,20 @@ The listing above shows the output generated by our example. The last line repre
 	+---------------------------------------------------------+
 	|  Population Statistics                                  |
 	+---------------------------------------------------------+
-	|                     Age mean: 2.27800000000             |
-	|                 Age variance: 5.71214028056             |
+	|                     Age mean: 1.67600000000             |
+	|                 Age variance: 4.17537474950             |
 	|                      Samples: 500                       |
-	|                 Best fitness: 100.72847485732203        |
-	|                Worst fitness: 37.12415326858011         |
+	|                 Best fitness: 104.39898868995472        |
+	|                Worst fitness: 310.43291286365866        |
 	+---------------------------------------------------------+
 	+---------------------------------------------------------+
 	|  Fitness Statistics                                     |
 	+---------------------------------------------------------+
-	|                 Fitness mean: 90.36801595664            |
-	|             Fitness variance: 151.83432779953           |
-	|        Fitness error of mean: 4.04138053342             |
+	|                 Fitness mean: 132.54050652459           |
+	|             Fitness variance: 3230.15643373580          |
+	|        Fitness error of mean: 5.92739164722             |
 	+---------------------------------------------------------+
-	[01111111|11111111] --> 100.72847485732203
+	[1|0|19|16|15|5|6|7|8|9|10|11|12|13|14|17|18|4|3|2] --> 104.39898868995472
 
 
 ## Coding standards
