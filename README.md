@@ -266,84 +266,106 @@ The console out put for the Knapsack GA will look like the listing beneath.
 
 The Traveling Salesman problem is a very good example which shows you how to solve combinatorial problems with an GA. Jenetics contains several classes which will work very well with this kind of problems. Wrapping the base type into an `EnumGene` is the first thing to do. In our example, every city has an unique number, that means we are wrapping an Integer into an `EnumGene`. Creating a genotype for integer values is very easy with the factory method of the `PermutationChromosome`. For other data types you have to use one of the constructors of the permutation chromosome. As alterers, we are using a swap-mutator and a partially-matched crossover. These alterers guarantees that no invalid solutions are created—every city exists exactly once in the altered chromosomes.
 
-	import static java.lang.Math.PI;
-	import static java.lang.Math.abs;
-	import static java.lang.Math.sin;
+	import static org.jenetics.util.math.random.nextDouble;
 
+	import java.util.Random;
+
+	import org.jenetics.BitChromosome;
+	import org.jenetics.BitGene;
 	import org.jenetics.Chromosome;
-	import org.jenetics.EnumGene;
 	import org.jenetics.GeneticAlgorithm;
 	import org.jenetics.Genotype;
-	import org.jenetics.NumberStatistics.Calculator;
-	import org.jenetics.Optimize;
-	import org.jenetics.PartiallyMatchedCrossover;
-	import org.jenetics.PermutationChromosome;
-	import org.jenetics.SwapMutator;
+	import org.jenetics.Mutator;
+	import org.jenetics.NumberStatistics;
+	import org.jenetics.RouletteWheelSelector;
+	import org.jenetics.SinglePointCrossover;
+	import org.jenetics.TournamentSelector;
 	import org.jenetics.util.Factory;
 	import org.jenetics.util.Function;
+	import org.jenetics.util.RandomRegistry;
 
-	class FF
-		implements Function<Genotype<EnumGene<Integer>>, Double>
-	{
-		private final double[][] _adjacence;
-		public FF(final double[][] adjacence) {
-			_adjacence = adjacence;
-		}
-		@Override
-		public Double apply(Genotype<EnumGene<Integer>> genotype) {
-			final Chromosome<EnumGene<Integer>> path =
-				genotype.getChromosome();
+	final class Item {
+		public final double size;
+		public final double value;
 
-			double length = 0.0;
-			for (int i = 0, n = path.length(); i < n; ++i) {
-				final int from = path.getGene(i).getAllele();
-				final int to = path.getGene((i + 1)%n).getAllele();
-				length += _adjacence[from][to];
-			}
-			return length;
+		Item(final double size, final double value) {
+			this.size = size;
+			this.value = value;
 		}
 	}
 
-	public class TravelingSalesman {
+	final class KnapsackFunction
+		implements Function<Genotype<BitGene>, Double>
+	{
+		private final Item[] items;
+		private final double size;
 
-		public static void main(String[] args) {
-			final int stops = 20;
+		public KnapsackFunction(final Item[] items, double size) {
+			this.items = items;
+			this.size = size;
+		}
 
-			final Function<Genotype<EnumGene<Integer>>, Double> ff =
-				new FF(adjacencyMatrix(stops));
-			final Factory<Genotype<EnumGene<Integer>>> gt = Genotype.valueOf(
-				PermutationChromosome.ofInteger(stops)
+		@Override
+		public Double apply(final Genotype<BitGene> genotype) {
+			final Chromosome<BitGene> ch = genotype.getChromosome();
+
+			double size = 0;
+			double value = 0;
+			for (int i = 0, n = ch.length(); i < n; ++i) {
+				if (ch.getGene(i).getBit()) {
+					size += items[i].size;
+					value += items[i].value;
+				}
+			}
+
+			return size <= this.size ? value : 0;
+		}
+	}
+
+	public class Knapsack {
+
+		private static KnapsackFunction FF(final int n, final double size) {
+			final Random random = RandomRegistry.getRandom();
+			final Item[] items = new Item[n];
+			for (int i = 0; i < items.length; ++i) {
+				items[i] = new Item(
+					nextDouble(random, 1, 10),
+					nextDouble(random, 1, 15)
+				);
+			}
+
+			return new KnapsackFunction(items, size);
+		}
+
+		public static void main(String[] args) throws Exception {
+			final KnapsackFunction ff = FF(15, 100);
+			final Factory<Genotype<BitGene>> genotype = Genotype.of(
+				BitChromosome.of(15, 0.5)
 			);
-			final GeneticAlgorithm<EnumGene<Integer>, Double>
-				ga = new GeneticAlgorithm<>(gt, ff, Optimize.MINIMUM);
+
+			final GeneticAlgorithm<BitGene, Double> ga = new GeneticAlgorithm<>(
+				genotype, ff
+			);
+			ga.setPopulationSize(500);
 			ga.setStatisticsCalculator(
-				new Calculator<EnumGene<Integer>, Double>()
+				new NumberStatistics.Calculator<BitGene, Double>()
 			);
-			ga.setPopulationSize(300);
+			ga.setSurvivorSelector(
+				new TournamentSelector<BitGene, Double>(5)
+			);
+			ga.setOffspringSelector(
+				new RouletteWheelSelector<BitGene, Double>()
+			);
 			ga.setAlterers(
-				new SwapMutator<EnumGene<Integer>>(0.2),
-				new PartiallyMatchedCrossover<Integer>(0.3)
+				new Mutator<BitGene>(0.115),
+				new SinglePointCrossover<BitGene>(0.16)
 			);
 
 			ga.setup();
-			ga.evolve(700);
+			ga.evolve(100);
 			System.out.println(ga.getBestStatistics());
 			System.out.println(ga.getBestPhenotype());
 		}
-
-		private static double[][] adjacencyMatrix(int stops) {
-			double[][] matrix = new double[stops][stops];
-			for (int i = 0; i < stops; ++i) {
-				for (int j = 0; j < stops; ++j) {
-					matrix[i][j] = chord(stops, abs(i - j), RADIUS);
-				}
-			}
-			return matrix;
-		}
-		private static double chord(int stops, int i, double r) {
-			return 2.0*r*abs(sin((PI*i)/stops));
-		}
-		private static final double RADIUS = 10.0;
 	}
 
 
@@ -352,20 +374,20 @@ The listing above shows the output generated by our example. The last line repre
 	+---------------------------------------------------------+
 	|  Population Statistics                                  |
 	+---------------------------------------------------------+
-	|                     Age mean: 1.48333333333             |
-	|                 Age variance: 3.72212931996             |
-	|                      Samples: 300                       |
-	|                 Best fitness: 62.573786016092335        |
-	|                Worst fitness: 315.49784819824816        |
+	|                     Age mean: 2.27800000000             |
+	|                 Age variance: 5.71214028056             |
+	|                      Samples: 500                       |
+	|                 Best fitness: 100.72847485732203        |
+	|                Worst fitness: 37.12415326858011         |
 	+---------------------------------------------------------+
 	+---------------------------------------------------------+
 	|  Fitness Statistics                                     |
 	+---------------------------------------------------------+
-	|                 Fitness mean: 118.87334461782           |
-	|             Fitness variance: 6464.82405084876          |
-	|        Fitness error of mean: 6.86315575146             |
+	|                 Fitness mean: 90.36801595664            |
+	|             Fitness variance: 151.83432779953           |
+	|        Fitness error of mean: 4.04138053342             |
 	+---------------------------------------------------------+
-	[19|18|17|16|15|14|13|12|11|10|9|8|7|6|5|4|3|2|1|0] --> 62.573786016092335
+	[01111111|11111111] --> 100.72847485732203
 
 
 ## Coding standards
