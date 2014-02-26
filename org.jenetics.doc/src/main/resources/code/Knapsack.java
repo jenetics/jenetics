@@ -56,7 +56,7 @@ final class KnapsackFunction
 
 public class Knapsack {
 
-	private static KnapsackFunction FF(final int n, final double size) {
+	private static KnapsackFunction FF(int n, double size) {
 		final Random random = RandomRegistry.getRandom();
 		final Item[] items = new Item[n];
 		for (int i = 0; i < items.length; ++i) {
@@ -75,9 +75,10 @@ public class Knapsack {
 			BitChromosome.of(15, 0.5)
 		);
 
-		final GeneticAlgorithm<BitGene, Double> ga = new GeneticAlgorithm<>(
-			genotype, ff
-		);
+		final GeneticAlgorithm<BitGene, Double> ga = 
+			new GeneticAlgorithm<>(
+				genotype, ff
+			);
 		ga.setPopulationSize(500);
 		ga.setStatisticsCalculator(
 			new NumberStatistics.Calculator<BitGene, Double>()

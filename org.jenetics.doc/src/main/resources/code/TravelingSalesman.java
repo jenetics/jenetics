@@ -31,8 +31,9 @@ public class TravelingSalesman {
 		}
 
 		@Override
-		public Double apply(final Genotype<EnumGene<Integer>> genotype) {
-			final Chromosome<EnumGene<Integer>> path = genotype.getChromosome();
+		public Double apply(Genotype<EnumGene<Integer>> gt) {
+			final Chromosome<EnumGene<Integer>>
+				path = gt.getChromosome();
 
 			double length = 0.0;
 			for (int i = 0, n = path.length(); i < n; ++i) {
@@ -74,10 +75,6 @@ public class TravelingSalesman {
 		System.out.println(ga.getBestPhenotype());
 	}
 
-	/**
-	 * All points in the created adjacency matrix lie on a circle. So it 
-	 * is easy to check the quality of the solution found by the GA.
-	 */
 	private static double[][] adjacencyMatrix(int stops) {
 		double[][] matrix = new double[stops][stops];
 		for (int i = 0; i < stops; ++i) {
