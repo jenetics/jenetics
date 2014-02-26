@@ -129,123 +129,6 @@ The genotype in this example consists of one `BitChromosome` with a ones probabi
 	+---------------------------------------------------------+
 	|  Population Statistics                                  |
 	+---------------------------------------------------------+
-	|                     Age mean: 1.11800000000             |
-	|                 Age variance: 2.54115831663             |
-	|                      Samples: 500                       |
-	|                 Best fitness: 19                        |
-	|                Worst fitness: 5                         |
-	+---------------------------------------------------------+
-	+---------------------------------------------------------+
-	|  Fitness Statistics                                     |
-	+---------------------------------------------------------+
-	|                 Fitness mean: 11.26000000000            |
-	|             Fitness variance: 6.28496993988             |
-	|        Fitness error of mean: 0.50356250853             |
-	+---------------------------------------------------------+
-
-
-The given example will print the overall timing statistics onto the console.
-
-### 0/1 Knapsack Problem
-
-In the [knapsack problem](http://en.wikipedia.org/wiki/Knapsack_problem) a set of items, together with their size and value, is given. The task is to select a disjoint subset so that the total size does not exeed the knapsacks size. For the 0/1 knapsack problem we define a `BitChromosome`, one bit for each item. If the ith `BitGene` is set to one the ith item is selected.
-
-	import org.jenetics.BitChromosome;
-	import org.jenetics.BitGene;
-	import org.jenetics.Chromosome;
-	import org.jenetics.GeneticAlgorithm;
-	import org.jenetics.Genotype;
-	import org.jenetics.Mutator;
-	import org.jenetics.NumberStatistics;
-	import org.jenetics.RouletteWheelSelector;
-	import org.jenetics.SinglePointCrossover;
-	import org.jenetics.util.Factory;
-	import org.jenetics.util.Function;
-
-	final class Item {
-		public double size;
-		public double value;
-	}
-
-	final class KnappsackFunction
-		implements Function<Genotype<BitGene>, Double>
-	{
-		private final Item[] _items;
-		private final double _size;
-
-		public KnappsackFunction(final Item[] items, double size) {
-			_items = items;
-			_size = size;
-		}
-
-		public Item[] getItems() {
-			return _items;
-		}
-
-		@Override
-		public Double apply(final Genotype<BitGene> genotype) {
-			final Chromosome<BitGene> ch = genotype.getChromosome();
-
-			double size = 0;
-			double value = 0;
-			for (int i = 0, n = ch.length(); i < n; ++i) {
-				if (ch.getGene(i).getBit()) {
-					size += _items[i].size;
-					value += _items[i].value;
-				}
-			}
-			
-			return size > _size ? 0 : value;
-		}
-	}
-
-	public class Knapsack {
-
-		private static KnappsackFunction FF(int n, double size) {
-			Item[] items = new Item[n];
-			for (int i = 0; i < items.length; ++i) {
-				items[i] = new Item();
-				items[i].size = (Math.random() + 1)*10;
-				items[i].value = (Math.random() + 1)*15;
-			}
-
-			return new KnappsackFunction(items, size);
-		}
-
-		public static void main(String[] argv) throws Exception {
-			final KnappsackFunction ff = FF(15, 100);
-			final Factory<Genotype<BitGene>> genotype = Genotype.valueOf(
-				new BitChromosome(15, 0.5)
-			);
-
-			final GeneticAlgorithm<BitGene, Double> ga =
-				new GeneticAlgorithm<>(genotype, ff);
-
-			ga.setMaximalPhenotypeAge(30);
-			ga.setPopulationSize(100);
-			ga.setStatisticsCalculator(
-				new NumberStatistics.Calculator<BitGene, Double>()
-			);
-			ga.setSelectors(
-				new RouletteWheelSelector<BitGene, Double>()
-			);
-			ga.setAlterers(
-				new Mutator<BitGene>(0.115),
-				new SinglePointCrossover<BitGene>(0.16)
-			);
-
-			ga.setup();
-			ga.evolve(100);
-			System.out.println(ga.getBestStatistics());
-		}
-	}
-
-
-The console out put for the Knapsack GA will look like the listing beneath.
-
-	+---------------------------------------------------------+
-	|  Population Statistics                                  |
-	+---------------------------------------------------------+
 	|                     Age mean: 1.14800000000             |
 	|                 Age variance: 2.88386372745             |
 	|                      Samples: 500                       |
@@ -260,6 +143,136 @@ The console out put for the Knapsack GA will look like the listing beneath.
 	|        Fitness error of mean: 0.49211384049             |
 	+---------------------------------------------------------+
 	[00001111|11111111|11111011] --> 19
+
+
+The given example will print the overall timing statistics onto the console.
+
+### 0/1 Knapsack Problem
+
+In the [knapsack problem](http://en.wikipedia.org/wiki/Knapsack_problem) a set of items, together with their size and value, is given. The task is to select a disjoint subset so that the total size does not exeed the knapsacks size. For the 0/1 knapsack problem we define a `BitChromosome`, one bit for each item. If the ith `BitGene` is set to one the ith item is selected.
+
+	import static org.jenetics.util.math.random.nextDouble;
+
+	import java.util.Random;
+
+	import org.jenetics.BitChromosome;
+	import org.jenetics.BitGene;
+	import org.jenetics.Chromosome;
+	import org.jenetics.GeneticAlgorithm;
+	import org.jenetics.Genotype;
+	import org.jenetics.Mutator;
+	import org.jenetics.NumberStatistics;
+	import org.jenetics.RouletteWheelSelector;
+	import org.jenetics.SinglePointCrossover;
+	import org.jenetics.TournamentSelector;
+	import org.jenetics.util.Factory;
+	import org.jenetics.util.Function;
+	import org.jenetics.util.RandomRegistry;
+
+	final class Item {
+		public final double size;
+		public final double value;
+
+		Item(final double size, final double value) {
+			this.size = size;
+			this.value = value;
+		}
+	}
+
+	final class KnapsackFunction
+		implements Function<Genotype<BitGene>, Double>
+	{
+		private final Item[] items;
+		private final double size;
+
+		public KnapsackFunction(final Item[] items, double size) {
+			this.items = items;
+			this.size = size;
+		}
+
+		@Override
+		public Double apply(final Genotype<BitGene> genotype) {
+			final Chromosome<BitGene> ch = genotype.getChromosome();
+
+			double size = 0;
+			double value = 0;
+			for (int i = 0, n = ch.length(); i < n; ++i) {
+				if (ch.getGene(i).getBit()) {
+					size += items[i].size;
+					value += items[i].value;
+				}
+			}
+
+			return size <= this.size ? value : 0;
+		}
+	}
+
+	public class Knapsack {
+
+		private static KnapsackFunction FF(final int n, final double size) {
+			final Random random = RandomRegistry.getRandom();
+			final Item[] items = new Item[n];
+			for (int i = 0; i < items.length; ++i) {
+				items[i] = new Item(
+					nextDouble(random, 1, 10),
+					nextDouble(random, 1, 15)
+				);
+			}
+
+			return new KnapsackFunction(items, size);
+		}
+
+		public static void main(String[] args) throws Exception {
+			final KnapsackFunction ff = FF(15, 100);
+			final Factory<Genotype<BitGene>> genotype = Genotype.of(
+				BitChromosome.of(15, 0.5)
+			);
+
+			final GeneticAlgorithm<BitGene, Double> ga = new GeneticAlgorithm<>(
+				genotype, ff
+			);
+			ga.setPopulationSize(500);
+			ga.setStatisticsCalculator(
+				new NumberStatistics.Calculator<BitGene, Double>()
+			);
+			ga.setSurvivorSelector(
+				new TournamentSelector<BitGene, Double>(5)
+			);
+			ga.setOffspringSelector(
+				new RouletteWheelSelector<BitGene, Double>()
+			);
+			ga.setAlterers(
+				new Mutator<BitGene>(0.115),
+				new SinglePointCrossover<BitGene>(0.16)
+			);
+
+			ga.setup();
+			ga.evolve(100);
+			System.out.println(ga.getBestStatistics());
+			System.out.println(ga.getBestPhenotype());
+		}
+	}
+
+
+The console out put for the Knapsack GA will look like the listing beneath.
+
+	+---------------------------------------------------------+
+	|  Population Statistics                                  |
+	+---------------------------------------------------------+
+	|                     Age mean: 2.15800000000             |
+	|                 Age variance: 4.71446492986             |
+	|                      Samples: 500                       |
+	|                 Best fitness: 99.95345446956883         |
+	|                Worst fitness: 25.50205183297677         |
+	+---------------------------------------------------------+
+	+---------------------------------------------------------+
+	|  Fitness Statistics                                     |
+	+---------------------------------------------------------+
+	|                 Fitness mean: 88.61369640889            |
+	|             Fitness variance: 129.23019686091           |
+	|        Fitness error of mean: 3.96292497816             |
+	+---------------------------------------------------------+
+	[01111111|11111111] --> 99.95345446956883
 
 
 ## Traveling Salesman Problem (TSP)
