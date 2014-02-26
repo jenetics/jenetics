@@ -88,30 +88,26 @@ Ones counting is one of the simplest model-problem and consists of a binary chro
 		implements Function<Genotype<BitGene>, Integer>
 	{
 		@Override
-		public Integer apply(Genotype<BitGene> genotype) {
-			int count = 0;
-			for (BitGene gene : genotype.getChromosome()) {
-				if (gene.getBit()) {
-					++count;
-				}
-			}
-			return count;
+		public Integer apply(final Genotype<BitGene> genotype) {
+			return ((BitChromosome)genotype.getChromosome()).bitCount();
 		}
 	}
 
 	public class OnesCounting {
 		public static void main(String[] args) {
-			final Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
-				new BitChromosome(20, 0.15)
+			Factory<Genotype<BitGene>> gtf = Genotype.of(
+				BitChromosome.of(20, 0.15)
 			);
-			final Function<Genotype<BitGene>, Integer> ff = new OneCounter();
-			final GeneticAlgorithm<BitGene, Integer> ga =
-				new GeneticAlgorithm<>(gtf, ff, Optimize.MAXIMUM);
+			Function<Genotype<BitGene>, Integer> ff = new OneCounter();
+			GeneticAlgorithm<BitGene, Integer> ga =
+			new GeneticAlgorithm<>(
+				gtf, ff, Optimize.MAXIMUM
+			);
 
 			ga.setStatisticsCalculator(
 				new NumberStatistics.Calculator<BitGene, Integer>()
 			);
-			ga.setPopulationSize(50);
+			ga.setPopulationSize(500);
 			ga.setSelectors(
 				new RouletteWheelSelector<BitGene, Integer>()
 			);
@@ -123,6 +119,7 @@ Ones counting is one of the simplest model-problem and consists of a binary chro
 			ga.setup();
 			ga.evolve(100);
 			System.out.println(ga.getBestStatistics());
+			System.out.println(ga.getBestPhenotype());
 		}
 	}
 
@@ -132,18 +129,18 @@ The genotype in this example consists of one `BitChromosome` with a ones probabi
 	+---------------------------------------------------------+
 	|  Population Statistics                                  |
 	+---------------------------------------------------------+
-	|                     Age mean: 1.36000000000             |
-	|                 Age variance: 3.74530612245             |
-	|                      Samples: 50                        |
-	|                 Best fitness: 18                        |
+	|                     Age mean: 1.11800000000             |
+	|                 Age variance: 2.54115831663             |
+	|                      Samples: 500                       |
+	|                 Best fitness: 19                        |
 	|                Worst fitness: 5                         |
 	+---------------------------------------------------------+
 	+---------------------------------------------------------+
 	|  Fitness Statistics                                     |
 	+---------------------------------------------------------+
-	|                 Fitness mean: 12.30000000000            |
-	|             Fitness variance: 8.25510204082             |
-	|        Fitness error of mean: 1.73948268172             |
+	|                 Fitness mean: 11.26000000000            |
+	|             Fitness variance: 6.28496993988             |
+	|        Fitness error of mean: 0.50356250853             |
 	+---------------------------------------------------------+
 
 
