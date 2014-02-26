@@ -2,6 +2,8 @@ import static java.lang.Math.PI;
 import static java.lang.Math.abs;
 import static java.lang.Math.sin;
 
+import java.io.Serializable;
+
 import org.jenetics.Chromosome;
 import org.jenetics.EnumGene;
 import org.jenetics.GeneticAlgorithm;
@@ -14,55 +16,68 @@ import org.jenetics.SwapMutator;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 
-class FF
-	implements Function<Genotype<EnumGene<Integer>>, Double>
-{
-	private final double[][] _adjacence;
-	public FF(final double[][] adjacence) {
-		_adjacence = adjacence;
-	}
-	@Override
-	public Double apply(Genotype<EnumGene<Integer>> genotype) {
-		Chromosome<EnumGene<Integer>> path = 
-			genotype.getChromosome();
-
-		double length = 0.0;
-		for (int i = 0, n = path.length(); i < n; ++i) {
-			final int from = path.getGene(i).getAllele();
-			final int to = path.getGene((i + 1)%n).getAllele();
-			length += _adjacence[from][to];
-		}
-		return length;
-	}
-}
-
 public class TravelingSalesman {
+
+	private static class FF
+		implements Function<Genotype<EnumGene<Integer>>, Double>,
+					Serializable
+	{
+		private static final long serialVersionUID = 1L;
+
+		private final double[][] adjacence;
+
+		public FF(final double[][] adjacence) {
+			this.adjacence = adjacence;
+		}
+
+		@Override
+		public Double apply(final Genotype<EnumGene<Integer>> genotype) {
+			final Chromosome<EnumGene<Integer>> path = genotype.getChromosome();
+
+			double length = 0.0;
+			for (int i = 0, n = path.length(); i < n; ++i) {
+				final int from = path.getGene(i).getAllele();
+				final int to = path.getGene((i + 1)%n).getAllele();
+				length += adjacence[from][to];
+			}
+			return length;
+		}
+
+		@Override
+		public String toString() {
+			return "Point distance";
+		}
+	}
 
 	public static void main(String[] args) {
 		final int stops = 20;
 
-		Function<Genotype<EnumGene<Integer>>, Double> ff = 
+		final Function<Genotype<EnumGene<Integer>>, Double> ff =
 			new FF(adjacencyMatrix(stops));
-		Factory<Genotype<EnumGene<Integer>>> gt = Genotype.valueOf(
+		final Factory<Genotype<EnumGene<Integer>>> gtf = Genotype.of(
 			PermutationChromosome.ofInteger(stops)
 		);
 		final GeneticAlgorithm<EnumGene<Integer>, Double>
-			ga = new GeneticAlgorithm<>(gt, ff, Optimize.MINIMUM);
+			ga = new GeneticAlgorithm<>(gtf, ff, Optimize.MINIMUM);
 		ga.setStatisticsCalculator(
-			new Calculator<EnumGene<Integer>, Double>()
-		);
-		ga.setPopulationSize(300);
+				new Calculator<EnumGene<Integer>, Double>()
+			);
+		ga.setPopulationSize(500);
 		ga.setAlterers(
 			new SwapMutator<EnumGene<Integer>>(0.2),
 			new PartiallyMatchedCrossover<Integer>(0.3)
 		);
 
 		ga.setup();
-		ga.evolve(700);
+		ga.evolve(100);
 		System.out.println(ga.getBestStatistics());
 		System.out.println(ga.getBestPhenotype());
 	}
 
+	/**
+	 * All points in the created adjacency matrix lie on a circle. So it 
+	 * is easy to check the quality of the solution found by the GA.
+	 */
 	private static double[][] adjacencyMatrix(int stops) {
 		double[][] matrix = new double[stops][stops];
 		for (int i = 0; i < stops; ++i) {
