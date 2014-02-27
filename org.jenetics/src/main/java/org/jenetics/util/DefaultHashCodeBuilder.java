@@ -24,9 +24,9 @@ import java.util.Arrays;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-10-24 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-02-27 $</em>
  */
-final class DefaultHashCodeBuilder extends HashCodeBuilder {
+final class DefaultHashCodeBuilder extends HashCodeBuilder implements Hash {
 	private static final int P1 = 47;
 	private static final int P2 = 103;
 	private static final int P3 = 1231;
@@ -38,99 +38,99 @@ final class DefaultHashCodeBuilder extends HashCodeBuilder {
 	}
 
 	@Override
-	public HashCodeBuilder and(final boolean value) {
+	public DefaultHashCodeBuilder and(final boolean value) {
 		_hash += value ? P3 : P4; return this;
 	}
 
 	@Override
-	public HashCodeBuilder and(final boolean[] values) {
+	public DefaultHashCodeBuilder and(final boolean[] values) {
 		_hash += Arrays.hashCode(values); return this;
 	}
 
 	@Override
-	public HashCodeBuilder and(final byte value) {
+	public DefaultHashCodeBuilder and(final byte value) {
 		_hash += P1*value + P2; return this;
 	}
 
 	@Override
-	public HashCodeBuilder and(final byte[] values) {
+	public DefaultHashCodeBuilder and(final byte[] values) {
 		_hash += Arrays.hashCode(values); return this;
 	}
 
 	@Override
-	public HashCodeBuilder and(final char value) {
+	public DefaultHashCodeBuilder and(final char value) {
 		_hash += P1*value + P2; return this;
 	}
 
 	@Override
-	public HashCodeBuilder and(final char[] values) {
+	public DefaultHashCodeBuilder and(final char[] values) {
 		_hash += Arrays.hashCode(values); return this;
 	}
 
 	@Override
-	public HashCodeBuilder and(final short value) {
+	public DefaultHashCodeBuilder and(final short value) {
 		_hash += P1*value + P2; return this;
 	}
 
 	@Override
-	public HashCodeBuilder and(final short[] values) {
+	public DefaultHashCodeBuilder and(final short[] values) {
 		_hash += Arrays.hashCode(values); return this;
 	}
 
 	@Override
-	public HashCodeBuilder and(final int value) {
+	public DefaultHashCodeBuilder and(final int value) {
 		_hash += P1*value + P2; return this;
 	}
 
 	@Override
-	public HashCodeBuilder and(final int[] values) {
+	public DefaultHashCodeBuilder and(final int[] values) {
 		_hash += Arrays.hashCode(values); return this;
 	}
 
 	@Override
-	public HashCodeBuilder and(final long value) {
+	public DefaultHashCodeBuilder and(final long value) {
 		_hash += P1*(int)(value^(value >>> 32)); return this;
 	}
 
 	@Override
-	public HashCodeBuilder and(final long[] values) {
+	public DefaultHashCodeBuilder and(final long[] values) {
 		_hash += Arrays.hashCode(values); return this;
 	}
 
 	@Override
-	public HashCodeBuilder and(final float value) {
+	public DefaultHashCodeBuilder and(final float value) {
 		_hash += P1*Float.floatToIntBits(value); return this;
 	}
 
 	@Override
-	public HashCodeBuilder and(final float[] values) {
+	public DefaultHashCodeBuilder and(final float[] values) {
 		_hash += Arrays.hashCode(values); return this;
 	}
 
 	@Override
-	public HashCodeBuilder and(final double value) {
+	public DefaultHashCodeBuilder and(final double value) {
 		long bits = Double.doubleToLongBits(value);
 		_hash += (int)(bits^(bits >>> 32));
 		return this;
 	}
 
 	@Override
-	public HashCodeBuilder and(final double[] values) {
+	public DefaultHashCodeBuilder and(final double[] values) {
 		_hash += Arrays.hashCode(values); return this;
 	}
 
 	@Override
-	public HashCodeBuilder and(final Object value) {
+	public DefaultHashCodeBuilder and(final Object value) {
 		_hash += P1*(value == null ? 0 : value.hashCode()) + P2; return this;
 	}
 
 	@Override
-	public HashCodeBuilder and(final Object[] values) {
+	public DefaultHashCodeBuilder and(final Object[] values) {
 		_hash += Arrays.hashCode(values); return this;
 	}
 
 	@Override
-	public HashCodeBuilder and(final Seq<?> values) {
+	public DefaultHashCodeBuilder and(final Seq<?> values) {
 		_hash += Seq.hashCode(values); return this;
 	}
 
