@@ -31,7 +31,7 @@ import org.jscience.mathematics.number.LargeInteger;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-15 $</em>
+ * @version <em>$Date: 2014-02-25 $</em>
  */
 public class bitTest {
 
@@ -383,6 +383,7 @@ public class bitTest {
 		};
 	}
 
+	@SuppressWarnings("deprecation")
 	@Test
 	public void increment() {
 		final int min = -128;
@@ -437,6 +438,7 @@ public class bitTest {
 		Assert.assertTrue(Arrays.equals(data, bit.complement(cdata)));
 	}
 
+	@SuppressWarnings("deprecation")
 	@Test(dataProvider = "toByteArrayData")
 	public void toByteArray(final LargeInteger value) {
 		final byte[] data = bit.toByteArray(value);
@@ -478,6 +480,7 @@ public class bitTest {
 		};
 	}
 
+	@SuppressWarnings("deprecation")
 	@Test(dataProvider = "toLargeIntegerData")
 	public void toLargeInteger(final byte[] data) {
 		final LargeInteger i = bit.toLargeInteger(data);
