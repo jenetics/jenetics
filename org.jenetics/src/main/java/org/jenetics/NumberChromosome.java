@@ -20,9 +20,10 @@
 package org.jenetics;
 
 import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
 
 import org.jscience.mathematics.number.Number;
+
+import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.util.ISeq;
 
@@ -32,7 +33,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-02-27 $</em>
  *
  * @deprecated Use {@link org.jenetics.NumericChromosome} instead. This classes
  *             uses the <i>JScience</i> library, which will be removed in the
@@ -229,7 +230,7 @@ public abstract class NumberChromosome<
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).
+		return HashBuilder.of(getClass()).
 				and(super.hashCode()).
 				and(_min).
 				and(_max).value();

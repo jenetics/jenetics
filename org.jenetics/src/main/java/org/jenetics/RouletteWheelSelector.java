@@ -24,11 +24,12 @@ import static org.jenetics.util.math.pow;
 import static org.jenetics.util.math.statistics.min;
 import static org.jenetics.util.math.statistics.sum;
 import static org.jenetics.util.math.ulpDistance;
-import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.Arrays;
 
 import javolution.lang.Immutable;
+
+import org.jenetics.internal.util.HashBuilder;
 
 
 /**
@@ -42,7 +43,7 @@ import javolution.lang.Immutable;
  *      </a>
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-02-27 $</em>
  */
 public class RouletteWheelSelector<
 	G extends Gene<?, G>,
@@ -88,7 +89,7 @@ public class RouletteWheelSelector<
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).value();
+		return HashBuilder.of(getClass()).value();
 	}
 
 	@Override

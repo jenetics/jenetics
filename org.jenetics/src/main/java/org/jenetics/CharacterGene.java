@@ -21,7 +21,6 @@ package org.jenetics;
 
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.Random;
 
@@ -41,6 +40,7 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.internal.util.model.ModelType;
 import org.jenetics.internal.util.model.ValueType;
 
@@ -56,7 +56,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.5 &mdash; <em>$Date: 2014-02-17 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-02-27 $</em>
  */
 @XmlJavaTypeAdapter(CharacterGene.Model.Adapter.class)
 public final class CharacterGene
@@ -163,7 +163,7 @@ public final class CharacterGene
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(_character).and(_validCharacters).value();
+		return HashBuilder.of(getClass()).and(_character).and(_validCharacters).value();
 	}
 
 	@Override

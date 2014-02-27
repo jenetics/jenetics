@@ -22,7 +22,6 @@ package org.jenetics.util;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -31,6 +30,8 @@ import java.util.NoSuchElementException;
 import java.util.regex.PatternSyntaxException;
 
 import javolution.lang.Immutable;
+
+import org.jenetics.internal.util.HashBuilder;
 
 /**
  * This class is used for holding the valid characters of an
@@ -46,7 +47,7 @@ import javolution.lang.Immutable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-02-17 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-02-27 $</em>
  */
 public final class CharSeq
 	extends AbstractCharSeq
@@ -206,7 +207,7 @@ public final class CharSeq
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(_characters).value();
+		return HashBuilder.of(getClass()).and(_characters).value();
 	}
 
 	@Override

@@ -21,13 +21,14 @@ package org.jenetics;
 
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
 
 import javolution.text.Text;
 import javolution.text.TextBuilder;
 import javolution.xml.XMLSerializable;
 
 import org.jscience.mathematics.number.Number;
+
+import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.util.Mean;
 
@@ -36,7 +37,7 @@ import org.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2014-02-27 $</em>
  *
  * @deprecated Use {@link org.jenetics.NumericGene} instead. This classes
  *             uses the <i>JScience</i> library, which will be removed in the
@@ -225,7 +226,7 @@ public abstract class NumberGene<
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(_value).and(_min).and(_max).value();
+		return HashBuilder.of(getClass()).and(_value).and(_min).and(_max).value();
 	}
 
 	@Override

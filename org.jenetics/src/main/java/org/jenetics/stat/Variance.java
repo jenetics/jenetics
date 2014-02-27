@@ -22,7 +22,8 @@ package org.jenetics.stat;
 import static java.lang.Double.NaN;
 import static java.lang.String.format;
 import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
+
+import org.jenetics.internal.util.HashBuilder;
 
 
 /**
@@ -44,7 +45,7 @@ import static org.jenetics.util.object.hashCodeOf;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-02-27 $</em>
  */
 public class Variance<N extends Number> extends Mean<N> {
 
@@ -91,7 +92,7 @@ public class Variance<N extends Number> extends Mean<N> {
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(super.hashCode()).and(_m2).value();
+		return HashBuilder.of(getClass()).and(super.hashCode()).and(_m2).value();
 	}
 
 	@Override

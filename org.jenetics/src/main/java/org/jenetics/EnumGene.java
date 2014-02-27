@@ -22,7 +22,6 @@ package org.jenetics;
 import static java.lang.String.format;
 import static org.jenetics.internal.util.jaxb.Unmarshaller;
 import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.List;
 import java.util.Objects;
@@ -40,6 +39,7 @@ import javolution.context.ObjectFactory;
 import javolution.xml.XMLFormat;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.internal.util.cast;
 import org.jenetics.internal.util.jaxb;
 import org.jenetics.internal.util.model.ModelType;
@@ -79,7 +79,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-02-24 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-02-27 $</em>
  */
 public final class EnumGene<A>
 	implements
@@ -182,7 +182,7 @@ public final class EnumGene<A>
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(EnumGene.class)
+		return HashBuilder.of(EnumGene.class)
 				.and(_alleleIndex)
 				.and(_validAlleles).value();
 	}

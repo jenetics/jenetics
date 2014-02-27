@@ -20,7 +20,8 @@
 package org.jenetics;
 
 import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
+
+import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.util.ISeq;
 
@@ -28,7 +29,7 @@ import org.jenetics.util.ISeq;
  * Abstract chromosome for {@code BoundedGene}s.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-02-17 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-02-27 $</em>
  * @since 1.6
  */
 public abstract class BoundedChromosome<
@@ -84,7 +85,7 @@ public abstract class BoundedChromosome<
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).
+		return HashBuilder.of(getClass()).
 			and(super.hashCode()).
 			and(_min).
 			and(_max).value();

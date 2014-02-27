@@ -22,9 +22,10 @@ package org.jenetics;
 import static java.lang.Math.pow;
 import static java.lang.String.format;
 import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
 
 import javolution.lang.Immutable;
+
+import org.jenetics.internal.util.HashBuilder;
 
 /**
  * <p>
@@ -52,7 +53,7 @@ import javolution.lang.Immutable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-02-27 $</em>
  */
 public final class ExponentialRankSelector<
 	G extends Gene<?, G>,
@@ -110,7 +111,7 @@ public final class ExponentialRankSelector<
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(_c).value();
+		return HashBuilder.of(getClass()).and(_c).value();
 	}
 
 	@Override

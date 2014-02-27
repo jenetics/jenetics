@@ -24,7 +24,6 @@ import static org.jenetics.Integer64Gene.Value;
 import static org.jenetics.internal.util.model.Integer64Model.Marshaller;
 import static org.jenetics.internal.util.model.Integer64Model.Unmarshaller;
 import static org.jenetics.util.functions.compose;
-import static org.jenetics.util.object.hashCodeOf;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -46,6 +45,7 @@ import javolution.xml.stream.XMLStreamException;
 
 import org.jscience.mathematics.number.Integer64;
 
+import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.internal.util.model.Integer64Model;
 import org.jenetics.internal.util.model.ModelType;
 import org.jenetics.internal.util.model.ValueType;
@@ -61,7 +61,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-02-17 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-02-27 $</em>
  *
  * @deprecated Use {@link org.jenetics.LongChromosome} instead. This classes
  *             uses the <i>JScience</i> library, which will be removed in the
@@ -194,7 +194,7 @@ public class Integer64Chromosome
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(super.hashCode()).value();
+		return HashBuilder.of(getClass()).and(super.hashCode()).value();
 	}
 
 	@Override
