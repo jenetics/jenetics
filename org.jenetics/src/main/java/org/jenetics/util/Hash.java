@@ -204,7 +204,7 @@ public interface Hash {
 	 * @return a new default {@code Hash} implementation.
 	 */
 	public static Hash of(final Class<?> type) {
-		return null;
+		return new DefaultHashCodeBuilder(type);
 	}
 
 }
