@@ -31,7 +31,7 @@ import java.util.function.Consumer;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.3 &mdash; <em>$Date: 2013-09-10 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2014-02-27 $</em>
  */
 public final class object extends StaticObject {
 	private object() {}
@@ -160,7 +160,7 @@ public final class object extends StaticObject {
 	/**
 	 * Create a HashCodeBuilder for the given type.
 	 *
-	 * @param type the type the HashCodebuilder is created for.
+	 * @param type the type the HashCodeBuilder is created for.
 	 * @return a new HashCodeBuilder.
 	 */
 	public static HashCodeBuilder hashCodeOf(final Class<?> type) {
