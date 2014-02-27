@@ -29,6 +29,8 @@ import javax.measure.Measurable;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 
+import org.jenetics.internal.util.DefaultHashCodeBuilder;
+
 /**
  * Some helper methods for creating hash codes and comparing values.
  *
@@ -222,9 +224,12 @@ public final class object extends StaticObject {
 	/**
 	 * Create a HashCodeBuilder for the given type.
 	 *
-	 * @param type the type the HashCodebuilder is created for.
+	 * @param type the type the HashCodeBuilder is created for.
 	 * @return a new HashCodeBuilder.
+	 *
+	 * @deprecated Will be removed, internal use only.
 	 */
+	@Deprecated
 	public static HashCodeBuilder hashCodeOf(final Class<?> type) {
 		return new DefaultHashCodeBuilder(type);
 	}
