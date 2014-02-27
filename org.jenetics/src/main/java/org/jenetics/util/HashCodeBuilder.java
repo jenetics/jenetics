@@ -39,7 +39,7 @@ package org.jenetics.util;
  * @since 1.0
  * @version 1.0 &mdash; <em>$Date$</em>
  *
- * @deprecated Will be removed; internal use only.
+ * @deprecated Will be (re)moved; internal use only.
  */
 @Deprecated
 public abstract class HashCodeBuilder {

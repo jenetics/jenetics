@@ -227,7 +227,7 @@ public final class object extends StaticObject {
 	 * @param type the type the HashCodeBuilder is created for.
 	 * @return a new HashCodeBuilder.
 	 *
-	 * @deprecated Will be removed, internal use only.
+	 * @deprecated Will be (re)moved; internal use only.
 	 */
 	@Deprecated
 	public static HashCodeBuilder hashCodeOf(final Class<?> type) {
