@@ -50,7 +50,7 @@ import javolution.lang.Reference;
  *         RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadSafe(1234));
  *
  *         ...
- *         final GeneticAlgorithm<Float64Gene, Float64> ga = ...
+ *         final GeneticAlgorithm<DoubleGene, Double> ga = ...
  *         ga.evolve(100);
  *     }
  * }
@@ -66,7 +66,7 @@ import javolution.lang.Reference;
  * public class GA {
  *     public static void main(final String[] args) {
  *         ...
- *         final GeneticAlgorithm<Float64Gene, Float64> ga = ...
+ *         final GeneticAlgorithm<DoubleGene, Double> ga = ...
  *         final LCG64ShiftRandom random = new LCG64ShiftRandom(1234)
  *
  *         try (Scoped<Random> scope = RandomRegistry.scope(random) {
@@ -89,7 +89,7 @@ import javolution.lang.Reference;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-02-24 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-02-27 $</em>
  */
 public final class RandomRegistry extends StaticObject {
 	private RandomRegistry() {}
