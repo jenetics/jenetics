@@ -20,7 +20,8 @@
 package org.jenetics;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.util.object.hashCodeOf;
+
+import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.util.RandomRegistry;
 
@@ -115,7 +116,7 @@ public class StochasticUniversalSelector<
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(super.hashCode()).value();
+		return HashBuilder.of(getClass()).and(super.hashCode()).value();
 	}
 
 	@Override

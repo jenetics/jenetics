@@ -24,7 +24,6 @@ import static org.jenetics.Float64Gene.Value;
 import static org.jenetics.internal.util.model.Float64Model.Marshaller;
 import static org.jenetics.internal.util.model.Float64Model.Unmarshaller;
 import static org.jenetics.util.functions.compose;
-import static org.jenetics.util.object.hashCodeOf;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -46,6 +45,7 @@ import javolution.xml.stream.XMLStreamException;
 
 import org.jscience.mathematics.number.Float64;
 
+import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.internal.util.model.Float64Model;
 import org.jenetics.internal.util.model.ModelType;
 import org.jenetics.internal.util.model.ValueType;
@@ -185,7 +185,7 @@ public class Float64Chromosome
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(super.hashCode()).value();
+		return HashBuilder.of(getClass()).and(super.hashCode()).value();
 	}
 
 	@Override

@@ -19,9 +19,6 @@
  */
 package org.jenetics.internal.util;
 
-import org.jenetics.util.HashCodeBuilder;
-import org.jenetics.util.Seq;
-
 /**
  * Interface for building hash codes. The HashCodeBuilder is created via a
  * factory method in the {@link org.jenetics.util.object} class.

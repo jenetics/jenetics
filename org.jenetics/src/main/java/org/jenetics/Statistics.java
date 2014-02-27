@@ -23,7 +23,6 @@ import static java.lang.Double.NaN;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -43,6 +42,8 @@ import javolution.xml.stream.XMLStreamException;
 
 import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.number.Integer64;
+
+import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.stat.Variance;
 import org.jenetics.util.FinalReference;
@@ -355,7 +356,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).
+		return HashBuilder.of(getClass()).
 				and(_optimize).
 				and(_generation).
 				and(_ageMean).
@@ -549,7 +550,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 		@Override
 		public int hashCode() {
-			return hashCodeOf(getClass()).
+			return HashBuilder.of(getClass()).
 					and(alter).
 					and(combine).
 					and(evaluation).

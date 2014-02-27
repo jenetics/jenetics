@@ -24,7 +24,6 @@ import static org.jenetics.Integer64Gene.Value;
 import static org.jenetics.internal.util.model.Integer64Model.Marshaller;
 import static org.jenetics.internal.util.model.Integer64Model.Unmarshaller;
 import static org.jenetics.util.functions.compose;
-import static org.jenetics.util.object.hashCodeOf;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -46,6 +45,7 @@ import javolution.xml.stream.XMLStreamException;
 
 import org.jscience.mathematics.number.Integer64;
 
+import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.internal.util.model.Integer64Model;
 import org.jenetics.internal.util.model.ModelType;
 import org.jenetics.internal.util.model.ValueType;
@@ -194,7 +194,7 @@ public class Integer64Chromosome
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(super.hashCode()).value();
+		return HashBuilder.of(getClass()).and(super.hashCode()).value();
 	}
 
 	@Override

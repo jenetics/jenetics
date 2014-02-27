@@ -22,7 +22,6 @@ package org.jenetics;
 import static org.jenetics.EnumGene.Gene;
 import static org.jenetics.util.factories.Int;
 import static org.jenetics.util.functions.StringToInteger;
-import static org.jenetics.util.object.hashCodeOf;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -44,6 +43,7 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.internal.util.cast;
 import org.jenetics.internal.util.jaxb;
 import org.jenetics.internal.util.model;
@@ -154,7 +154,7 @@ public final class PermutationChromosome<T>
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass())
+		return HashBuilder.of(getClass())
 				.and(super.hashCode())
 				.value();
 	}

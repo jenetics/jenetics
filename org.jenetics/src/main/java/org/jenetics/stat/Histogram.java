@@ -29,7 +29,6 @@ import static org.jenetics.util.functions.LongToInteger64;
 import static org.jenetics.util.math.statistics.sum;
 import static org.jenetics.util.object.NonNull;
 import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -37,6 +36,8 @@ import java.util.Comparator;
 
 import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.number.Integer64;
+
+import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.util.Function;
 import org.jenetics.util.MappedAccumulator;
@@ -340,7 +341,7 @@ public class Histogram<C> extends MappedAccumulator<C> {
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).
+		return HashBuilder.of(getClass()).
 				and(super.hashCode()).
 				and(_separators).
 				and(_histogram).value();

@@ -23,12 +23,13 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.NonNull;
 import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Function;
@@ -136,7 +137,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(_alterers).value();
+		return HashBuilder.of(getClass()).and(_alterers).value();
 	}
 
 	@Override

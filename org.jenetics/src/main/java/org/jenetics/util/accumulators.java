@@ -22,11 +22,12 @@ package org.jenetics.util;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.Iterator;
 
 import org.jscience.mathematics.structure.GroupAdditive;
+
+import org.jenetics.internal.util.HashBuilder;
 
 
 /**
@@ -108,7 +109,7 @@ public final class accumulators extends StaticObject {
 
 		@Override
 		public int hashCode() {
-			return hashCodeOf(getClass()).and(super.hashCode()).and(_min).value();
+			return HashBuilder.of(getClass()).and(super.hashCode()).and(_min).value();
 		}
 
 		@Override
@@ -201,7 +202,7 @@ public final class accumulators extends StaticObject {
 
 		@Override
 		public int hashCode() {
-			return hashCodeOf(getClass()).and(super.hashCode()).and(_max).value();
+			return HashBuilder.of(getClass()).and(super.hashCode()).and(_max).value();
 		}
 
 		@Override
@@ -308,7 +309,7 @@ public final class accumulators extends StaticObject {
 
 		@Override
 		public int hashCode() {
-			return hashCodeOf(getClass()).
+			return HashBuilder.of(getClass()).
 					and(super.hashCode()).
 					and(_min).
 					and(_max).value();

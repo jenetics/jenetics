@@ -24,11 +24,12 @@ import static org.jenetics.util.math.pow;
 import static org.jenetics.util.math.statistics.min;
 import static org.jenetics.util.math.statistics.sum;
 import static org.jenetics.util.math.ulpDistance;
-import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.Arrays;
 
 import javolution.lang.Immutable;
+
+import org.jenetics.internal.util.HashBuilder;
 
 
 /**
@@ -88,7 +89,7 @@ public class RouletteWheelSelector<
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).value();
+		return HashBuilder.of(getClass()).value();
 	}
 
 	@Override

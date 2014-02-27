@@ -22,7 +22,6 @@ package org.jenetics;
 import static java.lang.Math.min;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.util.object.hashCodeOf;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -49,6 +48,7 @@ import javolution.xml.stream.XMLStreamException;
 import org.jscience.mathematics.number.LargeInteger;
 import org.jscience.mathematics.number.Number;
 
+import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.internal.util.internalbit;
 import org.jenetics.internal.util.model.ModelType;
 import org.jenetics.internal.util.model.ValueType;
@@ -582,7 +582,7 @@ public class BitChromosome extends Number<BitChromosome>
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(_genes).value();
+		return HashBuilder.of(getClass()).and(_genes).value();
 	}
 
 	@Override

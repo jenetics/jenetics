@@ -21,7 +21,6 @@ package org.jenetics;
 
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -45,6 +44,7 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.internal.util.jaxb;
 import org.jenetics.internal.util.model;
 
@@ -374,7 +374,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(_population).value();
+		return HashBuilder.of(getClass()).and(_population).value();
 	}
 
 	@Override

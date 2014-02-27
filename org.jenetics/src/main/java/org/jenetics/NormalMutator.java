@@ -20,9 +20,10 @@
 package org.jenetics;
 
 import static java.lang.String.format;
-import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.Random;
+
+import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.util.IndexStream;
 import org.jenetics.util.MSeq;
@@ -87,7 +88,7 @@ public final class NormalMutator<G extends NumericGene<?, G>>
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(super.hashCode()).value();
+		return HashBuilder.of(getClass()).and(super.hashCode()).value();
 	}
 
 	@Override

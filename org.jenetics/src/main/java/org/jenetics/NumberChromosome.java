@@ -20,9 +20,10 @@
 package org.jenetics;
 
 import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
 
 import org.jscience.mathematics.number.Number;
+
+import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.util.ISeq;
 
@@ -229,7 +230,7 @@ public abstract class NumberChromosome<
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).
+		return HashBuilder.of(getClass()).
 				and(super.hashCode()).
 				and(_min).
 				and(_max).value();
