@@ -17,46 +17,18 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package org.jenetics.internal.util;
+
+import org.jenetics.util.Seq;
 
 /**
- * Interface for building hash codes. The HashCodeBuilder is created via a
- * factory method in the {@link object} class.
- * <p/>
- * Example for calculating the hash code for a given class:
- * [code]
- * \@Override
- * public int hashCode() {
- *     return object.hashCodeOf(getClass())
- *                  .and(_prop1)
- *                  .and(_prop2).value();
- * }
- * [/code]
- *
- * @see object#hashCodeOf(Class)
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-02-27 $</em>
- *
- * @deprecated Will be removed; internal use only.
+ * @version @__version__@ &mdash; <em>$Date: 2014-02-27 $</em>
+ * @since @__version__@
  */
-@Deprecated
-public abstract class HashCodeBuilder {
+public interface Hash {
 
-	protected int _hash = 0;
-
-	protected HashCodeBuilder(final Class<?> type) {
-		_hash = type.hashCode();
-	}
-
-	/**
-	 * Add hash code for a {@code boolean}.
-	 *
-	 * @param value the value to add to the hash code.
-	 * @return {@code this}
-	 */
-	public abstract HashCodeBuilder and(final boolean value);
+	public abstract Hash and(final boolean value);
 
 	/**
 	 * Add hash code for an {@code boolean} array.
@@ -64,7 +36,7 @@ public abstract class HashCodeBuilder {
 	 * @param values the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public abstract HashCodeBuilder and(final boolean[] values);
+	public abstract Hash and(final boolean[] values);
 
 	/**
 	 * Add hash code for a {@code byte}.
@@ -72,7 +44,7 @@ public abstract class HashCodeBuilder {
 	 * @param value the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public abstract HashCodeBuilder and(final byte value);
+	public abstract Hash and(final byte value);
 
 	/**
 	 * Add hash code for an {@code byte} arrays.
@@ -80,7 +52,7 @@ public abstract class HashCodeBuilder {
 	 * @param values the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public abstract HashCodeBuilder and(final byte[] values);
+	public abstract Hash and(final byte[] values);
 
 	/**
 	 * Add hash code for a {@code char}.
@@ -88,7 +60,7 @@ public abstract class HashCodeBuilder {
 	 * @param value the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public abstract HashCodeBuilder and(final char value);
+	public abstract Hash and(final char value);
 
 	/**
 	 * Add hash code for an {@code char} array.
@@ -96,7 +68,7 @@ public abstract class HashCodeBuilder {
 	 * @param values the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public abstract HashCodeBuilder and(final char[] values);
+	public abstract Hash and(final char[] values);
 
 	/**
 	 * Add hash code for a {@code short}.
@@ -104,7 +76,7 @@ public abstract class HashCodeBuilder {
 	 * @param value the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public abstract HashCodeBuilder and(final short value);
+	public abstract Hash and(final short value);
 
 	/**
 	 * Add hash code for an {@code short} array.
@@ -112,7 +84,7 @@ public abstract class HashCodeBuilder {
 	 * @param values the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public abstract HashCodeBuilder and(final short[] values);
+	public abstract Hash and(final short[] values);
 
 	/**
 	 * Add hash code for an {@code int}.
@@ -120,7 +92,7 @@ public abstract class HashCodeBuilder {
 	 * @param value the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public abstract HashCodeBuilder and(final int value);
+	public abstract Hash and(final int value);
 
 	/**
 	 * Add hash code for an {@code int} array.
@@ -128,7 +100,7 @@ public abstract class HashCodeBuilder {
 	 * @param values the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public abstract HashCodeBuilder and(final int[] values);
+	public abstract Hash and(final int[] values);
 
 	/**
 	 * Add hash code for a {@code long}.
@@ -136,7 +108,7 @@ public abstract class HashCodeBuilder {
 	 * @param value the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public abstract HashCodeBuilder and(final long value);
+	public abstract Hash and(final long value);
 
 	/**
 	 * Add hash code for an {@code long} array.
@@ -144,7 +116,7 @@ public abstract class HashCodeBuilder {
 	 * @param values the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public abstract HashCodeBuilder and(final long[] values);
+	public abstract Hash and(final long[] values);
 
 	/**
 	 * Add hash code for a {@code float}.
@@ -152,7 +124,7 @@ public abstract class HashCodeBuilder {
 	 * @param value the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public abstract HashCodeBuilder and(final float value);
+	public abstract Hash and(final float value);
 
 	/**
 	 * Add hash code for an {@code float} array.
@@ -160,7 +132,7 @@ public abstract class HashCodeBuilder {
 	 * @param values the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public abstract HashCodeBuilder and(final float[] values);
+	public abstract Hash and(final float[] values);
 
 	/**
 	 * Add hash code for a {@code double}.
@@ -168,7 +140,7 @@ public abstract class HashCodeBuilder {
 	 * @param value the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public abstract HashCodeBuilder and(final double value);
+	public abstract Hash and(final double value);
 
 	/**
 	 * Add hash code for an {@code double} array.
@@ -176,7 +148,7 @@ public abstract class HashCodeBuilder {
 	 * @param values the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public abstract HashCodeBuilder and(final double[] values);
+	public abstract Hash and(final double[] values);
 
 	/**
 	 * Add hash code for a {@code Object}.
@@ -184,7 +156,7 @@ public abstract class HashCodeBuilder {
 	 * @param value the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public abstract HashCodeBuilder and(final Object value);
+	public abstract Hash and(final Object value);
 
 	/**
 	 * Add hash code for an {@code Object}.
@@ -192,7 +164,7 @@ public abstract class HashCodeBuilder {
 	 * @param values the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public abstract HashCodeBuilder and(final Object[] values);
+	public abstract Hash and(final Object[] values);
 
 	/**
 	 * Add hash code for a {@code Seq}.
@@ -200,15 +172,12 @@ public abstract class HashCodeBuilder {
 	 * @param values the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public abstract HashCodeBuilder and(final Seq<?> values);
+	public abstract Hash and(final Seq<?> values);
 
 	/**
 	 * Return the calculated hash value.
 	 *
 	 * @return the calculated hash value.
 	 */
-	public int value() {
-		return _hash;
-	}
-
+	public int value();
 }
