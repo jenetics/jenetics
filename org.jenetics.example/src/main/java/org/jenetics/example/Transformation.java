@@ -129,7 +129,7 @@ public class Transformation {
 		final GeneticAlgorithm<DoubleGene, Double> ga = new GeneticAlgorithm<>(gtf, ff);
 
 		ga.setPopulationSize(1000);
-		ga.setAlterer(CompositeAlterer.valueOf(
+		ga.setAlterer(CompositeAlterer.of(
 			new Mutator<DoubleGene>(0.03),
 			new MeanAlterer<DoubleGene>(0.6)
 		));

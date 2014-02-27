@@ -58,18 +58,18 @@ public class PartiallyMatchedCrossoverTest {
 		shuffling.shuffle(that);
 		shuffling.shuffle(other);
 
-		final PermutationChromosome<Integer> thatChrom1 = PermutationChromosome.valueOf(that.toISeq());
+		final PermutationChromosome<Integer> thatChrom1 = PermutationChromosome.of(that.toISeq());
 		Assert.assertTrue(thatChrom1.isValid(), "thatChrom1 not valid");
 
-		final PermutationChromosome<Integer> otherChrom1 = PermutationChromosome.valueOf(other.toISeq());
+		final PermutationChromosome<Integer> otherChrom1 = PermutationChromosome.of(other.toISeq());
 		Assert.assertTrue(otherChrom1.isValid(), "otherChrom1 not valid");
 
 		pmco.crossover(that, other);
 
-		final PermutationChromosome<Integer> thatChrom2 = PermutationChromosome.valueOf(that.toISeq());
+		final PermutationChromosome<Integer> thatChrom2 = PermutationChromosome.of(that.toISeq());
 		Assert.assertTrue(thatChrom2.isValid(), "thatChrom2 not valid: " + thatChrom2.toSeq());
 
-		final PermutationChromosome<Integer> otherChrom2 = PermutationChromosome.valueOf(other.toISeq());
+		final PermutationChromosome<Integer> otherChrom2 = PermutationChromosome.of(other.toISeq());
 		Assert.assertTrue(otherChrom2.isValid(), "otherChrom2 not valid: " + otherChrom2.toSeq());
 
 		Assert.assertFalse(thatChrom1.equals(thatChrom2), "That chromosome must not be equal");
