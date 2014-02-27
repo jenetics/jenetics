@@ -58,7 +58,7 @@ import javolution.xml.stream.XMLStreamException;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-02-14 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-02-27 $</em>
  */
 public abstract class IO {
 
@@ -113,8 +113,8 @@ public abstract class IO {
 	};
 
 	/**
-	 * JAXB implementation for <i>XML</i> serialization. Is compatible to the
-	 * existing, deprecated {@link #xml} marshalling.
+	 * JAXB for <i>XML</i> serialization. Is compatible to the existing,
+	 * deprecated {@link #xml} marshalling.
 	 */
 	public static final IO jaxb = new IO() {
 
@@ -366,7 +366,7 @@ public abstract class IO {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version 1.0 &mdash; <em>$Date: 2014-02-14 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2014-02-27 $</em>
 	 */
 	private static final class NonClosableOutputStream extends OutputStream {
 		private final OutputStream _adoptee;
@@ -410,7 +410,7 @@ public abstract class IO {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version 1.0 &mdash; <em>$Date: 2014-02-14 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2014-02-27 $</em>
 	 */
 	private static final class NonClosableInputStream extends InputStream {
 		private final InputStream _adoptee;
