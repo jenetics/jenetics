@@ -38,8 +38,9 @@ import org.jenetics.util.shuffling;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-25 $</em>
+ * @version <em>$Date: 2014-02-28 $</em>
  */
+@SuppressWarnings("deprecation")
 public class PartiallyMatchedCrossoverTest {
 
 

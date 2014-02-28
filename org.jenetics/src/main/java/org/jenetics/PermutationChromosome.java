@@ -61,7 +61,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-02-27 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-02-28 $</em>
  */
 @XmlJavaTypeAdapter(PermutationChromosome.Model.Adapter.class)
 public final class PermutationChromosome<T>
@@ -213,6 +213,7 @@ public final class PermutationChromosome<T>
 	 * @param length the chromosome length.
 	 * @return a integer permutation chromosome with the given length.
 	 */
+	@SuppressWarnings("deprecation")
 	public static PermutationChromosome<Integer> ofInteger(final int length) {
 		final ISeq<Integer> alleles = new Array<Integer>(length).fill(Int()).toISeq();
 		return new PermutationChromosome<>(alleles);
