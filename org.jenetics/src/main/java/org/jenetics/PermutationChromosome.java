@@ -213,6 +213,7 @@ public final class PermutationChromosome<T>
 	 * @param length the chromosome length.
 	 * @return a integer permutation chromosome with the given length.
 	 */
+	@SuppressWarnings("deprecation")
 	public static PermutationChromosome<Integer> ofInteger(final int length) {
 		final ISeq<Integer> alleles = new Array<Integer>(length).fill(Int()).toISeq();
 		return new PermutationChromosome<>(alleles);
