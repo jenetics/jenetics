@@ -23,8 +23,8 @@ import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.arrays.forEach;
-import static org.jenetics.util.object.NonNull;
-import static org.jenetics.util.object.checkProbability;
+import static org.jenetics.internal.util.object.NonNull;
+import static org.jenetics.internal.util.object.checkProbability;
 
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;

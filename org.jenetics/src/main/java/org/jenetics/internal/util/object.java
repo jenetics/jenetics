@@ -17,8 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
-
+package org.jenetics.internal.util;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
@@ -31,16 +30,21 @@ import javax.measure.unit.SI;
 
 import org.jenetics.internal.util.DefaultHashCodeBuilder;
 
+import org.jenetics.util.Function;
+import org.jenetics.util.HashCodeBuilder;
+import org.jenetics.util.Seq;
+import org.jenetics.util.StaticObject;
+import org.jenetics.util.Verifiable;
+import org.jenetics.util.arrays;
+import org.jenetics.util.bit;
+
 /**
  * Some helper methods for creating hash codes and comparing values.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
  * @version 1.3 &mdash; <em>$Date$</em>
- *
- * @deprecated Will be (re)moved; internal use only.
  */
-@Deprecated
 public final class object extends StaticObject {
 	private object() {}
 
@@ -79,7 +83,7 @@ public final class object extends StaticObject {
 
 
 	/**
-	 * Verifies {@link Verifiable} array elements. All elements are valid if the
+	 * Verifies {@link org.jenetics.util.Verifiable} array elements. All elements are valid if the
 	 * condition
 	 * [code]
 	 * arrays.forAll(Verify) == true
@@ -87,7 +91,7 @@ public final class object extends StaticObject {
 	 * is true.
 	 */
 	public static final Function<Verifiable, Boolean>
-	Verify = new Function<Verifiable,Boolean>() {
+		Verify = new Function<Verifiable,Boolean>() {
 		@Override
 		public Boolean apply(final Verifiable object) {
 			return object.isValid() ? Boolean.TRUE : Boolean.FALSE;
@@ -132,39 +136,6 @@ public final class object extends StaticObject {
 	}
 
 	/**
-	 * Checks that the specified object reference is not {@code null}.
-	 *
-	 * @param obj the object to check.
-	 * @param message the error message.
-	 * @return {@code obj} if not {@code null}.
-	 * @throws NullPointerException if {@code obj} is {@code null}.
-	 *
-	 * @deprecated Use {@link java.util.Objects#requireNonNull(Object, String)}
-	 *             instead.
-	 */
-	@Deprecated
-	public static <T> T nonNull(final T obj, final String message) {
-		if (obj == null) {
-			throw new NullPointerException(message + " must not be null.");
-		}
-		return obj;
-	}
-
-	/**
-	 * Checks that the specified object reference is not {@code null}.
-	 *
-	 * @param obj the object to check.
-	 * @return {@code obj} if not {@code null}.
-	 * @throws NullPointerException if {@code obj} is {@code null}.
-	 *
-	 * @deprecated Use {@link java.util.Objects#requireNonNull(Object)} instead.
-	 */
-	@Deprecated
-	public static <T> T nonNull(final T obj) {
-		return nonNull(obj, "Object");
-	}
-
-	/**
 	 * Check if the specified value is not negative.
 	 *
 	 * @param value the value to check.
@@ -175,8 +146,8 @@ public final class object extends StaticObject {
 	public static double nonNegative(final double value, final String message) {
 		if (value < 0) {
 			throw new IllegalArgumentException(format(
-					"%s must not negative: %f.", message, value
-				));
+				"%s must not negative: %f.", message, value
+			));
 		}
 		return value;
 	}
@@ -222,19 +193,6 @@ public final class object extends StaticObject {
 			));
 		}
 		return p;
-	}
-
-	/**
-	 * Create a HashCodeBuilder for the given type.
-	 *
-	 * @param type the type the HashCodeBuilder is created for.
-	 * @return a new HashCodeBuilder.
-	 *
-	 * @deprecated Will be (re)moved; internal use only.
-	 */
-	@Deprecated
-	public static HashCodeBuilder hashCodeOf(final Class<?> type) {
-		return new DefaultHashCodeBuilder(type);
 	}
 
 	/**
@@ -483,45 +441,6 @@ public final class object extends StaticObject {
 	 */
 	public static boolean eq(final Seq<?> a, final Seq<?> b) {
 		return arrays.equals(a, b);
-	}
-
-	/**
-	 * Returns the result of calling toString for a non-null argument and "null"
-	 * for a null argument.
-	 *
-	 * @see Objects#toString(Object)
-	 *
-	 * @param a the object.
-	 * @return the result of calling toString for a non-null argument and "null"
-	 *          for a null argument
-	 *
-	 * @deprecated Use {@link Objects#toString(Object)} instead.
-	 */
-	@Deprecated
-	public static String str(final Object a) {
-		return Objects.toString(a);
-	}
-
-	/**
-	 * Print a binary representation of the given byte array. The printed string
-	 * has the following format:
-	 * <pre>
-	 *  Byte:       3        2        1        0
-	 *              |        |        |        |
-	 *  Array: "11110011|10011101|01000000|00101010"
-	 *          |                 |        |      |
-	 *  Bit:    23                15       7      0
-	 * </pre>
-	 * <i>Only the array string is printed.</i>
-	 *
-	 * @param data the byte array to convert to a string.
-	 * @return the binary representation of the given byte array.
-	 *
-	 * @deprecated Use {@link bit#toByteString(byte...)} instead.
-	 */
-	@Deprecated
-	public static String str(final byte... data) {
-		return bit.toByteString(data);
 	}
 
 }

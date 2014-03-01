@@ -24,7 +24,7 @@ import static java.lang.String.format;
 import static org.jenetics.util.math.divide;
 import static org.jenetics.util.math.normalize;
 import static org.jenetics.util.math.statistics.max;
-import static org.jenetics.util.object.eq;
+import static org.jenetics.internal.util.object.eq;
 
 import javolution.lang.Immutable;
 

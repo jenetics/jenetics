@@ -21,7 +21,7 @@ package org.jenetics.stat;
 
 import static java.lang.Double.NaN;
 import static java.lang.String.format;
-import static org.jenetics.util.object.eq;
+import static org.jenetics.internal.util.object.eq;
 
 import org.jenetics.internal.util.HashBuilder;
 

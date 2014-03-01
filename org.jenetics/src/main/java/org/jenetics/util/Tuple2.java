@@ -19,7 +19,7 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.object.eq;
+import static org.jenetics.internal.util.object.eq;
 
 import org.jenetics.internal.util.HashBuilder;
 

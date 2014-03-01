@@ -20,7 +20,7 @@
 package org.jenetics;
 
 import static org.jenetics.CharacterGene.DEFAULT_CHARACTERS;
-import static org.jenetics.util.object.eq;
+import static org.jenetics.internal.util.object.eq;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

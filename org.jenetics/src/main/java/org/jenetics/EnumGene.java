@@ -21,7 +21,7 @@ package org.jenetics;
 
 import static java.lang.String.format;
 import static org.jenetics.internal.util.jaxb.Unmarshaller;
-import static org.jenetics.util.object.eq;
+import static org.jenetics.internal.util.object.eq;
 
 import java.util.List;
 import java.util.Objects;
