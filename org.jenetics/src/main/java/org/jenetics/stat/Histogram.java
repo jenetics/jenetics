@@ -23,12 +23,12 @@ import static java.lang.Math.max;
 import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static org.jenetics.internal.util.object.NonNull;
+import static org.jenetics.internal.util.object.eq;
 import static org.jenetics.util.arrays.forEach;
 import static org.jenetics.util.functions.DoubleToFloat64;
 import static org.jenetics.util.functions.LongToInteger64;
 import static org.jenetics.util.math.statistics.sum;
-import static org.jenetics.internal.util.object.NonNull;
-import static org.jenetics.internal.util.object.eq;
 
 import java.io.IOException;
 import java.util.Arrays;
