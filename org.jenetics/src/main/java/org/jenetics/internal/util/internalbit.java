@@ -27,7 +27,7 @@ import org.jenetics.util.StaticObject;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-02-22 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-01 $</em>
  * @since 1.6
  */
 public final class internalbit extends StaticObject {
@@ -79,7 +79,7 @@ public final class internalbit extends StaticObject {
 			}
 
 			// Trim (delete) the overhanging bits.
-			copy[copy.length - 1] &= 0xFF >>> (copy.length*8 - bitLength);
+			copy[copy.length - 1] &= 0xFF >>> ((copy.length << 3) - bitLength);
 		}
 
 		return copy;

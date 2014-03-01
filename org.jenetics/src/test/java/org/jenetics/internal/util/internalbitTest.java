@@ -36,8 +36,7 @@ import org.jenetics.util.bit;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-02-22 $</em>
- * @since @__version__@
+ * @version <em>$Date: 2014-03-01 $</em>
  */
 public class internalbitTest {
 
@@ -45,7 +44,7 @@ public class internalbitTest {
 	@Test(dataProvider = "copyParameter")
 	public void copy(final Integer length, final Integer start, final Integer end) {
 		final Random random = new Random(12341);
-		final byte[] data = new byte[length];
+		final byte[] data = new byte[length >>> 3];
 		random.nextBytes(data);
 
 		Assert.assertEquals(
@@ -58,10 +57,10 @@ public class internalbitTest {
 	@DataProvider(name = "copyParameter")
 	public Object[][] copyParameter() {
 		final List<Object[]> list = new ArrayList<>();
-		for (int length = 1; length < 10; length += 3) {
-			for (int start = 0; start < length*8; start += 3) {
-				for (int end = start; end < length*8 + 2; end += 5) {
-					list.add(new Integer[]{length, start, end});
+		for (int length = 1; length < 20; length += 5) {
+			for (int start = 0; start < length*8; start += 7) {
+				for (int end = start; end < length*8 + 2; end += 11) {
+					list.add(new Integer[]{length << 3, start, end});
 				}
 			}
 		}
