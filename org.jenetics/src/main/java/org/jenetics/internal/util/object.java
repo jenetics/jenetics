@@ -18,25 +18,21 @@
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 package org.jenetics.internal.util;
+
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
-import java.util.Objects;
 
 import javax.measure.Measurable;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 
-import org.jenetics.internal.util.DefaultHashCodeBuilder;
-
 import org.jenetics.util.Function;
-import org.jenetics.util.HashCodeBuilder;
 import org.jenetics.util.Seq;
 import org.jenetics.util.StaticObject;
 import org.jenetics.util.Verifiable;
 import org.jenetics.util.arrays;
-import org.jenetics.util.bit;
 
 /**
  * Some helper methods for creating hash codes and comparing values.
