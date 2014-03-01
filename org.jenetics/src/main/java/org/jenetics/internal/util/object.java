@@ -39,7 +39,7 @@ import org.jenetics.util.arrays;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.3 &mdash; <em>$Date$</em>
+ * @version 1.6 &mdash; <em>$Date$</em>
  */
 public final class object extends StaticObject {
 	private object() {}
@@ -59,7 +59,7 @@ public final class object extends StaticObject {
 	 * arrays.forEach(CheckRange<(0, 10));
 	 * [/code]
 	 */
-	public static final <C extends Comparable<? super C>> Function<C, Boolean>
+	public static <C extends Comparable<? super C>> Function<C, Boolean>
 	CheckRange(final C min, final C max)
 	{
 		return new Function<C,Boolean>() {
@@ -122,7 +122,7 @@ public final class object extends StaticObject {
 	 * arrays.forEach(array, NonNull);
 	 * [/code]
 	 */
-	public static final Function<Object, Boolean> NonNull(final String message) {
+	public static Function<Object, Boolean> NonNull(final String message) {
 		return new Function<Object,Boolean>() {
 			@Override public Boolean apply(final Object object) {
 				requireNonNull(object, message );

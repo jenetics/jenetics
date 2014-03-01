@@ -79,7 +79,7 @@ public final class internalbit extends StaticObject {
 			}
 
 			// Trim (delete) the overhanging bits.
-			copy[copy.length - 1] &= 0xFF >>> (copy.length*8 - bitLength);
+			copy[copy.length - 1] &= 0xFF >>> ((copy.length << 3) - bitLength);
 		}
 
 		return copy;
