@@ -20,7 +20,7 @@
 package org.jenetics.stat;
 
 import static java.lang.String.format;
-import static org.jenetics.util.object.eq;
+import static org.jenetics.internal.util.object.eq;
 
 import org.jenetics.internal.util.HashBuilder;
 
@@ -45,7 +45,7 @@ import org.jenetics.util.MappedAccumulator;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-02-27 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-03-01 $</em>
  */
 public class Mean<N extends Number> extends MappedAccumulator<N> {
 

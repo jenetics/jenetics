@@ -20,7 +20,7 @@
 package org.jenetics;
 
 import static java.lang.String.format;
-import static org.jenetics.util.object.eq;
+import static org.jenetics.internal.util.object.eq;
 
 import javolution.lang.Immutable;
 
@@ -59,7 +59,7 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-02-27 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-03-01 $</em>
  */
 public final class LinearRankSelector<
 	G extends Gene<?, G>,
