@@ -66,7 +66,7 @@ public class CharacterChromosome
 	private static final long serialVersionUID = 1L;
 
 	private transient CharSeq _validCharacters;
-	
+
 	/**
 	 * Create a new chromosome from the given {@code genes} array. The genes
 	 * array is copied, so changes to the given genes array doesn't effect the
@@ -99,8 +99,8 @@ public class CharacterChromosome
 	public CharacterChromosome(final CharSeq validCharacters, final int length) {
 		this(CharacterGene.seq(validCharacters, length));
 		_valid = true;
-	}	
-	
+	}
+
 	/**
 	 * Create a new chromosome with the {@link CharacterGene#DEFAULT_CHARACTERS}
 	 * char set as valid characters.
@@ -404,7 +404,10 @@ public class CharacterChromosome
 
 			@Override
 			public CharacterChromosome unmarshal(final Model m) {
-				return new CharacterChromosome(m.genes, new CharSeq(m.validCharacters));
+				return CharacterChromosome.of(
+					m.genes,
+					new CharSeq(m.validCharacters)
+				);
 			}
 		}
 	}

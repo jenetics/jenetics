@@ -84,18 +84,18 @@ public final class CharacterGene
 		_validCharacters = chars;
 		_valid = true;
 	}
-	
+
 	/**
 	 * Create a new character gene from the given {@code character} and the
 	 * given set of valid characters.
-	 * 
+	 *
 	 * @param character the char this gene represents
-	 * @param validCharacters the set of valid characters.
+	 * @param validChars the set of valid characters.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	public CharacterGene(final Character character, final CharSeq validCharacters) {
+	public CharacterGene(final Character character, final CharSeq validChars) {
 		_character = requireNonNull(character);
-		_validCharacters = requireNonNull(validCharacters);
+		_validCharacters = requireNonNull(validChars);
 		_valid = _validCharacters.contains(_character);
 	}
 
@@ -121,11 +121,11 @@ public final class CharacterGene
 	/**
 	 * Test, if the given character is valid.
 	 *
-	 * @param c The character to test.
+	 * @param character The character to test.
 	 * @return true if the character is valid, false otherwise.
 	 */
-	public boolean isValidCharacter(final Character c) {
-		return _validCharacters.contains(c);
+	public boolean isValidCharacter(final Character character) {
+		return _validCharacters.contains(character);
 	}
 
 	/**
@@ -170,7 +170,7 @@ public final class CharacterGene
 	Factory<CharacterGene> asFactory() {
 		return this;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return HashBuilder.of(getClass()).and(_character).and(_validCharacters).value();
@@ -264,7 +264,7 @@ public final class CharacterGene
 	 */
 	public static CharacterGene of(final CharSeq validCharacters) {
 		return new CharacterGene(
-			validCharacters, 
+			validCharacters,
 			RandomRegistry.getRandom().nextInt(validCharacters.length())
 		);
 	}
@@ -288,7 +288,7 @@ public final class CharacterGene
 	 *         {@code null}.
 	 */
 	public static CharacterGene of(final Character character) {
-		return of(character, DEFAULT_CHARACTERS);
+		return new CharacterGene(character, DEFAULT_CHARACTERS);
 	}
 
 	/**
@@ -306,9 +306,10 @@ public final class CharacterGene
 	 * @return a new random character gene.
 	 */
 	public static CharacterGene of() {
-		final Random random = RandomRegistry.getRandom();
-		final int index = random.nextInt(DEFAULT_CHARACTERS.length());
-		return new CharacterGene(DEFAULT_CHARACTERS, index);
+		return new CharacterGene(
+			DEFAULT_CHARACTERS,
+			RandomRegistry.getRandom().nextInt(DEFAULT_CHARACTERS.length())
+		);
 	}
 
 	/**
@@ -344,13 +345,16 @@ public final class CharacterGene
 		return of(character, validCharacters);
 	}
 
-	static ISeq<CharacterGene> seq( final CharSeq characters, final int length) {
-		final Random r = RandomRegistry.getRandom();
+	static ISeq<CharacterGene> seq(final CharSeq characters, final int length) {
+		final Random random = RandomRegistry.getRandom();
+		final int charsLength = characters.length();
 
 		final Array<CharacterGene> genes = new Array<>(length);
 		for (int i = 0; i < length; ++i) {
-			final int index = r.nextInt(characters.length());
-			genes.set(i, new CharacterGene(characters, index));
+			final CharacterGene gene = new CharacterGene(
+				characters, random.nextInt(charsLength)
+			);
+			genes.set(i, gene);
 		}
 		return genes.toISeq();
 	}
@@ -377,7 +381,7 @@ public final class CharacterGene
 			final String character = xml.getText().toString();
 
 			return CharacterGene.of(
-				character.charAt(0), 
+				character.charAt(0),
 				new CharSeq(validCharacters)
 			);
 		}
