@@ -25,7 +25,6 @@ import static org.jenetics.internal.util.object.eq;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -35,7 +34,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import javolution.context.ObjectFactory;
 import javolution.xml.XMLFormat;
 import javolution.xml.stream.XMLStreamException;
 
@@ -68,7 +66,7 @@ import org.jenetics.util.RandomRegistry;
  * The following code shows the assurances of the {@code EnumGene}.
  * [code]
  * final ISeq〈Integer〉 alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
- * final EnumGene〈Integer〉 gene = EnumGene.of(alleles, 5);
+ * final EnumGene〈Integer〉 gene = new EnumGene<>(alleles, 5);
  *
  * assert(gene.getAlleleIndex() == 5);
  * assert(gene.getAllele() == gene.getValidAlleles().get(5));
@@ -79,7 +77,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-03-01 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-03 $</em>
  */
 public final class EnumGene<A>
 	implements
@@ -89,10 +87,48 @@ public final class EnumGene<A>
 
 	private static final long serialVersionUID = 1L;
 
-	private ISeq<A> _validAlleles;
-	private int _alleleIndex = -1;
+	private final ISeq<A> _validAlleles;
+	private final int _alleleIndex;
 
-	EnumGene() {
+	/**
+	 * Create a new enum gene from the given valid genes and the chosen allele
+	 * index.
+	 *
+	 * @param validAlleles the sequence of valid alleles.
+	 * @param alleleIndex the index of the allele for this gene.
+	 * @throws java.lang.IllegalArgumentException if the give valid alleles
+	 *         sequence is empty of the allele index is out of range.
+	 */
+	public EnumGene(final ISeq<? extends A> validAlleles, final int alleleIndex) {
+		if (validAlleles.length() == 0) {
+			throw new IllegalArgumentException(
+				"Array of valid alleles must be greater than zero."
+			);
+		}
+
+		if (alleleIndex < 0 || alleleIndex >= validAlleles.length()) {
+			throw new IndexOutOfBoundsException(format(
+				"Allele index is not in range [0, %d).", alleleIndex
+			));
+		}
+
+		_validAlleles = cast.apply(validAlleles);
+		_alleleIndex = alleleIndex;
+	}
+
+	/**
+	 * Return a new enum gene with an allele randomly chosen from the given
+	 * valid alleles.
+	 *
+	 * @param validAlleles the sequence of valid alleles.
+	 * @throws java.lang.IllegalArgumentException if the give valid alleles
+	 *         sequence is empty
+	 */
+	public EnumGene(final ISeq<? extends A> validAlleles) {
+		this(
+			validAlleles,
+			RandomRegistry.getRandom().nextInt(validAlleles.length())
+		);
 	}
 
 	/**
@@ -121,26 +157,20 @@ public final class EnumGene<A>
 	@Deprecated
 	@Override
 	public EnumGene<A> copy() {
-		final EnumGene<A> gene = new EnumGene<>();
-		gene._validAlleles = _validAlleles;
-		gene._alleleIndex = _alleleIndex;
-		return gene;
+		return new EnumGene<>(_validAlleles, _alleleIndex);
 	}
 
 	@Override
 	public boolean isValid() {
-		return _alleleIndex != -1;
+		return _alleleIndex >= 0;
 	}
 
 	@Override
 	public EnumGene<A> newInstance() {
-		@SuppressWarnings("unchecked")
-		final EnumGene<A> gene = FACTORY.object();
-		final Random random = RandomRegistry.getRandom();
-
-		gene._alleleIndex = random.nextInt(_validAlleles.length());
-		gene._validAlleles = _validAlleles;
-		return gene;
+		return new EnumGene<>(
+			_validAlleles,
+			RandomRegistry.getRandom().nextInt(_validAlleles.length())
+		);
 	}
 
 	/**
@@ -151,12 +181,10 @@ public final class EnumGene<A>
 	 * @return a new gene with the given value.
 	 */
 	public EnumGene<A> newInstance(final A value) {
-		@SuppressWarnings("unchecked")
-		final EnumGene<A> gene = FACTORY.object();
-		gene._validAlleles = _validAlleles;
-		gene._alleleIndex = _validAlleles.indexOf(value);
-
-		return gene;
+		return new EnumGene<>(
+			_validAlleles,
+			_validAlleles.indexOf(value)
+		);
 	}
 
 	@Override
@@ -216,7 +244,7 @@ public final class EnumGene<A>
 		return new Function<Integer, EnumGene<T>>() {
 			@Override
 			public EnumGene<T> apply(final Integer index) {
-				return of(validAlleles, index);
+				return new EnumGene<>(validAlleles, index);
 			}
 		};
 	}
@@ -226,64 +254,21 @@ public final class EnumGene<A>
 			private int _index = 0;
 			@Override
 			public EnumGene<T> newInstance() {
-				return EnumGene.of(validAlleles, _index++);
+				return new EnumGene<>(validAlleles, _index++);
 			}
 		};
 	}
 
 
-	@SuppressWarnings("rawtypes")
-	private static final ObjectFactory<EnumGene>
-	FACTORY = new ObjectFactory<EnumGene>() {
-		@Override
-		protected EnumGene create() {
-			return new EnumGene();
-		}
-	};
-
 	/**
-	 * Create a new enum gene from the given valid genes and the chosen allele
-	 * index.
-	 *
-	 * @param validAlleles the sequence of valid alleles.
-	 * @param alleleIndex the index of the allele for this gene.
-	 * @return a new enum gene
-	 * @throws java.lang.IllegalArgumentException if the give valid alleles
-	 *         sequence is empty of the allele index is out of range.
-	 */
-	public static <A> EnumGene<A> of(
-		final ISeq<? extends A> validAlleles,
-		final int alleleIndex
-	) {
-		if (validAlleles.length() == 0) {
-			throw new IllegalArgumentException(
-				"Array of valid alleles must be greater than zero."
-			);
-		}
-
-		if (alleleIndex < 0 || alleleIndex >= validAlleles.length()) {
-			throw new IndexOutOfBoundsException(format(
-				"Allele index is not in range [0, %d).", alleleIndex
-			));
-		}
-
-		@SuppressWarnings("unchecked")
-		final EnumGene<A> gene = FACTORY.object();
-
-		gene._validAlleles = cast.apply(validAlleles);
-		gene._alleleIndex = alleleIndex;
-		return gene;
-	}
-
-	/**
-	 * @deprecated Use {@link #of(org.jenetics.util.ISeq, int)} instead.
+	 * @deprecated Use {@link #EnumGene(org.jenetics.util.ISeq, int)} instead.
 	 */
 	@Deprecated
 	public static <A> EnumGene<A> valueOf(
 		final ISeq<? extends A> validAlleles,
 		final int alleleIndex
 	) {
-		return of(validAlleles, alleleIndex);
+		return new EnumGene<>(validAlleles, alleleIndex);
 	}
 
 	/**
@@ -300,7 +285,7 @@ public final class EnumGene<A>
 		final G[] validAlleles,
 		final int alleleIndex
 	) {
-		return of(Array.of(validAlleles).toISeq(), alleleIndex);
+		return new EnumGene<>(Array.of(validAlleles).toISeq(), alleleIndex);
 	}
 
 	/**
@@ -315,34 +300,11 @@ public final class EnumGene<A>
 	}
 
 	/**
-	 * Return a new enum gene with an allele randomly chosen from the given
-	 * valid alleles.
-	 *
-	 * @param validAlleles the sequence of valid alleles.
-	 * @return a new enum gene
-	 * @throws java.lang.IllegalArgumentException if the give valid alleles
-	 *         sequence is empty
-	 */
-	public static <G> EnumGene<G> of(final ISeq<G> validAlleles) {
-		if (validAlleles.length() == 0) {
-			throw new IllegalArgumentException(
-				"Array of valid alleles must be greater than zero."
-			);
-		}
-
-		@SuppressWarnings("unchecked")
-		final EnumGene<G> gene = FACTORY.object();
-		gene._validAlleles = validAlleles;
-		gene._alleleIndex = RandomRegistry.getRandom().nextInt(validAlleles.length());
-		return gene;
-	}
-
-	/**
-	 * @deprecated Use {@link #of(org.jenetics.util.ISeq)} instead.
+	 * @deprecated Use {@link #EnumGene(org.jenetics.util.ISeq)} instead.
 	 */
 	@Deprecated
 	public static <G> EnumGene<G> valueOf(final ISeq<G> validAlleles) {
-		return of(validAlleles);
+		return new EnumGene<>(validAlleles);
 	}
 
 	/**
@@ -355,7 +317,7 @@ public final class EnumGene<A>
 	 *         array is empty
 	 */
 	public static <G> EnumGene<G> of(final G[] validAlleles) {
-		return of(Array.of(validAlleles).toISeq());
+		return new EnumGene<>(Array.of(validAlleles).toISeq());
 	}
 
 	/**
@@ -391,7 +353,7 @@ public final class EnumGene<A>
 				alleles.set(i, allele);
 			}
 
-			return EnumGene.of(alleles.toISeq(), index);
+			return new EnumGene<>(alleles.toISeq(), index);
 		}
 
 		@Override
@@ -445,7 +407,7 @@ public final class EnumGene<A>
 
 			@Override
 			public EnumGene unmarshal(final Model m) {
-				return EnumGene.of(
+				return new EnumGene<>(
 					Array.of(m.alleles).map(Unmarshaller).toISeq(),
 					m.currentAlleleIndex
 				);

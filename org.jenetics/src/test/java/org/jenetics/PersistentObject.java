@@ -59,7 +59,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-18 $</em>
+ * @version <em>$Date: 2014-03-03 $</em>
  */
 @SuppressWarnings("deprecation")
 public class PersistentObject<T> {
@@ -265,47 +265,47 @@ public class PersistentObject<T> {
 	}
 
 	public static EnumGene<Boolean> nextEnumGeneBoolean() {
-		return EnumGene.of(ISeq(5, BooleanFactory));
+		return new EnumGene<>(ISeq(5, BooleanFactory));
 	}
 
 	public static EnumGene<Byte> nextEnumGeneByte() {
-		return EnumGene.of(ISeq(5, ByteFactory));
+		return new EnumGene<>(ISeq(5, ByteFactory));
 	}
 
 	public static EnumGene<Character> nextEnumGeneCharacter() {
-		return EnumGene.of(ISeq(5, CharacterFactory));
+		return new EnumGene<>(ISeq(5, CharacterFactory));
 	}
 
 	public static EnumGene<Short> nextEnumGeneShort() {
-		return EnumGene.of(ISeq(5, ShortFactory));
+		return new EnumGene<>(ISeq(5, ShortFactory));
 	}
 
 	public static EnumGene<Integer> nextEnumGeneInteger() {
-		return EnumGene.of(ISeq(5, IntegerFactory));
+		return new EnumGene<>(ISeq(5, IntegerFactory));
 	}
 
 	public static EnumGene<Long> nextEnumGeneLong() {
-		return EnumGene.of(ISeq(5, LongFactory));
+		return new EnumGene<>(ISeq(5, LongFactory));
 	}
 
 	public static EnumGene<Float> nextEnumGeneFloat() {
-		return EnumGene.of(ISeq(5, FloatFactory));
+		return new EnumGene<>(ISeq(5, FloatFactory));
 	}
 
 	public static EnumGene<Double> nextEnumGeneDouble() {
-		return EnumGene.of(ISeq(5, DoubleFactory));
+		return new EnumGene<>(ISeq(5, DoubleFactory));
 	}
 
 	public static EnumGene<String> nextEnumGeneString() {
-		return EnumGene.of(ISeq(5, StringFactory));
+		return new EnumGene<>(ISeq(5, StringFactory));
 	}
 
 	public static EnumGene<Integer64> nextEnumGeneInteger64() {
-		return EnumGene.of(ISeq(5, Integer64Factory));
+		return new EnumGene<>(ISeq(5, Integer64Factory));
 	}
 
 	public static EnumGene<Float64> nextEnumGeneFloat64() {
-		return EnumGene.of(ISeq(5, Float64Factory));
+		return new EnumGene<>(ISeq(5, Float64Factory));
 	}
 
 	/* *************************************************************************
