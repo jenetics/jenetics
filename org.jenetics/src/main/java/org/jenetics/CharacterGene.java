@@ -77,7 +77,7 @@ public final class CharacterGene
 
 	private final Character _character;
 	private final CharSeq _validCharacters;
-	private final boolean _valid;
+	private final Boolean _valid;
 
 	/**
 	 * Create a new character gene from the given {@code character} and the
