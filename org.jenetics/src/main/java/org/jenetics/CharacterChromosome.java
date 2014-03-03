@@ -233,29 +233,51 @@ public class CharacterChromosome
 	 * @throws IllegalArgumentException if the {@code length} is smaller than
 	 *         one.
 	 */
+	@SuppressWarnings("deprecation")
 	public static CharacterChromosome of(final int length) {
-		return new CharacterChromosome(length);
+		return new CharacterChromosome(
+			CharacterGene.seq(DEFAULT_CHARACTERS, length)
+		);
 	}
 
 	/**
 	 * Create a new chromosome from the given genes (given as string).
 	 *
-	 * @param genes the character genes.
-	 * @param validCharacters the valid characters.
+	 * @param alleles the character genes.
+	 * @param validChars the valid characters.
 	 * @throws IllegalArgumentException if the genes string is empty.
 	 */
-	public static CharacterChromosome of(final String genes, final CharSeq validCharacters) {
-		return new CharacterChromosome(genes, validCharacters);
+	@SuppressWarnings("deprecation")
+	public static CharacterChromosome of(
+		final String alleles,
+		final CharSeq validChars
+	) {
+		final Array<CharacterGene> genes = new Array<>(alleles.length());
+		genes.fill(GeneFactory(alleles, validChars));
+		return new CharacterChromosome(genes.toISeq());
+	}
+
+	private static Factory<CharacterGene>
+	GeneFactory(final String alleles, final CharSeq validChars) {
+		return new Factory<CharacterGene>() {
+			private int _index = 0;
+			@Override
+			public CharacterGene newInstance() {
+				return CharacterGene.of(
+					alleles.charAt(_index++), validChars
+				);
+			}
+		};
 	}
 
 	/**
 	 * Create a new chromosome from the given genes (given as string).
 	 *
-	 * @param genes the character genes.
+	 * @param alleles the character genes.
 	 * @throws IllegalArgumentException if the genes string is empty.
 	 */
-	public static CharacterChromosome of(final String genes) {
-		return new CharacterChromosome(genes);
+	public static CharacterChromosome of(final String alleles) {
+		return of(alleles, DEFAULT_CHARACTERS);
 	}
 
 	/* *************************************************************************
