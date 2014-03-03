@@ -38,7 +38,7 @@ import org.jenetics.util.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.0 &mdash; <em>$Date: 2014-02-25 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-03-03 $</em>
  */
 public class StringGenerator {
 
@@ -75,7 +75,7 @@ public class StringGenerator {
 
 		final CharSeq chars = CharSeq.of("a-z");
 		final Factory<Genotype<CharacterGene>> gtf = Genotype.of(
-			CharacterChromosome.of(chars, value.length())
+			new CharacterChromosome(chars, value.length())
 		);
 		final Gen ff = new Gen(value);
 		final GeneticAlgorithm<CharacterGene, Integer> ga = new GeneticAlgorithm<>(gtf, ff);

@@ -36,7 +36,7 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-18 $</em>
+ * @version <em>$Date: 2014-03-03 $</em>
  */
 public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 
@@ -51,7 +51,7 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
     public void newInstanceDistribution() {
 		try (Scoped<Random> s = RandomRegistry.scope(new Random(12345))) {
 			final CharSeq characters = new CharSeq("0123456789");
-			final CharacterChromosome chromosome = CharacterChromosome.of(characters, 5000);
+			final CharacterChromosome chromosome = new CharacterChromosome(characters, 5000);
 
 			final Histogram<Long> histogram = Histogram.of(0L, 10L, 10);
 
