@@ -79,6 +79,12 @@ public final class CharacterGene
 	private final CharSeq _validCharacters;
 	private final Boolean _valid;
 
+	private CharacterGene(final CharSeq chars, final int index) {
+		_character = chars.get(index);
+		_validCharacters = chars;
+		_valid = true;
+	}
+	
 	/**
 	 * Create a new character gene from the given {@code character} and the
 	 * given set of valid characters.
@@ -257,10 +263,10 @@ public final class CharacterGene
 	 *         {@code null}.
 	 */
 	public static CharacterGene of(final CharSeq validCharacters) {
-		final Random random = RandomRegistry.getRandom();
-		int pos = random.nextInt(validCharacters.length());
-		
-		return of(validCharacters.charAt(pos), validCharacters);
+		return new CharacterGene(
+			validCharacters, 
+			RandomRegistry.getRandom().nextInt(validCharacters.length())
+		);
 	}
 
 	/**
@@ -302,7 +308,7 @@ public final class CharacterGene
 	public static CharacterGene of() {
 		final Random random = RandomRegistry.getRandom();
 		final int index = random.nextInt(DEFAULT_CHARACTERS.length());
-		return of(DEFAULT_CHARACTERS.charAt(index));
+		return new CharacterGene(DEFAULT_CHARACTERS, index);
 	}
 
 	/**
@@ -344,7 +350,7 @@ public final class CharacterGene
 		final Array<CharacterGene> genes = new Array<>(length);
 		for (int i = 0; i < length; ++i) {
 			final int index = r.nextInt(characters.length());
-			genes.set(i, of(characters.get(index), characters));
+			genes.set(i, new CharacterGene(characters, index));
 		}
 		return genes.toISeq();
 	}
