@@ -72,7 +72,10 @@ public final class PermutationChromosome<T>
 
 	private ISeq<T> _validAlleles;
 
-	PermutationChromosome(final int length, final ISeq<? extends EnumGene<T>> genes) {
+	PermutationChromosome(
+		final ISeq<EnumGene<T>> genes,
+		final boolean internal
+	) {
 		super(genes);
 		_validAlleles = genes.get(0).getValidAlleles();
 		_valid = true;
@@ -84,10 +87,11 @@ public final class PermutationChromosome<T>
 	 * @param validAlleles the valid alleles used for this permutation arrays.
 	 */
 	public PermutationChromosome(final ISeq<? extends T> validAlleles) {
-		super(
+		this(
 			new Array<EnumGene<T>>(
 				validAlleles.length()
-			).fill(Gene(validAlleles)).shuffle().toISeq()
+			).fill(Gene(validAlleles)).shuffle().toISeq(),
+			true
 		);
 		_validAlleles = cast.apply(validAlleles);
 	}
@@ -149,7 +153,7 @@ public final class PermutationChromosome<T>
 
 	@Override
 	public PermutationChromosome<T> newInstance(final ISeq<EnumGene<T>> genes) {
-		return new PermutationChromosome<>(genes.length(), genes);
+		return new PermutationChromosome<>(genes, true);
 	}
 
 	@Override
@@ -192,7 +196,7 @@ public final class PermutationChromosome<T>
 	public static <T> PermutationChromosome<T> valueOf(
 		final ISeq<EnumGene<T>> genes
 	) {
-		return new PermutationChromosome<>(genes.length(), genes);
+		return new PermutationChromosome<>(genes, true);
 	}
 
 	/**
@@ -201,10 +205,8 @@ public final class PermutationChromosome<T>
 	 * @param genes the genes of this chromosome.
 	 * @return a new PermutationChromosome from the given genes.
 	 */
-	public static <T> PermutationChromosome<T> of(
-		final ISeq<EnumGene<T>> genes
-	) {
-		return new PermutationChromosome<>(genes.length(), genes);
+	public static <T> PermutationChromosome<T> of(final ISeq<EnumGene<T>> genes) {
+		return new PermutationChromosome<>(genes, true);
 	}
 
 	/**
@@ -286,7 +288,7 @@ public final class PermutationChromosome<T>
 				genes.set(i, new EnumGene<>(ialleles, indexes.get(i)));
 			}
 
-			return new PermutationChromosome(genes.length(), genes.toISeq());
+			return new PermutationChromosome(genes.toISeq(), true);
 		}
 
 		@Override
@@ -374,7 +376,7 @@ public final class PermutationChromosome<T>
 					genes.set(i, new EnumGene(seq, indexes.get(i)));
 				}
 
-				return new PermutationChromosome(genes.length(), genes.toISeq());
+				return new PermutationChromosome(genes.toISeq(), true);
 			}
 		}
 
