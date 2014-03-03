@@ -67,9 +67,9 @@ import javolution.lang.Reference;
  *     public static void main(final String[] args) {
  *         ...
  *         final GeneticAlgorithm<DoubleGene, Double> ga = ...
- *         final LCG64ShiftRandom random = new LCG64ShiftRandom(1234)
+ *         final LCG64ShiftRandom random = new LCG64ShiftRandom(1234);
  *
- *         try (Scoped<Random> scope = RandomRegistry.scope(random) {
+ *         try (Scoped<Random> scope = RandomRegistry.scope(random)) {
  *             // Easy access the random engine of the opened scope.
  *             assert(scope.get() == random);
  *
@@ -89,7 +89,7 @@ import javolution.lang.Reference;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-02-27 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-03 $</em>
  */
 public final class RandomRegistry extends StaticObject {
 	private RandomRegistry() {}
