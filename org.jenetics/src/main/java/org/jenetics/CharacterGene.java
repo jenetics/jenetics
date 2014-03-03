@@ -33,7 +33,6 @@ import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import javolution.context.ObjectFactory;
 import javolution.lang.Realtime;
 import javolution.text.Text;
 import javolution.xml.XMLFormat;
@@ -56,7 +55,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.5 &mdash; <em>$Date$</em>
+ * @version 1.6 &mdash; <em>$Date$</em>
  */
 @XmlJavaTypeAdapter(CharacterGene.Model.Adapter.class)
 public final class CharacterGene
@@ -76,19 +75,26 @@ public final class CharacterGene
 		" !\"$%&/()=?`{[]}\\+~*#';.:,-_<>|@^'"
 	);
 
-	private CharSeq _validCharacters;
-	private Character _character;
+	private final Character _character;
+	private final CharSeq _validCharacters;
+	private final boolean _valid;
 
-	private Boolean _valid;
-
-	CharacterGene() {
+	/**
+	 * Create a new character gene from the given {@code character} and the
+	 * given set of valid characters.
+	 * 
+	 * @param character the char this gene represents
+	 * @param validCharacters the set of valid characters.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 */
+	public CharacterGene(final Character character, final CharSeq validCharacters) {
+		_character = requireNonNull(character);
+		_validCharacters = requireNonNull(validCharacters);
+		_valid = _validCharacters.contains(_character);
 	}
 
 	@Override
 	public boolean isValid() {
-		if (_valid == null) {
-			_valid = _validCharacters.contains(_character);
-		}
 		return _valid;
 	}
 
@@ -128,9 +134,7 @@ public final class CharacterGene
 	@Deprecated
 	@Override
 	public CharacterGene copy() {
-		final CharacterGene gene = of(_character, _validCharacters);
-		gene._valid = _valid;
-		return gene;
+		return of(_character, _validCharacters);
 	}
 
 	/**
@@ -160,7 +164,7 @@ public final class CharacterGene
 	Factory<CharacterGene> asFactory() {
 		return this;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		return HashBuilder.of(getClass()).and(_character).and(_validCharacters).value();
@@ -243,14 +247,6 @@ public final class CharacterGene
 	 *  Static object creation methods
 	 * ************************************************************************/
 
-	private static final ObjectFactory<CharacterGene>
-	FACTORY = new ObjectFactory<CharacterGene>() {
-		@Override
-		protected CharacterGene create() {
-			return new CharacterGene();
-		}
-	};
-
 	/**
 	 * Create a new CharacterGene with a randomly chosen character from the
 	 * set of valid characters.
@@ -263,10 +259,8 @@ public final class CharacterGene
 	public static CharacterGene of(final CharSeq validCharacters) {
 		final Random random = RandomRegistry.getRandom();
 		int pos = random.nextInt(validCharacters.length());
-
-		final CharacterGene gene = of(validCharacters.charAt(pos), validCharacters);
-		gene._valid = true;
-		return gene;
+		
+		return of(validCharacters.charAt(pos), validCharacters);
 	}
 
 	/**
@@ -327,21 +321,14 @@ public final class CharacterGene
 	 * @throws IllegalArgumentException if the {@code validCharacters} are empty.
 	 */
 	public static CharacterGene of(
-		final Character character,
+		final char character,
 		final CharSeq validCharacters
 	) {
-		requireNonNull(character, "Character");
-		requireNonNull(validCharacters, "Valid characters");
-
-		final CharacterGene gene = FACTORY.object();
-		gene._character = character;
-		gene._validCharacters = validCharacters;
-
-		return gene;
+		return new CharacterGene(character, validCharacters);
 	}
 
 	/**
-	 * @deprecated Use {@link #of(Character, org.jenetics.util.CharSeq)} instead.
+	 * @deprecated Use {@link #of(char, org.jenetics.util.CharSeq)} instead.
 	 */
 	@Deprecated
 	public static CharacterGene valueOf(
@@ -383,7 +370,10 @@ public final class CharacterGene
 			);
 			final String character = xml.getText().toString();
 
-			return CharacterGene.of(character.charAt(0), new CharSeq(validCharacters));
+			return CharacterGene.of(
+				character.charAt(0), 
+				new CharSeq(validCharacters)
+			);
 		}
 		@Override
 		public void write(final CharacterGene gene, final OutputElement xml)

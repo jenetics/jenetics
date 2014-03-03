@@ -66,7 +66,7 @@ public class CharacterChromosome
 	private static final long serialVersionUID = 1L;
 
 	private transient CharSeq _validCharacters;
-
+	
 	/**
 	 * Create a new chromosome from the given {@code genes} array. The genes
 	 * array is copied, so changes to the given genes array doesn't effect the
@@ -86,6 +86,22 @@ public class CharacterChromosome
 	}
 
 	/**
+	 * Create a new chromosome with the {@code validCharacters} char set as
+	 * valid characters.
+	 *
+	 * @param validCharacters the valid characters for this chromosome.
+	 * @param length the length of the new chromosome.
+	 * @throws NullPointerException if the {@code validCharacters} is
+	 *         {@code null}.
+	 * @throws IllegalArgumentException if the {@code length} is smaller than
+	 *         one.
+	 */
+	public CharacterChromosome(final CharSeq validCharacters, final int length) {
+		this(CharacterGene.seq(validCharacters, length));
+		_valid = true;
+	}	
+	
+	/**
 	 * Create a new chromosome with the {@link CharacterGene#DEFAULT_CHARACTERS}
 	 * char set as valid characters.
 	 *
@@ -98,25 +114,6 @@ public class CharacterChromosome
 	@Deprecated
 	public CharacterChromosome(final int length) {
 		this(CharacterGene.seq(DEFAULT_CHARACTERS, length));
-		_valid = true;
-	}
-
-	/**
-	 * Create a new chromosome with the {@code validCharacters} char set as
-	 * valid characters.
-	 *
-	 * @param validCharacters the valid characters for this chromosome.
-	 * @param length the length of the new chromosome.
-	 * @throws NullPointerException if the {@code validCharacters} is
-	 *         {@code null}.
-	 * @throws IllegalArgumentException if the {@code length} is smaller than
-	 *         one.
-	 *
-	 * @deprecated Use {@link #of(org.jenetics.util.CharSeq, int)} instead.
-	 */
-	@Deprecated
-	public CharacterChromosome(final CharSeq validCharacters, final int length) {
-		this(CharacterGene.seq(validCharacters, length));
 		_valid = true;
 	}
 
@@ -238,21 +235,6 @@ public class CharacterChromosome
 	 */
 	public static CharacterChromosome of(final int length) {
 		return new CharacterChromosome(length);
-	}
-
-	/**
-	 * Create a new chromosome with the {@code validCharacters} char set as
-	 * valid characters.
-	 *
-	 * @param validCharacters the valid characters for this chromosome.
-	 * @param length the length of the new chromosome.
-	 * @throws NullPointerException if the {@code validCharacters} is
-	 *         {@code null}.
-	 * @throws IllegalArgumentException if the {@code length} is smaller than
-	 *         one.
-	 */
-	public static CharacterChromosome of(final CharSeq validCharacters, final int length) {
-		return new CharacterChromosome(validCharacters, length);
 	}
 
 	/**
