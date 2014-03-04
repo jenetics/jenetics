@@ -24,6 +24,7 @@ import static org.jenetics.util.bit.get;
 import static org.jenetics.util.bit.set;
 import static org.jenetics.util.bit.toByteLength;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -32,11 +33,15 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import org.jenetics.DoubleChromosome;
+import org.jenetics.DoubleGene;
+import org.jenetics.Genotype;
+import org.jenetics.util.IO;
 import org.jenetics.util.bit;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-01 $</em>
+ * @version <em>$Date: 2014-03-04 $</em>
  */
 public class internalbitTest {
 
@@ -78,6 +83,18 @@ public class internalbitTest {
 		}
 
 		return copy;
+	}
+
+
+	public static void main(final String[] args) throws IOException {
+		Genotype<DoubleGene> genotype = Genotype.of (
+			DoubleChromosome.of(0.0, 1.0, 8),
+			DoubleChromosome.of(1.0, 2.0, 10),
+			DoubleChromosome.of(0.0, 10.0, 9),
+			DoubleChromosome.of(0.1, 0.9, 5)
+		);
+
+		IO.jaxb.write(genotype, System.out);
 	}
 
 }
