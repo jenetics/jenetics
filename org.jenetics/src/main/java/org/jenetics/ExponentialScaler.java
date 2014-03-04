@@ -43,7 +43,8 @@ import org.jenetics.util.Function;
  * @since 1.0
  * @version 1.0 &mdash; <em>$Date$</em>
  *
- * @deprecated Will be removed in next major version.
+ * @deprecated Will be removed in next major version, respectively replaced with
+ *             a variant which will parameterized with {@code Double}s.
  */
 @Deprecated
 public final class ExponentialScaler
