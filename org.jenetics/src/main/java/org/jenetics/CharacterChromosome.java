@@ -233,7 +233,6 @@ public class CharacterChromosome
 	 * @throws IllegalArgumentException if the {@code length} is smaller than
 	 *         one.
 	 */
-	@SuppressWarnings("deprecation")
 	public static CharacterChromosome of(final int length) {
 		return new CharacterChromosome(
 			CharacterGene.seq(DEFAULT_CHARACTERS, length)
@@ -247,7 +246,6 @@ public class CharacterChromosome
 	 * @param validChars the valid characters.
 	 * @throws IllegalArgumentException if the genes string is empty.
 	 */
-	@SuppressWarnings("deprecation")
 	public static CharacterChromosome of(
 		final String alleles,
 		final CharSeq validChars
