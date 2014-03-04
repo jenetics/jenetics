@@ -163,7 +163,7 @@ public class GeneticAlgorithm<
 
 	private final Factory<Genotype<G>> _genotypeFactory;
 	private final Factory<Phenotype<G, C>> _phenotypeFactory;
-	private final Function<Genotype<G>, ? extends C> _fitnessFunction;
+	private final Function<? super Genotype<G>, ? extends C> _fitnessFunction;
 	private Function<? super C, ? extends C> _fitnessScaler;
 
 	private double _offspringFraction = DEFAULT_OFFSPRING_FRACTION;
@@ -212,7 +212,7 @@ public class GeneticAlgorithm<
 	 */
 	public GeneticAlgorithm(
 		final Factory<Genotype<G>> genotypeFactory,
-		final Function<Genotype<G>, ? extends C> fitnessFunction,
+		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
 		final Function<? super C, ? extends C> fitnessScaler,
 		final Optimize optimization
 	) {
