@@ -27,7 +27,7 @@ import org.jenetics.util.Array;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-25 $</em>
+ * @version <em>$Date: 2014-03-04 $</em>
  */
 public class CompositeAltererTest {
 
@@ -68,7 +68,7 @@ public class CompositeAltererTest {
 			chromosomes.set(i, DoubleChromosome.of(0, 10, ngenes));
 		}
 
-		final Genotype<DoubleGene> genotype = Genotype.of(chromosomes.toISeq());
+		final Genotype<DoubleGene> genotype = new Genotype<>(chromosomes.toISeq());
 		final Population<DoubleGene, Double> population = new Population<>(npopulation);
 
 		for (int i = 0; i < npopulation; ++i) {
