@@ -274,29 +274,30 @@ public final class EnumGene<A>
 	/**
 	 * Create a new enum gene from the given valid genes and the chosen allele
 	 * index.
-	 *
-	 * @param validAlleles the array of valid alleles.
 	 * @param alleleIndex the index of the allele for this gene.
+	 * @param validAlleles the array of valid alleles.
+	 *
 	 * @return a new enum gene
 	 * @throws java.lang.IllegalArgumentException if the give valid alleles
 	 *         array is empty of the allele index is out of range.
 	 */
+	@SafeVarargs
 	public static <G> EnumGene<G> of(
-		final G[] validAlleles,
-		final int alleleIndex
+		final int alleleIndex,
+		final G... validAlleles
 	) {
 		return new EnumGene<>(Array.of(validAlleles).toISeq(), alleleIndex);
 	}
 
 	/**
-	 * @deprecated Use {@link #of(Object[], int)} instead.
+	 * @deprecated Use {@link #of(int, Object[])} instead.
 	 */
 	@Deprecated
 	public static <G> EnumGene<G> valueOf(
 		final G[] validAlleles,
 		final int alleleIndex
 	) {
-		return of(validAlleles, alleleIndex);
+		return of(alleleIndex, validAlleles);
 	}
 
 	/**
@@ -316,7 +317,8 @@ public final class EnumGene<A>
 	 * @throws java.lang.IllegalArgumentException if the give valid alleles
 	 *         array is empty
 	 */
-	public static <G> EnumGene<G> of(final G[] validAlleles) {
+	@SafeVarargs
+	public static <G> EnumGene<G> of(final G... validAlleles) {
 		return new EnumGene<>(Array.of(validAlleles).toISeq());
 	}
 
