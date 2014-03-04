@@ -128,7 +128,7 @@ class TestUtils {
 			chromosomes.set(i, DoubleChromosome.of(0, 10, ngenes));
 		}
 
-		final Genotype<DoubleGene> genotype = Genotype.of(chromosomes.toISeq());
+		final Genotype<DoubleGene> genotype = new Genotype<>(chromosomes.toISeq());
 		final Population<DoubleGene, Double> population =
 			new Population<>(npopulation);
 
@@ -158,7 +158,7 @@ class TestUtils {
 			chromosomes.set(i, new PermutationChromosome<>(ialleles));
 		}
 
-		final Genotype<EnumGene<Double>> genotype = Genotype.of(chromosomes.toISeq());
+		final Genotype<EnumGene<Double>> genotype = new Genotype<>(chromosomes.toISeq());
 		final Population<EnumGene<Double>, Double> population =
 			new Population<>(npopulation);
 

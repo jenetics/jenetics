@@ -66,7 +66,7 @@ class GenotypeBuilder {
 			chromosomes.set(i, new DoubleChromosome(_min, _max, _ngenes));
 		}
 
-		return Genotype.of(chromosomes.toISeq());
+		return new Genotype<>(chromosomes.toISeq());
 	}
 
 }

@@ -19,7 +19,6 @@
  */
 package org.jenetics;
 
-import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.object.Verify;
 import static org.jenetics.internal.util.object.eq;
 
@@ -43,6 +42,7 @@ import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.cast;
 import org.jenetics.internal.util.jaxb;
 import org.jenetics.internal.util.model.ModelType;
 import org.jenetics.internal.util.model.ValueType;
@@ -100,9 +100,29 @@ public final class Genotype<G extends Gene<?, G>>
 	//Caching isValid value.
 	private volatile Boolean _valid = null;
 
-	private Genotype(final ISeq<Chromosome<G>> chromosomes, final int ngenes) {
-		_chromosomes = chromosomes;
+	private Genotype(
+		final ISeq<? extends Chromosome<G>> chromosomes,
+		final int ngenes
+	) {
+		if (chromosomes.length() == 0) {
+			throw new IllegalArgumentException("No chromosomes given.");
+		}
+
+		_chromosomes = cast.apply(chromosomes);
 		_ngenes = ngenes;
+	}
+
+	/**
+	 * Create a new Genotype from a given sequence of {@code Chromosomes}.
+	 *
+	 * @param chromosomes The {@code Chromosome} array the {@code Genotype}
+	 *         consists of.
+	 * @throws NullPointerException if {@code chromosomes} is null or one of its
+	 *         element.
+	 * @throws IllegalArgumentException if {@code chromosome.length == 0}.
+	 */
+	public Genotype(final ISeq<? extends Chromosome<G>> chromosomes) {
+		this(chromosomes, ngenes(chromosomes));
 	}
 
 	private static int ngenes(final Seq<? extends Chromosome<?>> chromosomes) {
@@ -298,36 +318,13 @@ public final class Genotype<G extends Gene<?, G>>
 	}
 
 	/**
-	 * @deprecated Use {@link #of(org.jenetics.util.ISeq)} instead.
+	 * @deprecated Use {@link #Genotype(org.jenetics.util.ISeq)} instead.
 	 */
 	@Deprecated
 	public static <G extends Gene<?, G>> Genotype<G> valueOf(
 		final ISeq<? extends Chromosome<G>> chromosomes
 	) {
-		return of(chromosomes);
-	}
-
-
-	/**
-	 * Create a new Genotype from a given array of {@code Chromosomes}.
-	 *
-	 * @param chromosomes The {@code Chromosome} array the {@code Genotype}
-	 *         consists of.
-	 * @throws NullPointerException if {@code chromosomes} is null or one of its
-	 *         element.
-	 * @throws IllegalArgumentException if {@code chromosome.length == 0}.
-	 */
-	public static <G extends Gene<?, G>> Genotype<G> of(
-		final ISeq<? extends Chromosome<G>> chromosomes
-	) {
-		requireNonNull(chromosomes, "Chromosomes");
-		if (chromosomes.length() == 0) {
-			throw new IllegalArgumentException("Chromosomes must be given.");
-		}
-
-		@SuppressWarnings("unchecked")
-		ISeq<Chromosome<G>> c = (ISeq<Chromosome<G>>)chromosomes;
-		return new Genotype<>(c, ngenes(chromosomes));
+		return new Genotype<>(chromosomes);
 	}
 
 	/**
@@ -338,7 +335,7 @@ public final class Genotype<G extends Gene<?, G>>
 	public static <G extends Gene<?, G>> Genotype<G> valueOf(
 		final Chromosome<G>... chromosomes
 	) {
-		return of(Array.of(chromosomes).toISeq());
+		return of(chromosomes);
 	}
 
 	/**
@@ -354,7 +351,7 @@ public final class Genotype<G extends Gene<?, G>>
 	public static <G extends Gene<?, G>> Genotype<G> of(
 		final Chromosome<G>... chromosomes
 	) {
-		return of(Array.of(chromosomes).toISeq());
+		return new Genotype<>(Array.of(chromosomes).toISeq());
 	}
 
 	/* *************************************************************************
