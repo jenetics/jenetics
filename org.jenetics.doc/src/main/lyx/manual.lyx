@@ -6308,12 +6308,6 @@ DoubleGene
 \begin_layout Itemize
 
 \family typewriter
-Integer64Gene
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
 BitChromosome
 \end_layout
 
