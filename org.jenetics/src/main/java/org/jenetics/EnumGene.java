@@ -162,7 +162,7 @@ public final class EnumGene<A>
 
 	@Override
 	public boolean isValid() {
-		return _alleleIndex >= 0;
+		return _alleleIndex >= 0 && _alleleIndex < _validAlleles.length();
 	}
 
 	@Override
