@@ -41,9 +41,10 @@ import org.jenetics.util.Function;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-03-01 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-03-04 $</em>
  *
- * @deprecated Will be removed in next major version.
+ * @deprecated Will be removed in next major version, respectively replaced with
+ *             a variant which will parameterized with {@code Double}s.
  */
 @Deprecated
 public final class ExponentialScaler
