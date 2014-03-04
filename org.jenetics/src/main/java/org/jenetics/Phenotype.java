@@ -31,7 +31,6 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import javolution.context.ObjectFactory;
 import javolution.lang.Immutable;
 import javolution.lang.Realtime;
 import javolution.text.Text;
@@ -61,7 +60,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-03-01 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-04 $</em>
  */
 @XmlJavaTypeAdapter(Phenotype.Model.Adapter.class)
 public final class Phenotype<
@@ -78,17 +77,45 @@ public final class Phenotype<
 {
 	private static final long serialVersionUID = 1L;
 
-	private Genotype<G> _genotype;
-	private transient Function<? super Genotype<G>, ? extends C> _fitnessFunction;
-	private transient Function<? super C, ? extends C> _fitnessScaler;
+	private final Genotype<G> _genotype;
 
-	private int _generation = 0;
+	private transient final
+	Function<Genotype<G>, ? extends C> _fitnessFunction;
+
+	private transient final
+	Function<? super C, ? extends C> _fitnessScaler;
+
+	private final int _generation;
 
 	//Storing the fitness value for lazy evaluation.
 	private C _rawFitness = null;
 	private C _fitness = null;
 
-	private Phenotype() {
+	/**
+	 * Create a new phenotype from the given arguments.
+	 *
+	 * @param genotype the genotype of this phenotype.
+	 * @param fitnessFunction the fitness function of this phenotype.
+	 * @param fitnessScaler the fitness scaler.
+	 * @param generation the current generation of the generated phenotype.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
+	 */
+	public Phenotype(
+		final Genotype<G> genotype,
+		final Function<Genotype<G>, ? extends C> fitnessFunction,
+		final Function<? super C, ? extends C> fitnessScaler,
+		final int generation
+	) {
+		_genotype = requireNonNull(genotype, "Genotype");
+		_fitnessFunction = requireNonNull(fitnessFunction, "Fitness function");
+		_fitnessScaler = requireNonNull(fitnessScaler, "Fitness scaler");
+		if (generation < 0) {
+			throw new IllegalArgumentException(
+				"Generation must not < 0: " + generation
+			);
+		}
+		_generation = generation;
 	}
 
 	/**
@@ -237,13 +264,6 @@ public final class Phenotype<
 		return toText().toString() + " --> " + getFitness();
 	}
 
-	@SuppressWarnings("rawtypes")
-	private static final ObjectFactory FACTORY = new ObjectFactory() {
-		@Override protected Object create() {
-			return new Phenotype();
-		}
-	};
-
 	/**
 	 * Factory method for creating a new {@link Phenotype} with the same
 	 * {@link Function} and age as this {@link Phenotype}.
@@ -272,7 +292,7 @@ public final class Phenotype<
 	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
 	 */
 	public Phenotype<G, C> newInstance(
-		final Function<? super Genotype<G>, ? extends C> function,
+		final Function<Genotype<G>, ? extends C> function,
 		final Function<? super C, ? extends C> scaler,
 		final int generation
 	) {
@@ -407,7 +427,7 @@ public final class Phenotype<
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Phenotype<G, C> valueOf(
 		final Genotype<G> genotype,
-		final Function<? super Genotype<G>, C> fitnessFunction,
+		final Function<Genotype<G>, C> fitnessFunction,
 		final int generation
 	) {
 		return of(genotype, fitnessFunction, generation);
@@ -426,7 +446,7 @@ public final class Phenotype<
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Phenotype<G, C> of(
 		final Genotype<G> genotype,
-		final Function<? super Genotype<G>, C> fitnessFunction,
+		final Function<Genotype<G>, C> fitnessFunction,
 		final int generation
 	) {
 		return of(genotype, fitnessFunction, functions.<C>Identity(), generation);
@@ -440,7 +460,7 @@ public final class Phenotype<
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Phenotype<G, C> valueOf(
 		final Genotype<G> genotype,
-		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
+		final Function<Genotype<G>, ? extends C> fitnessFunction,
 		final Function<? super C, ? extends C> fitnessScaler,
 		final int generation
 	) {
@@ -448,42 +468,24 @@ public final class Phenotype<
 	}
 
 	/**
-	 * The {@code Genotype} is copied to guarantee an immutable class. Only
-	 * the age of the {@code Phenotype} can be incremented.
+	 * Create a new phenotype from the given arguments.
 	 *
 	 * @param genotype the genotype of this phenotype.
 	 * @param fitnessFunction the fitness function of this phenotype.
 	 * @param fitnessScaler the fitness scaler.
 	 * @param generation the current generation of the generated phenotype.
+	 * @return a new phenotype object
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Phenotype<G, C> of(
 		final Genotype<G> genotype,
-		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
+		final Function<Genotype<G>, ? extends C> fitnessFunction,
 		final Function<? super C, ? extends C> fitnessScaler,
 		final int generation
 	) {
-		requireNonNull(genotype, "Genotype");
-		requireNonNull(fitnessFunction, "Fitness function");
-		requireNonNull(fitnessScaler, "Fitness scaler");
-		if (generation < 0) {
-			throw new IllegalArgumentException(
-				"Generation must not < 0: " + generation
-			);
-		}
-
-		@SuppressWarnings("unchecked")
-		final Phenotype<G, C> pt = (Phenotype<G, C>)FACTORY.object();
-		pt._genotype = genotype;
-		pt._fitnessFunction = fitnessFunction;
-		pt._fitnessScaler = fitnessScaler;
-		pt._generation = generation;
-
-		pt._rawFitness = null;
-		pt._fitness = null;
-		return pt;
+		return new Phenotype<>(genotype, fitnessFunction, fitnessScaler, generation);
 	}
 
 	/* *************************************************************************
@@ -504,9 +506,11 @@ public final class Phenotype<
 		)
 			throws XMLStreamException
 		{
-			final Phenotype pt = (Phenotype)FACTORY.object();
-			pt._generation = xml.getAttribute(GENERATION, 0);
-			pt._genotype = xml.getNext();
+			final int generation = xml.getAttribute(GENERATION, 0);
+			final Genotype genotype = xml.getNext();
+			final Phenotype pt = new Phenotype(
+				genotype, functions.Identity(), functions.Identity(), generation
+			);
 			pt._fitness = xml.get(FITNESS);
 			pt._rawFitness = xml.get(RAW_FITNESS);
 			return pt;
@@ -566,9 +570,12 @@ public final class Phenotype<
 
 			@Override
 			public Phenotype unmarshal(final Model m) throws Exception {
-				final Phenotype pt = (Phenotype)FACTORY.object();
-				pt._generation = m.generation;
-				pt._genotype = Genotype.Model.Adapter.unmarshal(m.genotype);
+				final Phenotype pt = new Phenotype(
+					Genotype.Model.Adapter.unmarshal(m.genotype),
+					functions.Identity(),
+					functions.Identity(),
+					m.generation
+				);
 				pt._fitness = (Comparable)m.fitness;
 				pt._rawFitness = (Comparable)m.rawFitness;
 				return pt;
