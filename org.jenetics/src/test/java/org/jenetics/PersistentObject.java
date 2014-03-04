@@ -611,11 +611,11 @@ public class PersistentObject<T> {
 	);
 
 
-	public static <R extends Comparable<R>> Function<Object, R>
+	public static <T, R extends Comparable<R>> Function<T, R>
 	FitnessFunction(final R result) {
-		return new Function<Object, R>() {
+		return new Function<T, R>() {
 			@Override
-			public R apply(final Object value) {
+			public R apply(final T value) {
 				return result;
 			}
 		};

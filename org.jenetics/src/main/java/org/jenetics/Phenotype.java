@@ -80,7 +80,7 @@ public final class Phenotype<
 	private final Genotype<G> _genotype;
 
 	private transient final
-	Function<Genotype<G>, ? extends C> _fitnessFunction;
+	Function<? super Genotype<G>, ? extends C> _fitnessFunction;
 
 	private transient final
 	Function<? super C, ? extends C> _fitnessScaler;
@@ -103,7 +103,7 @@ public final class Phenotype<
 	 */
 	public Phenotype(
 		final Genotype<G> genotype,
-		final Function<Genotype<G>, ? extends C> fitnessFunction,
+		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
 		final Function<? super C, ? extends C> fitnessScaler,
 		final int generation
 	) {
@@ -292,7 +292,7 @@ public final class Phenotype<
 	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
 	 */
 	public Phenotype<G, C> newInstance(
-		final Function<Genotype<G>, ? extends C> function,
+		final Function<? super Genotype<G>, ? extends C> function,
 		final Function<? super C, ? extends C> scaler,
 		final int generation
 	) {
@@ -310,7 +310,7 @@ public final class Phenotype<
 	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
 	 */
 	public Phenotype<G, C> newInstance(
-		final Function<Genotype<G>, C> function,
+		final Function<? super Genotype<G>, ? extends C> function,
 		final int generation
 	) {
 		return of(_genotype, function, functions.<C>Identity(), generation);
@@ -446,7 +446,7 @@ public final class Phenotype<
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Phenotype<G, C> of(
 		final Genotype<G> genotype,
-		final Function<Genotype<G>, C> fitnessFunction,
+		final Function<? super Genotype<G>, C> fitnessFunction,
 		final int generation
 	) {
 		return of(genotype, fitnessFunction, functions.<C>Identity(), generation);
@@ -460,7 +460,7 @@ public final class Phenotype<
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Phenotype<G, C> valueOf(
 		final Genotype<G> genotype,
-		final Function<Genotype<G>, ? extends C> fitnessFunction,
+		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
 		final Function<? super C, ? extends C> fitnessScaler,
 		final int generation
 	) {
@@ -481,11 +481,16 @@ public final class Phenotype<
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Phenotype<G, C> of(
 		final Genotype<G> genotype,
-		final Function<Genotype<G>, ? extends C> fitnessFunction,
+		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
 		final Function<? super C, ? extends C> fitnessScaler,
 		final int generation
 	) {
-		return new Phenotype<>(genotype, fitnessFunction, fitnessScaler, generation);
+		return new Phenotype<>(
+			genotype,
+			fitnessFunction,
+			fitnessScaler,
+			generation
+		);
 	}
 
 	/* *************************************************************************
