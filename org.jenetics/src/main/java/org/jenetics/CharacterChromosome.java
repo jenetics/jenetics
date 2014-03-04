@@ -113,8 +113,7 @@ public class CharacterChromosome
 	 */
 	@Deprecated
 	public CharacterChromosome(final int length) {
-		this(CharacterGene.seq(DEFAULT_CHARACTERS, length));
-		_valid = true;
+		this(DEFAULT_CHARACTERS, length);
 	}
 
 	/**
