@@ -54,7 +54,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-03-03 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-04 $</em>
  */
 public class CharacterChromosome
 	extends
@@ -233,7 +233,6 @@ public class CharacterChromosome
 	 * @throws IllegalArgumentException if the {@code length} is smaller than
 	 *         one.
 	 */
-	@SuppressWarnings("deprecation")
 	public static CharacterChromosome of(final int length) {
 		return new CharacterChromosome(
 			CharacterGene.seq(DEFAULT_CHARACTERS, length)
@@ -247,7 +246,6 @@ public class CharacterChromosome
 	 * @param validChars the valid characters.
 	 * @throws IllegalArgumentException if the genes string is empty.
 	 */
-	@SuppressWarnings("deprecation")
 	public static CharacterChromosome of(
 		final String alleles,
 		final CharSeq validChars
