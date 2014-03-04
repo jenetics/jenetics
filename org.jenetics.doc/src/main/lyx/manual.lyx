@@ -1055,7 +1055,7 @@ Getting started
 \begin_layout Standard
 The minimum GA setup needs a genotype factory,
 \family typewriter
-Factory<Genotype<?>>
+ Factory<Genotype<?>>
 \family default
 , and a fitness
 \family typewriter
@@ -1315,11 +1315,11 @@ The selection strategy for offspring and survivors in the given example
  It is also possible to set the selector for offspring and survivors independent
 ly with the
 \family typewriter
- set OffspringSelector
+ setOffspringSelector
 \family default
  and
 \family typewriter
- set SurvivorSelector
+ setSurvivorSelector
 \family default
  methods.
  The alterers are concatenated, at first the crossover (with probability
@@ -1818,7 +1818,7 @@ height "1pt"
 \family sans
 When using a fitness scaler you have to take care that your scaler doesn't
 \emph on
-destroy
+ destroy
 \emph default
  your fitness value.
  This can be the case when your fitness value is negative and your fitness
@@ -2044,7 +2044,7 @@ The
 \family typewriter
  offspringFraction
 \family default
- property,
+ property, 
 \begin_inset Formula $f_{O}\in[0,1]$
 \end_inset
 
@@ -2469,7 +2469,7 @@ P(i)=\frac{f_{i}}{\sum_{j=1}^{N}f_{j}}
 
 \end_inset
 
-Selecting
+Selecting 
 \begin_inset Formula $n$
 \end_inset
 
@@ -2648,7 +2648,7 @@ Z=\sum_{i=1}^{n}\textrm{e}^{f_{i}}.
 
 \end_inset
 
-Positive values o f
+Positive values of 
 \begin_inset Formula $b$
 \end_inset
 
@@ -4537,12 +4537,12 @@ For computation-performance analysis it might be interesting in which processing
 \emph default
  basis this can be accessed via the
 \family typewriter
-ga.getStatistics().getTime()
+ ga.getStatistics().getTime()
 \family default
  property.
  The overall calculation time statistics is available via the
 \family typewriter
-ga.getTimeStatistics()
+ ga.getTimeStatistics()
 \family default
  method.
 \end_layout
@@ -5227,7 +5227,7 @@ height "1pt"
 \family sans
 The
 \emph on
-Fair Play
+ Fair Play
 \emph default
  property of a PRNG guarantees that the quality of the GA does not depend
  on the degree of parallelization.
@@ -5433,7 +5433,7 @@ With this method each thread will be assigned a block of random numbers,
  which should be enough for the whole runtime of the process.
  This strategy is used when using the
 \family typewriter
-LCG64\SpecialChar \-
+ LCG64\SpecialChar \-
 Shift\SpecialChar \-
 Random\SpecialChar \-
 Thread\SpecialChar \-
@@ -5442,8 +5442,9 @@ Local
  class
 \emph on
 .
+
 \emph default
-This class assigns every thread a block of 
+ This class assigns every thread a block of 
 \begin_inset Formula $2^{56}\thickapprox7,2\cdot10^{16}$
 \end_inset
 
@@ -5644,7 +5645,7 @@ LCG64ShiftRandom
 \begin_layout Standard
 The
 \family typewriter
-LCG64ShiftRandom
+ LCG64ShiftRandom
 \family default
  class is a Java port of the
 \family typewriter
@@ -5881,8 +5882,8 @@ status open
 
 \begin_layout Plain Layout
 Measured on a Intel(R) Core(TM) i5-3427U CPU @ 1.80GHz with Java(TM) SE Runtime
- Environment (build 1.7.0_45-b18)---Java HotSpot(TM) 64-Bit Server VM (build
- 24.45-b08, mixed mode)
+ Environment (build 1.7.0_51-b13)---Java HotSpot(TM) 64-Bit Server VM (build
+ 24.51-b03, mixed mode)
 \end_layout
 
 \end_inset
@@ -7640,7 +7641,7 @@ count
  contains more elements than the original one.
  The last parameter,
 \family typewriter
-opt
+ opt
 \family default
 , determines the optimization strategy which must be used by the selector.
  This is exactly the point where it is decided whether the GA minimizes
@@ -9182,7 +9183,7 @@ Compile
 \shape default
  sources and copies the class files to the
 \family typewriter
-<build\SpecialChar \-
+ <build\SpecialChar \-
 dir>\SpecialChar \slash{}
 <module-dir>/build\SpecialChar \slash{}
 classes/main
@@ -9205,7 +9206,7 @@ test
 \emph default
 , is written to
 \family typewriter
-<build\SpecialChar \-
+ <build\SpecialChar \-
 dir>/<module-dir>
 \family default
  directory.
@@ -9221,7 +9222,7 @@ javadoc
 : Generates the API documentation.
  The Javadoc is stored in the
 \family typewriter
-<build\SpecialChar \-
+ <build\SpecialChar \-
 dir>/<module-dir>\SpecialChar \slash{}
 build\SpecialChar \slash{}
 docs
@@ -9239,7 +9240,7 @@ jar
 : Compiles the sources and creates the JAR files.
  The artifacts are copied to the
 \family typewriter
-<build\SpecialChar \-
+ <build\SpecialChar \-
 dir>/<module-dir>\SpecialChar \slash{}
 build\SpecialChar \slash{}
 libs
@@ -9259,7 +9260,7 @@ packaging
  from the home page.
  The build artifacts are copied into the
 \family typewriter
-<build\SpecialChar \-
+ <build\SpecialChar \-
 dir>\SpecialChar \slash{}
 build/package/jenetics-<version> directory.
 \end_layout
@@ -9273,7 +9274,7 @@ clean
 \series default
 : Deletes the
 \family typewriter
-<build\SpecialChar \-
+ <build\SpecialChar \-
 dir>\SpecialChar \slash{}
 build/*
 \family default
