@@ -44,17 +44,17 @@ abstract class AbstractBoundedGene<
 	/**
 	 * The minimum value of this {@code BoundedGene}.
 	 */
-	protected final A _min;
+	final A _min;
 
 	/**
 	 * The maximum value of this {@code BoundedGene}.
 	 */
-	protected final A _max;
+	final A _max;
 
 	/**
 	 * The value of this {@code BoundedGene}.
 	 */
-	protected final A _value;
+	final A _value;
 
 	private final boolean _valid;
 
