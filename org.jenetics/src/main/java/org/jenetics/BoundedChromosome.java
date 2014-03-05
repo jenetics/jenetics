@@ -28,7 +28,7 @@ package org.jenetics;
  */
 public interface BoundedChromosome<
 	A extends Comparable<? super A>,
-	G extends AbstractBoundedGene<A, G>
+	G extends BoundedGene<A, G>
 >
 	extends Chromosome<G>
 {
