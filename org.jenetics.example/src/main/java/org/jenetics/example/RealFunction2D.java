@@ -21,6 +21,7 @@ package org.jenetics.example;
 
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
+import org.jenetics.GaussianMutator;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.MeanAlterer;
@@ -71,8 +72,8 @@ public class RealFunction2D {
 		ga.setSelectors(new TournamentSelector<DoubleGene, Double>(3));
 		// This are the alterers you can use for this example, in any combination.
 		ga.setAlterers(
-			new MeanAlterer<DoubleGene>()
-			//new NormalMutator<DoubleGene>()
+			new MeanAlterer<DoubleGene>(),
+			new GaussianMutator<DoubleGene>()
 		);
 
 		ga.setup();
