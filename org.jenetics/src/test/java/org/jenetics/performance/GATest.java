@@ -34,10 +34,11 @@ import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.util.Array;
 import org.jenetics.util.Function;
+import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-04 $</em>
+ * @version <em>$Date: 2014-03-05 $</em>
  */
 @Suite("GA")
 public class GATest {
@@ -110,11 +111,12 @@ public class GATest {
 		String.format("CharacterGene[G=%s, C=%s]", NGENES, NCHROMOSOMES),
 		LOOPS, NGENES*NCHROMOSOMES
 	) {
-		private final Array<Chromosome<CharacterGene>>
-		_chromosomes = new Array<>(NCHROMOSOMES);
-		{_chromosomes.fill(CharacterChromosome.of(NGENES));}
+		private final ISeq<Chromosome<CharacterGene>> _chromosomes = 
+			new Array<Chromosome<CharacterGene>>(NCHROMOSOMES)
+				.fill(CharacterChromosome.of(NGENES))
+				.toISeq();
 
-		private final Genotype<CharacterGene> _gt = new Genotype<>(_chromosomes.toISeq());
+		private final Genotype<CharacterGene> _gt = new Genotype<>(_chromosomes);
 
 		private GeneticAlgorithm<CharacterGene, Double> _ga;
 
