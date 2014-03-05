@@ -49,7 +49,7 @@ import org.jenetics.util.RandomRegistry;
  */
 @XmlJavaTypeAdapter(LongGene.Model.Adapter.class)
 public final class LongGene
-	extends NumericGene<Long, LongGene>
+	extends AbstractNumericGene<Long, LongGene>
 	implements Mean<LongGene>
 {
 

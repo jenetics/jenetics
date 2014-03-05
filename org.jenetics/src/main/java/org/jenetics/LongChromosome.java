@@ -51,7 +51,7 @@ import org.jenetics.util.ISeq;
  */
 @XmlJavaTypeAdapter(LongChromosome.Model.Adapter.class)
 public class LongChromosome
-	extends NumericChromosome<Long, LongGene>
+	extends AbstractNumericChromosome<Long, LongGene>
 	implements Serializable
 {
 	private static final long serialVersionUID = 1L;

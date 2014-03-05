@@ -35,7 +35,7 @@ import org.jenetics.util.ISeq;
  * @since 1.0
  * @version 1.0 &mdash; <em>$Date$</em>
  *
- * @deprecated Use {@link org.jenetics.NumericChromosome} instead. This classes
+ * @deprecated Use {@link AbstractNumericChromosome} instead. This classes
  *             uses the <i>JScience</i> library, which will be removed in the
  *             next major version.
  */

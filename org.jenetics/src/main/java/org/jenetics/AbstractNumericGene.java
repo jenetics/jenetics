@@ -26,11 +26,11 @@ package org.jenetics;
  * @version 1.6 &mdash; <em>$Date$</em>
  * @since 1.6
  */
-public abstract class NumericGene<
+public abstract class AbstractNumericGene<
 	N extends Number & Comparable<? super N>,
-	G extends NumericGene<N, G>
+	G extends AbstractNumericGene<N, G>
 >
-	extends BoundedGene<N, G>
+	extends AbstractBoundedGene<N, G>
 {
 	private static final long serialVersionUID = 1L;
 
@@ -43,7 +43,7 @@ public abstract class NumericGene<
 	 * @throws NullPointerException if one of the given arguments is
 	 *         {@code null}.
 	 */
-	protected NumericGene(final N value, final N min, final N max) {
+	protected AbstractNumericGene(final N value, final N min, final N max) {
 		super(value, min, max);
 	}
 

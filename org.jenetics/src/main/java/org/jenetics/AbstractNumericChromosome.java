@@ -28,11 +28,11 @@ import org.jenetics.util.ISeq;
  * @version 1.6 &mdash; <em>$Date$</em>
  * @since 1.6
  */
-public abstract class NumericChromosome<
+public abstract class AbstractNumericChromosome<
 	N extends Number & Comparable<? super N>,
 	G extends NumericGene<N, G>
 >
-	extends BoundedChromosome<N, G>
+	extends AbstractBoundedChromosome<N, G>
 {
 	private static final long serialVersionUID = 1L;
 
@@ -44,7 +44,7 @@ public abstract class NumericChromosome<
 	 *          than one.
 	 * @throws NullPointerException if the {@code genes} are {@code null}.
 	 */
-	protected NumericChromosome(final ISeq<? extends G> genes) {
+	protected AbstractNumericChromosome(final ISeq<? extends G> genes) {
 		super(genes);
 	}
 

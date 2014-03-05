@@ -32,9 +32,9 @@ import org.jenetics.util.ISeq;
  * @version 1.6 &mdash; <em>$Date$</em>
  * @since 1.6
  */
-public abstract class BoundedChromosome<
+public abstract class AbstractBoundedChromosome<
 	A extends Comparable<? super A>,
-	G extends BoundedGene<A, G>
+	G extends AbstractBoundedGene<A, G>
 >
 	extends AbstractChromosome<G>
 {
@@ -59,7 +59,7 @@ public abstract class BoundedChromosome<
 	 *         than one.
 	 * @throws NullPointerException if the {@code genes} are {@code null}.
 	 */
-	protected BoundedChromosome(final ISeq<? extends G> genes) {
+	protected AbstractBoundedChromosome(final ISeq<? extends G> genes) {
 		super(genes);
 		_min = genes.get(0)._min;
 		_max = genes.get(0)._max;
@@ -96,11 +96,11 @@ public abstract class BoundedChromosome<
 		if (object == this) {
 			return true;
 		}
-		if (!(object instanceof BoundedChromosome<?, ?>)) {
+		if (!(object instanceof AbstractBoundedChromosome<?, ?>)) {
 			return false;
 		}
 
-		final BoundedChromosome<?, ?> nc = (BoundedChromosome<?, ?>)object;
+		final AbstractBoundedChromosome<?, ?> nc = (AbstractBoundedChromosome<?, ?>)object;
 		return eq(_min, nc._min) && eq(_max, nc._max) && super.equals(object);
 	}
 

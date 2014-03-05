@@ -39,7 +39,7 @@ import org.jenetics.util.Mean;
  * @since 1.0
  * @version 1.2 &mdash; <em>$Date$</em>
  *
- * @deprecated Use {@link org.jenetics.NumericGene} instead. This classes
+ * @deprecated Use {@link AbstractNumericGene} instead. This classes
  *             uses the <i>JScience</i> library, which will be removed in the
  *             next major version.
  */

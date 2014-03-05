@@ -49,7 +49,7 @@ import org.jenetics.util.RandomRegistry;
  */
 @XmlJavaTypeAdapter(DoubleGene.Model.Adapter.class)
 public final class DoubleGene
-	extends NumericGene<Double, DoubleGene>
+	extends AbstractNumericGene<Double, DoubleGene>
 	implements Mean<DoubleGene>
 {
 
