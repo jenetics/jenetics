@@ -20,7 +20,7 @@
  # Author:
  #    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  #
- # Version: <em>$Date: 2014-02-22 $</em>
+ # Version: <em>$Date: 2014-03-05 $</em>
  #
  ###############################################################################
 -->
@@ -72,11 +72,13 @@
 			<class name="org.jenetics.Float64GeneTest" />
 		</classes>
 	</test>
+	<!--
 	<test name="org.jenetics.GaussianMutator">
 		<classes>
 			<class name="org.jenetics.GaussianMutatorTest" />
 		</classes>
 	</test>
+	-->
 	<test name="org.jenetics.GeneticAlgorithm">
 		<classes>
 			<class name="org.jenetics.GeneticAlgorithmTest" />
