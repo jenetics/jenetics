@@ -56,6 +56,7 @@ abstract class AbstractBoundedGene<
 	 */
 	final A _value;
 
+	// Holds the valid state of the gene.
 	private final boolean _valid;
 
 	/**
