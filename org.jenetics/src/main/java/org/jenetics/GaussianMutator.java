@@ -50,9 +50,8 @@ import org.jenetics.util.math;
  * @since 1.0
  * @version 1.0 &mdash; <em>$Date$</em>
  *
- * @deprecated Use {@link org.jenetics.NormalMutator} instead. This classes
- *             uses the <i>JScience</i> library, which will be removed in the
- *             next major version.
+ * @deprecated Will be removed in next major version, respectively replaced with
+ *             a variant which will be parameterized with {@code NumericGene}s.
  */
 @Deprecated
 public final class GaussianMutator<G extends NumberGene<?, G>>
