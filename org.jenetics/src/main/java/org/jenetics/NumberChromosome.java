@@ -45,6 +45,7 @@ public abstract class NumberChromosome<
 	G extends NumberGene<N, G>
 >
 	extends AbstractChromosome<G>
+	implements NumericChromosome<N, G>
 {
 	private static final long serialVersionUID = 1L;
 

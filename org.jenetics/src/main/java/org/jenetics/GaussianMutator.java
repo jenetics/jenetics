@@ -33,7 +33,7 @@ import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.math;
 
 /**
- * The GaussianMutator class performs the mutation of a {@link NumberGene}.
+ * The GaussianMutator class performs the mutation of a {@link NumericGene}.
  * This mutator picks a new value based on a Gaussian distribution around the
  * current value of the gene. The variance of the new value (before clipping to
  * the allowed gene range) will be
@@ -48,13 +48,9 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date$</em>
- *
- * @deprecated Will be removed in next major version, respectively replaced with
- *             a variant which will be parameterized with {@code NumericGene}s.
+ * @version 1.6 &mdash; <em>$Date$</em>
  */
-@Deprecated
-public final class GaussianMutator<G extends NumberGene<?, G>>
+public final class GaussianMutator<G extends NumericGene<?, G>>
 	extends Mutator<G>
 	implements Immutable
 {

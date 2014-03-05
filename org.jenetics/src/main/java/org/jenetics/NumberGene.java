@@ -50,7 +50,7 @@ public abstract class NumberGene<
 >
 	extends Number<G>
 	implements
-		Gene<N, G>,
+		NumericGene<N, G>,
 		Mean<G>,
 		XMLSerializable
 {
