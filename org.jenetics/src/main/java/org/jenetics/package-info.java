@@ -64,8 +64,8 @@
  *
  * [code]
  * public static void main(final String[] args) {
- *     final Factory〈Genotype〈BitGene〉〉 gtf = Genotype.valueOf(
- *         BitChromosome.valueOf(10, 0.5)
+ *     final Factory〈Genotype〈BitGene〉〉 gtf = Genotype.of(
+ *         BitChromosome.of(10, 0.5)
  *     );
  *     final Function〈Genotype〈BitGene〉 Double〉 ff = ...
  *     final GeneticAlgorithm〈BitGene, Double〉
@@ -173,8 +173,8 @@
  *
  * public class OnesCounting {
  *     public static void main(String[] args) {
- *         final Factory〈Genotype〈BitGene〉〉 gtf = Genotype.valueOf(
- *             new BitChromosome(20, 0.15)
+ *         final Factory〈Genotype〈BitGene〉〉 gtf = Genotype.of(
+ *             BitChromosome.of(20, 0.15)
  *         );
  *         final Function〈Genotype〈BitGene〉, Integer〉 ff = new OneCounter();
  *         final GeneticAlgorithm〈BitGene, Integer〉 ga =
@@ -266,7 +266,7 @@
  *
  *         final Function〈Genotype〈EnumGene〈Integer〉〉, Double〉 ff =
  *             new FF(adjacencyMatrix(stops));
- *         final Factory〈Genotype〈EnumGene〈Integer〉〉〉 gt = Genotype.valueOf(
+ *         final Factory〈Genotype〈EnumGene〈Integer〉〉〉 gt = Genotype.of(
  *             PermutationChromosome.ofInteger(stops)
  *         );
  *         final GeneticAlgorithm〈EnumGene〈Integer〉, Double〉
