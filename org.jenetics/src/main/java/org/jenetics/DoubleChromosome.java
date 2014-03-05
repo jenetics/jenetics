@@ -46,12 +46,12 @@ import org.jenetics.util.ISeq;
  * Numeric chromosome implementation which holds 64 bit floating point numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-02-27 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-05 $</em>
  * @since 1.6
  */
 @XmlJavaTypeAdapter(DoubleChromosome.Model.Adapter.class)
 public class DoubleChromosome
-	extends NumericChromosome<Double, DoubleGene>
+	extends AbstractNumericChromosome<Double, DoubleGene>
 	implements Serializable
 {
 	private static final long serialVersionUID = 1L;

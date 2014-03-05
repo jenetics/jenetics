@@ -29,12 +29,12 @@ import org.jenetics.internal.util.HashBuilder;
  * value.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-01 $</em>
+ * @version 1.6 &mdash; <em>$Date$</em>
  * @since 1.6
  */
-public abstract class BoundedGene<
+public abstract class AbstractBoundedGene<
 	A extends Comparable<? super A>,
-	G extends BoundedGene<A, G>
+	G extends AbstractBoundedGene<A, G>
 >
 	implements
 		Gene<A, G>,
@@ -68,7 +68,7 @@ public abstract class BoundedGene<
 	 * @param max The allows max value of the gene.
 	 * @throws NullPointerException if one of the given arguments is {@code null}.
 	 */
-	protected BoundedGene(
+	protected AbstractBoundedGene(
 		final A value,
 		final A min,
 		final A max
@@ -140,7 +140,7 @@ public abstract class BoundedGene<
 			return false;
 		}
 
-		final BoundedGene<?, ?> gene = (BoundedGene<?, ?>)obj;
+		final AbstractBoundedGene<?, ?> gene = (AbstractBoundedGene<?, ?>)obj;
 		return eq(_value, gene._value) &&
 			eq(_min, gene._min) &&
 			eq(_max, gene._max);
