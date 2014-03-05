@@ -133,7 +133,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-03-04 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-03-05 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,
@@ -243,7 +243,7 @@ public class GeneticAlgorithm<
 	 */
 	public GeneticAlgorithm(
 		final Factory<Genotype<G>> genotypeFactory,
-		final Function<Genotype<G>, ? extends C> fitnessFunction
+		final Function<? super Genotype<G>, ? extends C> fitnessFunction
 	) {
 		this(
 			genotypeFactory,
@@ -264,7 +264,7 @@ public class GeneticAlgorithm<
 	 */
 	public GeneticAlgorithm(
 		final Factory<Genotype<G>> genotypeFactory,
-		final Function<Genotype<G>, ? extends C> fitnessFunction,
+		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
 		final Optimize optimization
 	) {
 		this(
@@ -286,7 +286,7 @@ public class GeneticAlgorithm<
 	 */
 	public GeneticAlgorithm(
 		final Factory<Genotype<G>> genotypeFactory,
-		final Function<Genotype<G>, ? extends C> fitnessFunction,
+		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
 		final Function<? super C, ? extends C> fitnessScaler
 	) {
 		this(
@@ -722,7 +722,7 @@ public class GeneticAlgorithm<
 	 * @param scaler The fitness scaler.
 	 * @throws NullPointerException if the scaler is {@code null}.
 	 */
-	public void setFitnessScaler(final Function<C, C> scaler) {
+	public void setFitnessScaler(final Function<? super C, ? extends C> scaler) {
 		_fitnessScaler = requireNonNull(scaler, "FitnessScaler");
 	}
 
