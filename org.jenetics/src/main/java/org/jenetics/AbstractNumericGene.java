@@ -23,14 +23,15 @@ package org.jenetics;
  * Abstract base class for implementing concrete NumericGenes.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date$</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-05 $</em>
  * @since 1.6
  */
-public abstract class AbstractNumericGene<
+abstract class AbstractNumericGene<
 	N extends Number & Comparable<? super N>,
 	G extends AbstractNumericGene<N, G>
 >
 	extends AbstractBoundedGene<N, G>
+	implements NumericGene<N, G>
 {
 	private static final long serialVersionUID = 1L;
 
@@ -48,72 +49,36 @@ public abstract class AbstractNumericGene<
 	}
 
 	@Override
-	public abstract G newInstance(final Number value);
-
-	/**
-	 * Returns the value of the specified gene as an byte. This may involve
-	 * rounding or truncation.
-	 *
-	 * @return the numeric value represented by this object after conversion to
-	 *         type {@code byte}.
-	 */
 	public byte byteValue() {
 		return _value.byteValue();
 	}
 
-	/**
-	 * Returns the value of the specified gene as an short. This may involve
-	 * rounding or truncation.
-	 *
-	 * @return the numeric value represented by this object after conversion to
-	 *         type {@code short}.
-	 */
+	@Override
 	public short shortValue() {
 		return _value.shortValue();
 	}
 
-	/**
-	 * Returns the value of the specified gene as an int. This may involve
-	 * rounding or truncation.
-	 *
-	 * @return the numeric value represented by this object after conversion to
-	 *         type {@code int}.
-	 */
+	@Override
 	public int intValue() {
 		return _value.intValue();
 	}
 
-	/**
-	 * Returns the value of the specified gene as an long. This may involve
-	 * rounding or truncation.
-	 *
-	 * @return the numeric value represented by this object after conversion to
-	 *         type {@code long}.
-	 */
+	@Override
 	public long longValue() {
 		return _value.longValue();
 	}
 
-	/**
-	 * Returns the value of the specified gene as an float. This may involve
-	 * rounding or truncation.
-	 *
-	 * @return the numeric value represented by this object after conversion to
-	 *         type {@code float}.
-	 */
+	@Override
 	public float floatValue() {
 		return _value.floatValue();
 	}
 
-	/**
-	 * Returns the value of the specified gene as an double. This may involve
-	 * rounding or truncation.
-	 *
-	 * @return the numeric value represented by this object after conversion to
-	 *         type {@code double}.
-	 */
+	@Override
 	public double doubleValue() {
 		return _value.doubleValue();
 	}
+
+	@Override
+	public abstract G newInstance(final Number number);
 
 }

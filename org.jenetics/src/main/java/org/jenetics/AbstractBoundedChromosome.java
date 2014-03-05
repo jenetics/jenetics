@@ -29,15 +29,14 @@ import org.jenetics.util.ISeq;
  * Abstract chromosome for {@code BoundedGene}s.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date$</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-05 $</em>
  * @since 1.6
  */
-public abstract class AbstractBoundedChromosome<
+abstract class AbstractBoundedChromosome<
 	A extends Comparable<? super A>,
 	G extends AbstractBoundedGene<A, G>
 >
-	extends AbstractChromosome<G>
-{
+	extends AbstractChromosome<G> implements BoundedChromosome<A, G> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -65,20 +64,12 @@ public abstract class AbstractBoundedChromosome<
 		_max = genes.get(0)._max;
 	}
 
-	/**
-	 * Return the minimum value of this {@code BoundedChromosome}.
-	 *
-	 * @return the minimum value of this {@code BoundedChromosome}.
-	 */
+	@Override
 	public A getMin() {
 		return _min;
 	}
 
-	/**
-	 * Return the maximum value of this {@code BoundedChromosome}.
-	 *
-	 * @return the maximum value of this {@code BoundedChromosome}.
-	 */
+	@Override
 	public A getMax() {
 		return _max;
 	}

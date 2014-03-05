@@ -50,7 +50,9 @@ import org.jenetics.util.RandomRegistry;
 @XmlJavaTypeAdapter(LongGene.Model.Adapter.class)
 public final class LongGene
 	extends AbstractNumericGene<Long, LongGene>
-	implements Mean<LongGene>
+	implements
+		NumericGene<Long, LongGene>,
+		Mean<LongGene>
 {
 
 	private static final long serialVersionUID = 1L;

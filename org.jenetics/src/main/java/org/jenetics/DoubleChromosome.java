@@ -52,7 +52,9 @@ import org.jenetics.util.ISeq;
 @XmlJavaTypeAdapter(DoubleChromosome.Model.Adapter.class)
 public class DoubleChromosome
 	extends AbstractNumericChromosome<Double, DoubleGene>
-	implements Serializable
+	implements
+		NumericChromosome<Double, DoubleGene>,
+		Serializable
 {
 	private static final long serialVersionUID = 1L;
 

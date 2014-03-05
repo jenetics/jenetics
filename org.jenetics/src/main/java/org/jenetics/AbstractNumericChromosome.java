@@ -25,15 +25,17 @@ import org.jenetics.util.ISeq;
  * Abstract numeric chromosome.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date$</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-05 $</em>
  * @since 1.6
  */
-public abstract class AbstractNumericChromosome<
+abstract class AbstractNumericChromosome<
 	N extends Number & Comparable<? super N>,
-	G extends NumericGene<N, G>
+	G extends AbstractNumericGene<N, G>
 >
 	extends AbstractBoundedChromosome<N, G>
+	implements NumericChromosome<N, G>
 {
+
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -48,140 +50,62 @@ public abstract class AbstractNumericChromosome<
 		super(genes);
 	}
 
-	/**
-	 * Return the byte value of this {@code NumericChromosome} at the given
-	 * {@code index}.
-	 *
-	 * @param index the index of the {@link NumericGene}.
-	 * @return the byte value of the {@link Gene} with the given {@code index}.
-	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         (index &lt; 0 || index &gt;= length()).
-	 */
+	@Override
 	public byte byteValue(final int index) {
 		return getGene(index).getAllele().byteValue();
 	}
 
-	/**
-	 * Return the byte value of this {@code NumericChromosome} at the
-	 * {@code index} 0.
-	 *
-	 * @return the byte value of the {@link Gene} with {@code index} 0.
-	 */
+	@Override
 	public byte byteValue() {
 		return byteValue(0);
 	}
 
-	/**
-	 * Return the short value of this {@code NumericChromosome} at the given
-	 * {@code index}.
-	 *
-	 * @param index the index of the {@link NumericGene}.
-	 * @return the short value of the {@link Gene} with the given {@code index}.
-	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         (index &lt; 0 || index &gt;= length()).
-	 */
+	@Override
 	public short shortValue(final int index) {
 		return getGene(index).getAllele().shortValue();
 	}
 
-	/**
-	 * Return the short value of this {@code NumericChromosome} at the
-	 * {@code index} 0.
-	 *
-	 * @return the short value of the {@link Gene} with {@code index} 0.
-	 */
+	@Override
 	public short shortValue() {
 		return shortValue(0);
 	}
 
-	/**
-	 * Return the int value of this {@code NumericChromosome} at the given
-	 * {@code index}.
-	 *
-	 * @param index the index of the {@link NumericGene}.
-	 * @return the int value of the {@link Gene} with the given {@code index}.
-	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         (index &lt; 0 || index &gt;= length()).
-	 */
+	@Override
 	public int intValue(final int index) {
 		return getGene(index).getAllele().intValue();
 	}
 
-	/**
-	 * Return the int value of this {@code NumericChromosome} at the
-	 * {@code index} 0.
-	 *
-	 * @return the int value of the {@link Gene} with {@code index} 0.
-	 */
+	@Override
 	public int intValue() {
 		return intValue(0);
 	}
 
-	/**
-	 * Return the long value of this {@code NumericChromosome} at the given
-	 * {@code index}.
-	 *
-	 * @param index the index of the {@link NumericGene}.
-	 * @return the long value of the {@link Gene} with the given {@code index}.
-	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         (index &lt; 0 || index &gt;= length()).
-	 */
+	@Override
 	public long longValue(final int index) {
 		return getGene(index).getAllele().longValue();
 	}
 
-	/**
-	 * Return the long value of this {@code NumericChromosome} at the
-	 * {@code index} 0.
-	 *
-	 * @return the long value of the {@link Gene} with {@code index} 0.
-	 */
+	@Override
 	public long longValue() {
 		return longValue(0);
 	}
 
-	/**
-	 * Return the float value of this {@code NumericChromosome} at the given
-	 * {@code index}.
-	 *
-	 * @param index the index of the {@link NumericGene}.
-	 * @return the float value of the {@link Gene} with the given {@code index}.
-	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         (index &lt; 0 || index &gt;= length()).
-	 */
+	@Override
 	public float floatValue(final int index) {
 		return getGene(index).getAllele().floatValue();
 	}
 
-	/**
-	 * Return the float value of this {@code NumericChromosome} at the
-	 * {@code index} 0.
-	 *
-	 * @return the float value of the {@link Gene} with {@code index} 0.
-	 */
+	@Override
 	public float floatValue() {
 		return floatValue(0);
 	}
 
-	/**
-	 * Return the double value of this {@code NumericChromosome} at the given
-	 * {@code index}.
-	 *
-	 * @param index the index of the {@link NumericGene}.
-	 * @return the double value of the {@link Gene} with the given {@code index}.
-	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         (index &lt; 0 || index &gt;= length()).
-	 */
+	@Override
 	public double doubleValue(final int index) {
 		return getGene(index).getAllele().doubleValue();
 	}
 
-	/**
-	 * Return the double value of this {@code NumericChromosome} at the
-	 * {@code index} 0.
-	 *
-	 * @return the double value of the {@link Gene} with {@code index} 0.
-	 */
+	@Override
 	public double doubleValue() {
 		return doubleValue(0);
 	}

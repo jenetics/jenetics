@@ -29,16 +29,14 @@ import org.jenetics.internal.util.HashBuilder;
  * value.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date$</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-05 $</em>
  * @since 1.6
  */
-public abstract class AbstractBoundedGene<
+abstract class AbstractBoundedGene<
 	A extends Comparable<? super A>,
 	G extends AbstractBoundedGene<A, G>
 >
-	implements
-		Gene<A, G>,
-		Comparable<G>
+	implements BoundedGene<A, G>
 {
 
 	private static final long serialVersionUID = 1L;
@@ -84,20 +82,12 @@ public abstract class AbstractBoundedGene<
 		return _value;
 	}
 
-	/**
-	 * Return the allowed min value.
-	 *
-	 * @return The allowed min value.
-	 */
+	@Override
 	public A getMin() {
 		return _min;
 	}
 
-	/**
-	 * Return the allowed max value.
-	 *
-	 * @return The allowed max value.
-	 */
+	@Override
 	public A getMax() {
 		return _max;
 	}
@@ -117,14 +107,6 @@ public abstract class AbstractBoundedGene<
 	public int compareTo(final G other) {
 		return _value.compareTo(other._value);
 	}
-
-	/**
-	 * Create a new gene from the given {@code value} and the current bounds.
-	 *
-	 * @param value the value of the new gene.
-	 * @return a new gene with the given value.
-	 */
-	public abstract G newInstance(final A value);
 
 	@Override
 	public int hashCode() {
