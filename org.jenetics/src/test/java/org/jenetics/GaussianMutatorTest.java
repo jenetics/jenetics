@@ -17,6 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
+/*
 package org.jenetics;
 
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
@@ -30,12 +31,13 @@ import org.jenetics.stat.NormalDistribution;
 import org.jenetics.stat.Variance;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Range;
-
+*/
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version <em>$Date$</em>
  */
+/*
 public class GaussianMutatorTest extends MutatorTestBase {
 
 	@Override
@@ -70,3 +72,4 @@ public class GaussianMutatorTest extends MutatorTestBase {
 	}
 
 }
+*/
