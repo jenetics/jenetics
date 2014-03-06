@@ -62,8 +62,8 @@ public class EnumGeneTest extends GeneTester<EnumGene<Integer>> {
 		}
 
 		for (int i = 0; i < alleles.length(); ++i) {
-			Assert.assertEquals(new EnumGene<>(alleles, i).getAllele(), new Integer(i));
-			Assert.assertSame(new EnumGene<>(alleles, i).getValidAlleles(), alleles);
+			Assert.assertEquals(new EnumGene<>(i, alleles).getAllele(), new Integer(i));
+			Assert.assertSame(new EnumGene<>(i, alleles).getValidAlleles(), alleles);
 		}
 	}
 
@@ -72,7 +72,7 @@ public class EnumGeneTest extends GeneTester<EnumGene<Integer>> {
 		final int length = 100;
 		final ISeq<Integer> alleles = new Array<Integer>(length).fill(Int()).toISeq();
 
-		new EnumGene<>(alleles, length + 1);
+		new EnumGene<>(length + 1, alleles);
 	}
 
 	@Test(expectedExceptions = IndexOutOfBoundsException.class)
@@ -80,7 +80,7 @@ public class EnumGeneTest extends GeneTester<EnumGene<Integer>> {
 		final int length = 100;
 		final ISeq<Integer> alleles = new Array<Integer>(length).fill(Int()).toISeq();
 
-		new EnumGene<>(alleles, -1);
+		new EnumGene<>(-1, alleles);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
