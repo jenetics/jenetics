@@ -61,7 +61,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-02-27 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-06 $</em>
  */
 @XmlJavaTypeAdapter(BitChromosome.Model.Adapter.class)
 public class BitChromosome extends Number<BitChromosome>
@@ -121,7 +121,8 @@ public class BitChromosome extends Number<BitChromosome>
 	}
 
 	/**
-	 * Create a new {@code BitChromosome} from the given {@code byte} array.
+	 * Create a new {@code BitChromosome} from the given {@code byte} array. 
+	 * This is a shortcut for {@code new BitChromosome(bits, 0, bits.length*8)}.
 	 *
 	 * @param bits the {@code byte} array.
 	 */
