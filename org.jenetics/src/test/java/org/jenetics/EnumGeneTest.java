@@ -41,7 +41,7 @@ public class EnumGeneTest extends GeneTester<EnumGene<Integer>> {
 
 		@Override
 		public EnumGene<Integer> newInstance() {
-			return new EnumGene<>(_alleles);
+			return EnumGene.of(_alleles);
 		}
 
 	};
@@ -88,7 +88,7 @@ public class EnumGeneTest extends GeneTester<EnumGene<Integer>> {
 		final int length = 0;
 		final ISeq<Integer> alleles = new Array<Integer>(length).fill(Int()).toISeq();
 
-		new EnumGene<>(alleles);
+		EnumGene.of(alleles);
 	}
 
 }

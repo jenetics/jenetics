@@ -117,22 +117,6 @@ public final class EnumGene<A>
 	}
 
 	/**
-	 * Return a new enum gene with an allele randomly chosen from the given
-	 * valid alleles.
-	 *
-	 * @param validAlleles the sequence of valid alleles.
-	 * @throws java.lang.IllegalArgumentException if the give valid alleles
-	 *         sequence is empty
-	 * @throws NullPointerException if the valid alleles seq is {@code null}.
-	 */
-	public EnumGene(final ISeq<? extends A> validAlleles) {
-		this(
-			RandomRegistry.getRandom().nextInt(validAlleles.length()),
-			validAlleles
-		);
-	}
-
-	/**
 	 * Return sequence of the valid alleles where this gene is a part of.
 	 *
 	 * @return the sequence of the valid alleles.
@@ -260,6 +244,21 @@ public final class EnumGene<A>
 		};
 	}
 
+	/**
+	 * Return a new enum gene with an allele randomly chosen from the given
+	 * valid alleles.
+	 *
+	 * @param validAlleles the sequence of valid alleles.
+	 * @throws java.lang.IllegalArgumentException if the give valid alleles
+	 *         sequence is empty
+	 * @throws NullPointerException if the valid alleles seq is {@code null}.
+	 */
+	public static <A> EnumGene<A> of(final ISeq<? extends A> validAlleles) {
+		return new EnumGene<>(
+			RandomRegistry.getRandom().nextInt(validAlleles.length()),
+			validAlleles
+		);
+	}
 
 	/**
 	 * @deprecated Use {@link #EnumGene(int, org.jenetics.util.ISeq)} instead.
@@ -302,11 +301,11 @@ public final class EnumGene<A>
 	}
 
 	/**
-	 * @deprecated Use {@link #EnumGene(org.jenetics.util.ISeq)} instead.
+	 * @deprecated Use {@link #of(org.jenetics.util.ISeq)} instead.
 	 */
 	@Deprecated
 	public static <G> EnumGene<G> valueOf(final ISeq<G> validAlleles) {
-		return new EnumGene<>(validAlleles);
+		return EnumGene.of(validAlleles);
 	}
 
 	/**
@@ -320,7 +319,7 @@ public final class EnumGene<A>
 	 */
 	@SafeVarargs
 	public static <G> EnumGene<G> of(final G... validAlleles) {
-		return new EnumGene<>(Array.of(validAlleles).toISeq());
+		return EnumGene.of(Array.of(validAlleles).toISeq());
 	}
 
 	/**
