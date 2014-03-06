@@ -61,7 +61,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-03-03 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-06 $</em>
  */
 @XmlJavaTypeAdapter(PermutationChromosome.Model.Adapter.class)
 public final class PermutationChromosome<T>
@@ -246,7 +246,7 @@ public final class PermutationChromosome<T>
 
 		final Array<EnumGene<T>> genes = new Array<>(_validAlleles.length());
 		for (int i = 0; i < _validAlleles.length(); ++i) {
-			genes.set(i, new EnumGene<>(_validAlleles, in.readInt()));
+			genes.set(i, new EnumGene<>(in.readInt(), _validAlleles));
 		}
 
 		_genes = genes.toISeq();
@@ -285,7 +285,7 @@ public final class PermutationChromosome<T>
 
 			final Array<Object> genes = new Array<>(length);
 			for (int i = 0; i < length; ++i) {
-				genes.set(i, new EnumGene<>(ialleles, indexes.get(i)));
+				genes.set(i, new EnumGene<>(indexes.get(i), ialleles));
 			}
 
 			return new PermutationChromosome(genes.toISeq(), true);
@@ -373,7 +373,7 @@ public final class PermutationChromosome<T>
 
 				final Array<Object> genes = new Array<>(seq.length());
 				for (int i = 0; i < seq.length(); ++i) {
-					genes.set(i, new EnumGene(seq, indexes.get(i)));
+					genes.set(i, new EnumGene(indexes.get(i), seq));
 				}
 
 				return new PermutationChromosome(genes.toISeq(), true);

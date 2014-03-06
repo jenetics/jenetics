@@ -66,7 +66,7 @@ import org.jenetics.util.RandomRegistry;
  * The following code shows the assurances of the {@code EnumGene}.
  * [code]
  * final ISeq〈Integer〉 alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
- * final EnumGene〈Integer〉 gene = new EnumGene<>(alleles, 5);
+ * final EnumGene〈Integer〉 gene = new EnumGene<>(5, alleles);
  *
  * assert(gene.getAlleleIndex() == 5);
  * assert(gene.getAllele() == gene.getValidAlleles().get(5));
@@ -77,7 +77,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-03-04 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-06 $</em>
  */
 public final class EnumGene<A>
 	implements
@@ -93,13 +93,13 @@ public final class EnumGene<A>
 	/**
 	 * Create a new enum gene from the given valid genes and the chosen allele
 	 * index.
-	 *
-	 * @param validAlleles the sequence of valid alleles.
 	 * @param alleleIndex the index of the allele for this gene.
+	 * @param validAlleles the sequence of valid alleles.
 	 * @throws java.lang.IllegalArgumentException if the give valid alleles
-	 *         sequence is empty of the allele index is out of range.
+	 *         sequence is empty
+	 * @throws NullPointerException if the valid alleles seq is {@code null}.
 	 */
-	public EnumGene(final ISeq<? extends A> validAlleles, final int alleleIndex) {
+	public EnumGene(final int alleleIndex, final ISeq<? extends A> validAlleles) {
 		if (validAlleles.length() == 0) {
 			throw new IllegalArgumentException(
 				"Array of valid alleles must be greater than zero."
@@ -123,11 +123,12 @@ public final class EnumGene<A>
 	 * @param validAlleles the sequence of valid alleles.
 	 * @throws java.lang.IllegalArgumentException if the give valid alleles
 	 *         sequence is empty
+	 * @throws NullPointerException if the valid alleles seq is {@code null}.
 	 */
 	public EnumGene(final ISeq<? extends A> validAlleles) {
 		this(
-			validAlleles,
-			RandomRegistry.getRandom().nextInt(validAlleles.length())
+			RandomRegistry.getRandom().nextInt(validAlleles.length()),
+			validAlleles
 		);
 	}
 
@@ -157,7 +158,7 @@ public final class EnumGene<A>
 	@Deprecated
 	@Override
 	public EnumGene<A> copy() {
-		return new EnumGene<>(_validAlleles, _alleleIndex);
+		return new EnumGene<>(_alleleIndex, _validAlleles);
 	}
 
 	@Override
@@ -168,8 +169,8 @@ public final class EnumGene<A>
 	@Override
 	public EnumGene<A> newInstance() {
 		return new EnumGene<>(
-			_validAlleles,
-			RandomRegistry.getRandom().nextInt(_validAlleles.length())
+			RandomRegistry.getRandom().nextInt(_validAlleles.length()),
+			_validAlleles
 		);
 	}
 
@@ -182,8 +183,8 @@ public final class EnumGene<A>
 	 */
 	public EnumGene<A> newInstance(final A value) {
 		return new EnumGene<>(
-			_validAlleles,
-			_validAlleles.indexOf(value)
+			_validAlleles.indexOf(value),
+			_validAlleles
 		);
 	}
 
@@ -244,7 +245,7 @@ public final class EnumGene<A>
 		return new Function<Integer, EnumGene<T>>() {
 			@Override
 			public EnumGene<T> apply(final Integer index) {
-				return new EnumGene<>(validAlleles, index);
+				return new EnumGene<>(index, validAlleles);
 			}
 		};
 	}
@@ -254,21 +255,21 @@ public final class EnumGene<A>
 			private int _index = 0;
 			@Override
 			public EnumGene<T> newInstance() {
-				return new EnumGene<>(validAlleles, _index++);
+				return new EnumGene<>(_index++, validAlleles);
 			}
 		};
 	}
 
 
 	/**
-	 * @deprecated Use {@link #EnumGene(org.jenetics.util.ISeq, int)} instead.
+	 * @deprecated Use {@link #EnumGene(int, org.jenetics.util.ISeq)} instead.
 	 */
 	@Deprecated
 	public static <A> EnumGene<A> valueOf(
 		final ISeq<? extends A> validAlleles,
 		final int alleleIndex
 	) {
-		return new EnumGene<>(validAlleles, alleleIndex);
+		return new EnumGene<>(alleleIndex, validAlleles);
 	}
 
 	/**
@@ -286,7 +287,7 @@ public final class EnumGene<A>
 		final int alleleIndex,
 		final G... validAlleles
 	) {
-		return new EnumGene<>(Array.of(validAlleles).toISeq(), alleleIndex);
+		return new EnumGene<>(alleleIndex, Array.of(validAlleles).toISeq());
 	}
 
 	/**
@@ -355,7 +356,7 @@ public final class EnumGene<A>
 				alleles.set(i, allele);
 			}
 
-			return new EnumGene<>(alleles.toISeq(), index);
+			return new EnumGene<>(index, alleles.toISeq());
 		}
 
 		@Override
@@ -410,8 +411,8 @@ public final class EnumGene<A>
 			@Override
 			public EnumGene unmarshal(final Model m) {
 				return new EnumGene<>(
-					Array.of(m.alleles).map(Unmarshaller).toISeq(),
-					m.currentAlleleIndex
+					m.currentAlleleIndex,
+					Array.of(m.alleles).map(Unmarshaller).toISeq()
 				);
 			}
 
