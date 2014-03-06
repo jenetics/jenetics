@@ -36,6 +36,7 @@ import org.jscience.mathematics.number.LargeInteger;
 
 import org.jenetics.util.Factory;
 import org.jenetics.util.LCG64ShiftRandom;
+import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.bit;
 
 /**
@@ -46,7 +47,7 @@ import org.jenetics.util.bit;
 public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
 	private final Factory<Chromosome<BitGene>>
-	_factory = new BitChromosome(500, 0.3);
+	_factory = BitChromosome.of(500, 0.3);
 	@Override protected Factory<Chromosome<BitGene>> getFactory() {
 		return _factory;
 	}
@@ -54,7 +55,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 	@Test(invocationCount = 20, successPercentage = 90)
 	public void newInstance() {
 		final int size = 50_000;
-		final BitChromosome base = new BitChromosome(size, 0.5);
+		final BitChromosome base = BitChromosome.of(size, 0.5);
 
 		for (int i = 0; i < 100; ++i) {
 			final BitChromosome other = base.newInstance();
@@ -65,8 +66,20 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 	}
 
 	@Test
+	public void chromosomeProbability() {
+		final byte[] data = new byte[1234];
+		RandomRegistry.getRandom().nextBytes(data);
+		
+		final BitChromosome c = new BitChromosome(data);
+		Assert.assertEquals(
+			c.getOneProbability(), 
+			(double)bit.count(data)/(double)(data.length*8)
+		);
+	}
+	
+	@Test
 	public void seqTypes() {
-		final BitChromosome c = new BitChromosome(100, 0.3);
+		final BitChromosome c = BitChromosome.of(100, 0.3);
 
 		Assert.assertEquals(c.toSeq().getClass(), BitGeneArray.BitGeneISeq.class);
 		Assert.assertEquals(c.toSeq().copy().getClass(), BitGeneArray.class);
@@ -75,7 +88,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
 	@Test
 	public void invert() {
-		BitChromosome c1 = new BitChromosome(100, 0.3);
+		BitChromosome c1 = BitChromosome.of(100, 0.3);
 		BitChromosome c2 = c1.copy();
 		Assert.assertNotSame(c2, c1);
 		Assert.assertEquals(c2, c1);
@@ -91,7 +104,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
 	@Test
 	public void numValue() {
-		BitChromosome c1 = new BitChromosome(10);
+		BitChromosome c1 = BitChromosome.of(10);
 
 		int value = c1.intValue();
 		assertEquals((short)value, c1.shortValue());
@@ -102,12 +115,12 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
 	@Test
 	public void intProbability() {
-		BitChromosome c = new BitChromosome(10, 0);
+		BitChromosome c = BitChromosome.of(10, 0);
 		for (BitGene g : c) {
 			assertFalse(g.getBit());
 		}
 
-		c = new BitChromosome(10, 1);
+		c = BitChromosome.of(10, 1);
 		for (BitGene g : c) {
 			assertTrue(g.getBit());
 		}
@@ -120,7 +133,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 			bits.set(i, i % 2 == 0);
 		}
 
-		BitChromosome c = new BitChromosome(bits);
+		BitChromosome c = BitChromosome.of(bits);
 		for (int i = 0; i < bits.length(); ++i) {
 			assertEquals(c.getGene(i).getBit(), i % 2 == 0);
 		}
