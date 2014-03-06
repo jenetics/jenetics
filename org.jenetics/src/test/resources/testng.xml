@@ -20,7 +20,7 @@
  # Author:
  #    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  #
- # Version: <em>$Date: 2014-03-05 $</em>
+ # Version: <em>$Date: 2014-03-06 $</em>
  #
  ###############################################################################
 -->
@@ -349,4 +349,3 @@
 		</classes>
 	</test>
 </suite>
-
