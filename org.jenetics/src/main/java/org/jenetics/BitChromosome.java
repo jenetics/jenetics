@@ -116,8 +116,9 @@ public class BitChromosome extends Number<BitChromosome>
 		this(
 			internalbit.copy(bits, start, end),
 			min(bits.length << 3, end) - start,
-			(double)bit.count(bits)/(double)(min(bits.length << 3, end) - start)
+			0.0
 		);
+		_p = (double)bit.count(_genes)/(double)_length;
 	}
 
 	/**
@@ -267,6 +268,15 @@ public class BitChromosome extends Number<BitChromosome>
 		}
 	}
 
+	/**
+	 * Return the one probability of this chromosome.
+	 * 
+	 * @return the one probability of this chromosome.
+	 */
+	double getOneProbability() {
+		return _p;
+	}
+	
 	@Override
 	public BitGene getGene() {
 		assert (_genes != null);
