@@ -121,7 +121,8 @@ public class BitChromosome extends Number<BitChromosome>
 	}
 
 	/**
-	 * Create a new {@code BitChromosome} from the given {@code byte} array.
+	 * Create a new {@code BitChromosome} from the given {@code byte} array. 
+	 * This is a shortcut for {@code new BitChromosome(bits, 0, bits.length*8)}.
 	 *
 	 * @param bits the {@code byte} array.
 	 */
