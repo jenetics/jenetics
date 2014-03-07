@@ -17,6 +17,7 @@ import org.jenetics.Genotype;
 import org.jenetics.Phenotype;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Timer;
+import org.jenetics.util.arrays;
 
 public class arraysTest {
 
@@ -60,7 +61,7 @@ public class arraysTest {
 			final Timer timer = new Timer();
 			for (int j = 0; j < 5; ++j) {
 				timer.start();
-				arrays.fill(data, _factory);
+				//arrays.fill(data, _factory);
 				timer.stop();
 			}
 		}

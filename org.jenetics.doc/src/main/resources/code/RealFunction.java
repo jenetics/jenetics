@@ -11,7 +11,7 @@ import org.jenetics.Mutator;
 import org.jenetics.NumberStatistics;
 import org.jenetics.Optimize;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Function;
+import java.util.function.Function;
 
 final class Real
 	implements Function<Genotype<DoubleGene>, Double>

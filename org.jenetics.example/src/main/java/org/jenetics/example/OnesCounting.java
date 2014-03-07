@@ -31,7 +31,7 @@ import org.jenetics.Optimize;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Function;
+import java.util.function.Function;
 
 final class OneCounter
 	implements Function<Genotype<BitGene>, Integer>

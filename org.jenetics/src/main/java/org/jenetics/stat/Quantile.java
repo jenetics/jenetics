@@ -25,6 +25,8 @@ import static org.jenetics.internal.util.object.eq;
 
 import java.util.Arrays;
 
+import org.jenetics.internal.util.HashBuilder;
+
 import org.jenetics.util.AbstractAccumulator;
 
 

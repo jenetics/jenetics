@@ -30,7 +30,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 
-import org.jenetics.util.Function;
+import java.util.function.Function;
 import org.jenetics.util.lists;
 
 

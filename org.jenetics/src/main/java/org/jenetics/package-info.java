@@ -52,7 +52,7 @@
  * The {@link org.jenetics.Gene} is the base of the building block. Genes are
  * aggregated in {@link org.jenetics.Chromosome}s. One to n Chromosomes are
  * aggregated in {@link org.jenetics.Genotype}s. A Genotype and a fitness
- * {@link org.jenetics.util.Function} form the {@link org.jenetics.Phenotype}.
+ * {@link java.util.function.Function} form the {@link org.jenetics.Phenotype}.
  * Phenotypes are collected into a {@link org.jenetics.Population}.
  *
  * <h3>Getting started</h3>
@@ -160,7 +160,7 @@
  * import org.jenetics.RouletteWheelSelector;
  * import org.jenetics.SinglePointCrossover;
  * import org.jenetics.util.Factory;
- * import org.jenetics.util.Function;
+ * import java.util.function.Function;
  *
  * final class OneCounter
  *     implements Function〈Genotype〈BitGene〉, Integer〉
@@ -234,7 +234,7 @@
  * import org.jenetics.PermutationChromosome;
  * import org.jenetics.SwapMutator;
  * import org.jenetics.util.Factory;
- * import org.jenetics.util.Function;
+ * import java.util.function.Function;
  *
  * class FF
  *     implements Function〈Genotype〈EnumGene<Integer〉〉, Double〉
@@ -304,6 +304,6 @@
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-03-05 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-07 $</em>
  */
 package org.jenetics;

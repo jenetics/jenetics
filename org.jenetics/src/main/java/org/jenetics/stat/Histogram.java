@@ -25,7 +25,6 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.NonNull;
 import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -34,6 +33,8 @@ import java.util.function.Function;
 
 import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.number.Integer64;
+
+import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.util.AbstractAccumulator;
 import org.jenetics.util.arrays;
@@ -408,43 +409,6 @@ public class Histogram<C> extends AbstractAccumulator<C> {
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	private static final Comparator COMPARATOR = (a, b) -> ((Comparable)a).compareTo(b);
 
-
-	/**
-	 * Return a <i>histogram</i> for {@link Double} values. The <i>histogram</i>
-	 * array of the returned {@link Histogram} will look like this:
-	 *
-	 * <pre>
-	 *    min                            max
-	 *     +----+----+----+----+  ~  +----+
-	 *     | 1  | 2  | 3  | 4  |     | nc |
-	 *     +----+----+----+----+  ~  +----+
-	 * </pre>
-	 *
-	 * The range of all classes will be equal: {@code (max - min)/nclasses}.
-	 *
-	 * @param min the minimum range value of the returned histogram.
-	 * @param max the maximum range value of the returned histogram.
-	 * @param nclasses the number of classes of the returned histogram. The
-	 *        number of separators will be {@code nclasses - 1}.
-	 * @return a new <i>histogram</i> for {@link Double} values.
-	 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
-	 * @throws IllegalArgumentException if {@code min.compareTo(max) >= 0} or
-	 *         {@code nclasses < 2}.
-	 *
-	 * @deprecated Use {@link #of(Double, Double, int)} instead.
-	 */
-	public static Histogram<Float64> valueOf(
-		final Float64 min,
-		final Float64 max,
-		final int nclasses
-	) {
-		return valueOf(arrays.map(
-			toSeparators(min.doubleValue(), max.doubleValue(), nclasses),
-			new Float64[nclasses - 1],
-			d -> Float64.valueOf(d)
-		));
-	}
-
 	/**
 	 * @see #valueOf(Float64, Float64, int)
 	 */
@@ -500,85 +464,6 @@ public class Histogram<C> extends AbstractAccumulator<C> {
 		}
 
 		return separators;
-	}
-
-	/**
-	 * @deprecated Use {@link #of(Double, Double, int)} instead.
-	 */
-	@Deprecated
-	public static Histogram<Float64> valueOf(
-		final Float64 min,
-		final Float64 max,
-		final int nclasses
-	) {
-		return of(arrays.map(
-			toSeparators(min.doubleValue(), max.doubleValue(), nclasses),
-			new Float64[nclasses - 1],
-			DoubleToFloat64
-		));
-	}
-
-	/**
-	 * @deprecated Use {@link #of(Long, Long, int)} instead.
-	 */
-	@Deprecated
-	public static Histogram<Integer64> valueOf(
-		final Integer64 min,
-		final Integer64 max,
-		final int nclasses
-	) {
-		return of(arrays.map(
-			toSeparators(min.longValue(), max.longValue(), nclasses),
-			new Integer64[0],
-			LongToInteger64
-		));
-	}
-
-	/**
-	 * Return a <i>histogram</i> for {@link Long} values. The <i>histogram</i>
-	 * array of the returned {@link Histogram} will look like this:
-	 *
-	 * <pre>
-	 *    min                            max
-	 *     +----+----+----+----+  ~  +----+
-	 *     | 1  | 2  | 3  | 4  |     | nc |
-	 *     +----+----+----+----+  ~  +----+
-	 * </pre>
-	 *
-	 * The range of all classes are more or less the same. But this is not
-	 * always possible due to integer rounding issues. Calling this method with
-	 * {@code min = 13} and {@code max = 99} will generate the following class
-	 * separators for the given number of classes:
-	 * <pre>
-	 *  nclasses = 2: [56]
-	 *  nclasses = 3: [41, 70]
-	 *  nclasses = 4: [34, 55, 77]
-	 *  nclasses = 5: [30, 47, 64, 81]
-	 *  nclasses = 6: [27, 41, 55, 69, 84]
-	 *  nclasses = 7: [25, 37, 49, 61, 73, 86]
-	 *  nclasses = 8: [23, 33, 44, 55, 66, 77, 88]
-	 *  nclasses = 9: [22, 31, 40, 49, 59, 69, 79, 89]
-	 * </pre>
-	 *
-	 * @param min the minimum range value of the returned histogram.
-	 * @param max the maximum range value of the returned histogram.
-	 * @param nclasses the number of classes of the returned histogram. The
-	 *        number of separators will be {@code nclasses - 1}.
-	 * @return a new <i>histogram</i> for {@link Long} values.
-	 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
-	 * @throws IllegalArgumentException if {@code min.compareTo(max) >= 0} or
-	 *         {@code nclasses < 2}.
-	 */
-	public static Histogram<Long> of(
-		final Long min,
-		final Long max,
-		final int nclasses
-	) {
-		return valueOf(arrays.map(
-			toSeparators(min.longValue(), max.longValue(), nclasses),
-			new Integer64[0],
-			l -> Integer64.valueOf(l)
-		));
 	}
 
 	/**

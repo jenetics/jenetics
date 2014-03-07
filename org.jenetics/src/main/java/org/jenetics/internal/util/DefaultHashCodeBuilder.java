@@ -28,17 +28,9 @@ import org.jenetics.util.arrays;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date$</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-03-07 $</em>
  */
-<<<<<<< local
 final class DefaultHashCodeBuilder extends HashCodeBuilder implements Hash {
-=======
-@SuppressWarnings("deprecation")
-public final class DefaultHashCodeBuilder
-	extends HashCodeBuilder
-	implements Hash
-{
->>>>>>> other
 	private static final int P1 = 47;
 	private static final int P2 = 103;
 	private static final int P3 = 1231;
@@ -143,11 +135,7 @@ public final class DefaultHashCodeBuilder
 
 	@Override
 	public DefaultHashCodeBuilder and(final Seq<?> values) {
-<<<<<<< local
 		_hash += Seq.hashCode(values); return this;
-=======
-		_hash += arrays.hashCode(values); return this;
->>>>>>> other
 	}
 
 }

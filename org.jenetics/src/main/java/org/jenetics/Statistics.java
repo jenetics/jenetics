@@ -638,10 +638,6 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			}
 		};
 
-		private static String fd(final Measurable<Duration> duration) {
-			return String.format("%d ns", duration.longValue(SI.NANO(SI.SECOND)));
-		}
-
  	}
 
 

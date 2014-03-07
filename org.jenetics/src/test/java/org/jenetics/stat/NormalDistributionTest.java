@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
 
 import org.jscience.mathematics.number.Float64;
 
-import org.jenetics.util.Function;
+import java.util.function.Function;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Range;
 

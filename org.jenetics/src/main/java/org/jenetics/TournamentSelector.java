@@ -24,6 +24,8 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Random;
 
+import org.jenetics.internal.util.HashBuilder;
+
 import org.jenetics.util.RandomRegistry;
 
 /**

@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.number.Integer64;
 
-import org.jenetics.util.Function;
+import java.util.function.Function;
 import org.jenetics.util.StaticObject;
 
 /**
@@ -43,7 +43,7 @@ import org.jenetics.util.StaticObject;
  * integer and float types of the JScience library.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-02-02 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-07 $</em>
  * @since 1.6
  */
 public final class model extends StaticObject {

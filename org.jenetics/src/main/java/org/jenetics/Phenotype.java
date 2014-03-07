@@ -43,10 +43,8 @@ import org.jenetics.internal.util.jaxb;
 import org.jenetics.internal.util.model.ModelType;
 import org.jenetics.internal.util.model.ValueType;
 
-import org.jenetics.util.Function;
+import java.util.function.Function;
 import org.jenetics.util.Verifiable;
-import org.jenetics.util.functions;
-
 
 /**
  * The {@code Phenotype} consists of a {@link Genotype} plus a fitness
@@ -313,7 +311,7 @@ public final class Phenotype<
 		final Function<? super Genotype<G>, ? extends C> function,
 		final int generation
 	) {
-		return of(_genotype, function, functions.<C>Identity(), generation);
+		return of(_genotype, function, a -> a, generation);
 	}
 
 
@@ -420,7 +418,7 @@ public final class Phenotype<
 	}
 
 	/**
-	 * @deprecated Use {@link #of(Genotype, org.jenetics.util.Function, org.jenetics.util.Function, int)}
+	 * @deprecated Use {@link #of(Genotype, java.util.function.Function, java.util.function.Function, int)}
 	 *             instead.
 	 */
 	@Deprecated
@@ -449,11 +447,11 @@ public final class Phenotype<
 		final Function<? super Genotype<G>, C> fitnessFunction,
 		final int generation
 	) {
-		return of(genotype, fitnessFunction, functions.<C>Identity(), generation);
+		return of(genotype, fitnessFunction, a -> a, generation);
 	}
 
 	/**
-	 * @deprecated Use {@link #of(Genotype, org.jenetics.util.Function, org.jenetics.util.Function, int)}
+	 * @deprecated Use {@link #of(Genotype, java.util.function.Function, java.util.function.Function, int)}
 	 *             instead
 	 */
 	@Deprecated
@@ -514,7 +512,7 @@ public final class Phenotype<
 			final int generation = xml.getAttribute(GENERATION, 0);
 			final Genotype genotype = xml.getNext();
 			final Phenotype pt = new Phenotype(
-				genotype, functions.Identity(), functions.Identity(), generation
+				genotype, a -> a, a -> a, generation
 			);
 			pt._fitness = xml.get(FITNESS);
 			pt._rawFitness = xml.get(RAW_FITNESS);
@@ -577,8 +575,8 @@ public final class Phenotype<
 			public Phenotype unmarshal(final Model m) throws Exception {
 				final Phenotype pt = new Phenotype(
 					Genotype.Model.Adapter.unmarshal(m.genotype),
-					functions.Identity(),
-					functions.Identity(),
+					a -> a,
+					a -> a,
 					m.generation
 				);
 				pt._fitness = (Comparable)m.fitness;

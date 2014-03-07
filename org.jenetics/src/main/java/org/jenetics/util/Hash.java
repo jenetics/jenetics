@@ -19,6 +19,8 @@
  */
 package org.jenetics.util;
 
+import org.jenetics.internal.util.HashBuilder;
+
 /**
  * Interface for building hash codes.
  * <p/>
@@ -33,7 +35,7 @@ package org.jenetics.util;
  * [/code]
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-02-27 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-03-07 $</em>
  * @since @__version__@
  */
 public interface Hash {
@@ -204,7 +206,7 @@ public interface Hash {
 	 * @return a new default {@code Hash} implementation.
 	 */
 	public static Hash of(final Class<?> type) {
-		return new DefaultHashCodeBuilder(type);
+		return null;
 	}
 
 }

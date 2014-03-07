@@ -23,7 +23,6 @@ import static java.util.Objects.requireNonNull;
 import static org.jenetics.Integer64Gene.Value;
 import static org.jenetics.internal.util.model.Integer64Model.Marshaller;
 import static org.jenetics.internal.util.model.Integer64Model.Unmarshaller;
-import static org.jenetics.util.functions.compose;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -52,7 +51,7 @@ import org.jenetics.internal.util.model.ValueType;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Function;
+import java.util.function.Function;
 import org.jenetics.util.ISeq;
 
 
@@ -125,7 +124,7 @@ public class Integer64Chromosome
 	) {
 		this(
 			new Array<Integer64Gene>(length).fill(
-				Integer64Gene.valueOf(min, max)
+				() -> Integer64Gene.valueOf(min, max)
 			).toISeq()
 		);
 		_valid = true;
@@ -201,34 +200,6 @@ public class Integer64Chromosome
 	public boolean equals(final Object obj) {
 		return obj == this ||
 				obj instanceof Integer64Chromosome && super.equals(obj);
-	}
-
-	/* *************************************************************************
-	 *  Property access methods
-	 * ************************************************************************/
-
-	/**
-	 * Return a {@link Function} which returns the gene array from this
-	 * {@link Chromosome}.
-	 */
-	public static final Function<AbstractChromosome<Integer64Gene>, ISeq<Integer64Gene>>
-		Genes = AbstractChromosome.genes();
-
-	/**
-	 * Return a {@link Function} which returns the first {@link Gene} from this
-	 * {@link Chromosome}.
-	 */
-	public static final Function<Chromosome<Integer64Gene>, Integer64Gene>
-		Gene = AbstractChromosome.gene();
-
-	/**
-	 * Return a {@link Function} which returns the {@link Gene} with the given
-	 * {@code index} from this {@link Chromosome}.
-	 */
-	public static final Function<Chromosome<Integer64Gene>, Integer64Gene>
-	Gene(final int index)
-	{
-		return AbstractChromosome.gene(index);
 	}
 
 	/* *************************************************************************
@@ -347,12 +318,13 @@ public class Integer64Chromosome
 				m.length = c.length();
 				m.min = c._min.longValue();
 				m.max = c._max.longValue();
-				m.values = c.toSeq().map(compose(Value, Marshaller)).asList();
+				//m.values = c.toSeq().map(compose(Value, Marshaller)).asList();
 				return m;
 			}
 
 			@Override
 			public Integer64Chromosome unmarshal(final Model model) {
+				/*
 				final Integer64 min = Integer64.valueOf(model.min);
 				final Integer64 max = Integer64.valueOf(model.max);
 				final ISeq<Integer64Gene> genes = Array.of(model.values)
@@ -360,6 +332,8 @@ public class Integer64Chromosome
 					.toISeq();
 
 				return new Integer64Chromosome(genes, min, max);
+				*/
+				return null;
 			}
 		}
 	}

@@ -31,7 +31,7 @@ import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.internal.util.HashBuilder;
 
-import org.jenetics.util.Function;
+import java.util.function.Function;
 
 /**
  * Implements an exponential fitness scaling, whereby all fitness values are

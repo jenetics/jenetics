@@ -23,12 +23,12 @@ import static java.util.Objects.requireNonNull;
 import static org.jenetics.Float64Gene.Value;
 import static org.jenetics.internal.util.model.Float64Model.Marshaller;
 import static org.jenetics.internal.util.model.Float64Model.Unmarshaller;
-import static org.jenetics.util.functions.compose;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
+import java.util.function.Function;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -182,34 +182,6 @@ public class Float64Chromosome
 	}
 
 	/* *************************************************************************
-	 *  Property access methods
-	 * ************************************************************************/
-
-	/**
-	 * Return a {@link Function} which returns the gene array from this
-	 * {@link Chromosome}.
-	 */
-	public static final Function<AbstractChromosome<Float64Gene>, ISeq<Float64Gene>>
-		Genes = AbstractChromosome.genes();
-
-	/**
-	 * Return a {@link Function} which returns the first {@link Gene} from this
-	 * {@link Chromosome}.
-	 */
-	public static final Function<Chromosome<Float64Gene>, Float64Gene>
-		Gene = AbstractChromosome.gene();
-
-	/**
-	 * Return a {@link Function} which returns the {@link Gene} with the given
-	 * {@code index} from this {@link Chromosome}.
-	 */
-	public static Function<Chromosome<Float64Gene>, Float64Gene>
-	Gene(final int index)
-	{
-		return AbstractChromosome.gene(index);
-	}
-
-	/* *************************************************************************
 	 *  Java object serialization
 	 * ************************************************************************/
 
@@ -326,12 +298,13 @@ public class Float64Chromosome
 				m.length = c.length();
 				m.min = c._min.doubleValue();
 				m.max = c._max.doubleValue();
-				m.values = c.toSeq().map(compose(Value, Marshaller)).asList();
+				//m.values = c.toSeq().map(compose(Value, Marshaller)).asList();
 				return m;
 			}
 
 			@Override
 			public Float64Chromosome unmarshal(final Model model) {
+				/*
 				final Float64 min = Float64.valueOf(model.min);
 				final Float64 max = Float64.valueOf(model.max);
 				final ISeq<Float64Gene> genes = Array.of(model.values)
@@ -339,6 +312,8 @@ public class Float64Chromosome
 					.toISeq();
 
 				return new Float64Chromosome(genes, min, max);
+				*/
+				return null;
 			}
 		}
 	}

@@ -118,52 +118,18 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	/**
 	 * Fills the population with individuals created by the given factory.
 	 *
-	 * @param supplier the {@code Phenotype} supplier.
+	 * @param factory the {@code Phenotype} factory.
 	 * @param count the number of individuals to add to this population.
 	 * @return return this population, for command chaining.
 	 */
 	public Population<G, C> fill(
-		final Supplier<? extends Phenotype<G, C>> supplier,
+		final Factory<Phenotype<G, C>> factory,
 		final int count
 	) {
-		// Serial version.
-		if (ConcurrentContext.getConcurrency() == 0) {
-			for (int i = 0; i < count; ++i) {
-				_population.add(supplier.get());
-			}
-
-		// Parallel version.
-		} else {
-			final PhenotypeArray<G, C> array = new PhenotypeArray<>(count);
-			fill(supplier, array._array);
-			_population.addAll(array);
+		for (int i = count; --i >= 0;) {
+			_population.add(factory.newInstance());
 		}
-
 		return this;
-	}
-
-	private static <
-		G extends Gene<?, G>,
-		C extends Comparable<? super C>
-	>
-	void fill(
-		final Supplier<? extends Phenotype<G, C>> supplier,
-		final Object[] array
-	) {
-		try (final Concurrency c = Concurrency.start()) {
-			final int threads = ConcurrentContext.getConcurrency() + 1;
-			final int[] parts = arrays.partition(array.length, threads);
-
-			for (int i = 0; i < parts.length - 1; ++i) {
-				final int part = i;
-
-				c.execute(() -> {
-					for (int j = parts[part + 1]; --j >= parts[part];) {
-						array[j] = supplier.get();
-					}
-				});
-			}
-		}
 	}
 
 	/**

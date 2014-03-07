@@ -13,7 +13,7 @@ import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.TournamentSelector;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Function;
+import java.util.function.Function;
 import org.jenetics.util.RandomRegistry;
 
 final class Item {
@@ -75,7 +75,7 @@ public class Knapsack {
 			BitChromosome.of(15, 0.5)
 		);
 
-		final GeneticAlgorithm<BitGene, Double> ga = 
+		final GeneticAlgorithm<BitGene, Double> ga =
 			new GeneticAlgorithm<>(
 				genotype, ff
 			);

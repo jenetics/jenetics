@@ -28,7 +28,7 @@ import org.jenetics.stat.Distribution;
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.StatisticsAssert;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Function;
+import java.util.function.Function;
 import org.jenetics.util.ObjectTester;
 import org.jenetics.util.Range;
 

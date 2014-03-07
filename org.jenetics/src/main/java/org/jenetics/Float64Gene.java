@@ -44,7 +44,7 @@ import org.jenetics.internal.util.model.DoubleModel;
 import org.jenetics.internal.util.model.ModelType;
 import org.jenetics.internal.util.model.ValueType;
 
-import org.jenetics.util.Function;
+import java.util.function.Function;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.math;
 

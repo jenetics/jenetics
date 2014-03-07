@@ -58,7 +58,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	public CompositeAlterer(final Seq<Alterer<G>> alterers) {
 		super(1.0);
 
-		alterers.forEach(NonNull("Alterer"));
+		//alterers.forEach(NonNull("Alterer"));
 		_alterers = normalize(alterers).toISeq();
 	}
 

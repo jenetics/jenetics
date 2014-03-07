@@ -19,11 +19,13 @@
  */
 package org.jenetics.util;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.function.Supplier;
 
 import javolution.context.LocalContext;
+import javolution.lang.Reference;
 
 /**
  * This class holds the {@link Random} engine used for the GA. The
@@ -85,15 +87,22 @@ import javolution.context.LocalContext;
  * @see ThreadLocalRandom
  * @see LCG64ShiftRandom
  *
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz WilhelmstÃ¶tter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-07 $</em>
  */
 public final class RandomRegistry extends StaticObject {
 	private RandomRegistry() {}
 
-	private static final LocalContext.Reference<Supplier<Random>>
-	RANDOM = new LocalContext.Reference<>(ThreadLocalRandom::current);
+	private static final Reference<Random> TLOCAL_REF = new Ref<Random>() {
+		@Override
+		public Random get() {
+			return ThreadLocalRandom.current();
+		}
+	};
+
+	private static final LocalContext.Reference<Reference<? extends Random>>
+		RANDOM = new LocalContext.Reference<Reference<? extends Random>>(TLOCAL_REF);
 
 	/**
 	 * Return the global {@link Random} object.
@@ -119,7 +128,7 @@ public final class RandomRegistry extends StaticObject {
 	 * @throws NullPointerException if the {@code random} object is {@code null}.
 	 */
 	public static void setRandom(final Random random) {
-		RANDOM.set(() -> random);
+		RANDOM.set(new RRef(random));
 	}
 
 	/**
@@ -134,7 +143,7 @@ public final class RandomRegistry extends StaticObject {
 	 * @throws NullPointerException if the {@code random} object is {@code null}.
 	 */
 	public static void setRandom(final ThreadLocal<? extends Random> random) {
-		RANDOM.set(random::get);
+		RANDOM.set(new TLRRef<>(random));
 	}
 
 	/**

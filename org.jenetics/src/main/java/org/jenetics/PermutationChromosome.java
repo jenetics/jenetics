@@ -21,7 +21,6 @@ package org.jenetics;
 
 import static org.jenetics.EnumGene.Gene;
 import static org.jenetics.util.factories.Int;
-import static org.jenetics.util.functions.StringToInteger;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -50,7 +49,7 @@ import org.jenetics.internal.util.model;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Function;
+import java.util.function.Function;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.bit;
 
@@ -73,7 +72,7 @@ public final class PermutationChromosome<T>
 	private ISeq<T> _validAlleles;
 
 	/*
-	 * TODO: Refactor this to the default constructor in version 2.0. Currently 
+	 * TODO: Refactor this to the default constructor in version 2.0. Currently
 	 * not possible, because this would be an incompatible change.
 	 */
 	PermutationChromosome(
@@ -92,9 +91,7 @@ public final class PermutationChromosome<T>
 	 */
 	public PermutationChromosome(final ISeq<? extends T> validAlleles) {
 		this(
-			new Array<EnumGene<T>>(
-				validAlleles.length()
-			).fill(Gene(validAlleles)).shuffle().toISeq(),
+			null,
 			true
 		);
 		_validAlleles = cast.apply(validAlleles);
@@ -285,7 +282,7 @@ public final class PermutationChromosome<T>
 
 			final Array<Integer> indexes = Array.of(
 				xml.get(ALLELE_INDEXES, String.class
-				).split(",")).map(StringToInteger);
+				).split(",")).map(Integer::parseInt);
 
 			final Array<Object> genes = new Array<>(length);
 			for (int i = 0; i < length; ++i) {
@@ -373,7 +370,7 @@ public final class PermutationChromosome<T>
 					.map(jaxb.Unmarshaller).toISeq();
 				final Array<Integer> indexes = Array
 					.of(model.indexes.toString().split(","))
-					.map(StringToInteger);
+					.map(Integer::parseInt);
 
 				final Array<Object> genes = new Array<>(seq.length());
 				for (int i = 0; i < seq.length(); ++i) {
