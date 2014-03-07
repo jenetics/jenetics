@@ -21,9 +21,10 @@ package org.jenetics.util;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.util.object.hashCodeOf;
 
 import java.io.Serializable;
+
+import org.jenetics.internal.util.HashBuilder;
 
 
 /**
@@ -535,7 +536,7 @@ public class LCG64ShiftRandom extends Random64 {
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass())
+		return HashBuilder.of(getClass())
 				.and(_a).and(_b).and(_r)
 				.and(_seed).and(_param).value();
 	}
@@ -745,4 +746,3 @@ Preparing to run test 209.  ntuple = 0
 # Runtime: 0:38:01                                                            #
 #=============================================================================#
 */
-

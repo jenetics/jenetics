@@ -25,14 +25,12 @@ import java.beans.PropertyDescriptor;
 import java.io.Serializable;
 import java.util.Random;
 
-import javolution.context.LocalContext;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
 import javolution.lang.Immutable;
 import javolution.lang.Reflection;
 import javolution.lang.Reflection.Method;
-import javolution.xml.XMLSerializable;
-
-import org.testng.Assert;
-import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -46,12 +44,9 @@ public abstract class ObjectTester<T> {
 		final Array<T> objects = new Array<>(nobjects);
 
 		for (int i = 0; i < nobjects; ++i) {
-			LocalContext.enter();
-			try {
-				RandomRegistry.setRandom(new Random(23487589));
+
+			try (Scoped<Random> s = RandomRegistry.scope(new Random(23487589))) {
 				objects.set(i, getFactory().newInstance());
-			} finally {
-				LocalContext.exit();
 			}
 		}
 
@@ -163,7 +158,7 @@ public abstract class ObjectTester<T> {
 		if (a instanceof Copyable<?>) {
 			final Object b = ((Copyable<?>)a).copy();
 			if (a.getClass() == b.getClass()) {
-				Assert.assertFalse(a instanceof Copyable<?> && a instanceof Immutable);
+				Assert.assertFalse(a instanceof Immutable);
 			}
 		}
 
@@ -172,21 +167,6 @@ public abstract class ObjectTester<T> {
 			final BeanInfo info = Introspector.getBeanInfo(a.getClass());
 			for (PropertyDescriptor prop : info.getPropertyDescriptors()) {
 				Assert.assertNull(prop.getWriteMethod());
-			}
-		}
-	}
-
-
-	@Test
-	public void xmlSerialize() throws Exception {
-		final Object object = getFactory().newInstance();
-
-		if (object instanceof XMLSerializable) {
-			for (int i = 0; i < 10; ++i) {
-				final XMLSerializable serializable =
-					(XMLSerializable)getFactory().newInstance();
-
-				Serialize.xml.test(serializable);
 			}
 		}
 	}
@@ -206,10 +186,3 @@ public abstract class ObjectTester<T> {
 	}
 
 }
-
-
-
-
-
-
-

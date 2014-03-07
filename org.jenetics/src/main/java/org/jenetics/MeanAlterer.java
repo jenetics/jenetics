@@ -20,11 +20,12 @@
 package org.jenetics;
 
 import static java.lang.String.format;
-import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.Random;
 
 import javolution.lang.Immutable;
+
+import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
@@ -107,7 +108,7 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(super.hashCode()).value();
+		return HashBuilder.of(getClass()).and(super.hashCode()).value();
 	}
 
 	@Override
@@ -121,5 +122,3 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 	}
 
 }
-
-

@@ -353,7 +353,10 @@ public final class bit extends StaticObject {
 	 * @param value the value to convert.
 	 * @return the byte array representing the given {@link LargeInteger}.
 	 * @throws NullPointerException if the given value is {@code null}.
+	 *
+	 * @deprecated Will be removed.
 	 */
+	@Deprecated
 	public static byte[] toByteArray(final LargeInteger value) {
 		final int bytes = (value.bitLength() >>> 3) + 1;
 
@@ -369,7 +372,10 @@ public final class bit extends StaticObject {
 	 *
 	 * @param array the byte array to convert.
 	 * @return the {@link LargeInteger} built from the given byte array.
+	 *
+	 * @deprecated Will be removed.
 	 */
+	@Deprecated
 	public static LargeInteger toLargeInteger(final byte[] array) {
 		return LargeInteger.valueOf(reverse(array.clone()), 0, array.length);
 	}
@@ -588,7 +594,3 @@ public final class bit extends StaticObject {
 	}
 
 }
-
-
-
-

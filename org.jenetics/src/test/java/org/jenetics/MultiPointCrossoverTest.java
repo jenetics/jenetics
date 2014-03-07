@@ -236,7 +236,7 @@ public class MultiPointCrossoverTest {
 	@Test(dataProvider = "numberOfCrossoverPoints")
 	public void reverseCrossover(final Integer npoints) {
 		for (int i = 1; i < 500; ++i) {
-			final CharSeq chars = CharSeq.valueOf("a-zA-Z");
+			final CharSeq chars = CharSeq.of("a-zA-Z");
 			final ISeq<Character> a = new CharacterChromosome(chars, i)
 											.toSeq().map(CharacterGene.Allele);
 			final ISeq<Character> b = new CharacterChromosome(chars, i)
@@ -271,7 +271,7 @@ public class MultiPointCrossoverTest {
 
 	@Test
 	public void crossoverAll1() {
-		final CharSeq chars = CharSeq.valueOf("a-zA-Z");
+		final CharSeq chars = CharSeq.of("a-zA-Z");
 		final ISeq<CharacterGene> g1 = new CharacterChromosome(chars, 20).toSeq();
 		final ISeq<CharacterGene> g2 = new CharacterChromosome(chars, 20).toSeq();
 
@@ -314,25 +314,3 @@ public class MultiPointCrossoverTest {
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

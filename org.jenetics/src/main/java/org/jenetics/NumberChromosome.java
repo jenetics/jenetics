@@ -19,10 +19,11 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
+import static org.jenetics.internal.util.object.eq;
 
 import org.jscience.mathematics.number.Number;
+
+import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.util.ISeq;
 
@@ -34,11 +35,13 @@ import org.jenetics.util.ISeq;
  * @since 1.0
  * @version 2.0 &mdash; <em>$Date$</em>
  */
+@Deprecated
 public abstract class NumberChromosome<
 	N extends Number<N>,
 	G extends NumberGene<N, G>
 >
 	extends AbstractChromosome<G>
+	implements NumericChromosome<N, G>
 {
 	private static final long serialVersionUID = 1L;
 
@@ -224,7 +227,7 @@ public abstract class NumberChromosome<
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).
+		return HashBuilder.of(getClass()).
 				and(super.hashCode()).
 				and(_min).
 				and(_max).value();
@@ -245,7 +248,3 @@ public abstract class NumberChromosome<
 
 
 }
-
-
-
-

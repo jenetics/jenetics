@@ -61,6 +61,7 @@ public abstract class GeneTester<G extends Gene<?, G>> extends ObjectTester<G> {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@Test
 	public void copy() {
 		for (int i = 0; i < 10; ++i) {
@@ -73,6 +74,3 @@ public abstract class GeneTester<G extends Gene<?, G>> extends ObjectTester<G> {
 	}
 
 }
-
-
-

@@ -63,5 +63,3 @@ public class ColorizerTask extends DefaultTask {
 	}
 
 }
-
-

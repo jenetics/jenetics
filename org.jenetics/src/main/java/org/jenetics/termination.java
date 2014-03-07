@@ -99,7 +99,7 @@ public final class termination extends StaticObject {
 	 * current GA generation is {@code >=} as the given {@code generation}.
 	 *
 	 * [code]
-	 * final GeneticAlgortihm<Float64Gene, Float64> ga = ...
+	 * final GeneticAlgorithm<DoubleGene, Double> ga = ...
 	 * ga.evolve(termination.Generation(100));
 	 * [/code]
 	 *

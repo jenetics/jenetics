@@ -21,8 +21,6 @@ package org.jenetics;
 
 import java.util.Random;
 
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
 
@@ -35,44 +33,39 @@ public class SelectorFactories {
 	private SelectorFactories() {
 	}
 
-	public static Factory<BoltzmannSelector<Float64Gene, Float64>>
-	BoltzmannSelector = new Factory<BoltzmannSelector<Float64Gene, Float64>>() {
+	public static Factory<BoltzmannSelector<DoubleGene, Double>>
+	BoltzmannSelector = new Factory<BoltzmannSelector<DoubleGene, Double>>() {
 		@Override
-		public BoltzmannSelector<Float64Gene, Float64> newInstance() {
+		public BoltzmannSelector<DoubleGene, Double> newInstance() {
 			final Random random = RandomRegistry.getRandom();
 			return new BoltzmannSelector<>(random.nextDouble());
 		}
 	};
 
-	public static Factory<ExponentialRankSelector<Float64Gene, Float64>>
-	ExponentialRankSelector = new Factory<ExponentialRankSelector<Float64Gene, Float64>>() {
+	public static Factory<ExponentialRankSelector<DoubleGene, Double>>
+	ExponentialRankSelector = new Factory<ExponentialRankSelector<DoubleGene, Double>>() {
 		@Override
-		public ExponentialRankSelector<Float64Gene, Float64> newInstance() {
+		public ExponentialRankSelector<DoubleGene, Double> newInstance() {
 			final Random random = RandomRegistry.getRandom();
 			return new ExponentialRankSelector<>(random.nextDouble());
 		}
 	};
 
-	public static Factory<LinearRankSelector<Float64Gene, Float64>>
-	LinearRankSelector = new Factory<LinearRankSelector<Float64Gene, Float64>>() {
+	public static Factory<LinearRankSelector<DoubleGene, Double>>
+	LinearRankSelector = new Factory<LinearRankSelector<DoubleGene, Double>>() {
 		@Override
-		public LinearRankSelector<Float64Gene, Float64> newInstance() {
+		public LinearRankSelector<DoubleGene, Double> newInstance() {
 			final Random random = RandomRegistry.getRandom();
 			return new LinearRankSelector<>(random.nextDouble());
 		}
 	};
 
-	public static Factory<RouletteWheelSelector<Float64Gene, Float64>>
-	RouletteWheelSelector = new Factory<RouletteWheelSelector<Float64Gene, Float64>>() {
+	public static Factory<RouletteWheelSelector<DoubleGene, Double>>
+	RouletteWheelSelector = new Factory<RouletteWheelSelector<DoubleGene, Double>>() {
 		@Override
-		public RouletteWheelSelector<Float64Gene, Float64> newInstance() {
+		public RouletteWheelSelector<DoubleGene, Double> newInstance() {
 			return new RouletteWheelSelector<>();
 		}
 	};
 
 }
-
-
-
-
-

@@ -111,6 +111,3 @@ public abstract class Random64 extends PRNG {
 	}
 
 }
-
-
-

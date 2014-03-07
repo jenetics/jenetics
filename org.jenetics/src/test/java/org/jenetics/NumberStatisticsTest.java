@@ -21,8 +21,6 @@ package org.jenetics;
 
 import java.util.Random;
 
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.util.Factory;
 import org.jenetics.util.ObjectTester;
 import org.jenetics.util.RandomRegistry;
@@ -32,16 +30,16 @@ import org.jenetics.util.RandomRegistry;
  * @version <em>$Date$</em>
  */
 public class NumberStatisticsTest
-	extends ObjectTester<NumberStatistics<Float64Gene, Float64>>
+	extends ObjectTester<NumberStatistics<DoubleGene, Double>>
 {
 
-	final Factory<NumberStatistics<Float64Gene, Float64>>
-	_factory = new Factory<NumberStatistics<Float64Gene, Float64>>() {
+	final Factory<NumberStatistics<DoubleGene, Double>>
+	_factory = new Factory<NumberStatistics<DoubleGene, Double>>() {
 		@Override
-		public NumberStatistics<Float64Gene, Float64> newInstance() {
+		public NumberStatistics<DoubleGene, Double> newInstance() {
 			final Random random = RandomRegistry.getRandom();
 
-			final NumberStatistics.Builder<Float64Gene, Float64>
+			final NumberStatistics.Builder<DoubleGene, Double>
 			builder = new NumberStatistics.Builder<>();
 			builder.ageMean(random.nextDouble());
 			builder.ageVariance(random.nextDouble());
@@ -52,17 +50,15 @@ public class NumberStatisticsTest
 			builder.fitnessMean(random.nextDouble());
 			builder.fitnessVariance(random.nextDouble());
 			builder.standardError(random.nextDouble());
-			builder.bestPhenotype(TestUtils.newFloat64Phenotype());
-			builder.worstPhenotype(TestUtils.newFloat64Phenotype());
+			builder.bestPhenotype(TestUtils.newDoublePhenotype());
+			builder.worstPhenotype(TestUtils.newDoublePhenotype());
 
 			return builder.build();
 		}
 	};
 	@Override
-	protected Factory<NumberStatistics<Float64Gene, Float64>> getFactory() {
+	protected Factory<NumberStatistics<DoubleGene, Double>> getFactory() {
 		return _factory;
 	}
 
 }
-
-

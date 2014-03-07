@@ -21,7 +21,8 @@ package org.jenetics;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.util.object.hashCodeOf;
+
+import org.jenetics.internal.util.HashBuilder;
 
 /**
  * In truncation selection individuals are sorted according to their fitness.
@@ -87,7 +88,7 @@ public final class TruncationSelector<
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).value();
+		return HashBuilder.of(getClass()).value();
 	}
 
 	@Override
@@ -101,14 +102,3 @@ public final class TruncationSelector<
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-

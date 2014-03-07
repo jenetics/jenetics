@@ -82,7 +82,7 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 
 		@Override
 		public BitGene __get(final int absoluteIndex) {
-			return BitGene.valueOf(bit.get(_array, absoluteIndex));
+			return BitGene.of(bit.get(_array, absoluteIndex));
 		}
 
 		@Override

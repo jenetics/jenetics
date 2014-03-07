@@ -21,13 +21,14 @@ package org.jenetics;
 
 import static java.lang.Double.NaN;
 import static java.lang.String.format;
-import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
+import static org.jenetics.internal.util.object.eq;
 
 import javolution.xml.XMLFormat;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jscience.mathematics.number.Float64;
+
+import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.stat.Variance;
 import org.jenetics.util.accumulators;
@@ -203,7 +204,7 @@ public class NumberStatistics<
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).
+		return HashBuilder.of(getClass()).
 				and(super.hashCode()).
 				and(_fitnessMean).
 				and(_fitnessVariance).

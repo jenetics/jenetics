@@ -67,4 +67,3 @@ class ArrayISeq<T> extends ArraySeq<T> implements ISeq<T> {
 	}
 
 }
-

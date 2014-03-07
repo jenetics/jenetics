@@ -60,4 +60,22 @@ public interface Gene<A, G extends Gene<A, G>>
 	@Override
 	public G newInstance();
 
+//	/**
+//	 * Create a new gene from the given {@code value} and the gene context.
+//	 *
+//	 * @since 1.6
+//	 * @param value the value of the new gene.
+//	 * @return a new gene with the given value.
+//	 */
+//	public G newInstance(final A value);
+
+	/**
+	 * @deprecated This method is introduced by the {@link javolution.lang.ValueType}
+	 *             of the <i>Javolution</i> library, which will be removed in
+	 *             the next major version.
+	 */
+	@Deprecated
+	@Override
+	public Object copy();
+
 }

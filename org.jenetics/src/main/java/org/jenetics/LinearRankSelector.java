@@ -20,10 +20,11 @@
 package org.jenetics;
 
 import static java.lang.String.format;
-import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
+import static org.jenetics.internal.util.object.eq;
 
 import javolution.lang.Immutable;
+
+import org.jenetics.internal.util.HashBuilder;
 
 
 /**
@@ -125,7 +126,7 @@ public final class LinearRankSelector<
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(_nminus).and(_nplus).value();
+		return HashBuilder.of(getClass()).and(_nminus).and(_nplus).value();
 	}
 
 	@Override
@@ -150,5 +151,3 @@ public final class LinearRankSelector<
 	}
 
 }
-
-

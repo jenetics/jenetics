@@ -19,13 +19,14 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
+import static org.jenetics.internal.util.object.eq;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 import javolution.lang.Reference;
+
+import org.jenetics.internal.util.HashBuilder;
 
 /**
  * A final {@link Reference}. This class is used if you want to allow to set the
@@ -91,7 +92,7 @@ public final class FinalReference<T> implements Reference<T>, Serializable {
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(get()).value();
+		return HashBuilder.of(getClass()).and(get()).value();
 	}
 
 	@Override
@@ -113,7 +114,3 @@ public final class FinalReference<T> implements Reference<T>, Serializable {
 	}
 
 }
-
-
-
-

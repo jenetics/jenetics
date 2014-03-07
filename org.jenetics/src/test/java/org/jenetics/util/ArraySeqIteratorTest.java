@@ -178,8 +178,3 @@ public class ArraySeqIteratorTest {
 	}
 
 }
-
-
-
-
-

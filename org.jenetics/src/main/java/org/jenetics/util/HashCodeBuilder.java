@@ -39,11 +39,12 @@ package org.jenetics.util;
  * @since 1.0
  * @version 2.0 &mdash; <em>$Date$</em>
  */
+@Deprecated
 public abstract class HashCodeBuilder {
 
-	int _hash = 0;
+	protected int _hash = 0;
 
-	HashCodeBuilder(final Class<?> type) {
+	protected HashCodeBuilder(final Class<?> type) {
 		_hash = type.hashCode();
 	}
 
@@ -209,6 +210,3 @@ public abstract class HashCodeBuilder {
 	}
 
 }
-
-
-

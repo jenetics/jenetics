@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<org.jenetics.Integer64Gene min="-9223372036854775808" max="9223372036854775807">
+    <java.lang.Long value="-8069223231273077030"/>
+</org.jenetics.Integer64Gene>

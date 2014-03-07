@@ -26,6 +26,7 @@ package org.jenetics.util;
  * @since 1.0
  * @version 2.0 &mdash; <em>$Date$</em>
  */
+@Deprecated
 public final class factories extends StaticObject {
 	private factories() {}
 

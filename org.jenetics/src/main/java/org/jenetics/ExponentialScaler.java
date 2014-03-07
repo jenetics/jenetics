@@ -20,14 +20,15 @@
 package org.jenetics;
 
 import static java.lang.String.format;
-import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
+import static org.jenetics.internal.util.object.eq;
 
 import java.io.Serializable;
 
 import javolution.lang.Immutable;
 
 import org.jscience.mathematics.number.Float64;
+
+import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.util.Function;
 
@@ -42,6 +43,7 @@ import org.jenetics.util.Function;
  * @since 1.0
  * @version 2.0 &mdash; <em>$Date$</em>
  */
+@Deprecated
 public final class ExponentialScaler
 	implements
 		Function<Float64, Float64>,
@@ -97,7 +99,7 @@ public final class ExponentialScaler
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(_a).and(_b).and(_c).value();
+		return HashBuilder.of(getClass()).and(_a).and(_b).and(_c).value();
 	}
 
 	@Override

@@ -19,8 +19,6 @@
  */
 package org.jenetics;
 
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.stat.Distribution;
 import org.jenetics.stat.LinearDistribution;
 import org.jenetics.util.Factory;
@@ -30,12 +28,12 @@ import org.jenetics.util.Factory;
  * @version <em>$Date$</em>
  */
 public class RouletteWheelSelectorTest
-	extends ProbabilitySelectorTester<RouletteWheelSelector<Float64Gene, Float64>>
+	extends ProbabilitySelectorTester<RouletteWheelSelector<DoubleGene, Double>>
 {
 
 
 	@Override
-	protected Distribution<Float64> getDistribution() {
+	protected Distribution<Double> getDistribution() {
 		return new LinearDistribution<>(getDomain(), 0);
 	}
 
@@ -45,7 +43,7 @@ public class RouletteWheelSelectorTest
 	}
 
 	@Override
-	protected Factory<RouletteWheelSelector<Float64Gene, Float64>> getFactory() {
+	protected Factory<RouletteWheelSelector<DoubleGene, Double>> getFactory() {
 		return SelectorFactories.RouletteWheelSelector;
 	}
 

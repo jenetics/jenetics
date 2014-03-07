@@ -21,7 +21,6 @@ package org.jenetics;
 
 import java.util.Random;
 
-import org.jscience.mathematics.number.Float64;
 import org.testng.annotations.Test;
 
 import org.jenetics.stat.Distribution;
@@ -34,25 +33,25 @@ import org.jenetics.util.RandomRegistry;
  * @version <em>$Date$</em>
  */
 public class TournamentSelectorTest
-	extends SelectorTester<TournamentSelector<Float64Gene, Float64>>
+	extends SelectorTester<TournamentSelector<DoubleGene, Double>>
 {
 
-	final Factory<TournamentSelector<Float64Gene, Float64>>
-	_factory = new Factory<TournamentSelector<Float64Gene,Float64>>()
+	final Factory<TournamentSelector<DoubleGene, Double>>
+	_factory = new Factory<TournamentSelector<DoubleGene,Double>>()
 	{
 		@Override
-		public TournamentSelector<Float64Gene, Float64> newInstance() {
+		public TournamentSelector<DoubleGene, Double> newInstance() {
 			final Random random = RandomRegistry.getRandom();
 			return new TournamentSelector<>(random.nextInt(10) + 2);
 		}
 	};
 	@Override
-	protected Factory<TournamentSelector<Float64Gene, Float64>> getFactory() {
+	protected Factory<TournamentSelector<DoubleGene, Double>> getFactory() {
 		return _factory;
 	}
 
 	@Override
-	protected Distribution<Float64> getDistribution() {
+	protected Distribution<Double> getDistribution() {
 		return new UniformDistribution<>(getDomain());
 	}
 

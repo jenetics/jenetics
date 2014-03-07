@@ -19,8 +19,8 @@
  */
 package org.jenetics.performance;
 
-import org.jenetics.Float64Chromosome;
-import org.jenetics.Float64Gene;
+import org.jenetics.DoubleChromosome;
+import org.jenetics.DoubleGene;
 import org.jenetics.Genotype;
 import org.jenetics.util.Array;
 
@@ -58,15 +58,15 @@ class GenotypeBuilder {
 		return this;
 	}
 
-	public Genotype<Float64Gene> build() {
-		final Array<Float64Chromosome> chromosomes =
+	public Genotype<DoubleGene> build() {
+		final Array<DoubleChromosome> chromosomes =
 			new Array<>(_nchromosomes);
 
 		for (int i = 0; i < _nchromosomes; ++i) {
-			chromosomes.set(i, new Float64Chromosome(_min, _max, _ngenes));
+			chromosomes.set(i, new DoubleChromosome(_min, _max, _ngenes));
 		}
 
-		return Genotype.valueOf(chromosomes.toISeq());
+		return new Genotype<>(chromosomes.toISeq());
 	}
 
 }

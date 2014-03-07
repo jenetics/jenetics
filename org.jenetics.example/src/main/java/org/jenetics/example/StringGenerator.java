@@ -23,8 +23,6 @@ import java.io.Serializable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.jscience.mathematics.number.Integer64;
-
 import org.jenetics.CharacterChromosome;
 import org.jenetics.CharacterGene;
 import org.jenetics.CompositeAlterer;
@@ -46,7 +44,7 @@ import org.jenetics.util.Function;
 public class StringGenerator {
 
 	private static class Gen
-		implements Function<Genotype<CharacterGene>, Integer64>,
+		implements Function<Genotype<CharacterGene>, Integer>,
 					Serializable
 	{
 		private static final long serialVersionUID = 1L;
@@ -58,9 +56,10 @@ public class StringGenerator {
 		}
 
 		@Override
-		public Integer64 apply(final Genotype<CharacterGene> genotype) {
-			final CharacterChromosome chromosome = (CharacterChromosome)genotype.getChromosome();
-			return Integer64.valueOf(value.length() - levenshtein(value, chromosome));
+		public Integer apply(final Genotype<CharacterGene> gt) {
+			return value.length() - levenshtein(
+				value, (CharacterChromosome)gt.getChromosome()
+			);
 		}
 
 		@Override
@@ -73,25 +72,23 @@ public class StringGenerator {
 		final int maxThreads = Runtime.getRuntime().availableProcessors() + 2;
 		final ExecutorService pool = Executors.newFixedThreadPool(maxThreads);
 
-		final String value =
-			"jenetics";
+		final String value = "jenetics";
 
-		final CharSeq chars = CharSeq.valueOf("a-z");
-		final Factory<Genotype<CharacterGene>> gtf = Genotype.valueOf(
+		final CharSeq chars = CharSeq.of("a-z");
+		final Factory<Genotype<CharacterGene>> gtf = Genotype.of(
 			new CharacterChromosome(chars, value.length())
 		);
 		final Gen ff = new Gen(value);
-		final GeneticAlgorithm<CharacterGene, Integer64>
-		ga = new GeneticAlgorithm<>(gtf, ff);
+		final GeneticAlgorithm<CharacterGene, Integer> ga = new GeneticAlgorithm<>(gtf, ff);
 
 		ga.setPopulationSize(500);
 		ga.setSurvivorSelector(
-			new StochasticUniversalSelector<CharacterGene, Integer64>()
+			new StochasticUniversalSelector<CharacterGene, Integer>()
 		);
 		ga.setOffspringSelector(
-			new TournamentSelector<CharacterGene, Integer64>(5)
+			new TournamentSelector<CharacterGene, Integer>(5)
 		);
-		ga.setAlterer(CompositeAlterer.valueOf(
+		ga.setAlterer(CompositeAlterer.of(
 			new Mutator<CharacterGene>(0.1),
 			new SinglePointCrossover<CharacterGene>(0.5)
 		));
