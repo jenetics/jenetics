@@ -28,7 +28,7 @@ import org.jenetics.util.bit;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-12-05 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2014-02-17 $</em>
  */
 final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 
@@ -82,7 +82,7 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 
 		@Override
 		public BitGene __get(final int absoluteIndex) {
-			return BitGene.valueOf(bit.get(_array, absoluteIndex));
+			return BitGene.of(bit.get(_array, absoluteIndex));
 		}
 
 		@Override

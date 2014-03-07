@@ -27,7 +27,7 @@ import org.jenetics.util.ObjectTester;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-08-29 $</em>
+ * @version <em>$Date: 2014-02-17 $</em>
  */
 public abstract class GeneTester<G extends Gene<?, G>> extends ObjectTester<G> {
 
@@ -61,6 +61,7 @@ public abstract class GeneTester<G extends Gene<?, G>> extends ObjectTester<G> {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@Test
 	public void copy() {
 		for (int i = 0; i < 10; ++i) {
@@ -73,6 +74,3 @@ public abstract class GeneTester<G extends Gene<?, G>> extends ObjectTester<G> {
 	}
 
 }
-
-
-

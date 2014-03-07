@@ -20,8 +20,7 @@
 package org.jenetics;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
+import static org.jenetics.internal.util.object.eq;
 
 import java.util.Random;
 
@@ -31,6 +30,8 @@ import javolution.xml.XMLSerializable;
 
 import org.jscience.mathematics.number.Number;
 
+import org.jenetics.internal.util.HashBuilder;
+
 import org.jenetics.util.Mean;
 import org.jenetics.util.RandomRegistry;
 
@@ -39,15 +40,16 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2013-12-18 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-07 $</em>
  */
+@Deprecated
 public abstract class NumberGene<
 	N extends Number<N>,
 	G extends NumberGene<N, G>
 >
 	extends Number<G>
 	implements
-		Gene<N, G>,
+		NumericGene<N, G>,
 		Mean<G>,
 		XMLSerializable
 {
@@ -56,110 +58,8 @@ public abstract class NumberGene<
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz WilhelmstÃ¶tter</a>
 	 * @since @__new_version__@
-	 * @version @__new_version__@ &mdash; <em>$Date: 2013-12-18 $</em>
-	 */
-	public static abstract class Builder<
-		N extends Number<N>,
-		G extends NumberGene<N, G>
-	>
-	{
-
-		protected Builder() {
-		}
-
-		/**
-		 * Boxes a given Java number into the required number object.
-		 *
-		 * @param value the Java number to box.
-		 * @return the boxed number.
-		 */
-		protected abstract N box(final java.lang.Number value);
-
-		/**
-		 * Create a new number within the given range.
-		 *
-		 * @param random the random engine use for creating the random number.
-		 * @param min the minimal value of the random number (inclusively)
-		 * @param max the maximal value of the random number (inclusively for
-		 *        integer types and exclusively for real types).
-		 * @return a new random number within the given range
-		 */
-		protected abstract N next(final Random random, final N min, final N max);
-
-		/**
-		 * Create a new {@code Gene} with the given value and the given range.
-		 * If the {@code value} isn't within the given interval, no exception is
-		 * thrown. In this case the method {@link Gene#isValid()} returns
-		 * {@code false}.
-		 *
-		 * @param value the value of the gene.
-		 * @param min the minimal valid value of this gene (inclusively).
-		 * @param max the maximal value of the random number (inclusively for
-		 *        integer types and exclusively for real types).
-		 * @return the new created gene with the given {@code value}.
-		 * @throws NullPointerException if one of the arguments is {@code null}.
-		 */
-		public abstract G build(final N value, final N min, final N max);
-
-		/**
-		 * Create a new {@code Gene} with the given value and the given range.
-		 * If the {@code value} isn't within the given interval, no exception is
-		 * thrown. In this case the method {@link Gene#isValid()} returns
-		 * {@code false}.
-		 *
-		 * @param value the value of the gene.
-		 * @param min the minimal valid value of this gene (inclusively).
-		 * @param max the maximal value of the random number (inclusively for
-		 *        integer types and exclusively for real types).
-		 * @return the new created gene with the given {@code value}.
-		 * @throws NullPointerException if one of the arguments is {@code null}.
-		 */
-		public G build(
-			final java.lang.Number value,
-			final java.lang.Number min,
-			final java.lang.Number max
-		) {
-			return build(box(value), box(min), box(max));
-		}
-
-		/**
-		 * Create a new, random {@code Gene} with the given value and the given
-		 * range.
-		 *
-		 * @param value the value of the gene.
-		 * @param min the minimal valid value of this gene (inclusively).
-		 * @param max the maximal value of the random number (inclusively for
-		 *        integer types and exclusively for real types).
-		 * @return the new created gene with the given {@code value}.
-		 * @throws NullPointerException if one of the arguments is {@code null}.
-		 */
-		public G build(final N min, final N max) {
-			final Random random = RandomRegistry.getRandom();
-			return build(next(random, min, max), min, max);
-		}
-
-		/**
-		 * Create a new, random {@code Gene} with the given value and the given
-		 * range.
-		 *
-		 * @param value the value of the gene.
-		 * @param min the minimal valid value of this gene (inclusively).
-		 * @param max the maximal value of the random number (inclusively for
-		 *        integer types and exclusively for real types).
-		 * @return the new created gene with the given {@code value}.
-		 * @throws NullPointerException if one of the arguments is {@code null}.
-		 */
-		public G build(
-			final java.lang.Number min,
-			final java.lang.Number max
-		) {
-			return build(box(min), box(max));
-		}
-
-	}
-
-	/**
-	 * The minimum value of this <code>NumberGene</code>. This field is marked
+	 * @version @__new_version__@ &mdash; <em>$Date: 2014-03-07 $</em>
+	 * The minimum value of this {@code NumberGene}. This field is marked
 	 * as transient and must serialized manually by sub classes.
 	 */
 	protected transient N _min;
@@ -189,10 +89,6 @@ public abstract class NumberGene<
 	 */
 	protected abstract N box(final java.lang.Number value);
 
-	protected Builder<N, G> getBuilder() {
-		return null;
-	}
-
 	/**
 	 * Create a new gene from the given {@code value}.
 	 *
@@ -218,7 +114,7 @@ public abstract class NumberGene<
 	}
 
 	/**
-	 * Set the {@code NumerGene}.
+	 * Set the {@code NumberGene}.
 	 *
 	 * @param value The value of the number gene.
 	 * @param min The allowed min value of the gene.
@@ -332,7 +228,7 @@ public abstract class NumberGene<
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(_value).and(_min).and(_max).value();
+		return HashBuilder.of(getClass()).and(_value).and(_min).and(_max).value();
 	}
 
 	@Override
@@ -358,9 +254,3 @@ public abstract class NumberGene<
 	}
 
 }
-
-
-
-
-
-

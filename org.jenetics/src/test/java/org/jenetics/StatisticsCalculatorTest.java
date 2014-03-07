@@ -21,7 +21,6 @@ package org.jenetics;
 
 import java.util.Iterator;
 
-import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -32,21 +31,21 @@ import org.jenetics.util.accumulators;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-08-29 $</em>
+ * @version <em>$Date: 2014-02-17 $</em>
  */
 public class StatisticsCalculatorTest {
 
-	public Calculator<Float64Gene, Float64> newCalculator() {
+	public Calculator<DoubleGene, Double> newCalculator() {
 		return new Calculator<>();
 	}
 
-	public Iterable<Phenotype<Float64Gene, Float64>> population(final int size) {
-		return new Iterable<Phenotype<Float64Gene,Float64>>() {
+	public Iterable<Phenotype<DoubleGene, Double>> population(final int size) {
+		return new Iterable<Phenotype<DoubleGene,Double>>() {
 			@Override
-			public Iterator<Phenotype<Float64Gene, Float64>> iterator() {
-				return new Iterator<Phenotype<Float64Gene,Float64>>() {
-					private final Float64 MIN = Float64.valueOf(0);
-					private final Float64 MAX = Float64.valueOf(size);
+			public Iterator<Phenotype<DoubleGene, Double>> iterator() {
+				return new Iterator<Phenotype<DoubleGene,Double>>() {
+					private final Double MIN = Double.valueOf(0);
+					private final Double MAX = Double.valueOf(size);
 
 					private int _pos = -1;
 
@@ -56,15 +55,13 @@ public class StatisticsCalculatorTest {
 					}
 
 					@Override
-					public Phenotype<Float64Gene, Float64> next() {
+					public Phenotype<DoubleGene, Double> next() {
 						++_pos;
-						final Float64Gene gene = Float64Gene.valueOf(
-									Float64.valueOf(_pos), MIN, MAX
-								);
-						return Phenotype.valueOf(
-								Genotype.valueOf(new Float64Chromosome(gene)),
-								TestUtils.FF, 0
-							);
+						final DoubleGene gene = DoubleGene.of(_pos, MIN, MAX);
+						return Phenotype.of(
+							Genotype.of(DoubleChromosome.of(gene)),
+							TestUtils.FF, 0
+						);
 					}
 
 					@Override
@@ -77,10 +74,10 @@ public class StatisticsCalculatorTest {
 
 	@Test(dataProvider = "size_gen")
 	public void evaluate(final Integer size, final Integer gen) {
-		final Calculator<Float64Gene, Float64> calculator = newCalculator();
-		final Statistics.Builder<Float64Gene, Float64>
+		final Calculator<DoubleGene, Double> calculator = newCalculator();
+		final Statistics.Builder<DoubleGene, Double>
 		builder = calculator.evaluate(population(size), gen, Optimize.MAXIMUM);
-		final Statistics<Float64Gene, Float64> statistics = builder.build();
+		final Statistics<DoubleGene, Double> statistics = builder.build();
 
 		final Variance<Integer> ageVariance = new Variance<>();
 		accumulators.accumulate(population(size), ageVariance.map(Phenotype.Age(gen)));
@@ -89,8 +86,8 @@ public class StatisticsCalculatorTest {
 		Assert.assertEquals(statistics.getAgeVariance(), ageVariance.getVariance());
 		Assert.assertEquals(statistics.getSamples(), size.intValue());
 		Assert.assertEquals(statistics.getGeneration(), gen.intValue());
-		Assert.assertEquals(statistics.getBestFitness(), Float64.valueOf(size - 1));
-		Assert.assertEquals(statistics.getWorstFitness(), Float64.ZERO);
+		Assert.assertEquals(statistics.getBestFitness(), size - 1.0);
+		Assert.assertEquals(statistics.getWorstFitness(), 0.0);
 	}
 
 	@DataProvider(name = "size_gen")
@@ -103,9 +100,3 @@ public class StatisticsCalculatorTest {
 	}
 
 }
-
-
-
-
-
-

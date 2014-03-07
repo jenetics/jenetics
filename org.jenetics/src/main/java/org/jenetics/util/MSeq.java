@@ -29,7 +29,7 @@ import java.util.ListIterator;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2013-12-18 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-07 $</em>
  */
 public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 
@@ -148,7 +148,3 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 
 
 }
-
-
-
-

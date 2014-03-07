@@ -1,11 +1,11 @@
 Jenetics: Java Genetic Algorithm Library
-Copyright (c) 2007-2013 Franz Wilhelmstötter
+Copyright (c) 2007-2014 Franz Wilhelmstötter
 
 ===============================================================================
 This product includes software from the JScience library
 (http://jscience.org/) under the JScience BSD License
 (http://jscience.org/doc/license.txt)
- 
+
 ===============================================================================
 Apache Commons Math
 Copyright 2001-2013 The Apache Software Foundation

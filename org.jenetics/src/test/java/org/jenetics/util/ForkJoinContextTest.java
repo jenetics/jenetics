@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-11-22 $</em>
+ * @version <em>$Date: 2014-02-15 $</em>
  */
 //@SuppressWarnings("deprecation")
 public class ForkJoinContextTest {
@@ -138,7 +138,3 @@ public class ForkJoinContextTest {
 
 
 }
-
-
-
-
