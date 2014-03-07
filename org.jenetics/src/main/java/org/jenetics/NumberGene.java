@@ -20,8 +20,7 @@
 package org.jenetics;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
+import static org.jenetics.internal.util.object.eq;
 
 import java.util.Random;
 
@@ -31,6 +30,8 @@ import javolution.xml.XMLSerializable;
 
 import org.jscience.mathematics.number.Number;
 
+import org.jenetics.internal.util.HashBuilder;
+
 import org.jenetics.util.Mean;
 import org.jenetics.util.RandomRegistry;
 
@@ -39,15 +40,20 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2013-12-09 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2014-03-07 $</em>
+ *
+ * @deprecated Use {@link AbstractNumericGene} instead. This classes
+ *             uses the <i>JScience</i> library, which will be removed in the
+ *             next major version.
  */
+@Deprecated
 public abstract class NumberGene<
 	N extends Number<N>,
 	G extends NumberGene<N, G>
 >
 	extends Number<G>
 	implements
-		Gene<N, G>,
+		NumericGene<N, G>,
 		Mean<G>,
 		XMLSerializable
 {
@@ -56,7 +62,7 @@ public abstract class NumberGene<
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since @__version__@
-	 * @version @__version__@ &mdash; <em>$Date: 2013-12-09 $</em>
+	 * @version @__version__@ &mdash; <em>$Date: 2014-03-07 $</em>
 	 */
 	public static abstract class Builder<
 		N extends Number<N>,
@@ -226,7 +232,7 @@ public abstract class NumberGene<
 	}
 
 	/**
-	 * Set the {@code NumerGene}.
+	 * Set the {@code NumberGene}.
 	 *
 	 * @param value The value of the number gene.
 	 * @param min The allowed min value of the gene.
@@ -340,7 +346,7 @@ public abstract class NumberGene<
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(_value).and(_min).and(_max).value();
+		return HashBuilder.of(getClass()).and(_value).and(_min).and(_max).value();
 	}
 
 	@Override
@@ -366,9 +372,3 @@ public abstract class NumberGene<
 	}
 
 }
-
-
-
-
-
-

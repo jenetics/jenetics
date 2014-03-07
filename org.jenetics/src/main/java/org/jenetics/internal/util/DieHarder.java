@@ -40,7 +40,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5 &mdash; <em>$Date: 2013-11-24 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-02-15 $</em>
  */
 public final class DieHarder {
 
@@ -49,7 +49,7 @@ public final class DieHarder {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.5
-	 * @version 1.5 &mdash; <em>$Date: 2013-11-24 $</em>
+	 * @version 1.5 &mdash; <em>$Date: 2014-02-15 $</em>
 	 */
 	private static final class Randomizer implements Runnable {
 		private final Random _random;
@@ -166,8 +166,3 @@ public final class DieHarder {
 	}
 
 }
-
-
-
-
-

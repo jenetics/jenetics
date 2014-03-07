@@ -25,82 +25,75 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 
-import javolution.context.ConcurrentContext;
-import javolution.context.LocalContext;
-
-import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.Test;
 
+import javolution.context.ConcurrentContext;
+
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-11-22 $</em>
+ * @version <em>$Date: 2014-02-17 $</em>
  */
 public class GeneticAlgorithmTest {
 
 	private static class FF
-		implements Function<Genotype<Float64Gene>, Float64>,
+		implements Function<Genotype<DoubleGene>, Double>,
 					Serializable
 	{
 		private static final long serialVersionUID = 618089611921083000L;
 
 		@Override
-		public Float64 apply(final Genotype<Float64Gene> genotype) {
+		public Double apply(final Genotype<DoubleGene> genotype) {
 			return genotype.getGene().getAllele();
 		}
 	}
 
 	@Test
 	public void optimize() {
-		LocalContext.enter();
-		try {
+		final int concurrency = ConcurrentContext.getConcurrency();
+		try (Scoped<Random> scope = RandomRegistry.scope(new Random(12345))) {
 			ConcurrentContext.setConcurrency(0);
-			RandomRegistry.setRandom(new Random(12345));
+			RandomRegistry.setRandom(new Random(123456));
 
-			final Factory<Genotype<Float64Gene>> factory = Genotype.valueOf(
-				new Float64Chromosome(0, 1)
+			final Factory<Genotype<DoubleGene>> factory = Genotype.of(
+				DoubleChromosome.of(0, 1)
 			);
-			final Function<Genotype<Float64Gene>, Float64> ff = new FF();
+			final Function<Genotype<DoubleGene>, Double> ff = new FF();
 
-			final GeneticAlgorithm<Float64Gene, Float64> ga = new GeneticAlgorithm<>(factory, ff);
+			final GeneticAlgorithm<DoubleGene, Double> ga = new GeneticAlgorithm<>(factory, ff);
 			ga.setPopulationSize(200);
-			ga.setAlterer(new MeanAlterer<Float64Gene>());
+			ga.setAlterer(new MeanAlterer<DoubleGene>());
 			ga.setOffspringFraction(0.3);
-			ga.setOffspringSelector(new RouletteWheelSelector<Float64Gene, Float64>());
-			ga.setSurvivorSelector(new TournamentSelector<Float64Gene, Float64>());
+			ga.setOffspringSelector(new RouletteWheelSelector<DoubleGene, Double>());
+			ga.setSurvivorSelector(new TournamentSelector<DoubleGene, Double>());
 
 			ga.setup();
 			ga.evolve(100);
 
-			Statistics<Float64Gene, Float64> s = ga.getBestStatistics();
+			Statistics<DoubleGene, Double> s = ga.getBestStatistics();
 			Reporter.log(s.toString());
-			Assert.assertEquals(s.getAgeMean(), 20.775000000000002);
-			Assert.assertEquals(s.getAgeVariance(), 363.4918341708541);
+			Assert.assertEquals(s.getAgeMean(), 21.40500000000002);
+			Assert.assertEquals(s.getAgeVariance(), 648.051231155779);
 			Assert.assertEquals(s.getSamples(), 200);
-			Assert.assertEquals(s.getBestFitness().doubleValue(), 0.997787124427267, 0.00000001);
-			Assert.assertEquals(s.getWorstFitness().doubleValue(), 0.0326815029742894, 0.00000001);
+			Assert.assertEquals(s.getBestFitness().doubleValue(), 0.9955101231254028, 0.00000001);
+			Assert.assertEquals(s.getWorstFitness().doubleValue(), 0.03640144995042627, 0.00000001);
 
 			s = ga.getStatistics();
 			Reporter.log(s.toString());
 
-			Assert.assertEquals(s.getAgeMean(), 23.550000000000008, 0.000001);
-			Assert.assertEquals(s.getAgeVariance(), 76.31909547738691, 0.000001);
+			Assert.assertEquals(s.getAgeMean(), 23.15500000000001, 0.000001);
+			Assert.assertEquals(s.getAgeVariance(), 82.23213567839196, 0.000001);
 			Assert.assertEquals(s.getSamples(), 200);
-			Assert.assertEquals(s.getBestFitness().doubleValue(), 0.997787124427267, 0.00000001);
-			Assert.assertEquals(s.getWorstFitness().doubleValue(), 0.997787124427267, 0.00000001);
-
-//			Assert.assertEquals(s.getAgeMean(), 39.175000000000026, 0.000001);
-//			Assert.assertEquals(s.getAgeVariance(), 366.18530150753793, 0.000001);
-//			Assert.assertEquals(s.getSamples(), 200);
-//			Assert.assertEquals(s.getBestFitness().doubleValue(), 0.9800565233548408, 0.00000001);
-//			Assert.assertEquals(s.getWorstFitness().doubleValue(), 0.9800565233548408, 0.00000001);
+			Assert.assertEquals(s.getBestFitness().doubleValue(), 0.9955101231254028, 0.00000001);
+			Assert.assertEquals(s.getWorstFitness().doubleValue(), 0.9955101231254028, 0.00000001);
 		} finally {
-			LocalContext.exit();
+			ConcurrentContext.setConcurrency(concurrency);
 		}
 
 	}
@@ -116,14 +109,14 @@ public class GeneticAlgorithmTest {
 
 	@SuppressWarnings("null")
 	public void evolve() {
-		Function<Statistics<? extends Float64Gene, ? extends Base>, Boolean> until = null;
-		GeneticAlgorithm<Float64Gene, Derived> ga = null;
+		Function<Statistics<? extends DoubleGene, ? extends Base>, Boolean> until = null;
+		GeneticAlgorithm<DoubleGene, Derived> ga = null;
 
 		ga.evolve(until);
 		ga.evolve(termination.Generation(1));
 
-		GeneticAlgorithm<Float64Gene, Float64> ga2 = null;
-		ga2.evolve(termination.<Float64>SteadyFitness(10));
+		GeneticAlgorithm<DoubleGene, Double> ga2 = null;
+		ga2.evolve(termination.<Double>SteadyFitness(10));
 	}
 
 	@Test(invocationCount = 10)
@@ -131,15 +124,15 @@ public class GeneticAlgorithmTest {
 		final ForkJoinPool pool = new ForkJoinPool(10);
 
 		try {
-			final Factory<Genotype<Float64Gene>> factory = Genotype.valueOf(new Float64Chromosome(-1, 1));
-			final Function<Genotype<Float64Gene>, Float64> ff = new FF();
+			final Factory<Genotype<DoubleGene>> factory = Genotype.of(DoubleChromosome.of(-1, 1));
+			final Function<Genotype<DoubleGene>, Double> ff = new FF();
 
-			final GeneticAlgorithm<Float64Gene, Float64> ga = new GeneticAlgorithm<>(factory, ff);
+			final GeneticAlgorithm<DoubleGene, Double> ga = new GeneticAlgorithm<>(factory, ff);
 			ga.setPopulationSize(1000);
-			ga.setAlterer(new MeanAlterer<Float64Gene>());
+			ga.setAlterer(new MeanAlterer<DoubleGene>());
 			ga.setOffspringFraction(0.3);
-			ga.setOffspringSelector(new RouletteWheelSelector<Float64Gene, Float64>());
-			ga.setSurvivorSelector(new StochasticUniversalSelector<Float64Gene, Float64>());
+			ga.setOffspringSelector(new RouletteWheelSelector<DoubleGene, Double>());
+			ga.setSurvivorSelector(new StochasticUniversalSelector<DoubleGene, Double>());
 
 			ga.setup();
 			for (int i = 0; i < 10; ++i) {
@@ -155,15 +148,15 @@ public class GeneticAlgorithmTest {
 		final ExecutorService pool = Executors.newFixedThreadPool(10);
 
 		try {
-			final Factory<Genotype<Float64Gene>> factory = Genotype.valueOf(new Float64Chromosome(-1, 1));
-			final Function<Genotype<Float64Gene>, Float64> ff = new FF();
+			final Factory<Genotype<DoubleGene>> factory = Genotype.of(DoubleChromosome.of(-1, 1));
+			final Function<Genotype<DoubleGene>, Double> ff = new FF();
 
-			final GeneticAlgorithm<Float64Gene, Float64> ga = new GeneticAlgorithm<>(factory, ff);
+			final GeneticAlgorithm<DoubleGene, Double> ga = new GeneticAlgorithm<>(factory, ff);
 			ga.setPopulationSize(1000);
-			ga.setAlterer(new MeanAlterer<Float64Gene>());
+			ga.setAlterer(new MeanAlterer<DoubleGene>());
 			ga.setOffspringFraction(0.3);
-			ga.setOffspringSelector(new BoltzmannSelector<Float64Gene, Float64>(0.001));
-			ga.setSurvivorSelector(new ExponentialRankSelector<Float64Gene, Float64>(0.675));
+			ga.setOffspringSelector(new BoltzmannSelector<DoubleGene, Double>(0.001));
+			ga.setSurvivorSelector(new ExponentialRankSelector<DoubleGene, Double>(0.675));
 
 			ga.setup();
 			for (int i = 0; i < 10; ++i) {
@@ -176,15 +169,15 @@ public class GeneticAlgorithmTest {
 
 	@Test(invocationCount = 10)
 	public void evolveConcurrent() {
-		final Factory<Genotype<Float64Gene>> factory = Genotype.valueOf(new Float64Chromosome(-1, 1));
-		final Function<Genotype<Float64Gene>, Float64> ff = new FF();
+		final Factory<Genotype<DoubleGene>> factory = Genotype.of(DoubleChromosome.of(-1, 1));
+		final Function<Genotype<DoubleGene>, Double> ff = new FF();
 
-		final GeneticAlgorithm<Float64Gene, Float64> ga = new GeneticAlgorithm<>(factory, ff);
+		final GeneticAlgorithm<DoubleGene, Double> ga = new GeneticAlgorithm<>(factory, ff);
 		ga.setPopulationSize(1000);
-		ga.setAlterer(new MeanAlterer<Float64Gene>());
+		ga.setAlterer(new MeanAlterer<DoubleGene>());
 		ga.setOffspringFraction(0.3);
-		ga.setOffspringSelector(new RouletteWheelSelector<Float64Gene, Float64>());
-		ga.setSurvivorSelector(new LinearRankSelector<Float64Gene, Float64>());
+		ga.setOffspringSelector(new RouletteWheelSelector<DoubleGene, Double>());
+		ga.setSurvivorSelector(new LinearRankSelector<DoubleGene, Double>());
 
 		ga.setup();
 		for (int i = 0; i < 10; ++i) {
@@ -193,7 +186,3 @@ public class GeneticAlgorithmTest {
 	}
 
 }
-
-
-
-

@@ -21,14 +21,12 @@ package org.jenetics.util;
 
 import java.util.Random;
 
-import javolution.context.LocalContext;
-
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-01 $</em>
+ * @version <em>$Date: 2014-02-15 $</em>
  */
 public class RandomRegistryTest {
 
@@ -66,31 +64,61 @@ public class RandomRegistryTest {
 	public void localContext() {
 		final Random random = RandomRegistry.getRandom();
 
-		LocalContext.enter();
-		try {
-			final Random random1 = new Random();
-			RandomRegistry.setRandom(random1);
-
-			LocalContext.enter();
-			try {
-				final Random random2 = new Random();
-				RandomRegistry.setRandom(random2);
-
+		final Random random1 = new Random();
+		try (Scoped<Random> s = RandomRegistry.scope(random1)) {
+			final Random random2 = new Random();
+			try (Scoped<Random> s2 = RandomRegistry.scope(random2)) {
 				Assert.assertSame(RandomRegistry.getRandom(), random2);
-			} finally {
-				LocalContext.exit();
 			}
 
 			Assert.assertSame(RandomRegistry.getRandom(), random1);
-		} finally {
-			LocalContext.exit();
 		}
 
 		Assert.assertSame(RandomRegistry.getRandom(), random);
 	}
 
+	@Test(invocationCount = 10)
+	public void concurrentLocalContext() {
+		try (Concurrency c = Concurrency.start()) {
+			for (int i = 0; i < 25; ++i) {
+				c.execute(new ContextRunnable());
+			}
+		}
+	}
+
+	private static final class ContextRunnable implements Runnable {
+		@Override
+		public void run() {
+			try (Scoped<Random> c = RandomRegistry.scope(new Random())) {
+				try {
+					Thread.sleep(1);
+				} catch (InterruptedException e) {
+					throw new RuntimeException(e);
+				}
+				Assert.assertSame(c.get(), RandomRegistry.getRandom());
+
+				final Random random2 = new Random();
+				try (Scoped<Random> c2 = RandomRegistry.scope(random2)) {
+					Assert.assertSame(RandomRegistry.getRandom(), random2);
+					Assert.assertSame(c2.get(), random2);
+
+					final Random random2_2 = new Random();
+					RandomRegistry.setRandom(random2_2);
+					Assert.assertSame(RandomRegistry.getRandom(), random2_2);
+
+					final Random random3 = new Random();
+					try (Scoped<Random> c3 = RandomRegistry.scope(random3)) {
+						Assert.assertSame(RandomRegistry.getRandom(), random3);
+						Assert.assertSame(c3.get(), random3);
+					}
+
+					Assert.assertSame(RandomRegistry.getRandom(), random2_2);
+					Assert.assertNotEquals(c.get(), RandomRegistry.getRandom());
+				}
+
+				Assert.assertSame(c.get(), RandomRegistry.getRandom());
+			}
+		}
+	}
+
 }
-
-
-
-

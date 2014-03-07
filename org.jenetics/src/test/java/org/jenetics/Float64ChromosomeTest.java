@@ -22,28 +22,25 @@ package org.jenetics;
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 import static org.jenetics.util.accumulators.accumulate;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Random;
 
-import javolution.context.LocalContext;
-
-import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.UniformDistribution;
 import org.jenetics.stat.Variance;
-import org.jenetics.util.IO;
-import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Scoped;
 import org.jenetics.util.accumulators.MinMax;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-01 $</em>
+ * @version <em>$Date: 2014-02-15 $</em>
  */
+@SuppressWarnings("deprecation")
 public class Float64ChromosomeTest
 	extends NumberChromosomeTester<Float64, Float64Gene>
 {
@@ -56,10 +53,7 @@ public class Float64ChromosomeTest
 
 	@Test(invocationCount = 20, successPercentage = 95)
     public void newInstanceDistribution() {
-		LocalContext.enter();
-		try {
-			RandomRegistry.setRandom(new Random(12345));
-
+		try (Scoped<Random> s = RandomRegistry.scope(new Random(12345))) {
 			final Float64 min = Float64.ZERO;
 			final Float64 max = Float64.valueOf(100);
 
@@ -82,8 +76,6 @@ public class Float64ChromosomeTest
 			Assert.assertTrue(mm.getMin().compareTo(0) >= 0);
 			Assert.assertTrue(mm.getMax().compareTo(100) <= 100);
 			assertDistribution(histogram, new UniformDistribution<>(min, max));
-		} finally {
-			LocalContext.exit();
 		}
     }
 
@@ -115,66 +107,4 @@ public class Float64ChromosomeTest
 			);
 	}
 
-	@Test
-	public void objectSerializationCompatibility() throws IOException {
-		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
-		LocalContext.enter();
-		try {
-			RandomRegistry.setRandom(random);
-			final Object chromosome = new Float64Chromosome(-1000.0, 1000.0, 500);
-
-			final String resource = "/org/jenetics/Float64Chromosome.object";
-			try (InputStream in = getClass().getResourceAsStream(resource)) {
-				final Object object = IO.object.read(in);
-
-				Assert.assertEquals(object, chromosome);
-			}
-		} finally {
-			LocalContext.exit();
-		}
-	}
-
-	@Test
-	public void xmlSerializationCompatibility() throws IOException {
-		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
-		LocalContext.enter();
-		try {
-			RandomRegistry.setRandom(random);
-			final Object chromosome = new Float64Chromosome(-1000.0, 1000.0, 500);
-
-			final String resource = "/org/jenetics/Float64Chromosome.xml";
-			try (InputStream in = getClass().getResourceAsStream(resource)) {
-				final Object object = IO.xml.read(in);
-
-				Assert.assertEquals(object, chromosome);
-			}
-		} finally {
-			LocalContext.exit();
-		}
-	}
-
-	private static String Source = "/home/fwilhelm/Workspace/Development/Projects/Jenetics/" +
-			"org.jenetics/src/test/resources/org/jenetics/";
-
-	public static void main(final String[] args) throws Exception {
-		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
-
-		LocalContext.enter();
-		try {
-			RandomRegistry.setRandom(random);
-			Object c = new Float64Chromosome(-1000.0, 1000.0, 500);
-
-			IO.xml.write(c, Source + "Float64Chromosome.xml");
-			IO.object.write(c, Source + "Float64Chromosome.object");
-		} finally {
-			LocalContext.exit();
-		}
-	}
-
 }
-
-
-
-
-
-

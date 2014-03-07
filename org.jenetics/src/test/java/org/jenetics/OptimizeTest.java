@@ -29,37 +29,37 @@ import org.jenetics.util.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-08-29 $</em>
+ * @version <em>$Date: 2014-02-17 $</em>
  */
 public class OptimizeTest {
 
 	private static class FF
-		implements Function<Genotype<Float64Gene>, Double>,
+		implements Function<Genotype<DoubleGene>, Double>,
 					Serializable
 	{
 		private static final long serialVersionUID = 6215331666272441749L;
 
 		@Override
-		public Double apply(Genotype<Float64Gene> genotype) {
-			return genotype.getGene().doubleValue();
+		public Double apply(Genotype<DoubleGene> genotype) {
+			return genotype.getGene().getAllele();
 		}
 	}
 
 	private static final FF _ff = new FF();
 
-	private static Phenotype<Float64Gene, Double> pt(double value) {
-		return Phenotype.valueOf(Genotype.valueOf(new Float64Chromosome(Float64Gene.valueOf(value, 0, 10))), _ff, 0);
+	private static Phenotype<DoubleGene, Double> pt(double value) {
+		return Phenotype.of(Genotype.of(DoubleChromosome.of(DoubleGene.of(value, 0, 10))), _ff, 0);
 	}
 
 	@Test
 	public void comparator() {
-		Comparator<Phenotype<Float64Gene, Double>> comp =
-			Optimize.MAXIMUM.<Phenotype<Float64Gene, Double>>descending();
+		Comparator<Phenotype<DoubleGene, Double>> comp =
+			Optimize.MAXIMUM.<Phenotype<DoubleGene, Double>>descending();
 		Assert.assertTrue(comp.compare(pt(2), pt(3)) > 0);
 		Assert.assertTrue(comp.compare(pt(2), pt(2)) == 0);
 		Assert.assertTrue(comp.compare(pt(5), pt(3)) < 0);
 
-		comp = Optimize.MINIMUM.<Phenotype<Float64Gene, Double>>descending();
+		comp = Optimize.MINIMUM.<Phenotype<DoubleGene, Double>>descending();
 		Assert.assertTrue(comp.compare(pt(4), pt(3)) > 0);
 		Assert.assertTrue(comp.compare(pt(2), pt(2)) == 0);
 		Assert.assertTrue(comp.compare(pt(2), pt(3)) < 0);
@@ -68,12 +68,12 @@ public class OptimizeTest {
 	@Test
 	public void compare() {
 		final FF ff = new FF();
-		final Phenotype<Float64Gene, Double> pt1 = Phenotype.valueOf(Genotype.valueOf(
-				new Float64Chromosome(Float64Gene.valueOf(5, 0, 10))), ff, 0);
-		final Phenotype<Float64Gene, Double> pt2 = Phenotype.valueOf(Genotype.valueOf(
-				new Float64Chromosome(Float64Gene.valueOf(7, 0, 10))), ff, 0);
-		final Phenotype<Float64Gene, Double> pt3 = Phenotype.valueOf(Genotype.valueOf(
-				new Float64Chromosome(Float64Gene.valueOf(7, 0, 10))), ff, 0);
+		final Phenotype<DoubleGene, Double> pt1 = Phenotype.of(Genotype.of(
+			DoubleChromosome.of(DoubleGene.of(5, 0, 10))), ff, 0);
+		final Phenotype<DoubleGene, Double> pt2 = Phenotype.of(Genotype.of(
+			DoubleChromosome.of(DoubleGene.of(7, 0, 10))), ff, 0);
+		final Phenotype<DoubleGene, Double> pt3 = Phenotype.of(Genotype.of(
+			DoubleChromosome.of(DoubleGene.of(7, 0, 10))), ff, 0);
 
 		Assert.assertTrue(Optimize.MINIMUM.compare(pt1, pt2) > 0);
 		Assert.assertTrue(Optimize.MAXIMUM.compare(pt1, pt2) < 0);
@@ -84,12 +84,12 @@ public class OptimizeTest {
 	@Test
 	public void best() {
 		final FF ff = new FF();
-		final Phenotype<Float64Gene, Double> pt1 = Phenotype.valueOf(Genotype.valueOf(
-				new Float64Chromosome(Float64Gene.valueOf(5, 0, 10))), ff, 0);
-		final Phenotype<Float64Gene, Double> pt2 = Phenotype.valueOf(Genotype.valueOf(
-				new Float64Chromosome(Float64Gene.valueOf(7, 0, 10))), ff, 0);
-		final Phenotype<Float64Gene, Double> pt3 = Phenotype.valueOf(Genotype.valueOf(
-				new Float64Chromosome(Float64Gene.valueOf(7, 0, 10))), ff, 0);
+		final Phenotype<DoubleGene, Double> pt1 = Phenotype.of(Genotype.of(
+			DoubleChromosome.of(DoubleGene.of(5, 0, 10))), ff, 0);
+		final Phenotype<DoubleGene, Double> pt2 = Phenotype.of(Genotype.of(
+			DoubleChromosome.of(DoubleGene.of(7, 0, 10))), ff, 0);
+		final Phenotype<DoubleGene, Double> pt3 = Phenotype.of(Genotype.of(
+			DoubleChromosome.of(DoubleGene.of(7, 0, 10))), ff, 0);
 
 		Assert.assertSame(Optimize.MINIMUM.best(pt1, pt2), pt1);
 		Assert.assertSame(Optimize.MAXIMUM.best(pt1, pt2), pt2);
@@ -99,12 +99,12 @@ public class OptimizeTest {
 	@Test
 	public void worst() {
 		final FF ff = new FF();
-		final Phenotype<Float64Gene, Double> pt1 = Phenotype.valueOf(Genotype.valueOf(
-				new Float64Chromosome(Float64Gene.valueOf(5, 0, 10))), ff, 0);
-		final Phenotype<Float64Gene, Double> pt2 = Phenotype.valueOf(Genotype.valueOf(
-				new Float64Chromosome(Float64Gene.valueOf(7, 0, 10))), ff, 0);
-		final Phenotype<Float64Gene, Double> pt3 = Phenotype.valueOf(Genotype.valueOf(
-				new Float64Chromosome(Float64Gene.valueOf(7, 0, 10))), ff, 0);
+		final Phenotype<DoubleGene, Double> pt1 = Phenotype.of(Genotype.of(
+			DoubleChromosome.of(DoubleGene.of(5, 0, 10))), ff, 0);
+		final Phenotype<DoubleGene, Double> pt2 = Phenotype.of(Genotype.of(
+			DoubleChromosome.of(DoubleGene.of(7, 0, 10))), ff, 0);
+		final Phenotype<DoubleGene, Double> pt3 = Phenotype.of(Genotype.of(
+			DoubleChromosome.of(DoubleGene.of(7, 0, 10))), ff, 0);
 
 		Assert.assertSame(Optimize.MINIMUM.worst(pt1, pt2), pt2);
 		Assert.assertSame(Optimize.MAXIMUM.worst(pt1, pt2), pt1);
@@ -112,8 +112,3 @@ public class OptimizeTest {
 	}
 
 }
-
-
-
-
-

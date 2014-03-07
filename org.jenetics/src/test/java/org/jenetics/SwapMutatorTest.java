@@ -20,9 +20,9 @@
 package org.jenetics;
 
 //import static org.jenetics.TestUtils.diff;
-import static org.jenetics.TestUtils.newFloat64GenePopulation;
 
-import org.jscience.mathematics.number.Float64;
+import static org.jenetics.TestUtils.newDoubleGenePopulation;
+
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -30,12 +30,12 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-08-29 $</em>
+ * @version <em>$Date: 2014-02-15 $</em>
  */
 public class SwapMutatorTest extends MutatorTestBase {
 
 	@Override
-	public Alterer<Float64Gene> newAlterer(double p) {
+	public Alterer<DoubleGene> newAlterer(double p) {
 		return new SwapMutator<>(p);
 	}
 
@@ -46,13 +46,13 @@ public class SwapMutatorTest extends MutatorTestBase {
 		final Integer nchromosomes,
 		final Integer npopulation
 	) {
-		final Population<Float64Gene, Float64> p1 = newFloat64GenePopulation(
+		final Population<DoubleGene, Double> p1 = newDoubleGenePopulation(
 					ngenes, nchromosomes, npopulation
 				);
-		final Population<Float64Gene, Float64> p2 = p1.copy();
+		final Population<DoubleGene, Double> p2 = p1.copy();
 		Assert.assertEquals(p2, p1);
 
-		final Alterer<Float64Gene> mutator = newAlterer(0.01);
+		final Alterer<DoubleGene> mutator = newAlterer(0.01);
 
 		final int alterations = mutator.alter(p1, 1);
 		//final int diff = diff(p1, p2);
