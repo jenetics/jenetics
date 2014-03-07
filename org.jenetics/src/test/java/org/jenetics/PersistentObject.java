@@ -59,7 +59,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-06 $</em>
+ * @version <em>$Date: 2014-03-07 $</em>
  */
 @SuppressWarnings("deprecation")
 public class PersistentObject<T> {
@@ -156,8 +156,6 @@ public class PersistentObject<T> {
 		put("CharacterGene", nextCharacterGene(), oldIO);
 		put("LongGene", nextLongGene(), newIO);
 		put("DoubleGene", nextDoubleGene(), newIO);
-		put("Integer64Gene", nextInteger64Gene(), oldIO);
-		put("Float64Gene", nextFloat64Gene(), oldIO);
 
 		put("EnumGene<Boolean>", nextEnumGeneBoolean(), oldIO);
 		put("EnumGene<Byte>", nextEnumGeneByte(), oldIO);
@@ -179,8 +177,6 @@ public class PersistentObject<T> {
 		put("CharacterChromosome", nextCharacterChromosome(), oldIO);
 		put("LongChromosome", nextLongChromosome(), newIO);
 		put("DoubleChromosome", nextDoubleChromosome(), newIO);
-		put("Integer64Chromosome", nextInteger64Chromosome(), oldIO);
-		put("Float64Chromosome", nextFloat64Chromosome(), oldIO);
 
 		put("PermutationChromosome<Integer>", nextIntegerPermutationChromosome(), oldIO);
 		put("PermutationChromosome<Double>", nextDoublePermutationChromosome(), oldIO);
@@ -196,42 +192,23 @@ public class PersistentObject<T> {
 		put("Genotype<CharacterGene>", nextGenotypeCharacterGene(), oldIO);
 		put("Genotype<LongGene>", nextGenotypeLongGene(), minIO);
 		put("Genotype<DoubleGene>", nextGenotypeDoubleGene(), minIO);
-		put("Genotype<Integer64Gene>", nextGenotypeInteger64Gene(), oldIO);
-		put("Genotype<Float64Gene>", nextGenotypeFloat64Gene(), oldIO);
 
 
 		/* *********************************************************************
 		 * Phenotypes
 		 **********************************************************************/
 
-		put("Phenotype<Integer64Gene, Integer>", nextPhenotypeInteger64GeneInteger(), oldIO);
-		put("Phenotype<Integer64Gene, Long>", nextPhenotypeInteger64GeneLong(), oldIO);
-		put("Phenotype<Integer64Gene, Double>", nextPhenotypeInteger64GeneDouble(), oldIO);
-
 		put("Phenotype<LongGene, Integer>", nextPhenotypeLongGeneInteger(), minIO);
 		put("Phenotype<LongGene, Long>", nextPhenotypeLongGeneLong(), minIO);
 		put("Phenotype<LongGene, Double>", nextPhenotypeLongGeneDouble(), minIO);
-
-		put("Phenotype<Integer64Gene, Integer64>", nextPhenotypeInteger64GeneInteger64(), oldIO);
-		put("Phenotype<Integer64Gene, Float64>", nextPhenotypeInteger64GeneFloat64(), oldIO);
 
 		put("Phenotype<DoubleGene, Integer>", nextPhenotypeDoubleGeneInteger(), minIO);
 		put("Phenotype<DoubleGene, Long>", nextPhenotypeDoubleGeneLong(), minIO);
 		put("Phenotype<DoubleGene, Double>", nextPhenotypeDoubleGeneDouble(), minIO);
 
-		put("Phenotype<Float64Gene, Integer>", nextPhenotypeFloat64GeneInteger(), oldIO);
-		put("Phenotype<Float64Gene, Long>", nextPhenotypeFloat64GeneLong(), oldIO);
-		put("Phenotype<Float64Gene, Double>", nextPhenotypeFloat64GeneDouble(), oldIO);
-
-		put("Phenotype<Float64Gene, Integer64>", nextPhenotypeFloat64GeneInteger64(), oldIO);
-		put("Phenotype<Float64Gene, Float64>", nextPhenotypeFloat64GeneFloat64(), oldIO);
-
 		/* *********************************************************************
 		 * Populations
 		 **********************************************************************/
-
-		put("Population<Integer64Gene, Integer>", nextPopulationInteger64GeneInteger(), oldIO);
-		put("Population<Float64Gene, Integer>", nextPopulationFloat64GeneInteger(), oldIO);
 
 		put("Population<LongGene, Integer>", nextPopulationLongGeneInteger(), minIO);
 		put("Population<DoubleGene, Integer>", nextPopulationDoubleGeneInteger(), minIO);
@@ -254,14 +231,6 @@ public class PersistentObject<T> {
 
 	public static DoubleGene nextDoubleGene() {
 		return DoubleGene.of(0, 1);
-	}
-
-	public static Integer64Gene nextInteger64Gene() {
-		return Integer64Gene.valueOf(Long.MIN_VALUE, Long.MAX_VALUE);
-	}
-
-	public static Float64Gene nextFloat64Gene() {
-		return Float64Gene.valueOf(0, 1.0);
 	}
 
 	public static EnumGene<Boolean> nextEnumGeneBoolean() {
@@ -328,14 +297,6 @@ public class PersistentObject<T> {
 		return DoubleChromosome.of(0.0, 1.0, 20);
 	}
 
-	public static Integer64Chromosome nextInteger64Chromosome() {
-		return new Integer64Chromosome(Long.MIN_VALUE, Long.MAX_VALUE, 20);
-	}
-
-	public static Float64Chromosome nextFloat64Chromosome() {
-		return new Float64Chromosome(0.0, 1.0, 20);
-	}
-
 	public static PermutationChromosome<Integer> nextIntegerPermutationChromosome() {
 		return PermutationChromosome.ofInteger(15);
 	}
@@ -375,14 +336,6 @@ public class PersistentObject<T> {
 
 	public static Genotype<DoubleGene> nextGenotypeDoubleGene() {
 		return new Genotype<>(ISeq(5, DoubleChromosomeFactory));
-	}
-
-	public static Genotype<Integer64Gene> nextGenotypeInteger64Gene() {
-		return new Genotype<>(ISeq(5, Integer64ChromosomeFactory));
-	}
-
-	public static Genotype<Float64Gene> nextGenotypeFloat64Gene() {
-		return new Genotype<>(ISeq(5, Float64ChromosomeFactory));
 	}
 
 	/* *************************************************************************
@@ -437,86 +390,6 @@ public class PersistentObject<T> {
 		).evaluate();
 	}
 
-	public static Phenotype<Integer64Gene, Integer> nextPhenotypeInteger64GeneInteger() {
-		return Phenotype.of(
-			nextGenotypeInteger64Gene(),
-			FitnessFunction(IntegerFactory.newInstance()),
-			Math.abs(IntegerFactory.newInstance())
-		).evaluate();
-	}
-
-	public static Phenotype<Integer64Gene, Long> nextPhenotypeInteger64GeneLong() {
-		return Phenotype.of(
-			nextGenotypeInteger64Gene(),
-			FitnessFunction(LongFactory.newInstance()),
-			Math.abs(IntegerFactory.newInstance())
-		).evaluate();
-	}
-
-	public static Phenotype<Integer64Gene, Double> nextPhenotypeInteger64GeneDouble() {
-		return Phenotype.of(
-			nextGenotypeInteger64Gene(),
-			FitnessFunction(DoubleFactory.newInstance()),
-			Math.abs(IntegerFactory.newInstance())
-		).evaluate();
-	}
-
-	public static Phenotype<Integer64Gene, Integer64> nextPhenotypeInteger64GeneInteger64() {
-		return Phenotype.of(
-			nextGenotypeInteger64Gene(),
-			FitnessFunction(Integer64Factory.newInstance()),
-			Math.abs(IntegerFactory.newInstance())
-		).evaluate();
-	}
-
-	public static Phenotype<Integer64Gene, Float64> nextPhenotypeInteger64GeneFloat64() {
-		return Phenotype.of(
-			nextGenotypeInteger64Gene(),
-			FitnessFunction(Float64Factory.newInstance()),
-			Math.abs(IntegerFactory.newInstance())
-		).evaluate();
-	}
-
-	public static Phenotype<Float64Gene, Integer> nextPhenotypeFloat64GeneInteger() {
-		return Phenotype.of(
-			nextGenotypeFloat64Gene(),
-			FitnessFunction(IntegerFactory.newInstance()),
-			Math.abs(IntegerFactory.newInstance())
-		).evaluate();
-	}
-
-	public static Phenotype<Float64Gene, Long> nextPhenotypeFloat64GeneLong() {
-		return Phenotype.of(
-			nextGenotypeFloat64Gene(),
-			FitnessFunction(LongFactory.newInstance()),
-			Math.abs(IntegerFactory.newInstance())
-		).evaluate();
-	}
-
-	public static Phenotype<Float64Gene, Double> nextPhenotypeFloat64GeneDouble() {
-		return Phenotype.of(
-			nextGenotypeFloat64Gene(),
-			FitnessFunction(DoubleFactory.newInstance()),
-			Math.abs(IntegerFactory.newInstance())
-		).evaluate();
-	}
-
-	public static Phenotype<Float64Gene, Integer64> nextPhenotypeFloat64GeneInteger64() {
-		return Phenotype.of(
-			nextGenotypeFloat64Gene(),
-			FitnessFunction(Integer64Factory.newInstance()),
-			Math.abs(IntegerFactory.newInstance())
-		).evaluate();
-	}
-
-	public static Phenotype<Float64Gene, Float64> nextPhenotypeFloat64GeneFloat64() {
-		return Phenotype.of(
-			nextGenotypeFloat64Gene(),
-			FitnessFunction(Float64Factory.newInstance()),
-			Math.abs(IntegerFactory.newInstance())
-		).evaluate();
-	}
-
 	/* *************************************************************************
 	 * Populations
 	 **************************************************************************/
@@ -535,26 +408,6 @@ public class PersistentObject<T> {
 		final ISeq<Phenotype<DoubleGene, Integer>> seq = ISeq(7,
 			PersistentObject.<Phenotype<DoubleGene, Integer>>Factory(
 				"nextPhenotypeDoubleGeneInteger"
-			)
-		);
-
-		return new Population<>(seq.asList());
-	}
-
-	public static Population<Integer64Gene, Integer> nextPopulationInteger64GeneInteger() {
-		final ISeq<Phenotype<Integer64Gene, Integer>> seq = ISeq(7,
-			PersistentObject.<Phenotype<Integer64Gene, Integer>>Factory(
-				"nextPhenotypeInteger64GeneInteger"
-			)
-		);
-
-		return new Population<>(seq.asList());
-	}
-
-	public static Population<Float64Gene, Integer> nextPopulationFloat64GeneInteger() {
-		final ISeq<Phenotype<Float64Gene, Integer>> seq = ISeq(7,
-			PersistentObject.<Phenotype<Float64Gene, Integer>>Factory(
-				"nextPhenotypeFloat64GeneInteger"
 			)
 		);
 
@@ -600,14 +453,6 @@ public class PersistentObject<T> {
 
 	public static final Factory<DoubleChromosome> DoubleChromosomeFactory = factory(
 		PersistentObject.class, "nextDoubleChromosome"
-	);
-
-	public static final Factory<Integer64Chromosome> Integer64ChromosomeFactory = factory(
-		PersistentObject.class, "nextInteger64Chromosome"
-	);
-
-	public static final Factory<Float64Chromosome> Float64ChromosomeFactory = factory(
-		PersistentObject.class, "nextFloat64Chromosome"
 	);
 
 
