@@ -565,18 +565,18 @@ public class PersistentObject<T> {
 	 * Statistics
 	 **************************************************************************/
 
-	public static Statistics.Time nextStatisticsTime() {
-		final Random random = RandomRegistry.getRandom();
-
-		final Statistics.Time time = new Statistics.Time();
-		time.alter.set(Measure.valueOf(random.nextInt(1233), SI.SECOND));
-		time.combine.set(Measure.valueOf(random.nextInt(1233), SI.MILLI(SI.SECOND)));
-		time.evaluation.set(Measure.valueOf(random.nextInt(1233), SI.MICRO(SI.SECOND)));
-		time.execution.set(Measure.valueOf(random.nextInt(1233), SI.NANO(SI.SECOND)));
-		time.selection.set(Measure.valueOf(random.nextInt(1233), SI.HECTO(SI.SECOND)));
-		time.statistics.set(Measure.valueOf(random.nextInt(1233), SI.KILO(SI.SECOND)));
-		return time;
-	}
+//	public static Statistics.Time nextStatisticsTime() {
+//		final Random random = RandomRegistry.getRandom();
+//
+//		final Statistics.Time time = new Statistics.Time();
+//		time.alter.set(Measure.valueOf(random.nextInt(1233), SI.SECOND));
+//		time.combine.set(Measure.valueOf(random.nextInt(1233), SI.MILLI(SI.SECOND)));
+//		time.evaluation.set(Measure.valueOf(random.nextInt(1233), SI.MICRO(SI.SECOND)));
+//		time.execution.set(Measure.valueOf(random.nextInt(1233), SI.NANO(SI.SECOND)));
+//		time.selection.set(Measure.valueOf(random.nextInt(1233), SI.HECTO(SI.SECOND)));
+//		time.statistics.set(Measure.valueOf(random.nextInt(1233), SI.KILO(SI.SECOND)));
+//		return time;
+//	}
 
 	/* *************************************************************************
 	 * Factories

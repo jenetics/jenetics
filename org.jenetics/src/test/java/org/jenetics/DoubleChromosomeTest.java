@@ -20,6 +20,7 @@
 package org.jenetics;
 
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
+import static org.jenetics.util.Accumulator.accumulate;
 
 import java.util.Random;
 import java.util.function.Function;
@@ -32,8 +33,8 @@ import javolution.context.LocalContext;
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.UniformDistribution;
 import org.jenetics.stat.Variance;
+import org.jenetics.util.Accumulator.MinMax;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.accumulators.MinMax;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

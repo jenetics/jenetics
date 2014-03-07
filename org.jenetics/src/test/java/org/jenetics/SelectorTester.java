@@ -29,6 +29,9 @@ import org.jenetics.stat.Histogram;
 import org.jenetics.stat.StatisticsAssert;
 import org.jenetics.util.Factory;
 import java.util.function.Function;
+
+import org.jscience.mathematics.number.Float64;
+
 import org.jenetics.util.ObjectTester;
 import org.jenetics.util.Range;
 
@@ -92,10 +95,10 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 			accumulate(
 				selection,
 				histogram
-					.<Gene<Float64, Float64Gene>>map(g -> g.getAllele())
-					.<Chromosome<Float64Gene>>map(ch -> ch.getGene())
-					.<Genotype<Float64Gene>>map(gt -> gt.getChromosome())
-					.<Phenotype<Float64Gene, Float64>>map(pt -> pt.getGenotype())
+					.<Gene<Double, DoubleGene>>map(g -> g.getAllele())
+					.<Chromosome<DoubleGene>>map(ch -> ch.getGene())
+					.<Genotype<DoubleGene>>map(gt -> gt.getChromosome())
+					.<Phenotype<DoubleGene, Double>>map(pt -> pt.getGenotype())
 			);
 
 			population.clear();
@@ -103,16 +106,6 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 
 		check(histogram, getDistribution());
 	}
-
-	private static final Function<DoubleGene, Double> Allele =
-		new Function<DoubleGene, Double>() {
-			@Override public Double apply(final DoubleGene value) {
-				return value.getAllele();
-			}
-		};
-
-	private static final Function<Chromosome<DoubleGene>, DoubleGene>
-		Gene = AbstractChromosome.gene();
 
 	protected double χ2(
 		final Histogram<Double> histogram,

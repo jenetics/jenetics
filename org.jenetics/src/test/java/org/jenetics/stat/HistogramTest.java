@@ -34,7 +34,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-17 $</em>
+ * @version <em>$Date: 2014-03-07 $</em>
  */
 @SuppressWarnings("deprecation")
 public class HistogramTest
@@ -76,34 +76,12 @@ public class HistogramTest
 	}
 
 	@Test
-	public void createFloat64() {
-		final Float64 begin = Float64.valueOf(12);
-		final Float64 end = Float64.valueOf(123);
-		final int elements = 10;
-
-		Histogram<Float64> histogram = Histogram.valueOf(begin, end, elements);
-		Assert.assertEquals(histogram.length(), elements);
-		Assert.assertEquals(histogram.getHistogram(), new long[elements]);
-	}
-
-	@Test
 	public void createLong() {
 		final long begin = 0;
 		final long end = 1000;
 		final int elements = 9;
 
 		Histogram<Long> histogram = Histogram.valueOf(begin, end, elements);
-		Assert.assertEquals(histogram.length(), elements);
-		Assert.assertEquals(histogram.getHistogram(), new long[elements]);
-	}
-
-	@Test
-	public void createInteger64() {
-		final Integer64 begin = Integer64.ZERO;
-		final Integer64 end = Integer64.valueOf(1000);
-		final int elements = 9;
-
-		Histogram<Integer64> histogram = Histogram.valueOf(begin, end, elements);
 		Assert.assertEquals(histogram.length(), elements);
 		Assert.assertEquals(histogram.getHistogram(), new long[elements]);
 	}

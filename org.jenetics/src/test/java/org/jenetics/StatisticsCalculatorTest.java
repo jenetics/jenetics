@@ -42,10 +42,10 @@ public class StatisticsCalculatorTest {
 	public Iterable<Phenotype<DoubleGene, Double>> population(final int size) {
 		return new Iterable<Phenotype<DoubleGene,Double>>() {
 			@Override
-			public Iterator<Phenotype<Float64Gene, Float64>> iterator() {
-			return new Iterator<Phenotype<Float64Gene,Float64>>() {
-				private final Float64 MIN = Float64.valueOf(0);
-				private final Float64 MAX = Float64.valueOf(size);
+			public Iterator<Phenotype<DoubleGene, Double>> iterator() {
+			return new Iterator<Phenotype<DoubleGene,Double>>() {
+				private final Double MIN = Double.valueOf(0);
+				private final Double MAX = Double.valueOf(size);
 
 				private int _pos = -1;
 
@@ -55,13 +55,13 @@ public class StatisticsCalculatorTest {
 				}
 
 				@Override
-				public Phenotype<Float64Gene, Float64> next() {
+				public Phenotype<DoubleGene, Double> next() {
 					++_pos;
-					final Float64Gene gene = Float64Gene.valueOf(
-								Float64.valueOf(_pos), MIN, MAX
+					final DoubleGene gene = DoubleGene.of(
+								Double.valueOf(_pos), MIN, MAX
 							);
 					return Phenotype.valueOf(
-							Genotype.valueOf(new Float64Chromosome(gene)),
+							Genotype.valueOf(DoubleChromosome.of(gene)),
 							TestUtils.FF, 0
 						);
 				}
@@ -84,7 +84,7 @@ public class StatisticsCalculatorTest {
 		final Variance<Integer> ageVariance = new Variance<>();
 		Accumulator.accumulate(
 			population(size),
-			ageVariance.<Phenotype<Float64Gene, Float64>>map(pt -> pt.getAge(gen))
+			ageVariance.<Phenotype<DoubleGene, Double>>map(pt -> pt.getAge(gen))
 		);
 
 		Assert.assertEquals(statistics.getAgeMean(), ageVariance.getMean());

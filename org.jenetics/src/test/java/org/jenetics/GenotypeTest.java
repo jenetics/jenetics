@@ -37,7 +37,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-18 $</em>
+ * @version <em>$Date: 2014-03-07 $</em>
  */
 @SuppressWarnings("deprecation")
 public class GenotypeTest extends ObjectTester<Genotype<DoubleGene>> {
@@ -142,7 +142,7 @@ public class GenotypeTest extends ObjectTester<Genotype<DoubleGene>> {
 		try {
 			RandomRegistry.setRandom(random);
 			final BitChromosome chromosome = new BitChromosome(30, 0.5);
-			final Genotype<?> genotype = Genotype.of(chromosome, chromosome);
+			final Genotype<BitGene> genotype = Genotype.of(chromosome, chromosome);
 
 			/*
 			JAXBContext jc = JAXBContext.newInstance("org.jenetics");

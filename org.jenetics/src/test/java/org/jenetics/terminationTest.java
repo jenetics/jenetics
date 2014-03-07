@@ -27,6 +27,8 @@ import java.util.function.Predicate;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import org.jscience.mathematics.number.Float64;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version <em>$Date: 2014-03-07 $</em>
@@ -80,7 +82,7 @@ public class terminationTest {
 		ga.setup();
 		values.addFirst(ga.getBestPhenotype().getFitness());
 
-		final Predicate<Statistics<?, Float64>> until =
+		final Predicate<Statistics<?, Double>> until =
 			termination.SteadyFitness(steadyGenerations);
 
 		while (until.test(ga.getStatistics())) {

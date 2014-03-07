@@ -23,8 +23,10 @@ import static java.lang.Math.max;
 import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.util.object.NonNull;
-import static org.jenetics.util.object.eq;
+import static org.jenetics.internal.util.object.eq;
+import static org.jenetics.util.functions.DoubleToFloat64;
+import static org.jenetics.util.functions.LongToInteger64;
+import static org.jenetics.util.math.statistics.sum;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -37,8 +39,8 @@ import org.jscience.mathematics.number.Integer64;
 import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.util.AbstractAccumulator;
+import org.jenetics.util.Accumulator;
 import org.jenetics.util.arrays;
-import org.jenetics.util.math;
 
 /**
  * To create an <i>Histogram Accumulator</i> you have to define the <i>class
@@ -112,7 +114,7 @@ public class Histogram<C> extends AbstractAccumulator<C> {
 
 	@SuppressWarnings("unchecked")
 	private static <C> C[] check(final C... classes) {
-		Arrays.asList(classes).forEach(NonNull);
+		//Arrays.asList(classes).forEach(NonNull);
 		if (classes.length == 0) {
 			throw new IllegalArgumentException("Given classes array is empty.");
 		}
@@ -253,7 +255,7 @@ public class Histogram<C> extends AbstractAccumulator<C> {
 	public double[] getProbabilities() {
 		final double[] probabilities = new double[_histogram.length];
 
-		assert (math.statistics.sum(_histogram) == _samples);
+		assert (sum(_histogram) == _samples);
 		for (int i = 0; i < probabilities.length; ++i) {
 			probabilities[i] = (double)_histogram[i]/(double)_samples;
 		}
@@ -339,9 +341,9 @@ public class Histogram<C> extends AbstractAccumulator<C> {
 	@Override
 	public int hashCode() {
 		return HashBuilder.of(getClass()).
-				and(super.hashCode()).
-				and(_separators).
-				and(_histogram).value();
+			and(super.hashCode()).
+			and(_separators).
+			and(_histogram).value();
 	}
 
 	@Override
@@ -355,14 +357,14 @@ public class Histogram<C> extends AbstractAccumulator<C> {
 
 		final Histogram<?> histogram = (Histogram<?>)obj;
 		return 	eq(_separators, histogram._separators) &&
-				eq(_histogram, histogram._histogram) &&
-				super.equals(obj);
+			eq(_histogram, histogram._histogram) &&
+			super.equals(obj);
 	}
 
 	@Override
 	public String toString() {
 		return Arrays.toString(_separators) + "\n" + Arrays.toString(getHistogram()) +
-				"\nSamples: " + _samples;
+			"\nSamples: " + _samples;
 	}
 
 	@Override
@@ -407,11 +409,38 @@ public class Histogram<C> extends AbstractAccumulator<C> {
 	}
 
 	@SuppressWarnings({"rawtypes", "unchecked"})
-	private static final Comparator COMPARATOR = (a, b) -> ((Comparable)a).compareTo(b);
+	private static final Comparator COMPARATOR = new Comparator() {
+		@Override
+		public int compare(final Object o1, final Object o2) {
+			return ((Comparable)o1).compareTo(o2);
+		}
+	};
 
 	/**
-	 * @see #valueOf(Float64, Float64, int)
+	 * Return a <i>histogram</i> for {@link Double} values. The <i>histogram</i>
+	 * array of the returned {@link Histogram} will look like this:
+	 *
+	 * <pre>
+	 *    min                            max
+	 *     +----+----+----+----+  ~  +----+
+	 *     | 1  | 2  | 3  | 4  |     | nc |
+	 *     +----+----+----+----+  ~  +----+
+	 * </pre>
+	 *
+	 * The range of all classes will be equal: {@code (max - min)/nclasses}.
+	 *
+	 * @param min the minimum range value of the returned histogram.
+	 * @param max the maximum range value of the returned histogram.
+	 * @param nclasses the number of classes of the returned histogram. The
+	 *        number of separators will be {@code nclasses - 1}.
+	 * @return a new <i>histogram</i> for {@link Double} values.
+	 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
+	 * @throws IllegalArgumentException if {@code min.compareTo(max) >= 0} or
+	 *         {@code nclasses < 2}.
+	 *
+	 * @deprecated Use {@link #of(Double, Double, int)} instead.
 	 */
+	@Deprecated
 	public static Histogram<Double> valueOf(
 		final Double min,
 		final Double max,
@@ -467,6 +496,49 @@ public class Histogram<C> extends AbstractAccumulator<C> {
 	}
 
 	/**
+	 * Return a <i>histogram</i> for {@link Long} values. The <i>histogram</i>
+	 * array of the returned {@link Histogram} will look like this:
+	 *
+	 * <pre>
+	 *    min                            max
+	 *     +----+----+----+----+  ~  +----+
+	 *     | 1  | 2  | 3  | 4  |     | nc |
+	 *     +----+----+----+----+  ~  +----+
+	 * </pre>
+	 *
+	 * The range of all classes are more or less the same. But this is not
+	 * always possible due to integer rounding issues. Calling this method with
+	 * {@code min = 13} and {@code max = 99} will generate the following class
+	 * separators for the given number of classes:
+	 * <pre>
+	 *  nclasses = 2: [56]
+	 *  nclasses = 3: [41, 70]
+	 *  nclasses = 4: [34, 55, 77]
+	 *  nclasses = 5: [30, 47, 64, 81]
+	 *  nclasses = 6: [27, 41, 55, 69, 84]
+	 *  nclasses = 7: [25, 37, 49, 61, 73, 86]
+	 *  nclasses = 8: [23, 33, 44, 55, 66, 77, 88]
+	 *  nclasses = 9: [22, 31, 40, 49, 59, 69, 79, 89]
+	 * </pre>
+	 *
+	 * @param min the minimum range value of the returned histogram.
+	 * @param max the maximum range value of the returned histogram.
+	 * @param nclasses the number of classes of the returned histogram. The
+	 *        number of separators will be {@code nclasses - 1}.
+	 * @return a new <i>histogram</i> for {@link Long} values.
+	 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
+	 * @throws IllegalArgumentException if {@code min.compareTo(max) >= 0} or
+	 *         {@code nclasses < 2}.
+	 */
+	public static Histogram<Long> of(
+		final Long min,
+		final Long max,
+		final int nclasses
+	) {
+		return of(toSeparators(min, max, nclasses));
+	}
+
+	/**
 	 * @deprecated Use {@link #of(Long, Long, int)} instead.
 	 */
 	@Deprecated
@@ -497,7 +569,7 @@ public class Histogram<C> extends AbstractAccumulator<C> {
 		}
 		for (int i = 0; i < rest; ++i) {
 			separators[separators.length - rest + i] =
-					(pts - rest)*bulk + i*(bulk + 1) + min;
+				(pts - rest)*bulk + i*(bulk + 1) + min;
 		}
 
 		return separators;
@@ -513,8 +585,8 @@ public class Histogram<C> extends AbstractAccumulator<C> {
 		requireNonNull(max, "Maximum");
 		if (min.compareTo(max) >= 0) {
 			throw new IllegalArgumentException(format(
-					"Min must be smaller than max: %s < %s failed.", min, max
-				));
+				"Min must be smaller than max: %s < %s failed.", min, max
+			));
 		}
 		if (nclasses < 2) {
 			throw new IllegalArgumentException(format(

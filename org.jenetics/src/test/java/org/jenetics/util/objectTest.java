@@ -22,7 +22,6 @@ package org.jenetics.util;
 import static org.jenetics.internal.util.object.CheckRange;
 import static org.jenetics.internal.util.object.NonNull;
 import static org.jenetics.internal.util.object.Verify;
-import static java.util.function.Functions.not;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -39,7 +38,8 @@ public class objectTest {
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, i);
 		}
-		array.forEach(CheckRange(0, 100));
+		//array.forEach(CheckRange(0, 100));
+		assert(false);
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
@@ -49,7 +49,7 @@ public class objectTest {
 			array.set(i, i);
 		}
 		array.set(45, null);
-		array.forEach(CheckRange(0, 100));
+		//array.forEach(CheckRange(0, 100));
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -59,7 +59,7 @@ public class objectTest {
 			array.set(i, i);
 		}
 		array.set(45, 333);
-		array.forEach(CheckRange(0, 100));
+		//array.forEach(CheckRange(0, 100));
 	}
 
 	@Test
@@ -89,7 +89,7 @@ public class objectTest {
 			array.set(i, i);
 		}
 
-		array.forEach(NonNull);
+		//array.forEach(NonNull);
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
@@ -99,7 +99,7 @@ public class objectTest {
 			array.set(i, i);
 		}
 		array.set(45, null);
-		array.forEach(NonNull);
+		//array.forEach(NonNull);
 	}
 
 }
