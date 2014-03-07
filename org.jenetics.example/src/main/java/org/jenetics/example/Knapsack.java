@@ -19,6 +19,8 @@
  */
 package org.jenetics.example;
 
+import static org.jenetics.util.math.random.nextDouble;
+
 import java.util.function.Function;
 
 import java.util.Random;

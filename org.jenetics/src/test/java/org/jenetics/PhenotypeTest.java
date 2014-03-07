@@ -52,7 +52,7 @@ public class PhenotypeTest extends ObjectTester<Phenotype<DoubleGene, Double>> {
 		DoubleChromosome.of(0, 1, 50)
 	);
 	private final Function<Genotype<DoubleGene>, Double> _ff = new FF();
-	private final Function<Double, Double> _scaler = functions.Identity();
+	private final Function<Double, Double> _scaler = a -> a;
 	private final Factory<Phenotype<DoubleGene, Double>>
 	_factory = new Factory<Phenotype<DoubleGene, Double>>() {
 		@Override public Phenotype<DoubleGene, Double> newInstance() {

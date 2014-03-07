@@ -71,7 +71,7 @@ public class PopulationTest {
 		}
 
 		lists.shuffle(population);
-		population.sortWith(Optimize.MAXIMUM.<Double>descending());
+		population.populationSort(Optimize.MAXIMUM.<Double>descending());
 		for (int i = 0; i < population.size() - 1; ++i) {
 			Double first = _cf.apply(population.get(i).getGenotype());
 			Double second = _cf.apply(population.get(i + 1).getGenotype());
@@ -79,7 +79,7 @@ public class PopulationTest {
 		}
 
 		lists.shuffle(population);
-		population.sortWith(Optimize.MINIMUM.<Double>descending());
+		population.populationSort(Optimize.MINIMUM.<Double>descending());
 		for (int i = 0; i < population.size() - 1; ++i) {
 			Double first = _cf.apply(population.get(i).getGenotype());
 			Double second = _cf.apply(population.get(i + 1).getGenotype());

@@ -19,6 +19,8 @@
  */
 package org.jenetics.example;
 
+import java.util.function.Function;
+
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
 import org.jenetics.GaussianMutator;
