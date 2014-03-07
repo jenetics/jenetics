@@ -62,14 +62,12 @@
 	</test>
 	<test name="org.jenetics.DoubleChromosome">
 		<classes>
-			<class name="org.jenetics.Float64ChromosomeTest" />
             <class name="org.jenetics.DoubleChromosomeTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.DoubleGene">
 		<classes>
             <class name="org.jenetics.DoubleGeneTest" />
-			<class name="org.jenetics.Float64GeneTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.GaussianMutator">
@@ -99,13 +97,11 @@
 	</test>
 	<test name="org.jenetics.LongChromosome">
 		<classes>
-			<class name="org.jenetics.Integer64ChromosomeTest" />
             <class name="org.jenetics.LongChromosomeTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.LongGene">
 		<classes>
-			<class name="org.jenetics.Integer64GeneTest" />
 			<class name="org.jenetics.LongGeneTest" />
 		</classes>
 	</test>
