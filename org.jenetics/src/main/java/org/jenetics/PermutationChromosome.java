@@ -72,6 +72,10 @@ public final class PermutationChromosome<T>
 
 	private ISeq<T> _validAlleles;
 
+	/*
+	 * TODO: Refactor this to the default constructor in version 2.0. Currently 
+	 * not possible, because this would be an incompatible change.
+	 */
 	PermutationChromosome(
 		final ISeq<EnumGene<T>> genes,
 		final boolean internal
