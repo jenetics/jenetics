@@ -61,7 +61,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-03-06 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-07 $</em>
  */
 @XmlJavaTypeAdapter(PermutationChromosome.Model.Adapter.class)
 public final class PermutationChromosome<T>
@@ -72,6 +72,10 @@ public final class PermutationChromosome<T>
 
 	private ISeq<T> _validAlleles;
 
+	/*
+	 * TODO: Refactor this to the default constructor in version 2.0. Currently 
+	 * not possible, because this would be an incompatible change.
+	 */
 	PermutationChromosome(
 		final ISeq<EnumGene<T>> genes,
 		final boolean internal
