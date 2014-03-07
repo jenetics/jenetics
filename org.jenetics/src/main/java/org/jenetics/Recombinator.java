@@ -50,7 +50,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-12-18 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-03-07 $</em>
  */
 public abstract class Recombinator<G extends Gene<?, G>>
 	extends AbstractAlterer<G>
@@ -123,9 +123,3 @@ public abstract class Recombinator<G extends Gene<?, G>>
 
 
 }
-
-
-
-
-
-

@@ -29,10 +29,9 @@ import org.testng.annotations.Test;
 
 import org.jenetics.util.Accumulator.Max;
 
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-12-18 $</em>
+ * @version <em>$Date: 2014-03-07 $</em>
  */
 public class accumulatorsMaxTest
 	extends MappedAccumulatorTester<Accumulator.Max<Double>>

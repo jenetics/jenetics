@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<org.jenetics.PermutationChromosome length="15">
+	<org.jscience.mathematics.number.Float64 value="0.27251556008507416"/>
+	<org.jscience.mathematics.number.Float64 value="0.0031408162290671449"/>
+	<org.jscience.mathematics.number.Float64 value="0.43947528327497376"/>
+	<org.jscience.mathematics.number.Float64 value="0.10654807463069327"/>
+	<org.jscience.mathematics.number.Float64 value="0.19696530915810317"/>
+	<org.jscience.mathematics.number.Float64 value="0.74500038380655376"/>
+	<org.jscience.mathematics.number.Float64 value="0.55944169692713586"/>
+	<org.jscience.mathematics.number.Float64 value="0.02823782430152355"/>
+	<org.jscience.mathematics.number.Float64 value="0.57411023150107887"/>
+	<org.jscience.mathematics.number.Float64 value="0.45336510413671438"/>
+	<org.jscience.mathematics.number.Float64 value="0.81114814180036698"/>
+	<org.jscience.mathematics.number.Float64 value="0.5710456351848858"/>
+	<org.jscience.mathematics.number.Float64 value="0.30166768355230955"/>
+	<org.jscience.mathematics.number.Float64 value="0.5455492865240272"/>
+	<org.jscience.mathematics.number.Float64 value="0.21068427527733102"/>
+	<allele-indexes class="java.lang.String" value="13,12,4,6,8,14,7,2,11,5,3,0,9,10,1"/>
+</org.jenetics.PermutationChromosome>

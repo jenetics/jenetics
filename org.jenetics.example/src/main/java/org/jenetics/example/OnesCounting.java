@@ -23,7 +23,6 @@ import java.util.function.Function;
 
 import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;
-import org.jenetics.Chromosome;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.Mutator;
@@ -32,11 +31,21 @@ import org.jenetics.Optimize;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.util.Factory;
+import org.jenetics.util.Function;
+
+final class OneCounter
+	implements Function<Genotype<BitGene>, Integer>
+{
+	@Override
+	public Integer apply(final Genotype<BitGene> genotype) {
+		return ((BitChromosome)genotype.getChromosome()).bitCount();
+	}
+}
 
 public class OnesCounting {
 	public static void main(String[] args) {
-		final Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
-			new BitChromosome(20, 0.15)
+		Factory<Genotype<BitGene>> gtf = Genotype.of(
+			BitChromosome.of(20, 0.15)
 		);
 		final Function<Genotype<BitGene>, Integer> ff = genotype -> {
 			final Chromosome<BitGene> chromosome = genotype.getChromosome();
@@ -72,5 +81,4 @@ public class OnesCounting {
 		System.out.println(ga.getBestStatistics());
 		System.out.println(ga.getBestPhenotype());
 	}
-
 }

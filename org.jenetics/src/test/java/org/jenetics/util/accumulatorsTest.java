@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-08 $</em>
+ * @version <em>$Date: 2014-03-07 $</em>
  */
 public class accumulatorsTest {
 
@@ -231,11 +231,3 @@ public class accumulatorsTest {
 //	}
 
 }
-
-
-
-
-
-
-
-

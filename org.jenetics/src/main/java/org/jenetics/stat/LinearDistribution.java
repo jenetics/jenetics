@@ -21,8 +21,7 @@ package org.jenetics.stat;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
+import static org.jenetics.internal.util.object.eq;
 
 import java.io.Serializable;
 import java.util.Locale;
@@ -30,6 +29,9 @@ import java.util.function.Function;
 
 import org.jscience.mathematics.number.Float64;
 
+import org.jenetics.internal.util.HashBuilder;
+
+import org.jenetics.util.Function;
 import org.jenetics.util.Range;
 
 
@@ -66,7 +68,7 @@ import org.jenetics.util.Range;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-09-08 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-03-07 $</em>
  */
 public class LinearDistribution<
 	N extends Number & Comparable<? super N>
@@ -87,7 +89,7 @@ public class LinearDistribution<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-09-08 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2014-03-07 $</em>
 	 */
 	static final class PDF<N extends Number & Comparable<? super N>>
 		implements
@@ -141,7 +143,7 @@ public class LinearDistribution<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-09-08 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2014-03-07 $</em>
 	 */
 	static final class CDF<N extends Number & Comparable<? super N>>
 		implements
@@ -266,7 +268,7 @@ public class LinearDistribution<
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).
+		return HashBuilder.of(getClass()).
 				and(_domain).
 				and(_x1).and(_x2).
 				and(_y1).and(_y2).value();
@@ -296,8 +298,3 @@ public class LinearDistribution<
 	}
 
 }
-
-
-
-
-

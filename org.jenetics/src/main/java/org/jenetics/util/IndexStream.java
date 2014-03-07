@@ -55,7 +55,7 @@ import org.jenetics.internal.math.probability;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2013-12-18 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-03-07 $</em>
  */
 public abstract class IndexStream extends IntStreamAdapter {
 
@@ -142,7 +142,7 @@ public abstract class IndexStream extends IntStreamAdapter {
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since @__version__@
-	 * @version @__version__@ &mdash; <em>$Date: 2013-12-18 $</em>
+	 * @version @__version__@ &mdash; <em>$Date: 2014-03-07 $</em>
 	 */
 	final static class IndexSpliterator implements Spliterator.OfInt {
 		private final IndexStream _stream;
@@ -182,7 +182,7 @@ public abstract class IndexStream extends IntStreamAdapter {
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.4
-	 * @version @__version__@ &mdash; <em>$Date: 2013-12-18 $</em>
+	 * @version @__version__@ &mdash; <em>$Date: 2014-03-07 $</em>
 	 */
 	final static class RandomIndexStream extends IndexStream {
 		private final int _n;
@@ -219,7 +219,7 @@ public abstract class IndexStream extends IntStreamAdapter {
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5 &mdash; <em>$Date: 2013-12-18 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-03-07 $</em>
  */
 final class RandomIndexStreamP0 extends IndexStream {
 	@Override public int next() {
@@ -230,7 +230,7 @@ final class RandomIndexStreamP0 extends IndexStream {
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5 &mdash; <em>$Date: 2013-12-18 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-03-07 $</em>
  */
 final class RandomIndexStreamP1 extends IndexStream {
 	private final int _n;
@@ -245,5 +245,3 @@ final class RandomIndexStreamP1 extends IndexStream {
 		return _pos < _n ? _pos : -1;
 	}
 }
-
-

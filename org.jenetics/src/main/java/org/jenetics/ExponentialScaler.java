@@ -20,8 +20,7 @@
 package org.jenetics;
 
 import static java.lang.String.format;
-import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
+import static org.jenetics.internal.util.object.eq;
 
 import java.io.Serializable;
 import java.util.function.Function;
@@ -29,6 +28,10 @@ import java.util.function.Function;
 import javolution.lang.Immutable;
 
 import org.jscience.mathematics.number.Float64;
+
+import org.jenetics.internal.util.HashBuilder;
+
+import org.jenetics.util.Function;
 
 /**
  * Implements an exponential fitness scaling, whereby all fitness values are
@@ -39,8 +42,12 @@ import org.jscience.mathematics.number.Float64;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-12-18 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-03-07 $</em>
+ *
+ * @deprecated Will be removed in next major version, respectively replaced with
+ *             a variant which will be parametrized with {@code Double}s.
  */
+@Deprecated
 public final class ExponentialScaler
 	implements
 		Function<Float64, Float64>,
@@ -96,7 +103,7 @@ public final class ExponentialScaler
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(_a).and(_b).and(_c).value();
+		return HashBuilder.of(getClass()).and(_a).and(_b).and(_c).value();
 	}
 
 	@Override

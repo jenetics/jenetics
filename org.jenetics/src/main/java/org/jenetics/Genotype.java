@@ -24,6 +24,16 @@ import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.Iterator;
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import javolution.lang.Immutable;
 import javolution.lang.Realtime;
@@ -51,21 +61,22 @@ import org.jenetics.util.Verifiable;
  * for number genes.
  *
  * [code]
- * final Genotype〈Float64Gene〉 genotype = Genotype.valueOf(
- *     new Float64Chromosome(0.0, 1.0, 8),
- *     new Float64Chromosome(1.0, 2.0, 10),
- *     new Float64Chromosome(0.0, 10.0, 9),
- *     new Float64Chromosome(0.1, 0.9, 5)
+ * final Genotype〈DoubleGene〉 genotype = Genotype.of(
+ *     DoubleChromosome.of(0.0, 1.0, 8),
+ *     DoubleChromosome.of(1.0, 2.0, 10),
+ *     DoubleChromosome.of(0.0, 10.0, 9),
+ *     DoubleChromosome.of(0.1, 0.9, 5)
  * );
  * [/code]
  * The code snippet above creates a genotype with the same structure as shown in
- * the figure above. In this example the {@link Float64Gene} has been chosen as
+ * the figure above. In this example the {@link DoubleGene} has been chosen as
  * gene type.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-12-18 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-07 $</em>
  */
+@XmlJavaTypeAdapter(Genotype.Model.Adapter.class)
 public final class Genotype<G extends Gene<?, G>>
 	implements
 		Factory<Genotype<G>>,
@@ -83,9 +94,29 @@ public final class Genotype<G extends Gene<?, G>>
 	//Caching isValid value.
 	private volatile Boolean _valid = null;
 
-	private Genotype(final ISeq<Chromosome<G>> chromosomes, final int ngenes) {
-		_chromosomes = chromosomes;
+	private Genotype(
+		final ISeq<? extends Chromosome<G>> chromosomes,
+		final int ngenes
+	) {
+		if (chromosomes.length() == 0) {
+			throw new IllegalArgumentException("No chromosomes given.");
+		}
+
+		_chromosomes = cast.apply(chromosomes);
 		_ngenes = ngenes;
+	}
+
+	/**
+	 * Create a new Genotype from a given sequence of {@code Chromosomes}.
+	 *
+	 * @param chromosomes The {@code Chromosome} array the {@code Genotype}
+	 *         consists of.
+	 * @throws NullPointerException if {@code chromosomes} is null or one of its
+	 *         element.
+	 * @throws IllegalArgumentException if {@code chromosome.length == 0}.
+	 */
+	public Genotype(final ISeq<? extends Chromosome<G>> chromosomes) {
+		this(chromosomes, ngenes(chromosomes));
 	}
 
 	private static int ngenes(final Seq<? extends Chromosome<?>> chromosomes) {
@@ -114,8 +145,8 @@ public final class Genotype<G extends Gene<?, G>>
 	/**
 	 * Return the first chromosome. This is a shortcut for
 	 * [code]
-	 * final Genotype〈Float64Gene〉 gt = ...
-	 * final Chromosome〈Float64Gene〉 chromosome = gt.getChromosome(0);
+	 * final Genotype〈DoubleGene〉 gt = ...
+	 * final Chromosome〈DoubleGene〉 chromosome = gt.getChromosome(0);
 	 * [/code]
 	 *
 	 * @return The first chromosome.
@@ -131,8 +162,8 @@ public final class Genotype<G extends Gene<?, G>>
 	 * Return the first {@link Gene} of the first {@link Chromosome} of this
 	 * {@code Genotype}. This is a shortcut for
 	 * [code]
-	 * final Genotype〈Float64Gene〉 gt = ...
-	 * final Float64Gene gene = gt.getChromosome(0).getGene(0);
+	 * final Genotype〈DoubleGene〉 gt = ...
+	 * final DoubleGene gene = gt.getChromosome(0).getGene(0);
 	 * [/code]
 	 *
 	 * @return the first {@link Gene} of the first {@link Chromosome} of this
@@ -209,7 +240,7 @@ public final class Genotype<G extends Gene<?, G>>
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(_chromosomes).value();
+		return HashBuilder.of(getClass()).and(_chromosomes).value();
 	}
 
 	@Override
@@ -247,19 +278,23 @@ public final class Genotype<G extends Gene<?, G>>
 	 *         consists of.
 	 * @throws NullPointerException if {@code chromosomes} is null or one of its
 	 *         element.
-	 * @throws IllegalArgumentException if {@code chromosome.length == 0}.
 	 */
+	@Deprecated
 	public static <G extends Gene<?, G>> Genotype<G> valueOf(
 		final ISeq<? extends Chromosome<G>> chromosomes
 	) {
-		requireNonNull(chromosomes, "Chromosomes");
-		if (chromosomes.length() == 0) {
-			throw new IllegalArgumentException("Chromosomes must be given.");
-		}
+		return new Genotype<>(chromosomes);
+	}
 
-		@SuppressWarnings("unchecked")
-		ISeq<Chromosome<G>> c = (ISeq<Chromosome<G>>)chromosomes;
-		return new Genotype<>(c, ngenes(chromosomes));
+	/**
+	 * @deprecated Use {@link #of(Chromosome[])} instead.
+	 */
+	@Deprecated
+	@SafeVarargs
+	public static <G extends Gene<?, G>> Genotype<G> valueOf(
+		final Chromosome<G>... chromosomes
+	) {
+		return of(chromosomes);
 	}
 
 	/**
@@ -272,7 +307,7 @@ public final class Genotype<G extends Gene<?, G>>
 	 * @throws IllegalArgumentException if {@code chromosome.length == 0}.
 	 */
 	@SafeVarargs
-	public static <G extends Gene<?, G>> Genotype<G> valueOf(
+	public static <G extends Gene<?, G>> Genotype<G> of(
 		final Chromosome<G>... chromosomes
 	) {
 		final ISeq<Chromosome<G>> seq = ISeq.valueOf(chromosomes);
@@ -324,9 +359,51 @@ public final class Genotype<G extends Gene<?, G>>
 		public void read(final InputElement xml, final Genotype gt) {
 		}
 	};
+
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
+
+	@XmlRootElement(name = "org.jenetics.Genotype")
+	@XmlType(name = "org.jenetics.Genotype")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	static final class Model {
+
+		@XmlAttribute
+		public int length;
+
+		@XmlAttribute
+		public int ngenes;
+
+		@XmlAnyElement
+		public List<Object> chromosomes;
+
+		@ValueType(Genotype.class)
+		@ModelType(Model.class)
+		public static final class Adapter
+			extends XmlAdapter<Model, Genotype>
+		{
+			@Override
+			public Model marshal(final Genotype gt) throws Exception {
+				final Model model = new Model();
+				model.length = gt.length();
+				model.ngenes = gt.getNumberOfGenes();
+				model.chromosomes = gt.toSeq()
+					.map(jaxb.Marshaller(gt.getChromosome())).asList();
+
+				return model;
+			}
+
+			@Override
+			public Genotype unmarshal(final Model model) throws Exception {
+				final ISeq chs = Array.of(model.chromosomes)
+					.map(jaxb.Unmarshaller).toISeq();
+
+				return new Genotype(chs, model.ngenes);
+			}
+		}
+
+		public static final Adapter Adapter = new Adapter();
+	}
 }
-
-
-
-
-

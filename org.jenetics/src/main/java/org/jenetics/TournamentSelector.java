@@ -21,7 +21,6 @@ package org.jenetics;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.Random;
 
@@ -41,7 +40,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-09-16 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-03-07 $</em>
  */
 public class TournamentSelector<
 	G extends Gene<?, G>,
@@ -140,7 +139,7 @@ public class TournamentSelector<
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(_sampleSize).value();
+		return HashBuilder.of(getClass()).and(_sampleSize).value();
 	}
 
 	@Override
@@ -156,11 +155,19 @@ public class TournamentSelector<
 		return _sampleSize == selector._sampleSize;
 	}
 
+	/**
+	 * @deprecated Will be removed.
+	 */
+	@Deprecated
 	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
 	TournamentSelector<SG, SC> valueOf(final int sampleSize) {
 		return new TournamentSelector<>(sampleSize);
 	}
 
+	/**
+	 * @deprecated Will be removed.
+	 */
+	@Deprecated
 	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
 	TournamentSelector<SG, SC> valueOf() {
 		return new TournamentSelector<>();
@@ -172,8 +179,3 @@ public class TournamentSelector<
 	}
 
 }
-
-
-
-
-

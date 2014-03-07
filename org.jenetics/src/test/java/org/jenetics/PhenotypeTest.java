@@ -25,39 +25,43 @@ import static java.lang.Math.toRadians;
 import java.io.Serializable;
 import java.util.function.Function;
 
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.util.Factory;
 import org.jenetics.util.ObjectTester;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-10-04 $</em>
+ * @version <em>$Date: 2014-03-07 $</em>
  */
-public class PhenotypeTest extends ObjectTester<Phenotype<Float64Gene, Float64>> {
+public class PhenotypeTest extends ObjectTester<Phenotype<DoubleGene, Double>> {
 
 	private static final class FF
-		implements Function<Genotype<Float64Gene>, Float64>,
+		implements Function<Genotype<DoubleGene>, Double>,
 					Serializable
 	{
 		private static final long serialVersionUID = 2793605351118238308L;
-		@Override public Float64 apply(final Genotype<Float64Gene> genotype) {
-			final Float64Gene gene = genotype.getChromosome().getGene(0);
-			return Float64.valueOf(sin(toRadians(gene.doubleValue())));
+		@Override public Double apply(final Genotype<DoubleGene> genotype) {
+			final DoubleGene gene = genotype.getChromosome().getGene(0);
+			return sin(toRadians(gene.getAllele()));
 		}
 	}
 
-	private final Factory<Genotype<Float64Gene>> _genotype = Genotype.valueOf(
-			new Float64Chromosome(0, 1, 50),
-			new Float64Chromosome(0, 1, 500),
-			new Float64Chromosome(0, 1, 100),
-			new Float64Chromosome(0, 1, 50)
-		);
-	private final Function<Genotype<Float64Gene>, Float64> _ff = new FF();
+	private final Factory<Genotype<DoubleGene>> _genotype = Genotype.of(
+		DoubleChromosome.of(0, 1, 50),
+		DoubleChromosome.of(0, 1, 500),
+		DoubleChromosome.of(0, 1, 100),
+		DoubleChromosome.of(0, 1, 50)
+	);
+	private final Function<Genotype<DoubleGene>, Double> _ff = new FF();
+	private final Function<Double, Double> _scaler = functions.Identity();
+	private final Factory<Phenotype<DoubleGene, Double>>
+	_factory = new Factory<Phenotype<DoubleGene, Double>>() {
+		@Override public Phenotype<DoubleGene, Double> newInstance() {
+			return Phenotype.of(_genotype.newInstance(), _ff, _scaler, 0).evaluate();
+		}
+	};
 
-	@Override
-	protected Factory<Phenotype<Float64Gene, Float64>> getFactory() {
-		return () -> Phenotype.valueOf(_genotype.newInstance(), _ff, a -> a, 0);
+	@Override protected Factory<Phenotype<DoubleGene, Double>> getFactory() {
+		return _factory;
 	}
 
 }

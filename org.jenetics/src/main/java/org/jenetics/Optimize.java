@@ -27,7 +27,7 @@ import java.util.Comparator;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2013-11-01 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-03-07 $</em>
  */
 public enum Optimize {
 
@@ -77,8 +77,8 @@ public enum Optimize {
 	 * of <i>better</i> and <i>worse</i>.
 	 *
 	 * [code]
-	 * Population<Float64Gene, Float64> population = ...
-	 * population.populationSort(Optimize.MINIMUM.<Float64>descending());
+	 * Population<DoubleGene, Double> population = ...
+	 * population.sort(Optimize.MINIMUM.<Double>descending());
 	 * [/code]
 	 *
 	 * The code example above will populationSort the population according it's fitness
@@ -99,8 +99,8 @@ public enum Optimize {
 	 * of <i>better</i> and <i>worse</i>.
 	 *
 	 * [code]
-	 * Population<Float64Gene, Float64> population = ...
-	 * population.populationSort(Optimize.MINIMUM.<Float64>ascending());
+	 * Population<DoubleGene, Double> population = ...
+	 * population.sort(Optimize.MINIMUM.<Double>ascending());
 	 * [/code]
 	 *
 	 * The code example above will populationSort the population according it's fitness

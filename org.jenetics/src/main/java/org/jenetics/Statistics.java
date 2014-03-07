@@ -22,8 +22,7 @@ package org.jenetics;
 import static java.lang.Double.NaN;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
+import static org.jenetics.internal.util.object.eq;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -39,6 +38,8 @@ import javolution.xml.stream.XMLStreamException;
 import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.number.Integer64;
 
+import org.jenetics.internal.util.HashBuilder;
+
 import org.jenetics.stat.Variance;
 import org.jenetics.util.Accumulator;
 import org.jenetics.util.Accumulator.MinMax;
@@ -49,7 +50,7 @@ import org.jenetics.util.FinalReference;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2013-12-18 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-03-07 $</em>
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	implements
@@ -62,7 +63,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-12-18 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2014-03-07 $</em>
 	 */
 	public static class Builder<
 		G extends Gene<?, G>,
@@ -350,7 +351,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).
+		return HashBuilder.of(getClass()).
 				and(_optimize).
 				and(_generation).
 				and(_ageMean).
@@ -476,7 +477,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version @__version__@ &mdash; <em>$Date: 2013-12-18 $</em>
+	 * @version @__version__@ &mdash; <em>$Date: 2014-03-07 $</em>
 	 */
 	public static final class Time implements XMLSerializable {
 		private static final long serialVersionUID = 1L;
@@ -540,7 +541,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 		@Override
 		public int hashCode() {
-			return hashCodeOf(getClass()).
+			return HashBuilder.of(getClass()).
 					and(alter).
 					and(combine).
 					and(evaluation).
@@ -559,12 +560,12 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			}
 
 			final Statistics.Time time = (Statistics.Time)object;
-			return eq(alter, time.alter) &&
-					eq(combine, time.combine) &&
-					eq(evaluation, time.evaluation) &&
-					eq(execution, time.execution) &&
-					eq(selection, time.selection) &&
-					eq(statistics, time.statistics);
+			return eq(alter.get(), time.alter.get()) &&
+					eq(combine.get(), time.combine.get()) &&
+					eq(evaluation.get(), time.evaluation.get()) &&
+					eq(execution.get(), time.execution.get()) &&
+					eq(selection.get(), time.selection.get()) &&
+					eq(statistics.get(), time.statistics.get());
 		}
 
 		@Override
@@ -585,6 +586,10 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 			return out.toString();
 		}
+
+		/* ********************************************************************
+		 *  XML object serialization
+		 * ********************************************************************/
 
 		static final XMLFormat<Statistics.Time> XML =
 			new XMLFormat<Statistics.Time>(Statistics.Time.class)
@@ -632,7 +637,12 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			public void read(final InputElement xml, final Statistics.Time p) {
 			}
 		};
-	}
+
+		private static String fd(final Measurable<Duration> duration) {
+			return String.format("%d ns", duration.longValue(SI.NANO(SI.SECOND)));
+		}
+
+ 	}
 
 
 	/**
@@ -641,7 +651,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-12-18 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2014-03-07 $</em>
 	 */
 	public static class Calculator<
 		G extends Gene<?, G>,
@@ -694,6 +704,3 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	}
 
 }
-
-
-

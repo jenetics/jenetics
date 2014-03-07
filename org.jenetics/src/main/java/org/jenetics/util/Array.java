@@ -51,7 +51,7 @@ import javolution.util.FastList;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2013-12-18 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-03-07 $</em>
  *
  */
 //@Deprecated
@@ -527,7 +527,7 @@ public final class Array<T>
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
 	@SafeVarargs
-	public static <T> Array<T> valueOf(final T... values) {
+	public static <T> Array<T> of(final T... values) {
 		Array<T> array = empty();
 		if (values.length > 0) {
 			array = new Array<>(values.length);
@@ -538,13 +538,22 @@ public final class Array<T>
 	}
 
 	/**
+	 * @deprecated Use {@link #of(Object[])} instead.
+	 */
+	@Deprecated
+	@SafeVarargs
+	public static <T> Array<T> valueOf(final T... values) {
+		return of(values);
+	}
+
+	/**
 	 * Create a new Array from the values of the given {@code Collection}. The
 	 * order of the elements are determined by the iterator of the Collection.
 	 *
 	 * @param values the array values.
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
-	public static <T> Array<T> valueOf(final Collection<? extends T> values) {
+	public static <T> Array<T> of(final Collection<? extends T> values) {
 		Array<T> array = empty();
 		if (!values.isEmpty()) {
 			array = new Array<>(values.size());
@@ -560,12 +569,20 @@ public final class Array<T>
 	}
 
 	/**
+	 * @deprecated Use {@link #of(java.util.Collection)} instead.
+	 */
+	@Deprecated
+	public static <T> Array<T> valueOf(final Collection<? extends T> values) {
+		return of(values);
+	}
+
+	/**
 	 * Create a new Array from the values of the given {@code Seq}.
 	 *
 	 * @param values the array values.
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
-	public static <T> Array<T> valueOf(final Seq<T> values) {
+	public static <T> Array<T> of(final Seq<T> values) {
 		Array<T> array = empty();
 		if (values.length() > 0) {
 			if (values instanceof Array<?>) {
@@ -582,6 +599,14 @@ public final class Array<T>
 		}
 
 		return array;
+	}
+
+	/**
+	 * @deprecated Use {@link #of(Seq)} instead.
+	 */
+	@Deprecated
+	public static <T> Array<T> valueOf(final Seq<T> values) {
+		return of(values);
 	}
 
 	/**
@@ -817,14 +842,3 @@ public final class Array<T>
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-

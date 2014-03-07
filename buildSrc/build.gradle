@@ -17,13 +17,13 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
- 
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.5 &mdash; <em>$Date: 2013-11-25 $</em>
- */ 
- 
+ * @version 1.5 &mdash; <em>$Date: 2014-02-15 $</em>
+ */
+
 apply plugin: 'java'
 apply plugin: 'groovy'
 apply plugin: 'eclipse'

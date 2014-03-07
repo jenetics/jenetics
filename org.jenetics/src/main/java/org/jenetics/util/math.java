@@ -29,7 +29,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2013-12-18 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-03-07 $</em>
  */
 public final class math extends StaticObject {
 	private math() {}
@@ -519,7 +519,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.3
-	 * @version 1.3 &mdash; <em>$Date: 2013-12-18 $</em>
+	 * @version 1.3 &mdash; <em>$Date: 2014-03-07 $</em>
 	 */
 	public static final class statistics extends StaticObject {
 		private statistics() {}
@@ -616,7 +616,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.2 &mdash; <em>$Date: 2013-12-18 $</em>
+	 * @version 1.2 &mdash; <em>$Date: 2014-03-07 $</em>
 	 */
 	public static final class random extends StaticObject {
 		private random() {}
@@ -860,7 +860,3 @@ public final class math extends StaticObject {
 	}
 
 }
-
-
-
-

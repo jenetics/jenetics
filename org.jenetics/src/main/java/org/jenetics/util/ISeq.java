@@ -31,7 +31,7 @@ import javolution.lang.Immutable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2013-10-17 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-03-07 $</em>
  */
 public interface ISeq<T>
 	extends
@@ -86,8 +86,3 @@ public interface ISeq<T>
 	}
 
 }
-
-
-
-
-

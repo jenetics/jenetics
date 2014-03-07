@@ -25,7 +25,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.DataProvider;
@@ -36,10 +35,10 @@ import org.jenetics.util.lists;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-08-30 $</em>
+ * @version <em>$Date: 2014-02-15 $</em>
  */
 public abstract class ProbabilitySelectorTester<
-	S extends ProbabilitySelector<Float64Gene, Float64>
+	S extends ProbabilitySelector<DoubleGene, Double>
 >
 	extends SelectorTester<S>
 {
@@ -121,7 +120,7 @@ public abstract class ProbabilitySelectorTester<
 
 	@Test
 	public void probabilities() {
-		final Population<Float64Gene, Float64> population = TestUtils.newFloat64Population(100);
+		final Population<DoubleGene, Double> population = TestUtils.newDoublePopulation(100);
 		lists.shuffle(population, new Random(System.currentTimeMillis()));
 
 		final S selector = getFactory().newInstance();

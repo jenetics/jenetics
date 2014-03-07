@@ -34,8 +34,9 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-12-18 $</em>
+ * @version <em>$Date: 2014-03-07 $</em>
  */
+@SuppressWarnings("deprecation")
 public class ArrayTest extends ObjectTester<Array<Double>> {
 
 	private final Random _random = new Random();
@@ -621,30 +622,30 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 
 	@Test
 	public void append1() {
-		final Array<Integer> a1 = Array.valueOf(0, 1, 2, 3, 4, 5);
-		final Array<Integer> a2 = Array.valueOf(6, 7, 8, 9, 10);
+		final Array<Integer> a1 = Array.of(0, 1, 2, 3, 4, 5);
+		final Array<Integer> a2 = Array.of(6, 7, 8, 9, 10);
 		final Array<Integer> a3 = a1.add(a2);
 
 		Assert.assertEquals(a3.length(), 11);
 		Assert.assertEquals(a3,
-				Array.valueOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+				Array.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 			);
 	}
 
 	@Test
 	public void append2() {
-		final Array<Integer> a1 = Array.valueOf(0, 1, 2, 3, 4, 5);
+		final Array<Integer> a1 = Array.of(0, 1, 2, 3, 4, 5);
 		final Array<Integer> a3 = a1.add(Arrays.asList(6, 7, 8, 9, 10));
 
 		Assert.assertEquals(a3.length(), 11);
 		Assert.assertEquals(a3,
-				Array.valueOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+				Array.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 			);
 	}
 
 	@Test
 	public void append3() {
-		final Array<Integer> a1 = Array.valueOf(0, 1, 2, 3, 4, 5);
+		final Array<Integer> a1 = Array.of(0, 1, 2, 3, 4, 5);
 		final Array<Integer> a2 = a1.add(6);
 		final Array<Integer> a3 = a1.add(6);
 
@@ -732,7 +733,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	@Test
 	public void iterator() {
 		final List<Integer> list = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 0);
-		final Array<Integer> array = Array.valueOf(list);
+		final Array<Integer> array = Array.of(list);
 
 		final Iterator<Integer> ai = array.iterator();
 		for (Integer i : list) {
@@ -769,13 +770,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 		for (int i = 0; i < oa.length; ++i) {
 			Assert.assertEquals(oa[i], array.get(i));
 		}
-		Assert.assertEquals(Array.valueOf(oa), array);
+		Assert.assertEquals(Array.of(oa), array);
 	}
 
 }
-
-
-
-
-
-

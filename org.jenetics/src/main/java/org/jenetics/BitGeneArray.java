@@ -28,7 +28,7 @@ import org.jenetics.util.bit;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-12-18 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2014-03-07 $</em>
  */
 final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 
@@ -53,7 +53,7 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.4
-	 * @version 1.4 &mdash; <em>$Date: 2013-12-18 $</em>
+	 * @version 1.4 &mdash; <em>$Date: 2014-03-07 $</em>
 	 */
 	static final class BitGeneISeq extends ArrayProxyISeq<BitGene> {
 		public BitGeneISeq(final Proxy proxy) {
@@ -75,7 +75,7 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.4
-	 * @version 1.4 &mdash; <em>$Date: 2013-12-18 $</em>
+	 * @version 1.4 &mdash; <em>$Date: 2014-03-07 $</em>
 	 */
 	static final class Proxy extends ArrayProxy<BitGene> {
 		private byte[] _array;
@@ -92,7 +92,7 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 
 		@Override
 		public BitGene __get(final int absoluteIndex) {
-			return BitGene.valueOf(bit.get(_array, absoluteIndex));
+			return BitGene.of(bit.get(_array, absoluteIndex));
 		}
 
 		@Override

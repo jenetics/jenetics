@@ -26,8 +26,11 @@ import java.util.function.Supplier;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2013-10-04 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-03-07 $</em>
+ *
+ * @deprecated Will be (re)moved; internal use only.
  */
+@Deprecated
 public final class factories extends StaticObject {
 	private factories() {}
 

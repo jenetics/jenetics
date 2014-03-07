@@ -26,13 +26,22 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Consumer;
 
+import javax.measure.Measurable;
+import javax.measure.quantity.Duration;
+import javax.measure.unit.SI;
+
+import org.jenetics.internal.util.DefaultHashCodeBuilder;
+
 /**
  * Some helper methods for creating hash codes and comparing values.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.3 &mdash; <em>$Date: 2014-02-27 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2014-03-07 $</em>
+ *
+ * @deprecated Will be (re)moved; internal use only.
  */
+@Deprecated
 public final class object extends StaticObject {
 	private object() {}
 
@@ -162,7 +171,10 @@ public final class object extends StaticObject {
 	 *
 	 * @param type the type the HashCodeBuilder is created for.
 	 * @return a new HashCodeBuilder.
+	 *
+	 * @deprecated Will be (re)moved; internal use only.
 	 */
+	@Deprecated
 	public static HashCodeBuilder hashCodeOf(final Class<?> type) {
 		return new DefaultHashCodeBuilder(type);
 	}
@@ -383,6 +395,14 @@ public final class object extends StaticObject {
 		return (a != null ? a.equals(b) : b == null);
 	}
 
+	public static boolean eq(final Measurable<Duration> a, final Measurable<Duration> b) {
+		if (a == null && b == null) {
+			return true;
+		}
+		return a != null && b != null &&
+			a.longValue(SI.NANO(SI.SECOND)) == b.longValue(SI.NANO(SI.SECOND));
+	}
+
 	/**
 	 * Compares the two given {@code Object} arrays.
 	 *
@@ -408,5 +428,3 @@ public final class object extends StaticObject {
 	}
 
 }
-
-

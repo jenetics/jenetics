@@ -31,7 +31,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-11-18 $</em>
+ * @version <em>$Date: 2014-02-15 $</em>
  */
 public class MeanTest extends MappedAccumulatorTester<Mean<Double>> {
 
@@ -70,8 +70,3 @@ public class MeanTest extends MappedAccumulatorTester<Mean<Double>> {
 	}
 
 }
-
-
-
-
-

@@ -19,15 +19,17 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.object.CheckRange;
-import static org.jenetics.util.object.NonNull;
+import static org.jenetics.internal.util.object.CheckRange;
+import static org.jenetics.internal.util.object.NonNull;
+import static org.jenetics.internal.util.object.Verify;
+import static org.jenetics.util.functions.not;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-08 $</em>
+ * @version <em>$Date: 2014-03-07 $</em>
  */
 public class objectTest {
 
@@ -101,8 +103,3 @@ public class objectTest {
 	}
 
 }
-
-
-
-
-

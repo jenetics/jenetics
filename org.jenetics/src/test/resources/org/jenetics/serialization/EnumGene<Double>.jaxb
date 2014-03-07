@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<org.jenetics.EnumGene length="5" allele-index="0">
+    <java.lang.Double value="0.27251556008507416"/>
+    <java.lang.Double value="0.003140816229067145"/>
+    <java.lang.Double value="0.43947528327497376"/>
+    <java.lang.Double value="0.10654807463069327"/>
+    <java.lang.Double value="0.19696530915810317"/>
+</org.jenetics.EnumGene>

@@ -27,8 +27,6 @@ import static org.testng.Assert.assertTrue;
 
 import java.util.Random;
 
-import javolution.context.LocalContext;
-
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -37,29 +35,27 @@ import org.jenetics.stat.UniformDistribution;
 import org.jenetics.util.CharSeq;
 import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-08-29 $</em>
+ * @version <em>$Date: 2014-02-17 $</em>
  */
 public class CharacterGeneTest extends GeneTester<CharacterGene> {
 
-	private final Factory<CharacterGene> _factory = CharacterGene.valueOf();
+	private final Factory<CharacterGene> _factory = CharacterGene.of();
 	@Override protected Factory<CharacterGene> getFactory() {
 		return _factory;
 	}
 
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstanceDistribution() {
-		LocalContext.enter();
-		try {
-			RandomRegistry.setRandom(new Random(12345));
-
+		try (Scoped<Random> s = RandomRegistry.scope(new Random(12345))) {
 			final CharSeq characters = new CharSeq("0123456789");
 
-			final Factory<CharacterGene> factory = CharacterGene.valueOf(characters);
+			final Factory<CharacterGene> factory = CharacterGene.of(characters);
 
-			final Histogram<Long> histogram = Histogram.valueOf(0L, 10L, 10);
+			final Histogram<Long> histogram = Histogram.of(0L, 10L, 10);
 
 			final int samples = 100000;
 			for (int i = 0; i < samples; ++i) {
@@ -72,36 +68,34 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 			}
 
 			assertDistribution(histogram, new UniformDistribution<>(0L, 10L));
-		} finally {
-			LocalContext.exit();
 		}
 	}
 
     @Test
     public void testCharacterGene() {
-        CharacterGene gene = CharacterGene.valueOf();
+        CharacterGene gene = CharacterGene.of();
         assertTrue(gene.isValidCharacter(gene.getAllele()));
     }
 
     @Test
     public void testCharacterGeneCharacter() {
-        CharacterGene gene = CharacterGene.valueOf('4');
+        CharacterGene gene = CharacterGene.of('4');
 
         assertEquals(new Character('4'), gene.getAllele());
     }
 
     @Test
     public void testGetCharacter() {
-        CharacterGene gene = CharacterGene.valueOf('6');
+        CharacterGene gene = CharacterGene.of('6');
 
         assertEquals(new Character('6'), gene.getAllele());
     }
 
     @Test
     public void testCompareTo() {
-        CharacterGene g1 = CharacterGene.valueOf('1');
-        CharacterGene g2 = CharacterGene.valueOf('2');
-        CharacterGene g3 = CharacterGene.valueOf('3');
+        CharacterGene g1 = CharacterGene.of('1');
+        CharacterGene g2 = CharacterGene.of('2');
+        CharacterGene g3 = CharacterGene.of('3');
 
         assertTrue(g1.compareTo(g2) < 0);
         assertTrue(g2.compareTo(g3) < 0);
@@ -112,7 +106,7 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
     @Test
     public void testIsValidCharacter() {
         for (Character c : CharacterGene.DEFAULT_CHARACTERS) {
-            assertTrue(CharacterGene.valueOf(c).isValidCharacter(c));
+            assertTrue(CharacterGene.of(c).isValidCharacter(c));
         }
     }
 
@@ -124,7 +118,3 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
     }
 
 }
-
-
-
-

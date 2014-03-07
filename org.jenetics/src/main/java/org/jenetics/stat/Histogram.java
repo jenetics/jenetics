@@ -67,7 +67,7 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-12-18 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-03-07 $</em>
  */
 public class Histogram<C> extends AbstractAccumulator<C> {
 
@@ -337,7 +337,7 @@ public class Histogram<C> extends AbstractAccumulator<C> {
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).
+		return HashBuilder.of(getClass()).
 				and(super.hashCode()).
 				and(_separators).
 				and(_histogram).value();
@@ -378,9 +378,28 @@ public class Histogram<C> extends AbstractAccumulator<C> {
 	 * @return a new Histogram.
 	 * @throws NullPointerException if the {@code separators} are {@code null}.
 	 * @throws IllegalArgumentException if {@code separators.length == 0}.
+	 *
+	 * @deprecated Use {@link #of(Comparable[])} instead.
 	 */
+	@Deprecated
 	@SuppressWarnings("unchecked")
 	public static <C extends Comparable<? super C>> Histogram<C> valueOf(
+		final C... separators
+	) {
+		return new Histogram<C>(COMPARATOR, separators);
+	}
+
+	/**
+	 * Create a new Histogram with the given class separators. The classes are
+	 * sorted by its natural order.
+	 *
+	 * @param separators the class separators.
+	 * @return a new Histogram.
+	 * @throws NullPointerException if the {@code separators} are {@code null}.
+	 * @throws IllegalArgumentException if {@code separators.length == 0}.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <C extends Comparable<? super C>> Histogram<C> of(
 		final C... separators
 	) {
 		return new Histogram<C>(COMPARATOR, separators);
@@ -391,7 +410,7 @@ public class Histogram<C> extends AbstractAccumulator<C> {
 
 
 	/**
-	 * Return a <i>histogram</i> for {@link Float64} values. The <i>histogram</i>
+	 * Return a <i>histogram</i> for {@link Double} values. The <i>histogram</i>
 	 * array of the returned {@link Histogram} will look like this:
 	 *
 	 * <pre>
@@ -407,10 +426,12 @@ public class Histogram<C> extends AbstractAccumulator<C> {
 	 * @param max the maximum range value of the returned histogram.
 	 * @param nclasses the number of classes of the returned histogram. The
 	 *        number of separators will be {@code nclasses - 1}.
-	 * @return a new <i>histogram</i> for {@link Float64} values.
+	 * @return a new <i>histogram</i> for {@link Double} values.
 	 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
 	 * @throws IllegalArgumentException if {@code min.compareTo(max) >= 0} or
 	 *         {@code nclasses < 2}.
+	 *
+	 * @deprecated Use {@link #of(Double, Double, int)} instead.
 	 */
 	public static Histogram<Float64> valueOf(
 		final Float64 min,
@@ -432,7 +453,37 @@ public class Histogram<C> extends AbstractAccumulator<C> {
 		final Double max,
 		final int nclasses
 	) {
-		return valueOf(toSeparators(min, max, nclasses));
+		return of(toSeparators(min, max, nclasses));
+	}
+
+	/**
+	 * Return a <i>histogram</i> for {@link Double} values. The <i>histogram</i>
+	 * array of the returned {@link Histogram} will look like this:
+	 *
+	 * <pre>
+	 *    min                            max
+	 *     +----+----+----+----+  ~  +----+
+	 *     | 1  | 2  | 3  | 4  |     | nc |
+	 *     +----+----+----+----+  ~  +----+
+	 * </pre>
+	 *
+	 * The range of all classes will be equal: {@code (max - min)/nclasses}.
+	 *
+	 * @param min the minimum range value of the returned histogram.
+	 * @param max the maximum range value of the returned histogram.
+	 * @param nclasses the number of classes of the returned histogram. The
+	 *        number of separators will be {@code nclasses - 1}.
+	 * @return a new <i>histogram</i> for {@link Double} values.
+	 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
+	 * @throws IllegalArgumentException if {@code min.compareTo(max) >= 0} or
+	 *         {@code nclasses < 2}.
+	 */
+	public static Histogram<Double> of(
+		final Double min,
+		final Double max,
+		final int nclasses
+	) {
+		return of(toSeparators(min, max, nclasses));
 	}
 
 	private static Double[] toSeparators(
@@ -452,7 +503,39 @@ public class Histogram<C> extends AbstractAccumulator<C> {
 	}
 
 	/**
-	 * Return a <i>histogram</i> for {@link Integer64} values. The <i>histogram</i>
+	 * @deprecated Use {@link #of(Double, Double, int)} instead.
+	 */
+	@Deprecated
+	public static Histogram<Float64> valueOf(
+		final Float64 min,
+		final Float64 max,
+		final int nclasses
+	) {
+		return of(arrays.map(
+			toSeparators(min.doubleValue(), max.doubleValue(), nclasses),
+			new Float64[nclasses - 1],
+			DoubleToFloat64
+		));
+	}
+
+	/**
+	 * @deprecated Use {@link #of(Long, Long, int)} instead.
+	 */
+	@Deprecated
+	public static Histogram<Integer64> valueOf(
+		final Integer64 min,
+		final Integer64 max,
+		final int nclasses
+	) {
+		return of(arrays.map(
+			toSeparators(min.longValue(), max.longValue(), nclasses),
+			new Integer64[0],
+			LongToInteger64
+		));
+	}
+
+	/**
+	 * Return a <i>histogram</i> for {@link Long} values. The <i>histogram</i>
 	 * array of the returned {@link Histogram} will look like this:
 	 *
 	 * <pre>
@@ -481,14 +564,14 @@ public class Histogram<C> extends AbstractAccumulator<C> {
 	 * @param max the maximum range value of the returned histogram.
 	 * @param nclasses the number of classes of the returned histogram. The
 	 *        number of separators will be {@code nclasses - 1}.
-	 * @return a new <i>histogram</i> for {@link Integer64} values.
+	 * @return a new <i>histogram</i> for {@link Long} values.
 	 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
 	 * @throws IllegalArgumentException if {@code min.compareTo(max) >= 0} or
 	 *         {@code nclasses < 2}.
 	 */
-	public static Histogram<Integer64> valueOf(
-		final Integer64 min,
-		final Integer64 max,
+	public static Histogram<Long> of(
+		final Long min,
+		final Long max,
 		final int nclasses
 	) {
 		return valueOf(arrays.map(
@@ -499,14 +582,15 @@ public class Histogram<C> extends AbstractAccumulator<C> {
 	}
 
 	/**
-	 * @see #valueOf(Integer64, Integer64, int)
+	 * @deprecated Use {@link #of(Long, Long, int)} instead.
 	 */
+	@Deprecated
 	public static Histogram<Long> valueOf(
 		final Long min,
 		final Long max,
 		final int nclasses
 	) {
-		return valueOf(toSeparators(min, max, nclasses));
+		return of(toSeparators(min, max, nclasses));
 	}
 
 	private static Long[] toSeparators(
@@ -573,13 +657,3 @@ public class Histogram<C> extends AbstractAccumulator<C> {
 	}
 
 }
-
-
-
-
-
-
-
-
-
-

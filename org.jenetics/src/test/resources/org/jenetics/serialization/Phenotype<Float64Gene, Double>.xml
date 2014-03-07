@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<org.jenetics.Phenotype generation="485166348">
+	<org.jenetics.Genotype length="5" ngenes="100">
+		<org.jenetics.Float64Chromosome length="20" min="0.0" max="1.0">
+			<org.jscience.mathematics.number.Float64 value="0.0031408162290671449"/>
+			<org.jscience.mathematics.number.Float64 value="0.43947528327497376"/>
+			<org.jscience.mathematics.number.Float64 value="0.10654807463069327"/>
+			<org.jscience.mathematics.number.Float64 value="0.19696530915810317"/>
+			<org.jscience.mathematics.number.Float64 value="0.74500038380655376"/>
+			<org.jscience.mathematics.number.Float64 value="0.55944169692713586"/>
+			<org.jscience.mathematics.number.Float64 value="0.02823782430152355"/>
+			<org.jscience.mathematics.number.Float64 value="0.57411023150107887"/>
+			<org.jscience.mathematics.number.Float64 value="0.45336510413671438"/>
+			<org.jscience.mathematics.number.Float64 value="0.81114814180036698"/>
+			<org.jscience.mathematics.number.Float64 value="0.5710456351848858"/>
+			<org.jscience.mathematics.number.Float64 value="0.30166768355230955"/>
+			<org.jscience.mathematics.number.Float64 value="0.5455492865240272"/>
+			<org.jscience.mathematics.number.Float64 value="0.21068427527733102"/>
+			<org.jscience.mathematics.number.Float64 value="0.5265067943902246"/>
+			<org.jscience.mathematics.number.Float64 value="0.273549098065591"/>
+			<org.jscience.mathematics.number.Float64 value="0.26481973792971258"/>
+			<org.jscience.mathematics.number.Float64 value="0.8732775776362911"/>
+			<org.jscience.mathematics.number.Float64 value="0.9498003919007005"/>
+			<org.jscience.mathematics.number.Float64 value="0.18390258154466066"/>
+		</org.jenetics.Float64Chromosome>
+		<org.jenetics.Float64Chromosome length="20" min="0.0" max="1.0">
+			<org.jscience.mathematics.number.Float64 value="0.36137605952663554"/>
+			<org.jscience.mathematics.number.Float64 value="0.6187317752729355"/>
+			<org.jscience.mathematics.number.Float64 value="0.49634528087090857"/>
+			<org.jscience.mathematics.number.Float64 value="0.26713315249369174"/>
+			<org.jscience.mathematics.number.Float64 value="0.86085276153165746"/>
+			<org.jscience.mathematics.number.Float64 value="0.69614018373853548"/>
+			<org.jscience.mathematics.number.Float64 value="0.7867353090218838"/>
+			<org.jscience.mathematics.number.Float64 value="0.92879344762177918"/>
+			<org.jscience.mathematics.number.Float64 value="0.88169871467825889"/>
+			<org.jscience.mathematics.number.Float64 value="0.22562797997552053"/>
+			<org.jscience.mathematics.number.Float64 value="0.71842966388522567"/>
+			<org.jscience.mathematics.number.Float64 value="0.08910077094649615"/>
+			<org.jscience.mathematics.number.Float64 value="0.12372939147690265"/>
+			<org.jscience.mathematics.number.Float64 value="0.29862523743778357"/>
+			<org.jscience.mathematics.number.Float64 value="0.005858419240857726"/>
+			<org.jscience.mathematics.number.Float64 value="0.2028743625801428"/>
+			<org.jscience.mathematics.number.Float64 value="0.9533383540379163"/>
+			<org.jscience.mathematics.number.Float64 value="0.10057170935437787"/>
+			<org.jscience.mathematics.number.Float64 value="0.84906214623405307"/>
+			<org.jscience.mathematics.number.Float64 value="0.014705556977227419"/>
+		</org.jenetics.Float64Chromosome>
+		<org.jenetics.Float64Chromosome length="20" min="0.0" max="1.0">
+			<org.jscience.mathematics.number.Float64 value="0.95592889608075438"/>
+			<org.jscience.mathematics.number.Float64 value="0.40041398300425834"/>
+			<org.jscience.mathematics.number.Float64 value="0.81174583116827259"/>
+			<org.jscience.mathematics.number.Float64 value="0.6452739732657262"/>
+			<org.jscience.mathematics.number.Float64 value="0.38667203662437744"/>
+			<org.jscience.mathematics.number.Float64 value="0.6638674265619968"/>
+			<org.jscience.mathematics.number.Float64 value="0.7195876970971453"/>
+			<org.jscience.mathematics.number.Float64 value="0.16016697763956089"/>
+			<org.jscience.mathematics.number.Float64 value="0.021507002503379447"/>
+			<org.jscience.mathematics.number.Float64 value="0.14110067290534944"/>
+			<org.jscience.mathematics.number.Float64 value="0.9654491715284181"/>
+			<org.jscience.mathematics.number.Float64 value="0.06751151075691508"/>
+			<org.jscience.mathematics.number.Float64 value="0.27105075867740713"/>
+			<org.jscience.mathematics.number.Float64 value="0.07817708505334009"/>
+			<org.jscience.mathematics.number.Float64 value="0.27532057363677054"/>
+			<org.jscience.mathematics.number.Float64 value="0.5344938137376007"/>
+			<org.jscience.mathematics.number.Float64 value="0.16569494948347963"/>
+			<org.jscience.mathematics.number.Float64 value="0.4217268114331285"/>
+			<org.jscience.mathematics.number.Float64 value="0.9931119530206538"/>
+			<org.jscience.mathematics.number.Float64 value="0.07181417885222796"/>
+		</org.jenetics.Float64Chromosome>
+		<org.jenetics.Float64Chromosome length="20" min="0.0" max="1.0">
+			<org.jscience.mathematics.number.Float64 value="0.6864725531986664"/>
+			<org.jscience.mathematics.number.Float64 value="0.50325112514376769"/>
+			<org.jscience.mathematics.number.Float64 value="0.0034708504158957876"/>
+			<org.jscience.mathematics.number.Float64 value="0.7847872617818259"/>
+			<org.jscience.mathematics.number.Float64 value="0.2045482093721358"/>
+			<org.jscience.mathematics.number.Float64 value="0.5660002182949364"/>
+			<org.jscience.mathematics.number.Float64 value="0.57446738583055978"/>
+			<org.jscience.mathematics.number.Float64 value="0.58039733264946269"/>
+			<org.jscience.mathematics.number.Float64 value="0.934651393360306"/>
+			<org.jscience.mathematics.number.Float64 value="0.6546789010130398"/>
+			<org.jscience.mathematics.number.Float64 value="0.9453246742864989"/>
+			<org.jscience.mathematics.number.Float64 value="0.30979427631051304"/>
+			<org.jscience.mathematics.number.Float64 value="0.71030862144109697"/>
+			<org.jscience.mathematics.number.Float64 value="0.7169264428408057"/>
+			<org.jscience.mathematics.number.Float64 value="0.0066313995193600928"/>
+			<org.jscience.mathematics.number.Float64 value="0.691606909398313"/>
+			<org.jscience.mathematics.number.Float64 value="0.07826529310022745"/>
+			<org.jscience.mathematics.number.Float64 value="0.40301805596401108"/>
+			<org.jscience.mathematics.number.Float64 value="0.38975409862318666"/>
+			<org.jscience.mathematics.number.Float64 value="0.70884842456198038"/>
+		</org.jenetics.Float64Chromosome>
+		<org.jenetics.Float64Chromosome length="20" min="0.0" max="1.0">
+			<org.jscience.mathematics.number.Float64 value="0.6240503686817267"/>
+			<org.jscience.mathematics.number.Float64 value="0.8831656777131493"/>
+			<org.jscience.mathematics.number.Float64 value="0.4946607830200207"/>
+			<org.jscience.mathematics.number.Float64 value="0.5722781881777812"/>
+			<org.jscience.mathematics.number.Float64 value="0.07160814381576341"/>
+			<org.jscience.mathematics.number.Float64 value="0.19536217528318534"/>
+			<org.jscience.mathematics.number.Float64 value="0.0966306163824735"/>
+			<org.jscience.mathematics.number.Float64 value="0.3728496357089057"/>
+			<org.jscience.mathematics.number.Float64 value="0.31001014089117085"/>
+			<org.jscience.mathematics.number.Float64 value="0.8990896827483752"/>
+			<org.jscience.mathematics.number.Float64 value="0.9979461770818101"/>
+			<org.jscience.mathematics.number.Float64 value="0.82764104486414536"/>
+			<org.jscience.mathematics.number.Float64 value="0.92255201690377109"/>
+			<org.jscience.mathematics.number.Float64 value="0.7956638891616807"/>
+			<org.jscience.mathematics.number.Float64 value="0.44810666994579518"/>
+			<org.jscience.mathematics.number.Float64 value="0.5704600921077769"/>
+			<org.jscience.mathematics.number.Float64 value="0.5965616171402119"/>
+			<org.jscience.mathematics.number.Float64 value="0.42835500006515415"/>
+			<org.jscience.mathematics.number.Float64 value="0.34863781512120773"/>
+			<org.jscience.mathematics.number.Float64 value="0.2861109633406351"/>
+		</org.jenetics.Float64Chromosome>
+	</org.jenetics.Genotype>
+	<fitness class="java.lang.Double" value="0.09451391095074157"/>
+	<raw-fitness class="java.lang.Double" value="0.09451391095074157"/>
+</org.jenetics.Phenotype>

@@ -32,7 +32,7 @@ import java.util.function.Function;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2013-12-18 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-03-07 $</em>
  */
 public final class arrays extends StaticObject {
 	private arrays() {}
@@ -509,6 +509,3 @@ public final class arrays extends StaticObject {
 	}
 
 }
-
-
-
