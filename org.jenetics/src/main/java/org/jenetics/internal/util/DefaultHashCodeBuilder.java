@@ -23,7 +23,6 @@ import java.util.Arrays;
 
 import org.jenetics.util.HashCodeBuilder;
 import org.jenetics.util.Seq;
-import org.jenetics.util.arrays;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

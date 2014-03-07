@@ -24,8 +24,6 @@ import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.object.eq;
-import static org.jenetics.util.functions.DoubleToFloat64;
-import static org.jenetics.util.functions.LongToInteger64;
 import static org.jenetics.util.math.statistics.sum;
 
 import java.io.IOException;
@@ -34,13 +32,10 @@ import java.util.Comparator;
 import java.util.function.Function;
 
 import org.jscience.mathematics.number.Float64;
-import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.util.AbstractAccumulator;
-import org.jenetics.util.Accumulator;
-import org.jenetics.util.arrays;
 
 /**
  * To create an <i>Histogram Accumulator</i> you have to define the <i>class

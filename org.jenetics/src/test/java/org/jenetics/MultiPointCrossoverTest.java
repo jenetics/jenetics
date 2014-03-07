@@ -31,7 +31,6 @@ import org.testng.annotations.Test;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.CharSeq;
-import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
 import org.jenetics.util.math;

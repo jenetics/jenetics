@@ -20,7 +20,6 @@
 package org.jenetics.util;
 
 import static java.lang.String.format;
-import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.object.eq;
 
 import org.jenetics.internal.util.HashBuilder;
@@ -32,7 +31,7 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date$</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-03-07 $</em>
  */
 public abstract class AbstractAccumulator<T>
 	implements

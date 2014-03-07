@@ -19,8 +19,6 @@
  */
 package org.jenetics.util;
 
-import org.jenetics.internal.util.HashBuilder;
-
 /**
  * Interface for building hash codes.
  * <p/>

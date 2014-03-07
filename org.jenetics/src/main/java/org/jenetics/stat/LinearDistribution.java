@@ -31,7 +31,6 @@ import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.internal.util.HashBuilder;
 
-import java.util.function.Function;
 import org.jenetics.util.Range;
 
 

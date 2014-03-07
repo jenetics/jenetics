@@ -20,9 +20,6 @@
 package org.jenetics;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.Integer64Gene.Value;
-import static org.jenetics.internal.util.model.Integer64Model.Marshaller;
-import static org.jenetics.internal.util.model.Integer64Model.Unmarshaller;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -51,7 +48,6 @@ import org.jenetics.internal.util.model.ValueType;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
-import java.util.function.Function;
 import org.jenetics.util.ISeq;
 
 

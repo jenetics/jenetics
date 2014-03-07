@@ -25,7 +25,6 @@ import java.util.function.Function;
 import org.jenetics.BoltzmannSelector;
 import org.jenetics.CharacterChromosome;
 import org.jenetics.CharacterGene;
-import org.jenetics.Chromosome;
 import org.jenetics.DoubleGene;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;

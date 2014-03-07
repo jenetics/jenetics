@@ -24,11 +24,10 @@ import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2013-11-12 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-03-07 $</em>
  * @since @__version__@
  */
 public interface PopulationStatistics<

@@ -25,9 +25,6 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jscience.mathematics.number.Float64;
-import org.jscience.mathematics.number.Integer64;
-
 import org.jenetics.util.Factory;
 import org.jenetics.util.MappedAccumulatorTester;
 import org.jenetics.util.RandomRegistry;

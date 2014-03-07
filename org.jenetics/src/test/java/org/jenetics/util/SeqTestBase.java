@@ -22,8 +22,6 @@ package org.jenetics.util;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 import org.testng.Assert;
@@ -32,7 +30,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-10 $</em>
+ * @version <em>$Date: 2014-03-07 $</em>
  */
 public abstract class SeqTestBase {
 

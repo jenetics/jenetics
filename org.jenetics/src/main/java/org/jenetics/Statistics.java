@@ -24,11 +24,8 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.object.eq;
 
-import java.text.NumberFormat;
-import java.text.ParseException;
 import java.time.Duration;
 import java.time.format.DateTimeParseException;
-import java.util.Locale;
 
 import javolution.lang.Immutable;
 import javolution.xml.XMLFormat;

@@ -19,11 +19,6 @@
  */
 package org.jenetics.internal.util;
 
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Function;
-
-import org.testng.annotations.Test;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version @__version__@ &mdash; <em>$Date: 2014-03-07 $</em>

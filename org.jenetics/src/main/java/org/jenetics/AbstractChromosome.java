@@ -21,15 +21,14 @@ package org.jenetics;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.object.Verify;
 import static org.jenetics.internal.util.object.eq;
 
 import java.util.Iterator;
 import java.util.RandomAccess;
-import java.util.function.Function;
 
 import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.internal.util.cast;
+
 import org.jenetics.util.ISeq;
 
 /**

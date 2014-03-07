@@ -23,8 +23,6 @@ import java.util.Iterator;
 
 import org.jscience.mathematics.structure.GroupAdditive;
 
-import org.jenetics.internal.util.HashBuilder;
-
 
 /**
  * Collection of some general purpose Accumulators and some static helper classes

@@ -28,10 +28,6 @@ import org.jenetics.stat.Distribution;
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.StatisticsAssert;
 import org.jenetics.util.Factory;
-import java.util.function.Function;
-
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.util.ObjectTester;
 import org.jenetics.util.Range;
 

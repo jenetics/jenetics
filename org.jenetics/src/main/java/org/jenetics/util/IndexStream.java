@@ -25,7 +25,6 @@ import static java.util.Objects.requireNonNull;
 import java.util.Random;
 import java.util.Spliterator;
 import java.util.function.IntConsumer;
-import java.util.stream.IntStream;
 import java.util.stream.StreamSupport;
 
 import org.jenetics.internal.math.probability;

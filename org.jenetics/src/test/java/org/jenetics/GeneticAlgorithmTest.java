@@ -34,7 +34,6 @@ import org.testng.annotations.Test;
 import javolution.context.ConcurrentContext;
 
 import org.jenetics.util.Factory;
-import org.jenetics.util.ForkJoinContext;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Scoped;
 

@@ -3,6 +3,7 @@ import static java.lang.Math.abs;
 import static java.lang.Math.sin;
 
 import java.io.Serializable;
+import java.util.function.Function;
 
 import org.jenetics.Chromosome;
 import org.jenetics.EnumGene;
@@ -14,7 +15,6 @@ import org.jenetics.PartiallyMatchedCrossover;
 import org.jenetics.PermutationChromosome;
 import org.jenetics.SwapMutator;
 import org.jenetics.util.Factory;
-import java.util.function.Function;
 
 public class TravelingSalesman {
 

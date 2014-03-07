@@ -19,7 +19,6 @@
  */
 package org.jenetics;
 
-import static org.jenetics.EnumGene.Gene;
 import static org.jenetics.util.factories.Int;
 
 import java.io.IOException;
@@ -27,6 +26,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -49,7 +49,6 @@ import org.jenetics.internal.util.model;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
-import java.util.function.Function;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.bit;
 

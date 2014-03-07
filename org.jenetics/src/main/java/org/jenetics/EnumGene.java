@@ -25,6 +25,7 @@ import static org.jenetics.internal.util.object.eq;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -45,7 +46,6 @@ import org.jenetics.internal.util.model.ValueType;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
-import java.util.function.Function;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
 

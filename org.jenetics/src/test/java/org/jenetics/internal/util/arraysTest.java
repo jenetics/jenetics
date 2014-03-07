@@ -6,10 +6,9 @@ import static java.lang.Math.toRadians;
 import java.io.Serializable;
 import java.util.function.Function;
 
-import javax.measure.unit.SI;
+import org.testng.annotations.Test;
 
 import org.jscience.mathematics.number.Float64;
-import org.testng.annotations.Test;
 
 import org.jenetics.Float64Chromosome;
 import org.jenetics.Float64Gene;
@@ -17,7 +16,6 @@ import org.jenetics.Genotype;
 import org.jenetics.Phenotype;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Timer;
-import org.jenetics.util.arrays;
 
 public class arraysTest {
 

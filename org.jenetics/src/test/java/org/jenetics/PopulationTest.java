@@ -22,15 +22,9 @@ package org.jenetics;
 import java.io.Serializable;
 import java.util.function.Function;
 
-import javolution.xml.XMLSerializable;
-
-import org.jenetics.util.arrays;
-import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-
-import java.util.function.Function;
 import org.jenetics.util.lists;
 
 

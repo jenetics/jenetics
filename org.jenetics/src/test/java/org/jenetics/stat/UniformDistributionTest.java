@@ -21,12 +21,10 @@ package org.jenetics.stat;
 
 import java.util.function.Function;
 
-import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.testng.Assert;
-import org.testng.annotations.Test;
+import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

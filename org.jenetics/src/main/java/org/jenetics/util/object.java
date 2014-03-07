@@ -23,14 +23,11 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.function.Consumer;
 
 import javax.measure.Measurable;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
-
-import org.jenetics.internal.util.HashBuilder;
 
 /**
  * Some helper methods for creating hash codes and comparing values.

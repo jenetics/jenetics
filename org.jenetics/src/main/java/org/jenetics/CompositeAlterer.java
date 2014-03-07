@@ -21,14 +21,12 @@ package org.jenetics;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.object.NonNull;
 import static org.jenetics.internal.util.object.eq;
 
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Function;
 
 import org.jenetics.internal.util.HashBuilder;
 

@@ -39,10 +39,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
-
-import javax.measure.Measure;
-import javax.measure.unit.SI;
+import java.util.function.Function;
 
 import javolution.context.LocalContext;
 
@@ -51,7 +48,6 @@ import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
-import java.util.function.Function;
 import org.jenetics.util.IO;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.LCG64ShiftRandom;

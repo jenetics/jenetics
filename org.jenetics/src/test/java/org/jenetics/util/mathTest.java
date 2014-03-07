@@ -24,7 +24,6 @@ import static org.jenetics.util.math.statistics.sum;
 import java.util.Random;
 
 import org.testng.Assert;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**

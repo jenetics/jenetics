@@ -2,6 +2,8 @@ import static java.lang.Math.PI;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
+import java.util.function.Function;
+
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
 import org.jenetics.GeneticAlgorithm;
@@ -11,7 +13,6 @@ import org.jenetics.Mutator;
 import org.jenetics.NumberStatistics;
 import org.jenetics.Optimize;
 import org.jenetics.util.Factory;
-import java.util.function.Function;
 
 final class Real
 	implements Function<Genotype<DoubleGene>, Double>

@@ -19,15 +19,15 @@
  */
 package org.jenetics.internal.util;
 
-import org.jenetics.util.StaticObject;
-
 import java.util.function.Function;
+
+import org.jenetics.util.StaticObject;
 
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.2 &mdash; <em>$Date: 2013-09-10 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2014-03-07 $</em>
  */
 public final class TypeBound extends StaticObject {
 

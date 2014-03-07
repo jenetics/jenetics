@@ -22,13 +22,13 @@ package org.jenetics.performance;
 import javolution.lang.Reusable;
 
 import org.jenetics.stat.Variance;
-import org.jenetics.util.Accumulator.MinMax;
 import org.jenetics.util.Accumulator;
+import org.jenetics.util.Accumulator.MinMax;
 import org.jenetics.util.Timer;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-10 $</em>
+ * @version <em>$Date: 2014-03-07 $</em>
  */
 public abstract class TestCase
 	implements

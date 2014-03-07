@@ -20,15 +20,11 @@
 package org.jenetics;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.Float64Gene.Value;
-import static org.jenetics.internal.util.model.Float64Model.Marshaller;
-import static org.jenetics.internal.util.model.Float64Model.Unmarshaller;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
-import java.util.function.Function;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -51,7 +47,6 @@ import org.jenetics.internal.util.model.ModelType;
 import org.jenetics.internal.util.model.ValueType;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 
 /**

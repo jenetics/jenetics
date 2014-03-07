@@ -27,7 +27,6 @@ import org.jenetics.DoubleGene;
 import org.jenetics.Genotype;
 import org.jenetics.Phenotype;
 import org.jenetics.Population;
-import org.jenetics.util.arrays;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
