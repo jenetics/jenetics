@@ -25,13 +25,13 @@ package org.jenetics;
  * survivors and offspring. The selectors for offspring and for the survivors
  * can be chosen independently.
  * [code]
- * final GeneticAlgorithm<Float64Gene, Float64> ga = ...
+ * final GeneticAlgorithm<DoubleGene, Double> ga = ...
  * ga.setOffspringFraction(0.7);
  * ga.setSurvivorSelector(
- *     new RouletteWheelSelector<Float64Gene, Float64>()
+ *     new RouletteWheelSelector<DoubleGene, Double>()
  * );
  * ga.setOffspringSelector(
- *     new TournamentSelector<Float64Gene, Float64>()
+ *     new TournamentSelector<DoubleGene, Double>()
  * );
  * [/code]
  *

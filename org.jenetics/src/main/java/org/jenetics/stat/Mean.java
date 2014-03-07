@@ -20,8 +20,9 @@
 package org.jenetics.stat;
 
 import static java.lang.String.format;
-import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
+import static org.jenetics.internal.util.object.eq;
+
+import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.util.MappedAccumulator;
 
@@ -95,7 +96,7 @@ public class Mean<N extends Number> extends MappedAccumulator<N> {
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(super.hashCode()).and(_mean).value();
+		return HashBuilder.of(getClass()).and(super.hashCode()).and(_mean).value();
 	}
 
 	@Override

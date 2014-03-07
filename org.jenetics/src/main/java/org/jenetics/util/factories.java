@@ -25,7 +25,10 @@ package org.jenetics.util;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
  * @version 1.0 &mdash; <em>$Date$</em>
+ *
+ * @deprecated Will be (re)moved; internal use only.
  */
+@Deprecated
 public final class factories extends StaticObject {
 	private factories() {}
 

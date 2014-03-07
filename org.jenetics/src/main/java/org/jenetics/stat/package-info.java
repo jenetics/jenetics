@@ -26,4 +26,3 @@
  * @version 1.0 &mdash; <em>$Date$</em>
  */
 package org.jenetics.stat;
-

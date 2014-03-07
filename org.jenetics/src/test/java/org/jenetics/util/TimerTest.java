@@ -67,8 +67,3 @@ public class TimerTest extends ObjectTester<Timer> {
 	}
 
 }
-
-
-
-
-

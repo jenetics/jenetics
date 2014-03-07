@@ -47,6 +47,3 @@ public class LCG64ShiftRandomTest extends RandomTestBase {
 	}
 
 }
-
-
-

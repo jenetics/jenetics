@@ -22,10 +22,11 @@ package org.jenetics.stat;
 import java.util.Arrays;
 import java.util.Random;
 
-import org.jscience.mathematics.number.Float64;
-import org.jscience.mathematics.number.Integer64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import org.jscience.mathematics.number.Float64;
+import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.util.Factory;
 import org.jenetics.util.MappedAccumulatorTester;
@@ -35,6 +36,7 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version <em>$Date$</em>
  */
+@SuppressWarnings("deprecation")
 public class HistogramTest
 	extends MappedAccumulatorTester<Histogram<Double>>
 {
@@ -47,7 +49,7 @@ public class HistogramTest
 			final double min = random.nextInt(100) + 100;
 			final double max = random.nextInt(100) + 100 + min;
 
-			final Histogram<Double> histogram = Histogram.valueOf(
+			final Histogram<Double> histogram = Histogram.of(
 						min, max, random.nextInt(10) + 5
 					);
 			for (int i = 0; i < 1000; ++i) {
@@ -68,7 +70,7 @@ public class HistogramTest
 		final double end = 123;
 		final int elements = 10;
 
-		Histogram<Double> histogram = Histogram.valueOf(begin, end, elements);
+		Histogram<Double> histogram = Histogram.of(begin, end, elements);
 		Assert.assertEquals(histogram.length(), elements);
 		Assert.assertEquals(histogram.getHistogram(), new long[elements]);
 	}
@@ -195,6 +197,3 @@ public class HistogramTest
 	}
 
 }
-
-
-

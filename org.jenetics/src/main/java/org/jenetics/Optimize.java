@@ -77,8 +77,8 @@ public enum Optimize {
 	 * of <i>better</i> and <i>worse</i>.
 	 *
 	 * [code]
-	 * Population<Float64Gene, Float64> population = ...
-	 * population.sort(Optimize.MINIMUM.<Float64>descending());
+	 * Population<DoubleGene, Double> population = ...
+	 * population.sort(Optimize.MINIMUM.<Double>descending());
 	 * [/code]
 	 *
 	 * The code example above will sort the population according it's fitness
@@ -104,8 +104,8 @@ public enum Optimize {
 	 * of <i>better</i> and <i>worse</i>.
 	 *
 	 * [code]
-	 * Population<Float64Gene, Float64> population = ...
-	 * population.sort(Optimize.MINIMUM.<Float64>ascending());
+	 * Population<DoubleGene, Double> population = ...
+	 * population.sort(Optimize.MINIMUM.<Double>ascending());
 	 * [/code]
 	 *
 	 * The code example above will sort the population according it's fitness

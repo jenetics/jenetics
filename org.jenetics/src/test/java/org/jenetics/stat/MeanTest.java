@@ -70,8 +70,3 @@ public class MeanTest extends MappedAccumulatorTester<Mean<Double>> {
 	}
 
 }
-
-
-
-
-

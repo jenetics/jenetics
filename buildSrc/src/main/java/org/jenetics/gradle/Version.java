@@ -161,7 +161,3 @@ public final class Version implements Comparable<Version> {
 	}
 
 }
-
-
-
-

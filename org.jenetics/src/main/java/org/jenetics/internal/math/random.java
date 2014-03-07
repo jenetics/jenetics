@@ -70,6 +70,5 @@ public final class random extends StaticObject {
 	public static double toDouble2(final int a, final int b) {
 		return (((long)(a >>> 6) << 26) | (b >>> 6))*0x1.0p-52d;
 	}
+
 }
-
-

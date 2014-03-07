@@ -112,8 +112,3 @@ public class Lyx2PDFTask extends DefaultTask {
 
 
 }
-
-
-
-
-

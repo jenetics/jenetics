@@ -1,4 +1,4 @@
-# Jenetics
+# Jenetics (_1.6.0_)
 
 
 Jenetics is an Genetic Algorithm, respectively an Evolutionary Algorithm, library written in Java. It is designed with a clear separation of the several  algorithm concepts, e. g. `Gene`, `Chromosome`, `Genotype`, `Phenotype`, `Population` and  fitness `Function`. Jenetics allows you to minimize or maximize the given fitness  function without tweaking it.
@@ -11,7 +11,7 @@ Jenetics is an Genetic Algorithm, respectively an Evolutionary Algorithm, librar
 *  **Gradle 1.10**: [Gradle](http://www.gradle.org/) is used for building the library. (Gradle is download automatically, if you are using the Gradle Wrapper script `gradlew`, located in the base directory, for building the library.)
 
 ### Test compile/execution
-*  **TestNG 8.7**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests. 
+*  **TestNG 8.8**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests. 
 *  **Apache Commons Math 3.2**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical accumulators.
 
 ### Runtime
@@ -88,30 +88,26 @@ Ones counting is one of the simplest model-problem and consists of a binary chro
 		implements Function<Genotype<BitGene>, Integer>
 	{
 		@Override
-		public Integer apply(Genotype<BitGene> genotype) {
-			int count = 0;
-			for (BitGene gene : genotype.getChromosome()) {
-				if (gene.getBit()) {
-					++count;
-				}
-			}
-			return count;
+		public Integer apply(final Genotype<BitGene> genotype) {
+			return ((BitChromosome)genotype.getChromosome()).bitCount();
 		}
 	}
 
 	public class OnesCounting {
 		public static void main(String[] args) {
-			final Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
-				new BitChromosome(20, 0.15)
+			Factory<Genotype<BitGene>> gtf = Genotype.of(
+				BitChromosome.of(20, 0.15)
 			);
-			final Function<Genotype<BitGene>, Integer> ff = new OneCounter();
-			final GeneticAlgorithm<BitGene, Integer> ga =
-				new GeneticAlgorithm<>(gtf, ff, Optimize.MAXIMUM);
+			Function<Genotype<BitGene>, Integer> ff = new OneCounter();
+			GeneticAlgorithm<BitGene, Integer> ga =
+			new GeneticAlgorithm<>(
+				gtf, ff, Optimize.MAXIMUM
+			);
 
 			ga.setStatisticsCalculator(
 				new NumberStatistics.Calculator<BitGene, Integer>()
 			);
-			ga.setPopulationSize(50);
+			ga.setPopulationSize(500);
 			ga.setSelectors(
 				new RouletteWheelSelector<BitGene, Integer>()
 			);
@@ -123,6 +119,7 @@ Ones counting is one of the simplest model-problem and consists of a binary chro
 			ga.setup();
 			ga.evolve(100);
 			System.out.println(ga.getBestStatistics());
+			System.out.println(ga.getBestPhenotype());
 		}
 	}
 
@@ -132,19 +129,20 @@ The genotype in this example consists of one `BitChromosome` with a ones probabi
 	+---------------------------------------------------------+
 	|  Population Statistics                                  |
 	+---------------------------------------------------------+
-	|                     Age mean: 1.36000000000             |
-	|                 Age variance: 3.74530612245             |
-	|                      Samples: 50                        |
-	|                 Best fitness: 18                        |
-	|                Worst fitness: 5                         |
+	|                     Age mean: 1.14800000000             |
+	|                 Age variance: 2.88386372745             |
+	|                      Samples: 500                       |
+	|                 Best fitness: 19                        |
+	|                Worst fitness: 4                         |
 	+---------------------------------------------------------+
 	+---------------------------------------------------------+
 	|  Fitness Statistics                                     |
 	+---------------------------------------------------------+
-	|                 Fitness mean: 12.30000000000            |
-	|             Fitness variance: 8.25510204082             |
-	|        Fitness error of mean: 1.73948268172             |
+	|                 Fitness mean: 11.00400000000            |
+	|             Fitness variance: 6.28856112224             |
+	|        Fitness error of mean: 0.49211384049             |
 	+---------------------------------------------------------+
+	[00001111|11111111|11111011] --> 19
 
 
 The given example will print the overall timing statistics onto the console.
@@ -153,7 +151,9 @@ The given example will print the overall timing statistics onto the console.
 
 In the [knapsack problem](http://en.wikipedia.org/wiki/Knapsack_problem) a set of items, together with their size and value, is given. The task is to select a disjoint subset so that the total size does not exeed the knapsacks size. For the 0/1 knapsack problem we define a `BitChromosome`, one bit for each item. If the ith `BitGene` is set to one the ith item is selected.
 
-	import org.jscience.mathematics.number.Float64;
+	import static org.jenetics.util.math.random.nextDouble;
+
+	import java.util.Random;
 
 	import org.jenetics.BitChromosome;
 	import org.jenetics.BitGene;
@@ -164,79 +164,82 @@ In the [knapsack problem](http://en.wikipedia.org/wiki/Knapsack_problem) a set o
 	import org.jenetics.NumberStatistics;
 	import org.jenetics.RouletteWheelSelector;
 	import org.jenetics.SinglePointCrossover;
+	import org.jenetics.TournamentSelector;
 	import org.jenetics.util.Factory;
 	import org.jenetics.util.Function;
+	import org.jenetics.util.RandomRegistry;
 
 	final class Item {
-		public double size;
-		public double value;
+		public final double size;
+		public final double value;
+
+		Item(final double size, final double value) {
+			this.size = size;
+			this.value = value;
+		}
 	}
 
-	final class KnappsackFunction
-		implements Function<Genotype<BitGene>, Float64>
+	final class KnapsackFunction
+		implements Function<Genotype<BitGene>, Double>
 	{
-		private final Item[] _items;
-		private final double _size;
+		private final Item[] items;
+		private final double size;
 
-		public KnappsackFunction(final Item[] items, double size) {
-			_items = items;
-			_size = size;
-		}
-
-		public Item[] getItems() {
-			return _items;
+		public KnapsackFunction(final Item[] items, double size) {
+			this.items = items;
+			this.size = size;
 		}
 
 		@Override
-		public Float64 apply(final Genotype<BitGene> genotype) {
+		public Double apply(final Genotype<BitGene> genotype) {
 			final Chromosome<BitGene> ch = genotype.getChromosome();
 
 			double size = 0;
 			double value = 0;
 			for (int i = 0, n = ch.length(); i < n; ++i) {
 				if (ch.getGene(i).getBit()) {
-					size += _items[i].size;
-					value += _items[i].value;
+					size += items[i].size;
+					value += items[i].value;
 				}
 			}
 
-			if (size > _size) {
-				return Float64.ZERO;
-			} else {
-				return Float64.valueOf(value);
-			}
+			return size <= this.size ? value : 0;
 		}
 	}
 
 	public class Knapsack {
 
-		private static KnappsackFunction FF(int n, double size) {
-			Item[] items = new Item[n];
+		private static KnapsackFunction FF(final int n, final double size) {
+			final Random random = RandomRegistry.getRandom();
+			final Item[] items = new Item[n];
 			for (int i = 0; i < items.length; ++i) {
-				items[i] = new Item();
-				items[i].size = (Math.random() + 1)*10;
-				items[i].value = (Math.random() + 1)*15;
+				items[i] = new Item(
+					nextDouble(random, 1, 10),
+					nextDouble(random, 1, 15)
+				);
 			}
 
-			return new KnappsackFunction(items, size);
+			return new KnapsackFunction(items, size);
 		}
 
-		public static void main(String[] argv) throws Exception {
-			final KnappsackFunction ff = FF(15, 100);
-			final Factory<Genotype<BitGene>> genotype = Genotype.valueOf(
-				new BitChromosome(15, 0.5)
+		public static void main(String[] args) throws Exception {
+			final KnapsackFunction ff = FF(15, 100);
+			final Factory<Genotype<BitGene>> genotype = Genotype.of(
+				BitChromosome.of(15, 0.5)
 			);
 
-			final GeneticAlgorithm<BitGene, Float64> ga =
-				new GeneticAlgorithm<>(genotype, ff);
-
-			ga.setMaximalPhenotypeAge(30);
-			ga.setPopulationSize(100);
+			final GeneticAlgorithm<BitGene, Double> ga = new GeneticAlgorithm<>(
+				genotype, ff
+			);
+			ga.setPopulationSize(500);
 			ga.setStatisticsCalculator(
-				new NumberStatistics.Calculator<BitGene, Float64>()
+				new NumberStatistics.Calculator<BitGene, Double>()
 			);
-			ga.setSelectors(
-				new RouletteWheelSelector<BitGene, Float64>()
+			ga.setSurvivorSelector(
+				new TournamentSelector<BitGene, Double>(5)
+			);
+			ga.setOffspringSelector(
+				new RouletteWheelSelector<BitGene, Double>()
 			);
 			ga.setAlterers(
 				new Mutator<BitGene>(0.115),
@@ -246,6 +249,7 @@ In the [knapsack problem](http://en.wikipedia.org/wiki/Knapsack_problem) a set o
 			ga.setup();
 			ga.evolve(100);
 			System.out.println(ga.getBestStatistics());
+			System.out.println(ga.getBestPhenotype());
 		}
 	}
 
@@ -255,20 +259,20 @@ The console out put for the Knapsack GA will look like the listing beneath.
 	+---------------------------------------------------------+
 	|  Population Statistics                                  |
 	+---------------------------------------------------------+
-	|                     Age mean: 1.55000000000             |
-	|                 Age variance: 2.69444444444             |
-	|                      Samples: 100                       |
-	|                 Best fitness: 188.57227213871303        |
-	|                Worst fitness: 0.0                       |
+	|                     Age mean: 2.15800000000             |
+	|                 Age variance: 4.71446492986             |
+	|                      Samples: 500                       |
+	|                 Best fitness: 99.95345446956883         |
+	|                Worst fitness: 25.50205183297677         |
 	+---------------------------------------------------------+
 	+---------------------------------------------------------+
 	|  Fitness Statistics                                     |
 	+---------------------------------------------------------+
-	|                 Fitness mean: 157.60654768894           |
-	|             Fitness variance: 1486.23455609328          |
-	|        Fitness error of mean: 15.76065476889            |
+	|                 Fitness mean: 88.61369640889            |
+	|             Fitness variance: 129.23019686091           |
+	|        Fitness error of mean: 3.96292497816             |
 	+---------------------------------------------------------+
-
+	[01111111|11111111] --> 99.95345446956883
 
 
 ## Traveling Salesman Problem (TSP)
@@ -278,6 +282,8 @@ The Traveling Salesman problem is a very good example which shows you how to sol
 	import static java.lang.Math.PI;
 	import static java.lang.Math.abs;
 	import static java.lang.Math.sin;
+
+	import java.io.Serializable;
 
 	import org.jenetics.Chromosome;
 	import org.jenetics.EnumGene;
@@ -291,55 +297,67 @@ The Traveling Salesman problem is a very good example which shows you how to sol
 	import org.jenetics.util.Factory;
 	import org.jenetics.util.Function;
 
-	class FF
-		implements Function<Genotype<EnumGene<Integer>>, Float64>
-	{
-		private final double[][] _adjacence;
-		public FF(final double[][] adjacence) {
-			_adjacence = adjacence;
-		}
-		@Override
-		public Float64 apply(Genotype<EnumGene<Integer>> genotype) {
-			final Chromosome<EnumGene<Integer>> path =
-				genotype.getChromosome();
-
-			double length = 0.0;
-			for (int i = 0, n = path.length(); i < n; ++i) {
-				final int from = path.getGene(i).getAllele();
-				final int to = path.getGene((i + 1)%n).getAllele();
-				length += _adjacence[from][to];
-			}
-			return Float64.valueOf(length);
-		}
-	}
-
 	public class TravelingSalesman {
+
+		private static class FF
+			implements Function<Genotype<EnumGene<Integer>>, Double>,
+						Serializable
+		{
+			private static final long serialVersionUID = 1L;
+
+			private final double[][] adjacence;
+
+			public FF(final double[][] adjacence) {
+				this.adjacence = adjacence;
+			}
+
+			@Override
+			public Double apply(final Genotype<EnumGene<Integer>> genotype) {
+				final Chromosome<EnumGene<Integer>> path = genotype.getChromosome();
+
+				double length = 0.0;
+				for (int i = 0, n = path.length(); i < n; ++i) {
+					final int from = path.getGene(i).getAllele();
+					final int to = path.getGene((i + 1)%n).getAllele();
+					length += adjacence[from][to];
+				}
+				return length;
+			}
+
+			@Override
+			public String toString() {
+				return "Point distance";
+			}
+		}
 
 		public static void main(String[] args) {
 			final int stops = 20;
 
-			final Function<Genotype<EnumGene<Integer>>, Float64> ff =
-				new FF(adjacencyMatrix(stops));
-			final Factory<Genotype<EnumGene<Integer>>> gt = Genotype.valueOf(
+			final Function<Genotype<EnumGene<Integer>>, Double> ff = new FF(adjacencyMatrix(stops));
+			final Factory<Genotype<EnumGene<Integer>>> gtf = Genotype.of(
 				PermutationChromosome.ofInteger(stops)
 			);
-			final GeneticAlgorithm<EnumGene<Integer>, Float64>
-				ga = new GeneticAlgorithm<>(gt, ff, Optimize.MINIMUM);
+			final GeneticAlgorithm<EnumGene<Integer>, Double>
+				ga = new GeneticAlgorithm<>(gtf, ff, Optimize.MINIMUM);
 			ga.setStatisticsCalculator(
-				new Calculator<EnumGene<Integer>, Float64>()
-			);
-			ga.setPopulationSize(300);
+					new Calculator<EnumGene<Integer>, Double>()
+				);
+			ga.setPopulationSize(500);
 			ga.setAlterers(
 				new SwapMutator<EnumGene<Integer>>(0.2),
 				new PartiallyMatchedCrossover<Integer>(0.3)
 			);
 
 			ga.setup();
-			ga.evolve(700);
+			ga.evolve(100);
 			System.out.println(ga.getBestStatistics());
 			System.out.println(ga.getBestPhenotype());
 		}
 
+		/**
+		* All points in the created adjacency matrix lie on a circle. So it is easy
+		* to check the quality of the solution found by the GA.
+		*/
 		private static double[][] adjacencyMatrix(int stops) {
 			double[][] matrix = new double[stops][stops];
 			for (int i = 0; i < stops; ++i) {
@@ -352,7 +370,7 @@ The Traveling Salesman problem is a very good example which shows you how to sol
 		private static double chord(int stops, int i, double r) {
 			return 2.0*r*abs(sin((PI*i)/stops));
 		}
-		private static final double RADIUS = 10.0;
+		private static double RADIUS = 10.0;
 	}
 
 
@@ -361,20 +379,20 @@ The listing above shows the output generated by our example. The last line repre
 	+---------------------------------------------------------+
 	|  Population Statistics                                  |
 	+---------------------------------------------------------+
-	|                     Age mean: 1.48333333333             |
-	|                 Age variance: 3.72212931996             |
-	|                      Samples: 300                       |
-	|                 Best fitness: 62.573786016092335        |
-	|                Worst fitness: 315.49784819824816        |
+	|                     Age mean: 1.67600000000             |
+	|                 Age variance: 4.17537474950             |
+	|                      Samples: 500                       |
+	|                 Best fitness: 104.39898868995472        |
+	|                Worst fitness: 310.43291286365866        |
 	+---------------------------------------------------------+
 	+---------------------------------------------------------+
 	|  Fitness Statistics                                     |
 	+---------------------------------------------------------+
-	|                 Fitness mean: 118.87334461782           |
-	|             Fitness variance: 6464.82405084876          |
-	|        Fitness error of mean: 6.86315575146             |
+	|                 Fitness mean: 132.54050652459           |
+	|             Fitness variance: 3230.15643373580          |
+	|        Fitness error of mean: 5.92739164722             |
 	+---------------------------------------------------------+
-	[19|18|17|16|15|14|13|12|11|10|9|8|7|6|5|4|3|2|1|0] --> 62.573786016092335
+	[1|0|19|16|15|5|6|7|8|9|10|11|12|13|14|17|18|4|3|2] --> 104.39898868995472
 
 
 ## Coding standards
@@ -385,11 +403,20 @@ Beside the Java coding standards as given in <http://www.oracle.com/technetwork/
 - Variable name for arrays or collections are plural.
 - All helper classes which only contains static methods are lower-case. This  indicates that the given class can not be used as type, because no instance can be created.
 
+## Release notes
+
+### 1.6.0
+
+* Preparation work for removing the dependency to the JScience library.
+    * Add Double/Long Gene/Chromosome as a replacement for Float64/Integer64 Gene/Chromosome.
+    * Add JAXB XML serialization as a replacement of the Javolution XML marshalling.
+* Streamlining of the existing API: Marking inconsistent methods/classes as deprecated.
+
 ## License
 
 The library is licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
 
-	Copyright 2007-2013 Franz Wilhelmstötter
+	Copyright 2007-2014 Franz Wilhelmstötter
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.

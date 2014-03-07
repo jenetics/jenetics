@@ -72,9 +72,3 @@ public class StaticObjectTest {
 }
 
 final class SomeStaticObject extends StaticObject {}
-
-
-
-
-
-

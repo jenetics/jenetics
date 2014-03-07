@@ -115,7 +115,3 @@ public class QuantileTest extends MappedAccumulatorTester<Quantile<Double>> {
 
 
 }
-
-
-
-

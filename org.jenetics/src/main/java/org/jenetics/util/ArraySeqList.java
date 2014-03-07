@@ -82,12 +82,3 @@ class ArraySeqList<T> extends AbstractList<T>
 	}
 
 }
-
-
-
-
-
-
-
-
-

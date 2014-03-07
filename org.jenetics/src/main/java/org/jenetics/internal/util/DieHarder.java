@@ -166,8 +166,3 @@ public final class DieHarder {
 	}
 
 }
-
-
-
-
-

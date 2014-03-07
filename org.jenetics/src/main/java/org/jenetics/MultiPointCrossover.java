@@ -21,9 +21,10 @@ package org.jenetics;
 
 import static java.lang.Math.min;
 import static java.lang.String.format;
-import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.Random;
+
+import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
@@ -148,7 +149,7 @@ public class MultiPointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).
+		return HashBuilder.of(getClass()).
 				and(super.hashCode()).
 				and(_n).value();
 	}
@@ -179,13 +180,3 @@ public class MultiPointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 	//}
 
 }
-
-
-
-
-
-
-
-
-
-

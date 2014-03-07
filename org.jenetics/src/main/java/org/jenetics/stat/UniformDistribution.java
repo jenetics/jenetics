@@ -21,13 +21,14 @@ package org.jenetics.stat;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
+import static org.jenetics.internal.util.object.eq;
 
 import java.io.Serializable;
 import java.util.Locale;
 
 import org.jscience.mathematics.number.Float64;
+
+import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.util.Function;
 import org.jenetics.util.Range;
@@ -236,7 +237,7 @@ public class UniformDistribution<
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(_domain).value();
+		return HashBuilder.of(getClass()).and(_domain).value();
 	}
 
 	@Override
@@ -258,6 +259,3 @@ public class UniformDistribution<
 	}
 
 }
-
-
-

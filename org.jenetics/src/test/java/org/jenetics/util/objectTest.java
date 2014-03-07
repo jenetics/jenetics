@@ -19,10 +19,10 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.internal.util.object.CheckRange;
+import static org.jenetics.internal.util.object.NonNull;
+import static org.jenetics.internal.util.object.Verify;
 import static org.jenetics.util.functions.not;
-import static org.jenetics.util.object.CheckRange;
-import static org.jenetics.util.object.NonNull;
-import static org.jenetics.util.object.Verify;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -103,8 +103,3 @@ public class objectTest {
 	}
 
 }
-
-
-
-
-

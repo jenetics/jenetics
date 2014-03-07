@@ -52,7 +52,7 @@ public abstract class MappedAccumulatorTester<A extends MappedAccumulator<Double
 	public void testClone() {
 		MappedAccumulator<Double> accu1 = getFactory().newInstance();
 		for (int i = 0; i < 1000; ++i) {
-			accu1.accumulate(Double.valueOf(i));
+			accu1.accumulate((double)i);
 		}
 
 		Accumulator<Double> accu2 = accu1.clone();
