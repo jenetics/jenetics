@@ -7070,7 +7070,7 @@ status open
 
 \begin_layout Plain Layout
 
-final Seq<String> data = Array.valueOf("-10","1","2","3","4","5");
+final Seq<String> data = Array.of("-10","1","2","3","4","5");
 \end_layout
 
 \begin_layout Plain Layout
