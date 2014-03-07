@@ -53,13 +53,6 @@ public class ArrayProxyISeq<T> extends ArrayProxySeq<T> implements ISeq<T> {
 		return new ArrayProxyISeq<>(_proxy.slice(start, end));
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	@Deprecated
-	public <A> ISeq<A> upcast(ISeq<? extends A> seq) {
-		return (ISeq<A>)seq;
-	}
-
 	@Override
 	public MSeq<T> copy() {
 		return new ArrayProxyMSeq<>(_proxy.copy());
