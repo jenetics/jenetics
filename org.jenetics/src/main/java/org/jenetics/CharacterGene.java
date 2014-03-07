@@ -20,22 +20,34 @@
 package org.jenetics;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
+import static org.jenetics.internal.util.object.eq;
 
 import java.util.Random;
 
-import javolution.context.ObjectFactory;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlValue;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import javolution.lang.Realtime;
 import javolution.text.Text;
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.model.ModelType;
+import org.jenetics.internal.util.model.ValueType;
+
 import org.jenetics.util.Array;
 import org.jenetics.util.CharSeq;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
+import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -43,8 +55,9 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.5 &mdash; <em>$Date: 2013-12-02 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-03 $</em>
  */
+@XmlJavaTypeAdapter(CharacterGene.Model.Adapter.class)
 public final class CharacterGene
 	implements
 		Gene<Character, CharacterGene>,
@@ -62,19 +75,32 @@ public final class CharacterGene
 		" !\"$%&/()=?`{[]}\\+~*#';.:,-_<>|@^'"
 	);
 
-	private CharSeq _validCharacters;
-	private Character _character;
+	private final Character _character;
+	private final CharSeq _validCharacters;
+	private final Boolean _valid;
 
-	private Boolean _valid;
+	private CharacterGene(final CharSeq chars, final int index) {
+		_character = chars.get(index);
+		_validCharacters = chars;
+		_valid = true;
+	}
 
-	CharacterGene() {
+	/**
+	 * Create a new character gene from the given {@code character} and the
+	 * given set of valid characters.
+	 *
+	 * @param character the char this gene represents
+	 * @param validChars the set of valid characters.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 */
+	public CharacterGene(final Character character, final CharSeq validChars) {
+		_character = requireNonNull(character);
+		_validCharacters = requireNonNull(validChars);
+		_valid = _validCharacters.contains(_character);
 	}
 
 	@Override
 	public boolean isValid() {
-		if (_valid == null) {
-			_valid = _validCharacters.contains(_character);
-		}
 		return _valid;
 	}
 
@@ -95,11 +121,11 @@ public final class CharacterGene
 	/**
 	 * Test, if the given character is valid.
 	 *
-	 * @param c The character to test.
+	 * @param character The character to test.
 	 * @return true if the character is valid, false otherwise.
 	 */
-	public boolean isValidCharacter(final Character c) {
-		return _validCharacters.contains(c);
+	public boolean isValidCharacter(final Character character) {
+		return _validCharacters.contains(character);
 	}
 
 	/**
@@ -111,11 +137,10 @@ public final class CharacterGene
 		return _validCharacters;
 	}
 
+	@Deprecated
 	@Override
 	public CharacterGene copy() {
-		final CharacterGene gene = valueOf(_character, _validCharacters);
-		gene._valid = _valid;
-		return gene;
+		return of(_character, _validCharacters);
 	}
 
 	/**
@@ -148,7 +173,7 @@ public final class CharacterGene
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(_character).and(_validCharacters).value();
+		return HashBuilder.of(getClass()).and(_character).and(_validCharacters).value();
 	}
 
 	@Override
@@ -206,7 +231,7 @@ public final class CharacterGene
 
 	@Override
 	public CharacterGene newInstance() {
-		return valueOf(_validCharacters);
+		return of(_validCharacters);
 	}
 
 	/**
@@ -220,21 +245,13 @@ public final class CharacterGene
 	 *         {@code null}.
 	 */
 	public CharacterGene newInstance(final Character character) {
-		return valueOf(character, _validCharacters);
+		return of(character, _validCharacters);
 	}
 
 
 	/* *************************************************************************
 	 *  Static object creation methods
 	 * ************************************************************************/
-
-	private static final ObjectFactory<CharacterGene>
-	FACTORY = new ObjectFactory<CharacterGene>() {
-		@Override
-		protected CharacterGene create() {
-			return new CharacterGene();
-		}
-	};
 
 	/**
 	 * Create a new CharacterGene with a randomly chosen character from the
@@ -245,13 +262,19 @@ public final class CharacterGene
 	 * @throws NullPointerException if the {@code validCharacters} are
 	 *         {@code null}.
 	 */
-	public static CharacterGene valueOf(final CharSeq validCharacters) {
-		final Random random = RandomRegistry.getRandom();
-		int pos = random.nextInt(validCharacters.length());
+	public static CharacterGene of(final CharSeq validCharacters) {
+		return new CharacterGene(
+			validCharacters,
+			RandomRegistry.getRandom().nextInt(validCharacters.length())
+		);
+	}
 
-		final CharacterGene gene = valueOf(validCharacters.charAt(pos), validCharacters);
-		gene._valid = true;
-		return gene;
+	/**
+	 * @deprecated Use {@link #of(org.jenetics.util.CharSeq)} instead.
+	 */
+	@Deprecated
+	public static CharacterGene valueOf(final CharSeq validCharacters) {
+		return of(validCharacters);
 	}
 
 	/**
@@ -264,14 +287,37 @@ public final class CharacterGene
 	 * @throws NullPointerException if the given {@code character} is
 	 *         {@code null}.
 	 */
-	public static CharacterGene valueOf(final Character character) {
-		return valueOf(character, DEFAULT_CHARACTERS);
+	public static CharacterGene of(final Character character) {
+		return new CharacterGene(character, DEFAULT_CHARACTERS);
 	}
 
+	/**
+	 * @deprecated Use {@link #of(Character)} instead.
+	 */
+	@Deprecated
+	public static CharacterGene valueOf(final Character character) {
+		return of(character);
+	}
+
+	/**
+	 * Create a new random character gene, chosen from the
+	 * {@link #DEFAULT_CHARACTERS}.
+	 *
+	 * @return a new random character gene.
+	 */
+	public static CharacterGene of() {
+		return new CharacterGene(
+			DEFAULT_CHARACTERS,
+			RandomRegistry.getRandom().nextInt(DEFAULT_CHARACTERS.length())
+		);
+	}
+
+	/**
+	 * @deprecated Use {@link #of()} instead.
+	 */
+	@Deprecated
 	public static CharacterGene valueOf() {
-		final Random random = RandomRegistry.getRandom();
-		final int index = random.nextInt(DEFAULT_CHARACTERS.length());
-		return valueOf(DEFAULT_CHARACTERS.charAt(index));
+		return of();
 	}
 
 	/**
@@ -281,20 +327,37 @@ public final class CharacterGene
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the {@code validCharacters} are empty.
 	 */
+	public static CharacterGene of(
+		final char character,
+		final CharSeq validCharacters
+	) {
+		return new CharacterGene(character, validCharacters);
+	}
+
+	/**
+	 * @deprecated Use {@link #of(char, org.jenetics.util.CharSeq)} instead.
+	 */
+	@Deprecated
 	public static CharacterGene valueOf(
 		final Character character,
 		final CharSeq validCharacters
 	) {
-		requireNonNull(character, "Character");
-		requireNonNull(validCharacters, "Valid characters");
-
-		final CharacterGene gene = FACTORY.object();
-		gene._character = character;
-		gene._validCharacters = validCharacters;
-
-		return gene;
+		return of(character, validCharacters);
 	}
 
+	static ISeq<CharacterGene> seq(final CharSeq characters, final int length) {
+		final Random random = RandomRegistry.getRandom();
+		final int charsLength = characters.length();
+
+		final Array<CharacterGene> genes = new Array<>(length);
+		for (int i = 0; i < length; ++i) {
+			final CharacterGene gene = new CharacterGene(
+				characters, random.nextInt(charsLength)
+			);
+			genes.set(i, gene);
+		}
+		return genes.toISeq();
+	}
 
 	/* *************************************************************************
 	 *  XML object serialization
@@ -317,7 +380,10 @@ public final class CharacterGene
 			);
 			final String character = xml.getText().toString();
 
-			return CharacterGene.valueOf(character.charAt(0), new CharSeq(validCharacters));
+			return CharacterGene.of(
+				character.charAt(0),
+				new CharSeq(validCharacters)
+			);
 		}
 		@Override
 		public void write(final CharacterGene gene, final OutputElement xml)
@@ -332,10 +398,42 @@ public final class CharacterGene
 	};
 
 
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
+
+	@XmlRootElement(name = "org.jenetics.CharacterGene")
+	@XmlType(name = "org.jenetics.CharacterGene")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	final static class Model {
+
+		@XmlAttribute(name = "valid-characters")
+		public String validCharacters;
+
+		@XmlValue
+		public String value;
+
+		@ValueType(CharacterGene.class)
+		@ModelType(Model.class)
+		public final static class Adapter
+			extends XmlAdapter<Model, CharacterGene>
+		{
+			@Override
+			public Model marshal(final CharacterGene value) {
+				final Model m = new Model();
+				m.validCharacters = value.getValidCharacters().toString();
+				m.value = value.getAllele().toString();
+				return m;
+			}
+
+			@Override
+			public CharacterGene unmarshal(final Model m) {
+				return CharacterGene.of(
+					m.value.charAt(0),
+					new CharSeq(m.validCharacters)
+				);
+			}
+		}
+	}
+
 }
-
-
-
-
-
-

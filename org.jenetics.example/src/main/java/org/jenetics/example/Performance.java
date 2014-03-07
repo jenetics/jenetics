@@ -28,10 +28,8 @@ import java.io.Serializable;
 import javax.measure.Measure;
 import javax.measure.unit.SI;
 
-import org.jscience.mathematics.number.Float64;
-
-import org.jenetics.Float64Chromosome;
-import org.jenetics.Float64Gene;
+import org.jenetics.DoubleChromosome;
+import org.jenetics.DoubleGene;
 import org.jenetics.Genotype;
 import org.jenetics.Phenotype;
 import org.jenetics.Population;
@@ -41,33 +39,33 @@ import org.jenetics.util.functions;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.0 &mdash; <em>$Date: 2013-08-29 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-02-17 $</em>
  */
 public class Performance {
 
 	private static final class Perf
-		implements Function<Genotype<Float64Gene>, Float64>,
+		implements Function<Genotype<DoubleGene>, Double>,
 					Serializable
 	{
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		public Float64 apply(final Genotype<Float64Gene> genotype) {
-			final Float64Gene gene = genotype.getChromosome().getGene(0);
+		public Double apply(final Genotype<DoubleGene> genotype) {
+			final DoubleGene gene = genotype.getChromosome().getGene(0);
 			final double radians = toRadians(gene.doubleValue());
-			return Float64.valueOf(Math.log(sin(radians)*cos(radians)));
+			return Math.log(sin(radians)*cos(radians));
 		}
 	}
 
 	public static void main(String[] args) {
 		final Perf ff = new Perf();
-		final Factory<Genotype<Float64Gene>> gtf = Genotype.valueOf(new Float64Chromosome(0, 360));
-		final Function<Float64, Float64> fs = functions.Identity();
+		final Factory<Genotype<DoubleGene>> gtf = Genotype.of(DoubleChromosome.of(0, 360));
+		final Function<Double, Double> fs = functions.Identity();
 
 		final int size = 1000000;
-		final Population<Float64Gene, Float64> population = new Population<>(size);
+		final Population<DoubleGene, Double> population = new Population<>(size);
 		for (int i = 0; i < size; ++i) {
-			final Phenotype<Float64Gene, Float64> pt = Phenotype.valueOf(
+			final Phenotype<DoubleGene, Double> pt = Phenotype.of(
 				gtf.newInstance(), ff, fs, 0
 			);
 			population.add(pt);
@@ -92,8 +90,3 @@ public class Performance {
 
 
 }
-
-
-
-
-

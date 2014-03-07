@@ -37,12 +37,6 @@ import org.jenetics.SwapMutator;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 
-/**
- * The classical <a href="http://en.wikipedia.org/wiki/Travelling_salesman_problem">TSP</a>.
- *
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.0 &mdash; <em>$Date: 2013-08-29 $</em>
- */
 public class TravelingSalesman {
 
 	private static class FF
@@ -51,21 +45,22 @@ public class TravelingSalesman {
 	{
 		private static final long serialVersionUID = 1L;
 
-		private final double[][] _adjacence;
+		private final double[][] adjacence;
 
 		public FF(final double[][] adjacence) {
-			_adjacence = adjacence;
+			this.adjacence = adjacence;
 		}
 
 		@Override
-		public Double apply(final Genotype<EnumGene<Integer>> genotype) {
-			final Chromosome<EnumGene<Integer>> path = genotype.getChromosome();
+		public Double apply(Genotype<EnumGene<Integer>> gt) {
+			final Chromosome<EnumGene<Integer>>
+				path = gt.getChromosome();
 
 			double length = 0.0;
 			for (int i = 0, n = path.length(); i < n; ++i) {
 				final int from = path.getGene(i).getAllele();
 				final int to = path.getGene((i + 1)%n).getAllele();
-				length += _adjacence[from][to];
+				length += adjacence[from][to];
 			}
 			return length;
 		}
@@ -79,8 +74,9 @@ public class TravelingSalesman {
 	public static void main(String[] args) {
 		final int stops = 20;
 
-		final Function<Genotype<EnumGene<Integer>>, Double> ff = new FF(adjacencyMatrix(stops));
-		final Factory<Genotype<EnumGene<Integer>>> gtf = Genotype.valueOf(
+		final Function<Genotype<EnumGene<Integer>>, Double> ff =
+			new FF(adjacencyMatrix(stops));
+		final Factory<Genotype<EnumGene<Integer>>> gtf = Genotype.of(
 			PermutationChromosome.ofInteger(stops)
 		);
 		final GeneticAlgorithm<EnumGene<Integer>, Double>
@@ -100,10 +96,6 @@ public class TravelingSalesman {
 		System.out.println(ga.getBestPhenotype());
 	}
 
-	/**
-	 * All points in the created adjacency matrix lie on a circle. So it is easy
-	 * to check the quality of the solution found by the GA.
-	 */
 	private static double[][] adjacencyMatrix(int stops) {
 		double[][] matrix = new double[stops][stops];
 		for (int i = 0; i < stops; ++i) {
@@ -118,8 +110,3 @@ public class TravelingSalesman {
 	}
 	private static double RADIUS = 10.0;
 }
-
-
-
-
-

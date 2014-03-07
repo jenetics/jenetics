@@ -21,25 +21,23 @@ package org.jenetics;
 
 import java.util.Random;
 
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.util.Factory;
 import org.jenetics.util.ObjectTester;
 import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-08-29 $</em>
+ * @version <em>$Date: 2014-02-15 $</em>
  */
-public class StatisticsTest extends ObjectTester<Statistics<Float64Gene, Float64>> {
+public class StatisticsTest extends ObjectTester<Statistics<DoubleGene, Double>> {
 
-	final Factory<Statistics<Float64Gene, Float64>>
-	_factory = new Factory<Statistics<Float64Gene,Float64>>() {
-		private final Phenotype<Float64Gene, Float64> _best = TestUtils.newFloat64Phenotype();
-		private final Phenotype<Float64Gene, Float64> _worst = _best;
+	final Factory<Statistics<DoubleGene, Double>>
+	_factory = new Factory<Statistics<DoubleGene,Double>>() {
+		private final Phenotype<DoubleGene, Double> _best = TestUtils.newDoublePhenotype();
+		private final Phenotype<DoubleGene, Double> _worst = _best;
 
 		@Override
-		public Statistics<Float64Gene, Float64> newInstance() {
+		public Statistics<DoubleGene, Double> newInstance() {
 			final Random random = RandomRegistry.getRandom();
 			final int generation = random.nextInt(1000);
 
@@ -56,13 +54,8 @@ public class StatisticsTest extends ObjectTester<Statistics<Float64Gene, Float64
 		}
 	};
 	@Override
-	protected Factory<Statistics<Float64Gene, Float64>> getFactory() {
+	protected Factory<Statistics<DoubleGene, Double>> getFactory() {
 		return _factory;
 	}
 
 }
-
-
-
-
-

@@ -19,8 +19,6 @@
  */
 package org.jenetics;
 
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.stat.Distribution;
 import org.jenetics.stat.UniformDistribution;
 import org.jenetics.util.Factory;
@@ -28,30 +26,30 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-08-29 $</em>
+ * @version <em>$Date: 2014-02-11 $</em>
  */
 public class TruncationSelectorTest
-	extends SelectorTester<TruncationSelector<Float64Gene, Float64>>
+	extends SelectorTester<TruncationSelector<DoubleGene, Double>>
 {
 
 
-	final Factory<TruncationSelector<Float64Gene, Float64>>
-	_factory = new Factory<TruncationSelector<Float64Gene,Float64>>()
+	final Factory<TruncationSelector<DoubleGene, Double>>
+	_factory = new Factory<TruncationSelector<DoubleGene,Double>>()
 	{
 		@Override
-		public TruncationSelector<Float64Gene, Float64> newInstance() {
+		public TruncationSelector<DoubleGene, Double> newInstance() {
 			return new TruncationSelector<>();
 		}
 	};
 	@Override
-	protected Factory<TruncationSelector<Float64Gene, Float64>> getFactory() {
+	protected Factory<TruncationSelector<DoubleGene, Double>> getFactory() {
 		return _factory;
 	}
 
 	@Override
-	protected Distribution<Float64> getDistribution() {
-		final Range<Float64> domain = new Range<>(
-				getDomain().getMax().minus(getDomain().getMin()).divide(2),
+	protected Distribution<Double> getDistribution() {
+		final Range<Double> domain = new Range<>(
+				(getDomain().getMax() - getDomain().getMin())/2.0,
 				getDomain().getMax()
 			);
 		return new UniformDistribution<>(domain);

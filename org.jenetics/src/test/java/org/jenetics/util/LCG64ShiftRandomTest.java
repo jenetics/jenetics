@@ -23,7 +23,7 @@ import org.testng.annotations.DataProvider;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-08-29 $</em>
+ * @version <em>$Date: 2014-02-15 $</em>
  */
 public class LCG64ShiftRandomTest extends RandomTestBase {
 
@@ -47,6 +47,3 @@ public class LCG64ShiftRandomTest extends RandomTestBase {
 	}
 
 }
-
-
-

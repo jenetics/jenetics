@@ -25,7 +25,7 @@ import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-08-29 $</em>
+ * @version <em>$Date: 2014-02-17 $</em>
  */
 public class PermutationChromosomeEnumTest
 	extends ChromosomeTester<EnumGene<PermutationEnum>>
@@ -35,7 +35,7 @@ public class PermutationChromosomeEnumTest
 	private final Factory<Chromosome<EnumGene<PermutationEnum>>>
 	_factory = new Factory<Chromosome<EnumGene<PermutationEnum>>>() {
 		private final ISeq<PermutationEnum> _alleles =
-			Array.valueOf(PermutationEnum.values()).toISeq();
+			Array.of(PermutationEnum.values()).toISeq();
 
 		@Override
 		public PermutationChromosome<PermutationEnum> newInstance() {

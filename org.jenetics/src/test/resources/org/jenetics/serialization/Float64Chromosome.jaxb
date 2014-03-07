@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<org.jenetics.Float64Chromosome length="20" min="0.0" max="1.0">
+    <org.jscience.mathematics.number.Float64 value="0.003140816229067145"/>
+    <org.jscience.mathematics.number.Float64 value="0.43947528327497376"/>
+    <org.jscience.mathematics.number.Float64 value="0.10654807463069327"/>
+    <org.jscience.mathematics.number.Float64 value="0.19696530915810317"/>
+    <org.jscience.mathematics.number.Float64 value="0.7450003838065538"/>
+    <org.jscience.mathematics.number.Float64 value="0.5594416969271359"/>
+    <org.jscience.mathematics.number.Float64 value="0.02823782430152355"/>
+    <org.jscience.mathematics.number.Float64 value="0.5741102315010789"/>
+    <org.jscience.mathematics.number.Float64 value="0.4533651041367144"/>
+    <org.jscience.mathematics.number.Float64 value="0.811148141800367"/>
+    <org.jscience.mathematics.number.Float64 value="0.5710456351848858"/>
+    <org.jscience.mathematics.number.Float64 value="0.30166768355230955"/>
+    <org.jscience.mathematics.number.Float64 value="0.5455492865240272"/>
+    <org.jscience.mathematics.number.Float64 value="0.21068427527733102"/>
+    <org.jscience.mathematics.number.Float64 value="0.5265067943902246"/>
+    <org.jscience.mathematics.number.Float64 value="0.273549098065591"/>
+    <org.jscience.mathematics.number.Float64 value="0.2648197379297126"/>
+    <org.jscience.mathematics.number.Float64 value="0.8732775776362911"/>
+    <org.jscience.mathematics.number.Float64 value="0.9498003919007005"/>
+    <org.jscience.mathematics.number.Float64 value="0.18390258154466066"/>
+</org.jenetics.Float64Chromosome>

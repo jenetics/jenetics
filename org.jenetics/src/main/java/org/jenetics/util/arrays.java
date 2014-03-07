@@ -35,7 +35,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.5 &mdash; <em>$Date: 2013-12-02 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-02-15 $</em>
  */
 public final class arrays extends StaticObject {
 	private arrays() {}
@@ -973,6 +973,3 @@ public final class arrays extends StaticObject {
 	}
 
 }
-
-
-

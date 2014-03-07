@@ -20,10 +20,17 @@
 package org.jenetics;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
+import static org.jenetics.internal.util.object.eq;
 
-import javolution.context.ObjectFactory;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import javolution.lang.Immutable;
 import javolution.lang.Realtime;
 import javolution.text.Text;
@@ -31,26 +38,31 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.jaxb;
+import org.jenetics.internal.util.model.ModelType;
+import org.jenetics.internal.util.model.ValueType;
+
 import org.jenetics.util.Function;
 import org.jenetics.util.Verifiable;
 import org.jenetics.util.functions;
 
 
 /**
- * The {@code Phenotype} consists of a {@link Genotype} plus a
- * fitness {@link Function}, where the fitness {@link Function} represents the
+ * The {@code Phenotype} consists of a {@link Genotype} plus a fitness
+ * {@link Function}, where the fitness {@link Function} represents the
  * environment where the {@link Genotype} lives.
  * This class implements the {@link Comparable} interface, to define a natural
  * order between two {@code Phenotype}s. The natural order of the
  * {@code Phenotypes} is defined by its fitness value (given by the
- * fitness {@link Function}.
- * The {@code Phenotype} is immutable and therefore can't be changed after
- * creation.
+ * fitness {@link Function}. The {@code Phenotype} is immutable and therefore
+ * can't be changed after creation.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-12-06 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-04 $</em>
  */
+@XmlJavaTypeAdapter(Phenotype.Model.Adapter.class)
 public final class Phenotype<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
@@ -65,17 +77,45 @@ public final class Phenotype<
 {
 	private static final long serialVersionUID = 1L;
 
-	private Genotype<G> _genotype;
-	private Function<Genotype<G>, C> _fitnessFunction;
-	private Function<C, C> _fitnessScaler;
+	private final Genotype<G> _genotype;
 
-	private int _generation = 0;
+	private transient final
+	Function<? super Genotype<G>, ? extends C> _fitnessFunction;
+
+	private transient final
+	Function<? super C, ? extends C> _fitnessScaler;
+
+	private final int _generation;
 
 	//Storing the fitness value for lazy evaluation.
 	private C _rawFitness = null;
 	private C _fitness = null;
 
-	private Phenotype() {
+	/**
+	 * Create a new phenotype from the given arguments.
+	 *
+	 * @param genotype the genotype of this phenotype.
+	 * @param fitnessFunction the fitness function of this phenotype.
+	 * @param fitnessScaler the fitness scaler.
+	 * @param generation the current generation of the generated phenotype.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
+	 */
+	public Phenotype(
+		final Genotype<G> genotype,
+		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
+		final Function<? super C, ? extends C> fitnessScaler,
+		final int generation
+	) {
+		_genotype = requireNonNull(genotype, "Genotype");
+		_fitnessFunction = requireNonNull(fitnessFunction, "Fitness function");
+		_fitnessScaler = requireNonNull(fitnessScaler, "Fitness scaler");
+		if (generation < 0) {
+			throw new IllegalArgumentException(
+				"Generation must not < 0: " + generation
+			);
+		}
+		_generation = generation;
 	}
 
 	/**
@@ -92,12 +132,15 @@ public final class Phenotype<
 	/**
 	 * Evaluates the (raw) fitness values and caches it so the fitness calculation
 	 * is performed only once.
+	 *
+	 * @return this phenotype, for method chaining.
 	 */
-	public void evaluate() {
+	public Phenotype<G, C> evaluate() {
 		if (_rawFitness == null) {
 			_rawFitness = _fitnessFunction.apply(_genotype);
 			_fitness = _fitnessScaler.apply(_rawFitness);
 		}
+		return this;
 	}
 
 	/**
@@ -116,7 +159,7 @@ public final class Phenotype<
 	 *
 	 * @return the fitness function.
 	 */
-	public Function<Genotype<G>, C> getFitnessFunction() {
+	public Function<? super Genotype<G>, ? extends C> getFitnessFunction() {
 		return _fitnessFunction;
 	}
 
@@ -126,7 +169,7 @@ public final class Phenotype<
 	 *
 	 * @return the fitness scaler.
 	 */
-	public Function<C, C> getFitnessScaler() {
+	public Function<? super C, ? extends C> getFitnessScaler() {
 		return _fitnessScaler;
 	}
 
@@ -188,7 +231,7 @@ public final class Phenotype<
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).
+		return HashBuilder.of(getClass()).
 				and(_generation).
 				and(getFitness()).
 				and(getRawFitness()).
@@ -221,13 +264,6 @@ public final class Phenotype<
 		return toText().toString() + " --> " + getFitness();
 	}
 
-	@SuppressWarnings("rawtypes")
-	private static final ObjectFactory FACTORY = new ObjectFactory() {
-		@Override protected Object create() {
-			return new Phenotype();
-		}
-	};
-
 	/**
 	 * Factory method for creating a new {@link Phenotype} with the same
 	 * {@link Function} and age as this {@link Phenotype}.
@@ -239,7 +275,7 @@ public final class Phenotype<
 	 */
 	Phenotype<G, C> newInstance(final Genotype<G> genotype, final int generation) {
 		requireNonNull(genotype, "Genotype");
-		return Phenotype.valueOf(
+		return Phenotype.of(
 			genotype, _fitnessFunction, _fitnessScaler, generation
 		);
 	}
@@ -256,11 +292,11 @@ public final class Phenotype<
 	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
 	 */
 	public Phenotype<G, C> newInstance(
-		final Function<Genotype<G>, C> function,
-		final Function<C, C> scaler,
+		final Function<? super Genotype<G>, ? extends C> function,
+		final Function<? super C, ? extends C> scaler,
 		final int generation
 	) {
-		return valueOf(_genotype, function, scaler, generation);
+		return of(_genotype, function, scaler, generation);
 	}
 
 	/**
@@ -274,10 +310,10 @@ public final class Phenotype<
 	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
 	 */
 	public Phenotype<G, C> newInstance(
-		final Function<Genotype<G>, C> function,
+		final Function<? super Genotype<G>, ? extends C> function,
 		final int generation
 	) {
-		return valueOf(_genotype, function, functions.<C>Identity(), generation);
+		return of(_genotype, function, functions.<C>Identity(), generation);
 	}
 
 
@@ -384,22 +420,17 @@ public final class Phenotype<
 	}
 
 	/**
-	 * The {@code Genotype} is copied to guarantee an immutable class. Only
-	 * the age of the {@code Phenotype} can be incremented.
-	 *
-	 * @param genotype the genotype of this phenotype.
-	 * @param fitnessFunction the fitness function of this phenotype.
-	 * @param generation the current generation of the generated phenotype.
-	 * @throws NullPointerException if one of the arguments is {@code null}.
-	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
+	 * @deprecated Use {@link #of(Genotype, org.jenetics.util.Function, org.jenetics.util.Function, int)}
+	 *             instead.
 	 */
+	@Deprecated
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Phenotype<G, C> valueOf(
 		final Genotype<G> genotype,
 		final Function<Genotype<G>, C> fitnessFunction,
 		final int generation
 	) {
-		return valueOf(genotype, fitnessFunction, functions.<C>Identity(), generation);
+		return of(genotype, fitnessFunction, generation);
 	}
 
 	/**
@@ -408,37 +439,58 @@ public final class Phenotype<
 	 *
 	 * @param genotype the genotype of this phenotype.
 	 * @param fitnessFunction the fitness function of this phenotype.
-	 * @param fitnessScaler the fitness scaler.
 	 * @param generation the current generation of the generated phenotype.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Phenotype<G, C> valueOf(
+	Phenotype<G, C> of(
 		final Genotype<G> genotype,
-		final Function<Genotype<G>, C> fitnessFunction,
-		final Function<C, C> fitnessScaler,
+		final Function<? super Genotype<G>, C> fitnessFunction,
 		final int generation
 	) {
-		requireNonNull(genotype, "Genotype");
-		requireNonNull(fitnessFunction, "Fitness function");
-		requireNonNull(fitnessScaler, "Fitness scaler");
-		if (generation < 0) {
-			throw new IllegalArgumentException(
-				"Generation must not < 0: " + generation
-			);
-		}
+		return of(genotype, fitnessFunction, functions.<C>Identity(), generation);
+	}
 
-		@SuppressWarnings("unchecked")
-		final Phenotype<G, C> pt = (Phenotype<G, C>)FACTORY.object();
-		pt._genotype = genotype;
-		pt._fitnessFunction = fitnessFunction;
-		pt._fitnessScaler = fitnessScaler;
-		pt._generation = generation;
+	/**
+	 * @deprecated Use {@link #of(Genotype, org.jenetics.util.Function, org.jenetics.util.Function, int)}
+	 *             instead
+	 */
+	@Deprecated
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Phenotype<G, C> valueOf(
+		final Genotype<G> genotype,
+		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
+		final Function<? super C, ? extends C> fitnessScaler,
+		final int generation
+	) {
+		return of(genotype, fitnessFunction, fitnessScaler, generation);
+	}
 
-		pt._rawFitness = null;
-		pt._fitness = null;
-		return pt;
+	/**
+	 * Create a new phenotype from the given arguments.
+	 *
+	 * @param genotype the genotype of this phenotype.
+	 * @param fitnessFunction the fitness function of this phenotype.
+	 * @param fitnessScaler the fitness scaler.
+	 * @param generation the current generation of the generated phenotype.
+	 * @return a new phenotype object
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
+	 */
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Phenotype<G, C> of(
+		final Genotype<G> genotype,
+		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
+		final Function<? super C, ? extends C> fitnessScaler,
+		final int generation
+	) {
+		return new Phenotype<>(
+			genotype,
+			fitnessFunction,
+			fitnessScaler,
+			generation
+		);
 	}
 
 	/* *************************************************************************
@@ -459,9 +511,11 @@ public final class Phenotype<
 		)
 			throws XMLStreamException
 		{
-			final Phenotype pt = (Phenotype)FACTORY.object();
-			pt._generation = xml.getAttribute(GENERATION, 0);
-			pt._genotype = xml.getNext();
+			final int generation = xml.getAttribute(GENERATION, 0);
+			final Genotype genotype = xml.getNext();
+			final Phenotype pt = new Phenotype(
+				genotype, functions.Identity(), functions.Identity(), generation
+			);
 			pt._fitness = xml.get(FITNESS);
 			pt._rawFitness = xml.get(RAW_FITNESS);
 			return pt;
@@ -480,8 +534,58 @@ public final class Phenotype<
 		}
 	};
 
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
+
+	@XmlRootElement(name = "org.jenetics.Phenotype")
+	@XmlType(name = "org.jenetics.Phenotype")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	final static class Model {
+
+		@XmlAttribute
+		public int generation;
+
+		@XmlElement(name = "org.jenetics.Genotype")
+		public Genotype.Model genotype;
+
+		@XmlJavaTypeAdapter(jaxb.JavolutionElementAdapter.class)
+		@XmlElement(name = "fitness")
+		public Object fitness;
+
+		@XmlJavaTypeAdapter(jaxb.JavolutionElementAdapter.class)
+		@XmlElement(name = "raw-fitness")
+		public Object rawFitness;
+
+		@ValueType(Phenotype.class)
+		@ModelType(Model.class)
+		public final static class Adapter
+			extends XmlAdapter<Model, Phenotype>
+		{
+			@Override
+			public Model marshal(final Phenotype pt) throws Exception {
+				final Model m = new Model();
+				m.generation = pt.getGeneration();
+				m.genotype = Genotype.Model.Adapter.marshal(pt.getGenotype());
+				m.fitness = jaxb.marshal(pt.getFitness());
+				m.rawFitness = jaxb.marshal(pt.getRawFitness());
+				return m;
+			}
+
+			@Override
+			public Phenotype unmarshal(final Model m) throws Exception {
+				final Phenotype pt = new Phenotype(
+					Genotype.Model.Adapter.unmarshal(m.genotype),
+					functions.Identity(),
+					functions.Identity(),
+					m.generation
+				);
+				pt._fitness = (Comparable)m.fitness;
+				pt._rawFitness = (Comparable)m.rawFitness;
+				return pt;
+			}
+		}
+	}
+
 }
-
-
-
-

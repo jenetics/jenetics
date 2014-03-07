@@ -22,8 +22,7 @@ package org.jenetics;
 import static java.lang.Double.NaN;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
+import static org.jenetics.internal.util.object.eq;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -44,6 +43,8 @@ import javolution.xml.stream.XMLStreamException;
 import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.number.Integer64;
 
+import org.jenetics.internal.util.HashBuilder;
+
 import org.jenetics.stat.Variance;
 import org.jenetics.util.FinalReference;
 import org.jenetics.util.accumulators;
@@ -54,7 +55,7 @@ import org.jenetics.util.accumulators.MinMax;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-12-05 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-01 $</em>
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	implements
@@ -67,7 +68,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-12-05 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2014-03-01 $</em>
 	 */
 	public static class Builder<
 		G extends Gene<?, G>,
@@ -355,7 +356,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).
+		return HashBuilder.of(getClass()).
 				and(_optimize).
 				and(_generation).
 				and(_ageMean).
@@ -481,7 +482,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-12-05 $</em>
+	 * @version 1.6 &mdash; <em>$Date: 2014-03-01 $</em>
 	 */
 	public static final class Time implements XMLSerializable {
 		private static final long serialVersionUID = 1L;
@@ -549,7 +550,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 		@Override
 		public int hashCode() {
-			return hashCodeOf(getClass()).
+			return HashBuilder.of(getClass()).
 					and(alter).
 					and(combine).
 					and(evaluation).
@@ -568,12 +569,12 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			}
 
 			final Statistics.Time time = (Statistics.Time)object;
-			return eq(alter, time.alter) &&
-					eq(combine, time.combine) &&
-					eq(evaluation, time.evaluation) &&
-					eq(execution, time.execution) &&
-					eq(selection, time.selection) &&
-					eq(statistics, time.statistics);
+			return eq(alter.get(), time.alter.get()) &&
+					eq(combine.get(), time.combine.get()) &&
+					eq(evaluation.get(), time.evaluation.get()) &&
+					eq(execution.get(), time.execution.get()) &&
+					eq(selection.get(), time.selection.get()) &&
+					eq(statistics.get(), time.statistics.get());
 		}
 
 		@Override
@@ -594,6 +595,10 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 			return out.toString();
 		}
+
+		/* ********************************************************************
+		 *  XML object serialization
+		 * ********************************************************************/
 
 		static final XMLFormat<Statistics.Time> XML =
 			new XMLFormat<Statistics.Time>(Statistics.Time.class)
@@ -644,14 +649,12 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			public void write(final Statistics.Time s, final OutputElement xml)
 				throws XMLStreamException
 			{
-				final MeasureFormat format = getMeasureFormat();
-
-				xml.add(format.format(s.alter.get()), ALTER_TIME);
-				xml.add(format.format(s.combine.get()), COMBINE_TIME);
-				xml.add(format.format(s.evaluation.get()), EVALUATION_TIME);
-				xml.add(format.format(s.execution.get()), EXECUTION_TIME);
-				xml.add(format.format(s.selection.get()), SELECTION_TIME);
-				xml.add(format.format(s.statistics.get()), STATISTICS_TIME);
+				xml.add(fd(s.alter.get()), ALTER_TIME);
+				xml.add(fd(s.combine.get()), COMBINE_TIME);
+				xml.add(fd(s.evaluation.get()), EVALUATION_TIME);
+				xml.add(fd(s.execution.get()), EXECUTION_TIME);
+				xml.add(fd(s.selection.get()), SELECTION_TIME);
+				xml.add(fd(s.statistics.get()), STATISTICS_TIME);
 			}
 			@Override
 			public void read(final InputElement xml, final Statistics.Time p) {
@@ -665,7 +668,12 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 				return MeasureFormat.getInstance(nf, uf);
 			}
 		};
-	}
+
+		private static String fd(final Measurable<Duration> duration) {
+			return String.format("%d ns", duration.longValue(SI.NANO(SI.SECOND)));
+		}
+
+ 	}
 
 
 	/**
@@ -674,7 +682,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-12-05 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2014-03-01 $</em>
 	 */
 	public static class Calculator<
 		G extends Gene<?, G>,
@@ -727,6 +735,3 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	}
 
 }
-
-
-
