@@ -22,16 +22,14 @@ package org.jenetics;
 import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static org.jenetics.internal.util.object.NonNull;
+import static org.jenetics.internal.util.object.checkProbability;
 import static org.jenetics.util.arrays.forEach;
-import static org.jenetics.util.object.NonNull;
-import static org.jenetics.util.object.checkProbability;
 
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-
-import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Concurrency;
@@ -50,11 +48,11 @@ import org.jenetics.util.functions;
  *
  * [code]
  * public static void main(final String[] args) {
- *     final Factory〈Genotype〈BitGene〉〉 gtf = Genotype.valueOf(
- *         BitChromosome.valueOf(10, 0.5)
+ *     final Factory〈Genotype〈BitGene〉〉 gtf = Genotype.of(
+ *         BitChromosome.of(10, 0.5)
  *     );
- *     final Function〈Genotype〈BitGene〉 Float64〉 ff = ...
- *     final GeneticAlgorithm〈BitGene, Float64〉
+ *     final Function〈Genotype〈BitGene〉 Double〉 ff = ...
+ *     final GeneticAlgorithm〈BitGene, Double〉
  *     ga = new GeneticAlgorithm〈〉(gtf, ff, Optimize.MAXIMUM);
  *
  *     ga.setup();
@@ -67,8 +65,8 @@ import org.jenetics.util.functions;
  * The genotype factory, {@code gtf}, in the example above will create genotypes
  * which consists of one {@link BitChromosome} with length 10. The one to zero
  * probability of the newly created genotypes is set to 0.5. The fitness function
- * is parametrized with a {@link BitGene} and a {@link Float64}. That means
- * that the fitness function is calculating the fitness value as {@link Float64}.
+ * is parametrized with a {@link BitGene} and a {@link Double}. That means
+ * that the fitness function is calculating the fitness value as {@link Double}.
  * The return type of the fitness function must be at least a {@link Comparable}.
  * The {@code GeneticAlgorithm} object is then created with the genotype factory
  * and the fitness function. In this example the GA tries to maximize the fitness
@@ -116,11 +114,11 @@ import org.jenetics.util.functions;
  * [code]
  * // Writing the population to disk.
  * final File file = new File("population.xml");
- * IO.xml.write(ga.getPopulation(), file);
+ * IO.jaxb.write(ga.getPopulation(), file);
  *
  * // Reading the population from disk.
- * Population〈Float64Gene,Float64〉 population =
- *     (Population〈Float64Gene, Float64〉)IO.xml.read(file);
+ * Population〈DoubleGene, Double〉 population =
+ *     (Population〈DoubleGene, Double〉)IO.jaxb.read(file);
  * ga.setPopulation(population);
  * [/code]
  *
@@ -135,7 +133,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-12-05 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-03-05 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,
@@ -165,13 +163,13 @@ public class GeneticAlgorithm<
 
 	private final Factory<Genotype<G>> _genotypeFactory;
 	private final Factory<Phenotype<G, C>> _phenotypeFactory;
-	private final Function<Genotype<G>, C> _fitnessFunction;
-	private Function<C, C> _fitnessScaler;
+	private final Function<? super Genotype<G>, ? extends C> _fitnessFunction;
+	private Function<? super C, ? extends C> _fitnessScaler;
 
 	private double _offspringFraction = DEFAULT_OFFSPRING_FRACTION;
 
 	// Alterers
-	private Alterer<G> _alterer = CompositeAlterer.valueOf(
+	private Alterer<G> _alterer = CompositeAlterer.of(
 		new SinglePointCrossover<G>(0.1),
 		new Mutator<G>(0.05)
 	);
@@ -214,8 +212,8 @@ public class GeneticAlgorithm<
 	 */
 	public GeneticAlgorithm(
 		final Factory<Genotype<G>> genotypeFactory,
-		final Function<Genotype<G>, C> fitnessFunction,
-		final Function<C, C> fitnessScaler,
+		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
+		final Function<? super C, ? extends C> fitnessScaler,
 		final Optimize optimization
 	) {
 		_genotypeFactory = requireNonNull(genotypeFactory, "GenotypeFactory");
@@ -225,7 +223,7 @@ public class GeneticAlgorithm<
 
 		_phenotypeFactory = new Factory<Phenotype<G, C>>() {
 			@Override public Phenotype<G, C> newInstance() {
-				return Phenotype.valueOf(
+				return Phenotype.of(
 					_genotypeFactory.newInstance(),
 					_fitnessFunction,
 					_fitnessScaler,
@@ -245,7 +243,7 @@ public class GeneticAlgorithm<
 	 */
 	public GeneticAlgorithm(
 		final Factory<Genotype<G>> genotypeFactory,
-		final Function<Genotype<G>, C> fitnessFunction
+		final Function<? super Genotype<G>, ? extends C> fitnessFunction
 	) {
 		this(
 			genotypeFactory,
@@ -266,7 +264,7 @@ public class GeneticAlgorithm<
 	 */
 	public GeneticAlgorithm(
 		final Factory<Genotype<G>> genotypeFactory,
-		final Function<Genotype<G>, C> fitnessFunction,
+		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
 		final Optimize optimization
 	) {
 		this(
@@ -288,8 +286,8 @@ public class GeneticAlgorithm<
 	 */
 	public GeneticAlgorithm(
 		final Factory<Genotype<G>> genotypeFactory,
-		final Function<Genotype<G>, C> fitnessFunction,
-		final Function<C, C> fitnessScaler
+		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
+		final Function<? super C, ? extends C> fitnessScaler
 	) {
 		this(
 			genotypeFactory,
@@ -398,20 +396,20 @@ public class GeneticAlgorithm<
 			//Increment the generation and the generation.
 			++_generation;
 
-			//Select the survivors and the offsprings.
+			//Select the survivors and the offspring.
 			_selectTimer.start();
 			final Array<Population<G, C>> selection = select();
 			final Population<G, C> survivors = selection.get(0);
 			final Population<G, C> offsprings = selection.get(1);
 			_selectTimer.stop();
 
-			//Alter the offsprings (Recombination, Mutation ...).
+			//Alter the offspring (Recombination, Mutation ...).
 			_alterTimer.start();
 			_alterer.alter(offsprings, _generation);
 			_alterTimer.stop();
 
 			// Combining the new population (containing the survivors and the
-			// altered offsprings).
+			// altered offspring).
 			_combineTimer.start();
 			final int killed = _killed.get();
 			final int invalid = _invalid.get();
@@ -597,7 +595,7 @@ public class GeneticAlgorithm<
 	 * </p>
 	 * To set one ore more GA parameter you will write code like this:
 	 * [code]
-	 * final GeneticAlgorithm〈Float64Gene, Float64〉 ga = ...
+	 * final GeneticAlgorithm〈DoubleGene, Double〉 ga = ...
 	 * final Function〈GeneticAlgorithm〈?, ?〉, Boolean〉 until = ...
 	 *
 	 * //Starting the GA in separate thread.
@@ -675,8 +673,8 @@ public class GeneticAlgorithm<
 	 * The following example shows the simplest possible fitness function. It's
 	 * the identity function and returns the allele of an 1x1  float genotype.
 	 * [code]
-	 * class Id implements Function〈Genotype〈Float64Gene〉, Float64〉 {
-	 *     public Float64 apply(final Genotype〈Float64Gene〉 genotype) {
+	 * class Id implements Function〈Genotype〈DoubleGene〉, Double〉 {
+	 *     public Double apply(final Genotype〈DoubleGene〉 genotype) {
 	 *         return genotype.getGene().getAllele();
 	 *     }
 	 * }
@@ -688,7 +686,7 @@ public class GeneticAlgorithm<
 	 *
 	 * @return the used fitness {@link Function} of the GA.
 	 */
-	public Function<Genotype<G>, C> getFitnessFunction() {
+	public Function<? super Genotype<G>, ? extends C> getFitnessFunction() {
 		return _fitnessFunction;
 	}
 
@@ -704,9 +702,9 @@ public class GeneticAlgorithm<
 	 * configuration the raw-fitness is equal to the actual fitness value, that
 	 * means, the used fitness scaler is the identity function.
 	 * [code]
-	 * class Sqrt extends Function〈Float64, Float64〉 {
-	 *     public Float64 apply(final Float64 value) {
-	 *         return Float64.valueOf(sqrt(value.doubleValue()));
+	 * class Sqrt extends Function〈Double, Double〉 {
+	 *     public Double apply(final Double value) {
+	 *         return sqrt(value);
 	 *     }
 	 * }
 	 * [/code]
@@ -724,7 +722,7 @@ public class GeneticAlgorithm<
 	 * @param scaler The fitness scaler.
 	 * @throws NullPointerException if the scaler is {@code null}.
 	 */
-	public void setFitnessScaler(final Function<C, C> scaler) {
+	public void setFitnessScaler(final Function<? super C, ? extends C> scaler) {
 		_fitnessScaler = requireNonNull(scaler, "FitnessScaler");
 	}
 
@@ -733,7 +731,7 @@ public class GeneticAlgorithm<
 	 *
 	 * @return the currently used fitness scaler {@link Function} of the GA.
 	 */
-	public Function<C, C> getFitnessScaler() {
+	public Function<? super C, ? extends C> getFitnessScaler() {
 		return _fitnessScaler;
 	}
 
@@ -873,7 +871,7 @@ public class GeneticAlgorithm<
 	 */
 	@SafeVarargs
 	public final void setAlterers(final Alterer<G>... alterers) {
-		setAlterer(CompositeAlterer.valueOf(alterers));
+		setAlterer(CompositeAlterer.of(alterers));
 	}
 
 	/**
@@ -970,7 +968,7 @@ public class GeneticAlgorithm<
 
 		final Population<G, C> population = new Population<>(genotypes.size());
 		for (Genotype<G> genotype : genotypes) {
-			population.add(Phenotype.valueOf(
+			population.add(Phenotype.of(
 				genotype,
 				_fitnessFunction,
 				_fitnessScaler,
@@ -1094,10 +1092,3 @@ public class GeneticAlgorithm<
 	}
 
 }
-
-
-
-
-
-
-

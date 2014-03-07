@@ -23,33 +23,31 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.math.BigInteger;
 import java.util.BitSet;
 import java.util.Random;
 
-import javolution.context.LocalContext;
-
-import org.jscience.mathematics.number.LargeInteger;
 import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import org.jscience.mathematics.number.LargeInteger;
+
 import org.jenetics.util.Factory;
-import org.jenetics.util.IO;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.bit;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-10-22 $</em>
+ * @version <em>$Date: 2014-03-06 $</em>
  */
+@SuppressWarnings("deprecation")
 public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
 	private final Factory<Chromosome<BitGene>>
-	_factory = new BitChromosome(500, 0.3);
+	_factory = BitChromosome.of(500, 0.3);
 	@Override protected Factory<Chromosome<BitGene>> getFactory() {
 		return _factory;
 	}
@@ -57,7 +55,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 	@Test(invocationCount = 20, successPercentage = 90)
 	public void newInstance() {
 		final int size = 50_000;
-		final BitChromosome base = new BitChromosome(size, 0.5);
+		final BitChromosome base = BitChromosome.of(size, 0.5);
 
 		for (int i = 0; i < 100; ++i) {
 			final BitChromosome other = base.newInstance();
@@ -68,8 +66,20 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 	}
 
 	@Test
+	public void chromosomeProbability() {
+		final byte[] data = new byte[1234];
+		RandomRegistry.getRandom().nextBytes(data);
+		
+		final BitChromosome c = new BitChromosome(data);
+		Assert.assertEquals(
+			c.getOneProbability(), 
+			(double)bit.count(data)/(double)(data.length*8)
+		);
+	}
+	
+	@Test
 	public void seqTypes() {
-		final BitChromosome c = new BitChromosome(100, 0.3);
+		final BitChromosome c = BitChromosome.of(100, 0.3);
 
 		Assert.assertEquals(c.toSeq().getClass(), BitGeneArray.BitGeneISeq.class);
 		Assert.assertEquals(c.toSeq().copy().getClass(), BitGeneArray.class);
@@ -78,7 +88,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
 	@Test
 	public void invert() {
-		BitChromosome c1 = new BitChromosome(100, 0.3);
+		BitChromosome c1 = BitChromosome.of(100, 0.3);
 		BitChromosome c2 = c1.copy();
 		Assert.assertNotSame(c2, c1);
 		Assert.assertEquals(c2, c1);
@@ -94,7 +104,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
 	@Test
 	public void numValue() {
-		BitChromosome c1 = new BitChromosome(10);
+		BitChromosome c1 = BitChromosome.of(10);
 
 		int value = c1.intValue();
 		assertEquals((short)value, c1.shortValue());
@@ -105,12 +115,12 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
 	@Test
 	public void intProbability() {
-		BitChromosome c = new BitChromosome(10, 0);
+		BitChromosome c = BitChromosome.of(10, 0);
 		for (BitGene g : c) {
 			assertFalse(g.getBit());
 		}
 
-		c = new BitChromosome(10, 1);
+		c = BitChromosome.of(10, 1);
 		for (BitGene g : c) {
 			assertTrue(g.getBit());
 		}
@@ -123,14 +133,14 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 			bits.set(i, i % 2 == 0);
 		}
 
-		BitChromosome c = new BitChromosome(bits);
+		BitChromosome c = BitChromosome.of(bits);
 		for (int i = 0; i < bits.length(); ++i) {
 			assertEquals(c.getGene(i).getBit(), i % 2 == 0);
 		}
 	}
 
 	@Test
-	public void toBigInteger() {
+	public void toLargeInteger() {
 		BitChromosome c = new BitChromosome(LargeInteger.valueOf(234902));
 
 		LargeInteger i = c.toLargeInteger();
@@ -144,6 +154,15 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 		BitChromosome c2 = new BitChromosome(data);
 		LargeInteger i2 = c2.toLargeInteger();
 		assertEquals(i2, LargeInteger.valueOf(234902));
+	}
+
+	@Test(invocationCount = 5)
+	public void toBigInteger() {
+		final LCG64ShiftRandom random = new LCG64ShiftRandom();
+		final BigInteger value = new BigInteger(1056, random);
+		final BitChromosome chromosome = BitChromosome.of(value);
+
+		assertEquals(chromosome.toBigInteger(), value);
 	}
 
 	@Test
@@ -246,56 +265,10 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 	}
 
 	@DataProvider(name = "bitCountProbability")
-	public Object[][] getBitcountProbability() {
+	public Object[][] getBitCountProbability() {
 		return new Object[][] {
 			{0.01}, {0.1}, {0.125}, {0.333}, {0.5}, {0.75}, {0.85}, {0.999}
 		};
 	}
 
-	@Test
-	public void objectSerializationCompatibility() throws IOException {
-		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
-		LocalContext.enter();
-		try {
-			RandomRegistry.setRandom(random);
-			final BitChromosome chromosome = new BitChromosome(5000, 0.5);
-
-			final String resource = "/org/jenetics/BitChromosome.object";
-			try (InputStream in = getClass().getResourceAsStream(resource)) {
-				final Object object = IO.object.read(in);
-
-				Assert.assertEquals(chromosome, object);
-			}
-		} finally {
-			LocalContext.exit();
-		}
-	}
-
-	@Test
-	public void xmlSerializationCompatibility() throws IOException {
-		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
-		LocalContext.enter();
-		try {
-			RandomRegistry.setRandom(random);
-			final BitChromosome chromosome = new BitChromosome(5000, 0.5);
-
-			final String resource = "/org/jenetics/BitChromosome.xml";
-			try (InputStream in = getClass().getResourceAsStream(resource)) {
-				final Object object = IO.xml.read(in);
-
-				Assert.assertEquals(chromosome, object);
-			}
-		} finally {
-			LocalContext.exit();
-		}
-	}
-
-
 }
-
-
-
-
-
-
-

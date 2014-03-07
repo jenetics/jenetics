@@ -19,11 +19,10 @@
  */
 package org.jenetics;
 
-import static org.jenetics.TestUtils.newPermutationFloat64GenePopulation;
+import static org.jenetics.TestUtils.newPermutationDoubleGenePopulation;
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 import static org.jenetics.util.factories.Int;
 
-import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -39,8 +38,9 @@ import org.jenetics.util.shuffling;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-10-17 $</em>
+ * @version <em>$Date: 2014-02-28 $</em>
  */
+@SuppressWarnings("deprecation")
 public class PartiallyMatchedCrossoverTest {
 
 
@@ -59,18 +59,18 @@ public class PartiallyMatchedCrossoverTest {
 		shuffling.shuffle(that);
 		shuffling.shuffle(other);
 
-		final PermutationChromosome<Integer> thatChrom1 = PermutationChromosome.valueOf(that.toISeq());
+		final PermutationChromosome<Integer> thatChrom1 = PermutationChromosome.of(that.toISeq());
 		Assert.assertTrue(thatChrom1.isValid(), "thatChrom1 not valid");
 
-		final PermutationChromosome<Integer> otherChrom1 = PermutationChromosome.valueOf(other.toISeq());
+		final PermutationChromosome<Integer> otherChrom1 = PermutationChromosome.of(other.toISeq());
 		Assert.assertTrue(otherChrom1.isValid(), "otherChrom1 not valid");
 
 		pmco.crossover(that, other);
 
-		final PermutationChromosome<Integer> thatChrom2 = PermutationChromosome.valueOf(that.toISeq());
+		final PermutationChromosome<Integer> thatChrom2 = PermutationChromosome.of(that.toISeq());
 		Assert.assertTrue(thatChrom2.isValid(), "thatChrom2 not valid: " + thatChrom2.toSeq());
 
-		final PermutationChromosome<Integer> otherChrom2 = PermutationChromosome.valueOf(other.toISeq());
+		final PermutationChromosome<Integer> otherChrom2 = PermutationChromosome.of(other.toISeq());
 		Assert.assertTrue(otherChrom2.isValid(), "otherChrom2 not valid: " + otherChrom2.toSeq());
 
 		Assert.assertFalse(thatChrom1.equals(thatChrom2), "That chromosome must not be equal");
@@ -99,12 +99,12 @@ public class PartiallyMatchedCrossoverTest {
 		final Integer npopulation,
 		final Double p
 	) {
-		final Population<EnumGene<Float64>, Float64> population = newPermutationFloat64GenePopulation(
+		final Population<EnumGene<Double>, Double> population = newPermutationDoubleGenePopulation(
 				ngenes, nchromosomes, npopulation
 			);
 
 		// The mutator to test.
-		final PartiallyMatchedCrossover<Float64> crossover = new PartiallyMatchedCrossover<>(p);
+		final PartiallyMatchedCrossover<Double> crossover = new PartiallyMatchedCrossover<>(p);
 
 		final long nallgenes = ngenes*nchromosomes*npopulation;
 		final long N = 100;
@@ -114,7 +114,7 @@ public class PartiallyMatchedCrossoverTest {
 		final long max = nallgenes;
 		final Range<Long> domain = new Range<>(min, max);
 
-		final Histogram<Long> histogram = Histogram.valueOf(min, max, 10);
+		final Histogram<Long> histogram = Histogram.of(min, max, 10);
 		final Variance<Long> variance = new Variance<>();
 
 		for (int i = 0; i < N; ++i) {
@@ -133,12 +133,3 @@ public class PartiallyMatchedCrossoverTest {
 	}
 
 }
-
-
-
-
-
-
-
-
-

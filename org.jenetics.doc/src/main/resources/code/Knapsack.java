@@ -1,4 +1,6 @@
-import org.jscience.mathematics.number.Float64;
+import static org.jenetics.util.math.random.nextDouble;
+
+import java.util.Random;
 
 import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;
@@ -9,79 +11,83 @@ import org.jenetics.Mutator;
 import org.jenetics.NumberStatistics;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
+import org.jenetics.TournamentSelector;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
+import org.jenetics.util.RandomRegistry;
 
 final class Item {
-	public double size;
-	public double value;
+	public final double size;
+	public final double value;
+
+	Item(final double size, final double value) {
+		this.size = size;
+		this.value = value;
+	}
 }
 
 final class KnapsackFunction
-	implements Function<Genotype<BitGene>, Float64>
+	implements Function<Genotype<BitGene>, Double>
 {
-	private final Item[] _items;
-	private final double _size;
+	private final Item[] items;
+	private final double size;
 
 	public KnapsackFunction(final Item[] items, double size) {
-		_items = items;
-		_size = size;
-	}
-
-	public Item[] getItems() {
-		return _items;
+		this.items = items;
+		this.size = size;
 	}
 
 	@Override
-	public Float64 apply(final Genotype<BitGene> genotype) {
+	public Double apply(final Genotype<BitGene> genotype) {
 		final Chromosome<BitGene> ch = genotype.getChromosome();
 
 		double size = 0;
 		double value = 0;
 		for (int i = 0, n = ch.length(); i < n; ++i) {
 			if (ch.getGene(i).getBit()) {
-				size += _items[i].size;
-				value += _items[i].value;
+				size += items[i].size;
+				value += items[i].value;
 			}
 		}
 
-		if (size > _size) {
-			return Float64.ZERO;
-		} else {
-			return Float64.valueOf(value);
-		}
+		return size <= this.size ? value : 0;
 	}
 }
 
 public class Knapsack {
 
 	private static KnapsackFunction FF(int n, double size) {
-		Item[] items = new Item[n];
+		final Random random = RandomRegistry.getRandom();
+		final Item[] items = new Item[n];
 		for (int i = 0; i < items.length; ++i) {
-			items[i] = new Item();
-			items[i].size = (Math.random() + 1)*10;
-			items[i].value = (Math.random() + 1)*15;
+			items[i] = new Item(
+				nextDouble(random, 1, 10),
+				nextDouble(random, 1, 15)
+			);
 		}
 
 		return new KnapsackFunction(items, size);
 	}
 
-	public static void main(String[] argv) throws Exception {
-		KnapsackFunction ff = FF(15, 100);
-		Factory<Genotype<BitGene>> genotype = Genotype.valueOf(
-			new BitChromosome(15, 0.5)
+	public static void main(String[] args) throws Exception {
+		final KnapsackFunction ff = FF(15, 100);
+		final Factory<Genotype<BitGene>> genotype = Genotype.of(
+			BitChromosome.of(15, 0.5)
 		);
 
-		GeneticAlgorithm<BitGene, Float64> ga = 
-			new GeneticAlgorithm<>(genotype, ff);
-		
-		ga.setMaximalPhenotypeAge(30);
-		ga.setPopulationSize(100);
+		final GeneticAlgorithm<BitGene, Double> ga = 
+			new GeneticAlgorithm<>(
+				genotype, ff
+			);
+		ga.setPopulationSize(500);
 		ga.setStatisticsCalculator(
-			new NumberStatistics.Calculator<BitGene, Float64>()
+			new NumberStatistics.Calculator<BitGene, Double>()
 		);
-		ga.setSelectors(
-			new RouletteWheelSelector<BitGene, Float64>()
+		ga.setSurvivorSelector(
+			new TournamentSelector<BitGene, Double>(5)
+		);
+		ga.setOffspringSelector(
+			new RouletteWheelSelector<BitGene, Double>()
 		);
 		ga.setAlterers(
 			 new Mutator<BitGene>(0.115),
@@ -91,5 +97,6 @@ public class Knapsack {
 		ga.setup();
 		ga.evolve(100);
 		System.out.println(ga.getBestStatistics());
+		System.out.println(ga.getBestPhenotype());
 	}
 }

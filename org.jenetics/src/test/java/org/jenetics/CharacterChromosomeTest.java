@@ -21,11 +21,7 @@ package org.jenetics;
 
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Random;
-
-import javolution.context.LocalContext;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -35,18 +31,17 @@ import org.jenetics.stat.Histogram;
 import org.jenetics.stat.UniformDistribution;
 import org.jenetics.util.CharSeq;
 import org.jenetics.util.Factory;
-import org.jenetics.util.IO;
-import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-08-29 $</em>
+ * @version <em>$Date: 2014-03-03 $</em>
  */
 public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 
 	private final Factory<Chromosome<CharacterGene>>
-	_factory = new CharacterChromosome(500);
+	_factory = CharacterChromosome.of(500);
 	@Override protected Factory<Chromosome<CharacterGene>> getFactory() {
 		return _factory;
 	}
@@ -54,38 +49,34 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 
 	@Test(invocationCount = 20, successPercentage = 95)
     public void newInstanceDistribution() {
-		LocalContext.enter();
-		try {
-			RandomRegistry.setRandom(new Random(12345));
-
+		try (Scoped<Random> s = RandomRegistry.scope(new Random(12345))) {
 			final CharSeq characters = new CharSeq("0123456789");
 			final CharacterChromosome chromosome = new CharacterChromosome(characters, 5000);
 
-			final Histogram<Long> histogram = Histogram.valueOf(0L, 10L, 10);
+			final Histogram<Long> histogram = Histogram.of(0L, 10L, 10);
 
 			for (CharacterGene gene : chromosome) {
 				histogram.accumulate(Long.valueOf(gene.getAllele().toString()));
 			}
 
 			assertDistribution(histogram, new UniformDistribution<>(0L, 10L));
-		} finally {
-			LocalContext.exit();
 		}
     }
 
 	@Test(dataProvider = "genes")
 	public void newCharacterChromosome(final String genes) {
 		final CharSeq characters = new CharSeq("0123456789");
-		CharacterChromosome chromosome = new CharacterChromosome(genes, characters);
+		CharacterChromosome chromosome = CharacterChromosome.of(genes, characters);
 
 		Assert.assertEquals(new String(new StringBuilder(chromosome)), genes);
 	}
 
-	@Test(dataProvider = "genes", expectedExceptions = IllegalArgumentException.class)
+	@Test(dataProvider = "genes")
 	public void newIllegalCharacterChromosome(final String genes) {
 		final CharSeq characters = new CharSeq("012356789");
-		CharacterChromosome chromosome = new CharacterChromosome(genes, characters);
+		CharacterChromosome chromosome = CharacterChromosome.of(genes, characters);
 
+		Assert.assertFalse(chromosome.isValid(), "Chromosome must not be valid");
 		Assert.assertEquals(new String(new StringBuilder(chromosome)), genes);
 	}
 
@@ -101,47 +92,4 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 		};
 	}
 
-	@Test
-	public void objectSerializationCompatibility() throws IOException {
-		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
-		LocalContext.enter();
-		try {
-			RandomRegistry.setRandom(random);
-			final Object chromosome = new CharacterChromosome(1000);
-
-			final String resource = "/org/jenetics/CharacterChromosome.object";
-			try (InputStream in = getClass().getResourceAsStream(resource)) {
-				final Object object = IO.object.read(in);
-
-				Assert.assertEquals(object, chromosome);
-			}
-		} finally {
-			LocalContext.exit();
-		}
-	}
-
-	@Test
-	public void xmlSerializationCompatibility() throws IOException {
-		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
-		LocalContext.enter();
-		try {
-			RandomRegistry.setRandom(random);
-			final Object chromosome = new CharacterChromosome(1000);
-
-			final String resource = "/org/jenetics/CharacterChromosome.xml";
-			try (InputStream in = getClass().getResourceAsStream(resource)) {
-				final Object object = IO.xml.read(in);
-
-				Assert.assertEquals(object, chromosome);
-			}
-		} finally {
-			LocalContext.exit();
-		}
-	}
-
-
 }
-
-
-
-

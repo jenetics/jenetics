@@ -24,11 +24,24 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Random;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import javolution.context.ObjectFactory;
 import javolution.xml.XMLFormat;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jscience.mathematics.number.Integer64;
+
+import org.jenetics.internal.util.model.LongModel;
+import org.jenetics.internal.util.model.ModelType;
+import org.jenetics.internal.util.model.ValueType;
 
 import org.jenetics.util.Function;
 import org.jenetics.util.RandomRegistry;
@@ -39,8 +52,14 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-12-05 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-02-15 $</em>
+ *
+ * @deprecated Use {@link org.jenetics.LongGene} instead. This classes
+ *             uses the <i>JScience</i> library, which will be removed in the
+ *             next major version.
  */
+@Deprecated
+@XmlJavaTypeAdapter(Integer64Gene.Model.Adapter.class)
 public final class Integer64Gene
 	extends NumberGene<Integer64, Integer64Gene>
 {
@@ -104,6 +123,18 @@ public final class Integer64Gene
 				return value._value;
 			}
 		};
+
+	static Function<Integer64, Integer64Gene> Gene(
+		final Integer64 min,
+		final Integer64 max
+	) {
+		return new Function<Integer64, Integer64Gene>() {
+			@Override
+			public Integer64Gene apply(final Integer64 value) {
+				return Integer64Gene.valueOf(value, min, max);
+			}
+		};
+	}
 
 	/* *************************************************************************
 	 *  Factory methods
@@ -226,13 +257,38 @@ public final class Integer64Gene
 		return valueOf(value, min, max);
 	}
 
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private void writeObject(final ObjectOutputStream out)
+		throws IOException
+	{
+		out.defaultWriteObject();
+
+		out.writeLong(_value.longValue());
+		out.writeLong(_min.longValue());
+		out.writeLong(_max.longValue());
+	}
+
+	private void readObject(final ObjectInputStream in)
+		throws IOException, ClassNotFoundException
+	{
+		in.defaultReadObject();
+
+		set(
+			Integer64.valueOf(in.readLong()),
+			Integer64.valueOf(in.readLong()),
+			Integer64.valueOf(in.readLong())
+		);
+	}
 
 	/* *************************************************************************
 	 *  XML object serialization
 	 * ************************************************************************/
 
 	static final XMLFormat<Integer64Gene>
-	XML = new XMLFormat<Integer64Gene>(Integer64Gene.class)
+		XML = new XMLFormat<Integer64Gene>(Integer64Gene.class)
 	{
 		private static final String MIN = "min";
 		private static final String MAX = "max";
@@ -261,39 +317,48 @@ public final class Integer64Gene
 		}
 	};
 
-
 	/* *************************************************************************
-	 *  Java object serialization
+	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	private void writeObject(final ObjectOutputStream out)
-		throws IOException
-	{
-		out.defaultWriteObject();
+	@XmlRootElement(name = "org.jenetics.Integer64Gene")
+	@XmlType(name = "org.jenetics.Integer64Gene")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	final static class Model {
 
-		out.writeLong(_value.longValue());
-		out.writeLong(_min.longValue());
-		out.writeLong(_max.longValue());
+		@XmlAttribute
+		public long min;
+
+		@XmlAttribute
+		public long max;
+
+		@XmlJavaTypeAdapter(LongModel.Adapter.class)
+		@XmlElement(name= "java.lang.Long")
+		public Long value;
+
+		@ValueType(Integer64Gene.class)
+		@ModelType(Model.class)
+		public final static class Adapter
+			extends XmlAdapter<Model, Integer64Gene>
+		{
+			@Override
+			public Model marshal(final Integer64Gene value) {
+				final Model m = new Model();
+				m.min = value.getMin().longValue();
+				m.max = value.getMax().longValue();
+				m.value = value.longValue();
+				return m;
+			}
+
+			@Override
+			public Integer64Gene unmarshal(final Model m) {
+				return Integer64Gene.valueOf(
+					m.value,
+					m.min,
+					m.max
+				);
+			}
+		}
 	}
-
-	private void readObject(final ObjectInputStream in)
-		throws IOException, ClassNotFoundException
-	{
-		in.defaultReadObject();
-
-		set(
-			Integer64.valueOf(in.readLong()),
-			Integer64.valueOf(in.readLong()),
-			Integer64.valueOf(in.readLong())
-		);
-	}
-
 
 }
-
-
-
-
-
-
-

@@ -33,7 +33,7 @@ import org.jscience.mathematics.number.Integer64;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-12-02 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-02-27 $</em>
  */
 public final class functions extends StaticObject {
 	private functions() {}
@@ -87,7 +87,10 @@ public final class functions extends StaticObject {
 	 * Convert a string to an Integer64. If the string can't be converted, an
 	 * {@link NumberFormatException} is throws by the {@link Function#apply(Object)}
 	 * method.
+	 *
+	 * @deprecated Will be removed.
 	 */
+	@Deprecated
 	public static final Function<String, Integer64>
 	StringToInteger64 = new Function<String, Integer64>() {
 		@Override public Integer64 apply(final String value) {
@@ -123,7 +126,10 @@ public final class functions extends StaticObject {
 	 * Convert a string to a Float64. If the string can't be converted, an
 	 * {@link NumberFormatException} is throws by the {@link Function#apply(Object)}
 	 * method.
+	 *
+	 * @deprecated Will be removed.
 	 */
+	@Deprecated
 	public static final Function<String, Float64>
 	StringToFloat64 = new Function<String, Float64>() {
 		@Override public Float64 apply(final String value) {
@@ -133,7 +139,10 @@ public final class functions extends StaticObject {
 
 	/**
 	 * Convert a {@link Float64} value to a {@link Double} value.
+	 *
+	 * @deprecated Will be removed.
 	 */
+	@Deprecated
 	public static final Function<Float64, Double>
 	Float64ToDouble = new Function<Float64, Double>() {
 		@Override public Double apply(final Float64 value) {
@@ -143,7 +152,10 @@ public final class functions extends StaticObject {
 
 	/**
 	 * Convert a {@link Double} value to a {@link Float64} value.
+	 *
+	 * @deprecated Will be removed.
 	 */
+	@Deprecated
 	public static final Function<Double, Float64>
 	DoubleToFloat64 = new Function<Double, Float64>() {
 		@Override public Float64 apply(final Double value) {
@@ -153,7 +165,10 @@ public final class functions extends StaticObject {
 
 	/**
 	 * Convert a {@link Integer64} value to a {@link Long} value.
+	 *
+	 * @deprecated Will be removed.
 	 */
+	@Deprecated
 	public static final Function<Integer64, Long>
 	Integer64ToLong = new Function<Integer64, Long>() {
 		@Override public Long apply(final Integer64 value) {
@@ -163,7 +178,10 @@ public final class functions extends StaticObject {
 
 	/**
 	 * Convert a {link Long} value to a {@link Integer64} value.
+	 *
+	 * @deprecated Will be removed.
 	 */
+	@Deprecated
 	public static final Function<Long, Integer64>
 	LongToInteger64 = new Function<Long, Integer64>() {
 		@Override public Integer64 apply(final Long value) {
@@ -326,9 +344,3 @@ public final class functions extends StaticObject {
 	}
 
 }
-
-
-
-
-
-

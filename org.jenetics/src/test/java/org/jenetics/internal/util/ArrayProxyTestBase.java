@@ -29,7 +29,7 @@ import org.jenetics.util.math;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-12-03 $</em>
+ * @version <em>$Date: 2014-02-15 $</em>
  */
 public abstract class ArrayProxyTestBase<T> {
 
@@ -424,6 +424,3 @@ public abstract class ArrayProxyTestBase<T> {
 	}
 
 }
-
-
-

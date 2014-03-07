@@ -23,8 +23,7 @@ import org.jenetics.util.StaticObject;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.5
- * @version 1.5 &mdash; <em>$Date: 2013-11-24 $</em>
+ * @version <em>$Date: 2014-02-15 $</em>
  */
 public class lcg64shiftrandom extends StaticObject {
 	private lcg64shiftrandom() {}
@@ -36,10 +35,3 @@ public class lcg64shiftrandom extends StaticObject {
 
 
 }
-
-
-
-
-
-
-

@@ -25,7 +25,7 @@ import org.jenetics.util.math;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5 &mdash; <em>$Date: 2013-11-24 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-02-15 $</em>
  */
 public class SeedRandom extends Random64 {
 
@@ -177,4 +177,3 @@ Preparing to run test 209.  ntuple = 0
 # Runtime: 1:50:19                                                            #
 #=============================================================================#
 */
-

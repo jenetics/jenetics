@@ -20,7 +20,8 @@
 package org.jenetics;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.util.object.hashCodeOf;
+
+import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.util.RandomRegistry;
 
@@ -44,7 +45,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-12-08 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-03-06 $</em>
  */
 public class StochasticUniversalSelector<
 	G extends Gene<?, G>,
@@ -115,13 +116,15 @@ public class StochasticUniversalSelector<
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(super.hashCode()).value();
+		return HashBuilder.of(getClass()).and(super.hashCode()).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-				obj != null && obj.getClass() == getClass() && super.equals(obj);
+				obj != null &&
+				obj.getClass() == getClass() &&
+				super.equals(obj);
 	}
 
 	@Override
@@ -130,9 +133,3 @@ public class StochasticUniversalSelector<
 	}
 
 }
-
-
-
-
-
-

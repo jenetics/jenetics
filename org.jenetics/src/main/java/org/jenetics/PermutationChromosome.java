@@ -22,18 +22,31 @@ package org.jenetics;
 import static org.jenetics.EnumGene.Gene;
 import static org.jenetics.util.factories.Int;
 import static org.jenetics.util.functions.StringToInteger;
-import static org.jenetics.util.object.hashCodeOf;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.internal.util.cast;
+import org.jenetics.internal.util.jaxb;
+import org.jenetics.internal.util.model;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
@@ -48,8 +61,9 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.5 &mdash; <em>$Date: 2013-12-02 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-07 $</em>
  */
+@XmlJavaTypeAdapter(PermutationChromosome.Model.Adapter.class)
 public final class PermutationChromosome<T>
 	extends AbstractChromosome<EnumGene<T>>
 	implements XMLSerializable
@@ -58,7 +72,14 @@ public final class PermutationChromosome<T>
 
 	private ISeq<T> _validAlleles;
 
-	PermutationChromosome(final int length, final ISeq<? extends EnumGene<T>> genes) {
+	/*
+	 * TODO: Refactor this to the default constructor in version 2.0. Currently 
+	 * not possible, because this would be an incompatible change.
+	 */
+	PermutationChromosome(
+		final ISeq<EnumGene<T>> genes,
+		final boolean internal
+	) {
 		super(genes);
 		_validAlleles = genes.get(0).getValidAlleles();
 		_valid = true;
@@ -70,10 +91,11 @@ public final class PermutationChromosome<T>
 	 * @param validAlleles the valid alleles used for this permutation arrays.
 	 */
 	public PermutationChromosome(final ISeq<? extends T> validAlleles) {
-		super(
+		this(
 			new Array<EnumGene<T>>(
 				validAlleles.length()
-			).fill(Gene(validAlleles)).shuffle().toISeq()
+			).fill(Gene(validAlleles)).shuffle().toISeq(),
+			true
 		);
 		_validAlleles = cast.apply(validAlleles);
 	}
@@ -135,12 +157,12 @@ public final class PermutationChromosome<T>
 
 	@Override
 	public PermutationChromosome<T> newInstance(final ISeq<EnumGene<T>> genes) {
-		return new PermutationChromosome<>(genes.length(), genes);
+		return new PermutationChromosome<>(genes, true);
 	}
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass())
+		return HashBuilder.of(getClass())
 				.and(super.hashCode())
 				.value();
 	}
@@ -171,11 +193,24 @@ public final class PermutationChromosome<T>
 	 *
 	 * @param genes the genes of this chromosome.
 	 * @return a new PermutationChromosome from the given genes.
+	 *
+	 * @deprecated Use {@link #of(org.jenetics.util.ISeq)} instead.
 	 */
+	@Deprecated
 	public static <T> PermutationChromosome<T> valueOf(
 		final ISeq<EnumGene<T>> genes
 	) {
-		return new PermutationChromosome<>(genes.length(), genes);
+		return new PermutationChromosome<>(genes, true);
+	}
+
+	/**
+	 * Create a new PermutationChromosome from the given genes.
+	 *
+	 * @param genes the genes of this chromosome.
+	 * @return a new PermutationChromosome from the given genes.
+	 */
+	public static <T> PermutationChromosome<T> of(final ISeq<EnumGene<T>> genes) {
+		return new PermutationChromosome<>(genes, true);
 	}
 
 	/**
@@ -184,73 +219,11 @@ public final class PermutationChromosome<T>
 	 * @param length the chromosome length.
 	 * @return a integer permutation chromosome with the given length.
 	 */
+	@SuppressWarnings("deprecation")
 	public static PermutationChromosome<Integer> ofInteger(final int length) {
 		final ISeq<Integer> alleles = new Array<Integer>(length).fill(Int()).toISeq();
 		return new PermutationChromosome<>(alleles);
 	}
-
-	/* *************************************************************************
-	 *  XML object serialization
-	 * ************************************************************************/
-
-	@SuppressWarnings("rawtypes")
-	static final XMLFormat<PermutationChromosome>
-	XML = new XMLFormat<PermutationChromosome>(PermutationChromosome.class) {
-
-		private static final String LENGTH = "length";
-		private static final String ALLELE_INDEXES = "allele-indexes";
-
-		@SuppressWarnings("unchecked")
-		@Override
-		public PermutationChromosome newInstance(
-			final Class<PermutationChromosome> cls, final InputElement xml
-		) throws XMLStreamException
-		{
-			final int length = xml.getAttribute(LENGTH, 0);
-			final Array<Object> alleles = new Array<>(length);
-			for (int i = 0; i < length; ++i) {
-				alleles.set(i, xml.getNext());
-			}
-
-			final ISeq<Object> ialleles = alleles.toISeq();
-
-			final Array<Integer> indexes = Array.valueOf(
-				xml.get(ALLELE_INDEXES, String.class
-			).split(",")).map(StringToInteger);
-
-			final Array<Object> genes = new Array<>(length);
-			for (int i = 0; i < length; ++i) {
-				genes.set(i, EnumGene.valueOf(ialleles, indexes.get(i)));
-			}
-
-			return new PermutationChromosome(genes.length(), genes.toISeq());
-		}
-
-		@Override
-		public void write(final PermutationChromosome chromosome, final OutputElement xml)
-			throws XMLStreamException
-		{
-			xml.setAttribute(LENGTH, chromosome.length());
-			for (Object allele : chromosome.getValidAlleles()) {
-				xml.add(allele);
-			}
-
-			final PermutationChromosome<?> pc = chromosome;
-			final String indexes = pc.toSeq().map(new Function<Object, Integer>() {
-				@Override public Integer apply(final Object value) {
-					return ((EnumGene<?>)value).getAlleleIndex();
-				}
-			}).toString(",");
-			xml.add(indexes, ALLELE_INDEXES);
-		}
-		@Override
-		public void read(
-			final InputElement element, final PermutationChromosome chromosome
-		)
-			throws XMLStreamException
-		{
-		}
-	};
 
 	/* *************************************************************************
 	 *  Java object serialization
@@ -277,14 +250,141 @@ public final class PermutationChromosome<T>
 
 		final Array<EnumGene<T>> genes = new Array<>(_validAlleles.length());
 		for (int i = 0; i < _validAlleles.length(); ++i) {
-			genes.set(i, EnumGene.valueOf(_validAlleles, in.readInt()));
+			genes.set(i, new EnumGene<>(in.readInt(), _validAlleles));
 		}
 
 		_genes = genes.toISeq();
 	}
 
+	/* *************************************************************************
+	 *  XML object serialization
+	 * ************************************************************************/
+
+	@SuppressWarnings("rawtypes")
+	static final XMLFormat<PermutationChromosome>
+		XML = new XMLFormat<PermutationChromosome>(PermutationChromosome.class) {
+
+		private static final String LENGTH = "length";
+		private static final String ALLELE_INDEXES = "allele-indexes";
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public PermutationChromosome newInstance(
+			final Class<PermutationChromosome> cls,
+			final InputElement xml
+		)
+			throws XMLStreamException
+		{
+			final int length = xml.getAttribute(LENGTH, 0);
+			final Array<Object> alleles = new Array<>(length);
+			for (int i = 0; i < length; ++i) {
+				alleles.set(i, xml.getNext());
+			}
+
+			final ISeq<Object> ialleles = alleles.toISeq();
+
+			final Array<Integer> indexes = Array.of(
+				xml.get(ALLELE_INDEXES, String.class
+				).split(",")).map(StringToInteger);
+
+			final Array<Object> genes = new Array<>(length);
+			for (int i = 0; i < length; ++i) {
+				genes.set(i, new EnumGene<>(indexes.get(i), ialleles));
+			}
+
+			return new PermutationChromosome(genes.toISeq(), true);
+		}
+
+		@Override
+		public void write(
+			final PermutationChromosome chromosome,
+			final OutputElement xml
+		)
+			throws XMLStreamException
+		{
+			xml.setAttribute(LENGTH, chromosome.length());
+			for (Object allele : chromosome.getValidAlleles()) {
+				xml.add(allele);
+			}
+
+			final PermutationChromosome<?> pc = chromosome;
+			final String indexes = pc.toSeq().map(new Function<Object, Integer>() {
+				@Override public Integer apply(final Object value) {
+					return ((EnumGene<?>)value).getAlleleIndex();
+				}
+			}).toString(",");
+			xml.add(indexes, ALLELE_INDEXES);
+		}
+		@Override
+		public void read(
+			final InputElement element,
+			final PermutationChromosome chromosome
+		) {
+		}
+	};
+
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
+
+
+	@XmlRootElement(name = "org.jenetics.PermutationChromosome")
+	@XmlType(name = "org.jenetics.PermutationChromosome")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	static final class Model {
+
+		@XmlAttribute
+		public int length;
+
+		@XmlAnyElement
+		public List<Object> genes;
+
+		@XmlJavaTypeAdapter(jaxb.JavolutionElementAdapter.class)
+		@XmlElement(name = "allele-indexes")
+		public Object indexes;
+
+		@model.ValueType(PermutationChromosome.class)
+		@model.ModelType(Model.class)
+		public static final class Adapter
+			extends XmlAdapter<Model, PermutationChromosome>
+		{
+			@Override
+			public Model marshal(final PermutationChromosome pc)
+				throws Exception
+			{
+				final Model model = new Model();
+				model.length = pc.length();
+				model.genes = pc.getValidAlleles()
+					.map(jaxb.Marshaller(pc.getValidAlleles().get(0))).asList();
+				model.indexes = jaxb.marshal(pc.toSeq().map(new Function<Object, Integer>() {
+					@Override public Integer apply(final Object value) {
+						return ((EnumGene<?>)value).getAlleleIndex();
+					}
+				}).toString(","));
+				return model;
+			}
+
+			@Override
+			public PermutationChromosome unmarshal(final Model model)
+				throws Exception
+			{
+				final ISeq seq = Array.of(model.genes)
+					.map(jaxb.Unmarshaller).toISeq();
+				final Array<Integer> indexes = Array
+					.of(model.indexes.toString().split(","))
+					.map(StringToInteger);
+
+				final Array<Object> genes = new Array<>(seq.length());
+				for (int i = 0; i < seq.length(); ++i) {
+					genes.set(i, new EnumGene(indexes.get(i), seq));
+				}
+
+				return new PermutationChromosome(genes.toISeq(), true);
+			}
+		}
+
+		public static final Adapter Adapter = new Adapter();
+	}
+
 }
-
-
-
-

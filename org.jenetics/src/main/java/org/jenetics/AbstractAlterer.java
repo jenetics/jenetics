@@ -19,16 +19,17 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.object.checkProbability;
-import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
+import static org.jenetics.internal.util.object.checkProbability;
+import static org.jenetics.internal.util.object.eq;
+
+import org.jenetics.internal.util.HashBuilder;
 
 /**
  * Abstract implementation of the alterer interface.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-12-02 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-03-01 $</em>
  */
 public abstract class AbstractAlterer<G extends Gene<?, G>>
 	implements Alterer<G>
@@ -51,7 +52,7 @@ public abstract class AbstractAlterer<G extends Gene<?, G>>
 
 			@Override
 			public int hashCode() {
-				return hashCodeOf(getClass()).value();
+				return HashBuilder.of(getClass()).value();
 			}
 
 			@Override
@@ -96,7 +97,7 @@ public abstract class AbstractAlterer<G extends Gene<?, G>>
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(_probability).value();
+		return HashBuilder.of(getClass()).and(_probability).value();
 	}
 
 	@Override
@@ -112,7 +113,3 @@ public abstract class AbstractAlterer<G extends Gene<?, G>>
 		return eq(_probability, alterer._probability);
 	}
 }
-
-
-
-

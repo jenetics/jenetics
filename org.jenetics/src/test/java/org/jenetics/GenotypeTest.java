@@ -22,33 +22,41 @@ package org.jenetics;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 
+import java.util.Random;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import javolution.context.LocalContext;
+
 import org.jenetics.util.Factory;
+import org.jenetics.util.IO;
+import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.ObjectTester;
+import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-08-29 $</em>
+ * @version <em>$Date: 2014-02-18 $</em>
  */
-public class GenotypeTest extends ObjectTester<Genotype<Float64Gene>> {
+@SuppressWarnings("deprecation")
+public class GenotypeTest extends ObjectTester<Genotype<DoubleGene>> {
 
 
-	private final Factory<Genotype<Float64Gene>> _factory = Genotype.valueOf(
-			new Float64Chromosome(0, 1, 50),
-			new Float64Chromosome(0, 1, 500),
-			new Float64Chromosome(0, 1, 100),
-			new Float64Chromosome(0, 1, 50)
-		);
-	@Override protected Factory<Genotype<Float64Gene>> getFactory() {
+	private final Factory<Genotype<DoubleGene>> _factory = Genotype.of(
+		DoubleChromosome.of(0, 1, 50),
+		DoubleChromosome.of(0, 1, 500),
+		DoubleChromosome.of(0, 1, 100),
+		DoubleChromosome.of(0, 1, 50)
+	);
+	@Override protected Factory<Genotype<DoubleGene>> getFactory() {
 		return _factory;
 	}
 
 	@Test
 	public void factory() {
-		final Genotype<Float64Gene> factory = (Genotype<Float64Gene>)_factory;
-		final Genotype<Float64Gene> gt = _factory.newInstance();
+		final Genotype<DoubleGene> factory = (Genotype<DoubleGene>)_factory;
+		final Genotype<DoubleGene> gt = _factory.newInstance();
 
 		Assert.assertEquals(factory.length(), gt.length());
 		Assert.assertEquals(factory.getNumberOfGenes(), gt.getNumberOfGenes());
@@ -65,7 +73,7 @@ public class GenotypeTest extends ObjectTester<Genotype<Float64Gene>> {
         BitChromosome c1 = new BitChromosome(12);
         BitChromosome c2 = new BitChromosome(12);
         BitChromosome c3 = c2.copy();
-        Genotype<BitGene> g2 = Genotype.valueOf(c1, c2, c3);
+        Genotype<BitGene> g2 = Genotype.of(c1, c2, c3);
         Genotype<BitGene> g4 = g2;
 
         assertEquals(g2, g4);
@@ -74,21 +82,21 @@ public class GenotypeTest extends ObjectTester<Genotype<Float64Gene>> {
 
     @Test
     public void testSetGetChromosome() {
-        Integer64Chromosome c1 = new Integer64Chromosome(0, 100, 10);
-        Integer64Chromosome c2 = new Integer64Chromosome(0, 100, 10);
+        LongChromosome c1 = LongChromosome.of(0, 100, 10);
+        LongChromosome c2 = LongChromosome.of(0, 100, 10);
         @SuppressWarnings("unused")
-		Integer64Chromosome c3 = new Integer64Chromosome(0, 100, 10);
+		LongChromosome c3 = LongChromosome.of(0, 100, 10);
         @SuppressWarnings("unused")
-		Genotype<Integer64Gene> g = Genotype.valueOf(c1, c2);
+		Genotype<LongGene> g = Genotype.of(c1, c2);
     }
 
 
     @Test
     public void testCreate() {
-        Integer64Chromosome c1 = new Integer64Chromosome(0, 100, 10);
-        Integer64Chromosome c2 = new Integer64Chromosome(0, 100, 10);
-        Genotype<Integer64Gene> g1 = Genotype.valueOf(c1, c2);
-        Genotype<Integer64Gene> g2 = g1.newInstance();
+        LongChromosome c1 = LongChromosome.of(0, 100, 10);
+        LongChromosome c2 = LongChromosome.of(0, 100, 10);
+        Genotype<LongGene> g1 = Genotype.of(c1, c2);
+        Genotype<LongGene> g2 = g1.newInstance();
 
         assertFalse(g1 == g2);
         assertFalse(g1.equals(g2));
@@ -96,41 +104,58 @@ public class GenotypeTest extends ObjectTester<Genotype<Float64Gene>> {
 
     @Test
     public void numberOfGenes() {
-		final Genotype<Float64Gene> genotype = Genotype.valueOf(
-			new Float64Chromosome(0.0, 1.0, 8),
-			new Float64Chromosome(1.0, 2.0, 10),
-			new Float64Chromosome(0.0, 10.0, 9),
-			new Float64Chromosome(0.1, 0.9, 5)
+		final Genotype<DoubleGene> genotype = Genotype.of(
+			new DoubleChromosome(0.0, 1.0, 8),
+			new DoubleChromosome(1.0, 2.0, 10),
+			new DoubleChromosome(0.0, 10.0, 9),
+			new DoubleChromosome(0.1, 0.9, 5)
 		);
 		Assert.assertEquals(genotype.getNumberOfGenes(), 32);
     }
 
     @Test
     public void newInstance() {
-    	final Genotype<Float64Gene> gt1 = Genotype.valueOf(
-    			//Rotation
-    			new Float64Chromosome(Float64Gene.valueOf(-Math.PI, Math.PI)),
+    	final Genotype<DoubleGene> gt1 = Genotype.of(
+			//Rotation
+			DoubleChromosome.of(DoubleGene.of(-Math.PI, Math.PI)),
 
-    			//Translation
-    			new Float64Chromosome(Float64Gene.valueOf(-300, 300), Float64Gene.valueOf(-300, 300)),
+			//Translation
+			DoubleChromosome.of(DoubleGene.of(-300, 300), DoubleGene.of(-300, 300)),
 
-    			//Shear
-    			new Float64Chromosome(Float64Gene.valueOf(-0.5, 0.5), Float64Gene.valueOf(-0.5, 0.5))
-    		);
+			//Shear
+			DoubleChromosome.of(DoubleGene.of(-0.5, 0.5), DoubleGene.of(-0.5, 0.5))
+		);
 
-    	final Genotype<Float64Gene> gt2 = gt1.newInstance();
+    	final Genotype<DoubleGene> gt2 = gt1.newInstance();
 
     	Assert.assertEquals(gt1.length(), gt2.length());
     	for (int i = 0; i < gt1.length(); ++i) {
-    		Chromosome<Float64Gene> ch1 = gt1.getChromosome(i);
-    		Chromosome<Float64Gene> ch2 = gt2.getChromosome(i);
+    		Chromosome<DoubleGene> ch1 = gt1.getChromosome(i);
+    		Chromosome<DoubleGene> ch2 = gt2.getChromosome(i);
     		Assert.assertEquals(ch1.length(), ch2.length());
     	}
     }
 
+	public static void main(final String[] args) throws Exception {
+		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
+		LocalContext.enter();
+		try {
+			RandomRegistry.setRandom(random);
+			final BitChromosome chromosome = new BitChromosome(30, 0.5);
+			final Genotype<?> genotype = Genotype.of(chromosome, chromosome);
+
+			/*
+			JAXBContext jc = JAXBContext.newInstance("org.jenetics");
+			Marshaller marshaller = jc.createMarshaller();
+			marshaller.setAdapter(new GenotypeXML.Adapter());
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			marshaller.marshal(genotype, System.out);
+			*/
+
+			IO.jaxb.write(genotype, System.out);
+		} finally {
+			LocalContext.exit();
+		}
+	}
+
 }
-
-
-
-
-

@@ -1,3 +1,7 @@
+- Add JAXB base XML serialization mechanism to the Gene/Chromosome/Genotype/Phenotype classes. Mark the XMLSerializable based XML serialization as deprecated. org.jenetics.util.IO.xml is now deprecated.
+- Add Double/Long genes/chromosomes which will replace the Float64/Integer64 genes/chromosomes.
+- Generalize the fitness function to 'Function<? super Genotype<G>, ? extends C>' and the fitness scaler to 'Function<? super C, ? extends C>'.
+
 Jenetics-1.5.0
 - Minor fixes in Gradle build script.
 - Mark some 'arrays' class methods as deprecated.

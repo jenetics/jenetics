@@ -19,19 +19,15 @@
  */
 package org.jenetics.gradle.plugin
 
+import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.bundling.Jar
 
-import org.apache.tools.ant.filters.ReplaceTokens
-
-import org.jenetics.gradle.Version
-
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5 &mdash; <em>$Date: 2013-11-20 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-02-15 $</em>
  */
 class PackagingPlugin implements Plugin<Project> {
 
@@ -358,4 +354,3 @@ class PackagingPluginExtension {
 		_plugin.doLastPackaging(closure)
 	}
 }
-
