@@ -20,8 +20,7 @@
 package org.jenetics;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
+import static org.jenetics.internal.util.object.eq;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,12 +31,27 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.RandomAccess;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.jaxb;
+import org.jenetics.internal.util.model;
+
+import org.jenetics.util.Array;
 import org.jenetics.util.Copyable;
 import org.jenetics.util.Factory;
+import org.jenetics.util.ISeq;
 
 /**
  * A population is a collection of Phenotypes.
@@ -49,8 +63,9 @@ import org.jenetics.util.Factory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.5 &mdash; <em>$Date: 2013-12-06 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-01 $</em>
  */
+@XmlJavaTypeAdapter(Population.Model.Adapter.class)
 public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	implements
 		List<Phenotype<G, C>>,
@@ -359,7 +374,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(_population).value();
+		return HashBuilder.of(getClass()).and(_population).value();
 	}
 
 	@Override
@@ -386,6 +401,9 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		return out.toString();
 	}
 
+	/* *************************************************************************
+	 *  XML object serialization
+	 * ************************************************************************/
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	static final XMLFormat<Population>
@@ -420,8 +438,48 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		}
 	};
 
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
+
+	@XmlRootElement(name = "org.jenetics.Population")
+	@XmlType(name = "org.jenetics.Population")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	static final class Model {
+
+		@XmlAttribute
+		public int size;
+
+		@XmlAnyElement
+		public List<Object> phenotypes = new ArrayList<>();
+
+		@model.ValueType(Genotype.class)
+		@model.ModelType(Model.class)
+		public static final class Adapter
+			extends XmlAdapter<Model, Population>
+		{
+			@Override
+			public Model marshal(final Population p) throws Exception {
+				final Model model = new Model();
+				model.size = p.size();
+				if (p.size() > 0) {
+					model.phenotypes = new Array<>(p.size()).setAll(p)
+						.map(jaxb.Marshaller(p.get(0))).asList();
+				}
+
+				return model;
+			}
+
+			@Override
+			public Population unmarshal(final Model model) throws Exception {
+				final ISeq pt = Array.of(model.phenotypes)
+					.map(jaxb.Unmarshaller).toISeq();
+
+				return new Population(pt.asList());
+			}
+		}
+
+		public static final Adapter Adapter = new Adapter();
+	}
 }
-
-
-
-

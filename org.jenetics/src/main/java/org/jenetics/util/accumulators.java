@@ -21,12 +21,13 @@ package org.jenetics.util;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
+import static org.jenetics.internal.util.object.eq;
 
 import java.util.Iterator;
 
 import org.jscience.mathematics.structure.GroupAdditive;
+
+import org.jenetics.internal.util.HashBuilder;
 
 
 /**
@@ -35,7 +36,7 @@ import org.jscience.mathematics.structure.GroupAdditive;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-12-19 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-03-01 $</em>
  */
 public final class accumulators extends StaticObject {
 	private accumulators() {}
@@ -56,7 +57,7 @@ public final class accumulators extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &ndash; <em>$Date: 2013-12-19 $</em>
+	 * @version 1.0 &ndash; <em>$Date: 2014-03-01 $</em>
 	 */
 	public static final class Min<C extends Comparable<? super C>>
 		extends MappedAccumulator<C>
@@ -108,7 +109,7 @@ public final class accumulators extends StaticObject {
 
 		@Override
 		public int hashCode() {
-			return hashCodeOf(getClass()).and(super.hashCode()).and(_min).value();
+			return HashBuilder.of(getClass()).and(super.hashCode()).and(_min).value();
 		}
 
 		@Override
@@ -149,7 +150,7 @@ public final class accumulators extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &ndash; <em>$Date: 2013-12-19 $</em>
+	 * @version 1.0 &ndash; <em>$Date: 2014-03-01 $</em>
 	 */
 	public static final class Max<C extends Comparable<? super C>>
 		extends MappedAccumulator<C>
@@ -201,7 +202,7 @@ public final class accumulators extends StaticObject {
 
 		@Override
 		public int hashCode() {
-			return hashCodeOf(getClass()).and(super.hashCode()).and(_max).value();
+			return HashBuilder.of(getClass()).and(super.hashCode()).and(_max).value();
 		}
 
 		@Override
@@ -242,7 +243,7 @@ public final class accumulators extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &ndash; <em>$Date: 2013-12-19 $</em>
+	 * @version 1.0 &ndash; <em>$Date: 2014-03-01 $</em>
 	 */
 	public static final class MinMax<C extends Comparable<? super C>>
 		extends MappedAccumulator<C>
@@ -308,7 +309,7 @@ public final class accumulators extends StaticObject {
 
 		@Override
 		public int hashCode() {
-			return hashCodeOf(getClass()).
+			return HashBuilder.of(getClass()).
 					and(super.hashCode()).
 					and(_min).
 					and(_max).value();
@@ -351,8 +352,11 @@ public final class accumulators extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &ndash; <em>$Date: 2013-12-19 $</em>
+	 * @version 1.0 &ndash; <em>$Date: 2014-03-01 $</em>
+	 *
+	 * @deprecated Will be removed.
 	 */
+	@Deprecated
 	public static class Sum<G extends GroupAdditive<G>>
 		extends MappedAccumulator<G>
 	{
@@ -462,7 +466,7 @@ public final class accumulators extends StaticObject {
 		final Iterable<? extends T> values,
 		final Accumulator<? super T>... accus
 	) {
-		accumulate(values, Array.valueOf(accus));
+		accumulate(values, Array.of(accus));
 	}
 
 	/**
@@ -628,5 +632,3 @@ public final class accumulators extends StaticObject {
 	}
 
 }
-
-

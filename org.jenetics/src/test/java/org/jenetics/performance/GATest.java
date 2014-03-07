@@ -21,13 +21,11 @@ package org.jenetics.performance;
 
 import java.io.Serializable;
 
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.BoltzmannSelector;
 import org.jenetics.CharacterChromosome;
 import org.jenetics.CharacterGene;
 import org.jenetics.Chromosome;
-import org.jenetics.Float64Gene;
+import org.jenetics.DoubleGene;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.MeanAlterer;
@@ -36,10 +34,11 @@ import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.util.Array;
 import org.jenetics.util.Function;
+import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-08-29 $</em>
+ * @version <em>$Date: 2014-03-05 $</em>
  */
 @Suite("GA")
 public class GATest {
@@ -49,27 +48,27 @@ public class GATest {
 	private static final int NCHROMOSOMES = 50;
 
 
-	private static final class Float64GeneFF
-		implements Function<Genotype<Float64Gene>, Float64>,
+	private static final class DoubleGeneFF
+		implements Function<Genotype<DoubleGene>, Double>,
 					Serializable
 	{
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		public Float64 apply(final Genotype<Float64Gene> genotype) {
+		public Double apply(final Genotype<DoubleGene> genotype) {
 			return genotype.getChromosome().getGene().getAllele();
 		}
 	}
 
 	private static final class CharacterGeneFF
-		implements Function<Genotype<CharacterGene>, Float64>,
+		implements Function<Genotype<CharacterGene>, Double>,
 					Serializable
 	{
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		public Float64 apply(final Genotype<CharacterGene> genotype) {
-			return Float64.valueOf(
+		public Double apply(final Genotype<CharacterGene> genotype) {
+			return Double.valueOf(
 					genotype.getChromosome().getGene().getAllele().hashCode()
 				);
 		}
@@ -77,8 +76,8 @@ public class GATest {
 	}
 
 	@Test(1)
-	public TestCase float64Gene = new TestCase(
-		String.format("Float64Gene[G=%s, C=%s]", NGENES, NCHROMOSOMES),
+	public TestCase DoubleGene = new TestCase(
+		String.format("DoubleGene[G=%s, C=%s]", NGENES, NCHROMOSOMES),
 		LOOPS, NGENES*NCHROMOSOMES
 	) {
 		private final GenotypeBuilder _gtb = new GenotypeBuilder(); {
@@ -86,18 +85,18 @@ public class GATest {
 			_gtb.nchromosomes(NCHROMOSOMES);
 		}
 
-		private GeneticAlgorithm<Float64Gene, Float64> _ga;
+		private GeneticAlgorithm<DoubleGene, Double> _ga;
 
 		@Override
 		protected void beforeTest() {
-			_ga = new GeneticAlgorithm<>(_gtb.build(), new Float64GeneFF());
+			_ga = new GeneticAlgorithm<>(_gtb.build(), new DoubleGeneFF());
 			_ga.setAlterers(
-				new MeanAlterer<Float64Gene>(),
-				new SinglePointCrossover<Float64Gene>(),
-				new Mutator<Float64Gene>(0.2)
+				new MeanAlterer<DoubleGene>(),
+				new SinglePointCrossover<DoubleGene>(),
+				new Mutator<DoubleGene>(0.2)
 			);
-			_ga.setOffspringSelector(new RouletteWheelSelector<Float64Gene, Float64>());
-			_ga.setSurvivorSelector(new BoltzmannSelector<Float64Gene, Float64>());
+			_ga.setOffspringSelector(new RouletteWheelSelector<DoubleGene, Double>());
+			_ga.setSurvivorSelector(new BoltzmannSelector<DoubleGene, Double>());
 			_ga.setup();
 		}
 
@@ -112,13 +111,14 @@ public class GATest {
 		String.format("CharacterGene[G=%s, C=%s]", NGENES, NCHROMOSOMES),
 		LOOPS, NGENES*NCHROMOSOMES
 	) {
-		private final Array<Chromosome<CharacterGene>>
-		_chromosomes = new Array<>(NCHROMOSOMES);
-		{_chromosomes.fill(new CharacterChromosome(NGENES));}
+		private final ISeq<Chromosome<CharacterGene>> _chromosomes = 
+			new Array<Chromosome<CharacterGene>>(NCHROMOSOMES)
+				.fill(CharacterChromosome.of(NGENES))
+				.toISeq();
 
-		private final Genotype<CharacterGene> _gt = Genotype.valueOf(_chromosomes.toISeq());
+		private final Genotype<CharacterGene> _gt = new Genotype<>(_chromosomes);
 
-		private GeneticAlgorithm<CharacterGene, Float64> _ga;
+		private GeneticAlgorithm<CharacterGene, Double> _ga;
 
 		@Override
 		protected void beforeTest() {
@@ -128,8 +128,8 @@ public class GATest {
 				new SinglePointCrossover<CharacterGene>(),
 				new Mutator<CharacterGene>(0.2)
 			);
-			_ga.setOffspringSelector(new RouletteWheelSelector<CharacterGene, Float64>());
-			_ga.setSurvivorSelector(new BoltzmannSelector<CharacterGene, Float64>());
+			_ga.setOffspringSelector(new RouletteWheelSelector<CharacterGene, Double>());
+			_ga.setSurvivorSelector(new BoltzmannSelector<CharacterGene, Double>());
 			_ga.setup();
 		}
 
@@ -141,8 +141,3 @@ public class GATest {
 	};
 
 }
-
-
-
-
-

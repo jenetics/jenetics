@@ -46,7 +46,7 @@ import org.jenetics.internal.math.probability;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.1 &mdash; <em>$Date: 2013-12-08 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2014-02-15 $</em>
  */
 public abstract class IndexStream {
 
@@ -130,7 +130,7 @@ public abstract class IndexStream {
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.5 &mdash; <em>$Date: 2013-12-08 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-02-15 $</em>
  */
 final class RandomIndexStream extends IndexStream {
 	private final int _n;
@@ -159,7 +159,7 @@ final class RandomIndexStream extends IndexStream {
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5 &mdash; <em>$Date: 2013-12-08 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-02-15 $</em>
  */
 final class RandomIndexStreamP0 extends IndexStream {
 	@Override public int next() {
@@ -170,7 +170,7 @@ final class RandomIndexStreamP0 extends IndexStream {
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5 &mdash; <em>$Date: 2013-12-08 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-02-15 $</em>
  */
 final class RandomIndexStreamP1 extends IndexStream {
 	private final int _n;
@@ -185,5 +185,3 @@ final class RandomIndexStreamP1 extends IndexStream {
 		return _pos < _n ? _pos : -1;
 	}
 }
-
-

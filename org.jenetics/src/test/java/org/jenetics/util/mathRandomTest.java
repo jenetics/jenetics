@@ -38,7 +38,7 @@ import org.jenetics.stat.UniformDistribution;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-01 $</em>
+ * @version <em>$Date: 2014-02-17 $</em>
  */
 public class mathRandomTest {
 
@@ -74,7 +74,7 @@ public class mathRandomTest {
 	@Test(invocationCount = 5)
 	public void toFloat_int() {
 		final Random random = new LCG64ShiftRandom();
-		final Histogram<Double> histogram = Histogram.valueOf(0.0, 1.0, 15);
+		final Histogram<Double> histogram = Histogram.of(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
 			histogram.accumulate((double)toFloat(random.nextInt()));
@@ -87,7 +87,7 @@ public class mathRandomTest {
 	@Test(invocationCount = 5)
 	public void toFloat_long() {
 		final Random random = new LCG64ShiftRandom();
-		final Histogram<Double> histogram = Histogram.valueOf(0.0, 1.0, 15);
+		final Histogram<Double> histogram = Histogram.of(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
 			histogram.accumulate((double)toFloat(random.nextLong()));
@@ -100,7 +100,7 @@ public class mathRandomTest {
 	@Test(invocationCount = 5)
 	public void toDouble_long() {
 		final Random random = new LCG64ShiftRandom();
-		final Histogram<Double> histogram = Histogram.valueOf(0.0, 1.0, 15);
+		final Histogram<Double> histogram = Histogram.of(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
 			histogram.accumulate(toDouble(random.nextLong()));
@@ -113,7 +113,7 @@ public class mathRandomTest {
 	@Test(invocationCount = 5)
 	public void toDouble_int_int() {
 		final Random random = new LCG64ShiftRandom();
-		final Histogram<Double> histogram = Histogram.valueOf(0.0, 1.0, 15);
+		final Histogram<Double> histogram = Histogram.of(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
 			final long value = random.nextLong();
@@ -127,7 +127,7 @@ public class mathRandomTest {
 	@Test(invocationCount = 5)
 	public void toFloat2_int() {
 		final Random random = new LCG64ShiftRandom();
-		final Histogram<Double> histogram = Histogram.valueOf(0.0, 1.0, 15);
+		final Histogram<Double> histogram = Histogram.of(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
 			histogram.accumulate((double)toFloat2(random.nextInt()));
@@ -140,7 +140,7 @@ public class mathRandomTest {
 	@Test(invocationCount = 5)
 	public void toFloat2_long() {
 		final Random random = new LCG64ShiftRandom();
-		final Histogram<Double> histogram = Histogram.valueOf(0.0, 1.0, 15);
+		final Histogram<Double> histogram = Histogram.of(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
 			histogram.accumulate((double)toFloat2(random.nextLong()));
@@ -153,7 +153,7 @@ public class mathRandomTest {
 	@Test(invocationCount = 5)
 	public void toDouble2_long() {
 		final Random random = new LCG64ShiftRandom();
-		final Histogram<Double> histogram = Histogram.valueOf(0.0, 1.0, 15);
+		final Histogram<Double> histogram = Histogram.of(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
 			histogram.accumulate(toDouble2(random.nextLong()));
@@ -166,7 +166,7 @@ public class mathRandomTest {
 	@Test(invocationCount = 5)
 	public void toDouble2_int_int() {
 		final Random random = new LCG64ShiftRandom();
-		final Histogram<Double> histogram = Histogram.valueOf(0.0, 1.0, 15);
+		final Histogram<Double> histogram = Histogram.of(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
 			final long value = random.nextLong();
@@ -178,12 +178,3 @@ public class mathRandomTest {
 	}
 
 }
-
-
-
-
-
-
-
-
-

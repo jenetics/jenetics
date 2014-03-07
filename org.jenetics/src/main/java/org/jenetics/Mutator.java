@@ -21,9 +21,10 @@ package org.jenetics;
 
 import static java.lang.Math.pow;
 import static java.lang.String.format;
-import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.concurrent.atomic.AtomicInteger;
+
+import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.util.IndexStream;
 import org.jenetics.util.MSeq;
@@ -65,7 +66,7 @@ import org.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-12-02 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-02-27 $</em>
  */
 public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 
@@ -183,7 +184,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(super.hashCode()).value();
+		return HashBuilder.of(getClass()).and(super.hashCode()).value();
 	}
 
 	@Override
@@ -197,7 +198,3 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	}
 
 }
-
-
-
-

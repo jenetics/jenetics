@@ -20,7 +20,7 @@
  # Author:
  #    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  #
- # Version: <em>$Date$</em>
+ # Version: <em>$Date: 2014-03-06 $</em>
  #
  ###############################################################################
 -->
@@ -60,13 +60,15 @@
 			<class name="org.jenetics.CompositeAltererTest" />
 		</classes>
 	</test>
-	<test name="org.jenetics.Float64Chromosome">
+	<test name="org.jenetics.DoubleChromosome">
 		<classes>
 			<class name="org.jenetics.Float64ChromosomeTest" />
+            <class name="org.jenetics.DoubleChromosomeTest" />
 		</classes>
 	</test>
-	<test name="org.jenetics.Float64Gene">
+	<test name="org.jenetics.DoubleGene">
 		<classes>
+            <class name="org.jenetics.DoubleGeneTest" />
 			<class name="org.jenetics.Float64GeneTest" />
 		</classes>
 	</test>
@@ -95,14 +97,16 @@
 			<class name="org.jenetics.GenotypeTest" />
 		</classes>
 	</test>
-	<test name="org.jenetics.Integer64Chromosome">
+	<test name="org.jenetics.LongChromosome">
 		<classes>
 			<class name="org.jenetics.Integer64ChromosomeTest" />
+            <class name="org.jenetics.LongChromosomeTest" />
 		</classes>
 	</test>
-	<test name="org.jenetics.Integer64Gene">
+	<test name="org.jenetics.LongGene">
 		<classes>
 			<class name="org.jenetics.Integer64GeneTest" />
+			<class name="org.jenetics.LongGeneTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.LinearRankSelector">
@@ -211,6 +215,11 @@
 			<class name="org.jenetics.TruncationSelectorTest" />
 		</classes>
 	</test>
+    <test name="org.jenetics.util.Marshalling">
+        <classes>
+            <class name="org.jenetics.MarshallingTest" />
+        </classes>
+    </test>
 	<test name="org.jenetics.stat.Accumulators">
 		<classes>
 			<class name="org.jenetics.stat.MeanTest" />
@@ -267,6 +276,11 @@
 			<class name="org.jenetics.internal.math.probabilityTest" />
 		</classes>
 	</test>
+    <test name="org.jenetics.internal.util.internalbit">
+        <classes>
+            <class name="org.jenetics.internal.util.internalbitTest" />
+        </classes>
+    </test>
 	<test name="org.jenetics.util.Array">
 		<classes>
 			<class name="org.jenetics.util.ArraySeqTest" />
@@ -302,11 +316,6 @@
 			<class name="org.jenetics.util.mathTest" />
 		</classes>
 	</test>
-	<test name="org.jenetics.util.MurmurHashCodeBuilder">
-		<classes>
-			<class name="org.jenetics.util.MurmurHashCodeBuilderTest" />
-		</classes>
-	</test>
 	<test name="org.jenetics.util.Random">
 		<classes>
 			<class name="org.jenetics.util.LCG64ShiftRandomTest" />
@@ -340,4 +349,3 @@
 		</classes>
 	</test>
 </suite>
-

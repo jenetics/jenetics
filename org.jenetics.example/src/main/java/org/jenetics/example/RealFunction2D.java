@@ -19,10 +19,8 @@
  */
 package org.jenetics.example;
 
-import org.jscience.mathematics.number.Float64;
-
-import org.jenetics.Float64Chromosome;
-import org.jenetics.Float64Gene;
+import org.jenetics.DoubleChromosome;
+import org.jenetics.DoubleGene;
 import org.jenetics.GaussianMutator;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
@@ -31,13 +29,13 @@ import org.jenetics.TournamentSelector;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 
-final class Real2D implements Function<Genotype<Float64Gene>, Float64> {
+final class Real2D implements Function<Genotype<DoubleGene>, Double> {
 	@Override
-	public Float64 apply(final Genotype<Float64Gene> gt) {
-		final Float64 x1 = gt.getChromosome(0).getGene().getAllele();
-		final Float64 x2 = gt.getChromosome(1).getGene().getAllele();
+	public Double apply(final Genotype<DoubleGene> gt) {
+		final Double x1 = gt.getChromosome(0).getGene().getAllele();
+		final Double x2 = gt.getChromosome(1).getGene().getAllele();
 
-		return Float64.valueOf(f(x1.doubleValue(), x2.doubleValue()));
+		return f(x1, x2);
 	}
 
 	private static double f(final double x1, final double x2) {
@@ -47,13 +45,13 @@ final class Real2D implements Function<Genotype<Float64Gene>, Float64> {
 
 public class RealFunction2D {
 
-	private static class FF implements Function<Genotype<Float64Gene>, Double> {
+	private static class FF implements Function<Genotype<DoubleGene>, Double> {
 		@Override
-		public Double apply(final Genotype<Float64Gene> gt) {
-			final Float64 x1 = gt.getChromosome(0).getGene().getAllele();
-			final Float64 x2 = gt.getChromosome(1).getGene().getAllele();
+		public Double apply(final Genotype<DoubleGene> gt) {
+			final Double x1 = gt.getChromosome(0).getGene().getAllele();
+			final Double x2 = gt.getChromosome(1).getGene().getAllele();
 
-			return f(x1.doubleValue(), x2.doubleValue());
+			return f(x1, x2);
 		}
 
 		// Function to be optimized.
@@ -63,19 +61,19 @@ public class RealFunction2D {
 	}
 
 	public static void main(final String[] args) {
-		final Factory<Genotype<Float64Gene>> gtf = Genotype.valueOf(
-			new Float64Chromosome(0.0, 10.0), // x1 in [0, 10]
-			new Float64Chromosome(5.0, 33.0)  // x2 in [5, 33]
+		final Factory<Genotype<DoubleGene>> gtf = Genotype.of(
+			new DoubleChromosome(0.0, 10.0), // x1 in [0, 10]
+			new DoubleChromosome(5.0, 33.0)  // x2 in [5, 33]
 		);
 
-		final Function<Genotype<Float64Gene>, Double> ff = new FF();
-		final GeneticAlgorithm<Float64Gene, Double> ga = new GeneticAlgorithm<>(gtf, ff);
+		final Function<Genotype<DoubleGene>, Double> ff = new FF();
+		final GeneticAlgorithm<DoubleGene, Double> ga = new GeneticAlgorithm<>(gtf, ff);
 
-		ga.setSelectors(new TournamentSelector<Float64Gene, Double>(3));
+		ga.setSelectors(new TournamentSelector<DoubleGene, Double>(3));
 		// This are the alterers you can use for this example, in any combination.
 		ga.setAlterers(
-			new MeanAlterer<Float64Gene>(),
-			new GaussianMutator<Float64Gene>()
+			new MeanAlterer<DoubleGene>(),
+			new GaussianMutator<DoubleGene>()
 		);
 
 		ga.setup();

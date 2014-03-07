@@ -24,12 +24,25 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Random;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import javolution.context.ObjectFactory;
 import javolution.xml.XMLFormat;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.structure.GroupMultiplicative;
+
+import org.jenetics.internal.util.model.DoubleModel;
+import org.jenetics.internal.util.model.ModelType;
+import org.jenetics.internal.util.model.ValueType;
 
 import org.jenetics.util.Function;
 import org.jenetics.util.RandomRegistry;
@@ -40,8 +53,14 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-08-30 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-02-15 $</em>
+ *
+ * @deprecated Use {@link org.jenetics.DoubleGene} instead. This classes
+ *             uses the <i>JScience</i> library, which will be removed in the
+ *             next major version.
  */
+@Deprecated
+@XmlJavaTypeAdapter(Float64Gene.Model.Adapter.class)
 public final class Float64Gene
 	extends NumberGene<Float64, Float64Gene>
 	implements GroupMultiplicative<Float64Gene>
@@ -112,6 +131,18 @@ public final class Float64Gene
 				return value._max;
 			}
 		};
+
+	static Function<Float64, Float64Gene> Gene(
+		final Float64 min,
+		final Float64 max
+	) {
+		return new Function<Float64, Float64Gene>() {
+			@Override
+			public Float64Gene apply(final Float64 value) {
+				return Float64Gene.valueOf(value, min, max);
+			}
+		};
+	}
 
 	/* *************************************************************************
 	 *  Factory methods
@@ -230,6 +261,31 @@ public final class Float64Gene
 		return valueOf(value, min, max);
 	}
 
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private void writeObject(final ObjectOutputStream out)
+		throws IOException
+	{
+		out.defaultWriteObject();
+
+		out.writeDouble(_value.doubleValue());
+		out.writeDouble(_min.doubleValue());
+		out.writeDouble(_max.doubleValue());
+	}
+
+	private void readObject(final ObjectInputStream in)
+		throws IOException, ClassNotFoundException
+	{
+		in.defaultReadObject();
+
+		set(
+			Float64.valueOf(in.readDouble()),
+			Float64.valueOf(in.readDouble()),
+			Float64.valueOf(in.readDouble())
+		);
+	}
 
 	/* *************************************************************************
 	 *  XML object serialization
@@ -266,33 +322,47 @@ public final class Float64Gene
 	};
 
 	/* *************************************************************************
-	 *  Java object serialization
+	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	private void writeObject(final ObjectOutputStream out)
-		throws IOException
-	{
-		out.defaultWriteObject();
+	@XmlRootElement(name = "org.jenetics.Float64Gene")
+	@XmlType(name = "org.jenetics.Float64Gene")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	final static class Model {
 
-		out.writeDouble(_value.doubleValue());
-		out.writeDouble(_min.doubleValue());
-		out.writeDouble(_max.doubleValue());
-	}
+		@XmlAttribute
+		public double min;
 
-	private void readObject(final ObjectInputStream in)
-		throws IOException, ClassNotFoundException
-	{
-		in.defaultReadObject();
+		@XmlAttribute
+		public double max;
 
-		set(
-			Float64.valueOf(in.readDouble()),
-			Float64.valueOf(in.readDouble()),
-			Float64.valueOf(in.readDouble())
-		);
+		@XmlJavaTypeAdapter(DoubleModel.Adapter.class)
+		@XmlElement(name= "java.lang.Double")
+		public Double value;
+
+		@ValueType(Float64Gene.class)
+		@ModelType(Model.class)
+		public final static class Adapter
+			extends XmlAdapter<Model, Float64Gene>
+		{
+			@Override
+			public Model marshal(final Float64Gene value) {
+				final Model m = new Model();
+				m.min = value.getMin().doubleValue();
+				m.max = value.getMax().doubleValue();
+				m.value = value.doubleValue();
+				return m;
+			}
+
+			@Override
+			public Float64Gene unmarshal(final Model m) {
+				return Float64Gene.valueOf(
+					m.value,
+					m.min,
+					m.max
+				);
+			}
+		}
 	}
 
 }
-
-
-
-

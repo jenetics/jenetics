@@ -21,7 +21,6 @@ package org.jenetics;
 
 import static org.jenetics.util.accumulators.accumulate;
 
-import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -29,23 +28,24 @@ import org.jenetics.stat.Distribution;
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.StatisticsAssert;
 import org.jenetics.util.Factory;
+import org.jenetics.util.Function;
 import org.jenetics.util.ObjectTester;
 import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-11-19 $</em>
+ * @version <em>$Date: 2014-02-17 $</em>
  */
-public abstract class SelectorTester<S extends Selector<Float64Gene, Float64>>
+public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 	extends ObjectTester<S>
 {
 
-	private final Range<Float64> _domain = new Range<>(Float64.ZERO, Float64.valueOf(100));
-	protected Range<Float64> getDomain() {
+	private final Range<Double> _domain = new Range<>(0.0, 100.0);
+	protected Range<Double> getDomain() {
 		return _domain;
 	}
 
-	protected abstract Distribution<Float64> getDistribution();
+	protected abstract Distribution<Double> getDistribution();
 
 	private final int _histogramSize = 37;
 	protected int getHistogramSize() {
@@ -66,36 +66,36 @@ public abstract class SelectorTester<S extends Selector<Float64Gene, Float64>>
 		final int loops = 500;
 
 
-		final Float64 min = getDomain().getMin();
-		final Float64 max = getDomain().getMax();
-		final Histogram<Float64> histogram = Histogram.valueOf(min, max, _histogramSize);
+		final Double min = getDomain().getMin();
+		final Double max = getDomain().getMax();
+		final Histogram<Double> histogram = Histogram.of(min, max, _histogramSize);
 
-		final Factory<Genotype<Float64Gene>>
-		gtf = Genotype.valueOf(new Float64Chromosome(min, max));
+		final Factory<Genotype<DoubleGene>>
+		gtf = Genotype.of(new DoubleChromosome(min, max));
 
 
 
-		final Population<Float64Gene, Float64>
+		final Population<DoubleGene, Double>
 		population = new Population<>(npopulation);
 
 		final S selector = getSelector();
 
 		for (int j = 0; j < loops; ++j) {
 			for (int i = 0; i < npopulation; ++i) {
-				population.add(Phenotype.valueOf(gtf.newInstance(), TestUtils.FF, 12));
+				population.add(Phenotype.of(gtf.newInstance(), TestUtils.FF, 12));
 			}
 
 
-			final Population<Float64Gene, Float64> selection =
+			final Population<DoubleGene, Double> selection =
 				selector.select(population, npopulation, Optimize.MAXIMUM);
 
 			accumulate(
 					selection,
 					histogram
-						.map(Float64Gene.Allele)
-						.map(Float64Chromosome.Gene)
-						.map(Genotype.<Float64Gene>Chromosome())
-						.map(Phenotype.<Float64Gene>Genotype())
+						.map(Allele)
+						.map(Gene)
+						.map(Genotype.<DoubleGene>Chromosome())
+						.map(Phenotype.<DoubleGene>Genotype())
 				);
 
 			population.clear();
@@ -104,16 +104,26 @@ public abstract class SelectorTester<S extends Selector<Float64Gene, Float64>>
 		check(histogram, getDistribution());
 	}
 
+	private static final Function<DoubleGene, Double> Allele =
+		new Function<DoubleGene, Double>() {
+			@Override public Double apply(final DoubleGene value) {
+				return value.getAllele();
+			}
+		};
+
+	private static final Function<Chromosome<DoubleGene>, DoubleGene>
+		Gene = AbstractChromosome.gene();
+
 	protected double χ2(
-		final Histogram<Float64> histogram,
-		final Distribution<Float64> distribution
+		final Histogram<Double> histogram,
+		final Distribution<Double> distribution
 	) {
 		return histogram.χ2(distribution.getCDF());
 	}
 
 	protected void check(
-		final Histogram<Float64> histogram,
-		final Distribution<Float64> distribution
+		final Histogram<Double> histogram,
+		final Distribution<Double> distribution
 	) {
 		if (isCheckEnabled()) {
 			final double χ2 =  χ2(histogram, distribution);
@@ -144,8 +154,3 @@ public abstract class SelectorTester<S extends Selector<Float64Gene, Float64>>
 	}
 
 }
-
-
-
-
-

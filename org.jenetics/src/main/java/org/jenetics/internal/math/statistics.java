@@ -32,7 +32,7 @@ import org.jenetics.util.StaticObject;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.4 &mdash; <em>$Date$</em>
+ * @version 1.4 &mdash; <em>$Date: 2014-02-15 $</em>
  */
 public final class statistics extends StaticObject {
 	private statistics() {}
@@ -200,15 +200,3 @@ public final class statistics extends StaticObject {
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-

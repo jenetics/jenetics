@@ -19,25 +19,7 @@
  */
 package org.jenetics.gradle.plugin
 
-import groovy.lang.Closure
-import groovy.lang.MissingPropertyException
-
-import java.io.File
-import java.net.URI
-import java.util.List
-import java.util.Map
-import java.util.Set
-
-import org.gradle.api.Action
-import org.gradle.api.AntBuilder
-import org.gradle.api.InvalidUserDataException
-import org.gradle.api.NamedDomainObjectContainer
-import org.gradle.api.NamedDomainObjectFactory
-import org.gradle.api.PathValidation
-import org.gradle.api.Project
-import org.gradle.api.ProjectState
-import org.gradle.api.Task
-import org.gradle.api.UnknownProjectException
+import org.gradle.api.*
 import org.gradle.api.artifacts.ConfigurationContainer
 import org.gradle.api.artifacts.dsl.ArtifactHandler
 import org.gradle.api.artifacts.dsl.DependencyHandler
@@ -59,11 +41,10 @@ import org.gradle.api.tasks.TaskContainer
 import org.gradle.api.tasks.WorkResult
 import org.gradle.process.ExecResult
 
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5 &mdash; <em>$Date: 2013-11-18 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-02-15 $</em>
  */
 class ProjectAdapter implements Project {
 

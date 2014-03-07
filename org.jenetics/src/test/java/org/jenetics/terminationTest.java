@@ -22,7 +22,6 @@ package org.jenetics;
 import java.util.Collections;
 import java.util.LinkedList;
 
-import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -30,13 +29,13 @@ import org.jenetics.util.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-08-29 $</em>
+ * @version <em>$Date: 2014-02-17 $</em>
  */
 public class terminationTest {
 
 	@Test
 	public void generation() {
-		final GeneticAlgorithm<Float64Gene, Float64> ga = TestUtils.GA();
+		final GeneticAlgorithm<DoubleGene, Double> ga = TestUtils.GA();
 		ga.setup();
 		ga.evolve(termination.Generation(10));
 		Assert.assertEquals(ga.getGeneration(), 10);
@@ -50,39 +49,39 @@ public class terminationTest {
 		Assert.assertEquals(ga.getGeneration(), 50);
 	}
 
-	static final Function<Genotype<Float64Gene>, Float64> FF =
-		new Function<Genotype<Float64Gene>, Float64>()
+	static final Function<Genotype<DoubleGene>, Double> FF =
+		new Function<Genotype<DoubleGene>, Double>()
 	{
 		@Override
-		public Float64 apply(final Genotype<Float64Gene> genotype) {
-			final double value = genotype.getChromosome().getGene().doubleValue();
-			return Float64.valueOf(Math.sin(value));
+		public Double apply(final Genotype<DoubleGene> genotype) {
+			final double value = genotype.getChromosome().getGene().getAllele();
+			return Math.sin(value);
 		}
 	};
 
-	static GeneticAlgorithm<Float64Gene, Float64> GA() {
+	static GeneticAlgorithm<DoubleGene, Double> GA() {
 		return new GeneticAlgorithm<>(
-				Genotype.valueOf(new Float64Chromosome(0, 10)), FF
+				Genotype.of(DoubleChromosome.of(0, 10)), FF
 			);
 	}
 
 	@Test
 	public void steadyState() {
 		final int steadyGenerations = 11;
-		final LinkedList<Float64> values = new LinkedList<>();
-		values.addFirst(Float64.valueOf(-100));
+		final LinkedList<Double> values = new LinkedList<>();
+		values.addFirst(-100.0);
 
-		final GeneticAlgorithm<Float64Gene, Float64> ga = GA();
+		final GeneticAlgorithm<DoubleGene, Double> ga = GA();
 		ga.setPopulationSize(20);
 		ga.setAlterers(
 			ga.getAlterer(),
-			new Mutator<Float64Gene>(0.999)
+			new Mutator<DoubleGene>(0.999)
 		);
 		ga.setup();
 		values.addFirst(ga.getBestPhenotype().getFitness());
 
-		final Function<Statistics<?, Float64>, Boolean> until =
-			termination.<Float64>SteadyFitness(steadyGenerations);
+		final Function<Statistics<?, Double>, Boolean> until =
+			termination.<Double>SteadyFitness(steadyGenerations);
 
 		while (until.apply(ga.getStatistics())) {
 			ga.evolve();
@@ -97,8 +96,8 @@ public class terminationTest {
 		Assert.assertTrue(ga.getGeneration() > steadyGenerations);
 
 		Collections.sort(values);
-		Float64 value = values.removeFirst();
-		for (Float64 f : values) {
+		Double value = values.removeFirst();
+		for (Double f : values) {
 			Assert.assertEquals(f, value);
 		}
 

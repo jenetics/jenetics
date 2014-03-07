@@ -21,9 +21,10 @@ package org.jenetics.util;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.util.object.hashCodeOf;
 
 import java.io.Serializable;
+
+import org.jenetics.internal.util.HashBuilder;
 
 
 /**
@@ -71,7 +72,7 @@ import java.io.Serializable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 1.1 &mdash; <em>$Date: 2013-12-08 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2014-02-27 $</em>
  */
 public class LCG64ShiftRandom extends Random64 {
 
@@ -84,7 +85,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2013-12-08 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2014-02-27 $</em>
 	 */
 	public static final class Param implements Serializable {
 
@@ -184,7 +185,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2013-12-08 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2014-02-27 $</em>
 	 */
 	public static class ThreadLocal
 		extends java.lang.ThreadLocal<LCG64ShiftRandom>
@@ -274,7 +275,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2013-12-08 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2014-02-27 $</em>
 	 */
 	public static class ThreadSafe extends LCG64ShiftRandom {
 		private static final long serialVersionUID = 1L;
@@ -535,7 +536,7 @@ public class LCG64ShiftRandom extends Random64 {
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass())
+		return HashBuilder.of(getClass())
 				.and(_a).and(_b).and(_r)
 				.and(_seed).and(_param).value();
 	}
@@ -745,4 +746,3 @@ Preparing to run test 209.  ntuple = 0
 # Runtime: 0:38:01                                                            #
 #=============================================================================#
 */
-
