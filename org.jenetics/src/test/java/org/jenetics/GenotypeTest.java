@@ -37,17 +37,18 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-15 $</em>
+ * @version <em>$Date: 2014-02-18 $</em>
  */
+@SuppressWarnings("deprecation")
 public class GenotypeTest extends ObjectTester<Genotype<DoubleGene>> {
 
 
-	private final Factory<Genotype<DoubleGene>> _factory = Genotype.valueOf(
-			DoubleChromosome.of(0, 1, 50),
-			DoubleChromosome.of(0, 1, 500),
-			DoubleChromosome.of(0, 1, 100),
-			DoubleChromosome.of(0, 1, 50)
-		);
+	private final Factory<Genotype<DoubleGene>> _factory = Genotype.of(
+		DoubleChromosome.of(0, 1, 50),
+		DoubleChromosome.of(0, 1, 500),
+		DoubleChromosome.of(0, 1, 100),
+		DoubleChromosome.of(0, 1, 50)
+	);
 	@Override protected Factory<Genotype<DoubleGene>> getFactory() {
 		return _factory;
 	}
@@ -72,7 +73,7 @@ public class GenotypeTest extends ObjectTester<Genotype<DoubleGene>> {
         BitChromosome c1 = new BitChromosome(12);
         BitChromosome c2 = new BitChromosome(12);
         BitChromosome c3 = c2.copy();
-        Genotype<BitGene> g2 = Genotype.valueOf(c1, c2, c3);
+        Genotype<BitGene> g2 = Genotype.of(c1, c2, c3);
         Genotype<BitGene> g4 = g2;
 
         assertEquals(g2, g4);
@@ -86,7 +87,7 @@ public class GenotypeTest extends ObjectTester<Genotype<DoubleGene>> {
         @SuppressWarnings("unused")
 		LongChromosome c3 = LongChromosome.of(0, 100, 10);
         @SuppressWarnings("unused")
-		Genotype<LongGene> g = Genotype.valueOf(c1, c2);
+		Genotype<LongGene> g = Genotype.of(c1, c2);
     }
 
 
@@ -94,7 +95,7 @@ public class GenotypeTest extends ObjectTester<Genotype<DoubleGene>> {
     public void testCreate() {
         LongChromosome c1 = LongChromosome.of(0, 100, 10);
         LongChromosome c2 = LongChromosome.of(0, 100, 10);
-        Genotype<LongGene> g1 = Genotype.valueOf(c1, c2);
+        Genotype<LongGene> g1 = Genotype.of(c1, c2);
         Genotype<LongGene> g2 = g1.newInstance();
 
         assertFalse(g1 == g2);
@@ -103,7 +104,7 @@ public class GenotypeTest extends ObjectTester<Genotype<DoubleGene>> {
 
     @Test
     public void numberOfGenes() {
-		final Genotype<DoubleGene> genotype = Genotype.valueOf(
+		final Genotype<DoubleGene> genotype = Genotype.of(
 			new DoubleChromosome(0.0, 1.0, 8),
 			new DoubleChromosome(1.0, 2.0, 10),
 			new DoubleChromosome(0.0, 10.0, 9),
@@ -114,16 +115,16 @@ public class GenotypeTest extends ObjectTester<Genotype<DoubleGene>> {
 
     @Test
     public void newInstance() {
-    	final Genotype<DoubleGene> gt1 = Genotype.valueOf(
-    			//Rotation
-    			DoubleChromosome.of(DoubleGene.of(-Math.PI, Math.PI)),
+    	final Genotype<DoubleGene> gt1 = Genotype.of(
+			//Rotation
+			DoubleChromosome.of(DoubleGene.of(-Math.PI, Math.PI)),
 
-    			//Translation
-    			DoubleChromosome.of(DoubleGene.of(-300, 300), DoubleGene.of(-300, 300)),
+			//Translation
+			DoubleChromosome.of(DoubleGene.of(-300, 300), DoubleGene.of(-300, 300)),
 
-    			//Shear
-    			DoubleChromosome.of(DoubleGene.of(-0.5, 0.5), DoubleGene.of(-0.5, 0.5))
-    		);
+			//Shear
+			DoubleChromosome.of(DoubleGene.of(-0.5, 0.5), DoubleGene.of(-0.5, 0.5))
+		);
 
     	final Genotype<DoubleGene> gt2 = gt1.newInstance();
 
@@ -141,7 +142,7 @@ public class GenotypeTest extends ObjectTester<Genotype<DoubleGene>> {
 		try {
 			RandomRegistry.setRandom(random);
 			final BitChromosome chromosome = new BitChromosome(30, 0.5);
-			final Genotype<?> genotype = Genotype.valueOf(chromosome, chromosome);
+			final Genotype<?> genotype = Genotype.of(chromosome, chromosome);
 
 			/*
 			JAXBContext jc = JAXBContext.newInstance("org.jenetics");

@@ -24,11 +24,11 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-15 $</em>
+ * @version <em>$Date: 2014-03-05 $</em>
  */
 public abstract class NumericGeneTester<
 	N extends Number & Comparable<N>,
-	G extends NumericGene<N,G>
+	G extends AbstractNumericGene<N,G>
 >
 	extends GeneTester<G>
 {

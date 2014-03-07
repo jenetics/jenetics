@@ -28,8 +28,6 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import javolution.context.LocalContext;
-
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.NormalDistribution;
 import org.jenetics.stat.Variance;
@@ -38,10 +36,11 @@ import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Range;
+import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-15 $</em>
+ * @version <em>$Date: 2014-03-03 $</em>
  */
 public class SinglePointCrossoverTest {
 
@@ -67,18 +66,16 @@ public class SinglePointCrossoverTest {
 
 	@Test
 	public void crossover() {
-		final CharSeq chars = CharSeq.valueOf("a-zA-Z");
+		final CharSeq chars = CharSeq.of("a-zA-Z");
 
 		final ISeq<CharacterGene> g1 = new CharacterChromosome(chars, 20).toSeq();
 		final ISeq<CharacterGene> g2 = new CharacterChromosome(chars, 20).toSeq();
 
-		LocalContext.enter();
-		try {
+		int rv = 12;
+		try (Scoped<?> s = RandomRegistry.scope(new ConstRandom(rv))) {
 			final SinglePointCrossover<CharacterGene>
 			crossover = new SinglePointCrossover<>();
 
-			int rv = 12;
-			RandomRegistry.setRandom(new ConstRandom(rv));
 			MSeq<CharacterGene> g1c = g1.copy();
 			MSeq<CharacterGene> g2c = g2.copy();
 			crossover.crossover(g1c, g2c);
@@ -89,34 +86,35 @@ public class SinglePointCrossoverTest {
 			Assert.assertNotEquals(g2c, g1);
 
 			rv = 0;
-			RandomRegistry.setRandom(new ConstRandom(rv));
-			g1c = g1.copy();
-			g2c = g2.copy();
-			crossover.crossover(g1c, g2c);
-			Assert.assertEquals(g1c, g2);
-			Assert.assertEquals(g2c, g1);
-			Assert.assertEquals(g1c.subSeq(0, rv), g1.subSeq(0, rv));
-			Assert.assertEquals(g1c.subSeq(rv), g2.subSeq(rv));
+			try (Scoped<?> s2 = RandomRegistry.scope(new ConstRandom(rv))) {
+				g1c = g1.copy();
+				g2c = g2.copy();
+				crossover.crossover(g1c, g2c);
+				Assert.assertEquals(g1c, g2);
+				Assert.assertEquals(g2c, g1);
+				Assert.assertEquals(g1c.subSeq(0, rv), g1.subSeq(0, rv));
+				Assert.assertEquals(g1c.subSeq(rv), g2.subSeq(rv));
 
-			rv = 1;
-			RandomRegistry.setRandom(new ConstRandom(rv));
-			g1c = g1.copy();
-			g2c = g2.copy();
-			crossover.crossover(g1c, g2c);
-			Assert.assertEquals(g1c.subSeq(0, rv), g1.subSeq(0, rv));
-			Assert.assertEquals(g1c.subSeq(rv), g2.subSeq(rv));
+				rv = 1;
+				try (Scoped<?> s3 = RandomRegistry.scope(new ConstRandom(rv))) {
+					g1c = g1.copy();
+					g2c = g2.copy();
+					crossover.crossover(g1c, g2c);
+					Assert.assertEquals(g1c.subSeq(0, rv), g1.subSeq(0, rv));
+					Assert.assertEquals(g1c.subSeq(rv), g2.subSeq(rv));
 
-			rv = g1.length();
-			RandomRegistry.setRandom(new ConstRandom(rv));
-			g1c = g1.copy();
-			g2c = g2.copy();
-			crossover.crossover(g1c, g2c);
-			Assert.assertEquals(g1c, g1);
-			Assert.assertEquals(g2c, g2);
-			Assert.assertEquals(g1c.subSeq(0, rv), g1.subSeq(0, rv));
-			Assert.assertEquals(g1c.subSeq(rv), g2.subSeq(rv));
-		} finally {
-			LocalContext.exit();
+					rv = g1.length();
+					try (Scoped<?> s4 = RandomRegistry.scope(new ConstRandom(rv))) {
+						g1c = g1.copy();
+						g2c = g2.copy();
+						crossover.crossover(g1c, g2c);
+						Assert.assertEquals(g1c, g1);
+						Assert.assertEquals(g2c, g2);
+						Assert.assertEquals(g1c.subSeq(0, rv), g1.subSeq(0, rv));
+						Assert.assertEquals(g1c.subSeq(rv), g2.subSeq(rv));
+					}
+				}
+			}
 		}
 	}
 
@@ -142,7 +140,7 @@ public class SinglePointCrossoverTest {
 		final long max = nallgenes;
 		final Range<Long> domain = new Range<>(min, max);
 
-		final Histogram<Long> histogram = Histogram.valueOf(min, max, 10);
+		final Histogram<Long> histogram = Histogram.of(min, max, 10);
 		final Variance<Long> variance = new Variance<>();
 
 		for (int i = 0; i < N; ++i) {

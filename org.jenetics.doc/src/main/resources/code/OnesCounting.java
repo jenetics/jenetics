@@ -14,30 +14,26 @@ final class OneCounter
 	implements Function<Genotype<BitGene>, Integer>
 {
 	@Override
-	public Integer apply(Genotype<BitGene> genotype) {
-		int count = 0;
-		for (BitGene gene : genotype.getChromosome()) {
-			if (gene.getBit()) {
-				++count;
-			}
-		}
-		return count;
+	public Integer apply(final Genotype<BitGene> gt) {
+		return ((BitChromosome)gt.getChromosome()).bitCount();
 	}
 }
 
 public class OnesCounting {
 	public static void main(String[] args) {
-		Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
-			new BitChromosome(20, 0.15)
+		Factory<Genotype<BitGene>> gtf = Genotype.of(
+			BitChromosome.of(20, 0.15)
 		);
 		Function<Genotype<BitGene>, Integer> ff = new OneCounter();
-		GeneticAlgorithm<BitGene, Integer> ga = 
-			new GeneticAlgorithm<>(gtf, ff, Optimize.MAXIMUM);
+		GeneticAlgorithm<BitGene, Integer> ga =
+		new GeneticAlgorithm<>(
+			gtf, ff, Optimize.MAXIMUM
+		);
 
 		ga.setStatisticsCalculator(
 			new NumberStatistics.Calculator<BitGene, Integer>()
 		);
-		ga.setPopulationSize(50);
+		ga.setPopulationSize(500);
 		ga.setSelectors(
 			new RouletteWheelSelector<BitGene, Integer>()
 		);
@@ -49,5 +45,6 @@ public class OnesCounting {
 		ga.setup();
 		ga.evolve(100);
 		System.out.println(ga.getBestStatistics());
+		System.out.println(ga.getBestPhenotype());
 	}
 }

@@ -59,8 +59,9 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-15 $</em>
+ * @version <em>$Date: 2014-03-06 $</em>
  */
+@SuppressWarnings("deprecation")
 public class PersistentObject<T> {
 
 	public static final class Marshalling {
@@ -112,7 +113,7 @@ public class PersistentObject<T> {
 	public PersistentObject(final String name, final T value, final String... ios) {
 		_name = Objects.requireNonNull(name);
 		_value = Objects.requireNonNull(value);
-		_marshallings = Array.valueOf(ios).map(ToMarshalling).toISeq();
+		_marshallings = Array.of(ios).map(ToMarshalling).toISeq();
 	}
 
 	public String getName() {
@@ -244,7 +245,7 @@ public class PersistentObject<T> {
 	 **************************************************************************/
 
 	public static CharacterGene nextCharacterGene() {
-		return CharacterGene.valueOf();
+		return CharacterGene.of();
 	}
 
 	public static LongGene nextLongGene() {
@@ -264,47 +265,47 @@ public class PersistentObject<T> {
 	}
 
 	public static EnumGene<Boolean> nextEnumGeneBoolean() {
-		return EnumGene.valueOf(ISeq(5, BooleanFactory));
+		return EnumGene.of(ISeq(5, BooleanFactory));
 	}
 
 	public static EnumGene<Byte> nextEnumGeneByte() {
-		return EnumGene.valueOf(ISeq(5, ByteFactory));
+		return EnumGene.of(ISeq(5, ByteFactory));
 	}
 
 	public static EnumGene<Character> nextEnumGeneCharacter() {
-		return EnumGene.valueOf(ISeq(5, CharacterFactory));
+		return EnumGene.of(ISeq(5, CharacterFactory));
 	}
 
 	public static EnumGene<Short> nextEnumGeneShort() {
-		return EnumGene.valueOf(ISeq(5, ShortFactory));
+		return EnumGene.of(ISeq(5, ShortFactory));
 	}
 
 	public static EnumGene<Integer> nextEnumGeneInteger() {
-		return EnumGene.valueOf(ISeq(5, IntegerFactory));
+		return EnumGene.of(ISeq(5, IntegerFactory));
 	}
 
 	public static EnumGene<Long> nextEnumGeneLong() {
-		return EnumGene.valueOf(ISeq(5, LongFactory));
+		return EnumGene.of(ISeq(5, LongFactory));
 	}
 
 	public static EnumGene<Float> nextEnumGeneFloat() {
-		return EnumGene.valueOf(ISeq(5, FloatFactory));
+		return EnumGene.of(ISeq(5, FloatFactory));
 	}
 
 	public static EnumGene<Double> nextEnumGeneDouble() {
-		return EnumGene.valueOf(ISeq(5, DoubleFactory));
+		return EnumGene.of(ISeq(5, DoubleFactory));
 	}
 
 	public static EnumGene<String> nextEnumGeneString() {
-		return EnumGene.valueOf(ISeq(5, StringFactory));
+		return EnumGene.of(ISeq(5, StringFactory));
 	}
 
 	public static EnumGene<Integer64> nextEnumGeneInteger64() {
-		return EnumGene.valueOf(ISeq(5, Integer64Factory));
+		return EnumGene.of(ISeq(5, Integer64Factory));
 	}
 
 	public static EnumGene<Float64> nextEnumGeneFloat64() {
-		return EnumGene.valueOf(ISeq(5, Float64Factory));
+		return EnumGene.of(ISeq(5, Float64Factory));
 	}
 
 	/* *************************************************************************
@@ -312,11 +313,11 @@ public class PersistentObject<T> {
 	 **************************************************************************/
 
 	public static BitChromosome nextBitChromosome() {
-		return new BitChromosome(20, 0.5);
+		return BitChromosome.of(20, 0.5);
 	}
 
 	public static CharacterChromosome nextCharacterChromosome() {
-		return new CharacterChromosome(20);
+		return CharacterChromosome.of(20);
 	}
 
 	public static LongChromosome nextLongChromosome() {
@@ -361,27 +362,27 @@ public class PersistentObject<T> {
 	 **************************************************************************/
 
 	public static Genotype<BitGene> nextGenotypeBitGene() {
-		return Genotype.valueOf(ISeq(5, BitChromosomeFactory));
+		return new Genotype<>(ISeq(5, BitChromosomeFactory));
 	}
 
 	public static Genotype<CharacterGene> nextGenotypeCharacterGene() {
-		return Genotype.valueOf(ISeq(5, CharacterChromosomeFactory));
+		return new Genotype<>(ISeq(5, CharacterChromosomeFactory));
 	}
 
 	public static Genotype<LongGene> nextGenotypeLongGene() {
-		return Genotype.valueOf(ISeq(5, LongChromosomeFactory));
+		return new Genotype<>(ISeq(5, LongChromosomeFactory));
 	}
 
 	public static Genotype<DoubleGene> nextGenotypeDoubleGene() {
-		return Genotype.valueOf(ISeq(5, DoubleChromosomeFactory));
+		return new Genotype<>(ISeq(5, DoubleChromosomeFactory));
 	}
 
 	public static Genotype<Integer64Gene> nextGenotypeInteger64Gene() {
-		return Genotype.valueOf(ISeq(5, Integer64ChromosomeFactory));
+		return new Genotype<>(ISeq(5, Integer64ChromosomeFactory));
 	}
 
 	public static Genotype<Float64Gene> nextGenotypeFloat64Gene() {
-		return Genotype.valueOf(ISeq(5, Float64ChromosomeFactory));
+		return new Genotype<>(ISeq(5, Float64ChromosomeFactory));
 	}
 
 	/* *************************************************************************
@@ -389,7 +390,7 @@ public class PersistentObject<T> {
 	 **************************************************************************/
 
 	public static Phenotype<LongGene, Integer> nextPhenotypeLongGeneInteger() {
-		return Phenotype.valueOf(
+		return Phenotype.of(
 			nextGenotypeLongGene(),
 			FitnessFunction(IntegerFactory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
@@ -397,7 +398,7 @@ public class PersistentObject<T> {
 	}
 
 	public static Phenotype<LongGene, Long> nextPhenotypeLongGeneLong() {
-		return Phenotype.valueOf(
+		return Phenotype.of(
 			nextGenotypeLongGene(),
 			FitnessFunction(LongFactory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
@@ -405,7 +406,7 @@ public class PersistentObject<T> {
 	}
 
 	public static Phenotype<LongGene, Double> nextPhenotypeLongGeneDouble() {
-		return Phenotype.valueOf(
+		return Phenotype.of(
 			nextGenotypeLongGene(),
 			FitnessFunction(DoubleFactory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
@@ -413,7 +414,7 @@ public class PersistentObject<T> {
 	}
 
 	public static Phenotype<DoubleGene, Integer> nextPhenotypeDoubleGeneInteger() {
-		return Phenotype.valueOf(
+		return Phenotype.of(
 			nextGenotypeDoubleGene(),
 			FitnessFunction(IntegerFactory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
@@ -421,7 +422,7 @@ public class PersistentObject<T> {
 	}
 
 	public static Phenotype<DoubleGene, Long> nextPhenotypeDoubleGeneLong() {
-		return Phenotype.valueOf(
+		return Phenotype.of(
 			nextGenotypeDoubleGene(),
 			FitnessFunction(LongFactory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
@@ -429,7 +430,7 @@ public class PersistentObject<T> {
 	}
 
 	public static Phenotype<DoubleGene, Double> nextPhenotypeDoubleGeneDouble() {
-		return Phenotype.valueOf(
+		return Phenotype.of(
 			nextGenotypeDoubleGene(),
 			FitnessFunction(DoubleFactory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
@@ -437,7 +438,7 @@ public class PersistentObject<T> {
 	}
 
 	public static Phenotype<Integer64Gene, Integer> nextPhenotypeInteger64GeneInteger() {
-		return Phenotype.valueOf(
+		return Phenotype.of(
 			nextGenotypeInteger64Gene(),
 			FitnessFunction(IntegerFactory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
@@ -445,7 +446,7 @@ public class PersistentObject<T> {
 	}
 
 	public static Phenotype<Integer64Gene, Long> nextPhenotypeInteger64GeneLong() {
-		return Phenotype.valueOf(
+		return Phenotype.of(
 			nextGenotypeInteger64Gene(),
 			FitnessFunction(LongFactory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
@@ -453,7 +454,7 @@ public class PersistentObject<T> {
 	}
 
 	public static Phenotype<Integer64Gene, Double> nextPhenotypeInteger64GeneDouble() {
-		return Phenotype.valueOf(
+		return Phenotype.of(
 			nextGenotypeInteger64Gene(),
 			FitnessFunction(DoubleFactory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
@@ -461,7 +462,7 @@ public class PersistentObject<T> {
 	}
 
 	public static Phenotype<Integer64Gene, Integer64> nextPhenotypeInteger64GeneInteger64() {
-		return Phenotype.valueOf(
+		return Phenotype.of(
 			nextGenotypeInteger64Gene(),
 			FitnessFunction(Integer64Factory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
@@ -469,7 +470,7 @@ public class PersistentObject<T> {
 	}
 
 	public static Phenotype<Integer64Gene, Float64> nextPhenotypeInteger64GeneFloat64() {
-		return Phenotype.valueOf(
+		return Phenotype.of(
 			nextGenotypeInteger64Gene(),
 			FitnessFunction(Float64Factory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
@@ -477,7 +478,7 @@ public class PersistentObject<T> {
 	}
 
 	public static Phenotype<Float64Gene, Integer> nextPhenotypeFloat64GeneInteger() {
-		return Phenotype.valueOf(
+		return Phenotype.of(
 			nextGenotypeFloat64Gene(),
 			FitnessFunction(IntegerFactory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
@@ -485,7 +486,7 @@ public class PersistentObject<T> {
 	}
 
 	public static Phenotype<Float64Gene, Long> nextPhenotypeFloat64GeneLong() {
-		return Phenotype.valueOf(
+		return Phenotype.of(
 			nextGenotypeFloat64Gene(),
 			FitnessFunction(LongFactory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
@@ -493,7 +494,7 @@ public class PersistentObject<T> {
 	}
 
 	public static Phenotype<Float64Gene, Double> nextPhenotypeFloat64GeneDouble() {
-		return Phenotype.valueOf(
+		return Phenotype.of(
 			nextGenotypeFloat64Gene(),
 			FitnessFunction(DoubleFactory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
@@ -501,7 +502,7 @@ public class PersistentObject<T> {
 	}
 
 	public static Phenotype<Float64Gene, Integer64> nextPhenotypeFloat64GeneInteger64() {
-		return Phenotype.valueOf(
+		return Phenotype.of(
 			nextGenotypeFloat64Gene(),
 			FitnessFunction(Integer64Factory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
@@ -509,7 +510,7 @@ public class PersistentObject<T> {
 	}
 
 	public static Phenotype<Float64Gene, Float64> nextPhenotypeFloat64GeneFloat64() {
-		return Phenotype.valueOf(
+		return Phenotype.of(
 			nextGenotypeFloat64Gene(),
 			FitnessFunction(Float64Factory.newInstance()),
 			Math.abs(IntegerFactory.newInstance())
@@ -610,11 +611,11 @@ public class PersistentObject<T> {
 	);
 
 
-	public static <R extends Comparable<R>> Function<Object, R>
+	public static <T, R extends Comparable<R>> Function<T, R>
 	FitnessFunction(final R result) {
-		return new Function<Object, R>() {
+		return new Function<T, R>() {
 			@Override
-			public R apply(final Object value) {
+			public R apply(final T value) {
 				return result;
 			}
 		};
@@ -631,7 +632,6 @@ public class PersistentObject<T> {
 	}
 
 
-	@SuppressWarnings("deprecation")
 	public static void main(final String[] args) throws Exception {
 		write();
 	}

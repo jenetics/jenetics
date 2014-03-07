@@ -19,8 +19,6 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.object.hashCodeOf;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -36,6 +34,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.internal.util.model.ModelType;
 import org.jenetics.internal.util.model.ValueType;
 
@@ -47,13 +46,15 @@ import org.jenetics.util.ISeq;
  * Numeric chromosome implementation which holds 64 bit integer numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-05 $</em>
  * @since 1.6
  */
 @XmlJavaTypeAdapter(LongChromosome.Model.Adapter.class)
 public class LongChromosome
-	extends NumericChromosome<Long, LongGene>
-	implements Serializable
+	extends AbstractNumericChromosome<Long, LongGene>
+	implements
+		NumericChromosome<Long, LongGene>,
+		Serializable
 {
 	private static final long serialVersionUID = 1L;
 
@@ -95,7 +96,7 @@ public class LongChromosome
 	 *         empty.
 	 */
 	public static LongChromosome of(final LongGene... genes) {
-		return new LongChromosome(Array.valueOf(genes).toISeq());
+		return new LongChromosome(Array.of(genes).toISeq());
 	}
 
 	/**
@@ -135,7 +136,7 @@ public class LongChromosome
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(super.hashCode()).value();
+		return HashBuilder.of(getClass()).and(super.hashCode()).value();
 	}
 
 	@Override
@@ -218,7 +219,7 @@ public class LongChromosome
 				final Long min = model.min;
 				final Long max = model.max;
 				return new LongChromosome(
-					Array.valueOf(model.values).map(Gene(min, max)).toISeq()
+					Array.of(model.values).map(Gene(min, max)).toISeq()
 				);
 			}
 		}

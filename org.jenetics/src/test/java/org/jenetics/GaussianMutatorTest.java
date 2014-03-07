@@ -34,13 +34,13 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-15 $</em>
+ * @version <em>$Date: 2014-03-05 $</em>
  */
 public class GaussianMutatorTest extends MutatorTestBase {
 
 	@Override
 	public Alterer<DoubleGene> newAlterer(double p) {
-		return new NormalMutator<DoubleGene>(p);
+		return new GaussianMutator<>(p);
 	}
 
 	@Test(invocationCount = 20, successPercentage = 95)
@@ -53,9 +53,9 @@ public class GaussianMutatorTest extends MutatorTestBase {
 		final double var = Math.pow((max - min)/4.0, 2);
 
 		final DoubleGene gene = DoubleGene.of(mean, min, max);
-		final NormalMutator<DoubleGene> mutator = new NormalMutator<>();
+		final GaussianMutator<DoubleGene> mutator = new GaussianMutator<>();
 
-		final Histogram<Double> histogram = Histogram.valueOf(0.0, 10.0, 10);
+		final Histogram<Double> histogram = Histogram.of(0.0, 10.0, 10);
 		final Variance<Double> variance = new Variance<>();
 
 		for (int i = 0; i < 10000; ++i) {
@@ -70,3 +70,4 @@ public class GaussianMutatorTest extends MutatorTestBase {
 	}
 
 }
+

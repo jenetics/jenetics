@@ -21,7 +21,6 @@ package org.jenetics.example;
 
 import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;
-import org.jenetics.Chromosome;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.Mutator;
@@ -36,28 +35,15 @@ final class OneCounter
 	implements Function<Genotype<BitGene>, Integer>
 {
 	@Override
-	public Integer apply(Genotype<BitGene> genotype) {
-		final Chromosome<BitGene> chromosome = genotype.getChromosome();
-
-		int count = 0;
-		if (chromosome instanceof BitChromosome) {
-			count = ((BitChromosome)chromosome).bitCount();
-		} else {
-			for (BitGene gene : genotype.getChromosome()) {
-				if (gene.getBit()) {
-					++count;
-				}
-			}
-		}
-
-		return count;
+	public Integer apply(final Genotype<BitGene> genotype) {
+		return ((BitChromosome)genotype.getChromosome()).bitCount();
 	}
 }
 
 public class OnesCounting {
 	public static void main(String[] args) {
-		Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
-			new BitChromosome(20, 0.15)
+		Factory<Genotype<BitGene>> gtf = Genotype.of(
+			BitChromosome.of(20, 0.15)
 		);
 		Function<Genotype<BitGene>, Integer> ff = new OneCounter();
 		GeneticAlgorithm<BitGene, Integer> ga =
@@ -82,5 +68,4 @@ public class OnesCounting {
 		System.out.println(ga.getBestStatistics());
 		System.out.println(ga.getBestPhenotype());
 	}
-
 }

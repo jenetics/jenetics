@@ -19,101 +19,34 @@
  */
 package org.jenetics;
 
-import static java.util.Objects.requireNonNull;
-import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
-
 /**
- * Base class for genes where the alleles are bound by a minimum and a maximum
- * value.
+ * Base interface for genes where the alleles are bound by a minimum and a
+ * maximum value.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-07 $</em>
  * @since 1.6
  */
-public abstract class BoundedGene<
+public interface BoundedGene<
 	A extends Comparable<? super A>,
 	G extends BoundedGene<A, G>
 >
-	implements
-		Gene<A, G>,
-		Comparable<G>
+	extends Gene<A, G>, Comparable<G>
 {
-
-	/**
-	 * The minimum value of this {@code BoundedGene}.
-	 */
-	protected final A _min;
-
-	/**
-	 * The maximum value of this {@code BoundedGene}.
-	 */
-	protected final A _max;
-
-	/**
-	 * The value of this {@code BoundedGene}.
-	 */
-	protected final A _value;
-
-	private final boolean _valid;
-
-	/**
-	 * Create new {@code BoundedGene}.
-	 *
-	 * @param value The value of the gene.
-	 * @param min The allowed min value of the gene.
-	 * @param max The allows max value of the gene.
-	 * @throws NullPointerException if one of the given arguments is {@code null}.
-	 */
-	protected BoundedGene(
-		final A value,
-		final A min,
-		final A max
-	) {
-		_min = requireNonNull(min, "Min value not be null.");
-		_max = requireNonNull(max, "Max value must not be null.");
-		_value = requireNonNull(value, "Gene value must not be null.");
-		_valid = _value.compareTo(min) >= 0 && _value.compareTo(max) <= 0;
-	}
-
-	@Override
-	public A getAllele() {
-		return _value;
-	}
 
 	/**
 	 * Return the allowed min value.
 	 *
 	 * @return The allowed min value.
 	 */
-	public A getMin() {
-		return _min;
-	}
+	public A getMin();
 
 	/**
 	 * Return the allowed max value.
 	 *
 	 * @return The allowed max value.
 	 */
-	public A getMax() {
-		return _max;
-	}
-
-	@Deprecated
-	@Override
-	public Object copy() {
-		return this;
-	}
-
-	@Override
-	public boolean isValid() {
-		return _valid;
-	}
-
-	@Override
-	public int compareTo(final G other) {
-		return _value.compareTo(other._value);
-	}
+	public A getMax();
 
 	/**
 	 * Create a new gene from the given {@code value} and the current bounds.
@@ -121,30 +54,5 @@ public abstract class BoundedGene<
 	 * @param value the value of the new gene.
 	 * @return a new gene with the given value.
 	 */
-	public abstract G newInstance(final A value);
-
-	@Override
-	public int hashCode() {
-		return hashCodeOf(getClass()).and(_value).and(_min).and(_max).value();
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null || obj.getClass() != getClass()) {
-			return false;
-		}
-
-		final BoundedGene<?, ?> gene = (BoundedGene<?, ?>)obj;
-		return eq(_value, gene._value) &&
-			eq(_min, gene._min) &&
-			eq(_max, gene._max);
-	}
-
-	@Override
-	public String toString() {
-		return String.format("[%s]", _value);
-	}
+	public G newInstance(final A value);
 }

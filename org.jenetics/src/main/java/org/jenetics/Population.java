@@ -20,8 +20,7 @@
 package org.jenetics;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
+import static org.jenetics.internal.util.object.eq;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -45,6 +44,7 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.internal.util.jaxb;
 import org.jenetics.internal.util.model;
 
@@ -63,7 +63,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-01 $</em>
  */
 @XmlJavaTypeAdapter(Population.Model.Adapter.class)
 public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
@@ -374,7 +374,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(_population).value();
+		return HashBuilder.of(getClass()).and(_population).value();
 	}
 
 	@Override
@@ -473,7 +473,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 			@Override
 			public Population unmarshal(final Model model) throws Exception {
-				final ISeq pt = Array.valueOf(model.phenotypes)
+				final ISeq pt = Array.of(model.phenotypes)
 					.map(jaxb.Unmarshaller).toISeq();
 
 				return new Population(pt.asList());

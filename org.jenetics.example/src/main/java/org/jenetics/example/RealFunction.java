@@ -46,14 +46,14 @@ final class Real
 
 public class RealFunction {
 	public static void main(String[] args) {
-		Factory<Genotype<DoubleGene>> gtf = Genotype.valueOf(
+		Factory<Genotype<DoubleGene>> gtf = Genotype.of(
 			new DoubleChromosome(0.0, 2.0 * PI)
 		);
 		Function<Genotype<DoubleGene>, Double> ff = new Real();
 		GeneticAlgorithm<DoubleGene, Double> ga =
-		new GeneticAlgorithm<>(
-			gtf, ff, Optimize.MINIMUM
-		);
+			new GeneticAlgorithm<>(
+				gtf, ff, Optimize.MINIMUM
+			);
 
 		ga.setStatisticsCalculator(
 			new NumberStatistics.Calculator<DoubleGene, Double>()

@@ -21,10 +21,10 @@ package org.jenetics.example;
 
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
+import org.jenetics.GaussianMutator;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.MeanAlterer;
-import org.jenetics.NormalMutator;
 import org.jenetics.TournamentSelector;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
@@ -61,7 +61,7 @@ public class RealFunction2D {
 	}
 
 	public static void main(final String[] args) {
-		final Factory<Genotype<DoubleGene>> gtf = Genotype.valueOf(
+		final Factory<Genotype<DoubleGene>> gtf = Genotype.of(
 			new DoubleChromosome(0.0, 10.0), // x1 in [0, 10]
 			new DoubleChromosome(5.0, 33.0)  // x2 in [5, 33]
 		);
@@ -73,7 +73,7 @@ public class RealFunction2D {
 		// This are the alterers you can use for this example, in any combination.
 		ga.setAlterers(
 			new MeanAlterer<DoubleGene>(),
-			new NormalMutator<DoubleGene>()
+			new GaussianMutator<DoubleGene>()
 		);
 
 		ga.setup();

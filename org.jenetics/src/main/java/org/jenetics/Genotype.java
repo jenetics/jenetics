@@ -19,10 +19,8 @@
  */
 package org.jenetics;
 
-import static java.util.Objects.requireNonNull;
-import static org.jenetics.util.object.Verify;
-import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
+import static org.jenetics.internal.util.object.Verify;
+import static org.jenetics.internal.util.object.eq;
 
 import java.util.Iterator;
 import java.util.List;
@@ -43,6 +41,8 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.cast;
 import org.jenetics.internal.util.jaxb;
 import org.jenetics.internal.util.model.ModelType;
 import org.jenetics.internal.util.model.ValueType;
@@ -67,7 +67,7 @@ import org.jenetics.util.Verifiable;
  * for number genes.
  *
  * [code]
- * final Genotype〈DoubleGene〉 genotype = Genotype.valueOf(
+ * final Genotype〈DoubleGene〉 genotype = Genotype.of(
  *     DoubleChromosome.of(0.0, 1.0, 8),
  *     DoubleChromosome.of(1.0, 2.0, 10),
  *     DoubleChromosome.of(0.0, 10.0, 9),
@@ -80,7 +80,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-02-14 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-04 $</em>
  */
 @XmlJavaTypeAdapter(Genotype.Model.Adapter.class)
 public final class Genotype<G extends Gene<?, G>>
@@ -100,9 +100,29 @@ public final class Genotype<G extends Gene<?, G>>
 	//Caching isValid value.
 	private volatile Boolean _valid = null;
 
-	private Genotype(final ISeq<Chromosome<G>> chromosomes, final int ngenes) {
-		_chromosomes = chromosomes;
+	private Genotype(
+		final ISeq<? extends Chromosome<G>> chromosomes,
+		final int ngenes
+	) {
+		if (chromosomes.length() == 0) {
+			throw new IllegalArgumentException("No chromosomes given.");
+		}
+
+		_chromosomes = cast.apply(chromosomes);
 		_ngenes = ngenes;
+	}
+
+	/**
+	 * Create a new Genotype from a given sequence of {@code Chromosomes}.
+	 *
+	 * @param chromosomes The {@code Chromosome} array the {@code Genotype}
+	 *         consists of.
+	 * @throws NullPointerException if {@code chromosomes} is null or one of its
+	 *         element.
+	 * @throws IllegalArgumentException if {@code chromosome.length == 0}.
+	 */
+	public Genotype(final ISeq<? extends Chromosome<G>> chromosomes) {
+		this(chromosomes, ngenes(chromosomes));
 	}
 
 	private static int ngenes(final Seq<? extends Chromosome<?>> chromosomes) {
@@ -226,7 +246,7 @@ public final class Genotype<G extends Gene<?, G>>
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(_chromosomes).value();
+		return HashBuilder.of(getClass()).and(_chromosomes).value();
 	}
 
 	@Override
@@ -297,27 +317,25 @@ public final class Genotype<G extends Gene<?, G>>
 		};
 	}
 
-
 	/**
-	 * Create a new Genotype from a given array of {@code Chromosomes}.
-	 *
-	 * @param chromosomes The {@code Chromosome} array the {@code Genotype}
-	 *         consists of.
-	 * @throws NullPointerException if {@code chromosomes} is null or one of its
-	 *         element.
-	 * @throws IllegalArgumentException if {@code chromosome.length == 0}.
+	 * @deprecated Use {@link #Genotype(org.jenetics.util.ISeq)} instead.
 	 */
+	@Deprecated
 	public static <G extends Gene<?, G>> Genotype<G> valueOf(
 		final ISeq<? extends Chromosome<G>> chromosomes
 	) {
-		requireNonNull(chromosomes, "Chromosomes");
-		if (chromosomes.length() == 0) {
-			throw new IllegalArgumentException("Chromosomes must be given.");
-		}
+		return new Genotype<>(chromosomes);
+	}
 
-		@SuppressWarnings("unchecked")
-		ISeq<Chromosome<G>> c = (ISeq<Chromosome<G>>)chromosomes;
-		return new Genotype<>(c, ngenes(chromosomes));
+	/**
+	 * @deprecated Use {@link #of(Chromosome[])} instead.
+	 */
+	@Deprecated
+	@SafeVarargs
+	public static <G extends Gene<?, G>> Genotype<G> valueOf(
+		final Chromosome<G>... chromosomes
+	) {
+		return of(chromosomes);
 	}
 
 	/**
@@ -330,10 +348,10 @@ public final class Genotype<G extends Gene<?, G>>
 	 * @throws IllegalArgumentException if {@code chromosome.length == 0}.
 	 */
 	@SafeVarargs
-	public static <G extends Gene<?, G>> Genotype<G> valueOf(
+	public static <G extends Gene<?, G>> Genotype<G> of(
 		final Chromosome<G>... chromosomes
 	) {
-		return valueOf(Array.valueOf(chromosomes).toISeq());
+		return new Genotype<>(Array.of(chromosomes).toISeq());
 	}
 
 	/* *************************************************************************
@@ -415,7 +433,7 @@ public final class Genotype<G extends Gene<?, G>>
 
 			@Override
 			public Genotype unmarshal(final Model model) throws Exception {
-				final ISeq chs = Array.valueOf(model.chromosomes)
+				final ISeq chs = Array.of(model.chromosomes)
 					.map(jaxb.Unmarshaller).toISeq();
 
 				return new Genotype(chs, model.ngenes);

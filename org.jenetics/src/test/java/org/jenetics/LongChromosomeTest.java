@@ -38,7 +38,7 @@ import org.jenetics.util.accumulators.MinMax;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-15 $</em>
+ * @version <em>$Date: 2014-02-17 $</em>
  */
 public class LongChromosomeTest
 	extends NumericChromosomeTester<Long, LongGene>
@@ -64,7 +64,7 @@ public class LongChromosomeTest
 
 			final MinMax<Long> mm = new MinMax<>();
 			final Variance<Long> variance = new Variance<>();
-			final Histogram<Long> histogram = Histogram.valueOf(min, max, 10);
+			final Histogram<Long> histogram = Histogram.of(min, max, 10);
 
 			for (int i = 0; i < 1000; ++i) {
 				final LongChromosome chromosome = new LongChromosome(min, max, 500);

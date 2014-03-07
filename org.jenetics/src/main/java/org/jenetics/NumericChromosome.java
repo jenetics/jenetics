@@ -19,34 +19,19 @@
  */
 package org.jenetics;
 
-import org.jenetics.util.ISeq;
-
 /**
- * Abstract numeric chromosome.
+ * Numeric chromosome interface.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-07 $</em>
  * @since 1.6
  */
-public abstract class NumericChromosome<
+public interface NumericChromosome<
 	N extends Number & Comparable<? super N>,
 	G extends NumericGene<N, G>
 >
-	extends BoundedChromosome<N, G>
+	extends Chromosome<G>
 {
-	private static final long serialVersionUID = 1L;
-
-	/**
-	 * Create a new chromosome from the given genes array.
-	 *
-	 * @param genes the genes of the new chromosome.
-	 * @throws IllegalArgumentException if the {@code genes.length()} is smaller
-	 *          than one.
-	 * @throws NullPointerException if the {@code genes} are {@code null}.
-	 */
-	protected NumericChromosome(final ISeq<? extends G> genes) {
-		super(genes);
-	}
 
 	/**
 	 * Return the byte value of this {@code NumericChromosome} at the given
@@ -57,9 +42,7 @@ public abstract class NumericChromosome<
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         (index &lt; 0 || index &gt;= length()).
 	 */
-	public byte byteValue(final int index) {
-		return getGene(index).getAllele().byteValue();
-	}
+	public byte byteValue(int index);
 
 	/**
 	 * Return the byte value of this {@code NumericChromosome} at the
@@ -67,9 +50,7 @@ public abstract class NumericChromosome<
 	 *
 	 * @return the byte value of the {@link Gene} with {@code index} 0.
 	 */
-	public byte byteValue() {
-		return byteValue(0);
-	}
+	public byte byteValue();
 
 	/**
 	 * Return the short value of this {@code NumericChromosome} at the given
@@ -80,9 +61,7 @@ public abstract class NumericChromosome<
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         (index &lt; 0 || index &gt;= length()).
 	 */
-	public short shortValue(final int index) {
-		return getGene(index).getAllele().shortValue();
-	}
+	public short shortValue(int index);
 
 	/**
 	 * Return the short value of this {@code NumericChromosome} at the
@@ -90,9 +69,7 @@ public abstract class NumericChromosome<
 	 *
 	 * @return the short value of the {@link Gene} with {@code index} 0.
 	 */
-	public short shortValue() {
-		return shortValue(0);
-	}
+	public short shortValue();
 
 	/**
 	 * Return the int value of this {@code NumericChromosome} at the given
@@ -103,9 +80,7 @@ public abstract class NumericChromosome<
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         (index &lt; 0 || index &gt;= length()).
 	 */
-	public int intValue(final int index) {
-		return getGene(index).getAllele().intValue();
-	}
+	public int intValue(int index);
 
 	/**
 	 * Return the int value of this {@code NumericChromosome} at the
@@ -113,9 +88,7 @@ public abstract class NumericChromosome<
 	 *
 	 * @return the int value of the {@link Gene} with {@code index} 0.
 	 */
-	public int intValue() {
-		return intValue(0);
-	}
+	public int intValue();
 
 	/**
 	 * Return the long value of this {@code NumericChromosome} at the given
@@ -126,9 +99,7 @@ public abstract class NumericChromosome<
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         (index &lt; 0 || index &gt;= length()).
 	 */
-	public long longValue(final int index) {
-		return getGene(index).getAllele().longValue();
-	}
+	public long longValue(int index);
 
 	/**
 	 * Return the long value of this {@code NumericChromosome} at the
@@ -136,9 +107,7 @@ public abstract class NumericChromosome<
 	 *
 	 * @return the long value of the {@link Gene} with {@code index} 0.
 	 */
-	public long longValue() {
-		return longValue(0);
-	}
+	public long longValue();
 
 	/**
 	 * Return the float value of this {@code NumericChromosome} at the given
@@ -149,9 +118,7 @@ public abstract class NumericChromosome<
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         (index &lt; 0 || index &gt;= length()).
 	 */
-	public float floatValue(final int index) {
-		return getGene(index).getAllele().floatValue();
-	}
+	public float floatValue(int index);
 
 	/**
 	 * Return the float value of this {@code NumericChromosome} at the
@@ -159,9 +126,7 @@ public abstract class NumericChromosome<
 	 *
 	 * @return the float value of the {@link Gene} with {@code index} 0.
 	 */
-	public float floatValue() {
-		return floatValue(0);
-	}
+	public float floatValue();
 
 	/**
 	 * Return the double value of this {@code NumericChromosome} at the given
@@ -172,9 +137,7 @@ public abstract class NumericChromosome<
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         (index &lt; 0 || index &gt;= length()).
 	 */
-	public double doubleValue(final int index) {
-		return getGene(index).getAllele().doubleValue();
-	}
+	public double doubleValue(int index);
 
 	/**
 	 * Return the double value of this {@code NumericChromosome} at the
@@ -182,8 +145,6 @@ public abstract class NumericChromosome<
 	 *
 	 * @return the double value of the {@link Gene} with {@code index} 0.
 	 */
-	public double doubleValue() {
-		return doubleValue(0);
-	}
+	public double doubleValue();
 
 }

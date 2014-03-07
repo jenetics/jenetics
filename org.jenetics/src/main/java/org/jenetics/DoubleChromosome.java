@@ -19,8 +19,6 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.object.hashCodeOf;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -36,6 +34,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.internal.util.model.ModelType;
 import org.jenetics.internal.util.model.ValueType;
 
@@ -47,13 +46,15 @@ import org.jenetics.util.ISeq;
  * Numeric chromosome implementation which holds 64 bit floating point numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-05 $</em>
  * @since 1.6
  */
 @XmlJavaTypeAdapter(DoubleChromosome.Model.Adapter.class)
 public class DoubleChromosome
-	extends NumericChromosome<Double, DoubleGene>
-	implements Serializable
+	extends AbstractNumericChromosome<Double, DoubleGene>
+	implements
+		NumericChromosome<Double, DoubleGene>,
+		Serializable
 {
 	private static final long serialVersionUID = 1L;
 
@@ -87,7 +88,7 @@ public class DoubleChromosome
 	}
 
 	/**
-	 * Create a new {@code DoubleChromoosme} with the given genes.
+	 * Create a new {@code DoubleChromosome} with the given genes.
 	 *
 	 * @param genes the genes of the chromosome.
 	 * @return a new chromosome with the given genes.
@@ -95,7 +96,7 @@ public class DoubleChromosome
 	 *         empty.
 	 */
 	public static DoubleChromosome of(final DoubleGene... genes) {
-		return new DoubleChromosome(Array.valueOf(genes).toISeq());
+		return new DoubleChromosome(Array.of(genes).toISeq());
 	}
 
 	/**
@@ -131,7 +132,7 @@ public class DoubleChromosome
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(super.hashCode()).value();
+		return HashBuilder.of(getClass()).and(super.hashCode()).value();
 	}
 
 	@Override
@@ -215,7 +216,7 @@ public class DoubleChromosome
 				final Double min = model.min;
 				final Double max = model.max;
 				return new DoubleChromosome(
-					Array.valueOf(model.values).map(Gene(min, max)).toISeq()
+					Array.of(model.values).map(Gene(min, max)).toISeq()
 				);
 			}
 		}

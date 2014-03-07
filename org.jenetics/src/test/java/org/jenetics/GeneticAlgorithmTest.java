@@ -30,15 +30,15 @@ import org.testng.Reporter;
 import org.testng.annotations.Test;
 
 import javolution.context.ConcurrentContext;
-import javolution.context.LocalContext;
 
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-15 $</em>
+ * @version <em>$Date: 2014-02-17 $</em>
  */
 public class GeneticAlgorithmTest {
 
@@ -56,12 +56,12 @@ public class GeneticAlgorithmTest {
 
 	@Test
 	public void optimize() {
-		LocalContext.enter();
-		try {
+		final int concurrency = ConcurrentContext.getConcurrency();
+		try (Scoped<Random> scope = RandomRegistry.scope(new Random(12345))) {
 			ConcurrentContext.setConcurrency(0);
 			RandomRegistry.setRandom(new Random(123456));
 
-			final Factory<Genotype<DoubleGene>> factory = Genotype.valueOf(
+			final Factory<Genotype<DoubleGene>> factory = Genotype.of(
 				DoubleChromosome.of(0, 1)
 			);
 			final Function<Genotype<DoubleGene>, Double> ff = new FF();
@@ -93,7 +93,7 @@ public class GeneticAlgorithmTest {
 			Assert.assertEquals(s.getBestFitness().doubleValue(), 0.9955101231254028, 0.00000001);
 			Assert.assertEquals(s.getWorstFitness().doubleValue(), 0.9955101231254028, 0.00000001);
 		} finally {
-			LocalContext.exit();
+			ConcurrentContext.setConcurrency(concurrency);
 		}
 
 	}
@@ -124,7 +124,7 @@ public class GeneticAlgorithmTest {
 		final ForkJoinPool pool = new ForkJoinPool(10);
 
 		try {
-			final Factory<Genotype<DoubleGene>> factory = Genotype.valueOf(DoubleChromosome.of(-1, 1));
+			final Factory<Genotype<DoubleGene>> factory = Genotype.of(DoubleChromosome.of(-1, 1));
 			final Function<Genotype<DoubleGene>, Double> ff = new FF();
 
 			final GeneticAlgorithm<DoubleGene, Double> ga = new GeneticAlgorithm<>(factory, ff);
@@ -148,7 +148,7 @@ public class GeneticAlgorithmTest {
 		final ExecutorService pool = Executors.newFixedThreadPool(10);
 
 		try {
-			final Factory<Genotype<DoubleGene>> factory = Genotype.valueOf(DoubleChromosome.of(-1, 1));
+			final Factory<Genotype<DoubleGene>> factory = Genotype.of(DoubleChromosome.of(-1, 1));
 			final Function<Genotype<DoubleGene>, Double> ff = new FF();
 
 			final GeneticAlgorithm<DoubleGene, Double> ga = new GeneticAlgorithm<>(factory, ff);
@@ -169,7 +169,7 @@ public class GeneticAlgorithmTest {
 
 	@Test(invocationCount = 10)
 	public void evolveConcurrent() {
-		final Factory<Genotype<DoubleGene>> factory = Genotype.valueOf(DoubleChromosome.of(-1, 1));
+		final Factory<Genotype<DoubleGene>> factory = Genotype.of(DoubleChromosome.of(-1, 1));
 		final Function<Genotype<DoubleGene>, Double> ff = new FF();
 
 		final GeneticAlgorithm<DoubleGene, Double> ga = new GeneticAlgorithm<>(factory, ff);

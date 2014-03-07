@@ -20,7 +20,7 @@
  # Author:
  #    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  #
- # Version: <em>$Date: 2014-02-15 $</em>
+ # Version: <em>$Date: 2014-03-06 $</em>
  #
  ###############################################################################
 -->
@@ -276,6 +276,11 @@
 			<class name="org.jenetics.internal.math.probabilityTest" />
 		</classes>
 	</test>
+    <test name="org.jenetics.internal.util.internalbit">
+        <classes>
+            <class name="org.jenetics.internal.util.internalbitTest" />
+        </classes>
+    </test>
 	<test name="org.jenetics.util.Array">
 		<classes>
 			<class name="org.jenetics.util.ArraySeqTest" />
@@ -344,4 +349,3 @@
 		</classes>
 	</test>
 </suite>
-

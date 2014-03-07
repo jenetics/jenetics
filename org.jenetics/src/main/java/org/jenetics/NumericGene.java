@@ -20,35 +20,18 @@
 package org.jenetics;
 
 /**
- * Abstract base class for implementing concrete NumericGenes.
+ * Base interface for numeric genes.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-07 $</em>
  * @since 1.6
  */
-public abstract class NumericGene<
+public interface NumericGene<
 	N extends Number & Comparable<? super N>,
 	G extends NumericGene<N, G>
 >
 	extends BoundedGene<N, G>
 {
-	private static final long serialVersionUID = 1L;
-
-	/**
-	 * Create new {@code NumericGene}.
-	 *
-	 * @param value The value of the gene.
-	 * @param min The allowed min value of the gene.
-	 * @param max The allows max value of the gene.
-	 * @throws NullPointerException if one of the given arguments is
-	 *         {@code null}.
-	 */
-	protected NumericGene(final N value, final N min, final N max) {
-		super(value, min, max);
-	}
-
-	@Override
-	public abstract G newInstance(final Number value);
 
 	/**
 	 * Returns the value of the specified gene as an byte. This may involve
@@ -57,9 +40,7 @@ public abstract class NumericGene<
 	 * @return the numeric value represented by this object after conversion to
 	 *         type {@code byte}.
 	 */
-	public byte byteValue() {
-		return _value.byteValue();
-	}
+	public byte byteValue();
 
 	/**
 	 * Returns the value of the specified gene as an short. This may involve
@@ -68,9 +49,7 @@ public abstract class NumericGene<
 	 * @return the numeric value represented by this object after conversion to
 	 *         type {@code short}.
 	 */
-	public short shortValue() {
-		return _value.shortValue();
-	}
+	public short shortValue();
 
 	/**
 	 * Returns the value of the specified gene as an int. This may involve
@@ -79,9 +58,7 @@ public abstract class NumericGene<
 	 * @return the numeric value represented by this object after conversion to
 	 *         type {@code int}.
 	 */
-	public int intValue() {
-		return _value.intValue();
-	}
+	public int intValue();
 
 	/**
 	 * Returns the value of the specified gene as an long. This may involve
@@ -90,9 +67,7 @@ public abstract class NumericGene<
 	 * @return the numeric value represented by this object after conversion to
 	 *         type {@code long}.
 	 */
-	public long longValue() {
-		return _value.longValue();
-	}
+	public long longValue();
 
 	/**
 	 * Returns the value of the specified gene as an float. This may involve
@@ -101,9 +76,7 @@ public abstract class NumericGene<
 	 * @return the numeric value represented by this object after conversion to
 	 *         type {@code float}.
 	 */
-	public float floatValue() {
-		return _value.floatValue();
-	}
+	public float floatValue();
 
 	/**
 	 * Returns the value of the specified gene as an double. This may involve
@@ -112,8 +85,9 @@ public abstract class NumericGene<
 	 * @return the numeric value represented by this object after conversion to
 	 *         type {@code double}.
 	 */
-	public double doubleValue() {
-		return _value.doubleValue();
-	}
+	public double doubleValue();
+
+	@Override
+	public G newInstance(final Number number);
 
 }

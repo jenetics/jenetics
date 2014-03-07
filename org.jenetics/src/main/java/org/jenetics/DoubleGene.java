@@ -44,13 +44,15 @@ import org.jenetics.util.RandomRegistry;
  * Implementation of the NumericGene which holds a 64 bit floating point number.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-05 $</em>
  * @since 1.6
  */
 @XmlJavaTypeAdapter(DoubleGene.Model.Adapter.class)
 public final class DoubleGene
-	extends NumericGene<Double, DoubleGene>
-	implements Mean<DoubleGene>
+	extends AbstractNumericGene<Double, DoubleGene>
+	implements
+		NumericGene<Double, DoubleGene>,
+		Mean<DoubleGene>
 {
 
 	private static final long serialVersionUID = 1L;

@@ -20,11 +20,12 @@
 package org.jenetics;
 
 import static java.lang.String.format;
-import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.Random;
 
 import javolution.lang.Immutable;
+
+import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.util.IndexStream;
 import org.jenetics.util.MSeq;
@@ -32,7 +33,7 @@ import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.math;
 
 /**
- * The GaussianMutator class performs the mutation of a {@link NumberGene}.
+ * The GaussianMutator class performs the mutation of a {@link NumericGene}.
  * This mutator picks a new value based on a Gaussian distribution around the
  * current value of the gene. The variance of the new value (before clipping to
  * the allowed gene range) will be
@@ -47,14 +48,9 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-02-15 $</em>
- *
- * @deprecated Use {@link org.jenetics.NormalMutator} instead. This classes
- *             uses the <i>JScience</i> library, which will be removed in the
- *             next major version.
+ * @version 1.6 &mdash; <em>$Date: 2014-03-05 $</em>
  */
-@Deprecated
-public final class GaussianMutator<G extends NumberGene<?, G>>
+public final class GaussianMutator<G extends NumericGene<?, G>>
 	extends Mutator<G>
 	implements Immutable
 {
@@ -95,7 +91,7 @@ public final class GaussianMutator<G extends NumberGene<?, G>>
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(super.hashCode()).value();
+		return HashBuilder.of(getClass()).and(super.hashCode()).value();
 	}
 
 	@Override

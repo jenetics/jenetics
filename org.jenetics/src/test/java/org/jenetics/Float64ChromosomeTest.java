@@ -27,14 +27,13 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import javolution.context.LocalContext;
-
 import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.UniformDistribution;
 import org.jenetics.stat.Variance;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Scoped;
 import org.jenetics.util.accumulators.MinMax;
 
 /**
@@ -54,10 +53,7 @@ public class Float64ChromosomeTest
 
 	@Test(invocationCount = 20, successPercentage = 95)
     public void newInstanceDistribution() {
-		LocalContext.enter();
-		try {
-			RandomRegistry.setRandom(new Random(12345));
-
+		try (Scoped<Random> s = RandomRegistry.scope(new Random(12345))) {
 			final Float64 min = Float64.ZERO;
 			final Float64 max = Float64.valueOf(100);
 
@@ -80,8 +76,6 @@ public class Float64ChromosomeTest
 			Assert.assertTrue(mm.getMin().compareTo(0) >= 0);
 			Assert.assertTrue(mm.getMax().compareTo(100) <= 100);
 			assertDistribution(histogram, new UniformDistribution<>(min, max));
-		} finally {
-			LocalContext.exit();
 		}
     }
 

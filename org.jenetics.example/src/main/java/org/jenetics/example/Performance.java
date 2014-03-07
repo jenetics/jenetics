@@ -39,7 +39,7 @@ import org.jenetics.util.functions;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.0 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-02-17 $</em>
  */
 public class Performance {
 
@@ -59,13 +59,13 @@ public class Performance {
 
 	public static void main(String[] args) {
 		final Perf ff = new Perf();
-		final Factory<Genotype<DoubleGene>> gtf = Genotype.valueOf(DoubleChromosome.of(0, 360));
+		final Factory<Genotype<DoubleGene>> gtf = Genotype.of(DoubleChromosome.of(0, 360));
 		final Function<Double, Double> fs = functions.Identity();
 
 		final int size = 1000000;
 		final Population<DoubleGene, Double> population = new Population<>(size);
 		for (int i = 0; i < size; ++i) {
-			final Phenotype<DoubleGene, Double> pt = Phenotype.valueOf(
+			final Phenotype<DoubleGene, Double> pt = Phenotype.of(
 				gtf.newInstance(), ff, fs, 0
 			);
 			population.add(pt);

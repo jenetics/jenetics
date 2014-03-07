@@ -32,11 +32,11 @@ public class MultiDimExample {
 	 * different extension for each dimension.
 	 */
 
-	final Factory<Genotype<DoubleGene>> gtf_1 = Genotype.valueOf(
-		new DoubleChromosome(0.0, 10.0),  // x1 in [0, 10]
-		new DoubleChromosome(-5.0, 0.0),  // x2 in [-5, 0]
-		new DoubleChromosome(1.0, 10.0),  // x3 in [1, 10]
-		new DoubleChromosome(0.0, 100.0)  // x4 in [0, 100]
+	final Factory<Genotype<DoubleGene>> gtf_1 = Genotype.of(
+		DoubleChromosome.of(0.0, 10.0),  // x1 in [0, 10]
+		DoubleChromosome.of(-5.0, 0.0),  // x2 in [-5, 0]
+		DoubleChromosome.of(1.0, 10.0),  // x3 in [1, 10]
+		DoubleChromosome.of(0.0, 100.0)  // x4 in [0, 100]
 	);
 
 	final Function<Genotype<DoubleGene>, Double> ff_1 = new Function<Genotype<DoubleGene>, Double>() {
@@ -68,7 +68,7 @@ public class MultiDimExample {
 	 * This Genotype schema has the same extension for each dimension.
 	 */
 
-	final Factory<Genotype<DoubleGene>> gtf_2 = Genotype.valueOf(
+	final Factory<Genotype<DoubleGene>> gtf_2 = Genotype.of(
 		new DoubleChromosome(0.0, 10.0, 4)  // x1, x2, x3, x4 in [0, 10]
 	);
 

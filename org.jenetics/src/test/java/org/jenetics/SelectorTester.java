@@ -34,7 +34,7 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-15 $</em>
+ * @version <em>$Date: 2014-02-17 $</em>
  */
 public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 	extends ObjectTester<S>
@@ -68,10 +68,10 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 
 		final Double min = getDomain().getMin();
 		final Double max = getDomain().getMax();
-		final Histogram<Double> histogram = Histogram.valueOf(min, max, _histogramSize);
+		final Histogram<Double> histogram = Histogram.of(min, max, _histogramSize);
 
 		final Factory<Genotype<DoubleGene>>
-		gtf = Genotype.valueOf(new DoubleChromosome(min, max));
+		gtf = Genotype.of(new DoubleChromosome(min, max));
 
 
 
@@ -82,7 +82,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 
 		for (int j = 0; j < loops; ++j) {
 			for (int i = 0; i < npopulation; ++i) {
-				population.add(Phenotype.valueOf(gtf.newInstance(), TestUtils.FF, 12));
+				population.add(Phenotype.of(gtf.newInstance(), TestUtils.FF, 12));
 			}
 
 

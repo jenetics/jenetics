@@ -44,13 +44,15 @@ import org.jenetics.util.RandomRegistry;
  * NumericGene implementation which holds a 64 bit integer number.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-05 $</em>
  * @since 1.6
  */
 @XmlJavaTypeAdapter(LongGene.Model.Adapter.class)
 public final class LongGene
-	extends NumericGene<Long, LongGene>
-	implements Mean<LongGene>
+	extends AbstractNumericGene<Long, LongGene>
+	implements
+		NumericGene<Long, LongGene>,
+		Mean<LongGene>
 {
 
 	private static final long serialVersionUID = 1L;

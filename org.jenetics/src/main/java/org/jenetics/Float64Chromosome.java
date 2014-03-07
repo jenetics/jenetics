@@ -24,7 +24,6 @@ import static org.jenetics.Float64Gene.Value;
 import static org.jenetics.internal.util.model.Float64Model.Marshaller;
 import static org.jenetics.internal.util.model.Float64Model.Unmarshaller;
 import static org.jenetics.util.functions.compose;
-import static org.jenetics.util.object.hashCodeOf;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -46,6 +45,7 @@ import javolution.xml.stream.XMLStreamException;
 
 import org.jscience.mathematics.number.Float64;
 
+import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.internal.util.model.Float64Model;
 import org.jenetics.internal.util.model.ModelType;
 import org.jenetics.internal.util.model.ValueType;
@@ -60,7 +60,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-02-14 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-02-27 $</em>
  *
  * @deprecated Use {@link org.jenetics.DoubleChromosome} instead. This classes
  *             uses the <i>JScience</i> library, which will be removed in the
@@ -98,7 +98,7 @@ public class Float64Chromosome
 	 * @throws NullPointerException if the {@code genes} are {@code null}.
 	 */
 	public Float64Chromosome(final Float64Gene... genes) {
-		this(Array.valueOf(genes).toISeq());
+		this(Array.of(genes).toISeq());
 	}
 
 	/**
@@ -185,7 +185,7 @@ public class Float64Chromosome
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(super.hashCode()).value();
+		return HashBuilder.of(getClass()).and(super.hashCode()).value();
 	}
 
 	@Override
@@ -349,7 +349,7 @@ public class Float64Chromosome
 			public Float64Chromosome unmarshal(final Model model) {
 				final Float64 min = Float64.valueOf(model.min);
 				final Float64 max = Float64.valueOf(model.max);
-				final ISeq<Float64Gene> genes = Array.valueOf(model.values)
+				final ISeq<Float64Gene> genes = Array.of(model.values)
 					.map(compose(Unmarshaller, Float64Gene.Gene(min, max)))
 					.toISeq();
 

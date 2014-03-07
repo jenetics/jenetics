@@ -22,9 +22,9 @@ package org.jenetics;
 import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static org.jenetics.internal.util.object.NonNull;
+import static org.jenetics.internal.util.object.checkProbability;
 import static org.jenetics.util.arrays.forEach;
-import static org.jenetics.util.object.NonNull;
-import static org.jenetics.util.object.checkProbability;
 
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -48,8 +48,8 @@ import org.jenetics.util.functions;
  *
  * [code]
  * public static void main(final String[] args) {
- *     final Factory〈Genotype〈BitGene〉〉 gtf = Genotype.valueOf(
- *         BitChromosome.valueOf(10, 0.5)
+ *     final Factory〈Genotype〈BitGene〉〉 gtf = Genotype.of(
+ *         BitChromosome.of(10, 0.5)
  *     );
  *     final Function〈Genotype〈BitGene〉 Double〉 ff = ...
  *     final GeneticAlgorithm〈BitGene, Double〉
@@ -133,7 +133,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-02-13 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-03-05 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,
@@ -169,7 +169,7 @@ public class GeneticAlgorithm<
 	private double _offspringFraction = DEFAULT_OFFSPRING_FRACTION;
 
 	// Alterers
-	private Alterer<G> _alterer = CompositeAlterer.valueOf(
+	private Alterer<G> _alterer = CompositeAlterer.of(
 		new SinglePointCrossover<G>(0.1),
 		new Mutator<G>(0.05)
 	);
@@ -223,7 +223,7 @@ public class GeneticAlgorithm<
 
 		_phenotypeFactory = new Factory<Phenotype<G, C>>() {
 			@Override public Phenotype<G, C> newInstance() {
-				return Phenotype.valueOf(
+				return Phenotype.of(
 					_genotypeFactory.newInstance(),
 					_fitnessFunction,
 					_fitnessScaler,
@@ -722,7 +722,7 @@ public class GeneticAlgorithm<
 	 * @param scaler The fitness scaler.
 	 * @throws NullPointerException if the scaler is {@code null}.
 	 */
-	public void setFitnessScaler(final Function<C, C> scaler) {
+	public void setFitnessScaler(final Function<? super C, ? extends C> scaler) {
 		_fitnessScaler = requireNonNull(scaler, "FitnessScaler");
 	}
 
@@ -871,7 +871,7 @@ public class GeneticAlgorithm<
 	 */
 	@SafeVarargs
 	public final void setAlterers(final Alterer<G>... alterers) {
-		setAlterer(CompositeAlterer.valueOf(alterers));
+		setAlterer(CompositeAlterer.of(alterers));
 	}
 
 	/**
@@ -968,7 +968,7 @@ public class GeneticAlgorithm<
 
 		final Population<G, C> population = new Population<>(genotypes.size());
 		for (Genotype<G> genotype : genotypes) {
-			population.add(Phenotype.valueOf(
+			population.add(Phenotype.of(
 				genotype,
 				_fitnessFunction,
 				_fitnessScaler,

@@ -29,8 +29,6 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import javolution.context.LocalContext;
-
 import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.stat.Histogram;
@@ -38,6 +36,7 @@ import org.jenetics.stat.UniformDistribution;
 import org.jenetics.stat.Variance;
 import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -54,10 +53,7 @@ public class Float64GeneTest extends NumberGeneTester<Float64, Float64Gene> {
 
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstanceDistribution() {
-		LocalContext.enter();
-		try {
-			RandomRegistry.setRandom(new Random(12345));
-
+		try (Scoped<Random> s = RandomRegistry.scope(new Random(12345))) {
 			final Float64 min = Float64.ZERO;
 			final Float64 max = Float64.valueOf(100);
 			final Factory<Float64Gene> factory = Float64Gene.valueOf(min, max);
@@ -85,8 +81,6 @@ public class Float64GeneTest extends NumberGeneTester<Float64, Float64Gene> {
 			}
 
 			assertDistribution(histogram, new UniformDistribution<>(min, max));
-		} finally {
-			LocalContext.exit();
 		}
 	}
 

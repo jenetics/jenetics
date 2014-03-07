@@ -26,7 +26,7 @@ import org.jenetics.util.Array;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-11 $</em>
+ * @version <em>$Date: 2014-03-04 $</em>
  */
 class GenotypeBuilder {
 
@@ -66,7 +66,7 @@ class GenotypeBuilder {
 			chromosomes.set(i, new DoubleChromosome(_min, _max, _ngenes));
 		}
 
-		return Genotype.valueOf(chromosomes.toISeq());
+		return new Genotype<>(chromosomes.toISeq());
 	}
 
 }
