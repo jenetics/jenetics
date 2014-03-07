@@ -64,11 +64,11 @@
  *
  * [code]
  * public static void main(final String[] args) {
- *     final Factory〈Genotype〈BitGene〉〉 gtf = Genotype.valueOf(
- *         BitChromosome.valueOf(10, 0.5)
+ *     final Factory〈Genotype〈BitGene〉〉 gtf = Genotype.of(
+ *         BitChromosome.of(10, 0.5)
  *     );
- *     final Function〈Genotype〈BitGene〉 Float64〉 ff = ...
- *     final GeneticAlgorithm〈BitGene, Float64〉
+ *     final Function〈Genotype〈BitGene〉 Double〉 ff = ...
+ *     final GeneticAlgorithm〈BitGene, Double〉
  *     ga = new GeneticAlgorithm〈〉(gtf, ff, Optimize.MAXIMUM)
  *
  *     ga.setup();
@@ -81,8 +81,8 @@
  * The genotype factory, {@code gtf}, in the example above will create genotypes
  * which consists of one {@code BitChromosome} with length 10. The one to zero
  * probability of the newly created genotypes is set to 0.5. The fitness function
- * is parameterized with a {@code BitGene} and a {@code Float64}. That means
- * that the fitness function is calculating the fitness value as {@code Float64}.
+ * is parameterized with a {@code BitGene} and a {@code Double}. That means
+ * that the fitness function is calculating the fitness value as {@code Double}.
  * The return type of the fitness function must be at least a {@code Comparable}.
  * The {@code GeneticAlgorithm} object is then created with the genotype factory
  * and the fitness function. In this example the GA tries to maximize the fitness
@@ -131,11 +131,11 @@
  * [code]
  * // Writing the population to disk.
  * final File file = new File("population.xml");
- * IO.xml.write(ga.getPopulation(), file);
+ * IO.jaxb.write(ga.getPopulation(), file);
  *
  * // Reading the population from disk.
- * final Population〈Float64Gene,Float64〉 population =
- *     (Population〈Float64Gene, Float64〉)IO.xml.read(file);
+ * final Population〈DoubleGene,Double〉 population =
+ *     (Population〈DoubleGene, Double〉)IO.jaxb.read(file);
  * ga.setPopulation(population);
  * [/code]
  *
@@ -173,8 +173,8 @@
  *
  * public class OnesCounting {
  *     public static void main(String[] args) {
- *         final Factory〈Genotype〈BitGene〉〉 gtf = Genotype.valueOf(
- *             new BitChromosome(20, 0.15)
+ *         final Factory〈Genotype〈BitGene〉〉 gtf = Genotype.of(
+ *             BitChromosome.of(20, 0.15)
  *         );
  *         final Function〈Genotype〈BitGene〉, Integer〉 ff = new OneCounter();
  *         final GeneticAlgorithm〈BitGene, Integer〉 ga =
@@ -237,7 +237,7 @@
  * import org.jenetics.util.Function;
  *
  * class FF
- *     implements Function〈Genotype〈EnumGene<Integer〉〉, Float64〉
+ *     implements Function〈Genotype〈EnumGene<Integer〉〉, Double〉
  * {
  *     private final double[][] _adjacence;
  *     public FF(final double[][] adjacence) {
@@ -245,7 +245,7 @@
  *     }
  *
  *     \@Override
- *     public Float64 apply(final Genotype〈EnumGene〈Integer〉〉 genotype) {
+ *     public Double apply(final Genotype〈EnumGene〈Integer〉〉 genotype) {
  *         final Chromosome〈EnumGene〈Integer〉〉 path =
  *             genotype.getChromosome();
  *
@@ -255,7 +255,7 @@
  *             final int to = path.getGene((i + 1)%n).getAllele();
  *             length += _adjacence[from][to];
  *         }
- *         return Float64.valueOf(length);
+ *         return length;
  *     }
  * }
  *
@@ -264,15 +264,15 @@
  *     public static void main(String[] args) {
  *         final int stops = 20;
  *
- *         final Function〈Genotype〈EnumGene〈Integer〉〉, Float64〉 ff =
+ *         final Function〈Genotype〈EnumGene〈Integer〉〉, Double〉 ff =
  *             new FF(adjacencyMatrix(stops));
- *         final Factory〈Genotype〈EnumGene〈Integer〉〉〉 gt = Genotype.valueOf(
+ *         final Factory〈Genotype〈EnumGene〈Integer〉〉〉 gt = Genotype.of(
  *             PermutationChromosome.ofInteger(stops)
  *         );
- *         final GeneticAlgorithm〈EnumGene〈Integer〉, Float64〉
+ *         final GeneticAlgorithm〈EnumGene〈Integer〉, Double〉
  *             ga = new GeneticAlgorithm〈〉(gt, ff, Optimize.MINIMUM);
  *         ga.setStatisticsCalculator(
- *             new Calculator〈EnumGene〈Integer〉, Float64〉()
+ *             new Calculator〈EnumGene〈Integer〉, Double〉()
  *         );
  *         ga.setPopulationSize(300);
  *         ga.setAlterers(
@@ -304,9 +304,6 @@
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.5 &mdash; <em>$Date: 2013-11-28 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-05 $</em>
  */
 package org.jenetics;
-
-
-

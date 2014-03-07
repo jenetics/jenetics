@@ -35,7 +35,7 @@ import org.jenetics.stat.Variance;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-12-08 $</em>
+ * @version <em>$Date: 2014-02-17 $</em>
  */
 public class RandomIndexStreamTest {
 
@@ -133,7 +133,7 @@ public class RandomIndexStreamTest {
 		final Random random = new LCG64ShiftRandom();
 		final Range<Long> domain = new Range<>(0L, n.longValue());
 
-		final Histogram<Long> histogram = Histogram.valueOf(
+		final Histogram<Long> histogram = Histogram.of(
 					domain.getMin(), domain.getMax(), 10
 				);
 		final Variance<Long> variance = new Variance<>();
@@ -254,7 +254,3 @@ public class RandomIndexStreamTest {
 	}
 
 }
-
-
-
-

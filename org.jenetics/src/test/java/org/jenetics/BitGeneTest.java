@@ -28,7 +28,7 @@ import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-08-29 $</em>
+ * @version <em>$Date: 2014-01-29 $</em>
  */
 public class BitGeneTest extends GeneTester<BitGene> {
 

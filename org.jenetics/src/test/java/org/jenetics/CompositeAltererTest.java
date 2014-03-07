@@ -19,7 +19,6 @@
  */
 package org.jenetics;
 
-import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -28,16 +27,16 @@ import org.jenetics.util.Array;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-02 $</em>
+ * @version <em>$Date: 2014-03-05 $</em>
  */
 public class CompositeAltererTest {
 
-	public Alterer<Float64Gene> newAlterer(double p) {
+	public Alterer<DoubleGene> newAlterer(double p) {
 		final double p3 = Math.pow(p, 3);
-		return CompositeAlterer.valueOf(
-			new Mutator<Float64Gene>(p3),
-			new Mutator<Float64Gene>(p3),
-			new Mutator<Float64Gene>(p3)
+		return CompositeAlterer.of(
+			new Mutator<DoubleGene>(p3),
+			new Mutator<DoubleGene>(p3),
+			new Mutator<DoubleGene>(p3)
 		);
 	}
 
@@ -47,33 +46,33 @@ public class CompositeAltererTest {
 		final Integer nchromosomes,
 		final Integer npopulation
 	) {
-		final Population<Float64Gene, Float64> p1 = population(
+		final Population<DoubleGene, Double> p1 = population(
 					ngenes, nchromosomes, npopulation
 				);
-		final Population<Float64Gene, Float64> p2 = p1.copy();
+		final Population<DoubleGene, Double> p2 = p1.copy();
 		Assert.assertEquals(p2, p1);
 
-		final Alterer<Float64Gene> mutator = newAlterer(0.01);
+		final Alterer<DoubleGene> mutator = newAlterer(0.01);
 
 		Assert.assertEquals(mutator.alter(p1, 1), diff(p1, p2));
 	}
 
-	public static Population<Float64Gene, Float64> population(
+	public static Population<DoubleGene, Double> population(
 		final int ngenes,
 		final int nchromosomes,
 		final int npopulation
 	) {
-		final Array<Float64Chromosome> chromosomes = new Array<>(nchromosomes);
+		final Array<DoubleChromosome> chromosomes = new Array<>(nchromosomes);
 
 		for (int i = 0; i < nchromosomes; ++i) {
-			chromosomes.set(i, new Float64Chromosome(0, 10, ngenes));
+			chromosomes.set(i, DoubleChromosome.of(0, 10, ngenes));
 		}
 
-		final Genotype<Float64Gene> genotype = Genotype.valueOf(chromosomes.toISeq());
-		final Population<Float64Gene, Float64> population = new Population<>(npopulation);
+		final Genotype<DoubleGene> genotype = new Genotype<>(chromosomes.toISeq());
+		final Population<DoubleGene, Double> population = new Population<>(npopulation);
 
 		for (int i = 0; i < npopulation; ++i) {
-			population.add(Phenotype.valueOf(genotype.newInstance(), TestUtils.FF, 0));
+			population.add(Phenotype.of(genotype.newInstance(), TestUtils.FF, 0));
 		}
 
 		return population;
@@ -83,8 +82,8 @@ public class CompositeAltererTest {
 	 * Count the number of different genes.
 	 */
 	public int diff(
-		final Population<Float64Gene, Float64> p1,
-		final Population<Float64Gene, Float64> p2
+		final Population<DoubleGene, Double> p1,
+		final Population<DoubleGene, Double> p2
 	) {
 		int count = 0;
 		for (int i = 0; i < p1.size(); ++i) {
@@ -142,36 +141,36 @@ public class CompositeAltererTest {
 	}
 	@Test
 	public void join() {
-		CompositeAlterer<Float64Gene> alterer = CompositeAlterer.join(
-				new Mutator<Float64Gene>(),
-				new GaussianMutator<Float64Gene>()
+		CompositeAlterer<DoubleGene> alterer = CompositeAlterer.join(
+				new Mutator<DoubleGene>(),
+				new SwapMutator<DoubleGene>()
 			);
 
 		Assert.assertEquals(alterer.getAlterers().length(), 2);
-		Assert.assertEquals(alterer.getAlterers().get(0), new Mutator<Float64Gene>());
-		Assert.assertEquals(alterer.getAlterers().get(1), new GaussianMutator<Float64Gene>());
+		Assert.assertEquals(alterer.getAlterers().get(0), new Mutator<DoubleGene>());
+		Assert.assertEquals(alterer.getAlterers().get(1), new SwapMutator<DoubleGene>());
 
-		alterer = CompositeAlterer.join(alterer, new MeanAlterer<Float64Gene>());
+		alterer = CompositeAlterer.join(alterer, new MeanAlterer<DoubleGene>());
 
 		Assert.assertEquals(alterer.getAlterers().length(), 3);
-		Assert.assertEquals(alterer.getAlterers().get(0), new Mutator<Float64Gene>());
-		Assert.assertEquals(alterer.getAlterers().get(1), new GaussianMutator<Float64Gene>());
-		Assert.assertEquals(alterer.getAlterers().get(2), new MeanAlterer<Float64Gene>());
+		Assert.assertEquals(alterer.getAlterers().get(0), new Mutator<DoubleGene>());
+		Assert.assertEquals(alterer.getAlterers().get(1), new SwapMutator<DoubleGene>());
+		Assert.assertEquals(alterer.getAlterers().get(2), new MeanAlterer<DoubleGene>());
 
-		alterer = CompositeAlterer.valueOf(
-			new MeanAlterer<Float64Gene>(),
-			new SwapMutator<Float64Gene>(),
+		alterer = CompositeAlterer.of(
+			new MeanAlterer<DoubleGene>(),
+			new SwapMutator<DoubleGene>(),
 			alterer,
-			new SwapMutator<Float64Gene>()
+			new SwapMutator<DoubleGene>()
 		);
 
 		Assert.assertEquals(alterer.getAlterers().length(), 6);
-		Assert.assertEquals(alterer.getAlterers().get(0), new MeanAlterer<Float64Gene>());
-		Assert.assertEquals(alterer.getAlterers().get(1), new SwapMutator<Float64Gene>());
-		Assert.assertEquals(alterer.getAlterers().get(2), new Mutator<Float64Gene>());
-		Assert.assertEquals(alterer.getAlterers().get(3), new GaussianMutator<Float64Gene>());
-		Assert.assertEquals(alterer.getAlterers().get(4), new MeanAlterer<Float64Gene>());
-		Assert.assertEquals(alterer.getAlterers().get(5), new SwapMutator<Float64Gene>());
+		Assert.assertEquals(alterer.getAlterers().get(0), new MeanAlterer<DoubleGene>());
+		Assert.assertEquals(alterer.getAlterers().get(1), new SwapMutator<DoubleGene>());
+		Assert.assertEquals(alterer.getAlterers().get(2), new Mutator<DoubleGene>());
+		Assert.assertEquals(alterer.getAlterers().get(3), new SwapMutator<DoubleGene>());
+		Assert.assertEquals(alterer.getAlterers().get(4), new MeanAlterer<DoubleGene>());
+		Assert.assertEquals(alterer.getAlterers().get(5), new SwapMutator<DoubleGene>());
 	}
 
 }

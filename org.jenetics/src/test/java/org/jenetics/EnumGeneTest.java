@@ -30,8 +30,9 @@ import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-08-29 $</em>
+ * @version <em>$Date: 2014-03-06 $</em>
  */
+@SuppressWarnings("deprecation")
 public class EnumGeneTest extends GeneTester<EnumGene<Integer>> {
 
 	private final Factory<EnumGene<Integer>>
@@ -40,7 +41,7 @@ public class EnumGeneTest extends GeneTester<EnumGene<Integer>> {
 
 		@Override
 		public EnumGene<Integer> newInstance() {
-			return EnumGene.valueOf(_alleles);
+			return EnumGene.of(_alleles);
 		}
 
 	};
@@ -61,8 +62,8 @@ public class EnumGeneTest extends GeneTester<EnumGene<Integer>> {
 		}
 
 		for (int i = 0; i < alleles.length(); ++i) {
-			Assert.assertEquals(EnumGene.valueOf(alleles, i).getAllele(), new Integer(i));
-			Assert.assertSame(EnumGene.valueOf(alleles, i).getValidAlleles(), alleles);
+			Assert.assertEquals(new EnumGene<>(i, alleles).getAllele(), new Integer(i));
+			Assert.assertSame(new EnumGene<>(i, alleles).getValidAlleles(), alleles);
 		}
 	}
 
@@ -71,7 +72,7 @@ public class EnumGeneTest extends GeneTester<EnumGene<Integer>> {
 		final int length = 100;
 		final ISeq<Integer> alleles = new Array<Integer>(length).fill(Int()).toISeq();
 
-		EnumGene.valueOf(alleles, length + 1);
+		new EnumGene<>(length + 1, alleles);
 	}
 
 	@Test(expectedExceptions = IndexOutOfBoundsException.class)
@@ -79,7 +80,7 @@ public class EnumGeneTest extends GeneTester<EnumGene<Integer>> {
 		final int length = 100;
 		final ISeq<Integer> alleles = new Array<Integer>(length).fill(Int()).toISeq();
 
-		EnumGene.valueOf(alleles, -1);
+		new EnumGene<>(-1, alleles);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -87,11 +88,7 @@ public class EnumGeneTest extends GeneTester<EnumGene<Integer>> {
 		final int length = 0;
 		final ISeq<Integer> alleles = new Array<Integer>(length).fill(Int()).toISeq();
 
-		EnumGene.valueOf(alleles);
+		EnumGene.of(alleles);
 	}
 
 }
-
-
-
-

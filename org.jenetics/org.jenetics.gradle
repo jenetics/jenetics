@@ -17,21 +17,24 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-
-import org.apache.tools.ant.filters.ReplaceTokens
-
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.5 &mdash; <em>$Date: 2013-11-19 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-02-15 $</em>
  */
 
 apply plugin: 'packaging'
- 
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
+repositories {
+	mavenCentral ()
+}
+
+
 dependencies {
 	compile Include.JScience
-	
+
 	testCompile Include.Apache.Commons.Math
 	testCompile Include.TestNG
 }
@@ -47,4 +50,29 @@ packaging {
 	author = 'Franz Wilhelmstötter'
 	url = 'http://jenetics.sourceforge.net'
 }
+
+task sourceJar(type: Jar) {
+	classifier "source"
+	from sourceSets.main.allSource
+}
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+		}
+		maven(MavenPublication) {
+			artifact sourceJar {
+				classifier "src"
+				extension "zip"
+			}
+		}
+	}
+	repositories {
+		maven {
+			url "$buildDir/repo"
+		}
+	}
+}
+
 

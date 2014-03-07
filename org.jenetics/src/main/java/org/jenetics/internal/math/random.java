@@ -26,7 +26,7 @@ import org.jenetics.util.StaticObject;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-09-01 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2014-02-15 $</em>
  */
 public final class random extends StaticObject {
 	private random() {}
@@ -70,6 +70,5 @@ public final class random extends StaticObject {
 	public static double toDouble2(final int a, final int b) {
 		return (((long)(a >>> 6) << 26) | (b >>> 6))*0x1.0p-52d;
 	}
+
 }
-
-

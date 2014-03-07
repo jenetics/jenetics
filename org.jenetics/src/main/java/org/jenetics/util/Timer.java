@@ -21,8 +21,7 @@ package org.jenetics.util;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
+import static org.jenetics.internal.util.object.eq;
 
 import java.io.Serializable;
 
@@ -33,6 +32,8 @@ import javax.measure.unit.SI;
 
 import javolution.lang.Reusable;
 
+import org.jenetics.internal.util.HashBuilder;
+
 /**
  * Timer for measure the performance of the GA. The timer uses nano second
  * precision (by using {@link System#nanoTime()}). This timer is not synchronized.
@@ -40,7 +41,7 @@ import javolution.lang.Reusable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-09-01 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-03-01 $</em>
  */
 public final class Timer
 	implements
@@ -191,7 +192,7 @@ public final class Timer
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).
+		return HashBuilder.of(getClass()).
 				and(_label).
 				and(_start).
 				and(_stop).
@@ -232,6 +233,3 @@ public final class Timer
 	}
 
 }
-
-
-

@@ -19,18 +19,16 @@
  */
 package org.jenetics;
 
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.stat.Distribution;
 import org.jenetics.stat.LinearDistribution;
 import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-08-29 $</em>
+ * @version <em>$Date: 2014-02-15 $</em>
  */
 public class LinearRankSelectorTest
-	extends ProbabilitySelectorTester<LinearRankSelector<Float64Gene, Float64>>
+	extends ProbabilitySelectorTester<LinearRankSelector<DoubleGene, Double>>
 {
 
 	@Override
@@ -39,23 +37,19 @@ public class LinearRankSelectorTest
 	}
 
 	@Override
-	protected Factory<LinearRankSelector<Float64Gene, Float64>> getFactory() {
+	protected Factory<LinearRankSelector<DoubleGene, Double>> getFactory() {
 		return SelectorFactories.LinearRankSelector;
 	}
 
 	@Override
-	protected Distribution<Float64> getDistribution() {
+	protected Distribution<Double> getDistribution() {
 		return new LinearDistribution<>(getDomain(), 0);
 	}
 
 	@Override
-	protected LinearRankSelector<Float64Gene, Float64> getSelector() {
+	protected LinearRankSelector<DoubleGene, Double> getSelector() {
 		return new LinearRankSelector<>(0.0);
 	}
 
 
 }
-
-
-
-

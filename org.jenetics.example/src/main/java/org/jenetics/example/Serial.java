@@ -21,11 +21,9 @@ package org.jenetics.example;
 
 import java.io.File;
 
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.Chromosome;
-import org.jenetics.Float64Chromosome;
-import org.jenetics.Float64Gene;
+import org.jenetics.DoubleChromosome;
+import org.jenetics.DoubleGene;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.util.Function;
@@ -33,49 +31,45 @@ import org.jenetics.util.IO;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.0 &mdash; <em>$Date: 2013-08-29 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-02-17 $</em>
  */
 public class Serial {
 
-	static class Id implements Function<Genotype<Float64Gene>, Float64> {
+	static class Id implements Function<Genotype<DoubleGene>, Double> {
 		@Override
-		public Float64 apply(final Genotype<Float64Gene> value) {
+		public Double apply(final Genotype<DoubleGene> value) {
 			double result = 0;
-			for (Chromosome<Float64Gene> c : value) {
-				for (Float64Gene g : c) {
+			for (Chromosome<DoubleGene> c : value) {
+				for (DoubleGene g : c) {
 					result += Math.sin(g.getAllele().doubleValue());
 				}
 			}
-			return Float64.valueOf(result);
+			return result;
 		}
 	}
 
-	static class Scaler implements Function<Float64, Float64> {
+	static class Scaler implements Function<Double, Double> {
 		@Override
-		public Float64 apply(Float64 value) {
-			return value.times(Math.PI);
+		public Double apply(Double value) {
+			return value*Math.PI;
 		}
 	}
 
 	public static void main(final String[] args) throws Exception {
-		final Genotype<Float64Gene> genotype = Genotype.valueOf(
-			    new Float64Chromosome(0.0, 1.0, 8),
-			    new Float64Chromosome(1.0, 2.0, 10),
-			    new Float64Chromosome(0.0, 10.0, 9),
-			    new Float64Chromosome(0.1, 0.9, 5)
-			);
+		final Genotype<DoubleGene> genotype = Genotype.of(
+			new DoubleChromosome(0.0, 1.0, 8),
+			new DoubleChromosome(1.0, 2.0, 10),
+			new DoubleChromosome(0.0, 10.0, 9),
+			new DoubleChromosome(0.1, 0.9, 5)
+		);
 
-		final GeneticAlgorithm<Float64Gene, Float64> ga = new GeneticAlgorithm<>(genotype, new Id(), new Scaler());
+		final GeneticAlgorithm<DoubleGene, Double> ga = new GeneticAlgorithm<>(genotype, new Id(), new Scaler());
 		ga.setPopulationSize(5);
 		ga.setup();
 		ga.evolve(5);
 
-		IO.xml.write(ga.getPopulation(), new File("/home/fwilhelm/population.xml"));
+		IO.jaxb.write(ga.getPopulation(), new File("/home/fwilhelm/population.xml"));
 
 	}
 
 }
-
-
-
-

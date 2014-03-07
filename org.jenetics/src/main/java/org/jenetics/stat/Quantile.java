@@ -21,10 +21,11 @@ package org.jenetics.stat;
 
 import static java.lang.Double.compare;
 import static java.lang.String.format;
-import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
+import static org.jenetics.internal.util.object.eq;
 
 import java.util.Arrays;
+
+import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.util.MappedAccumulator;
 
@@ -49,7 +50,7 @@ import org.jenetics.util.MappedAccumulator;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.3 &mdash; <em>$Date: 2013-12-02 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2014-03-01 $</em>
  */
 public class Quantile<N extends Number> extends MappedAccumulator<N> {
 
@@ -281,7 +282,7 @@ public class Quantile<N extends Number> extends MappedAccumulator<N> {
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).
+		return HashBuilder.of(getClass()).
 				and(super.hashCode()).
 				and(_quantile).
 				and(_dn).
@@ -327,5 +328,3 @@ public class Quantile<N extends Number> extends MappedAccumulator<N> {
 	}
 
 }
-
-

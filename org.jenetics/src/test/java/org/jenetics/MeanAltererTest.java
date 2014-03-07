@@ -20,10 +20,9 @@
 package org.jenetics;
 
 import static org.jenetics.TestUtils.diff;
-import static org.jenetics.TestUtils.newFloat64GenePopulation;
+import static org.jenetics.TestUtils.newDoubleGenePopulation;
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 
-import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -35,7 +34,7 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-08-29 $</em>
+ * @version <em>$Date: 2014-02-17 $</em>
  */
 public class MeanAltererTest {
 
@@ -45,13 +44,13 @@ public class MeanAltererTest {
 		final int ngenes = 11;
 		final int nchromosomes = 9;
 		final int npopulation = 100;
-		final Population<Float64Gene, Float64> p1 = newFloat64GenePopulation(
+		final Population<DoubleGene, Double> p1 = newDoubleGenePopulation(
 				ngenes, nchromosomes, npopulation
 			);
-		final Population<Float64Gene, Float64> p2 = p1.copy();
+		final Population<DoubleGene, Double> p2 = p1.copy();
 		final int[] selected = new int[]{3, 34};
 
-		final MeanAlterer<Float64Gene> crossover = new MeanAlterer<>(0.1);
+		final MeanAlterer<DoubleGene> crossover = new MeanAlterer<>(0.1);
 		crossover.recombine(p1, selected, 3);
 
 		Assert.assertEquals(diff(p1, p2), ngenes);
@@ -64,12 +63,12 @@ public class MeanAltererTest {
 		final Integer npopulation,
 		final Double p
 	) {
-		final Population<Float64Gene, Float64> population = newFloat64GenePopulation(
+		final Population<DoubleGene, Double> population = newDoubleGenePopulation(
 				ngenes, nchromosomes, npopulation
 			);
 
 		// The mutator to test.
-		final MeanAlterer<Float64Gene> crossover = new MeanAlterer<>(p);
+		final MeanAlterer<DoubleGene> crossover = new MeanAlterer<>(p);
 
 		final long nallgenes = ngenes*nchromosomes*npopulation;
 		final long N = 100;
@@ -79,7 +78,7 @@ public class MeanAltererTest {
 		final long max = nallgenes;
 		final Range<Long> domain = new Range<>(min, max);
 
-		final Histogram<Long> histogram = Histogram.valueOf(min, max, 10);
+		final Histogram<Long> histogram = Histogram.of(min, max, 10);
 		final Variance<Long> variance = new Variance<>();
 
 		for (int i = 0; i < N; ++i) {
@@ -97,7 +96,3 @@ public class MeanAltererTest {
 		return TestUtils.alterProbabilityParameters();
 	}
 }
-
-
-
-

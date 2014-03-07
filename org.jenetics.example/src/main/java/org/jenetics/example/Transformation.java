@@ -19,18 +19,14 @@
  */
 package org.jenetics.example;
 
-import static org.jenetics.ExponentialScaler.SQR_SCALER;
-
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.io.Serializable;
 
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.CompositeAlterer;
-import org.jenetics.Float64Chromosome;
-import org.jenetics.Float64Gene;
+import org.jenetics.DoubleChromosome;
+import org.jenetics.DoubleGene;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.MeanAlterer;
@@ -41,12 +37,12 @@ import org.jenetics.util.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.0 &mdash; <em>$Date: 2013-09-02 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-02-25 $</em>
  */
 public class Transformation {
 
 	private static final class FF
-		implements Function<Genotype<Float64Gene>, Float64>,
+		implements Function<Genotype<DoubleGene>, Double>,
 					Serializable
 	{
 		private static final long serialVersionUID = 1L;
@@ -60,7 +56,7 @@ public class Transformation {
 		}
 
 		@Override
-		public Float64 apply(final Genotype<Float64Gene> genotype) {
+		public Double apply(final Genotype<DoubleGene> genotype) {
 			final AffineTransform transform = converter.apply(genotype);
 
 			double error = 0;
@@ -71,13 +67,13 @@ public class Transformation {
 				error += _source[i].distanceSq(point);
 			}
 
-			return Float64.valueOf(error);
+			return error;
 		}
 
-		private Function<Genotype<Float64Gene>, AffineTransform>
-		converter = new Function<Genotype<Float64Gene>, AffineTransform>() {
+		private Function<Genotype<DoubleGene>, AffineTransform>
+		converter = new Function<Genotype<DoubleGene>, AffineTransform>() {
 			@Override
-			public AffineTransform apply(final Genotype<Float64Gene> genotype) {
+			public AffineTransform apply(final Genotype<DoubleGene> genotype) {
 				final double theta = genotype.getChromosome(0).getGene().doubleValue();
 				final double tx = genotype.getChromosome(1).getGene(0).doubleValue();
 				final double ty = genotype.getChromosome(1).getGene(1).doubleValue();
@@ -123,22 +119,21 @@ public class Transformation {
 			target[i]  = rotate.inverseTransform(source[i], null);
 		}
 
-		final Factory<Genotype<Float64Gene>> gtf = Genotype.valueOf(
-			new Float64Chromosome(Float64Gene.valueOf(-Math.PI, Math.PI)), //Rotation
-			new Float64Chromosome(Float64Gene.valueOf(-400, 400), Float64Gene.valueOf(-400, 400)), //Translation
-			new Float64Chromosome(Float64Gene.valueOf(-400, 400), Float64Gene.valueOf(-400, 400))	//Shear
+		final Factory<Genotype<DoubleGene>> gtf = Genotype.of(
+			DoubleChromosome.of(DoubleGene.of(-Math.PI, Math.PI)), //Rotation
+			DoubleChromosome.of(DoubleGene.of(-400, 400), DoubleGene.of(-400, 400)), //Translation
+			DoubleChromosome.of(DoubleGene.of(-400, 400), DoubleGene.of(-400, 400))    //Shear
 		);
 
 		final FF ff = new FF(source, target);
-		final GeneticAlgorithm<Float64Gene, Float64> ga = new GeneticAlgorithm<>(gtf, ff);
+		final GeneticAlgorithm<DoubleGene, Double> ga = new GeneticAlgorithm<>(gtf, ff);
 
-		ga.setFitnessScaler(SQR_SCALER);
 		ga.setPopulationSize(1000);
-		ga.setAlterer(CompositeAlterer.valueOf(
-			new Mutator<Float64Gene>(0.03),
-			new MeanAlterer<Float64Gene>(0.6)
+		ga.setAlterer(CompositeAlterer.of(
+			new Mutator<DoubleGene>(0.03),
+			new MeanAlterer<DoubleGene>(0.6)
 		));
-		ga.setSelectors(new RouletteWheelSelector<Float64Gene, Float64>());
+		ga.setSelectors(new RouletteWheelSelector<DoubleGene, Double>());
 
 		final int generations = 50;
 
@@ -156,28 +151,3 @@ public class Transformation {
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

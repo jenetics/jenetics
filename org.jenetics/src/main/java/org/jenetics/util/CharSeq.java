@@ -21,8 +21,7 @@ package org.jenetics.util;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.util.object.eq;
-import static org.jenetics.util.object.hashCodeOf;
+import static org.jenetics.internal.util.object.eq;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -31,6 +30,8 @@ import java.util.NoSuchElementException;
 import java.util.regex.PatternSyntaxException;
 
 import javolution.lang.Immutable;
+
+import org.jenetics.internal.util.HashBuilder;
 
 /**
  * This class is used for holding the valid characters of an
@@ -46,7 +47,7 @@ import javolution.lang.Immutable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-12-02 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-01 $</em>
  */
 public final class CharSeq
 	extends AbstractCharSeq
@@ -206,7 +207,7 @@ public final class CharSeq
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(_characters).value();
+		return HashBuilder.of(getClass()).and(_characters).value();
 	}
 
 	@Override
@@ -324,8 +325,16 @@ public final class CharSeq
 	 * @throws PatternSyntaxException if the pattern could not be expanded.
 	 * @throws NullPointerException if the pattern is {@code null}.
 	 */
-	public static CharSeq valueOf(final CharSequence pattern) {
+	public static CharSeq of(final CharSequence pattern) {
 		return new CharSeq(expand(pattern));
+	}
+
+	/**
+	 * @deprecated Use {@link #of(CharSequence)} instead.
+	 */
+	@Deprecated
+	public static CharSeq valueOf(final CharSequence pattern) {
+		return of(pattern);
 	}
 
 	/**
@@ -337,8 +346,16 @@ public final class CharSeq
 	 * @param b the stop character.
 	 * @return the expanded characters.
 	 */
-	public static CharSeq valueOf(final char a, final char b) {
+	public static CharSeq of(final char a, final char b) {
 		return new CharSeq(expand(a, b));
+	}
+
+	/**
+	 * @deprecated Use {@link #of(char, char)} instead.
+	 */
+	@Deprecated
+	public static CharSeq valueOf(final char a, final char b) {
+		return of(a, b);
 	}
 
 	/**
@@ -360,7 +377,3 @@ public final class CharSeq
 	}
 
 }
-
-
-
-

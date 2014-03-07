@@ -1,0 +1,815 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<org.jenetics.Population size="7">
+    <org.jenetics.Phenotype generation="485166348">
+        <org.jenetics.Genotype length="5" ngenes="100">
+            <org.jenetics.Integer64Chromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+                <org.jscience.mathematics.number.Integer64 value="-4111772314810463982"/>
+                <org.jscience.mathematics.number.Integer64 value="-380826747604496445"/>
+                <org.jscience.mathematics.number.Integer64 value="6246972533032081786"/>
+                <org.jscience.mathematics.number.Integer64 value="3112874395405942084"/>
+                <org.jscience.mathematics.number.Integer64 value="5979631888971550264"/>
+                <org.jscience.mathematics.number.Integer64 value="-6973556321379081737"/>
+                <org.jscience.mathematics.number.Integer64 value="-8921503689965950481"/>
+                <org.jscience.mathematics.number.Integer64 value="-8932556098078406216"/>
+                <org.jscience.mathematics.number.Integer64 value="6388146046525416221"/>
+                <org.jscience.mathematics.number.Integer64 value="-8634250998827456925"/>
+                <org.jscience.mathematics.number.Integer64 value="5316819321207015480"/>
+                <org.jscience.mathematics.number.Integer64 value="-1345217698116542402"/>
+                <org.jscience.mathematics.number.Integer64 value="-7144755673073475303"/>
+                <org.jscience.mathematics.number.Integer64 value="6053786736809578435"/>
+                <org.jscience.mathematics.number.Integer64 value="5586834713742438890"/>
+                <org.jscience.mathematics.number.Integer64 value="-1120164351599137773"/>
+                <org.jscience.mathematics.number.Integer64 value="4374187880249812222"/>
+                <org.jscience.mathematics.number.Integer64 value="-7863855656443022702"/>
+                <org.jscience.mathematics.number.Integer64 value="1386882606293782618"/>
+                <org.jscience.mathematics.number.Integer64 value="-404495742865627634"/>
+            </org.jenetics.Integer64Chromosome>
+            <org.jenetics.Integer64Chromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+                <org.jscience.mathematics.number.Integer64 value="5365414649285285510"/>
+                <org.jscience.mathematics.number.Integer64 value="1696139980083867974"/>
+                <org.jscience.mathematics.number.Integer64 value="5311979301091792112"/>
+                <org.jscience.mathematics.number.Integer64 value="-5173432911082671008"/>
+                <org.jscience.mathematics.number.Integer64 value="-5472500210706468301"/>
+                <org.jscience.mathematics.number.Integer64 value="1111020645005224513"/>
+                <org.jscience.mathematics.number.Integer64 value="-4112746918572083176"/>
+                <org.jscience.mathematics.number.Integer64 value="2638788695836353763"/>
+                <org.jscience.mathematics.number.Integer64 value="5588434355942293092"/>
+                <org.jscience.mathematics.number.Integer64 value="2356398743201311520"/>
+                <org.jscience.mathematics.number.Integer64 value="7236016521123581989"/>
+                <org.jscience.mathematics.number.Integer64 value="3693352968642639784"/>
+                <org.jscience.mathematics.number.Integer64 value="-2039573403557484531"/>
+                <org.jscience.mathematics.number.Integer64 value="5729923614523319140"/>
+                <org.jscience.mathematics.number.Integer64 value="6111411078316473179"/>
+                <org.jscience.mathematics.number.Integer64 value="-3241678066803038162"/>
+                <org.jscience.mathematics.number.Integer64 value="-4179550599571187622"/>
+                <org.jscience.mathematics.number.Integer64 value="7796183889691100966"/>
+                <org.jscience.mathematics.number.Integer64 value="3858905116994538651"/>
+                <org.jscience.mathematics.number.Integer64 value="5377364183021295141"/>
+            </org.jenetics.Integer64Chromosome>
+            <org.jenetics.Integer64Chromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+                <org.jscience.mathematics.number.Integer64 value="2544335310857141719"/>
+                <org.jscience.mathematics.number.Integer64 value="-5429537846344166262"/>
+                <org.jscience.mathematics.number.Integer64 value="-7323700815509028006"/>
+                <org.jscience.mathematics.number.Integer64 value="-6270608225301549524"/>
+                <org.jscience.mathematics.number.Integer64 value="-5717830110720473783"/>
+                <org.jscience.mathematics.number.Integer64 value="6609770446447405651"/>
+                <org.jscience.mathematics.number.Integer64 value="8771749209374862809"/>
+                <org.jscience.mathematics.number.Integer64 value="1509427203109930745"/>
+                <org.jscience.mathematics.number.Integer64 value="6791525097003168044"/>
+                <org.jscience.mathematics.number.Integer64 value="-638875686148692174"/>
+                <org.jscience.mathematics.number.Integer64 value="8259446113499259706"/>
+                <org.jscience.mathematics.number.Integer64 value="-7813441308673122498"/>
+                <org.jscience.mathematics.number.Integer64 value="37249501114742029"/>
+                <org.jscience.mathematics.number.Integer64 value="261560856678603902"/>
+                <org.jscience.mathematics.number.Integer64 value="-2493754259930416793"/>
+                <org.jscience.mathematics.number.Integer64 value="-7770805810701095602"/>
+                <org.jscience.mathematics.number.Integer64 value="-3719227068495278724"/>
+                <org.jscience.mathematics.number.Integer64 value="6626694340572822001"/>
+                <org.jscience.mathematics.number.Integer64 value="5620461313952569514"/>
+                <org.jscience.mathematics.number.Integer64 value="5886528135282357084"/>
+            </org.jenetics.Integer64Chromosome>
+            <org.jenetics.Integer64Chromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+                <org.jscience.mathematics.number.Integer64 value="-5725487128480485325"/>
+                <org.jscience.mathematics.number.Integer64 value="3839333324099333847"/>
+                <org.jscience.mathematics.number.Integer64 value="8890121295749998791"/>
+                <org.jscience.mathematics.number.Integer64 value="-7846239782887048785"/>
+                <org.jscience.mathematics.number.Integer64 value="-5970851902653770043"/>
+                <org.jscience.mathematics.number.Integer64 value="-7158174369146883945"/>
+                <org.jscience.mathematics.number.Integer64 value="-6644725878894089084"/>
+                <org.jscience.mathematics.number.Integer64 value="-4564036144942635994"/>
+                <org.jscience.mathematics.number.Integer64 value="6638011546783599397"/>
+                <org.jscience.mathematics.number.Integer64 value="-8882653653147338956"/>
+                <org.jscience.mathematics.number.Integer64 value="405077730686834956"/>
+                <org.jscience.mathematics.number.Integer64 value="2248691403445231043"/>
+                <org.jscience.mathematics.number.Integer64 value="1223674444660244591"/>
+                <org.jscience.mathematics.number.Integer64 value="-8634675335635781420"/>
+                <org.jscience.mathematics.number.Integer64 value="-8304607847702790289"/>
+                <org.jscience.mathematics.number.Integer64 value="-2397303880769021265"/>
+                <org.jscience.mathematics.number.Integer64 value="6426989143802540019"/>
+                <org.jscience.mathematics.number.Integer64 value="7743502791416545726"/>
+                <org.jscience.mathematics.number.Integer64 value="2866044659420960963"/>
+                <org.jscience.mathematics.number.Integer64 value="-59858025282467446"/>
+            </org.jenetics.Integer64Chromosome>
+            <org.jenetics.Integer64Chromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+                <org.jscience.mathematics.number.Integer64 value="-4581853947655309483"/>
+                <org.jscience.mathematics.number.Integer64 value="5665002156221768823"/>
+                <org.jscience.mathematics.number.Integer64 value="6316274431691519155"/>
+                <org.jscience.mathematics.number.Integer64 value="-7743614047242223402"/>
+                <org.jscience.mathematics.number.Integer64 value="-4111463965379457483"/>
+                <org.jscience.mathematics.number.Integer64 value="2248176047077685147"/>
+                <org.jscience.mathematics.number.Integer64 value="-5012071199655429359"/>
+                <org.jscience.mathematics.number.Integer64 value="9198029604570996685"/>
+                <org.jscience.mathematics.number.Integer64 value="-4020318305686854376"/>
+                <org.jscience.mathematics.number.Integer64 value="-3202513794727594912"/>
+                <org.jscience.mathematics.number.Integer64 value="-3463277363044040469"/>
+                <org.jscience.mathematics.number.Integer64 value="7682364728567942373"/>
+                <org.jscience.mathematics.number.Integer64 value="-2846623759205966245"/>
+                <org.jscience.mathematics.number.Integer64 value="-7679557612699325471"/>
+                <org.jscience.mathematics.number.Integer64 value="-8203540428037253595"/>
+                <org.jscience.mathematics.number.Integer64 value="4717837933715155635"/>
+                <org.jscience.mathematics.number.Integer64 value="-1262824820614453177"/>
+                <org.jscience.mathematics.number.Integer64 value="-4109857320370587131"/>
+                <org.jscience.mathematics.number.Integer64 value="7905387471169487615"/>
+                <org.jscience.mathematics.number.Integer64 value="8049221063338963850"/>
+            </org.jenetics.Integer64Chromosome>
+        </org.jenetics.Genotype>
+        <fitness class="java.lang.Integer" value="837911329"/>
+        <raw-fitness class="java.lang.Integer" value="837911329"/>
+    </org.jenetics.Phenotype>
+    <org.jenetics.Phenotype generation="782506113">
+        <org.jenetics.Genotype length="5" ngenes="100">
+            <org.jenetics.Integer64Chromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+                <org.jscience.mathematics.number.Integer64 value="4239941727876463602"/>
+                <org.jscience.mathematics.number.Integer64 value="4846086061507703389"/>
+                <org.jscience.mathematics.number.Integer64 value="2490078952271750832"/>
+                <org.jscience.mathematics.number.Integer64 value="1575809799567295024"/>
+                <org.jscience.mathematics.number.Integer64 value="3452268959702037003"/>
+                <org.jscience.mathematics.number.Integer64 value="4130961952165419727"/>
+                <org.jscience.mathematics.number.Integer64 value="7969626332832572974"/>
+                <org.jscience.mathematics.number.Integer64 value="3008951766404302965"/>
+                <org.jscience.mathematics.number.Integer64 value="-4355901681891694264"/>
+                <org.jscience.mathematics.number.Integer64 value="1423881657108693575"/>
+                <org.jscience.mathematics.number.Integer64 value="4432621209763600767"/>
+                <org.jscience.mathematics.number.Integer64 value="333707616290712401"/>
+                <org.jscience.mathematics.number.Integer64 value="8694478158926730583"/>
+                <org.jscience.mathematics.number.Integer64 value="2295460566995486024"/>
+                <org.jscience.mathematics.number.Integer64 value="3263438918857349610"/>
+                <org.jscience.mathematics.number.Integer64 value="3667752690151682962"/>
+                <org.jscience.mathematics.number.Integer64 value="-7449904551326089058"/>
+                <org.jscience.mathematics.number.Integer64 value="-8698657622840276420"/>
+                <org.jscience.mathematics.number.Integer64 value="788510063241723858"/>
+                <org.jscience.mathematics.number.Integer64 value="-559185315744095092"/>
+            </org.jenetics.Integer64Chromosome>
+            <org.jenetics.Integer64Chromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+                <org.jscience.mathematics.number.Integer64 value="-5615781286265049760"/>
+                <org.jscience.mathematics.number.Integer64 value="-23047335821866945"/>
+                <org.jscience.mathematics.number.Integer64 value="-2508230067056456655"/>
+                <org.jscience.mathematics.number.Integer64 value="1979482836227141176"/>
+                <org.jscience.mathematics.number.Integer64 value="4732870979045704106"/>
+                <org.jscience.mathematics.number.Integer64 value="1632093383304585027"/>
+                <org.jscience.mathematics.number.Integer64 value="3654650997407599464"/>
+                <org.jscience.mathematics.number.Integer64 value="6627449595200791190"/>
+                <org.jscience.mathematics.number.Integer64 value="-6527318542450127390"/>
+                <org.jscience.mathematics.number.Integer64 value="8062540165075179643"/>
+                <org.jscience.mathematics.number.Integer64 value="6751083670616997353"/>
+                <org.jscience.mathematics.number.Integer64 value="-4849064649784512854"/>
+                <org.jscience.mathematics.number.Integer64 value="-4485990137985031254"/>
+                <org.jscience.mathematics.number.Integer64 value="991848670962561410"/>
+                <org.jscience.mathematics.number.Integer64 value="6480103147793152172"/>
+                <org.jscience.mathematics.number.Integer64 value="6988131561595817948"/>
+                <org.jscience.mathematics.number.Integer64 value="-8886647413865189930"/>
+                <org.jscience.mathematics.number.Integer64 value="-7969336960210330873"/>
+                <org.jscience.mathematics.number.Integer64 value="8398200023421156392"/>
+                <org.jscience.mathematics.number.Integer64 value="5294686374208643617"/>
+            </org.jenetics.Integer64Chromosome>
+            <org.jenetics.Integer64Chromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+                <org.jscience.mathematics.number.Integer64 value="5803659255737485334"/>
+                <org.jscience.mathematics.number.Integer64 value="-806623645012705886"/>
+                <org.jscience.mathematics.number.Integer64 value="-6674337812122915253"/>
+                <org.jscience.mathematics.number.Integer64 value="6464089915245965664"/>
+                <org.jscience.mathematics.number.Integer64 value="6415629023428550991"/>
+                <org.jscience.mathematics.number.Integer64 value="3845619582834545896"/>
+                <org.jscience.mathematics.number.Integer64 value="5311613245610509595"/>
+                <org.jscience.mathematics.number.Integer64 value="7268814463867272095"/>
+                <org.jscience.mathematics.number.Integer64 value="-7498410043949413240"/>
+                <org.jscience.mathematics.number.Integer64 value="941366690421300114"/>
+                <org.jscience.mathematics.number.Integer64 value="5400539706353212335"/>
+                <org.jscience.mathematics.number.Integer64 value="5338545845791444460"/>
+                <org.jscience.mathematics.number.Integer64 value="925080059662276556"/>
+                <org.jscience.mathematics.number.Integer64 value="6246920675690153193"/>
+                <org.jscience.mathematics.number.Integer64 value="8361640228891217998"/>
+                <org.jscience.mathematics.number.Integer64 value="-5765336114360474803"/>
+                <org.jscience.mathematics.number.Integer64 value="5415638897171863415"/>
+                <org.jscience.mathematics.number.Integer64 value="-7349420017357918997"/>
+                <org.jscience.mathematics.number.Integer64 value="-112330287520359434"/>
+                <org.jscience.mathematics.number.Integer64 value="-7085817297229140779"/>
+            </org.jenetics.Integer64Chromosome>
+            <org.jenetics.Integer64Chromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+                <org.jscience.mathematics.number.Integer64 value="8081102371583406595"/>
+                <org.jscience.mathematics.number.Integer64 value="-6497484290240945516"/>
+                <org.jscience.mathematics.number.Integer64 value="-7812536387260213605"/>
+                <org.jscience.mathematics.number.Integer64 value="-6122574470463328989"/>
+                <org.jscience.mathematics.number.Integer64 value="7171547029169190824"/>
+                <org.jscience.mathematics.number.Integer64 value="-903306803843087993"/>
+                <org.jscience.mathematics.number.Integer64 value="-4076479257574043532"/>
+                <org.jscience.mathematics.number.Integer64 value="-1466012896208746577"/>
+                <org.jscience.mathematics.number.Integer64 value="5528084598914310770"/>
+                <org.jscience.mathematics.number.Integer64 value="-3592805129686762860"/>
+                <org.jscience.mathematics.number.Integer64 value="-2594676698022530904"/>
+                <org.jscience.mathematics.number.Integer64 value="8390175360110839564"/>
+                <org.jscience.mathematics.number.Integer64 value="-3553456181213080800"/>
+                <org.jscience.mathematics.number.Integer64 value="5304296135786094050"/>
+                <org.jscience.mathematics.number.Integer64 value="554684146607689736"/>
+                <org.jscience.mathematics.number.Integer64 value="6840932337521521514"/>
+                <org.jscience.mathematics.number.Integer64 value="-1372808776341131850"/>
+                <org.jscience.mathematics.number.Integer64 value="-8284402478308952583"/>
+                <org.jscience.mathematics.number.Integer64 value="7468929249806239750"/>
+                <org.jscience.mathematics.number.Integer64 value="8014229521161572407"/>
+            </org.jenetics.Integer64Chromosome>
+            <org.jenetics.Integer64Chromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+                <org.jscience.mathematics.number.Integer64 value="-3673842460720435906"/>
+                <org.jscience.mathematics.number.Integer64 value="6909610010607229730"/>
+                <org.jscience.mathematics.number.Integer64 value="3650110331084206100"/>
+                <org.jscience.mathematics.number.Integer64 value="-2824781214026301996"/>
+                <org.jscience.mathematics.number.Integer64 value="7380278965838949194"/>
+                <org.jscience.mathematics.number.Integer64 value="-6251296584729374890"/>
+                <org.jscience.mathematics.number.Integer64 value="109791734004002011"/>
+                <org.jscience.mathematics.number.Integer64 value="-760489865887197728"/>
+                <org.jscience.mathematics.number.Integer64 value="7314010879173693545"/>
+                <org.jscience.mathematics.number.Integer64 value="-354380261385042005"/>
+                <org.jscience.mathematics.number.Integer64 value="-48143866000785397"/>
+                <org.jscience.mathematics.number.Integer64 value="-1782034503048079892"/>
+                <org.jscience.mathematics.number.Integer64 value="8198045629597715232"/>
+                <org.jscience.mathematics.number.Integer64 value="5188016153793709220"/>
+                <org.jscience.mathematics.number.Integer64 value="522386129892474768"/>
+                <org.jscience.mathematics.number.Integer64 value="7052085872009179999"/>
+                <org.jscience.mathematics.number.Integer64 value="8390752084817180133"/>
+                <org.jscience.mathematics.number.Integer64 value="4130703816933939766"/>
+                <org.jscience.mathematics.number.Integer64 value="-4808966199330078061"/>
+                <org.jscience.mathematics.number.Integer64 value="297703814931076460"/>
+            </org.jenetics.Integer64Chromosome>
+        </org.jenetics.Genotype>
+        <fitness class="java.lang.Integer" value="-1265796698"/>
+        <raw-fitness class="java.lang.Integer" value="-1265796698"/>
+    </org.jenetics.Phenotype>
+    <org.jenetics.Phenotype generation="171628016">
+        <org.jenetics.Genotype length="5" ngenes="100">
+            <org.jenetics.Integer64Chromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+                <org.jscience.mathematics.number.Integer64 value="-1598698849826083479"/>
+                <org.jscience.mathematics.number.Integer64 value="-2439392025532507088"/>
+                <org.jscience.mathematics.number.Integer64 value="2182451628436400548"/>
+                <org.jscience.mathematics.number.Integer64 value="-7459046085657372834"/>
+                <org.jscience.mathematics.number.Integer64 value="-4605077220857899312"/>
+                <org.jscience.mathematics.number.Integer64 value="137061515745029435"/>
+                <org.jscience.mathematics.number.Integer64 value="7998427231004100418"/>
+                <org.jscience.mathematics.number.Integer64 value="3996258726082976177"/>
+                <org.jscience.mathematics.number.Integer64 value="2044828523293951502"/>
+                <org.jscience.mathematics.number.Integer64 value="-24718602402714961"/>
+                <org.jscience.mathematics.number.Integer64 value="8385729625192263357"/>
+                <org.jscience.mathematics.number.Integer64 value="3216245777656109857"/>
+                <org.jscience.mathematics.number.Integer64 value="-7572251731042743703"/>
+                <org.jscience.mathematics.number.Integer64 value="-6560622639886892467"/>
+                <org.jscience.mathematics.number.Integer64 value="1873326033461195368"/>
+                <org.jscience.mathematics.number.Integer64 value="1317585319808409227"/>
+                <org.jscience.mathematics.number.Integer64 value="-7355404540770231024"/>
+                <org.jscience.mathematics.number.Integer64 value="-8005336593628533602"/>
+                <org.jscience.mathematics.number.Integer64 value="-6622157639743685292"/>
+                <org.jscience.mathematics.number.Integer64 value="-4885242514658658752"/>
+            </org.jenetics.Integer64Chromosome>
+            <org.jenetics.Integer64Chromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+                <org.jscience.mathematics.number.Integer64 value="1983025849947225877"/>
+                <org.jscience.mathematics.number.Integer64 value="4872117006330222429"/>
+                <org.jscience.mathematics.number.Integer64 value="-3678242255553011620"/>
+                <org.jscience.mathematics.number.Integer64 value="-3644534058521657223"/>
+                <org.jscience.mathematics.number.Integer64 value="572265292650043746"/>
+                <org.jscience.mathematics.number.Integer64 value="-5450877089899421300"/>
+                <org.jscience.mathematics.number.Integer64 value="2834950565515020613"/>
+                <org.jscience.mathematics.number.Integer64 value="-8268908700060596736"/>
+                <org.jscience.mathematics.number.Integer64 value="8616844956948213663"/>
+                <org.jscience.mathematics.number.Integer64 value="-7664739480927957129"/>
+                <org.jscience.mathematics.number.Integer64 value="8071955899363781025"/>
+                <org.jscience.mathematics.number.Integer64 value="-3908693555292963484"/>
+                <org.jscience.mathematics.number.Integer64 value="160218884209285404"/>
+                <org.jscience.mathematics.number.Integer64 value="-7765742937439530172"/>
+                <org.jscience.mathematics.number.Integer64 value="6010999226359154818"/>
+                <org.jscience.mathematics.number.Integer64 value="4014012323835563308"/>
+                <org.jscience.mathematics.number.Integer64 value="4899578094999804021"/>
+                <org.jscience.mathematics.number.Integer64 value="-820647339513001044"/>
+                <org.jscience.mathematics.number.Integer64 value="8473337451304790814"/>
+                <org.jscience.mathematics.number.Integer64 value="2730704155730885"/>
+            </org.jenetics.Integer64Chromosome>
+            <org.jenetics.Integer64Chromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+                <org.jscience.mathematics.number.Integer64 value="592361838258512273"/>
+                <org.jscience.mathematics.number.Integer64 value="5864714683838001739"/>
+                <org.jscience.mathematics.number.Integer64 value="3759668340535237969"/>
+                <org.jscience.mathematics.number.Integer64 value="-8551086908494883271"/>
+                <org.jscience.mathematics.number.Integer64 value="-8599490832495415872"/>
+                <org.jscience.mathematics.number.Integer64 value="8832906638671370983"/>
+                <org.jscience.mathematics.number.Integer64 value="3723023981471007642"/>
+                <org.jscience.mathematics.number.Integer64 value="8474895259442269056"/>
+                <org.jscience.mathematics.number.Integer64 value="7488071688116976039"/>
+                <org.jscience.mathematics.number.Integer64 value="8397465370562102972"/>
+                <org.jscience.mathematics.number.Integer64 value="7285113859704372994"/>
+                <org.jscience.mathematics.number.Integer64 value="9027531368724372878"/>
+                <org.jscience.mathematics.number.Integer64 value="-8036642496637350139"/>
+                <org.jscience.mathematics.number.Integer64 value="3807165688108477699"/>
+                <org.jscience.mathematics.number.Integer64 value="1633792784999551896"/>
+                <org.jscience.mathematics.number.Integer64 value="-8053059834464005491"/>
+                <org.jscience.mathematics.number.Integer64 value="-6387660213454446997"/>
+                <org.jscience.mathematics.number.Integer64 value="6036232120122373835"/>
+                <org.jscience.mathematics.number.Integer64 value="-810478107613048900"/>
+                <org.jscience.mathematics.number.Integer64 value="3894469069131835630"/>
+            </org.jenetics.Integer64Chromosome>
+            <org.jenetics.Integer64Chromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+                <org.jscience.mathematics.number.Integer64 value="4991891393304269814"/>
+                <org.jscience.mathematics.number.Integer64 value="-3792374056940975962"/>
+                <org.jscience.mathematics.number.Integer64 value="-7245453310723981747"/>
+                <org.jscience.mathematics.number.Integer64 value="2818959008884590356"/>
+                <org.jscience.mathematics.number.Integer64 value="4140663142684541294"/>
+                <org.jscience.mathematics.number.Integer64 value="699685602631716249"/>
+                <org.jscience.mathematics.number.Integer64 value="6185974497295514523"/>
+                <org.jscience.mathematics.number.Integer64 value="8740961740495253794"/>
+                <org.jscience.mathematics.number.Integer64 value="5193740354788996801"/>
+                <org.jscience.mathematics.number.Integer64 value="2032917444256185809"/>
+                <org.jscience.mathematics.number.Integer64 value="3549959787140084773"/>
+                <org.jscience.mathematics.number.Integer64 value="8588924171080632544"/>
+                <org.jscience.mathematics.number.Integer64 value="-6833627601399860831"/>
+                <org.jscience.mathematics.number.Integer64 value="-3357344834651513276"/>
+                <org.jscience.mathematics.number.Integer64 value="2167689876600454774"/>
+                <org.jscience.mathematics.number.Integer64 value="7148419712846834980"/>
+                <org.jscience.mathematics.number.Integer64 value="-768155166738441534"/>
+                <org.jscience.mathematics.number.Integer64 value="4105221413195844260"/>
+                <org.jscience.mathematics.number.Integer64 value="-8038291090761687065"/>
+                <org.jscience.mathematics.number.Integer64 value="-7165567288598030996"/>
+            </org.jenetics.Integer64Chromosome>
+            <org.jenetics.Integer64Chromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+                <org.jscience.mathematics.number.Integer64 value="2689225760940827"/>
+                <org.jscience.mathematics.number.Integer64 value="-2182032352532130694"/>
+                <org.jscience.mathematics.number.Integer64 value="1646897167593752448"/>
+                <org.jscience.mathematics.number.Integer64 value="-2216422975724315006"/>
+                <org.jscience.mathematics.number.Integer64 value="-763310717527580433"/>
+                <org.jscience.mathematics.number.Integer64 value="175646517111079837"/>
+                <org.jscience.mathematics.number.Integer64 value="6372978934372152334"/>
+                <org.jscience.mathematics.number.Integer64 value="6771095362433604767"/>
+                <org.jscience.mathematics.number.Integer64 value="3000182631747212888"/>
+                <org.jscience.mathematics.number.Integer64 value="-2850235764649456286"/>
+                <org.jscience.mathematics.number.Integer64 value="-3712809032049959130"/>
+                <org.jscience.mathematics.number.Integer64 value="2602646872912426954"/>
+                <org.jscience.mathematics.number.Integer64 value="6289765459780744680"/>
+                <org.jscience.mathematics.number.Integer64 value="-5178239354056385689"/>
+                <org.jscience.mathematics.number.Integer64 value="8801175456483552643"/>
+                <org.jscience.mathematics.number.Integer64 value="227920612374412886"/>
+                <org.jscience.mathematics.number.Integer64 value="8893366973877261413"/>
+                <org.jscience.mathematics.number.Integer64 value="-8122886556309783135"/>
+                <org.jscience.mathematics.number.Integer64 value="-3116443768680049874"/>
+                <org.jscience.mathematics.number.Integer64 value="-4647020662433608329"/>
+            </org.jenetics.Integer64Chromosome>
+        </org.jenetics.Genotype>
+        <fitness class="java.lang.Integer" value="372565271"/>
+        <raw-fitness class="java.lang.Integer" value="372565271"/>
+    </org.jenetics.Phenotype>
+    <org.jenetics.Phenotype generation="633739314">
+        <org.jenetics.Genotype length="5" ngenes="100">
+            <org.jenetics.Integer64Chromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+                <org.jscience.mathematics.number.Integer64 value="-1872973580745160625"/>
+                <org.jscience.mathematics.number.Integer64 value="3923037793590032567"/>
+                <org.jscience.mathematics.number.Integer64 value="-1580170936198558825"/>
+                <org.jscience.mathematics.number.Integer64 value="4760732128684049371"/>
+                <org.jscience.mathematics.number.Integer64 value="5836515951196133393"/>
+                <org.jscience.mathematics.number.Integer64 value="-2590323395541719487"/>
+                <org.jscience.mathematics.number.Integer64 value="6852526349237036441"/>
+                <org.jscience.mathematics.number.Integer64 value="837726539466647172"/>
+                <org.jscience.mathematics.number.Integer64 value="-8520941110406351507"/>
+                <org.jscience.mathematics.number.Integer64 value="7181754725957473460"/>
+                <org.jscience.mathematics.number.Integer64 value="8625550494061662105"/>
+                <org.jscience.mathematics.number.Integer64 value="913340379231899942"/>
+                <org.jscience.mathematics.number.Integer64 value="-6475930702533348587"/>
+                <org.jscience.mathematics.number.Integer64 value="5376503324424947370"/>
+                <org.jscience.mathematics.number.Integer64 value="-3778034088452407"/>
+                <org.jscience.mathematics.number.Integer64 value="-6042835264986421381"/>
+                <org.jscience.mathematics.number.Integer64 value="-3153586296037591607"/>
+                <org.jscience.mathematics.number.Integer64 value="-7286190339607637046"/>
+                <org.jscience.mathematics.number.Integer64 value="2137560081078906015"/>
+                <org.jscience.mathematics.number.Integer64 value="6720566864692107692"/>
+            </org.jenetics.Integer64Chromosome>
+            <org.jenetics.Integer64Chromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+                <org.jscience.mathematics.number.Integer64 value="394910354404467995"/>
+                <org.jscience.mathematics.number.Integer64 value="7228273617072301458"/>
+                <org.jscience.mathematics.number.Integer64 value="3437464771565943838"/>
+                <org.jscience.mathematics.number.Integer64 value="356016153514452571"/>
+                <org.jscience.mathematics.number.Integer64 value="5802145701050084149"/>
+                <org.jscience.mathematics.number.Integer64 value="-6290885008055391120"/>
+                <org.jscience.mathematics.number.Integer64 value="7748148161078963261"/>
+                <org.jscience.mathematics.number.Integer64 value="-169555227706311334"/>
+                <org.jscience.mathematics.number.Integer64 value="8288519954285892344"/>
+                <org.jscience.mathematics.number.Integer64 value="4310378618967439525"/>
+                <org.jscience.mathematics.number.Integer64 value="-7560786080902073259"/>
+                <org.jscience.mathematics.number.Integer64 value="6244299165640127970"/>
+                <org.jscience.mathematics.number.Integer64 value="8354028410131385136"/>
+                <org.jscience.mathematics.number.Integer64 value="1814775661436644573"/>
+                <org.jscience.mathematics.number.Integer64 value="251286451677312208"/>
+                <org.jscience.mathematics.number.Integer64 value="-7670093041462376696"/>
+                <org.jscience.mathematics.number.Integer64 value="-3637011620283644959"/>
+                <org.jscience.mathematics.number.Integer64 value="-1378092079461548417"/>
+                <org.jscience.mathematics.number.Integer64 value="-502604693421378854"/>
+                <org.jscience.mathematics.number.Integer64 value="-5073475127943864746"/>
+            </org.jenetics.Integer64Chromosome>
+            <org.jenetics.Integer64Chromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+                <org.jscience.mathematics.number.Integer64 value="1491605061161060784"/>
+                <org.jscience.mathematics.number.Integer64 value="-4926869507493923447"/>
+                <org.jscience.mathematics.number.Integer64 value="3132136921956277128"/>
+                <org.jscience.mathematics.number.Integer64 value="4855348427935956639"/>
+                <org.jscience.mathematics.number.Integer64 value="3229029133753286471"/>
+                <org.jscience.mathematics.number.Integer64 value="6254297261019462649"/>
+                <org.jscience.mathematics.number.Integer64 value="-7418158450573565301"/>
+                <org.jscience.mathematics.number.Integer64 value="-1318334758525206031"/>
+                <org.jscience.mathematics.number.Integer64 value="1841675936595149333"/>
+                <org.jscience.mathematics.number.Integer64 value="-6901390685707559335"/>
+                <org.jscience.mathematics.number.Integer64 value="7756962461781539359"/>
+                <org.jscience.mathematics.number.Integer64 value="-4253626612742952304"/>
+                <org.jscience.mathematics.number.Integer64 value="-7445392479732888336"/>
+                <org.jscience.mathematics.number.Integer64 value="5428399843336902481"/>
+                <org.jscience.mathematics.number.Integer64 value="6699709840749102218"/>
+                <org.jscience.mathematics.number.Integer64 value="7198230991733282570"/>
+                <org.jscience.mathematics.number.Integer64 value="-3161604856250033257"/>
+                <org.jscience.mathematics.number.Integer64 value="-6990294531741859143"/>
+                <org.jscience.mathematics.number.Integer64 value="2827488042857338225"/>
+                <org.jscience.mathematics.number.Integer64 value="2935661684411231187"/>
+            </org.jenetics.Integer64Chromosome>
+            <org.jenetics.Integer64Chromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+                <org.jscience.mathematics.number.Integer64 value="2824077888090386787"/>
+                <org.jscience.mathematics.number.Integer64 value="-385372849659606978"/>
+                <org.jscience.mathematics.number.Integer64 value="1707619342684017767"/>
+                <org.jscience.mathematics.number.Integer64 value="-6868436312922836457"/>
+                <org.jscience.mathematics.number.Integer64 value="-8603584340233580221"/>
+                <org.jscience.mathematics.number.Integer64 value="-6790496121722847114"/>
+                <org.jscience.mathematics.number.Integer64 value="-632939464209370669"/>
+                <org.jscience.mathematics.number.Integer64 value="-216382114516656251"/>
+                <org.jscience.mathematics.number.Integer64 value="4288606327849693637"/>
+                <org.jscience.mathematics.number.Integer64 value="3617063447358536264"/>
+                <org.jscience.mathematics.number.Integer64 value="-1948002285312082353"/>
+                <org.jscience.mathematics.number.Integer64 value="4900868864758081336"/>
+                <org.jscience.mathematics.number.Integer64 value="-5608715209776249617"/>
+                <org.jscience.mathematics.number.Integer64 value="473224260026077595"/>
+                <org.jscience.mathematics.number.Integer64 value="-1971432289199993787"/>
+                <org.jscience.mathematics.number.Integer64 value="-910988329234707861"/>
+                <org.jscience.mathematics.number.Integer64 value="-3155697128707441749"/>
+                <org.jscience.mathematics.number.Integer64 value="-3018762101359082429"/>
+                <org.jscience.mathematics.number.Integer64 value="-424994627547387731"/>
+                <org.jscience.mathematics.number.Integer64 value="2943111901400948186"/>
+            </org.jenetics.Integer64Chromosome>
+            <org.jenetics.Integer64Chromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+                <org.jscience.mathematics.number.Integer64 value="-4523850290844789985"/>
+                <org.jscience.mathematics.number.Integer64 value="4020644784684539439"/>
+                <org.jscience.mathematics.number.Integer64 value="1912226189842462965"/>
+                <org.jscience.mathematics.number.Integer64 value="-9100311290610560604"/>
+                <org.jscience.mathematics.number.Integer64 value="-6071431129264558459"/>
+                <org.jscience.mathematics.number.Integer64 value="-6798146059161626704"/>
+                <org.jscience.mathematics.number.Integer64 value="7852966822845249470"/>
+                <org.jscience.mathematics.number.Integer64 value="1252028230535731685"/>
+                <org.jscience.mathematics.number.Integer64 value="5478873449556098999"/>
+                <org.jscience.mathematics.number.Integer64 value="6844949957211721963"/>
+                <org.jscience.mathematics.number.Integer64 value="2049392396721853857"/>
+                <org.jscience.mathematics.number.Integer64 value="1959309488580146678"/>
+                <org.jscience.mathematics.number.Integer64 value="-237142286900010246"/>
+                <org.jscience.mathematics.number.Integer64 value="6998393554052151080"/>
+                <org.jscience.mathematics.number.Integer64 value="-5968188694518427812"/>
+                <org.jscience.mathematics.number.Integer64 value="1320891870419225965"/>
+                <org.jscience.mathematics.number.Integer64 value="-6863197032942138535"/>
+                <org.jscience.mathematics.number.Integer64 value="6967295398899497722"/>
+                <org.jscience.mathematics.number.Integer64 value="477046502887649767"/>
+                <org.jscience.mathematics.number.Integer64 value="-635574322119040278"/>
+            </org.jenetics.Integer64Chromosome>
+        </org.jenetics.Genotype>
+        <fitness class="java.lang.Integer" value="-916969199"/>
+        <raw-fitness class="java.lang.Integer" value="-916969199"/>
+    </org.jenetics.Phenotype>
+    <org.jenetics.Phenotype generation="1914614352">
+        <org.jenetics.Genotype length="5" ngenes="100">
+            <org.jenetics.Integer64Chromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+                <org.jscience.mathematics.number.Integer64 value="7296215166690075706"/>
+                <org.jscience.mathematics.number.Integer64 value="-2854337788139707370"/>
+                <org.jscience.mathematics.number.Integer64 value="5418082588385283361"/>
+                <org.jscience.mathematics.number.Integer64 value="-8682856471959504532"/>
+                <org.jscience.mathematics.number.Integer64 value="674230525724051527"/>
+                <org.jscience.mathematics.number.Integer64 value="-212233441679764229"/>
+                <org.jscience.mathematics.number.Integer64 value="-7615883236465973103"/>
+                <org.jscience.mathematics.number.Integer64 value="-6760059815888288627"/>
+                <org.jscience.mathematics.number.Integer64 value="-6990424396544244622"/>
+                <org.jscience.mathematics.number.Integer64 value="600040953472408296"/>
+                <org.jscience.mathematics.number.Integer64 value="455316137364977376"/>
+                <org.jscience.mathematics.number.Integer64 value="3247343610551372876"/>
+                <org.jscience.mathematics.number.Integer64 value="-8324137450174923397"/>
+                <org.jscience.mathematics.number.Integer64 value="6570015775063778678"/>
+                <org.jscience.mathematics.number.Integer64 value="8003165235573086428"/>
+                <org.jscience.mathematics.number.Integer64 value="-8269500190810669453"/>
+                <org.jscience.mathematics.number.Integer64 value="-7878302327450986049"/>
+                <org.jscience.mathematics.number.Integer64 value="-2119541710614632897"/>
+                <org.jscience.mathematics.number.Integer64 value="-7896080789640493498"/>
+                <org.jscience.mathematics.number.Integer64 value="-3349773287366787475"/>
+            </org.jenetics.Integer64Chromosome>
+            <org.jenetics.Integer64Chromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+                <org.jscience.mathematics.number.Integer64 value="8321932249371819003"/>
+                <org.jscience.mathematics.number.Integer64 value="-4531159057518180141"/>
+                <org.jscience.mathematics.number.Integer64 value="3985679842640134254"/>
+                <org.jscience.mathematics.number.Integer64 value="-7850659775319708773"/>
+                <org.jscience.mathematics.number.Integer64 value="6281563444342003682"/>
+                <org.jscience.mathematics.number.Integer64 value="-246469773815619658"/>
+                <org.jscience.mathematics.number.Integer64 value="-3621018003944639918"/>
+                <org.jscience.mathematics.number.Integer64 value="-4337432190582868838"/>
+                <org.jscience.mathematics.number.Integer64 value="1662783374714067068"/>
+                <org.jscience.mathematics.number.Integer64 value="-5514187127085501473"/>
+                <org.jscience.mathematics.number.Integer64 value="5201096775302577206"/>
+                <org.jscience.mathematics.number.Integer64 value="3345729147774695914"/>
+                <org.jscience.mathematics.number.Integer64 value="8877396018443387529"/>
+                <org.jscience.mathematics.number.Integer64 value="4777992285908121543"/>
+                <org.jscience.mathematics.number.Integer64 value="-1463118027688203999"/>
+                <org.jscience.mathematics.number.Integer64 value="-7558637458283476773"/>
+                <org.jscience.mathematics.number.Integer64 value="-5267252154294955520"/>
+                <org.jscience.mathematics.number.Integer64 value="-2222210389420513125"/>
+                <org.jscience.mathematics.number.Integer64 value="-7771686860140402419"/>
+                <org.jscience.mathematics.number.Integer64 value="2603095793190683097"/>
+            </org.jenetics.Integer64Chromosome>
+            <org.jenetics.Integer64Chromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+                <org.jscience.mathematics.number.Integer64 value="6744257822156546709"/>
+                <org.jscience.mathematics.number.Integer64 value="-2255115836119657298"/>
+                <org.jscience.mathematics.number.Integer64 value="3879237414725523568"/>
+                <org.jscience.mathematics.number.Integer64 value="411685825308223401"/>
+                <org.jscience.mathematics.number.Integer64 value="6575330612926088650"/>
+                <org.jscience.mathematics.number.Integer64 value="-7411581526204856757"/>
+                <org.jscience.mathematics.number.Integer64 value="-1717179550938410726"/>
+                <org.jscience.mathematics.number.Integer64 value="8237133690038284504"/>
+                <org.jscience.mathematics.number.Integer64 value="3517858237907705976"/>
+                <org.jscience.mathematics.number.Integer64 value="-6961975749254983923"/>
+                <org.jscience.mathematics.number.Integer64 value="6637998821567809384"/>
+                <org.jscience.mathematics.number.Integer64 value="-7306937650861975904"/>
+                <org.jscience.mathematics.number.Integer64 value="-3052787564489321237"/>
+                <org.jscience.mathematics.number.Integer64 value="3705069121446760582"/>
+                <org.jscience.mathematics.number.Integer64 value="9118520252576359760"/>
+                <org.jscience.mathematics.number.Integer64 value="6943545002485827128"/>
+                <org.jscience.mathematics.number.Integer64 value="-1587232847782119284"/>
+                <org.jscience.mathematics.number.Integer64 value="859938217122296651"/>
+                <org.jscience.mathematics.number.Integer64 value="4595911189517409165"/>
+                <org.jscience.mathematics.number.Integer64 value="-4940760795053662531"/>
+            </org.jenetics.Integer64Chromosome>
+            <org.jenetics.Integer64Chromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+                <org.jscience.mathematics.number.Integer64 value="-3841526670186950527"/>
+                <org.jscience.mathematics.number.Integer64 value="-3550252378826169110"/>
+                <org.jscience.mathematics.number.Integer64 value="5354725197471324433"/>
+                <org.jscience.mathematics.number.Integer64 value="-3615963484755200037"/>
+                <org.jscience.mathematics.number.Integer64 value="378583374071336464"/>
+                <org.jscience.mathematics.number.Integer64 value="5449567319384799858"/>
+                <org.jscience.mathematics.number.Integer64 value="-1219627996332661797"/>
+                <org.jscience.mathematics.number.Integer64 value="6624537192832212302"/>
+                <org.jscience.mathematics.number.Integer64 value="-8579410192146011953"/>
+                <org.jscience.mathematics.number.Integer64 value="4769593958701928177"/>
+                <org.jscience.mathematics.number.Integer64 value="-5342352665186718142"/>
+                <org.jscience.mathematics.number.Integer64 value="1742708137282311987"/>
+                <org.jscience.mathematics.number.Integer64 value="-4655689407823992224"/>
+                <org.jscience.mathematics.number.Integer64 value="-6831725898678906947"/>
+                <org.jscience.mathematics.number.Integer64 value="-7901641358373700588"/>
+                <org.jscience.mathematics.number.Integer64 value="5078489795905640578"/>
+                <org.jscience.mathematics.number.Integer64 value="6438890905885423203"/>
+                <org.jscience.mathematics.number.Integer64 value="-6814084177676641433"/>
+                <org.jscience.mathematics.number.Integer64 value="6405961707943653071"/>
+                <org.jscience.mathematics.number.Integer64 value="-9205930877397487197"/>
+            </org.jenetics.Integer64Chromosome>
+            <org.jenetics.Integer64Chromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+                <org.jscience.mathematics.number.Integer64 value="7343331711560570803"/>
+                <org.jscience.mathematics.number.Integer64 value="-1520861299792655078"/>
+                <org.jscience.mathematics.number.Integer64 value="157615413511426451"/>
+                <org.jscience.mathematics.number.Integer64 value="2612014535105157275"/>
+                <org.jscience.mathematics.number.Integer64 value="5724747106346816711"/>
+                <org.jscience.mathematics.number.Integer64 value="-189282348096956076"/>
+                <org.jscience.mathematics.number.Integer64 value="-7850727338355043778"/>
+                <org.jscience.mathematics.number.Integer64 value="2646500344256930508"/>
+                <org.jscience.mathematics.number.Integer64 value="9069321457103361314"/>
+                <org.jscience.mathematics.number.Integer64 value="3522117483958613563"/>
+                <org.jscience.mathematics.number.Integer64 value="-2923378892815617964"/>
+                <org.jscience.mathematics.number.Integer64 value="-2705049980871866270"/>
+                <org.jscience.mathematics.number.Integer64 value="-6268367218923443829"/>
+                <org.jscience.mathematics.number.Integer64 value="7835335933764430258"/>
+                <org.jscience.mathematics.number.Integer64 value="-8587394460347168562"/>
+                <org.jscience.mathematics.number.Integer64 value="-1913993207276564291"/>
+                <org.jscience.mathematics.number.Integer64 value="4399047605858729126"/>
+                <org.jscience.mathematics.number.Integer64 value="-6031310673477587875"/>
+                <org.jscience.mathematics.number.Integer64 value="-8256226149307295661"/>
+                <org.jscience.mathematics.number.Integer64 value="7875359151470461859"/>
+            </org.jenetics.Integer64Chromosome>
+        </org.jenetics.Genotype>
+        <fitness class="java.lang.Integer" value="803574211"/>
+        <raw-fitness class="java.lang.Integer" value="803574211"/>
+    </org.jenetics.Phenotype>
+    <org.jenetics.Phenotype generation="1729782102">
+        <org.jenetics.Genotype length="5" ngenes="100">
+            <org.jenetics.Integer64Chromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+                <org.jscience.mathematics.number.Integer64 value="3930550374384364701"/>
+                <org.jscience.mathematics.number.Integer64 value="-4612959202900891195"/>
+                <org.jscience.mathematics.number.Integer64 value="8788273169027931077"/>
+                <org.jscience.mathematics.number.Integer64 value="-4885146025328147236"/>
+                <org.jscience.mathematics.number.Integer64 value="7670025692961260083"/>
+                <org.jscience.mathematics.number.Integer64 value="-730041486163840013"/>
+                <org.jscience.mathematics.number.Integer64 value="-1044442820479780413"/>
+                <org.jscience.mathematics.number.Integer64 value="1854668982497889635"/>
+                <org.jscience.mathematics.number.Integer64 value="-7097368459619883461"/>
+                <org.jscience.mathematics.number.Integer64 value="5553753354078915471"/>
+                <org.jscience.mathematics.number.Integer64 value="-7429128120592845241"/>
+                <org.jscience.mathematics.number.Integer64 value="7040946290225523675"/>
+                <org.jscience.mathematics.number.Integer64 value="-6680806725254984436"/>
+                <org.jscience.mathematics.number.Integer64 value="5713056876670752744"/>
+                <org.jscience.mathematics.number.Integer64 value="5265888220207999675"/>
+                <org.jscience.mathematics.number.Integer64 value="-817409079579786420"/>
+                <org.jscience.mathematics.number.Integer64 value="-3451390625826187313"/>
+                <org.jscience.mathematics.number.Integer64 value="-2655532656268843262"/>
+                <org.jscience.mathematics.number.Integer64 value="-8654709853618245558"/>
+                <org.jscience.mathematics.number.Integer64 value="8623139965493195623"/>
+            </org.jenetics.Integer64Chromosome>
+            <org.jenetics.Integer64Chromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+                <org.jscience.mathematics.number.Integer64 value="-434659297043235910"/>
+                <org.jscience.mathematics.number.Integer64 value="-4357440016993466160"/>
+                <org.jscience.mathematics.number.Integer64 value="-8348851507407799560"/>
+                <org.jscience.mathematics.number.Integer64 value="-8208572921986310733"/>
+                <org.jscience.mathematics.number.Integer64 value="5015023079120297906"/>
+                <org.jscience.mathematics.number.Integer64 value="-2208136869426379683"/>
+                <org.jscience.mathematics.number.Integer64 value="4530194822876782195"/>
+                <org.jscience.mathematics.number.Integer64 value="6843161628083805798"/>
+                <org.jscience.mathematics.number.Integer64 value="3041767908846934168"/>
+                <org.jscience.mathematics.number.Integer64 value="4788350165790540921"/>
+                <org.jscience.mathematics.number.Integer64 value="6884785648135741287"/>
+                <org.jscience.mathematics.number.Integer64 value="4097886774969101603"/>
+                <org.jscience.mathematics.number.Integer64 value="2811507056892909699"/>
+                <org.jscience.mathematics.number.Integer64 value="1064731102175150005"/>
+                <org.jscience.mathematics.number.Integer64 value="-2732755919520245209"/>
+                <org.jscience.mathematics.number.Integer64 value="-3963371796639079807"/>
+                <org.jscience.mathematics.number.Integer64 value="-2860136498346084189"/>
+                <org.jscience.mathematics.number.Integer64 value="8396096536494607385"/>
+                <org.jscience.mathematics.number.Integer64 value="4114661278076602788"/>
+                <org.jscience.mathematics.number.Integer64 value="-7547697028381979476"/>
+            </org.jenetics.Integer64Chromosome>
+            <org.jenetics.Integer64Chromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+                <org.jscience.mathematics.number.Integer64 value="8089888428375127866"/>
+                <org.jscience.mathematics.number.Integer64 value="-7603037706736229486"/>
+                <org.jscience.mathematics.number.Integer64 value="-2501123791418623192"/>
+                <org.jscience.mathematics.number.Integer64 value="-397733416946030904"/>
+                <org.jscience.mathematics.number.Integer64 value="5252329209828727399"/>
+                <org.jscience.mathematics.number.Integer64 value="2470015444538415212"/>
+                <org.jscience.mathematics.number.Integer64 value="2251489289209488872"/>
+                <org.jscience.mathematics.number.Integer64 value="6192358518919579217"/>
+                <org.jscience.mathematics.number.Integer64 value="-6723177620216827742"/>
+                <org.jscience.mathematics.number.Integer64 value="-3849101178961022324"/>
+                <org.jscience.mathematics.number.Integer64 value="5563420236378559175"/>
+                <org.jscience.mathematics.number.Integer64 value="1294227471623279543"/>
+                <org.jscience.mathematics.number.Integer64 value="-2024677339600167457"/>
+                <org.jscience.mathematics.number.Integer64 value="-6086285154580197309"/>
+                <org.jscience.mathematics.number.Integer64 value="-1983702515361734991"/>
+                <org.jscience.mathematics.number.Integer64 value="-5371206819716628284"/>
+                <org.jscience.mathematics.number.Integer64 value="1944344039302057312"/>
+                <org.jscience.mathematics.number.Integer64 value="4548009501945884503"/>
+                <org.jscience.mathematics.number.Integer64 value="1638084692181012387"/>
+                <org.jscience.mathematics.number.Integer64 value="-3841643480847128506"/>
+            </org.jenetics.Integer64Chromosome>
+            <org.jenetics.Integer64Chromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+                <org.jscience.mathematics.number.Integer64 value="-7686158823766241975"/>
+                <org.jscience.mathematics.number.Integer64 value="-2375700800971912984"/>
+                <org.jscience.mathematics.number.Integer64 value="-7615238633692544389"/>
+                <org.jscience.mathematics.number.Integer64 value="556200205912401243"/>
+                <org.jscience.mathematics.number.Integer64 value="-3401360414709353337"/>
+                <org.jscience.mathematics.number.Integer64 value="-6711635681179098002"/>
+                <org.jscience.mathematics.number.Integer64 value="542088484181729023"/>
+                <org.jscience.mathematics.number.Integer64 value="3213149672645912318"/>
+                <org.jscience.mathematics.number.Integer64 value="3671118824153666487"/>
+                <org.jscience.mathematics.number.Integer64 value="8568402017841058369"/>
+                <org.jscience.mathematics.number.Integer64 value="851789968114768559"/>
+                <org.jscience.mathematics.number.Integer64 value="7231834640735414895"/>
+                <org.jscience.mathematics.number.Integer64 value="-840632908310857277"/>
+                <org.jscience.mathematics.number.Integer64 value="-8928727292106106598"/>
+                <org.jscience.mathematics.number.Integer64 value="8981400051973714445"/>
+                <org.jscience.mathematics.number.Integer64 value="554134975135874216"/>
+                <org.jscience.mathematics.number.Integer64 value="4377522797272980906"/>
+                <org.jscience.mathematics.number.Integer64 value="-812009124852278170"/>
+                <org.jscience.mathematics.number.Integer64 value="-8387289149955553105"/>
+                <org.jscience.mathematics.number.Integer64 value="-5409936827311904747"/>
+            </org.jenetics.Integer64Chromosome>
+            <org.jenetics.Integer64Chromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+                <org.jscience.mathematics.number.Integer64 value="1593948150277769749"/>
+                <org.jscience.mathematics.number.Integer64 value="7464863070271405093"/>
+                <org.jscience.mathematics.number.Integer64 value="-7296567587291663695"/>
+                <org.jscience.mathematics.number.Integer64 value="-637185960720578624"/>
+                <org.jscience.mathematics.number.Integer64 value="9193995768921170228"/>
+                <org.jscience.mathematics.number.Integer64 value="-3870879974637171447"/>
+                <org.jscience.mathematics.number.Integer64 value="5507583634139285566"/>
+                <org.jscience.mathematics.number.Integer64 value="4692144963303552068"/>
+                <org.jscience.mathematics.number.Integer64 value="2969388192599717831"/>
+                <org.jscience.mathematics.number.Integer64 value="3430269195197941564"/>
+                <org.jscience.mathematics.number.Integer64 value="7110811223579308895"/>
+                <org.jscience.mathematics.number.Integer64 value="6098594179528300010"/>
+                <org.jscience.mathematics.number.Integer64 value="3070131939975854585"/>
+                <org.jscience.mathematics.number.Integer64 value="-4481302617071309529"/>
+                <org.jscience.mathematics.number.Integer64 value="-8172184713753124148"/>
+                <org.jscience.mathematics.number.Integer64 value="8511204277030766538"/>
+                <org.jscience.mathematics.number.Integer64 value="7906717722491327765"/>
+                <org.jscience.mathematics.number.Integer64 value="2720544291072917824"/>
+                <org.jscience.mathematics.number.Integer64 value="-7774108304832579686"/>
+                <org.jscience.mathematics.number.Integer64 value="8712813545258550677"/>
+            </org.jenetics.Integer64Chromosome>
+        </org.jenetics.Genotype>
+        <fitness class="java.lang.Integer" value="-1203966896"/>
+        <raw-fitness class="java.lang.Integer" value="-1203966896"/>
+    </org.jenetics.Phenotype>
+    <org.jenetics.Phenotype generation="1314591624">
+        <org.jenetics.Genotype length="5" ngenes="100">
+            <org.jenetics.Integer64Chromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+                <org.jscience.mathematics.number.Integer64 value="-1301050635133323437"/>
+                <org.jscience.mathematics.number.Integer64 value="789957832297559859"/>
+                <org.jscience.mathematics.number.Integer64 value="-4727609352133885476"/>
+                <org.jscience.mathematics.number.Integer64 value="-6039752466314480479"/>
+                <org.jscience.mathematics.number.Integer64 value="4273100831839322951"/>
+                <org.jscience.mathematics.number.Integer64 value="-5253419886644030436"/>
+                <org.jscience.mathematics.number.Integer64 value="1013875657083683929"/>
+                <org.jscience.mathematics.number.Integer64 value="8202278162243823033"/>
+                <org.jscience.mathematics.number.Integer64 value="-8346316934452886724"/>
+                <org.jscience.mathematics.number.Integer64 value="-5138359614795789208"/>
+                <org.jscience.mathematics.number.Integer64 value="5542989786381485474"/>
+                <org.jscience.mathematics.number.Integer64 value="-2139537148508064145"/>
+                <org.jscience.mathematics.number.Integer64 value="-8884718211764795675"/>
+                <org.jscience.mathematics.number.Integer64 value="7335512207950650413"/>
+                <org.jscience.mathematics.number.Integer64 value="3581356272722155298"/>
+                <org.jscience.mathematics.number.Integer64 value="-8688178169871452343"/>
+                <org.jscience.mathematics.number.Integer64 value="6829152387681394291"/>
+                <org.jscience.mathematics.number.Integer64 value="-377981748273975916"/>
+                <org.jscience.mathematics.number.Integer64 value="-6483524018067874754"/>
+                <org.jscience.mathematics.number.Integer64 value="-7347654471977824252"/>
+            </org.jenetics.Integer64Chromosome>
+            <org.jenetics.Integer64Chromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+                <org.jscience.mathematics.number.Integer64 value="410961019613881839"/>
+                <org.jscience.mathematics.number.Integer64 value="720568451340381832"/>
+                <org.jscience.mathematics.number.Integer64 value="4482395770078478693"/>
+                <org.jscience.mathematics.number.Integer64 value="-8896766407844505186"/>
+                <org.jscience.mathematics.number.Integer64 value="6140210632824056930"/>
+                <org.jscience.mathematics.number.Integer64 value="-1362922317686414673"/>
+                <org.jscience.mathematics.number.Integer64 value="-1992075936921756637"/>
+                <org.jscience.mathematics.number.Integer64 value="3991850988664595985"/>
+                <org.jscience.mathematics.number.Integer64 value="-8644754602127478606"/>
+                <org.jscience.mathematics.number.Integer64 value="7578237331722602147"/>
+                <org.jscience.mathematics.number.Integer64 value="-9133643612935378970"/>
+                <org.jscience.mathematics.number.Integer64 value="8238188077864297245"/>
+                <org.jscience.mathematics.number.Integer64 value="-2011417840509097997"/>
+                <org.jscience.mathematics.number.Integer64 value="-5921905502694636984"/>
+                <org.jscience.mathematics.number.Integer64 value="1600537855352560027"/>
+                <org.jscience.mathematics.number.Integer64 value="4322142387767545730"/>
+                <org.jscience.mathematics.number.Integer64 value="-3874985783634494000"/>
+                <org.jscience.mathematics.number.Integer64 value="7800068449603557"/>
+                <org.jscience.mathematics.number.Integer64 value="8527178662085755656"/>
+                <org.jscience.mathematics.number.Integer64 value="1422660339876360726"/>
+            </org.jenetics.Integer64Chromosome>
+            <org.jenetics.Integer64Chromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+                <org.jscience.mathematics.number.Integer64 value="7707905572096419983"/>
+                <org.jscience.mathematics.number.Integer64 value="7641045900842634161"/>
+                <org.jscience.mathematics.number.Integer64 value="3119252030882906065"/>
+                <org.jscience.mathematics.number.Integer64 value="8788392895712650742"/>
+                <org.jscience.mathematics.number.Integer64 value="-1827265496875400032"/>
+                <org.jscience.mathematics.number.Integer64 value="-3980451885480078165"/>
+                <org.jscience.mathematics.number.Integer64 value="-7258898711378482274"/>
+                <org.jscience.mathematics.number.Integer64 value="-5697668320211204871"/>
+                <org.jscience.mathematics.number.Integer64 value="-7952821905324578760"/>
+                <org.jscience.mathematics.number.Integer64 value="-2148441810357669502"/>
+                <org.jscience.mathematics.number.Integer64 value="3650172643606901823"/>
+                <org.jscience.mathematics.number.Integer64 value="2338328608831031959"/>
+                <org.jscience.mathematics.number.Integer64 value="7378651849435625282"/>
+                <org.jscience.mathematics.number.Integer64 value="7567602800325718675"/>
+                <org.jscience.mathematics.number.Integer64 value="7628675351506766693"/>
+                <org.jscience.mathematics.number.Integer64 value="-7988829883228372301"/>
+                <org.jscience.mathematics.number.Integer64 value="8796754452210747424"/>
+                <org.jscience.mathematics.number.Integer64 value="813573753693985646"/>
+                <org.jscience.mathematics.number.Integer64 value="4388060487545553037"/>
+                <org.jscience.mathematics.number.Integer64 value="7176531122910133209"/>
+            </org.jenetics.Integer64Chromosome>
+            <org.jenetics.Integer64Chromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+                <org.jscience.mathematics.number.Integer64 value="-3123537347926459778"/>
+                <org.jscience.mathematics.number.Integer64 value="-6856641482928896914"/>
+                <org.jscience.mathematics.number.Integer64 value="-7536789979728865880"/>
+                <org.jscience.mathematics.number.Integer64 value="-5954562893812550111"/>
+                <org.jscience.mathematics.number.Integer64 value="-1002709910259851365"/>
+                <org.jscience.mathematics.number.Integer64 value="-7397965700224408919"/>
+                <org.jscience.mathematics.number.Integer64 value="-5845286850882138399"/>
+                <org.jscience.mathematics.number.Integer64 value="3570861770785143093"/>
+                <org.jscience.mathematics.number.Integer64 value="151614153961505570"/>
+                <org.jscience.mathematics.number.Integer64 value="3256637075758708824"/>
+                <org.jscience.mathematics.number.Integer64 value="-7737821168489397779"/>
+                <org.jscience.mathematics.number.Integer64 value="5700701912072107276"/>
+                <org.jscience.mathematics.number.Integer64 value="-6420951904694578616"/>
+                <org.jscience.mathematics.number.Integer64 value="-6947207964296329568"/>
+                <org.jscience.mathematics.number.Integer64 value="4794843842309763353"/>
+                <org.jscience.mathematics.number.Integer64 value="-2323764739673551337"/>
+                <org.jscience.mathematics.number.Integer64 value="9207662806919123100"/>
+                <org.jscience.mathematics.number.Integer64 value="27456491241554771"/>
+                <org.jscience.mathematics.number.Integer64 value="-8931511530007348122"/>
+                <org.jscience.mathematics.number.Integer64 value="2225932822323033466"/>
+            </org.jenetics.Integer64Chromosome>
+            <org.jenetics.Integer64Chromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+                <org.jscience.mathematics.number.Integer64 value="-8967143497590356878"/>
+                <org.jscience.mathematics.number.Integer64 value="7669573738617926353"/>
+                <org.jscience.mathematics.number.Integer64 value="-8045501406041024503"/>
+                <org.jscience.mathematics.number.Integer64 value="7396141342937455468"/>
+                <org.jscience.mathematics.number.Integer64 value="2549761936795495684"/>
+                <org.jscience.mathematics.number.Integer64 value="6342404709903146819"/>
+                <org.jscience.mathematics.number.Integer64 value="-5340371574660178911"/>
+                <org.jscience.mathematics.number.Integer64 value="-7138360381046080960"/>
+                <org.jscience.mathematics.number.Integer64 value="7577719412380100759"/>
+                <org.jscience.mathematics.number.Integer64 value="-8140520722156559148"/>
+                <org.jscience.mathematics.number.Integer64 value="-6350927137116713597"/>
+                <org.jscience.mathematics.number.Integer64 value="-8247661593875027301"/>
+                <org.jscience.mathematics.number.Integer64 value="2173018291889808560"/>
+                <org.jscience.mathematics.number.Integer64 value="-5360058768917426751"/>
+                <org.jscience.mathematics.number.Integer64 value="-3839944336924234400"/>
+                <org.jscience.mathematics.number.Integer64 value="8368165267046421322"/>
+                <org.jscience.mathematics.number.Integer64 value="5550060801579570244"/>
+                <org.jscience.mathematics.number.Integer64 value="-7340501416601610921"/>
+                <org.jscience.mathematics.number.Integer64 value="-768360930002062088"/>
+                <org.jscience.mathematics.number.Integer64 value="-7149242962884960403"/>
+            </org.jenetics.Integer64Chromosome>
+        </org.jenetics.Genotype>
+        <fitness class="java.lang.Integer" value="1090760305"/>
+        <raw-fitness class="java.lang.Integer" value="1090760305"/>
+    </org.jenetics.Phenotype>
+</org.jenetics.Population>
