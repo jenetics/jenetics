@@ -22,6 +22,7 @@ package org.jenetics;
 import static org.jenetics.internal.util.object.Verify;
 import static org.jenetics.internal.util.object.eq;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 
@@ -33,13 +34,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import javolution.lang.Immutable;
-import javolution.lang.Realtime;
-import javolution.text.Text;
-import javolution.xml.XMLFormat;
-import javolution.xml.XMLSerializable;
-import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.internal.util.cast;
@@ -88,9 +82,7 @@ public final class Genotype<G extends Gene<?, G>>
 		Factory<Genotype<G>>,
 		Iterable<Chromosome<G>>,
 		Verifiable,
-		XMLSerializable,
-		Realtime,
-		Immutable
+		Serializable
 {
 	private static final long serialVersionUID = 2L;
 
@@ -263,11 +255,6 @@ public final class Genotype<G extends Gene<?, G>>
 	}
 
 	@Override
-	public Text toText() {
-		return new Text(_chromosomes.toString());
-	}
-
-	@Override
 	public String toString() {
 		return _chromosomes.toString();
 	}
@@ -332,48 +319,6 @@ public final class Genotype<G extends Gene<?, G>>
 	) {
 		return new Genotype<>(Array.of(chromosomes).toISeq());
 	}
-
-	/* *************************************************************************
-	 *  XML object serialization
-	 * ************************************************************************/
-
-	@SuppressWarnings({ "unchecked", "rawtypes"})
-	static final XMLFormat<Genotype>
-	XML = new XMLFormat<Genotype>(Genotype.class)
-	{
-		private static final String LENGTH = "length";
-		private static final String NGENES = "ngenes";
-
-		@Override
-		public Genotype newInstance(
-			final Class<Genotype> cls, final InputElement xml
-		)
-			throws XMLStreamException
-		{
-			final int length = xml.getAttribute(LENGTH, 0);
-			final int ngenes = xml.getAttribute(NGENES, 0);
-			final Array<Chromosome> chromosomes = new Array<>(length);
-			for (int i = 0; i < length; ++i) {
-				final Chromosome<?> c = xml.getNext();
-				chromosomes.set(i, c);
-			}
-
-			return new Genotype(chromosomes.toISeq(), ngenes);
-		}
-		@Override
-		public void write(final Genotype gt, final OutputElement xml)
-			throws XMLStreamException
-		{
-			xml.setAttribute(LENGTH, gt.length());
-			xml.setAttribute(NGENES, gt.getNumberOfGenes());
-			for (int i = 0; i < gt.length(); ++i) {
-				xml.add(gt._chromosomes.get(i));
-			}
-		}
-		@Override
-		public void read(final InputElement xml, final Genotype gt) {
-		}
-	};
 
 	/* *************************************************************************
 	 *  JAXB object serialization

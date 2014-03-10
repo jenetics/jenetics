@@ -19,6 +19,8 @@
  */
 package org.jenetics;
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -26,10 +28,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import javolution.xml.XMLFormat;
-import javolution.xml.XMLSerializable;
-import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.internal.util.model.ModelType;
 import org.jenetics.internal.util.model.ValueType;
@@ -42,14 +40,14 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date$</em>
+ * @version 2.0 &mdash; <em>$Date$</em>
  */
 @XmlJavaTypeAdapter(BitGene.Model.Adapter.class)
 public enum BitGene
 	implements
 		Gene<Boolean, BitGene>,
 		Comparable<BitGene>,
-		XMLSerializable
+		Serializable
 {
 
 	FALSE(false),
@@ -165,36 +163,6 @@ public enum BitGene
 			}
 		};
 
-
-	/* *************************************************************************
-	 *  XML object serialization
-	 * ************************************************************************/
-
-	static final XMLFormat<BitGene>
-	XML = new XMLFormat<BitGene>(BitGene.class)
-	{
-		private static final String VALUE = "value";
-
-		@Override
-		public BitGene newInstance(
-			final Class<BitGene> cls,
-			final InputElement element
-		)
-			throws XMLStreamException
-		{
-			final boolean value = element.getAttribute(VALUE, true);
-			return value ? BitGene.TRUE : BitGene.FALSE;
-		}
-		@Override
-		public void write(final BitGene gene, final OutputElement element)
-			throws XMLStreamException
-		{
-			element.setAttribute(VALUE, gene._value);
-		}
-		@Override
-		public void read(final InputElement element, final BitGene gene) {
-		}
-	};
 
 	/* *************************************************************************
 	 *  JAXB object serialization

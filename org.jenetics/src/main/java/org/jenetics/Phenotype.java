@@ -22,6 +22,8 @@ package org.jenetics;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.object.eq;
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -30,13 +32,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import javolution.lang.Immutable;
-import javolution.lang.Realtime;
-import javolution.text.Text;
-import javolution.xml.XMLFormat;
-import javolution.xml.XMLSerializable;
-import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.internal.util.jaxb;
@@ -69,10 +64,8 @@ public final class Phenotype<
 >
 	implements
 		Comparable<Phenotype<G, C>>,
-		Immutable,
 		Verifiable,
-		XMLSerializable,
-		Realtime,
+		Serializable,
 		Runnable
 {
 	private static final long serialVersionUID = 1L;
@@ -255,13 +248,8 @@ public final class Phenotype<
 	}
 
 	@Override
-	public Text toText() {
-		return _genotype.toText();
-	}
-
-	@Override
 	public String toString() {
-		return toText().toString() + " --> " + getFitness();
+		return _genotype.toString() + " --> " + getFitness();
 	}
 
 	/**
@@ -447,47 +435,6 @@ public final class Phenotype<
 			generation
 		);
 	}
-
-	/* *************************************************************************
-	 *  XML object serialization
-	 * ************************************************************************/
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	static final XMLFormat<Phenotype>
-	XML = new XMLFormat<Phenotype>(Phenotype.class)
-	{
-		private static final String GENERATION = "generation";
-		private static final String FITNESS = "fitness";
-		private static final String RAW_FITNESS = "raw-fitness";
-
-		@Override
-		public Phenotype newInstance(
-			final Class<Phenotype> cls, final InputElement xml
-		)
-			throws XMLStreamException
-		{
-			final int generation = xml.getAttribute(GENERATION, 0);
-			final Genotype genotype = xml.getNext();
-			final Phenotype pt = new Phenotype(
-				genotype, functions.Identity(), functions.Identity(), generation
-			);
-			pt._fitness = xml.get(FITNESS);
-			pt._rawFitness = xml.get(RAW_FITNESS);
-			return pt;
-		}
-		@Override
-		public void write(final Phenotype pt, final OutputElement xml)
-			throws XMLStreamException
-		{
-			xml.setAttribute(GENERATION, pt._generation);
-			xml.add(pt._genotype);
-			xml.add(pt.getFitness(), FITNESS);
-			xml.add(pt.getRawFitness(), RAW_FITNESS);
-		}
-		@Override
-		public void read(final InputElement xml, final Phenotype gt) {
-		}
-	};
 
 	/* *************************************************************************
 	 *  JAXB object serialization

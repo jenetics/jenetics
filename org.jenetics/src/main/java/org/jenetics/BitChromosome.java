@@ -41,9 +41,6 @@ import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import javolution.xml.XMLFormat;
-import javolution.xml.stream.XMLStreamException;
-
 import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.internal.util.internalbit;
 import org.jenetics.internal.util.model.ModelType;
@@ -57,7 +54,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date$</em>
+ * @version 2.0 &mdash; <em>$Date$</em>
  */
 @XmlJavaTypeAdapter(BitChromosome.Model.Adapter.class)
 public class BitChromosome extends Number
@@ -516,43 +513,6 @@ public class BitChromosome extends Number
 
 		_seq = new BitGeneArray(_genes, 0, _length);
 	}
-
-	/* *************************************************************************
-	 *  XML object serialization
-	 * ************************************************************************/
-
-	static final XMLFormat<BitChromosome>
-		XML = new XMLFormat<BitChromosome>(BitChromosome.class)
-	{
-		private static final String LENGTH = "length";
-		private static final String PROBABILITY = "probability";
-
-		@Override
-		public BitChromosome newInstance(
-			final Class<BitChromosome> cls, final InputElement xml
-		)
-			throws XMLStreamException
-		{
-			final int length = xml.getAttribute(LENGTH, 1);
-			final double probability = xml.getAttribute(PROBABILITY, 0.5);
-			final byte[] data = bit.fromByteString(xml.getText().toString());
-			final BitChromosome chromosome = new BitChromosome(data);
-			chromosome._p = probability;
-			chromosome._length = length;
-			return chromosome;
-		}
-		@Override
-		public void write(final BitChromosome chromosome, final OutputElement xml)
-			throws XMLStreamException
-		{
-			xml.setAttribute(LENGTH, chromosome._length);
-			xml.setAttribute(PROBABILITY, chromosome._p);
-			xml.addText(bit.toByteString(chromosome.toByteArray()));
-		}
-		@Override
-		public void read(final InputElement element, final BitChromosome gene) {
-		}
-	};
 
 	/* *************************************************************************
 	 *  JAXB object serialization

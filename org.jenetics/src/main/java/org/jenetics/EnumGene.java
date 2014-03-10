@@ -34,9 +34,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import javolution.xml.XMLFormat;
-import javolution.xml.stream.XMLStreamException;
-
 import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.internal.util.cast;
 import org.jenetics.internal.util.jaxb;
@@ -246,17 +243,6 @@ public final class EnumGene<A>
 	}
 
 	/**
-	 * @deprecated Use {@link #EnumGene(int, org.jenetics.util.ISeq)} instead.
-	 */
-	@Deprecated
-	public static <A> EnumGene<A> valueOf(
-		final ISeq<? extends A> validAlleles,
-		final int alleleIndex
-	) {
-		return new EnumGene<>(alleleIndex, validAlleles);
-	}
-
-	/**
 	 * Create a new enum gene from the given valid genes and the chosen allele
 	 * index.
 	 * @param alleleIndex the index of the allele for this gene.
@@ -275,25 +261,6 @@ public final class EnumGene<A>
 	}
 
 	/**
-	 * @deprecated Use {@link #of(int, Object[])} instead.
-	 */
-	@Deprecated
-	public static <G> EnumGene<G> valueOf(
-		final G[] validAlleles,
-		final int alleleIndex
-	) {
-		return of(alleleIndex, validAlleles);
-	}
-
-	/**
-	 * @deprecated Use {@link #of(org.jenetics.util.ISeq)} instead.
-	 */
-	@Deprecated
-	public static <G> EnumGene<G> valueOf(final ISeq<G> validAlleles) {
-		return EnumGene.of(validAlleles);
-	}
-
-	/**
 	 * Return a new enum gene with an allele randomly chosen from the given
 	 * valid alleles.
 	 *
@@ -306,58 +273,6 @@ public final class EnumGene<A>
 	public static <G> EnumGene<G> of(final G... validAlleles) {
 		return EnumGene.of(Array.of(validAlleles).toISeq());
 	}
-
-	/**
-	 * @deprecated Use {@link #of(Object[])} instead.
-	 */
-	@Deprecated
-	public static <G> EnumGene<G> valueOf(final G[] validAlleles) {
-		return of(validAlleles);
-	}
-
-	/* *************************************************************************
-	 *  XML object serialization
-	 * ************************************************************************/
-
-	@SuppressWarnings("rawtypes")
-	static final XMLFormat<EnumGene>
-		XML = new XMLFormat<EnumGene>(EnumGene.class)
-	{
-		private static final String LENGTH = "length";
-		private static final String CURRENT_ALLELE_INDEX = "allele-index";
-
-		@Override
-		public EnumGene newInstance(
-			final Class<EnumGene> cls, final InputElement xml
-		)
-			throws XMLStreamException
-		{
-			final int length = xml.getAttribute(LENGTH, 0);
-			final int index = xml.getAttribute(CURRENT_ALLELE_INDEX, 0);
-			final Array<Object> alleles = new Array<>(length);
-			for (int i = 0; i < length; ++i) {
-				final Object allele = xml.getNext();
-				alleles.set(i, allele);
-			}
-
-			return new EnumGene<>(index, alleles.toISeq());
-		}
-
-		@Override
-		public void write(final EnumGene eg, final OutputElement xml)
-			throws XMLStreamException
-		{
-			xml.setAttribute(LENGTH, eg.getValidAlleles().length());
-			xml.setAttribute(CURRENT_ALLELE_INDEX, eg.getAlleleIndex());
-			for (Object allele : eg.getValidAlleles()) {
-				xml.add(allele);
-			}
-		}
-
-		@Override
-		public void read(final InputElement xml, final EnumGene eg) {
-		}
-	};
 
 	/* *************************************************************************
 	 *  JAXB object serialization
