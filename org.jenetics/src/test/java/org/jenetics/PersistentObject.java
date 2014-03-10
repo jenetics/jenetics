@@ -85,7 +85,6 @@ public class PersistentObject<T> {
 
 		public static Marshalling of(final String name) {
 			switch (name) {
-				case "xml": return new Marshalling(name, IO.xml);
 				case "jaxb": return new Marshalling(name, IO.jaxb);
 				case "object": return new Marshalling(name, IO.object);
 				default: throw new IllegalArgumentException(name);
@@ -147,71 +146,69 @@ public class PersistentObject<T> {
 		 * Genes
 		 **********************************************************************/
 
-		final String[] oldIO = {"object", "xml", "jaxb"};
-		final String[] newIO = {"object", "jaxb"};
-		final String[] minIO = {"object", "jaxb"};
+		final String[] ios = {"object", "xml", "jaxb"};
 
-		put("BitGene[true]", BitGene.TRUE, oldIO);
-		put("BitGene[false]", BitGene.FALSE, oldIO);
-		put("CharacterGene", nextCharacterGene(), oldIO);
-		put("LongGene", nextLongGene(), newIO);
-		put("DoubleGene", nextDoubleGene(), newIO);
+		put("BitGene[true]", BitGene.TRUE, ios);
+		put("BitGene[false]", BitGene.FALSE, ios);
+		put("CharacterGene", nextCharacterGene(), ios);
+		put("LongGene", nextLongGene(), ios);
+		put("DoubleGene", nextDoubleGene(), ios);
 
-		put("EnumGene<Boolean>", nextEnumGeneBoolean(), oldIO);
-		put("EnumGene<Byte>", nextEnumGeneByte(), oldIO);
-		put("EnumGene<Character>", nextEnumGeneCharacter(), oldIO);
-		put("EnumGene<Short>", nextEnumGeneShort(), oldIO);
-		put("EnumGene<Integer>", nextEnumGeneInteger(), oldIO);
-		put("EnumGene<Long>", nextEnumGeneLong(), oldIO);
-		put("EnumGene<Float>", nextEnumGeneFloat(), oldIO);
-		put("EnumGene<Double>", nextEnumGeneDouble(), oldIO);
-		put("EnumGene<String>", nextEnumGeneString(), oldIO);
-		put("EnumGene<Float64>", nextEnumGeneFloat64(), oldIO);
-		put("EnumGene<Integer64>", nextEnumGeneInteger64(), oldIO);
+		put("EnumGene<Boolean>", nextEnumGeneBoolean(), ios);
+		put("EnumGene<Byte>", nextEnumGeneByte(), ios);
+		put("EnumGene<Character>", nextEnumGeneCharacter(), ios);
+		put("EnumGene<Short>", nextEnumGeneShort(), ios);
+		put("EnumGene<Integer>", nextEnumGeneInteger(), ios);
+		put("EnumGene<Long>", nextEnumGeneLong(), ios);
+		put("EnumGene<Float>", nextEnumGeneFloat(), ios);
+		put("EnumGene<Double>", nextEnumGeneDouble(), ios);
+		put("EnumGene<String>", nextEnumGeneString(), ios);
+		put("EnumGene<Float64>", nextEnumGeneFloat64(), ios);
+		put("EnumGene<Integer64>", nextEnumGeneInteger64(), ios);
 
 		/* *********************************************************************
 		 * Chromosomes
 		 **********************************************************************/
 
-		put("BitChromosome", nextBitChromosome(), oldIO);
-		put("CharacterChromosome", nextCharacterChromosome(), oldIO);
-		put("LongChromosome", nextLongChromosome(), newIO);
-		put("DoubleChromosome", nextDoubleChromosome(), newIO);
+		put("BitChromosome", nextBitChromosome(), ios);
+		put("CharacterChromosome", nextCharacterChromosome(), ios);
+		put("LongChromosome", nextLongChromosome(), ios);
+		put("DoubleChromosome", nextDoubleChromosome(), ios);
 
-		put("PermutationChromosome<Integer>", nextIntegerPermutationChromosome(), oldIO);
-		put("PermutationChromosome<Double>", nextDoublePermutationChromosome(), oldIO);
-		put("PermutationChromosome<Float64>", nextFloat64PermutationChromosome(), oldIO);
-		put("PermutationChromosome<Character>", nextCharacterPermutationChromosome(), oldIO);
-		put("PermutationChromosome<String>", nextStringPermutationChromosome(), oldIO);
+		put("PermutationChromosome<Integer>", nextIntegerPermutationChromosome(), ios);
+		put("PermutationChromosome<Double>", nextDoublePermutationChromosome(), ios);
+		put("PermutationChromosome<Float64>", nextFloat64PermutationChromosome(), ios);
+		put("PermutationChromosome<Character>", nextCharacterPermutationChromosome(), ios);
+		put("PermutationChromosome<String>", nextStringPermutationChromosome(), ios);
 
 		/* *********************************************************************
 		 * Genotypes
 		 **********************************************************************/
 
-		put("Genotype<BitGene>", nextGenotypeBitGene(), oldIO);
-		put("Genotype<CharacterGene>", nextGenotypeCharacterGene(), oldIO);
-		put("Genotype<LongGene>", nextGenotypeLongGene(), minIO);
-		put("Genotype<DoubleGene>", nextGenotypeDoubleGene(), minIO);
+		put("Genotype<BitGene>", nextGenotypeBitGene(), ios);
+		put("Genotype<CharacterGene>", nextGenotypeCharacterGene(), ios);
+		put("Genotype<LongGene>", nextGenotypeLongGene(), ios);
+		put("Genotype<DoubleGene>", nextGenotypeDoubleGene(), ios);
 
 
 		/* *********************************************************************
 		 * Phenotypes
 		 **********************************************************************/
 
-		put("Phenotype<LongGene, Integer>", nextPhenotypeLongGeneInteger(), minIO);
-		put("Phenotype<LongGene, Long>", nextPhenotypeLongGeneLong(), minIO);
-		put("Phenotype<LongGene, Double>", nextPhenotypeLongGeneDouble(), minIO);
+		put("Phenotype<LongGene, Integer>", nextPhenotypeLongGeneInteger(), ios);
+		put("Phenotype<LongGene, Long>", nextPhenotypeLongGeneLong(), ios);
+		put("Phenotype<LongGene, Double>", nextPhenotypeLongGeneDouble(), ios);
 
-		put("Phenotype<DoubleGene, Integer>", nextPhenotypeDoubleGeneInteger(), minIO);
-		put("Phenotype<DoubleGene, Long>", nextPhenotypeDoubleGeneLong(), minIO);
-		put("Phenotype<DoubleGene, Double>", nextPhenotypeDoubleGeneDouble(), minIO);
+		put("Phenotype<DoubleGene, Integer>", nextPhenotypeDoubleGeneInteger(), ios);
+		put("Phenotype<DoubleGene, Long>", nextPhenotypeDoubleGeneLong(), ios);
+		put("Phenotype<DoubleGene, Double>", nextPhenotypeDoubleGeneDouble(), ios);
 
 		/* *********************************************************************
 		 * Populations
 		 **********************************************************************/
 
-		put("Population<LongGene, Integer>", nextPopulationLongGeneInteger(), minIO);
-		put("Population<DoubleGene, Integer>", nextPopulationDoubleGeneInteger(), minIO);
+		put("Population<LongGene, Integer>", nextPopulationLongGeneInteger(), ios);
+		put("Population<DoubleGene, Integer>", nextPopulationDoubleGeneInteger(), ios);
 
 		//put("Statistics.Time", nextStatisticsTime());
 

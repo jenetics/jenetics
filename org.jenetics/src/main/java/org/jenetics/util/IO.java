@@ -36,10 +36,6 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import javolution.xml.XMLObjectReader;
-import javolution.xml.XMLObjectWriter;
-import javolution.xml.stream.XMLStreamException;
-
 
 /**
  * Class for object serialization. The following example shows how to write and
@@ -66,55 +62,7 @@ public abstract class IO {
 	}
 
 	/**
-	 * IO implementation for <i>XML</i> serialization.
-	 *
-	 * @deprecated Will be removed when the Javolution is removed. Use the
-	 *             {@link #jaxb} {@code IO} implementation instead, which is
-	 *             compatible to the existing XML marshalling.
-	 */
-	@Deprecated
-	public static final IO xml = new IO() {
-
-		@Override
-		public void write(final Object object, final OutputStream out)
-			throws IOException
-		{
-			try {
-				final OutputStream nco = new NonClosableOutputStream(out);
-				final XMLObjectWriter writer = XMLObjectWriter.newInstance(nco);
-				writer.setIndentation("\t");
-				try {
-					writer.write(object);
-					writer.flush();
-				} finally {
-					writer.reset();
-				}
-			} catch (XMLStreamException e) {
-				throw new IOException(e);
-			}
-		}
-
-		@Override
-		public <T> T read(final Class<T> type, final InputStream in)
-			throws IOException
-		{
-			try {
-				final InputStream nci = new NonClosableInputStream(in);
-				final XMLObjectReader reader = XMLObjectReader.newInstance(nci);
-				try {
-					return type.cast(reader.read());
-				} finally {
-					reader.reset();
-				}
-			} catch (XMLStreamException e) {
-				throw new IOException(e);
-			}
-		}
-	};
-
-	/**
-	 * JAXB for <i>XML</i> serialization. Is compatible to the existing,
-	 * deprecated {@link #xml} marshalling.
+	 * JAXB for <i>XML</i> serialization.
 	 */
 	public static final IO jaxb = new IO() {
 
@@ -362,106 +310,4 @@ public abstract class IO {
 	public Object read(final InputStream in) throws IOException {
 		return read(Object.class, in);
 	}
-
-
-	/**
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version 2.0 &ndash; <em>$Revision: 4ffc28a6e2ef $</em>
-	 */
-	private static final class NonClosableOutputStream extends OutputStream {
-		private final OutputStream _adoptee;
-
-		public NonClosableOutputStream(final OutputStream adoptee) {
-			_adoptee = adoptee;
-		}
-
-		@Override
-		public void close() throws IOException {
-			//Ignore close call.
-			_adoptee.flush();
-		}
-
-		@Override
-		public void flush() throws IOException {
-			_adoptee.flush();
-		}
-
-		@Override
-		public String toString() {
-			return _adoptee.toString();
-		}
-
-		@Override
-		public void write(byte[] b, int off, int len) throws IOException {
-			_adoptee.write(b, off, len);
-		}
-
-		@Override
-		public void write(byte[] b) throws IOException {
-			_adoptee.write(b);
-		}
-
-		@Override
-		public void write(int b) throws IOException {
-			_adoptee.write(b);
-		}
-
-	}
-
-	/**
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version 2.0 &ndash; <em>$Revision: 4ffc28a6e2ef $</em>
-	 */
-	private static final class NonClosableInputStream extends InputStream {
-		private final InputStream _adoptee;
-
-		public NonClosableInputStream(final InputStream adoptee) {
-			_adoptee = adoptee;
-		}
-
-		@Override
-		public int available() throws IOException {
-			return _adoptee.available();
-		}
-
-		@Override
-		public void close() throws IOException {
-		}
-
-		@Override
-		public void mark(int readlimit) {
-			_adoptee.mark(readlimit);
-		}
-
-		@Override
-		public boolean markSupported() {
-			return _adoptee.markSupported();
-		}
-
-		@Override
-		public int read() throws IOException {
-			return _adoptee.read();
-		}
-
-		@Override
-		public int read(byte[] b, int off, int len) throws IOException {
-			return _adoptee.read(b, off, len);
-		}
-
-		@Override
-		public int read(byte[] b) throws IOException {
-			return _adoptee.read(b);
-		}
-
-		@Override
-		public void reset() throws IOException {
-			_adoptee.reset();
-		}
-
-		@Override
-		public long skip(long n) throws IOException {
-			return _adoptee.skip(n);
-		}
-	}
-
 }
