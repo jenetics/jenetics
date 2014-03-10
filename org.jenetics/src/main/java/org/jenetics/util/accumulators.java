@@ -343,51 +343,6 @@ public final class accumulators extends StaticObject {
 	}
 
 	/**
-	 * Calculates the sum of the accumulated values.
-	 *
-	 * <p/>
-	 * <strong>Note that this implementation is not synchronized.</strong> If
-	 * multiple threads access this object concurrently, and at least one of the
-	 * threads modifies it, it must be synchronized externally.
-	 *
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @since 1.0
-	 * @version 1.0 &ndash; <em>$Date$</em>
-	 *
-	 * @deprecated Will be removed.
-	 */
-	@Deprecated
-	public static class Sum<G extends GroupAdditive<G>>
-		extends MappedAccumulator<G>
-	{
-
-		private G _sum = null;
-
-		public Sum() {
-		}
-
-		public Sum(final G start) {
-			_sum = start;
-		}
-
-		@Override
-		public void accumulate(final G value) {
-			if (_sum == null) {
-				_sum = value;
-			} else {
-				_sum = _sum.plus(value);
-			}
-
-			++_samples;
-		}
-
-		public G getSum() {
-			return _sum;
-		}
-
-	}
-
-	/**
 	 * Calls the {@link Accumulator#accumulate(Object)} method of all given
 	 * {@code accumulators} with each value of the given {@code values}. The
 	 * accumulation is done in parallel.
