@@ -24,24 +24,12 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.object.eq;
 
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.util.Locale;
+import java.io.Serializable;
 
 import javax.measure.Measurable;
 import javax.measure.Measure;
-import javax.measure.MeasureFormat;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
-import javax.measure.unit.UnitFormat;
-
-import javolution.lang.Immutable;
-import javolution.xml.XMLFormat;
-import javolution.xml.XMLSerializable;
-import javolution.xml.stream.XMLStreamException;
-
-import org.jscience.mathematics.number.Float64;
-import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.internal.util.HashBuilder;
 
@@ -58,9 +46,7 @@ import org.jenetics.util.accumulators.MinMax;
  * @version 2.0 &mdash; <em>$Date$</em>
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
-	implements
-		Immutable,
-		XMLSerializable
+	implements Serializable
 {
 
 	/**
@@ -409,74 +395,6 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		return out.toString();
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	static final XMLFormat<Statistics> XML =
-		new XMLFormat<Statistics>(Statistics.class)
-	{
-		private static final String OPTIMIZE = "optimize";
-		private static final String GENERATION = "generation";
-		private static final String SAMPLES = "samples";
-		private static final String AGE_MEAN = "age-mean";
-		private static final String AGE_VARIANCE = "age-variance";
-		private static final String BEST_PHENOTYPE = "best-phenotype";
-		private static final String WORST_PHENOTYPE = "worst-phenotype";
-		private static final String STATISTICS_TIME = "statistics-time";
-		private static final String INVALID = "invalid";
-		private static final String KILLED = "killed";
-
-		@Override
-		public Statistics newInstance(final Class<Statistics> cls, final InputElement xml)
-			throws XMLStreamException
-		{
-			final Optimize optimize = Optimize.valueOf(
-				xml.getAttribute(OPTIMIZE, Optimize.MAXIMUM.name())
-			);
-			final int generation = xml.getAttribute(GENERATION, 0);
-			final int samples = xml.getAttribute(SAMPLES, 1);
-			final Float64 meanAge = xml.get(AGE_MEAN);
-			final Float64 varianceAge = xml.get(AGE_VARIANCE);
-			final Integer64 invalid = xml.get(INVALID);
-			final Integer64 killed = xml.get(KILLED);
-			final Phenotype best = xml.get(BEST_PHENOTYPE);
-			final Phenotype worst = xml.get(WORST_PHENOTYPE);
-
-			final Statistics statistics = new Statistics(
-				optimize,
-				generation,
-				best,
-				worst,
-				samples,
-				meanAge.doubleValue(),
-				varianceAge.doubleValue(),
-				killed.intValue(),
-				invalid.intValue()
-			);
-			statistics._time.set(xml.get(STATISTICS_TIME));
-
-			return statistics;
-
-		}
-		@Override
-		public void write(final Statistics s, final OutputElement xml)
-			throws XMLStreamException
-		{
-			xml.setAttribute(OPTIMIZE, s._optimize.name());
-			xml.setAttribute(GENERATION, s._generation);
-			xml.setAttribute(SAMPLES, s._samples);
-			xml.add(Float64.valueOf(s._ageMean), AGE_MEAN);
-			xml.add(Float64.valueOf(s._ageVariance), AGE_VARIANCE);
-			xml.add(Integer64.valueOf(s._invalid), INVALID);
-			xml.add(Integer64.valueOf(s._killed), KILLED);
-			xml.add(s._best, BEST_PHENOTYPE);
-			xml.add(s._worst, WORST_PHENOTYPE);
-			xml.add(s._time.get(), STATISTICS_TIME);
-		}
-		@Override
-		public void read(final InputElement xml, final Statistics p) {
-		}
-	};
-
-
 	/**
 	 * Class which holds time statistic values.
 	 *
@@ -484,7 +402,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 * @since 1.0
 	 * @version 2.0 &mdash; <em>$Date$</em>
 	 */
-	public static final class Time implements XMLSerializable {
+	public static final class Time implements Serializable {
 		private static final long serialVersionUID = 1L;
 
 		private static final Measurable<Duration> ZERO = Measure.valueOf(
@@ -595,79 +513,6 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 			return out.toString();
 		}
-
-		/* ********************************************************************
-		 *  XML object serialization
-		 * ********************************************************************/
-
-		static final XMLFormat<Statistics.Time> XML =
-			new XMLFormat<Statistics.Time>(Statistics.Time.class)
-		{
-			private static final String ALTER_TIME = "alter-time";
-			private static final String COMBINE_TIME = "combine-time";
-			private static final String EVALUATION_TIME = "evaluation-time";
-			private static final String EXECUTION_TIME = "execution-time";
-			private static final String SELECTION_TIME = "selection-time";
-			private static final String STATISTICS_TIME = "statistics-time";
-
-			@SuppressWarnings("unchecked")
-			@Override
-			public Statistics.Time newInstance(
-				final Class<Statistics.Time> cls, final InputElement xml
-			)
-				throws XMLStreamException
-			{
-				final MeasureFormat format = getMeasureFormat();
-				final Statistics.Time time = new Statistics.Time();
-
-				try {
-					time.alter.set((Measurable<Duration>)format.parseObject(
-							(String)xml.get(ALTER_TIME)
-						));
-					time.combine.set((Measurable<Duration>)format.parseObject(
-							(String)xml.get(COMBINE_TIME)
-						));
-					time.evaluation.set((Measurable<Duration>)format.parseObject(
-							(String)xml.get(EVALUATION_TIME)
-						));
-					time.execution.set((Measurable<Duration>)format.parseObject(
-							(String)xml.get(EXECUTION_TIME)
-						));
-					time.selection.set((Measurable<Duration>)format.parseObject(
-							(String)xml.get(SELECTION_TIME)
-						));
-					time.statistics.set((Measurable<Duration>)format.parseObject(
-							(String)xml.get(STATISTICS_TIME)
-						));
-				} catch (ParseException e) {
-					throw new XMLStreamException(e);
-				}
-				return time;
-
-			}
-			@Override
-			public void write(final Statistics.Time s, final OutputElement xml)
-				throws XMLStreamException
-			{
-				xml.add(fd(s.alter.get()), ALTER_TIME);
-				xml.add(fd(s.combine.get()), COMBINE_TIME);
-				xml.add(fd(s.evaluation.get()), EVALUATION_TIME);
-				xml.add(fd(s.execution.get()), EXECUTION_TIME);
-				xml.add(fd(s.selection.get()), SELECTION_TIME);
-				xml.add(fd(s.statistics.get()), STATISTICS_TIME);
-			}
-			@Override
-			public void read(final InputElement xml, final Statistics.Time p) {
-			}
-
-			private MeasureFormat getMeasureFormat() {
-				final NumberFormat nf = NumberFormat.getInstance(Locale.ENGLISH);
-				nf.setMinimumFractionDigits(25);
-				final UnitFormat uf = UnitFormat.getInstance(Locale.ENGLISH);
-
-				return MeasureFormat.getInstance(nf, uf);
-			}
-		};
 
 		private static String fd(final Measurable<Duration> duration) {
 			return String.format("%d ns", duration.longValue(SI.NANO(SI.SECOND)));
