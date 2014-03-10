@@ -41,7 +41,6 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import javolution.xml.XMLFormat;
-import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.internal.util.HashBuilder;
@@ -63,15 +62,14 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
  */
 @XmlJavaTypeAdapter(Population.Model.Adapter.class)
 public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	implements
 		List<Phenotype<G, C>>,
 		Copyable<Population<G, C>>,
-		RandomAccess,
-		XMLSerializable
+		RandomAccess
 {
 	private static final long serialVersionUID = 1L;
 
@@ -209,23 +207,6 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 */
 	public void sort() {
 		sortWith(Optimize.MAXIMUM.<C>descending());
-	}
-
-	/**
-	 * Sort this population according the order defined by the given
-	 * {@code comparator}.
-	 *
-	 * @param comparator the comparator which defines the sorting order.
-	 * @throws java.lang.NullPointerException if the {@code comparator} is
-	 *         {@code null}.
-	 *
-	 * @deprecated This method conflicts with the default method of the
-	 *             {@link java.util.List} interface introduced in Java 8. Use
-	 *             {@link #sortWith(java.util.Comparator)} instead.
-	 */
-	@Deprecated
-	public void sort(final Comparator<? super C> comparator) {
-		sortWith(comparator);
 	}
 
 	/**
