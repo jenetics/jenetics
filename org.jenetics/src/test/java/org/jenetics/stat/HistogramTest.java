@@ -25,9 +25,6 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jscience.mathematics.number.Float64;
-import org.jscience.mathematics.number.Integer64;
-
 import org.jenetics.util.Factory;
 import org.jenetics.util.MappedAccumulatorTester;
 import org.jenetics.util.RandomRegistry;
@@ -76,34 +73,12 @@ public class HistogramTest
 	}
 
 	@Test
-	public void createFloat64() {
-		final Float64 begin = Float64.valueOf(12);
-		final Float64 end = Float64.valueOf(123);
-		final int elements = 10;
-
-		Histogram<Float64> histogram = Histogram.valueOf(begin, end, elements);
-		Assert.assertEquals(histogram.length(), elements);
-		Assert.assertEquals(histogram.getHistogram(), new long[elements]);
-	}
-
-	@Test
 	public void createLong() {
 		final long begin = 0;
 		final long end = 1000;
 		final int elements = 9;
 
 		Histogram<Long> histogram = Histogram.valueOf(begin, end, elements);
-		Assert.assertEquals(histogram.length(), elements);
-		Assert.assertEquals(histogram.getHistogram(), new long[elements]);
-	}
-
-	@Test
-	public void createInteger64() {
-		final Integer64 begin = Integer64.ZERO;
-		final Integer64 end = Integer64.valueOf(1000);
-		final int elements = 9;
-
-		Histogram<Integer64> histogram = Histogram.valueOf(begin, end, elements);
 		Assert.assertEquals(histogram.length(), elements);
 		Assert.assertEquals(histogram.getHistogram(), new long[elements]);
 	}
@@ -129,7 +104,7 @@ public class HistogramTest
 		final Random random = RandomRegistry.getRandom();
 		Double[] parts = new Double[10000];
 		for (int i = 0; i < parts.length; ++i) {
-			parts[i] = Double.valueOf(i);
+			parts[i] = (double)i;
 		}
 
 		Histogram<Double> histogram = Histogram.valueOf(parts);
