@@ -22,6 +22,7 @@ package org.jenetics;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.object.eq;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -66,7 +67,8 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	implements
 		List<Phenotype<G, C>>,
 		Copyable<Population<G, C>>,
-		RandomAccess
+		RandomAccess,
+		Serializable
 {
 	private static final long serialVersionUID = 1L;
 

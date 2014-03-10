@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<org.jenetics.EnumGene length="5" allele-index="0">
-	<java.lang.Float value="0.5625665188"/>
-	<java.lang.Float value="0.7771003246"/>
-	<java.lang.Float value="0.9793553352"/>
-	<java.lang.Float value="0.3386490345"/>
-	<java.lang.Float value="0.1687492132"/>
-</org.jenetics.EnumGene>

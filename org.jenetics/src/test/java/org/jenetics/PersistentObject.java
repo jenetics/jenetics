@@ -23,10 +23,8 @@ import static org.jenetics.util.RandomUtils.BooleanFactory;
 import static org.jenetics.util.RandomUtils.ByteFactory;
 import static org.jenetics.util.RandomUtils.CharacterFactory;
 import static org.jenetics.util.RandomUtils.DoubleFactory;
-import static org.jenetics.util.RandomUtils.Float64Factory;
 import static org.jenetics.util.RandomUtils.FloatFactory;
 import static org.jenetics.util.RandomUtils.ISeq;
-import static org.jenetics.util.RandomUtils.Integer64Factory;
 import static org.jenetics.util.RandomUtils.IntegerFactory;
 import static org.jenetics.util.RandomUtils.LongFactory;
 import static org.jenetics.util.RandomUtils.ShortFactory;
@@ -45,9 +43,6 @@ import javax.measure.Measure;
 import javax.measure.unit.SI;
 
 import javolution.context.LocalContext;
-
-import org.jscience.mathematics.number.Float64;
-import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
@@ -146,7 +141,7 @@ public class PersistentObject<T> {
 		 * Genes
 		 **********************************************************************/
 
-		final String[] ios = {"object", "xml", "jaxb"};
+		final String[] ios = {"object", "jaxb"};
 
 		put("BitGene[true]", BitGene.TRUE, ios);
 		put("BitGene[false]", BitGene.FALSE, ios);
@@ -163,8 +158,6 @@ public class PersistentObject<T> {
 		put("EnumGene<Float>", nextEnumGeneFloat(), ios);
 		put("EnumGene<Double>", nextEnumGeneDouble(), ios);
 		put("EnumGene<String>", nextEnumGeneString(), ios);
-		put("EnumGene<Float64>", nextEnumGeneFloat64(), ios);
-		put("EnumGene<Integer64>", nextEnumGeneInteger64(), ios);
 
 		/* *********************************************************************
 		 * Chromosomes
@@ -177,7 +170,6 @@ public class PersistentObject<T> {
 
 		put("PermutationChromosome<Integer>", nextIntegerPermutationChromosome(), ios);
 		put("PermutationChromosome<Double>", nextDoublePermutationChromosome(), ios);
-		put("PermutationChromosome<Float64>", nextFloat64PermutationChromosome(), ios);
 		put("PermutationChromosome<Character>", nextCharacterPermutationChromosome(), ios);
 		put("PermutationChromosome<String>", nextStringPermutationChromosome(), ios);
 
@@ -266,14 +258,6 @@ public class PersistentObject<T> {
 		return EnumGene.of(ISeq(5, StringFactory));
 	}
 
-	public static EnumGene<Integer64> nextEnumGeneInteger64() {
-		return EnumGene.of(ISeq(5, Integer64Factory));
-	}
-
-	public static EnumGene<Float64> nextEnumGeneFloat64() {
-		return EnumGene.of(ISeq(5, Float64Factory));
-	}
-
 	/* *************************************************************************
 	 * Chromosomes
 	 **************************************************************************/
@@ -300,10 +284,6 @@ public class PersistentObject<T> {
 
 	public static PermutationChromosome<Double> nextDoublePermutationChromosome() {
 		return PermutationChromosome.of(ISeq(15, DoubleFactory));
-	}
-
-	public static PermutationChromosome<Float64> nextFloat64PermutationChromosome() {
-		return PermutationChromosome.of(ISeq(15, Float64Factory));
 	}
 
 	public static PermutationChromosome<Character> nextCharacterPermutationChromosome() {
