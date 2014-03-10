@@ -71,35 +71,6 @@ public final class math extends StaticObject {
 	}
 
 	/**
-	 * Implementation of the <a href="http://en.wikipedia.org/wiki/Kahan_summation_algorithm">
-	 * Kahan summation algorithm</a>.
-	 *
-	 * @param values the values to sum up.
-	 * @return the sum of the given {@code values}.
-	 * @throws NullPointerException if the given array is {@code null}.
-	 *
-	 * @deprecated Use {@link math.statistics#sum(double[])} instead.
-	 */
-	@Deprecated
-	public static double sum(final double[] values) {
-		return statistics.sum(values);
-	}
-
-	/**
-	 * Add the values of the given array.
-	 *
-	 * @param values the values to add.
-	 * @return the values sum.
-	 * @throws NullPointerException if the values are null;
-	 *
-	 * @deprecated Use {@link math.statistics#sum(long[])} instead.
-	 */
-	@Deprecated
-	public static long sum(final long[] values) {
-		return statistics.sum(values);
-	}
-
-	/**
 	 * Normalize the given double array, so that it sum to one. The
 	 * normalization is performed in place and the same {@code values} are
 	 * returned.
@@ -115,36 +86,6 @@ public final class math extends StaticObject {
 		}
 
 		return values;
-	}
-
-	/**
-	 * Return the minimum value of the given double array.
-	 *
-	 * @param values the double array.
-	 * @return the minimum value or {@link Double#NaN} if the given array is
-	 *         empty.
-	 * @throws NullPointerException if the given array is {@code null}.
-	 *
-	 * @deprecated Use {@link math.statistics#min(double[])} instead.
-	 */
-	@Deprecated
-	public static double min(final double[] values) {
-		return statistics.min(values);
-	}
-
-	/**
-	 * Return the maximum value of the given double array.
-	 *
-	 * @param values the double array.
-	 * @return the maximum value or {@link Double#NaN} if the given array is
-	 *         empty.
-	 * @throws NullPointerException if the given array is {@code null}.
-	 *
-	 * @deprecated Use {@link math.statistics#max(double[])} instead.
-	 */
-	@Deprecated
-	public static double max(final double[] values) {
-		return statistics.max(values);
 	}
 
 	/**
