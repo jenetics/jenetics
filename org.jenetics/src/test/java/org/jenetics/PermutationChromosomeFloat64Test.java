@@ -49,7 +49,7 @@ public class PermutationChromosomeFloat64Test
 
 		@Override
 		public PermutationChromosome<Float64> newInstance() {
-			return new PermutationChromosome<>(_alleles);
+			return PermutationChromosome.of(_alleles);
 		}
 	};
 

@@ -39,7 +39,7 @@ public class PermutationChromosomeEnumTest
 
 		@Override
 		public PermutationChromosome<PermutationEnum> newInstance() {
-			return new PermutationChromosome<>(_alleles);
+			return PermutationChromosome.of(_alleles);
 		}
 	};
 
