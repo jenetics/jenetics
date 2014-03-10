@@ -60,7 +60,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
  */
 @XmlJavaTypeAdapter(Phenotype.Model.Adapter.class)
 public final class Phenotype<
@@ -375,22 +375,6 @@ public final class Phenotype<
 	 *
 	 * @param <C> the fitness value type.
 	 * @return a raw fitness {@link Function}.
-	 *
-	 * @deprecated Fixing typo, use {@link #RawFitness()} instead.
-	 */
-	@Deprecated
-	public static <C extends Comparable<? super C>>
-	Function<Phenotype<?, C>, C> RawFitnees()
-	{
-		return RawFitness();
-	}
-
-	/**
-	 * Create a {@link Function} which return the phenotype raw fitness when
-	 * calling {@code converter.convert(phenotype)}.
-	 *
-	 * @param <C> the fitness value type.
-	 * @return a raw fitness {@link Function}.
 	 */
 	public static <C extends Comparable<? super C>>
 	Function<Phenotype<?, C>, C> RawFitness()
@@ -420,20 +404,6 @@ public final class Phenotype<
 	}
 
 	/**
-	 * @deprecated Use {@link #of(Genotype, org.jenetics.util.Function, org.jenetics.util.Function, int)}
-	 *             instead.
-	 */
-	@Deprecated
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Phenotype<G, C> valueOf(
-		final Genotype<G> genotype,
-		final Function<Genotype<G>, C> fitnessFunction,
-		final int generation
-	) {
-		return of(genotype, fitnessFunction, generation);
-	}
-
-	/**
 	 * The {@code Genotype} is copied to guarantee an immutable class. Only
 	 * the age of the {@code Phenotype} can be incremented.
 	 *
@@ -450,21 +420,6 @@ public final class Phenotype<
 		final int generation
 	) {
 		return of(genotype, fitnessFunction, functions.<C>Identity(), generation);
-	}
-
-	/**
-	 * @deprecated Use {@link #of(Genotype, org.jenetics.util.Function, org.jenetics.util.Function, int)}
-	 *             instead
-	 */
-	@Deprecated
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Phenotype<G, C> valueOf(
-		final Genotype<G> genotype,
-		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
-		final Function<? super C, ? extends C> fitnessScaler,
-		final int generation
-	) {
-		return of(genotype, fitnessFunction, fitnessScaler, generation);
 	}
 
 	/**
