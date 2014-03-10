@@ -76,24 +76,12 @@ public abstract class ArrayProxySeq<T> implements Seq<T> {
 	}
 
 	@Override
-	@Deprecated
-	public <R> void foreach(final Function<? super T, ? extends R> function) {
-		forEach(function);
-	}
-
-	@Override
 	public <R> void forEach(final Function<? super T, ? extends R> function) {
 		requireNonNull(function, "Function");
 
 		for (int i = _proxy._start; i < _proxy._end; ++i) {
 			function.apply(_proxy.__get(i));
 		}
-	}
-
-	@Override
-	@Deprecated
-	public boolean forall(final Function<? super T, Boolean> predicate) {
-		return forAll(predicate);
 	}
 
 	@Override

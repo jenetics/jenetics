@@ -66,13 +66,6 @@ public interface Seq<T> extends Iterable<T> {
 	);
 
 	/**
-	 * @deprecated Align the naming with the upcoming JDK 1.8 release. Use
-	 *             {@link #forEach(Function)} instead.
-	 */
-	@Deprecated
-	public <R> void foreach(final Function<? super T, ? extends R> function);
-
-	/**
 	 * Applies a {@code function} to all elements of this sequence.
 	 *
 	 * @param function the function to apply to the elements.
@@ -80,13 +73,6 @@ public interface Seq<T> extends Iterable<T> {
 	 *         {@code null}.
 	 */
 	public <R> void forEach(final Function<? super T, ? extends R> function);
-
-	/**
-	 * @deprecated Align the naming with the upcoming JDK 1.8 release. Use
-	 *             {@link #forAll(Function)} instead.
-	 */
-	@Deprecated
-	public boolean forall(final Function<? super T, Boolean> predicate);
 
 	/**
 	 * Tests whether a predicate holds for all elements of this sequence.

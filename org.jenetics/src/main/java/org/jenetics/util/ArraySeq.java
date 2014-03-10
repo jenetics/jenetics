@@ -215,16 +215,6 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		return index;
 	}
 
-	/**
-	 * @deprecated Align the naming with the upcoming JDK 1.8 release. Use
-	 *             {@link #forEach(Function)} instead.
-	 */
-	@Deprecated
-	@Override
-	public <R> void foreach(final Function<? super T, ? extends R> function) {
-		forEach(function);
-	}
-
 	@Override
 	public <R> void forEach(final Function<? super T, ? extends R> function) {
 		requireNonNull(function, "Function");
@@ -234,16 +224,6 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 			final T element = (T)_array.data[i];
 			function.apply(element);
 		}
-	}
-
-	/**
-	 * @deprecated Align the naming with the upcoming JDK 1.8 release. Use
-	 *             {@link #forAll(Function)} instead.
-	 */
-	@Deprecated
-	@Override
-	public boolean forall(final Function<? super T, Boolean> predicate) {
-		return forAll(predicate);
 	}
 
 	@Override
