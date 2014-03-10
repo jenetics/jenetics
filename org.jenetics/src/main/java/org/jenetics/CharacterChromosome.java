@@ -72,11 +72,8 @@ public class CharacterChromosome
 	 * @throws NullPointerException if the given gene array is {@code null}.
 	 * @throws IllegalArgumentException if the length of the gene array is
 	 *         smaller than one.
-	 *
-	 * @deprecated Visibility will be changed to {@code protected}.
 	 */
-	@Deprecated
-	public CharacterChromosome(final ISeq<CharacterGene> genes) {
+	protected CharacterChromosome(final ISeq<CharacterGene> genes) {
 		super(genes);
 		_validCharacters = genes.get(0).getValidCharacters();
 	}
@@ -95,59 +92,6 @@ public class CharacterChromosome
 	public CharacterChromosome(final CharSeq validCharacters, final int length) {
 		this(CharacterGene.seq(validCharacters, length));
 		_valid = true;
-	}
-
-	/**
-	 * Create a new chromosome with the {@link CharacterGene#DEFAULT_CHARACTERS}
-	 * char set as valid characters.
-	 *
-	 * @param length the {@code length} of the new chromosome.
-	 * @throws IllegalArgumentException if the {@code length} is smaller than
-	 *         one.
-	 *
-	 * @deprecated Use {@link #of(int)} instead.
-	 */
-	@Deprecated
-	public CharacterChromosome(final int length) {
-		this(DEFAULT_CHARACTERS, length);
-	}
-
-	/**
-	 * Create a new chromosome from the given genes (given as string).
-	 *
-	 * @param genes the character genes.
-	 * @param validCharacters the valid characters.
-	 * @throws IllegalArgumentException if the genes string is empty.
-	 *
-	 * @deprecated Use {@link #of(String, org.jenetics.util.CharSeq)} instead.
-	 */
-	@Deprecated
-	public CharacterChromosome(final String genes, final CharSeq validCharacters) {
-		super(
-			new Array<CharacterGene>(genes.length()).fill(new Factory<CharacterGene>() {
-				private int _index = 0;
-				@Override public CharacterGene newInstance() {
-					return CharacterGene.of(
-						genes.charAt(_index++), validCharacters
-					);
-				}
-			}).toISeq()
-		);
-
-		_validCharacters = validCharacters;
-	}
-
-	/**
-	 * Create a new chromosome from the given genes (given as string).
-	 *
-	 * @param genes the character genes.
-	 * @throws IllegalArgumentException if the genes string is empty.
-	 *
-	 * @deprecated Use {@link #of(String)} instead.
-	 */
-	@Deprecated
-	public CharacterChromosome(final String genes) {
-		this(genes, DEFAULT_CHARACTERS);
 	}
 
 	@Override
