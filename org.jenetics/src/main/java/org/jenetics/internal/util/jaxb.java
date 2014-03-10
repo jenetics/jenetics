@@ -55,7 +55,7 @@ import org.jenetics.util.StaticObject;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version 1.6 &mdash; <em>$Date$</em>
- * @since 1.6
+ * @since 2.0
  */
 public class jaxb extends StaticObject {
 	private jaxb() {}
