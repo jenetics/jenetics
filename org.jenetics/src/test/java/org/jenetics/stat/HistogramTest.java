@@ -78,7 +78,7 @@ public class HistogramTest
 		final long end = 1000;
 		final int elements = 9;
 
-		Histogram<Long> histogram = Histogram.valueOf(begin, end, elements);
+		Histogram<Long> histogram = Histogram.of(begin, end, elements);
 		Assert.assertEquals(histogram.length(), elements);
 		Assert.assertEquals(histogram.getHistogram(), new long[elements]);
 	}
@@ -89,9 +89,9 @@ public class HistogramTest
 		final long end = 10;
 		final int elements = 9;
 
-		Histogram<Long> histogram = Histogram.valueOf(begin, end, elements);
+		Histogram<Long> histogram = Histogram.of(begin, end, elements);
 		for (int i = 0; i < elements*1000; ++i) {
-			histogram.accumulate(Long.valueOf(i%elements));
+			histogram.accumulate((long)(i%elements));
 		}
 
 		final long[] expected = new long[9];
@@ -107,7 +107,7 @@ public class HistogramTest
 			parts[i] = (double)i;
 		}
 
-		Histogram<Double> histogram = Histogram.valueOf(parts);
+		Histogram<Double> histogram = Histogram.of(parts);
 		Double[] classes = histogram.getSeparators();
 		for (int i = 0; i < 1000; ++i) {
 			final Double value = random.nextDouble()*(parts.length + 1);
@@ -115,7 +115,7 @@ public class HistogramTest
 		}
 
 		parts = new Double[]{1.0};
-		histogram = Histogram.valueOf(parts);
+		histogram = Histogram.of(parts);
 		classes = histogram.getSeparators();
 		for (int i = 0; i < 10; ++i) {
 			final Double value = random.nextDouble()*(parts.length + 1);
@@ -123,7 +123,7 @@ public class HistogramTest
 		}
 
 		parts = new Double[]{1.0, 2.0};
-		histogram = Histogram.valueOf(parts);
+		histogram = Histogram.of(parts);
 		classes = histogram.getSeparators();
 		for (int i = 0; i < 10; ++i) {
 			final Double value = random.nextDouble()*(parts.length + 1);
@@ -131,7 +131,7 @@ public class HistogramTest
 		}
 
 		parts = new Double[]{1.0, 2.0, 3.0};
-		histogram = Histogram.valueOf(parts);
+		histogram = Histogram.of(parts);
 		classes = histogram.getSeparators();
 		for (int i = 0; i < 10; ++i) {
 			final Double value = random.nextDouble()*(parts.length + 1);
@@ -152,13 +152,13 @@ public class HistogramTest
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void histogramEmptyClasses() {
-		Histogram.valueOf(new Double[0]);
+		Histogram.of(0);
 	}
 
 	@Test
 	public void histogram() {
 		final Random random = RandomRegistry.getRandom();
-		final Histogram<Double> histogram = Histogram.valueOf(new Double[]{1d, 2d, 3d, 4d, 5d});
+		final Histogram<Double> histogram = Histogram.of(1d, 2d, 3d, 4d, 5d);
 
 		for (int i = 0; i < 600000; ++i) {
 			histogram.accumulate(random.nextDouble()*6);

@@ -26,8 +26,6 @@ import static org.jenetics.internal.util.object.eq;
 import java.io.Serializable;
 import java.util.Locale;
 
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.util.Function;
@@ -67,7 +65,7 @@ import org.jenetics.util.Range;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
  */
 public class LinearDistribution<
 	N extends Number & Comparable<? super N>
@@ -88,11 +86,11 @@ public class LinearDistribution<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-03-07 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
 	 */
 	static final class PDF<N extends Number & Comparable<? super N>>
 		implements
-			Function<N, Float64>,
+			Function<N, Double>,
 			Serializable
 	{
 		private static final long serialVersionUID = 1L;
@@ -113,12 +111,12 @@ public class LinearDistribution<
 		}
 
 		@Override
-		public Float64 apply(final N value) {
+		public Double apply(final N value) {
 			final double x = value.doubleValue();
 
-			Float64 result = Float64.ZERO;
+			double result = 0.0;
 			if (x >= _min && x <= _max) {
-				result = Float64.valueOf(_k*x + _d);
+				result = _k*x + _d;
 			}
 
 			return result;
@@ -142,11 +140,11 @@ public class LinearDistribution<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-03-07 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
 	 */
 	static final class CDF<N extends Number & Comparable<? super N>>
 		implements
-			Function<N, Float64>,
+			Function<N, Double>,
 			Serializable
 	{
 		private static final long serialVersionUID = 1L;
@@ -168,20 +166,20 @@ public class LinearDistribution<
 		}
 
 		@Override
-		public Float64 apply(final N value) {
+		public Double apply(final N value) {
 			final double x = value.doubleValue();
 
-			Float64 result = null;
+			double result = 0;
 			if (x < _x1) {
-				result = Float64.ZERO;
+				result = 0.0;
 			} else if (x > _x2) {
-				result = Float64.ONE;
+				result = 1.0;
 			} else {
-//				result = Float64.valueOf(
+//				result = Double.valueOf(
 //						-((x*x - 2*x*_x2)*_y1 - (x*x - 2*x*_x1)*_y2)/
 //						(2*(_x2 - _x1))
 //					);
-				result = Float64.valueOf( _k*x*x/2.0 + _d*x);
+				result = _k*x*x/2.0 + _d*x;
 			}
 
 			return result;
@@ -196,8 +194,8 @@ public class LinearDistribution<
 
 
 	private final Range<N> _domain;
-	private final Function<N, Float64> _cdf;
-	private final Function<N, Float64> _pdf;
+	private final Function<N, Double> _cdf;
+	private final Function<N, Double> _pdf;
 
 	private final double _x1;
 	private final double _x2;
@@ -242,7 +240,7 @@ public class LinearDistribution<
 	 *
 	 */
 	@Override
-	public Function<N, Float64> getCDF() {
+	public Function<N, Double> getCDF() {
 		return _cdf;
 	}
 
@@ -261,7 +259,7 @@ public class LinearDistribution<
 	 *
 	 */
 	@Override
-	public Function<N, Float64> getPDF() {
+	public Function<N, Double> getPDF() {
 		return _pdf;
 	}
 
