@@ -80,7 +80,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
  */
 @XmlJavaTypeAdapter(Genotype.Model.Adapter.class)
 public final class Genotype<G extends Gene<?, G>>
@@ -315,27 +315,6 @@ public final class Genotype<G extends Gene<?, G>>
 				return value.getChromosome();
 			}
 		};
-	}
-
-	/**
-	 * @deprecated Use {@link #Genotype(org.jenetics.util.ISeq)} instead.
-	 */
-	@Deprecated
-	public static <G extends Gene<?, G>> Genotype<G> valueOf(
-		final ISeq<? extends Chromosome<G>> chromosomes
-	) {
-		return new Genotype<>(chromosomes);
-	}
-
-	/**
-	 * @deprecated Use {@link #of(Chromosome[])} instead.
-	 */
-	@Deprecated
-	@SafeVarargs
-	public static <G extends Gene<?, G>> Genotype<G> valueOf(
-		final Chromosome<G>... chromosomes
-	) {
-		return of(chromosomes);
 	}
 
 	/**
