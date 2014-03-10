@@ -318,27 +318,6 @@ public final class Genotype<G extends Gene<?, G>>
 	}
 
 	/**
-	 * @deprecated Use {@link #Genotype(org.jenetics.util.ISeq)} instead.
-	 */
-	@Deprecated
-	public static <G extends Gene<?, G>> Genotype<G> valueOf(
-		final ISeq<? extends Chromosome<G>> chromosomes
-	) {
-		return new Genotype<>(chromosomes);
-	}
-
-	/**
-	 * @deprecated Use {@link #of(Chromosome[])} instead.
-	 */
-	@Deprecated
-	@SafeVarargs
-	public static <G extends Gene<?, G>> Genotype<G> valueOf(
-		final Chromosome<G>... chromosomes
-	) {
-		return of(chromosomes);
-	}
-
-	/**
 	 * Create a new Genotype from a given array of {@code Chromosomes}.
 	 *
 	 * @param chromosomes The {@code Chromosome} array the {@code Genotype}
