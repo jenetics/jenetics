@@ -43,7 +43,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
  */
 public class TournamentSelector<
 	G extends Gene<?, G>,
@@ -175,24 +175,6 @@ public class TournamentSelector<
 
 		final TournamentSelector<?, ?> selector = (TournamentSelector<?, ?>)obj;
 		return _sampleSize == selector._sampleSize;
-	}
-
-	/**
-	 * @deprecated Will be removed.
-	 */
-	@Deprecated
-	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
-	TournamentSelector<SG, SC> valueOf(final int sampleSize) {
-		return new TournamentSelector<>(sampleSize);
-	}
-
-	/**
-	 * @deprecated Will be removed.
-	 */
-	@Deprecated
-	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
-	TournamentSelector<SG, SC> valueOf() {
-		return new TournamentSelector<>();
 	}
 
 	@Override
