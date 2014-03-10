@@ -26,8 +26,6 @@ import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.object.NonNull;
 import static org.jenetics.internal.util.object.eq;
 import static org.jenetics.util.arrays.forEach;
-import static org.jenetics.util.functions.DoubleToFloat64;
-import static org.jenetics.util.functions.LongToInteger64;
 import static org.jenetics.util.math.statistics.sum;
 
 import java.io.IOException;
@@ -35,13 +33,11 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import org.jscience.mathematics.number.Float64;
-import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.util.Function;
 import org.jenetics.util.MappedAccumulator;
-import org.jenetics.util.arrays;
 
 /**
  * To create an <i>Histogram Accumulator</i> you have to define the <i>class
@@ -71,7 +67,7 @@ import org.jenetics.util.arrays;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
  */
 public class Histogram<C> extends MappedAccumulator<C> {
 
@@ -494,38 +490,6 @@ public class Histogram<C> extends MappedAccumulator<C> {
 		}
 
 		return separators;
-	}
-
-	/**
-	 * @deprecated Use {@link #of(Double, Double, int)} instead.
-	 */
-	@Deprecated
-	public static Histogram<Float64> valueOf(
-		final Float64 min,
-		final Float64 max,
-		final int nclasses
-	) {
-		return of(arrays.map(
-			toSeparators(min.doubleValue(), max.doubleValue(), nclasses),
-			new Float64[nclasses - 1],
-			DoubleToFloat64
-		));
-	}
-
-	/**
-	 * @deprecated Use {@link #of(Long, Long, int)} instead.
-	 */
-	@Deprecated
-	public static Histogram<Integer64> valueOf(
-		final Integer64 min,
-		final Integer64 max,
-		final int nclasses
-	) {
-		return of(arrays.map(
-			toSeparators(min.longValue(), max.longValue(), nclasses),
-			new Integer64[0],
-			LongToInteger64
-		));
 	}
 
 	/**
