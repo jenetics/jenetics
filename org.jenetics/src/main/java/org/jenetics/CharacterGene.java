@@ -54,7 +54,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
  */
 @XmlJavaTypeAdapter(CharacterGene.Model.Adapter.class)
 public final class CharacterGene
@@ -134,12 +134,6 @@ public final class CharacterGene
 	 */
 	public CharSeq getValidCharacters() {
 		return _validCharacters;
-	}
-
-	@Deprecated
-	@Override
-	public CharacterGene copy() {
-		return of(_character, _validCharacters);
 	}
 
 	/**

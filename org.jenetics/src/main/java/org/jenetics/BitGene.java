@@ -42,7 +42,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-10 $</em>
  */
 @XmlJavaTypeAdapter(BitGene.Model.Adapter.class)
 public enum BitGene
@@ -99,12 +99,6 @@ public enum BitGene
 	@Override
 	public boolean isValid() {
 		return true;
-	}
-
-	@Deprecated
-	@Override
-	public BitGene copy() {
-		return this;
 	}
 
 	/**

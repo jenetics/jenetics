@@ -27,7 +27,7 @@ import org.jenetics.util.ObjectTester;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-17 $</em>
+ * @version <em>$Date: 2014-03-10 $</em>
  */
 public abstract class GeneTester<G extends Gene<?, G>> extends ObjectTester<G> {
 
@@ -58,18 +58,6 @@ public abstract class GeneTester<G extends Gene<?, G>> extends ObjectTester<G> {
 			} else {
 				Assert.assertFalse(other.getAllele().equals(that.getAllele()));
 			}
-		}
-	}
-
-	@SuppressWarnings("deprecation")
-	@Test
-	public void copy() {
-		for (int i = 0; i < 10; ++i) {
-			final G gene = getFactory().newInstance();
-			final Object copy = gene.copy();
-
-			Assert.assertEquals(copy, gene);
-			Assert.assertEquals(copy.hashCode(), gene.hashCode());
 		}
 	}
 
