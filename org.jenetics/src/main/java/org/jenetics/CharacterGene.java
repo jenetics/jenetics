@@ -250,14 +250,6 @@ public final class CharacterGene
 	}
 
 	/**
-	 * @deprecated Use {@link #of(org.jenetics.util.CharSeq)} instead.
-	 */
-	@Deprecated
-	public static CharacterGene valueOf(final CharSeq validCharacters) {
-		return of(validCharacters);
-	}
-
-	/**
 	 * Create a new character gene from the given character. If the character
 	 * is not within the {@link #DEFAULT_CHARACTERS}, an invalid gene will be
 	 * created.
@@ -269,14 +261,6 @@ public final class CharacterGene
 	 */
 	public static CharacterGene of(final Character character) {
 		return new CharacterGene(character, DEFAULT_CHARACTERS);
-	}
-
-	/**
-	 * @deprecated Use {@link #of(Character)} instead.
-	 */
-	@Deprecated
-	public static CharacterGene valueOf(final Character character) {
-		return of(character);
 	}
 
 	/**
@@ -293,14 +277,6 @@ public final class CharacterGene
 	}
 
 	/**
-	 * @deprecated Use {@link #of()} instead.
-	 */
-	@Deprecated
-	public static CharacterGene valueOf() {
-		return of();
-	}
-
-	/**
 	 * Create a new CharacterGene from the give character.
 	 *
 	 * @param character The allele.
@@ -312,17 +288,6 @@ public final class CharacterGene
 		final CharSeq validCharacters
 	) {
 		return new CharacterGene(character, validCharacters);
-	}
-
-	/**
-	 * @deprecated Use {@link #of(char, org.jenetics.util.CharSeq)} instead.
-	 */
-	@Deprecated
-	public static CharacterGene valueOf(
-		final Character character,
-		final CharSeq validCharacters
-	) {
-		return of(character, validCharacters);
 	}
 
 	static ISeq<CharacterGene> seq(final CharSeq characters, final int length) {
