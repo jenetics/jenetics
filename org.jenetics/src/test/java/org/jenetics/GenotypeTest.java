@@ -70,11 +70,10 @@ public class GenotypeTest extends ObjectTester<Genotype<DoubleGene>> {
 
     @Test
     public void testGenotypeGenotypeOfT() {
-        BitChromosome c1 = new BitChromosome(12);
-        BitChromosome c2 = new BitChromosome(12);
-        BitChromosome c3 = c2.copy();
-        Genotype<BitGene> g2 = Genotype.of(c1, c2, c3);
-        Genotype<BitGene> g4 = g2;
+        final BitChromosome c1 = BitChromosome.of(12);
+        final BitChromosome c2 = BitChromosome.of(12);
+        final Genotype<BitGene> g2 = Genotype.of(c1, c2, c2);
+        final Genotype<BitGene> g4 = g2;
 
         assertEquals(g2, g4);
         assertEquals(g2.hashCode(), g4.hashCode());
@@ -141,7 +140,7 @@ public class GenotypeTest extends ObjectTester<Genotype<DoubleGene>> {
 		LocalContext.enter();
 		try {
 			RandomRegistry.setRandom(random);
-			final BitChromosome chromosome = new BitChromosome(30, 0.5);
+			final BitChromosome chromosome = BitChromosome.of(30, 0.5);
 			final Genotype<?> genotype = Genotype.of(chromosome, chromosome);
 
 			/*
