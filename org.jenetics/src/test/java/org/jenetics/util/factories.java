@@ -20,13 +20,9 @@
 package org.jenetics.util;
 
 /**
- * Contains factory (methods) for some 'primitive' types.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.0
- * @version 2.0 &mdash; <em>$Date$</em>
+ * @version <em>$Date$</em>
  */
-@Deprecated
 public final class factories extends StaticObject {
 	private factories() {}
 
