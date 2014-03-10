@@ -152,7 +152,7 @@ public class HistogramTest
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void histogramEmptyClasses() {
-		Histogram.of(0);
+		Histogram.of(new Double[0]);
 	}
 
 	@Test
