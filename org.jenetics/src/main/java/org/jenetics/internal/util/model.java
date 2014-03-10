@@ -32,10 +32,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import org.jscience.mathematics.number.Float64;
-import org.jscience.mathematics.number.Integer64;
-
-import org.jenetics.util.Function;
 import org.jenetics.util.StaticObject;
 
 /**
@@ -43,7 +39,7 @@ import org.jenetics.util.StaticObject;
  * integer and float types of the JScience library.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-02-02 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-10 $</em>
  * @since 1.6
  */
 public final class model extends StaticObject {
@@ -333,83 +329,6 @@ public final class model extends StaticObject {
 		}
 
 		public static final Adapter Adapter = new Adapter();
-
-	}
-
-
-	/* ************************************************************************
-	 * JScience primitive type models.
-	 **************************************************************************/
-
-	@XmlRootElement(name = "org.jscience.mathematics.number.Integer64")
-	@XmlType(name = "org.jscience.mathematics.number.Integer64")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	public static final class Integer64Model {
-
-		@XmlAttribute
-		public long value;
-
-		@ValueType(Integer64.class)
-		@ModelType(Integer64Model.class)
-		public static final class Adapter
-			extends XmlAdapter<Integer64Model, Integer64>
-		{
-			@Override
-			public Integer64Model marshal(final Integer64 value) {
-				final Integer64Model model = new Integer64Model();
-				model.value = value.longValue();
-				return model;
-			}
-
-			@Override
-			public Integer64 unmarshal(final Integer64Model model) {
-				return Integer64.valueOf(model.value);
-			}
-		}
-
-		public static final Adapter Adapter = new Adapter();
-
-		public static final Function<Integer64, Integer64Model>
-			Marshaller = jaxb.Marshaller(Adapter);
-
-		public static final Function<Integer64Model, Integer64>
-			Unmarshaller = jaxb.Unmarshaller(Adapter);
-
-	}
-
-	@XmlRootElement(name = "org.jscience.mathematics.number.Float64")
-	@XmlType(name = "org.jscience.mathematics.number.Float64")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	public static final class Float64Model {
-
-		@XmlAttribute
-		public double value;
-
-		@ValueType(Float64.class)
-		@ModelType(Float64Model.class)
-		public static final class Adapter
-			extends XmlAdapter<Float64Model, Float64>
-		{
-			@Override
-			public Float64Model marshal(final Float64 value) {
-				final Float64Model model = new Float64Model();
-				model.value = value.doubleValue();
-				return model;
-			}
-
-			@Override
-			public Float64 unmarshal(final Float64Model model) {
-				return Float64.valueOf(model.value);
-			}
-		}
-
-		public static final Adapter Adapter = new Adapter();
-
-		public static final Function<Float64, Float64Model> Marshaller =
-			jaxb.Marshaller(Adapter);
-
-		public static final Function<Float64Model, Float64> Unmarshaller =
-			jaxb.Unmarshaller(Adapter);
 
 	}
 

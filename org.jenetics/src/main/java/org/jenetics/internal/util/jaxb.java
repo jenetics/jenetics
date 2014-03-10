@@ -35,16 +35,11 @@ import javax.xml.transform.dom.DOMSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import org.jscience.mathematics.number.Float64;
-import org.jscience.mathematics.number.Integer64;
-
 import org.jenetics.internal.util.model.BooleanModel;
 import org.jenetics.internal.util.model.ByteModel;
 import org.jenetics.internal.util.model.CharacterModel;
 import org.jenetics.internal.util.model.DoubleModel;
-import org.jenetics.internal.util.model.Float64Model;
 import org.jenetics.internal.util.model.FloatModel;
-import org.jenetics.internal.util.model.Integer64Model;
 import org.jenetics.internal.util.model.IntegerModel;
 import org.jenetics.internal.util.model.LongModel;
 import org.jenetics.internal.util.model.ModelType;
@@ -59,7 +54,7 @@ import org.jenetics.util.StaticObject;
  * JAXB helper methods.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-02-02 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-10 $</em>
  * @since 1.6
  */
 public class jaxb extends StaticObject {
@@ -117,12 +112,6 @@ public class jaxb extends StaticObject {
 
 		ADAPTER_CACHE.put(String.class, StringModel.Adapter);
 		ADAPTER_CACHE.put(StringModel.class, StringModel.Adapter);
-
-		ADAPTER_CACHE.put(Integer64.class, Integer64Model.Adapter);
-		ADAPTER_CACHE.put(Integer64Model.class, Integer64Model.Adapter);
-
-		ADAPTER_CACHE.put(Float64.class, Float64Model.Adapter);
-		ADAPTER_CACHE.put(Float64Model.class, Float64Model.Adapter);
 	}
 
 	/**
