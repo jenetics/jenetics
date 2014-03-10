@@ -299,19 +299,19 @@ public class PersistentObject<T> {
 	}
 
 	public static PermutationChromosome<Double> nextDoublePermutationChromosome() {
-		return new PermutationChromosome<>(ISeq(15, DoubleFactory));
+		return PermutationChromosome.of(ISeq(15, DoubleFactory));
 	}
 
 	public static PermutationChromosome<Float64> nextFloat64PermutationChromosome() {
-		return new PermutationChromosome<>(ISeq(15, Float64Factory));
+		return PermutationChromosome.of(ISeq(15, Float64Factory));
 	}
 
 	public static PermutationChromosome<Character> nextCharacterPermutationChromosome() {
-		return new PermutationChromosome<>(ISeq(15, CharacterFactory));
+		return PermutationChromosome.of(ISeq(15, CharacterFactory));
 	}
 
 	public static PermutationChromosome<String> nextStringPermutationChromosome() {
-		return new PermutationChromosome<>(ISeq(15, StringFactory));
+		return PermutationChromosome.of(ISeq(15, StringFactory));
 	}
 
 

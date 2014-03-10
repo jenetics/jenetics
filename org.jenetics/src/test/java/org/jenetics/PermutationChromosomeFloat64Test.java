@@ -30,7 +30,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-15 $</em>
+ * @version <em>$Date: 2014-03-10 $</em>
  */
 public class PermutationChromosomeFloat64Test
 	extends ChromosomeTester<EnumGene<Float64>>
@@ -49,7 +49,7 @@ public class PermutationChromosomeFloat64Test
 
 		@Override
 		public PermutationChromosome<Float64> newInstance() {
-			return new PermutationChromosome<>(_alleles);
+			return PermutationChromosome.of(_alleles);
 		}
 	};
 

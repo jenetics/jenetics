@@ -20,12 +20,12 @@
 package org.jenetics;
 
 import static org.jenetics.EnumGene.Gene;
-import static org.jenetics.util.factories.Int;
 import static org.jenetics.util.functions.StringToInteger;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,7 +40,6 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import javolution.xml.XMLFormat;
-import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.internal.util.HashBuilder;
@@ -49,6 +48,7 @@ import org.jenetics.internal.util.jaxb;
 import org.jenetics.internal.util.model;
 
 import org.jenetics.util.Array;
+import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.bit;
@@ -60,43 +60,25 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
  */
 @XmlJavaTypeAdapter(PermutationChromosome.Model.Adapter.class)
 public final class PermutationChromosome<T>
 	extends AbstractChromosome<EnumGene<T>>
-	implements XMLSerializable
+	implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
 	private ISeq<T> _validAlleles;
 
 	/*
-	 * TODO: Refactor this to the default constructor in version 2.0. Currently 
+	 * TODO: Refactor this to the default constructor in version 2.0. Currently
 	 * not possible, because this would be an incompatible change.
 	 */
-	PermutationChromosome(
-		final ISeq<EnumGene<T>> genes,
-		final boolean internal
-	) {
+	public PermutationChromosome(final ISeq<EnumGene<T>> genes) {
 		super(genes);
 		_validAlleles = genes.get(0).getValidAlleles();
 		_valid = true;
-	}
-
-	/**
-	 * Create a new, random chromosome with the given valid alleles.
-	 *
-	 * @param validAlleles the valid alleles used for this permutation arrays.
-	 */
-	public PermutationChromosome(final ISeq<? extends T> validAlleles) {
-		this(
-			new Array<EnumGene<T>>(
-				validAlleles.length()
-			).fill(Gene(validAlleles)).shuffle().toISeq(),
-			true
-		);
-		_validAlleles = cast.apply(validAlleles);
 	}
 
 	public ISeq<T> getValidAlleles() {
@@ -137,12 +119,12 @@ public final class PermutationChromosome<T>
 	 */
 	@Override
 	public PermutationChromosome<T> newInstance() {
-		return new PermutationChromosome<>(_validAlleles);
+		return of(_validAlleles);
 	}
 
 	@Override
 	public PermutationChromosome<T> newInstance(final ISeq<EnumGene<T>> genes) {
-		return new PermutationChromosome<>(genes, true);
+		return new PermutationChromosome<>(genes);
 	}
 
 	@Override
@@ -174,28 +156,20 @@ public final class PermutationChromosome<T>
 	}
 
 	/**
-	 * Create a new PermutationChromosome from the given genes.
+	 * Create a new, random chromosome with the given valid alleles.
 	 *
-	 * @param genes the genes of this chromosome.
-	 * @return a new PermutationChromosome from the given genes.
-	 *
-	 * @deprecated Use {@link #of(org.jenetics.util.ISeq)} instead.
+	 * @param alleles the valid alleles used for this permutation arrays.
 	 */
-	@Deprecated
-	public static <T> PermutationChromosome<T> valueOf(
-		final ISeq<EnumGene<T>> genes
-	) {
-		return new PermutationChromosome<>(genes, true);
-	}
+	public static <T> PermutationChromosome<T> of(final ISeq<? extends T> alleles) {
+		final PermutationChromosome<T> chromosome = new PermutationChromosome<>(
+			new Array<EnumGene<T>>(alleles.length())
+					.fill(Gene(alleles))
+					.shuffle()
+					.toISeq()
+		);
+		chromosome._validAlleles = cast.apply(alleles);
 
-	/**
-	 * Create a new PermutationChromosome from the given genes.
-	 *
-	 * @param genes the genes of this chromosome.
-	 * @return a new PermutationChromosome from the given genes.
-	 */
-	public static <T> PermutationChromosome<T> of(final ISeq<EnumGene<T>> genes) {
-		return new PermutationChromosome<>(genes, true);
+		return chromosome;
 	}
 
 	/**
@@ -206,8 +180,24 @@ public final class PermutationChromosome<T>
 	 */
 	@SuppressWarnings("deprecation")
 	public static PermutationChromosome<Integer> ofInteger(final int length) {
-		final ISeq<Integer> alleles = new Array<Integer>(length).fill(Int()).toISeq();
-		return new PermutationChromosome<>(alleles);
+		return of(new Array<Integer>(length).fill(Int(0, 1)).toISeq());
+	}
+
+	private static Factory<Integer> Int(final int start, final int step) {
+		return new Factory<Integer>() {
+			private int _value = start;
+
+			@Override
+			public Integer newInstance() {
+				return next();
+			}
+
+			private int next() {
+				final int next = _value;
+				_value += step;
+				return next;
+			}
+		};
 	}
 
 	/* *************************************************************************
@@ -277,7 +267,7 @@ public final class PermutationChromosome<T>
 				genes.set(i, new EnumGene<>(indexes.get(i), ialleles));
 			}
 
-			return new PermutationChromosome(genes.toISeq(), true);
+			return new PermutationChromosome(genes.toISeq());
 		}
 
 		@Override
@@ -365,7 +355,7 @@ public final class PermutationChromosome<T>
 					genes.set(i, new EnumGene(indexes.get(i), seq));
 				}
 
-				return new PermutationChromosome(genes.toISeq(), true);
+				return new PermutationChromosome(genes.toISeq());
 			}
 		}
 
