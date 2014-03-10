@@ -32,8 +32,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.util.Function;
@@ -80,7 +78,7 @@ public class Histogram<C> extends MappedAccumulator<C> {
 	 * classes is {@code separators.length + 1}. A valid histogram consists of
 	 * at least two classes (with one separator).
 	 *
-	 * @see #valueOf(Comparable...)
+	 * @see #of(Comparable...)
 	 *
 	 * @param comparator the comparator for the separators.
 	 * @param separators the class separators.
@@ -276,7 +274,7 @@ public class Histogram<C> extends MappedAccumulator<C> {
 	 * @return the χ2 value of the current histogram.
 	 * @throws NullPointerException if {@code cdf} is {@code null}.
 	 */
-	public double χ2(final Function<C, Float64> cdf, final C min, final C max) {
+	public double χ2(final Function<C, Double> cdf, final C min, final C max) {
 		double χ2 = 0;
 		for (int j = 0; j < _histogram.length; ++j) {
 			final long n0j = n0(j, cdf, min, max);
@@ -297,41 +295,41 @@ public class Histogram<C> extends MappedAccumulator<C> {
 	 * @return the χ2 value of the current histogram.
 	 * @throws NullPointerException if {@code cdf} is {@code null}.
 	 */
-	public double χ2(final Function<C, Float64> cdf) {
+	public double χ2(final Function<C, Double> cdf) {
 		return χ2(cdf, null, null);
 	}
 
-	private long n0(final int j, final Function<C, Float64> cdf, final C min, final C max) {
-		Float64 p0j = Float64.ZERO;
+	private long n0(final int j, final Function<C, Double> cdf, final C min, final C max) {
+		double p0j = 0.0;
 		if (j == 0) {
 			p0j = cdf.apply(_separators[0]);
 			if (min != null) {
-				p0j = p0j.minus(cdf.apply(min));
+				p0j = p0j - cdf.apply(min);
 			}
 		} else if (j == _histogram.length - 1) {
 			if (max != null) {
-				p0j = cdf.apply(max).minus(cdf.apply(_separators[_separators.length - 1]));
+				p0j = cdf.apply(max) - cdf.apply(_separators[_separators.length - 1]);
 			} else {
-				p0j = Float64.ONE.minus(cdf.apply(_separators[_separators.length - 1]));
+				p0j = 1.0 - cdf.apply(_separators[_separators.length - 1]);
 			}
 		} else {
-			p0j = cdf.apply(_separators[j]).minus(cdf.apply(_separators[j - 1]));
+			p0j = cdf.apply(_separators[j]) - cdf.apply(_separators[j - 1]);
 		}
 
-		return max(round(p0j.doubleValue()*_samples), 1L);
+		return max(round(p0j*_samples), 1L);
 	}
 
 	/**
 	 * @see #χ2(Function)
 	 */
-	public double chisqr(final Function<C, Float64> cdf) {
+	public double chisqr(final Function<C, Double> cdf) {
 		return χ2(cdf);
 	}
 
 	/**
 	 * @see #χ2(Function, Object, Object)
 	 */
-	public double chisqr(final Function<C, Float64> cdf, final C min, final C max) {
+	public double chisqr(final Function<C, Double> cdf, final C min, final C max) {
 		return χ2(cdf, min, max);
 	}
 
@@ -369,26 +367,6 @@ public class Histogram<C> extends MappedAccumulator<C> {
 		return (Histogram<C>)super.clone();
 	}
 
-
-	/**
-	 * Create a new Histogram with the given class separators. The classes are
-	 * sorted by its natural order.
-	 *
-	 * @param separators the class separators.
-	 * @return a new Histogram.
-	 * @throws NullPointerException if the {@code separators} are {@code null}.
-	 * @throws IllegalArgumentException if {@code separators.length == 0}.
-	 *
-	 * @deprecated Use {@link #of(Comparable[])} instead.
-	 */
-	@Deprecated
-	@SuppressWarnings("unchecked")
-	public static <C extends Comparable<? super C>> Histogram<C> valueOf(
-		final C... separators
-	) {
-		return new Histogram<C>(COMPARATOR, separators);
-	}
-
 	/**
 	 * Create a new Histogram with the given class separators. The classes are
 	 * sorted by its natural order.
@@ -412,39 +390,6 @@ public class Histogram<C> extends MappedAccumulator<C> {
 			return ((Comparable)o1).compareTo(o2);
 		}
 	};
-
-	/**
-	 * Return a <i>histogram</i> for {@link Double} values. The <i>histogram</i>
-	 * array of the returned {@link Histogram} will look like this:
-	 *
-	 * <pre>
-	 *    min                            max
-	 *     +----+----+----+----+  ~  +----+
-	 *     | 1  | 2  | 3  | 4  |     | nc |
-	 *     +----+----+----+----+  ~  +----+
-	 * </pre>
-	 *
-	 * The range of all classes will be equal: {@code (max - min)/nclasses}.
-	 *
-	 * @param min the minimum range value of the returned histogram.
-	 * @param max the maximum range value of the returned histogram.
-	 * @param nclasses the number of classes of the returned histogram. The
-	 *        number of separators will be {@code nclasses - 1}.
-	 * @return a new <i>histogram</i> for {@link Double} values.
-	 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
-	 * @throws IllegalArgumentException if {@code min.compareTo(max) >= 0} or
-	 *         {@code nclasses < 2}.
-	 *
-	 * @deprecated Use {@link #of(Double, Double, int)} instead.
-	 */
-	@Deprecated
-	public static Histogram<Double> valueOf(
-		final Double min,
-		final Double max,
-		final int nclasses
-	) {
-		return of(toSeparators(min, max, nclasses));
-	}
 
 	/**
 	 * Return a <i>histogram</i> for {@link Double} values. The <i>histogram</i>
@@ -528,18 +473,6 @@ public class Histogram<C> extends MappedAccumulator<C> {
 	 *         {@code nclasses < 2}.
 	 */
 	public static Histogram<Long> of(
-		final Long min,
-		final Long max,
-		final int nclasses
-	) {
-		return of(toSeparators(min, max, nclasses));
-	}
-
-	/**
-	 * @deprecated Use {@link #of(Long, Long, int)} instead.
-	 */
-	@Deprecated
-	public static Histogram<Long> valueOf(
 		final Long min,
 		final Long max,
 		final int nclasses

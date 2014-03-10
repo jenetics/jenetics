@@ -112,18 +112,6 @@ public class Quantile<N extends Number> extends MappedAccumulator<N> {
 	 * Return the computed quantile value.
 	 *
 	 * @return the quantile value.
-	 *
-	 * @deprecated Use {@link #getValue()} instead.
-	 */
-	@Deprecated
-	public double getQuantile() {
-		return _q[2];
-	}
-
-	/**
-	 * Return the computed quantile value.
-	 *
-	 * @return the quantile value.
 	 */
 	public double getValue() {
 		return _q[2];
@@ -313,7 +301,7 @@ public class Quantile<N extends Number> extends MappedAccumulator<N> {
 	public String toString() {
 		return format(
 			"%s[samples=%d, quantile=%f]",
-			getClass().getSimpleName(), getSamples(), getQuantile()
+			getClass().getSimpleName(), getSamples(), getValue()
 		);
 	}
 

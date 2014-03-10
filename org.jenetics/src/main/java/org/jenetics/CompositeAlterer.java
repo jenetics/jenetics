@@ -62,20 +62,6 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 		_alterers = normalize(alterers).toISeq();
 	}
 
-	/**
-	 * Combine the given alterers.
-	 *
-	 * @param alterers the alterers to combine.
-	 * @throws NullPointerException if one of the alterers is {@code null}.
-	 *
-	 * @deprecated Use {@link #of(Alterer...)} instead.
-	 */
-	@Deprecated
-	@SafeVarargs
-	public CompositeAlterer(final Alterer<G>... alterers) {
-		this(Array.of(alterers));
-	}
-
 	private static <G extends Gene<?, G>>
 	Array<Alterer<G>> normalize(final Seq<Alterer<G>> alterers) {
 		final Deque<Alterer<G>> stack = new LinkedList<>(alterers.asList());
@@ -122,7 +108,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	 * @throws NullPointerException if the given alterer is {@code null}.
 	 */
 	public CompositeAlterer<G> append(final Alterer<G> alterer) {
-		return CompositeAlterer.valueOf(this, requireNonNull(alterer, "Alterer"));
+		return CompositeAlterer.of(this, requireNonNull(alterer, "Alterer"));
 	}
 
 	/**
@@ -163,21 +149,6 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	 *
 	 * @param alterers the alterers to combine.
 	 * @throws NullPointerException if one of the alterers is {@code null}.
-	 *
-	 * @deprecated Use {@link #of(Alterer[])} instead.
-	 */
-	@Deprecated
-	@SafeVarargs
-	public static <G extends Gene<?, G>>
-	CompositeAlterer<G> valueOf(final Alterer<G>... alterers) {
-		return new CompositeAlterer<>(Array.of(alterers));
-	}
-
-	/**
-	 * Combine the given alterers.
-	 *
-	 * @param alterers the alterers to combine.
-	 * @throws NullPointerException if one of the alterers is {@code null}.
 	 */
 	@SafeVarargs
 	public static <G extends Gene<?, G>>
@@ -200,6 +171,6 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 		final Alterer<T> a1,
 		final Alterer<T> a2
 	) {
-		return CompositeAlterer.valueOf(a1, a2);
+		return CompositeAlterer.of(a1, a2);
 	}
 }
