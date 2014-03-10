@@ -21,8 +21,6 @@ package org.jenetics;
 
 import java.io.Serializable;
 
-import javolution.lang.ValueType;
-
 import org.jenetics.util.Factory;
 import org.jenetics.util.Verifiable;
 
@@ -41,7 +39,6 @@ public interface Gene<A, G extends Gene<A, G>>
 	extends
 		Factory<G>,
 		Serializable,
-		ValueType,
 		Verifiable
 {
 
@@ -60,22 +57,13 @@ public interface Gene<A, G extends Gene<A, G>>
 	@Override
 	public G newInstance();
 
-//	/**
-//	 * Create a new gene from the given {@code value} and the gene context.
-//	 *
-//	 * @since 1.6
-//	 * @param value the value of the new gene.
-//	 * @return a new gene with the given value.
-//	 */
-//	public G newInstance(final A value);
-
 	/**
-	 * @deprecated This method is introduced by the {@link javolution.lang.ValueType}
-	 *             of the <i>Javolution</i> library, which will be removed in
-	 *             the next major version.
+	 * Create a new gene from the given {@code value} and the gene context.
+	 *
+	 * @since 2.0
+	 * @param value the value of the new gene.
+	 * @return a new gene with the given value.
 	 */
-	@Deprecated
-	@Override
-	public Object copy();
+	public G newInstance(final A value);
 
 }

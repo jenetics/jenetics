@@ -93,12 +93,6 @@ abstract class AbstractBoundedGene<
 		return _max;
 	}
 
-	@Deprecated
-	@Override
-	public Object copy() {
-		return this;
-	}
-
 	@Override
 	public boolean isValid() {
 		return _valid;

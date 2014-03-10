@@ -136,12 +136,6 @@ public final class CharacterGene
 		return _validCharacters;
 	}
 
-	@Deprecated
-	@Override
-	public CharacterGene copy() {
-		return of(_character, _validCharacters);
-	}
-
 	/**
 	 * @see java.lang.Character#compareTo(java.lang.Character)
 	 * @param that The other gene to compare.

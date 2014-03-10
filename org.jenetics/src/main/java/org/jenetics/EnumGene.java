@@ -139,12 +139,6 @@ public final class EnumGene<A>
 		return _validAlleles.get(_alleleIndex);
 	}
 
-	@Deprecated
-	@Override
-	public EnumGene<A> copy() {
-		return new EnumGene<>(_alleleIndex, _validAlleles);
-	}
-
 	@Override
 	public boolean isValid() {
 		return _alleleIndex >= 0 && _alleleIndex < _validAlleles.length();
