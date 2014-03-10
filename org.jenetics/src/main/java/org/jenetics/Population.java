@@ -40,9 +40,6 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import javolution.xml.XMLFormat;
-import javolution.xml.stream.XMLStreamException;
-
 import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.internal.util.jaxb;
 import org.jenetics.internal.util.model;
@@ -381,43 +378,6 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 		return out.toString();
 	}
-
-	/* *************************************************************************
-	 *  XML object serialization
-	 * ************************************************************************/
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	static final XMLFormat<Population>
-	XML = new XMLFormat<Population>(Population.class)
-	{
-		private static final String SIZE = "size";
-
-		@Override
-		public Population newInstance(
-			final Class<Population> cls, final InputElement xml
-		)
-			throws XMLStreamException
-		{
-			final int size = xml.getAttribute(SIZE, 10);
-			final Population p = new Population(size);
-			for (int i = 0; i < size; ++i) {
-				p.add(xml.<Phenotype>getNext());
-			}
-			return p;
-		}
-		@Override
-		public void write(final Population p, final OutputElement xml)
-			throws XMLStreamException
-		{
-			xml.setAttribute(SIZE, p.size());
-			for (Object phenotype : p) {
-				xml.add(phenotype);
-			}
-		}
-		@Override
-		public void read(final InputElement xml, final Population p) {
-		}
-	};
 
 	/* *************************************************************************
 	 *  JAXB object serialization

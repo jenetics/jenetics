@@ -22,6 +22,7 @@ package org.jenetics;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.object.eq;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -32,12 +33,6 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import javolution.lang.Realtime;
-import javolution.text.Text;
-import javolution.xml.XMLFormat;
-import javolution.xml.XMLSerializable;
-import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.internal.util.model.ModelType;
@@ -61,8 +56,7 @@ public final class CharacterGene
 	implements
 		Gene<Character, CharacterGene>,
 		Comparable<CharacterGene>,
-		Realtime,
-		XMLSerializable
+		Serializable
 {
 	private static final long serialVersionUID = 1L;
 
@@ -173,12 +167,6 @@ public final class CharacterGene
 	public String toString() {
 		return _character.toString();
 	}
-
-	@Override
-	public Text toText() {
-		return Text.valueOf(_character);
-	}
-
 
 	/* *************************************************************************
 	 *  Property access methods.
@@ -303,45 +291,6 @@ public final class CharacterGene
 		}
 		return genes.toISeq();
 	}
-
-	/* *************************************************************************
-	 *  XML object serialization
-	 * ************************************************************************/
-
-	static final XMLFormat<CharacterGene>
-	XML = new XMLFormat<CharacterGene>(CharacterGene.class)
-	{
-		private static final String VALID_CHARS = "valid-characters";
-
-		@Override
-		public CharacterGene newInstance(
-			final Class<CharacterGene> cls, final InputElement xml
-		)
-			throws XMLStreamException
-		{
-			final String validCharacters = xml.getAttribute(
-				VALID_CHARS,
-				DEFAULT_CHARACTERS.toString()
-			);
-			final String character = xml.getText().toString();
-
-			return CharacterGene.of(
-				character.charAt(0),
-				new CharSeq(validCharacters)
-			);
-		}
-		@Override
-		public void write(final CharacterGene gene, final OutputElement xml)
-			throws XMLStreamException
-		{
-			xml.setAttribute(VALID_CHARS, gene.getValidCharacters().toString());
-			xml.addText(gene._character.toString());
-		}
-		@Override
-		public void read(final InputElement element, final CharacterGene gene) {
-		}
-	};
-
 
 	/* *************************************************************************
 	 *  JAXB object serialization

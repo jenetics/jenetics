@@ -25,6 +25,7 @@ import static org.jenetics.internal.util.object.eq;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -33,11 +34,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-
-import javolution.text.CharArray;
-import javolution.xml.XMLFormat;
-import javolution.xml.XMLSerializable;
-import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.internal.util.model.ModelType;
@@ -54,14 +50,14 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
  */
 public class CharacterChromosome
 	extends
 		AbstractChromosome<CharacterGene>
 	implements
 		CharSequence,
-		XMLSerializable
+		Serializable
 {
 	private static final long serialVersionUID = 1L;
 
@@ -328,52 +324,6 @@ public class CharacterChromosome
 
 		_genes = genes.toISeq();
 	}
-
-	/* *************************************************************************
-	 *  XML object serialization
-	 * ************************************************************************/
-
-	static final XMLFormat<CharacterChromosome>
-		XML = new XMLFormat<CharacterChromosome>(CharacterChromosome.class)
-	{
-		private static final String LENGTH = "length";
-		private static final String VALID_CHARS = "valid-characters";
-
-		@Override
-		public CharacterChromosome newInstance(
-			final Class<CharacterChromosome> cls, final InputElement xml
-		)
-			throws XMLStreamException
-		{
-			final int length = xml.getAttribute(LENGTH, 0);
-			final CharSeq validCharacters = new CharSeq(xml.getAttribute(
-				VALID_CHARS, CharacterGene.DEFAULT_CHARACTERS.toString()
-			));
-
-			final Array<CharacterGene> array = new Array<>(length);
-			final CharArray values = xml.getText();
-			for (int i = 0; i < length; ++i) {
-				array.set(i, CharacterGene.of(values.charAt(i), validCharacters));
-			}
-			return new CharacterChromosome(array.toISeq());
-		}
-		@Override
-		public void write(final CharacterChromosome chromosome, final OutputElement xml)
-			throws XMLStreamException
-		{
-			xml.setAttribute(LENGTH, chromosome.length());
-			xml.setAttribute(VALID_CHARS, chromosome._validCharacters.toString());
-			final StringBuilder out = new StringBuilder(chromosome.length());
-			for (CharacterGene gene : chromosome) {
-				out.append(gene.getAllele().charValue());
-			}
-			xml.addText(out.toString());
-		}
-		@Override
-		public void read(final InputElement element, final CharacterChromosome chromosome) {
-		}
-
-	};
 
 	/* *************************************************************************
 	 *  JAXB object serialization
