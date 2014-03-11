@@ -29,7 +29,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.4 &mdash; <em>$Date: 2014-03-10 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2014-03-11 $</em>
  */
 public final class math extends StaticObject {
 	private math() {}
@@ -454,7 +454,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.3
-	 * @version 1.3 &mdash; <em>$Date: 2014-03-10 $</em>
+	 * @version 1.3 &mdash; <em>$Date: 2014-03-11 $</em>
 	 */
 	public static final class statistics extends StaticObject {
 		private statistics() {}
@@ -551,13 +551,13 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.2 &mdash; <em>$Date: 2014-03-10 $</em>
+	 * @version 1.2 &mdash; <em>$Date: 2014-03-11 $</em>
 	 */
 	public static final class random extends StaticObject {
 		private random() {}
 
 		/**
-		 * Returns a pseudorandom, uniformly distributed int value between min
+		 * Returns a pseudo-random, uniformly distributed int value between min
 		 * and max (min and max included).
 		 *
 		 * @param min lower bound for generated integer
@@ -591,7 +591,7 @@ public final class math extends StaticObject {
 		}
 
 		/**
-		 * Returns a pseudorandom, uniformly distributed int value between min
+		 * Returns a pseudo-random, uniformly distributed int value between min
 		 * and max (min and max included).
 		 *
 		 * @param min lower bound for generated long integer
@@ -627,14 +627,14 @@ public final class math extends StaticObject {
 		}
 
 		/**
-		 * Returns a pseudorandom, uniformly distributed int value between 0
+		 * Returns a pseudo-random, uniformly distributed int value between 0
 		 * (inclusive) and the specified value (exclusive), drawn from the given
 		 * random number generator's sequence.
 		 *
 		 * @param random the random engine used for creating the random number.
 		 * @param n the bound on the random number to be returned. Must be
 		 *        positive.
-		 * @return the next pseudorandom, uniformly distributed int value
+		 * @return the next pseudo-random, uniformly distributed int value
 		 *         between 0 (inclusive) and n (exclusive) from the given random
 		 *         number generator's sequence
 		 * @throws IllegalArgumentException if n is smaller than 1.
@@ -657,7 +657,7 @@ public final class math extends StaticObject {
 		}
 
 		/**
-		 * Returns a pseudorandom, uniformly distributed double value between
+		 * Returns a pseudo-random, uniformly distributed double value between
 		 * min (inclusively) and max (exclusively).
 		 *
 		 * @param random the random engine used for creating the random number.
@@ -674,7 +674,7 @@ public final class math extends StaticObject {
 		}
 
 		/**
-		 * Returns a pseudorandom, uniformly distributed double value between
+		 * Returns a pseudo-random, uniformly distributed double value between
 		 * min (inclusively) and max (exclusively).
 		 *
 		 * @param random the random engine used for creating the random number.
