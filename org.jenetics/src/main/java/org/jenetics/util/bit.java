@@ -21,8 +21,6 @@ package org.jenetics.util;
 
 import static java.lang.Math.min;
 
-import org.jscience.mathematics.number.LargeInteger;
-
 
 /**
  * Some bit utils. All operation assume <a href="http://en.wikipedia.org/wiki/Endianness">

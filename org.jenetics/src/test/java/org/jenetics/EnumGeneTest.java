@@ -32,7 +32,6 @@ import org.jenetics.util.ISeq;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version <em>$Date$</em>
  */
-@SuppressWarnings("deprecation")
 public class EnumGeneTest extends GeneTester<EnumGene<Integer>> {
 
 	private final Factory<EnumGene<Integer>>

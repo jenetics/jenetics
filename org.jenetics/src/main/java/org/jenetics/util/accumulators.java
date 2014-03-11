@@ -25,8 +25,6 @@ import static org.jenetics.internal.util.object.eq;
 
 import java.util.Iterator;
 
-import org.jscience.mathematics.structure.GroupAdditive;
-
 import org.jenetics.internal.util.HashBuilder;
 
 
