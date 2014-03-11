@@ -25,8 +25,6 @@ import static org.jenetics.internal.util.object.eq;
 
 import java.util.Iterator;
 
-import org.jscience.mathematics.structure.GroupAdditive;
-
 import org.jenetics.internal.util.HashBuilder;
 
 
@@ -36,7 +34,7 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-11 $</em>
  */
 public final class accumulators extends StaticObject {
 	private accumulators() {}
@@ -57,7 +55,7 @@ public final class accumulators extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &ndash; <em>$Date: 2014-03-10 $</em>
+	 * @version 1.0 &ndash; <em>$Date: 2014-03-11 $</em>
 	 */
 	public static final class Min<C extends Comparable<? super C>>
 		extends MappedAccumulator<C>
@@ -150,7 +148,7 @@ public final class accumulators extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &ndash; <em>$Date: 2014-03-10 $</em>
+	 * @version 1.0 &ndash; <em>$Date: 2014-03-11 $</em>
 	 */
 	public static final class Max<C extends Comparable<? super C>>
 		extends MappedAccumulator<C>
@@ -243,7 +241,7 @@ public final class accumulators extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &ndash; <em>$Date: 2014-03-10 $</em>
+	 * @version 1.0 &ndash; <em>$Date: 2014-03-11 $</em>
 	 */
 	public static final class MinMax<C extends Comparable<? super C>>
 		extends MappedAccumulator<C>

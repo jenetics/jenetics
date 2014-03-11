@@ -32,9 +32,8 @@ import org.jenetics.PersistentObject.Marshalling;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-10 $</em>
+ * @version <em>$Date: 2014-03-11 $</em>
  */
-@SuppressWarnings("deprecation")
 public class MarshallingTest {
 
 	private static final String RESOURCE_PATTERN = "/org/jenetics/serialization/%s.%s";

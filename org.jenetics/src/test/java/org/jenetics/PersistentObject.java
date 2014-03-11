@@ -54,9 +54,8 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-10 $</em>
+ * @version <em>$Date: 2014-03-11 $</em>
  */
-@SuppressWarnings("deprecation")
 public class PersistentObject<T> {
 
 	public static final class Marshalling {

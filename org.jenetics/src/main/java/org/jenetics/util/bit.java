@@ -21,8 +21,6 @@ package org.jenetics.util;
 
 import static java.lang.Math.min;
 
-import org.jscience.mathematics.number.LargeInteger;
-
 
 /**
  * Some bit utils. All operation assume <a href="http://en.wikipedia.org/wiki/Endianness">
@@ -38,7 +36,7 @@ import org.jscience.mathematics.number.LargeInteger;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.5 &mdash; <em>$Date: 2014-03-10 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-03-11 $</em>
  */
 public final class bit extends StaticObject {
 	private bit() {}

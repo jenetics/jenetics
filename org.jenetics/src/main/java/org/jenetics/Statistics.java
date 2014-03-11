@@ -43,7 +43,7 @@ import org.jenetics.util.accumulators.MinMax;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-11 $</em>
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	implements Serializable
@@ -54,7 +54,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-03-11 $</em>
 	 */
 	public static class Builder<
 		G extends Gene<?, G>,
@@ -400,7 +400,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-03-11 $</em>
 	 */
 	public static final class Time implements Serializable {
 		private static final long serialVersionUID = 1L;
@@ -513,11 +513,6 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 			return out.toString();
 		}
-
-		private static String fd(final Measurable<Duration> duration) {
-			return String.format("%d ns", duration.longValue(SI.NANO(SI.SECOND)));
-		}
-
  	}
 
 
@@ -527,7 +522,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-03-11 $</em>
 	 */
 	public static class Calculator<
 		G extends Gene<?, G>,
