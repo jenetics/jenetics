@@ -33,8 +33,6 @@ repositories {
 
 
 dependencies {
-	compile Include.JScience
-
 	testCompile Include.Apache.Commons.Math
 	testCompile Include.TestNG
 }

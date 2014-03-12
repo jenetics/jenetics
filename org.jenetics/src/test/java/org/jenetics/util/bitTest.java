@@ -19,6 +19,7 @@
  */
 package org.jenetics.util;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Random;
@@ -26,8 +27,6 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import org.jscience.mathematics.number.LargeInteger;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -433,7 +432,7 @@ public class bitTest {
 				random.nextBytes(data);
 				_pos += 1;
 
-				return new Object[]{ LargeInteger.valueOf(data, 0, data.length) };
+				return new Object[]{ new BigInteger(data) };
 			}
 
 			@Override

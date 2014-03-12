@@ -133,7 +133,6 @@
 	<test name="org.jenetics.PermutationChromosome">
 		<classes>
 			<class name="org.jenetics.PermutationChromosomeTest" />
-			<class name="org.jenetics.PermutationChromosomeFloat64Test" />
 			<class name="org.jenetics.PermutationChromosomeCharacterTest" />
 		</classes>
 	</test>

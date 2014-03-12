@@ -29,8 +29,7 @@ import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.Test;
 
-import javolution.context.ConcurrentContext;
-
+import org.jenetics.util.Concurrent;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 import org.jenetics.util.RandomRegistry;
@@ -56,9 +55,9 @@ public class GeneticAlgorithmTest {
 
 	@Test
 	public void optimize() {
-		final int concurrency = ConcurrentContext.getConcurrency();
+		final ForkJoinPool pool = Concurrent.getForkJoinPool();
 		try (Scoped<Random> scope = RandomRegistry.scope(new Random(12345))) {
-			ConcurrentContext.setConcurrency(0);
+			Concurrent.setForkJoinPool(null);
 			RandomRegistry.setRandom(new Random(123456));
 
 			final Factory<Genotype<DoubleGene>> factory = Genotype.of(
@@ -81,8 +80,8 @@ public class GeneticAlgorithmTest {
 			Assert.assertEquals(s.getAgeMean(), 21.40500000000002);
 			Assert.assertEquals(s.getAgeVariance(), 648.051231155779);
 			Assert.assertEquals(s.getSamples(), 200);
-			Assert.assertEquals(s.getBestFitness().doubleValue(), 0.9955101231254028, 0.00000001);
-			Assert.assertEquals(s.getWorstFitness().doubleValue(), 0.03640144995042627, 0.00000001);
+			Assert.assertEquals(s.getBestFitness(), 0.9955101231254028, 0.00000001);
+			Assert.assertEquals(s.getWorstFitness(), 0.03640144995042627, 0.00000001);
 
 			s = ga.getStatistics();
 			Reporter.log(s.toString());
@@ -90,10 +89,10 @@ public class GeneticAlgorithmTest {
 			Assert.assertEquals(s.getAgeMean(), 23.15500000000001, 0.000001);
 			Assert.assertEquals(s.getAgeVariance(), 82.23213567839196, 0.000001);
 			Assert.assertEquals(s.getSamples(), 200);
-			Assert.assertEquals(s.getBestFitness().doubleValue(), 0.9955101231254028, 0.00000001);
-			Assert.assertEquals(s.getWorstFitness().doubleValue(), 0.9955101231254028, 0.00000001);
+			Assert.assertEquals(s.getBestFitness(), 0.9955101231254028, 0.00000001);
+			Assert.assertEquals(s.getWorstFitness(), 0.9955101231254028, 0.00000001);
 		} finally {
-			ConcurrentContext.setConcurrency(concurrency);
+			Concurrent.setForkJoinPool(pool);
 		}
 
 	}
