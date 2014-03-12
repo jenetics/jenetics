@@ -32,6 +32,7 @@ public class RandomRegistryTest {
 
 	@Test
 	public void setDefault() {
+		RandomRegistry.reset();
 		final Random devault = RandomRegistry.getRandom();
 		Assert.assertNotNull(devault);
 
