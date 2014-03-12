@@ -19,7 +19,8 @@
  */
 package org.jenetics.util;
 
-import java.util.Objects;
+import static java.util.Objects.requireNonNull;
+
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
@@ -85,34 +86,75 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date$</em>
+ * @version 2.0 &mdash; <em>$Date$</em>
  */
-public final class RandRegistry extends StaticObject {
-	private RandRegistry() {}
+public final class RandomRegistry extends StaticObject {
+	private RandomRegistry() {}
+
+	// Default random engine used.
+	private static final Supplier<Random> DEFAULT = new Supplier<Random>() {
+		@Override
+		public Random get() {
+			return ThreadLocalRandom.current();
+		}
+	};
 
 	private static final ThreadLocal<Entry> THREAD_LOCAL_ENTRY = new ThreadLocal<>();
 
 	private static AtomicReference<Entry> ENTRY = new AtomicReference<>(
-		new Entry(ThreadLocalRandom.current())
+		new Entry(DEFAULT)
 	);
 
+	/**
+	 * Return the global {@link Random} object.
+	 *
+	 * @return the global {@link Random} object.
+	 */
 	public static Random getRandom() {
-		return getEntry().random;
+		return getEntry().random.get();
 	}
 
+	/**
+	 * Set the new global {@link Random} object for the GA. The given
+	 * {@link Random} <b>must</b> be thread safe, which is the case for the
+	 * default Java {@code Random} implementation.
+	 * <p/>
+	 * Setting a <i>thread-local</i> random object leads, in general, to a faster
+	 * PRN generation, because the given {@code Random} engine don't have to be
+	 * thread-safe.
+	 *
+	 * @see #setRandom(ThreadLocal)
+	 *
+	 * @param random the new global {@link Random} object for the GA.
+	 * @throws NullPointerException if the {@code random} object is {@code null}.
+	 */
 	public static void setRandom(final Random random) {
-		Objects.requireNonNull(random);
-		setEntry(random);
+		requireNonNull(random, "Random must not be null.");
+		setEntry(new RandomSupplier<>(random));
 	}
 
-	private static Entry getEntry() {
-		final Entry e = THREAD_LOCAL_ENTRY.get();
-		return e != null ? e : ENTRY.get();
+	/**
+	 * Set the new global {@link Random} object for the GA. The given
+	 * {@link Random} don't have be thread safe, because the given
+	 * {@link ThreadLocal} wrapper guarantees thread safety. Setting a
+	 * <i>thread-local</i> random object leads, in general, to a faster
+	 * PRN generation, when using a non-blocking PRNG. This is the preferred
+	 * way for changing the PRNG.
+	 *
+	 * @param random the thread-local random engine to use.
+	 * @throws NullPointerException if the {@code random} object is {@code null}.
+	 */
+	public static void setRandom(final ThreadLocal<? extends Random> random) {
+		requireNonNull(random, "Random must not be null.");
+		setEntry(new ThreadLocalRandomSupplier<>(random));
 	}
 
-	private static void setEntry(final Random random) {
-		final Entry e = THREAD_LOCAL_ENTRY.get();
-		if (e != null) e.random = random; else ENTRY.set(new Entry(random));
+	/**
+	 * Set the random object to it's default value. The <i>default</i> used PRNG
+	 * is the {@link ThreadLocalRandom} PRNG.
+	 */
+	public static void reset() {
+		setEntry(DEFAULT);
 	}
 
 	/**
@@ -121,7 +163,22 @@ public final class RandRegistry extends StaticObject {
 	 * @param random the PRNG used for the opened scope.
 	 * @return the scope with the given random object.
 	 */
-	public static Scoped<Random> scope(final Random random) {
+	public static <R extends Random> Scoped<R> scope(final R random) {
+		return scope(new RandomSupplier<>(random));
+	}
+
+	/**
+	 * Opens a new {@code Scope} with the given random engine.
+	 *
+	 * @param random the PRNG used for the opened scope.
+	 * @return the scope with the given random object.
+	 */
+	public static <R extends Random> Scoped<R> scope(final ThreadLocal<R> random) {
+		return scope(new ThreadLocalRandomSupplier<>(random));
+	}
+
+
+	private static <R extends Random> Scoped<R> scope(final Supplier<R> random) {
 		final Entry e = THREAD_LOCAL_ENTRY.get();
 		if (e != null) {
 			THREAD_LOCAL_ENTRY.set(e.inner(random));
@@ -129,19 +186,35 @@ public final class RandRegistry extends StaticObject {
 			THREAD_LOCAL_ENTRY.set(new Entry(random, Thread.currentThread()));
 		}
 
-		return new RandomScope(random);
+		return new RandomScope<>(random);
 	}
 
-	private static final class RandomScope implements Scoped<Random> {
-		private final Random _random;
+	private static Entry getEntry() {
+		final Entry e = THREAD_LOCAL_ENTRY.get();
+		return e != null ? e : ENTRY.get();
+	}
 
-		public RandomScope(final Random random) {
+	private static void setEntry(final Supplier<? extends Random> random) {
+		final Entry e = THREAD_LOCAL_ENTRY.get();
+		if (e != null) e.random = random; else  ENTRY.set(new Entry(random));
+	}
+
+	/* *************************************************************************
+	 *  Some private helper functions.
+	 * ************************************************************************/
+
+	private static final class RandomScope<R extends Random>
+		implements Scoped<R>
+	{
+		private final Supplier<R> _random;
+
+		public RandomScope(final Supplier<R> random) {
 			_random = random;
 		}
 
 		@Override
-		public Random get() {
-			return _random;
+		public R get() {
+			return _random.get();
 		}
 
 		@Override
@@ -167,26 +240,64 @@ public final class RandRegistry extends StaticObject {
 		final Thread thread;
 		final Entry parent;
 
-		Random random;
+		Supplier<? extends Random> random;
 
-		Entry(final Random random, final Entry parent, final Thread thread) {
+		Entry(
+			final Supplier<? extends Random> random,
+			final Entry parent,
+			final Thread thread
+		) {
 			this.random = random;
 			this.parent = parent;
 			this.thread = thread;
 		}
 
-		Entry(final Random random, final Thread thread) {
+		Entry(final Supplier<? extends Random> random, final Thread thread) {
 			this(random, null, thread);
 		}
 
-		Entry(final Random random) {
+		Entry(final Supplier<? extends Random> random) {
 			this(random, null, null);
 		}
 
-		Entry inner(final Random random) {
+		Entry inner(final Supplier<? extends Random> random) {
 			assert(thread == Thread.currentThread());
 			return new Entry(random, this, thread);
 		}
+	}
+
+	private final static class RandomSupplier<R extends Random>
+		implements Supplier<R>
+	{
+		private final R _random;
+
+		RandomSupplier(final R random) {
+			_random = requireNonNull(random, "Random must not be null.");
+		}
+
+		@Override
+		public final R get() {
+			return _random;
+		}
+	}
+
+	private final static class ThreadLocalRandomSupplier<R extends Random>
+		implements Supplier<R>
+	{
+		private final ThreadLocal<R> _random;
+
+		ThreadLocalRandomSupplier(final ThreadLocal<R> random) {
+			_random = requireNonNull(random, "Random must not be null.");
+		}
+
+		@Override
+		public final R get() {
+			return _random.get();
+		}
+	}
+
+	private static interface Supplier<T> {
+		T get();
 	}
 
 }
