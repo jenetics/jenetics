@@ -31,6 +31,36 @@ import org.testng.annotations.Test;
  */
 public class RandRegistryTest {
 
+//	@Test
+//	public void setDefault() {
+//		final Random devault = RandRegistry.getRandom();
+//		Assert.assertNotNull(devault);
+//
+//		RandRegistry.setRandom(new Random());
+//		Assert.assertNotNull(RandRegistry.getRandom());
+//		RandRegistry.reset();
+//
+//		Assert.assertSame(RandRegistry.getRandom(), devault);
+//	}
+
+	@Test
+	public void setRandom() {
+		final Random random = new Random();
+		RandRegistry.setRandom(random);
+
+		Assert.assertSame(RandRegistry.getRandom(), random);
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void setNullRandom() {
+		RandRegistry.setRandom((Random)null);
+	}
+
+//	@Test(expectedExceptions = NullPointerException.class)
+//	public void setNullTLRandom() {
+//		RandRegistry.setRandom((ThreadLocal<Random>)null);
+//	}
+
 	@Test
 	public void localContext() {
 		final Random random = RandRegistry.getRandom();
