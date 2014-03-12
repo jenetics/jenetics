@@ -84,7 +84,7 @@ public class NormalDistribution<
 			Function<N, Double>,
 			Serializable
 	{
-		private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 2L;
 
 		private final Range<N> _domain;
 		private final double _mean;
@@ -138,7 +138,7 @@ public class NormalDistribution<
 			Function<N, Double>,
 			Serializable
 	{
-		private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 2L;
 
 		private final double _min;
 		private final double _max;

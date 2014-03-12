@@ -68,7 +68,7 @@ public class UniformDistribution<
 			Function<N, Double>,
 			Serializable
 	{
-		private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 2L;
 
 		private final double _min;
 		private final double _max;
@@ -77,7 +77,7 @@ public class UniformDistribution<
 		public PDF(final Range<N> domain) {
 			_min = domain.getMin().doubleValue();
 			_max = domain.getMax().doubleValue();
-			_probability = Double.valueOf(1.0/(_max - _min));
+			_probability = 1.0/(_max - _min);
 		}
 
 		@Override
@@ -120,7 +120,7 @@ public class UniformDistribution<
 			Function<N, Double>,
 			Serializable
 	{
-		private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 2L;
 
 
 		private final double _min;

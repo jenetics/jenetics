@@ -63,7 +63,7 @@ public class BitChromosome extends Number
 		Comparable<BitChromosome>,
 		Serializable
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 
 	/**

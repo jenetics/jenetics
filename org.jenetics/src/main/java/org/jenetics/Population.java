@@ -70,7 +70,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		RandomAccess,
 		Serializable
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	private final List<Phenotype<G, C>> _population;
 

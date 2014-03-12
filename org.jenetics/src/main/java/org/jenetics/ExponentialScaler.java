@@ -44,7 +44,7 @@ public final class ExponentialScaler
 		Function<Double, Double>,
 		Serializable
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	public static final ExponentialScaler SQR_SCALER = new ExponentialScaler(2);
 	public static final ExponentialScaler SQRT_SCALER = new ExponentialScaler(0.5);

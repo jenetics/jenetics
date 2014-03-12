@@ -64,14 +64,10 @@ public final class PermutationChromosome<T>
 	extends AbstractChromosome<EnumGene<T>>
 	implements Serializable
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	private ISeq<T> _validAlleles;
 
-	/*
-	 * TODO: Refactor this to the default constructor in version 2.0. Currently
-	 * not possible, because this would be an incompatible change.
-	 */
 	public PermutationChromosome(final ISeq<EnumGene<T>> genes) {
 		super(genes);
 		_validAlleles = genes.get(0).getValidAlleles();

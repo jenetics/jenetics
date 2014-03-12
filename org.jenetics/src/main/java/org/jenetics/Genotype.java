@@ -84,7 +84,7 @@ public final class Genotype<G extends Gene<?, G>>
 		Verifiable,
 		Serializable
 {
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 3L;
 
 	private final ISeq<Chromosome<G>> _chromosomes;
 	private final int _ngenes;

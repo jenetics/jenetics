@@ -131,7 +131,7 @@ public class NumberStatistics<
 		}
 	}
 
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 3L;
 
 	protected final double _fitnessMean;
 	protected final double _fitnessVariance;

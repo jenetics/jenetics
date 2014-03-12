@@ -58,7 +58,7 @@ public final class CharacterGene
 		Comparable<CharacterGene>,
 		Serializable
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	/**
 	 * The default character set used by this gene.

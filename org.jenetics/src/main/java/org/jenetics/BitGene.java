@@ -53,7 +53,7 @@ public enum BitGene
 	FALSE(false),
 	TRUE(true);
 
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 3L;
 
 	public static final BitGene ZERO = FALSE;
 	public static final BitGene ONE = TRUE;

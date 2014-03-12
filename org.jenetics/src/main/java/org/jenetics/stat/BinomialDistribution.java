@@ -46,7 +46,7 @@ class BinomialDistribution<
 			Function<N, Double>,
 			Serializable
 	{
-		private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 2L;
 
 		private final Range<N> _domain;
 
@@ -85,7 +85,7 @@ class BinomialDistribution<
 			Function<N, Double>,
 			Serializable
 	{
-		private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 2L;
 
 		private final Range<N> _domain;
 

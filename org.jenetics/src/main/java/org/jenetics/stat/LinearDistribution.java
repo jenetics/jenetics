@@ -93,7 +93,7 @@ public class LinearDistribution<
 			Function<N, Double>,
 			Serializable
 	{
-		private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 2L;
 
 		private final double _min;
 		private final double _max;
@@ -147,7 +147,7 @@ public class LinearDistribution<
 			Function<N, Double>,
 			Serializable
 	{
-		private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 2L;
 
 		private final double _x1;
 		private final double _x2;

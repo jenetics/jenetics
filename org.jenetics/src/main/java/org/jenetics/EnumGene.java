@@ -82,7 +82,7 @@ public final class EnumGene<A>
 		Comparable<EnumGene<A>>
 {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	private final ISeq<A> _validAlleles;
 	private final int _alleleIndex;
