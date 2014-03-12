@@ -20,7 +20,7 @@
  # Author:
  #    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  #
- # Version: <em>$Date: 2014-03-07 $</em>
+ # Version: <em>$Date: 2014-03-12 $</em>
  #
  ###############################################################################
 -->
@@ -134,7 +134,6 @@
 		<classes>
 			<class name="org.jenetics.PermutationChromosomeTest" />
 			<class name="org.jenetics.PermutationChromosomeFloat64Test" />
-			<class name="org.jenetics.PermutationChromosomeEnumTest" />
 			<class name="org.jenetics.PermutationChromosomeCharacterTest" />
 		</classes>
 	</test>

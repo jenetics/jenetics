@@ -39,9 +39,6 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import javolution.xml.XMLFormat;
-import javolution.xml.stream.XMLStreamException;
-
 import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.internal.util.cast;
 import org.jenetics.internal.util.jaxb;
@@ -60,7 +57,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-11 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
  */
 @XmlJavaTypeAdapter(PermutationChromosome.Model.Adapter.class)
 public final class PermutationChromosome<T>
@@ -231,76 +228,8 @@ public final class PermutationChromosome<T>
 	}
 
 	/* *************************************************************************
-	 *  XML object serialization
-	 * ************************************************************************/
-
-	@SuppressWarnings("rawtypes")
-	static final XMLFormat<PermutationChromosome>
-		XML = new XMLFormat<PermutationChromosome>(PermutationChromosome.class) {
-
-		private static final String LENGTH = "length";
-		private static final String ALLELE_INDEXES = "allele-indexes";
-
-		@SuppressWarnings("unchecked")
-		@Override
-		public PermutationChromosome newInstance(
-			final Class<PermutationChromosome> cls,
-			final InputElement xml
-		)
-			throws XMLStreamException
-		{
-			final int length = xml.getAttribute(LENGTH, 0);
-			final Array<Object> alleles = new Array<>(length);
-			for (int i = 0; i < length; ++i) {
-				alleles.set(i, xml.getNext());
-			}
-
-			final ISeq<Object> ialleles = alleles.toISeq();
-
-			final Array<Integer> indexes = Array.of(
-				xml.get(ALLELE_INDEXES, String.class
-				).split(",")).map(StringToInteger);
-
-			final Array<Object> genes = new Array<>(length);
-			for (int i = 0; i < length; ++i) {
-				genes.set(i, new EnumGene<>(indexes.get(i), ialleles));
-			}
-
-			return new PermutationChromosome(genes.toISeq());
-		}
-
-		@Override
-		public void write(
-			final PermutationChromosome chromosome,
-			final OutputElement xml
-		)
-			throws XMLStreamException
-		{
-			xml.setAttribute(LENGTH, chromosome.length());
-			for (Object allele : chromosome.getValidAlleles()) {
-				xml.add(allele);
-			}
-
-			final PermutationChromosome<?> pc = chromosome;
-			final String indexes = pc.toSeq().map(new Function<Object, Integer>() {
-				@Override public Integer apply(final Object value) {
-					return ((EnumGene<?>)value).getAlleleIndex();
-				}
-			}).toString(",");
-			xml.add(indexes, ALLELE_INDEXES);
-		}
-		@Override
-		public void read(
-			final InputElement element,
-			final PermutationChromosome chromosome
-		) {
-		}
-	};
-
-	/* *************************************************************************
 	 *  JAXB object serialization
 	 * ************************************************************************/
-
 
 	@XmlRootElement(name = "org.jenetics.PermutationChromosome")
 	@XmlType(name = "org.jenetics.PermutationChromosome")
