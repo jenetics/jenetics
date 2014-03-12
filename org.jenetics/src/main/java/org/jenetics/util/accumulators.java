@@ -24,6 +24,7 @@ import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.object.eq;
 
 import java.util.Iterator;
+import java.util.concurrent.Executor;
 
 import org.jenetics.internal.util.HashBuilder;
 
@@ -34,7 +35,7 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-11 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
  */
 public final class accumulators extends StaticObject {
 	private accumulators() {}
@@ -55,7 +56,7 @@ public final class accumulators extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &ndash; <em>$Date: 2014-03-11 $</em>
+	 * @version 1.0 &ndash; <em>$Date: 2014-03-12 $</em>
 	 */
 	public static final class Min<C extends Comparable<? super C>>
 		extends MappedAccumulator<C>
@@ -148,7 +149,7 @@ public final class accumulators extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &ndash; <em>$Date: 2014-03-11 $</em>
+	 * @version 1.0 &ndash; <em>$Date: 2014-03-12 $</em>
 	 */
 	public static final class Max<C extends Comparable<? super C>>
 		extends MappedAccumulator<C>
@@ -241,7 +242,7 @@ public final class accumulators extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &ndash; <em>$Date: 2014-03-11 $</em>
+	 * @version 1.0 &ndash; <em>$Date: 2014-03-12 $</em>
 	 */
 	public static final class MinMax<C extends Comparable<? super C>>
 		extends MappedAccumulator<C>
@@ -396,9 +397,9 @@ public final class accumulators extends StaticObject {
 			);
 			break;
 		default:
-			try (Concurrency c = Concurrency.start()) {
+			try (Scoped<Concurrent> c = Concurrent.scope()) {
 				for (final Accumulator<? super T> accumulator : accus) {
-					c.execute(new Acc<>(values, accumulator));
+					c.get().execute(new Acc<>(values, accumulator));
 				}
 			}
 		}
@@ -474,9 +475,9 @@ public final class accumulators extends StaticObject {
 		final Accumulator<? super T> a1,
 		final Accumulator<? super T> a2
 	) {
-		try (Concurrency c = Concurrency.start()) {
-			c.execute(new Acc<>(values, a1));
-			c.execute(new Acc<>(values, a2));;
+		try (Scoped<Concurrent> c = Concurrent.scope()) {
+			c.get().execute(new Acc<>(values, a1));
+			c.get().execute(new Acc<>(values, a2));;
 		}
 	}
 
@@ -498,10 +499,10 @@ public final class accumulators extends StaticObject {
 		final Accumulator<? super T> a2,
 		final Accumulator<? super T> a3
 	) {
-		try (Concurrency c = Concurrency.start()) {
-			c.execute(new Acc<>(values, a1));
-			c.execute(new Acc<>(values, a2));
-			c.execute(new Acc<>(values, a3));
+		try (Scoped<Concurrent> c = Concurrent.scope()) {
+			c.get().execute(new Acc<>(values, a1));
+			c.get().execute(new Acc<>(values, a2));
+			c.get().execute(new Acc<>(values, a3));
 		}
 	}
 
@@ -525,11 +526,11 @@ public final class accumulators extends StaticObject {
 		final Accumulator<? super T> a3,
 		final Accumulator<? super T> a4
 	) {
-		try (Concurrency c = Concurrency.start()) {
-			c.execute(new Acc<>(values, a1));
-			c.execute(new Acc<>(values, a2));
-			c.execute(new Acc<>(values, a3));
-			c.execute(new Acc<>(values, a4));
+		try (Scoped<Concurrent> c = Concurrent.scope()) {
+			c.get().execute(new Acc<>(values, a1));
+			c.get().execute(new Acc<>(values, a2));
+			c.get().execute(new Acc<>(values, a3));
+			c.get().execute(new Acc<>(values, a4));
 		}
 	}
 
@@ -555,12 +556,12 @@ public final class accumulators extends StaticObject {
 		final Accumulator<? super T> a4,
 		final Accumulator<? super T> a5
 	) {
-		try (Concurrency c = Concurrency.start()) {
-			c.execute(new Acc<>(values, a1));
-			c.execute(new Acc<>(values, a2));
-			c.execute(new Acc<>(values, a3));
-			c.execute(new Acc<>(values, a4));
-			c.execute(new Acc<>(values, a5));
+		try (Scoped<Concurrent> c = Concurrent.scope()) {
+			c.get().execute(new Acc<>(values, a1));
+			c.get().execute(new Acc<>(values, a2));
+			c.get().execute(new Acc<>(values, a3));
+			c.get().execute(new Acc<>(values, a4));
+			c.get().execute(new Acc<>(values, a5));
 		}
 	}
 
