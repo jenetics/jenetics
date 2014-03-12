@@ -19,13 +19,10 @@
  */
 package org.jenetics.util;
 
-import static java.util.Objects.requireNonNull;
-
+import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-
-import javolution.context.LocalContext;
-import javolution.lang.Reference;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * This class holds the {@link Random} engine used for the GA. The
@@ -50,7 +47,7 @@ import javolution.lang.Reference;
  *         RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadSafe(1234));
  *
  *         ...
- *         final GeneticAlgorithm<DoubleGene, Double> ga = ...
+ *         final GeneticAlgorithm<Float64Gene, Float64> ga = ...
  *         ga.evolve(100);
  *     }
  * }
@@ -59,17 +56,16 @@ import javolution.lang.Reference;
  *
  * <b>Setup of a <i>local</i> PRNG</b><br/>
  *
- * Within a scoped context you can temporarily (and locally) change the
- * implementation of the PRNG.
+ * You can temporarily (and locally) change the implementation of the PRNG.
  *
  * [code]
  * public class GA {
  *     public static void main(final String[] args) {
  *         ...
- *         final GeneticAlgorithm<DoubleGene, Double> ga = ...
- *         final LCG64ShiftRandom random = new LCG64ShiftRandom(1234);
+ *         final GeneticAlgorithm<Float64Gene, Float64> ga = ...
+ *         final LCG64ShiftRandom random = new LCG64ShiftRandom(1234)
  *
- *         try (Scoped<Random> scope = RandomRegistry.scope(random)) {
+ *         try (Scoped<Random> scope = RandomRegistry.scope(random) {
  *             // Easy access the random engine of the opened scope.
  *             assert(scope.get() == random);
  *
@@ -89,134 +85,107 @@ import javolution.lang.Reference;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 1.6 &mdash; <em>$Date$</em>
  */
-public final class RandomRegistry extends StaticObject {
-	private RandomRegistry() {}
+public final class RandRegistry extends StaticObject {
+	private RandRegistry() {}
 
-	private static final Reference<Random> TLOCAL_REF = new Ref<Random>() {
-		@Override
-		public Random get() {
-			return ThreadLocalRandom.current();
-		}
-	};
+	private static final ThreadLocal<Entry> THREAD_LOCAL_ENTRY = new ThreadLocal<>();
 
-	private static final LocalContext.Reference<Reference<? extends Random>>
-	RANDOM = new LocalContext.Reference<Reference<? extends Random>>(TLOCAL_REF);
+	private static AtomicReference<Entry> ENTRY = new AtomicReference<>(
+		new Entry(ThreadLocalRandom.current())
+	);
 
-	/**
-	 * Return the global {@link Random} object.
-	 *
-	 * @return the global {@link Random} object.
-	 */
 	public static Random getRandom() {
-		return RANDOM.get().get();
+		return getEntry().random;
 	}
 
-	/**
-	 * Set the new global {@link Random} object for the GA. The given
-	 * {@link Random} <b>must</b> be thread safe, which is the case for the
-	 * default Java {@code Random} implementation.
-	 * <p/>
-	 * Setting a <i>thread-local</i> random object leads, in general, to a faster
-	 * PRN generation, because the given {@code Random} engine don't have to be
-	 * thread-safe.
-	 *
-	 * @see #setRandom(ThreadLocal)
-	 *
-	 * @param random the new global {@link Random} object for the GA.
-	 * @throws NullPointerException if the {@code random} object is {@code null}.
-	 */
 	public static void setRandom(final Random random) {
-		RANDOM.set(new RRef(random));
+		Objects.requireNonNull(random);
+		setEntry(random);
 	}
 
-	/**
-	 * Set the new global {@link Random} object for the GA. The given
-	 * {@link Random} don't have be thread safe, because the given
-	 * {@link ThreadLocal} wrapper guarantees thread safety. Setting a
-	 * <i>thread-local</i> random object leads, in general, to a faster
-	 * PRN generation, when using a non-blocking PRNG. This is the preferred
-	 * way for changing the PRNG.
-	 *
-	 * @param random the thread-local random engine to use.
-	 * @throws NullPointerException if the {@code random} object is {@code null}.
-	 */
-	public static void setRandom(final ThreadLocal<? extends Random> random) {
-		RANDOM.set(new TLRRef<>(random));
+	private static Entry getEntry() {
+		final Entry e = THREAD_LOCAL_ENTRY.get();
+		return e != null ? e : ENTRY.get();
 	}
 
-	/**
-	 * Set the random object to it's default value. The <i>default</i> used PRNG
-	 * is the {@link ThreadLocalRandom} PRNG.
-	 */
-	public static void reset() {
-		RANDOM.set(TLOCAL_REF);
+	private static void setEntry(final Random random) {
+		final Entry e = THREAD_LOCAL_ENTRY.get();
+		if (e != null) e.random = random; else ENTRY.set(new Entry(random));
 	}
 
 	/**
 	 * Opens a new {@code Scope} with the given random engine.
 	 *
-	 * @since 1.6
 	 * @param random the PRNG used for the opened scope.
 	 * @return the scope with the given random object.
 	 */
-	public static <R extends Random> Scoped<R> scope(final R random) {
-		LocalContext.enter();
-		setRandom(random);
-		return new Scope<>(Thread.currentThread(), random);
+	public static Scoped<Random> scope(final Random random) {
+		final Entry e = THREAD_LOCAL_ENTRY.get();
+		if (e != null) {
+			THREAD_LOCAL_ENTRY.set(e.inner(random));
+		} else {
+			THREAD_LOCAL_ENTRY.set(new Entry(random, Thread.currentThread()));
+		}
+
+		return new RandomScope(random);
 	}
 
-	/*
-	 * Some helper Reference classes.
-	 */
-
-	private static abstract class Ref<R> implements Reference<R> {
-		@Override public void set(final R random) {}
-	}
-
-	private final static class RRef extends Ref<Random> {
+	private static final class RandomScope implements Scoped<Random> {
 		private final Random _random;
-		public RRef(final Random random) {
-			_random = requireNonNull(random, "Random");
-		}
-		@Override public final Random get() {
-			return _random;
-		}
-	}
 
-	private final static class TLRRef<R extends Random> extends Ref<R> {
-		private final ThreadLocal<R> _random;
-		public TLRRef(final ThreadLocal<R> random) {
-			_random = requireNonNull(random, "Random");
-		}
-		@Override public final R get() {
-			return _random.get();
-		}
-	}
-
-	private static final class Scope<R extends Random> implements Scoped<R> {
-		private final Thread _thread;
-		private final R _random;
-
-		Scope(final Thread thread, final R random) {
-			_thread = requireNonNull(thread);
-			_random = requireNonNull(random);
+		public RandomScope(final Random random) {
+			_random = random;
 		}
 
 		@Override
-		public R get() {
+		public Random get() {
 			return _random;
 		}
 
 		@Override
 		public void close() {
-			if (_thread != Thread.currentThread()) {
+			final Entry e = THREAD_LOCAL_ENTRY.get();
+			if (e != null) {
+				if (e.thread != Thread.currentThread()) {
+					throw new IllegalStateException(
+						"Random context must be closed by the creating thread."
+					);
+				}
+
+				THREAD_LOCAL_ENTRY.set(e.parent);
+			} else {
 				throw new IllegalStateException(
-					"Try to close scope by a different thread."
+					"Random context has been already close."
 				);
 			}
-			LocalContext.exit();
+		}
+	}
+
+	private static final class Entry {
+		final Thread thread;
+		final Entry parent;
+
+		Random random;
+
+		Entry(final Random random, final Entry parent, final Thread thread) {
+			this.random = random;
+			this.parent = parent;
+			this.thread = thread;
+		}
+
+		Entry(final Random random, final Thread thread) {
+			this(random, null, thread);
+		}
+
+		Entry(final Random random) {
+			this(random, null, null);
+		}
+
+		Entry inner(final Random random) {
+			assert(thread == Thread.currentThread());
+			return new Entry(random, this, thread);
 		}
 	}
 
