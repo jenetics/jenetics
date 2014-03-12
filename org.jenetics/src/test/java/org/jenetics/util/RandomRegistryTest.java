@@ -50,6 +50,15 @@ public class RandomRegistryTest {
 		Assert.assertSame(RandomRegistry.getRandom(), random);
 	}
 
+	@Test
+	public void setThreadLocalRandom() {
+		final LCG64ShiftRandom.ThreadLocal random =
+			new LCG64ShiftRandom.ThreadLocal();
+		RandomRegistry.setRandom(random);
+
+		Assert.assertSame(RandomRegistry.getRandom(), random.get());
+	}
+
 	@Test(expectedExceptions = NullPointerException.class)
 	public void setNullRandom() {
 		RandomRegistry.setRandom((Random)null);
