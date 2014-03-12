@@ -74,7 +74,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
  */
 @XmlJavaTypeAdapter(Genotype.Model.Adapter.class)
 public final class Genotype<G extends Gene<?, G>>
@@ -84,7 +84,7 @@ public final class Genotype<G extends Gene<?, G>>
 		Verifiable,
 		Serializable
 {
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 3L;
 
 	private final ISeq<Chromosome<G>> _chromosomes;
 	private final int _ngenes;

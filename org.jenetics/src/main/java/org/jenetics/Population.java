@@ -60,7 +60,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
  */
 @XmlJavaTypeAdapter(Population.Model.Adapter.class)
 public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
@@ -70,7 +70,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		RandomAccess,
 		Serializable
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	private final List<Phenotype<G, C>> _population;
 

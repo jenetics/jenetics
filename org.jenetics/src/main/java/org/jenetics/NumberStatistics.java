@@ -32,7 +32,7 @@ import org.jenetics.util.accumulators.MinMax;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
  */
 public class NumberStatistics<
 	G extends Gene<?, G>,
@@ -46,7 +46,7 @@ public class NumberStatistics<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
 	 */
 	public static class Builder<
 		G extends Gene<?, G>,
@@ -131,7 +131,7 @@ public class NumberStatistics<
 		}
 	}
 
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 3L;
 
 	protected final double _fitnessMean;
 	protected final double _fitnessVariance;
@@ -242,7 +242,7 @@ public class NumberStatistics<
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
 	 */
 	public static class Calculator<
 		G extends Gene<?, G>,

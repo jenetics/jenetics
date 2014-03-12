@@ -54,7 +54,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
  */
 @XmlJavaTypeAdapter(BitChromosome.Model.Adapter.class)
 public class BitChromosome extends Number
@@ -63,7 +63,7 @@ public class BitChromosome extends Number
 		Comparable<BitChromosome>,
 		Serializable
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 
 	/**

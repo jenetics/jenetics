@@ -185,7 +185,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		}
 	}
 
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 3L;
 
 	protected final Optimize _optimize;
 	protected final int _generation;
@@ -399,7 +399,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
 	 */
 	public static final class Time implements Serializable {
-		private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 2L;
 
 		private static final Duration ZERO = Duration.ofNanos(0);
 

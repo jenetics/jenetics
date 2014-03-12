@@ -42,7 +42,7 @@ public final class Timer
 		Serializable,
 		Cloneable
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 	private static final String DEFAULT_LABEL = "Timer";
 
 	private String _label;

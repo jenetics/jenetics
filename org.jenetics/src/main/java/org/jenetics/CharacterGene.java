@@ -49,7 +49,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
  */
 @XmlJavaTypeAdapter(CharacterGene.Model.Adapter.class)
 public final class CharacterGene
@@ -58,7 +58,7 @@ public final class CharacterGene
 		Comparable<CharacterGene>,
 		Serializable
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	/**
 	 * The default character set used by this gene.

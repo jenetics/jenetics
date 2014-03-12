@@ -33,7 +33,7 @@ import org.jenetics.util.Range;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
  */
 class BinomialDistribution<
 	N extends Number & Comparable<? super N>
@@ -46,7 +46,7 @@ class BinomialDistribution<
 			Function<N, Double>,
 			Serializable
 	{
-		private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 2L;
 
 		private final Range<N> _domain;
 
@@ -85,7 +85,7 @@ class BinomialDistribution<
 			Function<N, Double>,
 			Serializable
 	{
-		private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 2L;
 
 		private final Range<N> _domain;
 

@@ -50,7 +50,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
  */
 public class CharacterChromosome
 	extends
@@ -59,7 +59,7 @@ public class CharacterChromosome
 		CharSequence,
 		Serializable
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	private transient CharSeq _validCharacters;
 
