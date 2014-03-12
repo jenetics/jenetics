@@ -22,10 +22,7 @@ package org.jenetics;
 import static java.lang.String.format;
 import static org.jenetics.internal.util.object.eq;
 
-import javolution.lang.Immutable;
-
 import org.jenetics.internal.util.HashBuilder;
-
 
 /**
  * <p>
@@ -66,7 +63,6 @@ public final class LinearRankSelector<
 	C extends Comparable<? super C>
 >
 	extends ProbabilitySelector<G, C>
-	implements Immutable
 {
 	private final double _nminus;
 	private final double _nplus;

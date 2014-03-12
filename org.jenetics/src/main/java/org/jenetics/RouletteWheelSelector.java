@@ -27,8 +27,6 @@ import static org.jenetics.util.math.ulpDistance;
 
 import java.util.Arrays;
 
-import javolution.lang.Immutable;
-
 import org.jenetics.internal.util.HashBuilder;
 
 
@@ -50,7 +48,6 @@ public class RouletteWheelSelector<
 	N extends Number & Comparable<? super N>
 >
 	extends ProbabilitySelector<G, N>
-	implements Immutable
 {
 
 	private static final long MAX_ULP_DISTANCE = pow(10, 9);

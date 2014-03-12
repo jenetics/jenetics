@@ -23,8 +23,6 @@ import static java.lang.String.format;
 
 import java.util.Random;
 
-import javolution.lang.Immutable;
-
 import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.util.ISeq;
@@ -44,7 +42,6 @@ import org.jenetics.util.Seq;
  */
 public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 	extends Recombinator<G>
-	implements Immutable
 {
 
 	/**

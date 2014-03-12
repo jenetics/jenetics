@@ -19,16 +19,12 @@
  */
 package org.jenetics.util;
 
-import java.beans.BeanInfo;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
 import java.io.Serializable;
 import java.util.Random;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import javolution.lang.Immutable;
 import javolution.lang.Reflection;
 import javolution.lang.Reflection.Method;
 
@@ -147,27 +143,6 @@ public abstract class ObjectTester<T> {
 		final T a = getFactory().newInstance();
 		if (a instanceof Verifiable) {
 			Assert.assertTrue(((Verifiable)a).isValid());
-		}
-	}
-
-	@Test
-	public void typeConsistency() throws Exception {
-		final T a = getFactory().newInstance();
-
-		Assert.assertFalse(a instanceof Cloneable && a instanceof Immutable);
-		if (a instanceof Copyable<?>) {
-			final Object b = ((Copyable<?>)a).copy();
-			if (a.getClass() == b.getClass()) {
-				Assert.assertFalse(a instanceof Immutable);
-			}
-		}
-
-
-		if (a instanceof Immutable) {
-			final BeanInfo info = Introspector.getBeanInfo(a.getClass());
-			for (PropertyDescriptor prop : info.getPropertyDescriptors()) {
-				Assert.assertNull(prop.getWriteMethod());
-			}
 		}
 	}
 

@@ -29,8 +29,6 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.regex.PatternSyntaxException;
 
-import javolution.lang.Immutable;
-
 import org.jenetics.internal.util.HashBuilder;
 
 /**
@@ -55,7 +53,6 @@ public final class CharSeq
 		CharSequence,
 		ISeq<Character>,
 		Comparable<CharSeq>,
-		Immutable,
 		Serializable
 {
 	private static final long serialVersionUID = 2L;

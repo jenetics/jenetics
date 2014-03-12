@@ -23,8 +23,6 @@ import static java.lang.String.format;
 
 import java.util.Random;
 
-import javolution.lang.Immutable;
-
 import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.util.MSeq;
@@ -74,10 +72,7 @@ import org.jenetics.util.math;
  * @since 1.0
  * @version 2.0 &mdash; <em>$Date$</em>
  */
-public final class PartiallyMatchedCrossover<T>
-	extends Crossover<EnumGene<T>>
-	implements Immutable
-{
+public final class PartiallyMatchedCrossover<T> extends Crossover<EnumGene<T>> {
 
 	public PartiallyMatchedCrossover(final double probability) {
 		super(probability);

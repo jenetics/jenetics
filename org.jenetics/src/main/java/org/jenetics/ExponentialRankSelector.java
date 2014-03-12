@@ -23,8 +23,6 @@ import static java.lang.Math.pow;
 import static java.lang.String.format;
 import static org.jenetics.internal.util.object.eq;
 
-import javolution.lang.Immutable;
-
 import org.jenetics.internal.util.HashBuilder;
 
 /**
@@ -60,7 +58,6 @@ public final class ExponentialRankSelector<
 	C extends Comparable<? super C>
 >
 	extends ProbabilitySelector<G, C>
-	implements Immutable
 {
 
 	private final double _c;
