@@ -19,14 +19,9 @@
  */
 package org.jenetics.performance;
 
-import javolution.context.Context;
-import javolution.context.LogContext;
-import javolution.lang.ClassInitializer;
-
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-15 $</em>
+ * @version <em>$Date: 2014-03-12 $</em>
  */
 public final class PerformanceTests {
 
@@ -34,16 +29,6 @@ public final class PerformanceTests {
 	}
 
 	public static void main(final String[] args) {
-		Context.enter(LogContext.NULL);
-		try {
-			ClassInitializer.initializeClassPath();
-		} finally {
-			Context.exit();
-		}
-
-		//ForkJoinContext.setForkkJoinPool(new ForkJoinPool(10));
-		//Concurrency.setContext(ForkJoinContext.class);
-
 		new TestSuite(ArrayTest.class).run().print();
 		new TestSuite(ChromosomeTest.class).run().print();
 		new TestSuite(PopulationTest.class).run().print();

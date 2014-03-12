@@ -31,14 +31,9 @@ import java.util.Formattable;
 import java.util.Formatter;
 import java.util.List;
 
-import javax.measure.Measurable;
-import javax.measure.Measure;
-import javax.measure.quantity.Duration;
-import javax.measure.unit.SI;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-15 $</em>
+ * @version <em>$Date: 2014-03-12 $</em>
  */
 public final class TestSuite {
 	private final String _name;
@@ -108,6 +103,7 @@ public final class TestSuite {
 	}
 
 	private static Formattable FormattableDuration(final double nanos) {
+		/*
 		return new Formattable() {
 
 			private final Measurable<Duration>
@@ -165,6 +161,8 @@ public final class TestSuite {
 			}
 
 		};
+		*/
+		return null;
 	}
 
 	public void print() {

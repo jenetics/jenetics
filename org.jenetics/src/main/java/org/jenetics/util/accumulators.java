@@ -24,7 +24,6 @@ import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.object.eq;
 
 import java.util.Iterator;
-import java.util.concurrent.Executor;
 
 import org.jenetics.internal.util.HashBuilder;
 

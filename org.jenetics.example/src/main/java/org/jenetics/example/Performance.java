@@ -25,9 +25,6 @@ import static java.lang.Math.toRadians;
 
 import java.io.Serializable;
 
-import javax.measure.Measure;
-import javax.measure.unit.SI;
-
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
 import org.jenetics.Genotype;
@@ -40,7 +37,7 @@ import org.jenetics.util.functions;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
  */
 public class Performance {
 
@@ -77,14 +74,14 @@ public class Performance {
 			population.get(i).getFitness();
 		}
 		long stop = System.currentTimeMillis();
-		System.out.println(Measure.valueOf(stop - start, SI.MILLI(SI.SECOND)));
+		System.out.println(stop - start);
 
 		start = System.currentTimeMillis();
 		for (int i = 0; i < size; ++i) {
 			population.get(i).getFitness();
 		}
 		stop = System.currentTimeMillis();
-		System.out.println(Measure.valueOf(stop - start, SI.MILLI(SI.SECOND)));
+		System.out.println(stop - start);
 
 
 	}
