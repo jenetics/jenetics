@@ -19,6 +19,7 @@
  */
 package org.jenetics.util;
 
+import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
@@ -84,7 +85,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-12 $</em>
  */
 public final class RandRegistry extends StaticObject {
 	private RandRegistry() {}
@@ -100,6 +101,7 @@ public final class RandRegistry extends StaticObject {
 	}
 
 	public static void setRandom(final Random random) {
+		Objects.requireNonNull(random);
 		setEntry(random);
 	}
 
