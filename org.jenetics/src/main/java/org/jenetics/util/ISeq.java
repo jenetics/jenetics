@@ -19,8 +19,6 @@
  */
 package org.jenetics.util;
 
-import javolution.lang.Immutable;
-
 /**
  * Immutable, ordered, fixed sized sequence.
  *
@@ -28,13 +26,12 @@ import javolution.lang.Immutable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
  */
 public interface ISeq<T>
 	extends
 		Seq<T>,
-		Copyable<MSeq<T>>,
-		Immutable
+		Copyable<MSeq<T>>
 {
 
 	@Override

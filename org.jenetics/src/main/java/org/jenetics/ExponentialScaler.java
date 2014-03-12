@@ -24,8 +24,6 @@ import static org.jenetics.internal.util.object.eq;
 
 import java.io.Serializable;
 
-import javolution.lang.Immutable;
-
 import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.util.Function;
@@ -39,13 +37,12 @@ import org.jenetics.util.Function;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
  */
 public final class ExponentialScaler
 	implements
 		Function<Double, Double>,
-		Serializable,
-		Immutable
+		Serializable
 {
 	private static final long serialVersionUID = 1L;
 
