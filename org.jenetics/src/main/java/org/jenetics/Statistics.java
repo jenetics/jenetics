@@ -26,14 +26,10 @@ import static org.jenetics.internal.util.object.eq;
 
 import java.io.Serializable;
 
-import javax.measure.Measurable;
-import javax.measure.Measure;
-import javax.measure.quantity.Duration;
-import javax.measure.unit.SI;
-
 import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.stat.Variance;
+import org.jenetics.util.Duration;
 import org.jenetics.util.FinalReference;
 import org.jenetics.util.accumulators;
 import org.jenetics.util.accumulators.MinMax;
@@ -43,7 +39,7 @@ import org.jenetics.util.accumulators.MinMax;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-11 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	implements Serializable
@@ -54,7 +50,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-03-11 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
 	 */
 	public static class Builder<
 		G extends Gene<?, G>,
@@ -400,14 +396,12 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-03-11 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
 	 */
 	public static final class Time implements Serializable {
 		private static final long serialVersionUID = 1L;
 
-		private static final Measurable<Duration> ZERO = Measure.valueOf(
-			0, SI.MILLI(SI.SECOND)
-		);
+		private static final Duration ZERO = Duration.ofNanos(0);
 
 		/**
 		 * Create a new time object with zero time values. The time references
@@ -422,7 +416,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * The time can be set only once, otherwise an IllegalArgumentException
 		 * is thrown.
 		 */
-		public final FinalReference<Measurable<Duration>>
+		public final FinalReference<Duration>
 			execution = new FinalReference<>(ZERO);
 
 		/**
@@ -430,7 +424,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * The time can be set only once, otherwise an IllegalArgumentException
 		 * is thrown.
 		 */
-		public final FinalReference<Measurable<Duration>>
+		public final FinalReference<Duration>
 			selection = new FinalReference<>(ZERO);
 
 		/**
@@ -438,7 +432,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * The time can be set only once, otherwise an IllegalArgumentException
 		 * is thrown.
 		 */
-		public final FinalReference<Measurable<Duration>>
+		public final FinalReference<Duration>
 			alter = new FinalReference<>(ZERO);
 
 		/**
@@ -446,7 +440,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * The time can be set only once, otherwise an IllegalArgumentException
 		 * is thrown.
 		 */
-		public final FinalReference<Measurable<Duration>>
+		public final FinalReference<Duration>
 			combine = new FinalReference<>(ZERO);
 
 		/**
@@ -454,7 +448,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * The time can be set only once, otherwise an IllegalArgumentException
 		 * is thrown.
 		 */
-		public final FinalReference<Measurable<Duration>>
+		public final FinalReference<Duration>
 			evaluation = new FinalReference<>(ZERO);
 
 		/**
@@ -462,7 +456,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * The time can be set only once, otherwise an IllegalArgumentException
 		 * is thrown.
 		 */
-		public final FinalReference<Measurable<Duration>>
+		public final FinalReference<Duration>
 			statistics = new FinalReference<>(ZERO);
 
 
@@ -503,12 +497,12 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			out.append("+---------------------------------------------------------+\n");
 			out.append("|  Time Statistics                                        |\n");
 			out.append("+---------------------------------------------------------+\n");
-			out.append(format(pattern, "Select time", selection.get().doubleValue(SI.SECOND)));
-			out.append(format(pattern, "Alter time", alter.get().doubleValue(SI.SECOND)));
-			out.append(format(pattern, "Combine time", combine.get().doubleValue(SI.SECOND)));
-			out.append(format(pattern, "Fitness calculation time", evaluation.get().doubleValue(SI.SECOND)));
-			out.append(format(pattern, "Statistics calculation time", statistics.get().doubleValue(SI.SECOND)));
-			out.append(format(pattern, "Overall execution time", execution.get().doubleValue(SI.SECOND)));
+			out.append(format(pattern, "Select time", selection.get().toSeconds()));
+			out.append(format(pattern, "Alter time", alter.get().toSeconds()));
+			out.append(format(pattern, "Combine time", combine.get().toSeconds()));
+			out.append(format(pattern, "Fitness calculation time", evaluation.get().toSeconds()));
+			out.append(format(pattern, "Statistics calculation time", statistics.get().toSeconds()));
+			out.append(format(pattern, "Overall execution time", execution.get().toSeconds()));
 			out.append("+---------------------------------------------------------+");
 
 			return out.toString();
@@ -522,7 +516,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-03-11 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
 	 */
 	public static class Calculator<
 		G extends Gene<?, G>,

@@ -25,13 +25,6 @@ import static org.jenetics.internal.util.object.eq;
 
 import java.io.Serializable;
 
-import javax.measure.Measurable;
-import javax.measure.Measure;
-import javax.measure.quantity.Duration;
-import javax.measure.unit.SI;
-
-import javolution.lang.Reusable;
-
 import org.jenetics.internal.util.HashBuilder;
 
 /**
@@ -41,12 +34,11 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
  */
 public final class Timer
 	implements
 		Comparable<Timer>,
-		Reusable,
 		Serializable,
 		Cloneable
 {
@@ -123,7 +115,6 @@ public final class Timer
 	/**
 	 * Reset the timer.
 	 */
-	@Override
 	public void reset() {
 		_sum = 0;
 		_start = 0;
@@ -144,8 +135,8 @@ public final class Timer
 	 *
 	 * @return the measured time so far.
 	 */
-	public Measurable<Duration> getTime() {
-		return Measure.valueOf(_sum, SI.NANO(SI.SECOND));
+	public Duration getTime() {
+		return Duration.ofNanos(_sum);
 	}
 
 	/**
@@ -154,8 +145,8 @@ public final class Timer
 	 *
 	 * @return the interim time measured.
 	 */
-	public Measurable<Duration> getInterimTime() {
-		return Measure.valueOf(_stop - _start, SI.NANO(SI.SECOND));
+	public Duration getInterimTime() {
+		return Duration.ofNanos(_stop - _start);
 	}
 
 	/**
@@ -226,10 +217,7 @@ public final class Timer
 
 	@Override
 	public String toString() {
-		return format(
-			"%s: %11.11f s", _label,
-			getTime().doubleValue(SI.SECOND)
-		);
+		return format("%s: %s", _label, getTime());
 	}
 
 }

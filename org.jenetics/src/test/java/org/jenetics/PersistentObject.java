@@ -39,22 +39,19 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
-import javax.measure.Measure;
-import javax.measure.unit.SI;
-
-import javolution.context.LocalContext;
-
 import org.jenetics.util.Array;
+import org.jenetics.util.Duration;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 import org.jenetics.util.IO;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-11 $</em>
+ * @version <em>$Date: 2014-03-12 $</em>
  */
 public class PersistentObject<T> {
 
@@ -398,12 +395,12 @@ public class PersistentObject<T> {
 		final Random random = RandomRegistry.getRandom();
 
 		final Statistics.Time time = new Statistics.Time();
-		time.alter.set(Measure.valueOf(random.nextInt(1233), SI.SECOND));
-		time.combine.set(Measure.valueOf(random.nextInt(1233), SI.MILLI(SI.SECOND)));
-		time.evaluation.set(Measure.valueOf(random.nextInt(1233), SI.MICRO(SI.SECOND)));
-		time.execution.set(Measure.valueOf(random.nextInt(1233), SI.NANO(SI.SECOND)));
-		time.selection.set(Measure.valueOf(random.nextInt(1233), SI.HECTO(SI.SECOND)));
-		time.statistics.set(Measure.valueOf(random.nextInt(1233), SI.KILO(SI.SECOND)));
+		time.alter.set(Duration.ofSeconds(random.nextInt(1233)));
+		time.combine.set(Duration.ofSeconds(random.nextInt(1233)));
+		time.evaluation.set(Duration.ofSeconds(random.nextInt(1233)));
+		time.execution.set(Duration.ofSeconds(random.nextInt(1233)));
+		time.selection.set(Duration.ofSeconds(random.nextInt(1233)));
+		time.statistics.set(Duration.ofSeconds(random.nextInt(1233)));
 		return time;
 	}
 
@@ -443,12 +440,9 @@ public class PersistentObject<T> {
 	}
 
 	static {
-		LocalContext.enter();
-		try {
-			RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadSafe(SEED));
+		final Random random = new LCG64ShiftRandom.ThreadSafe(SEED);
+		try (Scoped<?> s = RandomRegistry.scope(random)) {
 			init();
-		} finally {
-			LocalContext.exit();
 		}
 	}
 
