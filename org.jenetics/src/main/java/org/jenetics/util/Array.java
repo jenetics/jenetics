@@ -28,13 +28,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Random;
 import java.util.RandomAccess;
-
-import javolution.context.StackContext;
-import javolution.util.FastList;
 
 /**
  * Array class which wraps the the java build in array type T[]. Once the array
@@ -48,7 +46,7 @@ import javolution.util.FastList;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
  */
 public final class Array<T>
 	extends ArraySeq<T>
@@ -98,30 +96,23 @@ public final class Array<T>
 	 *         {@code null}.
 	 */
 	public Array<T> filter(final Function<? super T, Boolean> predicate) {
-		StackContext.enter();
-		try {
-			final FastList<T> filtered = FastList.newInstance();
-			for (int i = 0, n = length(); i < n; ++i) {
-				@SuppressWarnings("unchecked")
-				final T value = (T)_array.data[i + _start];
+		final LinkedList<T> filtered = new LinkedList<>();
+		for (int i = 0, n = length(); i < n; ++i) {
+			@SuppressWarnings("unchecked")
+			final T value = (T)_array.data[i + _start];
 
-				if (predicate.apply(value) == Boolean.TRUE) {
-					filtered.add(value);
-				}
+			if (predicate.apply(value) == Boolean.TRUE) {
+				filtered.add(value);
 			}
-
-			final Array<T> copy = new Array<>(filtered.size());
-			int index = 0;
-			for (FastList.Node<T> n = filtered.head(), end = filtered.tail();
-				(n = n.getNext()) != end;)
-			{
-				copy.set(index++, n.getValue());
-			}
-
-			return copy;
-		} finally {
-			StackContext.exit();
 		}
+
+		final Array<T> copy = new Array<>(filtered.size());
+		int index = 0;
+		for (T element : filtered) {
+			copy.set(index++, element);
+		}
+
+		return copy;
 	}
 
 	@Override
