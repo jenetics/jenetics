@@ -150,7 +150,7 @@ final class ScopedExecutorService extends ScopedExecutor<FutureTask<?>> {
 
 	@Override
 	public void execute(final Runnable command) {
-		final FutureTask task = toFutureTask(command);
+		final FutureTask<?> task = toFutureTask(command);
 		_futures.add(task);
 		_executor.execute(task);
 	}
