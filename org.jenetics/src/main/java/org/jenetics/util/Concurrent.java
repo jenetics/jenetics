@@ -20,13 +20,15 @@
 package org.jenetics.util;
 
 import static java.util.Objects.requireNonNull;
-import static java.util.concurrent.ForkJoinTask.adapt;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.ForkJoinTask;
+import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
 
 import org.jenetics.internal.context.Context;
 
@@ -42,202 +44,104 @@ import org.jenetics.internal.context.Context;
  * @since 2.0
  * @version 2.0 &mdash; <em>$Date$</em>
  */
-public abstract class Concurrent implements Executor {
+public abstract class Concurrent {
 
-	/* ************************************************************************
-	 * Static concurrent context.
-	 * ************************************************************************/
-
-	public static final ForkJoinPool DEFAULT =
+	private static final ForkJoinPool DEFAULT =
 		new ForkJoinPool(Runtime.getRuntime().availableProcessors());
 
-	private static final Context<ForkJoinPool> CONTEXT = new Context<>(DEFAULT);
+	private static Executor SERIAL_EXECUTOR = new Executor() {
+		@Override
+		public void execute(final Runnable command) {
+			command.run();
+		}
+	};
 
-	/**
-	 * Set the thread pool to use for concurrent actions. If the given pool is
-	 * {@code null}, the command, given in the {@link #execute(Runnable)} method
-	 * is executed in the main thread.
-	 *
-	 * @param pool the thread pool to use.
-	 */
-	public static void setForkJoinPool(final ForkJoinPool pool) {
-		CONTEXT.set(pool);
+	private static final Context<Executor> CONTEXT =
+		new Context<Executor>(DEFAULT);
+
+
+	public static ForkJoinPool commonPool() {
+		return DEFAULT;
 	}
 
 	/**
-	 * Return the currently use thread pool. {@code null} may be returned in
-	 * case of serial execution.
+	 * Set the executor object to use for concurrent actions.
+	 *
+	 * @param executor the executor object to use.
+	 * @throws java.lang.NullPointerException if the given {@code executor} is
+	 *         {@code null}.
+	 */
+	public static void setExecutor(final Executor executor) {
+		CONTEXT.set(requireNonNull(executor, "Executor must not be null."));
+	}
+
+	/**
+	 * Return the currently used executor object.
 	 *
 	 * @return the currently used thread pool.
 	 */
-	public static ForkJoinPool getForkJoinPool() {
+	public static Executor getExecutor() {
 		return CONTEXT.get();
 	}
 
-	public static Scoped<Concurrent> scope(final ForkJoinPool pool) {
-		return new ConcurrentScope(CONTEXT.scope(pool));
+	public static void reset() {
+		setExecutor(commonPool());
 	}
 
-	public static Scoped<Concurrent> scope() {
-		return scope(getForkJoinPool());
+	public static Scoped<Executor> scope(final Executor executor) {
+		return new ScopedConcurrentExecutor(
+			CONTEXT.scope(requireNonNull(executor))
+		);
 	}
 
-	/* ************************************************************************
-	 * Interface methods.
-	 * ************************************************************************/
-
-	/**
-	 * Return the current <i>parallelism</i> of this {@code Concurrent} object.
-	 *
-	 * @return the current <i>parallelism</i> of this {@code Concurrent} object
-	 */
-	public abstract int getParallelism();
-
-	/**
-	 * Executes the given {@code runnables} in {@code n} parts.
-	 *
-	 * @param n the number of parts the given {@code runnables} are executed.
-	 * @param runnables the runnables to be executed.
-	 * @throws NullPointerException if the given runnables are {@code null}.
-	 */
-	public abstract void execute(final int n, final List<? extends Runnable> runnables);
-
-	/**
-	 * Executes the given {@code runnables} in {@link #getParallelism()} parts.
-	 *
-	 * @param runnables the runnables to be executed.
-	 * @throws NullPointerException if the given runnables are {@code null}.
-	 */
-	public abstract void execute(final List<? extends Runnable> runnables);
-
-	/**
-	 * Executes the given {@code runnables} in {@code n} parts.
-	 *
-	 * @param n the number of parts the given {@code runnables} are executed.
-	 * @param runnables the runnables to be executed.
-	 * @throws NullPointerException if the given runnables are {@code null}.
-	 */
-	public abstract void execute(final int n, final Runnable... runnables);
-
-	/**
-	 * Executes the given {@code runnables} in {@link #getParallelism()} parts.
-	 *
-	 * @param runnables the runnables to be executed.
-	 * @throws NullPointerException if the given runnables are {@code null}.
-	 */
-	public abstract void execute(final Runnable... runnables);
-
-
-	/* ************************************************************************
-	 * Scope implementation
-	 * ************************************************************************/
-
-	private static final class ConcurrentScope
-		extends Concurrent
-		implements Scoped<Concurrent>
-	{
-		private final int TASKS_SIZE = 30;
-
-		private final Scoped<ForkJoinPool> _pool;
-		private final List<ForkJoinTask<?>> _tasks = new ArrayList<>(TASKS_SIZE);
-		private final boolean _parallel;
-
-		/**
-		 * Create a new {@code Concurrent} executor <i>context</i> with the given
-		 * {@link ForkJoinPool}.
-		 *
-		 * @param pool the {@code ForkJoinPool} used for concurrent execution of the
-		 *        given tasks. The {@code pool} may be {@code null} and if so, the
-		 *        given tasks are executed in the main thread.
-		 */
-		private ConcurrentScope(final Scoped<ForkJoinPool> pool) {
-			_pool = requireNonNull(pool);
-			_parallel = _pool.get() != null;
-		}
-
-		@Override
-		public int getParallelism() {
-			return _pool.get() != null ? _pool.get().getParallelism() : 1;
-		}
-
-		@Override
-		public void execute(final Runnable command) {
-			if (_parallel) {
-				final ForkJoinTask<?> task = toForkJoinTask(command);
-				_pool.get().execute(task);
-				_tasks.add(task);
-			} else {
-				command.run();
-			}
-		}
-
-		private static ForkJoinTask<?> toForkJoinTask(final Runnable r) {
-			return r instanceof ForkJoinTask<?> ? (ForkJoinTask<?>)r : adapt(r);
-		}
-
-		@Override
-		public void execute(final int n, final List<? extends Runnable> runnables) {
-			requireNonNull(runnables, "Runnables must not be null");
-			if (runnables.size() > 0) {
-				final int[] parts = arrays.partition(runnables.size(), n);
-
-				for (int i = 0; i < parts.length - 1; ++i) {
-					final int part = i;
-
-					execute(new Runnable() { @Override public void run() {
-						for (int j = parts[part]; j < parts[part + 1]; ++j) {
-							runnables.get(j).run();
-						}
-					}});
-				}
-			}
-		}
-
-		@Override
-		public void execute(final List<? extends Runnable> runnables) {
-			execute(getParallelism(), runnables);
-		}
-
-		@Override
-		public void execute(final int n, final Runnable... runnables) {
-			requireNonNull(runnables, "Runnables must not be null");
-			if (runnables.length > 0) {
-				final int[] parts = arrays.partition(runnables.length, n);
-
-				for (int i = 0; i < parts.length - 1; ++i) {
-					final int part = i;
-
-					execute(new Runnable() { @Override public void run() {
-						for (int j = parts[part]; j < parts[part + 1]; ++j) {
-							runnables[j].run();
-						}
-					}});
-				}
-			}
-		}
-
-		@Override
-		public void execute(final Runnable... runnables) {
-			execute(getParallelism(), runnables);
-		}
-
-		@Override
-		public Concurrent get() {
-			return this;
-		}
-
-		@Override
-		public void close() {
-			try {
-				if (_parallel) {
-					for (int i = _tasks.size(); --i >= 0;) {
-						_tasks.get(i).join();
-					}
-				}
-			} finally {
-				_pool.close();
-			}
-		}
+	public static Scoped<Executor> scope() {
+		return scope(getExecutor());
 	}
 
+	public static Scoped<Executor> serial() {
+		return CONTEXT.scope(SERIAL_EXECUTOR);
+	}
+
+}
+
+final class ScopedConcurrentExecutor implements Executor, Scoped<Executor> {
+	private final int TASKS_SIZE = 30;
+
+	private final Scoped<?> _scoped;
+	private final Executor _executor;
+	private final List<Future<?>> _tasks = new ArrayList<>(TASKS_SIZE);
+
+	ScopedConcurrentExecutor(final Scoped<Executor> pool) {
+		_executor = pool.get();
+		_scoped = pool;
+	}
+
+	@Override
+	public void execute(final Runnable command) {
+		final FutureTask task = toFutureTask(command);
+		_tasks.add(task);
+		_executor.execute(task);
+	}
+
+	private static FutureTask<?> toFutureTask(final Runnable runnable) {
+		return new FutureTask<>(runnable, null);
+	}
+
+	@Override
+	public Executor get() {
+		return this;
+	}
+
+	@Override
+	public void close() {
+		try {
+			for (int i = _tasks.size(); --i >= 0;) {
+				_tasks.get(i).get();
+			}
+		} catch (InterruptedException|ExecutionException e) {
+			throw new CancellationException(e.getMessage());
+		} finally {
+			_scoped.close();
+		}
+	}
 }

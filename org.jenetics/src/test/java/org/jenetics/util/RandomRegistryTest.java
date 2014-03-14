@@ -20,6 +20,7 @@
 package org.jenetics.util;
 
 import java.util.Random;
+import java.util.concurrent.Executor;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -89,7 +90,7 @@ public class RandomRegistryTest {
 
 	@Test(invocationCount = 10)
 	public void concurrentLocalContext() {
-		try (Scoped<Concurrent> c = Concurrent.scope()) {
+		try (Scoped<Executor> c = Concurrent.scope()) {
 			for (int i = 0; i < 25; ++i) {
 				c.get().execute(new ContextRunnable());
 			}

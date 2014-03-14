@@ -27,6 +27,7 @@ import static org.jenetics.internal.util.object.checkProbability;
 import static org.jenetics.util.arrays.forEach;
 
 import java.util.Collection;
+import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -459,7 +460,7 @@ public class GeneticAlgorithm<
 
 	private void evaluate() {
 		_evaluateTimer.start();
-		try (Scoped<Concurrent> c = Concurrent.scope()) {
+		try (Scoped<Executor> c = Concurrent.scope()) {
 			for (int i =  _population.size(); --i >= 0;) {
 				c.get().execute(_population.get(i));
 			}
@@ -499,7 +500,7 @@ public class GeneticAlgorithm<
 		final int numberOfOffspring = getNumberOfOffsprings();
 		assert (numberOfSurvivors + numberOfOffspring == _populationSize);
 
-		try (Scoped<Concurrent> c = Concurrent.scope()) {
+		try (Scoped<Executor> c = Concurrent.scope()) {
 			c.get().execute(new Runnable() { @Override public void run() {
 				final Population<G, C> survivors = _survivorSelector.select(
 					_population, numberOfSurvivors, _optimization
@@ -527,7 +528,7 @@ public class GeneticAlgorithm<
 		assert (survivors.size() + offsprings.size() == _populationSize);
 		final Population<G, C> population = new Population<>(_populationSize);
 
-		try (Scoped<Concurrent> c = Concurrent.scope()) {
+		try (Scoped<Executor> c = Concurrent.scope()) {
 			// Kill survivors which are to old and replace it with new one.
 			c.get().execute(new Runnable() { @Override public void run() {
 				for (int i = 0, n = survivors.size(); i < n; ++i) {
