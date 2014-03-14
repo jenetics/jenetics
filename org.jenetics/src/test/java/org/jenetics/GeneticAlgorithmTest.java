@@ -21,8 +21,6 @@ package org.jenetics;
 
 import java.io.Serializable;
 import java.util.Random;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 
 import org.testng.Assert;
@@ -55,10 +53,13 @@ public class GeneticAlgorithmTest {
 
 	@Test
 	public void optimize() {
-		final ForkJoinPool pool = Concurrent.getForkJoinPool();
-		try (Scoped<Random> scope = RandomRegistry.scope(new Random(12345))) {
-			Concurrent.setForkJoinPool(null);
-			RandomRegistry.setRandom(new Random(123456));
+		final Random random = new Random(123456);
+		try (Scoped<Random> rs = RandomRegistry.scope(random);
+			Scoped<Concurrent> cs = Concurrent.scope(null))
+		{
+			Assert.assertSame(random, RandomRegistry.getRandom());
+			Assert.assertSame(random, rs.get());
+			Assert.assertNull(Concurrent.getForkJoinPool());
 
 			final Factory<Genotype<DoubleGene>> factory = Genotype.of(
 				DoubleChromosome.of(0, 1)
@@ -91,10 +92,9 @@ public class GeneticAlgorithmTest {
 			Assert.assertEquals(s.getSamples(), 200);
 			Assert.assertEquals(s.getBestFitness(), 0.9955101231254028, 0.00000001);
 			Assert.assertEquals(s.getWorstFitness(), 0.9955101231254028, 0.00000001);
-		} finally {
-			Concurrent.setForkJoinPool(pool);
 		}
 
+		Assert.assertNotNull(Concurrent.getForkJoinPool());
 	}
 
 	private static class Base implements Comparable<Base> {
@@ -122,7 +122,7 @@ public class GeneticAlgorithmTest {
 	public void evolveForkJoinPool() {
 		final ForkJoinPool pool = new ForkJoinPool(10);
 
-		try {
+		try (Scoped<Concurrent> concurrent = Concurrent.scope(pool)) {
 			final Factory<Genotype<DoubleGene>> factory = Genotype.of(DoubleChromosome.of(-1, 1));
 			final Function<Genotype<DoubleGene>, Double> ff = new FF();
 
@@ -139,48 +139,6 @@ public class GeneticAlgorithmTest {
 			}
 		} finally {
 			pool.shutdown();
-		}
-	}
-
-	@Test(invocationCount = 10)
-	public void evolveThreadPool() {
-		final ExecutorService pool = Executors.newFixedThreadPool(10);
-
-		try {
-			final Factory<Genotype<DoubleGene>> factory = Genotype.of(DoubleChromosome.of(-1, 1));
-			final Function<Genotype<DoubleGene>, Double> ff = new FF();
-
-			final GeneticAlgorithm<DoubleGene, Double> ga = new GeneticAlgorithm<>(factory, ff);
-			ga.setPopulationSize(1000);
-			ga.setAlterer(new MeanAlterer<DoubleGene>());
-			ga.setOffspringFraction(0.3);
-			ga.setOffspringSelector(new BoltzmannSelector<DoubleGene, Double>(0.001));
-			ga.setSurvivorSelector(new ExponentialRankSelector<DoubleGene, Double>(0.675));
-
-			ga.setup();
-			for (int i = 0; i < 10; ++i) {
-				ga.evolve();
-			}
-		} finally {
-			pool.shutdown();
-		}
-	}
-
-	@Test(invocationCount = 10)
-	public void evolveConcurrent() {
-		final Factory<Genotype<DoubleGene>> factory = Genotype.of(DoubleChromosome.of(-1, 1));
-		final Function<Genotype<DoubleGene>, Double> ff = new FF();
-
-		final GeneticAlgorithm<DoubleGene, Double> ga = new GeneticAlgorithm<>(factory, ff);
-		ga.setPopulationSize(1000);
-		ga.setAlterer(new MeanAlterer<DoubleGene>());
-		ga.setOffspringFraction(0.3);
-		ga.setOffspringSelector(new RouletteWheelSelector<DoubleGene, Double>());
-		ga.setSurvivorSelector(new LinearRankSelector<DoubleGene, Double>());
-
-		ga.setup();
-		for (int i = 0; i < 10; ++i) {
-			ga.evolve();
 		}
 	}
 
