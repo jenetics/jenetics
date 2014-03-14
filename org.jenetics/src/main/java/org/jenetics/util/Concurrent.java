@@ -27,7 +27,8 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinTask;
-import java.util.concurrent.atomic.AtomicReference;
+
+import org.jenetics.internal.context.Context;
 
 /**
  * [code]
@@ -39,7 +40,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 2.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-14 $</em>
  */
 public abstract class Concurrent implements Executor {
 
@@ -47,12 +48,10 @@ public abstract class Concurrent implements Executor {
 	 * Static concurrent context.
 	 * ************************************************************************/
 
-	private static final Object NULL = new Object();
+	public static final ForkJoinPool DEFAULT =
+		new ForkJoinPool(Runtime.getRuntime().availableProcessors());
 
-	private static final AtomicReference<Object> POOL =
-		new AtomicReference<Object>(new ForkJoinPool(
-			Runtime.getRuntime().availableProcessors()
-		));
+	private static final Context<ForkJoinPool> CONTEXT = new Context<>(DEFAULT);
 
 	/**
 	 * Set the thread pool to use for concurrent actions. If the given pool is
@@ -62,7 +61,7 @@ public abstract class Concurrent implements Executor {
 	 * @param pool the thread pool to use.
 	 */
 	public static void setForkJoinPool(final ForkJoinPool pool) {
-		POOL.set(pool != null ? pool : NULL);
+		CONTEXT.set(pool);
 	}
 
 	/**
@@ -72,16 +71,15 @@ public abstract class Concurrent implements Executor {
 	 * @return the currently used thread pool.
 	 */
 	public static ForkJoinPool getForkJoinPool() {
-		final Object pool = POOL.get();
-		return pool != NULL ? (ForkJoinPool)pool : null;
+		return CONTEXT.get();
 	}
 
 	public static Scoped<Concurrent> scope(final ForkJoinPool pool) {
-		return new ConcurrentScope(pool);
+		return new ConcurrentScope(CONTEXT.scope(pool));
 	}
 
 	public static Scoped<Concurrent> scope() {
-		return new ConcurrentScope(null);
+		return scope(getForkJoinPool());
 	}
 
 	/* ************************************************************************
@@ -140,7 +138,7 @@ public abstract class Concurrent implements Executor {
 	{
 		private final int TASKS_SIZE = 30;
 
-		private final ForkJoinPool _pool;
+		private final Scoped<ForkJoinPool> _pool;
 		private final List<ForkJoinTask<?>> _tasks = new ArrayList<>(TASKS_SIZE);
 		private final boolean _parallel;
 
@@ -152,30 +150,21 @@ public abstract class Concurrent implements Executor {
 		 *        given tasks. The {@code pool} may be {@code null} and if so, the
 		 *        given tasks are executed in the main thread.
 		 */
-		private ConcurrentScope(final ForkJoinPool pool) {
-			_pool = pool;
-			_parallel = _pool != null;
-		}
-
-		/**
-		 * Create a new {@code Concurrent} executor <i>context</i> with the
-		 * {@code ForkJoinPool} set with the {@link #setForkJoinPool(ForkJoinPool)},
-		 * or the default pool, if no one has been set.
-		 */
-		public ConcurrentScope() {
-			this(getForkJoinPool());
+		private ConcurrentScope(final Scoped<ForkJoinPool> pool) {
+			_pool = requireNonNull(pool);
+			_parallel = _pool.get() != null;
 		}
 
 		@Override
 		public int getParallelism() {
-			return _pool != null ? _pool.getParallelism() : 1;
+			return _pool.get() != null ? _pool.get().getParallelism() : 1;
 		}
 
 		@Override
 		public void execute(final Runnable command) {
 			if (_parallel) {
 				final ForkJoinTask<?> task = toForkJoinTask(command);
-				_pool.execute(task);
+				_pool.get().execute(task);
 				_tasks.add(task);
 			} else {
 				command.run();
@@ -239,10 +228,14 @@ public abstract class Concurrent implements Executor {
 
 		@Override
 		public void close() {
-			if (_parallel) {
-				for (int i = _tasks.size(); --i >= 0;) {
-					_tasks.get(i).join();
+			try {
+				if (_parallel) {
+					for (int i = _tasks.size(); --i >= 0;) {
+						_tasks.get(i).join();
+					}
 				}
+			} finally {
+				_pool.close();
 			}
 		}
 	}

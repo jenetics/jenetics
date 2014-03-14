@@ -23,7 +23,9 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.atomic.AtomicReference;
+
+import org.jenetics.internal.context.Context;
+import org.jenetics.internal.util.Supplier;
 
 /**
  * This class holds the {@link Random} engine used for the GA. The
@@ -86,7 +88,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-14 $</em>
  */
 public final class RandomRegistry extends StaticObject {
 	private RandomRegistry() {}
@@ -99,11 +101,8 @@ public final class RandomRegistry extends StaticObject {
 		}
 	};
 
-	private static final ThreadLocal<Entry> THREAD_LOCAL_ENTRY = new ThreadLocal<>();
-
-	private static AtomicReference<Entry> ENTRY = new AtomicReference<>(
-		new Entry(DEFAULT)
-	);
+	private static final Context<Supplier<Random>> CONTEXT =
+		new Context<>(DEFAULT);
 
 	/**
 	 * Return the global {@link Random} object.
@@ -111,7 +110,7 @@ public final class RandomRegistry extends StaticObject {
 	 * @return the global {@link Random} object.
 	 */
 	public static Random getRandom() {
-		return getEntry().random.get();
+		return CONTEXT.get().get();
 	}
 
 	/**
@@ -130,7 +129,7 @@ public final class RandomRegistry extends StaticObject {
 	 */
 	public static void setRandom(final Random random) {
 		requireNonNull(random, "Random must not be null.");
-		setEntry(new RandomSupplier<>(random));
+		CONTEXT.set(new RandomSupplier<>(random));
 	}
 
 	/**
@@ -144,9 +143,10 @@ public final class RandomRegistry extends StaticObject {
 	 * @param random the thread-local random engine to use.
 	 * @throws NullPointerException if the {@code random} object is {@code null}.
 	 */
+	@SuppressWarnings("unchecked")
 	public static void setRandom(final ThreadLocal<? extends Random> random) {
 		requireNonNull(random, "Random must not be null.");
-		setEntry(new ThreadLocalRandomSupplier<>(random));
+		CONTEXT.set((Supplier<Random>)new ThreadLocalRandomSupplier<>(random));
 	}
 
 	/**
@@ -154,7 +154,7 @@ public final class RandomRegistry extends StaticObject {
 	 * is the {@link ThreadLocalRandom} PRNG.
 	 */
 	public static void reset() {
-		setEntry(DEFAULT);
+		CONTEXT.reset();
 	}
 
 	/**
@@ -163,8 +163,10 @@ public final class RandomRegistry extends StaticObject {
 	 * @param random the PRNG used for the opened scope.
 	 * @return the scope with the given random object.
 	 */
+	@SuppressWarnings("unchecked")
 	public static <R extends Random> Scoped<R> scope(final R random) {
-		return scope(new RandomSupplier<>(random));
+		final RandomSupplier<R> supplier = new RandomSupplier<>(random);
+		return CONTEXT.scope((Supplier<Random>) supplier, supplier);
 	}
 
 	/**
@@ -173,98 +175,17 @@ public final class RandomRegistry extends StaticObject {
 	 * @param random the PRNG used for the opened scope.
 	 * @return the scope with the given random object.
 	 */
+	@SuppressWarnings("unchecked")
 	public static <R extends Random> Scoped<R> scope(final ThreadLocal<R> random) {
-		return scope(new ThreadLocalRandomSupplier<>(random));
-	}
+		final ThreadLocalRandomSupplier<R> supplier =
+			new ThreadLocalRandomSupplier<>(random);
 
-
-	private static <R extends Random> Scoped<R> scope(final Supplier<R> random) {
-		final Entry e = THREAD_LOCAL_ENTRY.get();
-		if (e != null) {
-			THREAD_LOCAL_ENTRY.set(e.inner(random));
-		} else {
-			THREAD_LOCAL_ENTRY.set(new Entry(random, Thread.currentThread()));
-		}
-
-		return new RandomScope<>(random);
-	}
-
-	private static Entry getEntry() {
-		final Entry e = THREAD_LOCAL_ENTRY.get();
-		return e != null ? e : ENTRY.get();
-	}
-
-	private static void setEntry(final Supplier<? extends Random> random) {
-		final Entry e = THREAD_LOCAL_ENTRY.get();
-		if (e != null) e.random = random; else  ENTRY.set(new Entry(random));
+		return CONTEXT.scope((Supplier<Random>) supplier, supplier);
 	}
 
 	/* *************************************************************************
-	 *  Some private helper functions.
+	 *  Some private helper classes.
 	 * ************************************************************************/
-
-	private static final class RandomScope<R extends Random>
-		implements Scoped<R>
-	{
-		private final Supplier<R> _random;
-
-		public RandomScope(final Supplier<R> random) {
-			_random = random;
-		}
-
-		@Override
-		public R get() {
-			return _random.get();
-		}
-
-		@Override
-		public void close() {
-			final Entry e = THREAD_LOCAL_ENTRY.get();
-			if (e != null) {
-				if (e.thread != Thread.currentThread()) {
-					throw new IllegalStateException(
-						"Random context must be closed by the creating thread."
-					);
-				}
-
-				THREAD_LOCAL_ENTRY.set(e.parent);
-			} else {
-				throw new IllegalStateException(
-					"Random context has been already close."
-				);
-			}
-		}
-	}
-
-	private static final class Entry {
-		final Thread thread;
-		final Entry parent;
-
-		Supplier<? extends Random> random;
-
-		Entry(
-			final Supplier<? extends Random> random,
-			final Entry parent,
-			final Thread thread
-		) {
-			this.random = random;
-			this.parent = parent;
-			this.thread = thread;
-		}
-
-		Entry(final Supplier<? extends Random> random, final Thread thread) {
-			this(random, null, thread);
-		}
-
-		Entry(final Supplier<? extends Random> random) {
-			this(random, null, null);
-		}
-
-		Entry inner(final Supplier<? extends Random> random) {
-			assert(thread == Thread.currentThread());
-			return new Entry(random, this, thread);
-		}
-	}
 
 	private final static class RandomSupplier<R extends Random>
 		implements Supplier<R>
@@ -294,10 +215,6 @@ public final class RandomRegistry extends StaticObject {
 		public final R get() {
 			return _random.get();
 		}
-	}
-
-	private static interface Supplier<T> {
-		T get();
 	}
 
 }
