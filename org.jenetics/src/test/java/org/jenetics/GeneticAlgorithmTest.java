@@ -21,6 +21,7 @@ package org.jenetics;
 
 import java.io.Serializable;
 import java.util.Random;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ForkJoinPool;
 
 import org.testng.Assert;
@@ -55,11 +56,10 @@ public class GeneticAlgorithmTest {
 	public void optimize() {
 		final Random random = new Random(123456);
 		try (Scoped<Random> rs = RandomRegistry.scope(random);
-			Scoped<Concurrent> cs = Concurrent.scope(null))
+			Scoped<Executor> cs = Concurrent.serial())
 		{
 			Assert.assertSame(random, RandomRegistry.getRandom());
 			Assert.assertSame(random, rs.get());
-			Assert.assertNull(Concurrent.getForkJoinPool());
 
 			final Factory<Genotype<DoubleGene>> factory = Genotype.of(
 				DoubleChromosome.of(0, 1)
@@ -94,7 +94,7 @@ public class GeneticAlgorithmTest {
 			Assert.assertEquals(s.getWorstFitness(), 0.9955101231254028, 0.00000001);
 		}
 
-		Assert.assertNotNull(Concurrent.getForkJoinPool());
+		Assert.assertNotNull(Concurrent.getExecutor());
 	}
 
 	private static class Base implements Comparable<Base> {
@@ -122,7 +122,7 @@ public class GeneticAlgorithmTest {
 	public void evolveForkJoinPool() {
 		final ForkJoinPool pool = new ForkJoinPool(10);
 
-		try (Scoped<Concurrent> concurrent = Concurrent.scope(pool)) {
+		try (Scoped<Executor> concurrent = Concurrent.scope(pool)) {
 			final Factory<Genotype<DoubleGene>> factory = Genotype.of(DoubleChromosome.of(-1, 1));
 			final Function<Genotype<DoubleGene>, Double> ff = new FF();
 
