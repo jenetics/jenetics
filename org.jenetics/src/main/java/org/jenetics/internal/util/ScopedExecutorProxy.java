@@ -17,51 +17,41 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.concurrent;
+package org.jenetics.internal.util;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
-import java.util.concurrent.FutureTask;
 
 import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-03-15 $</em>
+ * @version 2.0 &mdash; <em>$Date$</em>
  * @since 2.0
  */
-public final class ScopedExecutor implements Executor, Scoped<Executor> {
+public final class ScopedExecutorProxy implements Scoped<Executor> {
 
-	private final List<FutureTask<?>> _tasks = new LinkedList<>();
-	private final Executor _executor;
+	private final Scoped<Executor> _scope;
+	private final Scoped<Executor> _executor;
 
-	public ScopedExecutor(final Executor executor) {
+	public ScopedExecutorProxy(
+		final Scoped<Executor> scope,
+		final Scoped<Executor> executor
+	) {
+		_scope = scope;
 		_executor = executor;
 	}
 
 	@Override
-	public void execute(final Runnable command) {
-		final FutureTask<?> task = new FutureTask<>(command, null);
-		_tasks.add(task);
-		_executor.execute(task);
-	}
-
-	@Override
 	public Executor get() {
-		return this;
+		return _executor.get();
 	}
 
 	@Override
 	public void close() {
 		try {
-			for (final FutureTask<?> task : _tasks) {
-				task.get();
-			}
-		} catch (InterruptedException|ExecutionException e) {
-			throw new CancellationException(e.getMessage());
+			_executor.close();
+		} finally {
+			_scope.close();
 		}
 	}
 }

@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.concurrent;
+package org.jenetics.internal.util;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -31,7 +31,7 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-03-15 $</em>
+ * @version 2.0 &mdash; <em>$Date$</em>
  * @since 2.0
  */
 public final class ScopedExecutorService implements Executor, Scoped<Executor> {
