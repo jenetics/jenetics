@@ -19,47 +19,37 @@
  */
 package org.jenetics.internal.util;
 
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
-import java.util.concurrent.FutureTask;
-
-import org.jenetics.util.Scoped;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version 2.0 &mdash; <em>$Date$</em>
  * @since 2.0
  */
-public final class ScopedExecutor implements Executor, Scoped<Executor> {
+final class Stack<T> {
 
-	private final Stack<FutureTask<?>> _tasks = new Stack<>();
-	private final Executor _executor;
+	private Node<T> _tail = null;
 
-	public ScopedExecutor(final Executor executor) {
-		_executor = executor;
+	public void push(final T value) {
+		_tail = new Node<>(value, _tail);
 	}
 
-	@Override
-	public void execute(final Runnable command) {
-		final FutureTask<?> task = new FutureTask<>(command, null);
-		_tasks.push(task);
-		_executor.execute(task);
+	public T pop() {
+		T value = null;
+		if (_tail != null) {
+			value = _tail._value;
+			_tail = _tail._previous;
+		}
+
+		return value;
 	}
 
-	@Override
-	public Executor get() {
-		return this;
-	}
 
-	@Override
-	public void close() {
-		try {
-			for (FutureTask<?> t = _tasks.pop(); t != null; t = _tasks.pop()) {
-				t.get();
-			}
-		} catch (InterruptedException|ExecutionException e) {
-			throw new CancellationException(e.getMessage());
+	private static final class Node<T> {
+		final T _value;
+		final Node<T> _previous;
+
+		Node(final T value, final Node<T> previous) {
+			_value = value;
+			_previous = previous;
 		}
 	}
 }
