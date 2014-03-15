@@ -21,8 +21,6 @@ package org.jenetics.internal.util;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.jenetics.internal.util.Supplier;
-
 import org.jenetics.util.Scoped;
 
 /**
