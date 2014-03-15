@@ -17,7 +17,14 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.context;
+package org.jenetics.internal.concurrent;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.FutureTask;
 
 import org.jenetics.util.Scoped;
 
@@ -26,37 +33,35 @@ import org.jenetics.util.Scoped;
  * @version 2.0 &mdash; <em>$Date$</em>
  * @since 2.0
  */
-final class Scope<A, B> implements Scoped<A> {
+public final class ScopedExecutor implements Executor, Scoped<Executor> {
 
-	private final A _value;
-	private final ThreadLocal<Entry<B>> _threadLocalEntry;
+	private final List<FutureTask<?>> _tasks = new LinkedList<>();
+	private final Executor _executor;
 
-	Scope(final A value, final ThreadLocal<Entry<B>> threadLocalEntry) {
-		_value = value;
-		_threadLocalEntry = threadLocalEntry;
+	public ScopedExecutor(final Executor executor) {
+		_executor = executor;
 	}
 
 	@Override
-	public A get() {
-		return _value;
+	public void execute(final Runnable command) {
+		final FutureTask<?> task = new FutureTask<>(command, null);
+		_tasks.add(task);
+		_executor.execute(task);
+	}
+
+	@Override
+	public Executor get() {
+		return this;
 	}
 
 	@Override
 	public void close() {
-		final Entry<B> e = _threadLocalEntry.get();
-		if (e != null) {
-			if (e.thread != Thread.currentThread()) {
-				throw new IllegalStateException(
-					"Value context must be closed by the creating thread."
-				);
+		try {
+			for (final FutureTask<?> task : _tasks) {
+				task.get();
 			}
-
-			_threadLocalEntry.set(e.parent);
-		} else {
-			throw new IllegalStateException(
-				"Value context has been already close."
-			);
+		} catch (InterruptedException|ExecutionException e) {
+			throw new CancellationException(e.getMessage());
 		}
 	}
-
 }

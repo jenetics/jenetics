@@ -30,7 +30,7 @@ import org.jenetics.util.Scoped;
  * @version 2.0 &mdash; <em>$Date$</em>
  * @since 2.0
  */
-public class Context<T> {
+public final class Context<T> {
 
 	private final T _default;
 	private final AtomicReference<Entry<T>> _entry;
