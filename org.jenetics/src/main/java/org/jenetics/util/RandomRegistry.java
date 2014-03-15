@@ -24,7 +24,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-import org.jenetics.internal.context.Context;
+import org.jenetics.internal.util.Context;
 import org.jenetics.internal.util.Supplier;
 
 /**

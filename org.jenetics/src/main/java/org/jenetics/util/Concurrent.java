@@ -29,7 +29,7 @@ import org.jenetics.internal.concurrent.ScopedExecutor;
 import org.jenetics.internal.concurrent.ScopedExecutorProxy;
 import org.jenetics.internal.concurrent.ScopedExecutorService;
 import org.jenetics.internal.concurrent.ScopedForkJoinPool;
-import org.jenetics.internal.context.Context;
+import org.jenetics.internal.util.Context;
 
 /**
  * [code]
