@@ -25,10 +25,10 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 
-import org.jenetics.internal.concurrent.ScopedExecutor;
-import org.jenetics.internal.concurrent.ScopedExecutorProxy;
-import org.jenetics.internal.concurrent.ScopedExecutorService;
-import org.jenetics.internal.concurrent.ScopedForkJoinPool;
+import org.jenetics.internal.util.ScopedExecutor;
+import org.jenetics.internal.util.ScopedExecutorProxy;
+import org.jenetics.internal.util.ScopedExecutorService;
+import org.jenetics.internal.util.ScopedForkJoinPool;
 import org.jenetics.internal.util.Context;
 
 /**

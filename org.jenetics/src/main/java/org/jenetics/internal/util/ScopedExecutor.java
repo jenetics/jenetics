@@ -17,9 +17,14 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.concurrent;
+package org.jenetics.internal.util;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
+import java.util.concurrent.FutureTask;
 
 import org.jenetics.util.Scoped;
 
@@ -28,30 +33,35 @@ import org.jenetics.util.Scoped;
  * @version 2.0 &mdash; <em>$Date$</em>
  * @since 2.0
  */
-public final class ScopedExecutorProxy implements Scoped<Executor> {
+public final class ScopedExecutor implements Executor, Scoped<Executor> {
 
-	private final Scoped<Executor> _scope;
-	private final Scoped<Executor> _executor;
+	private final List<FutureTask<?>> _tasks = new LinkedList<>();
+	private final Executor _executor;
 
-	public ScopedExecutorProxy(
-		final Scoped<Executor> scope,
-		final Scoped<Executor> executor
-	) {
-		_scope = scope;
+	public ScopedExecutor(final Executor executor) {
 		_executor = executor;
 	}
 
 	@Override
+	public void execute(final Runnable command) {
+		final FutureTask<?> task = new FutureTask<>(command, null);
+		_tasks.add(task);
+		_executor.execute(task);
+	}
+
+	@Override
 	public Executor get() {
-		return _executor.get();
+		return this;
 	}
 
 	@Override
 	public void close() {
 		try {
-			_executor.close();
-		} finally {
-			_scope.close();
+			for (final FutureTask<?> task : _tasks) {
+				task.get();
+			}
+		} catch (InterruptedException|ExecutionException e) {
+			throw new CancellationException(e.getMessage());
 		}
 	}
 }

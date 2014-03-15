@@ -17,15 +17,15 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.concurrent;
+package org.jenetics.internal.util;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ForkJoinTask;
 
 import org.jenetics.util.Scoped;
 
@@ -34,18 +34,18 @@ import org.jenetics.util.Scoped;
  * @version 2.0 &mdash; <em>$Date$</em>
  * @since 2.0
  */
-public final class ScopedExecutorService implements Executor, Scoped<Executor> {
+public final class ScopedForkJoinPool implements Executor, Scoped<Executor> {
 
-	private final List<Future<?>> _futures = new LinkedList<>();
-	private final ExecutorService _service;
+	private final List<ForkJoinTask<?>> _tasks = new LinkedList<>();
+	private final ForkJoinPool _pool;
 
-	public ScopedExecutorService(final ExecutorService service) {
-		_service = service;
+	public ScopedForkJoinPool(final ForkJoinPool pool) {
+		_pool = pool;
 	}
 
 	@Override
 	public void execute(final Runnable command) {
-		_futures.add(_service.submit(command));
+		_tasks.add(_pool.submit(command));
 	}
 
 	@Override
@@ -56,8 +56,8 @@ public final class ScopedExecutorService implements Executor, Scoped<Executor> {
 	@Override
 	public void close() {
 		try {
-			for (final Future<?> future : _futures) {
-				future.get();
+			for (final ForkJoinTask<?> task : _tasks) {
+				task.get();
 			}
 		} catch (InterruptedException|ExecutionException e) {
 			throw new CancellationException(e.getMessage());

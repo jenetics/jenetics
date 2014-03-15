@@ -17,15 +17,9 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.concurrent;
+package org.jenetics.internal.util;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.ForkJoinTask;
 
 import org.jenetics.util.Scoped;
 
@@ -34,33 +28,30 @@ import org.jenetics.util.Scoped;
  * @version 2.0 &mdash; <em>$Date$</em>
  * @since 2.0
  */
-public final class ScopedForkJoinPool implements Executor, Scoped<Executor> {
+public final class ScopedExecutorProxy implements Scoped<Executor> {
 
-	private final List<ForkJoinTask<?>> _tasks = new LinkedList<>();
-	private final ForkJoinPool _pool;
+	private final Scoped<Executor> _scope;
+	private final Scoped<Executor> _executor;
 
-	public ScopedForkJoinPool(final ForkJoinPool pool) {
-		_pool = pool;
-	}
-
-	@Override
-	public void execute(final Runnable command) {
-		_tasks.add(_pool.submit(command));
+	public ScopedExecutorProxy(
+		final Scoped<Executor> scope,
+		final Scoped<Executor> executor
+	) {
+		_scope = scope;
+		_executor = executor;
 	}
 
 	@Override
 	public Executor get() {
-		return this;
+		return _executor.get();
 	}
 
 	@Override
 	public void close() {
 		try {
-			for (final ForkJoinTask<?> task : _tasks) {
-				task.get();
-			}
-		} catch (InterruptedException|ExecutionException e) {
-			throw new CancellationException(e.getMessage());
+			_executor.close();
+		} finally {
+			_scope.close();
 		}
 	}
 }
