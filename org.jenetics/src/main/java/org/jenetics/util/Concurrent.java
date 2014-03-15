@@ -33,9 +33,9 @@ import org.jenetics.internal.util.Context;
 
 /**
  * [code]
- * try (final Scoped<Executor> c = Concurrent.scope()) {
- *     c.get().execute(task1);
- *     c.get().execute(task2);
+ * try (Scoped<Executor> executor = Concurrent.scope()) {
+ *     executor.get().execute(task1);
+ *     executor.get().execute(task2);
  * }
  * [/code]
  *
