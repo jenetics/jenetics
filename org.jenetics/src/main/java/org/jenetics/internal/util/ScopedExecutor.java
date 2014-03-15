@@ -19,8 +19,6 @@
  */
 package org.jenetics.internal.util;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
@@ -30,12 +28,12 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date$</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-16 $</em>
  * @since 2.0
  */
 public final class ScopedExecutor implements Executor, Scoped<Executor> {
 
-	private final List<FutureTask<?>> _tasks = new LinkedList<>();
+	private final Stack<FutureTask<?>> _tasks = new Stack<>();
 	private final Executor _executor;
 
 	public ScopedExecutor(final Executor executor) {
@@ -45,7 +43,7 @@ public final class ScopedExecutor implements Executor, Scoped<Executor> {
 	@Override
 	public void execute(final Runnable command) {
 		final FutureTask<?> task = new FutureTask<>(command, null);
-		_tasks.add(task);
+		_tasks.push(task);
 		_executor.execute(task);
 	}
 
@@ -57,8 +55,8 @@ public final class ScopedExecutor implements Executor, Scoped<Executor> {
 	@Override
 	public void close() {
 		try {
-			for (final FutureTask<?> task : _tasks) {
-				task.get();
+			for (FutureTask<?> t = _tasks.pop(); t != null; t = _tasks.pop()) {
+				t.get();
 			}
 		} catch (InterruptedException|ExecutionException e) {
 			throw new CancellationException(e.getMessage());

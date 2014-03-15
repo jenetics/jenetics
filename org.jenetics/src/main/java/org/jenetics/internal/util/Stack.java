@@ -19,40 +19,37 @@
  */
 package org.jenetics.internal.util;
 
-import java.util.concurrent.Executor;
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.ForkJoinTask;
-
-import org.jenetics.util.Scoped;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version 2.0 &mdash; <em>$Date: 2014-03-16 $</em>
  * @since 2.0
  */
-public final class ScopedForkJoinPool implements Executor, Scoped<Executor> {
+final class Stack<T> {
 
-	private final Stack<ForkJoinTask<?>> _tasks = new Stack<>();
-	private final ForkJoinPool _pool;
+	private Node<T> _tail = null;
 
-	public ScopedForkJoinPool(final ForkJoinPool pool) {
-		_pool = pool;
+	public void push(final T value) {
+		_tail = new Node<>(value, _tail);
 	}
 
-	@Override
-	public void execute(final Runnable command) {
-		_tasks.push(_pool.submit(command));
+	public T pop() {
+		T value = null;
+		if (_tail != null) {
+			value = _tail._value;
+			_tail = _tail._previous;
+		}
+
+		return value;
 	}
 
-	@Override
-	public Executor get() {
-		return this;
-	}
 
-	@Override
-	public void close() {
-		for (ForkJoinTask<?> t = _tasks.pop(); t != null; t = _tasks.pop()) {
-			t.join();
+	private static final class Node<T> {
+		final T _value;
+		final Node<T> _previous;
+
+		Node(final T value, final Node<T> previous) {
+			_value = value;
+			_previous = previous;
 		}
 	}
 }

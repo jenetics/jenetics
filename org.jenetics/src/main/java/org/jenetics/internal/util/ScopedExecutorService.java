@@ -19,8 +19,6 @@
  */
 package org.jenetics.internal.util;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
@@ -31,12 +29,12 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date$</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-16 $</em>
  * @since 2.0
  */
 public final class ScopedExecutorService implements Executor, Scoped<Executor> {
 
-	private final List<Future<?>> _futures = new LinkedList<>();
+	private final Stack<Future<?>> _futures = new Stack<>();
 	private final ExecutorService _service;
 
 	public ScopedExecutorService(final ExecutorService service) {
@@ -45,7 +43,7 @@ public final class ScopedExecutorService implements Executor, Scoped<Executor> {
 
 	@Override
 	public void execute(final Runnable command) {
-		_futures.add(_service.submit(command));
+		_futures.push(_service.submit(command));
 	}
 
 	@Override
@@ -56,8 +54,8 @@ public final class ScopedExecutorService implements Executor, Scoped<Executor> {
 	@Override
 	public void close() {
 		try {
-			for (final Future<?> future : _futures) {
-				future.get();
+			for (Future<?> f = _futures.pop(); f != null; f = _futures.pop()) {
+				f.get();
 			}
 		} catch (InterruptedException|ExecutionException e) {
 			throw new CancellationException(e.getMessage());

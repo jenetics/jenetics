@@ -19,40 +19,29 @@
  */
 package org.jenetics.internal.util;
 
-import java.util.concurrent.Executor;
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.ForkJoinTask;
-
-import org.jenetics.util.Scoped;
+import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-03-16 $</em>
- * @since 2.0
+ * @version @__version__@ &mdash; <em>$Date: 2014-03-16 $</em>
+ * @since @__version__@
  */
-public final class ScopedForkJoinPool implements Executor, Scoped<Executor> {
+public class StackTest {
 
-	private final Stack<ForkJoinTask<?>> _tasks = new Stack<>();
-	private final ForkJoinPool _pool;
+	@Test
+	public void list() {
+		final Stack<String> list = new Stack<>();
+		list.push("a");
+		list.push("b");
+		list.push("c");
 
-	public ScopedForkJoinPool(final ForkJoinPool pool) {
-		_pool = pool;
-	}
+		//for (int i = 0; i < 3; ++i) {
+		//	System.out.println(list.peek());
+		//}
 
-	@Override
-	public void execute(final Runnable command) {
-		_tasks.push(_pool.submit(command));
-	}
-
-	@Override
-	public Executor get() {
-		return this;
-	}
-
-	@Override
-	public void close() {
-		for (ForkJoinTask<?> t = _tasks.pop(); t != null; t = _tasks.pop()) {
-			t.join();
+		for (String value = list.pop(); value != null; value = list.pop()) {
+			System.out.println(value);
 		}
 	}
+
 }
