@@ -33,15 +33,15 @@ import org.jenetics.internal.util.Context;
 
 /**
  * [code]
- * try (final Scoped<Executor> c = Concurrent.scope()) {
- *     c.get().execute(task1);
- *     c.get().execute(task2);
+ * try (Scoped<Executor> executor = Concurrent.scope()) {
+ *     executor.get().execute(task1);
+ *     executor.get().execute(task2);
  * }
  * [/code]
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 2.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-15 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-16 $</em>
  */
 public abstract class Concurrent {
 
