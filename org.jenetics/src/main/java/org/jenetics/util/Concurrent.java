@@ -20,23 +20,20 @@
 package org.jenetics.util;
 
 import static java.util.Objects.requireNonNull;
-import static java.util.concurrent.ForkJoinTask.adapt;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.ForkJoinTask;
-import java.util.concurrent.Future;
-import java.util.concurrent.FutureTask;
 
+import org.jenetics.internal.concurrent.ScopedExecutor;
+import org.jenetics.internal.concurrent.ScopedExecutorProxy;
+import org.jenetics.internal.concurrent.ScopedExecutorService;
+import org.jenetics.internal.concurrent.ScopedForkJoinPool;
 import org.jenetics.internal.context.Context;
 
 /**
  * [code]
- * try (final Scoped<Concurrent> c = Concurrent.scope()) {
+ * try (final Scoped<Executor> c = Concurrent.scope()) {
  *     c.get().execute(task1);
  *     c.get().execute(task2);
  * }
@@ -44,7 +41,7 @@ import org.jenetics.internal.context.Context;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 2.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-14 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-15 $</em>
  */
 public abstract class Concurrent {
 
@@ -61,11 +58,6 @@ public abstract class Concurrent {
 
 	private static final Context<Executor> CONTEXT =
 		new Context<Executor>(DEFAULT);
-
-
-	public static ForkJoinPool commonPool() {
-		return DEFAULT;
-	}
 
 	/**
 	 * Set the executor object to use for concurrent actions.
@@ -87,110 +79,37 @@ public abstract class Concurrent {
 		return CONTEXT.get();
 	}
 
-	public static void reset() {
-		setExecutor(commonPool());
-	}
-
-	public static Scoped<Executor> scope(final Executor executor) {
-		final Scoped<Executor> scoped = CONTEXT.scope(requireNonNull(executor));
-
-		if (executor instanceof ForkJoinPool) {
-			return new ScopedForkJoinPool(scoped);
-		} else {
-			return new ScopedExecutorService(scoped);
-		}
-	}
-
+	/**
+	 *
+	 * @return
+	 */
 	public static Scoped<Executor> scope() {
-		return scope(getExecutor());
+		return newScope(CONTEXT.get());
 	}
 
 	public static Scoped<Executor> serial() {
 		return CONTEXT.scope(SERIAL_EXECUTOR);
 	}
 
-}
+	public static Scoped<Executor> scope(final Executor executor) {
+		final Scoped<Executor> scope = CONTEXT.scope(requireNonNull(executor));
+		final Scoped<Executor> exec = newScope(executor);
 
-abstract class ScopedExecutor<F extends Future<?>>
-	implements Executor, Scoped<Executor>
-{
-	private static final int TASKS_SIZE = 30;
-
-	protected final Scoped<?> _outer;
-	protected final Executor _executor;
-	protected final List<F> _futures = new ArrayList<>(TASKS_SIZE);
-
-	ScopedExecutor(final Scoped<?> outer, final Executor executor) {
-		_outer = requireNonNull(outer);
-		_executor = requireNonNull(executor);
+		return new ScopedExecutorProxy(scope, exec);
 	}
 
-	@Override
-	public Executor get() {
-		return this;
+	public static void reset() {
+		CONTEXT.reset();
 	}
 
-	@Override
-	public void close() {
-		try {
-			join();
-		} finally {
-			_outer.close();
+	private static Scoped<Executor> newScope(final Executor executor) {
+		if (executor instanceof ForkJoinPool) {
+			return new ScopedForkJoinPool((ForkJoinPool)executor);
+		} else if (executor instanceof ExecutorService) {
+			return new ScopedExecutorService((ExecutorService)executor);
+		} else {
+			return new ScopedExecutor(executor);
 		}
 	}
 
-	protected abstract void join();
-}
-
-final class ScopedExecutorService extends ScopedExecutor<FutureTask<?>> {
-
-	ScopedExecutorService(final Scoped<Executor> pool) {
-		super(pool, pool.get());
-	}
-
-	@Override
-	public void execute(final Runnable command) {
-		final FutureTask<?> task = toFutureTask(command);
-		_futures.add(task);
-		_executor.execute(task);
-	}
-
-	private static FutureTask<?> toFutureTask(final Runnable runnable) {
-		return new FutureTask<>(runnable, null);
-	}
-
-	@Override
-	protected void join() {
-		try {
-			for (int i = _futures.size(); --i >= 0;) {
-				_futures.get(i).get();
-			}
-		} catch (InterruptedException|ExecutionException e) {
-			throw new CancellationException(e.getMessage());
-		}
-	}
-}
-
-final class ScopedForkJoinPool extends ScopedExecutor<ForkJoinTask<?>> {
-	ScopedForkJoinPool(final Scoped<Executor> pool) {
-		super(pool, pool.get());
-	}
-
-	@Override
-	public void execute(final Runnable command) {
-		final ForkJoinTask<?> task = toForkJoinTask(command);
-		_futures.add(task);
-		((ForkJoinPool)_executor).execute(task);
-	}
-
-	private static ForkJoinTask<?> toForkJoinTask(final Runnable r) {
-		return r instanceof ForkJoinTask<?> ? (ForkJoinTask<?>)r : adapt(r);
-	}
-
-	@Override
-	protected void join() {
-		for (int i = _futures.size(); --i >= 0;) {
-			_futures.get(i).join();
-		}
-	}
 }

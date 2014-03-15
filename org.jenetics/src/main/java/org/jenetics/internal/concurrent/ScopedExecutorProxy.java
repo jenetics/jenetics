@@ -17,7 +17,9 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.context;
+package org.jenetics.internal.concurrent;
+
+import java.util.concurrent.Executor;
 
 import org.jenetics.util.Scoped;
 
@@ -26,37 +28,30 @@ import org.jenetics.util.Scoped;
  * @version 2.0 &mdash; <em>$Date: 2014-03-15 $</em>
  * @since 2.0
  */
-final class Scope<A, B> implements Scoped<A> {
+public final class ScopedExecutorProxy implements Scoped<Executor> {
 
-	private final A _value;
-	private final ThreadLocal<Entry<B>> _threadLocalEntry;
+	private final Scoped<Executor> _scope;
+	private final Scoped<Executor> _executor;
 
-	Scope(final A value, final ThreadLocal<Entry<B>> threadLocalEntry) {
-		_value = value;
-		_threadLocalEntry = threadLocalEntry;
+	public ScopedExecutorProxy(
+		final Scoped<Executor> scope,
+		final Scoped<Executor> executor
+	) {
+		_scope = scope;
+		_executor = executor;
 	}
 
 	@Override
-	public A get() {
-		return _value;
+	public Executor get() {
+		return _executor.get();
 	}
 
 	@Override
 	public void close() {
-		final Entry<B> e = _threadLocalEntry.get();
-		if (e != null) {
-			if (e.thread != Thread.currentThread()) {
-				throw new IllegalStateException(
-					"Value context must be closed by the creating thread."
-				);
-			}
-
-			_threadLocalEntry.set(e.parent);
-		} else {
-			throw new IllegalStateException(
-				"Value context has been already close."
-			);
+		try {
+			_executor.close();
+		} finally {
+			_scope.close();
 		}
 	}
-
 }
