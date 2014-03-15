@@ -81,4 +81,75 @@ public final class Context<T> {
 		};
 	}
 
+	/**
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @version 2.0 &mdash; <em>$Date: 2014-03-15 $</em>
+	 * @since 2.0
+	 */
+	static final class Entry<T> {
+		final Thread thread;
+		final Entry<T> parent;
+
+		T value;
+
+		Entry(final T value, final Entry<T> parent, final Thread thread) {
+			this.value = value;
+			this.parent = parent;
+			this.thread = thread;
+		}
+
+		Entry(final T value, final Thread thread) {
+			this(value, null, thread);
+		}
+
+		Entry(final T value) {
+			this(value, null, null);
+		}
+
+		Entry<T> inner(final T value) {
+			assert(thread == Thread.currentThread());
+			return new Entry<>(value, this, thread);
+		}
+
+	}
+
+	/**
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @version 2.0 &mdash; <em>$Date: 2014-03-15 $</em>
+	 * @since 2.0
+	 */
+	static final class Scope<A, B> implements Scoped<A> {
+
+		private final A _value;
+		private final ThreadLocal<Entry<B>> _threadLocalEntry;
+
+		Scope(final A value, final ThreadLocal<Entry<B>> threadLocalEntry) {
+			_value = value;
+			_threadLocalEntry = threadLocalEntry;
+		}
+
+		@Override
+		public A get() {
+			return _value;
+		}
+
+		@Override
+		public void close() {
+			final Entry<B> e = _threadLocalEntry.get();
+			if (e != null) {
+				if (e.thread != Thread.currentThread()) {
+					throw new IllegalStateException(
+						"Value context must be closed by the creating thread."
+					);
+				}
+
+				_threadLocalEntry.set(e.parent);
+			} else {
+				throw new IllegalStateException(
+					"Value context has been already close."
+				);
+			}
+		}
+
+	}
 }
