@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.context;
+package org.jenetics.internal.util;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -27,7 +27,7 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-03-15 $</em>
+ * @version 2.0 &mdash; <em>$Date$</em>
  * @since 2.0
  */
 public final class Context<T> {
@@ -83,10 +83,10 @@ public final class Context<T> {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version 2.0 &mdash; <em>$Date: 2014-03-15 $</em>
+	 * @version 2.0 &mdash; <em>$Date$</em>
 	 * @since 2.0
 	 */
-	static final class Entry<T> {
+	private static final class Entry<T> {
 		final Thread thread;
 		final Entry<T> parent;
 
@@ -115,10 +115,10 @@ public final class Context<T> {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version 2.0 &mdash; <em>$Date: 2014-03-15 $</em>
+	 * @version 2.0 &mdash; <em>$Date$</em>
 	 * @since 2.0
 	 */
-	static final class Scope<A, B> implements Scoped<A> {
+	private static final class Scope<A, B> implements Scoped<A> {
 
 		private final A _value;
 		private final ThreadLocal<Entry<B>> _threadLocalEntry;

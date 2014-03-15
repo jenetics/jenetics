@@ -24,7 +24,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-import org.jenetics.internal.context.Context;
+import org.jenetics.internal.util.Context;
 import org.jenetics.internal.util.Supplier;
 
 /**
@@ -88,7 +88,7 @@ import org.jenetics.internal.util.Supplier;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-14 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-15 $</em>
  */
 public final class RandomRegistry extends StaticObject {
 	private RandomRegistry() {}
