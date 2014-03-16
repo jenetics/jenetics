@@ -98,19 +98,17 @@ public final class Array<T>
 	 */
 	public Array<T> filter(final Function<? super T, Boolean> predicate) {
 		final Stack<T> filtered = new Stack<>();
-		int length = 0;
 		for (int i = 0, n = length(); i < n; ++i) {
 			@SuppressWarnings("unchecked")
 			final T value = (T)_array.data[i + _start];
 
 			if (predicate.apply(value) == Boolean.TRUE) {
 				filtered.push(value);
-				++length;
 			}
 		}
 
-		final Array<T> copy = new Array<>(length);
-		for (int i = length; --i >= 0;) {
+		final Array<T> copy = new Array<>(filtered.length);
+		for (int i = filtered.length; --i >= 0;) {
 			copy._array.data[i] = filtered.pop();
 		}
 
