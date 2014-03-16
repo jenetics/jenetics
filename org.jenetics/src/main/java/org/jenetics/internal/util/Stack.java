@@ -20,6 +20,20 @@
 package org.jenetics.internal.util;
 
 /**
+ * Minimal implementation of stack data-structure. {@code Null} values are not
+ * permitted, but not checked.
+ *
+ * [code]
+ * final Stack<Integer> stack = new Stack<>();
+ * for (int i = 0; i < 10; ++i) {
+ *     stack.push(i);
+ * }
+ *
+ * for (Integer i = stack.pop(); i != null; i = stack.pop()) {
+ *     System.out.println(i);
+ * }
+ * [/code]
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version 2.0 &mdash; <em>$Date: 2014-03-16 $</em>
  * @since 2.0
