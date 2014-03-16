@@ -22,6 +22,12 @@ package org.jenetics.util;
 import java.io.Serializable;
 
 /**
+ * This class models a quantity or amount of time, such as '34.5 seconds'.
+ * <p>
+ * <i>It is an (temporary) replacement for the the {@code Measurable<Duration>}
+ * class in the remove JScience library, till to the Java 8 upgrade of this
+ * library.</i>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version 2.0 &mdash; <em>$Date$</em>
  * @since 2.0
@@ -35,14 +41,29 @@ public final class Duration implements Comparable<Duration>, Serializable {
 		_nanos = nanos;
 	}
 
+	/**
+	 * Return the amount of this duration in nano seconds.
+	 *
+	 * @return the amount of this duration in nano seconds.
+	 */
 	public long toNanos() {
 		return _nanos;
 	}
 
+	/**
+	 * Return the amount of this duration in milli seconds.
+	 *
+	 * @return the amount of this duration in milli seconds.
+	 */
 	public long toMillis() {
 		return _nanos/1_000_000;
 	}
 
+	/**
+	 * Return the amount of this duration in seconds.
+	 *
+	 * @return the amount of this duration in seconds.
+	 */
 	public double toSeconds() {
 		return (double)_nanos/1_000_000_000.0;
 	}
@@ -81,10 +102,32 @@ public final class Duration implements Comparable<Duration>, Serializable {
 		return String.format("%11.11f s", toSeconds());
 	}
 
+	/**
+	 * Create a new duration object from the given nano seconds.
+	 *
+	 * @param nanos the amount of the new duration in nano seconds.
+	 * @return a new duration object from the given nano seconds
+	 */
 	public static Duration ofNanos(final long nanos) {
 		return new Duration(nanos);
 	}
 
+	/**
+	 * Create a new duration object from the given milli seconds.
+	 *
+	 * @param millis the amount of the new duration in milli seconds.
+	 * @return a new duration object from the given milli seconds
+	 */
+	public static Duration ofMillis(final long millis) {
+		return new Duration(millis*1_000_000);
+	}
+
+	/**
+	 * Create a new duration object from the given seconds.
+	 *
+	 * @param seconds the amount of the new duration in seconds.
+	 * @return a new duration object from the given seconds
+	 */
 	public static Duration ofSeconds(final double seconds) {
 		return new Duration((long)(seconds*1_000_000_000));
 	}
