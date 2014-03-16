@@ -24,7 +24,7 @@ package org.jenetics.internal.util;
  * @version 2.0 &mdash; <em>$Date: 2014-03-16 $</em>
  * @since 2.0
  */
-final class Stack<T> {
+public final class Stack<T> {
 
 	private Node<T> _tail = null;
 

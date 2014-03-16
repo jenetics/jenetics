@@ -38,7 +38,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-11 $</em>
+ * @version <em>$Date: 2014-03-16 $</em>
  */
 public class ArrayTest extends ObjectTester<Array<Double>> {
 
@@ -186,6 +186,10 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 
 		final Array<Integer> filtered = array.filter(not(Null));
 		Assert.assertEquals(filtered.length(), array.length() - 2);
+
+		for (Integer value : filtered) {
+			Assert.assertEquals(value, new Integer(100));
+		}
 	}
 
 	@Test

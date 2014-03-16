@@ -28,11 +28,12 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Random;
 import java.util.RandomAccess;
+
+import org.jenetics.internal.util.Stack;
 
 /**
  * Array class which wraps the the java build in array type T[]. Once the array
@@ -46,7 +47,7 @@ import java.util.RandomAccess;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-16 $</em>
  */
 public final class Array<T>
 	extends ArraySeq<T>
@@ -96,20 +97,21 @@ public final class Array<T>
 	 *         {@code null}.
 	 */
 	public Array<T> filter(final Function<? super T, Boolean> predicate) {
-		final LinkedList<T> filtered = new LinkedList<>();
+		final Stack<T> filtered = new Stack<>();
+		int index = 0;
 		for (int i = 0, n = length(); i < n; ++i) {
 			@SuppressWarnings("unchecked")
 			final T value = (T)_array.data[i + _start];
 
 			if (predicate.apply(value) == Boolean.TRUE) {
-				filtered.add(value);
+				filtered.push(value);
+				++index;
 			}
 		}
 
-		final Array<T> copy = new Array<>(filtered.size());
-		int index = 0;
-		for (T element : filtered) {
-			copy.set(index++, element);
+		final Array<T> copy = new Array<>(index);
+		for (T e = filtered.pop(); e != null; e = filtered.pop()) {
+			copy.set(--index, e);
 		}
 
 		return copy;
