@@ -25,11 +25,11 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 
+import org.jenetics.internal.util.Context;
 import org.jenetics.internal.util.ScopedExecutor;
 import org.jenetics.internal.util.ScopedExecutorProxy;
 import org.jenetics.internal.util.ScopedExecutorService;
 import org.jenetics.internal.util.ScopedForkJoinPool;
-import org.jenetics.internal.util.Context;
 
 /**
  * [code]
@@ -43,7 +43,8 @@ import org.jenetics.internal.util.Context;
  * @since 2.0
  * @version 2.0 &mdash; <em>$Date$</em>
  */
-public abstract class Concurrent {
+public final class Concurrent extends StaticObject {
+	private Concurrent() {}
 
 	private static final ForkJoinPool DEFAULT = new ForkJoinPool(
 		Math.max(Runtime.getRuntime().availableProcessors() - 1, 1)
@@ -80,17 +81,34 @@ public abstract class Concurrent {
 	}
 
 	/**
+	 * Open a new executor scope with the currently set
+	 * {@link java.util.concurrent.Executor}.
 	 *
-	 * @return
+	 * @return a new executor with the currently se {@code Executor}.
 	 */
 	public static Scoped<Executor> scope() {
 		return newScope(CONTEXT.get());
 	}
 
+	/**
+	 * Open a new executor scope, where all tasks are executed in the main
+	 * thread.
+	 *
+	 * @return a new <i>serial</i> executor scope.
+	 */
 	public static Scoped<Executor> serial() {
 		return CONTEXT.scope(SERIAL_EXECUTOR);
 	}
 
+	/**
+	 * Open a new executor scope with the given {@code executor}. When this
+	 * scope is <i>closed</i>, the original executor is restored.
+	 *
+	 * @param executor the executor used for the new scope.
+	 * @return a new executor scope
+	 * @throws java.lang.NullPointerException if the given {@code executor} is
+	 *         {@code null}.
+	 */
 	public static Scoped<Executor> scope(final Executor executor) {
 		final Scoped<Executor> scope = CONTEXT.scope(requireNonNull(executor));
 		final Scoped<Executor> exec = newScope(executor);
@@ -98,6 +116,9 @@ public abstract class Concurrent {
 		return new ScopedExecutorProxy(scope, exec);
 	}
 
+	/**
+	 * Set the used executor to the default value.
+	 */
 	public static void reset() {
 		CONTEXT.reset();
 	}
