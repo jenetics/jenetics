@@ -42,8 +42,11 @@ public final class Stack<T> {
 
 	private Node<T> _tail = null;
 
+	public int length = 0;
+
 	public void push(final T value) {
 		_tail = new Node<>(value, _tail);
+		++length;
 	}
 
 	public T pop() {
@@ -51,6 +54,7 @@ public final class Stack<T> {
 		if (_tail != null) {
 			value = _tail._value;
 			_tail = _tail._previous;
+			--length;
 		}
 
 		return value;
