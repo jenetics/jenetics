@@ -54,7 +54,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-16 $</em>
  */
 @XmlJavaTypeAdapter(BitChromosome.Model.Adapter.class)
 public class BitChromosome extends Number
@@ -542,18 +542,17 @@ public class BitChromosome extends Number
 				final Model model = new Model();
 				model.length = chromosome._length;
 				model.probability = chromosome._p;
-				model.value = bit.toByteString(chromosome.toByteArray());
+				model.value = chromosome.toCanonicalString();
 				return model;
 			}
 
 			@Override
 			public BitChromosome unmarshal(final Model model) {
-				final BitChromosome chromosome = new BitChromosome(
-					bit.fromByteString(model.value)
+				return new BitChromosome(
+					toByteArray(model.value),
+					model.length,
+					model.probability
 				);
-				chromosome._p = model.probability;
-				chromosome._length = model.length;
-				return chromosome;
 			}
 		}
 	}
