@@ -542,18 +542,17 @@ public class BitChromosome extends Number
 				final Model model = new Model();
 				model.length = chromosome._length;
 				model.probability = chromosome._p;
-				model.value = bit.toByteString(chromosome.toByteArray());
+				model.value = chromosome.toCanonicalString();
 				return model;
 			}
 
 			@Override
 			public BitChromosome unmarshal(final Model model) {
-				final BitChromosome chromosome = new BitChromosome(
-					bit.fromByteString(model.value)
+				return new BitChromosome(
+					toByteArray(model.value),
+					model.length,
+					model.probability
 				);
-				chromosome._p = model.probability;
-				chromosome._length = model.length;
-				return chromosome;
 			}
 		}
 	}
