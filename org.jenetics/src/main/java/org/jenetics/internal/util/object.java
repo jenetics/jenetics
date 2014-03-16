@@ -35,7 +35,7 @@ import org.jenetics.util.arrays;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-03-12 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-16 $</em>
  */
 public final class object extends StaticObject {
 	private object() {}
@@ -52,7 +52,7 @@ public final class object extends StaticObject {
 	 * integers in the array are smaller than zero and greater than 9.
 	 * [code]
 	 * final Array<Integer> array = ...
-	 * arrays.forEach(CheckRange<(0, 10));
+	 * arrays.forEach(CheckRange(0, 10));
 	 * [/code]
 	 */
 	public static <C extends Comparable<? super C>> Function<C, Boolean>
