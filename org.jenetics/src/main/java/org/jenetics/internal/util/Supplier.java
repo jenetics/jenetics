@@ -21,8 +21,8 @@ package org.jenetics.internal.util;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-03-14 $</em>
- * @since @__version__@
+ * @version 2.0 &mdash; <em>$Date: 2014-03-16 $</em>
+ * @since 2.0
  */
 public interface Supplier<T> {
 	public T get();
