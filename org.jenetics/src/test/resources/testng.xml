@@ -20,7 +20,7 @@
  # Author:
  #    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  #
- # Version: <em>$Date: 2014-03-12 $</em>
+ # Version: <em>$Date: 2014-03-17 $</em>
  #
  ###############################################################################
 -->
@@ -299,6 +299,11 @@
 			<class name="org.jenetics.util.CharSeqTest" />
 		</classes>
 	</test>
+	<test name="org.jenetics.util.Concurrent">
+		<classes>
+			<class name="org.jenetics.util.ConcurrentTest" />
+		</classes>
+	</test>	
 	<test name="org.jenetics.util.math">
 		<classes>
 			<class name="org.jenetics.util.mathRandomTest" />
