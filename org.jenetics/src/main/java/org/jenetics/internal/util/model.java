@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.jenetics.util.StaticObject;
@@ -121,12 +122,12 @@ public final class model extends StaticObject {
 
 	}
 
-	@XmlRootElement(name = "java.lang.Character")
-	@XmlType(name = "java.lang.Character")
+	@XmlRootElement(name = "char")
+	@XmlType(name = "char")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	public static final class CharacterModel {
 
-		@XmlAttribute
+		@XmlValue
 		public String value;
 
 		@ValueType(Character.class)
