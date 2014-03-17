@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.jenetics.util.StaticObject;
@@ -39,7 +40,7 @@ import org.jenetics.util.StaticObject;
  * integer and float types of the JScience library.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-10 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-17 $</em>
  * @since 1.6
  */
 public final class model extends StaticObject {
@@ -121,12 +122,12 @@ public final class model extends StaticObject {
 
 	}
 
-	@XmlRootElement(name = "java.lang.Character")
-	@XmlType(name = "java.lang.Character")
+	@XmlRootElement(name = "char")
+	@XmlType(name = "char")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	public static final class CharacterModel {
 
-		@XmlAttribute
+		@XmlValue
 		public String value;
 
 		@ValueType(Character.class)
