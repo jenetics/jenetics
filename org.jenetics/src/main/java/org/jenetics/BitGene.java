@@ -152,7 +152,7 @@ public enum BitGene
 	 * ************************************************************************/
 
 	@XmlRootElement(name = "bit-gene")
-	@XmlType(name = "bit-gene")
+	@XmlType(name = "org.jenetics.BitGene")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
 

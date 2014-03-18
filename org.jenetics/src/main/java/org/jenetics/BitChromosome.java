@@ -517,7 +517,7 @@ public class BitChromosome extends Number
 	 * ************************************************************************/
 
 	@XmlRootElement(name = "bit-chromosome")
-	@XmlType(name = "bit-chromosome")
+	@XmlType(name = "org.jenetics.BitChromosome")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
 

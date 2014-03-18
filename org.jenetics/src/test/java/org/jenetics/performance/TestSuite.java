@@ -19,16 +19,12 @@
  */
 package org.jenetics.performance;
 
-import static java.util.FormattableFlags.LEFT_JUSTIFY;
-
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Formattable;
-import java.util.Formatter;
 import java.util.List;
 
 /**

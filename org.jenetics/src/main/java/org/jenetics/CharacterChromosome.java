@@ -274,7 +274,7 @@ public class CharacterChromosome
 	 * ************************************************************************/
 
 	@XmlRootElement(name = "character-chromosome")
-	@XmlType(name = "character-chromosome")
+	@XmlType(name = "org.jenetics.CharacterChromosome")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
 

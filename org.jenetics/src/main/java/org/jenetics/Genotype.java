@@ -323,7 +323,7 @@ public final class Genotype<G extends Gene<?, G>>
 	 * ************************************************************************/
 
 	@XmlRootElement(name = "genotype")
-	@XmlType(name = "genotype")
+	@XmlType(name = "org.jenetics.Genotype")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	static final class Model {
@@ -335,7 +335,7 @@ public final class Genotype<G extends Gene<?, G>>
 		public int ngenes;
 
 		@XmlElement(name = "chromosome")
-		public List<Object> chromosomes;
+		public List chromosomes;
 
 		public static final class Adapter
 			extends XmlAdapter<Model, Genotype>
@@ -346,7 +346,8 @@ public final class Genotype<G extends Gene<?, G>>
 				model.length = gt.length();
 				model.ngenes = gt.getNumberOfGenes();
 				model.chromosomes = gt.toSeq()
-					.map(jaxb.Marshaller(gt.getChromosome())).asList();
+					.map(jaxb.Marshaller(gt.getChromosome()))
+					.asList();
 
 				return model;
 			}

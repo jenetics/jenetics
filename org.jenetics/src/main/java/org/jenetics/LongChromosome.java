@@ -181,7 +181,7 @@ public class LongChromosome
 	 * ************************************************************************/
 
 	@XmlRootElement(name = "long-chromosome")
-	@XmlType(name = "long-chromosome")
+	@XmlType(name = "org.jenetics.LongChromosome")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
 
