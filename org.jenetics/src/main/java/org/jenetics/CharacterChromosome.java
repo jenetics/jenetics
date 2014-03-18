@@ -30,10 +30,12 @@ import java.io.Serializable;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.internal.util.model.ModelType;
@@ -50,8 +52,9 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-18 $</em>
  */
+@XmlJavaTypeAdapter(CharacterChromosome.Model.Adapter.class)
 public class CharacterChromosome
 	extends
 		AbstractChromosome<CharacterGene>
@@ -273,18 +276,18 @@ public class CharacterChromosome
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "org.jenetics.CharacterChromosome")
-	@XmlType(name = "org.jenetics.CharacterChromosome")
+	@XmlRootElement(name = "character-chromosome")
+	@XmlType(name = "character-chromosome")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
 
 		@XmlAttribute
 		public int length;
 
-		@XmlAttribute(name = "valid-characters")
+		@XmlElement(name = "valid-alleles")
 		public String validCharacters;
 
-		@XmlValue
+		@XmlElement(name = "alleles")
 		public String genes;
 
 		@ValueType(CharacterChromosome.class)

@@ -51,7 +51,7 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-17 $</em>
+ * @version <em>$Date: 2014-03-18 $</em>
  */
 public class PersistentObject<T> {
 
@@ -448,8 +448,8 @@ public class PersistentObject<T> {
 
 
 	public static void main(final String[] args) throws Exception {
-		//write();
-		IO.jaxb.write(nextCharacterPermutationChromosome(), System.out);
+		write();
+		//IO.jaxb.write(nextGenotypeDoubleGene(), System.out);
 	}
 
 	private static void write() throws IOException {

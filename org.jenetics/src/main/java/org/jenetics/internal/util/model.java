@@ -24,6 +24,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+import java.util.Arrays;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -33,6 +34,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
+import org.jenetics.util.Function;
 import org.jenetics.util.StaticObject;
 
 /**
@@ -40,7 +42,7 @@ import org.jenetics.util.StaticObject;
  * integer and float types of the JScience library.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-17 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-18 $</em>
  * @since 1.6
  */
 public final class model extends StaticObject {
@@ -212,6 +214,34 @@ public final class model extends StaticObject {
 
 	}
 
+	@XmlRootElement(name = "intArray")
+	@XmlType(name = "intArray")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	public static final class IntegerArrayModel {
+		@XmlValue
+		public String value;
+
+		@ValueType(Integer[].class)
+		@ModelType(IntegerArrayModel.class)
+		public static final class Adapter
+			extends XmlAdapter<IntegerArrayModel, Integer[]>
+		{
+			@Override
+			public IntegerArrayModel marshal(final Integer[] value) {
+				final IntegerArrayModel model = new IntegerArrayModel();
+				model.value = Arrays.toString(value);
+				return model;
+			}
+
+			@Override
+			public Integer[] unmarshal(final IntegerArrayModel model) {
+				return new Integer[0]; //model.value;
+			}
+		}
+
+		public static final Adapter Adapter = new Adapter();
+	}
+
 	@XmlRootElement(name = "java.lang.Long")
 	@XmlType(name = "java.lang.Long")
 	@XmlAccessorType(XmlAccessType.FIELD)
@@ -333,4 +363,20 @@ public final class model extends StaticObject {
 
 	}
 
+
+	public static final Function<Character, String> CharacterToString =
+		new Function<Character, String>() {
+			@Override
+			public String apply(final Character value) {
+				return value.toString();
+			}
+		};
+
+	public static final Function<String, Character> StringToCharacter =
+		new Function<String, Character>() {
+			@Override
+			public Character apply(final String value) {
+				return value.charAt(0);
+			}
+		};
 }

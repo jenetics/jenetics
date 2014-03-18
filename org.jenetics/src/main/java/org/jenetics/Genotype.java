@@ -30,6 +30,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
@@ -74,7 +76,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-18 $</em>
  */
 @XmlJavaTypeAdapter(Genotype.Model.Adapter.class)
 public final class Genotype<G extends Gene<?, G>>
@@ -324,8 +326,8 @@ public final class Genotype<G extends Gene<?, G>>
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "org.jenetics.Genotype")
-	@XmlType(name = "org.jenetics.Genotype")
+	@XmlRootElement(name = "genotype")
+	@XmlType(name = "genotype")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	static final class Model {
@@ -336,7 +338,7 @@ public final class Genotype<G extends Gene<?, G>>
 		@XmlAttribute
 		public int ngenes;
 
-		@XmlAnyElement
+		@XmlElement(name = "chromosome")
 		public List<Object> chromosomes;
 
 		@ValueType(Genotype.class)
@@ -358,7 +360,8 @@ public final class Genotype<G extends Gene<?, G>>
 			@Override
 			public Genotype unmarshal(final Model model) throws Exception {
 				final ISeq chs = Array.of(model.chromosomes)
-					.map(jaxb.Unmarshaller).toISeq();
+					.map(jaxb.Unmarshaller(model.chromosomes.get(0)))
+					.toISeq();
 
 				return new Genotype(chs, model.ngenes);
 			}

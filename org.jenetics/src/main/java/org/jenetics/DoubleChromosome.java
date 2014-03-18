@@ -46,7 +46,7 @@ import org.jenetics.util.ISeq;
  * Numeric chromosome implementation which holds 64 bit floating point numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-05 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-18 $</em>
  * @since 1.6
  */
 @XmlJavaTypeAdapter(DoubleChromosome.Model.Adapter.class)
@@ -179,8 +179,8 @@ public class DoubleChromosome
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "org.jenetics.DoubleChromosome")
-	@XmlType(name = "org.jenetics.DoubleChromosome")
+	@XmlRootElement(name = "double-chromosome")
+	@XmlType(name = "double-chromosome")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
 

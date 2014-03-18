@@ -44,7 +44,7 @@ import org.jenetics.util.RandomRegistry;
  * NumericGene implementation which holds a 64 bit integer number.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-05 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-18 $</em>
  * @since 1.6
  */
 @XmlJavaTypeAdapter(LongGene.Model.Adapter.class)
@@ -134,8 +134,8 @@ public final class LongGene
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "org.jenetics.LongGene")
-	@XmlType(name = "org.jenetics.LongGene")
+	@XmlRootElement(name = "long-gene")
+	@XmlType(name = "long-gene")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
 

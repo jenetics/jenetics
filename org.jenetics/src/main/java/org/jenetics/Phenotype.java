@@ -55,7 +55,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-18 $</em>
  */
 @XmlJavaTypeAdapter(Phenotype.Model.Adapter.class)
 public final class Phenotype<
@@ -440,8 +440,8 @@ public final class Phenotype<
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "org.jenetics.Phenotype")
-	@XmlType(name = "org.jenetics.Phenotype")
+	@XmlRootElement(name = "phenotype")
+	@XmlType(name = "phenotype")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	final static class Model {
@@ -449,14 +449,12 @@ public final class Phenotype<
 		@XmlAttribute
 		public int generation;
 
-		@XmlElement(name = "org.jenetics.Genotype")
+		@XmlElement(name = "genotype")
 		public Genotype.Model genotype;
 
-		@XmlJavaTypeAdapter(jaxb.JavolutionElementAdapter.class)
 		@XmlElement(name = "fitness")
 		public Object fitness;
 
-		@XmlJavaTypeAdapter(jaxb.JavolutionElementAdapter.class)
 		@XmlElement(name = "raw-fitness")
 		public Object rawFitness;
 

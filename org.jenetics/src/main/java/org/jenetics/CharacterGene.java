@@ -49,7 +49,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-18 $</em>
  */
 @XmlJavaTypeAdapter(CharacterGene.Model.Adapter.class)
 public final class CharacterGene
@@ -296,8 +296,8 @@ public final class CharacterGene
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "org.jenetics.CharacterGene")
-	@XmlType(name = "org.jenetics.CharacterGene")
+	@XmlRootElement(name = "character-gene")
+	@XmlType(name = "character-gene")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
 

@@ -20,7 +20,8 @@
 package org.jenetics;
 
 import static org.jenetics.EnumGene.Gene;
-import static org.jenetics.util.functions.StringToInteger;
+import static org.jenetics.internal.util.model.CharacterToString;
+import static org.jenetics.internal.util.model.StringToCharacter;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -31,9 +32,10 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
@@ -57,9 +59,9 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-18 $</em>
  */
-@XmlJavaTypeAdapter(PermutationChromosome.Model.Adapter.class)
+@XmlJavaTypeAdapter(value = PermutationChromosome.Model.Adapter.class)
 public final class PermutationChromosome<T>
 	extends AbstractChromosome<EnumGene<T>>
 	implements Serializable
@@ -227,8 +229,8 @@ public final class PermutationChromosome<T>
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "org.jenetics.PermutationChromosome")
-	@XmlType(name = "org.jenetics.PermutationChromosome")
+	@XmlRootElement(name = "permutation-chromosome")
+	@XmlType(name = "permutation-chromosome")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	static final class Model {
@@ -236,12 +238,13 @@ public final class PermutationChromosome<T>
 		@XmlAttribute
 		public int length;
 
-		@XmlAnyElement
-		public List<Object> genes;
+		@XmlElementWrapper(name = "alleles")
+		@XmlElement(name = "allele")
+		public List<Object> alleles;
 
-		@XmlJavaTypeAdapter(jaxb.JavolutionElementAdapter.class)
-		@XmlElement(name = "allele-indexes")
-		public Object indexes;
+		@XmlList
+		@XmlElement(name = "order")
+		public List<Integer> order;
 
 		@model.ValueType(PermutationChromosome.class)
 		@model.ModelType(Model.class)
@@ -254,13 +257,14 @@ public final class PermutationChromosome<T>
 			{
 				final Model model = new Model();
 				model.length = pc.length();
-				model.genes = pc.getValidAlleles()
+				model.alleles = pc.getValidAlleles()
 					.map(jaxb.Marshaller(pc.getValidAlleles().get(0))).asList();
-				model.indexes = jaxb.marshal(pc.toSeq().map(new Function<Object, Integer>() {
+				model.order = pc.toSeq().map(new Function<Object, Integer>() {
 					@Override public Integer apply(final Object value) {
 						return ((EnumGene<?>)value).getAlleleIndex();
 					}
-				}).toString(","));
+				}).asList();
+
 				return model;
 			}
 
@@ -268,15 +272,14 @@ public final class PermutationChromosome<T>
 			public PermutationChromosome unmarshal(final Model model)
 				throws Exception
 			{
-				final ISeq seq = Array.of(model.genes)
-					.map(jaxb.Unmarshaller).toISeq();
-				final Array<Integer> indexes = Array
-					.of(model.indexes.toString().split(","))
-					.map(StringToInteger);
+				final ISeq alleles = new Array(model.length)
+					.setAll(model.alleles)
+					.map(jaxb.Unmarshaller(model.alleles.get(0)))
+					.toISeq();
 
-				final Array<Object> genes = new Array<>(seq.length());
-				for (int i = 0; i < seq.length(); ++i) {
-					genes.set(i, new EnumGene(indexes.get(i), seq));
+				final Array<Object> genes = new Array<>(alleles.length());
+				for (int i = 0; i < alleles.length(); ++i) {
+					genes.set(i, new EnumGene(model.order.get(i), alleles));
 				}
 
 				return new PermutationChromosome(genes.toISeq());

@@ -40,6 +40,7 @@ import org.jenetics.internal.util.model.ByteModel;
 import org.jenetics.internal.util.model.CharacterModel;
 import org.jenetics.internal.util.model.DoubleModel;
 import org.jenetics.internal.util.model.FloatModel;
+import org.jenetics.internal.util.model.IntegerArrayModel;
 import org.jenetics.internal.util.model.IntegerModel;
 import org.jenetics.internal.util.model.LongModel;
 import org.jenetics.internal.util.model.ModelType;
@@ -54,7 +55,7 @@ import org.jenetics.util.StaticObject;
  * JAXB helper methods.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-10 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-18 $</em>
  * @since 2.0
  */
 public class jaxb extends StaticObject {
@@ -73,33 +74,40 @@ public class jaxb extends StaticObject {
 	}
 
 	private static final XmlAdapter<Object, Object> IdentityAdapter =
-	new XmlAdapter<Object, Object>() {
-		@Override public Object unmarshal(final Object value) {
-			return value;
-		}
-		@Override public Object marshal(final Object value) {
-			return value;
-		}
-	};
+		new XmlAdapter<Object, Object>() {
+			@Override public Object unmarshal(final Object value) {
+				return value;
+			}
+			@Override public Object marshal(final Object value) {
+				return value;
+			}
+		};
 
 	private static final Map<Class<?>, XmlAdapter<? extends Object, ? extends Object>>
 		ADAPTER_CACHE = new HashMap<>();
 
 	static {
+
+		ADAPTER_CACHE.put(Character.class, CharacterModel.Adapter);
+		ADAPTER_CACHE.put(CharacterModel.class, CharacterModel.Adapter);
+
+		/*
 		ADAPTER_CACHE.put(Boolean.class, BooleanModel.Adapter);
 		ADAPTER_CACHE.put(BooleanModel.class, BooleanModel.Adapter);
 
 		ADAPTER_CACHE.put(Byte.class, ByteModel.Adapter);
 		ADAPTER_CACHE.put(ByteModel.class, ByteModel.Adapter);
 
-		ADAPTER_CACHE.put(Character.class, CharacterModel.Adapter);
-		ADAPTER_CACHE.put(CharacterModel.class, CharacterModel.Adapter);
+
 
 		ADAPTER_CACHE.put(Short.class, ShortModel.Adapter);
 		ADAPTER_CACHE.put(ShortModel.class, ShortModel.Adapter);
 
 		ADAPTER_CACHE.put(Integer.class, IntegerModel.Adapter);
 		ADAPTER_CACHE.put(IntegerModel.class, IntegerModel.Adapter);
+
+		ADAPTER_CACHE.put(Integer[].class, IntegerArrayModel.Adapter);
+		ADAPTER_CACHE.put(IntegerArrayModel.class, IntegerArrayModel.Adapter);
 
 		ADAPTER_CACHE.put(Long.class, LongModel.Adapter);
 		ADAPTER_CACHE.put(LongModel.class, LongModel.Adapter);
@@ -112,6 +120,7 @@ public class jaxb extends StaticObject {
 
 		ADAPTER_CACHE.put(String.class, StringModel.Adapter);
 		ADAPTER_CACHE.put(StringModel.class, StringModel.Adapter);
+		*/
 	}
 
 	/**
@@ -329,4 +338,17 @@ public class jaxb extends StaticObject {
 		}
 	}
 
+	public static final class CharacterAdapter
+		extends XmlAdapter<String, Character>
+	{
+		@Override
+		public String marshal(final Character v) throws Exception {
+			return v.toString();
+		}
+
+		@Override
+		public Character unmarshal(final String v) throws Exception {
+			return v.charAt(0);
+		}
+	}
 }
