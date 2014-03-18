@@ -26,12 +26,10 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import org.jenetics.util.Function;
 import org.jenetics.util.StaticObject;
 
 /**
- * This object contains models for the java primitive/basic types and the
- * integer and float types of the JScience library.
+ * This object contains models not defined as native XML type.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version 1.6 &mdash; <em>$Date$</em>
@@ -39,10 +37,6 @@ import org.jenetics.util.StaticObject;
  */
 public final class model extends StaticObject {
 	private model() {}
-
-	/* ************************************************************************
-	 * Java primitive type models.
-	 **************************************************************************/
 
 	@XmlRootElement(name = "char")
 	@XmlType(name = "char")
@@ -72,19 +66,4 @@ public final class model extends StaticObject {
 
 	}
 
-	public static final Function<Character, String> CharacterToString =
-		new Function<Character, String>() {
-			@Override
-			public String apply(final Character value) {
-				return value.toString();
-			}
-		};
-
-	public static final Function<String, Character> StringToCharacter =
-		new Function<String, Character>() {
-			@Override
-			public Character apply(final String value) {
-				return value.charAt(0);
-			}
-		};
 }
