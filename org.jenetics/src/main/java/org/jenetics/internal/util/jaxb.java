@@ -66,12 +66,11 @@ public class jaxb extends StaticObject {
 			}
 		};
 
-	private static final Map<Class<?>, XmlAdapter<? extends Object, ? extends Object>>
-		ADAPTER_CACHE = new HashMap<>();
+	private static final Map<Class<?>, XmlAdapter<?, ?>> ADAPTERS = new HashMap<>();
 
 	static {
-		ADAPTER_CACHE.put(Character.class, CharacterModel.Adapter);
-		ADAPTER_CACHE.put(CharacterModel.class, CharacterModel.Adapter);
+		ADAPTERS.put(Character.class, CharacterModel.Adapter);
+		ADAPTERS.put(CharacterModel.class, CharacterModel.Adapter);
 	}
 
 	/**
@@ -86,12 +85,12 @@ public class jaxb extends StaticObject {
 	public static XmlAdapter<Object, Object> adapterFor(final Object value) {
 		final Class<?> cls = classOf(value);
 
-		synchronized (ADAPTER_CACHE) {
-			if (!ADAPTER_CACHE.containsKey(cls)) {
-				ADAPTER_CACHE.put(cls, newXmlAdapter(cls));
+		synchronized (ADAPTERS) {
+			if (!ADAPTERS.containsKey(cls)) {
+				ADAPTERS.put(cls, newXmlAdapter(cls));
 			}
 
-			return (XmlAdapter<Object, Object>)ADAPTER_CACHE.get(cls);
+			return (XmlAdapter<Object, Object>) ADAPTERS.get(cls);
 		}
 	}
 
