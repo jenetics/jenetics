@@ -164,7 +164,11 @@ public class PersistentObject<T> {
 		put("LongChromosome", nextLongChromosome(), ios);
 		put("DoubleChromosome", nextDoubleChromosome(), ios);
 
+		put("PermutationChromosome<Byte>", nextBytePermutationChromosome(), ios);
+		put("PermutationChromosome<Short>", nextShortPermutationChromosome(), ios);
 		put("PermutationChromosome<Integer>", nextIntegerPermutationChromosome(), ios);
+		put("PermutationChromosome<Long>", nextLongPermutationChromosome(), ios);
+		put("PermutationChromosome<Float>", nextFloatPermutationChromosome(), ios);
 		put("PermutationChromosome<Double>", nextDoublePermutationChromosome(), ios);
 		put("PermutationChromosome<Character>", nextCharacterPermutationChromosome(), ios);
 		put("PermutationChromosome<String>", nextStringPermutationChromosome(), ios);
@@ -274,8 +278,24 @@ public class PersistentObject<T> {
 		return DoubleChromosome.of(0.0, 1.0, 20);
 	}
 
+	public static PermutationChromosome<Byte> nextBytePermutationChromosome() {
+		return PermutationChromosome.of(ISeq(15, ByteFactory));
+	}
+
+	public static PermutationChromosome<Short> nextShortPermutationChromosome() {
+		return PermutationChromosome.of(ISeq(15, ShortFactory));
+	}
+
 	public static PermutationChromosome<Integer> nextIntegerPermutationChromosome() {
 		return PermutationChromosome.ofInteger(15);
+	}
+
+	public static PermutationChromosome<Long> nextLongPermutationChromosome() {
+		return PermutationChromosome.of(ISeq(15, LongFactory));
+	}
+
+	public static PermutationChromosome<Float> nextFloatPermutationChromosome() {
+		return PermutationChromosome.of(ISeq(15, FloatFactory));
 	}
 
 	public static PermutationChromosome<Double> nextDoublePermutationChromosome() {
