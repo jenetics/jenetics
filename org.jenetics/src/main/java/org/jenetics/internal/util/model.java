@@ -19,12 +19,6 @@
  */
 package org.jenetics.internal.util;
 
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -46,18 +40,6 @@ import org.jenetics.util.StaticObject;
 public final class model extends StaticObject {
 	private model() {}
 
-	@Retention(RUNTIME)
-	@Target(TYPE)
-	public @interface ValueType {
-		Class<?> value();
-	}
-
-	@Retention(RUNTIME)
-	@Target(TYPE)
-	public @interface ModelType {
-		Class<?> value();
-	}
-
 	/* ************************************************************************
 	 * Java primitive type models.
 	 **************************************************************************/
@@ -70,8 +52,6 @@ public final class model extends StaticObject {
 		@XmlValue
 		public String value;
 
-		@ValueType(Character.class)
-		@ModelType(CharacterModel.class)
 		public static final class Adapter
 			extends XmlAdapter<CharacterModel, Character>
 		{
