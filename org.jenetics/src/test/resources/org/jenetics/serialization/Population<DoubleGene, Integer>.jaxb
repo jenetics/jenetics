@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <population size="7">
-    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="phenotype" generation="294024316">
+    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="294024316">
         <genotype length="5" ngenes="100">
-            <chromosome xsi:type="double-chromosome" length="20" min="0.0" max="1.0">
+            <chromosome xsi:type="org.jenetics.DoubleChromosome" length="20" min="0.0" max="1.0">
                 <allele>0.27251556008507416</allele>
                 <allele>0.003140816229067145</allele>
                 <allele>0.43947528327497376</allele>
@@ -24,7 +24,7 @@
                 <allele>0.8732775776362911</allele>
                 <allele>0.9498003919007005</allele>
             </chromosome>
-            <chromosome xsi:type="double-chromosome" length="20" min="0.0" max="1.0">
+            <chromosome xsi:type="org.jenetics.DoubleChromosome" length="20" min="0.0" max="1.0">
                 <allele>0.18390258154466066</allele>
                 <allele>0.4026521545744768</allele>
                 <allele>0.36137605952663554</allele>
@@ -46,7 +46,7 @@
                 <allele>0.9533383540379163</allele>
                 <allele>0.10057170935437787</allele>
             </chromosome>
-            <chromosome xsi:type="double-chromosome" length="20" min="0.0" max="1.0">
+            <chromosome xsi:type="org.jenetics.DoubleChromosome" length="20" min="0.0" max="1.0">
                 <allele>0.8490621462340531</allele>
                 <allele>0.014705556977227419</allele>
                 <allele>0.9842599262153036</allele>
@@ -68,7 +68,7 @@
                 <allele>0.5344938137376007</allele>
                 <allele>0.16569494948347963</allele>
             </chromosome>
-            <chromosome xsi:type="double-chromosome" length="20" min="0.0" max="1.0">
+            <chromosome xsi:type="org.jenetics.DoubleChromosome" length="20" min="0.0" max="1.0">
                 <allele>0.4217268114331285</allele>
                 <allele>0.9931119530206538</allele>
                 <allele>0.07181417885222796</allele>
@@ -90,7 +90,7 @@
                 <allele>0.006631399519360093</allele>
                 <allele>0.691606909398313</allele>
             </chromosome>
-            <chromosome xsi:type="double-chromosome" length="20" min="0.0" max="1.0">
+            <chromosome xsi:type="org.jenetics.DoubleChromosome" length="20" min="0.0" max="1.0">
                 <allele>0.07826529310022745</allele>
                 <allele>0.4030180559640111</allele>
                 <allele>0.38975409862318666</allele>
@@ -116,9 +116,9 @@
         <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">1098457242</fitness>
         <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">1098457242</raw-fitness>
     </phenotype>
-    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="phenotype" generation="414912241">
+    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="414912241">
         <genotype length="5" ngenes="100">
-            <chromosome xsi:type="double-chromosome" length="20" min="0.0" max="1.0">
+            <chromosome xsi:type="org.jenetics.DoubleChromosome" length="20" min="0.0" max="1.0">
                 <allele>0.42835500006515415</allele>
                 <allele>0.34863781512120773</allele>
                 <allele>0.2861109633406351</allele>
@@ -140,7 +140,7 @@
                 <allele>0.5619678281994618</allele>
                 <allele>0.6946347195010549</allele>
             </chromosome>
-            <chromosome xsi:type="double-chromosome" length="20" min="0.0" max="1.0">
+            <chromosome xsi:type="org.jenetics.DoubleChromosome" length="20" min="0.0" max="1.0">
                 <allele>0.6290054346514986</allele>
                 <allele>0.40469704745121193</allele>
                 <allele>0.788887171605928</allele>
@@ -162,7 +162,7 @@
                 <allele>0.291355582662542</allele>
                 <allele>0.9100921135270519</allele>
             </chromosome>
-            <chromosome xsi:type="double-chromosome" length="20" min="0.0" max="1.0">
+            <chromosome xsi:type="org.jenetics.DoubleChromosome" length="20" min="0.0" max="1.0">
                 <allele>0.23464628929932063</allele>
                 <allele>0.8719433251822393</allele>
                 <allele>0.6769117586854838</allele>
@@ -184,7 +184,7 @@
                 <allele>0.16070547914362598</allele>
                 <allele>0.3953032029283987</allele>
             </chromosome>
-            <chromosome xsi:type="double-chromosome" length="20" min="0.0" max="1.0">
+            <chromosome xsi:type="org.jenetics.DoubleChromosome" length="20" min="0.0" max="1.0">
                 <allele>0.4090363717345893</allele>
                 <allele>0.09503343162969657</allele>
                 <allele>0.6571011493988581</allele>
@@ -206,7 +206,7 @@
                 <allele>0.2370044060768679</allele>
                 <allele>0.8660376794023623</allele>
             </chromosome>
-            <chromosome xsi:type="double-chromosome" length="20" min="0.0" max="1.0">
+            <chromosome xsi:type="org.jenetics.DoubleChromosome" length="20" min="0.0" max="1.0">
                 <allele>0.9931730875436555</allele>
                 <allele>0.9742261241310146</allele>
                 <allele>0.790339875993475</allele>
@@ -232,9 +232,9 @@
         <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">-11209368</fitness>
         <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">-11209368</raw-fitness>
     </phenotype>
-    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="phenotype" generation="1483824787">
+    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="1483824787">
         <genotype length="5" ngenes="100">
-            <chromosome xsi:type="double-chromosome" length="20" min="0.0" max="1.0">
+            <chromosome xsi:type="org.jenetics.DoubleChromosome" length="20" min="0.0" max="1.0">
                 <allele>0.3318029814042305</allele>
                 <allele>0.9709972138046306</allele>
                 <allele>0.9930218302906475</allele>
@@ -256,7 +256,7 @@
                 <allele>0.3476900113033532</allele>
                 <allele>0.04314159424064057</allele>
             </chromosome>
-            <chromosome xsi:type="double-chromosome" length="20" min="0.0" max="1.0">
+            <chromosome xsi:type="org.jenetics.DoubleChromosome" length="20" min="0.0" max="1.0">
                 <allele>0.5113676951902268</allele>
                 <allele>0.006021633946985405</allele>
                 <allele>0.1500230414510002</allele>
@@ -278,7 +278,7 @@
                 <allele>0.48547830177683804</allele>
                 <allele>0.9334345338905905</allele>
             </chromosome>
-            <chromosome xsi:type="double-chromosome" length="20" min="0.0" max="1.0">
+            <chromosome xsi:type="org.jenetics.DoubleChromosome" length="20" min="0.0" max="1.0">
                 <allele>0.3239341658145134</allele>
                 <allele>0.08595010406221859</allele>
                 <allele>0.33425864650653403</allele>
@@ -300,7 +300,7 @@
                 <allele>0.2992649234708382</allele>
                 <allele>0.677389092146973</allele>
             </chromosome>
-            <chromosome xsi:type="double-chromosome" length="20" min="0.0" max="1.0">
+            <chromosome xsi:type="org.jenetics.DoubleChromosome" length="20" min="0.0" max="1.0">
                 <allele>0.8047696638793411</allele>
                 <allele>0.685919638246199</allele>
                 <allele>0.6118805780937882</allele>
@@ -322,7 +322,7 @@
                 <allele>0.41191164502751176</allele>
                 <allele>0.3614132080918806</allele>
             </chromosome>
-            <chromosome xsi:type="double-chromosome" length="20" min="0.0" max="1.0">
+            <chromosome xsi:type="org.jenetics.DoubleChromosome" length="20" min="0.0" max="1.0">
                 <allele>0.5622633283016742</allele>
                 <allele>0.8833963330826653</allele>
                 <allele>0.24202516231473248</allele>
@@ -348,9 +348,9 @@
         <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">40895891</fitness>
         <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">40895891</raw-fitness>
     </phenotype>
-    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="phenotype" generation="936129313">
+    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="936129313">
         <genotype length="5" ngenes="100">
-            <chromosome xsi:type="double-chromosome" length="20" min="0.0" max="1.0">
+            <chromosome xsi:type="org.jenetics.DoubleChromosome" length="20" min="0.0" max="1.0">
                 <allele>0.48519466128144706</allele>
                 <allele>0.17436716925057816</allele>
                 <allele>0.12052569521696244</allele>
@@ -372,7 +372,7 @@
                 <allele>0.13156875777415222</allele>
                 <allele>0.09488466755305214</allele>
             </chromosome>
-            <chromosome xsi:type="double-chromosome" length="20" min="0.0" max="1.0">
+            <chromosome xsi:type="org.jenetics.DoubleChromosome" length="20" min="0.0" max="1.0">
                 <allele>0.9668785219887506</allele>
                 <allele>0.8326650088732921</allele>
                 <allele>0.5665059547048712</allele>
@@ -394,7 +394,7 @@
                 <allele>0.9991595928462158</allele>
                 <allele>0.27050714607299353</allele>
             </chromosome>
-            <chromosome xsi:type="double-chromosome" length="20" min="0.0" max="1.0">
+            <chromosome xsi:type="org.jenetics.DoubleChromosome" length="20" min="0.0" max="1.0">
                 <allele>0.05146615404591759</allele>
                 <allele>0.33514990713474657</allele>
                 <allele>0.14292375753828068</allele>
@@ -416,7 +416,7 @@
                 <allele>0.20285650968490287</allele>
                 <allele>0.015206691328190525</allele>
             </chromosome>
-            <chromosome xsi:type="double-chromosome" length="20" min="0.0" max="1.0">
+            <chromosome xsi:type="org.jenetics.DoubleChromosome" length="20" min="0.0" max="1.0">
                 <allele>0.4741054068851742</allele>
                 <allele>0.10392345441133677</allele>
                 <allele>0.9884982956645716</allele>
@@ -438,7 +438,7 @@
                 <allele>0.496845233033695</allele>
                 <allele>0.07125893854671328</allele>
             </chromosome>
-            <chromosome xsi:type="double-chromosome" length="20" min="0.0" max="1.0">
+            <chromosome xsi:type="org.jenetics.DoubleChromosome" length="20" min="0.0" max="1.0">
                 <allele>0.43003784849908255</allele>
                 <allele>0.16766230861437648</allele>
                 <allele>0.9007724443100693</allele>
@@ -464,9 +464,9 @@
         <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">-1053290976</fitness>
         <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">-1053290976</raw-fitness>
     </phenotype>
-    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="phenotype" generation="1586527606">
+    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="1586527606">
         <genotype length="5" ngenes="100">
-            <chromosome xsi:type="double-chromosome" length="20" min="0.0" max="1.0">
+            <chromosome xsi:type="org.jenetics.DoubleChromosome" length="20" min="0.0" max="1.0">
                 <allele>0.5995088508676052</allele>
                 <allele>0.32497478157629534</allele>
                 <allele>0.8714735729144263</allele>
@@ -488,7 +488,7 @@
                 <allele>0.5100261726873214</allele>
                 <allele>0.6190935318840003</allele>
             </chromosome>
-            <chromosome xsi:type="double-chromosome" length="20" min="0.0" max="1.0">
+            <chromosome xsi:type="org.jenetics.DoubleChromosome" length="20" min="0.0" max="1.0">
                 <allele>0.6400109997671168</allele>
                 <allele>0.08521413571931058</allele>
                 <allele>0.20969350993096247</allele>
@@ -510,7 +510,7 @@
                 <allele>0.36719824444880067</allele>
                 <allele>0.7178606081473773</allele>
             </chromosome>
-            <chromosome xsi:type="double-chromosome" length="20" min="0.0" max="1.0">
+            <chromosome xsi:type="org.jenetics.DoubleChromosome" length="20" min="0.0" max="1.0">
                 <allele>0.20091381821830656</allele>
                 <allele>0.022690765965500903</allele>
                 <allele>0.8401585246426737</allele>
@@ -532,7 +532,7 @@
                 <allele>0.43507635905655206</allele>
                 <allele>0.5701720208221903</allele>
             </chromosome>
-            <chromosome xsi:type="double-chromosome" length="20" min="0.0" max="1.0">
+            <chromosome xsi:type="org.jenetics.DoubleChromosome" length="20" min="0.0" max="1.0">
                 <allele>0.3388615390672982</allele>
                 <allele>0.003376981036231408</allele>
                 <allele>0.7557777567179034</allele>
@@ -554,7 +554,7 @@
                 <allele>0.7767068561410166</allele>
                 <allele>0.5635093901869679</allele>
             </chromosome>
-            <chromosome xsi:type="double-chromosome" length="20" min="0.0" max="1.0">
+            <chromosome xsi:type="org.jenetics.DoubleChromosome" length="20" min="0.0" max="1.0">
                 <allele>0.9446416808561533</allele>
                 <allele>0.49728434692380863</allele>
                 <allele>0.9307212332259234</allele>
@@ -580,9 +580,9 @@
         <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">1499171114</fitness>
         <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">1499171114</raw-fitness>
     </phenotype>
-    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="phenotype" generation="195725102">
+    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="195725102">
         <genotype length="5" ngenes="100">
-            <chromosome xsi:type="double-chromosome" length="20" min="0.0" max="1.0">
+            <chromosome xsi:type="org.jenetics.DoubleChromosome" length="20" min="0.0" max="1.0">
                 <allele>0.4092366052272387</allele>
                 <allele>0.8727153611281231</allele>
                 <allele>0.7058870751150819</allele>
@@ -604,7 +604,7 @@
                 <allele>0.008134461081723332</allele>
                 <allele>0.7847876893063499</allele>
             </chromosome>
-            <chromosome xsi:type="double-chromosome" length="20" min="0.0" max="1.0">
+            <chromosome xsi:type="org.jenetics.DoubleChromosome" length="20" min="0.0" max="1.0">
                 <allele>0.7800043275444957</allele>
                 <allele>0.7495265053489859</allele>
                 <allele>0.6810114309884987</allele>
@@ -626,7 +626,7 @@
                 <allele>0.5629101102647978</allele>
                 <allele>0.5534570945906072</allele>
             </chromosome>
-            <chromosome xsi:type="double-chromosome" length="20" min="0.0" max="1.0">
+            <chromosome xsi:type="org.jenetics.DoubleChromosome" length="20" min="0.0" max="1.0">
                 <allele>0.26206943546155403</allele>
                 <allele>0.49872386257284784</allele>
                 <allele>0.6373320464676799</allele>
@@ -648,7 +648,7 @@
                 <allele>0.9136499755248415</allele>
                 <allele>0.27997369172365505</allele>
             </chromosome>
-            <chromosome xsi:type="double-chromosome" length="20" min="0.0" max="1.0">
+            <chromosome xsi:type="org.jenetics.DoubleChromosome" length="20" min="0.0" max="1.0">
                 <allele>0.4177969338743257</allele>
                 <allele>0.20629149358649967</allele>
                 <allele>0.9546752442639959</allele>
@@ -670,7 +670,7 @@
                 <allele>0.3274484186014648</allele>
                 <allele>0.37622761971327434</allele>
             </chromosome>
-            <chromosome xsi:type="double-chromosome" length="20" min="0.0" max="1.0">
+            <chromosome xsi:type="org.jenetics.DoubleChromosome" length="20" min="0.0" max="1.0">
                 <allele>0.4313200278173708</allele>
                 <allele>0.5732173901569844</allele>
                 <allele>0.5295586877127045</allele>
@@ -696,9 +696,9 @@
         <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">1683792714</fitness>
         <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">1683792714</raw-fitness>
     </phenotype>
-    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="phenotype" generation="831406044">
+    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="831406044">
         <genotype length="5" ngenes="100">
-            <chromosome xsi:type="double-chromosome" length="20" min="0.0" max="1.0">
+            <chromosome xsi:type="org.jenetics.DoubleChromosome" length="20" min="0.0" max="1.0">
                 <allele>0.4242759409549479</allele>
                 <allele>0.27142621415908086</allele>
                 <allele>0.04268162918723739</allele>
@@ -720,7 +720,7 @@
                 <allele>0.9172688361461139</allele>
                 <allele>0.15993519145683388</allele>
             </chromosome>
-            <chromosome xsi:type="double-chromosome" length="20" min="0.0" max="1.0">
+            <chromosome xsi:type="org.jenetics.DoubleChromosome" length="20" min="0.0" max="1.0">
                 <allele>0.7062336796585653</allele>
                 <allele>0.9509308428922141</allele>
                 <allele>0.4104738603074791</allele>
@@ -742,7 +742,7 @@
                 <allele>0.2716140206415345</allele>
                 <allele>0.7453537103103391</allele>
             </chromosome>
-            <chromosome xsi:type="double-chromosome" length="20" min="0.0" max="1.0">
+            <chromosome xsi:type="org.jenetics.DoubleChromosome" length="20" min="0.0" max="1.0">
                 <allele>0.05496936993292856</allele>
                 <allele>0.7909772205606278</allele>
                 <allele>0.9273191370988589</allele>
@@ -764,7 +764,7 @@
                 <allele>0.6702856055469588</allele>
                 <allele>0.36897569762584603</allele>
             </chromosome>
-            <chromosome xsi:type="double-chromosome" length="20" min="0.0" max="1.0">
+            <chromosome xsi:type="org.jenetics.DoubleChromosome" length="20" min="0.0" max="1.0">
                 <allele>0.47887969675779773</allele>
                 <allele>0.7067143504686235</allele>
                 <allele>0.9237124397282002</allele>
@@ -786,7 +786,7 @@
                 <allele>0.16213366548007957</allele>
                 <allele>0.2007034411460391</allele>
             </chromosome>
-            <chromosome xsi:type="double-chromosome" length="20" min="0.0" max="1.0">
+            <chromosome xsi:type="org.jenetics.DoubleChromosome" length="20" min="0.0" max="1.0">
                 <allele>0.8634888448362388</allele>
                 <allele>0.11880199306916772</allele>
                 <allele>0.9500870147122389</allele>

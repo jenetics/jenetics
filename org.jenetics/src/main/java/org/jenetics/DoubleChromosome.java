@@ -178,7 +178,7 @@ public class DoubleChromosome
 	 * ************************************************************************/
 
 	@XmlRootElement(name = "double-chromosome")
-	@XmlType(name = "double-chromosome")
+	@XmlType(name = "org.jenetics.DoubleChromosome")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <population size="7">
-    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="phenotype" generation="294024316">
+    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="294024316">
         <genotype length="5" ngenes="100">
-            <chromosome xsi:type="long-chromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
+            <chromosome xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
                 <allele>-8069223231273077030</allele>
                 <allele>-4111772314810463982</allele>
                 <allele>-380826747604496445</allele>
@@ -24,7 +24,7 @@
                 <allele>-7863855656443022702</allele>
                 <allele>1386882606293782618</allele>
             </chromosome>
-            <chromosome xsi:type="long-chromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
+            <chromosome xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
                 <allele>-404495742865627634</allele>
                 <allele>7194061989003983653</allele>
                 <allele>5365414649285285510</allele>
@@ -46,7 +46,7 @@
                 <allele>-4179550599571187622</allele>
                 <allele>7796183889691100966</allele>
             </chromosome>
-            <chromosome xsi:type="long-chromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
+            <chromosome xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
                 <allele>3858905116994538651</allele>
                 <allele>5377364183021295141</allele>
                 <allele>8678365594952514249</allele>
@@ -68,7 +68,7 @@
                 <allele>-7770805810701095602</allele>
                 <allele>-3719227068495278724</allele>
             </chromosome>
-            <chromosome xsi:type="long-chromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
+            <chromosome xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
                 <allele>6626694340572822001</allele>
                 <allele>5620461313952569514</allele>
                 <allele>5886528135282357084</allele>
@@ -90,7 +90,7 @@
                 <allele>-8304607847702790289</allele>
                 <allele>-2397303880769021265</allele>
             </chromosome>
-            <chromosome xsi:type="long-chromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
+            <chromosome xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
                 <allele>6426989143802540019</allele>
                 <allele>7743502791416545726</allele>
                 <allele>2866044659420960963</allele>
@@ -116,9 +116,9 @@
         <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">1098457242</fitness>
         <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">1098457242</raw-fitness>
     </phenotype>
-    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="phenotype" generation="414912241">
+    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="414912241">
         <genotype length="5" ngenes="100">
-            <chromosome xsi:type="long-chromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
+            <chromosome xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
                 <allele>-4109857320370587131</allele>
                 <allele>7905387471169487615</allele>
                 <allele>8049221063338963850</allele>
@@ -140,7 +140,7 @@
                 <allele>8694478158926730583</allele>
                 <allele>2295460566995486024</allele>
             </chromosome>
-            <chromosome xsi:type="long-chromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
+            <chromosome xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
                 <allele>3263438918857349610</allele>
                 <allele>3667752690151682962</allele>
                 <allele>-7449904551326089058</allele>
@@ -162,7 +162,7 @@
                 <allele>-4849064649784512854</allele>
                 <allele>-4485990137985031254</allele>
             </chromosome>
-            <chromosome xsi:type="long-chromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
+            <chromosome xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
                 <allele>991848670962561410</allele>
                 <allele>6480103147793152172</allele>
                 <allele>6988131561595817948</allele>
@@ -184,7 +184,7 @@
                 <allele>5400539706353212335</allele>
                 <allele>5338545845791444460</allele>
             </chromosome>
-            <chromosome xsi:type="long-chromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
+            <chromosome xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
                 <allele>925080059662276556</allele>
                 <allele>6246920675690153193</allele>
                 <allele>8361640228891217998</allele>
@@ -206,7 +206,7 @@
                 <allele>-3592805129686762860</allele>
                 <allele>-2594676698022530904</allele>
             </chromosome>
-            <chromosome xsi:type="long-chromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
+            <chromosome xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
                 <allele>8390175360110839564</allele>
                 <allele>-3553456181213080800</allele>
                 <allele>5304296135786094050</allele>
@@ -232,9 +232,9 @@
         <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">-11209368</fitness>
         <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">-11209368</raw-fitness>
     </phenotype>
-    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="phenotype" generation="1483824787">
+    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="1483824787">
         <genotype length="5" ngenes="100">
-            <chromosome xsi:type="long-chromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
+            <chromosome xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
                 <allele>8198045629597715232</allele>
                 <allele>5188016153793709220</allele>
                 <allele>522386129892474768</allele>
@@ -256,7 +256,7 @@
                 <allele>3996258726082976177</allele>
                 <allele>2044828523293951502</allele>
             </chromosome>
-            <chromosome xsi:type="long-chromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
+            <chromosome xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
                 <allele>-24718602402714961</allele>
                 <allele>8385729625192263357</allele>
                 <allele>3216245777656109857</allele>
@@ -278,7 +278,7 @@
                 <allele>2834950565515020613</allele>
                 <allele>-8268908700060596736</allele>
             </chromosome>
-            <chromosome xsi:type="long-chromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
+            <chromosome xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
                 <allele>8616844956948213663</allele>
                 <allele>-7664739480927957129</allele>
                 <allele>8071955899363781025</allele>
@@ -300,7 +300,7 @@
                 <allele>8832906638671370983</allele>
                 <allele>3723023981471007642</allele>
             </chromosome>
-            <chromosome xsi:type="long-chromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
+            <chromosome xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
                 <allele>8474895259442269056</allele>
                 <allele>7488071688116976039</allele>
                 <allele>8397465370562102972</allele>
@@ -322,7 +322,7 @@
                 <allele>4140663142684541294</allele>
                 <allele>699685602631716249</allele>
             </chromosome>
-            <chromosome xsi:type="long-chromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
+            <chromosome xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
                 <allele>6185974497295514523</allele>
                 <allele>8740961740495253794</allele>
                 <allele>5193740354788996801</allele>
@@ -348,9 +348,9 @@
         <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">40895891</fitness>
         <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">40895891</raw-fitness>
     </phenotype>
-    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="phenotype" generation="936129313">
+    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="936129313">
         <genotype length="5" ngenes="100">
-            <chromosome xsi:type="long-chromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
+            <chromosome xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
                 <allele>6771095362433604767</allele>
                 <allele>3000182631747212888</allele>
                 <allele>-2850235764649456286</allele>
@@ -372,7 +372,7 @@
                 <allele>-1580170936198558825</allele>
                 <allele>4760732128684049371</allele>
             </chromosome>
-            <chromosome xsi:type="long-chromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
+            <chromosome xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
                 <allele>5836515951196133393</allele>
                 <allele>-2590323395541719487</allele>
                 <allele>6852526349237036441</allele>
@@ -394,7 +394,7 @@
                 <allele>7228273617072301458</allele>
                 <allele>3437464771565943838</allele>
             </chromosome>
-            <chromosome xsi:type="long-chromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
+            <chromosome xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
                 <allele>356016153514452571</allele>
                 <allele>5802145701050084149</allele>
                 <allele>-6290885008055391120</allele>
@@ -416,7 +416,7 @@
                 <allele>1491605061161060784</allele>
                 <allele>-4926869507493923447</allele>
             </chromosome>
-            <chromosome xsi:type="long-chromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
+            <chromosome xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
                 <allele>3132136921956277128</allele>
                 <allele>4855348427935956639</allele>
                 <allele>3229029133753286471</allele>
@@ -438,7 +438,7 @@
                 <allele>7770946949220456956</allele>
                 <allele>2824077888090386787</allele>
             </chromosome>
-            <chromosome xsi:type="long-chromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
+            <chromosome xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
                 <allele>-385372849659606978</allele>
                 <allele>1707619342684017767</allele>
                 <allele>-6868436312922836457</allele>
@@ -464,9 +464,9 @@
         <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">-1053290976</fitness>
         <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">-1053290976</raw-fitness>
     </phenotype>
-    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="phenotype" generation="1586527606">
+    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="1586527606">
         <genotype length="5" ngenes="100">
-            <chromosome xsi:type="long-chromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
+            <chromosome xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
                 <allele>1912226189842462965</allele>
                 <allele>-9100311290610560604</allele>
                 <allele>-6071431129264558459</allele>
@@ -488,7 +488,7 @@
                 <allele>-3938352720267920179</allele>
                 <allele>-2721889625159649812</allele>
             </chromosome>
-            <chromosome xsi:type="long-chromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
+            <chromosome xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
                 <allele>-4104400506861828146</allele>
                 <allele>7296215166690075706</allele>
                 <allele>-2854337788139707370</allele>
@@ -510,7 +510,7 @@
                 <allele>-2119541710614632897</allele>
                 <allele>-7896080789640493498</allele>
             </chromosome>
-            <chromosome xsi:type="long-chromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
+            <chromosome xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
                 <allele>-3349773287366787475</allele>
                 <allele>2711269165802185573</allele>
                 <allele>8321932249371819003</allele>
@@ -532,7 +532,7 @@
                 <allele>-5267252154294955520</allele>
                 <allele>-2222210389420513125</allele>
             </chromosome>
-            <chromosome xsi:type="long-chromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
+            <chromosome xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
                 <allele>-7771686860140402419</allele>
                 <allele>2603095793190683097</allele>
                 <allele>2908225480077499579</allele>
@@ -554,7 +554,7 @@
                 <allele>6943545002485827128</allele>
                 <allele>-1587232847782119284</allele>
             </chromosome>
-            <chromosome xsi:type="long-chromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
+            <chromosome xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
                 <allele>859938217122296651</allele>
                 <allele>4595911189517409165</allele>
                 <allele>-4940760795053662531</allele>
@@ -580,9 +580,9 @@
         <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">1499171114</fitness>
         <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">1499171114</raw-fitness>
     </phenotype>
-    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="phenotype" generation="195725102">
+    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="195725102">
         <genotype length="5" ngenes="100">
-            <chromosome xsi:type="long-chromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
+            <chromosome xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
                 <allele>6405961707943653071</allele>
                 <allele>-9205930877397487197</allele>
                 <allele>2520691224468561196</allele>
@@ -604,7 +604,7 @@
                 <allele>-1913993207276564291</allele>
                 <allele>4399047605858729126</allele>
             </chromosome>
-            <chromosome xsi:type="long-chromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
+            <chromosome xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
                 <allele>-6031310673477587875</allele>
                 <allele>-8256226149307295661</allele>
                 <allele>7875359151470461859</allele>
@@ -626,7 +626,7 @@
                 <allele>-6680806725254984436</allele>
                 <allele>5713056876670752744</allele>
             </chromosome>
-            <chromosome xsi:type="long-chromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
+            <chromosome xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
                 <allele>5265888220207999675</allele>
                 <allele>-817409079579786420</allele>
                 <allele>-3451390625826187313</allele>
@@ -648,7 +648,7 @@
                 <allele>4097886774969101603</allele>
                 <allele>2811507056892909699</allele>
             </chromosome>
-            <chromosome xsi:type="long-chromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
+            <chromosome xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
                 <allele>1064731102175150005</allele>
                 <allele>-2732755919520245209</allele>
                 <allele>-3963371796639079807</allele>
@@ -670,7 +670,7 @@
                 <allele>5563420236378559175</allele>
                 <allele>1294227471623279543</allele>
             </chromosome>
-            <chromosome xsi:type="long-chromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
+            <chromosome xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
                 <allele>-2024677339600167457</allele>
                 <allele>-6086285154580197309</allele>
                 <allele>-1983702515361734991</allele>
@@ -696,9 +696,9 @@
         <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">1683792714</fitness>
         <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">1683792714</raw-fitness>
     </phenotype>
-    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="phenotype" generation="831406044">
+    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="831406044">
         <genotype length="5" ngenes="100">
-            <chromosome xsi:type="long-chromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
+            <chromosome xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
                 <allele>-8928727292106106598</allele>
                 <allele>8981400051973714445</allele>
                 <allele>554134975135874216</allele>
@@ -720,7 +720,7 @@
                 <allele>7110811223579308895</allele>
                 <allele>6098594179528300010</allele>
             </chromosome>
-            <chromosome xsi:type="long-chromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
+            <chromosome xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
                 <allele>3070131939975854585</allele>
                 <allele>-4481302617071309529</allele>
                 <allele>-8172184713753124148</allele>
@@ -742,7 +742,7 @@
                 <allele>8202278162243823033</allele>
                 <allele>-8346316934452886724</allele>
             </chromosome>
-            <chromosome xsi:type="long-chromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
+            <chromosome xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
                 <allele>-5138359614795789208</allele>
                 <allele>5542989786381485474</allele>
                 <allele>-2139537148508064145</allele>
@@ -764,7 +764,7 @@
                 <allele>-1992075936921756637</allele>
                 <allele>3991850988664595985</allele>
             </chromosome>
-            <chromosome xsi:type="long-chromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
+            <chromosome xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
                 <allele>-8644754602127478606</allele>
                 <allele>7578237331722602147</allele>
                 <allele>-9133643612935378970</allele>
@@ -786,7 +786,7 @@
                 <allele>-3980451885480078165</allele>
                 <allele>-7258898711378482274</allele>
             </chromosome>
-            <chromosome xsi:type="long-chromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
+            <chromosome xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
                 <allele>-5697668320211204871</allele>
                 <allele>-7952821905324578760</allele>
                 <allele>-2148441810357669502</allele>

@@ -439,7 +439,7 @@ public final class Phenotype<
 	 * ************************************************************************/
 
 	@XmlRootElement(name = "phenotype")
-	@XmlType(name = "phenotype")
+	@XmlType(name = "org.jenetics.Phenotype")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	final static class Model {

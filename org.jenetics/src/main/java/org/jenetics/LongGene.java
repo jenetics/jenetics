@@ -132,7 +132,7 @@ public final class LongGene
 	 * ************************************************************************/
 
 	@XmlRootElement(name = "long-gene")
-	@XmlType(name = "long-gene")
+	@XmlType(name = "org.jenetics.LongGene")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
 

@@ -385,7 +385,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 * ************************************************************************/
 
 	@XmlRootElement(name = "population")
-	@XmlType(name = "population")
+	@XmlType(name = "org.jenetics.Population")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	static final class Model {
@@ -394,7 +394,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		public int size;
 
 		@XmlElement(name = "phenotype")
-		public List<Object> phenotypes = new ArrayList<>();
+		public List phenotypes = new ArrayList<>();
 
 		public static final class Adapter
 			extends XmlAdapter<Model, Population>
@@ -404,8 +404,10 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 				final Model model = new Model();
 				model.size = p.size();
 				if (p.size() > 0) {
-					model.phenotypes = new Array<>(p.size()).setAll(p)
-						.map(jaxb.Marshaller(p.get(0))).asList();
+					model.phenotypes = new Array<>(p.size())
+						.setAll(p)
+						.map(jaxb.Marshaller(p.get(0)))
+						.asList();
 				}
 
 				return model;

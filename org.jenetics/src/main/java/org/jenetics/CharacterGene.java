@@ -295,7 +295,7 @@ public final class CharacterGene
 	 * ************************************************************************/
 
 	@XmlRootElement(name = "character-gene")
-	@XmlType(name = "character-gene")
+	@XmlType(name = "org.jenetics.CharacterGene")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
 

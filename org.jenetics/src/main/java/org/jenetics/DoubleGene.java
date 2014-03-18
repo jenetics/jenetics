@@ -136,7 +136,7 @@ public final class DoubleGene
 	 * ************************************************************************/
 
 	@XmlRootElement(name = "double-gene")
-	@XmlType(name = "double-gene")
+	@XmlType(name = "org.jenetics.DoubleGene")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
 

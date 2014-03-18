@@ -19,21 +19,17 @@
  */
 package org.jenetics.performance;
 
-import static java.util.FormattableFlags.LEFT_JUSTIFY;
-
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Formattable;
-import java.util.Formatter;
 import java.util.List;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-12 $</em>
+ * @version <em>$Date: 2014-03-18 $</em>
  */
 public final class TestSuite {
 	private final String _name;

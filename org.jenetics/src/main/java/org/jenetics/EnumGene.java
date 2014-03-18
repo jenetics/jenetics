@@ -279,7 +279,7 @@ public final class EnumGene<A>
 	 * ************************************************************************/
 
 	@XmlRootElement(name = "enum-gene")
-	@XmlType(name = "enum-gene")
+	@XmlType(name = "org.jenetics.EnumGene")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	final static class Model {
@@ -288,7 +288,7 @@ public final class EnumGene<A>
 
 		@XmlElementWrapper(name = "valid-alleles")
 		@XmlElement(name = "allele")
-		List<Object> alleles;
+		List alleles;
 
 		@XmlElement(name = "allele")
 		int currentAlleleIndex;
@@ -312,7 +312,9 @@ public final class EnumGene<A>
 			public EnumGene unmarshal(final Model m) {
 				return new EnumGene<>(
 					m.currentAlleleIndex,
-					Array.of(m.alleles).map(jaxb.Unmarshaller(m.alleles.get(0))).toISeq()
+					Array.of(m.alleles)
+						.map(jaxb.Unmarshaller(m.alleles.get(0)))
+						.toISeq()
 				);
 			}
 
