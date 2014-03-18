@@ -26,16 +26,10 @@ import java.util.List;
 import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.transform.dom.DOMSource;
-
-import org.w3c.dom.Element;
 
 import org.jenetics.internal.util.model.CharacterModel;
-import org.jenetics.internal.util.model.ModelType;
-import org.jenetics.internal.util.model.ValueType;
 
 import org.jenetics.util.Function;
 import org.jenetics.util.StaticObject;
@@ -120,44 +114,6 @@ public class jaxb extends StaticObject {
 	}
 
 	/**
-	 * Return the model type (Class<?>) for the given object. If the given
-	 * object is its own model, {@code value.getClass()} is returned.
-	 *
-	 * @param value the object we try to find the model type.
-	 * @return the model type of the given value.
-	 */
-	public static Class<?> modelTypeFor(final Object value) {
-		Class<?> modelType = classOf(value);
-
-		final Object adapter = adapterFor(value);
-		final ModelType ma = adapter.getClass().getAnnotation(ModelType.class);
-		if (ma != null) {
-			modelType = ma.value();
-		}
-
-		return modelType;
-	}
-
-	/**
-	 * Return the value type (Class<?>) for the given object. If the given
-	 * object is its own value, {@code value.getClass()} is returned.
-	 *
-	 * @param value the object we try to find the value type.
-	 * @return the value type of the given value.
-	 */
-	public static Class<?> valueTypeFor(final Object value) {
-		Class<?> valueType = classOf(value);
-
-		final Object adapter = adapterFor(value);
-		final ValueType ma = adapter.getClass().getAnnotation(ValueType.class);
-		if (ma != null) {
-			valueType = ma.value();
-		}
-
-		return valueType;
-	}
-
-	/**
 	 * Shorthand for {@code adapterFor(value).marshal(value)}
 	 */
 	public static Object marshal(final Object value) throws Exception {
@@ -230,37 +186,5 @@ public class jaxb extends StaticObject {
 	public static Function<Object, Object> Unmarshaller(final Object value)  {
 		return Unmarshaller(jaxb.adapterFor(value));
 	}
-
-	/**
-	 * An generic unmarshaller function.
-	 */
-	public static final Function<Object, Object> Unmarshaller =
-	new Function<Object, Object>() {
-		@SuppressWarnings("rawtypes")
-		@Override
-		public Object apply(final Object value) {
-			Object result = value;
-			if (value instanceof Element) {
-				final Element element = (Element)value;
-
-				try {
-					final Class<?> type = modelTypeFor(
-						Class.forName(element.getNodeName())
-					);
-
-					final DOMSource source = new DOMSource(element);
-					final JAXBElement jaxbElement = CONTEXT.createUnmarshaller()
-						.unmarshal(source, type);
-
-					result = jaxb.adapterFor(jaxbElement.getValue())
-						.unmarshal(jaxbElement.getValue());
-				} catch (Exception e) {
-					throw new RuntimeException(e);
-				}
-			}
-
-			return result;
-		}
-	};
 
 }
