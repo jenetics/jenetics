@@ -43,8 +43,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.internal.util.internalbit;
-import org.jenetics.internal.util.model.ModelType;
-import org.jenetics.internal.util.model.ValueType;
 
 import org.jenetics.util.ISeq;
 import org.jenetics.util.bit;
@@ -532,8 +530,6 @@ public class BitChromosome extends Number
 		@XmlValue
 		public String value;
 
-		@ValueType(BitChromosome.class)
-		@ModelType(Model.class)
 		public final static class Adapter
 			extends XmlAdapter<Model, BitChromosome>
 		{

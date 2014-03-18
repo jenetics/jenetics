@@ -34,7 +34,6 @@ import java.util.RandomAccess;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -44,7 +43,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.internal.util.jaxb;
-import org.jenetics.internal.util.model;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Copyable;
@@ -398,8 +396,6 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		@XmlElement(name = "phenotype")
 		public List<Object> phenotypes = new ArrayList<>();
 
-		@model.ValueType(Genotype.class)
-		@model.ModelType(Model.class)
 		public static final class Adapter
 			extends XmlAdapter<Model, Population>
 		{

@@ -20,8 +20,6 @@
 package org.jenetics;
 
 import static org.jenetics.EnumGene.Gene;
-import static org.jenetics.internal.util.model.CharacterToString;
-import static org.jenetics.internal.util.model.StringToCharacter;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -44,7 +42,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.internal.util.cast;
 import org.jenetics.internal.util.jaxb;
-import org.jenetics.internal.util.model;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
@@ -246,8 +243,6 @@ public final class PermutationChromosome<T>
 		@XmlElement(name = "order")
 		public List<Integer> order;
 
-		@model.ValueType(PermutationChromosome.class)
-		@model.ModelType(Model.class)
 		public static final class Adapter
 			extends XmlAdapter<Model, PermutationChromosome>
 		{

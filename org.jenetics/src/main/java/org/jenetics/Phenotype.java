@@ -35,8 +35,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.internal.util.jaxb;
-import org.jenetics.internal.util.model.ModelType;
-import org.jenetics.internal.util.model.ValueType;
 
 import org.jenetics.util.Function;
 import org.jenetics.util.Verifiable;
@@ -458,8 +456,6 @@ public final class Phenotype<
 		@XmlElement(name = "raw-fitness")
 		public Object rawFitness;
 
-		@ValueType(Phenotype.class)
-		@ModelType(Model.class)
 		public final static class Adapter
 			extends XmlAdapter<Model, Phenotype>
 		{

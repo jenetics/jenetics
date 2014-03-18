@@ -35,8 +35,6 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jenetics.internal.util.HashBuilder;
-import org.jenetics.internal.util.model.ModelType;
-import org.jenetics.internal.util.model.ValueType;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Function;
@@ -196,8 +194,6 @@ public class DoubleChromosome
 		@XmlElement(name = "allele")
 		public List<Double> values;
 
-		@ValueType(DoubleChromosome.class)
-		@ModelType(Model.class)
 		public final static class Adapter
 			extends XmlAdapter<Model, DoubleChromosome>
 		{

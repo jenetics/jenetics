@@ -20,7 +20,6 @@
 package org.jenetics;
 
 import static java.lang.String.format;
-import static org.jenetics.internal.util.jaxb.Unmarshaller;
 import static org.jenetics.internal.util.object.eq;
 
 import java.util.List;
@@ -33,15 +32,12 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.internal.util.cast;
 import org.jenetics.internal.util.jaxb;
-import org.jenetics.internal.util.model.ModelType;
-import org.jenetics.internal.util.model.ValueType;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
@@ -297,8 +293,6 @@ public final class EnumGene<A>
 		@XmlElement(name = "allele")
 		int currentAlleleIndex;
 
-		@ValueType(EnumGene.class)
-		@ModelType(Model.class)
 		public static final class Adapter
 			extends XmlAdapter<Model, EnumGene>
 		{
