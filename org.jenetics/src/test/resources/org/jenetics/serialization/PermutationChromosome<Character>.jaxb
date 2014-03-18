@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<org.jenetics.PermutationChromosome length="15">
-    <java.lang.Character value="䍵"/>
-    <java.lang.Character value="᱓"/>
-    <java.lang.Character value="႟"/>
-    <java.lang.Character value="ඖ"/>
-    <java.lang.Character value="铼"/>
-    <java.lang.Character value="⻰"/>
-    <java.lang.Character value="ဘ"/>
-    <java.lang.Character value="퀪"/>
-    <java.lang.Character value="阆"/>
-    <java.lang.Character value="㴇"/>
-    <java.lang.Character value="鷮"/>
-    <java.lang.Character value="ꔺ"/>
-    <java.lang.Character value="陵"/>
-    <java.lang.Character value="註"/>
-    <java.lang.Character value="䥅"/>
-    <allele-indexes class="java.lang.String" value="13,12,4,6,8,14,7,2,11,5,3,0,9,10,1"/>
-</org.jenetics.PermutationChromosome>
+<permutation-chromosome length="15">
+    <alleles>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">䍵</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">᱓</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">႟</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">ඖ</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">铼</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">⻰</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">ဘ</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">퀪</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">阆</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">㴇</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">鷮</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">ꔺ</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">陵</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">註</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">䥅</allele>
+    </alleles>
+    <order>13 12 4 6 8 14 7 2 11 5 3 0 9 10 1</order>
+</permutation-chromosome>

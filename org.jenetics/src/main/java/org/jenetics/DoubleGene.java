@@ -138,8 +138,8 @@ public final class DoubleGene
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "org.jenetics.DoubleGene")
-	@XmlType(name = "org.jenetics.DoubleGene")
+	@XmlRootElement(name = "double-gene")
+	@XmlType(name = "double-gene")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
 

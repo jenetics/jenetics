@@ -36,6 +36,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
@@ -385,8 +386,8 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "org.jenetics.Population")
-	@XmlType(name = "org.jenetics.Population")
+	@XmlRootElement(name = "population")
+	@XmlType(name = "population")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	static final class Model {
@@ -394,7 +395,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		@XmlAttribute
 		public int size;
 
-		@XmlAnyElement
+		@XmlElement(name = "phenotype")
 		public List<Object> phenotypes = new ArrayList<>();
 
 		@model.ValueType(Genotype.class)
@@ -417,7 +418,8 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 			@Override
 			public Population unmarshal(final Model model) throws Exception {
 				final ISeq pt = Array.of(model.phenotypes)
-					.map(jaxb.Unmarshaller).toISeq();
+					.map(jaxb.Unmarshaller(model.phenotypes.get(0)))
+					.toISeq();
 
 				return new Population(pt.asList());
 			}

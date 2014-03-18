@@ -448,8 +448,8 @@ public class PersistentObject<T> {
 
 
 	public static void main(final String[] args) throws Exception {
-		//write();
-		IO.jaxb.write(nextCharacterPermutationChromosome(), System.out);
+		write();
+		//IO.jaxb.write(nextGenotypeDoubleGene(), System.out);
 	}
 
 	private static void write() throws IOException {

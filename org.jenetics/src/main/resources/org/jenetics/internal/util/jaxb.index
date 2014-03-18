@@ -3,6 +3,7 @@ model$ByteModel
 model$CharacterModel
 model$ShortModel
 model$IntegerModel
+model$IntegerArrayModel
 model$LongModel
 model$FloatModel
 model$DoubleModel

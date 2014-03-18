@@ -518,8 +518,8 @@ public class BitChromosome extends Number
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "org.jenetics.BitChromosome")
-	@XmlType(name = "org.jenetics.BitChromosome")
+	@XmlRootElement(name = "bit-chromosome")
+	@XmlType(name = "bit-chromosome")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
 

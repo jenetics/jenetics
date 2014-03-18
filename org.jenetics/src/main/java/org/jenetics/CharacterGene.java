@@ -296,8 +296,8 @@ public final class CharacterGene
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "org.jenetics.CharacterGene")
-	@XmlType(name = "org.jenetics.CharacterGene")
+	@XmlRootElement(name = "character-gene")
+	@XmlType(name = "character-gene")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
 

@@ -179,8 +179,8 @@ public class DoubleChromosome
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "org.jenetics.DoubleChromosome")
-	@XmlType(name = "org.jenetics.DoubleChromosome")
+	@XmlRootElement(name = "double-chromosome")
+	@XmlType(name = "double-chromosome")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
 

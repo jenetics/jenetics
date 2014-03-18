@@ -182,8 +182,8 @@ public class LongChromosome
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "org.jenetics.LongChromosome")
-	@XmlType(name = "org.jenetics.LongChromosome")
+	@XmlRootElement(name = "long-chromosome")
+	@XmlType(name = "long-chromosome")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
 

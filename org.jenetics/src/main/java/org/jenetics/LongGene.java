@@ -134,8 +134,8 @@ public final class LongGene
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "org.jenetics.LongGene")
-	@XmlType(name = "org.jenetics.LongGene")
+	@XmlRootElement(name = "long-gene")
+	@XmlType(name = "long-gene")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
 

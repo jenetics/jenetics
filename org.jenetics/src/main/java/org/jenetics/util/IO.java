@@ -21,6 +21,7 @@ package org.jenetics.util;
 
 import static org.jenetics.internal.util.jaxb.CONTEXT;
 import static org.jenetics.internal.util.jaxb.adapterFor;
+import static org.jenetics.internal.util.jaxb.marshal;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -73,19 +74,7 @@ public abstract class IO {
 			try {
 				final Marshaller marshaller = CONTEXT.createMarshaller();
 				marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-
-				//final XMLOutputFactory factory = XMLOutputFactory.newInstance();
-				//final XMLStreamWriter writer = factory.createXMLStreamWriter(out);
-				//try {
-					final XmlAdapter<Object, Object> adapter = adapterFor(object);
-					if (adapter != null) {
-						marshaller.marshal(adapter.marshal(object), out);
-					} else {
-						marshaller.marshal(object, out);
-					}
-				//} finally {
-				//	writer.close();
-				//}
+				marshaller.marshal(marshal(object), out);
 			} catch (Exception e) {
 				throw new IOException(e);
 			}

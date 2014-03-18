@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<org.jenetics.EnumGene length="5" allele-index="0">
-    <java.lang.Character value="䍵"/>
-    <java.lang.Character value="᱓"/>
-    <java.lang.Character value="႟"/>
-    <java.lang.Character value="ඖ"/>
-    <java.lang.Character value="铼"/>
-</org.jenetics.EnumGene>
+<enum-gene length="5">
+    <valid-alleles>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">䍵</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">᱓</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">႟</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">ඖ</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">铼</allele>
+    </valid-alleles>
+    <allele>0</allele>
+</enum-gene>
