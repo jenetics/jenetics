@@ -29,23 +29,12 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import org.jenetics.internal.util.model.BooleanModel;
-import org.jenetics.internal.util.model.ByteModel;
 import org.jenetics.internal.util.model.CharacterModel;
-import org.jenetics.internal.util.model.DoubleModel;
-import org.jenetics.internal.util.model.FloatModel;
-import org.jenetics.internal.util.model.IntegerArrayModel;
-import org.jenetics.internal.util.model.IntegerModel;
-import org.jenetics.internal.util.model.LongModel;
 import org.jenetics.internal.util.model.ModelType;
-import org.jenetics.internal.util.model.ShortModel;
-import org.jenetics.internal.util.model.StringModel;
 import org.jenetics.internal.util.model.ValueType;
 
 import org.jenetics.util.Function;
@@ -87,40 +76,8 @@ public class jaxb extends StaticObject {
 		ADAPTER_CACHE = new HashMap<>();
 
 	static {
-
 		ADAPTER_CACHE.put(Character.class, CharacterModel.Adapter);
 		ADAPTER_CACHE.put(CharacterModel.class, CharacterModel.Adapter);
-
-		/*
-		ADAPTER_CACHE.put(Boolean.class, BooleanModel.Adapter);
-		ADAPTER_CACHE.put(BooleanModel.class, BooleanModel.Adapter);
-
-		ADAPTER_CACHE.put(Byte.class, ByteModel.Adapter);
-		ADAPTER_CACHE.put(ByteModel.class, ByteModel.Adapter);
-
-
-
-		ADAPTER_CACHE.put(Short.class, ShortModel.Adapter);
-		ADAPTER_CACHE.put(ShortModel.class, ShortModel.Adapter);
-
-		ADAPTER_CACHE.put(Integer.class, IntegerModel.Adapter);
-		ADAPTER_CACHE.put(IntegerModel.class, IntegerModel.Adapter);
-
-		ADAPTER_CACHE.put(Integer[].class, IntegerArrayModel.Adapter);
-		ADAPTER_CACHE.put(IntegerArrayModel.class, IntegerArrayModel.Adapter);
-
-		ADAPTER_CACHE.put(Long.class, LongModel.Adapter);
-		ADAPTER_CACHE.put(LongModel.class, LongModel.Adapter);
-
-		ADAPTER_CACHE.put(Float.class, FloatModel.Adapter);
-		ADAPTER_CACHE.put(FloatModel.class, FloatModel.Adapter);
-
-		ADAPTER_CACHE.put(Double.class, DoubleModel.Adapter);
-		ADAPTER_CACHE.put(DoubleModel.class, DoubleModel.Adapter);
-
-		ADAPTER_CACHE.put(String.class, StringModel.Adapter);
-		ADAPTER_CACHE.put(StringModel.class, StringModel.Adapter);
-		*/
 	}
 
 	/**
@@ -306,49 +263,4 @@ public class jaxb extends StaticObject {
 		}
 	};
 
-	public static final class JavolutionElementAdapter
-		extends XmlAdapter<Object, Object>
-	{
-		@SuppressWarnings("rawtypes")
-		@Override
-		public Object unmarshal(final Object v) throws Exception {
-			final Element element = (Element)v;
-			final Class<?> type = modelTypeFor(
-				Class.forName(element.getAttribute("class"))
-			);
-
-			final DOMSource source = new DOMSource(element);
-			final JAXBElement jaxbElement = CONTEXT.createUnmarshaller()
-				.unmarshal(source, type);
-
-			return jaxb.adapterFor(jaxbElement.getValue())
-				.unmarshal(jaxbElement.getValue());
-		}
-
-		@Override
-		public Object marshal(final Object v) throws Exception {
-			final DOMResult result = new DOMResult();
-			CONTEXT.createMarshaller().marshal(v, result);
-
-			final Element e = ((Document)result.getNode()).getDocumentElement();
-			final Class<?> type = valueTypeFor(v);
-			e.setAttribute("class", type.getCanonicalName());
-
-			return e;
-		}
-	}
-
-	public static final class CharacterAdapter
-		extends XmlAdapter<String, Character>
-	{
-		@Override
-		public String marshal(final Character v) throws Exception {
-			return v.toString();
-		}
-
-		@Override
-		public Character unmarshal(final String v) throws Exception {
-			return v.charAt(0);
-		}
-	}
 }

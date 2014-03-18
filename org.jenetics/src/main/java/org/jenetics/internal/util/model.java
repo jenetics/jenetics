@@ -24,11 +24,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-import java.util.Arrays;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
@@ -43,7 +41,7 @@ import org.jenetics.util.StaticObject;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version 1.6 &mdash; <em>$Date: 2014-03-18 $</em>
- * @since 1.6
+ * @since 2.0
  */
 public final class model extends StaticObject {
 	private model() {}
@@ -63,66 +61,6 @@ public final class model extends StaticObject {
 	/* ************************************************************************
 	 * Java primitive type models.
 	 **************************************************************************/
-
-	@XmlRootElement(name = "java.lang.Boolean")
-	@XmlType(name = "java.lang.Boolean")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	public static final class BooleanModel {
-
-		@XmlAttribute
-		public boolean value;
-
-		@ValueType(Boolean.class)
-		@ModelType(BooleanModel.class)
-		public static final class Adapter
-			extends XmlAdapter<BooleanModel, Boolean>
-		{
-			@Override
-			public BooleanModel marshal(final Boolean value) {
-				final BooleanModel model = new BooleanModel();
-				model.value = value;
-				return model;
-			}
-
-			@Override
-			public Boolean unmarshal(final BooleanModel model) {
-				return model.value;
-			}
-		}
-
-		public static final Adapter Adapter = new Adapter();
-
-	}
-
-	@XmlRootElement(name = "java.lang.Byte")
-	@XmlType(name = "java.lang.Byte")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	public static final class ByteModel {
-
-		@XmlAttribute
-		public byte value;
-
-		@ValueType(Byte.class)
-		@ModelType(ByteModel.class)
-		public static final class Adapter
-			extends XmlAdapter<ByteModel, Byte>
-		{
-			@Override
-			public ByteModel marshal(final Byte value) {
-				final ByteModel model = new ByteModel();
-				model.value = value;
-				return model;
-			}
-
-			@Override
-			public Byte unmarshal(final ByteModel model) {
-				return model.value;
-			}
-		}
-
-		public static final Adapter Adapter = new Adapter();
-
-	}
 
 	@XmlRootElement(name = "char")
 	@XmlType(name = "char")
@@ -153,216 +91,6 @@ public final class model extends StaticObject {
 		public static final Adapter Adapter = new Adapter();
 
 	}
-
-	@XmlRootElement(name = "java.lang.Short")
-	@XmlType(name = "java.lang.Short")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	public static final class ShortModel {
-
-		@XmlAttribute
-		public short value;
-
-		@ValueType(Short.class)
-		@ModelType(ShortModel.class)
-		public static final class Adapter
-			extends XmlAdapter<ShortModel, Short>
-		{
-			@Override
-			public ShortModel marshal(final Short value) {
-				final ShortModel model = new ShortModel();
-				model.value = value;
-				return model;
-			}
-
-			@Override
-			public Short unmarshal(final ShortModel model) {
-				return model.value;
-			}
-		}
-
-		public static final Adapter Adapter = new Adapter();
-
-	}
-
-	@XmlRootElement(name = "java.lang.Integer")
-	@XmlType(name = "java.lang.Integer")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	public static final class IntegerModel {
-
-		@XmlAttribute
-		public int value;
-
-		@ValueType(Integer.class)
-		@ModelType(IntegerModel.class)
-		public static final class Adapter
-			extends XmlAdapter<IntegerModel, Integer>
-		{
-			@Override
-			public IntegerModel marshal(final Integer value) {
-				final IntegerModel model = new IntegerModel();
-				model.value = value;
-				return model;
-			}
-
-			@Override
-			public Integer unmarshal(final IntegerModel model) {
-				return model.value;
-			}
-		}
-
-		public static final Adapter Adapter = new Adapter();
-
-	}
-
-	@XmlRootElement(name = "intArray")
-	@XmlType(name = "intArray")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	public static final class IntegerArrayModel {
-		@XmlValue
-		public String value;
-
-		@ValueType(Integer[].class)
-		@ModelType(IntegerArrayModel.class)
-		public static final class Adapter
-			extends XmlAdapter<IntegerArrayModel, Integer[]>
-		{
-			@Override
-			public IntegerArrayModel marshal(final Integer[] value) {
-				final IntegerArrayModel model = new IntegerArrayModel();
-				model.value = Arrays.toString(value);
-				return model;
-			}
-
-			@Override
-			public Integer[] unmarshal(final IntegerArrayModel model) {
-				return new Integer[0]; //model.value;
-			}
-		}
-
-		public static final Adapter Adapter = new Adapter();
-	}
-
-	@XmlRootElement(name = "java.lang.Long")
-	@XmlType(name = "java.lang.Long")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	public static final class LongModel {
-
-		@XmlAttribute
-		public long value;
-
-		@ValueType(Long.class)
-		@ModelType(LongModel.class)
-		public static final class Adapter
-			extends XmlAdapter<LongModel, Long>
-		{
-			@Override
-			public LongModel marshal(final Long value) {
-				final LongModel model = new LongModel();
-				model.value = value;
-				return model;
-			}
-
-			@Override
-			public Long unmarshal(final LongModel model) {
-				return model.value;
-			}
-		}
-
-		public static final Adapter Adapter = new Adapter();
-
-	}
-
-	@XmlRootElement(name = "java.lang.Float")
-	@XmlType(name = "java.lang.Float")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	public static final class FloatModel {
-
-		@XmlAttribute
-		public float value;
-
-		@ValueType(Float.class)
-		@ModelType(FloatModel.class)
-		public static final class Adapter
-			extends XmlAdapter<FloatModel, Float>
-		{
-			@Override
-			public FloatModel marshal(final Float value) {
-				final FloatModel model = new FloatModel();
-				model.value = value;
-				return model;
-			}
-
-			@Override
-			public Float unmarshal(final FloatModel model) {
-				return model.value;
-			}
-		}
-
-		public static final Adapter Adapter = new Adapter();
-
-
-	}
-
-	@XmlRootElement(name = "java.lang.Double")
-	@XmlType(name = "java.lang.Double")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	public static final class DoubleModel {
-
-		@XmlAttribute
-		public double value;
-
-		@ValueType(Double.class)
-		@ModelType(DoubleModel.class)
-		public static final class Adapter
-			extends XmlAdapter<DoubleModel, Double>
-		{
-			@Override
-			public DoubleModel marshal(final Double value) {
-				final DoubleModel model = new DoubleModel();
-				model.value = value;
-				return model;
-			}
-
-			@Override
-			public Double unmarshal(final DoubleModel model) {
-				return model.value;
-			}
-		}
-
-		public static final Adapter Adapter = new Adapter();
-
-	}
-
-	@XmlRootElement(name = "java.lang.String")
-	@XmlType(name = "java.lang.String")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	public static final class StringModel {
-
-		@XmlAttribute
-		public String value;
-
-		@ValueType(String.class)
-		@ModelType(StringModel.class)
-		public static final class Adapter
-			extends XmlAdapter<StringModel, String>
-		{
-			@Override
-			public StringModel marshal(final String value) {
-				final StringModel model = new StringModel();
-				model.value = value;
-				return model;
-			}
-
-			@Override
-			public String unmarshal(final StringModel model) {
-				return model.value;
-			}
-		}
-
-		public static final Adapter Adapter = new Adapter();
-
-	}
-
 
 	public static final Function<Character, String> CharacterToString =
 		new Function<Character, String>() {
