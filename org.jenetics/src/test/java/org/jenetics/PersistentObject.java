@@ -51,7 +51,7 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-18 $</em>
+ * @version <em>$Date: 2014-03-19 $</em>
  */
 public class PersistentObject<T> {
 
@@ -125,7 +125,7 @@ public class PersistentObject<T> {
 
 	private static final long SEED = 101010101010101L;
 
-	public static List<PersistentObject<?>> VALUES = new ArrayList<>();
+	public static final List<PersistentObject<?>> VALUES = new ArrayList<>();
 
 	private static <T> void put(final String name, final T value, final String... ios) {
 		VALUES.add(new PersistentObject<T>(name, value, ios));
@@ -139,21 +139,21 @@ public class PersistentObject<T> {
 
 		final String[] ios = {"object", "jaxb"};
 
-		put("BitGene[true]", BitGene.TRUE, ios);
-		put("BitGene[false]", BitGene.FALSE, ios);
+		put("BitGene_true", BitGene.TRUE, ios);
+		put("BitGene_false", BitGene.FALSE, ios);
 		put("CharacterGene", nextCharacterGene(), ios);
 		put("LongGene", nextLongGene(), ios);
 		put("DoubleGene", nextDoubleGene(), ios);
 
-		put("EnumGene<Boolean>", nextEnumGeneBoolean(), ios);
-		put("EnumGene<Byte>", nextEnumGeneByte(), ios);
-		put("EnumGene<Character>", nextEnumGeneCharacter(), ios);
-		put("EnumGene<Short>", nextEnumGeneShort(), ios);
-		put("EnumGene<Integer>", nextEnumGeneInteger(), ios);
-		put("EnumGene<Long>", nextEnumGeneLong(), ios);
-		put("EnumGene<Float>", nextEnumGeneFloat(), ios);
-		put("EnumGene<Double>", nextEnumGeneDouble(), ios);
-		put("EnumGene<String>", nextEnumGeneString(), ios);
+		put("EnumGene[Boolean]", nextEnumGeneBoolean(), ios);
+		put("EnumGene[Byte]", nextEnumGeneByte(), ios);
+		put("EnumGene[Character]", nextEnumGeneCharacter(), ios);
+		put("EnumGene[Short]", nextEnumGeneShort(), ios);
+		put("EnumGene[Integer]", nextEnumGeneInteger(), ios);
+		put("EnumGene[Long]", nextEnumGeneLong(), ios);
+		put("EnumGene[Float]", nextEnumGeneFloat(), ios);
+		put("EnumGene[Double]", nextEnumGeneDouble(), ios);
+		put("EnumGene[String]", nextEnumGeneString(), ios);
 
 		/* *********************************************************************
 		 * Chromosomes
@@ -164,43 +164,43 @@ public class PersistentObject<T> {
 		put("LongChromosome", nextLongChromosome(), ios);
 		put("DoubleChromosome", nextDoubleChromosome(), ios);
 
-		put("PermutationChromosome<Byte>", nextBytePermutationChromosome(), ios);
-		put("PermutationChromosome<Short>", nextShortPermutationChromosome(), ios);
-		put("PermutationChromosome<Integer>", nextIntegerPermutationChromosome(), ios);
-		put("PermutationChromosome<Long>", nextLongPermutationChromosome(), ios);
-		put("PermutationChromosome<Float>", nextFloatPermutationChromosome(), ios);
-		put("PermutationChromosome<Double>", nextDoublePermutationChromosome(), ios);
-		put("PermutationChromosome<Character>", nextCharacterPermutationChromosome(), ios);
-		put("PermutationChromosome<String>", nextStringPermutationChromosome(), ios);
+		put("PermutationChromosome[Byte]", nextBytePermutationChromosome(), ios);
+		put("PermutationChromosome[Short]", nextShortPermutationChromosome(), ios);
+		put("PermutationChromosome[Integer]", nextIntegerPermutationChromosome(), ios);
+		put("PermutationChromosome[Long]", nextLongPermutationChromosome(), ios);
+		put("PermutationChromosome[Float]", nextFloatPermutationChromosome(), ios);
+		put("PermutationChromosome[Double]", nextDoublePermutationChromosome(), ios);
+		put("PermutationChromosome[Character]", nextCharacterPermutationChromosome(), ios);
+		put("PermutationChromosome[String]", nextStringPermutationChromosome(), ios);
 
 		/* *********************************************************************
 		 * Genotypes
 		 **********************************************************************/
 
-		put("Genotype<BitGene>", nextGenotypeBitGene(), ios);
-		put("Genotype<CharacterGene>", nextGenotypeCharacterGene(), ios);
-		put("Genotype<LongGene>", nextGenotypeLongGene(), ios);
-		put("Genotype<DoubleGene>", nextGenotypeDoubleGene(), ios);
+		put("Genotype[BitGene]", nextGenotypeBitGene(), ios);
+		put("Genotype[CharacterGene]", nextGenotypeCharacterGene(), ios);
+		put("Genotype[LongGene]", nextGenotypeLongGene(), ios);
+		put("Genotype[DoubleGene]", nextGenotypeDoubleGene(), ios);
 
 
 		/* *********************************************************************
 		 * Phenotypes
 		 **********************************************************************/
 
-		put("Phenotype<LongGene, Integer>", nextPhenotypeLongGeneInteger(), ios);
-		put("Phenotype<LongGene, Long>", nextPhenotypeLongGeneLong(), ios);
-		put("Phenotype<LongGene, Double>", nextPhenotypeLongGeneDouble(), ios);
+		put("Phenotype[LongGene, Integer]", nextPhenotypeLongGeneInteger(), ios);
+		put("Phenotype[LongGene, Long]", nextPhenotypeLongGeneLong(), ios);
+		put("Phenotype[LongGene, Double]", nextPhenotypeLongGeneDouble(), ios);
 
-		put("Phenotype<DoubleGene, Integer>", nextPhenotypeDoubleGeneInteger(), ios);
-		put("Phenotype<DoubleGene, Long>", nextPhenotypeDoubleGeneLong(), ios);
-		put("Phenotype<DoubleGene, Double>", nextPhenotypeDoubleGeneDouble(), ios);
+		put("Phenotype[DoubleGene, Integer]", nextPhenotypeDoubleGeneInteger(), ios);
+		put("Phenotype[DoubleGene, Long]", nextPhenotypeDoubleGeneLong(), ios);
+		put("Phenotype[DoubleGene, Double]", nextPhenotypeDoubleGeneDouble(), ios);
 
 		/* *********************************************************************
 		 * Populations
 		 **********************************************************************/
 
-		put("Population<LongGene, Integer>", nextPopulationLongGeneInteger(), ios);
-		put("Population<DoubleGene, Integer>", nextPopulationDoubleGeneInteger(), ios);
+		put("Population[LongGene, Integer]", nextPopulationLongGeneInteger(), ios);
+		put("Population[DoubleGene, Integer]", nextPopulationDoubleGeneInteger(), ios);
 
 		//put("Statistics.Time", nextStatisticsTime());
 
