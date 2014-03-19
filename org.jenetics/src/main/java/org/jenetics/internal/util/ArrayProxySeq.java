@@ -31,7 +31,7 @@ import org.jenetics.util.Seq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.5 &mdash; <em>$Date: 2013-12-04 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-03-10 $</em>
  */
 public abstract class ArrayProxySeq<T> implements Seq<T> {
 
@@ -76,24 +76,12 @@ public abstract class ArrayProxySeq<T> implements Seq<T> {
 	}
 
 	@Override
-	@Deprecated
-	public <R> void foreach(final Function<? super T, ? extends R> function) {
-		forEach(function);
-	}
-
-	@Override
 	public <R> void forEach(final Function<? super T, ? extends R> function) {
 		requireNonNull(function, "Function");
 
 		for (int i = _proxy._start; i < _proxy._end; ++i) {
 			function.apply(_proxy.__get(i));
 		}
-	}
-
-	@Override
-	@Deprecated
-	public boolean forall(final Function<? super T, Boolean> predicate) {
-		return forAll(predicate);
 	}
 
 	@Override

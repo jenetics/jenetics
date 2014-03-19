@@ -21,28 +21,25 @@ package org.jenetics.internal.util;
 
 import java.util.Arrays;
 
-import org.jenetics.util.HashCodeBuilder;
 import org.jenetics.util.Seq;
 import org.jenetics.util.arrays;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date$</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
  */
-@SuppressWarnings("deprecation")
-public final class DefaultHashCodeBuilder
-	extends HashCodeBuilder
-	implements Hash
-{
+public final class DefaultHashCodeBuilder implements Hash {
 	private static final int P1 = 47;
 	private static final int P2 = 103;
 	private static final int P3 = 1231;
 	private static final int P4 = 1237;
 
 
-	public DefaultHashCodeBuilder(final Class<?> type) {
-		super(type);
+	protected int _hash = 0;
+
+	protected DefaultHashCodeBuilder(final Class<?> type) {
+		_hash = type.hashCode();
 	}
 
 	@Override
@@ -142,4 +139,8 @@ public final class DefaultHashCodeBuilder
 		_hash += arrays.hashCode(values); return this;
 	}
 
+	@Override
+	public int value() {
+		return _hash;
+	}
 }

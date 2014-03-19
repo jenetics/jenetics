@@ -22,6 +22,7 @@ package org.jenetics;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.object.eq;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -33,20 +34,15 @@ import java.util.RandomAccess;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import javolution.xml.XMLFormat;
-import javolution.xml.XMLSerializable;
-import javolution.xml.stream.XMLStreamException;
-
 import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.internal.util.jaxb;
-import org.jenetics.internal.util.model;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Copyable;
@@ -63,7 +59,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-03-01 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-18 $</em>
  */
 @XmlJavaTypeAdapter(Population.Model.Adapter.class)
 public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
@@ -71,9 +67,9 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		List<Phenotype<G, C>>,
 		Copyable<Population<G, C>>,
 		RandomAccess,
-		XMLSerializable
+		Serializable
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	private final List<Phenotype<G, C>> _population;
 
@@ -209,23 +205,6 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 */
 	public void sort() {
 		sortWith(Optimize.MAXIMUM.<C>descending());
-	}
-
-	/**
-	 * Sort this population according the order defined by the given
-	 * {@code comparator}.
-	 *
-	 * @param comparator the comparator which defines the sorting order.
-	 * @throws java.lang.NullPointerException if the {@code comparator} is
-	 *         {@code null}.
-	 *
-	 * @deprecated This method conflicts with the default method of the
-	 *             {@link java.util.List} interface introduced in Java 8. Use
-	 *             {@link #sortWith(java.util.Comparator)} instead.
-	 */
-	@Deprecated
-	public void sort(final Comparator<? super C> comparator) {
-		sortWith(comparator);
 	}
 
 	/**
@@ -402,47 +381,10 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	}
 
 	/* *************************************************************************
-	 *  XML object serialization
-	 * ************************************************************************/
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	static final XMLFormat<Population>
-	XML = new XMLFormat<Population>(Population.class)
-	{
-		private static final String SIZE = "size";
-
-		@Override
-		public Population newInstance(
-			final Class<Population> cls, final InputElement xml
-		)
-			throws XMLStreamException
-		{
-			final int size = xml.getAttribute(SIZE, 10);
-			final Population p = new Population(size);
-			for (int i = 0; i < size; ++i) {
-				p.add(xml.<Phenotype>getNext());
-			}
-			return p;
-		}
-		@Override
-		public void write(final Population p, final OutputElement xml)
-			throws XMLStreamException
-		{
-			xml.setAttribute(SIZE, p.size());
-			for (Object phenotype : p) {
-				xml.add(phenotype);
-			}
-		}
-		@Override
-		public void read(final InputElement xml, final Population p) {
-		}
-	};
-
-	/* *************************************************************************
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "org.jenetics.Population")
+	@XmlRootElement(name = "population")
 	@XmlType(name = "org.jenetics.Population")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	@SuppressWarnings({"unchecked", "rawtypes"})
@@ -451,11 +393,9 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		@XmlAttribute
 		public int size;
 
-		@XmlAnyElement
-		public List<Object> phenotypes = new ArrayList<>();
+		@XmlElement(name = "phenotype")
+		public List phenotypes = new ArrayList<>();
 
-		@model.ValueType(Genotype.class)
-		@model.ModelType(Model.class)
 		public static final class Adapter
 			extends XmlAdapter<Model, Population>
 		{
@@ -464,8 +404,10 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 				final Model model = new Model();
 				model.size = p.size();
 				if (p.size() > 0) {
-					model.phenotypes = new Array<>(p.size()).setAll(p)
-						.map(jaxb.Marshaller(p.get(0))).asList();
+					model.phenotypes = new Array<>(p.size())
+						.setAll(p)
+						.map(jaxb.Marshaller(p.get(0)))
+						.asList();
 				}
 
 				return model;
@@ -474,7 +416,8 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 			@Override
 			public Population unmarshal(final Model model) throws Exception {
 				final ISeq pt = Array.of(model.phenotypes)
-					.map(jaxb.Unmarshaller).toISeq();
+					.map(jaxb.Unmarshaller(model.phenotypes.get(0)))
+					.toISeq();
 
 				return new Population(pt.asList());
 			}

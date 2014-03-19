@@ -19,8 +19,6 @@
  */
 package org.jenetics.stat;
 
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.util.Function;
 import org.jenetics.util.Range;
 
@@ -30,7 +28,7 @@ import org.jenetics.util.Range;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-08-29 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
  */
 public interface Distribution<C extends Comparable<? super C>> {
 
@@ -48,7 +46,7 @@ public interface Distribution<C extends Comparable<? super C>> {
 	 *
 	 * @return the <i>Cumulative Distribution Function</i>.
 	 */
-	public Function<C, Float64> getCDF();
+	public Function<C, Double> getCDF();
 
 	/**
 	 * Return a new instance of the <i>Probability Density Function</i> (PDF).
@@ -57,6 +55,6 @@ public interface Distribution<C extends Comparable<? super C>> {
 	 *
 	 * @return the <i>Probability Density Function</i>.
 	 */
-	public Function<C, Float64> getPDF();
+	public Function<C, Double> getPDF();
 
 }

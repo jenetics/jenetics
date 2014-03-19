@@ -33,8 +33,7 @@ import java.util.ListIterator;
 import java.util.Random;
 import java.util.RandomAccess;
 
-import javolution.context.StackContext;
-import javolution.util.FastList;
+import org.jenetics.internal.util.Stack;
 
 /**
  * Array class which wraps the the java build in array type T[]. Once the array
@@ -48,7 +47,7 @@ import javolution.util.FastList;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-02-17 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-16 $</em>
  */
 public final class Array<T>
 	extends ArraySeq<T>
@@ -88,181 +87,6 @@ public final class Array<T>
 	}
 
 	/**
-	 * Create a new array with length one. The array will be initialized with
-	 * the given value.
-	 *
-	 * @param first the only element of the array.
-	 *
-	 * @deprecated Use {@link #of(Object...)} instead.
-	 */
-	@Deprecated
-	public Array(final T first) {
-		this(1);
-		_array.data[0] = first;
-	}
-
-	/**
-	 * Create a new array with length two. The array will be initialized with
-	 * the given values.
-	 *
-	 * @param first first array element.
-	 * @param second second array element.
-	 *
-	 * @deprecated Use {@link #of(Object...)} instead.
-	 */
-	@Deprecated
-	public Array(
-		final T first,
-		final T second
-	) {
-		this(2);
-		_array.data[0] = first;
-		_array.data[1] = second;
-	}
-
-	/**
-	 * Create a new array with length three. The array will be initialized with
-	 * the given values.
-	 *
-	 * @param first first array element.
-	 * @param second second array element.
-	 * @param third third array element.
-	 *
-	 * @deprecated Use {@link #of(Object...)} instead.
-	 */
-	@Deprecated
-	public Array(
-		final T first,
-		final T second,
-		final T third
-	) {
-		this(3);
-		_array.data[0] = first;
-		_array.data[1] = second;
-		_array.data[2] = third;
-	}
-
-	/**
-	 * Create a new array with length four. The array will be initialized with
-	 * the given values.
-	 *
-	 * @param first first array element.
-	 * @param second second array element.
-	 * @param third third array element.
-	 * @param fourth fourth array element.
-	 *
-	 * @deprecated Use {@link #of(Object...)} instead.
-	 */
-	@Deprecated
-	public Array(
-		final T first,
-		final T second,
-		final T third,
-		final T fourth
-	) {
-		this(4);
-		_array.data[0] = first;
-		_array.data[1] = second;
-		_array.data[2] = third;
-		_array.data[3] = fourth;
-	}
-
-	/**
-	 * Create a new array with length five. The array will be initialized with
-	 * the given values.
-	 *
-	 * @param first first array element.
-	 * @param second second array element.
-	 * @param third third array element.
-	 * @param fourth fourth array element.
-	 * @param fifth fifth array element.
-	 *
-	 * @deprecated Use {@link #of(Object...)} instead.
-	 */
-	@Deprecated
-	public Array(
-		final T first,
-		final T second,
-		final T third,
-		final T fourth,
-		final T fifth
-	) {
-		this(5);
-		_array.data[0] = first;
-		_array.data[1] = second;
-		_array.data[2] = third;
-		_array.data[3] = fourth;
-		_array.data[4] = fifth;
-	}
-
-	/**
-	 * Create a new array from the given values.
-	 *
-	 * @param first first array element.
-	 * @param second second array element.
-	 * @param third third array element.
-	 * @param fourth fourth array element.
-	 * @param fifth fifth array element.
-	 * @param rest the rest of the array element.
-	 * @throws NullPointerException if the {@code rest} array is {@code null}.
-	 *
-	 * @deprecated Use {@link #of(Object...)} instead.
-	 */
-	@Deprecated
-	@SafeVarargs
-	public Array(
-		final T first,
-		final T second,
-		final T third,
-		final T fourth,
-		final T fifth,
-		final T... rest
-	) {
-		this(5 + rest.length);
-		_array.data[0] = first;
-		_array.data[1] = second;
-		_array.data[2] = third;
-		_array.data[3] = fourth;
-		_array.data[4] = fifth;
-		arraycopy(rest, 0, _array.data, 5, rest.length);
-	}
-
-	/**
-	 * Create a new array from the given values.
-	 *
-	 * @param values the array values.
-	 * @throws NullPointerException if the {@code values} array is {@code null}.
-	 *
-	 * @deprecated Use {@link #of(Object...)} instead.
-	 */
-	@Deprecated
-	public Array(final T[] values) {
-		this(values.length);
-		arraycopy(values, 0, _array.data, 0, values.length);
-	}
-
-	/**
-	 * Create a new Array from the values of the given Collection. The order of
-	 * the elements are determined by the iterator of the Collection.
-	 *
-	 * @param values the array values.
-	 * @throws NullPointerException if the {@code values} array is {@code null}.
-	 *
-	 * @deprecated Use {@link #of(Collection)} instead.
-	 */
-	@Deprecated
-	public Array(final Collection<? extends T> values) {
-		this(values.size());
-
-		int index = 0;
-		for (Iterator<? extends T>
-			it = values.iterator(); it.hasNext(); ++index)
-		{
-			_array.data[index] = it.next();
-		}
-	}
-
-	/**
 	 * Selects all elements of this list which satisfy a predicate.
 	 *
 	 * @param predicate the predicate used to test elements.
@@ -273,30 +97,22 @@ public final class Array<T>
 	 *         {@code null}.
 	 */
 	public Array<T> filter(final Function<? super T, Boolean> predicate) {
-		StackContext.enter();
-		try {
-			final FastList<T> filtered = FastList.newInstance();
-			for (int i = 0, n = length(); i < n; ++i) {
-				@SuppressWarnings("unchecked")
-				final T value = (T)_array.data[i + _start];
+		final Stack<T> filtered = new Stack<>();
+		for (int i = 0, n = length(); i < n; ++i) {
+			@SuppressWarnings("unchecked")
+			final T value = (T)_array.data[i + _start];
 
-				if (predicate.apply(value) == Boolean.TRUE) {
-					filtered.add(value);
-				}
+			if (predicate.apply(value) == Boolean.TRUE) {
+				filtered.push(value);
 			}
-
-			final Array<T> copy = new Array<>(filtered.size());
-			int index = 0;
-			for (FastList.Node<T> n = filtered.head(), end = filtered.tail();
-				(n = n.getNext()) != end;)
-			{
-				copy.set(index++, n.getValue());
-			}
-
-			return copy;
-		} finally {
-			StackContext.exit();
 		}
+
+		final Array<T> copy = new Array<>(filtered.length);
+		for (int i = filtered.length; --i >= 0;) {
+			copy._array.data[i] = filtered.pop();
+		}
+
+		return copy;
 	}
 
 	@Override
@@ -731,15 +547,6 @@ public final class Array<T>
 	}
 
 	/**
-	 * @deprecated Use {@link #of(Object[])} instead.
-	 */
-	@Deprecated
-	@SafeVarargs
-	public static <T> Array<T> valueOf(final T... values) {
-		return of(values);
-	}
-
-	/**
 	 * Create a new Array from the values of the given {@code Collection}. The
 	 * order of the elements are determined by the iterator of the Collection.
 	 *
@@ -759,14 +566,6 @@ public final class Array<T>
 		}
 
 		return array;
-	}
-
-	/**
-	 * @deprecated Use {@link #of(java.util.Collection)} instead.
-	 */
-	@Deprecated
-	public static <T> Array<T> valueOf(final Collection<? extends T> values) {
-		return of(values);
 	}
 
 	/**
@@ -792,14 +591,6 @@ public final class Array<T>
 		}
 
 		return array;
-	}
-
-	/**
-	 * @deprecated Use {@link #of(Seq)} instead.
-	 */
-	@Deprecated
-	public static <T> Array<T> valueOf(final Seq<T> values) {
-		return of(values);
 	}
 
 	/**

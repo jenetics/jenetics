@@ -22,6 +22,8 @@ package org.jenetics;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.object.eq;
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -31,17 +33,8 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import javolution.lang.Immutable;
-import javolution.lang.Realtime;
-import javolution.text.Text;
-import javolution.xml.XMLFormat;
-import javolution.xml.XMLSerializable;
-import javolution.xml.stream.XMLStreamException;
-
 import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.internal.util.jaxb;
-import org.jenetics.internal.util.model.ModelType;
-import org.jenetics.internal.util.model.ValueType;
 
 import org.jenetics.util.Function;
 import org.jenetics.util.Verifiable;
@@ -60,7 +53,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-03-04 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-18 $</em>
  */
 @XmlJavaTypeAdapter(Phenotype.Model.Adapter.class)
 public final class Phenotype<
@@ -69,13 +62,11 @@ public final class Phenotype<
 >
 	implements
 		Comparable<Phenotype<G, C>>,
-		Immutable,
 		Verifiable,
-		XMLSerializable,
-		Realtime,
+		Serializable,
 		Runnable
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	private final Genotype<G> _genotype;
 
@@ -255,13 +246,8 @@ public final class Phenotype<
 	}
 
 	@Override
-	public Text toText() {
-		return _genotype.toText();
-	}
-
-	@Override
 	public String toString() {
-		return toText().toString() + " --> " + getFitness();
+		return _genotype.toString() + " --> " + getFitness();
 	}
 
 	/**
@@ -375,22 +361,6 @@ public final class Phenotype<
 	 *
 	 * @param <C> the fitness value type.
 	 * @return a raw fitness {@link Function}.
-	 *
-	 * @deprecated Fixing typo, use {@link #RawFitness()} instead.
-	 */
-	@Deprecated
-	public static <C extends Comparable<? super C>>
-	Function<Phenotype<?, C>, C> RawFitnees()
-	{
-		return RawFitness();
-	}
-
-	/**
-	 * Create a {@link Function} which return the phenotype raw fitness when
-	 * calling {@code converter.convert(phenotype)}.
-	 *
-	 * @param <C> the fitness value type.
-	 * @return a raw fitness {@link Function}.
 	 */
 	public static <C extends Comparable<? super C>>
 	Function<Phenotype<?, C>, C> RawFitness()
@@ -420,20 +390,6 @@ public final class Phenotype<
 	}
 
 	/**
-	 * @deprecated Use {@link #of(Genotype, org.jenetics.util.Function, org.jenetics.util.Function, int)}
-	 *             instead.
-	 */
-	@Deprecated
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Phenotype<G, C> valueOf(
-		final Genotype<G> genotype,
-		final Function<Genotype<G>, C> fitnessFunction,
-		final int generation
-	) {
-		return of(genotype, fitnessFunction, generation);
-	}
-
-	/**
 	 * The {@code Genotype} is copied to guarantee an immutable class. Only
 	 * the age of the {@code Phenotype} can be incremented.
 	 *
@@ -450,21 +406,6 @@ public final class Phenotype<
 		final int generation
 	) {
 		return of(genotype, fitnessFunction, functions.<C>Identity(), generation);
-	}
-
-	/**
-	 * @deprecated Use {@link #of(Genotype, org.jenetics.util.Function, org.jenetics.util.Function, int)}
-	 *             instead
-	 */
-	@Deprecated
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Phenotype<G, C> valueOf(
-		final Genotype<G> genotype,
-		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
-		final Function<? super C, ? extends C> fitnessScaler,
-		final int generation
-	) {
-		return of(genotype, fitnessFunction, fitnessScaler, generation);
 	}
 
 	/**
@@ -494,51 +435,10 @@ public final class Phenotype<
 	}
 
 	/* *************************************************************************
-	 *  XML object serialization
-	 * ************************************************************************/
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	static final XMLFormat<Phenotype>
-	XML = new XMLFormat<Phenotype>(Phenotype.class)
-	{
-		private static final String GENERATION = "generation";
-		private static final String FITNESS = "fitness";
-		private static final String RAW_FITNESS = "raw-fitness";
-
-		@Override
-		public Phenotype newInstance(
-			final Class<Phenotype> cls, final InputElement xml
-		)
-			throws XMLStreamException
-		{
-			final int generation = xml.getAttribute(GENERATION, 0);
-			final Genotype genotype = xml.getNext();
-			final Phenotype pt = new Phenotype(
-				genotype, functions.Identity(), functions.Identity(), generation
-			);
-			pt._fitness = xml.get(FITNESS);
-			pt._rawFitness = xml.get(RAW_FITNESS);
-			return pt;
-		}
-		@Override
-		public void write(final Phenotype pt, final OutputElement xml)
-			throws XMLStreamException
-		{
-			xml.setAttribute(GENERATION, pt._generation);
-			xml.add(pt._genotype);
-			xml.add(pt.getFitness(), FITNESS);
-			xml.add(pt.getRawFitness(), RAW_FITNESS);
-		}
-		@Override
-		public void read(final InputElement xml, final Phenotype gt) {
-		}
-	};
-
-	/* *************************************************************************
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "org.jenetics.Phenotype")
+	@XmlRootElement(name = "phenotype")
 	@XmlType(name = "org.jenetics.Phenotype")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -547,19 +447,15 @@ public final class Phenotype<
 		@XmlAttribute
 		public int generation;
 
-		@XmlElement(name = "org.jenetics.Genotype")
+		@XmlElement(name = "genotype")
 		public Genotype.Model genotype;
 
-		@XmlJavaTypeAdapter(jaxb.JavolutionElementAdapter.class)
 		@XmlElement(name = "fitness")
 		public Object fitness;
 
-		@XmlJavaTypeAdapter(jaxb.JavolutionElementAdapter.class)
 		@XmlElement(name = "raw-fitness")
 		public Object rawFitness;
 
-		@ValueType(Phenotype.class)
-		@ModelType(Model.class)
 		public final static class Adapter
 			extends XmlAdapter<Model, Phenotype>
 		{

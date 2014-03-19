@@ -23,11 +23,6 @@ import static java.lang.Double.NaN;
 import static java.lang.String.format;
 import static org.jenetics.internal.util.object.eq;
 
-import javolution.xml.XMLFormat;
-import javolution.xml.stream.XMLStreamException;
-
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.stat.Variance;
@@ -37,7 +32,7 @@ import org.jenetics.util.accumulators.MinMax;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-03-01 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
  */
 public class NumberStatistics<
 	G extends Gene<?, G>,
@@ -51,7 +46,7 @@ public class NumberStatistics<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2014-03-01 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
 	 */
 	public static class Builder<
 		G extends Gene<?, G>,
@@ -136,7 +131,7 @@ public class NumberStatistics<
 		}
 	}
 
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 3L;
 
 	protected final double _fitnessMean;
 	protected final double _fitnessVariance;
@@ -244,55 +239,10 @@ public class NumberStatistics<
 		return out.toString();
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	static final XMLFormat<NumberStatistics> XML =
-		new XMLFormat<NumberStatistics>(NumberStatistics.class)
-	{
-		private static final String FITNESS_MEAN = "fitness-mean";
-		private static final String FITNESS_VARIANCE = "fitness-variance";
-		private static final String ERROR_OF_MEAN = "error-of-mean";
-
-		@Override
-		public NumberStatistics newInstance(
-			final Class<NumberStatistics> type,
-			final InputElement xml
-		)
-			throws XMLStreamException
-		{
-			final Statistics stats = Statistics.XML.newInstance(
-					Statistics.class, xml
-				);
-			final Float64 fitnessMean = xml.get(FITNESS_MEAN);
-			final Float64 fitnessVariance = xml.get(FITNESS_VARIANCE);
-			final Float64 errorOfMean = xml.get(ERROR_OF_MEAN);
-
-			final Builder builder = new Builder().statistics(stats);
-			builder.fitnessMean(fitnessMean.doubleValue());
-			builder.fitnessVariance(fitnessVariance.doubleValue());
-			builder.standardError(errorOfMean.doubleValue());
-
-			return builder.build();
-		}
-
-		@Override
-		public void write(final NumberStatistics s, final OutputElement xml)
-			throws XMLStreamException
-		{
-			Statistics.XML.write(s, xml);
-			xml.add(Float64.valueOf(s.getFitnessMean()), FITNESS_MEAN);
-			xml.add(Float64.valueOf(s.getFitnessVariance()), FITNESS_VARIANCE);
-			xml.add(Float64.valueOf(s.getStandardError()), ERROR_OF_MEAN);
-		}
-
-		@Override
-		public void read(final InputElement xml, final NumberStatistics p) {
-		}
-	};
-
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2014-03-01 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
 	 */
 	public static class Calculator<
 		G extends Gene<?, G>,

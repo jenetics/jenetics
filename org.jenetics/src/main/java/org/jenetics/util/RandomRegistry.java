@@ -24,8 +24,8 @@ import static java.util.Objects.requireNonNull;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-import javolution.context.LocalContext;
-import javolution.lang.Reference;
+import org.jenetics.internal.util.Context;
+import org.jenetics.internal.util.Supplier;
 
 /**
  * This class holds the {@link Random} engine used for the GA. The
@@ -50,7 +50,7 @@ import javolution.lang.Reference;
  *         RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadSafe(1234));
  *
  *         ...
- *         final GeneticAlgorithm<DoubleGene, Double> ga = ...
+ *         final GeneticAlgorithm<Float64Gene, Float64> ga = ...
  *         ga.evolve(100);
  *     }
  * }
@@ -59,17 +59,16 @@ import javolution.lang.Reference;
  *
  * <b>Setup of a <i>local</i> PRNG</b><br/>
  *
- * Within a scoped context you can temporarily (and locally) change the
- * implementation of the PRNG.
+ * You can temporarily (and locally) change the implementation of the PRNG.
  *
  * [code]
  * public class GA {
  *     public static void main(final String[] args) {
  *         ...
- *         final GeneticAlgorithm<DoubleGene, Double> ga = ...
- *         final LCG64ShiftRandom random = new LCG64ShiftRandom(1234);
+ *         final GeneticAlgorithm<Float64Gene, Float64> ga = ...
+ *         final LCG64ShiftRandom random = new LCG64ShiftRandom(1234)
  *
- *         try (Scoped<Random> scope = RandomRegistry.scope(random)) {
+ *         try (Scoped<Random> scope = RandomRegistry.scope(random) {
  *             // Easy access the random engine of the opened scope.
  *             assert(scope.get() == random);
  *
@@ -89,20 +88,21 @@ import javolution.lang.Reference;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-03-03 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-19 $</em>
  */
 public final class RandomRegistry extends StaticObject {
 	private RandomRegistry() {}
 
-	private static final Reference<Random> TLOCAL_REF = new Ref<Random>() {
+	// Default random engine used.
+	private static final Supplier<Random> DEFAULT = new Supplier<Random>() {
 		@Override
 		public Random get() {
 			return ThreadLocalRandom.current();
 		}
 	};
 
-	private static final LocalContext.Reference<Reference<? extends Random>>
-	RANDOM = new LocalContext.Reference<Reference<? extends Random>>(TLOCAL_REF);
+	private static final Context<Supplier<Random>> CONTEXT =
+		new Context<>(DEFAULT);
 
 	/**
 	 * Return the global {@link Random} object.
@@ -110,7 +110,7 @@ public final class RandomRegistry extends StaticObject {
 	 * @return the global {@link Random} object.
 	 */
 	public static Random getRandom() {
-		return RANDOM.get().get();
+		return CONTEXT.get().get();
 	}
 
 	/**
@@ -128,7 +128,8 @@ public final class RandomRegistry extends StaticObject {
 	 * @throws NullPointerException if the {@code random} object is {@code null}.
 	 */
 	public static void setRandom(final Random random) {
-		RANDOM.set(new RRef(random));
+		requireNonNull(random, "Random must not be null.");
+		CONTEXT.set(new RandomSupplier<>(random));
 	}
 
 	/**
@@ -142,8 +143,10 @@ public final class RandomRegistry extends StaticObject {
 	 * @param random the thread-local random engine to use.
 	 * @throws NullPointerException if the {@code random} object is {@code null}.
 	 */
+	@SuppressWarnings("unchecked")
 	public static void setRandom(final ThreadLocal<? extends Random> random) {
-		RANDOM.set(new TLRRef<>(random));
+		requireNonNull(random, "Random must not be null.");
+		CONTEXT.set((Supplier<Random>)new ThreadLocalRandomSupplier<>(random));
 	}
 
 	/**
@@ -151,72 +154,66 @@ public final class RandomRegistry extends StaticObject {
 	 * is the {@link ThreadLocalRandom} PRNG.
 	 */
 	public static void reset() {
-		RANDOM.set(TLOCAL_REF);
+		CONTEXT.reset();
 	}
 
 	/**
 	 * Opens a new {@code Scope} with the given random engine.
 	 *
-	 * @since 1.6
 	 * @param random the PRNG used for the opened scope.
 	 * @return the scope with the given random object.
 	 */
+	@SuppressWarnings("unchecked")
 	public static <R extends Random> Scoped<R> scope(final R random) {
-		LocalContext.enter();
-		setRandom(random);
-		return new Scope<>(Thread.currentThread(), random);
+		final RandomSupplier<R> supplier = new RandomSupplier<>(random);
+		return CONTEXT.scope((Supplier<Random>) supplier, supplier);
 	}
 
-	/*
-	 * Some helper Reference classes.
+	/**
+	 * Opens a new {@code Scope} with the given random engine.
+	 *
+	 * @param random the PRNG used for the opened scope.
+	 * @return the scope with the given random object.
 	 */
+	@SuppressWarnings("unchecked")
+	public static <R extends Random> Scoped<R> scope(final ThreadLocal<R> random) {
+		final ThreadLocalRandomSupplier<R> supplier =
+			new ThreadLocalRandomSupplier<>(random);
 
-	private static abstract class Ref<R> implements Reference<R> {
-		@Override public void set(final R random) {}
+		return CONTEXT.scope((Supplier<Random>) supplier, supplier);
 	}
 
-	private final static class RRef extends Ref<Random> {
-		private final Random _random;
-		public RRef(final Random random) {
-			_random = requireNonNull(random, "Random");
-		}
-		@Override public final Random get() {
-			return _random;
-		}
-	}
+	/* *************************************************************************
+	 *  Some private helper classes.
+	 * ************************************************************************/
 
-	private final static class TLRRef<R extends Random> extends Ref<R> {
-		private final ThreadLocal<R> _random;
-		public TLRRef(final ThreadLocal<R> random) {
-			_random = requireNonNull(random, "Random");
-		}
-		@Override public final R get() {
-			return _random.get();
-		}
-	}
-
-	private static final class Scope<R extends Random> implements Scoped<R> {
-		private final Thread _thread;
+	private final static class RandomSupplier<R extends Random>
+		implements Supplier<R>
+	{
 		private final R _random;
 
-		Scope(final Thread thread, final R random) {
-			_thread = requireNonNull(thread);
-			_random = requireNonNull(random);
+		RandomSupplier(final R random) {
+			_random = requireNonNull(random, "Random must not be null.");
 		}
 
 		@Override
-		public R get() {
+		public final R get() {
 			return _random;
 		}
+	}
+
+	private final static class ThreadLocalRandomSupplier<R extends Random>
+		implements Supplier<R>
+	{
+		private final ThreadLocal<R> _random;
+
+		ThreadLocalRandomSupplier(final ThreadLocal<R> random) {
+			_random = requireNonNull(random, "Random must not be null.");
+		}
 
 		@Override
-		public void close() {
-			if (_thread != Thread.currentThread()) {
-				throw new IllegalStateException(
-					"Try to close scope by a different thread."
-				);
-			}
-			LocalContext.exit();
+		public final R get() {
+			return _random.get();
 		}
 	}
 

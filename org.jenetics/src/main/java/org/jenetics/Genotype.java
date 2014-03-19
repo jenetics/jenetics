@@ -22,30 +22,22 @@ package org.jenetics;
 import static org.jenetics.internal.util.object.Verify;
 import static org.jenetics.internal.util.object.eq;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import javolution.lang.Immutable;
-import javolution.lang.Realtime;
-import javolution.text.Text;
-import javolution.xml.XMLFormat;
-import javolution.xml.XMLSerializable;
-import javolution.xml.stream.XMLStreamException;
-
 import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.internal.util.cast;
 import org.jenetics.internal.util.jaxb;
-import org.jenetics.internal.util.model.ModelType;
-import org.jenetics.internal.util.model.ValueType;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
@@ -80,7 +72,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-03-04 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-18 $</em>
  */
 @XmlJavaTypeAdapter(Genotype.Model.Adapter.class)
 public final class Genotype<G extends Gene<?, G>>
@@ -88,11 +80,9 @@ public final class Genotype<G extends Gene<?, G>>
 		Factory<Genotype<G>>,
 		Iterable<Chromosome<G>>,
 		Verifiable,
-		XMLSerializable,
-		Realtime,
-		Immutable
+		Serializable
 {
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 3L;
 
 	private final ISeq<Chromosome<G>> _chromosomes;
 	private final int _ngenes;
@@ -263,11 +253,6 @@ public final class Genotype<G extends Gene<?, G>>
 	}
 
 	@Override
-	public Text toText() {
-		return new Text(_chromosomes.toString());
-	}
-
-	@Override
 	public String toString() {
 		return _chromosomes.toString();
 	}
@@ -318,27 +303,6 @@ public final class Genotype<G extends Gene<?, G>>
 	}
 
 	/**
-	 * @deprecated Use {@link #Genotype(org.jenetics.util.ISeq)} instead.
-	 */
-	@Deprecated
-	public static <G extends Gene<?, G>> Genotype<G> valueOf(
-		final ISeq<? extends Chromosome<G>> chromosomes
-	) {
-		return new Genotype<>(chromosomes);
-	}
-
-	/**
-	 * @deprecated Use {@link #of(Chromosome[])} instead.
-	 */
-	@Deprecated
-	@SafeVarargs
-	public static <G extends Gene<?, G>> Genotype<G> valueOf(
-		final Chromosome<G>... chromosomes
-	) {
-		return of(chromosomes);
-	}
-
-	/**
 	 * Create a new Genotype from a given array of {@code Chromosomes}.
 	 *
 	 * @param chromosomes The {@code Chromosome} array the {@code Genotype}
@@ -355,52 +319,10 @@ public final class Genotype<G extends Gene<?, G>>
 	}
 
 	/* *************************************************************************
-	 *  XML object serialization
-	 * ************************************************************************/
-
-	@SuppressWarnings({ "unchecked", "rawtypes"})
-	static final XMLFormat<Genotype>
-	XML = new XMLFormat<Genotype>(Genotype.class)
-	{
-		private static final String LENGTH = "length";
-		private static final String NGENES = "ngenes";
-
-		@Override
-		public Genotype newInstance(
-			final Class<Genotype> cls, final InputElement xml
-		)
-			throws XMLStreamException
-		{
-			final int length = xml.getAttribute(LENGTH, 0);
-			final int ngenes = xml.getAttribute(NGENES, 0);
-			final Array<Chromosome> chromosomes = new Array<>(length);
-			for (int i = 0; i < length; ++i) {
-				final Chromosome<?> c = xml.getNext();
-				chromosomes.set(i, c);
-			}
-
-			return new Genotype(chromosomes.toISeq(), ngenes);
-		}
-		@Override
-		public void write(final Genotype gt, final OutputElement xml)
-			throws XMLStreamException
-		{
-			xml.setAttribute(LENGTH, gt.length());
-			xml.setAttribute(NGENES, gt.getNumberOfGenes());
-			for (int i = 0; i < gt.length(); ++i) {
-				xml.add(gt._chromosomes.get(i));
-			}
-		}
-		@Override
-		public void read(final InputElement xml, final Genotype gt) {
-		}
-	};
-
-	/* *************************************************************************
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "org.jenetics.Genotype")
+	@XmlRootElement(name = "genotype")
 	@XmlType(name = "org.jenetics.Genotype")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	@SuppressWarnings({"unchecked", "rawtypes"})
@@ -412,11 +334,9 @@ public final class Genotype<G extends Gene<?, G>>
 		@XmlAttribute
 		public int ngenes;
 
-		@XmlAnyElement
-		public List<Object> chromosomes;
+		@XmlElement(name = "chromosome")
+		public List chromosomes;
 
-		@ValueType(Genotype.class)
-		@ModelType(Model.class)
 		public static final class Adapter
 			extends XmlAdapter<Model, Genotype>
 		{
@@ -426,7 +346,8 @@ public final class Genotype<G extends Gene<?, G>>
 				model.length = gt.length();
 				model.ngenes = gt.getNumberOfGenes();
 				model.chromosomes = gt.toSeq()
-					.map(jaxb.Marshaller(gt.getChromosome())).asList();
+					.map(jaxb.Marshaller(gt.getChromosome()))
+					.asList();
 
 				return model;
 			}
@@ -434,7 +355,8 @@ public final class Genotype<G extends Gene<?, G>>
 			@Override
 			public Genotype unmarshal(final Model model) throws Exception {
 				final ISeq chs = Array.of(model.chromosomes)
-					.map(jaxb.Unmarshaller).toISeq();
+					.map(jaxb.Unmarshaller(model.chromosomes.get(0)))
+					.toISeq();
 
 				return new Genotype(chs, model.ngenes);
 			}

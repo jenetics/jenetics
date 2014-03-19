@@ -22,6 +22,7 @@ package org.jenetics;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.object.eq;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -33,19 +34,10 @@ import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import javolution.lang.Realtime;
-import javolution.text.Text;
-import javolution.xml.XMLFormat;
-import javolution.xml.XMLSerializable;
-import javolution.xml.stream.XMLStreamException;
-
 import org.jenetics.internal.util.HashBuilder;
-import org.jenetics.internal.util.model.ModelType;
-import org.jenetics.internal.util.model.ValueType;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.CharSeq;
-import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
@@ -55,17 +47,16 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-03-03 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-18 $</em>
  */
 @XmlJavaTypeAdapter(CharacterGene.Model.Adapter.class)
 public final class CharacterGene
 	implements
 		Gene<Character, CharacterGene>,
 		Comparable<CharacterGene>,
-		Realtime,
-		XMLSerializable
+		Serializable
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	/**
 	 * The default character set used by this gene.
@@ -137,12 +128,6 @@ public final class CharacterGene
 		return _validCharacters;
 	}
 
-	@Deprecated
-	@Override
-	public CharacterGene copy() {
-		return of(_character, _validCharacters);
-	}
-
 	/**
 	 * @see java.lang.Character#compareTo(java.lang.Character)
 	 * @param that The other gene to compare.
@@ -156,19 +141,6 @@ public final class CharacterGene
 	@Override
 	public int compareTo(final CharacterGene that) {
 		return getAllele().compareTo(that.getAllele());
-	}
-
-	/**
-	 * Return the {@link Factory} view of this gene.
-	 *
-	 * @return the {@link Factory} view of this gene.
-	 *
-	 * @deprecated No longer needed after adding new factory methods to the
-	 *             {@link Array} class.
-	 */
-	@Deprecated
-	Factory<CharacterGene> asFactory() {
-		return this;
 	}
 
 	@Override
@@ -193,12 +165,6 @@ public final class CharacterGene
 	public String toString() {
 		return _character.toString();
 	}
-
-	@Override
-	public Text toText() {
-		return Text.valueOf(_character);
-	}
-
 
 	/* *************************************************************************
 	 *  Property access methods.
@@ -270,14 +236,6 @@ public final class CharacterGene
 	}
 
 	/**
-	 * @deprecated Use {@link #of(org.jenetics.util.CharSeq)} instead.
-	 */
-	@Deprecated
-	public static CharacterGene valueOf(final CharSeq validCharacters) {
-		return of(validCharacters);
-	}
-
-	/**
 	 * Create a new character gene from the given character. If the character
 	 * is not within the {@link #DEFAULT_CHARACTERS}, an invalid gene will be
 	 * created.
@@ -289,14 +247,6 @@ public final class CharacterGene
 	 */
 	public static CharacterGene of(final Character character) {
 		return new CharacterGene(character, DEFAULT_CHARACTERS);
-	}
-
-	/**
-	 * @deprecated Use {@link #of(Character)} instead.
-	 */
-	@Deprecated
-	public static CharacterGene valueOf(final Character character) {
-		return of(character);
 	}
 
 	/**
@@ -313,14 +263,6 @@ public final class CharacterGene
 	}
 
 	/**
-	 * @deprecated Use {@link #of()} instead.
-	 */
-	@Deprecated
-	public static CharacterGene valueOf() {
-		return of();
-	}
-
-	/**
 	 * Create a new CharacterGene from the give character.
 	 *
 	 * @param character The allele.
@@ -332,17 +274,6 @@ public final class CharacterGene
 		final CharSeq validCharacters
 	) {
 		return new CharacterGene(character, validCharacters);
-	}
-
-	/**
-	 * @deprecated Use {@link #of(char, org.jenetics.util.CharSeq)} instead.
-	 */
-	@Deprecated
-	public static CharacterGene valueOf(
-		final Character character,
-		final CharSeq validCharacters
-	) {
-		return of(character, validCharacters);
 	}
 
 	static ISeq<CharacterGene> seq(final CharSeq characters, final int length) {
@@ -360,49 +291,10 @@ public final class CharacterGene
 	}
 
 	/* *************************************************************************
-	 *  XML object serialization
-	 * ************************************************************************/
-
-	static final XMLFormat<CharacterGene>
-	XML = new XMLFormat<CharacterGene>(CharacterGene.class)
-	{
-		private static final String VALID_CHARS = "valid-characters";
-
-		@Override
-		public CharacterGene newInstance(
-			final Class<CharacterGene> cls, final InputElement xml
-		)
-			throws XMLStreamException
-		{
-			final String validCharacters = xml.getAttribute(
-				VALID_CHARS,
-				DEFAULT_CHARACTERS.toString()
-			);
-			final String character = xml.getText().toString();
-
-			return CharacterGene.of(
-				character.charAt(0),
-				new CharSeq(validCharacters)
-			);
-		}
-		@Override
-		public void write(final CharacterGene gene, final OutputElement xml)
-			throws XMLStreamException
-		{
-			xml.setAttribute(VALID_CHARS, gene.getValidCharacters().toString());
-			xml.addText(gene._character.toString());
-		}
-		@Override
-		public void read(final InputElement element, final CharacterGene gene) {
-		}
-	};
-
-
-	/* *************************************************************************
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "org.jenetics.CharacterGene")
+	@XmlRootElement(name = "character-gene")
 	@XmlType(name = "org.jenetics.CharacterGene")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
@@ -413,8 +305,6 @@ public final class CharacterGene
 		@XmlValue
 		public String value;
 
-		@ValueType(CharacterGene.class)
-		@ModelType(Model.class)
 		public final static class Adapter
 			extends XmlAdapter<Model, CharacterGene>
 		{

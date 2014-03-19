@@ -27,7 +27,7 @@ import java.util.RandomAccess;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-07 $</em>
  */
 class ArraySeqList<T> extends AbstractList<T>
 	implements RandomAccess

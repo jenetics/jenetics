@@ -29,8 +29,6 @@ import static org.jenetics.internal.util.object.nonNegative;
 import java.io.Serializable;
 import java.util.Locale;
 
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.util.Function;
@@ -60,7 +58,7 @@ import org.jenetics.util.Range;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-03-01 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
  */
 public class NormalDistribution<
 	N extends Number & Comparable<? super N>
@@ -79,14 +77,14 @@ public class NormalDistribution<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2014-03-01 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2014-03-12 $</em>
 	 */
 	static final class PDF<N extends Number & Comparable<? super N>>
 		implements
-			Function<N, Float64>,
+			Function<N, Double>,
 			Serializable
 	{
-		private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 2L;
 
 		private final Range<N> _domain;
 		private final double _mean;
@@ -101,12 +99,12 @@ public class NormalDistribution<
 		}
 
 		@Override
-		public Float64 apply(final N value) {
+		public Double apply(final N value) {
 			final double x = value.doubleValue();
 
-			Float64 result = Float64.ZERO;
+			double result = 0.0;
 			if (_domain.contains(value)) {
-				result = Float64.valueOf(φ(x, _mean, _stddev));
+				result = φ(x, _mean, _stddev);
 			}
 
 			return result;
@@ -133,14 +131,14 @@ public class NormalDistribution<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2014-03-01 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2014-03-12 $</em>
 	 */
 	static final class CDF<N extends Number & Comparable<? super N>>
 		implements
-			Function<N, Float64>,
+			Function<N, Double>,
 			Serializable
 	{
-		private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 2L;
 
 		private final double _min;
 		private final double _max;
@@ -157,16 +155,16 @@ public class NormalDistribution<
 		}
 
 		@Override
-		public Float64 apply(final N value) {
+		public Double apply(final N value) {
 			final double x = value.doubleValue();
 
-			Float64 result = null;
+			double result = 0.0;
 			if (x < _min) {
-				result = Float64.ZERO;
+				result = 0.0;
 			} else if (x > _max) {
-				result = Float64.ONE;
+				result = 1.0;
 			} else {
-				result = Float64.valueOf(Φ(x, _mean, _stddev));
+				result = Φ(x, _mean, _stddev);
 			}
 
 			return result;
@@ -184,8 +182,8 @@ public class NormalDistribution<
 	}
 
 	private final Range<N> _domain;
-	private final Function<N, Float64> _cdf;
-	private final Function<N, Float64> _pdf;
+	private final Function<N, Double> _cdf;
+	private final Function<N, Double> _pdf;
 	private final double _mean;
 	private final double _var;
 
@@ -228,7 +226,7 @@ public class NormalDistribution<
 	 * </p>
 	 */
 	@Override
-	public Function<N, Float64> getCDF() {
+	public Function<N, Double> getCDF() {
 		return _cdf;
 	}
 
@@ -243,7 +241,7 @@ public class NormalDistribution<
 	 * </p>
 	 */
 	@Override
-	public Function<N, Float64> getPDF() {
+	public Function<N, Double> getPDF() {
 		return _pdf;
 	}
 

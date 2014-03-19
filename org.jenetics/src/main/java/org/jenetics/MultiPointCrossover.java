@@ -52,7 +52,7 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.2 &mdash; <em>$Date: 2014-02-27 $ </em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-07 $ </em>
  */
 public class MultiPointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 

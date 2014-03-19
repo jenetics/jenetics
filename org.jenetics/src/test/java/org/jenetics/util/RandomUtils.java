@@ -23,14 +23,11 @@ import static org.jenetics.util.lambda.factory;
 
 import java.util.Random;
 
-import org.jscience.mathematics.number.Float64;
-import org.jscience.mathematics.number.Integer64;
-
 import org.jenetics.util.math.random;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-01-31 $</em>
+ * @version <em>$Date: 2014-03-10 $</em>
  */
 public class RandomUtils {
 
@@ -69,14 +66,6 @@ public class RandomUtils {
 		return (short)random.nextInt(random(), Short.MIN_VALUE, Short.MAX_VALUE);
 	}
 
-	public static Integer64 nextInteger64() {
-		return Integer64.valueOf(random().nextLong());
-	}
-
-	public static Float64 nextFloat64() {
-		return Float64.valueOf(random().nextDouble());
-	}
-
 	/*
 	 * Factory instances.
 	 */
@@ -96,10 +85,6 @@ public class RandomUtils {
 	public static final Factory<Float> FloatFactory = factory(random(), "nextFloat");
 
 	public static final Factory<Double> DoubleFactory = factory(random(), "nextDouble");
-
-	public static final Factory<Integer64> Integer64Factory = Factory("nextInteger64");
-
-	public static final Factory<Float64> Float64Factory = Factory("nextFloat64");
 
 	public static final Factory<String> StringFactory = Factory("nextString");
 

@@ -29,7 +29,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.4 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2014-03-11 $</em>
  */
 public final class math extends StaticObject {
 	private math() {}
@@ -71,35 +71,6 @@ public final class math extends StaticObject {
 	}
 
 	/**
-	 * Implementation of the <a href="http://en.wikipedia.org/wiki/Kahan_summation_algorithm">
-	 * Kahan summation algorithm</a>.
-	 *
-	 * @param values the values to sum up.
-	 * @return the sum of the given {@code values}.
-	 * @throws NullPointerException if the given array is {@code null}.
-	 *
-	 * @deprecated Use {@link math.statistics#sum(double[])} instead.
-	 */
-	@Deprecated
-	public static double sum(final double[] values) {
-		return statistics.sum(values);
-	}
-
-	/**
-	 * Add the values of the given array.
-	 *
-	 * @param values the values to add.
-	 * @return the values sum.
-	 * @throws NullPointerException if the values are null;
-	 *
-	 * @deprecated Use {@link math.statistics#sum(long[])} instead.
-	 */
-	@Deprecated
-	public static long sum(final long[] values) {
-		return statistics.sum(values);
-	}
-
-	/**
 	 * Normalize the given double array, so that it sum to one. The
 	 * normalization is performed in place and the same {@code values} are
 	 * returned.
@@ -115,36 +86,6 @@ public final class math extends StaticObject {
 		}
 
 		return values;
-	}
-
-	/**
-	 * Return the minimum value of the given double array.
-	 *
-	 * @param values the double array.
-	 * @return the minimum value or {@link Double#NaN} if the given array is
-	 *         empty.
-	 * @throws NullPointerException if the given array is {@code null}.
-	 *
-	 * @deprecated Use {@link math.statistics#min(double[])} instead.
-	 */
-	@Deprecated
-	public static double min(final double[] values) {
-		return statistics.min(values);
-	}
-
-	/**
-	 * Return the maximum value of the given double array.
-	 *
-	 * @param values the double array.
-	 * @return the maximum value or {@link Double#NaN} if the given array is
-	 *         empty.
-	 * @throws NullPointerException if the given array is {@code null}.
-	 *
-	 * @deprecated Use {@link math.statistics#max(double[])} instead.
-	 */
-	@Deprecated
-	public static double max(final double[] values) {
-		return statistics.max(values);
 	}
 
 	/**
@@ -513,7 +454,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.3
-	 * @version 1.3 &mdash; <em>$Date: 2014-02-15 $</em>
+	 * @version 1.3 &mdash; <em>$Date: 2014-03-11 $</em>
 	 */
 	public static final class statistics extends StaticObject {
 		private statistics() {}
@@ -610,13 +551,13 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.2 &mdash; <em>$Date: 2014-02-15 $</em>
+	 * @version 1.2 &mdash; <em>$Date: 2014-03-11 $</em>
 	 */
 	public static final class random extends StaticObject {
 		private random() {}
 
 		/**
-		 * Returns a pseudorandom, uniformly distributed int value between min
+		 * Returns a pseudo-random, uniformly distributed int value between min
 		 * and max (min and max included).
 		 *
 		 * @param min lower bound for generated integer
@@ -650,7 +591,7 @@ public final class math extends StaticObject {
 		}
 
 		/**
-		 * Returns a pseudorandom, uniformly distributed int value between min
+		 * Returns a pseudo-random, uniformly distributed int value between min
 		 * and max (min and max included).
 		 *
 		 * @param min lower bound for generated long integer
@@ -686,14 +627,14 @@ public final class math extends StaticObject {
 		}
 
 		/**
-		 * Returns a pseudorandom, uniformly distributed int value between 0
+		 * Returns a pseudo-random, uniformly distributed int value between 0
 		 * (inclusive) and the specified value (exclusive), drawn from the given
 		 * random number generator's sequence.
 		 *
 		 * @param random the random engine used for creating the random number.
 		 * @param n the bound on the random number to be returned. Must be
 		 *        positive.
-		 * @return the next pseudorandom, uniformly distributed int value
+		 * @return the next pseudo-random, uniformly distributed int value
 		 *         between 0 (inclusive) and n (exclusive) from the given random
 		 *         number generator's sequence
 		 * @throws IllegalArgumentException if n is smaller than 1.
@@ -716,7 +657,7 @@ public final class math extends StaticObject {
 		}
 
 		/**
-		 * Returns a pseudorandom, uniformly distributed double value between
+		 * Returns a pseudo-random, uniformly distributed double value between
 		 * min (inclusively) and max (exclusively).
 		 *
 		 * @param random the random engine used for creating the random number.
@@ -733,7 +674,7 @@ public final class math extends StaticObject {
 		}
 
 		/**
-		 * Returns a pseudorandom, uniformly distributed double value between
+		 * Returns a pseudo-random, uniformly distributed double value between
 		 * min (inclusively) and max (exclusively).
 		 *
 		 * @param random the random engine used for creating the random number.

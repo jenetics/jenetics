@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<org.jenetics.Phenotype generation="294024316">
-    <org.jenetics.Genotype length="5" ngenes="100">
-        <org.jenetics.LongChromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+<phenotype generation="294024316">
+    <genotype length="5" ngenes="100">
+        <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
             <allele>-8069223231273077030</allele>
             <allele>-4111772314810463982</allele>
             <allele>-380826747604496445</allele>
@@ -22,8 +22,8 @@
             <allele>4374187880249812222</allele>
             <allele>-7863855656443022702</allele>
             <allele>1386882606293782618</allele>
-        </org.jenetics.LongChromosome>
-        <org.jenetics.LongChromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+        </chromosome>
+        <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
             <allele>-404495742865627634</allele>
             <allele>7194061989003983653</allele>
             <allele>5365414649285285510</allele>
@@ -44,8 +44,8 @@
             <allele>-3241678066803038162</allele>
             <allele>-4179550599571187622</allele>
             <allele>7796183889691100966</allele>
-        </org.jenetics.LongChromosome>
-        <org.jenetics.LongChromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+        </chromosome>
+        <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
             <allele>3858905116994538651</allele>
             <allele>5377364183021295141</allele>
             <allele>8678365594952514249</allele>
@@ -66,8 +66,8 @@
             <allele>-2493754259930416793</allele>
             <allele>-7770805810701095602</allele>
             <allele>-3719227068495278724</allele>
-        </org.jenetics.LongChromosome>
-        <org.jenetics.LongChromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+        </chromosome>
+        <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
             <allele>6626694340572822001</allele>
             <allele>5620461313952569514</allele>
             <allele>5886528135282357084</allele>
@@ -88,8 +88,8 @@
             <allele>-8634675335635781420</allele>
             <allele>-8304607847702790289</allele>
             <allele>-2397303880769021265</allele>
-        </org.jenetics.LongChromosome>
-        <org.jenetics.LongChromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+        </chromosome>
+        <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.LongChromosome" length="20" min="-9223372036854775808" max="9223372036854775807">
             <allele>6426989143802540019</allele>
             <allele>7743502791416545726</allele>
             <allele>2866044659420960963</allele>
@@ -110,8 +110,8 @@
             <allele>-2846623759205966245</allele>
             <allele>-7679557612699325471</allele>
             <allele>-8203540428037253595</allele>
-        </org.jenetics.LongChromosome>
-    </org.jenetics.Genotype>
-    <fitness class="java.lang.Double" value="0.5704600921077769"/>
-    <raw-fitness class="java.lang.Double" value="0.5704600921077769"/>
-</org.jenetics.Phenotype>
+        </chromosome>
+    </genotype>
+    <fitness xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.5704600921077769</fitness>
+    <raw-fitness xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.5704600921077769</raw-fitness>
+</phenotype>

@@ -20,7 +20,7 @@
  # Author:
  #    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  #
- # Version: <em>$Date: 2014-03-06 $</em>
+ # Version: <em>$Date: 2014-03-17 $</em>
  #
  ###############################################################################
 -->
@@ -62,14 +62,12 @@
 	</test>
 	<test name="org.jenetics.DoubleChromosome">
 		<classes>
-			<class name="org.jenetics.Float64ChromosomeTest" />
             <class name="org.jenetics.DoubleChromosomeTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.DoubleGene">
 		<classes>
             <class name="org.jenetics.DoubleGeneTest" />
-			<class name="org.jenetics.Float64GeneTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.GaussianMutator">
@@ -99,13 +97,11 @@
 	</test>
 	<test name="org.jenetics.LongChromosome">
 		<classes>
-			<class name="org.jenetics.Integer64ChromosomeTest" />
             <class name="org.jenetics.LongChromosomeTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.LongGene">
 		<classes>
-			<class name="org.jenetics.Integer64GeneTest" />
 			<class name="org.jenetics.LongGeneTest" />
 		</classes>
 	</test>
@@ -137,8 +133,6 @@
 	<test name="org.jenetics.PermutationChromosome">
 		<classes>
 			<class name="org.jenetics.PermutationChromosomeTest" />
-			<class name="org.jenetics.PermutationChromosomeFloat64Test" />
-			<class name="org.jenetics.PermutationChromosomeEnumTest" />
 			<class name="org.jenetics.PermutationChromosomeCharacterTest" />
 		</classes>
 	</test>
@@ -305,11 +299,11 @@
 			<class name="org.jenetics.util.CharSeqTest" />
 		</classes>
 	</test>
-	<test name="org.jenetics.util.ForkJoinContext">
+	<test name="org.jenetics.util.Concurrent">
 		<classes>
-			<class name="org.jenetics.util.ForkJoinContextTest" />
+			<class name="org.jenetics.util.ConcurrentTest" />
 		</classes>
-	</test>
+	</test>	
 	<test name="org.jenetics.util.math">
 		<classes>
 			<class name="org.jenetics.util.mathRandomTest" />

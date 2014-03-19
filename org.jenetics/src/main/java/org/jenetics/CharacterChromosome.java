@@ -25,23 +25,18 @@ import static org.jenetics.internal.util.object.eq;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-
-import javolution.text.CharArray;
-import javolution.xml.XMLFormat;
-import javolution.xml.XMLSerializable;
-import javolution.xml.stream.XMLStreamException;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jenetics.internal.util.HashBuilder;
-import org.jenetics.internal.util.model.ModelType;
-import org.jenetics.internal.util.model.ValueType;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.CharSeq;
@@ -54,16 +49,17 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-03-04 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-18 $</em>
  */
+@XmlJavaTypeAdapter(CharacterChromosome.Model.Adapter.class)
 public class CharacterChromosome
 	extends
 		AbstractChromosome<CharacterGene>
 	implements
 		CharSequence,
-		XMLSerializable
+		Serializable
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	private transient CharSeq _validCharacters;
 
@@ -76,11 +72,8 @@ public class CharacterChromosome
 	 * @throws NullPointerException if the given gene array is {@code null}.
 	 * @throws IllegalArgumentException if the length of the gene array is
 	 *         smaller than one.
-	 *
-	 * @deprecated Visibility will be changed to {@code protected}.
 	 */
-	@Deprecated
-	public CharacterChromosome(final ISeq<CharacterGene> genes) {
+	protected CharacterChromosome(final ISeq<CharacterGene> genes) {
 		super(genes);
 		_validCharacters = genes.get(0).getValidCharacters();
 	}
@@ -99,73 +92,6 @@ public class CharacterChromosome
 	public CharacterChromosome(final CharSeq validCharacters, final int length) {
 		this(CharacterGene.seq(validCharacters, length));
 		_valid = true;
-	}
-
-	/**
-	 * Create a new chromosome with the {@link CharacterGene#DEFAULT_CHARACTERS}
-	 * char set as valid characters.
-	 *
-	 * @param length the {@code length} of the new chromosome.
-	 * @throws IllegalArgumentException if the {@code length} is smaller than
-	 *         one.
-	 *
-	 * @deprecated Use {@link #of(int)} instead.
-	 */
-	@Deprecated
-	public CharacterChromosome(final int length) {
-		this(DEFAULT_CHARACTERS, length);
-	}
-
-	/**
-	 * Create a new chromosome from the given genes (given as string).
-	 *
-	 * @param genes the character genes.
-	 * @param validCharacters the valid characters.
-	 * @throws IllegalArgumentException if the genes string is empty.
-	 *
-	 * @deprecated Use {@link #of(String, org.jenetics.util.CharSeq)} instead.
-	 */
-	@Deprecated
-	public CharacterChromosome(final String genes, final CharSeq validCharacters) {
-		super(
-			new Array<CharacterGene>(genes.length()).fill(new Factory<CharacterGene>() {
-				private int _index = 0;
-				@Override public CharacterGene newInstance() {
-					return CharacterGene.of(
-						genes.charAt(_index++), validCharacters
-					);
-				}
-			}).toISeq()
-		);
-
-		_validCharacters = validCharacters;
-	}
-
-	/**
-	 * Create a new chromosome from the given genes (given as string).
-	 *
-	 * @param genes the character genes.
-	 * @throws IllegalArgumentException if the genes string is empty.
-	 *
-	 * @deprecated Use {@link #of(String)} instead.
-	 */
-	@Deprecated
-	public CharacterChromosome(final String genes) {
-		this(genes, DEFAULT_CHARACTERS);
-	}
-
-	/**
-	 * Return a more specific view of this chromosome factory.
-	 *
-	 * @return a more specific view of this chromosome factory.
-	 *
-	 * @deprecated No longer needed after adding new factory methods to the
-	 *            {@link Array} class.
-	 */
-	@Deprecated
-	@SuppressWarnings("unchecked")
-	public Factory<CharacterChromosome> asFactory() {
-		return (Factory<CharacterChromosome>)(Object)this;
 	}
 
 	@Override
@@ -344,56 +270,10 @@ public class CharacterChromosome
 	}
 
 	/* *************************************************************************
-	 *  XML object serialization
-	 * ************************************************************************/
-
-	static final XMLFormat<CharacterChromosome>
-		XML = new XMLFormat<CharacterChromosome>(CharacterChromosome.class)
-	{
-		private static final String LENGTH = "length";
-		private static final String VALID_CHARS = "valid-characters";
-
-		@Override
-		public CharacterChromosome newInstance(
-			final Class<CharacterChromosome> cls, final InputElement xml
-		)
-			throws XMLStreamException
-		{
-			final int length = xml.getAttribute(LENGTH, 0);
-			final CharSeq validCharacters = new CharSeq(xml.getAttribute(
-				VALID_CHARS, CharacterGene.DEFAULT_CHARACTERS.toString()
-			));
-
-			final Array<CharacterGene> array = new Array<>(length);
-			final CharArray values = xml.getText();
-			for (int i = 0; i < length; ++i) {
-				array.set(i, CharacterGene.of(values.charAt(i), validCharacters));
-			}
-			return new CharacterChromosome(array.toISeq());
-		}
-		@Override
-		public void write(final CharacterChromosome chromosome, final OutputElement xml)
-			throws XMLStreamException
-		{
-			xml.setAttribute(LENGTH, chromosome.length());
-			xml.setAttribute(VALID_CHARS, chromosome._validCharacters.toString());
-			final StringBuilder out = new StringBuilder(chromosome.length());
-			for (CharacterGene gene : chromosome) {
-				out.append(gene.getAllele().charValue());
-			}
-			xml.addText(out.toString());
-		}
-		@Override
-		public void read(final InputElement element, final CharacterChromosome chromosome) {
-		}
-
-	};
-
-	/* *************************************************************************
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "org.jenetics.CharacterChromosome")
+	@XmlRootElement(name = "character-chromosome")
 	@XmlType(name = "org.jenetics.CharacterChromosome")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
@@ -401,14 +281,12 @@ public class CharacterChromosome
 		@XmlAttribute
 		public int length;
 
-		@XmlAttribute(name = "valid-characters")
+		@XmlElement(name = "valid-alleles")
 		public String validCharacters;
 
-		@XmlValue
+		@XmlElement(name = "alleles")
 		public String genes;
 
-		@ValueType(CharacterChromosome.class)
-		@ModelType(Model.class)
 		public final static class Adapter
 			extends XmlAdapter<Model, CharacterChromosome>
 		{

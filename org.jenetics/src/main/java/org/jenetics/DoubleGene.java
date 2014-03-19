@@ -32,9 +32,6 @@ import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.jenetics.internal.util.model.ModelType;
-import org.jenetics.internal.util.model.ValueType;
-
 import org.jenetics.util.Array;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Mean;
@@ -44,7 +41,7 @@ import org.jenetics.util.RandomRegistry;
  * Implementation of the NumericGene which holds a 64 bit floating point number.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-05 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-18 $</em>
  * @since 1.6
  */
 @XmlJavaTypeAdapter(DoubleGene.Model.Adapter.class)
@@ -138,7 +135,7 @@ public final class DoubleGene
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "org.jenetics.DoubleGene")
+	@XmlRootElement(name = "double-gene")
 	@XmlType(name = "org.jenetics.DoubleGene")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
@@ -152,8 +149,6 @@ public final class DoubleGene
 		@XmlValue
 		public double value;
 
-		@ValueType(DoubleGene.class)
-		@ModelType(Model.class)
 		public final static class Adapter
 			extends XmlAdapter<Model, DoubleGene>
 		{

@@ -35,8 +35,6 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jenetics.internal.util.HashBuilder;
-import org.jenetics.internal.util.model.ModelType;
-import org.jenetics.internal.util.model.ValueType;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Function;
@@ -46,7 +44,7 @@ import org.jenetics.util.ISeq;
  * Numeric chromosome implementation which holds 64 bit integer numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-05 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-18 $</em>
  * @since 1.6
  */
 @XmlJavaTypeAdapter(LongChromosome.Model.Adapter.class)
@@ -182,7 +180,7 @@ public class LongChromosome
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "org.jenetics.LongChromosome")
+	@XmlRootElement(name = "long-chromosome")
 	@XmlType(name = "org.jenetics.LongChromosome")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
@@ -199,8 +197,6 @@ public class LongChromosome
 		@XmlElement(name = "allele")
 		public List<Long> values;
 
-		@ValueType(LongChromosome.class)
-		@ModelType(Model.class)
 		public final static class Adapter
 			extends XmlAdapter<Model, LongChromosome>
 		{
