@@ -24,18 +24,21 @@ import org.apache.tools.ant.filters.ReplaceTokens
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__version__@
- * @version @__version__@ &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-03-19 $</em>
  */
 
 apply plugin: 'packaging'
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
+compileTestJava.dependsOn tasks.getByPath(':org.jenetics:compileTestJava')
+
 dependencies {
 	compile project(':org.jenetics')
 	compile Include.Jettison
 
 	testCompile Include.TestNG
+    testCompile project(':org.jenetics').sourceSets.test.output
 }
 
 jar.manifest.instruction('Export-Package',
