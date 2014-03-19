@@ -74,12 +74,10 @@ public class JSONTest {
 		return result;
 	}
 
-	/*
 	public static void main(final String[] args) throws Exception {
 		write();
 		//IO.jaxb.write(nextGenotypeDoubleGene(), System.out);
 	}
-	*/
 
 	private static void write() throws IOException {
 		final File baseDir = new File(
