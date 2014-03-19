@@ -51,7 +51,7 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-18 $</em>
+ * @version <em>$Date: 2014-03-19 $</em>
  */
 public class PersistentObject<T> {
 
@@ -125,7 +125,7 @@ public class PersistentObject<T> {
 
 	private static final long SEED = 101010101010101L;
 
-	public static List<PersistentObject<?>> VALUES = new ArrayList<>();
+	public static final List<PersistentObject<?>> VALUES = new ArrayList<>();
 
 	private static <T> void put(final String name, final T value, final String... ios) {
 		VALUES.add(new PersistentObject<T>(name, value, ios));
