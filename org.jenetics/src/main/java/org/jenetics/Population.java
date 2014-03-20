@@ -73,7 +73,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 	private final List<Phenotype<G, C>> _population;
 
-	private Population(final List<Phenotype<G, C>> population) {
+	private Population(final List<Phenotype<G, C>> population, boolean a) {
 		_population = population;
 	}
 
@@ -86,7 +86,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 * @throws NullPointerException if the specified population is {@code null}.
 	 */
 	public Population(final Collection<Phenotype<G, C>> population) {
-		this(new ArrayList<>(population));
+		this(new ArrayList<>(population), true);
 	}
 
 	/**
@@ -98,14 +98,14 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *         negative
 	 */
 	public Population(final int size) {
-		this(new ArrayList<Phenotype<G, C>>(size + 1));
+		this(new ArrayList<Phenotype<G, C>>(size + 1), true);
 	}
 
 	/**
 	 * Creating a new {@code Population}.
 	 */
 	public Population() {
-		this(new ArrayList<Phenotype<G, C>>());
+		this(new ArrayList<Phenotype<G, C>>(), true);
 	}
 
 	/**
@@ -348,7 +348,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 	@Override
 	public Population<G, C> copy() {
-		return new Population<>(new ArrayList<>(_population));
+		return new Population<>(new ArrayList<>(_population), true);
 	}
 
 	@Override
@@ -393,8 +393,8 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		@XmlAttribute(name = "size", required = true)
 		public int size;
 
-		@XmlElement(name = "phenotype", required = true, nillable = false)
-		public List phenotypes = new ArrayList<>();
+		@XmlElement(name = "phenotype", required = true)
+		public List phenotypes;
 
 		public static final class Adapter
 			extends XmlAdapter<Model, Population>
@@ -403,9 +403,8 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 			public Model marshal(final Population p) throws Exception {
 				final Model model = new Model();
 				model.size = p.size();
-				if (p.size() > 0) {
-					model.phenotypes = new Array<>(p.size())
-						.setAll(p)
+				if (!p.isEmpty()) {
+					model.phenotypes = Array.of(p)
 						.map(jaxb.Marshaller(p.get(0)))
 						.asList();
 				}
@@ -415,11 +414,16 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 			@Override
 			public Population unmarshal(final Model model) throws Exception {
-				final ISeq pt = Array.of(model.phenotypes)
-					.map(jaxb.Unmarshaller(model.phenotypes.get(0)))
-					.toISeq();
+				Population population = new Population();
+				if (model.size > 0) {
+					final ISeq pt = Array.of(model.phenotypes)
+						.map(jaxb.Unmarshaller(model.phenotypes.get(0)))
+						.toISeq();
 
-				return new Population(pt.asList());
+					population = new Population(pt.asList());
+				}
+
+				return population;
 			}
 		}
 
