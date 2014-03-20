@@ -38,6 +38,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.internal.util.cast;
 import org.jenetics.internal.util.jaxb;
+import org.jenetics.internal.util.model.IndexedObject;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
@@ -73,7 +74,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-18 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-20 $</em>
  */
 @XmlJavaTypeAdapter(EnumGene.Model.Adapter.class)
 public final class EnumGene<A>
@@ -283,26 +284,28 @@ public final class EnumGene<A>
 	@XmlAccessorType(XmlAccessType.FIELD)
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	final static class Model {
-		@XmlAttribute
+		@XmlAttribute(required = true)
 		int length;
 
 		@XmlElementWrapper(name = "valid-alleles")
-		@XmlElement(name = "allele")
+		@XmlElement(name = "allele", required = true, nillable = false)
 		List alleles;
 
-		@XmlElement(name = "allele")
-		int currentAlleleIndex;
+		@XmlElement(required = true, nillable = false)
+		IndexedObject allele = new IndexedObject();
 
 		public static final class Adapter
 			extends XmlAdapter<Model, EnumGene>
 		{
 			@Override
 			public Model marshal(final EnumGene gene) {
+				final Function marshaller = jaxb.Marshaller(gene.getAllele());
 				final Model m = new Model();
 				m.length = gene.getValidAlleles().length();
-				m.currentAlleleIndex = gene.getAlleleIndex();
+				m.allele.index = gene.getAlleleIndex();
+				m.allele.value = marshaller.apply(gene.getAllele());
 				m.alleles = gene.getValidAlleles()
-					.map(jaxb.Marshaller(gene.getAllele()))
+					.map(marshaller)
 					.asList();
 
 				return m;
@@ -311,13 +314,14 @@ public final class EnumGene<A>
 			@Override
 			public EnumGene unmarshal(final Model m) {
 				return new EnumGene<>(
-					m.currentAlleleIndex,
+					m.allele.index,
 					Array.of(m.alleles)
-						.map(jaxb.Unmarshaller(m.alleles.get(0)))
+						.map(jaxb.Unmarshaller(m.allele.value))
 						.toISeq()
 				);
 			}
 
 		}
 	}
+
 }
