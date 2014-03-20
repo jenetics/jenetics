@@ -35,7 +35,9 @@ import org.jenetics.SinglePointCrossover;
 import org.jenetics.TournamentSelector;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
+import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Scoped;
 
 final class Item {
 	public final double size;
@@ -62,6 +64,8 @@ final class KnapsackFunction
 	public Double apply(final Genotype<BitGene> genotype) {
 		final Chromosome<BitGene> ch = genotype.getChromosome();
 
+
+
 		double size = 0;
 		double value = 0;
 		for (int i = 0, n = ch.length(); i < n; ++i) {
@@ -71,6 +75,8 @@ final class KnapsackFunction
 			}
 		}
 
+		//System.out.println(ch + " --> " + (size <= this.size ? value : 0));
+
 		return size <= this.size ? value : 0;
 	}
 }
@@ -78,13 +84,16 @@ final class KnapsackFunction
 public class Knapsack {
 
 	private static KnapsackFunction FF(final int n, final double size) {
-		final Random random = RandomRegistry.getRandom();
 		final Item[] items = new Item[n];
-		for (int i = 0; i < items.length; ++i) {
-			items[i] = new Item(
-				nextDouble(random, 1, 10),
-				nextDouble(random, 1, 15)
-			);
+		try (Scoped<? extends Random> random =
+				 RandomRegistry.scope(new LCG64ShiftRandom(123)))
+		{
+			for (int i = 0; i < items.length; ++i) {
+				items[i] = new Item(
+					nextDouble(random.get(), 1, 25),
+					nextDouble(random.get(), 1, 15)
+				);
+			}
 		}
 
 		return new KnapsackFunction(items, size);
