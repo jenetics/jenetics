@@ -38,7 +38,7 @@ import org.jenetics.util.StaticObject;
  * JAXB helper methods.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-18 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-20 $</em>
  * @since 2.0
  */
 public class jaxb extends StaticObject {
@@ -69,8 +69,8 @@ public class jaxb extends StaticObject {
 	private static final Map<Class<?>, XmlAdapter<?, ?>> ADAPTERS = new HashMap<>();
 
 	static {
-		ADAPTERS.put(Character.class, CharacterModel.Adapter);
-		ADAPTERS.put(CharacterModel.class, CharacterModel.Adapter);
+		ADAPTERS.put(Character.class, CharacterModel.ADAPTER);
+		ADAPTERS.put(CharacterModel.class, CharacterModel.ADAPTER);
 	}
 
 	/**

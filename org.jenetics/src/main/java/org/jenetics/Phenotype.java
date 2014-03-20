@@ -53,7 +53,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-18 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-20 $</em>
  */
 @XmlJavaTypeAdapter(Phenotype.Model.Adapter.class)
 public final class Phenotype<
@@ -444,16 +444,16 @@ public final class Phenotype<
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	final static class Model {
 
-		@XmlAttribute
+		@XmlAttribute(name = "generation", required = true)
 		public int generation;
 
-		@XmlElement(name = "genotype")
+		@XmlElement(name = "genotype", required = true, nillable = false)
 		public Genotype.Model genotype;
 
-		@XmlElement(name = "fitness")
+		@XmlElement(name = "fitness", required = true, nillable = false)
 		public Object fitness;
 
-		@XmlElement(name = "raw-fitness")
+		@XmlElement(name = "raw-fitness", required = true, nillable = false)
 		public Object rawFitness;
 
 		public final static class Adapter
@@ -463,7 +463,7 @@ public final class Phenotype<
 			public Model marshal(final Phenotype pt) throws Exception {
 				final Model m = new Model();
 				m.generation = pt.getGeneration();
-				m.genotype = Genotype.Model.Adapter.marshal(pt.getGenotype());
+				m.genotype = Genotype.Model.ADAPTER.marshal(pt.getGenotype());
 				m.fitness = jaxb.marshal(pt.getFitness());
 				m.rawFitness = jaxb.marshal(pt.getRawFitness());
 				return m;
@@ -472,7 +472,7 @@ public final class Phenotype<
 			@Override
 			public Phenotype unmarshal(final Model m) throws Exception {
 				final Phenotype pt = new Phenotype(
-					Genotype.Model.Adapter.unmarshal(m.genotype),
+					Genotype.Model.ADAPTER.unmarshal(m.genotype),
 					functions.Identity(),
 					functions.Identity(),
 					m.generation

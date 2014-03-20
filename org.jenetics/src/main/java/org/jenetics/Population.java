@@ -59,7 +59,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-18 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-20 $</em>
  */
 @XmlJavaTypeAdapter(Population.Model.Adapter.class)
 public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
@@ -390,10 +390,10 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	static final class Model {
 
-		@XmlAttribute
+		@XmlAttribute(name = "size", required = true)
 		public int size;
 
-		@XmlElement(name = "phenotype")
+		@XmlElement(name = "phenotype", required = true, nillable = false)
 		public List phenotypes = new ArrayList<>();
 
 		public static final class Adapter
@@ -423,6 +423,5 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 			}
 		}
 
-		public static final Adapter Adapter = new Adapter();
 	}
 }

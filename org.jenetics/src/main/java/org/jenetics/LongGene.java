@@ -41,7 +41,7 @@ import org.jenetics.util.RandomRegistry;
  * NumericGene implementation which holds a 64 bit integer number.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-18 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-20 $</em>
  * @since 1.6
  */
 @XmlJavaTypeAdapter(LongGene.Model.Adapter.class)
@@ -136,10 +136,10 @@ public final class LongGene
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
 
-		@XmlAttribute
+		@XmlAttribute(name = "min", required = true)
 		public long min;
 
-		@XmlAttribute
+		@XmlAttribute(name = "max", required = true)
 		public long max;
 
 		@XmlValue

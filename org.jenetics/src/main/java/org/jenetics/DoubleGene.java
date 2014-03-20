@@ -41,7 +41,7 @@ import org.jenetics.util.RandomRegistry;
  * Implementation of the NumericGene which holds a 64 bit floating point number.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-18 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-20 $</em>
  * @since 1.6
  */
 @XmlJavaTypeAdapter(DoubleGene.Model.Adapter.class)
@@ -140,10 +140,10 @@ public final class DoubleGene
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
 
-		@XmlAttribute
+		@XmlAttribute(name = "min", required = true)
 		public double min;
 
-		@XmlAttribute
+		@XmlAttribute(name = "max", required = true)
 		public double max;
 
 		@XmlValue

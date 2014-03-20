@@ -49,7 +49,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-18 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-20 $</em>
  */
 @XmlJavaTypeAdapter(CharacterChromosome.Model.Adapter.class)
 public class CharacterChromosome
@@ -278,13 +278,13 @@ public class CharacterChromosome
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
 
-		@XmlAttribute
+		@XmlAttribute(name = "length", required = true)
 		public int length;
 
-		@XmlElement(name = "valid-alleles")
+		@XmlElement(name = "valid-alleles", required = true, nillable = false)
 		public String validCharacters;
 
-		@XmlElement(name = "alleles")
+		@XmlElement(name = "alleles", required = true, nillable = false)
 		public String genes;
 
 		public final static class Adapter

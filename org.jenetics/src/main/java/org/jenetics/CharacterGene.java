@@ -299,7 +299,7 @@ public final class CharacterGene
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
 
-		@XmlAttribute(name = "valid-alleles")
+		@XmlAttribute(name = "valid-alleles", required = true)
 		public String validCharacters;
 
 		@XmlValue
