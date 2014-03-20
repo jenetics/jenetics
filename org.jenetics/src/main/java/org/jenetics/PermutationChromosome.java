@@ -56,7 +56,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-18 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-20 $</em>
  */
 @XmlJavaTypeAdapter(value = PermutationChromosome.Model.Adapter.class)
 public final class PermutationChromosome<T>
@@ -235,7 +235,7 @@ public final class PermutationChromosome<T>
 		@XmlAttribute
 		public int length;
 
-		@XmlElementWrapper(name = "alleles")
+		@XmlElementWrapper(name = "valid-alleles")
 		@XmlElement(name = "allele")
 		public List<Object> alleles;
 

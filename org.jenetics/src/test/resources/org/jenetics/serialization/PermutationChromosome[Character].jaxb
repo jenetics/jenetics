@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <permutation-chromosome length="15">
-    <alleles>
+    <valid-alleles>
         <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">䍵</allele>
         <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">᱓</allele>
         <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">႟</allele>
@@ -16,6 +16,6 @@
         <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">陵</allele>
         <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">註</allele>
         <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">䥅</allele>
-    </alleles>
+    </valid-alleles>
     <order>13 12 4 6 8 14 7 2 11 5 3 0 9 10 1</order>
 </permutation-chromosome>
