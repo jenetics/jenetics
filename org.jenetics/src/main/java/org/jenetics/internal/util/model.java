@@ -21,6 +21,8 @@ package org.jenetics.internal.util;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
@@ -63,6 +65,17 @@ public final class model extends StaticObject {
 		}
 
 		public static final Adapter Adapter = new Adapter();
+
+	}
+
+	@XmlAccessorType(XmlAccessType.FIELD)
+	public static final class IndexedObject {
+
+		@XmlAttribute(required = true)
+		public int index;
+
+		@XmlElement(name = "value", required = true, nillable = false)
+		public Object value;
 
 	}
 

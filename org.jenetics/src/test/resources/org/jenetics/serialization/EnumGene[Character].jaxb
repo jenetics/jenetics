@@ -7,5 +7,7 @@
         <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">ඖ</allele>
         <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">铼</allele>
     </valid-alleles>
-    <allele>0</allele>
+    <allele index="0">
+        <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">䍵</value>
+    </allele>
 </enum-gene>
