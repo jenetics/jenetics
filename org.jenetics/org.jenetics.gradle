@@ -47,6 +47,8 @@ packaging {
 	name = 'Jenetics'
 	author = 'Franz Wilhelmstötter'
 	url = 'http://jenetics.sourceforge.net'
+
+    jarjar = false
 }
 
 task sourceJar(type: Jar) {
