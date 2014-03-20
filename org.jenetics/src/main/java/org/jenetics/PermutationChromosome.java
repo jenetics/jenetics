@@ -235,7 +235,7 @@ public final class PermutationChromosome<T>
 		@XmlAttribute
 		public int length;
 
-		@XmlElementWrapper(name = "alleles")
+		@XmlElementWrapper(name = "valid-alleles")
 		@XmlElement(name = "allele")
 		public List<Object> alleles;
 
