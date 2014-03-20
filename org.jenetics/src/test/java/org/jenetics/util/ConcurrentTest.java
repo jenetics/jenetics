@@ -20,21 +20,21 @@ public class ConcurrentTest {
 				e.get().execute(new Sleep(String.format("sleep(%d)", i), sleep));
 			}
 		}
-		
+
 		final long end = System.currentTimeMillis();
 		final long duration = end - start;
 		final long expected = sleep*loops;
 		Assert.assertTrue(
-			duration >= expected, 
+			duration >= expected,
 			String.format("%d < %d", duration, expected)
 		);
 		Assert.assertTrue(
-			duration < 1.2*expected, 
+			duration < 1.5*expected,
 			String.format("%d >= %d", duration, expected)
-		);		
+		);
 		System.out.println("Duration: " + (double)(end - start)/1000.0);
 	}
-	
+
 	@Test
 	public void scope() {
 		final long start = System.currentTimeMillis();
@@ -43,24 +43,24 @@ public class ConcurrentTest {
 		final int loops = 20;
 		final int parallelism = 5;
 		final ExecutorService executor = Executors.newFixedThreadPool(parallelism);
-		
+
 		try {
 			try (Scoped<Executor> e = Concurrent.scope(executor)) {
 				for (int i = 0; i < loops; ++i) {
 					e.get().execute(new Sleep(String.format("sleep(%d)", i), sleep));
 				}
 			}
-			
+
 			final long end = System.currentTimeMillis();
 			final long duration = end - start;
 			final long expected = sleep*loops/parallelism;
-			
+
 			Assert.assertTrue(
-				duration >= expected, 
+				duration >= expected,
 				String.format("%d < %d", duration, expected)
 			);
 			Assert.assertTrue(
-				duration < 1.2*expected, 
+				duration < 1.5*expected,
 				String.format("%d >= %d", duration, expected)
 			);
 			System.out.println("Duration: " + (double)(end - start)/1000.0);
@@ -68,16 +68,16 @@ public class ConcurrentTest {
 			executor.shutdownNow();
 		}
 	}
-	
+
 	private static final class Sleep implements Runnable {
 		private final String _name;
 		private final long _duration;
-		
+
 		Sleep(final String name, final long duration) {
 			_name = name;
 			_duration = duration;
 		}
-		
+
 		@Override
 		public void run() {
 			System.out.println("Starting " + _name);
@@ -89,7 +89,7 @@ public class ConcurrentTest {
 			}
 			System.out.println("    ...finished " + _name);
 		}
-		
+
 	}
-	
+
 }
