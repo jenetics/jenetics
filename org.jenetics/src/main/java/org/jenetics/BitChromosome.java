@@ -52,7 +52,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-20 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-21 $</em>
  */
 @XmlJavaTypeAdapter(BitChromosome.Model.Adapter.class)
 public class BitChromosome extends Number
@@ -481,6 +481,10 @@ public class BitChromosome extends Number
 		return equals;
 	}
 
+	@Override
+	public String toString() {
+		return bit.toByteString(_genes);
+	}
 
 	/* *************************************************************************
 	 *  Java object serialization
