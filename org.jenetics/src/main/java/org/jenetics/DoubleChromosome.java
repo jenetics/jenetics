@@ -216,22 +216,24 @@ public class DoubleChromosome
 				);
 			}
 		}
-	}
 
-	private static final Function<DoubleGene, Double> Allele =
-		new Function<DoubleGene, Double>() {
-			@Override
-			public Double apply(final DoubleGene value) {
-				return value.getAllele();
-			}
-		};
+		private static final Function<DoubleGene, Double> Allele =
+			new Function<DoubleGene, Double>() {
+				@Override
+				public Double apply(final DoubleGene value) {
+					return value.getAllele();
+				}
+			};
 
-	private static Function<Double, DoubleGene> Gene(final Double min, final Double max) {
-		return new Function<Double, DoubleGene>() {
-			@Override
-			public DoubleGene apply(final Double value) {
-				return new DoubleGene(value, min, max);
-			}
-		};
+		private static Function<Double, DoubleGene>
+		Gene(final Double min, final Double max) {
+			return new Function<Double, DoubleGene>() {
+				@Override
+				public DoubleGene apply(final Double value) {
+					return new DoubleGene(value, min, max);
+				}
+			};
+		}
+
 	}
 }

@@ -219,22 +219,24 @@ public class LongChromosome
 				);
 			}
 		}
-	}
 
-	private static final Function<LongGene, Long> Allele =
-		new Function<LongGene, Long>() {
-			@Override
-			public Long apply(LongGene value) {
-				return value.getAllele();
-			}
-		};
+		private static final Function<LongGene, Long> Allele =
+			new Function<LongGene, Long>() {
+				@Override
+				public Long apply(LongGene value) {
+					return value.getAllele();
+				}
+			};
 
-	private static Function<Long, LongGene> Gene(final Long min, final Long max) {
-		return new Function<Long, LongGene>() {
-			@Override
-			public LongGene apply(final Long value) {
-				return new LongGene(value, min, max);
-			}
-		};
+		private static Function<Long, LongGene>
+		Gene(final Long min, final Long max) {
+			return new Function<Long, LongGene>() {
+				@Override
+				public LongGene apply(final Long value) {
+					return new LongGene(value, min, max);
+				}
+			};
+		}
+
 	}
 }
