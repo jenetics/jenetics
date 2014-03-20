@@ -20,7 +20,7 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.5 &mdash; <em>$Date: 2014-03-12 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-03-21 $</em>
  */
 
 apply plugin: 'packaging'
@@ -47,6 +47,8 @@ packaging {
 	name = 'Jenetics'
 	author = 'Franz Wilhelmstötter'
 	url = 'http://jenetics.sourceforge.net'
+
+    jarjar = false
 }
 
 task sourceJar(type: Jar) {
