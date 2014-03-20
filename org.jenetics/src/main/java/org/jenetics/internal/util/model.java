@@ -64,7 +64,7 @@ public final class model extends StaticObject {
 			}
 		}
 
-		public static final Adapter Adapter = new Adapter();
+		public static final Adapter ADAPTER = new Adapter();
 
 	}
 

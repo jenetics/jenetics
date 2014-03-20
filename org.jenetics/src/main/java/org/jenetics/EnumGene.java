@@ -284,15 +284,16 @@ public final class EnumGene<A>
 	@XmlAccessorType(XmlAccessType.FIELD)
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	final static class Model {
-		@XmlAttribute(required = true)
-		int length;
 
-		@XmlElementWrapper(name = "valid-alleles")
+		@XmlAttribute(name = "length", required = true)
+		public int length;
+
+		@XmlElementWrapper(name = "valid-alleles", required = true, nillable = false)
 		@XmlElement(name = "allele", required = true, nillable = false)
-		List alleles;
+		public List alleles;
 
-		@XmlElement(required = true, nillable = false)
-		IndexedObject allele = new IndexedObject();
+		@XmlElement(name = "allele", required = true, nillable = false)
+		public IndexedObject allele = new IndexedObject();
 
 		public static final class Adapter
 			extends XmlAdapter<Model, EnumGene>

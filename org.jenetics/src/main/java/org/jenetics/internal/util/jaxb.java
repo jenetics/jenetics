@@ -69,8 +69,8 @@ public class jaxb extends StaticObject {
 	private static final Map<Class<?>, XmlAdapter<?, ?>> ADAPTERS = new HashMap<>();
 
 	static {
-		ADAPTERS.put(Character.class, CharacterModel.Adapter);
-		ADAPTERS.put(CharacterModel.class, CharacterModel.Adapter);
+		ADAPTERS.put(Character.class, CharacterModel.ADAPTER);
+		ADAPTERS.put(CharacterModel.class, CharacterModel.ADAPTER);
 	}
 
 	/**

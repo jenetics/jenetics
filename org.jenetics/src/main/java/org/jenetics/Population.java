@@ -390,10 +390,10 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	static final class Model {
 
-		@XmlAttribute
+		@XmlAttribute(name = "size", required = true)
 		public int size;
 
-		@XmlElement(name = "phenotype")
+		@XmlElement(name = "phenotype", required = true, nillable = false)
 		public List phenotypes = new ArrayList<>();
 
 		public static final class Adapter
@@ -423,6 +423,5 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 			}
 		}
 
-		public static final Adapter Adapter = new Adapter();
 	}
 }

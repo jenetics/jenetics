@@ -136,10 +136,10 @@ public final class LongGene
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
 
-		@XmlAttribute
+		@XmlAttribute(name = "min", required = true)
 		public long min;
 
-		@XmlAttribute
+		@XmlAttribute(name = "max", required = true)
 		public long max;
 
 		@XmlValue

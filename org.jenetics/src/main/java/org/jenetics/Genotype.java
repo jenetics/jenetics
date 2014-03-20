@@ -328,13 +328,13 @@ public final class Genotype<G extends Gene<?, G>>
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	static final class Model {
 
-		@XmlAttribute
+		@XmlAttribute(name = "length", required = true)
 		public int length;
 
-		@XmlAttribute
+		@XmlAttribute(name = "ngenes", required = true)
 		public int ngenes;
 
-		@XmlElement(name = "chromosome")
+		@XmlElement(name = "chromosome", required = true, nillable = false)
 		public List chromosomes;
 
 		public static final class Adapter
@@ -362,6 +362,6 @@ public final class Genotype<G extends Gene<?, G>>
 			}
 		}
 
-		public static final Adapter Adapter = new Adapter();
+		public static final Adapter ADAPTER = new Adapter();
 	}
 }

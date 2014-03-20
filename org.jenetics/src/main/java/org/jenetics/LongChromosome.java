@@ -185,16 +185,16 @@ public class LongChromosome
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
 
-		@XmlAttribute
+		@XmlAttribute(name = "length", required = true)
 		public int length;
 
-		@XmlAttribute
+		@XmlAttribute(name = "min", required = true)
 		public long min;
 
-		@XmlAttribute
+		@XmlAttribute(name = "max", required = true)
 		public long max;
 
-		@XmlElement(name = "allele")
+		@XmlElement(name = "allele", required = true, nillable = false)
 		public List<Long> values;
 
 		public final static class Adapter

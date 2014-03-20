@@ -140,10 +140,10 @@ public final class DoubleGene
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
 
-		@XmlAttribute
+		@XmlAttribute(name = "min", required = true)
 		public double min;
 
-		@XmlAttribute
+		@XmlAttribute(name = "max", required = true)
 		public double max;
 
 		@XmlValue

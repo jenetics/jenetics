@@ -182,16 +182,16 @@ public class DoubleChromosome
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
 
-		@XmlAttribute
+		@XmlAttribute(name = "length", required = true)
 		public int length;
 
-		@XmlAttribute
+		@XmlAttribute(name = "min", required = true)
 		public double min;
 
-		@XmlAttribute
+		@XmlAttribute(name = "max", required = true)
 		public double max;
 
-		@XmlElement(name = "allele")
+		@XmlElement(name = "allele", required = true, nillable = false)
 		public List<Double> values;
 
 		public final static class Adapter
