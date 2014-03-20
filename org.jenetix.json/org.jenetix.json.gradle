@@ -24,7 +24,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__version__@
- * @version @__version__@ &mdash; <em>$Date: 2014-03-19 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-03-20 $</em>
  */
 
 apply plugin: 'packaging'
@@ -36,6 +36,7 @@ compileTestJava.dependsOn tasks.getByPath(':org.jenetics:compileTestJava')
 dependencies {
 	compile project(':org.jenetics')
 	compile Include.Jettison
+    compile Include.Eclipse.Persistence.Moxy
 
 	testCompile Include.TestNG
     testCompile project(':org.jenetics').sourceSets.test.output
