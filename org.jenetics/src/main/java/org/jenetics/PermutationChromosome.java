@@ -253,12 +253,9 @@ public final class PermutationChromosome<T>
 				final Model model = new Model();
 				model.length = pc.length();
 				model.alleles = pc.getValidAlleles()
-					.map(jaxb.Marshaller(pc.getValidAlleles().get(0))).asList();
-				model.order = pc.toSeq().map(new Function<Object, Integer>() {
-					@Override public Integer apply(final Object value) {
-						return ((EnumGene<?>)value).getAlleleIndex();
-					}
-				}).asList();
+					.map(jaxb.Marshaller(pc.getValidAlleles().get(0)))
+					.asList();
+				model.order = pc.toSeq().map(AlleleIndex).asList();
 
 				return model;
 			}
@@ -267,21 +264,32 @@ public final class PermutationChromosome<T>
 			public PermutationChromosome unmarshal(final Model model)
 				throws Exception
 			{
-				final ISeq alleles = new Array(model.length)
-					.setAll(model.alleles)
+				final ISeq alleles = Array.of(model.alleles)
 					.map(jaxb.Unmarshaller(model.alleles.get(0)))
 					.toISeq();
 
-				final Array<Object> genes = new Array<>(alleles.length());
-				for (int i = 0; i < alleles.length(); ++i) {
-					genes.set(i, new EnumGene(model.order.get(i), alleles));
-				}
-
-				return new PermutationChromosome(genes.toISeq());
+				return new PermutationChromosome(
+					Array.of(model.order).map(Gene(alleles)).toISeq()
+				);
 			}
 		}
 
-		public static final Adapter Adapter = new Adapter();
-	}
+		private static final Function<EnumGene<?>, Integer> AlleleIndex =
+			new Function<EnumGene<?>, Integer>() {
+				@Override
+				public Integer apply(final EnumGene<?> value) {
+					return value.getAlleleIndex();
+				}
+			};
 
+		private static Function<Integer, EnumGene<Object>>
+		Gene(final ISeq<Object> alleles) {
+			return new Function<Integer, EnumGene<Object>>() {
+				@Override
+				public EnumGene<Object> apply(final Integer value) {
+					return new EnumGene<>(value, alleles);
+				}
+			};
+		}
+	}
 }

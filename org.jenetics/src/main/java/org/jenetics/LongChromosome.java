@@ -44,7 +44,7 @@ import org.jenetics.util.ISeq;
  * Numeric chromosome implementation which holds 64 bit integer numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-18 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-20 $</em>
  * @since 1.6
  */
 @XmlJavaTypeAdapter(LongChromosome.Model.Adapter.class)
@@ -219,22 +219,24 @@ public class LongChromosome
 				);
 			}
 		}
-	}
 
-	private static final Function<LongGene, Long> Allele =
-		new Function<LongGene, Long>() {
-			@Override
-			public Long apply(LongGene value) {
-				return value.getAllele();
-			}
-		};
+		private static final Function<LongGene, Long> Allele =
+			new Function<LongGene, Long>() {
+				@Override
+				public Long apply(LongGene value) {
+					return value.getAllele();
+				}
+			};
 
-	private static Function<Long, LongGene> Gene(final Long min, final Long max) {
-		return new Function<Long, LongGene>() {
-			@Override
-			public LongGene apply(final Long value) {
-				return new LongGene(value, min, max);
-			}
-		};
+		private static Function<Long, LongGene>
+		Gene(final Long min, final Long max) {
+			return new Function<Long, LongGene>() {
+				@Override
+				public LongGene apply(final Long value) {
+					return new LongGene(value, min, max);
+				}
+			};
+		}
+
 	}
 }

@@ -44,7 +44,7 @@ import org.jenetics.util.ISeq;
  * Numeric chromosome implementation which holds 64 bit floating point numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-18 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-20 $</em>
  * @since 1.6
  */
 @XmlJavaTypeAdapter(DoubleChromosome.Model.Adapter.class)
@@ -216,22 +216,24 @@ public class DoubleChromosome
 				);
 			}
 		}
-	}
 
-	private static final Function<DoubleGene, Double> Allele =
-		new Function<DoubleGene, Double>() {
-			@Override
-			public Double apply(final DoubleGene value) {
-				return value.getAllele();
-			}
-		};
+		private static final Function<DoubleGene, Double> Allele =
+			new Function<DoubleGene, Double>() {
+				@Override
+				public Double apply(final DoubleGene value) {
+					return value.getAllele();
+				}
+			};
 
-	private static Function<Double, DoubleGene> Gene(final Double min, final Double max) {
-		return new Function<Double, DoubleGene>() {
-			@Override
-			public DoubleGene apply(final Double value) {
-				return new DoubleGene(value, min, max);
-			}
-		};
+		private static Function<Double, DoubleGene>
+		Gene(final Double min, final Double max) {
+			return new Function<Double, DoubleGene>() {
+				@Override
+				public DoubleGene apply(final Double value) {
+					return new DoubleGene(value, min, max);
+				}
+			};
+		}
+
 	}
 }
