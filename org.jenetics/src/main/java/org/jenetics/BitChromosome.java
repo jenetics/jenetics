@@ -521,10 +521,10 @@ public class BitChromosome extends Number
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
 
-		@XmlAttribute
+		@XmlAttribute(name = "length")
 		public int length;
 
-		@XmlAttribute
+		@XmlAttribute(name = "ones-probability")
 		public double probability;
 
 		@XmlValue
