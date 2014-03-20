@@ -481,6 +481,10 @@ public class BitChromosome extends Number
 		return equals;
 	}
 
+	@Override
+	public String toString() {
+		return bit.toByteString(_genes);
+	}
 
 	/* *************************************************************************
 	 *  Java object serialization
