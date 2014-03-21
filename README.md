@@ -11,7 +11,7 @@ Jenetics is an Genetic Algorithm, respectively an Evolutionary Algorithm, librar
 *  **Gradle 1.10**: [Gradle](http://www.gradle.org/) is used for building the library. (Gradle is download automatically, if you are using the Gradle Wrapper script `gradlew`, located in the base directory, for building the library.)
 
 ### Test compile/execution
-*  **TestNG 8.8**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests. 
+*  **TestNG 8.8**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
 *  **Apache Commons Math 3.2**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical accumulators.
 
 ### Runtime
@@ -167,7 +167,9 @@ In the [knapsack problem](http://en.wikipedia.org/wiki/Knapsack_problem) a set o
 	import org.jenetics.TournamentSelector;
 	import org.jenetics.util.Factory;
 	import org.jenetics.util.Function;
+	import org.jenetics.util.LCG64ShiftRandom;
 	import org.jenetics.util.RandomRegistry;
+	import org.jenetics.util.Scoped;
 
 	final class Item {
 		public final double size;
@@ -193,7 +195,6 @@ In the [knapsack problem](http://en.wikipedia.org/wiki/Knapsack_problem) a set o
 		@Override
 		public Double apply(final Genotype<BitGene> genotype) {
 			final Chromosome<BitGene> ch = genotype.getChromosome();
-
 			double size = 0;
 			double value = 0;
 			for (int i = 0, n = ch.length(); i < n; ++i) {
@@ -210,22 +211,28 @@ In the [knapsack problem](http://en.wikipedia.org/wiki/Knapsack_problem) a set o
 	public class Knapsack {
 
 		private static KnapsackFunction FF(final int n, final double size) {
-			final Random random = RandomRegistry.getRandom();
 			final Item[] items = new Item[n];
-			for (int i = 0; i < items.length; ++i) {
-				items[i] = new Item(
-					nextDouble(random, 1, 10),
-					nextDouble(random, 1, 15)
-				);
+			try (Scoped<? extends Random> random =
+				RandomRegistry.scope(new LCG64ShiftRandom(123)))
+			{
+				for (int i = 0; i < items.length; ++i) {
+					items[i] = new Item(
+						nextDouble(random.get(), 0, 100),
+						nextDouble(random.get(), 0, 100)
+					);
+				}
 			}
 
 			return new KnapsackFunction(items, size);
 		}
 
 		public static void main(String[] args) throws Exception {
-			final KnapsackFunction ff = FF(15, 100);
+			final int nitems = 15;
+			final double kssize = nitems*100.0/3.0;
+
+			final KnapsackFunction ff = FF(nitems, kssize);
 			final Factory<Genotype<BitGene>> genotype = Genotype.of(
-				BitChromosome.of(15, 0.5)
+				BitChromosome.of(nitems, 0.5)
 			);
 
 			final GeneticAlgorithm<BitGene, Double> ga = new GeneticAlgorithm<>(
@@ -242,8 +249,8 @@ In the [knapsack problem](http://en.wikipedia.org/wiki/Knapsack_problem) a set o
 				new RouletteWheelSelector<BitGene, Double>()
 			);
 			ga.setAlterers(
-				new Mutator<BitGene>(0.115),
-				new SinglePointCrossover<BitGene>(0.16)
+				 new Mutator<BitGene>(0.115),
+				 new SinglePointCrossover<BitGene>(0.16)
 			);
 
 			ga.setup();
@@ -259,20 +266,20 @@ The console out put for the Knapsack GA will look like the listing beneath.
 	+---------------------------------------------------------+
 	|  Population Statistics                                  |
 	+---------------------------------------------------------+
-	|                     Age mean: 2.15800000000             |
-	|                 Age variance: 4.71446492986             |
+	|                     Age mean: 2.38000000000             |
+	|                 Age variance: 6.22004008016             |
 	|                      Samples: 500                       |
-	|                 Best fitness: 99.95345446956883         |
-	|                Worst fitness: 25.50205183297677         |
+	|                 Best fitness: 643.239770840163          |
+	|                Worst fitness: 0.0                       |
 	+---------------------------------------------------------+
 	+---------------------------------------------------------+
 	|  Fitness Statistics                                     |
 	+---------------------------------------------------------+
-	|                 Fitness mean: 88.61369640889            |
-	|             Fitness variance: 129.23019686091           |
-	|        Fitness error of mean: 3.96292497816             |
+	|                 Fitness mean: 525.20849288163           |
+	|             Fitness variance: 20182.61311489490         |
+	|        Fitness error of mean: 23.48803784887            |
 	+---------------------------------------------------------+
-	[01111111|11111111] --> 99.95345446956883
+	[01101111|01011111] --> 643.239770840163
 
 
 ## Traveling Salesman Problem (TSP)
