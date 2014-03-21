@@ -63,9 +63,6 @@ final class KnapsackFunction
 	@Override
 	public Double apply(final Genotype<BitGene> genotype) {
 		final Chromosome<BitGene> ch = genotype.getChromosome();
-
-
-
 		double size = 0;
 		double value = 0;
 		for (int i = 0, n = ch.length(); i < n; ++i) {
@@ -74,8 +71,6 @@ final class KnapsackFunction
 				value += items[i].value;
 			}
 		}
-
-		//System.out.println(ch + " --> " + (size <= this.size ? value : 0));
 
 		return size <= this.size ? value : 0;
 	}
@@ -86,12 +81,12 @@ public class Knapsack {
 	private static KnapsackFunction FF(final int n, final double size) {
 		final Item[] items = new Item[n];
 		try (Scoped<? extends Random> random =
-				 RandomRegistry.scope(new LCG64ShiftRandom(123)))
+			RandomRegistry.scope(new LCG64ShiftRandom(123)))
 		{
 			for (int i = 0; i < items.length; ++i) {
 				items[i] = new Item(
-					nextDouble(random.get(), 1, 25),
-					nextDouble(random.get(), 1, 15)
+					nextDouble(random.get(), 0, 100),
+					nextDouble(random.get(), 0, 100)
 				);
 			}
 		}
@@ -100,9 +95,12 @@ public class Knapsack {
 	}
 
 	public static void main(String[] args) throws Exception {
-		final KnapsackFunction ff = FF(15, 100);
+		final int nitems = 15;
+		final double kssize = nitems*100.0/3.0;
+
+		final KnapsackFunction ff = FF(nitems, kssize);
 		final Factory<Genotype<BitGene>> genotype = Genotype.of(
-			BitChromosome.of(15, 0.5)
+			BitChromosome.of(nitems, 0.5)
 		);
 
 		final GeneticAlgorithm<BitGene, Double> ga = new GeneticAlgorithm<>(
