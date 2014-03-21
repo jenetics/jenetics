@@ -90,7 +90,7 @@ public class RandomRegistryTest {
 
 	@Test(invocationCount = 10)
 	public void concurrentLocalContext() {
-		try (Scoped<Executor> c = Concurrent.scope()) {
+		try (Scoped<Concurrency> c = Concurrent.scope()) {
 			for (int i = 0; i < 25; ++i) {
 				c.get().execute(new ContextRunnable());
 			}

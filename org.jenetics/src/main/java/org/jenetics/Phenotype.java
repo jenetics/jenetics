@@ -222,11 +222,11 @@ public final class Phenotype<
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).
-				and(_generation).
-				and(getFitness()).
-				and(getRawFitness()).
-				and(_genotype).value();
+		return HashBuilder.of(getClass())
+				.and(_generation)
+				.and(getFitness())
+				.and(getRawFitness())
+				.and(_genotype).value();
 	}
 
 	@Override
