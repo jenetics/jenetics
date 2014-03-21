@@ -21,7 +21,6 @@ package org.jenetics;
 
 import java.io.Serializable;
 import java.util.Random;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ForkJoinPool;
 
 import org.testng.Assert;

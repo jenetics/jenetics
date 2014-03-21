@@ -20,7 +20,6 @@
 package org.jenetics.util;
 
 import java.util.Random;
-import java.util.concurrent.Executor;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
