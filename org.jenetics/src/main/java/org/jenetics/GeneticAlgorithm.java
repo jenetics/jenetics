@@ -27,12 +27,9 @@ import static org.jenetics.internal.util.object.checkProbability;
 import static org.jenetics.util.arrays.forEach;
 
 import java.util.Collection;
-import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-
-import org.jenetics.internal.util.RunnablesAction;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Concurrency;

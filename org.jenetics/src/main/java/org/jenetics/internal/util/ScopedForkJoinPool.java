@@ -20,7 +20,6 @@
 package org.jenetics.internal.util;
 
 import java.util.List;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinTask;
 
@@ -35,7 +34,7 @@ import org.jenetics.util.Scoped;
 public final class ScopedForkJoinPool
 	implements
 		Concurrency,
-	Scoped<Concurrency>
+		Scoped<Concurrency>
 {
 
 	private final Stack<ForkJoinTask<?>> _tasks = new Stack<>();
