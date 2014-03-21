@@ -17,53 +17,18 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.util;
+package org.jenetics.util;
 
 import java.util.List;
 import java.util.concurrent.Executor;
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.ForkJoinTask;
-
-import org.jenetics.util.Concurrency;
-import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version 2.0 &mdash; <em>$Date: 2014-03-21 $</em>
  * @since 2.0
  */
-public final class ScopedForkJoinPool
-	implements
-		Concurrency,
-	Scoped<Concurrency>
-{
+public interface Concurrency extends Executor {
 
-	private final Stack<ForkJoinTask<?>> _tasks = new Stack<>();
-	private final ForkJoinPool _pool;
+	public void execute(final List<? extends Runnable> runnables);
 
-	public ScopedForkJoinPool(final ForkJoinPool pool) {
-		_pool = pool;
-	}
-
-	@Override
-	public void execute(final Runnable runnable) {
-		_tasks.push(_pool.submit(runnable));
-	}
-
-	@Override
-	public void execute(final List<? extends Runnable> runnables) {
-		_tasks.push(_pool.submit(new RunnablesAction(runnables)));
-	}
-
-	@Override
-	public Concurrency get() {
-		return this;
-	}
-
-	@Override
-	public void close() {
-		for (ForkJoinTask<?> t = _tasks.pop(); t != null; t = _tasks.pop()) {
-			t.join();
-		}
-	}
 }

@@ -53,7 +53,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-20 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-21 $</em>
  */
 @XmlJavaTypeAdapter(Phenotype.Model.Adapter.class)
 public final class Phenotype<
@@ -222,11 +222,11 @@ public final class Phenotype<
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).
-				and(_generation).
-				and(getFitness()).
-				and(getRawFitness()).
-				and(_genotype).value();
+		return HashBuilder.of(getClass())
+				.and(_generation)
+				.and(getFitness())
+				.and(getRawFitness())
+				.and(_genotype).value();
 	}
 
 	@Override

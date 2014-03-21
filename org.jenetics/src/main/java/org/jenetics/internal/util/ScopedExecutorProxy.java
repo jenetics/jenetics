@@ -21,28 +21,29 @@ package org.jenetics.internal.util;
 
 import java.util.concurrent.Executor;
 
+import org.jenetics.util.Concurrency;
 import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date$</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-21 $</em>
  * @since 2.0
  */
-public final class ScopedExecutorProxy implements Scoped<Executor> {
+public final class ScopedExecutorProxy implements Scoped<Concurrency> {
 
 	private final Scoped<Executor> _scope;
-	private final Scoped<Executor> _executor;
+	private final Scoped<Concurrency> _executor;
 
 	public ScopedExecutorProxy(
 		final Scoped<Executor> scope,
-		final Scoped<Executor> executor
+		final Scoped<Concurrency> executor
 	) {
 		_scope = scope;
 		_executor = executor;
 	}
 
 	@Override
-	public Executor get() {
+	public Concurrency get() {
 		return _executor.get();
 	}
 

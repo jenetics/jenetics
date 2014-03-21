@@ -28,6 +28,7 @@ import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.Test;
 
+import org.jenetics.util.Concurrency;
 import org.jenetics.util.Concurrent;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
@@ -36,7 +37,7 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-14 $</em>
+ * @version <em>$Date: 2014-03-21 $</em>
  */
 public class GeneticAlgorithmTest {
 
@@ -56,7 +57,7 @@ public class GeneticAlgorithmTest {
 	public void optimize() {
 		final Random random = new Random(123456);
 		try (Scoped<Random> rs = RandomRegistry.scope(random);
-			Scoped<Executor> cs = Concurrent.serial())
+			Scoped<Concurrency> cs = Concurrent.serial())
 		{
 			Assert.assertSame(random, RandomRegistry.getRandom());
 			Assert.assertSame(random, rs.get());
@@ -122,7 +123,7 @@ public class GeneticAlgorithmTest {
 	public void evolveForkJoinPool() {
 		final ForkJoinPool pool = new ForkJoinPool(10);
 
-		try (Scoped<Executor> concurrent = Concurrent.scope(pool)) {
+		try (Scoped<Concurrency> concurrent = Concurrent.scope(pool)) {
 			final Factory<Genotype<DoubleGene>> factory = Genotype.of(DoubleChromosome.of(-1, 1));
 			final Function<Genotype<DoubleGene>, Double> ff = new FF();
 

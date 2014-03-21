@@ -21,6 +21,7 @@ package org.jenetics.util;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
@@ -41,7 +42,7 @@ import org.jenetics.internal.util.ScopedForkJoinPool;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 2.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-16 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-21 $</em>
  */
 public final class Concurrent extends StaticObject {
 	private Concurrent() {}
@@ -50,10 +51,16 @@ public final class Concurrent extends StaticObject {
 		Math.max(Runtime.getRuntime().availableProcessors() - 1, 1)
 	);
 
-	private static final Executor SERIAL_EXECUTOR = new Executor() {
+	private static final Concurrency SERIAL_EXECUTOR = new Concurrency() {
 		@Override
 		public void execute(final Runnable command) {
 			command.run();
+		}
+		@Override
+		public void execute(final List<? extends Runnable> runnables) {
+			for (final Runnable runnable : runnables) {
+				runnable.run();
+			}
 		}
 	};
 
@@ -86,7 +93,7 @@ public final class Concurrent extends StaticObject {
 	 *
 	 * @return a new executor with the currently se {@code Executor}.
 	 */
-	public static Scoped<Executor> scope() {
+	public static Scoped<Concurrency> scope() {
 		return newScope(CONTEXT.get());
 	}
 
@@ -96,7 +103,7 @@ public final class Concurrent extends StaticObject {
 	 *
 	 * @return a new <i>serial</i> executor scope.
 	 */
-	public static Scoped<Executor> serial() {
+	public static Scoped<Concurrency> serial() {
 		return CONTEXT.scope(SERIAL_EXECUTOR);
 	}
 
@@ -109,9 +116,9 @@ public final class Concurrent extends StaticObject {
 	 * @throws java.lang.NullPointerException if the given {@code executor} is
 	 *         {@code null}.
 	 */
-	public static Scoped<Executor> scope(final Executor executor) {
+	public static Scoped<Concurrency> scope(final Executor executor) {
 		final Scoped<Executor> scope = CONTEXT.scope(requireNonNull(executor));
-		final Scoped<Executor> exec = newScope(executor);
+		final Scoped<Concurrency> exec = newScope(executor);
 
 		return new ScopedExecutorProxy(scope, exec);
 	}
@@ -123,7 +130,7 @@ public final class Concurrent extends StaticObject {
 		CONTEXT.reset();
 	}
 
-	private static Scoped<Executor> newScope(final Executor executor) {
+	private static Scoped<Concurrency> newScope(final Executor executor) {
 		if (executor instanceof ForkJoinPool) {
 			return new ScopedForkJoinPool((ForkJoinPool)executor);
 		} else if (executor instanceof ExecutorService) {
