@@ -17,41 +17,39 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.util;
+package org.jenetics.util;
 
-import java.util.List;
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.ForkJoinTask;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.FutureTask;
+
+import org.jenetics.internal.util.Stack;
 
 import org.jenetics.util.Concurrency;
-import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-03-21 $</em>
+ * @version 2.0 &mdash; <em>$Date$</em>
  * @since 2.0
  */
-public final class ScopedForkJoinPool
-	implements
-		Concurrency,
-		Scoped<Concurrency>
+public final class ScopedExecutor
+	extends ExecutorAdapter
+	implements Scoped<Concurrency>
 {
 
-	private final Stack<ForkJoinTask<?>> _tasks = new Stack<>();
-	private final ForkJoinPool _pool;
+	private final Stack<FutureTask<?>> _tasks = new Stack<>();
+	private final Executor _executor;
 
-	public ScopedForkJoinPool(final ForkJoinPool pool) {
-		_pool = pool;
+	public ScopedExecutor(final Executor executor) {
+		_executor = executor;
 	}
 
 	@Override
-	public void execute(final Runnable runnable) {
-		_tasks.push(_pool.submit(runnable));
-	}
-
-	@Override
-	public void execute(final List<? extends Runnable> runnables) {
-		_tasks.push(_pool.submit(new RunnablesAction(runnables)));
+	public void execute(final Runnable command) {
+		final FutureTask<?> task = new FutureTask<>(command, null);
+		_tasks.push(task);
+		_executor.execute(task);
 	}
 
 	@Override
@@ -61,8 +59,12 @@ public final class ScopedForkJoinPool
 
 	@Override
 	public void close() {
-		for (ForkJoinTask<?> t = _tasks.pop(); t != null; t = _tasks.pop()) {
-			t.join();
+		try {
+			for (FutureTask<?> t = _tasks.pop(); t != null; t = _tasks.pop()) {
+				t.get();
+			}
+		} catch (InterruptedException|ExecutionException e) {
+			throw new CancellationException(e.getMessage());
 		}
 	}
 }

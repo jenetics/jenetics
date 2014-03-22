@@ -17,43 +17,25 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.util;
+package org.jenetics.util;
 
 import static java.lang.Math.max;
 
 import java.util.List;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
-import java.util.concurrent.FutureTask;
 
 import org.jenetics.util.Concurrency;
-import org.jenetics.util.Scoped;
 import org.jenetics.util.arrays;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-03-21 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-22 $</em>
  * @since 2.0
  */
-public final class ScopedExecutor implements Concurrency, Scoped<Concurrency> {
+abstract class ExecutorAdapter implements Executor, Concurrency {
 
 	private static final int MIN_THRESHOLD = 2;
 	private static final int CORES = Runtime.getRuntime().availableProcessors();
-
-	private final Stack<FutureTask<?>> _tasks = new Stack<>();
-	private final Executor _executor;
-
-	public ScopedExecutor(final Executor executor) {
-		_executor = executor;
-	}
-
-	@Override
-	public void execute(final Runnable command) {
-		final FutureTask<?> task = new FutureTask<>(command, null);
-		_tasks.push(task);
-		_executor.execute(task);
-	}
 
 	@Override
 	public void execute(final List<? extends Runnable> runnables) {
@@ -87,19 +69,4 @@ public final class ScopedExecutor implements Concurrency, Scoped<Concurrency> {
 		return max(ntasks/threshold, 1);
 	}
 
-	@Override
-	public Concurrency get() {
-		return this;
-	}
-
-	@Override
-	public void close() {
-		try {
-			for (FutureTask<?> t = _tasks.pop(); t != null; t = _tasks.pop()) {
-				t.get();
-			}
-		} catch (InterruptedException|ExecutionException e) {
-			throw new CancellationException(e.getMessage());
-		}
-	}
 }

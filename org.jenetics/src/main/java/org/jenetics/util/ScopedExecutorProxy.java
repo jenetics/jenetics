@@ -19,16 +19,40 @@
  */
 package org.jenetics.util;
 
-import java.util.List;
 import java.util.concurrent.Executor;
+
+import org.jenetics.util.Concurrency;
+import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-03-21 $</em>
+ * @version 2.0 &mdash; <em>$Date$</em>
  * @since 2.0
  */
-public interface Concurrency extends Executor {
+public final class ScopedExecutorProxy implements Scoped<Concurrency> {
 
-	public void execute(final List<? extends Runnable> runnables);
+	private final Scoped<Executor> _scope;
+	private final Scoped<Concurrency> _executor;
 
+	public ScopedExecutorProxy(
+		final Scoped<Executor> scope,
+		final Scoped<Concurrency> executor
+	) {
+		_scope = scope;
+		_executor = executor;
+	}
+
+	@Override
+	public Concurrency get() {
+		return _executor.get();
+	}
+
+	@Override
+	public void close() {
+		try {
+			_executor.close();
+		} finally {
+			_scope.close();
+		}
+	}
 }

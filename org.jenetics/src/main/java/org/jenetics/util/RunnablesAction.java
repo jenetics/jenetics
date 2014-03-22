@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.util;
+package org.jenetics.util;
 
 import static java.lang.Math.max;
 import static java.util.Objects.requireNonNull;
@@ -30,7 +30,7 @@ import java.util.concurrent.RecursiveAction;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-03-22 $</em>
+ * @version 2.0 &mdash; <em>$Date$</em>
  * @since 2.0
  */
 public final class RunnablesAction extends RecursiveAction {

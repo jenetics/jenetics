@@ -17,42 +17,52 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.util;
+package org.jenetics.util;
 
-import java.util.concurrent.Executor;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+
+import org.jenetics.internal.util.Stack;
 
 import org.jenetics.util.Concurrency;
-import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-03-21 $</em>
+ * @version 2.0 &mdash; <em>$Date$</em>
  * @since 2.0
  */
-public final class ScopedExecutorProxy implements Scoped<Concurrency> {
+public final class ScopedExecutorService
+	extends ExecutorAdapter
+	implements Scoped<Concurrency>
+{
 
-	private final Scoped<Executor> _scope;
-	private final Scoped<Concurrency> _executor;
+	private final Stack<Future<?>> _futures = new Stack<>();
+	private final ExecutorService _service;
 
-	public ScopedExecutorProxy(
-		final Scoped<Executor> scope,
-		final Scoped<Concurrency> executor
-	) {
-		_scope = scope;
-		_executor = executor;
+	public ScopedExecutorService(final ExecutorService service) {
+		_service = service;
+	}
+
+	@Override
+	public void execute(final Runnable command) {
+		_futures.push(_service.submit(command));
 	}
 
 	@Override
 	public Concurrency get() {
-		return _executor.get();
+		return this;
 	}
 
 	@Override
 	public void close() {
 		try {
-			_executor.close();
-		} finally {
-			_scope.close();
+			for (Future<?> f = _futures.pop(); f != null; f = _futures.pop()) {
+				f.get();
+			}
+		} catch (InterruptedException|ExecutionException e) {
+			throw new CancellationException(e.getMessage());
 		}
 	}
 }
