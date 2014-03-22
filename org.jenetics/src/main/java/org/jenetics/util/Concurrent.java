@@ -45,9 +45,6 @@ public abstract class Concurrent implements Executor {
 
 	private static final int CORES = Runtime.getRuntime().availableProcessors();
 
-	private static final ForkJoinPool DEFAULT =
-		new ForkJoinPool(max(CORES - 1, 1));
-
 	private static final Concurrent SERIAL_EXECUTOR = new Concurrent() {
 		@Override
 		public void execute(final Runnable command) {
@@ -60,6 +57,9 @@ public abstract class Concurrent implements Executor {
 			}
 		}
 	};
+
+	private static final ForkJoinPool DEFAULT =
+		new ForkJoinPool(max(CORES - 1, 1));
 
 	private static final Context<Executor> CONTEXT =
 		new Context<Executor>(DEFAULT);
