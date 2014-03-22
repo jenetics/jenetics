@@ -14,7 +14,7 @@ public class ConcurrentTest {
 
 		final long sleep = 100;
 		final int loops = 10;
-		try (Scoped<Concurrency> e = Concurrent.serial()) {
+		try (Scoped<Concurrent> e = Concurrent.serial()) {
 			for (int i = 0; i < loops; ++i) {
 				e.get().execute(new Sleep(String.format("sleep(%d)", i), sleep));
 			}
@@ -44,7 +44,7 @@ public class ConcurrentTest {
 		final ExecutorService executor = Executors.newFixedThreadPool(parallelism);
 
 		try {
-			try (Scoped<Concurrency> e = Concurrent.scope(executor)) {
+			try (Scoped<Concurrent> e = Concurrent.scope(executor)) {
 				for (int i = 0; i < loops; ++i) {
 					e.get().execute(new Sleep(String.format("sleep(%d)", i), sleep));
 				}

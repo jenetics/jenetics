@@ -32,7 +32,6 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.Concurrency;
 import org.jenetics.util.Concurrent;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
@@ -460,7 +459,7 @@ public class GeneticAlgorithm<
 
 	private void evaluate() {
 		_evaluateTimer.start();
-		try (Scoped<Concurrency> c = Concurrent.scope()) {
+		try (Scoped<Concurrent> c = Concurrent.scope()) {
 			c.get().execute(_population);
 		}
 		_evaluateTimer.stop();
@@ -498,7 +497,7 @@ public class GeneticAlgorithm<
 		final int numberOfOffspring = getNumberOfOffsprings();
 		assert (numberOfSurvivors + numberOfOffspring == _populationSize);
 
-		try (Scoped<Concurrency> c = Concurrent.scope()) {
+		try (Scoped<Concurrent> c = Concurrent.scope()) {
 			c.get().execute(new Runnable() { @Override public void run() {
 				final Population<G, C> survivors = _survivorSelector.select(
 					_population, numberOfSurvivors, _optimization
@@ -526,7 +525,7 @@ public class GeneticAlgorithm<
 		assert (survivors.size() + offsprings.size() == _populationSize);
 		final Population<G, C> population = new Population<>(_populationSize);
 
-		try (Scoped<Concurrency> c = Concurrent.scope()) {
+		try (Scoped<Concurrent> c = Concurrent.scope()) {
 			// Kill survivors which are to old and replace it with new one.
 			c.get().execute(new Runnable() { @Override public void run() {
 				for (int i = 0, n = survivors.size(); i < n; ++i) {

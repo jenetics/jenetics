@@ -27,7 +27,6 @@ import java.util.Iterator;
 
 import org.jenetics.internal.util.HashBuilder;
 
-
 /**
  * Collection of some general purpose Accumulators and some static helper classes
  * for accumulating.
@@ -396,7 +395,7 @@ public final class accumulators extends StaticObject {
 			);
 			break;
 		default:
-			try (Scoped<Concurrency> c = Concurrent.scope()) {
+			try (Scoped<Concurrent> c = Concurrent.scope()) {
 				c.get().execute(accus.map(AccumulatorToRunnable(values)).asList());
 			}
 		}
@@ -482,7 +481,7 @@ public final class accumulators extends StaticObject {
 		final Accumulator<? super T> a1,
 		final Accumulator<? super T> a2
 	) {
-		try (Scoped<Concurrency> c = Concurrent.scope()) {
+		try (Scoped<Concurrent> c = Concurrent.scope()) {
 			c.get().execute(new Acc<>(values, a1));
 			c.get().execute(new Acc<>(values, a2));
 		}
@@ -506,7 +505,7 @@ public final class accumulators extends StaticObject {
 		final Accumulator<? super T> a2,
 		final Accumulator<? super T> a3
 	) {
-		try (Scoped<Concurrency> c = Concurrent.scope()) {
+		try (Scoped<Concurrent> c = Concurrent.scope()) {
 			c.get().execute(new Acc<>(values, a1));
 			c.get().execute(new Acc<>(values, a2));
 			c.get().execute(new Acc<>(values, a3));
@@ -533,7 +532,7 @@ public final class accumulators extends StaticObject {
 		final Accumulator<? super T> a3,
 		final Accumulator<? super T> a4
 	) {
-		try (Scoped<Concurrency> c = Concurrent.scope()) {
+		try (Scoped<Concurrent> c = Concurrent.scope()) {
 			c.get().execute(new Acc<>(values, a1));
 			c.get().execute(new Acc<>(values, a2));
 			c.get().execute(new Acc<>(values, a3));
@@ -563,7 +562,7 @@ public final class accumulators extends StaticObject {
 		final Accumulator<? super T> a4,
 		final Accumulator<? super T> a5
 	) {
-		try (Scoped<Concurrency> c = Concurrent.scope()) {
+		try (Scoped<Concurrent> c = Concurrent.scope()) {
 			c.get().execute(new Acc<>(values, a1));
 			c.get().execute(new Acc<>(values, a2));
 			c.get().execute(new Acc<>(values, a3));

@@ -26,16 +26,14 @@ import java.util.concurrent.FutureTask;
 
 import org.jenetics.internal.util.Stack;
 
-import org.jenetics.util.Concurrency;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version 2.0 &mdash; <em>$Date$</em>
  * @since 2.0
  */
-public final class ScopedExecutor
-	extends ExecutorAdapter
-	implements Scoped<Concurrency>
+final class ScopedExecutor
+	extends ConcurrentExecutor
+	implements Scoped<Concurrent>
 {
 
 	private final Stack<FutureTask<?>> _tasks = new Stack<>();
@@ -53,7 +51,7 @@ public final class ScopedExecutor
 	}
 
 	@Override
-	public Concurrency get() {
+	public Concurrent get() {
 		return this;
 	}
 
