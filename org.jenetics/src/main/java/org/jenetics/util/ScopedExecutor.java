@@ -17,29 +17,26 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.util;
+package org.jenetics.util;
 
-import static java.lang.Math.max;
-
-import java.util.List;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.FutureTask;
 
+import org.jenetics.internal.util.Stack;
+
 import org.jenetics.util.Concurrency;
-import org.jenetics.util.Scoped;
-import org.jenetics.util.arrays;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version 2.0 &mdash; <em>$Date$</em>
  * @since 2.0
  */
-public final class ScopedExecutor implements Concurrency, Scoped<Concurrency> {
-
-	private static final int MIN_THRESHOLD = 2;
-	private static final int CORES = Runtime.getRuntime().availableProcessors();
+public final class ScopedExecutor
+	extends ExecutorAdapter
+	implements Scoped<Concurrency>
+{
 
 	private final Stack<FutureTask<?>> _tasks = new Stack<>();
 	private final Executor _executor;
@@ -53,38 +50,6 @@ public final class ScopedExecutor implements Concurrency, Scoped<Concurrency> {
 		final FutureTask<?> task = new FutureTask<>(command, null);
 		_tasks.push(task);
 		_executor.execute(task);
-	}
-
-	@Override
-	public void execute(final List<? extends Runnable> runnables) {
-		final int[] parts = arrays.partition(
-			runnables.size(),
-			partitions(runnables.size())
-		);
-
-		for (int i = 0; i < parts.length - 1; ++i) {
-			final int part = i;
-
-			execute(new Runnable() { @Override public void run() {
-				for (int j = parts[part]; j < parts[part + 1]; ++j) {
-					runnables.get(j).run();
-				}
-			}});
-		}
-	}
-
-	private static int partitions(final int ntasks) {
-		int threshold;
-		if (CORES == 1) {
-			threshold = max(ntasks/2, MIN_THRESHOLD);
-		} else {
-			threshold = max(
-				(int)((double)ntasks/(CORES*2)),
-				MIN_THRESHOLD
-			);
-		}
-
-		return max(ntasks/threshold, 1);
 	}
 
 	@Override
