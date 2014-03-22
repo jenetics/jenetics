@@ -31,9 +31,9 @@ import org.jenetics.internal.util.Context;
 
 /**
  * [code]
- * try (Scoped<Executor> executor = Concurrent.scope()) {
- *     executor.get().execute(task1);
- *     executor.get().execute(task2);
+ * try (Scoped<Concurrent> concurrent = Concurrent.scope()) {
+ *     concurrent.get().execute(task1);
+ *     concurrent.get().execute(task2);
  * }
  * [/code]
  *
@@ -43,12 +43,10 @@ import org.jenetics.internal.util.Context;
  */
 public abstract class Concurrent implements Executor {
 
-	private static final int MIN_THRESHOLD = 2;
 	private static final int CORES = Runtime.getRuntime().availableProcessors();
 
-	private static final ForkJoinPool DEFAULT = new ForkJoinPool(
-		Math.max(Runtime.getRuntime().availableProcessors() - 1, 1)
-	);
+	private static final ForkJoinPool DEFAULT =
+		new ForkJoinPool(max(CORES - 1, 1));
 
 	private static final Concurrent SERIAL_EXECUTOR = new Concurrent() {
 		@Override
@@ -149,12 +147,11 @@ public abstract class Concurrent implements Executor {
 	public void execute(final List<? extends Runnable> runnables) {
 		final int[] parts = arrays.partition(
 			runnables.size(),
-			partitions(runnables.size())
+			CORES == 1 ? 1 : CORES + 1
 		);
 
 		for (int i = 0; i < parts.length - 1; ++i) {
 			final int part = i;
-
 			execute(new Runnable() { @Override public void run() {
 				for (int j = parts[part]; j < parts[part + 1]; ++j) {
 					runnables.get(j).run();
@@ -163,17 +160,4 @@ public abstract class Concurrent implements Executor {
 		}
 	}
 
-	private static int partitions(final int ntasks) {
-		int threshold;
-		if (CORES == 1) {
-			threshold = max(ntasks/2, MIN_THRESHOLD);
-		} else {
-			threshold = max(
-				(int)((double)ntasks/(CORES*2)),
-				MIN_THRESHOLD
-			);
-		}
-
-		return max(ntasks/threshold, 1);
-	}
 }
