@@ -20,7 +20,7 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.5 &mdash; <em>$Date: 2014-03-21 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-22 $</em>
  */
 
 apply plugin: 'packaging'
@@ -51,9 +51,18 @@ packaging {
     jarjar = false
 }
 
+signing {
+	sign configurations.archives
+}
+
 task sourceJar(type: Jar) {
 	classifier "source"
 	from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+	classifier = 'javadoc'
+	from javadoc.destinationDir
 }
 
 publishing {
@@ -66,6 +75,10 @@ publishing {
 				classifier "src"
 				extension "zip"
 			}
+			artifact javadocJar {
+				classifier "javadoc"
+				extension "zip"
+			}
 		}
 	}
 	repositories {
@@ -74,5 +87,7 @@ publishing {
 		}
 	}
 }
+
+
 
 
