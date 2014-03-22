@@ -31,10 +31,7 @@ import org.jenetics.internal.util.Stack;
  * @version 2.0 &mdash; <em>$Date: 2014-03-22 $</em>
  * @since 2.0
  */
-final class ScopedExecutor
-	extends ConcurrentExecutor
-	implements Scoped<Concurrent>
-{
+final class ScopedExecutor extends Concurrent implements Scoped<Concurrent> {
 
 	private final Stack<FutureTask<?>> _tasks = new Stack<>();
 	private final Executor _executor;

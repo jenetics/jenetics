@@ -19,6 +19,7 @@
  */
 package org.jenetics.util;
 
+import static java.lang.Math.max;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
@@ -42,8 +43,8 @@ import org.jenetics.internal.util.Context;
  */
 public abstract class Concurrent implements Executor {
 
-	Concurrent() {
-	}
+	private static final int MIN_THRESHOLD = 2;
+	private static final int CORES = Runtime.getRuntime().availableProcessors();
 
 	private static final ForkJoinPool DEFAULT = new ForkJoinPool(
 		Math.max(Runtime.getRuntime().availableProcessors() - 1, 1)
@@ -64,6 +65,9 @@ public abstract class Concurrent implements Executor {
 
 	private static final Context<Executor> CONTEXT =
 		new Context<Executor>(DEFAULT);
+
+	Concurrent() {
+	}
 
 	/**
 	 * Set the executor object to use for concurrent actions.
@@ -139,9 +143,37 @@ public abstract class Concurrent implements Executor {
 	}
 
 	/* *************************************************************************
-	 *  Interface methods
+	 *  Instance methods
 	 * ************************************************************************/
 
-	public abstract void execute(final List<? extends Runnable> runnables);
+	public void execute(final List<? extends Runnable> runnables) {
+		final int[] parts = arrays.partition(
+			runnables.size(),
+			partitions(runnables.size())
+		);
 
+		for (int i = 0; i < parts.length - 1; ++i) {
+			final int part = i;
+
+			execute(new Runnable() { @Override public void run() {
+				for (int j = parts[part]; j < parts[part + 1]; ++j) {
+					runnables.get(j).run();
+				}
+			}});
+		}
+	}
+
+	private static int partitions(final int ntasks) {
+		int threshold;
+		if (CORES == 1) {
+			threshold = max(ntasks/2, MIN_THRESHOLD);
+		} else {
+			threshold = max(
+				(int)((double)ntasks/(CORES*2)),
+				MIN_THRESHOLD
+			);
+		}
+
+		return max(ntasks/threshold, 1);
+	}
 }
