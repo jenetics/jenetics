@@ -32,7 +32,7 @@ import org.jenetics.internal.util.Stack;
  * @since 2.0
  */
 final class ScopedExecutorService
-	extends ConcurrentExecutor
+	extends Concurrent
 	implements Scoped<Concurrent>
 {
 
