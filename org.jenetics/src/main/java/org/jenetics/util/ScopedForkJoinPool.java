@@ -25,17 +25,14 @@ import java.util.concurrent.ForkJoinTask;
 
 import org.jenetics.internal.util.Stack;
 
-import org.jenetics.util.Concurrency;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date$</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-22 $</em>
  * @since 2.0
  */
-public final class ScopedForkJoinPool
-	implements
-		Concurrency,
-		Scoped<Concurrency>
+final class ScopedForkJoinPool
+	extends Concurrent
+	implements Scoped<Concurrent>
 {
 
 	private final Stack<ForkJoinTask<?>> _tasks = new Stack<>();
@@ -56,7 +53,7 @@ public final class ScopedForkJoinPool
 	}
 
 	@Override
-	public Concurrency get() {
+	public Concurrent get() {
 		return this;
 	}
 
