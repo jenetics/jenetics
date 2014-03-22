@@ -23,7 +23,7 @@ SCRIPT_DIR=`readlink -f $0`
 SCRIPT_DIR=`dirname ${SCRIPT_DIR}`
 
 VERSION="@__version__@"
-CLS_PATH=`readlink -f ${SCRIPT_DIR}/../lib/org.jenetics-jarjar-${VERSION}.jar`
+CLS_PATH=`readlink -f ${SCRIPT_DIR}/../lib/org.jenetics-${VERSION}.jar`
 CLS_PATH=${CLS_PATH}:`readlink -f ${SCRIPT_DIR}/../lib/org.jenetics.example-${VERSION}.jar`:.
 
 java -cp $CLS_PATH org.jenetics.example.Knapsack
