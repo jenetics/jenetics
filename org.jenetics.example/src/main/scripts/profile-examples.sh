@@ -32,7 +32,7 @@ SCRIPT_DIR=`dirname ${SCRIPT_DIR}`
 REPORT_DIR=`readlink -f ${SCRIPT_DIR}/../report/performance`
 
 VERSION="@__version__@"
-CLS_PATH=`readlink -f ${SCRIPT_DIR}/../lib/org.jenetics-jarjar-${VERSION}.jar`
+CLS_PATH=`readlink -f ${SCRIPT_DIR}/../lib/org.jenetics-${VERSION}.jar`
 CLS_PATH=${CLS_PATH}:`readlink -f ${SCRIPT_DIR}/../lib/org.jenetics.example-${VERSION}.jar`:.
 
 agent_param() {
