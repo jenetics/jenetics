@@ -34,6 +34,7 @@ import java.util.concurrent.RecursiveAction;
  * @since 2.0
  */
 public final class RunnablesAction extends RecursiveAction {
+	private static final long serialVersionUID = 1;
 
 	private static final int MIN_THRESHOLD = 2;
 	private static final int THRESHOLD = 3;
