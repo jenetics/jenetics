@@ -31,6 +31,14 @@ repositories {
 	mavenCentral ()
 }
 
+buildscript {
+    repositories {
+        mavenCentral ()
+    }
+    dependencies {
+        classpath 'org.bouncycastle:bcprov-jdk15:1.46'
+    }
+}
 
 dependencies {
 	testCompile Include.Apache.Commons.Math
@@ -51,7 +59,9 @@ packaging {
     jarjar = false
 }
 
+import org.jenetics.gradle.signing.PGPSignatoryFactory
 signing {
+    signatory new PGPSignatoryFactory().createSignatory(project)
 	sign configurations.archives
 }
 
