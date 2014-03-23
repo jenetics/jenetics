@@ -59,14 +59,14 @@ packaging {
     jarjar = false
 }
 
-import org.jenetics.gradle.signing.PGPSignatoryFactory
+/*
 signing {
-    signatory new PGPSignatoryFactory().createSignatory(project)
 	sign configurations.archives
 }
+*/
 
 task sourceJar(type: Jar) {
-	classifier "source"
+	classifier "sources"
 	from sourceSets.main.allSource
 }
 
@@ -75,22 +75,105 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 	from javadoc.destinationDir
 }
 
+ext {
+    pomFilePath = "${project.projectDir}/tmp/pom.xml"
+    pomFile = file(pomFilePath)
+}
+
+configurations {
+    pom
+}
+
+artifacts {
+    archives jar
+    archives sourceJar
+    archives javadocJar
+    if (pomFile.exists()) {
+        pom pomFile
+    }
+}
+
+task signJars (type : Sign, dependsOn: [jar, javadocJar, sourceJar]) {
+    sign configurations.archives
+}
+
+// sign pom
+task signPom(type: Sign) {
+    sign configurations.pom
+}
+// defining which tasks should be called
+if (project.ext.pomFile.exists()) {
+    task preparePublication (dependsOn : [signJars, signPom])
+} else {
+    task preparePublication (dependsOn : signJars)
+}
+// extract signatures and add classifier and extension to them
+def getSignatureFiles = {
+    def allFiles = project.tasks.signJars.signatureFiles.collect { it }
+    def signedSources = allFiles.find { it.name.contains('-sources') }
+    def signedJavadoc = allFiles.find { it.name.contains('-javadoc') }
+    def signedJar = (allFiles - [signedSources, signedJavadoc])[0]
+    return [
+            [archive: signedSources, classifier: 'sources', extension: 'jar.asc'],
+            [archive: signedJavadoc, classifier: 'javadoc', extension: 'jar.asc'],
+            [archive: signedJar,     classifier: null,      extension: 'jar.asc']
+    ]
+}
+// extract pom signature
+def getPomSignature = {
+    return project.tasks.signPom.signatureFiles.collect{it}[0]
+}
+
 publishing {
-	publications {
-		mavenJava(MavenPublication) {
-			from components.java
-		}
-		maven(MavenPublication) {
-			artifact sourceJar {
-				classifier "src"
-				extension "zip"
-			}
-			artifact javadocJar {
-				classifier "javadoc"
-				extension "zip"
-			}
-		}
-	}
+    publications {
+        gpgJars(MavenPublication) {
+            getSignatureFiles().each {signature ->
+                artifact (signature.archive) {
+                    classifier = signature.classifier
+                    extension  = signature.extension
+                }
+            }
+        }
+        if (project.ext.pomFile.exists()) {
+            gpgPom(MavenPublication) {
+                artifact (getPomSignature()) {
+                    classifier = null
+                    extension  = 'pom.asc'
+                }
+            }
+        }
+        jar(MavenPublication) {
+            from components.java
+            pom.withXml {
+                asNode().children().last() + {
+                    resolveStrategy = Closure.DELEGATE_FIRST
+                    name project.name
+                    description jenetics.description
+                    url jenetics.url
+                    scm {
+                        url jenetics.maven.scm
+                        connection jenetics.maven.connection
+                        developerConnection jenetics.maven.developer
+                    }
+                    licenses {
+                        license {
+                            name 'The Apache Software License, Version 2.0'
+                            url 'http://www.apache.org/license/LICENSE-2.0.txt'
+                            distribution 'repo'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id 'fwilhelm'
+                            name 'Franz Wilhelmstötter'
+                            email 'franz.wilhelmstoetter@gmx.at'
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 	repositories {
 		maven {
 			url "$buildDir/repo"
