@@ -31,15 +31,6 @@ repositories {
 	mavenCentral ()
 }
 
-buildscript {
-    repositories {
-        mavenCentral ()
-    }
-    dependencies {
-        classpath 'org.bouncycastle:bcprov-jdk15:1.46'
-    }
-}
-
 dependencies {
 	testCompile Include.Apache.Commons.Math
 	testCompile Include.TestNG
@@ -58,12 +49,6 @@ packaging {
 
     jarjar = false
 }
-
-/*
-signing {
-	sign configurations.archives
-}
-*/
 
 task sourceJar(type: Jar) {
 	classifier "sources"
