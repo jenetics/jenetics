@@ -20,7 +20,7 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 2.0 &mdash; <em>$Date: 2014-03-23 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-24 $</em>
  */
 
 apply plugin: 'packaging'
@@ -82,17 +82,17 @@ task signJars (type : Sign, dependsOn: [jar, javadocJar, sourceJar]) {
     sign configurations.archives
 }
 
-// sign pom
 task signPom(type: Sign) {
     sign configurations.pom
 }
-// defining which tasks should be called
+
 if (project.ext.pomFile.exists()) {
     task preparePublication (dependsOn : [signJars, signPom])
 } else {
     task preparePublication (dependsOn : signJars)
 }
-// extract signatures and add classifier and extension to them
+
+
 def getSignatureFiles = {
     def allFiles = project.tasks.signJars.signatureFiles.collect { it }
     def signedSources = allFiles.find { it.name.contains('-sources') }
@@ -104,7 +104,7 @@ def getSignatureFiles = {
             [archive: signedJar,     classifier: null,      extension: 'jar.asc']
     ]
 }
-// extract pom signature
+
 def getPomSignature = {
     return project.tasks.signPom.signatureFiles.collect{it}[0]
 }
@@ -129,6 +129,13 @@ publishing {
         }
         jar(MavenPublication) {
             from components.java
+            artifact (javadocJar) {
+                classifier = 'javadoc'
+            }
+            artifact (sourceJar) {
+                classifier = 'sources'
+            }
+
             pom.withXml { asNode().children().last() + {
                 resolveStrategy = Closure.DELEGATE_FIRST
                 name jenetics.name
@@ -163,6 +170,8 @@ publishing {
 		}
 	}
 }
+
+publish.dependsOn(preparePublication)
 
 
 
