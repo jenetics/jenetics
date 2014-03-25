@@ -166,9 +166,18 @@ publishing {
     }
 
 	repositories {
-		maven {
-			url "$buildDir/repo"
-		}
+        maven {
+            //if (project.ext.pomFile.exists()) {
+                url 'https://oss.sonatype.org/content/repositories/snapshots'
+                //url 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+                credentials {
+                    username = sonatype_username
+                    password = sonatype_password
+                }
+            //} else {
+            //    url "$buildDir/repo"
+            //}
+        }
 	}
 }
 
