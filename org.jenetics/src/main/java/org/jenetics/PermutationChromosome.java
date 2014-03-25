@@ -227,7 +227,7 @@ public final class PermutationChromosome<T>
 	 * ************************************************************************/
 
 	@XmlRootElement(name = "permutation-chromosome")
-	@XmlType(name = "permutation-chromosome")
+	@XmlType(name = "org.jenetics.PermutationChromosome")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	static final class Model {
