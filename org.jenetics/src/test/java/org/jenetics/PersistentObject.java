@@ -19,6 +19,8 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.RandomUtils.BigDecimalFactory;
+import static org.jenetics.util.RandomUtils.BigIntegerFactory;
 import static org.jenetics.util.RandomUtils.BooleanFactory;
 import static org.jenetics.util.RandomUtils.ByteFactory;
 import static org.jenetics.util.RandomUtils.CharacterFactory;
@@ -34,6 +36,8 @@ import static org.jenetics.util.lambda.factory;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -153,6 +157,8 @@ public class PersistentObject<T> {
 		put("EnumGene[Long]", nextEnumGeneLong(), ios);
 		put("EnumGene[Float]", nextEnumGeneFloat(), ios);
 		put("EnumGene[Double]", nextEnumGeneDouble(), ios);
+		put("EnumGene[BigInteger]", nextEnumGeneBigInteger(), ios);
+		put("EnumGene[BigDecimal]", nextEnumGeneBigDecimal(), ios);
 		put("EnumGene[String]", nextEnumGeneString(), ios);
 
 		/* *********************************************************************
@@ -181,7 +187,13 @@ public class PersistentObject<T> {
 		put("Genotype[CharacterGene]", nextGenotypeCharacterGene(), ios);
 		put("Genotype[LongGene]", nextGenotypeLongGene(), ios);
 		put("Genotype[DoubleGene]", nextGenotypeDoubleGene(), ios);
-
+		put("Genotype[EnumGene[Byte]]", nextGenotypeEnumGeneByte(), ios);
+		put("Genotype[EnumGene[Character]]", nextGenotypeEnumGeneCharacter(), ios);
+		put("Genotype[EnumGene[Short]]", nextGenotypeEnumGeneShort(), ios);
+		put("Genotype[EnumGene[Integer]]", nextGenotypeEnumGeneInteger(), ios);
+		put("Genotype[EnumGene[Long]]", nextGenotypeEnumGeneLong(), ios);
+		put("Genotype[EnumGene[Float]]", nextGenotypeEnumGeneFloat(), ios);
+		put("Genotype[EnumGene[Double]]", nextGenotypeEnumGeneDouble(), ios);
 
 		/* *********************************************************************
 		 * Phenotypes
@@ -252,6 +264,14 @@ public class PersistentObject<T> {
 
 	public static EnumGene<Double> nextEnumGeneDouble() {
 		return EnumGene.of(ISeq(5, DoubleFactory));
+	}
+
+	public static EnumGene<BigInteger> nextEnumGeneBigInteger() {
+		return EnumGene.of(ISeq(5, BigIntegerFactory));
+	}
+
+	public static EnumGene<BigDecimal> nextEnumGeneBigDecimal() {
+		return EnumGene.of(ISeq(5, BigDecimalFactory));
 	}
 
 	public static EnumGene<String> nextEnumGeneString() {
@@ -329,6 +349,34 @@ public class PersistentObject<T> {
 
 	public static Genotype<DoubleGene> nextGenotypeDoubleGene() {
 		return new Genotype<>(ISeq(5, DoubleChromosomeFactory));
+	}
+
+	public static Genotype<EnumGene<Byte>> nextGenotypeEnumGeneByte() {
+		return new Genotype<>(ISeq(5, PermutationChromosomeByteFactory));
+	}
+
+	public static Genotype<EnumGene<Character>> nextGenotypeEnumGeneCharacter() {
+		return new Genotype<>(ISeq(5, PermutationChromosomeCharacterFactory));
+	}
+
+	public static Genotype<EnumGene<Short>> nextGenotypeEnumGeneShort() {
+		return new Genotype<>(ISeq(5, PermutationChromosomeShortFactory));
+	}
+
+	public static Genotype<EnumGene<Integer>> nextGenotypeEnumGeneInteger() {
+		return new Genotype<>(ISeq(5, PermutationChromosomeIntegerFactory));
+	}
+
+	public static Genotype<EnumGene<Long>> nextGenotypeEnumGeneLong() {
+		return new Genotype<>(ISeq(5, PermutationChromosomeLongFactory));
+	}
+
+	public static Genotype<EnumGene<Float>> nextGenotypeEnumGeneFloat() {
+		return new Genotype<>(ISeq(5, PermutationChromosomeFloatFactory));
+	}
+
+	public static Genotype<EnumGene<Double>> nextGenotypeEnumGeneDouble() {
+		return new Genotype<>(ISeq(5, PermutationChromosomeDoubleFactory));
 	}
 
 	/* *************************************************************************
@@ -448,6 +496,40 @@ public class PersistentObject<T> {
 		PersistentObject.class, "nextDoubleChromosome"
 	);
 
+	public static final Factory<PermutationChromosome<Byte>>
+	PermutationChromosomeByteFactory = factory(
+		PersistentObject.class, "nextBytePermutationChromosome"
+	);
+
+	public static final Factory<PermutationChromosome<Character>>
+	PermutationChromosomeCharacterFactory = factory(
+		PersistentObject.class, "nextCharacterPermutationChromosome"
+	);
+
+	public static final Factory<PermutationChromosome<Short>>
+	PermutationChromosomeShortFactory = factory(
+		PersistentObject.class, "nextShortPermutationChromosome"
+	);
+
+	public static final Factory<PermutationChromosome<Integer>>
+	PermutationChromosomeIntegerFactory = factory(
+		PersistentObject.class, "nextIntegerPermutationChromosome"
+	);
+
+	public static final Factory<PermutationChromosome<Long>>
+	PermutationChromosomeLongFactory = factory(
+		PersistentObject.class, "nextLongPermutationChromosome"
+	);
+
+	public static final Factory<PermutationChromosome<Float>>
+	PermutationChromosomeFloatFactory = factory(
+		PersistentObject.class, "nextFloatPermutationChromosome"
+	);
+
+	public static final Factory<PermutationChromosome<Double>>
+	PermutationChromosomeDoubleFactory = factory(
+		PersistentObject.class, "nextDoublePermutationChromosome"
+	);
 
 	public static <T, R extends Comparable<R>> Function<T, R>
 	FitnessFunction(final R result) {
@@ -469,7 +551,7 @@ public class PersistentObject<T> {
 
 	public static void main(final String[] args) throws Exception {
 		write();
-		//IO.jaxb.write(nextGenotypeDoubleGene(), System.out);
+		//IO.jaxb.write(nextGenotypeEnumGeneInteger(), System.out);
 	}
 
 	private static void write() throws IOException {
