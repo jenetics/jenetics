@@ -199,6 +199,9 @@ public class PersistentObject<T> {
 		 * Phenotypes
 		 **********************************************************************/
 
+		put("Phenotype[BitGene, Integer]", nextPhenotypeBitGeneInteger(), ios);
+		put("Phenotype[CharacterGene, Integer]", nextPhenotypeCharacterGeneInteger(), ios);
+
 		put("Phenotype[LongGene, Integer]", nextPhenotypeLongGeneInteger(), ios);
 		put("Phenotype[LongGene, Long]", nextPhenotypeLongGeneLong(), ios);
 		put("Phenotype[LongGene, Double]", nextPhenotypeLongGeneDouble(), ios);
@@ -217,8 +220,11 @@ public class PersistentObject<T> {
 		 * Populations
 		 **********************************************************************/
 
+		put("Population[BitGene, Integer]", nextPopulationBitGeneInteger(), ios);
+		put("Population[CharacterGene, Integer]", nextPopulationCharacterGeneInteger(), ios);
 		put("Population[LongGene, Integer]", nextPopulationLongGeneInteger(), ios);
 		put("Population[DoubleGene, Integer]", nextPopulationDoubleGeneInteger(), ios);
+		put("Population[EnumGene[Integer], Double]", nextPopulationEnumGeneIntegerDouble(), ios);
 
 		//put("Statistics.Time", nextStatisticsTime());
 
@@ -389,6 +395,22 @@ public class PersistentObject<T> {
 	 * Phenotypes
 	 **************************************************************************/
 
+	public static Phenotype<BitGene, Integer> nextPhenotypeBitGeneInteger() {
+		return Phenotype.of(
+			nextGenotypeBitGene(),
+			FitnessFunction(IntegerFactory.newInstance()),
+			Math.abs(IntegerFactory.newInstance())
+		).evaluate();
+	}
+
+	public static Phenotype<CharacterGene, Integer> nextPhenotypeCharacterGeneInteger() {
+		return Phenotype.of(
+			nextGenotypeCharacterGene(),
+			FitnessFunction(IntegerFactory.newInstance()),
+			Math.abs(IntegerFactory.newInstance())
+		).evaluate();
+	}
+
 	public static Phenotype<LongGene, Integer> nextPhenotypeLongGeneInteger() {
 		return Phenotype.of(
 			nextGenotypeLongGene(),
@@ -481,6 +503,26 @@ public class PersistentObject<T> {
 	 * Populations
 	 **************************************************************************/
 
+	public static Population<BitGene, Integer> nextPopulationBitGeneInteger() {
+		final ISeq<Phenotype<BitGene, Integer>> seq = ISeq(7,
+			PersistentObject.<Phenotype<BitGene, Integer>>Factory(
+				"nextPhenotypeBitGeneInteger"
+			)
+		);
+
+		return new Population<>(seq.asList());
+	}
+
+	public static Population<CharacterGene, Integer> nextPopulationCharacterGeneInteger() {
+		final ISeq<Phenotype<CharacterGene, Integer>> seq = ISeq(7,
+			PersistentObject.<Phenotype<CharacterGene, Integer>>Factory(
+				"nextPhenotypeCharacterGeneInteger"
+			)
+		);
+
+		return new Population<>(seq.asList());
+	}
+
 	public static Population<LongGene, Integer> nextPopulationLongGeneInteger() {
 		final ISeq<Phenotype<LongGene, Integer>> seq = ISeq(7,
 			PersistentObject.<Phenotype<LongGene, Integer>>Factory(
@@ -495,6 +537,16 @@ public class PersistentObject<T> {
 		final ISeq<Phenotype<DoubleGene, Integer>> seq = ISeq(7,
 			PersistentObject.<Phenotype<DoubleGene, Integer>>Factory(
 				"nextPhenotypeDoubleGeneInteger"
+			)
+		);
+
+		return new Population<>(seq.asList());
+	}
+
+	public static Population<EnumGene<Integer>, Double> nextPopulationEnumGeneIntegerDouble() {
+		final ISeq<Phenotype<EnumGene<Integer>, Double>> seq = ISeq(7,
+			PersistentObject.<Phenotype<EnumGene<Integer>, Double>>Factory(
+				"nextPhenotypeEnumGeneIntegerDouble"
 			)
 		);
 
