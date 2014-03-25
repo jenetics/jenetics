@@ -19,15 +19,18 @@
  */
 package org.jenetics.util;
 
+import static java.lang.Math.abs;
 import static org.jenetics.util.lambda.factory;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Random;
 
 import org.jenetics.util.math.random;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-10 $</em>
+ * @version <em>$Date: 2014-03-25 $</em>
  */
 public class RandomUtils {
 
@@ -66,6 +69,23 @@ public class RandomUtils {
 		return (short)random.nextInt(random(), Short.MIN_VALUE, Short.MAX_VALUE);
 	}
 
+	public static BigInteger nextBigInteger() {
+		return new BigInteger(100, random());
+	}
+
+	public static BigDecimal nextBigDecimal() {
+		final StringBuilder out = new StringBuilder();
+		for (int i = 0; i < 10; ++i) {
+			out.append(Long.toString(abs(random().nextLong())));
+		}
+		out.append(".");
+		for (int i = 0; i < 20; ++i) {
+			out.append(Long.toString(abs(random().nextLong())));
+		}
+
+		return new BigDecimal(out.toString());
+	}
+
 	/*
 	 * Factory instances.
 	 */
@@ -85,6 +105,10 @@ public class RandomUtils {
 	public static final Factory<Float> FloatFactory = factory(random(), "nextFloat");
 
 	public static final Factory<Double> DoubleFactory = factory(random(), "nextDouble");
+
+	public static final Factory<BigInteger> BigIntegerFactory = Factory("nextBigInteger");
+
+	public static final Factory<BigDecimal> BigDecimalFactory = Factory("nextBigDecimal");
 
 	public static final Factory<String> StringFactory = Factory("nextString");
 

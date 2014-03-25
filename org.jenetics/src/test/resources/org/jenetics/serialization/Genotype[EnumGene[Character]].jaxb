@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<genotype length="5" ngenes="75">
+    <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="permutation-chromosome" length="15">
+        <valid-alleles>
+            <allele xsi:type="char">䍵</allele>
+            <allele xsi:type="char">᱓</allele>
+            <allele xsi:type="char">႟</allele>
+            <allele xsi:type="char">ඖ</allele>
+            <allele xsi:type="char">铼</allele>
+            <allele xsi:type="char">⻰</allele>
+            <allele xsi:type="char">ဘ</allele>
+            <allele xsi:type="char">퀪</allele>
+            <allele xsi:type="char">阆</allele>
+            <allele xsi:type="char">㴇</allele>
+            <allele xsi:type="char">鷮</allele>
+            <allele xsi:type="char">ꔺ</allele>
+            <allele xsi:type="char">陵</allele>
+            <allele xsi:type="char">註</allele>
+            <allele xsi:type="char">䥅</allele>
+        </valid-alleles>
+        <order>13 12 4 6 8 14 7 2 11 5 3 0 9 10 1</order>
+    </chromosome>
+    <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="permutation-chromosome" length="15">
+        <valid-alleles>
+            <allele xsi:type="char">篟</allele>
+            <allele xsi:type="char">莮</allele>
+            <allele xsi:type="char">ॸ</allele>
+            <allele xsi:type="char">䫛</allele>
+            <allele xsi:type="char">곚</allele>
+            <allele xsi:type="char">둔</allele>
+            <allele xsi:type="char">檵</allele>
+            <allele xsi:type="char">蹂</allele>
+            <allele xsi:type="char">품</allele>
+            <allele xsi:type="char">巅</allele>
+            <allele xsi:type="char">阖</allele>
+            <allele xsi:type="char">䪞</allele>
+            <allele xsi:type="char">㉗</allele>
+            <allele xsi:type="char">휢</allele>
+            <allele xsi:type="char">骫</allele>
+        </valid-alleles>
+        <order>10 5 4 0 3 1 6 2 9 7 8 11 13 14 12</order>
+    </chromosome>
+    <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="permutation-chromosome" length="15">
+        <valid-alleles>
+            <allele xsi:type="char">繱</allele>
+            <allele xsi:type="char">籶</allele>
+            <allele xsi:type="char">渲</allele>
+            <allele xsi:type="char">ࠞ</allele>
+            <allele xsi:type="char">⭽</allele>
+            <allele xsi:type="char">௢</allele>
+            <allele xsi:type="char">隄</allele>
+            <allele xsi:type="char">Ḽ</allele>
+            <allele xsi:type="char">뀸</allele>
+            <allele xsi:type="char">Ꙭ</allele>
+            <allele xsi:type="char">ᦅ</allele>
+            <allele xsi:type="char">吂</allele>
+            <allele xsi:type="char">冒</allele>
+            <allele xsi:type="char">컓</allele>
+            <allele xsi:type="char">䣂</allele>
+        </valid-alleles>
+        <order>13 11 8 0 10 1 3 9 7 12 5 6 2 4 14</order>
+    </chromosome>
+    <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="permutation-chromosome" length="15">
+        <valid-alleles>
+            <allele xsi:type="char">턂</allele>
+            <allele xsi:type="char">됌</allele>
+            <allele xsi:type="char">ꢌ</allele>
+            <allele xsi:type="char">⪘</allele>
+            <allele xsi:type="char">鑣</allele>
+            <allele xsi:type="char">༾</allele>
+            <allele xsi:type="char">醋</allele>
+            <allele xsi:type="char">庴</allele>
+            <allele xsi:type="char">弅</allele>
+            <allele xsi:type="char">ั</allele>
+            <allele xsi:type="char">馮</allele>
+            <allele xsi:type="char">阒</allele>
+            <allele xsi:type="char">燶</allele>
+            <allele xsi:type="char">霚</allele>
+            <allele xsi:type="char">⌕</allele>
+        </valid-alleles>
+        <order>14 3 8 5 1 6 13 2 7 9 4 0 11 12 10</order>
+    </chromosome>
+    <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="permutation-chromosome" length="15">
+        <valid-alleles>
+            <allele xsi:type="char">™</allele>
+            <allele xsi:type="char">ꘟ</allele>
+            <allele xsi:type="char">⼵</allele>
+            <allele xsi:type="char">筦</allele>
+            <allele xsi:type="char">왩</allele>
+            <allele xsi:type="char">ꅽ</allele>
+            <allele xsi:type="char">錋</allele>
+            <allele xsi:type="char">싻</allele>
+            <allele xsi:type="char">⨕</allele>
+            <allele xsi:type="char">Ჩ</allele>
+            <allele xsi:type="char">ፙ</allele>
+            <allele xsi:type="char">笑</allele>
+            <allele xsi:type="char">친</allele>
+            <allele xsi:type="char">远</allele>
+            <allele xsi:type="char">䛍</allele>
+        </valid-alleles>
+        <order>1 9 11 6 5 14 0 13 4 7 12 8 10 3 2</order>
+    </chromosome>
+</genotype>
