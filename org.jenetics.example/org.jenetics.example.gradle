@@ -27,7 +27,6 @@ import org.apache.tools.ant.filters.ReplaceTokens
  */
 
 apply plugin: 'packaging'
-apply plugin: 'signing'
 
 dependencies {
 	compile project(':org.jenetics')
@@ -59,7 +58,4 @@ packaging {
 	}
 }
 
-signing {
-	sign configurations.archives
-}
 
