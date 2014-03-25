@@ -56,7 +56,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-20 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-25 $</em>
  */
 @XmlJavaTypeAdapter(value = PermutationChromosome.Model.Adapter.class)
 public final class PermutationChromosome<T>
@@ -227,7 +227,7 @@ public final class PermutationChromosome<T>
 	 * ************************************************************************/
 
 	@XmlRootElement(name = "permutation-chromosome")
-	@XmlType(name = "permutation-chromosome")
+	@XmlType(name = "org.jenetics.PermutationChromosome")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	static final class Model {

@@ -20,7 +20,7 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 2.0 &mdash; <em>$Date: 2014-03-24 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-25 $</em>
  */
 
 apply plugin: 'packaging'
@@ -166,9 +166,18 @@ publishing {
     }
 
 	repositories {
-		maven {
-			url "$buildDir/repo"
-		}
+        maven {
+            //if (project.ext.pomFile.exists()) {
+                url 'https://oss.sonatype.org/content/repositories/snapshots'
+                //url 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+                credentials {
+                    username = sonatype_username
+                    password = sonatype_password
+                }
+            //} else {
+            //    url "$buildDir/repo"
+            //}
+        }
 	}
 }
 
