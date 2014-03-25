@@ -141,10 +141,11 @@ publishing {
                 name jenetics.name
                 description jenetics.description
                 url jenetics.url
+                packaging 'jar'
                 scm {
-                    url jenetics.maven.scm
-                    connection jenetics.maven.connection
-                    developerConnection jenetics.maven.developer
+                    url jenetics.maven.scm.url
+                    connection jenetics.maven.scm.connection
+                    developerConnection jenetics.maven.scm.developer_connection
                 }
                 licenses {
                     license {

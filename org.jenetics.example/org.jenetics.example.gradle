@@ -23,11 +23,10 @@ import org.apache.tools.ant.filters.ReplaceTokens
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 2.0 &mdash; <em>$Date: 2014-03-22 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-25 $</em>
  */
 
 apply plugin: 'packaging'
-apply plugin: 'signing'
 
 dependencies {
 	compile project(':org.jenetics')
@@ -59,7 +58,4 @@ packaging {
 	}
 }
 
-signing {
-	sign configurations.archives
-}
 
