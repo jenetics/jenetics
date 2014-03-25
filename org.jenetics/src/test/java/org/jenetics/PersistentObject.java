@@ -207,6 +207,12 @@ public class PersistentObject<T> {
 		put("Phenotype[DoubleGene, Long]", nextPhenotypeDoubleGeneLong(), ios);
 		put("Phenotype[DoubleGene, Double]", nextPhenotypeDoubleGeneDouble(), ios);
 
+		put("Phenotype[EnumGene[Character], Double]", nextPhenotypeEnumGeneCharacterDouble(), ios);
+		put("Phenotype[EnumGene[Integer], Double]", nextPhenotypeEnumGeneIntegerDouble(), ios);
+		put("Phenotype[EnumGene[Long], Double]", nextPhenotypeEnumGeneLongDouble(), ios);
+		put("Phenotype[EnumGene[Float], Double]", nextPhenotypeEnumGeneFloatDouble(), ios);
+		put("Phenotype[EnumGene[Double], Double]", nextPhenotypeEnumGeneDoubleDouble(), ios);
+
 		/* *********************************************************************
 		 * Populations
 		 **********************************************************************/
@@ -431,6 +437,46 @@ public class PersistentObject<T> {
 		).evaluate();
 	}
 
+	public static Phenotype<EnumGene<Character>, Double> nextPhenotypeEnumGeneCharacterDouble() {
+		return Phenotype.of(
+			nextGenotypeEnumGeneCharacter(),
+			FitnessFunction(DoubleFactory.newInstance()),
+			Math.abs(IntegerFactory.newInstance())
+		).evaluate();
+	}
+
+	public static Phenotype<EnumGene<Integer>, Double> nextPhenotypeEnumGeneIntegerDouble() {
+		return Phenotype.of(
+			nextGenotypeEnumGeneInteger(),
+			FitnessFunction(DoubleFactory.newInstance()),
+			Math.abs(IntegerFactory.newInstance())
+		).evaluate();
+	}
+
+	public static Phenotype<EnumGene<Long>, Double> nextPhenotypeEnumGeneLongDouble() {
+		return Phenotype.of(
+			nextGenotypeEnumGeneLong(),
+			FitnessFunction(DoubleFactory.newInstance()),
+			Math.abs(IntegerFactory.newInstance())
+		).evaluate();
+	}
+
+	public static Phenotype<EnumGene<Float>, Double> nextPhenotypeEnumGeneFloatDouble() {
+		return Phenotype.of(
+			nextGenotypeEnumGeneFloat(),
+			FitnessFunction(DoubleFactory.newInstance()),
+			Math.abs(IntegerFactory.newInstance())
+		).evaluate();
+	}
+
+	public static Phenotype<EnumGene<Double>, Double> nextPhenotypeEnumGeneDoubleDouble() {
+		return Phenotype.of(
+			nextGenotypeEnumGeneDouble(),
+			FitnessFunction(DoubleFactory.newInstance()),
+			Math.abs(IntegerFactory.newInstance())
+		).evaluate();
+	}
+
 	/* *************************************************************************
 	 * Populations
 	 **************************************************************************/
@@ -551,7 +597,7 @@ public class PersistentObject<T> {
 
 	public static void main(final String[] args) throws Exception {
 		write();
-		//IO.jaxb.write(nextGenotypeEnumGeneInteger(), System.out);
+		//IO.jaxb.write(nextPhenotypeEnumGeneIntegerDouble(), System.out);
 	}
 
 	private static void write() throws IOException {
