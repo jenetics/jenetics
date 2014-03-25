@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <phenotype generation="1855505854">
     <genotype length="5" ngenes="75">
-        <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="permutation-chromosome" length="15">
+        <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.PermutationChromosome" length="15">
             <valid-alleles>
                 <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.27251556008507416</allele>
                 <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.003140816229067145</allele>
@@ -21,7 +21,7 @@
             </valid-alleles>
             <order>13 12 4 6 8 14 7 2 11 5 3 0 9 10 1</order>
         </chromosome>
-        <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="permutation-chromosome" length="15">
+        <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.PermutationChromosome" length="15">
             <valid-alleles>
                 <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.9287934476217792</allele>
                 <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.8816987146782589</allele>
@@ -41,7 +41,7 @@
             </valid-alleles>
             <order>10 5 4 0 3 1 6 2 9 7 8 11 13 14 12</order>
         </chromosome>
-        <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="permutation-chromosome" length="15">
+        <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.PermutationChromosome" length="15">
             <valid-alleles>
                 <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.5344938137376007</allele>
                 <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.16569494948347963</allele>
@@ -61,7 +61,7 @@
             </valid-alleles>
             <order>13 11 8 0 10 1 3 9 7 12 5 6 2 4 14</order>
         </chromosome>
-        <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="permutation-chromosome" length="15">
+        <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.PermutationChromosome" length="15">
             <valid-alleles>
                 <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.4946607830200207</allele>
                 <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.5722781881777812</allele>
@@ -81,7 +81,7 @@
             </valid-alleles>
             <order>14 3 8 5 1 6 13 2 7 9 4 0 11 12 10</order>
         </chromosome>
-        <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="permutation-chromosome" length="15">
+        <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.PermutationChromosome" length="15">
             <valid-alleles>
                 <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.7955319520793456</allele>
                 <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.16524001269876165</allele>
