@@ -411,6 +411,12 @@ Beside the Java coding standards as given in <http://www.oracle.com/technetwork/
 
 ## Release notes
 
+### 2.0.0
+
+* Remove all deprecated classes and methods.
+* Remove dependency to the JScience library.
+* Library can now also downloaded via the maven central repository: `org.bitbucket.fwilhelm:org.jenetics:2.0.0`
+
 ### 1.6.0
 
 * Preparation work for removing the dependency to the JScience library.
