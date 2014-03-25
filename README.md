@@ -16,7 +16,6 @@ Jenetics is an Genetic Algorithm, respectively an Evolutionary Algorithm, librar
 
 ### Runtime
 *  **JRE 7**: Java runtime version 7 is needed for using the library, respectively for running the examples.
-*  **JScience** library, <http://jscience.org>: This library is  included and lies in the `buildSrc/lib` directory.
 
 ## Download
 *  **Sourceforge**:  <https://sourceforge.net/projects/jenetics/files/latest/download>
