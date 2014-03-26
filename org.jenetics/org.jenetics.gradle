@@ -171,8 +171,8 @@ publishing {
                 url 'https://oss.sonatype.org/content/repositories/snapshots'
                 //url 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
                 credentials {
-                    username = sonatype_username
-                    password = sonatype_password
+                    username = hasProperty('sonatype_username') ? sonatype_username : 'foo'
+                    password = hasProperty('sonatype_password') ? sonatype_password : 'bar'
                 }
             //} else {
             //    url "$buildDir/repo"
