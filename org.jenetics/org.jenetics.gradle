@@ -34,7 +34,6 @@ repositories {
 dependencies {
 	testCompile Include.Apache.Commons.Math
 	testCompile Include.TestNG
-	testCompile Include.JMH
 }
 
 jar.manifest.instruction('Export-Package',
