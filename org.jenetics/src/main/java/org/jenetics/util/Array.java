@@ -38,7 +38,7 @@ import org.jenetics.internal.util.Stack;
 /**
  * Array class which wraps the the java build in array type T[]. Once the array
  * is created the array length can't be changed (like the build in array).
- * <p/>
+ * <p>
  * <strong>Note that this implementation is not synchronized.</strong> If
  * multiple threads access this object concurrently, and at least one of the
  * threads modifies it, it must be synchronized externally.
@@ -47,7 +47,7 @@ import org.jenetics.internal.util.Stack;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-16 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
  */
 public final class Array<T>
 	extends ArraySeq<T>

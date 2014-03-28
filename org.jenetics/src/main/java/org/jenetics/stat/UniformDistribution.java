@@ -40,7 +40,7 @@ import org.jenetics.util.Range;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
  */
 public class UniformDistribution<
 	N extends Number & Comparable<? super N>
@@ -56,12 +56,12 @@ public class UniformDistribution<
 	 *          \frac{1}{max-min} & for & x \in [min, max] \\
 	 *          0 & & otherwise \\
 	 *          \end{matrix}\right."
-	 * />
+	 * >
 	 * </p>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
 	 */
 	static final class PDF<N extends Number & Comparable<? super N>>
 		implements
@@ -108,12 +108,12 @@ public class UniformDistribution<
 	 *         \frac{x-min}{max-min} & for & x \in [min, max] \\
 	 *         1 & for & x > max  \\
 	 *         \end{matrix}\right."
-	 * />
+	 * >
 	 * </p>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
 	 */
 	static final class CDF<N extends Number & Comparable<? super N>>
 		implements
@@ -204,7 +204,7 @@ public class UniformDistribution<
 	 *          \frac{1}{max-min} & for & x \in [min, max] \\
 	 *          0 & & otherwise \\
 	 *          \end{matrix}\right."
-	 * />
+	 * >
 	 * </p>
 	 *
 	 */
@@ -224,7 +224,7 @@ public class UniformDistribution<
 	 *         \frac{x-min}{max-min} & for & x \in [min, max] \\
 	 *         1 & for & x > max  \\
 	 *         \end{matrix}\right."
-	 * />
+	 * >
 	 * </p>
 	 *
 	 */

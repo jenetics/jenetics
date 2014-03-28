@@ -47,7 +47,7 @@ import org.jenetics.util.MappedAccumulator;
  *     alt="i=\left\{\begin{matrix}  0 & when & v < c_0 \\
  *         len(c) & when & v \geq c_{len(c)-1} \\
  *         j & when & c_j< v \leq c_{j-1}  \\  \end{matrix}\right."
- * />
+ * >
  * </p>
  *
  * Example:
@@ -58,14 +58,14 @@ import org.jenetics.util.MappedAccumulator;
  *                  -------+----+----+----+----+----+----+----+----+----+------
  * Histogram index:     0     1    2    3    4    5    6    7    8    9    10
  * </pre>
- * <p/>
+ * <p>
  * <strong>Note that this implementation is not synchronized.</strong> If
  * multiple threads access this object concurrently, and at least one of the
  * threads modifies it, it must be synchronized externally.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
  */
 public class Histogram<C> extends MappedAccumulator<C> {
 

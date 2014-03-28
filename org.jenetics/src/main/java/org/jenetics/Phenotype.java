@@ -53,7 +53,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-21 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
  */
 @XmlJavaTypeAdapter(Phenotype.Model.Adapter.class)
 public final class Phenotype<
@@ -90,7 +90,8 @@ public final class Phenotype<
 	 * @param fitnessScaler the fitness scaler.
 	 * @param generation the current generation of the generated phenotype.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
-	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
+	 * @throws IllegalArgumentException if the given {@code generation} is
+	 *         {@code < 0}.
 	 */
 	public Phenotype(
 		final Genotype<G> genotype,
@@ -275,7 +276,8 @@ public final class Phenotype<
 	 * @param generation the generation of the new phenotype.
 	 * @return a new phenotype with the given values.
 	 * @throws NullPointerException if one of the values is {@code null}.
-	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
+	 * @throws IllegalArgumentException if the given {@code generation} is
+	 *         {@code < 0}.
 	 */
 	public Phenotype<G, C> newInstance(
 		final Function<? super Genotype<G>, ? extends C> function,
@@ -293,7 +295,8 @@ public final class Phenotype<
 	 * @param generation the generation of the new phenotype.
 	 * @return a new phenotype with the given values.
 	 * @throws NullPointerException if one of the values is {@code null}.
-	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
+	 * @throws IllegalArgumentException if the given {@code generation} is
+	 *         {@code < 0}.
 	 */
 	public Phenotype<G, C> newInstance(
 		final Function<? super Genotype<G>, ? extends C> function,
@@ -397,7 +400,8 @@ public final class Phenotype<
 	 * @param fitnessFunction the fitness function of this phenotype.
 	 * @param generation the current generation of the generated phenotype.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
-	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
+	 * @throws IllegalArgumentException if the given {@code generation} is
+	 *         {@code < 0}.
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Phenotype<G, C> of(
@@ -417,7 +421,8 @@ public final class Phenotype<
 	 * @param generation the current generation of the generated phenotype.
 	 * @return a new phenotype object
 	 * @throws NullPointerException if one of the arguments is {@code null}.
-	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
+	 * @throws IllegalArgumentException if the given {@code generation} is
+	 *         {@code < 0}.
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Phenotype<G, C> of(
