@@ -75,7 +75,6 @@ class FixJavadocCodeBlockTask extends DefaultTask {
                 switch (ch) {
                     case '<': out.append("&lt;"); modified = true; break;
                     case '>': out.append("&gt;"); modified = true; break;
-                    case '&': out.append("&amp;"); modified = true; break;
                     default: out.append(ch); break;
                 }
             } else {
@@ -96,11 +95,30 @@ class FixJavadocCodeBlockTask extends DefaultTask {
             @Override
             State apply(final char ch, final StringBuilder out) {
                 State state = this;
+                if ((ch == '*') &&
+                        (out.length() > 2) &&
+                        out.substring(out.length() - 3).equalsIgnoreCase("/**"))
+                {
+                    state = JAVADOC;
+                }
+
+                return state;
+            }
+        },
+        JAVADOC {
+            @Override
+            State apply(final char ch, final StringBuilder out) {
+                State state = this;
                 if ((ch == ']') &&
                     (out.length() > 5) &&
                     out.substring(out.length() - 6).equalsIgnoreCase("[code]"))
                 {
                     state = CODE_TAG;
+                } else if ((ch == '/') &&
+                        (out.length() > 1) &&
+                        out.substring(out.length() - 2).equalsIgnoreCase("*/"))
+                {
+                    state = DATA;
                 }
 
                 return state;
@@ -113,7 +131,7 @@ class FixJavadocCodeBlockTask extends DefaultTask {
                 if ((ch == ']') &&
                     out.substring(out.length() - 7).equalsIgnoreCase("[/code]"))
                 {
-                    state = DATA;
+                    state = JAVADOC;
                 }
 
                 return state;
