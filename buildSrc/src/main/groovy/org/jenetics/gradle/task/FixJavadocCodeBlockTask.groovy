@@ -37,7 +37,7 @@ class FixJavadocCodeBlockTask extends DefaultTask {
 
     @Input
     @Optional
-    public String extensions = '.java:.groovy'
+    public String extensions = '.java'
 
     @TaskAction
     public void fix() {
