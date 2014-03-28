@@ -49,12 +49,12 @@ import org.jenetics.util.functions;
  *
  * [code]
  * public static void main(final String[] args) {
- *     final Factory〈Genotype〈BitGene〉〉 gtf = Genotype.of(
+ *     final Factory<Genotype<BitGene>> gtf = Genotype.of(
  *         BitChromosome.of(10, 0.5)
  *     );
- *     final Function〈Genotype〈BitGene〉 Double〉 ff = ...
- *     final GeneticAlgorithm〈BitGene, Double〉
- *     ga = new GeneticAlgorithm〈〉(gtf, ff, Optimize.MAXIMUM);
+ *     final Function<Genotype<BitGene> Double> ff = ...
+ *     final GeneticAlgorithm<BitGene, Double>
+ *     ga = new GeneticAlgorithm<>(gtf, ff, Optimize.MAXIMUM);
  *
  *     ga.setup();
  *     ga.evolve(100);
@@ -83,10 +83,10 @@ import org.jenetics.util.functions;
  * [code]
  * public static void main(final String[] args) {
  *     ...
- *     ga.setSelectors(new RouletteWheelSelector〈BitGene〉());
+ *     ga.setSelectors(new RouletteWheelSelector<BitGene>());
  *     ga.setAlterers(
- *         new SinglePointCrossover〈BitGene〉(0.1),
- *         new Mutator〈BitGene〉(0.01)
+ *         new SinglePointCrossover<BitGene>(0.1),
+ *         new Mutator<BitGene>(0.01)
  *     );
  *
  *     ga.setup();
@@ -118,8 +118,8 @@ import org.jenetics.util.functions;
  * IO.jaxb.write(ga.getPopulation(), file);
  *
  * // Reading the population from disk.
- * Population〈DoubleGene, Double〉 population =
- *     (Population〈DoubleGene, Double〉)IO.jaxb.read(file);
+ * Population<DoubleGene, Double> population =
+ *     (Population<DoubleGene, Double>)IO.jaxb.read(file);
  * ga.setPopulation(population);
  * [/code]
  *
@@ -594,8 +594,8 @@ public class GeneticAlgorithm<
 	 * </p>
 	 * To set one ore more GA parameter you will write code like this:
 	 * [code]
-	 * final GeneticAlgorithm〈DoubleGene, Double〉 ga = ...
-	 * final Function〈GeneticAlgorithm〈?, ?〉, Boolean〉 until = ...
+	 * final GeneticAlgorithm<DoubleGene, Double> ga = ...
+	 * final Function<GeneticAlgorithm<?, ?>, Boolean> until = ...
 	 *
 	 * //Starting the GA in separate thread.
 	 * final Thread thread = new Thread(new Runnable() {
@@ -631,8 +631,8 @@ public class GeneticAlgorithm<
 	 * [code]
 	 * ga.getLock().lock();
 	 * try {
-	 *     final Statistics〈?, ?〉 statistics = ga.getStatistic();
-	 *     final Function〈?, ?〉 scaler = ga.getFitnessScaler();
+	 *     final Statistics<?, ?> statistics = ga.getStatistic();
+	 *     final Function<?, ?> scaler = ga.getFitnessScaler();
 	 * } finally {
 	 *     ga.getLock().unlock();
 	 * }
@@ -672,8 +672,8 @@ public class GeneticAlgorithm<
 	 * The following example shows the simplest possible fitness function. It's
 	 * the identity function and returns the allele of an 1x1  float genotype.
 	 * [code]
-	 * class Id implements Function〈Genotype〈DoubleGene〉, Double〉 {
-	 *     public Double apply(final Genotype〈DoubleGene〉 genotype) {
+	 * class Id implements Function<Genotype<DoubleGene>, Double> {
+	 *     public Double apply(final Genotype<DoubleGene> genotype) {
 	 *         return genotype.getGene().getAllele();
 	 *     }
 	 * }
@@ -701,7 +701,7 @@ public class GeneticAlgorithm<
 	 * configuration the raw-fitness is equal to the actual fitness value, that
 	 * means, the used fitness scaler is the identity function.
 	 * [code]
-	 * class Sqrt extends Function〈Double, Double〉 {
+	 * class Sqrt extends Function<Double, Double> {
 	 *     public Double apply(final Double value) {
 	 *         return sqrt(value);
 	 *     }

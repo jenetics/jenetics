@@ -54,16 +54,16 @@ import org.jenetics.util.RandomRegistry;
  * The following code shows how to create a combinatorial genotype factory which
  * can be used when creating an {@link GeneticAlgorithm} instance.
  * [code]
- * final ISeq〈Integer〉 alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
- * final Factory〈Genotype〈EnumGene〈Integer〉〉〉 gtf = Genotype.of(
+ * final ISeq<Integer> alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
+ * final Factory<Genotype<EnumGene<Integer>>> gtf = Genotype.of(
  *     new PermutationChromosome<>(alleles)
  * );
  * [/code]
  *
  * The following code shows the assurances of the {@code EnumGene}.
  * [code]
- * final ISeq〈Integer〉 alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
- * final EnumGene〈Integer〉 gene = new EnumGene<>(5, alleles);
+ * final ISeq<Integer> alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
+ * final EnumGene<Integer> gene = new EnumGene<>(5, alleles);
  *
  * assert(gene.getAlleleIndex() == 5);
  * assert(gene.getAllele() == gene.getValidAlleles().get(5));

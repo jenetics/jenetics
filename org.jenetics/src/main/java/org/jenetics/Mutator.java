@@ -155,7 +155,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 * </p>
 	 * This implementation, for example, does it in this way:
 	 * [code]
-	 * protected int mutate(final MSeq〈G〉 genes, final double p) {
+	 * protected int mutate(final MSeq<G> genes, final double p) {
 	 *     final IndexStream stream = IndexStream.Random(genes.length(), p);
 	 *
 	 *     int alterations = 0;

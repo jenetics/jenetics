@@ -59,7 +59,7 @@ import org.jenetics.util.Verifiable;
  * for number genes.
  *
  * [code]
- * final Genotype〈DoubleGene〉 genotype = Genotype.of(
+ * final Genotype<DoubleGene> genotype = Genotype.of(
  *     DoubleChromosome.of(0.0, 1.0, 8),
  *     DoubleChromosome.of(1.0, 2.0, 10),
  *     DoubleChromosome.of(0.0, 10.0, 9),
@@ -141,8 +141,8 @@ public final class Genotype<G extends Gene<?, G>>
 	/**
 	 * Return the first chromosome. This is a shortcut for
 	 * [code]
-	 * final Genotype〈DoubleGene〉 gt = ...
-	 * final Chromosome〈DoubleGene〉 chromosome = gt.getChromosome(0);
+	 * final Genotype<DoubleGene> gt = ...
+	 * final Chromosome<DoubleGene> chromosome = gt.getChromosome(0);
 	 * [/code]
 	 *
 	 * @return The first chromosome.
@@ -158,7 +158,7 @@ public final class Genotype<G extends Gene<?, G>>
 	 * Return the first {@link Gene} of the first {@link Chromosome} of this
 	 * {@code Genotype}. This is a shortcut for
 	 * [code]
-	 * final Genotype〈DoubleGene〉 gt = ...
+	 * final Genotype<DoubleGene> gt = ...
 	 * final DoubleGene gene = gt.getChromosome(0).getGene(0);
 	 * [/code]
 	 *
