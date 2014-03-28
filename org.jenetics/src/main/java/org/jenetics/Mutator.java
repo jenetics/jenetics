@@ -66,7 +66,7 @@ import org.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
  */
 public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 
@@ -155,7 +155,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 * </p>
 	 * This implementation, for example, does it in this way:
 	 * [code]
-	 * protected int mutate(final MSeq〈G〉 genes, final double p) {
+	 * protected int mutate(final MSeq<G> genes, final double p) {
 	 *     final IndexStream stream = IndexStream.Random(genes.length(), p);
 	 *
 	 *     int alterations = 0;
