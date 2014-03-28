@@ -213,7 +213,7 @@ public abstract class ArrayProxy<T> implements Copyable<ArrayProxy<T>> {
 	 *     _sealed = true;
 	 *     return new MyArrayProxy(_array, _start, _end);
 	 * }
-	 * [code]
+	 * [/code]
 	 *
 	 * @return a new {@code ArrayProxy} instance; for command chaining.
 	 */
