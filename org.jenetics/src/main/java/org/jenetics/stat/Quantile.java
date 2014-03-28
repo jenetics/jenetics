@@ -32,16 +32,16 @@ import org.jenetics.util.MappedAccumulator;
 
 /**
  * Implementation of the quantile estimation algorithm published by
- * <p/>
+ * <p>
  * <strong>Raj JAIN and Imrich CHLAMTAC</strong>:
  * <em>
  *     The P<sup>2</sup> Algorithm for Dynamic Calculation of Quantiles and
  *     Histograms Without Storing Observations
  * </em>
- * <br/>
+ * <br>
  * [<a href="http://www.cse.wustl.edu/~jain/papers/ftp/psqr.pdf">Communications
  * of the ACM; October 1985, Volume 28, Number 10</a>]
- * <p/>
+ * <p>
  * <strong>Note that this implementation is not synchronized.</strong> If
  * multiple threads access this object concurrently, and at least one of the
  * threads modifies it, it must be synchronized externally.

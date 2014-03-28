@@ -32,10 +32,10 @@ import org.jenetics.util.MappedAccumulator;
  * observations.</p>
  * <p><img src="doc-files/arithmetic-mean.gif"
  *         alt="\bar{x}=\frac{1}{N}\sum_{i=1}^{N}x_i"
- *    />
+ *    >
  * </p>
  *
- * <p/>
+ * <p>
  * <strong>Note that this implementation is not synchronized.</strong> If
  * multiple threads access this object concurrently, and at least one of the
  * threads modifies it, it must be synchronized externally.

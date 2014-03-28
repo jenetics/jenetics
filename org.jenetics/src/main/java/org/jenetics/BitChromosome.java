@@ -98,9 +98,9 @@ public class BitChromosome extends Number
 	 * @param start the initial (bit) index of the range to be copied, inclusive
 	 * @param end the final (bit) index of the range to be copied, exclusive.
 	 *        (This index may lie outside the array.)
-	 * @throws java.lang.ArrayIndexOutOfBoundsException if start < 0 or
-	 *         start > bits.length*8
-	 * @throws java.lang.IllegalArgumentException if start > end
+	 * @throws java.lang.ArrayIndexOutOfBoundsException if {@code start < 0} or
+	 *         {@code start > bits.length*8}
+	 * @throws java.lang.IllegalArgumentException if {@code start > end}
 	 * @throws java.lang.NullPointerException if the {@code bits} array is
 	 *         {@code null}.
 	 */

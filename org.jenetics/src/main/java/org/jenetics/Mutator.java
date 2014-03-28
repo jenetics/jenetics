@@ -55,13 +55,13 @@ import org.jenetics.util.MSeq;
  * over the whole population is mutated. The number of available genes of an
  * population is
  * <p>
- * <img src="doc-files/mutator-N_G.gif" alt="N_P N_{g}=N_P \sum_{i=0}^{N_{G}-1}N_{C[i]}" />
+ * <img src="doc-files/mutator-N_G.gif" alt="N_P N_{g}=N_P \sum_{i=0}^{N_{G}-1}N_{C[i]}" >
  * </p>
  * where <i>N<sub>P</sub></i>  is the population size, <i>N<sub>g</sub></i> the
  * number of genes of a genotype. So the (average) number of genes
  * mutated by the mutation is
  * <p>
- * <img src="doc-files/mutator-mean_m.gif" alt="\hat{\mu}=N_{P}N_{g}\cdot P(m)" />
+ * <img src="doc-files/mutator-mean_m.gif" alt="\hat{\mu}=N_{P}N_{g}\cdot P(m)" >
  * </p>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -155,7 +155,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 * </p>
 	 * This implementation, for example, does it in this way:
 	 * [code]
-	 * protected int mutate(final MSeq<G> genes, final double p) {
+	 * protected int mutate(final MSeq&lt;G&gt; genes, final double p) {
 	 *     final IndexStream stream = IndexStream.Random(genes.length(), p);
 	 *
 	 *     int alterations = 0;

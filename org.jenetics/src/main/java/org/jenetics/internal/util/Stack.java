@@ -24,8 +24,8 @@ package org.jenetics.internal.util;
  * permitted, but not checked.
  *
  * [code]
- * final Stack<Integer> stack = new Stack<>();
- * for (int i = 0; i < 10; ++i) {
+ * final Stack&lt;Integer&gt; stack = new Stack&lt;&gt;();
+ * for (int i = 0; i &lt; 10; ++i) {
  *     stack.push(i);
  * }
  *

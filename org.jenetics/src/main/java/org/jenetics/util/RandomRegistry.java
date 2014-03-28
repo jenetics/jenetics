@@ -34,7 +34,7 @@ import org.jenetics.internal.util.Supplier;
  * than an instance of the {@code Random} class. Alternatively, you can
  * initialize the registry with one of the PRNG, which are being part of the
  * library.
- * <p/>
+ * <p>
  *
  * <b>Setup of a <i>global</i> PRNG</b>
  *
@@ -50,14 +50,14 @@ import org.jenetics.internal.util.Supplier;
  *         RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadSafe(1234));
  *
  *         ...
- *         final GeneticAlgorithm<Float64Gene, Float64> ga = ...
+ *         final GeneticAlgorithm&lt;Float64Gene, Float64&gt; ga = ...
  *         ga.evolve(100);
  *     }
  * }
  * [/code]
- * <p/>
+ * <p>
  *
- * <b>Setup of a <i>local</i> PRNG</b><br/>
+ * <b>Setup of a <i>local</i> PRNG</b><br>
  *
  * You can temporarily (and locally) change the implementation of the PRNG.
  *
@@ -65,10 +65,10 @@ import org.jenetics.internal.util.Supplier;
  * public class GA {
  *     public static void main(final String[] args) {
  *         ...
- *         final GeneticAlgorithm<Float64Gene, Float64> ga = ...
+ *         final GeneticAlgorithm&lt;Float64Gene, Float64&gt; ga = ...
  *         final LCG64ShiftRandom random = new LCG64ShiftRandom(1234)
  *
- *         try (Scoped<Random> scope = RandomRegistry.scope(random) {
+ *         try (Scoped&lt;Random&gt; scope = RandomRegistry.scope(random) {
  *             // Easy access the random engine of the opened scope.
  *             assert(scope.get() == random);
  *
@@ -80,7 +80,7 @@ import org.jenetics.internal.util.Supplier;
  *     }
  * }
  * [/code]
- * <p/>
+ * <p>
  *
  * @see Random
  * @see ThreadLocalRandom
@@ -117,7 +117,7 @@ public final class RandomRegistry extends StaticObject {
 	 * Set the new global {@link Random} object for the GA. The given
 	 * {@link Random} <b>must</b> be thread safe, which is the case for the
 	 * default Java {@code Random} implementation.
-	 * <p/>
+	 * <p>
 	 * Setting a <i>thread-local</i> random object leads, in general, to a faster
 	 * PRN generation, because the given {@code Random} engine don't have to be
 	 * thread-safe.

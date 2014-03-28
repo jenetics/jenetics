@@ -43,7 +43,7 @@ public final class arrays extends StaticObject {
 	 *
 	 * [code]
 	 * int hashCode = 1;
-	 * final Iterator<E> it = seq.iterator();
+	 * final Iterator&lt;E&gt; it = seq.iterator();
 	 * while (it.hasNext()) {
 	 *     final E obj = it.next();
 	 *     hashCode = 31*hashCode + (obj == null ? 0 : obj.hashCode());
@@ -154,7 +154,7 @@ public final class arrays extends StaticObject {
 	/**
 	 * Return a array with the indexes of the partitions of an array with the
 	 * given size. The length of the returned array is {@code min(size, prts) + 1}.
-	 * <p/>
+	 * <p>
 	 * Some examples:
 	 * <pre>
 	 * 	 partition(10, 3): [0, 3, 6, 10]
@@ -166,7 +166,7 @@ public final class arrays extends StaticObject {
 	 * index (exclusive) of the {@code partition(15, 6)}.
 	 * [code]
 	 * int[] parts = partition(15, 6);
-	 * for (int i = 0; i < parts.length - 1; ++i) {
+	 * for (int i = 0; i &lt; parts.length - 1; ++i) {
 	 *     System.out.println(i + ": " + parts[i] + "\t" + parts[i + 1]);
 	 * }
 	 * [/code]
@@ -184,10 +184,10 @@ public final class arrays extends StaticObject {
 	 * try (final Concurrency c = Concurrency.start()) {
 	 *     final int[] parts = arrays.partition(population.size(), _maxThreads);
 	 *
-	 *     for (int i = 0; i < parts.length - 1; ++i) {
+	 *     for (int i = 0; i &lt; parts.length - 1; ++i) {
 	 *         final int part = i;
 	 *         c.execute(new Runnable() { @Override public void run() {
-	 *             for (int j = parts[part + 1]; --j >= parts[part];) {
+	 *             for (int j = parts[part + 1]; --j &gt;= parts[part];) {
 	 *                 population.get(j).evaluate();
 	 *             }
 	 *         }});
@@ -234,7 +234,7 @@ public final class arrays extends StaticObject {
 	 * {@code predicate} returns {@code true} (which means <i>continue</i>) and
 	 * returns the index the iteration has been interrupted. -1 is returned if
 	 * all elements were visited.
-	 * <p/>
+	 * <p>
 	 * Can be used to check all array elements for nullness.
 	 *
 	 * [code]

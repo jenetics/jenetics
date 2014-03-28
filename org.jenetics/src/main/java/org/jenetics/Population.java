@@ -52,7 +52,7 @@ import org.jenetics.util.ISeq;
 /**
  * A population is a collection of Phenotypes.
  *
- * <p/>
+ * <p>
  * <strong>This class is not synchronized.</strong> If multiple threads access
  * a {@code Population} concurrently, and at least one of the threads modifies
  * it, it <strong>must</strong> be synchronized externally.

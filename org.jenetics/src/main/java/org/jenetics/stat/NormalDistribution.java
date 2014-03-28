@@ -42,7 +42,7 @@ import org.jenetics.util.Range;
  *     src="doc-files/normal-pdf.gif"
  *     alt="f(x)=\frac{1}{\sqrt{2\pi \sigma^{2}}}\cdot
  *          e^{-\frac{(x-\mu)^2}{2\sigma^{2}}})"
- * />
+ * >
  * </p>
  * as <i>pdf</i> and
  * <p>
@@ -50,7 +50,7 @@ import org.jenetics.util.Range;
  *     src="doc-files/normal-cdf.gif"
  *     alt="f(x)=\frac{1}{2}\cdot \left [ 1 + \textup{erf} \left(
  *          \frac{x - \mu }{\sqrt{2\sigma^{2}}} \right) \right ]"
- * />
+ * >
  * </p>
  * as <i>cdf</i>.
  *
@@ -72,7 +72,7 @@ public class NormalDistribution<
 	 *     src="doc-files/normal-pdf.gif"
 	 *     alt="f(x)=\frac{1}{\sqrt{2\pi \sigma^{2}}}\cdot
 	 *          e^{-\frac{(x-\mu)^2}{2\sigma^{2}}})"
-	 * />
+	 * >
 	 * </p>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -126,7 +126,7 @@ public class NormalDistribution<
 	 *     src="doc-files/normal-cdf.gif"
 	 *     alt="f(x)=\frac{1}{2}\cdot \left [ 1 + \textup{erf} \left(
 	 *          \frac{x - \mu }{\sqrt{2\sigma^{2}}} \right) \right ]"
-	 * />
+	 * >
 	 * </p>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -222,7 +222,7 @@ public class NormalDistribution<
 	 *     src="doc-files/normal-cdf.gif"
 	 *     alt="f(x)=\frac{1}{2}\cdot \left [ 1 + \textup{erf} \left(
 	 *          \frac{x - \mu }{\sqrt{2\sigma^{2}}} \right) \right ]"
-	 * />
+	 * >
 	 * </p>
 	 */
 	@Override
@@ -237,7 +237,7 @@ public class NormalDistribution<
 	 * <img
 	 *     src="doc-files/normal-pdf.gif"
 	 *     alt="f(x)=\frac{1}{\sqrt{2\pi \sigma^{2}}}\cdot e^{-\frac{(x-\mu)^2}{2\sigma^{2}}})"
-	 * />
+	 * >
 	 * </p>
 	 */
 	@Override

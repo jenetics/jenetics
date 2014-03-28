@@ -31,7 +31,7 @@ import org.jenetics.internal.util.Context;
 
 /**
  * [code]
- * try (Scoped<Concurrent> concurrent = Concurrent.scope()) {
+ * try (Scoped&lt;Concurrent&gt; concurrent = Concurrent.scope()) {
  *     concurrent.get().execute(task1);
  *     concurrent.get().execute(task2);
  * }

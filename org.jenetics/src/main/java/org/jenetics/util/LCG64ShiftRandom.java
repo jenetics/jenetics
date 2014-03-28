@@ -30,14 +30,14 @@ import org.jenetics.internal.util.HashBuilder;
 /**
  * This class implements a linear congruential PRNG with additional bit-shift
  * transition. The base recursion
- * <p><div align="center">
+ * <p>
  * <img
  *     alt="r_{i+1} = (a\cdot r_i + b) \mod 2^{64}"
  *     src="doc-files/lcg-recursion.gif"
- * />
- * </p></div>
+ * >
+ * </p>
  * is followed by a non-linear transformation
- * <p><div align="center">
+ * <p>
  * <img
  *     alt="\begin{eqnarray*}
  *           t &=& r_i                \\
@@ -46,12 +46,12 @@ import org.jenetics.internal.util.HashBuilder;
  *           t &=& t \oplus (t >> 8)
  *         \end{eqnarray*}"
  *     src="doc-files/lcg-non-linear.gif"
- * />
- * </p></div>
+ * >
+ * </p>
  * which destroys the lattice structure introduced by the recursion. The period
  * of this PRNG is 2<sup>64</sup>, {@code iff} <i>b</i> is odd and <i>a</i>
  * {@code mod} 4 = 1.
- * <p/>
+ * <p>
  *
  * <em>
  * This is an re-implementation of the
@@ -60,7 +60,7 @@ import org.jenetics.internal.util.HashBuilder;
  * <a href="http://numbercrunch.de/trng/">TRNG</a> library created by Heiko
  * Bauke.</em>
  *
- * <p/>
+ * <p>
  * <strong>Not that the base implementation of the {@code LCG64ShiftRandom}
  * class is not thread-safe.</strong> If multiple threads requests random
  * numbers from this class, it <i>must</i> be synchronized externally.
@@ -222,16 +222,16 @@ public class LCG64ShiftRandom extends Random64 {
 		 *
 		 * <p align="left">
 		 * <strong>Tina’s Random Number Generator Library</strong>
-		 * <br/>
+		 * <br>
 		 * <em>Chapter 2. Pseudo-random numbers for parallel Monte Carlo
 		 *     simulations, Page 7</em>
-		 * <br/>
+		 * <br>
 		 * <small>Heiko Bauke</small>
-		 * <br/>
+		 * <br>
 		 * [<a href="http://numbercrunch.de/trng/trng.pdf">
 		 *  http://numbercrunch.de/trng/trng.pdf
 		 *  </a>].
-		 * <p/>
+		 * <p>
 		 */
 		@Override
 		protected synchronized LCG64ShiftRandom initialValue() {
