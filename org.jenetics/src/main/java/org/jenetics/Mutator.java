@@ -66,7 +66,7 @@ import org.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-30 $</em>
  */
 public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 
@@ -169,6 +169,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 *
 	 * @param genes the genes to mutate.
 	 * @param p the gene mutation probability.
+	 * @return the number of performed mutations
 	 */
 	protected int mutate(final MSeq<G> genes, final double p) {
 		final IndexStream stream = IndexStream.Random(genes.length(), p);

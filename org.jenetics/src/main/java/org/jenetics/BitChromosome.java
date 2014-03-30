@@ -52,7 +52,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-30 $</em>
  */
 @XmlJavaTypeAdapter(BitChromosome.Model.Adapter.class)
 public class BitChromosome extends Number
@@ -149,7 +149,6 @@ public class BitChromosome extends Number
 	}
 
 	private void rangeCheck(final int index) {
-		assert(_length >= 0);
 		if (index < 0 || index >= _length) {
 			throw new IndexOutOfBoundsException(
 				"Index: " + index + ", Length: " + _length
@@ -381,6 +380,7 @@ public class BitChromosome extends Number
 	 *
 	 * @param length Length of the BitChromosome, number of bits.
 	 * @param p Probability of the TRUEs in the BitChromosome.
+	 * @return a new {@code BitChromosome} with the given parameter
 	 * @throws NegativeArraySizeException if the {@code length} is smaller
 	 *         than one.
 	 * @throws IllegalArgumentException if {@code p} is not a valid probability.
@@ -394,6 +394,7 @@ public class BitChromosome extends Number
 	 * FALSE in the {@code Chromosome} are equally distributed.
 	 *
 	 * @param length Length of the BitChromosome.
+	 * @return a new {@code BitChromosome} with the given parameter
 	 * @throws NegativeArraySizeException if the {@code _length} is smaller
 	 *         than one.
 	 */
@@ -404,6 +405,7 @@ public class BitChromosome extends Number
 	/**
 	 * @param length length of the BitChromosome.
 	 * @param bits the bit-set which initializes the chromosome
+	 * @return a new {@code BitChromosome} with the given parameter
 	 * @throws NegativeArraySizeException if the {@code length} is smaller
 	 *         than one.
 	 * @throws NullPointerException if the {@code bitSet} is
@@ -428,6 +430,7 @@ public class BitChromosome extends Number
 	 * (@see BitSet#length).
 	 *
 	 * @param bits the bit-set which initializes the chromosome
+	 * @return a new {@code BitChromosome} with the given parameter
 	 * @throws NullPointerException if the {@code bitSet} is
 	 *        {@code null}.
 	 */
@@ -439,6 +442,7 @@ public class BitChromosome extends Number
 	 * Create a new {@code BitChromosome} from the given big integer value.
 	 *
 	 * @param value the value of the created {@code BitChromosome}
+	 * @return a new {@code BitChromosome} with the given parameter
 	 * @throws NullPointerException if the given {@code value} is {@code null}.
 	 */
 	public static BitChromosome of(final BigInteger value) {
@@ -451,6 +455,7 @@ public class BitChromosome extends Number
 	 * method.
 	 *
 	 * @param value the input string.
+	 * @return a new {@code BitChromosome} with the given parameter
 	 * @throws NullPointerException if the {@code value} is {@code null}.
 	 * @throws IllegalArgumentException if the length of the character sequence
 	 *         is zero or contains other characters than '0' or '1'.

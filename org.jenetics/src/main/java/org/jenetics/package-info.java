@@ -26,11 +26,11 @@
  * (GA) implementation. The project has very few dependencies to other libraries.
  * At runtime it only depends on the <em>Jenetics</em> library.
  * <p>
- * The order of the single execution steps of genetic algorithms may slightly
+ * The order of the single execution steps of genetic algorithms may slightlyh
  * differ from implementation to implementation. The following pseudo-code shows
  * the <em>Jenetics</em> genetic algorithm steps.
- *
- * <img width="556" align="BOTTOM" border="0" alt="Genetic algorithm"
+
+ * <img width="556" alt="Genetic algorithm"
  *      src="doc-files/genetic-algorithm.png" >
  *
  * <p>
@@ -304,7 +304,7 @@
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-30 $</em>
  */
 package org.jenetics;
 

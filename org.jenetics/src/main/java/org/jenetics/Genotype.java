@@ -72,7 +72,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-30 $</em>
  */
 @XmlJavaTypeAdapter(Genotype.Model.Adapter.class)
 public final class Genotype<G extends Gene<?, G>>
@@ -265,6 +265,9 @@ public final class Genotype<G extends Gene<?, G>>
 
 	/**
 	 * Return a converter which access the chromosome array of this genotype.
+	 *
+	 * @param <T> the gene type
+	 * @return a function object which returns the chromosomes for this genotype.
 	 */
 	public static <T extends Gene<?, T>>
 	Function<Genotype<T>, ISeq<Chromosome<T>>> Chromosomes()
@@ -279,6 +282,10 @@ public final class Genotype<G extends Gene<?, G>>
 	/**
 	 * Return a converter which access the chromosome with the given index of
 	 * this genotype.
+	 *
+	 * @param <T> the gene type
+	 * @param index the index of the chromosome
+	 * @return a function object which returns the chromosome at the given index.
 	 */
 	public static <T extends Gene<?, T>>
 	Function<Genotype<T>, Chromosome<T>> Chromosome(final int index)
@@ -292,6 +299,10 @@ public final class Genotype<G extends Gene<?, G>>
 
 	/**
 	 * Return a converter which access the first chromosome of this genotype.
+	 *
+	 * @param <T> the gene type
+	 * @return a function object which returns the first chromosome of this
+	 *         genotype.
 	 */
 	public static <T extends Gene<?, T>>
 	Function<Genotype<T>, Chromosome<T>> Chromosome()
