@@ -62,7 +62,13 @@ public class RandomUtils {
 
 	public static char nextCharacter() {
 		final int surrogateStart = 0xD800;
-		return (char)(random().nextInt(surrogateStart - 1) + 1);
+
+		char c = '\0';
+		do {
+			c = (char)(random().nextInt(surrogateStart - 1) + 1);
+		} while (!Character.isLetterOrDigit(c));
+
+		return c;
 	}
 
 	public static short nextShort() {

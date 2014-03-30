@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <enum-gene length="5">
     <valid-alleles>
-        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">᱓႟ඖ铼⻰ဘ퀪阆㴇鷮ꔺ陵註</allele>
-        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">㐼溹⩓鎁벘㔃ό်턜簳퀿䖺ዕᄞ篟莮</allele>
-        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">䫛곚둔檵蹂품巅阖䪞㉗휢骫ꜚ쇮֩낖뷵臛뱯珦꭭ԫ놶</allele>
-        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">鉂蜎繱籶渲ࠞ⭽௢隄Ḽ뀸Ꙭᦅ吂冒컓䣂</allele>
-        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">덛㳴㣇듵ꃽ鑧ഥꤐ׊</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">᱓ඖ铼ဘ퀪阆㴇鷮ꔺ陵註䥅㐼</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">鎁벘㔃ό턜簳퀿䖺ዕᄞ篟莮䫛곚둔檵蹂품巅</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">䪞휢骫ꜚ쇮낖뷵臛뱯珦놶孫鉂蜎繱籶渲隄Ḽ뀸Ꙭ</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">吂冒컓䣂ꍰ덛㳴</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">듵ꃽ鑧ഥꤐ닯ꤊ怕꽐턂됌ꢌ鑣醋庴弅馮阒燶</allele>
     </valid-alleles>
     <allele index="1">
-        <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">㐼溹⩓鎁벘㔃ό်턜簳퀿䖺ዕᄞ篟莮</value>
+        <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">鎁벘㔃ό턜簳퀿䖺ዕᄞ篟莮䫛곚둔檵蹂품巅</value>
     </allele>
 </enum-gene>

@@ -3,11 +3,11 @@
     <valid-alleles>
         <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">䍵</allele>
         <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">᱓</allele>
-        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">႟</allele>
         <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">ඖ</allele>
         <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">铼</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">ဘ</allele>
     </valid-alleles>
-    <allele index="0">
-        <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">䍵</value>
+    <allele index="4">
+        <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">ဘ</value>
     </allele>
 </enum-gene>
