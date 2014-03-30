@@ -147,7 +147,9 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	/**
 	 * Combine the given alterers.
 	 *
+	 * @param <G> the gene type
 	 * @param alterers the alterers to combine.
+	 * @return a new alterer which consists of the given one
 	 * @throws NullPointerException if one of the alterers is {@code null}.
 	 */
 	@SafeVarargs

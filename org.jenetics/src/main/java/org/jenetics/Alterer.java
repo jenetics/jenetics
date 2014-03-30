@@ -48,6 +48,7 @@ public interface Alterer<G extends Gene<?, G>> {
 	 * Alters (recombine) a given population. If the {@code population}
 	 * is empty, nothing is altered.
 	 *
+	 * @param <C> the fitness function result type
 	 * @param population The Population to be altered. If the
 	 *        {@code population} is {@code null} or empty, nothing is altered.
 	 * @param generation the date of birth (generation) of the altered phenotypes.

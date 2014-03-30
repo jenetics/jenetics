@@ -155,6 +155,7 @@ public class CharacterChromosome
 	 * char set as valid characters.
 	 *
 	 * @param length the {@code length} of the new chromosome.
+	 * @return a new {@code CharacterChromosome} with the given parameter
 	 * @throws IllegalArgumentException if the {@code length} is smaller than
 	 *         one.
 	 */
@@ -169,6 +170,7 @@ public class CharacterChromosome
 	 *
 	 * @param alleles the character genes.
 	 * @param validChars the valid characters.
+	 * @return a new {@code CharacterChromosome} with the given parameter
 	 * @throws IllegalArgumentException if the genes string is empty.
 	 */
 	public static CharacterChromosome of(
@@ -197,6 +199,7 @@ public class CharacterChromosome
 	 * Create a new chromosome from the given genes (given as string).
 	 *
 	 * @param alleles the character genes.
+	 * @return a new {@code CharacterChromosome} with the given parameter
 	 * @throws IllegalArgumentException if the genes string is empty.
 	 */
 	public static CharacterChromosome of(final String alleles) {
@@ -224,6 +227,9 @@ public class CharacterChromosome
 	/**
 	 * Return a {@link Function} which returns the {@link Gene} with the given
 	 * {@code index} from this {@link Chromosome}.
+	 *
+	 * @param index the gene index within the chromosome
+	 * @return a function witch returns the gene at the given index
 	 */
 	public static Function<Chromosome<CharacterGene>, CharacterGene>
 	Gene(final int index)

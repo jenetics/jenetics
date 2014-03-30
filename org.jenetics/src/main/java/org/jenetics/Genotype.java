@@ -265,6 +265,9 @@ public final class Genotype<G extends Gene<?, G>>
 
 	/**
 	 * Return a converter which access the chromosome array of this genotype.
+	 *
+	 * @param <T> the gene type
+	 * @return a function object which returns the chromosomes for this genotype.
 	 */
 	public static <T extends Gene<?, T>>
 	Function<Genotype<T>, ISeq<Chromosome<T>>> Chromosomes()
@@ -279,6 +282,10 @@ public final class Genotype<G extends Gene<?, G>>
 	/**
 	 * Return a converter which access the chromosome with the given index of
 	 * this genotype.
+	 *
+	 * @param <T> the gene type
+	 * @param index the index of the chromosome
+	 * @return a function object which returns the chromosome at the given index.
 	 */
 	public static <T extends Gene<?, T>>
 	Function<Genotype<T>, Chromosome<T>> Chromosome(final int index)
@@ -292,6 +299,10 @@ public final class Genotype<G extends Gene<?, G>>
 
 	/**
 	 * Return a converter which access the first chromosome of this genotype.
+	 *
+	 * @param <T> the gene type
+	 * @return a function object which returns the first chromosome of this
+	 *         genotype.
 	 */
 	public static <T extends Gene<?, T>>
 	Function<Genotype<T>, Chromosome<T>> Chromosome()

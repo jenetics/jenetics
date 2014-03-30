@@ -231,7 +231,9 @@ public final class EnumGene<A>
 	 * Return a new enum gene with an allele randomly chosen from the given
 	 * valid alleles.
 	 *
+	 * @param <A> the allele type
 	 * @param validAlleles the sequence of valid alleles.
+	 * @return a new {@code EnumGene} with the given parameter
 	 * @throws java.lang.IllegalArgumentException if the give valid alleles
 	 *         sequence is empty
 	 * @throws NullPointerException if the valid alleles seq is {@code null}.
@@ -246,17 +248,18 @@ public final class EnumGene<A>
 	/**
 	 * Create a new enum gene from the given valid genes and the chosen allele
 	 * index.
+	 *
+	 * @param <A> the allele type
 	 * @param alleleIndex the index of the allele for this gene.
 	 * @param validAlleles the array of valid alleles.
-	 *
-	 * @return a new enum gene
+	 * @return a new {@code EnumGene} with the given parameter
 	 * @throws java.lang.IllegalArgumentException if the give valid alleles
 	 *         array is empty of the allele index is out of range.
 	 */
 	@SafeVarargs
-	public static <G> EnumGene<G> of(
+	public static <A> EnumGene<A> of(
 		final int alleleIndex,
-		final G... validAlleles
+		final A... validAlleles
 	) {
 		return new EnumGene<>(alleleIndex, Array.of(validAlleles).toISeq());
 	}
@@ -265,13 +268,14 @@ public final class EnumGene<A>
 	 * Return a new enum gene with an allele randomly chosen from the given
 	 * valid alleles.
 	 *
+	 * @param <A> the allele type
 	 * @param validAlleles the array of valid alleles.
-	 * @return a new enum gene
+	 * @return a new {@code EnumGene} with the given parameter
 	 * @throws java.lang.IllegalArgumentException if the give valid alleles
 	 *         array is empty
 	 */
 	@SafeVarargs
-	public static <G> EnumGene<G> of(final G... validAlleles) {
+	public static <A> EnumGene<A> of(final A... validAlleles) {
 		return EnumGene.of(Array.of(validAlleles).toISeq());
 	}
 

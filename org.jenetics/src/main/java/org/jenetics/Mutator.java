@@ -169,6 +169,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 *
 	 * @param genes the genes to mutate.
 	 * @param p the gene mutation probability.
+	 * @return the number of performed mutations
 	 */
 	protected int mutate(final MSeq<G> genes, final double p) {
 		final IndexStream stream = IndexStream.Random(genes.length(), p);
