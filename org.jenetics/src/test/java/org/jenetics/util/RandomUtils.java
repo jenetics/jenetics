@@ -65,7 +65,7 @@ public class RandomUtils {
 
 		char c = '\0';
 		do {
-			c = (char)(random().nextInt(surrogateStart - 1) + 1);
+			c = (char)random.nextInt(random(), Character.MIN_VALUE, Character.MAX_VALUE);
 		} while (!Character.isLetterOrDigit(c));
 
 		return c;
