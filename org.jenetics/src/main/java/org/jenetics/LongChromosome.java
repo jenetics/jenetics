@@ -103,6 +103,7 @@ public class LongChromosome
 	 * @param min the min value of the {@link LongGene}s (inclusively).
 	 * @param max the max value of the {@link LongGene}s (inclusively).
 	 * @param length the length of the chromosome.
+	 * @return a new {@code LongChromosome} with the given gene parameters.
 	 */
 	public static LongChromosome of(
 		final long min,
@@ -117,6 +118,7 @@ public class LongChromosome
 	 *
 	 * @param min the minimal value of this chromosome (inclusively).
 	 * @param max the maximal value of this chromosome (inclusively).
+	 * @return a new {@code LongChromosome} with the given gene parameters.
 	 */
 	public static LongChromosome of(final long min, final long max) {
 		return new LongChromosome(min, max);

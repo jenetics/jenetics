@@ -79,7 +79,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 *
 		 * @param statistics the statistics values. If the {@code statistics}
 		 *         is {@code null} nothing is set.
-		 * @return this builder.
+		 * @return this builder instance.
 		 */
 		public Builder<G, C> statistics(final Statistics<G, C> statistics) {
 			if (statistics != null) {
@@ -103,6 +103,9 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 		/**
 		 * @see Statistics#getGeneration()
+		 *
+		 * @param generation the current GA generation
+		 * @return this builder instance
 		 */
 		public Builder<G, C> generation(final int generation) {
 			_generation = generation;
@@ -111,6 +114,9 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 		/**
 		 * @see Statistics#getBestPhenotype()
+		 *
+		 * @param best the best phenotype
+		 * @return this builder instance
 		 */
 		public Builder<G, C> bestPhenotype(final Phenotype<G, C> best) {
 			_best = best;
@@ -119,6 +125,9 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 		/**
 		 * @see Statistics#getWorstPhenotype()
+		 *
+		 * @param worst the worst phenotype
+		 * @return this builder instance
 		 */
 		public Builder<G, C> worstPhenotype(final Phenotype<G, C> worst) {
 			_worst = worst;
@@ -127,6 +136,9 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 		/**
 		 * @see Statistics#getSamples()
+		 *
+		 * @param samples the number of samples for the statistics object.
+		 * @return this builder instance
 		 */
 		public Builder<G, C> samples(final int samples) {
 			_samples = samples;
@@ -135,6 +147,9 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 		/**
 		 * @see Statistics#getAgeMean()
+		 *
+		 * @param ageMean the mean of the population age
+		 * @return this builder instance
 		 */
 		public Builder<G, C> ageMean(final double ageMean) {
 			_ageMean = ageMean;
@@ -143,6 +158,9 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 		/**
 		 * @see Statistics#getAgeVariance()
+		 *
+		 * @param ageVariance the variance of the population age
+		 * @return this builder instance
 		 */
 		public Builder<G, C> ageVariance(final double ageVariance) {
 			_ageVariance = ageVariance;
@@ -151,6 +169,9 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 		/**
 		 * @see Statistics#getInvalid()
+		 *
+		 * @param invalid the number of valid individuals
+		 * @return this builder instance
 		 */
 		public Builder<G, C> invalid(final int invalid) {
 			_invalid = invalid;
@@ -159,6 +180,9 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 		/**
 		 * @see Statistics#getKilled()
+		 *
+		 * @param killed the number of killed individuals
+		 * @return this builder instance
 		 */
 		public Builder<G, C> killed(final int killed) {
 			_killed = killed;
@@ -203,6 +227,16 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	/**
 	 * Evaluates statistic values from a given population. The given phenotypes
 	 * may be {@code null}
+	 *
+	 * @param optimize the optimization strategy used
+	 * @param generation the generation for this statistics
+	 * @param best best phenotype
+	 * @param worst worst phenotype
+	 * @param samples number of samples of this statistics
+	 * @param ageMean the mean value of the individuals age
+	 * @param ageVariance the variance value of the individuals ages
+	 * @param killed the number of killed individuals
+	 * @param invalid the number of invalid individuals
 	 */
 	protected Statistics(
 		final Optimize optimize,

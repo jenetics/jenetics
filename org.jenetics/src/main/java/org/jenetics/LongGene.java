@@ -78,6 +78,7 @@ public final class LongGene
 	 * @param value the value of the gene.
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (inclusively).
+	 * @return a new {@code LongGene} with the given parameters.
 	 */
 	public static LongGene of(final long value, final long min, final long max) {
 		return new LongGene(value, min, max);
@@ -89,6 +90,7 @@ public final class LongGene
 	 *
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (inclusively).
+	 * @return a new {@code LongGene} with the given parameters.
 	 */
 	public static LongGene of(final long min, final long max) {
 		return of(nextLong(RandomRegistry.getRandom(), min, max), min, max);

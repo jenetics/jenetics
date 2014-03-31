@@ -61,6 +61,8 @@ public abstract class Recombinator<G extends Gene<?, G>>
 	 * Constructs an alterer with a given recombination probability.
 	 *
 	 * @param probability The recombination probability.
+	 * @param order the number of individuals involved in the
+	 *        {@link #recombine(Population, int[], int)} step
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
 	 *         valid range of {@code [0, 1]} or the given {@code order} is
 	 *         smaller than two.

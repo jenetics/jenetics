@@ -76,7 +76,7 @@ public class NumberStatistics<
 		 *
 		 * @param statistics the statistics values. If the {@code statistics}
 		 *         is {@code null} nothing is set.
-		 * @return this builder.
+		 * @return this builder instance.
 		 */
 		public Builder<G, R> statistics(final NumberStatistics<G, R> statistics) {
 			if (statistics != null) {
@@ -90,6 +90,9 @@ public class NumberStatistics<
 
 		/**
 		 * @see NumberStatistics#getFitnessMean()
+		 *
+		 * @param fitnessMean the mean of the fitness value
+		 * @return this builder instance
 		 */
 		public Builder<G, R> fitnessMean(final double fitnessMean) {
 			_fitnessMean = fitnessMean;
@@ -98,6 +101,9 @@ public class NumberStatistics<
 
 		/**
 		 * @see NumberStatistics#getFitnessVariance()
+		 *
+		 * @param fitnessVariance the variance of the fitness value
+		 * @return this builder instance
 		 */
 		public Builder<G, R> fitnessVariance(final double fitnessVariance) {
 			_fitnessVariance = fitnessVariance;
@@ -106,6 +112,9 @@ public class NumberStatistics<
 
 		/**
 		 * @see NumberStatistics#getStandardError()
+		 *
+		 * @param standardError the standard error of the fitness mean value
+		 * @return this builder instancett
 		 */
 		public Builder<G, R> standardError(final double standardError) {
 			_standardError = standardError;

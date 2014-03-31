@@ -192,6 +192,7 @@ public abstract class IO {
 	/**
 	 * Reads an object from the given file.
 	 *
+	 * @param <T> the type of the read object
 	 * @param path the path to read from.
 	 * @param type the type of the read object.
 	 * @return the de-serialized object.
@@ -221,6 +222,7 @@ public abstract class IO {
 	/**
 	 * Reads an object from the given file.
 	 *
+	 * @param <T> the type of the read object
 	 * @param path the path to read from.
 	 * @param type the type of the read object.
 	 * @return the de-serialized object.
@@ -250,6 +252,7 @@ public abstract class IO {
 	/**
 	 * Reads an object from the given file.
 	 *
+	 * @param <T> the type of the read object
 	 * @param file the file to read from.
 	 * @param type the type of the read object.
 	 * @return the de-serialized object.
@@ -279,6 +282,7 @@ public abstract class IO {
 	/**
 	 * Reads an object from the given input stream.
 	 *
+	 * @param <T> the type of the read object
 	 * @param in the input stream to read from.
 	 * @param type the type of the read object.
 	 * @return the de-serialized object.

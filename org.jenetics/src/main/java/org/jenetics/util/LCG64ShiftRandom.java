@@ -220,7 +220,7 @@ public class LCG64ShiftRandom extends Random64 {
 		 * Create a new PRNG using <i>block splitting</i> for guaranteeing well
 		 * distributed PRN for every thread.
 		 *
-		 * <p align="left">
+		 * <p>
 		 * <strong>Tina’s Random Number Generator Library</strong>
 		 * <br>
 		 * <em>Chapter 2. Pseudo-random numbers for parallel Monte Carlo
@@ -231,7 +231,6 @@ public class LCG64ShiftRandom extends Random64 {
 		 * [<a href="http://numbercrunch.de/trng/trng.pdf">
 		 *  http://numbercrunch.de/trng/trng.pdf
 		 *  </a>].
-		 * <p>
 		 */
 		@Override
 		protected synchronized LCG64ShiftRandom initialValue() {

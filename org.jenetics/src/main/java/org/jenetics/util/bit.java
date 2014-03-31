@@ -335,6 +335,7 @@ public final class bit extends StaticObject {
 	 *
 	 * @param data the data array.
 	 * @param index the index of the bit to flip.
+	 * @return the input array, for command chaining
 	 * @throws IndexOutOfBoundsException if the index is
 	 *          {@code index >= max || index < 0}.
 	 * @throws NullPointerException if the {@code data} array is {@code null}.

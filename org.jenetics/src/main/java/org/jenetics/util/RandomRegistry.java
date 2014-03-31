@@ -160,6 +160,7 @@ public final class RandomRegistry extends StaticObject {
 	/**
 	 * Opens a new {@code Scope} with the given random engine.
 	 *
+	 * @param <R> the type of the random engine
 	 * @param random the PRNG used for the opened scope.
 	 * @return the scope with the given random object.
 	 */
@@ -172,6 +173,7 @@ public final class RandomRegistry extends StaticObject {
 	/**
 	 * Opens a new {@code Scope} with the given random engine.
 	 *
+	 * @param <R> the type of the random engine
 	 * @param random the PRNG used for the opened scope.
 	 * @return the scope with the given random object.
 	 */

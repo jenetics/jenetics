@@ -210,6 +210,7 @@ public final class functions extends StaticObject {
 	/**
 	 * Return the identity function for the given type.
 	 *
+	 * @param <T> the parameter type for the identity function
 	 * @return the identity function for the given type.
 	 */
 	@SuppressWarnings("unchecked")

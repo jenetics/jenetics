@@ -396,9 +396,12 @@ public final class Phenotype<
 	 * The {@code Genotype} is copied to guarantee an immutable class. Only
 	 * the age of the {@code Phenotype} can be incremented.
 	 *
+	 * @param <G> the gene type of the chromosome
+	 * @param <C> the fitness value type
 	 * @param genotype the genotype of this phenotype.
 	 * @param fitnessFunction the fitness function of this phenotype.
 	 * @param generation the current generation of the generated phenotype.
+	 * @return a new phenotype from the given parameters
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the given {@code generation} is
 	 *         {@code < 0}.
@@ -415,6 +418,8 @@ public final class Phenotype<
 	/**
 	 * Create a new phenotype from the given arguments.
 	 *
+	 * @param <G> the gene type of the chromosome
+	 * @param <C> the fitness value type
 	 * @param genotype the genotype of this phenotype.
 	 * @param fitnessFunction the fitness function of this phenotype.
 	 * @param fitnessScaler the fitness scaler.
