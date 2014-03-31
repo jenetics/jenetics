@@ -21,7 +21,6 @@ package org.jenetics;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.object.NonNull;
 import static org.jenetics.internal.util.object.eq;
 
 import java.util.Deque;
@@ -32,7 +31,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Seq;
 
@@ -41,7 +39,7 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-30 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public final class CompositeAlterer<G extends Gene<?, G>>
 	extends AbstractAlterer<G>
@@ -58,7 +56,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	public CompositeAlterer(final Seq<Alterer<G>> alterers) {
 		super(1.0);
 
-		alterers.forAll(NonNull("Alterer"));
+		//alterers.forEach(NonNull("Alterer"));
 		_alterers = normalize(alterers).toISeq();
 	}
 
@@ -89,14 +87,9 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	public <C extends Comparable<? super C>>
 	int alter(final Population<G, C> population, final int generation) {
 		final AtomicInteger alterations = new AtomicInteger(0);
-
-		_alterers.forEach(new Function<Alterer<G>, Void>() {
-			@Override public Void apply(final Alterer<G> alterer) {
-				alterations.addAndGet(alterer.alter(population, generation));
-				return null;
-			}
+		_alterers.forEach(a -> {
+			alterations.addAndGet(a.alter(population, generation));
 		});
-
 		return alterations.get();
 	}
 

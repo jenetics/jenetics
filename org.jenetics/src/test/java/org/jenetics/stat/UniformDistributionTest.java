@@ -19,14 +19,14 @@
  */
 package org.jenetics.stat;
 
+import java.util.function.Function;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.Function;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-10 $</em>
+ * @version <em>$Date: 2014-03-31 $</em>
  */
 public class UniformDistributionTest {
 

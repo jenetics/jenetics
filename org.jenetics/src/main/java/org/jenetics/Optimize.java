@@ -27,7 +27,7 @@ import java.util.Comparator;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public enum Optimize {
 
@@ -81,7 +81,7 @@ public enum Optimize {
 	 * population.sort(Optimize.MINIMUM.&lt;Double&gt;descending());
 	 * [/code]
 	 *
-	 * The code example above will sort the population according it's fitness
+	 * The code example above will populationSort the population according it's fitness
 	 * values in ascending order, since lower values are <i>better</i> in this
 	 * case.
 	 *
@@ -89,12 +89,7 @@ public enum Optimize {
 	 * @return a new {@link Comparator} for the type {@code T}.
 	 */
 	public <T extends Comparable<? super T>> Comparator<T> descending() {
-		return new Comparator<T>() {
-			@Override
-			public int compare(final T o1, final T o2) {
-				return Optimize.this.compare(o2, o1);
-			}
-		};
+		return (o1, o2) -> Optimize.this.compare(o2, o1);
 	}
 
 	/**
@@ -108,7 +103,7 @@ public enum Optimize {
 	 * population.sort(Optimize.MINIMUM.&lt;Double&gt;ascending());
 	 * [/code]
 	 *
-	 * The code example above will sort the population according it's fitness
+	 * The code example above will populationSort the population according it's fitness
 	 * values in descending order, since lower values are <i>better</i> in this
 	 * case.
 	 *
@@ -116,12 +111,7 @@ public enum Optimize {
 	 * @return a new {@link Comparator} for the type {@code T}.
 	 */
 	public <T extends Comparable<? super T>> Comparator<T> ascending() {
-		return new Comparator<T>() {
-			@Override
-			public int compare(final T o1, final T o2) {
-				return Optimize.this.compare(o1, o2);
-			}
-		};
+		return (o1, o2) -> Optimize.this.compare(o1, o2);
 	}
 
 	/**

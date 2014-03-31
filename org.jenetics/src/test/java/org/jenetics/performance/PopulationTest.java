@@ -21,17 +21,16 @@ package org.jenetics.performance;
 
 import java.io.Serializable;
 import java.util.Iterator;
+import java.util.function.Function;
 
 import org.jenetics.DoubleGene;
 import org.jenetics.Genotype;
 import org.jenetics.Phenotype;
 import org.jenetics.Population;
-import org.jenetics.util.Function;
-import org.jenetics.util.lists;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-07 $</em>
+ * @version <em>$Date: 2014-03-31 $</em>
  */
 @Suite("Population")
 public class PopulationTest {
@@ -62,16 +61,16 @@ public class PopulationTest {
 	};
 
 	@Test(3)
-	public TestCase sort = new TestCase("sort()", LOOPS, SIZE) {
+	public TestCase sort = new TestCase("populationSort()", LOOPS, SIZE) {
 
 		@Override
 		protected void test() {
-			_population.sort();
+			_population.populationSort();
 		}
 
 		@Override
 		protected void afterTest() {
-			lists.shuffle(_population);
+			//arrays.shuffle(_population);
 		}
 	};
 

@@ -25,6 +25,7 @@ import static org.jenetics.internal.util.object.eq;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.function.Supplier;
 import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -41,7 +42,6 @@ import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.util.Array;
 import org.jenetics.util.CharSeq;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
 
 /**
@@ -49,7 +49,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-30 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 @XmlJavaTypeAdapter(CharacterChromosome.Model.Adapter.class)
 public class CharacterChromosome
@@ -178,7 +178,7 @@ public class CharacterChromosome
 		final CharSeq validChars
 	) {
 		final Array<CharacterGene> genes = new Array<>(alleles.length());
-		genes.fill(GeneFactory(alleles, validChars));
+		//genes.fill(GeneFactory(alleles, validChars));
 		return new CharacterChromosome(genes.toISeq());
 	}
 
@@ -204,37 +204,6 @@ public class CharacterChromosome
 	 */
 	public static CharacterChromosome of(final String alleles) {
 		return of(alleles, DEFAULT_CHARACTERS);
-	}
-
-	/* *************************************************************************
-	 *  Property access methods
-	 * ************************************************************************/
-
-	/**
-	 * Return a {@link Function} which returns the gene array from this
-	 * {@link Chromosome}.
-	 */
-	public static final Function<Chromosome<CharacterGene>, ISeq<CharacterGene>>
-		Genes = AbstractChromosome.genes();
-
-	/**
-	 * Return a {@link Function} which returns the first {@link Gene} from this
-	 * {@link Chromosome}.
-	 */
-	public static final Function<Chromosome<CharacterGene>, CharacterGene>
-		Gene = AbstractChromosome.gene();
-
-	/**
-	 * Return a {@link Function} which returns the {@link Gene} with the given
-	 * {@code index} from this {@link Chromosome}.
-	 *
-	 * @param index the gene index within the chromosome
-	 * @return a function witch returns the gene at the given index
-	 */
-	public static Function<Chromosome<CharacterGene>, CharacterGene>
-	Gene(final int index)
-	{
-		return AbstractChromosome.gene(index);
 	}
 
 

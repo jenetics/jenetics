@@ -29,7 +29,6 @@ import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.util.IndexStream;
 import org.jenetics.util.MSeq;
 
-
 /**
  * This class is for mutating a chromosomes of an given population. There are
  * two distinct roles mutation plays
@@ -66,7 +65,7 @@ import org.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-30 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 

@@ -24,6 +24,7 @@ import static org.jenetics.internal.util.object.eq;
 
 import java.io.Serializable;
 import java.util.Random;
+import java.util.function.Function;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -38,7 +39,6 @@ import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.CharSeq;
-import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
 
@@ -47,7 +47,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-30 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 @XmlJavaTypeAdapter(CharacterGene.Model.Adapter.class)
 public final class CharacterGene
@@ -173,22 +173,14 @@ public final class CharacterGene
 	/**
 	 * Converter for accessing the allele from a given gene.
 	 */
-	public static final Function<CharacterGene, Character> Allele =
-		new Function<CharacterGene, Character>() {
-			@Override public Character apply(final CharacterGene value) {
-				return value._character;
-			}
-		};
+	public static final Function<CharacterGene, Character>
+	Allele = value -> value._character;
 
 	/**
 	 * Converter for accessing the valid characters from a given gene.
 	 */
-	public static final Function<CharacterGene, CharSeq> ValidCharacters =
-		new Function<CharacterGene, CharSeq>() {
-			@Override public CharSeq apply(final CharacterGene value) {
-				return value._validCharacters;
-			}
-		};
+	public static final Function<CharacterGene, CharSeq>
+	ValidCharacters = value -> value._validCharacters;
 
 
 	/* *************************************************************************

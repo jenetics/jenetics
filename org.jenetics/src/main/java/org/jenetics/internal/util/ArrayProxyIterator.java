@@ -22,11 +22,10 @@ package org.jenetics.internal.util;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.5 &mdash; <em>$Date: 2013-12-04 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2013-12-18 $</em>
  */
 public class ArrayProxyIterator<T> implements ListIterator<T> {
 

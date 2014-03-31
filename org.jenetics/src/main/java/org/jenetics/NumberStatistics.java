@@ -26,8 +26,8 @@ import static org.jenetics.internal.util.object.eq;
 import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.stat.Variance;
-import org.jenetics.util.accumulators;
-import org.jenetics.util.accumulators.MinMax;
+import org.jenetics.util.Accumulator;
+import org.jenetics.util.Accumulator.MinMax;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -277,11 +277,11 @@ public class NumberStatistics<
 			final Variance<Integer> age = new Variance<>();
 			final Variance<R> fitness = new Variance<>();
 
-			accumulators.<Phenotype<G, R>>accumulate(
+			Accumulator.accumulate(
 					population,
 					minMax,
-					age.map(Phenotype.Age(generation)),
-					fitness.map(Phenotype.<R>Fitness())
+					age.<Phenotype<G, R>>map(pt -> pt.getAge(generation)),
+					fitness.<Phenotype<G, R>>map(pt -> pt.getFitness())
 				);
 			builder.bestPhenotype(opt.best(minMax.getMax(), minMax.getMin()));
 			builder.worstPhenotype(opt.worst(minMax.getMax(), minMax.getMin()));

@@ -19,11 +19,7 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.arrays.isSorted;
 import static org.jenetics.util.factories.Int;
-import static org.jenetics.util.functions.Null;
-import static org.jenetics.util.functions.ObjectToString;
-import static org.jenetics.util.functions.not;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -38,18 +34,11 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-16 $</em>
+ * @version <em>$Date: 2014-03-31 $</em>
  */
 public class ArrayTest extends ObjectTester<Array<Double>> {
 
-	static Factory<Double> RANDOM = new Factory<Double>() {
-		private final Random random = new Random();
-		@Override
-		public Double newInstance() {
-			return random.nextDouble();
-		}
-
-	};
+	private final Random _random = new Random();
 
 	final Factory<Array<Double>> _factory = new Factory<Array<Double>>() {
 		@Override
@@ -184,7 +173,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 		array.set(18, null);
 		array.set(19, null);
 
-		final Array<Integer> filtered = array.filter(not(Null));
+		final Array<Integer> filtered = array.filter(o -> o != null);
 		Assert.assertEquals(filtered.length(), array.length() - 2);
 
 		for (Integer value : filtered) {
@@ -406,28 +395,23 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	public void sort() {
 		final Array<Integer> integers = new Array<Integer>(10000).fill(Int());
 
-		Assert.assertTrue(arrays.isSorted(integers));
+		Assert.assertTrue(integers.isSorted());
 
 		integers.sort();
-		Assert.assertTrue(arrays.isSorted(integers));
+		Assert.assertTrue(integers.isSorted());
 
-		shuffling.shuffle(integers, new Random());
+		integers.shuffle(new Random());
 		integers.sort();
-		Assert.assertTrue(arrays.isSorted(integers));
+		Assert.assertTrue(integers.isSorted());
 	}
 
 	@Test
 	public void sort2() {
 		final Random random = new Random();
-		final Factory<Integer> factory = new Factory<Integer>() {
-			@Override public Integer newInstance() {
-				return random.nextInt(10000);
-			}
-		};
 
 		final Array<Integer> array = new Array<>(100);
-		array.fill(factory);
-		Assert.assertFalse(isSorted(array));
+		array.fill(() -> random.nextInt(10000));
+		Assert.assertFalse(array.isSorted());
 
 		final Array<Integer> clonedArray = array.copy();
 		Assert.assertEquals(array, clonedArray);
@@ -441,7 +425,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	public void map() {
 		final Array<Integer> integers = new Array<Integer>(20).fill(Int());
 
-		final Array<String> strings = integers.map(ObjectToString);
+		final Array<String> strings = integers.map(o -> o.toString());
 
 		Assert.assertEquals(strings.length(), integers.length());
 		for (int i = 0; i < strings.length(); ++i) {
@@ -453,9 +437,9 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	public void reverse() {
 		final Array<Integer> integers = new Array<Integer>(1000).fill(Int(999, -1));
 
-		Assert.assertFalse(arrays.isSorted(integers));
+		Assert.assertFalse(integers.isSorted());
 		integers.reverse();
-		Assert.assertTrue(arrays.isSorted(integers));
+		Assert.assertTrue(integers.isSorted());
 	}
 
 	@Test
@@ -528,13 +512,13 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	@Test
 	public void asList() {
 		final Array<Integer> integers = new Array<Integer>(1000).fill(Int());
-		Assert.assertTrue(arrays.isSorted(integers));
+		Assert.assertTrue(integers.isSorted());
 
-		shuffling.shuffle(integers, new Random());
-		Assert.assertFalse(arrays.isSorted(integers));
+		integers.shuffle(new Random());
+		Assert.assertFalse(integers.isSorted());
 
 		Collections.sort(integers.asList());
-		Assert.assertTrue(arrays.isSorted(integers));
+		Assert.assertTrue(integers.isSorted());
 	}
 
 	@Test
@@ -566,7 +550,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	void immutableFill() {
 		immutable(new ArrayAlterer() {
 			@Override public void alter(final MSeq<Double> seq) {
-				seq.fill(RANDOM);
+				seq.fill(() -> _random.nextDouble());
 			}
 		});
 	}
@@ -620,23 +604,19 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 		final Array<Integer> array = new Array<Integer>(10).setAll(123);
 		array.toISeq();
 		final AtomicInteger count = new AtomicInteger(0);
-		boolean value = array.forAll(new Function<Integer, Boolean>() {
-			@Override public Boolean apply(Integer object) {
-				Assert.assertEquals(object, new Integer(123));
-				count.addAndGet(1);
-				return Boolean.TRUE;
-			}
+		boolean value = array.forAll(object -> {
+			Assert.assertEquals(object, new Integer(123));
+			count.addAndGet(1);
+			return true;
 		});
 
 		Assert.assertEquals(value, true);
 		Assert.assertEquals(count.get(), 10);
 
 		count.set(0);
-		int result = array.indexWhere(new Function<Integer, Boolean>() {
-			@Override public Boolean apply(Integer object) {
-				Assert.assertEquals(object, new Integer(123));
-				return count.addAndGet(1) == 5;
-			}
+		int result = array.indexWhere(o -> {
+			Assert.assertEquals(o, new Integer(123));
+			return count.addAndGet(1) == 5;
 		});
 
 		Assert.assertEquals(count.get(), 5);

@@ -19,17 +19,12 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.internal.util.object.CheckRange;
-import static org.jenetics.internal.util.object.NonNull;
-import static org.jenetics.internal.util.object.Verify;
-import static org.jenetics.util.functions.not;
-
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-07 $</em>
+ * @version <em>$Date: 2014-03-31 $</em>
  */
 public class objectTest {
 
@@ -39,7 +34,8 @@ public class objectTest {
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, i);
 		}
-		array.forEach(CheckRange(0, 100));
+		//array.forEach(CheckRange(0, 100));
+		assert(false);
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
@@ -49,7 +45,7 @@ public class objectTest {
 			array.set(i, i);
 		}
 		array.set(45, null);
-		array.forEach(CheckRange(0, 100));
+		//array.forEach(CheckRange(0, 100));
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -59,7 +55,7 @@ public class objectTest {
 			array.set(i, i);
 		}
 		array.set(45, 333);
-		array.forEach(CheckRange(0, 100));
+		//array.forEach(CheckRange(0, 100));
 	}
 
 	@Test
@@ -72,14 +68,14 @@ public class objectTest {
 				}
 			});
 		}
-		Assert.assertEquals(array.indexWhere(not(Verify)), -1);
+		Assert.assertEquals(array.indexWhere(o -> !o.isValid()), -1);
 
 		array.set(77, new Verifiable() {
 			@Override public boolean isValid() {
 				return false;
 			}
 		});
-		Assert.assertEquals(array.indexWhere(not(Verify)), 77);
+		Assert.assertEquals(array.indexWhere(o -> !o.isValid()), 77);
 	}
 
 	@Test
@@ -89,7 +85,7 @@ public class objectTest {
 			array.set(i, i);
 		}
 
-		array.forEach(NonNull);
+		//array.forEach(NonNull);
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
@@ -99,7 +95,7 @@ public class objectTest {
 			array.set(i, i);
 		}
 		array.set(45, null);
-		array.forEach(NonNull);
+		//array.forEach(NonNull);
 	}
 
 }

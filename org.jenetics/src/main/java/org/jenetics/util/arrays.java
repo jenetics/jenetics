@@ -24,18 +24,17 @@ import static java.util.Objects.requireNonNull;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
+import java.util.function.Function;
 
 /**
  * Static helper methods concerning arrays.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public final class arrays extends StaticObject {
 	private arrays() {}
-
 
 	/**
 	 * Unified method for calculating the hash code of every {@link Seq}
@@ -51,7 +50,7 @@ public final class arrays extends StaticObject {
 	 * [/code]
 	 *
 	 * @see Seq#hashCode()
-	 * @see List#hashCode()
+	 * @see java.util.List#hashCode()
 	 *
 	 * @param seq the sequence to calculate the hash code for.
 	 * @return the hash code of the given sequence.
@@ -113,8 +112,10 @@ public final class arrays extends StaticObject {
 	}
 
 	/**
+	 *
 	 * Test whether the given array is sorted in ascending order.
 	 *
+	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
 	 * @param <T> the array element type
 	 * @param seq the array to test.
 	 * @return {@code true} if the given {@code array} is sorted in ascending

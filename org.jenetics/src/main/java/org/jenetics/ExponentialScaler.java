@@ -23,10 +23,9 @@ import static java.lang.String.format;
 import static org.jenetics.internal.util.object.eq;
 
 import java.io.Serializable;
+import java.util.function.Function;
 
 import org.jenetics.internal.util.HashBuilder;
-
-import org.jenetics.util.Function;
 
 /**
  * Implements an exponential fitness scaling, whereby all fitness values are
@@ -37,7 +36,7 @@ import org.jenetics.util.Function;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public final class ExponentialScaler
 	implements

@@ -24,6 +24,7 @@ import static java.lang.Math.abs;
 import static java.lang.Math.sin;
 
 import java.io.Serializable;
+import java.util.function.Function;
 
 import org.jenetics.Chromosome;
 import org.jenetics.EnumGene;
@@ -35,14 +36,13 @@ import org.jenetics.PartiallyMatchedCrossover;
 import org.jenetics.PermutationChromosome;
 import org.jenetics.SwapMutator;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Function;
 
 /**
  * The classical <a href="http://en.wikipedia.org/wiki/Travelling_salesman_problem">TSP</a>.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public class TravelingSalesman {
 

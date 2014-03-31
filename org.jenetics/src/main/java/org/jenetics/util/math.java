@@ -29,7 +29,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.4 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public final class math extends StaticObject {
 	private math() {}
@@ -42,7 +42,10 @@ public final class math extends StaticObject {
 	 * @param b the second summand.
 	 * @return the sum of the given values.
 	 * @throws ArithmeticException if the summation would lead to an overflow.
+	 *
+	 * @deprecated Use {@link Math#addExact(long, long)} instead.
 	 */
+	@Deprecated
 	public static long plus(final long a, final long b) {
 		final long z = a + b;
 		if (((a^z) & (b^z)) < 0) {
@@ -60,7 +63,10 @@ public final class math extends StaticObject {
 	 * @param b the subtrahend.
 	 * @return the difference of the given values.
 	 * @throws ArithmeticException if the subtraction would lead to an overflow.
+	 *
+	 * @deprecated Use {@link Math#subtractExact(long, long)} instead.
 	 */
+	@Deprecated
 	public static long minus(final long a, final long b) {
 		final long z = a - b;
 		if (((a^b) & (a^z)) < 0) {
@@ -185,7 +191,7 @@ public final class math extends StaticObject {
 	 * @throws ArithmeticException if the distance doesn't fit in a long value.
 	 */
 	public static long ulpDistance(final double a, final double b) {
-		return minus(ulpPosition(a), ulpPosition(b));
+		return Math.subtractExact(ulpPosition(a), ulpPosition(b));
 	}
 
 	/**

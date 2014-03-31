@@ -28,7 +28,7 @@ import org.jenetics.util.Copyable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.5 &mdash; <em>$Date: 2014-03-28 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public abstract class ArrayProxy<T> implements Copyable<ArrayProxy<T>> {
 

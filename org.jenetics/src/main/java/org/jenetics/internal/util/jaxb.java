@@ -24,6 +24,7 @@ import static org.jenetics.internal.util.reflect.classOf;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -31,14 +32,13 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.jenetics.internal.util.model.CharacterModel;
 
-import org.jenetics.util.Function;
 import org.jenetics.util.StaticObject;
 
 /**
  * JAXB helper methods.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-20 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-31 $</em>
  * @since 2.0
  */
 public class jaxb extends StaticObject {

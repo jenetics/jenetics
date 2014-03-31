@@ -28,9 +28,7 @@ import static org.jenetics.util.math.ulpDistance;
 
 import java.util.Random;
 
-import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
-
 
 /**
  * Probability selectors are a variation of fitness proportional selectors and
@@ -47,7 +45,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public abstract class ProbabilitySelector<
 	G extends Gene<?, G>,
@@ -84,45 +82,16 @@ public abstract class ProbabilitySelector<
 			assert (sum2one(probabilities)) : "Probabilities doesn't sum to one.";
 
 			incremental(probabilities);
-			final Factory<Phenotype<G, C>> factory = factory(
-				population, probabilities, RandomRegistry.getRandom()
-			);
 
-			selection.fill(factory, count);
+			final Random random = RandomRegistry.getRandom();
+			selection.fill(
+				() -> population.get(indexOf(probabilities, random.nextDouble())),
+				count
+			);
 			assert (count == selection.size());
 		}
 
 		return selection;
-	}
-
-	private static <
-		G extends Gene<?, G>,
-		C extends Comparable<? super C>
-	>
-	Factory<Phenotype<G, C>> factory(
-		final Population<G, C> population,
-		final double[] probabilities,
-		final Random random
-	) {
-		return new Factory<Phenotype<G, C>>() {
-			@Override
-			public Phenotype<G, C> newInstance() {
-				return select(population, probabilities, random);
-			}
-		};
-	}
-
-	private static <
-		G extends Gene<?, G>,
-		C extends Comparable<? super C>
-	>
-	Phenotype<G, C> select(
-		final Population<G, C> population,
-		final double[] probabilities,
-		final Random random
-	) {
-		final double value = random.nextDouble();
-		return population.get(indexOf(probabilities, value));
 	}
 
 	/**

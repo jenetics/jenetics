@@ -21,15 +21,15 @@ package org.jenetics;
 
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.Function;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-17 $</em>
+ * @version <em>$Date: 2014-03-07 $</em>
  */
 public class terminationTest {
 
@@ -80,10 +80,10 @@ public class terminationTest {
 		ga.setup();
 		values.addFirst(ga.getBestPhenotype().getFitness());
 
-		final Function<Statistics<?, Double>, Boolean> until =
-			termination.<Double>SteadyFitness(steadyGenerations);
+		final Predicate<Statistics<?, Double>> until =
+			termination.SteadyFitness(steadyGenerations);
 
-		while (until.apply(ga.getStatistics())) {
+		while (until.test(ga.getStatistics())) {
 			ga.evolve();
 			values.addFirst(ga.getBestPhenotype().getFitness());
 

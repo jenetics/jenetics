@@ -19,7 +19,7 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.accumulators.accumulate;
+import static org.jenetics.util.Accumulator.accumulate;
 
 import java.util.Iterator;
 
@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-17 $</em>
+ * @version <em>$Date: 2014-03-31 $</em>
  */
 public class accumulatorsTest {
 
@@ -72,7 +72,7 @@ public class accumulatorsTest {
 
 	@Test
 	public void callSpeed() {
-		final Accumulator<Integer> accumulator = new MappedAccumulator<Integer>() {};
+		final Accumulator<Integer> accumulator = new AbstractAccumulator<Integer>() {};
 		Timer timer = new Timer();
 		timer.start();
 		for (long i = 0, n = 100000000L; i < n; ++i) {
@@ -88,7 +88,7 @@ public class accumulatorsTest {
 	@Test
 	public void accumulate1() {
 		final int SAMPLES = 1000;
-		final MappedAccumulator<Integer> accumulator = new MappedAccumulator<Integer>(){};
+		final AbstractAccumulator<Integer> accumulator = new AbstractAccumulator<Integer>(){};
 		accumulate(new IntegerIterator(SAMPLES), accumulator);
 
 		Assert.assertEquals(accumulator.getSamples(), SAMPLES);
@@ -97,7 +97,7 @@ public class accumulatorsTest {
 	@Test
 	public void accumulate2() {
 		final int SAMPLES = 1000;
-		final MappedAccumulator<Integer> accumulator = new MappedAccumulator<Integer>(){};
+		final AbstractAccumulator<Integer> accumulator = new AbstractAccumulator<Integer>(){};
 		accumulate(new IntegerIterable(SAMPLES), accumulator);
 
 		Assert.assertEquals(accumulator.getSamples(), SAMPLES);
@@ -106,8 +106,8 @@ public class accumulatorsTest {
 	@Test
 	public void accumulate3() {
 		final int SAMPLES = 1000;
-		final MappedAccumulator<Integer> accumulator1 = new MappedAccumulator<Integer>(){};
-		final MappedAccumulator<Integer> accumulator2 = new MappedAccumulator<Integer>(){};
+		final AbstractAccumulator<Integer> accumulator1 = new AbstractAccumulator<Integer>(){};
+		final AbstractAccumulator<Integer> accumulator2 = new AbstractAccumulator<Integer>(){};
 
 		accumulate(
 				new IntegerIterable(SAMPLES),
@@ -122,9 +122,9 @@ public class accumulatorsTest {
 	@Test
 	public void accumulate4() {
 		final int SAMPLES = 1000;
-		final MappedAccumulator<Integer> accumulator1 = new MappedAccumulator<Integer>(){};
-		final MappedAccumulator<Integer> accumulator2 = new MappedAccumulator<Integer>(){};
-		final MappedAccumulator<Integer> accumulator3 = new MappedAccumulator<Integer>(){};
+		final AbstractAccumulator<Integer> accumulator1 = new AbstractAccumulator<Integer>(){};
+		final AbstractAccumulator<Integer> accumulator2 = new AbstractAccumulator<Integer>(){};
+		final AbstractAccumulator<Integer> accumulator3 = new AbstractAccumulator<Integer>(){};
 
 		accumulate(
 				new IntegerIterable(SAMPLES),
@@ -141,10 +141,10 @@ public class accumulatorsTest {
 	@Test
 	public void accumulate5() {
 		final int SAMPLES = 1000;
-		final MappedAccumulator<Integer> accumulator1 = new MappedAccumulator<Integer>(){};
-		final MappedAccumulator<Integer> accumulator2 = new MappedAccumulator<Integer>(){};
-		final MappedAccumulator<Integer> accumulator3 = new MappedAccumulator<Integer>(){};
-		final MappedAccumulator<Integer> accumulator4 = new MappedAccumulator<Integer>(){};
+		final AbstractAccumulator<Integer> accumulator1 = new AbstractAccumulator<Integer>(){};
+		final AbstractAccumulator<Integer> accumulator2 = new AbstractAccumulator<Integer>(){};
+		final AbstractAccumulator<Integer> accumulator3 = new AbstractAccumulator<Integer>(){};
+		final AbstractAccumulator<Integer> accumulator4 = new AbstractAccumulator<Integer>(){};
 
 		accumulate(
 				new IntegerIterable(SAMPLES),
@@ -163,11 +163,11 @@ public class accumulatorsTest {
 	@Test
 	public void accumulate6() {
 		final int SAMPLES = 1000;
-		final MappedAccumulator<Integer> accumulator1 = new MappedAccumulator<Integer>(){};
-		final MappedAccumulator<Integer> accumulator2 = new MappedAccumulator<Integer>(){};
-		final MappedAccumulator<Integer> accumulator3 = new MappedAccumulator<Integer>(){};
-		final MappedAccumulator<Integer> accumulator4 = new MappedAccumulator<Integer>(){};
-		final MappedAccumulator<Integer> accumulator5 = new MappedAccumulator<Integer>(){};
+		final AbstractAccumulator<Integer> accumulator1 = new AbstractAccumulator<Integer>(){};
+		final AbstractAccumulator<Integer> accumulator2 = new AbstractAccumulator<Integer>(){};
+		final AbstractAccumulator<Integer> accumulator3 = new AbstractAccumulator<Integer>(){};
+		final AbstractAccumulator<Integer> accumulator4 = new AbstractAccumulator<Integer>(){};
+		final AbstractAccumulator<Integer> accumulator5 = new AbstractAccumulator<Integer>(){};
 
 		accumulate(
 				new IntegerIterable(SAMPLES),
@@ -188,12 +188,12 @@ public class accumulatorsTest {
 	@Test
 	public void accumulate7() {
 		final Seq<String> data = Array.of("-10", "1", "2", "3", "4", "5");
-		final accumulators.Max<Integer> max = new accumulators.Max<>();
-		final accumulators.Min<Integer> min = new accumulators.Min<>();
-		accumulators.accumulate(
+		final Accumulator.Max<Integer> max = new Accumulator.Max<>();
+		final Accumulator.Min<Integer> min = new Accumulator.Min<>();
+		Accumulator.accumulate(
 			data,
-			max.map(functions.StringToInteger),
-			min.map(functions.StringLength)
+			max.<String>map(s -> Integer.parseInt(s)),
+			min.<String>map(s -> s.length())
 		);
 		System.out.println(String.format(
 			"Max value:  %s, min length: %s.", max.getMax(), min.getMin()
@@ -203,9 +203,9 @@ public class accumulatorsTest {
 	@Test
 	public void accumulateN() {
 		final int SAMPLES = 1000;
-		final Array<MappedAccumulator<Integer>> accumulators = new Array<>(10);
+		final Array<AbstractAccumulator<Integer>> accumulators = new Array<>(10);
 		for (int i = 0; i < accumulators.length(); ++i) {
-			accumulators.set(i, new MappedAccumulator<Integer>(){});
+			accumulators.set(i, new AbstractAccumulator<Integer>(){});
 		}
 
 		accumulate(
@@ -213,7 +213,7 @@ public class accumulatorsTest {
 				accumulators
 			);
 
-		for (MappedAccumulator<Integer> accumulator : accumulators) {
+		for (AbstractAccumulator<Integer> accumulator : accumulators) {
 			Assert.assertEquals(accumulator.getSamples(), SAMPLES);
 		}
 	}

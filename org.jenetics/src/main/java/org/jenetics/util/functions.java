@@ -24,6 +24,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * This class contains some short general purpose functions.

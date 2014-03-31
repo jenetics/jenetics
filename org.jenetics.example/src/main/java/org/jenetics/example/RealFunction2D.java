@@ -19,6 +19,8 @@
  */
 package org.jenetics.example;
 
+import java.util.function.Function;
+
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
 import org.jenetics.GaussianMutator;
@@ -27,7 +29,6 @@ import org.jenetics.Genotype;
 import org.jenetics.MeanAlterer;
 import org.jenetics.TournamentSelector;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Function;
 
 final class Real2D implements Function<Genotype<DoubleGene>, Double> {
 	@Override

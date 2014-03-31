@@ -19,7 +19,7 @@
  */
 package org.jenetics.stat;
 
-import org.jenetics.util.Function;
+import java.util.function.Function;
 import org.jenetics.util.Range;
 
 /**
@@ -28,7 +28,7 @@ import org.jenetics.util.Range;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public interface Distribution<C extends Comparable<? super C>> {
 

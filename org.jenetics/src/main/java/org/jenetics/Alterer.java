@@ -39,10 +39,11 @@ package org.jenetics;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-30 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public interface Alterer<G extends Gene<?, G>> {
 
+	public static final double DEFAULT_ALTER_PROBABILITY = 0.2;
 
 	/**
 	 * Alters (recombine) a given population. If the {@code population}

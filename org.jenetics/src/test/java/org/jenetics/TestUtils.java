@@ -21,15 +21,15 @@ package org.jenetics;
 
 import java.io.Serializable;
 import java.util.Random;
+import java.util.function.Function;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-10 $</em>
+ * @version <em>$Date: 2014-03-31 $</em>
  */
 class TestUtils {
 

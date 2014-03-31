@@ -30,11 +30,15 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-03-31 $</em>
  */
 abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	private static final long serialVersionUID = 1L;
@@ -80,16 +84,6 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 
 	@Override
-	public int indexOf(final Object element) {
-		return indexOf(element, 0, length());
-	}
-
-	@Override
-	public int indexOf(final Object element, final int start) {
-		return indexOf(element, start, length());
-	}
-
-	@Override
 	public int indexOf(final Object element, final int start, final int end) {
 		checkIndex(start, end);
 
@@ -113,21 +107,8 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 
 	@Override
-	public int indexWhere(final Function<? super T, Boolean> predicate) {
-		return indexWhere(predicate, 0, length());
-	}
-
-	@Override
 	public int indexWhere(
-		final Function<? super T, Boolean> predicate,
-		final int start
-	) {
-		return indexWhere(predicate, start, length());
-	}
-
-	@Override
-	public int indexWhere(
-		final Function<? super T, Boolean> predicate,
+		final Predicate<? super T> predicate,
 		final int start,
 		final int end
 	) {
@@ -139,22 +120,12 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 			@SuppressWarnings("unchecked")
 			final T element = (T)_array.data[i];
 
-			if (predicate.apply(element) == Boolean.TRUE) {
+			if (predicate.test(element)) {
 				index = i - _start;
 			}
 		}
 
 		return index;
-	}
-
-	@Override
-	public int lastIndexOf(final Object element) {
-		return lastIndexOf(element, 0, length());
-	}
-
-	@Override
-	public int lastIndexOf(final Object element, final int end) {
-		return lastIndexOf(element, 0, end);
 	}
 
 	@Override
@@ -181,21 +152,8 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 
 	@Override
-	public int lastIndexWhere(final Function<? super T, Boolean> predicate) {
-		return lastIndexWhere(predicate, 0, length());
-	}
-
-	@Override
 	public int lastIndexWhere(
-		final Function<? super T, Boolean> predicate,
-		final int end
-	) {
-		return lastIndexWhere(predicate, 0, end);
-	}
-
-	@Override
-	public int lastIndexWhere(
-		final Function<? super T, Boolean> predicate,
+		final Predicate<? super T> predicate,
 		final int start,
 		final int end
 	) {
@@ -207,7 +165,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		for (int i = end + _start; --i >= start +_start && index == -1;) {
 			@SuppressWarnings("unchecked")
 			final T element = (T)_array.data[i];
-			if (predicate.apply(element) == Boolean.TRUE) {
+			if (predicate.test(element)) {
 				index = i - _start;
 			}
 		}
@@ -216,58 +174,51 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 
 	@Override
-	public <R> void forEach(final Function<? super T, ? extends R> function) {
-		requireNonNull(function, "Function");
-
+	public void forEach(final Consumer<? super T> consumer) {
 		for (int i = _start; i < _end; ++i) {
 			@SuppressWarnings("unchecked")
 			final T element = (T)_array.data[i];
-			function.apply(element);
+			consumer.accept(element);
 		}
 	}
 
 	@Override
-	public boolean forAll(final Function<? super T, Boolean> predicate) {
-		requireNonNull(predicate, "Predicate");
-
+	public boolean forAll(final Predicate<? super T> predicate) {
 		boolean valid = true;
 		for (int i = _start; i < _end && valid; ++i) {
 			@SuppressWarnings("unchecked")
 			final T element = (T)_array.data[i];
-			valid = predicate.apply(element);
+			valid = predicate.test(element);
 		}
 		return valid;
 	}
 
-	/*
-	<B> B foldLeft(final B z, final Function2<? super B, ? super T, ? extends B> op) {
+	@Override
+	public <B> B foldLeft(
+		final B z,
+		final BiFunction<? super B, ? super T, ? extends B> op
+	) {
 		B result = z;
 		for (int i = 0, n = length(); i < n; ++i) {
 			@SuppressWarnings("unchecked")
 			final T value = (T)_array.data[i + _start];
 			result = op.apply(result, value);
 		}
-		return z;
+		return result;
 	}
 
-	<B> B foldRight(final B z, final Function2<? super T, ? super B, ? extends B> op) {
+	@Override
+	public <B> B foldRight(
+		final B z,
+		final BiFunction<? super T, ? super B, ? extends B> op
+	) {
 		B result = z;
 		for (int i = length(); --i >= 0;) {
 			@SuppressWarnings("unchecked")
 			final T value = (T)_array.data[i + _start];
 			result = op.apply(value, result);
 		}
-		return z;
-	}
-
-	interface Function2<T1, T2, R> {
-		R apply(T1 t1, T2 t2);
-	}
-	*/
-
-	@Override
-	public boolean contains(final Object element) {
-		return indexOf(element) != -1;
+		return result;
 	}
 
 	@Override
@@ -284,8 +235,6 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	public <B> Iterator<B> iterator(
 		final Function<? super T, ? extends B> converter
 	) {
-		requireNonNull(converter, "Converter");
-
 		return new Iterator<B>() {
 			private final Iterator<T> _iterator = iterator();
 			@Override public boolean hasNext() {
@@ -360,39 +309,12 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 
 	@Override
 	public int hashCode() {
-		return arrays.hashCode(this);
+		return Seq.hashCode(this);
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-				obj instanceof ArraySeq<?> && arrays.equals(this, obj);
-	}
-
-	@Override
-	public String toString(
-		final String prefix,
-		final String separator,
-		final String suffix
-	) {
-		  final StringBuilder out = new StringBuilder();
-
-		  out.append(prefix);
-		  if (length() > 0) {
-			out.append(_array.data[_start]);
-		  }
-		  for (int i = _start + 1; i < _end; ++i) {
-			out.append(separator);
-			out.append(_array.data[i]);
-		  }
-		  out.append(suffix);
-
-		  return out.toString();
-	}
-
-	@Override
-	public String toString(final String separator) {
-		return toString("", separator, "");
+		return Seq.equals(this, obj);
 	}
 
 	@Override

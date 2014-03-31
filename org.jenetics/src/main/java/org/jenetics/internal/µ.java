@@ -17,23 +17,13 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package org.jenetics.internal;
 
 /**
- * A function of 1 parameter.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2013-09-08 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-11-10 $</em>
+ * @since @__version__@
  */
-public interface Function<T, R> {
-
-	/**
-	 * Apply the body of this function to the argument.
-	 *
-	 * @param value the function argument.
-	 * @return the result of function application.
-	 */
-	public R apply(final T value);
+public class µ {
 
 }

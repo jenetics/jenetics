@@ -22,6 +22,7 @@ package org.jenetics;
 import static java.lang.String.format;
 
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.jenetics.internal.util.HashBuilder;
 
@@ -38,7 +39,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public class SwapMutator<G extends Gene<?, G>> extends Mutator<G> {
 
@@ -67,23 +68,18 @@ public class SwapMutator<G extends Gene<?, G>> extends Mutator<G> {
 	 */
 	@Override
 	protected int mutate(final MSeq<G> genes, final double p) {
-		int alterations = 0;
+		final AtomicInteger alterations = new AtomicInteger(0);
 
 		if (genes.length() > 1) {
 			final Random random = RandomRegistry.getRandom();
-			final IndexStream stream = IndexStream.Random(
-				genes.length(), p, random
-			);
 
-			for (int i = stream.next(); i != -1; i = stream.next()) {
-				final int j = random.nextInt(genes.length());
-				genes.swap(i, j);
-
-				++alterations;
-			}
+			IndexStream.Random(genes.length(), p, random).forEach(i -> {
+				genes.swap(i, random.nextInt(genes.length()));
+				alterations.incrementAndGet();
+			});
 		}
 
-		return alterations;
+		return alterations.get();
 	}
 
 	@Override

@@ -23,6 +23,7 @@ import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.object.eq;
 
 import java.io.Serializable;
+import java.util.function.Function;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -36,10 +37,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.internal.util.jaxb;
 
-import org.jenetics.util.Function;
 import org.jenetics.util.Verifiable;
-import org.jenetics.util.functions;
-
 
 /**
  * The {@code Phenotype} consists of a {@link Genotype} plus a fitness
@@ -302,7 +300,7 @@ public final class Phenotype<
 		final Function<? super Genotype<G>, ? extends C> function,
 		final int generation
 	) {
-		return of(_genotype, function, functions.<C>Identity(), generation);
+		return of(_genotype, function, a -> a, generation);
 	}
 
 
@@ -412,7 +410,7 @@ public final class Phenotype<
 		final Function<? super Genotype<G>, C> fitnessFunction,
 		final int generation
 	) {
-		return of(genotype, fitnessFunction, functions.<C>Identity(), generation);
+		return of(genotype, fitnessFunction, a -> a, generation);
 	}
 
 	/**
@@ -483,8 +481,8 @@ public final class Phenotype<
 			public Phenotype unmarshal(final Model m) throws Exception {
 				final Phenotype pt = new Phenotype(
 					Genotype.Model.ADAPTER.unmarshal(m.genotype),
-					functions.Identity(),
-					functions.Identity(),
+					a -> a,
+					a -> a,
 					m.generation
 				);
 				pt._fitness = (Comparable)m.fitness;

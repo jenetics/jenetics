@@ -35,7 +35,7 @@ import org.jenetics.stat.Variance;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-17 $</em>
+ * @version <em>$Date: 2014-03-07 $</em>
  */
 public class RandomIndexStreamTest {
 
@@ -68,6 +68,13 @@ public class RandomIndexStreamTest {
 
 			Assert.assertEquals(stream.next(), -1);
 		}
+	}
+
+	@Test
+	public void map() {
+		final IndexStream stream = IndexStream.Random(1000, 0.5, new Random(1));
+		//final Object[] array = stream.mapToObj(i -> Integer.toString(i)).toArray();
+		System.out.println(stream.summaryStatistics());
 	}
 
 	@Test

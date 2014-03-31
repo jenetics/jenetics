@@ -20,17 +20,17 @@
 package org.jenetics;
 
 import java.io.Serializable;
+import java.util.function.Function;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.Function;
 import org.jenetics.util.lists;
 
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-07 $</em>
+ * @version <em>$Date: 2014-03-31 $</em>
  */
 public class PopulationTest {
 
@@ -57,7 +57,7 @@ public class PopulationTest {
 			population.add(pt(Math.random()*9.0));
 		}
 
-		population.sort();
+		population.populationSort();
 		for (int i = 0; i < population.size() - 1; ++i) {
 			Double first = _cf.apply(population.get(i).getGenotype());
 			Double second = _cf.apply(population.get(i + 1).getGenotype());

@@ -27,6 +27,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -45,7 +46,6 @@ import org.jenetics.internal.util.jaxb;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.bit;
 
@@ -157,7 +157,7 @@ public final class PermutationChromosome<T>
 	public static <T> PermutationChromosome<T> of(final ISeq<? extends T> alleles) {
 		final PermutationChromosome<T> chromosome = new PermutationChromosome<>(
 			new Array<EnumGene<T>>(alleles.length())
-					.fill(Gene(alleles))
+					.fill(() -> EnumGene.of(alleles))
 					.shuffle()
 					.toISeq()
 		);
@@ -173,7 +173,9 @@ public final class PermutationChromosome<T>
 	 * @return a integer permutation chromosome with the given length.
 	 */
 	public static PermutationChromosome<Integer> ofInteger(final int length) {
-		return of(new Array<Integer>(length).fill(Int(0, 1)).toISeq());
+		// TODO: FIX
+		//return of(new Array<Integer>(length).fill(Int(0, 1)).toISeq());
+		return null;
 	}
 
 	private static Factory<Integer> Int(final int start, final int step) {
@@ -277,21 +279,11 @@ public final class PermutationChromosome<T>
 		}
 
 		private static final Function<EnumGene<?>, Integer> AlleleIndex =
-			new Function<EnumGene<?>, Integer>() {
-				@Override
-				public Integer apply(final EnumGene<?> value) {
-					return value.getAlleleIndex();
-				}
-			};
+			g -> g.getAlleleIndex();
 
 		private static Function<Integer, EnumGene<Object>>
 		Gene(final ISeq<Object> alleles) {
-			return new Function<Integer, EnumGene<Object>>() {
-				@Override
-				public EnumGene<Object> apply(final Integer value) {
-					return new EnumGene<>(value, alleles);
-				}
-			};
+			return value -> new EnumGene<>(value, alleles);
 		}
 	}
 }

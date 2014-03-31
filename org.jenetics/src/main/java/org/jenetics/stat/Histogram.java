@@ -23,19 +23,17 @@ import static java.lang.Math.max;
 import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.object.NonNull;
 import static org.jenetics.internal.util.object.eq;
-import static org.jenetics.util.arrays.forEach;
 import static org.jenetics.util.math.statistics.sum;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.function.Function;
 
 import org.jenetics.internal.util.HashBuilder;
 
-import org.jenetics.util.Function;
-import org.jenetics.util.MappedAccumulator;
+import org.jenetics.util.AbstractAccumulator;
 
 /**
  * To create an <i>Histogram Accumulator</i> you have to define the <i>class
@@ -67,7 +65,7 @@ import org.jenetics.util.MappedAccumulator;
  * @since 1.0
  * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
-public class Histogram<C> extends MappedAccumulator<C> {
+public class Histogram<C> extends AbstractAccumulator<C> {
 
 	private final C[] _separators;
 	private final Comparator<C> _comparator;
@@ -109,7 +107,7 @@ public class Histogram<C> extends MappedAccumulator<C> {
 
 	@SuppressWarnings("unchecked")
 	private static <C> C[] check(final C... classes) {
-		forEach(classes, NonNull);
+		//Arrays.asList(classes).forEach(NonNull);
 		if (classes.length == 0) {
 			throw new IllegalArgumentException("Given classes array is empty.");
 		}
@@ -344,9 +342,9 @@ public class Histogram<C> extends MappedAccumulator<C> {
 	@Override
 	public int hashCode() {
 		return HashBuilder.of(getClass()).
-				and(super.hashCode()).
-				and(_separators).
-				and(_histogram).value();
+			and(super.hashCode()).
+			and(_separators).
+			and(_histogram).value();
 	}
 
 	@Override
@@ -360,14 +358,14 @@ public class Histogram<C> extends MappedAccumulator<C> {
 
 		final Histogram<?> histogram = (Histogram<?>)obj;
 		return 	eq(_separators, histogram._separators) &&
-				eq(_histogram, histogram._histogram) &&
-				super.equals(obj);
+			eq(_histogram, histogram._histogram) &&
+			super.equals(obj);
 	}
 
 	@Override
 	public String toString() {
 		return Arrays.toString(_separators) + "\n" + Arrays.toString(getHistogram()) +
-				"\nSamples: " + _samples;
+			"\nSamples: " + _samples;
 	}
 
 	@Override
@@ -508,7 +506,7 @@ public class Histogram<C> extends MappedAccumulator<C> {
 		}
 		for (int i = 0; i < rest; ++i) {
 			separators[separators.length - rest + i] =
-					(pts - rest)*bulk + i*(bulk + 1) + min;
+				(pts - rest)*bulk + i*(bulk + 1) + min;
 		}
 
 		return separators;
@@ -524,8 +522,8 @@ public class Histogram<C> extends MappedAccumulator<C> {
 		requireNonNull(max, "Maximum");
 		if (min.compareTo(max) >= 0) {
 			throw new IllegalArgumentException(format(
-					"Min must be smaller than max: %s < %s failed.", min, max
-				));
+				"Min must be smaller than max: %s < %s failed.", min, max
+			));
 		}
 		if (nclasses < 2) {
 			throw new IllegalArgumentException(format(

@@ -23,19 +23,18 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
+import java.util.function.Function;
 
-import org.jenetics.util.Function;
 import org.jenetics.util.Seq;
 import org.jenetics.util.StaticObject;
 import org.jenetics.util.Verifiable;
-import org.jenetics.util.arrays;
 
 /**
  * Some helper methods for creating hash codes and comparing values.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-03-28 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public final class object extends StaticObject {
 	private object() {}
@@ -424,7 +423,7 @@ public final class object extends StaticObject {
 	 *          otherwise.
 	 */
 	public static boolean eq(final Seq<?> a, final Seq<?> b) {
-		return arrays.equals(a, b);
+		return Seq.equals(a, b);
 	}
 
 }

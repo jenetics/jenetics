@@ -22,12 +22,11 @@ package org.jenetics.internal.util;
 import java.util.Arrays;
 
 import org.jenetics.util.Seq;
-import org.jenetics.util.arrays;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public final class DefaultHashCodeBuilder implements Hash {
 	private static final int P1 = 47;
@@ -136,7 +135,7 @@ public final class DefaultHashCodeBuilder implements Hash {
 
 	@Override
 	public DefaultHashCodeBuilder and(final Seq<?> values) {
-		_hash += arrays.hashCode(values); return this;
+		_hash += Seq.hashCode(values); return this;
 	}
 
 	@Override

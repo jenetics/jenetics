@@ -34,7 +34,7 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public final class Timer
 	implements
@@ -50,7 +50,7 @@ public final class Timer
 	/*private[test]*/ long _stop = 0;
 	/*private[test]*/ long _sum = 0;
 
-	private transient Accumulator<? super Long> _accumulator = accumulators.NULL;
+	private transient Accumulator<? super Long> _accumulator = o -> {};
 
 	/**
 	 * Create a new time with the given label. The label is use in the

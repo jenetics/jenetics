@@ -25,6 +25,7 @@ import static org.jenetics.internal.util.object.eq;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -41,7 +42,6 @@ import org.jenetics.internal.util.jaxb;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Seq;
 import org.jenetics.util.Verifiable;
@@ -211,7 +211,7 @@ public final class Genotype<G extends Gene<?, G>>
 	@Override
 	public boolean isValid() {
 		if (_valid == null) {
-			_valid = _chromosomes.forAll(Verify);
+			_valid = _chromosomes.forAll(Chromosome<G>::isValid);
 		}
 		return _valid;
 	}

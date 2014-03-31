@@ -29,10 +29,10 @@ import java.io.Serializable;
 import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.stat.Variance;
+import org.jenetics.util.Accumulator;
+import org.jenetics.util.Accumulator.MinMax;
 import org.jenetics.util.Duration;
 import org.jenetics.util.FinalReference;
-import org.jenetics.util.accumulators;
-import org.jenetics.util.accumulators.MinMax;
 
 /**
  * Data object which holds performance indicators of a given {@link Population}.
@@ -585,11 +585,11 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			final MinMax<Phenotype<G, C>> minMax = new MinMax<>();
 			final Variance<Integer> age = new Variance<>();
 
-			accumulators.<Phenotype<G, C>>accumulate(
-				population,
-				minMax,
-				age.map(Phenotype.Age(generation))
-			);
+			Accumulator.accumulate(
+					population,
+					minMax,
+					age.<Phenotype<G, C>>map(pt -> pt.getAge(generation))
+				);
 
 			builder.bestPhenotype(opt.best(minMax.getMax(), minMax.getMin()));
 			builder.worstPhenotype(opt.worst(minMax.getMax(), minMax.getMin()));

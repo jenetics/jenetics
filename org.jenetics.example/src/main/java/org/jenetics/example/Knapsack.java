@@ -22,6 +22,7 @@ package org.jenetics.example;
 import static org.jenetics.util.math.random.nextDouble;
 
 import java.util.Random;
+import java.util.function.Function;
 
 import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;
@@ -34,7 +35,6 @@ import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.TournamentSelector;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Function;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Scoped;

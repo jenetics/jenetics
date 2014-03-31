@@ -23,6 +23,9 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Random;
+import java.util.Spliterator;
+import java.util.function.IntConsumer;
+import java.util.stream.StreamSupport;
 
 import org.jenetics.internal.math.probability;
 
@@ -43,14 +46,24 @@ import org.jenetics.internal.math.probability;
  *     System.out.println(index);
  * }
  * [/code]
+ * [code]
+ * IndexStream.Random(1000, 0.6).forEach(index -> {
+ *     System.out.println(index);
+ * });
+ * [/code]
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
  * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
-public abstract class IndexStream {
+public abstract class IndexStream extends IntStreamAdapter {
 
 	protected IndexStream() {
+		setAdoptee(StreamSupport.intStream(
+			() -> new IndexSpliterator(this),
+			IndexSpliterator.CHARACTERISTICS,
+			false
+		));
 	}
 
 	/**
@@ -64,14 +77,14 @@ public abstract class IndexStream {
 	/**
 	 * Applies a {@code function} to all elements of this stream.
 	 *
-	 * @param function the function to apply to the elements.
+	 * @param consumer the function to apply to the elements.
 	 * @throws NullPointerException if the given {@code function} is
 	 *         {@code null}.
 	 */
-	<R> void forEach(final Function<? super Integer, ? extends R> function) {
-		requireNonNull(function, "Function");
+	@Override
+	public void forEach(final IntConsumer consumer) {
 		for (int i = next(); i != -1; i = next()) {
-			function.apply(i);
+			consumer.accept(i);
 		}
 	}
 
@@ -127,34 +140,80 @@ public abstract class IndexStream {
 		return stream;
 	}
 
-}
+	/**
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since @__version__@
+	 * @version @__version__@ &mdash; <em>$Date: 2014-03-31 $</em>
+	 */
+	final static class IndexSpliterator implements Spliterator.OfInt {
+		private final IndexStream _stream;
 
-/**
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.4
- * @version 1.5 &mdash; <em>$Date: 2014-03-31 $</em>
- */
-final class RandomIndexStream extends IndexStream {
-	private final int _n;
-	private final int _p;
-	private final Random _random;
+		final static int CHARACTERISTICS = Spliterator.IMMUTABLE;
 
-	private int _pos = -1;
+		IndexSpliterator(final IndexStream stream) {
+			_stream = stream;
+		}
 
-	RandomIndexStream(final int n, final double p, final Random random) {
-		_n = n;
-		_p = probability.toInt(p);
-		_random = requireNonNull(random, "Random object must not be null.");
+		@Override
+		public OfInt trySplit() {
+			return null;
+		}
+
+		@Override
+		public boolean tryAdvance(final IntConsumer action) {
+			final int index = _stream.next();
+			if (index != -1) {
+				action.accept(index);
+				return true;
+			}
+			return false;
+		}
+
+		@Override
+		public long estimateSize() {
+			return Long.MAX_VALUE;
+		}
+
+		@Override
+		public int characteristics() {
+			return CHARACTERISTICS;
+		}
 	}
 
-	@Override
-	public final int next() {
-		while (_pos < _n && _random.nextInt() >= _p) {
-			++_pos;
-		}
-		++_pos;
+	/**
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since 1.4
+	 * @version @__version__@ &mdash; <em>$Date: 2014-03-31 $</em>
+	 */
+	final static class RandomIndexStream extends IndexStream {
+		private final int _n;
+		private final int _p;
+		private final Random _random;
 
-		return _pos < _n ? _pos : -1;
+		private int _pos = -1;
+
+		RandomIndexStream(final int n, final double p, final Random random) {
+			_n = n;
+			_p = probability.toInt(p);
+			_random = requireNonNull(random, "Random object must not be null.");
+		}
+
+		@Override
+		public final int next() {
+			while (_pos < _n && _random.nextInt() >= _p) {
+				++_pos;
+			}
+			++_pos;
+
+			return _pos < _n ? _pos : -1;
+		}
+
+		@Override
+		public void forEachOrdered(final IntConsumer consumer) {
+			for (int i = next(); i != -1; i = next()) {
+				consumer.accept(i);
+			}
+		}
 	}
 }
 

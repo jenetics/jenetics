@@ -32,6 +32,9 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Random;
 import java.util.RandomAccess;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import org.jenetics.internal.util.Stack;
 
@@ -47,8 +50,10 @@ import org.jenetics.internal.util.Stack;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-03-31 $</em>
+ *
  */
+//@Deprecated
 public final class Array<T>
 	extends ArraySeq<T>
 	implements
@@ -96,13 +101,13 @@ public final class Array<T>
 	 * @throws NullPointerException if the given {@code predicate} is
 	 *         {@code null}.
 	 */
-	public Array<T> filter(final Function<? super T, Boolean> predicate) {
+	public Array<T> filter(final Predicate<? super T> predicate) {
 		final Stack<T> filtered = new Stack<>();
 		for (int i = 0, n = length(); i < n; ++i) {
 			@SuppressWarnings("unchecked")
 			final T value = (T)_array.data[i + _start];
 
-			if (predicate.apply(value) == Boolean.TRUE) {
+			if (predicate.test(value)) {
 				filtered.push(value);
 			}
 		}
@@ -163,14 +168,9 @@ public final class Array<T>
 	 * @throws ClassCastException if the array contains elements that are not
 	 *        <i>mutually comparable</i> (for example, strings and integers).
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void sort(final int from, final int to) {
-		sort(from, to, new Comparator<T>() {
-			@SuppressWarnings({ "unchecked", "rawtypes" })
-			@Override
-			public int compare(final T o1, final T o2) {
-				return ((Comparable)o1).compareTo(o2);
-			}
-		});
+		sort(from, to, (a, b) -> ((Comparable)a).compareTo(b));
 	}
 
 	/**
@@ -393,11 +393,6 @@ public final class Array<T>
 	}
 
 	@Override
-	public Array<T> setAll(final Iterable<? extends T> values) {
-		return setAll(values.iterator());
-	}
-
-	@Override
 	public Array<T> setAll(final T[] values) {
 		_array.cloneIfSealed();
 		arraycopy(
@@ -407,12 +402,10 @@ public final class Array<T>
 	}
 
 	@Override
-	public Array<T> fill(final Factory<? extends T> factory) {
-		requireNonNull(factory);
-
+	public Array<T> fill(final Supplier<? extends T> supplier) {
 		_array.cloneIfSealed();
 		for (int i = _start; i < _end; ++i) {
-			_array.data[i] = factory.newInstance();
+			_array.data[i] = supplier.get();
 		}
 		return this;
 	}
@@ -490,18 +483,7 @@ public final class Array<T>
 
 	@Override
 	public <B> Array<B> map(final Function<? super T, ? extends B> mapper) {
-		requireNonNull(mapper, "Converter");
-
-		final int length = length();
-		final Array<B> result = new Array<>(length);
-		assert (result._array.data.length == length);
-
-		for (int i = length; --i >= 0;) {
-			@SuppressWarnings("unchecked")
-			final T value = (T)_array.data[i + _start];
-			result._array.data[i] = mapper.apply(value);
-		}
-		return result;
+		return map(mapper, Array::new);
 	}
 
 	@Override

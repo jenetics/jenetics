@@ -29,47 +29,11 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-30 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public abstract class AbstractAlterer<G extends Gene<?, G>>
 	implements Alterer<G>
 {
-
-	/**
-	 * Return an alterer which does nothing.
-	 *
-	 * @param <G> the <i>gene</i> typ
-	 * @return an alterer which does nothing.
-	 */
-	public static <G extends Gene<?, G>> Alterer<G> Null() {
-		return new Alterer<G>() {
-			@Override
-			public <C extends Comparable<? super C>> int alter(
-				final Population<G, C> population,
-				final int generation
-			) {
-				return 0;
-			}
-
-			@Override
-			public int hashCode() {
-				return HashBuilder.of(getClass()).value();
-			}
-
-			@Override
-			public boolean equals(final Object obj) {
-				return obj == this ||
-						obj != null && obj.getClass() == getClass();
-			}
-
-			@Override
-			public String toString() {
-				return "Alterer.Null";
-			}
-		};
-	}
-
-	public static final double DEFAULT_ALTER_PROBABILITY = 0.2;
 
 	/**
 	 * The altering probability.

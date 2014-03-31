@@ -42,7 +42,7 @@ import org.jenetics.internal.math.random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 2.0 &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public abstract class Random64 extends PRNG {
 
@@ -50,7 +50,7 @@ public abstract class Random64 extends PRNG {
 
 	private static final int LONG_BYTE_SIZE = 8;
 
-	protected Random64(long seed) {
+	protected Random64(final long seed) {
 		super(seed);
 	}
 

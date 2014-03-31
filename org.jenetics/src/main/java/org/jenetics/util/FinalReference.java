@@ -23,6 +23,7 @@ import static org.jenetics.internal.util.object.eq;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 import org.jenetics.internal.util.HashBuilder;
 
@@ -33,9 +34,13 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-03-31 $</em>
  */
-public final class FinalReference<T> implements Serializable {
+public final class FinalReference<T>
+	implements
+		Supplier<T>,
+		Serializable
+{
 	private static final long serialVersionUID = 1L;
 
 	private T _value = null;

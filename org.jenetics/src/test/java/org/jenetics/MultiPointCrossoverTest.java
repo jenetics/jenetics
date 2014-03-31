@@ -23,6 +23,7 @@ import static java.lang.Math.min;
 
 import java.util.Iterator;
 import java.util.Random;
+import java.util.function.Supplier;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -30,14 +31,13 @@ import org.testng.annotations.Test;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.CharSeq;
-import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
 import org.jenetics.util.math;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-03 $</em>
+ * @version <em>$Date: 2014-03-07 $</em>
  */
 public class MultiPointCrossoverTest {
 
@@ -260,9 +260,9 @@ public class MultiPointCrossoverTest {
 
 	@DataProvider(name = "numberOfCrossoverPoints")
 	public Iterator<Object[]> getNumberOfCrossoverPoints() {
-		return new Array<Object[]>(11).fill(new Factory<Object[]>() {
+		return new Array<Object[]>(11).fill(new Supplier<Object[]>() {
 			private int point = 0;
-			@Override public Object[] newInstance() {
+			@Override public Object[] get() {
 				return new Object[]{++point};
 			}
 

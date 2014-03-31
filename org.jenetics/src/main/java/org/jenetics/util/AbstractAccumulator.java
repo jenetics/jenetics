@@ -20,7 +20,6 @@
 package org.jenetics.util;
 
 import static java.lang.String.format;
-import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.object.eq;
 
 import org.jenetics.internal.util.HashBuilder;
@@ -32,9 +31,9 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
+ * @version 2.0 &mdash; <em>$Date$</em>
  */
-public abstract class MappedAccumulator<T>
+public abstract class AbstractAccumulator<T>
 	implements
 		Accumulator<T>,
 		Cloneable
@@ -45,7 +44,7 @@ public abstract class MappedAccumulator<T>
 	 */
 	protected long _samples = 0;
 
-	protected MappedAccumulator() {
+	protected AbstractAccumulator() {
 	}
 
 	/**
@@ -62,43 +61,6 @@ public abstract class MappedAccumulator<T>
 		++_samples;
 	}
 
-	/**
-	 * Return a view of this adapter with a different type {@code B}.
-	 *
-	 * Usage example:
-	 * [code]
-	 * // Convert a string on the fly into a double value.
-	 * final Converter&lt;String, Double&gt; converter = new Converter&lt;String, Double&gt;() {
-	 *         public Double convert(final String value) {
-	 *             return Double.valueOf(value);
-	 *         }
-	 *     };
-	 *
-	 * // The values to accumulate
-	 * final List&lt;String&gt; values = Arrays.asList("0", "1", "2", "3", "4", "5");
-	 *
-	 * final Accumulators.Min&lt;Double&gt; accumulator = new Accumulators.Min&lt;Double&gt;();
-	 *
-	 * // No pain to accumulate collections of a different type.
-	 * Accumulators.accumulate(values, accumulator.map(converter));
-	 * [/code]
-	 *
-	 * @param <B> the type of the returned adapter (view).
-	 * @param mapper the mapper needed to map between the type of this
-	 *        adapter and the adapter view type.
-	 * @return the adapter view with the different type.
-	 * @throws NullPointerException if the given {@code converter} is {@code null}.
-	 */
-	public <B> MappedAccumulator<B> map(final Function<? super B, ? extends T> mapper) {
-		requireNonNull(mapper, "Mapper");
-		return new MappedAccumulator<B>() {
-			@Override
-			public void accumulate(final B value) {
-				MappedAccumulator.this.accumulate(mapper.apply(value));
-			}
-		};
-	}
-
 	@Override
 	public int hashCode() {
 		return HashBuilder.of(getClass()).and(_samples).value();
@@ -113,7 +75,7 @@ public abstract class MappedAccumulator<T>
 			return false;
 		}
 
-		final MappedAccumulator<?> accumulator = (MappedAccumulator<?>)obj;
+		final AbstractAccumulator<?> accumulator = (AbstractAccumulator<?>)obj;
 		return eq(_samples, accumulator._samples);
 	}
 
@@ -126,9 +88,9 @@ public abstract class MappedAccumulator<T>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected MappedAccumulator<T> clone() {
+	protected AbstractAccumulator<T> clone() {
 		try {
-			return (MappedAccumulator<T>)super.clone();
+			return (AbstractAccumulator<T>)super.clone();
 		} catch (CloneNotSupportedException e) {
 			throw new AssertionError(e);
 		}

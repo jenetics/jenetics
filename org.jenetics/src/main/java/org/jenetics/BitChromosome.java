@@ -52,7 +52,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-30 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 @XmlJavaTypeAdapter(BitChromosome.Model.Adapter.class)
 public class BitChromosome extends Number
@@ -65,7 +65,7 @@ public class BitChromosome extends Number
 
 
 	/**
-	 * The one's probability of the randomly generated Chromosome.
+	 * The ones probability of the randomly generated Chromosome.
 	 */
 	protected double _p;
 

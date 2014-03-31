@@ -19,6 +19,8 @@
  */
 package org.jenetics.util;
 
+import java.util.function.Function;
+
 /**
  * Immutable, ordered, fixed sized sequence.
  *
@@ -26,7 +28,7 @@ package org.jenetics.util;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public interface ISeq<T>
 	extends

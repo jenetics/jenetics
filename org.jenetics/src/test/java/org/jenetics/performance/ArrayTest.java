@@ -22,16 +22,13 @@ package org.jenetics.performance;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.ListIterator;
+import java.util.function.Function;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.Factory;
-import org.jenetics.util.Function;
-import org.jenetics.util.arrays;
-import org.jenetics.util.shuffling;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-12-18 $</em>
+ * @version <em>$Date: 2014-03-31 $</em>
  */
 @Suite("Array")
 public class ArrayTest {
@@ -41,13 +38,6 @@ public class ArrayTest {
 		@Override
 		public Boolean apply(final Integer value) {
 			return Boolean.TRUE;
-		}
-	};
-
-	private static final Factory<Integer> INTEGER_FACTORY = new Factory<Integer>() {
-		@Override
-		public Integer newInstance() {
-			return 1;
 		}
 	};
 
@@ -62,7 +52,7 @@ public class ArrayTest {
 	@Test(1)
 	public final TestCase forLoopGetter = new TestCase("for-loop (getter)", LOOPS, SIZE) {
 		{
-			_array.fill(INTEGER_FACTORY);
+			_array.fill(() -> 1);
 			for (int i = _array.length(); --i >= 0;) {
 				_array.get(i);
 			}
@@ -80,7 +70,7 @@ public class ArrayTest {
 	public final TestCase foreachLoopGetter = new TestCase("foreach(GETTER)", LOOPS, SIZE) {
 		@Override
 		protected void test() {
-			_array.forEach(GETTER);
+			_array.forEach(o -> {o.intValue();});
 		}
 	};
 
@@ -106,7 +96,7 @@ public class ArrayTest {
 	public final TestCase fillFactory = new TestCase("fill(Factory)", LOOPS, SIZE) {
 		@Override
 		protected void test() {
-			_array.fill(INTEGER_FACTORY);
+			_array.fill(() -> 1);
 		}
 	};
 
@@ -133,7 +123,7 @@ public class ArrayTest {
 	};
 
 	@Test(8)
-	public final TestCase sort = new TestCase("sort()", 50, SIZE) {
+	public final TestCase sort = new TestCase("populationSort()", 50, SIZE) {
 		private final Comparator<Integer> _comparator = new Comparator<Integer>() {
 			@Override
 			public int compare(Integer o1, Integer o2) {
@@ -146,7 +136,7 @@ public class ArrayTest {
 			for (int i = _array.length(); --i >= 0;) {
 				_array.set(i, i);
 			}
-			shuffling.shuffle(_array);
+			_array.shuffle();
 		}
 
 		@Override
@@ -156,7 +146,7 @@ public class ArrayTest {
 
 		@Override
 		protected void afterTest() {
-			if (!arrays.isSorted(_array)) {
+			if (!_array.isSorted()) {
 				throw new IllegalArgumentException("Error: array not sorted");
 			}
 		}
@@ -169,7 +159,7 @@ public class ArrayTest {
 			for (int i = _array.length(); --i >= 0;) {
 				_array.set(i, i);
 			}
-			shuffling.shuffle(_array);
+			_array.shuffle();
 		}
 
 		@Override
@@ -179,7 +169,7 @@ public class ArrayTest {
 
 		@Override
 		protected void afterTest() {
-			if (!arrays.isSorted(_array)) {
+			if (!_array.isSorted()) {
 				throw new IllegalArgumentException("Error: array not sorted");
 			}
 		}

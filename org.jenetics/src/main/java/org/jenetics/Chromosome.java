@@ -34,7 +34,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public interface Chromosome<G extends Gene<?, G>>
 	extends
@@ -61,7 +61,9 @@ public interface Chromosome<G extends Gene<?, G>>
 	 *
 	 * @return the first gene of this chromosome.
 	 */
-	public G getGene();
+	public default G getGene() {
+		return getGene(0);
+	}
 
 	/**
 	 * Return the gene on the specified index.

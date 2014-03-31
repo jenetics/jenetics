@@ -28,10 +28,10 @@ import static org.jenetics.internal.util.object.nonNegative;
 
 import java.io.Serializable;
 import java.util.Locale;
+import java.util.function.Function;
 
 import org.jenetics.internal.util.HashBuilder;
 
-import org.jenetics.util.Function;
 import org.jenetics.util.Range;
 
 /**
@@ -58,7 +58,7 @@ import org.jenetics.util.Range;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public class NormalDistribution<
 	N extends Number & Comparable<? super N>
@@ -77,7 +77,7 @@ public class NormalDistribution<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2014-03-28 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2014-03-31 $</em>
 	 */
 	static final class PDF<N extends Number & Comparable<? super N>>
 		implements
@@ -131,7 +131,7 @@ public class NormalDistribution<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2014-03-28 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2014-03-31 $</em>
 	 */
 	static final class CDF<N extends Number & Comparable<? super N>>
 		implements

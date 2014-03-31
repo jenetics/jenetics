@@ -27,11 +27,11 @@ import org.testng.annotations.Test;
 
 import org.jenetics.Statistics.Calculator;
 import org.jenetics.stat.Variance;
-import org.jenetics.util.accumulators;
+import org.jenetics.util.Accumulator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-17 $</em>
+ * @version <em>$Date: 2014-03-31 $</em>
  */
 public class StatisticsCalculatorTest {
 
@@ -43,31 +43,33 @@ public class StatisticsCalculatorTest {
 		return new Iterable<Phenotype<DoubleGene,Double>>() {
 			@Override
 			public Iterator<Phenotype<DoubleGene, Double>> iterator() {
-				return new Iterator<Phenotype<DoubleGene,Double>>() {
-					private final Double MIN = Double.valueOf(0);
-					private final Double MAX = Double.valueOf(size);
+			return new Iterator<Phenotype<DoubleGene,Double>>() {
+				private final Double MIN = Double.valueOf(0);
+				private final Double MAX = Double.valueOf(size);
 
-					private int _pos = -1;
+				private int _pos = -1;
 
-					@Override
-					public boolean hasNext() {
-						return _pos < size - 1;
-					}
+				@Override
+				public boolean hasNext() {
+					return _pos < size - 1;
+				}
 
-					@Override
-					public Phenotype<DoubleGene, Double> next() {
-						++_pos;
-						final DoubleGene gene = DoubleGene.of(_pos, MIN, MAX);
-						return Phenotype.of(
+				@Override
+				public Phenotype<DoubleGene, Double> next() {
+					++_pos;
+					final DoubleGene gene = DoubleGene.of(
+								Double.valueOf(_pos), MIN, MAX
+							);
+					return Phenotype.of(
 							Genotype.of(DoubleChromosome.of(gene)),
 							TestUtils.FF, 0
 						);
-					}
+				}
 
-					@Override
-					public void remove() {
-					}
-				};
+				@Override
+				public void remove() {
+				}
+			};
 			}
 		};
 	}
@@ -80,7 +82,10 @@ public class StatisticsCalculatorTest {
 		final Statistics<DoubleGene, Double> statistics = builder.build();
 
 		final Variance<Integer> ageVariance = new Variance<>();
-		accumulators.accumulate(population(size), ageVariance.map(Phenotype.Age(gen)));
+		Accumulator.accumulate(
+			population(size),
+			ageVariance.<Phenotype<DoubleGene, Double>>map(pt -> pt.getAge(gen))
+		);
 
 		Assert.assertEquals(statistics.getAgeMean(), ageVariance.getMean());
 		Assert.assertEquals(statistics.getAgeVariance(), ageVariance.getVariance());

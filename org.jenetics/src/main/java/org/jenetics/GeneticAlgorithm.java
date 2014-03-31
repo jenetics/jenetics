@@ -22,22 +22,20 @@ package org.jenetics;
 import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.object.NonNull;
 import static org.jenetics.internal.util.object.checkProbability;
-import static org.jenetics.util.arrays.forEach;
 
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Concurrent;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Function;
 import org.jenetics.util.Scoped;
 import org.jenetics.util.Timer;
-import org.jenetics.util.functions;
 
 /**
  * <h3>Getting started</h3>
@@ -133,7 +131,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,
@@ -221,16 +219,12 @@ public class GeneticAlgorithm<
 		_fitnessScaler = requireNonNull(fitnessScaler, "FitnessScaler");
 		_optimization = requireNonNull(optimization, "Optimization");
 
-		_phenotypeFactory = new Factory<Phenotype<G, C>>() {
-			@Override public Phenotype<G, C> newInstance() {
-				return Phenotype.of(
-					_genotypeFactory.newInstance(),
-					_fitnessFunction,
-					_fitnessScaler,
-					_generation
-				);
-			}
-		};
+		_phenotypeFactory = () -> Phenotype.of(
+			_genotypeFactory.newInstance(),
+			_fitnessFunction,
+			_fitnessScaler,
+			_generation
+		);
 	}
 
 	/**
@@ -248,7 +242,7 @@ public class GeneticAlgorithm<
 		this(
 			genotypeFactory,
 			fitnessFunction,
-			functions.<C>Identity(),
+			a -> a,
 			Optimize.MAXIMUM
 		);
 	}
@@ -270,7 +264,7 @@ public class GeneticAlgorithm<
 		this(
 			genotypeFactory,
 			fitnessFunction,
-			functions.<C>Identity(),
+			a -> a,
 			optimization
 		);
 	}
@@ -310,7 +304,7 @@ public class GeneticAlgorithm<
 		try {
 			prepareSetup();
 			_population.fill(
-				_phenotypeFactory,
+				_phenotypeFactory::newInstance,
 				_populationSize - _population.size()
 			);
 			finishSetup();
@@ -400,12 +394,12 @@ public class GeneticAlgorithm<
 			_selectTimer.start();
 			final Array<Population<G, C>> selection = select();
 			final Population<G, C> survivors = selection.get(0);
-			final Population<G, C> offsprings = selection.get(1);
+			final Population<G, C> offspring = selection.get(1);
 			_selectTimer.stop();
 
 			//Alter the offspring (Recombination, Mutation ...).
 			_alterTimer.start();
-			_alterer.alter(offsprings, _generation);
+			_alterer.alter(offspring, _generation);
 			_alterTimer.stop();
 
 			// Combining the new population (containing the survivors and the
@@ -413,7 +407,7 @@ public class GeneticAlgorithm<
 			_combineTimer.start();
 			final int killed = _killed.get();
 			final int invalid = _invalid.get();
-			_population = combine(survivors, offsprings);
+			_population = combine(survivors, offspring);
 			_combineTimer.stop();
 
 			//Evaluate the fitness
@@ -483,9 +477,8 @@ public class GeneticAlgorithm<
 	 * @param until the predicate which defines the termination condition.
 	 * @throws NullPointerException if the given predicate is {@code null}.
 	 */
-	public void evolve(final Function<? super Statistics<G, C>, Boolean> until) {
-		requireNonNull(until, "Termination condition");
-		while (until.apply(getStatistics())) {
+	public void evolve(final Predicate<? super Statistics<G, C>> until) {
+		while (until.test(getStatistics())) {
 			evolve();
 		}
 	}
@@ -493,7 +486,7 @@ public class GeneticAlgorithm<
 	private Array<Population<G, C>> select() {
 		final Array<Population<G, C>> selection = new Array<>(2);
 		final int numberOfSurvivors = getNumberOfSurvivors();
-		final int numberOfOffspring = getNumberOfOffsprings();
+		final int numberOfOffspring = getNumberOfOffspring();
 		assert (numberOfSurvivors + numberOfOffspring == _populationSize);
 
 		try (Scoped<Concurrent> c = Concurrent.scope()) {
@@ -506,22 +499,22 @@ public class GeneticAlgorithm<
 				selection.set(0, survivors);
 			}});
 
-			final Population<G, C> offsprings = _offspringSelector.select(
+			final Population<G, C> offspring = _offspringSelector.select(
 				_population, numberOfOffspring, _optimization
 			);
 
-			assert (offsprings.size() == numberOfOffspring);
-			selection.set(1, offsprings);
-		}
+			assert (offspring.size() == numberOfOffspring);
+			selection.set(1, offspring);
+		};
 
 		return selection;
 	}
 
 	private Population<G, C> combine(
 		final Population<G, C> survivors,
-		final Population<G, C> offsprings
+		final Population<G, C> offspring
 	) {
-		assert (survivors.size() + offsprings.size() == _populationSize);
+		assert (survivors.size() + offspring.size() == _populationSize);
 		final Population<G, C> population = new Population<>(_populationSize);
 
 		try (Scoped<Concurrent> c = Concurrent.scope()) {
@@ -548,8 +541,8 @@ public class GeneticAlgorithm<
 				}
 			}});
 
-			// In the mean time we can add the offsprings.
-			population.addAll(offsprings);
+			// In the mean time we can add the offspring.
+			population.addAll(offspring);
 		}
 
 		population.addAll(survivors);
@@ -558,13 +551,11 @@ public class GeneticAlgorithm<
 	}
 
 	private int getNumberOfSurvivors() {
-		return _populationSize - getNumberOfOffsprings();
+		return _populationSize - getNumberOfOffspring();
 	}
 
-	private int getNumberOfOffsprings() {
-		return (int)round(
-			_offspringFraction*_populationSize
-		);
+	private int getNumberOfOffspring() {
+		return (int)round(_offspringFraction*_populationSize);
 	}
 
 	/**
@@ -920,7 +911,8 @@ public class GeneticAlgorithm<
 	 *         one.
 	 */
 	public void setPopulation(final Collection<Phenotype<G, C>> population) {
-		forEach(population, NonNull);
+		// TODO: Fix
+		//population.forEach(NonNull);
 		if (population.size() < 1) {
 			throw new IllegalArgumentException(format(
 				"Population size must be greater than zero, but was %s.",
@@ -956,7 +948,8 @@ public class GeneticAlgorithm<
 	 *         one.
 	 */
 	public void setGenotypes(final Collection<Genotype<G>> genotypes) {
-		forEach(genotypes, NonNull);
+		// TODO: FIX
+		//genotypes.forEach(NonNull);
 		if (genotypes.size() < 1) {
 			throw new IllegalArgumentException(
 				"Genotype size must be greater than zero, but was " +
