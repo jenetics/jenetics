@@ -31,7 +31,7 @@ import java.util.List;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public final class arrays extends StaticObject {
 	private arrays() {}
@@ -98,6 +98,9 @@ public final class arrays extends StaticObject {
 	/**
 	 * Calls the sort method on the {@link Arrays} class.
 	 *
+	 * @param <T> the array element type
+	 * @param array the array to sort
+	 * @return the sorted input array, for command chaining
 	 * @throws NullPointerException if the give array is {@code null}.
 	 * @throws UnsupportedOperationException if the array is sealed
 	 * 		  ({@code array.isSealed() == true}).
@@ -112,6 +115,7 @@ public final class arrays extends StaticObject {
 	/**
 	 * Test whether the given array is sorted in ascending order.
 	 *
+	 * @param <T> the array element type
 	 * @param seq the array to test.
 	 * @return {@code true} if the given {@code array} is sorted in ascending
 	 *         order, {@code false} otherwise.
@@ -133,6 +137,7 @@ public final class arrays extends StaticObject {
 	 * Test whether the given array is sorted in ascending order. The order of
 	 * the array elements is defined by the given comparator.
 	 *
+	 * @param <T> the array element type
 	 * @param seq the array to test.
 	 * @param comparator the comparator which defines the order.
 	 * @return {@code true} if the given {@code array} is sorted in ascending
@@ -244,6 +249,8 @@ public final class arrays extends StaticObject {
 	 * }
 	 * [/code]
 	 *
+	 * @param <T> the array element type
+	 * @param <R> the returned type of the applied function
 	 * @param array the array to iterate.
 	 * @param f the function to apply to every element.
 	 * @throws NullPointerException if one of the elements are {@code null}.
@@ -263,6 +270,8 @@ public final class arrays extends StaticObject {
 	/**
 	 * Iterates over all elements of the given {@code values}
 	 *
+	 * @param <T> the element type
+	 * @param <R> the returned type of the applied function
 	 * @param values the values to iterate.
 	 * @param f the function to apply to each element.
 	 * @throws NullPointerException if one of the elements are {@code null}.
@@ -278,7 +287,6 @@ public final class arrays extends StaticObject {
 			f.apply(value);
 		}
 	}
-
 
 	/**
 	 * Map the array from type A to an other array of type B.

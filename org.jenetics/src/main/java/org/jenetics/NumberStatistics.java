@@ -32,7 +32,7 @@ import org.jenetics.util.accumulators.MinMax;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public class NumberStatistics<
 	G extends Gene<?, G>,
@@ -46,7 +46,7 @@ public class NumberStatistics<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
 	 */
 	public static class Builder<
 		G extends Gene<?, G>,
@@ -76,7 +76,7 @@ public class NumberStatistics<
 		 *
 		 * @param statistics the statistics values. If the {@code statistics}
 		 *         is {@code null} nothing is set.
-		 * @return this builder.
+		 * @return this builder instance.
 		 */
 		public Builder<G, R> statistics(final NumberStatistics<G, R> statistics) {
 			if (statistics != null) {
@@ -90,6 +90,9 @@ public class NumberStatistics<
 
 		/**
 		 * @see NumberStatistics#getFitnessMean()
+		 *
+		 * @param fitnessMean the mean of the fitness value
+		 * @return this builder instance
 		 */
 		public Builder<G, R> fitnessMean(final double fitnessMean) {
 			_fitnessMean = fitnessMean;
@@ -98,6 +101,9 @@ public class NumberStatistics<
 
 		/**
 		 * @see NumberStatistics#getFitnessVariance()
+		 *
+		 * @param fitnessVariance the variance of the fitness value
+		 * @return this builder instance
 		 */
 		public Builder<G, R> fitnessVariance(final double fitnessVariance) {
 			_fitnessVariance = fitnessVariance;
@@ -106,6 +112,9 @@ public class NumberStatistics<
 
 		/**
 		 * @see NumberStatistics#getStandardError()
+		 *
+		 * @param standardError the standard error of the fitness mean value
+		 * @return this builder instancett
 		 */
 		public Builder<G, R> standardError(final double standardError) {
 			_standardError = standardError;
@@ -242,7 +251,7 @@ public class NumberStatistics<
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
 	 */
 	public static class Calculator<
 		G extends Gene<?, G>,

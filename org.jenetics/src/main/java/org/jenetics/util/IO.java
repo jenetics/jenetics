@@ -55,7 +55,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public abstract class IO {
 
@@ -192,6 +192,7 @@ public abstract class IO {
 	/**
 	 * Reads an object from the given file.
 	 *
+	 * @param <T> the type of the read object
 	 * @param path the path to read from.
 	 * @param type the type of the read object.
 	 * @return the de-serialized object.
@@ -221,6 +222,7 @@ public abstract class IO {
 	/**
 	 * Reads an object from the given file.
 	 *
+	 * @param <T> the type of the read object
 	 * @param path the path to read from.
 	 * @param type the type of the read object.
 	 * @return the de-serialized object.
@@ -250,6 +252,7 @@ public abstract class IO {
 	/**
 	 * Reads an object from the given file.
 	 *
+	 * @param <T> the type of the read object
 	 * @param file the file to read from.
 	 * @param type the type of the read object.
 	 * @return the de-serialized object.
@@ -279,6 +282,7 @@ public abstract class IO {
 	/**
 	 * Reads an object from the given input stream.
 	 *
+	 * @param <T> the type of the read object
 	 * @param in the input stream to read from.
 	 * @param type the type of the read object.
 	 * @return the de-serialized object.

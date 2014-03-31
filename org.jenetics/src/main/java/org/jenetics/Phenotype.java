@@ -53,7 +53,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 @XmlJavaTypeAdapter(Phenotype.Model.Adapter.class)
 public final class Phenotype<
@@ -396,9 +396,12 @@ public final class Phenotype<
 	 * The {@code Genotype} is copied to guarantee an immutable class. Only
 	 * the age of the {@code Phenotype} can be incremented.
 	 *
+	 * @param <G> the gene type of the chromosome
+	 * @param <C> the fitness value type
 	 * @param genotype the genotype of this phenotype.
 	 * @param fitnessFunction the fitness function of this phenotype.
 	 * @param generation the current generation of the generated phenotype.
+	 * @return a new phenotype from the given parameters
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the given {@code generation} is
 	 *         {@code < 0}.
@@ -415,6 +418,8 @@ public final class Phenotype<
 	/**
 	 * Create a new phenotype from the given arguments.
 	 *
+	 * @param <G> the gene type of the chromosome
+	 * @param <C> the fitness value type
 	 * @param genotype the genotype of this phenotype.
 	 * @param fitnessFunction the fitness function of this phenotype.
 	 * @param fitnessScaler the fitness scaler.

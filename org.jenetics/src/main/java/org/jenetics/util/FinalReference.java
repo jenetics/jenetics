@@ -33,7 +33,7 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public final class FinalReference<T> implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -72,6 +72,7 @@ public final class FinalReference<T> implements Serializable {
 	 * Set the reference value. If you try to set the reference value twice an
 	 * {@link IllegalStateException} is thrown.
 	 *
+	 * @param value the value to set
 	 * @throws IllegalStateException if you try to set the reference value twice.
 	 */
 	public synchronized void set(final T value) {

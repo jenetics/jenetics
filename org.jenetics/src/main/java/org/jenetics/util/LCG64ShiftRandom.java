@@ -72,7 +72,7 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public class LCG64ShiftRandom extends Random64 {
 
@@ -85,7 +85,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
 	 */
 	public static final class Param implements Serializable {
 
@@ -185,7 +185,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
 	 */
 	public static class ThreadLocal
 		extends java.lang.ThreadLocal<LCG64ShiftRandom>
@@ -220,7 +220,7 @@ public class LCG64ShiftRandom extends Random64 {
 		 * Create a new PRNG using <i>block splitting</i> for guaranteeing well
 		 * distributed PRN for every thread.
 		 *
-		 * <p align="left">
+		 * <p>
 		 * <strong>Tina’s Random Number Generator Library</strong>
 		 * <br>
 		 * <em>Chapter 2. Pseudo-random numbers for parallel Monte Carlo
@@ -231,7 +231,6 @@ public class LCG64ShiftRandom extends Random64 {
 		 * [<a href="http://numbercrunch.de/trng/trng.pdf">
 		 *  http://numbercrunch.de/trng/trng.pdf
 		 *  </a>].
-		 * <p>
 		 */
 		@Override
 		protected synchronized LCG64ShiftRandom initialValue() {
@@ -275,7 +274,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
 	 */
 	public static class ThreadSafe extends LCG64ShiftRandom {
 		private static final long serialVersionUID = 1L;

@@ -56,7 +56,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-25 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 @XmlJavaTypeAdapter(value = PermutationChromosome.Model.Adapter.class)
 public final class PermutationChromosome<T>
@@ -150,7 +150,9 @@ public final class PermutationChromosome<T>
 	/**
 	 * Create a new, random chromosome with the given valid alleles.
 	 *
+	 * @param <T> the gene type of the chromosome
 	 * @param alleles the valid alleles used for this permutation arrays.
+	 * @return a new chromosome with the given alleles
 	 */
 	public static <T> PermutationChromosome<T> of(final ISeq<? extends T> alleles) {
 		final PermutationChromosome<T> chromosome = new PermutationChromosome<>(

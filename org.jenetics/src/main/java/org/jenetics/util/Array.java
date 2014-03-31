@@ -47,7 +47,7 @@ import org.jenetics.internal.util.Stack;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public final class Array<T>
 	extends ArraySeq<T>
@@ -185,6 +185,7 @@ public final class Array<T>
 	 *          Wikipedia: Quicksort
 	 *      </a>
 	 *
+	 * @param comparator the comparator used for sorting
 	 * @throws NullPointerException if the given {@code comparator} is
 	 *          {@code null}.
 	 * @throws ClassCastException if the array contains elements that are not
@@ -209,6 +210,7 @@ public final class Array<T>
 	 *
 	 * @param from the index of the first element (inclusive) to be sorted.
 	 * @param to the index of the last element (exclusive) to be sorted.
+	 * @param comparator the comparator used for sorting
 	 * @throws NullPointerException if the given {@code comparator} is
 	 *          {@code null}.
 	 * @throws IndexOutOfBoundsException if {@code from < 0 or to > length()}
@@ -314,6 +316,11 @@ public final class Array<T>
 
 	/**
 	 * @see MSeq#swap(int, int, MSeq, int)
+	 *
+	 * @param start the start index of the swap
+	 * @param end the end index of the swap
+	 * @param other the other array used for swapping
+	 * @param otherStart the start index of the other array
 	 */
 	public void swap(
 		final int start, final int end,
@@ -532,7 +539,9 @@ public final class Array<T>
 	/**
 	 * Create a new array from the given values.
 	 *
+	 * @param <T> the element type
 	 * @param values the array values.
+	 * @return an new {@code Array} with the given values
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
 	@SafeVarargs
@@ -550,7 +559,9 @@ public final class Array<T>
 	 * Create a new Array from the values of the given {@code Collection}. The
 	 * order of the elements are determined by the iterator of the Collection.
 	 *
+	 * @param <T> the element type
 	 * @param values the array values.
+	 * @return an new {@code Array} with the given values
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
 	public static <T> Array<T> of(final Collection<? extends T> values) {
@@ -571,7 +582,9 @@ public final class Array<T>
 	/**
 	 * Create a new Array from the values of the given {@code Seq}.
 	 *
+	 * @param <T> the element type
 	 * @param values the array values.
+	 * @return an new {@code Array} with the given values
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
 	public static <T> Array<T> of(final Seq<T> values) {
