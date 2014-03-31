@@ -30,7 +30,7 @@ import org.jenetics.util.math.random;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-25 $</em>
+ * @version <em>$Date: 2014-03-30 $</em>
  */
 public class RandomUtils {
 
@@ -62,7 +62,13 @@ public class RandomUtils {
 
 	public static char nextCharacter() {
 		final int surrogateStart = 0xD800;
-		return (char)(random().nextInt(surrogateStart - 1) + 1);
+
+		char c = '\0';
+		do {
+			c = (char)random.nextInt(random(), Character.MIN_VALUE, Character.MAX_VALUE);
+		} while (!Character.isLetterOrDigit(c));
+
+		return c;
 	}
 
 	public static short nextShort() {

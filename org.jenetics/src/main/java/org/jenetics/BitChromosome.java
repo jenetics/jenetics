@@ -52,7 +52,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-21 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-30 $</em>
  */
 @XmlJavaTypeAdapter(BitChromosome.Model.Adapter.class)
 public class BitChromosome extends Number
@@ -98,9 +98,9 @@ public class BitChromosome extends Number
 	 * @param start the initial (bit) index of the range to be copied, inclusive
 	 * @param end the final (bit) index of the range to be copied, exclusive.
 	 *        (This index may lie outside the array.)
-	 * @throws java.lang.ArrayIndexOutOfBoundsException if start < 0 or
-	 *         start > bits.length*8
-	 * @throws java.lang.IllegalArgumentException if start > end
+	 * @throws java.lang.ArrayIndexOutOfBoundsException if {@code start < 0} or
+	 *         {@code start > bits.length*8}
+	 * @throws java.lang.IllegalArgumentException if {@code start > end}
 	 * @throws java.lang.NullPointerException if the {@code bits} array is
 	 *         {@code null}.
 	 */
@@ -149,7 +149,6 @@ public class BitChromosome extends Number
 	}
 
 	private void rangeCheck(final int index) {
-		assert(_length >= 0);
 		if (index < 0 || index >= _length) {
 			throw new IndexOutOfBoundsException(
 				"Index: " + index + ", Length: " + _length
@@ -173,11 +172,34 @@ public class BitChromosome extends Number
 		return BitGene.of(bit.get(_genes, 0));
 	}
 
+	/**
+	 * Return the value of the first gene of this chromosome.
+	 *
+	 * @since 2.0
+	 * @return the first value of this chromosome.
+	 */
+	public boolean get() {
+		return bit.get(_genes, 0);
+	}
+
 	@Override
 	public BitGene getGene(final int index) {
 		rangeCheck(index);
 		assert(_genes != null);
 		return BitGene.of(bit.get(_genes, index));
+	}
+
+	/**
+	 * Return the value on the specified index.
+	 *
+	 * @param index the gene index
+	 * @return the wanted gene value
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *          (index &lt; 1 || index &gt;= length()).
+	 */
+	public boolean get(final int index) {
+		rangeCheck(index);
+		return bit.get(_genes, index);
 	}
 
 	@Override
@@ -381,6 +403,7 @@ public class BitChromosome extends Number
 	 *
 	 * @param length Length of the BitChromosome, number of bits.
 	 * @param p Probability of the TRUEs in the BitChromosome.
+	 * @return a new {@code BitChromosome} with the given parameter
 	 * @throws NegativeArraySizeException if the {@code length} is smaller
 	 *         than one.
 	 * @throws IllegalArgumentException if {@code p} is not a valid probability.
@@ -394,6 +417,7 @@ public class BitChromosome extends Number
 	 * FALSE in the {@code Chromosome} are equally distributed.
 	 *
 	 * @param length Length of the BitChromosome.
+	 * @return a new {@code BitChromosome} with the given parameter
 	 * @throws NegativeArraySizeException if the {@code _length} is smaller
 	 *         than one.
 	 */
@@ -404,6 +428,7 @@ public class BitChromosome extends Number
 	/**
 	 * @param length length of the BitChromosome.
 	 * @param bits the bit-set which initializes the chromosome
+	 * @return a new {@code BitChromosome} with the given parameter
 	 * @throws NegativeArraySizeException if the {@code length} is smaller
 	 *         than one.
 	 * @throws NullPointerException if the {@code bitSet} is
@@ -428,6 +453,7 @@ public class BitChromosome extends Number
 	 * (@see BitSet#length).
 	 *
 	 * @param bits the bit-set which initializes the chromosome
+	 * @return a new {@code BitChromosome} with the given parameter
 	 * @throws NullPointerException if the {@code bitSet} is
 	 *        {@code null}.
 	 */
@@ -439,6 +465,7 @@ public class BitChromosome extends Number
 	 * Create a new {@code BitChromosome} from the given big integer value.
 	 *
 	 * @param value the value of the created {@code BitChromosome}
+	 * @return a new {@code BitChromosome} with the given parameter
 	 * @throws NullPointerException if the given {@code value} is {@code null}.
 	 */
 	public static BitChromosome of(final BigInteger value) {
@@ -451,6 +478,7 @@ public class BitChromosome extends Number
 	 * method.
 	 *
 	 * @param value the input string.
+	 * @return a new {@code BitChromosome} with the given parameter
 	 * @throws NullPointerException if the {@code value} is {@code null}.
 	 * @throws IllegalArgumentException if the length of the character sequence
 	 *         is zero or contains other characters than '0' or '1'.

@@ -34,7 +34,7 @@ import org.jenetics.util.StaticObject;
  * This object contains models not defined as native XML type.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-20 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-27 $</em>
  * @since 2.0
  */
 public final class model extends StaticObject {
@@ -68,6 +68,8 @@ public final class model extends StaticObject {
 
 	}
 
+	@XmlRootElement(name = "indexed-object")
+	@XmlType(name = "org.jenetics.IndexedObject")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	public static final class IndexedObject {
 

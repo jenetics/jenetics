@@ -41,7 +41,7 @@ import org.jenetics.util.RandomRegistry;
  * Implementation of the NumericGene which holds a 64 bit floating point number.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-20 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-30 $</em>
  * @since 1.6
  */
 @XmlJavaTypeAdapter(DoubleGene.Model.Adapter.class)
@@ -78,6 +78,7 @@ public final class DoubleGene
 	 * @param value the value of the gene.
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (exclusively).
+	 * @return a new {@code DoubleGene} with the given parameter
 	 */
 	public static DoubleGene of(
 		final double value,
@@ -93,6 +94,7 @@ public final class DoubleGene
 	 *
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (exclusively).
+	 * @return a new {@code DoubleGene} with the given parameter
 	 */
 	public static DoubleGene of(final double min, final double max) {
 		return of(nextDouble(RandomRegistry.getRandom(), min, max), min, max);

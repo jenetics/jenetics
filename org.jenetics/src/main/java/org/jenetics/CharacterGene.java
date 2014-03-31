@@ -47,7 +47,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-20 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-30 $</em>
  */
 @XmlJavaTypeAdapter(CharacterGene.Model.Adapter.class)
 public final class CharacterGene
@@ -266,6 +266,8 @@ public final class CharacterGene
 	 * Create a new CharacterGene from the give character.
 	 *
 	 * @param character The allele.
+	 * @param validCharacters the valid characters fo the new gene
+	 * @return a new {@code CharacterGene} with the given parameter
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the {@code validCharacters} are empty.
 	 */

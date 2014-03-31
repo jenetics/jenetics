@@ -36,9 +36,9 @@ import org.jenetics.util.RandomRegistry;
  * Probability selectors are a variation of fitness proportional selectors and
  * selects individuals from a given population based on it's selection
  * probability <i>P(i)</i>.
- * <p><div align="center">
- * <img src="doc-files/FitnessProportionalSelection.svg" width="400" />
- * </p></div>
+ * <p>
+ * <img src="doc-files/FitnessProportionalSelection.svg" width="400" alt="Selection">
+ * <p>
  * Fitness proportional selection works as shown in the figure above. The
  * runtime complexity of the implemented probability selectors is
  * <i>O(n+</i>log<i>(n))</i> instead of <i>O(n<sup>2</sup>)</i> as for the naive
@@ -47,7 +47,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
  */
 public abstract class ProbabilitySelector<
 	G extends Gene<?, G>,

@@ -34,7 +34,7 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
  */
 public final class Timer
 	implements
@@ -74,11 +74,11 @@ public final class Timer
 	 * Set the accumulator for the interim results.
 	 *
 	 * [code]
-	 * final Mean<Long> variance = new Mean<>();
+	 * final Mean&lt;Long&gt; variance = new Mean&lt;&gt;();
 	 * final Timer timer = new Timer();
 	 * timer.setAccumulator(variance);
 	 *
-	 * for (int i = 0; i < 100; ++I) {
+	 * for (int i = 0; i &lt; 100; ++I) {
 	 *     timer.start();
 	 *     ... // Do some measurable task.
 	 *     timer.stop();
@@ -126,7 +126,7 @@ public final class Timer
 	 * return a measured time of 10 s (theoretically).
 	 * [code]
 	 * final Timer timer = new Timer();
-	 * for (int i = 0; i < 10; ++i) {
+	 * for (int i = 0; i &lt; 10; ++i) {
 	 *     timer.start();
 	 *     Thread.sleep(1000);
 	 *     timer.stop();
