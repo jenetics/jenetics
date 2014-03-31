@@ -32,9 +32,10 @@ import org.jenetics.util.RandomRegistry;
  * fluctuations. It can be viewed as a type of roulette game where now we have
  * P equally spaced points which we spin.
  *
- * <p><div align="center">
- * <img src="doc-files/StochasticUniversalSelection.svg" width="400" />
- * </p></div>
+ * <p>
+ * <img src="doc-files/StochasticUniversalSelection.svg" width="400"
+ *      alt="Selector">
+ * </p>
  *
  * The figure above shows how the stochastic-universal selection works; <i>n</i>
  * is the number of individuals to select.

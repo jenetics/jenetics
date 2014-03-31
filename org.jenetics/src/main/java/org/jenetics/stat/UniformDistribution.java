@@ -56,7 +56,7 @@ public class UniformDistribution<
 	 *          \frac{1}{max-min} & for & x \in [min, max] \\
 	 *          0 & & otherwise \\
 	 *          \end{matrix}\right."
-	 * />
+	 * >
 	 * </p>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -108,7 +108,7 @@ public class UniformDistribution<
 	 *         \frac{x-min}{max-min} & for & x \in [min, max] \\
 	 *         1 & for & x > max  \\
 	 *         \end{matrix}\right."
-	 * />
+	 * >
 	 * </p>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -204,7 +204,7 @@ public class UniformDistribution<
 	 *          \frac{1}{max-min} & for & x \in [min, max] \\
 	 *          0 & & otherwise \\
 	 *          \end{matrix}\right."
-	 * />
+	 * >
 	 * </p>
 	 *
 	 */
@@ -224,7 +224,7 @@ public class UniformDistribution<
 	 *         \frac{x-min}{max-min} & for & x \in [min, max] \\
 	 *         1 & for & x > max  \\
 	 *         \end{matrix}\right."
-	 * />
+	 * >
 	 * </p>
 	 *
 	 */

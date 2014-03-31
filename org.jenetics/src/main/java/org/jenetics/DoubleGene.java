@@ -78,6 +78,7 @@ public final class DoubleGene
 	 * @param value the value of the gene.
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (exclusively).
+	 * @return a new {@code DoubleGene} with the given parameter
 	 */
 	public static DoubleGene of(
 		final double value,
@@ -93,6 +94,7 @@ public final class DoubleGene
 	 *
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (exclusively).
+	 * @return a new {@code DoubleGene} with the given parameter
 	 */
 	public static DoubleGene of(final double min, final double max) {
 		return of(nextDouble(RandomRegistry.getRandom(), min, max), min, max);

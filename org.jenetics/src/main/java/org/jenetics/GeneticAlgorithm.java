@@ -49,12 +49,12 @@ import org.jenetics.util.functions;
  *
  * [code]
  * public static void main(final String[] args) {
- *     final Factory〈Genotype〈BitGene〉〉 gtf = Genotype.of(
+ *     final Factory&lt;Genotype&lt;BitGene&gt;&gt; gtf = Genotype.of(
  *         BitChromosome.of(10, 0.5)
  *     );
- *     final Function〈Genotype〈BitGene〉 Double〉 ff = ...
- *     final GeneticAlgorithm〈BitGene, Double〉
- *     ga = new GeneticAlgorithm〈〉(gtf, ff, Optimize.MAXIMUM);
+ *     final Function&lt;Genotype&lt;BitGene&gt; Double&gt; ff = ...
+ *     final GeneticAlgorithm&lt;BitGene, Double&gt;
+ *     ga = new GeneticAlgorithm&lt;&gt;(gtf, ff, Optimize.MAXIMUM);
  *
  *     ga.setup();
  *     ga.evolve(100);
@@ -83,10 +83,10 @@ import org.jenetics.util.functions;
  * [code]
  * public static void main(final String[] args) {
  *     ...
- *     ga.setSelectors(new RouletteWheelSelector〈BitGene〉());
+ *     ga.setSelectors(new RouletteWheelSelector&lt;BitGene&gt;());
  *     ga.setAlterers(
- *         new SinglePointCrossover〈BitGene〉(0.1),
- *         new Mutator〈BitGene〉(0.01)
+ *         new SinglePointCrossover&lt;BitGene&gt;(0.1),
+ *         new Mutator&lt;BitGene&gt;(0.01)
  *     );
  *
  *     ga.setup();
@@ -101,7 +101,6 @@ import org.jenetics.util.functions;
  * and {@code setSurvivorSelector} methods. The alterers are concatenated, at
  * first the crossover (with probability 0.1) is performed and then the
  * chromosomes are mutated (with probability 0.01).
- * <p/>
  *
  * <h3>Serialization</h3>
  *
@@ -118,8 +117,8 @@ import org.jenetics.util.functions;
  * IO.jaxb.write(ga.getPopulation(), file);
  *
  * // Reading the population from disk.
- * Population〈DoubleGene, Double〉 population =
- *     (Population〈DoubleGene, Double〉)IO.jaxb.read(file);
+ * Population&lt;DoubleGene, Double&gt; population =
+ *     (Population&lt;DoubleGene, Double&gt;)IO.jaxb.read(file);
  * ga.setPopulation(population);
  * [/code]
  *
@@ -594,13 +593,13 @@ public class GeneticAlgorithm<
 	 * </p>
 	 * To set one ore more GA parameter you will write code like this:
 	 * [code]
-	 * final GeneticAlgorithm〈DoubleGene, Double〉 ga = ...
-	 * final Function〈GeneticAlgorithm〈?, ?〉, Boolean〉 until = ...
+	 * final GeneticAlgorithm&lt;DoubleGene, Double&gt; ga = ...
+	 * final Function&lt;GeneticAlgorithm&lt;?, ?&gt;, Boolean&gt; until = ...
 	 *
 	 * //Starting the GA in separate thread.
 	 * final Thread thread = new Thread(new Runnable() {
 	 *     public void run() {
-	 *         while (!Thread.currentThread().isInterrupted() &&
+	 *         while (!Thread.currentThread().isInterrupted() &amp;&amp;
 	 *                !until.apply(ga))
 	 *         {
 	 *             if (ga.getGeneration() == 0) {
@@ -631,8 +630,8 @@ public class GeneticAlgorithm<
 	 * [code]
 	 * ga.getLock().lock();
 	 * try {
-	 *     final Statistics〈?, ?〉 statistics = ga.getStatistic();
-	 *     final Function〈?, ?〉 scaler = ga.getFitnessScaler();
+	 *     final Statistics&lt;?, ?&gt; statistics = ga.getStatistic();
+	 *     final Function&lt;?, ?&gt; scaler = ga.getFitnessScaler();
 	 * } finally {
 	 *     ga.getLock().unlock();
 	 * }
@@ -672,8 +671,8 @@ public class GeneticAlgorithm<
 	 * The following example shows the simplest possible fitness function. It's
 	 * the identity function and returns the allele of an 1x1  float genotype.
 	 * [code]
-	 * class Id implements Function〈Genotype〈DoubleGene〉, Double〉 {
-	 *     public Double apply(final Genotype〈DoubleGene〉 genotype) {
+	 * class Id implements Function&lt;Genotype&lt;DoubleGene&gt;, Double&gt; {
+	 *     public Double apply(final Genotype&lt;DoubleGene&gt; genotype) {
 	 *         return genotype.getGene().getAllele();
 	 *     }
 	 * }
@@ -701,7 +700,7 @@ public class GeneticAlgorithm<
 	 * configuration the raw-fitness is equal to the actual fitness value, that
 	 * means, the used fitness scaler is the identity function.
 	 * [code]
-	 * class Sqrt extends Function〈Double, Double〉 {
+	 * class Sqrt extends Function&lt;Double, Double&gt; {
 	 *     public Double apply(final Double value) {
 	 *         return sqrt(value);
 	 *     }
@@ -716,7 +715,7 @@ public class GeneticAlgorithm<
 	 * When using a fitness scaler you have to take care, that your scaler
 	 * doesn't destroy your fitness value. This can be the case when your
 	 * fitness value is negative and your fitness scaler squares the value.
-	 * Trying to find the minimum will not work in this configuration.</b>
+	 * Trying to find the minimum will not work in this configuration.
 	 *
 	 * @param scaler The fitness scaler.
 	 * @throws NullPointerException if the scaler is {@code null}.
@@ -814,7 +813,7 @@ public class GeneticAlgorithm<
 	 * Set the offspring selector.
 	 *
 	 * @param selector The offspring selector.
-	 * @throws NullPointerException, if the given selector is null.
+	 * @throws NullPointerException if the given selector is null.
 	 */
 	public void setOffspringSelector(final Selector<G, C> selector) {
 		_offspringSelector = requireNonNull(selector, "Offspring selector");
@@ -824,7 +823,7 @@ public class GeneticAlgorithm<
 	 * Set the survivor selector.
 	 *
 	 * @param selector The survivor selector.
-	 * @throws NullPointerException, if the given selector is null.
+	 * @throws NullPointerException if the given selector is null.
 	 */
 	public void setSurvivorSelector(final Selector<G, C> selector) {
 		_survivorSelector = requireNonNull(selector, "Survivor selector");

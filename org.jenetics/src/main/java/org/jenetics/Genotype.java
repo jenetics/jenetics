@@ -50,16 +50,16 @@ import org.jenetics.util.Verifiable;
  * The central class the GA is working with, is the {@code Genotype}. It is the
  * structural representative of an individual. This class is the encoded problem
  * solution with one to many {@link Chromosome}.
- * <p><div align="center">
- * <img src="doc-files/Genotype.svg" width="400" height="252" >
- * </p></div>
+ * <p>
+ * <img alt="Genotype" src="doc-files/Genotype.svg" width="400" height="252" >
+ * </p>
  * The chromosomes of a genotype doesn't have to have necessarily the same size.
  * It is only required that all genes are from the same type and the genes within
  * a chromosome have the same constraints; e. g. the same min- and max values
  * for number genes.
  *
  * [code]
- * final Genotype〈DoubleGene〉 genotype = Genotype.of(
+ * final Genotype&lt;DoubleGene&gt; genotype = Genotype.of(
  *     DoubleChromosome.of(0.0, 1.0, 8),
  *     DoubleChromosome.of(1.0, 2.0, 10),
  *     DoubleChromosome.of(0.0, 10.0, 9),
@@ -129,7 +129,8 @@ public final class Genotype<G extends Gene<?, G>>
 	 *
 	 * @param index Chromosome index.
 	 * @return The Chromosome.
-	 * @throws IndexOutOfBoundsException if (index < 0 || index >= _length).
+	 * @throws IndexOutOfBoundsException if
+	 *         {@code (index < 0 || index >= _length)}.
 	 */
 	public Chromosome<G> getChromosome(final int index) {
 		assert(_chromosomes != null);
@@ -141,8 +142,8 @@ public final class Genotype<G extends Gene<?, G>>
 	/**
 	 * Return the first chromosome. This is a shortcut for
 	 * [code]
-	 * final Genotype〈DoubleGene〉 gt = ...
-	 * final Chromosome〈DoubleGene〉 chromosome = gt.getChromosome(0);
+	 * final Genotype&lt;DoubleGene&gt; gt = ...
+	 * final Chromosome&lt;DoubleGene&gt; chromosome = gt.getChromosome(0);
 	 * [/code]
 	 *
 	 * @return The first chromosome.
@@ -158,7 +159,7 @@ public final class Genotype<G extends Gene<?, G>>
 	 * Return the first {@link Gene} of the first {@link Chromosome} of this
 	 * {@code Genotype}. This is a shortcut for
 	 * [code]
-	 * final Genotype〈DoubleGene〉 gt = ...
+	 * final Genotype&lt;DoubleGene&gt; gt = ...
 	 * final DoubleGene gene = gt.getChromosome(0).getGene(0);
 	 * [/code]
 	 *
@@ -264,6 +265,9 @@ public final class Genotype<G extends Gene<?, G>>
 
 	/**
 	 * Return a converter which access the chromosome array of this genotype.
+	 *
+	 * @param <T> the gene type
+	 * @return a function object which returns the chromosomes for this genotype.
 	 */
 	public static <T extends Gene<?, T>>
 	Function<Genotype<T>, ISeq<Chromosome<T>>> Chromosomes()
@@ -278,6 +282,10 @@ public final class Genotype<G extends Gene<?, G>>
 	/**
 	 * Return a converter which access the chromosome with the given index of
 	 * this genotype.
+	 *
+	 * @param <T> the gene type
+	 * @param index the index of the chromosome
+	 * @return a function object which returns the chromosome at the given index.
 	 */
 	public static <T extends Gene<?, T>>
 	Function<Genotype<T>, Chromosome<T>> Chromosome(final int index)
@@ -291,6 +299,10 @@ public final class Genotype<G extends Gene<?, G>>
 
 	/**
 	 * Return a converter which access the first chromosome of this genotype.
+	 *
+	 * @param <T> the gene type
+	 * @return a function object which returns the first chromosome of this
+	 *         genotype.
 	 */
 	public static <T extends Gene<?, T>>
 	Function<Genotype<T>, Chromosome<T>> Chromosome()

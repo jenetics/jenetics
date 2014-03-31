@@ -68,6 +68,8 @@ public final class model extends StaticObject {
 
 	}
 
+	@XmlRootElement(name = "indexed-object")
+	@XmlType(name = "org.jenetics.IndexedObject")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	public static final class IndexedObject {
 

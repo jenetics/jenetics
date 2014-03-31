@@ -266,6 +266,8 @@ public final class CharacterGene
 	 * Create a new CharacterGene from the give character.
 	 *
 	 * @param character The allele.
+	 * @param validCharacters the valid characters fo the new gene
+	 * @return a new {@code CharacterGene} with the given parameter
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the {@code validCharacters} are empty.
 	 */

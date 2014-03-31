@@ -24,7 +24,7 @@ import java.util.List;
 
 /**
  * General interface for a ordered, fixed sized, object sequence.
- * <br/>
+ * <br>
  * Use the {@link #asList()} method to work together with the
  * <a href="http://download.oracle.com/javase/6/docs/technotes/guides/collections/index.html">
  * Java Collection Framework</a>.
@@ -41,7 +41,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * @param index index of the element to return.
 	 * @return the value at the given {@code index}.
 	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         <code>(index < 0 || index >= size())</code>.
+	 *         (index &lt; 0 || index &gt;= size()).
 	 */
 	public T get(final int index);
 
@@ -334,7 +334,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * array. If this sequence fits in the specified array, it is returned therein.
 	 * Otherwise, a new array is allocated with the runtime type of the specified
 	 * array and the length of this array.
-	 * <p/>
+	 * <p>
 	 * If this sequence fits in the specified array with room to spare (i.e., the
 	 * array has more elements than this array), the element in the array
 	 * immediately following the end of this array is set to null. (This is
@@ -359,7 +359,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * and {@code end} are equal, the returned sequence has the length zero.) The
 	 * returned sequence is backed by this sequence, so non-structural changes
 	 * in the returned sequence are reflected in this sequence, and vice-versa.
-	 * <p/>
+	 * <p>
 	 * This method eliminates the need for explicit range operations (of the
 	 * sort that commonly exist for arrays). Any operation that expects an sequence
 	 * can be used as a range operation by passing an sub sequence view instead of
@@ -378,7 +378,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * and {@code end} are equal, the returned sequence has the length zero.) The
 	 * returned sequence is backed by this sequence, so non-structural changes in the
 	 * returned sequence are reflected in this array, and vice-versa.
-	 * <p/>
+	 * <p>
 	 * This method eliminates the need for explicit range operations (of the
 	 * sort that commonly exist for arrays). Any operation that expects an array
 	 * can be used as a range operation by passing an sub sequence view instead of
@@ -398,7 +398,7 @@ public interface Seq<T> extends Iterable<T> {
 	 *
 	 * [code]
 	 * int hashCode = 1;
-	 * final Iterator<E> it = seq.iterator();
+	 * final Iterator&lt;E&gt; it = seq.iterator();
 	 * while (it.hasNext()) {
 	 *     final E obj = it.next();
 	 *     hashCode = 31*hashCode + (obj == null ? 0 : obj.hashCode());

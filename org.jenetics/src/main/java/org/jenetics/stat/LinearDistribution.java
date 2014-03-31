@@ -34,7 +34,7 @@ import org.jenetics.util.Range;
 
 /**
  * <p>This distribution has the following cdf.</p>
- * <p><img src="doc-files/LinearDistribution.png" /></p>
+ * <p><img src="doc-files/LinearDistribution.png" alt="Distribution"></p>
  * <p>
  * The only restriction is that the integral of the cdf must be one.
  * </p>
@@ -44,20 +44,20 @@ import org.jenetics.util.Range;
  *             \\underset{k} {\\underbrace {\frac{y_2-y_1}{x_2-x_1}}} \cdot x +
  *             \\underset{d}{\\underbrace {y_1-\frac{y_2-y_1}{x_2-x_1}\cdot x_1}}
  *           \right)\mathrm{d}x = 1"
- *  />
+ *  >
  *  </p>
  *
  *  Solving this integral leads to
  *  <p>
  *  <img src="doc-files/linear-precondition-y2.gif"
  *       alt="y_2 = -\frac{(x_2-x_1)\cdot y_1 - 2}{x_2-x_1}"
- *  />
+ *  >
  *  </p>
  *
  *  for fixed values for <i>x<sub>1</sub></i>, <i>x<sub>2</sub></i> and
  *  <i>y<sub>1</sub></i>.
  *  <p>
- *  If the value of <i>y<sub>2</sub></i> < 0, the value of <i>x<sub>2</sub></i>
+ *  If the value of <i>y<sub>2</sub></i> &lt; 0, the value of <i>x<sub>2</sub></i>
  *  is decreased so that the resulting triangle (<i>x<sub>1</sub></i>,0),
  *  (<i>x<sub>1</sub></i>,<i>y<sub>1</sub></i>), (<i>x<sub>2</sub></i>,0) has
  *  an area of <i>one</i>.
@@ -81,7 +81,7 @@ public class LinearDistribution<
 	 *                      \frac{y_2-y_1}{x_2-x_1} \cdot x +
 	 *                      y_1-\frac{y_2-y_1}{x_2-x_1}\cdot x_1
 	 *                 \right)"
-	 * />
+	 * >
 	 * </p>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -135,7 +135,7 @@ public class LinearDistribution<
 	 *     src="doc-files/linear-cdf.gif"
 	 *     alt="f(x)=-\frac{(x^2-2x_2x)y_1 - (x^2 - 2x_1x)y_2}
 	 *      {2(x_2 - x_1)}"
-	 * />
+	 * >
 	 * </p>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -235,7 +235,7 @@ public class LinearDistribution<
 	 *     src="doc-files/linear-cdf.gif"
 	 *     alt="f(x)=-\frac{(x^2-2x_2x)y_1 - (x^2 - 2x_1x)y_2}
 	 *      {2(x_2 - x_1)}"
-	 * />
+	 * >
 	 * </p>
 	 *
 	 */
@@ -254,7 +254,7 @@ public class LinearDistribution<
 	 *                      \frac{y_2-y_1}{x_2-x_1} \cdot x +
 	 *                      y_1-\frac{y_2-y_1}{x_2-x_1}\cdot x_1
 	 *                 \right)"
-	 * />
+	 * >
 	 * </p>
 	 *
 	 */

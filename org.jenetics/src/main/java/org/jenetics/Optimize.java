@@ -77,8 +77,8 @@ public enum Optimize {
 	 * of <i>better</i> and <i>worse</i>.
 	 *
 	 * [code]
-	 * Population<DoubleGene, Double> population = ...
-	 * population.sort(Optimize.MINIMUM.<Double>descending());
+	 * Population&lt;DoubleGene, Double&gt; population = ...
+	 * population.sort(Optimize.MINIMUM.&lt;Double&gt;descending());
 	 * [/code]
 	 *
 	 * The code example above will sort the population according it's fitness
@@ -104,8 +104,8 @@ public enum Optimize {
 	 * of <i>better</i> and <i>worse</i>.
 	 *
 	 * [code]
-	 * Population<DoubleGene, Double> population = ...
-	 * population.sort(Optimize.MINIMUM.<Double>ascending());
+	 * Population&lt;DoubleGene, Double&gt; population = ...
+	 * population.sort(Optimize.MINIMUM.&lt;Double&gt;ascending());
 	 * [/code]
 	 *
 	 * The code example above will sort the population according it's fitness

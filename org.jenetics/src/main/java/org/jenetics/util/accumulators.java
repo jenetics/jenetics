@@ -47,7 +47,7 @@ public final class accumulators extends StaticObject {
 	/**
 	 * Calculates min value.
 	 *
-	 * <p/>
+	 * <p>
 	 * <strong>Note that this implementation is not synchronized.</strong> If
 	 * multiple threads access this object concurrently, and at least one of the
 	 * threads modifies it, it must be synchronized externally.
@@ -140,7 +140,7 @@ public final class accumulators extends StaticObject {
 	/**
 	 * Calculates max value.
 	 *
-	 * <p/>
+	 * <p>
 	 * <strong>Note that this implementation is not synchronized.</strong> If
 	 * multiple threads access this object concurrently, and at least one of the
 	 * threads modifies it, it must be synchronized externally.
@@ -233,7 +233,7 @@ public final class accumulators extends StaticObject {
 	/**
 	 * Calculates min and max values.
 	 *
-	 * <p/>
+	 * <p>
 	 * <strong>Note that this implementation is not synchronized.</strong> If
 	 * multiple threads access this object concurrently, and at least one of the
 	 * threads modifies it, it must be synchronized externally.
