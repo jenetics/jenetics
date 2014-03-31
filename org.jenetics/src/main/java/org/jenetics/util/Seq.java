@@ -763,7 +763,7 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
 	@SafeVarargs
-	public static <T> Seq<T> valueOf(final T... values) {
+	public static <T> Seq<T> of(final T... values) {
 		return MSeq.<T>valueOf(values.length).setAll(values).toISeq();
 	}
 
@@ -773,7 +773,7 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	 * @param values the array values.
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
-	public static <T> Seq<T> valueOf(final Collection<? extends T> values) {
+	public static <T> Seq<T> of(final Collection<? extends T> values) {
 		return MSeq.valueOf(values).toISeq();
 	}
 

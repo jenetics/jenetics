@@ -410,7 +410,7 @@ public final class Phenotype<
 		final Function<? super Genotype<G>, C> fitnessFunction,
 		final int generation
 	) {
-		return of(genotype, fitnessFunction, functions.<C>Identity(), generation);
+		return of(genotype, fitnessFunction, a -> a, generation);
 	}
 
 	/**

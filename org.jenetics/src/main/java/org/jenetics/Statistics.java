@@ -29,10 +29,10 @@ import java.io.Serializable;
 import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.stat.Variance;
+import org.jenetics.util.Accumulator;
+import org.jenetics.util.Accumulator.MinMax;
 import org.jenetics.util.Duration;
 import org.jenetics.util.FinalReference;
-import org.jenetics.util.accumulators;
-import org.jenetics.util.accumulators.MinMax;
 
 /**
  * Data object which holds performance indicators of a given {@link Population}.

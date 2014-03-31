@@ -26,8 +26,6 @@ import static org.jenetics.internal.util.object.checkProbability;
 import java.io.Serializable;
 import java.util.function.Function;
 
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.util.Range;
 
 /**

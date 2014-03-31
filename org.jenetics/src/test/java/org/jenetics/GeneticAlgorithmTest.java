@@ -23,7 +23,6 @@ import java.io.Serializable;
 import java.util.Random;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Function;
-import java.util.function.Predicate;
 
 import org.testng.Assert;
 import org.testng.Reporter;
@@ -106,18 +105,6 @@ public class GeneticAlgorithmTest {
 	public static class Derived extends Base {
 	}
 
-	@SuppressWarnings("null")
-	public void evolve() {
-		Predicate<Statistics<? extends Float64Gene, ? extends Base>> until = null;
-		GeneticAlgorithm<Float64Gene, Derived> ga = null;
-
-		ga.evolve(until);
-		ga.evolve(termination.Generation(1));
-
-		GeneticAlgorithm<DoubleGene, Double> ga2 = null;
-		ga2.evolve(termination.<Double>SteadyFitness(10));
-	}
-
 	@Test(invocationCount = 10)
 	public void evolveForkJoinPool() {
 		final ForkJoinPool pool = new ForkJoinPool(10);
@@ -132,20 +119,6 @@ public class GeneticAlgorithmTest {
 			ga.setOffspringFraction(0.3);
 			ga.setOffspringSelector(new RouletteWheelSelector<>());
 			ga.setSurvivorSelector(new StochasticUniversalSelector<>());
-
-			ga.setup();
-			for (int i = 0; i < 10; ++i) {
-				ga.evolve();
-			}
-		} finally {
-			pool.shutdown();
-		}
-	}
-
-			ga.setAlterer(new MeanAlterer<DoubleGene>());
-			ga.setOffspringFraction(0.3);
-			ga.setOffspringSelector(new RouletteWheelSelector<DoubleGene, Double>());
-			ga.setSurvivorSelector(new StochasticUniversalSelector<DoubleGene, Double>());
 
 			ga.setup();
 			for (int i = 0; i < 10; ++i) {

@@ -203,7 +203,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 * value in descending order.
 	 */
 	public void populationSort() {
-		populationSort(Optimize.MAXIMUM.<C>descending());
+		sortWith(Optimize.MAXIMUM.<C>descending());
 	}
 
 	/**

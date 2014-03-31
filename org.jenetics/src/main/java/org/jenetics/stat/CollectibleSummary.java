@@ -21,7 +21,7 @@ package org.jenetics.stat;
 
 import static java.lang.Double.NaN;
 import static java.lang.Math.sqrt;
-import static org.jenetics.util.object.eq;
+import static org.jenetics.internal.util.object.eq;
 
 import java.util.Objects;
 
@@ -31,7 +31,7 @@ import org.jenetics.internal.util.HashBuilder;
  * Mutable implementation of the statistical {@code Summary} interface.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-03-31 $</em>
  * @since @__version__@
  */
 final class CollectibleSummary<N extends Number & Comparable<? super N>>

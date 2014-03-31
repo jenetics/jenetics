@@ -23,7 +23,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Random;
+import java.util.Comparator;
 import java.util.function.Function;
 
 /**
@@ -50,7 +50,7 @@ public final class arrays extends StaticObject {
 	 * [/code]
 	 *
 	 * @see Seq#hashCode()
-	 * @see List#hashCode()
+	 * @see java.util.List#hashCode()
 	 *
 	 * @param seq the sequence to calculate the hash code for.
 	 * @return the hash code of the given sequence.
@@ -277,9 +277,6 @@ public final class arrays extends StaticObject {
 	 * @param f the function to apply to each element.
 	 * @throws NullPointerException if one of the elements are {@code null}.
 	 */
-	}
-
-	/**
 	public static <T, R> void forEach(
 		final Iterable<? extends T> values,
 		final Function<? super T, ? extends R> f

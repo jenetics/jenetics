@@ -20,13 +20,11 @@
 package org.jenetics.util;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.util.object.eq;
+import static org.jenetics.internal.util.object.eq;
 
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.function.Function;
-
-import org.jscience.mathematics.structure.GroupAdditive;
 
 import org.jenetics.internal.util.HashBuilder;
 
@@ -368,36 +366,6 @@ public interface Accumulator<T> {
 		}
 	}
 
-	public static class Sum<G extends GroupAdditive<G>>
-		extends AbstractAccumulator<G>
-	{
-
-		private G _sum = null;
-
-		public Sum() {
-		}
-
-		public Sum(final G start) {
-			_sum = start;
-		}
-
-		@Override
-		public void accumulate(final G value) {
-			if (_sum == null) {
-				_sum = value;
-			} else {
-				_sum = _sum.plus(value);
-			}
-
-			++_samples;
-		}
-
-		public G getSum() {
-			return _sum;
-		}
-
-	}
-
 	/**
 	 * Calls the {@link Accumulator#accumulate(Object)} method of all given
 	 * {@code accumulators} with each value of the given {@code values}. The
@@ -454,10 +422,9 @@ public interface Accumulator<T> {
 				);
 				break;
 			default:
-				try (Concurrency c = Concurrency.start()) {
-					for (final Accumulator<? super T> accumulator : accus) {
-						c.execute(new Acc<>(values, accumulator));
-					}
+				try (Scoped<Concurrent> c = Concurrent.scope()) {
+					// TODO: FIX
+					//c.get().execute(accus.map(AccumulatorToRunnable(values)).asList());
 				}
 		}
 	}
@@ -477,7 +444,7 @@ public interface Accumulator<T> {
 		final Iterable<? extends T> values,
 		final Accumulator<? super T>... accus
 	) {
-		accumulate(values, Array.valueOf(accus));
+		accumulate(values, Array.of(accus));
 	}
 
 	/**
@@ -532,9 +499,9 @@ public interface Accumulator<T> {
 		final Accumulator<? super T> a1,
 		final Accumulator<? super T> a2
 	) {
-		try (Concurrency c = Concurrency.start()) {
-			c.execute(new Acc<>(values, a1));
-			c.execute(new Acc<>(values, a2));
+		try (Scoped<Concurrent> c = Concurrent.scope()) {
+			c.get().execute(new Acc<>(values, a1));
+			c.get().execute(new Acc<>(values, a2));
 		}
 	}
 
@@ -556,10 +523,10 @@ public interface Accumulator<T> {
 		final Accumulator<? super T> a2,
 		final Accumulator<? super T> a3
 	) {
-		try (Concurrency c = Concurrency.start()) {
-			c.execute(new Acc<>(values, a1));
-			c.execute(new Acc<>(values, a2));
-			c.execute(new Acc<>(values, a3));
+		try (Scoped<Concurrent> c = Concurrent.scope()) {
+			c.get().execute(new Acc<>(values, a1));
+			c.get().execute(new Acc<>(values, a2));
+			c.get().execute(new Acc<>(values, a3));
 		}
 	}
 
@@ -583,11 +550,11 @@ public interface Accumulator<T> {
 		final Accumulator<? super T> a3,
 		final Accumulator<? super T> a4
 	) {
-		try (Concurrency c = Concurrency.start()) {
-			c.execute(new Acc<>(values, a1));
-			c.execute(new Acc<>(values, a2));
-			c.execute(new Acc<>(values, a3));
-			c.execute(new Acc<>(values, a4));
+		try (Scoped<Concurrent> c = Concurrent.scope()) {
+			c.get().execute(new Acc<>(values, a1));
+			c.get().execute(new Acc<>(values, a2));
+			c.get().execute(new Acc<>(values, a3));
+			c.get().execute(new Acc<>(values, a4));
 		}
 	}
 
@@ -613,12 +580,12 @@ public interface Accumulator<T> {
 		final Accumulator<? super T> a4,
 		final Accumulator<? super T> a5
 	) {
-		try (Concurrency c = Concurrency.start()) {
-			c.execute(new Acc<>(values, a1));
-			c.execute(new Acc<>(values, a2));
-			c.execute(new Acc<>(values, a3));
-			c.execute(new Acc<>(values, a4));
-			c.execute(new Acc<>(values, a5));
+		try (Scoped<Concurrent> c = Concurrent.scope()) {
+			c.get().execute(new Acc<>(values, a1));
+			c.get().execute(new Acc<>(values, a2));
+			c.get().execute(new Acc<>(values, a3));
+			c.get().execute(new Acc<>(values, a4));
+			c.get().execute(new Acc<>(values, a5));
 		}
 	}
 

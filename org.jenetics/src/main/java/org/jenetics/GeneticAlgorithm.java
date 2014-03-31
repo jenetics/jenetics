@@ -22,8 +22,7 @@ package org.jenetics;
 import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.util.object.NonNull;
-import static org.jenetics.util.object.checkProbability;
+import static org.jenetics.internal.util.object.checkProbability;
 
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -220,7 +219,7 @@ public class GeneticAlgorithm<
 		_fitnessScaler = requireNonNull(fitnessScaler, "FitnessScaler");
 		_optimization = requireNonNull(optimization, "Optimization");
 
-		_phenotypeFactory = () -> Phenotype.valueOf(
+		_phenotypeFactory = () -> Phenotype.of(
 			_genotypeFactory.newInstance(),
 			_fitnessFunction,
 			_fitnessScaler,
@@ -498,7 +497,7 @@ public class GeneticAlgorithm<
 
 				assert (survivors.size() == numberOfSurvivors);
 				selection.set(0, survivors);
-			});
+			}});
 
 			final Population<G, C> offspring = _offspringSelector.select(
 				_population, numberOfOffspring, _optimization
@@ -506,7 +505,7 @@ public class GeneticAlgorithm<
 
 			assert (offspring.size() == numberOfOffspring);
 			selection.set(1, offspring);
-		}
+		};
 
 		return selection;
 	}
@@ -540,7 +539,7 @@ public class GeneticAlgorithm<
 						_invalid.incrementAndGet();
 					}
 				}
-			});
+			}});
 
 			// In the mean time we can add the offspring.
 			population.addAll(offspring);
@@ -912,7 +911,8 @@ public class GeneticAlgorithm<
 	 *         one.
 	 */
 	public void setPopulation(final Collection<Phenotype<G, C>> population) {
-		population.forEach(NonNull);
+		// TODO: Fix
+		//population.forEach(NonNull);
 		if (population.size() < 1) {
 			throw new IllegalArgumentException(format(
 				"Population size must be greater than zero, but was %s.",
@@ -948,7 +948,8 @@ public class GeneticAlgorithm<
 	 *         one.
 	 */
 	public void setGenotypes(final Collection<Genotype<G>> genotypes) {
-		genotypes.forEach(NonNull);
+		// TODO: FIX
+		//genotypes.forEach(NonNull);
 		if (genotypes.size() < 1) {
 			throw new IllegalArgumentException(
 				"Genotype size must be greater than zero, but was " +

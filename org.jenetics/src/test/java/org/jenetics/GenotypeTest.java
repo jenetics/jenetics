@@ -136,8 +136,8 @@ public class GenotypeTest extends ObjectTester<Genotype<DoubleGene>> {
 	public static void main(final String[] args) throws Exception {
 		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
 		try (Scoped<?> s = RandomRegistry.scope(random)) {
-			final BitChromosome chromosome = BitChromosome.of(30, 0.5);
-			final Genotype<?> genotype = Genotype.of(chromosome, chromosome);
+			final Chromosome<BitGene> chromosome = BitChromosome.of(30, 0.5);
+			final Genotype<BitGene> genotype = Genotype.of(chromosome, chromosome);
 
 			/*
 			JAXBContext jc = JAXBContext.newInstance("org.jenetics");

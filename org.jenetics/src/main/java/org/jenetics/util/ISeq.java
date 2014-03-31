@@ -19,6 +19,8 @@
  */
 package org.jenetics.util;
 
+import java.util.function.Function;
+
 /**
  * Immutable, ordered, fixed sized sequence.
  *

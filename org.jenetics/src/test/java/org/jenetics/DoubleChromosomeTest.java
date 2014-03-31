@@ -34,7 +34,6 @@ import org.jenetics.stat.Variance;
 import org.jenetics.util.Accumulator.MinMax;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Scoped;
-import org.jenetics.util.accumulators.MinMax;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
