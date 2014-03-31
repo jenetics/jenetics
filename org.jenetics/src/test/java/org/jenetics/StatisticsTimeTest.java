@@ -19,34 +19,36 @@
  */
 package org.jenetics;
 
-import java.time.Duration;
 import java.util.Random;
 
 import org.jenetics.Statistics.Time;
+import org.jenetics.util.Duration;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ObjectTester;
 import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-10-04 $</em>
+ * @version <em>$Date: 2014-03-31 $</em>
  */
 public class StatisticsTimeTest extends ObjectTester<Time> {
 
-	final Factory<Time> _factory = () -> {
-		final Random random = RandomRegistry.getRandom();
+	final Factory<Time> _factory = new Factory<Time>() {
+		@Override
+		public Time newInstance() {
+			final Random random = RandomRegistry.getRandom();
 
-		final Time time = new Time();
-		time.alter.set(Duration.ofNanos(Math.abs(random.nextLong())));
-		time.combine.set(Duration.ofNanos(Math.abs(random.nextLong())));
-		time.evaluation.set(Duration.ofNanos(Math.abs(random.nextLong())));
-		time.execution.set(Duration.ofNanos(Math.abs(random.nextLong())));
-		time.selection.set(Duration.ofNanos(Math.abs(random.nextLong())));
-		time.statistics.set(Duration.ofNanos(Math.abs(random.nextLong())));
+			final Time time = new Time();
+			time.alter.set(Duration.ofSeconds(random.nextDouble() * 1000));
+			time.combine.set(Duration.ofSeconds(random.nextDouble()*1000));
+			time.evaluation.set(Duration.ofSeconds(random.nextDouble()*1000));
+			time.execution.set(Duration.ofSeconds(random.nextDouble()*1000));
+			time.selection.set(Duration.ofSeconds(random.nextDouble()*1000));
+			time.statistics.set(Duration.ofSeconds(random.nextDouble()*1000));
 
-		return time;
+			return time;
+		}
 	};
-
 	@Override
 	protected Factory<Time> getFactory() {
 		return _factory;

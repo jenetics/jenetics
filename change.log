@@ -1,3 +1,7 @@
+Jenetics-2.0.0
+- Remove all deprecated classes and methods.
+
+Jenetics-1.6.0
 - Add JAXB base XML serialization mechanism to the Gene/Chromosome/Genotype/Phenotype classes. Mark the XMLSerializable based XML serialization as deprecated. org.jenetics.util.IO.xml is now deprecated.
 - Add Double/Long genes/chromosomes which will replace the Float64/Integer64 genes/chromosomes.
 - Generalize the fitness function to 'Function<? super Genotype<G>, ? extends C>' and the fitness scaler to 'Function<? super C, ? extends C>'.
@@ -8,7 +12,6 @@ Jenetics-1.5.0
 - Fix/streamline BitChromosome constructors.
 - Improve Gradle build scripts.
 - Simplify statistics test classes.
-
 
 Jenetics-1.4.1
 - Fix bug in ListIterator implementation of the 'Seq' classes.

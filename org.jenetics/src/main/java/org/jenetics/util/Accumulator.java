@@ -34,17 +34,17 @@ import org.jenetics.internal.util.HashBuilder;
  * Interface for accumulating values of a given type. Here an usage example:
  *
  * [code]
- * final MinMax<Double> minMax = new MinMax<>();
- * final Variance<Double> variance = new Variance<>();
- * final Quantile<Double> quantile = new Quantile<>();
+ * final MinMax&lt;Double&gt; minMax = new MinMax&lt;&gt;();
+ * final Variance&lt;Double&gt; variance = new Variance&lt;&gt;();
+ * final Quantile&lt;Double&gt; quantile = new Quantile&lt;&gt;();
  *
- * final List<Double> values = ...;
+ * final List&lt;Double&gt; values = ...;
  * accumulators.accumulate(values, minMax, variance, quantile);
  * [/code]
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public interface Accumulator<T> {
 

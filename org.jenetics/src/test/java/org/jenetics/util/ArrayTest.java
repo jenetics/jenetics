@@ -34,9 +34,8 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-07 $</em>
+ * @version <em>$Date: 2014-03-31 $</em>
  */
-@SuppressWarnings("deprecation")
 public class ArrayTest extends ObjectTester<Array<Double>> {
 
 	private final Random _random = new Random();
@@ -176,6 +175,10 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 
 		final Array<Integer> filtered = array.filter(o -> o != null);
 		Assert.assertEquals(filtered.length(), array.length() - 2);
+
+		for (Integer value : filtered) {
+			Assert.assertEquals(value, new Integer(100));
+		}
 	}
 
 	@Test

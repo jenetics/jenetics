@@ -24,35 +24,25 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.object.eq;
 
-import java.time.Duration;
-import java.time.format.DateTimeParseException;
-
-import javolution.lang.Immutable;
-import javolution.xml.XMLFormat;
-import javolution.xml.XMLSerializable;
-import javolution.xml.stream.XMLStreamException;
-
-import org.jscience.mathematics.number.Float64;
-import org.jscience.mathematics.number.Integer64;
+import java.io.Serializable;
 
 import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.stat.Variance;
-import org.jenetics.util.Accumulator;
-import org.jenetics.util.Accumulator.MinMax;
+import org.jenetics.util.Duration;
 import org.jenetics.util.FinalReference;
+import org.jenetics.util.accumulators;
+import org.jenetics.util.accumulators.MinMax;
 
 /**
  * Data object which holds performance indicators of a given {@link Population}.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
-	implements
-		Immutable,
-		XMLSerializable
+	implements Serializable
 {
 
 	/**
@@ -60,7 +50,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2014-03-07 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
 	 */
 	public static class Builder<
 		G extends Gene<?, G>,
@@ -89,7 +79,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 *
 		 * @param statistics the statistics values. If the {@code statistics}
 		 *         is {@code null} nothing is set.
-		 * @return this builder.
+		 * @return this builder instance.
 		 */
 		public Builder<G, C> statistics(final Statistics<G, C> statistics) {
 			if (statistics != null) {
@@ -113,6 +103,9 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 		/**
 		 * @see Statistics#getGeneration()
+		 *
+		 * @param generation the current GA generation
+		 * @return this builder instance
 		 */
 		public Builder<G, C> generation(final int generation) {
 			_generation = generation;
@@ -121,6 +114,9 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 		/**
 		 * @see Statistics#getBestPhenotype()
+		 *
+		 * @param best the best phenotype
+		 * @return this builder instance
 		 */
 		public Builder<G, C> bestPhenotype(final Phenotype<G, C> best) {
 			_best = best;
@@ -129,6 +125,9 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 		/**
 		 * @see Statistics#getWorstPhenotype()
+		 *
+		 * @param worst the worst phenotype
+		 * @return this builder instance
 		 */
 		public Builder<G, C> worstPhenotype(final Phenotype<G, C> worst) {
 			_worst = worst;
@@ -137,6 +136,9 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 		/**
 		 * @see Statistics#getSamples()
+		 *
+		 * @param samples the number of samples for the statistics object.
+		 * @return this builder instance
 		 */
 		public Builder<G, C> samples(final int samples) {
 			_samples = samples;
@@ -145,6 +147,9 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 		/**
 		 * @see Statistics#getAgeMean()
+		 *
+		 * @param ageMean the mean of the population age
+		 * @return this builder instance
 		 */
 		public Builder<G, C> ageMean(final double ageMean) {
 			_ageMean = ageMean;
@@ -153,6 +158,9 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 		/**
 		 * @see Statistics#getAgeVariance()
+		 *
+		 * @param ageVariance the variance of the population age
+		 * @return this builder instance
 		 */
 		public Builder<G, C> ageVariance(final double ageVariance) {
 			_ageVariance = ageVariance;
@@ -161,6 +169,9 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 		/**
 		 * @see Statistics#getInvalid()
+		 *
+		 * @param invalid the number of valid individuals
+		 * @return this builder instance
 		 */
 		public Builder<G, C> invalid(final int invalid) {
 			_invalid = invalid;
@@ -169,6 +180,9 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 		/**
 		 * @see Statistics#getKilled()
+		 *
+		 * @param killed the number of killed individuals
+		 * @return this builder instance
 		 */
 		public Builder<G, C> killed(final int killed) {
 			_killed = killed;
@@ -195,7 +209,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		}
 	}
 
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 3L;
 
 	protected final Optimize _optimize;
 	protected final int _generation;
@@ -213,6 +227,16 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	/**
 	 * Evaluates statistic values from a given population. The given phenotypes
 	 * may be {@code null}
+	 *
+	 * @param optimize the optimization strategy used
+	 * @param generation the generation for this statistics
+	 * @param best best phenotype
+	 * @param worst worst phenotype
+	 * @param samples number of samples of this statistics
+	 * @param ageMean the mean value of the individuals age
+	 * @param ageVariance the variance value of the individuals ages
+	 * @param killed the number of killed individuals
+	 * @param invalid the number of invalid individuals
 	 */
 	protected Statistics(
 		final Optimize optimize,
@@ -401,83 +425,17 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		return out.toString();
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	static final XMLFormat<Statistics> XML =
-		new XMLFormat<Statistics>(Statistics.class)
-	{
-		private static final String OPTIMIZE = "optimize";
-		private static final String GENERATION = "generation";
-		private static final String SAMPLES = "samples";
-		private static final String AGE_MEAN = "age-mean";
-		private static final String AGE_VARIANCE = "age-variance";
-		private static final String BEST_PHENOTYPE = "best-phenotype";
-		private static final String WORST_PHENOTYPE = "worst-phenotype";
-		private static final String STATISTICS_TIME = "statistics-time";
-		private static final String INVALID = "invalid";
-		private static final String KILLED = "killed";
-
-		@Override
-		public Statistics newInstance(final Class<Statistics> cls, final InputElement xml)
-			throws XMLStreamException
-		{
-			final Optimize optimize = Optimize.valueOf(
-				xml.getAttribute(OPTIMIZE, Optimize.MAXIMUM.name())
-			);
-			final int generation = xml.getAttribute(GENERATION, 0);
-			final int samples = xml.getAttribute(SAMPLES, 1);
-			final Float64 meanAge = xml.get(AGE_MEAN);
-			final Float64 varianceAge = xml.get(AGE_VARIANCE);
-			final Integer64 invalid = xml.get(INVALID);
-			final Integer64 killed = xml.get(KILLED);
-			final Phenotype best = xml.get(BEST_PHENOTYPE);
-			final Phenotype worst = xml.get(WORST_PHENOTYPE);
-
-			final Statistics statistics = new Statistics(
-				optimize,
-				generation,
-				best,
-				worst,
-				samples,
-				meanAge.doubleValue(),
-				varianceAge.doubleValue(),
-				killed.intValue(),
-				invalid.intValue()
-			);
-			statistics._time.set(xml.get(STATISTICS_TIME));
-
-			return statistics;
-
-		}
-		@Override
-		public void write(final Statistics s, final OutputElement xml)
-			throws XMLStreamException
-		{
-			xml.setAttribute(OPTIMIZE, s._optimize.name());
-			xml.setAttribute(GENERATION, s._generation);
-			xml.setAttribute(SAMPLES, s._samples);
-			xml.add(Float64.valueOf(s._ageMean), AGE_MEAN);
-			xml.add(Float64.valueOf(s._ageVariance), AGE_VARIANCE);
-			xml.add(Integer64.valueOf(s._invalid), INVALID);
-			xml.add(Integer64.valueOf(s._killed), KILLED);
-			xml.add(s._best, BEST_PHENOTYPE);
-			xml.add(s._worst, WORST_PHENOTYPE);
-			xml.add(s._time.get(), STATISTICS_TIME);
-		}
-		@Override
-		public void read(final InputElement xml, final Statistics p) {
-		}
-	};
-
-
 	/**
 	 * Class which holds time statistic values.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version @__version__@ &mdash; <em>$Date: 2014-03-07 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
 	 */
-	public static final class Time implements XMLSerializable {
-		private static final long serialVersionUID = 1L;
+	public static final class Time implements Serializable {
+		private static final long serialVersionUID = 2L;
+
+		private static final Duration ZERO = Duration.ofNanos(0);
 
 		/**
 		 * Create a new time object with zero time values. The time references
@@ -493,7 +451,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * is thrown.
 		 */
 		public final FinalReference<Duration>
-		execution = new FinalReference<>(Duration.ZERO);
+			execution = new FinalReference<>(ZERO);
 
 		/**
 		 * The selection time.
@@ -501,7 +459,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * is thrown.
 		 */
 		public final FinalReference<Duration>
-		selection = new FinalReference<>(Duration.ZERO);
+			selection = new FinalReference<>(ZERO);
 
 		/**
 		 * The alter time.
@@ -509,7 +467,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * is thrown.
 		 */
 		public final FinalReference<Duration>
-		alter = new FinalReference<>(Duration.ZERO);
+			alter = new FinalReference<>(ZERO);
 
 		/**
 		 * Combination time between offspring and survivors.
@@ -517,7 +475,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * is thrown.
 		 */
 		public final FinalReference<Duration>
-		combine = new FinalReference<>(Duration.ZERO);
+			combine = new FinalReference<>(ZERO);
 
 		/**
 		 * The evaluation time.
@@ -525,7 +483,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * is thrown.
 		 */
 		public final FinalReference<Duration>
-		evaluation = new FinalReference<>(Duration.ZERO);
+			evaluation = new FinalReference<>(ZERO);
 
 		/**
 		 * The statistics time.
@@ -533,7 +491,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * is thrown.
 		 */
 		public final FinalReference<Duration>
-		statistics = new FinalReference<>(Duration.ZERO);
+			statistics = new FinalReference<>(ZERO);
 
 
 		@Override
@@ -573,68 +531,16 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			out.append("+---------------------------------------------------------+\n");
 			out.append("|  Time Statistics                                        |\n");
 			out.append("+---------------------------------------------------------+\n");
-			out.append(format(pattern, "Select time", selection.get().getNano()/1_000_000_000.0));
-			out.append(format(pattern, "Alter time", alter.get().getNano()/1_000_000_000.0));
-			out.append(format(pattern, "Combine time", combine.get().getNano()/1_000_000_000.0));
-			out.append(format(pattern, "Fitness calculation time", evaluation.get().getNano()/1_000_000_000.0));
-			out.append(format(pattern, "Statistics calculation time", statistics.get().getNano()/1_000_000_000.0));
-			out.append(format(pattern, "Overall execution time", execution.get().getNano()/1_000_000_000.0));
+			out.append(format(pattern, "Select time", selection.get().toSeconds()));
+			out.append(format(pattern, "Alter time", alter.get().toSeconds()));
+			out.append(format(pattern, "Combine time", combine.get().toSeconds()));
+			out.append(format(pattern, "Fitness calculation time", evaluation.get().toSeconds()));
+			out.append(format(pattern, "Statistics calculation time", statistics.get().toSeconds()));
+			out.append(format(pattern, "Overall execution time", execution.get().toSeconds()));
 			out.append("+---------------------------------------------------------+");
 
 			return out.toString();
 		}
-
-		/* ********************************************************************
-		 *  XML object serialization
-		 * ********************************************************************/
-
-		static final XMLFormat<Statistics.Time> XML =
-			new XMLFormat<Statistics.Time>(Statistics.Time.class)
-		{
-			private static final String ALTER_TIME = "alter-time";
-			private static final String COMBINE_TIME = "combine-time";
-			private static final String EVALUATION_TIME = "evaluation-time";
-			private static final String EXECUTION_TIME = "execution-time";
-			private static final String SELECTION_TIME = "selection-time";
-			private static final String STATISTICS_TIME = "statistics-time";
-
-			@SuppressWarnings("unchecked")
-			@Override
-			public Statistics.Time newInstance(
-				final Class<Statistics.Time> cls, final InputElement xml
-			)
-				throws XMLStreamException
-			{
-				final Statistics.Time time = new Statistics.Time();
-
-				try {
-					time.alter.set(Duration.parse(xml.get(ALTER_TIME)));
-					time.combine.set(Duration.parse(xml.get(COMBINE_TIME)));
-					time.evaluation.set(Duration.parse(xml.get(EVALUATION_TIME)));
-					time.execution.set(Duration.parse(xml.get(EXECUTION_TIME)));
-					time.selection.set(Duration.parse(xml.get(SELECTION_TIME)));
-					time.statistics.set(Duration.parse(xml.get(STATISTICS_TIME)));
-				} catch (DateTimeParseException e) {
-					throw new XMLStreamException(e);
-				}
-				return time;
-			}
-			@Override
-			public void write(final Statistics.Time s, final OutputElement xml)
-				throws XMLStreamException
-			{
-				xml.add(s.alter.get().toString(), ALTER_TIME);
-				xml.add(s.combine.get().toString(), COMBINE_TIME);
-				xml.add(s.evaluation.get().toString(), EVALUATION_TIME);
-				xml.add(s.execution.get().toString(), EXECUTION_TIME);
-				xml.add(s.selection.get().toString(), SELECTION_TIME);
-				xml.add(s.statistics.get().toString(), STATISTICS_TIME);
-			}
-			@Override
-			public void read(final InputElement xml, final Statistics.Time p) {
-			}
-		};
-
  	}
 
 
@@ -644,7 +550,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2014-03-07 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
 	 */
 	public static class Calculator<
 		G extends Gene<?, G>,

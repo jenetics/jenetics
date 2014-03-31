@@ -24,9 +24,6 @@ import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.object.eq;
 
 import java.io.Serializable;
-import java.time.Duration;
-
-import javolution.lang.Reusable;
 
 import org.jenetics.internal.util.HashBuilder;
 
@@ -37,16 +34,15 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public final class Timer
 	implements
 		Comparable<Timer>,
-		Reusable,
 		Serializable,
 		Cloneable
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 	private static final String DEFAULT_LABEL = "Timer";
 
 	private String _label;
@@ -78,11 +74,11 @@ public final class Timer
 	 * Set the accumulator for the interim results.
 	 *
 	 * [code]
-	 * final Mean<Long> variance = new Mean<>();
+	 * final Mean&lt;Long&gt; variance = new Mean&lt;&gt;();
 	 * final Timer timer = new Timer();
 	 * timer.setAccumulator(variance);
 	 *
-	 * for (int i = 0; i < 100; ++I) {
+	 * for (int i = 0; i &lt; 100; ++I) {
 	 *     timer.start();
 	 *     ... // Do some measurable task.
 	 *     timer.stop();
@@ -119,7 +115,6 @@ public final class Timer
 	/**
 	 * Reset the timer.
 	 */
-	@Override
 	public void reset() {
 		_sum = 0;
 		_start = 0;
@@ -131,7 +126,7 @@ public final class Timer
 	 * return a measured time of 10 s (theoretically).
 	 * [code]
 	 * final Timer timer = new Timer();
-	 * for (int i = 0; i < 10; ++i) {
+	 * for (int i = 0; i &lt; 10; ++i) {
 	 *     timer.start();
 	 *     Thread.sleep(1000);
 	 *     timer.stop();
@@ -222,10 +217,7 @@ public final class Timer
 
 	@Override
 	public String toString() {
-		return format(
-			"%s: %11.11f s", _label,
-			getTime().getNano()/1_000_000_000.0
-		);
+		return format("%s: %s", _label, getTime());
 	}
 
 }

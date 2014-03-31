@@ -28,7 +28,7 @@ import org.jenetics.util.StaticObject;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public final class termination extends StaticObject {
 	private termination() {}
@@ -98,7 +98,7 @@ public final class termination extends StaticObject {
 	 * current GA generation is {@code >=} as the given {@code generation}.
 	 *
 	 * [code]
-	 * final GeneticAlgorithm<DoubleGene, Double> ga = ...
+	 * final GeneticAlgorithm&lt;DoubleGene, Double&gt; ga = ...
 	 * ga.evolve(termination.Generation(100));
 	 * [/code]
 	 *

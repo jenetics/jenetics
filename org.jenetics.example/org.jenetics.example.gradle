@@ -23,7 +23,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.5 &mdash; <em>$Date: 2013-11-19 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-25 $</em>
  */
 
 apply plugin: 'packaging'
@@ -57,4 +57,5 @@ packaging {
 		}
 	}
 }
+
 

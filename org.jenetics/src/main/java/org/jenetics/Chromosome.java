@@ -21,8 +21,6 @@ package org.jenetics;
 
 import java.io.Serializable;
 
-import javolution.lang.Immutable;
-
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Verifiable;
@@ -36,14 +34,13 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public interface Chromosome<G extends Gene<?, G>>
 	extends
 		Verifiable,
 		Iterable<G>,
 		Factory<Chromosome<G>>,
-		Immutable,
 		Serializable
 {
 

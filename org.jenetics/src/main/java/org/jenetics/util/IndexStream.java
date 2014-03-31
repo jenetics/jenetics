@@ -54,7 +54,7 @@ import org.jenetics.internal.math.probability;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public abstract class IndexStream extends IntStreamAdapter {
 
@@ -93,6 +93,7 @@ public abstract class IndexStream extends IntStreamAdapter {
 	 * @param n the maximal value (exclusively) the created index stream will
 	 *         return.
 	 * @param probability the index selection probability.
+	 * @return a new {@code IndexStream} with the given parameter
 	 * @throws IllegalArgumentException if {@code n == Integer.MAX_VALUE} or
 	 *         {@code n <= 0} or the given {@code probability} is not valid.
 	 */
@@ -108,6 +109,7 @@ public abstract class IndexStream extends IntStreamAdapter {
 	 *        return.
 	 * @param p the index selection probability.
 	 * @param random the random engine used for creating the random indexes.
+	 * @return a new {@code IndexStream} with the given parameter
 	 * @throws IllegalArgumentException if {@code n == Integer.MAX_VALUE} or
 	 *         {@code n <= 0} or the given {@code probability} is not valid.
 	 * @throws NullPointerException if the given {@code random} engine is
@@ -141,7 +143,7 @@ public abstract class IndexStream extends IntStreamAdapter {
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since @__version__@
-	 * @version @__version__@ &mdash; <em>$Date: 2014-03-07 $</em>
+	 * @version @__version__@ &mdash; <em>$Date: 2014-03-31 $</em>
 	 */
 	final static class IndexSpliterator implements Spliterator.OfInt {
 		private final IndexStream _stream;
@@ -181,7 +183,7 @@ public abstract class IndexStream extends IntStreamAdapter {
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.4
-	 * @version @__version__@ &mdash; <em>$Date: 2014-03-07 $</em>
+	 * @version @__version__@ &mdash; <em>$Date: 2014-03-31 $</em>
 	 */
 	final static class RandomIndexStream extends IndexStream {
 		private final int _n;
@@ -218,7 +220,7 @@ public abstract class IndexStream extends IntStreamAdapter {
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5 &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 final class RandomIndexStreamP0 extends IndexStream {
 	@Override public int next() {
@@ -229,7 +231,7 @@ final class RandomIndexStreamP0 extends IndexStream {
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5 &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 final class RandomIndexStreamP1 extends IndexStream {
 	private final int _n;

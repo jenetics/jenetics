@@ -36,13 +36,12 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import javolution.context.StackContext;
-import javolution.util.FastList;
+import org.jenetics.internal.util.Stack;
 
 /**
  * Array class which wraps the the java build in array type T[]. Once the array
  * is created the array length can't be changed (like the build in array).
- * <p/>
+ * <p>
  * <strong>Note that this implementation is not synchronized.</strong> If
  * multiple threads access this object concurrently, and at least one of the
  * threads modifies it, it must be synchronized externally.
@@ -51,7 +50,7 @@ import javolution.util.FastList;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-03-31 $</em>
  *
  */
 //@Deprecated
@@ -103,30 +102,22 @@ public final class Array<T>
 	 *         {@code null}.
 	 */
 	public Array<T> filter(final Predicate<? super T> predicate) {
-		StackContext.enter();
-		try {
-			final FastList<T> filtered = FastList.newInstance();
-			for (int i = 0, n = length(); i < n; ++i) {
-				@SuppressWarnings("unchecked")
-				final T value = (T)_array.data[i + _start];
+		final Stack<T> filtered = new Stack<>();
+		for (int i = 0, n = length(); i < n; ++i) {
+			@SuppressWarnings("unchecked")
+			final T value = (T)_array.data[i + _start];
 
-				if (predicate.test(value)) {
-					filtered.add(value);
-				}
+			if (predicate.test(value)) {
+				filtered.push(value);
 			}
-
-			final Array<T> copy = new Array<>(filtered.size());
-			int index = 0;
-			for (FastList.Node<T> n = filtered.head(), end = filtered.tail();
-				(n = n.getNext()) != end;)
-			{
-				copy.set(index++, n.getValue());
-			}
-
-			return copy;
-		} finally {
-			StackContext.exit();
 		}
+
+		final Array<T> copy = new Array<>(filtered.length);
+		for (int i = filtered.length; --i >= 0;) {
+			copy._array.data[i] = filtered.pop();
+		}
+
+		return copy;
 	}
 
 	@Override
@@ -194,6 +185,7 @@ public final class Array<T>
 	 *          Wikipedia: Quicksort
 	 *      </a>
 	 *
+	 * @param comparator the comparator used for sorting
 	 * @throws NullPointerException if the given {@code comparator} is
 	 *          {@code null}.
 	 * @throws ClassCastException if the array contains elements that are not
@@ -218,6 +210,7 @@ public final class Array<T>
 	 *
 	 * @param from the index of the first element (inclusive) to be sorted.
 	 * @param to the index of the last element (exclusive) to be sorted.
+	 * @param comparator the comparator used for sorting
 	 * @throws NullPointerException if the given {@code comparator} is
 	 *          {@code null}.
 	 * @throws IndexOutOfBoundsException if {@code from < 0 or to > length()}
@@ -323,6 +316,11 @@ public final class Array<T>
 
 	/**
 	 * @see MSeq#swap(int, int, MSeq, int)
+	 *
+	 * @param start the start index of the swap
+	 * @param end the end index of the swap
+	 * @param other the other array used for swapping
+	 * @param otherStart the start index of the other array
 	 */
 	public void swap(
 		final int start, final int end,
@@ -523,7 +521,9 @@ public final class Array<T>
 	/**
 	 * Create a new array from the given values.
 	 *
+	 * @param <T> the element type
 	 * @param values the array values.
+	 * @return an new {@code Array} with the given values
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
 	@SafeVarargs
@@ -538,19 +538,12 @@ public final class Array<T>
 	}
 
 	/**
-	 * @deprecated Use {@link #of(Object[])} instead.
-	 */
-	@Deprecated
-	@SafeVarargs
-	public static <T> Array<T> valueOf(final T... values) {
-		return of(values);
-	}
-
-	/**
 	 * Create a new Array from the values of the given {@code Collection}. The
 	 * order of the elements are determined by the iterator of the Collection.
 	 *
+	 * @param <T> the element type
 	 * @param values the array values.
+	 * @return an new {@code Array} with the given values
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
 	public static <T> Array<T> of(final Collection<? extends T> values) {
@@ -569,17 +562,11 @@ public final class Array<T>
 	}
 
 	/**
-	 * @deprecated Use {@link #of(java.util.Collection)} instead.
-	 */
-	@Deprecated
-	public static <T> Array<T> valueOf(final Collection<? extends T> values) {
-		return of(values);
-	}
-
-	/**
 	 * Create a new Array from the values of the given {@code Seq}.
 	 *
+	 * @param <T> the element type
 	 * @param values the array values.
+	 * @return an new {@code Array} with the given values
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
 	public static <T> Array<T> of(final Seq<T> values) {
@@ -599,14 +586,6 @@ public final class Array<T>
 		}
 
 		return array;
-	}
-
-	/**
-	 * @deprecated Use {@link #of(Seq)} instead.
-	 */
-	@Deprecated
-	public static <T> Array<T> valueOf(final Seq<T> values) {
-		return of(values);
 	}
 
 	/**

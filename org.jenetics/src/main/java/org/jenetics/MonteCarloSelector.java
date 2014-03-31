@@ -24,8 +24,6 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Random;
 
-import javolution.lang.Immutable;
-
 import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.util.RandomRegistry;
@@ -38,15 +36,13 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-02-27 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
  */
 public final class MonteCarloSelector<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	implements
-		Selector<G, C>,
-		Immutable
+	implements Selector<G, C>
 {
 
 	public MonteCarloSelector() {

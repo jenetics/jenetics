@@ -19,21 +19,8 @@
  */
 package org.jenetics.util;
 
-import static java.lang.String.format;
-import static java.util.Objects.requireNonNull;
-
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.ListIterator;
-import java.util.Random;
-import java.util.function.Function;
-import java.util.function.IntFunction;
-import java.util.function.ObjIntConsumer;
-import java.util.function.Supplier;
-
-import org.jenetics.internal.util.ArrayProxyImpl;
-import org.jenetics.internal.util.ArrayProxyMSeq;
-import org.jenetics.internal.util.SeqListIteratorAdapter;
 
 /**
  * Mutable, ordered, fixed sized sequence.
@@ -42,7 +29,7 @@ import org.jenetics.internal.util.SeqListIteratorAdapter;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public interface MSeq<T> extends Seq<T>, ObjIntConsumer<T>, Copyable<MSeq<T>> {
 

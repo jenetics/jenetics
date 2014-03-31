@@ -19,22 +19,16 @@
  */
 package org.jenetics.util;
 
-import java.beans.BeanInfo;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
 import java.io.Serializable;
+import java.lang.reflect.Method;
 import java.util.Random;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import javolution.lang.Immutable;
-import javolution.lang.Reflection;
-import javolution.lang.Reflection.Method;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-15 $</em>
+ * @version <em>$Date: 2014-03-12 $</em>
  */
 public abstract class ObjectTester<T> {
 
@@ -104,12 +98,10 @@ public abstract class ObjectTester<T> {
 	}
 
 	@Test
-	public void cloning() {
+	public void cloning() throws Exception {
 		final Object that = getFactory().newInstance();
 		if (that instanceof Cloneable) {
-			final Method clone = Reflection.getMethod(String.format(
-				"%s.clone()", that.getClass().getName()
-			));
+			final Method clone = that.getClass().getMethod("clone");
 			final Object other = clone.invoke(that);
 
 			Assert.assertEquals(other, that);
@@ -147,27 +139,6 @@ public abstract class ObjectTester<T> {
 		final T a = getFactory().newInstance();
 		if (a instanceof Verifiable) {
 			Assert.assertTrue(((Verifiable)a).isValid());
-		}
-	}
-
-	@Test
-	public void typeConsistency() throws Exception {
-		final T a = getFactory().newInstance();
-
-		Assert.assertFalse(a instanceof Cloneable && a instanceof Immutable);
-		if (a instanceof Copyable<?>) {
-			final Object b = ((Copyable<?>)a).copy();
-			if (a.getClass() == b.getClass()) {
-				Assert.assertFalse(a instanceof Immutable);
-			}
-		}
-
-
-		if (a instanceof Immutable) {
-			final BeanInfo info = Introspector.getBeanInfo(a.getClass());
-			for (PropertyDescriptor prop : info.getPropertyDescriptors()) {
-				Assert.assertNull(prop.getWriteMethod());
-			}
 		}
 	}
 

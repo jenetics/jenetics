@@ -25,10 +25,6 @@ import static java.util.Objects.requireNonNull;
 import java.util.Arrays;
 import java.util.function.Function;
 
-import javax.measure.Measurable;
-import javax.measure.quantity.Duration;
-import javax.measure.unit.SI;
-
 import org.jenetics.util.Seq;
 import org.jenetics.util.StaticObject;
 import org.jenetics.util.Verifiable;
@@ -38,7 +34,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public final class object extends StaticObject {
 	private object() {}
@@ -49,13 +45,13 @@ public final class object extends StaticObject {
 	 * of an array are within an given range. If not, an
 	 * {@link IllegalArgumentException} is thrown. If one value is {@code null},
 	 * an {@link NullPointerException} is thrown.
-	 * <p/>
+	 * <p>
 	 *
 	 * The following code will throw an {@link IllegalArgumentException} if the
 	 * integers in the array are smaller than zero and greater than 9.
 	 * [code]
-	 * final Array<Integer> array = ...
-	 * arrays.forEach(CheckRange<(0, 10));
+	 * final Array&lt;Integer&gt; array = ...
+	 * arrays.forEach(CheckRange(0, 10));
 	 * [/code]
 	 */
 	public static <C extends Comparable<? super C>> Function<C, Boolean>
@@ -99,7 +95,7 @@ public final class object extends StaticObject {
 	 * {@link NullPointerException} if one of the array elements is {@code null}.
 	 *
 	 * [code]
-	 * final Array<String> array = ...
+	 * final Array&lt;String&gt; array = ...
 	 * array.forEach(NonNull("Object"));
 	 * ...
 	 * final String[] array = ...
@@ -114,7 +110,7 @@ public final class object extends StaticObject {
 	 * {@link NullPointerException} if one of the array elements is {@code null}.
 	 *
 	 * [code]
-	 * final Array<String> array = ...
+	 * final Array&lt;String&gt; array = ...
 	 * array.forEach(NonNull("Object"));
 	 * ...
 	 * final String[] array = ...
@@ -404,14 +400,6 @@ public final class object extends StaticObject {
 	 */
 	public static boolean eq(final Object a, final Object b) {
 		return (a != null ? a.equals(b) : b == null);
-	}
-
-	public static boolean eq(final Measurable<Duration> a, final Measurable<Duration> b) {
-		if (a == null && b == null) {
-			return true;
-		}
-		return a != null && b != null &&
-			a.longValue(SI.NANO(SI.SECOND)) == b.longValue(SI.NANO(SI.SECOND));
 	}
 
 	/**
