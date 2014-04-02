@@ -16,6 +16,7 @@ import org.jenetics.SwapMutator;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 
+
 public class TravelingSalesman {
 
 	private static class FF
