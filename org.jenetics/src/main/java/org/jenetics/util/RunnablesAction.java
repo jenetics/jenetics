@@ -30,10 +30,10 @@ import java.util.concurrent.RecursiveAction;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date$</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-02 $</em>
  * @since 2.0
  */
-public final class RunnablesAction extends RecursiveAction {
+final class RunnablesAction extends RecursiveAction {
 	private static final long serialVersionUID = 1;
 
 	private static final int MIN_THRESHOLD = 2;
