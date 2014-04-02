@@ -25,7 +25,6 @@ import static java.util.Objects.requireNonNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.RandomAccess;
-import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
 
 /**
@@ -36,8 +35,7 @@ import java.util.concurrent.RecursiveAction;
 final class RunnablesAction extends RecursiveAction {
 	private static final long serialVersionUID = 1;
 
-	private static final int MIN_THRESHOLD = 2;
-	private static final int THRESHOLD = 3;
+	private static final int DEFAULT_THRESHOLD = 7;
 
 	private final List<? extends Runnable> _runnables;
 	private final int _high;
@@ -84,23 +82,12 @@ final class RunnablesAction extends RecursiveAction {
 		}
 	}
 
-	// Calculate the adaptive threshold.
 	private int threshold() {
-		int threshold = THRESHOLD;
+		return max(_runnables.size()/(parallelism()*2), DEFAULT_THRESHOLD);
+	}
 
-		final ForkJoinPool pool = getPool();
-		if (pool != null) {
-			if (pool.getParallelism() == 1) {
-				threshold = max(_runnables.size()/2, MIN_THRESHOLD);
-			} else {
-				threshold = max(
-					(int)((double)_runnables.size()/(pool.getParallelism()*2)),
-					MIN_THRESHOLD
-				);
-			}
-		}
-
-		return threshold;
+	private int parallelism() {
+		return getPool() != null ? getPool().getParallelism() : 1;
 	}
 
 }
