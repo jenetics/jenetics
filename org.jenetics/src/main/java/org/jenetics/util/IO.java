@@ -48,8 +48,8 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
  * IO.jaxb.write(ga.getPopulation(), file);
  *
  * // Reading the population from disk.
- * final Population&lt;Float64Gene,Float64&gt; population =
- *     (Population&lt;Float64Gene, Float64)IO.jaxb.read(file);
+ * final Population&lt;DoubleGene,Double&gt; population =
+ *     (Population&lt;DoubleGene, Double)IO.jaxb.read(file);
  * ga.setPopulation(population);
  * [/code]
  *

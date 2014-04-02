@@ -25,8 +25,9 @@ import java.io.Serializable;
  * This class models a quantity or amount of time, such as '34.5 seconds'.
  * <p>
  * <i>It is an (temporary) replacement for the the {@code Measurable<Duration>}
- * class in the remove JScience library, till to the Java 8 upgrade of this
- * library.</i>
+ * class in the remove JScience library. Will be removed (and be replaced by the
+ * JDK version) when updated to Java 8.
+ * </i>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version 2.0 &mdash; <em>$Date$</em>

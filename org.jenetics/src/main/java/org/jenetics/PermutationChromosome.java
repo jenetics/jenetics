@@ -167,6 +167,19 @@ public final class PermutationChromosome<T>
 	}
 
 	/**
+	 * Create a new, random chromosome with the given valid alleles.
+	 *
+	 * @since 2.0
+	 * @param <T> the gene type of the chromosome
+	 * @param alleles the valid alleles used for this permutation arrays.
+	 * @return a new chromosome with the given alleles
+	 */
+	@SafeVarargs
+	public static <T> PermutationChromosome<T> of(final T... alleles) {
+		return of(Array.of(alleles).toISeq());
+	}
+
+	/**
 	 * Create a integer permutation chromosome with the given length.
 	 *
 	 * @param length the chromosome length.
