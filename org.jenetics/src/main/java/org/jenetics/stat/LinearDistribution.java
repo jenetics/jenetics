@@ -26,8 +26,6 @@ import static org.jenetics.internal.util.object.eq;
 import java.io.Serializable;
 import java.util.Locale;
 
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.util.Function;
@@ -36,7 +34,7 @@ import org.jenetics.util.Range;
 
 /**
  * <p>This distribution has the following cdf.</p>
- * <p><img src="doc-files/LinearDistribution.png" /></p>
+ * <p><img src="doc-files/LinearDistribution.png" alt="Distribution"></p>
  * <p>
  * The only restriction is that the integral of the cdf must be one.
  * </p>
@@ -46,20 +44,20 @@ import org.jenetics.util.Range;
  *             \\underset{k} {\\underbrace {\frac{y_2-y_1}{x_2-x_1}}} \cdot x +
  *             \\underset{d}{\\underbrace {y_1-\frac{y_2-y_1}{x_2-x_1}\cdot x_1}}
  *           \right)\mathrm{d}x = 1"
- *  />
+ *  >
  *  </p>
  *
  *  Solving this integral leads to
  *  <p>
  *  <img src="doc-files/linear-precondition-y2.gif"
  *       alt="y_2 = -\frac{(x_2-x_1)\cdot y_1 - 2}{x_2-x_1}"
- *  />
+ *  >
  *  </p>
  *
  *  for fixed values for <i>x<sub>1</sub></i>, <i>x<sub>2</sub></i> and
  *  <i>y<sub>1</sub></i>.
  *  <p>
- *  If the value of <i>y<sub>2</sub></i> < 0, the value of <i>x<sub>2</sub></i>
+ *  If the value of <i>y<sub>2</sub></i> &lt; 0, the value of <i>x<sub>2</sub></i>
  *  is decreased so that the resulting triangle (<i>x<sub>1</sub></i>,0),
  *  (<i>x<sub>1</sub></i>,<i>y<sub>1</sub></i>), (<i>x<sub>2</sub></i>,0) has
  *  an area of <i>one</i>.
@@ -67,7 +65,7 @@ import org.jenetics.util.Range;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-03-01 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
  */
 public class LinearDistribution<
 	N extends Number & Comparable<? super N>
@@ -83,19 +81,19 @@ public class LinearDistribution<
 	 *                      \frac{y_2-y_1}{x_2-x_1} \cdot x +
 	 *                      y_1-\frac{y_2-y_1}{x_2-x_1}\cdot x_1
 	 *                 \right)"
-	 * />
+	 * >
 	 * </p>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2014-03-01 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
 	 */
 	static final class PDF<N extends Number & Comparable<? super N>>
 		implements
-			Function<N, Float64>,
+			Function<N, Double>,
 			Serializable
 	{
-		private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 2L;
 
 		private final double _min;
 		private final double _max;
@@ -113,12 +111,12 @@ public class LinearDistribution<
 		}
 
 		@Override
-		public Float64 apply(final N value) {
+		public Double apply(final N value) {
 			final double x = value.doubleValue();
 
-			Float64 result = Float64.ZERO;
+			double result = 0.0;
 			if (x >= _min && x <= _max) {
-				result = Float64.valueOf(_k*x + _d);
+				result = _k*x + _d;
 			}
 
 			return result;
@@ -137,19 +135,19 @@ public class LinearDistribution<
 	 *     src="doc-files/linear-cdf.gif"
 	 *     alt="f(x)=-\frac{(x^2-2x_2x)y_1 - (x^2 - 2x_1x)y_2}
 	 *      {2(x_2 - x_1)}"
-	 * />
+	 * >
 	 * </p>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2014-03-01 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
 	 */
 	static final class CDF<N extends Number & Comparable<? super N>>
 		implements
-			Function<N, Float64>,
+			Function<N, Double>,
 			Serializable
 	{
-		private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 2L;
 
 		private final double _x1;
 		private final double _x2;
@@ -168,20 +166,20 @@ public class LinearDistribution<
 		}
 
 		@Override
-		public Float64 apply(final N value) {
+		public Double apply(final N value) {
 			final double x = value.doubleValue();
 
-			Float64 result = null;
+			double result = 0;
 			if (x < _x1) {
-				result = Float64.ZERO;
+				result = 0.0;
 			} else if (x > _x2) {
-				result = Float64.ONE;
+				result = 1.0;
 			} else {
-//				result = Float64.valueOf(
+//				result = Double.valueOf(
 //						-((x*x - 2*x*_x2)*_y1 - (x*x - 2*x*_x1)*_y2)/
 //						(2*(_x2 - _x1))
 //					);
-				result = Float64.valueOf( _k*x*x/2.0 + _d*x);
+				result = _k*x*x/2.0 + _d*x;
 			}
 
 			return result;
@@ -196,8 +194,8 @@ public class LinearDistribution<
 
 
 	private final Range<N> _domain;
-	private final Function<N, Float64> _cdf;
-	private final Function<N, Float64> _pdf;
+	private final Function<N, Double> _cdf;
+	private final Function<N, Double> _pdf;
 
 	private final double _x1;
 	private final double _x2;
@@ -237,12 +235,12 @@ public class LinearDistribution<
 	 *     src="doc-files/linear-cdf.gif"
 	 *     alt="f(x)=-\frac{(x^2-2x_2x)y_1 - (x^2 - 2x_1x)y_2}
 	 *      {2(x_2 - x_1)}"
-	 * />
+	 * >
 	 * </p>
 	 *
 	 */
 	@Override
-	public Function<N, Float64> getCDF() {
+	public Function<N, Double> getCDF() {
 		return _cdf;
 	}
 
@@ -256,12 +254,12 @@ public class LinearDistribution<
 	 *                      \frac{y_2-y_1}{x_2-x_1} \cdot x +
 	 *                      y_1-\frac{y_2-y_1}{x_2-x_1}\cdot x_1
 	 *                 \right)"
-	 * />
+	 * >
 	 * </p>
 	 *
 	 */
 	@Override
-	public Function<N, Float64> getPDF() {
+	public Function<N, Double> getPDF() {
 		return _pdf;
 	}
 

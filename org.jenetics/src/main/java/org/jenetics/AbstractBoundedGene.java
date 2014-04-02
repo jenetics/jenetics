@@ -29,7 +29,7 @@ import org.jenetics.internal.util.HashBuilder;
  * value.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-05 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-10 $</em>
  * @since 1.6
  */
 abstract class AbstractBoundedGene<
@@ -91,12 +91,6 @@ abstract class AbstractBoundedGene<
 	@Override
 	public A getMax() {
 		return _max;
-	}
-
-	@Deprecated
-	@Override
-	public Object copy() {
-		return this;
 	}
 
 	@Override

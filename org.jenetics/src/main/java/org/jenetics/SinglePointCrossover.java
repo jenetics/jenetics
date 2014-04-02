@@ -30,15 +30,14 @@ import org.jenetics.util.RandomRegistry;
 
 
 /**
- * <strong><p>Single point crossover</p></strong>
+ * <strong>Single point crossover</strong>
  *
  * <p>
  * One or two children are created by taking two parent strings and cutting
  * them at some randomly chosen site. E.g.
- * </p>
- * <div align="center">
- *	<img src="doc-files/SinglePointCrossover.svg" width="400" >
- * </div>
+ * <p>
+ *	<img src="doc-files/SinglePointCrossover.svg" width="400"
+ *	     alt="Single-point crossover" >
  * <p>
  * If we create a child and its complement we preserving the total number of
  * genes in the population, preventing any genetic drift.
@@ -47,13 +46,12 @@ import org.jenetics.util.RandomRegistry;
  * For problems where the site position has some intrinsic meaning to the
  * problem single-point crossover can lead to small disruption than multi-point
  * or uniform crossover.
- * </p>
  *
  * @see MultiPointCrossover
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2014-02-27 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
  */
 public class SinglePointCrossover<G extends Gene<?, G>>
 	extends MultiPointCrossover<G>

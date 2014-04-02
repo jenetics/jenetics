@@ -21,16 +21,13 @@ package org.jenetics;
 
 import java.io.Serializable;
 import java.util.Random;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 
 import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.Test;
 
-import javolution.context.ConcurrentContext;
-
+import org.jenetics.util.Concurrent;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 import org.jenetics.util.RandomRegistry;
@@ -38,7 +35,7 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-17 $</em>
+ * @version <em>$Date: 2014-03-22 $</em>
  */
 public class GeneticAlgorithmTest {
 
@@ -56,10 +53,12 @@ public class GeneticAlgorithmTest {
 
 	@Test
 	public void optimize() {
-		final int concurrency = ConcurrentContext.getConcurrency();
-		try (Scoped<Random> scope = RandomRegistry.scope(new Random(12345))) {
-			ConcurrentContext.setConcurrency(0);
-			RandomRegistry.setRandom(new Random(123456));
+		final Random random = new Random(123456);
+		try (Scoped<Random> rs = RandomRegistry.scope(random);
+			Scoped<Concurrent> cs = Concurrent.serial())
+		{
+			Assert.assertSame(random, RandomRegistry.getRandom());
+			Assert.assertSame(random, rs.get());
 
 			final Factory<Genotype<DoubleGene>> factory = Genotype.of(
 				DoubleChromosome.of(0, 1)
@@ -81,8 +80,8 @@ public class GeneticAlgorithmTest {
 			Assert.assertEquals(s.getAgeMean(), 21.40500000000002);
 			Assert.assertEquals(s.getAgeVariance(), 648.051231155779);
 			Assert.assertEquals(s.getSamples(), 200);
-			Assert.assertEquals(s.getBestFitness().doubleValue(), 0.9955101231254028, 0.00000001);
-			Assert.assertEquals(s.getWorstFitness().doubleValue(), 0.03640144995042627, 0.00000001);
+			Assert.assertEquals(s.getBestFitness(), 0.9955101231254028, 0.00000001);
+			Assert.assertEquals(s.getWorstFitness(), 0.03640144995042627, 0.00000001);
 
 			s = ga.getStatistics();
 			Reporter.log(s.toString());
@@ -90,12 +89,11 @@ public class GeneticAlgorithmTest {
 			Assert.assertEquals(s.getAgeMean(), 23.15500000000001, 0.000001);
 			Assert.assertEquals(s.getAgeVariance(), 82.23213567839196, 0.000001);
 			Assert.assertEquals(s.getSamples(), 200);
-			Assert.assertEquals(s.getBestFitness().doubleValue(), 0.9955101231254028, 0.00000001);
-			Assert.assertEquals(s.getWorstFitness().doubleValue(), 0.9955101231254028, 0.00000001);
-		} finally {
-			ConcurrentContext.setConcurrency(concurrency);
+			Assert.assertEquals(s.getBestFitness(), 0.9955101231254028, 0.00000001);
+			Assert.assertEquals(s.getWorstFitness(), 0.9955101231254028, 0.00000001);
 		}
 
+		Assert.assertNotNull(Concurrent.getExecutor());
 	}
 
 	private static class Base implements Comparable<Base> {
@@ -123,7 +121,7 @@ public class GeneticAlgorithmTest {
 	public void evolveForkJoinPool() {
 		final ForkJoinPool pool = new ForkJoinPool(10);
 
-		try {
+		try (Scoped<Concurrent> concurrent = Concurrent.scope(pool)) {
 			final Factory<Genotype<DoubleGene>> factory = Genotype.of(DoubleChromosome.of(-1, 1));
 			final Function<Genotype<DoubleGene>, Double> ff = new FF();
 
@@ -140,48 +138,6 @@ public class GeneticAlgorithmTest {
 			}
 		} finally {
 			pool.shutdown();
-		}
-	}
-
-	@Test(invocationCount = 10)
-	public void evolveThreadPool() {
-		final ExecutorService pool = Executors.newFixedThreadPool(10);
-
-		try {
-			final Factory<Genotype<DoubleGene>> factory = Genotype.of(DoubleChromosome.of(-1, 1));
-			final Function<Genotype<DoubleGene>, Double> ff = new FF();
-
-			final GeneticAlgorithm<DoubleGene, Double> ga = new GeneticAlgorithm<>(factory, ff);
-			ga.setPopulationSize(1000);
-			ga.setAlterer(new MeanAlterer<DoubleGene>());
-			ga.setOffspringFraction(0.3);
-			ga.setOffspringSelector(new BoltzmannSelector<DoubleGene, Double>(0.001));
-			ga.setSurvivorSelector(new ExponentialRankSelector<DoubleGene, Double>(0.675));
-
-			ga.setup();
-			for (int i = 0; i < 10; ++i) {
-				ga.evolve();
-			}
-		} finally {
-			pool.shutdown();
-		}
-	}
-
-	@Test(invocationCount = 10)
-	public void evolveConcurrent() {
-		final Factory<Genotype<DoubleGene>> factory = Genotype.of(DoubleChromosome.of(-1, 1));
-		final Function<Genotype<DoubleGene>, Double> ff = new FF();
-
-		final GeneticAlgorithm<DoubleGene, Double> ga = new GeneticAlgorithm<>(factory, ff);
-		ga.setPopulationSize(1000);
-		ga.setAlterer(new MeanAlterer<DoubleGene>());
-		ga.setOffspringFraction(0.3);
-		ga.setOffspringSelector(new RouletteWheelSelector<DoubleGene, Double>());
-		ga.setSurvivorSelector(new LinearRankSelector<DoubleGene, Double>());
-
-		ga.setup();
-		for (int i = 0; i < 10; ++i) {
-			ga.evolve();
 		}
 	}
 

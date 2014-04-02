@@ -32,9 +32,6 @@ import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.jenetics.internal.util.model.ModelType;
-import org.jenetics.internal.util.model.ValueType;
-
 import org.jenetics.util.Array;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Mean;
@@ -44,7 +41,7 @@ import org.jenetics.util.RandomRegistry;
  * Implementation of the NumericGene which holds a 64 bit floating point number.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-05 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-30 $</em>
  * @since 1.6
  */
 @XmlJavaTypeAdapter(DoubleGene.Model.Adapter.class)
@@ -81,6 +78,7 @@ public final class DoubleGene
 	 * @param value the value of the gene.
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (exclusively).
+	 * @return a new {@code DoubleGene} with the given parameter
 	 */
 	public static DoubleGene of(
 		final double value,
@@ -96,6 +94,7 @@ public final class DoubleGene
 	 *
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (exclusively).
+	 * @return a new {@code DoubleGene} with the given parameter
 	 */
 	public static DoubleGene of(final double min, final double max) {
 		return of(nextDouble(RandomRegistry.getRandom(), min, max), min, max);
@@ -138,22 +137,20 @@ public final class DoubleGene
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "org.jenetics.DoubleGene")
+	@XmlRootElement(name = "double-gene")
 	@XmlType(name = "org.jenetics.DoubleGene")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
 
-		@XmlAttribute
+		@XmlAttribute(name = "min", required = true)
 		public double min;
 
-		@XmlAttribute
+		@XmlAttribute(name = "max", required = true)
 		public double max;
 
 		@XmlValue
 		public double value;
 
-		@ValueType(DoubleGene.class)
-		@ModelType(Model.class)
 		public final static class Adapter
 			extends XmlAdapter<Model, DoubleGene>
 		{

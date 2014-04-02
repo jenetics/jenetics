@@ -24,7 +24,7 @@ package org.jenetics.util;
  * left, the original value is restored. A <i>scoped</i> value is usually used
  * within a {@code try} block.
  * [code]
- * try (Scoped<Random> s = RandomRegistry.scope(new Random(123))) {
+ * try (Scoped&lt;Random&gt; s = RandomRegistry.scope(new Random(123))) {
  *     System.out.println(s.get().nextDouble());
  * }
  * [/code]
@@ -33,7 +33,7 @@ package org.jenetics.util;
  * scope.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-02-24 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-28 $</em>
  * @since 1.6
  */
 public interface Scoped<T> extends AutoCloseable {

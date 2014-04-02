@@ -37,7 +37,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-30 $</em>
  */
 public abstract class Crossover<G extends Gene<?, G>> extends Recombinator<G> {
 
@@ -95,6 +95,10 @@ public abstract class Crossover<G extends Gene<?, G>> extends Recombinator<G> {
 	/**
 	 * Template method which performs the crossover. The arguments given are
 	 * mutable non null arrays of the same length.
+	 *
+	 * @param that the genes of the first chromosome
+	 * @param other the genes of the other chromosome
+	 * @return the number of altered genes
 	 */
 	protected abstract int crossover(final MSeq<G> that, final MSeq<G> other);
 

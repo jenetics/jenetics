@@ -32,7 +32,7 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-03-01 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
  */
 public abstract class MappedAccumulator<T>
 	implements
@@ -68,16 +68,16 @@ public abstract class MappedAccumulator<T>
 	 * Usage example:
 	 * [code]
 	 * // Convert a string on the fly into a double value.
-	 * final Converter<String, Double> converter = new Converter<String, Double>() {
+	 * final Converter&lt;String, Double&gt; converter = new Converter&lt;String, Double&gt;() {
 	 *         public Double convert(final String value) {
 	 *             return Double.valueOf(value);
 	 *         }
 	 *     };
 	 *
 	 * // The values to accumulate
-	 * final List<String> values = Arrays.asList("0", "1", "2", "3", "4", "5");
+	 * final List&lt;String&gt; values = Arrays.asList("0", "1", "2", "3", "4", "5");
 	 *
-	 * final Accumulators.Min<Double> accumulator = new Accumulators.Min<Double>();
+	 * final Accumulators.Min&lt;Double&gt; accumulator = new Accumulators.Min&lt;Double&gt;();
 	 *
 	 * // No pain to accumulate collections of a different type.
 	 * Accumulators.accumulate(values, accumulator.map(converter));

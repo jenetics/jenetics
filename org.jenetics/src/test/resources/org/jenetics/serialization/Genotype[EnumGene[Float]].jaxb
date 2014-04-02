@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<genotype length="5" ngenes="75">
+    <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.PermutationChromosome" length="15">
+        <valid-alleles>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.5625665</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.7771003</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.97935534</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.33864903</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.16874921</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.3241564</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.62196267</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.5163642</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.5157651</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.34630203</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.5319363</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.2882253</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.9270755</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.612682</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.32817638</allele>
+        </valid-alleles>
+        <order>13 12 4 6 8 14 7 2 11 5 3 0 9 10 1</order>
+    </chromosome>
+    <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.PermutationChromosome" length="15">
+        <valid-alleles>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.143049</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.30294955</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.12774062</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.3922652</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.20021701</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.88943446</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.3106197</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.33130014</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.8242682</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.77342606</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.42263186</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.20919156</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.29150748</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.47045505</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.1379286</allele>
+        </valid-alleles>
+        <order>10 5 4 0 3 1 6 2 9 7 8 11 13 14 12</order>
+    </chromosome>
+    <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.PermutationChromosome" length="15">
+        <valid-alleles>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.5787437</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.79838026</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.35923374</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.3046857</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.31910932</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.7463286</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.6896206</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.2081306</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.48193443</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.57465446</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.67631936</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.61195457</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.6397886</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.752583</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.3598473</allele>
+        </valid-alleles>
+        <order>13 11 8 0 10 1 3 9 7 12 5 6 2 4 14</order>
+    </chromosome>
+    <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.PermutationChromosome" length="15">
+        <valid-alleles>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.34240592</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.58021784</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.777117</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.121873856</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.72829497</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.4986261</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.782058</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.82639134</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.81225526</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.41646183</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.8456842</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.5836903</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.5552851</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.25575447</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.93154204</allele>
+        </valid-alleles>
+        <order>14 3 8 5 1 6 13 2 7 9 4 0 11 12 10</order>
+    </chromosome>
+    <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.PermutationChromosome" length="15">
+        <valid-alleles>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.76386607</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.07718873</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.24029279</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.018090248</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.4713285</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.124437094</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.17691135</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.19882917</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.5961398</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.52844477</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.042745113</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.9696864</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.8894118</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.69556785</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.99875057</allele>
+        </valid-alleles>
+        <order>1 9 11 6 5 14 0 13 4 7 12 8 10 3 2</order>
+    </chromosome>
+</genotype>

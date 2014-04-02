@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<org.jenetics.Genotype length="5" ngenes="100">
-    <org.jenetics.CharacterChromosome length="20" valid-characters=" !&quot;#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~">_f[mB%`BM;o@Dl5l8e*o</org.jenetics.CharacterChromosome>
-    <org.jenetics.CharacterChromosome length="20" valid-characters=" !&quot;#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~">%D7D8uQpI/$ZO~xIOOV:</org.jenetics.CharacterChromosome>
-    <org.jenetics.CharacterChromosome length="20" valid-characters=" !&quot;#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~">]N&lt;`^%K97r}o.,(J&amp;Z_:</org.jenetics.CharacterChromosome>
-    <org.jenetics.CharacterChromosome length="20" valid-characters=" !&quot;#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~">3^JS0tv#14SXW..FVoY9</org.jenetics.CharacterChromosome>
-    <org.jenetics.CharacterChromosome length="20" valid-characters=" !&quot;#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~">VV0S}5)%+YsN:dA=ObJ(</org.jenetics.CharacterChromosome>
-</org.jenetics.Genotype>

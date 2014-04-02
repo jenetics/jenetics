@@ -29,8 +29,6 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.regex.PatternSyntaxException;
 
-import javolution.lang.Immutable;
-
 import org.jenetics.internal.util.HashBuilder;
 
 /**
@@ -47,7 +45,7 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-03-01 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
  */
 public final class CharSeq
 	extends AbstractCharSeq
@@ -55,7 +53,6 @@ public final class CharSeq
 		CharSequence,
 		ISeq<Character>,
 		Comparable<CharSeq>,
-		Immutable,
 		Serializable
 {
 	private static final long serialVersionUID = 2L;
@@ -330,14 +327,6 @@ public final class CharSeq
 	}
 
 	/**
-	 * @deprecated Use {@link #of(CharSequence)} instead.
-	 */
-	@Deprecated
-	public static CharSeq valueOf(final CharSequence pattern) {
-		return of(pattern);
-	}
-
-	/**
 	 * Expands the characters between {@code a} and {@code b}.
 	 *
 	 * @see #expand(char, char)
@@ -348,14 +337,6 @@ public final class CharSeq
 	 */
 	public static CharSeq of(final char a, final char b) {
 		return new CharSeq(expand(a, b));
-	}
-
-	/**
-	 * @deprecated Use {@link #of(char, char)} instead.
-	 */
-	@Deprecated
-	public static CharSeq valueOf(final char a, final char b) {
-		return of(a, b);
 	}
 
 	/**
