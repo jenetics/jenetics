@@ -156,20 +156,6 @@ public final class math extends StaticObject {
 		return result;
 	}
 
-	static int gcd(final int a, final int b) {
-		int x = a;
-		int y = b;
-		int mod = x%y;
-
-		while (mod != 0) {
-			x = y;
-			y = mod;
-			mod = x%y;
-		}
-
-		return y;
-	}
-
 	static boolean isMultiplicationSave(final int a, final int b) {
 		final long m = (long)a*(long)b;
 		return ((int)m) == m;
