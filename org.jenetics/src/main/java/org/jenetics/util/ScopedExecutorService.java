@@ -33,7 +33,7 @@ import org.jenetics.internal.util.Stack;
  * @version 2.0 &mdash; <em>$Date$</em>
  * @since 2.0
  */
-final class ScopedExecutorService
+public final class ScopedExecutorService
 	extends Concurrent
 	implements Scoped<Concurrent>
 {

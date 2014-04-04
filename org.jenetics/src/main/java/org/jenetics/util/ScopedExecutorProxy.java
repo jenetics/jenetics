@@ -28,7 +28,7 @@ import java.util.concurrent.Executor;
  * @version 2.0 &mdash; <em>$Date$</em>
  * @since 2.0
  */
-final class ScopedExecutorProxy implements Scoped<Concurrent> {
+public final class ScopedExecutorProxy implements Scoped<Concurrent> {
 
 	private final Scoped<Executor> _scope;
 	private final Scoped<Concurrent> _executor;
