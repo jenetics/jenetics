@@ -27,6 +27,7 @@ import static org.jenetics.internal.util.object.checkProbability;
 import static org.jenetics.util.arrays.forEach;
 
 import java.util.Collection;
+import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -208,18 +209,24 @@ public class GeneticAlgorithm<
 	 * @param fitnessScaler the fitness scaler this GA is using.
 	 * @param optimization Determine whether this GA maximize or minimize the
 	 *        fitness function.
+	 * @param executor the {@link java.util.concurrent.Executor} used for
+	 *        executing the parallelizable parts of the code.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public GeneticAlgorithm(
 		final Factory<Genotype<G>> genotypeFactory,
 		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
 		final Function<? super C, ? extends C> fitnessScaler,
-		final Optimize optimization
+		final Optimize optimization,
+		final Executor executor
 	) {
 		_genotypeFactory = requireNonNull(genotypeFactory, "GenotypeFactory");
 		_fitnessFunction = requireNonNull(fitnessFunction, "FitnessFunction");
 		_fitnessScaler = requireNonNull(fitnessScaler, "FitnessScaler");
 		_optimization = requireNonNull(optimization, "Optimization");
+		if (executor != null) {
+			Concurrent.setExecutor(executor);
+		}
 
 		_phenotypeFactory = new Factory<Phenotype<G, C>>() {
 			@Override public Phenotype<G, C> newInstance() {
@@ -234,22 +241,53 @@ public class GeneticAlgorithm<
 	}
 
 	/**
-	 * Create a new genetic algorithm. By default the GA tries to maximize the
-	 * fitness function.
+	 * Create a new genetic algorithm.
 	 *
 	 * @param genotypeFactory the genotype factory this GA is working with.
 	 * @param fitnessFunction the fitness function this GA is using.
+	 * @param fitnessScaler the fitness scaler this GA is using.
+	 * @param optimization Determine whether this GA maximize or minimize the
+	 *        fitness function.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public GeneticAlgorithm(
 		final Factory<Genotype<G>> genotypeFactory,
-		final Function<? super Genotype<G>, ? extends C> fitnessFunction
+		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
+		final Function<? super C, ? extends C> fitnessScaler,
+		final Optimize optimization
+	) {
+		this(
+			genotypeFactory,
+			fitnessFunction,
+			fitnessScaler,
+			optimization,
+			null
+		);
+	}
+
+	/**
+	 * Create a new genetic algorithm.
+	 *
+	 * @param genotypeFactory the genotype factory this GA is working with.
+	 * @param fitnessFunction the fitness function this GA is using.
+	 * @param optimization Determine whether this GA maximize or minimize the
+	 *        fitness function.
+	 * @param executor the {@link java.util.concurrent.Executor} used for
+	 *        executing the parallelizable parts of the code.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 */
+	public GeneticAlgorithm(
+		final Factory<Genotype<G>> genotypeFactory,
+		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
+		final Optimize optimization,
+		final Executor executor
 	) {
 		this(
 			genotypeFactory,
 			fitnessFunction,
 			functions.<C>Identity(),
-			Optimize.MAXIMUM
+			optimization,
+			executor
 		);
 	}
 
@@ -271,7 +309,79 @@ public class GeneticAlgorithm<
 			genotypeFactory,
 			fitnessFunction,
 			functions.<C>Identity(),
-			optimization
+			optimization,
+			null
+		);
+	}
+
+	/**
+	 * Create a new genetic algorithm. By default the GA tries to maximize the
+	 * fitness function.
+	 *
+	 * @param genotypeFactory the genotype factory this GA is working with.
+	 * @param fitnessFunction the fitness function this GA is using.
+	 * @param executor the {@link java.util.concurrent.Executor} used for
+	 *        executing the parallelizable parts of the code.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 */
+	public GeneticAlgorithm(
+		final Factory<Genotype<G>> genotypeFactory,
+		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
+		final Executor executor
+	) {
+		this(
+			genotypeFactory,
+			fitnessFunction,
+			functions.<C>Identity(),
+			Optimize.MAXIMUM,
+			executor
+		);
+	}
+
+	/**
+	 * Create a new genetic algorithm. By default the GA tries to maximize the
+	 * fitness function.
+	 *
+	 * @param genotypeFactory the genotype factory this GA is working with.
+	 * @param fitnessFunction the fitness function this GA is using.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 */
+	public GeneticAlgorithm(
+		final Factory<Genotype<G>> genotypeFactory,
+		final Function<? super Genotype<G>, ? extends C> fitnessFunction
+	) {
+		this(
+			genotypeFactory,
+			fitnessFunction,
+			functions.<C>Identity(),
+			Optimize.MAXIMUM,
+			null
+		);
+	}
+
+	/**
+	 * Create a new genetic algorithm. By default the GA tries to maximize the
+	 * fitness function.
+	 *
+	 * @param genotypeFactory the genotype factory this GA is working with.
+	 * @param fitnessFunction the fitness function this GA is using.
+	 * @param fitnessScaler the fitness scaler this GA is using.
+	 * @param executor the {@link java.util.concurrent.Executor} used for
+	 *        executing the parallelizable parts of the code.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 */
+	public GeneticAlgorithm(
+		final Factory<Genotype<G>> genotypeFactory,
+		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
+		final Function<? super C, ? extends C> fitnessScaler,
+		final Executor executor
+	) {
+		this(
+			genotypeFactory,
+			fitnessFunction,
+			fitnessScaler,
+			Optimize.MAXIMUM,
+			executor
 		);
 	}
 
@@ -293,7 +403,8 @@ public class GeneticAlgorithm<
 			genotypeFactory,
 			fitnessFunction,
 			fitnessScaler,
-			Optimize.MAXIMUM
+			Optimize.MAXIMUM,
+			null
 		);
 	}
 
