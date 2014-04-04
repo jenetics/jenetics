@@ -29,7 +29,7 @@ import java.util.concurrent.RecursiveAction;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date$</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-05 $</em>
  * @since 2.0
  */
 public final class RunnablesAction extends RecursiveAction {
@@ -81,7 +81,7 @@ public final class RunnablesAction extends RecursiveAction {
 	}
 
 	private int threshold() {
-		return max(_runnables.size()/(Concurrent.CORES*2), DEFAULT_THRESHOLD);
+		return max(_runnables.size()/(Concurrency.CORES*2), DEFAULT_THRESHOLD);
 	}
 
 }
