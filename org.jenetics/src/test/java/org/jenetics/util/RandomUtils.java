@@ -61,8 +61,6 @@ public class RandomUtils {
 	}
 
 	public static char nextCharacter() {
-		final int surrogateStart = 0xD800;
-
 		char c = '\0';
 		do {
 			c = (char)random.nextInt(random(), Character.MIN_VALUE, Character.MAX_VALUE);
