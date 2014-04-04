@@ -23,6 +23,7 @@ import static java.lang.Math.max;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
@@ -43,7 +44,7 @@ import org.jenetics.internal.util.Context;
  */
 public abstract class Concurrent implements Executor {
 
-	private static final int CORES = Runtime.getRuntime().availableProcessors();
+	static final int CORES = Runtime.getRuntime().availableProcessors();
 
 	private static final Concurrent SERIAL_EXECUTOR = new Concurrent() {
 		@Override
@@ -158,6 +159,10 @@ public abstract class Concurrent implements Executor {
 				}
 			}});
 		}
+	}
+
+	<T> void execute(final Callable<T> callable) {
+
 	}
 
 }

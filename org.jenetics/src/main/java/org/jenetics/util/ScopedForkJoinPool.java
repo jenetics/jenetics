@@ -19,6 +19,8 @@
  */
 package org.jenetics.util;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.List;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinTask;
@@ -39,7 +41,7 @@ final class ScopedForkJoinPool
 	private final ForkJoinPool _pool;
 
 	public ScopedForkJoinPool(final ForkJoinPool pool) {
-		_pool = pool;
+		_pool = requireNonNull(pool);
 	}
 
 	@Override

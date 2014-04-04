@@ -19,6 +19,8 @@
  */
 package org.jenetics.util;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.concurrent.Executor;
 
 /**
@@ -35,8 +37,8 @@ final class ScopedExecutorProxy implements Scoped<Concurrent> {
 		final Scoped<Executor> scope,
 		final Scoped<Concurrent> executor
 	) {
-		_scope = scope;
-		_executor = executor;
+		_scope = requireNonNull(scope);
+		_executor = requireNonNull(executor);
 	}
 
 	@Override
