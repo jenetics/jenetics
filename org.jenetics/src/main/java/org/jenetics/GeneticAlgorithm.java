@@ -32,7 +32,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.Concurrent;
+import org.jenetics.internal.util.Concurrent;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 import org.jenetics.util.Scoped;
@@ -133,7 +133,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-04 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,

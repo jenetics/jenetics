@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package org.jenetics.internal.util;
 
 import static java.lang.Math.max;
 import static java.util.Objects.requireNonNull;
@@ -28,7 +28,8 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 
-import org.jenetics.internal.util.Context;
+import org.jenetics.util.Scoped;
+import org.jenetics.util.arrays;
 
 /**
  * [code]
@@ -40,11 +41,11 @@ import org.jenetics.internal.util.Context;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 2.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-04 $</em>
+ * @version 2.0 &mdash; <em>$Date$</em>
  */
 public abstract class Concurrent implements Executor {
 
-	static final int CORES = Runtime.getRuntime().availableProcessors();
+	public static final int CORES = Runtime.getRuntime().availableProcessors();
 
 	private static final Concurrent SERIAL_EXECUTOR = new Concurrent() {
 		@Override

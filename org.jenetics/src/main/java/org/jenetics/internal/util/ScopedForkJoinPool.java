@@ -17,37 +17,41 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package org.jenetics.internal.util;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
+import java.util.List;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ForkJoinTask;
 
-import org.jenetics.internal.util.Stack;
+import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-04-04 $</em>
+ * @version 2.0 &mdash; <em>$Date$</em>
  * @since 2.0
  */
-public final class ScopedExecutorService
+public final class ScopedForkJoinPool
 	extends Concurrent
 	implements Scoped<Concurrent>
 {
 
-	private final Stack<Future<?>> _futures = new Stack<>();
-	private final ExecutorService _service;
+	private final Stack<ForkJoinTask<?>> _tasks = new Stack<>();
+	private final ForkJoinPool _pool;
 
-	public ScopedExecutorService(final ExecutorService service) {
-		_service = requireNonNull(service);
+	public ScopedForkJoinPool(final ForkJoinPool pool) {
+		_pool = requireNonNull(pool);
 	}
 
 	@Override
-	public void execute(final Runnable command) {
-		_futures.push(_service.submit(command));
+	public void execute(final Runnable runnable) {
+		_tasks.push(_pool.submit(runnable));
+	}
+
+	@Override
+	public void execute(final List<? extends Runnable> runnables) {
+		_tasks.push(_pool.submit(new RunnablesAction(runnables)));
 	}
 
 	@Override
@@ -57,12 +61,8 @@ public final class ScopedExecutorService
 
 	@Override
 	public void close() {
-		try {
-			for (Future<?> f = _futures.pop(); f != null; f = _futures.pop()) {
-				f.get();
-			}
-		} catch (InterruptedException|ExecutionException e) {
-			throw new CancellationException(e.getMessage());
+		for (ForkJoinTask<?> t = _tasks.pop(); t != null; t = _tasks.pop()) {
+			t.join();
 		}
 	}
 }

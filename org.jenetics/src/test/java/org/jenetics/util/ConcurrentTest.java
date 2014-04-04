@@ -6,6 +6,8 @@ import java.util.concurrent.Executors;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import org.jenetics.internal.util.Concurrent;
+
 public class ConcurrentTest {
 
 	@Test
