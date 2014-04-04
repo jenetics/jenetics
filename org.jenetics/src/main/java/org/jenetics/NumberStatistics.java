@@ -23,6 +23,8 @@ import static java.lang.Double.NaN;
 import static java.lang.String.format;
 import static org.jenetics.internal.util.object.eq;
 
+import java.util.concurrent.Executor;
+
 import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.stat.Variance;
@@ -265,6 +267,7 @@ public class NumberStatistics<
 
 		@Override
 		public NumberStatistics.Builder<G, R> evaluate(
+			final Executor executor,
 			final Iterable<? extends Phenotype<G, R>> population,
 			final int generation,
 			final Optimize opt
@@ -278,6 +281,7 @@ public class NumberStatistics<
 			final Variance<R> fitness = new Variance<>();
 
 			accumulators.<Phenotype<G, R>>accumulate(
+					executor,
 					population,
 					minMax,
 					age.map(Phenotype.Age(generation)),

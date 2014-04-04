@@ -299,11 +299,6 @@
 			<class name="org.jenetics.util.CharSeqTest" />
 		</classes>
 	</test>
-	<test name="org.jenetics.internal.util.Concurrent">
-		<classes>
-			<class name="org.jenetics.util.ConcurrentTest" />
-		</classes>
-	</test>
 	<test name="org.jenetics.util.math">
 		<classes>
 			<class name="org.jenetics.util.mathRandomTest" />

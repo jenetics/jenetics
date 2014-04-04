@@ -81,7 +81,7 @@ public final class RunnablesAction extends RecursiveAction {
 	}
 
 	private int threshold() {
-		return max(_runnables.size()/(Concurrent.CORES*2), DEFAULT_THRESHOLD);
+		return max(_runnables.size()/(Concurrency.CORES*2), DEFAULT_THRESHOLD);
 	}
 
 }
