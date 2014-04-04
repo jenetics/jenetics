@@ -17,41 +17,40 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package org.jenetics.internal.util;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.List;
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.ForkJoinTask;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
+import org.jenetics.internal.util.Concurrent;
 import org.jenetics.internal.util.Stack;
+
+import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version 2.0 &mdash; <em>$Date$</em>
  * @since 2.0
  */
-public final class ScopedForkJoinPool
+public final class ScopedExecutorService
 	extends Concurrent
 	implements Scoped<Concurrent>
 {
 
-	private final Stack<ForkJoinTask<?>> _tasks = new Stack<>();
-	private final ForkJoinPool _pool;
+	private final Stack<Future<?>> _futures = new Stack<>();
+	private final ExecutorService _service;
 
-	public ScopedForkJoinPool(final ForkJoinPool pool) {
-		_pool = requireNonNull(pool);
+	public ScopedExecutorService(final ExecutorService service) {
+		_service = requireNonNull(service);
 	}
 
 	@Override
-	public void execute(final Runnable runnable) {
-		_tasks.push(_pool.submit(runnable));
-	}
-
-	@Override
-	public void execute(final List<? extends Runnable> runnables) {
-		_tasks.push(_pool.submit(new RunnablesAction(runnables)));
+	public void execute(final Runnable command) {
+		_futures.push(_service.submit(command));
 	}
 
 	@Override
@@ -61,8 +60,12 @@ public final class ScopedForkJoinPool
 
 	@Override
 	public void close() {
-		for (ForkJoinTask<?> t = _tasks.pop(); t != null; t = _tasks.pop()) {
-			t.join();
+		try {
+			for (Future<?> f = _futures.pop(); f != null; f = _futures.pop()) {
+				f.get();
+			}
+		} catch (InterruptedException|ExecutionException e) {
+			throw new CancellationException(e.getMessage());
 		}
 	}
 }

@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package org.jenetics.internal.util;
 
 import static java.lang.Math.max;
 import static java.util.Objects.requireNonNull;
@@ -32,7 +32,7 @@ import java.util.concurrent.RecursiveAction;
  * @version 2.0 &mdash; <em>$Date$</em>
  * @since 2.0
  */
-final class RunnablesAction extends RecursiveAction {
+public final class RunnablesAction extends RecursiveAction {
 	private static final long serialVersionUID = 1;
 
 	private static final int DEFAULT_THRESHOLD = 7;

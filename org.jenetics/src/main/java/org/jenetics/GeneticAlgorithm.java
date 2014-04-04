@@ -32,7 +32,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.Concurrent;
+import org.jenetics.internal.util.Concurrent;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 import org.jenetics.util.Scoped;

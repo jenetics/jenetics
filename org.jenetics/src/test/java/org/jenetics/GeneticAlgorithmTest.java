@@ -27,7 +27,7 @@ import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.Concurrent;
+import org.jenetics.internal.util.Concurrent;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 import org.jenetics.util.RandomRegistry;
