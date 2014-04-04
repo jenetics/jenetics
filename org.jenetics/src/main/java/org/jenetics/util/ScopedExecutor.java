@@ -19,6 +19,8 @@
  */
 package org.jenetics.util;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
@@ -28,7 +30,7 @@ import org.jenetics.internal.util.Stack;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-03-22 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-04 $</em>
  * @since 2.0
  */
 final class ScopedExecutor extends Concurrent implements Scoped<Concurrent> {
@@ -37,7 +39,7 @@ final class ScopedExecutor extends Concurrent implements Scoped<Concurrent> {
 	private final Executor _executor;
 
 	public ScopedExecutor(final Executor executor) {
-		_executor = executor;
+		_executor = requireNonNull(executor);
 	}
 
 	@Override

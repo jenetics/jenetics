@@ -29,7 +29,7 @@ import java.util.concurrent.RecursiveAction;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-04-03 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-04 $</em>
  * @since 2.0
  */
 final class RunnablesAction extends RecursiveAction {
@@ -59,9 +59,7 @@ final class RunnablesAction extends RecursiveAction {
 			runnables instanceof RandomAccess ?
 				requireNonNull(runnables) :
 				new ArrayList<>(runnables),
-			0,
-			runnables.size(),
-			null
+			0, runnables.size(), null
 		);
 	}
 
@@ -83,11 +81,7 @@ final class RunnablesAction extends RecursiveAction {
 	}
 
 	private int threshold() {
-		return max(_runnables.size()/(parallelism()*2), DEFAULT_THRESHOLD);
-	}
-
-	private int parallelism() {
-		return getPool() != null ? getPool().getParallelism() : 1;
+		return max(_runnables.size()/(Concurrent.CORES*2), DEFAULT_THRESHOLD);
 	}
 
 }
