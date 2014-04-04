@@ -32,7 +32,7 @@ import org.jenetics.internal.util.Stack;
  * @version 2.0 &mdash; <em>$Date: 2014-04-04 $</em>
  * @since 2.0
  */
-final class ScopedForkJoinPool
+public final class ScopedForkJoinPool
 	extends Concurrent
 	implements Scoped<Concurrent>
 {
