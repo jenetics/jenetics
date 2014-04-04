@@ -32,7 +32,7 @@ import java.util.concurrent.RecursiveAction;
  * @version 2.0 &mdash; <em>$Date$</em>
  * @since 2.0
  */
-public final class RunnablesAction extends RecursiveAction {
+final class RunnablesAction extends RecursiveAction {
 	private static final long serialVersionUID = 1;
 
 	private static final int DEFAULT_THRESHOLD = 7;
