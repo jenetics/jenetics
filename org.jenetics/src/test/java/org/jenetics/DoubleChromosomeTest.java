@@ -70,7 +70,7 @@ public class DoubleChromosomeTest
 				final DoubleChromosome chromosome = new DoubleChromosome(min, max, 500);
 
 				accumulate(
-					Concurrency.DEFAULT,
+					Concurrency.commonPool(),
 					chromosome,
 					mm.map(Allele),
 					histogram.map(Allele),

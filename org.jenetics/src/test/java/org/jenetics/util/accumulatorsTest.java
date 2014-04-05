@@ -112,7 +112,7 @@ public class accumulatorsTest {
 		final MappedAccumulator<Integer> accumulator2 = new MappedAccumulator<Integer>(){};
 
 		accumulate(
-			Concurrency.DEFAULT,
+			Concurrency.commonPool(),
 			new IntegerIterable(SAMPLES),
 			accumulator1,
 			accumulator2
@@ -130,7 +130,7 @@ public class accumulatorsTest {
 		final MappedAccumulator<Integer> accumulator3 = new MappedAccumulator<Integer>(){};
 
 		accumulate(
-			Concurrency.DEFAULT,
+			Concurrency.commonPool(),
 			new IntegerIterable(SAMPLES),
 			accumulator1,
 			accumulator2,
@@ -151,7 +151,7 @@ public class accumulatorsTest {
 		final MappedAccumulator<Integer> accumulator4 = new MappedAccumulator<Integer>(){};
 
 		accumulate(
-			Concurrency.DEFAULT,
+			Concurrency.commonPool(),
 			new IntegerIterable(SAMPLES),
 			accumulator1,
 			accumulator2,
@@ -175,7 +175,7 @@ public class accumulatorsTest {
 		final MappedAccumulator<Integer> accumulator5 = new MappedAccumulator<Integer>(){};
 
 		accumulate(
-			Concurrency.DEFAULT,
+			Concurrency.commonPool(),
 			new IntegerIterable(SAMPLES),
 			accumulator1,
 			accumulator2,
@@ -197,7 +197,7 @@ public class accumulatorsTest {
 		final accumulators.Max<Integer> max = new accumulators.Max<>();
 		final accumulators.Min<Integer> min = new accumulators.Min<>();
 		accumulators.accumulate(
-			Concurrency.DEFAULT,
+			Concurrency.commonPool(),
 			data,
 			max.map(functions.StringToInteger),
 			min.map(functions.StringLength)
@@ -216,7 +216,7 @@ public class accumulatorsTest {
 		}
 
 		accumulate(
-			Concurrency.DEFAULT,
+			Concurrency.commonPool(),
 			new IntegerIterable(SAMPLES),
 			accumulators
 		);

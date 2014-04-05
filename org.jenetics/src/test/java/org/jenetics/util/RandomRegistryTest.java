@@ -91,7 +91,7 @@ public class RandomRegistryTest {
 
 	@Test(invocationCount = 10)
 	public void concurrentLocalContext() {
-		try (Concurrency c = Concurrency.withDefault()) {
+		try (Concurrency c = Concurrency.withCommonPool()) {
 			for (int i = 0; i < 25; ++i) {
 				c.execute(new ContextRunnable());
 			}
