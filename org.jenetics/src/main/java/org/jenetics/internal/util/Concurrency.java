@@ -21,6 +21,7 @@ package org.jenetics.internal.util;
 
 import static java.lang.Math.max;
 import static java.util.Objects.requireNonNull;
+import static org.jenetics.util.arrays.partition;
 
 import java.util.List;
 import java.util.concurrent.CancellationException;
@@ -32,8 +33,6 @@ import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 
-import org.jenetics.util.arrays;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version 2.0 &mdash; <em>$Date$</em>
@@ -42,6 +41,8 @@ import org.jenetics.util.arrays;
 public abstract class Concurrency implements Executor, AutoCloseable {
 
 	public static final int CORES = Runtime.getRuntime().availableProcessors();
+
+	public static final Concurrency SERIAL_EXECUTOR = new SerialConcurrency();
 
 	private static final class LazyPoolHolder {
 		public static final ForkJoinPool FORK_JOIN_POOL =
@@ -52,23 +53,7 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 		return LazyPoolHolder.FORK_JOIN_POOL;
 	}
 
-	public static final Concurrency SERIAL_EXECUTOR = new SerialConcurrency();
-
-	public void execute(final List<? extends Runnable> runnables) {
-		final int[] parts = arrays.partition(
-			runnables.size(),
-			CORES == 1 ? 1 : CORES + 1
-		);
-
-		for (int i = 0; i < parts.length - 1; ++i) {
-			final int part = i;
-			execute(new Runnable() { @Override public void run() {
-				for (int j = parts[part]; j < parts[part + 1]; ++j) {
-					runnables.get(j).run();
-				}
-			}});
-		}
-	}
+	public abstract void execute(final List<? extends Runnable> runnables);
 
 	@Override
 	public abstract void close();
@@ -147,6 +132,14 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 		}
 
 		@Override
+		public void execute(final List<? extends Runnable> runnables) {
+			final int[] parts = partition(runnables.size(), CORES + 1);
+			for (int i = 0; i < parts.length - 1; ++i) {
+				execute(new RunnablesRunnable(runnables, parts[i], parts[i + 1]));
+			}
+		}
+
+		@Override
 		public void close() {
 			try {
 				for (Future<?> f = _futures.pop(); f != null; f = _futures.pop()) {
@@ -174,6 +167,14 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 			final FutureTask<?> task = new FutureTask<>(command, null);
 			_tasks.push(task);
 			_executor.execute(task);
+		}
+
+		@Override
+		public void execute(final List<? extends Runnable> runnables) {
+			final int[] parts = partition(runnables.size(), CORES + 1);
+			for (int i = 0; i < parts.length - 1; ++i) {
+				execute(new RunnablesRunnable(runnables, parts[i], parts[i + 1]));
+			}
 		}
 
 		@Override
