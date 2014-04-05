@@ -48,25 +48,11 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 			new ForkJoinPool(max(CORES - 1, 1));
 	}
 
-	public static final ForkJoinPool commonPool() {
+	public static ForkJoinPool commonPool() {
 		return LazyPoolHolder.FORK_JOIN_POOL;
 	}
 
-	public static final Concurrency SERIAL_EXECUTOR = new Concurrency() {
-		@Override
-		public void execute(final Runnable command) {
-			command.run();
-		}
-		@Override
-		public void execute(final List<? extends Runnable> runnables) {
-			for (final Runnable runnable : runnables) {
-				runnable.run();
-			}
-		}
-		@Override
-		public void close() {
-		}
-	};
+	public static final Concurrency SERIAL_EXECUTOR = new SerialConcurrency();
 
 	public void execute(final List<? extends Runnable> runnables) {
 		final int[] parts = arrays.partition(
@@ -87,25 +73,42 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 	@Override
 	public abstract void close();
 
+	/**
+	 * Return an new Concurrency object from the given executor.
+	 *
+	 * @param executor the underlying Executor
+	 * @return a new Concurrency object
+	 */
+	public static Concurrency with(final Executor executor) {
+		if (executor instanceof ForkJoinPool) {
+			return new ForkJoinPoolConcurrency((ForkJoinPool)executor);
+		} else if (executor instanceof ExecutorService) {
+			return new ExecutorServiceConcurrency((ExecutorService)executor);
+		} else if (executor == SERIAL_EXECUTOR) {
+			return SERIAL_EXECUTOR;
+		} else {
+			return new ExecutorConcurrency(executor);
+		}
+	}
+
+	/**
+	 * Return a new Concurrency object using the common ForkJoinPool.
+	 *
+	 * @return a new Concurrency object using the new ForkJoinPool
+	 */
 	public static Concurrency withCommonPool() {
 		return with(commonPool());
 	}
 
-	public static Concurrency with(final Executor executor) {
-		if (executor instanceof ForkJoinPool) {
-			return new ScopedForkJoinPool((ForkJoinPool)executor);
-		} else if (executor instanceof ExecutorService) {
-			return new ScopedExecutorService((ExecutorService)executor);
-		} else {
-			return new ScopedExecutor(executor);
-		}
-	}
 
-	private static final class ScopedForkJoinPool extends Concurrency {
+	/**
+	 * This Concurrency uses a ForkJoinPool.
+	 */
+	private static final class ForkJoinPoolConcurrency extends Concurrency {
 		private final Stack<ForkJoinTask<?>> _tasks = new Stack<>();
 		private final ForkJoinPool _pool;
 
-		ScopedForkJoinPool(final ForkJoinPool pool) {
+		ForkJoinPoolConcurrency(final ForkJoinPool pool) {
 			_pool = requireNonNull(pool);
 		}
 
@@ -127,11 +130,14 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 		}
 	}
 
-	private static final class ScopedExecutorService extends Concurrency {
+	/**
+	 * This Concurrency uses an ExecutorService.
+	 */
+	private static final class ExecutorServiceConcurrency extends Concurrency {
 		private final Stack<Future<?>> _futures = new Stack<>();
 		private final ExecutorService _service;
 
-		ScopedExecutorService(final ExecutorService service) {
+		ExecutorServiceConcurrency(final ExecutorService service) {
 			_service = requireNonNull(service);
 		}
 
@@ -152,11 +158,14 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 		}
 	}
 
-	private static final class ScopedExecutor extends Concurrency {
+	/**
+	 * This Concurrency uses an Executor.
+	 */
+	private static final class ExecutorConcurrency extends Concurrency {
 		private final Stack<FutureTask<?>> _tasks = new Stack<>();
 		private final Executor _executor;
 
-		ScopedExecutor(final Executor executor) {
+		ExecutorConcurrency(final Executor executor) {
 			_executor = requireNonNull(executor);
 		}
 
@@ -176,6 +185,28 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 			} catch (InterruptedException|ExecutionException e) {
 				throw new CancellationException(e.getMessage());
 			}
+		}
+	}
+
+	/**
+	 * This Concurrency executes the runnables within the main thread.
+	 */
+	private static final class SerialConcurrency extends Concurrency {
+
+		@Override
+		public void execute(final Runnable command) {
+			command.run();
+		}
+
+		@Override
+		public void execute(final List<? extends Runnable> runnables) {
+			for (final Runnable runnable : runnables) {
+				runnable.run();
+			}
+		}
+
+		@Override
+		public void close() {
 		}
 	}
 
