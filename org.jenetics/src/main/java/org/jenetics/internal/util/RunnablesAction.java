@@ -20,7 +20,6 @@
 package org.jenetics.internal.util;
 
 import static java.lang.Math.max;
-import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,8 +56,7 @@ final class RunnablesAction extends RecursiveAction {
 	public RunnablesAction(final List<? extends Runnable> runnables) {
 		this(
 			runnables instanceof RandomAccess ?
-				requireNonNull(runnables) :
-				new ArrayList<>(runnables),
+				runnables : new ArrayList<>(runnables),
 			0, runnables.size(), null
 		);
 	}
