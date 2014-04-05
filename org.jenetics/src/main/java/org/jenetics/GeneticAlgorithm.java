@@ -260,7 +260,7 @@ public class GeneticAlgorithm<
 			fitnessFunction,
 			fitnessScaler,
 			optimization,
-			Concurrency.DEFAULT
+			Concurrency.commonPool()
 		);
 	}
 
@@ -309,7 +309,7 @@ public class GeneticAlgorithm<
 			fitnessFunction,
 			functions.<C>Identity(),
 			optimization,
-			Concurrency.DEFAULT
+			Concurrency.commonPool()
 		);
 	}
 
@@ -354,7 +354,7 @@ public class GeneticAlgorithm<
 			fitnessFunction,
 			functions.<C>Identity(),
 			Optimize.MAXIMUM,
-			Concurrency.DEFAULT
+			Concurrency.commonPool()
 		);
 	}
 

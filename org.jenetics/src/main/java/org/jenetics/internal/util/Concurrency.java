@@ -43,7 +43,14 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 
 	public static final int CORES = Runtime.getRuntime().availableProcessors();
 
-	public static final ForkJoinPool DEFAULT = new ForkJoinPool(max(CORES - 1, 1));
+	private static final class LazyPoolHolder {
+		public static final ForkJoinPool FORK_JOIN_POOL =
+			new ForkJoinPool(max(CORES - 1, 1));
+	}
+
+	public static final ForkJoinPool commonPool() {
+		return LazyPoolHolder.FORK_JOIN_POOL;
+	}
 
 	public static final Concurrency SERIAL_EXECUTOR = new Concurrency() {
 		@Override
@@ -80,8 +87,8 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 	@Override
 	public abstract void close();
 
-	public static Concurrency withDefault() {
-		return with(DEFAULT);
+	public static Concurrency withCommonPool() {
+		return with(commonPool());
 	}
 
 	public static Concurrency with(final Executor executor) {

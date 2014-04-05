@@ -69,7 +69,7 @@ public class LongChromosomeTest
 				final LongChromosome chromosome = new LongChromosome(min, max, 500);
 
 				accumulate(
-					Concurrency.DEFAULT,
+					Concurrency.commonPool(),
 					chromosome,
 					mm.map(Allele),
 					variance.map(Allele),

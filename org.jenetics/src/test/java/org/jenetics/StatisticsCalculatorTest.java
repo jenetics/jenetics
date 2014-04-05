@@ -79,7 +79,7 @@ public class StatisticsCalculatorTest {
 		final Calculator<DoubleGene, Double> calculator = newCalculator();
 		final Statistics.Builder<DoubleGene, Double>
 		builder = calculator.evaluate(
-			Concurrency.DEFAULT,
+			Concurrency.commonPool(),
 			population(size),
 			gen,
 			Optimize.MAXIMUM
