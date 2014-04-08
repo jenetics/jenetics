@@ -19,16 +19,19 @@
  */
 package org.jenetics.util;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.Set;
 import java.util.regex.PatternSyntaxException;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-15 $</em>
+ * @version <em>$Date: 2014-04-08 $</em>
  */
 public class CharSeqTest extends ObjectTester<CharSeq> {
 
@@ -109,6 +112,39 @@ public class CharSeqTest extends ObjectTester<CharSeq> {
 
 		set = new CharSeq("000000987654321111111111");
 		Assert.assertEquals(set.toString(), "0123456789");
+	}
+
+	@Test(dataProvider = "randomString")
+	public void distinctRandomStrings(final String value) {
+		final CharSeq seq = new CharSeq(value);
+		final Set<Character> set = new HashSet<>(
+			Array.box(value.toCharArray()).asList()
+		);
+
+		Assert.assertEquals(seq.length(), set.size());
+		for (Character c : seq) {
+			Assert.assertTrue(set.contains(c), "Set must contain " + c);
+		}
+	}
+
+	@DataProvider(name = "randomString")
+	public Object[][] randomString() {
+		final Random random = new Random(123);
+		final Object[][] strings = new Object[25][1];
+		for (int i = 0; i < strings.length; ++i) {
+			strings[i][0] = nextString(random, 25);
+		}
+
+		return strings;
+	}
+
+	private static String nextString(final Random random, final int length) {
+		final char[] chars = new char[length];
+		for (int i = 0; i < chars.length; ++i) {
+			chars[i] = (char)math.random.nextInt(random, 'a', 'k');
+		}
+
+		return new String(chars);
 	}
 
 	@Test
