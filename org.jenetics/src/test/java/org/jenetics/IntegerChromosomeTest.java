@@ -27,6 +27,8 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import org.jenetics.internal.util.Concurrency;
+
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.UniformDistribution;
 import org.jenetics.stat.Variance;
@@ -37,7 +39,7 @@ import org.jenetics.util.accumulators.MinMax;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-24 $</em>
+ * @version <em>$Date: 2014-04-09 $</em>
  */
 public class IntegerChromosomeTest
 	extends NumericChromosomeTester<Integer, IntegerGene>
@@ -67,6 +69,7 @@ public class IntegerChromosomeTest
 				final IntegerChromosome chromosome = new IntegerChromosome(min, max, 500);
 
 				accumulate(
+					Concurrency.commonPool(),
 					chromosome,
 					mm.map(Allele),
 					variance.map(Allele),
