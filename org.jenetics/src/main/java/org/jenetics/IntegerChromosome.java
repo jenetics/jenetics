@@ -44,7 +44,7 @@ import org.jenetics.util.ISeq;
  * Numeric chromosome implementation which holds 32 bit integer numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz  Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-03-24 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-04-09 $</em>
  * @since @__version__@
  */
 @XmlJavaTypeAdapter(IntegerChromosome.Model.Adapter.class)
@@ -180,7 +180,7 @@ public class IntegerChromosome
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "long-chromosome")
+	@XmlRootElement(name = "int-chromosome")
 	@XmlType(name = "org.jenetics.IntegerChromosome")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
