@@ -41,7 +41,7 @@ import org.jenetics.util.RandomRegistry;
  * NumericGene implementation which holds a 64 bit integer number.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-24 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-04-09 $</em>
  * @since 1.6
  */
 @XmlJavaTypeAdapter(LongGene.Model.Adapter.class)
@@ -78,6 +78,7 @@ public final class LongGene
 	 * @param value the value of the gene.
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (inclusively).
+	 * @return a new {@code LongGene} with the given parameters.
 	 */
 	public static LongGene of(final long value, final long min, final long max) {
 		return new LongGene(value, min, max);
@@ -89,6 +90,7 @@ public final class LongGene
 	 *
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (inclusively).
+	 * @return a new {@code LongGene} with the given parameters.
 	 */
 	public static LongGene of(final long min, final long max) {
 		return of(nextLong(RandomRegistry.getRandom(), min, max), min, max);

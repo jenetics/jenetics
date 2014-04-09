@@ -72,7 +72,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-30 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 @XmlJavaTypeAdapter(Genotype.Model.Adapter.class)
 public final class Genotype<G extends Gene<?, G>>
@@ -317,8 +317,10 @@ public final class Genotype<G extends Gene<?, G>>
 	/**
 	 * Create a new Genotype from a given array of {@code Chromosomes}.
 	 *
+	 * @param <G> the gene type
 	 * @param chromosomes The {@code Chromosome} array the {@code Genotype}
 	 *         consists of.
+	 * @return a new {@code Genotype} from the given chromosomes
 	 * @throws NullPointerException if {@code chromosomes} is null or one of its
 	 *         element.
 	 * @throws IllegalArgumentException if {@code chromosome.length == 0}.

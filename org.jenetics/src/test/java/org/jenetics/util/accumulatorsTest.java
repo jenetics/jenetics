@@ -26,9 +26,11 @@ import java.util.Iterator;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import org.jenetics.internal.util.Concurrency;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-17 $</em>
+ * @version <em>$Date: 2014-04-05 $</em>
  */
 public class accumulatorsTest {
 
@@ -110,10 +112,11 @@ public class accumulatorsTest {
 		final MappedAccumulator<Integer> accumulator2 = new MappedAccumulator<Integer>(){};
 
 		accumulate(
-				new IntegerIterable(SAMPLES),
-				accumulator1,
-				accumulator2
-			);
+			Concurrency.commonPool(),
+			new IntegerIterable(SAMPLES),
+			accumulator1,
+			accumulator2
+		);
 
 		Assert.assertEquals(accumulator1.getSamples(), SAMPLES);
 		Assert.assertEquals(accumulator2.getSamples(), SAMPLES);
@@ -127,11 +130,12 @@ public class accumulatorsTest {
 		final MappedAccumulator<Integer> accumulator3 = new MappedAccumulator<Integer>(){};
 
 		accumulate(
-				new IntegerIterable(SAMPLES),
-				accumulator1,
-				accumulator2,
-				accumulator3
-			);
+			Concurrency.commonPool(),
+			new IntegerIterable(SAMPLES),
+			accumulator1,
+			accumulator2,
+			accumulator3
+		);
 
 		Assert.assertEquals(accumulator1.getSamples(), SAMPLES);
 		Assert.assertEquals(accumulator2.getSamples(), SAMPLES);
@@ -147,12 +151,13 @@ public class accumulatorsTest {
 		final MappedAccumulator<Integer> accumulator4 = new MappedAccumulator<Integer>(){};
 
 		accumulate(
-				new IntegerIterable(SAMPLES),
-				accumulator1,
-				accumulator2,
-				accumulator3,
-				accumulator4
-			);
+			Concurrency.commonPool(),
+			new IntegerIterable(SAMPLES),
+			accumulator1,
+			accumulator2,
+			accumulator3,
+			accumulator4
+		);
 
 		Assert.assertEquals(accumulator1.getSamples(), SAMPLES);
 		Assert.assertEquals(accumulator2.getSamples(), SAMPLES);
@@ -170,13 +175,14 @@ public class accumulatorsTest {
 		final MappedAccumulator<Integer> accumulator5 = new MappedAccumulator<Integer>(){};
 
 		accumulate(
-				new IntegerIterable(SAMPLES),
-				accumulator1,
-				accumulator2,
-				accumulator3,
-				accumulator4,
-				accumulator5
-			);
+			Concurrency.commonPool(),
+			new IntegerIterable(SAMPLES),
+			accumulator1,
+			accumulator2,
+			accumulator3,
+			accumulator4,
+			accumulator5
+		);
 
 		Assert.assertEquals(accumulator1.getSamples(), SAMPLES);
 		Assert.assertEquals(accumulator2.getSamples(), SAMPLES);
@@ -191,6 +197,7 @@ public class accumulatorsTest {
 		final accumulators.Max<Integer> max = new accumulators.Max<>();
 		final accumulators.Min<Integer> min = new accumulators.Min<>();
 		accumulators.accumulate(
+			Concurrency.commonPool(),
 			data,
 			max.map(functions.StringToInteger),
 			min.map(functions.StringLength)
@@ -209,9 +216,10 @@ public class accumulatorsTest {
 		}
 
 		accumulate(
-				new IntegerIterable(SAMPLES),
-				accumulators
-			);
+			Concurrency.commonPool(),
+			new IntegerIterable(SAMPLES),
+			accumulators
+		);
 
 		for (MappedAccumulator<Integer> accumulator : accumulators) {
 			Assert.assertEquals(accumulator.getSamples(), SAMPLES);

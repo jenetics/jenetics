@@ -44,7 +44,7 @@ import org.jenetics.util.ISeq;
  * Numeric chromosome implementation which holds 64 bit integer numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-20 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-31 $</em>
  * @since 1.6
  */
 @XmlJavaTypeAdapter(LongChromosome.Model.Adapter.class)
@@ -103,6 +103,7 @@ public class LongChromosome
 	 * @param min the min value of the {@link LongGene}s (inclusively).
 	 * @param max the max value of the {@link LongGene}s (inclusively).
 	 * @param length the length of the chromosome.
+	 * @return a new {@code LongChromosome} with the given gene parameters.
 	 */
 	public static LongChromosome of(
 		final long min,
@@ -117,6 +118,7 @@ public class LongChromosome
 	 *
 	 * @param min the minimal value of this chromosome (inclusively).
 	 * @param max the maximal value of this chromosome (inclusively).
+	 * @return a new {@code LongChromosome} with the given gene parameters.
 	 */
 	public static LongChromosome of(final long min, final long max) {
 		return new LongChromosome(min, max);

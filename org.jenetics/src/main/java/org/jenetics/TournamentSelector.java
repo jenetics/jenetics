@@ -43,7 +43,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public class TournamentSelector<
 	G extends Gene<?, G>,
@@ -58,6 +58,7 @@ public class TournamentSelector<
 	 * Create a tournament selector with the give sample size. The sample size
 	 * must be greater than one.
 	 *
+	 * @param sampleSize the number of individuals involved in one tournament
 	 * @throws IllegalArgumentException if the sample size is smaller than two.
 	 */
 	public TournamentSelector(final int sampleSize) {

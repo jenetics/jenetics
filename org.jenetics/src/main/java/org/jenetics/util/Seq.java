@@ -31,7 +31,7 @@ import java.util.List;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public interface Seq<T> extends Iterable<T> {
 
@@ -68,6 +68,7 @@ public interface Seq<T> extends Iterable<T> {
 	/**
 	 * Applies a {@code function} to all elements of this sequence.
 	 *
+	 * @param <R> the return value of the applied function
 	 * @param function the function to apply to the elements.
 	 * @throws NullPointerException if the given {@code function} is
 	 *         {@code null}.
@@ -168,6 +169,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * [/code]
 	 *
 	 * @param predicate the search predicate.
+	 * @param start the search start index
 	 * @return the index of the first element on which the given predicate
 	 *         returns {@code true}, or -1 if the predicate returns {@code false}
 	 *         for every sequence element.
@@ -195,6 +197,8 @@ public interface Seq<T> extends Iterable<T> {
 	 * [/code]
 	 *
 	 * @param predicate the search predicate.
+	 * @param start the search start index
+	 * @param end the search end index
 	 * @return the index of the first element on which the given predicate
 	 *         returns {@code true}, or -1 if the predicate returns {@code false}
 	 *         for every sequence element.
@@ -223,6 +227,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * in this sequence, or -1 if this sequence does not contain the element.
 	 *
 	 * @param element element to search for, can be {@code null}
+	 * @param end the search end index
 	 * @return the index of the last occurrence of the specified element in
 	 * 		   this sequence, or -1 if this sequence does not contain the element
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
@@ -235,6 +240,8 @@ public interface Seq<T> extends Iterable<T> {
 	 * in this sequence, or -1 if this sequence does not contain the element.
 	 *
 	 * @param element element to search for, can be {@code null}
+	 * @param start the search start index
+	 * @param end the search end index
 	 * @return the index of the last occurrence of the specified element in
 	 * 		   this sequence, or -1 if this sequence does not contain the element
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
@@ -261,6 +268,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * sequence element.
 	 *
 	 * @param predicate the search predicate.
+	 * @param end the search end index
 	 * @return the index of the last element on which the given predicate
 	 *         returns {@code true}, or -1 if the predicate returns false for
 	 *         every sequence element.
@@ -279,6 +287,8 @@ public interface Seq<T> extends Iterable<T> {
 	 * sequence element.
 	 *
 	 * @param predicate the search predicate.
+	 * @param start the search start index
+	 * @param end the search end index
 	 * @return the index of the last element on which the given predicate
 	 *         returns {@code true}, or -1 if the predicate returns false for
 	 *         every sequence element.

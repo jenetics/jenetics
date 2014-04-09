@@ -20,7 +20,7 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 2.0 &mdash; <em>$Date: 2014-03-26 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-03 $</em>
  */
 
 apply plugin: 'packaging'
@@ -171,8 +171,8 @@ publishing {
                 url 'https://oss.sonatype.org/content/repositories/snapshots'
                 //url 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
                 credentials {
-                    username = hasProperty('sonatype_username') ? sonatype_username : 'foo'
-                    password = hasProperty('sonatype_password') ? sonatype_password : 'bar'
+                    username = project.hasProperty('sonatype_username') ? sonatype_username : 'foo'
+                    password = project.hasProperty('sonatype_password') ? sonatype_password : 'bar'
                 }
             //} else {
             //    url "$buildDir/repo"

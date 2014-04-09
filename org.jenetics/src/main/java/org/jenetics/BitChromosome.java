@@ -52,7 +52,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-30 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-02 $</em>
  */
 @XmlJavaTypeAdapter(BitChromosome.Model.Adapter.class)
 public class BitChromosome extends Number
@@ -192,6 +192,7 @@ public class BitChromosome extends Number
 	/**
 	 * Return the value on the specified index.
 	 *
+	 * @since 2.0
 	 * @param index the gene index
 	 * @return the wanted gene value
 	 * @throws IndexOutOfBoundsException if the index is out of range
