@@ -180,7 +180,7 @@ public class IntegerChromosome
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "long-chromosome")
+	@XmlRootElement(name = "int-chromosome")
 	@XmlType(name = "org.jenetics.IntegerChromosome")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
