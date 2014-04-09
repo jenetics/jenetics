@@ -27,6 +27,8 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import org.jenetics.internal.util.Concurrency;
+
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.UniformDistribution;
 import org.jenetics.stat.Variance;
@@ -68,6 +70,7 @@ public class DoubleChromosomeTest
 				final DoubleChromosome chromosome = new DoubleChromosome(min, max, 500);
 
 				accumulate(
+					Concurrency.commonPool(),
 					chromosome,
 					mm.map(Allele),
 					histogram.map(Allele),

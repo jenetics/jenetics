@@ -62,11 +62,11 @@ final class KnapsackFunction
 
 	@Override
 	public Double apply(final Genotype<BitGene> genotype) {
-		final Chromosome<BitGene> ch = genotype.getChromosome();
+		final BitChromosome ch = (BitChromosome)genotype.getChromosome();
 		double size = 0;
 		double value = 0;
 		for (int i = 0, n = ch.length(); i < n; ++i) {
-			if (ch.getGene(i).getBit()) {
+			if (ch.get(i)) {
 				size += items[i].size;
 				value += items[i].value;
 			}

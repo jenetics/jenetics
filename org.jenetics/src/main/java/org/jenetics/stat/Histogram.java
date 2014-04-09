@@ -321,6 +321,9 @@ public class Histogram<C> extends MappedAccumulator<C> {
 
 	/**
 	 * @see #χ2(Function)
+	 *
+	 * @param cdf the cumulative density function
+	 * @return the chi square value of the given function
 	 */
 	public double chisqr(final Function<C, Double> cdf) {
 		return χ2(cdf);
@@ -328,6 +331,11 @@ public class Histogram<C> extends MappedAccumulator<C> {
 
 	/**
 	 * @see #χ2(Function, Object, Object)
+	 *
+	 * @param cdf the cumulative density function
+	 * @param min the lower limit
+	 * @param max the upper limit
+	 * @return the chi square value of the given function
 	 */
 	public double chisqr(final Function<C, Double> cdf, final C min, final C max) {
 		return χ2(cdf, min, max);
@@ -371,6 +379,7 @@ public class Histogram<C> extends MappedAccumulator<C> {
 	 * Create a new Histogram with the given class separators. The classes are
 	 * sorted by its natural order.
 	 *
+	 * @param <C> the separator types
 	 * @param separators the class separators.
 	 * @return a new Histogram.
 	 * @throws NullPointerException if the {@code separators} are {@code null}.

@@ -24,6 +24,8 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import org.jenetics.internal.util.Concurrency;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version <em>$Date$</em>
@@ -89,9 +91,9 @@ public class RandomRegistryTest {
 
 	@Test(invocationCount = 10)
 	public void concurrentLocalContext() {
-		try (Scoped<Concurrent> c = Concurrent.scope()) {
+		try (Concurrency c = Concurrency.withCommonPool()) {
 			for (int i = 0; i < 25; ++i) {
-				c.get().execute(new ContextRunnable());
+				c.execute(new ContextRunnable());
 			}
 		}
 	}

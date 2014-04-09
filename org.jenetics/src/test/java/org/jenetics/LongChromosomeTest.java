@@ -27,6 +27,8 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import org.jenetics.internal.util.Concurrency;
+
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.UniformDistribution;
 import org.jenetics.stat.Variance;
@@ -67,6 +69,7 @@ public class LongChromosomeTest
 				final LongChromosome chromosome = new LongChromosome(min, max, 500);
 
 				accumulate(
+					Concurrency.commonPool(),
 					chromosome,
 					mm.map(Allele),
 					variance.map(Allele),

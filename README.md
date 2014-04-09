@@ -409,21 +409,6 @@ Beside the Java coding standards as given in <http://www.oracle.com/technetwork/
 - Variable name for arrays or collections are plural.
 - All helper classes which only contains static methods are lower-case. This  indicates that the given class can not be used as type, because no instance can be created.
 
-## Release notes
-
-### 2.0.0
-
-* Remove all deprecated classes and methods.
-* Remove dependency to the JScience library.
-* Library can now be downloaded via the maven central repository: `org.bitbucket.fwilhelm:org.jenetics:2.0.0`
-
-### 1.6.0
-
-* Preparation work for removing the dependency to the JScience library.
-    * Add Double/Long Gene/Chromosome as a replacement for Float64/Integer64 Gene/Chromosome.
-    * Add JAXB XML serialization as a replacement of the Javolution XML marshalling.
-* Streamlining of the existing API: Marking inconsistent methods/classes as deprecated.
-
 ## License
 
 The library is licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
@@ -441,3 +426,20 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 	See the License for the specific language governing permissions and
 	limitations under the License.
+
+
+## Release notes
+
+### 2.0.0
+
+* Remove all deprecated classes and methods.
+* Remove dependency to the JScience library.
+* All concurrency classes are now internal. `GeneticAlgorithm` class takes an `Executor` as additional parameter, which is used for parallelizable code.
+* Library can now be downloaded via the maven central repository: `org.bitbucket.fwilhelm:org.jenetics:2.0.0`
+
+### 1.6.0
+
+* Preparation work for removing the dependency to the JScience library.
+    * Add Double/Long Gene/Chromosome as a replacement for Float64/Integer64 Gene/Chromosome.
+    * Add JAXB XML serialization as a replacement of the Javolution XML marshalling.
+* Streamlining of the existing API: Marking inconsistent methods/classes as deprecated.

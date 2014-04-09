@@ -72,6 +72,7 @@ public final class FinalReference<T> implements Serializable {
 	 * Set the reference value. If you try to set the reference value twice an
 	 * {@link IllegalStateException} is thrown.
 	 *
+	 * @param value the value to set
 	 * @throws IllegalStateException if you try to set the reference value twice.
 	 */
 	public synchronized void set(final T value) {

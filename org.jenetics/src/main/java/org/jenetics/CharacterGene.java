@@ -62,7 +62,7 @@ public final class CharacterGene
 	 * The default character set used by this gene.
 	 */
 	public static final CharSeq DEFAULT_CHARACTERS = new CharSeq(
-		CharSeq.expand("0-9a-zA-Z") +
+		"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" +
 		" !\"$%&/()=?`{[]}\\+~*#';.:,-_<>|@^'"
 	);
 
@@ -120,7 +120,7 @@ public final class CharacterGene
 	}
 
 	/**
-	 * Retunr a (unmodifiable) set of valid characters.
+	 * Return a (unmodifiable) set of valid characters.
 	 *
 	 * @return the {@link CharSeq} of valid characters.
 	 */

@@ -317,8 +317,10 @@ public final class Genotype<G extends Gene<?, G>>
 	/**
 	 * Create a new Genotype from a given array of {@code Chromosomes}.
 	 *
+	 * @param <G> the gene type
 	 * @param chromosomes The {@code Chromosome} array the {@code Genotype}
 	 *         consists of.
+	 * @return a new {@code Genotype} from the given chromosomes
 	 * @throws NullPointerException if {@code chromosomes} is null or one of its
 	 *         element.
 	 * @throws IllegalArgumentException if {@code chromosome.length == 0}.

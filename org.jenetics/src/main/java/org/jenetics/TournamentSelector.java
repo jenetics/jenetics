@@ -58,6 +58,7 @@ public class TournamentSelector<
 	 * Create a tournament selector with the give sample size. The sample size
 	 * must be greater than one.
 	 *
+	 * @param sampleSize the number of individuals involved in one tournament
 	 * @throws IllegalArgumentException if the sample size is smaller than two.
 	 */
 	public TournamentSelector(final int sampleSize) {

@@ -192,6 +192,7 @@ public class BitChromosome extends Number
 	/**
 	 * Return the value on the specified index.
 	 *
+	 * @since 2.0
 	 * @param index the gene index
 	 * @return the wanted gene value
 	 * @throws IndexOutOfBoundsException if the index is out of range

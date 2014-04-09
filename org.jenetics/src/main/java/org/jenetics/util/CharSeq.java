@@ -85,7 +85,7 @@ public final class CharSeq
 		requireNonNull(characters, "Characters");
 
 		final char[] chars = new char[characters.length()];
-		for (int i = 0; i < characters.length(); ++i) {
+		for (int i = chars.length; --i >= 0;) {
 			chars[i] = characters.charAt(i);
 		}
 
@@ -93,42 +93,24 @@ public final class CharSeq
 	}
 
 	private static char[] distinct(final char[] chars) {
-		char[] result = chars;
+		Arrays.sort(chars);
 
-		if (chars.length > 0) {
-			Arrays.sort(result);
+		int size = 0;
+		for (int i = 0, j = 0, n = chars.length; i < n && j < n; ++i) {
+			chars[i] = chars[j];
+			++size;
 
-			int nextIndex = 0;
-			int count = 1;
-			char last = result[0];
-
-			for (int i = 1; i < result.length; ++i) {
-				while (nextIndex < result.length && result[nextIndex] == last) {
-					++nextIndex;
-				}
-				if (nextIndex < result.length) {
-					last = result[nextIndex];
-					result[i] = last;
-					++count;
-				}
-			}
-
-			char[] array = new char[count];
-			System.arraycopy(result, 0, array, 0, count);
-			result = array;
+			while (j < n && chars[j] == chars[i]) ++j;
 		}
 
-		return result;
+		final char[] array = new char[size];
+		System.arraycopy(chars, 0, array, 0, size);
+		return array;
 	}
 
 	@Override
 	public boolean contains(final Object object) {
-		boolean contains = false;
-		if (object instanceof Character) {
-			contains = contains((Character)object);
-		}
-
-		return contains;
+		return object instanceof Character && contains((Character)object);
 	}
 
 	/**
