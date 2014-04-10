@@ -41,8 +41,8 @@ import org.jenetics.util.RandomRegistry;
  * NumericGene implementation which holds a 32 bit integer number.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date$</em>
- * @since @__version__@
+ * @version 2.0 &mdash; <em>$Date$</em>
+ * @since 2.0
  */
 @XmlJavaTypeAdapter(IntegerGene.Model.Adapter.class)
 public final class IntegerGene

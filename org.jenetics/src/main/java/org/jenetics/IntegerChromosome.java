@@ -44,8 +44,8 @@ import org.jenetics.util.ISeq;
  * Numeric chromosome implementation which holds 32 bit integer numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz  Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date$</em>
- * @since @__version__@
+ * @version 2.0 &mdash; <em>$Date$</em>
+ * @since 2.0
  */
 @XmlJavaTypeAdapter(IntegerChromosome.Model.Adapter.class)
 public class IntegerChromosome
