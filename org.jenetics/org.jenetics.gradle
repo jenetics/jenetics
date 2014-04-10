@@ -20,8 +20,10 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 2.0 &mdash; <em>$Date: 2014-04-03 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-10 $</em>
  */
+
+import org.apache.tools.ant.filters.ReplaceTokens
 
 apply plugin: 'packaging'
 apply plugin: 'maven-publish'
@@ -53,11 +55,19 @@ packaging {
 task sourceJar(type: Jar) {
 	classifier "sources"
 	from sourceSets.main.allSource
+    filter(ReplaceTokens, tokens: [
+            __identifier__: identifier,
+            __year__: copyrightYear
+    ])
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
 	classifier = 'javadoc'
 	from javadoc.destinationDir
+    filter(ReplaceTokens, tokens: [
+            __identifier__: identifier,
+            __year__: copyrightYear
+    ])
 }
 
 ext {
