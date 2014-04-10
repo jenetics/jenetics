@@ -156,7 +156,7 @@ public final class CharacterGene
 		if (!(obj instanceof CharacterGene)) {
 			return false;
 		}
-		CharacterGene gene = (CharacterGene)obj;
+		final CharacterGene gene = (CharacterGene)obj;
 		return eq(_character, gene._character) &&
 				eq(_validCharacters, gene._validCharacters);
 	}
