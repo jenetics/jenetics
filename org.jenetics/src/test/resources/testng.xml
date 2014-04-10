@@ -20,7 +20,7 @@
  # Author:
  #    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  #
- # Version: <em>$Date: 2014-04-05 $</em>
+ # Version: <em>$Date: 2014-04-09 $</em>
  #
  ###############################################################################
 -->
@@ -95,6 +95,16 @@
 			<class name="org.jenetics.GenotypeTest" />
 		</classes>
 	</test>
+    <test name="org.jenetics.IntegerChromosome">
+        <classes>
+            <class name="org.jenetics.IntegerChromosomeTest" />
+        </classes>
+    </test>
+    <test name="org.jenetics.IntegerGene">
+        <classes>
+            <class name="org.jenetics.IntegerGeneTest" />
+        </classes>
+    </test>
 	<test name="org.jenetics.LongChromosome">
 		<classes>
             <class name="org.jenetics.LongChromosomeTest" />
