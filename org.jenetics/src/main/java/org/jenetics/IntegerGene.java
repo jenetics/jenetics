@@ -19,7 +19,7 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.math.random.nextLong;
+import static org.jenetics.util.math.random.nextInt;
 
 import java.util.Random;
 
@@ -38,120 +38,118 @@ import org.jenetics.util.Mean;
 import org.jenetics.util.RandomRegistry;
 
 /**
- * NumericGene implementation which holds a 64 bit integer number.
+ * NumericGene implementation which holds a 32 bit integer number.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date$</em>
- * @since 1.6
+ * @version @__version__@ &mdash; <em>$Date$</em>
+ * @since @__version__@
  */
-@XmlJavaTypeAdapter(LongGene.Model.Adapter.class)
-public final class LongGene
-	extends AbstractNumericGene<Long, LongGene>
+@XmlJavaTypeAdapter(IntegerGene.Model.Adapter.class)
+public final class IntegerGene
+	extends AbstractNumericGene<Integer, IntegerGene>
 	implements
-			NumericGene<Long, LongGene>,
-			Mean<LongGene>
+			NumericGene<Integer, IntegerGene>,
+			Mean<IntegerGene>
 {
 
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Create a new random {@code LongGene} with the given value and the
+	 * Create a new random {@code IntegerGene} with the given value and the
 	 * given range. If the {@code value} isn't within the interval [min, max],
 	 * no exception is thrown. In this case the method
-	 * {@link LongGene#isValid()} returns {@code false}.
+	 * {@link IntegerGene#isValid()} returns {@code false}.
 	 *
 	 * @param value the value of the gene.
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (inclusively).
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	public LongGene(final Long value, final Long min, final Long max) {
+	public IntegerGene(final Integer value, final Integer min, final Integer max) {
 		super(value, min, max);
 	}
 
 	/**
-	 * Create a new random {@code LongGene} with the given value and the
+	 * Create a new random {@code IntegerGene} with the given value and the
 	 * given range. If the {@code value} isn't within the interval [min, max],
 	 * no exception is thrown. In this case the method
-	 * {@link LongGene#isValid()} returns {@code false}.
+	 * {@link IntegerGene#isValid()} returns {@code false}.
 	 *
 	 * @param value the value of the gene.
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (inclusively).
-	 * @return a new {@code LongGene} with the given parameters.
 	 */
-	public static LongGene of(final long value, final long min, final long max) {
-		return new LongGene(value, min, max);
+	public static IntegerGene of(final int value, final int min, final int max) {
+		return new IntegerGene(value, min, max);
 	}
 
 	/**
-	 * Create a new random {@code LongGene}. It is guaranteed that the value of
-	 * the {@code LongGene} lies in the interval [min, max].
+	 * Create a new random {@code IntegerGene}. It is guaranteed that the value of
+	 * the {@code IntegerGene} lies in the interval [min, max].
 	 *
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (inclusively).
-	 * @return a new {@code LongGene} with the given parameters.
 	 */
-	public static LongGene of(final long min, final long max) {
-		return of(nextLong(RandomRegistry.getRandom(), min, max), min, max);
+	public static IntegerGene of(final int min, final int max) {
+		return of(nextInt(RandomRegistry.getRandom(), min, max), min, max);
 	}
 
-	static ISeq<LongGene> seq(
-		final Long minimum,
-		final Long maximum,
+	static ISeq<IntegerGene> seq(
+		final Integer minimum,
+		final Integer maximum,
 		final int length
 	) {
-		final long min = minimum;
-		final long max = maximum;
+		final int min = minimum;
+		final int max = maximum;
 		final Random r = RandomRegistry.getRandom();
 
-		final Array<LongGene> genes = new Array<>(length);
+		final Array<IntegerGene> genes = new Array<>(length);
 		for (int i = 0; i < length; ++i) {
-			genes.set(i, new LongGene(nextLong(r, min, max), minimum, maximum));
+			genes.set(i, new IntegerGene(nextInt(r, min, max), minimum, maximum));
 		}
 		return genes.toISeq();
 	}
 
 	@Override
-	public LongGene newInstance(final Number number) {
-		return new LongGene(number.longValue(), _min, _max);
+	public IntegerGene newInstance(final Number number) {
+		return new IntegerGene(number.intValue(), _min, _max);
 	}
 
 	@Override
-	public LongGene newInstance() {
-		return new LongGene(
-			nextLong(RandomRegistry.getRandom(), _min, _max), _min, _max
+	public IntegerGene newInstance() {
+		return new IntegerGene(
+			nextInt(RandomRegistry.getRandom(), _min, _max), _min, _max
 		);
 	}
 
 	@Override
-	public LongGene mean(final LongGene that) {
-		return new LongGene(_value + (that._value - _value) / 2, _min, _max);
+	public IntegerGene mean(final IntegerGene that) {
+		return new IntegerGene(_value + (that._value - _value) / 2, _min, _max);
 	}
 
 	/* *************************************************************************
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "long-gene")
-	@XmlType(name = "org.jenetics.LongGene")
+	@XmlRootElement(name = "int-gene")
+	@XmlType(name = "org.jenetics.IntegerGene")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
 
 		@XmlAttribute(name = "min", required = true)
-		public long min;
+		public int min;
 
 		@XmlAttribute(name = "max", required = true)
-		public long max;
+		public int max;
 
 		@XmlValue
-		public long value;
+		public int value;
 
 		public final static class Adapter
-			extends XmlAdapter<Model, LongGene>
+			extends XmlAdapter<Model, IntegerGene>
 		{
 			@Override
-			public Model marshal(final LongGene value) {
+			public Model marshal(final IntegerGene value) {
 				final Model m = new Model();
 				m.min = value.getMin();
 				m.max = value.getMax();
@@ -160,8 +158,8 @@ public final class LongGene
 			}
 
 			@Override
-			public LongGene unmarshal(final Model m) {
-				return LongGene.of(m.value, m.min, m.max);
+			public IntegerGene unmarshal(final Model m) {
+				return IntegerGene.of(m.value, m.min, m.max);
 			}
 		}
 	}

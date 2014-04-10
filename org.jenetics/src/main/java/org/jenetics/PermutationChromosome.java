@@ -58,7 +58,7 @@ import org.jenetics.util.bit;
  * @since 1.0
  * @version 2.0 &mdash; <em>$Date$</em>
  */
-@XmlJavaTypeAdapter(value = PermutationChromosome.Model.Adapter.class)
+@XmlJavaTypeAdapter(PermutationChromosome.Model.Adapter.class)
 public final class PermutationChromosome<T>
 	extends AbstractChromosome<EnumGene<T>>
 	implements Serializable

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<int-chromosome length="20" min="-2147483648" max="2147483647">
+    <allele>-1878762439</allele>
+    <allele>-957346595</allele>
+    <allele>-88668137</allele>
+    <allele>1454486635</allele>
+    <allele>724772549</allele>
+    <allele>1392241541</allele>
+    <allele>-1623657607</allele>
+    <allele>-2077199447</allele>
+    <allele>-2079772786</allele>
+    <allele>1487356155</allele>
+    <allele>-2010318218</allele>
+    <allele>1237918464</allele>
+    <allele>-313207903</allele>
+    <allele>-1663518063</allele>
+    <allele>1409507062</allele>
+    <allele>1300786322</allele>
+    <allele>-260808587</allele>
+    <allele>1018444979</allele>
+    <allele>-1830946575</allele>
+    <allele>322908769</allele>
+</int-chromosome>
