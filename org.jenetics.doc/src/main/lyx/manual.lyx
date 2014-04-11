@@ -605,7 +605,7 @@ Gradle
 status collapsed
 
 \begin_layout Plain Layout
-The used Gradle version is 1.9 and it is downloaded automatically if you
+The used Gradle version is 1.10 and it is downloaded automatically if you
  build the library with the wrapper script
 \family typewriter
 ./gradlew
@@ -5826,13 +5826,37 @@ BitGene
 \begin_layout Itemize
 
 \family typewriter
+BitChromosome
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
 CharacterGene
 \end_layout
 
 \begin_layout Itemize
 
 \family typewriter
-EnumGene
+CharacterChromosome
+\end_layout
+
+\begin_layout Itemize
+IntegerGene
+\end_layout
+
+\begin_layout Itemize
+IntegerChromosome
+\end_layout
+
+\begin_layout Itemize
+LongGene
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+LongChomosome
 \end_layout
 
 \begin_layout Itemize
@@ -5844,31 +5868,19 @@ DoubleGene
 \begin_layout Itemize
 
 \family typewriter
-BitChromosome
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-CharacterChromosome
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-PermutationChromosome
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
 DoubleChromosome
 \end_layout
 
 \begin_layout Itemize
 
 \family typewriter
-LongChomosome
+EnumGene
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+PermutationChromosome
 \end_layout
 
 \begin_layout Itemize
@@ -5967,7 +5979,7 @@ IO.jaxb.write(ga.getPopulation(), file);
 
 \begin_layout Plain Layout
 
-Population<DoubleGene,Double> population =
+Population<DoubleGene, Double> population =
 \end_layout
 
 \begin_layout Plain Layout
@@ -9334,6 +9346,106 @@ Scope
 \end_layout
 
 \end_deeper
+\begin_layout Paragraph
+Maven Central
+\end_layout
+
+\begin_layout Standard
+The whole Jenetics package can also be downloaded from the 
+\emph on
+Maven Central
+\emph default
+ repository:
+\end_layout
+
+\begin_layout Subparagraph
+Maven 
+\end_layout
+
+\begin_layout LyX-Code
+<dependency>
+\end_layout
+
+\begin_layout LyX-Code
+    <groupId>org.bitbucket.fwilhelm</groupId>
+\end_layout
+
+\begin_layout LyX-Code
+    <artifactId>org.jenetics</artifactId>
+\end_layout
+
+\begin_layout LyX-Code
+    <version>2.0.0</version>
+\end_layout
+
+\begin_layout LyX-Code
+</dependency>
+\end_layout
+
+\begin_layout Subparagraph*
+Ivy
+\end_layout
+
+\begin_layout LyX-Code
+<dependency 
+\end_layout
+
+\begin_layout LyX-Code
+    org="org.bitbucket.fwilhelm" 
+\end_layout
+
+\begin_layout LyX-Code
+    name="org.jenetics" 
+\end_layout
+
+\begin_layout LyX-Code
+    rev="2.0.0"
+\end_layout
+
+\begin_layout LyX-Code
+/>
+\end_layout
+
+\begin_layout Subparagraph
+Grape
+\end_layout
+
+\begin_layout LyX-Code
+@Grapes(
+\end_layout
+
+\begin_layout LyX-Code
+    @Grab(
+\end_layout
+
+\begin_layout LyX-Code
+        group='org.bitbucket.fwilhelm', 
+\end_layout
+
+\begin_layout LyX-Code
+        module='org.jenetics', 
+\end_layout
+
+\begin_layout LyX-Code
+        version='2.0.0'
+\end_layout
+
+\begin_layout LyX-Code
+    ) 
+\end_layout
+
+\begin_layout LyX-Code
+)
+\end_layout
+
+\begin_layout Subparagraph
+Gradle
+\end_layout
+
+\begin_layout LyX-Code
+'org.bitbucket.fwilhelm:org.jenetics:2.0.0'
+\end_layout
+
 \begin_layout Section
 License
 \begin_inset Index idx
