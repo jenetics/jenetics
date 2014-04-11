@@ -34,7 +34,7 @@ import org.jenetics.util.accumulators.MinMax;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-05 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-11 $</em>
  */
 public class NumberStatistics<
 	G extends Gene<?, G>,
@@ -48,7 +48,7 @@ public class NumberStatistics<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-04-05 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-04-11 $</em>
 	 */
 	public static class Builder<
 		G extends Gene<?, G>,
@@ -253,7 +253,7 @@ public class NumberStatistics<
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-04-05 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-04-11 $</em>
 	 */
 	public static class Calculator<
 		G extends Gene<?, G>,
@@ -280,7 +280,7 @@ public class NumberStatistics<
 			final Variance<Integer> age = new Variance<>();
 			final Variance<R> fitness = new Variance<>();
 
-			accumulators.<Phenotype<G, R>>accumulate(
+			accumulators.accumulate(
 					executor,
 					population,
 					minMax,

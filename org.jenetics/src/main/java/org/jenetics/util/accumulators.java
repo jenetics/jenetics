@@ -35,7 +35,7 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-05 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-11 $</em>
  */
 public final class accumulators extends StaticObject {
 	private accumulators() {}
@@ -56,7 +56,7 @@ public final class accumulators extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &ndash; <em>$Date: 2014-04-05 $</em>
+	 * @version 1.0 &ndash; <em>$Date: 2014-04-11 $</em>
 	 */
 	public static final class Min<C extends Comparable<? super C>>
 		extends MappedAccumulator<C>
@@ -149,7 +149,7 @@ public final class accumulators extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &ndash; <em>$Date: 2014-04-05 $</em>
+	 * @version 1.0 &ndash; <em>$Date: 2014-04-11 $</em>
 	 */
 	public static final class Max<C extends Comparable<? super C>>
 		extends MappedAccumulator<C>
@@ -242,7 +242,7 @@ public final class accumulators extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &ndash; <em>$Date: 2014-04-05 $</em>
+	 * @version 1.0 &ndash; <em>$Date: 2014-04-11 $</em>
 	 */
 	public static final class MinMax<C extends Comparable<? super C>>
 		extends MappedAccumulator<C>
@@ -358,13 +358,13 @@ public final class accumulators extends StaticObject {
 	) {
 		switch (accus.length()) {
 		case 1:
-			accumulators.<T>accumulate(
+			accumulate(
 				values,
 				accus.get(0)
 			);
 			break;
 		case 2:
-			accumulators.<T>accumulate(
+			accumulate(
 				executor,
 				values,
 				accus.get(0),
@@ -372,7 +372,7 @@ public final class accumulators extends StaticObject {
 			);
 			break;
 		case 3:
-			accumulators.<T>accumulate(
+			accumulate(
 				executor,
 				values,
 				accus.get(0),
@@ -381,7 +381,7 @@ public final class accumulators extends StaticObject {
 			);
 			break;
 		case 4:
-			accumulators.<T>accumulate(
+			accumulate(
 				executor,
 				values,
 				accus.get(0),
@@ -391,7 +391,7 @@ public final class accumulators extends StaticObject {
 			);
 			break;
 		case 5:
-			accumulators.<T>accumulate(
+			accumulate(
 				executor,
 				values,
 				accus.get(0),
