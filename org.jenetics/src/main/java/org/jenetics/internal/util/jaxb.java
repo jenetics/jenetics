@@ -38,22 +38,27 @@ import org.jenetics.util.StaticObject;
  * JAXB helper methods.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-20 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-04-11 $</em>
  * @since 2.0
  */
 public class jaxb extends StaticObject {
 	private jaxb() {}
 
-	public static final JAXBContext CONTEXT = newContext();
-
-	private static JAXBContext newContext() {
-		try {
-			return JAXBContext.newInstance(
-				"org.jenetics:org.jenetics.internal.util"
-			);
-		} catch (JAXBException e) {
-			throw new AssertionError(e);
+	private static final class JAXBContextHolder {
+		private static final JAXBContext CONTEXT;
+		static {
+			try {
+				CONTEXT = JAXBContext.newInstance(
+					"org.jenetics:org.jenetics.internal.util"
+				);
+			} catch (JAXBException e) {
+				throw new AssertionError(e);
+			}
 		}
+	}
+
+	public static JAXBContext context() {
+		return JAXBContextHolder.CONTEXT;
 	}
 
 	private static final XmlAdapter<Object, Object> IdentityAdapter =

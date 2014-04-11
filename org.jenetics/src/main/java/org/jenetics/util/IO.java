@@ -19,7 +19,7 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.internal.util.jaxb.CONTEXT;
+import static org.jenetics.internal.util.jaxb.context;
 import static org.jenetics.internal.util.jaxb.adapterFor;
 import static org.jenetics.internal.util.jaxb.marshal;
 
@@ -55,7 +55,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-02 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-11 $</em>
  */
 public abstract class IO {
 
@@ -72,7 +72,7 @@ public abstract class IO {
 			throws IOException
 		{
 			try {
-				final Marshaller marshaller = CONTEXT.createMarshaller();
+				final Marshaller marshaller = context().createMarshaller();
 				marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 				marshaller.marshal(marshal(object), out);
 			} catch (Exception e) {
@@ -85,7 +85,7 @@ public abstract class IO {
 			throws IOException
 		{
 			try {
-				final Unmarshaller unmarshaller = CONTEXT.createUnmarshaller();
+				final Unmarshaller unmarshaller = context().createUnmarshaller();
 
 				//final XMLInputFactory factory = XMLInputFactory.newInstance();
 				//final XMLStreamReader reader = factory.createXMLStreamReader(in);
