@@ -15,7 +15,9 @@ final class OneCounter
 {
 	@Override
 	public Integer apply(final Genotype<BitGene> genotype) {
-		return ((BitChromosome)genotype.getChromosome()).bitCount();
+		final BitChromosome chromosome = 
+			(BitChromosome)genotype.getChromosome();
+		return chromosome.bitCount();
 	}
 }
 
