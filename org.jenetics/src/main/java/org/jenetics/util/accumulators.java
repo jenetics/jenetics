@@ -358,13 +358,13 @@ public final class accumulators extends StaticObject {
 	) {
 		switch (accus.length()) {
 		case 1:
-			accumulators.<T>accumulate(
+			accumulate(
 				values,
 				accus.get(0)
 			);
 			break;
 		case 2:
-			accumulators.<T>accumulate(
+			accumulate(
 				executor,
 				values,
 				accus.get(0),
@@ -372,7 +372,7 @@ public final class accumulators extends StaticObject {
 			);
 			break;
 		case 3:
-			accumulators.<T>accumulate(
+			accumulate(
 				executor,
 				values,
 				accus.get(0),
@@ -381,7 +381,7 @@ public final class accumulators extends StaticObject {
 			);
 			break;
 		case 4:
-			accumulators.<T>accumulate(
+			accumulate(
 				executor,
 				values,
 				accus.get(0),
@@ -391,7 +391,7 @@ public final class accumulators extends StaticObject {
 			);
 			break;
 		case 5:
-			accumulators.<T>accumulate(
+			accumulate(
 				executor,
 				values,
 				accus.get(0),

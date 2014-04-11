@@ -280,7 +280,7 @@ public class NumberStatistics<
 			final Variance<Integer> age = new Variance<>();
 			final Variance<R> fitness = new Variance<>();
 
-			accumulators.<Phenotype<G, R>>accumulate(
+			accumulators.accumulate(
 					executor,
 					population,
 					minMax,
