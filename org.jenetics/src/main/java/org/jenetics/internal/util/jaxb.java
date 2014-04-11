@@ -45,8 +45,7 @@ public class jaxb extends StaticObject {
 	private jaxb() {}
 
 	private static final class JAXBContextHolder {
-		private static final JAXBContext CONTEXT;
-		static {
+		private static final JAXBContext CONTEXT; static {
 			try {
 				CONTEXT = JAXBContext.newInstance(
 					"org.jenetics:org.jenetics.internal.util"
