@@ -47,7 +47,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-30 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-10 $</em>
  */
 @XmlJavaTypeAdapter(CharacterGene.Model.Adapter.class)
 public final class CharacterGene
@@ -62,7 +62,7 @@ public final class CharacterGene
 	 * The default character set used by this gene.
 	 */
 	public static final CharSeq DEFAULT_CHARACTERS = new CharSeq(
-		CharSeq.expand("0-9a-zA-Z") +
+		"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" +
 		" !\"$%&/()=?`{[]}\\+~*#';.:,-_<>|@^'"
 	);
 
@@ -120,7 +120,7 @@ public final class CharacterGene
 	}
 
 	/**
-	 * Retunr a (unmodifiable) set of valid characters.
+	 * Return a (unmodifiable) set of valid characters.
 	 *
 	 * @return the {@link CharSeq} of valid characters.
 	 */
@@ -156,7 +156,7 @@ public final class CharacterGene
 		if (!(obj instanceof CharacterGene)) {
 			return false;
 		}
-		CharacterGene gene = (CharacterGene)obj;
+		final CharacterGene gene = (CharacterGene)obj;
 		return eq(_character, gene._character) &&
 				eq(_validCharacters, gene._validCharacters);
 	}

@@ -17,39 +17,36 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package org.jenetics.internal.util;
 
-import java.util.concurrent.Executor;
+import java.util.List;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-03-22 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-05 $</em>
  * @since 2.0
  */
-final class ScopedExecutorProxy implements Scoped<Concurrent> {
+final class RunnablesRunnable implements Runnable {
 
-	private final Scoped<Executor> _scope;
-	private final Scoped<Concurrent> _executor;
+	private final List<? extends Runnable> _runnables;
+	private final int _start;
+	private final int _end;
 
-	public ScopedExecutorProxy(
-		final Scoped<Executor> scope,
-		final Scoped<Concurrent> executor
+	RunnablesRunnable(
+		final List<? extends Runnable> runnables,
+		final int start,
+		final int end
 	) {
-		_scope = scope;
-		_executor = executor;
+		_runnables = runnables;
+		_start = start;
+		_end = end;
 	}
 
 	@Override
-	public Concurrent get() {
-		return _executor.get();
-	}
-
-	@Override
-	public void close() {
-		try {
-			_executor.close();
-		} finally {
-			_scope.close();
+	public void run() {
+		for (int i = _start; i < _end; ++i) {
+			_runnables.get(i).run();
 		}
 	}
+
 }

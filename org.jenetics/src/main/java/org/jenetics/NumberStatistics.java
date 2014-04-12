@@ -23,6 +23,8 @@ import static java.lang.Double.NaN;
 import static java.lang.String.format;
 import static org.jenetics.internal.util.object.eq;
 
+import java.util.concurrent.Executor;
+
 import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.stat.Variance;
@@ -32,7 +34,7 @@ import org.jenetics.util.accumulators.MinMax;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-11 $</em>
  */
 public class NumberStatistics<
 	G extends Gene<?, G>,
@@ -46,7 +48,7 @@ public class NumberStatistics<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-04-11 $</em>
 	 */
 	public static class Builder<
 		G extends Gene<?, G>,
@@ -251,7 +253,7 @@ public class NumberStatistics<
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-04-11 $</em>
 	 */
 	public static class Calculator<
 		G extends Gene<?, G>,
@@ -265,6 +267,7 @@ public class NumberStatistics<
 
 		@Override
 		public NumberStatistics.Builder<G, R> evaluate(
+			final Executor executor,
 			final Iterable<? extends Phenotype<G, R>> population,
 			final int generation,
 			final Optimize opt
@@ -277,7 +280,8 @@ public class NumberStatistics<
 			final Variance<Integer> age = new Variance<>();
 			final Variance<R> fitness = new Variance<>();
 
-			accumulators.<Phenotype<G, R>>accumulate(
+			accumulators.accumulate(
+					executor,
 					population,
 					minMax,
 					age.map(Phenotype.Age(generation)),

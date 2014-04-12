@@ -605,7 +605,7 @@ Gradle
 status collapsed
 
 \begin_layout Plain Layout
-The used Gradle version is 1.9 and it is downloaded automatically if you
+The used Gradle version is 1.10 and it is downloaded automatically if you
  build the library with the wrapper script
 \family typewriter
 ./gradlew
@@ -3715,39 +3715,20 @@ The
  it is shared by all phenotypes of a population.
  The easiest way for achieving thread-safety is to make the fitness function
  immutable and re-entrant.
+ The used 
+\family typewriter
+Executor
+\family default
+ can be defined when creating the 
+\family typewriter
+GeneticAlgorithm
+\family default
+ object.
 
 \family sans
 \series bold
 \shape smallcaps
- Jenetics
-\family default
-\series default
-\shape default
- uses the
-\family typewriter
- Concurrent
-\family default
- class for parallelizing the execution when possible.
- In the default configuration the
-\family typewriter
- Concurrent
-\family default
- class uses a 
-\family typewriter
-ForkJoinPool
-\family default
- as 
-\family typewriter
-ExecutionService
-\family default
-.
- If you want to change the number of used cores, you have to change the
- execution service before the GA initialization.
- The configuration is done by the
-\family typewriter
- Concurrent
-\family default
- class as shown in the following example.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -3764,16 +3745,6 @@ import java.util.concurrent.Executor;
 \begin_layout Plain Layout
 
 import java.util.concurrent.Executors;
-\end_layout
-
-\begin_layout Plain Layout
-
-import java.util.concurrent.ExecutorService;
-\end_layout
-
-\begin_layout Plain Layout
-
-import org.jenetics.util.Concurrent;
 \end_layout
 
 \begin_layout Plain Layout
@@ -3802,7 +3773,22 @@ public class Main {
 
 \begin_layout Plain Layout
 
-        Concurrent.setExecutor(executor);
+        Factory<Genotype<DoubleGene>> factory = ...
+\end_layout
+
+\begin_layout Plain Layout
+
+        Function<Genotype<DoubleGene>, Double> ff = ...
+\end_layout
+
+\begin_layout Plain Layout
+
+        GeneticAlgorithm<DoubleGene, Double> ga =
+\end_layout
+
+\begin_layout Plain Layout
+
+            new GeneticAlgorithm<>(factory, ff, executor);
 \end_layout
 
 \begin_layout Plain Layout
@@ -3822,231 +3808,23 @@ public class Main {
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
-The example in the listing below executes the two tasks in parallel.
- The 
+If no 
 \family typewriter
-try
+Executor
 \family default
- block is left when all tasks finishes execution.
- 
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-try (Scoped<Concurrent> c = Concurrent.scope())
-\end_layout
-
-\begin_layout Plain Layout
-
-    c.get().execute(new Runnable() { public void run() {
-\end_layout
-
-\begin_layout Plain Layout
-
-        // Execution of task one.
-\end_layout
-
-\begin_layout Plain Layout
-
-    }});
-\end_layout
-
-\begin_layout Plain Layout
-
-    c.get().execute(new Runnable() { public void run() {
-\end_layout
-
-\begin_layout Plain Layout
-
-        // Execution of task two.
-\end_layout
-
-\begin_layout Plain Layout
-
-    }});
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-If the GA itself runs in a separate thread and you want to change the configurat
-ion of the GA while running you have to acquire the GA's lock to do this
- in a safe manner.
- The following code example shows how to start the GA in a separate thread.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-final GeneticAlgorithm<DoubleGene, Double> ga = ...
-\end_layout
-
-\begin_layout Plain Layout
-
-ga.setup();
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-// Starting the GA in separate thread.
-\end_layout
-
-\begin_layout Plain Layout
-
-Thread thread = new Thread(new Runnable() { public void run() {
-\end_layout
-
-\begin_layout Plain Layout
-
-    while(!Thread.currentThread().isInterrupted()) {
-\end_layout
-
-\begin_layout Plain Layout
-
-        ga.evolve();
-\end_layout
-
-\begin_layout Plain Layout
-
-    }
-\end_layout
-
-\begin_layout Plain Layout
-
-}});
-\end_layout
-
-\begin_layout Plain Layout
-
-thread.start();
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-// Update the GA configuration.
-\end_layout
-
-\begin_layout Plain Layout
-
-ga.getLock().lock();
-\end_layout
-
-\begin_layout Plain Layout
-
-try {
-\end_layout
-
-\begin_layout Plain Layout
-
-    ga.setAlterer(new Mutation(0.02));
-\end_layout
-
-\begin_layout Plain Layout
-
-    ga.setPopulationSize(120);
-\end_layout
-
-\begin_layout Plain Layout
-
-    ga.setMaximalPhenotypeAge(30);
-\end_layout
-
-\begin_layout Plain Layout
-
-} finally {
-\end_layout
-
-\begin_layout Plain Layout
-
-    ga.getLock().unlock();
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-// Read the GA configuration.
-\end_layout
-
-\begin_layout Plain Layout
-
-ga.getLock().lock();
-\end_layout
-
-\begin_layout Plain Layout
-
-try {
-\end_layout
-
-\begin_layout Plain Layout
-
-    final Statistics<?, ?> statistics = ga.getStatistics();
-\end_layout
-
-\begin_layout Plain Layout
-
-    final Function<?, ?> scaler = ga.getFitnessScaler();
-\end_layout
-
-\begin_layout Plain Layout
-
-} finally {
-\end_layout
-
-\begin_layout Plain Layout
-
-    ga.getLock().unlock();
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-The listing shows two examples how to use the lock.
- In the first example, the lock is used for updating the GA configuration.
- The second example fetches the statistics and fitness scaler in a guaranteed
- consistent way.
+ is given, 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ uses a default 
+\family typewriter
+ForkJoinPool
+\family default
+ for concurrency.
 \end_layout
 
 \begin_layout Subsection
@@ -6048,13 +5826,37 @@ BitGene
 \begin_layout Itemize
 
 \family typewriter
+BitChromosome
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
 CharacterGene
 \end_layout
 
 \begin_layout Itemize
 
 \family typewriter
-EnumGene
+CharacterChromosome
+\end_layout
+
+\begin_layout Itemize
+IntegerGene
+\end_layout
+
+\begin_layout Itemize
+IntegerChromosome
+\end_layout
+
+\begin_layout Itemize
+LongGene
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+LongChomosome
 \end_layout
 
 \begin_layout Itemize
@@ -6066,31 +5868,19 @@ DoubleGene
 \begin_layout Itemize
 
 \family typewriter
-BitChromosome
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-CharacterChromosome
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-PermutationChromosome
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
 DoubleChromosome
 \end_layout
 
 \begin_layout Itemize
 
 \family typewriter
-LongChomosome
+EnumGene
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+PermutationChromosome
 \end_layout
 
 \begin_layout Itemize
@@ -6189,7 +5979,7 @@ IO.jaxb.write(ga.getPopulation(), file);
 
 \begin_layout Plain Layout
 
-Population<DoubleGene,Double> population =
+Population<DoubleGene, Double> population =
 \end_layout
 
 \begin_layout Plain Layout
@@ -9556,6 +9346,106 @@ Scope
 \end_layout
 
 \end_deeper
+\begin_layout Paragraph
+Maven Central
+\end_layout
+
+\begin_layout Standard
+The whole Jenetics package can also be downloaded from the 
+\emph on
+Maven Central
+\emph default
+ repository:
+\end_layout
+
+\begin_layout Subparagraph
+Maven 
+\end_layout
+
+\begin_layout LyX-Code
+<dependency>
+\end_layout
+
+\begin_layout LyX-Code
+    <groupId>org.bitbucket.fwilhelm</groupId>
+\end_layout
+
+\begin_layout LyX-Code
+    <artifactId>org.jenetics</artifactId>
+\end_layout
+
+\begin_layout LyX-Code
+    <version>2.0.0</version>
+\end_layout
+
+\begin_layout LyX-Code
+</dependency>
+\end_layout
+
+\begin_layout Subparagraph*
+Ivy
+\end_layout
+
+\begin_layout LyX-Code
+<dependency 
+\end_layout
+
+\begin_layout LyX-Code
+    org="org.bitbucket.fwilhelm" 
+\end_layout
+
+\begin_layout LyX-Code
+    name="org.jenetics" 
+\end_layout
+
+\begin_layout LyX-Code
+    rev="2.0.0"
+\end_layout
+
+\begin_layout LyX-Code
+/>
+\end_layout
+
+\begin_layout Subparagraph
+Grape
+\end_layout
+
+\begin_layout LyX-Code
+@Grapes(
+\end_layout
+
+\begin_layout LyX-Code
+    @Grab(
+\end_layout
+
+\begin_layout LyX-Code
+        group='org.bitbucket.fwilhelm', 
+\end_layout
+
+\begin_layout LyX-Code
+        module='org.jenetics', 
+\end_layout
+
+\begin_layout LyX-Code
+        version='2.0.0'
+\end_layout
+
+\begin_layout LyX-Code
+    ) 
+\end_layout
+
+\begin_layout LyX-Code
+)
+\end_layout
+
+\begin_layout Subparagraph
+Gradle
+\end_layout
+
+\begin_layout LyX-Code
+'org.bitbucket.fwilhelm:org.jenetics:2.0.0'
+\end_layout
+
 \begin_layout Section
 License
 \begin_inset Index idx

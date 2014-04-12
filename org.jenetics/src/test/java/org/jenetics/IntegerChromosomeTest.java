@@ -39,18 +39,18 @@ import org.jenetics.util.accumulators.MinMax;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-05 $</em>
+ * @version <em>$Date: 2014-04-09 $</em>
  */
-public class LongChromosomeTest
-	extends NumericChromosomeTester<Long, LongGene>
+public class IntegerChromosomeTest
+	extends NumericChromosomeTester<Integer, IntegerGene>
 {
 
-	private final LongChromosome _factory = new LongChromosome(
-		0L, Long.MAX_VALUE, 500
+	private final IntegerChromosome _factory = new IntegerChromosome(
+		0, Integer.MAX_VALUE, 500
 	);
 
 	@Override
-	protected LongChromosome getFactory() {
+	protected IntegerChromosome getFactory() {
 		return _factory;
 	}
 
@@ -58,15 +58,15 @@ public class LongChromosomeTest
 	public void newInstanceDistribution() {
 		try (Scoped<?> s = RandomRegistry.scope(new Random(12345))) {
 
-			final long min = 0;
-			final long max = 10000000;
+			final int min = 0;
+			final int max = 10000000;
 
-			final MinMax<Long> mm = new MinMax<>();
-			final Variance<Long> variance = new Variance<>();
-			final Histogram<Long> histogram = Histogram.of(min, max, 10);
+			final MinMax<Integer> mm = new MinMax<>();
+			final Variance<Integer> variance = new Variance<>();
+			final Histogram<Integer> histogram = Histogram.of(min, max, 10);
 
 			for (int i = 0; i < 1000; ++i) {
-				final LongChromosome chromosome = new LongChromosome(min, max, 500);
+				final IntegerChromosome chromosome = new IntegerChromosome(min, max, 500);
 
 				accumulate(
 					Concurrency.commonPool(),
@@ -77,15 +77,15 @@ public class LongChromosomeTest
 				);
 			}
 
-			Assert.assertTrue(mm.getMin().compareTo(0L) >= 0);
-			Assert.assertTrue(mm.getMax().compareTo(100L) <= 100);
+			Assert.assertTrue(mm.getMin().compareTo(0) >= 0);
+			Assert.assertTrue(mm.getMax().compareTo(100) <= 100);
 			assertDistribution(histogram, new UniformDistribution<>(min, max));
 		}
 	}
 
-	private static final Function<LongGene, Long> Allele =
-		new Function<LongGene, Long>() {
-			@Override public Long apply(final LongGene value) {
+	private static final Function<IntegerGene, Integer> Allele =
+		new Function<IntegerGene, Integer>() {
+			@Override public Integer apply(final IntegerGene value) {
 				return value.getAllele();
 			}
 		};

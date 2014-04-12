@@ -68,7 +68,7 @@ import org.jenetics.internal.util.Supplier;
  *         final GeneticAlgorithm&lt;DoubleGene, Double&gt; ga = ...
  *         final LCG64ShiftRandom random = new LCG64ShiftRandom(1234)
  *
- *         try (Scoped&lt;Random&gt; scope = RandomRegistry.scope(random) {
+ *         try (Scoped&lt;Random&gt; scope = RandomRegistry.scope(random)) {
  *             // Easy access the random engine of the opened scope.
  *             assert(scope.get() == random);
  *
@@ -88,7 +88,7 @@ import org.jenetics.internal.util.Supplier;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-02 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-12 $</em>
  */
 public final class RandomRegistry extends StaticObject {
 	private RandomRegistry() {}

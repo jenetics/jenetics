@@ -25,6 +25,7 @@ import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.object.eq;
 
 import java.io.Serializable;
+import java.util.concurrent.Executor;
 
 import org.jenetics.internal.util.HashBuilder;
 
@@ -39,7 +40,7 @@ import org.jenetics.util.accumulators.MinMax;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-05 $</em>
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	implements Serializable
@@ -50,7 +51,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-04-05 $</em>
 	 */
 	public static class Builder<
 		G extends Gene<?, G>,
@@ -430,7 +431,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-04-05 $</em>
 	 */
 	public static final class Time implements Serializable {
 		private static final long serialVersionUID = 2L;
@@ -550,7 +551,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-04-05 $</em>
 	 */
 	public static class Calculator<
 		G extends Gene<?, G>,
@@ -574,6 +575,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * @return a new statistics object generated from the given arguments.
 		 */
 		public Statistics.Builder<G, C> evaluate(
+			final Executor executor,
 			final Iterable<? extends Phenotype<G, C>> population,
 			final int generation,
 			final Optimize opt
@@ -586,6 +588,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			final Variance<Integer> age = new Variance<>();
 
 			accumulators.<Phenotype<G, C>>accumulate(
+				executor,
 				population,
 				minMax,
 				age.map(Phenotype.Age(generation))
