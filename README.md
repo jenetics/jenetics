@@ -1,4 +1,4 @@
-# Jenetics (_1.6.0_)
+# Jenetics (_2.0.0_)
 
 
 Jenetics is an Genetic Algorithm, respectively an Evolutionary Algorithm, library written in Java. It is designed with a clear separation of the several  algorithm concepts, e. g. `Gene`, `Chromosome`, `Genotype`, `Phenotype`, `Population` and  fitness `Function`. Jenetics allows you to minimize or maximize the given fitness  function without tweaking it.
@@ -20,6 +20,7 @@ Jenetics is an Genetic Algorithm, respectively an Evolutionary Algorithm, librar
 ## Download
 *  **Sourceforge**:  <https://sourceforge.net/projects/jenetics/files/latest/download>
 *  **Bitbucket**:  <https://bitbucket.org/fwilhelm/jenetics/downloads>
+*  **Maven**: `org.bitbucket.fwilhelm:org.jenetics:2.0.0`
 
 ## Build Jenetics
 
