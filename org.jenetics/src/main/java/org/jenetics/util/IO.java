@@ -49,13 +49,13 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
  *
  * // Reading the population from disk.
  * final Population&lt;DoubleGene,Double&gt; population =
- *     (Population&lt;DoubleGene, Double)IO.jaxb.read(file);
+ *     (Population&lt;DoubleGene, Double&gt;)IO.jaxb.read(file);
  * ga.setPopulation(population);
  * [/code]
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-11 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-12 $</em>
  */
 public abstract class IO {
 
