@@ -56,7 +56,7 @@ import org.jenetics.util.RandomRegistry;
  * [code]
  * final ISeq&lt;Integer&gt; alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
  * final Factory&lt;Genotype&lt;EnumGene&lt;Integer&gt;&gt;&gt; gtf = Genotype.of(
- *     new PermutationChromosome&lt;&gt;(alleles)
+ *     PermutationChromosome.of(alleles)
  * );
  * [/code]
  *
