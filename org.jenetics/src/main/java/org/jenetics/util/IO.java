@@ -49,7 +49,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
  *
  * // Reading the population from disk.
  * final Population&lt;DoubleGene,Double&gt; population =
- *     (Population&lt;DoubleGene, Double)IO.jaxb.read(file);
+ *     (Population&lt;DoubleGene, Double&gt;)IO.jaxb.read(file);
  * ga.setPopulation(population);
  * [/code]
  *
