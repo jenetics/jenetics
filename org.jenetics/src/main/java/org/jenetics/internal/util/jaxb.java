@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.bind.DataBindingException;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
@@ -51,7 +52,9 @@ public class jaxb extends StaticObject {
 					"org.jenetics:org.jenetics.internal.util"
 				);
 			} catch (JAXBException e) {
-				throw new AssertionError(e);
+				throw new DataBindingException(
+					"Something went wrong while creating JAXBContext.", e
+				);
 			}
 		}
 	}
