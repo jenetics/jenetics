@@ -68,7 +68,7 @@ import org.jenetics.internal.util.Supplier;
  *         final GeneticAlgorithm&lt;DoubleGene, Double&gt; ga = ...
  *         final LCG64ShiftRandom random = new LCG64ShiftRandom(1234)
  *
- *         try (Scoped&lt;Random&gt; scope = RandomRegistry.scope(random) {
+ *         try (Scoped&lt;Random&gt; scope = RandomRegistry.scope(random)) {
  *             // Easy access the random engine of the opened scope.
  *             assert(scope.get() == random);
  *
