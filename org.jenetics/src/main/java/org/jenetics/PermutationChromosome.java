@@ -19,6 +19,7 @@
  */
 package org.jenetics;
 
+import static java.lang.String.format;
 import static org.jenetics.EnumGene.Gene;
 
 import java.io.IOException;
@@ -186,7 +187,29 @@ public final class PermutationChromosome<T>
 	 * @return a integer permutation chromosome with the given length.
 	 */
 	public static PermutationChromosome<Integer> ofInteger(final int length) {
-		return of(new Array<Integer>(length).fill(Int(0, 1)).toISeq());
+		return ofInteger(0, length);
+	}
+
+	/**
+	 * Create a integer permutation chromosome with the given length.
+	 *
+	 * @since 2.0
+	 * @param start the start of the integer range (inclusively) of the returned
+	 *        chromosome.
+	 * @param end the end of the integer range (exclusively) of the returned
+	 *        chromosome.
+	 * @return a integer permutation chromosome with the given integer range
+	 *         values.
+	 * @throws java.lang.IllegalArgumentException if {@code end <= start}
+	 */
+	public static PermutationChromosome<Integer>
+	ofInteger(final int start, final int end) {
+		if (end <= start) {
+			throw new IllegalArgumentException(format(
+				"end <= start: %d <= %d", end, start
+			));
+		}
+		return of(new Array<Integer>(end - start).fill(Int(start, 1)).toISeq());
 	}
 
 	private static Factory<Integer> Int(final int start, final int step) {
