@@ -29,7 +29,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-04-14 $</em>
  */
 public final class math extends StaticObject {
 	private math() {}
@@ -160,20 +160,6 @@ public final class math extends StaticObject {
 		}
 
 		return result;
-	}
-
-	static int gcd(final int a, final int b) {
-		int x = a;
-		int y = b;
-		int mod = x%y;
-
-		while (mod != 0) {
-			x = y;
-			y = mod;
-			mod = x%y;
-		}
-
-		return y;
 	}
 
 	static boolean isMultiplicationSave(final int a, final int b) {
@@ -461,7 +447,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.3
-	 * @version 1.3 &mdash; <em>$Date: 2014-03-31 $</em>
+	 * @version 1.3 &mdash; <em>$Date: 2014-04-14 $</em>
 	 */
 	public static final class statistics extends StaticObject {
 		private statistics() {}
@@ -558,7 +544,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.2 &mdash; <em>$Date: 2014-03-31 $</em>
+	 * @version 1.2 &mdash; <em>$Date: 2014-04-14 $</em>
 	 */
 	public static final class random extends StaticObject {
 		private random() {}

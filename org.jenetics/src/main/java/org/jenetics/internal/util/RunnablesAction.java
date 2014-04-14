@@ -17,27 +17,24 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package org.jenetics.internal.util;
 
 import static java.lang.Math.max;
-import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.RandomAccess;
-import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date$</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-05 $</em>
  * @since 2.0
  */
-public final class RunnablesAction extends RecursiveAction {
+final class RunnablesAction extends RecursiveAction {
 	private static final long serialVersionUID = 1;
 
-	private static final int MIN_THRESHOLD = 2;
-	private static final int THRESHOLD = 3;
+	private static final int DEFAULT_THRESHOLD = 7;
 
 	private final List<? extends Runnable> _runnables;
 	private final int _high;
@@ -59,11 +56,8 @@ public final class RunnablesAction extends RecursiveAction {
 	public RunnablesAction(final List<? extends Runnable> runnables) {
 		this(
 			runnables instanceof RandomAccess ?
-				requireNonNull(runnables) :
-				new ArrayList<>(runnables),
-			0,
-			runnables.size(),
-			null
+				runnables : new ArrayList<>(runnables),
+			0, runnables.size(), null
 		);
 	}
 
@@ -84,23 +78,8 @@ public final class RunnablesAction extends RecursiveAction {
 		}
 	}
 
-	// Calculate the adaptive threshold.
 	private int threshold() {
-		int threshold = THRESHOLD;
-
-		final ForkJoinPool pool = getPool();
-		if (pool != null) {
-			if (pool.getParallelism() == 1) {
-				threshold = max(_runnables.size()/2, MIN_THRESHOLD);
-			} else {
-				threshold = max(
-					(int)((double)_runnables.size()/(pool.getParallelism()*2)),
-					MIN_THRESHOLD
-				);
-			}
-		}
-
-		return threshold;
+		return max(_runnables.size()/(Concurrency.CORES*2), DEFAULT_THRESHOLD);
 	}
 
 }

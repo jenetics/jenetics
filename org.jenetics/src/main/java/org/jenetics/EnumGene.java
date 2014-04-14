@@ -56,7 +56,7 @@ import org.jenetics.util.RandomRegistry;
  * [code]
  * final ISeq&lt;Integer&gt; alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
  * final Factory&lt;Genotype&lt;EnumGene&lt;Integer&gt;&gt;&gt; gtf = Genotype.of(
- *     new PermutationChromosome&lt;&gt;(alleles)
+ *     PermutationChromosome.of(alleles)
  * );
  * [/code]
  *
@@ -74,7 +74,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-14 $</em>
  */
 @XmlJavaTypeAdapter(EnumGene.Model.Adapter.class)
 public final class EnumGene<A>

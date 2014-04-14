@@ -28,14 +28,15 @@ import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.Concurrent;
+import org.jenetics.internal.util.Concurrency;
+
 import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-31 $</em>
+ * @version <em>$Date: 2014-04-14 $</em>
  */
 public class GeneticAlgorithmTest {
 
@@ -54,9 +55,7 @@ public class GeneticAlgorithmTest {
 	@Test
 	public void optimize() {
 		final Random random = new Random(123456);
-		try (Scoped<Random> rs = RandomRegistry.scope(random);
-			Scoped<Concurrent> cs = Concurrent.serial())
-		{
+		try (Scoped<Random> rs = RandomRegistry.scope(random)) {
 			Assert.assertSame(random, RandomRegistry.getRandom());
 			Assert.assertSame(random, rs.get());
 
@@ -65,7 +64,9 @@ public class GeneticAlgorithmTest {
 			);
 			final Function<Genotype<DoubleGene>, Double> ff = new FF();
 
-			final GeneticAlgorithm<DoubleGene, Double> ga = new GeneticAlgorithm<>(factory, ff);
+			final GeneticAlgorithm<DoubleGene, Double> ga = new GeneticAlgorithm<>(
+				factory, ff, Concurrency.SERIAL_EXECUTOR
+			);
 			ga.setPopulationSize(200);
 			ga.setAlterer(new MeanAlterer<>());
 			ga.setOffspringFraction(0.3);
@@ -92,8 +93,6 @@ public class GeneticAlgorithmTest {
 			Assert.assertEquals(s.getBestFitness(), 0.9955101231254028, 0.00000001);
 			Assert.assertEquals(s.getWorstFitness(), 0.9955101231254028, 0.00000001);
 		}
-
-		Assert.assertNotNull(Concurrent.getExecutor());
 	}
 
 	private static class Base implements Comparable<Base> {
@@ -109,11 +108,13 @@ public class GeneticAlgorithmTest {
 	public void evolveForkJoinPool() {
 		final ForkJoinPool pool = new ForkJoinPool(10);
 
-		try (Scoped<Concurrent> concurrent = Concurrent.scope(pool)) {
+		try {
 			final Factory<Genotype<DoubleGene>> factory = Genotype.of(DoubleChromosome.of(-1, 1));
 			final Function<Genotype<DoubleGene>, Double> ff = new FF();
 
-			final GeneticAlgorithm<DoubleGene, Double> ga = new GeneticAlgorithm<>(factory, ff);
+			final GeneticAlgorithm<DoubleGene, Double> ga = new GeneticAlgorithm<>(
+				factory, ff, pool
+			);
 			ga.setPopulationSize(1000);
 			ga.setAlterer(new MeanAlterer<>());
 			ga.setOffspringFraction(0.3);

@@ -28,6 +28,8 @@ import java.util.function.Function;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import org.jenetics.internal.util.Concurrency;
+
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.UniformDistribution;
 import org.jenetics.stat.Variance;
@@ -37,7 +39,7 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-31 $</em>
+ * @version <em>$Date: 2014-04-14 $</em>
  */
 public class LongChromosomeTest
 	extends NumericChromosomeTester<Long, LongGene>
@@ -67,6 +69,7 @@ public class LongChromosomeTest
 				final LongChromosome chromosome = new LongChromosome(min, max, 500);
 
 				accumulate(
+					Concurrency.commonPool(),
 					chromosome,
 					mm.map(Allele),
 					variance.map(Allele),

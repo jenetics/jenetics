@@ -37,7 +37,7 @@ package org.jenetics;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-04-14 $</em>
  */
 @FunctionalInterface
 public interface Selector<

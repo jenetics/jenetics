@@ -50,7 +50,7 @@ import org.jenetics.internal.util.Supplier;
  *         RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadSafe(1234));
  *
  *         ...
- *         final GeneticAlgorithm&lt;Float64Gene, Float64&gt; ga = ...
+ *         final GeneticAlgorithm&lt;DoubleGene, Double&gt; ga = ...
  *         ga.evolve(100);
  *     }
  * }
@@ -65,10 +65,10 @@ import org.jenetics.internal.util.Supplier;
  * public class GA {
  *     public static void main(final String[] args) {
  *         ...
- *         final GeneticAlgorithm&lt;Float64Gene, Float64&gt; ga = ...
+ *         final GeneticAlgorithm&lt;DoubleGene, Double&gt; ga = ...
  *         final LCG64ShiftRandom random = new LCG64ShiftRandom(1234)
  *
- *         try (Scoped&lt;Random&gt; scope = RandomRegistry.scope(random) {
+ *         try (Scoped&lt;Random&gt; scope = RandomRegistry.scope(random)) {
  *             // Easy access the random engine of the opened scope.
  *             assert(scope.get() == random);
  *
@@ -88,7 +88,7 @@ import org.jenetics.internal.util.Supplier;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-14 $</em>
  */
 public final class RandomRegistry extends StaticObject {
 	private RandomRegistry() {}

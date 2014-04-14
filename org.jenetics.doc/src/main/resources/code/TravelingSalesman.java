@@ -16,6 +16,7 @@ import org.jenetics.PermutationChromosome;
 import org.jenetics.SwapMutator;
 import org.jenetics.util.Factory;
 
+
 public class TravelingSalesman {
 
 	private static class FF

@@ -19,6 +19,7 @@
  */
 package org.jenetics;
 
+import static java.lang.String.format;
 import static org.jenetics.EnumGene.Gene;
 
 import java.io.IOException;
@@ -56,9 +57,9 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-14 $</em>
  */
-@XmlJavaTypeAdapter(value = PermutationChromosome.Model.Adapter.class)
+@XmlJavaTypeAdapter(PermutationChromosome.Model.Adapter.class)
 public final class PermutationChromosome<T>
 	extends AbstractChromosome<EnumGene<T>>
 	implements Serializable
@@ -167,15 +168,48 @@ public final class PermutationChromosome<T>
 	}
 
 	/**
+	 * Create a new, random chromosome with the given valid alleles.
+	 *
+	 * @since 2.0
+	 * @param <T> the gene type of the chromosome
+	 * @param alleles the valid alleles used for this permutation arrays.
+	 * @return a new chromosome with the given alleles
+	 */
+	@SafeVarargs
+	public static <T> PermutationChromosome<T> of(final T... alleles) {
+		return of(Array.of(alleles).toISeq());
+	}
+
+	/**
 	 * Create a integer permutation chromosome with the given length.
 	 *
 	 * @param length the chromosome length.
 	 * @return a integer permutation chromosome with the given length.
 	 */
 	public static PermutationChromosome<Integer> ofInteger(final int length) {
-		// TODO: FIX
-		//return of(new Array<Integer>(length).fill(Int(0, 1)).toISeq());
-		return null;
+		return ofInteger(0, length);
+	}
+
+	/**
+	 * Create a integer permutation chromosome with the given length.
+	 *
+	 * @since 2.0
+	 * @param start the start of the integer range (inclusively) of the returned
+	 *        chromosome.
+	 * @param end the end of the integer range (exclusively) of the returned
+	 *        chromosome.
+	 * @return a integer permutation chromosome with the given integer range
+	 *         values.
+	 * @throws java.lang.IllegalArgumentException if {@code end <= start}
+	 */
+	public static PermutationChromosome<Integer>
+	ofInteger(final int start, final int end) {
+		if (end <= start) {
+			throw new IllegalArgumentException(format(
+				"end <= start: %d <= %d", end, start
+			));
+		}
+		return of(new Array<Integer>(end - start).fill(Int(start, 1)).toISeq());
 	}
 
 	private static Factory<Integer> Int(final int start, final int step) {

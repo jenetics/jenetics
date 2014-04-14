@@ -30,7 +30,7 @@ import org.jenetics.util.math.random;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-31 $</em>
+ * @version <em>$Date: 2014-04-14 $</em>
  */
 public class RandomUtils {
 
@@ -61,8 +61,6 @@ public class RandomUtils {
 	}
 
 	public static char nextCharacter() {
-		final int surrogateStart = 0xD800;
-
 		char c = '\0';
 		do {
 			c = (char)random.nextInt(random(), Character.MIN_VALUE, Character.MAX_VALUE);

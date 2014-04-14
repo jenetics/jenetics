@@ -25,13 +25,15 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import org.jenetics.internal.util.Concurrency;
+
 import org.jenetics.Statistics.Calculator;
 import org.jenetics.stat.Variance;
 import org.jenetics.util.Accumulator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-31 $</em>
+ * @version <em>$Date: 2014-04-14 $</em>
  */
 public class StatisticsCalculatorTest {
 
@@ -78,7 +80,12 @@ public class StatisticsCalculatorTest {
 	public void evaluate(final Integer size, final Integer gen) {
 		final Calculator<DoubleGene, Double> calculator = newCalculator();
 		final Statistics.Builder<DoubleGene, Double>
-		builder = calculator.evaluate(population(size), gen, Optimize.MAXIMUM);
+		builder = calculator.evaluate(
+			Concurrency.commonPool(),
+			population(size),
+			gen,
+			Optimize.MAXIMUM
+		);
 		final Statistics<DoubleGene, Double> statistics = builder.build();
 
 		final Variance<Integer> ageVariance = new Variance<>();

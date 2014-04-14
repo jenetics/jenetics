@@ -1,5 +1,9 @@
 Jenetics-2.0.0
+- Add IntegerGene/Chromosome classes.
 - Remove all deprecated classes and methods.
+- Remove dependency to the JScience library.
+- All concurrency classes are now internal. GeneticAlgorithm class takes an Executor as additional parameter, which is used for parallelizable code.
+- Library can now be downloaded via the maven central repository: `org.bitbucket.fwilhelm:org.jenetics:2.0.0`
 
 Jenetics-1.6.0
 - Add JAXB base XML serialization mechanism to the Gene/Chromosome/Genotype/Phenotype classes. Mark the XMLSerializable based XML serialization as deprecated. org.jenetics.util.IO.xml is now deprecated.
