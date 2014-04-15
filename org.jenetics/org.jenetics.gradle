@@ -88,7 +88,8 @@ nexus {
 	attachJavadoc = true
 	sign = true
 	repository = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
-	snapshotRepository = "file://$buildDir/repo" //'https://oss.sonatype.org/content/repositories/snapshots'
+	snapshotRepository = 'https://oss.sonatype.org/content/repositories/snapshots'
+    //snapshotRepository = "file://$buildDir/repo"
 }
 
 
