@@ -203,7 +203,7 @@ class SetupPlugin extends JeneticsPlugin {
 	private static final List<String> XLINT_OPTIONS = [
 		'cast',
 		'classfile',
-		//'deprecation',
+		'deprecation',
 		'dep-ann',
 		'divzero',
 		'finally',

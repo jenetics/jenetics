@@ -19,8 +19,6 @@
  */
 package org.jenetics.performance;
 
-import javolution.lang.Reusable;
-
 import org.jenetics.stat.Variance;
 import org.jenetics.util.Accumulator;
 import org.jenetics.util.Timer;
@@ -33,7 +31,6 @@ import org.jenetics.util.accumulators.MinMax;
 public abstract class TestCase
 	implements
 		Runnable,
-		Reusable,
 		Comparable<TestCase>
 {
 
@@ -63,7 +60,6 @@ public abstract class TestCase
 		this(name, 1000);
 	}
 
-	@Override
 	public void reset() {
 		_timer = new Timer(_name);
 		_variance = new Variance<>();

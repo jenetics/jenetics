@@ -155,7 +155,7 @@ class TestUtils {
 			new Array<>(nchromosomes);
 
 		for (int i = 0; i < nchromosomes; ++i) {
-			chromosomes.set(i, new PermutationChromosome<>(ialleles));
+			chromosomes.set(i, PermutationChromosome.of(ialleles));
 		}
 
 		final Genotype<EnumGene<Double>> genotype = new Genotype<>(chromosomes.toISeq());

@@ -29,7 +29,6 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version <em>$Date$</em>
  */
-@SuppressWarnings("deprecation")
 public class ExponentialScalerTest extends ObjectTester<ExponentialScaler> {
 
 	final Factory<ExponentialScaler> _factory = new Factory<ExponentialScaler>() {

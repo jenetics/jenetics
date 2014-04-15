@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<org.jenetics.Genotype length="5" ngenes="100">
-	<org.jenetics.BitChromosome length="20" probability="0.5">00000101|00110101|11000111</org.jenetics.BitChromosome>
-	<org.jenetics.BitChromosome length="20" probability="0.5">00000011|00100000|10110000</org.jenetics.BitChromosome>
-	<org.jenetics.BitChromosome length="20" probability="0.5">00000011|10010100|00111100</org.jenetics.BitChromosome>
-	<org.jenetics.BitChromosome length="20" probability="0.5">00000001|11000101|11110011</org.jenetics.BitChromosome>
-	<org.jenetics.BitChromosome length="20" probability="0.5">00000110|11101110|10110010</org.jenetics.BitChromosome>
-</org.jenetics.Genotype>

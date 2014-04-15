@@ -24,7 +24,7 @@ package org.jenetics.util;
  * @since 1.0
  * @version 1.0 &mdash; <em>$Date$</em>
  */
-public interface Copyable<T> {
+public interface  Copyable<T> {
 
 	/**
 	 * Return a new copy of type {@code T}.

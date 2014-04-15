@@ -22,7 +22,7 @@ package org.jenetics.internal.util;
 /**
  * Interface for building hash codes. The HashCodeBuilder is created via a
  * factory method in the {@link org.jenetics.util.object} class.
- * <p/>
+ * <p>
  * Example for calculating the hash code for a given class:
  * [code]
  * \@Override

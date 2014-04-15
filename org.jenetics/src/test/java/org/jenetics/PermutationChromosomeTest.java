@@ -19,7 +19,13 @@
  */
 package org.jenetics;
 
+import java.util.Collections;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
 import org.jenetics.util.Factory;
+import org.jenetics.util.MSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -42,5 +48,26 @@ public class PermutationChromosomeTest
 		return _factory;
 	}
 
+	@Test
+	public void ofIntegerLength() {
+		final PermutationChromosome<Integer> c = PermutationChromosome.ofInteger(100);
+		final MSeq<Integer> genes = c.getValidAlleles().copy();
+		Collections.sort(genes.asList());
+
+		for (int i = 0; i < c.length(); ++i) {
+			Assert.assertEquals(genes.get(i).intValue(), i);
+		}
+	}
+
+	@Test
+	public void ofIntegerStartEnd() {
+		final PermutationChromosome<Integer> c = PermutationChromosome.ofInteger(100, 200);
+		final MSeq<Integer> genes = c.getValidAlleles().copy();
+		Collections.sort(genes.asList());
+
+		for (int i = 0; i < c.length(); ++i) {
+			Assert.assertEquals(genes.get(i).intValue(), i + 100);
+		}
+	}
 
 }

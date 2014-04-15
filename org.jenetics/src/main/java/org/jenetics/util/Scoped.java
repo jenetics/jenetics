@@ -24,7 +24,7 @@ package org.jenetics.util;
  * left, the original value is restored. A <i>scoped</i> value is usually used
  * within a {@code try} block.
  * [code]
- * try (Scoped<Random> s = RandomRegistry.scope(new Random(123))) {
+ * try (Scoped&lt;Random&gt; s = RandomRegistry.scope(new Random(123))) {
  *     System.out.println(s.get().nextDouble());
  * }
  * [/code]

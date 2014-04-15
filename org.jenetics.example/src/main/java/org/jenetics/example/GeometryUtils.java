@@ -23,7 +23,8 @@ import java.awt.geom.Point2D;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.0 &mdash; <em>$Date$</em>
+ * @since 1.0
+ * @version 2.0 &mdash; <em>$Date$</em>
  */
 final class GeometryUtils {
 	private static final double GAMUT = 500000000;

@@ -21,10 +21,8 @@ package org.jenetics;
 
 import java.util.Random;
 
-import javax.measure.Measure;
-import javax.measure.unit.SI;
-
 import org.jenetics.Statistics.Time;
+import org.jenetics.util.Duration;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ObjectTester;
 import org.jenetics.util.RandomRegistry;
@@ -41,12 +39,12 @@ public class StatisticsTimeTest extends ObjectTester<Time> {
 			final Random random = RandomRegistry.getRandom();
 
 			final Time time = new Time();
-			time.alter.set(Measure.valueOf(random.nextDouble()*1000, SI.SECOND));
-			time.combine.set(Measure.valueOf(random.nextDouble()*1000, SI.SECOND));
-			time.evaluation.set(Measure.valueOf(random.nextDouble()*1000, SI.SECOND));
-			time.execution.set(Measure.valueOf(random.nextDouble()*1000, SI.SECOND));
-			time.selection.set(Measure.valueOf(random.nextDouble()*1000, SI.SECOND));
-			time.statistics.set(Measure.valueOf(random.nextDouble()*1000, SI.SECOND));
+			time.alter.set(Duration.ofSeconds(random.nextDouble() * 1000));
+			time.combine.set(Duration.ofSeconds(random.nextDouble()*1000));
+			time.evaluation.set(Duration.ofSeconds(random.nextDouble()*1000));
+			time.execution.set(Duration.ofSeconds(random.nextDouble()*1000));
+			time.selection.set(Duration.ofSeconds(random.nextDouble()*1000));
+			time.statistics.set(Duration.ofSeconds(random.nextDouble()*1000));
 
 			return time;
 		}

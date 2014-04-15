@@ -36,7 +36,7 @@ public class PermutationChromosomeCharacterTest
 
 		@Override
 		public PermutationChromosome<Character> newInstance() {
-			return new PermutationChromosome<>(_alleles);
+			return PermutationChromosome.of(_alleles);
 		}
 	};
 

@@ -61,16 +61,4 @@ public abstract class GeneTester<G extends Gene<?, G>> extends ObjectTester<G> {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
-	@Test
-	public void copy() {
-		for (int i = 0; i < 10; ++i) {
-			final G gene = getFactory().newInstance();
-			final Object copy = gene.copy();
-
-			Assert.assertEquals(copy, gene);
-			Assert.assertEquals(copy.hashCode(), gene.hashCode());
-		}
-	}
-
 }

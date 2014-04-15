@@ -108,7 +108,7 @@ class PackagingPlugin implements Plugin<Project> {
 				manifest {
 					attributes(
 						'Implementation-Title': "${_project.name}-${appendix}",
-						'Implementation-Versionv': _project.version,
+						'Implementation-Version': _project.version,
 						'Implementation-URL': _project.packaging.url,
 						'Implementation-Vendor': _project.packaging.author,
 						'ProjectName': _project.packaging.name,

@@ -112,9 +112,9 @@ public final class Colorizer extends SimpleFileVisitor<Path> {
 			for (int ch = in.read(); ch != -1; ch = in.read()) {
 				if (state != State.DATA) {
 					switch (ch) {
-						case '<': out.append("&lt;"); break;
-						case '>': out.append("&gt;"); break;
-						case '&': out.append("&amp;"); break;
+						//case '<': out.append("&lt;"); break;
+						//case '>': out.append("&gt;"); break;
+						//case '&': out.append("&amp;"); break;
 						default: out.append((char)ch); break;
 					}
 				} else {
