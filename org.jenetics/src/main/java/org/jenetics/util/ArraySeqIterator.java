@@ -27,7 +27,7 @@ import java.util.NoSuchElementException;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-09-18 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2013-12-09 $</em>
  */
 class ArraySeqIterator<T> implements ListIterator<T> {
 	final ArraySeq<T> _array;

@@ -35,8 +35,6 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jenetics.internal.util.HashBuilder;
-import org.jenetics.internal.util.model.ModelType;
-import org.jenetics.internal.util.model.ValueType;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Function;
@@ -46,7 +44,7 @@ import org.jenetics.util.ISeq;
  * Numeric chromosome implementation which holds 64 bit integer numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-05 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-31 $</em>
  * @since 1.6
  */
 @XmlJavaTypeAdapter(LongChromosome.Model.Adapter.class)
@@ -105,6 +103,7 @@ public class LongChromosome
 	 * @param min the min value of the {@link LongGene}s (inclusively).
 	 * @param max the max value of the {@link LongGene}s (inclusively).
 	 * @param length the length of the chromosome.
+	 * @return a new {@code LongChromosome} with the given gene parameters.
 	 */
 	public static LongChromosome of(
 		final long min,
@@ -119,6 +118,7 @@ public class LongChromosome
 	 *
 	 * @param min the minimal value of this chromosome (inclusively).
 	 * @param max the maximal value of this chromosome (inclusively).
+	 * @return a new {@code LongChromosome} with the given gene parameters.
 	 */
 	public static LongChromosome of(final long min, final long max) {
 		return new LongChromosome(min, max);
@@ -182,25 +182,23 @@ public class LongChromosome
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "org.jenetics.LongChromosome")
+	@XmlRootElement(name = "long-chromosome")
 	@XmlType(name = "org.jenetics.LongChromosome")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
 
-		@XmlAttribute
+		@XmlAttribute(name = "length", required = true)
 		public int length;
 
-		@XmlAttribute
+		@XmlAttribute(name = "min", required = true)
 		public long min;
 
-		@XmlAttribute
+		@XmlAttribute(name = "max", required = true)
 		public long max;
 
-		@XmlElement(name = "allele")
+		@XmlElement(name = "allele", required = true, nillable = false)
 		public List<Long> values;
 
-		@ValueType(LongChromosome.class)
-		@ModelType(Model.class)
 		public final static class Adapter
 			extends XmlAdapter<Model, LongChromosome>
 		{
@@ -223,22 +221,24 @@ public class LongChromosome
 				);
 			}
 		}
-	}
 
-	private static final Function<LongGene, Long> Allele =
-		new Function<LongGene, Long>() {
-			@Override
-			public Long apply(LongGene value) {
-				return value.getAllele();
-			}
-		};
+		private static final Function<LongGene, Long> Allele =
+			new Function<LongGene, Long>() {
+				@Override
+				public Long apply(LongGene value) {
+					return value.getAllele();
+				}
+			};
 
-	private static Function<Long, LongGene> Gene(final Long min, final Long max) {
-		return new Function<Long, LongGene>() {
-			@Override
-			public LongGene apply(final Long value) {
-				return new LongGene(value, min, max);
-			}
-		};
+		private static Function<Long, LongGene>
+		Gene(final Long min, final Long max) {
+			return new Function<Long, LongGene>() {
+				@Override
+				public LongGene apply(final Long value) {
+					return new LongGene(value, min, max);
+				}
+			};
+		}
+
 	}
 }

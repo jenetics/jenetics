@@ -31,7 +31,8 @@ import org.jenetics.util.IO;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.0 &mdash; <em>$Date: 2014-02-17 $</em>
+ * @since 1.0
+ * @version 2.0 &mdash; <em>$Date: 2014-03-07 $</em>
  */
 public class Serial {
 

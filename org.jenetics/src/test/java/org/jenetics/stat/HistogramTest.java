@@ -25,18 +25,14 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jscience.mathematics.number.Float64;
-import org.jscience.mathematics.number.Integer64;
-
 import org.jenetics.util.Factory;
 import org.jenetics.util.MappedAccumulatorTester;
 import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-17 $</em>
+ * @version <em>$Date: 2014-03-11 $</em>
  */
-@SuppressWarnings("deprecation")
 public class HistogramTest
 	extends MappedAccumulatorTester<Histogram<Double>>
 {
@@ -76,34 +72,12 @@ public class HistogramTest
 	}
 
 	@Test
-	public void createFloat64() {
-		final Float64 begin = Float64.valueOf(12);
-		final Float64 end = Float64.valueOf(123);
-		final int elements = 10;
-
-		Histogram<Float64> histogram = Histogram.valueOf(begin, end, elements);
-		Assert.assertEquals(histogram.length(), elements);
-		Assert.assertEquals(histogram.getHistogram(), new long[elements]);
-	}
-
-	@Test
 	public void createLong() {
 		final long begin = 0;
 		final long end = 1000;
 		final int elements = 9;
 
-		Histogram<Long> histogram = Histogram.valueOf(begin, end, elements);
-		Assert.assertEquals(histogram.length(), elements);
-		Assert.assertEquals(histogram.getHistogram(), new long[elements]);
-	}
-
-	@Test
-	public void createInteger64() {
-		final Integer64 begin = Integer64.ZERO;
-		final Integer64 end = Integer64.valueOf(1000);
-		final int elements = 9;
-
-		Histogram<Integer64> histogram = Histogram.valueOf(begin, end, elements);
+		Histogram<Long> histogram = Histogram.of(begin, end, elements);
 		Assert.assertEquals(histogram.length(), elements);
 		Assert.assertEquals(histogram.getHistogram(), new long[elements]);
 	}
@@ -114,9 +88,9 @@ public class HistogramTest
 		final long end = 10;
 		final int elements = 9;
 
-		Histogram<Long> histogram = Histogram.valueOf(begin, end, elements);
+		Histogram<Long> histogram = Histogram.of(begin, end, elements);
 		for (int i = 0; i < elements*1000; ++i) {
-			histogram.accumulate(Long.valueOf(i%elements));
+			histogram.accumulate((long)(i%elements));
 		}
 
 		final long[] expected = new long[9];
@@ -129,10 +103,10 @@ public class HistogramTest
 		final Random random = RandomRegistry.getRandom();
 		Double[] parts = new Double[10000];
 		for (int i = 0; i < parts.length; ++i) {
-			parts[i] = Double.valueOf(i);
+			parts[i] = (double)i;
 		}
 
-		Histogram<Double> histogram = Histogram.valueOf(parts);
+		Histogram<Double> histogram = Histogram.of(parts);
 		Double[] classes = histogram.getSeparators();
 		for (int i = 0; i < 1000; ++i) {
 			final Double value = random.nextDouble()*(parts.length + 1);
@@ -140,7 +114,7 @@ public class HistogramTest
 		}
 
 		parts = new Double[]{1.0};
-		histogram = Histogram.valueOf(parts);
+		histogram = Histogram.of(parts);
 		classes = histogram.getSeparators();
 		for (int i = 0; i < 10; ++i) {
 			final Double value = random.nextDouble()*(parts.length + 1);
@@ -148,7 +122,7 @@ public class HistogramTest
 		}
 
 		parts = new Double[]{1.0, 2.0};
-		histogram = Histogram.valueOf(parts);
+		histogram = Histogram.of(parts);
 		classes = histogram.getSeparators();
 		for (int i = 0; i < 10; ++i) {
 			final Double value = random.nextDouble()*(parts.length + 1);
@@ -156,7 +130,7 @@ public class HistogramTest
 		}
 
 		parts = new Double[]{1.0, 2.0, 3.0};
-		histogram = Histogram.valueOf(parts);
+		histogram = Histogram.of(parts);
 		classes = histogram.getSeparators();
 		for (int i = 0; i < 10; ++i) {
 			final Double value = random.nextDouble()*(parts.length + 1);
@@ -177,13 +151,13 @@ public class HistogramTest
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void histogramEmptyClasses() {
-		Histogram.valueOf(new Double[0]);
+		Histogram.of(new Double[0]);
 	}
 
 	@Test
 	public void histogram() {
 		final Random random = RandomRegistry.getRandom();
-		final Histogram<Double> histogram = Histogram.valueOf(new Double[]{1d, 2d, 3d, 4d, 5d});
+		final Histogram<Double> histogram = Histogram.of(1d, 2d, 3d, 4d, 5d);
 
 		for (int i = 0; i < 600000; ++i) {
 			histogram.accumulate(random.nextDouble()*6);

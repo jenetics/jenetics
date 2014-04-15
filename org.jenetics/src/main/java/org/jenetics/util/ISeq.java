@@ -19,8 +19,6 @@
  */
 package org.jenetics.util;
 
-import javolution.lang.Immutable;
-
 /**
  * Immutable, ordered, fixed sized sequence.
  *
@@ -28,13 +26,12 @@ import javolution.lang.Immutable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
  */
 public interface ISeq<T>
 	extends
 		Seq<T>,
-		Copyable<MSeq<T>>,
-		Immutable
+		Copyable<MSeq<T>>
 {
 
 	@Override
@@ -45,26 +42,6 @@ public interface ISeq<T>
 
 	@Override
 	public <B> ISeq<B> map(final Function<? super T, ? extends B> mapper);
-
-	/**
-	 * <p>
-	 * Helper method for up-casting an given immutable sequence. This allows you
-	 * to assign this sequence to an sequence where the element type is a super
-	 * type of {@code T}.
-	 * </p>
-	 * [code]
-	 * ISeq<Double> da = new Array<Double>(0.0, 1.0, 2.0).toISeq();
-	 * ISeq<Number> na = da.upcast(da);
-	 * ISeq<Object> oa = na.upcast(na);
-	 * [/code]
-	 *
-	 * @param seq the sequence to cast.
-	 * @return the up-casted sequence.
-	 *
-	 * @deprecated Will be removed in the next version.
-	 */
-	@Deprecated
-	public <A> ISeq<A> upcast(final ISeq<? extends A> seq);
 
 	/**
 	 * Return a shallow copy of this sequence. The sequence elements are not

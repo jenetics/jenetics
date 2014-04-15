@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<enum-gene length="5">
+    <valid-alleles>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">逄</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">웰</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">覆</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">嚱</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">勻</allele>
+    </valid-alleles>
+    <allele index="4">
+        <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">勻</value>
+    </allele>
+</enum-gene>

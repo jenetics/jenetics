@@ -27,13 +27,13 @@ package org.jenetics.util;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-10-23 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-10 $</em>
  */
 public interface Mean<T> {
 
 	/**
 	 * Return the (usually arithmetic) mean value of {@code this} and
-	 * {@code that}. For {@link org.jenetics.NumberGene}s the mean is the
+	 * {@code that}. For {@link org.jenetics.NumericGene}s the mean is the
 	 * arithmetic mean.
 	 *
 	 * @param that the second value for calculating the mean.

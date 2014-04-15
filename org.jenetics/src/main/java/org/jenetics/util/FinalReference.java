@@ -24,20 +24,18 @@ import static org.jenetics.internal.util.object.eq;
 import java.io.Serializable;
 import java.util.Objects;
 
-import javolution.lang.Reference;
-
 import org.jenetics.internal.util.HashBuilder;
 
 /**
- * A final {@link Reference}. This class is used if you want to allow to set the
- * value of a {@link Reference} only once. If you try to set the references
+ * A final reference. This class is used if you want to allow to set the
+ * value of a reference only once. If you try to set the references
  * value twice an {@link IllegalStateException} is thrown.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-03-01 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
-public final class FinalReference<T> implements Reference<T>, Serializable {
+public final class FinalReference<T> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private T _value = null;
@@ -60,10 +58,10 @@ public final class FinalReference<T> implements Reference<T>, Serializable {
 	}
 
 	/**
-	 * Test whether this {@link Reference} can be set without throwing an
+	 * Test whether this reference can be set without throwing an
 	 * {@link IllegalStateException} or not.
 	 *
-	 * @return {@code true} if this {@link Reference} can't be set again,
+	 * @return {@code true} if this reference can't be set again,
 	 *         false otherwise.
 	 */
 	public synchronized boolean isFinal() {
@@ -74,9 +72,9 @@ public final class FinalReference<T> implements Reference<T>, Serializable {
 	 * Set the reference value. If you try to set the reference value twice an
 	 * {@link IllegalStateException} is thrown.
 	 *
+	 * @param value the value to set
 	 * @throws IllegalStateException if you try to set the reference value twice.
 	 */
-	@Override
 	public synchronized void set(final T value) {
 		if (_initialized) {
 			throw new IllegalStateException("Value is already initialized.");
@@ -85,7 +83,6 @@ public final class FinalReference<T> implements Reference<T>, Serializable {
 		_initialized = true;
 	}
 
-	@Override
 	public synchronized T get() {
 		return _value;
 	}

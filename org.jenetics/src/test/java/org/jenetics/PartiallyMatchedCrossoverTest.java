@@ -38,9 +38,8 @@ import org.jenetics.util.shuffling;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-28 $</em>
+ * @version <em>$Date: 2014-03-11 $</em>
  */
-@SuppressWarnings("deprecation")
 public class PartiallyMatchedCrossoverTest {
 
 
@@ -59,18 +58,18 @@ public class PartiallyMatchedCrossoverTest {
 		shuffling.shuffle(that);
 		shuffling.shuffle(other);
 
-		final PermutationChromosome<Integer> thatChrom1 = PermutationChromosome.of(that.toISeq());
+		final PermutationChromosome<Integer> thatChrom1 = new PermutationChromosome<>(that.toISeq());
 		Assert.assertTrue(thatChrom1.isValid(), "thatChrom1 not valid");
 
-		final PermutationChromosome<Integer> otherChrom1 = PermutationChromosome.of(other.toISeq());
+		final PermutationChromosome<Integer> otherChrom1 = new PermutationChromosome<>(other.toISeq());
 		Assert.assertTrue(otherChrom1.isValid(), "otherChrom1 not valid");
 
 		pmco.crossover(that, other);
 
-		final PermutationChromosome<Integer> thatChrom2 = PermutationChromosome.of(that.toISeq());
+		final PermutationChromosome<Integer> thatChrom2 = new PermutationChromosome<>(that.toISeq());
 		Assert.assertTrue(thatChrom2.isValid(), "thatChrom2 not valid: " + thatChrom2.toSeq());
 
-		final PermutationChromosome<Integer> otherChrom2 = PermutationChromosome.of(other.toISeq());
+		final PermutationChromosome<Integer> otherChrom2 = new PermutationChromosome<>(other.toISeq());
 		Assert.assertTrue(otherChrom2.isValid(), "otherChrom2 not valid: " + otherChrom2.toSeq());
 
 		Assert.assertFalse(thatChrom1.equals(thatChrom2), "That chromosome must not be equal");

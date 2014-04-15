@@ -1,2 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<org.jenetics.CharacterChromosome length="20" valid-characters=" !&quot;#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~">_f[mB%`BM;o@Dl5l8e*o</org.jenetics.CharacterChromosome>
+<character-chromosome length="20">
+    <valid-alleles> !&quot;#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
+    <alleles>_f[mB%`BM;o@Dl5l8e*o</alleles>
+</character-chromosome>

@@ -21,8 +21,6 @@ package org.jenetics.util;
 
 import static java.lang.Math.min;
 
-import org.jscience.mathematics.number.LargeInteger;
-
 
 /**
  * Some bit utils. All operation assume <a href="http://en.wikipedia.org/wiki/Endianness">
@@ -38,7 +36,7 @@ import org.jscience.mathematics.number.LargeInteger;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.5 &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public final class bit extends StaticObject {
 	private bit() {}
@@ -337,6 +335,7 @@ public final class bit extends StaticObject {
 	 *
 	 * @param data the data array.
 	 * @param index the index of the bit to flip.
+	 * @return the input array, for command chaining
 	 * @throws IndexOutOfBoundsException if the index is
 	 *          {@code index >= max || index < 0}.
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
@@ -344,42 +343,6 @@ public final class bit extends StaticObject {
 	public static byte[] flip(final byte[] data, final int index) {
 		return get(data, index) ? unset(data, index) : set(data, index);
 	}
-
-	/**
-	 * Convert the given {@link LargeInteger} value to an byte array.
-	 *
-	 * @see #toLargeInteger(byte[])
-	 *
-	 * @param value the value to convert.
-	 * @return the byte array representing the given {@link LargeInteger}.
-	 * @throws NullPointerException if the given value is {@code null}.
-	 *
-	 * @deprecated Will be removed.
-	 */
-	@Deprecated
-	public static byte[] toByteArray(final LargeInteger value) {
-		final int bytes = (value.bitLength() >>> 3) + 1;
-
-		final byte[] array = new byte[bytes];
-		value.toByteArray(array, 0);
-		return reverse(array);
-	}
-
-	/**
-	 * Convert the given byte array into an {@link LargeInteger}.
-	 *
-	 * @see #toByteArray(LargeInteger)
-	 *
-	 * @param array the byte array to convert.
-	 * @return the {@link LargeInteger} built from the given byte array.
-	 *
-	 * @deprecated Will be removed.
-	 */
-	@Deprecated
-	public static LargeInteger toLargeInteger(final byte[] array) {
-		return LargeInteger.valueOf(reverse(array.clone()), 0, array.length);
-	}
-
 
 	static byte[] reverse(final byte[] array) {
 		int i = 0;
@@ -471,41 +434,9 @@ public final class bit extends StaticObject {
 	 *
 	 * @param length the number of bits, the returned byte array can store.
 	 * @return the new byte array.s
-	 *
-	 * @deprecated Use {@link #newArray(int)} instead.
-	 */
-	@Deprecated
-	public static byte[] newBitArray(final int length) {
-		return newArray(length);
-	}
-
-	/**
-	 * Create a new {@code byte[]} array which can store at least the number
-	 * of bits as defined by the given {@code length} parameter.
-	 *
-	 * @param length the number of bits, the returned byte array can store.
-	 * @return the new byte array.s
 	 */
 	public static byte[] newArray(final int length) {
 		return new byte[toByteLength(length)];
-	}
-
-	/**
-	 * Create a new {@code byte[]} array which can store at least the number
-	 * of bits as defined by the given {@code length} parameter. The returned
-	 * byte array is initialized with ones according to the given ones
-	 * probability {@code p}.
-	 *
-	 * @param length the number of bits, the returned byte array can store.
-	 * @param p the ones probability of the returned byte array.
-	 * @return the new byte array.s
-	 * @throws IllegalArgumentException if {@code p} is not a valid probability.
-	 *
-	 * @deprecated Use {@link #newArray(int, double)} instead.
-	 */
-	@Deprecated
-	public static byte[] newBitArray(final int length, final double p) {
-		return newArray(length, p);
 	}
 
 	/**

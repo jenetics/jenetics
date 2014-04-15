@@ -19,6 +19,7 @@
  */
 package org.jenetics.util;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Random;
@@ -27,11 +28,9 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jscience.mathematics.number.LargeInteger;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-25 $</em>
+ * @version <em>$Date: 2014-03-12 $</em>
  */
 public class bitTest {
 
@@ -383,32 +382,6 @@ public class bitTest {
 		};
 	}
 
-	@SuppressWarnings("deprecation")
-	@Test
-	public void increment() {
-		final int min = -128;
-		final int max = 127;
-
-		for (int i = min; i < -2; ++i) {
-			final LargeInteger li1 = LargeInteger.valueOf(i);
-			final byte[] data = bit.toByteArray(li1);
-
-			bit.increment(data);
-
-			final LargeInteger li2 = bit.toLargeInteger(data);
-			Assert.assertEquals(li2, li1.plus(1));
-		}
-		for (int i = 0; i < max; ++i) {
-			final LargeInteger li1 = LargeInteger.valueOf(i);
-			final byte[] data = bit.toByteArray(li1);
-
-			bit.increment(data);
-
-			final LargeInteger li2 = bit.toLargeInteger(data);
-			Assert.assertEquals(li2, li1.plus(1));
-		}
-	}
-
 	@Test
 	public void invert() {
 		final long seed = System.currentTimeMillis();
@@ -438,17 +411,6 @@ public class bitTest {
 		Assert.assertTrue(Arrays.equals(data, bit.complement(cdata)));
 	}
 
-	@SuppressWarnings("deprecation")
-	@Test(dataProvider = "toByteArrayData")
-	public void toByteArray(final LargeInteger value) {
-		final byte[] data = bit.toByteArray(value);
-		final LargeInteger i = bit.toLargeInteger(data);
-		final byte[] idata = bit.toByteArray(i);
-
-		Assert.assertEquals(idata, data);
-		Assert.assertEquals(i, value);
-	}
-
 	@DataProvider(name = "toByteArrayData")
 	public Iterator<Object[]> toByteArrayData() {
 		final long seed = System.currentTimeMillis();
@@ -470,7 +432,7 @@ public class bitTest {
 				random.nextBytes(data);
 				_pos += 1;
 
-				return new Object[]{ LargeInteger.valueOf(data, 0, data.length) };
+				return new Object[]{ new BigInteger(data) };
 			}
 
 			@Override
@@ -478,23 +440,6 @@ public class bitTest {
 				throw new UnsupportedOperationException();
 			}
 		};
-	}
-
-	@SuppressWarnings("deprecation")
-	@Test(dataProvider = "toLargeIntegerData")
-	public void toLargeInteger(final byte[] data) {
-		final LargeInteger i = bit.toLargeInteger(data);
-
-		final byte[] idata = bit.toByteArray(i);
-		final LargeInteger j = bit.toLargeInteger(idata);
-
-		for (int k = 0, n = Math.min(idata.length, data.length); k < n; ++k) {
-			if (idata[idata.length - k - 1] != data[data.length - k - 1]) {
-				Assert.assertEquals(idata[k], data[k]);
-			}
-
-		}
-		Assert.assertEquals(j, i);
 	}
 
 	@DataProvider(name = "toLargeIntegerData")

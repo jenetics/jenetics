@@ -24,10 +24,6 @@ import static org.jenetics.internal.util.object.eq;
 
 import java.io.Serializable;
 
-import javolution.lang.Immutable;
-
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.util.Function;
@@ -41,19 +37,14 @@ import org.jenetics.util.Function;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-03-05 $</em>
- *
- * @deprecated Will be removed in next major version, respectively replaced with
- *             a variant which will be parametrized with {@code Double}s.
+ * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
  */
-@Deprecated
 public final class ExponentialScaler
 	implements
-		Function<Float64, Float64>,
-		Serializable,
-		Immutable
+		Function<Double, Double>,
+		Serializable
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	public static final ExponentialScaler SQR_SCALER = new ExponentialScaler(2);
 	public static final ExponentialScaler SQRT_SCALER = new ExponentialScaler(0.5);
@@ -96,8 +87,8 @@ public final class ExponentialScaler
 
 
 	@Override
-	public Float64 apply(final Float64 value) {
-		return Float64.valueOf(Math.pow((_a*value.doubleValue() + _b), _c));
+	public Double apply(final Double value) {
+		return Math.pow((_a*value + _b), _c);
 	}
 
 	@Override
