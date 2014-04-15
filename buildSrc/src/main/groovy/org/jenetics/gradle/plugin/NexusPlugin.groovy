@@ -33,8 +33,8 @@ import org.gradle.plugins.signing.SigningPlugin
  * Benjamin Muschko: https://github.com/bmuschko/gradle-nexus-plugin
  */
 class NexusPlugin implements Plugin<Project> {
-	static final String NEXUS_USERNAME = 'nexus_username'
-	static final String NEXUS_PASSWORD = 'nexus_password'
+	static final String USERNAME = 'nexus_username'
+	static final String PASSWORD = 'nexus_password'
 
     private NexusPluginExtension nexus
 
@@ -62,8 +62,8 @@ class NexusPlugin implements Plugin<Project> {
 
 	private void configureInstallTask(final Project project) {
 		if (!nexus.usesStandardConfiguration()) {
-			project.tasks.getByName(MavenPlugin.INSTALL_TASK_NAME).configuration =
-                    project.configurations[nexus.configuration]
+			def task = project.tasks.getByName(MavenPlugin.INSTALL_TASK_NAME)
+            task.configuration = project.configurations[nexus.configuration]
 		}
 	}
 
@@ -117,8 +117,9 @@ class NexusPlugin implements Plugin<Project> {
 			if (nexus.sign) {
 				project.signing {
 					required {
-						project.gradle.taskGraph.hasTask(nexus.getUploadTaskPath(project)) &&
-                                !project.version.endsWith('SNAPSHOT')
+						project.gradle.taskGraph
+                                .hasTask(nexus.getUploadTaskPath(project)) &&
+                       !project.version.endsWith('SNAPSHOT')
 					}
 
 					sign project.configurations[nexus.configuration]
@@ -172,7 +173,8 @@ class NexusPlugin implements Plugin<Project> {
 		project.afterEvaluate {
 			project.ext.poms = [
                 project.tasks.getByName(MavenPlugin.INSTALL_TASK_NAME).repositories.mavenInstaller(),
-			    project.tasks.getByName(nexus.uploadTaskName).repositories.mavenDeployer()]*.pom
+			    project.tasks.getByName(nexus.uploadTaskName).repositories.mavenDeployer()
+            ]*.pom
 		}
 	}
 
@@ -183,8 +185,8 @@ class NexusPlugin implements Plugin<Project> {
 					if (taskGraph.hasTask(nexus.getUploadTaskPath(project))) {
 						Console console = System.console()
 
-						final String username =  project.property(NEXUS_USERNAME)
-						final String password =  project.property(NEXUS_PASSWORD)
+						final String username =  project.property(USERNAME)
+						final String password =  project.property(PASSWORD)
 
 						if (nexus.repository) {
 							repository(url: nexus.repository) {
