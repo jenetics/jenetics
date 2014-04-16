@@ -30,7 +30,7 @@ import org.jenetics.util.math.random;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-14 $</em>
+ * @version <em>$Date: 2014-04-16 $</em>
  */
 public class RandomUtils {
 
@@ -121,7 +121,6 @@ public class RandomUtils {
 	}
 
 	public static <T> ISeq<T> ISeq(final int size, final Factory<T> factory) {
-		//return new Array<T>(size).fill(factory).toISeq();
-		return null;
+		return new Array<T>(size).fill(factory::newInstance).toISeq();
 	}
 }
