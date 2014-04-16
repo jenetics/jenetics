@@ -44,7 +44,7 @@ import org.jenetics.util.ISeq;
  * Numeric chromosome implementation which holds 64 bit floating point numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-18 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-30 $</em>
  * @since 1.6
  */
 @XmlJavaTypeAdapter(DoubleChromosome.Model.Adapter.class)
@@ -103,6 +103,7 @@ public class DoubleChromosome
 	 * @param min the min value of the {@link DoubleGene}s (inclusively).
 	 * @param max the max value of the {@link DoubleGene}s (exclusively).
 	 * @param length the length of the chromosome.
+	 * @return a new {@code DoubleChromosome} with the given parameter
 	 */
 	public static DoubleChromosome of(final double min, double max, final int length) {
 		return new DoubleChromosome(min, max, length);
@@ -113,6 +114,7 @@ public class DoubleChromosome
 	 *
 	 * @param min the minimal value of this chromosome (inclusively).
 	 * @param max the maximal value of this chromosome (exclusively).
+	 * @return a new {@code DoubleChromosome} with the given parameter
 	 */
 	public static DoubleChromosome of(final double min, final double max) {
 		return new DoubleChromosome(min, max);
@@ -182,16 +184,16 @@ public class DoubleChromosome
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
 
-		@XmlAttribute
+		@XmlAttribute(name = "length", required = true)
 		public int length;
 
-		@XmlAttribute
+		@XmlAttribute(name = "min", required = true)
 		public double min;
 
-		@XmlAttribute
+		@XmlAttribute(name = "max", required = true)
 		public double max;
 
-		@XmlElement(name = "allele")
+		@XmlElement(name = "allele", required = true, nillable = false)
 		public List<Double> values;
 
 		public final static class Adapter
@@ -216,22 +218,24 @@ public class DoubleChromosome
 				);
 			}
 		}
-	}
 
-	private static final Function<DoubleGene, Double> Allele =
-		new Function<DoubleGene, Double>() {
-			@Override
-			public Double apply(final DoubleGene value) {
-				return value.getAllele();
-			}
-		};
+		private static final Function<DoubleGene, Double> Allele =
+			new Function<DoubleGene, Double>() {
+				@Override
+				public Double apply(final DoubleGene value) {
+					return value.getAllele();
+				}
+			};
 
-	private static Function<Double, DoubleGene> Gene(final Double min, final Double max) {
-		return new Function<Double, DoubleGene>() {
-			@Override
-			public DoubleGene apply(final Double value) {
-				return new DoubleGene(value, min, max);
-			}
-		};
+		private static Function<Double, DoubleGene>
+		Gene(final Double min, final Double max) {
+			return new Function<Double, DoubleGene>() {
+				@Override
+				public DoubleGene apply(final Double value) {
+					return new DoubleGene(value, min, max);
+				}
+			};
+		}
+
 	}
 }

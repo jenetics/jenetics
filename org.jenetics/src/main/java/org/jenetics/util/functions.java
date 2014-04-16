@@ -30,7 +30,7 @@ import java.util.Objects;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public final class functions extends StaticObject {
 	private functions() {}
@@ -210,6 +210,7 @@ public final class functions extends StaticObject {
 	/**
 	 * Return the identity function for the given type.
 	 *
+	 * @param <T> the parameter type for the identity function
 	 * @return the identity function for the given type.
 	 */
 	@SuppressWarnings("unchecked")

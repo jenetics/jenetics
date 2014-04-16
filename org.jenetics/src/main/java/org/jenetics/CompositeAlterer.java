@@ -41,7 +41,7 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-30 $</em>
  */
 public final class CompositeAlterer<G extends Gene<?, G>>
 	extends AbstractAlterer<G>
@@ -147,7 +147,9 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	/**
 	 * Combine the given alterers.
 	 *
+	 * @param <G> the gene type
 	 * @param alterers the alterers to combine.
+	 * @return a new alterer which consists of the given one
 	 * @throws NullPointerException if one of the alterers is {@code null}.
 	 */
 	@SafeVarargs

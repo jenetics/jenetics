@@ -24,14 +24,14 @@ import java.util.List;
 
 /**
  * General interface for a ordered, fixed sized, object sequence.
- * <br/>
+ * <br>
  * Use the {@link #asList()} method to work together with the
  * <a href="http://download.oracle.com/javase/6/docs/technotes/guides/collections/index.html">
  * Java Collection Framework</a>.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public interface Seq<T> extends Iterable<T> {
 
@@ -41,7 +41,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * @param index index of the element to return.
 	 * @return the value at the given {@code index}.
 	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         <code>(index < 0 || index >= size())</code>.
+	 *         (index &lt; 0 || index &gt;= size()).
 	 */
 	public T get(final int index);
 
@@ -68,6 +68,7 @@ public interface Seq<T> extends Iterable<T> {
 	/**
 	 * Applies a {@code function} to all elements of this sequence.
 	 *
+	 * @param <R> the return value of the applied function
 	 * @param function the function to apply to the elements.
 	 * @throws NullPointerException if the given {@code function} is
 	 *         {@code null}.
@@ -168,6 +169,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * [/code]
 	 *
 	 * @param predicate the search predicate.
+	 * @param start the search start index
 	 * @return the index of the first element on which the given predicate
 	 *         returns {@code true}, or -1 if the predicate returns {@code false}
 	 *         for every sequence element.
@@ -195,6 +197,8 @@ public interface Seq<T> extends Iterable<T> {
 	 * [/code]
 	 *
 	 * @param predicate the search predicate.
+	 * @param start the search start index
+	 * @param end the search end index
 	 * @return the index of the first element on which the given predicate
 	 *         returns {@code true}, or -1 if the predicate returns {@code false}
 	 *         for every sequence element.
@@ -223,6 +227,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * in this sequence, or -1 if this sequence does not contain the element.
 	 *
 	 * @param element element to search for, can be {@code null}
+	 * @param end the search end index
 	 * @return the index of the last occurrence of the specified element in
 	 * 		   this sequence, or -1 if this sequence does not contain the element
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
@@ -235,6 +240,8 @@ public interface Seq<T> extends Iterable<T> {
 	 * in this sequence, or -1 if this sequence does not contain the element.
 	 *
 	 * @param element element to search for, can be {@code null}
+	 * @param start the search start index
+	 * @param end the search end index
 	 * @return the index of the last occurrence of the specified element in
 	 * 		   this sequence, or -1 if this sequence does not contain the element
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
@@ -261,6 +268,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * sequence element.
 	 *
 	 * @param predicate the search predicate.
+	 * @param end the search end index
 	 * @return the index of the last element on which the given predicate
 	 *         returns {@code true}, or -1 if the predicate returns false for
 	 *         every sequence element.
@@ -279,6 +287,8 @@ public interface Seq<T> extends Iterable<T> {
 	 * sequence element.
 	 *
 	 * @param predicate the search predicate.
+	 * @param start the search start index
+	 * @param end the search end index
 	 * @return the index of the last element on which the given predicate
 	 *         returns {@code true}, or -1 if the predicate returns false for
 	 *         every sequence element.
@@ -334,7 +344,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * array. If this sequence fits in the specified array, it is returned therein.
 	 * Otherwise, a new array is allocated with the runtime type of the specified
 	 * array and the length of this array.
-	 * <p/>
+	 * <p>
 	 * If this sequence fits in the specified array with room to spare (i.e., the
 	 * array has more elements than this array), the element in the array
 	 * immediately following the end of this array is set to null. (This is
@@ -359,7 +369,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * and {@code end} are equal, the returned sequence has the length zero.) The
 	 * returned sequence is backed by this sequence, so non-structural changes
 	 * in the returned sequence are reflected in this sequence, and vice-versa.
-	 * <p/>
+	 * <p>
 	 * This method eliminates the need for explicit range operations (of the
 	 * sort that commonly exist for arrays). Any operation that expects an sequence
 	 * can be used as a range operation by passing an sub sequence view instead of
@@ -378,7 +388,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * and {@code end} are equal, the returned sequence has the length zero.) The
 	 * returned sequence is backed by this sequence, so non-structural changes in the
 	 * returned sequence are reflected in this array, and vice-versa.
-	 * <p/>
+	 * <p>
 	 * This method eliminates the need for explicit range operations (of the
 	 * sort that commonly exist for arrays). Any operation that expects an array
 	 * can be used as a range operation by passing an sub sequence view instead of
@@ -398,7 +408,7 @@ public interface Seq<T> extends Iterable<T> {
 	 *
 	 * [code]
 	 * int hashCode = 1;
-	 * final Iterator<E> it = seq.iterator();
+	 * final Iterator&lt;E&gt; it = seq.iterator();
 	 * while (it.hasNext()) {
 	 *     final E obj = it.next();
 	 *     hashCode = 31*hashCode + (obj == null ? 0 : obj.hashCode());

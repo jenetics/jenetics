@@ -26,8 +26,8 @@ import static org.jenetics.internal.util.object.eq;
 import java.util.Iterator;
 import java.util.concurrent.Executor;
 
+import org.jenetics.internal.util.Concurrency;
 import org.jenetics.internal.util.HashBuilder;
-
 
 /**
  * Collection of some general purpose Accumulators and some static helper classes
@@ -35,7 +35,7 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-14 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-11 $</em>
  */
 public final class accumulators extends StaticObject {
 	private accumulators() {}
@@ -49,14 +49,14 @@ public final class accumulators extends StaticObject {
 	/**
 	 * Calculates min value.
 	 *
-	 * <p/>
+	 * <p>
 	 * <strong>Note that this implementation is not synchronized.</strong> If
 	 * multiple threads access this object concurrently, and at least one of the
 	 * threads modifies it, it must be synchronized externally.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &ndash; <em>$Date: 2014-03-14 $</em>
+	 * @version 1.0 &ndash; <em>$Date: 2014-04-11 $</em>
 	 */
 	public static final class Min<C extends Comparable<? super C>>
 		extends MappedAccumulator<C>
@@ -142,14 +142,14 @@ public final class accumulators extends StaticObject {
 	/**
 	 * Calculates max value.
 	 *
-	 * <p/>
+	 * <p>
 	 * <strong>Note that this implementation is not synchronized.</strong> If
 	 * multiple threads access this object concurrently, and at least one of the
 	 * threads modifies it, it must be synchronized externally.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &ndash; <em>$Date: 2014-03-14 $</em>
+	 * @version 1.0 &ndash; <em>$Date: 2014-04-11 $</em>
 	 */
 	public static final class Max<C extends Comparable<? super C>>
 		extends MappedAccumulator<C>
@@ -235,14 +235,14 @@ public final class accumulators extends StaticObject {
 	/**
 	 * Calculates min and max values.
 	 *
-	 * <p/>
+	 * <p>
 	 * <strong>Note that this implementation is not synchronized.</strong> If
 	 * multiple threads access this object concurrently, and at least one of the
 	 * threads modifies it, it must be synchronized externally.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &ndash; <em>$Date: 2014-03-14 $</em>
+	 * @version 1.0 &ndash; <em>$Date: 2014-04-11 $</em>
 	 */
 	public static final class MinMax<C extends Comparable<? super C>>
 		extends MappedAccumulator<C>
@@ -352,25 +352,28 @@ public final class accumulators extends StaticObject {
 	 * @throws NullPointerException if one of the given arguments is {@code null}.
 	 */
 	public static <T> void accumulate(
+		final Executor executor,
 		final Iterable<? extends T> values,
 		final Seq<? extends Accumulator<? super T>> accus
 	) {
 		switch (accus.length()) {
 		case 1:
-			accumulators.<T>accumulate(
+			accumulate(
 				values,
 				accus.get(0)
 			);
 			break;
 		case 2:
-			accumulators.<T>accumulate(
+			accumulate(
+				executor,
 				values,
 				accus.get(0),
 				accus.get(1)
 			);
 			break;
 		case 3:
-			accumulators.<T>accumulate(
+			accumulate(
+				executor,
 				values,
 				accus.get(0),
 				accus.get(1),
@@ -378,7 +381,8 @@ public final class accumulators extends StaticObject {
 			);
 			break;
 		case 4:
-			accumulators.<T>accumulate(
+			accumulate(
+				executor,
 				values,
 				accus.get(0),
 				accus.get(1),
@@ -387,7 +391,8 @@ public final class accumulators extends StaticObject {
 			);
 			break;
 		case 5:
-			accumulators.<T>accumulate(
+			accumulate(
+				executor,
 				values,
 				accus.get(0),
 				accus.get(1),
@@ -397,12 +402,20 @@ public final class accumulators extends StaticObject {
 			);
 			break;
 		default:
-			try (Scoped<Executor> c = Concurrent.scope()) {
-				for (final Accumulator<? super T> accumulator : accus) {
-					c.get().execute(new Acc<>(values, accumulator));
-				}
+			try (Concurrency c = Concurrency.with(executor)) {
+				c.execute(accus.map(AccumulatorToRunnable(values)).asList());
 			}
 		}
+	}
+
+	private static <T> Function<Accumulator<? super T>, Runnable>
+	AccumulatorToRunnable(final Iterable<? extends T> values) {
+		return new Function<Accumulator<? super T>, Runnable>() {
+			@Override
+			public Runnable apply(final Accumulator<? super T> accumulator) {
+				return new Acc<>(values, accumulator);
+			}
+		};
 	}
 
 	/**
@@ -417,10 +430,11 @@ public final class accumulators extends StaticObject {
 	 */
 	@SafeVarargs
 	public static <T> void accumulate(
+		final Executor executor,
 		final Iterable<? extends T> values,
 		final Accumulator<? super T>... accus
 	) {
-		accumulate(values, Array.of(accus));
+		accumulate(executor, values, Array.of(accus));
 	}
 
 	/**
@@ -471,13 +485,14 @@ public final class accumulators extends StaticObject {
 	 * @throws NullPointerException if one of the given arguments is {@code null}.
 	 */
 	public static <T> void accumulate(
+		final Executor executor,
 		final Iterable<? extends T> values,
 		final Accumulator<? super T> a1,
 		final Accumulator<? super T> a2
 	) {
-		try (Scoped<Executor> c = Concurrent.scope()) {
-			c.get().execute(new Acc<>(values, a1));
-			c.get().execute(new Acc<>(values, a2));;
+		try (Concurrency c = Concurrency.with(executor)) {
+			c.execute(new Acc<>(values, a1));
+			c.execute(new Acc<>(values, a2));
 		}
 	}
 
@@ -494,15 +509,16 @@ public final class accumulators extends StaticObject {
 	 * @throws NullPointerException if one of the given arguments is {@code null}.
 	 */
 	public static <T> void accumulate(
+		final Executor executor,
 		final Iterable<? extends T> values,
 		final Accumulator<? super T> a1,
 		final Accumulator<? super T> a2,
 		final Accumulator<? super T> a3
 	) {
-		try (Scoped<Executor> c = Concurrent.scope()) {
-			c.get().execute(new Acc<>(values, a1));
-			c.get().execute(new Acc<>(values, a2));
-			c.get().execute(new Acc<>(values, a3));
+		try (Concurrency c = Concurrency.with(executor)) {
+			c.execute(new Acc<>(values, a1));
+			c.execute(new Acc<>(values, a2));
+			c.execute(new Acc<>(values, a3));
 		}
 	}
 
@@ -520,17 +536,18 @@ public final class accumulators extends StaticObject {
 	 * @throws NullPointerException if one of the given arguments is {@code null}.
 	 */
 	public static <T> void accumulate(
+		final Executor executor,
 		final Iterable<? extends T> values,
 		final Accumulator<? super T> a1,
 		final Accumulator<? super T> a2,
 		final Accumulator<? super T> a3,
 		final Accumulator<? super T> a4
 	) {
-		try (Scoped<Executor> c = Concurrent.scope()) {
-			c.get().execute(new Acc<>(values, a1));
-			c.get().execute(new Acc<>(values, a2));
-			c.get().execute(new Acc<>(values, a3));
-			c.get().execute(new Acc<>(values, a4));
+		try (Concurrency c = Concurrency.with(executor)) {
+			c.execute(new Acc<>(values, a1));
+			c.execute(new Acc<>(values, a2));
+			c.execute(new Acc<>(values, a3));
+			c.execute(new Acc<>(values, a4));
 		}
 	}
 
@@ -549,6 +566,7 @@ public final class accumulators extends StaticObject {
 	 * @throws NullPointerException if one of the given arguments is {@code null}.
 	 */
 	public static <T> void accumulate(
+		final Executor executor,
 		final Iterable<? extends T> values,
 		final Accumulator<? super T> a1,
 		final Accumulator<? super T> a2,
@@ -556,12 +574,12 @@ public final class accumulators extends StaticObject {
 		final Accumulator<? super T> a4,
 		final Accumulator<? super T> a5
 	) {
-		try (Scoped<Executor> c = Concurrent.scope()) {
-			c.get().execute(new Acc<>(values, a1));
-			c.get().execute(new Acc<>(values, a2));
-			c.get().execute(new Acc<>(values, a3));
-			c.get().execute(new Acc<>(values, a4));
-			c.get().execute(new Acc<>(values, a5));
+		try (Concurrency c = Concurrency.with(executor)) {
+			c.execute(new Acc<>(values, a1));
+			c.execute(new Acc<>(values, a2));
+			c.execute(new Acc<>(values, a3));
+			c.execute(new Acc<>(values, a4));
+			c.execute(new Acc<>(values, a5));
 		}
 	}
 

@@ -21,6 +21,8 @@ package org.jenetics.internal.util;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
@@ -32,7 +34,7 @@ import org.jenetics.util.StaticObject;
  * This object contains models not defined as native XML type.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-18 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-27 $</em>
  * @since 2.0
  */
 public final class model extends StaticObject {
@@ -62,7 +64,20 @@ public final class model extends StaticObject {
 			}
 		}
 
-		public static final Adapter Adapter = new Adapter();
+		public static final Adapter ADAPTER = new Adapter();
+
+	}
+
+	@XmlRootElement(name = "indexed-object")
+	@XmlType(name = "org.jenetics.IndexedObject")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	public static final class IndexedObject {
+
+		@XmlAttribute(required = true)
+		public int index;
+
+		@XmlElement(name = "value", required = true, nillable = false)
+		public Object value;
 
 	}
 

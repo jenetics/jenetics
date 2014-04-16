@@ -19,6 +19,7 @@
  */
 package org.jenetics;
 
+import static java.lang.String.format;
 import static org.jenetics.EnumGene.Gene;
 
 import java.io.IOException;
@@ -56,9 +57,9 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-18 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-13 $</em>
  */
-@XmlJavaTypeAdapter(value = PermutationChromosome.Model.Adapter.class)
+@XmlJavaTypeAdapter(PermutationChromosome.Model.Adapter.class)
 public final class PermutationChromosome<T>
 	extends AbstractChromosome<EnumGene<T>>
 	implements Serializable
@@ -150,7 +151,9 @@ public final class PermutationChromosome<T>
 	/**
 	 * Create a new, random chromosome with the given valid alleles.
 	 *
+	 * @param <T> the gene type of the chromosome
 	 * @param alleles the valid alleles used for this permutation arrays.
+	 * @return a new chromosome with the given alleles
 	 */
 	public static <T> PermutationChromosome<T> of(final ISeq<? extends T> alleles) {
 		final PermutationChromosome<T> chromosome = new PermutationChromosome<>(
@@ -165,13 +168,48 @@ public final class PermutationChromosome<T>
 	}
 
 	/**
+	 * Create a new, random chromosome with the given valid alleles.
+	 *
+	 * @since 2.0
+	 * @param <T> the gene type of the chromosome
+	 * @param alleles the valid alleles used for this permutation arrays.
+	 * @return a new chromosome with the given alleles
+	 */
+	@SafeVarargs
+	public static <T> PermutationChromosome<T> of(final T... alleles) {
+		return of(Array.of(alleles).toISeq());
+	}
+
+	/**
 	 * Create a integer permutation chromosome with the given length.
 	 *
 	 * @param length the chromosome length.
 	 * @return a integer permutation chromosome with the given length.
 	 */
 	public static PermutationChromosome<Integer> ofInteger(final int length) {
-		return of(new Array<Integer>(length).fill(Int(0, 1)).toISeq());
+		return ofInteger(0, length);
+	}
+
+	/**
+	 * Create a integer permutation chromosome with the given length.
+	 *
+	 * @since 2.0
+	 * @param start the start of the integer range (inclusively) of the returned
+	 *        chromosome.
+	 * @param end the end of the integer range (exclusively) of the returned
+	 *        chromosome.
+	 * @return a integer permutation chromosome with the given integer range
+	 *         values.
+	 * @throws java.lang.IllegalArgumentException if {@code end <= start}
+	 */
+	public static PermutationChromosome<Integer>
+	ofInteger(final int start, final int end) {
+		if (end <= start) {
+			throw new IllegalArgumentException(format(
+				"end <= start: %d <= %d", end, start
+			));
+		}
+		return of(new Array<Integer>(end - start).fill(Int(start, 1)).toISeq());
 	}
 
 	private static Factory<Integer> Int(final int start, final int step) {
@@ -227,7 +265,7 @@ public final class PermutationChromosome<T>
 	 * ************************************************************************/
 
 	@XmlRootElement(name = "permutation-chromosome")
-	@XmlType(name = "permutation-chromosome")
+	@XmlType(name = "org.jenetics.PermutationChromosome")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	static final class Model {
@@ -235,7 +273,7 @@ public final class PermutationChromosome<T>
 		@XmlAttribute
 		public int length;
 
-		@XmlElementWrapper(name = "alleles")
+		@XmlElementWrapper(name = "valid-alleles")
 		@XmlElement(name = "allele")
 		public List<Object> alleles;
 
@@ -253,12 +291,9 @@ public final class PermutationChromosome<T>
 				final Model model = new Model();
 				model.length = pc.length();
 				model.alleles = pc.getValidAlleles()
-					.map(jaxb.Marshaller(pc.getValidAlleles().get(0))).asList();
-				model.order = pc.toSeq().map(new Function<Object, Integer>() {
-					@Override public Integer apply(final Object value) {
-						return ((EnumGene<?>)value).getAlleleIndex();
-					}
-				}).asList();
+					.map(jaxb.Marshaller(pc.getValidAlleles().get(0)))
+					.asList();
+				model.order = pc.toSeq().map(AlleleIndex).asList();
 
 				return model;
 			}
@@ -267,21 +302,32 @@ public final class PermutationChromosome<T>
 			public PermutationChromosome unmarshal(final Model model)
 				throws Exception
 			{
-				final ISeq alleles = new Array(model.length)
-					.setAll(model.alleles)
+				final ISeq alleles = Array.of(model.alleles)
 					.map(jaxb.Unmarshaller(model.alleles.get(0)))
 					.toISeq();
 
-				final Array<Object> genes = new Array<>(alleles.length());
-				for (int i = 0; i < alleles.length(); ++i) {
-					genes.set(i, new EnumGene(model.order.get(i), alleles));
-				}
-
-				return new PermutationChromosome(genes.toISeq());
+				return new PermutationChromosome(
+					Array.of(model.order).map(Gene(alleles)).toISeq()
+				);
 			}
 		}
 
-		public static final Adapter Adapter = new Adapter();
-	}
+		private static final Function<EnumGene<?>, Integer> AlleleIndex =
+			new Function<EnumGene<?>, Integer>() {
+				@Override
+				public Integer apply(final EnumGene<?> value) {
+					return value.getAlleleIndex();
+				}
+			};
 
+		private static Function<Integer, EnumGene<Object>>
+		Gene(final ISeq<Object> alleles) {
+			return new Function<Integer, EnumGene<Object>>() {
+				@Override
+				public EnumGene<Object> apply(final Integer value) {
+					return new EnumGene<>(value, alleles);
+				}
+			};
+		}
+	}
 }

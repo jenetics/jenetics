@@ -38,6 +38,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.internal.util.cast;
 import org.jenetics.internal.util.jaxb;
+import org.jenetics.internal.util.model.IndexedObject;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
@@ -53,16 +54,16 @@ import org.jenetics.util.RandomRegistry;
  * The following code shows how to create a combinatorial genotype factory which
  * can be used when creating an {@link GeneticAlgorithm} instance.
  * [code]
- * final ISeq〈Integer〉 alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
- * final Factory〈Genotype〈EnumGene〈Integer〉〉〉 gtf = Genotype.of(
- *     new PermutationChromosome<>(alleles)
+ * final ISeq&lt;Integer&gt; alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
+ * final Factory&lt;Genotype&lt;EnumGene&lt;Integer&gt;&gt;&gt; gtf = Genotype.of(
+ *     PermutationChromosome.of(alleles)
  * );
  * [/code]
  *
  * The following code shows the assurances of the {@code EnumGene}.
  * [code]
- * final ISeq〈Integer〉 alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
- * final EnumGene〈Integer〉 gene = new EnumGene<>(5, alleles);
+ * final ISeq&lt;Integer&gt; alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
+ * final EnumGene&lt;Integer&gt; gene = new EnumGene&lt;&gt;(5, alleles);
  *
  * assert(gene.getAlleleIndex() == 5);
  * assert(gene.getAllele() == gene.getValidAlleles().get(5));
@@ -73,7 +74,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-18 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-12 $</em>
  */
 @XmlJavaTypeAdapter(EnumGene.Model.Adapter.class)
 public final class EnumGene<A>
@@ -230,7 +231,9 @@ public final class EnumGene<A>
 	 * Return a new enum gene with an allele randomly chosen from the given
 	 * valid alleles.
 	 *
+	 * @param <A> the allele type
 	 * @param validAlleles the sequence of valid alleles.
+	 * @return a new {@code EnumGene} with the given parameter
 	 * @throws java.lang.IllegalArgumentException if the give valid alleles
 	 *         sequence is empty
 	 * @throws NullPointerException if the valid alleles seq is {@code null}.
@@ -245,17 +248,18 @@ public final class EnumGene<A>
 	/**
 	 * Create a new enum gene from the given valid genes and the chosen allele
 	 * index.
+	 *
+	 * @param <A> the allele type
 	 * @param alleleIndex the index of the allele for this gene.
 	 * @param validAlleles the array of valid alleles.
-	 *
-	 * @return a new enum gene
+	 * @return a new {@code EnumGene} with the given parameter
 	 * @throws java.lang.IllegalArgumentException if the give valid alleles
 	 *         array is empty of the allele index is out of range.
 	 */
 	@SafeVarargs
-	public static <G> EnumGene<G> of(
+	public static <A> EnumGene<A> of(
 		final int alleleIndex,
-		final G... validAlleles
+		final A... validAlleles
 	) {
 		return new EnumGene<>(alleleIndex, Array.of(validAlleles).toISeq());
 	}
@@ -264,13 +268,14 @@ public final class EnumGene<A>
 	 * Return a new enum gene with an allele randomly chosen from the given
 	 * valid alleles.
 	 *
+	 * @param <A> the allele type
 	 * @param validAlleles the array of valid alleles.
-	 * @return a new enum gene
+	 * @return a new {@code EnumGene} with the given parameter
 	 * @throws java.lang.IllegalArgumentException if the give valid alleles
 	 *         array is empty
 	 */
 	@SafeVarargs
-	public static <G> EnumGene<G> of(final G... validAlleles) {
+	public static <A> EnumGene<A> of(final A... validAlleles) {
 		return EnumGene.of(Array.of(validAlleles).toISeq());
 	}
 
@@ -283,26 +288,29 @@ public final class EnumGene<A>
 	@XmlAccessorType(XmlAccessType.FIELD)
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	final static class Model {
-		@XmlAttribute
-		int length;
 
-		@XmlElementWrapper(name = "valid-alleles")
-		@XmlElement(name = "allele")
-		List alleles;
+		@XmlAttribute(name = "length", required = true)
+		public int length;
 
-		@XmlElement(name = "allele")
-		int currentAlleleIndex;
+		@XmlElementWrapper(name = "valid-alleles", required = true, nillable = false)
+		@XmlElement(name = "allele", required = true, nillable = false)
+		public List alleles;
+
+		@XmlElement(name = "allele", required = true, nillable = false)
+		public IndexedObject allele = new IndexedObject();
 
 		public static final class Adapter
 			extends XmlAdapter<Model, EnumGene>
 		{
 			@Override
 			public Model marshal(final EnumGene gene) {
+				final Function marshaller = jaxb.Marshaller(gene.getAllele());
 				final Model m = new Model();
 				m.length = gene.getValidAlleles().length();
-				m.currentAlleleIndex = gene.getAlleleIndex();
+				m.allele.index = gene.getAlleleIndex();
+				m.allele.value = marshaller.apply(gene.getAllele());
 				m.alleles = gene.getValidAlleles()
-					.map(jaxb.Marshaller(gene.getAllele()))
+					.map(marshaller)
 					.asList();
 
 				return m;
@@ -311,13 +319,14 @@ public final class EnumGene<A>
 			@Override
 			public EnumGene unmarshal(final Model m) {
 				return new EnumGene<>(
-					m.currentAlleleIndex,
+					m.allele.index,
 					Array.of(m.alleles)
-						.map(jaxb.Unmarshaller(m.alleles.get(0)))
+						.map(jaxb.Unmarshaller(m.allele.value))
 						.toISeq()
 				);
 			}
 
 		}
 	}
+
 }

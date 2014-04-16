@@ -36,7 +36,7 @@ import static java.lang.Math.min;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.5 &mdash; <em>$Date: 2014-03-11 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public final class bit extends StaticObject {
 	private bit() {}
@@ -335,6 +335,7 @@ public final class bit extends StaticObject {
 	 *
 	 * @param data the data array.
 	 * @param index the index of the bit to flip.
+	 * @return the input array, for command chaining
 	 * @throws IndexOutOfBoundsException if the index is
 	 *          {@code index >= max || index < 0}.
 	 * @throws NullPointerException if the {@code data} array is {@code null}.

@@ -30,14 +30,14 @@ import org.jenetics.internal.util.HashBuilder;
 /**
  * This class implements a linear congruential PRNG with additional bit-shift
  * transition. The base recursion
- * <p><div align="center">
+ * <p>
  * <img
  *     alt="r_{i+1} = (a\cdot r_i + b) \mod 2^{64}"
  *     src="doc-files/lcg-recursion.gif"
- * />
- * </p></div>
+ * >
+ * </p>
  * is followed by a non-linear transformation
- * <p><div align="center">
+ * <p>
  * <img
  *     alt="\begin{eqnarray*}
  *           t &=& r_i                \\
@@ -46,12 +46,12 @@ import org.jenetics.internal.util.HashBuilder;
  *           t &=& t \oplus (t >> 8)
  *         \end{eqnarray*}"
  *     src="doc-files/lcg-non-linear.gif"
- * />
- * </p></div>
+ * >
+ * </p>
  * which destroys the lattice structure introduced by the recursion. The period
  * of this PRNG is 2<sup>64</sup>, {@code iff} <i>b</i> is odd and <i>a</i>
  * {@code mod} 4 = 1.
- * <p/>
+ * <p>
  *
  * <em>
  * This is an re-implementation of the
@@ -60,7 +60,7 @@ import org.jenetics.internal.util.HashBuilder;
  * <a href="http://numbercrunch.de/trng/">TRNG</a> library created by Heiko
  * Bauke.</em>
  *
- * <p/>
+ * <p>
  * <strong>Not that the base implementation of the {@code LCG64ShiftRandom}
  * class is not thread-safe.</strong> If multiple threads requests random
  * numbers from this class, it <i>must</i> be synchronized externally.
@@ -72,7 +72,7 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 2.0 &mdash; <em>$Date: 2014-03-16 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public class LCG64ShiftRandom extends Random64 {
 
@@ -85,7 +85,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 2.0 &mdash; <em>$Date: 2014-03-16 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
 	 */
 	public static final class Param implements Serializable {
 
@@ -185,7 +185,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 2.0 &mdash; <em>$Date: 2014-03-16 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
 	 */
 	public static class ThreadLocal
 		extends java.lang.ThreadLocal<LCG64ShiftRandom>
@@ -220,18 +220,17 @@ public class LCG64ShiftRandom extends Random64 {
 		 * Create a new PRNG using <i>block splitting</i> for guaranteeing well
 		 * distributed PRN for every thread.
 		 *
-		 * <p align="left">
+		 * <p>
 		 * <strong>Tina’s Random Number Generator Library</strong>
-		 * <br/>
+		 * <br>
 		 * <em>Chapter 2. Pseudo-random numbers for parallel Monte Carlo
 		 *     simulations, Page 7</em>
-		 * <br/>
+		 * <br>
 		 * <small>Heiko Bauke</small>
-		 * <br/>
+		 * <br>
 		 * [<a href="http://numbercrunch.de/trng/trng.pdf">
 		 *  http://numbercrunch.de/trng/trng.pdf
 		 *  </a>].
-		 * <p/>
 		 */
 		@Override
 		protected synchronized LCG64ShiftRandom initialValue() {
@@ -275,7 +274,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 2.0 &mdash; <em>$Date: 2014-03-16 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
 	 */
 	public static class ThreadSafe extends LCG64ShiftRandom {
 		private static final long serialVersionUID = 1L;

@@ -53,7 +53,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-18 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 @XmlJavaTypeAdapter(Phenotype.Model.Adapter.class)
 public final class Phenotype<
@@ -90,7 +90,8 @@ public final class Phenotype<
 	 * @param fitnessScaler the fitness scaler.
 	 * @param generation the current generation of the generated phenotype.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
-	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
+	 * @throws IllegalArgumentException if the given {@code generation} is
+	 *         {@code < 0}.
 	 */
 	public Phenotype(
 		final Genotype<G> genotype,
@@ -222,11 +223,11 @@ public final class Phenotype<
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).
-				and(_generation).
-				and(getFitness()).
-				and(getRawFitness()).
-				and(_genotype).value();
+		return HashBuilder.of(getClass())
+				.and(_generation)
+				.and(getFitness())
+				.and(getRawFitness())
+				.and(_genotype).value();
 	}
 
 	@Override
@@ -275,7 +276,8 @@ public final class Phenotype<
 	 * @param generation the generation of the new phenotype.
 	 * @return a new phenotype with the given values.
 	 * @throws NullPointerException if one of the values is {@code null}.
-	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
+	 * @throws IllegalArgumentException if the given {@code generation} is
+	 *         {@code < 0}.
 	 */
 	public Phenotype<G, C> newInstance(
 		final Function<? super Genotype<G>, ? extends C> function,
@@ -293,7 +295,8 @@ public final class Phenotype<
 	 * @param generation the generation of the new phenotype.
 	 * @return a new phenotype with the given values.
 	 * @throws NullPointerException if one of the values is {@code null}.
-	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
+	 * @throws IllegalArgumentException if the given {@code generation} is
+	 *         {@code < 0}.
 	 */
 	public Phenotype<G, C> newInstance(
 		final Function<? super Genotype<G>, ? extends C> function,
@@ -393,11 +396,15 @@ public final class Phenotype<
 	 * The {@code Genotype} is copied to guarantee an immutable class. Only
 	 * the age of the {@code Phenotype} can be incremented.
 	 *
+	 * @param <G> the gene type of the chromosome
+	 * @param <C> the fitness value type
 	 * @param genotype the genotype of this phenotype.
 	 * @param fitnessFunction the fitness function of this phenotype.
 	 * @param generation the current generation of the generated phenotype.
+	 * @return a new phenotype from the given parameters
 	 * @throws NullPointerException if one of the arguments is {@code null}.
-	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
+	 * @throws IllegalArgumentException if the given {@code generation} is
+	 *         {@code < 0}.
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Phenotype<G, C> of(
@@ -411,13 +418,16 @@ public final class Phenotype<
 	/**
 	 * Create a new phenotype from the given arguments.
 	 *
+	 * @param <G> the gene type of the chromosome
+	 * @param <C> the fitness value type
 	 * @param genotype the genotype of this phenotype.
 	 * @param fitnessFunction the fitness function of this phenotype.
 	 * @param fitnessScaler the fitness scaler.
 	 * @param generation the current generation of the generated phenotype.
 	 * @return a new phenotype object
 	 * @throws NullPointerException if one of the arguments is {@code null}.
-	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
+	 * @throws IllegalArgumentException if the given {@code generation} is
+	 *         {@code < 0}.
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Phenotype<G, C> of(
@@ -444,16 +454,16 @@ public final class Phenotype<
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	final static class Model {
 
-		@XmlAttribute
+		@XmlAttribute(name = "generation", required = true)
 		public int generation;
 
-		@XmlElement(name = "genotype")
+		@XmlElement(name = "genotype", required = true, nillable = false)
 		public Genotype.Model genotype;
 
-		@XmlElement(name = "fitness")
+		@XmlElement(name = "fitness", required = true, nillable = false)
 		public Object fitness;
 
-		@XmlElement(name = "raw-fitness")
+		@XmlElement(name = "raw-fitness", required = true, nillable = false)
 		public Object rawFitness;
 
 		public final static class Adapter
@@ -463,7 +473,7 @@ public final class Phenotype<
 			public Model marshal(final Phenotype pt) throws Exception {
 				final Model m = new Model();
 				m.generation = pt.getGeneration();
-				m.genotype = Genotype.Model.Adapter.marshal(pt.getGenotype());
+				m.genotype = Genotype.Model.ADAPTER.marshal(pt.getGenotype());
 				m.fitness = jaxb.marshal(pt.getFitness());
 				m.rawFitness = jaxb.marshal(pt.getRawFitness());
 				return m;
@@ -472,7 +482,7 @@ public final class Phenotype<
 			@Override
 			public Phenotype unmarshal(final Model m) throws Exception {
 				final Phenotype pt = new Phenotype(
-					Genotype.Model.Adapter.unmarshal(m.genotype),
+					Genotype.Model.ADAPTER.unmarshal(m.genotype),
 					functions.Identity(),
 					functions.Identity(),
 					m.generation

@@ -47,7 +47,7 @@ import org.jenetics.util.MappedAccumulator;
  *     alt="i=\left\{\begin{matrix}  0 & when & v < c_0 \\
  *         len(c) & when & v \geq c_{len(c)-1} \\
  *         j & when & c_j< v \leq c_{j-1}  \\  \end{matrix}\right."
- * />
+ * >
  * </p>
  *
  * Example:
@@ -58,14 +58,14 @@ import org.jenetics.util.MappedAccumulator;
  *                  -------+----+----+----+----+----+----+----+----+----+------
  * Histogram index:     0     1    2    3    4    5    6    7    8    9    10
  * </pre>
- * <p/>
+ * <p>
  * <strong>Note that this implementation is not synchronized.</strong> If
  * multiple threads access this object concurrently, and at least one of the
  * threads modifies it, it must be synchronized externally.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public class Histogram<C> extends MappedAccumulator<C> {
 
@@ -321,6 +321,9 @@ public class Histogram<C> extends MappedAccumulator<C> {
 
 	/**
 	 * @see #χ2(Function)
+	 *
+	 * @param cdf the cumulative density function
+	 * @return the chi square value of the given function
 	 */
 	public double chisqr(final Function<C, Double> cdf) {
 		return χ2(cdf);
@@ -328,6 +331,11 @@ public class Histogram<C> extends MappedAccumulator<C> {
 
 	/**
 	 * @see #χ2(Function, Object, Object)
+	 *
+	 * @param cdf the cumulative density function
+	 * @param min the lower limit
+	 * @param max the upper limit
+	 * @return the chi square value of the given function
 	 */
 	public double chisqr(final Function<C, Double> cdf, final C min, final C max) {
 		return χ2(cdf, min, max);
@@ -371,6 +379,7 @@ public class Histogram<C> extends MappedAccumulator<C> {
 	 * Create a new Histogram with the given class separators. The classes are
 	 * sorted by its natural order.
 	 *
+	 * @param <C> the separator types
 	 * @param separators the class separators.
 	 * @return a new Histogram.
 	 * @throws NullPointerException if the {@code separators} are {@code null}.

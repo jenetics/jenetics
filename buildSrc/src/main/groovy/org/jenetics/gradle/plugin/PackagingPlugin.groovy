@@ -27,7 +27,7 @@ import org.gradle.api.tasks.bundling.Jar
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-03-21 $</em>
  */
 class PackagingPlugin implements Plugin<Project> {
 
@@ -108,7 +108,7 @@ class PackagingPlugin implements Plugin<Project> {
 				manifest {
 					attributes(
 						'Implementation-Title': "${_project.name}-${appendix}",
-						'Implementation-Versionv': _project.version,
+						'Implementation-Version': _project.version,
 						'Implementation-URL': _project.packaging.url,
 						'Implementation-Vendor': _project.packaging.author,
 						'ProjectName': _project.packaging.name,

@@ -1,50 +1,45 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <org.jenetics.Population size="5">
-    <org.jenetics.Phenotype generation="5">
-        <org.jenetics.Genotype length="4" ngenes="32">
-            <org.jenetics.DoubleChromosome length="8" min="0.0" max="1.0">
-                <allele>0.4444900501206944</allele>
-                <allele>0.6483556637872625</allele>
-                <allele>0.7019221784478316</allele>
-                <allele>0.052670625992551234</allele>
-                <allele>0.6116371566850141</allele>
-                <allele>0.37531639101256764</allele>
-                <allele>0.7149668741364675</allele>
-                <allele>0.6481367213025813</allele>
-            </org.jenetics.DoubleChromosome>
-            <org.jenetics.DoubleChromosome length="10" min="1.0" max="2.0">
-                <allele>1.7492666733199718</allele>
-                <allele>1.3619424478938893</allele>
-                <allele>1.2210119877809866</allele>
-                <allele>1.2046372575617843</allele>
-                <allele>1.2435520639504776</allele>
-                <allele>1.5792518727382536</allele>
-                <allele>1.0494303370879607</allele>
-                <allele>1.8106690033984103</allele>
-                <allele>1.5819508055868186</allele>
-                <allele>1.0120042064456067</allele>
-            </org.jenetics.DoubleChromosome>
-            <org.jenetics.DoubleChromosome length="9" min="0.0" max="10.0">
-                <allele>2.893782760274207</allele>
-                <allele>9.38531151935226</allele>
-                <allele>4.426885203501866</allele>
-                <allele>5.713946035059521</allele>
-                <allele>5.571425427958594</allele>
-                <allele>3.6096617854835564</allele>
-                <allele>4.802775557206869</allele>
-                <allele>9.395077971174707</allele>
-                <allele>4.034454112751056</allele>
-            </org.jenetics.DoubleChromosome>
-            <org.jenetics.DoubleChromosome length="5" min="0.1" max="0.9">
-                <allele>0.14551027861154806</allele>
-                <allele>0.12253586293076246</allele>
-                <allele>0.5613132410837164</allele>
-                <allele>0.7142745244482724</allele>
-                <allele>0.5967978899115506</allele>
-            </org.jenetics.DoubleChromosome>
-        </org.jenetics.Genotype>
-        <fitness class="java.lang.Double" value="62.76897467920044"/>
-        <raw-fitness class="java.lang.Double" value="19.979985186009532"/>
-    </org.jenetics.Phenotype>
+    <phenotype 
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:type="org.jenetics.Phenotype" generation="294"
+    >
+        <genotype length="5" ngenes="100">
+            <chromosome 
+                xsi:type="org.jenetics.DoubleChromosome" 
+                length="20" min="0.0" max="1.0"
+            >
+                <allele>0.27251556008507416</allele>
+                <allele>0.003140816229067145</allele>
+                <allele>0.43947528327497376</allele>
+                <allele>0.10654807463069327</allele>
+                <allele>0.19696530915810317</allele>
+                <allele>0.7450003838065538</allele>
+                <allele>0.5594416969271359</allele>
+                <allele>0.02823782430152355</allele>
+                <allele>0.5741102315010789</allele>
+                <allele>0.4533651041367144</allele>
+                <allele>0.811148141800367</allele>
+                <allele>0.5710456351848858</allele>
+                <allele>0.30166768355230955</allele>
+                <allele>0.5455492865240272</allele>
+                <allele>0.21068427527733102</allele>
+                <allele>0.5265067943902246</allele>
+                <allele>0.273549098065591</allele>
+                <allele>0.2648197379297126</allele>
+                <allele>0.8732775776362911</allele>
+                <allele>0.9498003919007005</allele>
+            </chromosome>
+            ...
+        </genotype>
+        <fitness 
+            xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+            xsi:type="xs:double"
+        >234.23443</fitness>
+        <raw-fitness 
+            xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+            xsi:type="xs:double"
+        >34.2498</raw-fitness>
+    </phenotype>
     ...
 </org.jenetics.Population>

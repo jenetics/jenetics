@@ -579,54 +579,7 @@ target "http://en.wikipedia.org/wiki/Genetic_algorithm"
 \end_inset
 
  (GA) implementation.
- The project has very few dependencies to other libraries.
- At runtime it only depends on the
-\emph on
- JScience
-\emph default
-
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-http://jscience.org/
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
- library,
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-
-\family sans
-\series bold
-\shape smallcaps
-Jenetics
-\family default
-\series default
-\shape default
- uses the XML-serialization support and the concurrent capability of the
-\emph on
- JScience
-\emph default
- library.
-\end_layout
-
-\end_inset
-
- which is part of the download package.
+ The project has no dependencies to other libraries.
  For building the library from the sources you only have the JDK 1.7
 \begin_inset Index idx
 status collapsed
@@ -652,7 +605,7 @@ Gradle
 status collapsed
 
 \begin_layout Plain Layout
-The used Gradle version is 1.9 and it is downloaded automatically if you
+The used Gradle version is 1.10 and it is downloaded automatically if you
  build the library with the wrapper script
 \family typewriter
 ./gradlew
@@ -3762,65 +3715,20 @@ The
  it is shared by all phenotypes of a population.
  The easiest way for achieving thread-safety is to make the fitness function
  immutable and re-entrant.
+ The used 
+\family typewriter
+Executor
+\family default
+ can be defined when creating the 
+\family typewriter
+GeneticAlgorithm
+\family default
+ object.
 
 \family sans
 \series bold
 \shape smallcaps
- Jenetics
-\family default
-\series default
-\shape default
- uses the
-\family typewriter
  
-\begin_inset CommandInset href
-LatexCommand href
-name "ConcurrentContext"
-target "http://javolution.org/target/site/apidocs/javolution/context/ConcurrentContext.html"
-
-\end_inset
-
-
-\family default
- from the
-\emph on
- 
-\begin_inset CommandInset href
-LatexCommand href
-name "Javolution"
-target "http://javolution.org/"
-
-\end_inset
-
-
-\emph default
- project for concurrent task execution.
- In the default configuration the
-\family typewriter
- ConcurrentContext
-\family default
- utilizes all available
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-This is defined by
-\family typewriter
- Runtime.getRuntime().availableProcessors()
-\family default
-.
-\end_layout
-
-\end_inset
-
- cores of the target machine.
- If you want to change the number of used cores you have to do this before
- the GA initialization.
- The configuration is done by the
-\family typewriter
- Concurrency
-\family default
- class as shown in the following example.
 \end_layout
 
 \begin_layout Standard
@@ -3831,7 +3739,12 @@ status open
 
 \begin_layout Plain Layout
 
-import org.jenetics.util.Concurrency;
+import java.util.concurrent.Executor;
+\end_layout
+
+\begin_layout Plain Layout
+
+import java.util.concurrent.Executors;
 \end_layout
 
 \begin_layout Plain Layout
@@ -3855,102 +3768,27 @@ public class Main {
 
 \begin_layout Plain Layout
 
-        Concurrency.setConcurrency(9);
+        Executor executor = Executors.newFixedThreadPool(10);
 \end_layout
 
 \begin_layout Plain Layout
 
-        ...
+        Factory<Genotype<DoubleGene>> factory = ...
 \end_layout
 
 \begin_layout Plain Layout
 
-        // Forces the GA to use only one thread.
+        Function<Genotype<DoubleGene>, Double> ff = ...
 \end_layout
 
 \begin_layout Plain Layout
 
-        Concurrency.setConcurrency(0);
+        GeneticAlgorithm<DoubleGene, Double> ga =
 \end_layout
 
 \begin_layout Plain Layout
 
-    }
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-If you want to disable the concurrent execution you have to set the concurrency
- to zero.
- The
-\family typewriter
- ConcurrentContext
-\family default
- uses it's own--optimized--thread-pool implementation.
- If you need to have a single executor service, for the GA and your own
- classes, you can initialize the
-\family typewriter
- Concurrency
-\family default
- class with the
-\family typewriter
- ForkJoinPool
-\family default
- from the JDK.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-import java.util.concurrent.ForkJoinPool;
-\end_layout
-
-\begin_layout Plain Layout
-
-import org.jenetics.util.Concurrency;
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-public class Main {
-\end_layout
-
-\begin_layout Plain Layout
-
-    public static void main(final String[] args) {
-\end_layout
-
-\begin_layout Plain Layout
-
-        final int nthreads = 10;
-\end_layout
-
-\begin_layout Plain Layout
-
-        final ForkJoinPool pool = new ForkJoinPool(nthreads);
-\end_layout
-
-\begin_layout Plain Layout
-
-        Concurrency.setForkJoinPool(pool);
+            new GeneticAlgorithm<>(factory, ff, executor);
 \end_layout
 
 \begin_layout Plain Layout
@@ -3970,326 +3808,23 @@ public class Main {
 
 \end_inset
 
-The concurrent context from the
-\emph on
- Javolution
-\emph default
- project is used as shown in the following listing.
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-A detailed usage description about how to use it can be found at 
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-http://javolution.org/
-\end_layout
-
-\end_inset
-
-.
-
-\emph on
- Keep in mind, that the number of threads is equal to the concurrency +
- 1.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-ConcurrentContext.enter();
-\end_layout
-
-\begin_layout Plain Layout
-
-try {
-\end_layout
-
-\begin_layout Plain Layout
-
-    ConcurrentContext.execute(new Runnable() { public void run() {
-\end_layout
-
-\begin_layout Plain Layout
-
-        // Execution of task one.
-\end_layout
-
-\begin_layout Plain Layout
-
-    }});
-\end_layout
-
-\begin_layout Plain Layout
-
-    ConcurrentContext.execute(new Runnable() { public void run() {
-\end_layout
-
-\begin_layout Plain Layout
-
-        // Execution task two.
-\end_layout
-
-\begin_layout Plain Layout
-
-    }});
-\end_layout
-
-\begin_layout Plain Layout
-
-} finally {
-\end_layout
-
-\begin_layout Plain Layout
-
-    ConcurrentContext.exit();
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-The example in the listing above executes the two tasks in parallel.
- The
+If no 
 \family typewriter
- exit()
+Executor
 \family default
- call in the finally block waits until all tasks finishes execution.
- Using the
+ is given, 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ uses a default 
 \family typewriter
- Concurrency
+ForkJoinPool
 \family default
- class this can be written more compactly.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-try (final Concurrency c = Concurrency.start()) {
-\end_layout
-
-\begin_layout Plain Layout
-
-    c.execute(new Runnable() { public void run() {
-\end_layout
-
-\begin_layout Plain Layout
-
-        // Execution of task one.
-\end_layout
-
-\begin_layout Plain Layout
-
-    }});
-\end_layout
-
-\begin_layout Plain Layout
-
-    c.execute(new Runnable() { public void run() {
-\end_layout
-
-\begin_layout Plain Layout
-
-        // Execution of task two.
-\end_layout
-
-\begin_layout Plain Layout
-
-    }});
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-If the GA itself runs in a separate thread and you want to change the configurat
-ion of the GA while running you have to acquire the GA's lock to do this
- in a safe manner.
- The following code example shows how to start the GA in a separate thread.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-final GeneticAlgorithm<DoubleGene, Double> ga = ...
-\end_layout
-
-\begin_layout Plain Layout
-
-ga.setup();
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-// Starting the GA in separate thread.
-\end_layout
-
-\begin_layout Plain Layout
-
-Thread thread = new Thread(new Runnable() { public void run() {
-\end_layout
-
-\begin_layout Plain Layout
-
-    while(!Thread.currentThread().isInterrupted()) {
-\end_layout
-
-\begin_layout Plain Layout
-
-        ga.evolve();
-\end_layout
-
-\begin_layout Plain Layout
-
-    }
-\end_layout
-
-\begin_layout Plain Layout
-
-}});
-\end_layout
-
-\begin_layout Plain Layout
-
-thread.start();
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-// Update the GA configuration.
-\end_layout
-
-\begin_layout Plain Layout
-
-ga.getLock().lock();
-\end_layout
-
-\begin_layout Plain Layout
-
-try {
-\end_layout
-
-\begin_layout Plain Layout
-
-    ga.setAlterer(new Mutation(0.02));
-\end_layout
-
-\begin_layout Plain Layout
-
-    ga.setPopulationSize(120);
-\end_layout
-
-\begin_layout Plain Layout
-
-    ga.setMaximalPhenotypeAge(30);
-\end_layout
-
-\begin_layout Plain Layout
-
-} finally {
-\end_layout
-
-\begin_layout Plain Layout
-
-    ga.getLock().unlock();
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-// Read the GA configuration.
-\end_layout
-
-\begin_layout Plain Layout
-
-ga.getLock().lock();
-\end_layout
-
-\begin_layout Plain Layout
-
-try {
-\end_layout
-
-\begin_layout Plain Layout
-
-    final Statistics<?, ?> statistics = ga.getStatistics();
-\end_layout
-
-\begin_layout Plain Layout
-
-    final Function<?, ?> scaler = ga.getFitnessScaler();
-\end_layout
-
-\begin_layout Plain Layout
-
-} finally {
-\end_layout
-
-\begin_layout Plain Layout
-
-    ga.getLock().unlock();
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-The listing shows two examples how to use the lock.
- In the first example, the lock is used for updating the GA configuration.
- The second example fetches the statistics and fitness scaler in a guaranteed
- consistent way.
+ for concurrency.
 \end_layout
 
 \begin_layout Subsection
@@ -5390,7 +4925,7 @@ All threads uses the same kind of PRNG but with different parameters.
  the Random object of the JDK.
  You can use the
 \family typewriter
-LCG64\SpecialChar \-
+ LCG64\SpecialChar \-
 Shift\SpecialChar \-
 Random
 \family default
@@ -5435,7 +4970,7 @@ With this method each thread will be assigned a block of random numbers,
 \family typewriter
  LCG64\SpecialChar \-
 Shift\SpecialChar \-
-Random\SpecialChar \-
+Random.\SpecialChar \-
 Thread\SpecialChar \-
 Local
 \family default
@@ -6291,13 +5826,37 @@ BitGene
 \begin_layout Itemize
 
 \family typewriter
+BitChromosome
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
 CharacterGene
 \end_layout
 
 \begin_layout Itemize
 
 \family typewriter
-EnumGene
+CharacterChromosome
+\end_layout
+
+\begin_layout Itemize
+IntegerGene
+\end_layout
+
+\begin_layout Itemize
+IntegerChromosome
+\end_layout
+
+\begin_layout Itemize
+LongGene
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+LongChomosome
 \end_layout
 
 \begin_layout Itemize
@@ -6309,31 +5868,19 @@ DoubleGene
 \begin_layout Itemize
 
 \family typewriter
-BitChromosome
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-CharacterChromosome
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-PermutationChromosome
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
 DoubleChromosome
 \end_layout
 
 \begin_layout Itemize
 
 \family typewriter
-LongChomosome
+EnumGene
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+PermutationChromosome
 \end_layout
 
 \begin_layout Itemize
@@ -6432,7 +5979,7 @@ IO.jaxb.write(ga.getPopulation(), file);
 
 \begin_layout Plain Layout
 
-Population<DoubleGene,Double> population =
+Population<DoubleGene, Double> population =
 \end_layout
 
 \begin_layout Plain Layout
@@ -7253,6 +6800,11 @@ public interface Gene<A, G extends Gene<A, G>>
 
 \begin_layout Plain Layout
 
+    public G newInstance(A allele);
+\end_layout
+
+\begin_layout Plain Layout
+
     public boolean isValid();
 \end_layout
 
@@ -7322,13 +6874,10 @@ Allele
 g.
  a gene which holds complex values, you may want extend it from the abstract
 \family typewriter
- NumberGene
+ NumericGene
 \family default
  class.
-\end_layout
-
-\begin_layout Standard
-Every gene extends the
+ Every gene extends the
 \family typewriter
  Serializable
 \family default
@@ -7338,48 +6887,7 @@ Every gene extends the
  normal
 \emph default
  genes there is no more work to do for using the Java serialization mechanism.
- If you want to serialize your gene in XML format, you have to extend the
-\family typewriter
- XMLSerializable
-\family default
- interface from the
-\emph on
- Javolution
-\emph default
- project.
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-For information how to make your gene XML serializable read the instructions
- on the
-\emph on
- Javolution
-\emph default
- site: 
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-http://javolution.org/target/site/apidocs/javolution/xml/XMLSerializable.html
-\end_layout
-
-\end_inset
-
-.
-\end_layout
-
-\end_inset
-
- Have a look at chapter 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "sub:Serialization"
-
-\end_inset
-
- for detailed information about serialization.
+ 
 \end_layout
 
 \begin_layout Subsection
@@ -7488,26 +6996,19 @@ Chromosome
 \begin_layout Standard
 The most important part of a chromosome is the factory method
 \family typewriter
- newInstance
+ new\SpecialChar \-
+Instance
 \family default
 , which lets the GA create a new chromosome instance from a sequence of
  genes.
  This method is used by the alterers when creating new, combined chromosomes.
  The other methods should be self-explanatory.
-\end_layout
-
-\begin_layout Standard
-The chromosome has the same serialization mechanism as the gene.
+ The chromosome has the same serialization mechanism as the gene.
  For the minimal case it extends the
 \family typewriter
  Serializable
 \family default
  interface.
- For XML serialization you have to extend the
-\family typewriter
- XMLSerializable
-\family default
-, which may rely on XML serialization of the genes.
 \end_layout
 
 \begin_layout Subsection
@@ -9382,105 +8883,6 @@ The following external projects are used for running and/or building the
 
 \series bold
 \emph on
-JScience
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-JScience
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-
-\series bold
-Version
-\series default
-:
-\emph on
- 4.3.1
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-Homepage
-\series default
-:
-\emph on
-
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
- http://jscience.org
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-Download
-\series default
-:
-\emph on
- 
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-http://java.net/projects/jscience/downloads
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-License
-\series default
-:
-\emph on
- 
-\begin_inset CommandInset href
-LatexCommand href
-name "JScience BSD License"
-target "http://jscience.org/doc/license.txt"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-Scope
-\series default
-:
-\emph on
- compile, runtime
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-
-\series bold
-\emph on
 TestNG
 \begin_inset Index idx
 status collapsed
@@ -9893,6 +9295,22 @@ Scope
 \end_layout
 
 \end_deeper
+\begin_layout Paragraph
+Maven Central
+\end_layout
+
+\begin_layout Standard
+The whole Jenetics package can also be downloaded from the 
+\emph on
+Maven Central
+\emph default
+ repository:
+\end_layout
+
+\begin_layout LyX-Code
+org.bitbucket.fwilhelm:org.jenetics:2.0.0
+\end_layout
+
 \begin_layout Section
 License
 \begin_inset Index idx

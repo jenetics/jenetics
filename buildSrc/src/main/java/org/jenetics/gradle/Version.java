@@ -23,21 +23,26 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static java.util.regex.Pattern.quote;
 
-
 /**
  * Represent a library version.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-25 $</em>
  */
 public final class Version implements Comparable<Version> {
 
 	private final int _major;
 	private final int _minor;
 	private final int _micro;
+	private final boolean _snapshot;
 
-	public Version(final int major, final int minor, final int micro) {
+	public Version(
+		final int major,
+		final int minor,
+		final int micro,
+		final boolean snapshot
+	) {
 		// Check the version numbers.
 		if ( major < 0 || minor < 0 || micro < 0 ) {
 			throw new IllegalArgumentException(format(
@@ -49,14 +54,7 @@ public final class Version implements Comparable<Version> {
 		_major = major;
 		_minor = minor;
 		_micro = micro;
-	}
-
-	public Version(final int major, final int minor) {
-		this(major, minor, 0);
-	}
-
-	public Version(final int major) {
-		this(major, 0, 0);
+		_snapshot = snapshot;
 	}
 
 	public int getMajor() {
@@ -69,6 +67,10 @@ public final class Version implements Comparable<Version> {
 
 	public int getMicro() {
 		return _micro;
+	}
+
+	public boolean isSnapshot() {
+		return _snapshot;
 	}
 
 	@Override
@@ -104,6 +106,7 @@ public final class Version implements Comparable<Version> {
 		hash = 31*hash + _major;
 		hash = 31*hash + _minor;
 		hash = 31*hash + _micro;
+		hash = 31*hash + Boolean.valueOf(_snapshot).hashCode();
 		return hash;
 	}
 
@@ -119,33 +122,36 @@ public final class Version implements Comparable<Version> {
 		final Version version = (Version)obj;
 		return _major == version._major &&
 				_minor == version._minor &&
-				_micro == version._micro;
+				_micro == version._micro &&
+				_snapshot == version._snapshot;
 	}
 
 	@Override
 	public String toString() {
-		return format("%d.%d.%d", _major, _minor, _micro);
+		return format("%d.%d.%d", _major, _minor, _micro) +
+				(_snapshot ? "-SNAPSHOT" : "");
 	}
 
 	public static Version parse(final String versionString) {
 		requireNonNull(versionString, "Version string must not be null.");
 		final String[] parts = versionString.split(quote("."));
 
-		Version version = null;
+		int major = 1;
+		int minor = 0;
+		int micro = 0;
+		boolean snapshot = false;
+
 		try {
-			if (parts.length == 1) {
-				version = new Version(Integer.parseInt(parts[0]));
-			} else if (parts.length == 2) {
-				version = new Version(
-					Integer.parseInt(parts[0]),
-					Integer.parseInt(parts[1])
-				);
-			} else if (parts.length == 3) {
-				version = new Version(
-					Integer.parseInt(parts[0]),
-					Integer.parseInt(parts[1]),
-					Integer.parseInt(parts[2])
-				);
+			if (parts.length == 3) {
+				major = Integer.parseInt(parts[0]);
+				minor = Integer.parseInt(parts[1]);
+				final String[] last = parts[2].split("-");
+				if (last.length == 2) {
+					micro = Integer.parseInt(last[0]);
+					snapshot = "SNAPSHOT".equals(last[1]);
+				} else {
+					micro = Integer.parseInt(parts[2]);
+				}
 			} else {
 				throw new IllegalArgumentException(format(
 					"'%s' is not a valid version string.", versionString
@@ -157,7 +163,7 @@ public final class Version implements Comparable<Version> {
 			));
 		}
 
-		return version;
+		return new Version(major, minor, micro, snapshot);
 	}
 
 }

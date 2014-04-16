@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.bind.DataBindingException;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
@@ -38,22 +39,28 @@ import org.jenetics.util.StaticObject;
  * JAXB helper methods.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-18 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-04-12 $</em>
  * @since 2.0
  */
 public class jaxb extends StaticObject {
 	private jaxb() {}
 
-	public static final JAXBContext CONTEXT = newContext();
-
-	private static JAXBContext newContext() {
-		try {
-			return JAXBContext.newInstance(
-				"org.jenetics:org.jenetics.internal.util"
-			);
-		} catch (JAXBException e) {
-			throw new AssertionError(e);
+	private static final class JAXBContextHolder {
+		private static final JAXBContext CONTEXT; static {
+			try {
+				CONTEXT = JAXBContext.newInstance(
+					"org.jenetics:org.jenetics.internal.util"
+				);
+			} catch (JAXBException e) {
+				throw new DataBindingException(
+					"Something went wrong while creating JAXBContext.", e
+				);
+			}
 		}
+	}
+
+	public static JAXBContext context() {
+		return JAXBContextHolder.CONTEXT;
 	}
 
 	private static final XmlAdapter<Object, Object> IdentityAdapter =
@@ -69,8 +76,8 @@ public class jaxb extends StaticObject {
 	private static final Map<Class<?>, XmlAdapter<?, ?>> ADAPTERS = new HashMap<>();
 
 	static {
-		ADAPTERS.put(Character.class, CharacterModel.Adapter);
-		ADAPTERS.put(CharacterModel.class, CharacterModel.Adapter);
+		ADAPTERS.put(Character.class, CharacterModel.ADAPTER);
+		ADAPTERS.put(CharacterModel.class, CharacterModel.ADAPTER);
 	}
 
 	/**
