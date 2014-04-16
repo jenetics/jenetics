@@ -36,7 +36,6 @@ import org.jenetics.internal.util.Concurrency;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Scoped;
 import org.jenetics.util.Timer;
 
 /**

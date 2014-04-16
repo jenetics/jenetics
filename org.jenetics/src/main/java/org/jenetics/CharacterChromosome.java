@@ -25,8 +25,8 @@ import static org.jenetics.internal.util.object.eq;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.function.Supplier;
 import java.io.Serializable;
+import java.util.function.Supplier;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -41,7 +41,6 @@ import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.CharSeq;
-import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 
 /**

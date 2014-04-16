@@ -20,6 +20,7 @@
 package org.jenetics;
 
 import java.io.Serializable;
+import java.util.function.Function;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -29,7 +30,6 @@ import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import java.util.function.Function;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -37,7 +37,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
  */
 @XmlJavaTypeAdapter(BitGene.Model.Adapter.class)
 public enum BitGene

@@ -20,14 +20,11 @@
 package org.jenetics.internal.util;
 
 import static java.lang.String.format;
-import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
-import java.util.function.Function;
 
 import org.jenetics.util.Seq;
 import org.jenetics.util.StaticObject;
-import org.jenetics.util.Verifiable;
 
 /**
  * Some helper methods for creating hash codes and comparing values.

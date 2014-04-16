@@ -19,8 +19,8 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.internal.util.jaxb.context;
 import static org.jenetics.internal.util.jaxb.adapterFor;
+import static org.jenetics.internal.util.jaxb.context;
 import static org.jenetics.internal.util.jaxb.marshal;
 
 import java.io.File;
@@ -55,7 +55,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
  */
 public abstract class IO {
 
