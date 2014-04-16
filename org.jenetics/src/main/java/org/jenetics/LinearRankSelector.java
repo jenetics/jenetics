@@ -22,7 +22,7 @@ package org.jenetics;
 import static java.lang.String.format;
 import static org.jenetics.internal.util.object.eq;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Hash;
 
 /**
  * <p>
@@ -56,7 +56,7 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
  */
 public final class LinearRankSelector<
 	G extends Gene<?, G>,
@@ -122,7 +122,7 @@ public final class LinearRankSelector<
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(_nminus).and(_nplus).value();
+		return Hash.of(getClass()).and(_nminus).and(_nplus).value();
 	}
 
 	@Override

@@ -23,7 +23,7 @@ package org.jenetics;
  * Numeric chromosome interface.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-05 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-04-16 $</em>
  * @since 1.6
  */
 public interface NumericChromosome<
@@ -42,7 +42,9 @@ public interface NumericChromosome<
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         (index &lt; 0 || index &gt;= length()).
 	 */
-	public byte byteValue(int index);
+	public default byte byteValue(int index) {
+		return (byte)intValue(index);
+	}
 
 	/**
 	 * Return the byte value of this {@code NumericChromosome} at the
@@ -50,7 +52,9 @@ public interface NumericChromosome<
 	 *
 	 * @return the byte value of the {@link Gene} with {@code index} 0.
 	 */
-	public byte byteValue();
+	public default byte byteValue() {
+		return (byte)intValue();
+	}
 
 	/**
 	 * Return the short value of this {@code NumericChromosome} at the given
@@ -61,7 +65,9 @@ public interface NumericChromosome<
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         (index &lt; 0 || index &gt;= length()).
 	 */
-	public short shortValue(int index);
+	public default short shortValue(int index) {
+		return (short)intValue(index);
+	}
 
 	/**
 	 * Return the short value of this {@code NumericChromosome} at the
@@ -69,7 +75,9 @@ public interface NumericChromosome<
 	 *
 	 * @return the short value of the {@link Gene} with {@code index} 0.
 	 */
-	public short shortValue();
+	public default short shortValue() {
+		return (short)intValue();
+	}
 
 	/**
 	 * Return the int value of this {@code NumericChromosome} at the given

@@ -24,7 +24,7 @@ import static java.lang.String.format;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.IndexStream;
 import org.jenetics.util.MSeq;
@@ -39,7 +39,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
  */
 public class SwapMutator<G extends Gene<?, G>> extends Mutator<G> {
 
@@ -84,7 +84,7 @@ public class SwapMutator<G extends Gene<?, G>> extends Mutator<G> {
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(super.hashCode()).value();
+		return Hash.of(getClass()).and(super.hashCode()).value();
 	}
 
 	@Override

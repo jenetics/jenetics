@@ -22,7 +22,7 @@ package org.jenetics;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Hash;
 
 /**
  * In truncation selection individuals are sorted according to their fitness.
@@ -36,7 +36,7 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
  */
 public final class TruncationSelector<
 	G extends Gene<?, G>,
@@ -88,7 +88,7 @@ public final class TruncationSelector<
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).value();
+		return Hash.of(getClass()).value();
 	}
 
 	@Override

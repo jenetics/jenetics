@@ -24,7 +24,6 @@ import static org.jenetics.internal.util.object.eq;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Function;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -35,7 +34,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.cast;
 import org.jenetics.internal.util.jaxb;
 
@@ -236,7 +235,7 @@ public final class Genotype<G extends Gene<?, G>>
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(_chromosomes).value();
+		return Hash.of(getClass()).and(_chromosomes).value();
 	}
 
 	@Override
@@ -257,62 +256,6 @@ public final class Genotype<G extends Gene<?, G>>
 		return _chromosomes.toString();
 	}
 
-
-	/* *************************************************************************
-	 *  Property access methods
-	 * ************************************************************************/
-
-	/**
-	 * Return a converter which access the chromosome array of this genotype.
-	 *
-	 * @param <T> the gene type
-	 * @return a function object which returns the chromosomes for this genotype.
-	 */
-	public static <T extends Gene<?, T>>
-	Function<Genotype<T>, ISeq<Chromosome<T>>> Chromosomes()
-	{
-		return new Function<Genotype<T>, ISeq<Chromosome<T>>>() {
-			@Override public ISeq<Chromosome<T>> apply(final Genotype<T> value) {
-				return value.toSeq();
-			}
-		};
-	}
-
-	/**
-	 * Return a converter which access the chromosome with the given index of
-	 * this genotype.
-	 *
-	 * @param <T> the gene type
-	 * @param index the index of the chromosome
-	 * @return a function object which returns the chromosome at the given index.
-	 */
-	public static <T extends Gene<?, T>>
-	Function<Genotype<T>, Chromosome<T>> Chromosome(final int index)
-	{
-		return new Function<Genotype<T>, Chromosome<T>>() {
-			@Override public Chromosome<T> apply(final Genotype<T> value) {
-				return value.getChromosome(index);
-			}
-		};
-	}
-
-	/**
-	 * Return a converter which access the first chromosome of this genotype.
-	 *
-	 * @param <T> the gene type
-	 * @return a function object which returns the first chromosome of this
-	 *         genotype.
-	 */
-	public static <T extends Gene<?, T>>
-	Function<Genotype<T>, Chromosome<T>> Chromosome()
-	{
-		return new Function<Genotype<T>, Chromosome<T>>() {
-			@Override public Chromosome<T> apply(final Genotype<T> value) {
-				return value.getChromosome();
-			}
-		};
-	}
-
 	/**
 	 * Create a new Genotype from a given array of {@code Chromosomes}.
 	 *
@@ -330,6 +273,7 @@ public final class Genotype<G extends Gene<?, G>>
 	) {
 		return new Genotype<>(Array.of(chromosomes).toISeq());
 	}
+
 
 	/* *************************************************************************
 	 *  JAXB object serialization

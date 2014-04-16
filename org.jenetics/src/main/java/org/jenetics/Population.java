@@ -41,7 +41,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.jaxb;
 
 import org.jenetics.util.Array;
@@ -59,7 +59,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
  */
 @XmlJavaTypeAdapter(Population.Model.Adapter.class)
 public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
@@ -352,7 +352,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(_population).value();
+		return Hash.of(getClass()).and(_population).value();
 	}
 
 	@Override

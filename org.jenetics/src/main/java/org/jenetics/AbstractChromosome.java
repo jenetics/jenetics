@@ -26,7 +26,7 @@ import static org.jenetics.internal.util.object.eq;
 import java.util.Iterator;
 import java.util.RandomAccess;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.cast;
 
 import org.jenetics.util.ISeq;
@@ -40,7 +40,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
  */
 public abstract class AbstractChromosome<G extends Gene<?, G>>
 	implements
@@ -97,7 +97,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	@Override
 	public boolean isValid() {
 		if (_valid == null) {
-			_valid = _genes.forAll(Gene::isValid);
+			_valid = _genes.forAll(g -> g.isValid());
 		}
 
 		return _valid;
@@ -126,7 +126,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(_genes).value();
+		return Hash.of(getClass()).and(_genes).value();
 	}
 
 	@Override

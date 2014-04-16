@@ -24,7 +24,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.List;
-import java.util.function.Function;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -35,7 +34,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.ISeq;
@@ -44,7 +43,7 @@ import org.jenetics.util.ISeq;
  * Numeric chromosome implementation which holds 64 bit floating point numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-04-16 $</em>
  * @since 1.6
  */
 @XmlJavaTypeAdapter(DoubleChromosome.Model.Adapter.class)
@@ -132,7 +131,7 @@ public class DoubleChromosome
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(super.hashCode()).value();
+		return Hash.of(getClass()).and(super.hashCode()).value();
 	}
 
 	@Override
@@ -205,7 +204,7 @@ public class DoubleChromosome
 				m.length = c.length();
 				m.min = c._min;
 				m.max = c._max;
-				m.values = c.toSeq().map(Allele).asList();
+				m.values = c.toSeq().map(g -> g.getAllele()).asList();
 				return m;
 			}
 
@@ -214,27 +213,11 @@ public class DoubleChromosome
 				final Double min = model.min;
 				final Double max = model.max;
 				return new DoubleChromosome(
-					Array.of(model.values).map(Gene(min, max)).toISeq()
+					Array.of(model.values)
+						.map(value -> new DoubleGene(value, min, max))
+						.toISeq()
 				);
 			}
-		}
-
-		private static final Function<DoubleGene, Double> Allele =
-			new Function<DoubleGene, Double>() {
-				@Override
-				public Double apply(final DoubleGene value) {
-					return value.getAllele();
-				}
-			};
-
-		private static Function<Double, DoubleGene>
-		Gene(final Double min, final Double max) {
-			return new Function<Double, DoubleGene>() {
-				@Override
-				public DoubleGene apply(final Double value) {
-					return new DoubleGene(value, min, max);
-				}
-			};
 		}
 
 	}

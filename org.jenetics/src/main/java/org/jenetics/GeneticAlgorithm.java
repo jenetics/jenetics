@@ -278,7 +278,7 @@ public class GeneticAlgorithm<
 		this(
 			genotypeFactory,
 			fitnessFunction,
-			a -> a,
+			Function.<C>identity(),
 			optimization,
 			executor
 		);
@@ -301,7 +301,7 @@ public class GeneticAlgorithm<
 		this(
 			genotypeFactory,
 			fitnessFunction,
-			a -> a,
+			Function.<C>identity(),
 			optimization,
 			Concurrency.commonPool()
 		);
@@ -325,7 +325,7 @@ public class GeneticAlgorithm<
 		this(
 			genotypeFactory,
 			fitnessFunction,
-			a -> a,
+			Function.<C>identity(),
 			Optimize.MAXIMUM,
 			executor
 		);
@@ -346,7 +346,7 @@ public class GeneticAlgorithm<
 		this(
 			genotypeFactory,
 			fitnessFunction,
-			a -> a,
+			Function.<C>identity(),
 			Optimize.MAXIMUM,
 			Concurrency.commonPool()
 		);

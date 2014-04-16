@@ -22,7 +22,7 @@ package org.jenetics.util;
 import static java.lang.String.format;
 import static org.jenetics.internal.util.object.eq;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Hash;
 
 /**
  * Abstract implementation of the {@link Accumulator} interface which defines a
@@ -31,7 +31,7 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date$</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
  */
 public abstract class AbstractAccumulator<T>
 	implements
@@ -63,7 +63,7 @@ public abstract class AbstractAccumulator<T>
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(_samples).value();
+		return Hash.of(getClass()).and(_samples).value();
 	}
 
 	@Override

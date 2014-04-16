@@ -23,7 +23,7 @@ package org.jenetics;
  * Abstract base class for implementing concrete NumericGenes.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-05 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-04-16 $</em>
  * @since 1.6
  */
 abstract class AbstractNumericGene<
@@ -46,16 +46,6 @@ abstract class AbstractNumericGene<
 	 */
 	protected AbstractNumericGene(final N value, final N min, final N max) {
 		super(value, min, max);
-	}
-
-	@Override
-	public byte byteValue() {
-		return _value.byteValue();
-	}
-
-	@Override
-	public short shortValue() {
-		return _value.shortValue();
 	}
 
 	@Override

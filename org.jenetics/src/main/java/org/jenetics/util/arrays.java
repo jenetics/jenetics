@@ -31,7 +31,7 @@ import java.util.function.Function;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-04-16 $</em>
  */
 public final class arrays extends StaticObject {
 	private arrays() {}
@@ -109,29 +109,6 @@ public final class arrays extends StaticObject {
 	{
 		Collections.sort(array.asList());
 		return array;
-	}
-
-	/**
-	 *
-	 * Test whether the given array is sorted in ascending order.
-	 *
-	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
-	 * @param <T> the array element type
-	 * @param seq the array to test.
-	 * @return {@code true} if the given {@code array} is sorted in ascending
-	 *         order, {@code false} otherwise.
-	 * @throws NullPointerException if the given array or one of it's element is
-	 *         {@code null}.
-	 */
-	public static <T extends Object & Comparable<? super T>>
-	boolean isSorted(final Seq<T> seq)
-	{
-		boolean sorted = true;
-		for (int i = 0, n = seq.length() - 1; i < n && sorted; ++i) {
-			sorted = seq.get(i).compareTo(seq.get(i + 1)) <= 0;
-		}
-
-		return sorted;
 	}
 
 	/**

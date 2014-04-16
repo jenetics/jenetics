@@ -25,7 +25,7 @@ import static org.jenetics.internal.util.object.eq;
 
 import java.util.concurrent.Executor;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Hash;
 
 import org.jenetics.stat.Variance;
 import org.jenetics.util.Accumulator;
@@ -34,7 +34,7 @@ import org.jenetics.util.Accumulator.MinMax;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-14 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
  */
 public class NumberStatistics<
 	G extends Gene<?, G>,
@@ -48,7 +48,7 @@ public class NumberStatistics<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-04-14 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
 	 */
 	public static class Builder<
 		G extends Gene<?, G>,
@@ -210,7 +210,7 @@ public class NumberStatistics<
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).
+		return Hash.of(getClass()).
 				and(super.hashCode()).
 				and(_fitnessMean).
 				and(_fitnessVariance).
@@ -253,7 +253,7 @@ public class NumberStatistics<
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-04-14 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
 	 */
 	public static class Calculator<
 		G extends Gene<?, G>,

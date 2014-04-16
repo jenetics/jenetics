@@ -24,7 +24,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Hash;
 
 
 /**
@@ -72,7 +72,7 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
  */
 public class LCG64ShiftRandom extends Random64 {
 
@@ -85,7 +85,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
 	 */
 	public static final class Param implements Serializable {
 
@@ -185,7 +185,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
 	 */
 	public static class ThreadLocal
 		extends java.lang.ThreadLocal<LCG64ShiftRandom>
@@ -274,7 +274,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
 	 */
 	public static class ThreadSafe extends LCG64ShiftRandom {
 		private static final long serialVersionUID = 1L;
@@ -535,7 +535,7 @@ public class LCG64ShiftRandom extends Random64 {
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass())
+		return Hash.of(getClass())
 				.and(_a).and(_b).and(_r)
 				.and(_seed).and(_param).value();
 	}

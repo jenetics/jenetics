@@ -27,7 +27,7 @@ import static org.jenetics.internal.util.object.eq;
 import java.io.Serializable;
 import java.util.concurrent.Executor;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Hash;
 
 import org.jenetics.stat.Variance;
 import org.jenetics.util.Accumulator;
@@ -40,7 +40,7 @@ import org.jenetics.util.FinalReference;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-14 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	implements Serializable
@@ -51,7 +51,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-04-14 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
 	 */
 	public static class Builder<
 		G extends Gene<?, G>,
@@ -373,7 +373,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).
+		return Hash.of(getClass()).
 				and(_optimize).
 				and(_generation).
 				and(_ageMean).
@@ -431,7 +431,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-04-14 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
 	 */
 	public static final class Time implements Serializable {
 		private static final long serialVersionUID = 2L;
@@ -497,7 +497,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 		@Override
 		public int hashCode() {
-			return HashBuilder.of(getClass()).
+			return Hash.of(getClass()).
 					and(alter).
 					and(combine).
 					and(evaluation).
@@ -551,7 +551,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-04-14 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
 	 */
 	public static class Calculator<
 		G extends Gene<?, G>,
@@ -591,7 +591,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 				executor,
 				population,
 				minMax,
-				age.map(Phenotype.Age(generation))
+				age.map(pt -> pt.getAge(generation))
 			);
 
 			builder.bestPhenotype(opt.best(minMax.getMax(), minMax.getMin()));

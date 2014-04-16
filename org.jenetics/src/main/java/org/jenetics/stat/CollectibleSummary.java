@@ -25,13 +25,13 @@ import static org.jenetics.internal.util.object.eq;
 
 import java.util.Objects;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Hash;
 
 /**
  * Mutable implementation of the statistical {@code Summary} interface.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-04-16 $</em>
  * @since @__version__@
  */
 final class CollectibleSummary<N extends Number & Comparable<? super N>>
@@ -207,7 +207,7 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(CollectibleSummary.class)
+		return Hash.of(CollectibleSummary.class)
 			.and(_n)
 			.and(_min)
 			.and(_max)

@@ -62,7 +62,7 @@ public final class Context<T> {
 			_threadLocalEntry.set(new Entry<T>(value, Thread.currentThread()));
 		}
 
-		return new Scope<>(value, _threadLocalEntry);
+		return new Scope<S, T>(value, _threadLocalEntry);
 	}
 
 	public <S> Scoped<S> scope(final T value, final Supplier<? extends S> supplier) {

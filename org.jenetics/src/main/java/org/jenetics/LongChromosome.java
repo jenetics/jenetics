@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.ISeq;
@@ -44,7 +44,7 @@ import org.jenetics.util.ISeq;
  * Numeric chromosome implementation which holds 64 bit integer numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-04-16 $</em>
  * @since 1.6
  */
 @XmlJavaTypeAdapter(LongChromosome.Model.Adapter.class)
@@ -136,7 +136,7 @@ public class LongChromosome
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(super.hashCode()).value();
+		return Hash.of(getClass()).and(super.hashCode()).value();
 	}
 
 	@Override
@@ -208,7 +208,7 @@ public class LongChromosome
 				m.length = c.length();
 				m.min = c._min;
 				m.max = c._max;
-				m.values = c.toSeq().map(Allele).asList();
+				m.values = c.toSeq().map(g -> g.getAllele()).asList();
 				return m;
 			}
 
@@ -217,28 +217,11 @@ public class LongChromosome
 				final Long min = model.min;
 				final Long max = model.max;
 				return new LongChromosome(
-					Array.of(model.values).map(Gene(min, max)).toISeq()
+					Array.of(model.values)
+						.map(value -> new LongGene(value, min, max))
+						.toISeq()
 				);
 			}
 		}
-
-		private static final Function<LongGene, Long> Allele =
-			new Function<LongGene, Long>() {
-				@Override
-				public Long apply(LongGene value) {
-					return value.getAllele();
-				}
-			};
-
-		private static Function<Long, LongGene>
-		Gene(final Long min, final Long max) {
-			return new Function<Long, LongGene>() {
-				@Override
-				public LongGene apply(final Long value) {
-					return new LongGene(value, min, max);
-				}
-			};
-		}
-
 	}
 }

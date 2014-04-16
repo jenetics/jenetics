@@ -37,7 +37,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.CharSeq;
@@ -121,7 +121,7 @@ public class CharacterChromosome
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).
+		return Hash.of(getClass()).
 				and(super.hashCode()).
 				and(_validCharacters).value();
 	}

@@ -41,7 +41,7 @@ import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.internalbit;
 
 import org.jenetics.util.ISeq;
@@ -52,7 +52,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-14 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
  */
 @XmlJavaTypeAdapter(BitChromosome.Model.Adapter.class)
 public class BitChromosome extends Number
@@ -490,7 +490,7 @@ public class BitChromosome extends Number
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(_genes).value();
+		return Hash.of(getClass()).and(_genes).value();
 	}
 
 	@Override

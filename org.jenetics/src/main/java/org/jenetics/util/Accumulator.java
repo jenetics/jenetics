@@ -28,7 +28,7 @@ import java.util.concurrent.Executor;
 import java.util.function.Function;
 
 import org.jenetics.internal.util.Concurrency;
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Hash;
 
 /**
  * Interface for accumulating values of a given type. Here an usage example:
@@ -145,7 +145,7 @@ public interface Accumulator<T> {
 
 		@Override
 		public int hashCode() {
-			return HashBuilder.of(getClass()).and(super.hashCode()).and(_min).value();
+			return Hash.of(getClass()).and(super.hashCode()).and(_min).value();
 		}
 
 		@Override
@@ -233,7 +233,7 @@ public interface Accumulator<T> {
 
 		@Override
 		public int hashCode() {
-			return HashBuilder.of(getClass()).and(super.hashCode()).and(_max).value();
+			return Hash.of(getClass()).and(super.hashCode()).and(_max).value();
 		}
 
 		@Override
@@ -335,7 +335,7 @@ public interface Accumulator<T> {
 
 		@Override
 		public int hashCode() {
-			return HashBuilder.of(getClass()).
+			return Hash.of(getClass()).
 				and(super.hashCode()).
 				and(_min).
 				and(_max).value();

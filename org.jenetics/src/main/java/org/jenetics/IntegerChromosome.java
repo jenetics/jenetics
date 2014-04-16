@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.ISeq;
@@ -134,7 +134,7 @@ public class IntegerChromosome
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(super.hashCode()).value();
+		return Hash.of(getClass()).and(super.hashCode()).value();
 	}
 
 	@Override
@@ -206,7 +206,7 @@ public class IntegerChromosome
 				m.length = c.length();
 				m.min = c._min;
 				m.max = c._max;
-				m.values = c.toSeq().map(Gene::getAllele).asList();
+				m.values = c.toSeq().map(g -> g.getAllele()).asList();
 				return m;
 			}
 
@@ -215,27 +215,11 @@ public class IntegerChromosome
 				final Integer min = model.min;
 				final Integer max = model.max;
 				return new IntegerChromosome(
-					Array.of(model.values).map(a -> new IntegerGene(a, min, max)).toISeq()
+					Array.of(model.values)
+						.map(a -> new IntegerGene(a, min, max))
+						.toISeq()
 				);
 			}
-		}
-
-		private static final Function<IntegerGene, Integer> Allele =
-			new Function<IntegerGene, Integer>() {
-				@Override
-				public Integer apply(IntegerGene value) {
-					return value.getAllele();
-				}
-			};
-
-		private static Function<Integer, IntegerGene>
-		Gene(final Integer min, final Integer max) {
-			return new Function<Integer, IntegerGene>() {
-				@Override
-				public IntegerGene apply(final Integer value) {
-					return new IntegerGene(value, min, max);
-				}
-			};
 		}
 
 	}

@@ -23,7 +23,7 @@ import static java.lang.Double.NaN;
 import static java.lang.String.format;
 import static org.jenetics.internal.util.object.eq;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Hash;
 
 /**
  * <p>Calculate the variance from a finite sample of <i>N</i> observations.</p>
@@ -44,7 +44,7 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
  */
 public class Variance<N extends Number> extends Mean<N> {
 
@@ -116,7 +116,7 @@ public class Variance<N extends Number> extends Mean<N> {
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(super.hashCode()).and(_m2).value();
+		return Hash.of(getClass()).and(super.hashCode()).and(_m2).value();
 	}
 
 	@Override

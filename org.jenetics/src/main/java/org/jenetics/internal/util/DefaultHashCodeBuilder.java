@@ -26,7 +26,7 @@ import org.jenetics.util.Seq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
  */
 public final class DefaultHashCodeBuilder implements Hash {
 	private static final int P1 = 47;
@@ -37,7 +37,7 @@ public final class DefaultHashCodeBuilder implements Hash {
 
 	protected int _hash = 0;
 
-	protected DefaultHashCodeBuilder(final Class<?> type) {
+	public DefaultHashCodeBuilder(final Class<?> type) {
 		_hash = type.hashCode();
 	}
 
