@@ -24,7 +24,7 @@ import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-17 $</em>
+ * @version <em>$Date: 2014-03-10 $</em>
  */
 public class PermutationChromosomeCharacterTest
 	extends ChromosomeTester<EnumGene<Character>>
@@ -36,7 +36,7 @@ public class PermutationChromosomeCharacterTest
 
 		@Override
 		public PermutationChromosome<Character> newInstance() {
-			return new PermutationChromosome<>(_alleles);
+			return PermutationChromosome.of(_alleles);
 		}
 	};
 

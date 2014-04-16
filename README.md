@@ -1,4 +1,4 @@
-# Jenetics (_1.6.0_)
+# Jenetics (_2.0.0_)
 
 
 Jenetics is an Genetic Algorithm, respectively an Evolutionary Algorithm, library written in Java. It is designed with a clear separation of the several  algorithm concepts, e. g. `Gene`, `Chromosome`, `Genotype`, `Phenotype`, `Population` and  fitness `Function`. Jenetics allows you to minimize or maximize the given fitness  function without tweaking it.
@@ -11,16 +11,16 @@ Jenetics is an Genetic Algorithm, respectively an Evolutionary Algorithm, librar
 *  **Gradle 1.10**: [Gradle](http://www.gradle.org/) is used for building the library. (Gradle is download automatically, if you are using the Gradle Wrapper script `gradlew`, located in the base directory, for building the library.)
 
 ### Test compile/execution
-*  **TestNG 8.8**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests. 
+*  **TestNG 8.8**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
 *  **Apache Commons Math 3.2**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical accumulators.
 
 ### Runtime
 *  **JRE 7**: Java runtime version 7 is needed for using the library, respectively for running the examples.
-*  **JScience** library, <http://jscience.org>: This library is  included and lies in the `buildSrc/lib` directory.
 
 ## Download
 *  **Sourceforge**:  <https://sourceforge.net/projects/jenetics/files/latest/download>
 *  **Bitbucket**:  <https://bitbucket.org/fwilhelm/jenetics/downloads>
+*  **Maven**: `org.bitbucket.fwilhelm:org.jenetics:2.0.0` (currently staged)
 
 ## Build Jenetics
 
@@ -167,7 +167,9 @@ In the [knapsack problem](http://en.wikipedia.org/wiki/Knapsack_problem) a set o
 	import org.jenetics.TournamentSelector;
 	import org.jenetics.util.Factory;
 	import org.jenetics.util.Function;
+	import org.jenetics.util.LCG64ShiftRandom;
 	import org.jenetics.util.RandomRegistry;
+	import org.jenetics.util.Scoped;
 
 	final class Item {
 		public final double size;
@@ -193,7 +195,6 @@ In the [knapsack problem](http://en.wikipedia.org/wiki/Knapsack_problem) a set o
 		@Override
 		public Double apply(final Genotype<BitGene> genotype) {
 			final Chromosome<BitGene> ch = genotype.getChromosome();
-
 			double size = 0;
 			double value = 0;
 			for (int i = 0, n = ch.length(); i < n; ++i) {
@@ -210,22 +211,28 @@ In the [knapsack problem](http://en.wikipedia.org/wiki/Knapsack_problem) a set o
 	public class Knapsack {
 
 		private static KnapsackFunction FF(final int n, final double size) {
-			final Random random = RandomRegistry.getRandom();
 			final Item[] items = new Item[n];
-			for (int i = 0; i < items.length; ++i) {
-				items[i] = new Item(
-					nextDouble(random, 1, 10),
-					nextDouble(random, 1, 15)
-				);
+			try (Scoped<? extends Random> random =
+				RandomRegistry.scope(new LCG64ShiftRandom(123)))
+			{
+				for (int i = 0; i < items.length; ++i) {
+					items[i] = new Item(
+						nextDouble(random.get(), 0, 100),
+						nextDouble(random.get(), 0, 100)
+					);
+				}
 			}
 
 			return new KnapsackFunction(items, size);
 		}
 
 		public static void main(String[] args) throws Exception {
-			final KnapsackFunction ff = FF(15, 100);
+			final int nitems = 15;
+			final double kssize = nitems*100.0/3.0;
+
+			final KnapsackFunction ff = FF(nitems, kssize);
 			final Factory<Genotype<BitGene>> genotype = Genotype.of(
-				BitChromosome.of(15, 0.5)
+				BitChromosome.of(nitems, 0.5)
 			);
 
 			final GeneticAlgorithm<BitGene, Double> ga = new GeneticAlgorithm<>(
@@ -242,8 +249,8 @@ In the [knapsack problem](http://en.wikipedia.org/wiki/Knapsack_problem) a set o
 				new RouletteWheelSelector<BitGene, Double>()
 			);
 			ga.setAlterers(
-				new Mutator<BitGene>(0.115),
-				new SinglePointCrossover<BitGene>(0.16)
+				 new Mutator<BitGene>(0.115),
+				 new SinglePointCrossover<BitGene>(0.16)
 			);
 
 			ga.setup();
@@ -259,20 +266,20 @@ The console out put for the Knapsack GA will look like the listing beneath.
 	+---------------------------------------------------------+
 	|  Population Statistics                                  |
 	+---------------------------------------------------------+
-	|                     Age mean: 2.15800000000             |
-	|                 Age variance: 4.71446492986             |
+	|                     Age mean: 2.38000000000             |
+	|                 Age variance: 6.22004008016             |
 	|                      Samples: 500                       |
-	|                 Best fitness: 99.95345446956883         |
-	|                Worst fitness: 25.50205183297677         |
+	|                 Best fitness: 643.239770840163          |
+	|                Worst fitness: 0.0                       |
 	+---------------------------------------------------------+
 	+---------------------------------------------------------+
 	|  Fitness Statistics                                     |
 	+---------------------------------------------------------+
-	|                 Fitness mean: 88.61369640889            |
-	|             Fitness variance: 129.23019686091           |
-	|        Fitness error of mean: 3.96292497816             |
+	|                 Fitness mean: 525.20849288163           |
+	|             Fitness variance: 20182.61311489490         |
+	|        Fitness error of mean: 23.48803784887            |
 	+---------------------------------------------------------+
-	[01111111|11111111] --> 99.95345446956883
+	[01101111|01011111] --> 643.239770840163
 
 
 ## Traveling Salesman Problem (TSP)
@@ -403,15 +410,6 @@ Beside the Java coding standards as given in <http://www.oracle.com/technetwork/
 - Variable name for arrays or collections are plural.
 - All helper classes which only contains static methods are lower-case. This  indicates that the given class can not be used as type, because no instance can be created.
 
-## Release notes
-
-### 1.6.0
-
-* Preparation work for removing the dependency to the JScience library.
-    * Add Double/Long Gene/Chromosome as a replacement for Float64/Integer64 Gene/Chromosome.
-    * Add JAXB XML serialization as a replacement of the Javolution XML marshalling.
-* Streamlining of the existing API: Marking inconsistent methods/classes as deprecated.
-
 ## License
 
 The library is licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
@@ -429,3 +427,21 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 	See the License for the specific language governing permissions and
 	limitations under the License.
+
+
+## Release notes
+
+### 2.0.0
+
+* Add IntegerGene/Chromosome classes.
+* Remove all deprecated classes and methods.
+* Remove dependency to the JScience library.
+* All concurrency classes are now internal. `GeneticAlgorithm` class takes an `Executor` as additional parameter, which is used for parallelizable code.
+* Library can now be downloaded via the maven central repository: `org.bitbucket.fwilhelm:org.jenetics:2.0.0`
+
+### 1.6.0
+
+* Preparation work for removing the dependency to the JScience library.
+    * Add Double/Long Gene/Chromosome as a replacement for Float64/Integer64 Gene/Chromosome.
+    * Add JAXB XML serialization as a replacement of the Javolution XML marshalling.
+* Streamlining of the existing API: Marking inconsistent methods/classes as deprecated.

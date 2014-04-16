@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<org.jenetics.EnumGene length="5" allele-index="0">
-	<java.lang.Boolean value="true"/>
-	<java.lang.Boolean value="true"/>
-	<java.lang.Boolean value="true"/>
-	<java.lang.Boolean value="false"/>
-	<java.lang.Boolean value="false"/>
-</org.jenetics.EnumGene>

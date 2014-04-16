@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<org.jenetics.LongChromosome length="20" min="-9223372036854775808" max="9223372036854775807">
+<long-chromosome length="20" min="-9223372036854775808" max="9223372036854775807">
     <allele>-8069223231273077030</allele>
     <allele>-4111772314810463982</allele>
     <allele>-380826747604496445</allele>
@@ -20,4 +20,4 @@
     <allele>4374187880249812222</allele>
     <allele>-7863855656443022702</allele>
     <allele>1386882606293782618</allele>
-</org.jenetics.LongChromosome>
+</long-chromosome>

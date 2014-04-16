@@ -21,11 +21,9 @@ package org.jenetics.stat;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.util.object.checkProbability;
+import static org.jenetics.internal.util.object.checkProbability;
 
 import java.io.Serializable;
-
-import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.util.Function;
 import org.jenetics.util.Range;
@@ -35,7 +33,7 @@ import org.jenetics.util.Range;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-09-02 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
  */
 class BinomialDistribution<
 	N extends Number & Comparable<? super N>
@@ -45,10 +43,10 @@ class BinomialDistribution<
 
 	static final class PDF<N extends Number & Comparable<? super N>>
 		implements
-			Function<N, Float64>,
+			Function<N, Double>,
 			Serializable
 	{
-		private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 2L;
 
 		private final Range<N> _domain;
 
@@ -64,14 +62,12 @@ class BinomialDistribution<
 		}
 
 		@Override
-		public Float64 apply(final N value) {
+		public Double apply(final N value) {
 			final long x = value.longValue() - _domain.getMin().longValue();
 
-			Float64 result = Float64.ZERO;
+			double result = 0.0;
 			if (_domain.contains(value)) {
-				result = Float64.valueOf(
-						binomial(_N, x)*Math.pow(_p, x)*Math.pow(_q, _N - x)
-					);
+				result = binomial(_N, x)*Math.pow(_p, x)*Math.pow(_q, _N - x);
 			}
 
 			return result;
@@ -86,10 +82,10 @@ class BinomialDistribution<
 
 	static final class CDF<N extends Number & Comparable<? super N>>
 		implements
-			Function<N, Float64>,
+			Function<N, Double>,
 			Serializable
 	{
-		private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 2L;
 
 		private final Range<N> _domain;
 
@@ -105,21 +101,21 @@ class BinomialDistribution<
 		}
 
 		@Override
-		public Float64 apply(final N value) {
+		public Double apply(final N value) {
 			long x = value.longValue();
 
-			Float64 result = null;
+			double result = 0.0;
 			if (_domain.getMin().longValue() > x) {
-				result = Float64.ZERO;
+				result = 0.0;
 			} else if (_domain.getMax().longValue() < x) {
-				result = Float64.ONE;
+				result = 1.0;
 			} else {
 				x = x - _domain.getMin().longValue();
 				double v = 0;
 				for (long i = 0; i <= x; ++i) {
 					v += binomial(_N, i)*Math.pow(_p, i)*Math.pow(_q, _N - i);
 				}
-				result = Float64.valueOf(v);
+				result = v;
 			}
 
 			return result;
@@ -146,12 +142,12 @@ class BinomialDistribution<
 	}
 
 	@Override
-	public Function<N, Float64> getCDF() {
+	public Function<N, Double> getCDF() {
 		return new CDF<>(_domain, _p);
 	}
 
 	@Override
-	public Function<N, Float64> getPDF() {
+	public Function<N, Double> getPDF() {
 		return new PDF<>(_domain, _p);
 	}
 

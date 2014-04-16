@@ -42,7 +42,7 @@ import java.util.Set;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.4 &mdash; <em>$Date: 2013-09-01 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2014-03-28 $</em>
  */
 public final class Colorizer extends SimpleFileVisitor<Path> {
 
@@ -112,9 +112,9 @@ public final class Colorizer extends SimpleFileVisitor<Path> {
 			for (int ch = in.read(); ch != -1; ch = in.read()) {
 				if (state != State.DATA) {
 					switch (ch) {
-						case '<': out.append("&lt;"); break;
-						case '>': out.append("&gt;"); break;
-						case '&': out.append("&amp;"); break;
+						//case '<': out.append("&lt;"); break;
+						//case '>': out.append("&gt;"); break;
+						//case '&': out.append("&amp;"); break;
 						default: out.append((char)ch); break;
 					}
 				} else {
@@ -144,7 +144,7 @@ public final class Colorizer extends SimpleFileVisitor<Path> {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.4 &mdash; <em>$Date: 2013-09-01 $</em>
+	 * @version 1.4 &mdash; <em>$Date: 2014-03-28 $</em>
 	 */
 	private static enum State {
 

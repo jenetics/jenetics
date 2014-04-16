@@ -27,19 +27,17 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import javolution.context.LocalContext;
-
 import org.jenetics.util.Factory;
 import org.jenetics.util.IO;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.ObjectTester;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-18 $</em>
+ * @version <em>$Date: 2014-03-12 $</em>
  */
-@SuppressWarnings("deprecation")
 public class GenotypeTest extends ObjectTester<Genotype<DoubleGene>> {
 
 
@@ -70,11 +68,10 @@ public class GenotypeTest extends ObjectTester<Genotype<DoubleGene>> {
 
     @Test
     public void testGenotypeGenotypeOfT() {
-        BitChromosome c1 = new BitChromosome(12);
-        BitChromosome c2 = new BitChromosome(12);
-        BitChromosome c3 = c2.copy();
-        Genotype<BitGene> g2 = Genotype.of(c1, c2, c3);
-        Genotype<BitGene> g4 = g2;
+        final BitChromosome c1 = BitChromosome.of(12);
+        final BitChromosome c2 = BitChromosome.of(12);
+        final Genotype<BitGene> g2 = Genotype.of(c1, c2, c2);
+        final Genotype<BitGene> g4 = g2;
 
         assertEquals(g2, g4);
         assertEquals(g2.hashCode(), g4.hashCode());
@@ -138,10 +135,8 @@ public class GenotypeTest extends ObjectTester<Genotype<DoubleGene>> {
 
 	public static void main(final String[] args) throws Exception {
 		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
-		LocalContext.enter();
-		try {
-			RandomRegistry.setRandom(random);
-			final BitChromosome chromosome = new BitChromosome(30, 0.5);
+		try (Scoped<?> s = RandomRegistry.scope(random)) {
+			final BitChromosome chromosome = BitChromosome.of(30, 0.5);
 			final Genotype<?> genotype = Genotype.of(chromosome, chromosome);
 
 			/*
@@ -153,8 +148,6 @@ public class GenotypeTest extends ObjectTester<Genotype<DoubleGene>> {
 			*/
 
 			IO.jaxb.write(genotype, System.out);
-		} finally {
-			LocalContext.exit();
 		}
 	}
 

@@ -22,10 +22,7 @@ package org.jenetics;
 import static java.lang.String.format;
 import static org.jenetics.internal.util.object.eq;
 
-import javolution.lang.Immutable;
-
 import org.jenetics.internal.util.HashBuilder;
-
 
 /**
  * <p>
@@ -35,7 +32,7 @@ import org.jenetics.internal.util.HashBuilder;
  * individual <i>i</i> is linearly assigned to the individuals according to
  * their rank.
  * </p>
- * <p/><img
+ * <p><img
  *        src="doc-files/linear-rank-selector.gif"
  *        alt="P(i)=\frac{1}{N}\left(n^{-}+\left(n^{+}-n^{-}\right)\frac{i-1}{N-1}\right)"
  *     >
@@ -47,7 +44,7 @@ import org.jenetics.internal.util.HashBuilder;
  * held constant, the conditions <i>n</i><sup><i>+</i></sup> = 2 - <i>n</i><sup><i>-</i></sup>
  * and <i>n</i><sup><i>-</i></sup> &gt;= 0 must be fulfilled. Note that all individuals
  * get a different rank, i.e., a different selection probability, even if the
- * have the same fitness value. <p/>
+ * have the same fitness value. <p>
  *
  * <i>
  * T. Blickle, L. Thiele, A comparison of selection schemes used
@@ -59,14 +56,13 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-03-01 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
  */
 public final class LinearRankSelector<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
 	extends ProbabilitySelector<G, C>
-	implements Immutable
 {
 	private final double _nminus;
 	private final double _nplus;

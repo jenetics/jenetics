@@ -25,32 +25,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.bind.DataBindingException;
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.transform.dom.DOMResult;
-import javax.xml.transform.dom.DOMSource;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
-import org.jscience.mathematics.number.Float64;
-import org.jscience.mathematics.number.Integer64;
-
-import org.jenetics.internal.util.model.BooleanModel;
-import org.jenetics.internal.util.model.ByteModel;
 import org.jenetics.internal.util.model.CharacterModel;
-import org.jenetics.internal.util.model.DoubleModel;
-import org.jenetics.internal.util.model.Float64Model;
-import org.jenetics.internal.util.model.FloatModel;
-import org.jenetics.internal.util.model.Integer64Model;
-import org.jenetics.internal.util.model.IntegerModel;
-import org.jenetics.internal.util.model.LongModel;
-import org.jenetics.internal.util.model.ModelType;
-import org.jenetics.internal.util.model.ShortModel;
-import org.jenetics.internal.util.model.StringModel;
-import org.jenetics.internal.util.model.ValueType;
 
 import org.jenetics.util.Function;
 import org.jenetics.util.StaticObject;
@@ -59,70 +39,45 @@ import org.jenetics.util.StaticObject;
  * JAXB helper methods.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-02-02 $</em>
- * @since 1.6
+ * @version 1.6 &mdash; <em>$Date: 2014-04-12 $</em>
+ * @since 2.0
  */
 public class jaxb extends StaticObject {
 	private jaxb() {}
 
-	public static final JAXBContext CONTEXT = newContext();
-
-	private static JAXBContext newContext() {
-		try {
-			return JAXBContext.newInstance(
-				"org.jenetics:org.jenetics.internal.util"
-			);
-		} catch (JAXBException e) {
-			throw new AssertionError(e);
+	private static final class JAXBContextHolder {
+		private static final JAXBContext CONTEXT; static {
+			try {
+				CONTEXT = JAXBContext.newInstance(
+					"org.jenetics:org.jenetics.internal.util"
+				);
+			} catch (JAXBException e) {
+				throw new DataBindingException(
+					"Something went wrong while creating JAXBContext.", e
+				);
+			}
 		}
 	}
 
-	private static final XmlAdapter<Object, Object> IdentityAdapter =
-	new XmlAdapter<Object, Object>() {
-		@Override public Object unmarshal(final Object value) {
-			return value;
-		}
-		@Override public Object marshal(final Object value) {
-			return value;
-		}
-	};
+	public static JAXBContext context() {
+		return JAXBContextHolder.CONTEXT;
+	}
 
-	private static final Map<Class<?>, XmlAdapter<? extends Object, ? extends Object>>
-		ADAPTER_CACHE = new HashMap<>();
+	private static final XmlAdapter<Object, Object> IdentityAdapter =
+		new XmlAdapter<Object, Object>() {
+			@Override public Object unmarshal(final Object value) {
+				return value;
+			}
+			@Override public Object marshal(final Object value) {
+				return value;
+			}
+		};
+
+	private static final Map<Class<?>, XmlAdapter<?, ?>> ADAPTERS = new HashMap<>();
 
 	static {
-		ADAPTER_CACHE.put(Boolean.class, BooleanModel.Adapter);
-		ADAPTER_CACHE.put(BooleanModel.class, BooleanModel.Adapter);
-
-		ADAPTER_CACHE.put(Byte.class, ByteModel.Adapter);
-		ADAPTER_CACHE.put(ByteModel.class, ByteModel.Adapter);
-
-		ADAPTER_CACHE.put(Character.class, CharacterModel.Adapter);
-		ADAPTER_CACHE.put(CharacterModel.class, CharacterModel.Adapter);
-
-		ADAPTER_CACHE.put(Short.class, ShortModel.Adapter);
-		ADAPTER_CACHE.put(ShortModel.class, ShortModel.Adapter);
-
-		ADAPTER_CACHE.put(Integer.class, IntegerModel.Adapter);
-		ADAPTER_CACHE.put(IntegerModel.class, IntegerModel.Adapter);
-
-		ADAPTER_CACHE.put(Long.class, LongModel.Adapter);
-		ADAPTER_CACHE.put(LongModel.class, LongModel.Adapter);
-
-		ADAPTER_CACHE.put(Float.class, FloatModel.Adapter);
-		ADAPTER_CACHE.put(FloatModel.class, FloatModel.Adapter);
-
-		ADAPTER_CACHE.put(Double.class, DoubleModel.Adapter);
-		ADAPTER_CACHE.put(DoubleModel.class, DoubleModel.Adapter);
-
-		ADAPTER_CACHE.put(String.class, StringModel.Adapter);
-		ADAPTER_CACHE.put(StringModel.class, StringModel.Adapter);
-
-		ADAPTER_CACHE.put(Integer64.class, Integer64Model.Adapter);
-		ADAPTER_CACHE.put(Integer64Model.class, Integer64Model.Adapter);
-
-		ADAPTER_CACHE.put(Float64.class, Float64Model.Adapter);
-		ADAPTER_CACHE.put(Float64Model.class, Float64Model.Adapter);
+		ADAPTERS.put(Character.class, CharacterModel.ADAPTER);
+		ADAPTERS.put(CharacterModel.class, CharacterModel.ADAPTER);
 	}
 
 	/**
@@ -137,12 +92,12 @@ public class jaxb extends StaticObject {
 	public static XmlAdapter<Object, Object> adapterFor(final Object value) {
 		final Class<?> cls = classOf(value);
 
-		synchronized (ADAPTER_CACHE) {
-			if (!ADAPTER_CACHE.containsKey(cls)) {
-				ADAPTER_CACHE.put(cls, newXmlAdapter(cls));
+		synchronized (ADAPTERS) {
+			if (!ADAPTERS.containsKey(cls)) {
+				ADAPTERS.put(cls, newXmlAdapter(cls));
 			}
 
-			return (XmlAdapter<Object, Object>)ADAPTER_CACHE.get(cls);
+			return (XmlAdapter<Object, Object>) ADAPTERS.get(cls);
 		}
 	}
 
@@ -162,44 +117,6 @@ public class jaxb extends StaticObject {
 		}
 
 		return adapter;
-	}
-
-	/**
-	 * Return the model type (Class<?>) for the given object. If the given
-	 * object is its own model, {@code value.getClass()} is returned.
-	 *
-	 * @param value the object we try to find the model type.
-	 * @return the model type of the given value.
-	 */
-	public static Class<?> modelTypeFor(final Object value) {
-		Class<?> modelType = classOf(value);
-
-		final Object adapter = adapterFor(value);
-		final ModelType ma = adapter.getClass().getAnnotation(ModelType.class);
-		if (ma != null) {
-			modelType = ma.value();
-		}
-
-		return modelType;
-	}
-
-	/**
-	 * Return the value type (Class<?>) for the given object. If the given
-	 * object is its own value, {@code value.getClass()} is returned.
-	 *
-	 * @param value the object we try to find the value type.
-	 * @return the value type of the given value.
-	 */
-	public static Class<?> valueTypeFor(final Object value) {
-		Class<?> valueType = classOf(value);
-
-		final Object adapter = adapterFor(value);
-		final ValueType ma = adapter.getClass().getAnnotation(ValueType.class);
-		if (ma != null) {
-			valueType = ma.value();
-		}
-
-		return valueType;
 	}
 
 	/**
@@ -274,70 +191,6 @@ public class jaxb extends StaticObject {
 	 */
 	public static Function<Object, Object> Unmarshaller(final Object value)  {
 		return Unmarshaller(jaxb.adapterFor(value));
-	}
-
-	/**
-	 * An generic unmarshaller function.
-	 */
-	public static final Function<Object, Object> Unmarshaller =
-	new Function<Object, Object>() {
-		@SuppressWarnings("rawtypes")
-		@Override
-		public Object apply(final Object value) {
-			Object result = value;
-			if (value instanceof Element) {
-				final Element element = (Element)value;
-
-				try {
-					final Class<?> type = modelTypeFor(
-						Class.forName(element.getNodeName())
-					);
-
-					final DOMSource source = new DOMSource(element);
-					final JAXBElement jaxbElement = CONTEXT.createUnmarshaller()
-						.unmarshal(source, type);
-
-					result = jaxb.adapterFor(jaxbElement.getValue())
-						.unmarshal(jaxbElement.getValue());
-				} catch (Exception e) {
-					throw new RuntimeException(e);
-				}
-			}
-
-			return result;
-		}
-	};
-
-	public static final class JavolutionElementAdapter
-		extends XmlAdapter<Object, Object>
-	{
-		@SuppressWarnings("rawtypes")
-		@Override
-		public Object unmarshal(final Object v) throws Exception {
-			final Element element = (Element)v;
-			final Class<?> type = modelTypeFor(
-				Class.forName(element.getAttribute("class"))
-			);
-
-			final DOMSource source = new DOMSource(element);
-			final JAXBElement jaxbElement = CONTEXT.createUnmarshaller()
-				.unmarshal(source, type);
-
-			return jaxb.adapterFor(jaxbElement.getValue())
-				.unmarshal(jaxbElement.getValue());
-		}
-
-		@Override
-		public Object marshal(final Object v) throws Exception {
-			final DOMResult result = new DOMResult();
-			CONTEXT.createMarshaller().marshal(v, result);
-
-			final Element e = ((Document)result.getNode()).getDocumentElement();
-			final Class<?> type = valueTypeFor(v);
-			e.setAttribute("class", type.getCanonicalName());
-
-			return e;
-		}
 	}
 
 }
