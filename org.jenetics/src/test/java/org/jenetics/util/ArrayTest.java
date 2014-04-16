@@ -34,7 +34,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-31 $</em>
+ * @version <em>$Date: 2014-04-17 $</em>
  */
 public class ArrayTest extends ObjectTester<Array<Double>> {
 
@@ -624,41 +624,6 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	}
 
 	@Test
-	public void append1() {
-		final Array<Integer> a1 = Array.of(0, 1, 2, 3, 4, 5);
-		final Array<Integer> a2 = Array.of(6, 7, 8, 9, 10);
-		final Array<Integer> a3 = a1.add(a2);
-
-		Assert.assertEquals(a3.length(), 11);
-		Assert.assertEquals(a3,
-				Array.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
-			);
-	}
-
-	@Test
-	public void append2() {
-		final Array<Integer> a1 = Array.of(0, 1, 2, 3, 4, 5);
-		final Array<Integer> a3 = a1.add(Arrays.asList(6, 7, 8, 9, 10));
-
-		Assert.assertEquals(a3.length(), 11);
-		Assert.assertEquals(a3,
-				Array.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
-			);
-	}
-
-	@Test
-	public void append3() {
-		final Array<Integer> a1 = Array.of(0, 1, 2, 3, 4, 5);
-		final Array<Integer> a2 = a1.add(6);
-		final Array<Integer> a3 = a1.add(6);
-
-		Assert.assertEquals(a2.length(), a1.length() + 1);
-		Assert.assertEquals(a3.length(), a1.length() + 1);
-		Assert.assertNotSame(a2, a3);
-		Assert.assertEquals(a2, a3);
-	}
-
-	@Test
 	public void indexOf() {
 		final Array<Integer> array = new Array<>(20);
 		for (int i = 0; i < 10; ++i) {
@@ -734,18 +699,6 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	}
 
 	@Test
-	public void iterator() {
-		final List<Integer> list = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 0);
-		final Array<Integer> array = Array.of(list);
-
-		final Iterator<Integer> ai = array.iterator();
-		for (Integer i : list) {
-			Assert.assertEquals(i, ai.next());
-		}
-		Assert.assertFalse(ai.hasNext());
-	}
-
-	@Test
 	public void toObjectArray() {
 		final Array<Integer> array = new Array<>(10);
 		for (int i = 0; i < array.length(); ++i) {
@@ -758,22 +711,6 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 		for (int i = 0; i < oa.length; ++i) {
 			Assert.assertEquals(oa[i], array.get(i));
 		}
-	}
-
-	@Test
-	public void toTypedArray() {
-		final Array<Integer> array = new Array<>(10);
-		for (int i = 0; i < array.length(); ++i) {
-			array.set(i, i);
-		}
-
-		Integer[] oa = array.toArray(new Integer[0]);
-		Assert.assertEquals(oa.length, array.length());
-		Assert.assertEquals(oa.getClass(), Integer[].class);
-		for (int i = 0; i < oa.length; ++i) {
-			Assert.assertEquals(oa[i], array.get(i));
-		}
-		Assert.assertEquals(Array.of(oa), array);
 	}
 
 }

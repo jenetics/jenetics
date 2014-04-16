@@ -25,9 +25,9 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.RandomAccess;
 import java.util.function.Function;
-import java.util.function.IntFunction;
 import java.util.function.Predicate;
 
 /**
@@ -39,9 +39,9 @@ import java.util.function.Predicate;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-17 $</em>
  */
-public interface Seq<T> extends Iterable<T>, IntFunction<T> {
+public interface Seq<T> extends Iterable<T> {
 
 	/**
 	 * Return the value at the given {@code index}.
@@ -52,23 +52,6 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	 *         (index &lt; 0 || index &gt;= size()).
 	 */
 	public T get(final int index);
-
-	@Override
-	public default T apply(final int index) {
-		return get(index);
-	}
-
-	/**
-	 * Check if the value of the {@code IntFunction} is defined at the given
-	 * {@code index}.
-	 *
-	 * @param index the index to test.
-	 * @return {@code true} if {@code index >= 0 && index < length()},
-	 *         {@code false} otherwise.
-	 */
-	public default boolean isDefinedAt(final int index) {
-		return index >= 0 && index < length();
-	}
 
 	/**
 	 * Return the length of this sequence. Once the sequence is created, the
@@ -162,13 +145,9 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	 *          ({@code start < 0 || end > length() || start > end}).
 	 */
 	public default int indexOf(final Object element, final int start, final int end) {
-		int index = -1;
-		if (element != null) {
-			index = indexWhere(element::equals, start, end);
-		} else {
-			index = indexWhere(o -> o == null, start, end);
-		}
-		return index;
+		return element != null ?
+			indexWhere(element::equals, start, end) :
+			indexWhere(Objects::isNull, start, end);
 	}
 
 	/**
@@ -309,15 +288,9 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 		final int start,
 		final int end
 	) {
-		int index = -1;
-
-		if (element == null) {
-			index = lastIndexWhere(o -> o == null, start, end);
-		} else {
-			index = lastIndexWhere(o -> element.equals(o), start, end);
-		}
-
-		return index;
+		return element != null ?
+			lastIndexWhere(element::equals, start, end) :
+			lastIndexWhere(Objects::isNull, start, end);
 	}
 
 	/**
@@ -684,9 +657,9 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	}
 
 
-	/*
-	 * Some static factory methods.
-	 */
+	/* *************************************************************************
+	 *  Some static factory methods.
+	 * ************************************************************************/
 
 	/**
 	 * Create a new {@code Seq} from the given values.
@@ -696,7 +669,7 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	 */
 	@SafeVarargs
 	public static <T> Seq<T> of(final T... values) {
-		return MSeq.<T>valueOf(values.length).setAll(values).toISeq();
+		return ISeq.of(values);
 	}
 
 	/**
@@ -706,7 +679,7 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
 	public static <T> Seq<T> of(final Collection<? extends T> values) {
-		return MSeq.valueOf(values).toISeq();
+		return ISeq.of(values);
 	}
 
 }

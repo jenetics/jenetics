@@ -24,7 +24,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.List;
-import java.util.function.Function;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -44,7 +43,7 @@ import org.jenetics.util.ISeq;
  * Numeric chromosome implementation which holds 64 bit integer numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-04-17 $</em>
  * @since 1.6
  */
 @XmlJavaTypeAdapter(LongChromosome.Model.Adapter.class)
@@ -94,7 +93,7 @@ public class LongChromosome
 	 *         empty.
 	 */
 	public static LongChromosome of(final LongGene... genes) {
-		return new LongChromosome(Array.of(genes).toISeq());
+		return new LongChromosome(ISeq.of(genes));
 	}
 
 	/**
@@ -217,9 +216,8 @@ public class LongChromosome
 				final Long min = model.min;
 				final Long max = model.max;
 				return new LongChromosome(
-					Array.of(model.values)
+					ISeq.of(model.values)
 						.map(value -> new LongGene(value, min, max))
-						.toISeq()
 				);
 			}
 		}

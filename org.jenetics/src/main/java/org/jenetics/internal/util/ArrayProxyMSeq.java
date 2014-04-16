@@ -34,7 +34,7 @@ import org.jenetics.util.MSeq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.5 &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-04-17 $</em>
  */
 public class ArrayProxyMSeq<T> extends ArrayProxySeq<T> implements MSeq<T> {
 
@@ -116,7 +116,7 @@ public class ArrayProxyMSeq<T> extends ArrayProxySeq<T> implements MSeq<T> {
 
 		if (start < end) {
 			if (other instanceof ArrayProxyMSeq<?>) {
-				swap(start, end, (ArrayProxyMSeq<T>)other, otherStart);
+				_swap(start, end, (ArrayProxyMSeq<T>)other, otherStart);
 			} else {
 				_proxy.cloneIfSealed();
 
@@ -129,7 +129,7 @@ public class ArrayProxyMSeq<T> extends ArrayProxySeq<T> implements MSeq<T> {
 		}
 	}
 
-	private void swap(int start, int end, ArrayProxyMSeq<T> other, int otherStart) {
+	private void _swap(int start, int end, ArrayProxyMSeq<T> other, int otherStart) {
 		_proxy.swap(start, end, other._proxy, otherStart);
 	}
 

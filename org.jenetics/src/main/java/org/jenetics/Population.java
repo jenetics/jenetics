@@ -44,10 +44,10 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.jaxb;
 
-import org.jenetics.util.Array;
 import org.jenetics.util.Copyable;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.Seq;
 
 /**
  * A population is a collection of Phenotypes.
@@ -59,7 +59,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-17 $</em>
  */
 @XmlJavaTypeAdapter(Population.Model.Adapter.class)
 public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
@@ -403,7 +403,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 				final Model model = new Model();
 				model.size = p.size();
 				if (!p.isEmpty()) {
-					model.phenotypes = Array.of(p)
+					model.phenotypes = Seq.of(p)
 						.map(jaxb.Marshaller(p.get(0)))
 						.asList();
 				}
@@ -415,9 +415,8 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 			public Population unmarshal(final Model model) throws Exception {
 				Population population = new Population();
 				if (model.size > 0) {
-					final ISeq pt = Array.of(model.phenotypes)
-						.map(jaxb.Unmarshaller(model.phenotypes.get(0)))
-						.toISeq();
+					final ISeq pt = ISeq.of(model.phenotypes)
+						.map(jaxb.Unmarshaller(model.phenotypes.get(0)));
 
 					population = new Population(pt.asList());
 				}

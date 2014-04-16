@@ -56,7 +56,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-17 $</em>
  */
 @XmlJavaTypeAdapter(PermutationChromosome.Model.Adapter.class)
 public final class PermutationChromosome<T>
@@ -176,7 +176,7 @@ public final class PermutationChromosome<T>
 	 */
 	@SafeVarargs
 	public static <T> PermutationChromosome<T> of(final T... alleles) {
-		return of(Array.of(alleles).toISeq());
+		return of(ISeq.of(alleles));
 	}
 
 	/**
@@ -301,12 +301,11 @@ public final class PermutationChromosome<T>
 			public PermutationChromosome unmarshal(final Model model)
 				throws Exception
 			{
-				final ISeq alleles = Array.of(model.alleles)
-					.map(jaxb.Unmarshaller(model.alleles.get(0)))
-					.toISeq();
+				final ISeq alleles = ISeq.of(model.alleles)
+					.map(jaxb.Unmarshaller(model.alleles.get(0)));
 
 				return new PermutationChromosome(
-					Array.of(model.order).map(Gene(alleles)).toISeq()
+					ISeq.of(model.order).map(Gene(alleles))
 				);
 			}
 		}

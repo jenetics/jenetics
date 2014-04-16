@@ -50,7 +50,7 @@ import org.jenetics.internal.util.Stack;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-04-17 $</em>
  *
  */
 //@Deprecated
@@ -518,75 +518,75 @@ public final class Array<T>
 	 * Static factory methods.
 	 **************************************************************************/
 
-	/**
-	 * Create a new array from the given values.
-	 *
-	 * @param <T> the element type
-	 * @param values the array values.
-	 * @return an new {@code Array} with the given values
-	 * @throws NullPointerException if the {@code values} array is {@code null}.
-	 */
-	@SafeVarargs
-	public static <T> Array<T> of(final T... values) {
-		Array<T> array = empty();
-		if (values.length > 0) {
-			array = new Array<>(values.length);
-			arraycopy(values, 0, array._array.data, 0, values.length);
-		}
-
-		return array;
-	}
-
-	/**
-	 * Create a new Array from the values of the given {@code Collection}. The
-	 * order of the elements are determined by the iterator of the Collection.
-	 *
-	 * @param <T> the element type
-	 * @param values the array values.
-	 * @return an new {@code Array} with the given values
-	 * @throws NullPointerException if the {@code values} array is {@code null}.
-	 */
-	public static <T> Array<T> of(final Collection<? extends T> values) {
-		Array<T> array = empty();
-		if (!values.isEmpty()) {
-			array = new Array<>(values.size());
-			int index = 0;
-			for (Iterator<? extends T>
-				it = values.iterator(); it.hasNext(); ++index)
-			{
-				array._array.data[index] = it.next();
-			}
-		}
-
-		return array;
-	}
-
-	/**
-	 * Create a new Array from the values of the given {@code Seq}.
-	 *
-	 * @param <T> the element type
-	 * @param values the array values.
-	 * @return an new {@code Array} with the given values
-	 * @throws NullPointerException if the {@code values} array is {@code null}.
-	 */
-	public static <T> Array<T> of(final Seq<T> values) {
-		Array<T> array = empty();
-		if (values.length() > 0) {
-			if (values instanceof Array<?>) {
-				array = ((Array<T>)values).copy();
-			} else {
-				array = new Array<>(values.length());
-				int index = 0;
-				for (Iterator<? extends T>
-					it = values.iterator(); it.hasNext(); ++index)
-				{
-					array._array.data[index] = it.next();
-				}
-			}
-		}
-
-		return array;
-	}
+//	/**
+//	 * Create a new array from the given values.
+//	 *
+//	 * @param <T> the element type
+//	 * @param values the array values.
+//	 * @return an new {@code Array} with the given values
+//	 * @throws NullPointerException if the {@code values} array is {@code null}.
+//	 */
+//	@SafeVarargs
+//	public static <T> Array<T> of(final T... values) {
+//		Array<T> array = empty();
+//		if (values.length > 0) {
+//			array = new Array<>(values.length);
+//			arraycopy(values, 0, array._array.data, 0, values.length);
+//		}
+//
+//		return array;
+//	}
+//
+//	/**
+//	 * Create a new Array from the values of the given {@code Collection}. The
+//	 * order of the elements are determined by the iterator of the Collection.
+//	 *
+//	 * @param <T> the element type
+//	 * @param values the array values.
+//	 * @return an new {@code Array} with the given values
+//	 * @throws NullPointerException if the {@code values} array is {@code null}.
+//	 */
+//	public static <T> Array<T> of(final Collection<? extends T> values) {
+//		Array<T> array = empty();
+//		if (!values.isEmpty()) {
+//			array = new Array<>(values.size());
+//			int index = 0;
+//			for (Iterator<? extends T>
+//				it = values.iterator(); it.hasNext(); ++index)
+//			{
+//				array._array.data[index] = it.next();
+//			}
+//		}
+//
+//		return array;
+//	}
+//
+//	/**
+//	 * Create a new Array from the values of the given {@code Seq}.
+//	 *
+//	 * @param <T> the element type
+//	 * @param values the array values.
+//	 * @return an new {@code Array} with the given values
+//	 * @throws NullPointerException if the {@code values} array is {@code null}.
+//	 */
+//	public static <T> Array<T> of(final Seq<T> values) {
+//		Array<T> array = empty();
+//		if (values.length() > 0) {
+//			if (values instanceof Array<?>) {
+//				array = ((Array<T>)values).copy();
+//			} else {
+//				array = new Array<>(values.length());
+//				int index = 0;
+//				for (Iterator<? extends T>
+//					it = values.iterator(); it.hasNext(); ++index)
+//				{
+//					array._array.data[index] = it.next();
+//				}
+//			}
+//		}
+//
+//		return array;
+//	}
 
 	/**
 	 * Boxes the given native array into an {@code Array<Boolean>}.

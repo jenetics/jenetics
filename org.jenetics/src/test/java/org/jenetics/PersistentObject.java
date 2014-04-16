@@ -55,7 +55,7 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-14 $</em>
+ * @version <em>$Date: 2014-04-17 $</em>
  */
 public class PersistentObject<T> {
 
@@ -107,7 +107,7 @@ public class PersistentObject<T> {
 	public PersistentObject(final String name, final T value, final String... ios) {
 		_name = Objects.requireNonNull(name);
 		_value = Objects.requireNonNull(value);
-		_marshallings = Array.of(ios).map(ToMarshalling).toISeq();
+		_marshallings = ISeq.of(ios).map(ToMarshalling);
 	}
 
 	public String getName() {

@@ -28,7 +28,6 @@ import java.util.ListIterator;
 import java.util.Random;
 import java.util.function.Function;
 import java.util.function.IntFunction;
-import java.util.function.ObjIntConsumer;
 import java.util.function.Supplier;
 
 import org.jenetics.internal.util.ArrayProxyImpl;
@@ -41,9 +40,9 @@ import org.jenetics.internal.util.ArrayProxyMSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-17 $</em>
  */
-public interface MSeq<T> extends Seq<T>, ObjIntConsumer<T>, Copyable<MSeq<T>> {
+public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 
 	/**
 	 * Set the {@code value} at the given {@code index}.
@@ -54,11 +53,6 @@ public interface MSeq<T> extends Seq<T>, ObjIntConsumer<T>, Copyable<MSeq<T>> {
 	 *         <code>(index < 0 || index >= size())</code>.
 	 */
 	public void set(final int index, final T value);
-
-	@Override
-	public default void accept(final T value, final int index) {
-		set(index, value);
-	}
 
 	/**
 	 * Set all sequence elements to the given {@code value}.
@@ -249,14 +243,14 @@ public interface MSeq<T> extends Seq<T>, ObjIntConsumer<T>, Copyable<MSeq<T>> {
 	public ISeq<T> toISeq();
 
 
-	/*
-	 * Some static factory methods.
-	 */
+	/* *************************************************************************
+	 *  Some static factory methods.
+	 * ************************************************************************/
 
 	/**
 	 * Single instance of an empty {@code MSeq}.
 	 */
-	public static final MSeq<?> EMPTY = valueOf(0);
+	public static final MSeq<?> EMPTY = ofLength(0);
 
 	/**
 	 * Return an empty {@code MSeq}.
@@ -276,7 +270,7 @@ public interface MSeq<T> extends Seq<T>, ObjIntConsumer<T>, Copyable<MSeq<T>> {
 	 * @param <T> the element type of the new {@code MSeq}.
 	 * @return the new mutable sequence.
 	 */
-	public static <T> MSeq<T> valueOf(final int length) {
+	public static <T> MSeq<T> ofLength(final int length) {
 		return new ArrayProxyMSeq<>(new ArrayProxyImpl<T>(length));
 	}
 
@@ -287,8 +281,8 @@ public interface MSeq<T> extends Seq<T>, ObjIntConsumer<T>, Copyable<MSeq<T>> {
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
 	@SafeVarargs
-	public static <T> MSeq<T> valueOf(final T... values) {
-		return MSeq.<T>valueOf(values.length).setAll(values);
+	public static <T> MSeq<T> of(final T... values) {
+		return MSeq.<T>ofLength(values.length).setAll(values);
 	}
 
 	/**
@@ -297,8 +291,22 @@ public interface MSeq<T> extends Seq<T>, ObjIntConsumer<T>, Copyable<MSeq<T>> {
 	 * @param values the array values.
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
-	public static <T> MSeq<T> valueOf(final Collection<? extends T> values) {
-		return MSeq.<T>valueOf(values.size()).setAll(values);
+	public static <T> MSeq<T> of(final Collection<? extends T> values) {
+		return MSeq.<T>ofLength(values.size()).setAll(values);
+	}
+
+	/**
+	 * Create a new {@code MSeq} from the values of the given {@code Seq}.
+	 *
+	 * @param <T> the element type
+	 * @param values the array values.
+	 * @return an new {@code MSeq} with the given values
+	 * @throws NullPointerException if the {@code values} array is {@code null}.
+	 */
+	public static <T> MSeq<T> of(final Seq<T> values) {
+		return values instanceof ArrayProxyMSeq<?> ?
+			((ArrayProxyMSeq<T>)values).copy() :
+			MSeq.<T>ofLength(values.length()).setAll(values);
 	}
 
 }

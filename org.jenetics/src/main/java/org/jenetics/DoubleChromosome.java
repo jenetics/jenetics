@@ -43,7 +43,7 @@ import org.jenetics.util.ISeq;
  * Numeric chromosome implementation which holds 64 bit floating point numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-04-17 $</em>
  * @since 1.6
  */
 @XmlJavaTypeAdapter(DoubleChromosome.Model.Adapter.class)
@@ -93,7 +93,7 @@ public class DoubleChromosome
 	 *         empty.
 	 */
 	public static DoubleChromosome of(final DoubleGene... genes) {
-		return new DoubleChromosome(Array.of(genes).toISeq());
+		return new DoubleChromosome(ISeq.of(genes));
 	}
 
 	/**
@@ -213,9 +213,8 @@ public class DoubleChromosome
 				final Double min = model.min;
 				final Double max = model.max;
 				return new DoubleChromosome(
-					Array.of(model.values)
+					ISeq.of(model.values)
 						.map(value -> new DoubleGene(value, min, max))
-						.toISeq()
 				);
 			}
 		}

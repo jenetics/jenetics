@@ -24,7 +24,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.List;
-import java.util.function.Function;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -44,7 +43,7 @@ import org.jenetics.util.ISeq;
  * Numeric chromosome implementation which holds 32 bit integer numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz  Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-17 $</em>
  * @since 2.0
  */
 @XmlJavaTypeAdapter(IntegerChromosome.Model.Adapter.class)
@@ -94,7 +93,7 @@ public class IntegerChromosome
 	 *         empty.
 	 */
 	public static IntegerChromosome of(final IntegerGene... genes) {
-		return new IntegerChromosome(Array.of(genes).toISeq());
+		return new IntegerChromosome(ISeq.of(genes));
 	}
 
 	/**
@@ -215,9 +214,8 @@ public class IntegerChromosome
 				final Integer min = model.min;
 				final Integer max = model.max;
 				return new IntegerChromosome(
-					Array.of(model.values)
+					ISeq.of(model.values)
 						.map(a -> new IntegerGene(a, min, max))
-						.toISeq()
 				);
 			}
 		}
