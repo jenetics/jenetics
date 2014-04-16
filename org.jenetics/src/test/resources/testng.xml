@@ -20,7 +20,7 @@
  # Author:
  #    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  #
- # Version: <em>$Date: 2014-04-14 $</em>
+ # Version: <em>$Date: 2014-04-16 $</em>
  #
  ###############################################################################
 -->
@@ -253,14 +253,6 @@
 	<test name="org.jenetics.stat.UniformDistribution">
 		<classes>
 			<class name="org.jenetics.stat.UniformDistributionTest" />
-		</classes>
-	</test>
-	<test name="org.jenetics.util.accumulatorsTest">
-		<classes>
-			<class name="org.jenetics.util.accumulatorsTest" />
-			<class name="org.jenetics.util.accumulatorsMaxTest" />
-			<class name="org.jenetics.util.accumulatorsMinMaxTest" />
-			<class name="org.jenetics.util.accumulatorsMinTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.internal.util.ArrayProxy">

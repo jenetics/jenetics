@@ -24,39 +24,9 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-31 $</em>
+ * @version <em>$Date: 2014-04-16 $</em>
  */
 public class objectTest {
-
-	@Test
-	public void rangeCheckPredicate1() {
-		final Array<Integer> array = new Array<>(100);
-		for (int i = 0; i < array.length(); ++i) {
-			array.set(i, i);
-		}
-		//array.forEach(CheckRange(0, 100));
-		assert(false);
-	}
-
-	@Test(expectedExceptions = NullPointerException.class)
-	public void rangeCheckPredicate2() {
-		final Array<Integer> array = new Array<>(100);
-		for (int i = 0; i < array.length(); ++i) {
-			array.set(i, i);
-		}
-		array.set(45, null);
-		//array.forEach(CheckRange(0, 100));
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void rangeCheckPredicate3() {
-		final Array<Integer> array = new Array<>(100);
-		for (int i = 0; i < array.length(); ++i) {
-			array.set(i, i);
-		}
-		array.set(45, 333);
-		//array.forEach(CheckRange(0, 100));
-	}
 
 	@Test
 	public void validPredicate() {
@@ -76,26 +46,6 @@ public class objectTest {
 			}
 		});
 		Assert.assertEquals(array.indexWhere(o -> !o.isValid()), 77);
-	}
-
-	@Test
-	public void nonNullPredicate1() {
-		final Array<Integer> array = new Array<>(100);
-		for (int i = 0; i < array.length(); ++i) {
-			array.set(i, i);
-		}
-
-		//array.forEach(NonNull);
-	}
-
-	@Test(expectedExceptions = NullPointerException.class)
-	public void nonNullPredicate2() {
-		final Array<Integer> array = new Array<>(100);
-		for (int i = 0; i < array.length(); ++i) {
-			array.set(i, i);
-		}
-		array.set(45, null);
-		//array.forEach(NonNull);
 	}
 
 }

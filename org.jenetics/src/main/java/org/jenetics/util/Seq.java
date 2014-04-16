@@ -44,7 +44,7 @@ import org.jenetics.internal.util.SeqMappedIteratorAdapter;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-04-16 $</em>
  */
 public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 
@@ -219,7 +219,7 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	public default int indexOf(final Object element, final int start, final int end) {
 		int index = -1;
 		if (element != null) {
-			index = indexWhere(o -> element.equals(o), start, end);
+			index = indexWhere(element::equals, start, end);
 		} else {
 			index = indexWhere(o -> o == null, start, end);
 		}

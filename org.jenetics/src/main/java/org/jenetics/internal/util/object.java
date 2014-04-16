@@ -34,97 +34,10 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-04-16 $</em>
  */
 public final class object extends StaticObject {
 	private object() {}
-
-
-	/**
-	 * A range checking predicate which can be used to check whether the elements
-	 * of an array are within an given range. If not, an
-	 * {@link IllegalArgumentException} is thrown. If one value is {@code null},
-	 * an {@link NullPointerException} is thrown.
-	 * <p>
-	 *
-	 * The following code will throw an {@link IllegalArgumentException} if the
-	 * integers in the array are smaller than zero and greater than 9.
-	 * [code]
-	 * final Array&lt;Integer&gt; array = ...
-	 * arrays.forEach(CheckRange(0, 10));
-	 * [/code]
-	 */
-	public static <C extends Comparable<? super C>> Function<C, Boolean>
-	CheckRange(final C min, final C max)
-	{
-		return new Function<C,Boolean>() {
-			@Override
-			public Boolean apply(final C value) {
-				requireNonNull(value);
-				if (value.compareTo(min) < 0 || value.compareTo(max) >= 0) {
-					throw new IllegalArgumentException(format(
-						"Given value %s is out of range [%s, %s)",
-						value, min, max
-					));
-				}
-				return Boolean.TRUE;
-			}
-		};
-	}
-
-
-	/**
-	 * Verifies {@link org.jenetics.util.Verifiable} array elements. All elements are valid if the
-	 * condition
-	 * [code]
-	 * arrays.forAll(Verify) == true
-	 * [/code]
-	 * is true.
-	 */
-	public static final Function<Verifiable, Boolean>
-		Verify = new Function<Verifiable,Boolean>() {
-		@Override
-		public Boolean apply(final Verifiable object) {
-			return object.isValid() ? Boolean.TRUE : Boolean.FALSE;
-		}
-	};
-
-	/**
-	 * A {@code null} checking predicate which can be used to check an array
-	 * for null values. The following code will throw an
-	 * {@link NullPointerException} if one of the array elements is {@code null}.
-	 *
-	 * [code]
-	 * final Array&lt;String&gt; array = ...
-	 * array.forEach(NonNull("Object"));
-	 * ...
-	 * final String[] array = ...
-	 * arrays.forEach(array, NonNull);
-	 * [/code]
-	 */
-	public static final Function<Object, Boolean> NonNull = NonNull("Object");
-
-	/**
-	 * A {@code null} checking predicate which can be used to check an array
-	 * for null values. The following code will throw an
-	 * {@link NullPointerException} if one of the array elements is {@code null}.
-	 *
-	 * [code]
-	 * final Array&lt;String&gt; array = ...
-	 * array.forEach(NonNull("Object"));
-	 * ...
-	 * final String[] array = ...
-	 * arrays.forEach(array, NonNull);
-	 * [/code]
-	 */
-	public static Function<Object, Boolean> NonNull(final String message) {
-		return new Function<Object,Boolean>() {
-			@Override public Boolean apply(final Object object) {
-				requireNonNull(object, message );
-				return Boolean.TRUE;
-			}
-		};
-	}
 
 	/**
 	 * Check if the specified value is not negative.

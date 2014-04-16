@@ -49,7 +49,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
  */
 @XmlJavaTypeAdapter(CharacterChromosome.Model.Adapter.class)
 public class CharacterChromosome
@@ -178,16 +178,16 @@ public class CharacterChromosome
 		final CharSeq validChars
 	) {
 		final Array<CharacterGene> genes = new Array<>(alleles.length());
-		//genes.fill(GeneFactory(alleles, validChars));
+		genes.fill(GeneFactory(alleles, validChars));
 		return new CharacterChromosome(genes.toISeq());
 	}
 
-	private static Factory<CharacterGene>
+	private static Supplier<CharacterGene>
 	GeneFactory(final String alleles, final CharSeq validChars) {
-		return new Factory<CharacterGene>() {
+		return new Supplier<CharacterGene>() {
 			private int _index = 0;
 			@Override
-			public CharacterGene newInstance() {
+			public CharacterGene get() {
 				return CharacterGene.of(
 					alleles.charAt(_index++), validChars
 				);

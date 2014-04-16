@@ -34,7 +34,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
  */
 public interface Chromosome<G extends Gene<?, G>>
 	extends
@@ -43,7 +43,6 @@ public interface Chromosome<G extends Gene<?, G>>
 		Factory<Chromosome<G>>,
 		Serializable
 {
-
 	/**
 	 * A factory method which creates a new {@link Chromosome} of specific type
 	 * and the given {@code genes}.

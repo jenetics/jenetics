@@ -29,7 +29,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-31 $</em>
+ * @version <em>$Date: 2014-04-16 $</em>
  */
 class TestUtils {
 
@@ -144,10 +144,10 @@ class TestUtils {
 		final int nchromosomes,
 		final int npopulation
 	) {
-		final Random random = RandomRegistry.getRandom();
+		final Random random = new Random(122343);
 		final Array<Double> alleles = new Array<>(ngenes);
 		for (int i = 0; i < ngenes; ++i) {
-			alleles.set(i, Double.valueOf(random.nextDouble()*10));
+			alleles.set(i, random.nextDouble()*10);
 		}
 		final ISeq<Double> ialleles = alleles.toISeq();
 
