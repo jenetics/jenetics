@@ -20,7 +20,7 @@ Jenetics is an Genetic Algorithm, respectively an Evolutionary Algorithm, librar
 ## Download
 *  **Sourceforge**:  <https://sourceforge.net/projects/jenetics/files/latest/download>
 *  **Bitbucket**:  <https://bitbucket.org/fwilhelm/jenetics/downloads>
-*  **Maven**: `org.bitbucket.fwilhelm:org.jenetics:2.0.0`
+*  **Maven**: `org.bitbucket.fwilhelm:org.jenetics:2.0.0` (currently staged)
 
 ## Build Jenetics
 
@@ -433,6 +433,7 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 
 ### 2.0.0
 
+* Add IntegerGene/Chromosome classes.
 * Remove all deprecated classes and methods.
 * Remove dependency to the JScience library.
 * All concurrency classes are now internal. `GeneticAlgorithm` class takes an `Executor` as additional parameter, which is used for parallelizable code.

@@ -26,7 +26,6 @@ import java.util.function.Function;
 
 import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;
-import org.jenetics.Chromosome;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.Mutator;
@@ -62,7 +61,8 @@ final class KnapsackFunction
 
 	@Override
 	public Double apply(final Genotype<BitGene> genotype) {
-		final BitChromosome ch = (BitChromosome)genotype.getChromosome();
+		final BitChromosome ch = 
+				(BitChromosome)genotype.getChromosome();
 		double size = 0;
 		double value = 0;
 		for (int i = 0, n = ch.length(); i < n; ++i) {
