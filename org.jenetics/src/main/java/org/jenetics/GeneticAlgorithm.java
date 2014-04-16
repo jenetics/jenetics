@@ -27,12 +27,14 @@ import static org.jenetics.internal.util.object.checkProbability;
 import static org.jenetics.util.arrays.forEach;
 
 import java.util.Collection;
+import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.jenetics.internal.util.Concurrency;
+
 import org.jenetics.util.Array;
-import org.jenetics.util.Concurrency;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 import org.jenetics.util.Timer;
@@ -48,12 +50,12 @@ import org.jenetics.util.functions;
  *
  * [code]
  * public static void main(final String[] args) {
- *     final Factory〈Genotype〈BitGene〉〉 gtf = Genotype.of(
+ *     final Factory&lt;Genotype&lt;BitGene&gt;&gt; gtf = Genotype.of(
  *         BitChromosome.of(10, 0.5)
  *     );
- *     final Function〈Genotype〈BitGene〉 Double〉 ff = ...
- *     final GeneticAlgorithm〈BitGene, Double〉
- *     ga = new GeneticAlgorithm〈〉(gtf, ff, Optimize.MAXIMUM);
+ *     final Function&lt;Genotype&lt;BitGene&gt; Double&gt; ff = ...
+ *     final GeneticAlgorithm&lt;BitGene, Double&gt;
+ *     ga = new GeneticAlgorithm&lt;&gt;(gtf, ff, Optimize.MAXIMUM);
  *
  *     ga.setup();
  *     ga.evolve(100);
@@ -82,10 +84,10 @@ import org.jenetics.util.functions;
  * [code]
  * public static void main(final String[] args) {
  *     ...
- *     ga.setSelectors(new RouletteWheelSelector〈BitGene〉());
+ *     ga.setSelectors(new RouletteWheelSelector&lt;BitGene&gt;());
  *     ga.setAlterers(
- *         new SinglePointCrossover〈BitGene〉(0.1),
- *         new Mutator〈BitGene〉(0.01)
+ *         new SinglePointCrossover&lt;BitGene&gt;(0.1),
+ *         new Mutator&lt;BitGene&gt;(0.01)
  *     );
  *
  *     ga.setup();
@@ -100,7 +102,6 @@ import org.jenetics.util.functions;
  * and {@code setSurvivorSelector} methods. The alterers are concatenated, at
  * first the crossover (with probability 0.1) is performed and then the
  * chromosomes are mutated (with probability 0.01).
- * <p/>
  *
  * <h3>Serialization</h3>
  *
@@ -117,8 +118,8 @@ import org.jenetics.util.functions;
  * IO.jaxb.write(ga.getPopulation(), file);
  *
  * // Reading the population from disk.
- * Population〈DoubleGene, Double〉 population =
- *     (Population〈DoubleGene, Double〉)IO.jaxb.read(file);
+ * Population&lt;DoubleGene, Double&gt; population =
+ *     (Population&lt;DoubleGene, Double&gt;)IO.jaxb.read(file);
  * ga.setPopulation(population);
  * [/code]
  *
@@ -133,7 +134,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-03-05 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-12 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,
@@ -160,6 +161,7 @@ public class GeneticAlgorithm<
 	private final Lock _lock = new ReentrantLock(true);
 
 	private final Optimize _optimization;
+	private final Executor _executor;
 
 	private final Factory<Genotype<G>> _genotypeFactory;
 	private final Factory<Phenotype<G, C>> _phenotypeFactory;
@@ -208,18 +210,22 @@ public class GeneticAlgorithm<
 	 * @param fitnessScaler the fitness scaler this GA is using.
 	 * @param optimization Determine whether this GA maximize or minimize the
 	 *        fitness function.
+	 * @param executor the {@link java.util.concurrent.Executor} used for
+	 *        executing the parallelizable parts of the code.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public GeneticAlgorithm(
 		final Factory<Genotype<G>> genotypeFactory,
 		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
 		final Function<? super C, ? extends C> fitnessScaler,
-		final Optimize optimization
+		final Optimize optimization,
+		final Executor executor
 	) {
 		_genotypeFactory = requireNonNull(genotypeFactory, "GenotypeFactory");
 		_fitnessFunction = requireNonNull(fitnessFunction, "FitnessFunction");
 		_fitnessScaler = requireNonNull(fitnessScaler, "FitnessScaler");
 		_optimization = requireNonNull(optimization, "Optimization");
+		_executor = requireNonNull(executor, "Executor");
 
 		_phenotypeFactory = new Factory<Phenotype<G, C>>() {
 			@Override public Phenotype<G, C> newInstance() {
@@ -234,22 +240,53 @@ public class GeneticAlgorithm<
 	}
 
 	/**
-	 * Create a new genetic algorithm. By default the GA tries to maximize the
-	 * fitness function.
+	 * Create a new genetic algorithm.
 	 *
 	 * @param genotypeFactory the genotype factory this GA is working with.
 	 * @param fitnessFunction the fitness function this GA is using.
+	 * @param fitnessScaler the fitness scaler this GA is using.
+	 * @param optimization Determine whether this GA maximize or minimize the
+	 *        fitness function.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public GeneticAlgorithm(
 		final Factory<Genotype<G>> genotypeFactory,
-		final Function<? super Genotype<G>, ? extends C> fitnessFunction
+		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
+		final Function<? super C, ? extends C> fitnessScaler,
+		final Optimize optimization
+	) {
+		this(
+			genotypeFactory,
+			fitnessFunction,
+			fitnessScaler,
+			optimization,
+			Concurrency.commonPool()
+		);
+	}
+
+	/**
+	 * Create a new genetic algorithm.
+	 *
+	 * @param genotypeFactory the genotype factory this GA is working with.
+	 * @param fitnessFunction the fitness function this GA is using.
+	 * @param optimization Determine whether this GA maximize or minimize the
+	 *        fitness function.
+	 * @param executor the {@link java.util.concurrent.Executor} used for
+	 *        executing the parallelizable parts of the code.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 */
+	public GeneticAlgorithm(
+		final Factory<Genotype<G>> genotypeFactory,
+		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
+		final Optimize optimization,
+		final Executor executor
 	) {
 		this(
 			genotypeFactory,
 			fitnessFunction,
 			functions.<C>Identity(),
-			Optimize.MAXIMUM
+			optimization,
+			executor
 		);
 	}
 
@@ -271,7 +308,79 @@ public class GeneticAlgorithm<
 			genotypeFactory,
 			fitnessFunction,
 			functions.<C>Identity(),
-			optimization
+			optimization,
+			Concurrency.commonPool()
+		);
+	}
+
+	/**
+	 * Create a new genetic algorithm. By default the GA tries to maximize the
+	 * fitness function.
+	 *
+	 * @param genotypeFactory the genotype factory this GA is working with.
+	 * @param fitnessFunction the fitness function this GA is using.
+	 * @param executor the {@link java.util.concurrent.Executor} used for
+	 *        executing the parallelizable parts of the code.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 */
+	public GeneticAlgorithm(
+		final Factory<Genotype<G>> genotypeFactory,
+		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
+		final Executor executor
+	) {
+		this(
+			genotypeFactory,
+			fitnessFunction,
+			functions.<C>Identity(),
+			Optimize.MAXIMUM,
+			executor
+		);
+	}
+
+	/**
+	 * Create a new genetic algorithm. By default the GA tries to maximize the
+	 * fitness function.
+	 *
+	 * @param genotypeFactory the genotype factory this GA is working with.
+	 * @param fitnessFunction the fitness function this GA is using.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 */
+	public GeneticAlgorithm(
+		final Factory<Genotype<G>> genotypeFactory,
+		final Function<? super Genotype<G>, ? extends C> fitnessFunction
+	) {
+		this(
+			genotypeFactory,
+			fitnessFunction,
+			functions.<C>Identity(),
+			Optimize.MAXIMUM,
+			Concurrency.commonPool()
+		);
+	}
+
+	/**
+	 * Create a new genetic algorithm. By default the GA tries to maximize the
+	 * fitness function.
+	 *
+	 * @param genotypeFactory the genotype factory this GA is working with.
+	 * @param fitnessFunction the fitness function this GA is using.
+	 * @param fitnessScaler the fitness scaler this GA is using.
+	 * @param executor the {@link java.util.concurrent.Executor} used for
+	 *        executing the parallelizable parts of the code.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 */
+	public GeneticAlgorithm(
+		final Factory<Genotype<G>> genotypeFactory,
+		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
+		final Function<? super C, ? extends C> fitnessScaler,
+		final Executor executor
+	) {
+		this(
+			genotypeFactory,
+			fitnessFunction,
+			fitnessScaler,
+			Optimize.MAXIMUM,
+			executor
 		);
 	}
 
@@ -293,7 +402,8 @@ public class GeneticAlgorithm<
 			genotypeFactory,
 			fitnessFunction,
 			fitnessScaler,
-			Optimize.MAXIMUM
+			Optimize.MAXIMUM,
+			null
 		);
 	}
 
@@ -362,7 +472,7 @@ public class GeneticAlgorithm<
 		//First valuation of the initial population.
 		_statisticTimer.start();
 		_statistics = _calculator.evaluate(
-			_population, _generation, _optimization
+			_executor, _population, _generation, _optimization
 		).build();
 
 		_bestStatistics = _statistics;
@@ -422,7 +532,7 @@ public class GeneticAlgorithm<
 			//Evaluate the statistic
 			_statisticTimer.start();
 			final Statistics.Builder<G, C> builder = _calculator.evaluate(
-					_population, _generation, _optimization
+					_executor, _population, _generation, _optimization
 				);
 			builder.killed(_killed.get() - killed);
 			builder.invalid(_invalid.get() - invalid);
@@ -458,10 +568,8 @@ public class GeneticAlgorithm<
 
 	private void evaluate() {
 		_evaluateTimer.start();
-		try (Concurrency c = Concurrency.start()) {
-			for (int i =  _population.size(); --i >= 0;) {
-				c.execute(_population.get(i));
-			}
+		try (Concurrency c = Concurrency.with(_executor)) {
+			c.execute(_population);
 		}
 		_evaluateTimer.stop();
 	}
@@ -498,15 +606,18 @@ public class GeneticAlgorithm<
 		final int numberOfOffspring = getNumberOfOffsprings();
 		assert (numberOfSurvivors + numberOfOffspring == _populationSize);
 
-		try (Concurrency c = Concurrency.start()) {
-			c.execute(new Runnable() { @Override public void run() {
-				final Population<G, C> survivors = _survivorSelector.select(
-					_population, numberOfSurvivors, _optimization
-				);
+		try (Concurrency c = Concurrency.with(_executor)) {
+			c.execute(new Runnable() {
+				@Override
+				public void run() {
+					final Population<G, C> survivors = _survivorSelector.select(
+						_population, numberOfSurvivors, _optimization
+					);
 
-				assert (survivors.size() == numberOfSurvivors);
-				selection.set(0, survivors);
-			}});
+					assert (survivors.size() == numberOfSurvivors);
+					selection.set(0, survivors);
+				}
+			});
 
 			final Population<G, C> offsprings = _offspringSelector.select(
 				_population, numberOfOffspring, _optimization
@@ -526,29 +637,32 @@ public class GeneticAlgorithm<
 		assert (survivors.size() + offsprings.size() == _populationSize);
 		final Population<G, C> population = new Population<>(_populationSize);
 
-		try (Concurrency c = Concurrency.start()) {
+		try (Concurrency c = Concurrency.with(_executor)) {
 			// Kill survivors which are to old and replace it with new one.
-			c.execute(new Runnable() { @Override public void run() {
-				for (int i = 0, n = survivors.size(); i < n; ++i) {
-					final Phenotype<G, C> survivor = survivors.get(i);
+			c.execute(new Runnable() {
+				@Override
+				public void run() {
+					for (int i = 0, n = survivors.size(); i < n; ++i) {
+						final Phenotype<G, C> survivor = survivors.get(i);
 
-					final boolean isTooOld =
-						survivor.getAge(_generation) > _maximalPhenotypeAge;
+						final boolean isTooOld =
+							survivor.getAge(_generation) > _maximalPhenotypeAge;
 
-					final boolean isInvalid = isTooOld || !survivor.isValid();
+						final boolean isInvalid = isTooOld || !survivor.isValid();
 
-					// Sorry, too old or not valid.
-					if (isInvalid) {
-						survivors.set(i, _phenotypeFactory.newInstance());
-					}
+						// Sorry, too old or not valid.
+						if (isInvalid) {
+							survivors.set(i, _phenotypeFactory.newInstance());
+						}
 
-					if (isTooOld) {
-						_killed.incrementAndGet();
-					} else if (isInvalid) {
-						_invalid.incrementAndGet();
+						if (isTooOld) {
+							_killed.incrementAndGet();
+						} else if (isInvalid) {
+							_invalid.incrementAndGet();
+						}
 					}
 				}
-			}});
+			});
 
 			// In the mean time we can add the offsprings.
 			population.addAll(offsprings);
@@ -595,13 +709,13 @@ public class GeneticAlgorithm<
 	 * </p>
 	 * To set one ore more GA parameter you will write code like this:
 	 * [code]
-	 * final GeneticAlgorithm〈DoubleGene, Double〉 ga = ...
-	 * final Function〈GeneticAlgorithm〈?, ?〉, Boolean〉 until = ...
+	 * final GeneticAlgorithm&lt;DoubleGene, Double&gt; ga = ...
+	 * final Function&lt;GeneticAlgorithm&lt;?, ?&gt;, Boolean&gt; until = ...
 	 *
 	 * //Starting the GA in separate thread.
 	 * final Thread thread = new Thread(new Runnable() {
 	 *     public void run() {
-	 *         while (!Thread.currentThread().isInterrupted() &&
+	 *         while (!Thread.currentThread().isInterrupted() &amp;&amp;
 	 *                !until.apply(ga))
 	 *         {
 	 *             if (ga.getGeneration() == 0) {
@@ -618,7 +732,7 @@ public class GeneticAlgorithm<
 	 *  //are changed before the next evolve step.
 	 * ga.getLock().lock();
 	 * try {
-	 *     ga.setAlterer(new Mutation(0.02);
+	 *     ga.setAlterer(new Mutation(0.02));
 	 *     ga.setPopulationSize(55);
 	 *     ga.setMaximalPhenotypeAge(30);
 	 * } finally {
@@ -632,8 +746,8 @@ public class GeneticAlgorithm<
 	 * [code]
 	 * ga.getLock().lock();
 	 * try {
-	 *     final Statistics〈?, ?〉 statistics = ga.getStatistic();
-	 *     final Function〈?, ?〉 scaler = ga.getFitnessScaler();
+	 *     final Statistics&lt;?, ?&gt; statistics = ga.getStatistic();
+	 *     final Function&lt;?, ?&gt; scaler = ga.getFitnessScaler();
 	 * } finally {
 	 *     ga.getLock().unlock();
 	 * }
@@ -673,8 +787,8 @@ public class GeneticAlgorithm<
 	 * The following example shows the simplest possible fitness function. It's
 	 * the identity function and returns the allele of an 1x1  float genotype.
 	 * [code]
-	 * class Id implements Function〈Genotype〈DoubleGene〉, Double〉 {
-	 *     public Double apply(final Genotype〈DoubleGene〉 genotype) {
+	 * class Id implements Function&lt;Genotype&lt;DoubleGene&gt;, Double&gt; {
+	 *     public Double apply(final Genotype&lt;DoubleGene&gt; genotype) {
 	 *         return genotype.getGene().getAllele();
 	 *     }
 	 * }
@@ -702,7 +816,7 @@ public class GeneticAlgorithm<
 	 * configuration the raw-fitness is equal to the actual fitness value, that
 	 * means, the used fitness scaler is the identity function.
 	 * [code]
-	 * class Sqrt extends Function〈Double, Double〉 {
+	 * class Sqrt extends Function&lt;Double, Double&gt; {
 	 *     public Double apply(final Double value) {
 	 *         return sqrt(value);
 	 *     }
@@ -717,7 +831,7 @@ public class GeneticAlgorithm<
 	 * When using a fitness scaler you have to take care, that your scaler
 	 * doesn't destroy your fitness value. This can be the case when your
 	 * fitness value is negative and your fitness scaler squares the value.
-	 * Trying to find the minimum will not work in this configuration.</b>
+	 * Trying to find the minimum will not work in this configuration.
 	 *
 	 * @param scaler The fitness scaler.
 	 * @throws NullPointerException if the scaler is {@code null}.
@@ -815,7 +929,7 @@ public class GeneticAlgorithm<
 	 * Set the offspring selector.
 	 *
 	 * @param selector The offspring selector.
-	 * @throws NullPointerException, if the given selector is null.
+	 * @throws NullPointerException if the given selector is null.
 	 */
 	public void setOffspringSelector(final Selector<G, C> selector) {
 		_offspringSelector = requireNonNull(selector, "Offspring selector");
@@ -825,7 +939,7 @@ public class GeneticAlgorithm<
 	 * Set the survivor selector.
 	 *
 	 * @param selector The survivor selector.
-	 * @throws NullPointerException, if the given selector is null.
+	 * @throws NullPointerException if the given selector is null.
 	 */
 	public void setSurvivorSelector(final Selector<G, C> selector) {
 		_survivorSelector = requireNonNull(selector, "Survivor selector");

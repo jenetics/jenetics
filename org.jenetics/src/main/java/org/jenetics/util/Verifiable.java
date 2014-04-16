@@ -22,7 +22,7 @@ package org.jenetics.util;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-08-29 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2013-09-08 $</em>
  */
 public interface Verifiable {
 

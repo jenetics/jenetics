@@ -25,15 +25,12 @@ import static java.util.Objects.requireNonNull;
 import java.io.Serializable;
 import java.util.Objects;
 
-import org.jscience.mathematics.number.Float64;
-import org.jscience.mathematics.number.Integer64;
-
 /**
  * This class contains some short general purpose functions.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-02-27 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public final class functions extends StaticObject {
 	private functions() {}
@@ -84,21 +81,6 @@ public final class functions extends StaticObject {
 	};
 
 	/**
-	 * Convert a string to an Integer64. If the string can't be converted, an
-	 * {@link NumberFormatException} is throws by the {@link Function#apply(Object)}
-	 * method.
-	 *
-	 * @deprecated Will be removed.
-	 */
-	@Deprecated
-	public static final Function<String, Integer64>
-	StringToInteger64 = new Function<String, Integer64>() {
-		@Override public Integer64 apply(final String value) {
-			return Integer64.valueOf(value);
-		}
-	};
-
-	/**
 	 * Convert a string to a float. If the string can't be converted, an
 	 * {@link NumberFormatException} is throws by the {@link Function#apply(Object)}
 	 * method.
@@ -122,72 +104,6 @@ public final class functions extends StaticObject {
 		}
 	};
 
-	/**
-	 * Convert a string to a Float64. If the string can't be converted, an
-	 * {@link NumberFormatException} is throws by the {@link Function#apply(Object)}
-	 * method.
-	 *
-	 * @deprecated Will be removed.
-	 */
-	@Deprecated
-	public static final Function<String, Float64>
-	StringToFloat64 = new Function<String, Float64>() {
-		@Override public Float64 apply(final String value) {
-			return Float64.valueOf(value);
-		}
-	};
-
-	/**
-	 * Convert a {@link Float64} value to a {@link Double} value.
-	 *
-	 * @deprecated Will be removed.
-	 */
-	@Deprecated
-	public static final Function<Float64, Double>
-	Float64ToDouble = new Function<Float64, Double>() {
-		@Override public Double apply(final Float64 value) {
-			return value.doubleValue();
-		}
-	};
-
-	/**
-	 * Convert a {@link Double} value to a {@link Float64} value.
-	 *
-	 * @deprecated Will be removed.
-	 */
-	@Deprecated
-	public static final Function<Double, Float64>
-	DoubleToFloat64 = new Function<Double, Float64>() {
-		@Override public Float64 apply(final Double value) {
-			return Float64.valueOf(value);
-		}
-	};
-
-	/**
-	 * Convert a {@link Integer64} value to a {@link Long} value.
-	 *
-	 * @deprecated Will be removed.
-	 */
-	@Deprecated
-	public static final Function<Integer64, Long>
-	Integer64ToLong = new Function<Integer64, Long>() {
-		@Override public Long apply(final Integer64 value) {
-			return value.longValue();
-		}
-	};
-
-	/**
-	 * Convert a {link Long} value to a {@link Integer64} value.
-	 *
-	 * @deprecated Will be removed.
-	 */
-	@Deprecated
-	public static final Function<Long, Integer64>
-	LongToInteger64 = new Function<Long, Integer64>() {
-		@Override public Integer64 apply(final Long value) {
-			return Integer64.valueOf(value);
-		}
-	};
 
 	/**
 	 * A predicate which return {@code true} if an given value is {@code null}.
@@ -294,6 +210,7 @@ public final class functions extends StaticObject {
 	/**
 	 * Return the identity function for the given type.
 	 *
+	 * @param <T> the parameter type for the identity function
 	 * @return the identity function for the given type.
 	 */
 	@SuppressWarnings("unchecked")

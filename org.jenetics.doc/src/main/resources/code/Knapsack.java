@@ -14,7 +14,9 @@ import org.jenetics.SinglePointCrossover;
 import org.jenetics.TournamentSelector;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
+import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Scoped;
 
 final class Item {
 	public final double size;
@@ -40,7 +42,6 @@ final class KnapsackFunction
 	@Override
 	public Double apply(final Genotype<BitGene> genotype) {
 		final Chromosome<BitGene> ch = genotype.getChromosome();
-
 		double size = 0;
 		double value = 0;
 		for (int i = 0, n = ch.length(); i < n; ++i) {
@@ -56,29 +57,34 @@ final class KnapsackFunction
 
 public class Knapsack {
 
-	private static KnapsackFunction FF(int n, double size) {
-		final Random random = RandomRegistry.getRandom();
+	private static KnapsackFunction FF(final int n, final double size) {
 		final Item[] items = new Item[n];
-		for (int i = 0; i < items.length; ++i) {
-			items[i] = new Item(
-				nextDouble(random, 1, 10),
-				nextDouble(random, 1, 15)
-			);
+		try (Scoped<? extends Random> random =
+			RandomRegistry.scope(new LCG64ShiftRandom(123)))
+		{
+			for (int i = 0; i < items.length; ++i) {
+				items[i] = new Item(
+					nextDouble(random.get(), 0, 100),
+					nextDouble(random.get(), 0, 100)
+				);
+			}
 		}
 
 		return new KnapsackFunction(items, size);
 	}
 
 	public static void main(String[] args) throws Exception {
-		final KnapsackFunction ff = FF(15, 100);
+		final int nitems = 15;
+		final double kssize = nitems*100.0/3.0;
+
+		final KnapsackFunction ff = FF(nitems, kssize);
 		final Factory<Genotype<BitGene>> genotype = Genotype.of(
-			BitChromosome.of(15, 0.5)
+			BitChromosome.of(nitems, 0.5)
 		);
 
-		final GeneticAlgorithm<BitGene, Double> ga = 
-			new GeneticAlgorithm<>(
-				genotype, ff
-			);
+		final GeneticAlgorithm<BitGene, Double> ga = new GeneticAlgorithm<>(
+			genotype, ff
+		);
 		ga.setPopulationSize(500);
 		ga.setStatisticsCalculator(
 			new NumberStatistics.Calculator<BitGene, Double>()

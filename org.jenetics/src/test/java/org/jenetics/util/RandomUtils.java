@@ -19,18 +19,18 @@
  */
 package org.jenetics.util;
 
+import static java.lang.Math.abs;
 import static org.jenetics.util.lambda.factory;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Random;
-
-import org.jscience.mathematics.number.Float64;
-import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.util.math.random;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-01-31 $</em>
+ * @version <em>$Date: 2014-04-04 $</em>
  */
 public class RandomUtils {
 
@@ -61,20 +61,33 @@ public class RandomUtils {
 	}
 
 	public static char nextCharacter() {
-		final int surrogateStart = 0xD800;
-		return (char)(random().nextInt(surrogateStart - 1) + 1);
+		char c = '\0';
+		do {
+			c = (char)random.nextInt(random(), Character.MIN_VALUE, Character.MAX_VALUE);
+		} while (!Character.isLetterOrDigit(c));
+
+		return c;
 	}
 
 	public static short nextShort() {
 		return (short)random.nextInt(random(), Short.MIN_VALUE, Short.MAX_VALUE);
 	}
 
-	public static Integer64 nextInteger64() {
-		return Integer64.valueOf(random().nextLong());
+	public static BigInteger nextBigInteger() {
+		return new BigInteger(100, random());
 	}
 
-	public static Float64 nextFloat64() {
-		return Float64.valueOf(random().nextDouble());
+	public static BigDecimal nextBigDecimal() {
+		final StringBuilder out = new StringBuilder();
+		for (int i = 0; i < 10; ++i) {
+			out.append(Long.toString(abs(random().nextLong())));
+		}
+		out.append(".");
+		for (int i = 0; i < 20; ++i) {
+			out.append(Long.toString(abs(random().nextLong())));
+		}
+
+		return new BigDecimal(out.toString());
 	}
 
 	/*
@@ -97,9 +110,9 @@ public class RandomUtils {
 
 	public static final Factory<Double> DoubleFactory = factory(random(), "nextDouble");
 
-	public static final Factory<Integer64> Integer64Factory = Factory("nextInteger64");
+	public static final Factory<BigInteger> BigIntegerFactory = Factory("nextBigInteger");
 
-	public static final Factory<Float64> Float64Factory = Factory("nextFloat64");
+	public static final Factory<BigDecimal> BigDecimalFactory = Factory("nextBigDecimal");
 
 	public static final Factory<String> StringFactory = Factory("nextString");
 

@@ -20,7 +20,6 @@
 package org.jenetics;
 
 import static java.lang.String.format;
-import static org.jenetics.internal.util.jaxb.Unmarshaller;
 import static org.jenetics.internal.util.object.eq;
 
 import java.util.List;
@@ -28,20 +27,18 @@ import java.util.Objects;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-
-import javolution.xml.XMLFormat;
-import javolution.xml.stream.XMLStreamException;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jenetics.internal.util.HashBuilder;
 import org.jenetics.internal.util.cast;
 import org.jenetics.internal.util.jaxb;
-import org.jenetics.internal.util.model.ModelType;
-import org.jenetics.internal.util.model.ValueType;
+import org.jenetics.internal.util.model.IndexedObject;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
@@ -57,16 +54,16 @@ import org.jenetics.util.RandomRegistry;
  * The following code shows how to create a combinatorial genotype factory which
  * can be used when creating an {@link GeneticAlgorithm} instance.
  * [code]
- * final ISeq〈Integer〉 alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
- * final Factory〈Genotype〈EnumGene〈Integer〉〉〉 gtf = Genotype.of(
- *     new PermutationChromosome<>(alleles)
+ * final ISeq&lt;Integer&gt; alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
+ * final Factory&lt;Genotype&lt;EnumGene&lt;Integer&gt;&gt;&gt; gtf = Genotype.of(
+ *     PermutationChromosome.of(alleles)
  * );
  * [/code]
  *
  * The following code shows the assurances of the {@code EnumGene}.
  * [code]
- * final ISeq〈Integer〉 alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
- * final EnumGene〈Integer〉 gene = new EnumGene<>(5, alleles);
+ * final ISeq&lt;Integer&gt; alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
+ * final EnumGene&lt;Integer&gt; gene = new EnumGene&lt;&gt;(5, alleles);
  *
  * assert(gene.getAlleleIndex() == 5);
  * assert(gene.getAllele() == gene.getValidAlleles().get(5));
@@ -77,15 +74,16 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-03-06 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-12 $</em>
  */
+@XmlJavaTypeAdapter(EnumGene.Model.Adapter.class)
 public final class EnumGene<A>
 	implements
 		Gene<A, EnumGene<A>>,
 		Comparable<EnumGene<A>>
 {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	private final ISeq<A> _validAlleles;
 	private final int _alleleIndex;
@@ -139,12 +137,6 @@ public final class EnumGene<A>
 		return _validAlleles.get(_alleleIndex);
 	}
 
-	@Deprecated
-	@Override
-	public EnumGene<A> copy() {
-		return new EnumGene<>(_alleleIndex, _validAlleles);
-	}
-
 	@Override
 	public boolean isValid() {
 		return _alleleIndex >= 0 && _alleleIndex < _validAlleles.length();
@@ -182,15 +174,6 @@ public final class EnumGene<A>
 		}
 
 		return result;
-	}
-
-	/**
-	 * @deprecated No longer needed after adding new factory methods to the
-	 *             {@link Array} class.
-	 */
-	@Deprecated
-	public Factory<EnumGene<A>> asFactory() {
-		return this;
 	}
 
 	@Override
@@ -248,7 +231,9 @@ public final class EnumGene<A>
 	 * Return a new enum gene with an allele randomly chosen from the given
 	 * valid alleles.
 	 *
+	 * @param <A> the allele type
 	 * @param validAlleles the sequence of valid alleles.
+	 * @return a new {@code EnumGene} with the given parameter
 	 * @throws java.lang.IllegalArgumentException if the give valid alleles
 	 *         sequence is empty
 	 * @throws NullPointerException if the valid alleles seq is {@code null}.
@@ -261,160 +246,87 @@ public final class EnumGene<A>
 	}
 
 	/**
-	 * @deprecated Use {@link #EnumGene(int, org.jenetics.util.ISeq)} instead.
-	 */
-	@Deprecated
-	public static <A> EnumGene<A> valueOf(
-		final ISeq<? extends A> validAlleles,
-		final int alleleIndex
-	) {
-		return new EnumGene<>(alleleIndex, validAlleles);
-	}
-
-	/**
 	 * Create a new enum gene from the given valid genes and the chosen allele
 	 * index.
+	 *
+	 * @param <A> the allele type
 	 * @param alleleIndex the index of the allele for this gene.
 	 * @param validAlleles the array of valid alleles.
-	 *
-	 * @return a new enum gene
+	 * @return a new {@code EnumGene} with the given parameter
 	 * @throws java.lang.IllegalArgumentException if the give valid alleles
 	 *         array is empty of the allele index is out of range.
 	 */
 	@SafeVarargs
-	public static <G> EnumGene<G> of(
+	public static <A> EnumGene<A> of(
 		final int alleleIndex,
-		final G... validAlleles
+		final A... validAlleles
 	) {
 		return new EnumGene<>(alleleIndex, Array.of(validAlleles).toISeq());
-	}
-
-	/**
-	 * @deprecated Use {@link #of(int, Object[])} instead.
-	 */
-	@Deprecated
-	public static <G> EnumGene<G> valueOf(
-		final G[] validAlleles,
-		final int alleleIndex
-	) {
-		return of(alleleIndex, validAlleles);
-	}
-
-	/**
-	 * @deprecated Use {@link #of(org.jenetics.util.ISeq)} instead.
-	 */
-	@Deprecated
-	public static <G> EnumGene<G> valueOf(final ISeq<G> validAlleles) {
-		return EnumGene.of(validAlleles);
 	}
 
 	/**
 	 * Return a new enum gene with an allele randomly chosen from the given
 	 * valid alleles.
 	 *
+	 * @param <A> the allele type
 	 * @param validAlleles the array of valid alleles.
-	 * @return a new enum gene
+	 * @return a new {@code EnumGene} with the given parameter
 	 * @throws java.lang.IllegalArgumentException if the give valid alleles
 	 *         array is empty
 	 */
 	@SafeVarargs
-	public static <G> EnumGene<G> of(final G... validAlleles) {
+	public static <A> EnumGene<A> of(final A... validAlleles) {
 		return EnumGene.of(Array.of(validAlleles).toISeq());
 	}
-
-	/**
-	 * @deprecated Use {@link #of(Object[])} instead.
-	 */
-	@Deprecated
-	public static <G> EnumGene<G> valueOf(final G[] validAlleles) {
-		return of(validAlleles);
-	}
-
-	/* *************************************************************************
-	 *  XML object serialization
-	 * ************************************************************************/
-
-	@SuppressWarnings("rawtypes")
-	static final XMLFormat<EnumGene>
-		XML = new XMLFormat<EnumGene>(EnumGene.class)
-	{
-		private static final String LENGTH = "length";
-		private static final String CURRENT_ALLELE_INDEX = "allele-index";
-
-		@Override
-		public EnumGene newInstance(
-			final Class<EnumGene> cls, final InputElement xml
-		)
-			throws XMLStreamException
-		{
-			final int length = xml.getAttribute(LENGTH, 0);
-			final int index = xml.getAttribute(CURRENT_ALLELE_INDEX, 0);
-			final Array<Object> alleles = new Array<>(length);
-			for (int i = 0; i < length; ++i) {
-				final Object allele = xml.getNext();
-				alleles.set(i, allele);
-			}
-
-			return new EnumGene<>(index, alleles.toISeq());
-		}
-
-		@Override
-		public void write(final EnumGene eg, final OutputElement xml)
-			throws XMLStreamException
-		{
-			xml.setAttribute(LENGTH, eg.getValidAlleles().length());
-			xml.setAttribute(CURRENT_ALLELE_INDEX, eg.getAlleleIndex());
-			for (Object allele : eg.getValidAlleles()) {
-				xml.add(allele);
-			}
-		}
-
-		@Override
-		public void read(final InputElement xml, final EnumGene eg) {
-		}
-	};
 
 	/* *************************************************************************
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "org.jenetics.EnumGene")
+	@XmlRootElement(name = "enum-gene")
 	@XmlType(name = "org.jenetics.EnumGene")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	final static class Model {
-		@XmlAttribute
-		int length;
 
-		@XmlAttribute(name = "allele-index")
-		int currentAlleleIndex;
+		@XmlAttribute(name = "length", required = true)
+		public int length;
 
-		@XmlAnyElement
-		List<Object> alleles;
+		@XmlElementWrapper(name = "valid-alleles", required = true, nillable = false)
+		@XmlElement(name = "allele", required = true, nillable = false)
+		public List alleles;
 
-		@ValueType(EnumGene.class)
-		@ModelType(Model.class)
+		@XmlElement(name = "allele", required = true, nillable = false)
+		public IndexedObject allele = new IndexedObject();
+
 		public static final class Adapter
 			extends XmlAdapter<Model, EnumGene>
 		{
 			@Override
-			public Model marshal(final EnumGene value) {
+			public Model marshal(final EnumGene gene) {
+				final Function marshaller = jaxb.Marshaller(gene.getAllele());
 				final Model m = new Model();
-				m.length = value.getValidAlleles().length();
-				m.currentAlleleIndex = value.getAlleleIndex();
-				m.alleles = value.getValidAlleles()
-					.map(jaxb.Marshaller(value.getValidAlleles().get(0))).asList();
+				m.length = gene.getValidAlleles().length();
+				m.allele.index = gene.getAlleleIndex();
+				m.allele.value = marshaller.apply(gene.getAllele());
+				m.alleles = gene.getValidAlleles()
+					.map(marshaller)
+					.asList();
+
 				return m;
 			}
 
 			@Override
 			public EnumGene unmarshal(final Model m) {
 				return new EnumGene<>(
-					m.currentAlleleIndex,
-					Array.of(m.alleles).map(Unmarshaller).toISeq()
+					m.allele.index,
+					Array.of(m.alleles)
+						.map(jaxb.Unmarshaller(m.allele.value))
+						.toISeq()
 				);
 			}
 
 		}
 	}
+
 }

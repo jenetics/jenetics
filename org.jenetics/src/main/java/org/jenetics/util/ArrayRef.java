@@ -22,7 +22,7 @@ package org.jenetics.util;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.3 &mdash; <em>$Date: 2013-08-30 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-09 $</em>
  */
 final class ArrayRef implements Cloneable {
 	Object[] data;
@@ -40,14 +40,14 @@ final class ArrayRef implements Cloneable {
 		this.length = length;
 	}
 
-	final void cloneIfSealed() {
+	void cloneIfSealed() {
 		if (_sealed) {
 			data = data.clone();
 			_sealed = false;
 		}
 	}
 
-	final ArrayRef seal() {
+	ArrayRef seal() {
 		_sealed = true;
 		return this;
 	}

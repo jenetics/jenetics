@@ -35,7 +35,7 @@ import java.text.SimpleDateFormat
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-04-04 $</em>
  */
 class SetupPlugin extends JeneticsPlugin {
 
@@ -203,7 +203,7 @@ class SetupPlugin extends JeneticsPlugin {
 	private static final List<String> XLINT_OPTIONS = [
 		'cast',
 		'classfile',
-		//'deprecation',
+		'deprecation',
 		'dep-ann',
 		'divzero',
 		'finally',

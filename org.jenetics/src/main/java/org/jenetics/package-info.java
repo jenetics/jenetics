@@ -26,11 +26,11 @@
  * (GA) implementation. The project has very few dependencies to other libraries.
  * At runtime it only depends on the <em>Jenetics</em> library.
  * <p>
- * The order of the single execution steps of genetic algorithms may slightly
+ * The order of the single execution steps of genetic algorithms may slightlyh
  * differ from implementation to implementation. The following pseudo-code shows
  * the <em>Jenetics</em> genetic algorithm steps.
- *
- * <img width="556" align="BOTTOM" border="0" alt="Genetic algorithm"
+
+ * <img width="556" alt="Genetic algorithm"
  *      src="doc-files/genetic-algorithm.png" >
  *
  * <p>
@@ -64,12 +64,12 @@
  *
  * [code]
  * public static void main(final String[] args) {
- *     final Factory〈Genotype〈BitGene〉〉 gtf = Genotype.of(
+ *     final Factory&lt;Genotype&lt;BitGene&gt;&gt; gtf = Genotype.of(
  *         BitChromosome.of(10, 0.5)
  *     );
- *     final Function〈Genotype〈BitGene〉 Double〉 ff = ...
- *     final GeneticAlgorithm〈BitGene, Double〉
- *     ga = new GeneticAlgorithm〈〉(gtf, ff, Optimize.MAXIMUM)
+ *     final Function&lt;Genotype&lt;BitGene&gt; Double&gt; ff = ...
+ *     final GeneticAlgorithm&lt;BitGene, Double&gt;
+ *     ga = new GeneticAlgorithm&lt;&gt;(gtf, ff, Optimize.MAXIMUM)
  *
  *     ga.setup();
  *     ga.evolve(100);
@@ -98,10 +98,10 @@
  * [code]
  * public static void main(final String[] args) {
  *     ...
- *     ga.setSelectors(new RouletteWheelSelector〈BitGene〉());
+ *     ga.setSelectors(new RouletteWheelSelector&lt;BitGene&gt;());
  *     ga.setAlterers(
- *         new SinglePointCrossover〈BitGene〉(0.1),
- *         new Mutator〈BitGene〉(0.01)
+ *         new SinglePointCrossover&lt;BitGene&gt;(0.1),
+ *         new Mutator&lt;BitGene&gt;(0.01)
  *     );
  *
  *     ga.setup();
@@ -134,8 +134,8 @@
  * IO.jaxb.write(ga.getPopulation(), file);
  *
  * // Reading the population from disk.
- * final Population〈DoubleGene,Double〉 population =
- *     (Population〈DoubleGene, Double〉)IO.jaxb.read(file);
+ * final Population&lt;DoubleGene,Double&gt; population =
+ *     (Population&lt;DoubleGene, Double&gt;)IO.jaxb.read(file);
  * ga.setPopulation(population);
  * [/code]
  *
@@ -163,33 +163,33 @@
  * import org.jenetics.util.Function;
  *
  * final class OneCounter
- *     implements Function〈Genotype〈BitGene〉, Integer〉
+ *     implements Function&lt;Genotype&lt;BitGene&gt;, Integer&gt;
  * {
  *     \@Override
- *     public Integer apply(final Genotype〈BitGene〉 genotype) {
+ *     public Integer apply(final Genotype&lt;BitGene&gt; genotype) {
  *         return ((BitChromosome)genotype.getChromosome()).bitCount();
  *     }
  * }
  *
  * public class OnesCounting {
  *     public static void main(String[] args) {
- *         final Factory〈Genotype〈BitGene〉〉 gtf = Genotype.of(
+ *         final Factory&lt;Genotype&lt;BitGene&gt;&gt; gtf = Genotype.of(
  *             BitChromosome.of(20, 0.15)
  *         );
- *         final Function〈Genotype〈BitGene〉, Integer〉 ff = new OneCounter();
- *         final GeneticAlgorithm〈BitGene, Integer〉 ga =
- *             new GeneticAlgorithm〈〉(gtf, ff, Optimize.MAXIMUM);
+ *         final Function&lt;Genotype&lt;BitGene&gt;, Integer&gt; ff = new OneCounter();
+ *         final GeneticAlgorithm&lt;BitGene, Integer&gt; ga =
+ *             new GeneticAlgorithm&lt;&gt;(gtf, ff, Optimize.MAXIMUM);
  *
  *         ga.setStatisticsCalculator(
- *             new NumberStatistics.Calculator〈BitGene, Integer〉()
+ *             new NumberStatistics.Calculator&lt;BitGene, Integer&gt;()
  *         );
  *         ga.setPopulationSize(50);
  *         ga.setSelectors(
- *             new RouletteWheelSelector〈BitGene, Integer〉()
+ *             new RouletteWheelSelector&lt;BitGene, Integer&gt;()
  *         );
  *         ga.setAlterers(
- *             new Mutator〈BitGene〉(0.55),
- *             new SinglePointCrossover〈BitGene〉(0.06)
+ *             new Mutator&lt;BitGene&gt;(0.55),
+ *             new SinglePointCrossover&lt;BitGene&gt;(0.06)
  *         );
  *
  *         ga.setup();
@@ -237,7 +237,7 @@
  * import org.jenetics.util.Function;
  *
  * class FF
- *     implements Function〈Genotype〈EnumGene<Integer〉〉, Double〉
+ *     implements Function&lt;Genotype&lt;EnumGene&lt;Integer&gt;&gt;, Double&gt;
  * {
  *     private final double[][] _adjacence;
  *     public FF(final double[][] adjacence) {
@@ -245,12 +245,12 @@
  *     }
  *
  *     \@Override
- *     public Double apply(final Genotype〈EnumGene〈Integer〉〉 genotype) {
- *         final Chromosome〈EnumGene〈Integer〉〉 path =
+ *     public Double apply(final Genotype&lt;EnumGene&lt;Integer&gt;&gt; genotype) {
+ *         final Chromosome&lt;EnumGene&lt;Integer&gt;&gt; path =
  *             genotype.getChromosome();
  *
  *         double length = 0.0;
- *         for (int i = 0, n = path.length(); i 〈 n; ++i) {
+ *         for (int i = 0, n = path.length(); i &lt; n; ++i) {
  *             final int from = path.getGene(i).getAllele();
  *             final int to = path.getGene((i + 1)%n).getAllele();
  *             length += _adjacence[from][to];
@@ -264,20 +264,20 @@
  *     public static void main(String[] args) {
  *         final int stops = 20;
  *
- *         final Function〈Genotype〈EnumGene〈Integer〉〉, Double〉 ff =
+ *         final Function&lt;Genotype&lt;EnumGene&lt;Integer&gt;&gt;, Double&gt; ff =
  *             new FF(adjacencyMatrix(stops));
- *         final Factory〈Genotype〈EnumGene〈Integer〉〉〉 gt = Genotype.of(
+ *         final Factory&lt;Genotype&lt;EnumGene&lt;Integer&gt;&gt;&gt; gt = Genotype.of(
  *             PermutationChromosome.ofInteger(stops)
  *         );
- *         final GeneticAlgorithm〈EnumGene〈Integer〉, Double〉
- *             ga = new GeneticAlgorithm〈〉(gt, ff, Optimize.MINIMUM);
+ *         final GeneticAlgorithm&lt;EnumGene&lt;Integer&gt;, Double&gt;
+ *             ga = new GeneticAlgorithm&lt;&gt;(gt, ff, Optimize.MINIMUM);
  *         ga.setStatisticsCalculator(
- *             new Calculator〈EnumGene〈Integer〉, Double〉()
+ *             new Calculator&lt;EnumGene&lt;Integer&gt;, Double&gt;()
  *         );
  *         ga.setPopulationSize(300);
  *         ga.setAlterers(
- *             new SwapMutator〈EnumGene〈Integer〉〉(0.2),
- *             new PartiallyMatchedCrossover〈Integer〉(0.3)
+ *             new SwapMutator&lt;EnumGene&lt;Integer&gt;&gt;(0.2),
+ *             new PartiallyMatchedCrossover&lt;Integer&gt;(0.3)
  *         );
  *
  *         ga.setup();
@@ -288,8 +288,8 @@
  *
  *     private static double[][] adjacencyMatrix(int stops) {
  *         double[][] matrix = new double[stops][stops];
- *         for (int i = 0; i 〈 stops; ++i) {
- *             for (int j = 0; j 〈 stops; ++j) {
+ *         for (int i = 0; i &lt; stops; ++i) {
+ *             for (int j = 0; j &lt; stops; ++j) {
  *                 matrix[i][j] = chord(stops, abs(i - j), RADIUS);
  *             }
  *         }
@@ -304,6 +304,7 @@
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-03-05 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-30 $</em>
  */
 package org.jenetics;
+

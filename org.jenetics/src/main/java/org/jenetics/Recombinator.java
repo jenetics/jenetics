@@ -49,7 +49,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public abstract class Recombinator<G extends Gene<?, G>>
 	extends AbstractAlterer<G>
@@ -61,6 +61,8 @@ public abstract class Recombinator<G extends Gene<?, G>>
 	 * Constructs an alterer with a given recombination probability.
 	 *
 	 * @param probability The recombination probability.
+	 * @param order the number of individuals involved in the
+	 *        {@link #recombine(Population, int[], int)} step
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
 	 *         valid range of {@code [0, 1]} or the given {@code order} is
 	 *         smaller than two.

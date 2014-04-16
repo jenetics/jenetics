@@ -31,28 +31,28 @@ import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.math;
 
 /**
- * <strong><p>Multiple point crossover</p></strong>
+ * <p><strong>Multiple point crossover</strong></p>
  *
  * If the {@code MultiPointCrossover} is created with one crossover point, it
  * behaves exactly like the {@link SinglePointCrossover}. The following picture
  * shows how the {@code MultiPointCrossover} works with two crossover points,
  * defined at index 1 and 4.
- * <p><div align="center">
+ * <p>
  *	<img src="doc-files/2PointCrossover.svg" width="400" alt="2-point crossover">
- * </div></p>
+ * </p>
  *
  * If the number of crossover points is odd, the crossover looks like in the
  * following figure.
  *
- * <p><div align="center">
+ * <p>
  *	<img src="doc-files/3PointCrossover.svg" width="400" alt="3-point crossover">
- * </div></p>
+ * </p>
  *
  * @see SinglePointCrossover
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.2 &mdash; <em>$Date: 2014-02-27 $ </em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-28 $ </em>
  */
 public class MultiPointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 

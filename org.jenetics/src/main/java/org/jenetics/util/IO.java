@@ -19,8 +19,9 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.internal.util.jaxb.CONTEXT;
+import static org.jenetics.internal.util.jaxb.context;
 import static org.jenetics.internal.util.jaxb.adapterFor;
+import static org.jenetics.internal.util.jaxb.marshal;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,10 +37,6 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import javolution.xml.XMLObjectReader;
-import javolution.xml.XMLObjectWriter;
-import javolution.xml.stream.XMLStreamException;
-
 
 /**
  * Class for object serialization. The following example shows how to write and
@@ -51,14 +48,14 @@ import javolution.xml.stream.XMLStreamException;
  * IO.jaxb.write(ga.getPopulation(), file);
  *
  * // Reading the population from disk.
- * final Population<Float64Gene,Float64> population =
- *     (Population<Float64Gene, Float64)IO.jaxb.read(file);
+ * final Population&lt;DoubleGene,Double&gt; population =
+ *     (Population&lt;DoubleGene, Double&gt;)IO.jaxb.read(file);
  * ga.setPopulation(population);
  * [/code]
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-02-27 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-12 $</em>
  */
 public abstract class IO {
 
@@ -66,55 +63,7 @@ public abstract class IO {
 	}
 
 	/**
-	 * IO implementation for <i>XML</i> serialization.
-	 *
-	 * @deprecated Will be removed when the Javolution is removed. Use the
-	 *             {@link #jaxb} {@code IO} implementation instead, which is
-	 *             compatible to the existing XML marshalling.
-	 */
-	@Deprecated
-	public static final IO xml = new IO() {
-
-		@Override
-		public void write(final Object object, final OutputStream out)
-			throws IOException
-		{
-			try {
-				final OutputStream nco = new NonClosableOutputStream(out);
-				final XMLObjectWriter writer = XMLObjectWriter.newInstance(nco);
-				writer.setIndentation("\t");
-				try {
-					writer.write(object);
-					writer.flush();
-				} finally {
-					writer.reset();
-				}
-			} catch (XMLStreamException e) {
-				throw new IOException(e);
-			}
-		}
-
-		@Override
-		public <T> T read(final Class<T> type, final InputStream in)
-			throws IOException
-		{
-			try {
-				final InputStream nci = new NonClosableInputStream(in);
-				final XMLObjectReader reader = XMLObjectReader.newInstance(nci);
-				try {
-					return type.cast(reader.read());
-				} finally {
-					reader.reset();
-				}
-			} catch (XMLStreamException e) {
-				throw new IOException(e);
-			}
-		}
-	};
-
-	/**
-	 * JAXB for <i>XML</i> serialization. Is compatible to the existing,
-	 * deprecated {@link #xml} marshalling.
+	 * JAXB for <i>XML</i> serialization.
 	 */
 	public static final IO jaxb = new IO() {
 
@@ -123,21 +72,9 @@ public abstract class IO {
 			throws IOException
 		{
 			try {
-				final Marshaller marshaller = CONTEXT.createMarshaller();
+				final Marshaller marshaller = context().createMarshaller();
 				marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-
-				//final XMLOutputFactory factory = XMLOutputFactory.newInstance();
-				//final XMLStreamWriter writer = factory.createXMLStreamWriter(out);
-				//try {
-					final XmlAdapter<Object, Object> adapter = adapterFor(object);
-					if (adapter != null) {
-						marshaller.marshal(adapter.marshal(object), out);
-					} else {
-						marshaller.marshal(object, out);
-					}
-				//} finally {
-				//	writer.close();
-				//}
+				marshaller.marshal(marshal(object), out);
 			} catch (Exception e) {
 				throw new IOException(e);
 			}
@@ -148,7 +85,7 @@ public abstract class IO {
 			throws IOException
 		{
 			try {
-				final Unmarshaller unmarshaller = CONTEXT.createUnmarshaller();
+				final Unmarshaller unmarshaller = context().createUnmarshaller();
 
 				//final XMLInputFactory factory = XMLInputFactory.newInstance();
 				//final XMLStreamReader reader = factory.createXMLStreamReader(in);
@@ -255,6 +192,7 @@ public abstract class IO {
 	/**
 	 * Reads an object from the given file.
 	 *
+	 * @param <T> the type of the read object
 	 * @param path the path to read from.
 	 * @param type the type of the read object.
 	 * @return the de-serialized object.
@@ -284,6 +222,7 @@ public abstract class IO {
 	/**
 	 * Reads an object from the given file.
 	 *
+	 * @param <T> the type of the read object
 	 * @param path the path to read from.
 	 * @param type the type of the read object.
 	 * @return the de-serialized object.
@@ -313,6 +252,7 @@ public abstract class IO {
 	/**
 	 * Reads an object from the given file.
 	 *
+	 * @param <T> the type of the read object
 	 * @param file the file to read from.
 	 * @param type the type of the read object.
 	 * @return the de-serialized object.
@@ -342,6 +282,7 @@ public abstract class IO {
 	/**
 	 * Reads an object from the given input stream.
 	 *
+	 * @param <T> the type of the read object
 	 * @param in the input stream to read from.
 	 * @param type the type of the read object.
 	 * @return the de-serialized object.
@@ -362,106 +303,4 @@ public abstract class IO {
 	public Object read(final InputStream in) throws IOException {
 		return read(Object.class, in);
 	}
-
-
-	/**
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version 1.0 &mdash; <em>$Date: 2014-02-27 $</em>
-	 */
-	private static final class NonClosableOutputStream extends OutputStream {
-		private final OutputStream _adoptee;
-
-		public NonClosableOutputStream(final OutputStream adoptee) {
-			_adoptee = adoptee;
-		}
-
-		@Override
-		public void close() throws IOException {
-			//Ignore close call.
-			_adoptee.flush();
-		}
-
-		@Override
-		public void flush() throws IOException {
-			_adoptee.flush();
-		}
-
-		@Override
-		public String toString() {
-			return _adoptee.toString();
-		}
-
-		@Override
-		public void write(byte[] b, int off, int len) throws IOException {
-			_adoptee.write(b, off, len);
-		}
-
-		@Override
-		public void write(byte[] b) throws IOException {
-			_adoptee.write(b);
-		}
-
-		@Override
-		public void write(int b) throws IOException {
-			_adoptee.write(b);
-		}
-
-	}
-
-	/**
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version 1.0 &mdash; <em>$Date: 2014-02-27 $</em>
-	 */
-	private static final class NonClosableInputStream extends InputStream {
-		private final InputStream _adoptee;
-
-		public NonClosableInputStream(final InputStream adoptee) {
-			_adoptee = adoptee;
-		}
-
-		@Override
-		public int available() throws IOException {
-			return _adoptee.available();
-		}
-
-		@Override
-		public void close() throws IOException {
-		}
-
-		@Override
-		public void mark(int readlimit) {
-			_adoptee.mark(readlimit);
-		}
-
-		@Override
-		public boolean markSupported() {
-			return _adoptee.markSupported();
-		}
-
-		@Override
-		public int read() throws IOException {
-			return _adoptee.read();
-		}
-
-		@Override
-		public int read(byte[] b, int off, int len) throws IOException {
-			return _adoptee.read(b, off, len);
-		}
-
-		@Override
-		public int read(byte[] b) throws IOException {
-			return _adoptee.read(b);
-		}
-
-		@Override
-		public void reset() throws IOException {
-			_adoptee.reset();
-		}
-
-		@Override
-		public long skip(long n) throws IOException {
-			return _adoptee.skip(n);
-		}
-	}
-
 }

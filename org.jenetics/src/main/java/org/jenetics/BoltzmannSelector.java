@@ -26,8 +26,6 @@ import static org.jenetics.util.math.divide;
 import static org.jenetics.util.math.normalize;
 import static org.jenetics.util.math.statistics.max;
 
-import javolution.lang.Immutable;
-
 import org.jenetics.internal.util.HashBuilder;
 
 /**
@@ -59,14 +57,13 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-03-01 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
  */
 public final class BoltzmannSelector<
 	G extends Gene<?, G>,
 	N extends Number & Comparable<? super N>
 >
 	extends ProbabilitySelector<G, N>
-	implements Immutable
 {
 
 	private final double _b;

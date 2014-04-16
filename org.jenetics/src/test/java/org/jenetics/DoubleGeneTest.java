@@ -29,17 +29,16 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import javolution.context.LocalContext;
-
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.UniformDistribution;
 import org.jenetics.stat.Variance;
 import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-17 $</em>
+ * @version <em>$Date: 2014-03-12 $</em>
  */
 public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 
@@ -50,9 +49,7 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstanceDistribution() {
-		LocalContext.enter();
-		try {
-			RandomRegistry.setRandom(new Random(12345));
+		try (Scoped<?> s = RandomRegistry.scope(new Random(12345))) {
 
 			final double min = 0;
 			final double max = 100;
@@ -81,8 +78,6 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 			}
 
 			assertDistribution(histogram, new UniformDistribution<>(min, max));
-		} finally {
-			LocalContext.exit();
 		}
 	}
 

@@ -36,7 +36,7 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-02-27 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-07 $</em>
  */
 public final class TruncationSelector<
 	G extends Gene<?, G>,

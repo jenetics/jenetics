@@ -23,8 +23,6 @@ import static java.lang.String.format;
 
 import java.util.Random;
 
-import javolution.lang.Immutable;
-
 import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.util.MSeq;
@@ -32,7 +30,6 @@ import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.math;
 
 /**
- * <p>
  * The {@code PartiallyMatchedCrossover} (PMX) guarantees that all {@link Gene}s
  * are found exactly once in each chromosome. No gene is duplicated by this
  * crossover. The PMX can be applied usefully in the TSP or other permutation
@@ -46,7 +43,7 @@ import org.jenetics.util.math;
  *     <li>edge recombination crossover</li>
  *     <li>edge assembly crossover</li>
  * </ul>
- * </p>
+ * <p>
  * The PMX is similar to the two-point crossover. A crossing region is chosen
  * by selecting two crossing points.
  * <pre>
@@ -61,7 +58,8 @@ import org.jenetics.util.math;
  * Chromosome {@code C1} contains the value 6  twice and misses the value
  * 3. On  the other side chromosome {@code C2} contains the value 3 twice and
  * misses the value 6. We can observe that this crossover is equivalent
- * to the exchange of the values 3 -> 6, 4 -> 5 and 5 -> 4. To repair the two
+ * to the exchange of the values {@code 3 -> 6}, {@code 4 -> 5} and
+ * {@code 5 -> 4}. To repair the two
  * chromosomes we have to apply this exchange outside the crossing region.
  * <pre>
  *     C1 = 012|654|3789
@@ -72,12 +70,9 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-02-27 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
  */
-public final class PartiallyMatchedCrossover<T>
-	extends Crossover<EnumGene<T>>
-	implements Immutable
-{
+public final class PartiallyMatchedCrossover<T> extends Crossover<EnumGene<T>> {
 
 	public PartiallyMatchedCrossover(final double probability) {
 		super(probability);
