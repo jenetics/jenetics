@@ -20,9 +20,10 @@
 package org.jenetics;
 
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
-import static org.jenetics.util.accumulators.accumulate;
+import static org.jenetics.util.Accumulator.accumulate;
 
 import java.util.Random;
+import java.util.function.Function;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -32,14 +33,13 @@ import org.jenetics.internal.util.Concurrency;
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.UniformDistribution;
 import org.jenetics.stat.Variance;
-import org.jenetics.util.Function;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Scoped;
-import org.jenetics.util.accumulators.MinMax;
+import org.jenetics.util.Accumulator.MinMax;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-09 $</em>
+ * @version <em>$Date: 2014-04-16 $</em>
  */
 public class IntegerChromosomeTest
 	extends NumericChromosomeTester<Integer, IntegerGene>

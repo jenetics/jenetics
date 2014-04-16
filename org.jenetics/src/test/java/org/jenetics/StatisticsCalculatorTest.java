@@ -33,7 +33,7 @@ import org.jenetics.util.Accumulator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-14 $</em>
+ * @version <em>$Date: 2014-04-16 $</em>
  */
 public class StatisticsCalculatorTest {
 
@@ -90,6 +90,7 @@ public class StatisticsCalculatorTest {
 
 		final Variance<Integer> ageVariance = new Variance<>();
 		Accumulator.accumulate(
+			Concurrency.commonPool(),
 			population(size),
 			ageVariance.<Phenotype<DoubleGene, Double>>map(pt -> pt.getAge(gen))
 		);

@@ -20,12 +20,13 @@
 package org.jenetics.internal.util;
 
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 
 import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-03-15 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
  * @since 2.0
  */
 public final class Context<T> {
@@ -81,7 +82,7 @@ public final class Context<T> {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version 2.0 &mdash; <em>$Date: 2014-03-15 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
 	 * @since 2.0
 	 */
 	private static final class Entry<T> {
@@ -113,7 +114,7 @@ public final class Context<T> {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version 2.0 &mdash; <em>$Date: 2014-03-15 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
 	 * @since 2.0
 	 */
 	private static final class Scope<A, B> implements Scoped<A> {

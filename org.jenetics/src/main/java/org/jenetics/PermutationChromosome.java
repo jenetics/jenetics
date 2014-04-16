@@ -20,7 +20,6 @@
 package org.jenetics;
 
 import static java.lang.String.format;
-import static org.jenetics.EnumGene.Gene;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -29,6 +28,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -46,7 +46,6 @@ import org.jenetics.internal.util.cast;
 import org.jenetics.internal.util.jaxb;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.bit;
 
@@ -57,7 +56,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-14 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
  */
 @XmlJavaTypeAdapter(PermutationChromosome.Model.Adapter.class)
 public final class PermutationChromosome<T>
@@ -212,12 +211,12 @@ public final class PermutationChromosome<T>
 		return of(new Array<Integer>(end - start).fill(Int(start, 1)).toISeq());
 	}
 
-	private static Factory<Integer> Int(final int start, final int step) {
-		return new Factory<Integer>() {
+	private static Supplier<Integer> Int(final int start, final int step) {
+		return new Supplier<Integer>() {
 			private int _value = start;
 
 			@Override
-			public Integer newInstance() {
+			public Integer get() {
 				return next();
 			}
 

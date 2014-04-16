@@ -23,9 +23,9 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Supplier;
 
 import org.jenetics.internal.util.Context;
-import org.jenetics.internal.util.Supplier;
 
 /**
  * This class holds the {@link Random} engine used for the GA. The
@@ -94,12 +94,7 @@ public final class RandomRegistry extends StaticObject {
 	private RandomRegistry() {}
 
 	// Default random engine used.
-	private static final Supplier<Random> DEFAULT = new Supplier<Random>() {
-		@Override
-		public Random get() {
-			return ThreadLocalRandom.current();
-		}
-	};
+	private static final Supplier<Random> DEFAULT = ThreadLocalRandom::current;
 
 	private static final Context<Supplier<Random>> CONTEXT =
 		new Context<>(DEFAULT);
@@ -199,7 +194,7 @@ public final class RandomRegistry extends StaticObject {
 		}
 
 		@Override
-		public final R get() {
+		public R get() {
 			return _random;
 		}
 	}

@@ -133,7 +133,7 @@ import org.jenetics.util.Timer;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-14 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,
@@ -302,7 +302,7 @@ public class GeneticAlgorithm<
 		this(
 			genotypeFactory,
 			fitnessFunction,
-			functions.<C>Identity(),
+			a -> a,
 			optimization,
 			Concurrency.commonPool()
 		);

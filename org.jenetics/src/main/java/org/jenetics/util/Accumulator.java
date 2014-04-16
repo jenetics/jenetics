@@ -24,8 +24,10 @@ import static org.jenetics.internal.util.object.eq;
 
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.concurrent.Executor;
 import java.util.function.Function;
 
+import org.jenetics.internal.util.Concurrency;
 import org.jenetics.internal.util.HashBuilder;
 
 /**
@@ -42,7 +44,7 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-04-16 $</em>
  */
 public interface Accumulator<T> {
 
@@ -377,18 +379,21 @@ public interface Accumulator<T> {
 	 * @throws NullPointerException if one of the given arguments is {@code null}.
 	 */
 	public static <T> void accumulate(
+		final Executor executor,
 		final Iterable<? extends T> values,
 		final Seq<? extends Accumulator<? super T>> accus
 	) {
 		switch (accus.length()) {
 			case 1:
 				Accumulator.accumulate(
+					executor,
 					values,
 					accus.get(0)
 				);
 				break;
 			case 2:
 				Accumulator.accumulate(
+					executor,
 					values,
 					accus.get(0),
 					accus.get(1)
@@ -396,6 +401,7 @@ public interface Accumulator<T> {
 				break;
 			case 3:
 				Accumulator.accumulate(
+					executor,
 					values,
 					accus.get(0),
 					accus.get(1),
@@ -404,6 +410,7 @@ public interface Accumulator<T> {
 				break;
 			case 4:
 				Accumulator.accumulate(
+					executor,
 					values,
 					accus.get(0),
 					accus.get(1),
@@ -413,6 +420,7 @@ public interface Accumulator<T> {
 				break;
 			case 5:
 				Accumulator.accumulate(
+					executor,
 					values,
 					accus.get(0),
 					accus.get(1),
@@ -422,9 +430,8 @@ public interface Accumulator<T> {
 				);
 				break;
 			default:
-				try (Scoped<Concurrent> c = Concurrent.scope()) {
-					// TODO: FIX
-					//c.get().execute(accus.map(AccumulatorToRunnable(values)).asList());
+				try (Concurrency c = Concurrency.with(executor)) {
+					c.execute(accus.map(a -> new Acc<>(values, a)).asList());
 				}
 		}
 	}
@@ -441,10 +448,11 @@ public interface Accumulator<T> {
 	 */
 	@SafeVarargs
 	public static <T> void accumulate(
+		final Executor executor,
 		final Iterable<? extends T> values,
 		final Accumulator<? super T>... accus
 	) {
-		accumulate(values, Array.of(accus));
+		accumulate(executor, values, Array.of(accus));
 	}
 
 	/**
@@ -475,6 +483,7 @@ public interface Accumulator<T> {
 	 * @throws NullPointerException if one of the given arguments is {@code null}.
 	 */
 	public static <T> void accumulate(
+		final Executor executor,
 		final Iterable<? extends T> values,
 		final Accumulator<? super T> a
 	) {
@@ -495,13 +504,14 @@ public interface Accumulator<T> {
 	 * @throws NullPointerException if one of the given arguments is {@code null}.
 	 */
 	public static <T> void accumulate(
+		final Executor executor,
 		final Iterable<? extends T> values,
 		final Accumulator<? super T> a1,
 		final Accumulator<? super T> a2
 	) {
-		try (Scoped<Concurrent> c = Concurrent.scope()) {
-			c.get().execute(new Acc<>(values, a1));
-			c.get().execute(new Acc<>(values, a2));
+		try (Concurrency c = Concurrency.with(executor)) {
+			c.execute(new Acc<>(values, a1));
+			c.execute(new Acc<>(values, a2));
 		}
 	}
 
@@ -518,15 +528,16 @@ public interface Accumulator<T> {
 	 * @throws NullPointerException if one of the given arguments is {@code null}.
 	 */
 	public static <T> void accumulate(
+		final Executor executor,
 		final Iterable<? extends T> values,
 		final Accumulator<? super T> a1,
 		final Accumulator<? super T> a2,
 		final Accumulator<? super T> a3
 	) {
-		try (Scoped<Concurrent> c = Concurrent.scope()) {
-			c.get().execute(new Acc<>(values, a1));
-			c.get().execute(new Acc<>(values, a2));
-			c.get().execute(new Acc<>(values, a3));
+		try (Concurrency c = Concurrency.with(executor)) {
+			c.execute(new Acc<>(values, a1));
+			c.execute(new Acc<>(values, a2));
+			c.execute(new Acc<>(values, a3));
 		}
 	}
 
@@ -544,17 +555,18 @@ public interface Accumulator<T> {
 	 * @throws NullPointerException if one of the given arguments is {@code null}.
 	 */
 	public static <T> void accumulate(
+		final Executor executor,
 		final Iterable<? extends T> values,
 		final Accumulator<? super T> a1,
 		final Accumulator<? super T> a2,
 		final Accumulator<? super T> a3,
 		final Accumulator<? super T> a4
 	) {
-		try (Scoped<Concurrent> c = Concurrent.scope()) {
-			c.get().execute(new Acc<>(values, a1));
-			c.get().execute(new Acc<>(values, a2));
-			c.get().execute(new Acc<>(values, a3));
-			c.get().execute(new Acc<>(values, a4));
+		try (Concurrency c = Concurrency.with(executor)) {
+			c.execute(new Acc<>(values, a1));
+			c.execute(new Acc<>(values, a2));
+			c.execute(new Acc<>(values, a3));
+			c.execute(new Acc<>(values, a4));
 		}
 	}
 
@@ -573,6 +585,7 @@ public interface Accumulator<T> {
 	 * @throws NullPointerException if one of the given arguments is {@code null}.
 	 */
 	public static <T> void accumulate(
+		final Executor executor,
 		final Iterable<? extends T> values,
 		final Accumulator<? super T> a1,
 		final Accumulator<? super T> a2,
@@ -580,12 +593,12 @@ public interface Accumulator<T> {
 		final Accumulator<? super T> a4,
 		final Accumulator<? super T> a5
 	) {
-		try (Scoped<Concurrent> c = Concurrent.scope()) {
-			c.get().execute(new Acc<>(values, a1));
-			c.get().execute(new Acc<>(values, a2));
-			c.get().execute(new Acc<>(values, a3));
-			c.get().execute(new Acc<>(values, a4));
-			c.get().execute(new Acc<>(values, a5));
+		try (Concurrency c = Concurrency.with(executor)) {
+			c.execute(new Acc<>(values, a1));
+			c.execute(new Acc<>(values, a2));
+			c.execute(new Acc<>(values, a3));
+			c.execute(new Acc<>(values, a4));
+			c.execute(new Acc<>(values, a5));
 		}
 	}
 
