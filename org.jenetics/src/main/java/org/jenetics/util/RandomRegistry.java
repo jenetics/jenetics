@@ -88,7 +88,7 @@ import org.jenetics.internal.util.Supplier;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
  */
 public final class RandomRegistry extends StaticObject {
 	private RandomRegistry() {}

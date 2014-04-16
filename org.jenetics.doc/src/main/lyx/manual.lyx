@@ -4925,7 +4925,7 @@ All threads uses the same kind of PRNG but with different parameters.
  the Random object of the JDK.
  You can use the
 \family typewriter
-LCG64\SpecialChar \-
+ LCG64\SpecialChar \-
 Shift\SpecialChar \-
 Random
 \family default
@@ -4970,7 +4970,7 @@ With this method each thread will be assigned a block of random numbers,
 \family typewriter
  LCG64\SpecialChar \-
 Shift\SpecialChar \-
-Random\SpecialChar \-
+Random.\SpecialChar \-
 Thread\SpecialChar \-
 Local
 \family default
@@ -6874,13 +6874,10 @@ Allele
 g.
  a gene which holds complex values, you may want extend it from the abstract
 \family typewriter
- NumberGene
+ NumericGene
 \family default
  class.
-\end_layout
-
-\begin_layout Standard
-Every gene extends the
+ Every gene extends the
 \family typewriter
  Serializable
 \family default
@@ -6890,48 +6887,7 @@ Every gene extends the
  normal
 \emph default
  genes there is no more work to do for using the Java serialization mechanism.
- If you want to serialize your gene in XML format, you have to extend the
-\family typewriter
- XMLSerializable
-\family default
- interface from the
-\emph on
- Javolution
-\emph default
- project.
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-For information how to make your gene XML serializable read the instructions
- on the
-\emph on
- Javolution
-\emph default
- site: 
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-http://javolution.org/target/site/apidocs/javolution/xml/XMLSerializable.html
-\end_layout
-
-\end_inset
-
-.
-\end_layout
-
-\end_inset
-
- Have a look at chapter 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "sub:Serialization"
-
-\end_inset
-
- for detailed information about serialization.
+ 
 \end_layout
 
 \begin_layout Subsection
@@ -7040,26 +6996,19 @@ Chromosome
 \begin_layout Standard
 The most important part of a chromosome is the factory method
 \family typewriter
- newInstance
+ new\SpecialChar \-
+Instance
 \family default
 , which lets the GA create a new chromosome instance from a sequence of
  genes.
  This method is used by the alterers when creating new, combined chromosomes.
  The other methods should be self-explanatory.
-\end_layout
-
-\begin_layout Standard
-The chromosome has the same serialization mechanism as the gene.
+ The chromosome has the same serialization mechanism as the gene.
  For the minimal case it extends the
 \family typewriter
  Serializable
 \family default
  interface.
- For XML serialization you have to extend the
-\family typewriter
- XMLSerializable
-\family default
-, which may rely on XML serialization of the genes.
 \end_layout
 
 \begin_layout Subsection
@@ -9358,92 +9307,8 @@ Maven Central
  repository:
 \end_layout
 
-\begin_layout Subparagraph
-Maven 
-\end_layout
-
 \begin_layout LyX-Code
-<dependency>
-\end_layout
-
-\begin_layout LyX-Code
-    <groupId>org.bitbucket.fwilhelm</groupId>
-\end_layout
-
-\begin_layout LyX-Code
-    <artifactId>org.jenetics</artifactId>
-\end_layout
-
-\begin_layout LyX-Code
-    <version>2.0.0</version>
-\end_layout
-
-\begin_layout LyX-Code
-</dependency>
-\end_layout
-
-\begin_layout Subparagraph*
-Ivy
-\end_layout
-
-\begin_layout LyX-Code
-<dependency 
-\end_layout
-
-\begin_layout LyX-Code
-    org="org.bitbucket.fwilhelm" 
-\end_layout
-
-\begin_layout LyX-Code
-    name="org.jenetics" 
-\end_layout
-
-\begin_layout LyX-Code
-    rev="2.0.0"
-\end_layout
-
-\begin_layout LyX-Code
-/>
-\end_layout
-
-\begin_layout Subparagraph
-Grape
-\end_layout
-
-\begin_layout LyX-Code
-@Grapes(
-\end_layout
-
-\begin_layout LyX-Code
-    @Grab(
-\end_layout
-
-\begin_layout LyX-Code
-        group='org.bitbucket.fwilhelm', 
-\end_layout
-
-\begin_layout LyX-Code
-        module='org.jenetics', 
-\end_layout
-
-\begin_layout LyX-Code
-        version='2.0.0'
-\end_layout
-
-\begin_layout LyX-Code
-    ) 
-\end_layout
-
-\begin_layout LyX-Code
-)
-\end_layout
-
-\begin_layout Subparagraph
-Gradle
-\end_layout
-
-\begin_layout LyX-Code
-'org.bitbucket.fwilhelm:org.jenetics:2.0.0'
+org.bitbucket.fwilhelm:org.jenetics:2.0.0
 \end_layout
 
 \begin_layout Section

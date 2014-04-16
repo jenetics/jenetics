@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.bind.DataBindingException;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
@@ -38,7 +39,7 @@ import org.jenetics.util.StaticObject;
  * JAXB helper methods.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-04-11 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-04-12 $</em>
  * @since 2.0
  */
 public class jaxb extends StaticObject {
@@ -51,7 +52,9 @@ public class jaxb extends StaticObject {
 					"org.jenetics:org.jenetics.internal.util"
 				);
 			} catch (JAXBException e) {
-				throw new AssertionError(e);
+				throw new DataBindingException(
+					"Something went wrong while creating JAXBContext.", e
+				);
 			}
 		}
 	}

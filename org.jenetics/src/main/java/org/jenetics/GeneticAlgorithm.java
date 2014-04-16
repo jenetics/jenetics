@@ -134,7 +134,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-05 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-12 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,
@@ -732,7 +732,7 @@ public class GeneticAlgorithm<
 	 *  //are changed before the next evolve step.
 	 * ga.getLock().lock();
 	 * try {
-	 *     ga.setAlterer(new Mutation(0.02);
+	 *     ga.setAlterer(new Mutation(0.02));
 	 *     ga.setPopulationSize(55);
 	 *     ga.setMaximalPhenotypeAge(30);
 	 * } finally {

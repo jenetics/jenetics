@@ -20,14 +20,11 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 2.0 &mdash; <em>$Date: 2014-04-11 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-15 $</em>
  */
 
-import org.apache.tools.ant.filters.ReplaceTokens
-
 apply plugin: 'packaging'
-apply plugin: 'maven-publish'
-apply plugin: 'signing'
+apply plugin: 'nexus'
 
 repositories {
 	mavenCentral ()
@@ -49,149 +46,53 @@ packaging {
 	author = 'Franz Wilhelmstötter'
 	url = 'http://jenetics.sourceforge.net'
 
-    jarjar = false
+	jarjar = false
 }
 
-task sourceJar(type: Jar) {
-	classifier "sources"
-	from sourceSets.main.allSource
-    filter(ReplaceTokens, tokens: [
-        __identifier__: identifier,
-        __year__: copyrightYear
-    ])
-}
+modifyPom {
+	project {
+		name jenetics.name
+		description jenetics.description
+		url jenetics.url
+		inceptionYear '2014'
 
-task javadocJar(type: Jar, dependsOn: javadoc) {
-	classifier = 'javadoc'
-	from javadoc.destinationDir
-    filter(ReplaceTokens, tokens: [
-        __identifier__: identifier,
-        __year__: copyrightYear
-    ])
-}
+		scm {
+			url jenetics.maven.scm.url
+			connection jenetics.maven.scm.connection
+			developerConnection jenetics.maven.scm.developer_connection
+		}
 
-ext {
-    pomFilePath = "${project.projectDir}/tmp/pom.xml"
-    pomFile = file(pomFilePath)
-}
+		licenses {
+			license {
+				name 'The Apache Software License, Version 2.0'
+				url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+				distribution 'repo'
+			}
+		}
 
-configurations {
-    pom
-}
-
-artifacts {
-    archives jar
-    archives sourceJar
-    archives javadocJar
-    if (pomFile.exists()) {
-        pom pomFile
-    }
-}
-
-task signJars (type : Sign, dependsOn: [jar, javadocJar, sourceJar]) {
-    sign configurations.archives
-}
-
-task signPom(type: Sign) {
-    sign configurations.pom
-}
-
-if (project.ext.pomFile.exists()) {
-    task preparePublication (dependsOn : [signJars, signPom])
-} else {
-    task preparePublication (dependsOn : signJars)
-}
-
-
-def getSignatureFiles = {
-    def allFiles = project.tasks.signJars.signatureFiles.collect { it }
-    def signedSources = allFiles.find { it.name.contains('-sources') }
-    def signedJavadoc = allFiles.find { it.name.contains('-javadoc') }
-    def signedJar = (allFiles - [signedSources, signedJavadoc])[0]
-    return [
-            [archive: signedSources, classifier: 'sources', extension: 'jar.asc'],
-            [archive: signedJavadoc, classifier: 'javadoc', extension: 'jar.asc'],
-            [archive: signedJar,     classifier: null,      extension: 'jar.asc']
-    ]
-}
-
-def getPomSignature = {
-    return project.tasks.signPom.signatureFiles.collect{it}[0]
-}
-
-publishing {
-    publications {
-        gpgJars(MavenPublication) {
-            getSignatureFiles().each {signature ->
-                artifact (signature.archive) {
-                    classifier = signature.classifier
-                    extension  = signature.extension
-                }
-            }
-        }
-        if (project.ext.pomFile.exists()) {
-            gpgPom(MavenPublication) {
-                artifact (getPomSignature()) {
-                    classifier = null
-                    extension  = 'pom.asc'
-                }
-            }
-        }
-        jar(MavenPublication) {
-            from components.java
-            artifact (javadocJar) {
-                classifier = 'javadoc'
-            }
-            artifact (sourceJar) {
-                classifier = 'sources'
-            }
-
-            pom.withXml { asNode().children().last() + {
-                resolveStrategy = Closure.DELEGATE_FIRST
-                name jenetics.name
-                description jenetics.description
-                url jenetics.url
-                packaging 'jar'
-                scm {
-                    url jenetics.maven.scm.url
-                    connection jenetics.maven.scm.connection
-                    developerConnection jenetics.maven.scm.developer_connection
-                }
-                licenses {
-                    license {
-                        name 'The Apache Software License, Version 2.0'
-                        url 'http://www.apache.org/license/LICENSE-2.0.txt'
-                        distribution 'repo'
-                    }
-                }
-                developers {
-                    developer {
-                        id 'fwilhelm'
-                        name 'Franz Wilhelmstötter'
-                        email 'franz.wilhelmstoetter@gmx.at'
-                    }
-                }
-            }}
-        }
-    }
-
-	repositories {
-        maven {
-            //if (project.ext.pomFile.exists()) {
-                url 'https://oss.sonatype.org/content/repositories/snapshots'
-                //url 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
-                credentials {
-                    username = project.hasProperty('sonatype_username') ? sonatype_username : 'foo'
-                    password = project.hasProperty('sonatype_password') ? sonatype_password : 'bar'
-                }
-            //} else {
-            //    url "$buildDir/repo"
-            //}
-        }
+		developers {
+			developer {
+				id 'fwilhelm'
+				name 'Franz Wilhelmstötter'
+				email 'franz.wilhelmstoetter@gmx.at'
+			}
+		}
 	}
 }
 
-publish.dependsOn(preparePublication)
+nexus {
+    identifier = project.identifier
+    copyrightYear = project.copyrightYear
+	attachSources = true
+	attachTests = false
+	attachJavadoc = true
+	sign = true
+	repository = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+	snapshotRepository = 'https://oss.sonatype.org/content/repositories/snapshots'
+    //snapshotRepository = "file://$buildDir/repo"
+}
+
+
 
 
 
