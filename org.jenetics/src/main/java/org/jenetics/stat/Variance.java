@@ -30,10 +30,10 @@ import org.jenetics.internal.util.HashBuilder;
  * <p>Calculate the variance from a finite sample of <i>N</i> observations.</p>
  * <p><img src="doc-files/variance.gif"
  *         alt="s^2_{N-1}=\frac{1}{N-1}\sum_{i=1}^{N}\left ( x_i - \bar{x} \right )^2"
- *    />
+ *    >
  * </p>
  *
- * <p/>
+ * <p>
  * <strong>Note that this implementation is not synchronized.</strong> If
  * multiple threads access this object concurrently, and at least one of the
  * threads modifies it, it must be synchronized externally.
@@ -45,7 +45,7 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-03-01 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
  */
 public class Variance<N extends Number> extends Mean<N> {
 
@@ -56,7 +56,7 @@ public class Variance<N extends Number> extends Mean<N> {
 
 	/**
 	 * Return the variance of the accumulated values.
-	 * <p><img src="doc-files/variance.gif" alt="Variance" /></p>
+	 * <p><img src="doc-files/variance.gif" alt="Variance" ></p>
 	 *
 	 * @return the variance of the accumulated values, or {@link java.lang.Double#NaN}
 	 *          if {@code getSamples() == 0}.

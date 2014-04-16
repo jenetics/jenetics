@@ -29,8 +29,6 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.regex.PatternSyntaxException;
 
-import javolution.lang.Immutable;
-
 import org.jenetics.internal.util.HashBuilder;
 
 /**
@@ -47,7 +45,7 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-03-01 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-08 $</em>
  */
 public final class CharSeq
 	extends AbstractCharSeq
@@ -55,7 +53,6 @@ public final class CharSeq
 		CharSequence,
 		ISeq<Character>,
 		Comparable<CharSeq>,
-		Immutable,
 		Serializable
 {
 	private static final long serialVersionUID = 2L;
@@ -88,7 +85,7 @@ public final class CharSeq
 		requireNonNull(characters, "Characters");
 
 		final char[] chars = new char[characters.length()];
-		for (int i = 0; i < characters.length(); ++i) {
+		for (int i = chars.length; --i >= 0;) {
 			chars[i] = characters.charAt(i);
 		}
 
@@ -96,42 +93,24 @@ public final class CharSeq
 	}
 
 	private static char[] distinct(final char[] chars) {
-		char[] result = chars;
+		Arrays.sort(chars);
 
-		if (chars.length > 0) {
-			Arrays.sort(result);
+		int size = 0;
+		for (int i = 0, j = 0, n = chars.length; i < n && j < n; ++i) {
+			chars[i] = chars[j];
+			++size;
 
-			int nextIndex = 0;
-			int count = 1;
-			char last = result[0];
-
-			for (int i = 1; i < result.length; ++i) {
-				while (nextIndex < result.length && result[nextIndex] == last) {
-					++nextIndex;
-				}
-				if (nextIndex < result.length) {
-					last = result[nextIndex];
-					result[i] = last;
-					++count;
-				}
-			}
-
-			char[] array = new char[count];
-			System.arraycopy(result, 0, array, 0, count);
-			result = array;
+			while (j < n && chars[j] == chars[i]) ++j;
 		}
 
-		return result;
+		final char[] array = new char[size];
+		System.arraycopy(chars, 0, array, 0, size);
+		return array;
 	}
 
 	@Override
 	public boolean contains(final Object object) {
-		boolean contains = false;
-		if (object instanceof Character) {
-			contains = contains((Character)object);
-		}
-
-		return contains;
+		return object instanceof Character && contains((Character)object);
 	}
 
 	/**
@@ -330,14 +309,6 @@ public final class CharSeq
 	}
 
 	/**
-	 * @deprecated Use {@link #of(CharSequence)} instead.
-	 */
-	@Deprecated
-	public static CharSeq valueOf(final CharSequence pattern) {
-		return of(pattern);
-	}
-
-	/**
 	 * Expands the characters between {@code a} and {@code b}.
 	 *
 	 * @see #expand(char, char)
@@ -348,14 +319,6 @@ public final class CharSeq
 	 */
 	public static CharSeq of(final char a, final char b) {
 		return new CharSeq(expand(a, b));
-	}
-
-	/**
-	 * @deprecated Use {@link #of(char, char)} instead.
-	 */
-	@Deprecated
-	public static CharSeq valueOf(final char a, final char b) {
-		return of(a, b);
 	}
 
 	/**

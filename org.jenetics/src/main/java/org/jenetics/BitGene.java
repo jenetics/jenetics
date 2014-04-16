@@ -19,20 +19,15 @@
  */
 package org.jenetics;
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import javolution.xml.XMLFormat;
-import javolution.xml.XMLSerializable;
-import javolution.xml.stream.XMLStreamException;
-
-import org.jenetics.internal.util.model.ModelType;
-import org.jenetics.internal.util.model.ValueType;
 
 import org.jenetics.util.Function;
 import org.jenetics.util.RandomRegistry;
@@ -42,20 +37,20 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-02-23 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-18 $</em>
  */
 @XmlJavaTypeAdapter(BitGene.Model.Adapter.class)
 public enum BitGene
 	implements
 		Gene<Boolean, BitGene>,
 		Comparable<BitGene>,
-		XMLSerializable
+		Serializable
 {
 
 	FALSE(false),
 	TRUE(true);
 
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 3L;
 
 	public static final BitGene ZERO = FALSE;
 	public static final BitGene ONE = TRUE;
@@ -101,12 +96,6 @@ public enum BitGene
 		return true;
 	}
 
-	@Deprecated
-	@Override
-	public BitGene copy() {
-		return this;
-	}
-
 	/**
 	 * Create a new, <em>random</em> gene.
 	 */
@@ -137,20 +126,6 @@ public enum BitGene
 	 *
 	 * @param value the value of the returned {@code BitGene}.
 	 * @return the {@code BitGene} for the given {@code boolean} value.
-	 *
-	 * @deprecated Use {@link #of(boolean)} instead.
-	 */
-	@Deprecated
-	public static BitGene valueOf(final boolean value) {
-		return of(value);
-	}
-
-	/**
-	 * Return the corresponding {@code BitGene} for the given {@code boolean}
-	 * value.
-	 *
-	 * @param value the value of the returned {@code BitGene}.
-	 * @return the {@code BitGene} for the given {@code boolean} value.
 	 */
 	public static BitGene of(final boolean value) {
 		return value ? TRUE : FALSE;
@@ -173,46 +148,17 @@ public enum BitGene
 
 
 	/* *************************************************************************
-	 *  XML object serialization
-	 * ************************************************************************/
-
-	static final XMLFormat<BitGene>
-	XML = new XMLFormat<BitGene>(BitGene.class)
-	{
-		private static final String VALUE = "value";
-
-		@Override
-		public BitGene newInstance(final Class<BitGene> cls, final InputElement element)
-			throws XMLStreamException
-		{
-			final boolean value = element.getAttribute(VALUE, true);
-			return value ? BitGene.TRUE : BitGene.FALSE;
-		}
-		@Override
-		public void write(final BitGene gene, final OutputElement element)
-			throws XMLStreamException
-		{
-			element.setAttribute(VALUE, gene._value);
-		}
-		@Override
-		public void read(final InputElement element, final BitGene gene) {
-		}
-	};
-
-	/* *************************************************************************
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "org.jenetics.BitGene")
+	@XmlRootElement(name = "bit-gene")
 	@XmlType(name = "org.jenetics.BitGene")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
 
-		@XmlAttribute
+		@XmlValue
 		public boolean value;
 
-		@ValueType(BitGene.class)
-		@ModelType(Model.class)
 		public final static class Adapter
 			extends XmlAdapter<Model, BitGene>
 		{

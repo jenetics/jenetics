@@ -29,7 +29,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-04 $</em>
+ * @version <em>$Date: 2014-03-10 $</em>
  */
 class TestUtils {
 
@@ -155,7 +155,7 @@ class TestUtils {
 			new Array<>(nchromosomes);
 
 		for (int i = 0; i < nchromosomes; ++i) {
-			chromosomes.set(i, new PermutationChromosome<>(ialleles));
+			chromosomes.set(i, PermutationChromosome.of(ialleles));
 		}
 
 		final Genotype<EnumGene<Double>> genotype = new Genotype<>(chromosomes.toISeq());

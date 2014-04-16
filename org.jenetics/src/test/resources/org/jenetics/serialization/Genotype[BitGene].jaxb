@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<genotype length="5" ngenes="100">
+    <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">11100011101011001010</chromosome>
+    <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">00001101000001001100</chromosome>
+    <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">00111100001010011100</chromosome>
+    <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">11001111101000111000</chromosome>
+    <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">01001101011101110110</chromosome>
+</genotype>

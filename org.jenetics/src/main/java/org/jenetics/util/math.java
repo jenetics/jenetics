@@ -29,7 +29,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.4 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2014-04-03 $</em>
  */
 public final class math extends StaticObject {
 	private math() {}
@@ -71,35 +71,6 @@ public final class math extends StaticObject {
 	}
 
 	/**
-	 * Implementation of the <a href="http://en.wikipedia.org/wiki/Kahan_summation_algorithm">
-	 * Kahan summation algorithm</a>.
-	 *
-	 * @param values the values to sum up.
-	 * @return the sum of the given {@code values}.
-	 * @throws NullPointerException if the given array is {@code null}.
-	 *
-	 * @deprecated Use {@link math.statistics#sum(double[])} instead.
-	 */
-	@Deprecated
-	public static double sum(final double[] values) {
-		return statistics.sum(values);
-	}
-
-	/**
-	 * Add the values of the given array.
-	 *
-	 * @param values the values to add.
-	 * @return the values sum.
-	 * @throws NullPointerException if the values are null;
-	 *
-	 * @deprecated Use {@link math.statistics#sum(long[])} instead.
-	 */
-	@Deprecated
-	public static long sum(final long[] values) {
-		return statistics.sum(values);
-	}
-
-	/**
 	 * Normalize the given double array, so that it sum to one. The
 	 * normalization is performed in place and the same {@code values} are
 	 * returned.
@@ -115,36 +86,6 @@ public final class math extends StaticObject {
 		}
 
 		return values;
-	}
-
-	/**
-	 * Return the minimum value of the given double array.
-	 *
-	 * @param values the double array.
-	 * @return the minimum value or {@link Double#NaN} if the given array is
-	 *         empty.
-	 * @throws NullPointerException if the given array is {@code null}.
-	 *
-	 * @deprecated Use {@link math.statistics#min(double[])} instead.
-	 */
-	@Deprecated
-	public static double min(final double[] values) {
-		return statistics.min(values);
-	}
-
-	/**
-	 * Return the maximum value of the given double array.
-	 *
-	 * @param values the double array.
-	 * @return the maximum value or {@link Double#NaN} if the given array is
-	 *         empty.
-	 * @throws NullPointerException if the given array is {@code null}.
-	 *
-	 * @deprecated Use {@link math.statistics#max(double[])} instead.
-	 */
-	@Deprecated
-	public static double max(final double[] values) {
-		return statistics.max(values);
 	}
 
 	/**
@@ -215,20 +156,6 @@ public final class math extends StaticObject {
 		return result;
 	}
 
-	static int gcd(final int a, final int b) {
-		int x = a;
-		int y = b;
-		int mod = x%y;
-
-		while (mod != 0) {
-			x = y;
-			y = mod;
-			mod = x%y;
-		}
-
-		return y;
-	}
-
 	static boolean isMultiplicationSave(final int a, final int b) {
 		final long m = (long)a*(long)b;
 		return ((int)m) == m;
@@ -253,11 +180,11 @@ public final class math extends StaticObject {
 	 *
 	 * [code]
 	 * double a = 0.0;
-	 * for (int i = 0; i < 10; ++i) {
+	 * for (int i = 0; i &lt; 10; ++i) {
 	 *     a = Math.nextAfter(a, Double.POSITIVE_INFINITY);
 	 * }
 	 *
-	 * for (int i = 0; i < 19; ++i) {
+	 * for (int i = 0; i &lt; 19; ++i) {
 	 *     a = Math.nextAfter(a, Double.NEGATIVE_INFINITY);
 	 *     System.out.println(
 	 *          a + "\t" + ulpPosition(a) + "\t" + ulpDistance(0.0, a)
@@ -403,6 +330,7 @@ public final class math extends StaticObject {
 	 * @param n the size of the set.
 	 * @param sub the sub set array.
 	 * @param random the random number generator used.
+	 * @return the sub-set array for the given parameter
 	 * @throws NullPointerException if {@code sub} or {@code random} is
 	 *         {@code null}.
 	 * @throws IllegalArgumentException if {@code n < sub.length},
@@ -513,7 +441,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.3
-	 * @version 1.3 &mdash; <em>$Date: 2014-02-15 $</em>
+	 * @version 1.3 &mdash; <em>$Date: 2014-04-03 $</em>
 	 */
 	public static final class statistics extends StaticObject {
 		private statistics() {}
@@ -610,15 +538,17 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.2 &mdash; <em>$Date: 2014-02-15 $</em>
+	 * @version 1.2 &mdash; <em>$Date: 2014-04-03 $</em>
 	 */
 	public static final class random extends StaticObject {
 		private random() {}
 
 		/**
-		 * Returns a pseudorandom, uniformly distributed int value between min
+		 * Returns a pseudo-random, uniformly distributed int value between min
 		 * and max (min and max included).
 		 *
+		 * @param random the random engine to use for calculating the random
+		 *        int value
 		 * @param min lower bound for generated integer
 		 * @param max upper bound for generated integer
 		 * @return a random integer greater than or equal to {@code min} and
@@ -650,9 +580,11 @@ public final class math extends StaticObject {
 		}
 
 		/**
-		 * Returns a pseudorandom, uniformly distributed int value between min
+		 * Returns a pseudo-random, uniformly distributed int value between min
 		 * and max (min and max included).
 		 *
+		 * @param random the random engine to use for calculating the random
+		 *        long value
 		 * @param min lower bound for generated long integer
 		 * @param max upper bound for generated long integer
 		 * @return a random long integer greater than or equal to {@code min}
@@ -686,14 +618,14 @@ public final class math extends StaticObject {
 		}
 
 		/**
-		 * Returns a pseudorandom, uniformly distributed int value between 0
+		 * Returns a pseudo-random, uniformly distributed int value between 0
 		 * (inclusive) and the specified value (exclusive), drawn from the given
 		 * random number generator's sequence.
 		 *
 		 * @param random the random engine used for creating the random number.
 		 * @param n the bound on the random number to be returned. Must be
 		 *        positive.
-		 * @return the next pseudorandom, uniformly distributed int value
+		 * @return the next pseudo-random, uniformly distributed int value
 		 *         between 0 (inclusive) and n (exclusive) from the given random
 		 *         number generator's sequence
 		 * @throws IllegalArgumentException if n is smaller than 1.
@@ -716,7 +648,7 @@ public final class math extends StaticObject {
 		}
 
 		/**
-		 * Returns a pseudorandom, uniformly distributed double value between
+		 * Returns a pseudo-random, uniformly distributed double value between
 		 * min (inclusively) and max (exclusively).
 		 *
 		 * @param random the random engine used for creating the random number.
@@ -733,7 +665,7 @@ public final class math extends StaticObject {
 		}
 
 		/**
-		 * Returns a pseudorandom, uniformly distributed double value between
+		 * Returns a pseudo-random, uniformly distributed double value between
 		 * min (inclusively) and max (exclusively).
 		 *
 		 * @param random the random engine used for creating the random number.
@@ -792,13 +724,13 @@ public final class math extends StaticObject {
 		 * PRNGs. This method uses a combination of {@code System.nanoTime()}
 		 * and {@code new Object().hashCode()} calls to create a reasonable safe
 		 * seed value:
-		 * <p/>
+		 * <p>
 		 * [code]
 		 * public static long seed() {
 		 *     return seed(System.nanoTime());
 		 * }
 		 * [/code]
-		 * <p/>
+		 * <p>
 		 * This method passes all of the statistical tests of the
 		 * <a href="http://www.phy.duke.edu/~rgb/General/dieharder.php">
 		 * dieharder</a> test suite&mdash;executed on a linux machine with
@@ -818,15 +750,15 @@ public final class math extends StaticObject {
 		 * Uses the given {@code base} value to create a reasonable safe seed
 		 * value. This is done by combining it with values of
 		 * {@code new Object().hashCode()}:
-		 * <p/>
+		 * <p>
 		 * [code]
 		 * public static long seed(final long base) {
-		 *     final long objectHashSeed = ((long)(new Object().hashCode()) << 32) |
+		 *     final long objectHashSeed = ((long)(new Object().hashCode()) &lt;&lt; 32) |
 		 *                                         new Object().hashCode();
 		 *     long seed = base ^ objectHashSeed;
-		 *     seed ^= seed << 17;
-		 *     seed ^= seed >>> 31;
-		 *     seed ^= seed << 8;
+		 *     seed ^= seed &lt;&lt; 17;
+		 *     seed ^= seed &gt;&gt;&gt; 31;
+		 *     seed ^= seed &lt;&lt; 8;
 		 *     return seed;
 		 * }
 		 * [/code]

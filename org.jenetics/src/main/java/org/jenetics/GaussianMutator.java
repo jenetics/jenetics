@@ -23,8 +23,6 @@ import static java.lang.String.format;
 
 import java.util.Random;
 
-import javolution.lang.Immutable;
-
 import org.jenetics.internal.util.HashBuilder;
 
 import org.jenetics.util.IndexStream;
@@ -48,11 +46,10 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-03-05 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
  */
 public final class GaussianMutator<G extends NumericGene<?, G>>
 	extends Mutator<G>
-	implements Immutable
 {
 
 	public GaussianMutator() {

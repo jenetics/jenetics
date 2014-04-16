@@ -36,9 +36,9 @@ import org.jenetics.util.RandomRegistry;
  * Probability selectors are a variation of fitness proportional selectors and
  * selects individuals from a given population based on it's selection
  * probability <i>P(i)</i>.
- * <p><div align="center">
- * <img src="doc-files/FitnessProportionalSelection.svg" width="400" />
- * </p></div>
+ * <p>
+ * <img src="doc-files/FitnessProportionalSelection.svg" width="400" alt="Selection">
+ * <p>
  * Fitness proportional selection works as shown in the figure above. The
  * runtime complexity of the implemented probability selectors is
  * <i>O(n+</i>log<i>(n))</i> instead of <i>O(n<sup>2</sup>)</i> as for the naive
@@ -47,7 +47,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
  */
 public abstract class ProbabilitySelector<
 	G extends Gene<?, G>,
@@ -132,8 +132,9 @@ public abstract class ProbabilitySelector<
 	 * @param population The population.
 	 * @param count The number of phenotypes to select.
 	 * @param opt Determines whether the individuals with higher fitness values
-	 *        or lower fitness values must be selected. This parameter determines
-	 *        whether the GA maximizes or minimizes the fitness function.
+	 *        or lower fitness values must be selected. This parameter
+	 *        determines whether the GA maximizes or minimizes the fitness
+	 *        function.
 	 * @return Probability array.
 	 */
 	protected final double[] probabilities(
@@ -167,7 +168,7 @@ public abstract class ProbabilitySelector<
 	 *
 	 * @param population The <em>unsorted</em> population.
 	 * @param count The number of phenotypes to select. <i>This parameter is not
-	 *         needed for most implementations.</i>
+	 *        needed for most implementations.</i>
 	 * @return Probability array. The returned probability array must have the
 	 *         length {@code population.size()} and <strong>must</strong> sum to
 	 *         one. The returned value is checked with
@@ -184,7 +185,7 @@ public abstract class ProbabilitySelector<
 	 *
 	 * @param probabilities the probabilities to check.
 	 * @return {@code true} if the sum of the probabilities are within the error
-	 *          range, {@code false} otherwise.
+	 *         range, {@code false} otherwise.
 	 */
 	static boolean sum2one(final double[] probabilities) {
 		final double sum = sum(probabilities);

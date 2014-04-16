@@ -22,7 +22,7 @@ package org.jenetics.internal.util;
 /**
  * Interface for building hash codes. The HashCodeBuilder is created via a
  * factory method in the {@link org.jenetics.util.object} class.
- * <p/>
+ * <p>
  * Example for calculating the hash code for a given class:
  * [code]
  * \@Override
@@ -36,7 +36,7 @@ package org.jenetics.internal.util;
  * @see org.jenetics.util.object#hashCodeOf(Class)
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-02-27 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-03-28 $</em>
  * @since 1.6
  */
 public abstract class HashBuilder {

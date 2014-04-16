@@ -20,21 +20,17 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.5 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-15 $</em>
  */
 
 apply plugin: 'packaging'
-apply plugin: 'maven-publish'
-apply plugin: 'signing'
+apply plugin: 'nexus'
 
 repositories {
 	mavenCentral ()
 }
 
-
 dependencies {
-	compile Include.JScience
-
 	testCompile Include.Apache.Commons.Math
 	testCompile Include.TestNG
 }
@@ -49,30 +45,55 @@ packaging {
 	name = 'Jenetics'
 	author = 'Franz Wilhelmstötter'
 	url = 'http://jenetics.sourceforge.net'
+
+	jarjar = false
 }
 
-task sourceJar(type: Jar) {
-	classifier "source"
-	from sourceSets.main.allSource
-}
+modifyPom {
+	project {
+		name jenetics.name
+		description jenetics.description
+		url jenetics.url
+		inceptionYear '2014'
 
-publishing {
-	publications {
-		mavenJava(MavenPublication) {
-			from components.java
+		scm {
+			url jenetics.maven.scm.url
+			connection jenetics.maven.scm.connection
+			developerConnection jenetics.maven.scm.developer_connection
 		}
-		maven(MavenPublication) {
-			artifact sourceJar {
-				classifier "src"
-				extension "zip"
+
+		licenses {
+			license {
+				name 'The Apache Software License, Version 2.0'
+				url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+				distribution 'repo'
+			}
+		}
+
+		developers {
+			developer {
+				id 'fwilhelm'
+				name 'Franz Wilhelmstötter'
+				email 'franz.wilhelmstoetter@gmx.at'
 			}
 		}
 	}
-	repositories {
-		maven {
-			url "$buildDir/repo"
-		}
-	}
 }
+
+nexus {
+    identifier = project.identifier
+    copyrightYear = project.copyrightYear
+	attachSources = true
+	attachTests = false
+	attachJavadoc = true
+	sign = true
+	repository = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+	snapshotRepository = 'https://oss.sonatype.org/content/repositories/snapshots'
+    //snapshotRepository = "file://$buildDir/repo"
+}
+
+
+
+
 
 

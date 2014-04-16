@@ -31,7 +31,7 @@ import org.jenetics.util.lists;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-17 $</em>
+ * @version <em>$Date: 2014-03-07 $</em>
  */
 @Suite("Population")
 public class PopulationTest {
