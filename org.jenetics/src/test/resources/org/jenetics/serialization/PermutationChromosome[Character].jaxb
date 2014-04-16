@@ -17,5 +17,5 @@
         <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">䶈</allele>
         <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">㲴</allele>
     </valid-alleles>
-    <order>4 7 2 13 6 3 10 12 11 1 8 9 5 14 0</order>
+    <order>0 10 4 5 3 11 14 9 6 7 14 10 6 3 0</order>
 </permutation-chromosome>

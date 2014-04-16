@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<phenotype generation="1946846076">
+<phenotype generation="848559211">
     <genotype length="5" ngenes="75">
         <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.PermutationChromosome" length="15">
             <valid-alleles>
@@ -19,50 +19,32 @@
                 <allele xsi:type="char">䶈</allele>
                 <allele xsi:type="char">㲴</allele>
             </valid-alleles>
-            <order>4 7 2 13 6 3 10 12 11 1 8 9 5 14 0</order>
+            <order>0 10 4 5 3 11 14 9 6 7 14 10 6 3 0</order>
         </chromosome>
         <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.PermutationChromosome" length="15">
             <valid-alleles>
-                <allele xsi:type="char">摫</allele>
-                <allele xsi:type="char">侄</allele>
-                <allele xsi:type="char">哐</allele>
-                <allele xsi:type="char">팃</allele>
-                <allele xsi:type="char">엿</allele>
-                <allele xsi:type="char">氱</allele>
-                <allele xsi:type="char">㖍</allele>
-                <allele xsi:type="char">䪠</allele>
-                <allele xsi:type="char">硯</allele>
-                <allele xsi:type="char">뒦</allele>
-                <allele xsi:type="char">驜</allele>
                 <allele xsi:type="char">낦</allele>
                 <allele xsi:type="char">宺</allele>
                 <allele xsi:type="char">离</allele>
                 <allele xsi:type="char">ᓲ</allele>
-            </valid-alleles>
-            <order>11 8 0 9 12 2 10 4 6 1 3 7 5 13 14</order>
-        </chromosome>
-        <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.PermutationChromosome" length="15">
-            <valid-alleles>
+                <allele xsi:type="char">幀</allele>
+                <allele xsi:type="char">犟</allele>
+                <allele xsi:type="char">鎑</allele>
+                <allele xsi:type="char">Ρ</allele>
+                <allele xsi:type="char">鐨</allele>
+                <allele xsi:type="char">챢</allele>
+                <allele xsi:type="char">寶</allele>
+                <allele xsi:type="char">冱</allele>
+                <allele xsi:type="char">뼏</allele>
+                <allele xsi:type="char">낊</allele>
                 <allele xsi:type="char">㕈</allele>
-                <allele xsi:type="char">筠</allele>
-                <allele xsi:type="char">錜</allele>
-                <allele xsi:type="char">괣</allele>
-                <allele xsi:type="char">鲩</allele>
-                <allele xsi:type="char">ꏉ</allele>
-                <allele xsi:type="char">삩</allele>
-                <allele xsi:type="char">尞</allele>
-                <allele xsi:type="char">蒺</allele>
-                <allele xsi:type="char">ἴ</allele>
-                <allele xsi:type="char">蠫</allele>
-                <allele xsi:type="char">賀</allele>
-                <allele xsi:type="char">失</allele>
-                <allele xsi:type="char">歶</allele>
-                <allele xsi:type="char">Ｋ</allele>
             </valid-alleles>
-            <order>0 10 6 9 14 4 1 11 5 13 2 8 7 12 3</order>
+            <order>10 0 10 14 3 12 9 9 1 12 14 1 3 14 6</order>
         </chromosome>
         <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.PermutationChromosome" length="15">
             <valid-alleles>
+                <allele xsi:type="char">쿯</allele>
+                <allele xsi:type="char">檝</allele>
                 <allele xsi:type="char">镬</allele>
                 <allele xsi:type="char">踧</allele>
                 <allele xsi:type="char">䅹</allele>
@@ -76,32 +58,50 @@
                 <allele xsi:type="char">ᗞ</allele>
                 <allele xsi:type="char">㥔</allele>
                 <allele xsi:type="char">溙</allele>
-                <allele xsi:type="char">쎌</allele>
-                <allele xsi:type="char">Ꮒ</allele>
             </valid-alleles>
-            <order>3 6 0 7 2 12 5 8 11 13 10 14 1 9 4</order>
+            <order>7 7 7 4 1 3 4 7 14 1 4 10 1 7 7</order>
         </chromosome>
         <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.PermutationChromosome" length="15">
             <valid-alleles>
-                <allele xsi:type="char">䆮</allele>
-                <allele xsi:type="char">ᚦ</allele>
-                <allele xsi:type="char">对</allele>
-                <allele xsi:type="char">ꕪ</allele>
-                <allele xsi:type="char">濣</allele>
-                <allele xsi:type="char">嶰</allele>
-                <allele xsi:type="char">벴</allele>
-                <allele xsi:type="char">솾</allele>
-                <allele xsi:type="char">ස</allele>
-                <allele xsi:type="char">姭</allele>
                 <allele xsi:type="char">惺</allele>
                 <allele xsi:type="char">蒬</allele>
                 <allele xsi:type="char">酧</allele>
                 <allele xsi:type="char">璌</allele>
                 <allele xsi:type="char">䥺</allele>
+                <allele xsi:type="char">꾹</allele>
+                <allele xsi:type="char">傊</allele>
+                <allele xsi:type="char">ꍟ</allele>
+                <allele xsi:type="char">妵</allele>
+                <allele xsi:type="char">夈</allele>
+                <allele xsi:type="char">㕞</allele>
+                <allele xsi:type="char">䦶</allele>
+                <allele xsi:type="char">擠</allele>
+                <allele xsi:type="char">韰</allele>
+                <allele xsi:type="char">ഐ</allele>
             </valid-alleles>
-            <order>3 8 0 4 6 13 5 2 9 7 10 11 1 14 12</order>
+            <order>7 3 0 10 10 7 1 13 5 8 12 11 2 6 3</order>
+        </chromosome>
+        <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.PermutationChromosome" length="15">
+            <valid-alleles>
+                <allele xsi:type="char">枦</allele>
+                <allele xsi:type="char">漸</allele>
+                <allele xsi:type="char">睴</allele>
+                <allele xsi:type="char">촃</allele>
+                <allele xsi:type="char">忣</allele>
+                <allele xsi:type="char">晬</allele>
+                <allele xsi:type="char">ꤾ</allele>
+                <allele xsi:type="char">Ɔ</allele>
+                <allele xsi:type="char">斀</allele>
+                <allele xsi:type="char">ﬔ</allele>
+                <allele xsi:type="char">ｔ</allele>
+                <allele xsi:type="char">燅</allele>
+                <allele xsi:type="char">䟿</allele>
+                <allele xsi:type="char">懞</allele>
+                <allele xsi:type="char">瑱</allele>
+            </valid-alleles>
+            <order>6 14 13 10 5 12 5 6 10 4 6 1 0 10 10</order>
         </chromosome>
     </genotype>
-    <fitness xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.09503343162969657</fitness>
-    <raw-fitness xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.09503343162969657</raw-fitness>
+    <fitness xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.2661515471754887</fitness>
+    <raw-fitness xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.2661515471754887</raw-fitness>
 </phenotype>
