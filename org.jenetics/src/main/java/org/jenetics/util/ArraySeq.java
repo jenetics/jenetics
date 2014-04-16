@@ -38,7 +38,7 @@ import java.util.function.Predicate;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-04-16 $</em>
  */
 abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	private static final long serialVersionUID = 1L;
@@ -194,34 +194,6 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 
 	@Override
-	public <B> B foldLeft(
-		final B z,
-		final BiFunction<? super B, ? super T, ? extends B> op
-	) {
-		B result = z;
-		for (int i = 0, n = length(); i < n; ++i) {
-			@SuppressWarnings("unchecked")
-			final T value = (T)_array.data[i + _start];
-			result = op.apply(result, value);
-		}
-		return result;
-	}
-
-	@Override
-	public <B> B foldRight(
-		final B z,
-		final BiFunction<? super T, ? super B, ? extends B> op
-	) {
-		B result = z;
-		for (int i = length(); --i >= 0;) {
-			@SuppressWarnings("unchecked")
-			final T value = (T)_array.data[i + _start];
-			result = op.apply(value, result);
-		}
-		return result;
-	}
-
-	@Override
 	public int length() {
 		return _length;
 	}
@@ -229,24 +201,6 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	@Override
 	public Iterator<T> iterator() {
 		return new ArraySeqIterator<>(this);
-	}
-
-	@Override
-	public <B> Iterator<B> iterator(
-		final Function<? super T, ? extends B> converter
-	) {
-		return new Iterator<B>() {
-			private final Iterator<T> _iterator = iterator();
-			@Override public boolean hasNext() {
-				return _iterator.hasNext();
-			}
-			@Override public B next() {
-				return converter.apply(_iterator.next());
-			}
-			@Override public void remove() {
-				_iterator.remove();
-			}
-		};
 	}
 
 	@Override

@@ -33,7 +33,6 @@ import java.util.function.Supplier;
 
 import org.jenetics.internal.util.ArrayProxyImpl;
 import org.jenetics.internal.util.ArrayProxyMSeq;
-import org.jenetics.internal.util.SeqListIteratorAdapter;
 
 /**
  * Mutable, ordered, fixed sized sequence.
@@ -42,7 +41,7 @@ import org.jenetics.internal.util.SeqListIteratorAdapter;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
  */
 public interface MSeq<T> extends Seq<T>, ObjIntConsumer<T>, Copyable<MSeq<T>> {
 
@@ -214,9 +213,7 @@ public interface MSeq<T> extends Seq<T>, ObjIntConsumer<T>, Copyable<MSeq<T>> {
 	 * @return a list iterator over the elements in this list (in proper
 	 *         sequence)
 	 */
-	public default ListIterator<T> listIterator() {
-		return new SeqListIteratorAdapter<T>(this);
-	}
+	public ListIterator<T> listIterator();
 
 	@Override
 	public MSeq<T> subSeq(final int start, final int end);

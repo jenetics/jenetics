@@ -28,7 +28,7 @@ import org.jenetics.util.Seq;
  * @since 1.0
  * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
  */
-public final class DefaultHashCodeBuilder implements Hash {
+final class DefaultHashCodeBuilder implements Hash {
 	private static final int P1 = 47;
 	private static final int P2 = 103;
 	private static final int P3 = 1231;
@@ -37,7 +37,7 @@ public final class DefaultHashCodeBuilder implements Hash {
 
 	protected int _hash = 0;
 
-	public DefaultHashCodeBuilder(final Class<?> type) {
+	DefaultHashCodeBuilder(final Class<?> type) {
 		_hash = type.hashCode();
 	}
 

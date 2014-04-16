@@ -26,14 +26,9 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.RandomAccess;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.function.Predicate;
-
-import org.jenetics.internal.util.SeqIteratorAdapter;
-import org.jenetics.internal.util.SeqListAdapter;
-import org.jenetics.internal.util.SeqMappedIteratorAdapter;
 
 /**
  * General interface for a ordered, fixed sized, object sequence.
@@ -44,7 +39,7 @@ import org.jenetics.internal.util.SeqMappedIteratorAdapter;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-16 $</em>
  */
 public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 
@@ -91,34 +86,6 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	}
 
 	/**
-	 * Return default implementation of the {@code Iterable} method. Only uses
-	 * the {@link #get(int)} and {@link #length()} method for implementing the
-	 * Iterator. Implementing classes encouraged to override this method if
-	 * needed.
-	 *
-	 * @return an iterator over the elements of the sequence.
-	 */
-	@Override
-	public default Iterator<T> iterator() {
-		return new SeqIteratorAdapter<T>(this);
-	}
-
-	/**
-	 * Return an iterator with the new type {@code B}.
-	 *
-	 * @param <B> the component type of the returned type.
-	 * @param mapper the converter for converting from {@code T} to {@code B}.
-	 * @return the iterator of the converted type.
-	 * @throws NullPointerException if the given {@code converter} is
-	 *        {@code null}.
-	 */
-	public default <B> Iterator<B> iterator(
-		final Function<? super T, ? extends B> mapper
-	) {
-		return new SeqMappedIteratorAdapter<>(this, mapper);
-	}
-
-	/**
 	 * Tests whether a predicate holds for all elements of this sequence.
 	 *
 	 * @param predicate the predicate to use to test the elements.
@@ -142,28 +109,6 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 		}
 
 		return valid;
-	}
-
-	public default <B> B foldLeft(
-		final B z,
-		final BiFunction<? super B, ? super T, ? extends B> op
-	) {
-		B result = z;
-		for (int i = 0, n = length(); i < n; ++i) {
-			result = op.apply(result, get(i));
-		}
-		return result;
-	}
-
-	public default <B> B foldRight(
-		final B z,
-		final BiFunction<? super T, ? super B, ? extends B> op
-	) {
-		B result = z;
-		for (int i = length(); --i >= 0;) {
-			result = op.apply(get(i), result);
-		}
-		return result;
 	}
 
 	/**
@@ -224,17 +169,6 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 			index = indexWhere(o -> o == null, start, end);
 		}
 		return index;
-	}
-
-	/**
-	 * Tests whether a predicate holds for some of the elements of this sequence.
-	 *
-	 * @param predicate the predicate used to test elements.
-	 * @return {@code true} if the given predicate p holds for some of the
-	 *         elements of this sequence, otherwise {@code false}.
-	 */
-	public default boolean exists(final Predicate<? super T> predicate) {
-		return indexWhere(predicate) != -1;
 	}
 
 	/**
@@ -460,9 +394,7 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	 *
 	 * @return a list view of this sequence
 	 */
-	public default List<T> asList() {
-		return new SeqListAdapter<T>(this);
-	}
+	public List<T> asList();
 
 	/**
 	 * Builds a new sequence by applying a function to all elements of this

@@ -33,7 +33,7 @@ import org.jenetics.util.Seq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.5 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-04-16 $</em>
  */
 public abstract class ArrayProxySeq<T> implements Seq<T> {
 
@@ -55,26 +55,6 @@ public abstract class ArrayProxySeq<T> implements Seq<T> {
 
 	public ListIterator<T> listIterator() {
 		return new ArrayProxyIterator<>(_proxy);
-	}
-
-	@Override
-	public <B> Iterator<B> iterator(
-		final Function<? super T, ? extends B> mapper
-	) {
-		requireNonNull(mapper, "Mapper must not be null.");
-
-		return new Iterator<B>() {
-			private final Iterator<T> _iterator = iterator();
-			@Override public boolean hasNext() {
-				return _iterator.hasNext();
-			}
-			@Override public B next() {
-				return mapper.apply(_iterator.next());
-			}
-			@Override public void remove() {
-				_iterator.remove();
-			}
-		};
 	}
 
 	@Override
