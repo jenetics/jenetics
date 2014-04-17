@@ -20,7 +20,7 @@ Jenetics is an Genetic Algorithm, respectively an Evolutionary Algorithm, librar
 ## Download
 *  **Sourceforge**:  <https://sourceforge.net/projects/jenetics/files/latest/download>
 *  **Bitbucket**:  <https://bitbucket.org/fwilhelm/jenetics/downloads>
-*  **Maven**: `org.bitbucket.fwilhelm:org.jenetics:2.0.0` (currently staged)
+*  **Maven**: `org.bitbucket.fwilhelm:org.jenetics:2.0.0` on [Maven Central](http://search.maven.org/#search|ga|1|a%3A%22org.jenetics%22)
 
 ## Build Jenetics
 
