@@ -37,7 +37,7 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-16 $</em>
+ * @version <em>$Date: 2014-04-17 $</em>
  */
 public class PartiallyMatchedCrossoverTest {
 
@@ -51,8 +51,8 @@ public class PartiallyMatchedCrossoverTest {
 		final Array<Integer> alleles = new Array<Integer>(length).fill(Int());
 		final ISeq<Integer> ialleles = alleles.toISeq();
 
-		final Array<EnumGene<Integer>> that = alleles.map(EnumGene.ToGene(ialleles));
-		final Array<EnumGene<Integer>> other = alleles.map(EnumGene.ToGene(ialleles));
+		final Array<EnumGene<Integer>> that = alleles.map(i -> new EnumGene<>(i, ialleles));
+		final Array<EnumGene<Integer>> other = alleles.map(i -> new EnumGene<>(i, ialleles));
 
 		that.shuffle();
 		other.shuffle();
@@ -83,24 +83,22 @@ public class PartiallyMatchedCrossoverTest {
 		final Array<Integer> alleles = new Array<Integer>(length).fill(Int());
 		final ISeq<Integer> ialleles = alleles.toISeq();
 
-		final Array<EnumGene<Integer>> that = alleles.map(EnumGene.ToGene(ialleles));
-		final Array<EnumGene<Integer>> other = alleles.map(EnumGene.ToGene(ialleles));
+		final Array<EnumGene<Integer>> that = alleles.map(i -> new EnumGene<>(i, ialleles));
+		final Array<EnumGene<Integer>> other = alleles.map(i -> new EnumGene<>(i, ialleles));
 
 		pmco.crossover(that, other);
 
 	}
 
-	// TODO: Fix this test.
-	//@Test(dataProvider = "alterProbabilityParameters")
+	@Test(dataProvider = "alterProbabilityParameters")
 	public void alterProbability(
 		final Integer ngenes,
 		final Integer nchromosomes,
 		final Integer npopulation,
 		final Double p
 	) {
-		final Population<EnumGene<Double>, Double> population = newPermutationDoubleGenePopulation(
-				ngenes, nchromosomes, npopulation
-			);
+		final Population<EnumGene<Double>, Double> population =
+			newPermutationDoubleGenePopulation(ngenes, nchromosomes, npopulation);
 
 		// The mutator to test.
 		final PartiallyMatchedCrossover<Double> crossover = new PartiallyMatchedCrossover<>(p);

@@ -17,5 +17,5 @@
         <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">13</allele>
         <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">14</allele>
     </valid-alleles>
-    <order>6 1 14 4 0 11 14 14 12 5 12 13 7 4 5</order>
+    <order>12 6 3 5 10 1 2 14 7 0 8 9 11 4 13</order>
 </permutation-chromosome>

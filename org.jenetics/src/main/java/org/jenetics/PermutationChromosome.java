@@ -157,7 +157,7 @@ public final class PermutationChromosome<T>
 	public static <T> PermutationChromosome<T> of(final ISeq<? extends T> alleles) {
 		final PermutationChromosome<T> chromosome = new PermutationChromosome<>(
 			new Array<EnumGene<T>>(alleles.length())
-					.fill(() -> EnumGene.of(alleles))
+					.fill(EnumGene.Gene(alleles))
 					.shuffle()
 					.toISeq()
 		);

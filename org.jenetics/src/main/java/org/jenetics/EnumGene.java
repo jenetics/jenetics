@@ -25,6 +25,7 @@ import static org.jenetics.internal.util.object.eq;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -205,22 +206,11 @@ public final class EnumGene<A>
 	 *  Static object creation methods
 	 * ************************************************************************/
 
-	static <T> Function<Integer, EnumGene<T>> ToGene(
-		final ISeq<T> validAlleles
-	) {
-		return new Function<Integer, EnumGene<T>>() {
-			@Override
-			public EnumGene<T> apply(final Integer index) {
-				return new EnumGene<T>(index, validAlleles);
-			}
-		};
-	}
-
-	static <T> Factory<EnumGene<T>> Gene(final ISeq<? extends T> validAlleles) {
-		return new Factory<EnumGene<T>>() {
+	static <T> Supplier<EnumGene<T>> Gene(final ISeq<? extends T> validAlleles) {
+		return new Supplier<EnumGene<T>>() {
 			private int _index = 0;
 			@Override
-			public EnumGene<T> newInstance() {
+			public EnumGene<T> get() {
 				return new EnumGene<T>(_index++, validAlleles);
 			}
 		};
