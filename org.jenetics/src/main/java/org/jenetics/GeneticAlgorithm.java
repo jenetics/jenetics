@@ -34,8 +34,9 @@ import java.util.function.Predicate;
 
 import org.jenetics.internal.util.Concurrency;
 
-import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
+import org.jenetics.util.MSeq;
+import org.jenetics.util.Seq;
 import org.jenetics.util.Timer;
 
 /**
@@ -132,7 +133,7 @@ import org.jenetics.util.Timer;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-18 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,
@@ -502,7 +503,7 @@ public class GeneticAlgorithm<
 
 			//Select the survivors and the offspring.
 			_selectTimer.start();
-			final Array<Population<G, C>> selection = select();
+			final Seq<Population<G, C>> selection = select();
 			final Population<G, C> survivors = selection.get(0);
 			final Population<G, C> offspring = selection.get(1);
 			_selectTimer.stop();
@@ -593,8 +594,8 @@ public class GeneticAlgorithm<
 		}
 	}
 
-	private Array<Population<G, C>> select() {
-		final Array<Population<G, C>> selection = new Array<>(2);
+	private Seq<Population<G, C>> select() {
+		final MSeq<Population<G, C>> selection = MSeq.ofLength(2);
 		final int numberOfSurvivors = getNumberOfSurvivors();
 		final int numberOfOffspring = getNumberOfOffspring();
 		assert (numberOfSurvivors + numberOfOffspring == _populationSize);

@@ -36,14 +36,14 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jenetics.internal.util.Hash;
 
-import org.jenetics.util.Array;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 
 /**
  * Numeric chromosome implementation which holds 64 bit integer numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-04-17 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-04-18 $</em>
  * @since 1.6
  */
 @XmlJavaTypeAdapter(LongChromosome.Model.Adapter.class)
@@ -166,7 +166,7 @@ public class LongChromosome
 	{
 		in.defaultReadObject();
 
-		final Array<LongGene> genes = new Array<>(in.readInt());
+		final MSeq<LongGene> genes = MSeq.ofLength(in.readInt());
 		_min = in.readLong();
 		_max = in.readLong();
 

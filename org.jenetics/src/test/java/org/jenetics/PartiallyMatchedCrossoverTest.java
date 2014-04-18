@@ -30,14 +30,14 @@ import org.testng.annotations.Test;
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.NormalDistribution;
 import org.jenetics.stat.Variance;
-import org.jenetics.util.Array;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 import org.jenetics.util.Range;
 
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-17 $</em>
+ * @version <em>$Date: 2014-04-18 $</em>
  */
 public class PartiallyMatchedCrossoverTest {
 
@@ -48,11 +48,11 @@ public class PartiallyMatchedCrossoverTest {
 			new PartiallyMatchedCrossover<>(1);
 
 		final int length = 1000;
-		final Array<Integer> alleles = new Array<Integer>(length).fill(Int());
+		final MSeq<Integer> alleles = MSeq.<Integer>ofLength(length).fill(Int());
 		final ISeq<Integer> ialleles = alleles.toISeq();
 
-		final Array<EnumGene<Integer>> that = alleles.map(i -> new EnumGene<>(i, ialleles));
-		final Array<EnumGene<Integer>> other = alleles.map(i -> new EnumGene<>(i, ialleles));
+		final MSeq<EnumGene<Integer>> that = alleles.map(i -> new EnumGene<>(i, ialleles));
+		final MSeq<EnumGene<Integer>> other = alleles.map(i -> new EnumGene<>(i, ialleles));
 
 		that.shuffle();
 		other.shuffle();
@@ -80,11 +80,11 @@ public class PartiallyMatchedCrossoverTest {
 		final PartiallyMatchedCrossover<Integer> pmco = new PartiallyMatchedCrossover<>(1);
 
 		final int length = 1000;
-		final Array<Integer> alleles = new Array<Integer>(length).fill(Int());
+		final MSeq<Integer> alleles = MSeq.<Integer>ofLength(length).fill(Int());
 		final ISeq<Integer> ialleles = alleles.toISeq();
 
-		final Array<EnumGene<Integer>> that = alleles.map(i -> new EnumGene<>(i, ialleles));
-		final Array<EnumGene<Integer>> other = alleles.map(i -> new EnumGene<>(i, ialleles));
+		final MSeq<EnumGene<Integer>> that = alleles.map(i -> new EnumGene<>(i, ialleles));
+		final MSeq<EnumGene<Integer>> other = alleles.map(i -> new EnumGene<>(i, ialleles));
 
 		pmco.crossover(that, other);
 

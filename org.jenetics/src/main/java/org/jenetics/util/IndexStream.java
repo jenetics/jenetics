@@ -54,7 +54,7 @@ import org.jenetics.internal.math.probability;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-18 $</em>
  */
 public abstract class IndexStream extends IntStreamAdapter {
 
@@ -143,7 +143,7 @@ public abstract class IndexStream extends IntStreamAdapter {
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since @__version__@
-	 * @version @__version__@ &mdash; <em>$Date: 2014-03-31 $</em>
+	 * @version @__version__@ &mdash; <em>$Date: 2014-04-18 $</em>
 	 */
 	final static class IndexSpliterator implements Spliterator.OfInt {
 		private final IndexStream _stream;
@@ -183,7 +183,7 @@ public abstract class IndexStream extends IntStreamAdapter {
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.4
-	 * @version @__version__@ &mdash; <em>$Date: 2014-03-31 $</em>
+	 * @version @__version__@ &mdash; <em>$Date: 2014-04-18 $</em>
 	 */
 	final static class RandomIndexStream extends IndexStream {
 		private final int _n;
@@ -199,7 +199,7 @@ public abstract class IndexStream extends IntStreamAdapter {
 		}
 
 		@Override
-		public final int next() {
+		public int next() {
 			while (_pos < _n && _random.nextInt() >= _p) {
 				++_pos;
 			}
@@ -220,7 +220,7 @@ public abstract class IndexStream extends IntStreamAdapter {
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-04-18 $</em>
  */
 final class RandomIndexStreamP0 extends IndexStream {
 	@Override public int next() {
@@ -231,7 +231,7 @@ final class RandomIndexStreamP0 extends IndexStream {
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-04-18 $</em>
  */
 final class RandomIndexStreamP1 extends IndexStream {
 	private final int _n;

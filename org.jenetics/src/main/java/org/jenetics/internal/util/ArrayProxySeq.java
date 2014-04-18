@@ -21,6 +21,7 @@ package org.jenetics.internal.util;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -33,9 +34,14 @@ import org.jenetics.util.Seq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.5 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-18 $</em>
  */
-public abstract class ArrayProxySeq<T> implements Seq<T> {
+public abstract class ArrayProxySeq<T>
+	implements
+		Seq<T>,
+		Serializable
+{
+	private static final long serialVersionUID = 1L;
 
 	protected final ArrayProxy<T> _proxy;
 
@@ -193,4 +199,8 @@ public abstract class ArrayProxySeq<T> implements Seq<T> {
 		return asList().toArray(array);
 	}
 
+	@Override
+	public String toString() {
+		return toString("[", ",", "]");
+	}
 }

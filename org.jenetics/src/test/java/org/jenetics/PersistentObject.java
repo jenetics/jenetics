@@ -44,7 +44,6 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.function.Function;
 
-import org.jenetics.util.Array;
 import org.jenetics.util.Duration;
 import org.jenetics.util.Factory;
 import org.jenetics.util.IO;
@@ -55,7 +54,7 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-17 $</em>
+ * @version <em>$Date: 2014-04-18 $</em>
  */
 public class PersistentObject<T> {
 

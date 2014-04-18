@@ -28,7 +28,7 @@ import org.jenetics.util.bit;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2014-04-18 $</em>
  */
 final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 
@@ -53,9 +53,11 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.4
-	 * @version 1.4 &mdash; <em>$Date: 2014-03-07 $</em>
+	 * @version 1.4 &mdash; <em>$Date: 2014-04-18 $</em>
 	 */
 	static final class BitGeneISeq extends ArrayProxyISeq<BitGene> {
+		private static final long serialVersionUID = 1L;
+
 		public BitGeneISeq(final Proxy proxy) {
 			super(proxy);
 		}
@@ -75,9 +77,11 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.4
-	 * @version 1.4 &mdash; <em>$Date: 2014-03-07 $</em>
+	 * @version 1.4 &mdash; <em>$Date: 2014-04-18 $</em>
 	 */
 	static final class Proxy extends ArrayProxy<BitGene> {
+		private static final long serialVersionUID = 1L;
+
 		private byte[] _array;
 		private boolean _sealed = false;
 

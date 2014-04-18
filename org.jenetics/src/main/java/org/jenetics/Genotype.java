@@ -38,7 +38,6 @@ import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.cast;
 import org.jenetics.internal.util.jaxb;
 
-import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Seq;
@@ -70,7 +69,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-17 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-18 $</em>
  */
 @XmlJavaTypeAdapter(Genotype.Model.Adapter.class)
 public final class Genotype<G extends Gene<?, G>>
@@ -221,12 +220,7 @@ public final class Genotype<G extends Gene<?, G>>
 	 */
 	@Override
 	public Genotype<G> newInstance() {
-		final Array<Chromosome<G>> chromosomes = new Array<>(length());
-		for (int i = 0; i < length(); ++i) {
-			chromosomes.set(i, _chromosomes.get(i).newInstance());
-		}
-
-		return new Genotype<>(chromosomes.toISeq(), _ngenes);
+		return new Genotype<G>(_chromosomes.map(c -> c.newInstance()), _ngenes);
 	}
 
 	Genotype<G> newInstance(final ISeq<Chromosome<G>> chromosomes) {
@@ -273,7 +267,6 @@ public final class Genotype<G extends Gene<?, G>>
 	) {
 		return new Genotype<G>(ISeq.of(chromosomes));
 	}
-
 
 	/* *************************************************************************
 	 *  JAXB object serialization

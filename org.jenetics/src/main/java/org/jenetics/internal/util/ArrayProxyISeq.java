@@ -19,6 +19,7 @@
  */
 package org.jenetics.internal.util;
 
+import java.io.Serializable;
 import java.util.function.Function;
 
 import org.jenetics.util.ISeq;
@@ -27,9 +28,13 @@ import org.jenetics.util.MSeq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.5 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-18 $</em>
  */
-public class ArrayProxyISeq<T> extends ArrayProxySeq<T> implements ISeq<T> {
+public class ArrayProxyISeq<T>
+	extends ArrayProxySeq<T>
+	implements ISeq<T>
+{
+	private static final long serialVersionUID = 1L;
 
 	public ArrayProxyISeq(final ArrayProxy<T> proxy) {
 		super(proxy);

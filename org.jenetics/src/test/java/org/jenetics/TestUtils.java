@@ -23,13 +23,13 @@ import java.io.Serializable;
 import java.util.Random;
 import java.util.function.Function;
 
-import org.jenetics.util.Array;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-16 $</em>
+ * @version <em>$Date: 2014-04-18 $</em>
  */
 class TestUtils {
 
@@ -121,8 +121,7 @@ class TestUtils {
 		final int nchromosomes,
 		final int npopulation
 	) {
-		final Array<DoubleChromosome> chromosomes =
-			new Array<>(nchromosomes);
+		final MSeq<DoubleChromosome> chromosomes = MSeq.ofLength(nchromosomes);
 
 		for (int i = 0; i < nchromosomes; ++i) {
 			chromosomes.set(i, DoubleChromosome.of(0, 10, ngenes));
@@ -145,14 +144,13 @@ class TestUtils {
 		final int npopulation
 	) {
 		final Random random = new Random(122343);
-		final Array<Double> alleles = new Array<>(ngenes);
+		final MSeq<Double> alleles = MSeq.ofLength(ngenes);
 		for (int i = 0; i < ngenes; ++i) {
 			alleles.set(i, random.nextDouble()*10);
 		}
 		final ISeq<Double> ialleles = alleles.toISeq();
 
-		final Array<PermutationChromosome<Double>> chromosomes =
-			new Array<>(nchromosomes);
+		final MSeq<PermutationChromosome<Double>> chromosomes = MSeq.ofLength(nchromosomes);
 
 		for (int i = 0; i < nchromosomes; ++i) {
 			chromosomes.set(i, PermutationChromosome.of(ialleles));

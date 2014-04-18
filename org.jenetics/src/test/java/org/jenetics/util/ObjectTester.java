@@ -28,14 +28,14 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-12 $</em>
+ * @version <em>$Date: 2014-04-18 $</em>
  */
 public abstract class ObjectTester<T> {
 
 	protected abstract Factory<T> getFactory();
 
-	protected Array<T> newSameObjects(final int nobjects) {
-		final Array<T> objects = new Array<>(nobjects);
+	protected MSeq<T> newSameObjects(final int nobjects) {
+		final MSeq<T> objects = MSeq.ofLength(nobjects);
 
 		for (int i = 0; i < nobjects; ++i) {
 
@@ -49,7 +49,7 @@ public abstract class ObjectTester<T> {
 
 	@Test
 	public void equals() {
-		final Array<T> same = newSameObjects(5);
+		final MSeq<T> same = newSameObjects(5);
 
 		final Object that = same.get(0);
 		for (int i = 1; i < same.length(); ++i) {
@@ -87,7 +87,7 @@ public abstract class ObjectTester<T> {
 
 	@Test
 	public void hashcode() {
-		final Array<T> same = newSameObjects(5);
+		final MSeq<T> same = newSameObjects(5);
 
 		final Object that = same.get(0);
 		for (int i = 1; i < same.length(); ++i) {
@@ -123,7 +123,7 @@ public abstract class ObjectTester<T> {
 
 	@Test
 	public void tostring() {
-		final Array<T> same = newSameObjects(5);
+		final MSeq<T> same = newSameObjects(5);
 
 		final Object that = same.get(0);
 		for (int i = 1; i < same.length(); ++i) {

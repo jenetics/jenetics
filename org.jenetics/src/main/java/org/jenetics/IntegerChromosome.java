@@ -36,14 +36,14 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jenetics.internal.util.Hash;
 
-import org.jenetics.util.Array;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 
 /**
  * Numeric chromosome implementation which holds 32 bit integer numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz  Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-04-17 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-18 $</em>
  * @since 2.0
  */
 @XmlJavaTypeAdapter(IntegerChromosome.Model.Adapter.class)
@@ -164,7 +164,7 @@ public class IntegerChromosome
 	{
 		in.defaultReadObject();
 
-		final Array<IntegerGene> genes = new Array<>(in.readInt());
+		final MSeq<IntegerGene> genes = MSeq.ofLength(in.readInt());
 		_min = in.readInt();
 		_max = in.readInt();
 

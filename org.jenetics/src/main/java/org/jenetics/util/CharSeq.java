@@ -29,6 +29,8 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.regex.PatternSyntaxException;
 
+import org.jenetics.internal.util.ArrayProxy;
+import org.jenetics.internal.util.ArrayProxyISeq;
 import org.jenetics.internal.util.Hash;
 
 /**
@@ -45,10 +47,10 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-18 $</em>
  */
 public final class CharSeq
-	extends AbstractCharSeq
+	extends CharArray
 	implements
 		CharSequence,
 		ISeq<Character>,
@@ -134,22 +136,22 @@ public final class CharSeq
 	 *          {@code false} otherwise.
 	 */
 	public boolean contains(final char c) {
-		return Arrays.binarySearch(_characters, c) >= 0;
+		return Arrays.binarySearch(proxy._characters, c) >= 0;
 	}
 
 	@Override
 	public char charAt(int index) {
-		return _characters[index];
+		return proxy._characters[index];
 	}
 
 	@Override
 	public int length() {
-		return _characters.length;
+		return proxy._characters.length;
 	}
 
 	@Override
 	public CharSeq subSequence(int start, int end) {
-		return new CharSeq(new String(_characters, start, end - start));
+		return new CharSeq(new String(proxy._characters, start, end - start));
 	}
 
 	/**
@@ -159,7 +161,7 @@ public final class CharSeq
 	 *          otherwise.
 	 */
 	public boolean isEmpty() {
-		return _characters.length == 0;
+		return proxy._characters.length == 0;
 	}
 
 	@Override
@@ -167,16 +169,16 @@ public final class CharSeq
 		return new Iterator<Character>() {
 			private int _pos = 0;
 			@Override public boolean hasNext() {
-				return _pos < _characters.length;
+				return _pos < proxy._characters.length;
 			}
 			@Override public Character next() {
 				if (!hasNext()) {
 					throw new NoSuchElementException(format(
 						"Index %s is out of range [0, %s)",
-						_pos, _characters.length
+						_pos, proxy._characters.length
 					));
 				}
-				return _characters[_pos++];
+				return proxy._characters[_pos++];
 			}
 			@Override public void remove() {
 				throw new UnsupportedOperationException();
@@ -186,7 +188,7 @@ public final class CharSeq
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass()).and(_characters).value();
+		return Hash.of(getClass()).and(proxy._characters).value();
 	}
 
 	@Override
@@ -199,19 +201,19 @@ public final class CharSeq
 		}
 
 		final CharSeq ch = (CharSeq)object;
-		return eq(_characters, ch._characters);
+		return eq(proxy._characters, ch.proxy._characters);
 	}
 
 	@Override
 	public int compareTo(final CharSeq set) {
 		int result = 0;
 
-		final int n = Math.min(_characters.length, set._characters.length);
+		final int n = Math.min(proxy._characters.length, set.proxy._characters.length);
 		for (int i = 0; i < n && result == 0; ++i) {
-			result = _characters[i] - set._characters[i];
+			result = proxy._characters[i] - set.proxy._characters[i];
 		}
 		if (result == 0) {
-			result = _characters.length - set._characters.length;
+			result = proxy._characters.length - set.proxy._characters.length;
 		}
 
 		return result;
@@ -219,7 +221,7 @@ public final class CharSeq
 
 	@Override
 	public String toString() {
-		return new String(_characters);
+		return new String(proxy._characters);
 	}
 
 	/**
@@ -331,12 +333,80 @@ public final class CharSeq
 	 *         order.
 	 */
 	public static ISeq<Character> toISeq(final CharSequence chars) {
-		final Array<Character> seq = new Array<>(chars.length());
+		final MSeq<Character> seq = MSeq.ofLength(chars.length());
 		for (int i = 0; i < chars.length(); ++i) {
 			seq.set(i, chars.charAt(i));
 		}
 
 		return seq.toISeq();
+	}
+
+}
+
+class CharArray extends ArrayProxyISeq<Character> {
+	private static final long serialVersionUID = 1L;
+
+	final Proxy proxy;
+
+	public CharArray(final char[] characters) {
+		super(new Proxy(characters));
+		proxy = (Proxy)(_proxy);
+	}
+
+	static final class Proxy extends ArrayProxy<Character> {
+		private static final long serialVersionUID = 1L;
+
+		char[] _characters;
+		boolean _sealed = false;
+
+		Proxy(final char[] characters, final int start, final int end) {
+			super(start, end);
+			_characters = characters;
+		}
+
+		Proxy(final char[] characters) {
+			this(characters, 0, characters.length);
+		}
+
+		Proxy(final int length) {
+			this(new char[length], 0, length);
+		}
+
+		@Override
+		public Character __get(int absoluteIndex) {
+			return _characters[absoluteIndex];
+		}
+
+		@Override
+		public void __set(int absoluteIndex, Character value) {
+			_characters[absoluteIndex] = value;
+		}
+
+		@Override
+		public Proxy slice(int from, int until) {
+			return new Proxy(_characters, from + _start, until + _start);
+		}
+
+		@Override
+		public void cloneIfSealed() {
+			if (_sealed) {
+				_characters = _characters.clone();
+				_sealed = false;
+			}
+		}
+
+		@Override
+		public Proxy seal() {
+			_sealed = true;
+			return new Proxy(_characters, _start, _end);
+		}
+
+		@Override
+		public Proxy copy() {
+			final Proxy proxy = new Proxy(_length);
+			System.arraycopy(_characters, _start, proxy._characters, 0, _length);
+			return proxy;
+		}
 	}
 
 }

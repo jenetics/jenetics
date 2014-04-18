@@ -24,13 +24,13 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-16 $</em>
+ * @version <em>$Date: 2014-04-18 $</em>
  */
 public class objectTest {
 
 	@Test
 	public void validPredicate() {
-		final Array<Verifiable> array = new Array<>(100);
+		final MSeq<Verifiable> array = MSeq.ofLength(100);
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, new Verifiable() {
 				@Override public boolean isValid() {

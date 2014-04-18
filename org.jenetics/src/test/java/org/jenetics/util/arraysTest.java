@@ -30,13 +30,13 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-31 $</em>
+ * @version <em>$Date: 2014-04-18 $</em>
  */
 public class arraysTest {
 
 	@Test
 	public void iselect() {
-		final Array<Integer> array = new Array<>(100);
+		final MSeq<Integer> array = MSeq.ofLength(100);
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, i);
 		}
@@ -50,7 +50,7 @@ public class arraysTest {
 
 	@Test
 	public void sorted() {
-		final Array<Integer> array = new Array<>(100);
+		final MSeq<Integer> array = MSeq.ofLength(100);
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, i);
 		}
@@ -70,7 +70,7 @@ public class arraysTest {
 
 	@Test
 	public void sorted2() {
-		final Array<Integer> array = new Array<>(100);
+		final MSeq<Integer> array = MSeq.ofLength(100);
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, i);
 		}
@@ -85,11 +85,11 @@ public class arraysTest {
 	@Test
 	public void sort1() {
 		final Random random = new Random();
-		final Array<Integer> array = new Array<>(100);
+		final MSeq<Integer> array = MSeq.ofLength(100);
 		array.fill(() -> random.nextInt(10000));
 		Assert.assertFalse(array.isSorted());
 
-		final Array<Integer> clonedArray = array.copy();
+		final MSeq<Integer> clonedArray = array.copy();
 		org.jenetics.util.arrays.sort(array.subSeq(30, 40));
 		Assert.assertTrue(array.subSeq(30, 40).isSorted());
 		Assert.assertEquals(array.subSeq(0, 30), clonedArray.subSeq(0, 30));
@@ -133,7 +133,7 @@ public class arraysTest {
 //	}
 
 	public static void main(String[] args) {
-		Array<Integer> array = new Array<>(10000000);
+		final MSeq<Integer> array = MSeq.ofLength(100);
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, (int)(Math.random()*1000));
 		}

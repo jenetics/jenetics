@@ -21,6 +21,8 @@ package org.jenetics.internal.util;
 
 import static java.lang.String.format;
 
+import java.io.Serializable;
+
 import org.jenetics.util.Copyable;
 
 /**
@@ -28,9 +30,15 @@ import org.jenetics.util.Copyable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.5 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-04-18 $</em>
  */
-public abstract class ArrayProxy<T> implements Copyable<ArrayProxy<T>> {
+public abstract class ArrayProxy<T>
+	implements
+		Copyable<ArrayProxy<T>>,
+		Serializable
+{
+
+	private static final long serialVersionUID = 1L;
 
 	protected final int _start;
 	protected final int _end;

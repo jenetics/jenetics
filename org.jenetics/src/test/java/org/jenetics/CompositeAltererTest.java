@@ -23,11 +23,11 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.Array;
+import org.jenetics.util.MSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-05 $</em>
+ * @version <em>$Date: 2014-04-18 $</em>
  */
 public class CompositeAltererTest {
 
@@ -62,7 +62,7 @@ public class CompositeAltererTest {
 		final int nchromosomes,
 		final int npopulation
 	) {
-		final Array<DoubleChromosome> chromosomes = new Array<>(nchromosomes);
+		final MSeq<DoubleChromosome> chromosomes = MSeq.ofLength(nchromosomes);
 
 		for (int i = 0; i < nchromosomes; ++i) {
 			chromosomes.set(i, DoubleChromosome.of(0, 10, ngenes));
