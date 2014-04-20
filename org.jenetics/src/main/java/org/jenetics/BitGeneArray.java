@@ -22,15 +22,18 @@ package org.jenetics;
 import org.jenetics.internal.collection.ArrayProxy;
 import org.jenetics.internal.collection.ArrayProxyISeq;
 import org.jenetics.internal.collection.ArrayProxyMSeq;
+import org.jenetics.internal.util.internalbit;
 
 import org.jenetics.util.bit;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0 &mdash; <em>$Date: 2014-04-20 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-21 $</em>
  */
 final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
+
+	private static final long serialVersionUID = 1L;
 
 	BitGeneArray(final Proxy proxy) {
 		super(proxy);
@@ -53,7 +56,7 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.4
-	 * @version 1.4 &mdash; <em>$Date: 2014-04-20 $</em>
+	 * @version 1.4 &mdash; <em>$Date: 2014-04-21 $</em>
 	 */
 	static final class BitGeneISeq extends ArrayProxyISeq<BitGene> {
 		private static final long serialVersionUID = 1L;
@@ -77,13 +80,13 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.4
-	 * @version 3.0 &mdash; <em>$Date: 2014-04-20 $</em>
+	 * @version 3.0 &mdash; <em>$Date: 2014-04-21 $</em>
 	 */
 	static final class Proxy extends ArrayProxy<BitGene, byte[], Proxy> {
 		private static final long serialVersionUID = 1L;
 
 		Proxy(final byte[] array, final int start, final int end) {
-			super(array, start, end, Proxy::new, b -> b.clone());
+			super(array, start, end, Proxy::new, internalbit::copy);
 		}
 
 		Proxy(final int length) {
@@ -91,16 +94,13 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 		}
 
 		@Override
-		public BitGene __get(final int absoluteIndex) {
-			return BitGene.of(bit.get(_array, absoluteIndex));
+		public BitGene __get(final int index) {
+			return BitGene.of(bit.get(_array, index));
 		}
 
 		@Override
-		public void __set(
-			final int absoluteIndex,
-			final BitGene value
-		) {
-			bit.set(_array, absoluteIndex, value.booleanValue());
+		public void __set(final int index, final BitGene value) {
+			bit.set(_array, index, value.booleanValue());
 		}
 
 		@Override
@@ -128,23 +128,6 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 				_array, start + _start, end + _start,
 				other._array, otherStart + other._start
 			);
-		}
-
-		@Override
-		public Proxy copy() {
-			final Proxy proxy = new Proxy(_length);
-			if (_start == 0 && _end == _length) {
-				proxy._array = _array.clone();
-			} else if (_start == 0) {
-				System.arraycopy(
-					_array, 0, proxy._array, 0, proxy._array.length
-				);
-			} else {
-				for (int i = _length; --i >= 0;) {
-					bit.set(proxy._array, i, bit.get(_array, i + _start));
-				}
-			}
-			return proxy;
 		}
 
 	}

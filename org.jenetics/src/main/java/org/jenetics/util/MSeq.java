@@ -30,7 +30,7 @@ import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.function.Supplier;
 
-import org.jenetics.internal.collection.ArrayProxyImpl;
+import org.jenetics.internal.collection.ObjectArrayProxy;
 import org.jenetics.internal.collection.ArrayProxyMSeq;
 
 /**
@@ -40,7 +40,7 @@ import org.jenetics.internal.collection.ArrayProxyMSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-04-20 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-21 $</em>
  */
 public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 
@@ -218,22 +218,6 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	@Override
 	public <B> MSeq<B> map(final Function<? super T, ? extends B> mapper);
 
-	public default <B, S extends MSeq<B>> S map(
-		final Function<? super T, ? extends B> mapper,
-		final IntFunction<? extends S> builder
-	) {
-		requireNonNull(mapper, "Converter function must not be null.");
-		requireNonNull(builder, "Seq builder must not be null.");
-
-		final S result = builder.apply(length());
-		assert (result.length() == length());
-
-		for (int i = length(); --i >= 0;) {
-			result.set(i, mapper.apply(get(i)));
-		}
-		return result;
-	}
-
 	/**
 	 * Return a read-only projection of this sequence. Changes to the original
 	 * sequence will not influence the returned {@code ISeq}.
@@ -271,7 +255,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @return the new mutable sequence.
 	 */
 	public static <T> MSeq<T> ofLength(final int length) {
-		return new ArrayProxyMSeq<>(new ArrayProxyImpl<T>(length));
+		return new ArrayProxyMSeq<>(new ObjectArrayProxy<T>(length));
 	}
 
 	/**

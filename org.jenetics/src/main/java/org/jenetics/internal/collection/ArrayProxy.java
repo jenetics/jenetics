@@ -23,6 +23,8 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
+import java.util.function.Function;
+import java.util.function.IntFunction;
 
 import org.jenetics.util.Copyable;
 
@@ -31,7 +33,7 @@ import org.jenetics.util.Copyable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0 &mdash; <em>$Date$</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-21 $</em>
  */
 public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	implements
@@ -75,18 +77,18 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	 * Return the <i>array</i> element at the specified, absolute position in
 	 * the {@code ArrayProxy}. The array boundaries are not checked.
 	 *
-	 * @param absoluteIndex absolute index of the element to return
+	 * @param index absolute index of the element to return
 	 * @return the <i>array</i> element at the specified absolute position
 	 */
-	public abstract T __get(final int absoluteIndex);
+	public abstract T __get(final int index);
 
 	/**
 	 * Set the <i>array</i> element at the specified absolute position in the
 	 * {@code ArrayProxy}. The array boundaries are not checked.
 	 *
-	 * @param absoluteIndex absolute index of the <i>array</i> element
+	 * @param index absolute index of the <i>array</i> element
 	 */
-	public abstract void __set(final int absoluteIndex, final T value);
+	public abstract void __set(final int index, final T value);
 
 	/**
 	 * Return the <i>array</i> element at the specified position in the
@@ -210,13 +212,32 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 		}
 	}
 
+	public final <B> ObjectArrayProxy<B> map(
+		final Function<? super T, ? extends B> mapper
+	) {
+		return map(mapper, ObjectArrayProxy<B>::new);
+	}
+
+	public final <B, P extends ArrayProxy<B, ?, ?>> P map(
+		final Function<? super T, ? extends B> mapper,
+		final IntFunction<P> builder
+	) {
+		final P result = builder.apply(_length);
+		assert (result._length == _length);
+
+		for (int i = 0; i < _length; ++i) {
+			result.__set(i, mapper.apply(uncheckedGet(i)));
+		}
+		return result;
+	}
+
 	/**
 	 * Clone the underlying data structure of this {@code ArrayProxy} if it is
 	 * sealed.
 	 */
 	public final void cloneIfSealed() {
 		if (_sealed) {
-			_array = _copier.copy(_array);
+			_array = _copier.copy(_array, 0, _end);
 			_sealed = false;
 		}
 	}
@@ -232,6 +253,11 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	public final P seal() {
 		_sealed = true;
 		return _factory.create(_array, _start, _end);
+	}
+
+	@Override
+	public P copy() {
+		return _factory.create(_copier.copy(_array, _start, _end), 0, _end - _start);
 	}
 
 	/**

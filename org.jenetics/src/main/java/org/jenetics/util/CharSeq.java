@@ -47,7 +47,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-20 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-21 $</em>
  */
 public final class CharSeq
 	extends CharArray
@@ -357,25 +357,19 @@ class CharArray extends ArrayProxyISeq<Character> {
 		private static final long serialVersionUID = 1L;
 
 		Proxy(final char[] characters, final int start, final int end) {
-			super(characters, start, end, Proxy::new, c -> c.clone());
+			super(characters, start, end, Proxy::new, Arrays::copyOfRange);
 		}
 
 		@Override
-		public Character __get(int absoluteIndex) {
-			return _array[absoluteIndex];
+		public Character __get(int index) {
+			return _array[index];
 		}
 
 		@Override
-		public void __set(int absoluteIndex, Character value) {
-			_array[absoluteIndex] = value;
+		public void __set(int index, Character value) {
+			_array[index] = value;
 		}
 
-		@Override
-		public Proxy copy() {
-			final Proxy proxy = new Proxy(new char[_length], 0, _length);
-			System.arraycopy(_array, _start, proxy._array, 0, _length);
-			return proxy;
-		}
 	}
 
 }

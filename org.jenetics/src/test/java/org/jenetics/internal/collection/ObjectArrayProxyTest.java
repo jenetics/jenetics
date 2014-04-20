@@ -25,11 +25,11 @@ import java.util.Random;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version <em>$Date$</em>
  */
-public class ArrayProxyImplTest extends ArrayProxyTestBase<Integer> {
+public class ObjectArrayProxyTest extends ArrayProxyTestBase<Integer> {
 
 	@Override
 	public ArrayProxy<Integer, ?, ?> newArrayProxy(final int length) {
-		return new ArrayProxyImpl<>(length);
+		return new ObjectArrayProxy<>(length);
 	}
 
 	@Override

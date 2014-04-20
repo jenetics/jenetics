@@ -22,9 +22,11 @@ package org.jenetics.internal.collection;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date$</em>
+ * @version 1.4 &mdash; <em>$Date: 2014-04-21 $</em>
  */
 public class ArrayProxyMList<T> extends ArrayProxyList<T> {
+
+	private static final long serialVersionUID = 1L;
 
 	public ArrayProxyMList(final ArrayProxy<T, ?, ?> proxy) {
 		super(proxy);

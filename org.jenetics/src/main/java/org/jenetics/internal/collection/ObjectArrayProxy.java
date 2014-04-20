@@ -19,6 +19,8 @@
  */
 package org.jenetics.internal.collection;
 
+import java.util.Arrays;
+
 /**
  * {@code ArrayProxy} implementation which stores {@code Object}s.
  *
@@ -26,8 +28,8 @@ package org.jenetics.internal.collection;
  * @since 1.4
  * @version 3.0 &mdash; <em>$Date$</em>
  */
-public final class ArrayProxyImpl<T>
-	extends ArrayProxy<T, Object[], ArrayProxyImpl<T>>
+public final class ObjectArrayProxy<T>
+	extends ArrayProxy<T, Object[], ObjectArrayProxy<T>>
 {
 
 	private static final long serialVersionUID = 1L;
@@ -39,8 +41,8 @@ public final class ArrayProxyImpl<T>
 	 * @param start the start index of the array proxy, inclusively.
 	 * @param end the end index of the array proxy, exclusively.
 	 */
-	public ArrayProxyImpl(final Object[] array, final int start, final int end) {
-		super(array, start, end, ArrayProxyImpl<T>::new, o -> o.clone());
+	public ObjectArrayProxy(final Object[] array, final int start, final int end) {
+		super(array, start, end, ObjectArrayProxy<T>::new, Arrays::copyOfRange);
 	}
 
 	/**
@@ -48,26 +50,19 @@ public final class ArrayProxyImpl<T>
 	 *
 	 * @param length the length of the array proxy.
 	 */
-	public ArrayProxyImpl(final int length) {
+	public ObjectArrayProxy(final int length) {
 		this(new Object[length], 0, length);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public T __get(final int absoluteIndex) {
-		return (T)_array[absoluteIndex];
+	public T __get(final int index) {
+		return (T)_array[index];
 	}
 
 	@Override
-	public void __set(final int absoluteIndex, final T value) {
-		_array[absoluteIndex] = value;
-	}
-
-	@Override
-	public ArrayProxyImpl<T> copy() {
-		final ArrayProxyImpl<T> proxy = new ArrayProxyImpl<>(_length);
-		System.arraycopy(_array, _start, proxy._array, 0, _length);
-		return proxy;
+	public void __set(final int index, final T value) {
+		_array[index] = value;
 	}
 
 }

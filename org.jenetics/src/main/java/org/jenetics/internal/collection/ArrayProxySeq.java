@@ -26,14 +26,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.IntFunction;
 import java.util.function.Predicate;
 
+import org.jenetics.util.MSeq;
 import org.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0 &mdash; <em>$Date$</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-21 $</em>
  */
 public abstract class ArrayProxySeq<T>
 	implements
@@ -51,15 +54,6 @@ public abstract class ArrayProxySeq<T>
 	@Override
 	public final T get(final int index) {
 		return _proxy.get(index);
-	}
-
-	@Override
-	public Iterator<T> iterator() {
-		return new ArrayProxyIterator<>(_proxy);
-	}
-
-	public ListIterator<T> listIterator() {
-		return new ArrayProxyIterator<>(_proxy);
 	}
 
 	@Override
@@ -184,6 +178,15 @@ public abstract class ArrayProxySeq<T>
 	}
 
 	@Override
+	public Iterator<T> iterator() {
+		return new ArrayProxyIterator<>(_proxy);
+	}
+
+	public ListIterator<T> listIterator() {
+		return new ArrayProxyIterator<>(_proxy);
+	}
+
+	@Override
 	public List<T> asList() {
 		return new ArrayProxyList<>(_proxy);
 	}
@@ -202,4 +205,23 @@ public abstract class ArrayProxySeq<T>
 	public String toString() {
 		return toString("[", ",", "]");
 	}
+
+	@Override
+	public int hashCode() {
+		return Seq.hashCode(this);
+	}
+
+	@Override
+	public boolean equals(final Object object) {
+		if (object == this) {
+			return true;
+		}
+		if (!(object instanceof Seq<?>)) {
+			return false;
+		}
+
+		final Seq<?> seq = (Seq<?>)object;
+		return Seq.equals(this, seq);
+	}
+
 }

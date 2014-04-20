@@ -34,7 +34,7 @@ import org.jenetics.util.MSeq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.5 &mdash; <em>$Date$</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-21 $</em>
  */
 public class ArrayProxyMSeq<T> extends ArrayProxySeq<T> implements MSeq<T> {
 
@@ -160,7 +160,7 @@ public class ArrayProxyMSeq<T> extends ArrayProxySeq<T> implements MSeq<T> {
 
 	@Override
 	public <B> MSeq<B> map(final Function<? super T, ? extends B> mapper) {
-		return map(mapper, l -> new ArrayProxyMSeq<>(new ArrayProxyImpl<B>(l)));
+		return new ArrayProxyMSeq<>(_proxy.map(mapper));
 	}
 
 	@Override
