@@ -27,13 +27,13 @@ import org.jenetics.util.SeqTestBase;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-07 $</em>
+ * @version <em>$Date: 2014-04-20 $</em>
  */
 public class ArrayProxySeqTest extends SeqTestBase {
 
 	private static final class ArrayProxySeqImpl<T> extends ArrayProxySeq<T> {
 
-		ArrayProxySeqImpl(final ArrayProxy<T> proxy) {
+		ArrayProxySeqImpl(final ArrayProxy<T, ?, ?> proxy) {
 			super(proxy);
 		}
 

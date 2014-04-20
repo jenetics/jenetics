@@ -29,13 +29,13 @@ import org.jenetics.util.math;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-15 $</em>
+ * @version <em>$Date: 2014-04-20 $</em>
  */
 public class ArrayProxyListTest {
 
 	@Test
 	public void size() {
-		final ArrayProxy<Integer> proxy = new ArrayProxyImpl<>(1000);
+		final ArrayProxy<Integer, ?, ?> proxy = new ArrayProxyImpl<>(1000);
 		final List<Integer> list = new ArrayProxyList<>(proxy);
 
 		Assert.assertEquals(list.size(), proxy._length);
@@ -46,7 +46,7 @@ public class ArrayProxyListTest {
 		final long seed = math.random.seed();
 		final Random random = new Random(seed);
 
-		final ArrayProxy<Integer> proxy = new ArrayProxyImpl<>(1000);
+		final ArrayProxy<Integer, ?, ?> proxy = new ArrayProxyImpl<>(1000);
 		for (int i = 0; i < proxy._length; ++i) {
 			proxy.set(i, random.nextInt());
 		}
@@ -62,7 +62,7 @@ public class ArrayProxyListTest {
 
 	@Test(expectedExceptions = UnsupportedOperationException.class)
 	public void set() {
-		final ArrayProxy<Integer> proxy = new ArrayProxyImpl<>(1000);
+		final ArrayProxy<Integer, ?, ?> proxy = new ArrayProxyImpl<>(1000);
 		final List<Integer> list = new ArrayProxyList<>(proxy);
 
 		list.set(34, 23);
@@ -73,7 +73,7 @@ public class ArrayProxyListTest {
 		long seed = math.random.seed();
 		final Random random = new Random(seed);
 
-		final ArrayProxy<Long> proxy = new ArrayProxyImpl<>(1000);
+		final ArrayProxy<Long, ?, ?> proxy = new ArrayProxyImpl<>(1000);
 		for (int i = 0; i < proxy._length; ++i) {
 			proxy.set(i, random.nextLong());
 		}
@@ -92,7 +92,7 @@ public class ArrayProxyListTest {
 		long seed = math.random.seed();
 		final Random random = new Random(seed);
 
-		final ArrayProxy<Long> proxy = new ArrayProxyImpl<>(1000);
+		final ArrayProxy<Long, ?, ?> proxy = new ArrayProxyImpl<>(1000);
 		for (int i = 0; i < proxy._length; ++i) {
 			proxy.set(i, random.nextLong());
 		}
@@ -113,7 +113,7 @@ public class ArrayProxyListTest {
 		long seed = math.random.seed();
 		final Random random = new Random(seed);
 
-		final ArrayProxy<Long> proxy = new ArrayProxyImpl<>(1000);
+		final ArrayProxy<Long, ?, ?> proxy = new ArrayProxyImpl<>(1000);
 		for (int i = 0; i < proxy._length; ++i) {
 			proxy.set(i, random.nextLong());
 		}
@@ -131,7 +131,7 @@ public class ArrayProxyListTest {
 		long seed = math.random.seed();
 		final Random random = new Random(seed);
 
-		final ArrayProxy<Long> proxy = new ArrayProxyImpl<>(1000);
+		final ArrayProxy<Long, ?, ?> proxy = new ArrayProxyImpl<>(1000);
 		for (int i = 0; i < proxy._length; ++i) {
 			proxy.set(i, random.nextLong());
 		}

@@ -34,7 +34,7 @@ import org.jenetics.util.Seq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0 &mdash; <em>$Date: 2014-04-18 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-20 $</em>
  */
 public abstract class ArrayProxySeq<T>
 	implements
@@ -43,9 +43,9 @@ public abstract class ArrayProxySeq<T>
 {
 	private static final long serialVersionUID = 1L;
 
-	protected final ArrayProxy<T> _proxy;
+	protected final ArrayProxy<T, ?, ?> _proxy;
 
-	public ArrayProxySeq(final ArrayProxy<T> proxy) {
+	public ArrayProxySeq(final ArrayProxy<T, ?, ?> proxy) {
 		_proxy = requireNonNull(proxy, "ArrayProxy must not be null.");
 	}
 

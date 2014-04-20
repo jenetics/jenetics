@@ -31,7 +31,7 @@ import java.util.function.Function;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-04-20 $</em>
  */
 public final class arrays extends StaticObject {
 	private arrays() {}
@@ -242,27 +242,6 @@ public final class arrays extends StaticObject {
 
 		for (int i = 0; i < array.length; ++i) {
 			f.apply(array[i]);
-		}
-	}
-
-	/**
-	 * Iterates over all elements of the given {@code values}
-	 *
-	 * @param <T> the element type
-	 * @param <R> the returned type of the applied function
-	 * @param values the values to iterate.
-	 * @param f the function to apply to each element.
-	 * @throws NullPointerException if one of the elements are {@code null}.
-	 */
-	public static <T, R> void forEach(
-		final Iterable<? extends T> values,
-		final Function<? super T, ? extends R> f
-	) {
-		requireNonNull(values, "Array");
-		requireNonNull(f, "Function");
-
-		for (final T value : values) {
-			f.apply(value);
 		}
 	}
 

@@ -17,27 +17,16 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package org.jenetics.internal.util;
 
-import java.util.Random;
-
-import org.jenetics.internal.util.ArrayProxy;
-import org.jenetics.internal.util.ArrayProxyTestBase;
+import java.io.Serializable;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-20 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-04-20 $</em>
+ * @since @__version__@
  */
-public class BitGeneArrayProxyTest extends ArrayProxyTestBase<BitGene> {
-
-	@Override
-	public ArrayProxy<BitGene, ?, ?> newArrayProxy(final int length) {
-		return new BitGeneArray.Proxy(length);
-	}
-
-	@Override
-	public BitGene newArrayProxyElement(final Random random) {
-		return BitGene.of(random.nextBoolean());
-	}
-
+@FunctionalInterface
+public interface ArrayProxyFactory<A, P> extends Serializable {
+	public P create(final A array, final int start, final int end);
 }

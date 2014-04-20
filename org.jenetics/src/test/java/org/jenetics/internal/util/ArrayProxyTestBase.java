@@ -29,11 +29,11 @@ import org.jenetics.util.math;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-15 $</em>
+ * @version <em>$Date: 2014-04-20 $</em>
  */
 public abstract class ArrayProxyTestBase<T> {
 
-	public abstract ArrayProxy<T> newArrayProxy(final int length);
+	public abstract ArrayProxy<T, ?, ?> newArrayProxy(final int length);
 
 	public abstract T newArrayProxyElement(final Random random);
 
@@ -46,7 +46,7 @@ public abstract class ArrayProxyTestBase<T> {
 		final long seed = math.random.seed();
 		final Random random = new Random(seed);
 
-		final ArrayProxy<T> proxy = newArrayProxy(10_000);
+		final ArrayProxy<T, ?, ?> proxy = newArrayProxy(10_000);
 		for (int i = 0; i < proxy._length; ++i) {
 			proxy.__set(i, newArrayProxyElement(random));
 		}
@@ -65,7 +65,7 @@ public abstract class ArrayProxyTestBase<T> {
 		final long seed = math.random.seed();
 		final Random random = new Random(seed);
 
-		final ArrayProxy<T> proxy = newArrayProxy(10_000);
+		final ArrayProxy<T, ?, ?> proxy = newArrayProxy(10_000);
 		for (int i = 0; i < proxy._length; ++i) {
 			proxy.uncheckedSet(i, newArrayProxyElement(random));
 		}
@@ -84,7 +84,7 @@ public abstract class ArrayProxyTestBase<T> {
 		final long seed = math.random.seed();
 		final Random random = new Random(seed);
 
-		final ArrayProxy<T> proxy = newArrayProxy(10_000);
+		final ArrayProxy<T, ?, ?> proxy = newArrayProxy(10_000);
 		for (int i = 0; i < proxy._length; ++i) {
 			proxy.set(i, newArrayProxyElement(random));
 		}
@@ -103,7 +103,7 @@ public abstract class ArrayProxyTestBase<T> {
 		expectedExceptions = IndexOutOfBoundsException.class
 	)
 	public void outOfBoundsGet(final Integer length, final Integer index) {
-		final ArrayProxy<T> proxy = newArrayProxy(length);
+		final ArrayProxy<T, ?, ?> proxy = newArrayProxy(length);
 		proxy.get(index);
 	}
 
@@ -112,7 +112,7 @@ public abstract class ArrayProxyTestBase<T> {
 		expectedExceptions = IndexOutOfBoundsException.class
 	)
 	public void outOfBoundsSet(final Integer length, final Integer index) {
-		final ArrayProxy<T> proxy = newArrayProxy(length);
+		final ArrayProxy<T, ?, ?> proxy = newArrayProxy(length);
 		proxy.get(index);
 	}
 
@@ -137,7 +137,7 @@ public abstract class ArrayProxyTestBase<T> {
 		final long seed = math.random.seed();
 		final Random random = new Random(seed);
 
-		final ArrayProxy<T> proxy = newArrayProxy(length);
+		final ArrayProxy<T, ?, ?> proxy = newArrayProxy(length);
 		for (int i = 0; i < proxy._length; ++i) {
 			proxy.set(i, newArrayProxyElement(random));
 		}
@@ -150,7 +150,7 @@ public abstract class ArrayProxyTestBase<T> {
 			Assert.assertEquals(actual, expected);
 		}
 
-		final ArrayProxy<T> sub = proxy.slice(start, end);
+		final ArrayProxy<T, ?, ?> sub = proxy.slice(start, end);
 		for (int i = 0; i < (end - start); ++i) {
 			final T expected = newArrayProxyElement(random);
 
@@ -180,7 +180,7 @@ public abstract class ArrayProxyTestBase<T> {
 		final long seed = math.random.seed();
 		final Random random = new Random(seed);
 
-		final ArrayProxy<T> proxy = newArrayProxy(length + 10).slice(5, length + 5);
+		final ArrayProxy<T, ?, ?> proxy = newArrayProxy(length + 10).slice(5, length + 5);
 		for (int i = 0; i < proxy._length; ++i) {
 			proxy.set(i, newArrayProxyElement(random));
 		}
@@ -193,7 +193,7 @@ public abstract class ArrayProxyTestBase<T> {
 			Assert.assertEquals(actual, expected);
 		}
 
-		final ArrayProxy<T> sub = proxy.slice(start, end);
+		final ArrayProxy<T, ?, ?> sub = proxy.slice(start, end);
 		for (int i = 0; i < (end - start); ++i) {
 			final T expected = newArrayProxyElement(random);
 
@@ -223,7 +223,7 @@ public abstract class ArrayProxyTestBase<T> {
 		final long seed = math.random.seed();
 		final Random random = new Random(seed);
 
-		final ArrayProxy<T> proxy = newArrayProxy(length + 20)
+		final ArrayProxy<T, ?, ?> proxy = newArrayProxy(length + 20)
 										.slice(5, length + 15)
 										.slice(5, length + 10);
 		for (int i = 0; i < proxy._length; ++i) {
@@ -238,7 +238,7 @@ public abstract class ArrayProxyTestBase<T> {
 			Assert.assertEquals(actual, expected);
 		}
 
-		final ArrayProxy<T> sub = proxy.slice(start, end);
+		final ArrayProxy<T, ?, ?> sub = proxy.slice(start, end);
 		for (int i = 0; i < (end - start); ++i) {
 			final T expected = newArrayProxyElement(random);
 
@@ -282,10 +282,10 @@ public abstract class ArrayProxyTestBase<T> {
 		final Random thatRandom = new Random(thatSeed);
 		final Random otherRandom = new Random(otherSeed);
 
-		final ArrayProxy<T> that = newArrayProxy(length);
-		final ArrayProxy<T> other = newArrayProxy(otherLength);
-		final ArrayProxy<T> thatCopy = newArrayProxy(length);
-		final ArrayProxy<T> otherCopy = newArrayProxy(otherLength);
+		final ArrayProxy<T, ?, ?> that = newArrayProxy(length);
+		final ArrayProxy<T, ?, ?> other = newArrayProxy(otherLength);
+		final ArrayProxy<T, ?, ?> thatCopy = newArrayProxy(length);
+		final ArrayProxy<T, ?, ?> otherCopy = newArrayProxy(otherLength);
 
 		for (int i = 0; i < length; ++i) {
 			that.set(i, newArrayProxyElement(thatRandom));
@@ -339,10 +339,10 @@ public abstract class ArrayProxyTestBase<T> {
 		final Random thatRandom = new Random(thatSeed);
 		final Random otherRandom = new Random(otherSeed);
 
-		final ArrayProxy<T> that = newArrayProxy(length);
-		final ArrayProxy<T> other = newArrayProxy(otherLength);
-		final ArrayProxy<T> thatCopy = newArrayProxy(length);
-		final ArrayProxy<T> otherCopy = newArrayProxy(otherLength);
+		final ArrayProxy<T, ?, ?> that = newArrayProxy(length);
+		final ArrayProxy<T, ?, ?> other = newArrayProxy(otherLength);
+		final ArrayProxy<T, ?, ?> thatCopy = newArrayProxy(length);
+		final ArrayProxy<T, ?, ?> otherCopy = newArrayProxy(otherLength);
 
 		for (int i = 0; i < length; ++i) {
 			that.set(i, newArrayProxyElement(thatRandom));
@@ -393,12 +393,12 @@ public abstract class ArrayProxyTestBase<T> {
 		final long seed = math.random.seed();
 		final Random random = new Random(seed);
 
-		final ArrayProxy<T> that = newArrayProxy(length + offset).slice(offset);
+		final ArrayProxy<T, ?, ?> that = newArrayProxy(length + offset).slice(offset);
 		for (int i = 0; i < length; ++i) {
 			that.set(i, newArrayProxyElement(random));
 		}
 
-		final ArrayProxy<T> copy = that.copy();
+		final ArrayProxy<T, ?, ?> copy = that.copy();
 		Assert.assertEquals(copy._length, length.intValue());
 
 		for (int i = 0; i < length; ++i) {

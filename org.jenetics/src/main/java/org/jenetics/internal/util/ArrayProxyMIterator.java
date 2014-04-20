@@ -23,11 +23,11 @@ package org.jenetics.internal.util;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-12-02 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2014-04-20 $</em>
  */
 public class ArrayProxyMIterator<T> extends ArrayProxyIterator<T> {
 
-	public ArrayProxyMIterator(final ArrayProxy<T> proxy) {
+	public ArrayProxyMIterator(final ArrayProxy<T, ?, ?> proxy) {
 		super(proxy);
 	}
 

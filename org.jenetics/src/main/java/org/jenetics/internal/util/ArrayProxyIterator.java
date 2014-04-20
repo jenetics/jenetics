@@ -25,16 +25,16 @@ import java.util.NoSuchElementException;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.5 &mdash; <em>$Date: 2013-12-18 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-04-20 $</em>
  */
 public class ArrayProxyIterator<T> implements ListIterator<T> {
 
-	protected final ArrayProxy<T> _proxy;
+	protected final ArrayProxy<T, ?, ?> _proxy;
 
 	protected int _cursor = 0;
 	protected int _lastElement = -1;
 
-	public ArrayProxyIterator(final ArrayProxy<T> proxy) {
+	public ArrayProxyIterator(final ArrayProxy<T, ?, ?> proxy) {
 		_proxy = proxy;
 	}
 

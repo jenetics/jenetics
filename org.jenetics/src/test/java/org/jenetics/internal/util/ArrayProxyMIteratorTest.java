@@ -29,7 +29,7 @@ import org.jenetics.util.math;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-18 $</em>
+ * @version <em>$Date: 2014-04-20 $</em>
  */
 public class ArrayProxyMIteratorTest {
 
@@ -38,7 +38,7 @@ public class ArrayProxyMIteratorTest {
 		long seed = math.random.seed();
 		final Random random = new Random(seed);
 
-		final ArrayProxy<Integer> proxy = new ArrayProxyImpl<>(1000);
+		final ArrayProxy<Integer, ?, ?> proxy = new ArrayProxyImpl<>(1000);
 		for (int i = proxy._length; --i >= 0;) {
 			proxy.set(i, random.nextInt());
 		}
@@ -59,7 +59,7 @@ public class ArrayProxyMIteratorTest {
 
 	@Test
 	public void setValueForward() {
-		final ArrayProxy<Integer> proxy = new ArrayProxyImpl<>(1000);
+		final ArrayProxy<Integer, ?, ?> proxy = new ArrayProxyImpl<>(1000);
 		for (int i = 0; i < proxy._length; ++i) {
 			proxy.set(i, 111);
 		}
@@ -86,7 +86,7 @@ public class ArrayProxyMIteratorTest {
 
 	@Test
 	public void setValueBackward() {
-		final ArrayProxy<Integer> proxy = new ArrayProxyImpl<>(1000);
+		final ArrayProxy<Integer, ?, ?> proxy = new ArrayProxyImpl<>(1000);
 		for (int i = 0; i < proxy._length; ++i) {
 			proxy.set(i, 111);
 		}

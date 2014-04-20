@@ -34,11 +34,13 @@ import org.jenetics.util.MSeq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.5 &mdash; <em>$Date: 2014-04-17 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-04-20 $</em>
  */
 public class ArrayProxyMSeq<T> extends ArrayProxySeq<T> implements MSeq<T> {
 
-	public ArrayProxyMSeq(final ArrayProxy<T> proxy) {
+	private static final long serialVersionUID = 1L;
+
+	public ArrayProxyMSeq(final ArrayProxy<T, ?, ?> proxy) {
 		super(proxy);
 	}
 

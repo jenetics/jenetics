@@ -20,6 +20,7 @@
 package org.jenetics.internal.util;
 
 import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
 
@@ -30,30 +31,44 @@ import org.jenetics.util.Copyable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.5 &mdash; <em>$Date: 2014-04-18 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-20 $</em>
  */
-public abstract class ArrayProxy<T>
+public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	implements
-		Copyable<ArrayProxy<T>>,
+		Copyable<P>,
 		Serializable
 {
-
 	private static final long serialVersionUID = 1L;
+
+	public A _array;
+	private boolean _sealed = false;
 
 	protected final int _start;
 	protected final int _end;
 	protected final int _length;
 
-	protected ArrayProxy(final int from, final int until) {
-		if (from < 0 || until < 0 || until < from) {
+	private final ArrayProxyFactory<A, P> _factory;
+	private final ArrayCopier<A> _copier;
+
+	protected ArrayProxy(
+		final A array,
+		final int start,
+		final int end,
+		final ArrayProxyFactory<A, P> factory,
+		final ArrayCopier<A> copier
+	) {
+		if (start < 0 || end < 0 || end < start) {
 			throw new IllegalArgumentException(format(
-				"Invalid indexes [%d, %d)", from, until
+				"Invalid indexes [%d, %d)", start, end
 			));
 		}
 
-		_start = from;
-		_end = until;
+		_array = requireNonNull(array);
+		_start = start;
+		_end = end;
 		_length = _end - _start;
+		_factory = requireNonNull(factory);
+		_copier = requireNonNull(copier);
 	}
 
 	/**
@@ -135,7 +150,9 @@ public abstract class ArrayProxy<T>
 	 * @return a new array proxy (view) with the given start and end index.
 	 * @throws IndexOutOfBoundsException if the given indexes are out of bounds.
 	 */
-	public abstract ArrayProxy<T> slice(final int from, final int until);
+	public P slice(final int from, final int until) {
+		return _factory.create(_array, from + _start, until + _start);
+	}
 
 	/**
 	 * Return a new sub {@code ArrayProxy} object with the given start index.
@@ -147,7 +164,7 @@ public abstract class ArrayProxy<T>
 	 * @return a new array proxy (view) with the given start index.
 	 * @throws IndexOutOfBoundsException if the given indexes are out of bounds.
 	 */
-	public ArrayProxy<T> slice(final int from) {
+	public P slice(final int from) {
 		return slice(from, _length);
 	}
 
@@ -167,77 +184,67 @@ public abstract class ArrayProxy<T>
 	 *                      otherFrom
 	 * </pre>
 	 *
-	 * @param from the start index of {@code this} range, inclusively.
-	 * @param until the end index of {@code this} range, exclusively.
+	 * @param start the start index of {@code this} range, inclusively.
+	 * @param end the end index of {@code this} range, exclusively.
 	 * @param other the other array to swap the elements with.
-	 * @param otherFrom the start index of the {@code other} array.
+	 * @param otherStart the start index of the {@code other} array.
 	 * @throws IndexOutOfBoundsException if {@code start > end} or
 	 *         if {@code from < 0 || until >= this.length() || otherFrom < 0 ||
 	 *         otherFrom + (until - from) >= other.length()}
 	 */
 	public void swap(
-		final int from,
-		final int until,
-		final ArrayProxy<T> other,
-		final int otherFrom
+		final int start,
+		final int end,
+		final ArrayProxy<T, ?, ?> other,
+		final int otherStart
 	) {
-		checkIndex(from, until);
-		other.checkIndex(otherFrom, otherFrom + (until - from));
+		checkIndex(start, end);
+		other.checkIndex(otherStart, otherStart + (end - start));
 		cloneIfSealed();
 		other.cloneIfSealed();
 
-		for (int i = (until - from); --i >= 0;) {
-			final T temp = uncheckedGet(i + from);
-			uncheckedSet(i + from, other.uncheckedGet(otherFrom + i));
-			other.uncheckedSet(otherFrom + i, temp);
+		for (int i = (end - start); --i >= 0;) {
+			final T temp = uncheckedGet(i + start);
+			uncheckedSet(i + start, other.uncheckedGet(otherStart + i));
+			other.uncheckedSet(otherStart + i, temp);
 		}
 	}
 
 	/**
 	 * Clone the underlying data structure of this {@code ArrayProxy} if it is
 	 * sealed.
-	 * <p>
-	 * The <i>default</i> implementation will look like this:
-	 * [code]
-	 *     public void cloneIfSealed() {
-	 *         if (_sealed) {
-	 *             _array = _array.clone();
-	 *             _sealed = false;
-	 *         }
-	 *     }
-	 * [/code]
 	 */
-	public abstract void cloneIfSealed();
+	public final void cloneIfSealed() {
+		if (_sealed) {
+			_array = _copier.copy(_array);
+			_sealed = false;
+		}
+	}
 
 
 	/**
 	 * Set the seal flag for this {@code ArrayProxy} instance and return a new
 	 * {@code ArrayProxy} object with an not set <i>seal</i> flag but with the
 	 * same underlying data structure.
-	 * <p>
-	 * The <i>default</i> implementation will look like this:
-	 * [code]
-	 * public MyArrayProxy&lt;T&gt; seal() {
-	 *     _sealed = true;
-	 *     return new MyArrayProxy(_array, _start, _end);
-	 * }
-	 * [/code]
 	 *
 	 * @return a new {@code ArrayProxy} instance; for command chaining.
 	 */
-	public abstract ArrayProxy<T> seal();
+	public final P seal() {
+		_sealed = true;
+		return _factory.create(_array, _start, _end);
+	}
 
 	/**
 	 * Checks the given index.
 	 *
-	 * @param from the index to check.
+	 * @param start the index to check.
 	 * @throws java.lang.ArrayIndexOutOfBoundsException if the given index is
 	 *         not in the valid range.
 	 */
-	protected final void checkIndex(final int from) {
-		if (from < 0 || from >= _length) {
+	protected final void checkIndex(final int start) {
+		if (start < 0 || start >= _length) {
 			throw new ArrayIndexOutOfBoundsException(format(
-				"Index %s is out of bounds [0, %s)", from, _length
+				"Index %s is out of bounds [0, %s)", start, _length
 			));
 		}
 	}
@@ -245,23 +252,22 @@ public abstract class ArrayProxy<T>
 	/**
 	 * Check the given {@code from} and {@code until} indices.
 	 *
-	 * @param from the start index, inclusively.
-	 * @param until the end index, exclusively.
+	 * @param start the start index, inclusively.
+	 * @param end the end index, exclusively.
 	 * @throws java.lang.ArrayIndexOutOfBoundsException if the given index is
 	 *         not in the valid range.
 	 */
-	protected final void checkIndex(final int from, final int until) {
-		if (from > until) {
+	protected final void checkIndex(final int start, final int end) {
+		if (start > end) {
 			throw new ArrayIndexOutOfBoundsException(format(
-				"fromIndex(%d) > toIndex(%d)", from, until
+				"fromIndex(%d) > toIndex(%d)", start, end
 			));
 		}
-		if (from < 0 || until > _length) {
+		if (start < 0 || end > _length) {
 			throw new ArrayIndexOutOfBoundsException(format(
-				"Invalid index range: [%d, %s)", from, until
+				"Invalid index range: [%d, %s)", start, end
 			));
 		}
 	}
-
 
 }

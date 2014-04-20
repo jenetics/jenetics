@@ -23,12 +23,12 @@ import java.util.Random;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-01 $</em>
+ * @version <em>$Date: 2014-04-20 $</em>
  */
 public class ArrayProxyImplTest extends ArrayProxyTestBase<Integer> {
 
 	@Override
-	public ArrayProxy<Integer> newArrayProxy(final int length) {
+	public ArrayProxy<Integer, ?, ?> newArrayProxy(final int length) {
 		return new ArrayProxyImpl<>(length);
 	}
 

@@ -27,15 +27,15 @@ import java.util.RandomAccess;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.5 &mdash; <em>$Date: 2013-12-04 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-04-20 $</em>
  */
 public class ArrayProxyList<T> extends AbstractList<T>
 	implements RandomAccess
 {
 
-	protected final ArrayProxy<T> _proxy;
+	protected final ArrayProxy<T, ?, ?> _proxy;
 
-	public ArrayProxyList(final ArrayProxy<T> proxy) {
+	public ArrayProxyList(final ArrayProxy<T, ?, ?> proxy) {
 		_proxy = requireNonNull(proxy, "ArrayProxy must not be null.");
 	}
 

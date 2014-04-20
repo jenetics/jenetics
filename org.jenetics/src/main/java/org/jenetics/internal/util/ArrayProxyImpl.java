@@ -19,20 +19,18 @@
  */
 package org.jenetics.internal.util;
 
-import static java.util.Objects.requireNonNull;
-
-
 /**
  * {@code ArrayProxy} implementation which stores {@code Object}s.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.5 &mdash; <em>$Date: 2013-12-05 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-20 $</em>
  */
-public final class ArrayProxyImpl<T> extends ArrayProxy<T> {
+public final class ArrayProxyImpl<T>
+	extends ArrayProxy<T, Object[], ArrayProxyImpl<T>>
+{
 
-	Object[] _array;
-	private boolean _sealed = false;
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Create a new array proxy implementation.
@@ -42,8 +40,7 @@ public final class ArrayProxyImpl<T> extends ArrayProxy<T> {
 	 * @param end the end index of the array proxy, exclusively.
 	 */
 	public ArrayProxyImpl(final Object[] array, final int start, final int end) {
-		super(start, end);
-		_array = requireNonNull(array, "Object array must not be null.");
+		super(array, start, end, ArrayProxyImpl<T>::new, o -> o.clone());
 	}
 
 	/**
@@ -64,25 +61,6 @@ public final class ArrayProxyImpl<T> extends ArrayProxy<T> {
 	@Override
 	public void __set(final int absoluteIndex, final T value) {
 		_array[absoluteIndex] = value;
-	}
-
-	@Override
-	public ArrayProxyImpl<T> slice(final int from, final int until) {
-		return new ArrayProxyImpl<>(_array, from + _start, until + _start);
-	}
-
-	@Override
-	public void cloneIfSealed() {
-		if (_sealed) {
-			_array = _array.clone();
-			_sealed = false;
-		}
-	}
-
-	@Override
-	public ArrayProxyImpl<T> seal() {
-		_sealed = true;
-		return new ArrayProxyImpl<>(_array, _start, _end);
 	}
 
 	@Override

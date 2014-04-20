@@ -47,7 +47,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-18 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-20 $</em>
  */
 public final class CharSeq
 	extends CharArray
@@ -136,22 +136,22 @@ public final class CharSeq
 	 *          {@code false} otherwise.
 	 */
 	public boolean contains(final char c) {
-		return Arrays.binarySearch(proxy._characters, c) >= 0;
+		return Arrays.binarySearch(proxy._array, c) >= 0;
 	}
 
 	@Override
 	public char charAt(int index) {
-		return proxy._characters[index];
+		return proxy._array[index];
 	}
 
 	@Override
 	public int length() {
-		return proxy._characters.length;
+		return proxy._array.length;
 	}
 
 	@Override
 	public CharSeq subSequence(int start, int end) {
-		return new CharSeq(new String(proxy._characters, start, end - start));
+		return new CharSeq(new String(proxy._array, start, end - start));
 	}
 
 	/**
@@ -161,7 +161,7 @@ public final class CharSeq
 	 *          otherwise.
 	 */
 	public boolean isEmpty() {
-		return proxy._characters.length == 0;
+		return proxy._array.length == 0;
 	}
 
 	@Override
@@ -169,16 +169,16 @@ public final class CharSeq
 		return new Iterator<Character>() {
 			private int _pos = 0;
 			@Override public boolean hasNext() {
-				return _pos < proxy._characters.length;
+				return _pos < proxy._array.length;
 			}
 			@Override public Character next() {
 				if (!hasNext()) {
 					throw new NoSuchElementException(format(
 						"Index %s is out of range [0, %s)",
-						_pos, proxy._characters.length
+						_pos, proxy._array.length
 					));
 				}
-				return proxy._characters[_pos++];
+				return proxy._array[_pos++];
 			}
 			@Override public void remove() {
 				throw new UnsupportedOperationException();
@@ -188,7 +188,7 @@ public final class CharSeq
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass()).and(proxy._characters).value();
+		return Hash.of(getClass()).and(proxy._array).value();
 	}
 
 	@Override
@@ -201,19 +201,19 @@ public final class CharSeq
 		}
 
 		final CharSeq ch = (CharSeq)object;
-		return eq(proxy._characters, ch.proxy._characters);
+		return eq(proxy._array, ch.proxy._array);
 	}
 
 	@Override
 	public int compareTo(final CharSeq set) {
 		int result = 0;
 
-		final int n = Math.min(proxy._characters.length, set.proxy._characters.length);
+		final int n = Math.min(proxy._array.length, set.proxy._array.length);
 		for (int i = 0; i < n && result == 0; ++i) {
-			result = proxy._characters[i] - set.proxy._characters[i];
+			result = proxy._array[i] - set.proxy._array[i];
 		}
 		if (result == 0) {
-			result = proxy._characters.length - set.proxy._characters.length;
+			result = proxy._array.length - set.proxy._array.length;
 		}
 
 		return result;
@@ -221,7 +221,7 @@ public final class CharSeq
 
 	@Override
 	public String toString() {
-		return new String(proxy._characters);
+		return new String(proxy._array);
 	}
 
 	/**
@@ -349,62 +349,31 @@ class CharArray extends ArrayProxyISeq<Character> {
 	final Proxy proxy;
 
 	public CharArray(final char[] characters) {
-		super(new Proxy(characters));
+		super(new Proxy(characters, 0, characters.length));
 		proxy = (Proxy)(_proxy);
 	}
 
-	static final class Proxy extends ArrayProxy<Character> {
+	static final class Proxy extends ArrayProxy<Character, char[], Proxy> {
 		private static final long serialVersionUID = 1L;
 
-		char[] _characters;
-		boolean _sealed = false;
-
 		Proxy(final char[] characters, final int start, final int end) {
-			super(start, end);
-			_characters = characters;
-		}
-
-		Proxy(final char[] characters) {
-			this(characters, 0, characters.length);
-		}
-
-		Proxy(final int length) {
-			this(new char[length], 0, length);
+			super(characters, start, end, Proxy::new, c -> c.clone());
 		}
 
 		@Override
 		public Character __get(int absoluteIndex) {
-			return _characters[absoluteIndex];
+			return _array[absoluteIndex];
 		}
 
 		@Override
 		public void __set(int absoluteIndex, Character value) {
-			_characters[absoluteIndex] = value;
-		}
-
-		@Override
-		public Proxy slice(int from, int until) {
-			return new Proxy(_characters, from + _start, until + _start);
-		}
-
-		@Override
-		public void cloneIfSealed() {
-			if (_sealed) {
-				_characters = _characters.clone();
-				_sealed = false;
-			}
-		}
-
-		@Override
-		public Proxy seal() {
-			_sealed = true;
-			return new Proxy(_characters, _start, _end);
+			_array[absoluteIndex] = value;
 		}
 
 		@Override
 		public Proxy copy() {
-			final Proxy proxy = new Proxy(_length);
-			System.arraycopy(_characters, _start, proxy._characters, 0, _length);
+			final Proxy proxy = new Proxy(new char[_length], 0, _length);
+			System.arraycopy(_array, _start, proxy._array, 0, _length);
 			return proxy;
 		}
 	}
