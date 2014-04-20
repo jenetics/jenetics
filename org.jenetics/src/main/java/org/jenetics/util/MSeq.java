@@ -30,8 +30,8 @@ import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.function.Supplier;
 
-import org.jenetics.internal.util.ArrayProxyImpl;
-import org.jenetics.internal.util.ArrayProxyMSeq;
+import org.jenetics.internal.collection.ArrayProxyImpl;
+import org.jenetics.internal.collection.ArrayProxyMSeq;
 
 /**
  * Mutable, ordered, fixed sized sequence.
@@ -40,7 +40,7 @@ import org.jenetics.internal.util.ArrayProxyMSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-04-17 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-20 $</em>
  */
 public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 

@@ -17,25 +17,26 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.util;
+package org.jenetics.internal.collection;
+
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-03-07 $</em>
- * @since @__version__@
+ * @since 1.4
+ * @version 1.4 &mdash; <em>$Date$</em>
  */
-public class LazyTest {
-/*
-	@Test
-	public void singleInitialization() {
-		final AtomicInteger count = new AtomicInteger(0);
-		final Lazy<String> value = new Lazy<>(() ->
-			"value_" + count.incrementAndGet()
-		);
+public class ArrayProxyMIterator<T> extends ArrayProxyIterator<T> {
 
-		for (int i = 0; i < 100; ++i) {
-			Assert.assertEquals("value_1", value.get());
-		}
+	public ArrayProxyMIterator(final ArrayProxy<T, ?, ?> proxy) {
+		super(proxy);
 	}
-*/
+
+	@Override
+	public void set(final T value) {
+		if (_lastElement < 0) {
+			throw new IllegalStateException();
+		}
+		_proxy.uncheckedSet(_lastElement, value);
+	}
+
 }

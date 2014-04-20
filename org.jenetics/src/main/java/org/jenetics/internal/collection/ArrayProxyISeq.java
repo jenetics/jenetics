@@ -17,9 +17,8 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.util;
+package org.jenetics.internal.collection;
 
-import java.io.Serializable;
 import java.util.function.Function;
 
 import org.jenetics.util.ISeq;
@@ -28,7 +27,7 @@ import org.jenetics.util.MSeq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0 &mdash; <em>$Date: 2014-04-20 $</em>
+ * @version 3.0 &mdash; <em>$Date$</em>
  */
 public class ArrayProxyISeq<T>
 	extends ArrayProxySeq<T>

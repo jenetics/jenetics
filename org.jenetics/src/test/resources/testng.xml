@@ -20,7 +20,7 @@
  # Author:
  #    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  #
- # Version: <em>$Date: 2014-04-18 $</em>
+ # Version: <em>$Date: 2014-04-20 $</em>
  #
  ###############################################################################
 -->
@@ -255,16 +255,16 @@
 			<class name="org.jenetics.stat.UniformDistributionTest" />
 		</classes>
 	</test>
-	<test name="org.jenetics.internal.util.ArrayProxy">
+	<test name="org.jenetics.internal.collection.ArrayProxy">
 		<classes>
-			<class name="org.jenetics.internal.util.ArrayProxyImplTest" />
-			<class name="org.jenetics.internal.util.ArrayProxySeqTest" />
-			<class name="org.jenetics.internal.util.ArrayProxyISeqTest" />
-			<class name="org.jenetics.internal.util.ArrayProxyMListTest" />
-			<class name="org.jenetics.internal.util.ArrayProxyListTest" />
-			<class name="org.jenetics.internal.util.ArrayProxyIteratorTest" />
-			<class name="org.jenetics.internal.util.ArrayProxyMIteratorTest" />
-			<class name="org.jenetics.internal.util.ArrayProxyMSeqTest" />
+			<class name="org.jenetics.internal.collection.ArrayProxyImplTest" />
+			<class name="org.jenetics.internal.collection.ArrayProxySeqTest" />
+			<class name="org.jenetics.internal.collection.ArrayProxyISeqTest" />
+			<class name="org.jenetics.internal.collection.ArrayProxyMListTest" />
+			<class name="org.jenetics.internal.collection.ArrayProxyListTest" />
+			<class name="org.jenetics.internal.collection.ArrayProxyIteratorTest" />
+			<class name="org.jenetics.internal.collection.ArrayProxyMIteratorTest" />
+			<class name="org.jenetics.internal.collection.ArrayProxyMSeqTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.internal.math.probability">

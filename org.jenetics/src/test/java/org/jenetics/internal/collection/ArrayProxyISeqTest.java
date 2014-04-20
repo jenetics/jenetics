@@ -17,14 +17,17 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.util;
+package org.jenetics.internal.collection;
+
+import org.jenetics.internal.collection.ArrayProxyISeq;
+import org.jenetics.internal.collection.ArrayProxyImpl;
 
 import org.jenetics.util.ISeq;
 import org.jenetics.util.ISeqTestBase;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-01 $</em>
+ * @version <em>$Date$</em>
  */
 public class ArrayProxyISeqTest extends ISeqTestBase {
 

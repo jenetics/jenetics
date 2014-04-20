@@ -17,24 +17,27 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.util;
+package org.jenetics.internal.collection;
+
+import org.jenetics.internal.collection.ArrayProxyImpl;
+import org.jenetics.internal.collection.ArrayProxyMSeq;
+
+import org.jenetics.util.MSeq;
+import org.jenetics.util.MSeqTestBase;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2014-04-20 $</em>
+ * @version <em>$Date$</em>
  */
-public class ArrayProxyMList<T> extends ArrayProxyList<T> {
-
-	public ArrayProxyMList(final ArrayProxy<T, ?, ?> proxy) {
-		super(proxy);
-	}
+public class ArrayProxyMSeqTest extends MSeqTestBase {
 
 	@Override
-	public T set(final int index, final T element) {
-		final T oldElement = _proxy.get(index);
-		_proxy.set(index, element);
-		return oldElement;
+	protected MSeq<Integer> newSeq(final int length) {
+		final ArrayProxyImpl<Integer> impl = new ArrayProxyImpl<>(length);
+		for (int i = 0; i < length; ++i) {
+			impl._array[i] = i;
+		}
+		return new ArrayProxyMSeq<>(impl);
 	}
 
 }

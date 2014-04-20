@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.util;
+package org.jenetics.internal.collection;
 
 import static java.util.Objects.requireNonNull;
 
@@ -27,7 +27,7 @@ import java.util.RandomAccess;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.5 &mdash; <em>$Date: 2014-04-20 $</em>
+ * @version 1.5 &mdash; <em>$Date$</em>
  */
 public class ArrayProxyList<T> extends AbstractList<T>
 	implements RandomAccess

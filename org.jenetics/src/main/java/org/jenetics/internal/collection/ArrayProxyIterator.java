@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.util;
+package org.jenetics.internal.collection;
 
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
@@ -25,7 +25,7 @@ import java.util.NoSuchElementException;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.5 &mdash; <em>$Date: 2014-04-20 $</em>
+ * @version 1.5 &mdash; <em>$Date$</em>
  */
 public class ArrayProxyIterator<T> implements ListIterator<T> {
 

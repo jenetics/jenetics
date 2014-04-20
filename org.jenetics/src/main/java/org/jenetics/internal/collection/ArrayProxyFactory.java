@@ -17,26 +17,16 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.util;
+package org.jenetics.internal.collection;
 
+import java.io.Serializable;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2014-04-20 $</em>
+ * @version @__version__@ &mdash; <em>$Date$</em>
+ * @since @__version__@
  */
-public class ArrayProxyMIterator<T> extends ArrayProxyIterator<T> {
-
-	public ArrayProxyMIterator(final ArrayProxy<T, ?, ?> proxy) {
-		super(proxy);
-	}
-
-	@Override
-	public void set(final T value) {
-		if (_lastElement < 0) {
-			throw new IllegalStateException();
-		}
-		_proxy.uncheckedSet(_lastElement, value);
-	}
-
+@FunctionalInterface
+public interface ArrayProxyFactory<A, P> extends Serializable {
+	public P create(final A array, final int start, final int end);
 }

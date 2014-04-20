@@ -19,9 +19,9 @@
  */
 package org.jenetics;
 
-import org.jenetics.internal.util.ArrayProxy;
-import org.jenetics.internal.util.ArrayProxyISeq;
-import org.jenetics.internal.util.ArrayProxyMSeq;
+import org.jenetics.internal.collection.ArrayProxy;
+import org.jenetics.internal.collection.ArrayProxyISeq;
+import org.jenetics.internal.collection.ArrayProxyMSeq;
 
 import org.jenetics.util.bit;
 

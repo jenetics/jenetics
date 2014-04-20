@@ -29,8 +29,8 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.regex.PatternSyntaxException;
 
-import org.jenetics.internal.util.ArrayProxy;
-import org.jenetics.internal.util.ArrayProxyISeq;
+import org.jenetics.internal.collection.ArrayProxy;
+import org.jenetics.internal.collection.ArrayProxyISeq;
 import org.jenetics.internal.util.Hash;
 
 /**
