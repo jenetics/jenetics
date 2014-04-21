@@ -157,8 +157,8 @@ class SetupPlugin extends JeneticsPlugin {
 				//options.addStringOption('-subpackages', 'org.jenetics')
 				//options.addStringOption('-exclude', 'org.jenetics.internal.util')
 
-				//group('Core API', ['org.jenetics']).
-				//group('Utilities', ['org.jenetics.util', 'org.jenetics.stat'])
+				group('Core API', ['org.jenetics']).
+				group('Utilities', ['org.jenetics.util', 'org.jenetics.stat'])
 			}
 
 			// Copy the doc-files.
