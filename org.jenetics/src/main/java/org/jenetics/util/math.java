@@ -35,48 +35,6 @@ public final class math extends StaticObject {
 	private math() {}
 
 	/**
-	 * Add to long values and throws an ArithmeticException in the case of an
-	 * overflow.
-	 *
-	 * @param a the first summand.
-	 * @param b the second summand.
-	 * @return the sum of the given values.
-	 * @throws ArithmeticException if the summation would lead to an overflow.
-	 *
-	 * @deprecated Use {@link Math#addExact(long, long)} instead.
-	 */
-	@Deprecated
-	public static long plus(final long a, final long b) {
-		final long z = a + b;
-		if (((a^z) & (b^z)) < 0) {
-			throw new ArithmeticException(format("Overflow: %d + %d", a, b));
-		}
-
-		return z;
-	}
-
-	/**
-	 * Subtracts to long values and throws an ArithmeticException in the case of
-	 * an overflow.
-	 *
-	 * @param a the minuend.
-	 * @param b the subtrahend.
-	 * @return the difference of the given values.
-	 * @throws ArithmeticException if the subtraction would lead to an overflow.
-	 *
-	 * @deprecated Use {@link Math#subtractExact(long, long)} instead.
-	 */
-	@Deprecated
-	public static long minus(final long a, final long b) {
-		final long z = a - b;
-		if (((a^b) & (a^z)) < 0) {
-			throw new ArithmeticException(format("Overflow: %d - %d", a, b));
-		}
-
-		return z;
-	}
-
-	/**
 	 * Normalize the given double array, so that it sum to one. The
 	 * normalization is performed in place and the same {@code values} are
 	 * returned.
@@ -111,19 +69,6 @@ public final class math extends StaticObject {
 	 */
 	public static double clamp(final double v, final double lo, final double hi) {
 		return v < lo ? lo : (v > hi ? hi : v);
-	}
-
-	/**
-	 * Component wise multiplication of the given double array.
-	 *
-	 * @param values the double values to multiply.
-	 * @param multiplier the multiplier.
-	 * @throws NullPointerException if the given double array is {@code null}.
-	 */
-	public static void times(final double[] values, final double multiplier) {
-		for (int i = values.length; --i >= 0;) {
-			values[i] *= multiplier;
-		}
 	}
 
 	/**

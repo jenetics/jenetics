@@ -277,11 +277,6 @@
             <class name="org.jenetics.internal.util.internalbitTest" />
         </classes>
     </test>
-	<test name="org.jenetics.util.arrays">
-		<classes>
-			<class name="org.jenetics.util.arraysTest" />
-		</classes>
-	</test>
 	<test name="org.jenetics.util.bit">
 		<classes>
 			<class name="org.jenetics.util.bitTest" />
