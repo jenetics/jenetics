@@ -44,7 +44,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2014-04-17 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-21 $</em>
  */
 public interface Accumulator<T> {
 
@@ -61,16 +61,16 @@ public interface Accumulator<T> {
 	 * Usage example:
 	 * [code]
 	 * // Convert a string on the fly into a double value.
-	 * final Converter<String, Double> converter = new Converter<String, Double>() {
+	 * final Converter&lt;String, Double&gt; converter = new Converter&lt;String, Double&gt;() {
 	 *         public Double convert(final String value) {
 	 *             return Double.valueOf(value);
 	 *         }
 	 *     };
 	 *
 	 * // The values to accumulate
-	 * final List<String> values = Arrays.asList("0", "1", "2", "3", "4", "5");
+	 * final List&lt;String&gt; values = Arrays.asList("0", "1", "2", "3", "4", "5");
 	 *
-	 * final Accumulators.Min<Double> accumulator = new Accumulators.Min<Double>();
+	 * final Accumulators.Min&lt;Double&gt; accumulator = new Accumulators.Min&lt;Double&gt;();
 	 *
 	 * // No pain to accumulate collections of a different type.
 	 * Accumulators.accumulate(values, accumulator.map(converter));

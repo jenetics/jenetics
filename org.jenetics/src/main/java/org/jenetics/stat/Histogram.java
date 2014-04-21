@@ -63,7 +63,7 @@ import org.jenetics.util.AbstractAccumulator;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-21 $</em>
  */
 public class Histogram<C> extends AbstractAccumulator<C> {
 
@@ -341,10 +341,10 @@ public class Histogram<C> extends AbstractAccumulator<C> {
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass()).
-			and(super.hashCode()).
-			and(_separators).
-			and(_histogram).value();
+		return Hash.of(getClass())
+			.and(super.hashCode())
+			.and(_separators)
+			.and(_histogram).value();
 	}
 
 	@Override
@@ -357,7 +357,7 @@ public class Histogram<C> extends AbstractAccumulator<C> {
 		}
 
 		final Histogram<?> histogram = (Histogram<?>)obj;
-		return 	eq(_separators, histogram._separators) &&
+		return eq(_separators, histogram._separators) &&
 			eq(_histogram, histogram._histogram) &&
 			super.equals(obj);
 	}

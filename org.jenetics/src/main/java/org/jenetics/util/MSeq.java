@@ -48,7 +48,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @param index the index of the new value.
 	 * @param value the new value.
 	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         <code>(index < 0 || index >= size())</code>.
+	 *         <code>(index &lt; 0 || index &gt;= size())</code>.
 	 */
 	public void set(final int index, final T value);
 

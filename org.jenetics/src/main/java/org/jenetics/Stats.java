@@ -25,8 +25,8 @@ import org.jenetics.stat.Summary;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2013-11-17 $</em>
- * @since @__version__@
+ * @version 3.0 &mdash; <em>$Date: 2014-04-21 $</em>
+ * @since 3.0
  */
 public interface Stats<G extends Gene<?, G>, C extends Comparable<? super C>> {
 	/*protected Optimize _optimize;

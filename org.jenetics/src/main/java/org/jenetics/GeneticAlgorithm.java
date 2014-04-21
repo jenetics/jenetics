@@ -701,7 +701,7 @@ public class GeneticAlgorithm<
 	 * final Function&lt;GeneticAlgorithm&lt;?, ?&gt;, Boolean&gt; until = ...
 	 *
 	 * //Starting the GA in separate thread.
-	 * final Thread thread = new Thread(() -> {
+	 * final Thread thread = new Thread(() -&gt; {
 	 *     while (!Thread.currentThread().isInterrupted() &amp;&amp;
 	 *            !until.apply(ga))
 	 *     {

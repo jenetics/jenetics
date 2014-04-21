@@ -42,8 +42,8 @@ import java.util.stream.Stream;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since @__version__@
- * @version @__version__@ &mdash; <em>$Date: 2013-11-13 $</em>
+ * @since 3.0
+ * @version 3.0 &mdash; <em>$Date: 2014-04-21 $</em>
  */
 abstract class IntStreamAdapter implements IntStream {
 

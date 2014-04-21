@@ -26,13 +26,13 @@ import java.util.stream.Collector.Characteristics;
  * Reporting interface for basic univariate statistics.
  *
  * [code]
- * final Stream<Integer> numbers = Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
- * final Summary<Integer> summary = numbers.collect(Summary.collector());
+ * final Stream&lt;Integer&gt; numbers = Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+ * final Summary&lt;Integer&gt; summary = numbers.collect(Summary.collector());
  * [/code]
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2013-11-14 $</em>
- * @since @__version__@
+ * @version 3.0 &mdash; <em>$Date: 2014-04-21 $</em>
+ * @since 3.0
  */
 public interface Summary<N extends Number & Comparable<? super N>> {
 
@@ -110,8 +110,8 @@ public interface Summary<N extends Number & Comparable<? super N>> {
 	 * {@link java.util.stream.Stream}.
 	 *
 	 * [code]
-	 * final Stream<Integer> numbers = Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-	 * final Summary<Integer> summary = numbers.collect(Summary.collector());
+	 * final Stream&lt;Integer&gt; numbers = Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+	 * final Summary&lt;Integer&gt; summary = numbers.collect(Summary.collector());
 	 * [/code]
 	 *
 	 * @see <a href="http://en.wikipedia.org/wiki/Algorithms_for_calculating_variance">

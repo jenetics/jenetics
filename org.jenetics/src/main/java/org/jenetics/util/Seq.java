@@ -39,7 +39,7 @@ import java.util.function.Predicate;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-04-18 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-21 $</em>
  */
 public interface Seq<T> extends Iterable<T> {
 
@@ -158,10 +158,10 @@ public interface Seq<T> extends Iterable<T> {
 	 * </p>
 	 * [code]
 	 * // Finding index of first null value.
-	 * final int index = seq.indexOf(o -> o == null);
+	 * final int index = seq.indexOf(o -&gt; o == null);
 	 *
 	 * // Assert of no null values.
-	 * assert (sequence.indexOf(o -> o == null) == -1);
+	 * assert (sequence.indexOf(o -&gt; o == null) == -1);
 	 * [/code]
 	 *
 	 * @param predicate the search predicate.
@@ -182,10 +182,10 @@ public interface Seq<T> extends Iterable<T> {
 	 * </p>
 	 * [code]
 	 * // Finding index of first null value.
-	 * final int index = seq.indexOf(o -> o == null);
+	 * final int index = seq.indexOf(o -&gt; o == null);
 	 *
 	 * // Assert of no null values.
-	 * assert (sequence.indexOf(o -> o == null) == -1);
+	 * assert (sequence.indexOf(o -&gt; o == null) == -1);
 	 * [/code]
 	 *
 	 * @param predicate the search predicate.
@@ -212,10 +212,10 @@ public interface Seq<T> extends Iterable<T> {
 	 * </p>
 	 * [code]
 	 * // Finding index of first null value.
-	 * final int index = seq.indexOf(o -> o == null);
+	 * final int index = seq.indexOf(o -&gt; o == null);
 	 *
 	 * // Assert of no null values.
-	 * assert (sequence.indexOf(o -> o == null) == -1);
+	 * assert (sequence.indexOf(o -&gt; o == null) == -1);
 	 * [/code]
 	 *
 	 * @param predicate the search predicate.
@@ -604,7 +604,7 @@ public interface Seq<T> extends Iterable<T> {
 	 *
 	 * [code]
 	 * int hashCode = 1;
-	 * final Iterator<E> it = seq.iterator();
+	 * final Iterator&lt;E&gt; it = seq.iterator();
 	 * while (it.hasNext()) {
 	 *     final E obj = it.next();
 	 *     hashCode = 31*hashCode + (obj == null ? 0 : obj.hashCode());
