@@ -32,7 +32,7 @@ public class ArrayProxyMSeqTest extends MSeqTestBase {
 	protected MSeq<Integer> newSeq(final int length) {
 		final ObjectArrayProxy<Integer> impl = new ObjectArrayProxy<>(length);
 		for (int i = 0; i < length; ++i) {
-			impl._array[i] = i;
+			impl.array[i] = i;
 		}
 		return new ArrayProxyMSeq<>(impl);
 	}

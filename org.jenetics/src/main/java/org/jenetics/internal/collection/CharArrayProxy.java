@@ -19,45 +19,34 @@
  */
 package org.jenetics.internal.collection;
 
-import java.util.function.Function;
-
-import org.jenetics.util.ISeq;
-import org.jenetics.util.MSeq;
+import java.util.Arrays;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.4
  * @version 3.0 &mdash; <em>$Date: 2014-04-21 $</em>
+ * @since 3.0
  */
-public class ArrayProxyISeq<T, P extends ArrayProxy<T, ?, ?>>
-	extends ArrayProxySeq<T, P>
-	implements ISeq<T>
+public final class CharArrayProxy
+	extends ArrayProxy<Character, char[], CharArrayProxy>
 {
-
 	private static final long serialVersionUID = 1L;
 
-	public ArrayProxyISeq(final P proxy) {
-		super(proxy);
+	public CharArrayProxy(final char[] chars, final int start, final int end) {
+		super(chars, start, end, CharArrayProxy::new, Arrays::copyOfRange);
+	}
+
+	public CharArrayProxy(final int length) {
+		this(new char[length], 0, length);
 	}
 
 	@Override
-	public <B> ISeq<B> map(final Function<? super T, ? extends B> mapper) {
-		return new ArrayProxyISeq<>(proxy.map(mapper));
+	public Character __get__(int index) {
+		return array[index];
 	}
 
 	@Override
-	public ISeq<T> subSeq(final int start) {
-		return new ArrayProxyISeq<>(proxy.slice(start));
-	}
-
-	@Override
-	public ISeq<T> subSeq(int start, int end) {
-		return new ArrayProxyISeq<>(proxy.slice(start, end));
-	}
-
-	@Override
-	public MSeq<T> copy() {
-		return new ArrayProxyMSeq<>(proxy.copy());
+	public void __set__(int index, Character value) {
+		array[index] = value;
 	}
 
 }

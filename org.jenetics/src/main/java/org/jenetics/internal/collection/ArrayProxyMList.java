@@ -24,18 +24,19 @@ package org.jenetics.internal.collection;
  * @since 1.4
  * @version 1.4 &mdash; <em>$Date: 2014-04-21 $</em>
  */
-public class ArrayProxyMList<T> extends ArrayProxyList<T> {
-
+public class ArrayProxyMList<T, P extends ArrayProxy<T, ?, ?>>
+	extends ArrayProxyList<T, P>
+{
 	private static final long serialVersionUID = 1L;
 
-	public ArrayProxyMList(final ArrayProxy<T, ?, ?> proxy) {
+	public ArrayProxyMList(final P proxy) {
 		super(proxy);
 	}
 
 	@Override
 	public T set(final int index, final T element) {
-		final T oldElement = _proxy.get(index);
-		_proxy.set(index, element);
+		final T oldElement = proxy.get(index);
+		proxy.set(index, element);
 		return oldElement;
 	}
 

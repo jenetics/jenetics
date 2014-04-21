@@ -19,18 +19,15 @@
  */
 package org.jenetics.util;
 
-import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.object.eq;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
 import java.util.regex.PatternSyntaxException;
 
-import org.jenetics.internal.collection.ArrayProxy;
 import org.jenetics.internal.collection.ArrayProxyISeq;
+import org.jenetics.internal.collection.CharArrayProxy;
 import org.jenetics.internal.util.Hash;
 
 /**
@@ -50,7 +47,7 @@ import org.jenetics.internal.util.Hash;
  * @version 2.0 &mdash; <em>$Date: 2014-04-21 $</em>
  */
 public final class CharSeq
-	extends CharArray
+	extends CharSeqBase
 	implements
 		CharSequence,
 		ISeq<Character>,
@@ -136,22 +133,22 @@ public final class CharSeq
 	 *          {@code false} otherwise.
 	 */
 	public boolean contains(final char c) {
-		return Arrays.binarySearch(proxy._array, c) >= 0;
+		return Arrays.binarySearch(proxy.array, c) >= 0;
 	}
 
 	@Override
 	public char charAt(int index) {
-		return proxy._array[index];
+		return proxy.array[index];
 	}
 
 	@Override
 	public int length() {
-		return proxy._array.length;
+		return proxy.array.length;
 	}
 
 	@Override
 	public CharSeq subSequence(int start, int end) {
-		return new CharSeq(new String(proxy._array, start, end - start));
+		return new CharSeq(new String(proxy.array, start, end - start));
 	}
 
 	/**
@@ -161,34 +158,12 @@ public final class CharSeq
 	 *          otherwise.
 	 */
 	public boolean isEmpty() {
-		return proxy._array.length == 0;
-	}
-
-	@Override
-	public Iterator<Character> iterator() {
-		return new Iterator<Character>() {
-			private int _pos = 0;
-			@Override public boolean hasNext() {
-				return _pos < proxy._array.length;
-			}
-			@Override public Character next() {
-				if (!hasNext()) {
-					throw new NoSuchElementException(format(
-						"Index %s is out of range [0, %s)",
-						_pos, proxy._array.length
-					));
-				}
-				return proxy._array[_pos++];
-			}
-			@Override public void remove() {
-				throw new UnsupportedOperationException();
-			}
-		};
+		return proxy.array.length == 0;
 	}
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass()).and(proxy._array).value();
+		return Hash.of(getClass()).and(proxy.array).value();
 	}
 
 	@Override
@@ -201,19 +176,19 @@ public final class CharSeq
 		}
 
 		final CharSeq ch = (CharSeq)object;
-		return eq(proxy._array, ch.proxy._array);
+		return eq(proxy.array, ch.proxy.array);
 	}
 
 	@Override
 	public int compareTo(final CharSeq set) {
 		int result = 0;
 
-		final int n = Math.min(proxy._array.length, set.proxy._array.length);
+		final int n = Math.min(proxy.array.length, set.proxy.array.length);
 		for (int i = 0; i < n && result == 0; ++i) {
-			result = proxy._array[i] - set.proxy._array[i];
+			result = proxy.array[i] - set.proxy.array[i];
 		}
 		if (result == 0) {
-			result = proxy._array.length - set.proxy._array.length;
+			result = proxy.array.length - set.proxy.array.length;
 		}
 
 		return result;
@@ -221,7 +196,7 @@ public final class CharSeq
 
 	@Override
 	public String toString() {
-		return new String(proxy._array);
+		return new String(proxy.array);
 	}
 
 	/**
@@ -340,36 +315,11 @@ public final class CharSeq
 
 		return seq.toISeq();
 	}
-
 }
 
-class CharArray extends ArrayProxyISeq<Character> {
+abstract class CharSeqBase extends ArrayProxyISeq<Character, CharArrayProxy> {
 	private static final long serialVersionUID = 1L;
-
-	final Proxy proxy;
-
-	public CharArray(final char[] characters) {
-		super(new Proxy(characters, 0, characters.length));
-		proxy = (Proxy)(_proxy);
+	protected CharSeqBase(final char[] characters) {
+		super(new CharArrayProxy(characters, 0, characters.length));
 	}
-
-	static final class Proxy extends ArrayProxy<Character, char[], Proxy> {
-		private static final long serialVersionUID = 1L;
-
-		Proxy(final char[] characters, final int start, final int end) {
-			super(characters, start, end, Proxy::new, Arrays::copyOfRange);
-		}
-
-		@Override
-		public Character __get(int index) {
-			return _array[index];
-		}
-
-		@Override
-		public void __set(int index, Character value) {
-			_array[index] = value;
-		}
-
-	}
-
 }

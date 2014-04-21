@@ -39,7 +39,7 @@ public class ArrayProxyMIteratorTest {
 		final Random random = new Random(seed);
 
 		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
-		for (int i = proxy._length; --i >= 0;) {
+		for (int i = proxy.length; --i >= 0;) {
 			proxy.set(i, random.nextInt());
 		}
 
@@ -52,7 +52,7 @@ public class ArrayProxyMIteratorTest {
 		}
 
 		random.setSeed(seed);
-		for (int i = 0; i < proxy._length; ++i) {
+		for (int i = 0; i < proxy.length; ++i) {
 			Assert.assertEquals(proxy.get(i).intValue(), random.nextInt());
 		}
 	}
@@ -60,11 +60,11 @@ public class ArrayProxyMIteratorTest {
 	@Test
 	public void setValueForward() {
 		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
-		for (int i = 0; i < proxy._length; ++i) {
+		for (int i = 0; i < proxy.length; ++i) {
 			proxy.set(i, 111);
 		}
 
-		for (int i = 0; i < proxy._length; ++i) {
+		for (int i = 0; i < proxy.length; ++i) {
 			final Integer value = proxy.get(i);
 			Assert.assertEquals(value, new Integer(111));
 		}
@@ -77,8 +77,8 @@ public class ArrayProxyMIteratorTest {
 			++count;
 		}
 
-		Assert.assertEquals(count, proxy._length);
-		for (int i = 0; i < proxy._length; ++i) {
+		Assert.assertEquals(count, proxy.length);
+		for (int i = 0; i < proxy.length; ++i) {
 			final Integer value = proxy.get(i);
 			Assert.assertEquals(value, new Integer(222));
 		}
@@ -87,11 +87,11 @@ public class ArrayProxyMIteratorTest {
 	@Test
 	public void setValueBackward() {
 		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
-		for (int i = 0; i < proxy._length; ++i) {
+		for (int i = 0; i < proxy.length; ++i) {
 			proxy.set(i, 111);
 		}
 
-		for (int i = 0; i < proxy._length; ++i) {
+		for (int i = 0; i < proxy.length; ++i) {
 			final Integer value = proxy.get(i);
 			Assert.assertEquals(value, new Integer(111));
 		}
@@ -108,8 +108,8 @@ public class ArrayProxyMIteratorTest {
 			++count;
 		}
 
-		Assert.assertEquals(count, proxy._length);
-		for (int i = 0; i < proxy._length; ++i) {
+		Assert.assertEquals(count, proxy.length);
+		for (int i = 0; i < proxy.length; ++i) {
 			final Integer value = proxy.get(i);
 			Assert.assertEquals(value, new Integer(222));
 		}

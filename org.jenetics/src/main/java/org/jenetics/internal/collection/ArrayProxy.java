@@ -42,16 +42,29 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 {
 	private static final long serialVersionUID = 1L;
 
-	public A _array;
-	private boolean _sealed = false;
+	public A array;
+	public final int length;
+	public final int start;
+	public final int end;
 
-	protected final int _start;
-	protected final int _end;
-	protected final int _length;
+	private boolean _sealed = false;
 
 	private final ArrayProxyFactory<A, P> _factory;
 	private final ArrayCopier<A> _copier;
 
+	/**
+	 * Create a new array proxy.
+	 *
+	 * @param array the array which is wrapped by this proxy
+	 * @param start the start index of the wrapped array (inclusively)
+	 * @param end the end index of the wrapped array (exclusively)
+	 * @param factory factory function for creating new proxy objects
+	 * @param copier array cloning function
+	 * @throws java.lang.NullPointerException if one of the arguments is
+	 *         {@code null}
+	 * @throws java.lang.IllegalArgumentException if the start and end indexes
+	 *         are invalid.
+	 */
 	protected ArrayProxy(
 		final A array,
 		final int start,
@@ -65,10 +78,11 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 			));
 		}
 
-		_array = requireNonNull(array);
-		_start = start;
-		_end = end;
-		_length = _end - _start;
+		this.array = requireNonNull(array);
+		this.length = end - start;
+		this.start = start;
+		this.end = end;
+
 		_factory = requireNonNull(factory);
 		_copier = requireNonNull(copier);
 	}
@@ -80,7 +94,7 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	 * @param index absolute index of the element to return
 	 * @return the <i>array</i> element at the specified absolute position
 	 */
-	public abstract T __get(final int index);
+	public abstract T __get__(final int index);
 
 	/**
 	 * Set the <i>array</i> element at the specified absolute position in the
@@ -88,7 +102,7 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	 *
 	 * @param index absolute index of the <i>array</i> element
 	 */
-	public abstract void __set(final int index, final T value);
+	public abstract void __set__(final int index, final T value);
 
 	/**
 	 * Return the <i>array</i> element at the specified position in the
@@ -97,8 +111,8 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	 * @param index index of the element to return
 	 * @return the <i>array</i> element at the specified position
 	 */
-	public T uncheckedGet(final int index) {
-		return __get(index + _start);
+	public final T __get(final int index) {
+		return __get__(index + start);
 	}
 
 	/**
@@ -107,8 +121,8 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	 *
 	 * @param index index of the <i>array</i> element
 	 */
-	public void uncheckedSet(final int index, final T value) {
-		__set(index + _start, value);
+	public final void __set(final int index, final T value) {
+		__set__(index + start, value);
 	}
 
 	/**
@@ -120,9 +134,9 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	 * @throws IndexOutOfBoundsException if the index it out of range
 	 *         (index < 0 || index >= _length).
 	 */
-	public T get(final int index) {
+	public final T get(final int index) {
 		checkIndex(index);
-		return __get(index + _start);
+		return __get__(index + start);
 	}
 
 	/**
@@ -134,9 +148,9 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	 * @throws IndexOutOfBoundsException if the index it out of range
 	 *         (index < 0 || index >= _length).
 	 */
-	public void set(final int index, final T value) {
+	public final void set(final int index, final T value) {
 		checkIndex(index);
-		__set(index + _start, value);
+		__set__(index + start, value);
 	}
 
 	/**
@@ -152,8 +166,8 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	 * @return a new array proxy (view) with the given start and end index.
 	 * @throws IndexOutOfBoundsException if the given indexes are out of bounds.
 	 */
-	public P slice(final int from, final int until) {
-		return _factory.create(_array, from + _start, until + _start);
+	public final P slice(final int from, final int until) {
+		return _factory.create(array, from + start, until + start);
 	}
 
 	/**
@@ -166,8 +180,8 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	 * @return a new array proxy (view) with the given start index.
 	 * @throws IndexOutOfBoundsException if the given indexes are out of bounds.
 	 */
-	public P slice(final int from) {
-		return slice(from, _length);
+	public final P slice(final int from) {
+		return slice(from, length);
 	}
 
 	/**
@@ -206,9 +220,9 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 		other.cloneIfSealed();
 
 		for (int i = (end - start); --i >= 0;) {
-			final T temp = uncheckedGet(i + start);
-			uncheckedSet(i + start, other.uncheckedGet(otherStart + i));
-			other.uncheckedSet(otherStart + i, temp);
+			final T temp = __get(i + start);
+			__set(i + start, other.__get(otherStart + i));
+			other.__set(otherStart + i, temp);
 		}
 	}
 
@@ -222,11 +236,11 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 		final Function<? super T, ? extends B> mapper,
 		final IntFunction<P> builder
 	) {
-		final P result = builder.apply(_length);
-		assert (result._length == _length);
+		final P result = builder.apply(length);
+		assert (result.length == length);
 
-		for (int i = 0; i < _length; ++i) {
-			result.__set(i, mapper.apply(uncheckedGet(i)));
+		for (int i = 0; i < length; ++i) {
+			result.__set__(i, mapper.apply(__get(i)));
 		}
 		return result;
 	}
@@ -237,7 +251,7 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	 */
 	public final void cloneIfSealed() {
 		if (_sealed) {
-			_array = _copier.copy(_array, 0, _end);
+			array = _copier.copy(array, 0, end);
 			_sealed = false;
 		}
 	}
@@ -252,12 +266,12 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	 */
 	public final P seal() {
 		_sealed = true;
-		return _factory.create(_array, _start, _end);
+		return _factory.create(array, start, end);
 	}
 
 	@Override
 	public P copy() {
-		return _factory.create(_copier.copy(_array, _start, _end), 0, _end - _start);
+		return _factory.create(_copier.copy(array, start, end), 0, end - start);
 	}
 
 	/**
@@ -268,9 +282,9 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	 *         not in the valid range.
 	 */
 	protected final void checkIndex(final int start) {
-		if (start < 0 || start >= _length) {
+		if (start < 0 || start >= length) {
 			throw new ArrayIndexOutOfBoundsException(format(
-				"Index %s is out of bounds [0, %s)", start, _length
+				"Index %s is out of bounds [0, %s)", start, length
 			));
 		}
 	}
@@ -289,7 +303,7 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 				"fromIndex(%d) > toIndex(%d)", start, end
 			));
 		}
-		if (start < 0 || end > _length) {
+		if (start < 0 || end > length) {
 			throw new ArrayIndexOutOfBoundsException(format(
 				"Invalid index range: [%d, %s)", start, end
 			));

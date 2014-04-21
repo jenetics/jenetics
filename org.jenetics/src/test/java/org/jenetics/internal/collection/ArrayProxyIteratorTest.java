@@ -40,7 +40,7 @@ public class ArrayProxyIteratorTest {
 		final Random random = new Random(seed);
 
 		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
-		for (int i = 0; i < proxy._length; ++i) {
+		for (int i = 0; i < proxy.length; ++i) {
 			proxy.set(i, random.nextInt());
 		}
 
@@ -52,7 +52,7 @@ public class ArrayProxyIteratorTest {
 			++count;
 		}
 
-		Assert.assertEquals(count, proxy._length);
+		Assert.assertEquals(count, proxy.length);
 	}
 
 	@Test
@@ -61,7 +61,7 @@ public class ArrayProxyIteratorTest {
 		final Random random = new Random(seed);
 
 		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
-		for (int i = proxy._length; --i >= 0;) {
+		for (int i = proxy.length; --i >= 0;) {
 			proxy.set(i, random.nextInt());
 		}
 
@@ -78,7 +78,7 @@ public class ArrayProxyIteratorTest {
 			++count;
 		}
 
-		Assert.assertEquals(count, proxy._length);
+		Assert.assertEquals(count, proxy.length);
 	}
 
 	@Test
@@ -87,7 +87,7 @@ public class ArrayProxyIteratorTest {
 		final Random random = new Random(seed);
 
 		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
-		for (int i = 0; i < proxy._length; ++i) {
+		for (int i = 0; i < proxy.length; ++i) {
 			proxy.set(i, random.nextInt());
 		}
 
@@ -101,7 +101,7 @@ public class ArrayProxyIteratorTest {
 			++count;
 		}
 
-		Assert.assertEquals(count, proxy._length);
+		Assert.assertEquals(count, proxy.length);
 	}
 
 	@Test(expectedExceptions = UnsupportedOperationException.class)
@@ -118,7 +118,7 @@ public class ArrayProxyIteratorTest {
 		final Random random = new Random(seed);
 
 		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
-		for (int i = 0; i < proxy._length; ++i) {
+		for (int i = 0; i < proxy.length; ++i) {
 			proxy.set(i, random.nextInt());
 		}
 
@@ -127,7 +127,7 @@ public class ArrayProxyIteratorTest {
 			it.next();
 		}
 
-		int count = proxy._length;
+		int count = proxy.length;
 		while (it.hasPrevious()) {
 			--count;
 

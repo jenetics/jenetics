@@ -22,6 +22,10 @@ package org.jenetics.internal.collection;
 import java.io.Serializable;
 
 /**
+ * Functional interface for copying arrays.
+ *
+ * @param <A> the array type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version 3.0 &mdash; <em>$Date: 2014-04-21 $</em>
  * @since 3.0

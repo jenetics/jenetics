@@ -19,65 +19,69 @@
  */
 package org.jenetics.internal.collection;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.5 &mdash; <em>$Date$</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-21 $</em>
  */
-public class ArrayProxyIterator<T> implements ListIterator<T> {
+public class ArrayProxyIterator<T, P extends ArrayProxy<T, ?, ?>>
+	implements ListIterator<T>
+{
 
-	protected final ArrayProxy<T, ?, ?> _proxy;
+	public final P proxy;
 
-	protected int _cursor = 0;
-	protected int _lastElement = -1;
+	protected int cursor = 0;
+	protected int lastElement = -1;
 
-	public ArrayProxyIterator(final ArrayProxy<T, ?, ?> proxy) {
-		_proxy = proxy;
+	public ArrayProxyIterator(final P proxy) {
+		this.proxy = requireNonNull(proxy, "ArrayProxy must not be null.");
 	}
 
 	@Override
 	public boolean hasNext() {
-		return _cursor != _proxy._length;
+		return cursor != proxy.length;
 	}
 
 	@Override
 	public T next() {
-		final int i = _cursor;
-		if (_cursor >= _proxy._length) {
+		final int i = cursor;
+		if (cursor >= proxy.length) {
 			throw new NoSuchElementException();
 		}
 
-		_cursor = i + 1;
-		return _proxy.uncheckedGet(_lastElement = i);
+		cursor = i + 1;
+		return proxy.__get(lastElement = i);
 	}
 
 	@Override
 	public int nextIndex() {
-		return _cursor;
+		return cursor;
 	}
 
 	@Override
 	public boolean hasPrevious() {
-		return _cursor != 0;
+		return cursor != 0;
 	}
 
 	@Override
 	public T previous() {
-		final int i = _cursor - 1;
+		final int i = cursor - 1;
 		if (i < 0) {
 			throw new NoSuchElementException();
 		}
 
-		_cursor = i;
-		return _proxy.uncheckedGet(_lastElement = i);
+		cursor = i;
+		return proxy.__get(lastElement = i);
 	}
 
 	@Override
 	public int previousIndex() {
-		return _cursor - 1;
+		return cursor - 1;
 	}
 
 	@Override

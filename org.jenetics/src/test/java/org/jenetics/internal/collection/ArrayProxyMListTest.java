@@ -39,7 +39,7 @@ public class ArrayProxyMListTest {
 		final Random random = new Random(seed);
 
 		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
-		for (int i = 0; i < proxy._length; ++i) {
+		for (int i = 0; i < proxy.length; ++i) {
 			proxy.set(i, random.nextInt());
 		}
 
@@ -47,12 +47,12 @@ public class ArrayProxyMListTest {
 
 		seed = math.random.seed();
 		random.setSeed(seed);
-		for (int i = 0; i < proxy._length; ++i) {
+		for (int i = 0; i < proxy.length; ++i) {
 			list.set(i, random.nextInt());
 		}
 
 		random.setSeed(seed);
-		for (int i = 0; i < proxy._length; ++i) {
+		for (int i = 0; i < proxy.length; ++i) {
 			Assert.assertEquals(proxy.get(i), list.get(i));
 			Assert.assertEquals(list.get(i).intValue(), random.nextInt());
 		}

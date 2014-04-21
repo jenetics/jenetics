@@ -26,11 +26,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.IntFunction;
 import java.util.function.Predicate;
 
-import org.jenetics.util.MSeq;
 import org.jenetics.util.Seq;
 
 /**
@@ -38,30 +35,30 @@ import org.jenetics.util.Seq;
  * @since 1.4
  * @version 3.0 &mdash; <em>$Date: 2014-04-21 $</em>
  */
-public abstract class ArrayProxySeq<T>
+public abstract class ArrayProxySeq<T, P extends ArrayProxy<T, ?, ?>>
 	implements
 		Seq<T>,
 		Serializable
 {
 	private static final long serialVersionUID = 1L;
 
-	protected final ArrayProxy<T, ?, ?> _proxy;
+	public final P proxy;
 
-	public ArrayProxySeq(final ArrayProxy<T, ?, ?> proxy) {
-		_proxy = requireNonNull(proxy, "ArrayProxy must not be null.");
+	public ArrayProxySeq(final P proxy) {
+		this.proxy = requireNonNull(proxy, "ArrayProxy must not be null.");
 	}
 
 	@Override
 	public final T get(final int index) {
-		return _proxy.get(index);
+		return proxy.get(index);
 	}
 
 	@Override
 	public void forEach(final Consumer<? super T> consumer) {
 		requireNonNull(consumer, "The consumer must not be null.");
 
-		for (int i = _proxy._start; i < _proxy._end; ++i) {
-			consumer.accept(_proxy.__get(i));
+		for (int i = proxy.start; i < proxy.end; ++i) {
+			consumer.accept(proxy.__get__(i));
 		}
 	}
 
@@ -70,36 +67,10 @@ public abstract class ArrayProxySeq<T>
 		requireNonNull(predicate, "Predicate");
 
 		boolean valid = true;
-		for (int i = _proxy._start; i < _proxy._end && valid; ++i) {
-			valid = predicate.test(_proxy.__get(i));
+		for (int i = proxy.start; i < proxy.end && valid; ++i) {
+			valid = predicate.test(proxy.__get__(i));
 		}
 		return valid;
-	}
-
-	@Override
-	public int indexOf(final Object element, final int start, final int end) {
-		_proxy.checkIndex(start, end);
-
-		int index = -1;
-		if (element == null) {
-			for (int i = start + _proxy._start, n = end + _proxy._start;
-					i < n && index == -1; ++i)
-			{
-				if (_proxy.__get(i) == null) {
-					index = i - _proxy._start;
-				}
-			}
-		} else {
-			for (int i = start + _proxy._start, n = end + _proxy._start;
-					i < n && index == -1; ++i)
-			{
-				if (element.equals(_proxy.__get(i))) {
-					index = i - _proxy._start;
-				}
-			}
-		}
-
-		return index;
 	}
 
 	@Override
@@ -108,42 +79,16 @@ public abstract class ArrayProxySeq<T>
 		final int start,
 		final int end
 	) {
-		_proxy.checkIndex(start, end);
+		proxy.checkIndex(start, end);
 		requireNonNull(predicate, "Predicate");
 
 		int index = -1;
 
-		for (int i = start + _proxy._start, n = end + _proxy._start;
+		for (int i = start + proxy.start, n = end + proxy.start;
 				i < n && index == -1; ++i)
 		{
-			if (predicate.test(_proxy.__get(i))) {
-				index = i - _proxy._start;
-			}
-		}
-
-		return index;
-	}
-
-	@Override
-	public int lastIndexOf(final Object element, final int start, final int end) {
-		_proxy.checkIndex(start, end);
-		int index = -1;
-
-		if (element == null) {
-			for (int i = end + _proxy._start;
-				--i >= start + _proxy._start && index == -1;)
-			{
-				if (_proxy.__get(i) == null) {
-					index = i - _proxy._start;
-				}
-			}
-		} else {
-			for (int i = end + _proxy._start;
-				--i >= start + _proxy._start && index == -1;)
-			{
-				if (element.equals(_proxy.__get(i))) {
-					index = i - _proxy._start;
-				}
+			if (predicate.test(proxy.__get__(i))) {
+				index = i - proxy.start;
 			}
 		}
 
@@ -156,16 +101,16 @@ public abstract class ArrayProxySeq<T>
 		final int start,
 		final int end
 	) {
-		_proxy.checkIndex(start, end);
+		proxy.checkIndex(start, end);
 		requireNonNull(predicate, "Predicate must not be null.");
 
 		int index = -1;
 
-		for (int i = end + _proxy._start;
-			--i >= start + _proxy._start && index == -1;)
+		for (int i = end + proxy.start;
+			--i >= start + proxy.start && index == -1;)
 		{
-			if (predicate.test(_proxy.__get(i))) {
-				index = i - _proxy._start;
+			if (predicate.test(proxy.__get__(i))) {
+				index = i - proxy.start;
 			}
 		}
 
@@ -174,21 +119,21 @@ public abstract class ArrayProxySeq<T>
 
 	@Override
 	public int length() {
-		return _proxy._length;
+		return proxy.length;
 	}
 
 	@Override
 	public Iterator<T> iterator() {
-		return new ArrayProxyIterator<>(_proxy);
+		return new ArrayProxyIterator<>(proxy);
 	}
 
 	public ListIterator<T> listIterator() {
-		return new ArrayProxyIterator<>(_proxy);
+		return new ArrayProxyIterator<>(proxy);
 	}
 
 	@Override
 	public List<T> asList() {
-		return new ArrayProxyList<>(_proxy);
+		return new ArrayProxyList<>(proxy);
 	}
 
 	@Override

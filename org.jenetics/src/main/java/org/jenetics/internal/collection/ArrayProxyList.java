@@ -22,53 +22,51 @@ package org.jenetics.internal.collection;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.AbstractList;
 import java.util.RandomAccess;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.5 &mdash; <em>$Date: 2014-04-21 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-21 $</em>
  */
-public class ArrayProxyList<T> extends AbstractList<T>
+public class ArrayProxyList<T, P extends ArrayProxy<T, ?, ?>>
+	extends AbstractList<T>
 	implements
 		RandomAccess,
 		Serializable
 {
 	private static final long serialVersionUID = 1L;
 
-	protected final ArrayProxy<T, ?, ?> _proxy;
+	public final P proxy;
 
-	public ArrayProxyList(final ArrayProxy<T, ?, ?> proxy) {
-		_proxy = requireNonNull(proxy, "ArrayProxy must not be null.");
+	public ArrayProxyList(final P proxy) {
+		this.proxy = requireNonNull(proxy, "ArrayProxy must not be null.");
 	}
 
 	@Override
 	public T get(final int index) {
-		return _proxy.get(index);
+		return proxy.get(index);
 	}
 
 	@Override
 	public int size() {
-		return _proxy._length;
+		return proxy.length;
 	}
 
 	@Override
 	public int indexOf(final Object element) {
 		int index = -1;
 		if (element == null) {
-			for (int i = _proxy._start, n = _proxy._end;
-				i < n && index == -1; ++i)
-			{
-				if (_proxy.__get(i) == null) {
+			for (int i = proxy.start; i < proxy.end && index == -1; ++i) {
+				if (proxy.__get__(i) == null) {
 					index = i;
 				}
 			}
 		} else {
-			for (int i = _proxy._start, n = _proxy._end;
-				i < n && index == -1; ++i)
-			{
-				if (element.equals(_proxy.__get(i))) {
+			for (int i = proxy.start; i < proxy.end && index == -1; ++i) {
+				if (element.equals(proxy.__get__(i))) {
 					index = i;
 				}
 			}
@@ -86,7 +84,7 @@ public class ArrayProxyList<T> extends AbstractList<T>
 	public Object[] toArray() {
 		final Object[] array = new Object[size()];
 		for (int i = size(); --i >= 0;) {
-			array[i] = _proxy.uncheckedGet(i);
+			array[i] = proxy.__get(i);
 		}
 		return array;
 	}
@@ -95,18 +93,18 @@ public class ArrayProxyList<T> extends AbstractList<T>
 	@Override
 	public <E> E[] toArray(final E[] array) {
 		if (array.length < size()) {
-			final E[] copy = (E[])java.lang.reflect.Array.newInstance(
+			final E[] copy = (E[])Array.newInstance(
 				array.getClass().getComponentType(), size()
 			);
 			for (int i = size(); --i >= 0;) {
-				copy[i] = (E)_proxy.uncheckedGet(i);
+				copy[i] = (E) proxy.__get(i);
 			}
 
 			return copy;
 		}
 
 		for (int i = size(); --i >= 0;) {
-			array[i] = (E)_proxy.uncheckedGet(i);
+			array[i] = (E) proxy.__get(i);
 		}
 		return array;
 	}

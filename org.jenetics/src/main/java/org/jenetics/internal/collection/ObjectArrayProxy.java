@@ -26,7 +26,7 @@ import java.util.Arrays;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0 &mdash; <em>$Date$</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-21 $</em>
  */
 public final class ObjectArrayProxy<T>
 	extends ArrayProxy<T, Object[], ObjectArrayProxy<T>>
@@ -56,13 +56,13 @@ public final class ObjectArrayProxy<T>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public T __get(final int index) {
-		return (T)_array[index];
+	public T __get__(final int index) {
+		return (T) array[index];
 	}
 
 	@Override
-	public void __set(final int index, final T value) {
-		_array[index] = value;
+	public void __set__(final int index, final T value) {
+		array[index] = value;
 	}
 
 }

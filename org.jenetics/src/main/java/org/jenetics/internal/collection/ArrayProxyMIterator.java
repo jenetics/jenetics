@@ -23,20 +23,22 @@ package org.jenetics.internal.collection;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date$</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-21 $</em>
  */
-public class ArrayProxyMIterator<T> extends ArrayProxyIterator<T> {
+public class ArrayProxyMIterator<T, P extends ArrayProxy<T, ?, ?>>
+	extends ArrayProxyIterator<T, P>
+{
 
-	public ArrayProxyMIterator(final ArrayProxy<T, ?, ?> proxy) {
+	public ArrayProxyMIterator(final P proxy) {
 		super(proxy);
 	}
 
 	@Override
 	public void set(final T value) {
-		if (_lastElement < 0) {
+		if (lastElement < 0) {
 			throw new IllegalStateException();
 		}
-		_proxy.uncheckedSet(_lastElement, value);
+		proxy.__set(lastElement, value);
 	}
 
 }

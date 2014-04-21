@@ -25,13 +25,11 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jenetics.internal.collection.ArrayProxy;
-
 import org.jenetics.util.math;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date$</em>
+ * @version <em>$Date: 2014-04-21 $</em>
  */
 public abstract class ArrayProxyTestBase<T> {
 
@@ -49,13 +47,13 @@ public abstract class ArrayProxyTestBase<T> {
 		final Random random = new Random(seed);
 
 		final ArrayProxy<T, ?, ?> proxy = newArrayProxy(10_000);
-		for (int i = 0; i < proxy._length; ++i) {
-			proxy.__set(i, newArrayProxyElement(random));
+		for (int i = 0; i < proxy.length; ++i) {
+			proxy.__set__(i, newArrayProxyElement(random));
 		}
 
 		random.setSeed(seed);
-		for (int i = 0; i < proxy._length; ++i) {
-			final T actual = proxy.__get(i);
+		for (int i = 0; i < proxy.length; ++i) {
+			final T actual = proxy.__get__(i);
 			final T expected = newArrayProxyElement(random);
 
 			Assert.assertEquals(actual, expected);
@@ -68,13 +66,13 @@ public abstract class ArrayProxyTestBase<T> {
 		final Random random = new Random(seed);
 
 		final ArrayProxy<T, ?, ?> proxy = newArrayProxy(10_000);
-		for (int i = 0; i < proxy._length; ++i) {
-			proxy.uncheckedSet(i, newArrayProxyElement(random));
+		for (int i = 0; i < proxy.length; ++i) {
+			proxy.__set(i, newArrayProxyElement(random));
 		}
 
 		random.setSeed(seed);
-		for (int i = 0; i < proxy._length; ++i) {
-			final T actual = proxy.uncheckedGet(i);
+		for (int i = 0; i < proxy.length; ++i) {
+			final T actual = proxy.__get(i);
 			final T expected = newArrayProxyElement(random);
 
 			Assert.assertEquals(actual, expected);
@@ -87,12 +85,12 @@ public abstract class ArrayProxyTestBase<T> {
 		final Random random = new Random(seed);
 
 		final ArrayProxy<T, ?, ?> proxy = newArrayProxy(10_000);
-		for (int i = 0; i < proxy._length; ++i) {
+		for (int i = 0; i < proxy.length; ++i) {
 			proxy.set(i, newArrayProxyElement(random));
 		}
 
 		random.setSeed(seed);
-		for (int i = 0; i < proxy._length; ++i) {
+		for (int i = 0; i < proxy.length; ++i) {
 			final T actual = proxy.get(i);
 			final T expected = newArrayProxyElement(random);
 
@@ -140,7 +138,7 @@ public abstract class ArrayProxyTestBase<T> {
 		final Random random = new Random(seed);
 
 		final ArrayProxy<T, ?, ?> proxy = newArrayProxy(length);
-		for (int i = 0; i < proxy._length; ++i) {
+		for (int i = 0; i < proxy.length; ++i) {
 			proxy.set(i, newArrayProxyElement(random));
 		}
 
@@ -159,15 +157,15 @@ public abstract class ArrayProxyTestBase<T> {
 			Assert.assertEquals(sub.get(i), expected);
 			Assert.assertEquals(proxy.get(i + start), expected);
 
-			Assert.assertEquals(sub.uncheckedGet(i), expected);
-			Assert.assertEquals(proxy.uncheckedGet(i + start), expected);
+			Assert.assertEquals(sub.__get(i), expected);
+			Assert.assertEquals(proxy.__get(i + start), expected);
 
 			Assert.assertEquals(
-				sub.__get(i + start + proxy._start),
+				sub.__get__(i + start + proxy.start),
 				expected
 			);
 			Assert.assertEquals(
-				proxy.__get(i + start + proxy._start),
+				proxy.__get__(i + start + proxy.start),
 				expected
 			);
 		}
@@ -183,7 +181,7 @@ public abstract class ArrayProxyTestBase<T> {
 		final Random random = new Random(seed);
 
 		final ArrayProxy<T, ?, ?> proxy = newArrayProxy(length + 10).slice(5, length + 5);
-		for (int i = 0; i < proxy._length; ++i) {
+		for (int i = 0; i < proxy.length; ++i) {
 			proxy.set(i, newArrayProxyElement(random));
 		}
 
@@ -202,15 +200,15 @@ public abstract class ArrayProxyTestBase<T> {
 			Assert.assertEquals(sub.get(i), expected);
 			Assert.assertEquals(proxy.get(i + start), expected);
 
-			Assert.assertEquals(sub.uncheckedGet(i), expected);
-			Assert.assertEquals(proxy.uncheckedGet(i + start), expected);
+			Assert.assertEquals(sub.__get(i), expected);
+			Assert.assertEquals(proxy.__get(i + start), expected);
 
 			Assert.assertEquals(
-				sub.__get(i + start + proxy._start),
+				sub.__get__(i + start + proxy.start),
 				expected
 			);
 			Assert.assertEquals(
-				proxy.__get(i + start + proxy._start),
+				proxy.__get__(i + start + proxy.start),
 				expected
 			);
 		}
@@ -228,7 +226,7 @@ public abstract class ArrayProxyTestBase<T> {
 		final ArrayProxy<T, ?, ?> proxy = newArrayProxy(length + 20)
 										.slice(5, length + 15)
 										.slice(5, length + 10);
-		for (int i = 0; i < proxy._length; ++i) {
+		for (int i = 0; i < proxy.length; ++i) {
 			proxy.set(i, newArrayProxyElement(random));
 		}
 
@@ -247,15 +245,15 @@ public abstract class ArrayProxyTestBase<T> {
 			Assert.assertEquals(sub.get(i), expected);
 			Assert.assertEquals(proxy.get(i + start), expected);
 
-			Assert.assertEquals(sub.uncheckedGet(i), expected);
-			Assert.assertEquals(proxy.uncheckedGet(i + start), expected);
+			Assert.assertEquals(sub.__get(i), expected);
+			Assert.assertEquals(proxy.__get(i + start), expected);
 
 			Assert.assertEquals(
-				sub.__get(i + start + proxy._start),
+				sub.__get__(i + start + proxy.start),
 				expected
 			);
 			Assert.assertEquals(
-				proxy.__get(i + start + proxy._start),
+				proxy.__get__(i + start + proxy.start),
 				expected
 			);
 		}
@@ -401,7 +399,7 @@ public abstract class ArrayProxyTestBase<T> {
 		}
 
 		final ArrayProxy<T, ?, ?> copy = that.copy();
-		Assert.assertEquals(copy._length, length.intValue());
+		Assert.assertEquals(copy.length, length.intValue());
 
 		for (int i = 0; i < length; ++i) {
 			that.set(i, newArrayProxyElement(random));
