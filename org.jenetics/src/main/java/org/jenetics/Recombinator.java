@@ -38,7 +38,7 @@ import org.jenetics.util.RandomRegistry;
  * points, and merge those portions of different chromosomes to form new ones.
  * </p>
  * <p>
- * The recombination probability <i>P)r)</i> determines the probability that a
+ * The recombination probability <i>P(r)</i> determines the probability that a
  * given individual (genotype, not gene) of a population is selected for
  * recombination. The (<i>mean</i>) number of changed individuals depend on the
  * concrete implementation and can be vary from
@@ -50,7 +50,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-21 $</em>
  */
 public abstract class Recombinator<G extends Gene<?, G>>
 	extends AbstractAlterer<G>
