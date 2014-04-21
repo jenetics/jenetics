@@ -25,7 +25,9 @@ import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.object.checkProbability;
 
 import java.util.Collection;
+import java.util.Objects;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -133,7 +135,7 @@ import org.jenetics.util.Timer;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-18 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-21 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,
@@ -255,7 +257,7 @@ public class GeneticAlgorithm<
 			fitnessFunction,
 			fitnessScaler,
 			optimization,
-			Concurrency.commonPool()
+			ForkJoinPool.commonPool()
 		);
 	}
 
@@ -304,7 +306,7 @@ public class GeneticAlgorithm<
 			fitnessFunction,
 			Function.<C>identity(),
 			optimization,
-			Concurrency.commonPool()
+			ForkJoinPool.commonPool()
 		);
 	}
 
@@ -349,7 +351,7 @@ public class GeneticAlgorithm<
 			fitnessFunction,
 			Function.<C>identity(),
 			Optimize.MAXIMUM,
-			Concurrency.commonPool()
+			ForkJoinPool.commonPool()
 		);
 	}
 
@@ -601,16 +603,13 @@ public class GeneticAlgorithm<
 		assert (numberOfSurvivors + numberOfOffspring == _populationSize);
 
 		try (Concurrency c = Concurrency.with(_executor)) {
-			c.execute(new Runnable() {
-				@Override
-				public void run() {
-					final Population<G, C> survivors = _survivorSelector.select(
-						_population, numberOfSurvivors, _optimization
-					);
+			c.execute(() -> {
+				final Population<G, C> survivors = _survivorSelector.select(
+					_population, numberOfSurvivors, _optimization
+				);
 
-					assert (survivors.size() == numberOfSurvivors);
-					selection.set(0, survivors);
-				}
+				assert (survivors.size() == numberOfSurvivors);
+				selection.set(0, survivors);
 			});
 
 			final Population<G, C> offspring = _offspringSelector.select(
@@ -619,7 +618,7 @@ public class GeneticAlgorithm<
 
 			assert (offspring.size() == numberOfOffspring);
 			selection.set(1, offspring);
-		};
+		}
 
 		return selection;
 	}
@@ -633,27 +632,24 @@ public class GeneticAlgorithm<
 
 		try (Concurrency c = Concurrency.with(_executor)) {
 			// Kill survivors which are to old and replace it with new one.
-			c.execute(new Runnable() {
-				@Override
-				public void run() {
-					for (int i = 0, n = survivors.size(); i < n; ++i) {
-						final Phenotype<G, C> survivor = survivors.get(i);
+			c.execute(() -> {
+				for (int i = 0, n = survivors.size(); i < n; ++i) {
+					final Phenotype<G, C> survivor = survivors.get(i);
 
-						final boolean isTooOld =
-							survivor.getAge(_generation) > _maximalPhenotypeAge;
+					final boolean isTooOld =
+						survivor.getAge(_generation) > _maximalPhenotypeAge;
 
-						final boolean isInvalid = isTooOld || !survivor.isValid();
+					final boolean isInvalid = isTooOld || !survivor.isValid();
 
-						// Sorry, too old or not valid.
-						if (isInvalid) {
-							survivors.set(i, _phenotypeFactory.newInstance());
-						}
+					// Sorry, too old or not valid.
+					if (isInvalid) {
+						survivors.set(i, _phenotypeFactory.newInstance());
+					}
 
-						if (isTooOld) {
-							_killed.incrementAndGet();
-						} else if (isInvalid) {
-							_invalid.incrementAndGet();
-						}
+					if (isTooOld) {
+						_killed.incrementAndGet();
+					} else if (isInvalid) {
+						_invalid.incrementAndGet();
 					}
 				}
 			});
@@ -705,16 +701,14 @@ public class GeneticAlgorithm<
 	 * final Function&lt;GeneticAlgorithm&lt;?, ?&gt;, Boolean&gt; until = ...
 	 *
 	 * //Starting the GA in separate thread.
-	 * final Thread thread = new Thread(new Runnable() {
-	 *     public void run() {
-	 *         while (!Thread.currentThread().isInterrupted() &amp;&amp;
-	 *                !until.apply(ga))
-	 *         {
-	 *             if (ga.getGeneration() == 0) {
-	 *                 ga.setup();
-	 *             } else {
-	 *                 ga.evolve();
-	 *             }
+	 * final Thread thread = new Thread(() -> {
+	 *     while (!Thread.currentThread().isInterrupted() &amp;&amp;
+	 *            !until.apply(ga))
+	 *     {
+	 *         if (ga.getGeneration() == 0) {
+	 *             ga.setup();
+	 *         } else {
+	 *             ga.evolve();
 	 *         }
 	 *     }
 	 * });
@@ -1028,8 +1022,8 @@ public class GeneticAlgorithm<
 	 *         one.
 	 */
 	public void setPopulation(final Collection<Phenotype<G, C>> population) {
-		// TODO: Fix
-		//population.forEach(NonNull);
+		population.forEach(Objects::requireNonNull);
+
 		if (population.size() < 1) {
 			throw new IllegalArgumentException(format(
 				"Population size must be greater than zero, but was %s.",
@@ -1065,8 +1059,8 @@ public class GeneticAlgorithm<
 	 *         one.
 	 */
 	public void setGenotypes(final Collection<Genotype<G>> genotypes) {
-		// TODO: FIX
-		//genotypes.forEach(NonNull);
+		genotypes.forEach(Objects::requireNonNull);
+
 		if (genotypes.size() < 1) {
 			throw new IllegalArgumentException(
 				"Genotype size must be greater than zero, but was " +

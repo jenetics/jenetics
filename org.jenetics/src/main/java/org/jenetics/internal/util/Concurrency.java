@@ -19,7 +19,6 @@
  */
 package org.jenetics.internal.util;
 
-import static java.lang.Math.max;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.arrays.partition;
 
@@ -35,7 +34,7 @@ import java.util.concurrent.FutureTask;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-04-05 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-21 $</em>
  * @since 2.0
  */
 public abstract class Concurrency implements Executor, AutoCloseable {
@@ -43,15 +42,6 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 	public static final int CORES = Runtime.getRuntime().availableProcessors();
 
 	public static final Concurrency SERIAL_EXECUTOR = new SerialConcurrency();
-
-	private static final class LazyPoolHolder {
-		public static final ForkJoinPool FORK_JOIN_POOL =
-			new ForkJoinPool(max(CORES - 1, 1));
-	}
-
-	public static ForkJoinPool commonPool() {
-		return LazyPoolHolder.FORK_JOIN_POOL;
-	}
 
 	public abstract void execute(final List<? extends Runnable> runnables);
 
@@ -82,7 +72,7 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 	 * @return a new Concurrency object using the new ForkJoinPool
 	 */
 	public static Concurrency withCommonPool() {
-		return with(commonPool());
+		return with(ForkJoinPool.commonPool());
 	}
 
 

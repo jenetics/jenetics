@@ -20,18 +20,16 @@
 package org.jenetics.util;
 
 import static java.lang.String.format;
-import static java.util.Objects.requireNonNull;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Random;
 import java.util.function.Function;
-import java.util.function.IntFunction;
 import java.util.function.Supplier;
 
-import org.jenetics.internal.collection.ObjectArrayProxy;
 import org.jenetics.internal.collection.ArrayProxyMSeq;
+import org.jenetics.internal.collection.ObjectArrayProxy;
 
 /**
  * Mutable, ordered, fixed sized sequence.

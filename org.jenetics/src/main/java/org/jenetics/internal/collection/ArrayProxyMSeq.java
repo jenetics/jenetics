@@ -122,7 +122,7 @@ public class ArrayProxyMSeq<T, P extends ArrayProxy<T, ?, ?>>
 
 		if (start < end) {
 			if (other instanceof ArrayProxyMSeq<?, ?>) {
-				_swap(start, end, (ArrayProxyMSeq<T, P>)other, otherStart);
+				__swap(start, end, (ArrayProxyMSeq<T, P>) other, otherStart);
 			} else {
 				proxy.cloneIfSealed();
 
@@ -135,7 +135,7 @@ public class ArrayProxyMSeq<T, P extends ArrayProxy<T, ?, ?>>
 		}
 	}
 
-	private void _swap(int start, int end, ArrayProxyMSeq<T, P> other, int otherStart) {
+	private void __swap(int start, int end, ArrayProxyMSeq<T, P> other, int otherStart) {
 		proxy.swap(start, end, other.proxy, otherStart);
 	}
 

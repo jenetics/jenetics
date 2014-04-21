@@ -42,7 +42,6 @@ import org.jenetics.internal.util.cast;
 import org.jenetics.internal.util.jaxb;
 import org.jenetics.internal.util.model.IndexedObject;
 
-import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
 
@@ -74,7 +73,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-17 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-21 $</em>
  */
 @XmlJavaTypeAdapter(EnumGene.Model.Adapter.class)
 public final class EnumGene<A>

@@ -23,12 +23,11 @@ import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 import static org.jenetics.util.Accumulator.accumulate;
 
 import java.util.Random;
+import java.util.concurrent.ForkJoinPool;
 import java.util.function.Function;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import org.jenetics.internal.util.Concurrency;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.UniformDistribution;
@@ -39,7 +38,7 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-16 $</em>
+ * @version <em>$Date: 2014-04-21 $</em>
  */
 public class IntegerChromosomeTest
 	extends NumericChromosomeTester<Integer, IntegerGene>
@@ -69,7 +68,7 @@ public class IntegerChromosomeTest
 				final IntegerChromosome chromosome = new IntegerChromosome(min, max, 500);
 
 				accumulate(
-					Concurrency.commonPool(),
+					ForkJoinPool.commonPool(),
 					chromosome,
 					mm.map(Allele),
 					variance.map(Allele),

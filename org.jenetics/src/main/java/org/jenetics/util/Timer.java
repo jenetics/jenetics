@@ -24,6 +24,7 @@ import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.object.eq;
 
 import java.io.Serializable;
+import java.time.Duration;
 
 import org.jenetics.internal.util.Hash;
 
@@ -34,7 +35,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-21 $</em>
  */
 public final class Timer
 	implements

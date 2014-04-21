@@ -38,13 +38,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.function.Function;
 
-import org.jenetics.util.Duration;
 import org.jenetics.util.Factory;
 import org.jenetics.util.IO;
 import org.jenetics.util.ISeq;
@@ -54,7 +54,7 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-18 $</em>
+ * @version <em>$Date: 2014-04-21 $</em>
  */
 public class PersistentObject<T> {
 

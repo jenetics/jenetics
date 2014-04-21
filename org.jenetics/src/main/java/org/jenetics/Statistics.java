@@ -25,6 +25,7 @@ import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.object.eq;
 
 import java.io.Serializable;
+import java.time.Duration;
 import java.util.concurrent.Executor;
 
 import org.jenetics.internal.util.Hash;
@@ -32,7 +33,6 @@ import org.jenetics.internal.util.Hash;
 import org.jenetics.stat.Variance;
 import org.jenetics.util.Accumulator;
 import org.jenetics.util.Accumulator.MinMax;
-import org.jenetics.util.Duration;
 import org.jenetics.util.FinalReference;
 
 /**
@@ -40,7 +40,7 @@ import org.jenetics.util.FinalReference;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-17 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-21 $</em>
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>> {
 
@@ -49,7 +49,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>> {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-04-17 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-04-21 $</em>
 	 */
 	public static class Builder<
 		G extends Gene<?, G>,
@@ -429,12 +429,10 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>> {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-04-17 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-04-21 $</em>
 	 */
 	public static final class Time implements Serializable {
 		private static final long serialVersionUID = 2L;
-
-		private static final Duration ZERO = Duration.ofNanos(0);
 
 		/**
 		 * Create a new time object with zero time values. The time references
@@ -450,7 +448,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>> {
 		 * is thrown.
 		 */
 		public final FinalReference<Duration>
-			execution = new FinalReference<>(ZERO);
+			execution = new FinalReference<>(Duration.ZERO);
 
 		/**
 		 * The selection time.
@@ -458,7 +456,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>> {
 		 * is thrown.
 		 */
 		public final FinalReference<Duration>
-			selection = new FinalReference<>(ZERO);
+			selection = new FinalReference<>(Duration.ZERO);
 
 		/**
 		 * The alter time.
@@ -466,7 +464,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>> {
 		 * is thrown.
 		 */
 		public final FinalReference<Duration>
-			alter = new FinalReference<>(ZERO);
+			alter = new FinalReference<>(Duration.ZERO);
 
 		/**
 		 * Combination time between offspring and survivors.
@@ -474,7 +472,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>> {
 		 * is thrown.
 		 */
 		public final FinalReference<Duration>
-			combine = new FinalReference<>(ZERO);
+			combine = new FinalReference<>(Duration.ZERO);
 
 		/**
 		 * The evaluation time.
@@ -482,7 +480,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>> {
 		 * is thrown.
 		 */
 		public final FinalReference<Duration>
-			evaluation = new FinalReference<>(ZERO);
+			evaluation = new FinalReference<>(Duration.ZERO);
 
 		/**
 		 * The statistics time.
@@ -490,18 +488,18 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>> {
 		 * is thrown.
 		 */
 		public final FinalReference<Duration>
-			statistics = new FinalReference<>(ZERO);
+			statistics = new FinalReference<>(Duration.ZERO);
 
 
 		@Override
 		public int hashCode() {
-			return Hash.of(getClass()).
-					and(alter).
-					and(combine).
-					and(evaluation).
-					and(execution).
-					and(selection).
-					and(statistics).value();
+			return Hash.of(getClass())
+					.and(alter)
+					.and(combine)
+					.and(evaluation)
+					.and(execution)
+					.and(selection)
+					.and(statistics).value();
 		}
 
 		@Override
@@ -530,17 +528,21 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>> {
 			out.append("+---------------------------------------------------------+\n");
 			out.append("|  Time Statistics                                        |\n");
 			out.append("+---------------------------------------------------------+\n");
-			out.append(format(pattern, "Select time", selection.get().toSeconds()));
-			out.append(format(pattern, "Alter time", alter.get().toSeconds()));
-			out.append(format(pattern, "Combine time", combine.get().toSeconds()));
-			out.append(format(pattern, "Fitness calculation time", evaluation.get().toSeconds()));
-			out.append(format(pattern, "Statistics calculation time", statistics.get().toSeconds()));
-			out.append(format(pattern, "Overall execution time", execution.get().toSeconds()));
+			out.append(format(pattern, "Select time", toSeconds(selection)));
+			out.append(format(pattern, "Alter time", toSeconds(alter)));
+			out.append(format(pattern, "Combine time", toSeconds(combine)));
+			out.append(format(pattern, "Fitness calculation time", toSeconds(evaluation)));
+			out.append(format(pattern, "Statistics calculation time", toSeconds(statistics)));
+			out.append(format(pattern, "Overall execution time", toSeconds(execution)));
 			out.append("+---------------------------------------------------------+");
 
 			return out.toString();
 		}
  	}
+
+	private static double toSeconds(final FinalReference<Duration> duration) {
+		return duration.get().toMillis()/1_000_000_000.0;
+	}
 
 
 	/**
@@ -549,7 +551,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>> {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-04-17 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-04-21 $</em>
 	 */
 	public static class Calculator<
 		G extends Gene<?, G>,

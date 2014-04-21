@@ -20,12 +20,11 @@
 package org.jenetics;
 
 import java.util.Iterator;
+import java.util.concurrent.ForkJoinPool;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import org.jenetics.internal.util.Concurrency;
 
 import org.jenetics.Statistics.Calculator;
 import org.jenetics.stat.Variance;
@@ -33,7 +32,7 @@ import org.jenetics.util.Accumulator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-16 $</em>
+ * @version <em>$Date: 2014-04-21 $</em>
  */
 public class StatisticsCalculatorTest {
 
@@ -81,7 +80,7 @@ public class StatisticsCalculatorTest {
 		final Calculator<DoubleGene, Double> calculator = newCalculator();
 		final Statistics.Builder<DoubleGene, Double>
 		builder = calculator.evaluate(
-			Concurrency.commonPool(),
+			ForkJoinPool.commonPool(),
 			population(size),
 			gen,
 			Optimize.MAXIMUM
@@ -90,7 +89,7 @@ public class StatisticsCalculatorTest {
 
 		final Variance<Integer> ageVariance = new Variance<>();
 		Accumulator.accumulate(
-			Concurrency.commonPool(),
+			ForkJoinPool.commonPool(),
 			population(size),
 			ageVariance.<Phenotype<DoubleGene, Double>>map(pt -> pt.getAge(gen))
 		);
