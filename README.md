@@ -1,4 +1,4 @@
-# Jenetics (_2.0.0_)
+# Jenetics (_3.0.0_)
 
 
 Jenetics is an Genetic Algorithm, respectively an Evolutionary Algorithm, library written in Java. It is designed with a clear separation of the several  algorithm concepts, e. g. `Gene`, `Chromosome`, `Genotype`, `Phenotype`, `Population` and  fitness `Function`. Jenetics allows you to minimize or maximize the given fitness  function without tweaking it.
@@ -7,7 +7,7 @@ Jenetics is an Genetic Algorithm, respectively an Evolutionary Algorithm, librar
 ## Requirements
 
 ### Build time
-*  **JDK 7**: The `JAVA_HOME` variable must be set to your java installation directory.
+*  **JDK 8**: The `JAVA_HOME` variable must be set to your java installation directory.
 *  **Gradle 1.10**: [Gradle](http://www.gradle.org/) is used for building the library. (Gradle is download automatically, if you are using the Gradle Wrapper script `gradlew`, located in the base directory, for building the library.)
 
 ### Test compile/execution
@@ -15,12 +15,12 @@ Jenetics is an Genetic Algorithm, respectively an Evolutionary Algorithm, librar
 *  **Apache Commons Math 3.2**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical accumulators.
 
 ### Runtime
-*  **JRE 7**: Java runtime version 7 is needed for using the library, respectively for running the examples.
+*  **JRE 8**: Java runtime version 8 is needed for using the library, respectively for running the examples.
 
 ## Download
 *  **Sourceforge**:  <https://sourceforge.net/projects/jenetics/files/latest/download>
 *  **Bitbucket**:  <https://bitbucket.org/fwilhelm/jenetics/downloads>
-*  **Maven**: `org.bitbucket.fwilhelm:org.jenetics:2.0.0` on [Maven Central](http://search.maven.org/#search|ga|1|a%3A%22org.jenetics%22)
+*  **Maven**: `org.bitbucket.fwilhelm:org.jenetics:3.0.0` on [Maven Central](http://search.maven.org/#search|ga|1|a%3A%22org.jenetics%22)
 
 ## Build Jenetics
 
