@@ -63,6 +63,7 @@ public interface Seq<T> extends Iterable<T> {
 
 	/**
 	 * @see #length()
+	 * @return the size of this sequence
 	 */
 	public default int size() {
 		return length();
@@ -664,7 +665,9 @@ public interface Seq<T> extends Iterable<T> {
 	/**
 	 * Create a new {@code Seq} from the given values.
 	 *
+	 * @param <T> the element type
 	 * @param values the array values.
+	 * @return a new {@code Seq} with the given values.
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
 	@SafeVarargs
@@ -675,7 +678,9 @@ public interface Seq<T> extends Iterable<T> {
 	/**
 	 * Create a new {@code Seq} from the given values.
 	 *
+	 * @param <T> the element type
 	 * @param values the array values.
+	 * @return a new {@code Seq} with the given values.
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
 	public static <T> Seq<T> of(final Collection<? extends T> values) {

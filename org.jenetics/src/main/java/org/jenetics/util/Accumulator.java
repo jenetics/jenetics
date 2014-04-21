@@ -374,6 +374,8 @@ public interface Accumulator<T> {
 	 * accumulation is done in parallel.
 	 *
 	 * @param <T> the value type.
+	 * @param executor the {@link java.util.concurrent.Executor} service to
+	 *        use
 	 * @param values the values to accumulate.
 	 * @param accus the accumulators to apply.
 	 * @throws NullPointerException if one of the given arguments is {@code null}.
@@ -442,6 +444,8 @@ public interface Accumulator<T> {
 	 * accumulation is done in parallel.
 	 *
 	 * @param <T> the value type.
+	 * @param executor the {@link java.util.concurrent.Executor} service to
+	 *        use
 	 * @param values the values to accumulate.
 	 * @param accus the accumulators to apply.
 	 * @throws NullPointerException if one of the given arguments is {@code null}.
@@ -478,6 +482,8 @@ public interface Accumulator<T> {
 	 * {@code accumulator} with each value of the given {@code values}.
 	 *
 	 * @param <T> the value type.
+	 * @param executor the {@link java.util.concurrent.Executor} service to
+	 *        use
 	 * @param values the values to accumulate.
 	 * @param a the accumulator.
 	 * @throws NullPointerException if one of the given arguments is {@code null}.
@@ -498,6 +504,8 @@ public interface Accumulator<T> {
 	 * accumulation is done in parallel.
 	 *
 	 * @param <T> the value type.
+	 * @param executor the {@link java.util.concurrent.Executor} service to
+	 *        use
 	 * @param values the values to accumulate.
 	 * @param a1 the first accumulator.
 	 * @param a2 the second accumulator.
@@ -521,6 +529,8 @@ public interface Accumulator<T> {
 	 * accumulation is done in parallel.
 	 *
 	 * @param <T> the value type.
+	 * @param executor the {@link java.util.concurrent.Executor} service to
+	 *        use
 	 * @param values the values to accumulate.
 	 * @param a1 the first accumulator.
 	 * @param a2 the second accumulator.
@@ -547,6 +557,8 @@ public interface Accumulator<T> {
 	 * accumulation is done in parallel.
 	 *
 	 * @param <T> the value type.
+	 * @param executor the {@link java.util.concurrent.Executor} service to
+	 *        use
 	 * @param values the values to accumulate.
 	 * @param a1 the first accumulator.
 	 * @param a2 the second accumulator.
@@ -576,6 +588,8 @@ public interface Accumulator<T> {
 	 * accumulation is done in parallel.
 	 *
 	 * @param <T> the value type.
+	 * @param executor the {@link java.util.concurrent.Executor} service to
+	 *        use
 	 * @param values the values to accumulate.
 	 * @param a1 the first accumulator.
 	 * @param a2 the second accumulator.

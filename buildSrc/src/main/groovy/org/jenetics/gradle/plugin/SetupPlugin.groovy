@@ -145,14 +145,12 @@ class SetupPlugin extends JeneticsPlugin {
 				charSet = 'UTF-8'
 				linkSource = true
 				links = [
-					'http://download.oracle.com/javase/7/docs/api/',
-					'http://jscience.org/api/',
-					'http://javolution.org/target/site/apidocs/'
+					'http://docs.oracle.com/javase/8/docs/api/'
 				]
 				windowTitle = "Jenetics ${project.version}"
 				docTitle = "<h1>Jenetics ${project.version}</h1>"
 				bottom = "&copy; ${copyrightYear} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${dateformat.format(now.time)})</i>"
-				//stylesheetFile = project.file("${rootDir}/buildSrc/resources/javadoc/stylesheet.css")
+				stylesheetFile = project.file("${rootDir}/buildSrc/resources/javadoc/stylesheet.css")
 
 				exclude 'org/*/internal/**'
 

@@ -569,6 +569,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>> {
 		 * Create a new statistics object from the given {@code population} at
 		 * the given {@code generation}.
 		 *
+		 * @param executor the {@link java.util.concurrent.Executor} service to
+		 *        use
 		 * @param population the population to aggregate.
 		 * @param generation the current GA generation.
 		 * @param opt the optimization <i>direction</i>.

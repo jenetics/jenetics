@@ -43,7 +43,7 @@ import org.jenetics.util.MSeq;
  * Numeric chromosome implementation which holds 32 bit integer numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz  Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-04-18 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-21 $</em>
  * @since 2.0
  */
 @XmlJavaTypeAdapter(IntegerChromosome.Model.Adapter.class)
@@ -102,6 +102,7 @@ public class IntegerChromosome
 	 * @param min the min value of the {@link IntegerGene}s (inclusively).
 	 * @param max the max value of the {@link IntegerGene}s (inclusively).
 	 * @param length the length of the chromosome.
+	 * @return a new random {@code IntegerChromosome}
 	 */
 	public static IntegerChromosome of(
 		final int min,
@@ -116,6 +117,7 @@ public class IntegerChromosome
 	 *
 	 * @param min the minimal value of this chromosome (inclusively).
 	 * @param max the maximal value of this chromosome (inclusively).
+	 * @return a new random {@code IntegerChromosome} of length one
 	 */
 	public static IntegerChromosome of(final int min, final int max) {
 		return new IntegerChromosome(min, max);

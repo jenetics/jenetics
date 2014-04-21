@@ -176,6 +176,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
 	 * Third edition, page 142, Algorithm S (Selection sampling technique).
 	 *
+	 * @return this shuffled sequence
 	 * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public default MSeq<T> shuffle() {
@@ -188,6 +189,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * Third edition, page 142, Algorithm S (Selection sampling technique).
 	 *
 	 * @param random the {@link Random} object to use for randomize.
+	 * @return this shuffled sequence
 	 * @throws NullPointerException if the give array or the random object is
 	 *          {@code null}.
 	 */
@@ -259,7 +261,9 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	/**
 	 * Create a new {@code MSeq} from the given values.
 	 *
+	 * @param <T> the element type
 	 * @param values the array values.
+	 * @return a new {@code Meq} with the given values.
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
 	@SafeVarargs
@@ -270,7 +274,9 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	/**
 	 * Create a new {@code MSeq} from the given values.
 	 *
+	 * @param <T> the element type
 	 * @param values the array values.
+	 * @return a new {@code MSeq} with the given values.
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
 	public static <T> MSeq<T> of(final Collection<? extends T> values) {
