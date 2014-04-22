@@ -21,12 +21,15 @@ package org.jenetics.util;
 
 import static java.lang.String.format;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collector;
 
 import org.jenetics.internal.collection.ArrayProxyMSeq;
 import org.jenetics.internal.collection.ObjectArrayProxy;
@@ -38,7 +41,7 @@ import org.jenetics.internal.collection.ObjectArrayProxy;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-04-21 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-22 $</em>
  */
 public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 
@@ -230,6 +233,15 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	/* *************************************************************************
 	 *  Some static factory methods.
 	 * ************************************************************************/
+
+	public static <T> Collector<T, ?, MSeq<T>> collector() {
+		return Collector.of(
+			(Supplier<List<T>>)ArrayList::new,
+			List::add,
+			(left, right) -> { left.addAll(right); return left; },
+			MSeq::of
+		);
+	}
 
 	/**
 	 * Single instance of an empty {@code MSeq}.

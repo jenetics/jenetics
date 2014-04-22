@@ -19,8 +19,12 @@
  */
 package org.jenetics.util;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collector;
 
 /**
  * Immutable, ordered, fixed sized sequence.
@@ -29,7 +33,7 @@ import java.util.function.Function;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-04-21 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-22 $</em>
  */
 public interface ISeq<T>
 	extends
@@ -60,6 +64,15 @@ public interface ISeq<T>
 	/* *************************************************************************
 	 *  Some static factory methods.
 	 * ************************************************************************/
+
+	public static <T> Collector<T, ?, ISeq<T>> collector() {
+		return Collector.of(
+			(Supplier<List<T>>)ArrayList::new,
+			List::add,
+			(left, right) -> { left.addAll(right); return left; },
+			ISeq::of
+		);
+	}
 
 	/**
 	 * Create a new {@code ISeq} from the given values.
