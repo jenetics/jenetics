@@ -22,8 +22,7 @@ package org.jenetics.stat;
 import static org.jenetics.internal.util.object.eq;
 
 import java.util.Objects;
-import java.util.function.Consumer;
-import java.util.stream.Collector;
+import java.util.function.DoubleConsumer;
 
 import org.jenetics.internal.util.Hash;
 
@@ -35,41 +34,37 @@ import org.jenetics.internal.util.Hash;
  * @version 3.0 &mdash; <em>$Date: 2014-04-22 $</em>
  * @since 3.0
  */
-public class Moments<N extends Number & Comparable<? super N>>
-	extends MomentsBase
-	implements Consumer<N>
-{
+public class DoubleMoments extends MomentsBase implements DoubleConsumer {
 
-	private N _min = null;
-	private N _max = null;
+	private double _min = Double.POSITIVE_INFINITY;
+	private double _max = Double.NEGATIVE_INFINITY;
 
 	@Override
-	public void accept(final N number) {
-		final double value = number.doubleValue();
+	public void accept(final double value) {
+		_min = Math.min(_min, value);
+		_max = Math.max(_max, value);
 
-		if (_min == null || _min.compareTo(number) > 0) _min = number;
-		if (_max == null || _max.compareTo(number) < 0) _max = number;
 		++n;
 		updateSum(value);
 		updateMoments(value);
 	}
 
 	/**
-	 * Combine two {@code Moments} statistic objects.
+	 * Combine two {@code DoubleMoments} statistic objects.
 	 *
-	 * @param other the other {@code Moments} statistics to combine with
+	 * @param other the other {@code DoubleMoments} statistics to combine with
 	 *        {@code this} one.
 	 * @return a new statistical objects.
 	 * @throws java.lang.NullPointerException if the other statistical summary
 	 *         is {@code null}.
 	 */
-	public Moments<N> combine(final Moments<N> other) {
+	public DoubleMoments combine(final DoubleMoments other) {
 		Objects.requireNonNull(other);
-		final Moments<N> result = new Moments<>();
+		final DoubleMoments result = new DoubleMoments();
 
 		result.n = n + other.n;
-		result._min = _min.compareTo(other._min) < 0 ? _min : other._min;
-		result._max = _max.compareTo(other._max) > 0 ? _max : other._max;
+		result._min = Math.min(_min, other._min);
+		result._max = Math.max(_max, other._max);
 		result.updateSum(sum);
 		result.updateSum(other.sum);
 		combineMoments(other, result);
@@ -77,11 +72,11 @@ public class Moments<N extends Number & Comparable<? super N>>
 		return result;
 	}
 
-	public N getMin() {
+	public double getMin() {
 		return _min;
 	}
 
-	public N getMax() {
+	public double getMax() {
 		return _max;
 	}
 
@@ -107,23 +102,14 @@ public class Moments<N extends Number & Comparable<? super N>>
 		if (obj == this) {
 			return true;
 		}
-		if (!(obj instanceof Moments<?>)) {
+		if (!(obj instanceof DoubleMoments)) {
 			return false;
 		}
 
-		final Moments<?> sum = (Moments<?>)obj;
+		final DoubleMoments sum = (DoubleMoments)obj;
 		return super.equals(obj) &&
 			eq(_min, sum._min) &&
 			eq(_max, sum._max);
-	}
-
-	public static <N extends Number & Comparable<? super N>>
-	Collector<N, ?, Moments<N>> collector() {
-		return Collector.of(
-			Moments::new,
-			Moments::accept,
-			Moments::combine
-		);
 	}
 
 }
