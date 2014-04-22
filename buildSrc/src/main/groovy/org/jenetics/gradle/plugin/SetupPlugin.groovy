@@ -34,7 +34,7 @@ import java.text.SimpleDateFormat
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5 &mdash; <em>$Date: 2014-04-21 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-04-22 $</em>
  */
 class SetupPlugin extends JeneticsPlugin {
 
@@ -152,10 +152,12 @@ class SetupPlugin extends JeneticsPlugin {
 				bottom = "&copy; ${copyrightYear} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${dateformat.format(now.time)})</i>"
 				stylesheetFile = project.file("${rootDir}/buildSrc/resources/javadoc/stylesheet.css")
 
+                //subpackages = 'org.jenetics'
+                //exclude = 'org.jenetics.internal'
 				exclude 'org/*/internal/**'
 
-				//options.addStringOption('-subpackages', 'org.jenetics')
-				//options.addStringOption('-exclude', 'org.jenetics.internal.util')
+				options.addStringOption('subpackages', 'org.jenetics')
+				options.addStringOption('exclude', 'org.jenetics.internal')
 
 				group('Core API', ['org.jenetics']).
 				group('Utilities', ['org.jenetics.util', 'org.jenetics.stat'])

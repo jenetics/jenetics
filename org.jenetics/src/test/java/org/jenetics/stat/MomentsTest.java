@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class SummaryTest {
+public class MomentsTest {
 
 	private List<Double> numbers(final int size) {
 		final Random random = new Random(123);
@@ -50,8 +50,8 @@ public class SummaryTest {
 		final DescriptiveStatistics expected = new DescriptiveStatistics();
 		numbers.forEach(expected::addValue);
 
-		final Summary<Double> summary = numbers.stream().collect(Summary.collector());
-		Assert.assertEquals(summary.getSampleCount(), numbers.size());
+		final Moments<Double> summary = numbers.stream().collect(Moments.collector());
+		Assert.assertEquals(summary.getCount(), numbers.size());
 		assertEqualsDouble(
 			summary.getMin() == null ? Double.NaN : summary.getMin(),
 			expected.getMin(), 0.0
@@ -66,8 +66,8 @@ public class SummaryTest {
 		assertEqualsDouble(summary.getSkewness(), expected.getSkewness(), epsilon);
 		assertEqualsDouble(summary.getKurtosis(), expected.getKurtosis(), epsilon);
 
-		final Summary<Double> psummary = numbers.parallelStream().collect(Summary.collector());
-		Assert.assertEquals(psummary.getSampleCount(), numbers.size());
+		final Moments<Double> psummary = numbers.parallelStream().collect(Moments.collector());
+		Assert.assertEquals(psummary.getCount(), numbers.size());
 		assertEqualsDouble(
 			psummary.getMin() == null ? Double.NaN : summary.getMin(),
 			expected.getMin(), 0.0

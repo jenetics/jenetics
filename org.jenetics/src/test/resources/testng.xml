@@ -240,6 +240,11 @@
 			<class name="org.jenetics.stat.LinearDistributionTest" />
 		</classes>
 	</test>
+    <test name="org.jenetics.stat.Moments">
+        <classes>
+            <class name="org.jenetics.stat.MomentsTest" />
+        </classes>
+    </test>
 	<test name="org.jenetics.stat.NormalDistribution">
 		<classes>
 			<class name="org.jenetics.stat.NormalDistributionTest" />

@@ -24,18 +24,21 @@ import static java.lang.Math.sqrt;
 import static org.jenetics.internal.util.object.eq;
 
 import java.util.Objects;
+import java.util.function.Consumer;
+import java.util.stream.Collector;
 
 import org.jenetics.internal.util.Hash;
 
 /**
- * Mutable implementation of the statistical {@code Summary} interface.
+ * @see <a href="http://people.xiph.org/~tterribe/notes/homs.html">
+ *      Computing Higher-Order Moments Online</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.0 &mdash; <em>$Date: 2014-04-21 $</em>
+ * @version 3.0 &mdash; <em>$Date$</em>
  * @since 3.0
  */
-final class CollectibleSummary<N extends Number & Comparable<? super N>>
-	implements Summary<N>
+public class Moments<N extends Number & Comparable<? super N>>
+	implements Consumer<N>
 {
 
 	private long _n = 0L;
@@ -52,29 +55,48 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 	private double _m3 = 0.0;
 	private double _m4 = 0.0;
 
-	/**
-	 * Accumulates the given number.
-	 *
-	 * @param number the {@code number to accumulate}.
-	 */
-	void accumulate(final N number) {
+	@Override
+	public void accept(final N number) {
 		final double value = number.doubleValue();
 
 		if (_min == null || _min.compareTo(number) > 0) _min = number;
 		if (_max == null || _max.compareTo(number) < 0) _max = number;
 		++_n;
-		accumulateSum(value);
-		accumulateMoments(value);
+		combineSum(value);
+		combineMoments(value);
 	}
 
-	private void accumulateSum(final double value) {
+	/**
+	 * Combine two {@code Moments} statistic objects.
+	 *
+	 * @param other the other {@code Moments} statistics to combine with
+	 *        {@code this} one.
+	 * @return a new statistical objects.
+	 * @throws java.lang.NullPointerException if the other statistical summary
+	 *         is {@code null}.
+	 */
+	public Moments<N> combine(final Moments<N> other) {
+		Objects.requireNonNull(other);
+		final Moments<N> result = new Moments<>();
+
+		result._n = _n + other._n;
+		result._min = _min.compareTo(other._min) < 0 ? _min : other._min;
+		result._max = _max.compareTo(other._max) > 0 ? _max : other._max;
+		result.combineSum(_sum);
+		result.combineSum(other._sum);
+		combineMoments(other, result);
+
+		return result;
+	}
+
+	private void combineSum(final double value) {
 		final double y = value - _c;
 		final double t = _sum + y;
 		_c = t - _sum - y;
 		_sum = t;
 	}
 
-	private void accumulateMoments(final double value) {
+	private void combineMoments(final double value) {
 		final double d = value - _m1;
 		final double dN = d/_n;
 		final double dN2 = dN*dN;
@@ -86,35 +108,12 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 	}
 
 	/**
-	 * Combine two summary statistic objects.
-	 *
-	 * @param other the other statistical summary to combine with {@code this}
-	 *        one.
-	 * @return a new statistical summary objects.
-	 * @throws java.lang.NullPointerException if the other statistical summary
-	 *         is {@code null}.
-	 */
-	CollectibleSummary<N> combine(final CollectibleSummary<N> other) {
-		Objects.requireNonNull(other);
-		final CollectibleSummary<N> result = new CollectibleSummary<>();
-
-		result._n = _n + other._n;
-		result._min = _min.compareTo(other._min) < 0 ? _min : other._min;
-		result._max = _max.compareTo(other._max) > 0 ? _max : other._max;
-		result.accumulateSum(_sum);
-		result.accumulateSum(other._sum);
-		combineMoments(other, result);
-
-		return result;
-	}
-
-	/**
 	 * @see <a href="http://people.xiph.org/~tterribe/notes/homs.html">
 	 *      Computing Higher-Order Moments Online</a>
 	 */
 	private void combineMoments(
-		final CollectibleSummary<N> b,
-		final CollectibleSummary<N> r
+		final Moments<N> b,
+		final Moments<N> r
 	) {
 		final double d = b._m1 - _m1;
 		final double d2 = d*d;
@@ -137,32 +136,26 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 				4.0*d*(_n*b._m3 - b._n*_m3)/r._n;
 	}
 
-	@Override
-	public long getSampleCount() {
+	public long getCount() {
 		return _n;
 	}
 
-	@Override
 	public N getMin() {
 		return _min;
 	}
 
-	@Override
 	public N getMax() {
 		return _max;
 	}
 
-	@Override
 	public double getSum() {
 		return _sum;
 	}
 
-	@Override
 	public double getMean() {
 		return _n == 0 ? NaN : _m1;
 	}
 
-	@Override
 	public double getVariance() {
 		double var = NaN;
 		if (_n == 1) {
@@ -174,7 +167,6 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 		return var;
 	}
 
-	@Override
 	public double getSkewness() {
 		double skewness = NaN;
 		if (_n >= 3) {
@@ -189,7 +181,6 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 		return skewness;
 	}
 
-	@Override
 	public double getKurtosis() {
 		double kurtosis = NaN;
 		if (_n > 3) {
@@ -205,9 +196,8 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 		return kurtosis;
 	}
 
-	@Override
 	public int hashCode() {
-		return Hash.of(CollectibleSummary.class)
+		return Hash.of(Moments.class)
 			.and(_n)
 			.and(_min)
 			.and(_max)
@@ -218,13 +208,12 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 			.and(_m4).value();
 	}
 
-	@Override
 	public boolean equals(final Object obj) {
 		if (obj == null || obj.getClass() != getClass()) {
 			return false;
 		}
 
-		final CollectibleSummary sum = (CollectibleSummary)obj;
+		final Moments<?> sum = (Moments<?>)obj;
 		return eq(_n, sum._n) &&
 				eq(_min, sum._min) &&
 				eq(_max, sum._max) &&
@@ -241,6 +230,15 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 			"Summary[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s, s2=%s, S=%s, K=%s]",
 			_n, _min, _max, _sum,
 			getMean(), getVariance(), getSkewness(), getKurtosis()
+		);
+	}
+
+	public static <N extends Number & Comparable<? super N>>
+	Collector<N, ?, Moments<N>> collector() {
+		return Collector.of(
+			Moments::new,
+			Moments::accept,
+			Moments::combine
 		);
 	}
 
