@@ -21,13 +21,10 @@ package org.jenetics.stat;
 
 import static java.lang.Double.NaN;
 import static java.lang.Math.sqrt;
-import static org.jenetics.internal.util.object.eq;
-
-import org.jenetics.internal.util.Hash;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.0 &mdash; <em>$Date: 2014-04-22 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-23 $</em>
  * @since 3.0
  */
 class MomentsBase {
@@ -137,35 +134,6 @@ class MomentsBase {
 			}
 		}
 		return kurtosis;
-	}
-
-	@Override
-	public int hashCode() {
-		return Hash.of(Moments.class)
-			.and(n)
-			.and(sum)
-			.and(m1)
-			.and(m2)
-			.and(m3)
-			.and(m4).value();
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (!(obj instanceof MomentsBase)) {
-			return false;
-		}
-
-		final MomentsBase sum = (MomentsBase)obj;
-		return eq(n, sum.n) &&
-			eq(this.sum, sum.sum) &&
-			eq(m1, sum.m1) &&
-			eq(m2, sum.m2) &&
-			eq(m3, sum.m3) &&
-			eq(m4, sum.m4);
 	}
 
 }

@@ -19,20 +19,16 @@
  */
 package org.jenetics.stat;
 
-import static org.jenetics.internal.util.object.eq;
-
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Collector;
-
-import org.jenetics.internal.util.Hash;
 
 /**
  * @see <a href="http://people.xiph.org/~tterribe/notes/homs.html">
  *      Computing Higher-Order Moments Online</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.0 &mdash; <em>$Date: 2014-04-22 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-23 $</em>
  * @since 3.0
  */
 public class Moments<N extends Number & Comparable<? super N>>
@@ -92,29 +88,6 @@ public class Moments<N extends Number & Comparable<? super N>>
 			n, _min, _max, sum,
 			getMean(), getVariance(), getSkewness(), getKurtosis()
 		);
-	}
-
-	@Override
-	public int hashCode() {
-		return Hash.of(DoubleMoments.class)
-			.and(super.hashCode())
-			.and(_min)
-			.and(_max).value();
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (!(obj instanceof Moments<?>)) {
-			return false;
-		}
-
-		final Moments<?> sum = (Moments<?>)obj;
-		return super.equals(obj) &&
-			eq(_min, sum._min) &&
-			eq(_max, sum._max);
 	}
 
 	public static <N extends Number & Comparable<? super N>>

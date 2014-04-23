@@ -29,6 +29,7 @@ import static org.jenetics.util.math.statistics.sum;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Objects;
 import java.util.function.Function;
 
 import org.jenetics.internal.util.Hash;
@@ -63,7 +64,7 @@ import org.jenetics.util.AbstractAccumulator;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-21 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-23 $</em>
  */
 public class Histogram<C> extends AbstractAccumulator<C> {
 
@@ -107,7 +108,7 @@ public class Histogram<C> extends AbstractAccumulator<C> {
 
 	@SuppressWarnings("unchecked")
 	private static <C> C[] check(final C... classes) {
-		//Arrays.asList(classes).forEach(NonNull);
+		Arrays.asList(classes).forEach(Objects::requireNonNull);
 		if (classes.length == 0) {
 			throw new IllegalArgumentException("Given classes array is empty.");
 		}
@@ -147,8 +148,7 @@ public class Histogram<C> extends AbstractAccumulator<C> {
 			}
 		}
 
-		assert (false): "This line will never be reached.";
-		return -1;
+		throw new AssertionError("This line will never be reached.");
 	}
 
 	/**
