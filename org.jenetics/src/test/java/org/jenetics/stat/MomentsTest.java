@@ -34,7 +34,7 @@ import org.testng.annotations.Test;
 public class MomentsTest {
 
 	private List<Double> numbers(final int size) {
-		final Random random = new Random(123);
+		final Random random = new Random(1235);
 		final List<Double> numbers = new ArrayList<>(size);
 		for (int i = 0; i < size; ++i) {
 			numbers.add(random.nextDouble());
@@ -65,22 +65,30 @@ public class MomentsTest {
 		assertEqualsDouble(summary.getVariance(), expected.getVariance(), epsilon);
 		assertEqualsDouble(summary.getSkewness(), expected.getSkewness(), epsilon);
 		assertEqualsDouble(summary.getKurtosis(), expected.getKurtosis(), epsilon);
+	}
+	
+	@Test(dataProvider = "parallelSampleCounts")
+	public void parallelSummary(final Integer sampleCounts, final Double epsilon) {
+		final List<Double> numbers = numbers(sampleCounts);
 
-		final Moments<Double> psummary = numbers.parallelStream().collect(Moments.collector());
-		Assert.assertEquals(psummary.getCount(), numbers.size());
+		final DescriptiveStatistics expected = new DescriptiveStatistics();
+		numbers.forEach(expected::addValue);
+
+		final Moments<Double> summary = numbers.parallelStream().collect(Moments.collector());
+		Assert.assertEquals(summary.getCount(), numbers.size());
 		assertEqualsDouble(
-			psummary.getMin() == null ? Double.NaN : summary.getMin(),
+			summary.getMin() == null ? Double.NaN : summary.getMin(),
 			expected.getMin(), 0.0
 		);
 		assertEqualsDouble(
-			psummary.getMax() == null ? Double.NaN : summary.getMax(),
+			summary.getMax() == null ? Double.NaN : summary.getMax(),
 			expected.getMax(), 0.0
 		);
-		assertEqualsDouble(psummary.getSum(), expected.getSum(), epsilon);
-		assertEqualsDouble(psummary.getMean(), expected.getMean(), epsilon);
-		assertEqualsDouble(psummary.getVariance(), expected.getVariance(), epsilon);
-		assertEqualsDouble(psummary.getSkewness(), expected.getSkewness(), epsilon);
-		assertEqualsDouble(psummary.getKurtosis(), expected.getKurtosis(), epsilon);
+		assertEqualsDouble(summary.getSum(), expected.getSum(), epsilon);
+		assertEqualsDouble(summary.getMean(), expected.getMean(), epsilon);
+		assertEqualsDouble(summary.getVariance(), expected.getVariance(), epsilon);
+		assertEqualsDouble(summary.getSkewness(), expected.getSkewness(), epsilon);
+		assertEqualsDouble(summary.getKurtosis(), expected.getKurtosis(), epsilon);
 	}
 
 	private static void assertEqualsDouble(final double a, final double b, final double e) {
@@ -104,7 +112,21 @@ public class MomentsTest {
 			{100, 0.05},
 			{1000, 0.0001},
 			{10000, 0.00001},
-			{100000, 0.000001}
+			{100000, 0.000001},
+			{1000000, 0.0000001}
+		};
+	}
+	
+	@DataProvider(name = "parallelSampleCounts")
+	public Object[][] parallelSampleCounts() {
+		return new Object[][] {
+			{0, 0.0},
+			{1, 0.0},
+			{100, 0.5},
+			{1000, 0.003},
+			{10000, 0.00001},
+			{100000, 0.000001},
+			{1000000, 0.0000001}
 		};
 	}
 
