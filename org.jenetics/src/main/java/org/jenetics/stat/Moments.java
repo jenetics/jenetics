@@ -19,9 +19,14 @@
  */
 package org.jenetics.stat;
 
+import static org.jenetics.internal.math.statistics.max;
+import static org.jenetics.internal.math.statistics.min;
+
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Collector;
+
+import org.jenetics.internal.math.DoubleAdder;
 
 /**
  * @see <a href="http://people.xiph.org/~tterribe/notes/homs.html">
@@ -35,6 +40,8 @@ public class Moments<N extends Number & Comparable<? super N>>
 	extends MomentsBase
 	implements Consumer<N>
 {
+	// The accumulated sum.
+	private final DoubleAdder _sum = new DoubleAdder();
 
 	private N _min = null;
 	private N _max = null;
@@ -43,11 +50,10 @@ public class Moments<N extends Number & Comparable<? super N>>
 	public void accept(final N number) {
 		final double value = number.doubleValue();
 
-		if (_min == null || _min.compareTo(number) > 0) _min = number;
-		if (_max == null || _max.compareTo(number) < 0) _max = number;
-		++n;
-		updateSum(value);
-		updateMoments(value);
+		update(value);
+		_sum.add(value);
+		_min = min(_min, number);
+		_max = max(_max, number);
 	}
 
 	/**
@@ -61,16 +67,16 @@ public class Moments<N extends Number & Comparable<? super N>>
 	 */
 	public Moments<N> combine(final Moments<N> other) {
 		Objects.requireNonNull(other);
-		final Moments<N> result = new Moments<>();
 
-		result.n = n + other.n;
-		result._min = _min.compareTo(other._min) < 0 ? _min : other._min;
-		result._max = _max.compareTo(other._max) > 0 ? _max : other._max;
-		result.updateSum(sum);
-		result.updateSum(other.sum);
-		combineMoments(other, result);
-
+		final Moments<N> result = combine(this, other, new Moments<N>());
+		result._sum.add(_sum).add(other._sum);
+		result._min = min(_min, other._min);
+		result._max = max(_max, other._max);
 		return result;
+	}
+
+	public double getSum() {
+		return _sum.value;
 	}
 
 	public N getMin() {
@@ -85,7 +91,7 @@ public class Moments<N extends Number & Comparable<? super N>>
 	public String toString() {
 		return String.format(
 			"Summary[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s, s2=%s, S=%s, K=%s]",
-			n, _min, _max, sum,
+			n, _min, _max, _sum,
 			getMean(), getVariance(), getSkewness(), getKurtosis()
 		);
 	}

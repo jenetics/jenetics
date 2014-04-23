@@ -20,7 +20,7 @@
  # Author:
  #    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  #
- # Version: <em>$Date: 2014-04-22 $</em>
+ # Version: <em>$Date: 2014-04-23 $</em>
  #
  ###############################################################################
 -->
@@ -272,6 +272,11 @@
 			<class name="org.jenetics.internal.collection.ArrayProxyMSeqTest" />
 		</classes>
 	</test>
+    <test name="org.jenetics.internal.math.DoubleAdder">
+        <classes>
+            <class name="org.jenetics.internal.math.DoubleAdderTest" />
+        </classes>
+    </test>
 	<test name="org.jenetics.internal.math.probability">
 		<classes>
 			<class name="org.jenetics.internal.math.probabilityTest" />

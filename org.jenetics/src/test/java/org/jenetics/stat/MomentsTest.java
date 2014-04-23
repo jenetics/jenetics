@@ -34,7 +34,7 @@ import org.testng.annotations.Test;
 public class MomentsTest {
 
 	private List<Double> numbers(final int size) {
-		final Random random = new Random(1235);
+		final Random random = new Random(123);
 		final List<Double> numbers = new ArrayList<>(size);
 		for (int i = 0; i < size; ++i) {
 			numbers.add(random.nextDouble());
@@ -66,7 +66,7 @@ public class MomentsTest {
 		assertEqualsDouble(summary.getSkewness(), expected.getSkewness(), epsilon);
 		assertEqualsDouble(summary.getKurtosis(), expected.getKurtosis(), epsilon);
 	}
-	
+
 	@Test(dataProvider = "parallelSampleCounts")
 	public void parallelSummary(final Integer sampleCounts, final Double epsilon) {
 		final List<Double> numbers = numbers(sampleCounts);
@@ -75,6 +75,7 @@ public class MomentsTest {
 		numbers.forEach(expected::addValue);
 
 		final Moments<Double> summary = numbers.parallelStream().collect(Moments.collector());
+
 		Assert.assertEquals(summary.getCount(), numbers.size());
 		assertEqualsDouble(
 			summary.getMin() == null ? Double.NaN : summary.getMin(),
@@ -116,7 +117,7 @@ public class MomentsTest {
 			{1000000, 0.0000001}
 		};
 	}
-	
+
 	@DataProvider(name = "parallelSampleCounts")
 	public Object[][] parallelSampleCounts() {
 		return new Object[][] {

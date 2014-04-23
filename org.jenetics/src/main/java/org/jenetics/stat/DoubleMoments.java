@@ -37,12 +37,12 @@ public class DoubleMoments extends MomentsBase implements DoubleConsumer {
 
 	@Override
 	public void accept(final double value) {
-		_min = Math.min(_min, value);
-		_max = Math.max(_max, value);
-
-		++n;
-		updateSum(value);
-		updateMoments(value);
+//		_min = Math.min(_min, value);
+//		_max = Math.max(_max, value);
+//
+//		++n;
+//		sum.add(value);
+//		updateMoments(value);
 	}
 
 	/**
@@ -61,9 +61,9 @@ public class DoubleMoments extends MomentsBase implements DoubleConsumer {
 		result.n = n + other.n;
 		result._min = Math.min(_min, other._min);
 		result._max = Math.max(_max, other._max);
-		result.updateSum(sum);
-		result.updateSum(other.sum);
-		combineMoments(other, result);
+		//result.updateSum(sum);
+		//result.updateSum(other.sum);
+		//combineMoments(other, result);
 
 		return result;
 	}
@@ -76,13 +76,13 @@ public class DoubleMoments extends MomentsBase implements DoubleConsumer {
 		return _max;
 	}
 
-	@Override
-	public String toString() {
-		return String.format(
-			"Summary[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s, s2=%s, S=%s, K=%s]",
-			n, _min, _max, sum,
-			getMean(), getVariance(), getSkewness(), getKurtosis()
-		);
-	}
+//	@Override
+//	public String toString() {
+//		return String.format(
+//			"Summary[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s, s2=%s, S=%s, K=%s]",
+//			n, _min, _max, sum,
+//			getMean(), getVariance(), getSkewness(), getKurtosis()
+//		);
+//	}
 
 }
