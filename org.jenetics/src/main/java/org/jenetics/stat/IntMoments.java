@@ -24,11 +24,10 @@ import static java.lang.Math.min;
 import static org.jenetics.internal.util.object.eq;
 
 import java.util.Objects;
-import java.util.function.DoubleConsumer;
-import java.util.function.ToDoubleFunction;
+import java.util.function.IntConsumer;
+import java.util.function.ToIntFunction;
 import java.util.stream.Collector;
 
-import org.jenetics.internal.math.DoubleAdder;
 import org.jenetics.internal.util.Hash;
 
 /**
@@ -39,20 +38,19 @@ import org.jenetics.internal.util.Hash;
  * @since 3.0
  * @version 3.0 &mdash; <em>$Date: 2014-04-24 $</em>
  */
-public class DoubleMoments extends Moments implements DoubleConsumer {
+public class IntMoments extends Moments implements IntConsumer {
 
-	private double _min = Double.POSITIVE_INFINITY;
-	private double _max = Double.NEGATIVE_INFINITY;
-
-	private final DoubleAdder _sum = new DoubleAdder();
+	private int _min = Integer.MAX_VALUE;
+	private int _max = Integer.MIN_VALUE;
+	private long _sum = 0L;
 
 	@Override
-	public void accept(final double value) {
+	public void accept(final int value) {
 		update(value);
 
 		_min = min(_min, value);
 		_max = max(_max, value);
-		_sum.add(value);
+		_sum += value;
 	}
 
 	/**
@@ -64,34 +62,34 @@ public class DoubleMoments extends Moments implements DoubleConsumer {
 	 * @throws java.lang.NullPointerException if the other statistical summary
 	 *         is {@code null}.
 	 */
-	public DoubleMoments combine(final DoubleMoments other) {
+	public IntMoments combine(final IntMoments other) {
 		Objects.requireNonNull(other);
 
-		final DoubleMoments result = new DoubleMoments();
+		final IntMoments result = new IntMoments();
 		Moments.combine(this, other, result);
 
 		result._min = min(_min, other._min);
 		result._max = max(_max, other._max);
-		result._sum.set(_sum).add(other._sum);
+		result._sum = _sum + other._sum;
 
 		return result;
 	}
 
-	public double getMin() {
+	public int getMin() {
 		return _min;
 	}
 
-	public double getMax() {
+	public int getMax() {
 		return _max;
 	}
 
-	public double getSum() {
-		return _sum.doubleValue();
+	public long getSum() {
+		return _sum;
 	}
 
 	@Override
 	public int hashCode() {
-		return Hash.of(DoubleMoments.class)
+		return Hash.of(IntMoments.class)
 			.and(super.hashCode())
 			.and(_min)
 			.and(_max)
@@ -103,11 +101,11 @@ public class DoubleMoments extends Moments implements DoubleConsumer {
 		if (object == null) {
 			return true;
 		}
-		if (!(object instanceof DoubleMoments)) {
+		if (!(object instanceof IntMoments)) {
 			return false;
 		}
 
-		final DoubleMoments moments = (DoubleMoments)object;
+		final IntMoments moments = (IntMoments)object;
 		return super.equals(object) &&
 			eq(_min, moments._min) &&
 			eq(_max, moments._max) &&
@@ -118,18 +116,18 @@ public class DoubleMoments extends Moments implements DoubleConsumer {
 	public String toString() {
 		return String.format(
 			"Summary[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s, s2=%s, S=%s, K=%s]",
-			getCount(), _min, _max, _sum.doubleValue(),
+			getCount(), _min, _max, _sum,
 			getMean(), getVariance(), getSkewness(), getKurtosis()
 		);
 	}
 
 
-	public static <T> Collector<T, ?, DoubleMoments>
-	collector(final ToDoubleFunction<? super T> mapper) {
+	public static <T> Collector<T, ?, IntMoments>
+	collector(final ToIntFunction<? super T> mapper) {
 		return Collector.of(
-			DoubleMoments::new,
-			(r, t) -> r.accept(mapper.applyAsDouble(t)),
-			DoubleMoments::combine
+			IntMoments::new,
+			(r, t) -> r.accept(mapper.applyAsInt(t)),
+			IntMoments::combine
 		);
 	}
 

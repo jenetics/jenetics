@@ -21,12 +21,14 @@ package org.jenetics.stat;
 
 import static java.lang.Double.NaN;
 import static java.lang.Math.sqrt;
+import static org.jenetics.internal.util.object.eq;
 
 import org.jenetics.internal.math.DoubleAdder;
+import org.jenetics.internal.util.Hash;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.0 &mdash; <em>$Date$</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-24 $</em>
  * @since 3.0
  */
 class Moments {
@@ -135,6 +137,31 @@ class Moments {
 			}
 		}
 		return kurtosis;
+	}
+
+	@Override
+	public int hashCode() {
+		return Hash.of(Moments.class)
+			.and(_m1)
+			.and(_m2)
+			.and(_m3)
+			.and(_m4).value();
+	}
+
+	@Override
+	public boolean equals(final Object object) {
+		if (object == null) {
+			return true;
+		}
+		if (!(object instanceof Moments)) {
+			return false;
+		}
+
+		final Moments moments = (Moments)object;
+		return eq(_m1, moments._m1) &&
+			eq(_m2, moments._m2) &&
+			eq(_m3, moments._m3) &&
+			eq(_m4, moments._m4);
 	}
 
 }

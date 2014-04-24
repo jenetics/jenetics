@@ -19,10 +19,14 @@
  */
 package org.jenetics.internal.math;
 
+import static org.jenetics.internal.util.object.eq;
+
+import org.jenetics.internal.util.Hash;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.0 &mdash; <em>$Date: 2014-04-24 $</em>
  * @since 3.0
+ * @version 3.0 &mdash; <em>$Date: 2014-04-24 $</em>
  */
 public final class DoubleAdder
 	extends Number
@@ -93,13 +97,8 @@ public final class DoubleAdder
 
 	@Override
 	public double doubleValue() {
-		// Better error bounds to add both terms as the final sum
 		double result =  _sum + _compensation;
 		if (Double.isNaN(result) && Double.isInfinite(_simpleSum)) {
-			// If the compensated sum is spuriously NaN from
-			// accumulating one or more same-signed infinite values,
-			// return the correctly-signed infinity stored in
-			// simpleSum.
 			result = _simpleSum;
 		}
 
@@ -109,6 +108,24 @@ public final class DoubleAdder
 	@Override
 	public int compareTo(final DoubleAdder other) {
 		return Double.compare(doubleValue(), other.doubleValue());
+	}
+
+	@Override
+	public int hashCode() {
+		return Hash.of(DoubleAdder.class).and(doubleValue()).value();
+	}
+
+	@Override
+	public boolean equals(final Object object) {
+		if (object == this) {
+			return true;
+		}
+		if (!(object instanceof DoubleAdder)) {
+			return false;
+		}
+
+		final DoubleAdder adder = (DoubleAdder)object;
+		return eq(doubleValue(), adder.doubleValue());
 	}
 
 	@Override
