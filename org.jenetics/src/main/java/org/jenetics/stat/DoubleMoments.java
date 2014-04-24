@@ -24,6 +24,8 @@ import static java.lang.Math.min;
 
 import java.util.Objects;
 import java.util.function.DoubleConsumer;
+import java.util.function.ToDoubleFunction;
+import java.util.stream.Collector;
 
 import org.jenetics.internal.math.DoubleAdder;
 
@@ -91,6 +93,16 @@ public class DoubleMoments extends MomentsBase implements DoubleConsumer {
 			"Summary[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s, s2=%s, S=%s, K=%s]",
 			getCount(), _min, _max, _sum.doubleValue(),
 			getMean(), getVariance(), getSkewness(), getKurtosis()
+		);
+	}
+
+
+	public static <T> Collector<T, ?, DoubleMoments>
+	collector(final ToDoubleFunction<? super T> mapper) {
+		return Collector.of(
+			DoubleMoments::new,
+			(r, t) -> r.accept(mapper.applyAsDouble(t)),
+			DoubleMoments::combine
 		);
 	}
 

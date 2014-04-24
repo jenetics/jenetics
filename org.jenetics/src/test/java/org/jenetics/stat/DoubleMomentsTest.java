@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class MomentsTest {
+public class DoubleMomentsTest {
 
 	private List<Double> numbers(final int size) {
 		final Random random = new Random(123);
@@ -50,16 +50,12 @@ public class MomentsTest {
 		final DescriptiveStatistics expected = new DescriptiveStatistics();
 		numbers.forEach(expected::addValue);
 
-		final Moments<Double> summary = numbers.stream().collect(Moments.collector());
+		final DoubleMoments summary = numbers.stream()
+			.collect(DoubleMoments.collector(Double::doubleValue));
+
 		Assert.assertEquals(summary.getCount(), numbers.size());
-		assertEqualsDouble(
-			summary.getMin() == null ? Double.NaN : summary.getMin(),
-			expected.getMin(), 0.0
-		);
-		assertEqualsDouble(
-			summary.getMax() == null ? Double.NaN : summary.getMax(),
-			expected.getMax(), 0.0
-		);
+		assertEqualsDouble(min(summary.getMin()), expected.getMin(), 0.0);
+		assertEqualsDouble(max(summary.getMax()), expected.getMax(), 0.0);
 		assertEqualsDouble(summary.getSum(), expected.getSum(), epsilon);
 		assertEqualsDouble(summary.getMean(), expected.getMean(), epsilon);
 		assertEqualsDouble(summary.getVariance(), expected.getVariance(), epsilon);
@@ -74,22 +70,25 @@ public class MomentsTest {
 		final DescriptiveStatistics expected = new DescriptiveStatistics();
 		numbers.forEach(expected::addValue);
 
-		final Moments<Double> summary = numbers.parallelStream().collect(Moments.collector());
+		final DoubleMoments summary = numbers.stream()
+			.collect(DoubleMoments.collector(Double::doubleValue));
 
 		Assert.assertEquals(summary.getCount(), numbers.size());
-		assertEqualsDouble(
-			summary.getMin() == null ? Double.NaN : summary.getMin(),
-			expected.getMin(), 0.0
-		);
-		assertEqualsDouble(
-			summary.getMax() == null ? Double.NaN : summary.getMax(),
-			expected.getMax(), 0.0
-		);
+		assertEqualsDouble(min(summary.getMin()), expected.getMin(), 0.0);
+		assertEqualsDouble(max(summary.getMax()), expected.getMax(), 0.0);
 		assertEqualsDouble(summary.getSum(), expected.getSum(), epsilon);
 		assertEqualsDouble(summary.getMean(), expected.getMean(), epsilon);
 		assertEqualsDouble(summary.getVariance(), expected.getVariance(), epsilon);
 		assertEqualsDouble(summary.getSkewness(), expected.getSkewness(), epsilon);
 		assertEqualsDouble(summary.getKurtosis(), expected.getKurtosis(), epsilon);
+	}
+
+	private static double min(final double value) {
+		return value == Double.POSITIVE_INFINITY ? Double.NaN : value;
+	}
+
+	private static double max(final double value) {
+		return value == Double.NEGATIVE_INFINITY ? Double.NaN : value;
 	}
 
 	private static void assertEqualsDouble(final double a, final double b, final double e) {
