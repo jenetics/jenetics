@@ -21,13 +21,18 @@ package org.jenetics.internal.math;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.0 &mdash; <em>$Date: 2014-04-23 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-24 $</em>
  * @since 3.0
  */
-public final class DoubleAdder {
-	public double value = 0.0;
+public final class DoubleAdder
+	extends Number
+	implements Comparable<DoubleAdder>
+{
+	private static final long serialVersionUID = 1L;
 
-	private double compensation = 0.0;
+	private double _sum = 0.0;
+	private double _simpleSum = 0.0;
+	private double _compensation = 0.0;
 
 	public DoubleAdder(final double value) {
 		add(value);
@@ -37,8 +42,9 @@ public final class DoubleAdder {
 	}
 
 	private DoubleAdder reset() {
-		value = 0.0;
-		compensation = 0.0;
+		_sum = 0.0;
+		_simpleSum = 0.0;
+		_compensation = 0.0;
 		return this;
 	}
 
@@ -50,23 +56,64 @@ public final class DoubleAdder {
 		return reset().add(value);
 	}
 
-	public DoubleAdder add(final double v) {
-		final double y = v - compensation;
-		final double t = this.value + y;
-		compensation = (t - this.value) - y;
-		this.value = t;
+	public DoubleAdder add(final double value) {
+		addWithCompensation(value);
+		_simpleSum += value;
 		return this;
 	}
 
+	private void addWithCompensation(final double value) {
+		final double y = value - _compensation;
+		final double t = _sum + y;
+		_compensation = (t - _sum) - y;
+		_sum = t;
+	}
+
 	public DoubleAdder add(final DoubleAdder value) {
-		add(value.value);
-		add(value.compensation);
+		addWithCompensation(value._sum);
+		addWithCompensation(value._compensation);
+		_simpleSum += value._simpleSum;
 		return this;
 	}
 
 	@Override
+	public int intValue() {
+		return (int)doubleValue();
+	}
+
+	@Override
+	public long longValue() {
+		return (long)doubleValue();
+	}
+
+	@Override
+	public float floatValue() {
+		return (float)doubleValue();
+	}
+
+	@Override
+	public double doubleValue() {
+		// Better error bounds to add both terms as the final sum
+		double result =  _sum + _compensation;
+		if (Double.isNaN(result) && Double.isInfinite(_simpleSum)) {
+			// If the compensated sum is spuriously NaN from
+			// accumulating one or more same-signed infinite values,
+			// return the correctly-signed infinity stored in
+			// simpleSum.
+			result = _simpleSum;
+		}
+
+		return result;
+	}
+
+	@Override
+	public int compareTo(final DoubleAdder other) {
+		return Double.compare(doubleValue(), other.doubleValue());
+	}
+
+	@Override
 	public String toString() {
-		return Double.toString(value);
+		return Double.toString(doubleValue());
 	}
 
 }

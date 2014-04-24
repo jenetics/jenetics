@@ -19,15 +19,20 @@
  */
 package org.jenetics.stat;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 import java.util.Objects;
 import java.util.function.DoubleConsumer;
+
+import org.jenetics.internal.math.DoubleAdder;
 
 /**
  * @see <a href="http://people.xiph.org/~tterribe/notes/homs.html">
  *      Computing Higher-Order Moments Online</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.0 &mdash; <em>$Date: 2014-04-23 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-24 $</em>
  * @since 3.0
  */
 public class DoubleMoments extends MomentsBase implements DoubleConsumer {
@@ -35,14 +40,15 @@ public class DoubleMoments extends MomentsBase implements DoubleConsumer {
 	private double _min = Double.POSITIVE_INFINITY;
 	private double _max = Double.NEGATIVE_INFINITY;
 
+	private final DoubleAdder _sum = new DoubleAdder();
+
 	@Override
 	public void accept(final double value) {
-//		_min = Math.min(_min, value);
-//		_max = Math.max(_max, value);
-//
-//		++n;
-//		sum.add(value);
-//		updateMoments(value);
+		update(value);
+
+		_min = min(_min, value);
+		_max = max(_max, value);
+		_sum.add(value);
 	}
 
 	/**
@@ -56,14 +62,13 @@ public class DoubleMoments extends MomentsBase implements DoubleConsumer {
 	 */
 	public DoubleMoments combine(final DoubleMoments other) {
 		Objects.requireNonNull(other);
-		final DoubleMoments result = new DoubleMoments();
 
-		result.n = n + other.n;
-		result._min = Math.min(_min, other._min);
-		result._max = Math.max(_max, other._max);
-		//result.updateSum(sum);
-		//result.updateSum(other.sum);
-		//combineMoments(other, result);
+		final DoubleMoments result = new DoubleMoments();
+		MomentsBase.combine(this, other, result);
+
+		result._min = min(_min, other._min);
+		result._max = max(_max, other._max);
+		result._sum.set(_sum).add(other._sum);
 
 		return result;
 	}
@@ -76,13 +81,17 @@ public class DoubleMoments extends MomentsBase implements DoubleConsumer {
 		return _max;
 	}
 
-//	@Override
-//	public String toString() {
-//		return String.format(
-//			"Summary[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s, s2=%s, S=%s, K=%s]",
-//			n, _min, _max, sum,
-//			getMean(), getVariance(), getSkewness(), getKurtosis()
-//		);
-//	}
+	public double getSum() {
+		return _sum.doubleValue();
+	}
+
+	@Override
+	public String toString() {
+		return String.format(
+			"Summary[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s, s2=%s, S=%s, K=%s]",
+			getCount(), _min, _max, _sum.doubleValue(),
+			getMean(), getVariance(), getSkewness(), getKurtosis()
+		);
+	}
 
 }

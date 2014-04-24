@@ -33,7 +33,7 @@ import org.jenetics.internal.math.DoubleAdder;
  *      Computing Higher-Order Moments Online</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.0 &mdash; <em>$Date: 2014-04-23 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-24 $</em>
  * @since 3.0
  */
 public class Moments<N extends Number & Comparable<? super N>>
@@ -68,15 +68,15 @@ public class Moments<N extends Number & Comparable<? super N>>
 	public Moments<N> combine(final Moments<N> other) {
 		Objects.requireNonNull(other);
 
-		final Moments<N> result = combine(this, other, new Moments<N>());
-		result._sum.add(_sum).add(other._sum);
-		result._min = min(_min, other._min);
-		result._max = max(_max, other._max);
-		return result;
+		final Moments<N> r = (Moments<N>)MomentsBase.combine(this, other, new Moments<N>());
+		r._sum.set(_sum).add(other._sum);
+		r._min = min(_min, other._min);
+		r._max = max(_max, other._max);
+		return r;
 	}
 
 	public double getSum() {
-		return _sum.value;
+		return _sum.doubleValue();
 	}
 
 	public N getMin() {
@@ -91,7 +91,7 @@ public class Moments<N extends Number & Comparable<? super N>>
 	public String toString() {
 		return String.format(
 			"Summary[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s, s2=%s, S=%s, K=%s]",
-			n, _min, _max, _sum,
+			getCount(), _min, _max, _sum,
 			getMean(), getVariance(), getSkewness(), getKurtosis()
 		);
 	}

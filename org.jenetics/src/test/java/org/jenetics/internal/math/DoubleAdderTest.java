@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-23 $</em>
+ * @version <em>$Date: 2014-04-24 $</em>
  */
 public class DoubleAdderTest {
 
@@ -51,7 +51,7 @@ public class DoubleAdderTest {
 			.collect(summarizingDouble(Double::doubleValue))
 			.getSum();
 
-		Assert.assertEquals(adder.value, expectedSum);
+		Assert.assertEquals(adder.doubleValue(), expectedSum);
 
 		double naiveSum = 0;
 		for (Double value : numbers) {

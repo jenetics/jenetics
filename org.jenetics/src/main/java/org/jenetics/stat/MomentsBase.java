@@ -26,77 +26,83 @@ import org.jenetics.internal.math.DoubleAdder;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.0 &mdash; <em>$Date: 2014-04-23 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-24 $</em>
  * @since 3.0
  */
 class MomentsBase {
 
 	// the sample count.
-	long n = 0L;
+	private long _n = 0L;
 
 	// Variables used for statistical moments.
-	final DoubleAdder m1 = new DoubleAdder();
-	final DoubleAdder m2 = new DoubleAdder();
-	final DoubleAdder m3 = new DoubleAdder();
-	final DoubleAdder m4 = new DoubleAdder();
+	private final DoubleAdder _m1 = new DoubleAdder();
+	private final DoubleAdder _m2 = new DoubleAdder();
+	private final DoubleAdder _m3 = new DoubleAdder();
+	private final DoubleAdder _m4 = new DoubleAdder();
+
 
 	void update(final double value) {
-		++n;
+		++_n;
 
-		final double d = value - m1.value;
-		final double dN = d/ n;
+		final double n = _n;
+		final double d = value - _m1.doubleValue();
+		final double dN = d/n;
 		final double dN2 = dN*dN;
 		final double t1 = d*dN*(n - 1.0);
 
-		m1.add(dN);
-		m4.add(t1*dN2*(n*n - 3.0*n + 3.0)).add(6.0 * dN2 * m2.value - 4.0 * dN * m3.value);
-		m3.add(t1*dN*(n - 2.0) - 3.0*dN*m2.value);
-		m2.add(t1);
+		_m1.add(dN);
+		_m4.add(t1*dN2*(n*n - 3.0*n + 3.0))
+			.add(6.0 * dN2 * _m2.doubleValue() - 4.0 * dN * _m3.doubleValue());
+		_m3.add(t1*dN*(n - 2.0) - 3.0*dN*_m2.doubleValue());
+		_m2.add(t1);
 	}
 
 	/**
 	 * @see <a href="http://people.xiph.org/~tterribe/notes/homs.html">
 	 *      Computing Higher-Order Moments Online</a>
 	 */
-	static <M extends MomentsBase> M combine(final M a, final M b, final M r) {
-		final double d = b.m1.value - a.m1.value;
+	static void combine(
+		final MomentsBase a,
+		final MomentsBase b,
+		final MomentsBase r
+	) {
+		final double d = b._m1.doubleValue() - a._m1.doubleValue();
 		final double d2 = d*d;
 		final double d3 = d2*d;
 		final double d4 = d3*d;
 
-		r.n = a.n + b.n;
+		r._n = a._n + b._n;
 
-		r.m1.set(a.m1).add(d*b.n/(double)r.n);
+		r._m1.set(a._m1).add(d*b._n/(double)r._n);
 
-		r.m2.set(a.m2).add(b.m2)
-			.add(d2*a.n *b.n/(double)r.n);
+		r._m2.set(a._m2).add(b._m2)
+			.add(d2*a._n*b._n/(double)r._n);
 
-		r.m3.set(a.m3).add(b.m3)
-			.add(d3*(a.n*b.n*(a.n - b.n)/(r.n*r.n)))
-			.add(3*d*(a.n*b.m2.value - b.n*a.m2.value)/r.n);
+		r._m3.set(a._m3).add(b._m3)
+			.add(d3*(a._n*b._n*(a._n - b._n)/(r._n*r._n)))
+			.add(3.0*d*(a._n*b._m2.doubleValue() - b._n*a._m2.doubleValue())/r._n);
 
-		r.m4.set(a.m4).add(b.m4)
-			.add(d4*(a.n*b.n*(a.n*a.n - a.n*b.n + b.n*b.n)/(r.n*r.n*r.n)))
-			.add(6.0*d*d*(a.n*a.n*b.m2.value + b.n*b.n*a.m2.value)/(r.n*r.n))
-			.add(4.0*d*(a.n*b.m3.value - b.n*a.m3.value)/r.n);
-
-		return r;
+		r._m4.set(a._m4).add(b._m4)
+			.add(d4*(a._n*b._n*(a._n*a._n - a._n*b._n + b._n*b._n)/(r._n*r._n*r._n)))
+			.add(6.0*d*d*(a._n*a._n*b._m2.doubleValue() +
+						b._n*b._n*a._m2.doubleValue())/(r._n*r._n))
+			.add(4.0*d*(a._n*b._m3.doubleValue() - b._n*a._m3.doubleValue())/r._n);
 	}
 
 	public long getCount() {
-		return n;
+		return _n;
 	}
 
 	public double getMean() {
-		return n == 0 ? NaN : m1.value;
+		return _n == 0L ? NaN : _m1.doubleValue();
 	}
 
 	public double getVariance() {
 		double var = NaN;
-		if (n == 1) {
-			var = m2.value;
-		} else if (n > 1) {
-			var = m2.value/(n - 1);
+		if (_n == 1L) {
+			var = _m2.doubleValue();
+		} else if (_n > 1L) {
+			var = _m2.doubleValue()/(_n - 1.0);
 		}
 
 		return var;
@@ -104,12 +110,12 @@ class MomentsBase {
 
 	public double getSkewness() {
 		double skewness = NaN;
-		if (n >= 3) {
-			final double var = m2.value/(n - 1);
+		if (_n >= 3L) {
+			final double var = _m2.doubleValue()/(_n - 1.0);
 			if (var < 10E-20) {
 				skewness = 0.0d;
 			} else {
-				skewness = (n*m3.value)/((n - 1.0)*(n - 2.0)*sqrt(var)*var);
+				skewness = (_n*_m3.doubleValue())/((_n - 1.0)*(_n - 2.0)*sqrt(var)*var);
 			}
 		}
 
@@ -118,14 +124,14 @@ class MomentsBase {
 
 	public double getKurtosis() {
 		double kurtosis = NaN;
-		if (n > 3) {
-			final double var = m2.value/(n - 1);
-			if (n <= 3 || var < 10E-20) {
+		if (_n > 3L) {
+			final double var = _m2.doubleValue()/(_n - 1);
+			if (_n <= 3L || var < 10E-20) {
 				kurtosis = 0.0;
 			} else {
-				kurtosis = (n*(n + 1.0)*m4.value -
-					3*m2.value*m2.value*(n - 1.0))/
-					((n - 1.0)*(n - 2.0)*(n - 3.0)*var*var);
+				kurtosis = (_n*(_n + 1.0)*_m4.doubleValue() -
+					3.0*_m2.doubleValue()*_m2.doubleValue()*(_n - 1.0))/
+					((_n - 1.0)*(_n - 2.0)*(_n - 3.0)*var*var);
 			}
 		}
 		return kurtosis;
