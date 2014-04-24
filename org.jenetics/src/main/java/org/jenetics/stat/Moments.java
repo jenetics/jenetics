@@ -26,10 +26,10 @@ import org.jenetics.internal.math.DoubleAdder;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.0 &mdash; <em>$Date: 2014-04-24 $</em>
+ * @version 3.0 &mdash; <em>$Date$</em>
  * @since 3.0
  */
-class MomentsBase {
+class Moments {
 
 	// the sample count.
 	private long _n = 0L;
@@ -62,9 +62,9 @@ class MomentsBase {
 	 *      Computing Higher-Order Moments Online</a>
 	 */
 	static void combine(
-		final MomentsBase a,
-		final MomentsBase b,
-		final MomentsBase r
+		final Moments a,
+		final Moments b,
+		final Moments r
 	) {
 		final double d = b._m1.doubleValue() - a._m1.doubleValue();
 		final double d2 = d*d;

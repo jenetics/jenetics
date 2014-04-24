@@ -37,7 +37,7 @@ import org.jenetics.internal.math.DoubleAdder;
  * @version 3.0 &mdash; <em>$Date: 2014-04-24 $</em>
  * @since 3.0
  */
-public class DoubleMoments extends MomentsBase implements DoubleConsumer {
+public class DoubleMoments extends Moments implements DoubleConsumer {
 
 	private double _min = Double.POSITIVE_INFINITY;
 	private double _max = Double.NEGATIVE_INFINITY;
@@ -66,7 +66,7 @@ public class DoubleMoments extends MomentsBase implements DoubleConsumer {
 		Objects.requireNonNull(other);
 
 		final DoubleMoments result = new DoubleMoments();
-		MomentsBase.combine(this, other, result);
+		Moments.combine(this, other, result);
 
 		result._min = min(_min, other._min);
 		result._max = max(_max, other._max);
