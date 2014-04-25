@@ -31,8 +31,10 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collector;
 
 import org.jenetics.internal.util.Concurrency;
 
@@ -135,7 +137,7 @@ import org.jenetics.util.Timer;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-21 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-25 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,
@@ -663,6 +665,14 @@ public class GeneticAlgorithm<
 		return population;
 	}
 
+	public <T> T collect(final Collector<Phenotype<G, C>, ?, T> collector) {
+		return _population.parallelStream().collect(collector);
+	}
+
+	public <T> T collect(final BiFunction<Integer, Optimize, Collector<Phenotype<G, C>, ?, T>> f) {
+		return collect(f.apply(getGeneration(), getOptimization()));
+	}
+
 	private int getNumberOfSurvivors() {
 		return _populationSize - getNumberOfOffspring();
 	}
@@ -878,6 +888,10 @@ public class GeneticAlgorithm<
 	 */
 	public int getGeneration() {
 		return _generation;
+	}
+
+	public Optimize getOptimization() {
+		return _optimization;
 	}
 
 	/**

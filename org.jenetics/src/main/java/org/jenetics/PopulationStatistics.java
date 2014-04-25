@@ -19,109 +19,77 @@
  */
 package org.jenetics;
 
-import java.util.Set;
-import java.util.function.BiConsumer;
-import java.util.function.BinaryOperator;
-import java.util.function.Function;
-import java.util.function.Supplier;
+import static java.util.Objects.requireNonNull;
+import static org.jenetics.internal.math.statistics.max;
+import static org.jenetics.internal.math.statistics.min;
+
+import java.util.function.Consumer;
+import java.util.stream.Collector;
+
+import org.jenetics.stat.IntMoments;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.0 &mdash; <em>$Date: 2014-04-21 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-25 $</em>
  * @since 3.0
  */
-public interface PopulationStatistics<
+public class PopulationStatistics<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
+	implements Consumer<Phenotype<G, C>>
 {
-	/*
-	protected Optimize _optimize = Optimize.MAXIMUM;
-	protected int _generation = 0;
-	protected Phenotype<G, C> _best = null;
-	protected Phenotype<G, C> _worst = null;
-	protected int _samples = 0;
-	protected double _ageMean = NaN;
-	protected double _ageVariance = NaN;
-	protected int _killed = 0;
-	protected int _invalid = 0;
-	*/
 
-	public Phenotype<G, C> getBestPhenotype();
+	private final int _generation;
+	private final Optimize _optimize;
 
-	public Phenotype<G, C> getWorstPhenotype();
+	private Phenotype<G, C> _min = null;
+	private Phenotype<G, C> _max = null;
 
-	//public Moment<Double> getAgeMoment();
+	private final IntMoments _ageMoments = new IntMoments();
 
-	public double getAgeMean();
-
-	public double getAgeVariance();
-
-	public int getPopulationSize();
-
-
-	public static class MStats<
-		G extends Gene<?, G>,
-		C extends Comparable<? super C>
-	>
-	{
-		public Phenotype<G, C> bestPhenotype;
-		public Phenotype<G, C> worstPhenotype;
+	public PopulationStatistics(final int generation, final Optimize optimize) {
+		_generation = generation;
+		_optimize = requireNonNull(optimize);
 	}
 
-	public static class Collector<
-		G extends Gene<?, G>,
-		C extends Comparable<? super C>
-	>
-		implements java.util.stream.Collector<Phenotype<G, C>, MStats<G, C>, PopulationStatistics<G, C>>
-	{
-		@Override
-		public Supplier<MStats<G, C>> supplier() {
-			return () -> new MStats<>();
-		}
-
-		@Override
-		public BiConsumer<MStats<G, C>, Phenotype<G, C>> accumulator() {
-			return (ms, pt) -> {
-				if (pt.compareTo(ms.bestPhenotype) > 0) {
-					ms.bestPhenotype = pt;
-				}
-				if (pt.compareTo(ms.worstPhenotype) < 0) {
-					ms.worstPhenotype = pt;
-				}
-			};
-		}
-
-		@Override
-		public BinaryOperator<MStats<G, C>> combiner() {
-			return (ms1, ms2) -> {
-				final MStats<G, C> result = new MStats<>();
-				if (ms1.bestPhenotype.compareTo(ms2.bestPhenotype) > 0) {
-					result.bestPhenotype = ms1.bestPhenotype;
-				} else {
-					result.bestPhenotype = ms2.bestPhenotype;
-				}
-				if (ms1.worstPhenotype.compareTo(ms2.worstPhenotype) < 0) {
-					result.worstPhenotype = ms1.worstPhenotype;
-				} else {
-					result.worstPhenotype = ms2.worstPhenotype;
-				}
-
-				return result;
-			};
-		}
-
-		@Override
-		public Function<MStats<G, C>, PopulationStatistics<G, C>> finisher() {
-			return ms -> {
-				return (PopulationStatistics<G, C>)null;
-			};
-		}
-
-		@Override
-		public Set<Characteristics> characteristics() {
-			return null;
-		}
+	@Override
+	public void accept(final Phenotype<G, C> phenotype) {
+		_ageMoments.accept(phenotype.getAge(_generation));
+		_min = min(_min, phenotype);
+		_max = max(_max, phenotype);
 	}
 
+	public PopulationStatistics<G, C> combine(final PopulationStatistics<G, C> statistics) {
+		final PopulationStatistics<G, C> result =
+			new PopulationStatistics<>(_generation, _optimize);
+
+		result._ageMoments.set(_ageMoments.combine(statistics._ageMoments));
+		result._min = min(_min, statistics._min);
+		result._max = max(_max, statistics._max);
+
+		return result;
+	}
+
+	public IntMoments getAgeMoments() {
+		return _ageMoments;
+	}
+
+	public Phenotype<G, C> getWorst() {
+		return (_min != null && _max != null) ? _optimize.worst(_min, _max) : null;
+	}
+
+	public Phenotype<G, C> getBest() {
+		return (_min != null && _max != null) ? _optimize.best(_min, _max) : null;
+	}
+
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Collector<Phenotype<G, C>, ?, PopulationStatistics<G, C>>
+	collector(final int generation, final Optimize optimize) {
+		return Collector.of(
+			() -> new PopulationStatistics<>(generation, optimize),
+			PopulationStatistics::accept,
+			PopulationStatistics::combine
+		);
+	}
 }

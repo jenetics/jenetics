@@ -37,7 +37,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-04-24 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-25 $</em>
  */
 public class DoubleMoments extends Moments implements DoubleConsumer {
 
@@ -53,6 +53,14 @@ public class DoubleMoments extends Moments implements DoubleConsumer {
 		_min = min(_min, value);
 		_max = max(_max, value);
 		_sum.add(value);
+	}
+
+	public DoubleMoments set(final DoubleMoments moments) {
+		super.set(moments);
+		_min = moments._min;
+		_max = moments._max;
+		_sum.set(moments._sum);
+		return this;
 	}
 
 	/**

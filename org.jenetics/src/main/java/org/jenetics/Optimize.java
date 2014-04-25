@@ -27,7 +27,7 @@ import java.util.Comparator;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-04-21 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-25 $</em>
  */
 public enum Optimize {
 
@@ -37,9 +37,9 @@ public enum Optimize {
 	MINIMUM {
 		@Override
 		public <T extends Comparable<? super T>>
-		int compare(final T o1, final T o2)
+		int compare(final T a, final T b)
 		{
-			return o2.compareTo(o1);
+			return b.compareTo(a);
 		}
 	},
 
@@ -111,7 +111,7 @@ public enum Optimize {
 	 * @return a new {@link Comparator} for the type {@code T}.
 	 */
 	public <T extends Comparable<? super T>> Comparator<T> ascending() {
-		return (o1, o2) -> Optimize.this.compare(o1, o2);
+		return this::compare;
 	}
 
 	/**

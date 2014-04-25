@@ -28,7 +28,7 @@ import org.jenetics.internal.util.Hash;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.0 &mdash; <em>$Date: 2014-04-24 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-25 $</em>
  * @since 3.0
  */
 class Moments {
@@ -57,6 +57,14 @@ class Moments {
 			.add(6.0 * dN2 * _m2.doubleValue() - 4.0 * dN * _m3.doubleValue());
 		_m3.add(t1*dN*(n - 2.0) - 3.0*dN*_m2.doubleValue());
 		_m2.add(t1);
+	}
+
+	void set(final Moments moments) {
+		_n = moments._n;
+		_m1.set(moments._m1);
+		_m2.set(moments._m2);
+		_m3.set(moments._m3);
+		_m4.set(moments._m4);
 	}
 
 	/**
