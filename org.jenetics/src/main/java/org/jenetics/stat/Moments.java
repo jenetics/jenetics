@@ -28,6 +28,8 @@ import org.jenetics.internal.math.DoubleAdder;
 import org.jenetics.internal.util.Hash;
 
 /**
+ * Base class for statistical moments calculation.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version 3.0 &mdash; <em>$Date: 2014-04-29 $</em>
  * @since 3.0
@@ -44,7 +46,12 @@ class Moments {
 	private final DoubleAdder _m4 = new DoubleAdder();
 
 
-	void update(final double value) {
+	/**
+	 * Update the moments with the given {@code value}.
+	 *
+	 * @param value the value which is used to update this statistical moments.
+	 */
+	void accept(final double value) {
 		++_n;
 
 		final double n = _n;
@@ -61,6 +68,8 @@ class Moments {
 	}
 
 	/**
+	 * Combines the state of another {@code Moments} object into this one.
+	 *
 	 * @see <a href="http://people.xiph.org/~tterribe/notes/homs.html">
 	 *      Computing Higher-Order Moments Online</a>
 	 */
@@ -71,33 +80,50 @@ class Moments {
 		final double d3 = d2*d;
 		final double d4 = d3*d;
 
-		final double an = _n;
-		_n = _n + b._n;
+		final double pn = _n;
+		_n += b._n;
 
-		_m1.add(d * b._n / (double) _n);
+		_m1.add(d*b._n/(double)_n);
 
 		_m2.add(b._m2)
-			.add(d2 * an * b._n / (double) _n);
+			.add(d2*pn*b._n/(double)_n);
 
 		_m3.add(b._m3)
-			.add(d3*(an*b._n*(an - b._n)/(_n*_n)))
-			.add(3.0 * d * (an * b._m2.doubleValue() - b._n * _m2.doubleValue()) / _n);
+			.add(d3*(pn*b._n*(pn - b._n)/(_n*_n)))
+			.add(3.0*d*(pn*b._m2.doubleValue() - b._n*_m2.doubleValue())/_n);
 
 		_m4.add(b._m4)
-			.add(d4*(an*b._n*(an*an - an*b._n + b._n*b._n)/(_n*_n*_n)))
-			.add(6.0*d*d*(an*an*b._m2.doubleValue() +
+			.add(d4*(pn*b._n*(pn*pn - pn*b._n + b._n*b._n)/(_n*_n*_n)))
+			.add(6.0*d*d*(pn*pn*b._m2.doubleValue() +
 				b._n*b._n*_m2.doubleValue())/(_n*_n))
-			.add(4.0 * d * (an * b._m3.doubleValue() - b._n * _m3.doubleValue()) / _n);
+			.add(4.0*d*(pn*b._m3.doubleValue() - b._n*_m3.doubleValue())/_n);
 	}
 
+	/**
+	 * Returns the count of values recorded.
+	 *
+	 * @return the count of recorded values
+	 */
 	public long getCount() {
 		return _n;
 	}
 
+	/**
+	 * Return the arithmetic mean of values recorded, or zero if no values have
+	 * been recorded.
+	 *
+	 * @return the arithmetic mean of values, or zero if none
+	 */
 	public double getMean() {
 		return _n == 0L ? NaN : _m1.doubleValue();
 	}
 
+	/**
+	 * Return the variance of values recorded, or {@code Double.NaN} if no
+	 * values have been recorded.
+	 *
+	 * @return the variance of values, or {@code NaN} if none
+	 */
 	public double getVariance() {
 		double var = NaN;
 		if (_n == 1L) {
@@ -109,6 +135,15 @@ class Moments {
 		return var;
 	}
 
+	/**
+	 * Return the skewness of values recorded, or {@code Double.NaN} if less
+	 * than two values have been recorded.
+	 *
+	 * @see <a href="https://en.wikipedia.org/wiki/Skewness">Skewness</a>
+	 *
+	 * @return the skewness of values, or {@code NaN} if less than two values
+	 *         have been recorded
+	 */
 	public double getSkewness() {
 		double skewness = NaN;
 		if (_n >= 3L) {
@@ -116,13 +151,23 @@ class Moments {
 			if (var < 10E-20) {
 				skewness = 0.0d;
 			} else {
-				skewness = (_n*_m3.doubleValue())/((_n - 1.0)*(_n - 2.0)*sqrt(var)*var);
+				skewness = (_n*_m3.doubleValue())/
+						((_n - 1.0)*(_n - 2.0)*sqrt(var)*var);
 			}
 		}
 
 		return skewness;
 	}
 
+	/**
+	 * Return the kurtosis of values recorded, or {@code Double.NaN} if less
+	 * than four values have been recorded.
+	 *
+	 * @see <a href="https://en.wikipedia.org/wiki/Kurtosis">Kurtosis</a>
+	 *
+	 * @return the kurtosis of values, or {@code NaN} if less than four values
+	 *         have been recorded
+	 */
 	public double getKurtosis() {
 		double kurtosis = NaN;
 		if (_n > 3L) {

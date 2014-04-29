@@ -31,6 +31,19 @@ import org.jenetics.internal.math.DoubleAdder;
 import org.jenetics.internal.util.Hash;
 
 /**
+ * A state object for collecting statistics such as count, min, max, sum, mean,
+ * variance, skewness and kurtosis. The design of this class is similar to the
+ * {@link java.util.DoubleSummaryStatistics} class.
+ * <p>
+ * <b>Implementation note:</b>
+ * <i>This implementation is not thread safe. However, it is safe to use
+ * {@link #collector(java.util.function.ToDoubleFunction)}  on a parallel stream,
+ * because the parallel implementation of
+ * {@link java.util.stream.Stream#collect Stream.collect()}
+ * provides the necessary partitioning, isolation, and merging of results for
+ * safe and efficient parallel execution.</i>
+ *
+ * @see java.util.DoubleSummaryStatistics
  * @see <a href="http://people.xiph.org/~tterribe/notes/homs.html">
  *      Computing Higher-Order Moments Online</a>
  *
@@ -45,10 +58,20 @@ public class DoubleMoments extends Moments implements DoubleConsumer {
 
 	private final DoubleAdder _sum = new DoubleAdder();
 
+	/**
+	 * Create an empty moments object.
+	 */
+	public DoubleMoments() {
+	}
+
+	/**
+	 * Records a new value into the moments information
+	 *
+	 * @param value the input {@code value}
+	 */
 	@Override
 	public void accept(final double value) {
-		update(value);
-
+		super.accept(value);
 		_min = min(_min, value);
 		_max = max(_max, value);
 		_sum.add(value);
@@ -68,14 +91,32 @@ public class DoubleMoments extends Moments implements DoubleConsumer {
 		_max = max(_max, other._max);
 	}
 
+	/**
+	 * Return the minimum value recorded, or {@code Double.POSITIVE_INFINITY} if
+	 * no values have been recorded.
+	 *
+	 * @return the minimum value, or {@code Double.POSITIVE_INFINITY} if none
+	 */
 	public double getMin() {
 		return _min;
 	}
 
+	/**
+	 * Return the maximum value recorded, or {@code Double.NEGATIVE_INFINITY} if
+	 * no values have been recorded.
+	 *
+	 * @return the maximum value, or {@code Double.NEGATIVE_INFINITY} if none
+	 */
 	public double getMax() {
 		return _max;
 	}
 
+	/**
+	 * Return the sum of values recorded, or zero if no values have been
+	 * recorded.
+	 *
+	 * @return the sum of values, or zero if none
+	 */
 	public double getSum() {
 		return _sum.doubleValue();
 	}
@@ -114,7 +155,22 @@ public class DoubleMoments extends Moments implements DoubleConsumer {
 		);
 	}
 
-
+	/**
+	 * Return a {@code Collector} which applies an long-producing mapping
+	 * function to each input element, and returns moments-statistics for the
+	 * resulting values.
+	 *
+	 * [code]
+	 * final DoubleMoments moments = objects.stream()
+	 *     .collect(doubleMoments.collector(v -&gt; v.doubleValue()));
+	 * [/code]
+	 *
+	 * @param mapper a mapping function to apply to each element
+	 * @param <T> the type of the input elements
+	 * @return a {@code Collector} implementing the moments-statistics reduction
+	 * @throws java.lang.NullPointerException if the given {@code mapper} is
+	 *         {@code null}
+	 */
 	public static <T> Collector<T, ?, DoubleMoments>
 	collector(final ToDoubleFunction<? super T> mapper) {
 		return Collector.of(
