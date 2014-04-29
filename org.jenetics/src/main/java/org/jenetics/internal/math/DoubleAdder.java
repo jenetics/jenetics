@@ -19,14 +19,20 @@
  */
 package org.jenetics.internal.math;
 
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.object.eq;
 
 import org.jenetics.internal.util.Hash;
 
 /**
+ * This class implements the the
+ * <a href="http://en.wikipedia.org/wiki/Kahan_summation_algorithm">Kahan
+ * summation algorithm</a>, which significantly reduces the numerical error when
+ * adding double values.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-04-24 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-29 $</em>
  */
 public final class DoubleAdder
 	extends Number
@@ -38,13 +44,26 @@ public final class DoubleAdder
 	private double _simpleSum = 0.0;
 	private double _compensation = 0.0;
 
+	/**
+	 * Create a new adder with the given default {@code value}.
+	 *
+	 * @param value the initial {@code value} of this adder.
+	 */
 	public DoubleAdder(final double value) {
 		add(value);
 	}
 
+	/**
+	 * Create a new adder with the initial value of {@code 0.0}.
+	 */
 	public DoubleAdder() {
 	}
 
+	/**
+	 * Reset the adder to the initial value of {@code 0.0}.
+	 *
+	 * @return {@code this} adder, for command chaining
+	 */
 	private DoubleAdder reset() {
 		_sum = 0.0;
 		_simpleSum = 0.0;
@@ -52,14 +71,36 @@ public final class DoubleAdder
 		return this;
 	}
 
+	/**
+	 * Set the adder to the given {@code value}.
+	 *
+	 * @param value the new adder value
+	 * @return {@code this} adder, for command chaining
+	 */
 	public DoubleAdder set(final double value) {
 		return reset().add(value);
 	}
 
+	/**
+	 * Set the adder to the given {@code value}.
+	 *
+	 * @param value the new adder value
+	 * @return {@code this} adder, for command chaining
+	 * @throws java.lang.NullPointerException if the given {@code value} is
+	 *         {@code null}
+	 */
 	public DoubleAdder set(final DoubleAdder value) {
-		return reset().add(value);
+		return reset().add(requireNonNull(value));
 	}
 
+	/**
+	 * Add the given {@code value} to this adder, using the
+	 * <a href="http://en.wikipedia.org/wiki/Kahan_summation_algorithm">Kahan
+	 * summation algorithm</a>
+	 *
+	 * @param value the {@code value} to add
+	 * @return {@code this} adder, for command chaining
+	 */
 	public DoubleAdder add(final double value) {
 		addWithCompensation(value);
 		_simpleSum += value;
@@ -73,6 +114,16 @@ public final class DoubleAdder
 		_sum = t;
 	}
 
+	/**
+	 * Add the given {@code value} to this adder, using the
+	 * <a href="http://en.wikipedia.org/wiki/Kahan_summation_algorithm">Kahan
+	 * summation algorithm</a>
+	 *
+	 * @param value the {@code value} to add
+	 * @return {@code this} adder, for command chaining
+	 * @throws java.lang.NullPointerException if the given {@code value} is
+	 *         {@code null}
+	 */
 	public DoubleAdder add(final DoubleAdder value) {
 		addWithCompensation(value._sum);
 		addWithCompensation(value._compensation);
