@@ -137,7 +137,7 @@ import org.jenetics.util.Timer;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-25 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-04-29 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,
@@ -669,8 +669,8 @@ public class GeneticAlgorithm<
 		return _population.parallelStream().collect(collector);
 	}
 
-	public <T> T collect(final BiFunction<Integer, Optimize, Collector<Phenotype<G, C>, ?, T>> f) {
-		return collect(f.apply(getGeneration(), getOptimization()));
+	public <T> T collect(final Function<GeneticAlgorithm<G, C>, Collector<Phenotype<G, C>, ?, T>> f) {
+		return collect(f.apply(this));
 	}
 
 	private int getNumberOfSurvivors() {

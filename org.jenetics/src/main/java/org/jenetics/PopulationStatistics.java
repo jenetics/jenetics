@@ -19,77 +19,128 @@
  */
 package org.jenetics;
 
-import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.math.statistics.max;
-import static org.jenetics.internal.math.statistics.min;
-
-import java.util.function.Consumer;
+import java.util.IntSummaryStatistics;
 import java.util.stream.Collector;
 
-import org.jenetics.stat.IntMoments;
+import org.jenetics.stat.MinMax;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.0 &mdash; <em>$Date: 2014-04-25 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-29 $</em>
  * @since 3.0
  */
-public class PopulationStatistics<
+public final class PopulationStatistics<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	implements Consumer<Phenotype<G, C>>
 {
 
-	private final int _generation;
-	private final Optimize _optimize;
+	private final Phenotype<G, C> _best;
+	private final Phenotype<G, C> _worst;
 
-	private Phenotype<G, C> _min = null;
-	private Phenotype<G, C> _max = null;
+	private final int _samples;
+	private final int _ageMin;
+	private final int _ageMax;
+	private final long _ageSum;
+	private final double _ageMean;
 
-	private final IntMoments _ageMoments = new IntMoments();
-
-	public PopulationStatistics(final int generation, final Optimize optimize) {
-		_generation = generation;
-		_optimize = requireNonNull(optimize);
-	}
-
-	@Override
-	public void accept(final Phenotype<G, C> phenotype) {
-		_ageMoments.accept(phenotype.getAge(_generation));
-		_min = min(_min, phenotype);
-		_max = max(_max, phenotype);
-	}
-
-	public PopulationStatistics<G, C> combine(final PopulationStatistics<G, C> statistics) {
-		final PopulationStatistics<G, C> result =
-			new PopulationStatistics<>(_generation, _optimize);
-
-		result._ageMoments.set(_ageMoments.combine(statistics._ageMoments));
-		result._min = min(_min, statistics._min);
-		result._max = max(_max, statistics._max);
-
-		return result;
-	}
-
-	public IntMoments getAgeMoments() {
-		return _ageMoments;
+	private PopulationStatistics(
+		final Phenotype<G, C> best,
+		final Phenotype<G, C> worst,
+		final int samples,
+		final int ageMin,
+		final int ageMax,
+		final long ageSum,
+		final double ageMean
+	) {
+		_best = best;
+		_worst = worst;
+		_samples = samples;
+		_ageMin = ageMin;
+		_ageMax = ageMax;
+		_ageSum = ageSum;
+		_ageMean = ageMean;
 	}
 
 	public Phenotype<G, C> getWorst() {
-		return (_min != null && _max != null) ? _optimize.worst(_min, _max) : null;
+		return _worst;
 	}
 
 	public Phenotype<G, C> getBest() {
-		return (_min != null && _max != null) ? _optimize.best(_min, _max) : null;
+		return _best;
+	}
+
+	public int getSamples() {
+		return _samples;
+	}
+
+	public int getAgeMin() {
+		return _ageMin;
+	}
+
+	public int getAgeMax() {
+		return _ageMax;
+	}
+
+	public double getAgeSum() {
+		return _ageSum;
+	}
+
+	public double getAgeMean() {
+		return _ageMean;
+	}
+
+
+	private static final class Calculator<
+		G extends Gene<?, G>,
+		C extends Comparable<? super C>
+	>
+	{
+		private final Optimize _optimize;
+		private final int _generation;
+
+		private final MinMax<Phenotype<G, C>> _minMax = new MinMax<>();
+		private final IntSummaryStatistics _age = new IntSummaryStatistics();
+
+		Calculator(final Optimize optimize, final int generation) {
+			_optimize = optimize;
+			_generation = generation;
+		}
+
+		void accept(final Phenotype<G, C> pt) {
+			_minMax.accept(pt);
+			_age.accept(pt.getAge(_generation));
+		}
+
+		void combine(final Calculator<G, C> other) {
+			_minMax.combine(other._minMax);
+			_age.combine(other._age);
+		}
+
+		PopulationStatistics<G, C> finish() {
+			return new PopulationStatistics<G, C>(
+				(_minMax.getMin() != null) ?
+					_optimize.worst(_minMax.getMin(), _minMax.getMax()) : null,
+				(_minMax.getMax() != null) ?
+					_optimize.best(_minMax.getMin(), _minMax.getMax()) : null,
+				(int)_age.getCount(),
+				_age.getMin(),
+				_age.getMax(),
+				_age.getSum(),
+				_age.getAverage()
+			);
+		}
 	}
 
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Collector<Phenotype<G, C>, ?, PopulationStatistics<G, C>>
-	collector(final int generation, final Optimize optimize) {
-		return Collector.of(
-			() -> new PopulationStatistics<>(generation, optimize),
-			PopulationStatistics::accept,
-			PopulationStatistics::combine
+	collector(final GeneticAlgorithm<G, C> ga)
+	{
+		return Collector.<Phenotype<G, C>, Calculator<G, C>, PopulationStatistics<G, C>>of(
+			() -> new Calculator<>(ga.getOptimization(), ga.getGeneration()),
+			Calculator::accept,
+			(a, b) -> {a.combine(b); return a;},
+			Calculator::finish
 		);
 	}
 }
