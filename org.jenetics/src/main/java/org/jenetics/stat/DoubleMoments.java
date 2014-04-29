@@ -23,7 +23,6 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static org.jenetics.internal.util.object.eq;
 
-import java.util.Objects;
 import java.util.function.DoubleConsumer;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
@@ -37,7 +36,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-04-25 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-29 $</em>
  */
 public class DoubleMoments extends Moments implements DoubleConsumer {
 
@@ -55,34 +54,18 @@ public class DoubleMoments extends Moments implements DoubleConsumer {
 		_sum.add(value);
 	}
 
-	public DoubleMoments set(final DoubleMoments moments) {
-		super.set(moments);
-		_min = moments._min;
-		_max = moments._max;
-		_sum.set(moments._sum);
-		return this;
-	}
-
 	/**
 	 * Combine two {@code DoubleMoments} statistic objects.
 	 *
 	 * @param other the other {@code DoubleMoments} statistics to combine with
 	 *        {@code this} one.
-	 * @return a new statistical objects.
 	 * @throws java.lang.NullPointerException if the other statistical summary
 	 *         is {@code null}.
 	 */
-	public DoubleMoments combine(final DoubleMoments other) {
-		Objects.requireNonNull(other);
-
-		final DoubleMoments result = new DoubleMoments();
-		Moments.combine(this, other, result);
-
-		result._min = min(_min, other._min);
-		result._max = max(_max, other._max);
-		result._sum.set(_sum).add(other._sum);
-
-		return result;
+	public void combine(final DoubleMoments other) {
+		super.combine(other);
+		_min = min(_min, other._min);
+		_max = max(_max, other._max);
 	}
 
 	public double getMin() {
@@ -137,7 +120,7 @@ public class DoubleMoments extends Moments implements DoubleConsumer {
 		return Collector.of(
 			DoubleMoments::new,
 			(r, t) -> r.accept(mapper.applyAsDouble(t)),
-			DoubleMoments::combine
+			(a, b) -> {a.combine(b); return a;}
 		);
 	}
 

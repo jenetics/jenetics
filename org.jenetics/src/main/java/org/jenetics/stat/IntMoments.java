@@ -23,7 +23,6 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static org.jenetics.internal.util.object.eq;
 
-import java.util.Objects;
 import java.util.function.IntConsumer;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collector;
@@ -36,7 +35,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-04-25 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-29 $</em>
  */
 public class IntMoments extends Moments implements IntConsumer {
 
@@ -53,14 +52,6 @@ public class IntMoments extends Moments implements IntConsumer {
 		_sum += value;
 	}
 
-	public IntMoments set(final IntMoments moments) {
-		super.set(moments);
-		_min = moments._min;
-		_max = moments._max;
-		_sum = moments._sum;
-		return this;
-	}
-
 	/**
 	 * Combine two {@code DoubleMoments} statistic objects.
 	 *
@@ -70,17 +61,10 @@ public class IntMoments extends Moments implements IntConsumer {
 	 * @throws java.lang.NullPointerException if the other statistical summary
 	 *         is {@code null}.
 	 */
-	public IntMoments combine(final IntMoments other) {
-		Objects.requireNonNull(other);
-
-		final IntMoments result = new IntMoments();
-		Moments.combine(this, other, result);
-
-		result._min = min(_min, other._min);
-		result._max = max(_max, other._max);
-		result._sum = _sum + other._sum;
-
-		return result;
+	public void combine(final IntMoments other) {
+		super.combine(other);
+		_min = min(_min, other._min);
+		_max = max(_max, other._max);
 	}
 
 	public int getMin() {
@@ -135,7 +119,7 @@ public class IntMoments extends Moments implements IntConsumer {
 		return Collector.of(
 			IntMoments::new,
 			(r, t) -> r.accept(mapper.applyAsInt(t)),
-			IntMoments::combine
+			(a, b) -> {a.combine(b); return a;}
 		);
 	}
 

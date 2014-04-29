@@ -21,6 +21,7 @@ package org.jenetics.stat;
 
 import static java.lang.Double.NaN;
 import static java.lang.Math.sqrt;
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.object.eq;
 
 import org.jenetics.internal.math.DoubleAdder;
@@ -28,7 +29,7 @@ import org.jenetics.internal.util.Hash;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.0 &mdash; <em>$Date: 2014-04-25 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-29 $</em>
  * @since 3.0
  */
 class Moments {
@@ -55,48 +56,38 @@ class Moments {
 		_m1.add(dN);
 		_m4.add(t1*dN2*(n*n - 3.0*n + 3.0))
 			.add(6.0 * dN2 * _m2.doubleValue() - 4.0 * dN * _m3.doubleValue());
-		_m3.add(t1*dN*(n - 2.0) - 3.0*dN*_m2.doubleValue());
+		_m3.add(t1 * dN * (n - 2.0) - 3.0 * dN * _m2.doubleValue());
 		_m2.add(t1);
-	}
-
-	void set(final Moments moments) {
-		_n = moments._n;
-		_m1.set(moments._m1);
-		_m2.set(moments._m2);
-		_m3.set(moments._m3);
-		_m4.set(moments._m4);
 	}
 
 	/**
 	 * @see <a href="http://people.xiph.org/~tterribe/notes/homs.html">
 	 *      Computing Higher-Order Moments Online</a>
 	 */
-	static void combine(
-		final Moments a,
-		final Moments b,
-		final Moments r
-	) {
-		final double d = b._m1.doubleValue() - a._m1.doubleValue();
+	void combine(final Moments b) {
+		requireNonNull(b);
+		final double d = b._m1.doubleValue() - _m1.doubleValue();
 		final double d2 = d*d;
 		final double d3 = d2*d;
 		final double d4 = d3*d;
 
-		r._n = a._n + b._n;
+		final double an = _n;
+		_n = _n + b._n;
 
-		r._m1.set(a._m1).add(d*b._n/(double)r._n);
+		_m1.add(d * b._n / (double) _n);
 
-		r._m2.set(a._m2).add(b._m2)
-			.add(d2*a._n*b._n/(double)r._n);
+		_m2.add(b._m2)
+			.add(d2 * an * b._n / (double) _n);
 
-		r._m3.set(a._m3).add(b._m3)
-			.add(d3*(a._n*b._n*(a._n - b._n)/(r._n*r._n)))
-			.add(3.0*d*(a._n*b._m2.doubleValue() - b._n*a._m2.doubleValue())/r._n);
+		_m3.add(b._m3)
+			.add(d3*(an*b._n*(an - b._n)/(_n*_n)))
+			.add(3.0 * d * (an * b._m2.doubleValue() - b._n * _m2.doubleValue()) / _n);
 
-		r._m4.set(a._m4).add(b._m4)
-			.add(d4*(a._n*b._n*(a._n*a._n - a._n*b._n + b._n*b._n)/(r._n*r._n*r._n)))
-			.add(6.0*d*d*(a._n*a._n*b._m2.doubleValue() +
-						b._n*b._n*a._m2.doubleValue())/(r._n*r._n))
-			.add(4.0*d*(a._n*b._m3.doubleValue() - b._n*a._m3.doubleValue())/r._n);
+		_m4.add(b._m4)
+			.add(d4*(an*b._n*(an*an - an*b._n + b._n*b._n)/(_n*_n*_n)))
+			.add(6.0*d*d*(an*an*b._m2.doubleValue() +
+				b._n*b._n*_m2.doubleValue())/(_n*_n))
+			.add(4.0 * d * (an * b._m3.doubleValue() - b._n * _m3.doubleValue()) / _n);
 	}
 
 	public long getCount() {
