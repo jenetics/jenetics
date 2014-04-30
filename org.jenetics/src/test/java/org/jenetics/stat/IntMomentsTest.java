@@ -31,27 +31,27 @@ import org.testng.annotations.Test;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class DoubleMomentsTest {
+public class IntMomentsTest {
 
-	private List<Double> numbers(final int size) {
+	private List<Integer> numbers(final int size) {
 		final Random random = new Random(123);
-		final List<Double> numbers = new ArrayList<>(size);
+		final List<Integer> numbers = new ArrayList<>(size);
 		for (int i = 0; i < size; ++i) {
-			numbers.add(random.nextDouble());
+			numbers.add((int)(random.nextDouble()*10_000));
 		}
 
 		return numbers;
 	}
 
-	//@Test(dataProvider = "sampleCounts")
+	@Test(dataProvider = "sampleCounts")
 	public void summary(final Integer sampleCounts, final Double epsilon) {
-		final List<Double> numbers = numbers(sampleCounts);
+		final List<Integer> numbers = numbers(sampleCounts);
 
 		final DescriptiveStatistics expected = new DescriptiveStatistics();
 		numbers.forEach(expected::addValue);
 
-		final DoubleMoments summary = numbers.stream()
-			.collect(DoubleMoments.collector(Double::doubleValue));
+		final IntMoments summary = numbers.stream()
+			.collect(IntMoments.collector(Integer::intValue));
 
 		Assert.assertEquals(summary.getCount(), numbers.size());
 		assertEqualsDouble(min(summary.getMin()), expected.getMin(), 0.0);
@@ -65,13 +65,13 @@ public class DoubleMomentsTest {
 
 	@Test(dataProvider = "parallelSampleCounts")
 	public void parallelSummary(final Integer sampleCounts, final Double epsilon) {
-		final List<Double> numbers = numbers(sampleCounts);
+		final List<Integer> numbers = numbers(sampleCounts);
 
 		final DescriptiveStatistics expected = new DescriptiveStatistics();
 		numbers.forEach(expected::addValue);
 
-		final DoubleMoments summary = numbers.parallelStream()
-			.collect(DoubleMoments.collector(Double::doubleValue));
+		final IntMoments summary = numbers.parallelStream()
+			.collect(IntMoments.collector(Integer::intValue));
 
 		Assert.assertEquals(summary.getCount(), numbers.size());
 		assertEqualsDouble(min(summary.getMin()), expected.getMin(), 0.0);
@@ -121,16 +121,16 @@ public class DoubleMomentsTest {
 	@DataProvider(name = "parallelSampleCounts")
 	public Object[][] parallelSampleCounts() {
 		return new Object[][] {
-/*			{0, 0.0},
+			{0, 0.0},
 			{1, 0.0},
 			{2, 0.05},
 			{3, 0.05},
-			{100, 0.5},*/
-			{1_0, 0.003}
-//			{10_000, 0.00001},
-//			{100_000, 0.000001},
-//			{1_000_000, 0.0000001},
-//			{2_000_000, 0.0000005}
+			{100, 0.5},
+			{1_000, 0.003},
+			{10_000, 0.00001},
+			{100_000, 0.000001},
+			{1_000_000, 0.0000001},
+			{2_000_000, 0.0000005}
 		};
 	}
 
