@@ -75,27 +75,27 @@ class Moments {
 	 */
 	void combine(final Moments b) {
 		requireNonNull(b);
-				
+
 		final double m2 = _m2.doubleValue();
 		final double m3 = _m3.doubleValue();
-		
+
 		final double pn = _n;
 		final double n = _n + b._n;
 		final double n2 = n*n;
-		
+
 		final double d = b._m1.doubleValue() - _m1.doubleValue();
 		final double d2 = d*d;
 
 		_n += b._n;
-		
-		_m1.add(d*b._n/n);
-		
+
+		_m1.add(d * b._n / n);
+
 		_m2.add(b._m2).add(d2*pn*b._n/n);
-		
+
 		_m3.add(b._m3)
 			.add(d2*d*(pn*b._n*(pn - b._n)/n2))
 			.add(3.0*d*(pn*b._m2.doubleValue() - b._n*m2)/n);
-		
+
 		_m4.add(b._m4)
 			.add(d2*d2*(pn*b._n*(pn*pn - pn*b._n + b._n*b._n)/(n2*n)))
 			.add(6.0*d2*(pn*pn*b._m2.doubleValue() + b._n*b._n*m2)/n2)
@@ -119,6 +119,24 @@ class Moments {
 	 */
 	public double getMean() {
 		return _n == 0L ? NaN : _m1.doubleValue();
+	}
+
+	/**
+	 * Return the
+	 * <a href="https://secure.wikimedia.org/wikipedia/en/wiki/Standard_error_%28statistics%29">
+	 * Standard error
+	 * </a> of the calculated mean.
+	 *
+	 * @return the standard error of the calculated mean.
+	 */
+	public double getStandardError() {
+		double sem = Double.NaN;
+
+		if (_n > 0) {
+			sem = _m1.doubleValue()/Math.sqrt(_n);
+		}
+
+		return sem;
 	}
 
 	/**
