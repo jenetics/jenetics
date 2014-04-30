@@ -43,7 +43,7 @@ public class DoubleMomentsTest {
 		return numbers;
 	}
 
-	//@Test(dataProvider = "sampleCounts")
+	@Test(dataProvider = "sampleCounts")
 	public void summary(final Integer sampleCounts, final Double epsilon) {
 		final List<Double> numbers = numbers(sampleCounts);
 
@@ -121,16 +121,16 @@ public class DoubleMomentsTest {
 	@DataProvider(name = "parallelSampleCounts")
 	public Object[][] parallelSampleCounts() {
 		return new Object[][] {
-/*			{0, 0.0},
+			{0, 0.0},
 			{1, 0.0},
 			{2, 0.05},
 			{3, 0.05},
-			{100, 0.5},*/
-			{1_0, 0.003}
-//			{10_000, 0.00001},
-//			{100_000, 0.000001},
-//			{1_000_000, 0.0000001},
-//			{2_000_000, 0.0000005}
+			{100, 0.5},
+			{1_0, 0.003},
+			{10_000, 0.00001},
+			{100_000, 0.000001},
+			{1_000_000, 0.0000001},
+			{2_000_000, 0.0000005}
 		};
 	}
 
