@@ -31,7 +31,7 @@ import org.jenetics.internal.util.Hash;
  * Base class for statistical moments calculation.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.0 &mdash; <em>$Date: 2014-04-29 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-30 $</em>
  * @since 3.0
  */
 class Moments {
@@ -75,28 +75,33 @@ class Moments {
 	 */
 	void combine(final Moments b) {
 		requireNonNull(b);
+				
+		final double m2 = _m2.doubleValue();
+		final double m3 = _m3.doubleValue();
+		
 		final double d = b._m1.doubleValue() - _m1.doubleValue();
 		final double d2 = d*d;
 		final double d3 = d2*d;
 		final double d4 = d3*d;
-
+		
 		final double pn = _n;
+		final double n = _n + b._n;
+		final double n2 = n*n;
+
 		_n += b._n;
+		
+		_m1.add(d*b._n/n);
 
-		_m1.add(d*b._n/(double)_n);
-
-		_m2.add(b._m2)
-			.add(d2*pn*b._n/(double)_n);
+		_m2.add(b._m2).add(d2*pn*b._n/n);
 
 		_m3.add(b._m3)
-			.add(d3*(pn*b._n*(pn - b._n)/(_n*_n)))
-			.add(3.0*d*(pn*b._m2.doubleValue() - b._n*_m2.doubleValue())/_n);
+			.add(d3*(pn*b._n*(pn - b._n)/n2))
+			.add(3.0*d*(pn*b._m2.doubleValue() - b._n*m2)/n);
 
 		_m4.add(b._m4)
-			.add(d4*(pn*b._n*(pn*pn - pn*b._n + b._n*b._n)/(_n*_n*_n)))
-			.add(6.0*d*d*(pn*pn*b._m2.doubleValue() +
-				b._n*b._n*_m2.doubleValue())/(_n*_n))
-			.add(4.0*d*(pn*b._m3.doubleValue() - b._n*_m3.doubleValue())/_n);
+			.add(d4*(pn*b._n*(pn*pn - pn*b._n + b._n*b._n)/(n2*n)))
+			.add(6.0*d*d*(pn*pn*b._m2.doubleValue() + b._n*b._n*m2)/n2)
+			.add(4.0*d*(pn*b._m3.doubleValue() - b._n*m3)/n);
 	}
 
 	/**
