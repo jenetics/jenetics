@@ -31,13 +31,13 @@ import org.testng.annotations.Test;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class IntMomentsTest {
+public class LongMomentsTest {
 
-	private List<Integer> numbers(final int size) {
+	private List<Long> numbers(final int size) {
 		final Random random = new Random(123);
-		final List<Integer> numbers = new ArrayList<>(size);
+		final List<Long> numbers = new ArrayList<>(size);
 		for (int i = 0; i < size; ++i) {
-			numbers.add((int)(random.nextDouble()*10_000));
+			numbers.add((long)(random.nextDouble()*10_000));
 		}
 
 		return numbers;
@@ -45,13 +45,13 @@ public class IntMomentsTest {
 
 	@Test(dataProvider = "sampleCounts")
 	public void summary(final Integer sampleCounts, final Double epsilon) {
-		final List<Integer> numbers = numbers(sampleCounts);
+		final List<Long> numbers = numbers(sampleCounts);
 
 		final DescriptiveStatistics expected = new DescriptiveStatistics();
 		numbers.forEach(expected::addValue);
 
-		final IntMoments summary = numbers.stream()
-			.collect(IntMoments.collector(Integer::intValue));
+		final LongMoments summary = numbers.stream()
+			.collect(LongMoments.collector(Long::longValue));
 
 		Assert.assertEquals(summary.getCount(), numbers.size());
 		assertEqualsDouble(min(summary.getMin()), expected.getMin(), 0.0);
@@ -65,13 +65,13 @@ public class IntMomentsTest {
 
 	@Test(dataProvider = "parallelSampleCounts")
 	public void parallelSummary(final Integer sampleCounts, final Double epsilon) {
-		final List<Integer> numbers = numbers(sampleCounts);
+		final List<Long> numbers = numbers(sampleCounts);
 
 		final DescriptiveStatistics expected = new DescriptiveStatistics();
 		numbers.forEach(expected::addValue);
 
-		final IntMoments summary = numbers.parallelStream()
-			.collect(IntMoments.collector(Integer::intValue));
+		final LongMoments summary = numbers.stream()
+			.collect(LongMoments.collector(Long::longValue));
 
 		Assert.assertEquals(summary.getCount(), numbers.size());
 		assertEqualsDouble(min(summary.getMin()), expected.getMin(), 0.0);
@@ -83,12 +83,12 @@ public class IntMomentsTest {
 		assertEqualsDouble(summary.getKurtosis(), expected.getKurtosis(), epsilon);
 	}
 
-	private static double min(final int value) {
-		return value == Integer.MAX_VALUE ? Double.NaN : value;
+	private static double min(final long value) {
+		return value == Long.MAX_VALUE ? Double.NaN : value;
 	}
 
-	private static double max(final int value) {
-		return value == Integer.MIN_VALUE ? Double.NaN : value;
+	private static double max(final long value) {
+		return value == Long.MIN_VALUE ? Double.NaN : value;
 	}
 
 	private static void assertEqualsDouble(final double a, final double b, final double e) {

@@ -49,7 +49,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-04-29 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-30 $</em>
  */
 public class IntMoments extends Moments implements IntConsumer {
 
@@ -88,6 +88,7 @@ public class IntMoments extends Moments implements IntConsumer {
 		super.combine(other);
 		_min = min(_min, other._min);
 		_max = max(_max, other._max);
+		_sum += other._sum;
 	}
 
 	/**
