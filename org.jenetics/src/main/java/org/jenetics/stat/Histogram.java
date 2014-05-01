@@ -30,7 +30,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Objects;
-import java.util.function.Function;
+import java.util.function.ToDoubleFunction;
 
 import org.jenetics.internal.util.Hash;
 
@@ -64,7 +64,7 @@ import org.jenetics.util.AbstractAccumulator;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-23 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-05-01 $</em>
  */
 public class Histogram<C> extends AbstractAccumulator<C> {
 
@@ -272,7 +272,7 @@ public class Histogram<C> extends AbstractAccumulator<C> {
 	 * @return the χ2 value of the current histogram.
 	 * @throws NullPointerException if {@code cdf} is {@code null}.
 	 */
-	public double χ2(final Function<C, Double> cdf, final C min, final C max) {
+	public double χ2(final ToDoubleFunction<C> cdf, final C min, final C max) {
 		double χ2 = 0;
 		for (int j = 0; j < _histogram.length; ++j) {
 			final long n0j = n0(j, cdf, min, max);
@@ -293,49 +293,49 @@ public class Histogram<C> extends AbstractAccumulator<C> {
 	 * @return the χ2 value of the current histogram.
 	 * @throws NullPointerException if {@code cdf} is {@code null}.
 	 */
-	public double χ2(final Function<C, Double> cdf) {
+	public double χ2(final ToDoubleFunction<C> cdf) {
 		return χ2(cdf, null, null);
 	}
 
-	private long n0(final int j, final Function<C, Double> cdf, final C min, final C max) {
+	private long n0(final int j, final ToDoubleFunction<C> cdf, final C min, final C max) {
 		double p0j = 0.0;
 		if (j == 0) {
-			p0j = cdf.apply(_separators[0]);
+			p0j = cdf.applyAsDouble(_separators[0]);
 			if (min != null) {
-				p0j = p0j - cdf.apply(min);
+				p0j = p0j - cdf.applyAsDouble(min);
 			}
 		} else if (j == _histogram.length - 1) {
 			if (max != null) {
-				p0j = cdf.apply(max) - cdf.apply(_separators[_separators.length - 1]);
+				p0j = cdf.applyAsDouble(max) - cdf.applyAsDouble(_separators[_separators.length - 1]);
 			} else {
-				p0j = 1.0 - cdf.apply(_separators[_separators.length - 1]);
+				p0j = 1.0 - cdf.applyAsDouble(_separators[_separators.length - 1]);
 			}
 		} else {
-			p0j = cdf.apply(_separators[j]) - cdf.apply(_separators[j - 1]);
+			p0j = cdf.applyAsDouble(_separators[j]) - cdf.applyAsDouble(_separators[j - 1]);
 		}
 
 		return max(round(p0j*_samples), 1L);
 	}
 
 	/**
-	 * @see #χ2(Function)
+	 * @see #χ2(java.util.function.ToDoubleFunction)
 	 *
 	 * @param cdf the cumulative density function
 	 * @return the chi square value of the given function
 	 */
-	public double chisqr(final Function<C, Double> cdf) {
+	public double chisqr(final ToDoubleFunction<C> cdf) {
 		return χ2(cdf);
 	}
 
 	/**
-	 * @see #χ2(Function, Object, Object)
+	 * @see #χ2(java.util.function.ToDoubleFunction, Object, Object)
 	 *
 	 * @param cdf the cumulative density function
 	 * @param min the lower limit
 	 * @param max the upper limit
 	 * @return the chi square value of the given function
 	 */
-	public double chisqr(final Function<C, Double> cdf, final C min, final C max) {
+	public double chisqr(final ToDoubleFunction<C> cdf, final C min, final C max) {
 		return χ2(cdf, min, max);
 	}
 

@@ -19,7 +19,7 @@
  */
 package org.jenetics.stat;
 
-import java.util.function.Function;
+import java.util.function.ToDoubleFunction;
 
 import org.jenetics.util.Range;
 
@@ -29,7 +29,7 @@ import org.jenetics.util.Range;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-05-01 $</em>
  */
 public interface Distribution<C extends Comparable<? super C>> {
 
@@ -47,7 +47,7 @@ public interface Distribution<C extends Comparable<? super C>> {
 	 *
 	 * @return the <i>Cumulative Distribution Function</i>.
 	 */
-	public Function<C, Double> getCDF();
+	public ToDoubleFunction<C> getCDF();
 
 	/**
 	 * Return a new instance of the <i>Probability Density Function</i> (PDF).
@@ -56,6 +56,6 @@ public interface Distribution<C extends Comparable<? super C>> {
 	 *
 	 * @return the <i>Probability Density Function</i>.
 	 */
-	public Function<C, Double> getPDF();
+	public ToDoubleFunction<C> getPDF();
 
 }
