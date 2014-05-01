@@ -31,7 +31,7 @@ import org.jenetics.internal.util.Hash;
  * Base class for statistical moments calculation.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.0 &mdash; <em>$Date: 2014-04-30 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-05-01 $</em>
  * @since 3.0
  */
 class Moments {
@@ -55,15 +55,15 @@ class Moments {
 		++_n;
 
 		final double n = _n;
-		final double d = value - _m1.doubleValue();
+		final double d = value - _m1.value();
 		final double dN = d/n;
 		final double dN2 = dN*dN;
 		final double t1 = d*dN*(n - 1.0);
 
 		_m1.add(dN);
 		_m4.add(t1*dN2*(n*n - 3.0*n + 3.0))
-			.add(6.0 * dN2 * _m2.doubleValue() - 4.0 * dN * _m3.doubleValue());
-		_m3.add(t1 * dN * (n - 2.0) - 3.0 * dN * _m2.doubleValue());
+			.add(6.0*dN2*_m2.value() - 4.0*dN*_m3.value());
+		_m3.add(t1*dN*(n - 2.0) - 3.0*dN*_m2.value());
 		_m2.add(t1);
 	}
 
@@ -76,30 +76,30 @@ class Moments {
 	void combine(final Moments b) {
 		requireNonNull(b);
 
-		final double m2 = _m2.doubleValue();
-		final double m3 = _m3.doubleValue();
+		final double m2 = _m2.value();
+		final double m3 = _m3.value();
 
 		final double pn = _n;
 		final double n = _n + b._n;
-		final double n2 = n*n;
+		final double nn = n*n;
 
-		final double d = b._m1.doubleValue() - _m1.doubleValue();
-		final double d2 = d*d;
+		final double d = b._m1.value() - _m1.value();
+		final double dd = d*d;
 
 		_n += b._n;
 
 		_m1.add(d * b._n / n);
 
-		_m2.add(b._m2).add(d2*pn*b._n/n);
+		_m2.add(b._m2).add(dd*pn*b._n/n);
 
 		_m3.add(b._m3)
-			.add(d2*d*(pn*b._n*(pn - b._n)/n2))
-			.add(3.0*d*(pn*b._m2.doubleValue() - b._n*m2)/n);
+			.add(dd*d*(pn*b._n*(pn - b._n)/nn))
+			.add(3.0*d*(pn*b._m2.value() - b._n*m2)/n);
 
 		_m4.add(b._m4)
-			.add(d2*d2*(pn*b._n*(pn*pn - pn*b._n + b._n*b._n)/(n2*n)))
-			.add(6.0*d2*(pn*pn*b._m2.doubleValue() + b._n*b._n*m2)/n2)
-			.add(4.0*d*(pn*b._m3.doubleValue() - b._n*m3)/n);
+			.add(dd*dd*(pn*b._n*(pn*pn - pn*b._n + b._n*b._n)/(nn*n)))
+			.add(6.0*dd*(pn*pn*b._m2.value() + b._n*b._n*m2)/nn)
+			.add(4.0*d*(pn*b._m3.value() - b._n*m3)/n);
 	}
 
 	/**
@@ -118,7 +118,7 @@ class Moments {
 	 * @return the arithmetic mean of values, or zero if none
 	 */
 	public double getMean() {
-		return _n == 0L ? NaN : _m1.doubleValue();
+		return _n == 0L ? NaN : _m1.value();
 	}
 
 	/**
@@ -130,13 +130,7 @@ class Moments {
 	 * @return the standard error of the calculated mean.
 	 */
 	public double getStandardError() {
-		double sem = Double.NaN;
-
-		if (_n > 0) {
-			sem = _m1.doubleValue()/Math.sqrt(_n);
-		}
-
-		return sem;
+		return _n > 0 ? _m1.value()/sqrt(_n) : NaN;
 	}
 
 	/**
@@ -148,9 +142,9 @@ class Moments {
 	public double getVariance() {
 		double var = NaN;
 		if (_n == 1L) {
-			var = _m2.doubleValue();
+			var = _m2.value();
 		} else if (_n > 1L) {
-			var = _m2.doubleValue()/(_n - 1.0);
+			var = _m2.value()/(_n - 1.0);
 		}
 
 		return var;
@@ -168,11 +162,11 @@ class Moments {
 	public double getSkewness() {
 		double skewness = NaN;
 		if (_n >= 3L) {
-			final double var = _m2.doubleValue()/(_n - 1.0);
+			final double var = _m2.value()/(_n - 1.0);
 			if (var < 10E-20) {
 				skewness = 0.0d;
 			} else {
-				skewness = (_n*_m3.doubleValue())/
+				skewness = (_n*_m3.value())/
 						((_n - 1.0)*(_n - 2.0)*sqrt(var)*var);
 			}
 		}
@@ -192,12 +186,12 @@ class Moments {
 	public double getKurtosis() {
 		double kurtosis = NaN;
 		if (_n > 3L) {
-			final double var = _m2.doubleValue()/(_n - 1);
+			final double var = _m2.value()/(_n - 1);
 			if (_n <= 3L || var < 10E-20) {
 				kurtosis = 0.0;
 			} else {
-				kurtosis = (_n*(_n + 1.0)*_m4.doubleValue() -
-					3.0*_m2.doubleValue()*_m2.doubleValue()*(_n - 1.0))/
+				kurtosis = (_n*(_n + 1.0)*_m4.value() -
+					3.0*_m2.value()*_m2.value()*(_n - 1.0))/
 					((_n - 1.0)*(_n - 2.0)*(_n - 3.0)*var*var);
 			}
 		}

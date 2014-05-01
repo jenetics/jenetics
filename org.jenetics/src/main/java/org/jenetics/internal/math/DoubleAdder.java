@@ -19,6 +19,8 @@
  */
 package org.jenetics.internal.math;
 
+import static java.lang.Double.isInfinite;
+import static java.lang.Double.isNaN;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.object.eq;
 
@@ -32,7 +34,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-04-29 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-05-01 $</em>
  */
 public final class DoubleAdder
 	extends Number
@@ -131,29 +133,29 @@ public final class DoubleAdder
 		return this;
 	}
 
+	public double value() {
+		final double result =  _sum + _compensation;
+		return isNaN(result) && isInfinite(_simpleSum) ? _simpleSum : result;
+	}
+
 	@Override
 	public int intValue() {
-		return (int)doubleValue();
+		return (int)value();
 	}
 
 	@Override
 	public long longValue() {
-		return (long)doubleValue();
+		return (long)value();
 	}
 
 	@Override
 	public float floatValue() {
-		return (float)doubleValue();
+		return (float)value();
 	}
 
 	@Override
 	public double doubleValue() {
-		double result =  _sum + _compensation;
-		if (Double.isNaN(result) && Double.isInfinite(_simpleSum)) {
-			result = _simpleSum;
-		}
-
-		return result;
+		return value();
 	}
 
 	@Override
