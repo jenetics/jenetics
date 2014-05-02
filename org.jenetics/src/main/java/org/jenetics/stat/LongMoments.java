@@ -21,6 +21,7 @@ package org.jenetics.stat;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.object.eq;
 
 import java.util.function.LongConsumer;
@@ -183,6 +184,7 @@ public class LongMoments extends Moments implements LongConsumer {
 	 */
 	public static <T> Collector<T, ?, LongMoments>
 	collector(final ToLongFunction<? super T> mapper) {
+		requireNonNull(mapper);
 		return Collector.of(
 			LongMoments::new,
 			(r, t) -> r.accept(mapper.applyAsLong(t)),

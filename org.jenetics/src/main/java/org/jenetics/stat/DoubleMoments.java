@@ -21,6 +21,7 @@ package org.jenetics.stat;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.object.eq;
 
 import java.util.function.DoubleConsumer;
@@ -175,7 +176,7 @@ public class DoubleMoments extends Moments implements DoubleConsumer {
 	 * [code]
 	 * final Stream&lt;SomeObject&gt; stream = ...
 	 * final DoubleMoments moments = stream
-	 *     .collect(doubleMoments.collector(v -&gt; v.doubleValue()));
+	 *     .collect(DoubleMoments.collector(v -&gt; v.doubleValue()));
 	 * [/code]
 	 *
 	 * @param mapper a mapping function to apply to each element
@@ -186,6 +187,7 @@ public class DoubleMoments extends Moments implements DoubleConsumer {
 	 */
 	public static <T> Collector<T, ?, DoubleMoments>
 	collector(final ToDoubleFunction<? super T> mapper) {
+		requireNonNull(mapper);
 		return Collector.of(
 			DoubleMoments::new,
 			(r, t) -> r.accept(mapper.applyAsDouble(t)),
