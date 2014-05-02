@@ -19,7 +19,6 @@
  */
 package org.jenetics.internal.util;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Deque;
@@ -32,7 +31,7 @@ import org.jenetics.util.StaticObject;
  * Helper methods concerning Java reflection.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-02-02 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-05-02 $</em>
  * @since 1.6
  */
 public class reflect extends StaticObject {
@@ -59,58 +58,6 @@ public class reflect extends StaticObject {
 		}
 
 		return Collections.unmodifiableList(result);
-	}
-
-	/**
-	 * Returns a Method object that reflects the specified public member method
-	 * of the class or interface represented by this Class object.
-	 *
-	 * @param type the class for getting the desired method.
-	 * @param name the method name
-	 * @param parameterTypes the method parameter types.
-	 * @return the method, or {@code null} if no such method can be found.
-	 */
-	public static Method getMethod(
-		final Class<?> type,
-		final String name,
-		Class<?>[] parameterTypes
-	) {
-		Method method = null;
-		final Method[] methods = type.getMethods();
-
-		for (int i = 0; i < methods.length && method == null; ++i) {
-			if (name.equals(methods[i].getName()) &&
-				equals(parameterTypes, methods[i].getParameterTypes()))
-			{
-				method = methods[i];
-			}
-		}
-
-		return method;
-	}
-
-	private static boolean equals(final Class<?>[] p1, final Class<?>[] p2) {
-		boolean equals = p1.length == p2.length;
-		for (int i = 0; i < p1.length && equals; ++i) {
-			equals = toClassType(p1[i]) == toClassType(p2[i]);
-		}
-
-		return equals;
-	}
-
-	private static Class<?> toClassType(final Class<?> type) {
-		switch (type.getCanonicalName()) {
-			case "void": return Void.class;
-			case "boolean": return Boolean.class;
-			case "byte": return Byte.class;
-			case "char": return Character.class;
-			case "short": return Short.class;
-			case "int": return Integer.class;
-			case "long": return Long.class;
-			case "float": return Float.class;
-			case "double": return Double.class;
-			default: return type;
-		}
 	}
 
 	/**
