@@ -24,10 +24,9 @@ import static java.lang.String.format;
 import static org.jenetics.internal.util.object.eq;
 
 import java.util.Arrays;
+import java.util.function.DoubleConsumer;
 
 import org.jenetics.internal.util.Hash;
-
-import org.jenetics.util.AbstractAccumulator;
 
 
 /**
@@ -50,9 +49,11 @@ import org.jenetics.util.AbstractAccumulator;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-05-02 $</em>
  */
-public class Quantile<N extends Number> extends AbstractAccumulator<N> {
+public class Quantile implements DoubleConsumer {
+
+	private long _samples = 0;
 
 	// The desired quantile.
 	private final double _quantile;
@@ -117,12 +118,16 @@ public class Quantile<N extends Number> extends AbstractAccumulator<N> {
 		return _q[2];
 	}
 
+	public long getSamples() {
+		return _samples;
+	}
+
 	@Override
-	public void accumulate(final N value) {
+	public void accept(final double value) {
 		if (!_initialized) {
-			initialize(value.doubleValue());
+			initialize(value);
 		} else {
-			update(value.doubleValue());
+			update(value);
 		}
 
 		++_samples;
@@ -288,7 +293,7 @@ public class Quantile<N extends Number> extends AbstractAccumulator<N> {
 			return false;
 		}
 
-		final Quantile<?> quantile = (Quantile<?>)obj;
+		final Quantile quantile = (Quantile)obj;
 		return super.equals(obj) &&
 				eq(_quantile, quantile._quantile) &&
 				eq(_dn, quantile._dn) &&
@@ -305,14 +310,9 @@ public class Quantile<N extends Number> extends AbstractAccumulator<N> {
 		);
 	}
 
-	@Override
-	public Quantile<N> clone() {
-		return (Quantile<N>)super.clone();
-	}
 
-
-	static <N extends Number> Quantile<N> median() {
-		return new Quantile<>(0.5);
+	static Quantile median() {
+		return new Quantile(0.5);
 	}
 
 }
