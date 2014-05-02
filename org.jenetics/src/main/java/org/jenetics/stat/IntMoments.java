@@ -33,13 +33,23 @@ import org.jenetics.internal.util.Hash;
 /**
  * A state object for collecting statistics such as count, min, max, sum, mean,
  * variance, skewness and kurtosis. The design of this class is similar to the
- * {@link java.util.IntSummaryStatistics} class.
+ * design of the {@link java.util.IntSummaryStatistics} class.
+ * <p>
+ * This class is designed to work with (though does not require) streams. For
+ * example, you can compute moments-statistics on a stream of ints with:
+ * [code]
+ * final IntStream stream = ...
+ * final IntMoments moments = stream.collect(
+ *         IntMoments::new,
+ *         IntMoments::accept,
+ *         IntMoments::combine
+ *     );
+ * [/code]
  * <p>
  * <b>Implementation note:</b>
  * <i>This implementation is not thread safe. However, it is safe to use
- * {@link #collector(java.util.function.ToIntFunction)}  on a parallel stream,
- * because the parallel implementation of
- * {@link java.util.stream.Stream#collect Stream.collect()}
+ * {@link #collector(ToIntFunction)}  on a parallel stream, because the parallel
+ * implementation of {@link java.util.stream.Stream#collect Stream.collect()}
  * provides the necessary partitioning, isolation, and merging of results for
  * safe and efficient parallel execution.</i>
  *
@@ -49,7 +59,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-04-30 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-05-02 $</em>
  */
 public class IntMoments extends Moments implements IntConsumer {
 
@@ -161,7 +171,8 @@ public class IntMoments extends Moments implements IntConsumer {
 	 * resulting values.
 	 *
 	 * [code]
-	 * final IntMoments moments = objects.stream()
+	 * final Stream&lt;SomeObject&gt; stream = ...
+	 * final IntMoments moments = stream
 	 *     .collect(IntMoments.collector(v -&gt; v.intValue()));
 	 * [/code]
 	 *

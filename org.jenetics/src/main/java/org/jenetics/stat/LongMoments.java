@@ -32,13 +32,23 @@ import org.jenetics.internal.util.Hash;
 /**
  * A state object for collecting statistics such as count, min, max, sum, mean,
  * variance, skewness and kurtosis. The design of this class is similar to the
- * {@link java.util.LongSummaryStatistics} class.
+ * design of the {@link java.util.LongSummaryStatistics} class.
+ * <p>
+ * This class is designed to work with (though does not require) streams. For
+ * example, you can compute moments-statistics on a stream of longs with:
+ * [code]
+ * final LongStream stream = ...
+ * final LongMoments moments = stream.collect(
+ *         LongMoments::new,
+ *         LongMoments::accept,
+ *         LongMoments::combine
+ *     );
+ * [/code]
  * <p>
  * <b>Implementation note:</b>
  * <i>This implementation is not thread safe. However, it is safe to use
- * {@link #collector(java.util.function.ToLongFunction)}  on a parallel stream,
- * because the parallel implementation of
- * {@link java.util.stream.Stream#collect Stream.collect()}
+ * {@link #collector(ToLongFunction)}  on a parallel stream, because the parallel
+ * implementation of {@link java.util.stream.Stream#collect Stream.collect()}
  * provides the necessary partitioning, isolation, and merging of results for
  * safe and efficient parallel execution.</i>
  *
@@ -48,7 +58,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-04-30 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-05-02 $</em>
  */
 public class LongMoments extends Moments implements LongConsumer {
 
@@ -160,7 +170,8 @@ public class LongMoments extends Moments implements LongConsumer {
 	 * resulting values.
 	 *
 	 * [code]
-	 * final LongMoments moments = objects.stream()
+	 * final Stream&lt;SomeObject&gt; stream = ...
+	 * final LongMoments moments = stream
 	 *     .collect(LongMoments.collector(v -&gt; v.longValue()));
 	 * [/code]
 	 *

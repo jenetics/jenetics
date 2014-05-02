@@ -35,10 +35,21 @@ import org.jenetics.internal.util.Hash;
  * variance, skewness and kurtosis. The design of this class is similar to the
  * {@link java.util.DoubleSummaryStatistics} class.
  * <p>
+ * This class is designed to work with (though does not require) streams. For
+ * example, you can compute moments-statistics on a stream of doubles with:
+ * [code]
+ * final DoubleStream stream = ...
+ * final DoubleMoments moments = stream.collect(
+ *         DoubleMoments::new,
+ *         DoubleMoments::accept,
+ *         DoubleMoments::combine
+ *     );
+ * [/code]
+ * <p>
  * <b>Implementation note:</b>
  * <i>This implementation is not thread safe. However, it is safe to use
- * {@link #collector(java.util.function.ToDoubleFunction)}  on a parallel stream,
- * because the parallel implementation of
+ * {@link #collector(ToDoubleFunction)}  on a parallel stream, because the
+ * parallel implementation of
  * {@link java.util.stream.Stream#collect Stream.collect()}
  * provides the necessary partitioning, isolation, and merging of results for
  * safe and efficient parallel execution.</i>
@@ -49,7 +60,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-04-30 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-05-02 $</em>
  */
 public class DoubleMoments extends Moments implements DoubleConsumer {
 
@@ -162,7 +173,8 @@ public class DoubleMoments extends Moments implements DoubleConsumer {
 	 * resulting values.
 	 *
 	 * [code]
-	 * final DoubleMoments moments = objects.stream()
+	 * final Stream&lt;SomeObject&gt; stream = ...
+	 * final DoubleMoments moments = stream
 	 *     .collect(doubleMoments.collector(v -&gt; v.doubleValue()));
 	 * [/code]
 	 *
