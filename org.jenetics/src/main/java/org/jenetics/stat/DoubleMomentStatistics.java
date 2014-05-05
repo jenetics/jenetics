@@ -22,14 +22,12 @@ package org.jenetics.stat;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.object.eq;
 
 import java.util.function.DoubleConsumer;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
 
 import org.jenetics.internal.math.DoubleAdder;
-import org.jenetics.internal.util.Hash;
 
 /**
  * A state object for collecting statistics such as count, min, max, sum, mean,
@@ -56,12 +54,13 @@ import org.jenetics.internal.util.Hash;
  * safe and efficient parallel execution.</i>
  *
  * @see java.util.DoubleSummaryStatistics
+ * @see org.jenetics.stat.DoubleMoments
  * @see <a href="http://people.xiph.org/~tterribe/notes/homs.html">
  *      Computing Higher-Order Moments Online</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date$</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-05-05 $</em>
  */
 public class DoubleMomentStatistics extends Moments implements DoubleConsumer {
 
@@ -134,29 +133,23 @@ public class DoubleMomentStatistics extends Moments implements DoubleConsumer {
 		return _sum.doubleValue();
 	}
 
-	@Override
-	public int hashCode() {
-		return Hash.of(DoubleMomentStatistics.class)
-			.and(super.hashCode())
-			.and(_min)
-			.and(_max)
-			.and(_sum).value();
-	}
-
-	@Override
-	public boolean equals(final Object object) {
-		if (object == null) {
-			return true;
-		}
-		if (!(object instanceof DoubleMomentStatistics)) {
-			return false;
-		}
-
-		final DoubleMomentStatistics moments = (DoubleMomentStatistics)object;
-		return super.equals(object) &&
-			eq(_min, moments._min) &&
-			eq(_max, moments._max) &&
-			eq(_sum, moments._sum);
+	/**
+	 * Return a new value object of the statistical moments, currently
+	 * represented by this object.
+	 *
+	 * @return the current statistical moments
+	 */
+	public DoubleMoments moments() {
+		return new DoubleMoments(
+			getCount(),
+			getMin(),
+			getMax(),
+			getSum(),
+			getMean(),
+			getVariance(),
+			getSkewness(),
+			getKurtosis()
+		);
 	}
 
 	@Override
