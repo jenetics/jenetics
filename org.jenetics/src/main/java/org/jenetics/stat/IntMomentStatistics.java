@@ -22,13 +22,10 @@ package org.jenetics.stat;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.object.eq;
 
 import java.util.function.IntConsumer;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collector;
-
-import org.jenetics.internal.util.Hash;
 
 /**
  * A state object for collecting statistics such as count, min, max, sum, mean,
@@ -39,10 +36,10 @@ import org.jenetics.internal.util.Hash;
  * example, you can compute moments-statistics on a stream of ints with:
  * [code]
  * final IntStream stream = ...
- * final IntMoments moments = stream.collect(
- *         IntMoments::new,
- *         IntMoments::accept,
- *         IntMoments::combine
+ * final IntMomentStatistics statistics = stream.collect(
+ *         IntMomentStatistics::new,
+ *         IntMomentStatistics::accept,
+ *         IntMomentStatistics::combine
  *     );
  * [/code]
  * <p>
@@ -54,12 +51,13 @@ import org.jenetics.internal.util.Hash;
  * safe and efficient parallel execution.</i>
  *
  * @see java.util.IntSummaryStatistics
+ * @see org.jenetics.stat.IntMoments
  * @see <a href="http://people.xiph.org/~tterribe/notes/homs.html">
  *      Computing Higher-Order Moments Online</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date$</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-05-05 $</em>
  */
 public class IntMomentStatistics extends Moments implements IntConsumer {
 
@@ -131,36 +129,30 @@ public class IntMomentStatistics extends Moments implements IntConsumer {
 		return _sum;
 	}
 
-	@Override
-	public int hashCode() {
-		return Hash.of(IntMomentStatistics.class)
-			.and(super.hashCode())
-			.and(_min)
-			.and(_max)
-			.and(_sum).value();
-	}
-
-	@Override
-	public boolean equals(final Object object) {
-		if (object == null) {
-			return true;
-		}
-		if (!(object instanceof IntMomentStatistics)) {
-			return false;
-		}
-
-		final IntMomentStatistics moments = (IntMomentStatistics)object;
-		return super.equals(object) &&
-			eq(_min, moments._min) &&
-			eq(_max, moments._max) &&
-			eq(_sum, moments._sum);
+	/**
+	 * Return a new value object of the current statistical moments, currently
+	 * represented by this object.
+	 *
+	 * @return the current statistical moments
+	 */
+	public IntMoments moments() {
+		return new IntMoments(
+			getCount(),
+			getMin(),
+			getMax(),
+			getSum(),
+			getMean(),
+			getVariance(),
+			getSkewness(),
+			getKurtosis()
+		);
 	}
 
 	@Override
 	public String toString() {
 		return String.format(
-			"Summary[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s, s2=%s, S=%s, K=%s]",
-			getCount(), _min, _max, _sum,
+			"IntMomentStatistics[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s, s2=%s, S=%s, K=%s]",
+			getCount(), getMin(), getMax(), getSum(),
 			getMean(), getVariance(), getSkewness(), getKurtosis()
 		);
 	}
