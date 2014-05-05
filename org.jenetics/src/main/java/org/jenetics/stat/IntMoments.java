@@ -232,7 +232,7 @@ public final class IntMoments implements Serializable {
 		requireNonNull(mapper);
 		return Collector.of(
 			IntMomentStatistics::new,
-			(r, t) -> r.accept(mapper.applyAsInt(t)),
+			(a, b) -> a.accept(mapper.applyAsInt(b)),
 			(a, b) -> {a.combine(b); return a;},
 			IntMomentStatistics::moments
 		);
