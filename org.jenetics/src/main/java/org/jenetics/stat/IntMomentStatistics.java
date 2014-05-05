@@ -164,8 +164,8 @@ public class IntMomentStatistics extends Moments implements IntConsumer {
 	 *
 	 * [code]
 	 * final Stream&lt;SomeObject&gt; stream = ...
-	 * final IntMoments moments = stream
-	 *     .collect(IntMoments.collector(v -&gt; v.intValue()));
+	 * final IntMomentStatistics statistics = stream
+	 *     .collect(IntMomentStatistics.collector(v -&gt; v.intValue()));
 	 * [/code]
 	 *
 	 * @param mapper a mapping function to apply to each element
