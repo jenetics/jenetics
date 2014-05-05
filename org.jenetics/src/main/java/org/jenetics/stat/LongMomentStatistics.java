@@ -59,7 +59,10 @@ import java.util.stream.Collector;
  * @since 3.0
  * @version 3.0 &mdash; <em>$Date: 2014-05-05 $</em>
  */
-public class LongMomentStatistics extends Moments implements LongConsumer {
+public class LongMomentStatistics
+	extends MomentStatistics
+	implements LongConsumer
+{
 
 	private long _min = Long.MAX_VALUE;
 	private long _max = Long.MIN_VALUE;

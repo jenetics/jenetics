@@ -62,7 +62,10 @@ import org.jenetics.internal.math.DoubleAdder;
  * @since 3.0
  * @version 3.0 &mdash; <em>$Date: 2014-05-05 $</em>
  */
-public class DoubleMomentStatistics extends Moments implements DoubleConsumer {
+public class DoubleMomentStatistics
+	extends MomentStatistics
+	implements DoubleConsumer
+{
 
 	private double _min = Double.POSITIVE_INFINITY;
 	private double _max = Double.NEGATIVE_INFINITY;

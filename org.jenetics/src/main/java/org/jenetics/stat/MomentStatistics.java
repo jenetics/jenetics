@@ -22,10 +22,8 @@ package org.jenetics.stat;
 import static java.lang.Double.NaN;
 import static java.lang.Math.sqrt;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.object.eq;
 
 import org.jenetics.internal.math.DoubleAdder;
-import org.jenetics.internal.util.Hash;
 
 /**
  * Base class for statistical moments calculation.
@@ -35,9 +33,9 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-05-05 $</em>
+ * @version 3.0 &mdash; <em>$Date$</em>
  */
-class Moments {
+class MomentStatistics {
 
 	// the sample count.
 	private long _n = 0L;
@@ -76,7 +74,7 @@ class Moments {
 	 * @see <a href="http://people.xiph.org/~tterribe/notes/homs.html">
 	 *      Computing Higher-Order Moments Online</a>
 	 */
-	void combine(final Moments b) {
+	void combine(final MomentStatistics b) {
 		requireNonNull(b);
 
 		final double m2 = _m2.value();
@@ -187,31 +185,6 @@ class Moments {
 			}
 		}
 		return kurtosis;
-	}
-
-	@Override
-	public int hashCode() {
-		return Hash.of(Moments.class)
-			.and(_m1)
-			.and(_m2)
-			.and(_m3)
-			.and(_m4).value();
-	}
-
-	@Override
-	public boolean equals(final Object object) {
-		if (object == null) {
-			return true;
-		}
-		if (!(object instanceof Moments)) {
-			return false;
-		}
-
-		final Moments moments = (Moments)object;
-		return eq(_m1, moments._m1) &&
-			eq(_m2, moments._m2) &&
-			eq(_m3, moments._m3) &&
-			eq(_m4, moments._m4);
 	}
 
 }

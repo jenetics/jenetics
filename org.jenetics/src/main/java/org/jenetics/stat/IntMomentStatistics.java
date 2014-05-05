@@ -59,7 +59,10 @@ import java.util.stream.Collector;
  * @since 3.0
  * @version 3.0 &mdash; <em>$Date: 2014-05-05 $</em>
  */
-public class IntMomentStatistics extends Moments implements IntConsumer {
+public class IntMomentStatistics
+	extends MomentStatistics
+	implements IntConsumer
+{
 
 	private int _min = Integer.MAX_VALUE;
 	private int _max = Integer.MIN_VALUE;
