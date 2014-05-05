@@ -40,10 +40,10 @@ import org.jenetics.internal.util.Hash;
  * example, you can compute moments-statistics on a stream of doubles with:
  * [code]
  * final DoubleStream stream = ...
- * final DoubleMoments moments = stream.collect(
- *         DoubleMoments::new,
- *         DoubleMoments::accept,
- *         DoubleMoments::combine
+ * final DoubleMomentStatistics statistics = stream.collect(
+ *         DoubleMomentStatistics::new,
+ *         DoubleMomentStatistics::accept,
+ *         DoubleMomentStatistics::combine
  *     );
  * [/code]
  * <p>
@@ -61,9 +61,9 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-05-02 $</em>
+ * @version 3.0 &mdash; <em>$Date$</em>
  */
-public class DoubleMoments extends Moments implements DoubleConsumer {
+public class DoubleMomentStatistics extends Moments implements DoubleConsumer {
 
 	private double _min = Double.POSITIVE_INFINITY;
 	private double _max = Double.NEGATIVE_INFINITY;
@@ -73,7 +73,7 @@ public class DoubleMoments extends Moments implements DoubleConsumer {
 	/**
 	 * Create an empty moments object.
 	 */
-	public DoubleMoments() {
+	public DoubleMomentStatistics() {
 	}
 
 	/**
@@ -97,7 +97,7 @@ public class DoubleMoments extends Moments implements DoubleConsumer {
 	 * @throws java.lang.NullPointerException if the other statistical summary
 	 *         is {@code null}.
 	 */
-	public void combine(final DoubleMoments other) {
+	public void combine(final DoubleMomentStatistics other) {
 		super.combine(other);
 		_min = min(_min, other._min);
 		_max = max(_max, other._max);
@@ -136,7 +136,7 @@ public class DoubleMoments extends Moments implements DoubleConsumer {
 
 	@Override
 	public int hashCode() {
-		return Hash.of(DoubleMoments.class)
+		return Hash.of(DoubleMomentStatistics.class)
 			.and(super.hashCode())
 			.and(_min)
 			.and(_max)
@@ -148,11 +148,11 @@ public class DoubleMoments extends Moments implements DoubleConsumer {
 		if (object == null) {
 			return true;
 		}
-		if (!(object instanceof DoubleMoments)) {
+		if (!(object instanceof DoubleMomentStatistics)) {
 			return false;
 		}
 
-		final DoubleMoments moments = (DoubleMoments)object;
+		final DoubleMomentStatistics moments = (DoubleMomentStatistics)object;
 		return super.equals(object) &&
 			eq(_min, moments._min) &&
 			eq(_max, moments._max) &&
@@ -175,8 +175,8 @@ public class DoubleMoments extends Moments implements DoubleConsumer {
 	 *
 	 * [code]
 	 * final Stream&lt;SomeObject&gt; stream = ...
-	 * final DoubleMoments moments = stream
-	 *     .collect(DoubleMoments.collector(v -&gt; v.doubleValue()));
+	 * final DoubleMomentStatistics statistics = stream
+	 *     .collect(DoubleMomentStatistics.collector(v -&gt; v.doubleValue()));
 	 * [/code]
 	 *
 	 * @param mapper a mapping function to apply to each element
@@ -185,11 +185,11 @@ public class DoubleMoments extends Moments implements DoubleConsumer {
 	 * @throws java.lang.NullPointerException if the given {@code mapper} is
 	 *         {@code null}
 	 */
-	public static <T> Collector<T, ?, DoubleMoments>
+	public static <T> Collector<T, ?, DoubleMomentStatistics>
 	collector(final ToDoubleFunction<? super T> mapper) {
 		requireNonNull(mapper);
 		return Collector.of(
-			DoubleMoments::new,
+			DoubleMomentStatistics::new,
 			(r, t) -> r.accept(mapper.applyAsDouble(t)),
 			(a, b) -> {a.combine(b); return a;}
 		);
