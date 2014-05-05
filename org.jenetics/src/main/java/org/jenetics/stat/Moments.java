@@ -30,9 +30,12 @@ import org.jenetics.internal.util.Hash;
 /**
  * Base class for statistical moments calculation.
  *
+ * @see <a href="http://people.xiph.org/~tterribe/notes/homs.html">
+ *      Computing Higher-Order Moments Online</a>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.0 &mdash; <em>$Date: 2014-05-01 $</em>
  * @since 3.0
+ * @version 3.0 &mdash; <em>$Date: 2014-05-05 $</em>
  */
 class Moments {
 
@@ -88,7 +91,7 @@ class Moments {
 
 		_n += b._n;
 
-		_m1.add(d * b._n / n);
+		_m1.add(d*b._n/n);
 
 		_m2.add(b._m2).add(dd*pn*b._n/n);
 
