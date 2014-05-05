@@ -130,7 +130,7 @@ public class IntMomentStatistics extends Moments implements IntConsumer {
 	}
 
 	/**
-	 * Return a new value object of the current statistical moments, currently
+	 * Return a new value object of the statistical moments, currently
 	 * represented by this object.
 	 *
 	 * @return the current statistical moments

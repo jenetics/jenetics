@@ -59,7 +59,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date$</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-05-05 $</em>
  */
 public class LongMomentStatistics extends Moments implements LongConsumer {
 
@@ -129,6 +129,25 @@ public class LongMomentStatistics extends Moments implements LongConsumer {
 	 */
 	public long getSum() {
 		return _sum;
+	}
+
+	/**
+	 * Return a new value object of the statistical moments, currently
+	 * represented by this object.
+	 *
+	 * @return the current statistical moments
+	 */
+	public LongMoments moments() {
+		return new LongMoments(
+			getCount(),
+			getMin(),
+			getMax(),
+			getSum(),
+			getMean(),
+			getVariance(),
+			getSkewness(),
+			getKurtosis()
+		);
 	}
 
 	/**
