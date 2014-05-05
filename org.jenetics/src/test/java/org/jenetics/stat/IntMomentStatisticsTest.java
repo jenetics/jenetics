@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class IntMomentsTest {
+public class IntMomentStatisticsTest {
 
 	private List<Integer> numbers(final int size) {
 		final Random random = new Random(123);
@@ -50,8 +50,8 @@ public class IntMomentsTest {
 		final DescriptiveStatistics expected = new DescriptiveStatistics();
 		numbers.forEach(expected::addValue);
 
-		final IntMoments summary = numbers.stream()
-			.collect(IntMoments.collector(Integer::intValue));
+		final IntMomentStatistics summary = numbers.stream()
+			.collect(IntMomentStatistics.collector(Integer::intValue));
 
 		Assert.assertEquals(summary.getCount(), numbers.size());
 		assertEqualsDouble(min(summary.getMin()), expected.getMin(), 0.0);
@@ -70,8 +70,8 @@ public class IntMomentsTest {
 		final DescriptiveStatistics expected = new DescriptiveStatistics();
 		numbers.forEach(expected::addValue);
 
-		final IntMoments summary = numbers.parallelStream()
-			.collect(IntMoments.collector(Integer::intValue));
+		final IntMomentStatistics summary = numbers.parallelStream()
+			.collect(IntMomentStatistics.collector(Integer::intValue));
 
 		Assert.assertEquals(summary.getCount(), numbers.size());
 		assertEqualsDouble(min(summary.getMin()), expected.getMin(), 0.0);

@@ -59,9 +59,9 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-05-02 $</em>
+ * @version 3.0 &mdash; <em>$Date$</em>
  */
-public class IntMoments extends Moments implements IntConsumer {
+public class IntMomentStatistics extends Moments implements IntConsumer {
 
 	private int _min = Integer.MAX_VALUE;
 	private int _max = Integer.MIN_VALUE;
@@ -70,7 +70,7 @@ public class IntMoments extends Moments implements IntConsumer {
 	/**
 	 * Create an empty moments object.
 	 */
-	public IntMoments() {
+	public IntMomentStatistics() {
 	}
 
 	/**
@@ -94,7 +94,7 @@ public class IntMoments extends Moments implements IntConsumer {
 	 * @throws java.lang.NullPointerException if the other statistical summary
 	 *         is {@code null}.
 	 */
-	public void combine(final IntMoments other) {
+	public void combine(final IntMomentStatistics other) {
 		super.combine(other);
 		_min = min(_min, other._min);
 		_max = max(_max, other._max);
@@ -133,7 +133,7 @@ public class IntMoments extends Moments implements IntConsumer {
 
 	@Override
 	public int hashCode() {
-		return Hash.of(IntMoments.class)
+		return Hash.of(IntMomentStatistics.class)
 			.and(super.hashCode())
 			.and(_min)
 			.and(_max)
@@ -145,11 +145,11 @@ public class IntMoments extends Moments implements IntConsumer {
 		if (object == null) {
 			return true;
 		}
-		if (!(object instanceof IntMoments)) {
+		if (!(object instanceof IntMomentStatistics)) {
 			return false;
 		}
 
-		final IntMoments moments = (IntMoments)object;
+		final IntMomentStatistics moments = (IntMomentStatistics)object;
 		return super.equals(object) &&
 			eq(_min, moments._min) &&
 			eq(_max, moments._max) &&
@@ -182,11 +182,11 @@ public class IntMoments extends Moments implements IntConsumer {
 	 * @throws java.lang.NullPointerException if the given {@code mapper} is
 	 *         {@code null}
 	 */
-	public static <T> Collector<T, ?, IntMoments>
+	public static <T> Collector<T, ?, IntMomentStatistics>
 	collector(final ToIntFunction<? super T> mapper) {
 		requireNonNull(mapper);
 		return Collector.of(
-			IntMoments::new,
+			IntMomentStatistics::new,
 			(r, t) -> r.accept(mapper.applyAsInt(t)),
 			(a, b) -> {a.combine(b); return a;}
 		);

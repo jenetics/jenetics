@@ -20,7 +20,7 @@
  # Author:
  #    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  #
- # Version: <em>$Date: 2014-04-30 $</em>
+ # Version: <em>$Date: 2014-05-05 $</em>
  #
  ###############################################################################
 -->
@@ -242,7 +242,7 @@
 	</test>
     <test name="org.jenetics.stat.Moments">
         <classes>
-            <class name="org.jenetics.stat.IntMomentsTest" />
+            <class name="org.jenetics.stat.IntMomentStatisticsTest" />
             <class name="org.jenetics.stat.LongMomentsTest" />
             <class name="org.jenetics.stat.DoubleMomentsTest" />
         </classes>
