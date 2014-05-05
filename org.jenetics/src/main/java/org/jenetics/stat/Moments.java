@@ -125,18 +125,6 @@ class Moments {
 	}
 
 	/**
-	 * Return the
-	 * <a href="https://secure.wikimedia.org/wikipedia/en/wiki/Standard_error_%28statistics%29">
-	 * Standard error
-	 * </a> of the calculated mean.
-	 *
-	 * @return the standard error of the calculated mean.
-	 */
-	public double getStandardError() {
-		return _n > 0 ? _m1.value()/sqrt(_n) : NaN;
-	}
-
-	/**
 	 * Return the variance of values recorded, or {@code Double.NaN} if no
 	 * values have been recorded.
 	 *
