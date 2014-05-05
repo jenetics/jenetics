@@ -170,7 +170,7 @@ public final class LongMoments implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Hash.of(IntMoments.class)
+		return Hash.of(LongMoments.class)
 			.and(_count)
 			.and(_sum)
 			.and(_min)

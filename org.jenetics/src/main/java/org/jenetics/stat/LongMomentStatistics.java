@@ -51,6 +51,7 @@ import java.util.stream.Collector;
  * safe and efficient parallel execution.</i>
  *
  * @see java.util.LongSummaryStatistics
+ * @see org.jenetics.stat.LongMoments
  * @see <a href="http://people.xiph.org/~tterribe/notes/homs.html">
  *      Computing Higher-Order Moments Online</a>
  *
