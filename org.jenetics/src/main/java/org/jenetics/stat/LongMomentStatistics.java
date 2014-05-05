@@ -22,13 +22,10 @@ package org.jenetics.stat;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.object.eq;
 
 import java.util.function.LongConsumer;
 import java.util.function.ToLongFunction;
 import java.util.stream.Collector;
-
-import org.jenetics.internal.util.Hash;
 
 /**
  * A state object for collecting statistics such as count, min, max, sum, mean,
