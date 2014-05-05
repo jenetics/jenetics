@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class LongMomentsTest {
+public class LongMomentStatisticsTest {
 
 	private List<Long> numbers(final int size) {
 		final Random random = new Random(123);
@@ -50,8 +50,8 @@ public class LongMomentsTest {
 		final DescriptiveStatistics expected = new DescriptiveStatistics();
 		numbers.forEach(expected::addValue);
 
-		final LongMoments summary = numbers.stream()
-			.collect(LongMoments.collector(Long::longValue));
+		final LongMomentStatistics summary = numbers.stream()
+			.collect(LongMomentStatistics.collector(Long::longValue));
 
 		Assert.assertEquals(summary.getCount(), numbers.size());
 		assertEqualsDouble(min(summary.getMin()), expected.getMin(), 0.0);
@@ -70,8 +70,8 @@ public class LongMomentsTest {
 		final DescriptiveStatistics expected = new DescriptiveStatistics();
 		numbers.forEach(expected::addValue);
 
-		final LongMoments summary = numbers.stream()
-			.collect(LongMoments.collector(Long::longValue));
+		final LongMomentStatistics summary = numbers.stream()
+			.collect(LongMomentStatistics.collector(Long::longValue));
 
 		Assert.assertEquals(summary.getCount(), numbers.size());
 		assertEqualsDouble(min(summary.getMin()), expected.getMin(), 0.0);

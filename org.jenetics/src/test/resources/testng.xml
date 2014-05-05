@@ -243,7 +243,7 @@
     <test name="org.jenetics.stat.Moments">
         <classes>
             <class name="org.jenetics.stat.IntMomentStatisticsTest" />
-            <class name="org.jenetics.stat.LongMomentsTest" />
+            <class name="org.jenetics.stat.LongMomentStatisticsTest" />
             <class name="org.jenetics.stat.DoubleMomentsTest" />
         </classes>
     </test>

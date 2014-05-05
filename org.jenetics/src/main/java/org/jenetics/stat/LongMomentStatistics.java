@@ -39,10 +39,10 @@ import org.jenetics.internal.util.Hash;
  * example, you can compute moments-statistics on a stream of longs with:
  * [code]
  * final LongStream stream = ...
- * final LongMoments moments = stream.collect(
- *         LongMoments::new,
- *         LongMoments::accept,
- *         LongMoments::combine
+ * final LongMomentStatistics statistics = stream.collect(
+ *         LongMomentStatistics::new,
+ *         LongMomentStatistics::accept,
+ *         LongMomentStatistics::combine
  *     );
  * [/code]
  * <p>
@@ -59,9 +59,9 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-05-02 $</em>
+ * @version 3.0 &mdash; <em>$Date$</em>
  */
-public class LongMoments extends Moments implements LongConsumer {
+public class LongMomentStatistics extends Moments implements LongConsumer {
 
 	private long _min = Long.MAX_VALUE;
 	private long _max = Long.MIN_VALUE;
@@ -70,7 +70,7 @@ public class LongMoments extends Moments implements LongConsumer {
 	/**
 	 * Create an empty moments object.
 	 */
-	public LongMoments() {
+	public LongMomentStatistics() {
 	}
 
 	/**
@@ -94,7 +94,7 @@ public class LongMoments extends Moments implements LongConsumer {
 	 * @throws java.lang.NullPointerException if the other statistical summary
 	 *         is {@code null}.
 	 */
-	public void combine(final LongMoments other) {
+	public void combine(final LongMomentStatistics other) {
 		super.combine(other);
 		_min = min(_min, other._min);
 		_max = max(_max, other._max);
@@ -131,40 +131,6 @@ public class LongMoments extends Moments implements LongConsumer {
 		return _sum;
 	}
 
-	@Override
-	public int hashCode() {
-		return Hash.of(LongMoments.class)
-			.and(super.hashCode())
-			.and(_min)
-			.and(_max)
-			.and(_sum).value();
-	}
-
-	@Override
-	public boolean equals(final Object object) {
-		if (object == null) {
-			return true;
-		}
-		if (!(object instanceof LongMoments)) {
-			return false;
-		}
-
-		final LongMoments moments = (LongMoments)object;
-		return super.equals(object) &&
-			eq(_min, moments._min) &&
-			eq(_max, moments._max) &&
-			eq(_sum, moments._sum);
-	}
-
-	@Override
-	public String toString() {
-		return String.format(
-			"Summary[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s, s2=%s, S=%s, K=%s]",
-			getCount(), _min, _max, _sum,
-			getMean(), getVariance(), getSkewness(), getKurtosis()
-		);
-	}
-
 	/**
 	 * Return a {@code Collector} which applies an long-producing mapping
 	 * function to each input element, and returns moments-statistics for the
@@ -172,8 +138,8 @@ public class LongMoments extends Moments implements LongConsumer {
 	 *
 	 * [code]
 	 * final Stream&lt;SomeObject&gt; stream = ...
-	 * final LongMoments moments = stream
-	 *     .collect(LongMoments.collector(v -&gt; v.longValue()));
+	 * final LongMomentStatistics statistics = stream
+	 *     .collect(LongMomentStatistics.collector(v -&gt; v.longValue()));
 	 * [/code]
 	 *
 	 * @param mapper a mapping function to apply to each element
@@ -182,11 +148,11 @@ public class LongMoments extends Moments implements LongConsumer {
 	 * @throws java.lang.NullPointerException if the given {@code mapper} is
 	 *         {@code null}
 	 */
-	public static <T> Collector<T, ?, LongMoments>
+	public static <T> Collector<T, ?, LongMomentStatistics>
 	collector(final ToLongFunction<? super T> mapper) {
 		requireNonNull(mapper);
 		return Collector.of(
-			LongMoments::new,
+			LongMomentStatistics::new,
 			(r, t) -> r.accept(mapper.applyAsLong(t)),
 			(a, b) -> {a.combine(b); return a;}
 		);
