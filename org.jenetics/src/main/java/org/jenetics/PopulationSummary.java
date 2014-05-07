@@ -23,10 +23,10 @@ import org.jenetics.stat.IntSummary;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.0 &mdash; <em>$Date: 2014-05-07 $</em>
  * @since 3.0
+ * @version 3.0 &mdash; <em>$Date$</em>
  */
-public final class PopulationStatistics<
+public final class PopulationSummary<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
@@ -36,7 +36,7 @@ public final class PopulationStatistics<
 	private final Phenotype<G, C> _worst;
 	private final IntSummary _ageSummary;
 
-	private PopulationStatistics(
+	private PopulationSummary(
 		final int count,
 		final Phenotype<G, C> best,
 		final Phenotype<G, C> worst,
@@ -48,16 +48,16 @@ public final class PopulationStatistics<
 		_ageSummary = ageSummary;
 	}
 
+	public int getCount() {
+		return _count;
+	}
+
 	public Phenotype<G, C> getWorst() {
 		return _worst;
 	}
 
 	public Phenotype<G, C> getBest() {
 		return _best;
-	}
-
-	public int getCount() {
-		return _count;
 	}
 
 	public IntSummary getAgeSummary() {
