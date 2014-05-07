@@ -231,14 +231,14 @@ public final class DoubleMoments implements Serializable {
 	}
 
 	/**
-	 * Return a {@code Collector} which applies an int-producing mapping
+	 * Return a {@code Collector} which applies an double-producing mapping
 	 * function to each input element, and returns moments-statistics for the
 	 * resulting values.
 	 *
 	 * [code]
 	 * final Stream&lt;SomeObject&gt; stream = ...
-	 * final IntMoments moments = stream
-	 *     .collect(IntMoments.collector(v -&gt; v.intValue()));
+	 * final DoubleMoments moments = stream
+	 *     .collect(DoubleMoments.collector(v -&gt; v.doubleValue()));
 	 * [/code]
 	 *
 	 * @param mapper a mapping function to apply to each element

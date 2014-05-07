@@ -231,14 +231,14 @@ public final class LongMoments implements Serializable {
 	}
 
 	/**
-	 * Return a {@code Collector} which applies an int-producing mapping
+	 * Return a {@code Collector} which applies an long-producing mapping
 	 * function to each input element, and returns moments-statistics for the
 	 * resulting values.
 	 *
 	 * [code]
 	 * final Stream&lt;SomeObject&gt; stream = ...
 	 * final LongMoments moments = stream
-	 *     .collect(LongMoments.collector(v -&gt; v.intValue()));
+	 *     .collect(LongMoments.collector(v -&gt; v.longValue()));
 	 * [/code]
 	 *
 	 * @param mapper a mapping function to apply to each element

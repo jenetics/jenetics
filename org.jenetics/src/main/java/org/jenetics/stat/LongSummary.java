@@ -30,6 +30,10 @@ import java.util.stream.Collector;
 import org.jenetics.internal.util.Hash;
 
 /**
+ * <i>Value</i> objects which contains statistical summary information.
+ *
+ * @see java.util.LongSummaryStatistics
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
  * @version 3.0 &mdash; <em>$Date: 2014-05-07 $</em>
@@ -168,6 +172,23 @@ public final class LongSummary implements Serializable {
 		);
 	}
 
+	/**
+	 * Return a {@code Collector} which applies an long-producing mapping
+	 * function to each input element, and returns summary-statistics for the
+	 * resulting values.
+	 *
+	 * [code]
+	 * final Stream&lt;SomeObject&gt; stream = ...
+	 * final LongSummary summary = stream
+	 *     .collect(LongSummary.collector(v -&gt; v.longValue()));
+	 * [/code]
+	 *
+	 * @param mapper a mapping function to apply to each element
+	 * @param <T> the type of the input elements
+	 * @return a {@code Collector} implementing the summary-statistics reduction
+	 * @throws java.lang.NullPointerException if the given {@code mapper} is
+	 *         {@code null}
+	 */
 	public static <T> Collector<T, ?, LongSummary>
 	collector(final ToLongFunction<? super T> mapper) {
 		requireNonNull(mapper);
