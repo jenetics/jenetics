@@ -33,7 +33,7 @@ import org.jenetics.internal.math.DoubleAdder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date$</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-05-07 $</em>
  */
 class MomentStatistics {
 
@@ -113,8 +113,8 @@ class MomentStatistics {
 	}
 
 	/**
-	 * Return the arithmetic mean of values recorded, or zero if no values have
-	 * been recorded.
+	 * Return the arithmetic mean of values recorded, or {@code Double.NaN} if
+	 * no values have been recorded.
 	 *
 	 * @return the arithmetic mean of values, or zero if none
 	 */

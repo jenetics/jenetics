@@ -81,20 +81,20 @@ public final class DoubleSummary implements Serializable {
 	}
 
 	/**
-	 * Return the minimum value recorded, or {@code Integer.MAX_VALUE} if no
-	 * values have been recorded.
+	 * Return the minimum value recorded, or {@code Double.POSITIVE_INFINITY} if
+	 * no values have been recorded.
 	 *
-	 * @return the minimum value, or {@code Integer.MAX_VALUE} if none
+	 * @return the minimum value, or {@code Double.POSITIVE_INFINITY} if none
 	 */
 	public double getMin() {
 		return _min;
 	}
 
 	/**
-	 * Return the maximum value recorded, or {@code Integer.MIN_VALUE} if no
-	 * values have been recorded.
+	 * Return the maximum value recorded, or {@code Double.NEGATIVE_INFINITY} if
+	 * no values have been recorded.
 	 *
-	 * @return the maximum value, or {@code Integer.MIN_VALUE} if none
+	 * @return the maximum value, or {@code Double.NEGATIVE_INFINITY} if none
 	 */
 	public double getMax() {
 		return _max;

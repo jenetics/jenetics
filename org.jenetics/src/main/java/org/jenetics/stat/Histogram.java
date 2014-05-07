@@ -98,17 +98,6 @@ public class Histogram<C> implements Consumer<C> {
 		Arrays.fill(_histogram, 0L);
 	}
 
-	@SafeVarargs
-	private Histogram(
-		final long[] histogram,
-		final Comparator<C> comparator,
-		final C... separators
-	) {
-		_histogram = histogram;
-		_comparator = comparator;
-		_separators = separators;
-	}
-
 	@SuppressWarnings("unchecked")
 	private static <C> C[] check(final C... classes) {
 		Arrays.asList(classes).forEach(Objects::requireNonNull);
