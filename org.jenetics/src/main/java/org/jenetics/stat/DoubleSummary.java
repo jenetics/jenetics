@@ -34,7 +34,7 @@ import org.jenetics.internal.util.Hash;
  * @since 3.0
  * @version 3.0 &mdash; <em>$Date: 2014-05-07 $</em>
  */
-public class DoubleSummary implements Serializable {
+public final class DoubleSummary implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
