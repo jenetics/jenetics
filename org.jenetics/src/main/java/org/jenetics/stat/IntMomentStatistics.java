@@ -57,7 +57,7 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-05-05 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-05-07 $</em>
  */
 public class IntMomentStatistics
 	extends MomentStatistics
@@ -130,25 +130,6 @@ public class IntMomentStatistics
 	 */
 	public long getSum() {
 		return _sum;
-	}
-
-	/**
-	 * Return a new value object of the statistical moments, currently
-	 * represented by this object.
-	 *
-	 * @return the current statistical moments
-	 */
-	public IntMoments moments() {
-		return new IntMoments(
-			getCount(),
-			getMin(),
-			getMax(),
-			getSum(),
-			getMean(),
-			getVariance(),
-			getSkewness(),
-			getKurtosis()
-		);
 	}
 
 	@Override

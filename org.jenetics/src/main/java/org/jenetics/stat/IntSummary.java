@@ -23,21 +23,18 @@ import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.object.eq;
 
 import java.io.Serializable;
+import java.util.IntSummaryStatistics;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collector;
 
 import org.jenetics.internal.util.Hash;
 
 /**
- * <i>Value</i> objects which contains statistical moments.
- *
- * @see org.jenetics.stat.IntMomentStatistics
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
  * @version 3.0 &mdash; <em>$Date: 2014-05-07 $</em>
  */
-public final class IntMoments implements Serializable {
+public class IntSummary implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -46,41 +43,28 @@ public final class IntMoments implements Serializable {
 	private final int _max;
 	private final long _sum;
 	private final double _mean;
-	private final double _variance;
-	private final double _skewness;
-	private final double _kurtosis;
-
 
 	/**
-	 * Create an immutable object which contains statistical values.
+	 * Create an immutable object which contains statistical summary values.
 	 *
 	 * @param count the count of values recorded
 	 * @param min the minimum value
 	 * @param max the maximum value
 	 * @param sum the sum of the recorded values
 	 * @param mean the arithmetic mean of values
-	 * @param variance the variance of values
-	 * @param skewness the skewness of values
-	 * @param kurtosis the kurtosis of values
 	 */
-	public IntMoments(
+	public IntSummary(
 		final long count,
 		final int min,
 		final int max,
 		final long sum,
-		final double mean,
-		final double variance,
-		final double skewness,
-		final double kurtosis
+		final double mean
 	) {
 		_count = count;
 		_min = min;
 		_max = max;
 		_sum = sum;
 		_mean = mean;
-		_variance = variance;
-		_skewness = skewness;
-		_kurtosis = kurtosis;
 	}
 
 	/**
@@ -132,42 +116,6 @@ public final class IntMoments implements Serializable {
 		return _mean;
 	}
 
-	/**
-	 * Return the variance of values recorded, or {@code Double.NaN} if no
-	 * values have been recorded.
-	 *
-	 * @return the variance of values, or {@code NaN} if none
-	 */
-	public double getVariance() {
-		return _variance;
-	}
-
-	/**
-	 * Return the skewness of values recorded, or {@code Double.NaN} if less
-	 * than two values have been recorded.
-	 *
-	 * @see <a href="https://en.wikipedia.org/wiki/Skewness">Skewness</a>
-	 *
-	 * @return the skewness of values, or {@code NaN} if less than two values
-	 *         have been recorded
-	 */
-	public double getSkewness() {
-		return _skewness;
-	}
-
-	/**
-	 * Return the kurtosis of values recorded, or {@code Double.NaN} if less
-	 * than four values have been recorded.
-	 *
-	 * @see <a href="https://en.wikipedia.org/wiki/Kurtosis">Kurtosis</a>
-	 *
-	 * @return the kurtosis of values, or {@code NaN} if less than four values
-	 *         have been recorded
-	 */
-	public double getKurtosis() {
-		return _kurtosis;
-	}
-
 	@Override
 	public int hashCode() {
 		return Hash.of(IntMoments.class)
@@ -175,10 +123,7 @@ public final class IntMoments implements Serializable {
 			.and(_sum)
 			.and(_min)
 			.and(_max)
-			.and(_mean)
-			.and(_variance)
-			.and(_skewness)
-			.and(_kurtosis).value();
+			.and(_mean).value();
 	}
 
 	@Override
@@ -186,75 +131,51 @@ public final class IntMoments implements Serializable {
 		if (object == null) {
 			return true;
 		}
-		if (!(object instanceof IntMoments)) {
+		if (!(object instanceof IntSummary)) {
 			return false;
 		}
 
-		final IntMoments moments = (IntMoments)object;
-		return eq(_count, moments._count) &&
-			eq(_sum, moments._sum) &&
-			eq(_min, moments._min) &&
-			eq(_max, moments._max) &&
-			eq(_mean, moments._mean) &&
-			eq(_variance, moments._variance) &&
-			eq(_skewness, moments._skewness) &&
-			eq(_kurtosis, moments._kurtosis);
+		final IntSummary summary = (IntSummary)object;
+		return eq(_count, summary._count) &&
+			eq(_sum, summary._sum) &&
+			eq(_min, summary._min) &&
+			eq(_max, summary._max) &&
+			eq(_mean, summary._mean);
 	}
 
 	@Override
 	public String toString() {
 		return String.format(
-			"IntMoments[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s, s2=%s, S=%s, K=%s]",
-			getCount(), getMin(), getMax(), getSum(),
-			getMean(), getVariance(), getSkewness(), getKurtosis()
+			"IntSummary[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s]",
+			getCount(), getMin(), getMax(), getSum(), getMean()
 		);
 	}
 
 	/**
-	 * Return a new value object of the statistical moments, currently
+	 * Return a new value object of the statistical summary, currently
 	 * represented by the {@code statistics} object.
 	 *
 	 * @param statistics the creating (mutable) statistics class
 	 * @return the statistical moments
 	 */
-	public static IntMoments of(final IntMomentStatistics statistics) {
-		return new IntMoments(
+	public static IntSummary of(final IntSummaryStatistics statistics) {
+		return new IntSummary(
 			statistics.getCount(),
 			statistics.getMin(),
 			statistics.getMax(),
 			statistics.getSum(),
-			statistics.getMean(),
-			statistics.getVariance(),
-			statistics.getSkewness(),
-			statistics.getKurtosis()
+			statistics.getAverage()
 		);
 	}
 
-	/**
-	 * Return a {@code Collector} which applies an int-producing mapping
-	 * function to each input element, and returns moments-statistics for the
-	 * resulting values.
-	 *
-	 * [code]
-	 * final Stream&lt;SomeObject&gt; stream = ...
-	 * final IntMoments moments = stream
-	 *     .collect(IntMoments.collector(v -&gt; v.intValue()));
-	 * [/code]
-	 *
-	 * @param mapper a mapping function to apply to each element
-	 * @param <T> the type of the input elements
-	 * @return a {@code Collector} implementing the moments-statistics reduction
-	 * @throws java.lang.NullPointerException if the given {@code mapper} is
-	 *         {@code null}
-	 */
-	public static <T> Collector<T, ?, IntMoments>
+	public static <T> Collector<T, ?, IntSummary>
 	collector(final ToIntFunction<? super T> mapper) {
 		requireNonNull(mapper);
 		return Collector.of(
-			IntMomentStatistics::new,
+			IntSummaryStatistics::new,
 			(a, b) -> a.accept(mapper.applyAsInt(b)),
 			(a, b) -> {a.combine(b); return a;},
-			IntMoments::of
+			IntSummary::of
 		);
 	}
 
