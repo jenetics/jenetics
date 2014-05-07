@@ -39,7 +39,7 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-17 $</em>
+ * @version <em>$Date: 2014-05-07 $</em>
  */
 public class CharacterGeneTest extends GeneTester<CharacterGene> {
 
@@ -63,8 +63,8 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 				final CharacterGene g2 = factory.newInstance();
 				Assert.assertNotSame(g1, g2);
 
-				histogram.accumulate(Long.valueOf(g1.getAllele().toString()));
-				histogram.accumulate(Long.valueOf(g2.getAllele().toString()));
+				histogram.accept(Long.valueOf(g1.getAllele().toString()));
+				histogram.accept(Long.valueOf(g2.getAllele().toString()));
 			}
 
 			assertDistribution(histogram, new UniformDistribution<>(0L, 10L));

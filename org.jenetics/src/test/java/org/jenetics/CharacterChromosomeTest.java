@@ -36,7 +36,7 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-03 $</em>
+ * @version <em>$Date: 2014-05-07 $</em>
  */
 public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 
@@ -56,7 +56,7 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 			final Histogram<Long> histogram = Histogram.of(0L, 10L, 10);
 
 			for (CharacterGene gene : chromosome) {
-				histogram.accumulate(Long.valueOf(gene.getAllele().toString()));
+				histogram.accept(Long.valueOf(gene.getAllele().toString()));
 			}
 
 			assertDistribution(histogram, new UniformDistribution<>(0L, 10L));

@@ -34,7 +34,7 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-05 $</em>
+ * @version <em>$Date: 2014-05-07 $</em>
  */
 public class GaussianMutatorTest extends MutatorTestBase {
 
@@ -61,7 +61,7 @@ public class GaussianMutatorTest extends MutatorTestBase {
 		for (int i = 0; i < 10000; ++i) {
 			final double value = mutator.mutate(gene, random).getAllele();
 
-			histogram.accumulate(value);
+			histogram.accept(value);
 			variance.accumulate(value);
 		}
 

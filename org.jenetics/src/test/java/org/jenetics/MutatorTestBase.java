@@ -34,7 +34,7 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-17 $</em>
+ * @version <em>$Date: 2014-05-07 $</em>
  */
 public abstract class MutatorTestBase {
 
@@ -91,7 +91,7 @@ public abstract class MutatorTestBase {
 
 		for (int i = 0; i < N; ++i) {
 			final long alterations = mutator.alter(population, 1);
-			histogram.accumulate(alterations);
+			histogram.accept(alterations);
 			variance.accumulate(alterations);
 		}
 

@@ -35,7 +35,7 @@ import org.jenetics.stat.Variance;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-07 $</em>
+ * @version <em>$Date: 2014-05-07 $</em>
  */
 public class RandomIndexStreamTest {
 
@@ -147,7 +147,7 @@ public class RandomIndexStreamTest {
 		for (int i = 0; i < 2500; ++i) {
 			final long k = k(n, p, random);
 
-			histogram.accumulate(k);
+			histogram.accept(k);
 			variance.accumulate(k);
 		}
 

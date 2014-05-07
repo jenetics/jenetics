@@ -28,7 +28,7 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-05-01 $</em>
+ * @version <em>$Date: 2014-05-07 $</em>
  */
 public class NormalDistributionTest {
 
@@ -43,7 +43,7 @@ public class NormalDistributionTest {
 		final double std = 100;
 		for (int i = 0; i < 50000; ++i) {
 			final double value =  random.nextGaussian()*std + mean;
-			histogram.accumulate(value);
+			histogram.accept(value);
 			variance.accumulate(value);
 		}
 

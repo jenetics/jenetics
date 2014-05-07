@@ -20,11 +20,8 @@
 package org.jenetics;
 
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
-import static org.jenetics.util.Accumulator.accumulate;
 
 import java.util.Random;
-import java.util.concurrent.ForkJoinPool;
-import java.util.function.Function;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -38,7 +35,7 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-21 $</em>
+ * @version <em>$Date: 2014-05-07 $</em>
  */
 public class IntegerChromosomeTest
 	extends NumericChromosomeTester<Integer, IntegerGene>
@@ -67,13 +64,11 @@ public class IntegerChromosomeTest
 			for (int i = 0; i < 1000; ++i) {
 				final IntegerChromosome chromosome = new IntegerChromosome(min, max, 500);
 
-				accumulate(
-					ForkJoinPool.commonPool(),
-					chromosome,
-					mm.map(Allele),
-					variance.map(Allele),
-					histogram.map(Allele)
-				);
+				chromosome.toSeq().forEach(g -> {
+					mm.accumulate(g.getAllele());
+					variance.accumulate(g.getAllele());
+					histogram.accept(g.getAllele());
+				});
 			}
 
 			Assert.assertTrue(mm.getMin().compareTo(0) >= 0);
@@ -81,12 +76,5 @@ public class IntegerChromosomeTest
 			assertDistribution(histogram, new UniformDistribution<>(min, max));
 		}
 	}
-
-	private static final Function<IntegerGene, Integer> Allele =
-		new Function<IntegerGene, Integer>() {
-			@Override public Integer apply(final IntegerGene value) {
-				return value.getAllele();
-			}
-		};
 
 }

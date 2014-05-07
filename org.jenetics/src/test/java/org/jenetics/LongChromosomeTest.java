@@ -20,11 +20,8 @@
 package org.jenetics;
 
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
-import static org.jenetics.util.Accumulator.accumulate;
 
 import java.util.Random;
-import java.util.concurrent.ForkJoinPool;
-import java.util.function.Function;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -38,7 +35,7 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-21 $</em>
+ * @version <em>$Date: 2014-05-07 $</em>
  */
 public class LongChromosomeTest
 	extends NumericChromosomeTester<Long, LongGene>
@@ -66,14 +63,11 @@ public class LongChromosomeTest
 
 			for (int i = 0; i < 1000; ++i) {
 				final LongChromosome chromosome = new LongChromosome(min, max, 500);
-
-				accumulate(
-					ForkJoinPool.commonPool(),
-					chromosome,
-					mm.map(Allele),
-					variance.map(Allele),
-					histogram.map(Allele)
-				);
+				for (LongGene gene : chromosome) {
+					mm.accumulate(gene.getAllele());
+					variance.accumulate(gene.getAllele());
+					histogram.accept(gene.getAllele());
+				}
 			}
 
 			Assert.assertTrue(mm.getMin().compareTo(0L) >= 0);
@@ -81,12 +75,5 @@ public class LongChromosomeTest
 			assertDistribution(histogram, new UniformDistribution<>(min, max));
 		}
 	}
-
-	private static final Function<LongGene, Long> Allele =
-		new Function<LongGene, Long>() {
-			@Override public Long apply(final LongGene value) {
-				return value.getAllele();
-			}
-		};
 
 }

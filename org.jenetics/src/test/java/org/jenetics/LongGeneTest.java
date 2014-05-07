@@ -36,7 +36,7 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-12 $</em>
+ * @version <em>$Date: 2014-05-07 $</em>
  */
 public class LongGeneTest extends NumericGeneTester<Long, LongGene> {
 
@@ -70,8 +70,8 @@ public class LongGeneTest extends NumericGeneTester<Long, LongGene> {
 
 				variance.accumulate(g1.getAllele());
 				variance.accumulate(g2.getAllele());
-				histogram.accumulate(g1.getAllele());
-				histogram.accumulate(g2.getAllele());
+				histogram.accept(g1.getAllele());
+				histogram.accept(g2.getAllele());
 			}
 
 			assertDistribution(histogram, new UniformDistribution<>(min, max));

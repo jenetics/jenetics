@@ -37,7 +37,7 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-18 $</em>
+ * @version <em>$Date: 2014-05-07 $</em>
  */
 public class PartiallyMatchedCrossoverTest {
 
@@ -116,7 +116,7 @@ public class PartiallyMatchedCrossoverTest {
 
 		for (int i = 0; i < N; ++i) {
 			final long alterations = crossover.alter(population, 1);
-			histogram.accumulate(alterations);
+			histogram.accept(alterations);
 			variance.accumulate(alterations);
 		}
 

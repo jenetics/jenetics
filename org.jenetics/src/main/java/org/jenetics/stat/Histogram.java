@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.ToDoubleFunction;
 
 import org.jenetics.internal.util.Hash;
@@ -64,12 +65,14 @@ import org.jenetics.util.AbstractAccumulator;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-05-01 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-05-07 $</em>
  */
-public class Histogram<C> extends AbstractAccumulator<C> {
+public class Histogram<C> implements Consumer<C> {
 
-	private final C[] _separators;
 	private final Comparator<C> _comparator;
+	private final C[] _separators;
+
+	private long _count = 0;
 	private final long[] _histogram;
 
 	/**
@@ -117,9 +120,31 @@ public class Histogram<C> extends AbstractAccumulator<C> {
 	}
 
 	@Override
-	public void accumulate(final C value) {
+	public void accept(final C value) {
+		++_count;
 		++_histogram[index(value)];
-		++_samples;
+	}
+
+	/**
+	 * Combine the given {@code other} histogram with {@code this} one.
+	 *
+	 * @param other the histogram to add.
+	 * @throws IllegalArgumentException if the {@link #length()} and the
+	 *         separators of {@code this} and the given {@code histogram} are
+	 *         not the same.
+	 * @throws NullPointerException if the given {@code histogram} is {@code null}.
+	 */
+	public void combine(final Histogram<C> other) {
+		if (!eq(_separators, other._separators)) {
+			throw new IllegalArgumentException(
+				"The histogram separators are not equals."
+			);
+		}
+
+		_count += other._count;
+		for (int i = other._histogram.length; --i >= 0;) {
+			_histogram[i] += other._histogram[i];
+		}
 	}
 
 	/**
@@ -149,36 +174,6 @@ public class Histogram<C> extends AbstractAccumulator<C> {
 		}
 
 		throw new AssertionError("This line will never be reached.");
-	}
-
-	/**
-	 * Add the given {@code histogram} to this in a newly created one.
-	 *
-	 * @param histogram the histogram to add.
-	 * @return a new histogram with the added values of this and the given one.
-	 * @throws IllegalArgumentException if the {@link #length()} and the
-	 *         separators of {@code this} and the given {@code histogram} are
-	 *         not the same.
-	 * @throws NullPointerException if the given {@code histogram} is {@code null}.
-	 */
-	public Histogram<C> plus(final Histogram<C> histogram) {
-		if (!_comparator.equals(histogram._comparator)) {
-			throw new IllegalArgumentException(
-				"The histogram comparators are not equals."
-			);
-		}
-		if (!Arrays.equals(_separators, histogram._separators)) {
-			throw new IllegalArgumentException(
-				"The histogram separators are not equals."
-			);
-		}
-
-		final long[] data = new long[_histogram.length];
-		for (int i = 0; i < data.length; ++i) {
-			data[i] = _histogram[i] + histogram._histogram[i];
-		}
-
-		return new Histogram<>(data, _comparator, _separators);
 	}
 
 	/**
@@ -248,9 +243,9 @@ public class Histogram<C> extends AbstractAccumulator<C> {
 	public double[] getProbabilities() {
 		final double[] probabilities = new double[_histogram.length];
 
-		assert (sum(_histogram) == _samples);
+		assert (sum(_histogram) == _count);
 		for (int i = 0; i < probabilities.length; ++i) {
-			probabilities[i] = (double)_histogram[i]/(double)_samples;
+			probabilities[i] = (double)_histogram[i]/(double)_count;
 		}
 
 		return probabilities;
@@ -314,7 +309,7 @@ public class Histogram<C> extends AbstractAccumulator<C> {
 			p0j = cdf.applyAsDouble(_separators[j]) - cdf.applyAsDouble(_separators[j - 1]);
 		}
 
-		return max(round(p0j*_samples), 1L);
+		return max(round(p0j*_count), 1L);
 	}
 
 	/**
@@ -337,6 +332,10 @@ public class Histogram<C> extends AbstractAccumulator<C> {
 	 */
 	public double chisqr(final ToDoubleFunction<C> cdf, final C min, final C max) {
 		return χ2(cdf, min, max);
+	}
+
+	public long getCount() {
+		return _count;
 	}
 
 	@Override
@@ -364,13 +363,9 @@ public class Histogram<C> extends AbstractAccumulator<C> {
 
 	@Override
 	public String toString() {
-		return Arrays.toString(_separators) + "\n" + Arrays.toString(getHistogram()) +
-			"\nSamples: " + _samples;
-	}
-
-	@Override
-	public Histogram<C> clone() {
-		return (Histogram<C>)super.clone();
+		return Arrays.toString(_separators) + "\n" +
+			Arrays.toString(getHistogram()) +
+			"\nSamples: " + _count;
 	}
 
 	/**
