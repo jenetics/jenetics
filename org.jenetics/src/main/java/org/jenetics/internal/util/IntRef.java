@@ -22,21 +22,50 @@ package org.jenetics.internal.util;
 import java.io.Serializable;
 
 /**
+ * Int reference class, which allows the usage in an lambda expression.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
  * @version 3.0 &mdash; <em>$Date: 2014-05-10 $</em>
  */
-public class IntRef implements Serializable {
+public final class IntRef implements Serializable {
 	private static final long serialVersionUID = 1;
 
+	/**
+	 * The actual int value.
+	 */
 	public int value;
 
+	/**
+	 * Create a new {@code IntRef} object with the given initial value.
+	 *
+	 * @param initialValue the initial int value of the reference.
+	 */
 	public IntRef(final int initialValue) {
 		value = initialValue;
 	}
 
+	/**
+	 * Create a new {@code IntRef} object initialized with zero.
+	 */
 	public IntRef() {
 		this(0);
+	}
+
+	@Override
+	public int hashCode() {
+		return Integer.hashCode(value);
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			(obj instanceof IntRef && value == ((IntRef)obj).value);
+	}
+
+	@Override
+	public String toString() {
+		return Integer.toString(value);
 	}
 
 }
