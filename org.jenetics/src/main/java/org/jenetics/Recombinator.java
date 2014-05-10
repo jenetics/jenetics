@@ -20,12 +20,13 @@
 package org.jenetics;
 
 import static java.lang.String.format;
+import static org.jenetics.util.math.random.indexes;
 import static org.jenetics.util.math.subset;
 
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicInteger;
 
-import org.jenetics.util.IndexStream;
+import org.jenetics.internal.util.IntRef;
+
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -50,7 +51,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-21 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-05-10 $</em>
  */
 public abstract class Recombinator<G extends Gene<?, G>>
 	extends AbstractAlterer<G>
@@ -95,14 +96,14 @@ public abstract class Recombinator<G extends Gene<?, G>>
 		final Random random = RandomRegistry.getRandom();
 		final int order = Math.min(_order, population.size());
 
-		final AtomicInteger alterations = new AtomicInteger(0);
-		IndexStream.Random(population.size(), _probability).forEach(i -> {
+		final IntRef alterations = new IntRef(0);
+		indexes(random, population.size(), _probability).forEach(i -> {
 			final int[] individuals = subset(population.size(), order, random);
 			individuals[0] = i;
-			alterations.addAndGet(recombine(population, individuals, generation));
+			alterations.value += recombine(population, individuals, generation);
 		});
 
-		return alterations.get();
+		return alterations.value;
 	}
 
 	/**

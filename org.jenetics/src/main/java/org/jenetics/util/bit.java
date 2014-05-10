@@ -20,6 +20,7 @@
 package org.jenetics.util;
 
 import static java.lang.Math.min;
+import static org.jenetics.util.math.random.indexes;
 
 
 /**
@@ -36,7 +37,7 @@ import static java.lang.Math.min;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.5 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-05-10 $</em>
  */
 public final class bit extends StaticObject {
 	private bit() {}
@@ -453,10 +454,9 @@ public final class bit extends StaticObject {
 	public static byte[] newArray(final int length, final double p) {
 		final byte[] bytes = newArray(length);
 
-		final IndexStream stream = IndexStream.Random(length, p);
-		for (int i = stream.next(); i != -1; i = stream.next()) {
+		indexes(RandomRegistry.getRandom(), length, p).forEach(i -> {
 			bytes[i >>> 3] |= 1 << (i & 7);
-		}
+		});
 
 		return bytes;
 	}

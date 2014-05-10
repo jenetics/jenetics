@@ -21,13 +21,15 @@ package org.jenetics;
 
 import static java.lang.Math.pow;
 import static java.lang.String.format;
+import static org.jenetics.util.math.random.indexes;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.jenetics.internal.util.Hash;
+import org.jenetics.internal.util.IntRef;
 
-import org.jenetics.util.IndexStream;
 import org.jenetics.util.MSeq;
+import org.jenetics.util.RandomRegistry;
 
 /**
  * This class is for mutating a chromosomes of an given population. There are
@@ -65,7 +67,7 @@ import org.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-05-10 $</em>
  */
 public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 
@@ -102,8 +104,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 		final double p = pow(_probability, 1.0/3.0);
 		final AtomicInteger alterations = new AtomicInteger(0);
 
-		final IndexStream stream = IndexStream.Random(population.size(), p);
-		for (int i = stream.next(); i != -1; i = stream.next()) {
+		indexes(RandomRegistry.getRandom(), population.size(), p).forEach(i -> {
 			final Phenotype<G, C> pt = population.get(i);
 
 			final Genotype<G> gt = pt.getGenotype();
@@ -111,7 +112,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 
 			final Phenotype<G, C> mpt = pt.newInstance(mgt, generation);
 			population.set(i, mpt);
-		}
+		});
 
 		return alterations.get();
 	}
@@ -121,29 +122,20 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 		final double p,
 		final AtomicInteger alterations
 	) {
-		Genotype<G> gt = genotype;
+		final MSeq<Chromosome<G>> chromosomes = genotype.toSeq().copy();
 
-		final IndexStream stream = IndexStream.Random(genotype.length(), p);
-		final int start = stream.next();
+		indexes(RandomRegistry.getRandom(), genotype.length(), p).forEach(i -> {
+			final Chromosome<G> chromosome = chromosomes.get(i);
+			final MSeq<G> genes = chromosome.toSeq().copy();
 
-		if (start != -1) {
-			final MSeq<Chromosome<G>> chromosomes = genotype.toSeq().copy();
-
-			for (int i = start; i != -1; i = stream.next()) {
-				final Chromosome<G> chromosome = chromosomes.get(i);
-				final MSeq<G> genes = chromosome.toSeq().copy();
-
-				final int mutations = mutate(genes, p);
-				if (mutations > 0) {
-					alterations.addAndGet(mutations);
-					chromosomes.set(i, chromosome.newInstance(genes.toISeq()));
-				}
+			final int mutations = mutate(genes, p);
+			if (mutations > 0) {
+				alterations.addAndGet(mutations);
+				chromosomes.set(i, chromosome.newInstance(genes.toISeq()));
 			}
+		});
 
-			gt = genotype.newInstance(chromosomes.toISeq());
-		}
-
-		return gt;
+		return genotype.newInstance(chromosomes.toISeq());
 	}
 
 	/**
@@ -171,15 +163,14 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 * @return the number of performed mutations
 	 */
 	protected int mutate(final MSeq<G> genes, final double p) {
-		final IndexStream stream = IndexStream.Random(genes.length(), p);
+		final IntRef alternations = new IntRef(0);
 
-		int alterations = 0;
-		for (int i = stream.next(); i != -1; i = stream.next()) {
+		indexes(RandomRegistry.getRandom(), genes.length(), p).forEach(i -> {
 			genes.set(i, genes.get(i).newInstance());
-			++alterations;
-		}
+			++alternations.value;
+		});
 
-		return alterations;
+		return alternations.value;
 	}
 
 	@Override

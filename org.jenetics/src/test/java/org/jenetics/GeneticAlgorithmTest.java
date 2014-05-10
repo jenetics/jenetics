@@ -36,7 +36,7 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-05-07 $</em>
+ * @version <em>$Date: 2014-05-10 $</em>
  */
 public class GeneticAlgorithmTest {
 
@@ -78,11 +78,11 @@ public class GeneticAlgorithmTest {
 
 			Statistics<DoubleGene, Double> s = ga.getBestStatistics();
 			Reporter.log(s.toString());
-			Assert.assertEquals(s.getAgeMean(), 21.40500000000002);
-			Assert.assertEquals(s.getAgeVariance(), 648.051231155779);
+			Assert.assertEquals(s.getAgeMean(), 19.895);
+			Assert.assertEquals(s.getAgeVariance(), 521.9135427135678);
 			Assert.assertEquals(s.getSamples(), 200);
-			Assert.assertEquals(s.getBestFitness(), 0.9955101231254028, 0.00000001);
-			Assert.assertEquals(s.getWorstFitness(), 0.03640144995042627, 0.00000001);
+			Assert.assertEquals(s.getBestFitness(), 0.9928706649747477, 0.00000001);
+			Assert.assertEquals(s.getWorstFitness(), 0.02638061798078739, 0.00000001);
 
 			s = ga.getStatistics();
 			Reporter.log(s.toString());
