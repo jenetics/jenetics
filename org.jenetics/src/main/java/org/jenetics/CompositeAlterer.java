@@ -26,9 +26,9 @@ import static org.jenetics.internal.util.object.eq;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.jenetics.internal.util.Hash;
+import org.jenetics.internal.util.IntRef;
 
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Seq;
@@ -38,7 +38,7 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-17 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-05-10 $</em>
  */
 public final class CompositeAlterer<G extends Gene<?, G>>
 	extends AbstractAlterer<G>
@@ -84,11 +84,11 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	@Override
 	public <C extends Comparable<? super C>>
 	int alter(final Population<G, C> population, final int generation) {
-		final AtomicInteger alterations = new AtomicInteger(0);
+		final IntRef alterations = new IntRef(0);
 		_alterers.forEach(a -> {
-			alterations.addAndGet(a.alter(population, generation));
+			alterations.value += a.alter(population, generation);
 		});
-		return alterations.get();
+		return alterations.value;
 	}
 
 	/**

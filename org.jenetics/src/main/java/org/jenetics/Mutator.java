@@ -23,8 +23,6 @@ import static java.lang.Math.pow;
 import static java.lang.String.format;
 import static org.jenetics.util.math.random.indexes;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.IntRef;
 
@@ -102,7 +100,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 		assert(population != null) : "Not null is guaranteed from base class.";
 
 		final double p = pow(_probability, 1.0/3.0);
-		final AtomicInteger alterations = new AtomicInteger(0);
+		final IntRef alterations = new IntRef(0);
 
 		indexes(RandomRegistry.getRandom(), population.size(), p).forEach(i -> {
 			final Phenotype<G, C> pt = population.get(i);
@@ -114,13 +112,13 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 			population.set(i, mpt);
 		});
 
-		return alterations.get();
+		return alterations.value;
 	}
 
 	private Genotype<G> mutate(
 		final Genotype<G> genotype,
 		final double p,
-		final AtomicInteger alterations
+		final IntRef alterations
 	) {
 		final MSeq<Chromosome<G>> chromosomes = genotype.toSeq().copy();
 
@@ -130,7 +128,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 
 			final int mutations = mutate(genes, p);
 			if (mutations > 0) {
-				alterations.addAndGet(mutations);
+				alterations.value += mutations;
 				chromosomes.set(i, chromosome.newInstance(genes.toISeq()));
 			}
 		});
