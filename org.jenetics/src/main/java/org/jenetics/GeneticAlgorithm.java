@@ -31,7 +31,6 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collector;
@@ -137,7 +136,7 @@ import org.jenetics.util.Timer;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-29 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-05-10 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,
