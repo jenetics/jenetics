@@ -45,7 +45,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-05-11 $</em>
  */
 public abstract class ProbabilitySelector<
 	G extends Gene<?, G>,
@@ -131,7 +131,7 @@ public abstract class ProbabilitySelector<
 	 * population is not sorted. If a subclass needs a sorted population, the
 	 * subclass is responsible to sort the population.
 	 * </p>
-	 * The implementor always assumes that higher fitness values are better. The
+	 * The implementer always assumes that higher fitness values are better. The
 	 * base class inverts the probabilities ({@code p = 1.0 - p }) if the GA is
 	 * supposed to minimize the fitness function.
 	 *
@@ -164,7 +164,7 @@ public abstract class ProbabilitySelector<
 	/**
 	 * Perform a binary-search on the summed probability array.
 	 */
-	final static int indexOf(final double[] incremental, final double v) {
+	static int indexOf(final double[] incremental, final double v) {
 		int imin = 0;
 		int imax = incremental.length;
 
@@ -188,7 +188,7 @@ public abstract class ProbabilitySelector<
 	/**
 	 * In-place summation of the probability array.
 	 */
-	final static double[] incremental(final double[] values) {
+	static double[] incremental(final double[] values) {
 		for (int i = 1; i < values.length; ++i) {
 			values[i] = values[i - 1] + values[i];
 		}
