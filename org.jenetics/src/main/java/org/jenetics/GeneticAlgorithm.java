@@ -22,10 +22,12 @@ package org.jenetics;
 import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static java.util.concurrent.CompletableFuture.supplyAsync;
 import static org.jenetics.internal.util.object.checkProbability;
 
 import java.util.Collection;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -33,6 +35,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collector;
 
 import org.jenetics.internal.util.Concurrency;
@@ -136,7 +139,7 @@ import org.jenetics.util.Timer;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-05-10 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-05-11 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,
@@ -555,6 +558,52 @@ public class GeneticAlgorithm<
 		}
 	}
 
+	public void _evolve() {
+		++_generation;
+
+		final CompletableFuture<Population<G, C>> offspring = async(() ->
+			_offspringSelector.select(
+				_population,
+				getNumberOfOffspring(),
+				_optimization
+			)
+		);
+		final CompletableFuture<Population<G, C>> survivor = async(() ->
+			_survivorSelector.select(
+				_population,
+				getNumberOfSurvivors(),
+				_optimization
+			)
+		);
+		final CompletableFuture<Population<G, C>> alteredOffspring =
+			offspring.thenApplyAsync(o -> {
+				_alterer.alter(o, _generation);
+				return o;
+			});
+
+		final CompletableFuture<Population<G, C>> validSurvivor =
+			survivor.thenApplyAsync(s ->
+				s.stream()
+					.filter(Phenotype::isValid)
+					.filter(pt -> pt.getAge(_generation) <= _maximalPhenotypeAge)
+					.collect(Population.collector())
+			);
+
+		final CompletableFuture<Population<G, C>> combined =
+			alteredOffspring.thenCombineAsync(validSurvivor, (o, s) -> {
+				s.addAll(o);
+				final int missing = _populationSize - o.size() - s.size();
+				for (int i = missing; --i >= 0;) {
+					s.add(_phenotypeFactory.newInstance());
+				}
+				return s;
+			});
+
+		_population = combined.join();
+
+		combined.thenRun(this::evaluate).join();
+	}
+
 	private void setTimes(final Statistics<?, ?> statistic) {
 		statistic.getTime().execution.set(_executionTimer.getInterimTime());
 		statistic.getTime().selection.set(_selectTimer.getInterimTime());
@@ -678,6 +727,10 @@ public class GeneticAlgorithm<
 
 	private int getNumberOfOffspring() {
 		return (int)round(_offspringFraction*_populationSize);
+	}
+
+	private <U> CompletableFuture<U> async(final Supplier<U> supplier) {
+		return supplyAsync(supplier, _executor);
 	}
 
 	/**
