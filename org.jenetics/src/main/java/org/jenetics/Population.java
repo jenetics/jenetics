@@ -31,6 +31,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.RandomAccess;
+import java.util.function.Supplier;
+import java.util.stream.Collector;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -59,7 +61,7 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-17 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-05-11 $</em>
  */
 @XmlJavaTypeAdapter(Population.Model.Adapter.class)
 public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
@@ -377,6 +379,16 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		}
 
 		return out.toString();
+	}
+
+
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Collector<Phenotype<G, C>, ?, Population<G, C>> collector() {
+		return Collector.of(
+			Population::new,
+			Population::add,
+			(left, right) -> { left.addAll(right); return left; }
+		);
 	}
 
 	/* *************************************************************************
