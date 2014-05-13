@@ -29,7 +29,7 @@ import org.jenetics.util.ISeq;
  * Abstract chromosome for {@code BoundedGene}s.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-05-13 $</em>
  * @since 1.6
  */
 abstract class AbstractBoundedChromosome<
@@ -76,10 +76,10 @@ abstract class AbstractBoundedChromosome<
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass()).
-			and(super.hashCode()).
-			and(_min).
-			and(_max).value();
+		return Hash.of(getClass())
+			.and(super.hashCode())
+			.and(_min)
+			.and(_max).value();
 	}
 
 	@Override
@@ -91,8 +91,11 @@ abstract class AbstractBoundedChromosome<
 			return false;
 		}
 
-		final AbstractBoundedChromosome<?, ?> nc = (AbstractBoundedChromosome<?, ?>)object;
-		return eq(_min, nc._min) && eq(_max, nc._max) && super.equals(object);
+		final AbstractBoundedChromosome<?, ?> nc =
+			(AbstractBoundedChromosome<?, ?>)object;
+		return eq(_min, nc._min) &&
+			eq(_max, nc._max) &&
+			super.equals(object);
 	}
 
 }

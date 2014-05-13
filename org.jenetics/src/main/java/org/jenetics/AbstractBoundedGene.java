@@ -29,7 +29,7 @@ import org.jenetics.internal.util.Hash;
  * value.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-05-13 $</em>
  * @since 1.6
  */
 abstract class AbstractBoundedGene<
@@ -105,7 +105,10 @@ abstract class AbstractBoundedGene<
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass()).and(_value).and(_min).and(_max).value();
+		return Hash.of(getClass())
+			.and(_value)
+			.and(_min)
+			.and(_max).value();
 	}
 
 	@Override

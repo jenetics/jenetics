@@ -69,7 +69,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-18 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-05-13 $</em>
  */
 @XmlJavaTypeAdapter(Genotype.Model.Adapter.class)
 public final class Genotype<G extends Gene<?, G>>
@@ -113,11 +113,9 @@ public final class Genotype<G extends Gene<?, G>>
 	}
 
 	private static int ngenes(final Seq<? extends Chromosome<?>> chromosomes) {
-		int ngenes = 0;
-		for (int i = chromosomes.length(); --i >= 0;) {
-			ngenes += chromosomes.get(i).length();
-		}
-		return ngenes;
+		return chromosomes.asList().stream()
+			.mapToInt(c -> c.length())
+			.sum();
 	}
 
 	/**
@@ -267,6 +265,7 @@ public final class Genotype<G extends Gene<?, G>>
 	) {
 		return new Genotype<G>(ISeq.of(chromosomes));
 	}
+
 
 	/* *************************************************************************
 	 *  JAXB object serialization

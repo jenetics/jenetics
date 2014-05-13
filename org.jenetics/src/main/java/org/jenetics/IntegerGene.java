@@ -41,7 +41,7 @@ import org.jenetics.util.RandomRegistry;
  * NumericGene implementation which holds a 32 bit integer number.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-04-21 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-05-13 $</em>
  * @since 2.0
  */
 @XmlJavaTypeAdapter(IntegerGene.Model.Adapter.class)
@@ -105,11 +105,9 @@ public final class IntegerGene
 		final int max = maximum;
 		final Random r = RandomRegistry.getRandom();
 
-		final MSeq<IntegerGene> genes = MSeq.ofLength(length);
-		for (int i = 0; i < length; ++i) {
-			genes.set(i, new IntegerGene(nextInt(r, min, max), minimum, maximum));
-		}
-		return genes.toISeq();
+		return MSeq.<IntegerGene>ofLength(length)
+			.fill(() -> new IntegerGene(nextInt(r, min, max), minimum, maximum))
+			.toISeq();
 	}
 
 	@Override

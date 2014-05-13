@@ -139,7 +139,7 @@ import org.jenetics.util.Timer;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-05-11 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-05-13 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,
@@ -586,7 +586,7 @@ public class GeneticAlgorithm<
 				s.stream()
 					.filter(Phenotype::isValid)
 					.filter(pt -> pt.getAge(_generation) <= _maximalPhenotypeAge)
-					.collect(Population.collector())
+					.collect(Population.toPopulation())
 			);
 
 		final CompletableFuture<Population<G, C>> combined =

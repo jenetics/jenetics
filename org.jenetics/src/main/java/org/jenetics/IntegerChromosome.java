@@ -43,7 +43,7 @@ import org.jenetics.util.MSeq;
  * Numeric chromosome implementation which holds 32 bit integer numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz  Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-04-21 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-05-13 $</em>
  * @since 2.0
  */
 @XmlJavaTypeAdapter(IntegerChromosome.Model.Adapter.class)
@@ -207,7 +207,7 @@ public class IntegerChromosome
 				m.length = c.length();
 				m.min = c._min;
 				m.max = c._max;
-				m.values = c.toSeq().map(g -> g.getAllele()).asList();
+				m.values = c.toSeq().map(IntegerGene::getAllele).asList();
 				return m;
 			}
 

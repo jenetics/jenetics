@@ -42,7 +42,7 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-04-22 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-05-13 $</em>
  */
 public interface Seq<T> extends Iterable<T> {
 
@@ -77,9 +77,9 @@ public interface Seq<T> extends Iterable<T> {
 	 *
 	 * @param predicate the predicate to use to test the elements.
 	 * @return {@code true} if the given predicate p holds for all elements of
-	 *          this sequence, {@code false} otherwise.
+	 *         this sequence, {@code false} otherwise.
 	 * @throws NullPointerException if the given {@code predicate} is
-	 *          {@code null}.
+	 *         {@code null}.
 	 */
 	public default boolean forAll(final Predicate<? super T> predicate) {
 		boolean valid = true;

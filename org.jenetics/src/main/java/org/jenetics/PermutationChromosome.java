@@ -20,15 +20,15 @@
 package org.jenetics;
 
 import static java.lang.String.format;
+import static org.jenetics.internal.util.internalbit.getAndSet;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
-import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -42,6 +42,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jenetics.internal.util.Hash;
+import org.jenetics.internal.util.IntRef;
 import org.jenetics.internal.util.cast;
 import org.jenetics.internal.util.jaxb;
 
@@ -56,7 +57,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-18 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-05-13 $</em>
  */
 @XmlJavaTypeAdapter(PermutationChromosome.Model.Adapter.class)
 public final class PermutationChromosome<T>
@@ -70,7 +71,6 @@ public final class PermutationChromosome<T>
 	public PermutationChromosome(final ISeq<EnumGene<T>> genes) {
 		super(genes);
 		_validAlleles = genes.get(0).getValidAlleles();
-		_valid = true;
 	}
 
 	public ISeq<T> getValidAlleles() {
@@ -83,24 +83,8 @@ public final class PermutationChromosome<T>
 	@Override
 	public boolean isValid() {
 		if (_valid == null) {
-			byte[] check = new byte[length()/8 + 1];
-			Arrays.fill(check, (byte)0);
-
-			boolean valid = super.isValid();
-			for (int i = 0; i < length() && valid; ++i) {
-				final int value = _genes.get(i).getAlleleIndex();
-				if (value >= 0 && value < length()) {
-					if (bit.get(check, value)) {
-						valid = false;
-					} else {
-						bit.set(check, value, true);
-					}
-				} else {
-					valid = false;
-				}
-			}
-
-			_valid = valid;
+			final byte[] check = bit.newArray(length());
+			_valid = _genes.forAll(g -> !getAndSet(check, g.getAlleleIndex()));
 		}
 
 		return _valid;
@@ -139,12 +123,9 @@ public final class PermutationChromosome<T>
 
 	@Override
 	public String toString() {
-		final StringBuilder out = new StringBuilder();
-		out.append(_genes.get(0).getAllele());
-		for (int i = 1; i < length(); ++i) {
-			out.append("|").append(_genes.get(i).getAllele());
-		}
-		return out.toString();
+		return _genes.asList().stream()
+			.map(g -> g.getAllele().toString())
+			.collect(Collectors.joining("|"));
 	}
 
 	/**
@@ -162,6 +143,7 @@ public final class PermutationChromosome<T>
 					.toISeq()
 		);
 		chromosome._validAlleles = cast.apply(alleles);
+		chromosome._valid = true;
 
 		return chromosome;
 	}
@@ -208,24 +190,13 @@ public final class PermutationChromosome<T>
 				"end <= start: %d <= %d", end, start
 			));
 		}
-		return of(MSeq.<Integer>ofLength(end - start).fill(Int(start, 1)).toISeq());
-	}
 
-	private static Supplier<Integer> Int(final int start, final int step) {
-		return new Supplier<Integer>() {
-			private int _value = start;
+		final IntRef index = new IntRef(start);
+		final ISeq<Integer> alleles = MSeq.<Integer>ofLength(end - start)
+			.fill(() -> index.value++)
+			.toISeq();
 
-			@Override
-			public Integer get() {
-				return next();
-			}
-
-			private int next() {
-				final int next = _value;
-				_value += step;
-				return next;
-			}
-		};
+		return of(alleles);
 	}
 
 	/* *************************************************************************

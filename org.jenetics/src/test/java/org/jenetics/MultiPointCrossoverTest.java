@@ -37,7 +37,7 @@ import org.jenetics.util.math;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-18 $</em>
+ * @version <em>$Date: 2014-05-13 $</em>
  */
 public class MultiPointCrossoverTest {
 
@@ -237,10 +237,10 @@ public class MultiPointCrossoverTest {
 	public void reverseCrossover(final Integer npoints) {
 		for (int i = 1; i < 500; ++i) {
 			final CharSeq chars = CharSeq.of("a-zA-Z");
-			final ISeq<Character> a = new CharacterChromosome(chars, i)
-											.toSeq().map(CharacterGene.Allele);
-			final ISeq<Character> b = new CharacterChromosome(chars, i)
-											.toSeq().map(CharacterGene.Allele);
+			final ISeq<Character> a = new CharacterChromosome(chars, i).toSeq()
+				.map(CharacterGene::getAllele);
+			final ISeq<Character> b = new CharacterChromosome(chars, i).toSeq()
+				.map(CharacterGene::getAllele);
 
 			final MSeq<Character> ma1 = a.copy();
 			final MSeq<Character> mb1 = b.copy();

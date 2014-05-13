@@ -52,7 +52,7 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $ </em>
+ * @version 2.0 &mdash; <em>$Date: 2014-05-13 $ </em>
  */
 public class MultiPointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 
@@ -149,9 +149,9 @@ public class MultiPointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass()).
-				and(super.hashCode()).
-				and(_n).value();
+		return Hash.of(getClass())
+				.and(super.hashCode())
+				.and(_n).value();
 	}
 
 	@Override

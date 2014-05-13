@@ -40,7 +40,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-05-13 $</em>
  */
 public abstract class AbstractChromosome<G extends Gene<?, G>>
 	implements
@@ -73,7 +73,8 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 */
 	protected AbstractChromosome(final ISeq<? extends G> genes) {
 		requireNonNull(genes, "Gene array");
-		assert (genes.indexWhere(g -> g == null) == -1) : "Found at least on null gene.";
+		assert (genes.indexWhere(g -> g == null) == -1) :
+			"Found at least on null gene.";
 
 		if (genes.length() < 1) {
 			throw new IllegalArgumentException(format(

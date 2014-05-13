@@ -51,7 +51,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-05-13 $</em>
  */
 @XmlJavaTypeAdapter(Phenotype.Model.Adapter.class)
 public final class Phenotype<
@@ -260,9 +260,7 @@ public final class Phenotype<
 	 */
 	Phenotype<G, C> newInstance(final Genotype<G> genotype, final int generation) {
 		requireNonNull(genotype, "Genotype");
-		return Phenotype.of(
-			genotype, _fitnessFunction, _fitnessScaler, generation
-		);
+		return of(genotype, _fitnessFunction, _fitnessScaler, generation);
 	}
 
 	/**

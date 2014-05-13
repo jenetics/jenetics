@@ -38,7 +38,7 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-05-13 $</em>
  */
 public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 	extends Recombinator<G>
@@ -110,7 +110,8 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this || obj instanceof MeanAlterer<?> && super.equals(obj);
+		return obj == this ||
+			obj instanceof MeanAlterer<?> && super.equals(obj);
 	}
 
 	@Override

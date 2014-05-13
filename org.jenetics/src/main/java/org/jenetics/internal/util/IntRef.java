@@ -26,7 +26,7 @@ import java.io.Serializable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-05-10 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-05-13 $</em>
  */
 public final class IntRef implements Serializable {
 	private static final long serialVersionUID = 1;
@@ -50,6 +50,12 @@ public final class IntRef implements Serializable {
 	 */
 	public IntRef() {
 		this(0);
+	}
+
+	public int getAndAdd(final int delta) {
+		final int prev = value;
+		value += delta;
+		return prev;
 	}
 
 	@Override

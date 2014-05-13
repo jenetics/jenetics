@@ -24,7 +24,6 @@ import static org.jenetics.internal.util.object.eq;
 
 import java.io.Serializable;
 import java.util.Random;
-import java.util.function.Function;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -47,7 +46,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-18 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-05-13 $</em>
  */
 @XmlJavaTypeAdapter(CharacterGene.Model.Adapter.class)
 public final class CharacterGene
@@ -166,22 +165,6 @@ public final class CharacterGene
 		return _character.toString();
 	}
 
-	/* *************************************************************************
-	 *  Property access methods.
-	 * ************************************************************************/
-
-	/**
-	 * Converter for accessing the allele from a given gene.
-	 */
-	public static final Function<CharacterGene, Character>
-	Allele = value -> value._character;
-
-	/**
-	 * Converter for accessing the valid characters from a given gene.
-	 */
-	public static final Function<CharacterGene, CharSeq>
-	ValidCharacters = value -> value._validCharacters;
-
 
 	/* *************************************************************************
 	 *  Factory methods
@@ -270,18 +253,12 @@ public final class CharacterGene
 		return new CharacterGene(character, validCharacters);
 	}
 
-	static ISeq<CharacterGene> seq(final CharSeq characters, final int length) {
-		final Random random = RandomRegistry.getRandom();
-		final int charsLength = characters.length();
+	static ISeq<CharacterGene> seq(final CharSeq chars, final int length) {
+		final Random r = RandomRegistry.getRandom();
 
-		final MSeq<CharacterGene> genes = MSeq.ofLength(length);
-		for (int i = 0; i < length; ++i) {
-			final CharacterGene gene = new CharacterGene(
-				characters, random.nextInt(charsLength)
-			);
-			genes.set(i, gene);
-		}
-		return genes.toISeq();
+		return MSeq.<CharacterGene>ofLength(length)
+			.fill(() -> new CharacterGene(chars, r.nextInt(chars.length())))
+			.toISeq();
 	}
 
 	/* *************************************************************************
