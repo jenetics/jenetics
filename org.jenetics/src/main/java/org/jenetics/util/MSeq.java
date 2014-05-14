@@ -41,7 +41,7 @@ import org.jenetics.internal.collection.ObjectArrayProxy;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-04-22 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-05-14 $</em>
  */
 public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 
@@ -54,19 +54,6 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 *         <code>(index &lt; 0 || index &gt;= size())</code>.
 	 */
 	public void set(final int index, final T value);
-
-	/**
-	 * Set all sequence elements to the given {@code value}.
-	 *
-	 * @param value {@code value} to fill this sequence with.
-	 * @return {@code this} array.
-	 */
-	public default MSeq<T> setAll(final T value) {
-		for (int i = length(); --i >= 0;) {
-			set(i, value);
-		}
-		return this;
-	}
 
 	/**
 	 * Fills the sequence with values of the given iterator.

@@ -19,14 +19,20 @@
  */
 package org.jenetics.internal.collection;
 
+import static java.util.Spliterator.IMMUTABLE;
+import static java.util.Spliterator.ORDERED;
+import static java.util.Spliterators.spliterator;
+
 import java.util.Arrays;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * {@code ArrayProxy} implementation which stores {@code Object}s.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0 &mdash; <em>$Date: 2014-04-21 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-05-14 $</em>
  */
 public final class ObjectArrayProxy<T>
 	extends ArrayProxy<T, Object[], ObjectArrayProxy<T>>
@@ -54,8 +60,8 @@ public final class ObjectArrayProxy<T>
 		this(new Object[length], 0, length);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
+	@SuppressWarnings("unchecked")
 	public T __get__(final int index) {
 		return (T) array[index];
 	}
@@ -65,4 +71,19 @@ public final class ObjectArrayProxy<T>
 		array[index] = value;
 	}
 
+	@Override
+	public Stream<T> stream() {
+		return StreamSupport.stream(
+			spliterator(array, start, end, ORDERED | IMMUTABLE),
+			false
+		);
+	}
+
+	@Override
+	public Stream<T> parallelStream() {
+		return StreamSupport.stream(
+			spliterator(array, start, end, ORDERED | IMMUTABLE),
+			true
+		);
+	}
 }

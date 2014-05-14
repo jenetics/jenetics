@@ -20,6 +20,7 @@
 package org.jenetics.util;
 
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.joining;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,6 +33,8 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * General interface for a ordered, fixed sized, object sequence.
@@ -42,7 +45,7 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-05-13 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-05-14 $</em>
  */
 public interface Seq<T> extends Iterable<T> {
 
@@ -96,6 +99,30 @@ public interface Seq<T> extends Iterable<T> {
 		}
 
 		return valid;
+	}
+
+	/**
+	 * Returns a sequential Stream with this sequence as its source.
+	 *
+	 * @since 3.0
+	 *
+	 * @return a sequential Stream over the elements in this sequence
+	 */
+	public default Stream<T> stream() {
+		return StreamSupport.stream(spliterator(), false);
+	}
+
+	/**
+	 * Returns a possibly parallel {@code Stream} with this sequence as its
+	 * source.  It is allowable for this method to return a sequential stream.
+	 *
+	 * @since 3.0
+	 *
+	 * @return a possibly parallel {@code Stream} over the elements in this
+	 * collection
+	 */
+	public default Stream<T> parallelStream() {
+		return StreamSupport.stream(spliterator(), true);
 	}
 
 	/**
@@ -577,19 +604,9 @@ public interface Seq<T> extends Iterable<T> {
 		final String separator,
 		final String suffix
 	) {
-		final StringBuilder out = new StringBuilder();
-
-		out.append(prefix);
-		if (length() > 0) {
-			out.append(get(0));
-		}
-		for (int i =  1; i < length(); ++i) {
-			out.append(separator);
-			out.append(get(i));
-		}
-		out.append(suffix);
-
-		return out.toString();
+		return stream()
+			.map(Object::toString)
+			.collect(joining(separator, prefix, suffix));
 	}
 
 	/**

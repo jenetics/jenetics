@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-07 $</em>
+ * @version <em>$Date: 2014-05-14 $</em>
  */
 public abstract class MSeqTestBase extends SeqTestBase {
 
@@ -100,7 +100,8 @@ public abstract class MSeqTestBase extends SeqTestBase {
 		final long seed = math.random.seed();
 		final Random random = new Random(seed);
 
-		seq.setAll(random.nextInt());
+		final Integer v = random.nextInt();
+		seq.fill(() -> v);
 
 		random.setSeed(seed);
 		final Integer value = random.nextInt();

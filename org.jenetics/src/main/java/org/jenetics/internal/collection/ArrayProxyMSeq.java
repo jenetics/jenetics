@@ -34,7 +34,7 @@ import org.jenetics.util.MSeq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0 &mdash; <em>$Date: 2014-04-21 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-05-14 $</em>
  */
 public class ArrayProxyMSeq<T, P extends ArrayProxy<T, ?, ?>>
 	extends ArrayProxySeq<T, P>
@@ -66,15 +66,6 @@ public class ArrayProxyMSeq<T, P extends ArrayProxy<T, ?, ?>>
 	public void set(final int index, final T value) {
 		proxy.cloneIfSealed();
 		proxy.set(index, value);
-	}
-
-	@Override
-	public MSeq<T> setAll(final T value) {
-		proxy.cloneIfSealed();
-		for (int i = proxy.start; i < proxy.end; ++i) {
-			proxy.__set__(i, value);
-		}
-		return this;
 	}
 
 	@Override

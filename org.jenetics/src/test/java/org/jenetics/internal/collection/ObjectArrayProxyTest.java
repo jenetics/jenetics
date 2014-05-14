@@ -21,9 +21,11 @@ package org.jenetics.internal.collection;
 
 import java.util.Random;
 
+import org.testng.annotations.Test;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date$</em>
+ * @version <em>$Date: 2014-05-14 $</em>
  */
 public class ObjectArrayProxyTest extends ArrayProxyTestBase<Integer> {
 

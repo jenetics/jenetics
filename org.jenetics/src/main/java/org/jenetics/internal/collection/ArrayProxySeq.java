@@ -27,13 +27,14 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import org.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0 &mdash; <em>$Date: 2014-04-21 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-05-14 $</em>
  */
 public abstract class ArrayProxySeq<T, P extends ArrayProxy<T, ?, ?>>
 	implements
@@ -51,6 +52,16 @@ public abstract class ArrayProxySeq<T, P extends ArrayProxy<T, ?, ?>>
 	@Override
 	public final T get(final int index) {
 		return proxy.get(index);
+	}
+
+	@Override
+	public Stream<T> stream() {
+		return proxy.stream();
+	}
+
+	@Override
+	public Stream<T> parallelStream() {
+		return proxy.parallelStream();
 	}
 
 	@Override

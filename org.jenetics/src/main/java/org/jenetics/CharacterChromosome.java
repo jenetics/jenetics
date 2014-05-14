@@ -49,7 +49,7 @@ import org.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-05-13 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-05-14 $</em>
  */
 @XmlJavaTypeAdapter(CharacterChromosome.Model.Adapter.class)
 public class CharacterChromosome
@@ -143,7 +143,7 @@ public class CharacterChromosome
 
 	@Override
 	public String toString() {
-		return toSeq().asList().stream()
+		return toSeq().stream()
 			.map(Object::toString)
 			.collect(Collectors.joining());
 	}

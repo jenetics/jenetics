@@ -19,17 +19,21 @@
  */
 package org.jenetics.internal.collection;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import org.jenetics.internal.util.IntRef;
+
 import org.jenetics.util.math;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-21 $</em>
+ * @version <em>$Date: 2014-05-14 $</em>
  */
 public abstract class ArrayProxyTestBase<T> {
 
@@ -96,6 +100,28 @@ public abstract class ArrayProxyTestBase<T> {
 
 			Assert.assertEquals(actual, expected);
 		}
+	}
+
+	@Test
+	public void stream() {
+		final long seed = math.random.seed();
+		final Random random = new Random(seed);
+
+		final List<T> elements = new ArrayList<>(1000);
+		final ArrayProxy<T, ?, ?> proxy = newArrayProxy(1000);
+		for (int i = 0; i < proxy.length; ++i) {
+			final T element = newArrayProxyElement(random);
+			proxy.set(i, element);
+			elements.add(element);
+		}
+
+		final IntRef index = new IntRef();
+		proxy.stream().forEach(element -> {
+			Assert.assertEquals(element, elements.get(index.value));
+			Assert.assertEquals(element, proxy.get(index.value++));
+		});
+
+		Assert.assertEquals(index.value, 1000);
 	}
 
 	@Test(
