@@ -61,7 +61,7 @@ import org.jenetics.util.Factory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-05-13 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-05-14 $</em>
  */
 @XmlJavaTypeAdapter(Population.Model.Adapter.class)
 public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
@@ -339,6 +339,8 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 * Returns a {@code Collector} that accumulates the input elements into a
 	 * new {@code Population}.
 	 *
+	 * @param <G> the gene type
+	 * @param <C> the fitness result type
 	 * @return a {@code Collector} which collects all the input elements into a
 	 *         {@code Population}, in encounter order
 	 */
