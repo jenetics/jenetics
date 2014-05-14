@@ -33,7 +33,7 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-05-02 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-05-14 $</em>
  */
 public interface ISeq<T>
 	extends
@@ -60,12 +60,11 @@ public interface ISeq<T>
 	public MSeq<T> copy();
 
 
-
 	/* *************************************************************************
 	 *  Some static factory methods.
 	 * ************************************************************************/
 
-	public static <T> Collector<T, ?, ISeq<T>> collector() {
+	public static <T> Collector<T, ?, ISeq<T>> toISeq() {
 		return Collector.of(
 			(Supplier<List<T>>)ArrayList::new,
 			List::add,

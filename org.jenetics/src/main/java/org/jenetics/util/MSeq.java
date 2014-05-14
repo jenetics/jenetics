@@ -221,9 +221,9 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 *  Some static factory methods.
 	 * ************************************************************************/
 
-	public static <T> Collector<T, ?, MSeq<T>> collector() {
+	public static <T> Collector<T, ?, MSeq<T>> toMSeq() {
 		return Collector.of(
-			(Supplier<List<T>>)ArrayList::new,
+			(Supplier<List<T>>) ArrayList::new,
 			List::add,
 			(left, right) -> { left.addAll(right); return left; },
 			MSeq::of

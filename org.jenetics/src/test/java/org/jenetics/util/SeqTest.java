@@ -19,6 +19,8 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.Seq.toSeq;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -28,7 +30,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-22 $</em>
+ * @version <em>$Date: 2014-05-14 $</em>
  */
 public class SeqTest {
 
@@ -42,7 +44,7 @@ public class SeqTest {
 			list.add(random.nextDouble());
 		}
 
-		final Seq<Double> seq = list.stream().collect(Seq.collector());
+		final Seq<Double> seq = list.stream().collect(toSeq());
 		Assert.assertEquals(list, seq.asList());
 	}
 

@@ -22,13 +22,12 @@ package org.jenetics;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.object.eq;
+import static org.jenetics.util.ISeq.toISeq;
 
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 import org.jenetics.internal.util.Hash;
-import org.jenetics.internal.util.IntRef;
 
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Seq;
@@ -38,7 +37,7 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-05-10 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-05-14 $</em>
  */
 public final class CompositeAlterer<G extends Gene<?, G>>
 	extends AbstractAlterer<G>
@@ -54,41 +53,26 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	 */
 	public CompositeAlterer(final Seq<Alterer<G>> alterers) {
 		super(1.0);
-
 		_alterers = normalize(alterers);
 	}
 
 	private static <G extends Gene<?, G>>
 	ISeq<Alterer<G>> normalize(final Seq<Alterer<G>> alterers) {
-		final Deque<Alterer<G>> stack = new LinkedList<>(alterers.asList());
+		final Function<Alterer<G>, Stream<Alterer<G>>> mapper =
+			a -> a instanceof CompositeAlterer<?> ?
+				((CompositeAlterer<G>)a).getAlterers().stream() : Stream.of(a);
 
-		final List<Alterer<G>> normalized = new LinkedList<>();
-
-		while (!stack.isEmpty()) {
-			final Alterer<G> alterer = stack.pollFirst();
-
-			if (alterer instanceof CompositeAlterer<?>) {
-				final CompositeAlterer<G> calterer = (CompositeAlterer<G>)alterer;
-
-				for (int i = calterer.getAlterers().length(); --i >= 0;) {
-					stack.addFirst(calterer.getAlterers().get(i));
-				}
-			} else {
-				normalized.add(alterer);
-			}
-		}
-
-		return ISeq.of(normalized);
+		return alterers.stream()
+			.flatMap(mapper)
+			.collect(toISeq());
 	}
 
 	@Override
 	public <C extends Comparable<? super C>>
 	int alter(final Population<G, C> population, final int generation) {
-		final IntRef alterations = new IntRef(0);
-		_alterers.forEach(a -> {
-			alterations.value += a.alter(population, generation);
-		});
-		return alterations.value;
+		return _alterers.stream()
+			.mapToInt(a -> a.alter(population, generation))
+			.sum();
 	}
 
 	/**
