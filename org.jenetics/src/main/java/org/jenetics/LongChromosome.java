@@ -19,6 +19,8 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.ISeq.toISeq;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -43,7 +45,7 @@ import org.jenetics.util.MSeq;
  * Numeric chromosome implementation which holds 64 bit integer numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-05-13 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-05-14 $</em>
  * @since 1.6
  */
 @XmlJavaTypeAdapter(LongChromosome.Model.Adapter.class)
@@ -216,8 +218,9 @@ public class LongChromosome
 				final Long min = model.min;
 				final Long max = model.max;
 				return new LongChromosome(
-					ISeq.of(model.values)
+					model.values.stream()
 						.map(value -> new LongGene(value, min, max))
+						.collect(toISeq())
 				);
 			}
 		}

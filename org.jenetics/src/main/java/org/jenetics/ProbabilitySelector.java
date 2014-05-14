@@ -45,7 +45,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-05-11 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-05-14 $</em>
  */
 public abstract class ProbabilitySelector<
 	G extends Gene<?, G>,
@@ -88,7 +88,6 @@ public abstract class ProbabilitySelector<
 				() -> population.get(indexOf(probabilities, random.nextDouble())),
 				count
 			);
-			assert (count == selection.size());
 		}
 
 		return selection;

@@ -20,6 +20,7 @@
 package org.jenetics;
 
 import static org.jenetics.internal.util.object.eq;
+import static org.jenetics.util.ISeq.toISeq;
 
 import java.io.Serializable;
 import java.util.Iterator;
@@ -69,7 +70,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-05-13 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-05-14 $</em>
  */
 @XmlJavaTypeAdapter(Genotype.Model.Adapter.class)
 public final class Genotype<G extends Gene<?, G>>
@@ -113,7 +114,7 @@ public final class Genotype<G extends Gene<?, G>>
 	}
 
 	private static int ngenes(final Seq<? extends Chromosome<?>> chromosomes) {
-		return chromosomes.asList().stream()
+		return chromosomes.stream()
 			.mapToInt(c -> c.length())
 			.sum();
 	}
@@ -303,8 +304,9 @@ public final class Genotype<G extends Gene<?, G>>
 
 			@Override
 			public Genotype unmarshal(final Model model) throws Exception {
-				final ISeq chs = ISeq.of(model.chromosomes)
-					.map(jaxb.Unmarshaller(model.chromosomes.get(0)));
+				final ISeq chs = (ISeq)model.chromosomes.stream()
+					.map(jaxb.Unmarshaller(model.chromosomes.get(0)))
+					.collect(toISeq());
 
 				return new Genotype(chs, model.ngenes);
 			}
