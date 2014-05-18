@@ -39,6 +39,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jenetics.internal.util.Hash;
+import org.jenetics.internal.util.IntRef;
 
 import org.jenetics.util.CharSeq;
 import org.jenetics.util.ISeq;
@@ -49,7 +50,7 @@ import org.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-05-14 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-05-18 $</em>
  */
 @XmlJavaTypeAdapter(CharacterChromosome.Model.Adapter.class)
 public class CharacterChromosome
@@ -176,22 +177,17 @@ public class CharacterChromosome
 		final String alleles,
 		final CharSeq validChars
 	) {
-		final MSeq<CharacterGene> genes = MSeq.ofLength(alleles.length());
-		genes.fill(GeneFactory(alleles, validChars));
-		return new CharacterChromosome(genes.toISeq());
-	}
+		final IntRef index = new IntRef();
+		final Supplier<CharacterGene> geneFactory = () -> CharacterGene.of(
+			alleles.charAt(index.value++), validChars
+		);
 
-	private static Supplier<CharacterGene>
-	GeneFactory(final String alleles, final CharSeq validChars) {
-		return new Supplier<CharacterGene>() {
-			private int _index = 0;
-			@Override
-			public CharacterGene get() {
-				return CharacterGene.of(
-					alleles.charAt(_index++), validChars
-				);
-			}
-		};
+		final ISeq<CharacterGene> genes =
+			MSeq.<CharacterGene>ofLength(alleles.length())
+				.fill(geneFactory)
+				.toISeq();
+
+		return new CharacterChromosome(genes);
 	}
 
 	/**

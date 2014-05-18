@@ -24,6 +24,7 @@ import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.object.eq;
 
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.RandomAccess;
 
 import org.jenetics.internal.util.Hash;
@@ -74,8 +75,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 */
 	protected AbstractChromosome(final ISeq<? extends G> genes) {
 		requireNonNull(genes, "Gene array");
-		assert (genes.indexWhere(g -> g == null) == -1) :
-			"Found at least on null gene.";
+		assert (genes.forAll(Objects::nonNull)) : "Found at least on null gene.";
 
 		if (genes.length() < 1) {
 			throw new IllegalArgumentException(format(
