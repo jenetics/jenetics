@@ -19,9 +19,9 @@
  */
 package org.jenetics.internal.util;
 
+import static org.jenetics.internal.util.reflect.innerClasses;
 import static org.jenetics.internal.util.reflect.classOf;
 
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
@@ -39,7 +39,7 @@ import org.jenetics.util.StaticObject;
  * JAXB helper methods.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-04-21 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-05-18 $</em>
  * @since 2.0
  */
 public class jaxb extends StaticObject {
@@ -63,7 +63,7 @@ public class jaxb extends StaticObject {
 		return JAXBContextHolder.CONTEXT;
 	}
 
-	private static final XmlAdapter<Object, Object> IdentityAdapter =
+	private static final XmlAdapter<Object, Object> IDENTITY_ADAPTER =
 		new XmlAdapter<Object, Object>() {
 			@Override public Object unmarshal(final Object value) {
 				return value;
@@ -96,22 +96,21 @@ public class jaxb extends StaticObject {
 		);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	private static XmlAdapter<Object, Object> newXmlAdapter(final Class<?> cls) {
-		final List<Class<?>> classes = reflect.allDeclaredClasses(cls);
-
-		XmlAdapter<Object, Object> adapter = IdentityAdapter;
-		for (int i = 0; i < classes.size() && adapter == IdentityAdapter; ++i) {
-			if (XmlAdapter.class.isAssignableFrom(classes.get(i))) {
-				try {
-					adapter = (XmlAdapter<Object, Object>)classes.get(i).newInstance();
-				} catch (InstantiationException | IllegalAccessException e) {
-					// ignore exception
-				}
+		final Function<Class, XmlAdapter> toXmlAdapter = c -> {
+			try {
+				return (XmlAdapter<Object, Object>)c.newInstance();
+			} catch (InstantiationException | IllegalAccessException e) {
+				throw new RuntimeException(e);
 			}
-		}
+		};
 
-		return adapter;
+		return innerClasses(cls)
+			.filter(XmlAdapter.class::isAssignableFrom)
+			.findFirst()
+			.map(toXmlAdapter)
+			.orElse(IDENTITY_ADAPTER);
 	}
 
 	/**

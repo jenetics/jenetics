@@ -19,11 +19,10 @@
  */
 package org.jenetics.internal.util;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.List;
+import static java.util.Arrays.stream;
+import static java.util.stream.Stream.concat;
+
+import java.util.stream.Stream;
 
 import org.jenetics.util.StaticObject;
 
@@ -31,7 +30,7 @@ import org.jenetics.util.StaticObject;
  * Helper methods concerning Java reflection.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.0 &mdash; <em>$Date: 2014-05-02 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-05-18 $</em>
  * @since 1.6
  */
 public class reflect extends StaticObject {
@@ -44,20 +43,12 @@ public class reflect extends StaticObject {
 	 * @param cls the class for which the declared classes are retrieved.
 	 * @return all nested classes
 	 */
-	public static List<Class<?>> allDeclaredClasses(final Class<?> cls) {
-		final Deque<Class<?>> stack = new LinkedList<>();
-		stack.addFirst(cls);
-
-		final List<Class<?>> result = new ArrayList<>();
-		while (!stack.isEmpty()) {
-			final Class<?>[] classes = stack.pollFirst().getDeclaredClasses();
-			for (final Class<?> c : classes) {
-				result.add(c);
-				stack.addFirst(c);
-			}
-		}
-
-		return Collections.unmodifiableList(result);
+	public static Stream<Class<?>> innerClasses(final Class<?> cls) {
+		return concat(
+			stream(cls.getDeclaredClasses())
+				.flatMap(reflect::innerClasses),
+			stream(cls.getDeclaredClasses())
+		);
 	}
 
 	/**
