@@ -19,28 +19,29 @@
  */
 package org.jenetics.internal.util;
 
+import java.util.stream.IntStream;
+
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-04-10 $</em>
- * @since s2.0
+ * @version 2.0 &mdash; <em>$Date: 2014-05-18 $</em>
+ * @since 2.0
  */
 public class StackTest {
 
 	@Test
-	public void list() {
-		final Stack<String> list = new Stack<>();
-		list.push("a");
-		list.push("b");
-		list.push("c");
+	public void forLoop() {
+		final Stack<Integer> stack = new Stack<>();
+		IntStream.range(1000, 10_000)
+			.mapToObj(Integer::valueOf)
+			.forEach(stack::push);
 
-		//for (int i = 0; i < 3; ++i) {
-		//	System.out.println(list.peek());
-		//}
 
-		for (String value = list.pop(); value != null; value = list.pop()) {
-			System.out.println(value);
+		int expected = 10_000;
+		for (Integer value = stack.pop(); value != null; value = stack.pop()) {
+			Assert.assertEquals(value.intValue(), --expected);
 		}
 	}
 

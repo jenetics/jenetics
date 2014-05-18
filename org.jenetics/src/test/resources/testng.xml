@@ -294,6 +294,11 @@
             <class name="org.jenetics.internal.util.reflectTest" />
         </classes>
     </test>
+    <test name="org.jenetics.internal.util.Stack">
+        <classes>
+            <class name="org.jenetics.internal.util.StackTest" />
+        </classes>
+    </test>
 	<test name="org.jenetics.util.bit">
 		<classes>
 			<class name="org.jenetics.util.bitTest" />
