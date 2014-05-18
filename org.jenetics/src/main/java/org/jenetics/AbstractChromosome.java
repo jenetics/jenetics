@@ -30,6 +30,7 @@ import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.cast;
 
 import org.jenetics.util.ISeq;
+import org.jenetics.util.Verifiable;
 
 /**
  * The abstract base implementation of the Chromosome interface. The implementors
@@ -40,7 +41,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-05-13 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-05-18 $</em>
  */
 public abstract class AbstractChromosome<G extends Gene<?, G>>
 	implements
@@ -98,7 +99,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	@Override
 	public boolean isValid() {
 		if (_valid == null) {
-			_valid = _genes.forAll(g -> g.isValid());
+			_valid = _genes.forAll(Verifiable::isValid);
 		}
 
 		return _valid;
@@ -112,17 +113,6 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	@Override
 	public int length() {
 		return _genes.length();
-	}
-
-	/**
-	 * Return the index of the first occurrence of the given {@code gene}.
-	 *
-	 * @param gene the {@link Gene} to search for.
-	 * @return the index of the searched gene, or -1 if the given gene was not
-	 *         found.
-	 */
-	protected int indexOf(final Object gene) {
-		return _genes.indexOf(gene);
 	}
 
 	@Override
