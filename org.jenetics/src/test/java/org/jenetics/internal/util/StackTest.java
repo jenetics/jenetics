@@ -34,10 +34,7 @@ public class StackTest {
 	@Test
 	public void forLoop() {
 		final Stack<Integer> stack = new Stack<>();
-		IntStream.range(1000, 10_000)
-			.mapToObj(Integer::valueOf)
-			.forEach(stack::push);
-
+		IntStream.range(1000, 10_000).forEach(stack::push);
 
 		int expected = 10_000;
 		for (Integer value = stack.pop(); value != null; value = stack.pop()) {
