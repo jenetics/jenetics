@@ -21,6 +21,9 @@ package org.jenetics;
 
 import java.util.function.Predicate;
 
+import org.jenetics.internal.util.IntRef;
+import org.jenetics.internal.util.ObjectRef;
+
 import org.jenetics.util.StaticObject;
 
 /**
@@ -28,43 +31,10 @@ import org.jenetics.util.StaticObject;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-05-18 $</em>
  */
 public final class termination extends StaticObject {
 	private termination() {}
-
-	static final class SteadyFitness<C extends Comparable<? super C>>
-		implements Predicate<Statistics<?, C>>
-	{
-		private final int _generations;
-
-		private C _fitness;
-		private int _stableGenerations = 0;
-
-		public SteadyFitness(final int generations) {
-			_generations = generations;
-		}
-
-		@Override
-		public boolean test(final Statistics<?, C> statistics) {
-			boolean proceed = true;
-
-			if (_fitness == null) {
-				_fitness = statistics.getBestFitness();
-				_stableGenerations = 1;
-			} else {
-				final Optimize opt = statistics.getOptimize();
-				if (opt.compare(_fitness, statistics.getBestFitness()) >= 0) {
-					proceed = ++_stableGenerations <= _generations;
-				} else {
-					_fitness = statistics.getBestFitness();
-					_stableGenerations = 1;
-				}
-			}
-
-			return proceed;
-		}
-	}
 
 	/**
 	 * Create a <i>terminator</i> which returns {@code false} if the fitness
@@ -76,21 +46,28 @@ public final class termination extends StaticObject {
 	 * @return the GA terminator.
 	 */
 	public static <C extends Comparable<? super C>>
-	Predicate<Statistics<?, C>> SteadyFitness(final int generation) {
-		return new SteadyFitness<>(generation);
-	}
+	Predicate<Statistics<?, C>> SteadyFitness(final int generations) {
+		final ObjectRef<C> fitness = new ObjectRef<>();
+		final IntRef stableGenerations = new IntRef();
 
-	static final class Generation implements Predicate<Statistics<?, ?>> {
-		private final int _generation;
+		return statistics -> {
+			boolean proceed = true;
 
-		public Generation(final int generation) {
-			_generation = generation;
-		}
+			if (fitness.value == null) {
+				fitness.value = statistics.getBestFitness();
+				stableGenerations.value = 1;
+			} else {
+				final Optimize opt = statistics.getOptimize();
+				if (opt.compare(fitness.value, statistics.getBestFitness()) >= 0) {
+					proceed = ++stableGenerations.value <= generations;
+				} else {
+					fitness.value = statistics.getBestFitness();
+					stableGenerations.value = 1;
+				}
+			}
 
-		@Override
-		public boolean test(final Statistics<?, ?> statistics) {
-			return statistics.getGeneration() < _generation;
-		}
+			return proceed;
+		};
 	}
 
 	/**
@@ -106,7 +83,7 @@ public final class termination extends StaticObject {
 	 * @return the termination predicate.
 	 */
 	public static Predicate<Statistics<?, ?>> Generation(final int generation) {
-		return new Generation(generation);
+		return statistics -> statistics.getGeneration() < generation;
 	}
 
 }
