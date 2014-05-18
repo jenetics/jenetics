@@ -45,7 +45,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-05-14 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-05-18 $</em>
  */
 public abstract class ProbabilitySelector<
 	G extends Gene<?, G>,
@@ -84,8 +84,8 @@ public abstract class ProbabilitySelector<
 			incremental(probabilities);
 
 			final Random random = RandomRegistry.getRandom();
-			selection.fill(
-				() -> population.get(indexOf(probabilities, random.nextDouble())),
+			selection.fill(() ->
+				population.get(indexOf(probabilities, random.nextDouble())),
 				count
 			);
 		}
@@ -163,25 +163,24 @@ public abstract class ProbabilitySelector<
 	/**
 	 * Perform a binary-search on the summed probability array.
 	 */
-	static int indexOf(final double[] incremental, final double v) {
+	static int indexOf(final double[] incr, final double v) {
 		int imin = 0;
-		int imax = incremental.length;
+		int imax = incr.length;
+		int index = -1;
 
-		while (imax > imin) {
+		while (imax > imin && index == -1) {
 			int imid = (imin + imax) >>> 1;
 
-			if (imid == 0) {
-				return imid;
-			} else if (incremental[imid] >= v && incremental[imid - 1] < v) {
-				return imid;
-			} else if (incremental[imid] <= v) {
+			if (imid == 0 || (incr[imid] >= v && incr[imid - 1] < v)) {
+				index = imid;
+			} else if (incr[imid] <= v) {
 				imin = imid + 1;
-			} else if (incremental[imid] > v) {
+			} else if (incr[imid] > v) {
 				imax = imid;
 			}
 		}
 
-		return incremental.length - 1;
+		return index;
 	}
 
 	/**
