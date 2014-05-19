@@ -41,7 +41,7 @@ import org.jenetics.internal.collection.ObjectArrayProxy;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-05-14 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-05-19 $</em>
  */
 public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 
@@ -223,7 +223,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 
 	public static <T> Collector<T, ?, MSeq<T>> toMSeq() {
 		return Collector.of(
-			(Supplier<List<T>>) ArrayList::new,
+			(Supplier<List<T>>)ArrayList::new,
 			List::add,
 			(left, right) -> { left.addAll(right); return left; },
 			MSeq::of
@@ -267,7 +267,10 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 */
 	@SafeVarargs
 	public static <T> MSeq<T> of(final T... values) {
-		return MSeq.<T>ofLength(values.length).setAll(values);
+		final ObjectArrayProxy<T> proxy = new ObjectArrayProxy<>(
+			values.clone(), 0, values.length
+		);
+		return new ArrayProxyMSeq<>(proxy);
 	}
 
 	/**
