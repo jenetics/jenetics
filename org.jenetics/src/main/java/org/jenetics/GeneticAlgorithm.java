@@ -139,7 +139,7 @@ import org.jenetics.util.Timer;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-05-13 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-05-20 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,
@@ -1245,18 +1245,16 @@ public class GeneticAlgorithm<
 	 */
 	@Override
 	public String toString() {
-		Phenotype<G, C> phenotype = null;
-		int generation = 0;
-
 		_lock.lock();
 		try {
-			generation = _generation;
-			phenotype = getStatistics().getBestPhenotype();
+			return format(
+				"%4d: (best) %s",
+				_generation,
+				getStatistics().getBestPhenotype()
+			);
 		} finally {
 			_lock.unlock();
 		}
-
-		return format("%4d: (best) %s", generation, phenotype);
 	}
 
 }
