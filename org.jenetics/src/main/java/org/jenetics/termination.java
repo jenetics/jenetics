@@ -31,7 +31,7 @@ import org.jenetics.util.StaticObject;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-05-18 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-05-20 $</em>
  */
 public final class termination extends StaticObject {
 	private termination() {}
@@ -41,7 +41,7 @@ public final class termination extends StaticObject {
 	 * hasn't improved for a given number of generations.
 	 *
 	 * @param <C> the fitness type.
-	 * @param generation the number of generations the fitness don't have been
+	 * @param generations the number of generations the fitness don't have been
 	 *         improved.
 	 * @return the GA terminator.
 	 */
