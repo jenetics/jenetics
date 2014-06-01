@@ -37,9 +37,14 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-21 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-06-01 $</em>
  */
-public abstract class Crossover<G extends Gene<?, G>> extends Recombinator<G> {
+public abstract class Crossover<
+	G extends Gene<?, G>,
+	C extends Comparable<? super C>
+>
+	extends Recombinator<G, C>
+{
 
 	/**
 	 * Constructs an alterer with a given recombination probability.
@@ -53,7 +58,7 @@ public abstract class Crossover<G extends Gene<?, G>> extends Recombinator<G> {
 	}
 
 	@Override
-	protected final <C extends Comparable<? super C>> int recombine(
+	protected final int recombine(
 		final Population<G, C> population,
 		final int[] individuals,
 		final int generation

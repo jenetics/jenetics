@@ -52,9 +52,14 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 2.0 &mdash; <em>$Date: 2014-05-13 $ </em>
+ * @version 3.0 &mdash; <em>$Date: 2014-06-01 $ </em>
  */
-public class MultiPointCrossover<G extends Gene<?, G>> extends Crossover<G> {
+public class MultiPointCrossover<
+	G extends Gene<?, G>,
+	C extends Comparable<? super C>
+>
+	extends Crossover<G, C>
+{
 
 	private final int _n;
 
@@ -163,7 +168,7 @@ public class MultiPointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 			return false;
 		}
 
-		final MultiPointCrossover<?> mpc = (MultiPointCrossover<?>)obj;
+		final MultiPointCrossover<?, ?> mpc = (MultiPointCrossover<?, ?>)obj;
 		return _n == mpc._n && super.equals(obj);
 	}
 

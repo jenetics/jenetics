@@ -37,7 +37,7 @@ import org.jenetics.util.math;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-05-13 $</em>
+ * @version <em>$Date: 2014-06-01 $</em>
  */
 public class MultiPointCrossoverTest {
 
@@ -275,7 +275,7 @@ public class MultiPointCrossoverTest {
 		final ISeq<CharacterGene> g1 = new CharacterChromosome(chars, 20).toSeq();
 		final ISeq<CharacterGene> g2 = new CharacterChromosome(chars, 20).toSeq();
 
-		final MultiPointCrossover<CharacterGene> crossover =
+		final MultiPointCrossover<CharacterGene, Double> crossover =
 				new MultiPointCrossover<>(2000);
 		final int[] points = new int[g1.length()];
 		for (int i = 0; i < points.length; ++i) {

@@ -29,10 +29,13 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-06-01 $</em>
  */
-public abstract class AbstractAlterer<G extends Gene<?, G>>
-	implements Alterer<G>
+public abstract class AbstractAlterer<
+	G extends Gene<?, G>,
+	C extends Comparable<? super C>
+>
+	implements Alterer<G, C>
 {
 
 	/**
@@ -70,11 +73,11 @@ public abstract class AbstractAlterer<G extends Gene<?, G>>
 		if (obj == this) {
 			return true;
 		}
-		if (!(obj instanceof AbstractAlterer<?>)) {
+		if (!(obj instanceof AbstractAlterer<?, ?>)) {
 			return false;
 		}
 
-		final AbstractAlterer<?> alterer = (AbstractAlterer<?>)obj;
+		final AbstractAlterer<?, ?> alterer = (AbstractAlterer<?, ?>)obj;
 		return eq(_probability, alterer._probability);
 	}
 }

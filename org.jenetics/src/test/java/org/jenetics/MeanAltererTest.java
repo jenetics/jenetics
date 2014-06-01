@@ -34,7 +34,7 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-05-07 $</em>
+ * @version <em>$Date: 2014-06-01 $</em>
  */
 public class MeanAltererTest {
 
@@ -50,7 +50,7 @@ public class MeanAltererTest {
 		final Population<DoubleGene, Double> p2 = p1.copy();
 		final int[] selected = new int[]{3, 34};
 
-		final MeanAlterer<DoubleGene> crossover = new MeanAlterer<>(0.1);
+		final MeanAlterer<DoubleGene, Double> crossover = new MeanAlterer<>(0.1);
 		crossover.recombine(p1, selected, 3);
 
 		Assert.assertEquals(diff(p1, p2), ngenes);
@@ -68,7 +68,7 @@ public class MeanAltererTest {
 			);
 
 		// The mutator to test.
-		final MeanAlterer<DoubleGene> crossover = new MeanAlterer<>(p);
+		final MeanAlterer<DoubleGene, Double> crossover = new MeanAlterer<>(p);
 
 		final long nallgenes = ngenes*nchromosomes*npopulation;
 		final long N = 100;

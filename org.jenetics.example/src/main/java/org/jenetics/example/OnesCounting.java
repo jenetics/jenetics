@@ -72,8 +72,8 @@ public class OnesCounting {
 		ga.setPopulationSize(500);
 		ga.setSelectors(new RouletteWheelSelector<>());
 		ga.setAlterers(
-			new Mutator<BitGene>(0.55),
-			new SinglePointCrossover<BitGene>(0.06)
+			new Mutator<BitGene, Integer>(0.55),
+			new SinglePointCrossover<BitGene, Integer>(0.06)
 		);
 
 		ga.setup();

@@ -42,7 +42,7 @@ import org.jenetics.util.Factory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-06-01 $</em>
  */
 public class TravelingSalesman {
 
@@ -93,8 +93,8 @@ public class TravelingSalesman {
 			);
 		ga.setPopulationSize(500);
 		ga.setAlterers(
-			new SwapMutator<EnumGene<Integer>>(0.2),
-			new PartiallyMatchedCrossover<Integer>(0.3)
+			new SwapMutator<EnumGene<Integer>, Double>(0.2),
+			new PartiallyMatchedCrossover<Integer, Double>(0.3)
 		);
 
 		ga.setup();

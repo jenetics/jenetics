@@ -65,9 +65,14 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-05-10 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-06-01 $</em>
  */
-public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
+public class Mutator<
+	G extends Gene<?, G>,
+	C extends Comparable<? super C>
+>
+	extends AbstractAlterer<G, C>
+{
 
 	/**
 	 * Construct a Mutation object which a given mutation probability.
@@ -93,7 +98,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 * Concrete implementation of the alter method.
 	 */
 	@Override
-	public <C extends Comparable<? super C>> int alter(
+	public int alter(
 		final Population<G, C> population,
 		final int generation
 	) {
@@ -178,7 +183,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this || obj instanceof Mutator<?>;
+		return obj == this || obj instanceof Mutator<?, ?>;
 	}
 
 	@Override

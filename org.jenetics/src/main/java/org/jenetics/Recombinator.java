@@ -51,10 +51,13 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-05-10 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-06-01 $</em>
  */
-public abstract class Recombinator<G extends Gene<?, G>>
-	extends AbstractAlterer<G>
+public abstract class Recombinator<
+	G extends Gene<?, G>,
+	C extends Comparable<? super C>
+>
+	extends AbstractAlterer<G, C>
 {
 
 	private final int _order;
@@ -90,8 +93,9 @@ public abstract class Recombinator<G extends Gene<?, G>>
 	}
 
 	@Override
-	public final <C extends Comparable<? super C>> int alter(
-		final Population<G, C> population, final int generation
+	public final int alter(
+		final Population<G, C> population,
+		final int generation
 	) {
 		final Random random = RandomRegistry.getRandom();
 		final int order = Math.min(_order, population.size());
@@ -109,7 +113,6 @@ public abstract class Recombinator<G extends Gene<?, G>>
 	/**
 	 * Recombination template method.
 	 *
-	 * @param <C> the fitness result type
 	 * @param population the population to recombine
 	 * @param individuals the array with the indexes of the individuals which
 	 *         are involved in the <i>recombination</i> step. The length of the
@@ -118,7 +121,7 @@ public abstract class Recombinator<G extends Gene<?, G>>
 	 * @param generation the current generation.
 	 * @return the number of genes that has been altered.
 	 */
-	protected abstract <C extends Comparable<? super C>> int recombine(
+	protected abstract int recombine(
 		final Population<G, C> population,
 		final int[] individuals,
 		final int generation

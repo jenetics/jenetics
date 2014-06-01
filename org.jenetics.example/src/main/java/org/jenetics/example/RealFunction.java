@@ -61,8 +61,8 @@ public class RealFunction {
 		);
 		ga.setPopulationSize(500);
 		ga.setAlterers(
-			new Mutator<DoubleGene>(0.03),
-			new MeanAlterer<DoubleGene>(0.6)
+			new Mutator<DoubleGene, Double>(0.03),
+			new MeanAlterer<DoubleGene, Double>(0.6)
 		);
 
 		ga.setup();

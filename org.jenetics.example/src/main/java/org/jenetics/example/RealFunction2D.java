@@ -73,8 +73,8 @@ public class RealFunction2D {
 		ga.setSelectors(new TournamentSelector<DoubleGene, Double>(3));
 		// This are the alterers you can use for this example, in any combination.
 		ga.setAlterers(
-			new MeanAlterer<DoubleGene>(),
-			new GaussianMutator<DoubleGene>()
+			new MeanAlterer<DoubleGene, Double>(),
+			new GaussianMutator<DoubleGene, Double>()
 		);
 
 		ga.setup();

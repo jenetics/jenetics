@@ -40,7 +40,7 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-05-07 $</em>
+ * @version <em>$Date: 2014-06-01 $</em>
  */
 public class SinglePointCrossoverTest {
 
@@ -73,7 +73,7 @@ public class SinglePointCrossoverTest {
 
 		int rv = 12;
 		try (Scoped<?> s = RandomRegistry.scope(new ConstRandom(rv))) {
-			final SinglePointCrossover<CharacterGene>
+			final SinglePointCrossover<CharacterGene, Double>
 			crossover = new SinglePointCrossover<>();
 
 			MSeq<CharacterGene> g1c = g1.copy();
@@ -130,7 +130,7 @@ public class SinglePointCrossoverTest {
 			);
 
 		// The mutator to test.
-		final SinglePointCrossover<DoubleGene> crossover = new SinglePointCrossover<>(p);
+		final SinglePointCrossover<DoubleGene, Double> crossover = new SinglePointCrossover<>(p);
 
 		final long nallgenes = ngenes*nchromosomes*npopulation;
 		final long N = 200;

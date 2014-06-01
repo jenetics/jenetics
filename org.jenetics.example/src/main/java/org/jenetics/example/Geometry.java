@@ -82,7 +82,7 @@ import org.jenetics.util.RandomRegistry;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-06-01 $</em>
  */
 public class Geometry extends javax.swing.JFrame {
 	private static final long serialVersionUID = 1L;
@@ -651,7 +651,7 @@ public class Geometry extends javax.swing.JFrame {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-31 $</em>
+ * @version <em>$Date: 2014-06-01 $</em>
  */
 class GeometryController implements StepListener {
 	private final Geometry _geometry;
@@ -856,8 +856,8 @@ class GeometryController implements StepListener {
 					_ga.getLock().lock();
 					try {
 						_ga.setAlterers(
-							new Mutator<DoubleGene>(probability),
-							new MeanAlterer<DoubleGene>()
+							new Mutator<DoubleGene, Double>(probability),
+							new MeanAlterer<DoubleGene, Double>()
 						);
 						System.out.println("Mutation probability: " + probability);
 					} finally {
@@ -915,7 +915,7 @@ class GeometryController implements StepListener {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-31 $</em>
+ * @version <em>$Date: 2014-06-01 $</em>
  */
 class InitAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -936,7 +936,7 @@ class InitAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-31 $</em>
+ * @version <em>$Date: 2014-06-01 $</em>
  */
 class StartAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -957,7 +957,7 @@ class StartAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-31 $</em>
+ * @version <em>$Date: 2014-06-01 $</em>
  */
 class StopAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -978,7 +978,7 @@ class StopAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-31 $</em>
+ * @version <em>$Date: 2014-06-01 $</em>
  */
 class PauseAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -999,7 +999,7 @@ class PauseAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-31 $</em>
+ * @version <em>$Date: 2014-06-01 $</em>
  */
 class StepAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -1020,7 +1020,7 @@ class StepAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-31 $</em>
+ * @version <em>$Date: 2014-06-01 $</em>
  */
 class PopulationSpinnerModel extends SpinnerNumberModel implements ChangeListener {
 	private static final long serialVersionUID = 1L;
@@ -1045,7 +1045,7 @@ class PopulationSpinnerModel extends SpinnerNumberModel implements ChangeListene
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-31 $</em>
+ * @version <em>$Date: 2014-06-01 $</em>
  */
 class MaximalPhenotypeAgeSpinnerModel extends SpinnerNumberModel
 	implements ChangeListener
@@ -1163,7 +1163,7 @@ class MutationProbabilityRangeModel extends DefaultBoundedRangeModel
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-31 $</em>
+ * @version <em>$Date: 2014-06-01 $</em>
  */
 class TransformPanel extends javax.swing.JPanel {
 	private static final long serialVersionUID = 1L;
@@ -1269,7 +1269,7 @@ class TransformPanel extends javax.swing.JPanel {
  * The panel which draws the polygons.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-31 $</em>
+ * @version <em>$Date: 2014-06-01 $</em>
  */
 class DrawPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -1400,7 +1400,7 @@ class DrawPanel extends JPanel {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-31 $</em>
+ * @version <em>$Date: 2014-06-01 $</em>
  */
 class Stepable implements Runnable {
 	private final Lock _lock = new ReentrantLock();
@@ -1514,7 +1514,7 @@ class Stepable implements Runnable {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-31 $</em>
+ * @version <em>$Date: 2014-06-01 $</em>
  */
 interface StepListener extends EventListener {
 
@@ -1528,7 +1528,7 @@ interface StepListener extends EventListener {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-31 $</em>
+ * @version <em>$Date: 2014-06-01 $</em>
  */
 class GA {
 
@@ -1674,8 +1674,8 @@ class GA {
 				GA.getGenotypeFactory(), function, new Scaler(), Optimize.MINIMUM
 			);
 		ga.setAlterers(
-			new MeanAlterer<DoubleGene>(),
-			new Mutator<DoubleGene>(0.1)
+			new MeanAlterer<DoubleGene, Double>(),
+			new Mutator<DoubleGene, Double>(0.1)
 		);
 		ga.setSelectors(new TournamentSelector<DoubleGene, Double>(5));
 		ga.setPopulationSize(25);

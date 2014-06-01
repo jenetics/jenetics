@@ -30,12 +30,12 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-15 $</em>
+ * @version <em>$Date: 2014-06-01 $</em>
  */
 public class SwapMutatorTest extends MutatorTestBase {
 
 	@Override
-	public Alterer<DoubleGene> newAlterer(double p) {
+	public Alterer<DoubleGene, Double> newAlterer(double p) {
 		return new SwapMutator<>(p);
 	}
 
@@ -52,7 +52,7 @@ public class SwapMutatorTest extends MutatorTestBase {
 		final Population<DoubleGene, Double> p2 = p1.copy();
 		Assert.assertEquals(p2, p1);
 
-		final Alterer<DoubleGene> mutator = newAlterer(0.01);
+		final Alterer<DoubleGene, Double> mutator = newAlterer(0.01);
 
 		final int alterations = mutator.alter(p1, 1);
 		//final int diff = diff(p1, p2);

@@ -38,10 +38,13 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-05-13 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-06-01 $</em>
  */
-public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
-	extends Recombinator<G>
+public final class MeanAlterer<
+	G extends Gene<?, G> & Mean<G>,
+	C extends Comparable<? super C>
+>
+	extends Recombinator<G, C>
 {
 
 	/**
@@ -63,7 +66,7 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 	}
 
 	@Override
-	protected <C extends Comparable<? super C>> int recombine(
+	protected int recombine(
 		final Population<G, C> population,
 		final int[] individuals,
 		final int generation
@@ -111,7 +114,7 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof MeanAlterer<?> && super.equals(obj);
+			obj instanceof MeanAlterer<?, ?> && super.equals(obj);
 	}
 
 	@Override

@@ -91,8 +91,8 @@ import org.jenetics.util.Timer;
  *     ...
  *     ga.setSelectors(new RouletteWheelSelector&lt;BitGene&gt;());
  *     ga.setAlterers(
- *         new SinglePointCrossover&lt;BitGene&gt;(0.1),
- *         new Mutator&lt;BitGene&gt;(0.01)
+ *         new SinglePointCrossover&lt;BitGene, Double&gt;(0.1),
+ *         new Mutator&lt;BitGene, Double&gt;(0.01)
  *     );
  *
  *     ga.setup();
@@ -139,7 +139,7 @@ import org.jenetics.util.Timer;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-05-20 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-06-01 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,
@@ -176,9 +176,9 @@ public class GeneticAlgorithm<
 	private double _offspringFraction = DEFAULT_OFFSPRING_FRACTION;
 
 	// Alterers
-	private Alterer<G> _alterer = CompositeAlterer.of(
-		new SinglePointCrossover<G>(0.1),
-		new Mutator<G>(0.05)
+	private Alterer<G, C> _alterer = CompositeAlterer.of(
+		new SinglePointCrossover<G, C>(0.1),
+		new Mutator<G, C>(0.05)
 	);
 
 	// Selectors
@@ -929,7 +929,7 @@ public class GeneticAlgorithm<
 	 *
 	 * @return the currently used {@link Alterer} of the GA.
 	 */
-	public Alterer<G> getAlterer() {
+	public Alterer<G, C> getAlterer() {
 		return _alterer;
 	}
 
@@ -1025,7 +1025,7 @@ public class GeneticAlgorithm<
 	 * @param alterer The alterer.
 	 * @throws NullPointerException if the alterer is null.
 	 */
-	public void setAlterer(final Alterer<G> alterer) {
+	public void setAlterer(final Alterer<G, C> alterer) {
 		_alterer = requireNonNull(alterer, "Alterer");
 	}
 
@@ -1036,7 +1036,7 @@ public class GeneticAlgorithm<
 	 * @throws NullPointerException if the alterers are null.
 	 */
 	@SafeVarargs
-	public final void setAlterers(final Alterer<G>... alterers) {
+	public final void setAlterers(final Alterer<G, C>... alterers) {
 		setAlterer(CompositeAlterer.of(alterers));
 	}
 

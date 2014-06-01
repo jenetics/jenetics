@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-07 $</em>
+ * @version <em>$Date: 2014-06-01 $</em>
  */
 public class terminationTest {
 
@@ -75,7 +75,7 @@ public class terminationTest {
 		ga.setPopulationSize(20);
 		ga.setAlterers(
 			ga.getAlterer(),
-			new Mutator<DoubleGene>(0.999)
+			new Mutator<DoubleGene, Double>(0.999)
 		);
 		ga.setup();
 		values.addFirst(ga.getBestPhenotype().getFitness());
