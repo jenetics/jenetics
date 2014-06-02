@@ -32,7 +32,7 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-05-10 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public class LinearDistributionTest extends ObjectTester<LinearDistribution<Double>> {
 
@@ -52,7 +52,7 @@ public class LinearDistributionTest extends ObjectTester<LinearDistribution<Doub
 		}
 	};
 	@Override
-	protected Factory<LinearDistribution<Double>> getFactory() {
+	protected Factory<LinearDistribution<Double>> factory() {
 		return _factory;
 	}
 

@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-05-02 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public class TimerTest extends ObjectTester<Timer> {
 
@@ -43,7 +43,7 @@ public class TimerTest extends ObjectTester<Timer> {
 	};
 
 	@Override
-	protected Factory<Timer> getFactory() {
+	protected Factory<Timer> factory() {
 		return _factory;
 	}
 

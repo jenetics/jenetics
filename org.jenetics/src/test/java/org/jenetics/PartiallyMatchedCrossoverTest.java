@@ -34,13 +34,11 @@ import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
 import org.jenetics.util.Range;
 
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-06-01 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public class PartiallyMatchedCrossoverTest {
-
 
 	@Test(invocationCount = 10)
 	public void crossover() {
@@ -76,7 +74,7 @@ public class PartiallyMatchedCrossoverTest {
 	}
 
 	@Test
-	public void corssoverWithIllegalChromosome() {
+	public void crossoverWithIllegalChromosome() {
 		final PartiallyMatchedCrossover<Integer, Double> pmco = new PartiallyMatchedCrossover<>(1);
 
 		final int length = 1000;

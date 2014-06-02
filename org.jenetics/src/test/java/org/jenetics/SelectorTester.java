@@ -31,7 +31,7 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-05-07 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 	extends ObjectTester<S>
@@ -50,7 +50,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 	}
 
 	protected S getSelector() {
-		return getFactory().newInstance();
+		return factory().newInstance();
 	}
 
 	protected boolean isCheckEnabled() {

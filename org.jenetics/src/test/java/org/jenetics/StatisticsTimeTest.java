@@ -29,7 +29,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-21 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public class StatisticsTimeTest extends ObjectTester<Time> {
 
@@ -50,7 +50,7 @@ public class StatisticsTimeTest extends ObjectTester<Time> {
 		}
 	};
 	@Override
-	protected Factory<Time> getFactory() {
+	protected Factory<Time> factory() {
 		return _factory;
 	}
 

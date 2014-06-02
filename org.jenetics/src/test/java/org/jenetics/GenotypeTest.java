@@ -22,24 +22,17 @@ package org.jenetics;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 
-import java.util.Random;
-
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import org.jenetics.util.Factory;
-import org.jenetics.util.IO;
-import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.ObjectTester;
-import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-31 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public class GenotypeTest extends ObjectTester<Genotype<DoubleGene>> {
-
 
 	private final Factory<Genotype<DoubleGene>> _factory = Genotype.of(
 		DoubleChromosome.of(0, 1, 50),
@@ -47,12 +40,12 @@ public class GenotypeTest extends ObjectTester<Genotype<DoubleGene>> {
 		DoubleChromosome.of(0, 1, 100),
 		DoubleChromosome.of(0, 1, 50)
 	);
-	@Override protected Factory<Genotype<DoubleGene>> getFactory() {
+	@Override protected Factory<Genotype<DoubleGene>> factory() {
 		return _factory;
 	}
 
 	@Test
-	public void factory() {
+	public void factoryTest() {
 		final Genotype<DoubleGene> factory = (Genotype<DoubleGene>)_factory;
 		final Genotype<DoubleGene> gt = _factory.newInstance();
 
@@ -132,23 +125,5 @@ public class GenotypeTest extends ObjectTester<Genotype<DoubleGene>> {
     		Assert.assertEquals(ch1.length(), ch2.length());
     	}
     }
-
-	public static void main(final String[] args) throws Exception {
-		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
-		try (Scoped<?> s = RandomRegistry.scope(random)) {
-			final Chromosome<BitGene> chromosome = BitChromosome.of(30, 0.5);
-			final Genotype<BitGene> genotype = Genotype.of(chromosome, chromosome);
-
-			/*
-			JAXBContext jc = JAXBContext.newInstance("org.jenetics");
-			Marshaller marshaller = jc.createMarshaller();
-			marshaller.setAdapter(new GenotypeXML.Adapter());
-			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-			marshaller.marshal(genotype, System.out);
-			*/
-
-			IO.jaxb.write(genotype, System.out);
-		}
-	}
 
 }

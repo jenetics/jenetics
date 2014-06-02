@@ -33,7 +33,7 @@ import org.jenetics.internal.math.random;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-05-02 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public class CharSeqTest extends ObjectTester<CharSeq> {
 
@@ -45,7 +45,7 @@ public class CharSeqTest extends ObjectTester<CharSeq> {
 		}
 	};
 	@Override
-	protected Factory<CharSeq> getFactory() {
+	protected Factory<CharSeq> factory() {
 		return _factory;
 	}
 

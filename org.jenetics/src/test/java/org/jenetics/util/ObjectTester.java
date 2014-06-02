@@ -28,11 +28,11 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-18 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public abstract class ObjectTester<T> {
 
-	protected abstract Factory<T> getFactory();
+	protected abstract Factory<T> factory();
 
 	protected MSeq<T> newSameObjects(final int nobjects) {
 		final MSeq<T> objects = MSeq.ofLength(nobjects);
@@ -40,7 +40,7 @@ public abstract class ObjectTester<T> {
 		for (int i = 0; i < nobjects; ++i) {
 
 			try (Scoped<Random> s = RandomRegistry.scope(new Random(23487589))) {
-				objects.set(i, getFactory().newInstance());
+				objects.set(i, factory().newInstance());
 			}
 		}
 
@@ -65,8 +65,8 @@ public abstract class ObjectTester<T> {
 	@Test
 	public void notEquals() {
 		for (int i = 0; i < 10; ++i) {
-			final Object that = getFactory().newInstance();
-			final Object other = getFactory().newInstance();
+			final Object that = factory().newInstance();
+			final Object other = factory().newInstance();
 
 			if (that.equals(other)) {
 				Assert.assertTrue(other.equals(that));
@@ -79,7 +79,7 @@ public abstract class ObjectTester<T> {
 
 	@Test
 	public void notEqualsDifferentType() {
-		final Object that = getFactory().newInstance();
+		final Object that = factory().newInstance();
 		Assert.assertFalse(that.equals(null));
 		Assert.assertFalse(that.equals(""));
 		Assert.assertFalse(that.equals(23));
@@ -99,7 +99,7 @@ public abstract class ObjectTester<T> {
 
 	@Test
 	public void cloning() throws Exception {
-		final Object that = getFactory().newInstance();
+		final Object that = factory().newInstance();
 		if (that instanceof Cloneable) {
 			final Method clone = that.getClass().getMethod("clone");
 			final Object other = clone.invoke(that);
@@ -111,7 +111,7 @@ public abstract class ObjectTester<T> {
 
 	@Test
 	public void copying() {
-		final Object that = getFactory().newInstance();
+		final Object that = factory().newInstance();
 		if (that instanceof Copyable<?>) {
 			final Object other = ((Copyable<?>)that).copy();
 			if (other.getClass() == that.getClass()) {
@@ -136,7 +136,7 @@ public abstract class ObjectTester<T> {
 
 	@Test
 	public void isValid() {
-		final T a = getFactory().newInstance();
+		final T a = factory().newInstance();
 		if (a instanceof Verifiable) {
 			Assert.assertTrue(((Verifiable)a).isValid());
 		}
@@ -144,12 +144,12 @@ public abstract class ObjectTester<T> {
 
 	@Test
 	public void objectSerialize() throws Exception {
-		final Object object = getFactory().newInstance();
+		final Object object = factory().newInstance();
 
 		if (object instanceof Serializable) {
 			for (int i = 0; i < 10; ++i) {
 				final Serializable serializable =
-					(Serializable)getFactory().newInstance();
+					(Serializable) factory().newInstance();
 
 				Serialize.object.test(serializable);
 			}

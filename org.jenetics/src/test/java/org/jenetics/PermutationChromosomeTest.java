@@ -30,13 +30,13 @@ import org.jenetics.util.MSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-05-13 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public class PermutationChromosomeTest
 	extends ChromosomeTester<EnumGene<Integer>>
 {
 	@Override
-	protected Factory<Chromosome<EnumGene<Integer>>> getFactory() {
+	protected Factory<Chromosome<EnumGene<Integer>>> factory() {
 		return () -> PermutationChromosome.ofInteger(100);
 	}
 

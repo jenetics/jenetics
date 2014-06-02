@@ -36,12 +36,12 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-05-07 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public class LongGeneTest extends NumericGeneTester<Long, LongGene> {
 
 	private final Factory<LongGene> _factory = LongGene.of(0, Long.MAX_VALUE);
-	@Override protected Factory<LongGene> getFactory() {
+	@Override protected Factory<LongGene> factory() {
 		return _factory;
 	}
 

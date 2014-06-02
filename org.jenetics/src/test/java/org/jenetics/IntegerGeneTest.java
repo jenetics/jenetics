@@ -36,12 +36,12 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-05-07 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 
 	private final Factory<IntegerGene> _factory = IntegerGene.of(0, Integer.MAX_VALUE);
-	@Override protected Factory<IntegerGene> getFactory() {
+	@Override protected Factory<IntegerGene> factory() {
 		return _factory;
 	}
 

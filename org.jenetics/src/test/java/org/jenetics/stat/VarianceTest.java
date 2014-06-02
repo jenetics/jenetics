@@ -31,7 +31,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-12-18 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public class VarianceTest extends MappedAccumulatorTester<Variance<Double>> {
 
@@ -49,7 +49,7 @@ public class VarianceTest extends MappedAccumulatorTester<Variance<Double>> {
 		}
 	};
 	@Override
-	protected Factory<Variance<Double>> getFactory() {
+	protected Factory<Variance<Double>> factory() {
 		return _factory;
 	}
 

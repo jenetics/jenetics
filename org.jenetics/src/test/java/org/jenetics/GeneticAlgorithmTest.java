@@ -19,10 +19,8 @@
  */
 package org.jenetics;
 
-import java.io.Serializable;
 import java.util.Random;
 import java.util.concurrent.ForkJoinPool;
-import java.util.function.Function;
 
 import org.testng.Assert;
 import org.testng.Reporter;
@@ -30,27 +28,14 @@ import org.testng.annotations.Test;
 
 import org.jenetics.internal.util.Concurrency;
 
-import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-05-10 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public class GeneticAlgorithmTest {
-
-	private static class FF
-		implements Function<Genotype<DoubleGene>, Double>,
-					Serializable
-	{
-		private static final long serialVersionUID = 618089611921083000L;
-
-		@Override
-		public Double apply(final Genotype<DoubleGene> genotype) {
-			return genotype.getGene().getAllele();
-		}
-	}
 
 	@Test
 	public void optimize() {
@@ -59,13 +44,10 @@ public class GeneticAlgorithmTest {
 			Assert.assertSame(random, RandomRegistry.getRandom());
 			Assert.assertSame(random, rs.get());
 
-			final Factory<Genotype<DoubleGene>> factory = Genotype.of(
-				DoubleChromosome.of(0, 1)
-			);
-			final Function<Genotype<DoubleGene>, Double> ff = new FF();
-
 			final GeneticAlgorithm<DoubleGene, Double> ga = new GeneticAlgorithm<>(
-				factory, ff, Concurrency.SERIAL_EXECUTOR
+				Genotype.of(DoubleChromosome.of(0, 1)),
+				gt -> gt.getGene().getAllele(),
+				Concurrency.SERIAL_EXECUTOR
 			);
 			ga.setPopulationSize(200);
 			ga.setAlterer(new MeanAlterer<>());
@@ -86,26 +68,7 @@ public class GeneticAlgorithmTest {
 
 			s = ga.getStatistics();
 			Reporter.log(s.toString());
-
-			//PopulationStatistics<DoubleGene, Double> ps =
-			//	ga.collect(a -> PopulationStatistics.collector(a));
-			//System.out.println(ps.getSamples());
-
-			//Assert.assertEquals(ps.getAgeMean(), 23.15500000000001, 0.000001);
-			//Assert.assertEquals(ps.getAgeVariance(), 82.23213567839196, 0.000001);
-			//Assert.assertEquals(ps.getSamples(), 200);
-			//Assert.assertEquals(ps.getBest().getFitness(), 0.9955101231254028, 0.00000001);
-			//Assert.assertEquals(ps.getWorst().getFitness(), 0.9955101231254028, 0.00000001);
 		}
-	}
-
-	private static class Base implements Comparable<Base> {
-		@Override public int compareTo(Base o) {
-			return 0;
-		}
-	}
-
-	public static class Derived extends Base {
 	}
 
 	@Test(invocationCount = 10)
@@ -113,11 +76,10 @@ public class GeneticAlgorithmTest {
 		final ForkJoinPool pool = new ForkJoinPool(10);
 
 		try {
-			final Factory<Genotype<DoubleGene>> factory = Genotype.of(DoubleChromosome.of(-1, 1));
-			final Function<Genotype<DoubleGene>, Double> ff = new FF();
-
 			final GeneticAlgorithm<DoubleGene, Double> ga = new GeneticAlgorithm<>(
-				factory, ff, pool
+				Genotype.of(DoubleChromosome.of(-1, 1)),
+				gt -> gt.getGene().getAllele(),
+				pool
 			);
 			ga.setPopulationSize(1000);
 			ga.setAlterer(new MeanAlterer<>());

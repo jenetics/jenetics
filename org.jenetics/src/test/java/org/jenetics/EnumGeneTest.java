@@ -30,7 +30,7 @@ import org.jenetics.util.MSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-18 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public class EnumGeneTest extends GeneTester<EnumGene<Integer>> {
 
@@ -46,7 +46,7 @@ public class EnumGeneTest extends GeneTester<EnumGene<Integer>> {
 	};
 
 	@Override
-	protected Factory<EnumGene<Integer>> getFactory() {
+	protected Factory<EnumGene<Integer>> factory() {
 		return _factory;
 	}
 

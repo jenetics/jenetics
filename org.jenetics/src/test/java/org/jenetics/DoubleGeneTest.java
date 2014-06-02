@@ -38,12 +38,12 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-05-07 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 
 	private final Factory<DoubleGene> _factory = DoubleGene.of(0, Double.MAX_VALUE);
-	@Override protected Factory<DoubleGene> getFactory() {
+	@Override protected Factory<DoubleGene> factory() {
 		return _factory;
 	}
 

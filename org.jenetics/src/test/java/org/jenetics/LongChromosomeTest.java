@@ -35,7 +35,7 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-05-07 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public class LongChromosomeTest
 	extends NumericChromosomeTester<Long, LongGene>
@@ -46,7 +46,7 @@ public class LongChromosomeTest
 	);
 
 	@Override
-	protected LongChromosome getFactory() {
+	protected LongChromosome factory() {
 		return _factory;
 	}
 

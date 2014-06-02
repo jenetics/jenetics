@@ -27,20 +27,20 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-15 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public class NumberStatisticsTest
 	extends ObjectTester<NumberStatistics<DoubleGene, Double>>
 {
 
-	final Factory<NumberStatistics<DoubleGene, Double>>
-	_factory = new Factory<NumberStatistics<DoubleGene, Double>>() {
-		@Override
-		public NumberStatistics<DoubleGene, Double> newInstance() {
+	@Override
+	protected Factory<NumberStatistics<DoubleGene, Double>> factory() {
+		return () -> {
 			final Random random = RandomRegistry.getRandom();
 
-			final NumberStatistics.Builder<DoubleGene, Double>
-			builder = new NumberStatistics.Builder<>();
+			final NumberStatistics.Builder<DoubleGene, Double> builder =
+				new NumberStatistics.Builder<>();
+
 			builder.ageMean(random.nextDouble());
 			builder.ageVariance(random.nextDouble());
 			builder.invalid(random.nextInt(1000));
@@ -54,11 +54,7 @@ public class NumberStatisticsTest
 			builder.worstPhenotype(TestUtils.newDoublePhenotype());
 
 			return builder.build();
-		}
-	};
-	@Override
-	protected Factory<NumberStatistics<DoubleGene, Double>> getFactory() {
-		return _factory;
+		};
 	}
 
 }

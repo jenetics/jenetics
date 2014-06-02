@@ -35,7 +35,7 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-05-07 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public class IntegerChromosomeTest
 	extends NumericChromosomeTester<Integer, IntegerGene>
@@ -46,7 +46,7 @@ public class IntegerChromosomeTest
 	);
 
 	@Override
-	protected IntegerChromosome getFactory() {
+	protected IntegerChromosome factory() {
 		return _factory;
 	}
 

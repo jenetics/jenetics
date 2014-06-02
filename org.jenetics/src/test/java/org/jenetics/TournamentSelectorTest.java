@@ -30,7 +30,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-07 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public class TournamentSelectorTest
 	extends SelectorTester<TournamentSelector<DoubleGene, Double>>
@@ -46,7 +46,7 @@ public class TournamentSelectorTest
 		}
 	};
 	@Override
-	protected Factory<TournamentSelector<DoubleGene, Double>> getFactory() {
+	protected Factory<TournamentSelector<DoubleGene, Double>> factory() {
 		return _factory;
 	}
 

@@ -26,7 +26,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-07 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public abstract class MappedAccumulatorTester<A extends AbstractAccumulator<Double>>
 	extends ObjectTester<A>
@@ -36,7 +36,7 @@ public abstract class MappedAccumulatorTester<A extends AbstractAccumulator<Doub
 	public void accumulatedSamples() {
 		final int SAMPLES = 12345;
 		final Random random = new Random(123456);
-		final AbstractAccumulator<Double> accu = getFactory().newInstance();
+		final AbstractAccumulator<Double> accu = factory().newInstance();
 
 		final long samples = accu.getSamples();
 
@@ -50,7 +50,7 @@ public abstract class MappedAccumulatorTester<A extends AbstractAccumulator<Doub
 
 	@Test
 	public void testClone() {
-		AbstractAccumulator<Double> accu1 = getFactory().newInstance();
+		AbstractAccumulator<Double> accu1 = factory().newInstance();
 		for (int i = 0; i < 1000; ++i) {
 			accu1.accumulate((double)i);
 		}
@@ -69,7 +69,7 @@ public abstract class MappedAccumulatorTester<A extends AbstractAccumulator<Doub
 		Assert.assertEquals(accu1.hashCode(), accu2.hashCode());
 		Assert.assertEquals(accu1, accu2);
 
-		accu1 = getFactory().newInstance();
+		accu1 = factory().newInstance();
 		accu2 = accu1.clone();
 
 		Assert.assertNotSame(accu1, accu2);

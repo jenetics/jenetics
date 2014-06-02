@@ -30,7 +30,7 @@ import org.jenetics.util.ObjectTester;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-07 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public class PhenotypeTest extends ObjectTester<Phenotype<DoubleGene, Double>> {
 
@@ -53,14 +53,10 @@ public class PhenotypeTest extends ObjectTester<Phenotype<DoubleGene, Double>> {
 	);
 	private final Function<Genotype<DoubleGene>, Double> _ff = new FF();
 	private final Function<Double, Double> _scaler = a -> a;
-	private final Factory<Phenotype<DoubleGene, Double>>
-	_factory = new Factory<Phenotype<DoubleGene, Double>>() {
-		@Override public Phenotype<DoubleGene, Double> newInstance() {
-			return Phenotype.of(_genotype.newInstance(), _ff, _scaler, 0).evaluate();
-		}
-	};
+	private final Factory<Phenotype<DoubleGene, Double>> _factory =
+		() ->  Phenotype.of(_genotype.newInstance(), _ff, _scaler, 0).evaluate();
 
-	@Override protected Factory<Phenotype<DoubleGene, Double>> getFactory() {
+	@Override protected Factory<Phenotype<DoubleGene, Double>> factory() {
 		return _factory;
 	}
 

@@ -34,7 +34,7 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-06-01 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public abstract class MutatorTestBase {
 
@@ -97,9 +97,9 @@ public abstract class MutatorTestBase {
 
 		// Normal distribution as approximation for binomial distribution.
 		assertDistribution(
-				histogram,
-				new NormalDistribution<>(domain, mean, variance.getVariance())
-			);
+			histogram,
+			new NormalDistribution<>(domain, mean, variance.getVariance())
+		);
 	}
 
 	public double var(final double p, final long N) {

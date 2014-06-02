@@ -27,7 +27,7 @@ import org.jenetics.util.MSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-06-01 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public class CompositeAltererTest {
 
@@ -108,35 +108,35 @@ public class CompositeAltererTest {
 	public Object[][] alterCountParameters() {
 		return new Object[][] {
 				//    ngenes,       nchromosomes     npopulation
-				{ new Integer(1),   new Integer(1),  new Integer(100) },
-				{ new Integer(5),   new Integer(1),  new Integer(100) },
-				{ new Integer(80),  new Integer(1),  new Integer(100) },
-				{ new Integer(1),   new Integer(2),  new Integer(100) },
-				{ new Integer(5),   new Integer(2),  new Integer(100) },
-				{ new Integer(80),  new Integer(2),  new Integer(100) },
-				{ new Integer(1),   new Integer(15), new Integer(100) },
-				{ new Integer(5),   new Integer(15), new Integer(100) },
-				{ new Integer(80),  new Integer(15), new Integer(100) },
+				{ 1,   1,  100 },
+				{ 5,   1,  100 },
+				{ 80,  1,  100 },
+				{ 1,   2,  100 },
+				{ 5,   2,  100 },
+				{ 80,  2,  100 },
+				{ 1,   15, 100 },
+				{ 5,   15, 100 },
+				{ 80,  15, 100 },
 
-				{ new Integer(1),   new Integer(1),  new Integer(150) },
-				{ new Integer(5),   new Integer(1),  new Integer(150) },
-				{ new Integer(80),  new Integer(1),  new Integer(150) },
-				{ new Integer(1),   new Integer(2),  new Integer(150) },
-				{ new Integer(5),   new Integer(2),  new Integer(150) },
-				{ new Integer(80),  new Integer(2),  new Integer(150) },
-				{ new Integer(1),   new Integer(15), new Integer(150) },
-				{ new Integer(5),   new Integer(15), new Integer(150) },
-				{ new Integer(80),  new Integer(15), new Integer(150) },
+				{ 1,   1,  150 },
+				{ 5,   1,  150 },
+				{ 80,  1,  150 },
+				{ 1,   2,  150 },
+				{ 5,   2,  150 },
+				{ 80,  2,  150 },
+				{ 1,   15, 150 },
+				{ 5,   15, 150 },
+				{ 80,  15, 150 },
 
-				{ new Integer(1),   new Integer(1),  new Integer(500) },
-				{ new Integer(5),   new Integer(1),  new Integer(500) },
-				{ new Integer(80),  new Integer(1),  new Integer(500) },
-				{ new Integer(1),   new Integer(2),  new Integer(500) },
-				{ new Integer(5),   new Integer(2),  new Integer(500) },
-				{ new Integer(80),  new Integer(2),  new Integer(500) },
-				{ new Integer(1),   new Integer(15), new Integer(500) },
-				{ new Integer(5),   new Integer(15), new Integer(500) },
-				{ new Integer(80),  new Integer(15), new Integer(500) }
+				{ 1,   1,  500 },
+				{ 5,   1,  500 },
+				{ 80,  1,  500 },
+				{ 1,   2,  500 },
+				{ 5,   2,  500 },
+				{ 80,  2,  500 },
+				{ 1,   15, 500 },
+				{ 5,   15, 500 },
+				{ 80,  15, 500 }
 		};
 	}
 

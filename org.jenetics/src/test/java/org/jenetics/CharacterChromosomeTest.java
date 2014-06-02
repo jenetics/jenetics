@@ -36,14 +36,13 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-05-07 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 
-	private final Factory<Chromosome<CharacterGene>>
-	_factory = CharacterChromosome.of(500);
-	@Override protected Factory<Chromosome<CharacterGene>> getFactory() {
-		return _factory;
+	@Override
+	protected Factory<Chromosome<CharacterGene>> factory() {
+		return () -> CharacterChromosome.of(500);
 	}
 
 
