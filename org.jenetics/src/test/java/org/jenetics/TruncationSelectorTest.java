@@ -32,18 +32,9 @@ public class TruncationSelectorTest
 	extends SelectorTester<TruncationSelector<DoubleGene, Double>>
 {
 
-
-	final Factory<TruncationSelector<DoubleGene, Double>>
-	_factory = new Factory<TruncationSelector<DoubleGene,Double>>()
-	{
-		@Override
-		public TruncationSelector<DoubleGene, Double> newInstance() {
-			return new TruncationSelector<>();
-		}
-	};
 	@Override
 	protected Factory<TruncationSelector<DoubleGene, Double>> factory() {
-		return _factory;
+		return () -> new TruncationSelector<>();
 	}
 
 	@Override

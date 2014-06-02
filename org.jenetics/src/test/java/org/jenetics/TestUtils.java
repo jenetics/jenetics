@@ -29,7 +29,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-18 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 class TestUtils {
 
@@ -116,7 +116,7 @@ class TestUtils {
 	/**
 	 *  Create a population of DoubleGenes
 	 */
-	public static final Population<DoubleGene, Double> newDoubleGenePopulation(
+	public static Population<DoubleGene, Double> newDoubleGenePopulation(
 		final int ngenes,
 		final int nchromosomes,
 		final int npopulation
@@ -138,7 +138,7 @@ class TestUtils {
 		return population;
 	}
 
-	public static final Population<EnumGene<Double>, Double> newPermutationDoubleGenePopulation(
+	public static Population<EnumGene<Double>, Double> newPermutationDoubleGenePopulation(
 		final int ngenes,
 		final int nchromosomes,
 		final int npopulation
@@ -168,12 +168,7 @@ class TestUtils {
 	}
 
 	private static final Function<Genotype<EnumGene<Double>>, Double>
-	PFF = new Function<Genotype<EnumGene<Double>>, Double>() {
-		@Override
-		public Double apply(Genotype<EnumGene<Double>> value) {
-			return value.getGene().getAllele();
-		}
-	};
+	PFF = gt -> gt.getGene().getAllele();
 
 	/**
 	 * Count the number of different genes.
@@ -201,11 +196,7 @@ class TestUtils {
 		return count;
 	}
 
-	/**
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id$
-	 */
-	private static final class Continous
+	private static final class Continuous
 		implements Function<Genotype<DoubleGene>, Double>,
 					Serializable
 	{
@@ -220,7 +211,7 @@ class TestUtils {
 	/**
 	 * 'Identity' fitness function.
 	 */
-	public static final Function<Genotype<DoubleGene>, Double> FF = new Continous();
+	public static final Function<Genotype<DoubleGene>, Double> FF = new Continuous();
 
 	public static GeneticAlgorithm<DoubleGene, Double> GA() {
 		return new GeneticAlgorithm<>(

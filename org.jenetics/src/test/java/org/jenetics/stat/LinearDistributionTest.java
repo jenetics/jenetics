@@ -36,10 +36,9 @@ import org.jenetics.util.Range;
  */
 public class LinearDistributionTest extends ObjectTester<LinearDistribution<Double>> {
 
-	private final Factory<LinearDistribution<Double>>
-	_factory = new Factory<LinearDistribution<Double>>() {
-		@Override
-		public LinearDistribution<Double> newInstance() {
+	@Override
+	protected Factory<LinearDistribution<Double>> factory() {
+		return () -> {
 			final Random random = RandomRegistry.getRandom();
 
 			final double min = random.nextInt(100) + 100;
@@ -49,11 +48,7 @@ public class LinearDistributionTest extends ObjectTester<LinearDistribution<Doub
 				new LinearDistribution<>(new Range<>(min, max), y2);
 
 			return dist;
-		}
-	};
-	@Override
-	protected Factory<LinearDistribution<Double>> factory() {
-		return _factory;
+		};
 	}
 
 	@Test

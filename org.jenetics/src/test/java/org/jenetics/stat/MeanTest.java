@@ -35,9 +35,9 @@ import org.jenetics.util.RandomRegistry;
  */
 public class MeanTest extends MappedAccumulatorTester<Mean<Double>> {
 
-	private final Factory<Mean<Double>> _factory = new Factory<Mean<Double>>() {
-		@Override
-		public Mean<Double> newInstance() {
+	@Override
+	protected Factory<Mean<Double>> factory() {
+		return () -> {
 			final Random random = RandomRegistry.getRandom();
 
 			final Mean<Double> mean = new Mean<>();
@@ -46,11 +46,7 @@ public class MeanTest extends MappedAccumulatorTester<Mean<Double>> {
 			}
 
 			return mean;
-		}
-	};
-	@Override
-	protected Factory<Mean<Double>> factory() {
-		return _factory;
+		};
 	}
 
 	@Test

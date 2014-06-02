@@ -35,9 +35,9 @@ import org.jenetics.util.RandomRegistry;
  */
 public class VarianceTest extends MappedAccumulatorTester<Variance<Double>> {
 
-	private final Factory<Variance<Double>> _factory = new Factory<Variance<Double>>() {
-		@Override
-		public Variance<Double> newInstance() {
+	@Override
+	protected Factory<Variance<Double>> factory() {
+		return () -> {
 			final Random random = RandomRegistry.getRandom();
 
 			final Variance<Double> variance = new Variance<>();
@@ -46,11 +46,7 @@ public class VarianceTest extends MappedAccumulatorTester<Variance<Double>> {
 			}
 
 			return variance;
-		}
-	};
-	@Override
-	protected Factory<Variance<Double>> factory() {
-		return _factory;
+		};
 	}
 
 	@Test
