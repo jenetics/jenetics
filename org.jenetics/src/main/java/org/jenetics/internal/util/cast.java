@@ -19,6 +19,8 @@
  */
 package org.jenetics.internal.util;
 
+import java.util.Optional;
+
 import org.jenetics.util.ISeq;
 import org.jenetics.util.StaticObject;
 
@@ -27,7 +29,7 @@ import org.jenetics.util.StaticObject;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5 &mdash; <em>$Date: 2013-10-15 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-06-04 $</em>
  */
 public class cast extends StaticObject {
 	private cast() {}
@@ -35,6 +37,18 @@ public class cast extends StaticObject {
 	@SuppressWarnings("unchecked")
 	public static <A, B extends A> ISeq<A> apply(final ISeq<B> seq) {
 		return (ISeq<A>)seq;
+	}
+
+	public static <A> Optional<A> to(final Class<A> type, final Object object) {
+		return Optional.ofNullable(object)
+			.filter(o -> type.isAssignableFrom(o.getClass()))
+			.map(type::cast);
+	}
+
+	public static void main(final String[] args) {
+		Object foo = "foo";
+
+		cast.to(String.class, foo);
 	}
 
 }
