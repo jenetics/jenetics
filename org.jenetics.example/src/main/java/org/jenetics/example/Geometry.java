@@ -82,7 +82,7 @@ import org.jenetics.util.RandomRegistry;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-06-04 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-06-04 $</em>
  */
 public class Geometry extends javax.swing.JFrame {
 	private static final long serialVersionUID = 1L;
@@ -633,7 +633,7 @@ public class Geometry extends javax.swing.JFrame {
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version <em>$Date: 2014-06-04 $</em>
  */
-class GeometryController implements StepListener {
+final class GeometryController implements StepListener {
 	private final Geometry _geometry;
 
 	private final InitAction _initAction = new InitAction(this);
@@ -1552,16 +1552,16 @@ class GA {
             final double ty = genotype.getChromosome(1).getGene(1).doubleValue();
             final double shx = genotype.getChromosome(2).getGene(0).doubleValue();
             final double shy = genotype.getChromosome(2).getGene(1).doubleValue();
-            
+
             final AffineTransform rotate = AffineTransform.getRotateInstance(theta);
             final AffineTransform translate = AffineTransform.getTranslateInstance(tx, ty);
             final AffineTransform shear = AffineTransform.getShearInstance(shx,shy);
-            
+
             final AffineTransform transform = new AffineTransform();
             transform.concatenate(shear);
             transform.concatenate(rotate);
             transform.concatenate(translate);
-            
+
             return transform;
         };
 
@@ -1630,7 +1630,7 @@ class GA {
 	public static GeneticAlgorithm<DoubleGene, Double> getGA(final GAFF function) {
 		final GeneticAlgorithm<DoubleGene, Double> ga =
 			new GeneticAlgorithm<>(
-				GA.getGenotypeFactory(), function, new Scaler(), Optimize.MINIMUM
+				GA.getGenotypeFactory(), function, Math::sqrt, Optimize.MINIMUM
 			);
 		ga.setAlterers(
 			new MeanAlterer<>(),
@@ -1643,13 +1643,6 @@ class GA {
 		ga.setStatisticsCalculator(new NumberStatistics.Calculator<>());
 
 		return ga;
-	}
-
-	private static final class Scaler implements Function<Double, Double> {
-		@Override
-		public Double apply(final Double value) {
-			return Math.sqrt(value);
-		}
 	}
 
 }
