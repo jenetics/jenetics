@@ -39,9 +39,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.IntRef;
-import org.jenetics.internal.util.cast;
 import org.jenetics.internal.util.jaxb;
 import org.jenetics.internal.util.model.IndexedObject;
+import org.jenetics.internal.util.reflect;
 
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
@@ -74,7 +74,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-05-13 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-06-05 $</em>
  */
 @XmlJavaTypeAdapter(EnumGene.Model.Adapter.class)
 public final class EnumGene<A>
@@ -110,7 +110,7 @@ public final class EnumGene<A>
 			));
 		}
 
-		_validAlleles = cast.apply(validAlleles);
+		_validAlleles = reflect.cast(validAlleles);
 		_alleleIndex = alleleIndex;
 	}
 

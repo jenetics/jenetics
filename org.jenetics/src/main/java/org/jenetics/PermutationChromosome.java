@@ -43,8 +43,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.IntRef;
-import org.jenetics.internal.util.cast;
 import org.jenetics.internal.util.jaxb;
+import org.jenetics.internal.util.reflect;
 
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
@@ -57,7 +57,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-05-13 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-06-05 $</em>
  */
 @XmlJavaTypeAdapter(PermutationChromosome.Model.Adapter.class)
 public final class PermutationChromosome<T>
@@ -142,7 +142,7 @@ public final class PermutationChromosome<T>
 					.shuffle()
 					.toISeq()
 		);
-		chromosome._validAlleles = cast.apply(alleles);
+		chromosome._validAlleles = reflect.cast(alleles);
 		chromosome._valid = true;
 
 		return chromosome;

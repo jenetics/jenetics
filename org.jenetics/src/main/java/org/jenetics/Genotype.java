@@ -36,8 +36,8 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jenetics.internal.util.Hash;
-import org.jenetics.internal.util.cast;
 import org.jenetics.internal.util.jaxb;
+import org.jenetics.internal.util.reflect;
 
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
@@ -70,7 +70,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-05-14 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-06-05 $</em>
  */
 @XmlJavaTypeAdapter(Genotype.Model.Adapter.class)
 public final class Genotype<G extends Gene<?, G>>
@@ -96,7 +96,7 @@ public final class Genotype<G extends Gene<?, G>>
 			throw new IllegalArgumentException("No chromosomes given.");
 		}
 
-		_chromosomes = cast.apply(chromosomes);
+		_chromosomes = reflect.cast(chromosomes);
 		_ngenes = ngenes;
 	}
 

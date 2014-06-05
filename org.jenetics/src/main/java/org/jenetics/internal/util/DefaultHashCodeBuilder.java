@@ -26,7 +26,7 @@ import org.jenetics.util.Seq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-06-05 $</em>
  */
 final class DefaultHashCodeBuilder implements Hash {
 	private static final int P1 = 47;
@@ -93,7 +93,7 @@ final class DefaultHashCodeBuilder implements Hash {
 
 	@Override
 	public DefaultHashCodeBuilder and(final long value) {
-		_hash += P1*(int)(value^(value >>> 32)); return this;
+		_hash += P1*Long.hashCode(value); return this;
 	}
 
 	@Override
@@ -103,7 +103,7 @@ final class DefaultHashCodeBuilder implements Hash {
 
 	@Override
 	public DefaultHashCodeBuilder and(final float value) {
-		_hash += P1*Float.floatToIntBits(value); return this;
+		_hash += P1*Float.hashCode(value); return this;
 	}
 
 	@Override
@@ -113,9 +113,7 @@ final class DefaultHashCodeBuilder implements Hash {
 
 	@Override
 	public DefaultHashCodeBuilder and(final double value) {
-		long bits = Double.doubleToLongBits(value);
-		_hash += (int)(bits^(bits >>> 32));
-		return this;
+		_hash += P1*Double.hashCode(value); return this;
 	}
 
 	@Override

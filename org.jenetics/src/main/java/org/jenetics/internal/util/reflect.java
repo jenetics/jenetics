@@ -22,16 +22,18 @@ package org.jenetics.internal.util;
 import static java.util.Arrays.stream;
 import static java.util.stream.Stream.concat;
 
+import java.util.Optional;
 import java.util.stream.Stream;
 
+import org.jenetics.util.ISeq;
 import org.jenetics.util.StaticObject;
 
 /**
  * Helper methods concerning Java reflection.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.0 &mdash; <em>$Date: 2014-05-18 $</em>
  * @since 1.6
+ * @version 3.0 &mdash; <em>$Date: 2014-06-05 $</em>
  */
 public class reflect extends StaticObject {
 	private reflect() {}
@@ -63,4 +65,23 @@ public class reflect extends StaticObject {
 		return value instanceof Class<?> ? (Class<?>)value : value.getClass();
 	}
 
+	@SuppressWarnings("unchecked")
+	public static <T> T newInstance(final Class<?> type) {
+		try {
+			return (T)type.newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	public static <A> Optional<A> cast(final Class<A> type, final Object object) {
+		return Optional.ofNullable(object)
+			.filter(o -> type.isAssignableFrom(o.getClass()))
+			.map(type::cast);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <A, B extends A> ISeq<A> cast(final ISeq<B> seq) {
+		return (ISeq<A>)seq;
+	}
 }

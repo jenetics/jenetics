@@ -39,7 +39,7 @@ import org.jenetics.util.StaticObject;
  * JAXB helper methods.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-05-18 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-06-05 $</em>
  * @since 2.0
  */
 public class jaxb extends StaticObject {
@@ -98,18 +98,10 @@ public class jaxb extends StaticObject {
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	private static XmlAdapter<Object, Object> newXmlAdapter(final Class<?> cls) {
-		final Function<Class, XmlAdapter> toXmlAdapter = c -> {
-			try {
-				return (XmlAdapter<Object, Object>)c.newInstance();
-			} catch (InstantiationException | IllegalAccessException e) {
-				throw new RuntimeException(e);
-			}
-		};
-
 		return innerClasses(cls)
 			.filter(XmlAdapter.class::isAssignableFrom)
 			.findFirst()
-			.map(toXmlAdapter)
+			.map(reflect::<XmlAdapter<Object, Object>>newInstance)
 			.orElse(IDENTITY_ADAPTER);
 	}
 
