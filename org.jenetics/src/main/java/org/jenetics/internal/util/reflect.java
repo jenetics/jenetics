@@ -66,11 +66,11 @@ public class reflect extends StaticObject {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T> T newInstance(final Class<?> type) {
+	public static <T> Optional<T> newInstance(final Class<?> type) {
 		try {
-			return (T)type.newInstance();
+			return Optional.of((T)type.newInstance());
 		} catch (InstantiationException | IllegalAccessException e) {
-			throw new UnsupportedOperationException(e);
+			return Optional.empty();
 		}
 	}
 

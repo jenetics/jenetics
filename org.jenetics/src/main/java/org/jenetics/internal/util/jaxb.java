@@ -101,7 +101,7 @@ public class jaxb extends StaticObject {
 		return innerClasses(cls)
 			.filter(XmlAdapter.class::isAssignableFrom)
 			.findFirst()
-			.map(reflect::<XmlAdapter<Object, Object>>newInstance)
+			.flatMap(reflect::<XmlAdapter<Object, Object>>newInstance)
 			.orElse(IDENTITY_ADAPTER);
 	}
 
