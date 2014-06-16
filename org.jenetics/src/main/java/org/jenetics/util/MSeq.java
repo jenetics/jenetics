@@ -284,10 +284,18 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
 	public static <T> MSeq<T> of(final Iterable<? extends T> values) {
-		final Builder<T> builder = Stream.builder();
-		values.forEach(builder::accept);
+		MSeq<T> mseq = null;
+		if (values instanceof Collection<?>) {
+			@SuppressWarnings("unchecked")
+			final Collection<T> collection = (Collection<T>)values;
+			mseq = MSeq.<T>ofLength(collection.size()).setAll(values);
+		} else {
+			final Builder<T> builder = Stream.builder();
+			values.forEach(builder::accept);
+			mseq = builder.build().collect(toMSeq());
+		}
 
-		return builder.build().collect(toMSeq());
+		return mseq;
 	}
 
 	/**
