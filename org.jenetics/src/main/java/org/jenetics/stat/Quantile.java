@@ -49,7 +49,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-05-02 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-06-16 $</em>
  */
 public class Quantile implements DoubleConsumer {
 
@@ -98,7 +98,8 @@ public class Quantile implements DoubleConsumer {
 
 		_n[0] = -1.0;
 		_q[2] = 0.0;
-		_initialized = compare(quantile, 0.0) == 0 || compare(quantile, 1.0) == 0;
+		_initialized = compare(quantile, 0.0) == 0 ||
+						compare(quantile, 1.0) == 0;
 		_samples = 0;
 	}
 
