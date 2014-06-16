@@ -37,7 +37,7 @@ import org.jenetics.util.math;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-06-02 $</em>
+ * @version <em>$Date: 2014-06-16 $</em>
  */
 public class MultiPointCrossoverTest {
 
@@ -55,7 +55,8 @@ public class MultiPointCrossoverTest {
 		final MSeq<Character> ma = a.copy();
 		final MSeq<Character> mb = b.copy();
 
-		MultiPointCrossover.crossover(ma, mb, Seq.unboxInt(points));
+		final int[] intPoints = points.stream().mapToInt(Integer::intValue).toArray();
+		MultiPointCrossover.crossover(ma, mb, intPoints);
 		Assert.assertEquals(ma, CharSeq.toISeq(expectedA));
 		Assert.assertEquals(mb, CharSeq.toISeq(expectedB));
 	}

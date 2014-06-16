@@ -45,7 +45,7 @@ import java.util.stream.StreamSupport;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-05-14 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-06-16 $</em>
  */
 public interface Seq<T> extends Iterable<T> {
 
@@ -715,12 +715,4 @@ public interface Seq<T> extends Iterable<T> {
 		return ISeq.of(values);
 	}
 
-	public static int[] unboxInt(final Seq<Integer> values) {
-		final int[] array = new int[values.length()];
-		for (int i = values.length(); --i >= 0;) {
-			array[i] = values.get(i);
-		}
-
-		return array;
-	}
 }
