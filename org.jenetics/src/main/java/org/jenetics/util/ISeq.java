@@ -33,7 +33,7 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-05-14 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-06-16 $</em>
  */
 public interface ISeq<T>
 	extends
@@ -94,7 +94,7 @@ public interface ISeq<T>
 	 * @return a new {@code ISeq} with the given values.
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
-	public static <T> ISeq<T> of(final Collection<? extends T> values) {
+	public static <T> ISeq<T> of(final Iterable<? extends T> values) {
 		return MSeq.of(values).toISeq();
 	}
 

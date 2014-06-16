@@ -711,7 +711,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * @return a new {@code Seq} with the given values.
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
-	public static <T> Seq<T> of(final Collection<? extends T> values) {
+	public static <T> Seq<T> of(final Iterable<? extends T> values) {
 		return ISeq.of(values);
 	}
 
