@@ -33,7 +33,7 @@ import org.jenetics.util.StaticObject;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 3.0 &mdash; <em>$Date: 2014-06-05 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-06-16 $</em>
  */
 public class reflect extends StaticObject {
 	private reflect() {}
@@ -47,8 +47,7 @@ public class reflect extends StaticObject {
 	 */
 	public static Stream<Class<?>> innerClasses(final Class<?> cls) {
 		return concat(
-			stream(cls.getDeclaredClasses())
-				.flatMap(reflect::innerClasses),
+			stream(cls.getDeclaredClasses()).flatMap(reflect::innerClasses),
 			stream(cls.getDeclaredClasses())
 		);
 	}
