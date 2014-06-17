@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.util;
+package org.jenetics.internal.collection;
 
 /**
  * Minimal implementation of stack data-structure. {@code Null} values are not
@@ -35,7 +35,7 @@ package org.jenetics.internal.util;
  * [/code]
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
+ * @version 2.0 &mdash; <em>$Date$</em>
  * @since 2.0
  */
 public final class Stack<T> {

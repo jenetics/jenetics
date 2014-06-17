@@ -31,9 +31,11 @@ import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 
+import org.jenetics.internal.collection.Stack;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-04-21 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-06-17 $</em>
  * @since 2.0
  */
 public abstract class Concurrency implements Executor, AutoCloseable {
