@@ -296,7 +296,7 @@
     </test>
     <test name="org.jenetics.internal.collection.Stack">
         <classes>
-            <class name="org.jenetics.internal.util.StackTest" />
+            <class name="org.jenetics.internal.collection.StackTest" />
         </classes>
     </test>
 	<test name="org.jenetics.util.bit">
