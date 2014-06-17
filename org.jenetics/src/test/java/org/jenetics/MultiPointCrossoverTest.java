@@ -32,12 +32,11 @@ import org.testng.annotations.Test;
 import org.jenetics.util.CharSeq;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
-import org.jenetics.util.Seq;
 import org.jenetics.util.math;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-06-16 $</em>
+ * @version <em>$Date: 2014-06-17 $</em>
  */
 public class MultiPointCrossoverTest {
 

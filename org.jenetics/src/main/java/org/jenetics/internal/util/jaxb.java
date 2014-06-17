@@ -19,8 +19,8 @@
  */
 package org.jenetics.internal.util;
 
-import static org.jenetics.internal.util.reflect.innerClasses;
 import static org.jenetics.internal.util.reflect.classOf;
+import static org.jenetics.internal.util.reflect.innerClasses;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -39,7 +39,7 @@ import org.jenetics.util.StaticObject;
  * JAXB helper methods.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-06-05 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-06-17 $</em>
  * @since 2.0
  */
 public class jaxb extends StaticObject {
