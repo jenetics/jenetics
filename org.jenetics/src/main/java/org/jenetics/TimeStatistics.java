@@ -30,7 +30,7 @@ import org.jenetics.internal.util.Hash;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-06-24 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-06-25 $</em>
  */
 public final class TimeStatistics {
 
@@ -148,6 +148,6 @@ public final class TimeStatistics {
 	}
 
 	private static double toSeconds(final Duration duration) {
-		return duration.toMillis()/1_000_000_000.0;
+		return duration.toNanos()/1_000_000_000.0;
 	}
 }
