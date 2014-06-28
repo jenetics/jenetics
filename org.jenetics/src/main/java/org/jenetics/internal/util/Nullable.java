@@ -22,6 +22,7 @@ package org.jenetics.internal.util;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.jenetics.DoubleGene;
 import org.jenetics.Phenotype;
@@ -29,7 +30,7 @@ import org.jenetics.Phenotype;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-06-25 $</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-06-28 $</em>
  */
 public final class Nullable<A> {
 
@@ -45,6 +46,10 @@ public final class Nullable<A> {
 
 	public <B> Nullable<B> flatMap(final Function<A, Optional<B>> mapper) {
 		return new Nullable<>(_value.flatMap(mapper));
+	}
+
+	public Nullable<A> filter(Predicate<? super A> predicate) {
+		return new Nullable<>(_value.filter(predicate));
 	}
 
 	public <B> Optional<B> yield(final Function<A, B> mapper) {
