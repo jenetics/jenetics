@@ -19,13 +19,15 @@
  */
 package org.jenetics.internal.util;
 
+import static org.jenetics.internal.util.reflect.typeOf;
+
 import java.util.Optional;
 import java.util.function.Predicate;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-06-28 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-06-29 $</em>
  */
 public final class Equality<T> {
 	private final T _self;
@@ -42,9 +44,7 @@ public final class Equality<T> {
 	}
 
 	public static <T> Equality<T> of(final T self, final Object other) {
-		@SuppressWarnings("unchecked")
-		final Class<T> type = (Class<T>)self.getClass();
-		return new Equality<>(self, cast(type, other));
+		return new Equality<>(self, cast(typeOf(self), other));
 	}
 
 	private static <A> Optional<A> cast(final Class<A> type, final Object object) {
