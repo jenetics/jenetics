@@ -24,6 +24,7 @@ import static java.lang.Double.isNaN;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.object.eq;
 
+import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 /**
@@ -34,7 +35,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-05-01 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-06-30 $</em>
  */
 public final class DoubleAdder
 	extends Number
@@ -169,16 +170,10 @@ public final class DoubleAdder
 	}
 
 	@Override
-	public boolean equals(final Object object) {
-		if (object == this) {
-			return true;
-		}
-		if (!(object instanceof DoubleAdder)) {
-			return false;
-		}
-
-		final DoubleAdder adder = (DoubleAdder)object;
-		return eq(doubleValue(), adder.doubleValue());
+	public boolean equals(final Object obj) {
+		return Equality.of(this, obj).test(adder ->
+			eq(doubleValue(), adder.doubleValue())
+		);
 	}
 
 	@Override

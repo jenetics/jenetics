@@ -27,6 +27,7 @@ import java.util.LongSummaryStatistics;
 import java.util.function.ToLongFunction;
 import java.util.stream.Collector;
 
+import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 /**
@@ -36,7 +37,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-05-07 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-06-30 $</em>
  */
 public final class LongSummary implements Serializable {
 
@@ -131,20 +132,14 @@ public final class LongSummary implements Serializable {
 	}
 
 	@Override
-	public boolean equals(final Object object) {
-		if (object == null) {
-			return true;
-		}
-		if (!(object instanceof LongSummary)) {
-			return false;
-		}
-
-		final LongSummary summary = (LongSummary)object;
-		return eq(_count, summary._count) &&
+	public boolean equals(final Object obj) {
+		return Equality.of(this, obj).test(summary ->
+			eq(_count, summary._count) &&
 			eq(_sum, summary._sum) &&
 			eq(_min, summary._min) &&
 			eq(_max, summary._max) &&
-			eq(_mean, summary._mean);
+			eq(_mean, summary._mean)
+		);
 	}
 
 	@Override

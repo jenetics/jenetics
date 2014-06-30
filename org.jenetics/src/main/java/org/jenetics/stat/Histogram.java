@@ -33,6 +33,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.ToDoubleFunction;
 
+import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 /**
@@ -63,7 +64,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-05-10 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-06-30 $</em>
  */
 public class Histogram<C> implements Consumer<C> {
 
@@ -335,17 +336,11 @@ public class Histogram<C> implements Consumer<C> {
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null || getClass() != obj.getClass()) {
-			return false;
-		}
-
-		final Histogram<?> histogram = (Histogram<?>)obj;
-		return eq(_separators, histogram._separators) &&
+		return Equality.of(this, obj).test(histogram ->
+			eq(_separators, histogram._separators) &&
 			eq(_histogram, histogram._histogram) &&
-			super.equals(obj);
+			super.equals(obj)
+		);
 	}
 
 	@Override

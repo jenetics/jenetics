@@ -23,6 +23,7 @@ import static java.lang.Math.pow;
 import static java.lang.String.format;
 import static org.jenetics.util.math.random.indexes;
 
+import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.IntRef;
 
@@ -65,7 +66,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-06-01 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-06-30 $</em>
  */
 public class Mutator<
 	G extends Gene<?, G>,
@@ -183,7 +184,7 @@ public class Mutator<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this || obj instanceof Mutator<?, ?>;
+		return Equality.of(this, obj).test(super::equals);
 	}
 
 	@Override

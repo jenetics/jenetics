@@ -45,6 +45,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.jaxb;
 
@@ -61,7 +62,7 @@ import org.jenetics.util.Factory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-05-14 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-06-30 $</em>
  */
 @XmlJavaTypeAdapter(Population.Model.Adapter.class)
 public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
@@ -316,16 +317,8 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	}
 
 	@Override
-	public boolean equals(final Object object) {
-		if (object == this) {
-			return true;
-		}
-		if (!(object instanceof Population<?, ?>)) {
-			return false;
-		}
-
-		final Population<?, ?> population = (Population<?, ?>)object;
-		return eq(_population, population._population);
+	public boolean equals(final Object obj) {
+		return Equality.of(this, obj).test(p -> eq(_population, p._population));
 	}
 
 	@Override

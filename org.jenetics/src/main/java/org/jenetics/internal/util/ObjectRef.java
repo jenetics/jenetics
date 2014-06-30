@@ -27,7 +27,7 @@ import java.util.Objects;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-05-18 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-06-30 $</em>
  */
 public final class ObjectRef<T> implements Serializable {
 	private static final long serialVersionUID = 1;
@@ -49,14 +49,7 @@ public final class ObjectRef<T> implements Serializable {
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!(obj instanceof ObjectRef<?>)) {
-			return false;
-		}
-
-		return eq(value, ((ObjectRef<?>)obj).value);
+		return Equality.of(this, obj).test(r -> eq(value, r.value));
 	}
 
 }

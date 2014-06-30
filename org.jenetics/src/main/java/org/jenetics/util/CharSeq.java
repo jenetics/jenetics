@@ -28,6 +28,7 @@ import java.util.regex.PatternSyntaxException;
 
 import org.jenetics.internal.collection.ArrayProxyISeq;
 import org.jenetics.internal.collection.CharArrayProxy;
+import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 /**
@@ -44,7 +45,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-21 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-06-30 $</em>
  */
 public final class CharSeq
 	extends CharSeqBase
@@ -167,16 +168,8 @@ public final class CharSeq
 	}
 
 	@Override
-	public boolean equals(final Object object) {
-		if (object == this) {
-			return true;
-		}
-		if (!(object instanceof CharSeq)) {
-			return false;
-		}
-
-		final CharSeq ch = (CharSeq)object;
-		return eq(proxy.array, ch.proxy.array);
+	public boolean equals(final Object obj) {
+		return Equality.of(this, obj).test(ch -> eq(proxy.array, ch.proxy.array));
 	}
 
 	@Override

@@ -23,6 +23,7 @@ import static java.lang.Double.NaN;
 import static java.lang.String.format;
 import static org.jenetics.internal.util.object.eq;
 
+import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 /**
@@ -44,7 +45,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-06-30 $</em>
  */
 public class Variance<N extends Number> extends Mean<N> {
 
@@ -121,15 +122,10 @@ public class Variance<N extends Number> extends Mean<N> {
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null || getClass() != obj.getClass()) {
-			return false;
-		}
-
-		final Variance<?> variance = (Variance<?>)obj;
-		return eq(_m2, variance._m2) && super.equals(variance);
+		return Equality.of(this, obj).test(variance ->
+			eq(_m2, variance._m2) &&
+			super.equals(variance)
+		);
 	}
 
 	@Override

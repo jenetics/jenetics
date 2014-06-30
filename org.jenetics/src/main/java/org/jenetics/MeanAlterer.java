@@ -23,6 +23,7 @@ import static java.lang.String.format;
 
 import java.util.Random;
 
+import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.ISeq;
@@ -38,7 +39,7 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-06-01 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-06-30 $</em>
  */
 public final class MeanAlterer<
 	G extends Gene<?, G> & Mean<G>,
@@ -113,8 +114,7 @@ public final class MeanAlterer<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof MeanAlterer<?, ?> && super.equals(obj);
+		return Equality.of(this, obj).test(super::equals);
 	}
 
 	@Override

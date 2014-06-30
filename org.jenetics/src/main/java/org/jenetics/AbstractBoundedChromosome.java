@@ -21,6 +21,7 @@ package org.jenetics;
 
 import static org.jenetics.internal.util.object.eq;
 
+import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.ISeq;
@@ -29,7 +30,7 @@ import org.jenetics.util.ISeq;
  * Abstract chromosome for {@code BoundedGene}s.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-05-13 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-06-30 $</em>
  * @since 1.6
  */
 abstract class AbstractBoundedChromosome<
@@ -84,18 +85,11 @@ abstract class AbstractBoundedChromosome<
 
 	@Override
 	public boolean equals(final Object object) {
-		if (object == this) {
-			return true;
-		}
-		if (!(object instanceof AbstractBoundedChromosome<?, ?>)) {
-			return false;
-		}
-
-		final AbstractBoundedChromosome<?, ?> nc =
-			(AbstractBoundedChromosome<?, ?>)object;
-		return eq(_min, nc._min) &&
+		return Equality.of(this, object).test(nc ->
+			eq(_min, nc._min) &&
 			eq(_max, nc._max) &&
-			super.equals(object);
+			super.equals(object)
+		);
 	}
 
 }

@@ -25,6 +25,7 @@ import static org.jenetics.internal.util.object.eq;
 import java.io.Serializable;
 import java.util.function.Function;
 
+import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 /**
@@ -36,7 +37,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-06-30 $</em>
  */
 public final class ExponentialScaler
 	implements
@@ -97,15 +98,11 @@ public final class ExponentialScaler
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null || obj.getClass() != getClass()) {
-			return false;
-		}
-
-		final ExponentialScaler selector = (ExponentialScaler)obj;
-		return eq(_a, selector._a) && eq(_b, selector._b) && eq(_c, selector._c);
+		return Equality.of(this, obj).test(selector ->
+			eq(_a, selector._a) &&
+			eq(_b, selector._b) &&
+			eq(_c, selector._c)
+		);
 	}
 
 	@Override

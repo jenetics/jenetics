@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.jaxb;
 import org.jenetics.internal.util.reflect;
@@ -70,7 +71,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-06-05 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-06-30 $</em>
  */
 @XmlJavaTypeAdapter(Genotype.Model.Adapter.class)
 public final class Genotype<G extends Gene<?, G>>
@@ -232,16 +233,10 @@ public final class Genotype<G extends Gene<?, G>>
 	}
 
 	@Override
-	public boolean equals(final Object o) {
-		if (o == this) {
-			return true;
-		}
-		if (!(o instanceof Genotype<?>)) {
-			return false;
-		}
-
-		final Genotype<?> gt = (Genotype<?>)o;
-		return eq(_chromosomes, gt._chromosomes);
+	public boolean equals(final Object obj) {
+		return Equality.of(this, obj).test(gt ->
+			eq(_chromosomes, gt._chromosomes)
+		);
 	}
 
 	@Override

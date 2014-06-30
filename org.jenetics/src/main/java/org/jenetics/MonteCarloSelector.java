@@ -24,6 +24,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Random;
 
+import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.RandomRegistry;
@@ -36,7 +37,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-06-30 $</em>
  */
 public final class MonteCarloSelector<
 	G extends Gene<?, G>,
@@ -84,7 +85,7 @@ public final class MonteCarloSelector<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this || obj instanceof MonteCarloSelector<?, ?>;
+		return Equality.of(this, obj).test();
 	}
 
 	@Override

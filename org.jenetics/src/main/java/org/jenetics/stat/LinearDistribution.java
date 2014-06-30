@@ -25,6 +25,7 @@ import static org.jenetics.internal.util.object.eq;
 
 import java.util.function.ToDoubleFunction;
 
+import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.Range;
@@ -63,7 +64,7 @@ import org.jenetics.util.Range;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-05-01 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-06-30 $</em>
  */
 public class LinearDistribution<
 	N extends Number & Comparable<? super N>
@@ -172,17 +173,11 @@ public class LinearDistribution<
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null || getClass() != obj.getClass()) {
-			return false;
-		}
-
-		final LinearDistribution<?> dist = (LinearDistribution<?>)obj;
-		return eq(_domain, dist._domain) &&
-				eq(_x1, dist._x1) && eq(_x2, dist._x2) &&
-				eq(_y1, dist._y1) && eq(_y2, dist._y2);
+		return Equality.of(this, obj).test(dist ->
+			eq(_domain, dist._domain) &&
+			eq(_x1, dist._x1) && eq(_x2, dist._x2) &&
+			eq(_y1, dist._y1) && eq(_y2, dist._y2)
+		);
 	}
 
 	@Override

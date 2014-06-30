@@ -26,6 +26,7 @@ import static org.jenetics.internal.util.object.eq;
 import java.io.Serializable;
 import java.time.Duration;
 
+import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 /**
@@ -35,7 +36,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-05-19 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-06-30 $</em>
  */
 public final class Timer
 	implements
@@ -192,19 +193,13 @@ public final class Timer
 	}
 
 	@Override
-	public boolean equals(final Object object) {
-		if (object == this) {
-			return true;
-		}
-		if (!(object instanceof Timer)) {
-			return false;
-		}
-
-		final Timer timer = (Timer)object;
-		return eq(_start, timer._start) &&
-				eq(_stop, timer._stop) &&
-				eq(_sum, timer._sum) &&
-				eq(_label, timer._label);
+	public boolean equals(final Object obj) {
+		return Equality.of(this, obj).test(timer ->
+			eq(_start, timer._start) &&
+			eq(_stop, timer._stop) &&
+			eq(_sum, timer._sum) &&
+			eq(_label, timer._label)
+		);
 	}
 
 	@Override

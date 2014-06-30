@@ -25,6 +25,7 @@ import static org.jenetics.internal.util.object.eq;
 
 import java.util.concurrent.Executor;
 
+import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 import org.jenetics.stat.Variance;
@@ -34,7 +35,7 @@ import org.jenetics.util.Accumulator.MinMax;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-06-30 $</em>
  */
 public class NumberStatistics<
 	G extends Gene<?, G>,
@@ -48,7 +49,7 @@ public class NumberStatistics<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-06-30 $</em>
 	 */
 	public static class Builder<
 		G extends Gene<?, G>,
@@ -219,18 +220,12 @@ public class NumberStatistics<
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (!(obj instanceof NumberStatistics<?, ?>)) {
-			return false;
-		}
-
-		final NumberStatistics<?, ?> statistics = (NumberStatistics<?, ?>) obj;
-		return eq(statistics._fitnessMean, _fitnessMean) &&
-				eq(statistics._fitnessVariance, _fitnessVariance) &&
-				eq(statistics._standardError, _standardError) &&
-				super.equals(obj);
+		return Equality.of(this, obj).test(statistics ->
+			eq(statistics._fitnessMean, _fitnessMean) &&
+			eq(statistics._fitnessVariance, _fitnessVariance) &&
+			eq(statistics._standardError, _standardError) &&
+			super.equals(obj)
+		);
 	}
 
 	@Override
@@ -253,7 +248,7 @@ public class NumberStatistics<
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-06-30 $</em>
 	 */
 	public static class Calculator<
 		G extends Gene<?, G>,

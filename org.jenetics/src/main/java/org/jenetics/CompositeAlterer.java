@@ -27,6 +27,7 @@ import static org.jenetics.util.ISeq.toISeq;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.ISeq;
@@ -37,7 +38,7 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-06-01 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-06-30 $</em>
  */
 public final class CompositeAlterer<
 	G extends Gene<?, G>,
@@ -105,15 +106,7 @@ public final class CompositeAlterer<
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null || obj.getClass() != getClass()) {
-			return false;
-		}
-
-		final CompositeAlterer<?, ?> alterer = (CompositeAlterer<?, ?>)obj;
-		return eq(_alterers, alterer._alterers);
+		return Equality.of(this, obj).test(a -> eq(_alterers, a._alterers));
 	}
 
 	@Override

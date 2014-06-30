@@ -23,6 +23,7 @@ import static java.lang.Math.pow;
 import static java.lang.String.format;
 import static org.jenetics.internal.util.object.eq;
 
+import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 /**
@@ -51,7 +52,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-05-14 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-06-30 $</em>
  */
 public final class ExponentialRankSelector<
 	G extends Gene<?, G>,
@@ -113,16 +114,7 @@ public final class ExponentialRankSelector<
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null || obj.getClass() != getClass()) {
-			return false;
-		}
-
-		final ExponentialRankSelector<?, ?> selector =
-			(ExponentialRankSelector<?, ?>)obj;
-		return eq(_c, selector._c);
+		return Equality.of(this, obj).test(s -> eq(_c, s._c));
 	}
 
 	@Override

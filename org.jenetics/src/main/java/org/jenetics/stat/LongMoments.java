@@ -26,6 +26,7 @@ import java.io.Serializable;
 import java.util.function.ToLongFunction;
 import java.util.stream.Collector;
 
+import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 /**
@@ -35,7 +36,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-05-07 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-06-30 $</em>
  */
 public final class LongMoments implements Serializable {
 
@@ -182,23 +183,17 @@ public final class LongMoments implements Serializable {
 	}
 
 	@Override
-	public boolean equals(final Object object) {
-		if (object == null) {
-			return true;
-		}
-		if (!(object instanceof LongMoments)) {
-			return false;
-		}
-
-		final LongMoments moments = (LongMoments)object;
-		return eq(_count, moments._count) &&
+	public boolean equals(final Object obj) {
+		return Equality.of(this, obj).test(moments ->
+			eq(_count, moments._count) &&
 			eq(_sum, moments._sum) &&
 			eq(_min, moments._min) &&
 			eq(_max, moments._max) &&
 			eq(_mean, moments._mean) &&
 			eq(_variance, moments._variance) &&
 			eq(_skewness, moments._skewness) &&
-			eq(_kurtosis, moments._kurtosis);
+			eq(_kurtosis, moments._kurtosis)
+		);
 	}
 
 	@Override

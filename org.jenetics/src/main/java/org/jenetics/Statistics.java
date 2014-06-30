@@ -28,6 +28,7 @@ import java.io.Serializable;
 import java.time.Duration;
 import java.util.concurrent.Executor;
 
+import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 import org.jenetics.stat.Variance;
@@ -40,7 +41,7 @@ import org.jenetics.util.FinalReference;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-21 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-06-30 $</em>
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>> {
 
@@ -49,7 +50,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>> {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-04-21 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-06-30 $</em>
 	 */
 	public static class Builder<
 		G extends Gene<?, G>,
@@ -385,23 +386,17 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>> {
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null || getClass() != obj.getClass()) {
-			return false;
-		}
-
-		final Statistics<?, ?> statistics = (Statistics<?, ?>)obj;
-		return eq(_optimize, statistics._optimize) &&
-				eq(_generation, statistics._generation) &&
- 				eq(_ageMean, statistics._ageMean) &&
-				eq(_ageVariance, statistics._ageVariance) &&
-				eq(_best, statistics._best) &&
-				eq(_worst, statistics._worst) &&
-				eq(_invalid, statistics._invalid) &&
-				eq(_samples, statistics._samples) &&
-				eq(_killed, statistics._killed);
+		return Equality.of(this, obj).test(statistics ->
+			eq(_optimize, statistics._optimize) &&
+			eq(_generation, statistics._generation) &&
+			eq(_ageMean, statistics._ageMean) &&
+			eq(_ageVariance, statistics._ageVariance) &&
+			eq(_best, statistics._best) &&
+			eq(_worst, statistics._worst) &&
+			eq(_invalid, statistics._invalid) &&
+			eq(_samples, statistics._samples) &&
+			eq(_killed, statistics._killed)
+		);
 	}
 
 	@Override
@@ -429,7 +424,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>> {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-04-21 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-06-30 $</em>
 	 */
 	public static final class Time implements Serializable {
 		private static final long serialVersionUID = 2L;
@@ -503,21 +498,15 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>> {
 		}
 
 		@Override
-		public boolean equals(final Object object) {
-			if (object == this) {
-				return true;
-			}
-			if (object == null || object.getClass() != getClass()) {
-				return false;
-			}
-
-			final Statistics.Time time = (Statistics.Time)object;
-			return eq(alter.get(), time.alter.get()) &&
-					eq(combine.get(), time.combine.get()) &&
-					eq(evaluation.get(), time.evaluation.get()) &&
-					eq(execution.get(), time.execution.get()) &&
-					eq(selection.get(), time.selection.get()) &&
-					eq(statistics.get(), time.statistics.get());
+		public boolean equals(final Object obj) {
+			return Equality.of(this, obj).test(time ->
+				eq(alter.get(), time.alter.get()) &&
+				eq(combine.get(), time.combine.get()) &&
+				eq(evaluation.get(), time.evaluation.get()) &&
+				eq(execution.get(), time.execution.get()) &&
+				eq(selection.get(), time.selection.get()) &&
+				eq(statistics.get(), time.statistics.get())
+			);
 		}
 
 		@Override
@@ -551,7 +540,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>> {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-04-21 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-06-30 $</em>
 	 */
 	public static class Calculator<
 		G extends Gene<?, G>,

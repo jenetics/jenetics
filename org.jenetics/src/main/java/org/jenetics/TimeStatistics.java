@@ -25,12 +25,13 @@ import static org.jenetics.internal.util.object.eq;
 import java.time.Duration;
 import java.util.Objects;
 
+import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-06-25 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-06-30 $</em>
  */
 public final class TimeStatistics {
 
@@ -111,21 +112,15 @@ public final class TimeStatistics {
 	}
 
 	@Override
-	public boolean equals(final Object object) {
-		if (object == this) {
-			return true;
-		}
-		if (object == null || object.getClass() != getClass()) {
-			return false;
-		}
-
-		final TimeStatistics time = (TimeStatistics)object;
-		return eq(_alter, time._alter) &&
+	public boolean equals(final Object obj) {
+		return Equality.of(this, obj).test(time ->
+			eq(_alter, time._alter) &&
 			eq(_combine, time._combine) &&
 			eq(_evaluation, time._evaluation) &&
 			eq(_execution, time._execution) &&
 			eq(_selection, time._selection) &&
-			eq(_statistics, time._statistics);
+			eq(_statistics, time._statistics)
+		);
 	}
 
 	@Override
