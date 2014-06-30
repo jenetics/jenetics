@@ -22,7 +22,6 @@ package org.jenetics;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import java.util.Objects;
 import java.util.Random;
 
 import org.jenetics.internal.util.Equality;
