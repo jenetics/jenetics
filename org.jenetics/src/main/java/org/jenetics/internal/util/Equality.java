@@ -19,44 +19,53 @@
  */
 package org.jenetics.internal.util;
 
-import static org.jenetics.internal.util.reflect.typeOf;
-
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Predicate;
 
 /**
+ * Interface for calculating object equality.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
  * @version 3.0 &mdash; <em>$Date: 2014-06-30 $</em>
  */
-public class Equality<T> {
-	private final T _self;
-	private final Optional<T> _other;
+public interface Equality<T> {
 
-	private Equality(final T self, final Optional<T> other) {
-		_self = Objects.requireNonNull(self);
-		_other = Objects.requireNonNull(other);
+	/**
+	 * Perform additional object equality tests.
+	 *
+	 * @param equality the object equality test
+	 * @return the overall object equality.
+	 */
+	public boolean test(final Predicate<T> equality);
+
+	/**
+	 * Test if objects are from the same type.
+	 *
+	 * @return {@code true} if the tested object are from the same type,
+	 *         {@code false} otherwise.
+	 */
+	public default boolean test() {
+		return test(o -> true);
 	}
 
-	public boolean test(final Predicate<T> equality) {
-		return _other.isPresent() &&
-			_other.filter(o -> o == _self).isPresent() ||
-			_other.filter(equality).isPresent();
-	}
-
-	public boolean test() {
-		return _other.isPresent();
-	}
-
+	/**
+	 * Create a new {@code Equality} object for testing object equality.
+	 *
+	 * @param self the {@code this} object to test; must not be {@code null}
+	 * @param other the {@code other} object to test; maybe {@code null}
+	 * @param <T> the object type
+	 * @return the {@code Equality} object for equality testing
+	 * @throws java.lang.NullPointerException if the {@code self} parameter is
+	 *         {@code null}
+	 */
+	@SuppressWarnings("unchecked")
 	public static <T> Equality<T> of(final T self, final Object other) {
-		return new Equality<>(self, cast(typeOf(self), other));
-	}
-
-	private static <A> Optional<A> cast(final Class<A> type, final Object object) {
-		return Optional.ofNullable(object)
-			.filter(o -> o.getClass() == type)
-			.map(type::cast);
+		Objects.requireNonNull(self);
+		return self == other ?
+			p -> true :
+			(other == null || self.getClass() != other.getClass()) ?
+				p -> false : p -> p.test((T)other);
 	}
 
 }
