@@ -45,12 +45,28 @@ public final class Equality extends StaticObject {
 	 *         {@code null}
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> Predicate<Predicate<T>> of(final T self, final Object other) {
+	public static <T> Predicate<Predicate<T>>
+	of(final T self, final Object other) {
 		Objects.requireNonNull(self);
 		return self == other ?
 			p -> true :
 			(other == null || self.getClass() != other.getClass()) ?
 				p -> false : p -> p.test((T)other);
+	}
+
+	/**
+	 * Check if the given arguments are from the same type.
+	 *
+	 * @param self the {@code this} object to test; must not be {@code null}
+	 * @param other the {@code other} object to test; maybe {@code null}
+	 * @return {@code true} if the two objects are from the same type
+	 * @throws java.lang.NullPointerException if the {@code self} parameter is
+	 *         {@code null}
+	 */
+	public static boolean ofType(final Object self, final Object other) {
+		Objects.requireNonNull(self);
+		return self == other ||
+			(other != null && self.getClass() == other.getClass());
 	}
 
 }

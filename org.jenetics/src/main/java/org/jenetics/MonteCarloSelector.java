@@ -85,7 +85,7 @@ public final class MonteCarloSelector<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(o -> true);
+		return Equality.ofType(this, obj);
 	}
 
 	@Override
