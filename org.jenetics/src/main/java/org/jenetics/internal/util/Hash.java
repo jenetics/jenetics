@@ -22,12 +22,20 @@ package org.jenetics.internal.util;
 import org.jenetics.util.Seq;
 
 /**
+ * Interface for calculating the object hash value.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 3.0 &mdash; <em>$Date: 2014-06-05 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-06-30 $</em>
  */
 public interface Hash {
 
+	/**
+	 * Add hash code for a {@code boolean} value.
+	 *
+	 * @param values the value to add to the hash code.
+	 * @return {@code this}
+	 */
 	public Hash and(final boolean value);
 
 	/**
