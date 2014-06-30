@@ -22,32 +22,18 @@ package org.jenetics.internal.util;
 import java.util.Objects;
 import java.util.function.Predicate;
 
+import org.jenetics.util.StaticObject;
+
 /**
- * Interface for calculating object equality.
+ * Helper object for calculating object equality.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
  * @version 3.0 &mdash; <em>$Date: 2014-06-30 $</em>
  */
-public interface Equality<T> {
+public final class Equality extends StaticObject {
 
-	/**
-	 * Perform additional object equality tests.
-	 *
-	 * @param equality the object equality test
-	 * @return the overall object equality.
-	 */
-	public boolean test(final Predicate<T> equality);
-
-	/**
-	 * Test if objects are from the same type.
-	 *
-	 * @return {@code true} if the tested object are from the same type,
-	 *         {@code false} otherwise.
-	 */
-	public default boolean test() {
-		return test(o -> true);
-	}
+	private Equality() {}
 
 	/**
 	 * Create a new {@code Equality} object for testing object equality.
@@ -55,12 +41,12 @@ public interface Equality<T> {
 	 * @param self the {@code this} object to test; must not be {@code null}
 	 * @param other the {@code other} object to test; maybe {@code null}
 	 * @param <T> the object type
-	 * @return the {@code Equality} object for equality testing
+	 * @return the {@code Predicate} object for equality testing
 	 * @throws java.lang.NullPointerException if the {@code self} parameter is
 	 *         {@code null}
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> Equality<T> of(final T self, final Object other) {
+	public static <T> Predicate<Predicate<T>> of(final T self, final Object other) {
 		Objects.requireNonNull(self);
 		return self == other ?
 			p -> true :

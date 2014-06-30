@@ -22,6 +22,7 @@ package org.jenetics;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import java.util.Objects;
 import java.util.Random;
 
 import org.jenetics.internal.util.Equality;
@@ -85,7 +86,7 @@ public final class MonteCarloSelector<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test();
+		return Equality.of(this, obj).test(o -> true);
 	}
 
 	@Override

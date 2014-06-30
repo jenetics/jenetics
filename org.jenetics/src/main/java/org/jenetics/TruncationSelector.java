@@ -94,7 +94,7 @@ public final class TruncationSelector<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test();
+		return Equality.of(this, obj).test(o -> true);
 	}
 
 	@Override
