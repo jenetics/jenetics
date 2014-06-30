@@ -21,26 +21,32 @@ package org.jenetics.internal.util;
 
 import static org.jenetics.internal.util.reflect.typeOf;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-06-29 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-06-30 $</em>
  */
-public final class Equality<T> {
+public class Equality<T> {
 	private final T _self;
 	private final Optional<T> _other;
 
 	private Equality(final T self, final Optional<T> other) {
-		_self = self;
-		_other = other;
+		_self = Objects.requireNonNull(self);
+		_other = Objects.requireNonNull(other);
 	}
 
 	public boolean test(final Predicate<T> equality) {
-		return _other.filter(o -> o == _self).isPresent() ||
+		return _other.isPresent() &&
+			_other.filter(o -> o == _self).isPresent() ||
 			_other.filter(equality).isPresent();
+	}
+
+	public boolean test() {
+		return _other.isPresent();
 	}
 
 	public static <T> Equality<T> of(final T self, final Object other) {
@@ -52,4 +58,5 @@ public final class Equality<T> {
 			.filter(o -> o.getClass() == type)
 			.map(type::cast);
 	}
+
 }
