@@ -32,6 +32,21 @@ import org.jenetics.util.ObjectTester;
 public abstract class GeneTester<G extends Gene<?, G>> extends ObjectTester<G> {
 
 	@Test
+	public void newInstance() {
+		for (int i = 0; i < 1000; ++i) {
+			final G gene = factory().newInstance();
+			Assert.assertNotNull(gene);
+			Assert.assertNotNull(gene.getAllele());
+			Assert.assertTrue(gene.isValid());
+
+			final G gene2 = gene.newInstance();
+			Assert.assertNotNull(gene2);
+			Assert.assertNotNull(gene2.getAllele());
+			Assert.assertTrue(gene2.isValid());
+		}
+	}
+
+	@Test
 	public void equalsAllele() {
 		final MSeq<G> same = newSameObjects(5);
 
@@ -42,13 +57,25 @@ public abstract class GeneTester<G extends Gene<?, G>> extends ObjectTester<G> {
 			Assert.assertEquals(other.getAllele(), other.getAllele());
 			Assert.assertEquals(other.getAllele(), that.getAllele());
 			Assert.assertEquals(that.getAllele(), other.getAllele());
-			Assert.assertFalse(other.getAllele().equals(null));
 		}
 	}
 
 	@Test
+	public void alleleNotNull() {
+		for (int i = 0; i < 1000; ++i) {
+			Assert.assertNotNull(factory().newInstance().getAllele());
+		}
+	}
+
+	@Test
+	public void notEqualsAlleleNull() {
+		final Object that = factory().newInstance().getAllele();
+		Assert.assertFalse(that.equals(null));
+	}
+
+	@Test
 	public void notEqualsAllele() {
-		for (int i = 0; i < 10; ++i) {
+		for (int i = 0; i < 1000; ++i) {
 			final Object that = factory().newInstance().getAllele();
 			final Object other = factory().newInstance().getAllele();
 
