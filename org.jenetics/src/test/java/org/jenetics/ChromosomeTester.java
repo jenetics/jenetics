@@ -27,7 +27,7 @@ import org.jenetics.util.ObjectTester;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-06-02 $</em>
+ * @version <em>$Date: 2014-07-01 $</em>
  */
 public abstract class ChromosomeTester<G extends Gene<?, G>>
 	extends ObjectTester<Chromosome<G>>
@@ -52,6 +52,7 @@ public abstract class ChromosomeTester<G extends Gene<?, G>>
 			final Chromosome<G> c2 = c1.newInstance(genes);
 
 			Assert.assertEquals(c2, c1);
+			Assert.assertEquals(c1, c2);
 		}
 	}
 
@@ -75,7 +76,7 @@ public abstract class ChromosomeTester<G extends Gene<?, G>>
 	}
 
 	@Test
-	public void iterator(){
+	public void iterator() {
 		final Chromosome<G> c = factory().newInstance();
 		final ISeq<G> a = c.toSeq();
 

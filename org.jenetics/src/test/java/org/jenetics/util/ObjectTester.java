@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-06-02 $</em>
+ * @version <em>$Date: 2014-07-01 $</em>
  */
 public abstract class ObjectTester<T> {
 
@@ -38,7 +38,6 @@ public abstract class ObjectTester<T> {
 		final MSeq<T> objects = MSeq.ofLength(nobjects);
 
 		for (int i = 0; i < nobjects; ++i) {
-
 			try (Scoped<Random> s = RandomRegistry.scope(new Random(23487589))) {
 				objects.set(i, factory().newInstance());
 			}
@@ -58,7 +57,7 @@ public abstract class ObjectTester<T> {
 			Assert.assertEquals(other, other);
 			Assert.assertEquals(other, that);
 			Assert.assertEquals(that, other);
-			Assert.assertFalse(other.equals(null));
+			Assert.assertEquals(that.hashCode(), other.hashCode());
 		}
 	}
 
@@ -73,20 +72,31 @@ public abstract class ObjectTester<T> {
 				Assert.assertEquals(that.hashCode(), other.hashCode());
 			} else {
 				Assert.assertFalse(other.equals(that));
+				Assert.assertFalse(that.equals(other));
 			}
 		}
 	}
 
 	@Test
-	public void notEqualsDifferentType() {
+	public void notEqualsNull() {
 		final Object that = factory().newInstance();
 		Assert.assertFalse(that.equals(null));
-		Assert.assertFalse(that.equals(""));
-		Assert.assertFalse(that.equals(23));
 	}
 
 	@Test
-	public void hashcode() {
+	public void notEqualsStringType() {
+		final Object that = factory().newInstance();
+		Assert.assertFalse(that.equals("__some_string__"));
+	}
+
+	@Test
+	public void notEqualsClassType() {
+		final Object that = factory().newInstance();
+		Assert.assertFalse(that.equals(Class.class));
+	}
+
+	@Test
+	public void hashCodeMethod() {
 		final MSeq<T> same = newSameObjects(5);
 
 		final Object that = same.get(0);
@@ -98,8 +108,9 @@ public abstract class ObjectTester<T> {
 	}
 
 	@Test
-	public void cloning() throws Exception {
+	public void cloneMethod() throws Exception {
 		final Object that = factory().newInstance();
+
 		if (that instanceof Cloneable) {
 			final Method clone = that.getClass().getMethod("clone");
 			final Object other = clone.invoke(that);
@@ -110,7 +121,7 @@ public abstract class ObjectTester<T> {
 	}
 
 	@Test
-	public void copying() {
+	public void copyMethod() {
 		final Object that = factory().newInstance();
 		if (that instanceof Copyable<?>) {
 			final Object other = ((Copyable<?>)that).copy();
@@ -122,7 +133,7 @@ public abstract class ObjectTester<T> {
 	}
 
 	@Test
-	public void tostring() {
+	public void toStringMethod() {
 		final MSeq<T> same = newSameObjects(5);
 
 		final Object that = same.get(0);

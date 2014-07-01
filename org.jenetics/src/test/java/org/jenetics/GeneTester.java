@@ -27,7 +27,7 @@ import org.jenetics.util.ObjectTester;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-06-02 $</em>
+ * @version <em>$Date: 2014-07-01 $</em>
  */
 public abstract class GeneTester<G extends Gene<?, G>> extends ObjectTester<G> {
 
@@ -49,14 +49,15 @@ public abstract class GeneTester<G extends Gene<?, G>> extends ObjectTester<G> {
 	@Test
 	public void notEqualsAllele() {
 		for (int i = 0; i < 10; ++i) {
-			final G that = factory().newInstance();
-			final G other = factory().newInstance();
+			final Object that = factory().newInstance().getAllele();
+			final Object other = factory().newInstance().getAllele();
 
 			if (that.equals(other)) {
-				Assert.assertTrue(other.getAllele().equals(that.getAllele()));
-				Assert.assertEquals(that.getAllele().hashCode(), other.getAllele().hashCode());
+				Assert.assertTrue(other.equals(that));
+				Assert.assertEquals(that.hashCode(), other.hashCode());
 			} else {
-				Assert.assertFalse(other.getAllele().equals(that.getAllele()));
+				Assert.assertFalse(other.equals(that));
+				Assert.assertFalse(that.equals(other));
 			}
 		}
 	}
