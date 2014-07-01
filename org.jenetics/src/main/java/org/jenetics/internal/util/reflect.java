@@ -33,7 +33,7 @@ import org.jenetics.util.StaticObject;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 3.0 &mdash; <em>$Date: 2014-06-29 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-07-01 $</em>
  */
 public class reflect extends StaticObject {
 	private reflect() {}
@@ -65,23 +65,12 @@ public class reflect extends StaticObject {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T> Class<T> typeOf(final T value) {
-		return (Class<T>)value.getClass();
-	}
-
-	@SuppressWarnings("unchecked")
 	public static <T> Optional<T> newInstance(final Class<?> type) {
 		try {
 			return Optional.of((T)type.newInstance());
 		} catch (InstantiationException | IllegalAccessException e) {
 			return Optional.empty();
 		}
-	}
-
-	public static <A> Optional<A> cast(final Class<A> type, final Object object) {
-		return Optional.ofNullable(object)
-			.filter(o -> type.isAssignableFrom(o.getClass()))
-			.map(type::cast);
 	}
 
 	@SuppressWarnings("unchecked")
