@@ -26,15 +26,14 @@ import java.util.function.Function;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.StaticObject;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-06-02 $</em>
+ * @version <em>$Date: 2014-07-02 $</em>
  */
-class TestUtils {
-
-	private TestUtils() {
-	}
+class TestUtils extends StaticObject {
+	private TestUtils() {}
 
 	/**
 	 * Data for alter count tests.

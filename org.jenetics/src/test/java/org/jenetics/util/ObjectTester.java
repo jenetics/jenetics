@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-07-01 $</em>
+ * @version <em>$Date: 2014-07-02 $</em>
  */
 public abstract class ObjectTester<T> {
 
@@ -160,7 +160,7 @@ public abstract class ObjectTester<T> {
 		if (object instanceof Serializable) {
 			for (int i = 0; i < 10; ++i) {
 				final Serializable serializable =
-					(Serializable) factory().newInstance();
+					(Serializable)factory().newInstance();
 
 				Serialize.object.test(serializable);
 			}
