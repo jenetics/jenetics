@@ -158,6 +158,7 @@ public final class IntSummary implements Serializable {
 	 * @param max the maximum value
 	 * @param sum the sum of the recorded values
 	 * @param mean the arithmetic mean of values
+	 * @return an immutable object which contains statistical values
 	 */
 	public static IntSummary of(
 		final long count,
