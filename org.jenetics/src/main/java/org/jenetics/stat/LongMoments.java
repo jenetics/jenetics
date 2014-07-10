@@ -216,6 +216,7 @@ public final class LongMoments implements Serializable {
 	 * @param variance the variance of values
 	 * @param skewness the skewness of values
 	 * @param kurtosis the kurtosis of values
+	 * @return an immutable object which contains statistical values
 	 */
 	public static LongMoments of(
 		final long count,
