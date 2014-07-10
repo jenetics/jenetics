@@ -19,7 +19,12 @@
  */
 package org.jenetics;
 
+import static org.jenetics.internal.util.object.eq;
+
 import java.util.Objects;
+
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 
 import org.jenetics.stat.IntSummary;
 
@@ -99,6 +104,25 @@ public final class PopulationSummary<
 	 */
 	public IntSummary getAgeSummary() {
 		return _ageSummary;
+	}
+
+	@Override
+	public int hashCode() {
+		return Hash.of(getClass())
+			.and(_count)
+			.and(_best)
+			.and(_worst)
+			.and(_ageSummary).value();
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return Equality.of(this, obj).test(summary ->
+			eq(_count, summary._count) &&
+			eq(_best, summary._best) &&
+			eq(_worst, summary._worst) &&
+			eq(_ageSummary, summary._ageSummary)
+		);
 	}
 
 	/**
