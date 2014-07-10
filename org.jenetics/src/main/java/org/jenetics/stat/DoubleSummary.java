@@ -37,7 +37,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-06-30 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-07-10 $</em>
  */
 public final class DoubleSummary implements Serializable {
 
@@ -58,7 +58,7 @@ public final class DoubleSummary implements Serializable {
 	 * @param sum the sum of the recorded values
 	 * @param mean the arithmetic mean of values
 	 */
-	public DoubleSummary(
+	private DoubleSummary(
 		final long count,
 		final double min,
 		final double max,
@@ -147,6 +147,31 @@ public final class DoubleSummary implements Serializable {
 		return String.format(
 			"DoubleSummary[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s]",
 			getCount(), getMin(), getMax(), getSum(), getMean()
+		);
+	}
+
+	/**
+	 * Create an immutable object which contains statistical summary values.
+	 *
+	 * @param count the count of values recorded
+	 * @param min the minimum value
+	 * @param max the maximum value
+	 * @param sum the sum of the recorded values
+	 * @param mean the arithmetic mean of values
+	 */
+	public static DoubleSummary of(
+		final long count,
+		final double min,
+		final double max,
+		final double sum,
+		final double mean
+	) {
+		return new DoubleSummary(
+			count,
+			min,
+			max,
+			sum,
+			mean
 		);
 	}
 
