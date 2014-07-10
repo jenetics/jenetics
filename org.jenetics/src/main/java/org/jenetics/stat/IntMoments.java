@@ -36,7 +36,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-06-30 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-07-10 $</em>
  */
 public final class IntMoments implements Serializable {
 
@@ -64,7 +64,7 @@ public final class IntMoments implements Serializable {
 	 * @param skewness the skewness of values
 	 * @param kurtosis the kurtosis of values
 	 */
-	public IntMoments(
+	private IntMoments(
 		final long count,
 		final int min,
 		final int max,
@@ -202,6 +202,40 @@ public final class IntMoments implements Serializable {
 			"IntMoments[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s, s2=%s, S=%s, K=%s]",
 			getCount(), getMin(), getMax(), getSum(),
 			getMean(), getVariance(), getSkewness(), getKurtosis()
+		);
+	}
+
+	/**
+	 * Create an immutable object which contains statistical values.
+	 *
+	 * @param count the count of values recorded
+	 * @param min the minimum value
+	 * @param max the maximum value
+	 * @param sum the sum of the recorded values
+	 * @param mean the arithmetic mean of values
+	 * @param variance the variance of values
+	 * @param skewness the skewness of values
+	 * @param kurtosis the kurtosis of values
+	 */
+	public static IntMoments of(
+		final long count,
+		final int min,
+		final int max,
+		final long sum,
+		final double mean,
+		final double variance,
+		final double skewness,
+		final double kurtosis
+	) {
+		return new IntMoments(
+			count,
+			min,
+			max,
+			sum,
+			mean,
+			variance,
+			skewness,
+			kurtosis
 		);
 	}
 
