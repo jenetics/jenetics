@@ -21,7 +21,7 @@ package org.jenetics.stat;
 
 import static java.lang.Double.NaN;
 import static java.lang.String.format;
-import static org.jenetics.internal.util.object.eq;
+import static org.jenetics.internal.util.Equality.eq;
 
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
@@ -45,7 +45,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-06-30 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
  */
 public class Variance<N extends Number> extends Mean<N> {
 

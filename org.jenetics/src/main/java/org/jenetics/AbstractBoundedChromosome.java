@@ -19,7 +19,7 @@
  */
 package org.jenetics;
 
-import static org.jenetics.internal.util.object.eq;
+import static org.jenetics.internal.util.Equality.eq;
 
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
@@ -30,7 +30,7 @@ import org.jenetics.util.ISeq;
  * Abstract chromosome for {@code BoundedGene}s.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-06-30 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-07-10 $</em>
  * @since 1.6
  */
 abstract class AbstractBoundedChromosome<

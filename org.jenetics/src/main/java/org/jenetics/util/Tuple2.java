@@ -19,7 +19,7 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.internal.util.object.eq;
+import static org.jenetics.internal.util.Equality.eq;
 
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
@@ -28,7 +28,7 @@ import org.jenetics.internal.util.Hash;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-06-30 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
  */
 class Tuple2<T1, T2> {
 

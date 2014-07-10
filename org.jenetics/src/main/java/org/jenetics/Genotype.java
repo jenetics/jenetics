@@ -19,7 +19,7 @@
  */
 package org.jenetics;
 
-import static org.jenetics.internal.util.object.eq;
+import static org.jenetics.internal.util.Equality.eq;
 import static org.jenetics.util.ISeq.toISeq;
 
 import java.io.Serializable;
@@ -71,7 +71,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-06-30 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
  */
 @XmlJavaTypeAdapter(Genotype.Model.Adapter.class)
 public final class Genotype<G extends Gene<?, G>>

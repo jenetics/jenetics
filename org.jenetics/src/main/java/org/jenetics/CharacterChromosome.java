@@ -20,7 +20,7 @@
 package org.jenetics;
 
 import static org.jenetics.CharacterGene.DEFAULT_CHARACTERS;
-import static org.jenetics.internal.util.object.eq;
+import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -51,7 +51,7 @@ import org.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-06-30 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
  */
 @XmlJavaTypeAdapter(CharacterChromosome.Model.Adapter.class)
 public class CharacterChromosome

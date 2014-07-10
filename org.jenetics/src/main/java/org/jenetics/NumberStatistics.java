@@ -21,7 +21,7 @@ package org.jenetics;
 
 import static java.lang.Double.NaN;
 import static java.lang.String.format;
-import static org.jenetics.internal.util.object.eq;
+import static org.jenetics.internal.util.Equality.eq;
 
 import java.util.concurrent.Executor;
 
@@ -35,7 +35,7 @@ import org.jenetics.util.Accumulator.MinMax;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-06-30 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
  */
 public class NumberStatistics<
 	G extends Gene<?, G>,
@@ -49,7 +49,7 @@ public class NumberStatistics<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-06-30 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
 	 */
 	public static class Builder<
 		G extends Gene<?, G>,
@@ -248,7 +248,7 @@ public class NumberStatistics<
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-06-30 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
 	 */
 	public static class Calculator<
 		G extends Gene<?, G>,

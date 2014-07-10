@@ -20,7 +20,7 @@
 package org.jenetics;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.object.eq;
+import static org.jenetics.internal.util.Equality.eq;
 
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
@@ -30,7 +30,7 @@ import org.jenetics.internal.util.Hash;
  * value.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-06-28 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-07-10 $</em>
  * @since 1.6
  */
 abstract class AbstractBoundedGene<

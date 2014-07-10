@@ -21,7 +21,7 @@ package org.jenetics.stat;
 
 import static java.lang.Double.compare;
 import static java.lang.String.format;
-import static org.jenetics.internal.util.object.eq;
+import static org.jenetics.internal.util.Equality.eq;
 
 import java.util.Arrays;
 import java.util.function.DoubleConsumer;
@@ -50,7 +50,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-06-30 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-07-10 $</em>
  */
 public class Quantile implements DoubleConsumer {
 

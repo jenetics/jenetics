@@ -22,7 +22,7 @@ package org.jenetics;
 import static java.lang.Double.NaN;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.object.eq;
+import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
 import java.time.Duration;
@@ -41,7 +41,7 @@ import org.jenetics.util.FinalReference;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-06-30 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>> {
 
@@ -50,7 +50,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>> {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-06-30 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
 	 */
 	public static class Builder<
 		G extends Gene<?, G>,
@@ -424,7 +424,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>> {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-06-30 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
 	 */
 	public static final class Time implements Serializable {
 		private static final long serialVersionUID = 2L;
@@ -540,7 +540,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>> {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-06-30 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
 	 */
 	public static class Calculator<
 		G extends Gene<?, G>,
