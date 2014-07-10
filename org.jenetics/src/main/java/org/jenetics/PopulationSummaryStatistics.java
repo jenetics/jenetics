@@ -29,6 +29,9 @@ import java.util.function.Function;
 import java.util.stream.Collector;
 
 /**
+ * @param <G> the gene type
+ * @param <C> the fitness value type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
  * @version 3.0 &mdash; <em>$Date: 2014-07-10 $</em>

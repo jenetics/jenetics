@@ -26,6 +26,9 @@ import org.jenetics.stat.IntSummary;
 /**
  * Contains statistical values about a given population.
  *
+ * @param <G> the gene type
+ * @param <C> the fitness value type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
  * @version 3.0 &mdash; <em>$Date: 2014-07-10 $</em>
@@ -47,8 +50,6 @@ public final class PopulationSummary<
 	 * @param best the best phenotype
 	 * @param worst the worst phenotype
 	 * @param ageSummary the summary of the phenotype ages
-	 * @param <G> the gene type
-	 * @param <C> the fitness value type
 	 * @throws java.lang.NullPointerException if one of the parameters is
 	 *         {@code null}.
 	 */
