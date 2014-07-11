@@ -27,7 +27,6 @@ import org.gradle.api.plugins.scala.ScalaPlugin
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.plugins.ide.eclipse.EclipsePlugin
 import org.gradle.plugins.ide.idea.IdeaPlugin
-import org.gradle.testing.jacoco.plugins.JacocoPlugin
 import org.jenetics.gradle.task.ColorizerTask
 
 import java.text.SimpleDateFormat
@@ -35,7 +34,7 @@ import java.text.SimpleDateFormat
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5 &mdash; <em>$Date: 2014-04-04 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-04-22 $</em>
  */
 class SetupPlugin extends JeneticsPlugin {
 
@@ -110,7 +109,9 @@ class SetupPlugin extends JeneticsPlugin {
 	}
 
 	private void configureTestReporting() {
-		plugins.apply(JacocoPlugin)
+		// TODO: Jacoco doesn't work with java8
+
+		//plugins.apply(JacocoPlugin)
 		project.test {
 			useTestNG {
 				//parallel = 'tests' // 'methods'
@@ -121,6 +122,7 @@ class SetupPlugin extends JeneticsPlugin {
                     )
 			}
 		}
+        /*
 		project.jacocoTestReport {
 			reports {
 				xml.enabled true
@@ -130,6 +132,7 @@ class SetupPlugin extends JeneticsPlugin {
 		task('testReport', dependsOn: 'test') << {
 			project.jacocoTestReport.execute()
 		}
+		*/
 	}
 
 	private void configureJavadoc() {
@@ -142,22 +145,22 @@ class SetupPlugin extends JeneticsPlugin {
 				charSet = 'UTF-8'
 				linkSource = true
 				links = [
-					'http://download.oracle.com/javase/7/docs/api/',
-					'http://jscience.org/api/',
-					'http://javolution.org/target/site/apidocs/'
+					'http://docs.oracle.com/javase/8/docs/api/'
 				]
 				windowTitle = "Jenetics ${project.version}"
 				docTitle = "<h1>Jenetics ${project.version}</h1>"
 				bottom = "&copy; ${copyrightYear} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${dateformat.format(now.time)})</i>"
 				stylesheetFile = project.file("${rootDir}/buildSrc/resources/javadoc/stylesheet.css")
 
+                //subpackages = 'org.jenetics'
+                //exclude = 'org.jenetics.internal'
 				exclude 'org/*/internal/**'
 
-				//options.addStringOption('-subpackages', 'org.jenetics')
-				//options.addStringOption('-exclude', 'org.jenetics.internal.util')
+				options.addStringOption('subpackages', 'org.jenetics')
+				options.addStringOption('exclude', 'org.jenetics.internal')
 
-				//group('Core API', ['org.jenetics']).
-				//group('Utilities', ['org.jenetics.util', 'org.jenetics.stat'])
+				group('Core API', ['org.jenetics']).
+				group('Utilities', ['org.jenetics.util', 'org.jenetics.stat'])
 			}
 
 			// Copy the doc-files.
@@ -209,7 +212,7 @@ class SetupPlugin extends JeneticsPlugin {
 		'finally',
 		'overrides',
 		'rawtypes',
-		'serial',
+		//'serial',
 		//'try',
 		'unchecked'
 	]

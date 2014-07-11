@@ -19,6 +19,13 @@
  */
 package org.jenetics.internal.math;
 
+import static java.lang.Math.abs;
+import static org.jenetics.util.math.random.nextInt;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Random;
+
 import org.jenetics.util.StaticObject;
 
 /**
@@ -26,10 +33,61 @@ import org.jenetics.util.StaticObject;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2014-05-02 $</em>
  */
 public final class random extends StaticObject {
 	private random() {}
+
+	/*
+     * Some additional random 'object' creation methods.
+     */
+
+	public static byte nextByte(final Random random) {
+		return (byte)nextInt(random, Byte.MIN_VALUE, Byte.MAX_VALUE);
+	}
+
+	public static char nextCharacter(final Random random) {
+		char c = '\0';
+		do {
+			c = (char)nextInt(random, Character.MIN_VALUE, Character.MAX_VALUE);
+		} while (!Character.isLetterOrDigit(c));
+
+		return c;
+	}
+
+	public static String nextString(final Random random, final int length) {
+		final char[] chars = new char[length];
+		for (int i = 0; i < length; ++i) {
+			chars[i] = nextCharacter(random);
+		}
+
+		return new String(chars);
+	}
+
+	public static String nextString(final Random random) {
+		return nextString(random, nextInt(random, 5, 20));
+	}
+
+	public static short nextShort(final Random random) {
+		return (short)nextInt(random, Short.MIN_VALUE, Short.MAX_VALUE);
+	}
+
+	public static BigInteger nextBigInteger(final Random random) {
+		return new BigInteger(100, random);
+	}
+
+	public static BigDecimal nextBigDecimal(final Random random) {
+		final StringBuilder out = new StringBuilder();
+		for (int i = 0; i < 10; ++i) {
+			out.append(Long.toString(abs(random.nextLong())));
+		}
+		out.append(".");
+		for (int i = 0; i < 20; ++i) {
+			out.append(Long.toString(abs(random.nextLong())));
+		}
+
+		return new BigDecimal(out.toString());
+	}
 
 	/*
 	 * Conversion methods used by the 'Random' engine from the JDK.

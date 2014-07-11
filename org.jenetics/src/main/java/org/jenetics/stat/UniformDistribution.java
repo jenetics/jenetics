@@ -21,14 +21,13 @@ package org.jenetics.stat;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.object.eq;
+import static org.jenetics.internal.util.Equality.eq;
 
-import java.io.Serializable;
-import java.util.Locale;
+import java.util.function.ToDoubleFunction;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 
-import org.jenetics.util.Function;
 import org.jenetics.util.Range;
 
 
@@ -40,7 +39,7 @@ import org.jenetics.util.Range;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-07-11 $</em>
  */
 public class UniformDistribution<
 	N extends Number & Comparable<? super N>
@@ -48,122 +47,9 @@ public class UniformDistribution<
 	implements Distribution<N>
 {
 
-	/**
-	 * <p>
-	 * <img
-	 *     src="doc-files/uniform-pdf.gif"
-	 *     alt="f(x)=\left\{\begin{matrix}
-	 *          \frac{1}{max-min} & for & x \in [min, max] \\
-	 *          0 & & otherwise \\
-	 *          \end{matrix}\right."
-	 * >
-	 * </p>
-	 *
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
-	 */
-	static final class PDF<N extends Number & Comparable<? super N>>
-		implements
-			Function<N, Double>,
-			Serializable
-	{
-		private static final long serialVersionUID = 2L;
-
-		private final double _min;
-		private final double _max;
-		private final Double _probability;
-
-		public PDF(final Range<N> domain) {
-			_min = domain.getMin().doubleValue();
-			_max = domain.getMax().doubleValue();
-			_probability = 1.0/(_max - _min);
-		}
-
-		@Override
-		public Double apply(final N value) {
-			final double x = value.doubleValue();
-
-			double result = 0.0;
-			if (x >= _min && x <= _max) {
-				result = _probability;
-			}
-
-			return result;
-		}
-
-		@Override
-		public String toString() {
-			return format(Locale.ENGLISH, "p(x) = %s", _probability);
-		}
-
-	}
-
-	/**
-	 * <p>
-	 * <img
-	 *     src="doc-files/uniform-cdf.gif"
-	 *     alt="f(x)=\left\{\begin{matrix}
-	 *         0 & for & x < min \\
-	 *         \frac{x-min}{max-min} & for & x \in [min, max] \\
-	 *         1 & for & x > max  \\
-	 *         \end{matrix}\right."
-	 * >
-	 * </p>
-	 *
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
-	 */
-	static final class CDF<N extends Number & Comparable<? super N>>
-		implements
-			Function<N, Double>,
-			Serializable
-	{
-		private static final long serialVersionUID = 2L;
-
-
-		private final double _min;
-		private final double _max;
-		private final double _divisor;
-
-		public CDF(final Range<N> domain) {
-			_min = domain.getMin().doubleValue();
-			_max = domain.getMax().doubleValue();
-			_divisor = _max - _min;
-			assert (_divisor > 0);
-		}
-
-		@Override
-		public Double apply(final N value) {
-			final double x = value.doubleValue();
-
-			double result = 0.0;
-			if (x < _min) {
-				result = 0.0;
-			} else if (x > _max) {
-				result = 1.0;
-			} else {
-				result = (x - _min)/_divisor;
-			}
-
-			return result;
-		}
-
-		@Override
-		public String toString() {
-			return format(
-				Locale.ENGLISH,
-				"P(x) = (x - %1$s)/(%2$s - %1$s)", _min, _max
-			);
-		}
-
-	}
-
-
 	private final Range<N> _domain;
-	private final Function<N, Double> _cdf;
-	private final Function<N, Double> _pdf;
+	private final double _min;
+	private final double _max;
 
 	/**
 	 * Create a new uniform distribution with the given {@code domain}.
@@ -173,8 +59,8 @@ public class UniformDistribution<
 	 */
 	public UniformDistribution(final Range<N> domain) {
 		_domain = requireNonNull(domain, "Domain");
-		_cdf = new CDF<>(_domain);
-		_pdf = new PDF<>(_domain);
+		_min = _domain.getMin().doubleValue();
+		_max = _domain.getMax().doubleValue();
 	}
 
 	/**
@@ -209,8 +95,11 @@ public class UniformDistribution<
 	 *
 	 */
 	@Override
-	public Function<N, Double> getPDF() {
-		return _pdf;
+	public ToDoubleFunction<N> getPDF() {
+		return value -> {
+			final double x = value.doubleValue();
+			return (x >= _min && x <= _max) ? 1.0/(_max - _min) : 0.0;
+		};
 	}
 
 	/**
@@ -229,26 +118,32 @@ public class UniformDistribution<
 	 *
 	 */
 	@Override
-	public Function<N, Double> getCDF() {
-		return _cdf;
+	public ToDoubleFunction<N> getCDF() {
+		return value -> {
+			final double x = value.doubleValue();
+			final double divisor = _max - _min;
+
+			double result = 0.0;
+			if (x < _min) {
+				result = 0.0;
+			} else if (x > _max) {
+				result = 1.0;
+			} else {
+				result = (x - _min)/divisor;
+			}
+
+			return result;
+		};
 	}
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(_domain).value();
+		return Hash.of(getClass()).and(_domain).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null || getClass() != obj.getClass()) {
-			return false;
-		}
-
-		final UniformDistribution<?> dist = (UniformDistribution<?>)obj;
-		return eq(_domain, dist._domain);
+		return Equality.of(this, obj).test(dist -> eq(_domain, dist._domain));
 	}
 
 	@Override

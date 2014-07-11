@@ -19,56 +19,26 @@
  */
 package org.jenetics.util;
 
+import static java.lang.Double.doubleToLongBits;
+import static java.lang.Math.nextDown;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static org.jenetics.internal.util.object.checkProbability;
 
 import java.util.Random;
+import java.util.stream.IntStream;
+
+import org.jenetics.internal.math.probability;
 
 /**
  * This object contains mathematical helper functions.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.4 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-07-11 $</em>
  */
 public final class math extends StaticObject {
 	private math() {}
-
-	/**
-	 * Add to long values and throws an ArithmeticException in the case of an
-	 * overflow.
-	 *
-	 * @param a the first summand.
-	 * @param b the second summand.
-	 * @return the sum of the given values.
-	 * @throws ArithmeticException if the summation would lead to an overflow.
-	 */
-	public static long plus(final long a, final long b) {
-		final long z = a + b;
-		if (((a^z) & (b^z)) < 0) {
-			throw new ArithmeticException(format("Overflow: %d + %d", a, b));
-		}
-
-		return z;
-	}
-
-	/**
-	 * Subtracts to long values and throws an ArithmeticException in the case of
-	 * an overflow.
-	 *
-	 * @param a the minuend.
-	 * @param b the subtrahend.
-	 * @return the difference of the given values.
-	 * @throws ArithmeticException if the subtraction would lead to an overflow.
-	 */
-	public static long minus(final long a, final long b) {
-		final long z = a - b;
-		if (((a^b) & (a^z)) < 0) {
-			throw new ArithmeticException(format("Overflow: %d - %d", a, b));
-		}
-
-		return z;
-	}
 
 	/**
 	 * Normalize the given double array, so that it sum to one. The
@@ -105,19 +75,6 @@ public final class math extends StaticObject {
 	 */
 	public static double clamp(final double v, final double lo, final double hi) {
 		return v < lo ? lo : (v > hi ? hi : v);
-	}
-
-	/**
-	 * Component wise multiplication of the given double array.
-	 *
-	 * @param values the double values to multiply.
-	 * @param multiplier the multiplier.
-	 * @throws NullPointerException if the given double array is {@code null}.
-	 */
-	public static void times(final double[] values, final double multiplier) {
-		for (int i = values.length; --i >= 0;) {
-			values[i] *= multiplier;
-		}
 	}
 
 	/**
@@ -171,7 +128,7 @@ public final class math extends StaticObject {
 	 * @throws ArithmeticException if the distance doesn't fit in a long value.
 	 */
 	public static long ulpDistance(final double a, final double b) {
-		return minus(ulpPosition(a), ulpPosition(b));
+		return Math.subtractExact(ulpPosition(a), ulpPosition(b));
 	}
 
 	/**
@@ -219,7 +176,7 @@ public final class math extends StaticObject {
 	 * @return the ULP position.
 	 */
 	public static long ulpPosition(final double a) {
-		long t = Double.doubleToLongBits(a);
+		long t = doubleToLongBits(a);
 		if (t < 0) {
 			t = Long.MIN_VALUE - t;
 		}
@@ -441,7 +398,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.3
-	 * @version 1.3 &mdash; <em>$Date: 2014-04-16 $</em>
+	 * @version 1.3 &mdash; <em>$Date: 2014-07-11 $</em>
 	 */
 	public static final class statistics extends StaticObject {
 		private statistics() {}
@@ -538,10 +495,67 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.2 &mdash; <em>$Date: 2014-04-16 $</em>
+	 * @version 1.2 &mdash; <em>$Date: 2014-07-11 $</em>
 	 */
 	public static final class random extends StaticObject {
 		private random() {}
+
+		/**
+		 * Create an {@code IntStream} which creates random indexes within the
+		 * given range and the index probability.
+		 *
+		 * @since 3.0
+		 *
+		 * @param random the random engine used for calculating the random
+		 *        indexes
+		 * @param start the start index (inclusively)
+		 * @param end the end index (exclusively)
+		 * @param p the index selection probability
+		 * @return an new random index stream
+		 * @throws java.lang.IllegalArgumentException if {@code p} is not a
+		 *         valid probability.
+		 */
+		public static IntStream indexes(
+			final Random random,
+			final int start,
+			final int end,
+			final double p
+		) {
+			checkProbability(p);
+			return equals(p, 0, 1E-20) ?
+				IntStream.empty() :
+				equals(p, 1, 1E-20) ?
+					IntStream.range(start, end) :
+					IntStream.range(start, end)
+						.filter(i -> random.nextInt() < probability.toInt(p));
+		}
+
+		private static
+		boolean equals(final double a, final double b, final double delta) {
+			return Math.abs(a - b) <= delta;
+		}
+
+		/**
+		 * Create an {@code IntStream} which creates random indexes within the
+		 * given range and the index probability.
+		 *
+		 * @since 3.0
+		 *
+		 * @param random the random engine used for calculating the random
+		 *        indexes
+		 * @param n the end index (exclusively). The start index is zero.
+		 * @param p the index selection probability
+		 * @return an new random index stream
+		 * @throws java.lang.IllegalArgumentException if {@code p} is not a
+		 *         valid probability.
+		 */
+		public static IntStream indexes(
+			final Random random,
+			final int n,
+			final double p
+		) {
+			return indexes(random, 0, n, p);
+		}
 
 		/**
 		 * Returns a pseudo-random, uniformly distributed int value between min
@@ -652,8 +666,8 @@ public final class math extends StaticObject {
 		 * min (inclusively) and max (exclusively).
 		 *
 		 * @param random the random engine used for creating the random number.
-		 * @param min lower bound for generated float value
-		 * @param max upper bound for generated float value
+		 * @param min lower bound for generated float value (inclusively)
+		 * @param max upper bound for generated float value (exlusively)
 		 * @return a random float greater than or equal to {@code min} and less
 		 *         than to {@code max}
 		 */
@@ -661,7 +675,21 @@ public final class math extends StaticObject {
 			final Random random,
 			final float min, final float max
 		) {
-			return random.nextFloat()*(max - min) + min;
+			if (min >= max) {
+				throw new IllegalArgumentException(format(
+					"min >= max: %f >= %f.", min, max
+				));
+			}
+
+			float value = random.nextFloat();
+			if (min < max) {
+				value = value*(max - min) + min;
+				if (value >= max) {
+					value = nextDown(value);
+				}
+			}
+
+			return value;
 		}
 
 		/**
@@ -669,8 +697,8 @@ public final class math extends StaticObject {
 		 * min (inclusively) and max (exclusively).
 		 *
 		 * @param random the random engine used for creating the random number.
-		 * @param min lower bound for generated double value
-		 * @param max upper bound for generated double value
+		 * @param min lower bound for generated double value (inclusively)
+		 * @param max upper bound for generated double value (exclusively)
 		 * @return a random double greater than or equal to {@code min} and less
 		 *         than to {@code max}
 		 */
@@ -678,7 +706,21 @@ public final class math extends StaticObject {
 			final Random random,
 			final double min, final double max
 		) {
-			return random.nextDouble()*(max - min) + min;
+			if (min >= max) {
+				throw new IllegalArgumentException(format(
+					"min >= max: %f >= %f.", min, max
+				));
+			}
+
+			double value = random.nextDouble();
+			if (min < max) {
+				value = value*(max - min) + min;
+				if (value >= max) {
+					value = nextDown(value);
+				}
+			}
+
+			return value;
 		}
 
 		/**

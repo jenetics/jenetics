@@ -28,9 +28,7 @@ import static org.jenetics.util.math.ulpDistance;
 
 import java.util.Random;
 
-import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
-
 
 /**
  * Probability selectors are a variation of fitness proportional selectors and
@@ -47,7 +45,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-07-11 $</em>
  */
 public abstract class ProbabilitySelector<
 	G extends Gene<?, G>,
@@ -84,45 +82,15 @@ public abstract class ProbabilitySelector<
 			assert (sum2one(probabilities)) : "Probabilities doesn't sum to one.";
 
 			incremental(probabilities);
-			final Factory<Phenotype<G, C>> factory = factory(
-				population, probabilities, RandomRegistry.getRandom()
-			);
 
-			selection.fill(factory, count);
-			assert (count == selection.size());
+			final Random random = RandomRegistry.getRandom();
+			selection.fill(() ->
+				population.get(indexOf(probabilities, random.nextDouble())),
+				count
+			);
 		}
 
 		return selection;
-	}
-
-	private static <
-		G extends Gene<?, G>,
-		C extends Comparable<? super C>
-	>
-	Factory<Phenotype<G, C>> factory(
-		final Population<G, C> population,
-		final double[] probabilities,
-		final Random random
-	) {
-		return new Factory<Phenotype<G, C>>() {
-			@Override
-			public Phenotype<G, C> newInstance() {
-				return select(population, probabilities, random);
-			}
-		};
-	}
-
-	private static <
-		G extends Gene<?, G>,
-		C extends Comparable<? super C>
-	>
-	Phenotype<G, C> select(
-		final Population<G, C> population,
-		final double[] probabilities,
-		final Random random
-	) {
-		final double value = random.nextDouble();
-		return population.get(indexOf(probabilities, value));
 	}
 
 	/**
@@ -162,7 +130,7 @@ public abstract class ProbabilitySelector<
 	 * population is not sorted. If a subclass needs a sorted population, the
 	 * subclass is responsible to sort the population.
 	 * </p>
-	 * The implementor always assumes that higher fitness values are better. The
+	 * The implementer always assumes that higher fitness values are better. The
 	 * base class inverts the probabilities ({@code p = 1.0 - p }) if the GA is
 	 * supposed to minimize the fitness function.
 	 *
@@ -195,31 +163,30 @@ public abstract class ProbabilitySelector<
 	/**
 	 * Perform a binary-search on the summed probability array.
 	 */
-	final static int indexOf(final double[] incremental, final double v) {
+	static int indexOf(final double[] incr, final double v) {
 		int imin = 0;
-		int imax = incremental.length;
+		int imax = incr.length;
+		int index = -1;
 
-		while (imax > imin) {
+		while (imax > imin && index == -1) {
 			int imid = (imin + imax) >>> 1;
 
-			if (imid == 0) {
-				return imid;
-			} else if (incremental[imid] >= v && incremental[imid - 1] < v) {
-				return imid;
-			} else if (incremental[imid] <= v) {
+			if (imid == 0 || (incr[imid] >= v && incr[imid - 1] < v)) {
+				index = imid;
+			} else if (incr[imid] <= v) {
 				imin = imid + 1;
-			} else if (incremental[imid] > v) {
+			} else if (incr[imid] > v) {
 				imax = imid;
 			}
 		}
 
-		return incremental.length - 1;
+		return index;
 	}
 
 	/**
 	 * In-place summation of the probability array.
 	 */
-	final static double[] incremental(final double[] values) {
+	static double[] incremental(final double[] values) {
 		for (int i = 1; i < values.length; ++i) {
 			values[i] = values[i - 1] + values[i];
 		}

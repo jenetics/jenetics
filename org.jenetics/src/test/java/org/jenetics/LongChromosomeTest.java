@@ -20,26 +20,22 @@
 package org.jenetics;
 
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
-import static org.jenetics.util.accumulators.accumulate;
 
 import java.util.Random;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.internal.util.Concurrency;
-
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.UniformDistribution;
 import org.jenetics.stat.Variance;
-import org.jenetics.util.Function;
+import org.jenetics.util.Accumulator.MinMax;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Scoped;
-import org.jenetics.util.accumulators.MinMax;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-05 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public class LongChromosomeTest
 	extends NumericChromosomeTester<Long, LongGene>
@@ -50,7 +46,7 @@ public class LongChromosomeTest
 	);
 
 	@Override
-	protected LongChromosome getFactory() {
+	protected LongChromosome factory() {
 		return _factory;
 	}
 
@@ -67,14 +63,11 @@ public class LongChromosomeTest
 
 			for (int i = 0; i < 1000; ++i) {
 				final LongChromosome chromosome = new LongChromosome(min, max, 500);
-
-				accumulate(
-					Concurrency.commonPool(),
-					chromosome,
-					mm.map(Allele),
-					variance.map(Allele),
-					histogram.map(Allele)
-				);
+				for (LongGene gene : chromosome) {
+					mm.accumulate(gene.getAllele());
+					variance.accumulate(gene.getAllele());
+					histogram.accept(gene.getAllele());
+				}
 			}
 
 			Assert.assertTrue(mm.getMin().compareTo(0L) >= 0);
@@ -82,12 +75,5 @@ public class LongChromosomeTest
 			assertDistribution(histogram, new UniformDistribution<>(min, max));
 		}
 	}
-
-	private static final Function<LongGene, Long> Allele =
-		new Function<LongGene, Long>() {
-			@Override public Long apply(final LongGene value) {
-				return value.getAllele();
-			}
-		};
 
 }

@@ -39,13 +39,13 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-17 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public class CharacterGeneTest extends GeneTester<CharacterGene> {
 
-	private final Factory<CharacterGene> _factory = CharacterGene.of();
-	@Override protected Factory<CharacterGene> getFactory() {
-		return _factory;
+	@Override
+	protected Factory<CharacterGene> factory() {
+		return CharacterGene::of;
 	}
 
 	@Test(invocationCount = 20, successPercentage = 95)
@@ -63,8 +63,8 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 				final CharacterGene g2 = factory.newInstance();
 				Assert.assertNotSame(g1, g2);
 
-				histogram.accumulate(Long.valueOf(g1.getAllele().toString()));
-				histogram.accumulate(Long.valueOf(g2.getAllele().toString()));
+				histogram.accept(Long.valueOf(g1.getAllele().toString()));
+				histogram.accept(Long.valueOf(g2.getAllele().toString()));
 			}
 
 			assertDistribution(histogram, new UniformDistribution<>(0L, 10L));

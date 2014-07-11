@@ -20,7 +20,7 @@
  # Author:
  #    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  #
- # Version: <em>$Date: 2014-04-16 $</em>
+ # Version: <em>$Date: 2014-07-11 $</em>
  #
  ###############################################################################
 -->
@@ -240,6 +240,13 @@
 			<class name="org.jenetics.stat.LinearDistributionTest" />
 		</classes>
 	</test>
+    <test name="org.jenetics.stat.Moments">
+        <classes>
+            <class name="org.jenetics.stat.IntMomentStatisticsTest" />
+            <class name="org.jenetics.stat.LongMomentStatisticsTest" />
+            <class name="org.jenetics.stat.DoubleMomentStatisticsTest" />
+        </classes>
+    </test>
 	<test name="org.jenetics.stat.NormalDistribution">
 		<classes>
 			<class name="org.jenetics.stat.NormalDistributionTest" />
@@ -255,26 +262,23 @@
 			<class name="org.jenetics.stat.UniformDistributionTest" />
 		</classes>
 	</test>
-	<test name="org.jenetics.util.accumulatorsTest">
+	<test name="org.jenetics.internal.collection.ArrayProxy">
 		<classes>
-			<class name="org.jenetics.util.accumulatorsTest" />
-			<class name="org.jenetics.util.accumulatorsMaxTest" />
-			<class name="org.jenetics.util.accumulatorsMinMaxTest" />
-			<class name="org.jenetics.util.accumulatorsMinTest" />
+			<class name="org.jenetics.internal.collection.ObjectArrayProxyTest" />
+			<class name="org.jenetics.internal.collection.ArrayProxySeqTest" />
+			<class name="org.jenetics.internal.collection.ArrayProxyISeqTest" />
+			<class name="org.jenetics.internal.collection.ArrayProxyMListTest" />
+			<class name="org.jenetics.internal.collection.ArrayProxyListTest" />
+			<class name="org.jenetics.internal.collection.ArrayProxyIteratorTest" />
+			<class name="org.jenetics.internal.collection.ArrayProxyMIteratorTest" />
+			<class name="org.jenetics.internal.collection.ArrayProxyMSeqTest" />
 		</classes>
 	</test>
-	<test name="org.jenetics.internal.util.ArrayProxy">
-		<classes>
-			<class name="org.jenetics.internal.util.ArrayProxyImplTest" />
-			<class name="org.jenetics.internal.util.ArrayProxySeqTest" />
-			<class name="org.jenetics.internal.util.ArrayProxyISeqTest" />
-			<class name="org.jenetics.internal.util.ArrayProxyMListTest" />
-			<class name="org.jenetics.internal.util.ArrayProxyListTest" />
-			<class name="org.jenetics.internal.util.ArrayProxyIteratorTest" />
-			<class name="org.jenetics.internal.util.ArrayProxyMIteratorTest" />
-			<class name="org.jenetics.internal.util.ArrayProxyMSeqTest" />
-		</classes>
-	</test>
+    <test name="org.jenetics.internal.math.DoubleAdder">
+        <classes>
+            <class name="org.jenetics.internal.math.DoubleAdderTest" />
+        </classes>
+    </test>
 	<test name="org.jenetics.internal.math.probability">
 		<classes>
 			<class name="org.jenetics.internal.math.probabilityTest" />
@@ -285,20 +289,16 @@
             <class name="org.jenetics.internal.util.internalbitTest" />
         </classes>
     </test>
-	<test name="org.jenetics.util.Array">
-		<classes>
-			<class name="org.jenetics.util.ArraySeqTest" />
-			<class name="org.jenetics.util.ArrayISeqTest" />
-			<class name="org.jenetics.util.ArrayMSeqTest" />
-			<class name="org.jenetics.util.ArrayTest" />
-			<class name="org.jenetics.util.ArraySeqIteratorTest" />
-		</classes>
-	</test>
-	<test name="org.jenetics.util.arrays">
-		<classes>
-			<class name="org.jenetics.util.arraysTest" />
-		</classes>
-	</test>
+    <test name="org.jenetics.internal.util.reflect">
+        <classes>
+            <class name="org.jenetics.internal.util.reflectTest" />
+        </classes>
+    </test>
+    <test name="org.jenetics.internal.collection.Stack">
+        <classes>
+            <class name="org.jenetics.internal.collection.StackTest" />
+        </classes>
+    </test>
 	<test name="org.jenetics.util.bit">
 		<classes>
 			<class name="org.jenetics.util.bitTest" />
@@ -322,7 +322,7 @@
 			<class name="org.jenetics.util.PRNGTest" />
 		</classes>
 	</test>
-	<test name="org.jenetics.util.RandomIndexStream">
+	<test name="org.jenetics.util.RandomIndexStream_">
 		<classes>
 			<class name="org.jenetics.util.RandomIndexStreamTest" />
 		</classes>
@@ -332,6 +332,13 @@
 			<class name="org.jenetics.util.RandomRegistryTest" />
 		</classes>
 	</test>
+    <test name="org.jenetics.util.Seq">
+        <classes>
+            <class name="org.jenetics.util.SeqTest" />
+            <class name="org.jenetics.util.ISeqTest" />
+            <class name="org.jenetics.util.MSeqTest" />
+        </classes>
+    </test>
 	<test name="org.jenetics.util.StaticObject">
 		<classes>
 			<class name="org.jenetics.util.StaticObjectTest" />

@@ -21,9 +21,10 @@ package org.jenetics;
 
 import static java.lang.Math.pow;
 import static java.lang.String.format;
-import static org.jenetics.internal.util.object.eq;
+import static org.jenetics.internal.util.Equality.eq;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 
 /**
  * <p>
@@ -51,7 +52,7 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
  */
 public final class ExponentialRankSelector<
 	G extends Gene<?, G>,
@@ -80,7 +81,7 @@ public final class ExponentialRankSelector<
 
 	/**
 	 * This method sorts the population in descending order while calculating the
-	 * selection probabilities. (The method {@link Population#sort()} is called
+	 * selection probabilities. (The method {@link Population#populationSort()} is called
 	 * by this method.)
 	 */
 	@Override
@@ -92,7 +93,7 @@ public final class ExponentialRankSelector<
 		assert(count > 0) : "Population to select must be greater than zero. ";
 
 		//Sorted population required.
-		population.sort();
+		population.populationSort();
 
 		final double N = population.size();
 		final double[] probabilities = new double[population.size()];
@@ -108,20 +109,12 @@ public final class ExponentialRankSelector<
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(_c).value();
+		return Hash.of(getClass()).and(_c).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null || obj.getClass() != getClass()) {
-			return false;
-		}
-
-		final ExponentialRankSelector<?, ?> selector = (ExponentialRankSelector<?, ?>)obj;
-		return eq(_c, selector._c);
+		return Equality.of(this, obj).test(s -> eq(_c, s._c));
 	}
 
 	@Override

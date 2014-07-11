@@ -30,33 +30,30 @@ import org.testng.annotations.Test;
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.NormalDistribution;
 import org.jenetics.stat.Variance;
-import org.jenetics.util.Array;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 import org.jenetics.util.Range;
-import org.jenetics.util.shuffling;
-
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-11 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public class PartiallyMatchedCrossoverTest {
 
-
 	@Test(invocationCount = 10)
 	public void crossover() {
-		final PartiallyMatchedCrossover<Integer> pmco =
+		final PartiallyMatchedCrossover<Integer, Double> pmco =
 			new PartiallyMatchedCrossover<>(1);
 
 		final int length = 1000;
-		final Array<Integer> alleles = new Array<Integer>(length).fill(Int());
+		final MSeq<Integer> alleles = MSeq.<Integer>ofLength(length).fill(Int());
 		final ISeq<Integer> ialleles = alleles.toISeq();
 
-		final Array<EnumGene<Integer>> that = alleles.map(EnumGene.ToGene(ialleles));
-		final Array<EnumGene<Integer>> other = alleles.map(EnumGene.ToGene(ialleles));
+		final MSeq<EnumGene<Integer>> that = alleles.map(i -> new EnumGene<>(i, ialleles));
+		final MSeq<EnumGene<Integer>> other = alleles.map(i -> new EnumGene<>(i, ialleles));
 
-		shuffling.shuffle(that);
-		shuffling.shuffle(other);
+		that.shuffle();
+		other.shuffle();
 
 		final PermutationChromosome<Integer> thatChrom1 = new PermutationChromosome<>(that.toISeq());
 		Assert.assertTrue(thatChrom1.isValid(), "thatChrom1 not valid");
@@ -77,15 +74,15 @@ public class PartiallyMatchedCrossoverTest {
 	}
 
 	@Test
-	public void corssoverWithIllegalChromosome() {
-		final PartiallyMatchedCrossover<Integer> pmco = new PartiallyMatchedCrossover<>(1);
+	public void crossoverWithIllegalChromosome() {
+		final PartiallyMatchedCrossover<Integer, Double> pmco = new PartiallyMatchedCrossover<>(1);
 
 		final int length = 1000;
-		final Array<Integer> alleles = new Array<Integer>(length).fill(Int());
+		final MSeq<Integer> alleles = MSeq.<Integer>ofLength(length).fill(Int());
 		final ISeq<Integer> ialleles = alleles.toISeq();
 
-		final Array<EnumGene<Integer>> that = alleles.map(EnumGene.ToGene(ialleles));
-		final Array<EnumGene<Integer>> other = alleles.map(EnumGene.ToGene(ialleles));
+		final MSeq<EnumGene<Integer>> that = alleles.map(i -> new EnumGene<>(i, ialleles));
+		final MSeq<EnumGene<Integer>> other = alleles.map(i -> new EnumGene<>(i, ialleles));
 
 		pmco.crossover(that, other);
 
@@ -98,12 +95,11 @@ public class PartiallyMatchedCrossoverTest {
 		final Integer npopulation,
 		final Double p
 	) {
-		final Population<EnumGene<Double>, Double> population = newPermutationDoubleGenePopulation(
-				ngenes, nchromosomes, npopulation
-			);
+		final Population<EnumGene<Double>, Double> population =
+			newPermutationDoubleGenePopulation(ngenes, nchromosomes, npopulation);
 
 		// The mutator to test.
-		final PartiallyMatchedCrossover<Double> crossover = new PartiallyMatchedCrossover<>(p);
+		final PartiallyMatchedCrossover<Double, Double> crossover = new PartiallyMatchedCrossover<>(p);
 
 		final long nallgenes = ngenes*nchromosomes*npopulation;
 		final long N = 100;
@@ -118,7 +114,7 @@ public class PartiallyMatchedCrossoverTest {
 
 		for (int i = 0; i < N; ++i) {
 			final long alterations = crossover.alter(population, 1);
-			histogram.accumulate(alterations);
+			histogram.accept(alterations);
 			variance.accumulate(alterations);
 		}
 

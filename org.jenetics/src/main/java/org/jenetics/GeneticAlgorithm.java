@@ -22,23 +22,28 @@ package org.jenetics;
 import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.object.NonNull;
+import static java.util.concurrent.CompletableFuture.supplyAsync;
 import static org.jenetics.internal.util.object.checkProbability;
-import static org.jenetics.util.arrays.forEach;
 
 import java.util.Collection;
+import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+import java.util.stream.Collector;
 
 import org.jenetics.internal.util.Concurrency;
 
-import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Function;
+import org.jenetics.util.MSeq;
+import org.jenetics.util.Seq;
 import org.jenetics.util.Timer;
-import org.jenetics.util.functions;
 
 /**
  * <h3>Getting started</h3>
@@ -86,8 +91,8 @@ import org.jenetics.util.functions;
  *     ...
  *     ga.setSelectors(new RouletteWheelSelector&lt;BitGene&gt;());
  *     ga.setAlterers(
- *         new SinglePointCrossover&lt;BitGene&gt;(0.1),
- *         new Mutator&lt;BitGene&gt;(0.01)
+ *         new SinglePointCrossover&lt;BitGene, Double&gt;(0.1),
+ *         new Mutator&lt;BitGene, Double&gt;(0.01)
  *     );
  *
  *     ga.setup();
@@ -134,7 +139,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-07-11 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,
@@ -171,9 +176,9 @@ public class GeneticAlgorithm<
 	private double _offspringFraction = DEFAULT_OFFSPRING_FRACTION;
 
 	// Alterers
-	private Alterer<G> _alterer = CompositeAlterer.of(
-		new SinglePointCrossover<G>(0.1),
-		new Mutator<G>(0.05)
+	private Alterer<G, C> _alterer = CompositeAlterer.of(
+		new SinglePointCrossover<G, C>(0.1),
+		new Mutator<G, C>(0.05)
 	);
 
 	// Selectors
@@ -227,16 +232,12 @@ public class GeneticAlgorithm<
 		_optimization = requireNonNull(optimization, "Optimization");
 		_executor = requireNonNull(executor, "Executor");
 
-		_phenotypeFactory = new Factory<Phenotype<G, C>>() {
-			@Override public Phenotype<G, C> newInstance() {
-				return Phenotype.of(
-					_genotypeFactory.newInstance(),
-					_fitnessFunction,
-					_fitnessScaler,
-					_generation
-				);
-			}
-		};
+		_phenotypeFactory = () -> Phenotype.of(
+			_genotypeFactory.newInstance(),
+			_fitnessFunction,
+			_fitnessScaler,
+			_generation
+		);
 	}
 
 	/**
@@ -260,7 +261,7 @@ public class GeneticAlgorithm<
 			fitnessFunction,
 			fitnessScaler,
 			optimization,
-			Concurrency.commonPool()
+			ForkJoinPool.commonPool()
 		);
 	}
 
@@ -284,7 +285,7 @@ public class GeneticAlgorithm<
 		this(
 			genotypeFactory,
 			fitnessFunction,
-			functions.<C>Identity(),
+			Function.<C>identity(),
 			optimization,
 			executor
 		);
@@ -307,9 +308,9 @@ public class GeneticAlgorithm<
 		this(
 			genotypeFactory,
 			fitnessFunction,
-			functions.<C>Identity(),
+			Function.<C>identity(),
 			optimization,
-			Concurrency.commonPool()
+			ForkJoinPool.commonPool()
 		);
 	}
 
@@ -331,7 +332,7 @@ public class GeneticAlgorithm<
 		this(
 			genotypeFactory,
 			fitnessFunction,
-			functions.<C>Identity(),
+			Function.<C>identity(),
 			Optimize.MAXIMUM,
 			executor
 		);
@@ -352,9 +353,9 @@ public class GeneticAlgorithm<
 		this(
 			genotypeFactory,
 			fitnessFunction,
-			functions.<C>Identity(),
+			Function.<C>identity(),
 			Optimize.MAXIMUM,
-			Concurrency.commonPool()
+			ForkJoinPool.commonPool()
 		);
 	}
 
@@ -420,7 +421,7 @@ public class GeneticAlgorithm<
 		try {
 			prepareSetup();
 			_population.fill(
-				_phenotypeFactory,
+				_phenotypeFactory::newInstance,
 				_populationSize - _population.size()
 			);
 			finishSetup();
@@ -508,14 +509,14 @@ public class GeneticAlgorithm<
 
 			//Select the survivors and the offspring.
 			_selectTimer.start();
-			final Array<Population<G, C>> selection = select();
+			final Seq<Population<G, C>> selection = select();
 			final Population<G, C> survivors = selection.get(0);
-			final Population<G, C> offsprings = selection.get(1);
+			final Population<G, C> offspring = selection.get(1);
 			_selectTimer.stop();
 
 			//Alter the offspring (Recombination, Mutation ...).
 			_alterTimer.start();
-			_alterer.alter(offsprings, _generation);
+			_alterer.alter(offspring, _generation);
 			_alterTimer.stop();
 
 			// Combining the new population (containing the survivors and the
@@ -523,7 +524,7 @@ public class GeneticAlgorithm<
 			_combineTimer.start();
 			final int killed = _killed.get();
 			final int invalid = _invalid.get();
-			_population = combine(survivors, offsprings);
+			_population = combine(survivors, offspring);
 			_combineTimer.stop();
 
 			//Evaluate the fitness
@@ -555,6 +556,52 @@ public class GeneticAlgorithm<
 		} finally {
 			_lock.unlock();
 		}
+	}
+
+	public void _evolve() {
+		++_generation;
+
+		final CompletableFuture<Population<G, C>> offspring = async(() ->
+			_offspringSelector.select(
+				_population,
+				getNumberOfOffspring(),
+				_optimization
+			)
+		);
+		final CompletableFuture<Population<G, C>> survivor = async(() ->
+			_survivorSelector.select(
+				_population,
+				getNumberOfSurvivors(),
+				_optimization
+			)
+		);
+		final CompletableFuture<Population<G, C>> alteredOffspring =
+			offspring.thenApplyAsync(o -> {
+				_alterer.alter(o, _generation);
+				return o;
+			});
+
+		final CompletableFuture<Population<G, C>> validSurvivor =
+			survivor.thenApplyAsync(s ->
+				s.stream()
+					.filter(Phenotype::isValid)
+					.filter(pt -> pt.getAge(_generation) <= _maximalPhenotypeAge)
+					.collect(Population.toPopulation())
+			);
+
+		final CompletableFuture<Population<G, C>> combined =
+			alteredOffspring.thenCombineAsync(validSurvivor, (o, s) -> {
+				s.addAll(o);
+				final int missing = _populationSize - o.size() - s.size();
+				for (int i = missing; --i >= 0;) {
+					s.add(_phenotypeFactory.newInstance());
+				}
+				return s;
+			});
+
+		_population = combined.join();
+
+		combined.thenRun(this::evaluate).join();
 	}
 
 	private void setTimes(final Statistics<?, ?> statistic) {
@@ -593,38 +640,34 @@ public class GeneticAlgorithm<
 	 * @param until the predicate which defines the termination condition.
 	 * @throws NullPointerException if the given predicate is {@code null}.
 	 */
-	public void evolve(final Function<? super Statistics<G, C>, Boolean> until) {
-		requireNonNull(until, "Termination condition");
-		while (until.apply(getStatistics())) {
+	public void evolve(final Predicate<? super Statistics<G, C>> until) {
+		while (until.test(getStatistics())) {
 			evolve();
 		}
 	}
 
-	private Array<Population<G, C>> select() {
-		final Array<Population<G, C>> selection = new Array<>(2);
+	private Seq<Population<G, C>> select() {
+		final MSeq<Population<G, C>> selection = MSeq.ofLength(2);
 		final int numberOfSurvivors = getNumberOfSurvivors();
-		final int numberOfOffspring = getNumberOfOffsprings();
+		final int numberOfOffspring = getNumberOfOffspring();
 		assert (numberOfSurvivors + numberOfOffspring == _populationSize);
 
 		try (Concurrency c = Concurrency.with(_executor)) {
-			c.execute(new Runnable() {
-				@Override
-				public void run() {
-					final Population<G, C> survivors = _survivorSelector.select(
-						_population, numberOfSurvivors, _optimization
-					);
+			c.execute(() -> {
+				final Population<G, C> survivors = _survivorSelector.select(
+					_population, numberOfSurvivors, _optimization
+				);
 
-					assert (survivors.size() == numberOfSurvivors);
-					selection.set(0, survivors);
-				}
+				assert (survivors.size() == numberOfSurvivors);
+				selection.set(0, survivors);
 			});
 
-			final Population<G, C> offsprings = _offspringSelector.select(
+			final Population<G, C> offspring = _offspringSelector.select(
 				_population, numberOfOffspring, _optimization
 			);
 
-			assert (offsprings.size() == numberOfOffspring);
-			selection.set(1, offsprings);
+			assert (offspring.size() == numberOfOffspring);
+			selection.set(1, offspring);
 		}
 
 		return selection;
@@ -632,40 +675,37 @@ public class GeneticAlgorithm<
 
 	private Population<G, C> combine(
 		final Population<G, C> survivors,
-		final Population<G, C> offsprings
+		final Population<G, C> offspring
 	) {
-		assert (survivors.size() + offsprings.size() == _populationSize);
+		assert (survivors.size() + offspring.size() == _populationSize);
 		final Population<G, C> population = new Population<>(_populationSize);
 
 		try (Concurrency c = Concurrency.with(_executor)) {
 			// Kill survivors which are to old and replace it with new one.
-			c.execute(new Runnable() {
-				@Override
-				public void run() {
-					for (int i = 0, n = survivors.size(); i < n; ++i) {
-						final Phenotype<G, C> survivor = survivors.get(i);
+			c.execute(() -> {
+				for (int i = 0, n = survivors.size(); i < n; ++i) {
+					final Phenotype<G, C> survivor = survivors.get(i);
 
-						final boolean isTooOld =
-							survivor.getAge(_generation) > _maximalPhenotypeAge;
+					final boolean isTooOld =
+						survivor.getAge(_generation) > _maximalPhenotypeAge;
 
-						final boolean isInvalid = isTooOld || !survivor.isValid();
+					final boolean isInvalid = isTooOld || !survivor.isValid();
 
-						// Sorry, too old or not valid.
-						if (isInvalid) {
-							survivors.set(i, _phenotypeFactory.newInstance());
-						}
+					// Sorry, too old or not valid.
+					if (isInvalid) {
+						survivors.set(i, _phenotypeFactory.newInstance());
+					}
 
-						if (isTooOld) {
-							_killed.incrementAndGet();
-						} else if (isInvalid) {
-							_invalid.incrementAndGet();
-						}
+					if (isTooOld) {
+						_killed.incrementAndGet();
+					} else if (isInvalid) {
+						_invalid.incrementAndGet();
 					}
 				}
 			});
 
-			// In the mean time we can add the offsprings.
-			population.addAll(offsprings);
+			// In the mean time we can add the offspring.
+			population.addAll(offspring);
 		}
 
 		population.addAll(survivors);
@@ -673,14 +713,24 @@ public class GeneticAlgorithm<
 		return population;
 	}
 
-	private int getNumberOfSurvivors() {
-		return _populationSize - getNumberOfOffsprings();
+	public <T> T collect(final Collector<Phenotype<G, C>, ?, T> collector) {
+		return _population.parallelStream().collect(collector);
 	}
 
-	private int getNumberOfOffsprings() {
-		return (int)round(
-			_offspringFraction*_populationSize
-		);
+	public <T> T collect(final Function<GeneticAlgorithm<G, C>, Collector<Phenotype<G, C>, ?, T>> f) {
+		return collect(f.apply(this));
+	}
+
+	private int getNumberOfSurvivors() {
+		return _populationSize - getNumberOfOffspring();
+	}
+
+	private int getNumberOfOffspring() {
+		return (int)round(_offspringFraction*_populationSize);
+	}
+
+	private <U> CompletableFuture<U> async(final Supplier<U> supplier) {
+		return supplyAsync(supplier, _executor);
 	}
 
 	/**
@@ -713,16 +763,14 @@ public class GeneticAlgorithm<
 	 * final Function&lt;GeneticAlgorithm&lt;?, ?&gt;, Boolean&gt; until = ...
 	 *
 	 * //Starting the GA in separate thread.
-	 * final Thread thread = new Thread(new Runnable() {
-	 *     public void run() {
-	 *         while (!Thread.currentThread().isInterrupted() &amp;&amp;
-	 *                !until.apply(ga))
-	 *         {
-	 *             if (ga.getGeneration() == 0) {
-	 *                 ga.setup();
-	 *             } else {
-	 *                 ga.evolve();
-	 *             }
+	 * final Thread thread = new Thread(() -&gt; {
+	 *     while (!Thread.currentThread().isInterrupted() &amp;&amp;
+	 *            !until.apply(ga))
+	 *     {
+	 *         if (ga.getGeneration() == 0) {
+	 *             ga.setup();
+	 *         } else {
+	 *             ga.evolve();
 	 *         }
 	 *     }
 	 * });
@@ -881,7 +929,7 @@ public class GeneticAlgorithm<
 	 *
 	 * @return the currently used {@link Alterer} of the GA.
 	 */
-	public Alterer<G> getAlterer() {
+	public Alterer<G, C> getAlterer() {
 		return _alterer;
 	}
 
@@ -892,6 +940,10 @@ public class GeneticAlgorithm<
 	 */
 	public int getGeneration() {
 		return _generation;
+	}
+
+	public Optimize getOptimization() {
+		return _optimization;
 	}
 
 	/**
@@ -973,7 +1025,7 @@ public class GeneticAlgorithm<
 	 * @param alterer The alterer.
 	 * @throws NullPointerException if the alterer is null.
 	 */
-	public void setAlterer(final Alterer<G> alterer) {
+	public void setAlterer(final Alterer<G, C> alterer) {
 		_alterer = requireNonNull(alterer, "Alterer");
 	}
 
@@ -984,7 +1036,7 @@ public class GeneticAlgorithm<
 	 * @throws NullPointerException if the alterers are null.
 	 */
 	@SafeVarargs
-	public final void setAlterers(final Alterer<G>... alterers) {
+	public final void setAlterers(final Alterer<G, C>... alterers) {
 		setAlterer(CompositeAlterer.of(alterers));
 	}
 
@@ -1036,7 +1088,8 @@ public class GeneticAlgorithm<
 	 *         one.
 	 */
 	public void setPopulation(final Collection<Phenotype<G, C>> population) {
-		forEach(population, NonNull);
+		population.forEach(Objects::requireNonNull);
+
 		if (population.size() < 1) {
 			throw new IllegalArgumentException(format(
 				"Population size must be greater than zero, but was %s.",
@@ -1072,7 +1125,8 @@ public class GeneticAlgorithm<
 	 *         one.
 	 */
 	public void setGenotypes(final Collection<Genotype<G>> genotypes) {
-		forEach(genotypes, NonNull);
+		genotypes.forEach(Objects::requireNonNull);
+
 		if (genotypes.size() < 1) {
 			throw new IllegalArgumentException(
 				"Genotype size must be greater than zero, but was " +
@@ -1191,18 +1245,16 @@ public class GeneticAlgorithm<
 	 */
 	@Override
 	public String toString() {
-		Phenotype<G, C> phenotype = null;
-		int generation = 0;
-
 		_lock.lock();
 		try {
-			generation = _generation;
-			phenotype = getStatistics().getBestPhenotype();
+			return format(
+				"%4d: (best) %s",
+				_generation,
+				getStatistics().getBestPhenotype()
+			);
 		} finally {
 			_lock.unlock();
 		}
-
-		return format("%4d: (best) %s", generation, phenotype);
 	}
 
 }

@@ -27,7 +27,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-07-11 $</em>
  */
 abstract class PRNG extends Random {
 
@@ -38,7 +38,7 @@ abstract class PRNG extends Random {
 	 *
 	 * @param seed the seed of the new {@code PRNG} instance.
 	 */
-	protected PRNG(long seed) {
+	protected PRNG(final long seed) {
 		super(seed);
 	}
 
@@ -54,8 +54,8 @@ abstract class PRNG extends Random {
 	 * Returns a pseudorandom, uniformly distributed int value between min and
 	 * max (end points included).
 	 *
-	 * @param min lower bound for generated integer
-	 * @param max upper bound for generated integer
+	 * @param min lower bound for generated integer (inclusively)
+	 * @param max upper bound for generated integer (inclusively)
 	 * @return a random integer greater than or equal to {@code min} and less
 	 *         than or equal to {@code max}
 	 * @throws IllegalArgumentException if {@code min >= max}
@@ -70,8 +70,8 @@ abstract class PRNG extends Random {
 	 * Returns a pseudorandom, uniformly distributed int value between min
 	 * and max (end points included).
 	 *
-	 * @param min lower bound for generated long integer
-	 * @param max upper bound for generated long integer
+	 * @param min lower bound for generated long integer (inclusively)
+	 * @param max upper bound for generated long integer (inclusively)
 	 * @return a random long integer greater than or equal to {@code min}
 	 *         and less than or equal to {@code max}
 	 * @throws IllegalArgumentException if {@code min >= max}
@@ -104,8 +104,8 @@ abstract class PRNG extends Random {
 	 * Returns a pseudorandom, uniformly distributed double value between
 	 * min (inclusively) and max (exclusively).
 	 *
-	 * @param min lower bound for generated float value
-	 * @param max upper bound for generated float value
+	 * @param min lower bound for generated float value (inclusively)
+	 * @param max upper bound for generated float value (exclusively)
 	 * @return a random float greater than or equal to {@code min} and less
 	 *         than to {@code max}
 	 *
@@ -119,8 +119,8 @@ abstract class PRNG extends Random {
 	 * Returns a pseudorandom, uniformly distributed double value between
 	 * min (inclusively) and max (exclusively).
 	 *
-	 * @param min lower bound for generated double value
-	 * @param max upper bound for generated double value
+	 * @param min lower bound for generated double value (inclusively)
+	 * @param max upper bound for generated double value (exclusively)
 	 * @return a random double greater than or equal to {@code min} and less
 	 *         than to {@code max}
 	 *

@@ -19,6 +19,8 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.ISeq.toISeq;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -34,17 +36,17 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 
-import org.jenetics.util.Array;
-import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 
 /**
  * Numeric chromosome implementation which holds 64 bit floating point numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-30 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-06-30 $</em>
  * @since 1.6
  */
 @XmlJavaTypeAdapter(DoubleChromosome.Model.Adapter.class)
@@ -94,7 +96,7 @@ public class DoubleChromosome
 	 *         empty.
 	 */
 	public static DoubleChromosome of(final DoubleGene... genes) {
-		return new DoubleChromosome(Array.of(genes).toISeq());
+		return new DoubleChromosome(ISeq.of(genes));
 	}
 
 	/**
@@ -132,12 +134,12 @@ public class DoubleChromosome
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(super.hashCode()).value();
+		return Hash.of(getClass()).and(super.hashCode()).value();
 	}
 
 	@Override
-	public boolean equals(final Object o) {
-		return o == this || o instanceof DoubleChromosome && super.equals(o);
+	public boolean equals(final Object obj) {
+		return Equality.of(this, obj).test(super::equals);
 	}
 
 
@@ -164,7 +166,7 @@ public class DoubleChromosome
 	{
 		in.defaultReadObject();
 
-		final Array<DoubleGene> genes = new Array<>(in.readInt());
+		final MSeq<DoubleGene> genes = MSeq.ofLength(in.readInt());
 		_min = in.readDouble();
 		_max = in.readDouble();
 
@@ -205,7 +207,7 @@ public class DoubleChromosome
 				m.length = c.length();
 				m.min = c._min;
 				m.max = c._max;
-				m.values = c.toSeq().map(Allele).asList();
+				m.values = c.toSeq().map(DoubleGene::getAllele).asList();
 				return m;
 			}
 
@@ -214,27 +216,11 @@ public class DoubleChromosome
 				final Double min = model.min;
 				final Double max = model.max;
 				return new DoubleChromosome(
-					Array.of(model.values).map(Gene(min, max)).toISeq()
+					model.values.stream()
+						.map(value -> new DoubleGene(value, min, max))
+						.collect(toISeq())
 				);
 			}
-		}
-
-		private static final Function<DoubleGene, Double> Allele =
-			new Function<DoubleGene, Double>() {
-				@Override
-				public Double apply(final DoubleGene value) {
-					return value.getAllele();
-				}
-			};
-
-		private static Function<Double, DoubleGene>
-		Gene(final Double min, final Double max) {
-			return new Function<Double, DoubleGene>() {
-				@Override
-				public DoubleGene apply(final Double value) {
-					return new DoubleGene(value, min, max);
-				}
-			};
 		}
 
 	}

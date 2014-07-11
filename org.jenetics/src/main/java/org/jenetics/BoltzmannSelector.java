@@ -21,12 +21,13 @@ package org.jenetics;
 
 import static java.lang.Math.exp;
 import static java.lang.String.format;
-import static org.jenetics.internal.util.object.eq;
+import static org.jenetics.internal.util.Equality.eq;
 import static org.jenetics.util.math.divide;
 import static org.jenetics.util.math.normalize;
 import static org.jenetics.util.math.statistics.max;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 
 /**
  * <p>
@@ -57,7 +58,7 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-07-11 $</em>
  */
 public final class BoltzmannSelector<
 	G extends Gene<?, G>,
@@ -115,20 +116,12 @@ public final class BoltzmannSelector<
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(_b).value();
+		return Hash.of(getClass()).and(_b).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null || obj.getClass() != getClass()) {
-			return false;
-		}
-
-		final BoltzmannSelector<?, ?> selector = (BoltzmannSelector<?, ?>)obj;
-		return eq(_b, selector._b);
+		return Equality.of(this, obj).test(selector -> eq(_b, selector._b));
 	}
 
 	@Override

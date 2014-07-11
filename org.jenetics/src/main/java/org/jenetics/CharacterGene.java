@@ -20,7 +20,7 @@
 package org.jenetics;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.object.eq;
+import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
 import java.util.Random;
@@ -34,12 +34,12 @@ import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 
-import org.jenetics.util.Array;
 import org.jenetics.util.CharSeq;
-import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -47,7 +47,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-07-11 $</em>
  */
 @XmlJavaTypeAdapter(CharacterGene.Model.Adapter.class)
 public final class CharacterGene
@@ -145,50 +145,21 @@ public final class CharacterGene
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(_character).and(_validCharacters).value();
+		return Hash.of(getClass()).and(_character).and(_validCharacters).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (!(obj instanceof CharacterGene)) {
-			return false;
-		}
-		final CharacterGene gene = (CharacterGene)obj;
-		return eq(_character, gene._character) &&
-				eq(_validCharacters, gene._validCharacters);
+		return Equality.of(this, obj).test(gene ->
+			eq(_character, gene._character) &&
+			eq(_validCharacters, gene._validCharacters)
+		);
 	}
 
 	@Override
 	public String toString() {
 		return _character.toString();
 	}
-
-	/* *************************************************************************
-	 *  Property access methods.
-	 * ************************************************************************/
-
-	/**
-	 * Converter for accessing the allele from a given gene.
-	 */
-	public static final Function<CharacterGene, Character> Allele =
-		new Function<CharacterGene, Character>() {
-			@Override public Character apply(final CharacterGene value) {
-				return value._character;
-			}
-		};
-
-	/**
-	 * Converter for accessing the valid characters from a given gene.
-	 */
-	public static final Function<CharacterGene, CharSeq> ValidCharacters =
-		new Function<CharacterGene, CharSeq>() {
-			@Override public CharSeq apply(final CharacterGene value) {
-				return value._validCharacters;
-			}
-		};
 
 
 	/* *************************************************************************
@@ -278,18 +249,12 @@ public final class CharacterGene
 		return new CharacterGene(character, validCharacters);
 	}
 
-	static ISeq<CharacterGene> seq(final CharSeq characters, final int length) {
-		final Random random = RandomRegistry.getRandom();
-		final int charsLength = characters.length();
+	static ISeq<CharacterGene> seq(final CharSeq chars, final int length) {
+		final Random r = RandomRegistry.getRandom();
 
-		final Array<CharacterGene> genes = new Array<>(length);
-		for (int i = 0; i < length; ++i) {
-			final CharacterGene gene = new CharacterGene(
-				characters, random.nextInt(charsLength)
-			);
-			genes.set(i, gene);
-		}
-		return genes.toISeq();
+		return MSeq.<CharacterGene>ofLength(length)
+			.fill(() -> new CharacterGene(chars, r.nextInt(chars.length())))
+			.toISeq();
 	}
 
 	/* *************************************************************************

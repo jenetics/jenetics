@@ -38,7 +38,7 @@ import org.jenetics.stat.UniformDistribution;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-07 $</em>
+ * @version <em>$Date: 2014-05-07 $</em>
  */
 public class mathRandomTest {
 
@@ -77,7 +77,7 @@ public class mathRandomTest {
 		final Histogram<Double> histogram = Histogram.of(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
-			histogram.accumulate((double)toFloat(random.nextInt()));
+			histogram.accept((double)toFloat(random.nextInt()));
 		}
 
 		final UniformDistribution<Double> distribution = new UniformDistribution<>(0.0, 1.0);
@@ -90,7 +90,7 @@ public class mathRandomTest {
 		final Histogram<Double> histogram = Histogram.of(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
-			histogram.accumulate((double)toFloat(random.nextLong()));
+			histogram.accept((double)toFloat(random.nextLong()));
 		}
 
 		final UniformDistribution<Double> distribution = new UniformDistribution<>(0.0, 1.0);
@@ -103,7 +103,7 @@ public class mathRandomTest {
 		final Histogram<Double> histogram = Histogram.of(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
-			histogram.accumulate(toDouble(random.nextLong()));
+			histogram.accept(toDouble(random.nextLong()));
 		}
 
 		final UniformDistribution<Double> distribution = new UniformDistribution<>(0.0, 1.0);
@@ -117,7 +117,7 @@ public class mathRandomTest {
 
 		for (int i = 0; i < 100000; ++i) {
 			final long value = random.nextLong();
-			histogram.accumulate(toDouble((int)(value >>> 32), (int)value));
+			histogram.accept(toDouble((int)(value >>> 32), (int)value));
 		}
 
 		final UniformDistribution<Double> distribution = new UniformDistribution<>(0.0, 1.0);
@@ -130,7 +130,7 @@ public class mathRandomTest {
 		final Histogram<Double> histogram = Histogram.of(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
-			histogram.accumulate((double)toFloat2(random.nextInt()));
+			histogram.accept((double)toFloat2(random.nextInt()));
 		}
 
 		final UniformDistribution<Double> distribution = new UniformDistribution<>(0.0, 1.0);
@@ -143,7 +143,7 @@ public class mathRandomTest {
 		final Histogram<Double> histogram = Histogram.of(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
-			histogram.accumulate((double)toFloat2(random.nextLong()));
+			histogram.accept((double)toFloat2(random.nextLong()));
 		}
 
 		final UniformDistribution<Double> distribution = new UniformDistribution<>(0.0, 1.0);
@@ -156,7 +156,7 @@ public class mathRandomTest {
 		final Histogram<Double> histogram = Histogram.of(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
-			histogram.accumulate(toDouble2(random.nextLong()));
+			histogram.accept(toDouble2(random.nextLong()));
 		}
 
 		final UniformDistribution<Double> distribution = new UniformDistribution<>(0.0, 1.0);
@@ -170,7 +170,7 @@ public class mathRandomTest {
 
 		for (int i = 0; i < 100000; ++i) {
 			final long value = random.nextLong();
-			histogram.accumulate(toDouble2((int)(value >>> 32), (int)value));
+			histogram.accept(toDouble2((int)(value >>> 32), (int)value));
 		}
 
 		final UniformDistribution<Double> distribution = new UniformDistribution<>(0.0, 1.0);

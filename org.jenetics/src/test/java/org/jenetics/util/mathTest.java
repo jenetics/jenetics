@@ -24,93 +24,13 @@ import static org.jenetics.util.math.statistics.sum;
 import java.util.Random;
 
 import org.testng.Assert;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-07 $</em>
+ * @version <em>$Date: 2014-03-31 $</em>
  */
 public class mathTest {
-
-	@Test(dataProvider = "validSum")
-	public void validAdd(final Long a, final Long b) {
-		math.plus(a, b);
-	}
-
-	@DataProvider(name = "validSum")
-	public Object[][] validSum() {
-		return new Object[][] {
-			{Long.MAX_VALUE, 0L},
-			{Long.MAX_VALUE - 1, 1L},
-			{Long.MAX_VALUE - 100, 100L},
-			{Long.MAX_VALUE, Long.MIN_VALUE},
-
-			{Long.MIN_VALUE, 10L},
-			{Long.MIN_VALUE + 10, -10L},
-			{Long.MIN_VALUE + 100, -100L},
-			{Long.MIN_VALUE, Long.MAX_VALUE}
-		};
-	}
-
-	@Test(dataProvider = "invalidSum", expectedExceptions = ArithmeticException.class)
-	public void invalidAdd(final Long a, final Long b) {
-		math.plus(a, b);
-	}
-
-	@DataProvider(name = "invalidSum")
-	public Object[][] invalidSum() {
-		return new Object[][] {
-			{Long.MAX_VALUE, 1L},
-			{Long.MAX_VALUE - 1, 2L},
-			{Long.MAX_VALUE - 100, 101L},
-			{Long.MAX_VALUE, Long.MAX_VALUE},
-
-			{Long.MIN_VALUE, -1L},
-			{Long.MIN_VALUE, -10L},
-			{Long.MIN_VALUE + 100, Long.MIN_VALUE},
-			{Long.MIN_VALUE, Long.MIN_VALUE}
-		};
-	}
-
-	@Test(dataProvider = "validDifference")
-	public void validSub(final Long a, final Long b) {
-		math.minus(a, b);
-	}
-
-	@DataProvider(name = "validDifference")
-	public Object[][] validDifference() {
-		return new Object[][]{
-			{Long.MIN_VALUE, 0L},
-			{Long.MIN_VALUE + 1, 1L},
-			{Long.MIN_VALUE + 100, 100L},
-			{Long.MIN_VALUE, Long.MIN_VALUE},
-
-			{Long.MAX_VALUE, 0L},
-			{Long.MAX_VALUE, 1L},
-			{Long.MAX_VALUE, 100L},
-			{Long.MAX_VALUE, Long.MAX_VALUE}
-		};
-	}
-
-	@Test(dataProvider = "invalidDifference", expectedExceptions = ArithmeticException.class)
-	public void invalidSub(final Long a, final Long b) {
-		math.minus(a, b);
-	}
-
-	@DataProvider(name = "invalidDifference")
-	public Object[][] invalidDifference() {
-		return new Object[][]{
-			{Long.MIN_VALUE, 1L},
-			{Long.MIN_VALUE + 1, 2L},
-			{Long.MIN_VALUE + 100, 101L},
-
-			{Long.MAX_VALUE - 1, Long.MAX_VALUE + 1},
-			{Long.MAX_VALUE - 100, Long.MAX_VALUE + 100},
-			{Long.MAX_VALUE, Long.MIN_VALUE + 1},
-			{Long.MAX_VALUE, Long.MIN_VALUE}
-		};
-	}
 
 	@Test
 	public void summarize() {

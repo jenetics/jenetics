@@ -27,24 +27,20 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-11 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public class ExponentialScalerTest extends ObjectTester<ExponentialScaler> {
 
-	final Factory<ExponentialScaler> _factory = new Factory<ExponentialScaler>() {
-		@Override
-		public ExponentialScaler newInstance() {
+	@Override
+	protected Factory<ExponentialScaler> factory() {
+		return () -> {
 			final Random random = RandomRegistry.getRandom();
 			final double a = random.nextInt(100) + 10;
 			final double b = random.nextInt(100) + 10;
 			final double c = random.nextInt(100) + 10;
 
 			return new ExponentialScaler(a, b, c);
-		}
-	};
-	@Override
-	protected Factory<ExponentialScaler> getFactory() {
-		return _factory;
+		};
 	}
 
 }

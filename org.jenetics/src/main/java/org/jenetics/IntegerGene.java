@@ -32,8 +32,8 @@ import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.jenetics.util.Array;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 import org.jenetics.util.Mean;
 import org.jenetics.util.RandomRegistry;
 
@@ -41,7 +41,7 @@ import org.jenetics.util.RandomRegistry;
  * NumericGene implementation which holds a 32 bit integer number.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-04-10 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-05-13 $</em>
  * @since 2.0
  */
 @XmlJavaTypeAdapter(IntegerGene.Model.Adapter.class)
@@ -78,6 +78,7 @@ public final class IntegerGene
 	 * @param value the value of the gene.
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (inclusively).
+	 * @return a new random {@code IntegerGene}
 	 */
 	public static IntegerGene of(final int value, final int min, final int max) {
 		return new IntegerGene(value, min, max);
@@ -89,6 +90,7 @@ public final class IntegerGene
 	 *
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (inclusively).
+	 * @return a new random {@code IntegerGene}
 	 */
 	public static IntegerGene of(final int min, final int max) {
 		return of(nextInt(RandomRegistry.getRandom(), min, max), min, max);
@@ -103,11 +105,9 @@ public final class IntegerGene
 		final int max = maximum;
 		final Random r = RandomRegistry.getRandom();
 
-		final Array<IntegerGene> genes = new Array<>(length);
-		for (int i = 0; i < length; ++i) {
-			genes.set(i, new IntegerGene(nextInt(r, min, max), minimum, maximum));
-		}
-		return genes.toISeq();
+		return MSeq.<IntegerGene>ofLength(length)
+			.fill(() -> new IntegerGene(nextInt(r, min, max), minimum, maximum))
+			.toISeq();
 	}
 
 	@Override

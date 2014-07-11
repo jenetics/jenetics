@@ -26,9 +26,11 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-11 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
-public class RouletteWheelSelector_range_1000_3000_Test extends RouletteWheelSelectorTest {
+public class RouletteWheelSelector_range_1000_3000_Test
+	extends RouletteWheelSelectorTest
+{
 
 	private Range<Double> _domain = new Range<>(1000.0, 3000.0);
 

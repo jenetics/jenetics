@@ -20,13 +20,13 @@
 package org.jenetics;
 
 import static java.lang.String.format;
-import static org.jenetics.internal.util.object.eq;
+import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
+import java.util.function.Function;
 
-import org.jenetics.internal.util.HashBuilder;
-
-import org.jenetics.util.Function;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 
 /**
  * Implements an exponential fitness scaling, whereby all fitness values are
@@ -37,7 +37,7 @@ import org.jenetics.util.Function;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
  */
 public final class ExponentialScaler
 	implements
@@ -93,20 +93,16 @@ public final class ExponentialScaler
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(_a).and(_b).and(_c).value();
+		return Hash.of(getClass()).and(_a).and(_b).and(_c).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null || obj.getClass() != getClass()) {
-			return false;
-		}
-
-		final ExponentialScaler selector = (ExponentialScaler)obj;
-		return eq(_a, selector._a) && eq(_b, selector._b) && eq(_c, selector._c);
+		return Equality.of(this, obj).test(selector ->
+			eq(_a, selector._a) &&
+			eq(_b, selector._b) &&
+			eq(_c, selector._c)
+		);
 	}
 
 	@Override

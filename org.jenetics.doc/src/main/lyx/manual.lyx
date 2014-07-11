@@ -339,11 +339,26 @@ status open
 \begin_layout Standard
 \noindent
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
-http://jenetics.sourceforge.net/
+https://sourceforge.net/projects/jenetics
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://bitbucket.org/fwilhelm/jenetics
 \end_layout
 
 \end_inset

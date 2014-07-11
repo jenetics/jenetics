@@ -22,12 +22,12 @@ package org.jenetics.util;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Hash;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-07-11 $</em>
  */
 public class Range<C extends Comparable<? super C>> extends Tuple2<C, C> {
 
@@ -62,7 +62,7 @@ public class Range<C extends Comparable<? super C>> extends Tuple2<C, C> {
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(Range.class).and(super.hashCode()).value();
+		return Hash.of(Range.class).and(super.hashCode()).value();
 	}
 
 }

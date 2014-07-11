@@ -1,80 +1,80 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <population size="7">
-    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="485166348">
+    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="294024316">
         <genotype length="5" ngenes="100">
             <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">11100011101011001010</chromosome>
-            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">00001101000001001100</chromosome>
-            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">00111100001010011100</chromosome>
-            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">11001111101000111000</chromosome>
-            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">01001101011101110110</chromosome>
+            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">10000110100000100110</chromosome>
+            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">00001111000010100111</chromosome>
+            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">00011001111101000111</chromosome>
+            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">00010100110101110111</chromosome>
         </genotype>
-        <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">837911329</fitness>
-        <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">837911329</raw-fitness>
+        <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">1098457242</fitness>
+        <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">1098457242</raw-fitness>
     </phenotype>
-    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="782506113">
+    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="414912241">
         <genotype length="5" ngenes="100">
-            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">00000000010000000110</chromosome>
-            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">11110000010011000110</chromosome>
-            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">10110000010000001011</chromosome>
-            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">00111011101101000110</chromosome>
-            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">01001010101110000001</chromosome>
+            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">10001000000000100000</chromosome>
+            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">00110111110000010011</chromosome>
+            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">00011001011000001000</chromosome>
+            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">00010111001110111011</chromosome>
+            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">01000110001001010101</chromosome>
         </genotype>
-        <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">-1265796698</fitness>
-        <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">-1265796698</raw-fitness>
+        <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">-11209368</fitness>
+        <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">-11209368</raw-fitness>
     </phenotype>
-    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="171628016">
+    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="1483824787">
         <genotype length="5" ngenes="100">
-            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">01101100001001100111</chromosome>
-            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">00011010101010100010</chromosome>
-            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">10001100000001001101</chromosome>
-            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">00110000000001100101</chromosome>
-            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">00101100001100100011</chromosome>
+            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">00000010110110110000</chromosome>
+            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">10011001111000110101</chromosome>
+            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">01010100010010001100</chromosome>
+            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">00000100110100011000</chromosome>
+            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">00000011001011001011</chromosome>
         </genotype>
-        <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">372565271</fitness>
-        <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">372565271</raw-fitness>
+        <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">40895891</fitness>
+        <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">40895891</raw-fitness>
     </phenotype>
-    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="633739314">
+    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="936129313">
         <genotype length="5" ngenes="100">
-            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">11010010010001011110</chromosome>
-            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">10000010100100001111</chromosome>
-            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">00100001101011000110</chromosome>
-            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">00101111100101011111</chromosome>
-            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">11001110000001010100</chromosome>
+            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">00110010001110111010</chromosome>
+            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">01001000101111001000</chromosome>
+            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">00101001000011111001</chromosome>
+            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">00001101011000110000</chromosome>
+            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">10111110010101111101</chromosome>
         </genotype>
-        <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">-916969199</fitness>
-        <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">-916969199</raw-fitness>
+        <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">-1053290976</fitness>
+        <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">-1053290976</raw-fitness>
     </phenotype>
-    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="1914614352">
+    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="1586527606">
         <genotype length="5" ngenes="100">
+            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">01110000001010100111</chromosome>
             <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">10101011110001001111</chromosome>
-            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">00101011101000011111</chromosome>
-            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">00100011001011000100</chromosome>
-            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">01101001010101110010</chromosome>
-            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">00100011000111011011</chromosome>
+            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">10010101110100001111</chromosome>
+            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">10001000110010110001</chromosome>
+            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">00101101001010101110</chromosome>
         </genotype>
-        <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">803574211</fitness>
-        <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">803574211</raw-fitness>
+        <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">1499171114</fitness>
+        <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">1499171114</raw-fitness>
     </phenotype>
-    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="1729782102">
+    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="195725102">
         <genotype length="5" ngenes="100">
-            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">10101011010101001111</chromosome>
-            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">01111010000000011100</chromosome>
-            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">10111000011001111000</chromosome>
-            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">01110110000001100011</chromosome>
-            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">10011010000000110001</chromosome>
+            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">01001000110001110110</chromosome>
+            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">11001101010110101010</chromosome>
+            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">01111001111010000000</chromosome>
+            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">01110011011100001100</chromosome>
+            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">11110001011101100000</chromosome>
         </genotype>
-        <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">-1203966896</fitness>
-        <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">-1203966896</raw-fitness>
+        <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">1683792714</fitness>
+        <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">1683792714</raw-fitness>
     </phenotype>
-    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="1314591624">
+    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="831406044">
         <genotype length="5" ngenes="100">
-            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">11011010011011001011</chromosome>
-            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">10001011010101100100</chromosome>
-            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">00000111111000001000</chromosome>
-            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">01111111000101101001</chromosome>
-            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">01010001101110110011</chromosome>
+            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">10001111001101000000</chromosome>
+            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">01100010101101101001</chromosome>
+            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">10110010111100010110</chromosome>
+            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">10101100100000000111</chromosome>
+            <chromosome xsi:type="org.jenetics.BitChromosome" length="20" ones-probability="0.5">11100000100000111111</chromosome>
         </genotype>
-        <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">1090760305</fitness>
-        <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">1090760305</raw-fitness>
+        <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">-1360961900</fitness>
+        <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">-1360961900</raw-fitness>
     </phenotype>
 </population>

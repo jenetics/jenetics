@@ -32,8 +32,8 @@ import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.jenetics.util.Array;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 import org.jenetics.util.Mean;
 import org.jenetics.util.RandomRegistry;
 
@@ -41,7 +41,7 @@ import org.jenetics.util.RandomRegistry;
  * Implementation of the NumericGene which holds a 64 bit floating point number.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-30 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-05-13 $</em>
  * @since 1.6
  */
 @XmlJavaTypeAdapter(DoubleGene.Model.Adapter.class)
@@ -109,11 +109,9 @@ public final class DoubleGene
 		final double max = maximum;
 		final Random r = RandomRegistry.getRandom();
 
-		final Array<DoubleGene> genes = new Array<>(length);
-		for (int i = 0; i < length; ++i) {
-			genes.set(i, new DoubleGene(nextDouble(r, min, max), minimum, maximum));
-		}
-		return genes.toISeq();
+		return MSeq.<DoubleGene>ofLength(length)
+			.fill(() -> new DoubleGene(nextDouble(r, min, max), minimum, maximum))
+			.toISeq();
 	}
 
 	@Override

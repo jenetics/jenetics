@@ -20,7 +20,9 @@
 package org.jenetics.util;
 
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
+import static org.jenetics.util.math.random.indexes;
 
+import java.util.PrimitiveIterator.OfInt;
 import java.util.Random;
 
 import org.testng.Assert;
@@ -28,6 +30,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import org.jenetics.internal.math.probability;
+import org.jenetics.internal.util.IntRef;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.NormalDistribution;
@@ -35,20 +38,9 @@ import org.jenetics.stat.Variance;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-17 $</em>
+ * @version <em>$Date: 2014-05-10 $</em>
  */
 public class RandomIndexStreamTest {
-
-	@Test
-	public void repeatable() {
-		final IndexStream stream1 = IndexStream.Random(1000, 0.5, new Random(1));
-		final IndexStream stream2 = IndexStream.Random(1000, 0.5, new Random(1));
-
-		for (int i = stream1.next(); i != -1; i = stream1.next()) {
-			Assert.assertEquals(i, stream2.next());
-		}
-		Assert.assertEquals(stream2.next(), -1);
-	}
 
 	@Test
 	public void compatibility() {
@@ -59,14 +51,14 @@ public class RandomIndexStreamTest {
 		for (String[] line : data) {
 			final Random random = new LCG64ShiftRandom.ThreadSafe(0);
 			final double p = Double.parseDouble(line[0]);
-			final IndexStream stream = IndexStream.Random(500, p, random);
 
+			final OfInt it = indexes(random, 500, p).iterator();
 			for (int i = 1; i < line.length; ++i) {
 				final int index = Integer.parseInt(line[i]);
-				Assert.assertEquals(stream.next(), index);
+				Assert.assertEquals(it.nextInt(), index);
 			}
 
-			Assert.assertEquals(stream.next(), -1);
+			Assert.assertFalse(it.hasNext());
 		}
 	}
 
@@ -79,50 +71,18 @@ public class RandomIndexStreamTest {
 		final Random random2 = new LCG64ShiftRandom(0);
 
 		for (int j = 0; j < 1; ++j) {
-			final IndexStream stream1 = IndexStream.Random(
-				size, p, random1
-			);
+			final OfInt it = indexes(random1, size, p).iterator();
 			final IndexStream stream2 = ReferenceRandomStream(
 				size, p, random2
 			);
 
-			int actual = 0;
-			int expected = 0;
-			do {
-				actual = stream1.next();
-				expected = stream2.next();
-				Assert.assertEquals(actual, expected);
-			} while (actual != -1);
+			while (it.hasNext()) {
+				Assert.assertEquals(it.nextInt(), stream2.next());
+			}
 
-			Assert.assertEquals(stream1.next(), -1);
+			Assert.assertFalse(it.hasNext());
 			Assert.assertEquals(stream2.next(), -1);
 		}
-	}
-
-	@Test
-	public void iterateP0() {
-		final IndexStream it = IndexStream.Random(1000, 0, new Random());
-
-		for (int i = it.next(); i != -1; i = it.next()) {
-			Assert.assertTrue(false);
-		}
-
-		for (int i = 0; i < 100; ++i) {
-			Assert.assertEquals(it.next(), -1);
-		}
-	}
-
-	@Test
-	public void iterateP1() {
-		final IndexStream it = IndexStream.Random(1000, 1, new Random());
-
-		int count = 0;
-		for (int i = it.next(); i != -1; i = it.next()) {
-			Assert.assertEquals(i, count);
-			++count;
-		}
-
-		Assert.assertEquals(count, 1000);
 	}
 
 	@Test(dataProvider = "probabilities")
@@ -140,7 +100,7 @@ public class RandomIndexStreamTest {
 		for (int i = 0; i < 2500; ++i) {
 			final long k = k(n, p, random);
 
-			histogram.accumulate(k);
+			histogram.accept(k);
 			variance.accumulate(k);
 		}
 
@@ -157,13 +117,12 @@ public class RandomIndexStreamTest {
 	}
 
 	long k(final int n, final double p, final Random random) {
-		final IndexStream it = IndexStream.Random(n, p, random);
+		final IntRef kt = new IntRef(0);
+		indexes(random, n, p).forEach(i -> {
+			++kt.value;
+		});
 
-		int kt = 0;
-		for (int i = it.next(); i != -1; i = it.next()) {
-			++kt;
-		}
-		return kt;
+		return kt.value;
 	}
 
 	@DataProvider(name = "probabilities")
@@ -234,23 +193,27 @@ public class RandomIndexStreamTest {
 		};
 	}
 
-
-	public static void main(final String[] args) {
-		final int delta = 500;
-
-		for (int i = 0; i <= delta; ++i) {
-			final double p = (double)(i)/(double)delta;
-			final Random random = new LCG64ShiftRandom.ThreadSafe(0);
-			final IndexStream stream = ReferenceRandomStream(delta, p, random);
-
-			System.out.print(Double.toString(p));
-			System.out.print(",");
-			for (int j = stream.next(); j != -1; j = stream.next()) {
-				System.out.print(j);
-				System.out.print(",");
-			}
-			System.out.println();
-		}
+	interface IndexStream {
+		public int next();
 	}
+
+
+//	public static void main(final String[] args) {
+//		final int delta = 500;
+//
+//		for (int i = 0; i <= delta; ++i) {
+//			final double p = (double)(i)/(double)delta;
+//			final Random random = new LCG64ShiftRandom.ThreadSafe(0);
+//			final IndexStream stream = ReferenceRandomStream(delta, p, random);
+//
+//			System.out.print(Double.toString(p));
+//			System.out.print(",");
+//			for (int j = stream.next(); j != -1; j = stream.next()) {
+//				System.out.print(j);
+//				System.out.print(",");
+//			}
+//			System.out.println();
+//		}
+//	}
 
 }

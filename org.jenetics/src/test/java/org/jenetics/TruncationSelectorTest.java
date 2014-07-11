@@ -26,24 +26,15 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-11 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public class TruncationSelectorTest
 	extends SelectorTester<TruncationSelector<DoubleGene, Double>>
 {
 
-
-	final Factory<TruncationSelector<DoubleGene, Double>>
-	_factory = new Factory<TruncationSelector<DoubleGene,Double>>()
-	{
-		@Override
-		public TruncationSelector<DoubleGene, Double> newInstance() {
-			return new TruncationSelector<>();
-		}
-	};
 	@Override
-	protected Factory<TruncationSelector<DoubleGene, Double>> getFactory() {
-		return _factory;
+	protected Factory<TruncationSelector<DoubleGene, Double>> factory() {
+		return () -> new TruncationSelector<>();
 	}
 
 	@Override

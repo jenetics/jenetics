@@ -20,26 +20,22 @@
 package org.jenetics;
 
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
-import static org.jenetics.util.accumulators.accumulate;
 
 import java.util.Random;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.internal.util.Concurrency;
-
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.UniformDistribution;
 import org.jenetics.stat.Variance;
-import org.jenetics.util.Function;
+import org.jenetics.util.Accumulator.MinMax;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Scoped;
-import org.jenetics.util.accumulators.MinMax;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-05 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public class DoubleChromosomeTest
 	extends NumericChromosomeTester<Double, DoubleGene>
@@ -50,7 +46,7 @@ public class DoubleChromosomeTest
 	);
 
 	@Override
-	protected DoubleChromosome getFactory() {
+	protected DoubleChromosome factory() {
 		return _factory;
 	}
 
@@ -68,14 +64,11 @@ public class DoubleChromosomeTest
 
 			for (int i = 0; i < 1000; ++i) {
 				final DoubleChromosome chromosome = new DoubleChromosome(min, max, 500);
-
-				accumulate(
-					Concurrency.commonPool(),
-					chromosome,
-					mm.map(Allele),
-					histogram.map(Allele),
-					variance.map(Allele)
-				);
+				for (DoubleGene gene : chromosome) {
+					mm.accumulate(gene.getAllele());
+					histogram.accept(gene.getAllele());
+					variance.accumulate(gene.getAllele());
+				}
 			}
 
 			Assert.assertTrue(mm.getMin().compareTo(0.0) >= 0);
@@ -83,12 +76,5 @@ public class DoubleChromosomeTest
 			assertDistribution(histogram, new UniformDistribution<>(min, max));
 		}
 	}
-
-	private static final Function<DoubleGene, Double> Allele =
-		new Function<DoubleGene, Double>() {
-			@Override public Double apply(final DoubleGene value) {
-				return value.getAllele();
-			}
-		};
 
 }

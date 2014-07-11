@@ -22,6 +22,7 @@ package org.jenetics.example;
 import java.io.Serializable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Function;
 
 import org.jenetics.CharacterChromosome;
 import org.jenetics.CharacterGene;
@@ -34,12 +35,11 @@ import org.jenetics.StochasticUniversalSelector;
 import org.jenetics.TournamentSelector;
 import org.jenetics.util.CharSeq;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-06-01 $</em>
  */
 public class StringGenerator {
 
@@ -89,8 +89,8 @@ public class StringGenerator {
 			new TournamentSelector<CharacterGene, Integer>(5)
 		);
 		ga.setAlterer(CompositeAlterer.of(
-			new Mutator<CharacterGene>(0.1),
-			new SinglePointCrossover<CharacterGene>(0.5)
+			new Mutator<CharacterGene, Integer>(0.1),
+			new SinglePointCrossover<CharacterGene, Integer>(0.5)
 		));
 
 		final int generations = 100;
@@ -99,7 +99,7 @@ public class StringGenerator {
 				"String generator",
 				ga,
 				generations,
-				((CompositeAlterer<?>)ga.getAlterer()).getAlterers().toArray()
+				((CompositeAlterer<?, ?>)ga.getAlterer()).getAlterers().toArray()
 			);
 
 		GAUtils.execute(ga, generations, 20);

@@ -24,7 +24,8 @@ import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 
 
 /**
@@ -72,7 +73,7 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-07-11 $</em>
  */
 public class LCG64ShiftRandom extends Random64 {
 
@@ -85,7 +86,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-07-11 $</em>
 	 */
 	public static final class Param implements Serializable {
 
@@ -140,15 +141,7 @@ public class LCG64ShiftRandom extends Random64 {
 
 		@Override
 		public boolean equals(final Object obj) {
-			if (obj == this) {
-				return true;
-			}
-			if (!(obj instanceof Param)) {
-				return false;
-			}
-
-			final Param param = (Param)obj;
-			return a == param.a && b == param.b;
+			return Equality.of(this, obj).test(p -> a == p.a && b == p.b);
 		}
 
 		@Override
@@ -185,7 +178,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-07-11 $</em>
 	 */
 	public static class ThreadLocal
 		extends java.lang.ThreadLocal<LCG64ShiftRandom>
@@ -274,7 +267,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-07-11 $</em>
 	 */
 	public static class ThreadSafe extends LCG64ShiftRandom {
 		private static final long serialVersionUID = 1L;
@@ -535,26 +528,20 @@ public class LCG64ShiftRandom extends Random64 {
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass())
+		return Hash.of(getClass())
 				.and(_a).and(_b).and(_r)
 				.and(_seed).and(_param).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (!(obj instanceof LCG64ShiftRandom)) {
-			return false;
-		}
-
-		final LCG64ShiftRandom random = (LCG64ShiftRandom)obj;
-		return _a == random._a &&
-				_b == random._b &&
-				_r == random._r &&
-				_seed == random._seed &&
-				_param.equals(random._param);
+		return Equality.of(this, obj).test(random ->
+			_a == random._a &&
+			_b == random._b &&
+			_r == random._r &&
+			_seed == random._seed &&
+			_param.equals(random._param)
+		);
 	}
 
 	/**

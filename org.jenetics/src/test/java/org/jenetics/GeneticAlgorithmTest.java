@@ -19,7 +19,6 @@
  */
 package org.jenetics;
 
-import java.io.Serializable;
 import java.util.Random;
 import java.util.concurrent.ForkJoinPool;
 
@@ -29,28 +28,14 @@ import org.testng.annotations.Test;
 
 import org.jenetics.internal.util.Concurrency;
 
-import org.jenetics.util.Factory;
-import org.jenetics.util.Function;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-05 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public class GeneticAlgorithmTest {
-
-	private static class FF
-		implements Function<Genotype<DoubleGene>, Double>,
-					Serializable
-	{
-		private static final long serialVersionUID = 618089611921083000L;
-
-		@Override
-		public Double apply(final Genotype<DoubleGene> genotype) {
-			return genotype.getGene().getAllele();
-		}
-	}
 
 	@Test
 	public void optimize() {
@@ -59,61 +44,31 @@ public class GeneticAlgorithmTest {
 			Assert.assertSame(random, RandomRegistry.getRandom());
 			Assert.assertSame(random, rs.get());
 
-			final Factory<Genotype<DoubleGene>> factory = Genotype.of(
-				DoubleChromosome.of(0, 1)
-			);
-			final Function<Genotype<DoubleGene>, Double> ff = new FF();
-
 			final GeneticAlgorithm<DoubleGene, Double> ga = new GeneticAlgorithm<>(
-				factory, ff, Concurrency.SERIAL_EXECUTOR
+				Genotype.of(DoubleChromosome.of(0, 1)),
+				gt -> gt.getGene().getAllele(),
+				Concurrency.SERIAL_EXECUTOR
 			);
 			ga.setPopulationSize(200);
-			ga.setAlterer(new MeanAlterer<DoubleGene>());
+			ga.setAlterer(new MeanAlterer<>());
 			ga.setOffspringFraction(0.3);
-			ga.setOffspringSelector(new RouletteWheelSelector<DoubleGene, Double>());
-			ga.setSurvivorSelector(new TournamentSelector<DoubleGene, Double>());
+			ga.setOffspringSelector(new RouletteWheelSelector<>());
+			ga.setSurvivorSelector(new TournamentSelector<>());
 
 			ga.setup();
 			ga.evolve(100);
 
 			Statistics<DoubleGene, Double> s = ga.getBestStatistics();
 			Reporter.log(s.toString());
-			Assert.assertEquals(s.getAgeMean(), 21.40500000000002);
-			Assert.assertEquals(s.getAgeVariance(), 648.051231155779);
+			Assert.assertEquals(s.getAgeMean(), 19.895);
+			Assert.assertEquals(s.getAgeVariance(), 521.9135427135678);
 			Assert.assertEquals(s.getSamples(), 200);
-			Assert.assertEquals(s.getBestFitness(), 0.9955101231254028, 0.00000001);
-			Assert.assertEquals(s.getWorstFitness(), 0.03640144995042627, 0.00000001);
+			Assert.assertEquals(s.getBestFitness(), 0.9928706649747477, 0.00000001);
+			Assert.assertEquals(s.getWorstFitness(), 0.02638061798078739, 0.00000001);
 
 			s = ga.getStatistics();
 			Reporter.log(s.toString());
-
-			Assert.assertEquals(s.getAgeMean(), 23.15500000000001, 0.000001);
-			Assert.assertEquals(s.getAgeVariance(), 82.23213567839196, 0.000001);
-			Assert.assertEquals(s.getSamples(), 200);
-			Assert.assertEquals(s.getBestFitness(), 0.9955101231254028, 0.00000001);
-			Assert.assertEquals(s.getWorstFitness(), 0.9955101231254028, 0.00000001);
 		}
-	}
-
-	private static class Base implements Comparable<Base> {
-		@Override public int compareTo(Base o) {
-			return 0;
-		}
-	}
-
-	public static class Derived extends Base {
-	}
-
-	@SuppressWarnings("null")
-	public void evolve() {
-		Function<Statistics<? extends DoubleGene, ? extends Base>, Boolean> until = null;
-		GeneticAlgorithm<DoubleGene, Derived> ga = null;
-
-		ga.evolve(until);
-		ga.evolve(termination.Generation(1));
-
-		GeneticAlgorithm<DoubleGene, Double> ga2 = null;
-		ga2.evolve(termination.<Double>SteadyFitness(10));
 	}
 
 	@Test(invocationCount = 10)
@@ -121,17 +76,16 @@ public class GeneticAlgorithmTest {
 		final ForkJoinPool pool = new ForkJoinPool(10);
 
 		try {
-			final Factory<Genotype<DoubleGene>> factory = Genotype.of(DoubleChromosome.of(-1, 1));
-			final Function<Genotype<DoubleGene>, Double> ff = new FF();
-
 			final GeneticAlgorithm<DoubleGene, Double> ga = new GeneticAlgorithm<>(
-				factory, ff, pool
+				Genotype.of(DoubleChromosome.of(-1, 1)),
+				gt -> gt.getGene().getAllele(),
+				pool
 			);
 			ga.setPopulationSize(1000);
-			ga.setAlterer(new MeanAlterer<DoubleGene>());
+			ga.setAlterer(new MeanAlterer<>());
 			ga.setOffspringFraction(0.3);
-			ga.setOffspringSelector(new RouletteWheelSelector<DoubleGene, Double>());
-			ga.setSurvivorSelector(new StochasticUniversalSelector<DoubleGene, Double>());
+			ga.setOffspringSelector(new RouletteWheelSelector<>());
+			ga.setSurvivorSelector(new StochasticUniversalSelector<>());
 
 			ga.setup();
 			for (int i = 0; i < 10; ++i) {

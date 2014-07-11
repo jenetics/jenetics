@@ -31,13 +31,13 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-07 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public class MeanTest extends MappedAccumulatorTester<Mean<Double>> {
 
-	private final Factory<Mean<Double>> _factory = new Factory<Mean<Double>>() {
-		@Override
-		public Mean<Double> newInstance() {
+	@Override
+	protected Factory<Mean<Double>> factory() {
+		return () -> {
 			final Random random = RandomRegistry.getRandom();
 
 			final Mean<Double> mean = new Mean<>();
@@ -46,11 +46,7 @@ public class MeanTest extends MappedAccumulatorTester<Mean<Double>> {
 			}
 
 			return mean;
-		}
-	};
-	@Override
-	protected Factory<Mean<Double>> getFactory() {
-		return _factory;
+		};
 	}
 
 	@Test

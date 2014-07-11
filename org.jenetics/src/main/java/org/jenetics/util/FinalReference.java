@@ -19,12 +19,14 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.internal.util.object.eq;
+import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.function.Supplier;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 
 /**
  * A final reference. This class is used if you want to allow to set the
@@ -33,9 +35,13 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-07-11 $</em>
  */
-public final class FinalReference<T> implements Serializable {
+public final class FinalReference<T>
+	implements
+		Supplier<T>,
+		Serializable
+{
 	private static final long serialVersionUID = 1L;
 
 	private T _value = null;
@@ -89,20 +95,12 @@ public final class FinalReference<T> implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(get()).value();
+		return Hash.of(getClass()).and(get()).value();
 	}
 
 	@Override
-	public boolean equals(final Object object) {
-		if (object == this) {
-			return true;
-		}
-		if (!(object instanceof FinalReference<?>)) {
-			return false;
-		}
-
-		final FinalReference<?> f = (FinalReference<?>)object;
-		return eq(get(), f.get());
+	public boolean equals(final Object obj) {
+		return Equality.of(this, obj).test(f -> eq(get(), f.get()));
 	}
 
 	@Override

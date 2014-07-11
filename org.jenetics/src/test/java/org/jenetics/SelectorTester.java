@@ -19,8 +19,6 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.accumulators.accumulate;
-
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -28,13 +26,12 @@ import org.jenetics.stat.Distribution;
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.StatisticsAssert;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Function;
 import org.jenetics.util.ObjectTester;
 import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-07 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 	extends ObjectTester<S>
@@ -53,7 +50,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 	}
 
 	protected S getSelector() {
-		return getFactory().newInstance();
+		return factory().newInstance();
 	}
 
 	protected boolean isCheckEnabled() {
@@ -85,34 +82,15 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 				population.add(Phenotype.of(gtf.newInstance(), TestUtils.FF, 12));
 			}
 
-
-			final Population<DoubleGene, Double> selection =
-				selector.select(population, npopulation, Optimize.MAXIMUM);
-
-			accumulate(
-					selection,
-					histogram
-						.map(Allele)
-						.map(Gene)
-						.map(Genotype.<DoubleGene>Chromosome())
-						.map(Phenotype.<DoubleGene>Genotype())
-				);
+			selector.select(population, npopulation, Optimize.MAXIMUM).stream()
+				.map(pt -> pt.getGenotype().getChromosome().getGene().getAllele())
+				.forEach(histogram);
 
 			population.clear();
 		}
 
 		check(histogram, getDistribution());
 	}
-
-	private static final Function<DoubleGene, Double> Allele =
-		new Function<DoubleGene, Double>() {
-			@Override public Double apply(final DoubleGene value) {
-				return value.getAllele();
-			}
-		};
-
-	private static final Function<Chromosome<DoubleGene>, DoubleGene>
-		Gene = AbstractChromosome.gene();
 
 	protected double χ2(
 		final Histogram<Double> histogram,

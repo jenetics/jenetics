@@ -20,9 +20,10 @@
 package org.jenetics;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.object.eq;
+import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
+import java.util.function.Function;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -33,13 +34,11 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.jaxb;
 
-import org.jenetics.util.Function;
 import org.jenetics.util.Verifiable;
-import org.jenetics.util.functions;
-
 
 /**
  * The {@code Phenotype} consists of a {@link Genotype} plus a fitness
@@ -53,7 +52,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-07-11 $</em>
  */
 @XmlJavaTypeAdapter(Phenotype.Model.Adapter.class)
 public final class Phenotype<
@@ -223,7 +222,7 @@ public final class Phenotype<
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass())
+		return Hash.of(getClass())
 				.and(_generation)
 				.and(getFitness())
 				.and(getRawFitness())
@@ -231,19 +230,13 @@ public final class Phenotype<
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!(obj instanceof Phenotype<?, ?>)) {
-			return false;
-		}
-
-		final Phenotype<?, ?> pt = (Phenotype<?, ?>)obj;
-		return eq(getFitness(), pt.getFitness()) &&
-				eq(getRawFitness(), pt.getRawFitness()) &&
-				eq(_genotype, pt._genotype) &&
-				eq(_generation, pt._generation);
+	public boolean equals(final Object obj) {
+		return Equality.of(this, obj).test(pt ->
+			eq(getFitness(), pt.getFitness()) &&
+			eq(getRawFitness(), pt.getRawFitness()) &&
+			eq(_genotype, pt._genotype) &&
+			eq(_generation, pt._generation)
+		);
 	}
 
 	@Override
@@ -262,9 +255,7 @@ public final class Phenotype<
 	 */
 	Phenotype<G, C> newInstance(final Genotype<G> genotype, final int generation) {
 		requireNonNull(genotype, "Genotype");
-		return Phenotype.of(
-			genotype, _fitnessFunction, _fitnessScaler, generation
-		);
+		return of(genotype, _fitnessFunction, _fitnessScaler, generation);
 	}
 
 	/**
@@ -302,94 +293,7 @@ public final class Phenotype<
 		final Function<? super Genotype<G>, ? extends C> function,
 		final int generation
 	) {
-		return of(_genotype, function, functions.<C>Identity(), generation);
-	}
-
-
-	/* *************************************************************************
-	 *  Property access methods
-	 * ************************************************************************/
-
-	/**
-	 * Create a {@link Function} which return the phenotype age when calling
-	 * {@code converter.convert(phenotype)}.
-	 *
-	 * @param currentGeneration the current generation.
-	 * @return an age {@link Function}.
-	 */
-	public static Function<Phenotype<?, ?>, Integer>
-	Age(final int currentGeneration)
-	{
-		return new Function<Phenotype<?, ?>, Integer>() {
-			@Override public Integer apply(final Phenotype<?, ?> value) {
-				return value.getAge(currentGeneration);
-			}
-		};
-	}
-
-	/**
-	 * Create a {@link Function} which return the phenotype generation when
-	 * calling {@code converter.convert(phenotype)}.
-	 *
-	 * @return a generation {@link Function}.
-	 */
-	public static Function<Phenotype<?, ?>, Integer> Generation() {
-		return new Function<Phenotype<?, ?>, Integer>() {
-			@Override public Integer apply(final Phenotype<?, ?> value) {
-				return value.getGeneration();
-			}
-		};
-	}
-
-	/**
-	 * Create a {@link Function} which return the phenotype fitness when
-	 * calling {@code converter.convert(phenotype)}.
-	 *
-	 * @param <C> the fitness value type.
-	 * @return a fitness {@link Function}.
-	 */
-	public static <C extends Comparable<? super C>>
-	Function<Phenotype<?, C>, C> Fitness()
-	{
-		return new Function<Phenotype<?, C>, C>() {
-			@Override public C apply(final Phenotype<?, C> value) {
-				return value.getFitness();
-			}
-		};
-	}
-
-	/**
-	 * Create a {@link Function} which return the phenotype raw fitness when
-	 * calling {@code converter.convert(phenotype)}.
-	 *
-	 * @param <C> the fitness value type.
-	 * @return a raw fitness {@link Function}.
-	 */
-	public static <C extends Comparable<? super C>>
-	Function<Phenotype<?, C>, C> RawFitness()
-	{
-		return new Function<Phenotype<?, C>, C>() {
-			@Override public C apply(final Phenotype<?, C> value) {
-				return value.getRawFitness();
-			}
-		};
-	}
-
-	/**
-	 * Create a {@link Function} which return the phenotype genotype when
-	 * calling {@code converter.convert(phenotype)}.
-	 *
-	 * @param <G> the gene type.
-	 * @return a genotype {@link Function}.
-	 */
-	public static <G extends Gene<?, G>>
-	Function<Phenotype<G, ?>, Genotype<G>> Genotype()
-	{
-		return new Function<Phenotype<G, ?>, Genotype<G>>() {
-			@Override public Genotype<G> apply(final Phenotype<G, ?> value) {
-				return value.getGenotype();
-			}
-		};
+		return of(_genotype, function, a -> a, generation);
 	}
 
 	/**
@@ -412,7 +316,7 @@ public final class Phenotype<
 		final Function<? super Genotype<G>, C> fitnessFunction,
 		final int generation
 	) {
-		return of(genotype, fitnessFunction, functions.<C>Identity(), generation);
+		return of(genotype, fitnessFunction, a -> a, generation);
 	}
 
 	/**
@@ -483,8 +387,8 @@ public final class Phenotype<
 			public Phenotype unmarshal(final Model m) throws Exception {
 				final Phenotype pt = new Phenotype(
 					Genotype.Model.ADAPTER.unmarshal(m.genotype),
-					functions.Identity(),
-					functions.Identity(),
+					Function.identity(),
+					Function.identity(),
 					m.generation
 				);
 				pt._fitness = (Comparable)m.fitness;

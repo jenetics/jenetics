@@ -26,46 +26,32 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-15 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
-public class SelectorFactories {
+public final class SelectorFactories {
 
 	private SelectorFactories() {
 	}
 
 	public static Factory<BoltzmannSelector<DoubleGene, Double>>
-	BoltzmannSelector = new Factory<BoltzmannSelector<DoubleGene, Double>>() {
-		@Override
-		public BoltzmannSelector<DoubleGene, Double> newInstance() {
-			final Random random = RandomRegistry.getRandom();
-			return new BoltzmannSelector<>(random.nextDouble());
-		}
+	BoltzmannSelector = () -> {
+		final Random random = RandomRegistry.getRandom();
+		return new BoltzmannSelector<>(random.nextDouble());
 	};
 
 	public static Factory<ExponentialRankSelector<DoubleGene, Double>>
-	ExponentialRankSelector = new Factory<ExponentialRankSelector<DoubleGene, Double>>() {
-		@Override
-		public ExponentialRankSelector<DoubleGene, Double> newInstance() {
-			final Random random = RandomRegistry.getRandom();
-			return new ExponentialRankSelector<>(random.nextDouble());
-		}
+	ExponentialRankSelector = () -> {
+		final Random random = RandomRegistry.getRandom();
+		return new ExponentialRankSelector<>(random.nextDouble());
 	};
 
 	public static Factory<LinearRankSelector<DoubleGene, Double>>
-	LinearRankSelector = new Factory<LinearRankSelector<DoubleGene, Double>>() {
-		@Override
-		public LinearRankSelector<DoubleGene, Double> newInstance() {
-			final Random random = RandomRegistry.getRandom();
-			return new LinearRankSelector<>(random.nextDouble());
-		}
+	LinearRankSelector = () -> {
+		final Random random = RandomRegistry.getRandom();
+		return new LinearRankSelector<>(random.nextDouble());
 	};
 
 	public static Factory<RouletteWheelSelector<DoubleGene, Double>>
-	RouletteWheelSelector = new Factory<RouletteWheelSelector<DoubleGene, Double>>() {
-		@Override
-		public RouletteWheelSelector<DoubleGene, Double> newInstance() {
-			return new RouletteWheelSelector<>();
-		}
-	};
+	RouletteWheelSelector = () -> new RouletteWheelSelector<>();
 
 }

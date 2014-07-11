@@ -36,14 +36,13 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-03 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 
-	private final Factory<Chromosome<CharacterGene>>
-	_factory = CharacterChromosome.of(500);
-	@Override protected Factory<Chromosome<CharacterGene>> getFactory() {
-		return _factory;
+	@Override
+	protected Factory<Chromosome<CharacterGene>> factory() {
+		return () -> CharacterChromosome.of(500);
 	}
 
 
@@ -56,7 +55,7 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 			final Histogram<Long> histogram = Histogram.of(0L, 10L, 10);
 
 			for (CharacterGene gene : chromosome) {
-				histogram.accumulate(Long.valueOf(gene.getAllele().toString()));
+				histogram.accept(Long.valueOf(gene.getAllele().toString()));
 			}
 
 			assertDistribution(histogram, new UniformDistribution<>(0L, 10L));

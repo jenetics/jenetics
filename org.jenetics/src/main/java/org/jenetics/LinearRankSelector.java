@@ -20,9 +20,10 @@
 package org.jenetics;
 
 import static java.lang.String.format;
-import static org.jenetics.internal.util.object.eq;
+import static org.jenetics.internal.util.Equality.eq;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 
 /**
  * <p>
@@ -56,7 +57,7 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
  */
 public final class LinearRankSelector<
 	G extends Gene<?, G>,
@@ -94,7 +95,7 @@ public final class LinearRankSelector<
 
 	/**
 	 * This method sorts the population in descending order while calculating the
-	 * selection probabilities. (The method {@link Population#sort()} is called
+	 * selection probabilities. (The method {@link Population#populationSort()} is called
 	 * by this method.)
 	 */
 	@Override
@@ -106,7 +107,7 @@ public final class LinearRankSelector<
 		assert(count > 0) : "Population to select must be greater than zero. ";
 
 		//Sort the population.
-		population.sort();
+		population.populationSort();
 
 		final double N = population.size();
 		final double[] probabilities = new double[population.size()];
@@ -122,20 +123,15 @@ public final class LinearRankSelector<
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(_nminus).and(_nplus).value();
+		return Hash.of(getClass()).and(_nminus).and(_nplus).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (!(obj instanceof LinearRankSelector<?, ?>)) {
-			return false;
-		}
-
-		final LinearRankSelector<?, ?> selector = (LinearRankSelector<?, ?>)obj;
-		return eq(_nminus, selector._nminus) && eq(_nplus, selector._nplus);
+		return Equality.of(this, obj).test(selector ->
+			eq(_nminus, selector._nminus) &&
+			eq(_nplus, selector._nplus)
+		);
 	}
 
 	@Override

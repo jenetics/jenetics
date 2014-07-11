@@ -39,14 +39,13 @@ import org.jenetics.util.bit;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-16 $</em>
+ * @version <em>$Date: 2014-07-11 $</em>
  */
 public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
-	private final Factory<Chromosome<BitGene>>
-	_factory = BitChromosome.of(500, 0.3);
-	@Override protected Factory<Chromosome<BitGene>> getFactory() {
-		return _factory;
+	@Override
+	protected Factory<Chromosome<BitGene>> factory() {
+		return () -> BitChromosome.of(500, 0.3);
 	}
 
 	@Test(invocationCount = 20, successPercentage = 90)

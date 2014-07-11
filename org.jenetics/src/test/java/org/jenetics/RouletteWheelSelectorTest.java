@@ -25,12 +25,11 @@ import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-11 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public class RouletteWheelSelectorTest
 	extends ProbabilitySelectorTester<RouletteWheelSelector<DoubleGene, Double>>
 {
-
 
 	@Override
 	protected Distribution<Double> getDistribution() {
@@ -43,7 +42,7 @@ public class RouletteWheelSelectorTest
 	}
 
 	@Override
-	protected Factory<RouletteWheelSelector<DoubleGene, Double>> getFactory() {
+	protected Factory<RouletteWheelSelector<DoubleGene, Double>> factory() {
 		return SelectorFactories.RouletteWheelSelector;
 	}
 

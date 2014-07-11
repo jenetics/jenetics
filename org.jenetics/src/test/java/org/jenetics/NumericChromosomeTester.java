@@ -24,7 +24,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-05 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public abstract class NumericChromosomeTester<
 	N extends Number & Comparable<N>,
@@ -38,11 +38,11 @@ public abstract class NumericChromosomeTester<
 	public void minMax() {
 		@SuppressWarnings("unchecked")
 		final AbstractNumericChromosome<N, G>
-			c1 = (AbstractNumericChromosome<N, G>)getFactory().newInstance();
+			c1 = (AbstractNumericChromosome<N, G>) factory().newInstance();
 
 		@SuppressWarnings("unchecked")
 		final AbstractNumericChromosome<N, G>
-			c2 = (AbstractNumericChromosome<N, G>)getFactory().newInstance();
+			c2 = (AbstractNumericChromosome<N, G>) factory().newInstance();
 
 
 		assertMinMax(c1, c2);
@@ -54,7 +54,7 @@ public abstract class NumericChromosomeTester<
 	public void geneMinMax() {
 		@SuppressWarnings("unchecked")
 		final AbstractNumericChromosome<N, G>
-			c = (AbstractNumericChromosome<N, G>)getFactory().newInstance();
+			c = (AbstractNumericChromosome<N, G>) factory().newInstance();
 
 		for (G gene : c) {
 			Assert.assertSame(gene.getMin(), c.getMin());
@@ -66,7 +66,7 @@ public abstract class NumericChromosomeTester<
 	public void primitiveTypeAccess() {
 		@SuppressWarnings("unchecked")
 		final AbstractNumericChromosome<N, G>
-			c = (AbstractNumericChromosome<N, G>)getFactory().newInstance();
+			c = (AbstractNumericChromosome<N, G>) factory().newInstance();
 
 		Assert.assertEquals(c.byteValue(), c.byteValue(0));
 		Assert.assertEquals(c.shortValue(), c.shortValue(0));

@@ -22,7 +22,8 @@ package org.jenetics;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 
 /**
  * In truncation selection individuals are sorted according to their fitness.
@@ -36,7 +37,7 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-07-11 $</em>
  */
 public final class TruncationSelector<
 	G extends Gene<?, G>,
@@ -53,8 +54,8 @@ public final class TruncationSelector<
 
 	/**
 	 * This method sorts the population in descending order while calculating the
-	 * selection probabilities. (The method {@link Population#sort()} is called
-	 * by this method.)
+	 * selection probabilities. (The method {@link Population#populationSort()}
+	 * is called by this method.)
 	 *
 	 * @throws IllegalArgumentException if the sample size is greater than the
 	 *         population size or {@code count} is greater the the population
@@ -82,18 +83,18 @@ public final class TruncationSelector<
 			));
 		}
 
-		population.sortWith(opt.<C>descending());
+		population.sortWith(opt.descending());
 		return new Population<>(population.subList(0, count));
 	}
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).value();
+		return Hash.of(getClass()).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this || obj instanceof TruncationSelector<?, ?>;
+		return Equality.ofType(this, obj);
 	}
 
 	@Override

@@ -27,7 +27,8 @@ import static org.jenetics.util.math.ulpDistance;
 
 import java.util.Arrays;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 
 
 /**
@@ -41,7 +42,7 @@ import org.jenetics.internal.util.HashBuilder;
  *      </a>
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-07-11 $</em>
  */
 public class RouletteWheelSelector<
 	G extends Gene<?, G>,
@@ -86,12 +87,12 @@ public class RouletteWheelSelector<
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).value();
+		return Hash.of(getClass()).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this || obj != null && obj.getClass() == getClass();
+		return Equality.ofType(this, obj);
 	}
 
 	@Override

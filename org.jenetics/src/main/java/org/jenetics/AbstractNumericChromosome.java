@@ -25,7 +25,7 @@ import org.jenetics.util.ISeq;
  * Abstract numeric chromosome.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-05 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-04-16 $</em>
  * @since 1.6
  */
 abstract class AbstractNumericChromosome<
@@ -48,26 +48,6 @@ abstract class AbstractNumericChromosome<
 	 */
 	protected AbstractNumericChromosome(final ISeq<? extends G> genes) {
 		super(genes);
-	}
-
-	@Override
-	public byte byteValue(final int index) {
-		return getGene(index).getAllele().byteValue();
-	}
-
-	@Override
-	public byte byteValue() {
-		return byteValue(0);
-	}
-
-	@Override
-	public short shortValue(final int index) {
-		return getGene(index).getAllele().shortValue();
-	}
-
-	@Override
-	public short shortValue() {
-		return shortValue(0);
 	}
 
 	@Override

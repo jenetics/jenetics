@@ -34,17 +34,17 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 
-import org.jenetics.util.Array;
-import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 
 /**
  * Numeric chromosome implementation which holds 32 bit integer numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz  Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-04-10 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-06-30 $</em>
  * @since 2.0
  */
 @XmlJavaTypeAdapter(IntegerChromosome.Model.Adapter.class)
@@ -94,7 +94,7 @@ public class IntegerChromosome
 	 *         empty.
 	 */
 	public static IntegerChromosome of(final IntegerGene... genes) {
-		return new IntegerChromosome(Array.of(genes).toISeq());
+		return new IntegerChromosome(ISeq.of(genes));
 	}
 
 	/**
@@ -103,6 +103,7 @@ public class IntegerChromosome
 	 * @param min the min value of the {@link IntegerGene}s (inclusively).
 	 * @param max the max value of the {@link IntegerGene}s (inclusively).
 	 * @param length the length of the chromosome.
+	 * @return a new random {@code IntegerChromosome}
 	 */
 	public static IntegerChromosome of(
 		final int min,
@@ -117,6 +118,7 @@ public class IntegerChromosome
 	 *
 	 * @param min the minimal value of this chromosome (inclusively).
 	 * @param max the maximal value of this chromosome (inclusively).
+	 * @return a new random {@code IntegerChromosome} of length one
 	 */
 	public static IntegerChromosome of(final int min, final int max) {
 		return new IntegerChromosome(min, max);
@@ -134,12 +136,12 @@ public class IntegerChromosome
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(super.hashCode()).value();
+		return Hash.of(getClass()).and(super.hashCode()).value();
 	}
 
 	@Override
-	public boolean equals(final Object o) {
-		return o == this || o instanceof IntegerChromosome && super.equals(o);
+	public boolean equals(final Object obj) {
+		return Equality.of(this, obj).test(super::equals);
 	}
 
 	/* *************************************************************************
@@ -165,7 +167,7 @@ public class IntegerChromosome
 	{
 		in.defaultReadObject();
 
-		final Array<IntegerGene> genes = new Array<>(in.readInt());
+		final MSeq<IntegerGene> genes = MSeq.ofLength(in.readInt());
 		_min = in.readInt();
 		_max = in.readInt();
 
@@ -206,7 +208,7 @@ public class IntegerChromosome
 				m.length = c.length();
 				m.min = c._min;
 				m.max = c._max;
-				m.values = c.toSeq().map(Allele).asList();
+				m.values = c.toSeq().map(IntegerGene::getAllele).asList();
 				return m;
 			}
 
@@ -215,27 +217,10 @@ public class IntegerChromosome
 				final Integer min = model.min;
 				final Integer max = model.max;
 				return new IntegerChromosome(
-					Array.of(model.values).map(Gene(min, max)).toISeq()
+					ISeq.of(model.values)
+						.map(a -> new IntegerGene(a, min, max))
 				);
 			}
-		}
-
-		private static final Function<IntegerGene, Integer> Allele =
-			new Function<IntegerGene, Integer>() {
-				@Override
-				public Integer apply(IntegerGene value) {
-					return value.getAllele();
-				}
-			};
-
-		private static Function<Integer, IntegerGene>
-		Gene(final Integer min, final Integer max) {
-			return new Function<Integer, IntegerGene>() {
-				@Override
-				public IntegerGene apply(final Integer value) {
-					return new IntegerGene(value, min, max);
-				}
-			};
 		}
 
 	}

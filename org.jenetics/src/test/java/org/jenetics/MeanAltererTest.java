@@ -34,10 +34,9 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-17 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public class MeanAltererTest {
-
 
 	@Test
 	public void recombinate() {
@@ -50,7 +49,7 @@ public class MeanAltererTest {
 		final Population<DoubleGene, Double> p2 = p1.copy();
 		final int[] selected = new int[]{3, 34};
 
-		final MeanAlterer<DoubleGene> crossover = new MeanAlterer<>(0.1);
+		final MeanAlterer<DoubleGene, Double> crossover = new MeanAlterer<>(0.1);
 		crossover.recombine(p1, selected, 3);
 
 		Assert.assertEquals(diff(p1, p2), ngenes);
@@ -68,7 +67,7 @@ public class MeanAltererTest {
 			);
 
 		// The mutator to test.
-		final MeanAlterer<DoubleGene> crossover = new MeanAlterer<>(p);
+		final MeanAlterer<DoubleGene, Double> crossover = new MeanAlterer<>(p);
 
 		final long nallgenes = ngenes*nchromosomes*npopulation;
 		final long N = 100;
@@ -83,12 +82,15 @@ public class MeanAltererTest {
 
 		for (int i = 0; i < N; ++i) {
 			final long alterations = crossover.alter(population, 1);
-			histogram.accumulate(alterations);
+			histogram.accept(alterations);
 			variance.accumulate(alterations);
 		}
 
 		// Normal distribution as approximation for binomial distribution.
-		assertDistribution(histogram, new NormalDistribution<>(domain, mean, variance.getVariance()));
+		assertDistribution(
+			histogram,
+			new NormalDistribution<>(domain, mean, variance.getVariance())
+		);
 	}
 
 	@DataProvider(name = "alterProbabilityParameters")

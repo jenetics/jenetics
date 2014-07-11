@@ -21,7 +21,7 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.5 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-05-01 $</em>
  */
 
 apply plugin: 'java'
@@ -30,6 +30,6 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 
 project.tasks.withType(JavaCompile) { JavaCompile compile ->
-	sourceCompatibility = 1.7
-	targetCompatibility = 1.7
+	sourceCompatibility = 1.8
+	targetCompatibility = 1.8
 }

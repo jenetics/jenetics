@@ -19,52 +19,18 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.internal.util.object.CheckRange;
-import static org.jenetics.internal.util.object.NonNull;
-import static org.jenetics.internal.util.object.Verify;
-import static org.jenetics.util.functions.not;
-
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-07 $</em>
+ * @version <em>$Date: 2014-04-18 $</em>
  */
 public class objectTest {
 
 	@Test
-	public void rangeCheckPredicate1() {
-		final Array<Integer> array = new Array<>(100);
-		for (int i = 0; i < array.length(); ++i) {
-			array.set(i, i);
-		}
-		array.forEach(CheckRange(0, 100));
-	}
-
-	@Test(expectedExceptions = NullPointerException.class)
-	public void rangeCheckPredicate2() {
-		final Array<Integer> array = new Array<>(100);
-		for (int i = 0; i < array.length(); ++i) {
-			array.set(i, i);
-		}
-		array.set(45, null);
-		array.forEach(CheckRange(0, 100));
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void rangeCheckPredicate3() {
-		final Array<Integer> array = new Array<>(100);
-		for (int i = 0; i < array.length(); ++i) {
-			array.set(i, i);
-		}
-		array.set(45, 333);
-		array.forEach(CheckRange(0, 100));
-	}
-
-	@Test
 	public void validPredicate() {
-		final Array<Verifiable> array = new Array<>(100);
+		final MSeq<Verifiable> array = MSeq.ofLength(100);
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, new Verifiable() {
 				@Override public boolean isValid() {
@@ -72,34 +38,14 @@ public class objectTest {
 				}
 			});
 		}
-		Assert.assertEquals(array.indexWhere(not(Verify)), -1);
+		Assert.assertEquals(array.indexWhere(o -> !o.isValid()), -1);
 
 		array.set(77, new Verifiable() {
 			@Override public boolean isValid() {
 				return false;
 			}
 		});
-		Assert.assertEquals(array.indexWhere(not(Verify)), 77);
-	}
-
-	@Test
-	public void nonNullPredicate1() {
-		final Array<Integer> array = new Array<>(100);
-		for (int i = 0; i < array.length(); ++i) {
-			array.set(i, i);
-		}
-
-		array.forEach(NonNull);
-	}
-
-	@Test(expectedExceptions = NullPointerException.class)
-	public void nonNullPredicate2() {
-		final Array<Integer> array = new Array<>(100);
-		for (int i = 0; i < array.length(); ++i) {
-			array.set(i, i);
-		}
-		array.set(45, null);
-		array.forEach(NonNull);
+		Assert.assertEquals(array.indexWhere(o -> !o.isValid()), 77);
 	}
 
 }

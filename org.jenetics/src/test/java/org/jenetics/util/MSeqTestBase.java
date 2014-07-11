@@ -22,26 +22,22 @@ package org.jenetics.util;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Supplier;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-15 $</em>
+ * @version <em>$Date: 2014-05-14 $</em>
  */
 public abstract class MSeqTestBase extends SeqTestBase {
 
 	@Override
 	protected abstract MSeq<Integer> newSeq(final int length);
 
-	private Factory<Integer> RandomInt(final Random random) {
-		return new Factory<Integer>() {
-			@Override
-			public Integer newInstance() {
-				return random.nextInt();
-			}
-		};
+	private Supplier<Integer> RandomInt(final Random random) {
+		return () -> random.nextInt();
 	}
 
 	@Test
@@ -104,7 +100,8 @@ public abstract class MSeqTestBase extends SeqTestBase {
 		final long seed = math.random.seed();
 		final Random random = new Random(seed);
 
-		seq.setAll(random.nextInt());
+		final Integer v = random.nextInt();
+		seq.fill(() -> v);
 
 		random.setSeed(seed);
 		final Integer value = random.nextInt();

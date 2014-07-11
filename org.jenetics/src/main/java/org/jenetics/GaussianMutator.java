@@ -20,12 +20,14 @@
 package org.jenetics;
 
 import static java.lang.String.format;
+import static org.jenetics.util.math.random.indexes;
 
 import java.util.Random;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
+import org.jenetics.internal.util.IntRef;
 
-import org.jenetics.util.IndexStream;
 import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.math;
@@ -46,10 +48,13 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-07-11 $</em>
  */
-public final class GaussianMutator<G extends NumericGene<?, G>>
-	extends Mutator<G>
+public final class GaussianMutator<
+	G extends NumericGene<?, G>,
+	C extends Comparable<? super C>
+>
+	extends Mutator<G, C>
 {
 
 	public GaussianMutator() {
@@ -62,16 +67,14 @@ public final class GaussianMutator<G extends NumericGene<?, G>>
 	@Override
 	protected int mutate(final MSeq<G> genes, final double p) {
 		final Random random = RandomRegistry.getRandom();
-		final IndexStream stream = IndexStream.Random(genes.length(), p);
 
-		int alterations = 0;
-		for (int i = stream.next(); i != -1; i = stream.next()) {
+		final IntRef alterations = new IntRef(0);
+		indexes(random, genes.length(), p).forEach(i -> {
 			genes.set(i, mutate(genes.get(i), random));
+			++alterations.value;
+		});
 
-			++alterations;
-		}
-
-		return alterations;
+		return alterations.value;
 	}
 
 	G mutate(final G gene, final Random random) {
@@ -88,19 +91,12 @@ public final class GaussianMutator<G extends NumericGene<?, G>>
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(super.hashCode()).value();
+		return Hash.of(getClass()).and(super.hashCode()).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null || obj.getClass() != getClass()) {
-			return false;
-		}
-
-		return super.equals(obj);
+		return Equality.of(this, obj).test(super::equals);
 	}
 
 	@Override

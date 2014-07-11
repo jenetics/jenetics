@@ -1,3 +1,5 @@
+import java.util.function.Function;
+
 import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;
 import org.jenetics.GeneticAlgorithm;
@@ -8,7 +10,6 @@ import org.jenetics.Optimize;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Function;
 
 final class OneCounter
 	implements Function<Genotype<BitGene>, Integer>

@@ -32,8 +32,8 @@ import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.jenetics.util.Array;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 import org.jenetics.util.Mean;
 import org.jenetics.util.RandomRegistry;
 
@@ -41,7 +41,7 @@ import org.jenetics.util.RandomRegistry;
  * NumericGene implementation which holds a 64 bit integer number.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-04-09 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-05-13 $</em>
  * @since 1.6
  */
 @XmlJavaTypeAdapter(LongGene.Model.Adapter.class)
@@ -105,11 +105,9 @@ public final class LongGene
 		final long max = maximum;
 		final Random r = RandomRegistry.getRandom();
 
-		final Array<LongGene> genes = new Array<>(length);
-		for (int i = 0; i < length; ++i) {
-			genes.set(i, new LongGene(nextLong(r, min, max), minimum, maximum));
-		}
-		return genes.toISeq();
+		return MSeq.<LongGene>ofLength(length)
+			.fill(() -> new LongGene(nextLong(r, min, max), minimum, maximum))
+			.toISeq();
 	}
 
 	@Override

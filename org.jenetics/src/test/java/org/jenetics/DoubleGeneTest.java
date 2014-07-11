@@ -25,59 +25,61 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 import java.util.Random;
+import java.util.stream.IntStream;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.UniformDistribution;
-import org.jenetics.stat.Variance;
 import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-12 $</em>
+ * @version <em>$Date: 2014-07-01 $</em>
  */
 public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 
-	private final Factory<DoubleGene> _factory = DoubleGene.of(0, Double.MAX_VALUE);
-	@Override protected Factory<DoubleGene> getFactory() {
-		return _factory;
+	@Override
+	protected Factory<DoubleGene> factory() {
+		return () -> DoubleGene.of(0, Double.MAX_VALUE);
 	}
 
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstanceDistribution() {
+		final double min = 0;
+		final double max = 100;
+		final Histogram<Double> histogram = Histogram.of(min, max, 10);
+
 		try (Scoped<?> s = RandomRegistry.scope(new Random(12345))) {
+			IntStream.range(0, 200_000)
+				.mapToObj(i -> DoubleGene.of(min, max).getAllele())
+				.forEach(histogram::accept);
+		}
 
-			final double min = 0;
-			final double max = 100;
-			final Factory<DoubleGene> factory = DoubleGene.of(min, max);
+		assertDistribution(histogram, new UniformDistribution<>(min, max));
+	}
 
-			final Variance<Double> variance = new Variance<>();
+	@Test
+	public void mean() {
+		final double min = -Double.MAX_VALUE;
+		final double max = Double.MAX_VALUE;
+		final DoubleGene template = DoubleGene.of(min, max);
 
-			final Histogram<Double> histogram = Histogram.of(min, max, 10);
+		for (int i = 1; i < 500; ++i) {
+			final DoubleGene a = template.newInstance(i - 50.0);
+			final DoubleGene b = template.newInstance((i - 100)*3.0);
+			final DoubleGene c = a.mean(b);
 
-			final int samples = 100000;
-			for (int i = 0; i < samples; ++i) {
-				final DoubleGene g1 = factory.newInstance();
-				final DoubleGene g2 = factory.newInstance();
-
-				assertTrue(g1.getAllele().compareTo(min) >= 0);
-				assertTrue(g1.getAllele().compareTo(max) <= 0);
-				assertTrue(g2.getAllele().compareTo(min) >= 0);
-				assertTrue(g2.getAllele().compareTo(max) <= 0);
-				assertFalse(g1.equals(g2));
-				Assert.assertNotSame(g1, g2);
-
-				variance.accumulate(g1.getAllele());
-				variance.accumulate(g2.getAllele());
-				histogram.accumulate(g1.getAllele());
-				histogram.accumulate(g2.getAllele());
-			}
-
-			assertDistribution(histogram, new UniformDistribution<>(min, max));
+			assertEquals(a.getMin(), min);
+			assertEquals(a.getMax(), max);
+			assertEquals(b.getMin(), min);
+			assertEquals(b.getMax(), max);
+			assertEquals(c.getMin(), min);
+			assertEquals(c.getMax(), max);
+			assertEquals(c.getAllele(), ((i - 50) + ((i - 100)*3))/2.0);
 		}
 	}
 
@@ -101,27 +103,6 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 		DoubleGene gene = DoubleGene.of(-10.567, 10.567);
 		assertEquals(gene.getMin(), -10.567);
 		assertEquals(gene.getMax(), 10.567);
-	}
-
-	@Test
-	public void mean() {
-		final double min = -Double.MAX_VALUE;
-		final double max = Double.MAX_VALUE;
-		final DoubleGene template = DoubleGene.of(min, max);
-
-		for (int i = 1; i < 500; ++i) {
-			final DoubleGene a = template.newInstance(i - 50.0);
-			final DoubleGene b = template.newInstance((i - 100)*3.0);
-			final DoubleGene c = a.mean(b);
-
-			assertEquals(a.getMin(), min);
-			assertEquals(a.getMax(), max);
-			assertEquals(b.getMin(), min);
-			assertEquals(b.getMax(), max);
-			assertEquals(c.getMin(), min);
-			assertEquals(c.getMax(), max);
-			assertEquals(c.getAllele(), ((i - 50) + ((i - 100)*3))/2.0);
-		}
 	}
 
 	@Test
