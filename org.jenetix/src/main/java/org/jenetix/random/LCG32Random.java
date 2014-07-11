@@ -20,11 +20,13 @@
 package org.jenetix.random;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.util.object.hashCodeOf;
+import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
 
-import org.jenetics.util.LCG64ShiftRandom;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
+
 import org.jenetics.util.Random32;
 import org.jenetics.util.math;
 
@@ -99,15 +101,10 @@ public class LCG32Random extends Random32 {
 
 		@Override
 		public boolean equals(final Object obj) {
-			if (obj == this) {
-				return true;
-			}
-			if (!(obj instanceof Param)) {
-				return false;
-			}
-
-			final Param param = (Param)obj;
-			return a == param.a && b == param.b;
+			return Equality.of(this, obj).test( param ->
+				eq(a, param.a) &&
+				eq(b, param.b)
+			);
 		}
 
 		@Override
@@ -298,26 +295,23 @@ public class LCG32Random extends Random32 {
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass())
-				.and(_a).and(_b).and(_r)
-				.and(_seed).and(_param).value();
+		return Hash.of(getClass())
+				.and(_a)
+				.and(_b)
+				.and(_r)
+				.and(_seed)
+				.and(_param).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (!(obj instanceof LCG64ShiftRandom)) {
-			return false;
-		}
-
-		final LCG32Random random = (LCG32Random)obj;
-		return _a == random._a &&
-				_b == random._b &&
-				_r == random._r &&
-				_seed == random._seed &&
-				_param.equals(random._param);
+		return Equality.of(this, obj).test(random ->
+			eq(_a, random._a) &&
+			eq(_b, random._b) &&
+			eq(_r, random._r) &&
+			eq(_seed, random._seed) &&
+			eq(_param, random._param)
+		);
 	}
 
 	/**

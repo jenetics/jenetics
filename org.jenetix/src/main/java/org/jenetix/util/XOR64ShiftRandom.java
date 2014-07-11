@@ -19,7 +19,10 @@
  */
 package org.jenetix.util;
 
-import static org.jenetics.util.object.hashCodeOf;
+import static org.jenetics.internal.util.Equality.eq;
+
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.Random64;
 import org.jenetics.util.math;
@@ -61,9 +64,9 @@ public class XOR64ShiftRandom extends Random64 {
 
 
 	/**
-	 * This field can be used to initial the {@link RandomRegistry} with a fast
-	 * and thread safe random engine of this type; each thread gets a <i>local</i>
-	 * copy of the {@code XORShiftRandom} engine.
+	 * This field can be used to initial the {@link org.jenetics.util.RandomRegistry}
+	 * with a fast and thread safe random engine of this type; each thread gets
+	 * a <i>local</i> copy of the {@code XORShiftRandom} engine.
 	 *
 	 * [code]
 	 * RandomRegistry.setRandom(new XORShiftRandom.ThreadLocal());
@@ -146,12 +149,12 @@ public class XOR64ShiftRandom extends Random64 {
 		}
 
 		@Override
-		public final synchronized void setSeed(final long seed) {
+		public synchronized void setSeed(final long seed) {
 			super.setSeed(seed);
 		}
 
 		@Override
-		public final synchronized long nextLong() {
+		public synchronized long nextLong() {
 			return super.nextLong();
 		}
 
@@ -206,20 +209,15 @@ public class XOR64ShiftRandom extends Random64 {
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(_x).value();
+		return Hash.of(getClass())
+			.and(_x).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (!(obj instanceof XOR64ShiftRandom)) {
-			return false;
-		}
-
-		final XOR64ShiftRandom random = (XOR64ShiftRandom)obj;
-		return _x == random._x;
+		return Equality.of(this, obj).test(random ->
+			eq(_x, random._x)
+		);
 	}
 
 	@Override
