@@ -39,7 +39,7 @@ import org.jenetics.util.StaticObject;
  * JAXB helper methods.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-06-17 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-07-11 $</em>
  * @since 2.0
  */
 public class jaxb extends StaticObject {
@@ -96,7 +96,6 @@ public class jaxb extends StaticObject {
 		);
 	}
 
-	@SuppressWarnings({"unchecked", "rawtypes"})
 	private static XmlAdapter<Object, Object> newXmlAdapter(final Class<?> cls) {
 		return innerClasses(cls)
 			.filter(XmlAdapter.class::isAssignableFrom)
