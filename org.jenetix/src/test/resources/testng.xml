@@ -20,25 +20,15 @@
  # Author:
  #    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  #
- # Version: <em>$Date: 2013-12-09 $</em>
+ # Version: <em>$Date: 2014-07-11 $</em>
  #
  ###############################################################################
 -->
 <suite name="Jenetix" verbose="2" parallel="tests" thread-count="5" >
-	<test name="org.jenetix.LargeIntegerChromosome">
-		<classes>
-			<class name="org.jenetix.LargeIntegerChromosomeTest" />
-		</classes>
-	</test>
-	<test name="org.jenetix.LargeIntegerGene">
-		<classes>
-			<class name="org.jenetix.LargeIntegerGeneTest" />
-		</classes>
-	</test>
 	<test name="org.jenetix.util.NumberRandom">
 		<classes>
 			<class name="org.jenetix.util.LargeIntegerRandomTest" />
 			<class name="org.jenetix.util.LCG32ShiftRandomTest" />
 		</classes>
 	</test>
-</suite> 
+</suite>
