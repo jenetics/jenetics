@@ -19,17 +19,19 @@
  */
 package org.jenetix.random;
 
+import org.jenetics.util.Random64;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
  * @version !__version__! &mdash; <em>$Date: 2014-07-11 $</em>
  */
-public class MRGNRandom extends ParallelRandom {
+public class MRGNRandom extends Random64 implements ParallelRandom {
 
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	protected void step() {
+	public void step() {
 	}
 
 	@Override

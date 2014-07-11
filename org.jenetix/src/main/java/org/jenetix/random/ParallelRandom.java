@@ -19,35 +19,31 @@
  */
 package org.jenetix.random;
 
-import org.jenetics.util.Random64;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
  * @version !__version__! &mdash; <em>$Date: 2014-07-11 $</em>
  */
-public abstract class ParallelRandom extends Random64 {
-
-	private static final long serialVersionUID = 1L;
+public interface ParallelRandom {
 
 	/**
 	 * Moves the random engine one step forward. This method will change the
 	 * internal state of the object.
 	 */
-	protected abstract void step();
+	public void step();
 
 	/**
 	 * Changes the internal state of the PRNG in a way that future calls to
-	 * {@link #nextLong()} will generated the s<sup>th</sup> sub-stream of
-	 * p<sup>th</sup> sub-streams. <i>s</i> must be within the range of
-	 * {@code [0, p-1)}. This method is mainly used for <i>parallelization</i>
-	 * via <i>leapfrogging</i>.
+	 * {@link java.util.Random#nextLong()} will generated the s<sup>th</sup>
+	 * sub-stream of p<sup>th</sup> sub-streams. <i>s</i> must be within the
+	 * range of {@code [0, p-1)}. This method is mainly used for
+	 * <i>parallelization</i> via <i>leapfrogging</i>.
 	 *
 	 * @param p the overall number of sub-streams
 	 * @param s the s<sup>th</sup> sub-stream
 	 * @throws IllegalArgumentException if {@code p < 1 || s >= p}.
 	 */
-	public abstract void split(final int p, final int s);
+	public void split(final int p, final int s);
 
 	/**
 	 * Changes the internal state of the PRNG in such a way that the engine
@@ -56,7 +52,7 @@ public abstract class ParallelRandom extends Random64 {
 	 * @param s the 2<sup>s</sup> steps to jump ahead.
 	 * @throws IllegalArgumentException if {@code s < 0}.
 	 */
-	public abstract void jump2(final int s);
+	public void jump2(final int s);
 
 	/**
 	 * Changes the internal state of the PRNG in such a way that the engine
@@ -65,7 +61,7 @@ public abstract class ParallelRandom extends Random64 {
 	 * @param step the steps to jump ahead.
 	 * @throws IllegalArgumentException if {@code s < 0}.
 	 */
-	public void jump(final long step) {
+	public default void jump(final long step) {
 		if (step < 0) {
 			throw new IllegalArgumentException(String.format(
 				"step must be positive but was %d", step
@@ -89,7 +85,7 @@ public abstract class ParallelRandom extends Random64 {
 		}
 	}
 
-	protected void backward() {
+	public default void backward() {
 		for (int i = 0; i < Long.SIZE; ++i) {
 			jump2(i);
 		}
