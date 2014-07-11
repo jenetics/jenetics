@@ -23,6 +23,7 @@ import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
+import java.util.Random;
 
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
@@ -366,5 +367,10 @@ public class LCG32Random extends Random32 {
 		return 0;
 	}
 
+
+	public static void main(final String[] args) {
+		final Random random = new LCG32Random();
+		random.ints().limit(10).forEach(System.out::println);
+	}
 
 }
