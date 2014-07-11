@@ -28,7 +28,7 @@ import org.jenetics.internal.math.random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__version__@
- * @version @__version__@ &mdash; <em>$Date: 2013-12-09 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2014-07-11 $</em>
  */
 public abstract class Random32 extends PRNG {
 
@@ -51,12 +51,12 @@ public abstract class Random32 extends PRNG {
 
 
 	@Override
-	public long nextLong() {
+	public final long nextLong() {
 		return ((long)(nextInt()) << 32) + nextInt();
 	}
 
 	@Override
-	protected int next(final int bits) {
+	protected final int next(final int bits) {
 		return nextInt() >>> (32 - bits);
 	}
 
