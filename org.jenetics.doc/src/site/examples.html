@@ -88,7 +88,7 @@ import org.jenetics.Optimize;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Function;
+import java.util.function.Function;
 
 final class OneCounter
 	implements Function&lt;Genotype&lt;BitGene&gt;, Integer&gt;
@@ -111,7 +111,7 @@ public class OnesCounting {
 			new BitChromosome(20, 0.15)
 		);
 		Function&lt;Genotype&lt;BitGene&gt;, Integer&gt; ff = new OneCounter();
-		GeneticAlgorithm&lt;BitGene, Integer&gt; ga = 
+		GeneticAlgorithm&lt;BitGene, Integer&gt; ga =
 			new GeneticAlgorithm&lt;&gt;(gtf, ff, Optimize.MAXIMUM);
 
 		ga.setStatisticsCalculator(
@@ -162,9 +162,9 @@ selection---this is the default selector.
   |        Fitness error of mean: 1.73948268172             |
   +---------------------------------------------------------+
 </pre></div>
-	
+
 <p>
-The given example will print the overall timing statistics onto the console. 
+The given example will print the overall timing statistics onto the console.
 </p>
 
 
@@ -192,7 +192,7 @@ import org.jenetics.NumberStatistics;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Function;
+import java.util.function.Function;
 
 final class Item {
 	public double size;
@@ -254,9 +254,9 @@ public class Knapsack {
 			new BitChromosome(15, 0.5)
 		);
 
-		GeneticAlgorithm&lt;BitGene, Float64&gt; ga = 
+		GeneticAlgorithm&lt;BitGene, Float64&gt; ga =
 			new GeneticAlgorithm&lt;&gt;(genotype, ff);
-		
+
 		ga.setMaximalPhenotypeAge(30);
 		ga.setPopulationSize(100);
 		ga.setStatisticsCalculator(
@@ -334,7 +334,7 @@ import org.jenetics.PartiallyMatchedCrossover;
 import org.jenetics.PermutationChromosome;
 import org.jenetics.SwapMutator;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Function;
+import java.util.function.Function;
 
 class FF
 	implements Function&lt;Genotype&lt;EnumGene&lt;Integer&gt;&gt;, Float64&gt;
@@ -345,7 +345,7 @@ class FF
 	}
 	@Override
 	public Float64 apply(Genotype&lt;EnumGene&lt;Integer&gt;&gt; genotype) {
-		Chromosome&lt;EnumGene&lt;Integer&gt;&gt; path = 
+		Chromosome&lt;EnumGene&lt;Integer&gt;&gt; path =
 			genotype.getChromosome();
 
 		double length = 0.0;
@@ -363,7 +363,7 @@ public class TravelingSalesman {
 	public static void main(String[] args) {
 		final int stops = 20;
 
-		Function&lt;Genotype&lt;EnumGene&lt;Integer&gt;&gt;, Float64&gt; ff = 
+		Function&lt;Genotype&lt;EnumGene&lt;Integer&gt;&gt;, Float64&gt; ff =
 			new FF(adjacencyMatrix(stops));
 		Factory&lt;Genotype&lt;EnumGene&lt;Integer&gt;&gt;&gt; gt = Genotype.valueOf(
 			PermutationChromosome.ofInteger(stops)

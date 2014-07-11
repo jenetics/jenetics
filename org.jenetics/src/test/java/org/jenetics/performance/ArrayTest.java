@@ -25,13 +25,13 @@ import java.util.ListIterator;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Function;
+import java.util.function.Function;
 import org.jenetics.util.arrays;
 import org.jenetics.util.shuffling;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-16 $</em>
+ * @version <em>$Date: 2014-07-11 $</em>
  */
 @Suite("Array")
 public class ArrayTest {

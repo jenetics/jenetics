@@ -82,7 +82,7 @@ Ones counting is one of the simplest model-problem and consists of a binary chro
 	import org.jenetics.RouletteWheelSelector;
 	import org.jenetics.SinglePointCrossover;
 	import org.jenetics.util.Factory;
-	import org.jenetics.util.Function;
+	import java.util.function.Function;
 
 	final class OneCounter
 		implements Function<Genotype<BitGene>, Integer>
@@ -166,7 +166,7 @@ In the [knapsack problem](http://en.wikipedia.org/wiki/Knapsack_problem) a set o
 	import org.jenetics.SinglePointCrossover;
 	import org.jenetics.TournamentSelector;
 	import org.jenetics.util.Factory;
-	import org.jenetics.util.Function;
+	import java.util.function.Function;
 	import org.jenetics.util.LCG64ShiftRandom;
 	import org.jenetics.util.RandomRegistry;
 	import org.jenetics.util.Scoped;
@@ -302,7 +302,7 @@ The Traveling Salesman problem is a very good example which shows you how to sol
 	import org.jenetics.PermutationChromosome;
 	import org.jenetics.SwapMutator;
 	import org.jenetics.util.Factory;
-	import org.jenetics.util.Function;
+	import java.util.function.Function;
 
 	public class TravelingSalesman {
 
