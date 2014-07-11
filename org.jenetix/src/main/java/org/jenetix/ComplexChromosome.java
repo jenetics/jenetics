@@ -21,8 +21,8 @@ package org.jenetix;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since @__version__@
- * @version @__version__@ &mdash; <em>$Date: 2013-12-09 $</em>
+ * @since !__version__!
+ * @version !__version__! &mdash; <em>$Date: 2014-07-11 $</em>
  */
 public class ComplexChromosome {
 
