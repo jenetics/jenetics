@@ -19,8 +19,8 @@
  */
 package org.jenetics;
 
-import static org.jenetics.internal.util.object.checkProbability;
 import static org.jenetics.internal.util.Equality.eq;
+import static org.jenetics.internal.util.object.checkProbability;
 
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
@@ -30,7 +30,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-07-10 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-07-11 $</em>
  */
 public abstract class AbstractAlterer<
 	G extends Gene<?, G>,

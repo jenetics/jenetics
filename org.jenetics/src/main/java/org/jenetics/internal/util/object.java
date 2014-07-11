@@ -21,9 +21,6 @@ package org.jenetics.internal.util;
 
 import static java.lang.String.format;
 
-import java.util.Arrays;
-
-import org.jenetics.util.Seq;
 import org.jenetics.util.StaticObject;
 
 /**
@@ -31,7 +28,7 @@ import org.jenetics.util.StaticObject;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-07-10 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-07-11 $</em>
  */
 public final class object extends StaticObject {
 	private object() {}
