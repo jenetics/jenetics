@@ -5432,8 +5432,8 @@ status open
 
 \begin_layout Plain Layout
 Measured on a Intel(R) Core(TM) i5-3427U CPU @ 1.80GHz with Java(TM) SE Runtime
- Environment (build 1.7.0_51-b13)---Java HotSpot(TM) 64-Bit Server VM (build
- 24.51-b03, mixed mode)
+ Environment (build 1.8.0_05-b13)---Java HotSpot(TM) 64-Bit Server VM (build
+ 25.5-b02, mixed mode)
 \end_layout
 
 \end_inset
@@ -5597,7 +5597,7 @@ ThreadLocalRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $272\cdot10^{6}$
+\begin_inset Formula $253\cdot10^{6}$
 \end_inset
 
 
@@ -5609,7 +5609,7 @@ ThreadLocalRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $182\cdot10^{6}$
+\begin_inset Formula $365\cdot10^{6}$
 \end_inset
 
 
@@ -5621,7 +5621,7 @@ ThreadLocalRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $272\cdot10^{6}$
+\begin_inset Formula $249\cdot10^{6}$
 \end_inset
 
 
@@ -5633,7 +5633,7 @@ ThreadLocalRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $180\cdot10^{6}$
+\begin_inset Formula $229\cdot10^{6}$
 \end_inset
 
 
@@ -5658,7 +5658,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $230\cdot10^{6}$
+\begin_inset Formula $266\cdot10^{6}$
 \end_inset
 
 
@@ -5670,7 +5670,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $247\cdot10^{6}$
+\begin_inset Formula $270\cdot10^{6}$
 \end_inset
 
 
@@ -5682,7 +5682,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $213\cdot10^{6}$
+\begin_inset Formula $227\cdot10^{6}$
 \end_inset
 
 
@@ -5694,7 +5694,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $209\cdot10^{6}$
+\begin_inset Formula $233\cdot10^{6}$
 \end_inset
 
 
