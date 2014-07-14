@@ -84,7 +84,7 @@ public class RandomEnginePerf {
 
 
 	public static void main(String[] args) throws RunnerException {
-		Options opt = new OptionsBuilder()
+		final Options opt = new OptionsBuilder()
 			.include(".*" + RandomEnginePerf.class.getSimpleName() + ".*")
 			.warmupIterations(3)
 			.measurementIterations(5)
