@@ -40,7 +40,7 @@ import org.jenetics.util.Random64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz  Wilhelmstötter</a>
- * @version !__version__! &mdash; <em>$Date: 2014-07-14 $</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-07-15 $</em>
  * @since !__version__!
  */
 public class RandomEnginePerf {
@@ -88,25 +88,25 @@ public class RandomEnginePerf {
 	}
 	*/
 
-	public static class SimpleRandom64Perf extends Base {
-		{random = new Random64() {
+	public static class SimpleRandom64Perf extends Base {{
+		random = new Random64() {
 			long _x = 0;
 			@Override
 			public long nextLong() {
 				return ++_x;
 			}
-		};}
-	}
+		};
+	}}
 
-	public static class SimpleRandom32Perf extends Base {
-		{random = new Random32() {
+	public static class SimpleRandom32Perf extends Base {{
+		random = new Random32() {
 			int _x = 0;
 			@Override
 			public int nextInt() {
 				return ++_x;
 			}
-		};}
-	}
+		};
+	}}
 
 	/*
 	public static class ThreadLocalRandomPerf extends Base {
