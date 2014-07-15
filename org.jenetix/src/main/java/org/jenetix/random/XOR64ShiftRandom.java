@@ -56,7 +56,7 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-07-11 $</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-07-15 $</em>
  */
 public class XOR64ShiftRandom extends Random64 {
 
@@ -77,9 +77,11 @@ public class XOR64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2014-07-11 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2014-07-15 $</em>
 	 */
-	public static final class ThreadLocal extends java.lang.ThreadLocal<XOR64ShiftRandom> {
+	public static final class ThreadLocal
+		extends java.lang.ThreadLocal<XOR64ShiftRandom>
+	{
 
 		private final long _seed = math.random.seed();
 
@@ -127,7 +129,7 @@ public class XOR64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2014-07-11 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2014-07-15 $</em>
 	 */
 	public static final class ThreadSafe extends XOR64ShiftRandom {
 		private static final long serialVersionUID = 1L;
