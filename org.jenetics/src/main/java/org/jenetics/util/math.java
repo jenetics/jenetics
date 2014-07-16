@@ -25,6 +25,7 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.object.checkProbability;
 
+import java.math.BigInteger;
 import java.util.Random;
 import java.util.stream.IntStream;
 
@@ -35,7 +36,7 @@ import org.jenetics.internal.math.probability;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-07-11 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-07-16 $</em>
  */
 public final class math extends StaticObject {
 	private math() {}
@@ -398,7 +399,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.3
-	 * @version 1.3 &mdash; <em>$Date: 2014-07-11 $</em>
+	 * @version 1.3 &mdash; <em>$Date: 2014-07-16 $</em>
 	 */
 	public static final class statistics extends StaticObject {
 		private statistics() {}
@@ -495,7 +496,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.2 &mdash; <em>$Date: 2014-07-11 $</em>
+	 * @version 1.2 &mdash; <em>$Date: 2014-07-16 $</em>
 	 */
 	public static final class random extends StaticObject {
 		private random() {}
@@ -548,6 +549,8 @@ public final class math extends StaticObject {
 		 * @return an new random index stream
 		 * @throws java.lang.IllegalArgumentException if {@code p} is not a
 		 *         valid probability.
+		 * @throws java.lang.NullPointerException if the given {@code random}
+		 *         engine is {@code null}.
 		 */
 		public static IntStream indexes(
 			final Random random,
@@ -568,6 +571,8 @@ public final class math extends StaticObject {
 		 * @return a random integer greater than or equal to {@code min} and
 		 *         less than or equal to {@code max}
 		 * @throws IllegalArgumentException if {@code min >= max}
+		 * @throws java.lang.NullPointerException if the given {@code random}
+		 *         engine is {@code null}.
 		 */
 		public static int nextInt(
 			final Random random,
@@ -604,6 +609,8 @@ public final class math extends StaticObject {
 		 * @return a random long integer greater than or equal to {@code min}
 		 *         and less than or equal to {@code max}
 		 * @throws IllegalArgumentException if {@code min >= max}
+		 * @throws java.lang.NullPointerException if the given {@code random}
+		 *         engine is {@code null}.
 		 */
 		public static long nextLong(
 			final Random random,
@@ -643,6 +650,8 @@ public final class math extends StaticObject {
 		 *         between 0 (inclusive) and n (exclusive) from the given random
 		 *         number generator's sequence
 		 * @throws IllegalArgumentException if n is smaller than 1.
+		 * @throws java.lang.NullPointerException if the given {@code random}
+		 *         engine is {@code null}.
 		 */
 		public static long nextLong(final Random random, final long n) {
 			if (n <= 0) {
@@ -667,9 +676,11 @@ public final class math extends StaticObject {
 		 *
 		 * @param random the random engine used for creating the random number.
 		 * @param min lower bound for generated float value (inclusively)
-		 * @param max upper bound for generated float value (exlusively)
+		 * @param max upper bound for generated float value (exclusively)
 		 * @return a random float greater than or equal to {@code min} and less
 		 *         than to {@code max}
+		 * @throws java.lang.NullPointerException if the given {@code random}
+		 *         engine is {@code null}.
 		 */
 		public static float nextFloat(
 			final Random random,
@@ -701,6 +712,8 @@ public final class math extends StaticObject {
 		 * @param max upper bound for generated double value (exclusively)
 		 * @return a random double greater than or equal to {@code min} and less
 		 *         than to {@code max}
+		 * @throws java.lang.NullPointerException if the given {@code random}
+		 *         engine is {@code null}.
 		 */
 		public static double nextDouble(
 			final Random random,
@@ -721,6 +734,72 @@ public final class math extends StaticObject {
 			}
 
 			return value;
+		}
+
+		/**
+		 * Returns a pseudo-random, uniformly distributed int value between 0
+		 * (inclusive) and the specified value (exclusive), drawn from the given
+		 * random number generator's sequence.
+		 *
+		 * @param random the random engine used for creating the random number.
+		 * @param n the bound on the random number to be returned. Must be
+		 *        positive.
+		 * @return the next pseudo-random, uniformly distributed int value
+		 *         between 0 (inclusive) and n (exclusive) from the given random
+		 *         number generator's sequence
+		 * @throws IllegalArgumentException if n is smaller than 1.
+		 * @throws java.lang.NullPointerException if the given {@code random}
+		 *         engine of the maximal value {@code n} is {@code null}.
+		 */
+		public static BigInteger nextBigInteger(
+			final Random random,
+			final BigInteger n
+		) {
+			if (n.compareTo(BigInteger.ONE) < 0) {
+				throw new IllegalArgumentException(format(
+					"n is smaller than one: %d", n
+				));
+			}
+
+			BigInteger result = null;
+			if (n.bitLength() <= Integer.SIZE - 1) {
+				result = BigInteger.valueOf(random.nextInt(n.intValue()));
+			} else if (n.bitLength() <= Long.SIZE - 1) {
+				result = BigInteger.valueOf(nextLong(random, n.longValue()));
+			} else {
+				do {
+					result = new BigInteger(n.bitLength(), random);
+				} while (result.compareTo(n) >= 0);
+			}
+
+			return result;
+		}
+
+		/**
+		 * Returns a pseudo-random, uniformly distributed int value between min
+		 * and max (min and max included).
+		 *
+		 * @param random the random engine to use for calculating the random
+		 *        long value
+		 * @param min lower bound for generated long integer (inclusively)
+		 * @param max upper bound for generated long integer (exclusively)
+		 * @return a random long integer greater than or equal to {@code min}
+		 *         and less than or equal to {@code max}
+		 * @throws IllegalArgumentException if {@code min >= max}
+		 * @throws java.lang.NullPointerException if one of the given parameters
+		 *         are {@code null}.
+		 */
+		public static BigInteger nextBigInteger(
+			final Random random,
+			final BigInteger min, final BigInteger max
+		) {
+			if (min.compareTo(max) >= 0) {
+				throw new IllegalArgumentException(format(
+					"min >= max: %d >= %d.", min, max
+				));
+			}
+
+			return nextBigInteger(random, max.subtract(min)).add(min);
 		}
 
 		/**
