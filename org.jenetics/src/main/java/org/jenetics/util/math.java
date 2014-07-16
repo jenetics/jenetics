@@ -782,7 +782,7 @@ public final class math extends StaticObject {
 		 * @param random the random engine to use for calculating the random
 		 *        long value
 		 * @param min lower bound for generated long integer (inclusively)
-		 * @param max upper bound for generated long integer (exclusively)
+		 * @param max upper bound for generated long integer (inclusively)
 		 * @return a random long integer greater than or equal to {@code min}
 		 *         and less than or equal to {@code max}
 		 * @throws IllegalArgumentException if {@code min >= max}
@@ -799,7 +799,8 @@ public final class math extends StaticObject {
 				));
 			}
 
-			return nextBigInteger(random, max.subtract(min)).add(min);
+			return nextBigInteger(random, max.subtract(min).add(BigInteger.ONE))
+						.add(min);
 		}
 
 		/**
