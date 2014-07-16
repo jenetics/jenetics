@@ -29,25 +29,24 @@ import org.jenetics.util.math;
 
 
 /**
- * <q align="justified" cite="http://www.nr.com/"><em>
+ * <p><em>
  * This generator was discovered and characterized by George Marsaglia
  * [<a href="http://www.jstatsoft.org/v08/i14/paper">Xorshift RNGs</a>]. In just
  * three XORs and three shifts (generally fast operations) it produces a full
  * period of 2<sup>64</sup> - 1 on 64 bits. (The missing value is zero, which
  * perpetuates itself and must be avoided.) High and low bits pass Diehard.
- * </em></q>
+ * </em>
  *
- * <p align="left">
+ * <p>
  * <strong>Numerical Recipes 3rd Edition: The Art of Scientific Computing</strong>
- * <br/>
+ * <br>
  * <em>Chapter 7. Random Numbers, Section 7.1.2, Page 345</em>
- * <br/>
+ * <br>
  * <small>Cambridge University Press New York, NY, USA ©2007</small>
- * <br/>
+ * <br>
  * ISBN:0521880688 9780521880688
- * <br/>
+ * <br>
  * [<a href="http://www.nr.com/">http://www.nr.com/</a>].
- * <p/>
  *
  * <p><b>
  * The <i>main</i> class of this PRNG is not thread safe. To create an thread
@@ -56,7 +55,7 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-07-15 $</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-07-16 $</em>
  */
 public class XOR64ShiftRandom extends Random64 {
 
@@ -77,7 +76,7 @@ public class XOR64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2014-07-15 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2014-07-16 $</em>
 	 */
 	public static final class ThreadLocal
 		extends java.lang.ThreadLocal<XOR64ShiftRandom>
@@ -121,7 +120,7 @@ public class XOR64ShiftRandom extends Random64 {
 	 * [code]
 	 * final XORShiftRandom a = new XORShiftRandom(123);
 	 * final XORShiftRandom b = XORShiftRandom.ThreadSafe(123);
-	 * for (int i = 0; i < 1000;  ++i) {
+	 * for (int i = 0; i &lt; 1000;  ++i) {
 	 *     assert (a.nextLong() == b.nextLong());
 	 *     assert (a.nextDouble() == b.nextDouble());
 	 * }
@@ -129,7 +128,7 @@ public class XOR64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2014-07-15 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2014-07-16 $</em>
 	 */
 	public static final class ThreadSafe extends XOR64ShiftRandom {
 		private static final long serialVersionUID = 1L;
