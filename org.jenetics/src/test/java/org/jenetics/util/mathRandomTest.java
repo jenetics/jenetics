@@ -24,23 +24,96 @@ import static org.jenetics.internal.math.random.toDouble;
 import static org.jenetics.internal.math.random.toDouble2;
 import static org.jenetics.internal.math.random.toFloat;
 import static org.jenetics.internal.math.random.toFloat2;
+import static org.jenetics.util.math.random.nextBigInteger;
+import static org.jenetics.util.math.random.nextLong;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Random;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.StatisticsAssert;
 import org.jenetics.stat.UniformDistribution;
 
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-05-07 $</em>
+ * @version <em>$Date: 2014-07-16 $</em>
  */
 public class mathRandomTest {
+
+	@Test(dataProvider = "nextBigIntegerIntData")
+	public void nextBigIntegerInt(int n) {
+		final long seed = math.random.seed();
+		final Random random = new Random(seed);
+
+		final BigInteger value = nextBigInteger(random, BigInteger.valueOf(n));
+
+		random.setSeed(seed);
+		Assert.assertEquals(value.intValueExact(), random.nextInt(n));
+	}
+
+	@DataProvider(name = "nextBigIntegerIntData")
+	public Object[][] nextBigIntegerIntData() {
+		return new Object[][] {
+			{1},
+			{14},
+			{100},
+			{10_000_000},
+			{100_000_000},
+			{Integer.MAX_VALUE}
+		};
+	}
+
+	@Test(dataProvider = "nextBigIntegerLongData")
+	public void nextBigIntegerLong(long n) {
+		final long seed = math.random.seed();
+		final Random random = new Random(seed);
+
+		final BigInteger value = nextBigInteger(random, BigInteger.valueOf(n));
+
+		random.setSeed(seed);
+		Assert.assertEquals(value.longValueExact(), nextLong(random, n));
+	}
+
+	@DataProvider(name = "nextBigIntegerLongData")
+	public Object[][] nextBigIntegerLongData() {
+		return new Object[][] {
+			{1L + Integer.MAX_VALUE},
+			{14L + Integer.MAX_VALUE},
+			{100L + Integer.MAX_VALUE},
+			{10_000_000L + Integer.MAX_VALUE},
+			{100_000_000L + Integer.MAX_VALUE},
+			{Long.MAX_VALUE}
+		};
+	}
+
+	@Test(dataProvider = "nextBigIntegerData")
+	public void nextBigIntegerTest(final String string) {
+		final long seed = math.random.seed();
+		final Random random = new Random(seed);
+
+		final BigInteger n = new BigInteger(string);
+		final BigInteger value = nextBigInteger(random, n);
+
+		Assert.assertTrue(value.compareTo(BigInteger.ZERO) >= 0);
+		Assert.assertTrue(value.compareTo(n) < 0);
+	}
+
+	@DataProvider(name = "nextBigIntegerData")
+	public Object[][] nextBigIntegerData() {
+		return new Object[][] {
+			{"1000000000000000000000000000000000000"},
+			{"10000000000000000000000000000000000000000"},
+			{"100000000000000000000000000000000000000000000"},
+			{"1000000000000000000000000000000000000000000000000"},
+			{"10000000000000000000000000000000000000000000000000000"},
+			{"100000000000000000000000000000000000000000000000000000000"}
+		};
+	}
 
 	@Test
 	public void seed() {
