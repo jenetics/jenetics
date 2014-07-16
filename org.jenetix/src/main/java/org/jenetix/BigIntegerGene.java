@@ -20,11 +20,13 @@
 package org.jenetix;
 
 import static java.util.Objects.requireNonNull;
+import static org.jenetics.util.math.random.nextBigInteger;
 
 import java.math.BigInteger;
 
 import org.jenetics.NumericGene;
 import org.jenetics.util.Mean;
+import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -36,6 +38,8 @@ public final class BigIntegerGene implements
 	Mean<BigIntegerGene>
 {
 	private static final long serialVersionUID = 1L;
+
+	private static final BigInteger TWO = BigInteger.valueOf(2);
 
 	private final BigInteger _value;
 	private final BigInteger _min;
@@ -68,22 +72,23 @@ public final class BigIntegerGene implements
 
 	@Override
 	public BigIntegerGene mean(final BigIntegerGene that) {
-		return null;
+		final BigInteger value = _value.add(that._value).divide(TWO);
+		return of(value, _min, _max);
 	}
 
 	@Override
 	public BigIntegerGene newInstance(final Number number) {
-		return null;
+		return of(BigInteger.valueOf(number.longValue()), _min, _max);
 	}
 
 	@Override
 	public BigIntegerGene newInstance(final BigInteger value) {
-		return null;
+		return of(value, _min, _max);
 	}
 
 	@Override
 	public BigIntegerGene newInstance() {
-		return null;
+		return of(_min, _max);
 	}
 
 	public static BigIntegerGene of(
@@ -94,8 +99,11 @@ public final class BigIntegerGene implements
 		return new BigIntegerGene(value, min, max);
 	}
 
-	public static BigInteger of(final BigInteger min, final BigInteger max) {
-		//final BigInteger value = new BigInteger()
-		return null;
+	public static BigIntegerGene of(final BigInteger min, final BigInteger max) {
+		return of(
+			nextBigInteger(RandomRegistry.getRandom(), min, max),
+			min,
+			max
+		);
 	}
 }
