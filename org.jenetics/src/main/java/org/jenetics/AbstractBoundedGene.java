@@ -30,7 +30,7 @@ import org.jenetics.internal.util.Hash;
  * value.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-07-10 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-07-16 $</em>
  * @since 1.6
  */
 abstract class AbstractBoundedGene<
@@ -97,11 +97,6 @@ abstract class AbstractBoundedGene<
 	@Override
 	public boolean isValid() {
 		return _valid;
-	}
-
-	@Override
-	public int compareTo(final G other) {
-		return _value.compareTo(other._value);
 	}
 
 	@Override
