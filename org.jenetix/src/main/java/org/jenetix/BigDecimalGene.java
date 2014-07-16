@@ -19,6 +19,8 @@
  */
 package org.jenetix;
 
+import static java.util.Objects.requireNonNull;
+
 import java.math.BigDecimal;
 
 import org.jenetics.NumericGene;
@@ -35,44 +37,48 @@ public final class BigDecimalGene implements
 {
 	private static final long serialVersionUID = 1L;
 
+	private final BigDecimal _value;
+	private final BigDecimal _min;
+	private final BigDecimal _max;
+
+	private BigDecimalGene(
+		final BigDecimal value,
+		final BigDecimal min,
+		final BigDecimal max
+	) {
+		_value = requireNonNull(value);
+		_min = requireNonNull(min);
+		_max = requireNonNull(max);
+	}
+
 	@Override
 	public BigDecimal getAllele() {
-		return null;
+		return _value;
 	}
 
 	@Override
 	public BigDecimal getMin() {
-		return null;
+		return _min;
 	}
 
 	@Override
 	public BigDecimal getMax() {
+		return _max;
+	}
+
+	@Override
+	public BigDecimalGene mean(final BigDecimalGene that) {
 		return null;
 	}
 
 	@Override
-	public boolean isValid() {
-		return false;
-	}
-
-	@Override
-	public BigDecimalGene mean(BigDecimalGene that) {
+	public BigDecimalGene newInstance(final Number number) {
 		return null;
 	}
 
 	@Override
-	public BigDecimalGene newInstance(Number number) {
+	public BigDecimalGene newInstance(final BigDecimal value) {
 		return null;
-	}
-
-	@Override
-	public BigDecimalGene newInstance(BigDecimal value) {
-		return null;
-	}
-
-	@Override
-	public int compareTo(BigDecimalGene o) {
-		return 0;
 	}
 
 	@Override
