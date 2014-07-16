@@ -23,7 +23,7 @@ package org.jenetics;
  * Base interface for numeric genes.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-07-16 $</em>
  * @since 1.6
  */
 public interface NumericGene<
@@ -41,7 +41,7 @@ public interface NumericGene<
 	 *         type {@code byte}.
 	 */
 	public default byte byteValue() {
-		return (byte)intValue();
+		return getAllele().byteValue();
 	}
 
 	/**
@@ -52,7 +52,7 @@ public interface NumericGene<
 	 *         type {@code short}.
 	 */
 	public default short shortValue() {
-		return (short)intValue();
+		return getAllele().shortValue();
 	}
 
 	/**
@@ -62,7 +62,9 @@ public interface NumericGene<
 	 * @return the numeric value represented by this object after conversion to
 	 *         type {@code int}.
 	 */
-	public int intValue();
+	public default int intValue() {
+		return getAllele().intValue();
+	}
 
 	/**
 	 * Returns the value of the specified gene as an long. This may involve
@@ -71,7 +73,9 @@ public interface NumericGene<
 	 * @return the numeric value represented by this object after conversion to
 	 *         type {@code long}.
 	 */
-	public long longValue();
+	public default long longValue() {
+		return getAllele().longValue();
+	}
 
 	/**
 	 * Returns the value of the specified gene as an float. This may involve
@@ -80,7 +84,9 @@ public interface NumericGene<
 	 * @return the numeric value represented by this object after conversion to
 	 *         type {@code float}.
 	 */
-	public float floatValue();
+	public default float floatValue() {
+		return getAllele().floatValue();
+	}
 
 	/**
 	 * Returns the value of the specified gene as an double. This may involve
@@ -89,7 +95,9 @@ public interface NumericGene<
 	 * @return the numeric value represented by this object after conversion to
 	 *         type {@code double}.
 	 */
-	public double doubleValue();
+	public default double doubleValue() {
+		return getAllele().doubleValue();
+	}
 
 	@Override
 	public G newInstance(final Number number);

@@ -64,7 +64,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-07-11 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-07-16 $</em>
  */
 public class Histogram<C> implements Consumer<C> {
 
@@ -364,16 +364,8 @@ public class Histogram<C> implements Consumer<C> {
 	public static <C extends Comparable<? super C>> Histogram<C> of(
 		final C... separators
 	) {
-		return new Histogram<C>(COMPARATOR, separators);
+		return new Histogram<C>((o1, o2) -> o1.compareTo(o2), separators);
 	}
-
-	@SuppressWarnings({"rawtypes", "unchecked"})
-	private static final Comparator COMPARATOR = new Comparator() {
-		@Override
-		public int compare(final Object o1, final Object o2) {
-			return ((Comparable)o1).compareTo(o2);
-		}
-	};
 
 	/**
 	 * Return a <i>histogram</i> for {@link Double} values. The <i>histogram</i>

@@ -70,11 +70,11 @@ public class RealFunction2D {
 		final Function<Genotype<DoubleGene>, Double> ff = new FF();
 		final GeneticAlgorithm<DoubleGene, Double> ga = new GeneticAlgorithm<>(gtf, ff);
 
-		ga.setSelectors(new TournamentSelector<DoubleGene, Double>(3));
+		ga.setSelectors(new TournamentSelector<>(3));
 		// This are the alterers you can use for this example, in any combination.
 		ga.setAlterers(
-			new MeanAlterer<DoubleGene, Double>(),
-			new GaussianMutator<DoubleGene, Double>()
+			new MeanAlterer<>(),
+			new GaussianMutator<>()
 		);
 
 		ga.setup();

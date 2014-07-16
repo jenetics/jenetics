@@ -41,7 +41,7 @@ import org.jenetics.util.RandomRegistry;
  * Implementation of the NumericGene which holds a 64 bit floating point number.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-05-13 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-07-16 $</em>
  * @since 1.6
  */
 @XmlJavaTypeAdapter(DoubleGene.Model.Adapter.class)
@@ -128,7 +128,7 @@ public final class DoubleGene
 
 	@Override
 	public DoubleGene mean(final DoubleGene that) {
-		return new DoubleGene(_value + (that._value - _value) / 2.0, _min, _max);
+		return new DoubleGene(_value + (that._value - _value)/2.0, _min, _max);
 	}
 
 	/* *************************************************************************
