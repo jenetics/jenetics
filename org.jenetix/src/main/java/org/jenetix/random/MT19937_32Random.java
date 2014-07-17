@@ -98,12 +98,105 @@ public class MT19937_32Random extends Random32 {
 		}
 	}
 
+	/**
+	 * This class represents a <i>thread local</i> implementation of the
+	 * {@code MT19937_32Random} PRNG.
+	 *
+	 * It's recommended to initialize the {@code RandomRegistry} the following
+	 * way:
+	 *
+	 * [code]
+	 * // Register the PRNG with the default parameters.
+	 * RandomRegistry.setRandom(new MT19937_32Random.ThreadLocal());
+	 * [/code]
+	 *
+	 * Be aware, that calls of the {@code setSeed(long)} method will throw an
+	 * {@code UnsupportedOperationException} for <i>thread local</i> instances.
+	 * [code]
+	 * RandomRegistry.setRandom(new MT19937_32Random.ThreadLocal());
+	 *
+	 * // Will throw 'UnsupportedOperationException'.
+	 * RandomRegistry.getRandom().setSeed(1234);
+	 * [/code]
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since !__version__!
+	 * @version !__version__! &mdash; <em>$Date: 2014-07-17 $</em>
+	 */
+	public static class ThreadLocal
+		extends java.lang.ThreadLocal<MT19937_32Random>
+	{
+		@Override
+		protected synchronized MT19937_32Random initialValue() {
+			return new TLMT19937_32Random(math.random.seed());
+		}
+	}
+
+	private static final class TLMT19937_32Random extends MT19937_32Random {
+		private static final long serialVersionUID = 1L;
+
+		private final Boolean _sentry = Boolean.TRUE;
+
+		private TLMT19937_32Random(final long seed) {
+			super(seed);
+		}
+
+		@Override
+		public void setSeed(final long seed) {
+			if (_sentry != null) {
+				throw new UnsupportedOperationException(
+					"The 'setSeed(long)' method is not supported " +
+						"for thread local instances."
+				);
+			}
+		}
+
+	}
+
+	/**
+	 * This is a <i>thread safe</i> variation of the this PRGN&mdash;by
+	 * synchronizing the random number generation.
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since !__version__!
+	 * @version !__version__! &mdash; <em>$Date: 2014-07-17 $</em>
+	 */
+	public static class ThreadSafe extends MT19937_32Random {
+		private static final long serialVersionUID = 1L;
+
+		public ThreadSafe(final long seed) {
+			super(seed);
+		}
+
+		public ThreadSafe() {
+			super();
+		}
+
+		@Override
+		public synchronized int nextInt() {
+			return super.nextInt();
+		}
+
+		@Override
+		public synchronized void setSeed(final long seed) {
+			super.setSeed(seed);
+		}
+	}
+
 	private final Status status = new Status();
 
+	/**
+	 * Create a new random engine with the given seed.
+	 *
+	 * @param seed the seed of the random engine
+	 */
 	public MT19937_32Random(final long seed) {
 		status.setSeed(seed);
 	}
 
+	/**
+	 * Return a new random engine with a safe seed value.
+	 */
 	public MT19937_32Random() {
 		this(math.random.seed());
 	}
@@ -143,15 +236,6 @@ public class MT19937_32Random extends Random32 {
 	public void setSeed(final long seed) {
 		if (status != null) {
 			status.setSeed(seed);
-		}
-	}
-
-	public static void main(final String[] args) {
-		final MT19937_32Random random = new MT19937_32Random(0);
-		//random.setSeed(0);
-
-		for (int i = 0; i < 10; ++i) {
-			System.out.println(random.nextInt());
 		}
 	}
 
