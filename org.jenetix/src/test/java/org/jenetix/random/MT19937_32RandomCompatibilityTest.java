@@ -19,10 +19,8 @@
  */
 package org.jenetix.random;
 
-import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
 import org.testng.Assert;
@@ -65,11 +63,10 @@ public class MT19937_32RandomCompatibilityTest {
 
 	@DataProvider(name = "seeds")
 	public Object[][] seeds() {
-		final List<Long[]> seeds = LongStream.range(0, 100)
+		return LongStream.range(0, 100)
 			.mapToObj(i -> new Long[]{i*32344})
-			.collect(Collectors.toList());
-
-		return seeds.toArray(new Object[0][]);
+			.collect(Collectors.toList())
+			.toArray(new Object[0][]);
 	}
 
 }
