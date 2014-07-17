@@ -19,10 +19,33 @@
  */
 package org.jenetix.random;
 
+import static org.jenetics.internal.util.Equality.eq;
+
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
+
 import org.jenetics.util.Random32;
 import org.jenetics.util.math;
 
 /**
+ * This is a 32-bit version of Mersenne Twister pseudorandom number generator.
+ * <p>
+ * <i>
+ * References:<br>
+ * M. Matsumoto and T. Nishimura,<br>
+ * "Mersenne Twister: a 623-dimensionally equidistributed<br>
+ * uniform pseudorandom number generator"<br>
+ * ACM Transactions on Modeling and<br>
+ * Computer Simulation 8. (Jan. 1998) 3--30.<br>
+ * </i>
+ * <p>
+ * <em>
+ * This is an re-implementation of the
+ * <a href="https://github.com/rabauke/trng4/blob/master/src/mt19937.hpp">
+ * trng::mt19937</a> PRNG class of the
+ * <a href="http://numbercrunch.de/trng/">TRNG</a> library created by Heiko
+ * Bauke.</em>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
  * @version !__version__! &mdash; <em>$Date: 2014-07-17 $</em>
@@ -34,11 +57,11 @@ public class MT19937_32Random extends Random32 {
 	private static final int N = 624;
 	private static final int M = 397;
 
-	private static final int UM = -2147483648; // most significant bit
-	private static final int LM = 2147483647; // least significant 31 bits
+	private static final int UM = 0x80000000; // most significant bit
+	private static final int LM = 0x7FFFFFFF; // least significant 31 bits
 
 	/**
-	 * The status class of the random engine.
+	 * The status class of this random engine.
 	 */
 	private static final class Status {
 		int mti = 0;
@@ -58,6 +81,21 @@ public class MT19937_32Random extends Random32 {
 				mt[mti] = (1812433253*(mt[mti - 1]^(mt[mti - 1] >>> 30)) + mti);
 			}
 		}
+
+		@Override
+		public int hashCode() {
+			return Hash.of(getClass())
+				.and(mti)
+				.and(mt).value();
+		}
+
+		@Override
+		public boolean equals(final Object obj) {
+			return Equality.of(this, obj).test(status ->
+				eq(mti, status.mti) &&
+				eq(mt, status.mt)
+			);
+		}
 	}
 
 	private final Status status = new Status();
@@ -73,7 +111,7 @@ public class MT19937_32Random extends Random32 {
 	@Override
 	public int nextInt() {
 		int x;
-		final int[] mag01 = {0, -1727483681};
+		final int[] mag01 = {0, 0x9908b0df};
 
 		// Generate N words at one time.
 		if (status.mti >= N) {
@@ -94,8 +132,8 @@ public class MT19937_32Random extends Random32 {
 
 		x = status.mt[status.mti++];
 		x ^= (x >>> 11);
-		x ^= (x << 7) & -1658038656;
-		x ^= (x << 15) & -272236544;
+		x ^= (x << 7) & 0x9d2c5680;
+		x ^= (x << 15) & 0xefc60000;
 		x ^= (x >>> 18);
 
 		return x;
