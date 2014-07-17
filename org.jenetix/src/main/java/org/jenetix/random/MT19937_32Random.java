@@ -61,17 +61,17 @@ public class MT19937_32Random extends Random32 {
 	private static final int LM = 0x7FFFFFFF; // least significant 31 bits
 
 	/**
-	 * The status class of this random engine.
+	 * The internal state of this random engine.
 	 */
-	private static final class Status {
+	private static final class State {
 		int mti = 0;
 		int[] mt = new int[N];
 
-		Status(final long seed) {
+		State(final long seed) {
 			setSeed(seed);
 		}
 
-		Status() {
+		State() {
 			this(math.random.seed());
 		}
 
@@ -183,7 +183,7 @@ public class MT19937_32Random extends Random32 {
 		}
 	}
 
-	private final Status status = new Status();
+	private final State state = new State();
 
 	/**
 	 * Create a new random engine with the given seed.
@@ -191,7 +191,7 @@ public class MT19937_32Random extends Random32 {
 	 * @param seed the seed of the random engine
 	 */
 	public MT19937_32Random(final long seed) {
-		status.setSeed(seed);
+		state.setSeed(seed);
 	}
 
 	/**
@@ -207,23 +207,23 @@ public class MT19937_32Random extends Random32 {
 		final int[] mag01 = {0, 0x9908b0df};
 
 		// Generate N words at one time.
-		if (status.mti >= N) {
+		if (state.mti >= N) {
 			int i = 0;
 			for (i = 0; i < N - M; ++i) {
-				x = (status.mt[i] & UM) | (status.mt[i + 1] & LM);
-				status.mt[i] = status.mt[i + M]^(x >>> 1)^mag01[x & 1];
+				x = (state.mt[i] & UM) | (state.mt[i + 1] & LM);
+				state.mt[i] = state.mt[i + M]^(x >>> 1)^mag01[x & 1];
 			}
 			for (; i < N - 1; ++i) {
-				x = (status.mt[i] & UM) | (status.mt[i + 1] & LM);
-				status.mt[i] = status.mt[i + (M - N)]^(x >>> 1)^mag01[x & 1];
+				x = (state.mt[i] & UM) | (state.mt[i + 1] & LM);
+				state.mt[i] = state.mt[i + (M - N)]^(x >>> 1)^mag01[x & 1];
 			}
 
-			x = (status.mt[N - 1] & UM)|(status.mt[0] & LM);
-			status.mt[N - 1] = status.mt[M - 1]^(x >>> 1) ^ mag01[x & 1];
-			status.mti = 0;
+			x = (state.mt[N - 1] & UM)|(state.mt[0] & LM);
+			state.mt[N - 1] = state.mt[M - 1]^(x >>> 1) ^ mag01[x & 1];
+			state.mti = 0;
 		}
 
-		x = status.mt[status.mti++];
+		x = state.mt[state.mti++];
 		x ^= (x >>> 11);
 		x ^= (x << 7) & 0x9d2c5680;
 		x ^= (x << 15) & 0xefc60000;
@@ -234,19 +234,19 @@ public class MT19937_32Random extends Random32 {
 
 	@Override
 	public void setSeed(final long seed) {
-		if (status != null) {
-			status.setSeed(seed);
+		if (state != null) {
+			state.setSeed(seed);
 		}
 	}
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass()).and(status).value();
+		return Hash.of(getClass()).and(state).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(random -> eq(status, random.status));
+		return Equality.of(this, obj).test(random -> eq(state, random.state));
 	}
 
 }
