@@ -239,6 +239,16 @@ public class MT19937_32Random extends Random32 {
 		}
 	}
 
+	@Override
+	public int hashCode() {
+		return Hash.of(getClass()).and(status).value();
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return Equality.of(this, obj).test(random -> eq(status, random.status));
+	}
+
 }
 
 /*
