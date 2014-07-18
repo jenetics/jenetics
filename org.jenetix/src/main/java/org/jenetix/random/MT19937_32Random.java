@@ -188,7 +188,7 @@ public class MT19937_32Random extends Random32 {
 		}
 	}
 
-	private final State state = new State();
+	private final State _state = new State();
 
 	/**
 	 * Create a new random engine with the given seed.
@@ -196,7 +196,7 @@ public class MT19937_32Random extends Random32 {
 	 * @param seed the seed of the random engine
 	 */
 	public MT19937_32Random(final long seed) {
-		state.setSeed(seed);
+		_state.setSeed(seed);
 	}
 
 	/**
@@ -212,23 +212,23 @@ public class MT19937_32Random extends Random32 {
 		final int[] mag01 = {0, 0x9908b0df};
 
 		// Generate N words at one time.
-		if (state.mti >= N) {
+		if (_state.mti >= N) {
 			int i = 0;
 			for (i = 0; i < N - M; ++i) {
-				x = (state.mt[i] & UM) | (state.mt[i + 1] & LM);
-				state.mt[i] = state.mt[i + M]^(x >>> 1)^mag01[x & 1];
+				x = (_state.mt[i] & UM) | (_state.mt[i + 1] & LM);
+				_state.mt[i] = _state.mt[i + M]^(x >>> 1)^mag01[x & 1];
 			}
 			for (; i < N - 1; ++i) {
-				x = (state.mt[i] & UM) | (state.mt[i + 1] & LM);
-				state.mt[i] = state.mt[i + (M - N)]^(x >>> 1)^mag01[x & 1];
+				x = (_state.mt[i] & UM) | (_state.mt[i + 1] & LM);
+				_state.mt[i] = _state.mt[i + (M - N)]^(x >>> 1)^mag01[x & 1];
 			}
 
-			x = (state.mt[N - 1] & UM)|(state.mt[0] & LM);
-			state.mt[N - 1] = state.mt[M - 1]^(x >>> 1) ^ mag01[x & 1];
-			state.mti = 0;
+			x = (_state.mt[N - 1] & UM)|(_state.mt[0] & LM);
+			_state.mt[N - 1] = _state.mt[M - 1]^(x >>> 1) ^ mag01[x & 1];
+			_state.mti = 0;
 		}
 
-		x = state.mt[state.mti++];
+		x = _state.mt[_state.mti++];
 		x ^= (x >>> 11);
 		x ^= (x << 7) & 0x9d2c5680;
 		x ^= (x << 15) & 0xefc60000;
@@ -239,17 +239,17 @@ public class MT19937_32Random extends Random32 {
 
 	@Override
 	public void setSeed(final long seed) {
-		Optional.ofNullable( state ).ifPresent(s -> s.setSeed(seed));
+		Optional.ofNullable(_state).ifPresent(s -> s.setSeed(seed));
 	}
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass()).and(state).value();
+		return Hash.of(getClass()).and(_state).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(random -> eq(state, random.state));
+		return Equality.of(this, obj).test(random -> eq(_state, random._state));
 	}
 
 }
