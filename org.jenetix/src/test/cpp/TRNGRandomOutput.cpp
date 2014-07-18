@@ -24,37 +24,52 @@
 #include <sstream>
 #include <fstream>
 #include <vector>
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <trng/lcg64_shift.hpp>
 #include <trng/mt19937.hpp>
+#include <trng/mt19937_64.hpp>
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-07-17 $</em>
+ * @version <em>$Date: 2014-07-18 $</em>
  */
 
-template<class Random>
-void write(const std::string& dir, Random& random, unsigned long seed, std::size_t numbers) {
+template<class Random, typename seed_type, typename signed_seed_type>
+void write(const std::string& dir, Random& random, seed_type seed, std::size_t numbers) {
+	::mkdir(dir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+
 	std::stringstream file;
 	file << dir << "/" << seed;
-	std::cout << file.str() << std::endl;
 	std::fstream out(file.str().c_str(), std::fstream::out);
 
 	random.seed(seed);
 	for (std::size_t i = 0; i < numbers; ++i) {
-		out << static_cast<int>(random()) << std::endl;
+		out << static_cast<signed_seed_type>(random()) << std::endl;
 	}
 
 	out.close();
 }
 
-int main(void) {
-	trng::mt19937 random;
+template<class Random, typename seed_type, typename signed_seed_type>
+void generate_numbers(const std::string& name, Random& random) {
+	::mkdir("output", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 
-	for (unsigned int i = 0; i < 100; ++i) {
-		unsigned long seed = i*32344;
+	for (seed_type i = 0; i < 100; ++i) {
+		seed_type seed = i*32344;
 
-		write<trng::mt19937>("output", random, seed, 1000);
+		write<Random, seed_type, signed_seed_type>(
+			"output/" + name, random, seed, 1000
+		);
 	}
+}
+
+int main(void) {
+	trng::mt19937 random1;
+	generate_numbers<trng::mt19937, unsigned long, int>("MT19937_32Random.dat", random1);
+
+	trng::mt19937_64 random2;
+	generate_numbers<trng::mt19937_64, unsigned long long, long>("MT19937_64Random.dat", random2);
 
 	return 0;
 }
