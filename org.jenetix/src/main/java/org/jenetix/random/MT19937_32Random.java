@@ -21,6 +21,9 @@ package org.jenetix.random;
 
 import static org.jenetics.internal.util.Equality.eq;
 
+import java.io.Serializable;
+import java.util.Optional;
+
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
@@ -48,7 +51,7 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-07-17 $</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-07-18 $</em>
  */
 public class MT19937_32Random extends Random32 {
 
@@ -59,44 +62,6 @@ public class MT19937_32Random extends Random32 {
 
 	private static final int UM = 0x80000000; // most significant bit
 	private static final int LM = 0x7FFFFFFF; // least significant 31 bits
-
-	/**
-	 * The internal state of this random engine.
-	 */
-	private static final class State {
-		int mti = 0;
-		int[] mt = new int[N];
-
-		State(final long seed) {
-			setSeed(seed);
-		}
-
-		State() {
-			this(math.random.seed());
-		}
-
-		void setSeed(final long seed) {
-			mt[0] = (int)seed;
-			for (mti = 1; mti < N; ++mti) {
-				mt[mti] = (1812433253*(mt[mti - 1]^(mt[mti - 1] >>> 30)) + mti);
-			}
-		}
-
-		@Override
-		public int hashCode() {
-			return Hash.of(getClass())
-				.and(mti)
-				.and(mt).value();
-		}
-
-		@Override
-		public boolean equals(final Object obj) {
-			return Equality.of(this, obj).test(status ->
-				eq(mti, status.mti) &&
-				eq(mt, status.mt)
-			);
-		}
-	}
 
 	/**
 	 * This class represents a <i>thread local</i> implementation of the
@@ -121,7 +86,7 @@ public class MT19937_32Random extends Random32 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since !__version__!
-	 * @version !__version__! &mdash; <em>$Date: 2014-07-17 $</em>
+	 * @version !__version__! &mdash; <em>$Date: 2014-07-18 $</em>
 	 */
 	public static class ThreadLocal
 		extends java.lang.ThreadLocal<MT19937_32Random>
@@ -159,7 +124,7 @@ public class MT19937_32Random extends Random32 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since !__version__!
-	 * @version !__version__! &mdash; <em>$Date: 2014-07-17 $</em>
+	 * @version !__version__! &mdash; <em>$Date: 2014-07-18 $</em>
 	 */
 	public static class ThreadSafe extends MT19937_32Random {
 		private static final long serialVersionUID = 1L;
@@ -180,6 +145,46 @@ public class MT19937_32Random extends Random32 {
 		@Override
 		public synchronized void setSeed(final long seed) {
 			super.setSeed(seed);
+		}
+	}
+
+	/**
+	 * The internal state of this random engine.
+	 */
+	private static final class State implements Serializable {
+		private static final long serialVersionUID = 1L;
+
+		int mti = 0;
+		int[] mt = new int[N];
+
+		State(final long seed) {
+			setSeed(seed);
+		}
+
+		State() {
+			this(math.random.seed());
+		}
+
+		void setSeed(final long seed) {
+			mt[0] = (int)seed;
+			for (mti = 1; mti < N; ++mti) {
+				mt[mti] = (1812433253*(mt[mti - 1]^(mt[mti - 1] >>> 30)) + mti);
+			}
+		}
+
+		@Override
+		public int hashCode() {
+			return Hash.of(getClass())
+				.and(mti)
+				.and(mt).value();
+		}
+
+		@Override
+		public boolean equals(final Object obj) {
+			return Equality.of(this, obj).test(status ->
+				eq(mti, status.mti) &&
+				eq(mt, status.mt)
+			);
 		}
 	}
 
@@ -234,9 +239,7 @@ public class MT19937_32Random extends Random32 {
 
 	@Override
 	public void setSeed(final long seed) {
-		if (state != null) {
-			state.setSeed(seed);
-		}
+		Optional.ofNullable( state ).ifPresent(s -> s.setSeed(seed));
 	}
 
 	@Override
