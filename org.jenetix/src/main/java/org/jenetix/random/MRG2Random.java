@@ -24,7 +24,6 @@ import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
-import java.util.Random;
 
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
@@ -86,7 +85,7 @@ public class MRG2Random extends Random32 {
 
 		@Override
 		public String toString() {
-			return format("Param[%d, %d", a, b);
+			return format("Param[%d, %d]", a, b);
 		}
 	}
 
@@ -106,6 +105,26 @@ public class MRG2Random extends Random32 {
 
 			r1 = (int)t;
 			r2 = 1;
+		}
+
+		@Override
+		public int hashCode() {
+			return Hash.of(getClass())
+				.and(r1)
+				.and(r2).value();
+		}
+
+		@Override
+		public boolean equals(final Object obj) {
+			return Equality.of(this, obj).test(state ->
+				eq(r1, state.r1) &&
+				eq(r2, state.r2)
+			);
+		}
+
+		@Override
+		public String toString() {
+			return format("State[%d, %d]", r1, r2);
 		}
 	}
 
@@ -147,11 +166,24 @@ public class MRG2Random extends Random32 {
 		if (_state != null) _state.setSeed(seed);
 	}
 
-	public static void main(final String[] args) {
-		final Random random = new MRG2Random(32344);
-		for (int i = 0; i < 20; ++i) {
-			System.out.println(random.nextInt());
-		}
+	@Override
+	public int hashCode() {
+		return Hash.of(getClass())
+			.and(_param)
+			.and(_state).value();
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return Equality.of(this, obj).test(random ->
+			eq(_param, random._param) &&
+			eq(_state, random._state)
+		);
+	}
+
+	@Override
+	public String toString() {
+		return format("%s[%s, %s]", getClass().getSimpleName(), _param, _state);
 	}
 }
 
