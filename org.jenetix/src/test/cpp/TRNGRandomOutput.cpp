@@ -29,10 +29,13 @@
 #include <trng/lcg64_shift.hpp>
 #include <trng/mt19937.hpp>
 #include <trng/mt19937_64.hpp>
+#include <trng/mrg2.hpp>
+#include <trng/mrg3.hpp>
+#include <trng/yarn2.hpp>
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-07-18 $</em>
+ * @version <em>$Date: 2014-07-19 $</em>
  */
 
 template<class Random, typename seed_type, typename signed_seed_type>
@@ -68,8 +71,11 @@ int main(void) {
 	trng::mt19937 random1;
 	generate_numbers<trng::mt19937, unsigned long, int>("MT19937_32Random.dat", random1);
 
-	trng::mt19937_64 random2;
-	generate_numbers<trng::mt19937_64, unsigned long long, long>("MT19937_64Random.dat", random2);
+	trng::yarn2 random2;
+	generate_numbers<trng::yarn2, unsigned long, int>("MRG2Random.dat", random2);
+
+	trng::mt19937_64 random3;
+	generate_numbers<trng::mt19937_64, unsigned long long, long>("MT19937_64Random.dat", random3);
 
 	return 0;
 }
