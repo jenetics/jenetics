@@ -24,7 +24,6 @@ import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
-import java.util.Optional;
 import java.util.Random;
 
 import org.jenetics.internal.util.Equality;
@@ -36,11 +35,13 @@ import org.jenetics.util.math;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-07-18 $</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-07-19 $</em>
  */
 public class MRG2Random extends Random32 {
 
 	private static final long serialVersionUID = 1L;
+
+	private static final long MODULUS = 0xFFFFFFFFL;
 
 	public static final class Param implements Serializable {
 		private static final long serialVersionUID = 1L;
@@ -60,8 +61,8 @@ public class MRG2Random extends Random32 {
 		 */
 		public static final Param DEFAULT = LECUYER1;
 
-		public final int a;
-		public final int b;
+		public final long a;
+		public final long b;
 
 		public Param(final int a, final int b) {
 			this.a = a;
@@ -99,15 +100,9 @@ public class MRG2Random extends Random32 {
 			setSeed(seed);
 		}
 
-		State() {
-			this(math.random.seed());
-		}
-
-		void setSeed(final long s) {
-			long t = s%Integer.MAX_VALUE;
-			if (t < 0) {
-				t += Integer.MAX_VALUE;
-			}
+		void setSeed(final long seed) {
+			long t = seed% MODULUS;
+			if (t < 0) t += MODULUS;
 
 			r1 = (int)t;
 			r2 = 1;
@@ -141,16 +136,15 @@ public class MRG2Random extends Random32 {
 	}
 
 	public void step() {
-		final long t = (long)_param.a*(long)_state.r1 +
-						(long)_param.b*(long)_state.r2;
+		final long t = _param.a*_state.r1 + _param.b*_state.r2;
 
 		_state.r2 = _state.r1;
-		_state.r1 = (int)(t%Integer.MAX_VALUE); //int_math::modulo<modulus, 2>(t);
+		_state.r1 = (int)(t% MODULUS);
 	}
 
 	@Override
 	public void setSeed(final long seed) {
-		Optional.ofNullable(_state).ifPresent(s -> s.setSeed(seed));
+		if (_state != null) _state.setSeed(seed);
 	}
 
 	public static void main(final String[] args) {
