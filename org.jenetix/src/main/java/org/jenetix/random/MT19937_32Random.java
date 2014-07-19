@@ -22,7 +22,6 @@ package org.jenetix.random;
 import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
-import java.util.Optional;
 
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
@@ -51,7 +50,7 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-07-18 $</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-07-19 $</em>
  */
 public class MT19937_32Random extends Random32 {
 
@@ -86,7 +85,7 @@ public class MT19937_32Random extends Random32 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since !__version__!
-	 * @version !__version__! &mdash; <em>$Date: 2014-07-18 $</em>
+	 * @version !__version__! &mdash; <em>$Date: 2014-07-19 $</em>
 	 */
 	public static class ThreadLocal
 		extends java.lang.ThreadLocal<MT19937_32Random>
@@ -124,7 +123,7 @@ public class MT19937_32Random extends Random32 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since !__version__!
-	 * @version !__version__! &mdash; <em>$Date: 2014-07-18 $</em>
+	 * @version !__version__! &mdash; <em>$Date: 2014-07-19 $</em>
 	 */
 	public static class ThreadSafe extends MT19937_32Random {
 		private static final long serialVersionUID = 1L;
@@ -161,10 +160,6 @@ public class MT19937_32Random extends Random32 {
 			setSeed(seed);
 		}
 
-		State() {
-			this(math.random.seed());
-		}
-
 		void setSeed(final long seed) {
 			mt[0] = (int)seed;
 			for (mti = 1; mti < N; ++mti) {
@@ -188,7 +183,7 @@ public class MT19937_32Random extends Random32 {
 		}
 	}
 
-	private final State _state = new State();
+	private final State _state;
 
 	/**
 	 * Create a new random engine with the given seed.
@@ -196,7 +191,7 @@ public class MT19937_32Random extends Random32 {
 	 * @param seed the seed of the random engine
 	 */
 	public MT19937_32Random(final long seed) {
-		_state.setSeed(seed);
+		_state = new State(seed);
 	}
 
 	/**
@@ -239,7 +234,7 @@ public class MT19937_32Random extends Random32 {
 
 	@Override
 	public void setSeed(final long seed) {
-		Optional.ofNullable(_state).ifPresent(s -> s.setSeed(seed));
+		if (_state != null) _state.setSeed(seed);
 	}
 
 	@Override

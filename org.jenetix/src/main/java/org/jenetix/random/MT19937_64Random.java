@@ -21,8 +21,6 @@ package org.jenetix.random;
 
 import static org.jenetics.internal.util.Equality.eq;
 
-import java.util.Optional;
-
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
@@ -32,7 +30,7 @@ import org.jenetics.util.math;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-07-18 $</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-07-19 $</em>
  */
 public class MT19937_64Random extends Random64 {
 
@@ -50,10 +48,6 @@ public class MT19937_64Random extends Random64 {
 
 		State(final long seed) {
 			setSeed(seed);
-		}
-
-		State() {
-			this(math.random.seed());
 		}
 
 		void setSeed(final long s) {
@@ -81,7 +75,7 @@ public class MT19937_64Random extends Random64 {
 
 	}
 
-	private final State _state = new State();
+	private final State _state;
 
 	/**
 	 * Create a new random engine with the given seed.
@@ -89,7 +83,7 @@ public class MT19937_64Random extends Random64 {
 	 * @param seed the seed of the random engine
 	 */
 	public MT19937_64Random(final long seed) {
-		_state.setSeed(seed);
+		_state = new State(seed);
 	}
 
 	/**
@@ -131,7 +125,7 @@ public class MT19937_64Random extends Random64 {
 
 	@Override
 	public void setSeed(final long seed) {
-		Optional.ofNullable(_state).ifPresent(s -> s.setSeed(seed));
+		if (_state != null) _state.setSeed(seed);
 	}
 
 	@Override
