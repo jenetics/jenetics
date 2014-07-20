@@ -21,6 +21,8 @@ package org.jenetix.random;
 
 import static org.jenetics.internal.util.Equality.eq;
 
+import java.io.Serializable;
+
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
@@ -30,7 +32,7 @@ import org.jenetics.util.math;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-07-19 $</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-07-20 $</em>
  */
 public class MT19937_64Random extends Random64 {
 
@@ -42,7 +44,9 @@ public class MT19937_64Random extends Random64 {
 	private static final long UM = 0xFFFFFFFF80000000L; // most significant bit
 	private static final long LM = 0x7FFFFFFFL;         // least significant 31 bits
 
-	private static final class State {
+	private static final class State implements Serializable {
+		private static final long serialVersionUID = 1L;
+
 		int mti;
 		final long[] mt = new long[N];
 

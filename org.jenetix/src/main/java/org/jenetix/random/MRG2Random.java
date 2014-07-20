@@ -34,7 +34,7 @@ import org.jenetics.util.math;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-07-19 $</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-07-20 $</em>
  */
 public class MRG2Random extends Random32 {
 
@@ -42,16 +42,19 @@ public class MRG2Random extends Random32 {
 
 	private static final long MODULUS = 0xFFFFFFFFL;
 
+	/**
+	 * The parameter class of this random engine.
+	 */
 	public static final class Param implements Serializable {
 		private static final long serialVersionUID = 1L;
 
 		/**
-		 * LEcuyer 1 parameters: a = 1498809829; b = 1160990996
+		 * LEcuyer 1 parameters: a1 = 1498809829; a2 = 1160990996
 		 */
 		public static final Param LECUYER1 = new Param(1498809829, 1160990996);
 
 		/**
-		 * LEcuyer 2 parameters: a = 46325; b = 1084587
+		 * LEcuyer 2 parameters: a1 = 46325; a2 = 1084587
 		 */
 		public static final Param LECUYER2 = new Param(46325, 1084587);
 
@@ -60,32 +63,32 @@ public class MRG2Random extends Random32 {
 		 */
 		public static final Param DEFAULT = LECUYER1;
 
-		public final long a;
-		public final long b;
+		public final long a1;
+		public final long a2;
 
-		public Param(final int a, final int b) {
-			this.a = a;
-			this.b = b;
+		public Param(final int a1, final int a2) {
+			this.a1 = a1;
+			this.a2 = a2;
  		}
 
 		@Override
 		public int hashCode() {
 			return Hash.of(getClass())
-				.and(a)
-				.and(b).value();
+				.and(a1)
+				.and(a2).value();
 		}
 
 		@Override
 		public boolean equals(final Object obj) {
 			return Equality.of(this, obj).test(param ->
-				eq(a, param.a) &&
-				eq(b, param.b)
+				eq(a1, param.a1) &&
+				eq(a2, param.a2)
 			);
 		}
 
 		@Override
 		public String toString() {
-			return format("Param[%d, %d]", a, b);
+			return format("Param[%d, %d]", a1, a2);
 		}
 	}
 
@@ -155,7 +158,9 @@ public class MRG2Random extends Random32 {
 	}
 
 	public void step() {
-		final long t = _param.a*_state.r1 + _param.b*_state.r2;
+		final long t =
+			_param.a1*_state.r1 +
+			_param.a2*_state.r2;
 
 		_state.r2 = _state.r1;
 		_state.r1 = (int)(t% MODULUS);
@@ -164,6 +169,10 @@ public class MRG2Random extends Random32 {
 	@Override
 	public void setSeed(final long seed) {
 		if (_state != null) _state.setSeed(seed);
+	}
+
+	public Param getParam() {
+		return _param;
 	}
 
 	@Override

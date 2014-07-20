@@ -50,7 +50,7 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-07-19 $</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-07-20 $</em>
  */
 public class MT19937_32Random extends Random32 {
 
@@ -85,7 +85,7 @@ public class MT19937_32Random extends Random32 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since !__version__!
-	 * @version !__version__! &mdash; <em>$Date: 2014-07-19 $</em>
+	 * @version !__version__! &mdash; <em>$Date: 2014-07-20 $</em>
 	 */
 	public static class ThreadLocal
 		extends java.lang.ThreadLocal<MT19937_32Random>
@@ -123,7 +123,7 @@ public class MT19937_32Random extends Random32 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since !__version__!
-	 * @version !__version__! &mdash; <em>$Date: 2014-07-19 $</em>
+	 * @version !__version__! &mdash; <em>$Date: 2014-07-20 $</em>
 	 */
 	public static class ThreadSafe extends MT19937_32Random {
 		private static final long serialVersionUID = 1L;
@@ -219,7 +219,7 @@ public class MT19937_32Random extends Random32 {
 			}
 
 			x = (_state.mt[N - 1] & UM)|(_state.mt[0] & LM);
-			_state.mt[N - 1] = _state.mt[M - 1]^(x >>> 1) ^ mag01[x & 1];
+			_state.mt[N - 1] = _state.mt[M - 1]^(x >>> 1)^mag01[x & 1];
 			_state.mti = 0;
 		}
 
