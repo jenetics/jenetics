@@ -37,7 +37,7 @@ import org.jenetics.internal.util.IntRef;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.0 &mdash; <em>$Date: 2014-07-15 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-07-17 $</em>
  * @since 3.0
  */
 @State(Scope.Benchmark)
@@ -67,11 +67,11 @@ public class SeqPerf {
 
 	@Benchmark
 	public int forLoopArray() {
-		int sum = 0;
+		final IntRef sum = new IntRef();
 		for (int i = 0; i < array.length; ++i) {
-			sum += array[i];
+			sum.value += array[i];
 		}
-		return sum;
+		return sum.value;
 	}
 
 	@Benchmark
@@ -81,11 +81,11 @@ public class SeqPerf {
 
 	@Benchmark
 	public int forLoopSeq() {
-		int sum = 0;
+		final IntRef sum = new IntRef();
 		for (int i = 0; i < seq.length(); ++i) {
-			sum += seq.get(i);
+			sum.value += seq.get(i);
 		}
-		return 0;
+		return sum.value;
 	}
 
 	@Benchmark
