@@ -41,6 +41,8 @@ public class MRG2Random extends Random32 {
 	private static final long serialVersionUID = 1L;
 
 	private static final long MODULUS = 0xFFFFFFFFL;
+	private static final ModularArithmetic _modulus =
+		new ModularArithmetic(MODULUS);
 
 	/**
 	 * The parameter class of this random engine.
@@ -158,12 +160,13 @@ public class MRG2Random extends Random32 {
 	}
 
 	public void step() {
-		final long t =
-			_param.a1*_state._r1 +
-			_param.a2*_state._r2;
+		final long t = _modulus.add(
+			_param.a1*_state._r1,
+			_param.a2*_state._r2
+		);
 
 		_state._r2 = _state._r1;
-		_state._r1 = (int)(t%MODULUS);
+		_state._r1 = (int)t;
 	}
 
 	@Override
