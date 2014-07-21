@@ -34,7 +34,7 @@ import org.jenetics.util.math;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-07-20 $</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-07-21 $</em>
  */
 public class MRG2Random extends Random32 {
 
@@ -95,8 +95,8 @@ public class MRG2Random extends Random32 {
 	private static final class State implements Serializable {
 		private static final long serialVersionUID = 1L;
 
-		int r1;
-		int r2;
+		int _r1;
+		int _r2;
 
 		State(final long seed) {
 			setSeed(seed);
@@ -106,28 +106,28 @@ public class MRG2Random extends Random32 {
 			long t = seed%MODULUS;
 			if (t < 0) t += MODULUS;
 
-			r1 = (int)t;
-			r2 = 1;
+			_r1 = (int)t;
+			_r2 = 1;
 		}
 
 		@Override
 		public int hashCode() {
 			return Hash.of(getClass())
-				.and(r1)
-				.and(r2).value();
+				.and(_r1)
+				.and(_r2).value();
 		}
 
 		@Override
 		public boolean equals(final Object obj) {
 			return Equality.of(this, obj).test(state ->
-				eq(r1, state.r1) &&
-				eq(r2, state.r2)
+				eq(_r1, state._r1) &&
+				eq(_r2, state._r2)
 			);
 		}
 
 		@Override
 		public String toString() {
-			return format("State[%d, %d]", r1, r2);
+			return format("State[%d, %d]", _r1, _r2);
 		}
 	}
 
@@ -154,16 +154,16 @@ public class MRG2Random extends Random32 {
 	@Override
 	public int nextInt() {
 		step();
-		return _state.r1;
+		return _state._r1;
 	}
 
 	public void step() {
 		final long t =
-			_param.a1*_state.r1 +
-			_param.a2*_state.r2;
+			_param.a1*_state._r1 +
+			_param.a2*_state._r2;
 
-		_state.r2 = _state.r1;
-		_state.r1 = (int)(t% MODULUS);
+		_state._r2 = _state._r1;
+		_state._r1 = (int)(t%MODULUS);
 	}
 
 	@Override
