@@ -114,7 +114,7 @@ public class MRG3Random extends Random32 {
 			long t = modulus.mod(seed);
 			if (t < 0) t += modulus.VALUE;
 
-			_r1 = (int)t;
+			_r1 = t;
 			_r2 = 1;
 			_r3 = 1;
 		}
