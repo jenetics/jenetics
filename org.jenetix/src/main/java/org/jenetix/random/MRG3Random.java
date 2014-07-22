@@ -34,15 +34,11 @@ import org.jenetics.util.math;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-07-21 $</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-07-22 $</em>
  */
 public class MRG3Random extends Random32 {
 
 	private static final long serialVersionUID = 1L;
-
-	private static final long MODULUS = 0xFFFFFFFFL;
-	private static final ModularArithmetic _modulus =
-		new ModularArithmetic(MODULUS);
 
 	/**
 	 * The parameter class of this random engine.
@@ -106,17 +102,17 @@ public class MRG3Random extends Random32 {
 	private static final class State implements Serializable {
 		private static final long serialVersionUID = 1L;
 
-		int _r1;
-		int _r2;
-		int _r3;
+		long _r1;
+		long _r2;
+		long _r3;
 
 		State(final long seed) {
 			setSeed(seed);
 		}
 
 		void setSeed(final long seed) {
-			long t = seed%MODULUS;
-			if (t < 0) t += MODULUS;
+			long t = Modulus.mod(seed);
+			if (t < 0) t += Modulus.VALUE;
 
 			_r1 = (int)t;
 			_r2 = 1;
@@ -169,11 +165,11 @@ public class MRG3Random extends Random32 {
 	@Override
 	public int nextInt() {
 		step();
-		return _state._r1;
+		return (int)_state._r1;
 	}
 
 	public void step() {
-		final long t = _modulus.add(
+		final long t = Modulus.add(
 			_param.a1*_state._r1,
 			_param.a2*_state._r2,
 			_param.a3*_state._r3
@@ -181,7 +177,7 @@ public class MRG3Random extends Random32 {
 
 		_state._r3 = _state._r2;
 		_state._r2 = _state._r1;
-		_state._r1 = (int)t;
+		_state._r1 = t;
 	}
 
 	public Param getParam() {
