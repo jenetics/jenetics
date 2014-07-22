@@ -28,8 +28,8 @@ import org.jenetics.util.StaticObject;
  * @since !__version__!
  * @version !__version__! &mdash; <em>$Date$</em>
  */
-final class Modulus extends StaticObject {
-	private Modulus() {}
+final class modulus extends StaticObject {
+	private modulus() {}
 
 	static final long VALUE = 0xFFFFFFFFL;
 

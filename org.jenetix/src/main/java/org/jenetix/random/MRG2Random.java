@@ -101,8 +101,8 @@ public class MRG2Random extends Random32 {
 		}
 
 		void setSeed(final long seed) {
-			long t = Modulus.mod(seed);
-			if (t < 0) t += Modulus.VALUE;
+			long t = modulus.mod(seed);
+			if (t < 0) t += modulus.VALUE;
 
 			_r1 = (int)t;
 			_r2 = 1;
@@ -156,7 +156,7 @@ public class MRG2Random extends Random32 {
 	}
 
 	public void step() {
-		final long t = Modulus.add(
+		final long t = modulus.add(
 			_param.a1*_state._r1,
 			_param.a2*_state._r2
 		);
