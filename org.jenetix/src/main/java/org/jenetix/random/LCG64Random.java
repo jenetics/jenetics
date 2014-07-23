@@ -51,33 +51,37 @@ public class LCG64Random extends Random64 {
 		 * Default parameters: a = 0xFBD19FBBC5C07FF5L; b = 0
 		 */
 		public static final Param DEFAULT =
-			new Param(0xFBD19FBBC5C07FF5L, 0L);
+			Param.of(0xFBD19FBBC5C07FF5L, 0L);
 
 		/**
 		 * LEcuyer 1 parameters: a = 0x27BB2EE687B0B0FDL; b = 0
 		 */
 		public static final Param LECUYER1 =
-			new Param(0x27BB2EE687B0B0FDL, 0L);
+			Param.of(0x27BB2EE687B0B0FDL, 0L);
 
 		/**
 		 * LEcuyer 2 parameters: a = 0x2C6FE96EE78B6955L; b = 0
 		 */
 		public static final Param LECUYER2 =
-			new Param(0x2C6FE96EE78B6955L, 0L);
+			Param.of(0x2C6FE96EE78B6955L, 0L);
 
 		/**
 		 * LEcuyer 3 parameters: a = 0x369DEA0F31A53F85L; b = 0
 		 */
 		public static final Param LECUYER3 =
-			new Param(0x369DEA0F31A53F85L, 0L);
+			Param.of(0x369DEA0F31A53F85L, 0L);
 
 
 		public final long a;
 		public final long b;
 
-		public Param(final long a, final long b) {
+		private Param(final long a, final long b) {
 			this.a = a;
 			this.b = b;
+		}
+
+		public static Param of(final long a, final long b) {
+			return new Param(a, b);
 		}
 
 		@Override

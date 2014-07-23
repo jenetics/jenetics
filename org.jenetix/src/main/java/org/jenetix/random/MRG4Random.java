@@ -54,12 +54,12 @@ public class MRG4Random extends Random32 {
 		 *     a4 = 1668339922
 		 */
 		public static final Param LECUYER1 =
-			new Param(2001982722, 1412284257, 1155380217, 1668339922);
+			Param.of(2001982722, 1412284257, 1155380217, 1668339922);
 
 		/**
 		 * LEcuyer 2 parameters: a1 = 64886; a2 = 0; a3 = 0, a4 = 64322
 		 */
-		public static final Param LECUYER2 = new Param(64886, 0, 0, 64322);
+		public static final Param LECUYER2 = Param.of(64886, 0, 0, 64322);
 
 		/**
 		 * The default PRNG parameters: LECUYER1
@@ -71,11 +71,20 @@ public class MRG4Random extends Random32 {
 		public final long a3;
 		public final long a4;
 
-		public Param(final int a1, final int a2, final int a3, final int a4) {
+		private Param(final int a1, final int a2, final int a3, final int a4) {
 			this.a1 = a1;
 			this.a2 = a2;
 			this.a3 = a3;
 			this.a4 = a4;
+		}
+
+		public static Param of(
+			final int a1,
+			final int a2,
+			final int a3,
+			final int a4
+		) {
+			return new Param(a1, a2, a3, a4);
 		}
 
 		@Override

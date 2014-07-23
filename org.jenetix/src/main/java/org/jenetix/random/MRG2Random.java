@@ -49,12 +49,12 @@ public class MRG2Random extends Random32 {
 		/**
 		 * LEcuyer 1 parameters: a1 = 1498809829; a2 = 1160990996
 		 */
-		public static final Param LECUYER1 = new Param(1498809829, 1160990996);
+		public static final Param LECUYER1 = Param.of(1498809829, 1160990996);
 
 		/**
 		 * LEcuyer 2 parameters: a1 = 46325; a2 = 1084587
 		 */
-		public static final Param LECUYER2 = new Param(46325, 1084587);
+		public static final Param LECUYER2 = Param.of(46325, 1084587);
 
 		/**
 		 * The default PRNG parameters: LECUYER1
@@ -64,10 +64,14 @@ public class MRG2Random extends Random32 {
 		public final long a1;
 		public final long a2;
 
-		public Param(final int a1, final int a2) {
+		private Param(final int a1, final int a2) {
 			this.a1 = a1;
 			this.a2 = a2;
  		}
+
+		public static Param of(final int a1, final int a2) {
+			return new Param(a1, a2);
+		}
 
 		@Override
 		public int hashCode() {

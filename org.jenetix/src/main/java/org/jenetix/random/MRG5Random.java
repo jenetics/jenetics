@@ -55,7 +55,7 @@ public class MRG5Random  extends Random32 {
 		 *     a5 = 104480
 		 */
 		public static final Param LECUYER1 =
-			new Param(107374182, 0, 0, 0, 104480);
+			Param.of(107374182, 0, 0, 0, 104480);
 
 
 		/**
@@ -69,7 +69,7 @@ public class MRG5Random  extends Random32 {
 		public final long a4;
 		public final long a5;
 
-		public Param(
+		private Param(
 			final int a1,
 			final int a2,
 			final int a3,
@@ -81,6 +81,16 @@ public class MRG5Random  extends Random32 {
 			this.a3 = a3;
 			this.a4 = a4;
 			this.a5 = a5;
+		}
+
+		public static Param of(
+			final int a1,
+			final int a2,
+			final int a3,
+			final int a4,
+			final int a5
+		) {
+			return new Param(a1, a2, a3, a4, a5);
 		}
 
 		@Override

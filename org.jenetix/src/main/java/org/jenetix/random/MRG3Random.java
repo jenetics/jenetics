@@ -49,17 +49,17 @@ public class MRG3Random extends Random32 {
 		/**
 		 * LEcuyer 1 parameters: a1 = 2021422057; a2 = 1826992351; a3 = 1977753457
 		 */
-		public static final Param LECUYER1 = new Param(2021422057, 1826992351, 1977753457);
+		public static final Param LECUYER1 = Param.of(2021422057, 1826992351, 1977753457);
 
 		/**
 		 * LEcuyer 2 parameters: a1 = 1476728729; a2 = 0; a3 = 1155643113
 		 */
-		public static final Param LECUYER2 = new Param(1476728729, 0, 1155643113);
+		public static final Param LECUYER2 = Param.of(1476728729, 0, 1155643113);
 
 		/**
 		 * LEcuyer 3 parameters: a1 = 65338; a2 = 0; a3 = 64636
 		 */
-		public static final Param LECUYER3 = new Param(65338, 0, 64636);
+		public static final Param LECUYER3 = Param.of(65338, 0, 64636);
 
 		/**
 		 * The default PRNG parameters: LECUYER1
@@ -70,10 +70,14 @@ public class MRG3Random extends Random32 {
 		public final long a2;
 		public final long a3;
 
-		public Param(final int a1, final int a2, final int a3) {
+		private Param(final int a1, final int a2, final int a3) {
 			this.a1 = a1;
 			this.a2 = a2;
 			this.a3 = a3;
+		}
+
+		public static Param of(final int a1, final int a2, final int a3) {
+			return new Param(a1, a2, a3);
 		}
 
 		@Override
