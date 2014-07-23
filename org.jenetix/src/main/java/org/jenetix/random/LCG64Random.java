@@ -166,6 +166,25 @@ public class LCG64Random extends Random64 {
 		if (_state != null) _state.setSeed(seed);
 	}
 
+	public Param getParam() {
+		return _param;
+	}
+
+	@Override
+	public int hashCode() {
+		return Hash.of(getClass())
+			.and(_param)
+			.and(_state).value();
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return Equality.of(this, obj).test(random ->
+			eq(_param, random._param) &&
+			eq(_state, random._state)
+		);
+	}
+
 	@Override
 	public String toString() {
 		return format("%s[%s, %s]", getClass().getSimpleName(), _param, _state);
