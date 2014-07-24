@@ -37,7 +37,7 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-07-22 $</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-07-24 $</em>
  */
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.AverageTime)
@@ -51,7 +51,7 @@ public class modulusPerf {
 	public long systemModulus() {
 		long result = 0;
 		for (int i = 0; i < numbers.length; ++i) {
-			result = numbers[i]%modulus.VALUE;
+			result = numbers[i]%OxFFFFFFFF.VALUE;
 		}
 
 		return result;
@@ -62,7 +62,7 @@ public class modulusPerf {
 	public long optimizedModulus() {
 		long result = 0;
 		for (int i = 0; i < numbers.length; ++i) {
-			result = modulus.mod(numbers[i]);
+			result = OxFFFFFFFF.mod(numbers[i]);
 		}
 
 		return result;
@@ -73,7 +73,7 @@ public class modulusPerf {
 	public long systemAdd() {
 		long result = 0;
 		for (int i = 0; i < numbers.length - 1; ++i) {
-			result = (numbers[i]%modulus.VALUE + numbers[i + 1]%modulus.VALUE)%modulus.VALUE;
+			result = (numbers[i]%OxFFFFFFFF.VALUE + numbers[i + 1]%OxFFFFFFFF.VALUE)%OxFFFFFFFF.VALUE;
 		}
 
 		return result;
@@ -84,7 +84,7 @@ public class modulusPerf {
 	public long optimizedAdd() {
 		long result = 0;
 		for (int i = 0; i < numbers.length - 1; ++i) {
-			result = modulus.add(numbers[i], numbers[i + 1]);
+			result = OxFFFFFFFF.add(numbers[i], numbers[i + 1]);
 		}
 
 		return result;

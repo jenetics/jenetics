@@ -102,8 +102,8 @@ public class Yarn2Random extends Random32 {
 		}
 
 		void setSeed(final long seed) {
-			long t = modulus.mod(seed);
-			if (t < 0) t += modulus.VALUE;
+			long t = OxFFFFFFFF.mod(seed);
+			if (t < 0) t += OxFFFFFFFF.VALUE;
 
 			_r1 = t;
 			_r2 = 1;
@@ -163,16 +163,16 @@ public class Yarn2Random extends Random32 {
 		long t = GEN;
 		while (n > 0) {
 			if ((n&0x1) == 0x1) {
-				p = modulus.mod(p*t);
+				p = OxFFFFFFFF.mod(p*t);
 			}
-			t = modulus.mod(t*t);
+			t = OxFFFFFFFF.mod(t*t);
 			n /= 2;
 		}
 		return (int)p;
 	}
 
 	public void step() {
-		final long t = modulus.add(
+		final long t = OxFFFFFFFF.add(
 			_param.a1*_state._r1,
 			_param.a2*_state._r2
 		);

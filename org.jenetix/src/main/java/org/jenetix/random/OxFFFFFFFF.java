@@ -24,10 +24,10 @@ import org.jenetics.util.StaticObject;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-07-24 $</em>
+ * @version !__version__! &mdash; <em>$Date$</em>
  */
-final class modulus extends StaticObject {
-	private modulus() {}
+final class OxFFFFFFFF extends StaticObject {
+	private OxFFFFFFFF() {}
 
 	static final long VALUE = 0xFFFFFFFFL;
 

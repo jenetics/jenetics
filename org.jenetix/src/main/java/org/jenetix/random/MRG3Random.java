@@ -34,7 +34,7 @@ import org.jenetics.util.math;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-07-23 $</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-07-24 $</em>
  */
 public class MRG3Random extends Random32 {
 
@@ -115,8 +115,8 @@ public class MRG3Random extends Random32 {
 		}
 
 		void setSeed(final long seed) {
-			long t = modulus.mod(seed);
-			if (t < 0) t += modulus.VALUE;
+			long t = OxFFFFFFFF.mod(seed);
+			if (t < 0) t += OxFFFFFFFF.VALUE;
 
 			_r1 = t;
 			_r2 = 1;
@@ -173,7 +173,7 @@ public class MRG3Random extends Random32 {
 	}
 
 	public void step() {
-		final long t = modulus.add(
+		final long t = OxFFFFFFFF.add(
 			_param.a1*_state._r1,
 			_param.a2*_state._r2,
 			_param.a3*_state._r3
