@@ -24,7 +24,7 @@ import org.jenetics.util.StaticObject;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-07-22 $</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-07-24 $</em>
  */
 final class modulus extends StaticObject {
 	private modulus() {}
@@ -40,7 +40,7 @@ final class modulus extends StaticObject {
 	}
 
 	static long add(final long a,final long b, final long c) {
-		return add(add(a, b), c);
+		return mod(add(a, b) + mod(c));
 	}
 
 	static long add(final long a,final long b, final long c, final long d) {
