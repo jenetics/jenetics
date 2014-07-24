@@ -51,7 +51,7 @@ public class modulusPerf {
 	public long systemModulus() {
 		long result = 0;
 		for (int i = 0; i < numbers.length; ++i) {
-			result = numbers[i]%OxFFFFFFFF.VALUE;
+			result = numbers[i]%OxFFFFFFFB.VALUE;
 		}
 
 		return result;
@@ -62,7 +62,7 @@ public class modulusPerf {
 	public long optimizedModulus() {
 		long result = 0;
 		for (int i = 0; i < numbers.length; ++i) {
-			result = OxFFFFFFFF.mod(numbers[i]);
+			result = OxFFFFFFFB.mod(numbers[i]);
 		}
 
 		return result;
@@ -73,7 +73,7 @@ public class modulusPerf {
 	public long systemAdd() {
 		long result = 0;
 		for (int i = 0; i < numbers.length - 1; ++i) {
-			result = (numbers[i]%OxFFFFFFFF.VALUE + numbers[i + 1]%OxFFFFFFFF.VALUE)%OxFFFFFFFF.VALUE;
+			result = (numbers[i]%OxFFFFFFFB.VALUE + numbers[i + 1]%OxFFFFFFFB.VALUE)%OxFFFFFFFB.VALUE;
 		}
 
 		return result;
@@ -84,7 +84,7 @@ public class modulusPerf {
 	public long optimizedAdd() {
 		long result = 0;
 		for (int i = 0; i < numbers.length - 1; ++i) {
-			result = OxFFFFFFFF.add(numbers[i], numbers[i + 1]);
+			result = OxFFFFFFFB.add(numbers[i], numbers[i + 1]);
 		}
 
 		return result;

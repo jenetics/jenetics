@@ -115,8 +115,8 @@ public class MRG3Random extends Random32 {
 		}
 
 		void setSeed(final long seed) {
-			long t = OxFFFFFFFF.mod(seed);
-			if (t < 0) t += OxFFFFFFFF.VALUE;
+			long t = OxFFFFFFFB.mod(seed);
+			if (t < 0) t += OxFFFFFFFB.VALUE;
 
 			_r1 = t;
 			_r2 = 1;
@@ -173,7 +173,7 @@ public class MRG3Random extends Random32 {
 	}
 
 	public void step() {
-		final long t = OxFFFFFFFF.add(
+		final long t = OxFFFFFFFB.add(
 			_param.a1*_state._r1,
 			_param.a2*_state._r2,
 			_param.a3*_state._r3

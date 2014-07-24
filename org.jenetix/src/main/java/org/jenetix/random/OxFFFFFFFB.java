@@ -26,10 +26,11 @@ import org.jenetics.util.StaticObject;
  * @since !__version__!
  * @version !__version__! &mdash; <em>$Date$</em>
  */
-final class OxFFFFFFFF extends StaticObject {
-	private OxFFFFFFFF() {}
+final class OxFFFFFFFB extends StaticObject {
+	private OxFFFFFFFB() {}
 
-	static final long VALUE = 0xFFFFFFFFL;
+	// Largest prime number smaller than 2^32.
+	static final long VALUE = 0xFFFFFFFBL;
 
 	static long mod(final long a) {
 		return a%VALUE;
