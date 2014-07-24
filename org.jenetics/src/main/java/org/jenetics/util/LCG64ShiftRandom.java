@@ -73,7 +73,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 2.0 &mdash; <em>$Date: 2014-07-18 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-07-24 $</em>
  */
 public class LCG64ShiftRandom extends Random64 {
 
@@ -86,7 +86,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 2.0 &mdash; <em>$Date: 2014-07-18 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-07-24 $</em>
 	 */
 	public static final class Param implements Serializable {
 
@@ -95,22 +95,22 @@ public class LCG64ShiftRandom extends Random64 {
 		/**
 		 * The default PRNG parameters: a = 0xFBD19FBBC5C07FF5L; b = 1
 		 */
-		public static final Param DEFAULT = new Param(0xFBD19FBBC5C07FF5L, 1L);
+		public static final Param DEFAULT = Param.of(0xFBD19FBBC5C07FF5L, 1L);
 
 		/**
 		 * LEcuyer 1 parameters: a = 0x27BB2EE687B0B0FDL; b = 1
 		 */
-		public static final Param LECUYER1 = new Param(0x27BB2EE687B0B0FDL, 1L);
+		public static final Param LECUYER1 = Param.of(0x27BB2EE687B0B0FDL, 1L);
 
 		/**
 		 * LEcuyer 2 parameters: a = 0x2C6FE96EE78B6955L; b = 1
 		 */
-		public static final Param LECUYER2 = new Param(0x2C6FE96EE78B6955L, 1L);
+		public static final Param LECUYER2 = Param.of(0x2C6FE96EE78B6955L, 1L);
 
 		/**
 		 * LEcuyer 3 parameters: a = 0x369DEA0F31A53F85L; b = 1
 		 */
-		public static final Param LECUYER3 = new Param(0x369DEA0F31A53F85L, 1L);
+		public static final Param LECUYER3 = Param.of(0x369DEA0F31A53F85L, 1L);
 
 
 		/**
@@ -129,9 +129,13 @@ public class LCG64ShiftRandom extends Random64 {
 		 * @param a the parameter <i>a</i> of the LC recursion.
 		 * @param b the parameter <i>b</i> of the LC recursion.
 		 */
-		public Param(final long a, final long b) {
+		private Param(final long a, final long b) {
 			this.a = a;
 			this.b = b;
+		}
+
+		public static Param of(final long a, final long b) {
+			return new Param(a, b);
 		}
 
 		@Override
@@ -178,7 +182,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 2.0 &mdash; <em>$Date: 2014-07-18 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-07-24 $</em>
 	 */
 	public static class ThreadLocal
 		extends java.lang.ThreadLocal<LCG64ShiftRandom>
@@ -267,7 +271,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 2.0 &mdash; <em>$Date: 2014-07-18 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-07-24 $</em>
 	 */
 	public static class ThreadSafe extends LCG64ShiftRandom {
 		private static final long serialVersionUID = 1L;
