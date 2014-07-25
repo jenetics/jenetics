@@ -27,6 +27,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -59,11 +60,11 @@ public final class DieHarder {
 	 */
 	private static final class Randomizer implements Runnable {
 		private final Random _random;
-		private final OutputStream _out;
+		private final CountingOutputStream _out;
 
 		public Randomizer(final Random random, final OutputStream out) {
 			_random = Objects.requireNonNull(random);
-			_out = Objects.requireNonNull(out);
+			_out = new CountingOutputStream(out);
 		}
 
 		@Override
@@ -78,6 +79,10 @@ public final class DieHarder {
 			}
 		}
 
+		long getCount() {
+			return _out.getCount();
+		}
+		
 	}
 
 	public static void main(final String[] args) throws Exception {
@@ -114,11 +119,12 @@ public final class DieHarder {
 		final ProcessBuilder builder = new ProcessBuilder(dieharderArgs);
 		final Process dieharder = builder.start();
 
-		final Thread randomizer = new Thread(new Randomizer(
-			random,
-			dieharder.getOutputStream()
-		));
-		randomizer.start();
+		final Randomizer randomizer = new Randomizer(
+				random, 
+				dieharder.getOutputStream()
+		);
+		final Thread randomizerThread = new Thread(randomizer);
+		randomizerThread.start();
 
 		// The dieharder console output.
 		final BufferedReader stdout = new BufferedReader (
@@ -134,8 +140,10 @@ public final class DieHarder {
 		}
 
 		dieharder.waitFor();
-		randomizer.interrupt();
-		final long sec = (System.currentTimeMillis() - start)/1000;
+		randomizerThread.interrupt();
+		final long millis = System.currentTimeMillis() - start;
+		final long sec = (millis)/1000;
+		final double megaBytes = randomizer.getCount()/(1024.0*1024.0);
 
 		// Calculate statistics.
 		final long passed = results.stream()
@@ -148,8 +156,23 @@ public final class DieHarder {
 			.filter(r -> r.assessment == Assessment.FAILED)
 			.count();
 
+		final NumberFormat formater = NumberFormat.getIntegerInstance();
+		formater.setMinimumFractionDigits(3);
+		formater.setMaximumFractionDigits(3);
 
-		printt("Summary: PASSED=%d, WEAK=%d, FAILED=%d", passed, weak, failed);
+		println("#=============================================================================#");
+		println(
+			"# %-76s#",
+			format("Summary: PASSED=%d, WEAK=%d, FAILED=%d", passed, weak, failed)
+		);
+		println(
+			"# %-76s#",
+			format("         %s MB of random data created with %s MB/sec", 
+				formater.format(megaBytes),
+				formater.format(megaBytes/(millis/1000.0))
+			)
+		);		
+		println("#=============================================================================#");
 		printt("Runtime: %d:%02d:%02d", sec/3600, (sec%3600)/60, (sec%60));
 
 	}
@@ -315,7 +338,43 @@ public final class DieHarder {
 				testName, ntup, tsamples, psamples, pvalue, assessment
 			);
 		}
-
+	}
+	
+	/**
+	 * Counts the writen bytes. 
+	 */
+	private static final class CountingOutputStream extends OutputStream {
+		private final OutputStream _delegate;
+		private long _count;
+		
+		CountingOutputStream(final OutputStream delegate) {
+			_delegate = Objects.requireNonNull(delegate);
+		}
+		
+		@Override
+		public void write(final byte[] b) throws IOException {
+			_delegate.write(b);
+			_count += b.length;
+		}
+		
+		@Override
+		public void write(final byte[] b, final int offset, final int length)
+			throws IOException
+		{
+			_delegate.write(b, offset, length);
+			_count += length;
+		}
+		
+		@Override
+		public void write(final int b) throws IOException {
+			_delegate.write(b);
+			_count += 1;
+		}
+		
+		long getCount() {
+			return _count;
+		}
+		
 	}
 
 }
