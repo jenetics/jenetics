@@ -56,7 +56,7 @@ public final class DieHarder {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.5
-	 * @version !__version__! &mdash; <em>$Date: 2014-07-25 $</em>
+	 * @version 3.0 &mdash; <em>$Date: 2014-07-25 $</em>
 	 */
 	private static final class Randomizer implements Runnable {
 		private final Random _random;
@@ -82,7 +82,6 @@ public final class DieHarder {
 		long getCount() {
 			return _out.getCount();
 		}
-		
 	}
 
 	public static void main(final String[] args) throws Exception {
@@ -120,7 +119,7 @@ public final class DieHarder {
 		final Process dieharder = builder.start();
 
 		final Randomizer randomizer = new Randomizer(
-				random, 
+				random,
 				dieharder.getOutputStream()
 		);
 		final Thread randomizerThread = new Thread(randomizer);
@@ -141,6 +140,7 @@ public final class DieHarder {
 
 		dieharder.waitFor();
 		randomizerThread.interrupt();
+
 		final long millis = System.currentTimeMillis() - start;
 		final long sec = (millis)/1000;
 		final double megaBytes = randomizer.getCount()/(1024.0*1024.0);
@@ -156,9 +156,9 @@ public final class DieHarder {
 			.filter(r -> r.assessment == Assessment.FAILED)
 			.count();
 
-		final NumberFormat formater = NumberFormat.getIntegerInstance();
-		formater.setMinimumFractionDigits(3);
-		formater.setMaximumFractionDigits(3);
+		final NumberFormat formatter = NumberFormat.getIntegerInstance();
+		formatter.setMinimumFractionDigits(3);
+		formatter.setMaximumFractionDigits(3);
 
 		println("#=============================================================================#");
 		println(
@@ -167,11 +167,11 @@ public final class DieHarder {
 		);
 		println(
 			"# %-76s#",
-			format("         %s MB of random data created with %s MB/sec", 
-				formater.format(megaBytes),
-				formater.format(megaBytes/(millis/1000.0))
+			format("         %s MB of random data created with %s MB/sec",
+				formatter.format(megaBytes),
+				formatter.format(megaBytes/(millis/1000.0))
 			)
-		);		
+		);
 		println("#=============================================================================#");
 		printt("Runtime: %d:%02d:%02d", sec/3600, (sec%3600)/60, (sec%60));
 
@@ -266,10 +266,10 @@ public final class DieHarder {
 
 			if (parts.length == 6) {
 				final String name = parts[0].trim();
-				final OptionalInt ntup = parseInt(parts[1].trim());
-				final OptionalInt tsamples = parseInt(parts[2].trim());
-				final OptionalInt psamples = parseInt(parts[3].trim());
-				final OptionalDouble pvalue = parseDouble(parts[4].trim());
+				final OptionalInt ntup = toOptionalInt(parts[1].trim());
+				final OptionalInt tsamples = toOptionalInt(parts[2].trim());
+				final OptionalInt psamples = toOptionalInt(parts[3].trim());
+				final OptionalDouble pvalue = toOptionalDouble(parts[4].trim());
 				final Optional<Assessment> assessment = Assessment.of(parts[5].trim());
 
 				if (ntup.isPresent() &&
@@ -292,7 +292,7 @@ public final class DieHarder {
 			return Optional.empty();
 		}
 
-		private static OptionalInt parseInt(final String value) {
+		private static OptionalInt toOptionalInt(final String value) {
 			try {
 				return OptionalInt.of(Integer.parseInt(value));
 			} catch (NumberFormatException e) {
@@ -300,7 +300,7 @@ public final class DieHarder {
 			}
 		}
 
-		private static OptionalDouble parseDouble(final String value) {
+		private static OptionalDouble toOptionalDouble(final String value) {
 			try {
 				return OptionalDouble.of(Double.parseDouble(value));
 			} catch (NumberFormatException e) {
@@ -339,24 +339,28 @@ public final class DieHarder {
 			);
 		}
 	}
-	
+
 	/**
-	 * Counts the writen bytes. 
+	 * Counts the written bytes.
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since 3.0
+	 * @version 3.0 &mdash; <em>$Date: 2014-07-25 $</em>
 	 */
 	private static final class CountingOutputStream extends OutputStream {
 		private final OutputStream _delegate;
 		private long _count;
-		
+
 		CountingOutputStream(final OutputStream delegate) {
 			_delegate = Objects.requireNonNull(delegate);
 		}
-		
+
 		@Override
 		public void write(final byte[] b) throws IOException {
 			_delegate.write(b);
 			_count += b.length;
 		}
-		
+
 		@Override
 		public void write(final byte[] b, final int offset, final int length)
 			throws IOException
@@ -364,17 +368,17 @@ public final class DieHarder {
 			_delegate.write(b, offset, length);
 			_count += length;
 		}
-		
+
 		@Override
 		public void write(final int b) throws IOException {
 			_delegate.write(b);
 			_count += 1;
 		}
-		
+
 		long getCount() {
 			return _count;
 		}
-		
+
 	}
 
 }
