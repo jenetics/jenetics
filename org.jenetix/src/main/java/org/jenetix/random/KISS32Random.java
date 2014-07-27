@@ -142,7 +142,7 @@ public class KISS32Random extends Random32 {
 
 		int t = _state._z + _state._w + _state._c;
 		_state._z = _state._w;
-		_state._c = t < 0 ? 1 : 0;
+		_state._c = t >>> 31;
 		_state._w = t&2147483647;
 		_state._x += 1411392427;
 	}
@@ -170,6 +170,7 @@ public class KISS32Random extends Random32 {
 	public String toString() {
 		return format("%s[%s]", getClass().getSimpleName(), _state);
 	}
+
 }
 
 /*
