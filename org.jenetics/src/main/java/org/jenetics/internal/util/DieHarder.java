@@ -47,7 +47,7 @@ import org.jenetics.internal.util.DieHarder.Result.Assessment;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 3.0 &mdash; <em>$Date: 2014-07-25 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-07-27 $</em>
  */
 public final class DieHarder {
 
@@ -56,7 +56,7 @@ public final class DieHarder {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.5
-	 * @version 3.0 &mdash; <em>$Date: 2014-07-25 $</em>
+	 * @version 3.0 &mdash; <em>$Date: 2014-07-27 $</em>
 	 */
 	private static final class Randomizer implements Runnable {
 		private final Random _random;
@@ -101,6 +101,7 @@ public final class DieHarder {
 			);
 		} catch (Exception e) {
 			System.out.println("Can't create random class " + randomName);
+			e.printStackTrace();
 			return;
 		}
 
@@ -219,7 +220,7 @@ public final class DieHarder {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 3.0
-	 * @version 3.0 &mdash; <em>$Date: 2014-07-25 $</em>
+	 * @version 3.0 &mdash; <em>$Date: 2014-07-27 $</em>
 	 */
 	static final class Result {
 
@@ -345,7 +346,7 @@ public final class DieHarder {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 3.0
-	 * @version 3.0 &mdash; <em>$Date: 2014-07-25 $</em>
+	 * @version 3.0 &mdash; <em>$Date: 2014-07-27 $</em>
 	 */
 	private static final class CountingOutputStream extends OutputStream {
 		private final OutputStream _delegate;
