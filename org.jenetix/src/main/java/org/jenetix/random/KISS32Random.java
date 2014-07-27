@@ -33,9 +33,9 @@ import org.jenetics.util.math;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-07-27 $</em>
+ * @version !__version__! &mdash; <em>$Date$</em>
  */
-public class KISSRandom extends Random32 {
+public class KISS32Random extends Random32 {
 
 	private static final long serialVersionUID = 1L;
 
@@ -100,11 +100,11 @@ public class KISSRandom extends Random32 {
 
 	private final State _state;
 
-	public KISSRandom(final long seed) {
+	public KISS32Random(final long seed) {
 		_state = new State(seed);
 	}
 
-	public KISSRandom() {
+	public KISS32Random() {
 		this(math.random.seed());
 	}
 
