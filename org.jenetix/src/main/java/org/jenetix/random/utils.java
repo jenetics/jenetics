@@ -24,10 +24,10 @@ import org.jenetics.util.StaticObject;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-07-28 $</em>
+ * @version !__version__! &mdash; <em>$Date$</em>
  */
-final class ints extends StaticObject {
-	private ints() {}
+final class utils extends StaticObject {
+	private utils() {}
 
 	static long mix(final long a) {
 		long c = a^Long.rotateLeft(a, 7);
@@ -35,5 +35,13 @@ final class ints extends StaticObject {
 		c ^= c >>> 31;
 		c ^= c << 8;
 		return c;
+	}
+
+	static int lowInt(final long a) {
+		return (int)a;
+	}
+
+	static int highInt(final long a) {
+		return (int)(a >>> Integer.SIZE);
 	}
 }

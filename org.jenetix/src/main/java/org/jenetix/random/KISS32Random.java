@@ -21,7 +21,9 @@ package org.jenetix.random;
 
 import static java.lang.String.format;
 import static org.jenetics.internal.util.Equality.eq;
-import static org.jenetix.random.ints.mix;
+import static org.jenetix.random.utils.highInt;
+import static org.jenetix.random.utils.lowInt;
+import static org.jenetix.random.utils.mix;
 
 import java.io.Serializable;
 
@@ -46,25 +48,11 @@ public class KISS32Random extends Random32 {
 	private static final class State implements Serializable {
 		private static final long serialVersionUID = 1L;
 
-		int _x;
-		int _y;
-		int _z;
-		int _w;
+		int _x = 123456789;
+		int _y = 234567891;
+		int _z = 345678912;
+		int _w = 456789123;
 		int _c = 0;
-
-		State(final int x, final int y, final int z, final int w) {
-			_x = x;
-			_y = y;
-			_z = z;
-			_w = w;
-		}
-
-		State(final long a, final long b) {
-			_x = (int)(a >>> Integer.SIZE);
-			_y = (int)a;
-			_z = (int)(b >>> Integer.SIZE);
-			_w = (int)b;
-		}
 
 		State(final long seed) {
 			setSeed(seed);
@@ -74,13 +62,11 @@ public class KISS32Random extends Random32 {
 			final long a = seed;
 			final long b = mix(seed);
 
-			_x = (int)(a >>> Integer.SIZE);
-			_y = (int)a;
-			_z = (int)(b >>> Integer.SIZE);
-			_w = (int)b;
+			_x = highInt(a);
+			_y = lowInt(a);
+			_z = highInt(b);
+			_w = lowInt(b);
 		}
-
-
 
 		void step() {
 			_y ^= _y << 5;
@@ -124,16 +110,12 @@ public class KISS32Random extends Random32 {
 
 	private final State _state;
 
-	public KISS32Random(final long seed1, final long seed2) {
-		_state = new State(seed1, seed2);
-	}
-
 	public KISS32Random(final long seed) {
-		this(seed, mix(seed));
+		_state = new State(seed);
 	}
 
 	public KISS32Random() {
-		this(math.random.seed(), math.random.seed());
+		this(math.random.seed());
 	}
 
 	@Override

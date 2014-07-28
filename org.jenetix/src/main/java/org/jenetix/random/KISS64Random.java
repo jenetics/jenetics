@@ -19,9 +19,14 @@
  */
 package org.jenetix.random;
 
-import static org.jenetix.random.ints.mix;
+import static java.lang.String.format;
+import static org.jenetics.internal.util.Equality.eq;
+import static org.jenetix.random.utils.mix;
 
 import java.io.Serializable;
+
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.Random64;
 import org.jenetics.util.math;
@@ -35,59 +40,27 @@ public class KISS64Random extends Random64 {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * The internal state of this PRNG.
+	 */
 	private static final class State implements Serializable {
 		private static final long serialVersionUID = 1L;
 
-		long _x;
-		long _y;
-		int _z1;
-		int _c1;
-		int _z2;
-		int _c2;
-
-		State(
-			final long x,
-			final long y,
-			final int z1,
-			final int c1,
-			final int z2,
-			final int c2
-		) {
-			_x = x;
-			_y = y == 0 ? 0xdeadbeef : y;
-			_z1 = z1;
-			_c1 = c1;
-			_z2 = z2;
-			_c2 = c2;
-		}
-
-		State(final long a, final long b, final long c, final long d) {
-			this(
-				a,
-				b,
-				(int)(c >>> Integer.SIZE),
-				(int)c,
-				(int)(d >>> Integer.SIZE),
-				(int)d
-			);
-		}
+		long _x = 123456789123L;
+		long _y = 987654321987L;
+		int _z1 = 43219876;
+		int _c1 = 6543217;
+		int _z2 = 21987643;
+		int _c2 = 1732654;
 
 		State(final long seed) {
 			setSeed(seed);
 		}
 
 		void setSeed(final long seed) {
-			final long a = seed;
-			final long b = mix(seed);
-			final long c = mix(b);
-			final long d = mix(c);
-
-			_x = a;
-			_y = b == 0 ? 0xdeadbeef : b;
-			_z1 = (int)(c >>> Integer.SIZE);
-			_c1 = (int)c;
-			_z2 = (int)(d >>> Integer.SIZE);
-			_c2 = (int)d;
+			_x ^= seed;
+			_y ^= mix(seed);
+			if (_y == 0L) _y = 0xdeadbeef;
 		}
 
 		void step() {
@@ -105,30 +78,47 @@ public class KISS64Random extends Random64 {
 			_c2 = (int)(t >> 32);
 			_z2 = (int)t;
 		}
+
+		@Override
+		public int hashCode() {
+			return Hash.of(getClass())
+				.and(_x)
+				.and(_y)
+				.and(_z1)
+				.and(_c1)
+				.and(_z2)
+				.and(_c2).value();
+		}
+
+		@Override
+		public boolean equals(final Object obj) {
+			return Equality.of(this, obj).test(state ->
+				eq(_x, state._x) &&
+				eq(_y, state._y) &&
+				eq(_z1, state._z1) &&
+				eq(_c1, state._c1) &&
+				eq(_z2, state._z2) &&
+				eq(_z2, state._z2)
+			);
+		}
+
+		@Override
+		public String toString() {
+			return format(
+				"State[%d, %d, %d, %d, %d, %d]",
+				_x, _y, _z1, _c1, _z2, _c2
+			);
+		}
 	}
 
 	private final State _state;
-
-	public KISS64Random(
-		final long seed1,
-		final long seed2,
-		final long seed3,
-		final long seed4
-	) {
-		_state = new State(seed1, seed2, seed3, seed4);
-	}
 
 	public KISS64Random(final long seed) {
 		_state = new State(seed);
 	}
 
 	public KISS64Random() {
-		this(
-			math.random.seed(),
-			math.random.seed(),
-			math.random.seed(),
-			math.random.seed()
-		);
+		this(math.random.seed());
 	}
 
 	@Override
@@ -140,6 +130,24 @@ public class KISS64Random extends Random64 {
 	@Override
 	public void setSeed(final long seed) {
 		if (_state != null) _state.setSeed(seed);
+	}
+
+	@Override
+	public int hashCode() {
+		return Hash.of(getClass())
+			.and(_state).value();
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return Equality.of(this, obj).test(random ->
+			eq(_state, random._state)
+		);
+	}
+
+	@Override
+	public String toString() {
+		return format("%s[%s]", getClass().getSimpleName(), _state);
 	}
 
 }
