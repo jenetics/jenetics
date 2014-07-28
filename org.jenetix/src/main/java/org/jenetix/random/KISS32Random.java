@@ -21,6 +21,7 @@ package org.jenetix.random;
 
 import static java.lang.String.format;
 import static org.jenetics.internal.util.Equality.eq;
+import static org.jenetix.random.ints.mix;
 
 import java.io.Serializable;
 
@@ -79,12 +80,18 @@ public class KISS32Random extends Random32 {
 			_w = (int)b;
 		}
 
-		private static long mix(final long a) {
-			long c = a^Long.rotateLeft(a, 7);
-			c ^= c << 17;
-			c ^= c >>> 31;
-			c ^= c << 8;
-			return c;
+
+
+		void step() {
+			_y ^= _y << 5;
+			_y ^= _y >>> 7;
+			_y ^= _y << 22;
+
+			int t = _z + _w + _c;
+			_z = _w;
+			_c = t >>> 31;
+			_w = t&2147483647;
+			_x += 1411392427;
 		}
 
 		@Override
@@ -122,7 +129,7 @@ public class KISS32Random extends Random32 {
 	}
 
 	public KISS32Random(final long seed) {
-		this(seed, State.mix(seed));
+		this(seed, mix(seed));
 	}
 
 	public KISS32Random() {
@@ -131,22 +138,9 @@ public class KISS32Random extends Random32 {
 
 	@Override
 	public int nextInt() {
-		step();
+		_state.step();
 		return _state._x + _state._y + _state._w;
 	}
-
-	private void step() {
-		_state._y ^= _state._y << 5;
-		_state._y ^= _state._y >>> 7;
-		_state._y ^= _state._y << 22;
-
-		int t = _state._z + _state._w + _state._c;
-		_state._z = _state._w;
-		_state._c = t >>> 31;
-		_state._w = t&2147483647;
-		_state._x += 1411392427;
-	}
-
 
 	@Override
 	public void setSeed(final long seed) {
