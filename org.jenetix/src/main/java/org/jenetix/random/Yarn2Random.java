@@ -80,8 +80,8 @@ public class Yarn2Random extends Random32 {
 		@Override
 		public boolean equals(final Object obj) {
 			return Equality.of(this, obj).test(param ->
-					eq(a1, param.a1) &&
-						eq(a2, param.a2)
+				eq(a1, param.a1) &&
+				eq(a2, param.a2)
 			);
 		}
 

@@ -63,22 +63,6 @@ public class KISS64Random extends Random64 {
 			if (_y == 0L) _y = 0xdeadbeef;
 		}
 
-		void step() {
-			_x = 0x14ADA13ED78492ADL*_x + 123456789;
-
-			_y ^= _y << 21;
-			_y ^= _y >>> 17;
-			_y ^= _y << 30;
-
-			long t = 4294584393L*_z1 + _c1;
-			_c1 = (int)(t >> 32);
-			_z1 = (int)t;
-
-			t = 4246477509L*_z2 + _c2;
-			_c2 = (int)(t >> 32);
-			_z2 = (int)t;
-		}
-
 		@Override
 		public int hashCode() {
 			return Hash.of(getClass())
@@ -123,8 +107,24 @@ public class KISS64Random extends Random64 {
 
 	@Override
 	public long nextLong() {
-		_state.step();
+		step();
 		return _state._x + _state._y + _state._z1 + ((long)_state._z2 << 32);
+	}
+
+	private void step() {
+		_state._x = 0x14ADA13ED78492ADL*_state._x + 123456789;
+
+		_state._y ^= _state._y << 21;
+		_state._y ^= _state._y >>> 17;
+		_state._y ^= _state._y << 30;
+
+		long t = 4294584393L*_state._z1 + _state._c1;
+		_state._c1 = (int)(t >> 32);
+		_state._z1 = (int)t;
+
+		t = 4246477509L*_state._z2 + _state._c2;
+		_state._c2 = (int)(t >> 32);
+		_state._z2 = (int)t;
 	}
 
 	@Override

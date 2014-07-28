@@ -68,18 +68,6 @@ public class KISS32Random extends Random32 {
 			_w = lowInt(b);
 		}
 
-		void step() {
-			_y ^= _y << 5;
-			_y ^= _y >>> 7;
-			_y ^= _y << 22;
-
-			int t = _z + _w + _c;
-			_z = _w;
-			_c = t >>> 31;
-			_w = t&2147483647;
-			_x += 1411392427;
-		}
-
 		@Override
 		public int hashCode() {
 			return Hash.of(getClass())
@@ -120,8 +108,20 @@ public class KISS32Random extends Random32 {
 
 	@Override
 	public int nextInt() {
-		_state.step();
+		step();
 		return _state._x + _state._y + _state._w;
+	}
+
+	private void step() {
+		_state._y ^= _state._y << 5;
+		_state._y ^= _state._y >>> 7;
+		_state._y ^= _state._y << 22;
+
+		int t = _state._z + _state._w + _state._c;
+		_state._z = _state._w;
+		_state._c = t >>> 31;
+		_state._w = t&2147483647;
+		_state._x += 1411392427;
 	}
 
 	@Override
