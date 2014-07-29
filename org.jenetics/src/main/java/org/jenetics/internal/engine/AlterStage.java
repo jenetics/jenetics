@@ -19,43 +19,10 @@
  */
 package org.jenetics.internal.engine;
 
-import static org.jenetics.internal.util.NanoClock.minus;
-
-import java.time.Duration;
-import java.time.Instant;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
  * @version 3.0 &mdash; <em>$Date: 2014-07-29 $</em>
  */
-public final class Result<T> {
-
-	private final Instant _start;
-	private final Instant _stop;
-
-	private final T _value;
-
-	public Result(final Instant start, final Instant stop, final T value) {
-		_start = start;
-		_stop = stop;
-		_value = value;
-	}
-
-	public Instant getStart() {
-		return _start;
-	}
-
-	public Instant getStop() {
-		return _stop;
-	}
-
-	public Duration getDuration() {
-		return minus(_stop, _start);
-	}
-
-	public T get() {
-		return _value;
-	}
-
+public class AlterStage {
 }

@@ -19,43 +19,48 @@
  */
 package org.jenetics.internal.engine;
 
-import static org.jenetics.internal.util.NanoClock.minus;
-
-import java.time.Duration;
-import java.time.Instant;
+import org.jenetics.Gene;
+import org.jenetics.Phenotype;
+import org.jenetics.Population;
+import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
  * @version 3.0 &mdash; <em>$Date: 2014-07-29 $</em>
  */
-public final class Result<T> {
+public class SurvivorFilter<
+	G extends Gene<?, G>,
+	C extends Comparable<? super C>
+>
+{
 
-	private final Instant _start;
-	private final Instant _stop;
+	private int _generation;
+	private int _maxAge;
+	private final Factory<Phenotype<G, C>> _factory;
 
-	private final T _value;
-
-	public Result(final Instant start, final Instant stop, final T value) {
-		_start = start;
-		_stop = stop;
-		_value = value;
+	public SurvivorFilter(
+		final int generation,
+		final int maxAge,
+		final Factory<Phenotype<G, C>> factory
+	) {
+		_generation = generation;
+		_maxAge = maxAge;
+		_factory = factory;
 	}
 
-	public Instant getStart() {
-		return _start;
-	}
 
-	public Instant getStop() {
-		return _stop;
-	}
+	public final class Result {
+		public final Population<G, C> population;
+		public final int invalid;
+		public final int killed;
 
-	public Duration getDuration() {
-		return minus(_stop, _start);
-	}
 
-	public T get() {
-		return _value;
+		private Result(final Population<G, C> population, final int invalid, final int killed) {
+			this.population = population;
+			this.invalid = invalid;
+			this.killed = killed;
+		}
 	}
 
 }

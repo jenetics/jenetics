@@ -19,11 +19,71 @@
  */
 package org.jenetics.internal.engine;
 
+import static java.util.Objects.requireNonNull;
+
+import java.time.Clock;
+import java.util.concurrent.Executor;
+
+import org.jenetics.internal.util.NanoClock;
+
+import org.jenetics.Gene;
+import org.jenetics.Phenotype;
+import org.jenetics.util.Factory;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
  * @version 3.0 &mdash; <em>$Date: 2014-07-29 $</em>
  */
-public class Context {
+public class Context<
+	G extends Gene<?, G>,
+	C extends Comparable<? super C>
+	>
+{
 
+	private final Clock _clock = NanoClock.INSTANCE;
+
+	private final int _generation;
+	private final int _maximalPhenotypeAge;
+	private final int _populationSize;
+	private final Factory<Phenotype<G, C>> _phenotypeFactory;
+	private final Executor _executor;
+
+	public Context(
+		final int generation,
+		final int maximalPhenotypeAge,
+		final int populationSize,
+		final Factory<Phenotype<G, C>> phenotypeFactory,
+		final Executor executor
+	) {
+		_generation = generation;
+		_maximalPhenotypeAge = maximalPhenotypeAge;
+		_populationSize = populationSize;
+		_phenotypeFactory = phenotypeFactory;
+		_executor = requireNonNull(executor);
+	}
+
+	public Clock getClock() {
+		return _clock;
+	}
+
+	public int getGeneration() {
+		return _generation;
+	}
+
+	public int getMaximalPhenotypeAge() {
+		return _maximalPhenotypeAge;
+	}
+
+	public int getPopulationSize() {
+		return _populationSize;
+	}
+
+	public Factory<Phenotype<G, C>> getPhenotypeFactory() {
+		return _phenotypeFactory;
+	}
+
+	public Executor getExecutor() {
+		return _executor;
+	}
 }
