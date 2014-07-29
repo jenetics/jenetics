@@ -34,7 +34,7 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-07-10 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-07-29 $</em>
  */
 public class PopulationSummaryStatistics<
 	G extends Gene<?, G>,
@@ -48,7 +48,7 @@ public class PopulationSummaryStatistics<
 
 	private Phenotype<G, C> _best = null;
 	private Phenotype<G, C> _worst = null;
-	private IntSummaryStatistics _ageSummary = new IntSummaryStatistics();
+	private final IntSummaryStatistics _ageSummary = new IntSummaryStatistics();
 
 	public PopulationSummaryStatistics(
 		final Optimize optimize,
