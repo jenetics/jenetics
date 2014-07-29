@@ -22,6 +22,7 @@ package org.jenetics.internal.util;
 import static java.util.Objects.requireNonNull;
 
 import java.time.Clock;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -73,6 +74,13 @@ public final class NanoClock extends Clock {
 	public Instant instant() {
 		final long now = System.nanoTime() - NANO_START + EPOCH_NANOS;
 		return Instant.ofEpochSecond(now/NANOS_PER_SECOND, now%NANOS_PER_SECOND);
+	}
+
+	public static Duration minus(final Instant a, final Instant b)  {
+		final long seconds = a.getEpochSecond() - b.getEpochSecond();
+		final long nanos = a.getNano() - b.getNano();
+
+		return Duration.ofNanos(seconds*NANOS_PER_SECOND + nanos);
 	}
 
 }
