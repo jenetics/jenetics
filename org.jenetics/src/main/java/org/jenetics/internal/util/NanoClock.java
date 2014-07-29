@@ -26,6 +26,8 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Supplier;
 
 /**
  * Clock implementation with <i>nano</i> second precision.
@@ -81,6 +83,17 @@ public final class NanoClock extends Clock {
 		final long nanos = a.getNano() - b.getNano();
 
 		return Duration.ofNanos(seconds*NANOS_PER_SECOND + nanos);
+	}
+
+	public static <T> Supplier<T> timing(final AtomicLong timer, final Supplier<T> supplier) {
+		return () -> {
+			final long start = System.nanoTime();
+			try {
+				return supplier.get();
+			} finally {
+				timer.addAndGet(System.nanoTime() - start);
+			}
+		};
 	}
 
 }
