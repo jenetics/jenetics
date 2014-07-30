@@ -23,39 +23,28 @@ import static org.jenetics.internal.time.minus;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.function.Supplier;
+
+import org.jenetics.internal.util.Timer;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-07-30 $</em>
+ * @version 3.0 &mdash; <em>$Date$</em>
  */
-public final class Result<T> {
+public abstract class StageResult {
 
-	private final Instant _start;
-	private final Instant _stop;
+	private final Timer _timer = Timer.of();
 
-	private final T _value;
-
-	public Result(final Instant start, final Instant stop, final T value) {
-		_start = start;
-		_stop = stop;
-		_value = value;
-	}
-
-	public Instant getStart() {
-		return _start;
-	}
-
-	public Instant getStop() {
-		return _stop;
-	}
-
-	public Duration getDuration() {
-		return minus(_stop, _start);
-	}
-
-	public T get() {
-		return _value;
+	public <T> Supplier<T> timing(final Supplier<T> supplier) {
+		return () -> {
+			_timer.start();
+			try {
+				return supplier.get();
+			} finally {
+				_timer.stop();
+			}
+		};
 	}
 
 }
