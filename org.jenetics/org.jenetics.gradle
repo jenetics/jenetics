@@ -20,7 +20,7 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 2.0 &mdash; <em>$Date: 2014-07-14 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-07-30 $</em>
  */
 
 buildscript {
@@ -45,8 +45,8 @@ dependencies {
 	testCompile Include.Apache.Commons.Math
 	testCompile Include.TestNG
 
-    jmh 'org.openjdk.jmh:jmh-core:0.9.3'
-    jmh 'org.openjdk.jmh:jmh-generator-annprocess:0.9.3'
+    jmh Include.JMH.Core
+    jmh Include.JMH.Processor
     jmh files('build/classes/main')
 }
 
