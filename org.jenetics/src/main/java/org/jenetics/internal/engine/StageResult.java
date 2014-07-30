@@ -30,7 +30,7 @@ import org.jenetics.internal.util.Timer;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date$</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-07-31 $</em>
  */
 public abstract class StageResult {
 
@@ -45,6 +45,10 @@ public abstract class StageResult {
 				_timer.stop();
 			}
 		};
+	}
+
+	public Timer getTimer() {
+		return _timer;
 	}
 
 }
