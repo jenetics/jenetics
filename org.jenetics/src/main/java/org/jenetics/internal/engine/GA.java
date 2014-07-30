@@ -17,12 +17,15 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package org.jenetics.internal.engine;
+
+import org.jenetics.Gene;
+import org.jenetics.Population;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-06-25 $</em>
+ * @version 3.0 &mdash; <em>$Date$</em>
  */
 public class GA<
 	G extends Gene<?, G>,
