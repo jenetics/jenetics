@@ -28,7 +28,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'me.champeau.gradle:jmh-gradle-plugin:0.1'
+        classpath 'me.champeau.gradle:jmh-gradle-plugin:0.1.2'
     }
 }
 
