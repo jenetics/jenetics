@@ -3,7 +3,6 @@ package org.jenetics.internal;
 import java.time.Duration;
 import java.time.Instant;
 
-import org.jenetics.internal.util.NanoClock;
 import org.jenetics.util.StaticObject;
 
 public class time extends StaticObject {

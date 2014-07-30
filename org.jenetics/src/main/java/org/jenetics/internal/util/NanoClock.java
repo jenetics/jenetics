@@ -47,6 +47,8 @@ public final class NanoClock extends Clock {
 	 * Create an new clock instance with the given zone.
 	 *
 	 * @param zone the clock zone
+	 * @throws java.lang.NullPointerException if the given {@code zone} is
+	 *         {@code null}.
 	 */
 	public NanoClock(final ZoneId zone)  {
 		_zone = requireNonNull(zone);

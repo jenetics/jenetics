@@ -35,7 +35,7 @@ import org.jenetics.Population;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date$</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-07-30 $</em>
  */
 public final class CombineStage<
 	G extends Gene<?, G>,
@@ -49,10 +49,11 @@ public final class CombineStage<
 		_context = requireNonNull(context);
 	}
 
-	public CompletionStage<Result<CombineResult<G, C>>> combine(
+	public CompletionStage<CombineResult<G, C>> combine(
 		final Population<G, C> survivors,
 		final Population<G, C> offspring
 	) {
+		/*
 		final Population<G, C> population = new Population<>(_context.getPopulationSize());
 
 		survivors.stream()
@@ -66,12 +67,13 @@ public final class CombineStage<
 
 		final CompletionStage<Void> off =
 			CompletableFuture.runAsync(() -> population.addAll(offspring), _context.getExecutor());
-
+		*/
 
 		return null;
 	}
 
 	private CombineResult<G, C> filter(final Population<G, C> survivors) {
+		/*
 		int invalid = 0;
 		int killed = 0;
 
@@ -94,6 +96,8 @@ public final class CombineStage<
 		}
 
 		return new CombineResult<>(survivors, invalid, killed);
+		*/
+		return null;
 	}
 
 

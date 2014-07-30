@@ -19,15 +19,12 @@
  */
 package org.jenetics.internal.engine;
 
-import java.util.concurrent.CompletableFuture;
+import static java.lang.Math.round;
+
 import java.util.concurrent.CompletionStage;
-import java.util.concurrent.Executor;
 
 import org.jenetics.Gene;
-import org.jenetics.Optimize;
 import org.jenetics.Population;
-import org.jenetics.Selector;
-import org.jenetics.internal.util.Timer;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -38,44 +35,42 @@ public class SelectStage<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
+	extends Stage
 {
 
-	public int survivors;
-	public int offspring;
-	public Selector<G, C> survivorSelector;
-	public Selector<G, C> offspringSelector;
-	public Optimize optimize;
-	public Executor executor;
+	private final Context<G, C> _context;
+
+	public SelectStage(final Context<G, C> context) {
+		super(context.getExecutor());
+		_context = context;
+	}
 
 	public Result select(final Population<G, C> population) {
-        final Timer timer = Timer.of();
-		return new Result(
-            timer,
-			CompletableFuture.supplyAsync(timer.timing(() ->
-				survivorSelector.select(population, survivors, optimize)),
-				executor
-			),
-			CompletableFuture.supplyAsync(timer.timing(() ->
-				offspringSelector.select(population, offspring, optimize)),
-				executor
-			)
+		return new Result() {{
+			survivors = async(timing(() ->
+				_context.getSurvivorSelector()
+					.select(population, getSurvivorCount(), _context.getOptimize()))
+			);
+			offspring = async(timing(() ->
+				_context.getOffspringSelector()
+					.select(population, getOffspringCount(), _context.getOptimize()))
+			);
+		}};
+	}
+
+	private int getSurvivorCount() {
+		return _context.getPopulationSize() - getOffspringCount();
+	}
+
+	private int getOffspringCount() {
+		return (int)round(
+			_context.getOffspringFraction()*_context.getPopulationSize()
 		);
 	}
 
-	public final class Result {
-        public final Timer timer;
-		public final CompletionStage<Population<G, C>> survivors;
-		public final CompletionStage<Population<G, C>> offspring;
-
-		private Result(
-            final Timer timer,
-			final CompletionStage<Population<G, C>> survivors,
-			final CompletionStage<Population<G, C>> offspring
-		) {
-            this.timer = timer;
-			this.survivors = survivors;
-			this.offspring = offspring;
-		}
+	public abstract class Result extends StageResult {
+		public CompletionStage<Population<G, C>> survivors;
+		public CompletionStage<Population<G, C>> offspring;
 	}
 
 }
