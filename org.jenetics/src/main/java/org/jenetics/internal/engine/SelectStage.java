@@ -30,11 +30,12 @@ import org.jenetics.Gene;
 import org.jenetics.Optimize;
 import org.jenetics.Population;
 import org.jenetics.Selector;
+import org.jenetics.internal.util.Timer;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-07-29 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-07-30 $</em>
  */
 public class SelectStage<
 	G extends Gene<?, G>,
@@ -44,20 +45,20 @@ public class SelectStage<
 
 	public int survivors;
 	public int offspring;
-	private Selector<G, C> survivorSelector;
-	private Selector<G, C> offspringSelector;
+	public Selector<G, C> survivorSelector;
+	public Selector<G, C> offspringSelector;
 	public Optimize optimize;
 	public Executor executor;
 
-	public final AtomicLong time = new AtomicLong(0);
-
 	public Result select(final Population<G, C> population) {
+        final Timer timer = Timer.of();
 		return new Result(
-			CompletableFuture.supplyAsync(timing(time, () ->
+            timer,
+			CompletableFuture.supplyAsync(timer.timing(() ->
 				survivorSelector.select(population, survivors, optimize)),
 				executor
 			),
-			CompletableFuture.supplyAsync(timing(time, () ->
+			CompletableFuture.supplyAsync(timer.timing(() ->
 				offspringSelector.select(population, offspring, optimize)),
 				executor
 			)
@@ -65,13 +66,16 @@ public class SelectStage<
 	}
 
 	public final class Result {
+        public final Timer timer;
 		public final CompletionStage<Population<G, C>> survivors;
 		public final CompletionStage<Population<G, C>> offspring;
 
 		private Result(
+            final Timer timer,
 			final CompletionStage<Population<G, C>> survivors,
 			final CompletionStage<Population<G, C>> offspring
 		) {
+            this.timer = timer;
 			this.survivors = survivors;
 			this.offspring = offspring;
 		}
