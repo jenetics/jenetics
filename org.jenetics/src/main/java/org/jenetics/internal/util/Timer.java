@@ -6,6 +6,8 @@ import java.time.Instant;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Supplier;
 
+import org.jenetics.internal.time;
+
 public final class Timer {
 
 	private final Clock _clock;
@@ -25,7 +27,7 @@ public final class Timer {
 
 	private void stop() {
         _stop.set(_clock.instant());
-        _time.addAndGet(NanoClock.minus(_stop.get(), _start.get()).toMillis());
+        _time.addAndGet(time.minus(_stop.get(), _start.get()).toMillis());
 	}
 
     public Duration getTime() {

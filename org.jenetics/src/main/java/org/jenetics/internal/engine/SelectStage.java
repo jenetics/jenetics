@@ -19,12 +19,9 @@
  */
 package org.jenetics.internal.engine;
 
-import static org.jenetics.internal.util.NanoClock.timing;
-
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Executor;
-import java.util.concurrent.atomic.AtomicLong;
 
 import org.jenetics.Gene;
 import org.jenetics.Optimize;
