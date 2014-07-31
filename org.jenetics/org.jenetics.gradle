@@ -56,11 +56,11 @@ jmhJar {
 
 javadoc {
     options.docletpath = files(
-            "${project.rootDir}/buildSrc/build/libs/buildSrc.jar",
-            "${project.rootDir}/buildSrc/lib/publishedApiDoclet1.5-0.4.jar"
+            "${project.rootDir}/buildSrc/build/libs/buildSrc.jar"
+            //"${project.rootDir}/buildSrc/lib/publishedApiDoclet1.5-0.4.jar"
         ).asType(List)
 
-    options.doclet = 'org.jenetics.doclet.ExcludeInternalDoclet'
+    //options.doclet = 'org.jenetics.doclet.ExcludeInternalDoclet'
     //options.doclet = 'de.kruis.padoclet.PublishedApiDoclet'
     //options.addStringOption('-padExcludeTag', 'exclude')
 }

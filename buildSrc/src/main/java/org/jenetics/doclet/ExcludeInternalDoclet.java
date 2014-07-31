@@ -79,7 +79,7 @@ public class ExcludeInternalDoclet {
 
 		for (PackageDoc packageDoc : root.specifiedPackages()) {
 			if (containsPublicClasses(packageDoc)) {
-				System.out.println("Package '" + packageDoc.name() + "' contains Public APIs");
+				System.out.println("--------------------Package '" + packageDoc.name() + "' contains Public APIs");
 				includedPackages.add(packageDoc);
 			}
 		}
