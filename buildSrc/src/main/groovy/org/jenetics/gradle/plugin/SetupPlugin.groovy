@@ -34,7 +34,7 @@ import java.text.SimpleDateFormat
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5 &mdash; <em>$Date: 2014-04-22 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-07-31 $</em>
  */
 class SetupPlugin extends JeneticsPlugin {
 
@@ -155,8 +155,10 @@ class SetupPlugin extends JeneticsPlugin {
                 //subpackages = 'org.jenetics'
                 //exclude = 'org.jenetics.internal'
 				exclude 'org/*/internal/**'
+                excludeDocFilesSubDir 'org/jenetics/internal'
 
 				options.addStringOption('subpackages', 'org.jenetics')
+                options.addStringOption('excludedocfilessubdir', 'org/jenetics/internal')
 				options.addStringOption('exclude', 'org.jenetics.internal')
 
 				group('Core API', ['org.jenetics']).

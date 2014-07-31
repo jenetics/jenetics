@@ -27,12 +27,14 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
+import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.Doc;
 import com.sun.javadoc.DocErrorReporter;
 import com.sun.javadoc.LanguageVersion;
-import com.sun.javadoc.ProgramElementDoc;
 import com.sun.javadoc.RootDoc;
+import com.sun.javadoc.Type;
 import com.sun.tools.doclets.standard.Standard;
 import com.sun.tools.javadoc.Main;
 
@@ -44,6 +46,11 @@ import com.sun.tools.javadoc.Main;
 public class ExcludeInternalDoclet {
 
 	private static final String EXCLUDE_TAG = "@internal";
+
+	private static final Predicate<Type> TYPE_FILTER = type -> (
+		!type.qualifiedTypeName().startsWith("org.jenetics.internal") &&
+		!type.qualifiedTypeName().startsWith("org.jenetix.internal")
+	);
 
 	public static void main(String[] args) {
 		String name = ExcludeInternalDoclet.class.getName();
@@ -63,12 +70,12 @@ public class ExcludeInternalDoclet {
 		return LanguageVersion.JAVA_1_5;
 	}
 
-	public static int optionLength(String option) {
+	public static int optionLength(final String option) {
 		return Standard.optionLength(option);
 	}
 
 	public static boolean start(final RootDoc root) throws IOException {
-		return Standard.start((RootDoc) process(root, RootDoc.class));
+		return Standard.start((RootDoc)process(root, RootDoc.class));
 	}
 
 	private static boolean exclude(final Doc doc) {
@@ -76,9 +83,9 @@ public class ExcludeInternalDoclet {
 			return true;
 		} else if (doc.tags(EXCLUDE_TAG).length > 0) {
 			return true;
-		} else if (doc instanceof ProgramElementDoc) {
-			final ProgramElementDoc elem = (ProgramElementDoc)doc;
-			if (elem.containingPackage().tags(EXCLUDE_TAG).length > 0) {
+		} else if (doc instanceof Type) {
+			if (!TYPE_FILTER.test((Type)doc)) {
+				System.out.println("Excluded: '" + doc);
 				return true;
 			}
 		}
@@ -99,15 +106,18 @@ public class ExcludeInternalDoclet {
 				new ExcludeHandler(obj)
 			);
 		} else if (obj instanceof Object[]) {
-			final Class componentType = expect.getComponentType();
+			final Class<?> componentType = expect.getComponentType();
 			final Object[] array = (Object[]) obj;
 			final List<Object> list = new ArrayList<>(array.length);
 
 			for (int i = 0; i < array.length; i++) {
-				final Object entry = array[i];
-				if ((entry instanceof Doc) && exclude((Doc)entry)) {
-					continue;
+				Object entry = array[i];
+				if (entry instanceof Type) {
+					if ((entry instanceof Doc) && exclude((Doc)entry)) {
+						continue;
+					}
 				}
+
 				list.add(process(entry, componentType));
 			}
 

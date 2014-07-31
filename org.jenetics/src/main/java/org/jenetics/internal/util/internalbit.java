@@ -28,7 +28,7 @@ import org.jenetics.util.bit;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-05-13 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-07-31 $</em>
  * @since 1.6
  */
 public final class internalbit extends StaticObject {
@@ -41,9 +41,9 @@ public final class internalbit extends StaticObject {
 	 * @param start the initial index of the range to be copied, inclusive
 	 * @param end the final index of the range to be copied, exclusive.
 	 * @return a new array containing the specified range from the original array
-	 * @throws java.lang.ArrayIndexOutOfBoundsException if start < 0 or
-	 *         start > data.length*8
-	 * @throws java.lang.IllegalArgumentException if start > end
+	 * @throws java.lang.ArrayIndexOutOfBoundsException if start &lt; 0 or
+	 *         start &gt; data.length*8
+	 * @throws java.lang.IllegalArgumentException if start &gt; end
 	 * @throws java.lang.NullPointerException if the {@code data} array is
 	 *         {@code null}.
 	 */

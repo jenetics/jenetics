@@ -36,7 +36,7 @@ import org.jenetics.util.Copyable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0 &mdash; <em>$Date: 2014-06-17 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-07-31 $</em>
  */
 public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	implements
@@ -104,6 +104,7 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	 * {@code ArrayProxy}. The array boundaries are not checked.
 	 *
 	 * @param index absolute index of the <i>array</i> element
+	 * @param value the value to set
 	 */
 	public abstract void __set__(final int index, final T value);
 
@@ -123,6 +124,7 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	 * {@code ArrayProxy}. The array boundaries are not checked.
 	 *
 	 * @param index index of the <i>array</i> element
+	 * @param value the value to set
 	 */
 	public final void __set(final int index, final T value) {
 		__set__(index + start, value);
@@ -135,7 +137,7 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	 * @param index index of the element to return
 	 * @return the <i>array</i> element at the specified position
 	 * @throws IndexOutOfBoundsException if the index it out of range
-	 *         (index < 0 || index >= _length).
+	 *         (index &lt; 0 || index &gt;= _length).
 	 */
 	public final T get(final int index) {
 		checkIndex(index);
@@ -149,7 +151,7 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	 * @param index the index of the element to set
 	 * @param value the <i>array</i> element
 	 * @throws IndexOutOfBoundsException if the index it out of range
-	 *         (index < 0 || index >= _length).
+	 *         {@code (index &lt; 0 || index &gt;= _length)}.
 	 */
 	public final void set(final int index, final T value) {
 		checkIndex(index);
