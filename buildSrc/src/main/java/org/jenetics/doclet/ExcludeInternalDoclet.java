@@ -19,6 +19,8 @@
  */
 package org.jenetics.doclet;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationHandler;
@@ -26,13 +28,15 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.Doc;
 import com.sun.javadoc.DocErrorReporter;
-import com.sun.javadoc.LanguageVersion;
+import com.sun.javadoc.PackageDoc;
 import com.sun.javadoc.RootDoc;
 import com.sun.javadoc.Type;
 import com.sun.tools.doclets.standard.Standard;
@@ -45,14 +49,14 @@ import com.sun.tools.javadoc.Main;
  */
 public class ExcludeInternalDoclet {
 
-	private static final String EXCLUDE_TAG = "@internal";
-
-	private static final Predicate<Type> TYPE_FILTER = type -> (
+	private static final Predicate<Type> IsPublic = type -> (
 		!type.qualifiedTypeName().startsWith("org.jenetics.internal") &&
 		!type.qualifiedTypeName().startsWith("org.jenetix.internal")
 	);
 
-	public static void main(String[] args) {
+	private static final Set<PackageDoc> includedPackages = new HashSet<PackageDoc>();
+
+	public static void main(final String[] args) {
 		String name = ExcludeInternalDoclet.class.getName();
 		Main.execute(name, name, args);
 	}
@@ -66,37 +70,49 @@ public class ExcludeInternalDoclet {
 		return Standard.validOptions(options, reporter);
 	}
 
-	public static LanguageVersion languageVersion() {
-		return LanguageVersion.JAVA_1_5;
-	}
-
 	public static int optionLength(final String option) {
 		return Standard.optionLength(option);
 	}
 
 	public static boolean start(final RootDoc root) throws IOException {
-		return Standard.start((RootDoc)process(root, RootDoc.class));
-	}
+		final RootDoc newRootDoc = (RootDoc)process(root, RootDoc.class);
 
-	private static boolean exclude(final Doc doc) {
-		if (doc.name().contains("UnitTest")) {
-			return true;
-		} else if (doc.tags(EXCLUDE_TAG).length > 0) {
-			return true;
-		} else if (doc instanceof Type) {
-			if (!TYPE_FILTER.test((Type)doc)) {
-				System.out.println("Excluded: '" + doc);
-				return true;
+		for (PackageDoc packageDoc : root.specifiedPackages()) {
+			if (containsPublicClasses(packageDoc)) {
+				System.out.println("Package '" + packageDoc.name() + "' contains Public APIs");
+				includedPackages.add(packageDoc);
 			}
 		}
 
-		return false;
+		return Standard.start(newRootDoc);
+	}
+
+	private static boolean exclude(final Doc doc) {
+		boolean exclude = false;
+
+		if (doc instanceof ClassDoc) {
+			exclude = !IsPublic.test((ClassDoc) doc);
+		} else if (doc instanceof PackageDoc) {
+			exclude = !includedPackages.contains(doc);
+		}
+
+		return exclude;
+	}
+
+	private static boolean containsPublicClasses(final PackageDoc doc) {
+		boolean hasPublic = false;
+		for (ClassDoc classDoc : doc.allClasses()) {
+			hasPublic = IsPublic.test(classDoc);
+			if (hasPublic) {
+				//System.out.println("Excluding package '" + packageDoc.name() + "' as it contains no Classes that are Public APIs");
+				break;
+			}
+		}
+		return hasPublic;
 	}
 
 	private static Object process(final Object obj, final Class expect) {
-		if (obj == null) {
-			return null;
-		}
+		if (obj == null) return null;
 
 		final Class cls = obj.getClass();
 		if (cls.getName().startsWith("com.sun.")) {
@@ -106,37 +122,31 @@ public class ExcludeInternalDoclet {
 				new ExcludeHandler(obj)
 			);
 		} else if (obj instanceof Object[]) {
-			final Class<?> componentType = expect.getComponentType();
+			final Class componentType = expect.getComponentType();
 			final Object[] array = (Object[]) obj;
 			final List<Object> list = new ArrayList<>(array.length);
 
 			for (int i = 0; i < array.length; i++) {
-				Object entry = array[i];
-				if (entry instanceof Type) {
-					if ((entry instanceof Doc) && exclude((Doc)entry)) {
-						continue;
-					}
+				final Object entry = array[i];
+				if ((entry instanceof Doc) && exclude((Doc) entry)) {
+					continue;
 				}
-
 				list.add(process(entry, componentType));
 			}
-
-			return list.toArray(
-				(Object[])Array.newInstance(componentType, list.size())
-			);
+			return list.toArray((Object[]) Array.newInstance(componentType, list.size()));
 		} else {
 			return obj;
 		}
 	}
 
 	private static class ExcludeHandler implements InvocationHandler {
-		private Object _target;
+		private final Object _target;
 
 		public ExcludeHandler(final Object target) {
-			_target = target;
+			_target = requireNonNull(target);
 		}
 
-		public Object invoke(final Object proxy, final Method method, final Object[] args)
+		public Object invoke(Object proxy, Method method, Object[] args)
 			throws Throwable
 		{
 			if (args != null) {
@@ -158,10 +168,9 @@ public class ExcludeInternalDoclet {
 		}
 
 		private Object unwrap(final Object proxy) {
-			if (proxy instanceof Proxy) {
-				return ((ExcludeHandler)Proxy.getInvocationHandler(proxy))._target;
-			}
-			return proxy;
+			return proxy instanceof Proxy ?
+				((ExcludeHandler)Proxy.getInvocationHandler(proxy))._target :
+				proxy;
 		}
 	}
 }
