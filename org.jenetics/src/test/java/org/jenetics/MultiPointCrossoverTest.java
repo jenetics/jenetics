@@ -29,7 +29,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jenetics.internal.math.math;
+import org.jenetics.internal.math.base;
 
 import org.jenetics.util.CharSeq;
 import org.jenetics.util.ISeq;
@@ -243,7 +243,7 @@ public class MultiPointCrossoverTest {
 
 			final MSeq<Character> ma1 = a.copy();
 			final MSeq<Character> mb1 = b.copy();
-			final int[] points = math.subset(
+			final int[] points = base.subset(
 				a.length() + 1,
 				min(npoints, a.length() + 1),
 				new Random(1234)

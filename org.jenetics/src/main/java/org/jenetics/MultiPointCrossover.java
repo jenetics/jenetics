@@ -24,7 +24,7 @@ import static java.lang.String.format;
 
 import java.util.Random;
 
-import org.jenetics.internal.math.math;
+import org.jenetics.internal.math.base;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
@@ -129,7 +129,7 @@ public class MultiPointCrossover<
 		final int k = min(n, _n);
 
 		final Random random = RandomRegistry.getRandom();
-		final int[] points = k > 0 ? math.subset(n, k, random) : new int[0];
+		final int[] points = k > 0 ? base.subset(n, k, random) : new int[0];
 
 		crossover(that, other, points);
 		return 2;

@@ -309,10 +309,10 @@
 			<class name="org.jenetics.util.CharSeqTest" />
 		</classes>
 	</test>
-	<test name="org.jenetics.internal.math.math">
+	<test name="org.jenetics.internal.math.base">
 		<classes>
-			<class name="org.jenetics.util.mathRandomTest" />
-			<class name="org.jenetics.util.mathTest" />
+			<class name="org.jenetics.util.baseRandomTest" />
+			<class name="org.jenetics.util.baseTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.util.Random">

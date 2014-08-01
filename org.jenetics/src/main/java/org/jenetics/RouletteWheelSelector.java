@@ -21,7 +21,7 @@ package org.jenetics;
 
 import static java.lang.Math.abs;
 import static org.jenetics.internal.math.arithmetic.pow;
-import static org.jenetics.internal.math.math.ulpDistance;
+import static org.jenetics.internal.math.base.ulpDistance;
 import static org.jenetics.internal.math.statistics.min;
 
 import java.util.Arrays;

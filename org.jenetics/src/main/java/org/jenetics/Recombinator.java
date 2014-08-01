@@ -20,7 +20,7 @@
 package org.jenetics;
 
 import static java.lang.String.format;
-import static org.jenetics.internal.math.math.subset;
+import static org.jenetics.internal.math.base.subset;
 
 import java.util.Random;
 

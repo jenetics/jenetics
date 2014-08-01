@@ -33,10 +33,10 @@ import org.jenetics.util.StaticObject;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-01 $</em>
+ * @version 3.0 &mdash; <em>$Date$</em>
  */
-public final class math extends StaticObject {
-	private math() {}
+public final class base extends StaticObject {
+	private base() {}
 
 	/**
 	 * <i>Clamping</i> a value between a pair of boundary values.

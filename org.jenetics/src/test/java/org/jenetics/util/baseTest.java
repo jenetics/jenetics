@@ -24,13 +24,14 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import org.jenetics.internal.math.base;
 import org.jenetics.internal.math.statistics;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-01 $</em>
+ * @version <em>$Date$</em>
  */
-public class mathTest {
+public class baseTest {
 
 	@Test
 	public void summarize() {
@@ -48,7 +49,7 @@ public class mathTest {
 
 		for (int i = 1; i < 100; ++i) {
 			int[] sub = new int[i];
-			org.jenetics.internal.math.math.subset(1000, sub, random);
+			base.subset(1000, sub, random);
 
 			Assert.assertTrue(isSortedd(sub));
 		}
