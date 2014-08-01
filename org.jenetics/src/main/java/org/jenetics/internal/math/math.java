@@ -39,24 +39,6 @@ public final class math extends StaticObject {
 	private math() {}
 
 	/**
-	 * Normalize the given double array, so that it sum to one. The
-	 * normalization is performed in place and the same {@code values} are
-	 * returned.
-	 *
-	 * @param values the values to normalize.
-	 * @return the {@code values} array.
-	 * @throws NullPointerException if the given double array is {@code null}.
-	 */
-	public static double[] normalize(final double[] values) {
-		final double sum = 1.0/org.jenetics.internal.math.statistics.sum(values);
-		for (int i = values.length; --i >= 0;) {
-			values[i] = values[i]*sum;
-		}
-
-		return values;
-	}
-
-	/**
 	 * <i>Clamping</i> a value between a pair of boundary values.
 	 * <i>Note: using clamp with floating point numbers may give unexpected
 	 * results if one of the values is {@code NaN}.</i>
@@ -73,47 +55,6 @@ public final class math extends StaticObject {
 	 */
 	public static double clamp(final double v, final double lo, final double hi) {
 		return v < lo ? lo : (v > hi ? hi : v);
-	}
-
-	/**
-	 * Component wise division of the given double array.
-	 *
-	 * @param values the double values to divide.
-	 * @param divisor the divisor.
-	 * @throws NullPointerException if the given double array is {@code null}.
-	 */
-	public static void divide(final double[] values, final double divisor) {
-		for (int i = values.length; --i >= 0;) {
-			values[i] /= divisor;
-		}
-	}
-
-	/**
-	 * Binary exponentiation algorithm.
-	 *
-	 * @param b the base number.
-	 * @param e the exponent.
-	 * @return {@code b^e}.
-	 */
-	public static long pow(final long b, final long e) {
-		long base = b;
-		long exp = e;
-		long result = 1;
-
-		while (exp != 0) {
-			if ((exp & 1) != 0) {
-				result *= base;
-			}
-			exp >>>= 1;
-			base *= base;
-		}
-
-		return result;
-	}
-
-	static boolean isMultiplicationSave(final int a, final int b) {
-		final long m = (long)a*(long)b;
-		return ((int)m) == m;
 	}
 
 	/**
@@ -307,7 +248,7 @@ public final class math extends StaticObject {
 				"n smaller than k: %s < %s.", n, k
 			));
 		}
-		if (!math.isMultiplicationSave(n, k)) {
+		if (!arithmetic.isMultiplicationSave(n, k)) {
 			throw new IllegalArgumentException(format(
 				"n*sub.length > Integer.MAX_VALUE (%s*%s = %s > %s)",
 				n, sub.length, (long)n*(long)k, Integer.MAX_VALUE

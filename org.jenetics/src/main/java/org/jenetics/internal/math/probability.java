@@ -19,7 +19,7 @@
  */
 package org.jenetics.internal.math;
 
-import static org.jenetics.internal.math.math.pow;
+import static org.jenetics.internal.math.arithmetic.pow;
 
 import org.jenetics.util.StaticObject;
 

@@ -25,6 +25,7 @@ import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
 
+import org.jenetics.internal.math.arithmetic;
 import org.jenetics.internal.math.random;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
@@ -467,7 +468,7 @@ public class LCG64ShiftRandom extends Random64 {
 		if (p > 1) {
 			jump(s + 1);
 			final long b = _param.b*f(p, _param.a);
-			final long a = org.jenetics.internal.math.math.pow(_param.a, p);
+			final long a = arithmetic.pow(_param.a, p);
 			_param = Param.of(a, b);
 			backward();
 		}
@@ -494,7 +495,7 @@ public class LCG64ShiftRandom extends Random64 {
 			));
 		}
 
-		_state._r = _state._r*org.jenetics.internal.math.math.pow(_param.a, 1L << s) +
+		_state._r = _state._r*arithmetic.pow(_param.a, 1L << s) +
 					f(1L << s, _param.a)*_param.b;
 	}
 
