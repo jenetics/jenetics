@@ -25,7 +25,7 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.internal.math.math;
+import org.jenetics.internal.math.random;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -35,7 +35,7 @@ public class ArrayProxyMListTest {
 
 	@Test
 	public void set() {
-		long seed = math.random.seed();
+		long seed = random.seed();
 		final Random random = new Random(seed);
 
 		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
@@ -45,7 +45,7 @@ public class ArrayProxyMListTest {
 
 		final List<Integer> list = new ArrayProxyMList<>(proxy);
 
-		seed = math.random.seed();
+		seed = org.jenetics.internal.math.random.seed();
 		random.setSeed(seed);
 		for (int i = 0; i < proxy.length; ++i) {
 			list.set(i, random.nextInt());

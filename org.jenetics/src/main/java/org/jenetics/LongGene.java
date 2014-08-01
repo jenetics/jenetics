@@ -19,7 +19,7 @@
  */
 package org.jenetics;
 
-import static org.jenetics.internal.math.math.random.nextLong;
+import static org.jenetics.internal.math.random.nextLong;
 
 import java.util.Random;
 
@@ -31,6 +31,8 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import org.jenetics.internal.math.random;
 
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
@@ -93,7 +95,7 @@ public final class LongGene
 	 * @return a new {@code LongGene} with the given parameters.
 	 */
 	public static LongGene of(final long min, final long max) {
-		return of(nextLong(RandomRegistry.getRandom(), min, max), min, max);
+		return of(random.nextLong(RandomRegistry.getRandom(), min, max), min, max);
 	}
 
 	static ISeq<LongGene> seq(
@@ -106,7 +108,7 @@ public final class LongGene
 		final Random r = RandomRegistry.getRandom();
 
 		return MSeq.<LongGene>ofLength(length)
-			.fill(() -> new LongGene(nextLong(r, min, max), minimum, maximum))
+			.fill(() -> new LongGene(random.nextLong(r, min, max), minimum, maximum))
 			.toISeq();
 	}
 
@@ -118,7 +120,7 @@ public final class LongGene
 	@Override
 	public LongGene newInstance() {
 		return new LongGene(
-			nextLong(RandomRegistry.getRandom(), _min, _max), _min, _max
+			random.nextLong(RandomRegistry.getRandom(), _min, _max), _min, _max
 		);
 	}
 

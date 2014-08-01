@@ -20,7 +20,7 @@
 package org.jenetics;
 
 import static java.lang.String.format;
-import static org.jenetics.internal.math.math.random.indexes;
+import static org.jenetics.internal.math.random.indexes;
 import static org.jenetics.internal.math.math.subset;
 
 import java.util.Random;
@@ -101,7 +101,7 @@ public abstract class Recombinator<
 		final int order = Math.min(_order, population.size());
 
 		final IntRef alterations = new IntRef(0);
-		indexes(random, population.size(), _probability).forEach(i -> {
+		org.jenetics.internal.math.random.indexes(random, population.size(), _probability).forEach(i -> {
 			final int[] individuals = subset(population.size(), order, random);
 			individuals[0] = i;
 			alterations.value += recombine(population, individuals, generation);

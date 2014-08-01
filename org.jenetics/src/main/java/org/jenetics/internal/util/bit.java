@@ -21,7 +21,9 @@ package org.jenetics.internal.util;
 
 import static java.lang.Integer.parseInt;
 import static java.lang.Math.min;
-import static org.jenetics.internal.math.math.random.indexes;
+import static org.jenetics.internal.math.random.indexes;
+
+import org.jenetics.internal.math.random;
 
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.StaticObject;
@@ -516,7 +518,7 @@ public final class bit extends StaticObject {
 	public static byte[] newArray(final int length, final double p) {
 		final byte[] bytes = newArray(length);
 
-		indexes(RandomRegistry.getRandom(), length, p).forEach(i -> {
+		random.indexes(RandomRegistry.getRandom(), length, p).forEach(i -> {
 			bytes[i >>> 3] |= 1 << (i & 7);
 		});
 

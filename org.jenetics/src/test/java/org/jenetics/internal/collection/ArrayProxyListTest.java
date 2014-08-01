@@ -25,7 +25,7 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.internal.math.math;
+import org.jenetics.internal.math.random;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -43,7 +43,7 @@ public class ArrayProxyListTest {
 
 	@Test
 	public void get() {
-		final long seed = math.random.seed();
+		final long seed = random.seed();
 		final Random random = new Random(seed);
 
 		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
@@ -70,7 +70,7 @@ public class ArrayProxyListTest {
 
 	@Test
 	public void indexOf() {
-		long seed = math.random.seed();
+		long seed = random.seed();
 		final Random random = new Random(seed);
 
 		final ArrayProxy<Long, ?, ?> proxy = new ObjectArrayProxy<>(1000);
@@ -89,7 +89,7 @@ public class ArrayProxyListTest {
 
 	@Test
 	public void contains() {
-		long seed = math.random.seed();
+		long seed = random.seed();
 		final Random random = new Random(seed);
 
 		final ArrayProxy<Long, ?, ?> proxy = new ObjectArrayProxy<>(1000);
@@ -110,7 +110,7 @@ public class ArrayProxyListTest {
 
 	@Test
 	public void toArray() {
-		long seed = math.random.seed();
+		long seed = random.seed();
 		final Random random = new Random(seed);
 
 		final ArrayProxy<Long, ?, ?> proxy = new ObjectArrayProxy<>(1000);
@@ -128,7 +128,7 @@ public class ArrayProxyListTest {
 
 	@Test
 	public void toArrayLong() {
-		long seed = math.random.seed();
+		long seed = random.seed();
 		final Random random = new Random(seed);
 
 		final ArrayProxy<Long, ?, ?> proxy = new ObjectArrayProxy<>(1000);

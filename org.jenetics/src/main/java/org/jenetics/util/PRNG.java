@@ -21,6 +21,8 @@ package org.jenetics.util;
 
 import java.util.Random;
 
+import org.jenetics.internal.math.random;
+
 /**
  * Abstract {@code Random} class with additional <i>next</i> random number
  * methods.
@@ -44,10 +46,10 @@ abstract class PRNG extends Random {
 
 	/**
 	 * Create a new {@code PRNG} instance with a seed created with the
-	 * {@link org.jenetics.internal.math.math.random#seed()} value.
+	 * {@link org.jenetics.internal.math.random#seed()} value.
 	 */
 	protected PRNG() {
-		this(org.jenetics.internal.math.math.random.seed());
+		this(random.seed());
 	}
 
 	/**
@@ -60,10 +62,10 @@ abstract class PRNG extends Random {
 	 *         than or equal to {@code max}
 	 * @throws IllegalArgumentException if {@code min >= max}
 	 *
-	 * @see org.jenetics.internal.math.math.random#nextInt(Random, int, int)
+	 * @see org.jenetics.internal.math.random#nextInt(java.util.Random, int, int)
 	 */
 	public int nextInt(final int min, final int max) {
-		return org.jenetics.internal.math.math.random.nextInt(this, min, max);
+		return random.nextInt(this, min, max);
 	}
 
 	/**
@@ -76,10 +78,10 @@ abstract class PRNG extends Random {
 	 *         and less than or equal to {@code max}
 	 * @throws IllegalArgumentException if {@code min >= max}
 	 *
-	 * @see org.jenetics.internal.math.math.random#nextLong(Random, long, long)
+	 * @see org.jenetics.internal.math.random#nextLong(java.util.Random, long, long)
 	 */
 	public long nextLong(final long min, final long max) {
-		return org.jenetics.internal.math.math.random.nextLong(this, min, max);
+		return random.nextLong(this, min, max);
 	}
 
 	/**
@@ -94,10 +96,10 @@ abstract class PRNG extends Random {
 	 *         number generator's sequence
 	 * @throws IllegalArgumentException if n is smaller than 1.
 	 *
-	 * @see org.jenetics.internal.math.math.random#nextLong(Random, long)
+	 * @see org.jenetics.internal.math.random#nextLong(java.util.Random, long)
 	 */
 	public long nextLong(final long n) {
-		return org.jenetics.internal.math.math.random.nextLong(this, n);
+		return random.nextLong(this, n);
 	}
 
 	/**
@@ -109,10 +111,10 @@ abstract class PRNG extends Random {
 	 * @return a random float greater than or equal to {@code min} and less
 	 *         than to {@code max}
 	 *
-	 * @see org.jenetics.internal.math.math.random#nextFloat(Random, float, float)
+	 * @see org.jenetics.internal.math.random#nextFloat(java.util.Random, float, float)
 	 */
 	public float nextFloat(final float min, final float max) {
-		return org.jenetics.internal.math.math.random.nextFloat(this, min, max);
+		return random.nextFloat(this, min, max);
 	}
 
 	/**
@@ -124,10 +126,10 @@ abstract class PRNG extends Random {
 	 * @return a random double greater than or equal to {@code min} and less
 	 *         than to {@code max}
 	 *
-	 * @see org.jenetics.internal.math.math.random#nextDouble(Random, double, double)
+	 * @see org.jenetics.internal.math.random#nextDouble(java.util.Random, double, double)
 	 */
 	public double nextDouble(final double min, final double max) {
-		return org.jenetics.internal.math.math.random.nextDouble(this, min, max);
+		return random.nextDouble(this, min, max);
 	}
 
 }

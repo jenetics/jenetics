@@ -144,7 +144,7 @@ public class CharSeqTest extends ObjectTester<CharSeq> {
 	private static String nextString(final Random random, final int length) {
 		final char[] chars = new char[length];
 		for (int i = 0; i < chars.length; ++i) {
-			chars[i] = (char) org.jenetics.internal.math.math.random.nextInt(random, 'a', 'k');
+			chars[i] = (char) org.jenetics.internal.math.random.nextInt(random, 'a', 'k');
 		}
 
 		return new String(chars);

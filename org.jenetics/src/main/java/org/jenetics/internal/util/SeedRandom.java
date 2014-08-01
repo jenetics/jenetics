@@ -19,7 +19,7 @@
  */
 package org.jenetics.internal.util;
 
-import org.jenetics.internal.math.math;
+import org.jenetics.internal.math.random;
 
 import org.jenetics.util.Random64;
 
@@ -34,7 +34,7 @@ public final class SeedRandom extends Random64 {
 
 	@Override
 	public long nextLong() {
-		return math.random.seed();
+		return random.seed();
 	}
 
 }

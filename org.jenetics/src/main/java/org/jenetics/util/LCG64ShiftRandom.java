@@ -25,6 +25,7 @@ import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
 
+import org.jenetics.internal.math.random;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
@@ -116,7 +117,7 @@ public class LCG64ShiftRandom extends Random64 {
 		private static final long STEP_BASE = 1L << 56;
 
 		private int _block = 0;
-		private long _seed = org.jenetics.internal.math.math.random.seed();
+		private long _seed = random.seed();
 
 		private final Param _param;
 
@@ -159,7 +160,7 @@ public class LCG64ShiftRandom extends Random64 {
 		protected synchronized LCG64ShiftRandom initialValue() {
 			if (_block > 127) {
 				_block = 0;
-				_seed = org.jenetics.internal.math.math.random.seed();
+				_seed = random.seed();
 			}
 
 			final LCG64ShiftRandom random = new TLLCG64ShiftRandom(_seed, _param);
@@ -231,7 +232,7 @@ public class LCG64ShiftRandom extends Random64 {
 		 * @throws NullPointerException if the given {@code param} is null.
 		 */
 		public ThreadSafe(final Param param) {
-			this(org.jenetics.internal.math.math.random.seed(), param);
+			this(random.seed(), param);
 		}
 
 		/**
@@ -239,7 +240,7 @@ public class LCG64ShiftRandom extends Random64 {
 		 * a safe seed.
 		 */
 		public ThreadSafe() {
-			this(org.jenetics.internal.math.math.random.seed(), Param.DEFAULT);
+			this(random.seed(), Param.DEFAULT);
 		}
 
 		@Override
@@ -399,7 +400,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 * @throws NullPointerException if the given {@code param} is null.
 	 */
 	public LCG64ShiftRandom(final Param param) {
-		this(param, org.jenetics.internal.math.math.random.seed());
+		this(param, random.seed());
 	}
 
 	/**
@@ -417,7 +418,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 * seed.
 	 */
 	public LCG64ShiftRandom() {
-		this(Param.DEFAULT, org.jenetics.internal.math.math.random.seed());
+		this(Param.DEFAULT, random.seed());
 	}
 
 	@Override

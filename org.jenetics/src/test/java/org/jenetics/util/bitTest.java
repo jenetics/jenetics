@@ -28,6 +28,8 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import org.jenetics.internal.math.random;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version <em>$Date: 2014-08-01 $</em>
@@ -206,7 +208,7 @@ public class bitTest {
 
 	@Test
 	public void flip() {
-		final long seed = org.jenetics.internal.math.math.random.seed();
+		final long seed = random.seed();
 		final Random random = new Random(seed);
 		final byte[] data = new byte[1000];
 
@@ -402,7 +404,7 @@ public class bitTest {
 
 	@Test
 	public void complement() {
-		final Random random = new Random(org.jenetics.internal.math.math.random.seed());
+		final Random random = new Random(org.jenetics.internal.math.random.seed());
 		final byte[] data = new byte[20];
 		random.nextBytes(data);
 

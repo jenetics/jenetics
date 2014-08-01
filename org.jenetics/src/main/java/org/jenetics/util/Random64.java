@@ -55,7 +55,7 @@ public abstract class Random64 extends PRNG {
 	}
 
 	protected Random64() {
-		this(org.jenetics.internal.math.math.random.seed());
+		this(random.seed());
 	}
 
 	/**

@@ -26,7 +26,7 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.internal.math.math;
+import org.jenetics.internal.math.random;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -36,7 +36,7 @@ public class ArrayProxyIteratorTest {
 
 	@Test
 	public void iterateForward() {
-		final long seed = math.random.seed();
+		final long seed = random.seed();
 		final Random random = new Random(seed);
 
 		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
@@ -57,7 +57,7 @@ public class ArrayProxyIteratorTest {
 
 	@Test
 	public void iterateBackward() {
-		final long seed = math.random.seed();
+		final long seed = random.seed();
 		final Random random = new Random(seed);
 
 		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
@@ -83,7 +83,7 @@ public class ArrayProxyIteratorTest {
 
 	@Test
 	public void nextIndex() {
-		final long seed = math.random.seed();
+		final long seed = random.seed();
 		final Random random = new Random(seed);
 
 		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
@@ -114,7 +114,7 @@ public class ArrayProxyIteratorTest {
 
 	@Test
 	public void previousIndex() {
-		final long seed = math.random.seed();
+		final long seed = random.seed();
 		final Random random = new Random(seed);
 
 		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
