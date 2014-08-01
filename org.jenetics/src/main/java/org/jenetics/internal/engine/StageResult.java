@@ -19,6 +19,8 @@
  */
 package org.jenetics.internal.engine;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.function.Supplier;
 
 import org.jenetics.internal.util.Timer;
@@ -30,7 +32,11 @@ import org.jenetics.internal.util.Timer;
  */
 public abstract class StageResult {
 
-	private final Timer _timer = Timer.of();
+	protected final Timer _timer;
+
+	protected StageResult(final Timer timer) {
+		_timer = requireNonNull(timer);
+	}
 
 	public <T> Supplier<T> timing(final Supplier<T> supplier) {
 		return () -> {
