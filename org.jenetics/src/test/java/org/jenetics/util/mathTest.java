@@ -19,8 +19,6 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.internal.math.statistics.sum;
-
 import java.util.Random;
 
 import org.testng.Assert;
