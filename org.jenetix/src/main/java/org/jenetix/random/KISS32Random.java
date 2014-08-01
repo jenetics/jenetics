@@ -27,16 +27,16 @@ import static org.jenetix.random.utils.mix;
 
 import java.io.Serializable;
 
+import org.jenetics.internal.math.random;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.Random32;
-import org.jenetics.util.math;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-07-28 $</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-08-01 $</em>
  */
 public class KISS32Random extends Random32 {
 
@@ -103,7 +103,7 @@ public class KISS32Random extends Random32 {
 	}
 
 	public KISS32Random() {
-		this(math.random.seed());
+		this(random.seed());
 	}
 
 	@Override

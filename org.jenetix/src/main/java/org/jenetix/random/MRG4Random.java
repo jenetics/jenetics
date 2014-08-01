@@ -25,16 +25,16 @@ import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
 
+import org.jenetics.internal.math.random;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.Random32;
-import org.jenetics.util.math;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-07-28 $</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-08-01 $</em>
  */
 public class MRG4Random extends Random32 {
 
@@ -168,7 +168,7 @@ public class MRG4Random extends Random32 {
 	}
 
 	public MRG4Random(final Param param) {
-		this(param, math.random.seed());
+		this(param, random.seed());
 	}
 
 	public MRG4Random(final long seed) {
@@ -176,7 +176,7 @@ public class MRG4Random extends Random32 {
 	}
 
 	public MRG4Random() {
-		this(Param.DEFAULT, math.random.seed());
+		this(Param.DEFAULT, random.seed());
 	}
 
 	@Override

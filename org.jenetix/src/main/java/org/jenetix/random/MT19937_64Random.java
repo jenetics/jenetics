@@ -23,16 +23,16 @@ import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
 
+import org.jenetics.internal.math.random;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.Random64;
-import org.jenetics.util.math;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-07-28 $</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-08-01 $</em>
  */
 public class MT19937_64Random extends Random64 {
 
@@ -94,7 +94,7 @@ public class MT19937_64Random extends Random64 {
 	 * Return a new random engine with a safe seed value.
 	 */
 	public MT19937_64Random() {
-		this(math.random.seed());
+		this(random.seed());
 	}
 
 	@Override

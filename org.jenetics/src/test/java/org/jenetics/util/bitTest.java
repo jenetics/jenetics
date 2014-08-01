@@ -404,7 +404,7 @@ public class bitTest {
 
 	@Test
 	public void complement() {
-		final Random random = new Random(org.jenetics.internal.math.random.seed());
+		final Random random = new Random(org.jenetics.internal.random.seed());
 		final byte[] data = new byte[20];
 		random.nextBytes(data);
 

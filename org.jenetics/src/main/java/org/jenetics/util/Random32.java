@@ -28,7 +28,7 @@ import org.jenetics.internal.math.random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-07-16 $</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-08-01 $</em>
  */
 public abstract class Random32 extends PRNG {
 
@@ -39,7 +39,7 @@ public abstract class Random32 extends PRNG {
 	}
 
 	protected Random32() {
-		this(math.random.seed());
+		this(random.seed());
 	}
 
 	/**

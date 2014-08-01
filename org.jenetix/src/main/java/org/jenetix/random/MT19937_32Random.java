@@ -23,11 +23,11 @@ import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
 
+import org.jenetics.internal.math.random;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.Random32;
-import org.jenetics.util.math;
 
 /**
  * This is a 32-bit version of Mersenne Twister pseudorandom number generator.
@@ -50,7 +50,7 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-07-28 $</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-08-01 $</em>
  */
 public class MT19937_32Random extends Random32 {
 
@@ -85,14 +85,14 @@ public class MT19937_32Random extends Random32 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since !__version__!
-	 * @version !__version__! &mdash; <em>$Date: 2014-07-28 $</em>
+	 * @version !__version__! &mdash; <em>$Date: 2014-08-01 $</em>
 	 */
 	public static class ThreadLocal
 		extends java.lang.ThreadLocal<MT19937_32Random>
 	{
 		@Override
 		protected synchronized MT19937_32Random initialValue() {
-			return new TLMT19937_32Random(math.random.seed());
+			return new TLMT19937_32Random(random.seed());
 		}
 	}
 
@@ -123,7 +123,7 @@ public class MT19937_32Random extends Random32 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since !__version__!
-	 * @version !__version__! &mdash; <em>$Date: 2014-07-28 $</em>
+	 * @version !__version__! &mdash; <em>$Date: 2014-08-01 $</em>
 	 */
 	public static class ThreadSafe extends MT19937_32Random {
 		private static final long serialVersionUID = 1L;
@@ -198,7 +198,7 @@ public class MT19937_32Random extends Random32 {
 	 * Return a new random engine with a safe seed value.
 	 */
 	public MT19937_32Random() {
-		this(math.random.seed());
+		this(random.seed());
 	}
 
 	@Override

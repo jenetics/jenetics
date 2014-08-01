@@ -20,7 +20,7 @@
 package org.jenetix;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.util.math.random.nextBigInteger;
+import static org.jenetics.internal.math.random.nextBigInteger;
 
 import java.math.BigInteger;
 
@@ -31,7 +31,7 @@ import org.jenetics.util.RandomRegistry;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-07-16 $</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-08-01 $</em>
  */
 public final class BigIntegerGene implements
 	NumericGene<BigInteger, BigIntegerGene>,

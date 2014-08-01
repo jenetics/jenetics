@@ -45,7 +45,7 @@ public class ArrayProxyMListTest {
 
 		final List<Integer> list = new ArrayProxyMList<>(proxy);
 
-		seed = org.jenetics.internal.math.random.seed();
+		seed = org.jenetics.internal.random.seed();
 		random.setSeed(seed);
 		for (int i = 0; i < proxy.length; ++i) {
 			list.set(i, random.nextInt());

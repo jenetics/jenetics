@@ -19,19 +19,20 @@
  */
 package org.jenetix.random;
 
+import org.jenetics.internal.math.random;
+
 import org.jenetics.util.Random32;
-import org.jenetics.util.math;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-07-28 $</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-08-01 $</em>
  */
 public class XORShiftRandom extends Random32 {
 
 	private static final long serialVersionUID = 1L;
 
-	private int _x = (int)math.random.seed();
+	private int _x = (int) random.seed();
 
 	@Override
 	public int nextInt() {
