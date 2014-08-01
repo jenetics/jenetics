@@ -52,7 +52,7 @@ public class internalbitTest {
 		random.nextBytes(data);
 
 		Assert.assertEquals(
-			bit.toByteString(internalbit.copy(data, start, end)),
+			bit.toByteString(bit.copy(data, start, end)),
 			bit.toByteString(copySafe(data, start, end)),
 			"Original: " + bit.toByteString(data)
 		);

@@ -23,7 +23,6 @@ import org.jenetics.internal.collection.ArrayProxy;
 import org.jenetics.internal.collection.ArrayProxyISeq;
 import org.jenetics.internal.collection.ArrayProxyMSeq;
 import org.jenetics.internal.util.bit;
-import org.jenetics.internal.util.internalbit;
 
 import org.jenetics.BitGeneArray.Proxy;
 
@@ -86,7 +85,7 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene, Proxy> {
 		private static final long serialVersionUID = 1L;
 
 		Proxy(final byte[] array, final int start, final int end) {
-			super(array, start, end, Proxy::new, internalbit::copy);
+			super(array, start, end, Proxy::new, bit::copy);
 		}
 
 		Proxy(final int length) {

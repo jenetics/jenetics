@@ -20,7 +20,7 @@
 package org.jenetics;
 
 import static java.lang.String.format;
-import static org.jenetics.internal.util.internalbit.getAndSet;
+import static org.jenetics.internal.util.bit.getAndSet;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
