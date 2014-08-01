@@ -23,10 +23,12 @@ import static java.lang.Math.abs;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.math.math.pow;
-import static org.jenetics.internal.math.math.statistics.sum;
+import static org.jenetics.internal.math.statistics.sum;
 import static org.jenetics.internal.math.math.ulpDistance;
 
 import java.util.Random;
+
+import org.jenetics.internal.math.statistics;
 
 import org.jenetics.util.RandomRegistry;
 
@@ -156,7 +158,7 @@ public abstract class ProbabilitySelector<
 	 *         range, {@code false} otherwise.
 	 */
 	static boolean sum2one(final double[] probabilities) {
-		final double sum = sum(probabilities);
+		final double sum = statistics.sum(probabilities);
 		return abs(ulpDistance(sum, 1.0)) < MAX_ULP_DISTANCE;
 	}
 

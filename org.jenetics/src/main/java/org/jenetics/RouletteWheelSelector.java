@@ -21,12 +21,13 @@ package org.jenetics;
 
 import static java.lang.Math.abs;
 import static org.jenetics.internal.math.math.pow;
-import static org.jenetics.internal.math.math.statistics.min;
-import static org.jenetics.internal.math.math.statistics.sum;
+import static org.jenetics.internal.math.statistics.min;
+import static org.jenetics.internal.math.statistics.sum;
 import static org.jenetics.internal.math.math.ulpDistance;
 
 import java.util.Arrays;
 
+import org.jenetics.internal.math.statistics;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
@@ -71,7 +72,7 @@ public class RouletteWheelSelector<
 		}
 
 		final double worst = Math.min(min(probabilities), 0.0);
-		final double sum = sum(probabilities) - worst*population.size();
+		final double sum = statistics.sum(probabilities) - worst*population.size();
 
 		if (abs(ulpDistance(sum, 0.0)) > MAX_ULP_DISTANCE) {
 			for (int i = population.size(); --i >= 0;) {

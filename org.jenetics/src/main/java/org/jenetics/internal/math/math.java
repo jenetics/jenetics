@@ -48,7 +48,7 @@ public final class math extends StaticObject {
 	 * @throws NullPointerException if the given double array is {@code null}.
 	 */
 	public static double[] normalize(final double[] values) {
-		final double sum = 1.0/statistics.sum(values);
+		final double sum = 1.0/org.jenetics.internal.math.statistics.sum(values);
 		for (int i = values.length; --i >= 0;) {
 			values[i] = values[i]*sum;
 		}
@@ -389,103 +389,6 @@ public final class math extends StaticObject {
 
 	private static int nextInt(final Random random, final int a, final int b) {
 		return a == b ? a - 1 : random.nextInt(b - a) + a;
-	}
-
-	/**
-	 * Some helper method concerning statistics.
-	 *
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @since 1.3
-	 * @version 1.3 &mdash; <em>$Date: 2014-08-01 $</em>
-	 */
-	public static final class statistics extends StaticObject {
-		private statistics() {}
-
-		/**
-		 * Return the minimum value of the given double array.
-		 *
-		 * @param values the double array.
-		 * @return the minimum value or {@link Double#NaN} if the given array is
-		 *         empty.
-		 * @throws NullPointerException if the given array is {@code null}.
-		 */
-		public static double min(final double[] values) {
-			double min = Double.NaN;
-			if (values.length > 0) {
-				min = values[0];
-
-				for (int i = values.length; --i >= 1;) {
-					if (values[i] < min) {
-						min = values[i];
-					}
-				}
-			}
-
-			return min;
-		}
-
-		/**
-		 * Return the maximum value of the given double array.
-		 *
-		 * @param values the double array.
-		 * @return the maximum value or {@link Double#NaN} if the given array is
-		 *         empty.
-		 * @throws NullPointerException if the given array is {@code null}.
-		 */
-		public static double max(final double[] values) {
-			double max = Double.NaN;
-			if (values.length > 0) {
-				max = values[0];
-
-				for (int i = values.length; --i >= 1;) {
-					if (values[i] > max) {
-						max = values[i];
-					}
-				}
-			}
-
-			return max;
-		}
-
-		/**
-		 * Implementation of the <a href="http://en.wikipedia.org/wiki/Kahan_summation_algorithm">
-		 * Kahan summation algorithm</a>.
-		 *
-		 * @param values the values to sum up.
-		 * @return the sum of the given {@code values}.
-		 * @throws NullPointerException if the given array is {@code null}.
-		 */
-		public static double sum(final double[] values) {
-			double sum = 0.0;
-			double c = 0.0;
-			double y = 0.0;
-			double t = 0.0;
-
-			for (int i = values.length; --i >= 0;) {
-				y = values[i] - c;
-				t = sum + y;
-				c = t - sum - y;
-				sum = t;
-			}
-
-			return sum;
-		}
-
-		/**
-		 * Add the values of the given array.
-		 *
-		 * @param values the values to add.
-		 * @return the values sum.
-		 * @throws NullPointerException if the values are null;
-		 */
-		public static long sum(final long[] values) {
-			long sum = 0;
-			for (int i = values.length; --i >= 0;) {
-				sum += values[i];
-			}
-			return sum;
-		}
-
 	}
 
 }

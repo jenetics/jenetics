@@ -19,12 +19,14 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.internal.math.math.statistics.sum;
+import static org.jenetics.internal.math.statistics.sum;
 
 import java.util.Random;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import org.jenetics.internal.math.statistics;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -39,7 +41,7 @@ public class mathTest {
 			values[i] = 1.0/values.length;
 		}
 
-		Assert.assertEquals(sum(values), 1.0);
+		Assert.assertEquals(statistics.sum(values), 1.0);
 	}
 
 	@Test
