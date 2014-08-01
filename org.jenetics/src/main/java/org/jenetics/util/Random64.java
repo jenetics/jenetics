@@ -25,7 +25,7 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.function.LongSupplier;
 
-import org.jenetics.internal.math.*;
+import org.jenetics.internal.math.random;
 
 /**
  * An abstract base class which eases the implementation of {@code Random}

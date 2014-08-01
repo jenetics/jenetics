@@ -29,10 +29,11 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import org.jenetics.internal.math.math;
+
 import org.jenetics.util.CharSeq;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
-import org.jenetics.internal.math.math;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

@@ -20,12 +20,12 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.internal.math.math.random.nextBigInteger;
+import static org.jenetics.internal.math.math.random.nextLong;
 import static org.jenetics.internal.math.random.toDouble;
 import static org.jenetics.internal.math.random.toDouble2;
 import static org.jenetics.internal.math.random.toFloat;
 import static org.jenetics.internal.math.random.toFloat2;
-import static org.jenetics.internal.math.math.random.nextBigInteger;
-import static org.jenetics.internal.math.math.random.nextLong;
 
 import java.math.BigInteger;
 import java.util.Arrays;

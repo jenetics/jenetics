@@ -27,9 +27,8 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jenetics.internal.util.IntRef;
-
 import org.jenetics.internal.math.math;
+import org.jenetics.internal.util.IntRef;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

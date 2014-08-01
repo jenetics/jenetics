@@ -24,13 +24,13 @@ import static org.jenetics.internal.math.math.random.indexes;
 
 import java.util.Random;
 
+import org.jenetics.internal.math.math;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.IntRef;
 
 import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.internal.math.math;
 
 /**
  * The GaussianMutator class performs the mutation of a {@link NumericGene}.

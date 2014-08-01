@@ -21,21 +21,15 @@ package org.jenetics.internal.engine;
 
 import static java.util.Objects.requireNonNull;
 
-import java.time.Instant;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
-import org.jenetics.internal.util.Concurrency;
-import org.jenetics.internal.util.ObjectRef;
-
 import org.jenetics.Gene;
-import org.jenetics.Phenotype;
 import org.jenetics.Population;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-07-30 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-01 $</em>
  */
 public final class CombineStage<
 	G extends Gene<?, G>,

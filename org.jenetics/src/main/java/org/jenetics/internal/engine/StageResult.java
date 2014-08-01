@@ -19,10 +19,6 @@
  */
 package org.jenetics.internal.engine;
 
-import static org.jenetics.internal.time.minus;
-
-import java.time.Duration;
-import java.time.Instant;
 import java.util.function.Supplier;
 
 import org.jenetics.internal.util.Timer;
@@ -30,7 +26,7 @@ import org.jenetics.internal.util.Timer;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-07-31 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-01 $</em>
  */
 public abstract class StageResult {
 

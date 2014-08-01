@@ -23,12 +23,12 @@ import static java.lang.String.format;
 
 import java.util.Random;
 
+import org.jenetics.internal.math.math;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.internal.math.math;
 
 /**
  * The {@code PartiallyMatchedCrossover} (PMX) guarantees that all {@link Gene}s

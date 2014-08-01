@@ -23,8 +23,8 @@ import static java.lang.Math.max;
 import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.Equality.eq;
 import static org.jenetics.internal.math.math.statistics.sum;
+import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.IOException;
 import java.util.Arrays;
