@@ -19,7 +19,7 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.math.statistics.sum;
+import static org.jenetics.internal.math.math.statistics.sum;
 
 import java.util.Random;
 
@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-31 $</em>
+ * @version <em>$Date: 2014-08-01 $</em>
  */
 public class mathTest {
 
@@ -48,7 +48,7 @@ public class mathTest {
 
 		for (int i = 1; i < 100; ++i) {
 			int[] sub = new int[i];
-			math.subset(1000, sub, random);
+			org.jenetics.internal.math.math.subset(1000, sub, random);
 
 			Assert.assertTrue(isSortedd(sub));
 		}

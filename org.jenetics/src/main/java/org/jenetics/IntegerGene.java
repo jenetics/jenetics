@@ -19,7 +19,7 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.math.random.nextInt;
+import static org.jenetics.internal.math.math.random.nextInt;
 
 import java.util.Random;
 
@@ -41,7 +41,7 @@ import org.jenetics.util.RandomRegistry;
  * NumericGene implementation which holds a 32 bit integer number.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-05-13 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-01 $</em>
  * @since 2.0
  */
 @XmlJavaTypeAdapter(IntegerGene.Model.Adapter.class)

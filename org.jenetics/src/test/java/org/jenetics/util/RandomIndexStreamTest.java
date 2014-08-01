@@ -20,7 +20,7 @@
 package org.jenetics.util;
 
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
-import static org.jenetics.util.math.random.indexes;
+import static org.jenetics.internal.math.math.random.indexes;
 
 import java.util.PrimitiveIterator.OfInt;
 import java.util.Random;
@@ -38,7 +38,7 @@ import org.jenetics.stat.Variance;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-05-10 $</em>
+ * @version <em>$Date: 2014-08-01 $</em>
  */
 public class RandomIndexStreamTest {
 

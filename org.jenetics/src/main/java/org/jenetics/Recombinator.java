@@ -20,8 +20,8 @@
 package org.jenetics;
 
 import static java.lang.String.format;
-import static org.jenetics.util.math.random.indexes;
-import static org.jenetics.util.math.subset;
+import static org.jenetics.internal.math.math.random.indexes;
+import static org.jenetics.internal.math.math.subset;
 
 import java.util.Random;
 
@@ -51,7 +51,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-06-01 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-01 $</em>
  */
 public abstract class Recombinator<
 	G extends Gene<?, G>,

@@ -19,7 +19,7 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.math.random.nextDouble;
+import static org.jenetics.internal.math.math.random.nextDouble;
 
 import java.util.Random;
 
@@ -41,7 +41,7 @@ import org.jenetics.util.RandomRegistry;
  * Implementation of the NumericGene which holds a 64 bit floating point number.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-07-16 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-08-01 $</em>
  * @since 1.6
  */
 @XmlJavaTypeAdapter(DoubleGene.Model.Adapter.class)

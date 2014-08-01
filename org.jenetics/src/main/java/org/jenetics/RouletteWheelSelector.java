@@ -20,10 +20,10 @@
 package org.jenetics;
 
 import static java.lang.Math.abs;
-import static org.jenetics.util.math.pow;
-import static org.jenetics.util.math.statistics.min;
-import static org.jenetics.util.math.statistics.sum;
-import static org.jenetics.util.math.ulpDistance;
+import static org.jenetics.internal.math.math.pow;
+import static org.jenetics.internal.math.math.statistics.min;
+import static org.jenetics.internal.math.math.statistics.sum;
+import static org.jenetics.internal.math.math.ulpDistance;
 
 import java.util.Arrays;
 
@@ -42,7 +42,7 @@ import org.jenetics.internal.util.Hash;
  *      </a>
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-06-30 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-01 $</em>
  */
 public class RouletteWheelSelector<
 	G extends Gene<?, G>,

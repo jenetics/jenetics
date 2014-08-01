@@ -29,11 +29,11 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jenetics.internal.math.random;
+import org.jenetics.internal.math.*;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-06-02 $</em>
+ * @version <em>$Date: 2014-08-01 $</em>
  */
 public class CharSeqTest extends ObjectTester<CharSeq> {
 
@@ -144,7 +144,7 @@ public class CharSeqTest extends ObjectTester<CharSeq> {
 	private static String nextString(final Random random, final int length) {
 		final char[] chars = new char[length];
 		for (int i = 0; i < chars.length; ++i) {
-			chars[i] = (char)math.random.nextInt(random, 'a', 'k');
+			chars[i] = (char) org.jenetics.internal.math.math.random.nextInt(random, 'a', 'k');
 		}
 
 		return new String(chars);

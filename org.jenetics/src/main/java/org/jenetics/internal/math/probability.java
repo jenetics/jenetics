@@ -19,7 +19,7 @@
  */
 package org.jenetics.internal.math;
 
-import static org.jenetics.util.math.pow;
+import static org.jenetics.internal.math.math.pow;
 
 import org.jenetics.util.StaticObject;
 
@@ -28,7 +28,7 @@ import org.jenetics.util.StaticObject;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2014-07-31 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2014-08-01 $</em>
  */
 public final class probability extends StaticObject {
 	private probability() {}

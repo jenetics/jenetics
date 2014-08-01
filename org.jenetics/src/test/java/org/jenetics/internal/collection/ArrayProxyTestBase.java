@@ -29,11 +29,11 @@ import org.testng.annotations.Test;
 
 import org.jenetics.internal.util.IntRef;
 
-import org.jenetics.util.math;
+import org.jenetics.internal.math.math;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-05-14 $</em>
+ * @version <em>$Date: 2014-08-01 $</em>
  */
 public abstract class ArrayProxyTestBase<T> {
 

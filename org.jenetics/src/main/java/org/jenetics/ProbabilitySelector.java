@@ -22,9 +22,9 @@ package org.jenetics;
 import static java.lang.Math.abs;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.util.math.pow;
-import static org.jenetics.util.math.statistics.sum;
-import static org.jenetics.util.math.ulpDistance;
+import static org.jenetics.internal.math.math.pow;
+import static org.jenetics.internal.math.math.statistics.sum;
+import static org.jenetics.internal.math.math.ulpDistance;
 
 import java.util.Random;
 
@@ -45,7 +45,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-05-18 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-01 $</em>
  */
 public abstract class ProbabilitySelector<
 	G extends Gene<?, G>,

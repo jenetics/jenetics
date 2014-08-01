@@ -20,12 +20,12 @@
 package org.jenetics.internal.util;
 
 import org.jenetics.util.Random64;
-import org.jenetics.util.math;
+import org.jenetics.internal.math.math;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5 &mdash; <em>$Date: 2014-07-10 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-08-01 $</em>
  */
 public final class SeedRandom extends Random64 {
 

@@ -24,8 +24,8 @@ import static org.jenetics.internal.math.random.toDouble;
 import static org.jenetics.internal.math.random.toDouble2;
 import static org.jenetics.internal.math.random.toFloat;
 import static org.jenetics.internal.math.random.toFloat2;
-import static org.jenetics.util.math.random.nextBigInteger;
-import static org.jenetics.util.math.random.nextLong;
+import static org.jenetics.internal.math.math.random.nextBigInteger;
+import static org.jenetics.internal.math.math.random.nextLong;
 
 import java.math.BigInteger;
 import java.util.Arrays;
@@ -41,13 +41,13 @@ import org.jenetics.stat.UniformDistribution;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-07-16 $</em>
+ * @version <em>$Date: 2014-08-01 $</em>
  */
 public class mathRandomTest {
 
 	@Test(dataProvider = "nextBigIntegerIntData")
 	public void nextBigIntegerInt(int n) {
-		final long seed = math.random.seed();
+		final long seed = org.jenetics.internal.math.math.random.seed();
 		final Random random = new Random(seed);
 
 		final BigInteger value = nextBigInteger(random, BigInteger.valueOf(n));
@@ -70,7 +70,7 @@ public class mathRandomTest {
 
 	@Test(dataProvider = "nextBigIntegerLongData")
 	public void nextBigIntegerLong(long n) {
-		final long seed = math.random.seed();
+		final long seed = org.jenetics.internal.math.math.random.seed();
 		final Random random = new Random(seed);
 
 		final BigInteger value = nextBigInteger(random, BigInteger.valueOf(n));
@@ -93,7 +93,7 @@ public class mathRandomTest {
 
 	@Test(dataProvider = "nextBigIntegerData")
 	public void nextBigIntegerTest(final String string) {
-		final long seed = math.random.seed();
+		final long seed = org.jenetics.internal.math.math.random.seed();
 		final Random random = new Random(seed);
 
 		final BigInteger n = new BigInteger(string);
@@ -118,8 +118,8 @@ public class mathRandomTest {
 	@Test
 	public void seed() {
 		for (int i = 0; i < 100; ++i) {
-			final long seed1 = math.random.seed();
-			final long seed2 = math.random.seed();
+			final long seed1 = org.jenetics.internal.math.math.random.seed();
+			final long seed2 = org.jenetics.internal.math.math.random.seed();
 			Assert.assertNotEquals(seed1, seed2);
 		}
 	}
@@ -127,8 +127,8 @@ public class mathRandomTest {
 	@Test
 	public void seedLong() {
 		for (int i = 0; i < 100; ++i) {
-			final long seed1 = math.random.seed(i);
-			final long seed2 = math.random.seed(i);
+			final long seed1 = org.jenetics.internal.math.math.random.seed(i);
+			final long seed2 = org.jenetics.internal.math.math.random.seed(i);
 			Assert.assertNotEquals(seed1, seed2);
 		}
 	}
@@ -138,8 +138,8 @@ public class mathRandomTest {
 		final int length = 123;
 
 		for (int i = 0; i < 100; ++i) {
-			final byte[] seed1 = math.random.seedBytes(length);
-			final byte[] seed2 = math.random.seedBytes(length);
+			final byte[] seed1 = org.jenetics.internal.math.math.random.seedBytes(length);
+			final byte[] seed2 = org.jenetics.internal.math.math.random.seedBytes(length);
 			Assert.assertFalse(Arrays.equals(seed1, seed2));
 		}
 	}

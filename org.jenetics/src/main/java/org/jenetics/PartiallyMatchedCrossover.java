@@ -28,7 +28,7 @@ import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.math;
+import org.jenetics.internal.math.math;
 
 /**
  * The {@code PartiallyMatchedCrossover} (PMX) guarantees that all {@link Gene}s
@@ -71,7 +71,7 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-06-30 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-01 $</em>
  */
 public final class PartiallyMatchedCrossover<T, C extends Comparable<? super C>>
 	extends Crossover<EnumGene<T>, C>

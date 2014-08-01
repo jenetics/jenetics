@@ -20,7 +20,7 @@
 package org.jenetics.internal.math;
 
 import static java.lang.Math.abs;
-import static org.jenetics.util.math.random.nextInt;
+import static org.jenetics.internal.math.math.random.nextInt;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -33,7 +33,7 @@ import org.jenetics.util.StaticObject;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2014-05-02 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2014-08-01 $</em>
  */
 public final class random extends StaticObject {
 	private random() {}

@@ -29,7 +29,7 @@ import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.math;
+import org.jenetics.internal.math.math;
 
 /**
  * <p><strong>Multiple point crossover</strong></p>
@@ -53,7 +53,7 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 3.0 &mdash; <em>$Date: 2014-06-30 $ </em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-01 $ </em>
  */
 public class MultiPointCrossover<
 	G extends Gene<?, G>,

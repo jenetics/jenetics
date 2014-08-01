@@ -24,7 +24,7 @@ import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.Equality.eq;
-import static org.jenetics.util.math.statistics.sum;
+import static org.jenetics.internal.math.math.statistics.sum;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -64,7 +64,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-07-16 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-01 $</em>
  */
 public class Histogram<C> implements Consumer<C> {
 

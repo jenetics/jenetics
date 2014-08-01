@@ -21,7 +21,7 @@ package org.jenetics.util;
 
 import static java.lang.Integer.parseInt;
 import static java.lang.Math.min;
-import static org.jenetics.util.math.random.indexes;
+import static org.jenetics.internal.math.math.random.indexes;
 
 
 /**
@@ -38,7 +38,7 @@ import static org.jenetics.util.math.random.indexes;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.5 &mdash; <em>$Date: 2014-05-18 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-08-01 $</em>
  */
 public final class bit extends StaticObject {
 	private bit() {}

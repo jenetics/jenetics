@@ -20,7 +20,7 @@
 package org.jenetics;
 
 import static java.lang.String.format;
-import static org.jenetics.util.math.random.indexes;
+import static org.jenetics.internal.math.math.random.indexes;
 
 import java.util.Random;
 
@@ -30,7 +30,7 @@ import org.jenetics.internal.util.IntRef;
 
 import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.math;
+import org.jenetics.internal.math.math;
 
 /**
  * The GaussianMutator class performs the mutation of a {@link NumericGene}.
@@ -48,7 +48,7 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-06-30 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-01 $</em>
  */
 public final class GaussianMutator<
 	G extends NumericGene<?, G>,

@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-12 $</em>
+ * @version <em>$Date: 2014-08-01 $</em>
  */
 public class bitTest {
 
@@ -206,7 +206,7 @@ public class bitTest {
 
 	@Test
 	public void flip() {
-		final long seed = math.random.seed();
+		final long seed = org.jenetics.internal.math.math.random.seed();
 		final Random random = new Random(seed);
 		final byte[] data = new byte[1000];
 
@@ -402,7 +402,7 @@ public class bitTest {
 
 	@Test
 	public void complement() {
-		final Random random = new Random(math.random.seed());
+		final Random random = new Random(org.jenetics.internal.math.math.random.seed());
 		final byte[] data = new byte[20];
 		random.nextBytes(data);
 

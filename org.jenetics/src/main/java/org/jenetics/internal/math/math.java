@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package org.jenetics.internal.math;
 
 import static java.lang.Double.doubleToLongBits;
 import static java.lang.Math.nextDown;
@@ -29,14 +29,15 @@ import java.math.BigInteger;
 import java.util.Random;
 import java.util.stream.IntStream;
 
-import org.jenetics.internal.math.probability;
+import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.StaticObject;
 
 /**
  * This object contains mathematical helper functions.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-07-16 $</em>
+ * @version 3.0 &mdash; <em>$Date$</em>
  */
 public final class math extends StaticObject {
 	private math() {}
@@ -399,7 +400,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.3
-	 * @version 1.3 &mdash; <em>$Date: 2014-07-16 $</em>
+	 * @version 1.3 &mdash; <em>$Date$</em>
 	 */
 	public static final class statistics extends StaticObject {
 		private statistics() {}
@@ -496,7 +497,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.2 &mdash; <em>$Date: 2014-07-16 $</em>
+	 * @version 1.2 &mdash; <em>$Date$</em>
 	 */
 	public static final class random extends StaticObject {
 		private random() {}
