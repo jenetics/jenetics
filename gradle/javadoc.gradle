@@ -18,18 +18,18 @@
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 
-import org.apache.tools.ant.filters.ReplaceTokens
 
+import org.apache.tools.ant.filters.ReplaceTokens
 import org.jenetics.gradle.task.ColorizerTask
- 
+
 /**
  * Some commone task definitions and configurations.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date: 2013-09-02 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2014-08-01 $</em>
  */
- 
+
  javadoc {
 	 configure(options) {
 		 memberLevel = 'PROTECTED'
@@ -47,21 +47,21 @@ import org.jenetics.gradle.task.ColorizerTask
 		 docTitle = "<h1>Jenetics ${project.version}</h1>"
 		 bottom = "&copy; ${copyrightYear} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${dateformat.format(now)})</i>"
 		 stylesheetFile = file("${rootDir}/buildSrc/resources/javadoc/stylesheet.css")
-		 
+
 		 exclude '**/internal/**'
-		 
+
 		 //options.addStringOption('-subpackages', 'org.jenetics')
 		 //options.addStringOption('-exclude', 'org.jenetics.internal.util')
-		 
+
 		 //group('Core API', ['org.jenetics']).
 		 //group('Utilities', ['org.jenetics.util', 'org.jenetics.stat'])
 	 }
  }
- 
+
  task colorize(type: ColorizerTask) {
 	 directory = file(javadoc.destinationDir.path)
  }
- 
+
  task java2html {
 	 def destination = javadoc.destinationDir.path
 	 doLast {
@@ -81,7 +81,7 @@ import org.jenetics.gradle.task.ColorizerTask
 		 }
 	 }
  }
- 
+
  javadoc.finalizedBy([colorize, java2html])
 
  export.doLast {
@@ -103,6 +103,5 @@ import org.jenetics.gradle.task.ColorizerTask
 		into "${exportJavadocDir}/${project.name}"
 	}
 }
- 
- 
- 
+
+

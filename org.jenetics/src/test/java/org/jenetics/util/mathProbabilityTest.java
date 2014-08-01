@@ -21,13 +21,14 @@ package org.jenetics.util;
 
 import java.util.Random;
 
-import org.jenetics.internal.math.probability;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import org.jenetics.internal.math.probability;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-02 $</em>
+ * @version <em>$Date: 2014-08-01 $</em>
  */
 public class mathProbabilityTest {
 

@@ -20,7 +20,6 @@
 package org.jenetix.random;
 
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 import org.openjdk.jmh.annotations.Benchmark;
@@ -34,13 +33,12 @@ import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
-import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.Random32;
 import org.jenetics.util.Random64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz  Wilhelmstötter</a>
- * @version !__version__! &mdash; <em>$Date: 2014-07-15 $</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-08-01 $</em>
  * @since !__version__!
  */
 public class RandomEnginePerf {
