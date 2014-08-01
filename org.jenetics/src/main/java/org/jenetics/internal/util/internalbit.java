@@ -20,15 +20,14 @@
 package org.jenetics.internal.util;
 
 import static java.lang.Math.min;
-import static org.jenetics.util.bit.shiftRight;
-import static org.jenetics.util.bit.toByteLength;
+import static org.jenetics.internal.util.bit.shiftRight;
+import static org.jenetics.internal.util.bit.toByteLength;
 
 import org.jenetics.util.StaticObject;
-import org.jenetics.util.bit;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-07-31 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-08-01 $</em>
  * @since 1.6
  */
 public final class internalbit extends StaticObject {

@@ -17,11 +17,14 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package org.jenetics.internal.util;
 
 import static java.lang.Integer.parseInt;
 import static java.lang.Math.min;
 import static org.jenetics.internal.math.math.random.indexes;
+
+import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.StaticObject;
 
 
 /**
@@ -38,7 +41,7 @@ import static org.jenetics.internal.math.math.random.indexes;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.5 &mdash; <em>$Date: 2014-08-01 $</em>
+ * @version 1.5 &mdash; <em>$Date$</em>
  */
 public final class bit extends StaticObject {
 	private bit() {}

@@ -35,11 +35,11 @@ import org.testng.annotations.Test;
 import org.jenetics.util.Factory;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.bit;
+import org.jenetics.internal.util.bit;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-07-01 $</em>
+ * @version <em>$Date: 2014-08-01 $</em>
  */
 public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 

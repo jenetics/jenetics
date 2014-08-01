@@ -299,7 +299,7 @@
             <class name="org.jenetics.internal.collection.StackTest" />
         </classes>
     </test>
-	<test name="org.jenetics.util.bit">
+	<test name="org.jenetics.internal.util.bit">
 		<classes>
 			<class name="org.jenetics.util.bitTest" />
 		</classes>

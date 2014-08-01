@@ -47,14 +47,14 @@ import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.internalbit;
 
 import org.jenetics.util.ISeq;
-import org.jenetics.util.bit;
+import org.jenetics.internal.util.bit;
 
 /**
  * Implementation of the <i>classical</i> BitChromosome.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-06-28 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-01 $</em>
  */
 @XmlJavaTypeAdapter(BitChromosome.Model.Adapter.class)
 public class BitChromosome extends Number

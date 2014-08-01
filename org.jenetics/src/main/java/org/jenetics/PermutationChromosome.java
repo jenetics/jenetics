@@ -49,7 +49,7 @@ import org.jenetics.internal.util.reflect;
 
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
-import org.jenetics.util.bit;
+import org.jenetics.internal.util.bit;
 
 
 /**
@@ -58,7 +58,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-06-30 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-01 $</em>
  */
 @XmlJavaTypeAdapter(PermutationChromosome.Model.Adapter.class)
 public final class PermutationChromosome<T>

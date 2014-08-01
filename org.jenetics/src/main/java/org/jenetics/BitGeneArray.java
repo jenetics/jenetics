@@ -25,12 +25,12 @@ import org.jenetics.internal.collection.ArrayProxyMSeq;
 import org.jenetics.internal.util.internalbit;
 
 import org.jenetics.BitGeneArray.Proxy;
-import org.jenetics.util.bit;
+import org.jenetics.internal.util.bit;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0 &mdash; <em>$Date: 2014-04-21 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-01 $</em>
  */
 final class BitGeneArray extends ArrayProxyMSeq<BitGene, Proxy> {
 
@@ -57,7 +57,7 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene, Proxy> {
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.4
-	 * @version 1.4 &mdash; <em>$Date: 2014-04-21 $</em>
+	 * @version 1.4 &mdash; <em>$Date: 2014-08-01 $</em>
 	 */
 	static final class BitGeneISeq extends ArrayProxyISeq<BitGene, Proxy> {
 		private static final long serialVersionUID = 1L;
@@ -80,7 +80,7 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene, Proxy> {
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.4
-	 * @version 3.0 &mdash; <em>$Date: 2014-04-21 $</em>
+	 * @version 3.0 &mdash; <em>$Date: 2014-08-01 $</em>
 	 */
 	static final class Proxy extends ArrayProxy<BitGene, byte[], Proxy> {
 		private static final long serialVersionUID = 1L;
