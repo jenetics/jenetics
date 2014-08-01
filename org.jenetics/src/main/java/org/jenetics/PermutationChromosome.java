@@ -44,12 +44,12 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.IntRef;
+import org.jenetics.internal.util.bit;
 import org.jenetics.internal.util.jaxb;
 import org.jenetics.internal.util.reflect;
 
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
-import org.jenetics.internal.util.bit;
 
 
 /**

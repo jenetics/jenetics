@@ -22,10 +22,10 @@ package org.jenetics;
 import org.jenetics.internal.collection.ArrayProxy;
 import org.jenetics.internal.collection.ArrayProxyISeq;
 import org.jenetics.internal.collection.ArrayProxyMSeq;
+import org.jenetics.internal.util.bit;
 import org.jenetics.internal.util.internalbit;
 
 import org.jenetics.BitGeneArray.Proxy;
-import org.jenetics.internal.util.bit;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
