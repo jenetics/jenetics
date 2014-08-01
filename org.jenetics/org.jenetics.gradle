@@ -20,7 +20,7 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 2.0 &mdash; <em>$Date: 2014-07-31 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-01 $</em>
  */
 
 buildscript {
@@ -54,6 +54,7 @@ jmhJar {
     appendix = 'jmh'
 }
 
+/*
 javadoc {
     options.docletpath = files(
             "${project.rootDir}/buildSrc/build/libs/buildSrc.jar"
@@ -64,6 +65,7 @@ javadoc {
     //options.doclet = 'de.kruis.padoclet.PublishedApiDoclet'
     //options.addStringOption('-padExcludeTag', 'exclude')
 }
+*/
 
 jar.manifest.instruction('Export-Package',
 	'org.jenetics',
