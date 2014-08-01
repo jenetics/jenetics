@@ -21,8 +21,8 @@ package org.jenetics;
 
 import static java.lang.Math.pow;
 import static java.lang.String.format;
-import static org.jenetics.util.math.random.indexes;
 
+import org.jenetics.internal.math.random;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.IntRef;
@@ -66,7 +66,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-07-11 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-01 $</em>
  */
 public class Mutator<
 	G extends Gene<?, G>,
@@ -108,7 +108,7 @@ public class Mutator<
 		final double p = pow(_probability, 1.0/3.0);
 		final IntRef alterations = new IntRef(0);
 
-		indexes(RandomRegistry.getRandom(), population.size(), p).forEach(i -> {
+		random.indexes(RandomRegistry.getRandom(), population.size(), p).forEach(i -> {
 			final Phenotype<G, C> pt = population.get(i);
 
 			final Genotype<G> gt = pt.getGenotype();
@@ -128,7 +128,7 @@ public class Mutator<
 	) {
 		final MSeq<Chromosome<G>> chromosomes = genotype.toSeq().copy();
 
-		indexes(RandomRegistry.getRandom(), genotype.length(), p).forEach(i -> {
+		random.indexes(RandomRegistry.getRandom(), genotype.length(), p).forEach(i -> {
 			final Chromosome<G> chromosome = chromosomes.get(i);
 			final MSeq<G> genes = chromosome.toSeq().copy();
 
@@ -169,7 +169,7 @@ public class Mutator<
 	protected int mutate(final MSeq<G> genes, final double p) {
 		final IntRef alternations = new IntRef(0);
 
-		indexes(RandomRegistry.getRandom(), genes.length(), p).forEach(i -> {
+		random.indexes(RandomRegistry.getRandom(), genes.length(), p).forEach(i -> {
 			genes.set(i, genes.get(i).newInstance());
 			++alternations.value;
 		});

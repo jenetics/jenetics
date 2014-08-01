@@ -20,7 +20,7 @@
 package org.jenetics;
 
 import static java.lang.String.format;
-import static org.jenetics.internal.util.internalbit.getAndSet;
+import static org.jenetics.internal.util.bit.getAndSet;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -44,12 +44,12 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.IntRef;
+import org.jenetics.internal.util.bit;
 import org.jenetics.internal.util.jaxb;
 import org.jenetics.internal.util.reflect;
 
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
-import org.jenetics.util.bit;
 
 
 /**
@@ -58,7 +58,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-07-11 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-01 $</em>
  */
 @XmlJavaTypeAdapter(PermutationChromosome.Model.Adapter.class)
 public final class PermutationChromosome<T>

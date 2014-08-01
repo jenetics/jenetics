@@ -24,7 +24,6 @@ import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.Equality.eq;
-import static org.jenetics.util.math.statistics.sum;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -33,6 +32,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.ToDoubleFunction;
 
+import org.jenetics.internal.math.statistics;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
@@ -64,7 +64,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-07-16 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-01 $</em>
  */
 public class Histogram<C> implements Consumer<C> {
 
@@ -231,7 +231,7 @@ public class Histogram<C> implements Consumer<C> {
 	public double[] getProbabilities() {
 		final double[] probabilities = new double[_histogram.length];
 
-		assert (sum(_histogram) == _count);
+		assert (statistics.sum(_histogram) == _count);
 		for (int i = 0; i < probabilities.length; ++i) {
 			probabilities[i] = (double)_histogram[i]/(double)_count;
 		}

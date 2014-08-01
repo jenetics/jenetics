@@ -17,49 +17,28 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package org.jenetics.internal.engine;
 
-import static org.jenetics.util.math.statistics.sum;
-
-import java.util.Random;
-
-import org.testng.Assert;
-import org.testng.annotations.Test;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
+import java.util.concurrent.Executor;
+import java.util.function.Supplier;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-31 $</em>
+ * @since 3.0
+ * @version 3.0 &mdash; <em>$Date: 2014-07-30 $</em>
  */
-public class mathTest {
+public abstract class Stage {
 
-	@Test
-	public void summarize() {
-		final double[] values = new double[150000];
-		for (int i = 0; i < values.length; ++i) {
-			values[i] = 1.0/values.length;
-		}
+	private Executor _executor;
 
-		Assert.assertEquals(sum(values), 1.0);
+	protected Stage(final Executor executor) {
+		_executor = executor;
 	}
 
-	@Test
-	public void subset() {
-		final Random random = new Random();
-
-		for (int i = 1; i < 100; ++i) {
-			int[] sub = new int[i];
-			math.subset(1000, sub, random);
-
-			Assert.assertTrue(isSortedd(sub));
-		}
-	}
-
-	private static boolean isSortedd(int[] array) {
-		boolean sorted = true;
-		for (int i = 0; i < array.length - 1 && sorted; ++i) {
-			sorted = array[i] < array[i + 1];
-		}
-		return sorted;
+	protected <T> CompletionStage<T> async(final Supplier<T> supplier) {
+		return CompletableFuture.supplyAsync(supplier, _executor);
 	}
 
 }

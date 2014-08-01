@@ -25,6 +25,8 @@ import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
 
+import org.jenetics.internal.math.arithmetic;
+import org.jenetics.internal.math.random;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
@@ -74,7 +76,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 2.0 &mdash; <em>$Date: 2014-07-24 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-01 $</em>
  */
 public class LCG64ShiftRandom extends Random64 {
 
@@ -108,7 +110,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 2.0 &mdash; <em>$Date: 2014-07-24 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-08-01 $</em>
 	 */
 	public static class ThreadLocal
 		extends java.lang.ThreadLocal<LCG64ShiftRandom>
@@ -116,7 +118,7 @@ public class LCG64ShiftRandom extends Random64 {
 		private static final long STEP_BASE = 1L << 56;
 
 		private int _block = 0;
-		private long _seed = math.random.seed();
+		private long _seed = random.seed();
 
 		private final Param _param;
 
@@ -159,7 +161,7 @@ public class LCG64ShiftRandom extends Random64 {
 		protected synchronized LCG64ShiftRandom initialValue() {
 			if (_block > 127) {
 				_block = 0;
-				_seed = math.random.seed();
+				_seed = random.seed();
 			}
 
 			final LCG64ShiftRandom random = new TLLCG64ShiftRandom(_seed, _param);
@@ -197,7 +199,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 2.0 &mdash; <em>$Date: 2014-07-24 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-08-01 $</em>
 	 */
 	public static class ThreadSafe extends LCG64ShiftRandom {
 		private static final long serialVersionUID = 1L;
@@ -231,7 +233,7 @@ public class LCG64ShiftRandom extends Random64 {
 		 * @throws NullPointerException if the given {@code param} is null.
 		 */
 		public ThreadSafe(final Param param) {
-			this(math.random.seed(), param);
+			this(random.seed(), param);
 		}
 
 		/**
@@ -239,7 +241,7 @@ public class LCG64ShiftRandom extends Random64 {
 		 * a safe seed.
 		 */
 		public ThreadSafe() {
-			this(math.random.seed(), Param.DEFAULT);
+			this(random.seed(), Param.DEFAULT);
 		}
 
 		@Override
@@ -276,7 +278,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 2.0 &mdash; <em>$Date: 2014-07-24 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-08-01 $</em>
 	 */
 	public static final class Param implements Serializable {
 
@@ -399,7 +401,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 * @throws NullPointerException if the given {@code param} is null.
 	 */
 	public LCG64ShiftRandom(final Param param) {
-		this(param, math.random.seed());
+		this(param, random.seed());
 	}
 
 	/**
@@ -417,7 +419,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 * seed.
 	 */
 	public LCG64ShiftRandom() {
-		this(Param.DEFAULT, math.random.seed());
+		this(Param.DEFAULT, random.seed());
 	}
 
 	@Override
@@ -466,7 +468,7 @@ public class LCG64ShiftRandom extends Random64 {
 		if (p > 1) {
 			jump(s + 1);
 			final long b = _param.b*f(p, _param.a);
-			final long a = math.pow(_param.a, p);
+			final long a = arithmetic.pow(_param.a, p);
 			_param = Param.of(a, b);
 			backward();
 		}
@@ -493,7 +495,7 @@ public class LCG64ShiftRandom extends Random64 {
 			));
 		}
 
-		_state._r = _state._r*math.pow(_param.a, 1L << s) +
+		_state._r = _state._r*arithmetic.pow(_param.a, 1L << s) +
 					f(1L << s, _param.a)*_param.b;
 	}
 

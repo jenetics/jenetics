@@ -44,17 +44,16 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
-import org.jenetics.internal.util.internalbit;
+import org.jenetics.internal.util.bit;
 
 import org.jenetics.util.ISeq;
-import org.jenetics.util.bit;
 
 /**
  * Implementation of the <i>classical</i> BitChromosome.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-07-11 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-01 $</em>
  */
 @XmlJavaTypeAdapter(BitChromosome.Model.Adapter.class)
 public class BitChromosome extends Number
@@ -108,7 +107,7 @@ public class BitChromosome extends Number
 	 */
 	public BitChromosome(final byte[] bits, final int start, final int end) {
 		this(
-			internalbit.copy(bits, start, end),
+			bit.copy(bits, start, end),
 			min(bits.length << 3, end) - start,
 			0.0
 		);

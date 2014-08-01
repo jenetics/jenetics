@@ -20,7 +20,7 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 2.0 &mdash; <em>$Date: 2014-07-14 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-01 $</em>
  */
 
 buildscript {
@@ -28,7 +28,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'me.champeau.gradle:jmh-gradle-plugin:0.1'
+        classpath 'me.champeau.gradle:jmh-gradle-plugin:0.1.2'
     }
 }
 
@@ -45,14 +45,27 @@ dependencies {
 	testCompile Include.Apache.Commons.Math
 	testCompile Include.TestNG
 
-    jmh 'org.openjdk.jmh:jmh-core:0.9.3'
-    jmh 'org.openjdk.jmh:jmh-generator-annprocess:0.9.3'
+    jmh Include.JMH.Core
+    jmh Include.JMH.Processor
     jmh files('build/classes/main')
 }
 
 jmhJar {
     appendix = 'jmh'
 }
+
+/*
+javadoc {
+    options.docletpath = files(
+            "${project.rootDir}/buildSrc/build/libs/buildSrc.jar"
+            //"${project.rootDir}/buildSrc/lib/publishedApiDoclet1.5-0.4.jar"
+        ).asType(List)
+
+    //options.doclet = 'org.jenetics.doclet.ExcludeInternalDoclet'
+    //options.doclet = 'de.kruis.padoclet.PublishedApiDoclet'
+    //options.addStringOption('-padExcludeTag', 'exclude')
+}
+*/
 
 jar.manifest.instruction('Export-Package',
 	'org.jenetics',

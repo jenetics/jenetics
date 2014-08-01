@@ -21,10 +21,10 @@ package org.jenetics;
 
 import static java.lang.Math.exp;
 import static java.lang.String.format;
+import static org.jenetics.internal.math.arithmetic.divide;
+import static org.jenetics.internal.math.arithmetic.normalize;
+import static org.jenetics.internal.math.statistics.max;
 import static org.jenetics.internal.util.Equality.eq;
-import static org.jenetics.util.math.divide;
-import static org.jenetics.util.math.normalize;
-import static org.jenetics.util.math.statistics.max;
 
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
@@ -58,7 +58,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-07-11 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-01 $</em>
  */
 public final class BoltzmannSelector<
 	G extends Gene<?, G>,

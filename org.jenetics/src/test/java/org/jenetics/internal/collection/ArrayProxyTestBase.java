@@ -27,13 +27,12 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import org.jenetics.internal.math.random;
 import org.jenetics.internal.util.IntRef;
-
-import org.jenetics.util.math;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-05-14 $</em>
+ * @version <em>$Date: 2014-08-01 $</em>
  */
 public abstract class ArrayProxyTestBase<T> {
 
@@ -42,12 +41,12 @@ public abstract class ArrayProxyTestBase<T> {
 	public abstract T newArrayProxyElement(final Random random);
 
 	public T newArrayProxyElement() {
-		return newArrayProxyElement(new Random(math.random.seed()));
+		return newArrayProxyElement(new Random(random.seed()));
 	}
 
 	@Test
 	public void uncheckedOffsetGetSet() {
-		final long seed = math.random.seed();
+		final long seed = random.seed();
 		final Random random = new Random(seed);
 
 		final ArrayProxy<T, ?, ?> proxy = newArrayProxy(10_000);
@@ -66,7 +65,7 @@ public abstract class ArrayProxyTestBase<T> {
 
 	@Test
 	public void uncheckedGetSet() {
-		final long seed = math.random.seed();
+		final long seed = random.seed();
 		final Random random = new Random(seed);
 
 		final ArrayProxy<T, ?, ?> proxy = newArrayProxy(10_000);
@@ -85,7 +84,7 @@ public abstract class ArrayProxyTestBase<T> {
 
 	@Test
 	public void getSet() {
-		final long seed = math.random.seed();
+		final long seed = random.seed();
 		final Random random = new Random(seed);
 
 		final ArrayProxy<T, ?, ?> proxy = newArrayProxy(10_000);
@@ -104,7 +103,7 @@ public abstract class ArrayProxyTestBase<T> {
 
 	@Test
 	public void stream() {
-		final long seed = math.random.seed();
+		final long seed = random.seed();
 		final Random random = new Random(seed);
 
 		final List<T> elements = new ArrayList<>(1000);
@@ -160,7 +159,7 @@ public abstract class ArrayProxyTestBase<T> {
 		final Integer start,
 		final Integer end
 	) {
-		final long seed = math.random.seed();
+		final long seed = random.seed();
 		final Random random = new Random(seed);
 
 		final ArrayProxy<T, ?, ?> proxy = newArrayProxy(length);
@@ -203,7 +202,7 @@ public abstract class ArrayProxyTestBase<T> {
 		final Integer start,
 		final Integer end
 	) {
-		final long seed = math.random.seed();
+		final long seed = random.seed();
 		final Random random = new Random(seed);
 
 		final ArrayProxy<T, ?, ?> proxy = newArrayProxy(length + 10).slice(5, length + 5);
@@ -246,7 +245,7 @@ public abstract class ArrayProxyTestBase<T> {
 		final Integer start,
 		final Integer end
 	) {
-		final long seed = math.random.seed();
+		final long seed = random.seed();
 		final Random random = new Random(seed);
 
 		final ArrayProxy<T, ?, ?> proxy = newArrayProxy(length + 20)
@@ -303,8 +302,8 @@ public abstract class ArrayProxyTestBase<T> {
 		final Integer length, final Integer start, final Integer end,
 		final Integer otherLength, final Integer otherStart
 	) {
-		final long thatSeed = math.random.seed();
-		final long otherSeed = math.random.seed();
+		final long thatSeed = random.seed();
+		final long otherSeed = random.seed();
 		final Random thatRandom = new Random(thatSeed);
 		final Random otherRandom = new Random(otherSeed);
 
@@ -360,8 +359,8 @@ public abstract class ArrayProxyTestBase<T> {
 		final Integer length, final Integer start, final Integer end,
 		final Integer otherLength, final Integer otherStart
 	) {
-		final long thatSeed = math.random.seed();
-		final long otherSeed = math.random.seed();
+		final long thatSeed = random.seed();
+		final long otherSeed = random.seed();
 		final Random thatRandom = new Random(thatSeed);
 		final Random otherRandom = new Random(otherSeed);
 
@@ -416,7 +415,7 @@ public abstract class ArrayProxyTestBase<T> {
 
 	@Test(dataProvider = "copyproxylength")
 	public void copy(final Integer length, final Integer offset) {
-		final long seed = math.random.seed();
+		final long seed = random.seed();
 		final Random random = new Random(seed);
 
 		final ArrayProxy<T, ?, ?> that = newArrayProxy(length + offset).slice(offset);

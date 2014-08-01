@@ -20,7 +20,7 @@
  # Author:
  #    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  #
- # Version: <em>$Date: 2014-07-11 $</em>
+ # Version: <em>$Date: 2014-08-01 $</em>
  #
  ###############################################################################
 -->
@@ -299,7 +299,7 @@
             <class name="org.jenetics.internal.collection.StackTest" />
         </classes>
     </test>
-	<test name="org.jenetics.util.bit">
+	<test name="org.jenetics.internal.util.bit">
 		<classes>
 			<class name="org.jenetics.util.bitTest" />
 		</classes>
@@ -309,10 +309,10 @@
 			<class name="org.jenetics.util.CharSeqTest" />
 		</classes>
 	</test>
-	<test name="org.jenetics.util.math">
+	<test name="org.jenetics.internal.math.base">
 		<classes>
-			<class name="org.jenetics.util.mathRandomTest" />
-			<class name="org.jenetics.util.mathTest" />
+			<class name="org.jenetics.util.baseRandomTest" />
+			<class name="org.jenetics.util.baseTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.util.Random">

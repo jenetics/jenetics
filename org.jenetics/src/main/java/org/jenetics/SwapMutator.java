@@ -20,7 +20,6 @@
 package org.jenetics;
 
 import static java.lang.String.format;
-import static org.jenetics.util.math.random.indexes;
 
 import java.util.Random;
 
@@ -40,7 +39,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-07-11 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-01 $</em>
  */
 public class SwapMutator<
 	G extends Gene<?, G>,
@@ -79,7 +78,7 @@ public class SwapMutator<
 		if (genes.length() > 1) {
 			final Random random = RandomRegistry.getRandom();
 
-			indexes(random, genes.length(), p).forEach(i -> {
+			org.jenetics.internal.math.random.indexes(random, genes.length(), p).forEach(i -> {
 				genes.swap(i, random.nextInt(genes.length()));
 				++alterations.value;
 			});

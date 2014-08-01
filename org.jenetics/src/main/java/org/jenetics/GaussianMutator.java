@@ -20,17 +20,16 @@
 package org.jenetics;
 
 import static java.lang.String.format;
-import static org.jenetics.util.math.random.indexes;
 
 import java.util.Random;
 
+import org.jenetics.internal.math.base;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.IntRef;
 
 import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.math;
 
 /**
  * The GaussianMutator class performs the mutation of a {@link NumericGene}.
@@ -48,7 +47,7 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-07-11 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-01 $</em>
  */
 public final class GaussianMutator<
 	G extends NumericGene<?, G>,
@@ -69,7 +68,7 @@ public final class GaussianMutator<
 		final Random random = RandomRegistry.getRandom();
 
 		final IntRef alterations = new IntRef(0);
-		indexes(random, genes.length(), p).forEach(i -> {
+		org.jenetics.internal.math.random.indexes(random, genes.length(), p).forEach(i -> {
 			genes.set(i, mutate(genes.get(i), random));
 			++alterations.value;
 		});
@@ -82,7 +81,7 @@ public final class GaussianMutator<
 			gene.getMax().doubleValue() - gene.getMin().doubleValue()
 		)*0.25;
 
-		return gene.newInstance(math.clamp(
+		return gene.newInstance(base.clamp(
 			random.nextGaussian()*std + gene.doubleValue(),
 			gene.getMin().doubleValue(),
 			gene.getMax().doubleValue()

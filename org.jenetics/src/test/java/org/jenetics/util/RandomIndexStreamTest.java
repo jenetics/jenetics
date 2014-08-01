@@ -20,7 +20,6 @@
 package org.jenetics.util;
 
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
-import static org.jenetics.util.math.random.indexes;
 
 import java.util.PrimitiveIterator.OfInt;
 import java.util.Random;
@@ -30,6 +29,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import org.jenetics.internal.math.probability;
+import org.jenetics.internal.math.random;
 import org.jenetics.internal.util.IntRef;
 
 import org.jenetics.stat.Histogram;
@@ -38,7 +38,7 @@ import org.jenetics.stat.Variance;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-05-10 $</em>
+ * @version <em>$Date: 2014-08-01 $</em>
  */
 public class RandomIndexStreamTest {
 
@@ -52,7 +52,7 @@ public class RandomIndexStreamTest {
 			final Random random = new LCG64ShiftRandom.ThreadSafe(0);
 			final double p = Double.parseDouble(line[0]);
 
-			final OfInt it = indexes(random, 500, p).iterator();
+			final OfInt it = org.jenetics.internal.math.random.indexes(random, 500, p).iterator();
 			for (int i = 1; i < line.length; ++i) {
 				final int index = Integer.parseInt(line[i]);
 				Assert.assertEquals(it.nextInt(), index);
@@ -71,7 +71,7 @@ public class RandomIndexStreamTest {
 		final Random random2 = new LCG64ShiftRandom(0);
 
 		for (int j = 0; j < 1; ++j) {
-			final OfInt it = indexes(random1, size, p).iterator();
+			final OfInt it = random.indexes(random1, size, p).iterator();
 			final IndexStream stream2 = ReferenceRandomStream(
 				size, p, random2
 			);
@@ -118,7 +118,7 @@ public class RandomIndexStreamTest {
 
 	long k(final int n, final double p, final Random random) {
 		final IntRef kt = new IntRef(0);
-		indexes(random, n, p).forEach(i -> {
+		org.jenetics.internal.math.random.indexes(random, n, p).forEach(i -> {
 			++kt.value;
 		});
 

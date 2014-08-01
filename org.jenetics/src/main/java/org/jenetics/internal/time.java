@@ -17,46 +17,29 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package org.jenetics.internal;
+
+import java.time.Duration;
+import java.time.Instant;
+
+import org.jenetics.util.StaticObject;
 
 /**
+ * Helper methods for <i>time</i> classes.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-06-25 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-01 $</em>
  */
-public class GA<
-	G extends Gene<?, G>,
-	C extends Comparable<? super C>
->
-{
-	public int maxAge = 50;
-	public int size = 50;
+public class time extends StaticObject {
+    private time() {}
 
-	public static final class State<
-		G extends Gene<?, G>,
-		C extends Comparable<? super C>
-	>
-	{
-		private final int _generation;
-		private final Population<G, C> _population;
+    public static final long NANOS_PER_SECOND = 1_000_000_000;
 
-		public State(final int generation, final Population<G, C> population) {
-			_generation = generation;
-			_population = population;
-		}
+    public static Duration minus(final Instant a, final Instant b)  {
+        final long seconds = a.getEpochSecond() - b.getEpochSecond();
+        final long nanos = a.getNano() - b.getNano();
 
-		public int getGeneration() {
-			return _generation;
-		}
-
-		public Population<G, C> getPopulation() {
-			return _population;
-		}
-
-	}
-
-//	public State evolve(final State state) {
-//		return null;
-//	}
-
+        return Duration.ofNanos(seconds*NANOS_PER_SECOND + nanos);
+    }
 }

@@ -26,14 +26,14 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 3.0 &mdash; <em>$Date: 2014-06-30 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-07-31 $</em>
  */
 public interface Hash {
 
 	/**
 	 * Add hash code for a {@code boolean} value.
 	 *
-	 * @param values the value to add to the hash code.
+	 * @param value the value to add to the hash code.
 	 * @return {@code this}
 	 */
 	public Hash and(final boolean value);
