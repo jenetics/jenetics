@@ -19,8 +19,6 @@
  */
 package org.jenetics;
 
-import static org.jenetics.internal.math.random.nextLong;
-
 import java.util.Random;
 
 import javax.xml.bind.annotation.XmlAccessType;

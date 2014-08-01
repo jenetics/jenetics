@@ -20,14 +20,10 @@
 package org.jenetics.internal.math;
 
 import static java.lang.Double.doubleToLongBits;
-import static java.lang.Math.nextDown;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.object.checkProbability;
 
-import java.math.BigInteger;
 import java.util.Random;
-import java.util.stream.IntStream;
 
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.StaticObject;

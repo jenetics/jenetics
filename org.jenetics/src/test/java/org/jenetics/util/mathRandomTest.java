@@ -20,8 +20,6 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.internal.math.random.nextBigInteger;
-import static org.jenetics.internal.math.random.nextLong;
 import static org.jenetics.internal.math.random.toDouble;
 import static org.jenetics.internal.math.random.toDouble2;
 import static org.jenetics.internal.math.random.toFloat;

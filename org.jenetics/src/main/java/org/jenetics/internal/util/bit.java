@@ -21,7 +21,6 @@ package org.jenetics.internal.util;
 
 import static java.lang.Integer.parseInt;
 import static java.lang.Math.min;
-import static org.jenetics.internal.math.random.indexes;
 
 import org.jenetics.internal.math.random;
 

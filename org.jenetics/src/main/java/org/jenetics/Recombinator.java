@@ -20,7 +20,6 @@
 package org.jenetics;
 
 import static java.lang.String.format;
-import static org.jenetics.internal.math.random.indexes;
 import static org.jenetics.internal.math.math.subset;
 
 import java.util.Random;

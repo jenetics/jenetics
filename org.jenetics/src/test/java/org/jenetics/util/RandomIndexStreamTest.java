@@ -19,7 +19,6 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.internal.math.random.indexes;
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 
 import java.util.PrimitiveIterator.OfInt;
