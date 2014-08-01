@@ -21,8 +21,8 @@ package org.jenetics.internal.collection;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__! &mdash; <em>$Date: 2014-06-25 $</em>
- * @since !__version__!
+ * @since 3.0
+ * @version 3.0 &mdash; <em>$Date: 2014-08-01 $</em>
  */
 public class LinkedArrayList<T> {
 
@@ -35,10 +35,12 @@ public class LinkedArrayList<T> {
 
 	private static final class Node {
 		final Object[] _array;
+		final int _start;
 		final Node _next;
 
-		Node(final Object[] array, final Node next) {
+		Node(final Object[] array, final int start, final Node next) {
 			_array = array;
+			_start = start;
 			_next = next;
 		}
 	}
