@@ -40,7 +40,7 @@ package org.jenetics;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-06-01 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-04 $</em>
  */
 @FunctionalInterface
 public interface Alterer<
@@ -52,8 +52,9 @@ public interface Alterer<
 	public static final double DEFAULT_ALTER_PROBABILITY = 0.2;
 
 	/**
-	 * Alters (recombine) a given population. If the {@code population}
-	 * is empty, nothing is altered.
+	 * Alters (recombine) a given population. If the {@code population} is empty,
+	 * nothing is altered. The altering of the population is done in place; the
+	 * given <i>population</i> is altered.
 	 *
 	 * @param population The Population to be altered. If the
 	 *        {@code population} is {@code null} or empty, nothing is altered.
