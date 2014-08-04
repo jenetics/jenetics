@@ -19,6 +19,7 @@
  */
 package org.jenetics.internal.engine;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import org.jenetics.internal.util.Timer;
@@ -37,14 +38,36 @@ public class TimedResult<T> {
 		_result = result;
 	}
 
-	public static <T> TimedResult<T> of(final Supplier<T> result) {
-		final Timer timer = Timer.of();
-		timer.start();
-		try {
-			return new TimedResult<>(timer, result.get());
-		} finally {
-			timer.stop();
-		}
+	public static <T> Supplier<TimedResult<T>> of(final Supplier<T> result) {
+		return () -> {
+			final Timer timer = Timer.of();
+			timer.start();
+			try {
+				return new TimedResult<>(timer, result.get());
+			} finally {
+				timer.stop();
+			}
+		};
+	}
+
+	public static <T, R> Function<T, TimedResult<R>> of(final Function<T, R> fn) {
+		return v -> {
+			final Timer timer = Timer.of();
+			timer.start();
+			try {
+				return new TimedResult<>(timer, fn.apply(v));
+			} finally {
+				timer.stop();
+			}
+		};
+	}
+
+	public T get() {
+		return _result;
+	}
+
+	public Timer getTimer() {
+		return _timer;
 	}
 
 }

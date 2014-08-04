@@ -20,21 +20,19 @@
 package org.jenetics.internal.engine;
 
 import static java.util.Objects.requireNonNull;
+import static java.util.concurrent.CompletableFuture.supplyAsync;
 
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Executor;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import org.jenetics.internal.engine.AlterStage.Result;
-import org.jenetics.internal.engine.CombineStage.CombineResult;
 import org.jenetics.internal.util.Timer;
 
+import org.jenetics.Alterer;
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
 import org.jenetics.Optimize;
-import org.jenetics.Phenotype;
 import org.jenetics.Population;
 import org.jenetics.Selector;
 import org.jenetics.TournamentSelector;
@@ -54,11 +52,15 @@ public class GA<
 	// Selectors
 	private Selector<G, C> _survivorSelector = new TournamentSelector<>(3);
 	private Selector<G, C> _offspringSelector = new TournamentSelector<>(3);
+	private Alterer<G, C> _alterer = null;
 
 	private Context<G, C> _context = null;
 
 	private final SelectStage<G, C> _selection = new SelectStage<>(_context);
 	private final AlterStage<G, C> _altering = new AlterStage<>(_context);
+
+	private Function<Population<G, C>, Population<G, C>> _selector =
+		p -> _survivorSelector.select(p, _context.getSurvivorCount(), _context.getOptimize());
 
 	public GA(
 		final Factory<Genotype<G>> genotypeFactory,
@@ -83,36 +85,56 @@ public class GA<
 
 	public State<G, C> evolve(final State<G, C> state) {
 		final CompletionStage<TimedResult<Population<G, C>>> offspring = async(() ->
-			selectOffspring(state.getPopulation())
+			_context.getOffspringSelector().select(
+				state.getPopulation(),
+				_context.getOffspringCount(),
+				_context.getOptimize()
+			)
+		);
+		final CompletionStage<TimedResult<Population<G, C>>> survivor = async(() ->
+			_context.getSurvivorSelector().select(
+				state.getPopulation(),
+				_context.getSurvivorCount(),
+				_context.getOptimize()
+			)
 		);
 
+		final CompletionStage<TimedResult<Integer>> altered = then(offspring, population ->
+			_alterer.alter(population.get(), state.getGeneration())
+		);
+
+		final CompletionStage<Population<G, C>> population = survivor.thenCombineAsync(
+			altered,
+			(s, a) -> {
+				final Population<G, C> pop = s.get();
+				pop.addAll(offspring.toCompletableFuture().join().get());
+				return pop;
+			},
+			_context.getExecutor()
+		);
+
+		/*
 		final SelectStage.Result<G, C> select = _selection.select(null);
 
 		final CompletionStage<Integer> alter = select.getOffspring().thenApplyAsync(o ->
 			_context.getAlterer().alter(o, 10), _context.getExecutor()
 		);
+		*/
 
 
 		return null;
 	}
 
-	private Population<G, C> selectOffspring(final Population<G, C> population) {
-		return _context.getOffspringSelector().select(
-			population, _context.getOffspringCount(), _context.getOptimize()
-		);
-	}
-
-	private Population<G, C> selectSurvivor(final Population<G, C> population) {
-		return _context.getSurvivorSelector().select(
-			population, _context.getSurvivorCount(), _context.getOptimize()
-		);
-	}
-
 	private <T> CompletionStage<TimedResult<T>> async(final Supplier<T> supplier) {
-		final Supplier<TimedResult<T>> wrapped = () -> TimedResult.of(supplier);
-		return CompletableFuture.supplyAsync(wrapped, _context.getExecutor());
+		return supplyAsync(TimedResult.of(supplier), _context.getExecutor());
 	}
 
+	private <U, T> CompletionStage<TimedResult<T>> then(
+		final CompletionStage<U> result,
+		final Function<U, T> fn
+	) {
+		return result.thenApplyAsync(TimedResult.of(fn), _context.getExecutor());
+	}
 
 	/**
 	 * Represents a state of the GA.
