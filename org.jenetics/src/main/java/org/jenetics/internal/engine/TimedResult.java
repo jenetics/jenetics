@@ -17,31 +17,33 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.collection;
+package org.jenetics.internal.engine;
+
+import java.util.function.Supplier;
+
+import org.jenetics.internal.util.Timer;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
  * @version 3.0 &mdash; <em>$Date: 2014-08-04 $</em>
  */
-public class LinkedArrayList<T> {
+public class TimedResult<T> {
+	private final Timer _timer;
+	private final T _result;
 
-	private Node _head = null;
-
-	public LinkedArrayList(final int initialCapacity) {
-		_head = new Node(new Object[initialCapacity], 0, null);
+	private TimedResult(final Timer timer, final T result) {
+		_timer = timer;
+		_result = result;
 	}
 
-
-	private static final class Node {
-		final Object[] _array;
-		final int _start;
-		final Node _next;
-
-		Node(final Object[] array, final int start, final Node next) {
-			_array = array;
-			_start = start;
-			_next = next;
+	public static <T> TimedResult<T> of(final Supplier<T> result) {
+		final Timer timer = Timer.of();
+		timer.start();
+		try {
+			return new TimedResult<>(timer, result.get());
+		} finally {
+			timer.stop();
 		}
 	}
 

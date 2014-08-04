@@ -19,10 +19,70 @@
  */
 package org.jenetics.internal.engine;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.concurrent.CompletionStage;
+
+import org.jenetics.internal.util.Timer;
+
+import org.jenetics.Gene;
+import org.jenetics.Population;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-07-29 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-04 $</em>
  */
-public class AlterStage {
+public class AlterStage<
+	G extends Gene<?, G>,
+	C extends Comparable<? super C>
+	>
+	extends Stage
+{
+
+	private final Context<G, C> _context;
+
+	public AlterStage(final Context<G, C> context) {
+		super(context.getExecutor());
+		_context = context;
+	}
+
+	public Result<G, C> alter(final Population<G, C> offspring, final int generation) {
+		final Timer timer = Timer.of(_context.getClock());
+
+		final CompletionStage<Integer> altered = async(timer.timing(() ->
+			_context.getAlterer().alter(offspring, generation)
+		));
+
+		return new Result<>(timer, altered);
+	}
+
+	/**
+	 * Contains the <i>asynchronous</i> result of the selection stage.
+	 *
+	 * @param <G> the gene type
+	 * @param <C> the fitness type
+	 */
+	public static final class Result<
+		G extends Gene<?, G>,
+		C extends Comparable<? super C>
+		>
+		extends StageResult
+	{
+		private final CompletionStage<Integer> _altered;
+
+		private Result(
+			final Timer timer,
+			final  CompletionStage<Integer> altered
+		) {
+			super(timer);
+			_altered = requireNonNull(altered);
+		}
+
+		public CompletionStage<Integer> getOffspring() {
+			return _altered;
+		}
+
+	}
+
 }
