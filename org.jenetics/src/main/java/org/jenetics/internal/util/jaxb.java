@@ -33,17 +33,15 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.jenetics.internal.util.model.CharacterModel;
 
-import org.jenetics.util.StaticObject;
-
 /**
  * JAXB helper methods.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-07-11 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-08-05 $</em>
  * @since 2.0
  */
-public class jaxb extends StaticObject {
-	private jaxb() {}
+public class jaxb {
+	private jaxb() {require.singleton();}
 
 	private static final class JAXBContextHolder {
 		private static final JAXBContext CONTEXT; static {

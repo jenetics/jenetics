@@ -21,8 +21,6 @@ package org.jenetics.internal.util;
 
 import static java.lang.String.format;
 
-import org.jenetics.util.StaticObject;
-
 /**
  * Some helper methods for creating hash codes and comparing values.
  *
@@ -30,7 +28,7 @@ import org.jenetics.util.StaticObject;
  * @since 1.0
  * @version 1.6 &mdash; <em>$Date: 2014-08-05 $</em>
  */
-public final class require extends StaticObject {
+public final class require {
 	private require() { singleton(); }
 
 

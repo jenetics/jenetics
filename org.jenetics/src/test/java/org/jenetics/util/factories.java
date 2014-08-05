@@ -21,12 +21,14 @@ package org.jenetics.util;
 
 import java.util.function.Supplier;
 
+import org.jenetics.internal.util.require;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date$</em>
+ * @version <em>$Date: 2014-08-05 $</em>
  */
-public final class factories extends StaticObject {
-	private factories() {}
+public final class factories {
+	private factories() {require.singleton();}
 
 	/**
 	 * Return an integer factory which creates an integer sequence starting with

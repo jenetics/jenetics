@@ -29,7 +29,7 @@ import java.math.BigInteger;
 import java.util.Random;
 import java.util.stream.IntStream;
 
-import org.jenetics.util.StaticObject;
+import org.jenetics.internal.util.require;
 
 /**
  * Some random helper functions.
@@ -38,8 +38,8 @@ import org.jenetics.util.StaticObject;
  * @since 1.4
  * @version 3.0 &mdash; <em>$Date: 2014-08-05 $</em>
  */
-public final class random extends StaticObject {
-	private random() {}
+public final class random {
+	private random() {require.singleton();}
 
 	public static byte nextByte(final Random random) {
 		return (byte)nextInt(random, Byte.MIN_VALUE, Byte.MAX_VALUE);

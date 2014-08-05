@@ -25,7 +25,6 @@ import static java.lang.Math.min;
 import org.jenetics.internal.math.random;
 
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.StaticObject;
 
 
 /**
@@ -44,8 +43,8 @@ import org.jenetics.util.StaticObject;
  * @since 1.0
  * @version 3.0 &mdash; <em>$Date: 2014-08-05 $</em>
  */
-public final class bit extends StaticObject {
-	private bit() {}
+public final class bit {
+	private bit() {require.singleton();}
 
 	/**
 	 * Lookup table for counting the number of set bits in a {@code byte} value.
