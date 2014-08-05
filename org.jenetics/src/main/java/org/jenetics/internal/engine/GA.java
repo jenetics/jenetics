@@ -27,8 +27,6 @@ import java.util.concurrent.Executor;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import org.jenetics.internal.util.Timer;
-
 import org.jenetics.Alterer;
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
@@ -41,7 +39,7 @@ import org.jenetics.util.Factory;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-04 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-05 $</em>
  */
 public class GA<
 	G extends Gene<?, G>,
