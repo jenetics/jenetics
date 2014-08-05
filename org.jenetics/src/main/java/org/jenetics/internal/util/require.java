@@ -31,7 +31,28 @@ import org.jenetics.util.StaticObject;
  * @version 1.6 &mdash; <em>$Date: 2014-08-05 $</em>
  */
 public final class require extends StaticObject {
-	private require() {}
+	private require() { singleton(); }
+
+
+	/**
+	 * Calling the constructor of an {@code StaticObject} will always throw an
+	 * {@link AssertionError}.
+	 *
+	 * @throws AssertionError always.
+	 */
+	public static void singleton() {
+		String message = "Object instantiation is not allowed";
+
+		final StackTraceElement[] trace = Thread.currentThread().getStackTrace();
+		if (trace.length >= 3) {
+			message = format(
+				"Instantiation of '%s' is not allowed.",
+				trace[2].getClassName()
+			);
+		}
+
+		throw new AssertionError(message);
+	}
 
 	/**
 	 * Check if the specified value is not negative.
