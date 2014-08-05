@@ -30,7 +30,7 @@ import java.time.Instant;
  * @version 3.0 &mdash; <em>$Date: 2014-08-05 $</em>
  */
 public class time {
-    private time() {require.singleton();}
+    private time() {require.noInstance();}
 
     public static final long NANOS_PER_SECOND = 1_000_000_000;
 

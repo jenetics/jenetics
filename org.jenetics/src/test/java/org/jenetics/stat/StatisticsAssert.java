@@ -30,7 +30,7 @@ import org.jenetics.internal.util.require;
  */
 public final class StatisticsAssert {
 
-	private StatisticsAssert() {require.singleton();}
+	private StatisticsAssert() {require.noInstance();}
 
 	public static <C extends Comparable<? super C>> void assertDistribution(
 		final Histogram<C> histogram,

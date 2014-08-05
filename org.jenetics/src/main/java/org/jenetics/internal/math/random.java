@@ -39,7 +39,7 @@ import org.jenetics.internal.util.require;
  * @version 3.0 &mdash; <em>$Date: 2014-08-05 $</em>
  */
 public final class random {
-	private random() {require.singleton();}
+	private random() {require.noInstance();}
 
 	public static byte nextByte(final Random random) {
 		return (byte)nextInt(random, Byte.MIN_VALUE, Byte.MAX_VALUE);

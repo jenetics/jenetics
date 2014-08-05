@@ -31,7 +31,7 @@ import org.jenetics.internal.util.require;
  * @version 1.4 &mdash; <em>$Date: 2014-08-05 $</em>
  */
 public final class probability {
-	private probability() {require.singleton();}
+	private probability() {require.noInstance();}
 
 	private static final long INT_RANGE = pow(2, 32) - 1;
 

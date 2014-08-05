@@ -33,7 +33,7 @@ import org.jenetics.internal.util.require;
  * @version 2.0 &mdash; <em>$Date: 2014-08-05 $</em>
  */
 public final class termination {
-	private termination() {require.singleton();}
+	private termination() {require.noInstance();}
 
 	/**
 	 * Create a <i>terminator</i> which returns {@code false} if the fitness

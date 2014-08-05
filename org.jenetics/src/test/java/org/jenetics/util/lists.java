@@ -29,7 +29,7 @@ import org.jenetics.internal.util.require;
  * @version <em>$Date: 2014-08-05 $</em>
  */
 public class lists {
-	private lists() {require.singleton();}
+	private lists() {require.noInstance();}
 
 
 	/**

@@ -34,7 +34,7 @@ import org.jenetics.util.RandomRegistry;
  * @version <em>$Date: 2014-08-05 $</em>
  */
 class TestUtils {
-	private TestUtils() {require.singleton();}
+	private TestUtils() {require.noInstance();}
 
 	/**
 	 * Data for alter count tests.

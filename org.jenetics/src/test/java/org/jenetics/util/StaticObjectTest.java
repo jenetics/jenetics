@@ -63,5 +63,5 @@ public class StaticObjectTest {
 }
 
 final class SomeStaticObject {
-	SomeStaticObject() {require.singleton();}
+	SomeStaticObject() {require.noInstance();}
 }

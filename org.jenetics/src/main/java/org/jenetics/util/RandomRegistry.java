@@ -92,7 +92,7 @@ import org.jenetics.internal.util.require;
  * @version 2.0 &mdash; <em>$Date: 2014-08-05 $</em>
  */
 public final class RandomRegistry {
-	private RandomRegistry() {require.singleton();}
+	private RandomRegistry() {require.noInstance();}
 
 	private static final Context<Supplier<Random>> CONTEXT =
 		new Context<>(ThreadLocalRandom::current);

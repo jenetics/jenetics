@@ -37,7 +37,7 @@ import org.jenetics.util.RandomRegistry;
  * @version 3.0 &mdash; <em>$Date: 2014-08-05 $</em>
  */
 public final class base {
-	private base() {require.singleton();}
+	private base() {require.noInstance();}
 
 	/**
 	 * <i>Clamping</i> a value between a pair of boundary values.

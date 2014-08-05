@@ -41,7 +41,7 @@ import org.jenetics.internal.util.model.CharacterModel;
  * @since 2.0
  */
 public class jaxb {
-	private jaxb() {require.singleton();}
+	private jaxb() {require.noInstance();}
 
 	private static final class JAXBContextHolder {
 		private static final JAXBContext CONTEXT; static {

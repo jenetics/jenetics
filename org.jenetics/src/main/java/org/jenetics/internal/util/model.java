@@ -36,7 +36,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
  * @since 2.0
  */
 public final class model {
-	private model() {require.singleton();}
+	private model() {require.noInstance();}
 
 	@XmlRootElement(name = "char")
 	@XmlType(name = "char")

@@ -33,7 +33,7 @@ import org.jenetics.util.Seq;
  * @version 3.0 &mdash; <em>$Date: 2014-08-05 $</em>
  */
 public final class Equality {
-	private Equality() {require.singleton();}
+	private Equality() {require.noInstance();}
 
 	/**
 	 * Create a new {@code Equality} object for testing object equality.

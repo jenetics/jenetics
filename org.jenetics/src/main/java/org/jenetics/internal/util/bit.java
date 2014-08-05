@@ -44,7 +44,7 @@ import org.jenetics.util.RandomRegistry;
  * @version 3.0 &mdash; <em>$Date: 2014-08-05 $</em>
  */
 public final class bit {
-	private bit() {require.singleton();}
+	private bit() {require.noInstance();}
 
 	/**
 	 * Lookup table for counting the number of set bits in a {@code byte} value.

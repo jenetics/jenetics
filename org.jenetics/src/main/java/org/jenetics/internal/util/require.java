@@ -29,7 +29,7 @@ import static java.lang.String.format;
  * @version 1.6 &mdash; <em>$Date: 2014-08-05 $</em>
  */
 public final class require {
-	private require() { singleton(); }
+	private require() { noInstance(); }
 
 
 	/**
@@ -38,7 +38,7 @@ public final class require {
 	 *
 	 * @throws AssertionError always.
 	 */
-	public static void singleton() {
+	public static void noInstance() {
 		String message = "Object instantiation is not allowed";
 
 		final StackTraceElement[] trace = Thread.currentThread().getStackTrace();

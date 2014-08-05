@@ -35,7 +35,7 @@ import org.jenetics.util.ISeq;
  * @version 3.0 &mdash; <em>$Date: 2014-08-05 $</em>
  */
 public class reflect {
-	private reflect() {require.singleton();}
+	private reflect() {require.noInstance();}
 
 	/**
 	 * Return all declared classes of the given class, with arbitrary nested
