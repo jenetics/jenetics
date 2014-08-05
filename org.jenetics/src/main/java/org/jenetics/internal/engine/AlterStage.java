@@ -22,9 +22,9 @@ package org.jenetics.internal.engine;
 import static java.util.Objects.requireNonNull;
 
 import java.util.concurrent.CompletionStage;
+import java.util.concurrent.Executor;
 
-import org.jenetics.internal.util.Timer;
-
+import org.jenetics.Alterer;
 import org.jenetics.Gene;
 import org.jenetics.Population;
 
@@ -40,23 +40,18 @@ public class AlterStage<
 	extends Stage
 {
 
-	private final Context<G, C> _context;
+	private final Alterer<G, C> _alterer;
 
-	public AlterStage(final Context<G, C> context) {
-		super(context.getExecutor());
-		_context = context;
+	public AlterStage(final Alterer<G, C> alterer, final Executor executor) {
+		super(executor);
+		_alterer = alterer;
 	}
 
-	public Result<G, C> alter(final Population<G, C> offspring, final int generation) {
-//		final Timer timer = Timer.of(_context.getClock());
-//
-//		final CompletionStage<Integer> altered = async(timer.timing(() ->
-//			_context.getAlterer().alter(offspring, generation)
-//		));
-//
-//		return new Result<>(timer, altered);
-
-		return null;
+	public CompletionStage<TimedResult<Result<G, C>>>
+	alter(final Population<G, C> population, final int generation) {
+		return async(TimedResult.of(() ->
+			new Result<>(population, _alterer.alter(population, generation))
+		));
 	}
 
 	/**
@@ -68,20 +63,24 @@ public class AlterStage<
 	public static final class Result<
 		G extends Gene<?, G>,
 		C extends Comparable<? super C>
-		>
-		extends StageResult
+	>
 	{
-		private final CompletionStage<Integer> _altered;
+		private final Population<G, C> _population;
+		private final int _altered;
 
 		private Result(
-			final Timer timer,
-			final  CompletionStage<Integer> altered
+			final Population<G, C> population,
+			final int altered
 		) {
-			super(timer);
-			_altered = requireNonNull(altered);
+			_population = requireNonNull(population);
+			_altered = altered;
 		}
 
-		public CompletionStage<Integer> getOffspring() {
+		public Population<G, C> getPopulation() {
+			return _population;
+		}
+
+		public int getAltered() {
 			return _altered;
 		}
 

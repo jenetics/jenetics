@@ -68,7 +68,10 @@ public class GA<
 		_context.getExecutor()
 	);
 
-	private final AlterStage<G, C> _altering = new AlterStage<>(_context);
+	private final AlterStage<G, C> _altering = new AlterStage<>(
+		_context.getAlterer(),
+		_context.getExecutor()
+	);
 
 	private Function<Population<G, C>, Population<G, C>> _selector =
 		p -> _survivorSelector.select(p, _context.getSurvivorCount(), _context.getOptimize());
@@ -104,6 +107,14 @@ public class GA<
 		final CompletionStage<TimedResult<Integer>> altered = then(offspring, population ->
 			_alterer.alter(population.get(), state.getGeneration())
 		);
+
+//		CompletionStage<TimedResult<AlterStage.Result<G, C>>>
+//		alt = then(offspring, pop ->
+//			_altering.alter(pop.get(), state.getGeneration())
+//		);
+
+
+			_altering.alter(state.getPopulation(), state.getGeneration());
 
 		final CompletionStage<Population<G, C>> population = survivor.thenCombineAsync(
 			altered,

@@ -27,7 +27,7 @@ import java.util.function.Supplier;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-07-30 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-05 $</em>
  */
 public abstract class Stage {
 
@@ -37,7 +37,7 @@ public abstract class Stage {
 		_executor = executor;
 	}
 
-	protected <T> CompletionStage<T> async(final Supplier<T> supplier) {
+	protected final <T> CompletionStage<T> async(final Supplier<T> supplier) {
 		return CompletableFuture.supplyAsync(supplier, _executor);
 	}
 
