@@ -284,11 +284,6 @@
 			<class name="org.jenetics.internal.math.probabilityTest" />
 		</classes>
 	</test>
-    <test name="org.jenetics.internal.util.internalbit">
-        <classes>
-            <class name="org.jenetics.internal.util.internalbitTest" />
-        </classes>
-    </test>
     <test name="org.jenetics.internal.util.reflect">
         <classes>
             <class name="org.jenetics.internal.util.reflectTest" />
