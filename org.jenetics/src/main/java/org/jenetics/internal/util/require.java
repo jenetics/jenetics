@@ -28,10 +28,10 @@ import org.jenetics.util.StaticObject;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-07-11 $</em>
+ * @version 1.6 &mdash; <em>$Date$</em>
  */
-public final class object extends StaticObject {
-	private object() {}
+public final class require extends StaticObject {
+	private require() {}
 
 	/**
 	 * Check if the specified value is not negative.

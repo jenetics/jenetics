@@ -23,7 +23,7 @@ import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.CompletableFuture.supplyAsync;
-import static org.jenetics.internal.util.object.checkProbability;
+import static org.jenetics.internal.util.require.checkProbability;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -139,7 +139,7 @@ import org.jenetics.util.Timer;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-06-01 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-05 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,
