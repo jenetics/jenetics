@@ -19,52 +19,40 @@
  */
 package org.jenetics.internal.util;
 
+import static java.util.Objects.requireNonNull;
+
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.function.Supplier;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-01 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-05 $</em>
  */
 public final class Timer {
 
 	private final Clock _clock;
 
-    private final ThreadLocal<Instant> _start = new ThreadLocal<>();
-    private final ThreadLocal<Instant> _stop = new ThreadLocal<>();
+    private Instant _start;
+    private Instant _stop;
 
-    private final AtomicLong _time = new AtomicLong(0L);
-
-	public Timer(final Clock clock) {
-		_clock = clock;
+	private Timer(final Clock clock) {
+		_clock = requireNonNull(clock);
 	}
 
-	public void start() {
-        _start.set(_clock.instant());
+	public Timer start() {
+        _start = _clock.instant();
+		return this;
 	}
 
-	public void stop() {
-        _stop.set(_clock.instant());
-        _time.addAndGet(time.minus(_stop.get(), _start.get()).toMillis());
+	public Timer stop() {
+		_stop = _clock.instant();
+		return this;
 	}
 
     public Duration getTime() {
-        return Duration.ofNanos(_time.get());
-    }
-
-    public <T> Supplier<T> timing(final Supplier<T> supplier) {
-        return () -> {
-            start();
-            try {
-                return supplier.get();
-            } finally {
-                stop();
-            }
-        };
+        return time.minus(_stop, _start);
     }
 
 

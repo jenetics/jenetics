@@ -31,7 +31,7 @@ import org.jenetics.Population;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-04 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-05 $</em>
  */
 public class AlterStage<
 	G extends Gene<?, G>,
@@ -48,13 +48,15 @@ public class AlterStage<
 	}
 
 	public Result<G, C> alter(final Population<G, C> offspring, final int generation) {
-		final Timer timer = Timer.of(_context.getClock());
+//		final Timer timer = Timer.of(_context.getClock());
+//
+//		final CompletionStage<Integer> altered = async(timer.timing(() ->
+//			_context.getAlterer().alter(offspring, generation)
+//		));
+//
+//		return new Result<>(timer, altered);
 
-		final CompletionStage<Integer> altered = async(timer.timing(() ->
-			_context.getAlterer().alter(offspring, generation)
-		));
-
-		return new Result<>(timer, altered);
+		return null;
 	}
 
 	/**

@@ -19,6 +19,8 @@
  */
 package org.jenetics.internal.engine;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -27,21 +29,22 @@ import org.jenetics.internal.util.Timer;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-04 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-05 $</em>
  */
 public class TimedResult<T> {
 	private final Timer _timer;
 	private final T _result;
 
 	private TimedResult(final Timer timer, final T result) {
-		_timer = timer;
-		_result = result;
+		_timer = requireNonNull(timer);
+		_result = requireNonNull(result);
 	}
 
-	public static <T> Supplier<TimedResult<T>> of(final Supplier<T> result) {
+	public static <T> Supplier<TimedResult<T>> of(
+		final Supplier<? extends T> result
+	) {
 		return () -> {
-			final Timer timer = Timer.of();
-			timer.start();
+			final Timer timer = Timer.of().start();
 			try {
 				return new TimedResult<>(timer, result.get());
 			} finally {
@@ -50,12 +53,13 @@ public class TimedResult<T> {
 		};
 	}
 
-	public static <T, R> Function<T, TimedResult<R>> of(final Function<T, R> fn) {
-		return v -> {
-			final Timer timer = Timer.of();
-			timer.start();
+	public static <T, R> Function<T, TimedResult<R>> of(
+		final Function<? super T, ? extends R> function
+	) {
+		return value -> {
+			final Timer timer = Timer.of().start();
 			try {
-				return new TimedResult<>(timer, fn.apply(v));
+				return new TimedResult<>(timer, function.apply(value));
 			} finally {
 				timer.stop();
 			}

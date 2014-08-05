@@ -54,7 +54,20 @@ public class GA<
 
 	private Context<G, C> _context = null;
 
-	private final SelectStage<G, C> _selection = new SelectStage<>(_context);
+	private final SelectStage<G, C> _offspringSelection = new SelectStage<>(
+		_context.getOffspringSelector(),
+		_context.getOffspringCount(),
+		_context.getOptimize(),
+		_context.getExecutor()
+	);
+
+	private final SelectStage<G, C> _survivorSelection = new SelectStage<>(
+		_context.getSurvivorSelector(),
+		_context.getSurvivorCount(),
+		_context.getOptimize(),
+		_context.getExecutor()
+	);
+
 	private final AlterStage<G, C> _altering = new AlterStage<>(_context);
 
 	private Function<Population<G, C>, Population<G, C>> _selector =
@@ -82,20 +95,11 @@ public class GA<
 	}
 
 	public State<G, C> evolve(final State<G, C> state) {
-		final CompletionStage<TimedResult<Population<G, C>>> offspring = async(() ->
-			_context.getOffspringSelector().select(
-				state.getPopulation(),
-				_context.getOffspringCount(),
-				_context.getOptimize()
-			)
-		);
-		final CompletionStage<TimedResult<Population<G, C>>> survivor = async(() ->
-			_context.getSurvivorSelector().select(
-				state.getPopulation(),
-				_context.getSurvivorCount(),
-				_context.getOptimize()
-			)
-		);
+		final CompletionStage<TimedResult<Population<G, C>>>
+		offspring = _offspringSelection.select(state.getPopulation());
+
+		final CompletionStage<TimedResult<Population<G, C>>>
+		survivor = _survivorSelection.select(state.getPopulation());
 
 		final CompletionStage<TimedResult<Integer>> altered = then(offspring, population ->
 			_alterer.alter(population.get(), state.getGeneration())
