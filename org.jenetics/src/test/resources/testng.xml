@@ -20,7 +20,7 @@
  # Author:
  #    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  #
- # Version: <em>$Date: 2014-08-01 $</em>
+ # Version: <em>$Date: 2014-08-05 $</em>
  #
  ###############################################################################
 -->
@@ -301,7 +301,7 @@
     </test>
 	<test name="org.jenetics.internal.util.bit">
 		<classes>
-			<class name="org.jenetics.util.bitTest" />
+			<class name="org.jenetics.internal.util.bitTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.util.CharSeq">

@@ -17,13 +17,14 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package org.jenetics.internal.util;
 
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Random;
 
+import org.jenetics.util.RandomRegistry;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -32,7 +33,7 @@ import org.jenetics.internal.math.random;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-01 $</em>
+ * @version <em>$Date$</em>
  */
 public class bitTest {
 
