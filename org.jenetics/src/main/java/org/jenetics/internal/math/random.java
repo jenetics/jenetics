@@ -22,7 +22,7 @@ package org.jenetics.internal.math;
 import static java.lang.Math.abs;
 import static java.lang.Math.nextDown;
 import static java.lang.String.format;
-import static org.jenetics.internal.util.require.checkProbability;
+import static org.jenetics.internal.util.require.probability;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -392,7 +392,7 @@ public final class random extends StaticObject {
 		final int end,
 		final double p
 	) {
-		checkProbability(p);
+		probability(p);
 		return equals(p, 0, 1E-20) ?
 			IntStream.empty() :
 			equals(p, 1, 1E-20) ?

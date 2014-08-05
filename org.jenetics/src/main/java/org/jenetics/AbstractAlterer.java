@@ -20,7 +20,7 @@
 package org.jenetics;
 
 import static org.jenetics.internal.util.Equality.eq;
-import static org.jenetics.internal.util.require.checkProbability;
+import static org.jenetics.internal.util.require.probability;
 
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
@@ -52,7 +52,7 @@ public abstract class AbstractAlterer<
 	 *         valid range of {@code [0, 1]}.
 	 */
 	protected AbstractAlterer(final double probability) {
-		_probability = checkProbability(probability);
+		_probability = probability(probability);
 	}
 
 	/**

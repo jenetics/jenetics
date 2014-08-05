@@ -23,7 +23,7 @@ import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.CompletableFuture.supplyAsync;
-import static org.jenetics.internal.util.require.checkProbability;
+import static org.jenetics.internal.util.require.probability;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -1016,7 +1016,7 @@ public class GeneticAlgorithm<
 	 *         range.
 	 */
 	public void setOffspringFraction(final double offspringFraction) {
-		_offspringFraction = checkProbability(offspringFraction);
+		_offspringFraction = probability(offspringFraction);
 	}
 
 	/**
