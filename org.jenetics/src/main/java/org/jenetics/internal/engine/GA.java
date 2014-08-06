@@ -23,18 +23,22 @@ import static java.lang.Math.round;
 import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Executor;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import org.jenetics.internal.engine.CombineStage.CombineResult;
+import org.jenetics.internal.util.Concurrency;
+import org.jenetics.internal.util.Timer;
 
 import org.jenetics.Alterer;
 import org.jenetics.Gene;
 import org.jenetics.Optimize;
+import org.jenetics.Phenotype;
 import org.jenetics.Population;
 import org.jenetics.Selector;
+import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -57,6 +61,9 @@ public class GA<
 	private final Alterer<G, C> _alterer;
 	private final Optimize _optimize;
 
+	private final int _maxAge;
+	private final Factory<Phenotype<G, C>> _phenotypeFactory;
+
 	// Execution context.
 	private final Executor _executor;
 
@@ -67,6 +74,8 @@ public class GA<
 		final Optimize optimize,
 		final int populationCount,
 		final int offspringFraction,
+		final int maxAge,
+		final Factory<Phenotype<G, C>> phenotypeFactory,
 		final Executor executor
 	) {
 		_survivorsSelector = requireNonNull(survivorsSelector);
@@ -78,6 +87,8 @@ public class GA<
 		_offspringFraction = offspringFraction;
 		_offspringCount = (int)round(_offspringFraction*_populationCount);
 		_survivorCount = _populationCount - _offspringCount;
+		_maxAge = maxAge;
+		_phenotypeFactory = phenotypeFactory;
 
 		_executor = requireNonNull(executor);
 	}
@@ -87,15 +98,23 @@ public class GA<
 			async(() -> selectOffspring(state.getPopulation()));
 
 		final CompletionStage<TimedResult<Population<G, C>>> survivors =
-			async(() -> selectSurvivors(state.getPopulation()));
+			async(() ->  selectSurvivors(state.getPopulation()));
 
-		final CompletionStage<TimedResult<AlterResult<G, C>>> alter =
+		final CompletionStage<TimedResult<AlterResult<G, C>>> alteredOffspring =
 			then(offspring, p -> alter(p.get(), state.getGeneration()));
 
-		final CompletionStage<CombineResult<G, C>> combine =
-			survivors.thenCombineAsync(alter, (s, o) -> combine(s.get(), o.get().population), _executor);
+		final CompletionStage<TimedResult<FilterResult<G, C>>> filteredSurvivors =
+			then(survivors, s -> filterSurvivors(s.get(), state.getGeneration()));
 
-		
+		final CompletionStage<Population<G, C>> combine =
+			filteredSurvivors.thenCombineAsync(alteredOffspring, (s, o) ->
+				combine(s.get().population, o.get().population),
+				_executor
+			);
+
+		final CompletionStage<Population<G, C>> result = combine.thenApply(this::evaluate);
+
+		result.toCompletableFuture().join();
 
 		return null;
 	}
@@ -108,6 +127,35 @@ public class GA<
 		return _offspringSelector.select(population, _offspringCount, _optimize);
 	}
 
+	private FilterResult<G, C> filterSurvivors(final Population<G, C> survivors, final int generation) {
+		int killed = 0;
+		int invalid = 0;
+
+		for (int i = 0, n = survivors.size(); i < n; ++i) {
+			final Phenotype<G, C> survivor = survivors.get(i);
+
+			final boolean isTooOld =
+				survivor.getAge(generation) > _maxAge;
+
+			final boolean isInvalid = isTooOld || !survivor.isValid();
+
+			// Sorry, too old or not valid.
+			if (isInvalid) {
+				survivors.set(i, _phenotypeFactory.newInstance());
+			}
+
+			if (isTooOld) {
+				++killed;
+			} else if (isInvalid) {
+				++invalid;
+			}
+		}
+
+		return new FilterResult<>(
+			survivors, killed, invalid
+		);
+	}
+
 	private AlterResult<G, C> alter(final Population<G,C> population, final int generation) {
 		return new AlterResult<>(
 			population,
@@ -115,8 +163,17 @@ public class GA<
 		);
 	}
 
-	private CombineResult<G, C> combine(final Population<G, C> survivors, final Population<G, C> offspring) {
-		return null;
+	private Population<G, C> combine(final Population<G, C> survivors, final Population<G, C> offspring) {
+		survivors.addAll(offspring);
+		return survivors;
+	}
+
+	private Population<G, C> evaluate(final Population<G, C> population) {
+		try (Concurrency c = Concurrency.with(_executor)) {
+			c.execute(population);
+		}
+
+		return population;
 	}
 
 	private <T> CompletionStage<TimedResult<T>> async(final Supplier<T> supplier) {
@@ -172,7 +229,7 @@ public class GA<
 		}
 	}
 
-	private static final class CombineResult<
+	private static final class FilterResult<
 		G extends Gene<?, G>,
 		C extends Comparable<? super C>
 	> {
@@ -180,7 +237,7 @@ public class GA<
 		public final int killed;
 		public final int invalid;
 
-		CombineResult(
+		FilterResult(
 			final Population<G, C> population,
 			final int killed,
 			final int invalid
