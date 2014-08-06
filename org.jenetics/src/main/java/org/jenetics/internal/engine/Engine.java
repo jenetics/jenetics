@@ -22,6 +22,7 @@ package org.jenetics.internal.engine;
 import static java.lang.Math.round;
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serializable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
@@ -54,11 +55,11 @@ public class Engine<
 	private final Selector<G, C> _survivorsSelector;
 	private final Selector<G, C> _offspringSelector;
 	private final int _offspringCount;
-	private final int _survivorCount;
+	private final int _survivorsCount;
 	private final Alterer<G, C> _alterer;
 	private final Optimize _optimize;
 
-	private final int _maxAge;
+	private final int _maximalPhenotypeAge;
 	private final Factory<Phenotype<G, C>> _phenotypeFactory;
 
 	// Execution context.
@@ -71,7 +72,7 @@ public class Engine<
 		final Optimize optimize,
 		final int populationCount,
 		final int offspringFraction,
-		final int maxAge,
+		final int maximalPhenotypeAge,
 		final Factory<Phenotype<G, C>> phenotypeFactory,
 		final Executor executor
 	) {
@@ -81,13 +82,19 @@ public class Engine<
 		_optimize = requireNonNull(optimize);
 
 		_offspringCount = round(offspringFraction*populationCount);
-		_survivorCount = populationCount - _offspringCount;
-		_maxAge = maxAge;
+		_survivorsCount = populationCount - _offspringCount;
+		_maximalPhenotypeAge = maximalPhenotypeAge;
 		_phenotypeFactory = phenotypeFactory;
 
 		_executor = new TimedExecutor(requireNonNull(executor));
 	}
 
+	/**
+	 * Performs one generation step.
+	 *
+	 * @param state the current GA state
+	 * @return the new GA state.
+	 */
 	public State<G, C> evolve(final State<G, C> state) {
 		// Select the offspring population.
 		final CompletableFuture<TimedResult<Population<G, C>>>
@@ -104,26 +111,27 @@ public class Engine<
 		// Altering the offspring population.
 		final CompletableFuture<TimedResult<AlterResult<G, C>>>
 		alteredOffspring = _executor.thenApply(offspring, p ->
-				alter(p.get(), state.getGeneration())
+			alter(p.get(), state.getGeneration())
 		);
 
 		// Filter and replace invalid and to old survivor individuals.
 		final CompletableFuture<TimedResult<FilterResult<G, C>>>
 		filteredSurvivors = _executor.thenApply(survivors, pop ->
-				filter(pop.get(), state.getGeneration())
+			filter(pop.get(), state.getGeneration())
 		);
 
 		// Filter and replace invalid and to old offspring individuals.
 		final CompletableFuture<TimedResult<FilterResult<G, C>>>
 		filteredOffspring = _executor.thenApply(alteredOffspring, pop ->
-			filter(pop.get().population, state.getGeneration())
+			filter(pop.get().getPopulation(), state.getGeneration())
 		);
 
 		// Combining survivors and offspring to the new population.
 		final CompletableFuture<Population<G, C>>
 		population = filteredSurvivors.thenCombineAsync(filteredOffspring, (s, o) -> {
-				s.get().population.addAll(o.get().population);
-				return s.get().population;
+				final Population<G, C> pop = s.get().getPopulation();
+				pop.addAll(o.get().getPopulation());
+				return pop;
 			},
 			_executor.get()
 		);
@@ -137,43 +145,39 @@ public class Engine<
 	}
 
 	private Population<G, C> selectSurvivors(final Population<G, C> population) {
-		return _survivorsSelector.select(population, _survivorCount, _optimize);
+		return _survivorsSelector.select(population, _survivorsCount, _optimize);
 	}
 
 	private Population<G, C> selectOffspring(final Population<G, C> population) {
 		return _offspringSelector.select(population, _offspringCount, _optimize);
 	}
 
-	private FilterResult<G, C> filter(final Population<G, C> population, final int generation) {
-		int killed = 0;
-		int invalid = 0;
+	private FilterResult<G, C> filter(
+		final Population<G, C> population,
+		final int generation
+	) {
+		int killCount = 0;
+		int invalidCount = 0;
 
 		for (int i = 0, n = population.size(); i < n; ++i) {
-			final Phenotype<G, C> survivor = population.get(i);
+			final Phenotype<G, C> individual = population.get(i);
 
-			final boolean isTooOld =
-				survivor.getAge(generation) > _maxAge;
-
-			final boolean isInvalid = isTooOld || !survivor.isValid();
-
-			// Sorry, too old or not valid.
-			if (isInvalid) {
+			if (!individual.isValid()) {
 				population.set(i, _phenotypeFactory.newInstance());
-			}
-
-			if (isTooOld) {
-				++killed;
-			} else if (isInvalid) {
-				++invalid;
+				++invalidCount;
+			} else if (individual.getAge(generation) > _maximalPhenotypeAge) {
+				population.set(i, _phenotypeFactory.newInstance());
+				++killCount;
 			}
 		}
 
-		return new FilterResult<>(
-			population, killed, invalid
-		);
+		return FilterResult.of(population, killCount, invalidCount);
 	}
 
-	private AlterResult<G, C> alter(final Population<G,C> population, final int generation) {
+	private AlterResult<G, C> alter(
+		final Population<G,C> population,
+		final int generation
+	) {
 		return new AlterResult<>(
 			population,
 			_alterer.alter(population, generation)
@@ -219,50 +223,97 @@ public class Engine<
 		}
 	}
 
-	private static final class AlterResult<
-		G extends Gene<?, G>,
-		C extends Comparable<? super C>
-	> {
-		public final Population<G, C> population;
-		public final int altered;
-
-		AlterResult(final Population<G, C> population, final int altered) {
-			this.population = population;
-			this.altered = altered;
-		}
-	}
-
-	private static final class FilterResult<
-		G extends Gene<?, G>,
-		C extends Comparable<? super C>
-	> {
-		public final Population<G, C> population;
-		public final int killed;
-		public final int invalid;
-
-		FilterResult(
-			final Population<G, C> population,
-			final int killed,
-			final int invalid
-		) {
-			this.population = population;
-			this.killed = killed;
-			this.invalid = invalid;
-		}
-	}
-
 	/**
-	 * Represents a configuration of the GA.
+	 * Represent the result of the validation/filtering step.
 	 *
 	 * @param <G> the gene type
 	 * @param <C> the fitness type
 	 */
-	public static final class Config<
+	public static final class FilterResult<
 		G extends Gene<?, G>,
 		C extends Comparable<? super C>
 	>
+		implements Serializable
 	{
+		private static final long serialVersionUID = 1L;
 
+		private final Population<G, C> _population;
+		private final int _killCount;
+		private final int _invalidCount;
+
+		private FilterResult(
+			final Population<G, C> population,
+			final int killCount,
+			final int invalidCount
+		) {
+			_population = requireNonNull(population);
+			_killCount = killCount;
+			_invalidCount = invalidCount;
+		}
+
+		public Population<G, C> getPopulation() {
+			return _population;
+		}
+
+		public int getKillCount() {
+			return _killCount;
+		}
+
+		public int getInvalidCount() {
+			return _invalidCount;
+		}
+
+		public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+		FilterResult<G, C> of(
+			final Population<G, C> population,
+			final int killCount,
+			final int invalidCount
+		) {
+			return new FilterResult<>(population, killCount, invalidCount);
+		}
+
+	}
+
+	/**
+	 * Represents the result of the alter step.
+	 *
+	 * @param <G> the gene type
+	 * @param <C> the fitness type
+	 */
+	public static final class AlterResult<
+		G extends Gene<?, G>,
+		C extends Comparable<? super C>
+	>
+		implements Serializable
+	{
+		private static final long serialVersionUID = 1L;
+
+		private final Population<G, C> _population;
+		private final int _alterCount;
+
+		private AlterResult(
+			final Population<G, C> population,
+			final int alterCount
+		) {
+			_population = requireNonNull(population);
+			_alterCount = alterCount;
+		}
+
+		public Population<G, C> getPopulation() {
+			return _population;
+		}
+
+		public int getAlterCount() {
+			return _alterCount;
+		}
+
+		public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+		AlterResult<G, C> of(
+			final Population<G, C> population,
+			final int alterCount
+		) {
+			return new AlterResult<>(population, alterCount);
+		}
 	}
 
 }
