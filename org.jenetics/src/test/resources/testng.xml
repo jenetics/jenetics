@@ -20,7 +20,7 @@
  # Author:
  #    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  #
- # Version: <em>$Date: 2014-08-05 $</em>
+ # Version: <em>$Date: 2014-08-06 $</em>
  #
  ###############################################################################
 -->
@@ -346,7 +346,7 @@
 	</test>
 	<test name="org.jenetics.util.object">
 		<classes>
-			<class name="org.jenetics.util.objectTest" />
+			<class name="org.jenetics.util.requireTest" />
 		</classes>
 	</test>
 </suite>

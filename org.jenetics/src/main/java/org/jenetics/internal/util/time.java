@@ -22,17 +22,15 @@ package org.jenetics.internal.util;
 import java.time.Duration;
 import java.time.Instant;
 
-import org.jenetics.util.StaticObject;
-
 /**
  * Helper methods for <i>time</i> classes.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date$</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-05 $</em>
  */
-public class time extends StaticObject {
-    private time() {}
+public class time {
+    private time() {require.noInstance();}
 
     public static final long NANOS_PER_SECOND = 1_000_000_000;
 

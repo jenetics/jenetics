@@ -23,18 +23,17 @@ import java.util.function.Predicate;
 
 import org.jenetics.internal.util.IntRef;
 import org.jenetics.internal.util.ObjectRef;
-
-import org.jenetics.util.StaticObject;
+import org.jenetics.internal.util.require;
 
 /**
  * Some default GA termination strategies.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-05-20 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-05 $</em>
  */
-public final class termination extends StaticObject {
-	private termination() {}
+public final class termination {
+	private termination() {require.noInstance();}
 
 	/**
 	 * Create a <i>terminator</i> which returns {@code false} if the fitness

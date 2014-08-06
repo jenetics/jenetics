@@ -24,8 +24,8 @@ package org.jenetics;
  * maximum value.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-07-16 $</em>
  * @since 1.6
+ * @version 3.0 &mdash; <em>$Date: 2014-08-05 $</em>
  */
 public interface BoundedGene<
 	A extends Comparable<? super A>,

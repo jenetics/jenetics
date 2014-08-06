@@ -26,6 +26,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
 
 import org.jenetics.internal.util.Context;
+import org.jenetics.internal.util.require;
 
 /**
  * This class holds the {@link Random} engine used for the GA. The
@@ -88,10 +89,10 @@ import org.jenetics.internal.util.Context;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-05 $</em>
  */
-public final class RandomRegistry extends StaticObject {
-	private RandomRegistry() {}
+public final class RandomRegistry {
+	private RandomRegistry() {require.noInstance();}
 
 	private static final Context<Supplier<Random>> CONTEXT =
 		new Context<>(ThreadLocalRandom::current);

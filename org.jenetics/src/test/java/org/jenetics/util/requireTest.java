@@ -17,32 +17,35 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.collection;
+package org.jenetics.util;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-04 $</em>
+ * @version <em>$Date$</em>
  */
-public class LinkedArrayList<T> {
+public class requireTest {
 
-	private Node _head = null;
-
-	public LinkedArrayList(final int initialCapacity) {
-		_head = new Node(new Object[initialCapacity], 0, null);
-	}
-
-
-	private static final class Node {
-		final Object[] _array;
-		final int _start;
-		final Node _next;
-
-		Node(final Object[] array, final int start, final Node next) {
-			_array = array;
-			_start = start;
-			_next = next;
+	@Test
+	public void validPredicate() {
+		final MSeq<Verifiable> array = MSeq.ofLength(100);
+		for (int i = 0; i < array.length(); ++i) {
+			array.set(i, new Verifiable() {
+				@Override public boolean isValid() {
+					return true;
+				}
+			});
 		}
+		Assert.assertEquals(array.indexWhere(o -> !o.isValid()), -1);
+
+		array.set(77, new Verifiable() {
+			@Override public boolean isValid() {
+				return false;
+			}
+		});
+		Assert.assertEquals(array.indexWhere(o -> !o.isValid()), 77);
 	}
 
 }

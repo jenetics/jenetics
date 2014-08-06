@@ -22,12 +22,14 @@ package org.jenetics.util;
 import java.util.List;
 import java.util.Random;
 
+import org.jenetics.internal.util.require;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-06-14 $</em>
+ * @version <em>$Date: 2014-08-05 $</em>
  */
-public class lists extends StaticObject {
-	private lists() {}
+public class lists {
+	private lists() {require.noInstance();}
 
 
 	/**

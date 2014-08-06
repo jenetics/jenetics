@@ -24,17 +24,16 @@ import java.util.Objects;
 import java.util.function.Predicate;
 
 import org.jenetics.util.Seq;
-import org.jenetics.util.StaticObject;
 
 /**
  * Helper object for calculating object equality.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-07-10 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-05 $</em>
  */
-public final class Equality extends StaticObject {
-	private Equality() {}
+public final class Equality {
+	private Equality() {require.noInstance();}
 
 	/**
 	 * Create a new {@code Equality} object for testing object equality.

@@ -27,17 +27,17 @@ import static java.lang.Math.sqrt;
 
 import java.util.Comparator;
 
-import org.jenetics.util.StaticObject;
+import org.jenetics.internal.util.require;
 
 /**
  * Some statistical (special) functions.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-01 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-05 $</em>
  */
-public final class statistics extends StaticObject {
-	private statistics() {}
+public final class statistics {
+	private statistics() {require.noInstance();}
 
 
 	/**
