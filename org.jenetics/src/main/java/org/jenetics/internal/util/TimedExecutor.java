@@ -17,55 +17,44 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.engine;
+package org.jenetics.internal.util;
 
+import static java.util.Objects.requireNonNull;
+import static java.util.concurrent.CompletableFuture.supplyAsync;
+
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Executor;
-
-import org.jenetics.Gene;
-import org.jenetics.Optimize;
-import org.jenetics.Population;
-import org.jenetics.Selector;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
- * This <i>stage</i> selects the survivor and offspring population.
- *
- * @param <G> the gene type
- * @param <C> the fitness type
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
  * @version 3.0 &mdash; <em>$Date: 2014-08-06 $</em>
  */
-public class SelectStage<
-	G extends Gene<?, G>,
-	C extends Comparable<? super C>
->
-	extends Stage
-{
+public final class TimedExecutor {
+	private final Executor _executor;
 
-	private final Selector<G, C> _selector;
-	private final int _count;
-	private final Optimize _optimize;
+	public TimedExecutor(final Executor executor) {
+		_executor = requireNonNull(executor);
+	}
 
-
-	public SelectStage(
-		final Selector<G, C> selector,
-		final int count,
-		final Optimize optimize,
-		final Executor executor
+	public <T> CompletableFuture<TimedResult<T>> async(
+		final Supplier<T> supplier
 	) {
-		super(executor);
-		_selector = selector;
-		_count = count;
-		_optimize = optimize;
+		return supplyAsync(TimedResult.of(supplier), _executor);
 	}
 
-	public CompletionStage<org.jenetics.internal.util.TimedResult<Population<G, C>>>
-	select(final Population<G, C> population) {
-		return async(org.jenetics.internal.util.TimedResult.of(() ->
-				_selector.select(population, _count, _optimize)
-		));
+	public <U, T> CompletableFuture<TimedResult<T>> thenApply(
+		final CompletableFuture<U> result,
+		final Function<U, T> function
+	) {
+		return result.thenApplyAsync(TimedResult.of(function), _executor);
 	}
 
+
+	public Executor get() {
+		return _executor;
+	}
 }

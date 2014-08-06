@@ -21,30 +21,31 @@ package org.jenetics.internal.util;
 
 import static java.util.Objects.requireNonNull;
 
+import java.time.Duration;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date$</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-06 $</em>
  */
 public class TimedResult<T> {
-	private final Timer _timer;
+	private final Duration _duration;
 	private final T _result;
 
-	private TimedResult(final Timer timer, final T result) {
-		_timer = requireNonNull(timer);
+	private TimedResult(final Duration duration, final T result) {
+		_duration = requireNonNull(duration);
 		_result = requireNonNull(result);
 	}
 
 	public static <T> Supplier<TimedResult<T>> of(
-		final Supplier<? extends T> result
+		final Supplier<? extends T> supplier
 	) {
 		return () -> {
 			final Timer timer = Timer.of().start();
 			try {
-				return new TimedResult<>(timer, result.get());
+				return new TimedResult<>(timer.getTime(), supplier.get());
 			} finally {
 				timer.stop();
 			}
@@ -57,23 +58,19 @@ public class TimedResult<T> {
 		return value -> {
 			final Timer timer = Timer.of().start();
 			try {
-				return new TimedResult<>(timer, function.apply(value));
+				return new TimedResult<>(timer.getTime(), function.apply(value));
 			} finally {
 				timer.stop();
 			}
 		};
 	}
 
-	public static <T> TimedResult<T> of(final Timer timer, final T result) {
-		return new TimedResult<>(timer, result);
-	}
-
 	public T get() {
 		return _result;
 	}
 
-	public Timer getTimer() {
-		return _timer;
+	public Duration getDuration() {
+		return _duration;
 	}
 
 }
