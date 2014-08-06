@@ -17,19 +17,17 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.engine;
+package org.jenetics.internal.util;
 
 import static java.util.Objects.requireNonNull;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import org.jenetics.internal.util.Timer;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-06 $</em>
+ * @version 3.0 &mdash; <em>$Date$</em>
  */
 public class TimedResult<T> {
 	private final Timer _timer;
