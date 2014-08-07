@@ -23,7 +23,6 @@ import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Executor;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -31,7 +30,7 @@ import java.util.function.Supplier;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-06 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-07 $</em>
  */
 public final class TimedExecutor {
 	private final Executor _executor;

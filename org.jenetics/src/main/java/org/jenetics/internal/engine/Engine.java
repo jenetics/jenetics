@@ -25,16 +25,17 @@ import java.io.Serializable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
+import org.jenetics.internal.util.Concurrency;
+import org.jenetics.internal.util.TimedExecutor;
+import org.jenetics.internal.util.TimedResult;
+import org.jenetics.internal.util.require;
+
 import org.jenetics.Alterer;
 import org.jenetics.Gene;
 import org.jenetics.Optimize;
 import org.jenetics.Phenotype;
 import org.jenetics.Population;
 import org.jenetics.Selector;
-import org.jenetics.internal.util.Concurrency;
-import org.jenetics.internal.util.TimedExecutor;
-import org.jenetics.internal.util.TimedResult;
-import org.jenetics.internal.util.require;
 import org.jenetics.util.Factory;
 
 /**
