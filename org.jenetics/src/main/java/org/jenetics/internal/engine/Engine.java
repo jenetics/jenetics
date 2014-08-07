@@ -19,16 +19,11 @@
  */
 package org.jenetics.internal.engine;
 
-import static java.lang.Math.round;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
-
-import org.jenetics.internal.util.Concurrency;
-import org.jenetics.internal.util.TimedExecutor;
-import org.jenetics.internal.util.TimedResult;
 
 import org.jenetics.Alterer;
 import org.jenetics.Gene;
@@ -36,10 +31,15 @@ import org.jenetics.Optimize;
 import org.jenetics.Phenotype;
 import org.jenetics.Population;
 import org.jenetics.Selector;
+import org.jenetics.internal.util.Concurrency;
+import org.jenetics.internal.util.TimedExecutor;
+import org.jenetics.internal.util.TimedResult;
+import org.jenetics.internal.util.require;
 import org.jenetics.util.Factory;
 
 /**
- * Genetic algorithm engine, which performs the actual evolve steps.
+ * Genetic algorithm engine, which performs the actual evolve steps. <i>The
+ * engine itself has not mutable state.</i>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
@@ -51,18 +51,17 @@ public class Engine<
 >
 {
 
-	// GA context.
+	// Needed context for population evolving.
+    private final Factory<Phenotype<G, C>> _phenotypeFactory;
 	private final Selector<G, C> _survivorsSelector;
 	private final Selector<G, C> _offspringSelector;
+    private final Alterer<G, C> _alterer;
+    private final Optimize _optimize;
 	private final int _offspringCount;
 	private final int _survivorsCount;
-	private final Alterer<G, C> _alterer;
-	private final Optimize _optimize;
-
 	private final int _maximalPhenotypeAge;
-	private final Factory<Phenotype<G, C>> _phenotypeFactory;
 
-	// Execution context.
+	// Execution context for concurrent execution of evolving steps.
 	private final TimedExecutor _executor;
 
     /**
@@ -72,33 +71,36 @@ public class Engine<
      * @param offspringSelector the selector used for selecting the offspring
      * @param alterer the alterer used for altering the offspring
      * @param optimize the kind of optimization (minimize or maximize)
-     * @param populationCount the number of individuals
-     * @param offspringFraction the fraction of offspring to select
+     * @param offspringCount the number of the offspring individuals
+     * @param survivorsCount the number of the survivor individuals
      * @param maximalPhenotypeAge the maximal age of an individual
      * @param phenotypeFactory the factory for creating new phenotypes
      * @param executor the executor used for executing the single evolve steps
      * @throws NullPointerException if one of the arguments is {@code null}
+     * @throws IllegalArgumentException if the given integer values are smaller
+     *         than one.
      */
 	public Engine(
+        final Factory<Phenotype<G, C>> phenotypeFactory,
 		final Selector<G, C> survivorsSelector,
 		final Selector<G, C> offspringSelector,
 		final Alterer<G, C> alterer,
 		final Optimize optimize,
-		final int populationCount,
-		final double offspringFraction,
+        final int offspringCount,
+        final int survivorsCount,
 		final int maximalPhenotypeAge,
-		final Factory<Phenotype<G, C>> phenotypeFactory,
 		final Executor executor
 	) {
+        _phenotypeFactory = requireNonNull(phenotypeFactory);
 		_survivorsSelector = requireNonNull(survivorsSelector);
 		_offspringSelector = requireNonNull(offspringSelector);
 		_alterer = requireNonNull(alterer);
 		_optimize = requireNonNull(optimize);
 
-		_offspringCount = (int)round(offspringFraction*populationCount);
-		_survivorsCount = populationCount - _offspringCount;
-		_maximalPhenotypeAge = maximalPhenotypeAge;
-		_phenotypeFactory = phenotypeFactory;
+		_offspringCount = require.positive(offspringCount);
+		_survivorsCount = require.positive(survivorsCount);
+		_maximalPhenotypeAge = require.positive(maximalPhenotypeAge);
+
 
 		_executor = new TimedExecutor(requireNonNull(executor));
 	}
