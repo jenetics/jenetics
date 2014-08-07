@@ -29,7 +29,8 @@
 
 SCRIPT_DIR=`readlink -f $0`
 SCRIPT_DIR=`dirname ${SCRIPT_DIR}`
-REPORT_DIR=`readlink -f ${SCRIPT_DIR}/../report/performance`
+REPORT_DIR=`readlink -f ${SCRIPT_DIR}/../report`
+REPORT_DIR=$REPORT_DIR/performance
 
 VERSION="@__version__@"
 CLS_PATH=`readlink -f ${SCRIPT_DIR}/../lib/org.jenetics-${VERSION}.jar`
@@ -44,7 +45,7 @@ agent_param() {
 }
 
 main() {
-	mkdir "${REPORT_DIR}"
+	mkdir -p "${REPORT_DIR}"
 	
 	opts="-XX:+UseG1GC"
 
