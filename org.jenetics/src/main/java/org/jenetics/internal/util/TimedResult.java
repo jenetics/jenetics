@@ -56,11 +56,8 @@ public final class TimedResult<T> implements Serializable {
 	) {
 		return () -> {
 			final Timer timer = Timer.of().start();
-			try {
-				return new TimedResult<>(timer.getTime(), supplier.get());
-			} finally {
-				timer.stop();
-			}
+			final T result = supplier.get();
+			return new TimedResult<>(timer.stop().getTime(), result);
 		};
 	}
 
@@ -78,11 +75,8 @@ public final class TimedResult<T> implements Serializable {
 	) {
 		return value -> {
 			final Timer timer = Timer.of().start();
-			try {
-				return new TimedResult<>(timer.getTime(), function.apply(value));
-			} finally {
-				timer.stop();
-			}
+			final R result = function.apply(value);
+			return new TimedResult<>(timer.stop().getTime(), result);
 		};
 	}
 
