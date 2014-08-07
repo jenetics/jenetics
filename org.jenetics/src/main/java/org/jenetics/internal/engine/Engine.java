@@ -65,6 +65,20 @@ public class Engine<
 	// Execution context.
 	private final TimedExecutor _executor;
 
+    /**
+     * Create a new GA engine with the given parameters.
+     *
+     * @param survivorsSelector the selector used for selecting the survivors
+     * @param offspringSelector the selector used for selecting the offspring
+     * @param alterer the alterer used for altering the offspring
+     * @param optimize the kind of optimization (minimize or maximize)
+     * @param populationCount the number of individuals
+     * @param offspringFraction the fraction of offspring to select
+     * @param maximalPhenotypeAge the maximal age of an individual
+     * @param phenotypeFactory the factory for creating new phenotypes
+     * @param executor the executor used for executing the single evolve steps
+     * @throws NullPointerException if one of the arguments is {@code null}
+     */
 	public Engine(
 		final Selector<G, C> survivorsSelector,
 		final Selector<G, C> offspringSelector,
