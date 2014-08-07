@@ -26,6 +26,8 @@ import java.time.Duration;
 import java.time.Instant;
 
 /**
+ * Timer implementation for measuring execution durations.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
  * @version 3.0 &mdash; <em>$Date: 2014-08-07 $</em>
@@ -41,16 +43,32 @@ public final class Timer {
 		_clock = requireNonNull(clock);
 	}
 
+	/**
+	 * Start the timer.
+	 *
+	 * @return {@code this} timer, for method chaining
+	 */
 	public Timer start() {
-        _start = _clock.instant();
+		_start = _clock.instant();
 		return this;
 	}
 
+	/**
+	 * Stop the timer.
+	 *
+	 * @return {@code this} timer, for method chaining
+	 */
 	public Timer stop() {
 		_stop = _clock.instant();
 		return this;
 	}
 
+	/**
+	 * Return the duration between two consecutive {@link #start()} and
+	 * {@link #stop()} calls.
+	 *
+	 * @return the duration between two {@code start} and {@code stop} calls
+	 */
     public Duration getTime() {
         return minus(_stop, _start);
     }
@@ -62,10 +80,22 @@ public final class Timer {
 		return Duration.ofNanos(seconds*NanoClock.NANOS_PER_SECOND + nanos);
 	}
 
+	/**
+	 * Return an new timer object which uses the given clock for measuring the
+	 * execution time.
+	 *
+	 * @param clock the clock used for measuring the execution time
+	 * @return a new timer
+	 */
     public static Timer of(final Clock clock) {
         return new Timer(clock);
     }
 
+	/**
+	 * Return an new timer object with the default clock implementation.
+	 *
+	 * @return a new timer
+	 */
     public static Timer of() {
         return of(NanoClock.INSTANCE);
     }
