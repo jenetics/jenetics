@@ -21,16 +21,21 @@ package org.jenetics.internal.util;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serializable;
 import java.time.Duration;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
+ * Container class which contains the execution result and the execution time.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-06 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-07 $</em>
  */
-public class TimedResult<T> {
+public final class TimedResult<T> implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	private final Duration _duration;
 	private final T _result;
 
@@ -39,6 +44,13 @@ public class TimedResult<T> {
 		_result = requireNonNull(result);
 	}
 
+	/**
+	 * Wraps the given supplier in a supplier which returns a {@code TimedResult}.
+	 *
+	 * @param supplier the supplier to wrap
+	 * @param <T> the result type
+	 * @return the wrapped supplier which returns a {@code TimedResult}
+	 */
 	public static <T> Supplier<TimedResult<T>> of(
 		final Supplier<? extends T> supplier
 	) {
@@ -52,6 +64,15 @@ public class TimedResult<T> {
 		};
 	}
 
+	/**
+	 * Wraps the given function in a function which returns a
+	 * {@code TimedResult}.
+	 *
+	 * @param function the function to wrap
+	 * @param <T> the functions parameter type
+	 * @param <R> the functions return type
+	 * @return the wrapped function which returns a {@code TimedResult}
+	 */
 	public static <T, R> Function<T, TimedResult<R>> of(
 		final Function<? super T, ? extends R> function
 	) {
@@ -65,10 +86,20 @@ public class TimedResult<T> {
 		};
 	}
 
+	/**
+	 * Return the execution result.
+	 *
+	 * @return the execution result.
+	 */
 	public T get() {
 		return _result;
 	}
 
+	/**
+	 * Return the execution duration.
+	 *
+	 * @return the execution duration
+	 */
 	public Duration getDuration() {
 		return _duration;
 	}
