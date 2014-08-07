@@ -43,7 +43,7 @@ import org.jenetics.util.Factory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-06 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-07 $</em>
  */
 public class Engine<
 	G extends Gene<?, G>,
@@ -71,7 +71,7 @@ public class Engine<
 		final Alterer<G, C> alterer,
 		final Optimize optimize,
 		final int populationCount,
-		final int offspringFraction,
+		final double offspringFraction,
 		final int maximalPhenotypeAge,
 		final Factory<Phenotype<G, C>> phenotypeFactory,
 		final Executor executor
@@ -81,7 +81,7 @@ public class Engine<
 		_alterer = requireNonNull(alterer);
 		_optimize = requireNonNull(optimize);
 
-		_offspringCount = round(offspringFraction*populationCount);
+		_offspringCount = (int)round(offspringFraction*populationCount);
 		_survivorsCount = populationCount - _offspringCount;
 		_maximalPhenotypeAge = maximalPhenotypeAge;
 		_phenotypeFactory = phenotypeFactory;
