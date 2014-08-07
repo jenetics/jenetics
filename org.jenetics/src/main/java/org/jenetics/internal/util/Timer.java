@@ -28,7 +28,7 @@ import java.time.Instant;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-05 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-07 $</em>
  */
 public final class Timer {
 
@@ -52,9 +52,15 @@ public final class Timer {
 	}
 
     public Duration getTime() {
-        return time.minus(_stop, _start);
+        return minus(_stop, _start);
     }
 
+	private static Duration minus(final Instant a, final Instant b)  {
+		final long seconds = a.getEpochSecond() - b.getEpochSecond();
+		final long nanos = a.getNano() - b.getNano();
+
+		return Duration.ofNanos(seconds*NanoClock.NANOS_PER_SECOND + nanos);
+	}
 
     public static Timer of(final Clock clock) {
         return new Timer(clock);
