@@ -114,51 +114,51 @@ public class Engine<
 	 */
 	public State<G, C> evolve(final State<G, C> state) {
 		// Select the offspring population.
-		final CompletableFuture<TimedResult<Population<G, C>>>
-		offspring = _executor.async(() ->
-			selectOffspring(state.getPopulation())
-		);
+		final CompletableFuture<TimedResult<Population<G, C>>> offspring =
+			_executor.async(() ->
+				selectOffspring(state.getPopulation())
+			);
 
 		// Select the survivor population.
-		final CompletableFuture<TimedResult<Population<G, C>>>
-		survivors = _executor.async(() ->
-			selectSurvivors(state.getPopulation())
-		);
+		final CompletableFuture<TimedResult<Population<G, C>>> survivors =
+			_executor.async(() ->
+				selectSurvivors(state.getPopulation())
+			);
 
 		// Altering the offspring population.
-		final CompletableFuture<TimedResult<AlterResult<G, C>>>
-		alteredOffspring = _executor.thenApply(offspring, p ->
-			alter(p.get(), state.getGeneration())
-		);
+		final CompletableFuture<TimedResult<AlterResult<G, C>>> alteredOffspring =
+			_executor.thenApply(offspring, p ->
+				alter(p.get(), state.getGeneration())
+			);
 
 		// Filter and replace invalid and to old survivor individuals.
-		final CompletableFuture<TimedResult<FilterResult<G, C>>>
-		filteredSurvivors = _executor.thenApply(survivors, pop ->
-			filter(pop.get(), state.getGeneration())
-		);
+		final CompletableFuture<TimedResult<FilterResult<G, C>>> filteredSurvivors =
+			_executor.thenApply(survivors, pop ->
+				filter(pop.get(), state.getGeneration())
+			);
 
 		// Filter and replace invalid and to old offspring individuals.
-		final CompletableFuture<TimedResult<FilterResult<G, C>>>
-		filteredOffspring = _executor.thenApply(alteredOffspring, pop ->
-			filter(pop.get().getPopulation(), state.getGeneration())
-		);
+		final CompletableFuture<TimedResult<FilterResult<G, C>>> filteredOffspring =
+			_executor.thenApply(alteredOffspring, pop ->
+				filter(pop.get().getPopulation(), state.getGeneration())
+			);
 
 		// Combining survivors and offspring to the new population.
-		final CompletableFuture<Population<G, C>>
-		population = filteredSurvivors.thenCombineAsync(filteredOffspring, (s, o) -> {
-				final Population<G, C> pop = s.get().getPopulation();
-				pop.addAll(o.get().getPopulation());
-				return pop;
-			},
-			_executor.get()
-		);
+		final CompletableFuture<Population<G, C>> population =
+			filteredSurvivors.thenCombineAsync(filteredOffspring, (s, o) -> {
+					final Population<G, C> pop = s.get().getPopulation();
+					pop.addAll(o.get().getPopulation());
+					return pop;
+				},
+				_executor.get()
+			);
 
 		// Evaluate the fitness-function and wait for result.
-		final Population<G, C> result = population
-			.thenApply(this::evaluate)
+		final TimedResult<Population<G, C>> result = population
+			.thenApply(TimedResult.of(this::evaluate))
 			.join();
 
-		return state.next(result);
+		return state.next(result.get());
 	}
 
 	private Population<G, C> selectSurvivors(final Population<G, C> population) {
