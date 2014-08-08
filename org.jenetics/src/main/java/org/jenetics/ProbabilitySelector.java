@@ -150,8 +150,9 @@ public abstract class ProbabilitySelector<
 	}
 
 	private static void invert(final double[] probabilities) {
+		final double multiplier = 1.0/(probabilities.length - 1.0);
 		for (int i = 0; i < probabilities.length; ++i) {
-			probabilities[i] = 1.0 - probabilities[i];
+			probabilities[i] = (1.0 - probabilities[i])*multiplier;
 		}
 	}
 
