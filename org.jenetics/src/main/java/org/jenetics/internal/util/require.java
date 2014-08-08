@@ -26,7 +26,7 @@ import static java.lang.String.format;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-08-07 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-08-08 $</em>
  */
 public final class require {
 	private require() { noInstance(); }
@@ -100,7 +100,7 @@ public final class require {
      * Require the given {@code value} to be positive (&gt: 0).
      * @param value the value to check
      * @return the given value
-     * @throws IllegalAccessException if the given {@code value} is smaller than
+     * @throws IllegalArgumentException if the given {@code value} is smaller than
      *         or equal zero.
      */
     public static int positive(final int value) {
