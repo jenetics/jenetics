@@ -1,0 +1,17 @@
+BitGene$Model
+EnumGene$Model
+CharacterGene$Model
+IntegerGene$Model
+LongGene$Model
+DoubleGene$Model
+
+BitChromosome$Model
+CharacterChromosome$Model
+IntegerChromosome$Model
+LongChromosome$Model
+DoubleChromosome$Model
+PermutationChromosome$Model
+
+Genotype$Model
+Phenotype$Model
+Population$Model
