@@ -22,9 +22,11 @@ package org.jenetics;
 import static java.lang.Math.abs;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static org.jenetics.internal.math.arithmetic.normalize;
 import static org.jenetics.internal.math.arithmetic.pow;
 import static org.jenetics.internal.math.base.ulpDistance;
 
+import java.util.Arrays;
 import java.util.Random;
 
 import org.jenetics.internal.math.statistics;
@@ -46,7 +48,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-08-01 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-08 $</em>
  */
 public abstract class ProbabilitySelector<
 	G extends Gene<?, G>,
@@ -119,8 +121,9 @@ public abstract class ProbabilitySelector<
 	}
 
 	private static void invert(final double[] probabilities) {
+		final double multiplier = 1.0/(probabilities.length - 1.0);
 		for (int i = 0; i < probabilities.length; ++i) {
-			probabilities[i] = 1.0 - probabilities[i];
+			probabilities[i] = (1.0 - probabilities[i])*multiplier;
 		}
 	}
 

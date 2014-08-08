@@ -19,13 +19,24 @@
  */
 package org.jenetics;
 
+import java.util.Arrays;
+import java.util.Random;
+import java.util.function.Function;
+import java.util.stream.IntStream;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
 import org.jenetics.stat.Distribution;
 import org.jenetics.stat.LinearDistribution;
 import org.jenetics.util.Factory;
+import org.jenetics.util.LCG64ShiftRandom;
+import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-06-02 $</em>
+ * @version <em>$Date: 2014-08-08 $</em>
  */
 public class RouletteWheelSelectorTest
 	extends ProbabilitySelectorTester<RouletteWheelSelector<DoubleGene, Double>>
@@ -44,6 +55,48 @@ public class RouletteWheelSelectorTest
 	@Override
 	protected Factory<RouletteWheelSelector<DoubleGene, Double>> factory() {
 		return SelectorFactories.RouletteWheelSelector;
+	}
+
+	@Test
+	public void minimize() {
+		try (Scoped<Random> sr = RandomRegistry.scope(new LCG64ShiftRandom(7345))) {
+			final Function<Genotype<IntegerGene>, Integer> ff =
+				g -> g.getChromosome().getGene().getAllele();
+
+			final Factory<Phenotype<IntegerGene, Integer>> ptf = () ->
+				Phenotype.of(Genotype.of(IntegerChromosome.of(0, 100)), ff, 1);
+
+			final Population<IntegerGene, Integer> population = IntStream.range(0, 1000)
+				.mapToObj(i -> ptf.newInstance())
+				.collect(Population.toPopulation());
+
+			final RouletteWheelSelector<IntegerGene, Integer> selector =
+				new RouletteWheelSelector<>();
+
+			final double[] p = selector.probabilities(population, 100, Optimize.MINIMUM);
+			Assert.assertTrue(RouletteWheelSelector.sum2one(p), Arrays.toString(p) + " != 1");
+		}
+	}
+
+	@Test
+	public void maximize() {
+		try (Scoped<Random> sr = RandomRegistry.scope(new LCG64ShiftRandom(7345))) {
+			final Function<Genotype<IntegerGene>, Integer> ff =
+				g -> g.getChromosome().getGene().getAllele();
+
+			final Factory<Phenotype<IntegerGene, Integer>> ptf = () ->
+				Phenotype.of(Genotype.of(IntegerChromosome.of(0, 100)), ff, 1);
+
+			final Population<IntegerGene, Integer> population = IntStream.range(0, 1000)
+				.mapToObj(i -> ptf.newInstance())
+				.collect(Population.toPopulation());
+
+			final RouletteWheelSelector<IntegerGene, Integer> selector =
+				new RouletteWheelSelector<>();
+
+			final double[] p = selector.probabilities(population, 100, Optimize.MAXIMUM);
+			Assert.assertTrue(RouletteWheelSelector.sum2one(p), Arrays.toString(p) + " != 1");
+		}
 	}
 
 }
