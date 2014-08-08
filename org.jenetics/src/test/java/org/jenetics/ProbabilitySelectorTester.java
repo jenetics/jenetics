@@ -35,7 +35,7 @@ import org.jenetics.util.lists;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-06-02 $</em>
+ * @version <em>$Date: 2014-08-08 $</em>
  */
 public abstract class ProbabilitySelectorTester<
 	S extends ProbabilitySelector<DoubleGene, Double>
@@ -78,7 +78,7 @@ public abstract class ProbabilitySelectorTester<
 		}
 	}
 
-	@Test(dataProvider = "propsize")
+	@Test(dataProvider = "probabilitySizes")
 	public void indexOf(final Integer size) {
 		final Random random = RandomRegistry.getRandom();
 
@@ -111,8 +111,8 @@ public abstract class ProbabilitySelectorTester<
 		return j;
 	}
 
-	@DataProvider(name = "propsize")
-	public Object[][] propsize() {
+	@DataProvider(name = "probabilitySizes")
+	public Object[][] probabilitySizes() {
 		return new Object[][] {
 			{1}, {2}, {3}, {5}, {9}, {15}, {30}, {99}, {150}
 		};
