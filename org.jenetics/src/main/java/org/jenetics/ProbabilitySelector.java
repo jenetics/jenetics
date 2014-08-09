@@ -47,7 +47,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-08-08 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-09 $</em>
  */
 public abstract class ProbabilitySelector<
 	G extends Gene<?, G>,
@@ -142,18 +142,70 @@ public abstract class ProbabilitySelector<
 		final int count,
 		final Optimize opt
 	) {
-		final double[] probabilities = probabilities(population, count);
-		if (opt == Optimize.MINIMUM) {
-			invert(probabilities);
-		}
-		return probabilities;
+		return opt == Optimize.MINIMUM ?
+			revert(probabilities(population, count)) :
+			probabilities(population, count);
 	}
 
-	private static void invert(final double[] probabilities) {
-		final double multiplier = 1.0/(probabilities.length - 1.0);
-		for (int i = 0; i < probabilities.length; ++i) {
-			probabilities[i] = (1.0 - probabilities[i])*multiplier;
+	// Package private for testing.
+	static double[] revert(final double[] probabilities) {
+		final int N = probabilities.length;
+		final int[] indexes = sort(probabilities);
+		final double[] result = probabilities.clone();
+
+		for (int i = 0; i < N; ++i) {
+			result[indexes[N - i - 1]] = probabilities[indexes[i]];
 		}
+
+		return result;
+	}
+
+	// Package private for testing.
+	static int[] sort(final double[] values) {
+		final int[] indexes = new int[values.length];
+		for (int i = 0; i < indexes.length; ++i) {
+			indexes[i] = i;
+		}
+
+		quicksort(values, indexes, 0, values.length - 1);
+		return indexes;
+	}
+
+	private static void quicksort(
+		final double[] array,
+		final int[] indexes,
+		final int left, final int right
+	) {
+		if (right > left) {
+			final int j = partition(array, indexes, left, right);
+			quicksort(array, indexes, left, j - 1);
+			quicksort(array, indexes, j + 1, right);
+		}
+	}
+
+	private static int partition(
+		final double[] array, final int[] indexes,
+		final int left, final int right
+	) {
+		final double pivot = array[indexes[left]];
+		int i = left;
+		int j = right + 1;
+
+		while (true) {
+			do ++i; while (i < right && array[indexes[i]] < pivot);
+			do --j; while (j > left && array[indexes[j]] > pivot);
+			if (j <= i) break;
+			swap(indexes, i, j);
+		}
+		swap(indexes, left, j);
+
+		return j;
+	}
+
+	private static void swap(final int[] indexes, final int i, final int j) {
+		final int temp = indexes[i];
+		indexes[i] = indexes[j];
+		indexes[j] = temp;
 	}
 
 	/**
@@ -196,7 +248,7 @@ public abstract class ProbabilitySelector<
 	/**
 	 * Perform a binary-search on the summed probability array.
 	 */
-	final static int indexOf(final double[] incremental, final double v) {
+	static int indexOf(final double[] incremental, final double v) {
 		int imin = 0;
 		int imax = incremental.length;
 
@@ -220,7 +272,7 @@ public abstract class ProbabilitySelector<
 	/**
 	 * In-place summation of the probability array.
 	 */
-	final static double[] incremental(final double[] values) {
+	static double[] incremental(final double[] values) {
 		for (int i = 1; i < values.length; ++i) {
 			values[i] = values[i - 1] + values[i];
 		}
