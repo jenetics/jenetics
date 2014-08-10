@@ -78,6 +78,43 @@ public class ProbabilitySelectorTest {
 		}
 	}
 
+//	@Test
+//	public void performance() {
+//		final Random random = new Random(123);
+//		final double[] probabilities = array(200, random);
+//
+//		final Timer quickSortTimer = new Timer("Quick sort");
+//		final Timer insertionSortTimer = new Timer("Insertion sort");
+//		for (int i = 0; i < 100000; ++i) {
+//			shuffle(probabilities, random);
+//
+//			quickSortTimer.start();
+//			ProbabilitySelector.quickSort(probabilities);
+//			quickSortTimer.stop();
+//
+//			shuffle(probabilities, random);
+//
+//			insertionSortTimer.start();
+//			ProbabilitySelector.insertionSort(probabilities);
+//			insertionSortTimer.stop();
+//		}
+//
+//		System.out.println(quickSortTimer);
+//		System.out.print(insertionSortTimer);
+//	}
+//
+//	private static <T> void shuffle(final double[] array, final Random random) {
+//		for (int j = array.length - 1; j > 0; --j) {
+//			swap(array, j, random.nextInt(j + 1));
+//		}
+//	}
+//
+//	private static void swap(final double[] indexes, final int i, final int j) {
+//		final double temp = indexes[i];
+//		indexes[i] = indexes[j];
+//		indexes[j] = temp;
+//	}
+
 //	private static double[] invert(final double[] probabilities) {
 //		final double multiplier = 1.0/(probabilities.length - 1.0);
 //		for (int i = 0; i < probabilities.length; ++i) {
