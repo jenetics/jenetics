@@ -19,6 +19,8 @@
  */
 package org.jenetics.internal.engine;
 
+import static java.lang.Math.round;
+
 import java.time.Clock;
 import java.util.concurrent.Executor;
 import java.util.function.Supplier;
@@ -34,7 +36,7 @@ import org.jenetics.Selector;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-07-30 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-04 $</em>
  */
 public class Context<
 	G extends Gene<?, G>,
@@ -108,6 +110,14 @@ public class Context<
 
 	public Selector<G, C> getOffspringSelector() {
 		return _offspringSelector;
+	}
+
+	public int getSurvivorCount() {
+		return getPopulationSize() - getOffspringCount();
+	}
+
+	public int getOffspringCount() {
+		return (int)round(getOffspringFraction()*getPopulationSize());
 	}
 
 	public Alterer<G, C> getAlterer() {

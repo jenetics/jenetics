@@ -27,17 +27,17 @@ import static java.lang.Math.sqrt;
 
 import java.util.Comparator;
 
-import org.jenetics.util.StaticObject;
+import org.jenetics.internal.util.require;
 
 /**
  * Some statistical (special) functions.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-01 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-10 $</em>
  */
-public final class statistics extends StaticObject {
-	private statistics() {}
+public final class statistics {
+	private statistics() {require.noInstance();}
 
 
 	/**
@@ -272,19 +272,12 @@ public final class statistics extends StaticObject {
 	 * @throws NullPointerException if the given array is {@code null}.
 	 */
 	public static double sum(final double[] values) {
-		double sum = 0.0;
-		double c = 0.0;
-		double y = 0.0;
-		double t = 0.0;
-
+		final DoubleAdder sum = new DoubleAdder();
 		for (int i = values.length; --i >= 0;) {
-			y = values[i] - c;
-			t = sum + y;
-			c = t - sum - y;
-			sum = t;
+			sum.add(values[i]);
 		}
 
-		return sum;
+		return sum.doubleValue();
 	}
 
 	/**

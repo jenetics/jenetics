@@ -17,11 +17,18 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package org.jenetics.internal.util;
+
+import static java.lang.Math.min;
+import static org.jenetics.internal.util.bit.get;
+import static org.jenetics.internal.util.bit.set;
+import static org.jenetics.internal.util.bit.toByteLength;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 import org.testng.Assert;
@@ -30,9 +37,11 @@ import org.testng.annotations.Test;
 
 import org.jenetics.internal.math.random;
 
+import org.jenetics.util.RandomRegistry;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-01 $</em>
+ * @version <em>$Date$</em>
  */
 public class bitTest {
 
@@ -474,5 +483,44 @@ public class bitTest {
 			}
 		};
 	}
+
+    @Test(dataProvider = "copyParameter")
+    public void copy(final Integer length, final Integer start, final Integer end) {
+        final Random random = new Random(12341);
+        final byte[] data = new byte[length >>> 3];
+        random.nextBytes(data);
+
+        Assert.assertEquals(
+            bit.toByteString(bit.copy(data, start, end)),
+            bit.toByteString(copySafe(data, start, end)),
+            "Original: " + bit.toByteString(data)
+        );
+    }
+
+    @DataProvider(name = "copyParameter")
+    public Object[][] copyParameter() {
+        final List<Object[]> list = new ArrayList<>();
+        for (int length = 1; length < 20; length += 5) {
+            for (int start = 0; start < length*8; start += 7) {
+                for (int end = start; end < length*8 + 2; end += 11) {
+                    list.add(new Integer[]{length << 3, start, end});
+                }
+            }
+        }
+
+        return list.toArray(new Object[0][]);
+    }
+
+    private static byte[] copySafe(final byte[] data, final int start, final int end) {
+        final int endIndex = min(data.length*8, end);
+        final int newLength = toByteLength(endIndex - start);
+        final byte[] copy = new byte[newLength];
+
+        for (int i = 0, n = endIndex - start; i < n; ++i) {
+            set(copy, i, get(data, i + start));
+        }
+
+        return copy;
+    }
 
 }

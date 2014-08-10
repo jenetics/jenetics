@@ -21,17 +21,36 @@ package org.jenetics.internal.util;
 
 import static java.lang.String.format;
 
-import org.jenetics.util.StaticObject;
-
 /**
  * Some helper methods for creating hash codes and comparing values.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-07-11 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-08-08 $</em>
  */
-public final class object extends StaticObject {
-	private object() {}
+public final class require {
+	private require() { noInstance(); }
+
+
+	/**
+	 * Calling the constructor of an {@code StaticObject} will always throw an
+	 * {@link AssertionError}.
+	 *
+	 * @throws AssertionError always.
+	 */
+	public static void noInstance() {
+		String message = "Object instantiation is not allowed";
+
+		final StackTraceElement[] trace = Thread.currentThread().getStackTrace();
+		if (trace.length >= 3) {
+			message = format(
+				"Instantiation of '%s' is not allowed.",
+				trace[2].getClassName()
+			);
+		}
+
+		throw new AssertionError(message);
+	}
 
 	/**
 	 * Check if the specified value is not negative.
@@ -77,6 +96,22 @@ public final class object extends StaticObject {
 		return length;
 	}
 
+    /**
+     * Require the given {@code value} to be positive (&gt: 0).
+     * @param value the value to check
+     * @return the given value
+     * @throws IllegalArgumentException if the given {@code value} is smaller than
+     *         or equal zero.
+     */
+    public static int positive(final int value) {
+        if (value <= 0) {
+            throw new IllegalArgumentException(format(
+                "Value is not positive: %d", value
+            ));
+        }
+        return value;
+    }
+
 	/**
 	 * Check if the given double value is within the closed range {@code [0, 1]}.
 	 *
@@ -84,7 +119,7 @@ public final class object extends StaticObject {
 	 * @return p if it is a valid probability.
 	 * @throws IllegalArgumentException if {@code p} is not a valid probability.
 	 */
-	public static double checkProbability(final double p) {
+	public static double probability(final double p) {
 		if (p < 0.0 || p > 1.0) {
 			throw new IllegalArgumentException(format(
 				"The given probability is not in the range [0, 1]: %f", p

@@ -431,6 +431,10 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 
 ## Release notes
 
+### 2.0.1
+
+* Fix bug in ProbabilitySelector class. The inverted probabilities are not correctly calculated when minimizing the fitness function.
+
 ### 2.0.0
 
 * Add IntegerGene/Chromosome classes.

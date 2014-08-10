@@ -22,9 +22,11 @@ package org.jenetics;
 import static java.lang.Math.abs;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static org.jenetics.internal.math.arithmetic.normalize;
 import static org.jenetics.internal.math.arithmetic.pow;
 import static org.jenetics.internal.math.base.ulpDistance;
 
+import java.util.Arrays;
 import java.util.Random;
 
 import org.jenetics.internal.math.statistics;
@@ -46,7 +48,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-08-01 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-10 $</em>
  */
 public abstract class ProbabilitySelector<
 	G extends Gene<?, G>,
@@ -111,17 +113,102 @@ public abstract class ProbabilitySelector<
 		final int count,
 		final Optimize opt
 	) {
-		final double[] probabilities = probabilities(population, count);
-		if (opt == Optimize.MINIMUM) {
-			invert(probabilities);
-		}
-		return probabilities;
+		return opt == Optimize.MINIMUM ?
+			revert(probabilities(population, count)) :
+			probabilities(population, count);
 	}
 
-	private static void invert(final double[] probabilities) {
-		for (int i = 0; i < probabilities.length; ++i) {
-			probabilities[i] = 1.0 - probabilities[i];
+	// Package private for testing.
+	static double[] revert(final double[] probabilities) {
+		final int N = probabilities.length;
+		final int[] indexes = sort(probabilities);
+		final double[] result = new double[N];
+
+		for (int i = 0; i < N; ++i) {
+			result[indexes[N - i - 1]] = probabilities[indexes[i]];
 		}
+
+		return result;
+	}
+
+	private static final int INSERTION_SORT_THRESHOLD = 75;
+
+	// Package private for testing.
+	static int[] sort(final double[] values) {
+		return values.length < INSERTION_SORT_THRESHOLD ?
+			insertionSort(values) :
+			quickSort(values);
+	}
+
+	private static int[] indexes(final int length) {
+		final int[] indexes = new int[length];
+		for (int i = 0; i < indexes.length; ++i) {
+			indexes[i] = i;
+		}
+		return indexes;
+	}
+
+	// Package private for testing.
+	static int[] quickSort(final double[] array) {
+		final int[] indexes = indexes(array.length);
+		quickSort(array, indexes, 0, array.length - 1);
+		return indexes;
+	}
+
+	private static void quickSort(
+		final double[] array,
+		final int[] indexes,
+		final int left, final int right
+	) {
+		if (right > left) {
+			final int j = partition(array, indexes, left, right);
+			quickSort(array, indexes, left, j - 1);
+			quickSort(array, indexes, j + 1, right);
+		}
+	}
+
+	private static int partition(
+		final double[] array, final int[] indexes,
+		final int left, final int right
+	) {
+		final double pivot = array[indexes[left]];
+		int i = left;
+		int j = right + 1;
+
+		while (true) {
+			do ++i; while (i < right && array[indexes[i]] < pivot);
+			do --j; while (j > left && array[indexes[j]] > pivot);
+			if (j <= i) break;
+			swap(indexes, i, j);
+		}
+		swap(indexes, left, j);
+
+		return j;
+	}
+
+	private static void swap(final int[] indexes, final int i, final int j) {
+		final int temp = indexes[i];
+		indexes[i] = indexes[j];
+		indexes[j] = temp;
+	}
+
+	// Package private for testing.
+	static int[] insertionSort(final double[] array) {
+		final int[] indexes = indexes(array.length);
+
+		for (int sz = array.length, i = 1; i < sz; ++i) {
+			int j = i;
+			while (j > 0) {
+				if (array[indexes[j - 1]] > array[indexes[j]]) {
+					swap(indexes, j - 1, j);
+				} else {
+					break;
+				}
+				--j;
+			}
+		}
+
+		return indexes;
 	}
 
 	/**

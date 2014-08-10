@@ -17,40 +17,43 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.engine;
+package org.jenetics.internal.util;
 
 import static java.util.Objects.requireNonNull;
+import static java.util.concurrent.CompletableFuture.supplyAsync;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+import java.util.function.Function;
 import java.util.function.Supplier;
-
-import org.jenetics.internal.util.Timer;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-01 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-07 $</em>
  */
-public abstract class StageResult {
+public final class TimedExecutor {
+	private final Executor _executor;
 
-	protected final Timer _timer;
-
-	protected StageResult(final Timer timer) {
-		_timer = requireNonNull(timer);
+	public TimedExecutor(final Executor executor) {
+		_executor = requireNonNull(executor);
 	}
 
-	public <T> Supplier<T> timing(final Supplier<T> supplier) {
-		return () -> {
-			_timer.start();
-			try {
-				return supplier.get();
-			} finally {
-				_timer.stop();
-			}
-		};
+	public <T> CompletableFuture<TimedResult<T>> async(
+		final Supplier<T> supplier
+	) {
+		return supplyAsync(TimedResult.of(supplier), _executor);
 	}
 
-	public Timer getTimer() {
-		return _timer;
+	public <U, T> CompletableFuture<TimedResult<T>> thenApply(
+		final CompletableFuture<U> result,
+		final Function<U, T> function
+	) {
+		return result.thenApplyAsync(TimedResult.of(function), _executor);
 	}
 
+
+	public Executor get() {
+		return _executor;
+	}
 }

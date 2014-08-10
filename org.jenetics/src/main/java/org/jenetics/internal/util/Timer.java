@@ -19,61 +19,83 @@
  */
 package org.jenetics.internal.util;
 
+import static java.util.Objects.requireNonNull;
+
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.function.Supplier;
-
-import org.jenetics.internal.time;
 
 /**
+ * Timer implementation for measuring execution durations.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-07-30 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-07 $</em>
  */
 public final class Timer {
 
 	private final Clock _clock;
 
-    private final ThreadLocal<Instant> _start = new ThreadLocal<>();
-    private final ThreadLocal<Instant> _stop = new ThreadLocal<>();
+    private Instant _start;
+    private Instant _stop;
 
-    private final AtomicLong _time = new AtomicLong(0L);
-
-	public Timer(final Clock clock) {
-		_clock = clock;
+	private Timer(final Clock clock) {
+		_clock = requireNonNull(clock);
 	}
 
-	public void start() {
-        _start.set(_clock.instant());
+	/**
+	 * Start the timer.
+	 *
+	 * @return {@code this} timer, for method chaining
+	 */
+	public Timer start() {
+		_start = _clock.instant();
+		return this;
 	}
 
-	public void stop() {
-        _stop.set(_clock.instant());
-        _time.addAndGet(time.minus(_stop.get(), _start.get()).toMillis());
+	/**
+	 * Stop the timer.
+	 *
+	 * @return {@code this} timer, for method chaining
+	 */
+	public Timer stop() {
+		_stop = _clock.instant();
+		return this;
 	}
 
+	/**
+	 * Return the duration between two consecutive {@link #start()} and
+	 * {@link #stop()} calls.
+	 *
+	 * @return the duration between two {@code start} and {@code stop} calls
+	 */
     public Duration getTime() {
-        return Duration.ofNanos(_time.get());
+        return minus(_stop, _start);
     }
 
-    public <T> Supplier<T> timing(final Supplier<T> supplier) {
-        return () -> {
-            start();
-            try {
-                return supplier.get();
-            } finally {
-                stop();
-            }
-        };
-    }
+	private static Duration minus(final Instant a, final Instant b)  {
+		final long seconds = a.getEpochSecond() - b.getEpochSecond();
+		final long nanos = a.getNano() - b.getNano();
 
+		return Duration.ofNanos(seconds*NanoClock.NANOS_PER_SECOND + nanos);
+	}
 
+	/**
+	 * Return an new timer object which uses the given clock for measuring the
+	 * execution time.
+	 *
+	 * @param clock the clock used for measuring the execution time
+	 * @return a new timer
+	 */
     public static Timer of(final Clock clock) {
         return new Timer(clock);
     }
 
+	/**
+	 * Return an new timer object with the default clock implementation.
+	 *
+	 * @return a new timer
+	 */
     public static Timer of() {
         return of(NanoClock.INSTANCE);
     }

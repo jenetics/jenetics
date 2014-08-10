@@ -25,7 +25,6 @@ import static java.lang.Math.min;
 import org.jenetics.internal.math.random;
 
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.StaticObject;
 
 
 /**
@@ -42,10 +41,10 @@ import org.jenetics.util.StaticObject;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date$</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-10 $</em>
  */
-public final class bit extends StaticObject {
-	private bit() {}
+public final class bit {
+	private bit() {require.noInstance();}
 
 	/**
 	 * Lookup table for counting the number of set bits in a {@code byte} value.
@@ -350,7 +349,7 @@ public final class bit extends StaticObject {
 		return get(data, index) ? unset(data, index) : set(data, index);
 	}
 
-	static byte[] reverse(final byte[] array) {
+	public static byte[] reverse(final byte[] array) {
 		int i = 0;
 		int j = array.length;
 
@@ -534,7 +533,7 @@ public final class bit extends StaticObject {
 		return (bitLength & 7) == 0 ? (bitLength >>> 3) : (bitLength >>> 3) + 1;
 	}
 
-	static long toLong(final byte[] data) {
+	public static long toLong(final byte[] data) {
 		return
 			(((long)data[0] << 56) +
 			((long)(data[1] & 255) << 48) +
@@ -546,7 +545,7 @@ public final class bit extends StaticObject {
 			((data[7] & 255)));
 	}
 
-	static byte[] toBytes(final long value) {
+	public static byte[] toBytes(final long value) {
 		final byte[] bytes = new byte[8];
 		bytes[0] = (byte)(value >>> 56);
 		bytes[1] = (byte)(value >>> 48);

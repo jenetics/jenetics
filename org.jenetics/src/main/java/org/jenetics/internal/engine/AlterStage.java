@@ -19,10 +19,71 @@
  */
 package org.jenetics.internal.engine;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.concurrent.CompletionStage;
+import java.util.concurrent.Executor;
+
+import org.jenetics.Alterer;
+import org.jenetics.Gene;
+import org.jenetics.Population;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-07-29 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-06 $</em>
  */
-public class AlterStage {
+public class AlterStage<
+	G extends Gene<?, G>,
+	C extends Comparable<? super C>
+	>
+	extends Stage
+{
+
+	private final Alterer<G, C> _alterer;
+
+	public AlterStage(final Alterer<G, C> alterer, final Executor executor) {
+		super(executor);
+		_alterer = alterer;
+	}
+
+	public CompletionStage<org.jenetics.internal.util.TimedResult<Result<G, C>>>
+	alter(final Population<G, C> population, final int generation) {
+		return async(org.jenetics.internal.util.TimedResult.of(() ->
+				new Result<>(population, _alterer.alter(population, generation))
+		));
+	}
+
+	/**
+	 * Contains the <i>asynchronous</i> result of the selection stage.
+	 *
+	 * @param <G> the gene type
+	 * @param <C> the fitness type
+	 */
+	public static final class Result<
+		G extends Gene<?, G>,
+		C extends Comparable<? super C>
+	>
+	{
+		private final Population<G, C> _population;
+		private final int _altered;
+
+		private Result(
+			final Population<G, C> population,
+			final int altered
+		) {
+			_population = requireNonNull(population);
+			_altered = altered;
+		}
+
+		public Population<G, C> getPopulation() {
+			return _population;
+		}
+
+		public int getAltered() {
+			return _altered;
+		}
+
+	}
+
 }

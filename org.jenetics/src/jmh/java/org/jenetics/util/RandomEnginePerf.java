@@ -36,7 +36,7 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.0 &mdash; <em>$Date: 2014-07-14 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-04 $</em>
  * @since 3.0
  */
 public class RandomEnginePerf {
@@ -70,17 +70,17 @@ public class RandomEnginePerf {
 
 	}
 
-	public static class LCG64ShiftRandomPerf extends Base {
-		{random = new LCG64ShiftRandom();}
-	}
+	public static class LCG64ShiftRandomPerf extends Base {{
+		random = new LCG64ShiftRandom();
+	}}
 
-	public static class RandomPerf extends Base {
-		{random = new Random();}
-	}
+	public static class RandomPerf extends Base {{
+		random = new Random();
+	}}
 
-	public static class ThreadLocalRandomPerf extends Base {
-		{random = ThreadLocalRandom.current();}
-	}
+	public static class ThreadLocalRandomPerf extends Base {{
+		random = ThreadLocalRandom.current();
+	}}
 
 
 	public static void main(String[] args) throws RunnerException {

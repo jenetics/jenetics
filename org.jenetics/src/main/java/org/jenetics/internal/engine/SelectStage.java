@@ -19,17 +19,23 @@
  */
 package org.jenetics.internal.engine;
 
-import static java.lang.Math.round;
-
 import java.util.concurrent.CompletionStage;
+import java.util.concurrent.Executor;
 
 import org.jenetics.Gene;
+import org.jenetics.Optimize;
 import org.jenetics.Population;
+import org.jenetics.Selector;
 
 /**
+ * This <i>stage</i> selects the survivor and offspring population.
+ *
+ * @param <G> the gene type
+ * @param <C> the fitness type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-07-30 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-06 $</em>
  */
 public class SelectStage<
 	G extends Gene<?, G>,
@@ -38,39 +44,28 @@ public class SelectStage<
 	extends Stage
 {
 
-	private final Context<G, C> _context;
+	private final Selector<G, C> _selector;
+	private final int _count;
+	private final Optimize _optimize;
 
-	public SelectStage(final Context<G, C> context) {
-		super(context.getExecutor());
-		_context = context;
+
+	public SelectStage(
+		final Selector<G, C> selector,
+		final int count,
+		final Optimize optimize,
+		final Executor executor
+	) {
+		super(executor);
+		_selector = selector;
+		_count = count;
+		_optimize = optimize;
 	}
 
-	public Result select(final Population<G, C> population) {
-		return new Result() {{
-			survivors = async(timing(() ->
-				_context.getSurvivorSelector()
-					.select(population, getSurvivorCount(), _context.getOptimize()))
-			);
-			offspring = async(timing(() ->
-				_context.getOffspringSelector()
-					.select(population, getOffspringCount(), _context.getOptimize()))
-			);
-		}};
-	}
-
-	private int getSurvivorCount() {
-		return _context.getPopulationSize() - getOffspringCount();
-	}
-
-	private int getOffspringCount() {
-		return (int)round(
-			_context.getOffspringFraction()*_context.getPopulationSize()
-		);
-	}
-
-	public abstract class Result extends StageResult {
-		public CompletionStage<Population<G, C>> survivors;
-		public CompletionStage<Population<G, C>> offspring;
+	public CompletionStage<org.jenetics.internal.util.TimedResult<Population<G, C>>>
+	select(final Population<G, C> population) {
+		return async(org.jenetics.internal.util.TimedResult.of(() ->
+				_selector.select(population, _count, _optimize)
+		));
 	}
 
 }

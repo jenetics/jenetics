@@ -17,29 +17,35 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal;
+package org.jenetics.util;
 
-import java.time.Duration;
-import java.time.Instant;
-
-import org.jenetics.util.StaticObject;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 /**
- * Helper methods for <i>time</i> classes.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-01 $</em>
+ * @version <em>$Date$</em>
  */
-public class time extends StaticObject {
-    private time() {}
+public class requireTest {
 
-    public static final long NANOS_PER_SECOND = 1_000_000_000;
+	@Test
+	public void validPredicate() {
+		final MSeq<Verifiable> array = MSeq.ofLength(100);
+		for (int i = 0; i < array.length(); ++i) {
+			array.set(i, new Verifiable() {
+				@Override public boolean isValid() {
+					return true;
+				}
+			});
+		}
+		Assert.assertEquals(array.indexWhere(o -> !o.isValid()), -1);
 
-    public static Duration minus(final Instant a, final Instant b)  {
-        final long seconds = a.getEpochSecond() - b.getEpochSecond();
-        final long nanos = a.getNano() - b.getNano();
+		array.set(77, new Verifiable() {
+			@Override public boolean isValid() {
+				return false;
+			}
+		});
+		Assert.assertEquals(array.indexWhere(o -> !o.isValid()), 77);
+	}
 
-        return Duration.ofNanos(seconds*NANOS_PER_SECOND + nanos);
-    }
 }
