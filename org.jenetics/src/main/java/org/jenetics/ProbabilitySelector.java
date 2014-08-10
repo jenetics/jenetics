@@ -22,11 +22,9 @@ package org.jenetics;
 import static java.lang.Math.abs;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.math.arithmetic.normalize;
 import static org.jenetics.internal.math.arithmetic.pow;
 import static org.jenetics.internal.math.base.ulpDistance;
 
-import java.util.Arrays;
 import java.util.Random;
 
 import org.jenetics.internal.math.statistics;
