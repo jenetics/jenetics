@@ -160,26 +160,39 @@ public abstract class ProbabilitySelector<
 		return result;
 	}
 
+	private static final int INSERTION_SORT_THRESHOLD = 75;
+
 	// Package private for testing.
 	static int[] sort(final double[] values) {
-		final int[] indexes = new int[values.length];
+		return values.length < INSERTION_SORT_THRESHOLD ?
+			insertionSort(values) :
+			quickSort(values);
+	}
+
+	private static int[] indexes(final int length) {
+		final int[] indexes = new int[length];
 		for (int i = 0; i < indexes.length; ++i) {
 			indexes[i] = i;
 		}
-
-		quicksort(values, indexes, 0, values.length - 1);
 		return indexes;
 	}
 
-	private static void quicksort(
+	// Package private for testing.
+	static int[] quickSort(final double[] array) {
+		final int[] indexes = indexes(array.length);
+		quickSort(array, indexes, 0, array.length - 1);
+		return indexes;
+	}
+
+	private static void quickSort(
 		final double[] array,
 		final int[] indexes,
 		final int left, final int right
 	) {
 		if (right > left) {
 			final int j = partition(array, indexes, left, right);
-			quicksort(array, indexes, left, j - 1);
-			quicksort(array, indexes, j + 1, right);
+			quickSort(array, indexes, left, j - 1);
+			quickSort(array, indexes, j + 1, right);
 		}
 	}
 
@@ -206,6 +219,25 @@ public abstract class ProbabilitySelector<
 		final int temp = indexes[i];
 		indexes[i] = indexes[j];
 		indexes[j] = temp;
+	}
+
+	// Package private for testing.
+	static int[] insertionSort(final double[] array) {
+		final int[] indexes = indexes(array.length);
+
+		for (int sz = array.length, i = 1; i < sz; ++i) {
+			int j = i;
+			while (j > 0) {
+				if (array[indexes[j - 1]] > array[indexes[j]]) {
+					swap(indexes, j - 1, j);
+				} else {
+					break;
+				}
+				--j;
+			}
+		}
+
+		return indexes;
 	}
 
 	/**
