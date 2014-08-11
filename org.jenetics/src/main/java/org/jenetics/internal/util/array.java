@@ -24,9 +24,11 @@ import java.util.Random;
 import org.jenetics.util.RandomRegistry;
 
 /**
+ * Helper class which contains array helper methods.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date$</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-11 $</em>
  */
 public final class array {
 	private array() {require.noInstance();}
