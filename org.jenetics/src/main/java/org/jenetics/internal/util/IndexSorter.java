@@ -28,7 +28,18 @@ import static org.jenetics.internal.util.arrays.swap;
  * @version 3.0 &mdash; <em>$Date: 2014-08-11 $</em>
  */
 public abstract class IndexSorter {
-	private static final int INSERTION_SORT_THRESHOLD = 75;
+
+	// This value has been chosen after JMH benchmarking.
+	// Benchmark                                   Mode  Samples      Score  Score error  Units
+	// o.j.i.u.IndexSorterPerf.heapSort320         avgt       14  39206.801      281.007  ns/op
+	// o.j.i.u.IndexSorterPerf.heapSort250         avgt       14  29554.563      325.331  ns/op
+	// o.j.i.u.IndexSorterPerf.heapSort160         avgt       14  16082.659      189.381  ns/op
+	// o.j.i.u.IndexSorterPerf.heapSort80          avgt       14   7419.023      119.355  ns/op
+	// o.j.i.u.IndexSorterPerf.insertionSort320    avgt       14  43254.492      277.617  ns/op
+	// o.j.i.u.IndexSorterPerf.insertionSort250    avgt       14  27259.377      260.012  ns/op
+	// o.j.i.u.IndexSorterPerf.insertionSort160    avgt       14  12059.304      158.105  ns/op
+	// o.j.i.u.IndexSorterPerf.insertionSort80     avgt       14   3645.073       50.276  ns/op
+	private static final int INSERTION_SORT_THRESHOLD = 260;
 
 	static final IndexSorter INSERTION_SORTER = new InsertionSorter();
 	static final IndexSorter HEAP_SORTER = new HeapSorter();
@@ -85,7 +96,7 @@ final class HeapSorter extends IndexSorter {
 final class InsertionSorter extends IndexSorter {
 	@Override
 	int[] sort(final double[] array, final int[] indexes) {
-		for (int sz = array.length, i = 1; i < sz; ++i) {
+		for (int i = 1, n = array.length; i < n; ++i) {
 			int j = i;
 			while (j > 0) {
 				if (array[indexes[j - 1]] > array[indexes[j]]) {
