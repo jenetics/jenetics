@@ -52,7 +52,7 @@ public final class array {
 	}
 
 	public static void shuffle(final double[] array, final Random random) {
-		for(int i = array.length; --i >=0 ;) {
+		for (int i = array.length; --i >=0;) {
 			swap(array, i, random.nextInt(array.length));
 		}
 	}
