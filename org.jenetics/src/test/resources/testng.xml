@@ -289,11 +289,6 @@
 			<class name="org.jenetics.internal.math.probabilityTest" />
 		</classes>
 	</test>
-    <test name="org.jenetics.internal.util.reflect">
-        <classes>
-            <class name="org.jenetics.internal.util.reflectTest" />
-        </classes>
-    </test>
     <test name="org.jenetics.internal.collection.Stack">
         <classes>
             <class name="org.jenetics.internal.collection.StackTest" />
@@ -304,6 +299,16 @@
 			<class name="org.jenetics.internal.util.bitTest" />
 		</classes>
 	</test>
+    <test name="org.jenetics.internal.util.IndexSorter">
+        <classes>
+            <class name="org.jenetics.internal.util.IndexSorterTest" />
+        </classes>
+    </test>
+    <test name="org.jenetics.internal.util.reflect">
+        <classes>
+            <class name="org.jenetics.internal.util.reflectTest" />
+        </classes>
+    </test>
 	<test name="org.jenetics.util.CharSeq">
 		<classes>
 			<class name="org.jenetics.util.CharSeqTest" />
