@@ -24,12 +24,13 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.math.arithmetic.pow;
 import static org.jenetics.internal.math.base.ulpDistance;
-import static org.jenetics.internal.util.IndexSort.InsertionSort;
-import static org.jenetics.internal.util.IndexSort.QuickSort;
+import static org.jenetics.internal.util.IndexSorter.sort;
+import static org.jenetics.internal.util.arrays.swap;
 
 import java.util.Random;
 
 import org.jenetics.internal.math.statistics;
+
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -123,31 +124,10 @@ public abstract class ProbabilitySelector<
 		final int[] indexes = sort(probabilities);
 
         for (int i = 0, j = probabilities.length - 1; i < j; ++i, --j) {
-            swap(probabilities, indexes, i, j);
+			swap(probabilities, indexes[i], indexes[j]);
+			swap(indexes, i, j);
         }
         return probabilities;
-	}
-
-    private static void swap(
-        final double[] array, final int[] indexes,
-        final int i, final int j
-    ) {
-        final double tempValue = array[indexes[i]];
-        array[indexes[i]] = array[indexes[j]];
-        array[indexes[j]] = tempValue;
-
-        final int tempIndex = indexes[i];
-        indexes[i] = indexes[j];
-        indexes[j] = tempIndex;
-    }
-
-	private static final int INSERTION_SORT_THRESHOLD = 75;
-
-	// Package private for testing.
-	static int[] sort(final double[] values) {
-		return values.length < INSERTION_SORT_THRESHOLD ?
-			InsertionSort.sort(values) :
-			QuickSort.sort(values);
 	}
 
 	/**
