@@ -92,14 +92,14 @@ public abstract class IndexSorter {
 final class HeapSorter extends IndexSorter {
 	@Override
 	int[] sort(final double[] array, final int[] indexes) {
-		int N = array.length;
-		for (int k = N/2; k >= 0; k--) {
-			sink(array, indexes, k, N);
+		int n = array.length;
+		for (int k = n/2; k >= 0; k--) {
+			sink(array, indexes, k, n);
 		}
 
-		while (N > 0) {
-			swap(indexes, 0, --N);
-			sink(array, indexes, 0, N);
+		while (n > 0) {
+			swap(indexes, 0, --n);
+			sink(array, indexes, 0, n);
 		}
 
 		return indexes;
@@ -107,12 +107,12 @@ final class HeapSorter extends IndexSorter {
 
 	private static void sink(
 		final double[] array, final int[] indexes,
-		final int k, final int N
+		final int k, final int n
 	) {
 		int m = k;
-		while (2*m < N) {
+		while (2*m < n) {
 			int j = 2*m;
-			if (j < N - 1 && array[indexes[j]] < array[indexes[j + 1]]) j++;
+			if (j < n - 1 && array[indexes[j]] < array[indexes[j + 1]]) j++;
 			if (array[indexes[m]] >= array[indexes[j]]) break;
 			swap(indexes, m, j);
 			m = j;
