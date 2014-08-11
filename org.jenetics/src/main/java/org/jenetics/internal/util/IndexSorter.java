@@ -30,15 +30,15 @@ import static org.jenetics.internal.util.arrays.swap;
 public abstract class IndexSorter {
 	private static final int INSERTION_SORT_THRESHOLD = 75;
 
-	static final IndexSorter InsertionSorter = new InsertionSorter();
-	static final IndexSorter HeapSorter = new HeapSorter();
+	static final IndexSorter INSERTION_SORTER = new InsertionSorter();
+	static final IndexSorter HEAP_SORTER = new HeapSorter();
 
 	abstract int[] sort(final double[] array, final int[] indexes);
 
 	public static int[] sort(final double[] array) {
 		final IndexSorter sorter = array.length < INSERTION_SORT_THRESHOLD ?
-			InsertionSorter :
-			HeapSorter;
+			INSERTION_SORTER :
+			HEAP_SORTER;
 
 		return sorter.sort(array, indexes(array.length));
 	}
@@ -52,7 +52,7 @@ public abstract class IndexSorter {
 
 final class HeapSorter extends IndexSorter {
 	@Override
-	public int[] sort(final double[] array, final int[] indexes) {
+	int[] sort(final double[] array, final int[] indexes) {
 		int N = array.length;
 		for (int k = N/2; k >= 0; k--) {
 			sink(array, indexes, k, N);
@@ -84,7 +84,7 @@ final class HeapSorter extends IndexSorter {
 
 final class InsertionSorter extends IndexSorter {
 	@Override
-	public int[] sort(final double[] array, final int[] indexes) {
+	int[] sort(final double[] array, final int[] indexes) {
 		for (int sz = array.length, i = 1; i < sz; ++i) {
 			int j = i;
 			while (j > 0) {

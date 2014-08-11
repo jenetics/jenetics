@@ -119,15 +119,14 @@ public abstract class ProbabilitySelector<
 	}
 
 	// Package private for testing.
-	static double[] revert(final double[] probabilities) {
-		final int N = probabilities.length;
-		final int[] indexes = sort(probabilities);
+	static double[] revert(final double[] array) {
+		final int[] indexes = sort(array);
 
-        for (int i = 0, j = probabilities.length - 1; i < j; ++i, --j) {
-			swap(probabilities, indexes[i], indexes[j]);
+        for (int i = 0, j = array.length - 1; i < j; ++i, --j) {
+			swap(array, indexes[i], indexes[j]);
 			swap(indexes, i, j);
         }
-        return probabilities;
+        return array;
 	}
 
 	/**
