@@ -23,6 +23,10 @@ import static org.jenetics.internal.util.arrays.indexes;
 import static org.jenetics.internal.util.arrays.swap;
 
 /**
+ * Implementations of this class doesn't sort the given array directly, instead
+ * an index lookup array is returned which allows to access the array in
+ * an sorted order.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
  * @version 3.0 &mdash; <em>$Date: 2014-08-11 $</em>
@@ -44,8 +48,22 @@ public abstract class IndexSorter {
 	static final IndexSorter INSERTION_SORTER = new InsertionSorter();
 	static final IndexSorter HEAP_SORTER = new HeapSorter();
 
+	/**
+	 * This method must be implemented by the different sorting algorithms.
+	 *
+	 * @param array the array to sort
+	 * @param indexes the index lookup array -
+	 *        &forall; i &isin; [0, N): index[i] = i
+	 * @return the given {@code indexes} which is now "sorted"
+	 */
 	abstract int[] sort(final double[] array, final int[] indexes);
 
+	/**
+	 * Return an new sorted index lookup array. The given array is not touched.
+	 *
+	 * @param array the array to sort.
+	 * @return the index lookup array
+	 */
 	public static int[] sort(final double[] array) {
 		final IndexSorter sorter = array.length < INSERTION_SORT_THRESHOLD ?
 			INSERTION_SORTER :
@@ -61,6 +79,9 @@ public abstract class IndexSorter {
 
 }
 
+/**
+ * Heap sort implementation.
+ */
 final class HeapSorter extends IndexSorter {
 	@Override
 	int[] sort(final double[] array, final int[] indexes) {
@@ -93,6 +114,9 @@ final class HeapSorter extends IndexSorter {
 
 }
 
+/**
+ * Insertion sort implementation.
+ */
 final class InsertionSorter extends IndexSorter {
 	@Override
 	int[] sort(final double[] array, final int[] indexes) {
