@@ -26,7 +26,6 @@ import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Level;
 import org.openjdk.jmh.annotations.Mode;
-import org.openjdk.jmh.annotations.OperationsPerInvocation;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.Setup;
@@ -66,62 +65,62 @@ public class IndexSorterPerf {
 
 	//@Benchmark
 	public int insertionSort20() {
-		return IndexSorter.INSERTION_SORTER.sort(array20, arrays.indexes(20))[0];
+		return IndexSorter.INSERTION_SORTER.sort(array20, IndexSorter.indexes(20))[0];
 	}
 
 	//@Benchmark
 	public int insertionSort40() {
-		return IndexSorter.INSERTION_SORTER.sort(array40, arrays.indexes(40))[0];
+		return IndexSorter.INSERTION_SORTER.sort(array40, IndexSorter.indexes(40))[0];
 	}
 
 	@Benchmark
 	public int insertionSort80() {
-		return IndexSorter.INSERTION_SORTER.sort(array80, arrays.indexes(80))[0];
+		return IndexSorter.INSERTION_SORTER.sort(array80, IndexSorter.indexes(80))[0];
 	}
 
 	@Benchmark
 	public int insertionSort160() {
-		return IndexSorter.INSERTION_SORTER.sort(array160, arrays.indexes(160))[0];
+		return IndexSorter.INSERTION_SORTER.sort(array160, IndexSorter.indexes(160))[0];
 	}
 
 	@Benchmark
 	public int insertionSort250() {
-		return IndexSorter.INSERTION_SORTER.sort(array250, arrays.indexes(250))[0];
+		return IndexSorter.INSERTION_SORTER.sort(array250, IndexSorter.indexes(250))[0];
 	}
 
 	@Benchmark
 	public int insertionSort320() {
-		return IndexSorter.INSERTION_SORTER.sort(array320, arrays.indexes(320))[0];
+		return IndexSorter.INSERTION_SORTER.sort(array320, IndexSorter.indexes(320))[0];
 	}
 
 	//@Benchmark
 	public int heapSort20() {
-		return IndexSorter.HEAP_SORTER.sort(array20, arrays.indexes(20))[0];
+		return IndexSorter.HEAP_SORTER.sort(array20, IndexSorter.indexes(20))[0];
 	}
 
 	//@Benchmark
 	public int heapSort40() {
-		return IndexSorter.HEAP_SORTER.sort(array40, arrays.indexes(40))[0];
+		return IndexSorter.HEAP_SORTER.sort(array40, IndexSorter.indexes(40))[0];
 	}
 
 	@Benchmark
 	public int heapSort80() {
-		return IndexSorter.HEAP_SORTER.sort(array80, arrays.indexes(80))[0];
+		return IndexSorter.HEAP_SORTER.sort(array80, IndexSorter.indexes(80))[0];
 	}
 
 	@Benchmark
 	public int heapSort160() {
-		return IndexSorter.HEAP_SORTER.sort(array160, arrays.indexes(160))[0];
+		return IndexSorter.HEAP_SORTER.sort(array160, IndexSorter.indexes(160))[0];
 	}
 
 	@Benchmark
 	public int heapSort250() {
-		return IndexSorter.HEAP_SORTER.sort(array250, arrays.indexes(250))[0];
+		return IndexSorter.HEAP_SORTER.sort(array250, IndexSorter.indexes(250))[0];
 	}
 
 	@Benchmark
 	public int heapSort320() {
-		return IndexSorter.HEAP_SORTER.sort(array320, arrays.indexes(320))[0];
+		return IndexSorter.HEAP_SORTER.sort(array320, IndexSorter.indexes(320))[0];
 	}
 
 	public static void main(String[] args) throws RunnerException {

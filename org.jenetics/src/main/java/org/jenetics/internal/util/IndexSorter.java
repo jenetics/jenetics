@@ -19,7 +19,6 @@
  */
 package org.jenetics.internal.util;
 
-import static org.jenetics.internal.util.arrays.indexes;
 import static org.jenetics.internal.util.arrays.swap;
 
 /**
@@ -70,6 +69,14 @@ public abstract class IndexSorter {
 			HEAP_SORTER;
 
 		return sorter.sort(array, indexes(array.length));
+	}
+
+	static int[] indexes(final int length) {
+		final int[] indexes = new int[length];
+		for (int i = 0; i < indexes.length; ++i) {
+			indexes[i] = i;
+		}
+		return indexes;
 	}
 
 	@Override

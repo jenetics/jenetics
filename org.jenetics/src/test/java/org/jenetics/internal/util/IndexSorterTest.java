@@ -19,7 +19,7 @@
  */
 package org.jenetics.internal.util;
 
-import static org.jenetics.internal.util.arrays.indexes;
+import static org.jenetics.internal.util.IndexSorter.indexes;
 import static org.jenetics.internal.util.arrays.revert;
 
 import java.util.Arrays;

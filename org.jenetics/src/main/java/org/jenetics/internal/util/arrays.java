@@ -31,14 +31,6 @@ import org.jenetics.util.RandomRegistry;
 public final class arrays {
 	private arrays() {require.noInstance();}
 
-	public static int[] indexes(final int length) {
-		final int[] indexes = new int[length];
-		for (int i = 0; i < indexes.length; ++i) {
-			indexes[i] = i;
-		}
-		return indexes;
-	}
-
 	public static void revert(final double[] array) {
 		for (int i = 0, j = array.length - 1; i < j; ++i, --j) {
 			swap(array, i, j);
