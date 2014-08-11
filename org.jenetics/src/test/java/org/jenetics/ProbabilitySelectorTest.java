@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-10 $</em>
+ * @version <em>$Date: 2014-08-11 $</em>
  */
 public class ProbabilitySelectorTest {
 
@@ -77,6 +77,19 @@ public class ProbabilitySelectorTest {
 			Assert.assertEquals(invertedIndexes[i], indexes[indexes.length - i - 1]);
 		}
 	}
+
+    @Test(dataProvider = "arraySize")
+    public void revertSortedArray(final Integer size) {
+        final double[] values = new double[100];
+        for (int i = 0; i < values.length; ++i) {
+            values[i] = i;
+        }
+
+        final double[] reverted = ProbabilitySelector.revert(values);
+        for (int i = 0; i < values.length; ++i) {
+            Assert.assertEquals(reverted[i], (double)(values.length - i - 1));
+        }
+    }
 
 //	@Test
 //	public void performance() {

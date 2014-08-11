@@ -24,11 +24,12 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.math.arithmetic.pow;
 import static org.jenetics.internal.math.base.ulpDistance;
+import static org.jenetics.internal.util.IndexSort.InsertionSort;
+import static org.jenetics.internal.util.IndexSort.QuickSort;
 
 import java.util.Random;
 
 import org.jenetics.internal.math.statistics;
-import org.jenetics.internal.util.IndexSort;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -120,14 +121,25 @@ public abstract class ProbabilitySelector<
 	static double[] revert(final double[] probabilities) {
 		final int N = probabilities.length;
 		final int[] indexes = sort(probabilities);
-		final double[] result = new double[N];
 
-		for (int i = 0; i < N; ++i) {
-			result[indexes[N - i - 1]] = probabilities[indexes[i]];
-		}
-
-		return result;
+        for (int i = 0, j = probabilities.length - 1; i < j; ++i, --j) {
+            swap(probabilities, indexes, i, j);
+        }
+        return probabilities;
 	}
+
+    private static void swap(
+        final double[] array, final int[] indexes,
+        final int i, final int j
+    ) {
+        final double tempValue = array[indexes[i]];
+        array[indexes[i]] = array[indexes[j]];
+        array[indexes[j]] = tempValue;
+
+        final int tempIndex = indexes[i];
+        indexes[i] = indexes[j];
+        indexes[j] = tempIndex;
+    }
 
 	private static final int INSERTION_SORT_THRESHOLD = 75;
 
@@ -137,67 +149,6 @@ public abstract class ProbabilitySelector<
 			InsertionSort.sort(values) :
 			QuickSort.sort(values);
 	}
-
-    private static final IndexSort<double[]> QuickSort = new IndexSort<double[]>() {
-        @Override
-        public int[] sort(final double[] array) {
-            final int[] indexes = newIndexes(array.length);
-            quickSort(array, indexes, 0, array.length - 1);
-            return indexes;
-        }
-
-        private void quickSort(
-            final double[] array,
-            final int[] indexes,
-            final int left, final int right
-        ) {
-            if (right > left) {
-                final int j = partition(array, indexes, left, right);
-                quickSort(array, indexes, left, j - 1);
-                quickSort(array, indexes, j + 1, right);
-            }
-        }
-
-        private int partition(
-            final double[] array, final int[] indexes,
-            final int left, final int right
-        ) {
-            final double pivot = array[indexes[left]];
-            int i = left;
-            int j = right + 1;
-
-            while (true) {
-                do ++i; while (i < right && array[indexes[i]] < pivot);
-                do --j; while (j > left && array[indexes[j]] > pivot);
-                if (j <= i) break;
-                swap(indexes, i, j);
-            }
-            swap(indexes, left, j);
-
-            return j;
-        }
-    };
-
-    private static final IndexSort<double[]> InsertionSort = new IndexSort<double[]>() {
-        @Override
-        public int[] sort(double[] array) {
-            final int[] indexes = newIndexes(array.length);
-
-            for (int sz = array.length, i = 1; i < sz; ++i) {
-                int j = i;
-                while (j > 0) {
-                    if (array[indexes[j - 1]] > array[indexes[j]]) {
-                        swap(indexes, j - 1, j);
-                    } else {
-                        break;
-                    }
-                    --j;
-                }
-            }
-
-            return indexes;
-        }
-    };
 
 	/**
 	 * <p>
