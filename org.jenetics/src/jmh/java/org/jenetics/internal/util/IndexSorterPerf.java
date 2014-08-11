@@ -55,12 +55,12 @@ public class IndexSorterPerf {
 
 	@Setup(Level.Invocation)
 	public void shuffle() {
-		arrays.shuffle(array20);
-		arrays.shuffle(array40);
-		arrays.shuffle(array80);
-		arrays.shuffle(array160);
-		arrays.shuffle(array250);
-		arrays.shuffle(array320);
+		array.shuffle(array20);
+		array.shuffle(array40);
+		array.shuffle(array80);
+		array.shuffle(array160);
+		array.shuffle(array250);
+		array.shuffle(array320);
 	}
 
 	//@Benchmark

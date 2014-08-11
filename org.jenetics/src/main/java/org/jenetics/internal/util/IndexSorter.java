@@ -19,7 +19,7 @@
  */
 package org.jenetics.internal.util;
 
-import static org.jenetics.internal.util.arrays.swap;
+import static org.jenetics.internal.util.array.swap;
 
 /**
  * Implementations of this class doesn't sort the given array directly, instead

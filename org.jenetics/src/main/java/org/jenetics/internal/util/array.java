@@ -26,10 +26,10 @@ import org.jenetics.util.RandomRegistry;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-11 $</em>
+ * @version 3.0 &mdash; <em>$Date$</em>
  */
-public final class arrays {
-	private arrays() {require.noInstance();}
+public final class array {
+	private array() {require.noInstance();}
 
 	public static void revert(final double[] array) {
 		for (int i = 0, j = array.length - 1; i < j; ++i, --j) {

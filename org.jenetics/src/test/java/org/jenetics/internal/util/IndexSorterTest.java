@@ -20,7 +20,7 @@
 package org.jenetics.internal.util;
 
 import static org.jenetics.internal.util.IndexSorter.indexes;
-import static org.jenetics.internal.util.arrays.revert;
+import static org.jenetics.internal.util.array.revert;
 
 import java.util.Arrays;
 import java.util.Random;

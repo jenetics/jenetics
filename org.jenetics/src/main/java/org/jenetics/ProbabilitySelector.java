@@ -25,7 +25,7 @@ import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.math.arithmetic.pow;
 import static org.jenetics.internal.math.base.ulpDistance;
 import static org.jenetics.internal.util.IndexSorter.sort;
-import static org.jenetics.internal.util.arrays.swap;
+import static org.jenetics.internal.util.array.swap;
 
 import java.util.Random;
 
