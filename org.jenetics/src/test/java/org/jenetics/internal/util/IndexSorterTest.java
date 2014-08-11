@@ -19,6 +19,7 @@
  */
 package org.jenetics.internal.util;
 
+import static org.jenetics.internal.util.arrays.indexes;
 import static org.jenetics.internal.util.arrays.revert;
 
 import java.util.Arrays;
@@ -38,7 +39,7 @@ public class IndexSorterTest {
 	public void sortRandomValues(final IndexSorter sorter, final Integer size) {
 		final double[] values = new Random().doubles(size).toArray();
 
-		final int[] indexes = sorter.sort(values);
+		final int[] indexes = sorter.sort(values, indexes(values.length));
 
 		final double[] sorted = values.clone();
 		Arrays.sort(sorted);
@@ -52,7 +53,7 @@ public class IndexSorterTest {
 		final double[] values = new Random().doubles(size).toArray();
 		Arrays.sort(values);
 
-		final int[] indexes = sorter.sort(values);
+		final int[] indexes = sorter.sort(values, indexes(values.length));
 
 		final double[] sorted = values.clone();
 		Arrays.sort(sorted);
@@ -67,7 +68,7 @@ public class IndexSorterTest {
 		Arrays.sort(values);
 		revert(values);
 
-		final int[] indexes = sorter.sort(values);
+		final int[] indexes = sorter.sort(values, indexes(values.length));
 
 		final double[] sorted = values.clone();
 		Arrays.sort(sorted);
@@ -85,7 +86,7 @@ public class IndexSorterTest {
 			{new HeapSorter(), 5},
 			{new HeapSorter(), 11},
 			{new HeapSorter(), 1000},
-			{new HeapSorter(), 10_000}
+			{new HeapSorter(), 250_000}
 		};
 	}
 
