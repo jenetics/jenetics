@@ -142,7 +142,7 @@ public abstract class ProbabilitySelector<
 		final int count,
 		final Optimize opt
 	) {
-		return opt == Optimize.MINIMUM ?
+		return requireNonNull(opt) == Optimize.MINIMUM ?
 			revert(probabilities(population, count)) :
 			probabilities(population, count);
 	}

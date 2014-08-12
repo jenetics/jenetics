@@ -66,11 +66,45 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		return true;
 	}
 
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void selectNegativeCountArgument() {
+		final Factory<Genotype<DoubleGene>> gtf =
+			Genotype.of(new DoubleChromosome(0.0, 1.0));
+
+		final Population<DoubleGene, Double> population =
+			new Population<>(2);
+
+		for (int i = 0, n = 2; i < n; ++i) {
+			population.add(Phenotype.of(gtf.newInstance(), TestUtils.FF, 12));
+		}
+
+		getSelector().select(population, -1, Optimize.MAXIMUM);
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void selectNullPopulationArgument() {
+		getSelector().select(null, 23, Optimize.MAXIMUM);
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void selectNullOptimizeArgument() {
+		final Factory<Genotype<DoubleGene>> gtf =
+			Genotype.of(new DoubleChromosome(0.0, 1.0));
+
+		final Population<DoubleGene, Double> population =
+			new Population<>(2);
+
+		for (int i = 0, n = 2; i < n; ++i) {
+			population.add(Phenotype.of(gtf.newInstance(), TestUtils.FF, 12));
+		}
+
+		getSelector().select(population, 1, null);
+	}
 
 	@Test(dataProvider = "selectParameters")
 	public void select(final Integer size, final Integer count, final Optimize opt) {
 		final Factory<Genotype<DoubleGene>> gtf =
-			Genotype.of(new DoubleChromosome(0.0, 10_000.0));
+			Genotype.of(new DoubleChromosome(0.0, 1_000.0));
 
 		final Population<DoubleGene, Double> population =
 			new Population<>(size);
@@ -94,15 +128,14 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 
 	@DataProvider(name = "selectParameters")
 	public Object[][] selectParameters() {
-		final List<Integer> sizes = Arrays.asList(1, 2, 3, 5, 11, 20, 50, 100);
+		final List<Integer> sizes = Arrays.asList(1, 2, 3, 5, 11, 50, 100, 10_000);
+		final List<Integer> counts = Arrays.asList(0, 1, 2, 3, 5, 11, 50, 100, 10_000);
 
 		final List<Object[]> result = new ArrayList<>();
 		for (Integer size : sizes) {
-			for (Integer count : sizes) {
-				if (count <= size) {
-					result.add(new Object[]{size, count, Optimize.MINIMUM});
-					result.add(new Object[]{size, count, Optimize.MAXIMUM});
-				}
+			for (Integer count : counts) {
+				result.add(new Object[]{size, count, Optimize.MINIMUM});
+				result.add(new Object[]{size, count, Optimize.MAXIMUM});
 			}
 		}
 
