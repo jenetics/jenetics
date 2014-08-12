@@ -21,6 +21,7 @@ package org.jenetics;
 
 import java.util.Random;
 
+import org.testng.SkipException;
 import org.testng.annotations.Test;
 
 import org.jenetics.stat.Distribution;
@@ -30,7 +31,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-06-02 $</em>
+ * @version <em>$Date: 2014-08-12 $</em>
  */
 public class TournamentSelectorTest
 	extends SelectorTester<TournamentSelector<DoubleGene, Double>>
@@ -59,7 +60,7 @@ public class TournamentSelectorTest
 	@Override
 	@Test
 	public void selectDistribution() {
-		//super.selectDistribution();
+		throw new SkipException("TODO: implement this test.");
 	}
 
 }

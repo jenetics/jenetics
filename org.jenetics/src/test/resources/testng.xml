@@ -20,7 +20,7 @@
  # Author:
  #    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  #
- # Version: <em>$Date: 2014-08-10 $</em>
+ # Version: <em>$Date: 2014-08-12 $</em>
  #
  ###############################################################################
 -->
@@ -161,6 +161,11 @@
 			<class name="org.jenetics.PopulationTest" />
 		</classes>
 	</test>
+    <test name="org.jenetics.ProbabilitySelector">
+        <classes>
+            <class name="org.jenetics.ProbabilitySelectorTest" />
+        </classes>
+    </test>
 	<test name="org.jenetics.RouletteWheelSelector">
 		<classes>
 			<class name="org.jenetics.RouletteWheelSelectorTest" />
@@ -284,11 +289,6 @@
 			<class name="org.jenetics.internal.math.probabilityTest" />
 		</classes>
 	</test>
-    <test name="org.jenetics.internal.util.reflect">
-        <classes>
-            <class name="org.jenetics.internal.util.reflectTest" />
-        </classes>
-    </test>
     <test name="org.jenetics.internal.collection.Stack">
         <classes>
             <class name="org.jenetics.internal.collection.StackTest" />
@@ -299,6 +299,16 @@
 			<class name="org.jenetics.internal.util.bitTest" />
 		</classes>
 	</test>
+    <test name="org.jenetics.internal.util.IndexSorter">
+        <classes>
+            <class name="org.jenetics.internal.util.IndexSorterTest" />
+        </classes>
+    </test>
+    <test name="org.jenetics.internal.util.reflect">
+        <classes>
+            <class name="org.jenetics.internal.util.reflectTest" />
+        </classes>
+    </test>
 	<test name="org.jenetics.util.CharSeq">
 		<classes>
 			<class name="org.jenetics.util.CharSeqTest" />
