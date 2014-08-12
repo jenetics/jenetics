@@ -22,6 +22,7 @@ package org.jenetics;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 
+import org.testng.SkipException;
 import org.testng.annotations.Test;
 
 import org.jenetics.stat.Distribution;
@@ -77,7 +78,7 @@ public class StochasticUniversalSelectorTest
 	@Override
 	@Test
 	public void selectDistribution() {
-		//super.selectDistribution();
+		throw new SkipException("TODO: implement this test.");
 	}
 
 }
