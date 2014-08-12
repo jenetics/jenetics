@@ -68,7 +68,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 
 
 	@Test(dataProvider = "selectParameters")
-	public void selectMinimum(final Integer size, final Integer count) {
+	public void select(final Integer size, final Integer count, final Optimize opt) {
 		final Factory<Genotype<DoubleGene>> gtf =
 			Genotype.of(new DoubleChromosome(0.0, 10_000.0));
 
@@ -80,7 +80,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		}
 
 		final Population<DoubleGene, Double> selection = getSelector()
-			.select(population, count, Optimize.MINIMUM);
+			.select(population, count, opt);
 
 		Assert.assertEquals(selection.size(), count.intValue());
 		for (Object gt : selection) {
@@ -100,7 +100,8 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		for (Integer size : sizes) {
 			for (Integer count : sizes) {
 				if (count <= size) {
-					result.add(new Object[]{size, count});
+					result.add(new Object[]{size, count, Optimize.MINIMUM});
+					result.add(new Object[]{size, count, Optimize.MAXIMUM});
 				}
 			}
 		}
