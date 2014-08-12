@@ -19,6 +19,9 @@
  */
 package org.jenetics;
 
+import java.util.function.Function;
+import java.util.stream.IntStream;
+
 import org.testng.annotations.Test;
 
 import org.jenetics.stat.Distribution;
@@ -27,7 +30,7 @@ import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-06-02 $</em>
+ * @version <em>$Date: 2014-08-12 $</em>
  */
 public class StochasticUniversalSelectorTest
 	extends ProbabilitySelectorTester<StochasticUniversalSelector<DoubleGene,Double>>
@@ -38,21 +41,36 @@ public class StochasticUniversalSelectorTest
 		return true;
 	}
 
-	final Factory<StochasticUniversalSelector<DoubleGene,Double>>
-	_factory = new Factory<StochasticUniversalSelector<DoubleGene,Double>>() {
-		@Override
-		public StochasticUniversalSelector<DoubleGene, Double> newInstance() {
-			return new StochasticUniversalSelector<>();
-		}
-	};
 	@Override
 	protected Factory<StochasticUniversalSelector<DoubleGene, Double>> factory() {
-		return _factory;
+		return StochasticUniversalSelector::new;
 	}
 
 	@Override
 	protected Distribution<Double> getDistribution() {
 		return new UniformDistribution<>(getDomain());
+	}
+
+	@Test
+	public void selectMinimum() {
+		final Function<Genotype<IntegerGene>, Integer> ff = gt ->
+			gt.getChromosome().toSeq().stream()
+				.mapToInt(IntegerGene::intValue)
+				.sum();
+
+		Factory<Genotype<IntegerGene>> gtf =
+			Genotype.of(IntegerChromosome.of(0, 100, 10));
+
+		final Population<IntegerGene, Integer> population = IntStream.range(0, 50)
+			.mapToObj(i -> Phenotype.of(gtf.newInstance(), ff, 50))
+			.collect(Population.toPopulation());
+
+		final StochasticUniversalSelector<IntegerGene, Integer> selector =
+			new StochasticUniversalSelector<>();
+
+		final Population<IntegerGene, Integer> selection = selector.select(
+			population, 50, Optimize.MINIMUM
+		);
 	}
 
 	// TODO: implement select-distribution test.

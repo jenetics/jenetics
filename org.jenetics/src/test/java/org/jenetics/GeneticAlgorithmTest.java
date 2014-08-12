@@ -21,24 +21,28 @@ package org.jenetics;
 
 import static java.lang.String.format;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Function;
 
 import org.testng.Assert;
 import org.testng.Reporter;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import org.jenetics.internal.util.Concurrency;
 
-import org.jenetics.util.IO;
+import org.jenetics.util.Factory;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-08 $</em>
+ * @version <em>$Date: 2014-08-12 $</em>
  */
 public class GeneticAlgorithmTest {
 
@@ -121,8 +125,15 @@ public class GeneticAlgorithmTest {
 		}
 	}
 
-	@Test
-	public void testMinimize() {
+	@Test(dataProvider = "configuration")
+	public void testMinimize(
+		final Factory<Genotype<IntegerGene>> gtf,
+		final Selector<IntegerGene, Integer> survivorsSelector,
+		final Selector<IntegerGene, Integer> offspringSelector,
+		final Alterer<IntegerGene, Integer> alterer,
+		final Double offspringFraction,
+		final Integer populationSize
+	) {
 		final Function<Genotype<IntegerGene>, Integer> ff = gt ->
 			gt.getChromosome().toSeq().stream()
 				.mapToInt(IntegerGene::intValue)
@@ -130,16 +141,16 @@ public class GeneticAlgorithmTest {
 
 		try (Scoped<Random> sr = RandomRegistry.scope(new LCG64ShiftRandom(7345))) {
 			final GeneticAlgorithm<IntegerGene, Integer> ga = new GeneticAlgorithm<>(
-				Genotype.of(IntegerChromosome.of(0, 10_000, 5)),
+				gtf,
 				ff,
 				Optimize.MINIMUM,
 				Concurrency.SERIAL_EXECUTOR
 			);
-			ga.setPopulationSize(200);
-			ga.setAlterer(new MeanAlterer<>());
-			ga.setOffspringFraction(0.3);
-			ga.setOffspringSelector(new RouletteWheelSelector<>());
-			ga.setSurvivorSelector(new TournamentSelector<>());
+			ga.setPopulationSize(populationSize);
+			ga.setAlterer(alterer);
+			ga.setOffspringFraction(offspringFraction);
+			ga.setOffspringSelector(offspringSelector);
+			ga.setSurvivorSelector(survivorsSelector);
 
 			ga.setup();
 			final Phenotype<IntegerGene, Integer> start = ga.getBestPhenotype();
@@ -166,28 +177,49 @@ public class GeneticAlgorithmTest {
 		}
 	}
 
-	public static void main(final String[] args) throws Exception {
-		final Function<Genotype<IntegerGene>, Integer> ff = gt ->
-			gt.getChromosome().toSeq().stream()
-				.mapToInt(c -> c.getAllele())
-				.sum();
+	@DataProvider(name = "configuration")
+	public Object[][] configuration() {
+		final List<Factory<Genotype<IntegerGene>>> factories = Arrays.asList(
+			Genotype.of(IntegerChromosome.of(0, 100, 10)),
+			Genotype.of(IntegerChromosome.of(0, 100, 25))
+		);
+		final List<Selector<IntegerGene, Integer>> selectors = Arrays.asList(
+			new RouletteWheelSelector<>(),
+			new TournamentSelector<>(),
+			new BoltzmannSelector<>(),
+			new ExponentialRankSelector<>(0.12),
+			new LinearRankSelector<>(0.12),
+			new MonteCarloSelector<>(),
+			new StochasticUniversalSelector<>(),
+			new TournamentSelector<>(),
+			new TruncationSelector<>()
+		);
+		final List<Alterer<IntegerGene, Integer>> alterers = Arrays.asList(
+			new GaussianMutator<>(),
+			new MeanAlterer<>(),
+			new MultiPointCrossover<>(0.2, 4),
+			new SinglePointCrossover<>(),
+			new SwapMutator<>()
+		);
+		final List<Double> fractions = Arrays.asList(0.1, 0.7);
+		final List<Integer> size = Arrays.asList(50, 250);
 
-		try (Scoped<Random> sr = RandomRegistry.scope(new LCG64ShiftRandom(7345))) {
-			final GeneticAlgorithm<IntegerGene, Integer> ga = new GeneticAlgorithm<>(
-				Genotype.of(IntegerChromosome.of(0, 10_000, 5)),
-				ff,
-				Optimize.MINIMUM,
-				Concurrency.SERIAL_EXECUTOR
-			);
-			ga.setPopulationSize(50);
-
-			ga.setup();
-			IO.jaxb.write(ga.getBestPhenotype(), System.out);
-			for (int i = 0; i < 20; ++i) {
-				ga.evolve();
-				IO.jaxb.write(ga.getBestPhenotype(), System.out);
+		final List<Object[]> result = new ArrayList<>();
+		for (Object gtf : factories) {
+			for (Object selector : selectors) {
+				for (Object alterer : alterers) {
+					for (Object fraction : fractions) {
+						for (Object s : size) {
+							result.add(new Object[] {
+								gtf, selector, selector, alterer, fraction, s
+							});
+						}
+					}
+				}
 			}
 		}
+
+		return result.toArray(new Object[0][]);
 	}
 
 	@Test(invocationCount = 10)
