@@ -28,21 +28,21 @@ import static org.jenetics.internal.util.array.swap;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-11 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-12 $</em>
  */
 public abstract class IndexSorter {
 
 	// This value has been chosen after JMH benchmarking.
-	// Benchmark                                   Mode  Samples      Score  Score error  Units
-	// o.j.i.u.IndexSorterPerf.heapSort320         avgt       14  39206.801      281.007  ns/op
-	// o.j.i.u.IndexSorterPerf.heapSort250         avgt       14  29554.563      325.331  ns/op
-	// o.j.i.u.IndexSorterPerf.heapSort160         avgt       14  16082.659      189.381  ns/op
-	// o.j.i.u.IndexSorterPerf.heapSort80          avgt       14   7419.023      119.355  ns/op
-	// o.j.i.u.IndexSorterPerf.insertionSort320    avgt       14  43254.492      277.617  ns/op
-	// o.j.i.u.IndexSorterPerf.insertionSort250    avgt       14  27259.377      260.012  ns/op
-	// o.j.i.u.IndexSorterPerf.insertionSort160    avgt       14  12059.304      158.105  ns/op
-	// o.j.i.u.IndexSorterPerf.insertionSort80     avgt       14   3645.073       50.276  ns/op
-	private static final int INSERTION_SORT_THRESHOLD = 260;
+//    Benchmark                                   Mode  Samples      Score  Score error  Units
+//    o.j.i.u.IndexSorterPerf.heapSort160         avgt       14  20647.269      815.420  ns/op
+//    o.j.i.u.IndexSorterPerf.heapSort250         avgt       14  35181.217     1227.351  ns/op
+//    o.j.i.u.IndexSorterPerf.heapSort320         avgt       14  48016.965      720.255  ns/op
+//    o.j.i.u.IndexSorterPerf.heapSort80          avgt       14  10035.026       41.065  ns/op
+//    o.j.i.u.IndexSorterPerf.insertionSort160    avgt       14  19166.018      181.915  ns/op
+//    o.j.i.u.IndexSorterPerf.insertionSort250    avgt       14  45008.837      440.234  ns/op
+//    o.j.i.u.IndexSorterPerf.insertionSort320    avgt       14  71668.810     5127.380  ns/op
+//    o.j.i.u.IndexSorterPerf.insertionSort80     avgt       14   5706.015       69.888  ns/op
+	private static final int INSERTION_SORT_THRESHOLD = 150;
 
 	static final IndexSorter INSERTION_SORTER = new InsertionSorter();
 	static final IndexSorter HEAP_SORTER = new HeapSorter();
