@@ -80,33 +80,47 @@ public class GeneticAlgorithmTest {
 		}
 	}
 
-	@Test
-	public void testMaximize() {
-		final Function<Genotype<IntegerGene>, Integer> ff = gt ->
-			gt.getChromosome().toSeq().stream()
-				.mapToInt(IntegerGene::intValue)
-				.sum();
+	@Test(dataProvider = "configuration")
+	public void testMaximize(
+		final Factory<Genotype<IntegerGene>> gtf,
+		final Selector<IntegerGene, Long> survivorsSelector,
+		final Selector<IntegerGene, Long> offspringSelector,
+		final Alterer<IntegerGene, Long> alterer,
+		final Double offspringFraction,
+		final Integer populationSize
+	) {
+		final Function<Genotype<IntegerGene>, Long> ff = gt -> {
+			long sum = 0;
+			for (int i = 0, n = gt.length(); i < n; ++i) {
+				final Chromosome<IntegerGene> ch = gt.getChromosome(i);
+				for (int j = 0, m = ch.length(); j < m; ++j) {
+					sum += ch.getGene(j).longValue()*(i + 1)*(j + 1);
+				}
+			}
+
+			return sum;
+		};
 
 		try (Scoped<Random> sr = RandomRegistry.scope(new LCG64ShiftRandom(7345))) {
-			final GeneticAlgorithm<IntegerGene, Integer> ga = new GeneticAlgorithm<>(
-				Genotype.of(IntegerChromosome.of(0, 10_000, 5)),
+			final GeneticAlgorithm<IntegerGene, Long> ga = new GeneticAlgorithm<>(
+				gtf,
 				ff,
 				Optimize.MAXIMUM,
 				Concurrency.SERIAL_EXECUTOR
 			);
-			ga.setPopulationSize(200);
-			ga.setAlterer(new MeanAlterer<>());
-			ga.setOffspringFraction(0.3);
-			ga.setOffspringSelector(new RouletteWheelSelector<>());
-			ga.setSurvivorSelector(new TournamentSelector<>());
+			ga.setPopulationSize(populationSize);
+			ga.setAlterer(alterer);
+			ga.setOffspringFraction(offspringFraction);
+			ga.setOffspringSelector(offspringSelector);
+			ga.setSurvivorSelector(survivorsSelector);
 
 			ga.setup();
-			final Phenotype<IntegerGene, Integer> start = ga.getBestPhenotype();
-			Phenotype<IntegerGene, Integer> last = start;
-			for (int i = 0; i < 1000; ++i) {
+			final Phenotype<IntegerGene, Long> start = ga.getBestPhenotype();
+			Phenotype<IntegerGene, Long> last = start;
+			for (int i = 0; i < 500; ++i) {
 				ga.evolve();
 
-				final Phenotype<IntegerGene, Integer> value = ga.getBestPhenotype();
+				final Phenotype<IntegerGene, Long> value = ga.getBestPhenotype();
 				if (value.compareTo(last) < 0) {
 					throw new AssertionError(format(
 						"Value %s is smaller than last value %s.", value, last
