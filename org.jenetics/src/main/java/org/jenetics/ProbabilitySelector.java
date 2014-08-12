@@ -48,7 +48,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-08-11 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-12 $</em>
  */
 public abstract class ProbabilitySelector<
 	G extends Gene<?, G>,
@@ -113,7 +113,7 @@ public abstract class ProbabilitySelector<
 		final int count,
 		final Optimize opt
 	) {
-		return opt == Optimize.MINIMUM ?
+		return requireNonNull(opt) == Optimize.MINIMUM ?
 			revert(probabilities(population, count)) :
 			probabilities(population, count);
 	}

@@ -57,7 +57,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-12 $</em>
  */
 public final class LinearRankSelector<
 	G extends Gene<?, G>,
@@ -112,9 +112,13 @@ public final class LinearRankSelector<
 		final double N = population.size();
 		final double[] probabilities = new double[population.size()];
 
-		for (int i = probabilities.length; --i >= 0;) {
-			probabilities[probabilities.length - i - 1] =
-				(_nminus + ((_nplus - _nminus)*i)/(N - 1))/N;
+		if (N == 1) {
+			probabilities[0] = 1;
+		} else {
+			for (int i = probabilities.length; --i >= 0; ) {
+				probabilities[probabilities.length - i - 1] =
+					(_nminus + ((_nplus - _nminus)*i)/(N - 1))/N;
+			}
 		}
 
 		assert (sum2one(probabilities)) : "Probabilities doesn't sum to one.";
