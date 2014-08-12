@@ -128,19 +128,26 @@ public class GeneticAlgorithmTest {
 	@Test(dataProvider = "configuration")
 	public void testMinimize(
 		final Factory<Genotype<IntegerGene>> gtf,
-		final Selector<IntegerGene, Integer> survivorsSelector,
-		final Selector<IntegerGene, Integer> offspringSelector,
-		final Alterer<IntegerGene, Integer> alterer,
+		final Selector<IntegerGene, Long> survivorsSelector,
+		final Selector<IntegerGene, Long> offspringSelector,
+		final Alterer<IntegerGene, Long> alterer,
 		final Double offspringFraction,
 		final Integer populationSize
 	) {
-		final Function<Genotype<IntegerGene>, Integer> ff = gt ->
-			gt.getChromosome().toSeq().stream()
-				.mapToInt(IntegerGene::intValue)
-				.sum();
+		final Function<Genotype<IntegerGene>, Long> ff = gt -> {
+			long sum = 0;
+			for (int i = 0, n = gt.length(); i < n; ++i) {
+				final Chromosome<IntegerGene> ch = gt.getChromosome(i);
+				for (int j = 0, m = ch.length(); j < m; ++j) {
+					sum += ch.getGene(j).longValue()*(i + 1)*(j + 1);
+				}
+			}
+
+			return sum;
+		};
 
 		try (Scoped<Random> sr = RandomRegistry.scope(new LCG64ShiftRandom(7345))) {
-			final GeneticAlgorithm<IntegerGene, Integer> ga = new GeneticAlgorithm<>(
+			final GeneticAlgorithm<IntegerGene, Long> ga = new GeneticAlgorithm<>(
 				gtf,
 				ff,
 				Optimize.MINIMUM,
@@ -153,15 +160,16 @@ public class GeneticAlgorithmTest {
 			ga.setSurvivorSelector(survivorsSelector);
 
 			ga.setup();
-			final Phenotype<IntegerGene, Integer> start = ga.getBestPhenotype();
-			Phenotype<IntegerGene, Integer> last = start;
-			for (int i = 0; i < 1000; ++i) {
+			final Phenotype<IntegerGene, Long> start = ga.getBestPhenotype();
+			Phenotype<IntegerGene, Long> last = start;
+			for (int i = 0; i < 500; ++i) {
 				ga.evolve();
 
-				final Phenotype<IntegerGene, Integer> value = ga.getBestPhenotype();
+				final Phenotype<IntegerGene, Long> value = ga.getBestPhenotype();
 				if (value.compareTo(last) > 0) {
 					throw new AssertionError(format(
-						"Value %s is smaller than last value %s.", value, last
+						"Generation %d: value %s is smaller than last value %s.",
+						i, value, last
 					));
 				}
 
@@ -179,11 +187,14 @@ public class GeneticAlgorithmTest {
 
 	@DataProvider(name = "configuration")
 	public Object[][] configuration() {
-		final List<Factory<Genotype<IntegerGene>>> factories = Arrays.asList(
-			Genotype.of(IntegerChromosome.of(0, 100, 10)),
-			Genotype.of(IntegerChromosome.of(0, 100, 25))
-		);
-		final List<Selector<IntegerGene, Integer>> selectors = Arrays.asList(
+		List<Factory<Genotype<IntegerGene>>> factories = null;
+		try (Scoped<Random> sr = RandomRegistry.scope(new LCG64ShiftRandom(17345))) {
+			factories = Arrays.asList(
+				Genotype.of(IntegerChromosome.of(0, 100_000, 25)),
+				Genotype.of(IntegerChromosome.of(0, 100_000, 50))
+			);
+		}
+		final List<Selector<IntegerGene, Long>> selectors = Arrays.asList(
 			new RouletteWheelSelector<>(),
 			new TournamentSelector<>(),
 			new BoltzmannSelector<>(),
@@ -194,24 +205,24 @@ public class GeneticAlgorithmTest {
 			new TournamentSelector<>(),
 			new TruncationSelector<>()
 		);
-		final List<Alterer<IntegerGene, Integer>> alterers = Arrays.asList(
-			new GaussianMutator<>(),
-			new MeanAlterer<>(),
-			new MultiPointCrossover<>(0.2, 4),
-			new SinglePointCrossover<>(),
-			new SwapMutator<>()
+		final List<Alterer<IntegerGene, Long>> alterers = Arrays.asList(
+			CompositeAlterer.<IntegerGene, Long>of(new GaussianMutator<>(), new Mutator<>(0.1)),
+			CompositeAlterer.<IntegerGene, Long>of(new MeanAlterer<>(), new Mutator<>(0.1)),
+			CompositeAlterer.<IntegerGene, Long>of(new MultiPointCrossover<>(), new Mutator<>(0.1)),
+			CompositeAlterer.<IntegerGene, Long>of(new SwapMutator<>(), new Mutator<>(0.1)),
+			CompositeAlterer.<IntegerGene, Long>of(new SinglePointCrossover<>(), new Mutator<>(0.1))
 		);
-		final List<Double> fractions = Arrays.asList(0.1, 0.7);
-		final List<Integer> size = Arrays.asList(50, 250);
+		final List<Double> fractions = Arrays.asList(0.4, 0.7);
+		final List<Integer> sizes = Arrays.asList(70, 150);
 
 		final List<Object[]> result = new ArrayList<>();
 		for (Object gtf : factories) {
 			for (Object selector : selectors) {
 				for (Object alterer : alterers) {
 					for (Object fraction : fractions) {
-						for (Object s : size) {
+						for (Object size : sizes) {
 							result.add(new Object[] {
-								gtf, selector, selector, alterer, fraction, s
+								gtf, selector, selector, alterer, fraction, size
 							});
 						}
 					}
