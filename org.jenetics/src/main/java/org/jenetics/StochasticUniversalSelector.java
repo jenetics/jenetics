@@ -100,7 +100,7 @@ public class StochasticUniversalSelector<
 				prop += probabilities[j];
 				++j;
 			}
-			selection.add(population.get(j));
+			selection.add(population.get(j%population.size()));
 		}
 
 		return selection;
