@@ -43,7 +43,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-12 $</em>
  */
 public class TournamentSelector<
 	G extends Gene<?, G>,
@@ -77,12 +77,6 @@ public class TournamentSelector<
 		this(2);
 	}
 
-	/**
-	 * @throws IllegalArgumentException if the sample size is greater than the
-	 *         population size or {@code count} is greater the the population
-	 *         size or the _sampleSize is greater the the population size.
-	 * @throws NullPointerException if the {@code population} is {@code null}.
-	 */
 	@Override
 	public Population<G, C> select(
 		final Population<G, C> population,
@@ -95,18 +89,6 @@ public class TournamentSelector<
 			throw new IllegalArgumentException(format(
 				"Selection count must be greater or equal then zero, but was %s",
 				count
-			));
-		}
-		if (count > population.size()) {
-			throw new IllegalArgumentException(format(
-				"Selection size greater than population size: %s > %s",
-				count, population.size()
-			));
-		}
-		if (_sampleSize > population.size()) {
-			throw new IllegalArgumentException(format(
-				"Tournament size is greater than the population size! %d > %d.",
-				 _sampleSize, population.size()
 			));
 		}
 
