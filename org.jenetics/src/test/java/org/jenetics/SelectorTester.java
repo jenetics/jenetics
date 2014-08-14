@@ -24,6 +24,7 @@ import static java.lang.String.format;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -38,7 +39,7 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-12 $</em>
+ * @version <em>$Date: 2014-08-14 $</em>
  */
 public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 	extends ObjectTester<S>
@@ -56,7 +57,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		return _histogramSize;
 	}
 
-	protected S getSelector() {
+	protected S selector() {
 		return factory().newInstance();
 	}
 
@@ -76,12 +77,12 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 			population.add(Phenotype.of(gtf.newInstance(), TestUtils.FF, 12));
 		}
 
-		getSelector().select(population, -1, Optimize.MAXIMUM);
+		selector().select(population, -1, Optimize.MAXIMUM);
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
 	public void selectNullPopulationArgument() {
-		getSelector().select(null, 23, Optimize.MAXIMUM);
+		selector().select(null, 23, Optimize.MAXIMUM);
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
@@ -96,7 +97,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 			population.add(Phenotype.of(gtf.newInstance(), TestUtils.FF, 12));
 		}
 
-		getSelector().select(population, 1, null);
+		selector().select(population, 1, null);
 	}
 
 	@Test(dataProvider = "selectParameters")
@@ -111,7 +112,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 			population.add(Phenotype.of(gtf.newInstance(), TestUtils.FF, 12));
 		}
 
-		final Population<DoubleGene, Double> selection = getSelector()
+		final Population<DoubleGene, Double> selection = selector()
 			.select(population, count, opt);
 
 		Assert.assertEquals(selection.size(), count.intValue());
@@ -145,31 +146,23 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		final int npopulation = 101;
 		final int loops = 500;
 
-
 		final Double min = getDomain().getMin();
 		final Double max = getDomain().getMax();
-		final Histogram<Double> histogram = Histogram.of(min, max, _histogramSize);
+		final Histogram<Double> histogram = Histogram.of(min, max, getHistogramSize());
 
-		final Factory<Genotype<DoubleGene>>
-		gtf = Genotype.of(new DoubleChromosome(min, max));
+		final Factory<Phenotype<DoubleGene, Double>> ptf = () ->
+			Phenotype.of(Genotype.of(DoubleChromosome.of(min, max)), TestUtils.FF, 12);
 
-
-
-		final Population<DoubleGene, Double>
-		population = new Population<>(npopulation);
-
-		final S selector = getSelector();
+		final S selector = selector();
 
 		for (int j = 0; j < loops; ++j) {
-			for (int i = 0; i < npopulation; ++i) {
-				population.add(Phenotype.of(gtf.newInstance(), TestUtils.FF, 12));
-			}
+			final Population<DoubleGene, Double> population = IntStream.range(0, npopulation)
+				.mapToObj(i -> ptf.newInstance())
+				.collect(Population.toPopulation());
 
 			selector.select(population, npopulation, Optimize.MAXIMUM).stream()
-				.map(pt -> pt.getGenotype().getChromosome().getGene().getAllele())
+				.map(pt -> pt.getGenotype().getGene().getAllele())
 				.forEach(histogram);
-
-			population.clear();
 		}
 
 		check(histogram, getDistribution());

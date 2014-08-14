@@ -25,7 +25,7 @@ import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-06-02 $</em>
+ * @version <em>$Date: 2014-08-14 $</em>
  */
 public class LinearRankSelectorTest
 	extends ProbabilitySelectorTester<LinearRankSelector<DoubleGene, Double>>
@@ -47,7 +47,7 @@ public class LinearRankSelectorTest
 	}
 
 	@Override
-	protected LinearRankSelector<DoubleGene, Double> getSelector() {
+	protected LinearRankSelector<DoubleGene, Double> selector() {
 		return new LinearRankSelector<>(0.0);
 	}
 
