@@ -32,7 +32,7 @@ import org.jenetics.util.Accumulator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-21 $</em>
+ * @version <em>$Date: 2014-08-14 $</em>
  */
 public class StatisticsCalculatorTest {
 
@@ -41,36 +41,25 @@ public class StatisticsCalculatorTest {
 	}
 
 	public Iterable<Phenotype<DoubleGene, Double>> population(final int size) {
-		return new Iterable<Phenotype<DoubleGene,Double>>() {
+		return () -> new Iterator<Phenotype<DoubleGene,Double>>() {
+			private final Double MIN = 0.0;
+			private final Double MAX = (double)size;
+
+			private int _pos = -1;
+
 			@Override
-			public Iterator<Phenotype<DoubleGene, Double>> iterator() {
-			return new Iterator<Phenotype<DoubleGene,Double>>() {
-				private final Double MIN = Double.valueOf(0);
-				private final Double MAX = Double.valueOf(size);
+			public boolean hasNext() {
+				return _pos < size - 1;
+			}
 
-				private int _pos = -1;
-
-				@Override
-				public boolean hasNext() {
-					return _pos < size - 1;
-				}
-
-				@Override
-				public Phenotype<DoubleGene, Double> next() {
-					++_pos;
-					final DoubleGene gene = DoubleGene.of(
-								Double.valueOf(_pos), MIN, MAX
-							);
-					return Phenotype.of(
-							Genotype.of(DoubleChromosome.of(gene)),
-							TestUtils.FF, 0
-						);
-				}
-
-				@Override
-				public void remove() {
-				}
-			};
+			@Override
+			public Phenotype<DoubleGene, Double> next() {
+				++_pos;
+				final DoubleGene gene = DoubleGene.of(_pos, MIN, MAX);
+				return Phenotype.of(
+						Genotype.of(DoubleChromosome.of(gene)),
+						TestUtils.FF, 0
+					);
 			}
 		};
 	}

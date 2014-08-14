@@ -19,18 +19,15 @@
  */
 package org.jenetics;
 
-//import static org.jenetics.TestUtils.diff;
-
 import static org.jenetics.TestUtils.newDoubleGenePopulation;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-06-01 $</em>
+ * @version <em>$Date: 2014-08-14 $</em>
  */
 public class SwapMutatorTest extends MutatorTestBase {
 
@@ -81,18 +78,18 @@ public class SwapMutatorTest extends MutatorTestBase {
 	@DataProvider(name = "alterProbabilityParameters")
 	public Object[][] alterProbabilityParameters() {
 		return new Object[][] {
-				//    ngenes,       nchromosomes     npopulation
-				{ new Integer(180),  new Integer(1),  new Integer(150), new Double(0.15) },
-				{ new Integer(180),  new Integer(2),  new Integer(150), new Double(0.15) },
-				{ new Integer(180),  new Integer(15), new Integer(150), new Double(0.15) },
+			//    ngenes,       nchromosomes     npopulation
+			{180, 1,  150, 0.15},
+			{180, 2,  150, 0.15},
+			{180, 15, 150, 0.15},
 
-				{ new Integer(180),  new Integer(1),  new Integer(150), new Double(0.5) },
-				{ new Integer(180),  new Integer(2),  new Integer(150), new Double(0.5) },
-				{ new Integer(180),  new Integer(15), new Integer(150), new Double(0.5) },
+			{180, 1,  150, 0.5},
+			{180, 2,  150, 0.5},
+			{180, 15, 150, 0.5},
 
-				{ new Integer(180),  new Integer(1),  new Integer(150), new Double(0.85) },
-				{ new Integer(180),  new Integer(2),  new Integer(150), new Double(0.85) },
-				{ new Integer(180),  new Integer(15), new Integer(150), new Double(0.85) }
+			{180, 1,  150, 0.85},
+			{180, 2,  150, 0.85},
+			{180, 15, 150, 0.85}
 		};
 	}
 

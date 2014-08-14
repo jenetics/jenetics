@@ -26,7 +26,7 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-12 $</em>
+ * @version <em>$Date: 2014-08-14 $</em>
  */
 public class TruncationSelectorTest
 	extends SelectorTester<TruncationSelector<DoubleGene, Double>>
@@ -34,7 +34,7 @@ public class TruncationSelectorTest
 
 	@Override
 	protected Factory<TruncationSelector<DoubleGene, Double>> factory() {
-		return () -> new TruncationSelector<>();
+		return TruncationSelector::new;
 	}
 
 	@Override

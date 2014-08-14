@@ -23,11 +23,12 @@ import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UncheckedIOException;
 import java.util.Iterator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-08-29 $</em>
+ * @version <em>$Date: 2014-08-14 $</em>
  */
 public class TestData implements Iterable<String[]> {
 
@@ -95,11 +96,9 @@ public class TestData implements Iterable<String[]> {
 		@Override
 		public void close() {
 			try {
-				if (_reader != null) {
-					_reader.close();
-				}
+				_reader.close();
 			} catch (IOException e) {
-				throw new RuntimeException(e);
+				throw new UncheckedIOException(e);
 			}
 		}
 	}

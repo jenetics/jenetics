@@ -31,10 +31,9 @@ import org.jenetics.stat.Variance;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Range;
 
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-06-01 $</em>
+ * @version <em>$Date: 2014-08-14 $</em>
  */
 public class GaussianMutatorTest extends MutatorTestBase {
 

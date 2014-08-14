@@ -25,7 +25,7 @@ import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-06-02 $</em>
+ * @version <em>$Date: 2014-08-14 $</em>
  */
 public class MonteCarloSelectorTest
 	extends SelectorTester<MonteCarloSelector<DoubleGene, Double>>
@@ -33,7 +33,7 @@ public class MonteCarloSelectorTest
 
 	@Override
 	protected Factory<MonteCarloSelector<DoubleGene, Double>> factory() {
-		return () -> new MonteCarloSelector<>();
+		return MonteCarloSelector::new;
 	}
 
 	@Override
