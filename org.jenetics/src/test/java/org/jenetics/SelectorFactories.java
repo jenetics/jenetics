@@ -26,24 +26,12 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-06-02 $</em>
+ * @version <em>$Date: 2014-08-15 $</em>
  */
 public final class SelectorFactories {
 
 	private SelectorFactories() {
 	}
-
-	public static Factory<BoltzmannSelector<DoubleGene, Double>>
-	BoltzmannSelector = () -> {
-		final Random random = RandomRegistry.getRandom();
-		return new BoltzmannSelector<>(random.nextDouble());
-	};
-
-	public static Factory<ExponentialRankSelector<DoubleGene, Double>>
-	ExponentialRankSelector = () -> {
-		final Random random = RandomRegistry.getRandom();
-		return new ExponentialRankSelector<>(random.nextDouble());
-	};
 
 	public static Factory<LinearRankSelector<DoubleGene, Double>>
 	LinearRankSelector = () -> {

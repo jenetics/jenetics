@@ -33,7 +33,7 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-14 $</em>
+ * @version <em>$Date: 2014-08-15 $</em>
  */
 public class ExponentialRankSelectorTest
 	extends ProbabilitySelectorTester<ExponentialRankSelector<DoubleGene, Double>>
@@ -46,7 +46,7 @@ public class ExponentialRankSelectorTest
 
 	@Override
 	protected Factory<ExponentialRankSelector<DoubleGene, Double>> factory() {
-		return SelectorFactories.ExponentialRankSelector;
+		return () -> new ExponentialRankSelector<>(0.75);
 	}
 
 	@Override

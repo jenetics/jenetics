@@ -28,7 +28,7 @@ import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-12 $</em>
+ * @version <em>$Date: 2014-08-15 $</em>
  */
 public class BoltzmannSelectorTest
 	extends ProbabilitySelectorTester<BoltzmannSelector<DoubleGene, Double>>
@@ -41,7 +41,7 @@ public class BoltzmannSelectorTest
 
 	@Override
 	protected Factory<BoltzmannSelector<DoubleGene, Double>> factory() {
-		return SelectorFactories.BoltzmannSelector;
+		return () -> new BoltzmannSelector<>(1.5);
 	}
 
 	@Override
@@ -49,11 +49,9 @@ public class BoltzmannSelectorTest
 		return new UniformDistribution<>(getDomain());
 	}
 
-	// TODO: implement select-distribution test.
 	@Override
 	@Test
 	public void selectDistribution() {
-		//super.selectDistribution();
 		throw new SkipException("TODO: implement this test.");
 	}
 
