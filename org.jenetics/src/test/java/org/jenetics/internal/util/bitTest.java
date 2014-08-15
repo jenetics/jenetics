@@ -19,16 +19,9 @@
  */
 package org.jenetics.internal.util;
 
-import static java.lang.Math.min;
-import static org.jenetics.internal.util.bit.get;
-import static org.jenetics.internal.util.bit.set;
-import static org.jenetics.internal.util.bit.toByteLength;
-
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Random;
 
 import org.testng.Assert;
