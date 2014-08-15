@@ -52,7 +52,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-15 $</em>
  */
 public final class ExponentialRankSelector<
 	G extends Gene<?, G>,
@@ -77,6 +77,13 @@ public final class ExponentialRankSelector<
 			));
 		}
 		_c = c;
+	}
+
+	/**
+	 * Create a new selector with default value of 0.75.
+	 */
+	public ExponentialRankSelector() {
+		this(0.75);
 	}
 
 	/**
