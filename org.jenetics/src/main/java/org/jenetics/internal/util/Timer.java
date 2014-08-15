@@ -30,14 +30,14 @@ import java.time.Instant;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-07 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-15 $</em>
  */
 public final class Timer {
 
 	private final Clock _clock;
 
-    private Instant _start;
-    private Instant _stop;
+	private Instant _start;
+	private Instant _stop;
 
 	private Timer(final Clock clock) {
 		_clock = requireNonNull(clock);
@@ -69,9 +69,9 @@ public final class Timer {
 	 *
 	 * @return the duration between two {@code start} and {@code stop} calls
 	 */
-    public Duration getTime() {
-        return minus(_stop, _start);
-    }
+	public Duration getTime() {
+		return minus(_stop, _start);
+	}
 
 	private static Duration minus(final Instant a, final Instant b)  {
 		final long seconds = a.getEpochSecond() - b.getEpochSecond();
@@ -87,17 +87,17 @@ public final class Timer {
 	 * @param clock the clock used for measuring the execution time
 	 * @return a new timer
 	 */
-    public static Timer of(final Clock clock) {
-        return new Timer(clock);
-    }
+	public static Timer of(final Clock clock) {
+		return new Timer(clock);
+	}
 
 	/**
 	 * Return an new timer object with the default clock implementation.
 	 *
 	 * @return a new timer
 	 */
-    public static Timer of() {
-        return of(NanoClock.INSTANCE);
-    }
+	public static Timer of() {
+		return of(NanoClock.INSTANCE);
+	}
 
 }

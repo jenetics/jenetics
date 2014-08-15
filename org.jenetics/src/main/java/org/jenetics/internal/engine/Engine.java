@@ -53,11 +53,11 @@ public class Engine<
 {
 
 	// Needed context for population evolving.
-    private final Factory<Phenotype<G, C>> _phenotypeFactory;
+	private final Factory<Phenotype<G, C>> _phenotypeFactory;
 	private final Selector<G, C> _survivorsSelector;
 	private final Selector<G, C> _offspringSelector;
-    private final Alterer<G, C> _alterer;
-    private final Optimize _optimize;
+	private final Alterer<G, C> _alterer;
+	private final Optimize _optimize;
 	private final int _offspringCount;
 	private final int _survivorsCount;
 	private final int _maximalPhenotypeAge;

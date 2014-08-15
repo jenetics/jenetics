@@ -48,7 +48,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-08-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-15 $</em>
  */
 public abstract class ProbabilitySelector<
 	G extends Gene<?, G>,
@@ -122,11 +122,11 @@ public abstract class ProbabilitySelector<
 	static double[] revert(final double[] array) {
 		final int[] indexes = sort(array);
 
-        for (int i = 0, j = array.length - 1; i < j; ++i, --j) {
+		for (int i = 0, j = array.length - 1; i < j; ++i, --j) {
 			swap(array, indexes[i], indexes[j]);
 			swap(indexes, i, j);
-        }
-        return array;
+		}
+		return array;
 	}
 
 	/**
