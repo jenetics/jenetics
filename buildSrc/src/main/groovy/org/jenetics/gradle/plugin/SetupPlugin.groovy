@@ -27,6 +27,7 @@ import org.gradle.api.plugins.scala.ScalaPlugin
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.plugins.ide.eclipse.EclipsePlugin
 import org.gradle.plugins.ide.idea.IdeaPlugin
+import org.gradle.testing.jacoco.plugins.JacocoPlugin
 import org.jenetics.gradle.task.ColorizerTask
 
 import java.text.SimpleDateFormat
@@ -34,7 +35,7 @@ import java.text.SimpleDateFormat
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5 &mdash; <em>$Date: 2014-08-01 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-08-15 $</em>
  */
 class SetupPlugin extends JeneticsPlugin {
 
@@ -109,9 +110,7 @@ class SetupPlugin extends JeneticsPlugin {
 	}
 
 	private void configureTestReporting() {
-		// TODO: Jacoco doesn't work with java8
-
-		//plugins.apply(JacocoPlugin)
+		plugins.apply(JacocoPlugin)
 		project.test {
 			useTestNG {
 				//parallel = 'tests' // 'methods'
@@ -122,7 +121,7 @@ class SetupPlugin extends JeneticsPlugin {
                     )
 			}
 		}
-        /*
+
 		project.jacocoTestReport {
 			reports {
 				xml.enabled true
@@ -132,7 +131,6 @@ class SetupPlugin extends JeneticsPlugin {
 		task('testReport', dependsOn: 'test') << {
 			project.jacocoTestReport.execute()
 		}
-		*/
 	}
 
 	private void configureJavadoc() {
