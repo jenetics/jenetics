@@ -44,7 +44,7 @@ import org.jenetics.util.Factory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-07 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-15 $</em>
  */
 public class Engine<
 	G extends Gene<?, G>,
@@ -65,22 +65,22 @@ public class Engine<
 	// Execution context for concurrent execution of evolving steps.
 	private final TimedExecutor _executor;
 
-    /**
-     * Create a new GA engine with the given parameters.
-     *
-     * @param survivorsSelector the selector used for selecting the survivors
-     * @param offspringSelector the selector used for selecting the offspring
-     * @param alterer the alterer used for altering the offspring
-     * @param optimize the kind of optimization (minimize or maximize)
-     * @param offspringCount the number of the offspring individuals
-     * @param survivorsCount the number of the survivor individuals
-     * @param maximalPhenotypeAge the maximal age of an individual
-     * @param phenotypeFactory the factory for creating new phenotypes
-     * @param executor the executor used for executing the single evolve steps
-     * @throws NullPointerException if one of the arguments is {@code null}
-     * @throws IllegalArgumentException if the given integer values are smaller
-     *         than one.
-     */
+	/**
+	 * Create a new GA engine with the given parameters.
+	 *
+	 * @param survivorsSelector the selector used for selecting the survivors
+	 * @param offspringSelector the selector used for selecting the offspring
+	 * @param alterer the alterer used for altering the offspring
+	 * @param optimize the kind of optimization (minimize or maximize)
+	 * @param offspringCount the number of the offspring individuals
+	 * @param survivorsCount the number of the survivor individuals
+	 * @param maximalPhenotypeAge the maximal age of an individual
+	 * @param phenotypeFactory the factory for creating new phenotypes
+	 * @param executor the executor used for executing the single evolve steps
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if the given integer values are smaller
+	 *         than one.
+	 */
 	public Engine(
         final Factory<Phenotype<G, C>> phenotypeFactory,
 		final Selector<G, C> survivorsSelector,
