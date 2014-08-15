@@ -19,12 +19,17 @@
  */
 package org.jenetics;
 
+import java.util.function.Function;
+import java.util.stream.IntStream;
+
 import org.testng.SkipException;
 import org.testng.annotations.Test;
 
 import org.jenetics.stat.Distribution;
+import org.jenetics.stat.Histogram;
 import org.jenetics.stat.UniformDistribution;
 import org.jenetics.util.Factory;
+import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -41,7 +46,7 @@ public class BoltzmannSelectorTest
 
 	@Override
 	protected Factory<BoltzmannSelector<DoubleGene, Double>> factory() {
-		return () -> new BoltzmannSelector<>(1.5);
+		return BoltzmannSelector::new;
 	}
 
 	@Override
@@ -53,6 +58,35 @@ public class BoltzmannSelectorTest
 	@Test
 	public void selectDistribution() {
 		throw new SkipException("TODO: implement this test.");
+	}
+
+	public static void main(final String[] args) {
+		final Range<Double> domain = new Range<>(0.0, 100.0);
+		final int npopulation = 101;
+		final int loops = 100_000;
+
+		final Double min = domain.getMin();
+		final Double max = domain.getMax();
+		final Histogram<Double> histogram = Histogram.of(min, max, 37);
+
+		final Function<Genotype<DoubleGene>, Double> ff = gt -> gt.getGene().getAllele();
+		final Factory<Phenotype<DoubleGene, Double>> ptf = () ->
+			Phenotype.of(Genotype.of(DoubleChromosome.of(min, max)), ff, 12);
+
+		final Selector<DoubleGene, Double> selector =
+			new BoltzmannSelector<>(2.5);
+
+		for (int j = 0; j < loops; ++j) {
+			final Population<DoubleGene, Double> population = IntStream.range(0, npopulation)
+				.mapToObj(i -> ptf.newInstance())
+				.collect(Population.toPopulation());
+
+			selector.select(population, npopulation/2, Optimize.MINIMUM).stream()
+				.map(pt -> pt.getGenotype().getChromosome().getGene().getAllele())
+				.forEach(histogram);
+		}
+
+		System.out.println(histogram);
 	}
 
 }

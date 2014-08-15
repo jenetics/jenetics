@@ -46,7 +46,7 @@ public class ExponentialRankSelectorTest
 
 	@Override
 	protected Factory<ExponentialRankSelector<DoubleGene, Double>> factory() {
-		return () -> new ExponentialRankSelector<>(0.75);
+		return ExponentialRankSelector::new;
 	}
 
 	@Override
@@ -54,7 +54,6 @@ public class ExponentialRankSelectorTest
 		return new UniformDistribution<>(getDomain());
 	}
 
-	// TODO: implement select-distribution test.
 	@Override
 	@Test
 	public void selectDistribution() {
