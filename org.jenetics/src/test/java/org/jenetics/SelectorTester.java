@@ -180,7 +180,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		for (Phenotype<DoubleGene, Double> pt : selection) {
 			Assert.assertTrue(
 				population.contains(pt),
-				format("Population doesn't contain %s.", gt)
+				format("Population doesn't contain %s.", pt)
 			);
 		}
 	}
