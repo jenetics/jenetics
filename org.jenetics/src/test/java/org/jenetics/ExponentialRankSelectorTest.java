@@ -73,8 +73,7 @@ public class ExponentialRankSelectorTest
 		final Factory<Phenotype<DoubleGene, Double>> ptf = () ->
 			Phenotype.of(Genotype.of(DoubleChromosome.of(min, max)), ff, 12);
 
-		final ExponentialRankSelector<DoubleGene, Double> selector =
-			new ExponentialRankSelector<>(0.75);
+		final Selector<DoubleGene, Double> selector = new ExponentialRankSelector<>();
 
 		for (int j = 0; j < loops; ++j) {
 			final Population<DoubleGene, Double> population = IntStream.range(0, npopulation)
@@ -82,7 +81,7 @@ public class ExponentialRankSelectorTest
 				.collect(Population.toPopulation());
 
 			selector.select(population, npopulation/2, Optimize.MINIMUM).stream()
-				.map(pt -> pt.getGenotype().getChromosome().getGene().getAllele())
+				.map(pt -> pt.getGenotype().getGene().getAllele())
 				.forEach(histogram);
 		}
 

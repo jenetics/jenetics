@@ -73,8 +73,7 @@ public class BoltzmannSelectorTest
 		final Factory<Phenotype<DoubleGene, Double>> ptf = () ->
 			Phenotype.of(Genotype.of(DoubleChromosome.of(min, max)), ff, 12);
 
-		final Selector<DoubleGene, Double> selector =
-			new BoltzmannSelector<>(2.5);
+		final Selector<DoubleGene, Double> selector = new BoltzmannSelector<>();
 
 		for (int j = 0; j < loops; ++j) {
 			final Population<DoubleGene, Double> population = IntStream.range(0, npopulation)
@@ -82,7 +81,7 @@ public class BoltzmannSelectorTest
 				.collect(Population.toPopulation());
 
 			selector.select(population, npopulation/2, Optimize.MINIMUM).stream()
-				.map(pt -> pt.getGenotype().getChromosome().getGene().getAllele())
+				.map(pt -> pt.getGenotype().getGene().getAllele())
 				.forEach(histogram);
 		}
 
