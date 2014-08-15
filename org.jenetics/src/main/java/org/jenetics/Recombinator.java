@@ -21,6 +21,7 @@ package org.jenetics;
 
 import static java.lang.String.format;
 import static org.jenetics.internal.math.base.subset;
+import static org.jenetics.internal.math.random.indexes;
 
 import java.util.Random;
 
@@ -50,7 +51,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-01 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-15 $</em>
  */
 public abstract class Recombinator<
 	G extends Gene<?, G>,
@@ -100,7 +101,7 @@ public abstract class Recombinator<
 		final int order = Math.min(_order, population.size());
 
 		final IntRef alterations = new IntRef(0);
-		org.jenetics.internal.math.random.indexes(random, population.size(), _probability).forEach(i -> {
+		indexes(random, population.size(), _probability).forEach(i -> {
 			final int[] individuals = subset(population.size(), order, random);
 			individuals[0] = i;
 			alterations.value += recombine(population, individuals, generation);
