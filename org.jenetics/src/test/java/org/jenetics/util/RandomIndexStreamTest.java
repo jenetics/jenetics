@@ -30,7 +30,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import org.jenetics.internal.math.probability;
-import org.jenetics.internal.math.random;
 import org.jenetics.internal.util.IntRef;
 
 import org.jenetics.stat.Histogram;
