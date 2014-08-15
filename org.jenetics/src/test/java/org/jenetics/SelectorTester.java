@@ -130,10 +130,11 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 						.mapToDouble(Phenotype::getFitness)
 						.sum();
 
-				final double selectionSum = selector
-					.select(population, count, opt).stream()
-					.mapToDouble(Phenotype::getFitness)
-					.sum();
+				final double selectionSum =
+					selector
+						.select(population, count, opt).stream()
+						.mapToDouble(Phenotype::getFitness)
+						.sum();
 
 				if (opt == Optimize.MAXIMUM) {
 					Assert.assertTrue(
@@ -176,9 +177,9 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 			.select(population, count, opt);
 
 		Assert.assertEquals(selection.size(), count.intValue());
-		for (Object gt : selection) {
+		for (Phenotype<DoubleGene, Double> pt : selection) {
 			Assert.assertTrue(
-				population.contains(gt),
+				population.contains(pt),
 				format("Population doesn't contain %s.", gt)
 			);
 		}
