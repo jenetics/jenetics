@@ -25,7 +25,7 @@ import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-14 $</em>
+ * @version <em>$Date: 2014-08-15 $</em>
  */
 public class MonteCarloSelectorTest
 	extends SelectorTester<MonteCarloSelector<DoubleGene, Double>>
@@ -37,7 +37,7 @@ public class MonteCarloSelectorTest
 	}
 
 	@Override
-	protected boolean isCheckEnabled() {
+	protected boolean isDistributionCheckEnabled() {
 		return true;
 	}
 

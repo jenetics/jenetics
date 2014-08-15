@@ -24,6 +24,8 @@ import static java.lang.String.format;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
+import java.util.function.Function;
 import java.util.stream.IntStream;
 
 import org.testng.Assert;
@@ -34,12 +36,15 @@ import org.jenetics.stat.Distribution;
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.StatisticsAssert;
 import org.jenetics.util.Factory;
+import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.ObjectTester;
+import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Range;
+import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-14 $</em>
+ * @version <em>$Date: 2014-08-15 $</em>
  */
 public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 	extends ObjectTester<S>
@@ -52,16 +57,15 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 
 	protected abstract Distribution<Double> getDistribution();
 
-	private final int _histogramSize = 37;
 	protected int getHistogramSize() {
-		return _histogramSize;
+		return 37;
 	}
 
 	protected S selector() {
 		return factory().newInstance();
 	}
 
-	protected boolean isCheckEnabled() {
+	protected boolean isDistributionCheckEnabled() {
 		return true;
 	}
 
@@ -98,6 +102,62 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		}
 
 		selector().select(population, 1, null);
+	}
+
+	@Test(dataProvider = "selectPerformanceParameters")
+	public void selectPerformance(
+		final Integer size,
+		final Integer count,
+		final Optimize opt
+	) {
+		final Function<Genotype<DoubleGene>, Double> ff =
+			g -> g.getGene().getAllele();
+
+		final Factory<Phenotype<DoubleGene, Double>> ptf = () ->
+			Phenotype.of(Genotype.of(DoubleChromosome.of(0.0, 100.0)), ff, 1);
+
+		try (Scoped<Random> sr = RandomRegistry.scope(new LCG64ShiftRandom(543455))) {
+			final Population<DoubleGene, Double> population = IntStream.range(0, size)
+				.mapToObj(i -> ptf.newInstance())
+				.collect(Population.toPopulation());
+
+			final Selector<DoubleGene, Double> selector = selector();
+
+			if (!(selector instanceof MonteCarloSelector<?, ?>)) {
+				final double monteCarloSelectionSum =
+					new MonteCarloSelector<DoubleGene, Double>()
+						.select(population, count, opt).stream()
+						.mapToDouble(Phenotype::getFitness)
+						.sum();
+
+				final double selectionSum = selector
+					.select(population, count, opt).stream()
+					.mapToDouble(Phenotype::getFitness)
+					.sum();
+
+				if (opt == Optimize.MAXIMUM) {
+					Assert.assertTrue(
+						selectionSum > monteCarloSelectionSum,
+						format("%f <= %f", selectionSum, monteCarloSelectionSum)
+					);
+				} else {
+					Assert.assertTrue(
+						selectionSum < monteCarloSelectionSum,
+						format("%f >= %f", selectionSum, monteCarloSelectionSum)
+					);
+				}
+			}
+		}
+	}
+
+	@DataProvider(name = "selectPerformanceParameters")
+	public Object[][] selectPerformanceParameters() {
+		return new Object[][] {
+			{200, 100, Optimize.MAXIMUM},
+			{2000, 1000, Optimize.MAXIMUM},
+			{200, 100, Optimize.MINIMUM},
+			{2000, 1000, Optimize.MINIMUM}
+		};
 	}
 
 	@Test(dataProvider = "selectParameters")
@@ -179,7 +239,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		final Histogram<Double> histogram,
 		final Distribution<Double> distribution
 	) {
-		if (isCheckEnabled()) {
+		if (isDistributionCheckEnabled()) {
 			final double χ2 =  χ2(histogram, distribution);
 			final int degreeOfFreedom = histogram.length();
 			assert (degreeOfFreedom > 0);

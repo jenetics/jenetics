@@ -26,7 +26,7 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-14 $</em>
+ * @version <em>$Date: 2014-08-15 $</em>
  */
 public class TruncationSelectorTest
 	extends SelectorTester<TruncationSelector<DoubleGene, Double>>
@@ -47,7 +47,7 @@ public class TruncationSelectorTest
 	}
 
 	@Override
-	protected boolean isCheckEnabled() {
+	protected boolean isDistributionCheckEnabled() {
 		return false;
 	}
 
