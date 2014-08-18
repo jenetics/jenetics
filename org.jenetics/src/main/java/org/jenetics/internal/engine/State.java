@@ -29,6 +29,10 @@ import org.jenetics.Population;
  *
  * @param <G> the gene type
  * @param <C> the fitness type
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 3.0
+ * @version 3.0 &mdash; <em>$Date: 2014-08-18 $</em>
  */
 public final class State<
 	G extends Gene<?, G>,
