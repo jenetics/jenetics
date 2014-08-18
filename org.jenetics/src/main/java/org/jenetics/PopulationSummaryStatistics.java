@@ -34,7 +34,7 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-07-29 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-18 $</em>
  */
 public class PopulationSummaryStatistics<
 	G extends Gene<?, G>,
@@ -117,6 +117,19 @@ public class PopulationSummaryStatistics<
 			() -> new PopulationSummaryStatistics<>(optimize, currentGeneration),
 			(r, t) -> r.accept(mapper.apply(t)),
 			(a, b) -> {a.combine(b); return a;}
+		);
+	}
+
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Collector<Phenotype<G, C>, PopulationSummaryStatistics<G, C>, PopulationSummary<G, C>> collector(
+		final Optimize optimize,
+		final int currentGeneration
+	) {
+		return Collector.of(
+			() -> new PopulationSummaryStatistics<>(optimize, currentGeneration),
+			(r, t) -> r.accept(t),
+			(a, b) -> {a.combine(b); return a;},
+			s -> PopulationSummary.of(s)
 		);
 	}
 

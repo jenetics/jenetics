@@ -39,6 +39,8 @@ import org.jenetics.Genotype;
 import org.jenetics.Optimize;
 import org.jenetics.Phenotype;
 import org.jenetics.Population;
+import org.jenetics.PopulationSummary;
+import org.jenetics.PopulationSummaryStatistics;
 import org.jenetics.Selector;
 import org.jenetics.util.Factory;
 
@@ -254,6 +256,7 @@ public class Engine<
 	}
 
 
+
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EngineBuilder<G, C> newBuilder(
 		final Factory<Genotype<G>> genotypeFactory,
@@ -270,7 +273,16 @@ public class Engine<
 			.build();
 
 		final State<DoubleGene, Double> start = engine.newState();
-		engine.evolve(start);
+		EvolutionResult<DoubleGene, Double> result = engine.evolve(start);
+
+		PopulationSummaryStatistics<DoubleGene, Double> statistics =
+			new PopulationSummaryStatistics<>(engine._optimize, result.getState().getGeneration());
+
+		final PopulationSummary<DoubleGene, Double> summary = result.getState().getPopulation()
+			.parallelStream()
+			.collect(PopulationSummaryStatistics.collector(engine._optimize, 1));
+
+		System.out.println(summary.getBest());
 	}
 
 }
