@@ -40,7 +40,6 @@ import org.jenetics.Optimize;
 import org.jenetics.Phenotype;
 import org.jenetics.Population;
 import org.jenetics.PopulationSummary;
-import org.jenetics.PopulationSummaryStatistics;
 import org.jenetics.Selector;
 import org.jenetics.util.Factory;
 
@@ -272,17 +271,18 @@ public class Engine<
 				gt -> gt.getGene().getAllele())
 			.build();
 
-		final State<DoubleGene, Double> start = engine.newState();
-		EvolutionResult<DoubleGene, Double> result = engine.evolve(start);
+		State<DoubleGene, Double> state = engine.newState();
+		for (int i = 0; i < 10; ++i) {
+			final EvolutionResult<DoubleGene, Double> result = engine.evolve(state);
+			final PopulationSummary<DoubleGene, Double> summary = result.getState().getPopulation()
+				.stream()
+				.collect(PopulationSummary
+					.collector(engine._optimize, result.getState().getGeneration()));
 
-		PopulationSummaryStatistics<DoubleGene, Double> statistics =
-			new PopulationSummaryStatistics<>(engine._optimize, result.getState().getGeneration());
+			System.out.println(summary);
 
-		final PopulationSummary<DoubleGene, Double> summary = result.getState().getPopulation()
-			.parallelStream()
-			.collect(PopulationSummaryStatistics.collector(engine._optimize, 1));
-
-		System.out.println(summary.getBest());
+			state = result.getState();
+		}
 	}
 
 }
