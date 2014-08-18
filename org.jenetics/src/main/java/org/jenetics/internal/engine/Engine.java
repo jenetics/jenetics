@@ -207,36 +207,4 @@ public class Engine<
 		return population;
 	}
 
-	/**
-	 * Represents a state of the GA.
-	 *
-	 * @param <G> the gene type
-	 * @param <C> the fitness type
-	 */
-	public static final class State<
-		G extends Gene<?, G>,
-		C extends Comparable<? super C>
-	>
-	{
-		private final Population<G, C> _population;
-		private final int _generation;
-
-		public State(final Population<G, C> population, final int generation) {
-			_population = requireNonNull(population);
-			_generation = generation;
-		}
-
-		public Population<G, C> getPopulation() {
-			return _population;
-		}
-
-		public int getGeneration() {
-			return _generation;
-		}
-
-		public State<G, C> next(final Population<G, C> population) {
-			return new State<>(population, _generation + 1);
-		}
-	}
-
 }
