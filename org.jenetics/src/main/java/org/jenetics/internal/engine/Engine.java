@@ -27,6 +27,7 @@ import java.util.concurrent.Executor;
 import org.jenetics.internal.util.Concurrency;
 import org.jenetics.internal.util.TimedExecutor;
 import org.jenetics.internal.util.TimedResult;
+import org.jenetics.internal.util.Timer;
 import org.jenetics.internal.util.require;
 
 import org.jenetics.Alterer;
@@ -111,7 +112,9 @@ public class Engine<
 	 * @param state the current GA state
 	 * @return the new GA state.
 	 */
-	public State<G, C> evolve(final State<G, C> state) {
+	public EvolutionResult<G, C> evolve(final State<G, C> state) {
+		final Timer timer = Timer.of().start();
+
 		// Select the offspring population.
 		final CompletableFuture<TimedResult<Population<G, C>>> offspring =
 			_executor.async(() ->
@@ -157,7 +160,20 @@ public class Engine<
 			.thenApply(TimedResult.of(this::evaluate))
 			.join();
 
-		return state.next(result.get());
+		final EvolutionDurations durations = EvolutionDurations.of(
+			offspring.join().getDuration(),
+			survivors.join().getDuration(),
+			alteredOffspring.join().getDuration(),
+			filteredOffspring.join().getDuration(),
+			filteredSurvivors.join().getDuration(),
+			result.getDuration(),
+			timer.stop().getTime()
+		);
+
+		return EvolutionResult.of(
+			durations,
+			state.next(result.get())
+		);
 	}
 
 	private Population<G, C> selectSurvivors(final Population<G, C> population) {
@@ -194,7 +210,7 @@ public class Engine<
 		final Population<G,C> population,
 		final int generation
 	) {
-		return new AlterResult<>(
+		return AlterResult.of(
 			population,
 			_alterer.alter(population, generation)
 		);

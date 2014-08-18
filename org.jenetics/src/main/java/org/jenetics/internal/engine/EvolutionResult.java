@@ -21,62 +21,43 @@ package org.jenetics.internal.engine;
 
 import static java.util.Objects.requireNonNull;
 
-import java.io.Serializable;
-
 import org.jenetics.Gene;
-import org.jenetics.Population;
 
 /**
- * Represent the result of the validation/filtering step.
- *
- * @param <G> the gene type
- * @param <C> the fitness type
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
  * @version 3.0 &mdash; <em>$Date: 2014-08-18 $</em>
  */
-public final class FilterResult<
+public class EvolutionResult<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	implements Serializable
 {
-	private static final long serialVersionUID = 1L;
+	private final EvolutionDurations _durations;
+	private final State<G, C> _state;
 
-	private final Population<G, C> _population;
-	private final int _killCount;
-	private final int _invalidCount;
-
-	private FilterResult(
-		final Population<G, C> population,
-		final int killCount,
-		final int invalidCount
+	private EvolutionResult(
+		final EvolutionDurations durations,
+		final State<G, C> state
 	) {
-		_population = requireNonNull(population);
-		_killCount = killCount;
-		_invalidCount = invalidCount;
+		_durations = requireNonNull(durations);
+		_state = requireNonNull(state);
 	}
 
-	public Population<G, C> getPopulation() {
-		return _population;
+	public EvolutionDurations getDurations() {
+		return _durations;
 	}
 
-	public int getKillCount() {
-		return _killCount;
-	}
-
-	public int getInvalidCount() {
-		return _invalidCount;
+	public State<G, C> getState() {
+		return _state;
 	}
 
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	FilterResult<G, C> of(
-		final Population<G, C> population,
-		final int killCount,
-		final int invalidCount
+	EvolutionResult<G, C> of(
+		final EvolutionDurations durations,
+		final State<G, C> state
 	) {
-		return new FilterResult<>(population, killCount, invalidCount);
+		return new EvolutionResult<>(durations, state);
 	}
 
 }

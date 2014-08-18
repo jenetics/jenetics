@@ -47,7 +47,7 @@ public final class AlterResult<
 	private final Population<G, C> _population;
 	private final int _alterCount;
 
-	AlterResult(
+	private AlterResult(
 		final Population<G, C> population,
 		final int alterCount
 	) {
