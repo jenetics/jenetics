@@ -19,9 +19,11 @@
  */
 package org.jenetics;
 
+import static java.lang.String.format;
 import static org.jenetics.internal.util.Equality.eq;
 
 import java.util.Objects;
+import java.util.stream.Collector;
 
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
@@ -36,7 +38,7 @@ import org.jenetics.stat.IntSummary;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-07-10 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-18 $</em>
  */
 public final class PopulationSummary<
 	G extends Gene<?, G>,
@@ -125,6 +127,14 @@ public final class PopulationSummary<
 		);
 	}
 
+	@Override
+	public String toString() {
+		return format(
+			"PopulationSummary[count=%d, best=%s, worst=%s, age=%s]",
+			_count, _best, _worst, _ageSummary
+		);
+	}
+
 	/**
 	 * Create a new population summary object.
 	 *
@@ -163,13 +173,39 @@ public final class PopulationSummary<
 	 * @throws java.lang.NullPointerException if one of the parameters is
 	 *         {@code null}.
 	 */
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	PopulationSummary<G, C> of(final PopulationSummaryStatistics<G, C> statistics) {
 		return of(
 			(int)statistics.getAgeSummary().getCount(),
 			statistics.getBest(),
 			statistics.getWorst(),
 			IntSummary.of(statistics.getAgeSummary())
+		);
+	}
+
+	/**
+	 * Return a collector, which creates an population summary object.
+	 *
+	 * @param optimize the optimization strategy used
+	 * @param generation the current generation
+	 * @param <G> the gene type
+	 * @param <C> the fitness function result type
+	 * @return a new population summary collector
+	 */
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Collector<Phenotype<G, C>, ?, PopulationSummary<G, C>> collector(
+		final Optimize optimize,
+		final int generation
+	) {
+		return Collector.<
+			Phenotype<G, C>,
+			PopulationSummaryStatistics<G, C>,
+			PopulationSummary<G, C>
+		>of(
+			() -> new PopulationSummaryStatistics<>(optimize, generation),
+			PopulationSummaryStatistics::accept,
+			(a, b) -> {a.combine(b); return a;},
+			PopulationSummary::of
 		);
 	}
 

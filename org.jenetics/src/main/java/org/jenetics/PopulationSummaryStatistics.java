@@ -25,8 +25,6 @@ import static org.jenetics.internal.math.statistics.min;
 
 import java.util.IntSummaryStatistics;
 import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.stream.Collector;
 
 /**
  * @param <G> the gene type
@@ -36,7 +34,7 @@ import java.util.stream.Collector;
  * @since 3.0
  * @version 3.0 &mdash; <em>$Date: 2014-08-18 $</em>
  */
-public class PopulationSummaryStatistics<
+final class PopulationSummaryStatistics<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
@@ -50,7 +48,7 @@ public class PopulationSummaryStatistics<
 	private Phenotype<G, C> _worst = null;
 	private final IntSummaryStatistics _ageSummary = new IntSummaryStatistics();
 
-	public PopulationSummaryStatistics(
+	PopulationSummaryStatistics(
 		final Optimize optimize,
 		final int currentGeneration
 	) {
@@ -104,33 +102,6 @@ public class PopulationSummaryStatistics<
 	 */
 	public IntSummaryStatistics getAgeSummary() {
 		return _ageSummary;
-	}
-
-	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
-	Collector<T, ?, PopulationSummaryStatistics<G, C>> collector(
-		final Optimize optimize,
-		final int currentGeneration,
-		final Function<T, Phenotype<G, C>> mapper
-	) {
-		requireNonNull(mapper);
-		return Collector.of(
-			() -> new PopulationSummaryStatistics<>(optimize, currentGeneration),
-			(r, t) -> r.accept(mapper.apply(t)),
-			(a, b) -> {a.combine(b); return a;}
-		);
-	}
-
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Collector<Phenotype<G, C>, PopulationSummaryStatistics<G, C>, PopulationSummary<G, C>> collector(
-		final Optimize optimize,
-		final int currentGeneration
-	) {
-		return Collector.of(
-			() -> new PopulationSummaryStatistics<>(optimize, currentGeneration),
-			(r, t) -> r.accept(t),
-			(a, b) -> {a.combine(b); return a;},
-			s -> PopulationSummary.of(s)
-		);
 	}
 
 }
