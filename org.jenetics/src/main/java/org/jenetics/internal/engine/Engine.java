@@ -23,6 +23,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+import java.util.function.Function;
 
 import org.jenetics.internal.util.Concurrency;
 import org.jenetics.internal.util.TimedExecutor;
@@ -31,7 +32,10 @@ import org.jenetics.internal.util.Timer;
 import org.jenetics.internal.util.require;
 
 import org.jenetics.Alterer;
+import org.jenetics.DoubleChromosome;
+import org.jenetics.DoubleGene;
 import org.jenetics.Gene;
+import org.jenetics.Genotype;
 import org.jenetics.Optimize;
 import org.jenetics.Phenotype;
 import org.jenetics.Population;
@@ -53,7 +57,9 @@ public class Engine<
 {
 
 	// Needed context for population evolving.
-	private final Factory<Phenotype<G, C>> _phenotypeFactory;
+	private final Function<? super Genotype<G>, ? extends C> _fitnessFunction;
+	private final Function<? super C, ? extends C> _fitnessScaler;
+	private final Factory<Genotype<G>> _genotypeFactory;
 	private final Selector<G, C> _survivorsSelector;
 	private final Selector<G, C> _offspringSelector;
 	private final Alterer<G, C> _alterer;
@@ -68,6 +74,9 @@ public class Engine<
 	/**
 	 * Create a new GA engine with the given parameters.
 	 *
+	 * @param genotypeFactory the genotype factory this GA is working with.
+	 * @param fitnessFunction the fitness function this GA is using.
+	 * @param fitnessScaler the fitness scaler this GA is using.
 	 * @param survivorsSelector the selector used for selecting the survivors
 	 * @param offspringSelector the selector used for selecting the offspring
 	 * @param alterer the alterer used for altering the offspring
@@ -75,14 +84,15 @@ public class Engine<
 	 * @param offspringCount the number of the offspring individuals
 	 * @param survivorsCount the number of the survivor individuals
 	 * @param maximalPhenotypeAge the maximal age of an individual
-	 * @param phenotypeFactory the factory for creating new phenotypes
 	 * @param executor the executor used for executing the single evolve steps
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if the given integer values are smaller
 	 *         than one.
 	 */
 	public Engine(
-        final Factory<Phenotype<G, C>> phenotypeFactory,
+		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
+		final Function<? super C, ? extends C> fitnessScaler,
+        final Factory<Genotype<G>> genotypeFactory,
 		final Selector<G, C> survivorsSelector,
 		final Selector<G, C> offspringSelector,
 		final Alterer<G, C> alterer,
@@ -92,7 +102,9 @@ public class Engine<
 		final int maximalPhenotypeAge,
 		final Executor executor
 	) {
-        _phenotypeFactory = requireNonNull(phenotypeFactory);
+		_fitnessFunction = requireNonNull(fitnessFunction);
+		_fitnessScaler = requireNonNull(fitnessScaler);
+		_genotypeFactory = requireNonNull(genotypeFactory);
 		_survivorsSelector = requireNonNull(survivorsSelector);
 		_offspringSelector = requireNonNull(offspringSelector);
 		_alterer = requireNonNull(alterer);
@@ -104,6 +116,15 @@ public class Engine<
 
 
 		_executor = new TimedExecutor(requireNonNull(executor));
+	}
+
+	public State<G, C> newState() {
+		final int generation = 1;
+		final int size = _offspringCount + _survivorsCount;
+		final Population<G, C> population = new Population<>(size);
+		population.fill(() -> newPhenotype(generation), size);
+
+		return new State<>(evaluate(population), generation);
 	}
 
 	/**
@@ -195,15 +216,24 @@ public class Engine<
 			final Phenotype<G, C> individual = population.get(i);
 
 			if (!individual.isValid()) {
-				population.set(i, _phenotypeFactory.newInstance());
+				population.set(i, newPhenotype(generation));
 				++invalidCount;
 			} else if (individual.getAge(generation) > _maximalPhenotypeAge) {
-				population.set(i, _phenotypeFactory.newInstance());
+				population.set(i, newPhenotype(generation));
 				++killCount;
 			}
 		}
 
 		return FilterResult.of(population, killCount, invalidCount);
+	}
+
+	private Phenotype<G, C> newPhenotype(final int generation) {
+		return Phenotype.of(
+			_genotypeFactory.newInstance(),
+			_fitnessFunction,
+			_fitnessScaler,
+			generation
+		);
 	}
 
 	private AlterResult<G, C> alter(
@@ -221,6 +251,26 @@ public class Engine<
 			c.execute(population);
 		}
 		return population;
+	}
+
+
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	EngineBuilder<G, C> newBuilder(
+		final Factory<Genotype<G>> genotypeFactory,
+		final Function<? super Genotype<G>, ? extends C> fitnessFunction
+	) {
+		return new EngineBuilder<>(genotypeFactory, fitnessFunction);
+	}
+
+	public static void main(final String[] args) {
+		final Engine<DoubleGene, Double> engine = Engine
+			.newBuilder(
+				Genotype.of(DoubleChromosome.of(0.0, 1.0)),
+				gt -> gt.getGene().getAllele())
+			.build();
+
+		final State<DoubleGene, Double> start = engine.newState();
+		engine.evolve(start);
 	}
 
 }
