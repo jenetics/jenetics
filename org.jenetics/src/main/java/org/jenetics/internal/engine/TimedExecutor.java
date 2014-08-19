@@ -30,9 +30,9 @@ import java.util.function.Supplier;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date$</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-19 $</em>
  */
-public final class TimedExecutor {
+final class TimedExecutor {
 	private final Executor _executor;
 
 	public TimedExecutor(final Executor executor) {
