@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.util;
+package org.jenetics.internal.engine;
 
 import static java.util.Objects.requireNonNull;
 
@@ -31,7 +31,7 @@ import java.util.function.Supplier;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-07 $</em>
+ * @version 3.0 &mdash; <em>$Date$</em>
  */
 public final class TimedResult<T> implements Serializable {
 	private static final long serialVersionUID = 1L;

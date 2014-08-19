@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.util;
+package org.jenetics.internal.engine;
 
 import static java.util.Objects.requireNonNull;
 
@@ -25,12 +25,14 @@ import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
 
+import org.jenetics.internal.util.NanoClock;
+
 /**
  * Timer implementation for measuring execution durations.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-15 $</em>
+ * @version 3.0 &mdash; <em>$Date$</em>
  */
 public final class Timer {
 

@@ -26,9 +26,6 @@ import java.util.concurrent.Executor;
 import java.util.function.Function;
 
 import org.jenetics.internal.util.Concurrency;
-import org.jenetics.internal.util.TimedExecutor;
-import org.jenetics.internal.util.TimedResult;
-import org.jenetics.internal.util.Timer;
 import org.jenetics.internal.util.require;
 
 import org.jenetics.Alterer;
