@@ -43,22 +43,28 @@ public final class EvolutionResult<
 {
 	private static final long serialVersionUID = 1L;
 
-	private final EvolutionDurations _durations;
 	private final Population<G, C> _population;
 	private final int _generation;
 
+	private final EvolutionDurations _durations;
+	private final int _killCount;
+	private final int _invalidCount;
+	private final int _alterCount;
+
 	private EvolutionResult(
-		final EvolutionDurations durations,
 		final Population<G, C> population,
-		final int generation
+		final int generation,
+		final EvolutionDurations durations,
+		final int killCount,
+		final int invalidCount,
+		final int alterCount
 	) {
-		_durations = requireNonNull(durations);
 		_population = requireNonNull(population);
 		_generation = generation;
-	}
-
-	public EvolutionDurations getDurations() {
-		return _durations;
+		_durations = requireNonNull(durations);
+		_killCount = killCount;
+		_invalidCount = invalidCount;
+		_alterCount = alterCount;
 	}
 
 	public Population<G, C> getPopulation() {
@@ -69,6 +75,22 @@ public final class EvolutionResult<
 		return _generation;
 	}
 
+	public EvolutionDurations getDurations() {
+		return _durations;
+	}
+
+	public int getKillCount() {
+		return _killCount;
+	}
+
+	public int getInvalidCount() {
+		return _invalidCount;
+	}
+
+	public int getAlterCount() {
+		return _alterCount;
+	}
+
 	public EvolutionStart<G, C> next() {
 		return EvolutionStart.of(_population, _generation + 1);
 	}
@@ -77,6 +99,9 @@ public final class EvolutionResult<
 	public int hashCode() {
 		return Hash.of(getClass())
 			.and(_durations)
+			.and(_killCount)
+			.and(_invalidCount)
+			.and(_alterCount)
 			.and(_population)
 			.and(_generation).value();
 	}
@@ -85,6 +110,9 @@ public final class EvolutionResult<
 	public boolean equals(final Object obj) {
 		return Equality.of(this, obj).test(result ->
 			eq(_durations, result._durations) &&
+			eq(_killCount, result._killCount) &&
+			eq(_invalidCount, result._invalidCount) &&
+			eq(_alterCount, result._alterCount) &&
 			eq(_population, result._population) &&
 			eq(_generation, result._population)
 		);
@@ -92,11 +120,21 @@ public final class EvolutionResult<
 
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionResult<G, C> of(
-		final EvolutionDurations durations,
 		final Population<G, C> population,
-		final int generation
+		final int generation,
+		final EvolutionDurations durations,
+		final int killCount,
+		final int invalidCount,
+		final int alterCount
 	) {
-		return new EvolutionResult<>(durations, population, generation);
+		return new EvolutionResult<>(
+			population,
+			generation,
+			durations,
+			killCount,
+			invalidCount,
+			alterCount
+		);
 	}
 
 }
