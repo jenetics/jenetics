@@ -119,52 +119,52 @@ public class Engine<
 		_executor = new TimedExecutor(requireNonNull(executor));
 	}
 
-	public EvolutionStart<G, C> initialState() {
+	public EvolutionStart<G, C> evaluationStart() {
 		final int generation = 1;
 		final int size = _offspringCount + _survivorsCount;
 		final Population<G, C> population = new Population<>(size);
 		population.fill(() -> newPhenotype(generation), size);
 
-		return new EvolutionStart<>(evaluate(population), generation);
+		return EvolutionStart.of(evaluate(population), generation);
 	}
 
 	/**
 	 * Performs one generation step.
 	 *
-	 * @param state the current GA state
-	 * @return the new GA state.
+	 * @param start the evolution start state
+	 * @return the resulting evolution state
 	 */
-	public EvolutionResult<G, C> evolve(final EvolutionStart<G, C> state) {
+	public EvolutionResult<G, C> evolve(final EvolutionStart<G, C> start) {
 		final Timer timer = Timer.of().start();
 
 		// Select the offspring population.
 		final CompletableFuture<TimedResult<Population<G, C>>> offspring =
 			_executor.async(() ->
-				selectOffspring(state.getPopulation())
+				selectOffspring(start.getPopulation())
 			);
 
 		// Select the survivor population.
 		final CompletableFuture<TimedResult<Population<G, C>>> survivors =
 			_executor.async(() ->
-				selectSurvivors(state.getPopulation())
+				selectSurvivors(start.getPopulation())
 			);
 
 		// Altering the offspring population.
 		final CompletableFuture<TimedResult<AlterResult<G, C>>> alteredOffspring =
 			_executor.thenApply(offspring, p ->
-				alter(p.get(), state.getGeneration())
+				alter(p.get(), start.getGeneration())
 			);
 
 		// Filter and replace invalid and to old survivor individuals.
 		final CompletableFuture<TimedResult<FilterResult<G, C>>> filteredSurvivors =
 			_executor.thenApply(survivors, pop ->
-				filter(pop.get(), state.getGeneration())
+				filter(pop.get(), start.getGeneration())
 			);
 
 		// Filter and replace invalid and to old offspring individuals.
 		final CompletableFuture<TimedResult<FilterResult<G, C>>> filteredOffspring =
 			_executor.thenApply(alteredOffspring, pop ->
-				filter(pop.get().getPopulation(), state.getGeneration())
+				filter(pop.get().getPopulation(), start.getGeneration())
 			);
 
 		// Combining survivors and offspring to the new population.
@@ -194,7 +194,8 @@ public class Engine<
 
 		return EvolutionResult.of(
 			durations,
-			state.next(result.get())
+			result.get(),
+			start.getGeneration()
 		);
 	}
 
@@ -271,17 +272,17 @@ public class Engine<
 				gt -> gt.getGene().getAllele())
 			.build();
 
-		EvolutionStart<DoubleGene, Double> state = engine.initialState();
+		EvolutionStart<DoubleGene, Double> start = engine.evaluationStart();
 		for (int i = 0; i < 10; ++i) {
-			final EvolutionResult<DoubleGene, Double> result = engine.evolve(state);
-			final PopulationSummary<DoubleGene, Double> summary = result.getState().getPopulation()
-				.stream()
-				.collect(PopulationSummary
-					.collector(engine._optimize, result.getState().getGeneration()));
+			final EvolutionResult<DoubleGene, Double> result = engine.evolve(start);
+			final PopulationSummary<DoubleGene, Double> summary =
+				result.getPopulation().stream()
+					.collect(PopulationSummary
+						.collector(engine._optimize, result.getGeneration()));
 
 			System.out.println(summary);
 
-			state = result.getState();
+			start = result.next();
 		}
 	}
 
