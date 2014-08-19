@@ -49,7 +49,7 @@ import org.jenetics.util.Factory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-18 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-19 $</em>
  */
 public class Engine<
 	G extends Gene<?, G>,
@@ -119,13 +119,13 @@ public class Engine<
 		_executor = new TimedExecutor(requireNonNull(executor));
 	}
 
-	public State<G, C> newState() {
+	public EvolutionStart<G, C> initialState() {
 		final int generation = 1;
 		final int size = _offspringCount + _survivorsCount;
 		final Population<G, C> population = new Population<>(size);
 		population.fill(() -> newPhenotype(generation), size);
 
-		return new State<>(evaluate(population), generation);
+		return new EvolutionStart<>(evaluate(population), generation);
 	}
 
 	/**
@@ -134,7 +134,7 @@ public class Engine<
 	 * @param state the current GA state
 	 * @return the new GA state.
 	 */
-	public EvolutionResult<G, C> evolve(final State<G, C> state) {
+	public EvolutionResult<G, C> evolve(final EvolutionStart<G, C> state) {
 		final Timer timer = Timer.of().start();
 
 		// Select the offspring population.
@@ -271,7 +271,7 @@ public class Engine<
 				gt -> gt.getGene().getAllele())
 			.build();
 
-		State<DoubleGene, Double> state = engine.newState();
+		EvolutionStart<DoubleGene, Double> state = engine.initialState();
 		for (int i = 0; i < 10; ++i) {
 			final EvolutionResult<DoubleGene, Double> result = engine.evolve(state);
 			final PopulationSummary<DoubleGene, Double> summary = result.getState().getPopulation()

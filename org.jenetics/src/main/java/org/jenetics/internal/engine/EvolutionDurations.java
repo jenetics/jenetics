@@ -20,15 +20,21 @@
 package org.jenetics.internal.engine;
 
 import static java.util.Objects.requireNonNull;
+import static org.jenetics.internal.util.Equality.eq;
 
+import java.io.Serializable;
 import java.time.Duration;
+
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-18 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-19 $</em>
  */
-public class EvolutionDurations {
+public class EvolutionDurations implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	private final Duration _offspringSelectionDuration;
 	private final Duration _survivorsSelectionDuration;
@@ -82,6 +88,31 @@ public class EvolutionDurations {
 
 	public Duration getEvolveDuration() {
 		return _evolveDuration;
+	}
+
+	@Override
+	public int hashCode() {
+		return Hash.of(getClass())
+			.and(_offspringSelectionDuration)
+			.and(_survivorsSelectionDuration)
+			.and(_offspringAlterDuration)
+			.and(_offspringFilterDuration)
+			.and(_survivorFilterDuration)
+			.and(_evaluationDuration)
+			.and(_evolveDuration).value();
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return Equality.of(this, obj).test(d ->
+			eq(_offspringSelectionDuration, d._offspringSelectionDuration) &&
+			eq(_survivorsSelectionDuration, d._survivorsSelectionDuration) &&
+			eq(_offspringAlterDuration, d._offspringAlterDuration) &&
+			eq(_offspringFilterDuration, d._offspringFilterDuration) &&
+			eq(_survivorFilterDuration, d._survivorFilterDuration) &&
+			eq(_evaluationDuration, d._evaluationDuration) &&
+			eq(_evolveDuration, d._evolveDuration)
+		);
 	}
 
 	public static EvolutionDurations of(
