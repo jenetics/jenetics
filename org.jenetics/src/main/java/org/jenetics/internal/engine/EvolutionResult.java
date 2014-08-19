@@ -26,7 +26,7 @@ import org.jenetics.Gene;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-18 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-19 $</em>
  */
 public class EvolutionResult<
 	G extends Gene<?, G>,
@@ -34,11 +34,11 @@ public class EvolutionResult<
 >
 {
 	private final EvolutionDurations _durations;
-	private final State<G, C> _state;
+	private final EvolutionStart<G, C> _state;
 
 	private EvolutionResult(
 		final EvolutionDurations durations,
-		final State<G, C> state
+		final EvolutionStart<G, C> state
 	) {
 		_durations = requireNonNull(durations);
 		_state = requireNonNull(state);
@@ -48,14 +48,14 @@ public class EvolutionResult<
 		return _durations;
 	}
 
-	public State<G, C> getState() {
+	public EvolutionStart<G, C> getState() {
 		return _state;
 	}
 
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionResult<G, C> of(
 		final EvolutionDurations durations,
-		final State<G, C> state
+		final EvolutionStart<G, C> state
 	) {
 		return new EvolutionResult<>(durations, state);
 	}

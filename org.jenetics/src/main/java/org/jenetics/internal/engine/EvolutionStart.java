@@ -32,9 +32,9 @@ import org.jenetics.Population;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-18 $</em>
+ * @version 3.0 &mdash; <em>$Date$</em>
  */
-public final class State<
+public final class EvolutionStart<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
@@ -42,7 +42,7 @@ public final class State<
 	private final Population<G, C> _population;
 	private final int _generation;
 
-	public State(final Population<G, C> population, final int generation) {
+	public EvolutionStart(final Population<G, C> population, final int generation) {
 		_population = requireNonNull(population);
 		_generation = generation;
 	}
@@ -55,7 +55,7 @@ public final class State<
 		return _generation;
 	}
 
-	public State<G, C> next(final Population<G, C> population) {
-		return new State<>(population, _generation + 1);
+	public EvolutionStart<G, C> next(final Population<G, C> population) {
+		return new EvolutionStart<>(population, _generation + 1);
 	}
 }
