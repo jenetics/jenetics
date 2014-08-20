@@ -28,11 +28,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.apache.commons.math3.stat.inference.ChiSquareTest;
 import org.testng.SkipException;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import org.jenetics.internal.util.Named;
 import org.jenetics.internal.util.Pair;
 
 import org.jenetics.stat.Distribution;
@@ -76,7 +76,7 @@ public class TournamentSelectorTest
 	)
 	public void selectDist(
 		final Integer tournamentSize,
-		final double[] expected,
+		final Named<double[]> expected,
 		final Optimize opt
 	) {
 		final int npopulation = 800;
@@ -89,7 +89,7 @@ public class TournamentSelectorTest
 			loops
 		);
 
-		StatisticsAssert.assertDistribution(distribution, expected);
+		StatisticsAssert.assertDistribution(distribution, expected.value);
 	}
 
 	@DataProvider
@@ -105,7 +105,11 @@ public class TournamentSelectorTest
 		final int[] sizes = TestData.toInt(csv[0]);
 
 		return IntStream.range(0, sizes.length)
-			.mapToObj(i -> new Object[]{sizes[i], expected(csv, i), Optimize.MAXIMUM})
+			.mapToObj(i -> new Object[]{
+				sizes[i],
+				Named.of(format("distribution[%d]", sizes[i]), expected(csv, i)),
+				Optimize.MAXIMUM
+			})
 			.toArray(Object[][]::new);
 	}
 
@@ -131,7 +135,7 @@ public class TournamentSelectorTest
 
 			final List<Pair<Integer, Histogram<Double>>> result = sizes.parallelStream()
 				.map(i -> Pair.of(i, new TournamentSelector<DoubleGene, Double>(i)))
-				.map(s -> Pair.of(s._1, SelectorTester.distribution(s._2, opt, npopulation, loops)))
+				.map(s -> Pair.of(s._1, distribution(s._2, opt, npopulation, loops)))
 				.collect(Collectors.toList());
 
 			result.sort((a, b) -> a._1 - b._1);

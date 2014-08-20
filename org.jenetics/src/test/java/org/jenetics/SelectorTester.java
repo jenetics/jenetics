@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
+import java.util.stream.Collector;
 import java.util.stream.IntStream;
 
 import org.testng.Assert;
@@ -285,9 +286,16 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		final Factory<Phenotype<DoubleGene, Double>> ptf = () ->
 			Phenotype.of(Genotype.of(DoubleChromosome.of(min, max)), ff, 1);
 
-		final Histogram<Double> histogram = Histogram.of(min, max, nclasses);
+		final Collector<Histogram<Double>, Histogram<Double>, Histogram<Double>>
+		collector = Collector.of(
+			() -> Histogram.of(min, max, nclasses),
+			(a, b) -> a.combine(b),
+			(a, b) -> {a.combine(b); return a;}
+		);
 
-		for (int j = 0; j < loops; ++j) {
+		return IntStream.range(0, loops).parallel().mapToObj(j -> {
+			final Histogram<Double> hist = Histogram.of(min, max, nclasses);
+
 			final Population<DoubleGene, Double> population =
 				IntStream.range(0, npopulation)
 					.mapToObj(i -> ptf.newInstance())
@@ -295,10 +303,12 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 
 			selector.select(population, npopulation/2, opt).stream()
 				.map(pt -> pt.getGenotype().getGene().getAllele())
-				.forEach(histogram);
-		}
+				.forEach(hist::accept);
 
-		return histogram;
+			return hist;
+		}).collect(collector);
 	}
+
+
 
 }
