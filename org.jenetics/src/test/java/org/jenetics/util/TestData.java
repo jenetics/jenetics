@@ -24,11 +24,14 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-14 $</em>
+ * @version <em>$Date: 2014-08-20 $</em>
  */
 public class TestData implements Iterable<String[]> {
 
@@ -68,6 +71,10 @@ public class TestData implements Iterable<String[]> {
 		};
 	}
 
+	public Stream<String[]> stream() {
+		return StreamSupport.stream(spliterator(), false);
+	}
+
 	private static final class Reader implements Closeable {
 
 		private final BufferedReader _reader;
@@ -103,4 +110,23 @@ public class TestData implements Iterable<String[]> {
 		}
 	}
 
+	public static int[] toInt(final String[] line) {
+		return Arrays.stream(line).mapToInt(Integer::parseInt).toArray();
+	}
+
+	public static int[] toInt(final double[] array) {
+		final int[] result = new int[array.length];
+		for (int i = 0; i < result.length; ++i) {
+			result[i] = (int)array[i];
+		}
+		return result;
+	}
+
+	public static long[] toLong(final String[] line) {
+		return Arrays.stream(line).mapToLong(Long::parseLong).toArray();
+	}
+
+	public static double[] toDouble(final String[] line) {
+		return Arrays.stream(line).mapToDouble(Double::parseDouble).toArray();
+	}
 }

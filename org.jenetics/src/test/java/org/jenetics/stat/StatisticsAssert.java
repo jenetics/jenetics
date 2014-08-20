@@ -20,13 +20,14 @@
 package org.jenetics.stat;
 
 import org.apache.commons.math3.distribution.ChiSquaredDistribution;
+import org.apache.commons.math3.stat.inference.ChiSquareTest;
 import org.testng.Assert;
 
 import org.jenetics.internal.util.require;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-05 $</em>
+ * @version <em>$Date: 2014-08-20 $</em>
  */
 public final class StatisticsAssert {
 
@@ -62,8 +63,31 @@ public final class StatisticsAssert {
 			);
 	}
 
-	public static double chi(final double p, final int dof) {
-		return new ChiSquaredDistribution(dof).inverseCumulativeProbability(p);
+	public static <C extends Comparable<? super C>> void assertDistribution(
+		final Histogram<C> distribution,
+		final double[] expected
+	) {
+		final double χ2 = new ChiSquareTest()
+			.chiSquare(expected, distribution.getHistogram());
+
+		final int degreeOfFreedom = distribution.length();
+		assert (degreeOfFreedom > 0);
+
+		final double maxChi = chi(0.999, degreeOfFreedom);
+
+		Assert.assertTrue(
+			χ2 <= maxChi,
+			String.format(
+				"The histogram doesn't follow the given distribution." +
+				"χ2 must be smaller than %f but was %f",
+				maxChi, χ2
+			)
+		);
+	}
+
+	public static double chi(final double p, final int degreeOfFreedom) {
+		return new ChiSquaredDistribution(degreeOfFreedom)
+			.inverseCumulativeProbability(p);
 	}
 
 }

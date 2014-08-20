@@ -44,7 +44,7 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-15 $</em>
+ * @version <em>$Date: 2014-08-20 $</em>
  */
 public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 	extends ObjectTester<S>
@@ -104,8 +104,8 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		selector().select(population, 1, null);
 	}
 
-	@Test(dataProvider = "selectPerformanceParameters")
-	public void selectPerformance(
+	@Test(dataProvider = "selectionPerformanceParameters")
+	public void selectionPerformance(
 		final Integer size,
 		final Integer count,
 		final Optimize opt
@@ -151,8 +151,8 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		}
 	}
 
-	@DataProvider(name = "selectPerformanceParameters")
-	public Object[][] selectPerformanceParameters() {
+	@DataProvider(name = "selectionPerformanceParameters")
+	public Object[][] selectionPerformanceParameters() {
 		return new Object[][] {
 			{200, 100, Optimize.MAXIMUM},
 			{2000, 1000, Optimize.MAXIMUM},
@@ -163,18 +163,18 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 
 	@Test(dataProvider = "selectParameters")
 	public void select(final Integer size, final Integer count, final Optimize opt) {
-		final Factory<Genotype<DoubleGene>> gtf =
-			Genotype.of(new DoubleChromosome(0.0, 1_000.0));
+		final Function<Genotype<DoubleGene>, Double> ff =
+			gt -> gt.getGene().getAllele();
 
-		final Population<DoubleGene, Double> population =
-			new Population<>(size);
+		final Factory<Phenotype<DoubleGene, Double>> ptf = () ->
+			Phenotype.of(Genotype.of(DoubleChromosome.of(0.0, 1_000.0)), ff, 1);
 
-		for (int i = 0, n = size; i < n; ++i) {
-			population.add(Phenotype.of(gtf.newInstance(), TestUtils.FF, 12));
-		}
+		final Population<DoubleGene, Double> population = IntStream.range(0, size)
+			.mapToObj(i -> ptf.newInstance())
+			.collect(Population.toPopulation());
 
-		final Population<DoubleGene, Double> selection = selector()
-			.select(population, count, opt);
+		final Population<DoubleGene, Double> selection =
+			selector().select(population, count, opt);
 
 		Assert.assertEquals(selection.size(), count.intValue());
 		for (Phenotype<DoubleGene, Double> pt : selection) {
@@ -211,17 +211,18 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		final Double max = getDomain().getMax();
 		final Histogram<Double> histogram = Histogram.of(min, max, getHistogramSize());
 
-		final Factory<Phenotype<DoubleGene, Double>> ptf = () ->
-			Phenotype.of(Genotype.of(DoubleChromosome.of(min, max)), TestUtils.FF, 12);
+		final Function<Genotype<DoubleGene>, Double> ff =
+			gt -> gt.getGene().getAllele();
 
-		final S selector = selector();
+		final Factory<Phenotype<DoubleGene, Double>> ptf = () ->
+			Phenotype.of(Genotype.of(DoubleChromosome.of(min, max)), ff, 12);
 
 		for (int j = 0; j < loops; ++j) {
 			final Population<DoubleGene, Double> population = IntStream.range(0, npopulation)
 				.mapToObj(i -> ptf.newInstance())
 				.collect(Population.toPopulation());
 
-			selector.select(population, npopulation, Optimize.MAXIMUM).stream()
+			selector().select(population, npopulation, Optimize.MAXIMUM).stream()
 				.map(pt -> pt.getGenotype().getGene().getAllele())
 				.forEach(histogram);
 		}
@@ -266,6 +267,38 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 				)
 			);
 		}
+	}
+
+	public static Histogram<Double> distribution(
+		final Selector<DoubleGene, Double> selector,
+		final Optimize opt,
+		final int npopulation,
+		final int loops
+	) {
+		final int nclasses = 71;
+		final double min = 0.0;
+		final double max = 1_000.0;
+
+		final Function<Genotype<DoubleGene>, Double> ff =
+			gt -> gt.getGene().getAllele();
+
+		final Factory<Phenotype<DoubleGene, Double>> ptf = () ->
+			Phenotype.of(Genotype.of(DoubleChromosome.of(min, max)), ff, 1);
+
+		final Histogram<Double> histogram = Histogram.of(min, max, nclasses);
+
+		for (int j = 0; j < loops; ++j) {
+			final Population<DoubleGene, Double> population =
+				IntStream.range(0, npopulation)
+					.mapToObj(i -> ptf.newInstance())
+					.collect(Population.toPopulation());
+
+			selector.select(population, npopulation/2, opt).stream()
+				.map(pt -> pt.getGenotype().getGene().getAllele())
+				.forEach(histogram);
+		}
+
+		return histogram;
 	}
 
 }
