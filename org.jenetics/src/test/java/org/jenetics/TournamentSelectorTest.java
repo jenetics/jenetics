@@ -47,7 +47,7 @@ import org.jenetics.util.TestData;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-20 $</em>
+ * @version <em>$Date: 2014-08-21 $</em>
  */
 public class TournamentSelectorTest
 	extends SelectorTester<TournamentSelector<DoubleGene, Double>>
@@ -66,7 +66,7 @@ public class TournamentSelectorTest
 	@Override
 	@Test
 	public void selectDistribution() {
-		throw new SkipException("TODO: implement this test.");
+		//throw new SkipException("TODO: implement this test.");
 	}
 
 	@Test(
@@ -122,7 +122,10 @@ public class TournamentSelectorTest
 	}
 
 	public static void main(final String[] args) {
+		System.out.println("MAXIMUM");
 		writeDistributionData(Optimize.MAXIMUM);
+		System.out.println("MINIMUM");
+		writeDistributionData(Optimize.MINIMUM);
 	}
 
 	private static void writeDistributionData(final Optimize opt) {
@@ -130,8 +133,8 @@ public class TournamentSelectorTest
 		try (Scoped<LCG64ShiftRandom> sr = RandomRegistry.scope(random)) {
 			final List<Integer> sizes = Arrays.asList(2, 3, 4, 5, 6, 7, 13, 23, 37);
 
-			final int npopulation = 2_500;
-			final int loops = 250_000;
+			final int npopulation = 5000;
+			final int loops = 1_000_000;
 
 			final List<Pair<Integer, Histogram<Double>>> result = sizes.parallelStream()
 				.map(i -> Pair.of(i, new TournamentSelector<DoubleGene, Double>(i)))
@@ -161,8 +164,8 @@ public class TournamentSelectorTest
 			.toArray(double[][]::new);
 
 		final NumberFormat format = NumberFormat.getNumberInstance();
-		format.setMinimumFractionDigits(9);
-		format.setMaximumFractionDigits(9);
+		format.setMinimumFractionDigits(15);
+		format.setMaximumFractionDigits(15);
 
 		for (int i = 0; i < array[0].length; ++i) {
 			for (int j = 0; j < array.length; ++j) {
