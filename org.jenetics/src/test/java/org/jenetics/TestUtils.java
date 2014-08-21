@@ -19,7 +19,6 @@
  */
 package org.jenetics;
 
-import java.io.Serializable;
 import java.util.Random;
 import java.util.function.Function;
 
@@ -31,7 +30,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-15 $</em>
+ * @version <em>$Date: 2014-08-21 $</em>
  */
 class TestUtils {
 	private TestUtils() {require.noInstance();}
