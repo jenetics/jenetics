@@ -38,15 +38,13 @@ import org.jenetics.stat.Variance;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-15 $</em>
+ * @version <em>$Date: 2014-08-21 $</em>
  */
 public class RandomIndexStreamTest {
 
 	@Test
 	public void compatibility() {
-		final TestData data = new TestData(
-			"/org/jenetics/util/IndexStream.Random.dat"
-		);
+		final TestData data = TestData.of("/org/jenetics/util/IndexStream.Random");
 
 		for (String[] line : data) {
 			final Random random = new LCG64ShiftRandom.ThreadSafe(0);
@@ -93,9 +91,8 @@ public class RandomIndexStreamTest {
 		final Random random = new LCG64ShiftRandom();
 		final Range<Long> domain = new Range<>(0L, n.longValue());
 
-		final Histogram<Long> histogram = Histogram.of(
-					domain.getMin(), domain.getMax(), 10
-				);
+		final Histogram<Long> histogram =
+			Histogram.of(domain.getMin(), domain.getMax(), 10);
 		final Variance<Long> variance = new Variance<>();
 		for (int i = 0; i < 2500; ++i) {
 			final long k = k(n, p, random);

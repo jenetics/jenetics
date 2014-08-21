@@ -25,6 +25,8 @@ import java.io.PrintStream;
 import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -152,7 +154,7 @@ public class TournamentSelectorTest
 				.collect(Collectors.toList());
 
 			final String header = sizes.stream()
-				.map(i -> i.toString())
+				.map(Objects::toString)
 				.collect(Collectors.joining(",", "", ""));
 
 			System.out.println(header);
@@ -168,7 +170,7 @@ public class TournamentSelectorTest
 			.map(Histogram::getNormalizedHistogram)
 			.toArray(double[][]::new);
 
-		final NumberFormat format = NumberFormat.getNumberInstance();
+		final NumberFormat format = NumberFormat.getNumberInstance(Locale.ENGLISH);
 		format.setMinimumFractionDigits(15);
 		format.setMaximumFractionDigits(15);
 
