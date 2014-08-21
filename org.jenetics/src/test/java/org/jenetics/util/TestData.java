@@ -26,12 +26,15 @@ import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 /**
+ * Helper class for reading test data from file.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-20 $</em>
+ * @version <em>$Date: 2014-08-21 $</em>
  */
 public class TestData implements Iterable<String[]> {
 
@@ -44,7 +47,6 @@ public class TestData implements Iterable<String[]> {
 	@Override
 	public Iterator<String[]> iterator() {
 		return new Iterator<String[]>() {
-
 			private final Reader _reader = new Reader(_resource);
 
 			private String[] _data = _reader.read();
@@ -71,43 +73,21 @@ public class TestData implements Iterable<String[]> {
 		};
 	}
 
+	/**
+	 * Return a stream with the data lines.
+	 *
+	 * @return a stream with the data lines
+	 */
 	public Stream<String[]> stream() {
 		return StreamSupport.stream(spliterator(), false);
 	}
 
-	private static final class Reader implements Closeable {
+	public static TestData of(final String resource, final String... parameters) {
+		final String param = Arrays.stream(parameters)
+			.collect(Collectors.joining(",", "[", "]"));
 
-		private final BufferedReader _reader;
-
-		Reader(final String resource) {
-			_reader = new BufferedReader(new InputStreamReader(
-				Reader.class.getResourceAsStream(resource)
-			));
-		}
-
-		String[] read() {
-			try {
-				String line = null;
-				while ((line = _reader.readLine()) != null &&
-						(line.trim().startsWith("#") ||
-						line.trim().isEmpty()))
-				{
-				}
-
-				return line != null ? line.split(",") : null;
-			} catch (IOException e) {
-				throw new RuntimeException(e);
-			}
-		}
-
-		@Override
-		public void close() {
-			try {
-				_reader.close();
-			} catch (IOException e) {
-				throw new UncheckedIOException(e);
-			}
-		}
+		final String path =  resource + param + ".dat";
+		return new TestData(path);
 	}
 
 	public static int[] toInt(final String[] line) {
@@ -128,5 +108,39 @@ public class TestData implements Iterable<String[]> {
 
 	public static double[] toDouble(final String[] line) {
 		return Arrays.stream(line).mapToDouble(Double::parseDouble).toArray();
+	}
+
+	private static final class Reader implements Closeable {
+		private final BufferedReader _reader;
+
+		Reader(final String resource) {
+			_reader = new BufferedReader(new InputStreamReader(
+				Reader.class.getResourceAsStream(resource)
+			));
+		}
+
+		String[] read() {
+			try {
+				String line = null;
+				while ((line = _reader.readLine()) != null &&
+					(line.trim().startsWith("#") ||
+						line.trim().isEmpty()))
+				{
+				}
+
+				return line != null ? line.split(",") : null;
+			} catch (IOException e) {
+				throw new UncheckedIOException(e);
+			}
+		}
+
+		@Override
+		public void close() {
+			try {
+				_reader.close();
+			} catch (IOException e) {
+				throw new UncheckedIOException(e);
+			}
+		}
 	}
 }
