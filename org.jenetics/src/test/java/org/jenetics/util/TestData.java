@@ -40,7 +40,7 @@ import java.util.stream.StreamSupport;
  * format: {@code $resource[$param1, $param2,...].dat}.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-21 $</em>
+ * @version <em>$Date: 2014-08-22 $</em>
  */
 public class TestData implements Iterable<String[]> {
 
@@ -218,11 +218,10 @@ public class TestData implements Iterable<String[]> {
 		String[] read() {
 			try {
 				String line = null;
-				while (
-					(line = _reader.readLine()) != null &&
-					(line.trim().startsWith("#") ||
-					line.trim().isEmpty())
-				);
+				do {
+					line = _reader.readLine();
+				} while (line != null &&
+					(line.trim().startsWith("#") || line.trim().isEmpty()));
 
 				return line != null ? line.split(",") : null;
 			} catch (IOException e) {
