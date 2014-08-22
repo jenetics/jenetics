@@ -128,63 +128,32 @@ public class TournamentSelectorTest
 	}
 
 	public static void main(final String[] args) {
-        System.out.println(Optimize.MINIMUM);
         writeDistributionData(Optimize.MINIMUM);
-
-		System.out.println(Optimize.MAXIMUM);
 		writeDistributionData(Optimize.MAXIMUM);
 	}
 
 	private static void writeDistributionData(final Optimize opt) {
 		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
 		try (Scoped<LCG64ShiftRandom> sr = RandomRegistry.scope(random)) {
-			final List<Integer> sizes = Arrays.asList(2, 3, 4, 5, 6, 7, 13, 23, 37);
 
-            // For big testing: npopulation = 25_000, loops = 2_500_000
-            // For fast testing: npopulation = 500, loops = 10_000
-			final int npopulation = 25_000;
-			final int loops = 2_500_000;
+			// For exact testing
+			//final int npopulation = 25_000;
+			//final int loops = 2_500_000;
 
-			final List<Pair<Integer, Histogram<Double>>> result = sizes.parallelStream()
-				.map(i -> Pair.of(i, new TournamentSelector<DoubleGene, Double>(i)))
-				.map(s -> Pair.of(s._1, distribution(s._2, opt, npopulation, loops)))
-				.collect(Collectors.toList());
+			// For fast testing
+			final int npopulation = 500;
+			final int loops = 10_000;
 
-			result.sort((a, b) -> a._1 - b._1);
-			final List<Histogram<Double>> histograms = result.stream()
-				.map(p -> p._2)
-				.collect(Collectors.toList());
-
-			final String header = sizes.stream()
-				.map(Objects::toString)
-				.collect(Collectors.joining(",", "", ""));
-
-			System.out.println(header);
-			print(System.out, histograms);
+			printDistributions(
+				System.out,
+				Arrays.asList(2, 3, 4, 5, 6, 7, 13, 23, 37),
+				TournamentSelector::new,
+				opt,
+				npopulation,
+				loops
+			);
 		}
 	}
 
-	private static void print(
-		final PrintStream writer,
-		final List<Histogram<Double>> histograms
-	) {
-		final double[][] array = histograms.stream()
-			.map(Histogram::getNormalizedHistogram)
-			.toArray(double[][]::new);
-
-		final NumberFormat format = NumberFormat.getNumberInstance(Locale.ENGLISH);
-		format.setMinimumFractionDigits(15);
-		format.setMaximumFractionDigits(15);
-
-		for (int i = 0; i < array[0].length; ++i) {
-			for (int j = 0; j < array.length; ++j) {
-				writer.print(format.format(array[j][i]));
-				if (j < array.length - 1) {
-					writer.print(',');
-				}
-			}
-			writer.println();
-		}
-	}
 
 }

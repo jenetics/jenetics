@@ -19,14 +19,26 @@
  */
 package org.jenetics;
 
+import java.util.Arrays;
+
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import org.jenetics.internal.util.Named;
+
 import org.jenetics.stat.Distribution;
+import org.jenetics.stat.Histogram;
+import org.jenetics.stat.StatisticsAssert;
 import org.jenetics.stat.UniformDistribution;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Range;
+import org.jenetics.util.LCG64ShiftRandom;
+import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Scoped;
+import org.jenetics.util.TestData;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-15 $</em>
+ * @version <em>$Date: 2014-08-22 $</em>
  */
 public class TruncationSelectorTest
 	extends SelectorTester<TruncationSelector<DoubleGene, Double>>
@@ -39,16 +51,77 @@ public class TruncationSelectorTest
 
 	@Override
 	protected Distribution<Double> getDistribution() {
-		final Range<Double> domain = new Range<>(
-				(getDomain().getMax() - getDomain().getMin())/2.0,
-				getDomain().getMax()
-			);
-		return new UniformDistribution<>(domain);
+		return new UniformDistribution<>(getDomain());
 	}
 
 	@Override
-	protected boolean isDistributionCheckEnabled() {
-		return false;
+	@Test
+	public void selectDistribution() {
+		//throw new SkipException("TODO: implement this test.");
+	}
+
+	@Test(
+		dataProvider = "expectedDistribution",
+		invocationCount = 20,
+		successPercentage = 95
+	)
+	public void selectDist(final Named<double[]> expected, final Optimize opt) {
+		final int npopulation = 250;
+		final int loops = 500;
+
+		final Histogram<Double> distribution = SelectorTester.distribution(
+			new TruncationSelector<>(),
+			opt,
+			npopulation,
+			loops
+		);
+
+		StatisticsAssert.assertDistribution(distribution, expected.value);
+	}
+
+	@DataProvider
+	public Object[][] expectedDistribution() {
+		final String resource =
+			"/org/jenetics/selector/distribution/TruncationSelector";
+
+		return Arrays.stream(Optimize.values())
+			.map(opt -> {
+				final TestData data = TestData.of(resource, opt.toString());
+				final double[] expected = data.stream()
+					.map(line -> line[0])
+					.mapToDouble(Double::parseDouble)
+					.toArray();
+
+				return new Object[]{Named.of("distribution", expected), opt};
+			}).toArray(Object[][]::new);
+	}
+
+	public static void main(final String[] args) {
+		writeDistributionData(Optimize.MINIMUM);
+		writeDistributionData(Optimize.MAXIMUM);
+	}
+
+	private static void writeDistributionData(final Optimize opt) {
+		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
+		try (Scoped<LCG64ShiftRandom> sr = RandomRegistry.scope(random)) {
+
+			// For exact testing
+			//final int npopulation = 25_000;
+			//final int loops = 2_500_000;
+
+			// For fast testing
+			final int npopulation = 500;
+			final int loops = 10_000;
+
+			printDistributions(
+				System.out,
+				Arrays.asList(""),
+				value -> new TruncationSelector<DoubleGene, Double>(),
+				opt,
+				npopulation,
+				loops
+			);
+		}
 	}
 
 }

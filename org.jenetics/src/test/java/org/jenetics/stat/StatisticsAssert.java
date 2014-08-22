@@ -27,7 +27,7 @@ import org.jenetics.internal.util.require;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-20 $</em>
+ * @version <em>$Date: 2014-08-22 $</em>
  */
 public final class StatisticsAssert {
 
@@ -74,6 +74,14 @@ public final class StatisticsAssert {
 		assert (degreeOfFreedom > 0);
 
 		final double maxChi = chi(0.999, degreeOfFreedom);
+
+		if (χ2 > maxChi) {
+			String.format(
+				"The histogram doesn't follow the given distribution." +
+					"χ2 must be smaller than %f but was %f",
+				maxChi, χ2
+			);
+		}
 
 		Assert.assertTrue(
 			χ2 <= maxChi,
