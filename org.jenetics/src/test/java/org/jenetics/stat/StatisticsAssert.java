@@ -25,6 +25,7 @@ import java.util.Arrays;
 
 import org.apache.commons.math3.distribution.ChiSquaredDistribution;
 import org.apache.commons.math3.stat.inference.ChiSquareTest;
+import org.apache.commons.math3.stat.inference.TestUtils;
 import org.testng.Assert;
 import org.testng.Reporter;
 
@@ -32,7 +33,7 @@ import org.jenetics.internal.util.require;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-22 $</em>
+ * @version <em>$Date: 2014-08-23 $</em>
  */
 public final class StatisticsAssert {
 
@@ -84,8 +85,16 @@ public final class StatisticsAssert {
 			.map(v -> Math.max(v, Double.MIN_VALUE))
 			.toArray();
 
+		final long[] dist = distribution.getHistogram();
+
+//		System.out.println(format("chiSquare: %f", TestUtils.chiSquare(exp, dist)));
+//		System.out.println(format("g: %f", TestUtils.g(exp, dist)));
+//		System.out.println(format("gTest: %f", TestUtils.gTest(exp, dist)));
+//		System.out.println(format("gTestIntrinsic: %f", TestUtils.gTestIntrinsic(exp, dist)));
+//		System.out.println(format("chiSquare: %f", TestUtils.chiSquare(exp, dist)));
+
 		final double χ2 = new ChiSquareTest()
-			.chiSquare(exp, distribution.getHistogram());
+			.chiSquare(exp, dist);
 
 		final int degreeOfFreedom = distribution.length();
 		assert (degreeOfFreedom > 0);
