@@ -19,33 +19,74 @@
  */
 package org.jenetics.util;
 
+import static java.lang.String.format;
+import static java.util.Optional.ofNullable;
+
 import java.io.BufferedReader;
 import java.io.Closeable;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 /**
+ * Helper class for reading test data from file. The file has the following
+ * format: {@code $resource[$param1, $param2,...].dat}.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-20 $</em>
+ * @version <em>$Date: 2014-08-21 $</em>
  */
 public class TestData implements Iterable<String[]> {
 
 	private final String _resource;
+	private final String[] _parameters;
 
-	public TestData(final String resource) {
+	private TestData(final String resource, final String... parameters) {
 		_resource = resource;
+		_parameters = parameters;
+	}
+
+	/**
+	 * Return the base resource name, without extension and parameters.
+	 *
+	 * @return the base resource name
+	 */
+	public String getResource() {
+		return _resource;
+	}
+
+	/**
+	 * Return the full resource path, with parameters and extension.
+	 *
+	 * @return the full resource path
+	 */
+	public String getResourcePath() {
+		final String param = _parameters.length == 0 ? "" :
+			Arrays.stream(_parameters)
+				.collect(Collectors.joining(",", "[", "]"));
+
+		return _resource + param + ".dat";
+	}
+
+	/**
+	 * Return the test data parameters.
+	 *
+	 * @return the test data parameters
+	 */
+	public String[] getParameters() {
+		return _parameters;
 	}
 
 	@Override
 	public Iterator<String[]> iterator() {
 		return new Iterator<String[]>() {
-
-			private final Reader _reader = new Reader(_resource);
+			private final Reader _reader = new Reader(getResourcePath());
 
 			private String[] _data = _reader.read();
 
@@ -71,42 +112,71 @@ public class TestData implements Iterable<String[]> {
 		};
 	}
 
+	/**
+	 * Return a stream with the data lines.
+	 *
+	 * @return a stream with the data lines
+	 */
 	public Stream<String[]> stream() {
 		return StreamSupport.stream(spliterator(), false);
 	}
 
-	private static final class Reader implements Closeable {
+	@Override
+	public String toString() {
+		return getResourcePath();
+	}
 
-		private final BufferedReader _reader;
+	/**
+	 * Create a new {@code TestData} object from the given base resource name
+	 * and parameters.
+	 *
+	 * @param resource the base resource name
+	 * @param parameters the test data parameters
+	 * @return
+	 */
+	public static TestData of(final String resource, final String... parameters) {
+		return new TestData(resource, parameters);
+	}
 
-		Reader(final String resource) {
-			_reader = new BufferedReader(new InputStreamReader(
-				Reader.class.getResourceAsStream(resource)
-			));
-		}
+	public static Stream<TestData> list(final String path) {
+		return resources(path)
+			.map(name -> of(parseResource(name), parseParameters(name)));
+	}
 
-		String[] read() {
-			try {
-				String line = null;
-				while ((line = _reader.readLine()) != null &&
-						(line.trim().startsWith("#") ||
-						line.trim().isEmpty()))
-				{
-				}
+	private static String parseResource(final String name) {
+		final int end = name.indexOf('[');
+		return name.substring(0, end);
+	}
 
-				return line != null ? line.split(",") : null;
-			} catch (IOException e) {
-				throw new RuntimeException(e);
-			}
-		}
+	private static String[] parseParameters(final String name) {
+		final int start = name.indexOf('[');
+		final int end = name.lastIndexOf(']');
 
-		@Override
-		public void close() {
-			try {
-				_reader.close();
-			} catch (IOException e) {
-				throw new UncheckedIOException(e);
-			}
+		return (start != -1 && end != -1) ?
+			name.substring(start + 1, end).split(",") :
+			new String[0];
+	}
+
+	private static Stream<String> resources(final String path) {
+		try {
+			final String className = TestData.class.getName();
+			final String classPath = className.replace(".", "/") + ".class";
+
+			final URL url = TestData.class.getClassLoader().getResource(classPath);
+			final String absoluteClassPath = new File(url.toURI()).getAbsolutePath();
+			final String basePath = absoluteClassPath.substring(
+				0, absoluteClassPath.length() - classPath.length()
+			);
+
+			return ofNullable(new File(basePath, path).list())
+				.map(Arrays::stream)
+				.map(lines -> lines
+					.filter(line -> line.endsWith(".dat"))
+					.map(line -> (path + "/" + line)))
+				.orElse(Stream.empty());
+
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -128,5 +198,45 @@ public class TestData implements Iterable<String[]> {
 
 	public static double[] toDouble(final String[] line) {
 		return Arrays.stream(line).mapToDouble(Double::parseDouble).toArray();
+	}
+
+	/**
+	 * The reader class used for reading the test data.
+	 */
+	private static final class Reader implements Closeable {
+		private final BufferedReader _reader;
+
+		Reader(final String resource) {
+			_reader = ofNullable(Reader.class.getResourceAsStream(resource))
+				.map(InputStreamReader::new)
+				.map(BufferedReader::new)
+				.orElseThrow(() -> new IllegalArgumentException(format(
+						"Resource '%s' not found.", resource
+					)));
+		}
+
+		String[] read() {
+			try {
+				String line = null;
+				while (
+					(line = _reader.readLine()) != null &&
+					(line.trim().startsWith("#") ||
+					line.trim().isEmpty())
+				);
+
+				return line != null ? line.split(",") : null;
+			} catch (IOException e) {
+				throw new UncheckedIOException(e);
+			}
+		}
+
+		@Override
+		public void close() {
+			try {
+				_reader.close();
+			} catch (IOException e) {
+				throw new UncheckedIOException(e);
+			}
+		}
 	}
 }
