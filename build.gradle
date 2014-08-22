@@ -40,7 +40,7 @@ apply plugin: 'signing'
 apply plugin: 'packaging'
 
 ext {
-    javaVersion = '1.8'
+    javaVersion = '1.9'
 
 	now = Calendar.getInstance()
 	year = now.get(Calendar.YEAR);
