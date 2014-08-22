@@ -48,7 +48,7 @@ import org.jenetics.util.TestData;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-21 $</em>
+ * @version <em>$Date: 2014-08-22 $</em>
  */
 public class TournamentSelectorTest
 	extends SelectorTester<TournamentSelector<DoubleGene, Double>>
@@ -128,11 +128,11 @@ public class TournamentSelectorTest
 	}
 
 	public static void main(final String[] args) {
+        System.out.println(Optimize.MINIMUM);
+        writeDistributionData(Optimize.MINIMUM);
+
 		System.out.println(Optimize.MAXIMUM);
 		writeDistributionData(Optimize.MAXIMUM);
-
-		System.out.println(Optimize.MINIMUM);
-		writeDistributionData(Optimize.MINIMUM);
 	}
 
 	private static void writeDistributionData(final Optimize opt) {
@@ -140,8 +140,10 @@ public class TournamentSelectorTest
 		try (Scoped<LCG64ShiftRandom> sr = RandomRegistry.scope(random)) {
 			final List<Integer> sizes = Arrays.asList(2, 3, 4, 5, 6, 7, 13, 23, 37);
 
-			final int npopulation = 500;
-			final int loops = 10_000;
+            // For big testing: npopulation = 25_000, loops = 2_500_000
+            // For fast testing: npopulation = 500, loops = 10_000
+			final int npopulation = 25_000;
+			final int loops = 2_500_000;
 
 			final List<Pair<Integer, Histogram<Double>>> result = sizes.parallelStream()
 				.map(i -> Pair.of(i, new TournamentSelector<DoubleGene, Double>(i)))
