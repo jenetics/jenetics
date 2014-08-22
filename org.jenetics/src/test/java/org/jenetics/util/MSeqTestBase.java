@@ -22,31 +22,29 @@ package org.jenetics.util;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Supplier;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import org.jenetics.internal.math.random;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-15 $</em>
+ * @version <em>$Date: 2014-08-01 $</em>
  */
 public abstract class MSeqTestBase extends SeqTestBase {
 
 	@Override
 	protected abstract MSeq<Integer> newSeq(final int length);
 
-	private Factory<Integer> RandomInt(final Random random) {
-		return new Factory<Integer>() {
-			@Override
-			public Integer newInstance() {
-				return random.nextInt();
-			}
-		};
+	private Supplier<Integer> RandomInt(final Random random) {
+		return () -> random.nextInt();
 	}
 
 	@Test
 	public void asList() {
-		final long seed = math.random.seed();
+		final long seed = random.seed();
 		final Random random = new Random(seed);
 
 		final MSeq<Integer> seq = newSeq(1000);
@@ -73,7 +71,7 @@ public abstract class MSeqTestBase extends SeqTestBase {
 
 	@Test(dataProvider = "sequences")
 	public void fill(final MSeq<Integer> seq) {
-		final long seed = math.random.seed();
+		final long seed = random.seed();
 		final Random random = new Random(seed);
 
 		seq.fill(RandomInt(random));
@@ -86,7 +84,7 @@ public abstract class MSeqTestBase extends SeqTestBase {
 
 	@Test(dataProvider = "sequences")
 	public void set(final MSeq<Integer> seq) {
-		final long seed = math.random.seed();
+		final long seed = random.seed();
 		final Random random = new Random(seed);
 
 		for (int i = 0; i < seq.length(); ++i) {
@@ -101,10 +99,11 @@ public abstract class MSeqTestBase extends SeqTestBase {
 
 	@Test(dataProvider = "sequences")
 	public void setAll(final MSeq<Integer> seq) {
-		final long seed = math.random.seed();
+		final long seed = random.seed();
 		final Random random = new Random(seed);
 
-		seq.setAll(random.nextInt());
+		final Integer v = random.nextInt();
+		seq.fill(() -> v);
 
 		random.setSeed(seed);
 		final Integer value = random.nextInt();
@@ -115,7 +114,7 @@ public abstract class MSeqTestBase extends SeqTestBase {
 
 	@Test(dataProvider = "sequences")
 	public void setAllArray(final MSeq<Integer> seq) {
-		final long seed = math.random.seed();
+		final long seed = random.seed();
 		final Random random = new Random(seed);
 
 		final Integer[] array = new Integer[seq.length()];
@@ -132,7 +131,7 @@ public abstract class MSeqTestBase extends SeqTestBase {
 
 	@Test(dataProvider = "sequences")
 	public void setAllIterable(final MSeq<Integer> seq) {
-		final long seed = math.random.seed();
+		final long seed = random.seed();
 		final Random random = new Random(seed);
 
 		final Integer[] array = new Integer[seq.length()];
@@ -149,7 +148,7 @@ public abstract class MSeqTestBase extends SeqTestBase {
 
 	@Test(dataProvider = "sequences")
 	public void setAllIterator(final MSeq<Integer> seq) {
-		final long seed = math.random.seed();
+		final long seed = random.seed();
 		final Random random = new Random(seed);
 
 		final Integer[] array = new Integer[seq.length()];
@@ -187,7 +186,7 @@ public abstract class MSeqTestBase extends SeqTestBase {
 	@Test(dataProvider = "sequences")
 	public void swapIntIntMSeqInt(final MSeq<Integer> seq) {
 		for (int start = 0; start < seq.length() - 3; ++start) {
-			final long seed = math.random.seed();
+			final long seed = random.seed();
 			final Random random = new Random(seed);
 			final MSeq<Integer> other = newSeq(seq.length());
 			final MSeq<Integer> otherCopy = newSeq(seq.length());
@@ -216,7 +215,7 @@ public abstract class MSeqTestBase extends SeqTestBase {
 		final ISeq<Integer> iseq = seq.toISeq();
 		final Integer[] copy = seq.toArray(new Integer[0]);
 
-		final long seed = math.random.seed();
+		final long seed = random.seed();
 		final Random random = new Random(seed);
 		for (int i = 0; i < seq.length(); ++i) {
 			seq.set(i, random.nextInt());

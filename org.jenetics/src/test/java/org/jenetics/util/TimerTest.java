@@ -19,6 +19,8 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.internal.math.random.nextString;
+
 import java.util.Random;
 
 import org.testng.Assert;
@@ -26,24 +28,22 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-15 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public class TimerTest extends ObjectTester<Timer> {
 
-	private final Factory<Timer> _factory = new Factory<Timer>() {
-		@Override
-		public Timer newInstance() {
-			final Random random = RandomRegistry.getRandom();
+	private final Factory<Timer> _factory = () -> {
+		final Random random = RandomRegistry.getRandom();
 
-			final Timer timer = new Timer(RandomUtils.nextString(random.nextInt(10) + 10));
-			timer._start = random.nextLong();
-			timer._stop = timer._start + random.nextInt(1000) + 1000;
-			timer._sum = timer._stop - timer._start;
-			return timer;
-		}
+		final Timer timer = new Timer(nextString(random, random.nextInt(10) + 10));
+		timer._start = random.nextLong();
+		timer._stop = timer._start + random.nextInt(1000) + 1000;
+		timer._sum = timer._stop - timer._start;
+		return timer;
 	};
+
 	@Override
-	protected Factory<Timer> getFactory() {
+	protected Factory<Timer> factory() {
 		return _factory;
 	}
 

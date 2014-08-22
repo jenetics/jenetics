@@ -20,14 +20,15 @@
 package org.jenetics;
 
 import static java.lang.Math.abs;
-import static org.jenetics.util.math.pow;
-import static org.jenetics.util.math.statistics.min;
-import static org.jenetics.util.math.statistics.sum;
-import static org.jenetics.util.math.ulpDistance;
+import static org.jenetics.internal.math.arithmetic.pow;
+import static org.jenetics.internal.math.base.ulpDistance;
+import static org.jenetics.internal.math.statistics.min;
 
 import java.util.Arrays;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.math.statistics;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 
 
 /**
@@ -41,7 +42,7 @@ import org.jenetics.internal.util.HashBuilder;
  *      </a>
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-01 $</em>
  */
 public class RouletteWheelSelector<
 	G extends Gene<?, G>,
@@ -70,7 +71,7 @@ public class RouletteWheelSelector<
 		}
 
 		final double worst = Math.min(min(probabilities), 0.0);
-		final double sum = sum(probabilities) - worst*population.size();
+		final double sum = statistics.sum(probabilities) - worst*population.size();
 
 		if (abs(ulpDistance(sum, 0.0)) > MAX_ULP_DISTANCE) {
 			for (int i = population.size(); --i >= 0;) {
@@ -86,12 +87,12 @@ public class RouletteWheelSelector<
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).value();
+		return Hash.of(getClass()).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this || obj != null && obj.getClass() == getClass();
+		return Equality.ofType(this, obj);
 	}
 
 	@Override

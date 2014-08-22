@@ -22,36 +22,35 @@ package org.jenetics;
 import static java.lang.Double.NaN;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.object.eq;
+import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
+import java.time.Duration;
 import java.util.concurrent.Executor;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 
 import org.jenetics.stat.Variance;
-import org.jenetics.util.Duration;
+import org.jenetics.util.Accumulator;
+import org.jenetics.util.Accumulator.MinMax;
 import org.jenetics.util.FinalReference;
-import org.jenetics.util.accumulators;
-import org.jenetics.util.accumulators.MinMax;
 
 /**
  * Data object which holds performance indicators of a given {@link Population}.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-05 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
  */
-public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
-	implements Serializable
-{
+public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>> {
 
 	/**
 	 * Builder for the Statistics class.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-04-05 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
 	 */
 	public static class Builder<
 		G extends Gene<?, G>,
@@ -373,7 +372,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).
+		return Hash.of(getClass()).
 				and(_optimize).
 				and(_generation).
 				and(_ageMean).
@@ -387,23 +386,17 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null || getClass() != obj.getClass()) {
-			return false;
-		}
-
-		final Statistics<?, ?> statistics = (Statistics<?, ?>)obj;
-		return eq(_optimize, statistics._optimize) &&
-				eq(_generation, statistics._generation) &&
- 				eq(_ageMean, statistics._ageMean) &&
-				eq(_ageVariance, statistics._ageVariance) &&
-				eq(_best, statistics._best) &&
-				eq(_worst, statistics._worst) &&
-				eq(_invalid, statistics._invalid) &&
-				eq(_samples, statistics._samples) &&
-				eq(_killed, statistics._killed);
+		return Equality.of(this, obj).test(statistics ->
+			eq(_optimize, statistics._optimize) &&
+			eq(_generation, statistics._generation) &&
+			eq(_ageMean, statistics._ageMean) &&
+			eq(_ageVariance, statistics._ageVariance) &&
+			eq(_best, statistics._best) &&
+			eq(_worst, statistics._worst) &&
+			eq(_invalid, statistics._invalid) &&
+			eq(_samples, statistics._samples) &&
+			eq(_killed, statistics._killed)
+		);
 	}
 
 	@Override
@@ -431,12 +424,10 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-04-05 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
 	 */
 	public static final class Time implements Serializable {
 		private static final long serialVersionUID = 2L;
-
-		private static final Duration ZERO = Duration.ofNanos(0);
 
 		/**
 		 * Create a new time object with zero time values. The time references
@@ -452,7 +443,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * is thrown.
 		 */
 		public final FinalReference<Duration>
-			execution = new FinalReference<>(ZERO);
+			execution = new FinalReference<>(Duration.ZERO);
 
 		/**
 		 * The selection time.
@@ -460,7 +451,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * is thrown.
 		 */
 		public final FinalReference<Duration>
-			selection = new FinalReference<>(ZERO);
+			selection = new FinalReference<>(Duration.ZERO);
 
 		/**
 		 * The alter time.
@@ -468,7 +459,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * is thrown.
 		 */
 		public final FinalReference<Duration>
-			alter = new FinalReference<>(ZERO);
+			alter = new FinalReference<>(Duration.ZERO);
 
 		/**
 		 * Combination time between offspring and survivors.
@@ -476,7 +467,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * is thrown.
 		 */
 		public final FinalReference<Duration>
-			combine = new FinalReference<>(ZERO);
+			combine = new FinalReference<>(Duration.ZERO);
 
 		/**
 		 * The evaluation time.
@@ -484,7 +475,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * is thrown.
 		 */
 		public final FinalReference<Duration>
-			evaluation = new FinalReference<>(ZERO);
+			evaluation = new FinalReference<>(Duration.ZERO);
 
 		/**
 		 * The statistics time.
@@ -492,36 +483,30 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * is thrown.
 		 */
 		public final FinalReference<Duration>
-			statistics = new FinalReference<>(ZERO);
+			statistics = new FinalReference<>(Duration.ZERO);
 
 
 		@Override
 		public int hashCode() {
-			return HashBuilder.of(getClass()).
-					and(alter).
-					and(combine).
-					and(evaluation).
-					and(execution).
-					and(selection).
-					and(statistics).value();
+			return Hash.of(getClass())
+					.and(alter)
+					.and(combine)
+					.and(evaluation)
+					.and(execution)
+					.and(selection)
+					.and(statistics).value();
 		}
 
 		@Override
-		public boolean equals(final Object object) {
-			if (object == this) {
-				return true;
-			}
-			if (object == null || object.getClass() != getClass()) {
-				return false;
-			}
-
-			final Statistics.Time time = (Statistics.Time)object;
-			return eq(alter.get(), time.alter.get()) &&
-					eq(combine.get(), time.combine.get()) &&
-					eq(evaluation.get(), time.evaluation.get()) &&
-					eq(execution.get(), time.execution.get()) &&
-					eq(selection.get(), time.selection.get()) &&
-					eq(statistics.get(), time.statistics.get());
+		public boolean equals(final Object obj) {
+			return Equality.of(this, obj).test(time ->
+				eq(alter.get(), time.alter.get()) &&
+				eq(combine.get(), time.combine.get()) &&
+				eq(evaluation.get(), time.evaluation.get()) &&
+				eq(execution.get(), time.execution.get()) &&
+				eq(selection.get(), time.selection.get()) &&
+				eq(statistics.get(), time.statistics.get())
+			);
 		}
 
 		@Override
@@ -532,17 +517,21 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			out.append("+---------------------------------------------------------+\n");
 			out.append("|  Time Statistics                                        |\n");
 			out.append("+---------------------------------------------------------+\n");
-			out.append(format(pattern, "Select time", selection.get().toSeconds()));
-			out.append(format(pattern, "Alter time", alter.get().toSeconds()));
-			out.append(format(pattern, "Combine time", combine.get().toSeconds()));
-			out.append(format(pattern, "Fitness calculation time", evaluation.get().toSeconds()));
-			out.append(format(pattern, "Statistics calculation time", statistics.get().toSeconds()));
-			out.append(format(pattern, "Overall execution time", execution.get().toSeconds()));
+			out.append(format(pattern, "Select time", toSeconds(selection)));
+			out.append(format(pattern, "Alter time", toSeconds(alter)));
+			out.append(format(pattern, "Combine time", toSeconds(combine)));
+			out.append(format(pattern, "Fitness calculation time", toSeconds(evaluation)));
+			out.append(format(pattern, "Statistics calculation time", toSeconds(statistics)));
+			out.append(format(pattern, "Overall execution time", toSeconds(execution)));
 			out.append("+---------------------------------------------------------+");
 
 			return out.toString();
 		}
  	}
+
+	private static double toSeconds(final FinalReference<Duration> duration) {
+		return duration.get().toMillis()/1_000_000_000.0;
+	}
 
 
 	/**
@@ -551,7 +540,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date: 2014-04-05 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
 	 */
 	public static class Calculator<
 		G extends Gene<?, G>,
@@ -569,6 +558,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * Create a new statistics object from the given {@code population} at
 		 * the given {@code generation}.
 		 *
+		 * @param executor the {@link java.util.concurrent.Executor} service to
+		 *        use
 		 * @param population the population to aggregate.
 		 * @param generation the current GA generation.
 		 * @param opt the optimization <i>direction</i>.
@@ -587,11 +578,11 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			final MinMax<Phenotype<G, C>> minMax = new MinMax<>();
 			final Variance<Integer> age = new Variance<>();
 
-			accumulators.<Phenotype<G, C>>accumulate(
+			Accumulator.accumulate(
 				executor,
 				population,
 				minMax,
-				age.map(Phenotype.Age(generation))
+				age.map(pt -> pt.getAge(generation))
 			);
 
 			builder.bestPhenotype(opt.best(minMax.getMax(), minMax.getMin()));

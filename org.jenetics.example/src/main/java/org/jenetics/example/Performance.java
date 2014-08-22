@@ -24,6 +24,7 @@ import static java.lang.Math.sin;
 import static java.lang.Math.toRadians;
 
 import java.io.Serializable;
+import java.util.function.Function;
 
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
@@ -31,13 +32,11 @@ import org.jenetics.Genotype;
 import org.jenetics.Phenotype;
 import org.jenetics.Population;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Function;
-import org.jenetics.util.functions;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
  */
 public class Performance {
 
@@ -58,7 +57,7 @@ public class Performance {
 	public static void main(String[] args) {
 		final Perf ff = new Perf();
 		final Factory<Genotype<DoubleGene>> gtf = Genotype.of(DoubleChromosome.of(0, 360));
-		final Function<Double, Double> fs = functions.Identity();
+		final Function<Double, Double> fs = a -> a;
 
 		final int size = 1000000;
 		final Population<DoubleGene, Double> population = new Population<>(size);

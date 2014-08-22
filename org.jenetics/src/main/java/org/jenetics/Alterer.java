@@ -27,28 +27,35 @@ package org.jenetics;
  * [code]
  * final GeneticAlgorithm&lt;DoubleGene, Double&gt; ga = ...
  * ga.setAlterers(
- *     new Crossover&lt;DoubleGene&gt;(0.1),
- *     new Mutator&lt;DoubleGene&gt;(0.05),
- *     new MeanAlterer&lt;DoubleGene&gt;(0.2)
+ *     new Crossover&lt;DoubleGene, Double&gt;(0.1),
+ *     new Mutator&lt;DoubleGene, Double&gt;(0.05),
+ *     new MeanAlterer&lt;DoubleGene, Double&gt;(0.2)
  * );
  * [/code]
  *
  * The order of the alterer calls is: Crossover, Mutation and MeanAlterer.
  *
- * @param <G> the gene type.
+ * @param <G> the gene type
+ * @param <C> the fitness function result type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-30 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-04 $</em>
  */
-public interface Alterer<G extends Gene<?, G>> {
+@FunctionalInterface
+public interface Alterer<
+	G extends Gene<?, G>,
+	C extends Comparable<? super C>
+>
+{
 
+	public static final double DEFAULT_ALTER_PROBABILITY = 0.2;
 
 	/**
-	 * Alters (recombine) a given population. If the {@code population}
-	 * is empty, nothing is altered.
+	 * Alters (recombine) a given population. If the {@code population} is empty,
+	 * nothing is altered. The altering of the population is done in place; the
+	 * given <i>population</i> is altered.
 	 *
-	 * @param <C> the fitness function result type
 	 * @param population The Population to be altered. If the
 	 *        {@code population} is {@code null} or empty, nothing is altered.
 	 * @param generation the date of birth (generation) of the altered phenotypes.
@@ -56,9 +63,6 @@ public interface Alterer<G extends Gene<?, G>> {
 	 * @throws NullPointerException if the given {@code population} is
 	 *        {@code null}.
 	 */
-	public <C extends Comparable<? super C>> int alter(
-		final Population<G, C> population,
-		final int generation
-	);
+	public int alter(final Population<G, C> population, final int generation);
 
 }

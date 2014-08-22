@@ -21,18 +21,18 @@ package org.jenetics;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.object.Verify;
-import static org.jenetics.internal.util.object.eq;
-import static org.jenetics.util.functions.Null;
+import static org.jenetics.internal.util.Equality.eq;
 
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.RandomAccess;
 
-import org.jenetics.internal.util.HashBuilder;
-import org.jenetics.internal.util.cast;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
+import org.jenetics.internal.util.reflect;
 
-import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.Verifiable;
 
 /**
  * The abstract base implementation of the Chromosome interface. The implementors
@@ -43,7 +43,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
  */
 public abstract class AbstractChromosome<G extends Gene<?, G>>
 	implements
@@ -76,7 +76,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 */
 	protected AbstractChromosome(final ISeq<? extends G> genes) {
 		requireNonNull(genes, "Gene array");
-		assert (genes.indexWhere(Null) == -1) : "Found at least on null gene.";
+		assert (genes.forAll(Objects::nonNull)) : "Found at least on null gene.";
 
 		if (genes.length() < 1) {
 			throw new IllegalArgumentException(format(
@@ -84,17 +84,12 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 			));
 		}
 
-		_genes = cast.apply(genes);
+		_genes = reflect.cast(genes);
 	}
 
 	@Override
 	public G getGene(final int index) {
 		return _genes.get(index);
-	}
-
-	@Override
-	public G getGene() {
-		return _genes.get(0);
 	}
 
 	@Override
@@ -105,7 +100,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	@Override
 	public boolean isValid() {
 		if (_valid == null) {
-			_valid = _genes.forAll(Verify);
+			_valid = _genes.forAll(Verifiable::isValid);
 		}
 
 		return _valid;
@@ -121,82 +116,19 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 		return _genes.length();
 	}
 
-	/**
-	 * Return the index of the first occurrence of the given {@code gene}.
-	 *
-	 * @param gene the {@link Gene} to search for.
-	 * @return the index of the searched gene, or -1 if the given gene was not
-	 *         found.
-	 */
-	protected int indexOf(final Object gene) {
-		return _genes.indexOf(gene);
-	}
-
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(_genes).value();
+		return Hash.of(getClass()).and(_genes).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null || getClass() != obj.getClass()) {
-			return false;
-		}
-
-		final AbstractChromosome<?> chromosome = (AbstractChromosome<?>)obj;
-		return eq(_genes, chromosome._genes);
+		return Equality.of(this, obj).test(ch -> eq(_genes, ch._genes));
 	}
 
 	@Override
 	public String toString() {
 		return _genes.toString();
-	}
-
-
-	/* *************************************************************************
-	 *  Property access methods
-	 * ************************************************************************/
-
-	/**
-	 * Return a {@link Function} which returns the first {@link Gene} from this
-	 * {@link Chromosome}.
-	 */
-	static <G extends Gene<?, G>, C extends Chromosome<G>>
-	Function<C, G> gene() {
-		return new Function<C, G>() {
-			@Override public G apply(final C value) {
-				return value.getGene();
-			}
-		};
-	}
-
-	/**
-	 * Return a {@link Function} which returns the {@link Gene} with the given
-	 * {@code index} from this {@link Chromosome}.
-	 */
-	static <G extends Gene<?, G>, C extends Chromosome<G>>
-	Function<C, G> gene(final int index) {
-		return new Function<C, G>() {
-			@Override public G apply(final C value) {
-				return value.getGene(index);
-			}
-		};
-	}
-
-	/**
-	 * Return a {@link Function} which returns the gene array from this
-	 * {@link Chromosome}.
-	 */
-	static <G extends Gene<?, G>, C extends Chromosome<G>>
-	Function<C, ISeq<G>> genes() {
-		return new Function<C, ISeq<G>>() {
-			@Override public ISeq<G> apply(final C value) {
-				return value.toSeq();
-			}
-		};
 	}
 
 }

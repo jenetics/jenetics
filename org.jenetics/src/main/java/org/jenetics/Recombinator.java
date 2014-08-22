@@ -20,11 +20,13 @@
 package org.jenetics;
 
 import static java.lang.String.format;
-import static org.jenetics.util.math.subset;
+import static org.jenetics.internal.math.base.subset;
+import static org.jenetics.internal.math.random.indexes;
 
 import java.util.Random;
 
-import org.jenetics.util.IndexStream;
+import org.jenetics.internal.util.IntRef;
+
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -37,7 +39,7 @@ import org.jenetics.util.RandomRegistry;
  * points, and merge those portions of different chromosomes to form new ones.
  * </p>
  * <p>
- * The recombination probability <i>P)r)</i> determines the probability that a
+ * The recombination probability <i>P(r)</i> determines the probability that a
  * given individual (genotype, not gene) of a population is selected for
  * recombination. The (<i>mean</i>) number of changed individuals depend on the
  * concrete implementation and can be vary from
@@ -49,10 +51,13 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-15 $</em>
  */
-public abstract class Recombinator<G extends Gene<?, G>>
-	extends AbstractAlterer<G>
+public abstract class Recombinator<
+	G extends Gene<?, G>,
+	C extends Comparable<? super C>
+>
+	extends AbstractAlterer<G, C>
 {
 
 	private final int _order;
@@ -88,30 +93,26 @@ public abstract class Recombinator<G extends Gene<?, G>>
 	}
 
 	@Override
-	public final <C extends Comparable<? super C>> int alter(
-		final Population<G, C> population, final int generation
+	public final int alter(
+		final Population<G, C> population,
+		final int generation
 	) {
 		final Random random = RandomRegistry.getRandom();
 		final int order = Math.min(_order, population.size());
-		final IndexStream stream = IndexStream.Random(
-			population.size(), _probability
-		);
 
-		int alterations = 0;
-		for (int i = stream.next(); i != -1; i = stream.next()) {
+		final IntRef alterations = new IntRef(0);
+		indexes(random, population.size(), _probability).forEach(i -> {
 			final int[] individuals = subset(population.size(), order, random);
 			individuals[0] = i;
+			alterations.value += recombine(population, individuals, generation);
+		});
 
-			alterations += recombine(population, individuals, generation);
-		}
-
-		return alterations;
+		return alterations.value;
 	}
 
 	/**
 	 * Recombination template method.
 	 *
-	 * @param <C> the fitness result type
 	 * @param population the population to recombine
 	 * @param individuals the array with the indexes of the individuals which
 	 *         are involved in the <i>recombination</i> step. The length of the
@@ -120,7 +121,7 @@ public abstract class Recombinator<G extends Gene<?, G>>
 	 * @param generation the current generation.
 	 * @return the number of genes that has been altered.
 	 */
-	protected abstract <C extends Comparable<? super C>> int recombine(
+	protected abstract int recombine(
 		final Population<G, C> population,
 		final int[] individuals,
 		final int generation

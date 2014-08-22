@@ -27,7 +27,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-15 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public class StatisticsTest extends ObjectTester<Statistics<DoubleGene, Double>> {
 
@@ -54,7 +54,7 @@ public class StatisticsTest extends ObjectTester<Statistics<DoubleGene, Double>>
 		}
 	};
 	@Override
-	protected Factory<Statistics<DoubleGene, Double>> getFactory() {
+	protected Factory<Statistics<DoubleGene, Double>> factory() {
 		return _factory;
 	}
 

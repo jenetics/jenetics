@@ -19,6 +19,12 @@
  */
 package org.jenetics.util;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collector;
+
 /**
  * Immutable, ordered, fixed sized sequence.
  *
@@ -26,7 +32,7 @@ package org.jenetics.util;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-06-17 $</em>
  */
 public interface ISeq<T>
 	extends
@@ -51,5 +57,48 @@ public interface ISeq<T>
 	 */
 	@Override
 	public MSeq<T> copy();
+
+
+	/* *************************************************************************
+	 *  Some static factory methods.
+	 * ************************************************************************/
+
+	public static <T> Collector<T, ?, ISeq<T>> toISeq() {
+		return Collector.of(
+			(Supplier<List<T>>)ArrayList::new,
+			List::add,
+			(left, right) -> { left.addAll(right); return left; },
+			ISeq::of
+		);
+	}
+
+	/**
+	 * Create a new {@code ISeq} from the given values.
+	 *
+	 * @param <T> the element type
+	 * @param values the array values.
+	 * @return a new {@code ISeq} with the given values.
+	 * @throws NullPointerException if the {@code values} array is {@code null}.
+	 */
+	@SafeVarargs
+	public static <T> ISeq<T> of(final T... values) {
+		return MSeq.of(values).toISeq();
+	}
+
+	/**
+	 * Create a new {@code ISeq} from the given values.
+	 *
+	 * @param <T> the element type
+	 * @param values the array values.
+	 * @return a new {@code ISeq} with the given values.
+	 * @throws NullPointerException if the {@code values} array is {@code null}.
+	 */
+	public static <T> ISeq<T> of(final Iterable<? extends T> values) {
+		return MSeq.of(values).toISeq();
+	}
+
+	public static <T> ISeq<T> of(final int length, Supplier<? extends T> supplier) {
+		return MSeq.<T>ofLength(length).fill(supplier).toISeq();
+	}
 
 }

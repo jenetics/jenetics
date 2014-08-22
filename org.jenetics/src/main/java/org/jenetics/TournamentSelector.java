@@ -24,9 +24,9 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Random;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 
-import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -43,7 +43,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-12 $</em>
  */
 public class TournamentSelector<
 	G extends Gene<?, G>,
@@ -77,12 +77,6 @@ public class TournamentSelector<
 		this(2);
 	}
 
-	/**
-	 * @throws IllegalArgumentException if the sample size is greater than the
-	 *         population size or {@code count} is greater the the population
-	 *         size or the _sampleSize is greater the the population size.
-	 * @throws NullPointerException if the {@code population} is {@code null}.
-	 */
 	@Override
 	public Population<G, C> select(
 		final Population<G, C> population,
@@ -97,43 +91,12 @@ public class TournamentSelector<
 				count
 			));
 		}
-		if (count > population.size()) {
-			throw new IllegalArgumentException(format(
-				"Selection size greater than population size: %s > %s",
-				count, population.size()
-			));
-		}
-		if (_sampleSize > population.size()) {
-			throw new IllegalArgumentException(format(
-				"Tournament size is greater than the population size! %d > %d.",
-				 _sampleSize, population.size()
-			));
-		}
 
-		final Population<G, C> pop = new Population<>(count);
-		final Factory<Phenotype<G, C>> factory = factory(
-			population, opt, _sampleSize, RandomRegistry.getRandom()
+		final Random random = RandomRegistry.getRandom();
+		return new Population<G, C>(count).fill(
+			() -> select(population, opt, _sampleSize, random),
+			count
 		);
-
-		return pop.fill(factory, count);
-	}
-
-	private static <
-		G extends Gene<?, G>,
-		C extends Comparable<? super C>
-	>
-	Factory<Phenotype<G, C>> factory(
-		final Population<G, C> population,
-		final Optimize opt,
-		final int sampleSize,
-		final Random random
-	) {
-		return new Factory<Phenotype<G, C>>() {
-			@Override
-			public Phenotype<G, C> newInstance() {
-				return select(population, opt, sampleSize, random);
-			}
-		};
 	}
 
 	private static <
@@ -162,20 +125,12 @@ public class TournamentSelector<
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(_sampleSize).value();
+		return Hash.of(getClass()).and(_sampleSize).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null || obj.getClass() != getClass()) {
-			return false;
-		}
-
-		final TournamentSelector<?, ?> selector = (TournamentSelector<?, ?>)obj;
-		return _sampleSize == selector._sampleSize;
+		return Equality.of(this, obj).test(s -> _sampleSize == s._sampleSize);
 	}
 
 	@Override

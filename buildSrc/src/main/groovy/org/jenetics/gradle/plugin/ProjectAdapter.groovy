@@ -44,7 +44,7 @@ import org.gradle.process.ExecResult
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-06-25 $</em>
  */
 class ProjectAdapter implements Project {
 
@@ -115,11 +115,6 @@ class ProjectAdapter implements Project {
 	@Override
 	public void buildscript(final Closure closure) {
 		project.buildscript(closure)
-	}
-
-	@Override
-	public Project childrenDependOnMe() {
-		return project.childrenDependOnMe()
 	}
 
 	@Override
@@ -199,28 +194,6 @@ class ProjectAdapter implements Project {
 	}
 
 	@Override
-	public void dependsOn(final String dep, boolean override)
-		throws UnknownProjectException
-	{
-		project.dependsOn(dep, override)
-	}
-
-	@Override
-	public void dependsOn(final String dep) throws UnknownProjectException {
-		project.dependsOn(dep)
-	}
-
-	@Override
-	public Project dependsOnChildren() {
-		return project.dependsOnChildren()
-	}
-
-	@Override
-	public Project dependsOnChildren(boolean flag) {
-		return project.dependsOnChildren(flag)
-	}
-
-	@Override
 	public int depthCompare(final Project prj) {
 		return project.depthCompare(prj)
 	}
@@ -252,11 +225,6 @@ class ProjectAdapter implements Project {
 	@Override
 	public File file(final Object path) {
 		return project.file(path)
-	}
-
-	@Override
-	public ConfigurableFileTree fileTree(final Closure closure) {
-		return project.fileTree(closure)
 	}
 
 	@Override
@@ -352,11 +320,6 @@ class ProjectAdapter implements Project {
 	@Override
 	public DependencyHandler getDependencies() {
 		return project.getDependencies()
-	}
-
-	@Override
-	public Set<Project> getDependsOnProjects() {
-		return project.getDependsOnProjects()
 	}
 
 	@Override

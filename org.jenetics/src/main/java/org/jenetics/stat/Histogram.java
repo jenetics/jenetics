@@ -23,19 +23,20 @@ import static java.lang.Math.max;
 import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.object.NonNull;
-import static org.jenetics.internal.util.object.eq;
-import static org.jenetics.util.arrays.forEach;
-import static org.jenetics.util.math.statistics.sum;
+import static org.jenetics.internal.math.arithmetic.normalize;
+import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Objects;
+import java.util.function.Consumer;
+import java.util.function.ToDoubleFunction;
+import java.util.stream.Collector;
 
-import org.jenetics.internal.util.HashBuilder;
-
-import org.jenetics.util.Function;
-import org.jenetics.util.MappedAccumulator;
+import org.jenetics.internal.math.statistics;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 
 /**
  * To create an <i>Histogram Accumulator</i> you have to define the <i>class
@@ -65,12 +66,14 @@ import org.jenetics.util.MappedAccumulator;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-22 $</em>
  */
-public class Histogram<C> extends MappedAccumulator<C> {
+public class Histogram<C> implements Consumer<C> {
 
-	private final C[] _separators;
 	private final Comparator<C> _comparator;
+	private final C[] _separators;
+
+	private long _count = 0;
 	private final long[] _histogram;
 
 	/**
@@ -96,20 +99,9 @@ public class Histogram<C> extends MappedAccumulator<C> {
 		Arrays.fill(_histogram, 0L);
 	}
 
-	@SafeVarargs
-	private Histogram(
-		final long[] histogram,
-		final Comparator<C> comparator,
-		final C... separators
-	) {
-		_histogram = histogram;
-		_comparator = comparator;
-		_separators = separators;
-	}
-
 	@SuppressWarnings("unchecked")
 	private static <C> C[] check(final C... classes) {
-		forEach(classes, NonNull);
+		Arrays.asList(classes).forEach(Objects::requireNonNull);
 		if (classes.length == 0) {
 			throw new IllegalArgumentException("Given classes array is empty.");
 		}
@@ -118,9 +110,31 @@ public class Histogram<C> extends MappedAccumulator<C> {
 	}
 
 	@Override
-	public void accumulate(final C value) {
+	public void accept(final C value) {
+		++_count;
 		++_histogram[index(value)];
-		++_samples;
+	}
+
+	/**
+	 * Combine the given {@code other} histogram with {@code this} one.
+	 *
+	 * @param other the histogram to add.
+	 * @throws IllegalArgumentException if the {@link #length()} and the
+	 *         separators of {@code this} and the given {@code histogram} are
+	 *         not the same.
+	 * @throws NullPointerException if the given {@code histogram} is {@code null}.
+	 */
+	public void combine(final Histogram<C> other) {
+		if (!eq(_separators, other._separators)) {
+			throw new IllegalArgumentException(
+				"The histogram separators are not equals."
+			);
+		}
+
+		_count += other._count;
+		for (int i = other._histogram.length; --i >= 0;) {
+			_histogram[i] += other._histogram[i];
+		}
 	}
 
 	/**
@@ -149,38 +163,7 @@ public class Histogram<C> extends MappedAccumulator<C> {
 			}
 		}
 
-		assert (false): "This line will never be reached.";
-		return -1;
-	}
-
-	/**
-	 * Add the given {@code histogram} to this in a newly created one.
-	 *
-	 * @param histogram the histogram to add.
-	 * @return a new histogram with the added values of this and the given one.
-	 * @throws IllegalArgumentException if the {@link #length()} and the
-	 *         separators of {@code this} and the given {@code histogram} are
-	 *         not the same.
-	 * @throws NullPointerException if the given {@code histogram} is {@code null}.
-	 */
-	public Histogram<C> plus(final Histogram<C> histogram) {
-		if (!_comparator.equals(histogram._comparator)) {
-			throw new IllegalArgumentException(
-				"The histogram comparators are not equals."
-			);
-		}
-		if (!Arrays.equals(_separators, histogram._separators)) {
-			throw new IllegalArgumentException(
-				"The histogram separators are not equals."
-			);
-		}
-
-		final long[] data = new long[_histogram.length];
-		for (int i = 0; i < data.length; ++i) {
-			data[i] = _histogram[i] + histogram._histogram[i];
-		}
-
-		return new Histogram<>(data, _comparator, _separators);
+		throw new AssertionError("This line will never be reached.");
 	}
 
 	/**
@@ -233,6 +216,10 @@ public class Histogram<C> extends MappedAccumulator<C> {
 		return getHistogram(new long[_histogram.length]);
 	}
 
+	public double[] getNormalizedHistogram() {
+		return normalize(getHistogram());
+	}
+
 	/**
 	 * Return the number of classes of this histogram.
 	 *
@@ -250,9 +237,9 @@ public class Histogram<C> extends MappedAccumulator<C> {
 	public double[] getProbabilities() {
 		final double[] probabilities = new double[_histogram.length];
 
-		assert (sum(_histogram) == _samples);
+		assert (statistics.sum(_histogram) == _count);
 		for (int i = 0; i < probabilities.length; ++i) {
-			probabilities[i] = (double)_histogram[i]/(double)_samples;
+			probabilities[i] = (double)_histogram[i]/(double)_count;
 		}
 
 		return probabilities;
@@ -274,7 +261,7 @@ public class Histogram<C> extends MappedAccumulator<C> {
 	 * @return the χ2 value of the current histogram.
 	 * @throws NullPointerException if {@code cdf} is {@code null}.
 	 */
-	public double χ2(final Function<C, Double> cdf, final C min, final C max) {
+	public double χ2(final ToDoubleFunction<C> cdf, final C min, final C max) {
 		double χ2 = 0;
 		for (int j = 0; j < _histogram.length; ++j) {
 			final long n0j = n0(j, cdf, min, max);
@@ -295,84 +282,78 @@ public class Histogram<C> extends MappedAccumulator<C> {
 	 * @return the χ2 value of the current histogram.
 	 * @throws NullPointerException if {@code cdf} is {@code null}.
 	 */
-	public double χ2(final Function<C, Double> cdf) {
+	public double χ2(final ToDoubleFunction<C> cdf) {
 		return χ2(cdf, null, null);
 	}
 
-	private long n0(final int j, final Function<C, Double> cdf, final C min, final C max) {
+	private long n0(final int j, final ToDoubleFunction<C> cdf, final C min, final C max) {
 		double p0j = 0.0;
 		if (j == 0) {
-			p0j = cdf.apply(_separators[0]);
+			p0j = cdf.applyAsDouble(_separators[0]);
 			if (min != null) {
-				p0j = p0j - cdf.apply(min);
+				p0j = p0j - cdf.applyAsDouble(min);
 			}
 		} else if (j == _histogram.length - 1) {
 			if (max != null) {
-				p0j = cdf.apply(max) - cdf.apply(_separators[_separators.length - 1]);
+				p0j = cdf.applyAsDouble(max) - cdf.applyAsDouble(_separators[_separators.length - 1]);
 			} else {
-				p0j = 1.0 - cdf.apply(_separators[_separators.length - 1]);
+				p0j = 1.0 - cdf.applyAsDouble(_separators[_separators.length - 1]);
 			}
 		} else {
-			p0j = cdf.apply(_separators[j]) - cdf.apply(_separators[j - 1]);
+			p0j = cdf.applyAsDouble(_separators[j]) - cdf.applyAsDouble(_separators[j - 1]);
 		}
 
-		return max(round(p0j*_samples), 1L);
+		return max(round(p0j*_count), 1L);
 	}
 
 	/**
-	 * @see #χ2(Function)
+	 * @see #χ2(java.util.function.ToDoubleFunction)
 	 *
 	 * @param cdf the cumulative density function
 	 * @return the chi square value of the given function
 	 */
-	public double chisqr(final Function<C, Double> cdf) {
+	public double chisqr(final ToDoubleFunction<C> cdf) {
 		return χ2(cdf);
 	}
 
 	/**
-	 * @see #χ2(Function, Object, Object)
+	 * @see #χ2(java.util.function.ToDoubleFunction, Object, Object)
 	 *
 	 * @param cdf the cumulative density function
 	 * @param min the lower limit
 	 * @param max the upper limit
 	 * @return the chi square value of the given function
 	 */
-	public double chisqr(final Function<C, Double> cdf, final C min, final C max) {
+	public double chisqr(final ToDoubleFunction<C> cdf, final C min, final C max) {
 		return χ2(cdf, min, max);
+	}
+
+	public long getCount() {
+		return _count;
 	}
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).
-				and(super.hashCode()).
-				and(_separators).
-				and(_histogram).value();
+		return Hash.of(getClass())
+			.and(super.hashCode())
+			.and(_separators)
+			.and(_histogram).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null || getClass() != obj.getClass()) {
-			return false;
-		}
-
-		final Histogram<?> histogram = (Histogram<?>)obj;
-		return 	eq(_separators, histogram._separators) &&
-				eq(_histogram, histogram._histogram) &&
-				super.equals(obj);
+		return Equality.of(this, obj).test(histogram ->
+			eq(_separators, histogram._separators) &&
+			eq(_histogram, histogram._histogram) &&
+			super.equals(obj)
+		);
 	}
 
 	@Override
 	public String toString() {
-		return Arrays.toString(_separators) + "\n" + Arrays.toString(getHistogram()) +
-				"\nSamples: " + _samples;
-	}
-
-	@Override
-	public Histogram<C> clone() {
-		return (Histogram<C>)super.clone();
+		return Arrays.toString(_separators) + "\n" +
+			Arrays.toString(getHistogram()) +
+			"\nSamples: " + _count;
 	}
 
 	/**
@@ -389,16 +370,8 @@ public class Histogram<C> extends MappedAccumulator<C> {
 	public static <C extends Comparable<? super C>> Histogram<C> of(
 		final C... separators
 	) {
-		return new Histogram<C>(COMPARATOR, separators);
+		return new Histogram<C>((o1, o2) -> o1.compareTo(o2), separators);
 	}
-
-	@SuppressWarnings({"rawtypes", "unchecked"})
-	private static final Comparator COMPARATOR = new Comparator() {
-		@Override
-		public int compare(final Object o1, final Object o2) {
-			return ((Comparable)o1).compareTo(o2);
-		}
-	};
 
 	/**
 	 * Return a <i>histogram</i> for {@link Double} values. The <i>histogram</i>
@@ -508,10 +481,19 @@ public class Histogram<C> extends MappedAccumulator<C> {
 		}
 		for (int i = 0; i < rest; ++i) {
 			separators[separators.length - rest + i] =
-					(pts - rest)*bulk + i*(bulk + 1) + min;
+				(pts - rest)*bulk + i*(bulk + 1) + min;
 		}
 
 		return separators;
+	}
+
+	public static Collector<Histogram<Double>, ?, Histogram<Double>>
+	toDoubleHistogram(final Double min, final Double max, final int classCount) {
+		return Collector.of(
+			() -> Histogram.of(min, max, classCount),
+			(a, b) -> a.combine(b),
+			(a, b) -> {a.combine(b); return a;}
+		);
 	}
 
 	/*
@@ -524,8 +506,8 @@ public class Histogram<C> extends MappedAccumulator<C> {
 		requireNonNull(max, "Maximum");
 		if (min.compareTo(max) >= 0) {
 			throw new IllegalArgumentException(format(
-					"Min must be smaller than max: %s < %s failed.", min, max
-				));
+				"Min must be smaller than max: %s < %s failed.", min, max
+			));
 		}
 		if (nclasses < 2) {
 			throw new IllegalArgumentException(format(

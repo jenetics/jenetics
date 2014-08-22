@@ -22,60 +22,33 @@ package org.jenetics.stat;
 import static java.lang.Math.floor;
 import static java.lang.Math.sqrt;
 
-import java.util.Random;
-
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.Factory;
 import org.jenetics.util.LCG64ShiftRandom;
-import org.jenetics.util.MappedAccumulatorTester;
-import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-07 $</em>
+ * @version <em>$Date: 2014-05-02 $</em>
  */
-public class QuantileTest extends MappedAccumulatorTester<Quantile<Double>> {
-
-	private final Factory<Quantile<Double>> _factory = new Factory<Quantile<Double>>() {
-		@Override
-		public Quantile<Double> newInstance() {
-			final Random random = RandomRegistry.getRandom();
-
-			final Quantile<Double> quantile = new Quantile<>(random.nextDouble());
-			for (int i = 0; i < 1000; ++i) {
-				quantile.accumulate(random.nextGaussian());
-			}
-
-			return quantile;
-		}
-	};
-	@Override
-	protected Factory<Quantile<Double>> getFactory() {
-		return _factory;
-	}
-
+public class QuantileTest {
 
 	@Test
 	public void median() {
-		final Quantile<Integer> quantile = Quantile.median();
+		final Quantile quantile = Quantile.median();
 		for (int i = 0; i < 1000; ++i) {
-			quantile.accumulate(i);
+			quantile.accept(i);
 			Assert.assertEquals(quantile.getValue(), floor(i/2.0), 1.0);
 		}
 	}
 
 	@Test(dataProvider = "quantiles")
 	public void quantile(final Double q) {
-		final Random random = new LCG64ShiftRandom(1234);
-		final Quantile<Double> quantile = new Quantile<>(q);
-
 		final int N = 2_000_000;
-		for (int i = 0; i < N; ++i) {
-			quantile.accumulate(random.nextDouble());
-		}
+		final Quantile quantile = new Quantile(q);
+
+		new LCG64ShiftRandom(1234).doubles().limit(N).forEach(quantile);
 
 		Assert.assertEquals(quantile.getSamples(), N);
 		Assert.assertEquals(quantile.getValue(), q, 1.0/sqrt(N));
@@ -99,16 +72,16 @@ public class QuantileTest extends MappedAccumulatorTester<Quantile<Double>> {
 
 	@Test
 	public void reset() {
-		final Quantile<Integer> quantile = Quantile.median();
+		final Quantile quantile = Quantile.median();
 		for (int i = 0; i < 1000; ++i) {
-			quantile.accumulate(i);
+			quantile.accept(i);
 			Assert.assertEquals(quantile.getValue(), floor(i/2.0), 1.0);
 		}
 
 		quantile.reset();
 
 		for (int i = 0; i < 1000; ++i) {
-			quantile.accumulate(i);
+			quantile.accept(i);
 			Assert.assertEquals(quantile.getValue(), floor(i/2.0), 1.0);
 		}
 	}

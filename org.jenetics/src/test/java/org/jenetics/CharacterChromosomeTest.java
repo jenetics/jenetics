@@ -36,19 +36,18 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-03 $</em>
+ * @version <em>$Date: 2014-08-15 $</em>
  */
 public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 
-	private final Factory<Chromosome<CharacterGene>>
-	_factory = CharacterChromosome.of(500);
-	@Override protected Factory<Chromosome<CharacterGene>> getFactory() {
-		return _factory;
+	@Override
+	protected Factory<Chromosome<CharacterGene>> factory() {
+		return () -> CharacterChromosome.of(500);
 	}
 
 
 	@Test(invocationCount = 20, successPercentage = 95)
-    public void newInstanceDistribution() {
+	public void newInstanceDistribution() {
 		try (Scoped<Random> s = RandomRegistry.scope(new Random(12345))) {
 			final CharSeq characters = new CharSeq("0123456789");
 			final CharacterChromosome chromosome = new CharacterChromosome(characters, 5000);
@@ -56,7 +55,7 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 			final Histogram<Long> histogram = Histogram.of(0L, 10L, 10);
 
 			for (CharacterGene gene : chromosome) {
-				histogram.accumulate(Long.valueOf(gene.getAllele().toString()));
+				histogram.accept(Long.valueOf(gene.getAllele().toString()));
 			}
 
 			assertDistribution(histogram, new UniformDistribution<>(0L, 10L));

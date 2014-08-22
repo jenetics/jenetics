@@ -32,21 +32,21 @@ import org.testng.Reporter;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import org.jenetics.internal.util.bit;
+
 import org.jenetics.util.Factory;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.bit;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-11 $</em>
+ * @version <em>$Date: 2014-08-01 $</em>
  */
 public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
-	private final Factory<Chromosome<BitGene>>
-	_factory = BitChromosome.of(500, 0.3);
-	@Override protected Factory<Chromosome<BitGene>> getFactory() {
-		return _factory;
+	@Override
+	protected Factory<Chromosome<BitGene>> factory() {
+		return () -> BitChromosome.of(500, 0.3);
 	}
 
 	@Test(invocationCount = 20, successPercentage = 90)

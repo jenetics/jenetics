@@ -23,9 +23,10 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Supplier;
 
 import org.jenetics.internal.util.Context;
-import org.jenetics.internal.util.Supplier;
+import org.jenetics.internal.util.require;
 
 /**
  * This class holds the {@link Random} engine used for the GA. The
@@ -88,21 +89,13 @@ import org.jenetics.internal.util.Supplier;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-15 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-05 $</em>
  */
-public final class RandomRegistry extends StaticObject {
-	private RandomRegistry() {}
-
-	// Default random engine used.
-	private static final Supplier<Random> DEFAULT = new Supplier<Random>() {
-		@Override
-		public Random get() {
-			return ThreadLocalRandom.current();
-		}
-	};
+public final class RandomRegistry {
+	private RandomRegistry() {require.noInstance();}
 
 	private static final Context<Supplier<Random>> CONTEXT =
-		new Context<>(DEFAULT);
+		new Context<>(ThreadLocalRandom::current);
 
 	/**
 	 * Return the global {@link Random} object.
@@ -129,7 +122,7 @@ public final class RandomRegistry extends StaticObject {
 	 */
 	public static void setRandom(final Random random) {
 		requireNonNull(random, "Random must not be null.");
-		CONTEXT.set(new RandomSupplier<>(random));
+		CONTEXT.set(() -> random);
 	}
 
 	/**
@@ -146,7 +139,7 @@ public final class RandomRegistry extends StaticObject {
 	@SuppressWarnings("unchecked")
 	public static void setRandom(final ThreadLocal<? extends Random> random) {
 		requireNonNull(random, "Random must not be null.");
-		CONTEXT.set((Supplier<Random>)new ThreadLocalRandomSupplier<>(random));
+		CONTEXT.set(random::get);
 	}
 
 	/**
@@ -166,8 +159,7 @@ public final class RandomRegistry extends StaticObject {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <R extends Random> Scoped<R> scope(final R random) {
-		final RandomSupplier<R> supplier = new RandomSupplier<>(random);
-		return CONTEXT.scope((Supplier<Random>) supplier, supplier);
+		return CONTEXT.scope(() -> random, () -> random);
 	}
 
 	/**
@@ -179,44 +171,7 @@ public final class RandomRegistry extends StaticObject {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <R extends Random> Scoped<R> scope(final ThreadLocal<R> random) {
-		final ThreadLocalRandomSupplier<R> supplier =
-			new ThreadLocalRandomSupplier<>(random);
-
-		return CONTEXT.scope((Supplier<Random>) supplier, supplier);
-	}
-
-	/* *************************************************************************
-	 *  Some private helper classes.
-	 * ************************************************************************/
-
-	private final static class RandomSupplier<R extends Random>
-		implements Supplier<R>
-	{
-		private final R _random;
-
-		RandomSupplier(final R random) {
-			_random = requireNonNull(random, "Random must not be null.");
-		}
-
-		@Override
-		public final R get() {
-			return _random;
-		}
-	}
-
-	private final static class ThreadLocalRandomSupplier<R extends Random>
-		implements Supplier<R>
-	{
-		private final ThreadLocal<R> _random;
-
-		ThreadLocalRandomSupplier(final ThreadLocal<R> random) {
-			_random = requireNonNull(random, "Random must not be null.");
-		}
-
-		@Override
-		public final R get() {
-			return _random.get();
-		}
+		return CONTEXT.scope(random::get, random::get);
 	}
 
 }

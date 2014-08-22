@@ -19,79 +19,54 @@
  */
 package org.jenetics;
 
-import org.jenetics.util.Function;
-import org.jenetics.util.StaticObject;
+import java.util.function.Predicate;
+
+import org.jenetics.internal.util.IntRef;
+import org.jenetics.internal.util.ObjectRef;
+import org.jenetics.internal.util.require;
 
 /**
  * Some default GA termination strategies.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-05 $</em>
  */
-public final class termination extends StaticObject {
-	private termination() {}
-
-	static class SteadyFitness<C extends Comparable<? super C>>
-		implements Function<Statistics<?, C>, Boolean>
-	{
-		private final int _generations;
-
-		private C _fitness;
-		private int _stableGenerations = 0;
-
-		public SteadyFitness(final int generations) {
-			_generations = generations;
-		}
-
-		@Override
-		public Boolean apply(final Statistics<?, C> statistics) {
-			boolean proceed = true;
-
-			if (_fitness == null) {
-				_fitness = statistics.getBestFitness();
-				_stableGenerations = 1;
-			} else {
-				final Optimize opt = statistics.getOptimize();
-				if (opt.compare(_fitness, statistics.getBestFitness()) >= 0) {
-					proceed = ++_stableGenerations <= _generations;
-				} else {
-					_fitness = statistics.getBestFitness();
-					_stableGenerations = 1;
-				}
-			}
-
-			return proceed ? Boolean.TRUE : Boolean.FALSE;
-		}
-	}
+public final class termination {
+	private termination() {require.noInstance();}
 
 	/**
 	 * Create a <i>terminator</i> which returns {@code false} if the fitness
 	 * hasn't improved for a given number of generations.
 	 *
 	 * @param <C> the fitness type.
-	 * @param generation the number of generations the fitness don't have been
+	 * @param generations the number of generations the fitness don't have been
 	 *         improved.
 	 * @return the GA terminator.
 	 */
 	public static <C extends Comparable<? super C>>
-	Function<Statistics<?, C>, Boolean> SteadyFitness(final int generation) {
-		return new SteadyFitness<>(generation);
-	}
+	Predicate<Statistics<?, C>> SteadyFitness(final int generations) {
+		final ObjectRef<C> fitness = new ObjectRef<>();
+		final IntRef stableGenerations = new IntRef();
 
-	static class Generation implements Function<Statistics<?, ?>, Boolean> {
-		private final int _generation;
+		return statistics -> {
+			boolean proceed = true;
 
-		public Generation(final int generation) {
-			_generation = generation;
-		}
+			if (fitness.value == null) {
+				fitness.value = statistics.getBestFitness();
+				stableGenerations.value = 1;
+			} else {
+				final Optimize opt = statistics.getOptimize();
+				if (opt.compare(fitness.value, statistics.getBestFitness()) >= 0) {
+					proceed = ++stableGenerations.value <= generations;
+				} else {
+					fitness.value = statistics.getBestFitness();
+					stableGenerations.value = 1;
+				}
+			}
 
-		@Override
-		public Boolean apply(final Statistics<?, ?> statistics) {
-			return statistics.getGeneration() < _generation ?
-					Boolean.TRUE :
-					Boolean.FALSE;
-		}
+			return proceed;
+		};
 	}
 
 	/**
@@ -106,9 +81,8 @@ public final class termination extends StaticObject {
 	 * @param generation the maximal GA generation.
 	 * @return the termination predicate.
 	 */
-	public static Function<Statistics<?, ?>, Boolean>
-	Generation(final int generation) {
-		return new Generation(generation);
+	public static Predicate<Statistics<?, ?>> Generation(final int generation) {
+		return statistics -> statistics.getGeneration() < generation;
 	}
 
 }

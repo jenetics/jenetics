@@ -21,11 +21,13 @@ package org.jenetics.util;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.object.eq;
+import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
+import java.time.Duration;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 
 /**
  * Timer for measure the performance of the GA. The timer uses nano second
@@ -34,7 +36,7 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
  */
 public final class Timer
 	implements
@@ -50,7 +52,7 @@ public final class Timer
 	/*private[test]*/ long _stop = 0;
 	/*private[test]*/ long _sum = 0;
 
-	private transient Accumulator<? super Long> _accumulator = accumulators.NULL;
+	private transient Accumulator<? super Long> _accumulator = o -> {};
 
 	/**
 	 * Create a new time with the given label. The label is use in the
@@ -183,27 +185,21 @@ public final class Timer
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).
-				and(_label).
-				and(_start).
-				and(_stop).
-				and(_sum).value();
+		return Hash.of(getClass())
+				.and(_label)
+				.and(_start)
+				.and(_stop)
+				.and(_sum).value();
 	}
 
 	@Override
-	public boolean equals(final Object object) {
-		if (object == this) {
-			return true;
-		}
-		if (!(object instanceof Timer)) {
-			return false;
-		}
-
-		final Timer timer = (Timer)object;
-		return eq(_start, timer._start) &&
-				eq(_stop, timer._stop) &&
-				eq(_sum, timer._sum) &&
-				eq(_label, timer._label);
+	public boolean equals(final Object obj) {
+		return Equality.of(this, obj).test(timer ->
+			eq(_start, timer._start) &&
+			eq(_stop, timer._stop) &&
+			eq(_sum, timer._sum) &&
+			eq(_label, timer._label)
+		);
 	}
 
 	@Override

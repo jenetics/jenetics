@@ -29,21 +29,23 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import org.jenetics.internal.math.random;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-08 $</em>
+ * @version <em>$Date: 2014-08-01 $</em>
  */
 public class CharSeqTest extends ObjectTester<CharSeq> {
 
 	private final Factory<CharSeq> _factory = new Factory<CharSeq>() {
 		@Override
 		public CharSeq newInstance() {
-			final Random random = RandomRegistry.getRandom();
-			return new CharSeq(RandomUtils.nextString(random.nextInt(200) + 100));
+			final Random r = RandomRegistry.getRandom();
+			return new CharSeq(random.nextString(r, r.nextInt(200) + 100));
 		}
 	};
 	@Override
-	protected Factory<CharSeq> getFactory() {
+	protected Factory<CharSeq> factory() {
 		return _factory;
 	}
 
@@ -117,9 +119,10 @@ public class CharSeqTest extends ObjectTester<CharSeq> {
 	@Test(dataProvider = "randomString")
 	public void distinctRandomStrings(final String value) {
 		final CharSeq seq = new CharSeq(value);
-		final Set<Character> set = new HashSet<>(
-			Array.box(value.toCharArray()).asList()
-		);
+		final Set<Character> set = new HashSet<>();
+		for (int i = value.length(); --i >= 0;) {
+			set.add(value.charAt(i));
+		}
 
 		Assert.assertEquals(seq.length(), set.size());
 		for (Character c : seq) {
@@ -141,7 +144,7 @@ public class CharSeqTest extends ObjectTester<CharSeq> {
 	private static String nextString(final Random random, final int length) {
 		final char[] chars = new char[length];
 		for (int i = 0; i < chars.length; ++i) {
-			chars[i] = (char)math.random.nextInt(random, 'a', 'k');
+			chars[i] = (char) org.jenetics.internal.math.random.nextInt(random, 'a', 'k');
 		}
 
 		return new String(chars);

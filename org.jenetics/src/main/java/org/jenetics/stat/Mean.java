@@ -20,11 +20,12 @@
 package org.jenetics.stat;
 
 import static java.lang.String.format;
-import static org.jenetics.internal.util.object.eq;
+import static org.jenetics.internal.util.Equality.eq;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 
-import org.jenetics.util.MappedAccumulator;
+import org.jenetics.util.AbstractAccumulator;
 
 
 /**
@@ -45,9 +46,9 @@ import org.jenetics.util.MappedAccumulator;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
  */
-public class Mean<N extends Number> extends MappedAccumulator<N> {
+public class Mean<N extends Number> extends AbstractAccumulator<N> {
 
 	protected double _mean = Double.NaN;
 
@@ -96,20 +97,15 @@ public class Mean<N extends Number> extends MappedAccumulator<N> {
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(super.hashCode()).and(_mean).value();
+		return Hash.of(getClass()).and(super.hashCode()).and(_mean).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null || getClass() != obj.getClass()) {
-			return false;
-		}
-
-		final Mean<?> mean = (Mean<?>)obj;
-		return eq(_mean, mean._mean) && super.equals(mean);
+		return Equality.of(this, obj).test(mean ->
+			eq(_mean, mean._mean) &&
+			super.equals(mean)
+		);
 	}
 
 	@Override

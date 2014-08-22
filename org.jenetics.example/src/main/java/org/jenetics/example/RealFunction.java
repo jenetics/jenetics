@@ -23,6 +23,8 @@ import static java.lang.Math.PI;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
+import java.util.function.Function;
+
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
 import org.jenetics.GeneticAlgorithm;
@@ -32,7 +34,6 @@ import org.jenetics.Mutator;
 import org.jenetics.NumberStatistics;
 import org.jenetics.Optimize;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Function;
 
 final class Real
 	implements Function<Genotype<DoubleGene>, Double>
@@ -60,8 +61,8 @@ public class RealFunction {
 		);
 		ga.setPopulationSize(500);
 		ga.setAlterers(
-			new Mutator<DoubleGene>(0.03),
-			new MeanAlterer<DoubleGene>(0.6)
+			new Mutator<DoubleGene, Double>(0.03),
+			new MeanAlterer<DoubleGene, Double>(0.6)
 		);
 
 		ga.setup();

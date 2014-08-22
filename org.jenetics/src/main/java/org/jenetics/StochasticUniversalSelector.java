@@ -21,7 +21,8 @@ package org.jenetics;
 
 import static java.util.Objects.requireNonNull;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.RandomRegistry;
 
@@ -46,7 +47,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-12 $</em>
  */
 public class StochasticUniversalSelector<
 	G extends Gene<?, G>,
@@ -60,7 +61,7 @@ public class StochasticUniversalSelector<
 
 	/**
 	 * This method sorts the population in descending order while calculating the
-	 * selection probabilities. (The method {@link Population#sort()} is called
+	 * selection probabilities. (The method {@link Population#populationSort()} is called
 	 * by this method.)
 	 */
 	@Override
@@ -100,7 +101,7 @@ public class StochasticUniversalSelector<
 				prop += probabilities[j];
 				++j;
 			}
-			selection.add(population.get(j));
+			selection.add(population.get(j%population.size()));
 		}
 
 		return selection;
@@ -111,21 +112,18 @@ public class StochasticUniversalSelector<
 		final Population<G, N> population,
 		final int count
 	) {
-		population.sort();
+		population.populationSort();
 		return super.probabilities(population, count);
 	}
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(super.hashCode()).value();
+		return Hash.of(getClass()).and(super.hashCode()).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-				obj != null &&
-				obj.getClass() == getClass() &&
-				super.equals(obj);
+		return Equality.of(this, obj).test(super::equals);
 	}
 
 	@Override

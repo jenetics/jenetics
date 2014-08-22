@@ -21,10 +21,10 @@ package org.jenetics.stat;
 
 import static java.lang.Double.NaN;
 import static java.lang.String.format;
-import static org.jenetics.internal.util.object.eq;
+import static org.jenetics.internal.util.Equality.eq;
 
-import org.jenetics.internal.util.HashBuilder;
-
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 
 /**
  * <p>Calculate the variance from a finite sample of <i>N</i> observations.</p>
@@ -45,7 +45,7 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
  */
 public class Variance<N extends Number> extends Mean<N> {
 
@@ -78,34 +78,54 @@ public class Variance<N extends Number> extends Mean<N> {
 	 */
 	@Override
 	public void accumulate(final N value) {
+		accumulate(value.doubleValue());
+	}
+
+	public void accumulate(final double value) {
 		if (_samples == 0) {
 			_mean = 0;
 			_m2 = 0;
 		}
 
-		final double data = value.doubleValue();
+		final double data = value;
 		final double delta = data - _mean;
 
 		_mean += delta/(++_samples);
 		_m2 += delta*(data - _mean);
 	}
 
+	/**
+	 * Merges the result of two variances into one.
+	 *
+	 * @see <a href="http://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Parallel_algorithm">
+	 *     Parallel variance calculation</a>
+	 *
+	 * @param other the other variance to combine.
+	 * @return a new variance containing the merged result of {@code this} and
+	 *         {@code other}.
+	 */
+	public Variance<N> merge(final Variance<N> other) {
+		final Variance<N> result = new Variance<>();
+
+		final double r = other._mean - _mean;
+		result._samples = _samples + other._samples;
+		result._mean = _mean + r*(other._samples/(double)result._samples);
+		result._m2 = _m2 + other._m2 + r*r*(_samples*other._samples/(double)result._samples);
+
+		return result;
+	}
+
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(super.hashCode()).and(_m2).value();
+		return Hash.of(getClass()).and(super.hashCode()).and(_m2).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null || getClass() != obj.getClass()) {
-			return false;
-		}
-
-		final Variance<?> variance = (Variance<?>)obj;
-		return eq(_m2, variance._m2) && super.equals(variance);
+		return Equality.of(this, obj).test(variance ->
+			eq(_m2, variance._m2) &&
+			super.equals(variance)
+		);
 	}
 
 	@Override

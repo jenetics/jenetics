@@ -19,22 +19,21 @@
  */
 package org.jenetics;
 
-import java.io.Serializable;
 import java.util.Random;
+import java.util.function.Function;
 
-import org.jenetics.util.Array;
-import org.jenetics.util.Function;
+import org.jenetics.internal.util.require;
+
 import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-10 $</em>
+ * @version <em>$Date: 2014-08-21 $</em>
  */
 class TestUtils {
-
-	private TestUtils() {
-	}
+	private TestUtils() {require.noInstance();}
 
 	/**
 	 * Data for alter count tests.
@@ -116,13 +115,12 @@ class TestUtils {
 	/**
 	 *  Create a population of DoubleGenes
 	 */
-	public static final Population<DoubleGene, Double> newDoubleGenePopulation(
+	public static Population<DoubleGene, Double> newDoubleGenePopulation(
 		final int ngenes,
 		final int nchromosomes,
 		final int npopulation
 	) {
-		final Array<DoubleChromosome> chromosomes =
-			new Array<>(nchromosomes);
+		final MSeq<DoubleChromosome> chromosomes = MSeq.ofLength(nchromosomes);
 
 		for (int i = 0; i < nchromosomes; ++i) {
 			chromosomes.set(i, DoubleChromosome.of(0, 10, ngenes));
@@ -139,20 +137,19 @@ class TestUtils {
 		return population;
 	}
 
-	public static final Population<EnumGene<Double>, Double> newPermutationDoubleGenePopulation(
+	public static Population<EnumGene<Double>, Double> newPermutationDoubleGenePopulation(
 		final int ngenes,
 		final int nchromosomes,
 		final int npopulation
 	) {
-		final Random random = RandomRegistry.getRandom();
-		final Array<Double> alleles = new Array<>(ngenes);
+		final Random random = new Random(122343);
+		final MSeq<Double> alleles = MSeq.ofLength(ngenes);
 		for (int i = 0; i < ngenes; ++i) {
-			alleles.set(i, Double.valueOf(random.nextDouble()*10));
+			alleles.set(i, random.nextDouble()*10);
 		}
 		final ISeq<Double> ialleles = alleles.toISeq();
 
-		final Array<PermutationChromosome<Double>> chromosomes =
-			new Array<>(nchromosomes);
+		final MSeq<PermutationChromosome<Double>> chromosomes = MSeq.ofLength(nchromosomes);
 
 		for (int i = 0; i < nchromosomes; ++i) {
 			chromosomes.set(i, PermutationChromosome.of(ialleles));
@@ -170,12 +167,7 @@ class TestUtils {
 	}
 
 	private static final Function<Genotype<EnumGene<Double>>, Double>
-	PFF = new Function<Genotype<EnumGene<Double>>, Double>() {
-		@Override
-		public Double apply(Genotype<EnumGene<Double>> value) {
-			return value.getGene().getAllele();
-		}
-	};
+	PFF = gt -> gt.getGene().getAllele();
 
 	/**
 	 * Count the number of different genes.
@@ -204,25 +196,10 @@ class TestUtils {
 	}
 
 	/**
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id$
-	 */
-	private static final class Continous
-		implements Function<Genotype<DoubleGene>, Double>,
-					Serializable
-	{
-		private static final long serialVersionUID = 1L;
-
-		@Override
-		public Double apply(Genotype<DoubleGene> genotype) {
-			return genotype.getChromosome().getGene().getAllele();
-		}
-	}
-
-	/**
 	 * 'Identity' fitness function.
 	 */
-	public static final Function<Genotype<DoubleGene>, Double> FF = new Continous();
+	public static final Function<Genotype<DoubleGene>, Double> FF =
+		gt -> gt.getGene().getAllele();
 
 	public static GeneticAlgorithm<DoubleGene, Double> GA() {
 		return new GeneticAlgorithm<>(

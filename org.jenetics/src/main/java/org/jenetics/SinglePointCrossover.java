@@ -23,7 +23,8 @@ import static java.lang.String.format;
 
 import java.util.Random;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
@@ -51,10 +52,13 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-06-30 $</em>
  */
-public class SinglePointCrossover<G extends Gene<?, G>>
-	extends MultiPointCrossover<G>
+public class SinglePointCrossover<
+	G extends Gene<?, G>,
+	C extends Comparable<? super C>
+>
+	extends MultiPointCrossover<G, C>
 {
 
 	/**
@@ -75,8 +79,6 @@ public class SinglePointCrossover<G extends Gene<?, G>>
 	public SinglePointCrossover() {
 		this(0.05);
 	}
-
-
 
 	@Override
 	protected int crossover(final MSeq<G> that, final MSeq<G> other) {
@@ -103,19 +105,12 @@ public class SinglePointCrossover<G extends Gene<?, G>>
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(super.hashCode()).value();
+		return Hash.of(getClass()).and(super.hashCode()).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null || obj.getClass() != getClass()) {
-			return false;
-		}
-
-		return super.equals(obj);
+		return Equality.of(this, obj).test(super::equals);
 	}
 
 	@Override
