@@ -313,7 +313,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 			.map(selector)
 			.collect(Collectors.toList());
 
-		print(writer, opt, selectors, parameters, histograms);
+		print(writer, opt, selectors, parameters, histograms, populationCount, loops);
 	}
 
 	/**
@@ -396,7 +396,9 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		final Optimize opt,
 		final List<Selector<?, ?>> selectors,
 		final List<?> parameters,
-		final List<Histogram<Double>> histograms
+		final List<Histogram<Double>> histograms,
+		final int populationCount,
+		final int loops
 	) {
 		final NumberFormat format = NumberFormat.getNumberInstance(Locale.ENGLISH);
 		format.setMinimumFractionDigits(15);
@@ -408,7 +410,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		);
 		printv(writer);
 
-		println(writer, "# %-76s#", format("Selector distributions (%s):", opt));
+		println(writer, "# %-76s#", format("Selector distributions (opt=%s, npop=%d, loops=%d):", opt, populationCount, loops));
 		for (Selector<?, ?> selector : selectors) {
 			println(writer, "# %-76s#", format("   - %s", selector));
 		}
