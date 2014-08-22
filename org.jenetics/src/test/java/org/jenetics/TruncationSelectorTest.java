@@ -60,26 +60,29 @@ public class TruncationSelectorTest
 		//throw new SkipException("TODO: implement this test.");
 	}
 
-	@Test(
-		dataProvider = "expectedDistribution",
-		invocationCount = 20,
-		successPercentage = 95
-	)
+	@Test(dataProvider = "expectedDistribution")
 	public void selectDist(final Named<double[]> expected, final Optimize opt) {
-		final int npopulation = 250;
-		final int loops = 500;
+		final int npopulation = 200;
+		final int loops = 1000;
 
-		final Histogram<Double> distribution = SelectorTester.distribution(
-			new TruncationSelector<>(),
-			opt,
-			npopulation,
-			loops
-		);
+		try (Scoped<LCG64ShiftRandom> sr = RandomRegistry.scope(new LCG64ShiftRandom())) {
+			final Histogram<Double> distribution = SelectorTester.distribution(
+				new TruncationSelector<>(),
+				opt,
+				npopulation,
+				loops
+			);
 
-		StatisticsAssert.assertDistribution(distribution, expected.value);
+			System.out.println(Arrays.toString(distribution.getNormalizedHistogram()));
+			System.out.println(Arrays.toString(expected.value));
+
+			StatisticsAssert.assertDistribution(distribution, expected.value);
+		}
+
+
 	}
 
-	@DataProvider
+	@DataProvider(name = "expectedDistribution")
 	public Object[][] expectedDistribution() {
 		final String resource =
 			"/org/jenetics/selector/distribution/TruncationSelector";

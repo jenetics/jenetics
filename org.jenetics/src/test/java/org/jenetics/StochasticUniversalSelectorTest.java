@@ -19,19 +19,29 @@
  */
 package org.jenetics;
 
+import java.util.Arrays;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 
 import org.testng.SkipException;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import org.jenetics.internal.util.Named;
+
 import org.jenetics.stat.Distribution;
+import org.jenetics.stat.Histogram;
+import org.jenetics.stat.StatisticsAssert;
 import org.jenetics.stat.UniformDistribution;
 import org.jenetics.util.Factory;
+import org.jenetics.util.LCG64ShiftRandom;
+import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Scoped;
+import org.jenetics.util.TestData;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-12 $</em>
+ * @version <em>$Date: 2014-08-22 $</em>
  */
 public class StochasticUniversalSelectorTest
 	extends ProbabilitySelectorTester<StochasticUniversalSelector<DoubleGene,Double>>
@@ -74,11 +84,75 @@ public class StochasticUniversalSelectorTest
 		);
 	}
 
-	// TODO: implement select-distribution test.
 	@Override
 	@Test
 	public void selectDistribution() {
-		throw new SkipException("TODO: implement this test.");
+		//throw new SkipException("TODO: implement this test.");
+	}
+
+	@Test(dataProvider = "expectedDistribution")
+	public void selectDist(final Named<double[]> expected, final Optimize opt) {
+		final int npopulation = 100;
+		final int loops = 1500;
+
+		try (Scoped<LCG64ShiftRandom> sr = RandomRegistry.scope(new LCG64ShiftRandom())) {
+			final Histogram<Double> distribution = SelectorTester.distribution(
+				new StochasticUniversalSelector<>(),
+				opt,
+				npopulation,
+				loops
+			);
+
+			System.out.println(Arrays.toString(distribution.getNormalizedHistogram()));
+			System.out.println(Arrays.toString(expected.value));
+
+			StatisticsAssert.assertDistribution(distribution, expected.value);
+		}
+	}
+
+	@DataProvider(name = "expectedDistribution")
+	public Object[][] expectedDistribution() {
+		final String resource =
+			"/org/jenetics/selector/distribution/StochasticUniversalSelector";
+
+		return Arrays.asList(Optimize.MAXIMUM).stream()
+			.map(opt -> {
+				final TestData data = TestData.of(resource, opt.toString());
+				final double[] expected = data.stream()
+					.map(line -> line[0])
+					.mapToDouble(Double::parseDouble)
+					.toArray();
+
+				return new Object[]{Named.of("distribution", expected), opt};
+			}).toArray(Object[][]::new);
+	}
+
+	public static void main(final String[] args) {
+		writeDistributionData(Optimize.MINIMUM);
+		writeDistributionData(Optimize.MAXIMUM);
+	}
+
+	private static void writeDistributionData(final Optimize opt) {
+		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
+		try (Scoped<LCG64ShiftRandom> sr = RandomRegistry.scope(random)) {
+
+			// For exact testing
+			//final int npopulation = 25_000;
+			//final int loops = 2_500_000;
+
+			// For fast testing
+			final int npopulation = 5000;
+			final int loops = 100_000;
+
+			printDistributions(
+				System.out,
+				Arrays.asList(""),
+				value -> new StochasticUniversalSelector<DoubleGene, Double>(),
+				opt,
+				npopulation,
+				loops
+			);
+		}
 	}
 
 }

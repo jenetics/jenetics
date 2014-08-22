@@ -21,20 +21,13 @@ package org.jenetics;
 
 import static java.lang.String.format;
 
-import java.io.PrintStream;
-import java.text.NumberFormat;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import org.jenetics.internal.util.Named;
-import org.jenetics.internal.util.Pair;
 
 import org.jenetics.stat.Distribution;
 import org.jenetics.stat.Histogram;
@@ -70,11 +63,7 @@ public class TournamentSelectorTest
 		//throw new SkipException("TODO: implement this test.");
 	}
 
-	@Test(
-		dataProvider = "expectedDistribution",
-		invocationCount = 20,
-		successPercentage = 95
-	)
+	@Test(dataProvider = "expectedDistribution")
 	public void selectDist(
 		final Integer tournamentSize,
 		final Named<double[]> expected,
@@ -93,7 +82,7 @@ public class TournamentSelectorTest
 		StatisticsAssert.assertDistribution(distribution, expected.value);
 	}
 
-	@DataProvider
+	@DataProvider(name = "expectedDistribution")
 	public Object[][] expectedDistribution() {
 		final String resource =
 			"/org/jenetics/selector/distribution/TournamentSelector";

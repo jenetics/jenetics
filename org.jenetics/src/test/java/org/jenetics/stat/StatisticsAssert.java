@@ -19,9 +19,16 @@
  */
 package org.jenetics.stat;
 
+import static java.lang.String.format;
+import static org.jenetics.internal.math.arithmetic.normalize;
+
+import java.util.Arrays;
+
 import org.apache.commons.math3.distribution.ChiSquaredDistribution;
 import org.apache.commons.math3.stat.inference.ChiSquareTest;
+import org.apache.commons.math3.stat.inference.GTest;
 import org.testng.Assert;
+import org.testng.Reporter;
 
 import org.jenetics.internal.util.require;
 
@@ -44,9 +51,9 @@ public final class StatisticsAssert {
 		final double maxChi = chi(0.999, degreeOfFreedom)*2;
 
 		if (χ2 > maxChi) {
-			System.out.println(String.format(
+			System.out.println(format(
 				"The histogram %s doesn't follow the distribution %s. \n" +
-				"χ2 must be smaller than %f but was %f",
+					"χ2 must be smaller than %f but was %f",
 				histogram, distribution,
 				maxChi, χ2
 			));
@@ -54,9 +61,9 @@ public final class StatisticsAssert {
 
 		Assert.assertTrue(
 				χ2 <= maxChi,
-				String.format(
+				format(
 					"The histogram %s doesn't follow the distribution %s. \n" +
-					"χ2 must be smaller than %f but was %f",
+						"χ2 must be smaller than %f but was %f",
 					histogram, distribution,
 					maxChi, χ2
 				)
@@ -67,8 +74,24 @@ public final class StatisticsAssert {
 		final Histogram<C> distribution,
 		final double[] expected
 	) {
-		final double χ2 = new ChiSquareTest()
-			.chiSquare(expected, distribution.getHistogram());
+		final double[] exp = Arrays.stream(expected)
+			.map(v -> Math.max(v, 1.0/1000000000000000.0))
+			.toArray();
+
+		normalize(exp);
+
+		final long[] dist = Arrays.stream(distribution.getHistogram())
+			//.map(v -> Math.max(v, 1))
+			.toArray();
+
+		final double χ2 = new ChiSquareTest().chiSquare(exp, dist);
+		System.out.println(format("CHISQR: %f", χ2));
+
+		final double p = new ChiSquareTest().chiSquareTest(exp, dist);
+		System.out.println("PPPPPPPP: " + p);
+
+		final double g = new GTest().gTest(exp, dist);
+		System.out.println("GGGGGGGG: " + g);
 
 		final int degreeOfFreedom = distribution.length();
 		assert (degreeOfFreedom > 0);
@@ -76,18 +99,20 @@ public final class StatisticsAssert {
 		final double maxChi = chi(0.999, degreeOfFreedom);
 
 		if (χ2 > maxChi) {
-			String.format(
+			format(
 				"The histogram doesn't follow the given distribution." +
 					"χ2 must be smaller than %f but was %f",
 				maxChi, χ2
 			);
 		}
 
+		Reporter.log(format("chi=%s, maxChi=%s", χ2, maxChi));
+
 		Assert.assertTrue(
 			χ2 <= maxChi,
-			String.format(
+			format(
 				"The histogram doesn't follow the given distribution." +
-				"χ2 must be smaller than %f but was %f",
+					"χ2 must be smaller than %f but was %f",
 				maxChi, χ2
 			)
 		);
