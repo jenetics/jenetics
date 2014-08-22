@@ -69,8 +69,8 @@ public class TournamentSelectorTest
 		final Named<double[]> expected,
 		final Optimize opt
 	) {
-		final int loops = 15;
-		final int npopulation = loops*100;
+		final int loops = 10;
+		final int npopulation = loops*500;
 
 		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
 		try (Scoped<LCG64ShiftRandom> sr = RandomRegistry.scope(random)) {
