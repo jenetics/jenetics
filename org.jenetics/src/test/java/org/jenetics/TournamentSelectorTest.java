@@ -63,14 +63,14 @@ public class TournamentSelectorTest
 		//throw new SkipException("TODO: implement this test.");
 	}
 
-	@Test(dataProvider = "expectedDistribution")
+	@Test(dataProvider = "expectedDistribution", invocationCount = 20, successPercentage = 95)
 	public void selectDist(
 		final Integer tournamentSize,
 		final Named<double[]> expected,
 		final Optimize opt
 	) {
-		final int loops = 5;
-		final int npopulation = loops*1000;
+		final int loops = 15;
+		final int npopulation = loops*100;
 
 		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
 		try (Scoped<LCG64ShiftRandom> sr = RandomRegistry.scope(random)) {
@@ -81,7 +81,7 @@ public class TournamentSelectorTest
 				loops
 			);
 
-			StatisticsAssert.assertDistribution(distribution, expected.value, 0.999);
+			StatisticsAssert.assertDistribution(distribution, expected.value, 0.99999);
 		}
 	}
 
@@ -120,8 +120,8 @@ public class TournamentSelectorTest
 	}
 
 	public static void main(final String[] args) {
-        writeDistributionData(Optimize.MINIMUM);
 		writeDistributionData(Optimize.MAXIMUM);
+        writeDistributionData(Optimize.MINIMUM);
 	}
 
 	private static void writeDistributionData(final Optimize opt) {
@@ -133,8 +133,8 @@ public class TournamentSelectorTest
 			//final int loops = 2_500_000;
 
 			// For fast testing
-			final int npopulation = 500;
-			final int loops = 10_000;
+			final int npopulation = 50_000;
+			final int loops = 1_000;
 
 			printDistributions(
 				System.out,
