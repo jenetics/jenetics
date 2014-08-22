@@ -376,7 +376,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 					.mapToObj(i -> ptf.newInstance())
 					.collect(Population.toPopulation());
 
-			selector.select(population, populationCount / 2, opt).stream()
+			selector.select(population, populationCount/2, opt).stream()
 				.map(pt -> pt.getGenotype().getGene().getAllele())
 				.forEach(hist::accept);
 

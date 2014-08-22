@@ -90,21 +90,19 @@ public class StochasticUniversalSelectorTest
 		//throw new SkipException("TODO: implement this test.");
 	}
 
-	@Test(dataProvider = "expectedDistribution")
+	@Test(dataProvider = "expectedDistribution", invocationCount = 20)
 	public void selectDist(final Named<double[]> expected, final Optimize opt) {
-		final int npopulation = 100;
-		final int loops = 1500;
+		final int loops = 25;
+		final int npopulation = loops*50;
 
-		try (Scoped<LCG64ShiftRandom> sr = RandomRegistry.scope(new LCG64ShiftRandom())) {
+		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
+		try (Scoped<LCG64ShiftRandom> sr = RandomRegistry.scope(random)) {
 			final Histogram<Double> distribution = SelectorTester.distribution(
 				new StochasticUniversalSelector<>(),
 				opt,
 				npopulation,
 				loops
 			);
-
-			System.out.println(Arrays.toString(distribution.getNormalizedHistogram()));
-			System.out.println(Arrays.toString(expected.value));
 
 			StatisticsAssert.assertDistribution(distribution, expected.value);
 		}
@@ -115,7 +113,7 @@ public class StochasticUniversalSelectorTest
 		final String resource =
 			"/org/jenetics/selector/distribution/StochasticUniversalSelector";
 
-		return Arrays.asList(Optimize.MAXIMUM).stream()
+		return Arrays.stream(Optimize.values())
 			.map(opt -> {
 				final TestData data = TestData.of(resource, opt.toString());
 				final double[] expected = data.stream()
@@ -128,8 +126,8 @@ public class StochasticUniversalSelectorTest
 	}
 
 	public static void main(final String[] args) {
-		writeDistributionData(Optimize.MINIMUM);
 		writeDistributionData(Optimize.MAXIMUM);
+		writeDistributionData(Optimize.MINIMUM);
 	}
 
 	private static void writeDistributionData(final Optimize opt) {

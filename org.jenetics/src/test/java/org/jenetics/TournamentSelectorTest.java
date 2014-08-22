@@ -69,17 +69,20 @@ public class TournamentSelectorTest
 		final Named<double[]> expected,
 		final Optimize opt
 	) {
-		final int npopulation = 250;
-		final int loops = 500;
+		final int loops = 5;
+		final int npopulation = loops*1000;
 
-		final Histogram<Double> distribution = SelectorTester.distribution(
-			new TournamentSelector<DoubleGene, Double>(tournamentSize),
-			opt,
-			npopulation,
-			loops
-		);
+		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
+		try (Scoped<LCG64ShiftRandom> sr = RandomRegistry.scope(random)) {
+			final Histogram<Double> distribution = SelectorTester.distribution(
+				new TournamentSelector<DoubleGene, Double>(tournamentSize),
+				opt,
+				npopulation,
+				loops
+			);
 
-		StatisticsAssert.assertDistribution(distribution, expected.value);
+			StatisticsAssert.assertDistribution(distribution, expected.value, 0.999);
+		}
 	}
 
 	@DataProvider(name = "expectedDistribution")
