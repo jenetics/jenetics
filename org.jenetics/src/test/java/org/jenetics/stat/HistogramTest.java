@@ -21,15 +21,17 @@ package org.jenetics.stat;
 
 import java.util.Arrays;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-05-10 $</em>
+ * @version <em>$Date: 2014-08-22 $</em>
  */
 public class HistogramTest {
 
@@ -141,6 +143,34 @@ public class HistogramTest {
 		for (int i = 0; i < hist.length; ++i) {
 			Assert.assertEquals(hist[i], 100000.0, 1000.0);
 		}
+	}
+
+	@Test
+	public void collector() {
+		final double min = 0.0;
+		final double max = 1_000.0;
+		final int nclasses = 71;
+
+		final LCG64ShiftRandom random = new LCG64ShiftRandom();
+		final double[] values = new double[100_000];
+		for (int i = 0; i < values.length; ++i) {
+			values[i] = random.nextDouble(min, max);
+		}
+
+		final Histogram<Double> serial = Histogram.of(min, max, nclasses);
+		Arrays.stream(values).forEach(serial::accept);
+
+		final Histogram<Double> parallel =
+			IntStream.range(0, values.length).parallel().mapToObj(i -> {
+				final Histogram<Double> hist = Histogram.of(min, max, nclasses);
+				hist.accept(values[i]);
+				return hist;
+			}).collect(Histogram.toDoubleHistogram(min, max, nclasses));
+
+		Assert.assertEquals(
+			Arrays.toString(parallel.getHistogram()),
+			Arrays.toString(serial.getHistogram())
+		);
 	}
 
 }
