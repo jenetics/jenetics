@@ -69,8 +69,8 @@ public class TournamentSelectorTest
 		final Named<double[]> expected,
 		final Optimize opt
 	) {
-		final int loops = 3;
-		final int npopulation = 1500;
+		final int loops = 20;
+		final int npopulation = POPULATION_COUNT;
 
 		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
 		try (Scoped<LCG64ShiftRandom> sr = RandomRegistry.scope(random)) {
@@ -81,7 +81,7 @@ public class TournamentSelectorTest
 				loops
 			);
 
-			StatisticsAssert.assertDistribution(distribution, expected.value, 0.99999);
+			StatisticsAssert.assertDistribution(distribution, expected.value, 0.00001);
 		}
 	}
 
@@ -128,13 +128,9 @@ public class TournamentSelectorTest
 		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
 		try (Scoped<LCG64ShiftRandom> sr = RandomRegistry.scope(random)) {
 
-			// For exact testing
-			//final int npopulation = 25_000;
+			final int npopulation = POPULATION_COUNT;
 			//final int loops = 2_500_000;
-
-			// For fast testing
-			final int npopulation = 1500;
-			final int loops = 50_000;
+			final int loops = 100_000;
 
 			printDistributions(
 				System.out,

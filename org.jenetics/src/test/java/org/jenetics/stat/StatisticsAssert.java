@@ -73,13 +73,13 @@ public final class StatisticsAssert {
 		final Histogram<C> distribution,
 		final double[] expected
 	) {
-		assertDistribution(distribution, expected, 0.95);
+		assertDistribution(distribution, expected, 0.05);
 	}
 
 	public static <C extends Comparable<? super C>> void assertDistribution(
 		final Histogram<C> distribution,
 		final double[] expected,
-		final double p
+		final double alpha
 	) {
 		final double[] exp = Arrays.stream(expected)
 			.map(v -> Math.max(v, Double.MIN_VALUE))
@@ -87,38 +87,16 @@ public final class StatisticsAssert {
 
 		final long[] dist = distribution.getHistogram();
 
-//		System.out.println(format("chiSquare: %f", TestUtils.chiSquare(exp, dist)));
-//		System.out.println(format("g: %f", TestUtils.g(exp, dist)));
-//		System.out.println(format("gTest: %f", TestUtils.gTest(exp, dist)));
-//		System.out.println(format("gTestIntrinsic: %f", TestUtils.gTestIntrinsic(exp, dist)));
-//		System.out.println(format("chiSquare: %f", TestUtils.chiSquare(exp, dist)));
+		final double χ2 = new ChiSquareTest().chiSquare(exp, dist);
+		final double max_χ2 = chi(1 - alpha, distribution.length());
+		final boolean reject = new ChiSquareTest().chiSquareTest(exp, dist, alpha);
 
-		final double χ2 = new ChiSquareTest()
-			.chiSquare(exp, dist);
-
-		final int degreeOfFreedom = distribution.length();
-		assert (degreeOfFreedom > 0);
-
-		final double maxChi = chi(p, degreeOfFreedom);
-
-		Reporter.log(format("χ2 <= χ2 max: %f <= %f", χ2, maxChi));
-
-		if (χ2 > maxChi) {
-			System.out.println(format(
-				"The histogram doesn't follow the given distribution." +
-					"χ2 must be smaller than %f but was %f",
-				maxChi, χ2
-			));
-		}
-
-		Reporter.log(format("chi=%s, maxChi=%s", χ2, maxChi));
-
-		Assert.assertTrue(
-			χ2 <= maxChi,
+		Assert.assertFalse(
+			reject,
 			format(
 				"The histogram doesn't follow the given distribution." +
 					"χ2 must be smaller than %f but was %f",
-				maxChi, χ2
+				max_χ2, χ2
 			)
 		);
 	}

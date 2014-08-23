@@ -38,7 +38,7 @@ import org.jenetics.util.TestData;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-22 $</em>
+ * @version <em>$Date: 2014-08-23 $</em>
  */
 public class TruncationSelectorTest
 	extends SelectorTester<TruncationSelector<DoubleGene, Double>>
@@ -64,7 +64,7 @@ public class TruncationSelectorTest
 	//@Test(dataProvider = "expectedDistribution")
 	public void selectDist(final Named<double[]> expected, final Optimize opt) {
 		final int loops = 5;
-		final int npopulation = 30_000;
+		final int npopulation = POPULATION_COUNT;
 
 		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
 		try (Scoped<LCG64ShiftRandom> sr = RandomRegistry.scope(random)) {
@@ -99,21 +99,17 @@ public class TruncationSelectorTest
 	}
 
 	public static void main(final String[] args) {
-		writeDistributionData(Optimize.MINIMUM);
 		writeDistributionData(Optimize.MAXIMUM);
+		writeDistributionData(Optimize.MINIMUM);
 	}
 
 	private static void writeDistributionData(final Optimize opt) {
 		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
 		try (Scoped<LCG64ShiftRandom> sr = RandomRegistry.scope(random)) {
 
-			// For exact testing
-			//final int npopulation = 25_000;
+			final int npopulation = POPULATION_COUNT;
 			//final int loops = 2_500_000;
-
-			// For fast testing
-			final int npopulation = 500;
-			final int loops = 10_000;
+			final int loops = 100_000;
 
 			printDistributions(
 				System.out,

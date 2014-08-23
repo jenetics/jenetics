@@ -41,7 +41,7 @@ import org.jenetics.util.TestData;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-22 $</em>
+ * @version <em>$Date: 2014-08-23 $</em>
  */
 public class StochasticUniversalSelectorTest
 	extends ProbabilitySelectorTester<StochasticUniversalSelector<DoubleGene,Double>>
@@ -93,7 +93,7 @@ public class StochasticUniversalSelectorTest
 	@Test(dataProvider = "expectedDistribution", invocationCount = 20)
 	public void selectDist(final Named<double[]> expected, final Optimize opt) {
 		final int loops = 25;
-		final int npopulation = loops*50;
+		final int npopulation = POPULATION_COUNT;
 
 		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
 		try (Scoped<LCG64ShiftRandom> sr = RandomRegistry.scope(random)) {
@@ -134,12 +134,8 @@ public class StochasticUniversalSelectorTest
 		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
 		try (Scoped<LCG64ShiftRandom> sr = RandomRegistry.scope(random)) {
 
-			// For exact testing
-			//final int npopulation = 25_000;
+			final int npopulation = POPULATION_COUNT;
 			//final int loops = 2_500_000;
-
-			// For fast testing
-			final int npopulation = 5000;
 			final int loops = 100_000;
 
 			printDistributions(

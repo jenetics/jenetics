@@ -51,11 +51,17 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-22 $</em>
+ * @version <em>$Date: 2014-08-23 $</em>
  */
 public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 	extends ObjectTester<S>
 {
+
+	public static final int CLASS_COUNT = 25;
+	public static final double MIN = 0.0;
+	public static final double MAX = 1_000.0;
+	public static final double SELECTION_FRACTION = 2.0;
+	public static final int POPULATION_COUNT = (int)(CLASS_COUNT*10*SELECTION_FRACTION);
 
 	private final Range<Double> _domain = new Range<>(0.0, 100.0);
 	protected Range<Double> getDomain() {
@@ -358,30 +364,27 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		final int populationCount,
 		final int loops
 	) {
-		final int nclasses = 71;
-		final double min = 0.0;
-		final double max = 1_000.0;
-
 		final Function<Genotype<DoubleGene>, Double> ff =
 			gt -> gt.getGene().getAllele();
 
 		final Factory<Phenotype<DoubleGene, Double>> ptf = () ->
-			Phenotype.of(Genotype.of(DoubleChromosome.of(min, max)), ff, 1);
+			Phenotype.of(Genotype.of(DoubleChromosome.of(MIN, MAX)), ff, 1);
 
 		return IntStream.range(0, loops).parallel().mapToObj(j -> {
-			final Histogram<Double> hist = Histogram.of(min, max, nclasses);
+			final Histogram<Double> hist = Histogram.of(MIN, MAX, CLASS_COUNT);
 
 			final Population<DoubleGene, Double> population =
 				IntStream.range(0, populationCount)
 					.mapToObj(i -> ptf.newInstance())
 					.collect(Population.toPopulation());
 
-			selector.select(population, populationCount/2, opt).stream()
+			final int selectionCount = (int)(populationCount/SELECTION_FRACTION);
+			selector.select(population, selectionCount, opt).stream()
 				.map(pt -> pt.getGenotype().getGene().getAllele())
 				.forEach(hist::accept);
 
 			return hist;
-		}).collect(Histogram.toDoubleHistogram(min, max, nclasses));
+		}).collect(Histogram.toDoubleHistogram(MIN, MAX, CLASS_COUNT));
 	}
 
 	/**
