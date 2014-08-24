@@ -23,7 +23,6 @@ import java.util.Arrays;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 
-import org.testng.SkipException;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -41,7 +40,7 @@ import org.jenetics.util.TestData;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-23 $</em>
+ * @version <em>$Date: 2014-08-24 $</em>
  */
 public class StochasticUniversalSelectorTest
 	extends ProbabilitySelectorTester<StochasticUniversalSelector<DoubleGene,Double>>

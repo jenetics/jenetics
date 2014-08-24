@@ -41,7 +41,7 @@ import org.jenetics.util.TestData;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-23 $</em>
+ * @version <em>$Date: 2014-08-24 $</em>
  */
 public class TournamentSelectorTest
 	extends SelectorTester<TournamentSelector<DoubleGene, Double>>
@@ -69,7 +69,7 @@ public class TournamentSelectorTest
 		final Named<double[]> expected,
 		final Optimize opt
 	) {
-		final int loops = 20;
+		final int loops = (int)(tournamentSize*1.6);
 		final int npopulation = POPULATION_COUNT;
 
 		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
@@ -129,8 +129,8 @@ public class TournamentSelectorTest
 		try (Scoped<LCG64ShiftRandom> sr = RandomRegistry.scope(random)) {
 
 			final int npopulation = POPULATION_COUNT;
-			//final int loops = 2_500_000;
-			final int loops = 100_000;
+			final int loops = 5_000_000;
+			//final int loops = 100_000;
 
 			printDistributions(
 				System.out,
