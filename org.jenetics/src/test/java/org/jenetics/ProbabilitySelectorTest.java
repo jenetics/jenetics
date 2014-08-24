@@ -32,7 +32,7 @@ import org.jenetics.internal.util.IndexSorter;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-15 $</em>
+ * @version <em>$Date: 2014-08-24 $</em>
  */
 public class ProbabilitySelectorTest {
 
@@ -91,6 +91,18 @@ public class ProbabilitySelectorTest {
 		for (int i = 0; i < values.length; ++i) {
 			Assert.assertEquals(reverted[i], (double)(values.length - i - 1));
 		}
+	}
+
+	@Test(dataProvider = "arraySize")
+	public void indexOfSerialEqualBinary(final Integer size) {
+		final double[] probabilities = array(size, new Random(12));
+		normalize(probabilities);
+		ProbabilitySelector.incremental(probabilities);
+
+		Assert.assertEquals(
+			ProbabilitySelector.indexOfSerial(probabilities, 0.5),
+			ProbabilitySelector.indexOfBinary(probabilities, 0.5)
+		);
 	}
 
 }

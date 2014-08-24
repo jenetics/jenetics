@@ -31,7 +31,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-22 $</em>
+ * @version <em>$Date: 2014-08-24 $</em>
  */
 public class HistogramTest {
 
@@ -126,7 +126,7 @@ public class HistogramTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void histogramEmptyClasses() {
-		Histogram.of(new Double[0]);
+		Histogram.<Double>of();
 	}
 
 	@Test

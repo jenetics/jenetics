@@ -48,7 +48,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-08-15 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-24 $</em>
  */
 public abstract class ProbabilitySelector<
 	G extends Gene<?, G>,
@@ -56,6 +56,8 @@ public abstract class ProbabilitySelector<
 >
 	implements Selector<G, C>
 {
+	private static final int SERIAL_INDEX_THRESHOLD = 35;
+
 	private static final long MAX_ULP_DISTANCE = pow(10, 10);
 
 	protected ProbabilitySelector() {
@@ -79,16 +81,16 @@ public abstract class ProbabilitySelector<
 		final Population<G, C> selection = new Population<>(count);
 
 		if (count > 0) {
-			final double[] probabilities = probabilities(population, count, opt);
-			assert (population.size() == probabilities.length) :
+			final double[] prob = probabilities(population, count, opt);
+			assert (population.size() == prob.length) :
 				"Population size and probability length are not equal.";
-			assert (sum2one(probabilities)) : "Probabilities doesn't sum to one.";
+			assert (sum2one(prob)) : "Probabilities doesn't sum to one.";
 
-			incremental(probabilities);
+			incremental(prob);
 
 			final Random random = RandomRegistry.getRandom();
-			selection.fill(() ->
-				population.get(indexOf(probabilities, random.nextDouble())),
+			selection.fill(
+				() -> population.get(indexOf(prob, random.nextDouble())),
 				count
 			);
 		}
@@ -166,16 +168,22 @@ public abstract class ProbabilitySelector<
 		return abs(ulpDistance(sum, 1.0)) < MAX_ULP_DISTANCE;
 	}
 
+	static int indexOf(final double[] incr, final double v) {
+		return incr.length <= SERIAL_INDEX_THRESHOLD ?
+			indexOfSerial(incr, v) :
+			indexOfBinary(incr, v);
+	}
+
 	/**
 	 * Perform a binary-search on the summed probability array.
 	 */
-	static int indexOf(final double[] incr, final double v) {
+	static int indexOfBinary(final double[] incr, final double v) {
 		int imin = 0;
 		int imax = incr.length;
 		int index = -1;
 
 		while (imax > imin && index == -1) {
-			int imid = (imin + imax) >>> 1;
+			final int imid = (imin + imax) >>> 1;
 
 			if (imid == 0 || (incr[imid] >= v && incr[imid - 1] < v)) {
 				index = imid;
@@ -183,6 +191,20 @@ public abstract class ProbabilitySelector<
 				imin = imid + 1;
 			} else if (incr[imid] > v) {
 				imax = imid;
+			}
+		}
+
+		return index;
+	}
+
+	/**
+	 * Perform a serial-search on the summed probability array.
+	 */
+	static int indexOfSerial(final double[] incr, final double v) {
+		int index = -1;
+		for (int i = 0; i < incr.length && index == -1; ++i) {
+			if (incr[i] >= v) {
+				index = i;
 			}
 		}
 
