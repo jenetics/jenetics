@@ -57,7 +57,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-08-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-25 $</em>
  */
 public final class LinearRankSelector<
 	G extends Gene<?, G>,
@@ -141,7 +141,7 @@ public final class LinearRankSelector<
 	@Override
 	public String toString() {
 		return format(
-			"%s[n-=%f, n+=%f]",
+			"%s[(n-)=%f, (n+)=%f]",
 			getClass().getSimpleName(), _nminus, _nplus
 		);
 	}
