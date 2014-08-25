@@ -42,7 +42,7 @@ import org.jenetics.util.TestData;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-24 $</em>
+ * @version <em>$Date: 2014-08-25 $</em>
  */
 public class RouletteWheelSelectorTest
 	extends ProbabilitySelectorTester<RouletteWheelSelector<DoubleGene, Double>>
@@ -157,7 +157,7 @@ public class RouletteWheelSelectorTest
 
 			final int npopulation = POPULATION_COUNT;
 			//final int loops = 2_500_000;
-			final int loops = 1_000_000;
+			final int loops = 5_000_000;
 
 			printDistributions(
 				System.out,
