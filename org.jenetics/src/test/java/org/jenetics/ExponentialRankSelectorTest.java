@@ -19,6 +19,7 @@
  */
 package org.jenetics;
 
+import java.util.Arrays;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 
@@ -29,11 +30,14 @@ import org.jenetics.stat.Distribution;
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.UniformDistribution;
 import org.jenetics.util.Factory;
+import org.jenetics.util.LCG64ShiftRandom;
+import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Range;
+import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-15 $</em>
+ * @version <em>$Date: 2014-08-26 $</em>
  */
 public class ExponentialRankSelectorTest
 	extends ProbabilitySelectorTester<ExponentialRankSelector<DoubleGene, Double>>
@@ -57,35 +61,30 @@ public class ExponentialRankSelectorTest
 	@Override
 	@Test
 	public void selectDistribution() {
-		throw new SkipException("TODO: implement this test.");
 	}
 
 	public static void main(final String[] args) {
-		final Range<Double> domain = new Range<>(0.0, 100.0);
-		final int npopulation = 101;
-		final int loops = 100_000;
+		//writeDistributionData(Optimize.MAXIMUM);
+		writeDistributionData(Optimize.MINIMUM);
+	}
 
-		final Double min = domain.getMin();
-		final Double max = domain.getMax();
-		final Histogram<Double> histogram = Histogram.of(min, max, 37);
+	private static void writeDistributionData(final Optimize opt) {
+		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
+		try (Scoped<LCG64ShiftRandom> sr = RandomRegistry.scope(random)) {
 
-		final Function<Genotype<DoubleGene>, Double> ff = gt -> gt.getGene().getAllele();
-		final Factory<Phenotype<DoubleGene, Double>> ptf = () ->
-			Phenotype.of(Genotype.of(DoubleChromosome.of(min, max)), ff, 12);
+			final int npopulation = POPULATION_COUNT;
+			//final int loops = 2_500_000;
+			final int loops = 100000;
 
-		final Selector<DoubleGene, Double> selector = new ExponentialRankSelector<>();
-
-		for (int j = 0; j < loops; ++j) {
-			final Population<DoubleGene, Double> population = IntStream.range(0, npopulation)
-				.mapToObj(i -> ptf.newInstance())
-				.collect(Population.toPopulation());
-
-			selector.select(population, npopulation/2, Optimize.MINIMUM).stream()
-				.map(pt -> pt.getGenotype().getGene().getAllele())
-				.forEach(histogram);
+			printDistributions(
+				System.out,
+				Arrays.asList(0.0, 0.1, 0.3, 0.5, 0.75, 0.95, 0.999),
+				ExponentialRankSelector::new,
+				opt,
+				npopulation,
+				loops
+			);
 		}
-
-		System.out.println(histogram);
 	}
 
 }

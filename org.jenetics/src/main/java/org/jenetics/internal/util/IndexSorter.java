@@ -19,6 +19,7 @@
  */
 package org.jenetics.internal.util;
 
+import static org.jenetics.internal.util.array.revert;
 import static org.jenetics.internal.util.array.swap;
 
 /**
@@ -28,7 +29,7 @@ import static org.jenetics.internal.util.array.swap;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-24 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-26 $</em>
  */
 public abstract class IndexSorter {
 
@@ -112,8 +113,8 @@ final class HeapSorter extends IndexSorter {
 		int m = k;
 		while (2*m < n) {
 			int j = 2*m;
-			if (j < n - 1 && array[indexes[j]] < array[indexes[j + 1]]) j++;
-			if (array[indexes[m]] >= array[indexes[j]]) break;
+			if (j < n - 1 && array[indexes[j]] > array[indexes[j + 1]]) j++;
+			if (array[indexes[m]] <= array[indexes[j]]) break;
 			swap(indexes, m, j);
 			m = j;
 		}
@@ -129,7 +130,7 @@ final class InsertionSorter extends IndexSorter {
 	int[] sort(final double[] array, final int[] indexes) {
 		for (int i = 1, n = array.length; i < n; ++i) {
 			int j = i;
-			while (j > 0) {
+			while (j < 0) {
 				if (array[indexes[j - 1]] > array[indexes[j]]) {
 					swap(indexes, j - 1, j);
 				} else {

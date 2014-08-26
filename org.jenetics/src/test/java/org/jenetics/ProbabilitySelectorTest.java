@@ -29,17 +29,18 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import org.jenetics.internal.util.IndexSorter;
+import org.jenetics.internal.util.IndexedArray;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-24 $</em>
+ * @version <em>$Date: 2014-08-26 $</em>
  */
 public class ProbabilitySelectorTest {
 
 	private static double[] array(final int size, final Random random) {
 		final double[] array = new double[size];
 		for (int i = 0; i < array.length; ++i) {
-			array[i] = random.nextDouble();
+			array[i] = random.nextInt(100);
 		}
 
 		return array;
@@ -61,8 +62,8 @@ public class ProbabilitySelectorTest {
 	@DataProvider(name = "arraySize")
 	public Object[][] arraySize() {
 		return new Object[][]{
-			{1}, {2}, {3}, {5}, {11},
-			{100}, {1000}, {10_000}, {100_000}, {500_000}
+			{5}
+			//{100}, {1000}, {10_000}, {100_000}, {500_000}
 		};
 	}
 
@@ -72,8 +73,14 @@ public class ProbabilitySelectorTest {
 		normalize(probabilities);
 		final int[] indexes = IndexSorter.sort(probabilities);
 
-		final double[] inverted = ProbabilitySelector.revert(probabilities);
-		final int[] invertedIndexes = IndexSorter.sort(inverted);
+		final double[] reverted = ProbabilitySelector.sortAndRevert(probabilities.clone());
+		final int[] invertedIndexes = IndexSorter.sort(reverted);
+
+		IndexedArray a1 = new IndexedArray(reverted);
+		IndexedArray a2 = new IndexedArray(probabilities, invertedIndexes);
+
+		System.out.println(a1);
+		System.out.println(a2);
 
 		for (int i = 0; i < indexes.length; ++i) {
 			Assert.assertEquals(invertedIndexes[i], indexes[indexes.length - i - 1]);
@@ -87,10 +94,23 @@ public class ProbabilitySelectorTest {
 			values[i] = i;
 		}
 
-		final double[] reverted = ProbabilitySelector.revert(values);
+		final double[] reverted = ProbabilitySelector.sortAndRevert(values);
 		for (int i = 0; i < values.length; ++i) {
 			Assert.assertEquals(reverted[i], (double)(values.length - i - 1));
 		}
+	}
+
+	@Test
+	public void revertSingularArray() {
+		final double[] values = new double[9];
+		values[0] = 1;
+		System.out.println(Arrays.toString(values));
+
+		double[] reverted = ProbabilitySelector.sortAndRevert(values.clone());
+		System.out.println(Arrays.toString(reverted));
+
+		reverted = ProbabilitySelector.sortAndRevert(reverted);
+		System.out.println(Arrays.toString(reverted));
 	}
 
 	@Test(dataProvider = "arraySize")

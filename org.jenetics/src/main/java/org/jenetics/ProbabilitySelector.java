@@ -25,6 +25,7 @@ import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.math.arithmetic.pow;
 import static org.jenetics.internal.math.base.ulpDistance;
 import static org.jenetics.internal.util.IndexSorter.sort;
+import static org.jenetics.internal.util.array.revert;
 import static org.jenetics.internal.util.array.swap;
 
 import java.util.Random;
@@ -48,7 +49,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-08-24 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-26 $</em>
  */
 public abstract class ProbabilitySelector<
 	G extends Gene<?, G>,
@@ -116,19 +117,20 @@ public abstract class ProbabilitySelector<
 		final Optimize opt
 	) {
 		return requireNonNull(opt) == Optimize.MINIMUM ?
-			revert(probabilities(population, count)) :
+			sortAndRevert(probabilities(population, count)) :
 			probabilities(population, count);
 	}
 
 	// Package private for testing.
-	static double[] revert(final double[] array) {
+	static double[] sortAndRevert(final double[] array) {
 		final int[] indexes = sort(array);
 
-		for (int i = 0, j = array.length - 1; i < j; ++i, --j) {
-			swap(array, indexes[i], indexes[j]);
-			swap(indexes, i, j);
+		final double[] result = new double[array.length];
+		for (int i = 0; i < result.length; ++i) {
+			result[indexes[result.length - 1 - i]] = array[indexes[i]];
 		}
-		return array;
+
+		return result;
 	}
 
 	/**
