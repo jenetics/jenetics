@@ -19,13 +19,12 @@
  */
 package org.jenetics.internal.util;
 
-import static org.jenetics.internal.util.array.revert;
 import static org.jenetics.internal.util.array.swap;
 
 /**
  * Implementations of this class doesn't sort the given array directly, instead
  * an index lookup array is returned which allows to access the array in
- * an sorted order.
+ * an sorted order. The arrays are sorted in descending order.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
@@ -130,8 +129,8 @@ final class InsertionSorter extends IndexSorter {
 	int[] sort(final double[] array, final int[] indexes) {
 		for (int i = 1, n = array.length; i < n; ++i) {
 			int j = i;
-			while (j < 0) {
-				if (array[indexes[j - 1]] > array[indexes[j]]) {
+			while (j > 0) {
+				if (array[indexes[j - 1]] < array[indexes[j]]) {
 					swap(indexes, j - 1, j);
 				} else {
 					break;
