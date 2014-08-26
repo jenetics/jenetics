@@ -28,7 +28,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-11 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-26 $</em>
  */
 public final class array {
 	private array() {require.noInstance();}
@@ -50,6 +50,12 @@ public final class array {
 		array[i] = array[j];
 		array[j] = temp;
 	}
+
+    public static void shuffle(final int[] array, final Random random) {
+        for (int i = array.length; --i >=0;) {
+            swap(array, i, random.nextInt(array.length));
+        }
+    }
 
 	public static void shuffle(final double[] array, final Random random) {
 		for (int i = array.length; --i >=0;) {
