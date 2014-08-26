@@ -21,12 +21,10 @@ package org.jenetics.internal.util;
 
 import static org.jenetics.internal.util.IndexSorter.indexes;
 import static org.jenetics.internal.util.array.revert;
-import static org.jenetics.internal.util.array.shuffle;
 
 import java.util.Arrays;
 import java.util.Random;
 
-import org.jenetics.internal.math.random;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -36,25 +34,6 @@ import org.testng.annotations.Test;
  * @version <em>$Date: 2014-08-26 $</em>
  */
 public class IndexSorterTest {
-
-    private static int[] sorted(final double[] array) {
-        final long seed = random.seed();
-        final Random random = new Random();
-        for (int i = 0; i < array.length; ++i) {
-            array[i] = random.nextDouble();
-        }
-
-        Arrays.sort(array);
-        final int[] indexes = indexes(array.length);
-
-        random.setSeed(seed);
-        shuffle(array, random);
-
-        random.setSeed(seed);
-        shuffle(indexes, random);
-
-        return indexes;
-    }
 
     private static double[] sort(final IndexSorter sorter, final double[] values) {
         final int[] indexes = sorter.sort(values, indexes(values.length));
@@ -66,14 +45,20 @@ public class IndexSorterTest {
         return result;
     }
 
+    private static double[] sort(final double[] values) {
+        final double[] result = values.clone();
+        Arrays.sort(result);
+        return result;
+    }
+
     @Test(dataProvider = "specialArray")
     public void sortSpecial(final double[] values) {
         final double[] indexSortedValues = sort(new HeapSorter(), values);
-        Arrays.sort(values);
+        final double[] indexSortedValues2 = sort(new InsertionSorter(), values);
+        Assert.assertEquals(indexSortedValues, indexSortedValues2);
 
         final String actual = Arrays.toString(indexSortedValues);
-        final String expected = Arrays.toString(values);
-        System.out.println(actual + ":" + expected);
+        final String expected = Arrays.toString(sort(values));
 
         Assert.assertEquals(actual, expected);
     }
@@ -92,11 +77,8 @@ public class IndexSorterTest {
     public void sortRandomValues(final IndexSorter sorter, final Integer size) {
         final double[] values = new Random().doubles(size).toArray();
 
-        final double[] indexSortedValues = sort(sorter, values);
-        Arrays.sort(values);
-
-        final String actual = Arrays.toString(indexSortedValues);
-        final String expected = Arrays.toString(values);
+        final String actual = Arrays.toString(sort(sorter, values));
+        final String expected = Arrays.toString(sort(values));
         Assert.assertEquals(actual, expected);
     }
 
@@ -105,10 +87,8 @@ public class IndexSorterTest {
 		final double[] values = new Random().doubles(size).toArray();
 		Arrays.sort(values);
 
-        final double[] indexSortedValues = sort(sorter, values);
-
-        final String actual = Arrays.toString(indexSortedValues);
-        final String expected = Arrays.toString(values);
+        final String actual = Arrays.toString(sort(sorter, values));
+        final String expected = Arrays.toString(sort(values));
         Assert.assertEquals(actual, expected);
 	}
 
@@ -118,11 +98,8 @@ public class IndexSorterTest {
 		Arrays.sort(values);
 		revert(values);
 
-        final double[] indexSortedValues = sort(sorter, values);
-        Arrays.sort(values);
-
-        final String actual = Arrays.toString(indexSortedValues);
-        final String expected = Arrays.toString(values);
+        final String actual = Arrays.toString(sort(sorter, values));
+        final String expected = Arrays.toString(sort(values));
         Assert.assertEquals(actual, expected);
 	}
 
