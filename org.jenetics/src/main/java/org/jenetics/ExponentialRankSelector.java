@@ -72,6 +72,8 @@ public final class ExponentialRankSelector<
 	 *         {@code [0..1)}.
 	 */
 	public ExponentialRankSelector(final double c) {
+		super(true);
+
 		if (c < 0.0 || c >= 1.0) {
 			throw new IllegalArgumentException(format(
 				"Value %s is out of range [0..1): ", c
@@ -85,11 +87,6 @@ public final class ExponentialRankSelector<
 	 */
 	public ExponentialRankSelector() {
 		this(0.75);
-	}
-
-	@Override
-	protected double[] revert(final double[] probabilities) {
-		return array.revert(probabilities);
 	}
 
 	/**

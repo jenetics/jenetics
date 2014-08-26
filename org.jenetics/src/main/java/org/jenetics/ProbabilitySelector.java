@@ -27,8 +27,10 @@ import static org.jenetics.internal.math.base.ulpDistance;
 import static org.jenetics.internal.util.IndexSorter.sort;
 
 import java.util.Random;
+import java.util.function.Function;
 
 import org.jenetics.internal.math.statistics;
+import org.jenetics.internal.util.array;
 
 import org.jenetics.util.RandomRegistry;
 
@@ -59,7 +61,14 @@ public abstract class ProbabilitySelector<
 
 	private static final long MAX_ULP_DISTANCE = pow(10, 10);
 
+	private final Function<double[], double[]> _revert;
+
+	protected ProbabilitySelector(final boolean sorted) {
+		_revert = sorted ? array::revert : ProbabilitySelector::sortAndRevert;
+	}
+
 	protected ProbabilitySelector() {
+		this(false);
 	}
 
 	@Override
@@ -115,12 +124,8 @@ public abstract class ProbabilitySelector<
 		final Optimize opt
 	) {
 		return requireNonNull(opt) == Optimize.MINIMUM ?
-			revert(probabilities(population, count)) :
+			_revert.apply(probabilities(population, count)) :
 			probabilities(population, count);
-	}
-
-	protected double[] revert(final double[] probabilities) {
-		return sortAndRevert(probabilities);
 	}
 
 	// Package private for testing.
