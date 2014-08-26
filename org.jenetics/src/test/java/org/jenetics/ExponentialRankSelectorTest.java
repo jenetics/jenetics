@@ -20,19 +20,14 @@
 package org.jenetics;
 
 import java.util.Arrays;
-import java.util.function.Function;
-import java.util.stream.IntStream;
 
-import org.testng.SkipException;
 import org.testng.annotations.Test;
 
 import org.jenetics.stat.Distribution;
-import org.jenetics.stat.Histogram;
 import org.jenetics.stat.UniformDistribution;
 import org.jenetics.util.Factory;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Range;
 import org.jenetics.util.Scoped;
 
 /**

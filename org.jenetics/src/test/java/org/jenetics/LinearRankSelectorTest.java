@@ -22,7 +22,6 @@ package org.jenetics;
 import static java.lang.String.format;
 
 import java.util.Arrays;
-import java.util.function.Function;
 import java.util.stream.IntStream;
 
 import org.testng.annotations.DataProvider;
@@ -37,13 +36,12 @@ import org.jenetics.stat.StatisticsAssert;
 import org.jenetics.util.Factory;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Range;
 import org.jenetics.util.Scoped;
 import org.jenetics.util.TestData;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-25 $</em>
+ * @version <em>$Date: 2014-08-26 $</em>
  */
 public class LinearRankSelectorTest
 	extends ProbabilitySelectorTester<LinearRankSelector<DoubleGene, Double>>
