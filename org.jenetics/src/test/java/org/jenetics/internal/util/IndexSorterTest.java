@@ -27,7 +27,6 @@ import java.util.Arrays;
 import java.util.Random;
 
 import org.jenetics.internal.math.random;
-import org.jenetics.util.LCG64ShiftRandom;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
