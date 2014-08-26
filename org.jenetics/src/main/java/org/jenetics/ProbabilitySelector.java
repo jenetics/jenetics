@@ -49,7 +49,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-08-26 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-27 $</em>
  */
 public abstract class ProbabilitySelector<
 	G extends Gene<?, G>,
@@ -63,10 +63,23 @@ public abstract class ProbabilitySelector<
 
 	private final Function<double[], double[]> _revert;
 
+	/**
+	 * Create a new {@code ProbabilitySelector} with the given {@code sorting}
+	 * flag. <em>This flag must set to {@code true} if the selector
+	 * implementation are sorting the population in the
+	 * {@link #probabilities(Population, int)} method.</em>
+	 *
+	 * @param sorted {@code true} if the implementation is sorting the
+	 *        population when calculating the selection probabilities,
+	 *        {@code false} otherwise.
+	 */
 	protected ProbabilitySelector(final boolean sorted) {
 		_revert = sorted ? array::revert : ProbabilitySelector::sortAndRevert;
 	}
 
+	/**
+	 * Create a new selector with {@code sorted = false}.
+	 */
 	protected ProbabilitySelector() {
 		this(false);
 	}
