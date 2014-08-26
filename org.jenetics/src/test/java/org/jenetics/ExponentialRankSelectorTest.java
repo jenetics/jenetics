@@ -64,7 +64,7 @@ public class ExponentialRankSelectorTest
 	}
 
 	public static void main(final String[] args) {
-		//writeDistributionData(Optimize.MAXIMUM);
+		writeDistributionData(Optimize.MAXIMUM);
 		writeDistributionData(Optimize.MINIMUM);
 	}
 
@@ -74,7 +74,7 @@ public class ExponentialRankSelectorTest
 
 			final int npopulation = POPULATION_COUNT;
 			//final int loops = 2_500_000;
-			final int loops = 100000;
+			final int loops = 10000;
 
 			printDistributions(
 				System.out,

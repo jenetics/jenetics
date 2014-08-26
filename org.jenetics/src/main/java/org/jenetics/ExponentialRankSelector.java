@@ -25,6 +25,7 @@ import static org.jenetics.internal.util.Equality.eq;
 
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
+import org.jenetics.internal.util.array;
 
 /**
  * <p>
@@ -84,6 +85,11 @@ public final class ExponentialRankSelector<
 	 */
 	public ExponentialRankSelector() {
 		this(0.75);
+	}
+
+	@Override
+	protected double[] revert(final double[] probabilities) {
+		return array.revert(probabilities);
 	}
 
 	/**

@@ -20,6 +20,7 @@
 package org.jenetics;
 
 import static org.jenetics.internal.math.arithmetic.normalize;
+import static org.jenetics.internal.util.array.shuffle;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -27,9 +28,6 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import org.jenetics.internal.util.IndexSorter;
-import org.jenetics.internal.util.IndexedArray;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -40,77 +38,45 @@ public class ProbabilitySelectorTest {
 	private static double[] array(final int size, final Random random) {
 		final double[] array = new double[size];
 		for (int i = 0; i < array.length; ++i) {
-			array[i] = random.nextInt(100);
+			array[i] = i;
 		}
 
+		shuffle(array, random);
 		return array;
-	}
-
-	@Test(dataProvider = "arraySize")
-	public void sort(final Integer size) {
-		final double[] probabilities = array(size, new Random());
-
-		final int[] indexes = IndexSorter.sort(probabilities);
-		final double[] sorted = probabilities.clone();
-		Arrays.sort(sorted);
-
-		for (int i = 0; i < indexes.length; ++i) {
-			Assert.assertEquals(probabilities[indexes[i]], sorted[i]);
-		}
 	}
 
 	@DataProvider(name = "arraySize")
 	public Object[][] arraySize() {
 		return new Object[][]{
-			{5}
-			//{100}, {1000}, {10_000}, {100_000}, {500_000}
+			{6}, {100}, {1000}, {10_000}, {100_000}, {500_000}
 		};
 	}
 
 	@Test(dataProvider = "arraySize")
 	public void revert(final Integer size) {
-		final double[] probabilities = array(size, new Random(12));
-		normalize(probabilities);
-		final int[] indexes = IndexSorter.sort(probabilities);
+		final double[] probabilities = array(size, new Random());
+		final double[] reverted = ProbabilitySelector.sortAndRevert(probabilities);
 
-		final double[] reverted = ProbabilitySelector.sortAndRevert(probabilities.clone());
-		final int[] invertedIndexes = IndexSorter.sort(reverted);
+		//System.out.println(Arrays.toString(probabilities));
+		//System.out.println(Arrays.toString(reverted));
 
-		IndexedArray a1 = new IndexedArray(reverted);
-		IndexedArray a2 = new IndexedArray(probabilities, invertedIndexes);
-
-		System.out.println(a1);
-		System.out.println(a2);
-
-		for (int i = 0; i < indexes.length; ++i) {
-			Assert.assertEquals(invertedIndexes[i], indexes[indexes.length - i - 1]);
+		for (int i = 0; i < size; ++i) {
+			Assert.assertEquals(
+				probabilities[i] + reverted[i],
+				size - 1.0
+			);
 		}
 	}
 
 	@Test(dataProvider = "arraySize")
 	public void revertSortedArray(final Integer size) {
-		final double[] values = new double[100];
-		for (int i = 0; i < values.length; ++i) {
-			values[i] = i;
-		}
+		final double[] values = array(size, new Random());
+		Arrays.sort(values);
 
 		final double[] reverted = ProbabilitySelector.sortAndRevert(values);
 		for (int i = 0; i < values.length; ++i) {
 			Assert.assertEquals(reverted[i], (double)(values.length - i - 1));
 		}
-	}
-
-	@Test
-	public void revertSingularArray() {
-		final double[] values = new double[9];
-		values[0] = 1;
-		System.out.println(Arrays.toString(values));
-
-		double[] reverted = ProbabilitySelector.sortAndRevert(values.clone());
-		System.out.println(Arrays.toString(reverted));
-
-		reverted = ProbabilitySelector.sortAndRevert(reverted);
-		System.out.println(Arrays.toString(reverted));
 	}
 
 	@Test(dataProvider = "arraySize")
