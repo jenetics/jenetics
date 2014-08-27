@@ -52,7 +52,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-08-26 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-27 $</em>
  */
 public final class ExponentialRankSelector<
 	G extends Gene<?, G>,
