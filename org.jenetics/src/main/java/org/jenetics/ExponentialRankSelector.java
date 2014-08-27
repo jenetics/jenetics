@@ -82,10 +82,10 @@ public final class ExponentialRankSelector<
 	}
 
 	/**
-	 * Create a new selector with default value of 0.75.
+	 * Create a new selector with default value of 0.975.
 	 */
 	public ExponentialRankSelector() {
-		this(0.75);
+		this(0.975);
 	}
 
 	/**
@@ -115,22 +115,6 @@ public final class ExponentialRankSelector<
 		assert (sum2one(probabilities)) : "Probabilities doesn't sum to one.";
 		return probabilities;
 	}
-
-//	protected  double[] probabilities(
-//		final Population<G, C> population,
-//		final int count
-//	) {
-//		final double N = population.size();
-//		final double[] probabilities = new double[population.size()];
-//
-//		final double b = (_c - 1.0)/(pow(_c, N) - 1.0);
-//		for (int i = probabilities.length; --i >= 0;) {
-//			probabilities[i] = pow(_c, i - 1)*b;
-//		}
-//
-//		assert (sum2one(probabilities)) : "Probabilities doesn't sum to one.";
-//		return probabilities;
-//	}
 
 	@Override
 	public int hashCode() {
