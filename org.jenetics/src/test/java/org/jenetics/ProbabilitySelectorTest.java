@@ -32,105 +32,61 @@ import org.testng.annotations.Test;
  */
 public class ProbabilitySelectorTest {
 
-    private static double[] array(final int size, final Random random) {
-        final double[] array = new double[size];
-        for (int i = 0; i < array.length; ++i) {
-            array[i] = i;
-        }
+	private static double[] array(final int size, final Random random) {
+		final double[] array = new double[size];
+		for (int i = 0; i < array.length; ++i) {
+			array[i] = i;
+		}
 
-        shuffle(array, random);
-        return array;
-    }
+		shuffle(array, random);
+		return array;
+	}
 
-    public static void shuffle(final double[] array, final Random random) {
-        for (int i = array.length; --i >=0;) {
-            swap(array, i, random.nextInt(array.length));
-        }
-    }
+	public static void shuffle(final double[] array, final Random random) {
+		for (int i = array.length; --i >=0;) {
+			swap(array, i, random.nextInt(array.length));
+		}
+	}
 
-    public static void swap(final double[] array, final int i, final int j) {
-        final double temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-    }
+	public static void swap(final double[] array, final int i, final int j) {
+		final double temp = array[i];
+		array[i] = array[j];
+		array[j] = temp;
+	}
 
-    @DataProvider(name = "arraySize")
-    public Object[][] arraySize() {
-        return new Object[][]{
-            {6}, {100}, {1000}, {10_000}, {100_000}, {500_000}
-        };
-    }
+	@DataProvider(name = "arraySize")
+	public Object[][] arraySize() {
+		return new Object[][]{
+			{6}, {100}, {1000}, {10_000}, {100_000}, {500_000}
+		};
+	}
 
-    @Test(dataProvider = "arraySize")
-    public void revert(final Integer size) {
-        final double[] probabilities = array(size, new Random());
-        final double[] reverted = ProbabilitySelector.sortAndRevert(probabilities);
+	@Test(dataProvider = "arraySize")
+	public void revert(final Integer size) {
+		final double[] probabilities = array(size, new Random());
+		final double[] reverted = ProbabilitySelector.sortAndRevert(probabilities);
 
-        //System.out.println(Arrays.toString(probabilities));
-        //System.out.println(Arrays.toString(reverted));
+		//System.out.println(Arrays.toString(probabilities));
+		//System.out.println(Arrays.toString(reverted));
 
-        for (int i = 0; i < size; ++i) {
-            Assert.assertEquals(
-                probabilities[i] + reverted[i],
-                size - 1.0
-            );
-        }
-    }
+		for (int i = 0; i < size; ++i) {
+			Assert.assertEquals(
+				probabilities[i] + reverted[i],
+				size - 1.0
+			);
+		}
+	}
 
-    @Test(dataProvider = "arraySize")
-    public void revertSortedArray(final Integer size) {
-        final double[] values = array(size, new Random());
-        Arrays.sort(values);
+	@Test(dataProvider = "arraySize")
+	public void revertSortedArray(final Integer size) {
+		final double[] values = array(size, new Random());
+		Arrays.sort(values);
 
-        final double[] reverted = ProbabilitySelector.sortAndRevert(values);
-        for (int i = 0; i < values.length; ++i) {
-            Assert.assertEquals(reverted[i], (double)(values.length - i - 1));
-        }
-    }
+		final double[] reverted = ProbabilitySelector.sortAndRevert(values);
+		for (int i = 0; i < values.length; ++i) {
+			Assert.assertEquals(reverted[i], (double)(values.length - i - 1));
+		}
+	}
 
-//	@Test
-//	public void performance() {
-//		final Random random = new Random(123);
-//		final double[] probabilities = array(200, random);
-//
-//		final Timer quickSortTimer = new Timer("Quick sort");
-//		final Timer insertionSortTimer = new Timer("Insertion sort");
-//		for (int i = 0; i < 100000; ++i) {
-//			shuffle(probabilities, random);
-//
-//			quickSortTimer.start();
-//			ProbabilitySelector.quickSort(probabilities);
-//			quickSortTimer.stop();
-//
-//			shuffle(probabilities, random);
-//
-//			insertionSortTimer.start();
-//			ProbabilitySelector.insertionSort(probabilities);
-//			insertionSortTimer.stop();
-//		}
-//
-//		System.out.println(quickSortTimer);
-//		System.out.print(insertionSortTimer);
-//	}
-//
-//	private static <T> void shuffle(final double[] array, final Random random) {
-//		for (int j = array.length - 1; j > 0; --j) {
-//			swap(array, j, random.nextInt(j + 1));
-//		}
-//	}
-//
-//	private static void swap(final double[] indexes, final int i, final int j) {
-//		final double temp = indexes[i];
-//		indexes[i] = indexes[j];
-//		indexes[j] = temp;
-//	}
-
-//	private static double[] invert(final double[] probabilities) {
-//		final double multiplier = 1.0/(probabilities.length - 1.0);
-//		for (int i = 0; i < probabilities.length; ++i) {
-//			probabilities[i] = (1.0 - probabilities[i])*multiplier;
-//		}
-//		return probabilities;
-//	}
 
 }
