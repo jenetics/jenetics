@@ -133,11 +133,11 @@ public class ExponentialRankSelectorTest
 
 			final int npopulation = POPULATION_COUNT;
 			//final int loops = 2_500_000;
-			final int loops = 10000;
+			final int loops = 100_000;
 
 			printDistributions(
 				System.out,
-				Arrays.asList(0.95, 0.97, 0.99, 0.995, 0.999, 0.9995, 0.9999),
+				Arrays.asList(0.95, 0.97, 0.975, 0.99, 0.995, 0.999, 0.9995, 0.9999),
 				ExponentialRankSelector::new,
 				opt,
 				npopulation,
