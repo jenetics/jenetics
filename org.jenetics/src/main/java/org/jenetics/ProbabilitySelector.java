@@ -58,25 +58,38 @@ public abstract class ProbabilitySelector<
 {
 	private static final long MAX_ULP_DISTANCE = pow(10, 10);
 
-    private final Function<double[], double[]> _revert;
+	private final Function<double[], double[]> _revert;
 
-    protected ProbabilitySelector(final boolean sorted) {
-        _revert = sorted ?
-            new Function<double[], double[]>() {
-                @Override public double[] apply(final double[] values) {
-                    return revert(values);
-                }
-            } :
-            new Function<double[], double[]>() {
-                @Override public double[] apply(final double[] values) {
-                    return sortAndRevert(values);
-                }
-            };
-    }
+	/**
+	 * Create a new {@code ProbabilitySelector} with the given {@code sorting}
+	 * flag. <em>This flag must set to {@code true} if the selector
+	 * implementation are sorting the population in the
+	 * {@link #probabilities(Population, int)} method.</em>
+	 *
+	 * @param sorted {@code true} if the implementation is sorting the
+	 *        population when calculating the selection probabilities,
+	 *        {@code false} otherwise.
+	 */
+	protected ProbabilitySelector(final boolean sorted) {
+		_revert = sorted ?
+			new Function<double[], double[]>() {
+				@Override public double[] apply(final double[] values) {
+					return revert(values);
+				}
+			} :
+			new Function<double[], double[]>() {
+				@Override public double[] apply(final double[] values) {
+					return sortAndRevert(values);
+				}
+			};
+	}
 
-    protected ProbabilitySelector() {
-        this(false);
-    }
+	/**
+	 * Create a new selector with {@code sorted = false}.
+	 */
+	protected ProbabilitySelector() {
+		this(false);
+	}
 
 	@Override
 	public Population<G, C> select(
@@ -329,18 +342,18 @@ public abstract class ProbabilitySelector<
 		return values;
 	}
 
-    public static double[] revert(final double[] array) {
-        for (int i = 0, j = array.length - 1; i < j; ++i, --j) {
-            swap(array, i, j);
-        }
+	public static double[] revert(final double[] array) {
+		for (int i = 0, j = array.length - 1; i < j; ++i, --j) {
+			swap(array, i, j);
+		}
 
-        return array;
-    }
+		return array;
+	}
 
-    public static void swap(final double[] array, final int i, final int j) {
-        final double temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-    }
+	public static void swap(final double[] array, final int i, final int j) {
+		final double temp = array[i];
+		array[i] = array[j];
+		array[j] = temp;
+	}
 
 }
