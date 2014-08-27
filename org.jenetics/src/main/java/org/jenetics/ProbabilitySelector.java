@@ -66,7 +66,7 @@ public abstract class ProbabilitySelector<
 	/**
 	 * Create a new {@code ProbabilitySelector} with the given {@code sorting}
 	 * flag. <em>This flag must set to {@code true} if the selector
-	 * implementation are sorting the population in the
+	 * implementation is sorting the population in the
 	 * {@link #probabilities(Population, int)} method.</em>
 	 *
 	 * @param sorted {@code true} if the implementation is sorting the
