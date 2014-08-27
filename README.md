@@ -12,7 +12,7 @@ Jenetics is an Genetic Algorithm, respectively an Evolutionary Algorithm, librar
 
 ### Test compile/execution
 *  **TestNG 8.8**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
-*  **Apache Commons Math 3.2**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical accumulators.
+*  **Apache Commons Math 3.3**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical accumulators.
 
 ### Runtime
 *  **JRE 8**: Java runtime version 8 is needed for using the library, respectively for running the examples.
@@ -430,6 +430,10 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 
 
 ## Release notes
+
+### 2.0.2
+
+* Stabilization of ProbabilitySelector.probabilities method when minimizing the fitness function.
 
 ### 2.0.1
 
