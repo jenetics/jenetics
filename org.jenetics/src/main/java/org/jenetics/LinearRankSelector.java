@@ -58,7 +58,7 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-08-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-27 $</em>
  */
 public final class LinearRankSelector<
 	G extends Gene<?, G>,
@@ -84,6 +84,7 @@ public final class LinearRankSelector<
 	 * @throws IllegalArgumentException if {@code nminus < 0}.
 	 */
 	public LinearRankSelector(final double nminus) {
+        super(true);
 		if (nminus < 0) {
 			throw new IllegalArgumentException(format(
 				"nminus is smaller than zero: %s", nminus

@@ -29,6 +29,7 @@ import static org.jenetics.util.math.ulpDistance;
 import java.util.Random;
 
 import org.jenetics.util.Factory;
+import org.jenetics.util.Function;
 import org.jenetics.util.RandomRegistry;
 
 
@@ -47,7 +48,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-08-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-27 $</em>
  */
 public abstract class ProbabilitySelector<
 	G extends Gene<?, G>,
@@ -57,8 +58,25 @@ public abstract class ProbabilitySelector<
 {
 	private static final long MAX_ULP_DISTANCE = pow(10, 10);
 
-	protected ProbabilitySelector() {
-	}
+    private final Function<double[], double[]> _revert;
+
+    protected ProbabilitySelector(final boolean sorted) {
+        _revert = sorted ?
+            new Function<double[], double[]>() {
+                @Override public double[] apply(final double[] values) {
+                    return revert(values);
+                }
+            } :
+            new Function<double[], double[]>() {
+                @Override public double[] apply(final double[] values) {
+                    return sortAndRevert(values);
+                }
+            };
+    }
+
+    protected ProbabilitySelector() {
+        this(false);
+    }
 
 	@Override
 	public Population<G, C> select(
@@ -143,12 +161,12 @@ public abstract class ProbabilitySelector<
 		final Optimize opt
 	) {
 		return requireNonNull(opt) == Optimize.MINIMUM ?
-			revert(probabilities(population, count)) :
+			_revert.apply(probabilities(population, count)) :
 			probabilities(population, count);
 	}
 
 	// Package private for testing.
-	static double[] revert(final double[] probabilities) {
+	static double[] sortAndRevert(final double[] probabilities) {
 		final int N = probabilities.length;
 		final int[] indexes = sort(probabilities);
 		final double[] result = new double[N];
@@ -310,5 +328,19 @@ public abstract class ProbabilitySelector<
 		}
 		return values;
 	}
+
+    public static double[] revert(final double[] array) {
+        for (int i = 0, j = array.length - 1; i < j; ++i, --j) {
+            swap(array, i, j);
+        }
+
+        return array;
+    }
+
+    public static void swap(final double[] array, final int i, final int j) {
+        final double temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
 
 }
