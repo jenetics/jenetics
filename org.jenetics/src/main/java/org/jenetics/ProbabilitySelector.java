@@ -48,7 +48,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-08-27 $</em>
+ * @version 2.0 — <em>$Date: 2014-08-27 $</em>
  */
 public abstract class ProbabilitySelector<
 	G extends Gene<?, G>,
@@ -63,7 +63,7 @@ public abstract class ProbabilitySelector<
 	/**
 	 * Create a new {@code ProbabilitySelector} with the given {@code sorting}
 	 * flag. <em>This flag must set to {@code true} if the selector
-	 * implementation are sorting the population in the
+	 * implementation is sorting the population in the
 	 * {@link #probabilities(Population, int)} method.</em>
 	 *
 	 * @param sorted {@code true} if the implementation is sorting the
