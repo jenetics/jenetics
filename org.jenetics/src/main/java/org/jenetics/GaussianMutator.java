@@ -48,7 +48,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-15 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-27 $</em>
  */
 public final class GaussianMutator<
 	G extends NumericGene<?, G>,
@@ -57,11 +57,12 @@ public final class GaussianMutator<
 	extends Mutator<G, C>
 {
 
-	public GaussianMutator() {
-	}
-
 	public GaussianMutator(final double probability) {
 		super(probability);
+	}
+
+	public GaussianMutator() {
+		this(DEFAULT_ALTER_PROBABILITY);
 	}
 
 	@Override
