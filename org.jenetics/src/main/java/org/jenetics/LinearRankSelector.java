@@ -70,13 +70,6 @@ public final class LinearRankSelector<
 	private final double _nplus;
 
 	/**
-	 * Create a new LinearRankSelector with {@code nminus := 0.5}.
-	 */
-	public LinearRankSelector() {
-		this(0.5);
-	}
-
-	/**
 	 * Create a new LinearRankSelector with the given values for {@code nminus}.
 	 *
 	 * @param nminus {@code nminus/N} is the probability of the worst phenotype
@@ -84,7 +77,7 @@ public final class LinearRankSelector<
 	 * @throws IllegalArgumentException if {@code nminus < 0}.
 	 */
 	public LinearRankSelector(final double nminus) {
-        super(true);
+		super(true);
 		if (nminus < 0) {
 			throw new IllegalArgumentException(format(
 				"nminus is smaller than zero: %s", nminus
@@ -93,6 +86,13 @@ public final class LinearRankSelector<
 
 		_nminus = nminus;
 		_nplus = 2 - _nminus;
+	}
+
+	/**
+	 * Create a new LinearRankSelector with {@code nminus := 0.5}.
+	 */
+	public LinearRankSelector() {
+		this(0.5);
 	}
 
 	/**
