@@ -40,7 +40,7 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-06-01 $</em>
+ * @version <em>$Date: 2014-08-28 $</em>
  */
 public class SinglePointCrossoverTest {
 
@@ -150,6 +150,7 @@ public class SinglePointCrossoverTest {
 		}
 
 		// Normal distribution as approximation for binomial distribution.
+		System.out.println(histogram);
 		assertDistribution(histogram, new NormalDistribution<>(domain, mean, variance.getVariance()));
 	}
 
