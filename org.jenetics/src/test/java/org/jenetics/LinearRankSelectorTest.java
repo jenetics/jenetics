@@ -29,9 +29,7 @@ import org.testng.annotations.Test;
 
 import org.jenetics.internal.util.Named;
 
-import org.jenetics.stat.Distribution;
 import org.jenetics.stat.Histogram;
-import org.jenetics.stat.LinearDistribution;
 import org.jenetics.stat.StatisticsAssert;
 import org.jenetics.util.Factory;
 import org.jenetics.util.LCG64ShiftRandom;
@@ -41,7 +39,7 @@ import org.jenetics.util.TestData;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-26 $</em>
+ * @version <em>$Date: 2014-08-28 $</em>
  */
 public class LinearRankSelectorTest
 	extends ProbabilitySelectorTester<LinearRankSelector<DoubleGene, Double>>
@@ -58,19 +56,8 @@ public class LinearRankSelectorTest
 	}
 
 	@Override
-	protected Distribution<Double> getDistribution() {
-		return new LinearDistribution<>(getDomain(), 0);
-	}
-
-	@Override
 	protected LinearRankSelector<DoubleGene, Double> selector() {
 		return new LinearRankSelector<>(0.0);
-	}
-
-	@Override
-	@Test
-	public void selectDistribution() {
-		//throw new SkipException("TODO: implement this test.");
 	}
 
 	@Test(dataProvider = "expectedDistribution", invocationCount = 20, successPercentage = 95)

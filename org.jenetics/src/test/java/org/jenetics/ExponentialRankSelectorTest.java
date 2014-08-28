@@ -29,10 +29,8 @@ import org.testng.annotations.Test;
 
 import org.jenetics.internal.util.Named;
 
-import org.jenetics.stat.Distribution;
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.StatisticsAssert;
-import org.jenetics.stat.UniformDistribution;
 import org.jenetics.util.Factory;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
@@ -41,7 +39,7 @@ import org.jenetics.util.TestData;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-27 $</em>
+ * @version <em>$Date: 2014-08-28 $</em>
  */
 public class ExponentialRankSelectorTest
 	extends ProbabilitySelectorTester<ExponentialRankSelector<DoubleGene, Double>>
@@ -55,17 +53,6 @@ public class ExponentialRankSelectorTest
 	@Override
 	protected Factory<ExponentialRankSelector<DoubleGene, Double>> factory() {
 		return ExponentialRankSelector::new;
-	}
-
-	@Override
-	protected Distribution<Double> getDistribution() {
-		return new UniformDistribution<>(getDomain());
-	}
-
-	@Override
-	@Test
-	public void selectDistribution() {
-		//throw new SkipException("TODO: implement this test.");
 	}
 
 	@Test(dataProvider = "expectedDistribution", invocationCount = 20, successPercentage = 95)

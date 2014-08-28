@@ -39,19 +39,16 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jenetics.stat.Distribution;
 import org.jenetics.stat.Histogram;
-import org.jenetics.stat.StatisticsAssert;
 import org.jenetics.util.Factory;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.ObjectTester;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Range;
 import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-23 $</em>
+ * @version <em>$Date: 2014-08-28 $</em>
  */
 public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 	extends ObjectTester<S>
@@ -63,23 +60,8 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 	public static final double SELECTION_FRACTION = 2.0;
 	public static final int POPULATION_COUNT = (int)(CLASS_COUNT*10*SELECTION_FRACTION);
 
-	private final Range<Double> _domain = new Range<>(0.0, 100.0);
-	protected Range<Double> getDomain() {
-		return _domain;
-	}
-
-	protected abstract Distribution<Double> getDistribution();
-
-	protected int getHistogramSize() {
-		return 37;
-	}
-
 	protected S selector() {
 		return factory().newInstance();
-	}
-
-	protected boolean isDistributionCheckEnabled() {
-		return true;
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -213,73 +195,6 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		}
 
 		return result.toArray(new Object[0][]);
-	}
-
-	@Test(invocationCount = 20, successPercentage = 95)
-	public void selectDistribution() {
-		final int npopulation = 101;
-		final int loops = 500;
-
-		final Double min = getDomain().getMin();
-		final Double max = getDomain().getMax();
-		final Histogram<Double> histogram = Histogram.of(min, max, getHistogramSize());
-
-		final Function<Genotype<DoubleGene>, Double> ff =
-			gt -> gt.getGene().getAllele();
-
-		final Factory<Phenotype<DoubleGene, Double>> ptf = () ->
-			Phenotype.of(Genotype.of(DoubleChromosome.of(min, max)), ff, 12);
-
-		for (int j = 0; j < loops; ++j) {
-			final Population<DoubleGene, Double> population = IntStream.range(0, npopulation)
-				.mapToObj(i -> ptf.newInstance())
-				.collect(Population.toPopulation());
-
-			selector().select(population, npopulation, Optimize.MAXIMUM).stream()
-				.map(pt -> pt.getGenotype().getGene().getAllele())
-				.forEach(histogram);
-		}
-
-		check(histogram, getDistribution());
-	}
-
-	protected double χ2(
-		final Histogram<Double> histogram,
-		final Distribution<Double> distribution
-	) {
-		return histogram.χ2(distribution.getCDF());
-	}
-
-	protected void check(
-		final Histogram<Double> histogram,
-		final Distribution<Double> distribution
-	) {
-		if (isDistributionCheckEnabled()) {
-			final double χ2 =  χ2(histogram, distribution);
-			final int degreeOfFreedom = histogram.length();
-			assert (degreeOfFreedom > 0);
-
-			final double maxChi = StatisticsAssert.chi(0.999, degreeOfFreedom)*2;
-
-			if (χ2 > maxChi) {
-				System.out.println(format(
-					"The histogram %s doesn't follow the distribution %s. \n" +
-						"χ2 must be smaller than %f but was %f",
-					histogram, distribution,
-					maxChi, χ2
-				));
-			}
-
-			Assert.assertTrue(
-				χ2 <= maxChi,
-				format(
-					"The histogram %s doesn't follow the distribution %s. \n" +
-						"χ2 must be smaller than %f but was %f",
-					histogram, distribution,
-					maxChi, χ2
-				)
-			);
-		}
 	}
 
 
