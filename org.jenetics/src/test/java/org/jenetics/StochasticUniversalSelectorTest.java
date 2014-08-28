@@ -77,7 +77,7 @@ public class StochasticUniversalSelectorTest
 	}
 
 	@Test(dataProvider = "expectedDistribution", invocationCount = 20)
-	public void selectDist(final Named<double[]> expected, final Optimize opt) {
+	public void selectDistribution(final Named<double[]> expected, final Optimize opt) {
 		final int loops = 5;
 		final int npopulation = POPULATION_COUNT;
 

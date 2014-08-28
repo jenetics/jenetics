@@ -48,7 +48,7 @@ public class TruncationSelectorTest
 
 	// Working, but not stable enough.
 	//@Test(dataProvider = "expectedDistribution")
-	public void selectDist(final Named<double[]> expected, final Optimize opt) {
+	public void selectDistribution(final Named<double[]> expected, final Optimize opt) {
 		final int loops = 5;
 		final int npopulation = POPULATION_COUNT;
 

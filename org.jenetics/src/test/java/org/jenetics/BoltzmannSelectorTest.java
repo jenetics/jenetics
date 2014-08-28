@@ -56,7 +56,7 @@ public class BoltzmannSelectorTest
 	}
 
 	@Test(dataProvider = "expectedDistribution", invocationCount = 20, successPercentage = 95)
-	public void selectDist(
+	public void selectDistribution(
 		final Double b,
 		final Named<double[]> expected,
 		final Optimize opt

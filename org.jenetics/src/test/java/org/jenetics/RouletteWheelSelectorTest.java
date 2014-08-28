@@ -99,7 +99,7 @@ public class RouletteWheelSelectorTest
 	}
 
 	@Test(dataProvider = "expectedDistribution", invocationCount = 20, successPercentage = 95)
-	public void selectDist(final Named<double[]> expected, final Optimize opt) {
+	public void selectDistribution(final Named<double[]> expected, final Optimize opt) {
 		final int loops = 50;
 		final int npopulation = POPULATION_COUNT;
 

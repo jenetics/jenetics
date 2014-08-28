@@ -61,7 +61,7 @@ public class LinearRankSelectorTest
 	}
 
 	@Test(dataProvider = "expectedDistribution", invocationCount = 20, successPercentage = 95)
-	public void selectDist(
+	public void selectDistribution(
 		final Double nminus,
 		final Named<double[]> expected,
 		final Optimize opt

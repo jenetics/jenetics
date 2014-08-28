@@ -51,7 +51,7 @@ public class TournamentSelectorTest
 	}
 
 	@Test(dataProvider = "expectedDistribution", invocationCount = 20, successPercentage = 95)
-	public void selectDist(
+	public void selectDistribution(
 		final Integer tournamentSize,
 		final Named<double[]> expected,
 		final Optimize opt
