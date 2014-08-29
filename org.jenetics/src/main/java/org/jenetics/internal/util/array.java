@@ -28,17 +28,15 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-26 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-29 $</em>
  */
 public final class array {
 	private array() {require.noInstance();}
 
-	public static double[] revert(final double[] array) {
-		for (int i = 0, j = array.length - 1; i < j; ++i, --j) {
-			swap(array, i, j);
-		}
-
-		return array;
+	public static void swap(final int[] array, final int i, final int j) {
+		final int temp = array[i];
+		array[i] = array[j];
+		array[j] = temp;
 	}
 
 	public static void swap(final double[] array, final int i, final int j) {
@@ -47,13 +45,15 @@ public final class array {
 		array[j] = temp;
 	}
 
-	public static void swap(final int[] array, final int i, final int j) {
-		final int temp = array[i];
-		array[i] = array[j];
-		array[j] = temp;
+	public static int[] revert(final int[] array) {
+		for (int i = 0, j = array.length - 1; i < j; ++i, --j) {
+			swap(array, i, j);
+		}
+
+		return array;
 	}
 
-	public static int[] revert(final int[] array) {
+	public static double[] revert(final double[] array) {
 		for (int i = 0, j = array.length - 1; i < j; ++i, --j) {
 			swap(array, i, j);
 		}
