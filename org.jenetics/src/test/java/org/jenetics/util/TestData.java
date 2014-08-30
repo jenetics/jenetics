@@ -32,6 +32,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.stream.Collectors;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -40,7 +41,7 @@ import java.util.stream.StreamSupport;
  * format: {@code $resource[$param1, $param2,...].dat}.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-22 $</em>
+ * @version <em>$Date: 2014-08-30 $</em>
  */
 public class TestData implements Iterable<String[]> {
 
@@ -119,6 +120,10 @@ public class TestData implements Iterable<String[]> {
 	 */
 	public Stream<String[]> stream() {
 		return StreamSupport.stream(spliterator(), false);
+	}
+
+	public LongStream longStream() {
+		return stream().mapToLong(line -> Long.parseLong(line[0]));
 	}
 
 	@Override
