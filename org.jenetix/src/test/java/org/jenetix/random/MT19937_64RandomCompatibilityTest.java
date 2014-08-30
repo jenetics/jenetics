@@ -31,7 +31,7 @@ import org.jenetics.util.TestData;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-07-18 $</em>
+ * @version <em>$Date: 2014-08-30 $</em>
  */
 public class MT19937_64RandomCompatibilityTest {
 
@@ -43,7 +43,7 @@ public class MT19937_64RandomCompatibilityTest {
 		final Random random = new MT19937_64Random(seed);
 
 		final String resource = String.format(TEST_RESOURCE, seed);
-		for (final String[] value : new TestData(resource)) {
+		for (final String[] value : TestData.of(resource)) {
 			final long expected = Long.parseLong(value[0]);
 			Assert.assertEquals(random.nextLong(), expected);
 		}
@@ -55,7 +55,7 @@ public class MT19937_64RandomCompatibilityTest {
 		random.setSeed(seed);
 
 		final String resource = String.format(TEST_RESOURCE, seed);
-		for (final String[] value : new TestData(resource)) {
+		for (final String[] value : TestData.of(resource)) {
 			final long expected = Long.parseLong(value[0]);
 			Assert.assertEquals(random.nextLong(), expected);
 		}

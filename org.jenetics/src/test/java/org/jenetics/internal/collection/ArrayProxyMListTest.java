@@ -29,7 +29,7 @@ import org.jenetics.internal.math.random;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-01 $</em>
+ * @version <em>$Date: 2014-08-30 $</em>
  */
 public class ArrayProxyMListTest {
 
@@ -45,7 +45,7 @@ public class ArrayProxyMListTest {
 
 		final List<Integer> list = new ArrayProxyMList<>(proxy);
 
-		seed = org.jenetics.internal.random.seed();
+		seed = org.jenetics.internal.math.random.seed();
 		random.setSeed(seed);
 		for (int i = 0; i < proxy.length; ++i) {
 			list.set(i, random.nextInt());
