@@ -36,7 +36,7 @@ import org.jenetics.util.TestData;
 public class MT19937_32RandomCompatibilityTest {
 
 	private final static String TEST_RESOURCE =
-		"/org/jenetix/random/MT19937_32Random.dat/%d";
+		"/org/jenetix/random/MT19937_32Random/%d";
 
 	@Test(dataProvider = "seeds")
 	public void constructorSeed(final long seed) {
