@@ -19,6 +19,7 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.internal.math.random.indexes;
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 
 import java.util.PrimitiveIterator.OfInt;
@@ -29,7 +30,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import org.jenetics.internal.math.probability;
-import org.jenetics.internal.math.random;
 import org.jenetics.internal.util.IntRef;
 
 import org.jenetics.stat.Histogram;
@@ -38,21 +38,19 @@ import org.jenetics.stat.Variance;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-01 $</em>
+ * @version <em>$Date: 2014-08-21 $</em>
  */
 public class RandomIndexStreamTest {
 
 	@Test
 	public void compatibility() {
-		final TestData data = new TestData(
-			"/org/jenetics/util/IndexStream.Random.dat"
-		);
+		final TestData data = TestData.of("/org/jenetics/util/IndexStream.Random");
 
 		for (String[] line : data) {
 			final Random random = new LCG64ShiftRandom.ThreadSafe(0);
 			final double p = Double.parseDouble(line[0]);
 
-			final OfInt it = org.jenetics.internal.math.random.indexes(random, 500, p).iterator();
+			final OfInt it = indexes(random, 500, p).iterator();
 			for (int i = 1; i < line.length; ++i) {
 				final int index = Integer.parseInt(line[i]);
 				Assert.assertEquals(it.nextInt(), index);
@@ -71,7 +69,7 @@ public class RandomIndexStreamTest {
 		final Random random2 = new LCG64ShiftRandom(0);
 
 		for (int j = 0; j < 1; ++j) {
-			final OfInt it = random.indexes(random1, size, p).iterator();
+			final OfInt it = indexes(random1, size, p).iterator();
 			final IndexStream stream2 = ReferenceRandomStream(
 				size, p, random2
 			);
@@ -93,9 +91,8 @@ public class RandomIndexStreamTest {
 		final Random random = new LCG64ShiftRandom();
 		final Range<Long> domain = new Range<>(0L, n.longValue());
 
-		final Histogram<Long> histogram = Histogram.of(
-					domain.getMin(), domain.getMax(), 10
-				);
+		final Histogram<Long> histogram =
+			Histogram.of(domain.getMin(), domain.getMax(), 10);
 		final Variance<Long> variance = new Variance<>();
 		for (int i = 0; i < 2500; ++i) {
 			final long k = k(n, p, random);
@@ -118,7 +115,7 @@ public class RandomIndexStreamTest {
 
 	long k(final int n, final double p, final Random random) {
 		final IntRef kt = new IntRef(0);
-		org.jenetics.internal.math.random.indexes(random, n, p).forEach(i -> {
+		indexes(random, n, p).forEach(i -> {
 			++kt.value;
 		});
 
@@ -128,49 +125,49 @@ public class RandomIndexStreamTest {
 	@DataProvider(name = "probabilities")
 	public Object[][] probabilities() {
 		return new Object[][] {
-			//    n,                p
-			{ new Integer(1115),  new Double(0.015) },
-			{ new Integer(1150),  new Double(0.015) },
-			{ new Integer(1160),  new Double(0.015) },
-			{ new Integer(1170),  new Double(0.015) },
-			{ new Integer(11100), new Double(0.015) },
-			{ new Integer(11200), new Double(0.015) },
-			{ new Integer(11500), new Double(0.015) },
+			// n,      p
+			{1115,  0.015},
+			{1150,  0.015},
+			{1160,  0.015},
+			{1170,  0.015},
+			{11100, 0.015},
+			{11200, 0.015},
+			{11500, 0.015},
 
-			{ new Integer(1115),  new Double(0.15) },
-			{ new Integer(1150),  new Double(0.15) },
-			{ new Integer(1160),  new Double(0.15) },
-			{ new Integer(1170),  new Double(0.15) },
-			{ new Integer(11100), new Double(0.15) },
-			{ new Integer(11200), new Double(0.15) },
-			{ new Integer(11500), new Double(0.15) },
+			{1115,  0.15},
+			{1150,  0.15},
+			{1160,  0.15},
+			{1170,  0.15},
+			{11100, 0.15},
+			{11200, 0.15},
+			{11500, 0.15},
 
-			{ new Integer(515),   new Double(0.5) },
-			{ new Integer(1115),  new Double(0.5) },
-			{ new Integer(1150),  new Double(0.5) },
-			{ new Integer(1160),  new Double(0.5) },
-			{ new Integer(1170),  new Double(0.5) },
-			{ new Integer(11100), new Double(0.5) },
-			{ new Integer(11200), new Double(0.5) },
-			{ new Integer(11500), new Double(0.5) },
+			{515,   0.5},
+			{1115,  0.5},
+			{1150,  0.5},
+			{1160,  0.5},
+			{1170,  0.5},
+			{11100, 0.5},
+			{11200, 0.5},
+			{11500, 0.5},
 
-			{ new Integer(515),   new Double(0.85) },
-			{ new Integer(1115),  new Double(0.85) },
-			{ new Integer(1150),  new Double(0.85) },
-			{ new Integer(1160),  new Double(0.85) },
-			{ new Integer(1170),  new Double(0.85) },
-			{ new Integer(11100), new Double(0.85) },
-			{ new Integer(11200), new Double(0.85) },
-			{ new Integer(11500), new Double(0.85) },
+			{515,   0.85},
+			{1115,  0.85},
+			{1150,  0.85},
+			{1160,  0.85},
+			{1170,  0.85},
+			{11100, 0.85},
+			{11200, 0.85},
+			{11500, 0.85},
 
-			{ new Integer(515),   new Double(0.99) },
-			{ new Integer(1115),  new Double(0.99) },
-			{ new Integer(1150),  new Double(0.99) },
-			{ new Integer(1160),  new Double(0.99) },
-			{ new Integer(1170),  new Double(0.99) },
-			{ new Integer(11100), new Double(0.99) },
-			{ new Integer(11200), new Double(0.99) },
-			{ new Integer(11500), new Double(0.99) }
+			{515,   0.99},
+			{1115,  0.99},
+			{1150,  0.99},
+			{1160,  0.99},
+			{1170,  0.99},
+			{11100, 0.99},
+			{11200, 0.99},
+			{11500, 0.99}
 		};
 	}
 

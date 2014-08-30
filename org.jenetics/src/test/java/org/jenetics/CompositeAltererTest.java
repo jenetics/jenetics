@@ -27,7 +27,7 @@ import org.jenetics.util.MSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-06-02 $</em>
+ * @version <em>$Date: 2014-08-14 $</em>
  */
 public class CompositeAltererTest {
 
@@ -151,7 +151,7 @@ public class CompositeAltererTest {
 		Assert.assertEquals(alterer.getAlterers().get(0), new Mutator<DoubleGene, Double>());
 		Assert.assertEquals(alterer.getAlterers().get(1), new SwapMutator<DoubleGene, Double>());
 
-		alterer = CompositeAlterer.join(alterer, new MeanAlterer<DoubleGene, Double>());
+		alterer = CompositeAlterer.join(alterer, new MeanAlterer<>());
 
 		Assert.assertEquals(alterer.getAlterers().length(), 3);
 		Assert.assertEquals(alterer.getAlterers().get(0), new Mutator<DoubleGene, Double>());
@@ -159,10 +159,10 @@ public class CompositeAltererTest {
 		Assert.assertEquals(alterer.getAlterers().get(2), new MeanAlterer<DoubleGene, Double>());
 
 		alterer = CompositeAlterer.of(
-			new MeanAlterer<DoubleGene, Double>(),
-			new SwapMutator<DoubleGene, Double>(),
+			new MeanAlterer<>(),
+			new SwapMutator<>(),
 			alterer,
-			new SwapMutator<DoubleGene, Double>()
+			new SwapMutator<>()
 		);
 
 		Assert.assertEquals(alterer.getAlterers().length(), 6);

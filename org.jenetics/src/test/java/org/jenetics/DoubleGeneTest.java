@@ -20,6 +20,7 @@
 package org.jenetics;
 
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
+import static org.jenetics.stat.StatisticsAssert.assertUniformDistribution;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
@@ -38,7 +39,7 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-07-01 $</em>
+ * @version <em>$Date: 2014-08-28 $</em>
  */
 public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 
@@ -59,7 +60,7 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 				.forEach(histogram::accept);
 		}
 
-		assertDistribution(histogram, new UniformDistribution<>(min, max));
+		assertUniformDistribution(histogram);
 	}
 
 	@Test

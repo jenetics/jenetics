@@ -32,7 +32,7 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-06-17 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-27 $</em>
  */
 public interface ISeq<T>
 	extends
@@ -63,6 +63,14 @@ public interface ISeq<T>
 	 *  Some static factory methods.
 	 * ************************************************************************/
 
+	/**
+	 * Returns a {@code Collector} that accumulates the input elements into a
+	 * new {@code ISeq}.
+	 *
+	 * @param <T> the type of the input elements
+	 * @return a {@code Collector} which collects all the input elements into an
+	 *         {@code ISeq}, in encounter order
+	 */
 	public static <T> Collector<T, ?, ISeq<T>> toISeq() {
 		return Collector.of(
 			(Supplier<List<T>>)ArrayList::new,

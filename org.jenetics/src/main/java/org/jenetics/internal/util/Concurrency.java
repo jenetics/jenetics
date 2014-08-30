@@ -35,7 +35,7 @@ import org.jenetics.internal.collection.Stack;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-08-08 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-15 $</em>
  * @since 2.0
  */
 public abstract class Concurrency implements Executor, AutoCloseable {
@@ -49,15 +49,15 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 	@Override
 	public abstract void close();
 
-    /**
-     * Return the underlying {@code Executor}, which is used for performing the
-     * actual task execution.
-     *
-     * @return the underlying {@code Executor} object
-     */
-    public Executor getInnerExecutor() {
-        return this;
-    }
+	/**
+	 * Return the underlying {@code Executor}, which is used for performing the
+	 * actual task execution.
+	 *
+	 * @return the underlying {@code Executor} object
+	 */
+	public Executor getInnerExecutor() {
+		return this;
+	}
 
 	/**
 	 * Return an new Concurrency object from the given executor.
@@ -108,10 +108,10 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 			_tasks.push(_pool.submit(new RunnablesAction(runnables)));
 		}
 
-        @Override
-        public Executor getInnerExecutor() {
-            return _pool;
-        }
+		@Override
+		public Executor getInnerExecutor() {
+			return _pool;
+		}
 
 		@Override
 		public void close() {
@@ -145,10 +145,10 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 			}
 		}
 
-        @Override
-        public Executor getInnerExecutor() {
-            return _service;
-        }
+		@Override
+		public Executor getInnerExecutor() {
+			return _service;
+		}
 
 		@Override
 		public void close() {

@@ -19,7 +19,6 @@
  */
 package org.jenetics;
 
-import java.io.Serializable;
 import java.util.function.Function;
 
 import org.testng.Assert;
@@ -27,25 +26,15 @@ import org.testng.annotations.Test;
 
 import org.jenetics.util.lists;
 
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-06-02 $</em>
+ * @version <em>$Date: 2014-08-16 $</em>
  */
 public class PopulationTest {
 
-	private static final class Continuous
-		implements Function<Genotype<DoubleGene>, Double>,
-					Serializable
-	{
-		private static final long serialVersionUID = 1L;
-		@Override
-		public Double apply(Genotype<DoubleGene> genotype) {
-			return genotype.getChromosome().getGene().getAllele();
-		}
-	}
+	private static final Function<Genotype<DoubleGene>, Double> _cf =
+		gt -> gt.getGene().getAllele();
 
-	private static final Function<Genotype<DoubleGene>, Double> _cf = new Continuous();
 	private static Phenotype<DoubleGene, Double> pt(double value) {
 		return Phenotype.of(Genotype.of(DoubleChromosome.of(DoubleGene.of(value, 0, 10))), _cf, 0);
 	}

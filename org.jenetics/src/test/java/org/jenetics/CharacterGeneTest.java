@@ -19,7 +19,7 @@
  */
 package org.jenetics;
 
-import static org.jenetics.stat.StatisticsAssert.assertDistribution;
+import static org.jenetics.stat.StatisticsAssert.assertUniformDistribution;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
@@ -31,7 +31,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import org.jenetics.stat.Histogram;
-import org.jenetics.stat.UniformDistribution;
 import org.jenetics.util.CharSeq;
 import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
@@ -39,7 +38,7 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-06-02 $</em>
+ * @version <em>$Date: 2014-08-28 $</em>
  */
 public class CharacterGeneTest extends GeneTester<CharacterGene> {
 
@@ -67,54 +66,54 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 				histogram.accept(Long.valueOf(g2.getAllele().toString()));
 			}
 
-			assertDistribution(histogram, new UniformDistribution<>(0L, 10L));
+			assertUniformDistribution(histogram);
 		}
 	}
 
-    @Test
-    public void testCharacterGene() {
-        CharacterGene gene = CharacterGene.of();
-        assertTrue(gene.isValidCharacter(gene.getAllele()));
-    }
+	@Test
+	public void testCharacterGene() {
+		CharacterGene gene = CharacterGene.of();
+		assertTrue(gene.isValidCharacter(gene.getAllele()));
+	}
 
-    @Test
-    public void testCharacterGeneCharacter() {
-        CharacterGene gene = CharacterGene.of('4');
+	@Test
+	public void testCharacterGeneCharacter() {
+		CharacterGene gene = CharacterGene.of('4');
 
-        assertEquals(new Character('4'), gene.getAllele());
-    }
+		assertEquals(new Character('4'), gene.getAllele());
+	}
 
-    @Test
-    public void testGetCharacter() {
-        CharacterGene gene = CharacterGene.of('6');
+	@Test
+	public void testGetCharacter() {
+		CharacterGene gene = CharacterGene.of('6');
 
-        assertEquals(new Character('6'), gene.getAllele());
-    }
+		assertEquals(new Character('6'), gene.getAllele());
+	}
 
-    @Test
-    public void testCompareTo() {
-        CharacterGene g1 = CharacterGene.of('1');
-        CharacterGene g2 = CharacterGene.of('2');
-        CharacterGene g3 = CharacterGene.of('3');
+	@Test
+	public void testCompareTo() {
+		CharacterGene g1 = CharacterGene.of('1');
+		CharacterGene g2 = CharacterGene.of('2');
+		CharacterGene g3 = CharacterGene.of('3');
 
-        assertTrue(g1.compareTo(g2) < 0);
-        assertTrue(g2.compareTo(g3) < 0);
-        assertTrue(g3.compareTo(g2) > 0);
-        assertTrue(g2.compareTo(g2) == 0);
-    }
+		assertTrue(g1.compareTo(g2) < 0);
+		assertTrue(g2.compareTo(g3) < 0);
+		assertTrue(g3.compareTo(g2) > 0);
+		assertTrue(g2.compareTo(g2) == 0);
+	}
 
-    @Test
-    public void testIsValidCharacter() {
-        for (Character c : CharacterGene.DEFAULT_CHARACTERS) {
-            assertTrue(CharacterGene.of(c).isValidCharacter(c));
-        }
-    }
+	@Test
+	public void testIsValidCharacter() {
+		for (Character c : CharacterGene.DEFAULT_CHARACTERS) {
+			assertTrue(CharacterGene.of(c).isValidCharacter(c));
+		}
+	}
 
-    @Test
-    public void testGetValidCharacters() {
-        CharSeq cset = CharacterGene.DEFAULT_CHARACTERS;
-        assertNotNull(cset);
-        assertFalse(cset.isEmpty());
-    }
+	@Test
+	public void testGetValidCharacters() {
+		CharSeq cset = CharacterGene.DEFAULT_CHARACTERS;
+		assertNotNull(cset);
+		assertFalse(cset.isEmpty());
+	}
 
 }

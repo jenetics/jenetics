@@ -21,20 +21,22 @@ package org.jenetics.internal.engine;
 
 import static java.util.Objects.requireNonNull;
 
-import java.io.Serializable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+import java.util.function.Function;
 
 import org.jenetics.internal.util.Concurrency;
-import org.jenetics.internal.util.TimedExecutor;
-import org.jenetics.internal.util.TimedResult;
 import org.jenetics.internal.util.require;
 
 import org.jenetics.Alterer;
+import org.jenetics.DoubleChromosome;
+import org.jenetics.DoubleGene;
 import org.jenetics.Gene;
+import org.jenetics.Genotype;
 import org.jenetics.Optimize;
 import org.jenetics.Phenotype;
 import org.jenetics.Population;
+import org.jenetics.PopulationSummary;
 import org.jenetics.Selector;
 import org.jenetics.util.Factory;
 
@@ -44,7 +46,7 @@ import org.jenetics.util.Factory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-07 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-19 $</em>
  */
 public class Engine<
 	G extends Gene<?, G>,
@@ -53,11 +55,13 @@ public class Engine<
 {
 
 	// Needed context for population evolving.
-    private final Factory<Phenotype<G, C>> _phenotypeFactory;
+	private final Function<? super Genotype<G>, ? extends C> _fitnessFunction;
+	private final Function<? super C, ? extends C> _fitnessScaler;
+	private final Factory<Genotype<G>> _genotypeFactory;
 	private final Selector<G, C> _survivorsSelector;
 	private final Selector<G, C> _offspringSelector;
-    private final Alterer<G, C> _alterer;
-    private final Optimize _optimize;
+	private final Alterer<G, C> _alterer;
+	private final Optimize _optimize;
 	private final int _offspringCount;
 	private final int _survivorsCount;
 	private final int _maximalPhenotypeAge;
@@ -65,24 +69,28 @@ public class Engine<
 	// Execution context for concurrent execution of evolving steps.
 	private final TimedExecutor _executor;
 
-    /**
-     * Create a new GA engine with the given parameters.
-     *
-     * @param survivorsSelector the selector used for selecting the survivors
-     * @param offspringSelector the selector used for selecting the offspring
-     * @param alterer the alterer used for altering the offspring
-     * @param optimize the kind of optimization (minimize or maximize)
-     * @param offspringCount the number of the offspring individuals
-     * @param survivorsCount the number of the survivor individuals
-     * @param maximalPhenotypeAge the maximal age of an individual
-     * @param phenotypeFactory the factory for creating new phenotypes
-     * @param executor the executor used for executing the single evolve steps
-     * @throws NullPointerException if one of the arguments is {@code null}
-     * @throws IllegalArgumentException if the given integer values are smaller
-     *         than one.
-     */
+	/**
+	 * Create a new GA engine with the given parameters.
+	 *
+	 * @param genotypeFactory the genotype factory this GA is working with.
+	 * @param fitnessFunction the fitness function this GA is using.
+	 * @param fitnessScaler the fitness scaler this GA is using.
+	 * @param survivorsSelector the selector used for selecting the survivors
+	 * @param offspringSelector the selector used for selecting the offspring
+	 * @param alterer the alterer used for altering the offspring
+	 * @param optimize the kind of optimization (minimize or maximize)
+	 * @param offspringCount the number of the offspring individuals
+	 * @param survivorsCount the number of the survivor individuals
+	 * @param maximalPhenotypeAge the maximal age of an individual
+	 * @param executor the executor used for executing the single evolve steps
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if the given integer values are smaller
+	 *         than one.
+	 */
 	public Engine(
-        final Factory<Phenotype<G, C>> phenotypeFactory,
+		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
+		final Function<? super C, ? extends C> fitnessScaler,
+        final Factory<Genotype<G>> genotypeFactory,
 		final Selector<G, C> survivorsSelector,
 		final Selector<G, C> offspringSelector,
 		final Alterer<G, C> alterer,
@@ -92,7 +100,9 @@ public class Engine<
 		final int maximalPhenotypeAge,
 		final Executor executor
 	) {
-        _phenotypeFactory = requireNonNull(phenotypeFactory);
+		_fitnessFunction = requireNonNull(fitnessFunction);
+		_fitnessScaler = requireNonNull(fitnessScaler);
+		_genotypeFactory = requireNonNull(genotypeFactory);
 		_survivorsSelector = requireNonNull(survivorsSelector);
 		_offspringSelector = requireNonNull(offspringSelector);
 		_alterer = requireNonNull(alterer);
@@ -106,41 +116,52 @@ public class Engine<
 		_executor = new TimedExecutor(requireNonNull(executor));
 	}
 
+	public EvolutionStart<G, C> evaluationStart() {
+		final int generation = 1;
+		final int size = _offspringCount + _survivorsCount;
+		final Population<G, C> population = new Population<>(size);
+		population.fill(() -> newPhenotype(generation), size);
+
+		return EvolutionStart.of(evaluate(population), generation);
+	}
+
 	/**
 	 * Performs one generation step.
 	 *
-	 * @param state the current GA state
-	 * @return the new GA state.
+	 * @param start the evolution start state
+	 * @return the resulting evolution state
 	 */
-	public State<G, C> evolve(final State<G, C> state) {
+	public EvolutionResult<G, C> evolve(final EvolutionStart<G, C> start) {
+		final Timer timer = Timer.of().start();
+
 		// Select the offspring population.
 		final CompletableFuture<TimedResult<Population<G, C>>> offspring =
 			_executor.async(() ->
-				selectOffspring(state.getPopulation())
+				selectOffspring(start.getPopulation())
 			);
 
 		// Select the survivor population.
 		final CompletableFuture<TimedResult<Population<G, C>>> survivors =
 			_executor.async(() ->
-				selectSurvivors(state.getPopulation())
+				selectSurvivors(start.getPopulation())
 			);
 
 		// Altering the offspring population.
 		final CompletableFuture<TimedResult<AlterResult<G, C>>> alteredOffspring =
 			_executor.thenApply(offspring, p ->
-				alter(p.get(), state.getGeneration())
+				alter(p.get(), start.getGeneration())
 			);
 
 		// Filter and replace invalid and to old survivor individuals.
 		final CompletableFuture<TimedResult<FilterResult<G, C>>> filteredSurvivors =
 			_executor.thenApply(survivors, pop ->
-				filter(pop.get(), state.getGeneration())
+				filter(pop.get(), start.getGeneration())
 			);
 
 		// Filter and replace invalid and to old offspring individuals.
 		final CompletableFuture<TimedResult<FilterResult<G, C>>> filteredOffspring =
 			_executor.thenApply(alteredOffspring, pop ->
-				filter(pop.get().getPopulation(), state.getGeneration())
+				filter(pop.get().getPopulation(), start.getGeneration())
 			);
 
 		// Combining survivors and offspring to the new population.
@@ -158,7 +179,30 @@ public class Engine<
 			.thenApply(TimedResult.of(this::evaluate))
 			.join();
 
-		return state.next(result.get());
+		final EvolutionDurations durations = EvolutionDurations.of(
+			offspring.join().getDuration(),
+			survivors.join().getDuration(),
+			alteredOffspring.join().getDuration(),
+			filteredOffspring.join().getDuration(),
+			filteredSurvivors.join().getDuration(),
+			result.getDuration(),
+			timer.stop().getTime()
+		);
+
+		final int killCount = filteredOffspring.join().get().getKillCount() +
+			filteredSurvivors.join().get().getKillCount();
+
+		final int invalidCount = filteredOffspring.join().get().getInvalidCount() +
+			filteredOffspring.join().get().getInvalidCount();
+
+		return EvolutionResult.of(
+			result.get(),
+			start.getGeneration(),
+			durations,
+			killCount,
+			invalidCount,
+			alteredOffspring.join().get().getAlterCount()
+		);
 	}
 
 	private Population<G, C> selectSurvivors(final Population<G, C> population) {
@@ -180,10 +224,10 @@ public class Engine<
 			final Phenotype<G, C> individual = population.get(i);
 
 			if (!individual.isValid()) {
-				population.set(i, _phenotypeFactory.newInstance());
+				population.set(i, newPhenotype(generation));
 				++invalidCount;
 			} else if (individual.getAge(generation) > _maximalPhenotypeAge) {
-				population.set(i, _phenotypeFactory.newInstance());
+				population.set(i, newPhenotype(generation));
 				++killCount;
 			}
 		}
@@ -191,11 +235,20 @@ public class Engine<
 		return FilterResult.of(population, killCount, invalidCount);
 	}
 
+	private Phenotype<G, C> newPhenotype(final int generation) {
+		return Phenotype.of(
+			_genotypeFactory.newInstance(),
+			_fitnessFunction,
+			_fitnessScaler,
+			generation
+		);
+	}
+
 	private AlterResult<G, C> alter(
 		final Population<G,C> population,
 		final int generation
 	) {
-		return new AlterResult<>(
+		return AlterResult.of(
 			population,
 			_alterer.alter(population, generation)
 		);
@@ -208,128 +261,34 @@ public class Engine<
 		return population;
 	}
 
-	/**
-	 * Represents a state of the GA.
-	 *
-	 * @param <G> the gene type
-	 * @param <C> the fitness type
-	 */
-	public static final class State<
-		G extends Gene<?, G>,
-		C extends Comparable<? super C>
-	>
-	{
-		private final Population<G, C> _population;
-		private final int _generation;
 
-		public State(final Population<G, C> population, final int generation) {
-			_population = requireNonNull(population);
-			_generation = generation;
-		}
 
-		public Population<G, C> getPopulation() {
-			return _population;
-		}
-
-		public int getGeneration() {
-			return _generation;
-		}
-
-		public State<G, C> next(final Population<G, C> population) {
-			return new State<>(population, _generation + 1);
-		}
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	EngineBuilder<G, C> newBuilder(
+		final Factory<Genotype<G>> genotypeFactory,
+		final Function<? super Genotype<G>, ? extends C> fitnessFunction
+	) {
+		return new EngineBuilder<>(genotypeFactory, fitnessFunction);
 	}
 
-	/**
-	 * Represent the result of the validation/filtering step.
-	 *
-	 * @param <G> the gene type
-	 * @param <C> the fitness type
-	 */
-	public static final class FilterResult<
-		G extends Gene<?, G>,
-		C extends Comparable<? super C>
-	>
-		implements Serializable
-	{
-		private static final long serialVersionUID = 1L;
+	public static void main(final String[] args) {
+		final Engine<DoubleGene, Double> engine = Engine
+			.newBuilder(
+				Genotype.of(DoubleChromosome.of(0.0, 1.0)),
+				gt -> gt.getGene().getAllele())
+			.build();
 
-		private final Population<G, C> _population;
-		private final int _killCount;
-		private final int _invalidCount;
+		EvolutionStart<DoubleGene, Double> start = engine.evaluationStart();
+		for (int i = 0; i < 10; ++i) {
+			final EvolutionResult<DoubleGene, Double> result = engine.evolve(start);
+			final PopulationSummary<DoubleGene, Double> summary =
+				result.getPopulation().stream()
+					.collect(PopulationSummary
+						.collector(engine._optimize, result.getGeneration()));
 
-		private FilterResult(
-			final Population<G, C> population,
-			final int killCount,
-			final int invalidCount
-		) {
-			_population = requireNonNull(population);
-			_killCount = killCount;
-			_invalidCount = invalidCount;
-		}
+			System.out.println(summary);
 
-		public Population<G, C> getPopulation() {
-			return _population;
-		}
-
-		public int getKillCount() {
-			return _killCount;
-		}
-
-		public int getInvalidCount() {
-			return _invalidCount;
-		}
-
-		public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-		FilterResult<G, C> of(
-			final Population<G, C> population,
-			final int killCount,
-			final int invalidCount
-		) {
-			return new FilterResult<>(population, killCount, invalidCount);
-		}
-
-	}
-
-	/**
-	 * Represents the result of the alter step.
-	 *
-	 * @param <G> the gene type
-	 * @param <C> the fitness type
-	 */
-	public static final class AlterResult<
-		G extends Gene<?, G>,
-		C extends Comparable<? super C>
-	>
-		implements Serializable
-	{
-		private static final long serialVersionUID = 1L;
-
-		private final Population<G, C> _population;
-		private final int _alterCount;
-
-		private AlterResult(
-			final Population<G, C> population,
-			final int alterCount
-		) {
-			_population = requireNonNull(population);
-			_alterCount = alterCount;
-		}
-
-		public Population<G, C> getPopulation() {
-			return _population;
-		}
-
-		public int getAlterCount() {
-			return _alterCount;
-		}
-
-		public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-		AlterResult<G, C> of(
-			final Population<G, C> population,
-			final int alterCount
-		) {
-			return new AlterResult<>(population, alterCount);
+			start = result.next();
 		}
 	}
 

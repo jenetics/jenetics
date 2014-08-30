@@ -31,35 +31,64 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-11 $</em>
+ * @version <em>$Date: 2014-08-26 $</em>
  */
 public class IndexSorterTest {
 
-	@Test(dataProvider = "sorters")
-	public void sortRandomValues(final IndexSorter sorter, final Integer size) {
-		final double[] values = new Random().doubles(size).toArray();
+    private static double[] indexSort(final IndexSorter sorter, final double[] values) {
+        final int[] indexes = sorter.sort(values, indexes(values.length));
 
-		final int[] indexes = sorter.sort(values, indexes(values.length));
+        final double[] result = new double[values.length];
+        for (int i = 0; i < result.length; ++i) {
+            result[i] = values[indexes[i]];
+        }
+        return result;
+    }
 
-		final double[] sorted = values.clone();
-		Arrays.sort(sorted);
-		for (int i = 0; i < values.length; ++i) {
-			Assert.assertEquals(values[indexes[i]], sorted[i]);
-		}
-	}
+    private static double[] arraySort(final double[] values) {
+        final double[] result = values.clone();
+        Arrays.sort(result);
+		revert(result);
+        return result;
+    }
+
+    @Test(dataProvider = "specialArray")
+    public void sortSpecial(final double[] values) {
+        final double[] indexHeapSortedValues = indexSort(new HeapSorter(), values);
+        final double[] indexInsertionSortedValues2 = indexSort(new InsertionSorter(), values);
+		final double[] arraySorted = arraySort(values);
+
+        Assert.assertEquals(indexHeapSortedValues, arraySorted);
+		Assert.assertEquals(indexInsertionSortedValues2, arraySorted);
+    }
+
+    @DataProvider(name = "specialArray")
+    public Object[][] specialArray() {
+        return new Object[][] {
+            {new double[]{0.0, 0.0, 0.0, 0.0, 1.0}},
+            {new double[]{1.0, 0.0, 0.0, 0.0, 0.0}},
+            {new double[]{1.0, 0.0, 0.0, 0.0, 1.0}},
+            {new double[]{2.0, 0.0, 1.0, 1.0, 1.0}}
+        };
+    }
+
+    @Test(dataProvider = "sorters")
+    public void sortRandomValues(final IndexSorter sorter, final Integer size) {
+        final double[] values = new Random().doubles(size).toArray();
+
+        final double[] actual = indexSort(sorter, values);
+        final double[] expected = arraySort(values);
+        Assert.assertEquals(actual, expected);
+    }
 
 	@Test(dataProvider = "sorters")
 	public void sortAscSortedValues(final IndexSorter sorter, final Integer size) {
 		final double[] values = new Random().doubles(size).toArray();
 		Arrays.sort(values);
 
-		final int[] indexes = sorter.sort(values, indexes(values.length));
-
-		final double[] sorted = values.clone();
-		Arrays.sort(sorted);
-		for (int i = 0; i < values.length; ++i) {
-			Assert.assertEquals(values[indexes[i]], sorted[i]);
-		}
+        final double[] actual = indexSort(sorter, values);
+        final double[] expected = arraySort(values);
+        Assert.assertEquals(actual, expected);
 	}
 
 	@Test(dataProvider = "sorters")
@@ -68,25 +97,26 @@ public class IndexSorterTest {
 		Arrays.sort(values);
 		revert(values);
 
-		final int[] indexes = sorter.sort(values, indexes(values.length));
-
-		final double[] sorted = values.clone();
-		Arrays.sort(sorted);
-		for (int i = 0; i < values.length; ++i) {
-			Assert.assertEquals(values[indexes[i]], sorted[i]);
-		}
+        final double[] actual = indexSort(sorter, values);
+        final double[] expected = arraySort(values);
+        Assert.assertEquals(actual, expected);
 	}
 
 	@DataProvider(name = "sorters")
 	public Object[][] sorters() {
 		return new Object[][] {
+            {new InsertionSorter(), 1},
+            {new InsertionSorter(), 2},
+            {new InsertionSorter(), 3},
+            {new InsertionSorter(), 5},
+            {new InsertionSorter(), 33},
 			{new HeapSorter(), 1},
 			{new HeapSorter(), 2},
 			{new HeapSorter(), 3},
 			{new HeapSorter(), 5},
 			{new HeapSorter(), 11},
 			{new HeapSorter(), 1000},
-			{new HeapSorter(), 250_000}
+			{new HeapSorter(), 10_000}
 		};
 	}
 

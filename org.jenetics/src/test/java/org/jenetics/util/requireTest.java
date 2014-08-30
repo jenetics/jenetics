@@ -24,7 +24,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date$</em>
+ * @version <em>$Date: 2014-08-14 $</em>
  */
 public class requireTest {
 
@@ -32,19 +32,11 @@ public class requireTest {
 	public void validPredicate() {
 		final MSeq<Verifiable> array = MSeq.ofLength(100);
 		for (int i = 0; i < array.length(); ++i) {
-			array.set(i, new Verifiable() {
-				@Override public boolean isValid() {
-					return true;
-				}
-			});
+			array.set(i, () -> true);
 		}
 		Assert.assertEquals(array.indexWhere(o -> !o.isValid()), -1);
 
-		array.set(77, new Verifiable() {
-			@Override public boolean isValid() {
-				return false;
-			}
-		});
+		array.set(77, () -> false);
 		Assert.assertEquals(array.indexWhere(o -> !o.isValid()), 77);
 	}
 

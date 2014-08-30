@@ -34,15 +34,15 @@ import org.jenetics.util.RandomRegistry;
  * This class is for mutating a chromosomes of an given population. There are
  * two distinct roles mutation plays
  * <ul>
- *	<li>Exploring the search space. By making small moves mutation allows a
- *	population to explore the search space. This exploration is often slow
- *	compared to crossover, but in problems where crossover is disruptive this
- *	can be an important way to explore the landscape.
- *	</li>
- *	<li>Maintaining diversity. Mutation prevents a population from
- *	correlating. Even if most of the search is being performed by crossover,
- *	mutation can be vital to provide the diversity which crossover needs.
- *	</li>
+ *     <li>Exploring the search space. By making small moves mutation allows a
+ *     population to explore the search space. This exploration is often slow
+ *     compared to crossover, but in problems where crossover is disruptive this
+ *     can be an important way to explore the landscape.
+ *     </li>
+ *     <li>Maintaining diversity. Mutation prevents a population from
+ *     correlating. Even if most of the search is being performed by crossover,
+ *     mutation can be vital to provide the diversity which crossover needs.
+ *     </li>
  * </ul>
  *
  * <p>
@@ -66,7 +66,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-01 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-30 $</em>
  */
 public class Mutator<
 	G extends Gene<?, G>,

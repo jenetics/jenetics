@@ -19,7 +19,7 @@
  */
 package org.jenetics;
 
-import static org.jenetics.stat.StatisticsAssert.assertDistribution;
+import static org.jenetics.stat.StatisticsAssert.assertUniformDistribution;
 
 import java.util.Random;
 
@@ -27,7 +27,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import org.jenetics.stat.Histogram;
-import org.jenetics.stat.UniformDistribution;
 import org.jenetics.stat.Variance;
 import org.jenetics.util.Accumulator.MinMax;
 import org.jenetics.util.RandomRegistry;
@@ -35,7 +34,7 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-06-02 $</em>
+ * @version <em>$Date: 2014-08-28 $</em>
  */
 public class DoubleChromosomeTest
 	extends NumericChromosomeTester<Double, DoubleGene>
@@ -73,7 +72,7 @@ public class DoubleChromosomeTest
 
 			Assert.assertTrue(mm.getMin().compareTo(0.0) >= 0);
 			Assert.assertTrue(mm.getMax().compareTo(100.0) <= 100);
-			assertDistribution(histogram, new UniformDistribution<>(min, max));
+			assertUniformDistribution(histogram);
 		}
 	}
 

@@ -41,7 +41,7 @@ import org.jenetics.util.RandomRegistry;
  * NumericGene implementation which holds a 64 bit integer number.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-08-01 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-08-30 $</em>
  * @since 1.6
  */
 @XmlJavaTypeAdapter(LongGene.Model.Adapter.class)
@@ -124,7 +124,7 @@ public final class LongGene
 
 	@Override
 	public LongGene mean(final LongGene that) {
-		return new LongGene(_value + (that._value - _value) / 2, _min, _max);
+		return new LongGene(_value + (that._value - _value)/2, _min, _max);
 	}
 
 	/* *************************************************************************

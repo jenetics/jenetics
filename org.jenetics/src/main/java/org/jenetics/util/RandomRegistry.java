@@ -89,7 +89,7 @@ import org.jenetics.internal.util.require;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-08-10 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-30 $</em>
  */
 public final class RandomRegistry {
 	private RandomRegistry() {require.noInstance();}

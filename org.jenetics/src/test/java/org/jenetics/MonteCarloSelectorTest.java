@@ -19,13 +19,11 @@
  */
 package org.jenetics;
 
-import org.jenetics.stat.Distribution;
-import org.jenetics.stat.UniformDistribution;
 import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-06-02 $</em>
+ * @version <em>$Date: 2014-08-28 $</em>
  */
 public class MonteCarloSelectorTest
 	extends SelectorTester<MonteCarloSelector<DoubleGene, Double>>
@@ -33,17 +31,7 @@ public class MonteCarloSelectorTest
 
 	@Override
 	protected Factory<MonteCarloSelector<DoubleGene, Double>> factory() {
-		return () -> new MonteCarloSelector<>();
-	}
-
-	@Override
-	protected boolean isCheckEnabled() {
-		return true;
-	}
-
-	@Override
-	protected Distribution<Double> getDistribution() {
-		return new UniformDistribution<>(getDomain());
+		return MonteCarloSelector::new;
 	}
 
 }

@@ -44,7 +44,7 @@ import java.util.stream.StreamSupport;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-07-11 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-30 $</em>
  */
 public interface Seq<T> extends Iterable<T> {
 
@@ -680,6 +680,14 @@ public interface Seq<T> extends Iterable<T> {
 	 *  Some static factory methods.
 	 * ************************************************************************/
 
+	/**
+	 * Returns a {@code Collector} that accumulates the input elements into a
+	 * new {@code Seq}.
+	 *
+	 * @param <T> the type of the input elements
+	 * @return a {@code Collector} which collects all the input elements into a
+	 *         {@code Seq}, in encounter order
+	 */
 	public static <T> Collector<T, ?, Seq<T>> toSeq() {
 		return Collector.of(
 			(Supplier<List<T>>) ArrayList::new,

@@ -19,14 +19,23 @@
  */
 package org.jenetics;
 
-import org.jenetics.stat.Distribution;
-import org.jenetics.stat.UniformDistribution;
+import java.util.Arrays;
+
+import org.testng.annotations.DataProvider;
+
+import org.jenetics.internal.util.Named;
+
+import org.jenetics.stat.Histogram;
+import org.jenetics.stat.StatisticsAssert;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Range;
+import org.jenetics.util.LCG64ShiftRandom;
+import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Scoped;
+import org.jenetics.util.TestData;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-12 $</em>
+ * @version <em>$Date: 2014-08-28 $</em>
  */
 public class TruncationSelectorTest
 	extends SelectorTester<TruncationSelector<DoubleGene, Double>>
@@ -34,21 +43,69 @@ public class TruncationSelectorTest
 
 	@Override
 	protected Factory<TruncationSelector<DoubleGene, Double>> factory() {
-		return () -> new TruncationSelector<>();
+		return TruncationSelector::new;
 	}
 
-	@Override
-	protected Distribution<Double> getDistribution() {
-		final Range<Double> domain = new Range<>(
-				(getDomain().getMax() - getDomain().getMin())/2.0,
-				getDomain().getMax()
+	// Working, but not stable enough.
+	//@Test(dataProvider = "expectedDistribution")
+	public void selectDistribution(final Named<double[]> expected, final Optimize opt) {
+		final int loops = 5;
+		final int npopulation = POPULATION_COUNT;
+
+		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
+		try (Scoped<LCG64ShiftRandom> sr = RandomRegistry.scope(random)) {
+			final Histogram<Double> distribution = SelectorTester.distribution(
+				new TruncationSelector<>(),
+				opt,
+				npopulation,
+				loops
 			);
-		return new UniformDistribution<>(domain);
+
+			StatisticsAssert.assertDistribution(distribution, expected.value, 0.999);
+		}
+
+
 	}
 
-	@Override
-	protected boolean isCheckEnabled() {
-		return false;
+	@DataProvider(name = "expectedDistribution")
+	public Object[][] expectedDistribution() {
+		final String resource =
+			"/org/jenetics/selector/distribution/TruncationSelector";
+
+		return Arrays.stream(Optimize.values())
+			.map(opt -> {
+				final TestData data = TestData.of(resource, opt.toString());
+				final double[] expected = data.stream()
+					.map(line -> line[0])
+					.mapToDouble(Double::parseDouble)
+					.toArray();
+
+				return new Object[]{Named.of("distribution", expected), opt};
+			}).toArray(Object[][]::new);
+	}
+
+	public static void main(final String[] args) {
+		writeDistributionData(Optimize.MAXIMUM);
+		writeDistributionData(Optimize.MINIMUM);
+	}
+
+	private static void writeDistributionData(final Optimize opt) {
+		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
+		try (Scoped<LCG64ShiftRandom> sr = RandomRegistry.scope(random)) {
+
+			final int npopulation = POPULATION_COUNT;
+			//final int loops = 2_500_000;
+			final int loops = 100_000;
+
+			printDistributions(
+				System.out,
+				Arrays.asList(""),
+				value -> new TruncationSelector<DoubleGene, Double>(),
+				opt,
+				npopulation,
+				loops
+			);
+		}
 	}
 
 }

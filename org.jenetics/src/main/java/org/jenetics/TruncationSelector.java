@@ -37,7 +37,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-08-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-30 $</em>
  */
 public final class TruncationSelector<
 	G extends Gene<?, G>,
@@ -54,10 +54,10 @@ public final class TruncationSelector<
 
 	/**
 	 * This method sorts the population in descending order while calculating
-	 * the selection probabilities. (The method {@link Population#sort()} is
-	 * called by this method.) If the selection size is greater the the
-	 * population size, the whole population is duplicated until the desired
-	 * sample size is reached.
+	 * the selection probabilities. (The method
+	 * {@link Population#sortWith(java.util.Comparator)} )} is called by this
+	 * method.) If the selection size is greater the the population size, the
+	 * whole population is duplicated until the desired sample size is reached.
 	 *
 	 * @throws NullPointerException if the {@code population} is {@code null}.
 	 */

@@ -71,7 +71,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-07-11 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-30 $</em>
  */
 @XmlJavaTypeAdapter(Genotype.Model.Adapter.class)
 public final class Genotype<G extends Gene<?, G>>
@@ -208,7 +208,7 @@ public final class Genotype<G extends Gene<?, G>>
 	@Override
 	public boolean isValid() {
 		if (_valid == null) {
-			_valid = _chromosomes.forAll(Chromosome<G>::isValid);
+			_valid = _chromosomes.forAll(Chromosome::isValid);
 		}
 		return _valid;
 	}
@@ -220,7 +220,7 @@ public final class Genotype<G extends Gene<?, G>>
 	 */
 	@Override
 	public Genotype<G> newInstance() {
-		return new Genotype<G>(_chromosomes.map(c -> c.newInstance()), _ngenes);
+		return new Genotype<>(_chromosomes.map(c -> c.newInstance()), _ngenes);
 	}
 
 	Genotype<G> newInstance(final ISeq<Chromosome<G>> chromosomes) {

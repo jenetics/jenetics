@@ -52,7 +52,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-27 $</em>
  */
 public final class ExponentialRankSelector<
 	G extends Gene<?, G>,
@@ -71,12 +71,21 @@ public final class ExponentialRankSelector<
 	 *         {@code [0..1)}.
 	 */
 	public ExponentialRankSelector(final double c) {
+		super(true);
+
 		if (c < 0.0 || c >= 1.0) {
 			throw new IllegalArgumentException(format(
 				"Value %s is out of range [0..1): ", c
 			));
 		}
 		_c = c;
+	}
+
+	/**
+	 * Create a new selector with default value of 0.975.
+	 */
+	public ExponentialRankSelector() {
+		this(0.975);
 	}
 
 	/**
@@ -98,9 +107,9 @@ public final class ExponentialRankSelector<
 		final double N = population.size();
 		final double[] probabilities = new double[population.size()];
 
-		final double b = pow(_c, N) - 1;
-		for (int i = probabilities.length; --i >= 0;) {
-			probabilities[i] = ((_c - 1)*pow(_c, i))/b;
+		final double b = (_c - 1.0)/(pow(_c, N) - 1.0);
+		for (int i = 0; i < probabilities.length; ++i) {
+			probabilities[i] = pow(_c, i)*b;
 		}
 
 		assert (sum2one(probabilities)) : "Probabilities doesn't sum to one.";

@@ -57,7 +57,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-08-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-27 $</em>
  */
 public final class LinearRankSelector<
 	G extends Gene<?, G>,
@@ -69,13 +69,6 @@ public final class LinearRankSelector<
 	private final double _nplus;
 
 	/**
-	 * Create a new LinearRankSelector with {@code nminus := 0.5}.
-	 */
-	public LinearRankSelector() {
-		this(0.5);
-	}
-
-	/**
 	 * Create a new LinearRankSelector with the given values for {@code nminus}.
 	 *
 	 * @param nminus {@code nminus/N} is the probability of the worst phenotype
@@ -83,6 +76,8 @@ public final class LinearRankSelector<
 	 * @throws IllegalArgumentException if {@code nminus < 0}.
 	 */
 	public LinearRankSelector(final double nminus) {
+		super(true);
+
 		if (nminus < 0) {
 			throw new IllegalArgumentException(format(
 				"nminus is smaller than zero: %s", nminus
@@ -91,6 +86,13 @@ public final class LinearRankSelector<
 
 		_nminus = nminus;
 		_nplus = 2 - _nminus;
+	}
+
+	/**
+	 * Create a new LinearRankSelector with {@code nminus := 0.5}.
+	 */
+	public LinearRankSelector() {
+		this(0.5);
 	}
 
 	/**
@@ -141,7 +143,7 @@ public final class LinearRankSelector<
 	@Override
 	public String toString() {
 		return format(
-			"%s[n-=%f, n+=%f]",
+			"%s[(n-)=%f, (n+)=%f]",
 			getClass().getSimpleName(), _nminus, _nplus
 		);
 	}

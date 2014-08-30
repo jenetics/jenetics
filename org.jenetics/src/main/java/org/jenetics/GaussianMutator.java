@@ -20,6 +20,7 @@
 package org.jenetics;
 
 import static java.lang.String.format;
+import static org.jenetics.internal.math.random.indexes;
 
 import java.util.Random;
 
@@ -47,7 +48,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-01 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-30 $</em>
  */
 public final class GaussianMutator<
 	G extends NumericGene<?, G>,
@@ -56,11 +57,12 @@ public final class GaussianMutator<
 	extends Mutator<G, C>
 {
 
-	public GaussianMutator() {
-	}
-
 	public GaussianMutator(final double probability) {
 		super(probability);
+	}
+
+	public GaussianMutator() {
+		this(DEFAULT_ALTER_PROBABILITY);
 	}
 
 	@Override
@@ -68,7 +70,7 @@ public final class GaussianMutator<
 		final Random random = RandomRegistry.getRandom();
 
 		final IntRef alterations = new IntRef(0);
-		org.jenetics.internal.math.random.indexes(random, genes.length(), p).forEach(i -> {
+		indexes(random, genes.length(), p).forEach(i -> {
 			genes.set(i, mutate(genes.get(i), random));
 			++alterations.value;
 		});
