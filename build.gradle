@@ -40,7 +40,7 @@ apply plugin: 'signing'
 apply plugin: 'packaging'
 
 ext {
-    javaVersion = '1.8'
+	javaVersion = '1.8'
 
 	now = Calendar.getInstance()
 	year = now.get(Calendar.YEAR);
@@ -77,17 +77,17 @@ task wrapper(type: Wrapper) {
 }
 
 task trimLineFeed(type: TrimLineFeedTask) {
-    directory = project.rootDir
-    outputs.upToDateWhen {
-        false
-    }
+	directory = project.rootDir
+	outputs.upToDateWhen {
+		false
+	}
 }
 
 task fixCodeBlock(type: FixJavadocCodeBlockTask) {
-    directory = project.rootDir
-    outputs.upToDateWhen {
-        false
-    }
+	directory = project.rootDir
+	outputs.upToDateWhen {
+		false
+	}
 }
 
 task alljavadoc(type: Javadoc) {
