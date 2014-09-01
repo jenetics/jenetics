@@ -90,7 +90,7 @@ public class TestData implements Iterable<String[]> {
 
 	@Override
 	public Iterator<String[]> iterator() {
-		return new DataIterator(getResource());
+		return new DataIterator(getResourcePath());
 	}
 
 	/**
@@ -99,7 +99,7 @@ public class TestData implements Iterable<String[]> {
 	 * @return a stream with the data lines
 	 */
 	public Stream<String[]> stream() {
-		final DataIterator iterator = new DataIterator(getResource());
+		final DataIterator iterator = new DataIterator(getResourcePath());
 		final Spliterator<String[]> spliterator = Spliterators
 			.spliteratorUnknownSize(iterator, 0);
 
