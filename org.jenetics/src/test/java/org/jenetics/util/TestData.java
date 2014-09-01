@@ -121,7 +121,7 @@ public class TestData implements Iterable<String[]> {
 	 *
 	 * @param resource the base resource name
 	 * @param parameters the test data parameters
-	 * @return
+	 * @return a new test data object
 	 */
 	public static TestData of(final String resource, final String... parameters) {
 		return new TestData(resource, parameters);
@@ -250,6 +250,7 @@ public class TestData implements Iterable<String[]> {
 
 				return line != null ? line.split(",") : null;
 			} catch (IOException e) {
+				close();
 				throw new UncheckedIOException(e);
 			}
 		}
