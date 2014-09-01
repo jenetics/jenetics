@@ -31,6 +31,8 @@ import java.io.UncheckedIOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
@@ -41,7 +43,7 @@ import java.util.stream.StreamSupport;
  * format: {@code $resource[$param1, $param2,...].dat}.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-30 $</em>
+ * @version <em>$Date: 2014-09-01 $</em>
  */
 public class TestData implements Iterable<String[]> {
 
@@ -86,31 +88,7 @@ public class TestData implements Iterable<String[]> {
 
 	@Override
 	public Iterator<String[]> iterator() {
-		return new Iterator<String[]>() {
-			private final Reader _reader = new Reader(getResourcePath());
-
-			private String[] _data = _reader.read();
-
-			@Override
-			public boolean hasNext() {
-				return _data != null;
-			}
-
-			@Override
-			public String[] next() {
-				final String[] current = _data;
-				_data = _reader.read();
-				if (_data == null) {
-					_reader.close();
-				}
-				return current;
-			}
-
-			@Override
-			public void remove() {
-				throw new UnsupportedOperationException();
-			}
-		};
+		return new DataIterator(getResource());
 	}
 
 	/**
@@ -119,7 +97,13 @@ public class TestData implements Iterable<String[]> {
 	 * @return a stream with the data lines
 	 */
 	public Stream<String[]> stream() {
-		return StreamSupport.stream(spliterator(), false);
+		final DataIterator iterator = new DataIterator(getResource());
+		final Spliterator<String[]> spliterator = Spliterators
+			.spliteratorUnknownSize(iterator, 0);
+
+		return StreamSupport
+			.stream(spliterator, false)
+			.onClose(iterator::close);
 	}
 
 	public LongStream longStream() {
@@ -203,6 +187,42 @@ public class TestData implements Iterable<String[]> {
 
 	public static double[] toDouble(final String[] line) {
 		return Arrays.stream(line).mapToDouble(Double::parseDouble).toArray();
+	}
+
+	/**
+	 * The closeable line iterator.
+	 */
+	private static final class DataIterator
+		implements Iterator<String[]>, Closeable
+	{
+		private final Reader _reader;
+
+		private String[] _data;
+
+		DataIterator(final String resource) {
+			_reader = new Reader(resource);
+			_data = _reader.read();
+		}
+
+		@Override
+		public boolean hasNext() {
+			return _data != null;
+		}
+
+		@Override
+		public String[] next() {
+			final String[] current = _data;
+			_data = _reader.read();
+			if (_data == null) {
+				close();
+			}
+			return current;
+		}
+
+		@Override
+		public void close() {
+			_reader.close();
+		}
 	}
 
 	/**
