@@ -38,6 +38,8 @@ import java.util.stream.LongStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import org.jenetics.internal.util.exception;
+
 /**
  * Helper class for reading test data from file. The file has the following
  * format: {@code $resource[$param1, $param2,...].dat}.
@@ -250,7 +252,7 @@ public class TestData implements Iterable<String[]> {
 
 				return line != null ? line.split(",") : null;
 			} catch (IOException e) {
-				close();
+				exception.ignore(UncheckedIOException.class, this::close);
 				throw new UncheckedIOException(e);
 			}
 		}
