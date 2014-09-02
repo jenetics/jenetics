@@ -28,16 +28,16 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-07-02 $</em>
+ * @version <em>$Date: 2014-09-02 $</em>
  */
 public abstract class ObjectTester<T> {
 
 	protected abstract Factory<T> factory();
 
-	protected MSeq<T> newSameObjects(final int nobjects) {
-		final MSeq<T> objects = MSeq.ofLength(nobjects);
+	protected MSeq<T> newSameObjects(final int length) {
+		final MSeq<T> objects = MSeq.ofLength(length);
 
-		for (int i = 0; i < nobjects; ++i) {
+		for (int i = 0; i < length; ++i) {
 			try (Scoped<Random> s = RandomRegistry.scope(new Random(23487589))) {
 				objects.set(i, factory().newInstance());
 			}
