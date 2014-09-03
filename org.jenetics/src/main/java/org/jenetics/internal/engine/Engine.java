@@ -46,7 +46,7 @@ import org.jenetics.util.Factory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-19 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-03 $</em>
  */
 public class Engine<
 	G extends Gene<?, G>,
@@ -116,7 +116,7 @@ public class Engine<
 		_executor = new TimedExecutor(requireNonNull(executor));
 	}
 
-	public EvolutionStart<G, C> evaluationStart() {
+	public EvolutionStart<G, C> evolutionStart() {
 		final int generation = 1;
 		final int size = _offspringCount + _survivorsCount;
 		final Population<G, C> population = new Population<>(size);
@@ -278,7 +278,7 @@ public class Engine<
 				gt -> gt.getGene().getAllele())
 			.build();
 
-		EvolutionStart<DoubleGene, Double> start = engine.evaluationStart();
+		EvolutionStart<DoubleGene, Double> start = engine.evolutionStart();
 		for (int i = 0; i < 10; ++i) {
 			final EvolutionResult<DoubleGene, Double> result = engine.evolve(start);
 			final PopulationSummary<DoubleGene, Double> summary =
