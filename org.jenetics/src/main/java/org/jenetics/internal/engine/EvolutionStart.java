@@ -93,7 +93,7 @@ public final class EvolutionStart<
 	}
 
 	/**
-	 * Create a new {@code EvolutionStart} object from the given values.
+	 * Create an new {@code EvolutionStart} object from the given values.
 	 *
 	 * @param population the start population
 	 * @param generation the current generation

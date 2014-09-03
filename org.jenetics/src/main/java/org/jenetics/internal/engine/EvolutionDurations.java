@@ -29,9 +29,11 @@ import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 /**
+ * This class contains timing information about one evolution step.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-19 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-03 $</em>
  */
 public class EvolutionDurations implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -62,30 +64,71 @@ public class EvolutionDurations implements Serializable {
 		_evolveDuration = requireNonNull(evolveDuration);
 	}
 
+	/**
+	 * Return the duration needed for selecting the offspring population.
+	 *
+	 * @return the duration needed for selecting the offspring population
+	 */
 	public Duration getOffspringSelectionDuration() {
 		return _offspringSelectionDuration;
 	}
 
+	/**
+	 * Return the duration needed for selecting the survivors population.
+	 *
+	 * @return the duration needed for selecting the survivors population
+	 */
 	public Duration getSurvivorsSelectionDuration() {
 		return _survivorsSelectionDuration;
 	}
 
+	/**
+	 * Return the duration needed for altering the offspring population.
+	 *
+	 * @return the duration needed for altering the offspring population
+	 */
 	public Duration getOffspringAlterDuration() {
 		return _offspringAlterDuration;
 	}
 
+	/**
+	 * Return the duration needed for removing and replacing invalid offspring
+	 * individuals.
+	 *
+	 * @return the duration needed for removing and replacing invalid offspring
+	 *         individuals
+	 */
 	public Duration getOffspringFilterDuration() {
 		return _offspringFilterDuration;
 	}
 
+	/**
+	 * Return the duration needed for removing and replacing old and invalid
+	 * survivor individuals.
+	 *
+	 * @return the duration needed for removing and replacing old and invalid
+	 *         survivor individuals
+	 */
 	public Duration getSurvivorFilterDuration() {
 		return _survivorFilterDuration;
 	}
 
+	/**
+	 * Return the duration needed for evaluating the fitness function of the new
+	 * individuals.
+	 *
+	 * @return the duration needed for evaluating the fitness function of the new
+	 *         individuals
+	 */
 	public Duration getEvaluationDuration() {
 		return _evaluationDuration;
 	}
 
+	/**
+	 * Return the duration needed for the whole evolve step.
+	 *
+	 * @return the duration needed for the whole evolve step
+	 */
 	public Duration getEvolveDuration() {
 		return _evolveDuration;
 	}
@@ -115,6 +158,24 @@ public class EvolutionDurations implements Serializable {
 		);
 	}
 
+	/**
+	 * Return an new {@code EvolutionDurations} object with the given values.
+	 *
+	 * @param offspringSelectionDuration the duration needed for selecting the
+	 *        offspring population
+	 * @param survivorsSelectionDuration the duration needed for selecting the
+	 *        survivors population
+	 * @param offspringAlterDuration the duration needed for altering the
+	 *        offspring population
+	 * @param offspringFilterDuration the duration needed for removing and
+	 *        replacing invalid offspring individuals
+	 * @param survivorFilterDuration the duration needed for removing and
+	 *        replacing old and invalid survivor individuals
+	 * @param evaluationDuration the duration needed for evaluating the fitness
+	 *        function of the new individuals
+	 * @param evolveDuration the duration needed for the whole evolve step
+	 * @return an new durations object
+	 */
 	public static EvolutionDurations of(
 		final Duration offspringSelectionDuration,
 		final Duration survivorsSelectionDuration,

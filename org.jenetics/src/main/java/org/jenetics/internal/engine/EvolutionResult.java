@@ -160,7 +160,7 @@ public final class EvolutionResult<
 	}
 
 	/**
-	 * Return a new {@code EvolutionResult} object with the given values.
+	 * Return an new {@code EvolutionResult} object with the given values.
 	 *
 	 * @param population the population after the evolution step
 	 * @param generation the current generation
