@@ -110,6 +110,20 @@ public final class DoubleAdder
 		return this;
 	}
 
+	/**
+	 * Add the given values to this adder.
+	 *
+	 * @param values the values to add.
+	 * @return {@code this} adder, for command chaining
+	 */
+	public DoubleAdder add(final double[] values) {
+		for (int i = values.length; --i >= 0;) {
+			add(values[i]);
+		}
+
+		return this;
+	}
+
 	private void addWithCompensation(final double value) {
 		final double y = value - _compensation;
 		final double t = _sum + y;
@@ -201,19 +215,13 @@ public final class DoubleAdder
 	 **************************************************************************/
 
 	/**
-	 * Implementation of the <a href="http://en.wikipedia.org/wiki/Kahan_summation_algorithm">
-	 * Kahan summation algorithm</a>.
+	 * Return the sum of the given double array.
 	 *
 	 * @param values the values to sum up.
 	 * @return the sum of the given {@code values}.
 	 * @throws NullPointerException if the given array is {@code null}.
 	 */
 	public static double sum(final double[] values) {
-		final DoubleAdder sum = new DoubleAdder();
-		for (int i = values.length; --i >= 0;) {
-			sum.add(values[i]);
-		}
-
-		return sum.doubleValue();
+		return new DoubleAdder().add(values).doubleValue();
 	}
 }
