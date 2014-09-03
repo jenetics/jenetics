@@ -34,7 +34,7 @@ import org.jenetics.internal.util.require;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-08 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-03 $</em>
  */
 public final class statistics {
 	private statistics() {require.noInstance();}
@@ -261,23 +261,6 @@ public final class statistics {
 		}
 
 		return max;
-	}
-
-	/**
-	 * Implementation of the <a href="http://en.wikipedia.org/wiki/Kahan_summation_algorithm">
-	 * Kahan summation algorithm</a>.
-	 *
-	 * @param values the values to sum up.
-	 * @return the sum of the given {@code values}.
-	 * @throws NullPointerException if the given array is {@code null}.
-	 */
-	public static double sum(final double[] values) {
-		final DoubleAdder sum = new DoubleAdder();
-		for (int i = values.length; --i >= 0;) {
-			sum.add(values[i]);
-		}
-
-		return sum.doubleValue();
 	}
 
 	/**

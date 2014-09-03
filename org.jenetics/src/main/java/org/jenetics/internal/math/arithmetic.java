@@ -24,7 +24,7 @@ import org.jenetics.internal.util.require;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-20 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-03 $</em>
  */
 public final class arithmetic {
 	private arithmetic() {require.noInstance();}
@@ -40,7 +40,7 @@ public final class arithmetic {
 	 * @throws NullPointerException if the given double array is {@code null}.
 	 */
 	public static double[] normalize(final double[] values) {
-		final double sum = 1.0/statistics.sum(values);
+		final double sum = 1.0/DoubleAdder.sum(values);
 		for (int i = values.length; --i >= 0;) {
 			values[i] = values[i]*sum;
 		}

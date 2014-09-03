@@ -195,4 +195,25 @@ public final class DoubleAdder
 		return Double.toString(doubleValue());
 	}
 
+
+	/* *************************************************************************
+	 * Some static helper methods.
+	 **************************************************************************/
+
+	/**
+	 * Implementation of the <a href="http://en.wikipedia.org/wiki/Kahan_summation_algorithm">
+	 * Kahan summation algorithm</a>.
+	 *
+	 * @param values the values to sum up.
+	 * @return the sum of the given {@code values}.
+	 * @throws NullPointerException if the given array is {@code null}.
+	 */
+	public static double sum(final double[] values) {
+		final DoubleAdder sum = new DoubleAdder();
+		for (int i = values.length; --i >= 0;) {
+			sum.add(values[i]);
+		}
+
+		return sum.doubleValue();
+	}
 }
