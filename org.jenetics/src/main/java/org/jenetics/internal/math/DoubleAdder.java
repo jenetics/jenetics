@@ -35,7 +35,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-07-10 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-03 $</em>
  */
 public final class DoubleAdder
 	extends Number
@@ -132,6 +132,20 @@ public final class DoubleAdder
 		addWithCompensation(value._compensation);
 		_simpleSum += value._simpleSum;
 		return this;
+	}
+
+	/**
+	 * Add the given {@code value} to this adder, using the
+	 * <a href="http://en.wikipedia.org/wiki/Kahan_summation_algorithm">Kahan
+	 * summation algorithm</a>
+	 *
+	 * @param other the {@code value} to add
+	 * @return {@code this} adder, for command chaining
+	 * @throws java.lang.NullPointerException if the given {@code value} is
+	 *         {@code null}
+	 */
+	public DoubleAdder combine(final DoubleAdder other) {
+		return add(other);
 	}
 
 	public double value() {
