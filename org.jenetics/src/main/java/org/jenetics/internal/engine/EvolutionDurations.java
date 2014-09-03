@@ -175,6 +175,8 @@ public class EvolutionDurations implements Serializable {
 	 *        function of the new individuals
 	 * @param evolveDuration the duration needed for the whole evolve step
 	 * @return an new durations object
+	 * @throws java.lang.NullPointerException if one of the arguments is
+	 *         {@code null}
 	 */
 	public static EvolutionDurations of(
 		final Duration offspringSelectionDuration,
