@@ -31,7 +31,7 @@ import org.jenetics.Gene;
 import org.jenetics.Population;
 
 /**
- * Represents a state of the GA.
+ * Represents a state of the GA at the start of an evolution step.
  *
  * @param <G> the gene type
  * @param <C> the fitness type

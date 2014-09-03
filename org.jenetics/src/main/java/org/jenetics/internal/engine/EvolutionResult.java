@@ -31,9 +31,14 @@ import org.jenetics.Gene;
 import org.jenetics.Population;
 
 /**
+ * Represents a state of the GA after an evolution step.
+ *
+ * @param <G> the gene type
+ * @param <C> the fitness type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-19 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-03 $</em>
  */
 public final class EvolutionResult<
 	G extends Gene<?, G>,
@@ -67,30 +72,66 @@ public final class EvolutionResult<
 		_alterCount = alterCount;
 	}
 
+	/**
+	 * Return the population after the evolution step.
+	 *
+	 * @return the population after the evolution step
+	 */
 	public Population<G, C> getPopulation() {
 		return _population;
 	}
 
+	/**
+	 * The current generation.
+	 *
+	 * @return the current generation
+	 */
 	public int getGeneration() {
 		return _generation;
 	}
 
+	/**
+	 * Return the timing (meta) information of the evolution step.
+	 *
+	 * @return the timing (meta) information of the evolution step
+	 */
 	public EvolutionDurations getDurations() {
 		return _durations;
 	}
 
+	/**
+	 * Return the number of killed individuals.
+	 *
+	 * @return the number of killed individuals
+	 */
 	public int getKillCount() {
 		return _killCount;
 	}
 
+	/**
+	 * Return the number of invalid individuals.
+	 *
+	 * @return the number of invalid individuals
+	 */
 	public int getInvalidCount() {
 		return _invalidCount;
 	}
 
+	/**
+	 * The number of altered individuals.
+	 *
+	 * @return the number of altered individuals
+	 */
 	public int getAlterCount() {
 		return _alterCount;
 	}
 
+	/**
+	 * Return the next evolution start object with the current population and
+	 * the incremented generation.
+	 *
+	 * @return the next evolution start object
+	 */
 	public EvolutionStart<G, C> next() {
 		return EvolutionStart.of(_population, _generation + 1);
 	}
@@ -114,10 +155,26 @@ public final class EvolutionResult<
 			eq(_invalidCount, result._invalidCount) &&
 			eq(_alterCount, result._alterCount) &&
 			eq(_population, result._population) &&
-			eq(_generation, result._population)
+			eq(_generation, result._generation)
 		);
 	}
 
+	/**
+	 * Return a new {@code EvolutionResult} object with the given values.
+	 *
+	 * @param population the population after the evolution step
+	 * @param generation the current generation
+	 * @param durations the timing (meta) information
+	 * @param killCount the number of individuals which has been killed
+	 * @param invalidCount the number of individuals which has been removed as
+	 *        invalid
+	 * @param alterCount the number of individuals which has been altered
+	 * @param <G> the gene type
+	 * @param <C> the fitness type
+	 * @return an new evolution result object
+	 * @throws java.lang.NullPointerException if one of the parameters is
+	 *         {@code null}
+	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionResult<G, C> of(
 		final Population<G, C> population,
