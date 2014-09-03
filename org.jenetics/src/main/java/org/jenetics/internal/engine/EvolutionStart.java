@@ -38,7 +38,7 @@ import org.jenetics.Population;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-19 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-03 $</em>
  */
 public final class EvolutionStart<
 	G extends Gene<?, G>,
@@ -59,10 +59,20 @@ public final class EvolutionStart<
 		_generation = generation;
 	}
 
+	/**
+	 * Return the start population.
+	 *
+	 * @return the start population
+	 */
 	public Population<G, C> getPopulation() {
 		return _population;
 	}
 
+	/**
+	 * Return the current generation.
+	 *
+	 * @return the current generation
+	 */
 	public int getGeneration() {
 		return _generation;
 	}
@@ -82,6 +92,17 @@ public final class EvolutionStart<
 		);
 	}
 
+	/**
+	 * Create a new {@code EvolutionStart} object from the given values.
+	 *
+	 * @param population the start population
+	 * @param generation the current generation
+	 * @param <G> the gene type
+	 * @param <C> the fitness type
+	 * @return a new evolution start object
+	 * @throws java.lang.NullPointerException if the give {@code population} is
+	 *         {@code null}
+	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionStart<G, C> of(
 		final Population<G, C> population,
