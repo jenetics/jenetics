@@ -23,12 +23,15 @@ import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
+import java.util.function.BinaryOperator;
 
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
+import org.jenetics.internal.util.Lazy;
 
 import org.jenetics.Gene;
 import org.jenetics.Optimize;
+import org.jenetics.Phenotype;
 import org.jenetics.Population;
 
 /**
@@ -58,6 +61,9 @@ public final class EvolutionResult<
 	private final int _invalidCount;
 	private final int _alterCount;
 
+	private final Lazy<Phenotype<G, C>> _best;
+	private final Lazy<Phenotype<G, C>> _worst;
+
 	private EvolutionResult(
 		final Optimize optimize,
 		final Population<G, C> population,
@@ -74,6 +80,17 @@ public final class EvolutionResult<
 		_killCount = killCount;
 		_invalidCount = invalidCount;
 		_alterCount = alterCount;
+
+		_best = Lazy.of(() ->
+			_population.stream()
+				.reduce(BinaryOperator.maxBy(_optimize.ascending()))
+				.orElse(null)
+		);
+		_worst = Lazy.of(() ->
+			_population.stream()
+				.reduce(BinaryOperator.maxBy(_optimize.descending()))
+				.orElse(null)
+		);
 	}
 
 	/**
@@ -140,6 +157,42 @@ public final class EvolutionResult<
 	}
 
 	/**
+	 * Return the best {@code Phenotype} of the result population.
+	 *
+	 * @return the best {@code Phenotype} of the result population
+	 */
+	public Phenotype<G, C> getBestPhenotype() {
+		return _best.get();
+	}
+
+	/**
+	 * Return the worst {@code Phenotype} of the result population.
+	 *
+	 * @return the worst {@code Phenotype} of the result population
+	 */
+	public Phenotype<G, C> getWorstPhenotype() {
+		return _worst.get();
+	}
+
+	/**
+	 * Return the best population fitness.
+	 *
+	 * @return The best population fitness.
+	 */
+	public C getBestFitness() {
+		return _best.get() != null ? _best.get().getFitness() : null;
+	}
+
+	/**
+	 * Return the worst population fitness.
+	 *
+	 * @return The worst population fitness.
+	 */
+	public C getWorstFitness() {
+		return _worst.get() != null ? _worst.get().getFitness() : null;
+	}
+
+	/**
 	 * Return the next evolution start object with the current population and
 	 * the incremented generation.
 	 *
@@ -152,6 +205,7 @@ public final class EvolutionResult<
 	@Override
 	public int hashCode() {
 		return Hash.of(getClass())
+			.and(_optimize)
 			.and(_durations)
 			.and(_killCount)
 			.and(_invalidCount)
@@ -163,6 +217,7 @@ public final class EvolutionResult<
 	@Override
 	public boolean equals(final Object obj) {
 		return Equality.of(this, obj).test(result ->
+			eq(_optimize, result._optimize) &&
 			eq(_durations, result._durations) &&
 			eq(_killCount, result._killCount) &&
 			eq(_invalidCount, result._invalidCount) &&
