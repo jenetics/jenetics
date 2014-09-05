@@ -28,6 +28,7 @@ import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 import org.jenetics.Gene;
+import org.jenetics.Optimize;
 import org.jenetics.Population;
 
 /**
@@ -38,7 +39,7 @@ import org.jenetics.Population;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-03 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-05 $</em>
  */
 public final class EvolutionResult<
 	G extends Gene<?, G>,
@@ -48,6 +49,7 @@ public final class EvolutionResult<
 {
 	private static final long serialVersionUID = 1L;
 
+	private final Optimize _optimize;
 	private final Population<G, C> _population;
 	private final int _generation;
 
@@ -57,6 +59,7 @@ public final class EvolutionResult<
 	private final int _alterCount;
 
 	private EvolutionResult(
+		final Optimize optimize,
 		final Population<G, C> population,
 		final int generation,
 		final EvolutionDurations durations,
@@ -64,12 +67,22 @@ public final class EvolutionResult<
 		final int invalidCount,
 		final int alterCount
 	) {
+		_optimize = requireNonNull(optimize);
 		_population = requireNonNull(population);
 		_generation = generation;
 		_durations = requireNonNull(durations);
 		_killCount = killCount;
 		_invalidCount = invalidCount;
 		_alterCount = alterCount;
+	}
+
+	/**
+	 * Return the optimization strategy used.
+	 *
+	 * @return the optimization strategy used
+	 */
+	public Optimize getOptimize() {
+		return _optimize;
 	}
 
 	/**
@@ -162,6 +175,7 @@ public final class EvolutionResult<
 	/**
 	 * Return an new {@code EvolutionResult} object with the given values.
 	 *
+	 * @param optimize the optimization strategy used
 	 * @param population the population after the evolution step
 	 * @param generation the current generation
 	 * @param durations the timing (meta) information
@@ -177,6 +191,7 @@ public final class EvolutionResult<
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionResult<G, C> of(
+		final Optimize optimize,
 		final Population<G, C> population,
 		final int generation,
 		final EvolutionDurations durations,
@@ -185,6 +200,7 @@ public final class EvolutionResult<
 		final int alterCount
 	) {
 		return new EvolutionResult<>(
+			optimize,
 			population,
 			generation,
 			durations,
