@@ -99,9 +99,21 @@ public final class MinMax<C> implements Consumer<C> {
 	 * @param comparator the comparator used for comparing two elements
 	 * @param <T> the element type
 	 * @return a new {@code MinMax} <i>consumer</i>
+	 * @throws java.lang.NullPointerException if the {@code comparator} is
+	 *         {@code null}.
 	 */
 	public static <T> MinMax<T> of(final Comparator<? super T> comparator) {
 		return new MinMax<>(comparator);
+	}
+
+	/**
+	 * Create a new {@code MinMax} <i>consumer</i>.
+	 *
+	 * @param <C> the element type
+	 * @return a new {@code MinMax} <i>consumer</i>
+	 */
+	public static <C extends Comparable<? super C>> MinMax<C> of() {
+		return of((a, b) -> a.compareTo(c));
 	}
 
 }
