@@ -26,7 +26,7 @@ import static org.jenetics.internal.math.statistics.min;
 
 import java.util.Arrays;
 
-import org.jenetics.internal.math.statistics;
+import org.jenetics.internal.math.DoubleAdder;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
@@ -42,7 +42,7 @@ import org.jenetics.internal.util.Hash;
  *      </a>
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-08-01 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-09-03 $</em>
  */
 public class RouletteWheelSelector<
 	G extends Gene<?, G>,
@@ -71,7 +71,7 @@ public class RouletteWheelSelector<
 		}
 
 		final double worst = Math.min(min(probabilities), 0.0);
-		final double sum = statistics.sum(probabilities) - worst*population.size();
+		final double sum = DoubleAdder.sum(probabilities) - worst*population.size();
 
 		if (abs(ulpDistance(sum, 0.0)) > MAX_ULP_DISTANCE) {
 			for (int i = population.size(); --i >= 0;) {

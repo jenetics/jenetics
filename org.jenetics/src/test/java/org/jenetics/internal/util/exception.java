@@ -17,21 +17,32 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.math;
+package org.jenetics.internal.util;
 
-import org.jenetics.internal.util.require;
+import static org.jenetics.internal.util.require.noInstance;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-05 $</em>
+ * @version <em>$Date: 2014-09-01 $</em>
  */
-public class lcg64shiftrandom {
-	private lcg64shiftrandom() {require.noInstance();}
+public final class exception {
+	private exception() {noInstance();}
 
-	public static final class State {
-		public long r = 0;
+
+	@FunctionalInterface
+	public static interface Block<E extends Throwable> {
+		public void call() throws E;
 	}
 
-
+	public static <E extends Throwable> void
+	ignore(final Class<? extends Throwable> ex, final Block<E> block) throws E {
+		try {
+			block.call();
+		} catch (Throwable e) {
+			if (!ex.isAssignableFrom(e.getClass())) {
+				throw e;
+			}
+		}
+	}
 
 }

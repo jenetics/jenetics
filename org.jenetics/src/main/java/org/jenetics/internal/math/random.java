@@ -36,7 +36,7 @@ import org.jenetics.internal.util.require;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0 &mdash; <em>$Date: 2014-08-05 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-03 $</em>
  */
 public final class random {
 	private random() {require.noInstance();}
@@ -297,8 +297,8 @@ public final class random {
 			));
 		}
 
-		return nextBigInteger(random, max.subtract(min).add(BigInteger.ONE))
-			.add(min);
+		final BigInteger n = max.subtract(min).add(BigInteger.ONE);
+		return nextBigInteger(random, n).add(min);
 	}
 
 	public static BigInteger nextBigInteger(final Random random) {

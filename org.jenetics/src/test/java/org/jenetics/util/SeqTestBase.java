@@ -28,9 +28,11 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import org.jenetics.internal.util.IntRef;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-07 $</em>
+ * @version <em>$Date: 2014-09-03 $</em>
  */
 public abstract class SeqTestBase {
 
@@ -242,6 +244,17 @@ public abstract class SeqTestBase {
 		}
 
 		Assert.assertEquals(count, seq.length());
+	}
+
+	@Test(dataProvider = "sequences")
+	public void stream(final Seq<Integer> seq) {
+		final IntRef count = new IntRef();
+		seq.stream().forEach(value -> {
+			Assert.assertTrue(seq.contains(value));
+			++count.value;
+		});
+
+		Assert.assertEquals(count.value, seq.length());
 	}
 
 	@Test(dataProvider = "sequences")

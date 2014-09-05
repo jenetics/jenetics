@@ -57,7 +57,7 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-05-07 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-03 $</em>
  */
 public class IntMomentStatistics
 	extends MomentStatistics
@@ -95,11 +95,13 @@ public class IntMomentStatistics
 	 * @throws java.lang.NullPointerException if the other statistical summary
 	 *         is {@code null}.
 	 */
-	public void combine(final IntMomentStatistics other) {
+	public IntMomentStatistics combine(final IntMomentStatistics other) {
 		super.combine(other);
 		_min = min(_min, other._min);
 		_max = max(_max, other._max);
 		_sum += other._sum;
+
+		return this;
 	}
 
 	/**
@@ -164,7 +166,7 @@ public class IntMomentStatistics
 		return Collector.of(
 			IntMomentStatistics::new,
 			(r, t) -> r.accept(mapper.applyAsInt(t)),
-			(a, b) -> {a.combine(b); return a;}
+			IntMomentStatistics::combine
 		);
 	}
 

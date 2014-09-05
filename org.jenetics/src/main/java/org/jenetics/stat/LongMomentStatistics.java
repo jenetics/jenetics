@@ -58,7 +58,7 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-16 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-03 $</em>
  */
 public class LongMomentStatistics
 	extends MomentStatistics
@@ -106,11 +106,13 @@ public class LongMomentStatistics
 	 * @throws java.lang.NullPointerException if the other statistical summary
 	 *         is {@code null}.
 	 */
-	public void combine(final LongMomentStatistics other) {
+	public LongMomentStatistics combine(final LongMomentStatistics other) {
 		super.combine(other);
 		_min = min(_min, other._min);
 		_max = max(_max, other._max);
 		_sum += other._sum;
+
+		return this;
 	}
 
 	/**
@@ -167,7 +169,7 @@ public class LongMomentStatistics
 		return Collector.of(
 			LongMomentStatistics::new,
 			(r, t) -> r.accept(mapper.applyAsLong(t)),
-			(a, b) -> {a.combine(b); return a;}
+			LongMomentStatistics::combine
 		);
 	}
 
