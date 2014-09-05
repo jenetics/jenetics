@@ -139,7 +139,7 @@ import org.jenetics.util.Timer;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-05 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-05 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,
@@ -942,6 +942,11 @@ public class GeneticAlgorithm<
 		return _generation;
 	}
 
+	/**
+	 * Return the optimization strategy.
+	 *
+	 * @return the optimization strategy
+	 */
 	public Optimize getOptimization() {
 		return _optimization;
 	}
