@@ -19,31 +19,40 @@
  */
 package org.jenetics.stat;
 
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.math.statistics.max;
 import static org.jenetics.internal.math.statistics.min;
 
+import java.util.Comparator;
 import java.util.function.Consumer;
 import java.util.stream.Collector;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-05-05 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-05 $</em>
  */
-public class MinMax<C extends Comparable<? super C>> implements Consumer<C> {
+public final class MinMax<C> implements Consumer<C> {
 
+	private final Comparator<? super C> _comparator;
 	private C _min;
 	private C _max;
 
-	@Override
-	public void accept(final C object) {
-		_min = min(_min, object);
-		_max = max(_max, object);
+	private MinMax(final Comparator<? super C> comparator) {
+		_comparator = requireNonNull(comparator);
 	}
 
-	public void combine(final MinMax<C> other) {
-		_min = min(_min, other._min);
-		_max = max(_max, other._max);
+	@Override
+	public void accept(final C object) {
+		_min = min(_comparator, _min, object);
+		_max = max(_comparator, _max, object);
+	}
+
+	public MinMax<C> combine(final MinMax<C> other) {
+		_min = min(_comparator, _min, other._min);
+		_max = max(_comparator, _max, other._max);
+
+		return this;
 	}
 
 	public C getMin() {
@@ -53,6 +62,10 @@ public class MinMax<C extends Comparable<? super C>> implements Consumer<C> {
 	public C getMax() {
 		return _max;
 	}
+
+	/* *************************************************************************
+	 *  Some static factory methods.
+	 * ************************************************************************/
 
 	/**
 	 * Return a {@code Collector} which applies an long-producing mapping
@@ -65,18 +78,30 @@ public class MinMax<C extends Comparable<? super C>> implements Consumer<C> {
 	 *     .collect(doubleMoments.collector());
 	 * [/code]
 	 *
-	 * @param <C> the type of the input elements
+	 * @param <T> the type of the input elements
 	 * @return a {@code Collector} implementing the moments-statistics reduction
 	 * @throws java.lang.NullPointerException if the given {@code mapper} is
 	 *         {@code null}
 	 */
-	public static <C extends Comparable<? super C>>
-	Collector<C, ?, MinMax<C>> collector() {
+	public static <T> Collector<T, ?, MinMax<T>>
+	collector(final Comparator<? super T> comparator) {
 		return Collector.of(
-			MinMax::new,
-			(r, t) -> r.accept(t),
-			(a, b) -> {a.combine(b); return a;}
+			() -> MinMax.of(comparator),
+			MinMax::accept,
+			MinMax::combine
 		);
+	}
+
+	/**
+	 * Create a new {@code MinMax} <i>consumer</i> with the given
+	 * {@link java.util.Comparator}.
+	 *
+	 * @param comparator the comparator used for comparing two elements
+	 * @param <T> the element type
+	 * @return a new {@code MinMax} <i>consumer</i>
+	 */
+	public static <T> MinMax<T> of(final Comparator<? super T> comparator) {
+		return new MinMax<>(comparator);
 	}
 
 }
