@@ -21,6 +21,7 @@ package org.jenetics.internal.util;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serializable;
 import java.util.function.Supplier;
 
 /**
@@ -28,18 +29,27 @@ import java.util.function.Supplier;
  * @since 3.0
  * @version 3.0 &mdash; <em>$Date: 2014-09-05 $</em>
  */
-public class Lazy<T> {
+public class Lazy<T> implements Supplier<T>, Serializable {
+	private static final long serialVersionUID = 1L;
 
 	private final Supplier<T> _supplier;
-	private T _value = null;
+
+	private T _value;
+	private volatile boolean _evaluated = false;
 
 	private Lazy(final Supplier<T> supplier) {
 		_supplier = requireNonNull(supplier);
 	}
 
-	public synchronized T get() {
-		if (_value == null) {
+	@Override
+	public T get() {
+		return _evaluated ? _value : evaluate();
+	}
+
+	private synchronized T evaluate() {
+		if (!_evaluated) {
 			_value = _supplier.get();
+			_evaluated = true;
 		}
 
 		return _value;
