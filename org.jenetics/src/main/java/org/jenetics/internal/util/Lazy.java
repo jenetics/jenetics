@@ -25,6 +25,8 @@ import java.io.Serializable;
 import java.util.function.Supplier;
 
 /**
+ * Class for lazy value initialization.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
  * @version 3.0 &mdash; <em>$Date: 2014-09-05 $</em>
@@ -55,6 +57,15 @@ public class Lazy<T> implements Supplier<T>, Serializable {
 		return _value;
 	}
 
+	/**
+	 * Create a new lazy value initialization.
+	 *
+	 * @param supplier the lazy value supplier
+	 * @param <T> the value type
+	 * @return a new lazy value initialization
+	 * @throws java.lang.NullPointerException if the given supplier is
+	 *         {@code null}
+	 */
 	public static <T> Lazy<T> of(final Supplier<T> supplier) {
 		return new Lazy<>(supplier);
 	}
