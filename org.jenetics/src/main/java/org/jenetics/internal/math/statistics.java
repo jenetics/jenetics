@@ -34,7 +34,7 @@ import org.jenetics.internal.util.require;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-03 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-05 $</em>
  */
 public final class statistics {
 	private statistics() {require.noInstance();}
@@ -209,11 +209,11 @@ public final class statistics {
 		return a != null ? b != null ? a.compareTo(b) >= 0 ? a : b : a : b;
 	}
 
-	public static <C> C min(final Comparator<C> comp, final C a, final C b) {
+	public static <C> C min(final Comparator<? super C> comp, final C a, final C b) {
 		return a != null ? b != null ? comp.compare(a, b) <= 0 ? a : b : a : b;
 	}
 
-	public static <C> C max(final Comparator<C> comp, final C a, final C b) {
+	public static <C> C max(final Comparator<? super C> comp, final C a, final C b) {
 		return a != null ? b != null ? comp.compare(a, b) >= 0 ? a : b : a : b;
 	}
 
