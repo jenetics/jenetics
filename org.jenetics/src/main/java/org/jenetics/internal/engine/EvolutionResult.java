@@ -23,7 +23,9 @@ import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.function.BinaryOperator;
+import java.util.stream.Collector;
 
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
@@ -33,6 +35,7 @@ import org.jenetics.Gene;
 import org.jenetics.Optimize;
 import org.jenetics.Phenotype;
 import org.jenetics.Population;
+import org.jenetics.stat.MinMax;
 
 /**
  * Represents a state of the GA after an evolution step.
@@ -226,6 +229,39 @@ public final class EvolutionResult<
 			eq(_generation, result._generation)
 		);
 	}
+
+	/* *************************************************************************
+	 *  Some static factory methods.
+	 * ************************************************************************/
+
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Collector<EvolutionResult<G, C>, ?, EvolutionResult<G, C>>
+	best(final Optimize opt) {
+		final Comparator<EvolutionResult<G, C>> comparator = (a, b) ->
+			opt.compare(a.getBestPhenotype(), b.getBestPhenotype());
+
+		return Collector.of(
+			() -> MinMax.of(comparator),
+			(r, t) -> r.accept(t),
+			(a, b) -> {a.combine(b); return a;},
+			MinMax::getMax
+		);
+	}
+
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Collector<EvolutionResult<G, C>, ?, EvolutionResult<G, C>>
+	worst(final Optimize opt) {
+		final Comparator<EvolutionResult<G, C>> comparator = (a, b) ->
+			opt.compare(a.getWorstPhenotype(), b.getWorstPhenotype());
+
+		return Collector.of(
+			() -> MinMax.of(comparator),
+			(r, t) -> r.accept(t),
+			(a, b) -> {a.combine(b); return a;},
+			MinMax::getMin
+		);
+	}
+
 
 	/**
 	 * Return an new {@code EvolutionResult} object with the given values.

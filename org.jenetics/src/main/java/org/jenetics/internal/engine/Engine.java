@@ -24,6 +24,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.function.Function;
+import java.util.stream.Collector;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -279,6 +280,13 @@ public class Engine<
 		});
 	}
 
+	public Collector<EvolutionResult<G, C>, ?, EvolutionResult<G, C>> best() {
+		return EvolutionResult.<G, C>best(_optimize);
+	}
+
+	public Collector<EvolutionResult<G, C>, ?, EvolutionResult<G, C>> worst() {
+		return EvolutionResult.<G, C>worst(_optimize);
+	}
 
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EngineBuilder<G, C> newBuilder(

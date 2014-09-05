@@ -49,10 +49,18 @@ public class EvolutionStream {
 				gt -> gt.getGene().getAllele())
 			.build();
 
-		final double best = engine.stream(100)
-			.flatMap(r -> r.getPopulation().stream().map(Phenotype::getFitness))
-			.reduce(BinaryOperator.maxBy(engine.getOptimize().ascending()))
-			.orElse(0.0);
+//		double best = engine.stream(100)
+//			.flatMap(r -> r.getPopulation().stream().map(Phenotype::getFitness))
+//			.reduce(BinaryOperator.maxBy(engine.getOptimize().ascending()))
+//			.orElse(0.0);
+
+//		final double best = engine.stream(100)
+//			.mapToDouble(EvolutionResult::getBestFitness)
+//			.max().orElse(0.0);
+
+		final double best = engine.stream(10)
+			.collect(engine.best())
+			.getBestFitness();
 
 //		final double best = engine.stream(100)
 //			.max(best(engine.getOptimize()))
