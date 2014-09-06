@@ -107,10 +107,8 @@ public final class MinMax<C> implements Consumer<C> {
 	public static <T> T
 	min(final Comparator<? super T> comparator, final T a, final T b) {
 		return a != null ?
-			b != null ?
-				comparator.compare(a, b) <= 0 ? a : b
-				: a
-			: b;
+			b != null ? comparator.compare(a, b) <= 0 ? a : b
+				: a : b;
 	}
 
 	/**
@@ -128,10 +126,8 @@ public final class MinMax<C> implements Consumer<C> {
 	public static <T> T
 	max(final Comparator<? super T> comparator, final T a, final T b) {
 		return a != null ?
-			b != null ?
-				comparator.compare(a, b) >= 0 ? a : b
-				: a
-			: b;
+			b != null ? comparator.compare(a, b) >= 0 ? a : b
+				: a : b;
 	}
 
 

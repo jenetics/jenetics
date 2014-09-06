@@ -51,7 +51,7 @@ public final class EvolutionResult<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	implements Serializable
+	implements Comparable<EvolutionResult<G, C>>, Serializable
 {
 	private static final long serialVersionUID = 1L;
 
@@ -205,6 +205,19 @@ public final class EvolutionResult<
 		return EvolutionStart.of(_population, _generation + 1);
 	}
 
+	/**
+	 * Compare {@code this} evolution result with another one, according the
+	 * populations best individual.
+	 *
+	 * @param other the other evolution result to compare
+	 * @return  a negative integer, zero, or a positive integer as this result
+	 *          is less than, equal to, or greater than the specified result.
+	 */
+	@Override
+	public int compareTo(final EvolutionResult<G, C> other) {
+		return _optimize.compare(_best.get(), other._best.get());
+	}
+
 	@Override
 	public int hashCode() {
 		return Hash.of(getClass())
@@ -233,6 +246,12 @@ public final class EvolutionResult<
 	/* *************************************************************************
 	 *  Some static factory methods.
 	 * ************************************************************************/
+
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Comparator<EvolutionResult<G, C>> max(final Optimize opt) {
+		return  (a, b) ->
+			opt.compare(a.getBestPhenotype(), b.getBestPhenotype());
+	}
 
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Collector<EvolutionResult<G, C>, ?, EvolutionResult<G, C>>

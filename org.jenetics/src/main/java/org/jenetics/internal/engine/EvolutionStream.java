@@ -20,6 +20,7 @@
 package org.jenetics.internal.engine;
 
 import java.util.Comparator;
+import java.util.function.BinaryOperator;
 
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
@@ -55,9 +56,16 @@ public class EvolutionStream {
 //			.mapToDouble(EvolutionResult::getBestFitness)
 //			.max().orElse(0.0);
 
-		final double best = engine.stream(10)
-			.collect(engine.best())
-			.getBestFitness();
+//		final double best = engine.stream(10)
+//			.collect(engine.best())
+//			.getBestFitness();
+
+
+		final double best = engine.stream(105)
+			.min(EvolutionResult::compareTo)
+			.map(EvolutionResult::getWorstPhenotype)
+			.map(r -> r.getGenotype().getGene().getAllele())
+			.orElse(0.0);
 
 //		final double best = engine.stream(100)
 //			.max(best(engine.getOptimize()))
