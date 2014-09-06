@@ -46,13 +46,13 @@ import org.jenetics.util.Factory;
 
 /**
  * Genetic algorithm engine, which performs the actual evolve steps. <i>The
- * engine itself has not mutable state.</i>
+ * engine itself has no mutable state.</i>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-05 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-06 $</em>
  */
-public class Engine<
+public final class Engine<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
@@ -91,7 +91,7 @@ public class Engine<
 	 * @throws IllegalArgumentException if the given integer values are smaller
 	 *         than one.
 	 */
-	public Engine(
+	Engine(
 		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
 		final Function<? super C, ? extends C> fitnessScaler,
         final Factory<Genotype<G>> genotypeFactory,
@@ -120,6 +120,94 @@ public class Engine<
 		_executor = new TimedExecutor(requireNonNull(executor));
 	}
 
+	/**
+	 * Return the fitness function of the GA engine.
+	 *
+	 * @return the fitness function
+	 */
+	public Function<? super Genotype<G>, ? extends C> getFitnessFunction() {
+		return _fitnessFunction;
+	}
+
+	/**
+	 * Return the fitness scaler of the GA engine.
+	 *
+	 * @return the fitness scaler
+	 */
+	public Function<? super C, ? extends C> getFitnessScaler() {
+		return _fitnessScaler;
+	}
+
+	/**
+	 * Return the used genotype {@link Factory} of the GA. The genotype factory
+	 * is used for creating the initial population and new, random individuals
+	 * when needed (as replacement for invalid and/or died genotypes).
+	 *
+	 * @return the used genotype {@link Factory} of the GA.
+	 */
+	public Factory<Genotype<G>> getGenotypeFactory() {
+		return _genotypeFactory;
+	}
+
+	/**
+	 * Return the used survivor {@link Selector} of the GA.
+	 *
+	 * @return the used survivor {@link Selector} of the GA.
+	 */
+	public Selector<G, C> getSurvivorsSelector() {
+		return _survivorsSelector;
+	}
+
+	/**
+	 * Return the used offspring {@link Selector} of the GA.
+	 *
+	 * @return the used offspring {@link Selector} of the GA.
+	 */
+	public Selector<G, C> getOffspringSelectors() {
+		return _offspringSelector;
+	}
+
+	/**
+	 * Return the used {@link Alterer} of the GA.
+	 *
+	 * @return the used {@link Alterer} of the GA.
+	 */
+	public Alterer<G, C> getAlterer() {
+		return _alterer;
+	}
+
+	/**
+	 * Return the number of selected offsprings.
+	 *
+	 * @return the number of selected offsprings
+	 */
+	public int getOffspringCount() {
+		return _offspringCount;
+	}
+
+	/**
+	 * The number of selected survivors.
+	 *
+	 * @return the number of selected survivors
+	 */
+	public int getSurvivorsCount() {
+		return _survivorsCount;
+	}
+
+	/**
+	 * Return the maximal allowed phenotype age.
+	 *
+	 * @return the maximal allowed phenotype age
+	 */
+	public int getMaximalPhenotypeAge() {
+		return _maximalPhenotypeAge;
+	}
+
+	/**
+	 * Return the optimization strategy.
+	 *
+	 * @return the optimization strategy
+	 */
 	public Optimize getOptimize() {
 		return _optimize;
 	}
