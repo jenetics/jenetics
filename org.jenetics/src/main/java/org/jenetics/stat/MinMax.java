@@ -43,12 +43,23 @@ public final class MinMax<C> implements Consumer<C> {
 		_comparator = requireNonNull(comparator);
 	}
 
+	/**
+	 * Accept the element for min-max calculation.
+	 *
+	 * @param object the element to use for min-max calculation
+	 */
 	@Override
 	public void accept(final C object) {
 		_min = min(_comparator, _min, object);
 		_max = max(_comparator, _max, object);
 	}
 
+	/**
+	 * Combine two {@code MinMax} objects.
+	 *
+	 * @param other the other {@code MinMax} object to combine
+	 * @return {@code this}
+	 */
 	public MinMax<C> combine(final MinMax<C> other) {
 		_min = min(_comparator, _min, other._min);
 		_max = max(_comparator, _max, other._max);
@@ -56,10 +67,22 @@ public final class MinMax<C> implements Consumer<C> {
 		return this;
 	}
 
+	/**
+	 * Return the current minimal object or {@code null} if no element has been
+	 * accepted yet.
+	 *
+	 * @return the current minimal object
+	 */
 	public C getMin() {
 		return _min;
 	}
 
+	/**
+	 * Return the current maximal object or {@code null} if no element has been
+	 * accepted yet.
+	 *
+	 * @return the current maximal object
+	 */
 	public C getMax() {
 		return _max;
 	}
