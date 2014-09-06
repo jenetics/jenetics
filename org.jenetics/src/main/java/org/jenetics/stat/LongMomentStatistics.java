@@ -58,7 +58,7 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-03 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-06 $</em>
  */
 public class LongMomentStatistics
 	extends MomentStatistics
@@ -103,6 +103,7 @@ public class LongMomentStatistics
 	 *
 	 * @param other the other {@code LongMoments} statistics to combine with
 	 *        {@code this} one.
+	 * @return {@code this} statistics object
 	 * @throws java.lang.NullPointerException if the other statistical summary
 	 *         is {@code null}.
 	 */

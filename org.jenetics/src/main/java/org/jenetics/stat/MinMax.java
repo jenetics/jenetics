@@ -127,6 +127,7 @@ public final class MinMax<C> implements Consumer<C> {
 	 *     .collect(doubleMoments.collector());
 	 * [/code]
 	 *
+	 * @param comparator the {@code Comparator} to use
 	 * @param <T> the type of the input elements
 	 * @return a {@code Collector} implementing the moments-statistics reduction
 	 * @throws java.lang.NullPointerException if the given {@code mapper} is
