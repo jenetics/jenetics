@@ -22,7 +22,7 @@ package org.jenetics;
 import static java.lang.Math.abs;
 import static org.jenetics.internal.math.arithmetic.pow;
 import static org.jenetics.internal.math.base.ulpDistance;
-import static org.jenetics.internal.math.statistics.min;
+import static org.jenetics.stat.MinMax.min;
 
 import java.util.Arrays;
 
@@ -42,7 +42,7 @@ import org.jenetics.internal.util.Hash;
  *      </a>
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-09-03 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-09-06 $</em>
  */
 public class RouletteWheelSelector<
 	G extends Gene<?, G>,

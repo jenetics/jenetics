@@ -20,8 +20,6 @@
 package org.jenetics.stat;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.math.statistics.max;
-import static org.jenetics.internal.math.statistics.min;
 
 import java.util.Comparator;
 import java.util.function.Consumer;
@@ -66,6 +64,52 @@ public final class MinMax<C> implements Consumer<C> {
 		return _max;
 	}
 
+
+	/* *************************************************************************
+	 *  Some static helper methods.
+	 * ************************************************************************/
+
+	/**
+	 * Return the minimum of two values, according the given comparator.
+	 * {@code null} values are allowed.
+	 *
+	 * @param comparator the comparator used for determining the min value
+	 * @param a the first value to compare
+	 * @param b the second value to compare
+	 * @param <T> the type of the compared objects
+	 * @return the minimum value, or {@code null} if both values are {@code null}.
+	 *         If only one value is {@code null}, the non {@code null} values is
+	 *         returned.
+	 */
+	public static <T> T
+	min(final Comparator<? super T> comparator, final T a, final T b) {
+		return a != null ?
+			b != null ?
+				comparator.compare(a, b) <= 0 ? a : b
+				: a
+			: b;
+	}
+
+	/**
+	 * Return the maximum of two values, according the given comparator.
+	 * {@code null} values are allowed.
+	 *
+	 * @param comparator the comparator used for determining the max value
+	 * @param a the first value to compare
+	 * @param b the second value to compare
+	 * @param <T> the type of the compared objects
+	 * @return the maximum value, or {@code null} if both values are {@code null}.
+	 *         If only one value is {@code null}, the non {@code null} values is
+	 *         returned.
+	 */
+	public static <T> T
+	max(final Comparator<? super T> comparator, final T a, final T b) {
+		return a != null ?
+			b != null ?
+				comparator.compare(a, b) >= 0 ? a : b
+				: a
+			: b;
+	}
 
 
 	/* *************************************************************************
