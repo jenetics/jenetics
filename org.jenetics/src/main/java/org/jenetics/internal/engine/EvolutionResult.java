@@ -45,7 +45,7 @@ import org.jenetics.stat.MinMax;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-05 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-06 $</em>
  */
 public final class EvolutionResult<
 	G extends Gene<?, G>,
@@ -242,8 +242,8 @@ public final class EvolutionResult<
 
 		return Collector.of(
 			() -> MinMax.of(comparator),
-			(r, t) -> r.accept(t),
-			(a, b) -> {a.combine(b); return a;},
+			MinMax::accept,
+			MinMax::combine,
 			MinMax::getMax
 		);
 	}
@@ -256,8 +256,8 @@ public final class EvolutionResult<
 
 		return Collector.of(
 			() -> MinMax.of(comparator),
-			(r, t) -> r.accept(t),
-			(a, b) -> {a.combine(b); return a;},
+			MinMax::accept,
+			MinMax::combine,
 			MinMax::getMin
 		);
 	}
