@@ -19,18 +19,10 @@
  */
 package org.jenetics.internal.engine;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Supplier;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-
-import org.jenetics.Gene;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-05 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-06 $</em>
  */
 public class EvolutionCollector {
 

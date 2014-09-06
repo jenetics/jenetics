@@ -19,13 +19,11 @@
  */
 package org.jenetics.stat;
 
-import static org.jenetics.internal.math.statistics.φ;
-
 import java.util.Arrays;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-28 $</em>
+ * @version <em>$Date: 2014-09-06 $</em>
  */
 public final class distribution {
 	private distribution() {}
