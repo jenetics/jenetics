@@ -24,9 +24,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Function;
 
+import org.jenetics.Alterer;
 import org.jenetics.CharacterChromosome;
 import org.jenetics.CharacterGene;
-import org.jenetics.CompositeAlterer;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.Mutator;
@@ -39,7 +39,7 @@ import org.jenetics.util.Factory;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-06-01 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-09-06 $</em>
  */
 public class StringGenerator {
 
@@ -88,7 +88,7 @@ public class StringGenerator {
 		ga.setOffspringSelector(
 			new TournamentSelector<CharacterGene, Integer>(5)
 		);
-		ga.setAlterer(CompositeAlterer.of(
+		ga.setAlterer(Alterer.of(
 			new Mutator<CharacterGene, Integer>(0.1),
 			new SinglePointCrossover<CharacterGene, Integer>(0.5)
 		));
@@ -99,7 +99,7 @@ public class StringGenerator {
 				"String generator",
 				ga,
 				generations,
-				((CompositeAlterer<?, ?>)ga.getAlterer()).getAlterers().toArray()
+				ga.getAlterer()
 			);
 
 		GAUtils.execute(ga, generations, 20);

@@ -19,6 +19,8 @@
  */
 package org.jenetics;
 
+import org.jenetics.util.ISeq;
+
 /**
  * The Alterer is responsible for the changing/recombining the Population.
  * Alterers can be chained by appending a list of alterers with the
@@ -40,7 +42,7 @@ package org.jenetics;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-04 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-06 $</em>
  */
 @FunctionalInterface
 public interface Alterer<
@@ -64,5 +66,20 @@ public interface Alterer<
 	 *        {@code null}.
 	 */
 	public int alter(final Population<G, C> population, final int generation);
+
+	/**
+	 * Combine the given alterers.
+	 *
+	 * @param <G> the gene type
+	 * @param <C> the fitness function result type
+	 * @param alterers the alterers to combine.
+	 * @return a new alterer which consists of the given one
+	 * @throws NullPointerException if one of the alterers is {@code null}.
+	 */
+	@SafeVarargs
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Alterer<G, C> of(final Alterer<G, C>... alterers) {
+		return new CompositeAlterer<G, C>(ISeq.of(alterers));
+	}
 
 }

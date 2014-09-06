@@ -25,7 +25,7 @@ import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.util.function.Function;
 
-import org.jenetics.CompositeAlterer;
+import org.jenetics.Alterer;
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
 import org.jenetics.GeneticAlgorithm;
@@ -38,7 +38,7 @@ import org.jenetics.util.Factory;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-06-01 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-09-06 $</em>
  */
 public class Transformation {
 
@@ -130,7 +130,7 @@ public class Transformation {
 		final GeneticAlgorithm<DoubleGene, Double> ga = new GeneticAlgorithm<>(gtf, ff);
 
 		ga.setPopulationSize(1000);
-		ga.setAlterer(CompositeAlterer.of(
+		ga.setAlterer(Alterer.of(
 			new Mutator<DoubleGene, Double>(0.03),
 			new MeanAlterer<DoubleGene, Double>(0.6)
 		));
@@ -142,7 +142,7 @@ public class Transformation {
 				"Affine transformation",
 				ga,
 				generations,
-				((CompositeAlterer<?, ?>)ga.getAlterer()).getAlterers().toArray()
+				ga.getAlterer()
 			);
 
 		GAUtils.execute(ga, generations, 10);

@@ -26,7 +26,7 @@ import org.jenetics.GeneticAlgorithm;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2013-09-08 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-09-06 $</em>
  */
 final class GAUtils {
 
@@ -57,7 +57,7 @@ final class GAUtils {
 		final String name,
 		final GeneticAlgorithm<?, ?> ga,
 		final int generations,
-		final Object... alterers
+		final Object alterer
 	) {
 		final StringBuilder out = new StringBuilder();
 		final String spattern = "| %18s: %-36s|\n";
@@ -71,9 +71,7 @@ final class GAUtils {
 		out.append(format(ipattern, "Population", ga.getPopulationSize()));
 		out.append(format(ipattern, "Generations", generations));
 		out.append(format(spattern, "Alterers", ""));
-		for (Object alterer : alterers) {
-			out.append(format(sspattern, "*", alterer));
-		}
+		out.append(format(sspattern, "", alterer));
 		out.append("+---------------------------------------------------------+\n");
 
 
