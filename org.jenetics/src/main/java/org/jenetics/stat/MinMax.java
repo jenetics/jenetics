@@ -152,13 +152,18 @@ public final class MinMax<C> implements Consumer<C> {
 	 * @throws java.lang.NullPointerException if the given {@code mapper} is
 	 *         {@code null}
 	 */
-	public static <T> Collector<T, ?, MinMax<T>>
-	collector(final Comparator<? super T> comparator) {
+	public static <T>
+	Collector<T, ?, MinMax<T>> toMinMax(final Comparator<? super T> comparator) {
 		return Collector.of(
 			() -> MinMax.of(comparator),
 			MinMax::accept,
 			MinMax::combine
 		);
+	}
+
+	public static <C extends Comparable<? super C>>
+	Collector<C, ?, MinMax<C>> toMinMax() {
+		return toMinMax((a, b) -> a.compareTo(b));
 	}
 
 	/**
