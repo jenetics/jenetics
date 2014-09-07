@@ -21,28 +21,22 @@ package org.jenetics.internal.engine;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.Spliterator;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.function.Function;
 import java.util.stream.Collector;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import org.jenetics.internal.util.Concurrency;
-import org.jenetics.internal.util.ObjectRef;
 import org.jenetics.internal.util.require;
 
 import org.jenetics.Alterer;
-import org.jenetics.DoubleChromosome;
-import org.jenetics.DoubleGene;
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
 import org.jenetics.Optimize;
 import org.jenetics.Phenotype;
 import org.jenetics.Population;
-import org.jenetics.PopulationSummary;
 import org.jenetics.Selector;
 import org.jenetics.util.Factory;
 
@@ -214,6 +208,11 @@ public final class Engine<
 		return _optimize;
 	}
 
+	/**
+	 * Create a new start generation.
+	 *
+	 * @return a new evolution start object
+	 */
 	public EvolutionStart<G, C> evolutionStart() {
 		final int generation = 1;
 		final int size = _offspringCount + _survivorsCount;
@@ -385,27 +384,6 @@ public final class Engine<
 		final Function<? super Genotype<G>, ? extends C> fitnessFunction
 	) {
 		return new EngineBuilder<>(genotypeFactory, fitnessFunction);
-	}
-
-	public static void main(final String[] args) {
-		final Engine<DoubleGene, Double> engine = Engine
-			.newBuilder(
-				Genotype.of(DoubleChromosome.of(0.0, 1.0)),
-				gt -> gt.getGene().getAllele())
-			.build();
-
-		EvolutionStart<DoubleGene, Double> start = engine.evolutionStart();
-		for (int i = 0; i < 10; ++i) {
-			final EvolutionResult<DoubleGene, Double> result = engine.evolve(start);
-			final PopulationSummary<DoubleGene, Double> summary =
-				result.getPopulation().stream()
-					.collect(PopulationSummary
-						.collector(engine._optimize, result.getGeneration()));
-
-			System.out.println(summary);
-
-			start = result.next();
-		}
 	}
 
 }

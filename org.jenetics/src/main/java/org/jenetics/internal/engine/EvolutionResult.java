@@ -24,7 +24,6 @@ import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
 import java.util.Comparator;
-import java.util.function.BinaryOperator;
 import java.util.stream.Collector;
 
 import org.jenetics.internal.util.Equality;
@@ -45,7 +44,7 @@ import org.jenetics.stat.MinMax;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-06 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-07 $</em>
  */
 public final class EvolutionResult<
 	G extends Gene<?, G>,
@@ -86,12 +85,12 @@ public final class EvolutionResult<
 
 		_best = Lazy.of(() ->
 			_population.stream()
-				.reduce(BinaryOperator.maxBy(_optimize.ascending()))
+				.max(_optimize.ascending())
 				.orElse(null)
 		);
 		_worst = Lazy.of(() ->
 			_population.stream()
-				.reduce(BinaryOperator.maxBy(_optimize.descending()))
+				.max(_optimize.descending())
 				.orElse(null)
 		);
 	}
