@@ -21,12 +21,14 @@ package org.jenetics.internal.engine;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Spliterator;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.jenetics.internal.util.Concurrency;
 import org.jenetics.internal.util.ObjectRef;
@@ -50,7 +52,7 @@ import org.jenetics.util.Factory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-06 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-07 $</em>
  */
 public final class Engine<
 	G extends Gene<?, G>,
@@ -359,13 +361,14 @@ public final class Engine<
 	}
 
 	public Stream<EvolutionResult<G, C>> stream(final int generations) {
-		final ObjectRef<EvolutionStart<G, C>> start = new ObjectRef<>(evolutionStart());
-
-		return IntStream.range(0, generations).mapToObj(i -> {
-			final EvolutionResult<G, C> result = evolve(start.value);
-			start.value = result.next();
-			return result;
-		});
+		return StreamSupport.stream(
+			new EvolutionSpliterator<>(
+				this::evolve,
+				evolutionStart(),
+				generations
+			),
+			false
+		);
 	}
 
 	public Collector<EvolutionResult<G, C>, ?, EvolutionResult<G, C>> best() {

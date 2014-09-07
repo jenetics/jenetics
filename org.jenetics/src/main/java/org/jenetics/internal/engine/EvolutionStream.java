@@ -31,7 +31,7 @@ import org.jenetics.Optimize;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-06 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-07 $</em>
  */
 public class EvolutionStream {
 
@@ -62,8 +62,8 @@ public class EvolutionStream {
 
 
 		final double best = engine.stream(105)
-			.min(EvolutionResult::compareTo)
-			.map(EvolutionResult::getWorstPhenotype)
+			.max(EvolutionResult::compareTo)
+			.map(EvolutionResult::getBestPhenotype)
 			.map(r -> r.getGenotype().getGene().getAllele())
 			.orElse(0.0);
 
