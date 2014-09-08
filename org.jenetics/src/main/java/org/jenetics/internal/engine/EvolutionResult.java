@@ -44,7 +44,7 @@ import org.jenetics.stat.MinMax;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-07 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-08 $</em>
  */
 public final class EvolutionResult<
 	G extends Gene<?, G>,
@@ -83,17 +83,17 @@ public final class EvolutionResult<
 		_invalidCount = invalidCount;
 		_alterCount = alterCount;
 
-		_best = Lazy.of(() ->
-			_population.stream()
-				.max(_optimize.ascending())
-				.orElse(null)
-		);
-		_worst = Lazy.of(() ->
-			_population.stream()
-				.max(_optimize.descending())
-				.orElse(null)
-		);
+		_best = Lazy.of(this::best);
+		_worst = Lazy.of(this::worst);
 	}
+
+    private Phenotype<G, C> best() {
+        return _population.stream().max(_optimize.ascending()).orElse(null);
+    }
+
+    private Phenotype<G, C> worst() {
+        return _population.stream().max(_optimize.descending()).orElse(null);
+    }
 
 	/**
 	 * Return the optimization strategy used.
