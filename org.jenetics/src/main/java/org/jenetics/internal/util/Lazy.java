@@ -19,7 +19,9 @@
  */
 package org.jenetics.internal.util;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
 import java.util.function.Supplier;
@@ -29,7 +31,7 @@ import java.util.function.Supplier;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-05 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-08 $</em>
  */
 public final class Lazy<T> implements Supplier<T>, Serializable {
 	private static final long serialVersionUID = 1L;
@@ -56,6 +58,21 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
 
 		return _value;
 	}
+
+    @Override
+    public int hashCode() {
+        return Hash.of(getClass()).and(get()).value();
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        return Equality.of(this, obj).test(lazy -> eq(get(), lazy.get()));
+    }
+
+    @Override
+    public String toString() {
+        return format("Lazy[%s]", get());
+    }
 
 	/**
 	 * Create a new lazy value initialization.
