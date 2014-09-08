@@ -46,7 +46,7 @@ import org.jenetics.util.Factory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-07 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-09 $</em>
  */
 public final class Engine<
 	G extends Gene<?, G>,
@@ -90,13 +90,13 @@ public final class Engine<
 	Engine(
 		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
 		final Function<? super C, ? extends C> fitnessScaler,
-        final Factory<Genotype<G>> genotypeFactory,
+		final Factory<Genotype<G>> genotypeFactory,
 		final Selector<G, C> survivorsSelector,
 		final Selector<G, C> offspringSelector,
 		final Alterer<G, C> alterer,
 		final Optimize optimize,
-        final int offspringCount,
-        final int survivorsCount,
+		final int offspringCount,
+		final int survivorsCount,
 		final int maximalPhenotypeAge,
 		final Executor executor
 	) {
