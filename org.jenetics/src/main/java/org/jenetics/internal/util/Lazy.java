@@ -19,11 +19,10 @@
  */
 package org.jenetics.internal.util;
 
-import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 /**
@@ -61,17 +60,17 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
 
     @Override
     public int hashCode() {
-        return Hash.of(getClass()).and(get()).value();
+        return Objects.hashCode(get());
     }
 
     @Override
     public boolean equals(final Object obj) {
-        return Equality.of(this, obj).test(lazy -> eq(get(), lazy.get()));
+        return Objects.equals(get(), obj);
     }
 
     @Override
     public String toString() {
-        return format("Lazy[%s]", get());
+        return Objects.toString(get());
     }
 
 	/**
