@@ -87,13 +87,13 @@ public final class EvolutionResult<
 		_worst = Lazy.of(this::worst);
 	}
 
-    private Phenotype<G, C> best() {
-        return _population.stream().max(_optimize.ascending()).orElse(null);
-    }
+	private Phenotype<G, C> best() {
+		return _population.stream().max(_optimize.ascending()).orElse(null);
+	}
 
-    private Phenotype<G, C> worst() {
-        return _population.stream().max(_optimize.descending()).orElse(null);
-    }
+	private Phenotype<G, C> worst() {
+		return _population.stream().max(_optimize.descending()).orElse(null);
+	}
 
 	/**
 	 * Return the optimization strategy used.
