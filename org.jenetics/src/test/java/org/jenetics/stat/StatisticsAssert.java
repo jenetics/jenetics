@@ -31,7 +31,7 @@ import org.jenetics.internal.util.require;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-28 $</em>
+ * @version <em>$Date: 2014-09-09 $</em>
  */
 public final class StatisticsAssert {
 	private StatisticsAssert() {require.noInstance();}
@@ -107,7 +107,7 @@ public final class StatisticsAssert {
 	public static <C extends Comparable<? super C>> void assertUniformDistribution(
 		final Histogram<C> histogram
 	) {
-		final double[] expected = distribution.uniform(histogram.length());
+		final double[] expected = dist.uniform(histogram.length());
 		assertDistribution(histogram, expected);
 	}
 

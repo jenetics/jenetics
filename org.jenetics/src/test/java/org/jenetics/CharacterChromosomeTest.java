@@ -28,7 +28,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import org.jenetics.stat.Histogram;
-import org.jenetics.stat.distribution;
+import org.jenetics.stat.dist;
 import org.jenetics.util.CharSeq;
 import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
@@ -36,7 +36,7 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-28 $</em>
+ * @version <em>$Date: 2014-09-09 $</em>
  */
 public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 
@@ -56,7 +56,7 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 				.map(g -> Long.valueOf(g.getAllele().toString()))
 				.forEach(histogram::accept);
 
-			final double[] expected = distribution.uniform(histogram.length());
+			final double[] expected = dist.uniform(histogram.length());
 			assertDistribution(histogram, expected);
 		}
     }
