@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package org.jenetics.internal.engine;
 
 import static java.lang.String.format;
 import static org.jenetics.internal.util.Equality.eq;
@@ -28,6 +28,9 @@ import java.util.stream.Collector;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
+import org.jenetics.Gene;
+import org.jenetics.Optimize;
+import org.jenetics.Phenotype;
 import org.jenetics.stat.IntSummary;
 
 /**
@@ -38,7 +41,7 @@ import org.jenetics.stat.IntSummary;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-10 $</em>
+ * @version 3.0 &mdash; <em>$Date$</em>
  */
 public final class PopulationSummary<
 	G extends Gene<?, G>,
@@ -174,7 +177,7 @@ public final class PopulationSummary<
 	 *         {@code null}.
 	 */
 	static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	PopulationSummary<G, C> of(final PopulationSummaryStatistics<G, C> statistics) {
+	PopulationSummary<G, C> of(final org.jenetics.internal.engine.PopulationSummaryStatistics<G, C> statistics) {
 		return of(
 			(int)statistics.getAgeSummary().getCount(),
 			statistics.getBest(),
@@ -199,12 +202,12 @@ public final class PopulationSummary<
 	) {
 		return Collector.<
 			Phenotype<G, C>,
-			PopulationSummaryStatistics<G, C>,
+			org.jenetics.internal.engine.PopulationSummaryStatistics<G, C>,
 			PopulationSummary<G, C>
 		>of(
-			() -> new PopulationSummaryStatistics<>(optimize, generation),
-			PopulationSummaryStatistics::accept,
-			PopulationSummaryStatistics::combine,
+			() -> new org.jenetics.internal.engine.PopulationSummaryStatistics<>(optimize, generation),
+			org.jenetics.internal.engine.PopulationSummaryStatistics::accept,
+			org.jenetics.internal.engine.PopulationSummaryStatistics::combine,
 			PopulationSummary::of
 		);
 	}
