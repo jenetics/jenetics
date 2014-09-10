@@ -38,7 +38,7 @@ import org.jenetics.stat.IntSummary;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-18 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-10 $</em>
  */
 public final class PopulationSummary<
 	G extends Gene<?, G>,
@@ -193,7 +193,7 @@ public final class PopulationSummary<
 	 * @return a new population summary collector
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Collector<Phenotype<G, C>, ?, PopulationSummary<G, C>> collector(
+	Collector<Phenotype<G, C>, ?, PopulationSummary<G, C>> toSummary(
 		final Optimize optimize,
 		final int generation
 	) {
@@ -204,7 +204,7 @@ public final class PopulationSummary<
 		>of(
 			() -> new PopulationSummaryStatistics<>(optimize, generation),
 			PopulationSummaryStatistics::accept,
-			(a, b) -> {a.combine(b); return a;},
+			PopulationSummaryStatistics::combine,
 			PopulationSummary::of
 		);
 	}

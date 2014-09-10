@@ -21,17 +21,19 @@ package org.jenetics.internal.engine;
 
 import java.util.Comparator;
 import java.util.function.BinaryOperator;
+import java.util.function.Function;
 
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
 import org.jenetics.Optimize;
+import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-07 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-10 $</em>
  */
 public class EvolutionStream {
 
@@ -41,11 +43,10 @@ public class EvolutionStream {
 	}
 
 	public static void main(final String[] args) {
-		final Engine<DoubleGene, Double> engine = Engine
-			.newBuilder(
-				Genotype.of(DoubleChromosome.of(0.0, 1.0)),
-				gt -> gt.getGene().getAllele())
-			.build();
+		final Engine<DoubleGene, Double> engine = Engine.newBuilder(
+			a -> a,
+			0.0, 1.0
+		).build();
 
 //		double best = engine.stream(100)
 //			.flatMap(r -> r.getPopulation().stream().map(Phenotype::getFitness))
@@ -59,6 +60,8 @@ public class EvolutionStream {
 //		final double best = engine.stream(10)
 //			.collect(engine.best())
 //			.getBestFitness();
+
+
 
 
 		final double best = engine.stream(105)
