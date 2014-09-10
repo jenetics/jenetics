@@ -33,7 +33,6 @@ import org.jenetics.internal.util.Concurrency;
 import org.jenetics.internal.util.require;
 
 import org.jenetics.Alterer;
-import org.jenetics.Chromosome;
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
 import org.jenetics.Gene;
@@ -365,10 +364,20 @@ public final class Engine<
 
 	public Stream<EvolutionResult<G, C>> stream(final int generations) {
 		return StreamSupport.stream(
-			new EvolutionSpliterator<>(
+			new LimitedEvolutionSpliterator<>(
 				this::evolve,
 				evolutionStart(),
 				generations
+			),
+			false
+		);
+	}
+
+	public Stream<EvolutionResult<G, C>> stream() {
+		return StreamSupport.stream(
+			new UnlimitedEvolutionSpliterator<>(
+				this::evolve,
+				this::evolutionStart
 			),
 			false
 		);
