@@ -20,18 +20,13 @@
 package org.jenetics.internal.engine;
 
 import java.util.Comparator;
-import java.util.function.BinaryOperator;
-import java.util.function.Function;
 
 import org.jenetics.Alterer;
-import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
 import org.jenetics.Gene;
-import org.jenetics.Genotype;
 import org.jenetics.MeanAlterer;
 import org.jenetics.Mutator;
 import org.jenetics.Optimize;
-import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -46,15 +41,10 @@ public class EvolutionStream {
 	}
 
 	public static void main(final String[] args) {
-		final Engine<DoubleGene, Double> engine = Engine.newBuilder(
-			a -> a,
-			0.0, 1.0
-		)
-		.alterer(Alterer.of(
-			new MeanAlterer<DoubleGene, Double>(0.5),
-			new Mutator<>(0.3)
-		))
-		.build();
+		final Engine<DoubleGene, Double> engine = Engine
+			.newBuilder(a -> a, 0.0, 1.0)
+			.alterer(new Mutator<>(0.3))
+			.build();
 
 //		double best = engine.stream(100)
 //			.flatMap(r -> r.getPopulation().stream().map(Phenotype::getFitness))
@@ -70,11 +60,10 @@ public class EvolutionStream {
 //			.getBestFitness();
 
 
-		final double best = engine.stream().limit(30)
-			.peek(r -> System.out.println(r.getBestFitness()))
-			.collect(engine.best())
-			.getBestPhenotype()
-			.getGenotype().getGene().doubleValue();
+		final double best = engine.stream().limit(300)
+			.peek(r -> System.out.println(r.getBestPhenotype().getGenotype()))
+			.collect(engine.BestGenotype)
+			.getGene().doubleValue();
 
 //		final double best = engine.stream(105)
 //			.max(EvolutionResult::compareTo)

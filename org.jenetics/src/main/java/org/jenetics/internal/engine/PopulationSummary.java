@@ -205,9 +205,9 @@ public final class PopulationSummary<
 			org.jenetics.internal.engine.PopulationSummaryStatistics<G, C>,
 			PopulationSummary<G, C>
 		>of(
-			() -> new org.jenetics.internal.engine.PopulationSummaryStatistics<>(optimize, generation),
-			org.jenetics.internal.engine.PopulationSummaryStatistics::accept,
-			org.jenetics.internal.engine.PopulationSummaryStatistics::combine,
+			() -> new PopulationSummaryStatistics<>(optimize, generation),
+			PopulationSummaryStatistics::accept,
+			PopulationSummaryStatistics::combine,
 			PopulationSummary::of
 		);
 	}

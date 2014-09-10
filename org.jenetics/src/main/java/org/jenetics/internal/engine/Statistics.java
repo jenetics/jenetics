@@ -36,7 +36,7 @@ import org.jenetics.Phenotype;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date$</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-09-10 $</em>
  */
 public class Statistics<
 	G extends Gene<?, G>,
@@ -220,6 +220,5 @@ public class Statistics<
 			eq(_killed, statistics._killed)
 		);
 	}
-
 
 }

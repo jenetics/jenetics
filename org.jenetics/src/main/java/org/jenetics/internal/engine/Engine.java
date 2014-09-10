@@ -72,6 +72,17 @@ public final class Engine<
 	// Execution context for concurrent execution of evolving steps.
 	private final TimedExecutor _executor;
 
+	// Some collectors.
+	public final Collector<EvolutionResult<G, C>, ?, EvolutionResult<G, C>>
+		BestEvolutionResult;
+
+	public final Collector<EvolutionResult<G, C>, ?, Phenotype<G, C>>
+		BestPhenotype;
+
+	public final Collector<EvolutionResult<G, C>, ?, Genotype<G>>
+		BestGenotype;
+
+
 	/**
 	 * Create a new GA engine with the given parameters.
 	 *
@@ -115,8 +126,11 @@ public final class Engine<
 		_survivorsCount = require.positive(survivorsCount);
 		_maximalPhenotypeAge = require.positive(maximalPhenotypeAge);
 
-
 		_executor = new TimedExecutor(requireNonNull(executor));
+
+		BestEvolutionResult = EvolutionResult.<G, C>best(_optimize);
+		BestPhenotype = EvolutionResult.<G, C>bestPhenotype(_optimize);
+		BestGenotype = EvolutionResult.<G, C>bestGenotype(optimize);
 	}
 
 	/**
