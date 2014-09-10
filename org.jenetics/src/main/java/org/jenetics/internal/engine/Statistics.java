@@ -17,199 +17,34 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package org.jenetics.internal.engine;
 
-import static java.lang.Double.NaN;
-import static java.lang.String.format;
-import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
-import java.time.Duration;
-import java.util.concurrent.Executor;
 
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
-import org.jenetics.stat.Variance;
-import org.jenetics.util.Accumulator;
-import org.jenetics.util.Accumulator.MinMax;
-import org.jenetics.util.FinalReference;
+import org.jenetics.Gene;
+import org.jenetics.Optimize;
+import org.jenetics.Phenotype;
 
 /**
- * Data object which holds performance indicators of a given {@link Population}.
+ * Data object which holds performance indicators of a given
+ * {@link org.jenetics.Population}.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
  * @version 2.0 &mdash; <em>$Date$</em>
  */
-public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>> {
-
-	/**
-	 * Builder for the Statistics class.
-	 *
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date$</em>
-	 */
-	public static class Builder<
-		G extends Gene<?, G>,
-		C extends Comparable<? super C>
-	>
-	{
-		protected Optimize _optimize = Optimize.MAXIMUM;
-		protected int _generation = 0;
-		protected Phenotype<G, C> _best = null;
-		protected Phenotype<G, C> _worst = null;
-		protected int _samples = 0;
-		protected double _ageMean = NaN;
-		protected double _ageVariance = NaN;
-		protected int _killed = 0;
-		protected int _invalid = 0;
-
-		/**
-		 * Create a new Statistics builder.
-		 */
-		public Builder() {
-		}
-
-		/**
-		 * Set the values of this builder with the values of the given
-		 * {@code statistics}.
-		 *
-		 * @param statistics the statistics values. If the {@code statistics}
-		 *         is {@code null} nothing is set.
-		 * @return this builder instance.
-		 */
-		public Builder<G, C> statistics(final Statistics<G, C> statistics) {
-			if (statistics != null) {
-				_optimize = statistics._optimize;
-				_generation = statistics._generation;
-				_best = statistics._best;
-				_worst = statistics._worst;
-				_samples = statistics._samples;
-				_ageMean = statistics._ageMean;
-				_ageVariance = statistics._ageVariance;
-				_killed = statistics._killed;
-				_invalid = statistics._invalid;
-			}
-			return this;
-		}
-
-		public Builder<G, C> optimize(final Optimize optimize) {
-			_optimize = requireNonNull(optimize, "Optimize strategy");
-			return this;
-		}
-
-		/**
-		 * @see Statistics#getGeneration()
-		 *
-		 * @param generation the current GA generation
-		 * @return this builder instance
-		 */
-		public Builder<G, C> generation(final int generation) {
-			_generation = generation;
-			return this;
-		}
-
-		/**
-		 * @see Statistics#getBestPhenotype()
-		 *
-		 * @param best the best phenotype
-		 * @return this builder instance
-		 */
-		public Builder<G, C> bestPhenotype(final Phenotype<G, C> best) {
-			_best = best;
-			return this;
-		}
-
-		/**
-		 * @see Statistics#getWorstPhenotype()
-		 *
-		 * @param worst the worst phenotype
-		 * @return this builder instance
-		 */
-		public Builder<G, C> worstPhenotype(final Phenotype<G, C> worst) {
-			_worst = worst;
-			return this;
-		}
-
-		/**
-		 * @see Statistics#getSamples()
-		 *
-		 * @param samples the number of samples for the statistics object.
-		 * @return this builder instance
-		 */
-		public Builder<G, C> samples(final int samples) {
-			_samples = samples;
-			return this;
-		}
-
-		/**
-		 * @see Statistics#getAgeMean()
-		 *
-		 * @param ageMean the mean of the population age
-		 * @return this builder instance
-		 */
-		public Builder<G, C> ageMean(final double ageMean) {
-			_ageMean = ageMean;
-			return this;
-		}
-
-		/**
-		 * @see Statistics#getAgeVariance()
-		 *
-		 * @param ageVariance the variance of the population age
-		 * @return this builder instance
-		 */
-		public Builder<G, C> ageVariance(final double ageVariance) {
-			_ageVariance = ageVariance;
-			return this;
-		}
-
-		/**
-		 * @see Statistics#getInvalid()
-		 *
-		 * @param invalid the number of valid individuals
-		 * @return this builder instance
-		 */
-		public Builder<G, C> invalid(final int invalid) {
-			_invalid = invalid;
-			return this;
-		}
-
-		/**
-		 * @see Statistics#getKilled()
-		 *
-		 * @param killed the number of killed individuals
-		 * @return this builder instance
-		 */
-		public Builder<G, C> killed(final int killed) {
-			_killed = killed;
-			return this;
-		}
-
-		/**
-		 * Return a new Statistics object with the builder values.
-		 *
-		 * @return new Statistics object with the builder values.
-		 */
-		public Statistics<G, C> build() {
-			return new Statistics<>(
-				_optimize,
-				_generation,
-				_best,
-				_worst,
-				_samples,
-				_ageMean,
-				_ageVariance,
-				_killed,
-				_invalid
-			);
-		}
-	}
-
-	private static final long serialVersionUID = 3L;
+public class Statistics<
+	G extends Gene<?, G>,
+	C extends Comparable<? super C>
+>
+	implements Serializable
+{
+	private static final long serialVersionUID = 4L;
 
 	protected final Optimize _optimize;
 	protected final int _generation;
@@ -220,9 +55,6 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>> {
 	protected final double _ageVariance;
 	protected final int _killed;
 	protected final int _invalid;
-
-	private final FinalReference<Time> _time = new FinalReference<>(new Time());
-
 
 	/**
 	 * Evaluates statistic values from a given population. The given phenotypes
@@ -276,16 +108,6 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>> {
 	 */
 	public int getGeneration() {
 		return _generation;
-	}
-
-	/**
-	 * Return the time statistic object which contains the durations of the
-	 * different GA execution steps.
-	 *
-	 * @return the time statistic object.
-	 */
-	public Time getTime() {
-		return _time.get();
 	}
 
 	/**
@@ -399,201 +221,5 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>> {
 		);
 	}
 
-	@Override
-	public String toString() {
-		final String spattern = "| %28s: %-26s|\n";
-		final String fpattern = "| %28s: %-26.11f|\n";
-		final String ipattern = "| %28s: %-26d|\n";
-
-		final StringBuilder out = new StringBuilder();
-		out.append("+---------------------------------------------------------+\n");
-		out.append("|  Population Statistics                                  |\n");
-		out.append("+---------------------------------------------------------+\n");
-		out.append(format(fpattern, "Age mean", _ageMean));
-		out.append(format(fpattern, "Age variance", _ageVariance));
-		out.append(format(ipattern, "Samples", _samples));
-		out.append(format(spattern, "Best fitness", getBestFitness()));
-		out.append(format(spattern, "Worst fitness", getWorstFitness()));
-		out.append("+---------------------------------------------------------+");
-
-		return out.toString();
-	}
-
-	/**
-	 * Class which holds time statistic values.
-	 *
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date$</em>
-	 */
-	public static final class Time implements Serializable {
-		private static final long serialVersionUID = 2L;
-
-		/**
-		 * Create a new time object with zero time values. The time references
-		 * can only be set once. If you try to set the values twice an
-		 * {@link IllegalStateException} is thrown.
-		 */
-		public Time() {
-		}
-
-		/**
-		 * The overall execution time.
-		 * The time can be set only once, otherwise an IllegalArgumentException
-		 * is thrown.
-		 */
-		public final FinalReference<Duration>
-			execution = new FinalReference<>(Duration.ZERO);
-
-		/**
-		 * The selection time.
-		 * The time can be set only once, otherwise an IllegalArgumentException
-		 * is thrown.
-		 */
-		public final FinalReference<Duration>
-			selection = new FinalReference<>(Duration.ZERO);
-
-		/**
-		 * The alter time.
-		 * The time can be set only once, otherwise an IllegalArgumentException
-		 * is thrown.
-		 */
-		public final FinalReference<Duration>
-			alter = new FinalReference<>(Duration.ZERO);
-
-		/**
-		 * Combination time between offspring and survivors.
-		 * The time can be set only once, otherwise an IllegalArgumentException
-		 * is thrown.
-		 */
-		public final FinalReference<Duration>
-			combine = new FinalReference<>(Duration.ZERO);
-
-		/**
-		 * The evaluation time.
-		 * The time can be set only once, otherwise an IllegalArgumentException
-		 * is thrown.
-		 */
-		public final FinalReference<Duration>
-			evaluation = new FinalReference<>(Duration.ZERO);
-
-		/**
-		 * The statistics time.
-		 * The time can be set only once, otherwise an IllegalArgumentException
-		 * is thrown.
-		 */
-		public final FinalReference<Duration>
-			statistics = new FinalReference<>(Duration.ZERO);
-
-
-		@Override
-		public int hashCode() {
-			return Hash.of(getClass())
-					.and(alter)
-					.and(combine)
-					.and(evaluation)
-					.and(execution)
-					.and(selection)
-					.and(statistics).value();
-		}
-
-		@Override
-		public boolean equals(final Object obj) {
-			return Equality.of(this, obj).test(time ->
-				eq(alter.get(), time.alter.get()) &&
-				eq(combine.get(), time.combine.get()) &&
-				eq(evaluation.get(), time.evaluation.get()) &&
-				eq(execution.get(), time.execution.get()) &&
-				eq(selection.get(), time.selection.get()) &&
-				eq(statistics.get(), time.statistics.get())
-			);
-		}
-
-		@Override
-		public String toString() {
-			final String pattern = "| %28s: %-26.11f|\n";
-
-			final StringBuilder out = new StringBuilder();
-			out.append("+---------------------------------------------------------+\n");
-			out.append("|  Time Statistics                                        |\n");
-			out.append("+---------------------------------------------------------+\n");
-			out.append(format(pattern, "Select time", toSeconds(selection)));
-			out.append(format(pattern, "Alter time", toSeconds(alter)));
-			out.append(format(pattern, "Combine time", toSeconds(combine)));
-			out.append(format(pattern, "Fitness calculation time", toSeconds(evaluation)));
-			out.append(format(pattern, "Statistics calculation time", toSeconds(statistics)));
-			out.append(format(pattern, "Overall execution time", toSeconds(execution)));
-			out.append("+---------------------------------------------------------+");
-
-			return out.toString();
-		}
- 	}
-
-	private static double toSeconds(final FinalReference<Duration> duration) {
-		return duration.get().toMillis()/1_000_000_000.0;
-	}
-
-
-	/**
-	 * Class for calculating the statistics. This class serves also as factory
-	 * for the Statistics class.
-	 *
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @since 1.0
-	 * @version 2.0 &mdash; <em>$Date$</em>
-	 */
-	public static class Calculator<
-		G extends Gene<?, G>,
-		C extends Comparable<? super C>
-	>
-	{
-
-		/**
-		 * Create a new calculator object.
-		 */
-		public Calculator() {
-		}
-
-		/**
-		 * Create a new statistics object from the given {@code population} at
-		 * the given {@code generation}.
-		 *
-		 * @param executor the {@link java.util.concurrent.Executor} service to
-		 *        use
-		 * @param population the population to aggregate.
-		 * @param generation the current GA generation.
-		 * @param opt the optimization <i>direction</i>.
-		 * @return a new statistics object generated from the given arguments.
-		 */
-		public Statistics.Builder<G, C> evaluate(
-			final Executor executor,
-			final Iterable<? extends Phenotype<G, C>> population,
-			final int generation,
-			final Optimize opt
-		) {
-			final Builder<G, C> builder = new Builder<>();
-			builder.generation(generation);
-			builder.optimize(opt);
-
-			final MinMax<Phenotype<G, C>> minMax = new MinMax<>();
-			final Variance<Integer> age = new Variance<>();
-
-			Accumulator.accumulate(
-				executor,
-				population,
-				minMax,
-				age.map(pt -> pt.getAge(generation))
-			);
-
-			builder.bestPhenotype(opt.best(minMax.getMax(), minMax.getMin()));
-			builder.worstPhenotype(opt.worst(minMax.getMax(), minMax.getMin()));
-			builder.samples((int)minMax.getSamples());
-			builder.ageMean(age.getMean());
-			builder.ageVariance(age.getVariance());
-
-			return builder;
-		}
-
-	}
 
 }
