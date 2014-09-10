@@ -32,9 +32,9 @@ import org.jenetics.Gene;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-07 $</em>
+ * @version 3.0 &mdash; <em>$Date$</em>
  */
-final class EvolutionSpliterator<
+final class LimitedEvolutionSpliterator<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
@@ -47,7 +47,7 @@ final class EvolutionSpliterator<
 	private EvolutionStart<G, C> _start;
 	private int _generation = 0;
 
-	EvolutionSpliterator(
+	LimitedEvolutionSpliterator(
 		final Function<EvolutionStart<G, C>, EvolutionResult<G, C>> evolution,
 		final EvolutionStart<G, C> start,
 		final int generations
