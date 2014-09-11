@@ -139,7 +139,7 @@ import org.jenetics.util.Timer;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-05 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-11 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,
@@ -177,8 +177,8 @@ public class GeneticAlgorithm<
 
 	// Alterers
 	private Alterer<G, C> _alterer = CompositeAlterer.of(
-		new SinglePointCrossover<G, C>(0.1),
-		new Mutator<G, C>(0.05)
+		new SinglePointCrossover<G, C>(0.2),
+		new Mutator<G, C>(0.15)
 	);
 
 	// Selectors
