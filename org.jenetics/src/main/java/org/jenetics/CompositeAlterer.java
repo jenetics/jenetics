@@ -39,7 +39,7 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-07 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-13 $</em>
  */
 final class CompositeAlterer<
 	G extends Gene<?, G>,
@@ -77,17 +77,6 @@ final class CompositeAlterer<
 		return _alterers.stream()
 			.mapToInt(a -> a.alter(population, generation))
 			.sum();
-	}
-
-	/**
-	 * Create a new CompositeAlterer with the given alterer appended.
-	 *
-	 * @param alterer the alterer to append.
-	 * @return a new CompositeAlterer.
-	 * @throws NullPointerException if the given alterer is {@code null}.
-	 */
-	public CompositeAlterer<G, C> append(final Alterer<G, C> alterer) {
-		return CompositeAlterer.of(this, requireNonNull(alterer, "Alterer"));
 	}
 
 	/**

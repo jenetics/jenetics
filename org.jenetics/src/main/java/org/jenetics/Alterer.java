@@ -42,7 +42,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-06 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-13 $</em>
  */
 @FunctionalInterface
 public interface Alterer<
@@ -66,6 +66,28 @@ public interface Alterer<
 	 *        {@code null}.
 	 */
 	public int alter(final Population<G, C> population, final int generation);
+
+	/**
+	 * Returns a composed alterer that first applies the {@code before} alterer
+	 * to its input, and then applies {@code this} alterer to the result.
+	 *
+	 * @param before the alterer to apply first
+	 * @return the new composed alterer
+	 */
+	public default Alterer<G, C> compose(final Alterer<G, C> before) {
+		return of(before, this);
+	}
+
+	/**
+	 * Returns a composed alterer that applies the {@code this} alterer
+	 * to its input, and then applies the {@code after} alterer to the result.
+	 *
+	 * @param after the alterer to apply first
+	 * @return the new composed alterer
+	 */
+	public default Alterer<G, C> andThen(final Alterer<G, C> after) {
+		return of(this, after);
+	}
 
 	/**
 	 * Combine the given alterers.
