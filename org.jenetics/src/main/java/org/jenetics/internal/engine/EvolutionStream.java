@@ -19,63 +19,72 @@
  */
 package org.jenetics.internal.engine;
 
-import java.util.Comparator;
+import static java.util.Objects.requireNonNull;
 
-import org.jenetics.Alterer;
-import org.jenetics.DoubleGene;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
 import org.jenetics.Gene;
-import org.jenetics.MeanAlterer;
-import org.jenetics.Mutator;
-import org.jenetics.Optimize;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-10 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-13 $</em>
  */
-public class EvolutionStream {
+public class EvolutionStream<
+	G extends Gene<?, G>,
+	C extends Comparable<? super C>
+>
+	extends StreamProxy<EvolutionResult<G, C>>
+{
 
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Comparator<EvolutionResult<G, C>> best(final Optimize opt) {
-		return null;
+	private final Function<EvolutionStart<G, C>, EvolutionResult<G, C>> _evolution;
+	private final Supplier<EvolutionStart<G, C>> _initial;
+
+	EvolutionStream(
+		final Function<EvolutionStart<G, C>, EvolutionResult<G, C>> evolution,
+		final Supplier<EvolutionStart<G, C>> initial,
+		final Stream<EvolutionResult<G, C>> stream
+	) {
+		super(stream);
+		_evolution = requireNonNull(evolution);
+		_initial = requireNonNull(initial);
 	}
 
-	public static void main(final String[] args) {
-		final Engine<DoubleGene, Double> engine = Engine
-			.newBuilder(a -> a, 0.0, 1.0)
-			.alterer(new Mutator<>(0.3))
-			.build();
+	EvolutionStream(
+		final Function<EvolutionStart<G, C>, EvolutionResult<G, C>> evolution,
+		final Supplier<EvolutionStart<G, C>> initial
+	) {
+		this(
+			evolution,
+			initial,
+			StreamSupport.stream(
+				new UnlimitedEvolutionSpliterator<>(
+					evolution,
+					initial
+				),
+				false
+			)
+		);
+	}
 
-//		double best = engine.stream(100)
-//			.flatMap(r -> r.getPopulation().stream().map(Phenotype::getFitness))
-//			.reduce(BinaryOperator.maxBy(engine.getOptimize().ascending()))
-//			.orElse(0.0);
-
-//		final double best = engine.stream(100)
-//			.mapToDouble(EvolutionResult::getBestFitness)
-//			.max().orElse(0.0);
-
-//		final double best = engine.stream(10)
-//			.collect(engine.best())
-//			.getBestFitness();
-
-
-		final double best = engine.stream().limit(300)
-			.peek(r -> System.out.println(r.getBestPhenotype().getGenotype()))
-			.collect(engine.BestGenotype)
-			.getGene().doubleValue();
-
-//		final double best = engine.stream(105)
-//			.max(EvolutionResult::compareTo)
-//			.map(EvolutionResult::getBestPhenotype)
-//			.map(r -> r.getGenotype().getGene().getAllele())
-//			.orElse(0.0);
-
-//		final double best = engine.stream(100)
-//			.max(best(engine.getOptimize()))
-//			.map(v -> v.getPopulation().stream().max)
-
-		System.out.println("BEST: " + best);
+	public Stream<EvolutionResult<G, C>>
+	limit(final Predicate<EvolutionResult<G, C>> terminate) {
+		return new EvolutionStream<G, C>(
+			_evolution,
+			_initial,
+			StreamSupport.stream(
+				new TerminatingEvolutionSpliterator<>(
+					_evolution,
+					_initial,
+					terminate
+				),
+				false
+			)
+		);
 	}
 
 }

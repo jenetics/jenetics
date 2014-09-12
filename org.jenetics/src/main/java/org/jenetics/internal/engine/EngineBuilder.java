@@ -41,9 +41,9 @@ import org.jenetics.util.Factory;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-06 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-13 $</em>
  */
-public class EngineBuilder<
+public final class EngineBuilder<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
@@ -111,8 +111,9 @@ public class EngineBuilder<
 		return this;
 	}
 
-	public EngineBuilder<G, C> alterer(final Alterer<G, C> alterer) {
-		_alterer = requireNonNull(alterer);
+	@SafeVarargs
+	public final EngineBuilder<G, C> alterers(final Alterer<G, C>... alterers) {
+		_alterer = Alterer.of(alterers);
 		return this;
 	}
 

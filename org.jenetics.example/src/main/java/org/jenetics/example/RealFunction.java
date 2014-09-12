@@ -27,7 +27,6 @@ import java.util.function.Function;
 
 import org.jenetics.internal.engine.Engine;
 
-import org.jenetics.Alterer;
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
 import org.jenetics.GeneticAlgorithm;
@@ -64,8 +63,8 @@ public class RealFunction {
 		);
 		ga.setPopulationSize(500);
 		ga.setAlterers(
-			new Mutator<DoubleGene, Double>(0.03),
-			new MeanAlterer<DoubleGene, Double>(0.6)
+			new Mutator<>(0.03),
+			new MeanAlterer<>(0.6)
 		);
 
 		ga.setup();
@@ -79,18 +78,19 @@ public class RealFunction {
 
 class RealFunction2 {
 
-	public static void main() {
-		final Function<Genotype<DoubleGene>, Double> ff = gt -> {
-			final double x = gt.getGene().doubleValue();
-			return cos(0.5 + sin(x)) * cos(x);
-		};
+	private static Double evaluate(final Genotype<DoubleGene> gt) {
+		final double x = gt.getGene().doubleValue();
+		return cos(0.5 + sin(x)) * cos(x);
+	}
 
-		final Engine<DoubleGene, Double> engine = Engine
-			.newBuilder(Genotype.of(DoubleChromosome.of(0.0, 2.0 * PI)), ff)
+	public static void main() {
+		final Engine<DoubleGene, Double> engine = Engine.newBuilder(
+				RealFunction2::evaluate,
+				DoubleChromosome.of(0.0, 2.0*PI))
 			.populationSize(500)
-			.alterer(Alterer.of(
-				new Mutator<DoubleGene, Double>(0.03),
-				new MeanAlterer<>(0.6)))
+			.alterers(
+				new Mutator<>(0.03),
+				new MeanAlterer<>(0.6))
 			.optimize(Optimize.MINIMUM)
 			.build();
 

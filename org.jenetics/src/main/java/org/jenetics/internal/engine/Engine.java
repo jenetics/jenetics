@@ -23,7 +23,6 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
-import java.util.function.DoubleFunction;
 import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
@@ -33,8 +32,7 @@ import org.jenetics.internal.util.Concurrency;
 import org.jenetics.internal.util.require;
 
 import org.jenetics.Alterer;
-import org.jenetics.DoubleChromosome;
-import org.jenetics.DoubleGene;
+import org.jenetics.Chromosome;
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
 import org.jenetics.Optimize;
@@ -49,13 +47,32 @@ import org.jenetics.util.Factory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-10 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-13 $</em>
  */
 public final class Engine<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
 {
+
+	/**
+	 * Collects the best evolution result of an evolution stream.
+	 */
+	public final Collector<EvolutionResult<G, C>, ?, EvolutionResult<G, C>>
+		BestEvolutionResult;
+
+	/**
+	 * Collects the best phenotype of an evolution stream.
+	 */
+	public final Collector<EvolutionResult<G, C>, ?, Phenotype<G, C>>
+		BestPhenotype;
+
+	/**
+	 * Collects the best genotype of an evolution stream.
+	 */
+	public final Collector<EvolutionResult<G, C>, ?, Genotype<G>>
+		BestGenotype;
+
 
 	// Needed context for population evolving.
 	private final Function<? super Genotype<G>, ? extends C> _fitnessFunction;
@@ -71,16 +88,6 @@ public final class Engine<
 
 	// Execution context for concurrent execution of evolving steps.
 	private final TimedExecutor _executor;
-
-	// Some collectors.
-	public final Collector<EvolutionResult<G, C>, ?, EvolutionResult<G, C>>
-		BestEvolutionResult;
-
-	public final Collector<EvolutionResult<G, C>, ?, Phenotype<G, C>>
-		BestPhenotype;
-
-	public final Collector<EvolutionResult<G, C>, ?, Genotype<G>>
-		BestGenotype;
 
 
 	/**
@@ -130,7 +137,7 @@ public final class Engine<
 
 		BestEvolutionResult = EvolutionResult.<G, C>best(_optimize);
 		BestPhenotype = EvolutionResult.<G, C>bestPhenotype(_optimize);
-		BestGenotype = EvolutionResult.<G, C>bestGenotype(optimize);
+		BestGenotype = EvolutionResult.<G, C>bestGenotype(_optimize);
 	}
 
 	/**
@@ -320,14 +327,17 @@ public final class Engine<
 		);
 	}
 
+	// Selects the survivors population. A new population object is returned.
 	private Population<G, C> selectSurvivors(final Population<G, C> population) {
 		return _survivorsSelector.select(population, _survivorsCount, _optimize);
 	}
 
+	// Selects the offspring population. A new population object is returned.
 	private Population<G, C> selectOffspring(final Population<G, C> population) {
 		return _offspringSelector.select(population, _offspringCount, _optimize);
 	}
 
+	// Filters out invalid and to old individuals. Filtering is done in place.
 	private FilterResult<G, C> filter(
 		final Population<G, C> population,
 		final int generation
@@ -350,6 +360,7 @@ public final class Engine<
 		return FilterResult.of(population, killCount, invalidCount);
 	}
 
+	// Create a new phenotype
 	private Phenotype<G, C> newPhenotype(final int generation) {
 		return Phenotype.of(
 			_genotypeFactory.newInstance(),
@@ -359,6 +370,7 @@ public final class Engine<
 		);
 	}
 
+	// Alters the given population. The altering is done in place.
 	private AlterResult<G, C> alter(
 		final Population<G,C> population,
 		final int generation
@@ -369,6 +381,7 @@ public final class Engine<
 		);
 	}
 
+	// Evaluates the fitness function of the give population concurrently.
 	private Population<G, C> evaluate(final Population<G, C> population) {
 		try (Concurrency c = Concurrency.with(_executor.get())) {
 			c.execute(population);
@@ -376,17 +389,11 @@ public final class Engine<
 		return population;
 	}
 
-	public Stream<EvolutionResult<G, C>> stream(final int generations) {
-		return StreamSupport.stream(
-			new LimitedEvolutionSpliterator<>(
-				this::evolve,
-				evolutionStart(),
-				generations
-			),
-			false
-		);
-	}
-
+	/**
+	 * Create a new evolution stream with a newly created population.
+	 *
+	 * @return a new evolution stream.
+	 */
 	public Stream<EvolutionResult<G, C>> stream() {
 		return StreamSupport.stream(
 			new UnlimitedEvolutionSpliterator<>(
@@ -397,36 +404,72 @@ public final class Engine<
 		);
 	}
 
-	public Collector<EvolutionResult<G, C>, ?, EvolutionResult<G, C>> best() {
-		return EvolutionResult.<G, C>best(_optimize);
+	/**
+	 * Create a new evolution stream with a newly created population.
+	 *
+	 * @param population the initial population used for the evolution stream
+	 * @return a new evolution stream.
+	 * @throws java.lang.NullPointerException if the given {@code population} is
+	 *         {@code null}.
+	 */
+	public Stream<EvolutionResult<G, C>> stream(final Population<G, C> population) {
+		requireNonNull(population);
+
+		return StreamSupport.stream(
+			new UnlimitedEvolutionSpliterator<>(
+				this::evolve,
+				() -> EvolutionStart.of(population, 1)
+			),
+			false
+		);
 	}
 
-	public Collector<EvolutionResult<G, C>, ?, EvolutionResult<G, C>> worst() {
-		return EvolutionResult.<G, C>worst(_optimize);
-	}
+//	public Stream<EvolutionResult<G, C>> stream(final int generations) {
+//		return StreamSupport.stream(
+//			new LimitedEvolutionSpliterator<>(
+//				this::evolve,
+//				evolutionStart(),
+//				generations
+//			),
+//			false
+//		);
+//	}
 
+	/**
+	 * Create a new evolution {@code EngineBuilder} with the given fitness
+	 * function and genotype factory.
+	 *
+	 * @param fitnessFunction the fitness function
+	 * @param genotypeFactory the genotype factory
+	 * @param <G> the gene type
+	 * @param <C> the fitness function result type
+	 * @return a new engine builder
+	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EngineBuilder<G, C> newBuilder(
-		final Factory<Genotype<G>> genotypeFactory,
-		final Function<? super Genotype<G>, ? extends C> fitnessFunction
+		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
+		final Factory<Genotype<G>> genotypeFactory
 	) {
 		return new EngineBuilder<>(genotypeFactory, fitnessFunction);
 	}
 
-
-	public static <C extends Comparable<? super C>>
-	EngineBuilder<DoubleGene, C> newBuilder(
-		final DoubleFunction<? extends C> fitnessFunction,
-		final double min, final double max
+	/**
+	 * Create a new evolution {@code EngineBuilder} with the given fitness
+	 * function and chromosome templates.
+	 *
+	 * @param fitnessFunction the fitness function
+	 * @param chromosomes the chromosome templates
+	 * @param <G> the gene type
+	 * @param <C> the fitness function result type
+	 * @return a new engine builder
+	 */
+	@SafeVarargs
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	EngineBuilder<G, C> newBuilder(
+		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
+		final Chromosome<G>... chromosomes
 	) {
-		final Function<? super Genotype<DoubleGene>, ? extends C> ff = gt ->
-			fitnessFunction.apply(gt.getGene().doubleValue());
-
-		final Factory<Genotype<DoubleGene>> gtf = Genotype.of(
-			DoubleChromosome.of(min, max)
-		);
-
-		return new EngineBuilder<>(gtf, ff);
+		return new EngineBuilder<>(Genotype.of(chromosomes), fitnessFunction);
 	}
 
 }

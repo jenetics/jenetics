@@ -38,7 +38,7 @@ import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-09-11 $</em>
+ * @version <em>$Date: 2014-09-13 $</em>
  */
 public class EngineCompatibilityTest {
 
@@ -64,8 +64,8 @@ public class EngineCompatibilityTest {
 		List<Double> newValues = new ArrayList<>();
 		try (Scoped<?> r = RandomRegistry.scope(new LCG64ShiftRandom(1))) {
 			final Engine<DoubleGene, Double> engine = Engine.newBuilder(
-				Genotype.of(DoubleChromosome.of(0.0, 1_000.0)),
-				gt -> gt.getGene().getAllele())
+				gt -> gt.getGene().getAllele(),
+				Genotype.of(DoubleChromosome.of(0.0, 1_000.0)))
 			.executor(Concurrency.SERIAL_EXECUTOR)
 			.survivorsSelector(new RouletteWheelSelector<>())
 			.offspringSelector(new RouletteWheelSelector<>())
