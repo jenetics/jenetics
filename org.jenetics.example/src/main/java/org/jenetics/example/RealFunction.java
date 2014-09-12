@@ -25,6 +25,9 @@ import static java.lang.Math.sin;
 
 import java.util.function.Function;
 
+import org.jenetics.internal.engine.Engine;
+
+import org.jenetics.Alterer;
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
 import org.jenetics.GeneticAlgorithm;
@@ -69,5 +72,34 @@ public class RealFunction {
 		ga.evolve(100);
 		System.out.println(ga.getBestStatistics());
 		System.out.println(ga.getBestPhenotype());
+
+		RealFunction2.main();
 	}
+}
+
+class RealFunction2 {
+
+	public static void main() {
+		final Function<Genotype<DoubleGene>, Double> ff = gt -> {
+			final double x = gt.getGene().doubleValue();
+			return cos(0.5 + sin(x)) * cos(x);
+		};
+
+		final Engine<DoubleGene, Double> engine = Engine
+			.newBuilder(Genotype.of(DoubleChromosome.of(0.0, 2.0 * PI)), ff)
+			.populationSize(500)
+			.alterer(Alterer.of(
+				new Mutator<DoubleGene, Double>(0.03),
+				new MeanAlterer<>(0.6)))
+			.optimize(Optimize.MINIMUM)
+			.build();
+
+		final Object best = engine.stream().limit(100)
+			.collect(engine.BestEvolutionResult)
+			.getBestPhenotype();
+
+		System.out.println("Best: " + best);
+
+	}
+
 }
