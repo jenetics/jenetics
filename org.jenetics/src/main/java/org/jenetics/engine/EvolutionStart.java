@@ -103,7 +103,7 @@ final class EvolutionStart<
 	 * @throws java.lang.NullPointerException if the give {@code population} is
 	 *         {@code null}
 	 */
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionStart<G, C> of(
 		final Population<G, C> population,
 		final int generation

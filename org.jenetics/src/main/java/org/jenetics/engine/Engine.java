@@ -56,7 +56,7 @@ import org.jenetics.util.Factory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date$</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-15 $</em>
  */
 public final class Engine<
 	G extends Gene<?, G>,
@@ -147,19 +147,6 @@ public final class Engine<
 		BestEvolutionResult = EvolutionResult.<G, C>best(_optimize);
 		BestPhenotype = EvolutionResult.<G, C>bestPhenotype(_optimize);
 		BestGenotype = EvolutionResult.<G, C>bestGenotype(_optimize);
-	}
-
-	/**
-	 * Create a new initial (random) population.
-	 *
-	 * @return a new, random population
-	 */
-	public Population<G, C> newPopulation() {
-		final int generation = 1;
-		final int size = _offspringCount + _survivorsCount;
-
-		return new Population<G, C>(size)
-			.fill(() -> newPhenotype(generation), size);
 	}
 
 	/**
@@ -332,8 +319,18 @@ public final class Engine<
 	public EvolutionStream<G, C> stream() {
 		return new EvolutionStreamImpl<>(
 			this::evolve,
-			() -> EvolutionStart.of(newPopulation(), 1)
+			this::evolutionStart
 		);
+	}
+
+	private EvolutionStart<G, C> evolutionStart() {
+		final int generation = 1;
+		final int size = _offspringCount + _survivorsCount;
+
+		final Population<G, C> population = new Population<G, C>(size)
+			.fill(() -> newPhenotype(generation), size);
+
+		return EvolutionStart.of(population, generation);
 	}
 
 	/**
@@ -342,9 +339,9 @@ public final class Engine<
 	 *
 	 * @param genotypes the initial individuals used for the evolution stream.
 	 *        Missing individuals are created and individuals not needed are
-	 *        removed.
+	 *        skipped.
 	 * @return a new evolution stream.
-	 * @throws java.lang.NullPointerException if the given {@code population} is
+	 * @throws java.lang.NullPointerException if the given {@code genotypes} is
 	 *         {@code null}.
 	 * @throws java.lang.IllegalArgumentException if the given {@code genotypes}
 	 *         collection is empty.
@@ -360,12 +357,16 @@ public final class Engine<
 		}
 
 		// Lazy population evaluation.
-		final Supplier<Population<G, C>> population = () -> Stream.concat(
-			genotypes.stream(),
-			Stream.generate(genotypes.iterator().next()::newInstance)
-		).limit(_offspringCount + _survivorsCount)
-			.map(gt -> Phenotype.of(gt, _fitnessFunction, _fitnessScaler, 1))
-			.collect(Population.toPopulation());
+		final Supplier<Population<G, C>> population = () -> {
+			final Stream<Genotype<G>> stream = Stream.concat(
+				genotypes.stream(),
+				Stream.generate(genotypes.iterator().next()::newInstance)
+			);
+
+			return stream.limit(_offspringCount + _survivorsCount)
+				.map(gt -> Phenotype.of(gt, _fitnessFunction, _fitnessScaler, 1))
+				.collect(Population.toPopulation());
+		};
 
 		return new EvolutionStreamImpl<>(
 			this::evolve,
@@ -521,7 +522,7 @@ public final class Engine<
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 3.0
-	 * @version 3.0 &mdash; <em>$Date$</em>
+	 * @version 3.0 &mdash; <em>$Date: 2014-09-15 $</em>
 	 */
 	public static final class Builder<
 		G extends Gene<?, G>,
