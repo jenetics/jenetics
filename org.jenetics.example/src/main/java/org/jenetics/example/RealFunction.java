@@ -33,7 +33,7 @@ import org.jenetics.MeanAlterer;
 import org.jenetics.Mutator;
 import org.jenetics.NumberStatistics;
 import org.jenetics.Optimize;
-import org.jenetics.engine.EvolutionEngine;
+import org.jenetics.engine.Engine;
 import org.jenetics.util.Factory;
 
 final class Real
@@ -83,9 +83,9 @@ class RealFunction2 {
 	}
 
 	public static void main() {
-		final EvolutionEngine<DoubleGene, Double> engine = EvolutionEngine.newBuilder(
-				RealFunction2::evaluate,
-				DoubleChromosome.of(0.0, 2.0*PI))
+		final Engine<DoubleGene, Double> engine = Engine.newBuilder(
+			RealFunction2::evaluate,
+			DoubleChromosome.of(0.0, 2.0*PI))
 			.populationSize(500)
 			.alterers(
 				new Mutator<>(0.03),
