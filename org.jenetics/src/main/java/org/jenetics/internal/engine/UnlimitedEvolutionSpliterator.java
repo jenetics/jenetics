@@ -33,9 +33,9 @@ import org.jenetics.Gene;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-10 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-15 $</em>
  */
-final class UnlimitedEvolutionSpliterator<
+public final class UnlimitedEvolutionSpliterator<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
@@ -47,7 +47,7 @@ final class UnlimitedEvolutionSpliterator<
 
 	private EvolutionStart<G, C> _start;
 
-	UnlimitedEvolutionSpliterator(
+	public UnlimitedEvolutionSpliterator(
 		final Function<EvolutionStart<G, C>, EvolutionResult<G, C>> evolution,
 		final Supplier<EvolutionStart<G, C>> initial
 	) {

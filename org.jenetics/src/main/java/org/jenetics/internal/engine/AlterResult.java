@@ -38,9 +38,9 @@ import org.jenetics.Population;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-19 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-15 $</em>
  */
-final class AlterResult<
+public final class AlterResult<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >

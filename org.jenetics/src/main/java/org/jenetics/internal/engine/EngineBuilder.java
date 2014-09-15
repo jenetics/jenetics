@@ -29,6 +29,7 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.function.Function;
 
 import org.jenetics.Alterer;
+import org.jenetics.EvolutionEngine;
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
 import org.jenetics.Mutator;
@@ -41,7 +42,7 @@ import org.jenetics.util.Factory;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-13 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-15 $</em>
  */
 public final class EngineBuilder<
 	G extends Gene<?, G>,
@@ -68,7 +69,7 @@ public final class EngineBuilder<
 
 	private Executor _executor = ForkJoinPool.commonPool();
 
-	EngineBuilder(
+	public EngineBuilder(
 		final Factory<Genotype<G>> genotypeFactory,
 		final Function<? super Genotype<G>, ? extends C> fitnessFunction
 	) {
@@ -152,8 +153,8 @@ public final class EngineBuilder<
 		return this;
 	}
 
-	public Engine<G, C> build() {
-		return new Engine<>(
+	public EvolutionEngine<G, C> build() {
+		return new EvolutionEngine<>(
 			_fitnessFunction,
 			_fitnessScaler,
 			_genotypeFactory,

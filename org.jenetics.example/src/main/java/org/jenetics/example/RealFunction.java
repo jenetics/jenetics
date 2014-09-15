@@ -25,10 +25,9 @@ import static java.lang.Math.sin;
 
 import java.util.function.Function;
 
-import org.jenetics.internal.engine.Engine;
-
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
+import org.jenetics.EvolutionEngine;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.MeanAlterer;
@@ -84,7 +83,7 @@ class RealFunction2 {
 	}
 
 	public static void main() {
-		final Engine<DoubleGene, Double> engine = Engine.newBuilder(
+		final EvolutionEngine<DoubleGene, Double> engine = EvolutionEngine.newBuilder(
 				RealFunction2::evaluate,
 				DoubleChromosome.of(0.0, 2.0*PI))
 			.populationSize(500)

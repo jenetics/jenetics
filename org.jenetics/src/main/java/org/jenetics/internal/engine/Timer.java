@@ -32,9 +32,9 @@ import org.jenetics.internal.util.NanoClock;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-19 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-15 $</em>
  */
-final class Timer {
+public final class Timer {
 
 	private final Clock _clock;
 
