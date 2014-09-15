@@ -45,13 +45,13 @@ import java.util.stream.Stream;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date$</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-15 $</em>
  */
-public abstract class StreamProxy<T> implements Stream<T> {
+abstract class StreamProxy<T> implements Stream<T> {
 
 	protected final Stream<T> _proxy;
 
-	protected StreamProxy(final Stream<T> proxy) {
+	StreamProxy(final Stream<T> proxy) {
 		_proxy = requireNonNull(proxy);
 	}
 
