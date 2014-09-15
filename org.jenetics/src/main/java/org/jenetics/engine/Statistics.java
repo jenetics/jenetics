@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.engine;
+package org.jenetics.engine;
 
 import static org.jenetics.internal.util.Equality.eq;
 
@@ -36,7 +36,7 @@ import org.jenetics.Phenotype;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-09-10 $</em>
+ * @version 2.0 &mdash; <em>$Date$</em>
  */
 public class Statistics<
 	G extends Gene<?, G>,

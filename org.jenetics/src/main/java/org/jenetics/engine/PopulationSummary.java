@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.engine;
+package org.jenetics.engine;
 
 import static java.lang.String.format;
 import static org.jenetics.internal.util.Equality.eq;
@@ -177,7 +177,7 @@ public final class PopulationSummary<
 	 *         {@code null}.
 	 */
 	static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	PopulationSummary<G, C> of(final org.jenetics.internal.engine.PopulationSummaryStatistics<G, C> statistics) {
+	PopulationSummary<G, C> of(final PopulationSummaryStatistics<G, C> statistics) {
 		return of(
 			(int)statistics.getAgeSummary().getCount(),
 			statistics.getBest(),
@@ -202,7 +202,7 @@ public final class PopulationSummary<
 	) {
 		return Collector.<
 			Phenotype<G, C>,
-			org.jenetics.internal.engine.PopulationSummaryStatistics<G, C>,
+			PopulationSummaryStatistics<G, C>,
 			PopulationSummary<G, C>
 		>of(
 			() -> new PopulationSummaryStatistics<>(optimize, generation),

@@ -17,74 +17,71 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.engine;
+package org.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Spliterator;
+import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import org.jenetics.Gene;
 
 /**
+ * Spliterator which is used for building the evolution stream.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-13 $</em>
+ * @version 3.0 &mdash; <em>$Date$</em>
  */
-public class EvolutionStream<
+public final class UnlimitedEvolutionSpliterator<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	extends StreamProxy<EvolutionResult<G, C>>
+	implements Spliterator<EvolutionResult<G, C>>
 {
 
 	private final Function<EvolutionStart<G, C>, EvolutionResult<G, C>> _evolution;
 	private final Supplier<EvolutionStart<G, C>> _initial;
 
-	EvolutionStream(
+	private EvolutionStart<G, C> _start;
+
+	public UnlimitedEvolutionSpliterator(
 		final Function<EvolutionStart<G, C>, EvolutionResult<G, C>> evolution,
-		final Supplier<EvolutionStart<G, C>> initial,
-		final Stream<EvolutionResult<G, C>> stream
+		final Supplier<EvolutionStart<G, C>> initial
 	) {
-		super(stream);
 		_evolution = requireNonNull(evolution);
 		_initial = requireNonNull(initial);
 	}
 
-	EvolutionStream(
-		final Function<EvolutionStart<G, C>, EvolutionResult<G, C>> evolution,
-		final Supplier<EvolutionStart<G, C>> initial
+	@Override
+	public boolean tryAdvance(
+		final Consumer<? super EvolutionResult<G, C>> action
 	) {
-		this(
-			evolution,
-			initial,
-			StreamSupport.stream(
-				new UnlimitedEvolutionSpliterator<>(
-					evolution,
-					initial
-				),
-				false
-			)
-		);
+		if (_start == null) {
+			_start = _initial.get();
+		}
+
+		final EvolutionResult<G, C> result = _evolution.apply(_start);
+		action.accept(result);
+		_start = result.next();
+
+		return true;
 	}
 
-	public Stream<EvolutionResult<G, C>>
-	limit(final Predicate<EvolutionResult<G, C>> terminate) {
-		return new EvolutionStream<G, C>(
-			_evolution,
-			_initial,
-			StreamSupport.stream(
-				new TerminatingEvolutionSpliterator<>(
-					_evolution,
-					_initial,
-					terminate
-				),
-				false
-			)
-		);
+	@Override
+	public Spliterator<EvolutionResult<G, C>> trySplit() {
+		return null;
 	}
 
+	@Override
+	public long estimateSize() {
+		return Long.MAX_VALUE;
+	}
+
+	@Override
+	public int characteristics() {
+		return Spliterator.NONNULL | Spliterator.IMMUTABLE;
+	}
 }

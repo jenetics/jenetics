@@ -27,7 +27,7 @@ import java.util.function.Function;
 
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
-import org.jenetics.EvolutionEngine;
+import org.jenetics.engine.EvolutionEngine;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.MeanAlterer;

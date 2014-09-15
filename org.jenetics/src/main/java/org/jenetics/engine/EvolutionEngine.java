@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package org.jenetics.engine;
 
 import static java.lang.Math.round;
 import static java.lang.String.format;
@@ -30,19 +30,17 @@ import java.util.stream.Collector;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import org.jenetics.internal.engine.AlterResult;
-import org.jenetics.internal.engine.EngineBuilder;
-import org.jenetics.internal.engine.EvolutionDurations;
-import org.jenetics.internal.engine.EvolutionResult;
-import org.jenetics.internal.engine.EvolutionStart;
-import org.jenetics.internal.engine.FilterResult;
-import org.jenetics.internal.engine.TimedExecutor;
-import org.jenetics.internal.engine.TimedResult;
-import org.jenetics.internal.engine.Timer;
-import org.jenetics.internal.engine.UnlimitedEvolutionSpliterator;
 import org.jenetics.internal.util.Concurrency;
 import org.jenetics.internal.util.require;
 
+import org.jenetics.Alterer;
+import org.jenetics.Chromosome;
+import org.jenetics.Gene;
+import org.jenetics.Genotype;
+import org.jenetics.Optimize;
+import org.jenetics.Phenotype;
+import org.jenetics.Population;
+import org.jenetics.Selector;
 import org.jenetics.util.Factory;
 
 /**
@@ -51,7 +49,7 @@ import org.jenetics.util.Factory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-15 $</em>
+ * @version 3.0 &mdash; <em>$Date$</em>
  */
 public final class EvolutionEngine<
 	G extends Gene<?, G>,

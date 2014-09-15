@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.engine;
+package org.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.Equality.eq;
@@ -31,16 +31,16 @@ import org.jenetics.Gene;
 import org.jenetics.Population;
 
 /**
- * Represent the result of the validation/filtering step.
+ * Represents the result of the alter step.
  *
  * @param <G> the gene type
  * @param <C> the fitness type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-15 $</em>
+ * @version 3.0 &mdash; <em>$Date$</em>
  */
-public final class FilterResult<
+public final class AlterResult<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
@@ -49,55 +49,44 @@ public final class FilterResult<
 	private static final long serialVersionUID = 1L;
 
 	private final Population<G, C> _population;
-	private final int _killCount;
-	private final int _invalidCount;
+	private final int _alterCount;
 
-	private FilterResult(
+	private AlterResult(
 		final Population<G, C> population,
-		final int killCount,
-		final int invalidCount
+		final int alterCount
 	) {
 		_population = requireNonNull(population);
-		_killCount = killCount;
-		_invalidCount = invalidCount;
+		_alterCount = alterCount;
 	}
 
 	public Population<G, C> getPopulation() {
 		return _population;
 	}
 
-	public int getKillCount() {
-		return _killCount;
-	}
-
-	public int getInvalidCount() {
-		return _invalidCount;
+	public int getAlterCount() {
+		return _alterCount;
 	}
 
 	@Override
 	public int hashCode() {
 		return Hash.of(getClass())
 			.and(_population)
-			.and(_killCount)
-			.and(_invalidCount).value();
+			.and(_alterCount).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return Equality.of(this, obj).test(result ->
 			eq(_population, result._population) &&
-			eq(_killCount, result._killCount) &&
-			eq(_invalidCount, result._invalidCount)
+			eq(_alterCount, result._alterCount)
 		);
 	}
 
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	FilterResult<G, C> of(
+	AlterResult<G, C> of(
 		final Population<G, C> population,
-		final int killCount,
-		final int invalidCount
+		final int alterCount
 	) {
-		return new FilterResult<>(population, killCount, invalidCount);
+		return new AlterResult<>(population, alterCount);
 	}
-
 }
