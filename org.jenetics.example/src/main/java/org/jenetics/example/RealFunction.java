@@ -27,13 +27,13 @@ import java.util.function.Function;
 
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
-import org.jenetics.engine.EvolutionEngine;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.MeanAlterer;
 import org.jenetics.Mutator;
 import org.jenetics.NumberStatistics;
 import org.jenetics.Optimize;
+import org.jenetics.engine.EvolutionEngine;
 import org.jenetics.util.Factory;
 
 final class Real
