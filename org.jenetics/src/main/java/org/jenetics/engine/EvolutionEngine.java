@@ -21,6 +21,7 @@ package org.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.function.Function;
@@ -108,7 +109,7 @@ public final class EvolutionEngine<
 	 * @throws IllegalArgumentException if the given integer values are smaller
 	 *         than one.
 	 */
-	public EvolutionEngine(
+	EvolutionEngine(
 		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
 		final Function<? super C, ? extends C> fitnessScaler,
 		final Factory<Genotype<G>> genotypeFactory,
@@ -141,109 +142,35 @@ public final class EvolutionEngine<
 	}
 
 	/**
-	 * Return the fitness function of the GA engine.
+	 * Create a new initial (random) population.
 	 *
-	 * @return the fitness function
+	 * @return a new, random population
 	 */
-	public Function<? super Genotype<G>, ? extends C> getFitnessFunction() {
-		return _fitnessFunction;
-	}
-
-	/**
-	 * Return the fitness scaler of the GA engine.
-	 *
-	 * @return the fitness scaler
-	 */
-	public Function<? super C, ? extends C> getFitnessScaler() {
-		return _fitnessScaler;
-	}
-
-	/**
-	 * Return the used genotype {@link Factory} of the GA. The genotype factory
-	 * is used for creating the initial population and new, random individuals
-	 * when needed (as replacement for invalid and/or died genotypes).
-	 *
-	 * @return the used genotype {@link Factory} of the GA.
-	 */
-	public Factory<Genotype<G>> getGenotypeFactory() {
-		return _genotypeFactory;
-	}
-
-	/**
-	 * Return the used survivor {@link Selector} of the GA.
-	 *
-	 * @return the used survivor {@link Selector} of the GA.
-	 */
-	public Selector<G, C> getSurvivorsSelector() {
-		return _survivorsSelector;
-	}
-
-	/**
-	 * Return the used offspring {@link Selector} of the GA.
-	 *
-	 * @return the used offspring {@link Selector} of the GA.
-	 */
-	public Selector<G, C> getOffspringSelectors() {
-		return _offspringSelector;
-	}
-
-	/**
-	 * Return the used {@link Alterer} of the GA.
-	 *
-	 * @return the used {@link Alterer} of the GA.
-	 */
-	public Alterer<G, C> getAlterer() {
-		return _alterer;
-	}
-
-	/**
-	 * Return the number of selected offsprings.
-	 *
-	 * @return the number of selected offsprings
-	 */
-	public int getOffspringCount() {
-		return _offspringCount;
-	}
-
-	/**
-	 * The number of selected survivors.
-	 *
-	 * @return the number of selected survivors
-	 */
-	public int getSurvivorsCount() {
-		return _survivorsCount;
-	}
-
-	/**
-	 * Return the maximal allowed phenotype age.
-	 *
-	 * @return the maximal allowed phenotype age
-	 */
-	public int getMaximalPhenotypeAge() {
-		return _maximalPhenotypeAge;
-	}
-
-	/**
-	 * Return the optimization strategy.
-	 *
-	 * @return the optimization strategy
-	 */
-	public Optimize getOptimize() {
-		return _optimize;
-	}
-
-	/**
-	 * Create a new start generation.
-	 *
-	 * @return a new evolution start object
-	 */
-	public EvolutionStart<G, C> evolutionStart() {
+	public Population<G, C> newPopulation() {
 		final int generation = 1;
 		final int size = _offspringCount + _survivorsCount;
-		final Population<G, C> population = new Population<>(size);
-		population.fill(() -> newPhenotype(generation), size);
 
-		return EvolutionStart.of(evaluate(population), generation);
+		return new Population<G, C>(size)
+			.fill(() -> newPhenotype(generation), size);
+	}
+
+	/**
+	 * Perform one evolution step with the given {@code population} and
+	 * {@code generation}. New phenotypes are created with the fitness function
+	 * and fitness scaler defined by this <em>engine</em>.
+	 *
+	 * @param population the population to evolve
+	 * @param generation the current generation; used for calculating the
+	 *        phenotype age.
+	 * @return the evolution result
+	 * @throws java.lang.NullPointerException if the given {@code population} is
+	 *         {@code null}
+	 */
+	public EvolutionResult<G, C> evolve(
+		final Population<G, C> population,
+		final int generation
+	) {
+		return evolve(EvolutionStart.of(population, generation));
 	}
 
 	/**
@@ -252,7 +179,7 @@ public final class EvolutionEngine<
 	 * @param start the evolution start state
 	 * @return the resulting evolution state
 	 */
-	public EvolutionResult<G, C> evolve(final EvolutionStart<G, C> start) {
+	EvolutionResult<G, C> evolve(final EvolutionStart<G, C> start) {
 		final Timer timer = Timer.of().start();
 
 		// Select the offspring population.
@@ -398,22 +325,41 @@ public final class EvolutionEngine<
 		return StreamSupport.stream(
 			new UnlimitedEvolutionSpliterator<>(
 				this::evolve,
-				this::evolutionStart
+				() -> EvolutionStart.of(newPopulation(), 1)
 			),
 			false
 		);
 	}
 
 	/**
-	 * Create a new evolution stream with a newly created population.
+	 * Create a new evolution stream with the given initial individuals. The
+	 * given {@code genotypes} must contain at least one element.
 	 *
-	 * @param population the initial population used for the evolution stream
+	 * @param genotypes the initial individuals used for the evolution stream.
+	 *        Missing individuals are created and individuals not needed are
+	 *        removed.
 	 * @return a new evolution stream.
 	 * @throws java.lang.NullPointerException if the given {@code population} is
 	 *         {@code null}.
+	 * @throws java.lang.IllegalArgumentException if the given {@code genotypes}
+	 *         collection is empty.
 	 */
-	public Stream<EvolutionResult<G, C>> stream(final Population<G, C> population) {
-		requireNonNull(population);
+	public Stream<EvolutionResult<G, C>> stream(
+		final Collection<Genotype<G>> genotypes
+	) {
+		requireNonNull(genotypes);
+		if (genotypes.isEmpty()) {
+			throw new IllegalArgumentException(
+				"Given genotype collection is empty."
+			);
+		}
+
+		final Population<G, C> population = Stream.concat(
+			genotypes.stream(),
+			Stream.generate(genotypes.iterator().next()::newInstance)
+		).limit(_offspringCount + _survivorsCount)
+			.map(gt -> Phenotype.of(gt, _fitnessFunction, _fitnessScaler, 1))
+			.collect(Population.toPopulation());
 
 		return StreamSupport.stream(
 			new UnlimitedEvolutionSpliterator<>(
@@ -424,16 +370,106 @@ public final class EvolutionEngine<
 		);
 	}
 
-//	public Stream<EvolutionResult<G, C>> stream(final int generations) {
-//		return StreamSupport.stream(
-//			new LimitedEvolutionSpliterator<>(
-//				this::evolve,
-//				evolutionStart(),
-//				generations
-//			),
-//			false
-//		);
-//	}
+	/* *************************************************************************
+	 * Property access methods.
+	 **************************************************************************/
+
+	/**
+	 * Return the fitness function of the GA engine.
+	 *
+	 * @return the fitness function
+	 */
+	public Function<? super Genotype<G>, ? extends C> getFitnessFunction() {
+		return _fitnessFunction;
+	}
+
+	/**
+	 * Return the fitness scaler of the GA engine.
+	 *
+	 * @return the fitness scaler
+	 */
+	public Function<? super C, ? extends C> getFitnessScaler() {
+		return _fitnessScaler;
+	}
+
+	/**
+	 * Return the used genotype {@link Factory} of the GA. The genotype factory
+	 * is used for creating the initial population and new, random individuals
+	 * when needed (as replacement for invalid and/or died genotypes).
+	 *
+	 * @return the used genotype {@link Factory} of the GA.
+	 */
+	public Factory<Genotype<G>> getGenotypeFactory() {
+		return _genotypeFactory;
+	}
+
+	/**
+	 * Return the used survivor {@link Selector} of the GA.
+	 *
+	 * @return the used survivor {@link Selector} of the GA.
+	 */
+	public Selector<G, C> getSurvivorsSelector() {
+		return _survivorsSelector;
+	}
+
+	/**
+	 * Return the used offspring {@link Selector} of the GA.
+	 *
+	 * @return the used offspring {@link Selector} of the GA.
+	 */
+	public Selector<G, C> getOffspringSelectors() {
+		return _offspringSelector;
+	}
+
+	/**
+	 * Return the used {@link Alterer} of the GA.
+	 *
+	 * @return the used {@link Alterer} of the GA.
+	 */
+	public Alterer<G, C> getAlterer() {
+		return _alterer;
+	}
+
+	/**
+	 * Return the number of selected offsprings.
+	 *
+	 * @return the number of selected offsprings
+	 */
+	public int getOffspringCount() {
+		return _offspringCount;
+	}
+
+	/**
+	 * The number of selected survivors.
+	 *
+	 * @return the number of selected survivors
+	 */
+	public int getSurvivorsCount() {
+		return _survivorsCount;
+	}
+
+	/**
+	 * Return the maximal allowed phenotype age.
+	 *
+	 * @return the maximal allowed phenotype age
+	 */
+	public int getMaximalPhenotypeAge() {
+		return _maximalPhenotypeAge;
+	}
+
+	/**
+	 * Return the optimization strategy.
+	 *
+	 * @return the optimization strategy
+	 */
+	public Optimize getOptimize() {
+		return _optimize;
+	}
+
+
+	/* *************************************************************************
+	 * Builder methods.
+	 **************************************************************************/
 
 	/**
 	 * Create a new evolution {@code EngineBuilder} with the given fitness

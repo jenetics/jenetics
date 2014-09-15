@@ -45,7 +45,7 @@ import org.jenetics.stat.MinMax;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date$</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-15 $</em>
  */
 public final class EvolutionResult<
 	G extends Gene<?, G>,
@@ -201,7 +201,7 @@ public final class EvolutionResult<
 	 *
 	 * @return the next evolution start object
 	 */
-	public EvolutionStart<G, C> next() {
+	EvolutionStart<G, C> next() {
 		return EvolutionStart.of(_population, _generation + 1);
 	}
 
@@ -257,7 +257,7 @@ public final class EvolutionResult<
 		return (a, b) -> opt.compare(a.getWorstPhenotype(), b.getWorstPhenotype());
 	}
 
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Collector<EvolutionResult<G, C>, ?, EvolutionResult<G, C>>
 	best(final Optimize opt) {
 		final Comparator<EvolutionResult<G, C>> comparator = (a, b) ->
@@ -271,7 +271,7 @@ public final class EvolutionResult<
 		);
 	}
 
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Collector<EvolutionResult<G, C>, ?, Phenotype<G, C>>
 	bestPhenotype(final Optimize opt) {
 		final Comparator<EvolutionResult<G, C>> comparator = (a, b) ->
@@ -285,7 +285,7 @@ public final class EvolutionResult<
 		);
 	}
 
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Collector<EvolutionResult<G, C>, ?, Genotype<G>>
 	bestGenotype(final Optimize opt) {
 		final Comparator<EvolutionResult<G, C>> comparator = (a, b) ->
@@ -299,7 +299,7 @@ public final class EvolutionResult<
 		);
 	}
 
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Collector<EvolutionResult<G, C>, ?, EvolutionResult<G, C>>
 	worst(final Optimize opt) {
 		final Comparator<EvolutionResult<G, C>> comparator = (a, b) ->
@@ -331,7 +331,7 @@ public final class EvolutionResult<
 	 * @throws java.lang.NullPointerException if one of the parameters is
 	 *         {@code null}
 	 */
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionResult<G, C> of(
 		final Optimize optimize,
 		final Population<G, C> population,
