@@ -49,38 +49,38 @@ import java.util.stream.Stream;
  */
 abstract class StreamProxy<T> implements Stream<T> {
 
-	protected final Stream<T> _proxy;
+	final Stream<T> _self;
 
-	StreamProxy(final Stream<T> proxy) {
-		_proxy = requireNonNull(proxy);
+	StreamProxy(final Stream<T> self) {
+		_self = requireNonNull(self);
 	}
 
 	@Override
 	public Stream<T> limit(final long maxSize) {
-		return _proxy.limit(maxSize);
+		return _self.limit(maxSize);
 	}
 
 	@Override
 	public Stream<T>
 	filter(final Predicate<? super T> predicate) {
-		return _proxy.filter(predicate);
+		return _self.filter(predicate);
 	}
 
 	public boolean
 	allMatch(final Predicate<? super T> predicate) {
-		return _proxy.allMatch(predicate);
+		return _self.allMatch(predicate);
 	}
 
 	@Override
 	public boolean
 	anyMatch(final Predicate<? super T> predicate) {
-		return _proxy.anyMatch(predicate);
+		return _self.anyMatch(predicate);
 	}
 
 	@Override
 	public <R, A> R
 	collect(final Collector<? super T, A, R> collector) {
-		return _proxy.collect(collector);
+		return _self.collect(collector);
 	}
 
 	@Override
@@ -89,128 +89,128 @@ abstract class StreamProxy<T> implements Stream<T> {
 		final BiConsumer<R, ? super T> accumulator,
 		final BiConsumer<R, R> combiner
 	) {
-		return _proxy.collect(supplier, accumulator, combiner);
+		return _self.collect(supplier, accumulator, combiner);
 	}
 
 	@Override
 	public long count() {
-		return _proxy.count();
+		return _self.count();
 	}
 
 	@Override
 	public Stream<T> distinct() {
-		return _proxy.distinct();
+		return _self.distinct();
 	}
 
 	@Override
 	public Optional<T> findAny() {
-		return _proxy.findAny();
+		return _self.findAny();
 	}
 
 	@Override
 	public Optional<T> findFirst() {
-		return _proxy.findFirst();
+		return _self.findFirst();
 	}
 
 	@Override
 	public <R> Stream<R> flatMap(
 		final Function<? super T, ? extends Stream<? extends R>> mapper
 	) {
-		return _proxy.flatMap(mapper);
+		return _self.flatMap(mapper);
 	}
 
 	@Override
 	public DoubleStream flatMapToDouble(
 		final Function<? super T, ? extends DoubleStream> mapper
 	) {
-		return _proxy.flatMapToDouble(mapper);
+		return _self.flatMapToDouble(mapper);
 	}
 
 	@Override
 	public IntStream flatMapToInt(
 		final Function<? super T, ? extends IntStream> mapper
 	) {
-		return _proxy.flatMapToInt(mapper);
+		return _self.flatMapToInt(mapper);
 	}
 
 	@Override
 	public LongStream flatMapToLong(
 		final Function<? super T, ? extends LongStream> mapper
 	) {
-		return _proxy.flatMapToLong(mapper);
+		return _self.flatMapToLong(mapper);
 	}
 
 	@Override
 	public void forEach(final Consumer<? super T> action) {
-		_proxy.forEach(action);
+		_self.forEach(action);
 	}
 
 	@Override
 	public void forEachOrdered(final Consumer<? super T> action) {
-		_proxy.forEachOrdered(action);
+		_self.forEachOrdered(action);
 	}
 
 	@Override
 	public <R> Stream<R> map(
 		final Function<? super T, ? extends R> mapper
 	) {
-		return _proxy.map(mapper);
+		return _self.map(mapper);
 	}
 
 	@Override
 	public DoubleStream mapToDouble(
 		final ToDoubleFunction<? super T> mapper
 	) {
-		return _proxy.mapToDouble(mapper);
+		return _self.mapToDouble(mapper);
 	}
 
 	@Override
 	public IntStream mapToInt(
 		final ToIntFunction<? super T> mapper
 	) {
-		return _proxy.mapToInt(mapper);
+		return _self.mapToInt(mapper);
 	}
 
 	@Override
 	public LongStream mapToLong(
 		final ToLongFunction<? super T> mapper
 	) {
-		return _proxy.mapToLong(mapper);
+		return _self.mapToLong(mapper);
 	}
 
 	@Override
 	public Optional<T> max(
 		final Comparator<? super T> comparator
 	) {
-		return _proxy.max(comparator);
+		return _self.max(comparator);
 	}
 
 	@Override
 	public Optional<T> min(
 		final Comparator<? super T> comparator
 	) {
-		return _proxy.min(comparator);
+		return _self.min(comparator);
 	}
 
 	@Override
 	public boolean noneMatch(
 		final Predicate<? super T> predicate
 	) {
-		return _proxy.noneMatch(predicate);
+		return _self.noneMatch(predicate);
 	}
 
 	@Override
 	public Stream<T> peek(
 		final Consumer<? super T> action
 	) {
-		return _proxy.peek(action);
+		return _self.peek(action);
 	}
 
 	@Override
 	public Optional<T> reduce(
 		final BinaryOperator<T> accumulator
 	) {
-		return _proxy.reduce(accumulator);
+		return _self.reduce(accumulator);
 	}
 
 	@Override
@@ -218,7 +218,7 @@ abstract class StreamProxy<T> implements Stream<T> {
 		final T identity,
 		final BinaryOperator<T> accumulator
 	) {
-		return _proxy.reduce(identity, accumulator);
+		return _self.reduce(identity, accumulator);
 	}
 
 	@Override
@@ -227,74 +227,74 @@ abstract class StreamProxy<T> implements Stream<T> {
 		final BiFunction<U, ? super T, U> accumulator,
 		final BinaryOperator<U> combiner
 	) {
-		return _proxy.reduce(identity, accumulator, combiner);
+		return _self.reduce(identity, accumulator, combiner);
 	}
 
 	@Override
 	public Stream<T> skip(final long n) {
-		return _proxy.skip(n);
+		return _self.skip(n);
 	}
 
 	@Override
 	public Stream<T> sorted() {
-		return _proxy.sorted();
+		return _self.sorted();
 	}
 
 	@Override
 	public Stream<T> sorted(
 		final Comparator<? super T> comparator
 	) {
-		return _proxy.sorted(comparator);
+		return _self.sorted(comparator);
 	}
 
 	@Override
 	public Object[] toArray() {
-		return _proxy.toArray();
+		return _self.toArray();
 	}
 
 	@Override
 	public <A> A[] toArray(IntFunction<A[]> generator) {
-		return _proxy.toArray(generator);
+		return _self.toArray(generator);
 	}
 
 	@Override
 	public void close() {
-		_proxy.close();
+		_self.close();
 	}
 
 	@Override
 	public boolean isParallel() {
-		return _proxy.isParallel();
+		return _self.isParallel();
 	}
 
 	@Override
 	public Iterator<T> iterator() {
-		return _proxy.iterator();
+		return _self.iterator();
 	}
 
 	@Override
 	public Stream<T> onClose(final Runnable closeHandler) {
-		return _proxy.onClose(closeHandler);
+		return _self.onClose(closeHandler);
 	}
 
 	@Override
 	public Stream<T> parallel() {
-		return _proxy.parallel();
+		return _self.parallel();
 	}
 
 	@Override
 	public Stream<T> sequential() {
-		return _proxy.sequential();
+		return _self.sequential();
 	}
 
 	@Override
 	public Spliterator<T> spliterator() {
-		return _proxy.spliterator();
+		return _self.spliterator();
 	}
 
 	@Override
 	public Stream<T> unordered() {
-		return _proxy.unordered();
+		return _self.unordered();
 	}
 
 }

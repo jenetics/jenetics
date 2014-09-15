@@ -34,17 +34,18 @@ import org.jenetics.Gene;
  * @since 3.0
  * @version 3.0 &mdash; <em>$Date$</em>
  */
-public class EvolutionStream<
+final class EvolutionStreamImpl<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
 	extends StreamProxy<EvolutionResult<G, C>>
+	implements EvolutionStream<G, C>
 {
 
 	private final Function<EvolutionStart<G, C>, EvolutionResult<G, C>> _evolution;
 	private final Supplier<EvolutionStart<G, C>> _initial;
 
-	EvolutionStream(
+	private EvolutionStreamImpl(
 		final Function<EvolutionStart<G, C>, EvolutionResult<G, C>> evolution,
 		final Supplier<EvolutionStart<G, C>> initial,
 		final Stream<EvolutionResult<G, C>> stream
@@ -54,7 +55,7 @@ public class EvolutionStream<
 		_initial = requireNonNull(initial);
 	}
 
-	EvolutionStream(
+	EvolutionStreamImpl(
 		final Function<EvolutionStart<G, C>, EvolutionResult<G, C>> evolution,
 		final Supplier<EvolutionStart<G, C>> initial
 	) {
@@ -71,9 +72,10 @@ public class EvolutionStream<
 		);
 	}
 
+	@Override
 	public Stream<EvolutionResult<G, C>>
 	limit(final Predicate<EvolutionResult<G, C>> terminate) {
-		return new EvolutionStream<G, C>(
+		return new EvolutionStreamImpl<G, C>(
 			_evolution,
 			_initial,
 			StreamSupport.stream(

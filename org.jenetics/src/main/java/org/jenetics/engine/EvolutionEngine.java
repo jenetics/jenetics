@@ -19,12 +19,17 @@
  */
 package org.jenetics.engine;
 
+import static java.lang.Math.round;
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static org.jenetics.internal.util.require.probability;
 
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ForkJoinPool;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -36,10 +41,14 @@ import org.jenetics.Alterer;
 import org.jenetics.Chromosome;
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
+import org.jenetics.Mutator;
 import org.jenetics.Optimize;
 import org.jenetics.Phenotype;
 import org.jenetics.Population;
 import org.jenetics.Selector;
+import org.jenetics.SinglePointCrossover;
+import org.jenetics.TournamentSelector;
+import org.jenetics.engine.EvolutionResult.Durations;
 import org.jenetics.util.Factory;
 
 /**
@@ -227,7 +236,7 @@ public final class EvolutionEngine<
 			.thenApply(TimedResult.of(this::evaluate))
 			.join();
 
-		final EvolutionDurations durations = EvolutionDurations.of(
+		final Durations durations = Durations.of(
 			offspring.join().getDuration(),
 			survivors.join().getDuration(),
 			alteredOffspring.join().getDuration(),
@@ -321,13 +330,10 @@ public final class EvolutionEngine<
 	 *
 	 * @return a new evolution stream.
 	 */
-	public Stream<EvolutionResult<G, C>> stream() {
-		return StreamSupport.stream(
-			new UnlimitedEvolutionSpliterator<>(
-				this::evolve,
-				() -> EvolutionStart.of(newPopulation(), 1)
-			),
-			false
+	public EvolutionStream<G, C> stream() {
+		return new EvolutionStreamImpl<>(
+			this::evolve,
+			() -> EvolutionStart.of(newPopulation(), 1)
 		);
 	}
 
@@ -344,7 +350,7 @@ public final class EvolutionEngine<
 	 * @throws java.lang.IllegalArgumentException if the given {@code genotypes}
 	 *         collection is empty.
 	 */
-	public Stream<EvolutionResult<G, C>> stream(
+	public EvolutionStream<G, C> stream(
 		final Collection<Genotype<G>> genotypes
 	) {
 		requireNonNull(genotypes);
@@ -354,19 +360,17 @@ public final class EvolutionEngine<
 			);
 		}
 
-		final Population<G, C> population = Stream.concat(
+		// Lazy population evaluation.
+		final Supplier<Population<G, C>> population = () -> Stream.concat(
 			genotypes.stream(),
 			Stream.generate(genotypes.iterator().next()::newInstance)
 		).limit(_offspringCount + _survivorsCount)
 			.map(gt -> Phenotype.of(gt, _fitnessFunction, _fitnessScaler, 1))
 			.collect(Population.toPopulation());
 
-		return StreamSupport.stream(
-			new UnlimitedEvolutionSpliterator<>(
-				this::evolve,
-				() -> EvolutionStart.of(population, 1)
-			),
-			false
+		return new EvolutionStreamImpl<>(
+			this::evolve,
+			() -> EvolutionStart.of(population.get(), 1)
 		);
 	}
 
@@ -482,11 +486,11 @@ public final class EvolutionEngine<
 	 * @return a new engine builder
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	EngineBuilder<G, C> newBuilder(
+	Builder<G, C> newBuilder(
 		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
 		final Factory<Genotype<G>> genotypeFactory
 	) {
-		return new EngineBuilder<>(genotypeFactory, fitnessFunction);
+		return new Builder<>(genotypeFactory, fitnessFunction);
 	}
 
 	/**
@@ -501,12 +505,157 @@ public final class EvolutionEngine<
 	 */
 	@SafeVarargs
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	EngineBuilder<G, C> newBuilder(
+	Builder<G, C> newBuilder(
 		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
 		final Chromosome<G>... chromosomes
 	) {
-		return new EngineBuilder<>(Genotype.of(chromosomes), fitnessFunction);
+		return new Builder<>(Genotype.of(chromosomes), fitnessFunction);
 	}
 
 
+
+
+	/* *************************************************************************
+	 * Inner classes
+	 **************************************************************************/
+
+	/**
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since 3.0
+	 * @version 3.0 &mdash; <em>$Date: 2014-09-15 $</em>
+	 */
+	public static final class Builder<
+		G extends Gene<?, G>,
+		C extends Comparable<? super C>
+	>
+	{
+
+		// No default values for this properties.
+		private Function<? super Genotype<G>, ? extends C> _fitnessFunction;
+		private Factory<Genotype<G>> _genotypeFactory;
+
+		// This are the properties which default values.
+		private Function<? super C, ? extends C> _fitnessScaler = Function.identity();
+		private Selector<G, C> _survivorsSelector = new TournamentSelector<>(3);
+		private Selector<G, C> _offspringSelector = new TournamentSelector<>(3);
+		private Alterer<G, C> _alterer = Alterer.of(
+			new SinglePointCrossover<G, C>(0.2),
+			new Mutator<G, C>(0.15)
+		);
+		private Optimize _optimize = Optimize.MAXIMUM;
+		private double _offspringFraction = 0.6;
+		private int _populationSize = 50;
+		private int _maximalPhenotypeAge = 70;
+
+		private Executor _executor = ForkJoinPool.commonPool();
+
+		private Builder(
+			final Factory<Genotype<G>> genotypeFactory,
+			final Function<? super Genotype<G>, ? extends C> fitnessFunction
+		) {
+			_genotypeFactory = requireNonNull(genotypeFactory);
+			_fitnessFunction = requireNonNull(fitnessFunction);
+		}
+
+		public Builder<G, C> fitnessFunction(
+			Function<? super Genotype<G>, ? extends C> function
+		) {
+			_fitnessFunction = requireNonNull(function);
+			return this;
+		}
+
+		public Builder<G, C> fitnessScaler(
+			final Function<? super C, ? extends C> scaler
+		) {
+			_fitnessScaler = requireNonNull(scaler);
+			return this;
+		}
+
+		public Builder<G, C> genotypeFactory(
+			final Factory<Genotype<G>> genotypeFactory
+		) {
+			_genotypeFactory = requireNonNull(genotypeFactory);
+			return this;
+		}
+
+		public Builder<G, C> offspringSelector(
+			final Selector<G, C> selector
+		) {
+			_offspringSelector = requireNonNull(selector);
+			return this;
+		}
+
+		public Builder<G, C> survivorsSelector(
+			final Selector<G, C> selector
+		) {
+			_survivorsSelector = requireNonNull(selector);
+			return this;
+		}
+
+		@SafeVarargs
+		public final Builder<G, C> alterers(final Alterer<G, C>... alterers) {
+			_alterer = Alterer.of(alterers);
+			return this;
+		}
+
+		public Builder<G, C> optimize(final Optimize optimize) {
+			_optimize = requireNonNull(optimize);
+			return this;
+		}
+
+		public Builder<G, C> offspringFraction(final double fraction) {
+			_offspringFraction = probability(fraction);
+			return this;
+		}
+
+		public Builder<G, C> populationSize(final int size) {
+			if (size < 1) {
+				throw new IllegalArgumentException(format(
+					"Population size must be greater than zero, but was %s.", size
+				));
+			}
+			_populationSize = size;
+			return this;
+		}
+
+		public Builder<G, C> maximalPhenotypeAge(final int age) {
+			if (age < 1) {
+				throw new IllegalArgumentException(format(
+					"Phenotype age must be greater than one, but was %s.", age
+				));
+			}
+			_maximalPhenotypeAge = age;
+			return this;
+		}
+
+		public Builder<G, C> executor(final Executor executor) {
+			_executor = requireNonNull(executor);
+			return this;
+		}
+
+		public EvolutionEngine<G, C> build() {
+			return new EvolutionEngine<>(
+				_fitnessFunction,
+				_fitnessScaler,
+				_genotypeFactory,
+				_survivorsSelector,
+				_offspringSelector,
+				_alterer,
+				_optimize,
+				getOffspringCount(),
+				getSurvivorsCount(),
+				_maximalPhenotypeAge,
+				_executor
+			);
+		}
+
+		private int getSurvivorsCount() {
+			return _populationSize - getOffspringCount();
+		}
+
+		private int getOffspringCount() {
+			return (int)round(_offspringFraction*_populationSize);
+		}
+
+	}
 }
