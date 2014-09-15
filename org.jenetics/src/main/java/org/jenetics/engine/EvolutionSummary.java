@@ -27,9 +27,9 @@ import org.jenetics.stat.IntSummary;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-15 $</em>
+ * @version 3.0 &mdash; <em>$Date$</em>
  */
-public class EvolutionResultSummary<
+public class EvolutionSummary<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >

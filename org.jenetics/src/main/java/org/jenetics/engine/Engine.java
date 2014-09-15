@@ -47,7 +47,6 @@ import org.jenetics.Population;
 import org.jenetics.Selector;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.TournamentSelector;
-import org.jenetics.engine.EvolutionResult.Durations;
 import org.jenetics.util.Factory;
 
 /**
@@ -222,7 +221,7 @@ public final class Engine<
 			.thenApply(TimedResult.of(this::evaluate))
 			.join();
 
-		final Durations durations = Durations.of(
+		final EvolutionDurations durations = EvolutionDurations.of(
 			offspring.join().getDuration(),
 			survivors.join().getDuration(),
 			alteredOffspring.join().getDuration(),
