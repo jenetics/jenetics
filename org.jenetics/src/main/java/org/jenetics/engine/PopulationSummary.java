@@ -41,7 +41,7 @@ import org.jenetics.stat.IntSummary;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-15 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-16 $</em>
  */
 public final class PopulationSummary<
 	G extends Gene<?, G>,
@@ -130,12 +130,31 @@ public final class PopulationSummary<
 		);
 	}
 
+//	@Override
+//	public String toString() {
+//		return format(
+//			"PopulationSummary[count=%d, best=%s, worst=%s, age=%s]",
+//			_count, _best, _worst, _ageSummary
+//		);
+//	}
+
 	@Override
 	public String toString() {
-		return format(
-			"PopulationSummary[count=%d, best=%s, worst=%s, age=%s]",
-			_count, _best, _worst, _ageSummary
-		);
+		final String spattern = "| %28s: %-26s|\n";
+		final String fpattern = "| %28s: %-26.11f|\n";
+		final String ipattern = "| %28s: %-26d|\n";
+
+		final StringBuilder out = new StringBuilder();
+		out.append("+---------------------------------------------------------+\n");
+		out.append("|  Population Statistics                                  |\n");
+		out.append("+---------------------------------------------------------+\n");
+		out.append(format(fpattern, "Age mean", getAgeSummary().getMean()));
+		out.append(format(ipattern, "Samples", getAgeSummary().getCount()));
+		out.append(format(spattern, "Best phenotype", getBest().getGenotype()));
+		out.append(format(spattern, "Best fitness", getBest().getFitness()));
+		out.append("+---------------------------------------------------------+");
+
+		return out.toString();
 	}
 
 	/**
