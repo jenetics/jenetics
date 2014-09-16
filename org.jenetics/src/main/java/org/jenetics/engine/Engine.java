@@ -55,7 +55,7 @@ import org.jenetics.util.Factory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-15 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-16 $</em>
  */
 public final class Engine<
 	G extends Gene<?, G>,
@@ -519,9 +519,11 @@ public final class Engine<
 	 **************************************************************************/
 
 	/**
+	 * Builder class for building GA {@code Engine} instances.
+	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 3.0
-	 * @version 3.0 &mdash; <em>$Date: 2014-09-15 $</em>
+	 * @version 3.0 &mdash; <em>$Date: 2014-09-16 $</em>
 	 */
 	public static final class Builder<
 		G extends Gene<?, G>,
@@ -556,13 +558,26 @@ public final class Engine<
 			_fitnessFunction = requireNonNull(fitnessFunction);
 		}
 
-		public Builder<G, C> fitnessFunction(
-			Function<? super Genotype<G>, ? extends C> function
-		) {
-			_fitnessFunction = requireNonNull(function);
-			return this;
-		}
+//		/**
+//		 * Set the fitness function of the build GA {@code Engine}.
+//		 *
+//		 * @param function the fitness function to use in the GA {@code Engine}
+//		 * @return {@code this} builder, for command chaining
+//		 */
+//		public Builder<G, C> fitnessFunction(
+//			Function<? super Genotype<G>, ? extends C> function
+//		) {
+//			_fitnessFunction = requireNonNull(function);
+//			return this;
+//		}
 
+		/**
+		 * Set the fitness scaler of the build GA {@code Engine}. <i>Default
+		 * value is set to the identity function.</i>
+		 *
+		 * @param scaler the fitness scale to use in the GA {@code Engine}
+		 * @return {@code this} builder, for command chaining
+		 */
 		public Builder<G, C> fitnessScaler(
 			final Function<? super C, ? extends C> scaler
 		) {
@@ -570,13 +585,27 @@ public final class Engine<
 			return this;
 		}
 
-		public Builder<G, C> genotypeFactory(
-			final Factory<Genotype<G>> genotypeFactory
-		) {
-			_genotypeFactory = requireNonNull(genotypeFactory);
-			return this;
-		}
+//		/**
+//		 * The genotype factory used for creating new individuals.
+//		 *
+//		 * @param genotypeFactory the genotype factory for creating new
+//		 *        individuals.
+//		 * @return {@code this} builder, for command chaining
+//		 */
+//		public Builder<G, C> genotypeFactory(
+//			final Factory<Genotype<G>> genotypeFactory
+//		) {
+//			_genotypeFactory = requireNonNull(genotypeFactory);
+//			return this;
+//		}
 
+		/**
+		 * The selector used for selecting the offspring population. <i>Default
+		 * values is set to {@code TournamentSelector&lt;&gt;(3)}.</i>
+		 *
+		 * @param selector used for selecting the offspring population
+		 * @return {@code this} builder, for command chaining
+		 */
 		public Builder<G, C> offspringSelector(
 			final Selector<G, C> selector
 		) {
@@ -584,6 +613,13 @@ public final class Engine<
 			return this;
 		}
 
+		/**
+		 * The selector used for selecting the survivors population. <i>Default
+		 * values is set to {@code TournamentSelector&lt;&gt;(3)}.</i>
+		 *
+		 * @param selector used for selecting survivors population
+		 * @return {@code this} builder, for command chaining
+		 */
 		public Builder<G, C> survivorsSelector(
 			final Selector<G, C> selector
 		) {
@@ -591,22 +627,53 @@ public final class Engine<
 			return this;
 		}
 
+		/**
+		 * The alterers used for alter the offspring population. <i>Default
+		 * values is set to {@code new SinglePointCrossover&lt;&gt;(0.2)}
+		 * followed by {@code new Mutator&lt;&gt;(0.15)}.</i>
+		 *
+		 * @param alterers used for alter the offspring population
+		 * @return {@code this} builder, for command chaining
+		 */
 		@SafeVarargs
 		public final Builder<G, C> alterers(final Alterer<G, C>... alterers) {
 			_alterer = Alterer.of(alterers);
 			return this;
 		}
 
+		/**
+		 * The optimization strategy used by the engine. <i>Default values is
+		 * set to {@code Optimize.MAXIMUM}.</i>
+		 *
+		 * @param optimize the optimization strategy used by the engine
+		 * @return {@code this} builder, for command chaining
+		 */
 		public Builder<G, C> optimize(final Optimize optimize) {
 			_optimize = requireNonNull(optimize);
 			return this;
 		}
 
+		/**
+		 * The offspring fraction. <i>Default values is set to {@code 0.6}.</i>
+		 *
+		 * @param fraction the offspring fraction
+		 * @return {@code this} builder, for command chaining
+		 * @throws java.lang.IllegalArgumentException if the fraction is not
+		 *         within the range [0, 1].
+		 */
 		public Builder<G, C> offspringFraction(final double fraction) {
 			_offspringFraction = probability(fraction);
 			return this;
 		}
 
+		/**
+		 * The number of individuals which form the population. <i>Default
+		 * values is set to {@code 50}.</i>
+		 *
+		 * @param size the number of individuals of a population
+		 * @return {@code this} builder, for command chaining
+		 * @throws java.lang.IllegalArgumentException if {@code size} &lt; 1
+		 */
 		public Builder<G, C> populationSize(final int size) {
 			if (size < 1) {
 				throw new IllegalArgumentException(format(
@@ -617,6 +684,14 @@ public final class Engine<
 			return this;
 		}
 
+		/**
+		 * The maximal allowed age of a phenotype. <i>Default values is set to
+		 * {@code 70}.</i>
+		 *
+		 * @param age the maximal phenotype age
+		 * @return {@code this} builder, for command chaining
+		 * @throws java.lang.IllegalArgumentException if {@code age} &lt; 1
+		 */
 		public Builder<G, C> maximalPhenotypeAge(final int age) {
 			if (age < 1) {
 				throw new IllegalArgumentException(format(
@@ -627,11 +702,22 @@ public final class Engine<
 			return this;
 		}
 
+		/**
+		 * The executor used by the engine.
+		 *
+		 * @param executor the executor used by the engine
+		 * @return {@code this} builder, for command chaining
+		 */
 		public Builder<G, C> executor(final Executor executor) {
 			_executor = requireNonNull(executor);
 			return this;
 		}
 
+		/**
+		 * Builds an new {@code Engine} instance from the set properties.
+		 *
+		 * @return an new {@code Engine} instance from the set properties
+		 */
 		public Engine<G, C> build() {
 			return new Engine<>(
 				_fitnessFunction,
