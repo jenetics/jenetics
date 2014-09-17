@@ -19,74 +19,43 @@
  */
 package org.jenetics.util;
 
-import static java.lang.String.format;
 import static org.jenetics.internal.util.Equality.eq;
 
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
+
 /**
- * Abstract implementation of the {@link Accumulator} interface which defines a
- * {@code samples} property which is incremented by the {@link #accumulate(Object)}
- * method.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
+ * @version 2.0 &mdash; <em>$Date$</em>
  */
-public abstract class AbstractAccumulator<T>
-	implements
-		Accumulator<T>,
-		Cloneable
-{
+class Tuple2<T1, T2> {
 
-	/**
-	 * The number of accumulated samples.
-	 */
-	protected long _samples = 0;
+	final T1 _1;
+	final T2 _2;
 
-	protected AbstractAccumulator() {
-	}
-
-	/**
-	 * Return the number of samples accumulated so far.
-	 *
-	 * @return the number of samples accumulated so far.
-	 */
-	public long getSamples() {
-		return _samples;
-	}
-
-	@Override
-	public void accumulate(final T value) {
-		++_samples;
+	public Tuple2(final T1 t1, final T2 t2) {
+		_1 = t1;
+		_2 = t2;
 	}
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass()).and(_samples).value();
+		return Hash.of(getClass()).and(_1).and(_2).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(a -> eq(_samples, a._samples));
+		return Equality.of(this, obj).test(tuple ->
+			eq(_1, tuple._1) &&
+			eq(_2, tuple._2)
+		);
 	}
 
 	@Override
 	public String toString() {
-		return format(
-				"%s[samples=%d]", getClass().getName(), _samples
-			);
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	protected AbstractAccumulator<T> clone() {
-		try {
-			return (AbstractAccumulator<T>)super.clone();
-		} catch (CloneNotSupportedException e) {
-			throw new AssertionError(e);
-		}
+		return "(" + _1 + ", " + _2 + ")";
 	}
 
 }

@@ -202,12 +202,6 @@
             <class name="org.jenetics.MarshallingTest" />
         </classes>
     </test>
-	<test name="org.jenetics.stat.Accumulators">
-		<classes>
-			<class name="org.jenetics.stat.MeanTest" />
-			<class name="org.jenetics.stat.VarianceTest" />
-		</classes>
-	</test>
 	<test name="org.jenetics.stat.Histogram">
 		<classes>
 			<class name="org.jenetics.stat.HistogramTest" />
@@ -225,11 +219,6 @@
             <class name="org.jenetics.stat.DoubleMomentStatisticsTest" />
         </classes>
     </test>
-	<test name="org.jenetics.stat.NormalDistribution">
-		<classes>
-			<class name="org.jenetics.stat.NormalDistributionTest" />
-		</classes>
-	</test>
 	<test name="org.jenetics.stat.Quantile">
 		<classes>
 			<class name="org.jenetics.stat.QuantileTest" />
@@ -320,11 +309,6 @@
 	<test name="org.jenetics.util.StaticObject">
 		<classes>
 			<class name="org.jenetics.util.StaticObjectTest" />
-		</classes>
-	</test>
-	<test name="org.jenetics.util.Timer">
-		<classes>
-			<class name="org.jenetics.util.TimerTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.util.object">

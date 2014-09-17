@@ -27,14 +27,13 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import org.jenetics.stat.Histogram;
-import org.jenetics.stat.Variance;
-import org.jenetics.util.Accumulator.MinMax;
+import org.jenetics.stat.MinMax;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-28 $</em>
+ * @version <em>$Date: 2014-09-17 $</em>
  */
 public class DoubleChromosomeTest
 	extends NumericChromosomeTester<Double, DoubleGene>
@@ -57,16 +56,14 @@ public class DoubleChromosomeTest
 			final double max = 100;
 
 
-			final MinMax<Double> mm = new MinMax<>();
+			final MinMax<Double> mm = MinMax.of();
 			final Histogram<Double> histogram = Histogram.of(min, max, 10);
-			final Variance<Double> variance = new Variance<>();
 
 			for (int i = 0; i < 1000; ++i) {
 				final DoubleChromosome chromosome = new DoubleChromosome(min, max, 500);
 				for (DoubleGene gene : chromosome) {
-					mm.accumulate(gene.getAllele());
+					mm.accept(gene.getAllele());
 					histogram.accept(gene.getAllele());
-					variance.accumulate(gene.getAllele());
 				}
 			}
 

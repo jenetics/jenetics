@@ -27,14 +27,13 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import org.jenetics.stat.Histogram;
-import org.jenetics.stat.Variance;
-import org.jenetics.util.Accumulator.MinMax;
+import org.jenetics.stat.MinMax;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-28 $</em>
+ * @version <em>$Date: 2014-09-17 $</em>
  */
 public class LongChromosomeTest
 	extends NumericChromosomeTester<Long, LongGene>
@@ -56,15 +55,13 @@ public class LongChromosomeTest
 			final long min = 0;
 			final long max = 10000000;
 
-			final MinMax<Long> mm = new MinMax<>();
-			final Variance<Long> variance = new Variance<>();
+			final MinMax<Long> mm = MinMax.of();
 			final Histogram<Long> histogram = Histogram.of(min, max, 10);
 
 			for (int i = 0; i < 1000; ++i) {
 				final LongChromosome chromosome = new LongChromosome(min, max, 500);
 				for (LongGene gene : chromosome) {
-					mm.accumulate(gene.getAllele());
-					variance.accumulate(gene.getAllele());
+					mm.accept(gene.getAllele());
 					histogram.accept(gene.getAllele());
 				}
 			}
