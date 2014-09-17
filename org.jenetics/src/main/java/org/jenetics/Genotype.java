@@ -42,6 +42,7 @@ import org.jenetics.internal.util.reflect;
 
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 import org.jenetics.util.Seq;
 import org.jenetics.util.Verifiable;
 
@@ -71,7 +72,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-08-15 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-09-17 $</em>
  */
 @XmlJavaTypeAdapter(Genotype.Model.Adapter.class)
 public final class Genotype<G extends Gene<?, G>>
@@ -248,8 +249,8 @@ public final class Genotype<G extends Gene<?, G>>
 	 * Create a new Genotype from a given array of {@code Chromosomes}.
 	 *
 	 * @param <G> the gene type
-	 * @param chromosomes The {@code Chromosome} array the {@code Genotype}
-	 *         consists of.
+	 * @param chromosome the first {@code Chromosome} of the {@code Genotype}
+	 * @param chromosomes the rest of the genotypes chromosomes.
 	 * @return a new {@code Genotype} from the given chromosomes
 	 * @throws NullPointerException if {@code chromosomes} is null or one of its
 	 *         element.
@@ -257,9 +258,15 @@ public final class Genotype<G extends Gene<?, G>>
 	 */
 	@SafeVarargs
 	public static <G extends Gene<?, G>> Genotype<G> of(
+		final Chromosome<G> chromosome,
 		final Chromosome<G>... chromosomes
 	) {
-		return new Genotype<G>(ISeq.of(chromosomes));
+		final MSeq<Chromosome<G>> seq = MSeq.ofLength(1 +  chromosomes.length);
+		seq.set(0, chromosome);
+		for (int i = 0; i < chromosomes.length; ++i) {
+			seq.set(i + 1, chromosomes[i]);
+		}
+		return new Genotype<G>(seq.toISeq());
 	}
 
 
