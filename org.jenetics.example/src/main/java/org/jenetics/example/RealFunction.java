@@ -23,71 +23,25 @@ import static java.lang.Math.PI;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
-import java.util.function.Function;
-
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
-import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.MeanAlterer;
 import org.jenetics.Mutator;
-import org.jenetics.NumberStatistics;
 import org.jenetics.Optimize;
+import org.jenetics.Phenotype;
 import org.jenetics.engine.Engine;
-import org.jenetics.engine.EvolutionSummary;
-import org.jenetics.util.Factory;
-
-final class Real
-	implements Function<Genotype<DoubleGene>, Double>
-{
-	@Override
-	public Double apply(Genotype<DoubleGene> genotype) {
-		final double x = genotype.getGene().doubleValue();
-		return cos(0.5 + sin(x)) * cos(x);
-	}
-}
 
 public class RealFunction {
-	public static void main(String[] args) {
-		Factory<Genotype<DoubleGene>> gtf = Genotype.of(
-			new DoubleChromosome(0.0, 2.0 * PI)
-		);
-		Function<Genotype<DoubleGene>, Double> ff = new Real();
-		GeneticAlgorithm<DoubleGene, Double> ga =
-			new GeneticAlgorithm<>(
-				gtf, ff, Optimize.MINIMUM
-			);
-
-		ga.setStatisticsCalculator(
-			new NumberStatistics.Calculator<DoubleGene, Double>()
-		);
-		ga.setPopulationSize(500);
-		ga.setAlterers(
-			new Mutator<>(0.03),
-			new MeanAlterer<>(0.6)
-		);
-
-		ga.setup();
-		ga.evolve(100);
-		System.out.println(ga.getBestStatistics());
-		System.out.println(ga.getBestPhenotype());
-
-		RealFunction2.main();
-	}
-}
-
-class RealFunction2 {
 
 	private static Double evaluate(final Genotype<DoubleGene> gt) {
 		final double x = gt.getGene().doubleValue();
 		return cos(0.5 + sin(x)) * cos(x);
 	}
 
-	public static void main() {
+	public static void main(String[] args) {
 		final Engine<DoubleGene, Double> engine = Engine
-			.newBuilder(
-				RealFunction2::evaluate,
-				DoubleChromosome.of(0.0, 2.0*PI))
+			.newBuilder(RealFunction::evaluate, DoubleChromosome.of(0.0, 2.0*PI))
 			.populationSize(500)
 			.optimize(Optimize.MINIMUM)
 			.alterers(
@@ -95,15 +49,9 @@ class RealFunction2 {
 				new MeanAlterer<>(0.6))
 			.build();
 
-		final EvolutionSummary<DoubleGene, Double> summary = new EvolutionSummary<>();
-		final Object best = engine.stream().limit(100)
-			.peek(summary)
-			.collect(engine.BestEvolutionResult)
-			.getBestPhenotype();
+		final Phenotype<DoubleGene, Double> result = engine.stream().limit(100)
+			.collect(engine.BestPhenotype);
 
-		System.out.println("Best: " + best);
-		System.out.println(summary.getBestPopulationSummary());
-
+		System.out.println(result);
 	}
-
 }

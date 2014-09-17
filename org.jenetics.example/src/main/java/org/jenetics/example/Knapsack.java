@@ -26,13 +26,13 @@ import java.util.function.Function;
 
 import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;
-import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.Mutator;
-import org.jenetics.NumberStatistics;
+import org.jenetics.Phenotype;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.TournamentSelector;
+import org.jenetics.engine.Engine;
 import org.jenetics.util.Factory;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
@@ -103,27 +103,18 @@ public class Knapsack {
 			BitChromosome.of(nitems, 0.5)
 		);
 
-		final GeneticAlgorithm<BitGene, Double> ga = new GeneticAlgorithm<>(
-			genotype, ff
-		);
-		ga.setPopulationSize(500);
-		ga.setStatisticsCalculator(
-			new NumberStatistics.Calculator<BitGene, Double>()
-		);
-		ga.setSurvivorSelector(
-			new TournamentSelector<BitGene, Double>(5)
-		);
-		ga.setOffspringSelector(
-			new RouletteWheelSelector<BitGene, Double>()
-		);
-		ga.setAlterers(
-			 new Mutator<BitGene, Double>(0.115),
-			 new SinglePointCrossover<BitGene, Double>(0.16)
-		);
+		final Engine<BitGene, Double> engine = Engine.newBuilder(ff, genotype)
+			.populationSize(500)
+			.survivorsSelector(new TournamentSelector<>(5))
+			.offspringSelector(new RouletteWheelSelector<>())
+			.alterers(
+				new Mutator<>(0.115),
+				new SinglePointCrossover<>(0.16))
+			.build();
 
-		ga.setup();
-		ga.evolve(100);
-		System.out.println(ga.getBestStatistics());
-		System.out.println(ga.getBestPhenotype());
+		final Phenotype<BitGene, Double> result = engine.stream().limit(100)
+			.collect(engine.BestPhenotype);
+
+		System.out.println(result);
 	}
 }

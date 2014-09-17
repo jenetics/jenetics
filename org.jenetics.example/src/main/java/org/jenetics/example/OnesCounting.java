@@ -19,66 +19,34 @@
  */
 package org.jenetics.example;
 
-import java.util.function.Function;
-
 import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;
-import org.jenetics.Chromosome;
-import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.Mutator;
-import org.jenetics.NumberStatistics;
-import org.jenetics.Optimize;
+import org.jenetics.Phenotype;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
-import org.jenetics.util.Factory;
-
-final class OneCounter
-	implements Function<Genotype<BitGene>, Integer>
-{
-	@Override
-	public Integer apply(final Genotype<BitGene> genotype) {
-		return ((BitChromosome)genotype.getChromosome()).bitCount();
-	}
-}
+import org.jenetics.engine.Engine;
 
 public class OnesCounting {
+
+	private static Integer count(final Genotype<BitGene> genotype) {
+		return ((BitChromosome)genotype.getChromosome()).bitCount();
+	}
+
 	public static void main(String[] args) {
-		Factory<Genotype<BitGene>> gtf = Genotype.of(
-			BitChromosome.of(20, 0.15)
-		);
-		final Function<Genotype<BitGene>, Integer> ff = genotype -> {
-			final Chromosome<BitGene> chromosome = genotype.getChromosome();
+		final Engine<BitGene, Integer> engine = Engine
+			.newBuilder(OnesCounting::count, BitChromosome.of(20, 0.15))
+			.populationSize(500)
+			.selector(new RouletteWheelSelector<>())
+			.alterers(
+				new Mutator<>(0.55),
+				new SinglePointCrossover<>(0.06))
+			.build();
 
-			int count = 0;
-			if (chromosome instanceof BitChromosome) {
-				count = ((BitChromosome)chromosome).bitCount();
-			} else {
-				for (BitGene gene : genotype.getChromosome()) {
-					if (gene.getBit()) {
-						++count;
-					}
-				}
-			}
+		final Phenotype<BitGene, Integer> result = engine.stream().limit(100)
+			.collect(engine.BestPhenotype);
 
-			return count;
-		};
-
-		GeneticAlgorithm<BitGene, Integer> ga = new GeneticAlgorithm<>(
-			gtf, ff, Optimize.MAXIMUM
-		);
-
-		ga.setStatisticsCalculator(new NumberStatistics.Calculator<>());
-		ga.setPopulationSize(500);
-		ga.setSelectors(new RouletteWheelSelector<>());
-		ga.setAlterers(
-			new Mutator<BitGene, Integer>(0.55),
-			new SinglePointCrossover<BitGene, Integer>(0.06)
-		);
-
-		ga.setup();
-		ga.evolve(100);
-		System.out.println(ga.getBestStatistics());
-		System.out.println(ga.getBestPhenotype());
+		System.out.println(result);
 	}
 }

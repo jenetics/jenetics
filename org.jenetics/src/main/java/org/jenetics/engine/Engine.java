@@ -55,7 +55,7 @@ import org.jenetics.util.Factory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-16 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-17 $</em>
  */
 public final class Engine<
 	G extends Gene<?, G>,
@@ -523,7 +523,7 @@ public final class Engine<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 3.0
-	 * @version 3.0 &mdash; <em>$Date: 2014-09-16 $</em>
+	 * @version 3.0 &mdash; <em>$Date: 2014-09-17 $</em>
 	 */
 	public static final class Builder<
 		G extends Gene<?, G>,
@@ -623,6 +623,20 @@ public final class Engine<
 		public Builder<G, C> survivorsSelector(
 			final Selector<G, C> selector
 		) {
+			_survivorsSelector = requireNonNull(selector);
+			return this;
+		}
+
+		/**
+		 * The selector used for selecting the survivors and offspring
+		 * population. <i>Default values is set to
+		 * {@code TournamentSelector&lt;&gt;(3)}.</i>
+		 *
+		 * @param selector used for selecting survivors and offspring population
+		 * @return {@code this} builder, for command chaining
+		 */
+		public Builder<G, C> selector(final Selector<G, C> selector) {
+			_offspringSelector = requireNonNull(selector);
 			_survivorsSelector = requireNonNull(selector);
 			return this;
 		}
