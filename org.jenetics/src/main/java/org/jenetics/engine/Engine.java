@@ -50,12 +50,39 @@ import org.jenetics.TournamentSelector;
 import org.jenetics.util.Factory;
 
 /**
- * Genetic algorithm engine, which performs the actual evolve steps. <i>The
- * engine itself has no mutable state.</i>
+ * Genetic algorithm engine, which performs the actual evolve steps. An new
+ * instance of the {@code Engine} can only be created via the {@code Builder}
+ * class:
+ *
+ * [code]
+ * public class RealFunction {
+ *    private static Double evaluate(final Genotype&lt;DoubleGene&gt; gt) {
+ *        final double x = gt.getGene().doubleValue();
+ *        return cos(0.5 + sin(x)) * cos(x);
+ *    }
+ *
+ *    public static void main(String[] args) {
+ *        final Engine&lt;DoubleGene, Double&gt; engine = Engine
+ *            .newBuilder(
+ *                RealFunction::evaluate,
+ *                DoubleChromosome.of(0.0, 2.0*PI))
+ *            .populationSize(500)
+ *            .optimize(Optimize.MINIMUM)
+ *            .alterers(
+ *                new Mutator&lt;&gt;(0.03),
+ *                new MeanAlterer&lt;&gt;(0.6))
+ *            .build();
+ *
+ *        final Phenotype&lt;DoubleGene, Double&gt; result = engine.stream()
+ *            .limit(100)
+ *            .collect(engine.BestPhenotype);
+ *     }
+ * }
+ * [/code]
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-17 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-18 $</em>
  */
 public final class Engine<
 	G extends Gene<?, G>,
@@ -497,6 +524,7 @@ public final class Engine<
 	 * function and chromosome templates.
 	 *
 	 * @param fitnessFunction the fitness function
+	 * @param chromosome the first chromosome
 	 * @param chromosomes the chromosome templates
 	 * @param <G> the gene type
 	 * @param <C> the fitness function result type
@@ -506,11 +534,14 @@ public final class Engine<
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Builder<G, C> newBuilder(
 		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
+		final Chromosome<G> chromosome,
 		final Chromosome<G>... chromosomes
 	) {
-		return new Builder<>(Genotype.of(chromosomes), fitnessFunction);
+		return new Builder<>(
+			Genotype.of(chromosome, chromosomes),
+			fitnessFunction
+		);
 	}
-
 
 
 
@@ -523,7 +554,7 @@ public final class Engine<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 3.0
-	 * @version 3.0 &mdash; <em>$Date: 2014-09-17 $</em>
+	 * @version 3.0 &mdash; <em>$Date: 2014-09-18 $</em>
 	 */
 	public static final class Builder<
 		G extends Gene<?, G>,

@@ -41,7 +41,9 @@ public class RealFunction {
 
 	public static void main(String[] args) {
 		final Engine<DoubleGene, Double> engine = Engine
-			.newBuilder(RealFunction::evaluate, DoubleChromosome.of(0.0, 2.0*PI))
+			.newBuilder(
+				RealFunction::evaluate,
+				DoubleChromosome.of(0.0, 2.0*PI))
 			.populationSize(500)
 			.optimize(Optimize.MINIMUM)
 			.alterers(
@@ -49,7 +51,8 @@ public class RealFunction {
 				new MeanAlterer<>(0.6))
 			.build();
 
-		final Phenotype<DoubleGene, Double> result = engine.stream().limit(100)
+		final Phenotype<DoubleGene, Double> result = engine.stream()
+			.limit(100)
 			.collect(engine.BestPhenotype);
 
 		System.out.println(result);
