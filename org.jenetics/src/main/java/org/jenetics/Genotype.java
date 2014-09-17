@@ -23,6 +23,8 @@ import static org.jenetics.internal.util.Equality.eq;
 import static org.jenetics.util.ISeq.toISeq;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.IllegalFormatException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -266,8 +268,30 @@ public final class Genotype<G extends Gene<?, G>>
 		for (int i = 0; i < chromosomes.length; ++i) {
 			seq.set(i + 1, chromosomes[i]);
 		}
-		return new Genotype<G>(seq.toISeq());
+		return new Genotype<>(seq.toISeq());
 	}
+
+	/**
+	 * Create a new Genotype from a given array of {@code Chromosomes}.
+	 *
+	 * @param <G> the gene type
+	 * @param chromosomes the array of the genotypes chromosomes.
+	 * @return a new {@code Genotype} from the given chromosomes
+	 * @throws NullPointerException if {@code chromosomes} is null or one of its
+	 *         element.
+	 * @throws IllegalArgumentException if {@code chromosome.length == 0}.
+	 */
+	public static <G extends Gene<?, G>> Genotype<G> of(
+		final Chromosome<G>[] chromosomes
+	) {
+		if (chromosomes.length < 1) {
+			throw new IllegalArgumentException(
+				"Chromosome array must not be empty."
+			);
+		}
+		return new Genotype<>(ISeq.of(Arrays.asList(chromosomes)));
+	}
+
 
 
 	/* *************************************************************************
