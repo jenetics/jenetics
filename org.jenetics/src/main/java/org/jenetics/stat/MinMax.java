@@ -31,7 +31,7 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-06 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-17 $</em>
  */
 public final class MinMax<C> implements Consumer<C> {
 
@@ -136,19 +136,19 @@ public final class MinMax<C> implements Consumer<C> {
 	 * ************************************************************************/
 
 	/**
-	 * Return a {@code Collector} which applies an long-producing mapping
-	 * function to each input element, and returns moments-statistics for the
-	 * resulting values.
+	 * Return a {@code Collector} which calculates the minimum and maximum value.
+	 * The given {@code comparator} is used for comparing two objects.
 	 *
 	 * [code]
+	 * final Comparator&lt;SomeObject&gt; comparator = ...
 	 * final Stream&lt;SomeObject&gt; stream = ...
 	 * final MinMax&lt;SomeObject&gt; moments = stream
-	 *     .collect(doubleMoments.collector());
+	 *     .collect(doubleMoments.toMinMax(comparator));
 	 * [/code]
 	 *
 	 * @param comparator the {@code Comparator} to use
 	 * @param <T> the type of the input elements
-	 * @return a {@code Collector} implementing the moments-statistics reduction
+	 * @return a {@code Collector} implementing the min-max reduction
 	 * @throws java.lang.NullPointerException if the given {@code mapper} is
 	 *         {@code null}
 	 */
@@ -161,6 +161,21 @@ public final class MinMax<C> implements Consumer<C> {
 		);
 	}
 
+	/**
+	 * Return a {@code Collector} which calculates the minimum and maximum value.
+	 * The <i>reducing</i> objects must be comparable.
+	 *
+	 * [code]
+	 * final Stream&lt;SomeObject&gt; stream = ...
+	 * final MinMax&lt;SomeObject&gt; moments = stream
+	 *     .collect(doubleMoments.toMinMax(comparator));
+	 * [/code]
+	 *
+	 * @param <C> the type of the input elements
+	 * @return a {@code Collector} implementing the min-max reduction
+	 * @throws java.lang.NullPointerException if the given {@code mapper} is
+	 *         {@code null}
+	 */
 	public static <C extends Comparable<? super C>>
 	Collector<C, ?, MinMax<C>> toMinMax() {
 		return toMinMax((a, b) -> a.compareTo(b));

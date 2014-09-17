@@ -44,11 +44,19 @@ import org.jenetics.internal.math.DoubleAdder;
  *         DoubleMomentStatistics::combine
  *     );
  * [/code]
+ *
+ * For a non double stream, you can use a collector:
+ * [code]
+ * final Stream&lt;SomeObject&gt; stream = ...
+ * final DoubleMomentStatistics statistics = stream
+ *     .collect(toDoubleMomentStatistics(v -&gt; v.doubleValue()));
+ * [/code]
+ *
  * <p>
  * <b>Implementation note:</b>
  * <i>This implementation is not thread safe. However, it is safe to use
- * {@link #collector(ToDoubleFunction)}  on a parallel stream, because the
- * parallel implementation of
+ * {@link #toDoubleMomentStatistics(ToDoubleFunction)}  on a parallel stream,
+ * because the parallel implementation of
  * {@link java.util.stream.Stream#collect Stream.collect()}
  * provides the necessary partitioning, isolation, and merging of results for
  * safe and efficient parallel execution.</i>
@@ -60,7 +68,7 @@ import org.jenetics.internal.math.DoubleAdder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-06 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-17 $</em>
  */
 public class DoubleMomentStatistics
 	extends MomentStatistics
@@ -156,7 +164,7 @@ public class DoubleMomentStatistics
 	 * [code]
 	 * final Stream&lt;SomeObject&gt; stream = ...
 	 * final DoubleMomentStatistics statistics = stream
-	 *     .collect(DoubleMomentStatistics.collector(v -&gt; v.doubleValue()));
+	 *     .collect(toDoubleMomentStatistics(v -&gt; v.doubleValue()));
 	 * [/code]
 	 *
 	 * @param mapper a mapping function to apply to each element
@@ -166,7 +174,7 @@ public class DoubleMomentStatistics
 	 *         {@code null}
 	 */
 	public static <T> Collector<T, ?, DoubleMomentStatistics>
-	collector(final ToDoubleFunction<? super T> mapper) {
+	toDoubleMomentStatistics(final ToDoubleFunction<? super T> mapper) {
 		requireNonNull(mapper);
 		return Collector.of(
 			DoubleMomentStatistics::new,

@@ -36,7 +36,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-07-10 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-17 $</em>
  */
 public final class DoubleMoments implements Serializable {
 
@@ -268,7 +268,7 @@ public final class DoubleMoments implements Serializable {
 	 * [code]
 	 * final Stream&lt;SomeObject&gt; stream = ...
 	 * final DoubleMoments moments = stream
-	 *     .collect(DoubleMoments.collector(v -&gt; v.doubleValue()));
+	 *     .collect(toDoubleMoments(v -&gt; v.doubleValue()));
 	 * [/code]
 	 *
 	 * @param mapper a mapping function to apply to each element
@@ -278,12 +278,12 @@ public final class DoubleMoments implements Serializable {
 	 *         {@code null}
 	 */
 	public static <T> Collector<T, ?, DoubleMoments>
-	collector(final ToDoubleFunction<? super T> mapper) {
+	toDoubleMoments(final ToDoubleFunction<? super T> mapper) {
 		requireNonNull(mapper);
 		return Collector.of(
 			DoubleMomentStatistics::new,
 			(a, b) -> a.accept(mapper.applyAsDouble(b)),
-			(a, b) -> {a.combine(b); return a;},
+			DoubleMomentStatistics::combine,
 			DoubleMoments::of
 		);
 	}

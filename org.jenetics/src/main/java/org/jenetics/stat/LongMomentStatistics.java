@@ -43,10 +43,18 @@ import java.util.stream.Collector;
  *         LongMomentStatistics::combine
  *     );
  * [/code]
+ *
+ * For a non long stream, you can use a collector:
+ * [code]
+ * final Stream&lt;SomeObject&gt; stream = ...
+ * final LongMomentStatistics statistics = stream
+ *     .collect(toLongMomentStatistics(v -&gt; v.longValue()));
+ * [/code]
+ *
  * <p>
  * <b>Implementation note:</b>
  * <i>This implementation is not thread safe. However, it is safe to use
- * {@link #collector(ToLongFunction)}  on a parallel stream, because the parallel
+ * {@link #toLongMomentStatistics(ToLongFunction)}  on a parallel stream, because the parallel
  * implementation of {@link java.util.stream.Stream#collect Stream.collect()}
  * provides the necessary partitioning, isolation, and merging of results for
  * safe and efficient parallel execution.</i>
@@ -58,7 +66,7 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-06 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-17 $</em>
  */
 public class LongMomentStatistics
 	extends MomentStatistics
@@ -155,7 +163,7 @@ public class LongMomentStatistics
 	 * [code]
 	 * final Stream&lt;SomeObject&gt; stream = ...
 	 * final LongMomentStatistics statistics = stream
-	 *     .collect(LongMomentStatistics.collector(v -&gt; v.longValue()));
+	 *     .collect(toLongMomentStatistics(v -&gt; v.longValue()));
 	 * [/code]
 	 *
 	 * @param mapper a mapping function to apply to each element
@@ -165,7 +173,7 @@ public class LongMomentStatistics
 	 *         {@code null}
 	 */
 	public static <T> Collector<T, ?, LongMomentStatistics>
-	collector(final ToLongFunction<? super T> mapper) {
+	toLongMomentStatistics(final ToLongFunction<? super T> mapper) {
 		requireNonNull(mapper);
 		return Collector.of(
 			LongMomentStatistics::new,

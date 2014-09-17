@@ -19,6 +19,8 @@
  */
 package org.jenetics.stat;
 
+import static org.jenetics.stat.IntMomentStatistics.toIntMomentStatistics;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -30,7 +32,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-06-02 $</em>
+ * @version <em>$Date: 2014-09-17 $</em>
  */
 public class IntMomentStatisticsTest {
 
@@ -52,7 +54,7 @@ public class IntMomentStatisticsTest {
 		numbers.forEach(expected::addValue);
 
 		final IntMomentStatistics summary = numbers.stream()
-			.collect(IntMomentStatistics.collector(Integer::intValue));
+			.collect(toIntMomentStatistics(Integer::intValue));
 
 		Assert.assertEquals(summary.getCount(), numbers.size());
 		assertEqualsDouble(min(summary.getMin()), expected.getMin(), 0.0);
@@ -72,7 +74,7 @@ public class IntMomentStatisticsTest {
 		numbers.forEach(expected::addValue);
 
 		final IntMomentStatistics summary = numbers.parallelStream()
-			.collect(IntMomentStatistics.collector(Integer::intValue));
+			.collect(toIntMomentStatistics(Integer::intValue));
 
 		Assert.assertEquals(summary.getCount(), numbers.size());
 		assertEqualsDouble(min(summary.getMin()), expected.getMin(), 0.0);

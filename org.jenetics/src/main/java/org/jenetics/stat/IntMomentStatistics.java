@@ -42,10 +42,18 @@ import java.util.stream.Collector;
  *         IntMomentStatistics::combine
  *     );
  * [/code]
+ *
+ * For a non int stream, you can use a collector:
+ * [code]
+ * final Stream&lt;SomeObject&gt; stream = ...
+ * final IntMomentStatistics statistics = stream
+ *     .collect(toIntMomentStatistics(v -&gt; v.intValue()));
+ * [/code]
+ *
  * <p>
  * <b>Implementation note:</b>
  * <i>This implementation is not thread safe. However, it is safe to use
- * {@link #collector(ToIntFunction)}  on a parallel stream, because the parallel
+ * {@link #toIntMomentStatistics(ToIntFunction)}  on a parallel stream, because the parallel
  * implementation of {@link java.util.stream.Stream#collect Stream.collect()}
  * provides the necessary partitioning, isolation, and merging of results for
  * safe and efficient parallel execution.</i>
@@ -57,7 +65,7 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-06 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-17 $</em>
  */
 public class IntMomentStatistics
 	extends MomentStatistics
@@ -152,7 +160,7 @@ public class IntMomentStatistics
 	 * [code]
 	 * final Stream&lt;SomeObject&gt; stream = ...
 	 * final IntMomentStatistics statistics = stream
-	 *     .collect(IntMomentStatistics.collector(v -&gt; v.intValue()));
+	 *     .collect(toIntMomentStatistics(v -&gt; v.intValue()));
 	 * [/code]
 	 *
 	 * @param mapper a mapping function to apply to each element
@@ -162,7 +170,7 @@ public class IntMomentStatistics
 	 *         {@code null}
 	 */
 	public static <T> Collector<T, ?, IntMomentStatistics>
-	collector(final ToIntFunction<? super T> mapper) {
+	toIntMomentStatistics(final ToIntFunction<? super T> mapper) {
 		requireNonNull(mapper);
 		return Collector.of(
 			IntMomentStatistics::new,

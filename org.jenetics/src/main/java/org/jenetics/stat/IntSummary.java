@@ -37,7 +37,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-07-10 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-17 $</em>
  */
 public final class IntSummary implements Serializable {
 
@@ -201,7 +201,7 @@ public final class IntSummary implements Serializable {
 	 * [code]
 	 * final Stream&lt;SomeObject&gt; stream = ...
 	 * final IntSummary summary = stream
-	 *     .collect(IntSummary.collector(v -&gt; v.intValue()));
+	 *     .collect(toIntSummary(v -&gt; v.intValue()));
 	 * [/code]
 	 *
 	 * @param mapper a mapping function to apply to each element
@@ -211,7 +211,7 @@ public final class IntSummary implements Serializable {
 	 *         {@code null}
 	 */
 	public static <T> Collector<T, ?, IntSummary>
-	collector(final ToIntFunction<? super T> mapper) {
+	toIntSummary(final ToIntFunction<? super T> mapper) {
 		requireNonNull(mapper);
 		return Collector.of(
 			IntSummaryStatistics::new,
