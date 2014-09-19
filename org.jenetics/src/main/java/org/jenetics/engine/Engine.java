@@ -82,7 +82,7 @@ import org.jenetics.util.Factory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-18 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-19 $</em>
  */
 public final class Engine<
 	G extends Gene<?, G>,
@@ -510,6 +510,8 @@ public final class Engine<
 	 * @param <G> the gene type
 	 * @param <C> the fitness function result type
 	 * @return a new engine builder
+	 * @throws java.lang.NullPointerException if one of the arguments is
+	 *         {@code null}.
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Builder<G, C> newBuilder(
@@ -529,6 +531,8 @@ public final class Engine<
 	 * @param <G> the gene type
 	 * @param <C> the fitness function result type
 	 * @return a new engine builder
+	 * @throws java.lang.NullPointerException if one of the arguments is
+	 *         {@code null}.
 	 */
 	@SafeVarargs
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
@@ -554,7 +558,7 @@ public final class Engine<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 3.0
-	 * @version 3.0 &mdash; <em>$Date: 2014-09-18 $</em>
+	 * @version 3.0 &mdash; <em>$Date: 2014-09-19 $</em>
 	 */
 	public static final class Builder<
 		G extends Gene<?, G>,

@@ -73,7 +73,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-09-19 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-19 $</em>
  */
 @XmlJavaTypeAdapter(Genotype.Model.Adapter.class)
 public final class Genotype<G extends Gene<?, G>>
@@ -249,9 +249,11 @@ public final class Genotype<G extends Gene<?, G>>
 	/**
 	 * Create a new Genotype from a given array of {@code Chromosomes}.
 	 *
+	 * @since 3.0
+	 *
 	 * @param <G> the gene type
-	 * @param chromosome the first {@code Chromosome} of the {@code Genotype}
-	 * @param chromosomes the rest of the genotypes chromosomes.
+	 * @param first the first {@code Chromosome} of the {@code Genotype}
+	 * @param rest the rest of the genotypes chromosomes.
 	 * @return a new {@code Genotype} from the given chromosomes
 	 * @throws NullPointerException if {@code chromosomes} is null or one of its
 	 *         element.
@@ -259,36 +261,15 @@ public final class Genotype<G extends Gene<?, G>>
 	 */
 	@SafeVarargs
 	public static <G extends Gene<?, G>> Genotype<G> of(
-		final Chromosome<G> chromosome,
-		final Chromosome<G>... chromosomes
+		final Chromosome<G> first,
+		final Chromosome<G>... rest
 	) {
-		final MSeq<Chromosome<G>> seq = MSeq.ofLength(1 +  chromosomes.length);
-		seq.set(0, chromosome);
-		for (int i = 0; i < chromosomes.length; ++i) {
-			seq.set(i + 1, chromosomes[i]);
+		final MSeq<Chromosome<G>> seq = MSeq.ofLength(1 +  rest.length);
+		seq.set(0, first);
+		for (int i = 0; i < rest.length; ++i) {
+			seq.set(i + 1, rest[i]);
 		}
 		return new Genotype<>(seq.toISeq());
-	}
-
-	/**
-	 * Create a new Genotype from a given array of {@code Chromosomes}.
-	 *
-	 * @param <G> the gene type
-	 * @param chromosomes the array of the genotypes chromosomes.
-	 * @return a new {@code Genotype} from the given chromosomes
-	 * @throws NullPointerException if {@code chromosomes} is null or one of its
-	 *         element.
-	 * @throws IllegalArgumentException if {@code chromosome.length == 0}.
-	 */
-	public static <G extends Gene<?, G>> Genotype<G> of(
-		final Chromosome<G>[] chromosomes
-	) {
-		if (chromosomes.length < 1) {
-			throw new IllegalArgumentException(
-				"Chromosome array must not be empty."
-			);
-		}
-		return new Genotype<>(ISeq.of(Arrays.asList(chromosomes)));
 	}
 
 
