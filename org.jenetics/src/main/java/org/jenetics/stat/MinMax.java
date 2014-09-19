@@ -31,7 +31,7 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-17 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-19 $</em>
  */
 public final class MinMax<C> implements Consumer<C> {
 
@@ -96,7 +96,7 @@ public final class MinMax<C> implements Consumer<C> {
 	 * Return the minimum of two values, according the given comparator.
 	 * {@code null} values are allowed.
 	 *
-	 * @param comparator the comparator used for determining the min value
+	 * @param comp the comparator used for determining the min value
 	 * @param a the first value to compare
 	 * @param b the second value to compare
 	 * @param <T> the type of the compared objects
@@ -105,17 +105,15 @@ public final class MinMax<C> implements Consumer<C> {
 	 *         returned.
 	 */
 	public static <T> T
-	min(final Comparator<? super T> comparator, final T a, final T b) {
-		return a != null ?
-			b != null ? comparator.compare(a, b) <= 0 ? a : b
-				: a : b;
+	min(final Comparator<? super T> comp, final T a, final T b) {
+		return a != null ? b != null ? comp.compare(a, b) <= 0 ? a : b : a : b;
 	}
 
 	/**
 	 * Return the maximum of two values, according the given comparator.
 	 * {@code null} values are allowed.
 	 *
-	 * @param comparator the comparator used for determining the max value
+	 * @param comp the comparator used for determining the max value
 	 * @param a the first value to compare
 	 * @param b the second value to compare
 	 * @param <T> the type of the compared objects
@@ -124,10 +122,8 @@ public final class MinMax<C> implements Consumer<C> {
 	 *         returned.
 	 */
 	public static <T> T
-	max(final Comparator<? super T> comparator, final T a, final T b) {
-		return a != null ?
-			b != null ? comparator.compare(a, b) >= 0 ? a : b
-				: a : b;
+	max(final Comparator<? super T> comp, final T a, final T b) {
+		return a != null ? b != null ? comp.compare(a, b) >= 0 ? a : b : a : b;
 	}
 
 
