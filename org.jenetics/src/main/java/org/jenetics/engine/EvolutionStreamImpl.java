@@ -63,7 +63,7 @@ final class EvolutionStreamImpl<
 			evolution,
 			initial,
 			StreamSupport.stream(
-				new TerminatingEvolutionSpliterator<>(
+				new EvolutionSpliterator<>(
 					evolution,
 					initial,
 					a -> true
@@ -80,7 +80,7 @@ final class EvolutionStreamImpl<
 			_evolution,
 			_initial,
 			StreamSupport.stream(
-				new TerminatingEvolutionSpliterator<>(
+				new EvolutionSpliterator<>(
 					_evolution,
 					_initial,
 					terminate
