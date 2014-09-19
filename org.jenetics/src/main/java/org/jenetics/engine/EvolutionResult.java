@@ -24,6 +24,7 @@ import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
 import java.util.Comparator;
+import java.util.function.Supplier;
 import java.util.stream.Collector;
 
 import org.jenetics.internal.util.Equality;
@@ -45,7 +46,7 @@ import org.jenetics.stat.MinMax;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-15 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-20 $</em>
  */
 public final class EvolutionResult<
 	G extends Gene<?, G>,
@@ -84,8 +85,8 @@ public final class EvolutionResult<
 		_invalidCount = invalidCount;
 		_alterCount = alterCount;
 
-		_best = Lazy.of(this::best);
-		_worst = Lazy.of(this::worst);
+		_best = Lazy.of((Supplier<Phenotype<G, C>> & Serializable)this::best);
+		_worst = Lazy.of((Supplier<Phenotype<G, C>> & Serializable)this::worst);
 	}
 
 	private Phenotype<G, C> best() {
@@ -239,9 +240,12 @@ public final class EvolutionResult<
 			eq(_invalidCount, result._invalidCount) &&
 			eq(_alterCount, result._alterCount) &&
 			eq(_population, result._population) &&
-			eq(_generation, result._generation)
+			eq(_generation, result._generation) &&
+			eq(getBestFitness(), result.getBestFitness())
 		);
 	}
+
+
 
 	/* *************************************************************************
 	 *  Some static factory methods.

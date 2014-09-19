@@ -20,7 +20,7 @@
  # Author:
  #    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  #
- # Version: <em>$Date: 2014-09-19 $</em>
+ # Version: <em>$Date: 2014-09-20 $</em>
  #
  ###############################################################################
 -->
@@ -202,6 +202,16 @@
             <class name="org.jenetics.MarshallingTest" />
         </classes>
     </test>
+    <test name="org.jenetics.engine.EvolutionDurations">
+        <classes>
+            <class name="org.jenetics.engine.EvolutionDurationsTest" />
+        </classes>
+    </test>
+    <test name="org.jenetics.engine.EvolutionResult">
+        <classes>
+            <class name="org.jenetics.engine.EvolutionResultTest" />
+        </classes>
+    </test>
 	<test name="org.jenetics.stat.Histogram">
 		<classes>
 			<class name="org.jenetics.stat.HistogramTest" />
@@ -259,6 +269,11 @@
 			<class name="org.jenetics.internal.math.probabilityTest" />
 		</classes>
 	</test>
+    <test name="org.jenetics.internal.math.util">
+        <classes>
+            <class name="org.jenetics.internal.util.LazyTest" />
+        </classes>
+    </test>
     <test name="org.jenetics.internal.collection.Stack">
         <classes>
             <class name="org.jenetics.internal.collection.StackTest" />

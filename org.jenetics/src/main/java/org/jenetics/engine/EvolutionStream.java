@@ -25,9 +25,14 @@ import java.util.stream.Stream;
 import org.jenetics.Gene;
 
 /**
+ * The {@code EvolutionStream} class extends the Java {@link Stream} and adds a
+ * method for limiting the evolution by a given predicate.
+ *
+ * @see java.util.stream.Stream
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-15 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-20 $</em>
  */
 public interface EvolutionStream<
 	G extends Gene<?, G>,
@@ -36,7 +41,17 @@ public interface EvolutionStream<
 	extends Stream<EvolutionResult<G, C>>
 {
 
+	/**
+	 * Returns a stream consisting of the elements of this stream, truncated
+	 * when the given {@code proceed} predicate returns {@code false}.
+	 *
+	 * @param proceed the predicate which determines whether the stream is
+	 *        truncated or not
+	 * @return the new stream
+	 * @throws java.lang.NullPointerException if the given predicate is
+	 *         {@code null}.
+	 */
 	public Stream<EvolutionResult<G, C>>
-	limit(final Predicate<EvolutionResult<G, C>> terminate);
+	limit(final Predicate<EvolutionResult<G, C>> proceed);
 
 }

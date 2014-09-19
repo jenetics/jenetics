@@ -52,7 +52,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-09-19 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-09-20 $</em>
  */
 @XmlJavaTypeAdapter(Phenotype.Model.Adapter.class)
 public final class Phenotype<
@@ -65,7 +65,7 @@ public final class Phenotype<
 		Serializable,
 		Runnable
 {
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 3L;
 
 	private final Genotype<G> _genotype;
 
@@ -313,7 +313,13 @@ public final class Phenotype<
 		final Function<? super Genotype<G>, C> fitnessFunction,
 		final int generation
 	) {
-		return of(genotype, fitnessFunction, a -> a, generation);
+		return of(
+			genotype,
+			fitnessFunction,
+			fitnessFunction instanceof Serializable ?
+				(Function<? super C, ? extends C> & Serializable)a -> a :
+				a -> a,
+			generation);
 	}
 
 	/**
