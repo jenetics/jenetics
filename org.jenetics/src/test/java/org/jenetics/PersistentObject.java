@@ -29,6 +29,7 @@ import static org.jenetics.internal.math.random.nextString;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -42,10 +43,11 @@ import org.jenetics.util.ISeq;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Scoped;
+import org.jenetics.util.Serialize;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-05-02 $</em>
+ * @version <em>$Date: 2014-09-19 $</em>
  */
 public class PersistentObject<T> {
 
@@ -82,13 +84,7 @@ public class PersistentObject<T> {
 		}
 	}
 
-	private static final Function<String, Marshalling> ToMarshalling =
-		new Function<String, Marshalling>() {
-			@Override
-			public Marshalling apply(final String value) {
-				return Marshalling.of(value);
-			}
-		};
+	private static final Function<String, Marshalling> ToMarshalling = Marshalling::of;
 
 	private final String _name;
 	private final T _value;
@@ -413,6 +409,7 @@ public class PersistentObject<T> {
 		return Phenotype.of(
 			nextGenotypeBitGene(),
 			FitnessFunction(random().nextInt()),
+			FitnessScaler(),
 			Math.abs(random().nextInt())
 		).evaluate();
 	}
@@ -421,6 +418,7 @@ public class PersistentObject<T> {
 		return Phenotype.of(
 			nextGenotypeCharacterGene(),
 			FitnessFunction(random().nextInt()),
+			FitnessScaler(),
 			Math.abs(random().nextInt())
 		).evaluate();
 	}
@@ -429,6 +427,7 @@ public class PersistentObject<T> {
 		return Phenotype.of(
 			nextGenotypeIntegerGene(),
 			FitnessFunction(random().nextInt()),
+			FitnessScaler(),
 			Math.abs(random().nextInt())
 		).evaluate();
 	}
@@ -437,6 +436,7 @@ public class PersistentObject<T> {
 		return Phenotype.of(
 			nextGenotypeIntegerGene(),
 			FitnessFunction(random().nextLong()),
+			FitnessScaler(),
 			Math.abs(random().nextInt())
 		).evaluate();
 	}
@@ -445,6 +445,7 @@ public class PersistentObject<T> {
 		return Phenotype.of(
 			nextGenotypeIntegerGene(),
 			FitnessFunction(random().nextDouble()),
+			FitnessScaler(),
 			Math.abs(random().nextInt())
 		).evaluate();
 	}
@@ -453,6 +454,7 @@ public class PersistentObject<T> {
 		return Phenotype.of(
 			nextGenotypeLongGene(),
 			FitnessFunction(random().nextInt()),
+			FitnessScaler(),
 			Math.abs(random().nextInt())
 		).evaluate();
 	}
@@ -461,6 +463,7 @@ public class PersistentObject<T> {
 		return Phenotype.of(
 			nextGenotypeLongGene(),
 			FitnessFunction(random().nextLong()),
+			FitnessScaler(),
 			Math.abs(random().nextInt())
 		).evaluate();
 	}
@@ -469,6 +472,7 @@ public class PersistentObject<T> {
 		return Phenotype.of(
 			nextGenotypeLongGene(),
 			FitnessFunction(random().nextDouble()),
+			FitnessScaler(),
 			Math.abs(random().nextInt())
 		).evaluate();
 	}
@@ -477,6 +481,7 @@ public class PersistentObject<T> {
 		return Phenotype.of(
 			nextGenotypeDoubleGene(),
 			FitnessFunction(random().nextInt()),
+			FitnessScaler(),
 			Math.abs(random().nextInt())
 		).evaluate();
 	}
@@ -485,6 +490,7 @@ public class PersistentObject<T> {
 		return Phenotype.of(
 			nextGenotypeDoubleGene(),
 			FitnessFunction(random().nextLong()),
+			FitnessScaler(),
 			Math.abs(random().nextInt())
 		).evaluate();
 	}
@@ -493,6 +499,7 @@ public class PersistentObject<T> {
 		return Phenotype.of(
 			nextGenotypeDoubleGene(),
 			FitnessFunction(random().nextDouble()),
+			FitnessScaler(),
 			Math.abs(random().nextInt())
 		).evaluate();
 	}
@@ -501,6 +508,7 @@ public class PersistentObject<T> {
 		return Phenotype.of(
 			nextGenotypeEnumGeneCharacter(),
 			FitnessFunction(random().nextDouble()),
+			FitnessScaler(),
 			Math.abs(random().nextInt())
 		).evaluate();
 	}
@@ -509,6 +517,7 @@ public class PersistentObject<T> {
 		return Phenotype.of(
 			nextGenotypeEnumGeneInteger(),
 			FitnessFunction(random().nextDouble()),
+			FitnessScaler(),
 			Math.abs(random().nextInt())
 		).evaluate();
 	}
@@ -517,6 +526,7 @@ public class PersistentObject<T> {
 		return Phenotype.of(
 			nextGenotypeEnumGeneLong(),
 			FitnessFunction(random().nextDouble()),
+			FitnessScaler(),
 			Math.abs(random().nextInt())
 		).evaluate();
 	}
@@ -525,6 +535,7 @@ public class PersistentObject<T> {
 		return Phenotype.of(
 			nextGenotypeEnumGeneFloat(),
 			FitnessFunction(random().nextDouble()),
+			FitnessScaler(),
 			Math.abs(random().nextInt())
 		).evaluate();
 	}
@@ -533,6 +544,7 @@ public class PersistentObject<T> {
 		return Phenotype.of(
 			nextGenotypeEnumGeneDouble(),
 			FitnessFunction(random().nextDouble()),
+			FitnessScaler(),
 			Math.abs(random().nextInt())
 		).evaluate();
 	}
@@ -541,6 +553,7 @@ public class PersistentObject<T> {
 		return Phenotype.of(
 			nextGenotypeEnumGeneString(),
 			FitnessFunction(nextBigDecimal(random())),
+			FitnessScaler(),
 			Math.abs(random().nextInt())
 		).evaluate();
 	}
@@ -607,7 +620,11 @@ public class PersistentObject<T> {
 
 	public static <T, R extends Comparable<R>> Function<T, R>
 	FitnessFunction(final R result) {
-		return a -> result;
+		return (Function<T, R> & Serializable)a -> result;
+	}
+
+	public static <T> Function<T, T> FitnessScaler() {
+		return (Function<T, T> & Serializable)a -> a;
 	}
 
 	private static Random random() {

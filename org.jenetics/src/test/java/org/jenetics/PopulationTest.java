@@ -19,24 +19,47 @@
  */
 package org.jenetics;
 
+import java.io.Serializable;
+import java.util.Random;
 import java.util.function.Function;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import org.jenetics.util.Factory;
+import org.jenetics.util.ObjectTester;
+import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Serialize;
 import org.jenetics.util.lists;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-16 $</em>
+ * @version <em>$Date: 2014-09-19 $</em>
  */
-public class PopulationTest {
+public class PopulationTest
+	extends ObjectTester<Population<DoubleGene, Double>>
+{
 
-	private static final Function<Genotype<DoubleGene>, Double> _cf =
-		gt -> gt.getGene().getAllele();
+	private static final Function<Genotype<DoubleGene>, Double> FF =
+		(Function<Genotype<DoubleGene>, Double> & Serializable)
+			gt -> gt.getGene().getAllele();
+
+	private static final Function<Double, Double> FS =
+		(Function<Double, Double> & Serializable)d -> d;
 
 	private static Phenotype<DoubleGene, Double> pt(double value) {
-		return Phenotype.of(Genotype.of(DoubleChromosome.of(DoubleGene.of(value, 0, 10))), _cf, 0);
+		return Phenotype.of(Genotype.of(DoubleChromosome.of(DoubleGene.of(value, 0, 10))), FF, FS, 0);
+	}
+
+	@Override
+	protected Factory<Population<DoubleGene, Double>> factory() {
+		return () -> {
+			final Random random = RandomRegistry.getRandom();
+			final Genotype<DoubleGene> gt = Genotype.of(DoubleChromosome.of(0, 1));
+
+			return new Population<DoubleGene, Double>(100)
+				.fill(() -> Phenotype.of(gt.newInstance(), FF, FS, 1), 100);
+		};
 	}
 
 	@Test
@@ -48,24 +71,24 @@ public class PopulationTest {
 
 		population.populationSort();
 		for (int i = 0; i < population.size() - 1; ++i) {
-			Double first = _cf.apply(population.get(i).getGenotype());
-			Double second = _cf.apply(population.get(i + 1).getGenotype());
+			Double first = FF.apply(population.get(i).getGenotype());
+			Double second = FF.apply(population.get(i + 1).getGenotype());
 			Assert.assertTrue(first.compareTo(second) >= 0);
 		}
 
 		lists.shuffle(population);
 		population.sortWith(Optimize.MAXIMUM.<Double>descending());
 		for (int i = 0; i < population.size() - 1; ++i) {
-			Double first = _cf.apply(population.get(i).getGenotype());
-			Double second = _cf.apply(population.get(i + 1).getGenotype());
+			Double first = FF.apply(population.get(i).getGenotype());
+			Double second = FF.apply(population.get(i + 1).getGenotype());
 			Assert.assertTrue(first.compareTo(second) >= 0, first + "<" + second);
 		}
 
 		lists.shuffle(population);
 		population.sortWith(Optimize.MINIMUM.<Double>descending());
 		for (int i = 0; i < population.size() - 1; ++i) {
-			Double first = _cf.apply(population.get(i).getGenotype());
-			Double second = _cf.apply(population.get(i + 1).getGenotype());
+			Double first = FF.apply(population.get(i).getGenotype());
+			Double second = FF.apply(population.get(i + 1).getGenotype());
 			Assert.assertTrue(first.compareTo(second) <= 0, first + ">" + second);
 		}
 	}
