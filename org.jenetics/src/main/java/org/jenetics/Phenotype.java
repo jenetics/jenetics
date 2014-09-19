@@ -52,7 +52,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-09-19 $</em>
  */
 @XmlJavaTypeAdapter(Phenotype.Model.Adapter.class)
 public final class Phenotype<
@@ -69,11 +69,8 @@ public final class Phenotype<
 
 	private final Genotype<G> _genotype;
 
-	private transient final
-	Function<? super Genotype<G>, ? extends C> _fitnessFunction;
-
-	private transient final
-	Function<? super C, ? extends C> _fitnessScaler;
+	private final Function<? super Genotype<G>, ? extends C> _fitnessFunction;
+	private final Function<? super C, ? extends C> _fitnessScaler;
 
 	private final int _generation;
 
