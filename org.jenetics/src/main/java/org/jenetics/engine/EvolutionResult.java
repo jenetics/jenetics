@@ -46,7 +46,7 @@ import org.jenetics.stat.MinMax;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-20 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-22 $</em>
  */
 public final class EvolutionResult<
 	G extends Gene<?, G>,
@@ -94,7 +94,7 @@ public final class EvolutionResult<
 	}
 
 	private Phenotype<G, C> worst() {
-		return _population.stream().max(_optimize.descending()).orElse(null);
+		return _population.stream().min(_optimize.ascending()).orElse(null);
 	}
 
 	/**

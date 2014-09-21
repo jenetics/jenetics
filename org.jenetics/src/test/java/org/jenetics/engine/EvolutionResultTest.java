@@ -21,12 +21,18 @@ package org.jenetics.engine;
 
 import java.io.Serializable;
 import java.time.Duration;
+import java.util.Collections;
 import java.util.Random;
 import java.util.function.Function;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
 import org.jenetics.Genotype;
+import org.jenetics.IntegerChromosome;
+import org.jenetics.IntegerGene;
 import org.jenetics.Optimize;
 import org.jenetics.Phenotype;
 import org.jenetics.Population;
@@ -36,7 +42,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-09-20 $</em>
+ * @version <em>$Date: 2014-09-22 $</em>
  */
 public class EvolutionResultTest
 	extends ObjectTester<EvolutionResult<DoubleGene, Double>>
@@ -50,7 +56,6 @@ public class EvolutionResultTest
 
 		return () -> {
 			final Random random = RandomRegistry.getRandom();
-
 			final Genotype<DoubleGene> gt = Genotype.of(DoubleChromosome.of(0, 1));
 
 			return EvolutionResult.of(
@@ -72,6 +77,91 @@ public class EvolutionResultTest
 				random.nextInt(100)
 			);
 		};
+	}
+
+	@Test
+	public void bestWorstPhenotype() {
+		final int length = 100;
+		final Function<Genotype<IntegerGene>, Integer> ff = gt -> gt.getGene().getAllele();
+
+		final Population<IntegerGene, Integer> population = new Population<>(length);
+		for (int i = 0; i < length; ++i) {
+			final Genotype<IntegerGene> gt = Genotype.of(IntegerChromosome.of(
+				IntegerGene.of(i, 0, length)
+			));
+			population.add(Phenotype.of(gt, ff, 1));
+		}
+		Collections.shuffle(population, RandomRegistry.getRandom());
+
+		final EvolutionResult<IntegerGene, Integer> maxResult = EvolutionResult.of(
+			Optimize.MAXIMUM, population,
+			0, EvolutionDurations.ZERO, 0, 0, 0
+		);
+
+		Assert.assertEquals(maxResult.getBestFitness().intValue(), length - 1);
+		Assert.assertEquals(maxResult.getWorstFitness().intValue(), 0);
+
+		final EvolutionResult<IntegerGene, Integer> minResult = EvolutionResult.of(
+				Optimize.MINIMUM, population,
+				0, EvolutionDurations.ZERO, 0, 0, 0
+			);
+
+		Assert.assertEquals(minResult.getBestFitness().intValue(), 0);
+		Assert.assertEquals(minResult.getWorstFitness().intValue(), length - 1);
+	}
+
+	@Test
+	public void compareTo() {
+		final int length = 100;
+		final Function<Genotype<IntegerGene>, Integer> ff = gt -> gt.getGene().getAllele();
+
+		final Population<IntegerGene, Integer> small = new Population<>(length);
+		for (int i = 0; i < length; ++i) {
+			final Genotype<IntegerGene> gt = Genotype.of(IntegerChromosome.of(
+				IntegerGene.of(i, 0, length)
+			));
+			small.add(Phenotype.of(gt, ff, 1));
+		}
+		Collections.shuffle(small, RandomRegistry.getRandom());
+
+		final Population<IntegerGene, Integer> big = new Population<>(length);
+		for (int i = 0; i < length; ++i) {
+			final Genotype<IntegerGene> gt = Genotype.of(IntegerChromosome.of(
+				IntegerGene.of(i + length, 0, length)
+			));
+			big.add(Phenotype.of(gt, ff, 1));
+		}
+		Collections.shuffle(big, RandomRegistry.getRandom());
+
+
+		final EvolutionResult<IntegerGene, Integer> smallMaxResult = EvolutionResult.of(
+			Optimize.MAXIMUM, small,
+			0, EvolutionDurations.ZERO, 0, 0, 0
+		);
+		final EvolutionResult<IntegerGene, Integer> bigMaxResult = EvolutionResult.of(
+			Optimize.MAXIMUM, big,
+			0, EvolutionDurations.ZERO, 0, 0, 0
+		);
+
+		Assert.assertTrue(smallMaxResult.compareTo(bigMaxResult) < 0);
+		Assert.assertTrue(bigMaxResult.compareTo(smallMaxResult) > 0);
+		Assert.assertTrue(smallMaxResult.compareTo(smallMaxResult) == 0);
+		Assert.assertTrue(bigMaxResult.compareTo(bigMaxResult) == 0);
+
+
+		final EvolutionResult<IntegerGene, Integer> smallMinResult = EvolutionResult.of(
+			Optimize.MINIMUM, small,
+			0, EvolutionDurations.ZERO, 0, 0, 0
+		);
+		final EvolutionResult<IntegerGene, Integer> bigMinResult = EvolutionResult.of(
+			Optimize.MINIMUM, big,
+			0, EvolutionDurations.ZERO, 0, 0, 0
+		);
+
+		Assert.assertTrue(smallMinResult.compareTo(bigMinResult) > 0);
+		Assert.assertTrue(bigMinResult.compareTo(smallMinResult) < 0);
+		Assert.assertTrue(smallMinResult.compareTo(smallMinResult) == 0);
+		Assert.assertTrue(bigMinResult.compareTo(bigMinResult) == 0);
 	}
 
 
