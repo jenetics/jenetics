@@ -22,6 +22,7 @@ package org.jenetics.engine;
 import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 
+import java.time.Clock;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.function.Function;
@@ -30,7 +31,7 @@ import java.util.function.Supplier;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-15 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-21 $</em>
  */
 final class TimedExecutor {
 	private final Executor _executor;
@@ -40,16 +41,18 @@ final class TimedExecutor {
 	}
 
 	public <T> CompletableFuture<TimedResult<T>> async(
-		final Supplier<T> supplier
+		final Supplier<T> supplier,
+		final Clock clock
 	) {
-		return supplyAsync(TimedResult.of(supplier), _executor);
+		return supplyAsync(TimedResult.of(supplier, clock), _executor);
 	}
 
 	public <U, T> CompletableFuture<TimedResult<T>> thenApply(
 		final CompletableFuture<U> result,
-		final Function<U, T> function
+		final Function<U, T> function,
+		final Clock clock
 	) {
-		return result.thenApplyAsync(TimedResult.of(function), _executor);
+		return result.thenApplyAsync(TimedResult.of(function, clock), _executor);
 	}
 
 

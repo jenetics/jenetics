@@ -24,7 +24,7 @@ import org.jenetics.util.ISeq;
 /**
  * The Alterer is responsible for the changing/recombining the Population.
  * Alterers can be chained by appending a list of alterers with the
- * {@link org.jenetics.engine.Engine.Builder#alterers(Alterer[])} method.
+ * {@link org.jenetics.engine.Engine.Builder#alterers(Alterer, Alterer[])} method.
  *
  * [code]
  * final GeneticAlgorithm&lt;DoubleGene, Double&gt; ga = ...
@@ -42,7 +42,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-17 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-21 $</em>
  */
 @FunctionalInterface
 public interface Alterer<
@@ -101,7 +101,11 @@ public interface Alterer<
 	@SafeVarargs
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Alterer<G, C> of(final Alterer<G, C>... alterers) {
-		return new CompositeAlterer<G, C>(ISeq.of(alterers));
+		return alterers.length == 0 ?
+			(p, g) -> 0 :
+			alterers.length == 1 ?
+				alterers[0] :
+				new CompositeAlterer<G, C>(ISeq.of(alterers));
 	}
 
 }

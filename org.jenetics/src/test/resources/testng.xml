@@ -20,7 +20,7 @@
  # Author:
  #    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  #
- # Version: <em>$Date: 2014-09-20 $</em>
+ # Version: <em>$Date: 2014-09-21 $</em>
  #
  ###############################################################################
 -->
@@ -312,7 +312,7 @@
 			<class name="org.jenetics.util.PRNGTest" />
 		</classes>
 	</test>
-	<test name="org.jenetics.util.RandomIndexStream_">
+	<test name="org.jenetics.util.RandomIndexStream">
 		<classes>
 			<class name="org.jenetics.util.RandomIndexStreamTest" />
 		</classes>

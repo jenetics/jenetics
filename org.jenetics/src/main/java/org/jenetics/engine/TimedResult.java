@@ -22,6 +22,7 @@ package org.jenetics.engine;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
+import java.time.Clock;
 import java.time.Duration;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -31,7 +32,7 @@ import java.util.function.Supplier;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-15 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-21 $</em>
  */
 final class TimedResult<T> implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -48,14 +49,16 @@ final class TimedResult<T> implements Serializable {
 	 * Wraps the given supplier in a supplier which returns a {@code TimedResult}.
 	 *
 	 * @param supplier the supplier to wrap
+	 * @param clock the clock used for measure the execution time
 	 * @param <T> the result type
 	 * @return the wrapped supplier which returns a {@code TimedResult}
 	 */
 	public static <T> Supplier<TimedResult<T>> of(
-		final Supplier<? extends T> supplier
+		final Supplier<? extends T> supplier,
+		final Clock clock
 	) {
 		return () -> {
-			final Timer timer = Timer.of().start();
+			final Timer timer = Timer.of(clock).start();
 			final T result = supplier.get();
 			return new TimedResult<>(timer.stop().getTime(), result);
 		};
@@ -66,12 +69,14 @@ final class TimedResult<T> implements Serializable {
 	 * {@code TimedResult}.
 	 *
 	 * @param function the function to wrap
+	 * @param clock the clock used for measure the execution time
 	 * @param <T> the functions parameter type
 	 * @param <R> the functions return type
 	 * @return the wrapped function which returns a {@code TimedResult}
 	 */
 	public static <T, R> Function<T, TimedResult<R>> of(
-		final Function<? super T, ? extends R> function
+		final Function<? super T, ? extends R> function,
+		final Clock clock
 	) {
 		return value -> {
 			final Timer timer = Timer.of().start();

@@ -22,9 +22,13 @@ package org.jenetics.engine;
 import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static org.jenetics.Population.toPopulation;
 import static org.jenetics.internal.util.require.probability;
 
+import java.time.Clock;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ForkJoinPool;
@@ -32,8 +36,10 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
+import java.util.stream.Stream.Builder;
 
 import org.jenetics.internal.util.Concurrency;
+import org.jenetics.internal.util.NanoClock;
 import org.jenetics.internal.util.require;
 
 import org.jenetics.Alterer;
@@ -82,7 +88,7 @@ import org.jenetics.util.Factory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-19 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-21 $</em>
  */
 public final class Engine<
 	G extends Gene<?, G>,
@@ -123,6 +129,7 @@ public final class Engine<
 
 	// Execution context for concurrent execution of evolving steps.
 	private final TimedExecutor _executor;
+	private final Clock _clock;
 
 
 	/**
@@ -139,6 +146,7 @@ public final class Engine<
 	 * @param survivorsCount the number of the survivor individuals
 	 * @param maximalPhenotypeAge the maximal age of an individual
 	 * @param executor the executor used for executing the single evolve steps
+	 * @param clock the clock used for calculating the timing results
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if the given integer values are smaller
 	 *         than one.
@@ -154,7 +162,8 @@ public final class Engine<
 		final int offspringCount,
 		final int survivorsCount,
 		final int maximalPhenotypeAge,
-		final Executor executor
+		final Executor executor,
+		final Clock clock
 	) {
 		_fitnessFunction = requireNonNull(fitnessFunction);
 		_fitnessScaler = requireNonNull(fitnessScaler);
@@ -169,6 +178,7 @@ public final class Engine<
 		_maximalPhenotypeAge = require.positive(maximalPhenotypeAge);
 
 		_executor = new TimedExecutor(requireNonNull(executor));
+		_clock = requireNonNull(clock);
 
 		BestEvolutionResult = EvolutionResult.<G, C>best(_optimize);
 		BestPhenotype = EvolutionResult.<G, C>bestPhenotype(_optimize);
@@ -206,31 +216,36 @@ public final class Engine<
 		// Select the offspring population.
 		final CompletableFuture<TimedResult<Population<G, C>>> offspring =
 			_executor.async(() ->
-				selectOffspring(start.getPopulation())
+				selectOffspring(start.getPopulation()),
+				_clock
 			);
 
 		// Select the survivor population.
 		final CompletableFuture<TimedResult<Population<G, C>>> survivors =
 			_executor.async(() ->
-				selectSurvivors(start.getPopulation())
+				selectSurvivors(start.getPopulation()),
+				_clock
 			);
 
 		// Altering the offspring population.
 		final CompletableFuture<TimedResult<AlterResult<G, C>>> alteredOffspring =
 			_executor.thenApply(offspring, p ->
-				alter(p.get(), start.getGeneration())
+				alter(p.get(), start.getGeneration()),
+				_clock
 			);
 
 		// Filter and replace invalid and to old survivor individuals.
 		final CompletableFuture<TimedResult<FilterResult<G, C>>> filteredSurvivors =
 			_executor.thenApply(survivors, pop ->
-				filter(pop.get(), start.getGeneration())
+				filter(pop.get(), start.getGeneration()),
+				_clock
 			);
 
 		// Filter and replace invalid and to old offspring individuals.
 		final CompletableFuture<TimedResult<FilterResult<G, C>>> filteredOffspring =
 			_executor.thenApply(alteredOffspring, pop ->
-				filter(pop.get().getPopulation(), start.getGeneration())
+				filter(pop.get().getPopulation(), start.getGeneration()),
+				_clock
 			);
 
 		// Combining survivors and offspring to the new population.
@@ -245,7 +260,7 @@ public final class Engine<
 
 		// Evaluate the fitness-function and wait for result.
 		final TimedResult<Population<G, C>> result = population
-			.thenApply(TimedResult.of(this::evaluate))
+			.thenApply(TimedResult.of(this::evaluate, _clock))
 			.join();
 
 		final EvolutionDurations durations = EvolutionDurations.of(
@@ -360,8 +375,9 @@ public final class Engine<
 	}
 
 	/**
-	 * Create a new evolution stream with the given initial individuals. The
-	 * given {@code genotypes} must contain at least one element.
+	 * Create a new evolution stream with the given initial individuals. If an
+	 * empty {@code Iterable} is given, the engines genotype factory is used
+	 * for creating the population.
 	 *
 	 * @param genotypes the initial individuals used for the evolution stream.
 	 *        Missing individuals are created and individuals not needed are
@@ -369,29 +385,29 @@ public final class Engine<
 	 * @return a new evolution stream.
 	 * @throws java.lang.NullPointerException if the given {@code genotypes} is
 	 *         {@code null}.
-	 * @throws java.lang.IllegalArgumentException if the given {@code genotypes}
-	 *         collection is empty.
 	 */
 	public EvolutionStream<G, C> stream(
-		final Collection<Genotype<G>> genotypes
+		final Iterable<Genotype<G>> genotypes
 	) {
 		requireNonNull(genotypes);
-		if (genotypes.isEmpty()) {
-			throw new IllegalArgumentException(
-				"Given genotype collection is empty."
-			);
-		}
+		final Iterator<Genotype<G>> it = genotypes.iterator();
+		final Factory<Genotype<G>> genotypeFactory = it.hasNext() ?
+				it.next() :
+				_genotypeFactory;
 
 		// Lazy population evaluation.
 		final Supplier<Population<G, C>> population = () -> {
+			final Stream.Builder<Genotype<G>> builder = Stream.builder();
+			genotypes.forEach(builder);
+
 			final Stream<Genotype<G>> stream = Stream.concat(
-				genotypes.stream(),
-				Stream.generate(genotypes.iterator().next()::newInstance)
+				builder.build(),
+				Stream.generate(genotypeFactory::newInstance)
 			);
 
 			return stream.limit(_offspringCount + _survivorsCount)
 				.map(gt -> Phenotype.of(gt, _fitnessFunction, _fitnessScaler, 1))
-				.collect(Population.toPopulation());
+				.collect(toPopulation());
 		};
 
 		return new EvolutionStreamImpl<>(
@@ -447,7 +463,7 @@ public final class Engine<
 	 *
 	 * @return the used offspring {@link Selector} of the GA.
 	 */
-	public Selector<G, C> getOffspringSelectors() {
+	public Selector<G, C> getOffspringSelector() {
 		return _offspringSelector;
 	}
 
@@ -476,6 +492,15 @@ public final class Engine<
 	 */
 	public int getSurvivorsCount() {
 		return _survivorsCount;
+	}
+
+	/**
+	 * Return the number of individuals of a population.
+	 *
+	 * @return the number of individuals of a population
+	 */
+	public int getPopulationSize() {
+		return _offspringCount + _survivorsCount;
 	}
 
 	/**
@@ -558,7 +583,7 @@ public final class Engine<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 3.0
-	 * @version 3.0 &mdash; <em>$Date: 2014-09-19 $</em>
+	 * @version 3.0 &mdash; <em>$Date: 2014-09-21 $</em>
 	 */
 	public static final class Builder<
 		G extends Gene<?, G>,
@@ -584,6 +609,7 @@ public final class Engine<
 		private int _maximalPhenotypeAge = 70;
 
 		private Executor _executor = ForkJoinPool.commonPool();
+		private Clock _clock = NanoClock.INSTANCE;
 
 		private Builder(
 			final Factory<Genotype<G>> genotypeFactory,
@@ -636,7 +662,7 @@ public final class Engine<
 
 		/**
 		 * The selector used for selecting the offspring population. <i>Default
-		 * values is set to {@code TournamentSelector&lt;&gt;(3)}.</i>
+		 * values is set to {@code TournamentSelector<>(3)}.</i>
 		 *
 		 * @param selector used for selecting the offspring population
 		 * @return {@code this} builder, for command chaining
@@ -650,7 +676,7 @@ public final class Engine<
 
 		/**
 		 * The selector used for selecting the survivors population. <i>Default
-		 * values is set to {@code TournamentSelector&lt;&gt;(3)}.</i>
+		 * values is set to {@code TournamentSelector<>(3)}.</i>
 		 *
 		 * @param selector used for selecting survivors population
 		 * @return {@code this} builder, for command chaining
@@ -665,7 +691,7 @@ public final class Engine<
 		/**
 		 * The selector used for selecting the survivors and offspring
 		 * population. <i>Default values is set to
-		 * {@code TournamentSelector&lt;&gt;(3)}.</i>
+		 * {@code TournamentSelector<>(3)}.</i>
 		 *
 		 * @param selector used for selecting survivors and offspring population
 		 * @return {@code this} builder, for command chaining
@@ -678,15 +704,29 @@ public final class Engine<
 
 		/**
 		 * The alterers used for alter the offspring population. <i>Default
-		 * values is set to {@code new SinglePointCrossover&lt;&gt;(0.2)}
-		 * followed by {@code new Mutator&lt;&gt;(0.15)}.</i>
+		 * values is set to {@code new SinglePointCrossover<>(0.2)} followed by
+		 * {@code new Mutator<>(0.15)}.</i>
 		 *
-		 * @param alterers used for alter the offspring population
+		 * @param first the first alterer used for alter the offspring
+		 *        population
+		 * @param rest the rest of the alterers used for alter the offspring
+		 *        population
 		 * @return {@code this} builder, for command chaining
+		 * @throws java.lang.NullPointerException if one of the alterers is
+		 *         {@code null}.
 		 */
 		@SafeVarargs
-		public final Builder<G, C> alterers(final Alterer<G, C>... alterers) {
-			_alterer = Alterer.of(alterers);
+		public final Builder<G, C> alterers(
+			final Alterer<G, C> first,
+			final Alterer<G, C>... rest
+		) {
+			requireNonNull(first);
+			Stream.of(rest).forEach(Objects::requireNonNull);
+
+			_alterer = rest.length == 0 ?
+				first :
+				Alterer.of(rest).compose(first);
+
 			return this;
 		}
 
@@ -721,7 +761,7 @@ public final class Engine<
 		 *
 		 * @param size the number of individuals of a population
 		 * @return {@code this} builder, for command chaining
-		 * @throws java.lang.IllegalArgumentException if {@code size} &lt; 1
+		 * @throws java.lang.IllegalArgumentException if {@code size < 1}
 		 */
 		public Builder<G, C> populationSize(final int size) {
 			if (size < 1) {
@@ -739,7 +779,7 @@ public final class Engine<
 		 *
 		 * @param age the maximal phenotype age
 		 * @return {@code this} builder, for command chaining
-		 * @throws java.lang.IllegalArgumentException if {@code age} &lt; 1
+		 * @throws java.lang.IllegalArgumentException if {@code age < 1}
 		 */
 		public Builder<G, C> maximalPhenotypeAge(final int age) {
 			if (age < 1) {
@@ -763,6 +803,17 @@ public final class Engine<
 		}
 
 		/**
+		 * The clock used for calculating the execution durations.
+		 *
+		 * @param clock the clock used for calculating the execution durations
+		 * @return {@code this} builder, for command chaining
+		 */
+		public Builder<G, C> clock(final Clock clock) {
+			_clock = requireNonNull(clock);
+			return null;
+		}
+
+		/**
 		 * Builds an new {@code Engine} instance from the set properties.
 		 *
 		 * @return an new {@code Engine} instance from the set properties
@@ -779,7 +830,8 @@ public final class Engine<
 				getOffspringCount(),
 				getSurvivorsCount(),
 				_maximalPhenotypeAge,
-				_executor
+				_executor,
+				_clock
 			);
 		}
 
