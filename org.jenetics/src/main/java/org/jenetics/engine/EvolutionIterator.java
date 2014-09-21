@@ -21,10 +21,8 @@ package org.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.Spliterator;
-import java.util.function.Consumer;
+import java.util.Iterator;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import org.jenetics.Gene;
@@ -34,56 +32,40 @@ import org.jenetics.Gene;
  * @since 3.0
  * @version 3.0 &mdash; <em>$Date: 2014-09-21 $</em>
  */
-final class EvolutionSpliterator<
+final class EvolutionIterator<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	implements Spliterator<EvolutionResult<G, C>>
+	implements Iterator<EvolutionResult<G, C>>
 {
 
 	private final Function<EvolutionStart<G, C>, EvolutionResult<G, C>> _evolution;
 	private final Supplier<EvolutionStart<G, C>> _initial;
-	private final Predicate<EvolutionResult<G, C>> _proceed;
 
 	private EvolutionStart<G, C> _start;
 
-	EvolutionSpliterator(
+	EvolutionIterator(
 		final Function<EvolutionStart<G, C>, EvolutionResult<G, C>> evolution,
-		final Supplier<EvolutionStart<G, C>> initial,
-		final Predicate<EvolutionResult<G, C>> proceed
+		final Supplier<EvolutionStart<G, C>> initial
 	) {
 		_evolution = requireNonNull(evolution);
 		_initial = requireNonNull(initial);
-		_proceed = requireNonNull(proceed);
 	}
 
 	@Override
-	public boolean tryAdvance(
-		final Consumer<? super EvolutionResult<G, C>> action
-	) {
+	public EvolutionResult<G, C> next() {
 		if (_start == null) {
 			_start = _initial.get();
 		}
 
 		final EvolutionResult<G, C> result = _evolution.apply(_start);
-		action.accept(result);
 		_start = result.next();
-
-		return _proceed.test(result);
+		return result;
 	}
 
 	@Override
-	public Spliterator<EvolutionResult<G, C>> trySplit() {
-		return null;
+	public boolean hasNext() {
+		return true;
 	}
 
-	@Override
-	public long estimateSize() {
-		return Long.MAX_VALUE;
-	}
-
-	@Override
-	public int characteristics() {
-		return Spliterator.NONNULL | Spliterator.IMMUTABLE;
-	}
 }

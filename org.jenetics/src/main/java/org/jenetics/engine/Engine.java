@@ -353,6 +353,20 @@ public final class Engine<
 	}
 
 	/**
+	 * Create a new <b>infinite</b> evolution iterator. This is an alternative
+	 * way for evolution. It lets the user start, stop and resume the evolution
+	 * process whenever deceired.
+	 *
+	 * @return a new <b>infinite</b> evolution iterator
+	 */
+	public Iterator<EvolutionResult<G, C>> iterator() {
+		return new EvolutionIterator<>(
+			this::evolve,
+			this::evolutionStart
+		);
+	}
+
+	/**
 	 * Create a new evolution stream with a newly created population.
 	 *
 	 * @return a new evolution stream.
