@@ -35,7 +35,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-09-19 $</em>
+ * @version <em>$Date: 2014-09-21 $</em>
  */
 public class MinMaxTest {
 
@@ -130,6 +130,32 @@ public class MinMaxTest {
 		Arrays.stream(numbers)
 			.mapToObj(Double::new)
 			.forEach(minMax);
+
+		Assert.assertEquals(minMax.getMin(), StatUtils.max(numbers));
+		Assert.assertEquals(minMax.getMax(), StatUtils.min(numbers));
+	}
+
+	@Test
+	public void toMinMaxNormal() {
+		final Random random = RandomRegistry.getRandom();
+		final double[] numbers = random.doubles().limit(1000).toArray();
+
+		final MinMax<Double> minMax = Arrays.stream(numbers)
+			.mapToObj(Double::new)
+			.collect(MinMax.toMinMax());
+
+		Assert.assertEquals(minMax.getMin(), StatUtils.min(numbers));
+		Assert.assertEquals(minMax.getMax(), StatUtils.max(numbers));
+	}
+
+	@Test
+	public void toMinMaxReverse() {
+		final Random random = RandomRegistry.getRandom();
+		final double[] numbers = random.doubles().limit(1000).toArray();
+
+		final MinMax<Double> minMax = Arrays.stream(numbers)
+			.mapToObj(Double::new)
+			.collect(MinMax.toMinMax((a, b) -> b.compareTo(a)));
 
 		Assert.assertEquals(minMax.getMin(), StatUtils.max(numbers));
 		Assert.assertEquals(minMax.getMax(), StatUtils.min(numbers));
