@@ -248,75 +248,66 @@ public final class EvolutionResult<
 
 
 	/* *************************************************************************
-	 *  Some static factory methods.
+	 *  Some static collector/factory methods.
 	 * ************************************************************************/
 
-	private static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Comparator<EvolutionResult<G, C>> bestComparator(final Optimize opt) {
-		return (a, b) -> opt.compare(a.getBestPhenotype(), b.getBestPhenotype());
-	}
-
-	private static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Comparator<EvolutionResult<G, C>> worstComparator(final Optimize opt) {
-		return (a, b) -> opt.compare(a.getWorstPhenotype(), b.getWorstPhenotype());
-	}
-
-	static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	/**
+	 * Return a collector which collects the best result of an evolution stream.
+	 *
+	 * @param <G> the gene type
+	 * @param <C> the fitness type
+	 * @return a collector which collects the best result of an evolution stream
+	 */
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Collector<EvolutionResult<G, C>, ?, EvolutionResult<G, C>>
-	best(final Optimize opt) {
-		final Comparator<EvolutionResult<G, C>> comparator = (a, b) ->
-			opt.compare(a.getBestPhenotype(), b.getBestPhenotype());
-
+	toBestEvolutionResult() {
 		return Collector.of(
-			() -> MinMax.of(comparator),
+			MinMax::<EvolutionResult<G, C>>of,
 			MinMax::accept,
 			MinMax::combine,
 			MinMax::getMax
 		);
 	}
 
-	static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	/**
+	 * Return a collector which collects the best phenotype of an evolution
+	 * stream.
+	 *
+	 * @param <G> the gene type
+	 * @param <C> the fitness type
+	 * @return a collector which collects the best phenotype of an evolution
+	 *         stream
+	 */
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Collector<EvolutionResult<G, C>, ?, Phenotype<G, C>>
-	bestPhenotype(final Optimize opt) {
-		final Comparator<EvolutionResult<G, C>> comparator = (a, b) ->
-			opt.compare(a.getBestPhenotype(), b.getBestPhenotype());
-
+	toBestPhenotype() {
 		return Collector.of(
-			() -> MinMax.of(comparator),
+			MinMax::<EvolutionResult<G, C>>of,
 			MinMax::accept,
 			MinMax::combine,
 			mm -> mm.getMax().getBestPhenotype()
 		);
 	}
 
-	static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	/**
+	 * Return a collector which collects the best genotype of an evolution
+	 * stream.
+	 *
+	 * @param <G> the gene type
+	 * @param <C> the fitness type
+	 * @return a collector which collects the best genotype of an evolution
+	 *         stream
+	 */
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Collector<EvolutionResult<G, C>, ?, Genotype<G>>
-	bestGenotype(final Optimize opt) {
-		final Comparator<EvolutionResult<G, C>> comparator = (a, b) ->
-			opt.compare(a.getBestPhenotype(), b.getBestPhenotype());
-
+	toBestGenotype() {
 		return Collector.of(
-			() -> MinMax.of(comparator),
+			MinMax::<EvolutionResult<G, C>>of,
 			MinMax::accept,
 			MinMax::combine,
 			mm -> mm.getMax().getBestPhenotype().getGenotype()
 		);
 	}
-
-	static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Collector<EvolutionResult<G, C>, ?, EvolutionResult<G, C>>
-	worst(final Optimize opt) {
-		final Comparator<EvolutionResult<G, C>> comparator = (a, b) ->
-			opt.compare(a.getWorstPhenotype(), b.getWorstPhenotype());
-
-		return Collector.of(
-			() -> MinMax.of(comparator),
-			MinMax::accept,
-			MinMax::combine,
-			MinMax::getMin
-		);
-	}
-
 
 	/**
 	 * Return an new {@code EvolutionResult} object with the given values.

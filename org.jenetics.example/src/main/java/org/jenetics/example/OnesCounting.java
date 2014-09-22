@@ -19,6 +19,8 @@
  */
 package org.jenetics.example;
 
+import static org.jenetics.engine.EvolutionResult.toBestPhenotype;
+
 import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;
 import org.jenetics.Genotype;
@@ -45,7 +47,7 @@ public class OnesCounting {
 			.build();
 
 		final Phenotype<BitGene, Integer> result = engine.stream().limit(100)
-			.collect(engine.BestPhenotype);
+			.collect(toBestPhenotype());
 
 		System.out.println(result);
 	}

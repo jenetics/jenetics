@@ -19,11 +19,14 @@
  */
 package org.jenetics.engine;
 
+import static org.jenetics.engine.EvolutionResult.toBestEvolutionResult;
+
 import java.io.Serializable;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Random;
 import java.util.function.Function;
+import java.util.stream.IntStream;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -164,5 +167,41 @@ public class EvolutionResultTest
 		Assert.assertTrue(bigMinResult.compareTo(bigMinResult) == 0);
 	}
 
+	@Test
+	public void bestCollector() {
+		final int bestMaxValue = IntStream.range(0, 100)
+			.mapToObj(value -> newResult(Optimize.MAXIMUM, value))
+			.collect(toBestEvolutionResult())
+			.getBestFitness();
+
+		Assert.assertEquals(bestMaxValue, 99);
+
+		final int bestMinValue = IntStream.range(0, 100)
+			.mapToObj(value -> newResult(Optimize.MINIMUM, value))
+			.collect(EvolutionResult.toBestGenotype())
+			.getGene().getAllele();
+
+		Assert.assertEquals(bestMinValue, 0);
+	}
+
+	private static EvolutionResult<IntegerGene, Integer> newResult(
+		final Optimize opt,
+		final int value
+	) {
+		final int length = 1000;
+		final Function<Genotype<IntegerGene>, Integer> ff = gt -> gt.getGene().getAllele();
+
+		final Population<IntegerGene, Integer> pop = new Population<>(length);
+		for (int i = 0; i < length; ++i) {
+			final Genotype<IntegerGene> gt = Genotype.of(IntegerChromosome.of(
+				IntegerGene.of(value, 0, length)
+			));
+			pop.add(Phenotype.of(gt, ff, 1));
+		}
+		Collections.shuffle(pop, RandomRegistry.getRandom());
+
+
+		return EvolutionResult.of(opt, pop, 0, EvolutionDurations.ZERO, 0, 0, 0);
+	}
 
 }

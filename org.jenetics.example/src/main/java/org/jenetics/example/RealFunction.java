@@ -22,6 +22,7 @@ package org.jenetics.example;
 import static java.lang.Math.PI;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
+import static org.jenetics.engine.EvolutionResult.toBestPhenotype;
 
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
@@ -53,7 +54,7 @@ public class RealFunction {
 
 		final Phenotype<DoubleGene, Double> result = engine.stream()
 			.limit(100)
-			.collect(engine.BestPhenotype);
+			.collect(toBestPhenotype());
 
 		System.out.println(result);
 	}

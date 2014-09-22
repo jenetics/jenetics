@@ -19,6 +19,7 @@
  */
 package org.jenetics.example;
 
+import static org.jenetics.engine.EvolutionResult.toBestPhenotype;
 import static org.jenetics.internal.math.random.nextDouble;
 
 import java.util.Random;
@@ -113,7 +114,7 @@ public class Knapsack {
 			.build();
 
 		final Phenotype<BitGene, Double> result = engine.stream().limit(100)
-			.collect(engine.BestPhenotype);
+			.collect(toBestPhenotype());
 
 		System.out.println(result);
 	}
