@@ -38,7 +38,7 @@ public class OnesCounting {
 
 	public static void main(String[] args) {
 		final Engine<BitGene, Integer> engine = Engine
-			.newBuilder(OnesCounting::count, BitChromosome.of(20, 0.15))
+			.builder(OnesCounting::count, BitChromosome.of(20, 0.15))
 			.populationSize(500)
 			.selector(new RouletteWheelSelector<>())
 			.alterers(

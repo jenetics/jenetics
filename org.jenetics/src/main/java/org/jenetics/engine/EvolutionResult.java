@@ -326,7 +326,7 @@ public final class EvolutionResult<
 	 * @throws java.lang.NullPointerException if one of the parameters is
 	 *         {@code null}
 	 */
-	static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionResult<G, C> of(
 		final Optimize optimize,
 		final Population<G, C> population,

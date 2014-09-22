@@ -42,7 +42,7 @@ public class RealFunction {
 
 	public static void main(String[] args) {
 		final Engine<DoubleGene, Double> engine = Engine
-			.newBuilder(
+			.builder(
 				RealFunction::evaluate,
 				DoubleChromosome.of(0.0, 2.0*PI))
 			.populationSize(500)

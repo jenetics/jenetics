@@ -76,7 +76,7 @@ public class TravelingSalesman {
 
 	public static void main(String[] args) {
 		final Engine<EnumGene<Integer>, Double> engine = Engine
-			.newBuilder(
+			.builder(
 				TravelingSalesman::distance,
 				PermutationChromosome.ofInteger(STOPS))
 			.optimize(Optimize.MINIMUM)

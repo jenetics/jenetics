@@ -37,7 +37,7 @@ import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-09-21 $</em>
+ * @version <em>$Date: 2014-09-22 $</em>
  */
 public class EngineBuilderTest {
 
@@ -57,7 +57,7 @@ public class EngineBuilderTest {
 		final int phenotypeAge = 340;
 
 		final Engine<DoubleGene, Double> engine = Engine
-			.newBuilder(fitnessFunction, genotypeFactory)
+			.builder(fitnessFunction, genotypeFactory)
 			.fitnessScaler(fitnessScaler)
 			.offspringSelector(offspringSelector)
 			.survivorsSelector(survivorsSelector)

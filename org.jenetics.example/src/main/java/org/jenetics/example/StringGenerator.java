@@ -55,7 +55,7 @@ public class StringGenerator {
 		);
 
 		final Engine<CharacterGene, Integer> engine = Engine
-			.newBuilder(StringGenerator::evaluate, gtf)
+			.builder(StringGenerator::evaluate, gtf)
 			.populationSize(500)
 			.survivorsSelector(new StochasticUniversalSelector<>())
 			.offspringSelector(new TournamentSelector<>(5))

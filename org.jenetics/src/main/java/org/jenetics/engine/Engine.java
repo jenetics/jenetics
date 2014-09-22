@@ -67,7 +67,7 @@ import org.jenetics.util.Factory;
  *
  *    public static void main(String[] args) {
  *        final Engine&lt;DoubleGene, Double&gt; engine = Engine
- *            .newBuilder(
+ *            .builder(
  *                RealFunction::evaluate,
  *                DoubleChromosome.of(0.0, 2.0*PI))
  *            .populationSize(500)
@@ -330,7 +330,7 @@ public final class Engine<
 	/**
 	 * Create a new <b>infinite</b> evolution iterator. This is an alternative
 	 * way for evolution. It lets the user start, stop and resume the evolution
-	 * process whenever deceired.
+	 * process whenever desired.
 	 *
 	 * @return a new <b>infinite</b> evolution iterator
 	 */
@@ -342,7 +342,8 @@ public final class Engine<
 	}
 
 	/**
-	 * Create a new evolution stream with a newly created population.
+	 * Create a new <b>infinite</b> evolution stream with a newly created
+	 * population.
 	 *
 	 * @return a new evolution stream.
 	 */
@@ -364,9 +365,9 @@ public final class Engine<
 	}
 
 	/**
-	 * Create a new evolution stream with the given initial individuals. If an
-	 * empty {@code Iterable} is given, the engines genotype factory is used
-	 * for creating the population.
+	 * Create a new <b>infinite</b> evolution stream with the given initial
+	 * individuals. If an empty {@code Iterable} is given, the engines genotype
+	 * factory is used for creating the population.
 	 *
 	 * @param genotypes the initial individuals used for the evolution stream.
 	 *        Missing individuals are created and individuals not needed are
@@ -379,30 +380,38 @@ public final class Engine<
 		final Iterable<Genotype<G>> genotypes
 	) {
 		requireNonNull(genotypes);
-		final Iterator<Genotype<G>> it = genotypes.iterator();
-		final Factory<Genotype<G>> genotypeFactory = it.hasNext() ?
-				it.next() :
-				_genotypeFactory;
-
-		// Lazy population evaluation.
-		final Supplier<Population<G, C>> population = () -> {
-			final Stream.Builder<Genotype<G>> builder = Stream.builder();
-			genotypes.forEach(builder);
-
-			final Stream<Genotype<G>> stream = Stream.concat(
-				builder.build(),
-				Stream.generate(genotypeFactory::newInstance)
-			);
-
-			return stream.limit(_offspringCount + _survivorsCount)
-				.map(gt -> Phenotype.of(gt, _fitnessFunction, _fitnessScaler, 1))
-				.collect(toPopulation());
-		};
 
 		return new EvolutionStreamImpl<>(
 			this::evolve,
-			() -> EvolutionStart.of(population.get(), 1)
+			() -> evolutionStart(genotypes)
 		);
+	}
+
+	private EvolutionStart<G, C> evolutionStart(
+		final Iterable<Genotype<G>> genotypes
+	) {
+		final int size = _offspringCount + _survivorsCount;
+
+		final Iterator<Genotype<G>> it = genotypes.iterator();
+		final Factory<Genotype<G>> genotypeFactory = it.hasNext() ?
+			it.next() :
+			_genotypeFactory;
+
+		final Stream.Builder<Genotype<G>> builder = Stream.builder();
+		genotypes.forEach(builder);
+
+		final Stream<Genotype<G>> stream = Stream.concat(
+			builder.build(),
+			Stream.generate(genotypeFactory::newInstance)
+		);
+
+		final int generation = 1;
+		final Population<G, C> pop = stream.limit(size)
+			.map(gt -> Phenotype.of(
+				gt, _fitnessFunction, _fitnessScaler, generation))
+			.collect(toPopulation());
+
+		return EvolutionStart.of(pop, generation);
 	}
 
 	/* *************************************************************************
@@ -528,7 +537,7 @@ public final class Engine<
 	 *         {@code null}.
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Builder<G, C> newBuilder(
+	Builder<G, C> builder(
 		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
 		final Factory<Genotype<G>> genotypeFactory
 	) {
@@ -550,7 +559,7 @@ public final class Engine<
 	 */
 	@SafeVarargs
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Builder<G, C> newBuilder(
+	Builder<G, C> builder(
 		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
 		final Chromosome<G> chromosome,
 		final Chromosome<G>... chromosomes

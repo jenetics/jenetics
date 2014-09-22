@@ -104,7 +104,7 @@ public class Knapsack {
 			BitChromosome.of(nitems, 0.5)
 		);
 
-		final Engine<BitGene, Double> engine = Engine.newBuilder(ff, genotype)
+		final Engine<BitGene, Double> engine = Engine.builder(ff, genotype)
 			.populationSize(500)
 			.survivorsSelector(new TournamentSelector<>(5))
 			.offspringSelector(new RouletteWheelSelector<>())
