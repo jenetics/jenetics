@@ -32,8 +32,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Collector;
 import java.util.stream.Stream;
 
 import org.jenetics.internal.util.Concurrency;
@@ -79,7 +77,7 @@ import org.jenetics.util.Factory;
  *
  *        final Phenotype&lt;DoubleGene, Double&gt; result = engine.stream()
  *            .limit(100)
- *            .collect(engine.BestPhenotype);
+ *            .collect(toBestPhenotype());
  *     }
  * }
  * [/code]
