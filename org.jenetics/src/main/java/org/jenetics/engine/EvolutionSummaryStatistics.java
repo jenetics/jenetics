@@ -19,24 +19,31 @@
  */
 package org.jenetics.engine;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.IntSummaryStatistics;
 import java.util.function.Consumer;
+import java.util.stream.Collector;
 
 import org.jenetics.Gene;
+import org.jenetics.Phenotype;
 import org.jenetics.stat.IntSummary;
 import org.jenetics.stat.MinMax;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date$</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-23 $</em>
  */
 public class EvolutionSummaryStatistics<
 	G extends Gene<?, G>,
-	C extends Comparable<? super C>
+	C extends Comparable<? super C>,
+    PS
 >
 	implements Consumer<EvolutionResult<G, C>>
 {
+
+    private final Collector<Phenotype<G, C>, ?, PS> _phenotypeCollector;
 
 	private IntSummaryStatistics _killedStatistics = new IntSummaryStatistics();
 	private IntSummaryStatistics _invalidStatistics = new IntSummaryStatistics();
@@ -44,6 +51,12 @@ public class EvolutionSummaryStatistics<
 
 	private MinMax<PopulationSummary<G, C>> _populationSummary =
 		MinMax.of((a, b) -> a.getBest().compareTo(b.getBest()));
+
+    public EvolutionSummaryStatistics(
+        final Collector<Phenotype<G, C>, ?, PS> phenotypeCollector
+    ) {
+        _phenotypeCollector = requireNonNull(phenotypeCollector);
+    }
 
 	@Override
 	public void accept(final EvolutionResult<G, C> result) {
@@ -58,6 +71,8 @@ public class EvolutionSummaryStatistics<
 			);
 		result.getPopulation().forEach(populationStatistics);
 		_populationSummary.accept(PopulationSummary.of(populationStatistics));
+
+        result.getPopulation().stream().collect(_phenotypeCollector);
 	}
 
 	public IntSummary getKilledMoments() {
