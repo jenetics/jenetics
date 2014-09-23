@@ -32,7 +32,7 @@ import org.jenetics.Gene;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-20 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-23 $</em>
  */
 public interface EvolutionStream<
 	G extends Gene<?, G>,
@@ -52,6 +52,6 @@ public interface EvolutionStream<
 	 *         {@code null}.
 	 */
 	public Stream<EvolutionResult<G, C>>
-	limit(final Predicate<EvolutionResult<G, C>> proceed);
+	limit(final Predicate<? super EvolutionResult<G, C>> proceed);
 
 }
