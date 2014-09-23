@@ -29,9 +29,9 @@ import org.jenetics.stat.MinMax;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-16 $</em>
+ * @version 3.0 &mdash; <em>$Date$</em>
  */
-public class EvolutionSummary<
+public class EvolutionSummaryStatistics<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
