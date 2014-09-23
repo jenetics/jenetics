@@ -19,45 +19,10 @@
  */
 package org.jenetics.engine;
 
-import java.util.function.Consumer;
-
-import org.jenetics.Gene;
-import org.jenetics.stat.IntMomentStatistics;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
  * @version 3.0 &mdash; <em>$Date: 2014-09-23 $</em>
  */
-public class EvolutionSummaryStatistics<
-	G extends Gene<?, G>,
-	C extends Comparable<? super C>
->
-	implements Consumer<EvolutionResult<G, C>>
-{
-
-	private IntMomentStatistics _killed = new IntMomentStatistics();
-	private IntMomentStatistics _invalids = new IntMomentStatistics();
-	private IntMomentStatistics _altered = new IntMomentStatistics();
-
-
-	@Override
-	public void accept(final EvolutionResult<G, C> result) {
-		_killed.accept(result.getKillCount());
-		_invalids.accept(result.getInvalidCount());
-		_altered.accept(result.getAlterCount());
-	}
-
-	public IntMomentStatistics getKilled() {
-		return _killed;
-	}
-
-	public IntMomentStatistics getInvalids() {
-		return _invalids;
-	}
-
-	public IntMomentStatistics getAltered() {
-		return _altered;
-	}
-
+public class EvolutionSummary {
 }
