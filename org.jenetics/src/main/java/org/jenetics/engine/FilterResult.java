@@ -20,12 +20,8 @@
 package org.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
-
-import org.jenetics.internal.util.Equality;
-import org.jenetics.internal.util.Hash;
 
 import org.jenetics.Gene;
 import org.jenetics.Population;
@@ -38,7 +34,7 @@ import org.jenetics.Population;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-15 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-23 $</em>
  */
 final class FilterResult<
 	G extends Gene<?, G>,
@@ -72,23 +68,6 @@ final class FilterResult<
 
 	public int getInvalidCount() {
 		return _invalidCount;
-	}
-
-	@Override
-	public int hashCode() {
-		return Hash.of(getClass())
-			.and(_population)
-			.and(_killCount)
-			.and(_invalidCount).value();
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(result ->
-			eq(_population, result._population) &&
-			eq(_killCount, result._killCount) &&
-			eq(_invalidCount, result._invalidCount)
-		);
 	}
 
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
