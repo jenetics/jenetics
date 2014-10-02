@@ -32,6 +32,7 @@ import org.jenetics.Mutator;
 import org.jenetics.Optimize;
 import org.jenetics.Phenotype;
 import org.jenetics.engine.Engine;
+import org.jenetics.engine.EvolutionStatistics;
 
 public class RealFunction {
 
@@ -52,10 +53,16 @@ public class RealFunction {
 				new MeanAlterer<>(0.6))
 			.build();
 
+
+		final EvolutionStatistics<DoubleGene, Double> statistics =
+			new EvolutionStatistics<>();
+
 		final Phenotype<DoubleGene, Double> result = engine.stream()
 			.limit(100)
+			.peek(statistics)
 			.collect(toBestPhenotype());
 
 		System.out.println(result);
+		System.out.println(statistics);
 	}
 }

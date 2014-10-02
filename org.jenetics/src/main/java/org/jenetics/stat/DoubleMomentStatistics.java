@@ -68,7 +68,7 @@ import org.jenetics.internal.math.DoubleAdder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-17 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-03 $</em>
  */
 public class DoubleMomentStatistics
 	extends MomentStatistics
@@ -150,7 +150,7 @@ public class DoubleMomentStatistics
 	@Override
 	public String toString() {
 		return String.format(
-			"Summary[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s, s2=%s, S=%s, K=%s]",
+			"Summary[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s, s²=%s, S=%s, K=%s]",
 			getCount(), _min, _max, _sum.doubleValue(),
 			getMean(), getVariance(), getSkewness(), getKurtosis()
 		);
