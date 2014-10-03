@@ -142,9 +142,7 @@ class SetupPlugin extends JeneticsPlugin {
 				charSet = 'UTF-8'
 				linkSource = true
 				links = [
-					'http://download.oracle.com/javase/7/docs/api/',
-					'http://jscience.org/api/',
-					'http://javolution.org/target/site/apidocs/'
+					'http://download.oracle.com/javase/7/docs/api/'
 				]
 				windowTitle = "Jenetics ${project.version}"
 				docTitle = "<h1>Jenetics ${project.version}</h1>"

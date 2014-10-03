@@ -551,7 +551,7 @@ The
 \shape default
  project is a Java
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 The library is build with and depends on Java SE 7:
@@ -582,7 +582,7 @@ target "http://en.wikipedia.org/wiki/Genetic_algorithm"
  The project has no dependencies to other libraries.
  For building the library from the sources you only have the JDK 1.7
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 JDK
@@ -592,7 +592,7 @@ JDK
 
  and Gradle
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Gradle
@@ -602,7 +602,7 @@ Gradle
 
 
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 The used Gradle version is 1.10 and it is downloaded automatically if you
@@ -5932,7 +5932,7 @@ With the serialization mechanism you can write a population to disk and
 \family default
  package, supports native Java serialization and JAXB XML serialization
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 The serialization through the XML support from the
@@ -8338,7 +8338,7 @@ For building the
  library from source, download the most recent, stable package version from
  
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -8495,7 +8495,7 @@ status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -8904,7 +8904,7 @@ Version
 \series default
 :
 \emph on
- 6.8.1
+ 6.8.8
 \end_layout
 
 \begin_layout Itemize
@@ -8916,7 +8916,7 @@ Homepage
 \emph on
  
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -8941,7 +8941,7 @@ status open
 
 \begin_layout Plain Layout
 
-http://testng.org/testng-6.8.1.zip
+http://testng.org/testng-6.8.8.zip
 \end_layout
 
 \end_inset
@@ -9006,7 +9006,7 @@ Version
 \series default
 :
 \emph on
- 3.2
+ 3.3
 \end_layout
 
 \begin_layout Itemize
@@ -9018,7 +9018,7 @@ Homepage
 \emph on
  
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -9043,7 +9043,7 @@ status open
 
 \begin_layout Plain Layout
 
-http://tweedo.com/mirror/apache/commons/math/binaries/commons-math3-3.2-bin.zip
+http://tweedo.com/mirror/apache/commons/math/binaries/commons-math3-3.3-bin.zip
 \end_layout
 
 \end_inset
@@ -9308,7 +9308,7 @@ Maven Central
 \end_layout
 
 \begin_layout LyX-Code
-org.bitbucket.fwilhelm:org.jenetics:2.0.0
+org.bitbucket.fwilhelm:org.jenetics:2.0.2
 \end_layout
 
 \begin_layout Section

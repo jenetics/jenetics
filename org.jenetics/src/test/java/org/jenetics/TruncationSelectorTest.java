@@ -32,7 +32,6 @@ public class TruncationSelectorTest
 	extends SelectorTester<TruncationSelector<DoubleGene, Double>>
 {
 
-
 	final Factory<TruncationSelector<DoubleGene, Double>>
 	_factory = new Factory<TruncationSelector<DoubleGene,Double>>()
 	{
