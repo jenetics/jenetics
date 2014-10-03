@@ -46,7 +46,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-12 $</em>
  */
 public class StochasticUniversalSelector<
 	G extends Gene<?, G>,
@@ -100,7 +100,7 @@ public class StochasticUniversalSelector<
 				prop += probabilities[j];
 				++j;
 			}
-			selection.add(population.get(j));
+			selection.add(population.get(j%population.size()));
 		}
 
 		return selection;
