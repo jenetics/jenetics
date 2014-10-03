@@ -52,7 +52,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-08-15 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-10-03 $</em>
  */
 public final class ExponentialRankSelector<
 	G extends Gene<?, G>,
@@ -71,6 +71,7 @@ public final class ExponentialRankSelector<
 	 *         {@code [0..1)}.
 	 */
 	public ExponentialRankSelector(final double c) {
+		super(true);
 		if (c < 0.0 || c >= 1.0) {
 			throw new IllegalArgumentException(format(
 				"Value %s is out of range [0..1): ", c
