@@ -1,4 +1,4 @@
-# Jenetics (_2.0.1_)
+# Jenetics (_2.0.2_)
 
 
 Jenetics is an Genetic Algorithm, respectively an Evolutionary Algorithm, library written in Java. It is designed with a clear separation of the several  algorithm concepts, e. g. `Gene`, `Chromosome`, `Genotype`, `Phenotype`, `Population` and  fitness `Function`. Jenetics allows you to minimize or maximize the given fitness  function without tweaking it.
@@ -12,7 +12,7 @@ Jenetics is an Genetic Algorithm, respectively an Evolutionary Algorithm, librar
 
 ### Test compile/execution
 *  **TestNG 8.8**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
-*  **Apache Commons Math 3.2**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical accumulators.
+*  **Apache Commons Math 3.3**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical accumulators.
 
 ### Runtime
 *  **JRE 7**: Java runtime version 7 is needed for using the library, respectively for running the examples.
@@ -20,7 +20,7 @@ Jenetics is an Genetic Algorithm, respectively an Evolutionary Algorithm, librar
 ## Download
 *  **Sourceforge**:  <https://sourceforge.net/projects/jenetics/files/latest/download>
 *  **Bitbucket**:  <https://bitbucket.org/fwilhelm/jenetics/downloads>
-*  **Maven**: `org.bitbucket.fwilhelm:org.jenetics:2.0.0` on [Maven Central](http://search.maven.org/#search|ga|1|a%3A%22org.jenetics%22)
+*  **Maven**: `org.bitbucket.fwilhelm:org.jenetics:2.0.2` on [Maven Central](http://search.maven.org/#search|ga|1|a%3A%22org.jenetics%22)
 
 ## Build Jenetics
 
@@ -430,6 +430,10 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 
 
 ## Release notes
+
+### 2.0.2
+
+* Stabilization of ProbabilitySelector.probabilities method when minimizing the fitness function.
 
 ### 2.0.1
 

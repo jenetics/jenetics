@@ -36,7 +36,7 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-12 $</em>
  */
 public final class TruncationSelector<
 	G extends Gene<?, G>,
@@ -52,13 +52,12 @@ public final class TruncationSelector<
 	}
 
 	/**
-	 * This method sorts the population in descending order while calculating the
-	 * selection probabilities. (The method {@link Population#sort()} is called
-	 * by this method.)
+	 * This method sorts the population in descending order while calculating
+	 * the selection probabilities. (The method {@link Population#sort()} is
+	 * called by this method.) If the selection size is greater the the
+	 * population size, the whole population is duplicated until the desired
+	 * sample size is reached.
 	 *
-	 * @throws IllegalArgumentException if the sample size is greater than the
-	 *         population size or {@code count} is greater the the population
-	 *         size.
 	 * @throws NullPointerException if the {@code population} is {@code null}.
 	 */
 	@Override
@@ -75,15 +74,17 @@ public final class TruncationSelector<
 				count
 			));
 		}
-		if (count > population.size()) {
-			throw new IllegalArgumentException(format(
-				"Selection size greater than population size: %s > %s",
-				count, population.size()
-			));
-		}
 
 		population.sortWith(opt.<C>descending());
-		return new Population<>(population.subList(0, count));
+		final Population<G, C> selection = new Population<>(count);
+		int size = count;
+		do {
+			final int length = Math.min(population.size(), size);
+			selection.addAll(population.subList(0, length));
+			size -= length;
+		} while (size > 0);
+
+		return selection;
 	}
 
 	@Override

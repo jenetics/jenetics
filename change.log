@@ -1,3 +1,7 @@
+Jenetics-2.0.2
+
+- Stabilization of ProbabilitySelector.probabilities method when minimizing the fitness function.
+
 Jenetics-2.0.1
 - Fix bug in ProbabilitySelector class. The inverted probabilities are not correctly calculated when minimizing the fitness function.
 
