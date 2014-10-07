@@ -32,7 +32,7 @@ import java.util.stream.StreamSupport;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0 &mdash; <em>$Date: 2014-09-11 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-07 $</em>
  */
 public final class ObjectArrayProxy<T>
 	extends ArrayProxy<T, Object[], ObjectArrayProxy<T>>
@@ -82,7 +82,7 @@ public final class ObjectArrayProxy<T>
 	@Override
 	public Stream<T> parallelStream() {
 		return StreamSupport.stream(
-			Spliterators.spliterator(array, start, end, ORDERED | IMMUTABLE),
+			Spliterators.spliterator(array, start, end, ORDERED|IMMUTABLE),
 			true
 		);
 	}
