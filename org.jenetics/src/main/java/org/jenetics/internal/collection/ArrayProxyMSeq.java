@@ -25,6 +25,7 @@ import static java.lang.String.format;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -34,7 +35,7 @@ import org.jenetics.util.MSeq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0 &mdash; <em>$Date: 2014-05-14 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-07 $</em>
  */
 public class ArrayProxyMSeq<T, P extends ArrayProxy<T, ?, ?>>
 	extends ArrayProxySeq<T, P>
@@ -95,6 +96,15 @@ public class ArrayProxyMSeq<T, P extends ArrayProxy<T, ?, ?>>
 		proxy.cloneIfSealed();
 		for (int i = proxy.start; i < proxy.end; ++i) {
 			proxy.__set__(i, supplier.get());
+		}
+		return this;
+	}
+
+	@Override
+	public MSeq<T> shuffle(final Random random) {
+		proxy.cloneIfSealed();
+		for (int j = length() - 1; j > 0; --j) {
+			swap(j, random.nextInt(j + 1));
 		}
 		return this;
 	}
