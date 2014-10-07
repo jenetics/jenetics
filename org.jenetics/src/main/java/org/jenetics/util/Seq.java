@@ -47,7 +47,7 @@ import org.jenetics.internal.collection.SeqSpliterator;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-11 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-07 $</em>
  */
 public interface Seq<T> extends Iterable<T> {
 
@@ -698,7 +698,7 @@ public interface Seq<T> extends Iterable<T> {
 	 */
 	public static <T> Collector<T, ?, Seq<T>> toSeq() {
 		return Collector.of(
-			(Supplier<List<T>>) ArrayList::new,
+			(Supplier<List<T>>)ArrayList::new,
 			List::add,
 			(left, right) -> { left.addAll(right); return left; },
 			Seq::of
