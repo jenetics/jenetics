@@ -21,7 +21,6 @@ package org.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 
-import java.io.Serializable;
 import java.time.Clock;
 import java.time.Duration;
 import java.util.function.Function;
@@ -32,17 +31,16 @@ import java.util.function.Supplier;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-21 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-09 $</em>
  */
-final class TimedResult<T> implements Serializable {
-	private static final long serialVersionUID = 1L;
+final class TimedResult<T> {
 
-	private final Duration _duration;
-	private final T _result;
+	final Duration duration;
+	final T result;
 
-	private TimedResult(final Duration duration, final T result) {
-		_duration = requireNonNull(duration);
-		_result = requireNonNull(result);
+	TimedResult(final Duration duration, final T result) {
+		this.duration = requireNonNull(duration);
+		this.result = requireNonNull(result);
 	}
 
 	/**
@@ -83,24 +81,6 @@ final class TimedResult<T> implements Serializable {
 			final R result = function.apply(value);
 			return new TimedResult<>(timer.stop().getTime(), result);
 		};
-	}
-
-	/**
-	 * Return the execution result.
-	 *
-	 * @return the execution result.
-	 */
-	public T get() {
-		return _result;
-	}
-
-	/**
-	 * Return the execution duration.
-	 *
-	 * @return the execution duration
-	 */
-	public Duration getDuration() {
-		return _duration;
 	}
 
 }

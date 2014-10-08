@@ -94,7 +94,7 @@ import org.jenetics.util.Factory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-08 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-09 $</em>
  */
 public final class Engine<
 	G extends Gene<?, G>,
@@ -213,29 +213,29 @@ public final class Engine<
 		// Altering the offspring population.
 		final CompletableFuture<TimedResult<AlterResult<G, C>>> alteredOffspring =
 			_executor.thenApply(offspring, p ->
-				alter(p.get(), start.getGeneration()),
+				alter(p.result, start.getGeneration()),
 				_clock
 			);
 
 		// Filter and replace invalid and to old survivor individuals.
 		final CompletableFuture<TimedResult<FilterResult<G, C>>> filteredSurvivors =
 			_executor.thenApply(survivors, pop ->
-				filter(pop.get(), start.getGeneration()),
+				filter(pop.result, start.getGeneration()),
 				_clock
 			);
 
 		// Filter and replace invalid and to old offspring individuals.
 		final CompletableFuture<TimedResult<FilterResult<G, C>>> filteredOffspring =
 			_executor.thenApply(alteredOffspring, pop ->
-				filter(pop.get().getPopulation(), start.getGeneration()),
+				filter(pop.result.population, start.getGeneration()),
 				_clock
 			);
 
 		// Combining survivors and offspring to the new population.
 		final CompletableFuture<Population<G, C>> population =
 			filteredSurvivors.thenCombineAsync(filteredOffspring, (s, o) -> {
-					final Population<G, C> pop = s.get().getPopulation();
-					pop.addAll(o.get().getPopulation());
+					final Population<G, C> pop = s.result.population;
+					pop.addAll(o.result.population);
 					return pop;
 				},
 				_executor.get()
@@ -247,29 +247,29 @@ public final class Engine<
 			.join();
 
 		final EvolutionDurations durations = EvolutionDurations.of(
-			offspring.join().getDuration(),
-			survivors.join().getDuration(),
-			alteredOffspring.join().getDuration(),
-			filteredOffspring.join().getDuration(),
-			filteredSurvivors.join().getDuration(),
-			result.getDuration(),
+			offspring.join().duration,
+			survivors.join().duration,
+			alteredOffspring.join().duration,
+			filteredOffspring.join().duration,
+			filteredSurvivors.join().duration,
+			result.duration,
 			timer.stop().getTime()
 		);
 
-		final int killCount = filteredOffspring.join().get().getKillCount() +
-			filteredSurvivors.join().get().getKillCount();
+		final int killCount = filteredOffspring.join().result.killCount +
+			filteredSurvivors.join().result.killCount;
 
-		final int invalidCount = filteredOffspring.join().get().getInvalidCount() +
-			filteredOffspring.join().get().getInvalidCount();
+		final int invalidCount = filteredOffspring.join().result.invalidCount +
+			filteredOffspring.join().result.invalidCount;
 
 		return EvolutionResult.of(
 			_optimize,
-			result.get(),
+			result.result,
 			start.getGeneration(),
 			durations,
 			killCount,
 			invalidCount,
-			alteredOffspring.join().get().getAlterCount()
+			alteredOffspring.join().result.alterCount
 		);
 	}
 
@@ -303,7 +303,7 @@ public final class Engine<
 			}
 		}
 
-		return FilterResult.of(population, killCount, invalidCount);
+		return new FilterResult<>(population, killCount, invalidCount);
 	}
 
 	// Create a new phenotype
@@ -321,7 +321,7 @@ public final class Engine<
 		final Population<G,C> population,
 		final int generation
 	) {
-		return AlterResult.of(
+		return new AlterResult<>(
 			population,
 			_alterer.alter(population, generation)
 		);
@@ -591,7 +591,7 @@ public final class Engine<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 3.0
-	 * @version 3.0 &mdash; <em>$Date: 2014-10-08 $</em>
+	 * @version 3.0 &mdash; <em>$Date: 2014-10-09 $</em>
 	 */
 	public static final class Builder<
 		G extends Gene<?, G>,
