@@ -23,6 +23,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import org.jenetics.internal.util.Context;
@@ -51,8 +52,9 @@ import org.jenetics.internal.util.require;
  *         RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadSafe(1234));
  *
  *         ...
- *         final GeneticAlgorithm&lt;DoubleGene, Double&gt; ga = ...
- *         ga.evolve(100);
+ *         final EvolutionResult&lt;DoubleGene, Double&gt; result = stream
+ *             .limit(100)
+ *             .collect(toBestEvolutionResult());
  *     }
  * }
  * [/code]
@@ -60,24 +62,26 @@ import org.jenetics.internal.util.require;
  *
  * <b>Setup of a <i>local</i> PRNG</b><br>
  *
- * You can temporarily (and locally) change the implementation of the PRNG.
+ * You can temporarily (and locally) change the implementation of the PRNG. E.g.
+ * for initialize the engine stream with the same initial population.
  *
  * [code]
  * public class GA {
  *     public static void main(final String[] args) {
- *         ...
- *         final GeneticAlgorithm&lt;DoubleGene, Double&gt; ga = ...
- *         final LCG64ShiftRandom random = new LCG64ShiftRandom(1234)
+ *         // Create a reproducible list of genotypes.
+ *         final List&lt;Genotype&lt;DoubleGene&gt;&gt; genotypes =
+ *         RandomRegistry.with(new LCG64ShiftRandom(123), random -&gt;
+ *             Genotype.of(DoubleChromosome.of(0, 10)).instances()
+ *                .limit(50)
+ *                .collect(toList())
+ *         );
  *
- *         try (Scoped&lt;Random&gt; scope = RandomRegistry.scope(random)) {
- *             // Easy access the random engine of the opened scope.
- *             assert(scope.get() == random);
- *
- *             // Only the 'setup' step uses the new PRGN.
- *             ga.setup();
- *         }
- *
- *         ga.evolve(100);
+ *         final Engine&lt;DoubleGene, Double&gt; engine = ...;
+ *         final EvolutionResult&lt;DoubleGene, Double&gt; result = engine
+ *              // Initialize the evolution stream with the given genotypes.
+ *             .stream(genotypes)
+ *             .limit(100)
+ *             .collect(toBestEvolutionResult());
  *     }
  * }
  * [/code]
@@ -89,7 +93,7 @@ import org.jenetics.internal.util.require;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-28 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-08 $</em>
  */
 public final class RandomRegistry {
 	private RandomRegistry() {require.noInstance();}
@@ -153,9 +157,12 @@ public final class RandomRegistry {
 	/**
 	 * Opens a new {@code Scope} with the given random engine.
 	 *
+	 * @see #with(Random, Function)
+	 *
 	 * @param <R> the type of the random engine
-	 * @param random the PRNG used for the opened scope.
-	 * @return the scope with the given random object.
+	 * @param random the PRNG used for the opened scope
+	 * @return the scope with the given random object
+	 * @throws NullPointerException if the {@code random} object is {@code null}.
 	 */
 	@SuppressWarnings("unchecked")
 	public static <R extends Random> Scoped<R> scope(final R random) {
@@ -163,7 +170,40 @@ public final class RandomRegistry {
 	}
 
 	/**
+	 * Opens a new {@code Scope} with the given random engine and executes the
+	 * given function within it. The following example shows how to create a
+	 * reproducible list of genotypes:
+	 * [code]
+	 * final List&lt;Genotype&lt;DoubleGene&gt;&gt; genotypes =
+	 *     RandomRegistry.with(new LCG64ShiftRandom(123), random -&gt;
+	 *         Genotype.of(DoubleChromosome.of(0, 10)).instances()
+	 *            .limit(50)
+	 *            .collect(toList())
+	 *     );
+	 * [/code]
+	 *
+	 * @see #scope(Random)
+	 *
+	 * @param <R> the type of the random engine
+	 * @param <T> the function return type
+	 * @param random the PRNG used for the opened scope
+	 * @param function the function to apply within the random scope
+	 * @return the object returned by the given function
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 */
+	public static <R extends Random, T> T with(
+		final R random,
+		final Function<R, T> function
+	) {
+		try (final Scoped<R> scope = scope(random)) {
+			return function.apply(scope.get());
+		}
+	}
+
+	/**
 	 * Opens a new {@code Scope} with the given random engine.
+	 *
+	 * @see #with(ThreadLocal, Function)
 	 *
 	 * @param <R> the type of the random engine
 	 * @param random the PRNG used for the opened scope.
@@ -172,6 +212,37 @@ public final class RandomRegistry {
 	@SuppressWarnings("unchecked")
 	public static <R extends Random> Scoped<R> scope(final ThreadLocal<R> random) {
 		return CONTEXT.scope(random::get, random::get);
+	}
+
+	/**
+	 * Opens a new {@code Scope} with the given random engine and executes the
+	 * given function within it. The following example shows how to create a
+	 * reproducible list of genotypes:
+	 * [code]
+	 * final List&lt;Genotype&lt;DoubleGene&gt;&gt; genotypes =
+	 *     RandomRegistry.with(new LCG64ShiftRandom(123), random -&gt;
+	 *         Genotype.of(DoubleChromosome.of(0, 10)).instances()
+	 *            .limit(50)
+	 *            .collect(toList())
+	 *     );
+	 * [/code]
+	 *
+	 * @see #scope(ThreadLocal)
+	 *
+	 * @param <R> the type of the random engine
+	 * @param <T> the function return type
+	 * @param random the PRNG used for the opened scope
+	 * @param function the function to apply within the random scope
+	 * @return the object returned by the given function
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 */
+	public static <R extends Random, T> T with(
+		final ThreadLocal<R> random,
+		final Function<R, T> function
+	) {
+		try (final Scoped<R> scope = scope(random)) {
+			return function.apply(scope.get());
+		}
 	}
 
 }
