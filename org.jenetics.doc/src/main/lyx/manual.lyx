@@ -566,12 +566,12 @@ The
 \shape default
  project is a Java
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
-The library is build with and depends on Java SE 7:
+The library is build with and depends on Java SE 8:
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -595,7 +595,7 @@ target "http://en.wikipedia.org/wiki/Genetic_algorithm"
 
  (GA) implementation.
  The project has no dependencies to other libraries.
- For building the library from the sources you only have the JDK 1.7
+ For building the library from the sources you only have the JDK 1.8
 \begin_inset Index idx
 status open
 
@@ -617,10 +617,10 @@ Gradle
 
 
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
-The used Gradle version is 1.10 and it is downloaded automatically if you
+The used Gradle version is 2.1 and it is downloaded automatically if you
  build the library with the wrapper script
 \family typewriter
 ./gradlew
@@ -644,7 +644,7 @@ http://www.gradle.org/
  to be installed, all other dependencies are available in the package which
  you can download from 
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -655,7 +655,7 @@ https://sourceforge.net/projects/jenetics/files/jenetics/
 
  or 
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -776,7 +776,7 @@ reference "lis:Genetic-algorithm"
 
 \end_inset
 
- shows the pseudo-code of the
+ shows the pseudo-code of the (conceptually)
 \family sans
 \series bold
 \shape smallcaps
@@ -891,12 +891,8 @@ Genetic algorithm
 \begin_layout Standard
 Line (1) creates the initial population and line (2) calculates the fitness
  value of the individuals.
- (This is done by the
-\family typewriter
- GeneticAlgorithm.setup()
-\family default
- method.) Line (4) increases the generation number and line (5) and (6) selects
- the survivor and the offspring population.
+ Line (4) increases the generation number and line (5) and (6) selects the
+ survivor and the offspring population.
  The offspring/survivor fraction is determined by the
 \family typewriter
  offspringFraction
@@ -1061,37 +1057,32 @@ status open
 
 \begin_layout Plain Layout
 
-public static void main(String[] args) {
+public class Main {
 \end_layout
 
 \begin_layout Plain Layout
 
-    Factory<Genotype<BitGene>> gtf = Genotype.of(
+    private static Double eval(Genotype<BitGene> gt) {
 \end_layout
 
 \begin_layout Plain Layout
 
-        BitChromosome.of(10, 0.5)
+        // Perform the fitness calculation.
 \end_layout
 
 \begin_layout Plain Layout
 
-    );
+        Double result = ...;
 \end_layout
 
 \begin_layout Plain Layout
 
-    Function<Genotype<BitGene>, Double> ff = ...
+        return result;
 \end_layout
 
 \begin_layout Plain Layout
 
-    GeneticAlgorithm<BitGene, Double>
-\end_layout
-
-\begin_layout Plain Layout
-
-    ga = new GeneticAlgorithm<>(gtf, ff, Optimize.MAXIMUM);
+    }
 \end_layout
 
 \begin_layout Plain Layout
@@ -1100,17 +1091,66 @@ public static void main(String[] args) {
 
 \begin_layout Plain Layout
 
-    ga.setup();
+    public static void main(String[] args) {
 \end_layout
 
 \begin_layout Plain Layout
 
-    ga.evolve(100);
+        Factory<Genotype<BitGene>> gtf = 
 \end_layout
 
 \begin_layout Plain Layout
 
-    System.out.println(ga.getBestPhenotype());
+            Genotype.of(BitChromosome.of(10, 0.5))
+\end_layout
+
+\begin_layout Plain Layout
+
+        Engine<BitGene, Double> engine = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+            .builder(gtf, Main::eval)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .build();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        EvaluationResult<BitGene, Double> result = engine.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .limit(100)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .collect(toBestEvaluationResult())
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+        System.out.println(result);
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
 \end_layout
 
 \begin_layout Plain Layout
