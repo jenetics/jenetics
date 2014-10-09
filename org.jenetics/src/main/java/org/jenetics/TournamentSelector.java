@@ -43,7 +43,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-08-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-10-10 $</em>
  */
 public class TournamentSelector<
 	G extends Gene<?, G>,
@@ -99,11 +99,7 @@ public class TournamentSelector<
 		);
 	}
 
-	private static <
-		G extends Gene<?, G>,
-		C extends Comparable<? super C>
-	>
-	Phenotype<G, C> select(
+	private Phenotype<G, C> select(
 		final Population<G, C> population,
 		final Optimize opt,
 		final int sampleSize,
