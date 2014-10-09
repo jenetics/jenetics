@@ -26,6 +26,7 @@ import static org.jenetics.Population.toPopulation;
 import static org.jenetics.internal.util.require.probability;
 
 import java.time.Clock;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
@@ -94,7 +95,7 @@ import org.jenetics.util.Factory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-09 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-10 $</em>
  */
 public final class Engine<
 	G extends Gene<?, G>,
@@ -385,7 +386,7 @@ public final class Engine<
 	 *         {@code null}.
 	 */
 	public EvolutionStream<G, C> stream(
-		final Iterable<Genotype<G>> genotypes
+		final Collection<Genotype<G>> genotypes
 	) {
 		requireNonNull(genotypes);
 
@@ -396,24 +397,17 @@ public final class Engine<
 	}
 
 	private EvolutionStart<G, C> evolutionStart(
-		final Iterable<Genotype<G>> genotypes
+		final Collection<Genotype<G>> genotypes
 	) {
-		final int size = _offspringCount + _survivorsCount;
-
-		final Iterator<Genotype<G>> it = genotypes.iterator();
-		final Factory<Genotype<G>> genotypeFactory = it.hasNext() ?
-			it.next() :
-			_genotypeFactory;
-
-		final Stream.Builder<Genotype<G>> builder = Stream.builder();
-		genotypes.forEach(builder);
-
 		final Stream<Genotype<G>> stream = Stream.concat(
-			builder.build(),
-			Stream.generate(genotypeFactory::newInstance)
+			genotypes.stream(),
+			genotypes.stream().findFirst()
+				.map(gt -> gt.instances())
+				.orElse(_genotypeFactory.instances())
 		);
 
 		final int generation = 1;
+		final int size = _offspringCount + _survivorsCount;
 		final Population<G, C> pop = stream.limit(size)
 			.map(gt -> Phenotype.of(
 				gt, _fitnessFunction, _fitnessScaler, generation))
@@ -591,7 +585,7 @@ public final class Engine<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 3.0
-	 * @version 3.0 &mdash; <em>$Date: 2014-10-09 $</em>
+	 * @version 3.0 &mdash; <em>$Date: 2014-10-10 $</em>
 	 */
 	public static final class Builder<
 		G extends Gene<?, G>,
@@ -604,7 +598,7 @@ public final class Engine<
 		private Factory<Genotype<G>> _genotypeFactory;
 
 		// This are the properties which default values.
-		private Function<? super C, ? extends C> _fitnessScaler = Function.identity();
+		private Function<? super C, ? extends C> _fitnessScaler = a -> a;
 		private Selector<G, C> _survivorsSelector = new TournamentSelector<>(3);
 		private Selector<G, C> _offspringSelector = new TournamentSelector<>(3);
 		private Alterer<G, C> _alterer = Alterer.of(
