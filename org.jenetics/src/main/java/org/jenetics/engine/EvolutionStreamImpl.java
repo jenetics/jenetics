@@ -32,7 +32,7 @@ import org.jenetics.Gene;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-23 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-10 $</em>
  */
 final class EvolutionStreamImpl<
 	G extends Gene<?, G>,
@@ -75,7 +75,7 @@ final class EvolutionStreamImpl<
 
 	@Override
 	public Stream<EvolutionResult<G, C>>
-	limit(final Predicate<? super EvolutionResult<G, C>> terminate) {
+	limit(final Predicate<? super EvolutionResult<G, C>> proceed) {
 		return new EvolutionStreamImpl<G, C>(
 			_evolution,
 			_initial,
@@ -83,7 +83,7 @@ final class EvolutionStreamImpl<
 				new EvolutionSpliterator<>(
 					_evolution,
 					_initial,
-					terminate
+					proceed
 				),
 				false
 			)
