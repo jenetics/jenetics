@@ -257,10 +257,12 @@ public final class Engine<
 			timer.stop().getTime()
 		);
 
-		final int killCount = filteredOffspring.join().result.killCount +
+		final int killCount =
+			filteredOffspring.join().result.killCount +
 			filteredSurvivors.join().result.killCount;
 
-		final int invalidCount = filteredOffspring.join().result.invalidCount +
+		final int invalidCount =
+			filteredOffspring.join().result.invalidCount +
 			filteredOffspring.join().result.invalidCount;
 
 		return EvolutionResult.of(
