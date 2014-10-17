@@ -20,7 +20,10 @@
 package org.jenetics.internal.util;
 
 import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 import static java.util.regex.Pattern.quote;
+import static java.util.stream.Collectors.counting;
+import static java.util.stream.Collectors.groupingBy;
 import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.BufferedReader;
@@ -32,7 +35,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
@@ -47,7 +50,7 @@ import org.jenetics.internal.util.DieHarder.Result.Assessment;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 3.0 &mdash; <em>$Date: 2014-07-25 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-18 $</em>
  */
 public final class DieHarder {
 
@@ -56,14 +59,14 @@ public final class DieHarder {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.5
-	 * @version 3.0 &mdash; <em>$Date: 2014-07-25 $</em>
+	 * @version 3.0 &mdash; <em>$Date: 2014-10-18 $</em>
 	 */
 	private static final class Randomizer implements Runnable {
 		private final Random _random;
 		private final CountingOutputStream _out;
 
-		public Randomizer(final Random random, final OutputStream out) {
-			_random = Objects.requireNonNull(random);
+		Randomizer(final Random random, final OutputStream out) {
+			_random = requireNonNull(random);
 			_out = new CountingOutputStream(out);
 		}
 
@@ -131,11 +134,9 @@ public final class DieHarder {
 		);
 
 		final List<Result> results = new ArrayList<>();
-
-		String line = null;
-		while ((line = stdout.readLine()) != null) {
-			Result.parse(line).ifPresent(results::add);
-			System.out.println(line);
+		for (String l = stdout.readLine(); l != null; l = stdout.readLine()) {
+			Result.parse(l).ifPresent(results::add);
+			System.out.println(l);
 		}
 
 		dieharder.waitFor();
@@ -146,15 +147,12 @@ public final class DieHarder {
 		final double megaBytes = randomizer.getCount()/(1024.0*1024.0);
 
 		// Calculate statistics.
-		final long passed = results.stream()
-			.filter(r -> r.assessment == Assessment.PASSED)
-			.count();
-		final long weak = results.stream()
-			.filter(r -> r.assessment == Assessment.WEAK)
-			.count();
-		final long failed = results.stream()
-			.filter(r -> r.assessment == Assessment.FAILED)
-			.count();
+		final Map<Assessment, Long> grouped = results.stream()
+			.collect(groupingBy(r -> r.assessment, counting()));
+
+		final long passed = grouped.get(Assessment.PASSED);
+		final long weak = grouped.get(Assessment.WEAK);
+		final long failed = grouped.get(Assessment.FAILED);
 
 		final NumberFormat formatter = NumberFormat.getIntegerInstance();
 		formatter.setMinimumFractionDigits(3);
@@ -219,7 +217,7 @@ public final class DieHarder {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 3.0
-	 * @version 3.0 &mdash; <em>$Date: 2014-07-25 $</em>
+	 * @version 3.0 &mdash; <em>$Date: 2014-10-18 $</em>
 	 */
 	static final class Result {
 
@@ -345,14 +343,14 @@ public final class DieHarder {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 3.0
-	 * @version 3.0 &mdash; <em>$Date: 2014-07-25 $</em>
+	 * @version 3.0 &mdash; <em>$Date: 2014-10-18 $</em>
 	 */
 	private static final class CountingOutputStream extends OutputStream {
 		private final OutputStream _delegate;
 		private long _count;
 
 		CountingOutputStream(final OutputStream delegate) {
-			_delegate = Objects.requireNonNull(delegate);
+			_delegate = requireNonNull(delegate);
 		}
 
 		@Override
