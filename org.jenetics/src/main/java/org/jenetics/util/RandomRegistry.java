@@ -26,7 +26,6 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import org.jenetics.internal.util.Context;
 import org.jenetics.internal.util.require;
 
 /**
@@ -93,7 +92,7 @@ import org.jenetics.internal.util.require;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-08 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-18 $</em>
  */
 public final class RandomRegistry {
 	private RandomRegistry() {require.noInstance();}
@@ -166,7 +165,7 @@ public final class RandomRegistry {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <R extends Random> Scoped<R> scope(final R random) {
-		return CONTEXT.scope(() -> random, () -> random);
+		return null; //CONTEXT.scope(() -> random, () -> random);
 	}
 
 	/**
@@ -195,9 +194,7 @@ public final class RandomRegistry {
 		final R random,
 		final Function<R, T> function
 	) {
-		try (final Scoped<R> scope = scope(random)) {
-			return function.apply(scope.get());
-		}
+		return CONTEXT.with(() -> random, s -> function.apply(random));
 	}
 
 	/**
@@ -211,7 +208,7 @@ public final class RandomRegistry {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <R extends Random> Scoped<R> scope(final ThreadLocal<R> random) {
-		return CONTEXT.scope(random::get, random::get);
+		return null; //CONTEXT.scope(random::get, random::get);
 	}
 
 	/**
