@@ -21,8 +21,8 @@ package org.jenetics;
 
 import static java.lang.Math.pow;
 import static java.lang.String.format;
+import static org.jenetics.internal.math.random.indexes;
 
-import org.jenetics.internal.math.random;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.IntRef;
@@ -108,7 +108,7 @@ public class Mutator<
 		final double p = pow(_probability, 1.0/3.0);
 		final IntRef alterations = new IntRef(0);
 
-		random.indexes(RandomRegistry.getRandom(), population.size(), p).forEach(i -> {
+		indexes(RandomRegistry.getRandom(), population.size(), p).forEach(i -> {
 			final Phenotype<G, C> pt = population.get(i);
 
 			final Genotype<G> gt = pt.getGenotype();
@@ -128,18 +128,23 @@ public class Mutator<
 	) {
 		final MSeq<Chromosome<G>> chromosomes = genotype.toSeq().copy();
 
-		random.indexes(RandomRegistry.getRandom(), genotype.length(), p).forEach(i -> {
-			final Chromosome<G> chromosome = chromosomes.get(i);
-			final MSeq<G> genes = chromosome.toSeq().copy();
-
-			final int mutations = mutate(genes, p);
-			if (mutations > 0) {
-				alterations.value += mutations;
-				chromosomes.set(i, chromosome.newInstance(genes.toISeq()));
-			}
-		});
+		alterations.value +=
+			indexes(RandomRegistry.getRandom(), genotype.length(), p)
+				.map(i -> mutate(chromosomes, i, p))
+				.sum();
 
 		return genotype.newInstance(chromosomes.toISeq());
+	}
+
+	private int mutate(final MSeq<Chromosome<G>> c, final int i, final double p) {
+		final Chromosome<G> chromosome = c.get(i);
+		final MSeq<G> genes = chromosome.toSeq().copy();
+
+		final int mutations = mutate(genes, p);
+		if (mutations > 0) {
+			c.set(i, chromosome.newInstance(genes.toISeq()));
+		}
+		return mutations;
 	}
 
 	/**
@@ -153,14 +158,9 @@ public class Mutator<
 	 * @return the number of performed mutations
 	 */
 	protected int mutate(final MSeq<G> genes, final double p) {
-		final IntRef alternations = new IntRef(0);
-
-		random.indexes(RandomRegistry.getRandom(), genes.length(), p).forEach(i -> {
-			genes.set(i, genes.get(i).newInstance());
-			++alternations.value;
-		});
-
-		return alternations.value;
+		return (int)indexes(RandomRegistry.getRandom(), genes.length(), p)
+			.peek(i -> genes.set(i, genes.get(i).newInstance()))
+			.count();
 	}
 
 	@Override
