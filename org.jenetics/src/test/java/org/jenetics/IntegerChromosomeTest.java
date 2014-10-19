@@ -20,6 +20,7 @@
 package org.jenetics;
 
 import static org.jenetics.stat.StatisticsAssert.assertUniformDistribution;
+import static org.jenetics.util.RandomRegistry.using;
 
 import java.util.Random;
 
@@ -28,12 +29,10 @@ import org.testng.annotations.Test;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.MinMax;
-import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-09-17 $</em>
+ * @version <em>$Date: 2014-10-19 $</em>
  */
 public class IntegerChromosomeTest
 	extends NumericChromosomeTester<Integer, IntegerGene>
@@ -50,8 +49,7 @@ public class IntegerChromosomeTest
 
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstanceDistribution() {
-		try (Scoped<?> s = RandomRegistry.scope(new Random(12345))) {
-
+		using(new Random(12345), r -> {
 			final int min = 0;
 			final int max = 10000000;
 
@@ -70,7 +68,7 @@ public class IntegerChromosomeTest
 			Assert.assertTrue(mm.getMin().compareTo(0) >= 0);
 			Assert.assertTrue(mm.getMax().compareTo(100) <= 100);
 			assertUniformDistribution(histogram);
-		}
+		});
 	}
 
 }

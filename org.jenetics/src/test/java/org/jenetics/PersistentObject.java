@@ -25,6 +25,7 @@ import static org.jenetics.internal.math.random.nextByte;
 import static org.jenetics.internal.math.random.nextCharacter;
 import static org.jenetics.internal.math.random.nextShort;
 import static org.jenetics.internal.math.random.nextString;
+import static org.jenetics.util.RandomRegistry.using;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -42,11 +43,10 @@ import org.jenetics.util.IO;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-10-07 $</em>
+ * @version <em>$Date: 2014-10-19 $</em>
  */
 public class PersistentObject<T> {
 
@@ -625,9 +625,7 @@ public class PersistentObject<T> {
 
 	static {
 		final Random random = new LCG64ShiftRandom.ThreadSafe(SEED);
-		try (Scoped<?> s = RandomRegistry.scope(random)) {
-			init();
-		}
+		using(random, r -> init());
 	}
 
 	public static void main(final String[] args) throws Exception {

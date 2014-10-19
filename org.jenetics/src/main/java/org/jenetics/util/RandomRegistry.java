@@ -23,6 +23,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -92,7 +93,7 @@ import org.jenetics.internal.util.require;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-18 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-19 $</em>
  */
 public final class RandomRegistry {
 	private RandomRegistry() {require.noInstance();}
@@ -153,20 +154,20 @@ public final class RandomRegistry {
 		CONTEXT.reset();
 	}
 
-	/**
-	 * Opens a new {@code Scope} with the given random engine.
-	 *
-	 * @see #with(Random, Function)
-	 *
-	 * @param <R> the type of the random engine
-	 * @param random the PRNG used for the opened scope
-	 * @return the scope with the given random object
-	 * @throws NullPointerException if the {@code random} object is {@code null}.
-	 */
-	@SuppressWarnings("unchecked")
-	public static <R extends Random> Scoped<R> scope(final R random) {
-		return null; //CONTEXT.scope(() -> random, () -> random);
-	}
+//	/**
+//	 * Opens a new {@code Scope} with the given random engine.
+//	 *
+//	 * @see #with(Random, Function)
+//	 *
+//	 * @param <R> the type of the random engine
+//	 * @param random the PRNG used for the opened scope
+//	 * @return the scope with the given random object
+//	 * @throws NullPointerException if the {@code random} object is {@code null}.
+//	 */
+//	@SuppressWarnings("unchecked")
+//	public static <R extends Random> Scoped<R> scope(final R random) {
+//		return null; //CONTEXT.scope(() -> random, () -> random);
+//	}
 
 	/**
 	 * Opens a new {@code Scope} with the given random engine and executes the
@@ -180,8 +181,6 @@ public final class RandomRegistry {
 	 *            .collect(toList())
 	 *     );
 	 * [/code]
-	 *
-	 * @see #scope(Random)
 	 *
 	 * @param <R> the type of the random engine
 	 * @param <T> the function return type
@@ -197,19 +196,29 @@ public final class RandomRegistry {
 		return CONTEXT.with(() -> random, s -> function.apply(random));
 	}
 
-	/**
-	 * Opens a new {@code Scope} with the given random engine.
-	 *
-	 * @see #with(ThreadLocal, Function)
-	 *
-	 * @param <R> the type of the random engine
-	 * @param random the PRNG used for the opened scope.
-	 * @return the scope with the given random object.
-	 */
-	@SuppressWarnings("unchecked")
-	public static <R extends Random> Scoped<R> scope(final ThreadLocal<R> random) {
-		return null; //CONTEXT.scope(random::get, random::get);
+	public static <R extends Random> void using(
+		final R random,
+		final Consumer<R> consumer
+	) {
+		final Function<Supplier<Random>, Void> f = s -> {
+			consumer.accept(random); return null;
+		};
+		CONTEXT.with(() -> random, f);
 	}
+
+//	/**
+//	 * Opens a new {@code Scope} with the given random engine.
+//	 *
+//	 * @see #with(ThreadLocal, Function)
+//	 *
+//	 * @param <R> the type of the random engine
+//	 * @param random the PRNG used for the opened scope.
+//	 * @return the scope with the given random object.
+//	 */
+//	@SuppressWarnings("unchecked")
+//	public static <R extends Random> Scoped<R> scope(final ThreadLocal<R> random) {
+//		return null; //CONTEXT.scope(random::get, random::get);
+//	}
 
 	/**
 	 * Opens a new {@code Scope} with the given random engine and executes the
@@ -224,8 +233,6 @@ public final class RandomRegistry {
 	 *     );
 	 * [/code]
 	 *
-	 * @see #scope(ThreadLocal)
-	 *
 	 * @param <R> the type of the random engine
 	 * @param <T> the function return type
 	 * @param random the PRNG used for the opened scope
@@ -237,9 +244,17 @@ public final class RandomRegistry {
 		final ThreadLocal<R> random,
 		final Function<R, T> function
 	) {
-		try (final Scoped<R> scope = scope(random)) {
-			return function.apply(scope.get());
-		}
+		return CONTEXT.with(random::get, s -> function.apply(random.get()));
+	}
+
+	public static <R extends Random> void using(
+		final ThreadLocal<R> random,
+		final Consumer<R> consumer
+	) {
+		final Function<Supplier<Random>, Void> f = s -> {
+			consumer.accept(random.get()); return null;
+		};
+		CONTEXT.with(random::get, f);
 	}
 
 }
