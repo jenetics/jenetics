@@ -25,7 +25,7 @@ import static org.jenetics.internal.math.random.nextDouble;
 import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.Collector;
-import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;
@@ -37,6 +37,7 @@ import org.jenetics.SinglePointCrossover;
 import org.jenetics.TournamentSelector;
 import org.jenetics.engine.Engine;
 import org.jenetics.util.Factory;
+import org.jenetics.util.RandomRegistry;
 
 /**
  * This class represents a knapsack item, with a specific "size" and "value".
@@ -53,7 +54,8 @@ final class Item {
 	/**
 	 * Create a new random knapsack item.
 	 */
-	static Item of(final Random r) {
+	static Item random() {
+		final Random r = RandomRegistry.getRandom();
 		return new Item(nextDouble(r, 0, 100), nextDouble(r, 0, 100));
 	}
 
@@ -80,14 +82,14 @@ final class KnapsackFunction
 	private final Item[] items;
 	private final double size;
 
-	public KnapsackFunction(final Item[] items, double size) {
+	public KnapsackFunction(final Item[] items, final double size) {
 		this.items = items;
 		this.size = size;
 	}
 
 	@Override
-	public Double apply(final Genotype<BitGene> genotype) {
-		final Item sum = ((BitChromosome)genotype.getChromosome()).ones()
+	public Double apply(final Genotype<BitGene> gt) {
+		final Item sum = ((BitChromosome)gt.getChromosome()).ones()
 			.mapToObj(i -> items[i])
 			.collect(Item.toSum());
 
@@ -100,16 +102,14 @@ final class KnapsackFunction
  */
 public class Knapsack {
 
-	public static void main(String[] args) throws Exception {
+	public static void main(final String[] args) {
 		final int nitems = 15;
 		final double kssize = nitems*100.0/3.0;
 
 		final KnapsackFunction ff = new KnapsackFunction(
-				IntStream.range(0, nitems)
-					.mapToObj(i -> Item.of(new Random(123)))
-					.toArray(Item[]::new),
-				kssize
-			);
+			Stream.generate(Item::random).limit(nitems).toArray(Item[]::new),
+			kssize
+		);
 
 		final Factory<Genotype<BitGene>> gtf = Genotype.of(
 			BitChromosome.of(nitems, 0.5)
