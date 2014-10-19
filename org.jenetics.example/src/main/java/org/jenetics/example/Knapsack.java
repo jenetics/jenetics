@@ -24,6 +24,8 @@ import static org.jenetics.internal.math.random.nextDouble;
 
 import java.util.Random;
 import java.util.function.Function;
+import java.util.stream.Collector;
+import java.util.stream.IntStream;
 
 import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;
@@ -35,10 +37,10 @@ import org.jenetics.SinglePointCrossover;
 import org.jenetics.TournamentSelector;
 import org.jenetics.engine.Engine;
 import org.jenetics.util.Factory;
-import org.jenetics.util.LCG64ShiftRandom;
-import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Scoped;
 
+/**
+ * This class represents a knapsack item, with a specific "size" and "value".
+ */
 final class Item {
 	public final double size;
 	public final double value;
@@ -47,8 +49,31 @@ final class Item {
 		this.size = size;
 		this.value = value;
 	}
+
+	/**
+	 * Create a new random knapsack item.
+	 */
+	static Item of(final Random r) {
+		return new Item(nextDouble(r, 0, 100), nextDouble(r, 0, 100));
+	}
+
+	/**
+	 * Create a new collector for summing up the knapsack items.
+	 */
+	static Collector<Item, ?, Item> toSum() {
+		return Collector.of(
+			() -> new double[2],
+			(a, b) -> {a[0] += b.size; a[1] += b.value;},
+			(a, b) -> {a[0] += b[0]; a[1] += b[1]; return a;},
+			r -> new Item(r[0], r[1])
+		);
+	}
 }
 
+/**
+ * The knapsack fitness function class, which is parametrized with the available
+ * items and the size of the knapsack.
+ */
 final class KnapsackFunction
 	implements Function<Genotype<BitGene>, Double>
 {
@@ -62,49 +87,35 @@ final class KnapsackFunction
 
 	@Override
 	public Double apply(final Genotype<BitGene> genotype) {
-		final BitChromosome ch =
-				(BitChromosome)genotype.getChromosome();
-		double size = 0;
-		double value = 0;
-		for (int i = 0, n = ch.length(); i < n; ++i) {
-			if (ch.get(i)) {
-				size += items[i].size;
-				value += items[i].value;
-			}
-		}
+		final Item sum = ((BitChromosome)genotype.getChromosome()).ones()
+			.mapToObj(i -> items[i])
+			.collect(Item.toSum());
 
-		return size <= this.size ? value : 0;
+		return sum.size <= this.size ? sum.value : 0;
 	}
 }
 
+/**
+ * The main class.
+ */
 public class Knapsack {
-
-	private static KnapsackFunction FF(final int n, final double size) {
-		final Item[] items = new Item[n];
-		try (Scoped<? extends Random> random =
-			RandomRegistry.scope(new LCG64ShiftRandom(123)))
-		{
-			for (int i = 0; i < items.length; ++i) {
-				items[i] = new Item(
-					nextDouble(random.get(), 0, 100),
-					nextDouble(random.get(), 0, 100)
-				);
-			}
-		}
-
-		return new KnapsackFunction(items, size);
-	}
 
 	public static void main(String[] args) throws Exception {
 		final int nitems = 15;
 		final double kssize = nitems*100.0/3.0;
 
-		final KnapsackFunction ff = FF(nitems, kssize);
-		final Factory<Genotype<BitGene>> genotype = Genotype.of(
+		final KnapsackFunction ff = new KnapsackFunction(
+				IntStream.range(0, nitems)
+					.mapToObj(i -> Item.of(new Random(123)))
+					.toArray(Item[]::new),
+				kssize
+			);
+
+		final Factory<Genotype<BitGene>> gtf = Genotype.of(
 			BitChromosome.of(nitems, 0.5)
 		);
 
-		final Engine<BitGene, Double> engine = Engine.builder(ff, genotype)
+		final Engine<BitGene, Double> engine = Engine.builder(ff, gtf)
 			.populationSize(500)
 			.survivorsSelector(new TournamentSelector<>(5))
 			.offspringSelector(new RouletteWheelSelector<>())
