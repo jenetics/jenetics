@@ -24,7 +24,7 @@ import java.util.function.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-10-19 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-10-20 $</em>
  * @since 3.0
  */
 final class Context<T> {
@@ -69,13 +69,12 @@ final class Context<T> {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version 2.0 &mdash; <em>$Date: 2014-10-19 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-10-20 $</em>
 	 * @since 2.0
 	 */
 	private static final class Entry<T> {
 		final Thread thread;
 		final Entry<T> parent;
-
 		T value;
 
 		Entry(final T value, final Entry<T> parent, final Thread thread) {
