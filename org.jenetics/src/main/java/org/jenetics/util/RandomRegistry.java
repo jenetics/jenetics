@@ -174,7 +174,7 @@ public final class RandomRegistry {
 	 */
 	public static <R extends Random> void using(
 		final R random,
-		final Consumer<R> consumer
+		final Consumer<? super R> consumer
 	) {
 		CONTEXT.with(() -> random, r -> {
 			consumer.accept(random);
@@ -202,7 +202,7 @@ public final class RandomRegistry {
 	 */
 	public static <R extends Random> void using(
 		final ThreadLocal<R> random,
-		final Consumer<R> consumer
+		final Consumer<? super R> consumer
 	) {
 		CONTEXT.with(random::get, r -> {
 			consumer.accept(random.get());
@@ -232,7 +232,7 @@ public final class RandomRegistry {
 	 */
 	public static <R extends Random, T> T with(
 		final R random,
-		final Function<R, T> function
+		final Function<? super R, ? extends T> function
 	) {
 		return CONTEXT.with(() -> random, s -> function.apply(random));
 	}
@@ -259,7 +259,7 @@ public final class RandomRegistry {
 	 */
 	public static <R extends Random, T> T with(
 		final ThreadLocal<R> random,
-		final Function<R, T> function
+		final Function<? super R, ? extends T> function
 	) {
 		return CONTEXT.with(random::get, s -> function.apply(random.get()));
 	}
