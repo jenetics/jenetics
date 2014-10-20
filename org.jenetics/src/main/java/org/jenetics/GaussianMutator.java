@@ -27,7 +27,6 @@ import java.util.Random;
 import org.jenetics.internal.math.base;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
-import org.jenetics.internal.util.IntRef;
 
 import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
@@ -48,7 +47,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-27 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-20 $</em>
  */
 public final class GaussianMutator<
 	G extends NumericGene<?, G>,
@@ -69,13 +68,9 @@ public final class GaussianMutator<
 	protected int mutate(final MSeq<G> genes, final double p) {
 		final Random random = RandomRegistry.getRandom();
 
-		final IntRef alterations = new IntRef(0);
-		indexes(random, genes.length(), p).forEach(i -> {
-			genes.set(i, mutate(genes.get(i), random));
-			++alterations.value;
-		});
-
-		return alterations.value;
+		return (int)indexes(random, genes.length(), p)
+			.peek(i -> genes.set(i, mutate(genes.get(i), random)))
+			.count();
 	}
 
 	G mutate(final G gene, final Random random) {
