@@ -23,7 +23,7 @@ import static java.lang.Math.PI;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static org.jenetics.engine.EvolutionResult.toBestPhenotype;
-import static org.jenetics.engine.EvolutionStream.bySteadyState;
+import static org.jenetics.engine.EvolutionStream.Limit.bySteadyFitness;
 
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
@@ -59,7 +59,7 @@ public class RealFunction {
 			new EvolutionStatistics<>();
 
 		final Phenotype<DoubleGene, Double> result = engine.stream()
-			.limit(bySteadyState(3))
+			.limit(bySteadyFitness(5))
 			.limit(100)
 			.peek(statistics)
 			.collect(toBestPhenotype());

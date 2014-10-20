@@ -32,7 +32,7 @@ import org.jenetics.Gene;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-10 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-21 $</em>
  */
 final class EvolutionStreamImpl<
 	G extends Gene<?, G>,
@@ -44,15 +44,18 @@ final class EvolutionStreamImpl<
 
 	private final Function<EvolutionStart<G, C>, EvolutionResult<G, C>> _evolution;
 	private final Supplier<EvolutionStart<G, C>> _initial;
+	private final Predicate<? super EvolutionResult<G, C>> _proceed;
 
 	private EvolutionStreamImpl(
 		final Function<EvolutionStart<G, C>, EvolutionResult<G, C>> evolution,
 		final Supplier<EvolutionStart<G, C>> initial,
-		final Stream<EvolutionResult<G, C>> stream
+		final Stream<EvolutionResult<G, C>> stream,
+		final Predicate<? super EvolutionResult<G, C>> proceed
 	) {
 		super(stream);
 		_evolution = requireNonNull(evolution);
 		_initial = requireNonNull(initial);
+		_proceed = requireNonNull(proceed);
 	}
 
 	EvolutionStreamImpl(
@@ -63,30 +66,27 @@ final class EvolutionStreamImpl<
 			evolution,
 			initial,
 			StreamSupport.stream(
-				new EvolutionSpliterator<>(
-					evolution,
-					initial,
-					a -> true
-				),
+				new EvolutionSpliterator<>(evolution, initial, r -> true),
 				false
-			)
+			),
+			r -> true
 		);
 	}
 
 	@Override
-	public Stream<EvolutionResult<G, C>>
+	public EvolutionStream<G, C>
 	limit(final Predicate<? super EvolutionResult<G, C>> proceed) {
+		final Predicate<? super EvolutionResult<G, C>> prcd = r ->
+			proceed.test(r) && _proceed.test(r);
+
 		return new EvolutionStreamImpl<G, C>(
 			_evolution,
 			_initial,
 			StreamSupport.stream(
-				new EvolutionSpliterator<>(
-					_evolution,
-					_initial,
-					proceed
-				),
+				new EvolutionSpliterator<>(_evolution, _initial, prcd),
 				false
-			)
+			),
+			prcd
 		);
 	}
 

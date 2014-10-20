@@ -22,7 +22,10 @@ package org.jenetics.engine;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import org.jenetics.internal.util.require;
+
 import org.jenetics.Gene;
+import org.jenetics.Optimize;
 
 /**
  * The {@code EvolutionStream} class extends the Java {@link Stream} and adds a
@@ -32,7 +35,7 @@ import org.jenetics.Gene;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-18 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-21 $</em>
  */
 public interface EvolutionStream<
 	G extends Gene<?, G>,
@@ -44,20 +47,108 @@ public interface EvolutionStream<
 	/**
 	 * Returns a stream consisting of the elements of this stream, truncated
 	 * when the given {@code proceed} predicate returns {@code false}.
+	 * <p>
+	 * <i>General usage example:</i>
+	 * [code]
+	 * final Phenotype&lt;DoubleGene, Double&gt; result = engine.stream()
+	 *      // Truncate the evolution stream after 5 "steady" generations.
+	 *     .limit(bySteadyFitness(5))
+	 *      // The evolution will stop after maximal 100 generations.
+	 *     .limit(100)
+	 *     .collect(toBestPhenotype());
+	 * [/code]
+	 *
+	 * @see EvolutionStream.Limit
 	 *
 	 * @param proceed the predicate which determines whether the stream is
-	 *        truncated or not
+	 *        truncated or not. <i>If the predicate returns {@code false}, the
+	 *        evolution stream is truncated.</i>
 	 * @return the new stream
-	 * @throws java.lang.NullPointerException if the given predicate is
-	 *         {@code null}.
+	 * @throws NullPointerException if the given predicate is {@code null}.
 	 */
-	public Stream<EvolutionResult<G, C>>
+	public EvolutionStream<G, C>
 	limit(final Predicate<? super EvolutionResult<G, C>> proceed);
 
 
-	public static <C extends Comparable<? super C>>
-	Predicate<EvolutionResult<?, C>> bySteadyState(final int generations) {
-		return new SteadyState<>(generations);
+	/**
+	 * This class contains factory methods for creating predicates, which can be
+	 * used for limiting the evolution stream.
+	 *
+	 * @see EvolutionStream#limit(Predicate)
+	 */
+	public static final class Limit {
+		private Limit() {require.noInstance();}
+
+		/**
+		 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+		 * @since 3.0
+		 * @version 3.0 &mdash; <em>$Date: 2014-10-21 $</em>
+		 */
+		private static final class SteadyFitness<C extends Comparable<? super C>>
+			implements Predicate<EvolutionResult<?, C>>
+		{
+			private final int _generations;
+			private int _stableGenerations = 0;
+			private C _fitness;
+
+			private SteadyFitness(final int generations) {
+				_generations = generations;
+			}
+
+			@Override
+			public boolean test(final EvolutionResult<?, C> result) {
+				boolean proceed = true;
+
+				if (_fitness == null) {
+					_fitness = result.getBestFitness();
+					_stableGenerations = 1;
+				} else {
+					final Optimize opt = result.getOptimize();
+					if (opt.compare(_fitness, result.getBestFitness()) >= 0) {
+						proceed = ++_stableGenerations <= _generations;
+					} else {
+						_fitness = result.getBestFitness();
+						_stableGenerations = 1;
+					}
+				}
+
+				return proceed;
+			}
+		}
+
+		/**
+		 * Return a predicate, which will truncate the evolution stream if no
+		 * better phenotype could be found after the given number of
+		 * {@code generations}.
+		 *
+		 * [code]
+		 * final Phenotype&lt;DoubleGene, Double&gt; result = engine.stream()
+		 *      // Truncate the evolution stream after 5 "steady" generations.
+		 *     .limit(bySteadyFitness(5))
+		 *      // The evolution will stop after maximal 100 generations.
+		 *     .limit(100)
+		 *     .collect(toBestPhenotype());
+		 * [/code]
+		 *
+		 * @param generations the number of <i>steady</i> generations
+		 * @param <C> the fitness type
+		 * @return a predicate which truncate the evolution stream if no better
+		 *         phenotype could be found after a give number of
+		 *         {@code generations}
+		 * @throws IllegalArgumentException if the generation is smaller than
+		 *         one.
+		 */
+		public static <C extends Comparable<? super C>>
+		Predicate<EvolutionResult<?, C>> bySteadyFitness(final int generations) {
+			if (generations < 1) {
+				throw new IllegalArgumentException(
+					"Generations must be greater than zero, but was " +
+					generations
+				);
+			}
+			return new SteadyFitness<>(generations);
+		}
+
 	}
 
 }
