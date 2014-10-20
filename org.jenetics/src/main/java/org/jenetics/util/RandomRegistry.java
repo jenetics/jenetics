@@ -171,6 +171,7 @@ public final class RandomRegistry {
 	 * @param consumer the consumer which is executed with the <i>scope</i> of
 	 *        the given {@code random} engine.
 	 * @param <R> the type of the random engine
+	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static <R extends Random> void using(
 		final R random,
@@ -199,6 +200,7 @@ public final class RandomRegistry {
 	 * @param consumer the consumer which is executed with the <i>scope</i> of
 	 *        the given {@code random} engine.
 	 * @param <R> the type of the random engine
+	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static <R extends Random> void using(
 		final ThreadLocal<R> random,
@@ -228,7 +230,7 @@ public final class RandomRegistry {
 	 * @param random the PRNG used for the opened scope
 	 * @param function the function to apply within the random scope
 	 * @return the object returned by the given function
-	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static <R extends Random, T> T with(
 		final R random,
