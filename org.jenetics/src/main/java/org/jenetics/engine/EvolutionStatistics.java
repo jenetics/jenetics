@@ -20,12 +20,14 @@
 package org.jenetics.engine;
 
 import static java.lang.String.format;
+import static org.jenetics.internal.util.require.safe;
 
 import java.text.NumberFormat;
 import java.time.Duration;
 import java.util.function.Consumer;
 
 import org.jenetics.Gene;
+import org.jenetics.Phenotype;
 import org.jenetics.stat.DoubleMomentStatistics;
 import org.jenetics.stat.IntMomentStatistics;
 import org.jenetics.stat.MinMax;
@@ -95,21 +97,26 @@ public class EvolutionStatistics<
 	private final IntMomentStatistics _altered = new IntMomentStatistics();
 
 	private final IntMomentStatistics _phenotypeAge = new IntMomentStatistics();
-	private final MinMax<C> _fitness = MinMax.of();
+	private MinMax<C> _fitness = MinMax.of();
 
 	@Override
 	public void accept(final EvolutionResult<G, C> result) {
+		if (_fitness.getMin() == null) {
+			_fitness = MinMax.of(result.getOptimize().ascending());
+		}
+
 		_killed.accept(result.getKillCount());
 		_invalids.accept(result.getInvalidCount());
 		_altered.accept(result.getAlterCount());
 
 		accept(result.getDurations());
-
 		result.getPopulation()
-			.forEach(pt -> {
-				_phenotypeAge.accept(pt.getAge(result.getGeneration()));
-				_fitness.accept(pt.getFitness());
-			});
+			.forEach(pt -> accept(pt, result.getGeneration()));
+	}
+
+	private void accept(final Phenotype<G, C> pt, final int generation) {
+		_phenotypeAge.accept(pt.getAge(generation));
+		_fitness.accept(pt.getFitness());
 	}
 
 	private void accept(final EvolutionDurations durations) {
@@ -253,15 +260,15 @@ public class EvolutionStatistics<
 		out.append("|  Population statistics                                                    |\n");
 		out.append("+---------------------------------------------------------------------------+\n");
 		out.append(format(pattern, "Age", p(_phenotypeAge)));
-		out.append(format(pattern, "Max fitness", _fitness.getMax()));
-		out.append(format(pattern, "Min fitness", _fitness.getMin()));
+		out.append(format(pattern, "Best fitness", _fitness.getMax()));
+		out.append(format(pattern, "Worst fitness", _fitness.getMin()));
 		out.append("+---------------------------------------------------------------------------+\n");
 		return out.toString();
 	}
 
 	private static String d(final DoubleMomentStatistics statistics) {
 		return format(
-			"Σ=%3.12f s, μ=%3.12f s",
+			"Σ=%3.12f s; μ=%3.12f s",
 			statistics.getSum(), statistics.getMean()
 		);
 	}
@@ -269,7 +276,7 @@ public class EvolutionStatistics<
 	private static String i(final IntMomentStatistics statistics) {
 		final NumberFormat nf = NumberFormat.getIntegerInstance();
 		return format(
-			"Σ=%s, μ=%6.9f",
+			"Σ=%s; μ=%6.9f",
 			nf.format(statistics.getSum()), statistics.getMean()
 		);
 	}
@@ -282,8 +289,10 @@ public class EvolutionStatistics<
 	private static String p(final IntMomentStatistics statistics) {
 		final NumberFormat nf = NumberFormat.getIntegerInstance();
 		return format(
-			"μ=%6.6f, s²=%6.6f",
-			statistics.getMean(), statistics.getVariance()
+			"∨=%s; μ=%6.6f; s²=%6.6f",
+			nf.format(statistics.getMax()),
+			statistics.getMean(),
+			statistics.getVariance()
 		);
 	}
 
