@@ -34,7 +34,6 @@ import org.jenetics.Optimize;
 import org.jenetics.Phenotype;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionStatistics;
-import org.jenetics.stat.MinMax;
 
 public class RealFunction {
 

@@ -29,12 +29,11 @@ import org.testng.annotations.Test;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ObjectTester;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Serialize;
 import org.jenetics.util.lists;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-09-19 $</em>
+ * @version <em>$Date: 2014-10-21 $</em>
  */
 public class PopulationTest
 	extends ObjectTester<Population<DoubleGene, Double>>
