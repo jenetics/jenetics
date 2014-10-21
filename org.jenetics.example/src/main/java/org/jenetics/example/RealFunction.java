@@ -59,12 +59,12 @@ public class RealFunction {
 			new EvolutionStatistics<>();
 
 		final Phenotype<DoubleGene, Double> result = engine.stream()
-			.limit(bySteadyFitness(5))
+			.limit(bySteadyFitness(7))
 			.limit(100)
 			.peek(statistics)
 			.collect(toBestPhenotype());
 
-		System.out.println(result);
 		System.out.println(statistics);
+		System.out.println(result);
 	}
 }

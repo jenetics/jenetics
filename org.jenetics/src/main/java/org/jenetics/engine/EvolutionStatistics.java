@@ -262,7 +262,7 @@ public class EvolutionStatistics<
 		out.append(format(pattern, "Age", p(_phenotypeAge)));
 		out.append(format(pattern, "Best fitness", _fitness.getMax()));
 		out.append(format(pattern, "Worst fitness", _fitness.getMin()));
-		out.append("+---------------------------------------------------------------------------+\n");
+		out.append("+---------------------------------------------------------------------------+");
 		return out.toString();
 	}
 
