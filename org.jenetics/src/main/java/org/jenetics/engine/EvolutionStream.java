@@ -32,6 +32,7 @@ import org.jenetics.Optimize;
  * method for limiting the evolution by a given predicate.
  *
  * @see java.util.stream.Stream
+ * @see Engine
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
