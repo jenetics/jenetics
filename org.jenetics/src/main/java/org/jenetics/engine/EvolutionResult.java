@@ -21,6 +21,7 @@ package org.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.Equality.eq;
+import static org.jenetics.internal.util.require.safe;
 
 import java.io.Serializable;
 import java.util.function.Supplier;
@@ -45,7 +46,7 @@ import org.jenetics.stat.MinMax;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-11 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-21 $</em>
  */
 public final class EvolutionResult<
 	G extends Gene<?, G>,
@@ -284,7 +285,7 @@ public final class EvolutionResult<
 			MinMax::<EvolutionResult<G, C>>of,
 			MinMax::accept,
 			MinMax::combine,
-			mm -> mm.getMax().getBestPhenotype()
+			mm -> safe(() -> mm.getMax().getBestPhenotype())
 		);
 	}
 
@@ -304,7 +305,7 @@ public final class EvolutionResult<
 			MinMax::<EvolutionResult<G, C>>of,
 			MinMax::accept,
 			MinMax::combine,
-			mm -> mm.getMax().getBestPhenotype().getGenotype()
+			mm -> safe(() -> mm.getMax().getBestPhenotype().getGenotype())
 		);
 	}
 
