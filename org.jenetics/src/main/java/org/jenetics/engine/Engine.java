@@ -53,19 +53,19 @@ import org.jenetics.TournamentSelector;
 import org.jenetics.util.Factory;
 
 /**
- * Genetic algorithm engine, which performs the actual evolve steps. An new
- * instance of the {@code Engine} can only be created via the {@code Builder}
- * class:
+ * Genetic algorithm <em>engine</em> which is the main class. The following
+ * example shows the main steps in initializing and executing the GA.
  *
  * [code]
  * public class RealFunction {
+ *    // Definition of the fitness function.
  *    private static Double evaluate(final Genotype&lt;DoubleGene&gt; gt) {
  *        final double x = gt.getGene().doubleValue();
  *        return cos(0.5 + sin(x)) * cos(x);
  *    }
  *
  *    public static void main(String[] args) {
- *        // Create the engine via its builder.
+ *        // Create/configuring the engine via its builder.
  *        final Engine&lt;DoubleGene, Double&gt; engine = Engine
  *            .builder(
  *                RealFunction::evaluate,
@@ -79,14 +79,23 @@ import org.jenetics.util.Factory;
  *
  *        // Execute the GA (engine).
  *        final Phenotype&lt;DoubleGene, Double&gt; result = engine.stream()
+ *             // Truncate the evolution stream if no better individual could
+ *             // be found after 5 consecutive generations.
+ *            .limit(bySteadyFitness(5)
+ *             // Terminate the evolution after maximal 100 generations.
  *            .limit(100)
  *            .collect(toBestPhenotype());
  *     }
  * }
  * [/code]
  *
- * This architecture allows to decouple the configuration of the engine from the
- * execution.
+ * The architecture allows to decouple the configuration of the engine from the
+ * execution. The {@code Engine} is configured via the {@code Engine.Builder}
+ * class and can't be changed after creation. The actual <i>evolution</i> is
+ * performed by the {@link EvolutionStream}, which is created by the
+ * {@code Engine}.
+ * <p>
+ * <em>No mutable state is maintained by the engine.</em>
  *
  * @see Engine.Builder
  * @see EvolutionResult
@@ -95,7 +104,7 @@ import org.jenetics.util.Factory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-11 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-21 $</em>
  */
 public final class Engine<
 	G extends Gene<?, G>,
@@ -173,6 +182,8 @@ public final class Engine<
 	 * Perform one evolution step with the given {@code population} and
 	 * {@code generation}. New phenotypes are created with the fitness function
 	 * and fitness scaler defined by this <em>engine</em>.
+     * <p>
+     * <em>This method is thread-safe.</em>
 	 *
 	 * @param population the population to evolve
 	 * @param generation the current generation; used for calculating the
@@ -587,7 +598,7 @@ public final class Engine<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 3.0
-	 * @version 3.0 &mdash; <em>$Date: 2014-10-11 $</em>
+	 * @version 3.0 &mdash; <em>$Date: 2014-10-21 $</em>
 	 */
 	public static final class Builder<
 		G extends Gene<?, G>,
