@@ -57,7 +57,7 @@ public class RealFunction {
 
 
 		final EvolutionStatistics<Double, ?>
-			statistics = EvolutionStatistics.ofNumber();
+			statistics = EvolutionStatistics.ofComparable();
 
 		final Phenotype<DoubleGene, Double> result = engine.stream()
 			.limit(bySteadyFitness(7))

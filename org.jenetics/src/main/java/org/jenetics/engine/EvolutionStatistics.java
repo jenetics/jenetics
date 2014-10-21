@@ -253,23 +253,21 @@ public abstract class EvolutionStatistics<
 
 	@Override
 	public String toString() {
-		final StringBuilder out = new StringBuilder();
-		out.append("+---------------------------------------------------------------------------+\n");
-		out.append("|  Time statistics                                                          |\n");
-		out.append("+---------------------------------------------------------------------------+\n");
-		out.append(format(pattern, "Selection", d(_selectionDuration)));
-		out.append(format(pattern, "Altering", d(_alterDuration)));
-		out.append(format(pattern, "Fitness calculation", d(_evaluationDuration)));
-		out.append(format(pattern, "Overall execution", d(_evolveDuration)));
-		out.append("+---------------------------------------------------------------------------+\n");
-		out.append("|  Evolution statistics                                                     |\n");
-		out.append("+---------------------------------------------------------------------------+\n");
-		out.append(format(pattern, "Generations", i(_altered.getCount())));
-		out.append(format(pattern, "Altered", i(_altered)));
-		out.append(format(pattern, "Killed", i(_killed)));
-		out.append(format(pattern, "Invalids", i(_invalids)));
-
-		return out.toString();
+		return
+		"+---------------------------------------------------------------------------+\n" +
+		"|  Time statistics                                                          |\n" +
+		"+---------------------------------------------------------------------------+\n" +
+		format(pattern, "Selection", d(_selectionDuration)) +
+		format(pattern, "Altering", d(_alterDuration)) +
+		format(pattern, "Fitness calculation", d(_evaluationDuration)) +
+		format(pattern, "Overall execution", d(_evolveDuration)) +
+		"+---------------------------------------------------------------------------+\n" +
+		"|  Evolution statistics                                                     |\n" +
+		"+---------------------------------------------------------------------------+\n" +
+		format(pattern, "Generations", i(_altered.getCount())) +
+		format(pattern, "Altered", i(_altered)) +
+		format(pattern, "Killed", i(_killed)) +
+		format(pattern, "Invalids", i(_invalids));
 	}
 
 	private static String d(final DoubleMomentStatistics statistics) {
@@ -313,11 +311,11 @@ public abstract class EvolutionStatistics<
 
 		@Override
 		public void accept(final EvolutionResult<?, C> result) {
-			super.accept(result);
-
 			if (_fitness.getMax() == null) {
 				_fitness = MinMax.of(result.getOptimize().ascending());
 			}
+
+			super.accept(result);
 		}
 
 		@Override
@@ -328,16 +326,15 @@ public abstract class EvolutionStatistics<
 
 		@Override
 		public String toString() {
-			final StringBuilder out = new StringBuilder(super.toString());
-			out.append("+---------------------------------------------------------------------------+\n");
-			out.append("|  Population statistics                                                    |\n");
-			out.append("+---------------------------------------------------------------------------+\n");
-			out.append(format(pattern, "Age", p(_age)));
-			out.append(format(pattern, "Best fitness", _fitness.getMax()));
-			out.append(format(pattern, "Worst fitness", _fitness.getMin()));
-			out.append("+---------------------------------------------------------------------------+");
-
-			return out.toString();
+			return super.toString() +
+			"+---------------------------------------------------------------------------+\n" +
+			"|  Population statistics                                                    |\n" +
+			"+---------------------------------------------------------------------------+\n" +
+			format(pattern, "Age", p(_age)) +
+			format(pattern, "Fitness", "") +
+			format(pattern, "∧", _fitness.getMin()) +
+			format(pattern, "∨", _fitness.getMax()) +
+			"+---------------------------------------------------------------------------+";
 		}
 	}
 
@@ -356,19 +353,17 @@ public abstract class EvolutionStatistics<
 
 		@Override
 		public String toString() {
-			final StringBuilder out = new StringBuilder(super.toString());
-			out.append("+---------------------------------------------------------------------------+\n");
-			out.append("|  Population statistics                                                    |\n");
-			out.append("+---------------------------------------------------------------------------+\n");
-			out.append(format(pattern, "Age", p(_age)));
-			out.append(format(pattern, "Fitness", ""));
-			out.append(format(pattern, "∧", d(_fitness.getMin())));
-			out.append(format(pattern, "∨", d(_fitness.getMax())));
-			out.append(format(pattern, "μ", d(_fitness.getMean())));
-			out.append(format(pattern, "s²", d(_fitness.getVariance())));
-			out.append("+---------------------------------------------------------------------------+");
-
-			return out.toString();
+			return super.toString() +
+			"+---------------------------------------------------------------------------+\n" +
+			"|  Population statistics                                                    |\n" +
+			"+---------------------------------------------------------------------------+\n" +
+			format(pattern, "Age", p(_age)) +
+			format(pattern, "Fitness", "") +
+			format(pattern, "∧", d(_fitness.getMin())) +
+			format(pattern, "∨", d(_fitness.getMax())) +
+			format(pattern, "μ", d(_fitness.getMean())) +
+			format(pattern, "s²", d(_fitness.getVariance())) +
+			"+---------------------------------------------------------------------------+";
 		}
 
 		private static String d(final double value) {
