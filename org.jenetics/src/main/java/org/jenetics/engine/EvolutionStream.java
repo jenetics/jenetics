@@ -19,6 +19,8 @@
  */
 package org.jenetics.engine;
 
+import static org.jenetics.stat.DoubleMoments.toDoubleMoments;
+
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -26,6 +28,7 @@ import org.jenetics.internal.util.require;
 
 import org.jenetics.Gene;
 import org.jenetics.Optimize;
+import org.jenetics.stat.DoubleMoments;
 
 /**
  * The {@code EvolutionStream} class extends the Java {@link Stream} and adds a
@@ -148,6 +151,48 @@ public interface EvolutionStream<
 				);
 			}
 			return new SteadyFitness<>(generations);
+		}
+
+		/**
+		 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+		 * @since 3.0
+		 * @version 3.0 &mdash; <em>$Date: 2014-10-21 $</em>
+		 */
+		private static final class SteadyPopulation<
+			N extends Number & Comparable<? super N>
+		>
+			implements Predicate<EvolutionResult<?, N>>
+		{
+			private final int _generations;
+			private int _stableGenerations = 0;
+			private N _fitness;
+
+			private SteadyPopulation(final int generations) {
+				_generations = generations;
+			}
+
+			@Override
+			public boolean test(final EvolutionResult<?, N> result) {
+				final DoubleMoments moments = result.getPopulation().stream()
+					.collect(toDoubleMoments(pt -> pt.getFitness().doubleValue()));
+
+				boolean proceed = true;
+
+				if (_fitness == null) {
+					_fitness = result.getBestFitness();
+					_stableGenerations = 1;
+				} else {
+					final Optimize opt = result.getOptimize();
+					if (opt.compare(_fitness, result.getBestFitness()) >= 0) {
+						proceed = ++_stableGenerations <= _generations;
+					} else {
+						_fitness = result.getBestFitness();
+						_stableGenerations = 1;
+					}
+				}
+
+				return proceed;
+			}
 		}
 
 	}

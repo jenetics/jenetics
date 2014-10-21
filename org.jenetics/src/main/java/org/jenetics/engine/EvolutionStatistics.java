@@ -20,13 +20,11 @@
 package org.jenetics.engine;
 
 import static java.lang.String.format;
-import static org.jenetics.internal.util.require.safe;
 
 import java.text.NumberFormat;
 import java.time.Duration;
 import java.util.function.Consumer;
 
-import org.jenetics.Gene;
 import org.jenetics.Phenotype;
 import org.jenetics.stat.DoubleMomentStatistics;
 import org.jenetics.stat.IntMomentStatistics;
@@ -34,14 +32,18 @@ import org.jenetics.stat.MinMax;
 
 /**
  * This class can be used to gather additional statistic information of an
- * evolution process.
+ * evolution process. The additional information can be useful during the
+ * development phase of the GA or while testing the GA's performance. The
+ * following example shows how to integrate the <i>statistics</i> object into
+ * your evolution <i>stream</i>.
  *
  * [code]
  * final Engine&lt;DoubleGene, Double&gt; engine = ...
- * final EvolutionStatistics&lt;DoubleGene, Double&gt; statistics =
- *     new EvolutionStatistics&lt;&gt;();
+ * final EvolutionStatistics&lt;Double, DoubleMomentStatistics&gt; statistics =
+ *     EvolutionStatistics.ofNumber();
  *
  * final Phenotype&lt;DoubleGene, Double&gt; result = engine.stream()
+ *     .limit(bySteadyFitness(7))
  *     .limit(100)
  *     .peek(statistics)
  *     .collect(toBestPhenotype());
@@ -49,40 +51,47 @@ import org.jenetics.stat.MinMax;
  * System.println(statistics);
  * [/code]
  *
- * <pre>
+ * <b>Example output</b>
+ *
+ * [code]
  +---------------------------------------------------------------------------+
  |  Time statistics                                                          |
  +---------------------------------------------------------------------------+
- |              Selection: Σ=0.031135653000 s, μ=0.000311356530 s            |
- |               Altering: Σ=0.176647042000 s, μ=0.001766470420 s            |
- |    Fitness calculation: Σ=0.046197010000 s, μ=0.000461970100 s            |
- |      Overall execution: Σ=0.269783151000 s, μ=0.002697831510 s            |
+ |              Selection: Σ=0.022079809000 s; μ=0.001051419476 s            |
+ |               Altering: Σ=0.077028587000 s; μ=0.003668027952 s            |
+ |    Fitness calculation: Σ=0.009673436000 s; μ=0.000460639810 s            |
+ |      Overall execution: Σ=0.113376443000 s; μ=0.005398878238 s            |
  +---------------------------------------------------------------------------+
  |  Evolution statistics                                                     |
  +---------------------------------------------------------------------------+
- |                Altered: Σ=18,766, μ=187.660000000                         |
- |                 Killed: Σ=0, μ=0.000000000                                |
- |               Invalids: Σ=0, μ=0.000000000                                |
+ |            Generations: 21                                                |
+ |                Altered: Σ=3,937; μ=187.476190476                          |
+ |                 Killed: Σ=0; μ=0.000000000                                |
+ |               Invalids: Σ=0; μ=0.000000000                                |
  +---------------------------------------------------------------------------+
  |  Population statistics                                                    |
  +---------------------------------------------------------------------------+
- |                    Age: μ=1.892140, s²=7.063327                           |
- |            Max fitness: 0.9381474996702884                                |
- |            Min fitness: -0.9381718976956661                               |
+ |                    Age: ∨=7; μ=1.084000; s²=1.839595                      |
+ |                Fitness:                                                   |
+ |                      ∧: -0.938171897696                                   |
+ |                      ∨: 0.912073050166                                    |
+ |                      μ: -0.904772655473                                   |
+ |                     s²: 0.021677650988                                    |
  +---------------------------------------------------------------------------+
- * </pre>
+ * [/code]
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
  * @version 3.0 &mdash; <em>$Date: 2014-10-21 $</em>
  */
-public class EvolutionStatistics<
-	G extends Gene<?, G>,
-	C extends Comparable<? super C>
+public abstract class EvolutionStatistics<
+	C extends Comparable<? super C>,
+	FitnessStatistics
 >
-	implements Consumer<EvolutionResult<G, C>>
+	implements Consumer<EvolutionResult<?, C>>
 {
 
+	// The duration statistics values.
 	private final DoubleMomentStatistics
 		_selectionDuration = new DoubleMomentStatistics();
 	private final DoubleMomentStatistics
@@ -92,33 +101,35 @@ public class EvolutionStatistics<
 	private final DoubleMomentStatistics
 		_evolveDuration = new DoubleMomentStatistics();
 
+	// The evolution statistics values.
 	private final IntMomentStatistics _killed = new IntMomentStatistics();
 	private final IntMomentStatistics _invalids = new IntMomentStatistics();
 	private final IntMomentStatistics _altered = new IntMomentStatistics();
 
-	private final IntMomentStatistics _phenotypeAge = new IntMomentStatistics();
-	private MinMax<C> _fitness = MinMax.of();
+	// The population statistics values.
+	final IntMomentStatistics _age = new IntMomentStatistics();
+	FitnessStatistics _fitness = null;
+
+	EvolutionStatistics() {
+	}
 
 	@Override
-	public void accept(final EvolutionResult<G, C> result) {
-		if (_fitness.getMin() == null) {
-			_fitness = MinMax.of(result.getOptimize().ascending());
-		}
+	public void accept(final EvolutionResult<?, C> result) {
+		accept(result.getDurations());
 
 		_killed.accept(result.getKillCount());
 		_invalids.accept(result.getInvalidCount());
 		_altered.accept(result.getAlterCount());
 
-		accept(result.getDurations());
 		result.getPopulation()
 			.forEach(pt -> accept(pt, result.getGeneration()));
 	}
 
-	private void accept(final Phenotype<G, C> pt, final int generation) {
-		_phenotypeAge.accept(pt.getAge(generation));
-		_fitness.accept(pt.getFitness());
+	void accept(final Phenotype<?, C> pt, final int generation) {
+		_age.accept(pt.getAge(generation));
 	}
 
+	// Calculate duration statistics
 	private void accept(final EvolutionDurations durations) {
 		final double selection =
 			toSeconds(durations.getOffspringSelectionDuration()) +
@@ -226,7 +237,7 @@ public class EvolutionStatistics<
 	 * @return individual age statistics
 	 */
 	public IntMomentStatistics getPhenotypeAge() {
-		return _phenotypeAge;
+		return _age;
 	}
 
 	/**
@@ -234,13 +245,14 @@ public class EvolutionStatistics<
 	 *
 	 * @return minimal and maximal fitness
 	 */
-	public MinMax<C> getFitness() {
+	public FitnessStatistics getFitness() {
 		return _fitness;
 	}
 
+	final String pattern = "| %22s: %-50s|\n";
+
 	@Override
 	public String toString() {
-		final String pattern = "| %22s: %-50s|\n";
 		final StringBuilder out = new StringBuilder();
 		out.append("+---------------------------------------------------------------------------+\n");
 		out.append("|  Time statistics                                                          |\n");
@@ -256,13 +268,7 @@ public class EvolutionStatistics<
 		out.append(format(pattern, "Altered", i(_altered)));
 		out.append(format(pattern, "Killed", i(_killed)));
 		out.append(format(pattern, "Invalids", i(_invalids)));
-		out.append("+---------------------------------------------------------------------------+\n");
-		out.append("|  Population statistics                                                    |\n");
-		out.append("+---------------------------------------------------------------------------+\n");
-		out.append(format(pattern, "Age", p(_phenotypeAge)));
-		out.append(format(pattern, "Best fitness", _fitness.getMax()));
-		out.append(format(pattern, "Worst fitness", _fitness.getMin()));
-		out.append("+---------------------------------------------------------------------------+");
+
 		return out.toString();
 	}
 
@@ -294,6 +300,90 @@ public class EvolutionStatistics<
 			statistics.getMean(),
 			statistics.getVariance()
 		);
+	}
+
+	private static final class Comp<
+		C extends Comparable<? super C>
+	>
+		extends EvolutionStatistics<C, MinMax<C>>
+	{
+		private Comp() {
+			_fitness = MinMax.of();
+		}
+
+		@Override
+		public void accept(final EvolutionResult<?, C> result) {
+			super.accept(result);
+
+			if (_fitness.getMax() == null) {
+				_fitness = MinMax.of(result.getOptimize().ascending());
+			}
+		}
+
+		@Override
+		void accept(final Phenotype<?, C> pt, final int generation) {
+			super.accept(pt, generation);
+			_fitness.accept(pt.getFitness());
+		}
+
+		@Override
+		public String toString() {
+			final StringBuilder out = new StringBuilder(super.toString());
+			out.append("+---------------------------------------------------------------------------+\n");
+			out.append("|  Population statistics                                                    |\n");
+			out.append("+---------------------------------------------------------------------------+\n");
+			out.append(format(pattern, "Age", p(_age)));
+			out.append(format(pattern, "Best fitness", _fitness.getMax()));
+			out.append(format(pattern, "Worst fitness", _fitness.getMin()));
+			out.append("+---------------------------------------------------------------------------+");
+
+			return out.toString();
+		}
+	}
+
+	private static final class Num<N extends Number & Comparable<? super N>>
+		extends EvolutionStatistics<N, DoubleMomentStatistics>
+	{
+		private Num() {
+			_fitness = new DoubleMomentStatistics();
+		}
+
+		@Override
+		void accept(final Phenotype<?, N> pt, final int generation) {
+			super.accept(pt, generation);
+			_fitness.accept(pt.getFitness().doubleValue());
+		}
+
+		@Override
+		public String toString() {
+			final StringBuilder out = new StringBuilder(super.toString());
+			out.append("+---------------------------------------------------------------------------+\n");
+			out.append("|  Population statistics                                                    |\n");
+			out.append("+---------------------------------------------------------------------------+\n");
+			out.append(format(pattern, "Age", p(_age)));
+			out.append(format(pattern, "Fitness", ""));
+			out.append(format(pattern, "∧", d(_fitness.getMin())));
+			out.append(format(pattern, "∨", d(_fitness.getMax())));
+			out.append(format(pattern, "μ", d(_fitness.getMean())));
+			out.append(format(pattern, "s²", d(_fitness.getVariance())));
+			out.append("+---------------------------------------------------------------------------+");
+
+			return out.toString();
+		}
+
+		private static String d(final double value) {
+			return format("%3.12f", value);
+		}
+	}
+
+	public static <C extends Comparable<? super C>>
+	EvolutionStatistics<C, MinMax<C>> ofComparable() {
+		return new Comp<>();
+	}
+
+	public static <N extends Number & Comparable<? super N>>
+	EvolutionStatistics<N, DoubleMomentStatistics> ofNumber() {
+		return new Num<>();
 	}
 
 }

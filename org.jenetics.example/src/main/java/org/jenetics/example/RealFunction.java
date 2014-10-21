@@ -34,6 +34,7 @@ import org.jenetics.Optimize;
 import org.jenetics.Phenotype;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionStatistics;
+import org.jenetics.stat.MinMax;
 
 public class RealFunction {
 
@@ -55,8 +56,8 @@ public class RealFunction {
 			.build();
 
 
-		final EvolutionStatistics<DoubleGene, Double> statistics =
-			new EvolutionStatistics<>();
+		final EvolutionStatistics<Double, ?>
+			statistics = EvolutionStatistics.ofNumber();
 
 		final Phenotype<DoubleGene, Double> result = engine.stream()
 			.limit(bySteadyFitness(7))
