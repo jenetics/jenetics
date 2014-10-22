@@ -20,7 +20,7 @@
 package org.jenetics.example;
 
 import static org.jenetics.engine.EvolutionResult.toBestPhenotype;
-import static org.jenetics.internal.math.random.nextDouble;
+import static org.jenetics.engine.limit.bySteadyFitness;
 
 import java.util.Random;
 import java.util.function.Function;
@@ -36,12 +36,11 @@ import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.TournamentSelector;
 import org.jenetics.engine.Engine;
-import org.jenetics.util.Factory;
+import org.jenetics.engine.EvolutionStatistics;
 import org.jenetics.util.RandomRegistry;
 
-/**
- * This class represents a knapsack item, with a specific "size" and "value".
- */
+// This class represents a knapsack item, with a specific
+// "size" and "value".
 final class Item {
 	public final double size;
 	public final double value;
@@ -51,17 +50,13 @@ final class Item {
 		this.value = value;
 	}
 
-	/**
-	 * Create a new random knapsack item.
-	 */
+	// Create a new random knapsack item.
 	static Item random() {
 		final Random r = RandomRegistry.getRandom();
-		return new Item(nextDouble(r, 0, 100), nextDouble(r, 0, 100));
+		return new Item(r.nextDouble()*100, r.nextDouble()*100);
 	}
 
-	/**
-	 * Create a new collector for summing up the knapsack items.
-	 */
+	// Create a new collector for summing up the knapsack items.
 	static Collector<Item, ?, Item> toSum() {
 		return Collector.of(
 			() -> new double[2],
@@ -72,17 +67,15 @@ final class Item {
 	}
 }
 
-/**
- * The knapsack fitness function class, which is parametrized with the available
- * items and the size of the knapsack.
- */
-final class KnapsackFunction
+// The knapsack fitness function class, which is parametrized with
+// the available items and the size of the knapsack.
+final class FF
 	implements Function<Genotype<BitGene>, Double>
 {
 	private final Item[] items;
 	private final double size;
 
-	public KnapsackFunction(final Item[] items, final double size) {
+	public FF(final Item[] items, final double size) {
 		this.items = items;
 		this.size = size;
 	}
@@ -97,25 +90,23 @@ final class KnapsackFunction
 	}
 }
 
-/**
- * The main class.
- */
+// The main class.
 public class Knapsack {
 
 	public static void main(final String[] args) {
 		final int nitems = 15;
 		final double kssize = nitems*100.0/3.0;
 
-		final KnapsackFunction ff = new KnapsackFunction(
-			Stream.generate(Item::random).limit(nitems).toArray(Item[]::new),
+		final FF ff = new FF(
+			Stream.generate(Item::random)
+				.limit(nitems)
+				.toArray(Item[]::new),
 			kssize
 		);
 
-		final Factory<Genotype<BitGene>> gtf = Genotype.of(
-			BitChromosome.of(nitems, 0.5)
-		);
-
-		final Engine<BitGene, Double> engine = Engine.builder(ff, gtf)
+		// Configure and build the evolution engine.
+		final Engine<BitGene, Double> engine = Engine
+			.builder(ff, BitChromosome.of(nitems, 0.5))
 			.populationSize(500)
 			.survivorsSelector(new TournamentSelector<>(5))
 			.offspringSelector(new RouletteWheelSelector<>())
@@ -124,9 +115,25 @@ public class Knapsack {
 				new SinglePointCrossover<>(0.16))
 			.build();
 
-		final Phenotype<BitGene, Double> result = engine.stream().limit(100)
+		// Create evolution statistics consumer.
+		final EvolutionStatistics<Double, ?>
+			statistics = EvolutionStatistics.ofNumber();
+
+		final Phenotype<BitGene, Double> best = engine.stream()
+			// Truncate the evolution stream after 7 "steady"
+			// generations.
+			.limit(bySteadyFitness(7))
+			// The evolution will stop after maximal 100
+			// generations.
+			.limit(100)
+			// Update the evaluation statistics after
+			// each generation
+			.peek(statistics)
+			// Collect (reduce) the evolution stream to
+			// its best phenotype.
 			.collect(toBestPhenotype());
 
-		System.out.println(result);
+		System.out.println(statistics);
+		System.out.println(best);
 	}
 }
