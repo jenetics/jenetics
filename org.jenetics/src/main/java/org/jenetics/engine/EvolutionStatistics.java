@@ -57,32 +57,32 @@ import org.jenetics.stat.MinMax;
  +---------------------------------------------------------------------------+
  |  Time statistics                                                          |
  +---------------------------------------------------------------------------+
- |              Selection: Σ=0.022079809000 s; μ=0.001051419476 s            |
- |               Altering: Σ=0.077028587000 s; μ=0.003668027952 s            |
- |    Fitness calculation: Σ=0.009673436000 s; μ=0.000460639810 s            |
- |      Overall execution: Σ=0.113376443000 s; μ=0.005398878238 s            |
+ |             Selection: sum=0.046538278000 s; mean=0.003878189833 s        |
+ |              Altering: sum=0.086155457000 s; mean=0.007179621417 s        |
+ |   Fitness calculation: sum=0.022901606000 s; mean=0.001908467167 s        |
+ |     Overall execution: sum=0.147298067000 s; mean=0.012274838917 s        |
  +---------------------------------------------------------------------------+
  |  Evolution statistics                                                     |
  +---------------------------------------------------------------------------+
- |            Generations: 21                                                |
- |                Altered: Σ=3,937; μ=187.476190476                          |
- |                 Killed: Σ=0; μ=0.000000000                                |
- |               Invalids: Σ=0; μ=0.000000000                                |
+ |           Generations: 12                                                 |
+ |               Altered: sum=7,331; mean=610.916666667                      |
+ |                Killed: sum=0; mean=0.000000000                            |
+ |              Invalids: sum=0; mean=0.000000000                            |
  +---------------------------------------------------------------------------+
  |  Population statistics                                                    |
  +---------------------------------------------------------------------------+
- |                    Age: ∨=7; μ=1.084000; s²=1.839595                      |
- |                Fitness:                                                   |
- |                      ∧: -0.938171897696                                   |
- |                      ∨: 0.912073050166                                    |
- |                      μ: -0.904772655473                                   |
- |                     s²: 0.021677650988                                    |
+ |                   Age: max=11; mean=1.951000; var=5.545190                |
+ |               Fitness:                                                    |
+ |                      min  = 0.000000000000                                |
+ |                      max  = 481.748227114537                              |
+ |                      mean = 384.430345078660                              |
+ |                      var  = 13006.132537301528                            |
  +---------------------------------------------------------------------------+
  * [/code]
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-21 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-22 $</em>
  */
 public abstract class EvolutionStatistics<
 	C extends Comparable<? super C>,
@@ -249,7 +249,8 @@ public abstract class EvolutionStatistics<
 		return _fitness;
 	}
 
-	final String pattern = "| %22s: %-50s|\n";
+	final String cpattern = "| %22s %-51s|\n";
+	final String spattern = "| %27s %-46s|\n";
 
 	@Override
 	public String toString() {
@@ -257,22 +258,22 @@ public abstract class EvolutionStatistics<
 		"+---------------------------------------------------------------------------+\n" +
 		"|  Time statistics                                                          |\n" +
 		"+---------------------------------------------------------------------------+\n" +
-		format(pattern, "Selection", d(_selectionDuration)) +
-		format(pattern, "Altering", d(_alterDuration)) +
-		format(pattern, "Fitness calculation", d(_evaluationDuration)) +
-		format(pattern, "Overall execution", d(_evolveDuration)) +
+		format(cpattern, "Selection:", d(_selectionDuration)) +
+		format(cpattern, "Altering:", d(_alterDuration)) +
+		format(cpattern, "Fitness calculation:", d(_evaluationDuration)) +
+		format(cpattern, "Overall execution:", d(_evolveDuration)) +
 		"+---------------------------------------------------------------------------+\n" +
 		"|  Evolution statistics                                                     |\n" +
 		"+---------------------------------------------------------------------------+\n" +
-		format(pattern, "Generations", i(_altered.getCount())) +
-		format(pattern, "Altered", i(_altered)) +
-		format(pattern, "Killed", i(_killed)) +
-		format(pattern, "Invalids", i(_invalids));
+		format(cpattern, "Generations:", i(_altered.getCount())) +
+		format(cpattern, "Altered:", i(_altered)) +
+		format(cpattern, "Killed:", i(_killed)) +
+		format(cpattern, "Invalids:", i(_invalids));
 	}
 
 	private static String d(final DoubleMomentStatistics statistics) {
 		return format(
-			"Σ=%3.12f s; μ=%3.12f s",
+			"sum=%3.12f s; mean=%3.12f s",
 			statistics.getSum(), statistics.getMean()
 		);
 	}
@@ -280,7 +281,7 @@ public abstract class EvolutionStatistics<
 	private static String i(final IntMomentStatistics statistics) {
 		final NumberFormat nf = NumberFormat.getIntegerInstance();
 		return format(
-			"Σ=%s; μ=%6.9f",
+			"sum=%s; mean=%6.9f",
 			nf.format(statistics.getSum()), statistics.getMean()
 		);
 	}
@@ -293,7 +294,7 @@ public abstract class EvolutionStatistics<
 	private static String p(final IntMomentStatistics statistics) {
 		final NumberFormat nf = NumberFormat.getIntegerInstance();
 		return format(
-			"∨=%s; μ=%6.6f; s²=%6.6f",
+			"max=%s; mean=%6.6f; var=%6.6f",
 			nf.format(statistics.getMax()),
 			statistics.getMean(),
 			statistics.getVariance()
@@ -330,10 +331,10 @@ public abstract class EvolutionStatistics<
 			"+---------------------------------------------------------------------------+\n" +
 			"|  Population statistics                                                    |\n" +
 			"+---------------------------------------------------------------------------+\n" +
-			format(pattern, "Age", p(_age)) +
-			format(pattern, "Fitness", "") +
-			format(pattern, "∧", _fitness.getMin()) +
-			format(pattern, "∨", _fitness.getMax()) +
+			format(cpattern, "Age:", p(_age)) +
+			format(cpattern, "Fitness", "") +
+			format(spattern, "min =", _fitness.getMin()) +
+			format(spattern, "max =", _fitness.getMax()) +
 			"+---------------------------------------------------------------------------+";
 		}
 	}
@@ -357,12 +358,12 @@ public abstract class EvolutionStatistics<
 			"+---------------------------------------------------------------------------+\n" +
 			"|  Population statistics                                                    |\n" +
 			"+---------------------------------------------------------------------------+\n" +
-			format(pattern, "Age", p(_age)) +
-			format(pattern, "Fitness", "") +
-			format(pattern, "∧", d(_fitness.getMin())) +
-			format(pattern, "∨", d(_fitness.getMax())) +
-			format(pattern, "μ", d(_fitness.getMean())) +
-			format(pattern, "s²", d(_fitness.getVariance())) +
+			format(cpattern, "Age:", p(_age)) +
+			format(cpattern, "Fitness:", "") +
+			format(spattern, "min  =", d(_fitness.getMin())) +
+			format(spattern, "max  =", d(_fitness.getMax())) +
+			format(spattern, "mean =", d(_fitness.getMean())) +
+			format(spattern, "var  =", d(_fitness.getVariance())) +
 			"+---------------------------------------------------------------------------+";
 		}
 
