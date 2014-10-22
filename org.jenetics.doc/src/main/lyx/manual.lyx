@@ -1118,7 +1118,7 @@ public class Main {
 
 \begin_layout Plain Layout
 
-            .builder(gtf, Main::eval)
+            .builder(Main::eval, gtf)
 \end_layout
 
 \begin_layout Plain Layout
@@ -3839,7 +3839,7 @@ public class Main {
 
 \begin_layout Plain Layout
 
-	private static Double eval(finalGenotype<DoubleGene> gt) {
+	private static Double eval(final Genotype<DoubleGene> gt) {
 \end_layout
 
 \begin_layout Plain Layout
