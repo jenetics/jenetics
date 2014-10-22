@@ -13,11 +13,13 @@
 \fi % end if pdflatex is used
 
 \usepackage{listings}
+%\usepackage{listingsutf8}
 \usepackage{color}
 \usepackage{url}
 \usepackage[usenames,dvipsnames]{xcolor}
 \usepackage{cclicenses}
 \usepackage{multicol}
+\usepackage{newunicodechar}
 
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.3,0.3,0.3}
@@ -31,7 +33,10 @@
 %\definecolor{covercolor}{RGB}{202,232,255}
 %\definecolor{covercolor}{rgb}{0.00,0.27,0.40}
 \definecolor{covercolor}{rgb}{0.34,0.55,0.66}
-\lstset{ %
+
+\newunicodechar{Σ}{\lstsum}
+
+\lstset{
   language=java,
   basicstyle=\footnotesize,
   numbers=left,
@@ -59,6 +64,7 @@
   morekeywords={*,...,public,extends}
 }
 \end_preamble
+\options utf8,utf8x
 \use_default_options true
 \begin_modules
 theorems-ams
@@ -776,7 +782,7 @@ reference "lis:Genetic-algorithm"
 
 \end_inset
 
- shows the pseudo-code of the (conceptually)
+ shows the pseudo-code of the
 \family sans
 \series bold
 \shape smallcaps
@@ -976,8 +982,9 @@ reference "fig:Structure-diagram"
  Gene
 \family default
  is the base of the class structure.
+
 \family typewriter
-Gene
+ Gene
 \family default
 s are aggregated in
 \family typewriter
@@ -1062,12 +1069,12 @@ public class Main {
 
 \begin_layout Plain Layout
 
-    private static Double eval(Genotype<BitGene> gt) {
+    // The fitness calculation method.
 \end_layout
 
 \begin_layout Plain Layout
 
-        // Perform the fitness calculation.
+    private static Double eval(Genotype<BitGene> gt) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -1215,12 +1222,31 @@ reference "lis:Simple-GA-setup"
  Comparable
 \family default
 .
- The
+ 
+\end_layout
+
+\begin_layout Standard
+-----// check
+\end_layout
+
+\begin_layout Standard
+The 
+\emph on
+evolution
 \family typewriter
- GeneticAlgorithm
+\emph default
+ Engine
 \family default
  object is then created with the genotype factory and the fitness function.
- In this example the GA tries to maximize the fitness function.
+ An evolution stream is created with the.
+\end_layout
+
+\begin_layout Standard
+-----
+\end_layout
+
+\begin_layout Standard
+In this example the GA tries to maximize the fitness function.
  If you want to find the minimal value you have to change the
 \family typewriter
  optimize
@@ -3766,17 +3792,17 @@ The
 \shape default
  library parallelizes independent task whenever possible.
  Especially the evaluation of the fitness function is done concurrently.
- That means that the GA's fitness-function must be thread safe, because
- it is shared by all phenotypes of a population.
- The easiest way for achieving thread-safety is to make the fitness function
+ That means that the fitness function must be thread safe, because it is
+ shared by all phenotypes of a population.
+ The easiest way for achieving thread safety is to make the fitness function
  immutable and re-entrant.
  The used 
 \family typewriter
 Executor
 \family default
- can be defined when creating the 
+ can be defined when building the evolution 
 \family typewriter
-GeneticAlgorithm
+Engine
 \family default
  object.
 
@@ -3813,37 +3839,56 @@ public class Main {
 
 \begin_layout Plain Layout
 
+	private static Double eval(finalGenotype<DoubleGene> gt) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        // calculate and return fitness
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
     public static void main(final String[] args) {
 \end_layout
 
 \begin_layout Plain Layout
 
-        // Using 10 threads for evolving.
+        Factory<Genotype<DoubleGene>> gtf = ...
 \end_layout
 
 \begin_layout Plain Layout
 
-        Executor executor = Executors.newFixedThreadPool(10);
+        final Engine<DoubleGene, Double> engine = Engine 			
 \end_layout
 
 \begin_layout Plain Layout
 
-        Factory<Genotype<DoubleGene>> factory = ...
+            .builder(Main::eval, gtf)
 \end_layout
 
 \begin_layout Plain Layout
 
-        Function<Genotype<DoubleGene>, Double> ff = ...
+             // Using 10 threads for evolving.
 \end_layout
 
 \begin_layout Plain Layout
 
-        GeneticAlgorithm<DoubleGene, Double> ga =
+            .executor(Executors.newFixedThreadPool(10))
 \end_layout
 
 \begin_layout Plain Layout
 
-            new GeneticAlgorithm<>(factory, ff, executor);
+            .build()
 \end_layout
 
 \begin_layout Plain Layout
@@ -3875,9 +3920,21 @@ Jenetics
 \family default
 \series default
 \shape default
- uses a default 
+ uses a common 
 \family typewriter
 ForkJoinPool
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+
+\family typewriter
+ForkJoinPool.commonPool()
+\end_layout
+
+\end_inset
+
+
 \family default
  for concurrency.
 \end_layout
@@ -7652,6 +7709,14 @@ The type of the statistics object returned by the GA is the same type as
  you have to cast it to your type.
 \end_layout
 
+\begin_layout Section
+Advanced configurations
+\end_layout
+
+\begin_layout Standard
+This section describes some advanced GA setups/configurations.
+\end_layout
+
 \begin_layout Standard
 \begin_inset Newpage pagebreak
 \end_inset
@@ -8045,6 +8110,15 @@ footnotesize}
 
 \begin_layout Standard
 The GA will generated an console output like above.
+ The 
+\emph on
+exact
+\emph default
+ result of the function--for the given range--will be 
+\begin_inset Formula $3.389,125,782,8907,939...$
+\end_inset
+
+ You can also see, that we reached the final result after 19 generations.
 \end_layout
 
 \begin_layout Subsection
