@@ -20,33 +20,28 @@
 package org.jenetics.engine;
 
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 
-import org.jenetics.Gene;
+import org.jenetics.internal.util.require;
 
 /**
- * The {@code EvolutionStream} class extends the Java {@link Stream} and adds a
- * method for limiting the evolution by a given predicate.
+ * This class contains factory methods for creating predicates, which can be
+ * used for limiting the evolution stream.
  *
- * @see java.util.stream.Stream
- * @see Engine
+ * @see EvolutionStream#limit(Predicate)
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
  * @version 3.0 &mdash; <em>$Date: 2014-10-22 $</em>
  */
-public interface EvolutionStream<
-	G extends Gene<?, G>,
-	C extends Comparable<? super C>
->
-	extends Stream<EvolutionResult<G, C>>
-{
+public final class limit {
+	private limit() {require.noInstance();}
+
 
 	/**
-	 * Returns a stream consisting of the elements of this stream, truncated
-	 * when the given {@code proceed} predicate returns {@code false}.
-	 * <p>
-	 * <i>General usage example:</i>
+	 * Return a predicate, which will truncate the evolution stream if no
+	 * better phenotype could be found after the given number of
+	 * {@code generations}.
+	 *
 	 * [code]
 	 * final Phenotype&lt;DoubleGene, Double&gt; result = engine.stream()
 	 *      // Truncate the evolution stream after 5 "steady" generations.
@@ -56,15 +51,17 @@ public interface EvolutionStream<
 	 *     .collect(toBestPhenotype());
 	 * [/code]
 	 *
-	 * @see limit
-	 *
-	 * @param proceed the predicate which determines whether the stream is
-	 *        truncated or not. <i>If the predicate returns {@code false}, the
-	 *        evolution stream is truncated.</i>
-	 * @return the new stream
-	 * @throws NullPointerException if the given predicate is {@code null}.
+	 * @param generations the number of <i>steady</i> generations
+	 * @param <C> the fitness type
+	 * @return a predicate which truncate the evolution stream if no better
+	 *         phenotype could be found after a give number of
+	 *         {@code generations}
+	 * @throws IllegalArgumentException if the generation is smaller than
+	 *         one.
 	 */
-	public EvolutionStream<G, C>
-	limit(final Predicate<? super EvolutionResult<G, C>> proceed);
+	public static <C extends Comparable<? super C>>
+	Predicate<EvolutionResult<?, C>> bySteadyFitness(final int generations) {
+		return new SteadyFitnessLimit<>(generations);
+	}
 
 }
