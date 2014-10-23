@@ -1019,8 +1019,12 @@ s.
 .
 \end_layout
 
-\begin_layout Section
+\begin_layout Paragraph
 Getting started
+\begin_inset Newline newline
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1295,27 +1299,37 @@ public static void main(String[] args) {
 
 \begin_layout Plain Layout
 
-    ga.setSelectors(new RouletteWheelSelector<BitGene>());
+    Engine<BitGene, Double> engine = Engine
 \end_layout
 
 \begin_layout Plain Layout
 
-    ga.setAlterers(
+        .builder(Main::eval, gtf)
 \end_layout
 
 \begin_layout Plain Layout
 
-        new SinglePointCrossover<BitGene>(0.1),
+        .selector(new RouletteWheelSelector<BitGene>())
 \end_layout
 
 \begin_layout Plain Layout
 
-        new Mutator<BitGene>(0.01)
+        .alterers(
 \end_layout
 
 \begin_layout Plain Layout
 
-    );
+            new SinglePointCrossover<BitGene>(0.1),
+\end_layout
+
+\begin_layout Plain Layout
+
+            new Mutator<BitGene>(0.01))
+\end_layout
+
+\begin_layout Plain Layout
+
+        .build();
 \end_layout
 
 \begin_layout Plain Layout
@@ -1324,17 +1338,27 @@ public static void main(String[] args) {
 
 \begin_layout Plain Layout
 
-    ga.setup();
+    Phenotype<BitGene, Double> result = engine.stream()
 \end_layout
 
 \begin_layout Plain Layout
 
-    ga.evolve(100);
+        .limit(100)
 \end_layout
 
 \begin_layout Plain Layout
 
-    System.out.println(ga.getBestPhenotype());
+        .collect(toBestPhenotype())
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+    System.out.println(result);
 \end_layout
 
 \begin_layout Plain Layout
@@ -1368,6 +1392,65 @@ reference "sec:Genetic-operators"
 \end_inset
 
 .
+\end_layout
+
+\begin_layout Section
+Concept
+\end_layout
+
+\begin_layout Standard
+The implementation heavily uses the Java streams an
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/ComponentDiagram.svg
+	width 80text%
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Package-structure"
+
+\end_inset
+
+Package structure
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Package structure
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+asdfasdf
+\end_layout
+
+\begin_layout Standard
+asdfasdf
 \end_layout
 
 \begin_layout Section
@@ -1489,7 +1572,7 @@ Phenotype
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
@@ -1693,22 +1776,65 @@ status open
 
 \begin_layout Plain Layout
 
-class Id implements Function<Genotype<DoubleGene>, Double> {
+public class Main {
 \end_layout
 
 \begin_layout Plain Layout
 
-    @Override
+    static Double identity(final Genotype<DoubleGene> gt) {
 \end_layout
 
 \begin_layout Plain Layout
 
-    public Double apply(Genotype<DoubleGene> genotype) {
+        return gt.getGene().getAllele();
 \end_layout
 
 \begin_layout Plain Layout
 
-        return genotype.getGene().getAllele();
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    public static void main(final String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        // Create fitness function from method reference.
+\end_layout
+
+\begin_layout Plain Layout
+
+        Function<Genotype<DoubleGene>, Double> ff1 = 
+\end_layout
+
+\begin_layout Plain Layout
+
+            Main::identity;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        // Create fitness function from lambda expression.
+\end_layout
+
+\begin_layout Plain Layout
+
+        Function<Genotype<DoubleGene>, Double> ff2 = gt -> 
+\end_layout
+
+\begin_layout Plain Layout
+
+            gt.getGene().getAllele();
 \end_layout
 
 \begin_layout Plain Layout
@@ -1925,6 +2051,10 @@ reference "sub:Genes"
 \end_layout
 
 \begin_layout Section
+Evolution engine
+\end_layout
+
+\begin_layout Section
 Genetic operators
 \begin_inset Index idx
 status collapsed
@@ -2030,42 +2160,27 @@ status open
 
 \begin_layout Plain Layout
 
-final GeneticAlgorithm<DoubleGene, Double> ga = ...
+Engine<DoubleGene, Double> engine = Engine.builder(...)
 \end_layout
 
 \begin_layout Plain Layout
 
-ga.setOffspringFraction(0.7);
+    .offspringFraction(0.7)
 \end_layout
 
 \begin_layout Plain Layout
 
-ga.setSurvivorSelector(
+    .survivorsSelector(new RouletteWheelSelector<>())
 \end_layout
 
 \begin_layout Plain Layout
 
-    new RouletteWheelSelector<DoubleGene, Double>()
+    .offspringSelector(new TournamentSelector<>())
 \end_layout
 
 \begin_layout Plain Layout
 
-);
-\end_layout
-
-\begin_layout Plain Layout
-
-ga.setOffspringSelector(
-\end_layout
-
-\begin_layout Plain Layout
-
-    new TournamentSelector<DoubleGene, Double>()
-\end_layout
-
-\begin_layout Plain Layout
-
-);
+    .build();
 \end_layout
 
 \end_inset
@@ -2078,7 +2193,7 @@ The
 \family typewriter
  offspringFraction
 \family default
- property, 
+, 
 \begin_inset Formula $f_{O}\in[0,1]$
 \end_inset
 
