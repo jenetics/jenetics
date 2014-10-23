@@ -1572,13 +1572,13 @@ Phenotype
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
 	filename ../resources/graphic/Genotype.eps
-	width 80text%
+	width 90text%
 	BoundingBox 0bp 50bp 402bp 246bp
 
 \end_inset
@@ -2052,6 +2052,10 @@ reference "sub:Genes"
 
 \begin_layout Section
 Evolution engine
+\end_layout
+
+\begin_layout Paragraph
+Evolution stream
 \end_layout
 
 \begin_layout Section
