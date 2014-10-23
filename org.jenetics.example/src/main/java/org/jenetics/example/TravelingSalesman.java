@@ -23,8 +23,10 @@ import static java.lang.Math.PI;
 import static java.lang.Math.abs;
 import static java.lang.Math.sin;
 import static org.jenetics.engine.EvolutionResult.toBestPhenotype;
+import static org.jenetics.engine.limit.bySteadyFitness;
 
-import org.jenetics.Chromosome;
+import java.util.stream.IntStream;
+
 import org.jenetics.EnumGene;
 import org.jenetics.Genotype;
 import org.jenetics.Optimize;
@@ -33,20 +35,17 @@ import org.jenetics.PermutationChromosome;
 import org.jenetics.Phenotype;
 import org.jenetics.SwapMutator;
 import org.jenetics.engine.Engine;
+import org.jenetics.engine.EvolutionStatistics;
 
-/**
- * The classical <a href="http://en.wikipedia.org/wiki/Travelling_salesman_problem">TSP</a>.
- *
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-22 $</em>
- */
 public class TravelingSalesman {
 
-	private static final int STOPS = 20;
-	private static final double[][] ADJACENCE = adjacencyMatrix(STOPS);
+	// Problem initialization:
+	// Calculating the adjacence matrix of the "city" distances.
 
-	private static double[][] adjacencyMatrix(int stops) {
+	private static final int STOPS = 20;
+	private static final double[][] ADJACENCE = matrix(STOPS);
+
+	private static double[][] matrix(int stops) {
 		final double radius = 10.0;
 		double[][] matrix = new double[stops][stops];
 
@@ -62,35 +61,55 @@ public class TravelingSalesman {
 		return 2.0*r*abs(sin((PI*i)/stops));
 	}
 
-	private static Double distance(final Genotype<EnumGene<Integer>> gt) {
-		final Chromosome<EnumGene<Integer>> path = gt.getChromosome();
+	// Calculate the path length of the current genotype.
+	private static
+	Double dist(final Genotype<EnumGene<Integer>> gt) {
+		// Convert the genotype to the traveling path.
+		final int[] path = gt.getChromosome().toSeq().stream()
+			.mapToInt(EnumGene<Integer>::getAllele)
+			.toArray();
 
-		double length = 0.0;
-		for (int i = 0, n = path.length(); i < n; ++i) {
-			final int from = path.getGene(i).getAllele();
-			final int to = path.getGene((i + 1)%n).getAllele();
-			length += ADJACENCE[from][to];
-		}
-		return length;
+		// Calculate the path distance.
+		return IntStream.range(0, STOPS)
+			.mapToDouble(i ->
+				ADJACENCE[path[i]][path[(i + 1)%STOPS]])
+			.sum();
 	}
 
 	public static void main(String[] args) {
 		final Engine<EnumGene<Integer>, Double> engine = Engine
 			.builder(
-				TravelingSalesman::distance,
+				TravelingSalesman::dist,
 				PermutationChromosome.ofInteger(STOPS))
 			.optimize(Optimize.MINIMUM)
+			.maximalPhenotypeAge(11)
 			.populationSize(500)
 			.alterers(
 				new SwapMutator<>(0.2),
-				new PartiallyMatchedCrossover<>(0.3))
+				new PartiallyMatchedCrossover<>(0.35))
 			.build();
 
-		final Phenotype<EnumGene<Integer>, Double> result = engine.stream()
-			.limit(100)
+		// Create evolution statistics consumer.
+		final EvolutionStatistics<Double, ?>
+			statistics = EvolutionStatistics.ofNumber();
+
+		final Phenotype<EnumGene<Integer>, Double> best =
+			engine.stream()
+			// Truncate the evolution stream after 7 "steady"
+			// generations.
+			.limit(bySteadyFitness(15))
+			// The evolution will stop after maximal 100
+			// generations.
+			.limit(250)
+			// Update the evaluation statistics after
+			// each generation
+			.peek(statistics)
+			// Collect (reduce) the evolution stream to
+			// its best phenotype.
 			.collect(toBestPhenotype());
 
-		System.out.println(result);
+		System.out.println(statistics);
+		System.out.println(best);
 	}
 
 }
