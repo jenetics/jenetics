@@ -39,14 +39,14 @@ public class OnesCounting {
 			// Truncate the evolution stream after 7 "steady"
 			// generations.
 			.limit(bySteadyFitness(7))
-				// The evolution will stop after maximal 100
-				// generations.
+			// The evolution will stop after maximal 100
+			// generations.
 			.limit(100)
-				// Update the evaluation statistics after
-				// each generation
+			// Update the evaluation statistics after
+			// each generation
 			.peek(statistics)
-				// Collect (reduce) the evolution stream to
-				// its best phenotype.
+			// Collect (reduce) the evolution stream to
+			// its best phenotype.
 			.collect(toBestPhenotype());
 
 		System.out.println(statistics);
