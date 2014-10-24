@@ -168,11 +168,21 @@ begin{adjustwidth*}{-4.4cm}{-4.5cm}
 
 \begin_layout Standard
 \align center
+\begin_inset Graphics
+	filename ../resources/graphic/Jenetics.png
+	lyxscale 20
+	height 20mm
 
-\family sans
-\series bold
-\size giant
-JENETICS
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 0.5cm
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -181,7 +191,7 @@ JENETICS
 LatexCommand rule
 offset "0page%"
 width "100page%"
-height "5pt"
+height "10pt"
 
 \end_inset
 
@@ -225,7 +235,7 @@ LIBRARY USER'S MANUAL
 \begin_inset Graphics
 	filename ../resources/graphic/title.png
 	lyxscale 20
-	height 57pheight%
+	height 47pheight%
 
 \end_inset
 
@@ -244,6 +254,13 @@ offset "0page%"
 width "100page%"
 height "2pt"
 
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 0.2cm
 \end_inset
 
 
@@ -1121,17 +1138,12 @@ public class Main {
 
 \begin_layout Plain Layout
 
-    private static Double eval(Genotype<BitGene> gt) {
+    private static Integer eval(Genotype<BitGene> gt) {
 \end_layout
 
 \begin_layout Plain Layout
 
-        Double result = ...;
-\end_layout
-
-\begin_layout Plain Layout
-
-        return result;
+        return ((BitChromosome)gt.getChromosome()).bitCount();
 \end_layout
 
 \begin_layout Plain Layout
@@ -1179,7 +1191,7 @@ public class Main {
 
 \begin_layout Plain Layout
 
-        EvaluationResult<BitGene, Double> result = engine.stream()
+        EvaluationResult<BitGene, Integer> result = engine.stream()
 \end_layout
 
 \begin_layout Plain Layout
