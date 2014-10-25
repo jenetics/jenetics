@@ -25,20 +25,25 @@ import java.util.Comparator;
 import java.util.function.Consumer;
 import java.util.stream.Collector;
 
+import org.jenetics.internal.util.PrimaryConstructor;
+
 /**
  * This <i>consumer</i> class is used for calculating the min and max value
  * according to the given {@code Comparator}.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-19 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-25 $</em>
  */
 public final class MinMax<C> implements Consumer<C> {
 
 	private final Comparator<? super C> _comparator;
+
 	private C _min;
 	private C _max;
+	private long _count = 0L;
 
+	@PrimaryConstructor
 	private MinMax(final Comparator<? super C> comparator) {
 		_comparator = requireNonNull(comparator);
 	}
@@ -52,6 +57,7 @@ public final class MinMax<C> implements Consumer<C> {
 	public void accept(final C object) {
 		_min = min(_comparator, _min, object);
 		_max = max(_comparator, _max, object);
+		++_count;
 	}
 
 	/**
@@ -63,6 +69,7 @@ public final class MinMax<C> implements Consumer<C> {
 	public MinMax<C> combine(final MinMax<C> other) {
 		_min = min(_comparator, _min, other._min);
 		_max = max(_comparator, _max, other._max);
+		_count += other._count;
 
 		return this;
 	}
@@ -87,6 +94,14 @@ public final class MinMax<C> implements Consumer<C> {
 		return _max;
 	}
 
+	/**
+	 * Returns the count of values recorded.
+	 *
+	 * @return the count of recorded values
+	 */
+	public long getCount() {
+		return _count;
+	}
 
 	/* *************************************************************************
 	 *  Some static helper methods.

@@ -622,15 +622,15 @@ Introduction
 \end_layout
 
 \begin_layout Standard
-The
+
 \family sans
 \series bold
 \shape smallcaps
- Jenetics
+Jenetics
 \family default
 \series default
 \shape default
- project is a Java
+ is a library, written in Java
 \begin_inset Foot
 status collapsed
 
@@ -651,7 +651,7 @@ http://www.oracle.com/technetwork/java/javase/downloads/index.html
 
 \end_inset
 
- library which provides an 
+, which provides an 
 \begin_inset CommandInset href
 LatexCommand href
 name "genetic algorithm"
@@ -660,7 +660,7 @@ target "http://en.wikipedia.org/wiki/Genetic_algorithm"
 \end_inset
 
  (GA) implementation.
- The project has no dependencies to other libraries.
+ The project has no runtime dependencies to other libraries.
  For building the library from the sources you only have the JDK 1.8
 \begin_inset Index idx
 status open
@@ -763,7 +763,7 @@ width "90col%"
 special "none"
 height "1in"
 height_special "totalheight"
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset CommandInset line
@@ -825,6 +825,19 @@ height "1pt"
 \end_inset
 
 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Explain stream base evolution engine 
 \end_layout
 
 \end_inset
@@ -1128,12 +1141,7 @@ status open
 
 \begin_layout Plain Layout
 
-public class Main {
-\end_layout
-
-\begin_layout Plain Layout
-
-    // The fitness calculation method.
+public class GA {
 \end_layout
 
 \begin_layout Plain Layout
@@ -1172,12 +1180,16 @@ public class Main {
 
 \begin_layout Plain Layout
 
+\end_layout
+
+\begin_layout Plain Layout
+
         Engine<BitGene, Double> engine = Engine
 \end_layout
 
 \begin_layout Plain Layout
 
-            .builder(Main::eval, gtf)
+            .builder(GA::eval, gtf)
 \end_layout
 
 \begin_layout Plain Layout
@@ -1231,7 +1243,11 @@ name "lis:Simple-GA-setup"
 
 \end_inset
 
-Simple GA setup
+Simple GA (evolution 
+\emph on
+engine
+\emph default
+) setup
 \end_layout
 
 \end_inset

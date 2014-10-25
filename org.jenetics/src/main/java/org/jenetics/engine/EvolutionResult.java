@@ -30,6 +30,7 @@ import java.util.stream.Collector;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.Lazy;
+import org.jenetics.internal.util.PrimaryConstructor;
 
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
@@ -46,7 +47,7 @@ import org.jenetics.stat.MinMax;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-21 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-25 $</em>
  */
 public final class EvolutionResult<
 	G extends Gene<?, G>,
@@ -58,7 +59,8 @@ public final class EvolutionResult<
 
 	private final Optimize _optimize;
 	private final Population<G, C> _population;
-	private final int _generation;
+	private final long _generation;
+	private final long _generationCount;
 
 	private final EvolutionDurations _durations;
 	private final int _killCount;
@@ -68,10 +70,12 @@ public final class EvolutionResult<
 	private final Lazy<Phenotype<G, C>> _best;
 	private final Lazy<Phenotype<G, C>> _worst;
 
+	@PrimaryConstructor
 	private EvolutionResult(
 		final Optimize optimize,
 		final Population<G, C> population,
-		final int generation,
+		final long generation,
+		final long generationCount,
 		final EvolutionDurations durations,
 		final int killCount,
 		final int invalidCount,
@@ -80,6 +84,7 @@ public final class EvolutionResult<
 		_optimize = requireNonNull(optimize);
 		_population = requireNonNull(population);
 		_generation = generation;
+		_generationCount = generationCount;
 		_durations = requireNonNull(durations);
 		_killCount = killCount;
 		_invalidCount = invalidCount;
@@ -120,8 +125,17 @@ public final class EvolutionResult<
 	 *
 	 * @return the current generation
 	 */
-	public int getGeneration() {
+	public long getGeneration() {
 		return _generation;
+	}
+
+	/**
+	 * Return the generation count evaluated so far.
+	 *
+	 * @return the overall generation count
+	 */
+	public long getGenerationCount() {
+		return _generationCount;
 	}
 
 	/**
@@ -219,6 +233,19 @@ public final class EvolutionResult<
 		return _optimize.compare(_best.get(), other._best.get());
 	}
 
+	private EvolutionResult<G, C> withGenerationCount(final long generationCount) {
+		return of(
+			_optimize,
+			_population,
+			_generation,
+			generationCount,
+			_durations,
+			_killCount,
+			_invalidCount,
+			_alterCount
+		);
+	}
+
 	@Override
 	public int hashCode() {
 		return Hash.of(getClass())
@@ -265,7 +292,7 @@ public final class EvolutionResult<
 			MinMax::<EvolutionResult<G, C>>of,
 			MinMax::accept,
 			MinMax::combine,
-			MinMax::getMax
+			mm -> mm.getMax().withGenerationCount(mm.getCount())
 		);
 	}
 
@@ -330,7 +357,8 @@ public final class EvolutionResult<
 	EvolutionResult<G, C> of(
 		final Optimize optimize,
 		final Population<G, C> population,
-		final int generation,
+		final long generation,
+		final long generationCount,
 		final EvolutionDurations durations,
 		final int killCount,
 		final int invalidCount,
@@ -340,6 +368,7 @@ public final class EvolutionResult<
 			optimize,
 			population,
 			generation,
+			generationCount,
 			durations,
 			killCount,
 			invalidCount,

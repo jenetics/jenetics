@@ -28,6 +28,7 @@ import java.util.function.Consumer;
 import org.jenetics.Phenotype;
 import org.jenetics.stat.DoubleMomentStatistics;
 import org.jenetics.stat.IntMomentStatistics;
+import org.jenetics.stat.LongMomentStatistics;
 import org.jenetics.stat.MinMax;
 
 /**
@@ -82,7 +83,7 @@ import org.jenetics.stat.MinMax;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-22 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-25 $</em>
  */
 public abstract class EvolutionStatistics<
 	C extends Comparable<? super C>,
@@ -107,7 +108,7 @@ public abstract class EvolutionStatistics<
 	private final IntMomentStatistics _altered = new IntMomentStatistics();
 
 	// The population statistics values.
-	final IntMomentStatistics _age = new IntMomentStatistics();
+	final LongMomentStatistics _age = new LongMomentStatistics();
 	FitnessStatistics _fitness = null;
 
 	EvolutionStatistics() {
@@ -125,7 +126,7 @@ public abstract class EvolutionStatistics<
 			.forEach(pt -> accept(pt, result.getGeneration()));
 	}
 
-	void accept(final Phenotype<?, C> pt, final int generation) {
+	void accept(final Phenotype<?, C> pt, final long generation) {
 		_age.accept(pt.getAge(generation));
 	}
 
@@ -236,7 +237,7 @@ public abstract class EvolutionStatistics<
 	 *
 	 * @return individual age statistics
 	 */
-	public IntMomentStatistics getPhenotypeAge() {
+	public LongMomentStatistics getPhenotypeAge() {
 		return _age;
 	}
 
@@ -301,6 +302,16 @@ public abstract class EvolutionStatistics<
 		);
 	}
 
+	private static String p(final LongMomentStatistics statistics) {
+		final NumberFormat nf = NumberFormat.getIntegerInstance();
+		return format(
+			"max=%s; mean=%6.6f; var=%6.6f",
+			nf.format(statistics.getMax()),
+			statistics.getMean(),
+			statistics.getVariance()
+		);
+	}
+
 	private static final class Comp<
 		C extends Comparable<? super C>
 	>
@@ -320,7 +331,7 @@ public abstract class EvolutionStatistics<
 		}
 
 		@Override
-		void accept(final Phenotype<?, C> pt, final int generation) {
+		void accept(final Phenotype<?, C> pt, final long generation) {
 			super.accept(pt, generation);
 			_fitness.accept(pt.getFitness());
 		}
@@ -347,7 +358,7 @@ public abstract class EvolutionStatistics<
 		}
 
 		@Override
-		void accept(final Phenotype<?, N> pt, final int generation) {
+		void accept(final Phenotype<?, N> pt, final long generation) {
 			super.accept(pt, generation);
 			_fitness.accept(pt.getFitness().doubleValue());
 		}

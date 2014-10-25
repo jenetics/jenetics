@@ -50,7 +50,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-19 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-25 $</em>
  */
 public abstract class Recombinator<
 	G extends Gene<?, G>,
@@ -66,7 +66,7 @@ public abstract class Recombinator<
 	 *
 	 * @param probability The recombination probability.
 	 * @param order the number of individuals involved in the
-	 *        {@link #recombine(Population, int[], int)} step
+	 *        {@link #recombine(Population, int[], long)} step
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
 	 *         valid range of {@code [0, 1]} or the given {@code order} is
 	 *         smaller than two.
@@ -83,7 +83,7 @@ public abstract class Recombinator<
 
 	/**
 	 * Return the number of individuals involved in the
-	 * {@link #recombine(Population, int[], int)} step.
+	 * {@link #recombine(Population, int[], long)} step.
 	 *
 	 * @return the number of individuals involved in the recombination step.
 	 */
@@ -94,7 +94,7 @@ public abstract class Recombinator<
 	@Override
 	public final int alter(
 		final Population<G, C> population,
-		final int generation
+		final long generation
 	) {
 		final Random random = RandomRegistry.getRandom();
 		final int order = Math.min(_order, population.size());
@@ -125,7 +125,7 @@ public abstract class Recombinator<
 	protected abstract int recombine(
 		final Population<G, C> population,
 		final int[] individuals,
-		final int generation
+		final long generation
 	);
 
 

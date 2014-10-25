@@ -42,7 +42,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-21 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-25 $</em>
  */
 @FunctionalInterface
 public interface Alterer<
@@ -65,7 +65,7 @@ public interface Alterer<
 	 * @throws NullPointerException if the given {@code population} is
 	 *        {@code null}.
 	 */
-	public int alter(final Population<G, C> population, final int generation);
+	public int alter(final Population<G, C> population, final long generation);
 
 	/**
 	 * Returns a composed alterer that first applies the {@code before} alterer

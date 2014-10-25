@@ -32,7 +32,7 @@ import org.jenetics.Population;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-11 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-25 $</em>
  */
 final class EvolutionStart<
 	G extends Gene<?, G>,
@@ -40,11 +40,11 @@ final class EvolutionStart<
 > {
 
 	final Population<G, C> population;
-	final int generation;
+	final long generation;
 
 	EvolutionStart(
 		final Population<G, C> population,
-		final int generation
+		final long generation
 	) {
 		this.population = requireNonNull(population);
 		this.generation = generation;

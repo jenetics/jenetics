@@ -38,7 +38,7 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-15 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-25 $</em>
  */
 final class CompositeAlterer<
 	G extends Gene<?, G>,
@@ -72,7 +72,7 @@ final class CompositeAlterer<
 	}
 
 	@Override
-	public int alter(final Population<G, C> population, final int generation) {
+	public int alter(final Population<G, C> population, final long generation) {
 		return _alterers.stream()
 			.mapToInt(a -> a.alter(population, generation))
 			.sum();

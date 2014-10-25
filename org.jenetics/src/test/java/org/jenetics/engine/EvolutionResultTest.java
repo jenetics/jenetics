@@ -45,7 +45,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-09-22 $</em>
+ * @version <em>$Date: 2014-10-25 $</em>
  */
 public class EvolutionResultTest
 	extends ObjectTester<EvolutionResult<DoubleGene, Double>>
@@ -65,6 +65,7 @@ public class EvolutionResultTest
 				random.nextBoolean() ? Optimize.MAXIMUM : Optimize.MINIMUM,
 				new Population<DoubleGene, Double>(100)
 					.fill(() -> Phenotype.of(gt.newInstance(), ff, 1), 100),
+				random.nextInt(1000),
 				random.nextInt(1000),
 				EvolutionDurations.of(
 					Duration.ofMillis(random.nextInt(1_000_000)),
@@ -98,7 +99,7 @@ public class EvolutionResultTest
 
 		final EvolutionResult<IntegerGene, Integer> maxResult = EvolutionResult.of(
 			Optimize.MAXIMUM, population,
-			0, EvolutionDurations.ZERO, 0, 0, 0
+			0, 0, EvolutionDurations.ZERO, 0, 0, 0
 		);
 
 		Assert.assertEquals(maxResult.getBestFitness().intValue(), length - 1);
@@ -106,7 +107,7 @@ public class EvolutionResultTest
 
 		final EvolutionResult<IntegerGene, Integer> minResult = EvolutionResult.of(
 				Optimize.MINIMUM, population,
-				0, EvolutionDurations.ZERO, 0, 0, 0
+				0, 0, EvolutionDurations.ZERO, 0, 0, 0
 			);
 
 		Assert.assertEquals(minResult.getBestFitness().intValue(), 0);
@@ -139,11 +140,11 @@ public class EvolutionResultTest
 
 		final EvolutionResult<IntegerGene, Integer> smallMaxResult = EvolutionResult.of(
 			Optimize.MAXIMUM, small,
-			0, EvolutionDurations.ZERO, 0, 0, 0
+			0, 0, EvolutionDurations.ZERO, 0, 0, 0
 		);
 		final EvolutionResult<IntegerGene, Integer> bigMaxResult = EvolutionResult.of(
 			Optimize.MAXIMUM, big,
-			0, EvolutionDurations.ZERO, 0, 0, 0
+			0, 0, EvolutionDurations.ZERO, 0, 0, 0
 		);
 
 		Assert.assertTrue(smallMaxResult.compareTo(bigMaxResult) < 0);
@@ -154,11 +155,11 @@ public class EvolutionResultTest
 
 		final EvolutionResult<IntegerGene, Integer> smallMinResult = EvolutionResult.of(
 			Optimize.MINIMUM, small,
-			0, EvolutionDurations.ZERO, 0, 0, 0
+			0, 0, EvolutionDurations.ZERO, 0, 0, 0
 		);
 		final EvolutionResult<IntegerGene, Integer> bigMinResult = EvolutionResult.of(
 			Optimize.MINIMUM, big,
-			0, EvolutionDurations.ZERO, 0, 0, 0
+			0, 0, EvolutionDurations.ZERO, 0, 0, 0
 		);
 
 		Assert.assertTrue(smallMinResult.compareTo(bigMinResult) > 0);
@@ -201,7 +202,7 @@ public class EvolutionResultTest
 		Collections.shuffle(pop, RandomRegistry.getRandom());
 
 
-		return EvolutionResult.of(opt, pop, 0, EvolutionDurations.ZERO, 0, 0, 0);
+		return EvolutionResult.of(opt, pop, 0, 0, EvolutionDurations.ZERO, 0, 0, 0);
 	}
 
 }
