@@ -660,95 +660,11 @@ target "http://en.wikipedia.org/wiki/Genetic_algorithm"
 \end_inset
 
  (GA) implementation.
- The project has no runtime dependencies to other libraries.
- For building the library from the sources you only have the JDK 1.8
-\begin_inset Index idx
-status open
-
-\begin_layout Plain Layout
-JDK
-\end_layout
-
-\end_inset
-
- and Gradle
-\begin_inset Index idx
-status open
-
-\begin_layout Plain Layout
-Gradle
-\end_layout
-
-\end_inset
-
-
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-The used Gradle version is 2.1 and it is downloaded automatically if you
- build the library with the wrapper script
-\family typewriter
-./gradlew
-\family default
-:
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-http://www.gradle.org/
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
- to be installed, all other dependencies are available in the package which
- you can download from 
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-https://sourceforge.net/projects/jenetics/files/jenetics/
-\end_layout
-
-\end_inset
-
- or 
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-https://bitbucket.org/fwilhelm/jenetics/downloads
-\end_layout
-
-\end_inset
-
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Download
-\end_layout
-
-\end_inset
-
-.
- For additional informations revere to the build instructions at section
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "sec:Build"
-
-\end_inset
-
-.
+ It has no runtime dependencies to other libraries, except the Java 8 runtime.
+ Since the library is available on maven central repository, it can be easily
+ integrated into existing projects.
+ The clear structuring of the library allows.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -763,7 +679,7 @@ width "90col%"
 special "none"
 height "1in"
 height_special "totalheight"
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset CommandInset line
@@ -780,11 +696,11 @@ height "1pt"
 \begin_layout Plain Layout
 
 \family sans
-This manual is not an introduction or a tutorial for genetic algorithms
- in general.
+This manual is not an introduction or a tutorial for genetic and/or evolutionary
+ algorithms in general.
  It is assumed that the reader has a knowledge about the structure and the
  functionality of genetic algorithms.
- A good GA introduction can be found in
+ Good introductions to GAs can be found in
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Sivanandam2010"
@@ -829,7 +745,262 @@ height "1pt"
 
 \end_inset
 
+ 
+\end_layout
 
+\begin_layout Standard
+To give you a first impression of the library, we will start with a simple
+ 
+\begin_inset Quotes ald
+\end_inset
+
+Hello World
+\begin_inset Quotes ard
+\end_inset
+
+ program.
+\begin_inset listings
+lstparams "extendedchars=true,language=Java,numbers=left,stepnumber=1,tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+import org.jenetics.BitChromosome; 
+\end_layout
+
+\begin_layout Plain Layout
+
+import org.jenetics.BitGene;
+\end_layout
+
+\begin_layout Plain Layout
+
+import org.jenetics.Genotype; 
+\end_layout
+
+\begin_layout Plain Layout
+
+import org.jenetics.engine.Engine;
+\end_layout
+
+\begin_layout Plain Layout
+
+import org.jenetics.engine.EvolutionResult
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+public class HelloWorld {
+\end_layout
+
+\begin_layout Plain Layout
+
+    // 2.) Definition of the fitness function.
+\end_layout
+
+\begin_layout Plain Layout
+
+    private static Integer eval(Genotype<BitGene> gt) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        return ((BitChromosome)gt.getChromosome()).bitCount();
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    public static void main(String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        // 1.) Define the genotype (factory) suitable 
+\end_layout
+
+\begin_layout Plain Layout
+
+        //     for your problem.
+\end_layout
+
+\begin_layout Plain Layout
+
+        Factory<Genotype<BitGene>> gtf = 
+\end_layout
+
+\begin_layout Plain Layout
+
+            Genotype.of(BitChromosome.of(10, 0.5))
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        // 3.) Create the execution environment.
+\end_layout
+
+\begin_layout Plain Layout
+
+        Engine<BitGene, Double> engine = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+            .builder(HelloWorld::eval, gtf)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .build();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        // 4.) Start the execution (evolution) and 
+\end_layout
+
+\begin_layout Plain Layout
+
+        //     collect the result.
+\end_layout
+
+\begin_layout Plain Layout
+
+        EvaluationResult<BitGene, Integer> result = engine.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .limit(100)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .collect(EvolutionResult.toBestEvaluationResult())
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+        // Print the result.
+\end_layout
+
+\begin_layout Plain Layout
+
+        System.out.println("Hello World:
+\backslash
+n" + result);
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Hello-World-GA"
+
+\end_inset
+
+
+\begin_inset Quotes ald
+\end_inset
+
+Hello World
+\begin_inset Quotes ard
+\end_inset
+
+ GA
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Now lets have a closer look at listing 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "lis:Hello-World-GA"
+
+\end_inset
+
+: 
+\end_layout
+
+\begin_layout Enumerate
+The probably most challenging part is to transform the problem domain into
+ a appropriate genotype (factory) representation.
+ Have a look to section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "par:Genotype"
+
+\end_inset
+
+ for detailed description of the genotype's structure.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Once this is done, the fitness function which should be maximized, can be
+ defined.
+ Thanks to the new language features introduced in Java 8, we simply write
+ a private static method, which takes the genotype we defined and calculates
+ it's fitness value.
+ 
+\end_layout
+
+\begin_layout Enumerate
+The execution engine defines the selectors and alterers which are used when
+ creating the evolution steps.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Now we can create a new evolution stream from the engine.
+ (You should make yourself familiar with the Java 8 stream classes.) Since
+ the created evolution stream is unlimited, you have to limit it.
+ In our example we will truncate the evolution stream after 100 generations.
+ 
+\end_layout
+
+\begin_layout Standard
+-------------------------
 \end_layout
 
 \begin_layout Standard
