@@ -661,8 +661,21 @@ target "http://en.wikipedia.org/wiki/Genetic_algorithm"
 
  (GA) implementation.
  It has no runtime dependencies to other libraries, except the Java 8 runtime.
- Since the library is available on maven central repository, it can be easily
- integrated into existing projects.
+ Since the library is available on maven central repository
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+If you are using Gradle, add the following dependency string: 
+\family typewriter
+'org.bitbucket.fwilhelm:org.jenetics:3.0.0'
+\family default
+.
+\end_layout
+
+\end_inset
+
+, it can be easily integrated into existing projects.
  The clear structuring of the library allows.
  
 \end_layout
@@ -952,6 +965,10 @@ Hello World
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 Now lets have a closer look at listing 
 \begin_inset CommandInset ref
 LatexCommand ref
