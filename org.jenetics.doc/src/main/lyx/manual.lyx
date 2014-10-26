@@ -158,7 +158,7 @@ pagecolor{covercolor}
 
 
 \backslash
-begin{adjustwidth*}{-4.4cm}{-4.5cm}
+begin{adjustwidth*}{-4.5cm}{-4.5cm}
 \end_layout
 
 \end_inset
@@ -170,7 +170,7 @@ begin{adjustwidth*}{-4.4cm}{-4.5cm}
 \align center
 \begin_inset Graphics
 	filename ../resources/graphic/Jenetics.png
-	lyxscale 20
+	lyxscale 60
 	height 20mm
 
 \end_inset
@@ -234,7 +234,7 @@ LIBRARY USER'S MANUAL
 \align center
 \begin_inset Graphics
 	filename ../resources/graphic/title.png
-	lyxscale 20
+	lyxscale 50
 	height 47pheight%
 
 \end_inset
@@ -666,7 +666,7 @@ target "http://en.wikipedia.org/wiki/Genetic_algorithm"
 status collapsed
 
 \begin_layout Plain Layout
-If you are using Gradle, add the following dependency string: 
+If you are using Gradle, you can use the following dependency string: 
 \family typewriter
 'org.bitbucket.fwilhelm:org.jenetics:3.0.0'
 \family default
@@ -676,8 +676,8 @@ If you are using Gradle, add the following dependency string:
 \end_inset
 
 , it can be easily integrated into existing projects.
- The clear structuring of the library allows.
- 
+ The clear structuring of the different parts of an GA allows an easy adaption
+ for different problem domains.
 \end_layout
 
 \begin_layout Standard
@@ -762,7 +762,7 @@ height "1pt"
 \end_layout
 
 \begin_layout Standard
-To give you a first impression of the library, we will start with a simple
+To give a first impression of the library usage, lets start with a simple
  
 \begin_inset Quotes ald
 \end_inset
@@ -799,7 +799,7 @@ import org.jenetics.engine.Engine;
 
 \begin_layout Plain Layout
 
-import org.jenetics.engine.EvolutionResult
+import org.jenetics.engine.EvolutionResult;
 \end_layout
 
 \begin_layout Plain Layout
@@ -857,7 +857,7 @@ public class HelloWorld {
 
 \begin_layout Plain Layout
 
-            Genotype.of(BitChromosome.of(10, 0.5))
+            Genotype.of(BitChromosome.of(10, 0.5));
 \end_layout
 
 \begin_layout Plain Layout
@@ -871,7 +871,7 @@ public class HelloWorld {
 
 \begin_layout Plain Layout
 
-        Engine<BitGene, Double> engine = Engine
+        Engine<BitGene, Integer> engine = Engine
 \end_layout
 
 \begin_layout Plain Layout
@@ -910,17 +910,12 @@ public class HelloWorld {
 
 \begin_layout Plain Layout
 
-            .collect(EvolutionResult.toBestEvaluationResult())
+            .collect(EvolutionResult.toBestEvaluationResult());
 \end_layout
 
 \begin_layout Plain Layout
 
  
-\end_layout
-
-\begin_layout Plain Layout
-
-        // Print the result.
 \end_layout
 
 \begin_layout Plain Layout
@@ -982,30 +977,44 @@ reference "lis:Hello-World-GA"
 \begin_layout Enumerate
 The probably most challenging part is to transform the problem domain into
  a appropriate genotype (factory) representation.
- Have a look to section 
+ For detailed description of the genotype's structure refer section 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "par:Genotype"
 
 \end_inset
 
- for detailed description of the genotype's structure.
+.
  
 \end_layout
 
 \begin_layout Enumerate
 Once this is done, the fitness function which should be maximized, can be
  defined.
- Thanks to the new language features introduced in Java 8, we simply write
+ Utilizing the new language features introduced in Java 8, we simply write
  a private static method, which takes the genotype we defined and calculates
  it's fitness value.
- 
+ A reference to this method is then used when creating the 
+\family typewriter
+Engine
+\family default
+ builder.
 \end_layout
 
 \begin_layout Enumerate
-The execution engine defines the selectors and alterers which are used when
- creating the evolution steps.
+In the third step the 
+\emph on
+evolution
+\emph default
  
+\family typewriter
+Engine
+\family default
+ has to be created.
+ The evolution Engine is responsible for applying the evolution steps on
+ a given population.
+ The engine is created via a builder where the selectors and alterers to
+ be used.
 \end_layout
 
 \begin_layout Enumerate
@@ -1017,12 +1026,50 @@ Now we can create a new evolution stream from the engine.
 \end_layout
 
 \begin_layout Standard
--------------------------
+As the example shows, 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ makes heavy use of the 
+\family typewriter
+Stream
+\family default
+ and 
+\family typewriter
+Collector
+\family default
+ classes of Java 8.
+ If this part of the Java API is new to you, it is recommended to make yourself
+ familiar with it.
+\end_layout
+
+\begin_layout Paragraph
+Packages
+\end_layout
+
+\begin_layout Itemize
+org.jenetics
+\end_layout
+
+\begin_layout Itemize
+org.jenetics.engine
+\end_layout
+
+\begin_layout Itemize
+org.jenetics.util.
+\end_layout
+
+\begin_layout Itemize
+org.jenetics.stat
 \end_layout
 
 \begin_layout Standard
 \begin_inset Note Note
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Explain stream base evolution engine 
@@ -1363,7 +1410,7 @@ public class GA {
 
 \begin_layout Plain Layout
 
-            Genotype.of(BitChromosome.of(10, 0.5))
+            Genotype.of(BitChromosome.of(10, 0.5));
 \end_layout
 
 \begin_layout Plain Layout
@@ -1401,7 +1448,7 @@ public class GA {
 
 \begin_layout Plain Layout
 
-            .collect(toBestEvaluationResult())
+            .collect(toBestEvaluationResult());
 \end_layout
 
 \begin_layout Plain Layout
@@ -1607,7 +1654,7 @@ public static void main(String[] args) {
 
 \begin_layout Plain Layout
 
-        .collect(toBestPhenotype())
+        .collect(toBestPhenotype());
 \end_layout
 
 \begin_layout Plain Layout
