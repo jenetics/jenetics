@@ -75,7 +75,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-09-17 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-10-28 $</em>
  */
 @XmlJavaTypeAdapter(EnumGene.Model.Adapter.class)
 public final class EnumGene<A>
@@ -203,7 +203,7 @@ public final class EnumGene<A>
 
 	static <T> Supplier<EnumGene<T>> Gene(final ISeq<? extends T> validAlleles) {
 		final IntRef index = new IntRef();
-		return () -> new EnumGene<T>(index.value++, validAlleles);
+		return () -> new EnumGene<>(index.value++, validAlleles);
 	}
 
 	/**
@@ -240,7 +240,7 @@ public final class EnumGene<A>
 		final int alleleIndex,
 		final A... validAlleles
 	) {
-		return new EnumGene<A>(alleleIndex, ISeq.of(validAlleles));
+		return new EnumGene<>(alleleIndex, ISeq.of(validAlleles));
 	}
 
 	/**

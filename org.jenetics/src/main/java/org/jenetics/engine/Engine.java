@@ -104,7 +104,7 @@ import org.jenetics.util.Factory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-25 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-28 $</em>
  */
 public final class Engine<
 	G extends Gene<?, G>,
@@ -416,7 +416,7 @@ public final class Engine<
 		final Stream<Genotype<G>> stream = Stream.concat(
 			genotypes.stream(),
 			genotypes.stream().findFirst()
-				.map(gt -> gt.instances())
+				.map(Factory::instances)
 				.orElse(_genotypeFactory.instances())
 		);
 
@@ -599,7 +599,7 @@ public final class Engine<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 3.0
-	 * @version 3.0 &mdash; <em>$Date: 2014-10-25 $</em>
+	 * @version 3.0 &mdash; <em>$Date: 2014-10-28 $</em>
 	 */
 	public static final class Builder<
 		G extends Gene<?, G>,
@@ -617,7 +617,7 @@ public final class Engine<
 		private Selector<G, C> _offspringSelector = new TournamentSelector<>(3);
 		private Alterer<G, C> _alterer = Alterer.of(
 			new SinglePointCrossover<G, C>(0.2),
-			new Mutator<G, C>(0.15)
+			new Mutator<>(0.15)
 		);
 		private Optimize _optimize = Optimize.MAXIMUM;
 		private double _offspringFraction = 0.6;
