@@ -1047,41 +1047,8 @@ Collector
  familiar with it.
 \end_layout
 
-\begin_layout Paragraph
-Packages
-\end_layout
-
-\begin_layout Itemize
-org.jenetics
-\end_layout
-
-\begin_layout Itemize
-org.jenetics.engine
-\end_layout
-
-\begin_layout Itemize
-org.jenetics.util.
-\end_layout
-
-\begin_layout Itemize
-org.jenetics.stat
-\end_layout
-
 \begin_layout Standard
-\begin_inset Note Note
-status collapsed
-
-\begin_layout Plain Layout
-Explain stream base evolution engine 
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The order of the single execution steps of genetic algorithm may slightly
+The order of the single execution steps of an genetic algorithm may slightly
  differ from implementation to implementation.
  Listing
 \begin_inset CommandInset ref
@@ -1090,7 +1057,7 @@ reference "lis:Genetic-algorithm"
 
 \end_inset
 
- shows the pseudo-code of the
+ shows the (imperative) pseudo-code of the
 \family sans
 \series bold
 \shape smallcaps
@@ -1179,7 +1146,7 @@ name "lis:Genetic-algorithm"
 
 \end_inset
 
-Genetic algorithm
+Genetic algorithm steps, the library is using.
 \begin_inset Index idx
 status collapsed
 
@@ -1199,12 +1166,10 @@ Genetic algorithm
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 Line (1) creates the initial population and line (2) calculates the fitness
  value of the individuals.
+ The initial population is created implicitly before the first evolution
+ step is performed.
  Line (4) increases the generation number and line (5) and (6) selects the
  survivor and the offspring population.
  The offspring/survivor fraction is determined by the
@@ -1249,7 +1214,16 @@ name "fig:Structure-diagram"
 
 \end_inset
 
-Structure diagram
+Class diagram of the 
+\emph on
+structural
+\emph default
+ GA classes.
+ This classes are located in the 
+\family typewriter
+org.jenetics
+\family default
+ package.
 \begin_inset Index idx
 status collapsed
 
@@ -1284,7 +1258,12 @@ reference "fig:Structure-diagram"
 
 \end_inset
 
- shows the class-diagram of the main structures of the GA.
+ shows the class-diagram of the main structures of the library.
+ All structural GA classes are located in the 
+\family typewriter
+org.jenetics
+\family default
+ package.
  The
 \family typewriter
  Gene
@@ -1325,6 +1304,93 @@ s.
  Population
 \family default
 .
+\end_layout
+
+\begin_layout Standard
+The dynamic classes, which perform the actual evolution, are located in
+ the 
+\family typewriter
+org.\SpecialChar \-
+jenetics.\SpecialChar \-
+engine
+\family default
+ package.
+ The 
+\emph on
+evolution stream
+\emph default
+ is the base metaphor for performing an GA.
+ On the evolution stream you can define the termination predicate and than
+ collect the final evolution result.
+ This decouples the static data structure from the dynamic evolution part.
+ The evolution stream is also very flexible, when it comes to collecting
+ the final result.
+ The 
+\family typewriter
+EvolutionResult
+\family default
+ class has several predefined collectors, but you are free to create your
+ own one, which can be seamlessly 
+\emph on
+plugged
+\emph default
+ into the existing stream.
+ 
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/StructureClassDiagram.svg
+	lyxscale 70
+	width 85text%
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Engine-diagram"
+
+\end_inset
+
+Class diagram of the 
+\emph on
+dynamic
+\emph default
+ GA classes.
+ This classes are located in the 
+\family typewriter
+org.jenetics.engine
+\family default
+ package.
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Class structure
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ Figure ...
 \end_layout
 
 \begin_layout Paragraph
@@ -2354,6 +2420,18 @@ reference "sub:Genes"
 \end_inset
 
  for how to implement your own gene types.
+\end_layout
+
+\begin_layout Paragraph
+EvolutionStream
+\end_layout
+
+\begin_layout Paragraph
+Engine
+\end_layout
+
+\begin_layout Paragraph
+EvolutionResult
 \end_layout
 
 \begin_layout Section
