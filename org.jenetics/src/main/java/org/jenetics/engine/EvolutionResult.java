@@ -47,7 +47,7 @@ import org.jenetics.stat.MinMax;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-25 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-28 $</em>
  */
 public final class EvolutionResult<
 	G extends Gene<?, G>,
@@ -60,7 +60,7 @@ public final class EvolutionResult<
 	private final Optimize _optimize;
 	private final Population<G, C> _population;
 	private final long _generation;
-	private final long _generationCount;
+	private final long _totalGenerations;
 
 	private final EvolutionDurations _durations;
 	private final int _killCount;
@@ -75,7 +75,7 @@ public final class EvolutionResult<
 		final Optimize optimize,
 		final Population<G, C> population,
 		final long generation,
-		final long generationCount,
+		final long totalGenerations,
 		final EvolutionDurations durations,
 		final int killCount,
 		final int invalidCount,
@@ -84,7 +84,7 @@ public final class EvolutionResult<
 		_optimize = requireNonNull(optimize);
 		_population = requireNonNull(population);
 		_generation = generation;
-		_generationCount = generationCount;
+		_totalGenerations = totalGenerations;
 		_durations = requireNonNull(durations);
 		_killCount = killCount;
 		_invalidCount = invalidCount;
@@ -132,10 +132,10 @@ public final class EvolutionResult<
 	/**
 	 * Return the generation count evaluated so far.
 	 *
-	 * @return the overall generation count
+	 * @return the total number of generations evaluated so far
 	 */
-	public long getGenerationCount() {
-		return _generationCount;
+	public long getTotalGenerations() {
+		return _totalGenerations;
 	}
 
 	/**
@@ -233,12 +233,12 @@ public final class EvolutionResult<
 		return _optimize.compare(_best.get(), other._best.get());
 	}
 
-	private EvolutionResult<G, C> withGenerationCount(final long generationCount) {
+	private EvolutionResult<G, C> withTotalGenerations(final long total) {
 		return of(
 			_optimize,
 			_population,
 			_generation,
-			generationCount,
+			total,
 			_durations,
 			_killCount,
 			_invalidCount,
@@ -250,24 +250,27 @@ public final class EvolutionResult<
 	public int hashCode() {
 		return Hash.of(getClass())
 			.and(_optimize)
+			.and(_population)
+			.and(_generation)
+			.and(_totalGenerations)
 			.and(_durations)
 			.and(_killCount)
 			.and(_invalidCount)
 			.and(_alterCount)
-			.and(_population)
-			.and(_generation).value();
+			.and(getBestFitness()).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return Equality.of(this, obj).test(result ->
 			eq(_optimize, result._optimize) &&
+			eq(_population, result._population) &&
+			eq(_generation, result._generation) &&
+			eq(_totalGenerations, result._totalGenerations) &&
 			eq(_durations, result._durations) &&
 			eq(_killCount, result._killCount) &&
 			eq(_invalidCount, result._invalidCount) &&
 			eq(_alterCount, result._alterCount) &&
-			eq(_population, result._population) &&
-			eq(_generation, result._generation) &&
 			eq(getBestFitness(), result.getBestFitness())
 		);
 	}
@@ -292,7 +295,7 @@ public final class EvolutionResult<
 			MinMax::<EvolutionResult<G, C>>of,
 			MinMax::accept,
 			MinMax::combine,
-			mm -> mm.getMax().withGenerationCount(mm.getCount())
+			mm -> mm.getMax().withTotalGenerations(mm.getCount())
 		);
 	}
 
@@ -342,6 +345,7 @@ public final class EvolutionResult<
 	 * @param optimize the optimization strategy used
 	 * @param population the population after the evolution step
 	 * @param generation the current generation
+	 * @param totalGenerations the overall number of generations
 	 * @param durations the timing (meta) information
 	 * @param killCount the number of individuals which has been killed
 	 * @param invalidCount the number of individuals which has been removed as
@@ -358,7 +362,7 @@ public final class EvolutionResult<
 		final Optimize optimize,
 		final Population<G, C> population,
 		final long generation,
-		final long generationCount,
+		final long totalGenerations,
 		final EvolutionDurations durations,
 		final int killCount,
 		final int invalidCount,
@@ -368,7 +372,46 @@ public final class EvolutionResult<
 			optimize,
 			population,
 			generation,
-			generationCount,
+			totalGenerations,
+			durations,
+			killCount,
+			invalidCount,
+			alterCount
+		);
+	}
+
+	/**
+	 * Return an new {@code EvolutionResult} object with the given values.
+	 *
+	 * @param optimize the optimization strategy used
+	 * @param population the population after the evolution step
+	 * @param generation the current generation
+	 * @param durations the timing (meta) information
+	 * @param killCount the number of individuals which has been killed
+	 * @param invalidCount the number of individuals which has been removed as
+	 *        invalid
+	 * @param alterCount the number of individuals which has been altered
+	 * @param <G> the gene type
+	 * @param <C> the fitness type
+	 * @return an new evolution result object
+	 * @throws java.lang.NullPointerException if one of the parameters is
+	 *         {@code null}
+	 */
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	EvolutionResult<G, C> of(
+		final Optimize optimize,
+		final Population<G, C> population,
+		final long generation,
+		final EvolutionDurations durations,
+		final int killCount,
+		final int invalidCount,
+		final int alterCount
+	) {
+		return new EvolutionResult<>(
+			optimize,
+			population,
+			generation,
+			generation,
 			durations,
 			killCount,
 			invalidCount,

@@ -280,7 +280,6 @@ public final class Engine<
 			_optimize,
 			result.result,
 			start.generation,
-			start.generation,
 			durations,
 			killCount,
 			invalidCount,

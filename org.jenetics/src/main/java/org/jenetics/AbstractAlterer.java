@@ -20,17 +20,17 @@
 package org.jenetics;
 
 import static org.jenetics.internal.util.Equality.eq;
-import static org.jenetics.internal.util.require.probability;
 
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
+import org.jenetics.internal.util.require;
 
 /**
  * Abstract implementation of the alterer interface.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-05 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-28 $</em>
  */
 public abstract class AbstractAlterer<
 	G extends Gene<?, G>,
@@ -51,8 +51,9 @@ public abstract class AbstractAlterer<
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
 	 *         valid range of {@code [0, 1]}.
 	 */
+	// Primary constructor
 	protected AbstractAlterer(final double probability) {
-		_probability = probability(probability);
+		_probability = require.probability(probability);
 	}
 
 	/**
