@@ -19,66 +19,58 @@
  */
 package org.jenetics.example;
 
-import java.util.function.Function;
+import static org.jenetics.engine.EvolutionResult.toBestPhenotype;
+import static org.jenetics.engine.limit.bySteadyFitness;
 
 import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;
-import org.jenetics.Chromosome;
-import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.Mutator;
-import org.jenetics.NumberStatistics;
-import org.jenetics.Optimize;
+import org.jenetics.Phenotype;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
-import org.jenetics.util.Factory;
-
-final class OneCounter
-	implements Function<Genotype<BitGene>, Integer>
-{
-	@Override
-	public Integer apply(final Genotype<BitGene> genotype) {
-		return ((BitChromosome)genotype.getChromosome()).bitCount();
-	}
-}
+import org.jenetics.engine.Engine;
+import org.jenetics.engine.EvolutionStatistics;
 
 public class OnesCounting {
+
+	// This method calculates the fitness for a given genotype.
+	private static Integer count(final Genotype<BitGene> gt) {
+		return ((BitChromosome)gt.getChromosome()).bitCount();
+	}
+
 	public static void main(String[] args) {
-		Factory<Genotype<BitGene>> gtf = Genotype.of(
-			BitChromosome.of(20, 0.15)
-		);
-		final Function<Genotype<BitGene>, Integer> ff = genotype -> {
-			final Chromosome<BitGene> chromosome = genotype.getChromosome();
+		// Configure and build the evolution engine.
+		final Engine<BitGene, Integer> engine = Engine
+			.builder(
+				OnesCounting::count,
+				BitChromosome.of(20, 0.15))
+			.populationSize(500)
+			.selector(new RouletteWheelSelector<>())
+			.alterers(
+				new Mutator<>(0.55),
+				new SinglePointCrossover<>(0.06))
+			.build();
 
-			int count = 0;
-			if (chromosome instanceof BitChromosome) {
-				count = ((BitChromosome)chromosome).bitCount();
-			} else {
-				for (BitGene gene : genotype.getChromosome()) {
-					if (gene.getBit()) {
-						++count;
-					}
-				}
-			}
+		// Create evolution statistics consumer.
+		final EvolutionStatistics<Integer, ?>
+			statistics = EvolutionStatistics.ofNumber();
 
-			return count;
-		};
+		final Phenotype<BitGene, Integer> best = engine.stream()
+			// Truncate the evolution stream after 7 "steady"
+			// generations.
+			.limit(bySteadyFitness(7))
+				// The evolution will stop after maximal 100
+				// generations.
+			.limit(100)
+				// Update the evaluation statistics after
+				// each generation
+			.peek(statistics)
+				// Collect (reduce) the evolution stream to
+				// its best phenotype.
+			.collect(toBestPhenotype());
 
-		GeneticAlgorithm<BitGene, Integer> ga = new GeneticAlgorithm<>(
-			gtf, ff, Optimize.MAXIMUM
-		);
-
-		ga.setStatisticsCalculator(new NumberStatistics.Calculator<>());
-		ga.setPopulationSize(500);
-		ga.setSelectors(new RouletteWheelSelector<>());
-		ga.setAlterers(
-			new Mutator<BitGene, Integer>(0.55),
-			new SinglePointCrossover<BitGene, Integer>(0.06)
-		);
-
-		ga.setup();
-		ga.evolve(100);
-		System.out.println(ga.getBestStatistics());
-		System.out.println(ga.getBestPhenotype());
+		System.out.println(statistics);
+		System.out.println(best);
 	}
 }

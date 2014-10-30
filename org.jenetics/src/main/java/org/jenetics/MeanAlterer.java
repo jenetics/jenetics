@@ -39,7 +39,7 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-06-30 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-25 $</em>
  */
 public final class MeanAlterer<
 	G extends Gene<?, G> & Mean<G>,
@@ -70,7 +70,7 @@ public final class MeanAlterer<
 	protected int recombine(
 		final Population<G, C> population,
 		final int[] individuals,
-		final int generation
+		final long generation
 	) {
 		final Random random = RandomRegistry.getRandom();
 

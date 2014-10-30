@@ -19,10 +19,12 @@
  */
 package org.jenetics;
 
+import org.jenetics.util.ISeq;
+
 /**
  * The Alterer is responsible for the changing/recombining the Population.
  * Alterers can be chained by appending a list of alterers with the
- * {@link GeneticAlgorithm#setAlterers(Alterer...)} method.
+ * {@link org.jenetics.engine.Engine.Builder#alterers(Alterer, Alterer[])} method.
  *
  * [code]
  * final GeneticAlgorithm&lt;DoubleGene, Double&gt; ga = ...
@@ -40,7 +42,7 @@ package org.jenetics;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-04 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-25 $</em>
  */
 @FunctionalInterface
 public interface Alterer<
@@ -63,6 +65,47 @@ public interface Alterer<
 	 * @throws NullPointerException if the given {@code population} is
 	 *        {@code null}.
 	 */
-	public int alter(final Population<G, C> population, final int generation);
+	public int alter(final Population<G, C> population, final long generation);
+
+	/**
+	 * Returns a composed alterer that first applies the {@code before} alterer
+	 * to its input, and then applies {@code this} alterer to the result.
+	 *
+	 * @param before the alterer to apply first
+	 * @return the new composed alterer
+	 */
+	public default Alterer<G, C> compose(final Alterer<G, C> before) {
+		return of(before, this);
+	}
+
+	/**
+	 * Returns a composed alterer that applies the {@code this} alterer
+	 * to its input, and then applies the {@code after} alterer to the result.
+	 *
+	 * @param after the alterer to apply first
+	 * @return the new composed alterer
+	 */
+	public default Alterer<G, C> andThen(final Alterer<G, C> after) {
+		return of(this, after);
+	}
+
+	/**
+	 * Combine the given alterers.
+	 *
+	 * @param <G> the gene type
+	 * @param <C> the fitness function result type
+	 * @param alterers the alterers to combine.
+	 * @return a new alterer which consists of the given one
+	 * @throws NullPointerException if one of the alterers is {@code null}.
+	 */
+	@SafeVarargs
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Alterer<G, C> of(final Alterer<G, C>... alterers) {
+		return alterers.length == 0 ?
+			(p, g) -> 0 :
+			alterers.length == 1 ?
+				alterers[0] :
+				new CompositeAlterer<G, C>(ISeq.of(alterers));
+	}
 
 }

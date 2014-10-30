@@ -44,11 +44,19 @@ import org.jenetics.internal.math.DoubleAdder;
  *         DoubleMomentStatistics::combine
  *     );
  * [/code]
+ *
+ * For a non double stream, you can use a collector:
+ * [code]
+ * final Stream&lt;SomeObject&gt; stream = ...
+ * final DoubleMomentStatistics statistics = stream
+ *     .collect(toDoubleMomentStatistics(v -&gt; v.doubleValue()));
+ * [/code]
+ *
  * <p>
  * <b>Implementation note:</b>
  * <i>This implementation is not thread safe. However, it is safe to use
- * {@link #collector(ToDoubleFunction)}  on a parallel stream, because the
- * parallel implementation of
+ * {@link #toDoubleMomentStatistics(ToDoubleFunction)}  on a parallel stream,
+ * because the parallel implementation of
  * {@link java.util.stream.Stream#collect Stream.collect()}
  * provides the necessary partitioning, isolation, and merging of results for
  * safe and efficient parallel execution.</i>
@@ -60,7 +68,7 @@ import org.jenetics.internal.math.DoubleAdder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-05-07 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-03 $</em>
  */
 public class DoubleMomentStatistics
 	extends MomentStatistics
@@ -96,14 +104,17 @@ public class DoubleMomentStatistics
 	 *
 	 * @param other the other {@code DoubleMoments} statistics to combine with
 	 *        {@code this} one.
+	 * @return {@code this} statistics object
 	 * @throws java.lang.NullPointerException if the other statistical summary
 	 *         is {@code null}.
 	 */
-	public void combine(final DoubleMomentStatistics other) {
+	public DoubleMomentStatistics combine(final DoubleMomentStatistics other) {
 		super.combine(other);
 		_min = min(_min, other._min);
 		_max = max(_max, other._max);
 		_sum.add(other._sum);
+
+		return this;
 	}
 
 	/**
@@ -139,7 +150,7 @@ public class DoubleMomentStatistics
 	@Override
 	public String toString() {
 		return String.format(
-			"Summary[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s, s2=%s, S=%s, K=%s]",
+			"Summary[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s, s²=%s, S=%s, K=%s]",
 			getCount(), _min, _max, _sum.doubleValue(),
 			getMean(), getVariance(), getSkewness(), getKurtosis()
 		);
@@ -153,7 +164,7 @@ public class DoubleMomentStatistics
 	 * [code]
 	 * final Stream&lt;SomeObject&gt; stream = ...
 	 * final DoubleMomentStatistics statistics = stream
-	 *     .collect(DoubleMomentStatistics.collector(v -&gt; v.doubleValue()));
+	 *     .collect(toDoubleMomentStatistics(v -&gt; v.doubleValue()));
 	 * [/code]
 	 *
 	 * @param mapper a mapping function to apply to each element
@@ -163,12 +174,12 @@ public class DoubleMomentStatistics
 	 *         {@code null}
 	 */
 	public static <T> Collector<T, ?, DoubleMomentStatistics>
-	collector(final ToDoubleFunction<? super T> mapper) {
+	toDoubleMomentStatistics(final ToDoubleFunction<? super T> mapper) {
 		requireNonNull(mapper);
 		return Collector.of(
 			DoubleMomentStatistics::new,
 			(r, t) -> r.accept(mapper.applyAsDouble(t)),
-			(a, b) -> {a.combine(b); return a;}
+			DoubleMomentStatistics::combine
 		);
 	}
 

@@ -37,7 +37,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-27 $</em>
  */
 public final class ExponentialScaler
 	implements
@@ -82,7 +82,7 @@ public final class ExponentialScaler
 	 * @param c <pre>fitness = (1 * fitness + 0) ^ <strong>c</strong></pre>
 	 */
 	public ExponentialScaler(final double c) {
-		this(0.0, c);
+		this(1.0, 0.0, c);
 	}
 
 

@@ -13,11 +13,14 @@
 \fi % end if pdflatex is used
 
 \usepackage{listings}
+%\usepackage{listingsutf8}
 \usepackage{color}
 \usepackage{url}
 \usepackage[usenames,dvipsnames]{xcolor}
 \usepackage{cclicenses}
 \usepackage{multicol}
+\usepackage{changepage}
+\usepackage{newunicodechar}
 
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.3,0.3,0.3}
@@ -31,7 +34,10 @@
 %\definecolor{covercolor}{RGB}{202,232,255}
 %\definecolor{covercolor}{rgb}{0.00,0.27,0.40}
 \definecolor{covercolor}{rgb}{0.34,0.55,0.66}
-\lstset{ %
+
+\newunicodechar{Σ}{\lstsum}
+
+\lstset{
   language=java,
   basicstyle=\footnotesize,
   numbers=left,
@@ -59,6 +65,7 @@
   morekeywords={*,...,public,extends}
 }
 \end_preamble
+\options utf8,utf8x
 \use_default_options true
 \begin_modules
 theorems-ams
@@ -147,6 +154,32 @@ status open
 pagecolor{covercolor}
 \end_layout
 
+\begin_layout Plain Layout
+
+
+\backslash
+begin{adjustwidth*}{-4.5cm}{-4.5cm}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/Jenetics.png
+	lyxscale 60
+	height 20mm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 0.5cm
 \end_inset
 
 
@@ -158,7 +191,7 @@ pagecolor{covercolor}
 LatexCommand rule
 offset "0page%"
 width "100page%"
-height "5pt"
+height "10pt"
 
 \end_inset
 
@@ -166,44 +199,25 @@ height "5pt"
 \end_layout
 
 \begin_layout Standard
-\align center
+\begin_inset VSpace 0.3cm
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align right
 
 \family sans
-\series bold
-\shape slanted
-\size giant
-\noun on
-J
 \size huge
-ENETICS
-\series default
-\shape default
-\size giant
-\noun default
+\color black
+LIBRARY USER'S MANUAL
+\size large
+\noun on
+\color inherit
 
-\begin_inset VSpace 6mm
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\align center
-
-\family sans
-\size largest
-\emph on
-Java Genetic Algorithm Library Manual
-\end_layout
-
-\begin_layout Standard
-\align center
-\begin_inset CommandInset line
-LatexCommand rule
-offset "0page%"
-width "100page%"
-height "5pt"
-
+\begin_inset space \hspace{}
+\length 1.5cm
 \end_inset
 
 
@@ -220,8 +234,8 @@ height "5pt"
 \align center
 \begin_inset Graphics
 	filename ../resources/graphic/title.png
-	lyxscale 20
-	height 40pheight%
+	lyxscale 50
+	height 47pheight%
 
 \end_inset
 
@@ -233,17 +247,69 @@ height "5pt"
 \end_layout
 
 \begin_layout Standard
+\align center
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0page%"
+width "100page%"
+height "2pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 0.2cm
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 \align right
 
 \family sans
+\size large
+\noun on
+\begin_inset space \hspace{}
+\length 2.5cm
+\end_inset
+
+
+\size default
+\noun default
+FRANZ WILHELMSTÖTTER
 \series bold
 \noun on
-Franz Wilhelmstötter
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\series default
+\noun default
+VERSION 3
+\size large
+\noun on
+
+\begin_inset space \hspace{}
+\length 1.5cm
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
 \begin_inset ERT
 status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{adjustwidth*}
+\end_layout
 
 \begin_layout Plain Layout
 
@@ -556,22 +622,22 @@ Introduction
 \end_layout
 
 \begin_layout Standard
-The
+
 \family sans
 \series bold
 \shape smallcaps
- Jenetics
+Jenetics
 \family default
 \series default
 \shape default
- project is a Java
+ is a library, written in Java
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
-The library is build with and depends on Java SE 7:
+The library is build with and depends on Java SE 8:
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -585,7 +651,7 @@ http://www.oracle.com/technetwork/java/javase/downloads/index.html
 
 \end_inset
 
- library which provides an 
+, which provides an 
 \begin_inset CommandInset href
 LatexCommand href
 name "genetic algorithm"
@@ -594,95 +660,24 @@ target "http://en.wikipedia.org/wiki/Genetic_algorithm"
 \end_inset
 
  (GA) implementation.
- The project has no dependencies to other libraries.
- For building the library from the sources you only have the JDK 1.7
-\begin_inset Index idx
-status open
-
-\begin_layout Plain Layout
-JDK
-\end_layout
-
-\end_inset
-
- and Gradle
-\begin_inset Index idx
-status open
-
-\begin_layout Plain Layout
-Gradle
-\end_layout
-
-\end_inset
-
-
+ It has no runtime dependencies to other libraries, except the Java 8 runtime.
+ Since the library is available on maven central repository
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
-The used Gradle version is 1.10 and it is downloaded automatically if you
- build the library with the wrapper script
+If you are using Gradle, you can use the following dependency string: 
 \family typewriter
-./gradlew
+'org.bitbucket.fwilhelm:org.jenetics:3.0.0'
 \family default
-:
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-http://www.gradle.org/
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
- to be installed, all other dependencies are available in the package which
- you can download from 
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-https://sourceforge.net/projects/jenetics/files/jenetics/
-\end_layout
-
-\end_inset
-
- or 
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-https://bitbucket.org/fwilhelm/jenetics/downloads
-\end_layout
-
-\end_inset
-
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Download
-\end_layout
-
-\end_inset
-
 .
- For additional informations revere to the build instructions at section
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "sec:Build"
+\end_layout
 
 \end_inset
 
-.
+, it can be easily integrated into existing projects.
+ The clear structuring of the different parts of an GA allows an easy adaption
+ for different problem domains.
 \end_layout
 
 \begin_layout Standard
@@ -714,11 +709,11 @@ height "1pt"
 \begin_layout Plain Layout
 
 \family sans
-This manual is not an introduction or a tutorial for genetic algorithms
- in general.
+This manual is not an introduction or a tutorial for genetic and/or evolutionary
+ algorithms in general.
  It is assumed that the reader has a knowledge about the structure and the
  functionality of genetic algorithms.
- A good GA introduction can be found in
+ Good introductions to GAs can be found in
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Sivanandam2010"
@@ -763,11 +758,297 @@ height "1pt"
 
 \end_inset
 
+ 
+\end_layout
+
+\begin_layout Standard
+To give a first impression of the library usage, lets start with a simple
+ 
+\begin_inset Quotes ald
+\end_inset
+
+Hello World
+\begin_inset Quotes ard
+\end_inset
+
+ program.
+\begin_inset listings
+lstparams "extendedchars=true,language=Java,numbers=left,stepnumber=1,tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+import org.jenetics.BitChromosome; 
+\end_layout
+
+\begin_layout Plain Layout
+
+import org.jenetics.BitGene;
+\end_layout
+
+\begin_layout Plain Layout
+
+import org.jenetics.Genotype; 
+\end_layout
+
+\begin_layout Plain Layout
+
+import org.jenetics.engine.Engine;
+\end_layout
+
+\begin_layout Plain Layout
+
+import org.jenetics.engine.EvolutionResult;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+public class HelloWorld {
+\end_layout
+
+\begin_layout Plain Layout
+
+    // 2.) Definition of the fitness function.
+\end_layout
+
+\begin_layout Plain Layout
+
+    private static Integer eval(Genotype<BitGene> gt) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        return ((BitChromosome)gt.getChromosome()).bitCount();
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    public static void main(String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        // 1.) Define the genotype (factory) suitable 
+\end_layout
+
+\begin_layout Plain Layout
+
+        //     for your problem.
+\end_layout
+
+\begin_layout Plain Layout
+
+        Factory<Genotype<BitGene>> gtf = 
+\end_layout
+
+\begin_layout Plain Layout
+
+            Genotype.of(BitChromosome.of(10, 0.5));
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        // 3.) Create the execution environment.
+\end_layout
+
+\begin_layout Plain Layout
+
+        Engine<BitGene, Integer> engine = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+            .builder(HelloWorld::eval, gtf)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .build();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        // 4.) Start the execution (evolution) and 
+\end_layout
+
+\begin_layout Plain Layout
+
+        //     collect the result.
+\end_layout
+
+\begin_layout Plain Layout
+
+        EvaluationResult<BitGene, Integer> result = engine.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .limit(100)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .collect(EvolutionResult.toBestEvaluationResult());
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+        System.out.println("Hello World:
+\backslash
+n" + result);
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Hello-World-GA"
+
+\end_inset
+
+
+\begin_inset Quotes ald
+\end_inset
+
+Hello World
+\begin_inset Quotes ard
+\end_inset
+
+ GA
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
 
 \end_layout
 
 \begin_layout Standard
-The order of the single execution steps of genetic algorithm may slightly
+Now lets have a closer look at listing 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "lis:Hello-World-GA"
+
+\end_inset
+
+: 
+\end_layout
+
+\begin_layout Enumerate
+The probably most challenging part is to transform the problem domain into
+ a appropriate genotype (factory) representation.
+ For detailed description of the genotype's structure refer section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "par:Genotype"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Once this is done, the fitness function which should be maximized, can be
+ defined.
+ Utilizing the new language features introduced in Java 8, we simply write
+ a private static method, which takes the genotype we defined and calculates
+ it's fitness value.
+ A reference to this method is then used when creating the 
+\family typewriter
+Engine
+\family default
+ builder.
+\end_layout
+
+\begin_layout Enumerate
+In the third step the 
+\emph on
+evolution
+\emph default
+ 
+\family typewriter
+Engine
+\family default
+ has to be created.
+ The evolution Engine is responsible for applying the evolution steps on
+ a given population.
+ The engine is created via a builder where the selectors and alterers to
+ be used.
+\end_layout
+
+\begin_layout Enumerate
+Now we can create a new evolution stream from the engine.
+ (You should make yourself familiar with the Java 8 stream classes.) Since
+ the created evolution stream is unlimited, you have to limit it.
+ In our example we will truncate the evolution stream after 100 generations.
+ 
+\end_layout
+
+\begin_layout Standard
+As the example shows, 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ makes heavy use of the 
+\family typewriter
+Stream
+\family default
+ and 
+\family typewriter
+Collector
+\family default
+ classes of Java 8.
+ If this part of the Java API is new to you, it is recommended to make yourself
+ familiar with it.
+\end_layout
+
+\begin_layout Standard
+The order of the single execution steps of an genetic algorithm may slightly
  differ from implementation to implementation.
  Listing
 \begin_inset CommandInset ref
@@ -776,7 +1057,7 @@ reference "lis:Genetic-algorithm"
 
 \end_inset
 
- shows the pseudo-code of the
+ shows the (imperative) pseudo-code of the
 \family sans
 \series bold
 \shape smallcaps
@@ -865,7 +1146,7 @@ name "lis:Genetic-algorithm"
 
 \end_inset
 
-Genetic algorithm
+Genetic algorithm steps, the library is using.
 \begin_inset Index idx
 status collapsed
 
@@ -885,18 +1166,12 @@ Genetic algorithm
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 Line (1) creates the initial population and line (2) calculates the fitness
  value of the individuals.
- (This is done by the
-\family typewriter
- GeneticAlgorithm.setup()
-\family default
- method.) Line (4) increases the generation number and line (5) and (6) selects
- the survivor and the offspring population.
+ The initial population is created implicitly before the first evolution
+ step is performed.
+ Line (4) increases the generation number and line (5) and (6) selects the
+ survivor and the offspring population.
  The offspring/survivor fraction is determined by the
 \family typewriter
  offspringFraction
@@ -939,7 +1214,16 @@ name "fig:Structure-diagram"
 
 \end_inset
 
-Structure diagram
+Class diagram of the 
+\emph on
+structural
+\emph default
+ GA classes.
+ This classes are located in the 
+\family typewriter
+org.jenetics
+\family default
+ package.
 \begin_inset Index idx
 status collapsed
 
@@ -974,14 +1258,20 @@ reference "fig:Structure-diagram"
 
 \end_inset
 
- shows the class-diagram of the main structures of the GA.
+ shows the class-diagram of the main structures of the library.
+ All structural GA classes are located in the 
+\family typewriter
+org.jenetics
+\family default
+ package.
  The
 \family typewriter
  Gene
 \family default
  is the base of the class structure.
+
 \family typewriter
-Gene
+ Gene
 \family default
 s are aggregated in
 \family typewriter
@@ -1016,8 +1306,99 @@ s.
 .
 \end_layout
 
-\begin_layout Section
+\begin_layout Standard
+The dynamic classes, which perform the actual evolution, are located in
+ the 
+\family typewriter
+org.\SpecialChar \-
+jenetics.\SpecialChar \-
+engine
+\family default
+ package.
+ The 
+\emph on
+evolution stream
+\emph default
+ is the base metaphor for performing an GA.
+ On the evolution stream you can define the termination predicate and than
+ collect the final evolution result.
+ This decouples the static data structure from the dynamic evolution part.
+ The evolution stream is also very flexible, when it comes to collecting
+ the final result.
+ The 
+\family typewriter
+EvolutionResult
+\family default
+ class has several predefined collectors, but you are free to create your
+ own one, which can be seamlessly 
+\emph on
+plugged
+\emph default
+ into the existing stream.
+ 
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/StructureClassDiagram.svg
+	lyxscale 70
+	width 85text%
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Engine-diagram"
+
+\end_inset
+
+Class diagram of the 
+\emph on
+dynamic
+\emph default
+ GA classes.
+ This classes are located in the 
+\family typewriter
+org.jenetics.engine
+\family default
+ package.
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Class structure
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ Figure ...
+\end_layout
+
+\begin_layout Paragraph
 Getting started
+\begin_inset Newline newline
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1061,37 +1442,22 @@ status open
 
 \begin_layout Plain Layout
 
-public static void main(String[] args) {
+public class GA {
 \end_layout
 
 \begin_layout Plain Layout
 
-    Factory<Genotype<BitGene>> gtf = Genotype.of(
+    private static Integer eval(Genotype<BitGene> gt) {
 \end_layout
 
 \begin_layout Plain Layout
 
-        BitChromosome.of(10, 0.5)
+        return ((BitChromosome)gt.getChromosome()).bitCount();
 \end_layout
 
 \begin_layout Plain Layout
 
-    );
-\end_layout
-
-\begin_layout Plain Layout
-
-    Function<Genotype<BitGene>, Double> ff = ...
-\end_layout
-
-\begin_layout Plain Layout
-
-    GeneticAlgorithm<BitGene, Double>
-\end_layout
-
-\begin_layout Plain Layout
-
-    ga = new GeneticAlgorithm<>(gtf, ff, Optimize.MAXIMUM);
+    }
 \end_layout
 
 \begin_layout Plain Layout
@@ -1100,17 +1466,70 @@ public static void main(String[] args) {
 
 \begin_layout Plain Layout
 
-    ga.setup();
+    public static void main(String[] args) {
 \end_layout
 
 \begin_layout Plain Layout
 
-    ga.evolve(100);
+        Factory<Genotype<BitGene>> gtf = 
 \end_layout
 
 \begin_layout Plain Layout
 
-    System.out.println(ga.getBestPhenotype());
+            Genotype.of(BitChromosome.of(10, 0.5));
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        Engine<BitGene, Double> engine = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+            .builder(GA::eval, gtf)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .build();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        EvaluationResult<BitGene, Integer> result = engine.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .limit(100)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .collect(toBestEvaluationResult());
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+        System.out.println(result);
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
 \end_layout
 
 \begin_layout Plain Layout
@@ -1125,7 +1544,11 @@ name "lis:Simple-GA-setup"
 
 \end_inset
 
-Simple GA setup
+Simple GA (evolution 
+\emph on
+engine
+\emph default
+) setup
 \end_layout
 
 \end_inset
@@ -1175,12 +1598,31 @@ reference "lis:Simple-GA-setup"
  Comparable
 \family default
 .
- The
+ 
+\end_layout
+
+\begin_layout Standard
+-----// check
+\end_layout
+
+\begin_layout Standard
+The 
+\emph on
+evolution
 \family typewriter
- GeneticAlgorithm
+\emph default
+ Engine
 \family default
  object is then created with the genotype factory and the fitness function.
- In this example the GA tries to maximize the fitness function.
+ An evolution stream is created with the.
+\end_layout
+
+\begin_layout Standard
+-----
+\end_layout
+
+\begin_layout Standard
+In this example the GA tries to maximize the fitness function.
  If you want to find the minimal value you have to change the
 \family typewriter
  optimize
@@ -1229,27 +1671,37 @@ public static void main(String[] args) {
 
 \begin_layout Plain Layout
 
-    ga.setSelectors(new RouletteWheelSelector<BitGene>());
+    Engine<BitGene, Double> engine = Engine
 \end_layout
 
 \begin_layout Plain Layout
 
-    ga.setAlterers(
+        .builder(Main::eval, gtf)
 \end_layout
 
 \begin_layout Plain Layout
 
-        new SinglePointCrossover<BitGene>(0.1),
+        .selector(new RouletteWheelSelector<BitGene>())
 \end_layout
 
 \begin_layout Plain Layout
 
-        new Mutator<BitGene>(0.01)
+        .alterers(
 \end_layout
 
 \begin_layout Plain Layout
 
-    );
+            new SinglePointCrossover<BitGene>(0.1),
+\end_layout
+
+\begin_layout Plain Layout
+
+            new Mutator<BitGene>(0.01))
+\end_layout
+
+\begin_layout Plain Layout
+
+        .build();
 \end_layout
 
 \begin_layout Plain Layout
@@ -1258,17 +1710,27 @@ public static void main(String[] args) {
 
 \begin_layout Plain Layout
 
-    ga.setup();
+    Phenotype<BitGene, Double> result = engine.stream()
 \end_layout
 
 \begin_layout Plain Layout
 
-    ga.evolve(100);
+        .limit(100)
 \end_layout
 
 \begin_layout Plain Layout
 
-    System.out.println(ga.getBestPhenotype());
+        .collect(toBestPhenotype());
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+    System.out.println(result);
 \end_layout
 
 \begin_layout Plain Layout
@@ -1302,6 +1764,65 @@ reference "sec:Genetic-operators"
 \end_inset
 
 .
+\end_layout
+
+\begin_layout Section
+Concept
+\end_layout
+
+\begin_layout Standard
+The implementation heavily uses the Java streams an
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/ComponentDiagram.svg
+	width 80text%
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Package-structure"
+
+\end_inset
+
+Package structure
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Package structure
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+asdfasdf
+\end_layout
+
+\begin_layout Standard
+asdfasdf
 \end_layout
 
 \begin_layout Section
@@ -1429,7 +1950,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename ../resources/graphic/Genotype.eps
-	width 80text%
+	width 90text%
 	BoundingBox 0bp 50bp 402bp 246bp
 
 \end_inset
@@ -1627,22 +2148,65 @@ status open
 
 \begin_layout Plain Layout
 
-class Id implements Function<Genotype<DoubleGene>, Double> {
+public class Main {
 \end_layout
 
 \begin_layout Plain Layout
 
-    @Override
+    static Double identity(final Genotype<DoubleGene> gt) {
 \end_layout
 
 \begin_layout Plain Layout
 
-    public Double apply(Genotype<DoubleGene> genotype) {
+        return gt.getGene().getAllele();
 \end_layout
 
 \begin_layout Plain Layout
 
-        return genotype.getGene().getAllele();
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    public static void main(final String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        // Create fitness function from method reference.
+\end_layout
+
+\begin_layout Plain Layout
+
+        Function<Genotype<DoubleGene>, Double> ff1 = 
+\end_layout
+
+\begin_layout Plain Layout
+
+            Main::identity;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        // Create fitness function from lambda expression.
+\end_layout
+
+\begin_layout Plain Layout
+
+        Function<Genotype<DoubleGene>, Double> ff2 = gt -> 
+\end_layout
+
+\begin_layout Plain Layout
+
+            gt.getGene().getAllele();
 \end_layout
 
 \begin_layout Plain Layout
@@ -1858,6 +2422,26 @@ reference "sub:Genes"
  for how to implement your own gene types.
 \end_layout
 
+\begin_layout Paragraph
+EvolutionStream
+\end_layout
+
+\begin_layout Paragraph
+Engine
+\end_layout
+
+\begin_layout Paragraph
+EvolutionResult
+\end_layout
+
+\begin_layout Section
+Evolution engine
+\end_layout
+
+\begin_layout Paragraph
+Evolution stream
+\end_layout
+
 \begin_layout Section
 Genetic operators
 \begin_inset Index idx
@@ -1964,42 +2548,27 @@ status open
 
 \begin_layout Plain Layout
 
-final GeneticAlgorithm<DoubleGene, Double> ga = ...
+Engine<DoubleGene, Double> engine = Engine.builder(...)
 \end_layout
 
 \begin_layout Plain Layout
 
-ga.setOffspringFraction(0.7);
+    .offspringFraction(0.7)
 \end_layout
 
 \begin_layout Plain Layout
 
-ga.setSurvivorSelector(
+    .survivorsSelector(new RouletteWheelSelector<>())
 \end_layout
 
 \begin_layout Plain Layout
 
-    new RouletteWheelSelector<DoubleGene, Double>()
+    .offspringSelector(new TournamentSelector<>())
 \end_layout
 
 \begin_layout Plain Layout
 
-);
-\end_layout
-
-\begin_layout Plain Layout
-
-ga.setOffspringSelector(
-\end_layout
-
-\begin_layout Plain Layout
-
-    new TournamentSelector<DoubleGene, Double>()
-\end_layout
-
-\begin_layout Plain Layout
-
-);
+    .build();
 \end_layout
 
 \end_inset
@@ -2012,7 +2581,7 @@ The
 \family typewriter
  offspringFraction
 \family default
- property, 
+, 
 \begin_inset Formula $f_{O}\in[0,1]$
 \end_inset
 
@@ -3726,17 +4295,17 @@ The
 \shape default
  library parallelizes independent task whenever possible.
  Especially the evaluation of the fitness function is done concurrently.
- That means that the GA's fitness-function must be thread safe, because
- it is shared by all phenotypes of a population.
- The easiest way for achieving thread-safety is to make the fitness function
+ That means that the fitness function must be thread safe, because it is
+ shared by all phenotypes of a population.
+ The easiest way for achieving thread safety is to make the fitness function
  immutable and re-entrant.
  The used 
 \family typewriter
 Executor
 \family default
- can be defined when creating the 
+ can be defined when building the evolution 
 \family typewriter
-GeneticAlgorithm
+Engine
 \family default
  object.
 
@@ -3773,37 +4342,56 @@ public class Main {
 
 \begin_layout Plain Layout
 
+	private static Double eval(final Genotype<DoubleGene> gt) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        // calculate and return fitness
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
     public static void main(final String[] args) {
 \end_layout
 
 \begin_layout Plain Layout
 
-        // Using 10 threads for evolving.
+        Factory<Genotype<DoubleGene>> gtf = ...
 \end_layout
 
 \begin_layout Plain Layout
 
-        Executor executor = Executors.newFixedThreadPool(10);
+        final Engine<DoubleGene, Double> engine = Engine 			
 \end_layout
 
 \begin_layout Plain Layout
 
-        Factory<Genotype<DoubleGene>> factory = ...
+            .builder(Main::eval, gtf)
 \end_layout
 
 \begin_layout Plain Layout
 
-        Function<Genotype<DoubleGene>, Double> ff = ...
+             // Using 10 threads for evolving.
 \end_layout
 
 \begin_layout Plain Layout
 
-        GeneticAlgorithm<DoubleGene, Double> ga =
+            .executor(Executors.newFixedThreadPool(10))
 \end_layout
 
 \begin_layout Plain Layout
 
-            new GeneticAlgorithm<>(factory, ff, executor);
+            .build()
 \end_layout
 
 \begin_layout Plain Layout
@@ -3835,9 +4423,21 @@ Jenetics
 \family default
 \series default
 \shape default
- uses a default 
+ uses a common 
 \family typewriter
 ForkJoinPool
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+
+\family typewriter
+ForkJoinPool.commonPool()
+\end_layout
+
+\end_inset
+
+
 \family default
  for concurrency.
 \end_layout
@@ -4139,12 +4739,12 @@ The console output of the time statistics looks like listing above and has
 \end_layout
 
 \begin_layout Subsection
-Termination
+Limiting evolution streams
 \begin_inset Index idx
 status collapsed
 
 \begin_layout Plain Layout
-Termination
+limit
 \end_layout
 
 \end_inset
@@ -4160,10 +4760,9 @@ name "sub:Termination"
 \end_layout
 
 \begin_layout Standard
-The easiest way to terminate an GA is to evolve a specific number of generations.
- This works well for most problems and termination is guaranteed.
- With the statistics object, which is available for every generation, you
- can define a more advanced termination strategy.
+The easiest way to terminate an evolution stream is to evolve a specific
+ number of generations.
+ This might work well for most problems and termination is guaranteed.
 \end_layout
 
 \begin_layout Standard
@@ -4174,45 +4773,22 @@ status open
 
 \begin_layout Plain Layout
 
-GeneticAlgorithm<DoubleGene, Double> ga = ...
+Engine<DoubleGene, Double> engine = ...
 \end_layout
 
 \begin_layout Plain Layout
 
-// Defining your termination function.
+Phenotype<DoubleGene, Double> result = engine.stream()
 \end_layout
 
 \begin_layout Plain Layout
 
-Function<Statistics<DoubleGene, Double>, Boolean> until = ...
+    .limit(25)
 \end_layout
 
 \begin_layout Plain Layout
 
-\end_layout
-
-\begin_layout Plain Layout
-
-ga.setup();
-\end_layout
-
-\begin_layout Plain Layout
-
-ga.evolve(until);
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-// Using the 'termination.SteadyFitness' terminator.
-\end_layout
-
-\begin_layout Plain Layout
-
-ga.evolve(termination.SteadyFitness(5));
+    .collect(toBestPhenotype());
 \end_layout
 
 \end_inset
@@ -4221,7 +4797,76 @@ ga.evolve(termination.SteadyFitness(5));
 \end_layout
 
 \begin_layout Standard
-The GA terminates when the termination function returns false.
+A better way for way for truncating the evolution stream is to use to call
+ the 
+\family typewriter
+limit(Predicate)
+\family default
+ method of the 
+\family typewriter
+EvolutionStream
+\family default
+ class.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Engine<DoubleGene, Double> engine = ...
+\end_layout
+
+\begin_layout Plain Layout
+
+LongAdder counter = new LongAdder();
+\end_layout
+
+\begin_layout Plain Layout
+
+Phenotype<DoubleGene, Double> result = engine.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+    .limit(bySteadyFitness(5))
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Counting the generations.
+\end_layout
+
+\begin_layout Plain Layout
+
+    .peek(r -> counter.increment())
+\end_layout
+
+\begin_layout Plain Layout
+
+    .collect(toBestPhenotype());
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The evolution stream is truncated when the 
+\emph on
+limit
+\emph default
+ predicate (
+\family typewriter
+by\SpecialChar \-
+Steady\SpecialChar \-
+Fitness(5)
+\family default
+) returns false.
 
 \family sans
 \series bold
@@ -4230,214 +4875,17 @@ The GA terminates when the termination function returns false.
 \family default
 \series default
 \shape default
- comes with some default terminations functions implemented in the
+ comes with some default limit predicates implemented in the
 \family typewriter
- termination
+ limit
 \family default
  class in the
 \family typewriter
- org.jenetics
+ org.jenetics.engine
 \family default
  package.
- The steady-fitness terminator for example finishes the
-\emph on
- evolution
-\emph default
- if the best fitness value doesn't increase for 5 consecutive generations.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "extendedchars=true,language=Java,mathescape=true,numbers=left,showstringspaces=false,tabsize=4"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-class SteadyFitness<C extends Comparable<? super C>>
-\end_layout
-
-\begin_layout Plain Layout
-
-    implements Function<Statistics<?, C>, Boolean>
-\end_layout
-
-\begin_layout Plain Layout
-
-{
-\end_layout
-
-\begin_layout Plain Layout
-
-    private final int _genenerations;
-\end_layout
-
-\begin_layout Plain Layout
-
-    private C _fitness;
-\end_layout
-
-\begin_layout Plain Layout
-
-    private int _stableGenerations = 0;
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-    public SteadyFitness(final int generations) {
-\end_layout
-
-\begin_layout Plain Layout
-
-        _genenerations = generations;
-\end_layout
-
-\begin_layout Plain Layout
-
-    }
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-    @Override
-\end_layout
-
-\begin_layout Plain Layout
-
-    public Boolean apply(Statistics<?, C> statistics) {
-\end_layout
-
-\begin_layout Plain Layout
-
-        boolean proceed = true;
-\end_layout
-
-\begin_layout Plain Layout
-
-        if (_fitness == null) {
-\end_layout
-
-\begin_layout Plain Layout
-
-            _fitness = stat.getBestFitness();
-\end_layout
-
-\begin_layout Plain Layout
-
-            _stableGenerations = 1;
-\end_layout
-
-\begin_layout Plain Layout
-
-        } else {
-\end_layout
-
-\begin_layout Plain Layout
-
-            final Optimize opt = stat.getOptimize();
-\end_layout
-
-\begin_layout Plain Layout
-
-            if (opt.compare(_fitness,stat.getBestFitness()) >= 0) {
-\end_layout
-
-\begin_layout Plain Layout
-
-                proceed = ++_stableGenerations <= _genenerations;
-\end_layout
-
-\begin_layout Plain Layout
-
-            } else {
-\end_layout
-
-\begin_layout Plain Layout
-
-                _fitness = stat.getBestFitness();
-\end_layout
-
-\begin_layout Plain Layout
-
-                _stableGenerations = 1;
-\end_layout
-
-\begin_layout Plain Layout
-
-            }
-\end_layout
-
-\begin_layout Plain Layout
-
-        }
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-        return proceed ? Boolean.TRUE : Boolean.FALSE;
-\end_layout
-
-\begin_layout Plain Layout
-
-    }
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\begin_layout Plain Layout
-
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "lis:Steady-state-termination"
-
-\end_inset
-
-Steady state termination
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Listing 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "lis:Steady-state-termination"
-
-\end_inset
-
- shows the (shortened) code for the steady-state termination function which
- you can find in the
-\family typewriter
- termination
-\family default
- class and should give you an idea how to implement your own termination
- function.
+ The steady-fitness terminator for example, truncates the stream if the
+ best fitness value doesn't increase for 5 consecutive generations.
 \end_layout
 
 \begin_layout Subsection
@@ -4533,16 +4981,20 @@ The following example shows how to change and restore the
  Random
 \family default
  object.
- When entering the
+ When opening the 
 \family typewriter
- Scoped<Random>
+with
 \family default
- context, changes to the
+ scope, changes to the
 \family typewriter
  RandomRegistry
 \family default
- are only visible within this context.
- When leaving the context, the original
+ are only visible within this scope.
+ Once the 
+\family typewriter
+with
+\family default
+ scope is left, the original
 \family typewriter
  Random
 \family default
@@ -4557,51 +5009,32 @@ status open
 
 \begin_layout Plain Layout
 
-Factory<Genotype<DoubleGene>> factory = Genotype.valueOf(
+List<Genotype<DoubleGene>> genotypes =
 \end_layout
 
 \begin_layout Plain Layout
 
-    new DoubleChromosome(0.0, 100.0, 10)
+    RandomRegistry.with(new Random(123), r -> {
 \end_layout
 
 \begin_layout Plain Layout
 
-);
+        Genotype.of(DoubleChromosome.of(0.0, 100.0, 10))
 \end_layout
 
 \begin_layout Plain Layout
 
-List<Genotype<DoubleGene>> genotypes = new ArrayList<>();
+            .instances()
 \end_layout
 
 \begin_layout Plain Layout
 
+            .collect(Collectors.toList())
 \end_layout
 
 \begin_layout Plain Layout
 
-try (Scoped<Random> s = RandomRegistry.scope(new Random(123)) {
-\end_layout
-
-\begin_layout Plain Layout
-
-    for (int i = 0; i < 100; ++i) {
-\end_layout
-
-\begin_layout Plain Layout
-
-        genotypes.add(factory.newInstance());
-\end_layout
-
-\begin_layout Plain Layout
-
-    }
-\end_layout
-
-\begin_layout Plain Layout
-
-}
+    });
 \end_layout
 
 \end_inset
@@ -4620,51 +5053,44 @@ status open
 
 \begin_layout Plain Layout
 
-Function<Genotype<DoubleGene>> ff = ...
+Engine<DoubleGene, Double> engine = ...;
 \end_layout
 
 \begin_layout Plain Layout
 
-GeneticAlgorithm<DoubleGene, Double> ga = new GeneticAlgorithm<>(
+// Create a new evolution stream with the given
 \end_layout
 
 \begin_layout Plain Layout
 
-    genotypes.get(0), ff
+// initial genotypes.
 \end_layout
 
 \begin_layout Plain Layout
 
-);
+engine.stream(genotypes)
 \end_layout
 
 \begin_layout Plain Layout
 
-ga.setup(genotypes);
+    .limit(10)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .collect(toBestPhenotype());
 \end_layout
 
 \end_inset
 
-This example uses the generated genotypes to setup the initial population
- of the GA.
+This example uses the generated genotypes for creating the evolution 
+\emph on
+stream
+\emph default
+.
  The GA is created with the first element of the genotypes, which is used
  as genotype factory.
- This guarantees that the same kind of genotypes are created while evolving.
- Calling the
-\family typewriter
- setup(Collection)
-\family default
- method, the given collection of genotypes is used as initial population.
- This method also automatically sets the GA's population size, that means
- the
-\family typewriter
- populationSize
-\family default
- property of the GA is changed to
-\family typewriter
- genotypes.size()
-\family default
-.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -4697,8 +5123,11 @@ height "1pt"
 
 \family sans
 Setting the PRNG to a Random object with a defined seed has the effect,
- that every run of the GA produces the same result---in a single threaded
- environment.
+ that every evolution 
+\emph on
+stream
+\emph default
+ will produce the same result---in a single threaded environment.
 \end_layout
 
 \begin_layout Plain Layout
@@ -5945,21 +6374,7 @@ With the serialization mechanism you can write a population to disk and
 \family typewriter
  org.jenetics.util
 \family default
- package, supports native Java serialization and JAXB XML serialization
-\begin_inset Foot
-status open
-
-\begin_layout Plain Layout
-The serialization through the XML support from the
-\emph on
- Javolution
-\emph default
- project has been deprecated and will be removed in the next major version.
-\end_layout
-
-\end_inset
-
-.
+ package, supports native Java serialization and JAXB XML serialization.
 \end_layout
 
 \begin_layout Standard
@@ -6240,11 +6655,7 @@ reference "fig:Seq-class-diagram"
 \family typewriter
  Seq
 \family default
- interfaces is possible via the
-\family typewriter
- Array
-\family default
- class.
+ interfaces is possible via the static factory methods of the interfaces.
 \end_layout
 
 \begin_layout Standard
@@ -6260,17 +6671,17 @@ status open
 
 \begin_layout Plain Layout
 
-final Seq<Integer> a1 = Array.box(1, 2, 3);
+final Seq<Integer> a1 = Seq.of(1, 2, 3);
 \end_layout
 
 \begin_layout Plain Layout
 
-final MSeq<Integer> a2 = Array.box(1, 2, 3);
+final MSeq<Integer> a2 = MSeq.of(1, 2, 3);
 \end_layout
 
 \begin_layout Plain Layout
 
-final ISeq<Integer> a3 = Array.box(1, 2, 3).toISeq();
+final ISeq<Integer> a3 = MSeq.of(1, 2, 3).toISeq();
 \end_layout
 
 \begin_layout Plain Layout
@@ -6331,384 +6742,6 @@ target "http://jenetics.sourceforge.net/javadoc/index.html"
 \end_inset
 
 .
-\end_layout
-
-\begin_layout Paragraph
-
-\family typewriter
-org.jenetics.util.IndexStream
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-IndexStream
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The abstract
-\family typewriter
- IndexStream
-\family default
- class is used to generate a stream of positive
-\family typewriter
- int
-\family default
- values by calling the
-\family typewriter
- next()
-\family default
- method.
- The end of the stream is reached, when
-\family typewriter
- next()
-\family default
- returns
-\family typewriter
- -1
-\family default
-.
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-public abstract class IndexStream {
-\end_layout
-
-\begin_layout Plain Layout
-
-    public abstract int next();
-\end_layout
-
-\begin_layout Plain Layout
-
-    public static IndexStream Random(int n, double p, Random r) {
-\end_layout
-
-\begin_layout Plain Layout
-
-        ...
-\end_layout
-
-\begin_layout Plain Layout
-
-    }
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\begin_inset Caption
-
-\begin_layout Plain Layout
-
-\family typewriter
-IndexStream
-\family default
- class
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
- An
-\emph on
- random
-\family typewriter
-\emph default
- IndexStream
-\family default
-, which is created with the I
-\family typewriter
-ndexStream.Random(int, double, Random)
-\family default
- factory method, is used in the
-\family typewriter
- Selector
-\family default
- and
-\family typewriter
- Alterer
-\family default
- classes for choosing random genes and/or chromosomes (indices).
-\begin_inset Foot
-status open
-
-\begin_layout Plain Layout
-The elements returned by the
-\emph on
- random
-\family typewriter
-\emph default
- IndexStream
-\family default
- are strictly increasing, except the termination element., which is 
-\begin_inset Formula $-1$
-\end_inset
-
-.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The following listing shows the typical usage of the
-\family typewriter
- IndexStream
-\family default
-.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-final Seq<Integer> array = ...
-\end_layout
-
-\begin_layout Plain Layout
-
-final IndexStream indices = IndexStream.Random(
-\end_layout
-
-\begin_layout Plain Layout
-
-    array.length(), 0.5, new Random()
-\end_layout
-
-\begin_layout Plain Layout
-
-);
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-for (int i = indices.next(); i != -1; i = indices.next()) {
-\end_layout
-
-\begin_layout Plain Layout
-
-    System.out.println(array.get(i));
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-An important property of the random
-\family typewriter
- IndexStream
-\family default
- is, that the number of selected items 
-\begin_inset Formula $n_{s}$
-\end_inset
-
- follows a Binomial distribution with 
-\begin_inset Formula $\mu=n\cdot p$
-\end_inset
-
- and may differ from run to run.
- The random
-\family typewriter
- IndexStream
-\family default
- produces unique values in ascending order.
-\end_layout
-
-\begin_layout Paragraph
-
-\family typewriter
-org.jenetics.util.Accumulator
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Accumulator
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The accumulator classes are mainly used for (incrementally) calculating
- statistic values in the
-\family typewriter
- Statistics
-\family default
- object.
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-public interface Accumulator<T> {
-\end_layout
-
-\begin_layout Plain Layout
-
-    public void accumulate(final T value);
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\begin_inset Caption
-
-\begin_layout Plain Layout
-
-\family typewriter
-Accumulator
-\family default
- interface
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Implementations of the Accumulator interface have an internal state which
- is updated when the accumulate method is called.
- If the values for accumulation are
-\emph on
- stored
-\emph default
- in an
-\family typewriter
- Iterable
-\family default
- object, the
-\family typewriter
- accumulate
-\family default
- helper methods in the
-\family typewriter
- accumulator
-\family default
- object can be used for accumulation.
- The accumulation of two or more accumulators is parallelized.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-final Seq<String> data = Array.of("-10","1","2","3","4","5");
-\end_layout
-
-\begin_layout Plain Layout
-
-final accumulators.Max<Integer> max = new accumulators.Max<>();
-\end_layout
-
-\begin_layout Plain Layout
-
-final accumulators.Min<Integer> min = new accumulators.Min<>();
-\end_layout
-
-\begin_layout Plain Layout
-
-accumulators.accumulate(
-\end_layout
-
-\begin_layout Plain Layout
-
-    data,
-\end_layout
-
-\begin_layout Plain Layout
-
-    max.map(functions.StringToInteger),
-\end_layout
-
-\begin_layout Plain Layout
-
-    min.map(functions.StringLength)
-\end_layout
-
-\begin_layout Plain Layout
-
-);
-\end_layout
-
-\begin_layout Plain Layout
-
-System.out.println(String.format(
-\end_layout
-
-\begin_layout Plain Layout
-
-    "Max value: %s, min length: %s.", max.getMax(), min.getMin()
-\end_layout
-
-\begin_layout Plain Layout
-
-));
-\end_layout
-
-\end_inset
-
-The given usage example
-\emph on
- calculates
-\emph default
- the maximum value and the minimum string length of the given data values.
- It also shows how the
-\family typewriter
- MappedAccumulator.map
-\family default
- method can be used to operate on different data-type then the one given
- in the data array.
- However the example snippet will print
-\end_layout
-
-\begin_layout LyX-Code
-
-\family typewriter
-$ Max value: 5, min length: 1.
-\end_layout
-
-\begin_layout Standard
-onto the console.
 \end_layout
 
 \begin_layout Section
@@ -7612,6 +7645,14 @@ The type of the statistics object returned by the GA is the same type as
  you have to cast it to your type.
 \end_layout
 
+\begin_layout Section
+Advanced configurations
+\end_layout
+
+\begin_layout Standard
+This section describes some advanced GA setups/configurations.
+\end_layout
+
 \begin_layout Standard
 \begin_inset Newpage pagebreak
 \end_inset
@@ -8005,6 +8046,15 @@ footnotesize}
 
 \begin_layout Standard
 The GA will generated an console output like above.
+ The 
+\emph on
+exact
+\emph default
+ result of the function--for the given range--will be 
+\begin_inset Formula $3.389,125,782,8907,939...$
+\end_inset
+
+ You can also see, that we reached the final result after 19 generations.
 \end_layout
 
 \begin_layout Subsection
@@ -9232,7 +9282,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 1.10 (
+: 2.2 (
 \emph on
 or later
 \emph default
@@ -9273,7 +9323,7 @@ status open
 
 \begin_layout Plain Layout
 
-http://services.gradle.org/distributions/gradle-1.10-bin.zip
+http://services.gradle.org/distributions/gradle-2.2-bin.zip
 \end_layout
 
 \end_inset
@@ -9323,7 +9373,7 @@ Maven Central
 \end_layout
 
 \begin_layout LyX-Code
-org.bitbucket.fwilhelm:org.jenetics:2.0.2
+org.bitbucket.fwilhelm:org.jenetics:3.0.0
 \end_layout
 
 \begin_layout Section

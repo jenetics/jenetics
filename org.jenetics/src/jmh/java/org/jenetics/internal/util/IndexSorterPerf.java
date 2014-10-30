@@ -37,7 +37,7 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.0 &mdash; <em>$Date: 2014-08-11 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-24 $</em>
  * @since 3.0
  */
 @State(Scope.Benchmark)
@@ -53,7 +53,7 @@ public class IndexSorterPerf {
 	private double[] array320 = new Random().doubles(320).toArray();
 
 
-	@Setup(Level.Invocation)
+	@Setup(Level.Iteration)
 	public void shuffle() {
 		array.shuffle(array20);
 		array.shuffle(array40);

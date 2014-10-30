@@ -58,7 +58,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-15 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-06 $</em>
  */
 public final class BoltzmannSelector<
 	G extends Gene<?, G>,
@@ -81,10 +81,10 @@ public final class BoltzmannSelector<
 	}
 
 	/**
-	 * Create a new BoltzmannSelector with a default beta of 3.0.
+	 * Create a new BoltzmannSelector with a default beta of 4.0.
 	 */
 	public BoltzmannSelector() {
-		this(3.0);
+		this(4.0);
 	}
 
 	@Override

@@ -21,8 +21,10 @@ package org.jenetics;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.maxBy;
 
 import java.util.Random;
+import java.util.stream.IntStream;
 
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
@@ -43,7 +45,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-08-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-10-28 $</em>
  */
 public class TournamentSelector<
 	G extends Gene<?, G>,
@@ -99,28 +101,16 @@ public class TournamentSelector<
 		);
 	}
 
-	private static <
-		G extends Gene<?, G>,
-		C extends Comparable<? super C>
-	>
-	Phenotype<G, C> select(
+	private Phenotype<G, C> select(
 		final Population<G, C> population,
 		final Optimize opt,
 		final int sampleSize,
 		final Random random
 	) {
 		final int N = population.size();
-		Phenotype<G, C> winner = population.get(random.nextInt(N));
-
-		for (int j = 0; j < sampleSize; ++j) {
-			final Phenotype<G, C> selection = population.get(random.nextInt(N));
-			if (opt.compare(selection, winner) > 0) {
-				winner = selection;
-			}
-		}
-		assert (winner != null);
-
-		return winner;
+		return IntStream.range(0, sampleSize)
+			.mapToObj(i -> population.get(random.nextInt(N)))
+			.collect(maxBy(opt.ascending())).get();
 	}
 
 	@Override

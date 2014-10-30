@@ -19,33 +19,31 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.RandomRegistry.using;
+
 import java.util.Arrays;
-import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jenetics.stat.Distribution;
-import org.jenetics.stat.LinearDistribution;
+import org.jenetics.internal.util.Named;
+
+import org.jenetics.stat.Histogram;
+import org.jenetics.stat.StatisticsAssert;
 import org.jenetics.util.Factory;
 import org.jenetics.util.LCG64ShiftRandom;
-import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Scoped;
+import org.jenetics.util.TestData;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-16 $</em>
+ * @version <em>$Date: 2014-10-19 $</em>
  */
 public class RouletteWheelSelectorTest
 	extends ProbabilitySelectorTester<RouletteWheelSelector<DoubleGene, Double>>
 {
-
-	@Override
-	protected Distribution<Double> getDistribution() {
-		return new LinearDistribution<>(getDomain(), 0);
-	}
 
 	@Override
 	protected boolean isSorted() {
@@ -59,7 +57,7 @@ public class RouletteWheelSelectorTest
 
 	@Test
 	public void minimize() {
-		try (Scoped<Random> sr = RandomRegistry.scope(new LCG64ShiftRandom(7345))) {
+		using(new LCG64ShiftRandom(7345), r -> {
 			final Function<Genotype<IntegerGene>, Integer> ff =
 				g -> g.getChromosome().getGene().getAllele();
 
@@ -75,12 +73,12 @@ public class RouletteWheelSelectorTest
 
 			final double[] p = selector.probabilities(population, 100, Optimize.MINIMUM);
 			Assert.assertTrue(RouletteWheelSelector.sum2one(p), Arrays.toString(p) + " != 1");
-		}
+		});
 	}
 
 	@Test
 	public void maximize() {
-		try (Scoped<Random> sr = RandomRegistry.scope(new LCG64ShiftRandom(7345))) {
+		using(new LCG64ShiftRandom(7345), r -> {
 			final Function<Genotype<IntegerGene>, Integer> ff =
 				g -> g.getChromosome().getGene().getAllele();
 
@@ -96,7 +94,65 @@ public class RouletteWheelSelectorTest
 
 			final double[] p = selector.probabilities(population, 100, Optimize.MAXIMUM);
 			Assert.assertTrue(RouletteWheelSelector.sum2one(p), Arrays.toString(p) + " != 1");
-		}
+		});
+	}
+
+	@Test(dataProvider = "expectedDistribution", invocationCount = 20, successPercentage = 95)
+	public void selectDistribution(final Named<double[]> expected, final Optimize opt) {
+		final int loops = 50;
+		final int npopulation = POPULATION_COUNT;
+
+		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
+		using(random, r -> {
+			final Histogram<Double> distribution = SelectorTester.distribution(
+				new RouletteWheelSelector<>(),
+				opt,
+				npopulation,
+				loops
+			);
+
+			StatisticsAssert.assertDistribution(distribution, expected.value);
+		});
+	}
+
+	@DataProvider(name = "expectedDistribution")
+	public Object[][] expectedDistribution() {
+		final String resource =
+			"/org/jenetics/selector/distribution/RouletteWheelSelector";
+
+		return Arrays.stream(Optimize.values())
+			.map(opt -> {
+				final TestData data = TestData.of(resource, opt.toString());
+				final double[] expected = data.stream()
+					.map(line -> line[0])
+					.mapToDouble(Double::parseDouble)
+					.toArray();
+
+				return new Object[]{Named.of("distribution", expected), opt};
+			}).toArray(Object[][]::new);
+	}
+
+	public static void main(final String[] args) {
+		writeDistributionData(Optimize.MAXIMUM);
+		writeDistributionData(Optimize.MINIMUM);
+	}
+
+	private static void writeDistributionData(final Optimize opt) {
+		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
+		using(random, r -> {
+			final int npopulation = POPULATION_COUNT;
+			//final int loops = 2_500_000;
+			final int loops = 5_000_000;
+
+			printDistributions(
+				System.out,
+				Arrays.asList(""),
+				value -> new RouletteWheelSelector<DoubleGene, Double>(),
+				opt,
+				npopulation,
+				loops
+			);
+		});
 	}
 
 }

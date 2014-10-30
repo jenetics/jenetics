@@ -37,7 +37,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-07-10 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-17 $</em>
  */
 public final class DoubleSummary implements Serializable {
 
@@ -201,7 +201,7 @@ public final class DoubleSummary implements Serializable {
 	 * [code]
 	 * final Stream&lt;SomeObject&gt; stream = ...
 	 * final DoubleSummary summary = stream
-	 *     .collect(DoubleSummary.collector(v -&gt; v.doubleValue()));
+	 *     .collect(toDoubleSummary(v -&gt; v.doubleValue()));
 	 * [/code]
 	 *
 	 * @param mapper a mapping function to apply to each element
@@ -211,7 +211,7 @@ public final class DoubleSummary implements Serializable {
 	 *         {@code null}
 	 */
 	public static <T> Collector<T, ?, DoubleSummary>
-	collector(final ToDoubleFunction<? super T> mapper) {
+	toDoubleSummary(final ToDoubleFunction<? super T> mapper) {
 		requireNonNull(mapper);
 		return Collector.of(
 			DoubleSummaryStatistics::new,

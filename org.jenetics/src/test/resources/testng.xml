@@ -20,7 +20,7 @@
  # Author:
  #    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  #
- # Version: <em>$Date: 2014-08-11 $</em>
+ # Version: <em>$Date: 2014-09-21 $</em>
  #
  ###############################################################################
 -->
@@ -73,11 +73,6 @@
 	<test name="org.jenetics.GaussianMutator">
 		<classes>
 			<class name="org.jenetics.GaussianMutatorTest" />
-		</classes>
-	</test>
-	<test name="org.jenetics.GeneticAlgorithm">
-		<classes>
-			<class name="org.jenetics.GeneticAlgorithmTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.ExponentialRankSelector">
@@ -169,29 +164,12 @@
 	<test name="org.jenetics.RouletteWheelSelector">
 		<classes>
 			<class name="org.jenetics.RouletteWheelSelectorTest" />
-			<class name="org.jenetics.RouletteWheelSelector_range_1000_3000_Test" />
-			<class name="org.jenetics.RouletteWheelSelector_range_m1000_3000_Test" />
 		</classes>
 	</test>
 	<test name="org.jenetics.Crossover">
 		<classes>
 			<class name="org.jenetics.SinglePointCrossoverTest" />
 			<class name="org.jenetics.MultiPointCrossoverTest" />
-		</classes>
-	</test>
-	<test name="org.jenetics.Statistics">
-		<classes>
-			<class name="org.jenetics.StatisticsTest" />
-			<class name="org.jenetics.StatisticsBuilderTest" />
-			<class name="org.jenetics.StatisticsCalculatorTest" />
-			<class name="org.jenetics.StatisticsTimeTest" />
-		</classes>
-	</test>
-	<test name="org.jenetics.NumberStatistics">
-		<classes>
-			<class name="org.jenetics.NumberStatisticsTest" />
-			<class name="org.jenetics.NumberStatisticsCalculatorTest" />
-			<class name="org.jenetics.NumberStatisticsBuilderTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.Optimize">
@@ -209,11 +187,6 @@
 			<class name="org.jenetics.SwapMutatorTest" />
 		</classes>
 	</test>
-	<test name="org.jenetics.termination">
-		<classes>
-			<class name="org.jenetics.terminationTest" />
-		</classes>
-	</test>
 	<test name="org.jenetics.TournamentSelector">
 		<classes>
 			<class name="org.jenetics.TournamentSelectorTest" />
@@ -229,12 +202,16 @@
             <class name="org.jenetics.MarshallingTest" />
         </classes>
     </test>
-	<test name="org.jenetics.stat.Accumulators">
-		<classes>
-			<class name="org.jenetics.stat.MeanTest" />
-			<class name="org.jenetics.stat.VarianceTest" />
-		</classes>
-	</test>
+    <test name="org.jenetics.engine.EvolutionDurations">
+        <classes>
+            <class name="org.jenetics.engine.EvolutionDurationsTest" />
+        </classes>
+    </test>
+    <test name="org.jenetics.engine.EvolutionResult">
+        <classes>
+            <class name="org.jenetics.engine.EvolutionResultTest" />
+        </classes>
+    </test>
 	<test name="org.jenetics.stat.Histogram">
 		<classes>
 			<class name="org.jenetics.stat.HistogramTest" />
@@ -248,15 +225,18 @@
     <test name="org.jenetics.stat.Moments">
         <classes>
             <class name="org.jenetics.stat.IntMomentStatisticsTest" />
+            <class name="org.jenetics.stat.IntMomentsTest" />
             <class name="org.jenetics.stat.LongMomentStatisticsTest" />
+            <class name="org.jenetics.stat.LongMomentsTest" />
             <class name="org.jenetics.stat.DoubleMomentStatisticsTest" />
+            <class name="org.jenetics.stat.DoubleMomentsTest" />
         </classes>
     </test>
-	<test name="org.jenetics.stat.NormalDistribution">
-		<classes>
-			<class name="org.jenetics.stat.NormalDistributionTest" />
-		</classes>
-	</test>
+    <test name="org.jenetics.stat.MinMax">
+        <classes>
+            <class name="org.jenetics.stat.MinMaxTest" />
+        </classes>
+    </test>
 	<test name="org.jenetics.stat.Quantile">
 		<classes>
 			<class name="org.jenetics.stat.QuantileTest" />
@@ -289,6 +269,11 @@
 			<class name="org.jenetics.internal.math.probabilityTest" />
 		</classes>
 	</test>
+    <test name="org.jenetics.internal.math.util">
+        <classes>
+            <class name="org.jenetics.internal.util.LazyTest" />
+        </classes>
+    </test>
     <test name="org.jenetics.internal.collection.Stack">
         <classes>
             <class name="org.jenetics.internal.collection.StackTest" />
@@ -327,7 +312,7 @@
 			<class name="org.jenetics.util.PRNGTest" />
 		</classes>
 	</test>
-	<test name="org.jenetics.util.RandomIndexStream_">
+	<test name="org.jenetics.util.RandomIndexStream">
 		<classes>
 			<class name="org.jenetics.util.RandomIndexStreamTest" />
 		</classes>
@@ -347,11 +332,6 @@
 	<test name="org.jenetics.util.StaticObject">
 		<classes>
 			<class name="org.jenetics.util.StaticObjectTest" />
-		</classes>
-	</test>
-	<test name="org.jenetics.util.Timer">
-		<classes>
-			<class name="org.jenetics.util.TimerTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.util.object">

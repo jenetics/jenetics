@@ -36,7 +36,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-07-10 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-03 $</em>
  */
 public final class LongMoments implements Serializable {
 
@@ -199,7 +199,7 @@ public final class LongMoments implements Serializable {
 	@Override
 	public String toString() {
 		return String.format(
-			"IntMoments[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s, s2=%s, S=%s, K=%s]",
+			"IntMoments[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s, s²=%s, S=%s, K=%s]",
 			getCount(), getMin(), getMax(), getSum(),
 			getMean(), getVariance(), getSkewness(), getKurtosis()
 		);
@@ -268,7 +268,7 @@ public final class LongMoments implements Serializable {
 	 * [code]
 	 * final Stream&lt;SomeObject&gt; stream = ...
 	 * final LongMoments moments = stream
-	 *     .collect(LongMoments.collector(v -&gt; v.longValue()));
+	 *     .collect(toLongMoments(v -&gt; v.longValue()));
 	 * [/code]
 	 *
 	 * @param mapper a mapping function to apply to each element
@@ -278,12 +278,12 @@ public final class LongMoments implements Serializable {
 	 *         {@code null}
 	 */
 	public static <T> Collector<T, ?, LongMoments>
-	collector(final ToLongFunction<? super T> mapper) {
+	toLongMoments(final ToLongFunction<? super T> mapper) {
 		requireNonNull(mapper);
 		return Collector.of(
 			LongMomentStatistics::new,
 			(a, b) -> a.accept(mapper.applyAsLong(b)),
-			(a, b) -> {a.combine(b); return a;},
+			LongMomentStatistics::combine,
 			LongMoments::of
 		);
 	}

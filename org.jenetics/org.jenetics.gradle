@@ -20,24 +20,18 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 2.0 &mdash; <em>$Date: 2014-08-15 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-10-17 $</em>
  */
 
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'me.champeau.gradle:jmh-gradle-plugin:0.1.2'
-    }
+plugins {
+    id "me.champeau.gradle.jmh" version "0.1.2"
 }
 
 apply plugin: 'packaging'
 apply plugin: 'nexus'
-apply plugin: 'me.champeau.gradle.jmh'
 
 repositories {
-	mavenCentral()
+    mavenCentral()
     jcenter()
 }
 
@@ -65,6 +59,7 @@ javadoc {
 
 jar.manifest.instruction('Export-Package',
 	'org.jenetics',
+	'org.jenetics.engine',
 	'org.jenetics.util',
 	'org.jenetics.stat'
 )

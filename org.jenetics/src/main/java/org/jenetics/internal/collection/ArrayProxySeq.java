@@ -25,6 +25,7 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Spliterator;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -34,7 +35,7 @@ import org.jenetics.util.Seq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0 &mdash; <em>$Date: 2014-05-14 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-11 $</em>
  */
 public abstract class ArrayProxySeq<T, P extends ArrayProxy<T, ?, ?>>
 	implements
@@ -62,6 +63,11 @@ public abstract class ArrayProxySeq<T, P extends ArrayProxy<T, ?, ?>>
 	@Override
 	public Stream<T> parallelStream() {
 		return proxy.parallelStream();
+	}
+
+	@Override
+	public Spliterator<T> spliterator() {
+		return proxy.spliterator();
 	}
 
 	@Override

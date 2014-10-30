@@ -24,12 +24,12 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import org.jenetics.internal.math.DoubleAdder;
 import org.jenetics.internal.math.base;
-import org.jenetics.internal.math.statistics;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date$</em>
+ * @version <em>$Date: 2014-09-03 $</em>
  */
 public class baseTest {
 
@@ -40,7 +40,7 @@ public class baseTest {
 			values[i] = 1.0/values.length;
 		}
 
-		Assert.assertEquals(statistics.sum(values), 1.0);
+		Assert.assertEquals(DoubleAdder.sum(values), 1.0);
 	}
 
 	@Test

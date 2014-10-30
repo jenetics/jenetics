@@ -19,18 +19,26 @@
  */
 package org.jenetics;
 
-import java.util.function.Function;
+import static java.lang.String.format;
+import static org.jenetics.util.RandomRegistry.using;
+
+import java.util.Arrays;
 import java.util.stream.IntStream;
 
-import org.jenetics.stat.Distribution;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import org.jenetics.internal.util.Named;
+
 import org.jenetics.stat.Histogram;
-import org.jenetics.stat.LinearDistribution;
+import org.jenetics.stat.StatisticsAssert;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Range;
+import org.jenetics.util.LCG64ShiftRandom;
+import org.jenetics.util.TestData;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-16 $</em>
+ * @version <em>$Date: 2014-10-19 $</em>
  */
 public class LinearRankSelectorTest
 	extends ProbabilitySelectorTester<LinearRankSelector<DoubleGene, Double>>
@@ -47,40 +55,84 @@ public class LinearRankSelectorTest
 	}
 
 	@Override
-	protected Distribution<Double> getDistribution() {
-		return new LinearDistribution<>(getDomain(), 0);
-	}
-
-	@Override
 	protected LinearRankSelector<DoubleGene, Double> selector() {
 		return new LinearRankSelector<>(0.0);
 	}
 
-	public static void main(final String[] args) {
-		final Range<Double> domain = new Range<>(0.0, 100.0);
-		final int npopulation = 101;
-		final int loops = 100_000;
+	@Test(dataProvider = "expectedDistribution", invocationCount = 20, successPercentage = 95)
+	public void selectDistribution(
+		final Double nminus,
+		final Named<double[]> expected,
+		final Optimize opt
+	) {
+		final int loops = (int)(nminus*1.7);
+		final int npopulation = POPULATION_COUNT;
 
-		final Double min = domain.getMin();
-		final Double max = domain.getMax();
-		final Histogram<Double> histogram = Histogram.of(min, max, 37);
+		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
+		using(random, r -> {
+			final Histogram<Double> distribution = SelectorTester.distribution(
+				new LinearRankSelector<>(nminus),
+				opt,
+				npopulation,
+				loops
+			);
 
-		final Function<Genotype<DoubleGene>, Double> ff = gt -> gt.getGene().getAllele();
-		final Factory<Phenotype<DoubleGene, Double>> ptf = () ->
-			Phenotype.of(Genotype.of(DoubleChromosome.of(min, max)), ff, 12);
+			StatisticsAssert.assertDistribution(distribution, expected.value, 0.001);
+		});
+	}
 
-		final Selector<DoubleGene, Double> selector = new LinearRankSelector<>();
+	@DataProvider(name = "expectedDistribution")
+	public Object[][] expectedDistribution() {
+		final String resource =
+			"/org/jenetics/selector/distribution/LinearRankSelector";
 
-		for (int j = 0; j < loops; ++j) {
-			final Population<DoubleGene, Double> population = IntStream.range(0, npopulation)
-				.mapToObj(i -> ptf.newInstance())
-				.collect(Population.toPopulation());
+		return Arrays.stream(Optimize.values())
+			.flatMap(opt -> {
+				final TestData data = TestData.of(resource, opt.toString());
+				final double[][] csv = data.stream()
+					.map(TestData::toDouble)
+					.toArray(double[][]::new);
 
-			selector.select(population, npopulation/2, Optimize.MINIMUM).stream()
-				.map(pt -> pt.getGenotype().getGene().getAllele())
-				.forEach(histogram);
+				return IntStream.range(0, csv[0].length)
+					.mapToObj(i -> new Object[]{
+						csv[0][i],
+						Named.of(
+							format("distribution[%f]", csv[0][i]),
+							expected(csv, i)
+						),
+						opt
+					});
+			}).toArray(Object[][]::new);
+	}
+
+	private static double[] expected(final double[][] csv, final int c) {
+		final double[] col = new double[csv.length - 1];
+		for (int i = 0; i < col.length; ++i) {
+			col[i] = Math.max(csv[i + 1][c], Double.MIN_VALUE);
 		}
+		return col;
+	}
 
-		System.out.println(histogram);
+	public static void main(final String[] args) {
+		writeDistributionData(Optimize.MAXIMUM);
+		writeDistributionData(Optimize.MINIMUM);
+	}
+
+	private static void writeDistributionData(final Optimize opt) {
+		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
+		using(random, r -> {
+			final int npopulation = POPULATION_COUNT;
+			//final int loops = 2_500_000;
+			final int loops = 100_000;
+
+			printDistributions(
+				System.out,
+				Arrays.asList(0.0, 0.1, 0.3, 0.5, 0.75, 0.95, 1.0),
+				LinearRankSelector::new,
+				opt,
+				npopulation,
+				loops
+			);
+		});
 	}
 }

@@ -24,8 +24,7 @@ import static org.jenetics.internal.math.base.subset;
 import static org.jenetics.internal.math.random.indexes;
 
 import java.util.Random;
-
-import org.jenetics.internal.util.IntRef;
+import java.util.function.IntFunction;
 
 import org.jenetics.util.RandomRegistry;
 
@@ -51,7 +50,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-15 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-25 $</em>
  */
 public abstract class Recombinator<
 	G extends Gene<?, G>,
@@ -67,7 +66,7 @@ public abstract class Recombinator<
 	 *
 	 * @param probability The recombination probability.
 	 * @param order the number of individuals involved in the
-	 *        {@link #recombine(Population, int[], int)} step
+	 *        {@link #recombine(Population, int[], long)} step
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
 	 *         valid range of {@code [0, 1]} or the given {@code order} is
 	 *         smaller than two.
@@ -84,7 +83,7 @@ public abstract class Recombinator<
 
 	/**
 	 * Return the number of individuals involved in the
-	 * {@link #recombine(Population, int[], int)} step.
+	 * {@link #recombine(Population, int[], long)} step.
 	 *
 	 * @return the number of individuals involved in the recombination step.
 	 */
@@ -95,19 +94,21 @@ public abstract class Recombinator<
 	@Override
 	public final int alter(
 		final Population<G, C> population,
-		final int generation
+		final long generation
 	) {
 		final Random random = RandomRegistry.getRandom();
 		final int order = Math.min(_order, population.size());
 
-		final IntRef alterations = new IntRef(0);
-		indexes(random, population.size(), _probability).forEach(i -> {
-			final int[] individuals = subset(population.size(), order, random);
-			individuals[0] = i;
-			alterations.value += recombine(population, individuals, generation);
-		});
+		final IntFunction<int[]> individuals = i -> {
+			final int[] ind = subset(population.size(), order, random);
+			ind[0] = i;
+			return ind;
+		};
 
-		return alterations.value;
+		return indexes(random, population.size(), _probability)
+			.mapToObj(individuals)
+			.mapToInt(i -> recombine(population, i, generation))
+			.sum();
 	}
 
 	/**
@@ -115,16 +116,16 @@ public abstract class Recombinator<
 	 *
 	 * @param population the population to recombine
 	 * @param individuals the array with the indexes of the individuals which
-	 *         are involved in the <i>recombination</i> step. The length of the
-	 *         array is {@link #getOrder()}. The first individual is the
-	 *         <i>primary</i> individual.
+	 *        are involved in the <i>recombination</i> step. The length of the
+	 *        array is {@link #getOrder()}. The first individual is the
+	 *        <i>primary</i> individual.
 	 * @param generation the current generation.
 	 * @return the number of genes that has been altered.
 	 */
 	protected abstract int recombine(
 		final Population<G, C> population,
 		final int[] individuals,
-		final int generation
+		final long generation
 	);
 
 

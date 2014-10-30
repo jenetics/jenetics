@@ -23,9 +23,10 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
-import org.jenetics.internal.util.Context;
 import org.jenetics.internal.util.require;
 
 /**
@@ -51,8 +52,9 @@ import org.jenetics.internal.util.require;
  *         RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadSafe(1234));
  *
  *         ...
- *         final GeneticAlgorithm&lt;DoubleGene, Double&gt; ga = ...
- *         ga.evolve(100);
+ *         final EvolutionResult&lt;DoubleGene, Double&gt; result = stream
+ *             .limit(100)
+ *             .collect(toBestEvolutionResult());
  *     }
  * }
  * [/code]
@@ -60,24 +62,26 @@ import org.jenetics.internal.util.require;
  *
  * <b>Setup of a <i>local</i> PRNG</b><br>
  *
- * You can temporarily (and locally) change the implementation of the PRNG.
+ * You can temporarily (and locally) change the implementation of the PRNG. E.g.
+ * for initialize the engine stream with the same initial population.
  *
  * [code]
  * public class GA {
  *     public static void main(final String[] args) {
- *         ...
- *         final GeneticAlgorithm&lt;DoubleGene, Double&gt; ga = ...
- *         final LCG64ShiftRandom random = new LCG64ShiftRandom(1234)
+ *         // Create a reproducible list of genotypes.
+ *         final List&lt;Genotype&lt;DoubleGene&gt;&gt; genotypes =
+ *             with(new LCG64ShiftRandom(123), r -&gt;
+ *                 Genotype.of(DoubleChromosome.of(0, 10)).instances()
+ *                     .limit(50)
+ *                     .collect(toList())
+ *             );
  *
- *         try (Scoped&lt;Random&gt; scope = RandomRegistry.scope(random)) {
- *             // Easy access the random engine of the opened scope.
- *             assert(scope.get() == random);
- *
- *             // Only the 'setup' step uses the new PRGN.
- *             ga.setup();
- *         }
- *
- *         ga.evolve(100);
+ *         final Engine&lt;DoubleGene, Double&gt; engine = ...;
+ *         final EvolutionResult&lt;DoubleGene, Double&gt; result = engine
+ *              // Initialize the evolution stream with the given genotypes.
+ *             .stream(genotypes)
+ *             .limit(100)
+ *             .collect(toBestEvolutionResult());
  *     }
  * }
  * [/code]
@@ -89,7 +93,7 @@ import org.jenetics.internal.util.require;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-08-05 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-20 $</em>
  */
 public final class RandomRegistry {
 	private RandomRegistry() {require.noInstance();}
@@ -151,27 +155,115 @@ public final class RandomRegistry {
 	}
 
 	/**
-	 * Opens a new {@code Scope} with the given random engine.
+	 * Executes the consumer code using the given {@code random} engine.
 	 *
+	 * [code]
+	 * final MSeq&lt;Integer&gt; seq = ...
+	 * using(new Random(123), r -&gt; {
+	 *     seq.shuffle();
+	 * });
+	 * [/code]
+	 *
+	 * The example above shuffles the given integer {@code seq} <i>using</i> the
+	 * given {@code Random(123)} engine.
+	 *
+	 * @param random the PRNG used within the consumer
+	 * @param consumer the consumer which is executed with the <i>scope</i> of
+	 *        the given {@code random} engine.
 	 * @param <R> the type of the random engine
-	 * @param random the PRNG used for the opened scope.
-	 * @return the scope with the given random object.
+	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	@SuppressWarnings("unchecked")
-	public static <R extends Random> Scoped<R> scope(final R random) {
-		return CONTEXT.scope(() -> random, () -> random);
+	public static <R extends Random> void using(
+		final R random,
+		final Consumer<? super R> consumer
+	) {
+		CONTEXT.with(() -> random, r -> {
+			consumer.accept(random);
+			return null;
+		});
 	}
 
 	/**
-	 * Opens a new {@code Scope} with the given random engine.
+	 * Executes the consumer code using the given {@code random} engine.
+	 *
+	 * [code]
+	 * final MSeq&lt;Integer&gt; seq = ...
+	 * using(new LCG64ShiftRandom.ThreadLocal(), r -&gt; {
+	 *     seq.shuffle();
+	 * });
+	 * [/code]
+	 *
+	 * The example above shuffles the given integer {@code seq} <i>using</i> the
+	 * given {@code LCG64ShiftRandom.ThreadLocal()} engine.
+	 *
+	 * @param random the PRNG used within the consumer
+	 * @param consumer the consumer which is executed with the <i>scope</i> of
+	 *        the given {@code random} engine.
+	 * @param <R> the type of the random engine
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <R extends Random> void using(
+		final ThreadLocal<R> random,
+		final Consumer<? super R> consumer
+	) {
+		CONTEXT.with(random::get, r -> {
+			consumer.accept(random.get());
+			return null;
+		});
+	}
+
+	/**
+	 * Opens a new {@code Scope} with the given random engine and executes the
+	 * given function within it. The following example shows how to create a
+	 * reproducible list of genotypes:
+	 * [code]
+	 * final List&lt;Genotype&lt;DoubleGene&gt;&gt; genotypes =
+	 *     with(new LCG64ShiftRandom(123), r -&gt;
+	 *         Genotype.of(DoubleChromosome.of(0, 10)).instances()
+	 *            .limit(50)
+	 *            .collect(toList())
+	 *     );
+	 * [/code]
 	 *
 	 * @param <R> the type of the random engine
-	 * @param random the PRNG used for the opened scope.
-	 * @return the scope with the given random object.
+	 * @param <T> the function return type
+	 * @param random the PRNG used for the opened scope
+	 * @param function the function to apply within the random scope
+	 * @return the object returned by the given function
+	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	@SuppressWarnings("unchecked")
-	public static <R extends Random> Scoped<R> scope(final ThreadLocal<R> random) {
-		return CONTEXT.scope(random::get, random::get);
+	public static <R extends Random, T> T with(
+		final R random,
+		final Function<? super R, ? extends T> function
+	) {
+		return CONTEXT.with(() -> random, s -> function.apply(random));
+	}
+
+	/**
+	 * Opens a new {@code Scope} with the given random engine and executes the
+	 * given function within it. The following example shows how to create a
+	 * reproducible list of genotypes:
+	 * [code]
+	 * final List&lt;Genotype&lt;DoubleGene&gt;&gt; genotypes =
+	 *     with(new LCG64ShiftRandom.ThreadLocal(), random -&gt;
+	 *         Genotype.of(DoubleChromosome.of(0, 10)).instances()
+	 *            .limit(50)
+	 *            .collect(toList())
+	 *     );
+	 * [/code]
+	 *
+	 * @param <R> the type of the random engine
+	 * @param <T> the function return type
+	 * @param random the PRNG used for the opened scope
+	 * @param function the function to apply within the random scope
+	 * @return the object returned by the given function
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 */
+	public static <R extends Random, T> T with(
+		final ThreadLocal<R> random,
+		final Function<? super R, ? extends T> function
+	) {
+		return CONTEXT.with(random::get, s -> function.apply(random.get()));
 	}
 
 }

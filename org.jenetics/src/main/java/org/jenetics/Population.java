@@ -62,7 +62,7 @@ import org.jenetics.util.Factory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-10-28 $</em>
  */
 @XmlJavaTypeAdapter(Population.Model.Adapter.class)
 public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
@@ -298,12 +298,6 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	@Override
 	public <A> A[] toArray(final A[] a) {
 		return _population.toArray(a);
-	}
-
-	public List<Genotype<G>> getGenotypes() {
-		return _population.stream()
-			.map(pt -> pt.getGenotype())
-			.collect(toList());
 	}
 
 	@Override

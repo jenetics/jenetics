@@ -20,6 +20,7 @@
 package org.jenetics;
 
 import static java.lang.String.format;
+import static org.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
 import java.util.stream.IntStream;
@@ -29,19 +30,15 @@ import org.testng.annotations.Test;
 
 import org.jenetics.internal.util.Named;
 
-import org.jenetics.stat.Distribution;
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.StatisticsAssert;
-import org.jenetics.stat.UniformDistribution;
 import org.jenetics.util.Factory;
 import org.jenetics.util.LCG64ShiftRandom;
-import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Scoped;
 import org.jenetics.util.TestData;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-22 $</em>
+ * @version <em>$Date: 2014-10-19 $</em>
  */
 public class TournamentSelectorTest
 	extends SelectorTester<TournamentSelector<DoubleGene, Double>>
@@ -52,34 +49,25 @@ public class TournamentSelectorTest
 		return () -> new TournamentSelector<>(3);
 	}
 
-	@Override
-	protected Distribution<Double> getDistribution() {
-		return new UniformDistribution<>(getDomain());
-	}
-
-	@Override
-	@Test
-	public void selectDistribution() {
-		//throw new SkipException("TODO: implement this test.");
-	}
-
-	@Test(dataProvider = "expectedDistribution")
-	public void selectDist(
+	@Test(dataProvider = "expectedDistribution", invocationCount = 20, successPercentage = 95)
+	public void selectDistribution(
 		final Integer tournamentSize,
 		final Named<double[]> expected,
 		final Optimize opt
 	) {
-		final int npopulation = 250;
-		final int loops = 500;
+		final int loops = (int)(tournamentSize*1.7);
+		final int npopulation = POPULATION_COUNT;
 
-		final Histogram<Double> distribution = SelectorTester.distribution(
-			new TournamentSelector<DoubleGene, Double>(tournamentSize),
-			opt,
-			npopulation,
-			loops
-		);
+		using(new LCG64ShiftRandom.ThreadLocal(), r -> {
+			final Histogram<Double> distribution = SelectorTester.distribution(
+				new TournamentSelector<DoubleGene, Double>(tournamentSize),
+				opt,
+				npopulation,
+				loops
+			);
 
-		StatisticsAssert.assertDistribution(distribution, expected.value);
+			StatisticsAssert.assertDistribution(distribution, expected.value, 0.00001);
+		});
 	}
 
 	@DataProvider(name = "expectedDistribution")
@@ -117,21 +105,15 @@ public class TournamentSelectorTest
 	}
 
 	public static void main(final String[] args) {
-        writeDistributionData(Optimize.MINIMUM);
 		writeDistributionData(Optimize.MAXIMUM);
+        writeDistributionData(Optimize.MINIMUM);
 	}
 
 	private static void writeDistributionData(final Optimize opt) {
-		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
-		try (Scoped<LCG64ShiftRandom> sr = RandomRegistry.scope(random)) {
-
-			// For exact testing
-			//final int npopulation = 25_000;
-			//final int loops = 2_500_000;
-
-			// For fast testing
-			final int npopulation = 500;
-			final int loops = 10_000;
+		using(new LCG64ShiftRandom.ThreadLocal(), r -> {
+			final int npopulation = POPULATION_COUNT;
+			final int loops = 5_000_000;
+			//final int loops = 100_000;
 
 			printDistributions(
 				System.out,
@@ -141,7 +123,7 @@ public class TournamentSelectorTest
 				npopulation,
 				loops
 			);
-		}
+		});
 	}
 
 

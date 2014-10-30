@@ -20,10 +20,13 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.internal.math.random.nextBigInteger;
+import static org.jenetics.internal.math.random.nextLong;
 import static org.jenetics.internal.math.random.toDouble;
 import static org.jenetics.internal.math.random.toDouble2;
 import static org.jenetics.internal.math.random.toFloat;
 import static org.jenetics.internal.math.random.toFloat2;
+import static org.jenetics.stat.StatisticsAssert.assertUniformDistribution;
 
 import java.math.BigInteger;
 import java.util.Arrays;
@@ -36,12 +39,10 @@ import org.testng.annotations.Test;
 import org.jenetics.internal.math.random;
 
 import org.jenetics.stat.Histogram;
-import org.jenetics.stat.StatisticsAssert;
-import org.jenetics.stat.UniformDistribution;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date$</em>
+ * @version <em>$Date: 2014-08-28 $</em>
  */
 public class baseRandomTest {
 
@@ -50,7 +51,7 @@ public class baseRandomTest {
 		final long seed = random.seed();
 		final Random random = new Random(seed);
 
-		final BigInteger value = org.jenetics.internal.math.random.nextBigInteger(random, BigInteger.valueOf(n));
+		final BigInteger value = nextBigInteger(random, BigInteger.valueOf(n));
 
 		random.setSeed(seed);
 		Assert.assertEquals(value.intValueExact(), random.nextInt(n));
@@ -73,10 +74,10 @@ public class baseRandomTest {
 		final long seed = random.seed();
 		final Random random = new Random(seed);
 
-		final BigInteger value = org.jenetics.internal.math.random.nextBigInteger(random, BigInteger.valueOf(n));
+		final BigInteger value = nextBigInteger(random, BigInteger.valueOf(n));
 
 		random.setSeed(seed);
-		Assert.assertEquals(value.longValueExact(), org.jenetics.internal.math.random.nextLong(random, n));
+		Assert.assertEquals(value.longValueExact(), nextLong(random, n));
 	}
 
 	@DataProvider(name = "nextBigIntegerLongData")
@@ -97,7 +98,7 @@ public class baseRandomTest {
 		final Random random = new Random(seed);
 
 		final BigInteger n = new BigInteger(string);
-		final BigInteger value = org.jenetics.internal.math.random.nextBigInteger(random, n);
+		final BigInteger value = nextBigInteger(random, n);
 
 		Assert.assertTrue(value.compareTo(BigInteger.ZERO) >= 0);
 		Assert.assertTrue(value.compareTo(n) < 0);
@@ -153,8 +154,7 @@ public class baseRandomTest {
 			histogram.accept((double)toFloat(random.nextInt()));
 		}
 
-		final UniformDistribution<Double> distribution = new UniformDistribution<>(0.0, 1.0);
-		StatisticsAssert.assertDistribution(histogram, distribution);
+		assertUniformDistribution(histogram);
 	}
 
 	@Test(invocationCount = 5)
@@ -166,8 +166,7 @@ public class baseRandomTest {
 			histogram.accept((double)toFloat(random.nextLong()));
 		}
 
-		final UniformDistribution<Double> distribution = new UniformDistribution<>(0.0, 1.0);
-		StatisticsAssert.assertDistribution(histogram, distribution);
+		assertUniformDistribution(histogram);
 	}
 
 	@Test(invocationCount = 5)
@@ -179,8 +178,7 @@ public class baseRandomTest {
 			histogram.accept(toDouble(random.nextLong()));
 		}
 
-		final UniformDistribution<Double> distribution = new UniformDistribution<>(0.0, 1.0);
-		StatisticsAssert.assertDistribution(histogram, distribution);
+		assertUniformDistribution(histogram);
 	}
 
 	@Test(invocationCount = 5)
@@ -193,8 +191,7 @@ public class baseRandomTest {
 			histogram.accept(toDouble((int)(value >>> 32), (int)value));
 		}
 
-		final UniformDistribution<Double> distribution = new UniformDistribution<>(0.0, 1.0);
-		StatisticsAssert.assertDistribution(histogram, distribution);
+		assertUniformDistribution(histogram);
 	}
 
 	@Test(invocationCount = 5)
@@ -206,8 +203,7 @@ public class baseRandomTest {
 			histogram.accept((double)toFloat2(random.nextInt()));
 		}
 
-		final UniformDistribution<Double> distribution = new UniformDistribution<>(0.0, 1.0);
-		StatisticsAssert.assertDistribution(histogram, distribution);
+		assertUniformDistribution(histogram);
 	}
 
 	@Test(invocationCount = 5)
@@ -219,8 +215,7 @@ public class baseRandomTest {
 			histogram.accept((double)toFloat2(random.nextLong()));
 		}
 
-		final UniformDistribution<Double> distribution = new UniformDistribution<>(0.0, 1.0);
-		StatisticsAssert.assertDistribution(histogram, distribution);
+		assertUniformDistribution(histogram);
 	}
 
 	@Test(invocationCount = 5)
@@ -232,8 +227,7 @@ public class baseRandomTest {
 			histogram.accept(toDouble2(random.nextLong()));
 		}
 
-		final UniformDistribution<Double> distribution = new UniformDistribution<>(0.0, 1.0);
-		StatisticsAssert.assertDistribution(histogram, distribution);
+		assertUniformDistribution(histogram);
 	}
 
 	@Test(invocationCount = 5)
@@ -246,8 +240,7 @@ public class baseRandomTest {
 			histogram.accept(toDouble2((int)(value >>> 32), (int)value));
 		}
 
-		final UniformDistribution<Double> distribution = new UniformDistribution<>(0.0, 1.0);
-		StatisticsAssert.assertDistribution(histogram, distribution);
+		assertUniformDistribution(histogram);
 	}
 
 }

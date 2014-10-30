@@ -37,7 +37,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-06-01 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-25 $</em>
  */
 public abstract class Crossover<
 	G extends Gene<?, G>,
@@ -61,7 +61,7 @@ public abstract class Crossover<
 	protected final int recombine(
 		final Population<G, C> population,
 		final int[] individuals,
-		final int generation
+		final long generation
 	) {
 		final Random random = RandomRegistry.getRandom();
 

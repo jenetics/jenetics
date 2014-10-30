@@ -41,7 +41,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-06 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-10 $</em>
  */
 public final class bit {
 	private bit() {require.noInstance();}
@@ -556,34 +556,6 @@ public final class bit {
 		bytes[6] = (byte)(value >>>  8);
 		bytes[7] = (byte)(value);
 		return bytes;
-	}
-
-	static byte[] writeInt(final int v, final byte[] data, final int start) {
-		if (data.length < 4 + start) {
-			throw new IllegalArgumentException(
-				"Byte array to short: " + data.length
-			);
-		}
-
-		data[start]     = (byte)((v >>> 24) & 0xFF);
-		data[1 + start] = (byte)((v >>> 16) & 0xFF);
-		data[2 + start] = (byte)((v >>>  8) & 0xFF);
-		data[3 + start] = (byte)((v)        & 0xFF);
-
-		return data;
-	}
-
-	static int readInt(final byte[] data, final int start) {
-		if (data.length < 4 + start) {
-			throw new IllegalArgumentException(
-				"Byte array to short: " + data.length
-			);
-		}
-
-		return ((data[start]     << 24) +
-				(data[1 + start] << 16) +
-				(data[2 + start] << 8) +
-				(data[3 + start]));
 	}
 
 }

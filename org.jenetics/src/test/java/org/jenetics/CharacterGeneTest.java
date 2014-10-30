@@ -19,7 +19,8 @@
  */
 package org.jenetics;
 
-import static org.jenetics.stat.StatisticsAssert.assertDistribution;
+import static org.jenetics.stat.StatisticsAssert.assertUniformDistribution;
+import static org.jenetics.util.RandomRegistry.using;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
@@ -31,15 +32,12 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import org.jenetics.stat.Histogram;
-import org.jenetics.stat.UniformDistribution;
 import org.jenetics.util.CharSeq;
 import org.jenetics.util.Factory;
-import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-15 $</em>
+ * @version <em>$Date: 2014-10-19 $</em>
  */
 public class CharacterGeneTest extends GeneTester<CharacterGene> {
 
@@ -50,7 +48,7 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstanceDistribution() {
-		try (Scoped<Random> s = RandomRegistry.scope(new Random(12345))) {
+		using(new Random(12345), r -> {
 			final CharSeq characters = new CharSeq("0123456789");
 
 			final Factory<CharacterGene> factory = CharacterGene.of(characters);
@@ -67,8 +65,8 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 				histogram.accept(Long.valueOf(g2.getAllele().toString()));
 			}
 
-			assertDistribution(histogram, new UniformDistribution<>(0L, 10L));
-		}
+			assertUniformDistribution(histogram);
+		});
 	}
 
 	@Test

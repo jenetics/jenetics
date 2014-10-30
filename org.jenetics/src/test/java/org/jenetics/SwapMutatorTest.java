@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-14 $</em>
+ * @version <em>$Date: 2014-08-28 $</em>
  */
 public class SwapMutatorTest extends MutatorTestBase {
 
@@ -43,9 +43,8 @@ public class SwapMutatorTest extends MutatorTestBase {
 		final Integer nchromosomes,
 		final Integer npopulation
 	) {
-		final Population<DoubleGene, Double> p1 = newDoubleGenePopulation(
-					ngenes, nchromosomes, npopulation
-				);
+		final Population<DoubleGene, Double> p1 =
+			newDoubleGenePopulation(ngenes, nchromosomes, npopulation);
 		final Population<DoubleGene, Double> p2 = p1.copy();
 		Assert.assertEquals(p2, p1);
 
