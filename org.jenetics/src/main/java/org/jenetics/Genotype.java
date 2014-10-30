@@ -42,6 +42,7 @@ import org.jenetics.internal.util.reflect;
 
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 import org.jenetics.util.Seq;
 import org.jenetics.util.Verifiable;
 
@@ -71,7 +72,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-08-30 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-30 $</em>
  */
 @XmlJavaTypeAdapter(Genotype.Model.Adapter.class)
 public final class Genotype<G extends Gene<?, G>>
@@ -208,7 +209,7 @@ public final class Genotype<G extends Gene<?, G>>
 	@Override
 	public boolean isValid() {
 		if (_valid == null) {
-			_valid = _chromosomes.forAll(Chromosome::isValid);
+			_valid = _chromosomes.forAll(Verifiable::isValid);
 		}
 		return _valid;
 	}
@@ -220,7 +221,7 @@ public final class Genotype<G extends Gene<?, G>>
 	 */
 	@Override
 	public Genotype<G> newInstance() {
-		return new Genotype<>(_chromosomes.map(c -> c.newInstance()), _ngenes);
+		return new Genotype<>(_chromosomes.map(Factory::newInstance), _ngenes);
 	}
 
 	Genotype<G> newInstance(final ISeq<Chromosome<G>> chromosomes) {
@@ -247,9 +248,11 @@ public final class Genotype<G extends Gene<?, G>>
 	/**
 	 * Create a new Genotype from a given array of {@code Chromosomes}.
 	 *
+	 * @since 3.0
+	 *
 	 * @param <G> the gene type
-	 * @param chromosomes The {@code Chromosome} array the {@code Genotype}
-	 *         consists of.
+	 * @param first the first {@code Chromosome} of the {@code Genotype}
+	 * @param rest the rest of the genotypes chromosomes.
 	 * @return a new {@code Genotype} from the given chromosomes
 	 * @throws NullPointerException if {@code chromosomes} is null or one of its
 	 *         element.
@@ -257,10 +260,17 @@ public final class Genotype<G extends Gene<?, G>>
 	 */
 	@SafeVarargs
 	public static <G extends Gene<?, G>> Genotype<G> of(
-		final Chromosome<G>... chromosomes
+		final Chromosome<G> first,
+		final Chromosome<G>... rest
 	) {
-		return new Genotype<G>(ISeq.of(chromosomes));
+		final MSeq<Chromosome<G>> seq = MSeq.ofLength(1 +  rest.length);
+		seq.set(0, first);
+		for (int i = 0; i < rest.length; ++i) {
+			seq.set(i + 1, rest[i]);
+		}
+		return new Genotype<>(seq.toISeq());
 	}
+
 
 
 	/* *************************************************************************

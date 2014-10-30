@@ -40,7 +40,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-01 $</em>
+ * @version <em>$Date: 2014-10-30 $</em>
  */
 public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
@@ -131,6 +131,24 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 		for (int i = 0; i < bits.length(); ++i) {
 			assertEquals(c.getGene(i).getBit(), i % 2 == 0);
 		}
+	}
+
+	@Test
+	public void ones() {
+		final BitChromosome c = BitChromosome.of(1000, 0.5);
+
+		final int ones = (int)c.ones().count();
+		assertEquals(ones, c.bitCount());
+		assertTrue(c.ones().allMatch(c::get));
+	}
+
+	@Test
+	public void zeros() {
+		final BitChromosome c = BitChromosome.of(1000, 0.5);
+
+		final int zeros = (int)c.zeros().count();
+		assertEquals(zeros, c.length() - c.bitCount());
+		assertTrue(c.zeros().allMatch(i -> !c.get(i)));
 	}
 
 	@Test(invocationCount = 5)

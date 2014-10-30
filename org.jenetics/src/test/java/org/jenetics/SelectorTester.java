@@ -20,6 +20,7 @@
 package org.jenetics;
 
 import static java.lang.String.format;
+import static org.jenetics.util.RandomRegistry.using;
 
 import java.io.PrintStream;
 import java.text.NumberFormat;
@@ -30,7 +31,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -43,12 +43,10 @@ import org.jenetics.stat.Histogram;
 import org.jenetics.util.Factory;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.ObjectTester;
-import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-28 $</em>
+ * @version <em>$Date: 2014-10-19 $</em>
  */
 public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 	extends ObjectTester<S>
@@ -111,7 +109,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		final Factory<Phenotype<DoubleGene, Double>> ptf = () ->
 			Phenotype.of(Genotype.of(DoubleChromosome.of(0.0, 100.0)), ff, 1);
 
-		try (Scoped<Random> sr = RandomRegistry.scope(new LCG64ShiftRandom(543455))) {
+		using(new LCG64ShiftRandom(543455), r -> {
 			final Population<DoubleGene, Double> population = IntStream.range(0, size)
 				.mapToObj(i -> ptf.newInstance())
 				.collect(Population.toPopulation());
@@ -143,7 +141,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 					);
 				}
 			}
-		}
+		});
 	}
 
 	@DataProvider(name = "selectionPerformanceParameters")

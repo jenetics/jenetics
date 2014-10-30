@@ -32,6 +32,7 @@ import java.math.BigInteger;
 import java.util.BitSet;
 import java.util.Iterator;
 import java.util.ListIterator;
+import java.util.stream.IntStream;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -53,7 +54,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-08-01 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-30 $</em>
  */
 @XmlJavaTypeAdapter(BitChromosome.Model.Adapter.class)
 public class BitChromosome extends Number
@@ -334,6 +335,30 @@ public class BitChromosome extends Number
 			set.set(i, getGene(i).getBit());
 		}
 		return set;
+	}
+
+	/**
+	 * Return the indexes of the <i>ones</i> of this bit-chromosome as stream.
+	 *
+	 * @since 3.0
+	 *
+	 * @return the indexes of the <i>ones</i> of this bit-chromosome
+	 */
+	public IntStream ones() {
+		return IntStream.range(0, length())
+			.filter(index -> bit.get(_genes, index));
+	}
+
+	/**
+	 * Return the indexes of the <i>zeros</i> of this bit-chromosome as stream.
+	 *
+	 * @since 3.0
+	 *
+	 * @return the indexes of the <i>zeros</i> of this bit-chromosome
+	 */
+	public IntStream zeros() {
+		return IntStream.range(0, length())
+			.filter(index -> !bit.get(_genes, index));
 	}
 
 	@Override

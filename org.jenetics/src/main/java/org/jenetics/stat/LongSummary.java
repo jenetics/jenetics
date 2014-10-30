@@ -37,7 +37,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-07-10 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-17 $</em>
  */
 public final class LongSummary implements Serializable {
 
@@ -201,7 +201,7 @@ public final class LongSummary implements Serializable {
 	 * [code]
 	 * final Stream&lt;SomeObject&gt; stream = ...
 	 * final LongSummary summary = stream
-	 *     .collect(LongSummary.collector(v -&gt; v.longValue()));
+	 *     .collect(toLongSummary(v -&gt; v.longValue()));
 	 * [/code]
 	 *
 	 * @param mapper a mapping function to apply to each element
@@ -211,7 +211,7 @@ public final class LongSummary implements Serializable {
 	 *         {@code null}
 	 */
 	public static <T> Collector<T, ?, LongSummary>
-	collector(final ToLongFunction<? super T> mapper) {
+	toLongSummary(final ToLongFunction<? super T> mapper) {
 		requireNonNull(mapper);
 		return Collector.of(
 			LongSummaryStatistics::new,

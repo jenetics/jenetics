@@ -20,6 +20,7 @@
 package org.jenetics;
 
 import static java.lang.String.format;
+import static org.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
 import java.util.stream.IntStream;
@@ -33,13 +34,11 @@ import org.jenetics.stat.Histogram;
 import org.jenetics.stat.StatisticsAssert;
 import org.jenetics.util.Factory;
 import org.jenetics.util.LCG64ShiftRandom;
-import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Scoped;
 import org.jenetics.util.TestData;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-28 $</em>
+ * @version <em>$Date: 2014-10-19 $</em>
  */
 public class LinearRankSelectorTest
 	extends ProbabilitySelectorTester<LinearRankSelector<DoubleGene, Double>>
@@ -70,7 +69,7 @@ public class LinearRankSelectorTest
 		final int npopulation = POPULATION_COUNT;
 
 		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
-		try (Scoped<LCG64ShiftRandom> sr = RandomRegistry.scope(random)) {
+		using(random, r -> {
 			final Histogram<Double> distribution = SelectorTester.distribution(
 				new LinearRankSelector<>(nminus),
 				opt,
@@ -79,7 +78,7 @@ public class LinearRankSelectorTest
 			);
 
 			StatisticsAssert.assertDistribution(distribution, expected.value, 0.001);
-		}
+		});
 	}
 
 	@DataProvider(name = "expectedDistribution")
@@ -121,8 +120,7 @@ public class LinearRankSelectorTest
 
 	private static void writeDistributionData(final Optimize opt) {
 		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
-		try (Scoped<LCG64ShiftRandom> sr = RandomRegistry.scope(random)) {
-
+		using(random, r -> {
 			final int npopulation = POPULATION_COUNT;
 			//final int loops = 2_500_000;
 			final int loops = 100_000;
@@ -135,6 +133,6 @@ public class LinearRankSelectorTest
 				npopulation,
 				loops
 			);
-		}
+		});
 	}
 }

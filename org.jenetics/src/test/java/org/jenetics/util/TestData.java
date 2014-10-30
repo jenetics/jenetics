@@ -31,16 +31,21 @@ import java.io.UncheckedIOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.stream.Collectors;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import org.jenetics.internal.util.exception;
 
 /**
  * Helper class for reading test data from file. The file has the following
  * format: {@code $resource[$param1, $param2,...].dat}.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-22 $</em>
+ * @version <em>$Date: 2014-09-01 $</em>
  */
 public class TestData implements Iterable<String[]> {
 
@@ -85,31 +90,7 @@ public class TestData implements Iterable<String[]> {
 
 	@Override
 	public Iterator<String[]> iterator() {
-		return new Iterator<String[]>() {
-			private final Reader _reader = new Reader(getResourcePath());
-
-			private String[] _data = _reader.read();
-
-			@Override
-			public boolean hasNext() {
-				return _data != null;
-			}
-
-			@Override
-			public String[] next() {
-				final String[] current = _data;
-				_data = _reader.read();
-				if (_data == null) {
-					_reader.close();
-				}
-				return current;
-			}
-
-			@Override
-			public void remove() {
-				throw new UnsupportedOperationException();
-			}
-		};
+		return new DataIterator(getResourcePath());
 	}
 
 	/**
@@ -118,7 +99,17 @@ public class TestData implements Iterable<String[]> {
 	 * @return a stream with the data lines
 	 */
 	public Stream<String[]> stream() {
-		return StreamSupport.stream(spliterator(), false);
+		final DataIterator iterator = new DataIterator(getResourcePath());
+		final Spliterator<String[]> spliterator = Spliterators
+			.spliteratorUnknownSize(iterator, 0);
+
+		return StreamSupport
+			.stream(spliterator, false)
+			.onClose(iterator::close);
+	}
+
+	public LongStream longStream() {
+		return stream().mapToLong(line -> Long.parseLong(line[0]));
 	}
 
 	@Override
@@ -132,7 +123,7 @@ public class TestData implements Iterable<String[]> {
 	 *
 	 * @param resource the base resource name
 	 * @param parameters the test data parameters
-	 * @return
+	 * @return a new test data object
 	 */
 	public static TestData of(final String resource, final String... parameters) {
 		return new TestData(resource, parameters);
@@ -201,6 +192,42 @@ public class TestData implements Iterable<String[]> {
 	}
 
 	/**
+	 * The closeable line iterator.
+	 */
+	private static final class DataIterator
+		implements Iterator<String[]>, Closeable
+	{
+		private final Reader _reader;
+
+		private String[] _data;
+
+		DataIterator(final String resource) {
+			_reader = new Reader(resource);
+			_data = _reader.read();
+		}
+
+		@Override
+		public boolean hasNext() {
+			return _data != null;
+		}
+
+		@Override
+		public String[] next() {
+			final String[] current = _data;
+			_data = _reader.read();
+			if (_data == null) {
+				close();
+			}
+			return current;
+		}
+
+		@Override
+		public void close() {
+			_reader.close();
+		}
+	}
+
+	/**
 	 * The reader class used for reading the test data.
 	 */
 	private static final class Reader implements Closeable {
@@ -225,6 +252,7 @@ public class TestData implements Iterable<String[]> {
 
 				return line != null ? line.split(",") : null;
 			} catch (IOException e) {
+				exception.ignore(UncheckedIOException.class, this::close);
 				throw new UncheckedIOException(e);
 			}
 		}

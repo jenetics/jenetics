@@ -32,7 +32,7 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-27 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-07 $</em>
  */
 public interface ISeq<T>
 	extends
@@ -105,7 +105,7 @@ public interface ISeq<T>
 		return MSeq.of(values).toISeq();
 	}
 
-	public static <T> ISeq<T> of(final int length, Supplier<? extends T> supplier) {
+	public static <T> ISeq<T> of(Supplier<? extends T> supplier, final int length) {
 		return MSeq.<T>ofLength(length).fill(supplier).toISeq();
 	}
 

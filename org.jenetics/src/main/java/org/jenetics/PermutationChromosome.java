@@ -50,6 +50,7 @@ import org.jenetics.internal.util.reflect;
 
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
+import org.jenetics.util.Seq;
 
 
 /**
@@ -58,7 +59,7 @@ import org.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-08-01 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-10-30 $</em>
  */
 @XmlJavaTypeAdapter(PermutationChromosome.Model.Adapter.class)
 public final class PermutationChromosome<T>
@@ -247,26 +248,25 @@ public final class PermutationChromosome<T>
 		public List<Integer> order;
 
 		public static final class Adapter
-			extends XmlAdapter<Model, PermutationChromosome>
-		{
+			extends XmlAdapter<Model, PermutationChromosome> {
 			@Override
 			public Model marshal(final PermutationChromosome pc)
-				throws Exception
-			{
+				throws Exception {
 				final Model model = new Model();
 				model.length = pc.length();
 				model.alleles = pc.getValidAlleles()
 					.map(jaxb.Marshaller(pc.getValidAlleles().get(0)))
 					.asList();
-				model.order = pc.toSeq().map(AlleleIndex).asList();
+				model.order = ((Seq<EnumGene<?>>)pc.toSeq())
+					.map(EnumGene::getAlleleIndex)
+					.asList();
 
 				return model;
 			}
 
 			@Override
 			public PermutationChromosome unmarshal(final Model model)
-				throws Exception
-			{
+				throws Exception {
 				final ISeq alleles = ISeq.of(model.alleles)
 					.map(jaxb.Unmarshaller(model.alleles.get(0)));
 
@@ -275,9 +275,6 @@ public final class PermutationChromosome<T>
 				);
 			}
 		}
-
-		private static final Function<EnumGene<?>, Integer> AlleleIndex =
-			g -> g.getAlleleIndex();
 
 		private static Function<Integer, EnumGene<Object>>
 		Gene(final ISeq<Object> alleles) {

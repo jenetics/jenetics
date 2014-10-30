@@ -30,7 +30,7 @@ import org.jenetics.util.ObjectTester;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-15 $</em>
+ * @version <em>$Date: 2014-10-03 $</em>
  */
 public class GenotypeTest extends ObjectTester<Genotype<DoubleGene>> {
 
@@ -95,10 +95,10 @@ public class GenotypeTest extends ObjectTester<Genotype<DoubleGene>> {
     @Test
     public void numberOfGenes() {
 		final Genotype<DoubleGene> genotype = Genotype.of(
-			new DoubleChromosome(0.0, 1.0, 8),
-			new DoubleChromosome(1.0, 2.0, 10),
-			new DoubleChromosome(0.0, 10.0, 9),
-			new DoubleChromosome(0.1, 0.9, 5)
+			DoubleChromosome.of(0.0, 1.0, 8),
+			DoubleChromosome.of(1.0, 2.0, 10),
+			DoubleChromosome.of(0.0, 10.0, 9),
+			DoubleChromosome.of(0.1, 0.9, 5)
 		);
 		Assert.assertEquals(genotype.getNumberOfGenes(), 32);
     }

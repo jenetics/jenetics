@@ -19,31 +19,30 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.MSeq.toMSeq;
+import static org.jenetics.util.RandomRegistry.with;
+
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Random;
+import java.util.stream.Stream;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-07-02 $</em>
+ * @version <em>$Date: 2014-10-19 $</em>
  */
 public abstract class ObjectTester<T> {
 
 	protected abstract Factory<T> factory();
 
-	protected MSeq<T> newSameObjects(final int nobjects) {
-		final MSeq<T> objects = MSeq.ofLength(nobjects);
-
-		for (int i = 0; i < nobjects; ++i) {
-			try (Scoped<Random> s = RandomRegistry.scope(new Random(23487589))) {
-				objects.set(i, factory().newInstance());
-			}
-		}
-
-		return objects;
+	protected MSeq<T> newSameObjects(final int length) {
+		return Stream
+			.generate(() -> with(new Random(589), r -> factory().newInstance()))
+			.limit(length)
+			.collect(toMSeq());
 	}
 
 	@Test

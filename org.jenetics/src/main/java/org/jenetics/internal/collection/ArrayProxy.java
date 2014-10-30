@@ -23,11 +23,11 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
+import java.util.Spliterator;
 import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.stream.Stream;
-
-import org.jenetics.internal.util.IntRef;
+import java.util.stream.StreamSupport;
 
 import org.jenetics.util.Copyable;
 
@@ -36,7 +36,7 @@ import org.jenetics.util.Copyable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0 &mdash; <em>$Date: 2014-07-31 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-11 $</em>
  */
 public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	implements
@@ -197,8 +197,7 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	 * @return a stream with the elements of this {@code ArrayProxy}
 	 */
 	public Stream<T> stream() {
-		final IntRef index = new IntRef(start);
-		return Stream.generate(() -> __get__(index.value++)).limit(length);
+		return StreamSupport.stream(spliterator(), false);
 	}
 
 	/**
@@ -209,8 +208,11 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	 * @return a stream with the elements of this {@code ArrayProxy}
 	 */
 	public Stream<T> parallelStream() {
-		final IntRef index = new IntRef(start);
-		return Stream.generate(() -> __get__(index.value++)).limit(length);
+		return StreamSupport.stream(spliterator(), true);
+	}
+
+	public Spliterator<T> spliterator() {
+		return new ArrayProxySpliterator<>(this);
 	}
 
 	/**

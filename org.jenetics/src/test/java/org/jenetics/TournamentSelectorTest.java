@@ -20,6 +20,7 @@
 package org.jenetics;
 
 import static java.lang.String.format;
+import static org.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
 import java.util.stream.IntStream;
@@ -33,13 +34,11 @@ import org.jenetics.stat.Histogram;
 import org.jenetics.stat.StatisticsAssert;
 import org.jenetics.util.Factory;
 import org.jenetics.util.LCG64ShiftRandom;
-import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Scoped;
 import org.jenetics.util.TestData;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-28 $</em>
+ * @version <em>$Date: 2014-10-19 $</em>
  */
 public class TournamentSelectorTest
 	extends SelectorTester<TournamentSelector<DoubleGene, Double>>
@@ -59,8 +58,7 @@ public class TournamentSelectorTest
 		final int loops = (int)(tournamentSize*1.7);
 		final int npopulation = POPULATION_COUNT;
 
-		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
-		try (Scoped<LCG64ShiftRandom> sr = RandomRegistry.scope(random)) {
+		using(new LCG64ShiftRandom.ThreadLocal(), r -> {
 			final Histogram<Double> distribution = SelectorTester.distribution(
 				new TournamentSelector<DoubleGene, Double>(tournamentSize),
 				opt,
@@ -69,7 +67,7 @@ public class TournamentSelectorTest
 			);
 
 			StatisticsAssert.assertDistribution(distribution, expected.value, 0.00001);
-		}
+		});
 	}
 
 	@DataProvider(name = "expectedDistribution")
@@ -112,9 +110,7 @@ public class TournamentSelectorTest
 	}
 
 	private static void writeDistributionData(final Optimize opt) {
-		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
-		try (Scoped<LCG64ShiftRandom> sr = RandomRegistry.scope(random)) {
-
+		using(new LCG64ShiftRandom.ThreadLocal(), r -> {
 			final int npopulation = POPULATION_COUNT;
 			final int loops = 5_000_000;
 			//final int loops = 100_000;
@@ -127,7 +123,7 @@ public class TournamentSelectorTest
 				npopulation,
 				loops
 			);
-		}
+		});
 	}
 
 

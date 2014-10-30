@@ -20,6 +20,7 @@
 package org.jenetics;
 
 import static org.jenetics.stat.StatisticsAssert.assertUniformDistribution;
+import static org.jenetics.util.RandomRegistry.using;
 import static org.testng.Assert.assertEquals;
 
 import java.util.Random;
@@ -30,12 +31,10 @@ import org.testng.annotations.Test;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.util.Factory;
-import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-28 $</em>
+ * @version <em>$Date: 2014-10-19 $</em>
  */
 public class LongGeneTest extends NumericGeneTester<Long, LongGene> {
 
@@ -50,11 +49,11 @@ public class LongGeneTest extends NumericGeneTester<Long, LongGene> {
 		final Long max = (long)Integer.MAX_VALUE;
 		final Histogram<Long> histogram = Histogram.of(min, max, 10);
 
-		try (Scoped<?> s = RandomRegistry.scope(new Random(12345))) {
+		using(new Random(12345), r ->
 			IntStream.range(0, 200_000)
 				.mapToObj(i -> LongGene.of(min, max).getAllele())
-				.forEach(histogram::accept);
-		}
+				.forEach(histogram::accept)
+		);
 
 		assertUniformDistribution(histogram);
 	}

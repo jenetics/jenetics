@@ -28,12 +28,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.RandomAccess;
+import java.util.Spliterator;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import org.jenetics.internal.collection.SeqSpliterator;
 
 /**
  * General interface for a ordered, fixed sized, object sequence.
@@ -44,7 +47,7 @@ import java.util.stream.StreamSupport;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-30 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-30 $</em>
  */
 public interface Seq<T> extends Iterable<T> {
 
@@ -108,7 +111,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * @return a sequential Stream over the elements in this sequence
 	 */
 	public default Stream<T> stream() {
-		return StreamSupport.stream(spliterator(), false);
+		return StreamSupport.stream(new SeqSpliterator<>(this), false);
 	}
 
 	/**
@@ -121,7 +124,12 @@ public interface Seq<T> extends Iterable<T> {
 	 * collection
 	 */
 	public default Stream<T> parallelStream() {
-		return StreamSupport.stream(spliterator(), true);
+		return StreamSupport.stream(new SeqSpliterator<>(this), true);
+	}
+
+	@Override
+	public default Spliterator<T> spliterator() {
+		return new SeqSpliterator<T>(this);
 	}
 
 	/**
@@ -690,7 +698,7 @@ public interface Seq<T> extends Iterable<T> {
 	 */
 	public static <T> Collector<T, ?, Seq<T>> toSeq() {
 		return Collector.of(
-			(Supplier<List<T>>) ArrayList::new,
+			(Supplier<List<T>>)ArrayList::new,
 			List::add,
 			(left, right) -> { left.addAll(right); return left; },
 			Seq::of

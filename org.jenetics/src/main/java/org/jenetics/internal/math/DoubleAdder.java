@@ -35,7 +35,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-07-10 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-03 $</em>
  */
 public final class DoubleAdder
 	extends Number
@@ -110,6 +110,20 @@ public final class DoubleAdder
 		return this;
 	}
 
+	/**
+	 * Add the given values to this adder.
+	 *
+	 * @param values the values to add.
+	 * @return {@code this} adder, for command chaining
+	 */
+	public DoubleAdder add(final double[] values) {
+		for (int i = values.length; --i >= 0;) {
+			add(values[i]);
+		}
+
+		return this;
+	}
+
 	private void addWithCompensation(final double value) {
 		final double y = value - _compensation;
 		final double t = _sum + y;
@@ -132,6 +146,20 @@ public final class DoubleAdder
 		addWithCompensation(value._compensation);
 		_simpleSum += value._simpleSum;
 		return this;
+	}
+
+	/**
+	 * Add the given {@code value} to this adder, using the
+	 * <a href="http://en.wikipedia.org/wiki/Kahan_summation_algorithm">Kahan
+	 * summation algorithm</a>
+	 *
+	 * @param other the {@code value} to add
+	 * @return {@code this} adder, for command chaining
+	 * @throws java.lang.NullPointerException if the given {@code value} is
+	 *         {@code null}
+	 */
+	public DoubleAdder combine(final DoubleAdder other) {
+		return add(other);
 	}
 
 	public double value() {
@@ -181,4 +209,19 @@ public final class DoubleAdder
 		return Double.toString(doubleValue());
 	}
 
+
+	/* *************************************************************************
+	 * Some static helper methods.
+	 **************************************************************************/
+
+	/**
+	 * Return the sum of the given double array.
+	 *
+	 * @param values the values to sum up.
+	 * @return the sum of the given {@code values}.
+	 * @throws NullPointerException if the given array is {@code null}.
+	 */
+	public static double sum(final double[] values) {
+		return new DoubleAdder().add(values).doubleValue();
+	}
 }

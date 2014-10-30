@@ -52,7 +52,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-07-11 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-10-30 $</em>
  */
 @XmlJavaTypeAdapter(Phenotype.Model.Adapter.class)
 public final class Phenotype<
@@ -65,17 +65,14 @@ public final class Phenotype<
 		Serializable,
 		Runnable
 {
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 4L;
 
 	private final Genotype<G> _genotype;
 
-	private transient final
-	Function<? super Genotype<G>, ? extends C> _fitnessFunction;
+	private final Function<? super Genotype<G>, ? extends C> _fitnessFunction;
+	private final Function<? super C, ? extends C> _fitnessScaler;
 
-	private transient final
-	Function<? super C, ? extends C> _fitnessScaler;
-
-	private final int _generation;
+	private final long _generation;
 
 	//Storing the fitness value for lazy evaluation.
 	private C _rawFitness = null;
@@ -96,7 +93,7 @@ public final class Phenotype<
 		final Genotype<G> genotype,
 		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
 		final Function<? super C, ? extends C> fitnessScaler,
-		final int generation
+		final long generation
 	) {
 		_genotype = requireNonNull(genotype, "Genotype");
 		_fitnessFunction = requireNonNull(fitnessFunction, "Fitness function");
@@ -189,7 +186,7 @@ public final class Phenotype<
 	 *
 	 * @return The generation this {@link Phenotype} was created.
 	 */
-	public int getGeneration() {
+	public long getGeneration() {
 		return _generation;
 	}
 
@@ -200,7 +197,7 @@ public final class Phenotype<
 	 * @return the age of this phenotype:
 	 *          {@code currentGeneration - this.getGeneration()}.
 	 */
-	public int getAge(final int currentGeneration) {
+	public long getAge(final long currentGeneration) {
 		return currentGeneration - _generation;
 	}
 
@@ -253,7 +250,7 @@ public final class Phenotype<
 	 * @return New {@link Phenotype} with the same fitness {@link Function}.
 	 * @throws NullPointerException if the {@code genotype} is {@code null}.
 	 */
-	Phenotype<G, C> newInstance(final Genotype<G> genotype, final int generation) {
+	Phenotype<G, C> newInstance(final Genotype<G> genotype, final long generation) {
 		requireNonNull(genotype, "Genotype");
 		return of(genotype, _fitnessFunction, _fitnessScaler, generation);
 	}
@@ -316,7 +313,13 @@ public final class Phenotype<
 		final Function<? super Genotype<G>, C> fitnessFunction,
 		final int generation
 	) {
-		return of(genotype, fitnessFunction, a -> a, generation);
+		return of(
+			genotype,
+			fitnessFunction,
+			fitnessFunction instanceof Serializable ?
+				(Function<? super C, ? extends C> & Serializable)a -> a :
+				a -> a,
+			generation);
 	}
 
 	/**
@@ -338,7 +341,7 @@ public final class Phenotype<
 		final Genotype<G> genotype,
 		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
 		final Function<? super C, ? extends C> fitnessScaler,
-		final int generation
+		final long generation
 	) {
 		return new Phenotype<>(
 			genotype,
@@ -359,7 +362,7 @@ public final class Phenotype<
 	final static class Model {
 
 		@XmlAttribute(name = "generation", required = true)
-		public int generation;
+		public long generation;
 
 		@XmlElement(name = "genotype", required = true, nillable = false)
 		public Genotype.Model genotype;

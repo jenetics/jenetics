@@ -20,6 +20,7 @@
 package org.jenetics;
 
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
+import static org.jenetics.util.RandomRegistry.using;
 
 import java.util.Random;
 
@@ -28,15 +29,13 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import org.jenetics.stat.Histogram;
-import org.jenetics.stat.distribution;
+import org.jenetics.stat.dist;
 import org.jenetics.util.CharSeq;
 import org.jenetics.util.Factory;
-import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-28 $</em>
+ * @version <em>$Date: 2014-10-19 $</em>
  */
 public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 
@@ -47,7 +46,7 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstanceDistribution() {
-		try (Scoped<Random> s = RandomRegistry.scope(new Random(12345))) {
+		using(new Random(12345), r -> {
 			final CharSeq characters = new CharSeq("0123456789");
 			final CharacterChromosome chromosome = new CharacterChromosome(characters, 5000);
 
@@ -56,9 +55,9 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 				.map(g -> Long.valueOf(g.getAllele().toString()))
 				.forEach(histogram::accept);
 
-			final double[] expected = distribution.uniform(histogram.length());
+			final double[] expected = dist.uniform(histogram.length());
 			assertDistribution(histogram, expected);
-		}
+		});
     }
 
 	@Test(dataProvider = "genes")

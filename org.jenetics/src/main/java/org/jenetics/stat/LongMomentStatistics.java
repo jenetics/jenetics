@@ -43,10 +43,18 @@ import java.util.stream.Collector;
  *         LongMomentStatistics::combine
  *     );
  * [/code]
+ *
+ * For a non long stream, you can use a collector:
+ * [code]
+ * final Stream&lt;SomeObject&gt; stream = ...
+ * final LongMomentStatistics statistics = stream
+ *     .collect(toLongMomentStatistics(v -&gt; v.longValue()));
+ * [/code]
+ *
  * <p>
  * <b>Implementation note:</b>
  * <i>This implementation is not thread safe. However, it is safe to use
- * {@link #collector(ToLongFunction)}  on a parallel stream, because the parallel
+ * {@link #toLongMomentStatistics(ToLongFunction)}  on a parallel stream, because the parallel
  * implementation of {@link java.util.stream.Stream#collect Stream.collect()}
  * provides the necessary partitioning, isolation, and merging of results for
  * safe and efficient parallel execution.</i>
@@ -58,7 +66,7 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-16 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-03 $</em>
  */
 public class LongMomentStatistics
 	extends MomentStatistics
@@ -103,14 +111,17 @@ public class LongMomentStatistics
 	 *
 	 * @param other the other {@code LongMoments} statistics to combine with
 	 *        {@code this} one.
+	 * @return {@code this} statistics object
 	 * @throws java.lang.NullPointerException if the other statistical summary
 	 *         is {@code null}.
 	 */
-	public void combine(final LongMomentStatistics other) {
+	public LongMomentStatistics combine(final LongMomentStatistics other) {
 		super.combine(other);
 		_min = min(_min, other._min);
 		_max = max(_max, other._max);
 		_sum += other._sum;
+
+		return this;
 	}
 
 	/**
@@ -143,6 +154,14 @@ public class LongMomentStatistics
 		return _sum;
 	}
 
+	@Override
+	public String toString() {
+		return String.format(
+			"LongMomentStatistics[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s, s²=%s, S=%s, K=%s]",
+			getCount(), getMin(), getMax(), getSum(),
+			getMean(), getVariance(), getSkewness(), getKurtosis()
+		);
+	}
 
 	/**
 	 * Return a {@code Collector} which applies an long-producing mapping
@@ -152,7 +171,7 @@ public class LongMomentStatistics
 	 * [code]
 	 * final Stream&lt;SomeObject&gt; stream = ...
 	 * final LongMomentStatistics statistics = stream
-	 *     .collect(LongMomentStatistics.collector(v -&gt; v.longValue()));
+	 *     .collect(toLongMomentStatistics(v -&gt; v.longValue()));
 	 * [/code]
 	 *
 	 * @param mapper a mapping function to apply to each element
@@ -162,12 +181,12 @@ public class LongMomentStatistics
 	 *         {@code null}
 	 */
 	public static <T> Collector<T, ?, LongMomentStatistics>
-	collector(final ToLongFunction<? super T> mapper) {
+	toLongMomentStatistics(final ToLongFunction<? super T> mapper) {
 		requireNonNull(mapper);
 		return Collector.of(
 			LongMomentStatistics::new,
 			(r, t) -> r.accept(mapper.applyAsLong(t)),
-			(a, b) -> {a.combine(b); return a;}
+			LongMomentStatistics::combine
 		);
 	}
 

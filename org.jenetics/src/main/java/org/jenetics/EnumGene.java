@@ -53,7 +53,7 @@ import org.jenetics.util.RandomRegistry;
  * problems in combination with the {@link PermutationChromosome}.
  * </p>
  * The following code shows how to create a combinatorial genotype factory which
- * can be used when creating an {@link GeneticAlgorithm} instance.
+ * can be used when creating an {@link org.jenetics.engine.Engine} instance.
  * [code]
  * final ISeq&lt;Integer&gt; alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
  * final Factory&lt;Genotype&lt;EnumGene&lt;Integer&gt;&gt;&gt; gtf = Genotype.of(
@@ -75,7 +75,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-07-11 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-10-30 $</em>
  */
 @XmlJavaTypeAdapter(EnumGene.Model.Adapter.class)
 public final class EnumGene<A>
@@ -203,7 +203,7 @@ public final class EnumGene<A>
 
 	static <T> Supplier<EnumGene<T>> Gene(final ISeq<? extends T> validAlleles) {
 		final IntRef index = new IntRef();
-		return () -> new EnumGene<T>(index.value++, validAlleles);
+		return () -> new EnumGene<>(index.value++, validAlleles);
 	}
 
 	/**
@@ -240,7 +240,7 @@ public final class EnumGene<A>
 		final int alleleIndex,
 		final A... validAlleles
 	) {
-		return new EnumGene<A>(alleleIndex, ISeq.of(validAlleles));
+		return new EnumGene<>(alleleIndex, ISeq.of(validAlleles));
 	}
 
 	/**
