@@ -676,8 +676,8 @@ If you are using Gradle, you can use the following dependency string:
 \end_inset
 
 , it can be easily integrated into existing projects.
- The clear structuring of the different parts of an GA allows an easy adaption
- for different problem domains.
+ The very clear structuring of the different parts of an GA allows an easy
+ adaption for different problem domains.
 \end_layout
 
 \begin_layout Standard
@@ -772,6 +772,7 @@ Hello World
 \end_inset
 
  program.
+ This first example implements the well known bit-counting problem.
 \begin_inset listings
 lstparams "extendedchars=true,language=Java,numbers=left,stepnumber=1,tabsize=4"
 inline false
@@ -900,7 +901,7 @@ public class HelloWorld {
 
 \begin_layout Plain Layout
 
-        EvaluationResult<BitGene, Integer> result = engine.stream()
+        Genotype<BitGene> result = engine.stream()
 \end_layout
 
 \begin_layout Plain Layout
@@ -910,7 +911,7 @@ public class HelloWorld {
 
 \begin_layout Plain Layout
 
-            .collect(EvolutionResult.toBestEvaluationResult());
+            .collect(EvolutionResult.toBestGenotype());
 \end_layout
 
 \begin_layout Plain Layout
@@ -964,19 +965,43 @@ Hello World
 \end_layout
 
 \begin_layout Standard
-Now lets have a closer look at listing 
+Now we will have a closer look at listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Hello-World-GA"
 
 \end_inset
 
-: 
+ and discuss this simple program step by step: 
 \end_layout
 
 \begin_layout Enumerate
 The probably most challenging part is to transform the problem domain into
- a appropriate genotype (factory) representation.
+ a appropriate Genotype (factory) representation.
+ In our example we want to count the number of 
+\emph on
+ones
+\emph default
+ of a 
+\family typewriter
+BitChromosome
+\family default
+.
+ Since we are counting only the ones of one chromosome, we are adding only
+ one 
+\family typewriter
+BitChromosome
+\family default
+ to our 
+\family typewriter
+Genotype
+\family default
+.
+ In general, the Genotype can be created with 1 to 
+\begin_inset Formula $n$
+\end_inset
+
+ chromosomes.
  For detailed description of the genotype's structure refer section 
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -985,24 +1010,49 @@ reference "par:Genotype"
 \end_inset
 
 .
- 
 \end_layout
 
 \begin_layout Enumerate
 Once this is done, the fitness function which should be maximized, can be
  defined.
  Utilizing the new language features introduced in Java 8, we simply write
- a private static method, which takes the genotype we defined and calculates
+ a private static method, which takes the genotype we defined and calculate
  it's fitness value.
- A reference to this method is then used when creating the 
+ If we want to use the optimized bit-counting method, 
 \family typewriter
-Engine
+bitCount()
 \family default
- builder.
+, we have to cast the 
+\family typewriter
+Chromosome<BitGene>
+\family default
+ class to the actual used 
+\family typewriter
+BitChromosome
+\family default
+ class.
+ Since we know for sure that we created the 
+\family typewriter
+Genotype
+\family default
+ with a 
+\family typewriter
+BitChromosome
+\family default
+, this can be safely done.
+ A reference to the
+\family typewriter
+ eval
+\family default
+ method is then used as fitness function and passed to the 
+\family typewriter
+Engine.build
+\family default
+ method.
 \end_layout
 
 \begin_layout Enumerate
-In the third step the 
+In the third step we are creating the 
 \emph on
 evolution
 \emph default
@@ -1010,19 +1060,63 @@ evolution
 \family typewriter
 Engine
 \family default
- has to be created.
- The evolution Engine is responsible for applying the evolution steps on
- a given population.
- The engine is created via a builder where the selectors and alterers to
- be used.
+, which is responsible for changing, respectively evolving, a given population.
+ The Engine is highly configurable and takes parameters for controlling
+ the evolution and the computational environment.
+ For changing the evolution behavior, you can set different alterers and
+ selectors (see section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sec:Genetic-operators"
+
+\end_inset
+
+).
+ By changing the used 
+\family typewriter
+Executor
+\family default
+ service, you control the number of threads, the Engine is allowed to use.
+ An new 
+\family typewriter
+Engine
+\family default
+ instance can only be created via its builder, which is created by calling
+ the 
+\family typewriter
+Engine.builder
+\family default
+ method.
 \end_layout
 
 \begin_layout Enumerate
-Now we can create a new evolution stream from the engine.
- (You should make yourself familiar with the Java 8 stream classes.) Since
- the created evolution stream is unlimited, you have to limit it.
- In our example we will truncate the evolution stream after 100 generations.
- 
+In the last step, we can create a new EvolutionStream from our Engine.
+ The 
+\family typewriter
+EvolutionStream
+\family default
+ models of the 
+\emph on
+evolutionary
+\emph default
+ progress from one generation to another.
+ It also allows you to control the termination of the evolution process.
+ In our example, we simply truncate the stream after 100 generations.
+ If you don't limit the stream, the evolution stream will not terminate.
+ Since the EvolutionStream extends the java.\SpecialChar \-
+util.\SpecialChar \-
+stream.\SpecialChar \-
+Stream interface, you
+ can use the whole Java streaming API.
+ The final result, the best 
+\family typewriter
+Genotype
+\family default
+, is then collected with one of the predefined collectors of the 
+\family typewriter
+EvolutionResult
+\family default
+ class.
 \end_layout
 
 \begin_layout Standard
