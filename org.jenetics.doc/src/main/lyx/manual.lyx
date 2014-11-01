@@ -479,7 +479,7 @@ target "http://creativecommons.org/licenses/by-sa/3.0/at/"
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 License
@@ -668,7 +668,9 @@ status collapsed
 \begin_layout Plain Layout
 If you are using Gradle, you can use the following dependency string: 
 \family typewriter
-'org.bitbucket.fwilhelm:org.jenetics:3.0.0'
+'org.bitbucket.fwilhelm:\SpecialChar \-
+org.jenetics:\SpecialChar \-
+3.0.0'
 \family default
 .
 \end_layout
@@ -1107,12 +1109,13 @@ evolutionary
 util.\SpecialChar \-
 stream.\SpecialChar \-
 Stream interface, you
- can use the whole Java streaming API.
+ can therefore use the whole Java streaming API.
  The final result, the best 
 \family typewriter
 Genotype
 \family default
-, is then collected with one of the predefined collectors of the 
+ in our example, is then collected with one of the predefined collectors
+ of the 
 \family typewriter
 EvolutionResult
 \family default
@@ -1137,13 +1140,26 @@ Stream
 Collector
 \family default
  classes of Java 8.
+ Also the newly introduced lambda expressions and the functional interfaces
+ (SAM types) play an important roll in the library design.
  If this part of the Java API is new to you, it is recommended to make yourself
  familiar with it.
+ Good introductions for this can be found here ??, here ?? and here ??.
+ 
 \end_layout
 
 \begin_layout Standard
-The order of the single execution steps of an genetic algorithm may slightly
- differ from implementation to implementation.
+There are many other GA implementations out there and they may slightly
+ differ in the order of the single execution steps.
+ 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ uses an classical approach.
  Listing
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -6269,36 +6285,7 @@ The default PRNG used by the
 \family typewriter
  int
 \family default
- values)
-\begin_inset Foot
-status open
-
-\begin_layout Plain Layout
-The
-\emph on
- random
-\family typewriter
-\emph default
- IndexStream
-\family default
- implementation uses random
-\family typewriter
- int
-\family default
- values for creating the
-\emph on
- random
-\emph default
- indexes and this
-\family typewriter
- IndexStream
-\family default
- is used for selecting the genes, chromosomes and genotypes.
-\end_layout
-
-\end_inset
-
-.
+ values).
 \end_layout
 
 \begin_layout Subsection
