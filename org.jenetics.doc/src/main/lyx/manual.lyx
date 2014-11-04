@@ -2533,15 +2533,44 @@ reference "sub:Genes"
 \end_layout
 
 \begin_layout Paragraph
-EvolutionStream
+Engine
+\end_layout
+
+\begin_layout Standard
+The evolution Engine controls the how the evolution steps are executed.
+ The evolution Engine is used for performing the actual evolution of a give
+ population.
+ One evolution step is executed by calling the Engine.\SpecialChar \-
+evolve method, which
+ returns an EvolutionResult object.
+ This object contains the evolved Population plus additional information
+ like execution duration of the several evolution sub-steps and information
+ about the killed and as invalid marked individuals.
+ The Engine object doesn't contain any mutable global state and can therefore
+ safely used/called from different threads.
+ It is also possible to create more than one EvolutionStream from the Engine
+ and execute it in parallel.
 \end_layout
 
 \begin_layout Paragraph
-Engine
+EvolutionStream
+\end_layout
+
+\begin_layout Standard
+The EvolutionStream is a kind of execution handle, where you can define
+ termination condition of the evolution process and the final result.
+ The stream can be truncated with the limit methods of the EvolutionStream.
+ The final evolution result is determined by the collector applied to the
+ collect method.
 \end_layout
 
 \begin_layout Paragraph
 EvolutionResult
+\end_layout
+
+\begin_layout Standard
+The EvolutionResult is the intermediate result of one evolution step.
+ 
 \end_layout
 
 \begin_layout Section
@@ -7732,6 +7761,44 @@ Advanced configurations
 
 \begin_layout Standard
 This section describes some advanced GA setups/configurations.
+\end_layout
+
+\begin_layout Subsection
+Problem encoding
+\end_layout
+
+\begin_layout Standard
+This section contains some encoding examples for common problems.
+ The Genotype allows to encode the problem form zero to two dimensions.
+\end_layout
+
+\begin_layout Itemize
+0-dimensional encoding
+\end_layout
+
+\begin_layout Itemize
+1-dimensional encoding
+\end_layout
+
+\begin_layout Itemize
+2-dimensional encoding
+\end_layout
+
+\begin_layout Itemize
+Encoding combinatorial problems
+\end_layout
+
+\begin_layout Itemize
+Encoding of scalars
+\end_layout
+
+\begin_layout Subsection
+Termination
+\end_layout
+
+\begin_layout Standard
+This section gives a deeper look into the different way of terminating the
+ evolution or truncating the evolution stream, respectively
 \end_layout
 
 \begin_layout Standard
