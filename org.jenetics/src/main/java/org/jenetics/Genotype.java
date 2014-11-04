@@ -72,7 +72,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-28 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-11-04 $</em>
  */
 @XmlJavaTypeAdapter(Genotype.Model.Adapter.class)
 public final class Genotype<G extends Gene<?, G>>
@@ -171,6 +171,21 @@ public final class Genotype<G extends Gene<?, G>>
 		return _chromosomes.get(0).getGene();
 	}
 
+	/**
+	 * Return the gene from the given chromosome- and gene index. This is a
+	 * shortcut for {@code gt.getChromosome(chromosomeIndex).getGene(geneIndex)}.
+	 *
+	 * @since 3.0
+	 *
+	 * @param chromosomeIndex the chromosome index
+	 * @param geneIndex the gene index within the chromosome
+	 * @return the gene with the given indexes
+	 * @throws IndexOutOfBoundsException if the given indexes are not within the
+	 *         allowed range
+	 */
+	public G get(final int chromosomeIndex, final int geneIndex) {
+		return getChromosome(chromosomeIndex).getGene(geneIndex);
+	}
 
 	public ISeq<Chromosome<G>> toSeq() {
 		return _chromosomes;
