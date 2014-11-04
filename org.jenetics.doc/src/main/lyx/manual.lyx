@@ -7792,6 +7792,303 @@ Encoding combinatorial problems
 Encoding of scalars
 \end_layout
 
+\begin_layout Subsubsection
+Scalars
+\end_layout
+
+\begin_layout Standard
+Optimizing fitness function with one depended variable.
+ Jenetics contains three different numeric genes implementation: IntegerGene,
+ LongGene and DoubleGene.
+ Not every alterer is useful for scalar Genotypes.
+ For scalars the appropriate alterers would be the MeanAlterer, GaussianAlterer
+ and Mutator.
+ Alterers which would only change the position of single genes in the chromosome
+ or split and merge two chromosomes will have no effect for scalar Genotypes.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+1-dimensional encodings
+\end_layout
+
+\begin_layout Standard
+The BitChromosome forms the easiest one dimensional genotype, if the length
+ of the chromosome is greater then one.
+\end_layout
+
+\begin_layout Subsubsection
+2-dimensional encodings
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $A=\left[\begin{array}{ccc}
+a_{11} & a_{12} & a_{13}\\
+a_{21} & a_{22} & a_{23}\\
+0 & 0 & 1
+\end{array}\right]$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+a_{11} & = & s_{x}\left(\left(1+k_{x}k_{y}\right)\cos\theta+k_{y}\sin\theta\right)\\
+a_{12} & = & s_{x}\left(k_{x}\cos\theta+\sin\theta\right)\\
+a_{13} & = & t_{x}\\
+a_{21} & = & s_{y}\left(-\left(1+k_{x}k_{y}\right)\sin\theta+k_{y}\cos\theta\right)\\
+a_{22} & = & s_{y}\left(-k_{x}\sin\theta+\cos\theta\right)\\
+a_{23} & = & t_{y}
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $s_{x}$
+\end_inset
+
+: scale factor in 
+\begin_inset Formula $x$
+\end_inset
+
+ direction
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $s_{y}$
+\end_inset
+
+: scale factor in 
+\begin_inset Formula $y$
+\end_inset
+
+ direction
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $t_{x}$
+\end_inset
+
+: offset in 
+\begin_inset Formula $x$
+\end_inset
+
+ direction
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $t_{y}$
+\end_inset
+
+: offset in 
+\begin_inset Formula $y$
+\end_inset
+
+ direction
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\theta$
+\end_inset
+
+: angle of rotation clockwise around origin
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $k_{x}$
+\end_inset
+
+: shearing parallel to 
+\begin_inset Formula $x$
+\end_inset
+
+ axis
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $k_{y}$
+\end_inset
+
+: shearing parallel to 
+\begin_inset Formula $y$
+\end_inset
+
+ axis
+\end_layout
+
+\begin_layout Standard
+Affine transformation for registering two images
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Genotype.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Scale
+\end_layout
+
+\begin_layout Plain Layout
+
+    DoubleChromosome.of(0.1, 5.0, 2),
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Translation
+\end_layout
+
+\begin_layout Plain Layout
+
+    DoubleChromosome.of(-300.0, 300.0, 2),
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Rotation 			
+\end_layout
+
+\begin_layout Plain Layout
+
+    DoubleChromosome.of(-Math.PI, Math.PI),
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Shear
+\end_layout
+
+\begin_layout Plain Layout
+
+    DoubleChromosome.of(-0.5, 0.5, 2)
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Calculate the affine transformation matrix from the given Genotype.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static double[][] matrix(Genotype<Double> gt) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    final double sx = gt.get(0, 0).doubleValue();
+\end_layout
+
+\begin_layout Plain Layout
+
+    final double sy = gt.get(0, 1).doubleValue();
+\end_layout
+
+\begin_layout Plain Layout
+
+    final double tx = gt.get(1, 0).doubleValue();
+\end_layout
+
+\begin_layout Plain Layout
+
+    final double ty = gt.get(1, 1).doubleValue();
+\end_layout
+
+\begin_layout Plain Layout
+
+    final double th = gt.get(2, 0).doubleValue();
+\end_layout
+
+\begin_layout Plain Layout
+
+    final double kx = gt.get(3, 0).doubleValue();
+\end_layout
+
+\begin_layout Plain Layout
+
+    final double ky = gt.get(3, 1).doubleValue();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    return new double[][] {
+\end_layout
+
+\begin_layout Plain Layout
+
+        {sx*((1 + kx*ky)*cos(th) + ky*sin(th),
+\end_layout
+
+\begin_layout Plain Layout
+
+         sx*(kx*cos(th) + sin(th)), tx},
+\end_layout
+
+\begin_layout Plain Layout
+
+        {sy*(-(1 + kx*ky)*sin(th) + ky*cos(th)),
+\end_layout
+
+\begin_layout Plain Layout
+
+         sy*(-kx*sin(th) + cos(th)), ty},
+\end_layout
+
+\begin_layout Plain Layout
+
+        {0.0, 0.0, 1.0}
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsection
 Termination
 \end_layout
@@ -7799,6 +8096,14 @@ Termination
 \begin_layout Standard
 This section gives a deeper look into the different way of terminating the
  evolution or truncating the evolution stream, respectively
+\end_layout
+
+\begin_layout Subsubsection
+Steady fitness
+\end_layout
+
+\begin_layout Subsubsection
+Steady population
 \end_layout
 
 \begin_layout Standard
