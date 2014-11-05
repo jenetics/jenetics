@@ -46,8 +46,8 @@ import org.jenetics.util.MSeq;
  * Numeric chromosome implementation which holds 64 bit floating point numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-11-05 $</em>
  * @since 1.6
+ * @version 3.0 &mdash; <em>$Date: 2014-11-05 $</em>
  */
 @XmlJavaTypeAdapter(DoubleChromosome.Model.Adapter.class)
 public class DoubleChromosome
