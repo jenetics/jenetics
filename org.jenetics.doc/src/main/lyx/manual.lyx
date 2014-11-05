@@ -7451,310 +7451,6 @@ Statistics
 
 \end_layout
 
-\begin_layout Standard
-The GA statistics is the only object which doesn't define an interface which
- must be implemented.
- For extending the GA statistics you have to implement three classes.
-\end_layout
-
-\begin_layout Enumerate
-
-\family typewriter
-\series bold
-Statistics
-\family default
-\series default
-: Contains the actual statistics information and is an immutable
-\emph on
- value
-\emph default
- class.
- It is not required that derived classes are also immutable, but strongly
- recommended.
-\end_layout
-
-\begin_layout Enumerate
-
-\family typewriter
-\series bold
-Statistics.Builder
-\family default
-\series default
-: Is a classical object builder
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-https://en.wikipedia.org/wiki/Builder_pattern
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
- which is building
-\family typewriter
- Statistics
-\family default
- objects.
-\end_layout
-
-\begin_layout Enumerate
-
-\family typewriter
-\series bold
-Statistics.Calculator
-\family default
-\series default
-: Changing the statistics calculator lets the GA create an instance of your
- statistics object.
- The statistics object is not created directly but via the builder indirection.
- This is necessary because the GA also adds some statistical information
- to the statistics object.
-\end_layout
-
-\begin_layout Standard
-The following listing shows an excerpt of the statistics calculator which
- must be extended.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-public class Statistics {
-\end_layout
-
-\begin_layout Plain Layout
-
-    public static class Calculator<
-\end_layout
-
-\begin_layout Plain Layout
-
-        G extends Gene<?, G>,
-\end_layout
-
-\begin_layout Plain Layout
-
-        C extends Comparable<? super C>
-\end_layout
-
-\begin_layout Plain Layout
-
-    >
-\end_layout
-
-\begin_layout Plain Layout
-
-    {
-\end_layout
-
-\begin_layout Plain Layout
-
-        public Statistics.Builder<G, C> evaluate(
-\end_layout
-
-\begin_layout Plain Layout
-
-            Iterable<? extends Phenotype<G, C>> population,
-\end_layout
-
-\begin_layout Plain Layout
-
-            int generation,
-\end_layout
-
-\begin_layout Plain Layout
-
-            Optimize opt
-\end_layout
-
-\begin_layout Plain Layout
-
-        ) {
-\end_layout
-
-\begin_layout Plain Layout
-
-            ...
-\end_layout
-
-\begin_layout Plain Layout
-
-        }
-\end_layout
-
-\begin_layout Plain Layout
-
-    }
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "lis:Statistics-class"
-
-\end_inset
-
-
-\family typewriter
-Statistics
-\family default
- class
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The
-\family typewriter
- evaluate
-\family default
- method of the
-\family typewriter
- Statistics.Calculator
-\family default
- class return a builder, pre-configured with your actual statistics values,
- which will create the actual statistics object.
- This indirection is necessary because the GA is setting additional statistical
- information about killed and invalid individuals to the statistics object.
-\end_layout
-
-\begin_layout Standard
-The listing beneath shows the
-\family typewriter
- Statistics.Builder
-\family default
- class with some of its properties and the
-\family typewriter
- build
-\family default
- method.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-public class Statistics {
-\end_layout
-
-\begin_layout Plain Layout
-
-    public static class Builder<
-\end_layout
-
-\begin_layout Plain Layout
-
-        G extends Gene<?, G>,
-\end_layout
-
-\begin_layout Plain Layout
-
-        C extends Comparable<? super C>
-\end_layout
-
-\begin_layout Plain Layout
-
-    >
-\end_layout
-
-\begin_layout Plain Layout
-
-    {
-\end_layout
-
-\begin_layout Plain Layout
-
-        public Builder<G, C> invalid(int invalid);
-\end_layout
-
-\begin_layout Plain Layout
-
-        public Builder<G, C> killed(int killed);
-\end_layout
-
-\begin_layout Plain Layout
-
-        ...
-\end_layout
-
-\begin_layout Plain Layout
-
-        public Statistics<G, C> build();
-\end_layout
-
-\begin_layout Plain Layout
-
-    }
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "lis:Statistics.Builder-class"
-
-\end_inset
-
-
-\family typewriter
-Statistics.Builder
-\family default
- class
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The type of the statistics object returned by the GA is the same type as
- returned by the statistics builder.
- If you want to access specific values from your special statistics type,
- you have to cast it to your type.
-\end_layout
-
 \begin_layout Section
 Advanced configurations
 \end_layout
@@ -7793,7 +7489,7 @@ Encoding of scalars
 \end_layout
 
 \begin_layout Subsubsection
-Scalars
+Scalar numbers
 \end_layout
 
 \begin_layout Standard
@@ -7801,62 +7497,204 @@ Optimizing fitness function with one depended variable.
  Jenetics contains three different numeric genes implementation: IntegerGene,
  LongGene and DoubleGene.
  Not every alterer is useful for scalar Genotypes.
- For scalars the appropriate alterers would be the MeanAlterer, GaussianAlterer
- and Mutator.
+ For scalars the appropriate alterers would be the 
+\family typewriter
+MeanAlterer
+\family default
+, 
+\family typewriter
+GaussianAlterer
+\family default
+ and 
+\family typewriter
+Mutator
+\family default
+.
  Alterers which would only change the position of single genes in the chromosome
  or split and merge two chromosomes will have no effect for scalar Genotypes.
  
 \end_layout
 
 \begin_layout Subsubsection
-1-dimensional encodings
-\end_layout
-
-\begin_layout Standard
-The BitChromosome forms the easiest one dimensional genotype, if the length
- of the chromosome is greater then one.
+Number vectors
 \end_layout
 
 \begin_layout Subsubsection
-2-dimensional encodings
+Permutation
+\end_layout
+
+\begin_layout Subsubsection
+Affine transformation
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula $A=\left[\begin{array}{ccc}
+An affine transformation
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Affine_transformation
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://mathworld.wolfram.com/AffineTransformation.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ is usually performed by a matrix multiplication with a transformation matrix---
+in a homogeneous coordinates system
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Homogeneous_coordinates
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+ For a transformation in 
+\begin_inset Formula $\mathbb{R}^{2}$
+\end_inset
+
+, we can define the matrix 
+\begin_inset Formula $A$
+\end_inset
+
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Transformation_matrix
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{equation}
+A=\left[\begin{array}{ccc}
 a_{11} & a_{12} & a_{13}\\
 a_{21} & a_{22} & a_{23}\\
 0 & 0 & 1
-\end{array}\right]$
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula 
-\begin{eqnarray*}
-a_{11} & = & s_{x}\left(\left(1+k_{x}k_{y}\right)\cos\theta+k_{y}\sin\theta\right)\\
-a_{12} & = & s_{x}\left(k_{x}\cos\theta+\sin\theta\right)\\
-a_{13} & = & t_{x}\\
-a_{21} & = & s_{y}\left(-\left(1+k_{x}k_{y}\right)\sin\theta+k_{y}\cos\theta\right)\\
-a_{22} & = & s_{y}\left(-k_{x}\sin\theta+\cos\theta\right)\\
-a_{23} & = & t_{y}
-\end{eqnarray*}
+\end{array}\right].\label{eq:Transformation matrix}
+\end{equation}
 
 \end_inset
 
+ A simple representation can be done by creating a 
+\family typewriter
+Genotype
+\family default
+ which contains two 
+\family typewriter
+DoubleChromosome
+\family default
+s with a length of 
+\begin_inset Formula $3$
+\end_inset
 
+.
+ 
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Genotype.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    DoubleChromosome.of(min, max, 3),
+\end_layout
+
+\begin_layout Plain Layout
+
+    DoubleChromosome.of(min, max, 3)
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+The drawback with this kind of encoding is, that we will create a lot of
+ 
+\emph on
+invalid
+\emph default
+ (non-affine transformation matrices) during the evolution process, which
+ must be detected and discarded.
+ It is also difficult find the right parameters for the 
+\emph on
+min
+\emph default
+ and 
+\emph on
+max
+\emph default
+ values of the 
+\family typewriter
+DoubleChromosome
+\family default
+s.
 \end_layout
 
 \begin_layout Standard
-where
+A better approach will be to encode the transformation parameters instead
+ of the transformation matrix.
+ The affine transformation can be expressed by the following parameters:
 \end_layout
 
 \begin_layout Itemize
 \begin_inset Formula $s_{x}$
 \end_inset
 
-: scale factor in 
+ -- the scale factor in 
 \begin_inset Formula $x$
 \end_inset
 
@@ -7867,7 +7705,7 @@ where
 \begin_inset Formula $s_{y}$
 \end_inset
 
-: scale factor in 
+ -- the scale factor in 
 \begin_inset Formula $y$
 \end_inset
 
@@ -7878,7 +7716,7 @@ where
 \begin_inset Formula $t_{x}$
 \end_inset
 
-: offset in 
+ -- the offset in 
 \begin_inset Formula $x$
 \end_inset
 
@@ -7889,7 +7727,7 @@ where
 \begin_inset Formula $t_{y}$
 \end_inset
 
-: offset in 
+ -- the offset in 
 \begin_inset Formula $y$
 \end_inset
 
@@ -7900,14 +7738,14 @@ where
 \begin_inset Formula $\theta$
 \end_inset
 
-: angle of rotation clockwise around origin
+ -- the rotation angle clockwise around origin
 \end_layout
 
 \begin_layout Itemize
 \begin_inset Formula $k_{x}$
 \end_inset
 
-: shearing parallel to 
+ -- shearing parallel to 
 \begin_inset Formula $x$
 \end_inset
 
@@ -7918,7 +7756,7 @@ where
 \begin_inset Formula $k_{y}$
 \end_inset
 
-: shearing parallel to 
+ -- shearing parallel to 
 \begin_inset Formula $y$
 \end_inset
 
@@ -7926,10 +7764,11 @@ where
 \end_layout
 
 \begin_layout Standard
-Affine transformation for registering two images
-\end_layout
-
-\begin_layout Standard
+This parameters can then be represented by the following 
+\family typewriter
+Genotype
+\family default
+.
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -7987,11 +7826,41 @@ Genotype.of(
 
 \end_inset
 
+This encoding ensures that no invalid 
+\family typewriter
+Genotype
+\family default
+ will be created during the evolution process, since the crossover will
+ be only performed on the same kind of chromosome (same chromosome index).
+ To convert the 
+\family typewriter
+Genotype
+\family default
+ back to the transformation matrix 
+\begin_inset Formula $A$
+\end_inset
 
+, we can use the following equations:
 \end_layout
 
 \begin_layout Standard
-Calculate the affine transformation matrix from the given Genotype.
+\begin_inset Formula 
+\begin{eqnarray}
+a_{11} & = & s_{x}\left(\left(1+k_{x}k_{y}\right)\cos\theta+k_{y}\sin\theta\right)\nonumber \\
+a_{12} & = & s_{x}\left(k_{x}\cos\theta+\sin\theta\right)\nonumber \\
+a_{13} & = & t_{x}\nonumber \\
+a_{21} & = & s_{y}\left(-\left(1+k_{x}k_{y}\right)\sin\theta+k_{y}\cos\theta\right)\label{eq:Matrix parameters}\\
+a_{22} & = & s_{y}\left(-k_{x}\sin\theta+\cos\theta\right)\nonumber \\
+a_{23} & = & t_{y}\nonumber 
+\end{eqnarray}
+
+\end_inset
+
+In Java code, the conversion from the 
+\family typewriter
+Genotype
+\family default
+ to the transformation matrix will look like this:
 \end_layout
 
 \begin_layout Standard
@@ -8002,7 +7871,7 @@ status open
 
 \begin_layout Plain Layout
 
-static double[][] matrix(Genotype<Double> gt) {
+static double[][] toMatrix(final Genotype<DoubleGene> gt) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -8046,27 +7915,41 @@ static double[][] matrix(Genotype<Double> gt) {
 
 \begin_layout Plain Layout
 
+    final double a11 = sx*((1 + kx*ky)*cos(th) + ky*sin(th));
+\end_layout
+
+\begin_layout Plain Layout
+
+    final double a12 = sx*(kx*cos(th) + sin(th));
+\end_layout
+
+\begin_layout Plain Layout
+
+    final double a21 = sy*(-(1 + kx*ky)*sin(th) + ky*cos(th));
+\end_layout
+
+\begin_layout Plain Layout
+
+    final double a22 = sy*(-kx*sin(th) + cos(th));
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
     return new double[][] {
 \end_layout
 
 \begin_layout Plain Layout
 
-        {sx*((1 + kx*ky)*cos(th) + ky*sin(th),
+        {a11, a12, tx},
 \end_layout
 
 \begin_layout Plain Layout
 
-         sx*(kx*cos(th) + sin(th)), tx},
-\end_layout
-
-\begin_layout Plain Layout
-
-        {sy*(-(1 + kx*ky)*sin(th) + ky*cos(th)),
-\end_layout
-
-\begin_layout Plain Layout
-
-         sy*(-kx*sin(th) + cos(th)), ty},
+        {a21, a22, ty},
 \end_layout
 
 \begin_layout Plain Layout
@@ -8087,6 +7970,27 @@ static double[][] matrix(Genotype<Double> gt) {
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+For the introduced encoding all kind of alterers can be used.
+ Since we have one scalar 
+\family typewriter
+DoubleChromosome
+\family default
+, the rotation angle 
+\begin_inset Formula $\theta$
+\end_inset
+
+, it is recommended also to add an 
+\family typewriter
+MeanAlterer
+\family default
+ or 
+\family typewriter
+GaussianAlterer
+\family default
+ to the list of alterers.
 \end_layout
 
 \begin_layout Subsection
