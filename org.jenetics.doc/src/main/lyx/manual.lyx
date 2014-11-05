@@ -7519,6 +7519,117 @@ Mutator
 Number vectors
 \end_layout
 
+\begin_layout Standard
+If we want to optimize an 
+\begin_inset Formula $n$
+\end_inset
+
+-dimensional function, 
+\begin_inset Formula $f:\mathbb{R}^{n}\rightarrow\mathbb{R}$
+\end_inset
+
+, we have two possibilities for encoding the Genotype.
+ If all parts of the vector have the same domain, we simply create a Genotype
+ with a NumericalChromosome of the desired dimension.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Genotype.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    DoubleChromosome.of(min, max, n)
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+With this encoding is preferable, because you have the possibility to use
+ additional alterers like Crossover, which will have no effect for the other
+ possible encoding.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static double[] toVector(final Genotype<DoubleGene> gt) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return ((DoubleChromosome)gt.getChromosome()).toArray();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The second encoding 
+\emph on
+must
+\emph default
+ be used when your vector parts needs to have different min and max values.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Genotype.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    DoubleChromosome.of(min1, max1, 1),
+\end_layout
+
+\begin_layout Plain Layout
+
+    DoubleChromosome.of(min2, max2, 1),
+\end_layout
+
+\begin_layout Plain Layout
+
+    DoubleChromosome.of(min3, max3, 1),
+\end_layout
+
+\begin_layout Plain Layout
+
+    ...
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+This encoding has the advantage that it is possible to define different
+ ranges for every vector component.
+ But on the other hand it restricts the possible alterers to Mutator, MeanAltere
+r and GaussianAlterer.
+\end_layout
+
 \begin_layout Subsubsection
 Permutation
 \end_layout
