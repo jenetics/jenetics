@@ -6854,6 +6854,17 @@ target "http://jenetics.sourceforge.net/javadoc/index.html"
 .
 \end_layout
 
+\begin_layout Paragraph
+
+\family typewriter
+org.jenetics.stat
+\end_layout
+
+\begin_layout Standard
+This package contains classes and collectors for calculating statistical
+ moments.
+\end_layout
+
 \begin_layout Section
 Extending
 \family sans
@@ -7489,13 +7500,24 @@ Encoding of scalars
 \end_layout
 
 \begin_layout Subsubsection
-Scalar numbers
+Real function
 \end_layout
 
 \begin_layout Standard
-Optimizing fitness function with one depended variable.
- Jenetics contains three different numeric genes implementation: IntegerGene,
- LongGene and DoubleGene.
+Optimizing fitness function with one depended (scalar) variable.
+ Jenetics contains three different numeric genes implementation: 
+\family typewriter
+IntegerGene
+\family default
+, 
+\family typewriter
+LongGene
+\family default
+ and 
+\family typewriter
+DoubleGene
+\family default
+.
  Not every alterer is useful for scalar Genotypes.
  For scalars the appropriate alterers would be the 
 \family typewriter
@@ -7513,10 +7535,49 @@ Mutator
  Alterers which would only change the position of single genes in the chromosome
  or split and merge two chromosomes will have no effect for scalar Genotypes.
  
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Genotype.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    DoubleChromosome.of(min, max, 1)
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Alterers:
+\end_layout
+
+\begin_layout Itemize
+Mutator
+\end_layout
+
+\begin_layout Itemize
+MeanAlterer
+\end_layout
+
+\begin_layout Itemize
+GaussianAlterer
 \end_layout
 
 \begin_layout Subsubsection
-Number vectors
+Scalar function
 \end_layout
 
 \begin_layout Standard
@@ -7530,7 +7591,7 @@ If we want to optimize an
 
 , we have two possibilities for encoding the Genotype.
  If all parts of the vector have the same domain, we simply create a Genotype
- with a NumericalChromosome of the desired dimension.
+ with a NumericChromosome of the desired dimension.
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -7631,7 +7692,7 @@ r and GaussianAlterer.
 \end_layout
 
 \begin_layout Subsubsection
-Permutation
+Vector function
 \end_layout
 
 \begin_layout Subsubsection
