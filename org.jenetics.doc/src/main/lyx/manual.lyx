@@ -5326,7 +5326,7 @@ width "90text%"
 special "none"
 height "1in"
 height_special "totalheight"
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset CommandInset line
@@ -7476,27 +7476,6 @@ Problem encoding
 
 \begin_layout Standard
 This section contains some encoding examples for common problems.
- The Genotype allows to encode the problem form zero to two dimensions.
-\end_layout
-
-\begin_layout Itemize
-0-dimensional encoding
-\end_layout
-
-\begin_layout Itemize
-1-dimensional encoding
-\end_layout
-
-\begin_layout Itemize
-2-dimensional encoding
-\end_layout
-
-\begin_layout Itemize
-Encoding combinatorial problems
-\end_layout
-
-\begin_layout Itemize
-Encoding of scalars
 \end_layout
 
 \begin_layout Subsubsection
@@ -7504,37 +7483,70 @@ Real function
 \end_layout
 
 \begin_layout Standard
-Optimizing fitness function with one depended (scalar) variable.
- Jenetics contains three different numeric genes implementation: 
+
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ contains three different numeric gene and chromosome implementations, which
+ can be used to encode a real function, 
+\begin_inset Formula $f:\,\mathbb{R}\rightarrow\mathbb{R}$
+\end_inset
+
+: 
+\end_layout
+
+\begin_layout Itemize
+
 \family typewriter
 IntegerGene
 \family default
-, 
+/
 \family typewriter
-LongGene
+Chromosome
+\family default
+, 
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+LongGene/Chromosome
 \family default
  and 
+\end_layout
+
+\begin_layout Itemize
+
 \family typewriter
 DoubleGene
 \family default
-.
- Not every alterer is useful for scalar Genotypes.
- For scalars the appropriate alterers would be the 
+/
 \family typewriter
-MeanAlterer
-\family default
-, 
-\family typewriter
-GaussianAlterer
-\family default
- and 
-\family typewriter
-Mutator
+Chromosome
 \family default
 .
- Alterers which would only change the position of single genes in the chromosome
- or split and merge two chromosomes will have no effect for scalar Genotypes.
- 
+\end_layout
+
+\begin_layout Standard
+It is quite easy to encode a real function.
+ Only the minimum and maximum value of the function domain must be defined.
+ The 
+\family typewriter
+Double\SpecialChar \-
+Chromosome
+\family default
+ of length 1 is then wrapped into a 
+\family typewriter
+Genotype
+\family default
+.
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -7557,23 +7569,160 @@ Genotype.of(
 
 \end_inset
 
+Decoding the double value from the Genotype is also straight forward.
+ Just get the first gene from the first chromosome, with the 
+\family typewriter
+getGene()
+\family default
+ method, and convert it to a 
+\family typewriter
+double
+\family default
+.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
 
+\begin_layout Plain Layout
+
+static double toDouble(final Genotype<DoubleGene> gt) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return gt.getGene().doubleValue();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+When the 
+\family typewriter
+Genotype
+\family default
+ only contains 
+\emph on
+scalar
+\emph default
+ chromosomes
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Scalar chromosomes contain only one gene.
+\end_layout
+
+\end_inset
+
+, it should be clear, that it can't be altered by every 
+\family typewriter
+Alterer
+\family default
+.
+ That means, that non of the 
+\family typewriter
+Crossover
+\family default
+ alterers will be able to create modified 
+\family typewriter
+Genotype
+\family default
+s.
+ For 
+\emph on
+scalars
+\emph default
+ the appropriate alterers would be the 
+\family typewriter
+MeanAlterer
+\family default
+, 
+\family typewriter
+GaussianAlterer
+\family default
+ and 
+\family typewriter
+Mutator
+\family default
+.
 \end_layout
 
 \begin_layout Standard
-Alterers:
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90text%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
 \end_layout
 
-\begin_layout Itemize
-Mutator
-\end_layout
+\begin_layout Plain Layout
 
-\begin_layout Itemize
+\family sans
+\emph on
+Scalar
+\emph default
+ 
+\family typewriter
+Chromosome
+\family sans
+s and/\SpecialChar \-
+or 
+\family typewriter
+Genotype
+\family sans
+s can only be altererd by 
+\family typewriter
 MeanAlterer
+\family sans
+, 
+\family typewriter
+GaussianAlterer
+\family sans
+ and 
+\family typewriter
+Mutator
+\family sans
+ classes.
 \end_layout
 
-\begin_layout Itemize
-GaussianAlterer
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
@@ -7581,17 +7730,44 @@ Scalar function
 \end_layout
 
 \begin_layout Standard
-If we want to optimize an 
+Optimizing a function 
+\begin_inset Formula $f\left(x_{1},...,x_{n}\right)$
+\end_inset
+
+ of one or more variable whose range is one-dimensional, we have two possibiliti
+es for the Genotype encoding.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "MathWorld_Weisstein"
+
+\end_inset
+
+ For the 
+\emph on
+first
+\emph default
+ encoding we expect that all variables, 
+\begin_inset Formula $x_{i}$
+\end_inset
+
+, have the same minimum and maximum value.
+ In this case we can simply create a 
+\family typewriter
+Genotype
+\family default
+ with a 
+\family typewriter
+\emph on
+Numeric
+\emph default
+\SpecialChar \-
+Chromosome
+\family default
+ of the desired length 
 \begin_inset Formula $n$
 \end_inset
 
--dimensional function, 
-\begin_inset Formula $f:\mathbb{R}^{n}\rightarrow\mathbb{R}$
-\end_inset
-
-, we have two possibilities for encoding the Genotype.
- If all parts of the vector have the same domain, we simply create a Genotype
- with a NumericChromosome of the desired dimension.
+.
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -7614,9 +7790,22 @@ Genotype.of(
 
 \end_inset
 
-With this encoding is preferable, because you have the possibility to use
- additional alterers like Crossover, which will have no effect for the other
- possible encoding.
+The decoding of the Genotype requires a cast of the first Chromosome to
+ a DoubleChromosome.
+ With a call to the 
+\family typewriter
+DoubleChromosome.\SpecialChar \-
+toArray()
+\family default
+ method we return the variables 
+\begin_inset Formula $\left(x_{1},...,x_{n}\right)$
+\end_inset
+
+ as 
+\family typewriter
+double[]
+\family default
+ array.
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -7624,7 +7813,7 @@ status open
 
 \begin_layout Plain Layout
 
-static double[] toVector(final Genotype<DoubleGene> gt) {
+static double[] toScalars(final Genotype<DoubleGene> gt) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -7639,15 +7828,63 @@ static double[] toVector(final Genotype<DoubleGene> gt) {
 
 \end_inset
 
-
+With the 
+\emph on
+first
+\emph default
+ encoding you have the possibility use all available alterers, including
+ all 
+\family typewriter
+Crossover
+\family default
+ alterer classes.
 \end_layout
 
 \begin_layout Standard
-The second encoding 
+The 
+\emph on
+second
+\emph default
+ encoding 
 \emph on
 must
 \emph default
- be used when your vector parts needs to have different min and max values.
+ be used if the minimum and maximum value of the variables 
+\begin_inset Formula $x_{i}$
+\end_inset
+
+ can't be the same for all 
+\begin_inset Formula $i$
+\end_inset
+
+.
+ For the different domains, each variable 
+\begin_inset Formula $x_{i}$
+\end_inset
+
+ is represented by a 
+\family typewriter
+\emph on
+Numeric
+\emph default
+\SpecialChar \-
+Chromosome
+\family default
+ with length one.
+ The final 
+\family typewriter
+Genotype
+\family default
+ will consist of 
+\begin_inset Formula $n$
+\end_inset
+
+ 
+\family typewriter
+Chromosome
+\family default
+s with length one.
+ 
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -7685,14 +7922,168 @@ Genotype.of(
 
 \end_inset
 
-This encoding has the advantage that it is possible to define different
- ranges for every vector component.
- But on the other hand it restricts the possible alterers to Mutator, MeanAltere
-r and GaussianAlterer.
+With the help of the new Java streaming API, the decoding of the Genotype
+ can be done in a view lines.
+ The 
+\family typewriter
+Double\SpecialChar \-
+Chromosome
+\family default
+ stream, which is created from the chromosome 
+\family typewriter
+Seq
+\family default
+, is first mapped to 
+\family typewriter
+double
+\family default
+ values and then collected into an array.
+ 
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static double[] toScalars(final Genotype<DoubleGene> gt) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return gt.toSeq().stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+        .mapToDouble(c -> c.getGene().doubleValue())
+\end_layout
+
+\begin_layout Plain Layout
+
+        .toArray();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+As already mentioned, with the use of scalar chromosomes we can only use
+ the 
+\family typewriter
+MeanAlterer
+\family default
+, 
+\family typewriter
+GaussianAlterer
+\family default
+ or 
+\family typewriter
+Mutator
+\family default
+ alterer class.
 \end_layout
 
 \begin_layout Subsubsection
 Vector function
+\end_layout
+
+\begin_layout Standard
+A function of one or more variables whose range is 
+\begin_inset Formula $n$
+\end_inset
+
+-dimensional, as compared to a scalar function, whose range is one-dimensional.
+ Vector functions are also called vector-valued functions.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "MathWorld_Weisstein2"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Genotype.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    DoubleChromosome.of(min1, max1, n),
+\end_layout
+
+\begin_layout Plain Layout
+
+    DoubleChromosome.of(min2, max2, n),
+\end_layout
+
+\begin_layout Plain Layout
+
+    DoubleChromosome.of(min3, max3, n),
+\end_layout
+
+\begin_layout Plain Layout
+
+    ...
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static double[][] toVectors(final Genotype<DoubleGene> gt) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return gt.toSeq().stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+        .map(DoubleChromosome.class::cast)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .map(DoubleChromosome::toArray)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .toArray(double[][]::new);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
@@ -7702,7 +8093,7 @@ Affine transformation
 \begin_layout Standard
 An affine transformation
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
@@ -7715,7 +8106,16 @@ https://en.wikipedia.org/wiki/Affine_transformation
 
 \end_inset
 
-, 
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
 \begin_inset Flex URL
 status collapsed
 
@@ -8131,7 +8531,7 @@ static double[][] toMatrix(final Genotype<DoubleGene> gt) {
 
 \begin_layout Plain Layout
 
-    }
+    };
 \end_layout
 
 \begin_layout Plain Layout
