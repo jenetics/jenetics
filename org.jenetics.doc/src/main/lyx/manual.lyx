@@ -2569,8 +2569,86 @@ EvolutionResult
 \end_layout
 
 \begin_layout Standard
-The EvolutionResult is the intermediate result of one evolution step.
- 
+The 
+\family typewriter
+EvolutionResult
+\family default
+ is the intermediate result of one evolution step.
+\end_layout
+
+\begin_layout Paragraph
+EvolutionStatistics
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+Evolution\SpecialChar \-
+Statistics
+\family default
+ class allows you to gather additional statistical information from the
+ evolution stream.
+ This is especially useful during the development phase of your application,
+ when you have to find the right parametrization of the evolution 
+\family typewriter
+Engine
+\family default
+.
+ There are two different specializations of the EvolutionStatistics object
+ available.
+ The first is the general one, which will be working for every kind of genes
+ and fitness types.
+ It can be created via the Evolution\SpecialChar \-
+Statistics.\SpecialChar \-
+ofComparable() method.
+ The second one collects additional statistical data for numeric fitness
+ values.
+ This can be created with the Evolution\SpecialChar \-
+Statistics.\SpecialChar \-
+ofNumber() method.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Engine<DoubleGene, Double> engine = ...
+\end_layout
+
+\begin_layout Plain Layout
+
+EvolutionStatistics<?, Double> statistics = 
+\end_layout
+
+\begin_layout Plain Layout
+
+    EvolutionStatistics.ofNumber();
+\end_layout
+
+\begin_layout Plain Layout
+
+engine.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+    .limit(100)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .peek(statistics)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .collect(toBestGenotype());
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -7422,10 +7500,6 @@ Alterer
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 The first parameter of the
 \family typewriter
  alter
@@ -7460,6 +7534,48 @@ Statistics
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+During the developing phase of an application which uses the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library additional statistical data about the evolution process is crucial.
+ Such data can help to optimize the parametrization of the evolution Engine.
+ A good starting point is to use the 
+\family typewriter
+Evolution\SpecialChar \-
+Statistics
+\family default
+ class in the 
+\family typewriter
+org.\SpecialChar \-
+jenetics.\SpecialChar \-
+engine
+\family default
+ package.
+ The basic usage of this class is described in xxx.
+\end_layout
+
+\begin_layout Standard
+If the data in the EvolutionStatistics class doesn't fit your needs, you
+ simply have to write your own statistics class.
+ It is not possible to derive from the existing Evolution\SpecialChar \-
+Statistics class.
+ This is not a real restriction, since you still can use the class by delegation.
+ Just implement the Java 
+\family typewriter
+Consumer<\SpecialChar \-
+Evolution\SpecialChar \-
+Result<G, C>\SpecialChar \-
+>
+\family default
+ interface.
 \end_layout
 
 \begin_layout Section
