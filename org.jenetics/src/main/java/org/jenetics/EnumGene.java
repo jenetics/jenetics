@@ -75,7 +75,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-10-28 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-11-12 $</em>
  */
 @XmlJavaTypeAdapter(EnumGene.Model.Adapter.class)
 public final class EnumGene<A>
@@ -98,7 +98,7 @@ public final class EnumGene<A>
 	 *         sequence is empty
 	 * @throws NullPointerException if the valid alleles seq is {@code null}.
 	 */
-	public EnumGene(final int alleleIndex, final ISeq<? extends A> validAlleles) {
+	EnumGene(final int alleleIndex, final ISeq<? extends A> validAlleles) {
 		if (validAlleles.length() == 0) {
 			throw new IllegalArgumentException(
 				"Array of valid alleles must be greater than zero."

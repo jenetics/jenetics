@@ -41,7 +41,7 @@ import org.jenetics.util.RandomRegistry;
  * NumericGene implementation which holds a 32 bit integer number.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-08-30 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-11-12 $</em>
  * @since 2.0
  */
 @XmlJavaTypeAdapter(IntegerGene.Model.Adapter.class)
@@ -65,7 +65,7 @@ public final class IntegerGene
 	 * @param max the maximal valid value of this gene (inclusively).
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	public IntegerGene(final Integer value, final Integer min, final Integer max) {
+	IntegerGene(final Integer value, final Integer min, final Integer max) {
 		super(value, min, max);
 	}
 

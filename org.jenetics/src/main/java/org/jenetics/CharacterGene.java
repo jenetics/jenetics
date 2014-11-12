@@ -47,7 +47,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-11-12 $</em>
  */
 @XmlJavaTypeAdapter(CharacterGene.Model.Adapter.class)
 public final class CharacterGene
@@ -84,7 +84,7 @@ public final class CharacterGene
 	 * @param validChars the set of valid characters.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	public CharacterGene(final Character character, final CharSeq validChars) {
+	CharacterGene(final Character character, final CharSeq validChars) {
 		_character = requireNonNull(character);
 		_validCharacters = requireNonNull(validChars);
 		_valid = _validCharacters.contains(_character);
