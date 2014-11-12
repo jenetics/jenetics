@@ -7480,6 +7480,23 @@ This section contains some encoding examples for common problems.
 
 \begin_layout Subsubsection
 Real function
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Real-function"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Encoding!Real function
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -7619,6 +7636,46 @@ Scalar chromosomes contain only one gene.
 
 \end_inset
 
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Chromosome!scalar
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Scalar chromosome
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Genotype!scalar
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Scalar genotype
+\end_layout
+
+\end_inset
+
 , it should be clear, that it can't be altered by every 
 \family typewriter
 Alterer
@@ -7727,6 +7784,23 @@ height "1pt"
 
 \begin_layout Subsubsection
 Scalar function
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Scalar-function"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Encoding!Scalar function
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -7907,12 +7981,12 @@ Genotype.of(
 
 \begin_layout Plain Layout
 
-    DoubleChromosome.of(min3, max3, 1),
+    ...
 \end_layout
 
 \begin_layout Plain Layout
 
-    ...
+    DoubleChromosome.of(minn, maxn, 1)
 \end_layout
 
 \begin_layout Plain Layout
@@ -7989,22 +8063,63 @@ Mutator
 
 \begin_layout Subsubsection
 Vector function
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Vector-function"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Encoding!Vector function
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-A function of one or more variables whose range is 
+A function 
+\begin_inset Formula $f\left(X_{1},...,X_{n}\right)$
+\end_inset
+
+, of one to 
 \begin_inset Formula $n$
 \end_inset
 
--dimensional, as compared to a scalar function, whose range is one-dimensional.
- Vector functions are also called vector-valued functions.
+ variables whose range is 
+\begin_inset Formula $m$
+\end_inset
+
+-dimensional, is encoded by 
+\begin_inset Formula $m$
+\end_inset
+
+ 
+\family typewriter
+Double\SpecialChar \-
+Chromosome
+\family default
+s of length 
+\begin_inset Formula $n$
+\end_inset
+
+.
 \begin_inset CommandInset citation
 LatexCommand cite
 key "MathWorld_Weisstein2"
 
 \end_inset
 
+ The domain--minimum and maximum values--of one variable 
+\begin_inset Formula $X_{i}$
+\end_inset
 
+ are the same in this encoding.
 \end_layout
 
 \begin_layout Standard
@@ -8020,17 +8135,12 @@ Genotype.of(
 
 \begin_layout Plain Layout
 
-    DoubleChromosome.of(min1, max1, n),
+    DoubleChromosome.of(min1, max1, m),
 \end_layout
 
 \begin_layout Plain Layout
 
-    DoubleChromosome.of(min2, max2, n),
-\end_layout
-
-\begin_layout Plain Layout
-
-    DoubleChromosome.of(min3, max3, n),
+    DoubleChromosome.of(min2, max2, m),
 \end_layout
 
 \begin_layout Plain Layout
@@ -8040,12 +8150,61 @@ Genotype.of(
 
 \begin_layout Plain Layout
 
+    DoubleChromosome.of(minn, maxn, m)
+\end_layout
+
+\begin_layout Plain Layout
+
 );
 \end_layout
 
 \end_inset
 
+The decoding of the vectors is quite easy with the help of the Java streaming
+ API.
+ In the first 
+\family typewriter
+map
+\family default
+ we have to cast the 
+\family typewriter
+Chromosome<DoubleGene>
+\family default
+ object to the actual 
+\family typewriter
+DoubleChromosome
+\family default
+.
+ The second 
+\family typewriter
+map
+\family default
+ then converts each 
+\family typewriter
+Double\SpecialChar \-
+Chromosome
+\family default
+ to an 
+\family typewriter
+double[]
+\family default
+ array, which is collected to an 
+\begin_inset Formula $2$
+\end_inset
 
+-dimensional 
+\family typewriter
+double[
+\emph on
+n
+\emph default
+][
+\emph on
+m
+\emph default
+]
+\family default
+ array afterwards.
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -8086,8 +8245,64 @@ static double[][] toVectors(final Genotype<DoubleGene> gt) {
 
 \end_layout
 
+\begin_layout Standard
+For the special case of 
+\begin_inset Formula $n=1$
+\end_inset
+
+, the decoding of the Genotype can be simplified to the decoding we introduced
+ for scalar functions in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Scalar-function"
+
+\end_inset
+
+.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static double[] toVector(final Genotype<DoubleGene> gt) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return ((DoubleChromosome)gt.getChromosome()).toArray();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsubsection
 Affine transformation
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Affine-transformation"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Encoding!Affine transformation
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -8664,7 +8879,7 @@ reference "sec:Build"
 \begin_layout Subsection
 Ones counting
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Examples!Ones counting
@@ -9878,6 +10093,9 @@ The following external projects are used for running and/or building the
 \series bold
 \emph on
 TestNG
+\series default
+\emph default
+
 \begin_inset Index idx
 status collapsed
 
@@ -9977,13 +10195,13 @@ Scope
 \series bold
 \emph on
 Apache Commons Math
+\series default
+\emph default
+
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
-
-\series bold
-\emph on
 Apache Commons Math
 \end_layout
 
@@ -10079,6 +10297,9 @@ Scope
 \series bold
 \emph on
 Java2Html
+\series default
+\emph default
+
 \begin_inset Index idx
 status collapsed
 
@@ -10186,15 +10407,21 @@ javadoc
 \series bold
 \emph on
 Gradle
+\series default
+\emph default
+
 \begin_inset Index idx
 status collapsed
 
 \begin_layout Plain Layout
-Gradle
+Gradel
 \end_layout
 
 \end_inset
 
+
+\series bold
+\emph on
 
 \begin_inset CommandInset label
 LatexCommand label
