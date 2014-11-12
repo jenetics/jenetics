@@ -23,14 +23,16 @@ package org.jenetics;
  * Base interface for numeric genes.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-07-16 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-11-12 $</em>
  * @since 1.6
  */
 public interface NumericGene<
 	N extends Number & Comparable<? super N>,
 	G extends NumericGene<N, G>
 >
-	extends BoundedGene<N, G>
+	extends
+		BoundedGene<N, G>,
+		Comparable<G>
 {
 
 	/**

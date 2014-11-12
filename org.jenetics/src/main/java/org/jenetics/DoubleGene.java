@@ -49,7 +49,8 @@ public final class DoubleGene
 	extends AbstractNumericGene<Double, DoubleGene>
 	implements
 		NumericGene<Double, DoubleGene>,
-		Mean<DoubleGene>
+		Mean<DoubleGene>,
+		Comparable<DoubleGene>
 {
 
 	private static final long serialVersionUID = 1L;
@@ -67,6 +68,11 @@ public final class DoubleGene
 	 */
 	DoubleGene(final Double value, final Double min, final Double max) {
 		super(value, min, max);
+	}
+
+	@Override
+	public int compareTo(final DoubleGene other) {
+		return _value.compareTo(other._value);
 	}
 
 	/**

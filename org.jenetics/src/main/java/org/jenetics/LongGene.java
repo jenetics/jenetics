@@ -48,8 +48,9 @@ import org.jenetics.util.RandomRegistry;
 public final class LongGene
 	extends AbstractNumericGene<Long, LongGene>
 	implements
-			NumericGene<Long, LongGene>,
-			Mean<LongGene>
+		NumericGene<Long, LongGene>,
+		Mean<LongGene>,
+		Comparable<LongGene>
 {
 
 	private static final long serialVersionUID = 1L;
@@ -67,6 +68,11 @@ public final class LongGene
 	 */
 	LongGene(final Long value, final Long min, final Long max) {
 		super(value, min, max);
+	}
+
+	@Override
+	public int compareTo(final LongGene other) {
+		return _value.compareTo(other._value);
 	}
 
 	/**

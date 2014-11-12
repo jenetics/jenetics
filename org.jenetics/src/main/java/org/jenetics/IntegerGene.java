@@ -48,8 +48,9 @@ import org.jenetics.util.RandomRegistry;
 public final class IntegerGene
 	extends AbstractNumericGene<Integer, IntegerGene>
 	implements
-			NumericGene<Integer, IntegerGene>,
-			Mean<IntegerGene>
+		NumericGene<Integer, IntegerGene>,
+		Mean<IntegerGene>,
+		Comparable<IntegerGene>
 {
 
 	private static final long serialVersionUID = 1L;
@@ -67,6 +68,11 @@ public final class IntegerGene
 	 */
 	IntegerGene(final Integer value, final Integer min, final Integer max) {
 		super(value, min, max);
+	}
+
+	@Override
+	public int compareTo(final IntegerGene other) {
+		return _value.compareTo(other._value);
 	}
 
 	/**
