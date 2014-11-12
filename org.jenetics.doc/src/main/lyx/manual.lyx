@@ -1877,7 +1877,7 @@ reference "sec:Genetic-operators"
 \end_layout
 
 \begin_layout Section
-Concept
+Architecture
 \end_layout
 
 \begin_layout Standard
@@ -2031,6 +2031,102 @@ The only exception is the
 Population
 \family default
  class, where it is possible to add and/or remove elements after it's creation.
+\end_layout
+
+\begin_layout Subsubsection
+Gene
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Gene
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+Gene
+\family default
+s are the basic building blocks of the
+\family sans
+\series bold
+\shape smallcaps
+ Jenetics
+\family default
+\series default
+\shape default
+ library.
+ They contain the actual information (alleles)
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Allele
+\end_layout
+
+\end_inset
+
+ of the encoded solution.
+ All implementations of the 
+\family typewriter
+Gene
+\family default
+ interfaces are final and immutable.
+ In fact, they are all value-based classes and fulfill the properties which
+ are described in the Java 8 API documentation
+\begin_inset CommandInset citation
+LatexCommand cite
+key "OracleJDKValueBasedClasses"
+
+\end_inset
+
+.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+It is also worth reading the blog entry from Stephen Colebourne: 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://blog.joda.org/2014/03/valjos-value-java-objects.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The available 
+\family typewriter
+Gene
+\family default
+ implementations should be sufficient for a very wide range of problem domains.
+ Refer to chapter
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Genes"
+
+\end_inset
+
+ for how to implement your own gene types.
+\end_layout
+
+\begin_layout Subsubsection
+Chromosome
 \end_layout
 
 \begin_layout Subsubsection
@@ -2251,6 +2347,10 @@ reference "fig:Genotype-structure"
 
 \begin_layout Subsubsection
 Phenotype
+\end_layout
+
+\begin_layout Subsection
+Engine
 \end_layout
 
 \begin_layout Subsubsection
@@ -2529,102 +2629,6 @@ height "1pt"
 \end_inset
 
 
-\end_layout
-
-\begin_layout Subsubsection
-Genes
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Gene
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-
-\family typewriter
-Gene
-\family default
-s are the basic building blocks of the
-\family sans
-\series bold
-\shape smallcaps
- Jenetics
-\family default
-\series default
-\shape default
- library.
- They contain the actual information (alleles)
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Allele
-\end_layout
-
-\end_inset
-
- of the encoded solution.
- All implementations of the 
-\family typewriter
-Gene
-\family default
- interfaces are final and immutable.
- In fact, they are all value-based classes and fulfill the properties which
- are described in the Java 8 API documentation
-\begin_inset CommandInset citation
-LatexCommand cite
-key "OracleJDKValueBasedClasses"
-
-\end_inset
-
-.
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-It is also worth reading the blog entry from Stephen Colebourne: 
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-http://blog.joda.org/2014/03/valjos-value-java-objects.html
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The available 
-\family typewriter
-Gene
-\family default
- implementations should be sufficient for a very wide range of problem domains.
- Refer to chapter
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "sub:Genes"
-
-\end_inset
-
- for how to implement your own gene types.
-\end_layout
-
-\begin_layout Subsection
-Engine
 \end_layout
 
 \begin_layout Paragraph
