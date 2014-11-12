@@ -1007,7 +1007,7 @@ Genotype
  For detailed description of the genotype's structure refer section 
 \begin_inset CommandInset ref
 LatexCommand vref
-reference "par:Genotype"
+reference "sub:Genotype"
 
 \end_inset
 
@@ -1991,7 +1991,49 @@ http://jenetics.sourceforge.net/javadoc/index.html
 
 \end_layout
 
-\begin_layout Paragraph
+\begin_layout Subsection
+Structural classes
+\end_layout
+
+\begin_layout Standard
+Most of the structural classes are pure data classes and can be treated
+ as 
+\emph on
+value
+\emph default
+ objects
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Value_object
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+ All Gene and Chromosome implementations are immutable
+\end_layout
+
+\begin_layout Standard
+The only exception is the 
+\family typewriter
+Population
+\family default
+ class, where it is possible to add and/or remove elements after it's creation.
+\end_layout
+
+\begin_layout Subsubsection
 Genotype
 \begin_inset Index idx
 status collapsed
@@ -2005,7 +2047,7 @@ Genotype
 
 \begin_inset CommandInset label
 LatexCommand label
-name "par:Genotype"
+name "sub:Genotype"
 
 \end_inset
 
@@ -2022,8 +2064,7 @@ The central class, the GA is working with, is the
 \emph on
  structural
 \emph default
- representative of an individual.
- The
+ representative of an individual, whereas the
 \family typewriter
  Phenotype
 \begin_inset Index idx
@@ -2037,12 +2078,13 @@ Phenotype
 
 
 \family default
- class is the
+ is the
 \emph on
  actual
 \emph default
- representative of an individual, but only consists of the genotype and
- the fitness function and doesn't change the basic structure.
+ representative of an individual.
+ but only consists of the genotype and the fitness function and doesn't
+ change the basic structure.
  The phenotype is
 \emph on
  only
@@ -2207,7 +2249,11 @@ reference "fig:Genotype-structure"
  has been chosen as gene type.
 \end_layout
 
-\begin_layout Paragraph
+\begin_layout Subsubsection
+Phenotype
+\end_layout
+
+\begin_layout Subsubsection
 Fitness function
 \begin_inset Index idx
 status collapsed
@@ -2339,7 +2385,7 @@ The first type parameter of the
  and the second type parameter determines the return type.
 \end_layout
 
-\begin_layout Paragraph
+\begin_layout Subsubsection
 Fitness scaler
 \begin_inset Index idx
 status collapsed
@@ -2485,7 +2531,7 @@ height "1pt"
 
 \end_layout
 
-\begin_layout Paragraph
+\begin_layout Subsubsection
 Genes
 \begin_inset Index idx
 status collapsed
@@ -2500,7 +2546,11 @@ Gene
 \end_layout
 
 \begin_layout Standard
-Genes are the basic building blocks of the
+
+\family typewriter
+Gene
+\family default
+s are the basic building blocks of the
 \family sans
 \series bold
 \shape smallcaps
@@ -2520,8 +2570,49 @@ Allele
 \end_inset
 
  of the encoded solution.
- The available Gene implementations should be sufficient for a very wide
- range of problem domains.
+ All implementations of the 
+\family typewriter
+Gene
+\family default
+ interfaces are final and immutable.
+ In fact, they are all value-based classes and fulfill the properties which
+ are described in the Java 8 API documentation
+\begin_inset CommandInset citation
+LatexCommand cite
+key "OracleJDKValueBasedClasses"
+
+\end_inset
+
+.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+It is also worth reading the blog entry from Stephen Colebourne: 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://blog.joda.org/2014/03/valjos-value-java-objects.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The available 
+\family typewriter
+Gene
+\family default
+ implementations should be sufficient for a very wide range of problem domains.
  Refer to chapter
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -2530,6 +2621,10 @@ reference "sub:Genes"
 \end_inset
 
  for how to implement your own gene types.
+\end_layout
+
+\begin_layout Subsection
+Engine
 \end_layout
 
 \begin_layout Paragraph
@@ -3740,7 +3835,7 @@ The mutator has to deal with the problem, that the genes are arranged in
  structure (see chapter 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "par:Genotype"
+reference "sub:Genotype"
 
 \end_inset
 
@@ -6627,7 +6722,7 @@ reference "fig:Genotype-structure"
  on page 
 \begin_inset CommandInset ref
 LatexCommand pageref
-reference "par:Genotype"
+reference "sub:Genotype"
 
 \end_inset
 
