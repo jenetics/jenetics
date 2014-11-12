@@ -40,9 +40,15 @@ import org.jenetics.util.RandomRegistry;
 /**
  * Implementation of the NumericGene which holds a 64 bit floating point number.
  *
+ * <p>This is a <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/doc-files/ValueBased.html">
+ * value-based</a> class; use of identity-sensitive operations (including
+ * reference equality ({@code ==}), identity hash code, or synchronization) on
+ * instances of {@code DoubleGene} may have unpredictable results and should
+ * be avoided.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-11-12 $</em>
  * @since 1.6
+ * @version 3.0 &mdash; <em>$Date: 2014-11-12 $</em>
  */
 @XmlJavaTypeAdapter(DoubleGene.Model.Adapter.class)
 public final class DoubleGene
