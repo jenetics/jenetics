@@ -27,7 +27,7 @@ import org.jenetics.util.Verifiable;
 /**
  * Genes are the atoms of the <em>Jenetics</em> library. They contain the actual
  * information (alleles) of the encoded solution. All implementations of the
- * this interface are final, immutable and can ne only created via static
+ * this interface are final, immutable and can be only created via static
  * factory methods which have the name {@code of}. When extending the library
  * with own {@code Gene} implementations, it is recommended to also implement it
  * as <a href="https://en.wikipedia.org/wiki/Value_object">value objects</a>.
@@ -39,7 +39,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-11-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-11-13 $</em>
  */
 public interface Gene<A, G extends Gene<A, G>>
 	extends
@@ -56,9 +56,11 @@ public interface Gene<A, G extends Gene<A, G>>
 	public A getAllele();
 
 	/**
-	 * Return a new, random gene of the same type than this gene. For all genes
-	 * returned by this method holds {@code gene.getClass() ==
-	 * gene.newInstance().getClass()}.
+	 * Return a new, random gene with the same type and with the same constraints
+	 * than this gene. For all genes returned by this method holds
+	 * {@code gene.getClass() == gene.newInstance().getClass()}. Implementations
+	 * of this method has to use the {@link java.util.Random} object which can
+	 * be fetched from the {@link org.jenetics.util.RandomRegistry}.
 	 */
 	@Override
 	public G newInstance();
