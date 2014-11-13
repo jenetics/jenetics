@@ -1303,7 +1303,7 @@ Line (1) creates the initial population and line (2) calculates the fitness
 placement h
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
@@ -1450,7 +1450,7 @@ plugged
 placement h
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
@@ -2061,7 +2061,7 @@ s are the basic building blocks of the
 \series default
 \shape default
  library.
- They contain the actual information (alleles)
+ They contain the actual information of the encoded solution, the allele
 \begin_inset Index idx
 status collapsed
 
@@ -2071,12 +2071,23 @@ Allele
 
 \end_inset
 
- of the encoded solution.
- All implementations of the 
+.
+ Some of the implementations also contains domain information of the 
+\emph on
+wrapped
+\emph default
+ allele.
+ This is the case for all 
 \family typewriter
+Bounded\SpecialChar \-
 Gene
 \family default
- interfaces are final and immutable.
+, which contain the allowed minimum and maximum values.
+ All
+\family typewriter
+ Gene
+\family default
+ implementations are final and immutable.
  In fact, they are all value-based classes and fulfill the properties which
  are described in the Java 8 API documentation
 \begin_inset CommandInset citation
@@ -2106,15 +2117,108 @@ http://blog.joda.org/2014/03/valjos-value-java-objects.html
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
-The available 
+ Beside the container functionality for the allele, every 
 \family typewriter
 Gene
 \family default
- implementations should be sufficient for a very wide range of problem domains.
+ is its own factory and is able to create new, random instances with the
+ same type and with the same constraints.
+ The factory methods are used by the 
+\family typewriter
+Alterer
+\family default
+s for creating new 
+\family typewriter
+Gene
+\family default
+s from the existing one and play a crucial role by the exploration of the
+ problem space.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface Gene<A, G extends Gene<A, G>>
+\end_layout
+
+\begin_layout Plain Layout
+
+    extends Factory<G>, Serializable, Verifiable
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    public A getAllele();
+\end_layout
+
+\begin_layout Plain Layout
+
+    public G newInstance();
+\end_layout
+
+\begin_layout Plain Layout
+
+    public G newInstance(A allele);
+\end_layout
+
+\begin_layout Plain Layout
+
+    public boolean isValid();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Gene-interface"
+
+\end_inset
+
+
+\family typewriter
+Gene
+\family default
+ interface
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Listing 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "lis:Gene-interface"
+
+\end_inset
+
+ shows the most important methods of the 
+\family typewriter
+Gene
+\family default
+ interface.
+ The available 
+\family typewriter
+Gene
+\family default
+ implementations should cover a wide range of problem encodings.
  Refer to chapter
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -2122,7 +2226,11 @@ reference "sub:Genes"
 
 \end_inset
 
- for how to implement your own gene types.
+ for how to implement your own 
+\family typewriter
+Gene
+\family default
+ types.
 \end_layout
 
 \begin_layout Subsubsection
@@ -2347,6 +2455,10 @@ reference "fig:Genotype-structure"
 
 \begin_layout Subsubsection
 Phenotype
+\end_layout
+
+\begin_layout Subsubsection
+Population
 \end_layout
 
 \begin_layout Subsection
@@ -7111,76 +7223,6 @@ Genes are the starting point in the class hierarchy.
 \shape default
  comes with gene implementations for numbers (double- and long values),
  characters and enumeration types.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-public interface Gene<A, G extends Gene<A, G>>
-\end_layout
-
-\begin_layout Plain Layout
-
-    extends Factory<G>, Serializable, ValueType, Verifiable
-\end_layout
-
-\begin_layout Plain Layout
-
-{
-\end_layout
-
-\begin_layout Plain Layout
-
-    public A getAllele();
-\end_layout
-
-\begin_layout Plain Layout
-
-    public G newInstance();
-\end_layout
-
-\begin_layout Plain Layout
-
-    public G newInstance(A allele);
-\end_layout
-
-\begin_layout Plain Layout
-
-    public boolean isValid();
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "lis:Gene-interface"
-
-\end_inset
-
-
-\family typewriter
-Gene
-\family default
- interface
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
