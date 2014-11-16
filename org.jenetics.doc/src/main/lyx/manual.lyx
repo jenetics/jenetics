@@ -1303,7 +1303,7 @@ Line (1) creates the initial population and line (2) calculates the fitness
 placement h
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -1957,16 +1957,16 @@ name "sec:Base-classes"
 \end_layout
 
 \begin_layout Standard
-This chapter describes the classes which are used to transform the actual
- problem into a structure that can be used by
+This chapter describes the main classes which are needed to setup and run
+ an genetic algorithm with the 
 \family sans
 \series bold
 \shape smallcaps
- Jenetics
+Jenetics
 \family default
 \series default
 \shape default
-.
+
 \begin_inset Foot
 status collapsed
 
@@ -1974,7 +1974,7 @@ status collapsed
 The documentation of the whole API is part of the download package or can
  be viewed online: 
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -1988,16 +1988,15 @@ http://jenetics.sourceforge.net/javadoc/index.html
 
 \end_inset
 
-
+ library.
 \end_layout
 
 \begin_layout Subsection
-Structural classes
+Domain classes
 \end_layout
 
 \begin_layout Standard
-Most of the structural classes are pure data classes and can be treated
- as 
+Most of the domain classes are pure data classes and can be treated as 
 \emph on
 value
 \emph default
@@ -2031,6 +2030,42 @@ The only exception is the
 Population
 \family default
  class, where it is possible to add and/or remove elements after it's creation.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/model/DomainModel.svg
+	lyxscale 70
+	width 85text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Domain model
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
@@ -3037,7 +3072,7 @@ N_{S_{g}}=\left\Vert S_{g}\right\Vert =\left\Vert P_{g}\right\Vert -\left\Vert O
 placement h
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
@@ -4579,8 +4614,8 @@ status open
 \align center
 \begin_inset Graphics
 	filename ../resources/graphic/PMX.svg
-	width 60text%
-	BoundingBox 0bp 0bp 500bp 375bp
+	width 45text%
+	BoundingBox 0bp 0bp 500bp 374bp
 	clip
 	rotateOrigin leftTop
 
