@@ -1298,211 +1298,6 @@ Line (1) creates the initial population and line (2) calculates the fitness
  is fulfilled.
 \end_layout
 
-\begin_layout Standard
-\begin_inset Float figure
-placement h
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename ../resources/graphic/StructureClassDiagram.svg
-	lyxscale 70
-	width 85text%
-
-\end_inset
-
-
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:Structure-diagram"
-
-\end_inset
-
-Class diagram of the 
-\emph on
-structural
-\emph default
- GA classes.
- This classes are located in the 
-\family typewriter
-org.jenetics
-\family default
- package.
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Class structure
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:Structure-diagram"
-
-\end_inset
-
- shows the class-diagram of the main structures of the library.
- All structural GA classes are located in the 
-\family typewriter
-org.jenetics
-\family default
- package.
- The
-\family typewriter
- Gene
-\family default
- is the base of the class structure.
-
-\family typewriter
- Gene
-\family default
-s are aggregated in
-\family typewriter
- Chromosome
-\family default
-s.
- One to n
-\family typewriter
- Chromosome
-\family default
-s are aggregated in
-\family typewriter
- Genotype
-\family default
-s.
- A
-\family typewriter
- Genotype
-\family default
- and a fitness
-\family typewriter
- Function
-\family default
- form the
-\family typewriter
- Phenotype, which
-\family default
- are collected into a
-\family typewriter
- Population
-\family default
-.
-\end_layout
-
-\begin_layout Standard
-The dynamic classes, which perform the actual evolution, are located in
- the 
-\family typewriter
-org.\SpecialChar \-
-jenetics.\SpecialChar \-
-engine
-\family default
- package.
- The 
-\emph on
-evolution stream
-\emph default
- is the base metaphor for performing an GA.
- On the evolution stream you can define the termination predicate and than
- collect the final evolution result.
- This decouples the static data structure from the dynamic evolution part.
- The evolution stream is also very flexible, when it comes to collecting
- the final result.
- The 
-\family typewriter
-EvolutionResult
-\family default
- class has several predefined collectors, but you are free to create your
- own one, which can be seamlessly 
-\emph on
-plugged
-\emph default
- into the existing stream.
- 
-\begin_inset Float figure
-placement h
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename ../resources/graphic/StructureClassDiagram.svg
-	lyxscale 70
-	width 85text%
-
-\end_inset
-
-
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:Engine-diagram"
-
-\end_inset
-
-Class diagram of the 
-\emph on
-dynamic
-\emph default
- GA classes.
- This classes are located in the 
-\family typewriter
-org.jenetics.engine
-\family default
- package.
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Class structure
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
- Figure ...
-\end_layout
-
 \begin_layout Paragraph
 Getting started
 \begin_inset Newline newline
@@ -2021,11 +1816,8 @@ https://en.wikipedia.org/wiki/Value_object
 \end_inset
 
 .
- All Gene and Chromosome implementations are immutable
-\end_layout
-
-\begin_layout Standard
-The only exception is the 
+ All Gene and Chromosome implementations are immutable.
+ The only exception is the 
 \family typewriter
 Population
 \family default
@@ -2055,6 +1847,12 @@ status open
 \begin_inset Caption
 
 \begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Domain-model"
+
+\end_inset
+
 Domain model
 \end_layout
 
@@ -2065,7 +1863,59 @@ Domain model
 
 \end_inset
 
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Domain-model"
 
+\end_inset
+
+ shows the class-diagram of the main structures of the library.
+ All structural GA classes are located in the 
+\family typewriter
+org.jenetics
+\family default
+ package.
+ The
+\family typewriter
+ Gene
+\family default
+ is the base of the class structure.
+
+\family typewriter
+ Gene
+\family default
+s are aggregated in
+\family typewriter
+ Chromosome
+\family default
+s.
+ One to n
+\family typewriter
+ Chromosome
+\family default
+s are aggregated in
+\family typewriter
+ Genotype
+\family default
+s.
+ A
+\family typewriter
+ Genotype
+\family default
+ and a fitness
+\family typewriter
+ Function
+\family default
+ form the
+\family typewriter
+ Phenotype, which
+\family default
+ are collected into a
+\family typewriter
+ Population
+\family default
+.
 \end_layout
 
 \begin_layout Subsubsection
@@ -2498,6 +2348,38 @@ Population
 
 \begin_layout Subsection
 Engine
+\end_layout
+
+\begin_layout Standard
+The dynamic classes, which perform the actual evolution, are located in
+ the 
+\family typewriter
+org.\SpecialChar \-
+jenetics.\SpecialChar \-
+engine
+\family default
+ package.
+ The 
+\emph on
+evolution stream
+\emph default
+ is the base metaphor for performing an GA.
+ On the evolution stream you can define the termination predicate and than
+ collect the final evolution result.
+ This decouples the static data structure from the dynamic evolution part.
+ The evolution stream is also very flexible, when it comes to collecting
+ the final result.
+ The 
+\family typewriter
+EvolutionResult
+\family default
+ class has several predefined collectors, but you are free to create your
+ own one, which can be seamlessly 
+\emph on
+plugged
+\emph default
+ into the existing stream.
+ Figure ...
 \end_layout
 
 \begin_layout Subsubsection
