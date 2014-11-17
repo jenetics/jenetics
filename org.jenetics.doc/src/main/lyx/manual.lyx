@@ -6552,7 +6552,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/graphic/ArrayClassDiagram.svg
+	filename ../resources/model/SeqModel.eps
 	lyxscale 75
 	width 80col%
 
