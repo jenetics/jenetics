@@ -134,7 +134,7 @@ figs-within-sections
 \papercolumns 1
 \papersides 1
 \paperpagestyle fancy
-\tracking_changes false
+\tracking_changes true
 \output_changes false
 \html_math_output 0
 \html_css_as_file 0
@@ -1834,9 +1834,10 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/model/DomainModel.svg
+	filename ../resources/model/DomainModel.eps
 	lyxscale 70
 	width 85text%
+	BoundingBox 0bp 0bp 432bp 180bp
 
 \end_inset
 
