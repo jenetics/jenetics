@@ -1836,7 +1836,7 @@ status open
 \begin_inset Graphics
 	filename ../resources/graphic/Genotype.eps
 	width 90text%
-	BoundingBox 0bp 50bp 402bp 246bp
+	BoundingBox 0bp 0bp 402bp 183bp
 
 \end_inset
 
@@ -3244,8 +3244,8 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/graphic/StochasticUniversalSelection.svg
-	width 70text%
+	filename ../resources/graphic/StochasticUniversalSelection.eps
+	width 75text%
 
 \end_inset
 
@@ -3799,7 +3799,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/graphic/SinglePointCrossover.svg
+	filename ../resources/graphic/SinglePointCrossover.eps
 	width 75text%
 
 \end_inset
@@ -3918,7 +3918,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/graphic/2PointCrossover.svg
+	filename ../resources/graphic/2PointCrossover.eps
 	width 75text%
 	clip
 
@@ -3980,7 +3980,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/graphic/3PointCrossover.svg
+	filename ../resources/graphic/3PointCrossover.eps
 	width 75text%
 	clip
 
@@ -4139,9 +4139,9 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/graphic/PMX.svg
-	width 45text%
-	BoundingBox 0bp 0bp 500bp 374bp
+	filename ../resources/graphic/PMX.eps
+	width 50text%
+	BoundingBox 0bp 0bp 330bp 241bp
 	clip
 	rotateOrigin leftTop
 
