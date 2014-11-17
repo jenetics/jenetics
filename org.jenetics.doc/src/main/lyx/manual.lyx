@@ -134,7 +134,7 @@ figs-within-sections
 \papercolumns 1
 \papersides 1
 \paperpagestyle fancy
-\tracking_changes true
+\tracking_changes false
 \output_changes false
 \html_math_output 0
 \html_css_as_file 0
@@ -1139,12 +1139,9 @@ Stream
 \family typewriter
 Collector
 \family default
- classes of Java 8.
+ classes in Java 8.
  Also the newly introduced lambda expressions and the functional interfaces
  (SAM types) play an important roll in the library design.
- If this part of the Java API is new to you, it is recommended to make yourself
- familiar with it.
- Good introductions for this can be found here ??, here ?? and here ??.
  
 \end_layout
 
@@ -1298,381 +1295,18 @@ Line (1) creates the initial population and line (2) calculates the fitness
  is fulfilled.
 \end_layout
 
-\begin_layout Paragraph
-Getting started
-\begin_inset Newline newline
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The minimum GA setup needs a genotype factory,
-\family typewriter
- Factory<Genotype<?>>
-\family default
-, and a fitness
-\family typewriter
- Function
-\family default
-.
- The
-\family typewriter
- Genotype
-\family default
- implements the
-\family typewriter
- Factory
-\family default
- interface and can therefore be used as
-\emph on
- prototype
-\emph default
- for creating the initial
-\family typewriter
- Population
-\family default
- and for creating new random
-\family typewriter
- Genotype
-\family default
-s.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "extendedchars=true,language=Java,numbers=left,stepnumber=1,tabsize=4"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-public class GA {
-\end_layout
-
-\begin_layout Plain Layout
-
-    private static Integer eval(Genotype<BitGene> gt) {
-\end_layout
-
-\begin_layout Plain Layout
-
-        return ((BitChromosome)gt.getChromosome()).bitCount();
-\end_layout
-
-\begin_layout Plain Layout
-
-    }
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-    public static void main(String[] args) {
-\end_layout
-
-\begin_layout Plain Layout
-
-        Factory<Genotype<BitGene>> gtf = 
-\end_layout
-
-\begin_layout Plain Layout
-
-            Genotype.of(BitChromosome.of(10, 0.5));
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-        Engine<BitGene, Double> engine = Engine
-\end_layout
-
-\begin_layout Plain Layout
-
-            .builder(GA::eval, gtf)
-\end_layout
-
-\begin_layout Plain Layout
-
-            .build();
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-        EvaluationResult<BitGene, Integer> result = engine.stream()
-\end_layout
-
-\begin_layout Plain Layout
-
-            .limit(100)
-\end_layout
-
-\begin_layout Plain Layout
-
-            .collect(toBestEvaluationResult());
-\end_layout
-
-\begin_layout Plain Layout
-
- 
-\end_layout
-
-\begin_layout Plain Layout
-
-        System.out.println(result);
-\end_layout
-
-\begin_layout Plain Layout
-
-    }
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "lis:Simple-GA-setup"
-
-\end_inset
-
-Simple GA (evolution 
-\emph on
-engine
-\emph default
-) setup
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The genotype factory,
-\family typewriter
- gtf
-\family default
-, in the example in listing 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "lis:Simple-GA-setup"
-
-\end_inset
-
-, will create genotypes which consists of one
-\family typewriter
- BitChromosome
-\family default
- with length 10.
- The one to zero probability of the newly created genotypes is set to 0.5.
- The fitness function is parameterized with a
-\family typewriter
- BitGene
-\family default
- and a
-\family typewriter
- Double
-\family default
-.
- That means that the fitness function is calculating the fitness value as
-\family typewriter
- Double
-\family default
- values.
- The return type of the fitness function must be at least of the type
-\family typewriter
- Comparable
-\family default
-.
- 
-\end_layout
-
-\begin_layout Standard
------// check
-\end_layout
-
-\begin_layout Standard
-The 
-\emph on
-evolution
-\family typewriter
-\emph default
- Engine
-\family default
- object is then created with the genotype factory and the fitness function.
- An evolution stream is created with the.
-\end_layout
-
-\begin_layout Standard
------
-\end_layout
-
-\begin_layout Standard
-In this example the GA tries to maximize the fitness function.
- If you want to find the minimal value you have to change the
-\family typewriter
- optimize
-\family default
- parameter from
-\family typewriter
- Optimize.MAXIMUM
-\family default
- to
-\family typewriter
- Optimize.MINIMUM
-\family default
-.
- The
-\family typewriter
- ga.setup()
-\family default
- call creates the initial population and calculates its fitness values.
- Then the GA evolves 100 generations (
-\family typewriter
-ga.evolve(100))
-\family default
- an prints the best phenotype found so far onto the console.
-\end_layout
-
-\begin_layout Standard
-In an more advanced setup you may want to change the default mutation and/or
- selection strategies.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-public static void main(String[] args) {
-\end_layout
-
-\begin_layout Plain Layout
-
-    ...
-\end_layout
-
-\begin_layout Plain Layout
-
-    Engine<BitGene, Double> engine = Engine
-\end_layout
-
-\begin_layout Plain Layout
-
-        .builder(Main::eval, gtf)
-\end_layout
-
-\begin_layout Plain Layout
-
-        .selector(new RouletteWheelSelector<BitGene>())
-\end_layout
-
-\begin_layout Plain Layout
-
-        .alterers(
-\end_layout
-
-\begin_layout Plain Layout
-
-            new SinglePointCrossover<BitGene>(0.1),
-\end_layout
-
-\begin_layout Plain Layout
-
-            new Mutator<BitGene>(0.01))
-\end_layout
-
-\begin_layout Plain Layout
-
-        .build();
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-    Phenotype<BitGene, Double> result = engine.stream()
-\end_layout
-
-\begin_layout Plain Layout
-
-        .limit(100)
-\end_layout
-
-\begin_layout Plain Layout
-
-        .collect(toBestPhenotype());
-\end_layout
-
-\begin_layout Plain Layout
-
- 
-\end_layout
-
-\begin_layout Plain Layout
-
-    System.out.println(result);
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-The selection strategy for offspring and survivors in the given example
- are set to the roulette-wheel selector.
- It is also possible to set the selector for offspring and survivors independent
-ly with the
-\family typewriter
- setOffspringSelector
-\family default
- and
-\family typewriter
- setSurvivorSelector
-\family default
- methods.
- The alterers are concatenated, at first the crossover (with probability
- 0.1) is performed and then the chromosomes are mutated (with probability
- 0.01).
- For a detailed description of the available genetic operators revere to
- chapter 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "sec:Genetic-operators"
-
-\end_inset
-
-.
-\end_layout
-
 \begin_layout Section
 Architecture
+\end_layout
+
+\begin_layout Standard
+The metaphor of the Jenetics library is the Evolution Stream.
+ It is no longer necessary to perform the evolution steps in an imperative
+ way.
+ The base steps when setup an GA are: build an immutable Engine by using
+ the engine builder.
+ Create an evolution stream from the engine.
+ The evolution stream uses the engine for executing the evolution steps.
 \end_layout
 
 \begin_layout Standard
@@ -1688,8 +1322,9 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/graphic/ComponentDiagram.svg
-	width 80text%
+	filename ../resources/model/PackageModel.eps
+	width 60text%
+	BoundingBox 0bp 0bp 288bp 137bp
 
 \end_inset
 
@@ -1723,11 +1358,20 @@ Package structure
 
 \end_inset
 
-asdfasdf
-\end_layout
+Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Package-structure"
 
-\begin_layout Standard
-asdfasdfasdfasdf
+\end_inset
+
+ shows the package structure of the library.
+ The org.jenetics.util package contains the helper and collection classes
+ used by the other packages.
+ the org.jenetics package contains all of the domain classes together with
+ the genetic operators, the selectors and the alterers.
+ The genetic algorithm execution (evolution) engine is part of the org.jenetics.en
+gine package.
 \end_layout
 
 \begin_layout Section
@@ -1835,7 +1479,6 @@ status open
 \align center
 \begin_inset Graphics
 	filename ../resources/model/DomainModel.eps
-	lyxscale 70
 	width 85text%
 	BoundingBox 0bp 0bp 432bp 180bp
 
