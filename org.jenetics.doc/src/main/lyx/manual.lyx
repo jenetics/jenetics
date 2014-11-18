@@ -850,7 +850,7 @@ public class HelloWorld {
 
 \begin_layout Plain Layout
 
-        //     for your problem.
+        //     for the problem.
 \end_layout
 
 \begin_layout Plain Layout
@@ -2594,74 +2594,7 @@ N_{S_{g}}=\left\Vert S_{g}\right\Vert =\left\Vert P_{g}\right\Vert -\left\Vert O
 \end_layout
 
 \begin_layout Standard
-\begin_inset Float figure
-placement h
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename ../resources/graphic/SelectorClassDiagram.svg
-	lyxscale 70
-	width 95text%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:Selector-class-diagram"
-
-\end_inset
-
-
-\family typewriter
-Selector
-\family default
- class diagram
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Selector!diagram
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:Selector-class-diagram"
-
-\end_inset
-
- shows the whole class hierarchy of the currently available selectors.
+Figure ### shows the whole class hierarchy of the currently available selectors.
  On the top the hierarchy is the
 \family typewriter
  Selector
@@ -3348,61 +3281,6 @@ target "https://en.wikipedia.org/wiki/Crossover_(genetic_algorithm)"
 \end_inset
 
 ).
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename ../resources/graphic/GeneticOperatorClassDiagram.svg
-	lyxscale 70
-	width 100text%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:Alterer-class-diagram"
-
-\end_inset
-
-
-\family typewriter
-Alterer
-\family default
- class diagram
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Alterer!diagram
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Subsubsection
@@ -5585,7 +5463,7 @@ Random!LCG64ShiftRandom
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 PRNG!
