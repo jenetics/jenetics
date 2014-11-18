@@ -1646,7 +1646,11 @@ http://blog.joda.org/2014/03/valjos-value-java-objects.html
 
 \end_inset
 
- Beside the container functionality for the allele, every 
+ 
+\end_layout
+
+\begin_layout Standard
+Beside the container functionality for the allele, every 
 \family typewriter
 Gene
 \family default
@@ -1991,7 +1995,7 @@ Population
 \end_layout
 
 \begin_layout Subsection
-Engine
+Engine classes
 \end_layout
 
 \begin_layout Standard
@@ -2424,14 +2428,6 @@ engine.stream()
 \end_layout
 
 \begin_layout Section
-Evolution engine
-\end_layout
-
-\begin_layout Paragraph
-Evolution stream
-\end_layout
-
-\begin_layout Section
 Genetic operators
 \begin_inset Index idx
 status collapsed
@@ -2562,10 +2558,6 @@ Engine<DoubleGene, Double> engine = Engine.builder(...)
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 The
 \family typewriter
  offspringFraction
@@ -2587,6 +2579,78 @@ and the number of selected survivors
 \begin{equation}
 N_{S_{g}}=\left\Vert S_{g}\right\Vert =\left\Vert P_{g}\right\Vert -\left\Vert O_{g}\right\Vert .
 \end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Jenetics comes with the following selectors:
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{multicols}{2}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+TournamentSelector
+\end_layout
+
+\begin_layout Itemize
+TruncationSelector
+\end_layout
+
+\begin_layout Itemize
+MonteCarloSelector
+\end_layout
+
+\begin_layout Itemize
+ProbabilitySelector
+\end_layout
+
+\begin_layout Itemize
+RouletteWheelSelector
+\end_layout
+
+\begin_layout Itemize
+LinearRankSelector
+\end_layout
+
+\begin_layout Itemize
+ExponentailRankSelector
+\end_layout
+
+\begin_layout Itemize
+BoltzmannSelector
+\end_layout
+
+\begin_layout Itemize
+StochasticUniversalSelector
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{multicols}
+\end_layout
 
 \end_inset
 
