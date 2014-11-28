@@ -45,7 +45,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-10-25 $</em>
+ * @version <em>$Date: 2014-11-28 $</em>
  */
 public class EvolutionResultTest
 	extends ObjectTester<EvolutionResult<DoubleGene, Double>>
@@ -64,7 +64,7 @@ public class EvolutionResultTest
 			return EvolutionResult.of(
 				random.nextBoolean() ? Optimize.MAXIMUM : Optimize.MINIMUM,
 				new Population<DoubleGene, Double>(100)
-					.fill(() -> Phenotype.of(gt.newInstance(), ff, 1), 100),
+					.fill(() -> Phenotype.of(gt.newInstance(), 1, ff), 100),
 				random.nextInt(1000),
 				random.nextInt(1000),
 				EvolutionDurations.of(
@@ -93,7 +93,7 @@ public class EvolutionResultTest
 			final Genotype<IntegerGene> gt = Genotype.of(IntegerChromosome.of(
 				IntegerGene.of(i, 0, length)
 			));
-			population.add(Phenotype.of(gt, ff, 1));
+			population.add(Phenotype.of(gt, 1, ff));
 		}
 		Collections.shuffle(population, RandomRegistry.getRandom());
 
@@ -124,7 +124,7 @@ public class EvolutionResultTest
 			final Genotype<IntegerGene> gt = Genotype.of(IntegerChromosome.of(
 				IntegerGene.of(i, 0, length)
 			));
-			small.add(Phenotype.of(gt, ff, 1));
+			small.add(Phenotype.of(gt, 1, ff));
 		}
 		Collections.shuffle(small, RandomRegistry.getRandom());
 
@@ -133,7 +133,7 @@ public class EvolutionResultTest
 			final Genotype<IntegerGene> gt = Genotype.of(IntegerChromosome.of(
 				IntegerGene.of(i + length, 0, length)
 			));
-			big.add(Phenotype.of(gt, ff, 1));
+			big.add(Phenotype.of(gt, 1, ff));
 		}
 		Collections.shuffle(big, RandomRegistry.getRandom());
 
@@ -197,7 +197,7 @@ public class EvolutionResultTest
 			final Genotype<IntegerGene> gt = Genotype.of(IntegerChromosome.of(
 				IntegerGene.of(value, 0, length)
 			));
-			pop.add(Phenotype.of(gt, ff, 1));
+			pop.add(Phenotype.of(gt, 1, ff));
 		}
 		Collections.shuffle(pop, RandomRegistry.getRandom());
 

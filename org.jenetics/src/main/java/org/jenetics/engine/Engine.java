@@ -104,7 +104,7 @@ import org.jenetics.util.Factory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-28 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-11-28 $</em>
  */
 public final class Engine<
 	G extends Gene<?, G>,
@@ -324,9 +324,8 @@ public final class Engine<
 	private Phenotype<G, C> newPhenotype(final long generation) {
 		return Phenotype.of(
 			_genotypeFactory.newInstance(),
-			_fitnessFunction,
-			_fitnessScaler,
-			generation
+			generation, _fitnessFunction,
+			_fitnessScaler
 		);
 	}
 
@@ -423,7 +422,7 @@ public final class Engine<
 		final int size = _offspringCount + _survivorsCount;
 		final Population<G, C> pop = stream.limit(size)
 			.map(gt -> Phenotype.of(
-				gt, _fitnessFunction, _fitnessScaler, generation))
+				gt, generation, _fitnessFunction, _fitnessScaler))
 			.collect(toPopulation());
 
 		return new EvolutionStart<>(pop, generation);
@@ -598,7 +597,7 @@ public final class Engine<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 3.0
-	 * @version 3.0 &mdash; <em>$Date: 2014-10-28 $</em>
+	 * @version 3.0 &mdash; <em>$Date: 2014-11-28 $</em>
 	 */
 	public static final class Builder<
 		G extends Gene<?, G>,

@@ -39,7 +39,7 @@ import org.jenetics.util.TestData;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-10-19 $</em>
+ * @version <em>$Date: 2014-11-28 $</em>
  */
 public class RouletteWheelSelectorTest
 	extends ProbabilitySelectorTester<RouletteWheelSelector<DoubleGene, Double>>
@@ -62,7 +62,7 @@ public class RouletteWheelSelectorTest
 				g -> g.getChromosome().getGene().getAllele();
 
 			final Factory<Phenotype<IntegerGene, Integer>> ptf = () ->
-				Phenotype.of(Genotype.of(IntegerChromosome.of(0, 100)), ff, 1);
+				Phenotype.of(Genotype.of(IntegerChromosome.of(0, 100)), 1, ff);
 
 			final Population<IntegerGene, Integer> population = IntStream.range(0, 1000)
 				.mapToObj(i -> ptf.newInstance())
@@ -83,7 +83,7 @@ public class RouletteWheelSelectorTest
 				g -> g.getChromosome().getGene().getAllele();
 
 			final Factory<Phenotype<IntegerGene, Integer>> ptf = () ->
-				Phenotype.of(Genotype.of(IntegerChromosome.of(0, 100)), ff, 1);
+				Phenotype.of(Genotype.of(IntegerChromosome.of(0, 100)), 1, ff);
 
 			final Population<IntegerGene, Integer> population = IntStream.range(0, 1000)
 				.mapToObj(i -> ptf.newInstance())

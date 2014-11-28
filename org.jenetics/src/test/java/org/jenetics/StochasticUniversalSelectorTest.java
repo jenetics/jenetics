@@ -38,7 +38,7 @@ import org.jenetics.util.TestData;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-10-19 $</em>
+ * @version <em>$Date: 2014-11-28 $</em>
  */
 public class StochasticUniversalSelectorTest
 	extends ProbabilitySelectorTester<StochasticUniversalSelector<DoubleGene,Double>>
@@ -65,7 +65,7 @@ public class StochasticUniversalSelectorTest
 			Genotype.of(IntegerChromosome.of(0, 100, 10));
 
 		final Population<IntegerGene, Integer> population = IntStream.range(0, 50)
-			.mapToObj(i -> Phenotype.of(gtf.newInstance(), ff, 50))
+			.mapToObj(i -> Phenotype.of(gtf.newInstance(), 50, ff))
 			.collect(Population.toPopulation());
 
 		final StochasticUniversalSelector<IntegerGene, Integer> selector =
