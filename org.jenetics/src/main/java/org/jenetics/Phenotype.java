@@ -89,7 +89,7 @@ public final class Phenotype<
 	 * @throws IllegalArgumentException if the given {@code generation} is
 	 *         {@code < 0}.
 	 */
-	public Phenotype(
+	private Phenotype(
 		final Genotype<G> genotype,
 		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
 		final Function<? super C, ? extends C> fitnessScaler,
