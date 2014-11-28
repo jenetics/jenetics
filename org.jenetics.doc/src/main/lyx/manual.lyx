@@ -678,7 +678,7 @@ org.jenetics:\SpecialChar \-
 \end_inset
 
 , it can be easily integrated into existing projects.
- The very clear structuring of the different parts of an GA allows an easy
+ The very clear structuring of the different parts of the GA allows an easy
  adaption for different problem domains.
 \end_layout
 
@@ -1300,17 +1300,28 @@ Architecture
 \end_layout
 
 \begin_layout Standard
-The metaphor of the Jenetics library is the Evolution Stream.
+The basic metaphor of the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library is the 
+\emph on
+Evolution Stream
+\emph default
+.
  It is no longer necessary to perform the evolution steps in an imperative
  way.
- The base steps when setup an GA are: build an immutable Engine by using
- the engine builder.
- Create an evolution stream from the engine.
- The evolution stream uses the engine for executing the evolution steps.
-\end_layout
-
-\begin_layout Standard
-The implementation heavily uses the Java streams an
+ An evolution stream is powered by an immutable 
+\emph on
+Evolution Engine
+\emph default
+, which performs the needed evolution steps for one generation.
+ Once the evolution engine is created, it can be used by multiple evolution
+ streams, which can be safely used in different execution threads.
 \end_layout
 
 \begin_layout Standard
