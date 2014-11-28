@@ -81,7 +81,7 @@ import org.jenetics.util.Factory;
  *        final Phenotype&lt;DoubleGene, Double&gt; result = engine.stream()
  *             // Truncate the evolution stream if no better individual could
  *             // be found after 5 consecutive generations.
- *            .limit(bySteadyFitness(5)
+ *            .limit(bySteadyFitness(5))
  *             // Terminate the evolution after maximal 100 generations.
  *            .limit(100)
  *            .collect(toBestPhenotype());

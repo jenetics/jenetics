@@ -318,7 +318,8 @@ public final class Phenotype<
 	) {
 		return of(
 			genotype,
-			generation, function,
+			generation,
+			function,
 			function instanceof Serializable ?
 				(Function<? super C, ? extends C> & Serializable)a -> a :
 				a -> a
