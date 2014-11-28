@@ -46,7 +46,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-10-19 $</em>
+ * @version <em>$Date: 2014-11-28 $</em>
  */
 public class PersistentObject<T> {
 
@@ -407,153 +407,136 @@ public class PersistentObject<T> {
 	public static Phenotype<BitGene, Integer> nextPhenotypeBitGeneInteger() {
 		return Phenotype.of(
 			nextGenotypeBitGene(),
-			FitnessFunction(random().nextInt()),
-			FitnessScaler(),
-			Math.abs(random().nextInt())
+			Math.abs(random().nextInt()), FitnessFunction(random().nextInt()),
+			FitnessScaler()
 		).evaluate();
 	}
 
 	public static Phenotype<CharacterGene, Integer> nextPhenotypeCharacterGeneInteger() {
 		return Phenotype.of(
 			nextGenotypeCharacterGene(),
-			FitnessFunction(random().nextInt()),
-			FitnessScaler(),
-			Math.abs(random().nextInt())
+			Math.abs(random().nextInt()), FitnessFunction(random().nextInt()),
+			FitnessScaler()
 		).evaluate();
 	}
 
 	public static Phenotype<IntegerGene, Integer> nextPhenotypeIntegerGeneInteger() {
 		return Phenotype.of(
 			nextGenotypeIntegerGene(),
-			FitnessFunction(random().nextInt()),
-			FitnessScaler(),
-			Math.abs(random().nextInt())
+			Math.abs(random().nextInt()), FitnessFunction(random().nextInt()),
+			FitnessScaler()
 		).evaluate();
 	}
 
 	public static Phenotype<IntegerGene, Long> nextPhenotypeIntegerGeneLong() {
 		return Phenotype.of(
 			nextGenotypeIntegerGene(),
-			FitnessFunction(random().nextLong()),
-			FitnessScaler(),
-			Math.abs(random().nextInt())
+			Math.abs(random().nextInt()), FitnessFunction(random().nextLong()),
+			FitnessScaler()
 		).evaluate();
 	}
 
 	public static Phenotype<IntegerGene, Double> nextPhenotypeIntegerGeneDouble() {
 		return Phenotype.of(
 			nextGenotypeIntegerGene(),
-			FitnessFunction(random().nextDouble()),
-			FitnessScaler(),
-			Math.abs(random().nextInt())
+			Math.abs(random().nextInt()), FitnessFunction(random().nextDouble()),
+			FitnessScaler()
 		).evaluate();
 	}
 
 	public static Phenotype<LongGene, Integer> nextPhenotypeLongGeneInteger() {
 		return Phenotype.of(
 			nextGenotypeLongGene(),
-			FitnessFunction(random().nextInt()),
-			FitnessScaler(),
-			Math.abs(random().nextInt())
+			Math.abs(random().nextInt()), FitnessFunction(random().nextInt()),
+			FitnessScaler()
 		).evaluate();
 	}
 
 	public static Phenotype<LongGene, Long> nextPhenotypeLongGeneLong() {
 		return Phenotype.of(
 			nextGenotypeLongGene(),
-			FitnessFunction(random().nextLong()),
-			FitnessScaler(),
-			Math.abs(random().nextInt())
+			Math.abs(random().nextInt()), FitnessFunction(random().nextLong()),
+			FitnessScaler()
 		).evaluate();
 	}
 
 	public static Phenotype<LongGene, Double> nextPhenotypeLongGeneDouble() {
 		return Phenotype.of(
 			nextGenotypeLongGene(),
-			FitnessFunction(random().nextDouble()),
-			FitnessScaler(),
-			Math.abs(random().nextInt())
+			Math.abs(random().nextInt()), FitnessFunction(random().nextDouble()),
+			FitnessScaler()
 		).evaluate();
 	}
 
 	public static Phenotype<DoubleGene, Integer> nextPhenotypeDoubleGeneInteger() {
 		return Phenotype.of(
 			nextGenotypeDoubleGene(),
-			FitnessFunction(random().nextInt()),
-			FitnessScaler(),
-			Math.abs(random().nextInt())
+			Math.abs(random().nextInt()), FitnessFunction(random().nextInt()),
+			FitnessScaler()
 		).evaluate();
 	}
 
 	public static Phenotype<DoubleGene, Long> nextPhenotypeDoubleGeneLong() {
 		return Phenotype.of(
 			nextGenotypeDoubleGene(),
-			FitnessFunction(random().nextLong()),
-			FitnessScaler(),
-			Math.abs(random().nextInt())
+			Math.abs(random().nextInt()), FitnessFunction(random().nextLong()),
+			FitnessScaler()
 		).evaluate();
 	}
 
 	public static Phenotype<DoubleGene, Double> nextPhenotypeDoubleGeneDouble() {
 		return Phenotype.of(
 			nextGenotypeDoubleGene(),
-			FitnessFunction(random().nextDouble()),
-			FitnessScaler(),
-			Math.abs(random().nextInt())
+			Math.abs(random().nextInt()), FitnessFunction(random().nextDouble()),
+			FitnessScaler()
 		).evaluate();
 	}
 
 	public static Phenotype<EnumGene<Character>, Double> nextPhenotypeEnumGeneCharacterDouble() {
 		return Phenotype.of(
 			nextGenotypeEnumGeneCharacter(),
-			FitnessFunction(random().nextDouble()),
-			FitnessScaler(),
-			Math.abs(random().nextInt())
+			Math.abs(random().nextInt()), FitnessFunction(random().nextDouble()),
+			FitnessScaler()
 		).evaluate();
 	}
 
 	public static Phenotype<EnumGene<Integer>, Double> nextPhenotypeEnumGeneIntegerDouble() {
 		return Phenotype.of(
 			nextGenotypeEnumGeneInteger(),
-			FitnessFunction(random().nextDouble()),
-			FitnessScaler(),
-			Math.abs(random().nextInt())
+			Math.abs(random().nextInt()), FitnessFunction(random().nextDouble()),
+			FitnessScaler()
 		).evaluate();
 	}
 
 	public static Phenotype<EnumGene<Long>, Double> nextPhenotypeEnumGeneLongDouble() {
 		return Phenotype.of(
 			nextGenotypeEnumGeneLong(),
-			FitnessFunction(random().nextDouble()),
-			FitnessScaler(),
-			Math.abs(random().nextInt())
+			Math.abs(random().nextInt()), FitnessFunction(random().nextDouble()),
+			FitnessScaler()
 		).evaluate();
 	}
 
 	public static Phenotype<EnumGene<Float>, Double> nextPhenotypeEnumGeneFloatDouble() {
 		return Phenotype.of(
 			nextGenotypeEnumGeneFloat(),
-			FitnessFunction(random().nextDouble()),
-			FitnessScaler(),
-			Math.abs(random().nextInt())
+			Math.abs(random().nextInt()), FitnessFunction(random().nextDouble()),
+			FitnessScaler()
 		).evaluate();
 	}
 
 	public static Phenotype<EnumGene<Double>, Double> nextPhenotypeEnumGeneDoubleDouble() {
 		return Phenotype.of(
 			nextGenotypeEnumGeneDouble(),
-			FitnessFunction(random().nextDouble()),
-			FitnessScaler(),
-			Math.abs(random().nextInt())
+			Math.abs(random().nextInt()), FitnessFunction(random().nextDouble()),
+			FitnessScaler()
 		).evaluate();
 	}
 
 	public static Phenotype<EnumGene<String>, BigDecimal> nextPhenotypeEnumGeneStringBigDecimal() {
 		return Phenotype.of(
 			nextGenotypeEnumGeneString(),
-			FitnessFunction(nextBigDecimal(random())),
-			FitnessScaler(),
-			Math.abs(random().nextInt())
+			Math.abs(random().nextInt()), FitnessFunction(nextBigDecimal(random())),
+			FitnessScaler()
 		).evaluate();
 	}
 

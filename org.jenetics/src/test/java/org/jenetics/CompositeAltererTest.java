@@ -27,7 +27,7 @@ import org.jenetics.util.MSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-14 $</em>
+ * @version <em>$Date: 2014-11-28 $</em>
  */
 public class CompositeAltererTest {
 
@@ -72,7 +72,7 @@ public class CompositeAltererTest {
 		final Population<DoubleGene, Double> population = new Population<>(npopulation);
 
 		for (int i = 0; i < npopulation; ++i) {
-			population.add(Phenotype.of(genotype.newInstance(), TestUtils.FF, 0));
+			population.add(Phenotype.of(genotype.newInstance(), 0, TestUtils.FF));
 		}
 
 		return population;

@@ -26,15 +26,14 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-06-02 $</em>
+ * @version <em>$Date: 2014-11-28 $</em>
  */
 public class OptimizeTest {
 
 	private static Phenotype<DoubleGene, Double> pt(double value) {
 		return Phenotype.of(
 			Genotype.of(DoubleChromosome.of(DoubleGene.of(value, 0, 10))),
-			gt -> gt.getGene().getAllele(),
-			0
+			0, gt -> gt.getGene().getAllele()
 		);
 	}
 
@@ -56,18 +55,15 @@ public class OptimizeTest {
 	public void compare() {
 		final Phenotype<DoubleGene, Double> pt1 = Phenotype.of(Genotype.of(
 			DoubleChromosome.of(DoubleGene.of(5, 0, 10))),
-			gt -> gt.getGene().getAllele(),
-			0
+			0, gt -> gt.getGene().getAllele()
 		);
 		final Phenotype<DoubleGene, Double> pt2 = Phenotype.of(Genotype.of(
 			DoubleChromosome.of(DoubleGene.of(7, 0, 10))),
-			gt -> gt.getGene().getAllele(),
-			0
+			0, gt -> gt.getGene().getAllele()
 		);
 		final Phenotype<DoubleGene, Double> pt3 = Phenotype.of(Genotype.of(
 			DoubleChromosome.of(DoubleGene.of(7, 0, 10))),
-			gt -> gt.getGene().getAllele(),
-			0
+			0, gt -> gt.getGene().getAllele()
 		);
 
 		Assert.assertTrue(Optimize.MINIMUM.compare(pt1, pt2) > 0);
@@ -80,18 +76,15 @@ public class OptimizeTest {
 	public void best() {
 		final Phenotype<DoubleGene, Double> pt1 = Phenotype.of(Genotype.of(
 			DoubleChromosome.of(DoubleGene.of(5, 0, 10))),
-			gt -> gt.getGene().getAllele(),
-			0
+			0, gt -> gt.getGene().getAllele()
 		);
 		final Phenotype<DoubleGene, Double> pt2 = Phenotype.of(Genotype.of(
 			DoubleChromosome.of(DoubleGene.of(7, 0, 10))),
-			gt -> gt.getGene().getAllele(),
-			0
+			0, gt -> gt.getGene().getAllele()
 		);
 		final Phenotype<DoubleGene, Double> pt3 = Phenotype.of(Genotype.of(
 			DoubleChromosome.of(DoubleGene.of(7, 0, 10))),
-			gt -> gt.getGene().getAllele(),
-			0
+			0, gt -> gt.getGene().getAllele()
 		);
 
 		Assert.assertSame(Optimize.MINIMUM.best(pt1, pt2), pt1);
@@ -103,18 +96,15 @@ public class OptimizeTest {
 	public void worst() {
 		final Phenotype<DoubleGene, Double> pt1 = Phenotype.of(Genotype.of(
 			DoubleChromosome.of(DoubleGene.of(5, 0, 10))),
-			gt -> gt.getGene().getAllele(),
-			0
+			0, gt -> gt.getGene().getAllele()
 		);
 		final Phenotype<DoubleGene, Double> pt2 = Phenotype.of(Genotype.of(
 			DoubleChromosome.of(DoubleGene.of(7, 0, 10))),
-			gt -> gt.getGene().getAllele(),
-			0
+			0, gt -> gt.getGene().getAllele()
 		);
 		final Phenotype<DoubleGene, Double> pt3 = Phenotype.of(Genotype.of(
 			DoubleChromosome.of(DoubleGene.of(7, 0, 10))),
-			gt -> gt.getGene().getAllele(),
-			0
+			0, gt -> gt.getGene().getAllele()
 		);
 
 		Assert.assertSame(Optimize.MINIMUM.worst(pt1, pt2), pt2);
