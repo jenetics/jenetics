@@ -1312,16 +1312,110 @@ Jenetics
 \emph on
 Evolution Stream
 \emph default
-.
- It is no longer necessary to perform the evolution steps in an imperative
+, implemented via the Java 8 streaming API.
+ Therefore it is no longer necessary (and advised) to perform the evolution
+ steps in an 
+\emph on
+imperative
+\emph default
  way.
- An evolution stream is powered by an immutable 
+ An evolution stream is powered by an 
 \emph on
 Evolution Engine
 \emph default
-, which performs the needed evolution steps for one generation.
+, which performs the needed 
+\emph on
+evolution
+\emph default
+ steps for one generation; the steps are described in the body of the while-loop
+ in listing 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "lis:Genetic-algorithm"
+
+\end_inset
+
+.
  Once the evolution engine is created, it can be used by multiple evolution
  streams, which can be safely used in different execution threads.
+ This is possible, because the evolution 
+\family typewriter
+Engine
+\family default
+ is immutable and doesn't have any mutable global state.
+ It is practically a stateless function, 
+\begin_inset Formula $f_{E}:\,\mathrm{P}\rightarrow\mathrm{P}$
+\end_inset
+
+, which maps a start population, 
+\begin_inset Formula $\mathrm{P}$
+\end_inset
+
+, to an evolved result population.
+ The 
+\family typewriter
+Engine
+\family default
+ function, 
+\begin_inset Formula $f_{E}$
+\end_inset
+
+, is, of course, 
+\emph on
+non
+\emph default
+-deterministic.
+ Calling it twice with the same start population will lead to different
+ result populations.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/model/EngineModel.eps
+	width 85text%
+	BoundingBox 0bp 0bp 432bp 72bp
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Evolution-engine-model"
+
+\end_inset
+
+Evolution engine model
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Evolution-engine-model"
+
+\end_inset
+
+ shows the main classes of the evolution engine model.
 \end_layout
 
 \begin_layout Standard
