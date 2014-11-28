@@ -72,7 +72,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-11-04 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-11-28 $</em>
  */
 @XmlJavaTypeAdapter(Genotype.Model.Adapter.class)
 public final class Genotype<G extends Gene<?, G>>
@@ -111,7 +111,7 @@ public final class Genotype<G extends Gene<?, G>>
 	 *         element.
 	 * @throws IllegalArgumentException if {@code chromosome.length == 0}.
 	 */
-	public Genotype(final ISeq<? extends Chromosome<G>> chromosomes) {
+	Genotype(final ISeq<? extends Chromosome<G>> chromosomes) {
 		this(chromosomes, ngenes(chromosomes));
 	}
 
