@@ -1092,7 +1092,11 @@ Engine.builder
 \end_layout
 
 \begin_layout Enumerate
-In the last step, we can create a new EvolutionStream from our Engine.
+In the last step, we can create a new 
+\family typewriter
+EvolutionStream
+\family default
+ from our Engine.
  The 
 \family typewriter
 EvolutionStream
@@ -1105,11 +1109,18 @@ evolutionary
  It also allows you to control the termination of the evolution process.
  In our example, we simply truncate the stream after 100 generations.
  If you don't limit the stream, the evolution stream will not terminate.
- Since the EvolutionStream extends the java.\SpecialChar \-
+ Since the 
+\family typewriter
+EvolutionStream
+\family default
+ extends the 
+\family typewriter
+java.\SpecialChar \-
 util.\SpecialChar \-
 stream.\SpecialChar \-
-Stream interface, you
- can therefore use the whole Java streaming API.
+Stream
+\family default
+ interface, you can therefore use the whole Java streaming API.
  The final result, the best 
 \family typewriter
 Genotype
@@ -1319,7 +1330,7 @@ Evolution Stream
 imperative
 \emph default
  way.
- An evolution stream is powered by an 
+ An evolution stream is powered by---respectively bound to---an 
 \emph on
 Evolution Engine
 \emph default
@@ -1342,7 +1353,7 @@ reference "lis:Genetic-algorithm"
 \family typewriter
 Engine
 \family default
- is immutable and doesn't have any mutable global state.
+ doesn't have any mutable global state.
  It is practically a stateless function, 
 \begin_inset Formula $f_{E}:\,\mathrm{P}\rightarrow\mathrm{P}$
 \end_inset
@@ -1394,7 +1405,11 @@ name "fig:Evolution-engine-model"
 
 \end_inset
 
-Evolution engine model
+Evolution 
+\emph on
+engine
+\emph default
+ model
 \end_layout
 
 \end_inset
@@ -1415,7 +1430,40 @@ reference "fig:Evolution-engine-model"
 
 \end_inset
 
- shows the main classes of the evolution engine model.
+ illustrates the main 
+\emph on
+engine
+\emph default
+ classes, together with its dependencies.
+ Since the Engine class itself is immutable, and can't be changed after
+ creation, it is build/configured via a builder.
+ After the engine has been created, it can be used to create an arbitrary
+ number of evolution streams.
+ The 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+ is used to control the evolution process and collect the final evolution
+ result.
+ This is done in the same way as for the 
+\emph on
+normal
+\emph default
+ 
+\family typewriter
+java.\SpecialChar \-
+util.\SpecialChar \-
+stream.\SpecialChar \-
+Stream 
+\family default
+classes.
+ With the additional 
+\family typewriter
+limit(Predicate)
+\family default
+ method, it is possible to truncate the evolution stream if some termination
+ criteria is fulfilled.
 \end_layout
 
 \begin_layout Standard
@@ -1463,7 +1511,11 @@ Package structure
 
 \end_inset
 
-Figure 
+
+\end_layout
+
+\begin_layout Standard
+The diagram 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Package-structure"
