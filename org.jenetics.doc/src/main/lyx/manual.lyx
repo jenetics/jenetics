@@ -99,7 +99,7 @@ figs-within-sections
 \pdf_title "Jenetics"
 \pdf_author "Franz Wilhelmstötter"
 \pdf_subject "Genetic Algorithm"
-\pdf_keywords "Research, Artificial Intelligence, Bio-Informatics"
+\pdf_keywords "Research, Artificial Intelligence, Bio-Informatics, evolutionaryalgorithm, optimization, geneticalgorithm, parallelized, algorithms, evolutionary, artificialintelligence, heuristicalgorithm"
 \pdf_bookmarks true
 \pdf_bookmarksnumbered false
 \pdf_bookmarksopen false
@@ -1330,7 +1330,7 @@ Evolution Stream
 imperative
 \emph default
  way.
- An evolution stream is powered by---respectively bound to---an 
+ An evolution stream is powered by---and bound to respectively---an 
 \emph on
 Evolution Engine
 \emph default
@@ -1811,8 +1811,8 @@ Beside the container functionality for the allele, every
 \family typewriter
 Gene
 \family default
- is its own factory and is able to create new, random instances with the
- same type and with the same constraints.
+ is its own factory and is able to create new, random instances of the same
+ type and with the same constraints.
  The factory methods are used by the 
 \family typewriter
 Alterer
@@ -1904,7 +1904,21 @@ reference "lis:Gene-interface"
 Gene
 \family default
  interface.
- The available 
+ The 
+\family typewriter
+isValid
+\family default
+ method, introduced by the 
+\family typewriter
+Verifiable
+\family default
+, allows the gene to mark itself as invalid or invalid receptively.
+ All invalid genes are replaced with new ones during the evolution phase.
+ 
+\end_layout
+
+\begin_layout Standard
+The available 
 \family typewriter
 Gene
 \family default
