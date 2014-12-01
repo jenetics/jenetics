@@ -1941,6 +1941,74 @@ Gene
 Chromosome
 \end_layout
 
+\begin_layout Standard
+A Chromosome serves as a container for Genes and is the main target of alteratio
+n step.
+ This means, that only chromosomes with the same position within a Genotype
+ are used by the crossover alterer.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface Chromosome<A, G extends Gene<A, G>>
+\end_layout
+
+\begin_layout Plain Layout
+
+    extends Factory<Chromosome<G>>, Serializable, Verifiable
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    public G getAllele();
+\end_layout
+
+\begin_layout Plain Layout
+
+    public G newInstance();
+\end_layout
+
+\begin_layout Plain Layout
+
+    public G newInstance(A allele);
+\end_layout
+
+\begin_layout Plain Layout
+
+    public boolean isValid();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\family typewriter
+Chromosome
+\family default
+ interface
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsubsection
 Genotype
 \begin_inset Index idx
@@ -2051,7 +2119,7 @@ Genotyp
 \begin_layout Standard
 Figure 
 \begin_inset CommandInset ref
-LatexCommand ref
+LatexCommand vref
 reference "fig:Genotype-structure"
 
 \end_inset
@@ -4373,184 +4441,12 @@ Nuts and bolts
 \end_layout
 
 \begin_layout Subsection
-Concurrency
+Collectors
 \begin_inset Index idx
 status collapsed
 
 \begin_layout Plain Layout
-Concurrency
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The
-\family sans
-\series bold
-\shape smallcaps
- Jenetics
-\family default
-\series default
-\shape default
- library parallelizes independent task whenever possible.
- Especially the evaluation of the fitness function is done concurrently.
- That means that the fitness function must be thread safe, because it is
- shared by all phenotypes of a population.
- The easiest way for achieving thread safety is to make the fitness function
- immutable and re-entrant.
- The used 
-\family typewriter
-Executor
-\family default
- can be defined when building the evolution 
-\family typewriter
-Engine
-\family default
- object.
-
-\family sans
-\series bold
-\shape smallcaps
- 
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-import java.util.concurrent.Executor;
-\end_layout
-
-\begin_layout Plain Layout
-
-import java.util.concurrent.Executors;
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-public class Main {
-\end_layout
-
-\begin_layout Plain Layout
-
-	private static Double eval(final Genotype<DoubleGene> gt) {
-\end_layout
-
-\begin_layout Plain Layout
-
-        // calculate and return fitness
-\end_layout
-
-\begin_layout Plain Layout
-
-    }
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-    public static void main(final String[] args) {
-\end_layout
-
-\begin_layout Plain Layout
-
-        Factory<Genotype<DoubleGene>> gtf = ...
-\end_layout
-
-\begin_layout Plain Layout
-
-        final Engine<DoubleGene, Double> engine = Engine 			
-\end_layout
-
-\begin_layout Plain Layout
-
-            .builder(Main::eval, gtf)
-\end_layout
-
-\begin_layout Plain Layout
-
-             // Using 10 threads for evolving.
-\end_layout
-
-\begin_layout Plain Layout
-
-            .executor(Executors.newFixedThreadPool(10))
-\end_layout
-
-\begin_layout Plain Layout
-
-            .build()
-\end_layout
-
-\begin_layout Plain Layout
-
-        ...
-\end_layout
-
-\begin_layout Plain Layout
-
-    }
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-If no 
-\family typewriter
-Executor
-\family default
- is given, 
-\family sans
-\series bold
-\shape smallcaps
-Jenetics
-\family default
-\series default
-\shape default
- uses a common 
-\family typewriter
-ForkJoinPool
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-
-\family typewriter
-ForkJoinPool.commonPool()
-\end_layout
-
-\end_inset
-
-
-\family default
- for concurrency.
-\end_layout
-
-\begin_layout Subsection
-Statistics
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Statistics
+Collectors
 \end_layout
 
 \end_inset
@@ -4841,7 +4737,7 @@ The console output of the time statistics looks like listing above and has
 \end_layout
 
 \begin_layout Subsection
-Limiting evolution streams
+Stream truncation
 \begin_inset Index idx
 status collapsed
 
@@ -4988,6 +4884,178 @@ Fitness(5)
  package.
  The steady-fitness terminator for example, truncates the stream if the
  best fitness value doesn't increase for 5 consecutive generations.
+\end_layout
+
+\begin_layout Subsection
+Concurrency
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Concurrency
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The
+\family sans
+\series bold
+\shape smallcaps
+ Jenetics
+\family default
+\series default
+\shape default
+ library parallelizes independent task whenever possible.
+ Especially the evaluation of the fitness function is done concurrently.
+ That means that the fitness function must be thread safe, because it is
+ shared by all phenotypes of a population.
+ The easiest way for achieving thread safety is to make the fitness function
+ immutable and re-entrant.
+ The used 
+\family typewriter
+Executor
+\family default
+ can be defined when building the evolution 
+\family typewriter
+Engine
+\family default
+ object.
+
+\family sans
+\series bold
+\shape smallcaps
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+import java.util.concurrent.Executor;
+\end_layout
+
+\begin_layout Plain Layout
+
+import java.util.concurrent.Executors;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+public class Main {
+\end_layout
+
+\begin_layout Plain Layout
+
+	private static Double eval(final Genotype<DoubleGene> gt) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        // calculate and return fitness
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    public static void main(final String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        Factory<Genotype<DoubleGene>> gtf = ...
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Engine<DoubleGene, Double> engine = Engine 			
+\end_layout
+
+\begin_layout Plain Layout
+
+            .builder(Main::eval, gtf)
+\end_layout
+
+\begin_layout Plain Layout
+
+             // Using 10 threads for evolving.
+\end_layout
+
+\begin_layout Plain Layout
+
+            .executor(Executors.newFixedThreadPool(10))
+\end_layout
+
+\begin_layout Plain Layout
+
+            .build()
+\end_layout
+
+\begin_layout Plain Layout
+
+        ...
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+If no 
+\family typewriter
+Executor
+\family default
+ is given, 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ uses a common 
+\family typewriter
+ForkJoinPool
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+
+\family typewriter
+ForkJoinPool.commonPool()
+\end_layout
+
+\end_inset
+
+
+\family default
+ for concurrency.
 \end_layout
 
 \begin_layout Subsection
@@ -5289,7 +5357,7 @@ width "90text%"
 special "none"
 height "1in"
 height_special "totalheight"
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset CommandInset line
@@ -5310,8 +5378,8 @@ The
 \emph on
  Fair Play
 \emph default
- property of a PRNG guarantees that the quality of the GA does not depend
- on the degree of parallelization.
+ property of a PRNG guarantees that the quality of the genetic algorithm
+ (evolution stream) does not depend on the degree of parallelization.
 \end_layout
 
 \begin_layout Plain Layout
@@ -5728,7 +5796,7 @@ The
 \family typewriter
  LCG64ShiftRandom
 \family default
- class is a Java port of the
+ class is a port of the
 \family typewriter
  trng::lcg64_shift
 \family default
@@ -6436,9 +6504,9 @@ end{multicols}
 
 \begin_layout Standard
 With the serialization mechanism you can write a population to disk and
- load it into an GA at a later time.
- It can also be used to transfer populations to GAs, running on different
- hosts, over a network link.
+ load it into an new evolution stream at a later time.
+ It can also be used to transfer populations to evolution engines, running
+ on different hosts, over a network link.
  The
 \family typewriter
  IO
@@ -6458,6 +6526,25 @@ status open
 
 \begin_layout Plain Layout
 
+// Creating result population.
+\end_layout
+
+\begin_layout Plain Layout
+
+EvolutionResult<DoubleGene, Double> result = stream
+\end_layout
+
+\begin_layout Plain Layout
+
+    .collect(toBestEvolutionResult());
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
 // Writing the population to disk.
 \end_layout
 
@@ -6468,7 +6555,7 @@ final File file = new File("population.xml");
 
 \begin_layout Plain Layout
 
-IO.jaxb.write(ga.getPopulation(), file);
+IO.jaxb.write(result.getPopulation(), file);
 \end_layout
 
 \begin_layout Plain Layout
@@ -6492,7 +6579,17 @@ Population<DoubleGene, Double> population =
 
 \begin_layout Plain Layout
 
-ga.setPopulation(population);
+EvolutionStream<DoubleGene, Double> stream = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+    .build(ff, gtf)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .stream(population, 1)
 \end_layout
 
 \end_inset
@@ -6557,33 +6654,14 @@ footnotesize}
 
 \begin_layout Standard
 When serializing a whole population the fitness function and fitness scaler
- are not serialized.
+ are not part of the serialized XML file.
  If a GA is initialized with a previously serialized population, the GA's
  current fitness function and fitness scaler are used for
 \emph on
  re
 \emph default
 -calculating the fitness values.
-\end_layout
-
-\begin_layout Standard
-The
-\family typewriter
- ga.setPopulation(Collection)
-\family default
- method doesn't perform a recalculation of the fitness values.
- This is done on demand, when evolving the next generation.
- Setting the population can be done whenever desired.
- In contrast to the
-\family typewriter
- ga.setup(Collection)
-\family default
- method, which can only be called before starting evaluation, as replacement
- for the
-\family typewriter
- ga.setup()
-\family default
- call.
+ 
 \end_layout
 
 \begin_layout Subsection
@@ -6705,7 +6783,7 @@ Seq
 \begin_layout Standard
 Figure 
 \begin_inset CommandInset ref
-LatexCommand ref
+LatexCommand vref
 reference "fig:Seq-class-diagram"
 
 \end_inset
@@ -7338,7 +7416,7 @@ The first parameter of the
 \end_layout
 
 \begin_layout Subsection
-Statistics
+Statistics/Collectors
 \begin_inset Index idx
 status collapsed
 
@@ -10460,7 +10538,23 @@ Maven Central
 \end_layout
 
 \begin_layout LyX-Code
-org.bitbucket.fwilhelm:org.jenetics:3.0.0
+<dependency>     
+\end_layout
+
+\begin_layout LyX-Code
+    <groupId>org.bitbucket.fwilhelm</groupId>
+\end_layout
+
+\begin_layout LyX-Code
+    <artifactId>org.jenetics</artifactId>
+\end_layout
+
+\begin_layout LyX-Code
+    <version>3.0.0</version>
+\end_layout
+
+\begin_layout LyX-Code
+</dependency>
 \end_layout
 
 \begin_layout Section
