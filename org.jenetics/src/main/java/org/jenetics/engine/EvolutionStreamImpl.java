@@ -66,10 +66,10 @@ final class EvolutionStreamImpl<
 			evolution,
 			initial,
 			StreamSupport.stream(
-				new EvolutionSpliterator<>(evolution, initial, True()),
+				new EvolutionSpliterator<>(evolution, initial, TRUE()),
 				false
 			),
-			True()
+			TRUE()
 		);
 	}
 
@@ -80,7 +80,7 @@ final class EvolutionStreamImpl<
 			_proceed == TRUE ? proceed :
 				r -> proceed.test(r) & _proceed.test(r);
 
-		return new EvolutionStreamImpl<G, C>(
+		return new EvolutionStreamImpl<>(
 			_evolution,
 			_initial,
 			StreamSupport.stream(
@@ -94,7 +94,7 @@ final class EvolutionStreamImpl<
 	private static final Predicate<?> TRUE = a -> true;
 
 	@SuppressWarnings("unchecked")
-	private static <T> Predicate<T> True() {
+	private static <T> Predicate<T> TRUE() {
 		return (Predicate<T>)TRUE;
 	}
 
