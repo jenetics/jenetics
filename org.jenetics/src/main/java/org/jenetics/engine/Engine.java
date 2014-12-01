@@ -35,6 +35,10 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import org.jenetics.internal.util.Concurrency;
+import org.jenetics.internal.util.NanoClock;
+import org.jenetics.internal.util.require;
+
 import org.jenetics.Alterer;
 import org.jenetics.Chromosome;
 import org.jenetics.Gene;
@@ -46,9 +50,6 @@ import org.jenetics.Population;
 import org.jenetics.Selector;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.TournamentSelector;
-import org.jenetics.internal.util.Concurrency;
-import org.jenetics.internal.util.NanoClock;
-import org.jenetics.internal.util.require;
 import org.jenetics.util.Factory;
 
 /**
