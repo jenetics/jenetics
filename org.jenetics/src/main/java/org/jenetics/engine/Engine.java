@@ -648,7 +648,28 @@ public final class Engine<
 	 **************************************************************************/
 
 	/**
-	 * Create a new evolution {@code EngineBuilder} with the given fitness
+	 * Create a new evolution {@code Engine.Builder} initialized with the values
+	 * of the current evolution {@code Engine}. With this method, the evolution
+	 * engine can serve as a template for an new one.
+	 *
+	 * @return a new engine builder
+	 */
+	public Builder<G, C> builder() {
+		return new Builder<>(_genotypeFactory, _fitnessFunction)
+			.alterers(_alterer)
+			.clock(_clock)
+			.executor(_executor.get())
+			.fitnessScaler(_fitnessScaler)
+			.maximalPhenotypeAge(_maximalPhenotypeAge)
+			.offspringFraction((double)_offspringCount/(double)getPopulationSize())
+			.offspringSelector(_offspringSelector)
+			.optimize(_optimize)
+			.populationSize(getPopulationSize())
+			.survivorsSelector(_survivorsSelector);
+	}
+
+	/**
+	 * Create a new evolution {@code Engine.Builder} with the given fitness
 	 * function and genotype factory.
 	 *
 	 * @param fitnessFunction the fitness function
@@ -668,7 +689,7 @@ public final class Engine<
 	}
 
 	/**
-	 * Create a new evolution {@code EngineBuilder} with the given fitness
+	 * Create a new evolution {@code Engine.Builder} with the given fitness
 	 * function and chromosome templates.
 	 *
 	 * @param fitnessFunction the fitness function
@@ -742,21 +763,21 @@ public final class Engine<
 			_fitnessFunction = requireNonNull(fitnessFunction);
 		}
 
-//		/**
-//		 * Set the fitness function of the build GA {@code Engine}.
-//		 *
-//		 * @param function the fitness function to use in the GA {@code Engine}
-//		 * @return {@code this} builder, for command chaining
-//		 */
-//		public Builder<G, C> fitnessFunction(
-//			Function<? super Genotype<G>, ? extends C> function
-//		) {
-//			_fitnessFunction = requireNonNull(function);
-//			return this;
-//		}
+		/**
+		 * Set the fitness function of the evolution {@code Engine}.
+		 *
+		 * @param function the fitness function to use in the GA {@code Engine}
+		 * @return {@code this} builder, for command chaining
+		 */
+		public Builder<G, C> fitnessFunction(
+			Function<? super Genotype<G>, ? extends C> function
+		) {
+			_fitnessFunction = requireNonNull(function);
+			return this;
+		}
 
 		/**
-		 * Set the fitness scaler of the build GA {@code Engine}. <i>Default
+		 * Set the fitness scaler of the evolution {@code Engine}. <i>Default
 		 * value is set to the identity function.</i>
 		 *
 		 * @param scaler the fitness scale to use in the GA {@code Engine}
@@ -769,19 +790,19 @@ public final class Engine<
 			return this;
 		}
 
-//		/**
-//		 * The genotype factory used for creating new individuals.
-//		 *
-//		 * @param genotypeFactory the genotype factory for creating new
-//		 *        individuals.
-//		 * @return {@code this} builder, for command chaining
-//		 */
-//		public Builder<G, C> genotypeFactory(
-//			final Factory<Genotype<G>> genotypeFactory
-//		) {
-//			_genotypeFactory = requireNonNull(genotypeFactory);
-//			return this;
-//		}
+		/**
+		 * The genotype factory used for creating new individuals.
+		 *
+		 * @param genotypeFactory the genotype factory for creating new
+		 *        individuals.
+		 * @return {@code this} builder, for command chaining
+		 */
+		public Builder<G, C> genotypeFactory(
+			final Factory<Genotype<G>> genotypeFactory
+		) {
+			_genotypeFactory = requireNonNull(genotypeFactory);
+			return this;
+		}
 
 		/**
 		 * The selector used for selecting the offspring population. <i>Default
