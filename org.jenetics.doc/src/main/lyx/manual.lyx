@@ -8844,8 +8844,50 @@ Termination
 \end_layout
 
 \begin_layout Standard
-This section gives a deeper look into the different way of terminating the
- evolution or truncating the evolution stream, respectively.
+Termination is the criterion by which the evolution stream decides whether
+ to continue or truncate the stream.
+ This section gives a deeper look into the different ways of terminating
+ or truncating the evolution stream, respectively.
+\end_layout
+
+\begin_layout Subsubsection
+Generation number
+\end_layout
+
+\begin_layout Standard
+The simplest way for terminating the evolution process, is to define a maximal
+ number of generations on the 
+\family typewriter
+EvolutionStream
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final long MAX_GENERATIONS = 100;
+\end_layout
+
+\begin_layout Plain Layout
+
+EvolutionStream<DoubleGene, Double> stream = engine.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+    .limit(MAX_GENERATIONS);
+\end_layout
+
+\end_inset
+
+This kind of termination method should always be applied, to guarantee the
+ truncation of the evolution stream.
 \end_layout
 
 \begin_layout Subsubsection
@@ -9020,6 +9062,69 @@ final class SteadyFitnessLimit<C extends Comparable<? super C>>
 
 \begin_layout Subsubsection
 Steady population
+\end_layout
+
+\begin_layout Subsubsection
+Evolution time
+\end_layout
+
+\begin_layout Standard
+A termination method that stops the evolution when the elapsed evolution
+ time exceeds the user-specified max evolution time.
+ By default, the evolution is not stopped until the evolution of the current
+ generation has completed, but this behavior can be changed so that the
+ evolution can be stopped within a generation.
+\end_layout
+
+\begin_layout Subsubsection
+Fitness threshold
+\end_layout
+
+\begin_layout Standard
+A termination method that stops the evolution when the best fitness in the
+ current population becomes less than the user-specified fitness threshold
+ and the objective is set to minimize the fitness.
+ This termination method also stops the evolution when the best fitness
+ in the current population becomes greater than the user-specified fitness
+ threshold when the objective is to maximize the fitness.
+\end_layout
+
+\begin_layout Subsubsection
+Fitness convergence
+\end_layout
+
+\begin_layout Standard
+A termination method that stops the evolution when the fitness is deemed
+ as converged.
+ Two filters of different lengths are used to smooth the best fitness across
+ the generations.
+ When the smoothed best fitness from the long filter is less than a user-specifi
+ed percentage away from the smoothed best fitness from the short filter,
+ the fitness is deemed as converged and the evolution terminates.
+\end_layout
+
+\begin_layout Subsubsection
+Population convergence
+\end_layout
+
+\begin_layout Standard
+A termination method that stops the evolution when the population is deemed
+ as converged.
+ The population is deemed as converged when the average fitness across the
+ current population is less than a user-specified percentage away from the
+ best fitness of the current population.
+\end_layout
+
+\begin_layout Subsubsection
+Gene convergence
+\end_layout
+
+\begin_layout Standard
+A termination method that stops the evolution when a user-specified percentage
+ of the genes that make up a chromosome are deemed as converged.
+ A gene is deemed as converged when the average value of that gene across
+ all of the chromosomes in the current population is less than a user-specified
+ percentage away from the maximum gene value across the chromosomes.
 \end_layout
 
 \begin_layout Standard
