@@ -3546,8 +3546,10 @@ Alterer
 \end_layout
 
 \begin_layout Standard
-Alterers are responsible for the genetic diversity of the genetic algorithm.
- The alterer types used in
+The representation determines the bounds of the search space, but the alterers
+ determine how the space can be traversed: alterers are responsible for
+ the genetic diversity of the genetic algorithm.
+ The two alterer types used in
 \family sans
 \series bold
 \shape smallcaps
@@ -7476,15 +7478,51 @@ Advanced configurations
 \end_layout
 
 \begin_layout Standard
-This section describes some advanced GA setups/configurations.
+This section describes some advanced topics when setting up an evolution
+ engine or stream.
 \end_layout
 
 \begin_layout Subsection
-Problem encoding
+Encoding
 \end_layout
 
 \begin_layout Standard
-This section contains some encoding examples for common problems.
+This section presents some encoding examples for common problems.
+ The encoding should be a complete and minimal expression of a solution
+ to the problem.
+ An encoding is complete if it contains enough information to represent
+ every solution to the problem.
+ An minimal encoding contains only the information needed to represent a
+ solution to the problem.
+ If an encoding contains more information than is needed to uniquely identify
+ solutions to the problem, the search space will be larger than necessary.
+ 
+\end_layout
+
+\begin_layout Standard
+Whenever possible, the encoding should not be able to represent infeasible
+ solutions.
+ If a genotype can represent an infeasible solution, care must be taken
+ in the fitness function to give partial credit to the genotype for its
+ 
+\begin_inset Quotes ald
+\end_inset
+
+good
+\begin_inset Quotes ard
+\end_inset
+
+ genetic material while sufficiently penalizing it for being infeasible.
+ Implementing a specialized 
+\family typewriter
+Chromosome
+\family default
+, which won't create invalid encodings can be an solution to this problem.
+ In general, it is much more desirable to design a representation that can
+ only represent valid solutions so that the fitness function measures only
+ fitness, not validity.
+ An encoding that includes invalid individuals enlarges the search space
+ and makes the search more costly.
 \end_layout
 
 \begin_layout Subsubsection
@@ -8789,17 +8827,195 @@ GaussianAlterer
  to the list of alterers.
 \end_layout
 
+\begin_layout Subsubsection
+Graph
+\end_layout
+
+\begin_layout Subsubsection
+Scheduling
+\end_layout
+
+\begin_layout Standard
+How to encode the problem for finding the best schedule of lessons.
+\end_layout
+
 \begin_layout Subsection
 Termination
 \end_layout
 
 \begin_layout Standard
 This section gives a deeper look into the different way of terminating the
- evolution or truncating the evolution stream, respectively
+ evolution or truncating the evolution stream, respectively.
 \end_layout
 
 \begin_layout Subsubsection
 Steady fitness
+\end_layout
+
+\begin_layout Standard
+The steady fitness strategy truncates the evolution stream if its best fitness
+ hasn't changed after a given number of generations.
+ The predicate maintains an internal state, the number of generations with
+ non increasing fitness, and must be created for every evolution stream.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final class SteadyFitnessLimit<C extends Comparable<? super C>> 	
+\end_layout
+
+\begin_layout Plain Layout
+
+    implements Predicate<EvolutionResult<?, C>> 
+\end_layout
+
+\begin_layout Plain Layout
+
+{ 	
+\end_layout
+
+\begin_layout Plain Layout
+
+    private final int _generations;
+\end_layout
+
+\begin_layout Plain Layout
+
+    private boolean _proceed = true;
+\end_layout
+
+\begin_layout Plain Layout
+
+    private int _stable = 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+    private C _fitness;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    public SteadyFitnessLimit(final int generations) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        _generations = generations;
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    @Override
+\end_layout
+
+\begin_layout Plain Layout
+
+    public boolean test(final EvolutionResult<?, C> result) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        if (!_proceed) return false;
+\end_layout
+
+\begin_layout Plain Layout
+
+        if (_fitness == null) {
+\end_layout
+
+\begin_layout Plain Layout
+
+            _fitness = result.getBestFitness();
+\end_layout
+
+\begin_layout Plain Layout
+
+            _stable = 1;
+\end_layout
+
+\begin_layout Plain Layout
+
+		} else {
+\end_layout
+
+\begin_layout Plain Layout
+
+            final Optimize opt = result.getOptimize();
+\end_layout
+
+\begin_layout Plain Layout
+
+            if (opt.compare(_fitness, result.getBestFitness()) >= 0) {
+\end_layout
+
+\begin_layout Plain Layout
+
+                _proceed = ++_stable <= _generations;
+\end_layout
+
+\begin_layout Plain Layout
+
+            } else {
+\end_layout
+
+\begin_layout Plain Layout
+
+                _fitness = result.getBestFitness();
+\end_layout
+
+\begin_layout Plain Layout
+
+                _stable = 1;
+\end_layout
+
+\begin_layout Plain Layout
+
+            }
+\end_layout
+
+\begin_layout Plain Layout
+
+        }
+\end_layout
+
+\begin_layout Plain Layout
+
+        return _proceed;
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
