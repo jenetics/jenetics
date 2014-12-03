@@ -72,7 +72,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-11-28 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-12-03 $</em>
  */
 @XmlJavaTypeAdapter(Genotype.Model.Adapter.class)
 public final class Genotype<G extends Gene<?, G>>
@@ -261,7 +261,7 @@ public final class Genotype<G extends Gene<?, G>>
 	}
 
 	/**
-	 * Create a new Genotype from a given array of {@code Chromosomes}.
+	 * Create a new {@code Genotype} from a given array of {@code Chromosomes}.
 	 *
 	 * @since 3.0
 	 *
@@ -269,9 +269,8 @@ public final class Genotype<G extends Gene<?, G>>
 	 * @param first the first {@code Chromosome} of the {@code Genotype}
 	 * @param rest the rest of the genotypes chromosomes.
 	 * @return a new {@code Genotype} from the given chromosomes
-	 * @throws NullPointerException if {@code chromosomes} is null or one of its
-	 *         element.
-	 * @throws IllegalArgumentException if {@code chromosome.length == 0}.
+	 * @throws NullPointerException if {@code chromosomes} is {@code null} or
+	 *         one of its element.
 	 */
 	@SafeVarargs
 	public static <G extends Gene<?, G>> Genotype<G> of(
@@ -286,7 +285,50 @@ public final class Genotype<G extends Gene<?, G>>
 		return new Genotype<>(seq.toISeq());
 	}
 
+	/**
+	 * Create a new {@code Genotype} which consists of {@code n} chromosomes,
+	 * which are created by the given {@code factory}. This method can be used
+	 * for easily creating a <i>gene matrix</i>. The following example will
+	 * create a 10x5 {@code DoubleGene} <i>matrix</i>.
+	 *
+	 * [code]
+	 * final Genotype&lt;DoubleGene&gt; gt = Genotype
+	 *     .of(DoubleChromosome.of(0.0, 1.0, 10), 5);
+	 * [/code]
+	 *
+	 * @since 3.0
+	 *
+	 * @param <G> the gene type
+	 * @param factory the factory which creates the chromosomes this genotype
+	 *        consists of
+	 * @param n the number of chromosomes this genotype consists of
+	 * @return new {@code Genotype} containing {@code n} chromosomes
+	 * @throws IllegalArgumentException if {@code n < 1}.
+	 * @throws NullPointerException if the {@code factory} is {@code null}.
+	 */
+	public static <G extends Gene<?, G>> Genotype<G>
+	of(final Factory<? extends Chromosome<G>> factory, final int n) {
+		final ISeq<Chromosome<G>> ch = ISeq.of(factory::newInstance, n);
+		return new Genotype<>(ch);
+	}
 
+	/**
+	 * Create a new {@code Genotype} from a given array of {@code chromosomes}.
+	 *
+	 * @since 3.0
+	 *
+	 * @param <G> the gene type
+	 * @param chromosomes the {@code Chromosome}s the returned genotype consists
+	 *        of
+	 * @return a new {@code Genotype} from the given chromosomes
+	 * @throws NullPointerException if {@code chromosomes} is {@code null} or
+	 *         one of its element.
+	 * @throws IllegalArgumentException if {@code chromosome.length() < 1}.
+	 */
+	public static <G extends Gene<?, G>> Genotype<G>
+	of(final Iterable<? extends Chromosome<G>> chromosomes) {
+		return new Genotype<>(ISeq.of(chromosomes));
+	}
 
 	/* *************************************************************************
 	 *  JAXB object serialization
