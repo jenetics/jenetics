@@ -108,7 +108,7 @@ import org.jenetics.util.Factory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-12-01 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-12-03 $</em>
  */
 public final class Engine<
 	G extends Gene<?, G>,
@@ -386,6 +386,7 @@ public final class Engine<
 
 		final Population<G, C> population = new Population<G, C>(size)
 			.fill(() -> newPhenotype(generation), size);
+		evaluate(population);
 
 		return new EvolutionStart<>(population, generation);
 	}
@@ -447,10 +448,12 @@ public final class Engine<
 			Stream.generate(() -> newPhenotype(generation))
 		);
 
-		return new EvolutionStart<>(
-			stream.limit(getPopulationSize()).collect(toPopulation()),
-			generation
-		);
+		final Population<G, C> population = stream
+			.limit(getPopulationSize())
+			.collect(toPopulation());
+		evaluate(population);
+
+		return new EvolutionStart<>(population, generation);
 	}
 
 	/**
@@ -530,10 +533,12 @@ public final class Engine<
 			Stream.generate(() -> newPhenotype(generation))
 		);
 
-		return new EvolutionStart<>(
-			stream.limit(getPopulationSize()).collect(toPopulation()),
-			generation
-		);
+		final Population<G, C> pop = stream
+			.limit(getPopulationSize())
+			.collect(toPopulation());
+		evaluate(pop);
+
+		return new EvolutionStart<>(pop, generation);
 	}
 
 
@@ -728,7 +733,7 @@ public final class Engine<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 3.0
-	 * @version 3.0 &mdash; <em>$Date: 2014-12-01 $</em>
+	 * @version 3.0 &mdash; <em>$Date: 2014-12-03 $</em>
 	 */
 	public static final class Builder<
 		G extends Gene<?, G>,
