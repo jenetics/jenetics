@@ -5714,7 +5714,7 @@ reference "fig:Parallelization-via-leapfrogging"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
@@ -6740,7 +6740,7 @@ s, respectively.
 placement h
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
@@ -7517,7 +7517,7 @@ good
 \family typewriter
 Chromosome
 \family default
-, which won't create invalid encodings can be an solution to this problem.
+, which won't create invalid encodings can be a solution to this problem.
  In general, it is much more desirable to design a representation that can
  only represent valid solutions so that the fitness function measures only
  fitness, not validity.
@@ -8829,6 +8829,137 @@ GaussianAlterer
 
 \begin_layout Subsubsection
 Graph
+\end_layout
+
+\begin_layout Standard
+There are many ways for representing a graph, but we will only consider
+ adjacency matrix in this section.
+ 
+\end_layout
+
+\begin_layout Paragraph
+Undirected graph
+\end_layout
+
+\begin_layout Standard
+An undirected graph means that in case there is an edge between the nodes
+ i and j we will assume that there is a path from i to j, as well as from
+ j to i.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/UndirectGraph.eps
+	lyxscale 80
+	width 65text%
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Undirected Graph and Adjacency Matrix
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+The following code snippet shows how to create an adjacency matrix for a
+ graph with 6 nodes.
+ Since the graph is undirected, only one of the both diagonal matrices should
+ be used when calculating the fitness function.
+ The other diagonal matrix is symmetric to the first one.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final int NODES = 6;
+\end_layout
+
+\begin_layout Plain Layout
+
+Genotype<BitGene> gt = Genotype
+\end_layout
+
+\begin_layout Plain Layout
+
+    .of(BitChromosome.of(NODES), NODES);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Converting back
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final int[][] array = gt.toSeq().stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+    .map(c -> c.toSeq().stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+        .mapToInt(BitGene::ordinal).toArray())
+\end_layout
+
+\begin_layout Plain Layout
+
+    .toArray(int[][]::new);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+// Accessing
+\end_layout
+
+\begin_layout Plain Layout
+
+gt.get(i, j).booleanValue();
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+Directed graph
 \end_layout
 
 \begin_layout Subsubsection
