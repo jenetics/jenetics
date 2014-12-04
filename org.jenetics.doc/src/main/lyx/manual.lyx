@@ -1493,7 +1493,7 @@ name "fig:Package-structure"
 
 Package structure
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Package structure
@@ -1602,7 +1602,7 @@ status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -1789,7 +1789,7 @@ status collapsed
 \begin_layout Plain Layout
 It is also worth reading the blog entry from Stephen Colebourne: 
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -2098,7 +2098,7 @@ Genotype structure
 status collapsed
 
 \begin_layout Plain Layout
-Genotyp
+Genotype
 \end_layout
 
 \end_inset
@@ -3939,7 +3939,7 @@ re combine
 \begin_layout Paragraph
 Single-point crossover
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Single-point crossover
@@ -3949,7 +3949,7 @@ Single-point crossover
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Crossover!Single-point crossover
@@ -4126,7 +4126,7 @@ status collapsed
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Crossover!2-point crossover
@@ -4345,7 +4345,7 @@ name "fig:Partially-matched-crossover"
 
 Partially-matched crossover
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Partially-matched crossover
@@ -4355,7 +4355,7 @@ Partially-matched crossover
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Crossover!Partially-matched crossover
@@ -5484,7 +5484,7 @@ concurrent
  Random seeding works well for the most problems but without theoretical
  foundation.
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 This is also expressed by Donald Knuth’s advice: 
@@ -5714,7 +5714,7 @@ reference "fig:Parallelization-via-leapfrogging"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -5768,7 +5768,7 @@ Random!LCG64ShiftRandom
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 PRNG!
@@ -6029,7 +6029,7 @@ reference "tab:PRNG-performance"
 \family default
 ) generation speed for the different PRNG implementations.
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Measured on a Intel(R) Core(TM) i5-3427U CPU @ 1.80GHz with Java(TM) SE Runtime
@@ -6740,7 +6740,7 @@ s, respectively.
 placement h
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -6942,7 +6942,7 @@ The
 \begin_layout Subsection
 Genes
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Gene
@@ -7035,7 +7035,7 @@ g.
 \begin_layout Subsection
 Chromosomes
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Chromosome
@@ -7156,7 +7156,7 @@ Instance
 \begin_layout Subsection
 Selectors
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Selector
@@ -7309,7 +7309,7 @@ Before implementing a selector from scratch, consider to extend your selector
 \begin_layout Subsection
 Alterers
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Alterer
@@ -8359,7 +8359,7 @@ status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -8375,11 +8375,11 @@ https://en.wikipedia.org/wiki/Affine_transformation
 
 
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -8400,7 +8400,7 @@ status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -8429,7 +8429,7 @@ status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -8984,6 +8984,74 @@ final int[][] array = gt.toSeq().stream()
 Directed graph
 \end_layout
 
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/DirectGraph.eps
+	lyxscale 80
+	width 65text%
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Undirected Graph and Adjacency Matrix
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+Weighted directed graph
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/WeightedDirectGraph.eps
+	lyxscale 80
+	width 65text%
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Undirected Graph and Adjacency Matrix
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsubsection
 Scheduling
 \end_layout
@@ -9362,7 +9430,7 @@ reference "sec:Build"
 \begin_layout Subsection
 Ones counting
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Examples!Ones counting
@@ -9437,7 +9505,7 @@ status collapsed
 For the other default values (population size, maximal age, ...) have a look
  at the Javadoc:
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -9497,7 +9565,7 @@ The given example will print the overall timing statistics onto the console.
 \begin_layout Subsection
 Real function
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Examples!Real function
@@ -9507,7 +9575,7 @@ Examples!Real function
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Real function
@@ -9687,7 +9755,7 @@ exact
 \begin_layout Subsection
 0/1 Knapsack
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Examples!0/1 Knapsack
@@ -9697,7 +9765,7 @@ Examples!0/1 Knapsack
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 0/1 Knapsack
@@ -9807,7 +9875,7 @@ footnotesize}
 \begin_layout Subsection
 Traveling salesman
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Examples!Traveling salesman
@@ -9817,7 +9885,7 @@ Examples!Traveling salesman
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Traveling salesman
@@ -10030,7 +10098,7 @@ For building the
  library from source, download the most recent, stable package version from
  
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -10231,14 +10299,14 @@ modules
 \emph default
 ).
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 If you are calling the
 \family typewriter
  gradlew
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Build!gradlew
@@ -10248,7 +10316,7 @@ Build!gradlew
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 gradlew
@@ -10611,7 +10679,7 @@ Homepage
 \emph on
  
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -10632,7 +10700,7 @@ Download
 \emph on
  
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -10713,7 +10781,7 @@ Homepage
 \emph on
  
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -10734,7 +10802,7 @@ Download
 \emph on
 
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -10815,7 +10883,7 @@ Homepage
 \emph on
  
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -10836,7 +10904,7 @@ Download
 \emph on
  
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -10894,10 +10962,10 @@ Gradle
 \emph default
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
-Gradel
+Gradle
 \end_layout
 
 \end_inset
@@ -11034,7 +11102,7 @@ Maven Central
 \begin_layout Section
 License
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 License
