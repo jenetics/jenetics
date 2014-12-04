@@ -7484,6 +7484,13 @@ This section describes some advanced topics when setting up an evolution
 
 \begin_layout Subsection
 Encoding
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Encoding"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -8832,8 +8839,10 @@ Graph
 \end_layout
 
 \begin_layout Standard
-There are many ways for representing a graph, but we will only consider
- adjacency matrix in this section.
+A graph can be represented in many different ways.
+ The most known graph representation is the adjacency matrix.
+ The following encoding examples uses adjacency matrices with different
+ characteristics.
  
 \end_layout
 
@@ -8842,8 +8851,8 @@ Undirected graph
 \end_layout
 
 \begin_layout Standard
-An undirected graph means that in case there is an edge between the nodes
- 
+In an undirected graph the edges between the vertices between have no direction.
+ If there is a path between nodes 
 \begin_inset Formula $i$
 \end_inset
 
@@ -8851,15 +8860,7 @@ An undirected graph means that in case there is an edge between the nodes
 \begin_inset Formula $j$
 \end_inset
 
- we will assume that there is a path from 
-\begin_inset Formula $i$
-\end_inset
-
- to 
-\begin_inset Formula $j$
-\end_inset
-
-, as well as from 
+, it is assumed that there is also path from 
 \begin_inset Formula $j$
 \end_inset
 
@@ -8889,7 +8890,13 @@ status open
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Undirected Graph and Adjacency Matrix
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Undirected-graph"
+
+\end_inset
+
+Undirected graph and adjacency matrix
 \end_layout
 
 \end_inset
@@ -8899,11 +8906,44 @@ Undirected Graph and Adjacency Matrix
 
 \end_inset
 
-The following code snippet shows how to create an adjacency matrix for a
- graph with six nodes.
- Since the graph is undirected, only one of the both diagonal matrices should
- be used when calculating the fitness function.
- The other diagonal matrix is symmetric to the first one.
+Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Undirected-graph"
+
+\end_inset
+
+ shows and undirected graph and its corresponding matrix representation.
+ Since the edges between the nodes have no direction, the matrix values
+ are mirrored along the matrices main diagonal.
+ An application which optimizes an undirected graph has to ignore one of
+ the two 
+\emph on
+diagonal
+\emph default
+ matrices.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+This property violates the 
+\emph on
+minimal
+\emph default
+ encoding requirement we mentioned at the beginning of section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Encoding"
+
+\end_inset
+
+.
+ For simplicity reason this will be ignored for the undirected graph encoding.
+\end_layout
+
+\end_inset
+
+ 
 \end_layout
 
 \begin_layout Standard
@@ -8914,7 +8954,7 @@ status open
 
 \begin_layout Plain Layout
 
-final int NODES = 6;
+final int n = 6;
 \end_layout
 
 \begin_layout Plain Layout
@@ -8924,12 +8964,32 @@ final Genotype<BitGene> gt = Genotype
 
 \begin_layout Plain Layout
 
-    .of(BitChromosome.of(NODES), NODES);
+    .of(BitChromosome.of(n), n);
 \end_layout
 
 \end_inset
 
-Whether the node 
+The code snippet above shows how to create an adjacency matrix for a graph
+ with 
+\begin_inset Formula $n=6$
+\end_inset
+
+ nodes.
+ It creates a genotype which consists of 
+\begin_inset Formula $n$
+\end_inset
+
+ 
+\family typewriter
+Bit\SpecialChar \-
+Chromosome
+\family default
+s of length 
+\begin_inset Formula $n$
+\end_inset
+
+ each.
+ Whether the node 
 \begin_inset Formula $i$
 \end_inset
 
@@ -8939,7 +8999,9 @@ Whether the node
 
  can be easily checked by calling 
 \family typewriter
-gt.get(i-1, j-1).booleanValue()
+gt\SpecialChar \-
+.get(i-1, j-1)\SpecialChar \-
+.booleanValue()
 \family default
 .
  For extracting the whole matrix as 
@@ -10962,7 +11024,7 @@ Gradle
 \emph default
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Gradle
@@ -11005,7 +11067,7 @@ Homepage
 \emph on
  
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -11026,7 +11088,7 @@ Download
 \emph on
 
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -11102,7 +11164,7 @@ Maven Central
 \begin_layout Section
 License
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 License
