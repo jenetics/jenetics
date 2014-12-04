@@ -8869,6 +8869,7 @@ In an undirected graph the edges between the vertices between have no direction.
 \end_inset
 
 .
+ 
 \end_layout
 
 \begin_layout Standard
@@ -8906,6 +8907,10 @@ Undirected graph and adjacency matrix
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 Figure 
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -8913,15 +8918,11 @@ reference "fig:Undirected-graph"
 
 \end_inset
 
- shows and undirected graph and its corresponding matrix representation.
- Since the edges between the nodes have no direction, the matrix values
- are mirrored along the matrices main diagonal.
- An application which optimizes an undirected graph has to ignore one of
- the two 
-\emph on
-diagonal
-\emph default
- matrices.
+ shows an undirected graph and its corresponding matrix representation.
+ Since the edges between the nodes have no direction, the values of the
+ lower diagonal matrix are not taken into account.
+ An application which optimizes an undirected graph has to ignore this part
+ of the matrix.
 \begin_inset Foot
 status collapsed
 
@@ -9047,6 +9048,16 @@ Directed graph
 \end_layout
 
 \begin_layout Standard
+A directed graph (digraph) is a graph where the path between the nodes have
+ a direction associated with them.
+ The encoding of a directed graph looks exactly like the encoding of an
+ undirected graph.
+ This time the whole matrix is used and the second diagonal matrix is no
+ longer ignored.
+ 
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
@@ -9065,7 +9076,13 @@ status open
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Undirected Graph and Adjacency Matrix
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Directed-graph"
+
+\end_inset
+
+Directed graph and adjacency matrix
 \end_layout
 
 \end_inset
@@ -9075,11 +9092,29 @@ Undirected Graph and Adjacency Matrix
 
 \end_inset
 
+ 
+\end_layout
 
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Directed-graph"
+
+\end_inset
+
+ shows the adjacency matrix of a digraph.
+ This time the whole matrix is used for representing the graph.
 \end_layout
 
 \begin_layout Paragraph
 Weighted directed graph
+\end_layout
+
+\begin_layout Standard
+A weighted graph associates a weight (label) with every path in the graph.
+ Weights are usually real numbers.
+ They may be restricted to rational numbers or integers.
 \end_layout
 
 \begin_layout Standard
@@ -9101,12 +9136,79 @@ status open
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Undirected Graph and Adjacency Matrix
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Weighted-graph"
+
+\end_inset
+
+Weighted graph and adjacency matrix
 \end_layout
 
 \end_inset
 
 
+\end_layout
+
+\end_inset
+
+The genotype creation...
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final int n = 6;
+\end_layout
+
+\begin_layout Plain Layout
+
+final double min = -1;
+\end_layout
+
+\begin_layout Plain Layout
+
+final double max = 20;
+\end_layout
+
+\begin_layout Plain Layout
+
+final Genotype<DoubleGene> gt = Genotype
+\end_layout
+
+\begin_layout Plain Layout
+
+    .of(DoubleChromosome.of(min, max, n), n);
+\end_layout
+
+\end_inset
+
+Matrix extraction...
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final double[][] array = gt.toSeq().stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+    .map(DoubleChromosome.class::cast)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .map(DoubleChromosome::toArray)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .toArray(double[][]::new);
 \end_layout
 
 \end_inset
