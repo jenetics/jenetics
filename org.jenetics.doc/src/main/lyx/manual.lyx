@@ -595,6 +595,24 @@ LatexCommand tableofcontents
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset FloatList figure
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 \begin_inset Newpage pagebreak
 \end_inset
 
@@ -1264,7 +1282,7 @@ name "lis:Genetic-algorithm"
 
 \end_inset
 
-Genetic algorithm steps, the library is using.
+Genetic algorithm steps
 \begin_inset Index idx
 status collapsed
 
@@ -1330,7 +1348,7 @@ Evolution Stream
 imperative
 \emph default
  way.
- An evolution stream is powered by---and bound to respectively---an 
+ An evolution stream is powered by---and bound to, respectively---an 
 \emph on
 Evolution Engine
 \emph default
@@ -1405,11 +1423,7 @@ name "fig:Evolution-engine-model"
 
 \end_inset
 
-Evolution 
-\emph on
-engine
-\emph default
- model
+Evolution engine model
 \end_layout
 
 \end_inset
@@ -1430,11 +1444,7 @@ reference "fig:Evolution-engine-model"
 
 \end_inset
 
- illustrates the main 
-\emph on
-engine
-\emph default
- classes, together with its dependencies.
+ illustrates the main evolution engine classes, together with its dependencies.
  Since the Engine class itself is immutable, and can't be changed after
  creation, it is build/configured via a builder.
  After the engine has been created, it can be used to create an arbitrary
@@ -1446,11 +1456,7 @@ Stream
 \family default
  is used to control the evolution process and collect the final evolution
  result.
- This is done in the same way as for the 
-\emph on
-normal
-\emph default
- 
+ This is done in the same way as for the normal 
 \family typewriter
 java.\SpecialChar \-
 util.\SpecialChar \-
@@ -1462,8 +1468,12 @@ classes.
 \family typewriter
 limit(Predicate)
 \family default
- method, it is possible to truncate the evolution stream if some termination
- criteria is fulfilled.
+ method, it is possible to truncate the 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+ if some termination criteria is fulfilled.
 \end_layout
 
 \begin_layout Standard
@@ -1522,13 +1532,124 @@ reference "fig:Package-structure"
 
 \end_inset
 
- shows the package structure of the library.
- The org.jenetics.util package contains the helper and collection classes
- used by the other packages.
- the org.jenetics package contains all of the domain classes together with
- the genetic operators, the selectors and the alterers.
- The genetic algorithm execution (evolution) engine is part of the org.jenetics.en
-gine package.
+ shows the package structure of the library which consists of the following
+ packages:
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+org.jenetics
+\family default
+ This is the base package of 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ and contains all domain classes of the library, like 
+\family typewriter
+Gene
+\family default
+, 
+\family typewriter
+Chromosome
+\family default
+ or 
+\family typewriter
+Genotype
+\family default
+.
+ Most of this types are immutable data classes and doesn't implement any
+ behavior.
+ It is also contains the 
+\family typewriter
+Selector
+\family default
+ and 
+\family typewriter
+Alterer
+\family default
+ interfaces and its implementations.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+org.jenetics.engine
+\family default
+ The classes in this package implements the actual GA or evolution 
+\family typewriter
+Engine
+\family default
+, respectively.
+ They mainly operate on the domain classes of the 
+\family typewriter
+org.\SpecialChar \-
+jenetics
+\family default
+ package.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+org.jenetics.stat 
+\family default
+This package contains additional statistics classes which are not available
+ in the Java core library.
+ Java only includes classes for calculating the sum and the average of a
+ given numeric stream (e.
+\begin_inset space ~
+\end_inset
+
+g.
+ 
+\family typewriter
+Double\SpecialChar \-
+Summary\SpecialChar \-
+Statistics
+\family default
+).
+ With the additions in this package it is also possible to calculate the
+ variance, skewness and kurtosis.
+ The 
+\family typewriter
+Evolution\SpecialChar \-
+Statistics
+\family default
+ object, which can be calculated for every generation, is relying on the
+ classes of this package.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+org.jenetics.util
+\family default
+ This package contains the collection classes (
+\family typewriter
+Seq
+\family default
+, 
+\family typewriter
+ISeq
+\family default
+ and 
+\family typewriter
+MS
+\family default
+eq) which are used in the public interface of the 
+\family typewriter
+Chromosome
+\family default
+ and 
+\family typewriter
+Genotype
+\family default
+.
 \end_layout
 
 \begin_layout Section
@@ -1953,7 +2074,7 @@ status open
 
 \begin_layout Plain Layout
 
-public interface Chromosome<A, G extends Gene<A, G>>
+public interface Chromosome<G extends Gene<?, G>>
 \end_layout
 
 \begin_layout Plain Layout
@@ -2137,7 +2258,8 @@ reference "fig:Genotype-structure"
  The overall number of genes of a genotype is given by the sum of the chromosome
 's genes, which can be accessed via the
 \family typewriter
- Genotype.getNumberOfGenes()
+ Genotype\SpecialChar \-
+.getNumberOfGenes()
 \family default
  method:
 \begin_inset Formula 
@@ -2212,7 +2334,7 @@ Genotype<DoubleGene> genotype = Genotype.of(
 The code snippet in the listing above creates a genotype with the same structure
  as shown in figure 
 \begin_inset CommandInset ref
-LatexCommand ref
+LatexCommand vref
 reference "fig:Genotype-structure"
 
 \end_inset
@@ -2222,15 +2344,117 @@ reference "fig:Genotype-structure"
 \family typewriter
  DoubleGene
 \family default
- has been chosen as gene type.
+ has been chosen for gene type.
 \end_layout
 
 \begin_layout Subsubsection
 Phenotype
 \end_layout
 
+\begin_layout Standard
+The 
+\family typewriter
+Phenotype
+\family default
+ is a composite of the 
+\family typewriter
+Genotype
+\family default
+ and the fitness function, where the fitness function represents the environment
+ the 
+\family typewriter
+Genotype
+\family default
+ lives in.
+ It
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public final class Phenotype<
+\end_layout
+
+\begin_layout Plain Layout
+
+    G extends Gene<?, G>,
+\end_layout
+
+\begin_layout Plain Layout
+
+    C extends Comparable<? super C>
+\end_layout
+
+\begin_layout Plain Layout
+
+>
+\end_layout
+
+\begin_layout Plain Layout
+
+    implements Comparable<Phenotype<G, C>>, Verifiable
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    public G getAllele();
+\end_layout
+
+\begin_layout Plain Layout
+
+    public G newInstance();
+\end_layout
+
+\begin_layout Plain Layout
+
+    public G newInstance(A allele);
+\end_layout
+
+\begin_layout Plain Layout
+
+    public boolean isValid();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\family typewriter
+Phenotype
+\family default
+ class
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsubsection
 Population
+\end_layout
+
+\begin_layout Standard
+A population is a collection of Phenotypes.
+ 
 \end_layout
 
 \begin_layout Subsection
@@ -4363,20 +4587,7 @@ Crossover!Partially-matched crossover
 
 \end_inset
 
-.
 
-\emph on
- a)
-\emph default
- shows the original chromosomes,
-\emph on
- b)
-\emph default
- the (invalid) chromosomes after crossover and
-\emph on
- c)
-\emph default
- the repaired chromosomes.
 \end_layout
 
 \end_inset
@@ -4436,6 +4647,18 @@ reference "fig:Partially-matched-crossover"
  b
 \emph default
 )).
+ At the end figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Partially-matched-crossover"
+
+\end_inset
+
+ 
+\emph on
+c
+\emph default
+) shows the repaired chromosome.
 \end_layout
 
 \begin_layout Section
@@ -5119,7 +5342,8 @@ PRNG
 \family default
  object is always fetched from the
 \family typewriter
- RandomRegistry
+ Random\SpecialChar \-
+Registry
 \family default
 
 \begin_inset Index idx
@@ -5134,7 +5358,16 @@ Random!Registry
 .
  This makes it possible to change the implementation of the random engine
  without changing the client code.
- The random engine
+ The central 
+\family typewriter
+Random\SpecialChar \-
+Registry
+\family default
+ also allows to easily change 
+\family typewriter
+Random
+\family default
+ engine
 \begin_inset Index idx
 status collapsed
 
@@ -5144,7 +5377,7 @@ Random!Engine
 
 \end_inset
 
- can easily changed, even for specific parts of the code.
+ even for specific parts of the code.
 \end_layout
 
 \begin_layout Standard
@@ -5214,7 +5447,12 @@ List<Genotype<DoubleGene>> genotypes =
 With the previous listing, a random, but reproducible, list of genotypes
  is created.
  This might be useful while testing your application or when you want to
- run the GA several times with the same initial population.
+ evaluate the 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+ several times with the same initial population.
 \end_layout
 
 \begin_layout Standard
@@ -5240,7 +5478,7 @@ Engine<DoubleGene, Double> engine = ...;
 
 \begin_layout Plain Layout
 
-engine.stream(genotypes)
+Phenotype<DoubleGene, Double> best = engine.stream(genotypes)
 \end_layout
 
 \begin_layout Plain Layout
@@ -5250,19 +5488,20 @@ engine.stream(genotypes)
 
 \begin_layout Plain Layout
 
-    .collect(toBestPhenotype());
+    .collect(EvolutionResult.toBestPhenotype());
 \end_layout
 
 \end_inset
 
-This example uses the generated genotypes for creating the evolution 
-\emph on
-stream
-\emph default
+The example above uses the generated genotypes for creating the 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
 .
- The GA is created with the first element of the genotypes, which is used
- as genotype factory.
- 
+ Each created stream uses the same starting population, but will, most likely,
+ create a different result.
+ This is because the stream evaluation is still non-deterministic.
 \end_layout
 
 \begin_layout Standard
@@ -5342,7 +5581,7 @@ The parallel nature of the GA implementation requires the creation of streams
  play fair
 \emph default
 , which means that the outcome of the GA is strictly independent from the
- underlying hardware and the number of parallel processes.
+ underlying hardware and the number of parallel processes or threads.
  This is essential for reproducing results in parallel environments where
  the number of parallel tasks may vary from run to run.
 \end_layout
@@ -5402,7 +5641,15 @@ height "1pt"
 \end_layout
 
 \begin_layout Standard
-There are essentially four different parallelizations techniques used in
+When the 
+\family typewriter
+Random
+\family default
+ engine is used in an multi-threaded environment, there must be a way to
+ parallelize the sequential PRNG.
+ Usually this is done by taking the elements of the sequence of pseudo-random
+ numbers and distribute them among the threads.
+ There are essentially four different parallelizations techniques used in
  practice:
 \emph on
  Random seeding
@@ -5484,7 +5731,7 @@ concurrent
  Random seeding works well for the most problems but without theoretical
  foundation.
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 This is also expressed by Donald Knuth’s advice: 
@@ -5580,8 +5827,13 @@ Block splitting
 \end_layout
 
 \begin_layout Standard
-With this method each thread will be assigned a block of random numbers,
- which should be enough for the whole runtime of the process.
+With this method each thread will be assigned a non-\SpecialChar \-
+over\SpecialChar \-
+lapping contiguous
+ block of random numbers, which should be enough for the whole runtime of
+ the process.
+ If the number of threads is not known in advance, the length of each block
+ should be chosen much larger then the maximal expected number of threads.
  This strategy is used when using the
 \family typewriter
  LCG64\SpecialChar \-
@@ -5639,9 +5891,7 @@ name "fig:Parallelization-via-block"
 
 \end_inset
 
-Parallelization via
-\emph on
- block splitting
+Block splitting
 \end_layout
 
 \end_inset
@@ -5687,7 +5937,7 @@ Leapfrog
 \end_layout
 
 \begin_layout Standard
-Each thread 
+With the leapfrog method each thread 
 \begin_inset Formula $t\in\left[0,P\right)$
 \end_inset
 
@@ -5695,15 +5945,22 @@ Each thread
 \begin_inset Formula $P^{th}$
 \end_inset
 
- random number.
+ random number and jump ahead in the random sequence by the number of threads,
+ 
+\begin_inset Formula $P$
+\end_inset
+
+.
+ This method requires the ability to jump very quickly ahead in the sequence
+ of random numbers by a given amount.
  Figure 
 \begin_inset CommandInset ref
-LatexCommand ref
+LatexCommand vref
 reference "fig:Parallelization-via-leapfrogging"
 
 \end_inset
 
- shows the concept of the
+ graphically shows the concept of the
 \emph on
  leapfrog
 \emph default
@@ -5734,9 +5991,7 @@ name "fig:Parallelization-via-leapfrogging"
 
 \end_inset
 
-Parallelization via
-\emph on
- leapfrogging
+Leapfrogging
 \end_layout
 
 \end_inset
@@ -5756,7 +6011,7 @@ Parallelization via
 \begin_layout Paragraph
 
 \family typewriter
-org.jenetics.util.LCG64ShiftRandom
+LCG64ShiftRandom
 \begin_inset Index idx
 status collapsed
 
@@ -5800,7 +6055,8 @@ The
 \family default
  class is a port of the
 \family typewriter
- trng::lcg64_shift
+ trng::\SpecialChar \-
+lcg64_shift
 \family default
  PRNG class of the 
 \begin_inset CommandInset href
@@ -5841,11 +6097,11 @@ key "Tina2011"
 \emph on
  block splitting
 \emph default
---and also the
+---and also the
 \emph on
  leapfrog
 \emph default
---method.
+---method.
 \end_layout
 
 \begin_layout Standard
@@ -6006,7 +6262,7 @@ PRNG!Performance
 \begin_layout Standard
 Table 
 \begin_inset CommandInset ref
-LatexCommand ref
+LatexCommand vref
 reference "tab:PRNG-performance"
 
 \end_inset
