@@ -45,11 +45,11 @@ import org.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz  Wilhelmstötter</a>
  * @since 2.0
- * @version 3.0 &mdash; <em>$Date: 2014-11-05 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-12-08 $</em>
  */
 @XmlJavaTypeAdapter(IntegerChromosome.Model.Adapter.class)
 public class IntegerChromosome
-	extends AbstractNumericChromosome<Integer, IntegerGene>
+	extends AbstractBoundedChromosome<Integer, IntegerGene>
 	implements
 			NumericChromosome<Integer, IntegerGene>,
 			Serializable

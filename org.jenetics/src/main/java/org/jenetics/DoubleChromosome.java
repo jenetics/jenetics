@@ -47,11 +47,11 @@ import org.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 3.0 &mdash; <em>$Date: 2014-11-05 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-12-08 $</em>
  */
 @XmlJavaTypeAdapter(DoubleChromosome.Model.Adapter.class)
 public class DoubleChromosome
-	extends AbstractNumericChromosome<Double, DoubleGene>
+	extends AbstractBoundedChromosome<Double, DoubleGene>
 	implements
 		NumericChromosome<Double, DoubleGene>,
 		Serializable
