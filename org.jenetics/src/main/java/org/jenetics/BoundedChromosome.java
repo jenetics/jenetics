@@ -23,7 +23,7 @@ package org.jenetics;
  * Chromosome interface for {@code BoundedGene}s.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-05 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-12-07 $</em>
  * @since 1.6
  */
 public interface BoundedChromosome<
@@ -32,6 +32,7 @@ public interface BoundedChromosome<
 >
 	extends Chromosome<G>
 {
+
 	/**
 	 * Return the minimum value of this {@code BoundedChromosome}.
 	 *

@@ -47,7 +47,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-20 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-12-07 $</em>
  */
 public final class GaussianMutator<
 	G extends NumericGene<?, G>,
@@ -74,9 +74,8 @@ public final class GaussianMutator<
 	}
 
 	G mutate(final G gene, final Random random) {
-		final double std = (
-			gene.getMax().doubleValue() - gene.getMin().doubleValue()
-		)*0.25;
+		final double std =
+			(gene.getMax().doubleValue() - gene.getMin().doubleValue())*0.25;
 
 		return gene.newInstance(base.clamp(
 			random.nextGaussian()*std + gene.doubleValue(),

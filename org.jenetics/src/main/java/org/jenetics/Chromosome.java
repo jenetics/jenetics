@@ -34,7 +34,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-12-07 $</em>
  */
 public interface Chromosome<G extends Gene<?, G>>
 	extends
@@ -51,6 +51,8 @@ public interface Chromosome<G extends Gene<?, G>>
 	 *         not copied.
 	 * @return A new {@link Chromosome} of the same type with the given genes.
 	 * @throws NullPointerException if the given {@code gene}s are {@code null}.
+	 * @throws IllegalArgumentException if the length of the given gene sequence
+	 *        is smaller than one.
 	 */
 	public Chromosome<G> newInstance(final ISeq<G> genes);
 

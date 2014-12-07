@@ -25,7 +25,6 @@ import static org.jenetics.internal.util.Equality.eq;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -39,7 +38,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
-import org.jenetics.internal.util.IntRef;
 import org.jenetics.internal.util.jaxb;
 import org.jenetics.internal.util.model.IndexedObject;
 import org.jenetics.internal.util.reflect;
@@ -55,7 +53,7 @@ import org.jenetics.util.RandomRegistry;
  * The following code shows how to create a combinatorial genotype factory which
  * can be used when creating an {@link org.jenetics.engine.Engine} instance.
  * [code]
- * final ISeq&lt;Integer&gt; alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
+ * final ISeq&lt;Integer&gt; alleles = ISeq.of(1, 2, 3, 4, 5, 6, 7, 8);
  * final Factory&lt;Genotype&lt;EnumGene&lt;Integer&gt;&gt;&gt; gtf = Genotype.of(
  *     PermutationChromosome.of(alleles)
  * );
@@ -63,7 +61,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * The following code shows the assurances of the {@code EnumGene}.
  * [code]
- * final ISeq&lt;Integer&gt; alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
+ * final ISeq&lt;Integer&gt; alleles = ISeq.of(1, 2, 3, 4, 5, 6, 7, 8);
  * final EnumGene&lt;Integer&gt; gene = new EnumGene&lt;&gt;(5, alleles);
  *
  * assert(gene.getAlleleIndex() == 5);
@@ -75,7 +73,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-11-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-12-07 $</em>
  */
 @XmlJavaTypeAdapter(EnumGene.Model.Adapter.class)
 public final class EnumGene<A>
@@ -94,8 +92,8 @@ public final class EnumGene<A>
 	 * index.
 	 * @param alleleIndex the index of the allele for this gene.
 	 * @param validAlleles the sequence of valid alleles.
-	 * @throws java.lang.IllegalArgumentException if the give valid alleles
-	 *         sequence is empty
+	 * @throws IllegalArgumentException if the give valid alleles sequence is
+	 *         empty
 	 * @throws NullPointerException if the valid alleles seq is {@code null}.
 	 */
 	EnumGene(final int alleleIndex, final ISeq<? extends A> validAlleles) {
@@ -200,11 +198,6 @@ public final class EnumGene<A>
 	/* *************************************************************************
 	 *  Static object creation methods
 	 * ************************************************************************/
-
-	static <T> Supplier<EnumGene<T>> Gene(final ISeq<? extends T> validAlleles) {
-		final IntRef index = new IntRef();
-		return () -> new EnumGene<>(index.value++, validAlleles);
-	}
 
 	/**
 	 * Return a new enum gene with an allele randomly chosen from the given
