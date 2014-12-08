@@ -49,7 +49,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-03 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-12-08 $</em>
  */
 public abstract class ProbabilitySelector<
 	G extends Gene<?, G>,
@@ -61,7 +61,7 @@ public abstract class ProbabilitySelector<
 
 	private static final long MAX_ULP_DISTANCE = pow(10, 10);
 
-	private final Function<double[], double[]> _revert;
+	private final Function<double[], double[]> _reverter;
 
 	/**
 	 * Create a new {@code ProbabilitySelector} with the given {@code sorting}
@@ -74,7 +74,7 @@ public abstract class ProbabilitySelector<
 	 *        {@code false} otherwise.
 	 */
 	protected ProbabilitySelector(final boolean sorted) {
-		_revert = sorted ? array::revert : ProbabilitySelector::sortAndRevert;
+		_reverter = sorted ? array::revert : ProbabilitySelector::sortAndRevert;
 	}
 
 	/**
@@ -137,7 +137,7 @@ public abstract class ProbabilitySelector<
 		final Optimize opt
 	) {
 		return requireNonNull(opt) == Optimize.MINIMUM ?
-			_revert.apply(probabilities(population, count)) :
+			_reverter.apply(probabilities(population, count)) :
 			probabilities(population, count);
 	}
 

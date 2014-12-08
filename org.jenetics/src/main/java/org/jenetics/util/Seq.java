@@ -47,7 +47,7 @@ import org.jenetics.internal.collection.SeqSpliterator;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-07 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-12-08 $</em>
  */
 public interface Seq<T> extends Iterable<T> {
 
@@ -288,7 +288,7 @@ public interface Seq<T> extends Iterable<T> {
 	 *
 	 * @param element element to search for, can be {@code null}
 	 * @return the index of the last occurrence of the specified element in
-	 * 		  this sequence, or -1 if this sequence does not contain the element
+	 *         this sequence, or -1 if this sequence does not contain the element
 	 */
 	public default int lastIndexOf(final Object element) {
 		return lastIndexOf(element, 0, length());
@@ -301,7 +301,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * @param element element to search for, can be {@code null}
 	 * @param end the search end index
 	 * @return the index of the last occurrence of the specified element in
-	 * 		  this sequence, or -1 if this sequence does not contain the element
+	 *         this sequence, or -1 if this sequence does not contain the element
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
 	 *          ({@code end < 0 || end > length()}).
 	 */
@@ -317,7 +317,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * @param start the search start index
 	 * @param end the search end index
 	 * @return the index of the last occurrence of the specified element in
-	 * 		  this sequence, or -1 if this sequence does not contain the element
+	 *         this sequence, or -1 if this sequence does not contain the element
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
 	 *          ({@code start < 0 || end > length() || start > end}).
 	 */
@@ -443,12 +443,12 @@ public interface Seq<T> extends Iterable<T> {
 	/**
 	 * Return an array containing all of the elements in this sequence in right
 	 * order; the runtime type of the returned array is that of the specified
-	 * array. If this sequence fits in the specified array, it is returned therein.
-	 * Otherwise, a new array is allocated with the runtime type of the specified
-	 * array and the length of this array.
+	 * array. If this sequence fits in the specified array, it is returned
+	 * therein. Otherwise, a new array is allocated with the runtime type of the
+	 * specified array and the length of this array.
 	 * <p>
-	 * If this sequence fits in the specified array with room to spare (i.e., the
-	 * array has more elements than this array), the element in the array
+	 * If this sequence fits in the specified array with room to spare (i.e.,
+	 * the array has more elements than this array), the element in the array
 	 * immediately following the end of this array is set to null. (This is
 	 * useful in determining the length of the array only if the caller knows
 	 * that the list does not contain any null elements.)
@@ -460,7 +460,8 @@ public interface Seq<T> extends Iterable<T> {
 	 *         runtime type is allocated for this purpose.
 	 * @return an array containing the elements of this array
 	 * @throws ArrayStoreException if the runtime type of the specified array is
-	 *          not a super type of the runtime type of every element in this array
+	 *         not a super type of the runtime type of every element in this
+	 *         array
 	 * @throws NullPointerException if the given array is {@code null}.
 	 */
 	@SuppressWarnings("unchecked")
@@ -485,14 +486,15 @@ public interface Seq<T> extends Iterable<T> {
 	/**
 	 * Returns a view of the portion of this sequence between the specified
 	 * {@code start}, inclusive, and {@code end}, exclusive. (If {@code start}
-	 * and {@code end} are equal, the returned sequence has the length zero.) The
-	 * returned sequence is backed by this sequence, so non-structural changes
-	 * in the returned sequence are reflected in this sequence, and vice-versa.
+	 * and {@code end} are equal, the returned sequence has the length zero.)
+	 * The returned sequence is backed by this sequence, so non-structural
+	 * changes in the returned sequence are reflected in this sequence, and
+	 * vice-versa.
 	 * <p>
 	 * This method eliminates the need for explicit range operations (of the
-	 * populationSort that commonly exist for arrays). Any operation that expects an sequence
-	 * can be used as a range operation by passing an sub sequence view instead of
-	 * an whole sequence.
+	 * populationSort that commonly exist for arrays). Any operation that
+	 * expects an sequence can be used as a range operation by passing an sub
+	 * sequence view instead of an whole sequence.
 	 *
 	 * @param start low end point (inclusive) of the sub array.
 	 * @return a view of the specified range within this array.
@@ -504,14 +506,15 @@ public interface Seq<T> extends Iterable<T> {
 	/**
 	 * Returns a view of the portion of this sequence between the specified
 	 * {@code start}, inclusive, and {@code end}, exclusive. (If {@code start}
-	 * and {@code end} are equal, the returned sequence has the length zero.) The
-	 * returned sequence is backed by this sequence, so non-structural changes in the
-	 * returned sequence are reflected in this array, and vice-versa.
+	 * and {@code end} are equal, the returned sequence has the length zero.)
+	 * The returned sequence is backed by this sequence, so non-structural
+	 * changes in the returned sequence are reflected in this array, and
+	 * vice-versa.
 	 * <p>
 	 * This method eliminates the need for explicit range operations (of the
-	 * populationSort that commonly exist for arrays). Any operation that expects an array
-	 * can be used as a range operation by passing an sub sequence view instead of
-	 * an whole sequence.
+	 * populationSort that commonly exist for arrays). Any operation that
+	 * expects an array can be used as a range operation by passing an sub
+	 * sequence view instead of an whole sequence.
 	 *
 	 * @param start low end point (inclusive) of the sub sequence.
 	 * @param end high end point (exclusive) of the sub sequence.

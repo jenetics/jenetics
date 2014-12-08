@@ -37,25 +37,30 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-
 /**
  * Class for object serialization. The following example shows how to write and
  * reload a given population.
  *
  * [code]
+ * // Creating result population.
+ * EvolutionResult&lt;DoubleGene, Double&gt; result = stream
+ *     .collect(toBestEvolutionResult());
+ *
  * // Writing the population to disk.
  * final File file = new File("population.xml");
- * IO.jaxb.write(ga.getPopulation(), file);
+ * IO.jaxb.write(result.getPopulation(), file);
  *
  * // Reading the population from disk.
- * final Population&lt;DoubleGene,Double&gt; population =
+ * Population&lt;DoubleGene, Double&gt; population =
  *     (Population&lt;DoubleGene, Double&gt;)IO.jaxb.read(file);
- * ga.setPopulation(population);
+ * EvolutionStream&lt;DoubleGene, Double&gt; stream = Engine
+ *     .build(ff, gtf)
+ *     .stream(population, 1);
  * [/code]
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-12-08 $</em>
  */
 public abstract class IO {
 

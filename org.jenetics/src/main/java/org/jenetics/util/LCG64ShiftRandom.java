@@ -30,7 +30,6 @@ import org.jenetics.internal.math.random;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
-
 /**
  * This class implements a linear congruential PRNG with additional bit-shift
  * transition. The base recursion
@@ -76,7 +75,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 2.0 &mdash; <em>$Date: 2014-10-07 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-12-08 $</em>
  */
 public class LCG64ShiftRandom extends Random64 {
 
@@ -110,7 +109,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 3.0 &mdash; <em>$Date: 2014-10-07 $</em>
+	 * @version 3.0 &mdash; <em>$Date: 2014-12-08 $</em>
 	 */
 	public static final class ThreadLocal
 		extends java.lang.ThreadLocal<LCG64ShiftRandom>
@@ -199,7 +198,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 3.0 &mdash; <em>$Date: 2014-10-07 $</em>
+	 * @version 3.0 &mdash; <em>$Date: 2014-12-08 $</em>
 	 */
 	public static final class ThreadSafe extends LCG64ShiftRandom {
 		private static final long serialVersionUID = 1L;
@@ -278,7 +277,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 2.0 &mdash; <em>$Date: 2014-10-07 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2014-12-08 $</em>
 	 */
 	public static final class Param implements Serializable {
 
