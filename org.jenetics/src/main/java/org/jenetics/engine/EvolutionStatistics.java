@@ -20,11 +20,18 @@
 package org.jenetics.engine;
 
 import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 
 import java.text.NumberFormat;
 import java.time.Duration;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
+import org.jenetics.internal.util.TablePrinter;
+
+import org.jenetics.Optimize;
 import org.jenetics.Phenotype;
 import org.jenetics.stat.DoubleMomentStatistics;
 import org.jenetics.stat.IntMomentStatistics;
@@ -81,26 +88,22 @@ import org.jenetics.stat.MinMax;
  +---------------------------------------------------------------------------+
  * [/code]
  *
+ * @param <C> the fitness value type
+ * @param <S> the fitness statistics type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-25 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-12-10 $</em>
  */
-public abstract class EvolutionStatistics<
-	C extends Comparable<? super C>,
-	FitnessStatistics
->
+public final class EvolutionStatistics<C extends Comparable<? super C>, S>
 	implements Consumer<EvolutionResult<?, C>>
 {
 
 	// The duration statistics values.
-	private final DoubleMomentStatistics
-		_selectionDuration = new DoubleMomentStatistics();
-	private final DoubleMomentStatistics
-		_alterDuration = new DoubleMomentStatistics();
-	private final DoubleMomentStatistics
-		_evaluationDuration = new DoubleMomentStatistics();
-	private final DoubleMomentStatistics
-		_evolveDuration = new DoubleMomentStatistics();
+	private final DoubleMomentStatistics _selectionDuration = new DoubleMomentStatistics();
+	private final DoubleMomentStatistics _alterDuration = new DoubleMomentStatistics();
+	private final DoubleMomentStatistics _evaluationDuration = new DoubleMomentStatistics();
+	private final DoubleMomentStatistics _evolveDuration = new DoubleMomentStatistics();
 
 	// The evolution statistics values.
 	private final IntMomentStatistics _killed = new IntMomentStatistics();
@@ -108,14 +111,26 @@ public abstract class EvolutionStatistics<
 	private final IntMomentStatistics _altered = new IntMomentStatistics();
 
 	// The population statistics values.
-	final LongMomentStatistics _age = new LongMomentStatistics();
-	FitnessStatistics _fitness = null;
+	private final LongMomentStatistics _age = new LongMomentStatistics();
+	private S _fitness;
 
-	EvolutionStatistics() {
+	private final Function<Optimize, S> _fitnessSupplier;
+	private final BiConsumer<S, C> _fitnessConsumer;
+
+	EvolutionStatistics(
+		final Function<Optimize, S> supplier,
+		final BiConsumer<S, C> consumer
+	) {
+		_fitnessSupplier = requireNonNull(supplier);
+		_fitnessConsumer = requireNonNull(consumer);
 	}
 
 	@Override
 	public void accept(final EvolutionResult<?, C> result) {
+		if (_fitness == null) {
+			_fitness = _fitnessSupplier.apply(result.getOptimize());
+		}
+
 		accept(result.getDurations());
 
 		_killed.accept(result.getKillCount());
@@ -126,8 +141,9 @@ public abstract class EvolutionStatistics<
 			.forEach(pt -> accept(pt, result.getGeneration()));
 	}
 
-	void accept(final Phenotype<?, C> pt, final long generation) {
+	private void accept(final Phenotype<?, C> pt, final long generation) {
 		_age.accept(pt.getAge(generation));
+		_fitnessConsumer.accept(_fitness, pt.getFitness());
 	}
 
 	// Calculate duration statistics
@@ -246,7 +262,7 @@ public abstract class EvolutionStatistics<
 	 *
 	 * @return minimal and maximal fitness
 	 */
-	public FitnessStatistics getFitness() {
+	public S getFitness() {
 		return _fitness;
 	}
 
@@ -255,6 +271,9 @@ public abstract class EvolutionStatistics<
 
 	@Override
 	public String toString() {
+		final TablePrinter printer = new TablePrinter(new StringBuilder());
+		printer.header("Time statistics");
+
 		return
 		"+---------------------------------------------------------------------------+\n" +
 		"|  Time statistics                                                          |\n" +
@@ -312,85 +331,100 @@ public abstract class EvolutionStatistics<
 		);
 	}
 
-	private static final class Comp<
-		C extends Comparable<? super C>
-	>
-		extends EvolutionStatistics<C, MinMax<C>>
-	{
-		private Comp() {
-			_fitness = MinMax.of();
-		}
-
-		@Override
-		public void accept(final EvolutionResult<?, C> result) {
-			if (_fitness.getMax() == null) {
-				_fitness = MinMax.of(result.getOptimize().ascending());
-			}
-
-			super.accept(result);
-		}
-
-		@Override
-		void accept(final Phenotype<?, C> pt, final long generation) {
-			super.accept(pt, generation);
-			_fitness.accept(pt.getFitness());
-		}
-
-		@Override
-		public String toString() {
-			return super.toString() +
-			"+---------------------------------------------------------------------------+\n" +
-			"|  Population statistics                                                    |\n" +
-			"+---------------------------------------------------------------------------+\n" +
-			format(cpattern, "Age:", p(_age)) +
-			format(cpattern, "Fitness", "") +
-			format(spattern, "min =", _fitness.getMin()) +
-			format(spattern, "max =", _fitness.getMax()) +
-			"+---------------------------------------------------------------------------+";
-		}
-	}
-
-	private static final class Num<N extends Number & Comparable<? super N>>
-		extends EvolutionStatistics<N, DoubleMomentStatistics>
-	{
-		private Num() {
-			_fitness = new DoubleMomentStatistics();
-		}
-
-		@Override
-		void accept(final Phenotype<?, N> pt, final long generation) {
-			super.accept(pt, generation);
-			_fitness.accept(pt.getFitness().doubleValue());
-		}
-
-		@Override
-		public String toString() {
-			return super.toString() +
-			"+---------------------------------------------------------------------------+\n" +
-			"|  Population statistics                                                    |\n" +
-			"+---------------------------------------------------------------------------+\n" +
-			format(cpattern, "Age:", p(_age)) +
-			format(cpattern, "Fitness:", "") +
-			format(spattern, "min  =", d(_fitness.getMin())) +
-			format(spattern, "max  =", d(_fitness.getMax())) +
-			format(spattern, "mean =", d(_fitness.getMean())) +
-			format(spattern, "var  =", d(_fitness.getVariance())) +
-			"+---------------------------------------------------------------------------+";
-		}
-
-		private static String d(final double value) {
-			return format("%3.12f", value);
-		}
+	public static <C extends Comparable<? super C>, S> EvolutionStatistics<C, S>
+	of(final Function<Optimize, S> supplier, final BiConsumer<S, C> consumer)  {
+		return new EvolutionStatistics<>(supplier, consumer);
 	}
 
 	public static <C extends Comparable<? super C>>
 	EvolutionStatistics<C, MinMax<C>> ofComparable() {
-		return new Comp<>();
+		return of(o -> MinMax.<C>of(o.ascending()), MinMax::accept);
 	}
 
 	public static <N extends Number & Comparable<? super N>>
 	EvolutionStatistics<N, DoubleMomentStatistics> ofNumber() {
-		return new Num<>();
+		return of(
+			o -> new DoubleMomentStatistics(),
+			(s, f) -> s.accept(f.doubleValue())
+		);
 	}
+
+
+//	/**
+//	 *
+//	 * @param <C>
+//	 */
+//	private static final class Comp<
+//		C extends Comparable<? super C>
+//	>
+//		extends EvolutionStatistics<C, MinMax<C>>
+//	{
+//		private Comp() {
+//			_fitness = MinMax.of();
+//		}
+//
+//		@Override
+//		public void accept(final EvolutionResult<?, C> result) {
+//			if (_fitness.getMax() == null) {
+//				_fitness = MinMax.of(result.getOptimize().ascending());
+//			}
+//
+//			super.accept(result);
+//		}
+//
+//		@Override
+//		void accept(final Phenotype<?, C> pt, final long generation) {
+//			super.accept(pt, generation);
+//			_fitness.accept(pt.getFitness());
+//		}
+//
+//		@Override
+//		public String toString() {
+//			return super.toString() +
+//			"+---------------------------------------------------------------------------+\n" +
+//			"|  Population statistics                                                    |\n" +
+//			"+---------------------------------------------------------------------------+\n" +
+//			format(cpattern, "Age:", p(_age)) +
+//			format(cpattern, "Fitness", "") +
+//			format(spattern, "min =", _fitness.getMin()) +
+//			format(spattern, "max =", _fitness.getMax()) +
+//			"+---------------------------------------------------------------------------+";
+//		}
+//	}
+//
+//	private static final class Num<N extends Number & Comparable<? super N>>
+//		extends EvolutionStatistics<N, DoubleMomentStatistics>
+//	{
+//		private Num() {
+//			_fitness = new DoubleMomentStatistics();
+//		}
+//
+//		@Override
+//		void accept(final Phenotype<?, N> pt, final long generation) {
+//			super.accept(pt, generation);
+//			_fitness.accept(pt.getFitness().doubleValue());
+//		}
+//
+//		@Override
+//		public String toString() {
+//			return super.toString() +
+//			"+---------------------------------------------------------------------------+\n" +
+//			"|  Population statistics                                                    |\n" +
+//			"+---------------------------------------------------------------------------+\n" +
+//			format(cpattern, "Age:", p(_age)) +
+//			format(cpattern, "Fitness:", "") +
+//			format(spattern, "min  =", d(_fitness.getMin())) +
+//			format(spattern, "max  =", d(_fitness.getMax())) +
+//			format(spattern, "mean =", d(_fitness.getMean())) +
+//			format(spattern, "var  =", d(_fitness.getVariance())) +
+//			"+---------------------------------------------------------------------------+";
+//		}
+//
+//		private static String d(final double value) {
+//			return format("%3.12f", value);
+//		}
+//	}
+
+
 
 }
