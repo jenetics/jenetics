@@ -1375,7 +1375,7 @@ name "lis:Genetic-algorithm"
 
 \end_inset
 
-Genetic algorithm steps
+Genetic algorithm
 \begin_inset Index idx
 status collapsed
 
@@ -1791,7 +1791,7 @@ Genotype
 Random\SpecialChar \-
 Registry
 \family default
- class, which implements the global PRNG lockup, as well as helper 
+ class, which implements the global PRNG lookup, as well as helper 
 \family typewriter
 IO
 \family default
@@ -1860,6 +1860,52 @@ http://jenetics.sourceforge.net/javadoc/index.html
 \end_inset
 
  library.
+ They can roughly divided into three types:
+\end_layout
+
+\begin_layout Description
+Domain
+\begin_inset space ~
+\end_inset
+
+classes This classes form the domain model of the evolutionary algorithm
+ and contain the structural classes.
+ They are located in the 
+\family typewriter
+org\SpecialChar \-
+.jenetics
+\family default
+ package.
+\end_layout
+
+\begin_layout Description
+Operation
+\begin_inset space ~
+\end_inset
+
+classes This classes operates on the domain classes and includes the alterer
+ and selector classes.
+ They are also located in the 
+\family typewriter
+org\SpecialChar \-
+.jenetics
+\family default
+ package.
+\end_layout
+
+\begin_layout Description
+Engine
+\begin_inset space ~
+\end_inset
+
+classes This classes implements the actual evolutionary algorithm and reside
+ solely in the 
+\family typewriter
+org\SpecialChar \-
+.jenetics\SpecialChar \-
+.engine
+\family default
+ package.
 \end_layout
 
 \begin_layout Subsection
@@ -2779,38 +2825,56 @@ begin{multicols}{2}
 \end_layout
 
 \begin_layout Itemize
+
+\family typewriter
 TournamentSelector
 \end_layout
 
 \begin_layout Itemize
+
+\family typewriter
 TruncationSelector
 \end_layout
 
 \begin_layout Itemize
+
+\family typewriter
 MonteCarloSelector
 \end_layout
 
 \begin_layout Itemize
+
+\family typewriter
 ProbabilitySelector
 \end_layout
 
 \begin_layout Itemize
+
+\family typewriter
 RouletteWheelSelector
 \end_layout
 
 \begin_layout Itemize
+
+\family typewriter
 LinearRankSelector
 \end_layout
 
 \begin_layout Itemize
-ExponentailRankSelector
+
+\family typewriter
+ExponentialRankSelector
 \end_layout
 
 \begin_layout Itemize
+
+\family typewriter
 BoltzmannSelector
 \end_layout
 
 \begin_layout Itemize
+
+\family typewriter
 StochasticUniversalSelector
 \end_layout
 
@@ -3512,8 +3576,12 @@ target "https://en.wikipedia.org/wiki/Crossover_(genetic_algorithm)"
 ).
 \end_layout
 
-\begin_layout Subsubsection
-Mutation
+\begin_layout Standard
+First we will have a look at the mutation: There are two distinct roles
+\emph on
+ mutation
+\emph default
+
 \begin_inset Index idx
 status collapsed
 
@@ -3523,14 +3591,6 @@ Mutation
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
-There are two distinct roles
-\emph on
- mutation
-\emph default
  plays in an Genetic algorithm:
 \end_layout
 
@@ -3753,8 +3813,11 @@ g.
  for the TSP.
 \end_layout
 
-\begin_layout Subsubsection
-Recombination
+\begin_layout Standard
+\begin_inset VSpace 10mm
+\end_inset
+
+The second alterer type is the recombination
 \begin_inset Index idx
 status collapsed
 
@@ -3764,11 +3827,7 @@ Recombination
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
-An enhanced genetic algorithm (EGA) combine elements of existing solutions
+: An enhanced genetic algorithm (EGA) combine elements of existing solutions
  in order to create a new solution, with some of the properties of each
  parents.
  Recombination creates a new chromosome by combining parts of two (or more)
@@ -4691,7 +4750,7 @@ height "1pt"
 
 \end_layout
 
-\begin_layout Paragraph
+\begin_layout Subsubsection
 Engine
 \end_layout
 
@@ -4711,7 +4770,7 @@ evolve method, which
  and execute it in parallel.
 \end_layout
 
-\begin_layout Paragraph
+\begin_layout Subsubsection
 EvolutionStream
 \end_layout
 
@@ -4723,7 +4782,7 @@ The EvolutionStream is a kind of execution handle, where you can define
  collect method.
 \end_layout
 
-\begin_layout Paragraph
+\begin_layout Subsubsection
 EvolutionResult
 \end_layout
 
@@ -4735,7 +4794,7 @@ EvolutionResult
  is the intermediate result of one evolution step.
 \end_layout
 
-\begin_layout Paragraph
+\begin_layout Subsubsection
 EvolutionStatistics
 \end_layout
 
