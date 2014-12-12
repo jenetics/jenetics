@@ -2522,7 +2522,7 @@ Engine
 \emph on
  structural
 \emph default
- representative of an individual and consists of one to 
+ and immutable representative of an individual and consists of one to 
 \begin_inset Formula $n$
 \end_inset
 
@@ -2787,29 +2787,37 @@ The
 \emph on
  actual
 \emph default
- representative of an individual.
- but only consists of the genotype and the fitness function and doesn't
- change the basic structure.
- The phenotype is
+ representative of an individual and consists of the 
+\family typewriter
+Genotype
+\family default
+ and the fitness 
+\family typewriter
+Function
+\family default
+.
+ It is
 \emph on
  only
 \emph default
- a container which forms the environment of the genotype.
- The 
+ a container which forms the 
+\emph on
+environment
+\emph default
+ of the 
+\family typewriter
+Genotype
+\family default
+ and doesn't change the structure.
+ Like the 
+\family typewriter
+Genotype
+\family default
+, the 
 \family typewriter
 Phenotype
 \family default
- is a composite of the 
-\family typewriter
-Genotype
-\family default
- and the fitness function, where the fitness function represents the environment
- the 
-\family typewriter
-Genotype
-\family default
- lives in.
- It
+ is immutable and can't be changed after creation.
 \end_layout
 
 \begin_layout Standard
@@ -2840,7 +2848,7 @@ public final class Phenotype<
 
 \begin_layout Plain Layout
 
-    implements Comparable<Phenotype<G, C>>, Verifiable
+    implements Comparable<Phenotype<G, C>>
 \end_layout
 
 \begin_layout Plain Layout
@@ -2850,22 +2858,22 @@ public final class Phenotype<
 
 \begin_layout Plain Layout
 
-    public G getAllele();
+    public C getFitness();
 \end_layout
 
 \begin_layout Plain Layout
 
-    public G newInstance();
+    public Genotype<G> getGenotype();
 \end_layout
 
 \begin_layout Plain Layout
 
-    public G newInstance(A allele);
+    public long getAge(long currentGeneration);
 \end_layout
 
 \begin_layout Plain Layout
 
-    public boolean isValid();
+    public void evaluate();
 \end_layout
 
 \begin_layout Plain Layout
@@ -2876,6 +2884,12 @@ public final class Phenotype<
 \begin_layout Plain Layout
 
 \family typewriter
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Phenotype-class"
+
+\end_inset
+
 Phenotype
 \family default
  class
@@ -2888,16 +2902,177 @@ Phenotype
 
 \end_inset
 
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Phenotype-class"
 
+\end_inset
+
+ shows the main methods of the 
+\family typewriter
+Pheno\SpecialChar \-
+type
+\family default
+.
+ The 
+\family typewriter
+fitness
+\family default
+ property will return the actual fitness value of the 
+\family typewriter
+Genotype
+\family default
+, which can be fetched with the 
+\family typewriter
+get\SpecialChar \-
+Geno\SpecialChar \-
+type
+\family default
+ method.
+ To make the runtime behavior predictable, the fitness value is evaluated
+ lazily.
+ Either by querying the 
+\family typewriter
+fitness
+\family default
+ property or through the call of the 
+\family typewriter
+evaluate
+\family default
+ method.
+ The evolution 
+\family typewriter
+Engine
+\family default
+ is calling the evaluate method in a separate step and makes the fitness
+ evaluation time available through the value-based 
+\family typewriter
+Evolution\SpecialChar \-
+Durations
+\family default
+ class.
+ Additionally to the fitness value, the Phenotype contains the generation
+ when it was created.
+ This allows to calculate the current age and the removal of overaged individual
+s from the 
+\family typewriter
+Population
+\family default
+.
 \end_layout
 
 \begin_layout Subsubsection
 Population
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Domain-classes-Population"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Population
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-A population is a collection of Phenotypes.
- 
+The last class in the domain model is the Population.
+ It is a collection of individuals at a given generation.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public final class Population<
+\end_layout
+
+\begin_layout Plain Layout
+
+    G extends Gene<?, G>,
+\end_layout
+
+\begin_layout Plain Layout
+
+    C extends Comparable<? super C>
+\end_layout
+
+\begin_layout Plain Layout
+
+>
+\end_layout
+
+\begin_layout Plain Layout
+
+    implements List<Phenotype<G, C>>
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    public Phenotype<G, C> get(int index);
+\end_layout
+
+\begin_layout Plain Layout
+
+    public void add(Phenotype<G, C> phenotype);
+\end_layout
+
+\begin_layout Plain Layout
+
+    public void sortWith(Comparator<? super C> comparator);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Population-class"
+
+\end_inset
+
+Population
+\family default
+ class
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Population-class"
+
+\end_inset
+
+ gives on overview of the most important methods of the Population class.
 \end_layout
 
 \begin_layout Subsection
@@ -10079,7 +10254,7 @@ name "lis:Steady-fitness-limit"
 
 \end_inset
 
-Steady fitness limit
+Steady fitness
 \end_layout
 
 \end_inset
