@@ -8295,6 +8295,11 @@ GaussianAlterer
 Mutator
 \family sans
  classes.
+ Other alterers are allowed, but will have no effect on the 
+\family typewriter
+Chromosome
+\family sans
+s.
 \end_layout
 
 \begin_layout Plain Layout
@@ -9721,7 +9726,8 @@ Generation number
 The simplest way for terminating the evolution process, is to define a maximal
  number of generations on the 
 \family typewriter
-EvolutionStream
+Evolution\SpecialChar \-
+Stream
 \family default
 .
 \end_layout
@@ -9916,11 +9922,47 @@ final class SteadyFitnessLimit<C extends Comparable<? super C>>
 \begin_layout Plain Layout
 
 }
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Steady-fitness-limit"
+
+\end_inset
+
+Steady fitness limit
 \end_layout
 
 \end_inset
 
 
+\end_layout
+
+\end_inset
+
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Steady-fitness-limit"
+
+\end_inset
+
+ shows the implementation of the 
+\family typewriter
+limit\SpecialChar \-
+.bySteadyFitness(int)
+\family default
+ in the 
+\family typewriter
+org\SpecialChar \-
+.jenetics\SpecialChar \-
+.engine
+\family default
+ package.
+ It should give you an impression of how to implement own termination strategies
+, which possible holds and internal state.
 \end_layout
 
 \begin_layout Subsubsection
