@@ -1091,7 +1091,7 @@ Genotype
  
 \begin_inset CommandInset ref
 LatexCommand vref
-reference "sub:Genotype"
+reference "sub:Domain-classes-Genotype"
 
 \end_inset
 
@@ -1869,7 +1869,15 @@ Domain
 \end_inset
 
 classes This classes form the domain model of the evolutionary algorithm
- and contain the structural classes.
+ and contain the structural classes like 
+\family typewriter
+Gene
+\family default
+ and 
+\family typewriter
+Chromosome
+\family default
+.
  They are located in the 
 \family typewriter
 org\SpecialChar \-
@@ -1883,8 +1891,15 @@ Operation
 \begin_inset space ~
 \end_inset
 
-classes This classes operates on the domain classes and includes the alterer
- and selector classes.
+classes This classes operates on the domain classes and includes the 
+\family typewriter
+Alterer
+\family default
+ and 
+\family typewriter
+Selector
+\family default
+ classes.
  They are also located in the 
 \family typewriter
 org\SpecialChar \-
@@ -1992,6 +2007,16 @@ name "fig:Domain-model"
 \end_inset
 
 Domain model
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Domain model
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -2008,8 +2033,8 @@ reference "fig:Domain-model"
 
 \end_inset
 
- shows the class-diagram of the main structures of the data classes.
- All structural GA classes are located in the 
+ shows the class diagram of the domain classes.
+ All domain classes are located in the 
 \family typewriter
 org.jenetics
 \family default
@@ -2058,6 +2083,13 @@ s.
 
 \begin_layout Subsubsection
 Gene
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Domain-classes-Gene"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -2231,7 +2263,7 @@ Gene
 
 Listing 
 \begin_inset CommandInset ref
-LatexCommand ref
+LatexCommand vref
 reference "lis:Gene-interface"
 
 \end_inset
@@ -2249,7 +2281,7 @@ isValid
 \family typewriter
 Verifiable
 \family default
-, allows the gene to mark itself as invalid or invalid receptively.
+ interface, allows the gene to mark itself as invalid.
  All invalid genes are replaced with new ones during the evolution phase.
  
 \end_layout
@@ -2259,7 +2291,15 @@ The available
 \family typewriter
 Gene
 \family default
- implementations should cover a wide range of problem encodings.
+ implementations in the
+\family sans
+\series bold
+\shape smallcaps
+ Jenetics
+\family default
+\series default
+\shape default
+ library should cover a wide range of problem encodings.
  Refer to chapter
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -2276,13 +2316,62 @@ Gene
 
 \begin_layout Subsubsection
 Chromosome
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Domain-classes-Chromosome"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Chromosome
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-A Chromosome serves as a container for Genes and is the main target of alteratio
-n step.
- This means, that only chromosomes with the same position within a Genotype
- are used by the crossover alterer.
+A 
+\family typewriter
+Chromosome
+\family default
+ is a collection of 
+\family typewriter
+Gene
+\family default
+s which contains at least one 
+\family typewriter
+Gene
+\family default
+.
+ This allows to encode problems which requires more than one 
+\family typewriter
+Gene
+\family default
+.
+ Like the 
+\family typewriter
+Gene
+\family default
+ interface, the 
+\family typewriter
+Chromosome
+\family default
+ is also it's own factory and allows to create a new 
+\family typewriter
+Chromosome
+\family default
+ from a given 
+\family typewriter
+Gene
+\family default
+ sequence.
+ 
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -2295,7 +2384,12 @@ public interface Chromosome<G extends Gene<?, G>>
 
 \begin_layout Plain Layout
 
-    extends Factory<Chromosome<G>>, Serializable, Verifiable
+	extends Factory<Chromosome<G>>, Iterable<G>, 
+\end_layout
+
+\begin_layout Plain Layout
+
+        Verifiable, Serializable
 \end_layout
 
 \begin_layout Plain Layout
@@ -2305,22 +2399,22 @@ public interface Chromosome<G extends Gene<?, G>>
 
 \begin_layout Plain Layout
 
-    public G getAllele();
+    public Chromosome<G> newInstance(ISeq<G> genes);
 \end_layout
 
 \begin_layout Plain Layout
 
-    public G newInstance();
+    public G getGene(int index);
 \end_layout
 
 \begin_layout Plain Layout
 
-    public G newInstance(A allele);
+    public ISeq<G> toSeq();
 \end_layout
 
 \begin_layout Plain Layout
 
-    public boolean isValid();
+    public int length();
 \end_layout
 
 \begin_layout Plain Layout
@@ -2329,6 +2423,12 @@ public interface Chromosome<G extends Gene<?, G>>
 \begin_inset Caption
 
 \begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Chromosome-interface"
+
+\end_inset
+
 
 \family typewriter
 Chromosome
@@ -2343,11 +2443,59 @@ Chromosome
 
 \end_inset
 
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Chromosome-interface"
 
+\end_inset
+
+ shows the main methods of the 
+\family typewriter
+Chromosome
+\family default
+ interface.
+ This are the methods for accessing single 
+\family typewriter
+Gene
+\family default
+s by index and as an 
+\family typewriter
+ISeq
+\family default
+ respectively, and the factory method for creating a new 
+\family typewriter
+Chromosome
+\family default
+ from a given sequence of 
+\family typewriter
+Gene
+\family default
+s.
+ The factory method is used by the 
+\family typewriter
+Alterer
+\family default
+ classes which were able to create altered 
+\family typewriter
+Chromosome
+\family default
+ from a (changed) 
+\family typewriter
+Gene
+\family default
+ sequence.
 \end_layout
 
 \begin_layout Subsubsection
 Genotype
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Domain-classes-Genotype"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -2358,17 +2506,14 @@ Genotype
 \end_inset
 
 
-\begin_inset CommandInset label
-LatexCommand label
-name "sub:Genotype"
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
-The central class, the GA is working with, is the
+The central class, the evolution 
+\family typewriter
+Engine
+\family default
+ is working with, is the
 \family typewriter
  Genotype
 \family default
@@ -2377,32 +2522,26 @@ The central class, the GA is working with, is the
 \emph on
  structural
 \emph default
- representative of an individual, whereas the
-\family typewriter
- Phenotype
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Phenotype
-\end_layout
-
+ representative of an individual and consists of one to 
+\begin_inset Formula $n$
 \end_inset
 
-
+ 
+\family typewriter
+Chromo\SpecialChar \-
+some
 \family default
- is the
-\emph on
- actual
-\emph default
- representative of an individual.
- but only consists of the genotype and the fitness function and doesn't
- change the basic structure.
- The phenotype is
-\emph on
- only
-\emph default
- a container which forms the environment of the genotype.
+s.
+ All 
+\family typewriter
+Chromo\SpecialChar \-
+some
+\family default
+s must be parameterized with the same 
+\family typewriter
+Gene
+\family default
+ type, but it is allowed to have different lengths and constraints.
 \end_layout
 
 \begin_layout Standard
@@ -2450,10 +2589,6 @@ Genotype
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 Figure 
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -2461,21 +2596,63 @@ reference "fig:Genotype-structure"
 
 \end_inset
 
- shows the genotype structure.
- A genotype consists of 
+ shows the 
+\family typewriter
+Genotype
+\family default
+ structure.
+ A 
+\family typewriter
+Genotype
+\family default
+ consists of 
 \begin_inset Formula $N_{G}$
 \end_inset
 
- chromosomes and a chromosome consists of 
+ 
+\family typewriter
+Chromosome
+\family default
+s and a 
+\family typewriter
+Chromosome
+\family default
+ consists of 
 \begin_inset Formula $N_{C[i]}$
 \end_inset
 
- genes (depending on the chromosome).
- The overall number of genes of a genotype is given by the sum of the chromosome
-'s genes, which can be accessed via the
+ 
+\family typewriter
+Gene
+\family default
+s (depending on the 
+\family typewriter
+Chromo
+\family default
+some).
+ The overall number of 
+\family typewriter
+Gene
+\family default
+s of a 
+\family typewriter
+Geno
+\family default
+type is given by the sum of the 
+\family typewriter
+Chromosome
+\family default
+'s 
+\family typewriter
+Gene
+\family default
+s, which can be accessed via the
 \family typewriter
  Genotype\SpecialChar \-
-.getNumberOfGenes()
+.get\SpecialChar \-
+Number\SpecialChar \-
+Of\SpecialChar \-
+Genes()
 \family default
  method:
 \begin_inset Formula 
@@ -2485,24 +2662,33 @@ N_{g}=\sum_{i=0}^{N_{G}-1}N_{C[i]}\label{eq:Number of genes}
 
 \end_inset
 
-The chromosomes
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
+As already mentioned, the 
+\family typewriter
 Chromosome
-\end_layout
-
-\end_inset
-
- of a genotype doesn't have to have necessarily the same size.
- It is only required that all genes are from the same type and the genes
- within a chromosome have the same constraints; e.
+\family default
+s of a 
+\family typewriter
+Genotype
+\family default
+ doesn't have to have necessarily the same size.
+ It is only required that all genes are from the same type and the 
+\family typewriter
+Gene
+\family default
+s within a 
+\family typewriter
+Chromosome
+\family default
+ have the same constraints; e.
 \begin_inset space ~
 \end_inset
 
 g.
- the same min- and max values for numerical genes.
+ the same min- and max values for numerical 
+\family typewriter
+Gene
+\family default
+s.
 \end_layout
 
 \begin_layout Standard
@@ -2547,8 +2733,11 @@ Genotype<DoubleGene> genotype = Genotype.of(
 \end_layout
 
 \begin_layout Standard
-The code snippet in the listing above creates a genotype with the same structure
- as shown in figure 
+The code snippet in the listing above creates a 
+\family typewriter
+Genotype
+\family default
+ with the same structure as shown in figure 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Genotype-structure"
@@ -2558,17 +2747,55 @@ reference "fig:Genotype-structure"
 .
  In this example the
 \family typewriter
- DoubleGene
+ Double\SpecialChar \-
+Gene
 \family default
- has been chosen for gene type.
+ has been chosen for 
+\family typewriter
+Gene
+\family default
+ type.
 \end_layout
 
 \begin_layout Subsubsection
 Phenotype
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Domain-classes-Phenotype"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Phenotype
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-The 
+The
+\family typewriter
+ Phenotype
+\family default
+ is the
+\emph on
+ actual
+\emph default
+ representative of an individual.
+ but only consists of the genotype and the fitness function and doesn't
+ change the basic structure.
+ The phenotype is
+\emph on
+ only
+\emph default
+ a container which forms the environment of the genotype.
+ The 
 \family typewriter
 Phenotype
 \family default
@@ -3679,7 +3906,7 @@ The mutator has to deal with the problem, that the genes are arranged in
  structure (see chapter 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "sub:Genotype"
+reference "sub:Domain-classes-Genotype"
 
 \end_inset
 
@@ -7089,7 +7316,7 @@ reference "fig:Genotype-structure"
  on page 
 \begin_inset CommandInset ref
 LatexCommand pageref
-reference "sub:Genotype"
+reference "sub:Domain-classes-Genotype"
 
 \end_inset
 
@@ -7531,86 +7758,6 @@ A new gene type normally needs a corresponding chromosome implementation.
  Chromosome
 \family default
  interface and the methods that must be implemented.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-public interface Chromosome<G extends Gene<?, G>>
-\end_layout
-
-\begin_layout Plain Layout
-
-	extends Factory<Chromosome<G>>, Iterable<G>, Verifiable,
-\end_layout
-
-\begin_layout Plain Layout
-
-            Immutable, Serializable
-\end_layout
-
-\begin_layout Plain Layout
-
-{
-\end_layout
-
-\begin_layout Plain Layout
-
-    public Chromosome<G> newInstance(ISeq<G> genes);
-\end_layout
-
-\begin_layout Plain Layout
-
-    public G getGene();
-\end_layout
-
-\begin_layout Plain Layout
-
-    public G getGene(int index);
-\end_layout
-
-\begin_layout Plain Layout
-
-    public ISeq<G> toSeq();
-\end_layout
-
-\begin_layout Plain Layout
-
-    public int length();
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "lis:Chromosome-interface"
-
-\end_inset
-
-
-\family typewriter
-Chromosome
-\family default
- interface
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
