@@ -41,7 +41,7 @@ import org.jenetics.internal.collection.ObjectArrayProxy;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-12-03 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-12-12 $</em>
  */
 public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 
@@ -168,7 +168,6 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * page 142, Algorithm S (Selection sampling technique).
 	 *
 	 * @return this shuffled sequence
-	 * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public default MSeq<T> shuffle() {
 		return shuffle(RandomRegistry.getRandom());
@@ -181,8 +180,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 *
 	 * @param random the {@link Random} object to use for randomize.
 	 * @return this shuffled sequence
-	 * @throws NullPointerException if the give array or the random object is
-	 *          {@code null}.
+	 * @throws NullPointerException if the random object is {@code null}.
 	 */
 	public default MSeq<T> shuffle(final Random random) {
 		for (int j = length() - 1; j > 0; --j) {
