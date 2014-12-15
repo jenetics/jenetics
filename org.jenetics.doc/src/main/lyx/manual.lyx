@@ -5932,15 +5932,247 @@ Evolution!Stream
 \end_layout
 
 \begin_layout Standard
-The EvolutionStream is a kind of execution handle, where you can define
- termination condition of the evolution process and the final result.
- The stream can be truncated with the limit methods of the EvolutionStream.
- The final evolution result is determined by the collector applied to the
- collect method.
+The 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+ controls the execution of the evolution process and can be seen as a kind
+ of execution 
+\emph on
+handle
+\emph default
+.
+ This handle can be used to define the termination criteria and to 
+\emph on
+collect
+\emph default
+ the final evolution result.
+ Since the 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+ extends the Java 
+\family typewriter
+Stream
+\family default
+ interface, it integrates smoothly with the rest of the Java streaming API.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+It is recommended to make yourself familiar with the Java streaming API.
+ A good introduction can be found here: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://winterbe.com/posts/2014/07/31/java8-stream-tutorial-examples/
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface EvolutionStream<
+\end_layout
+
+\begin_layout Plain Layout
+
+    G extends Gene<?, G>,
+\end_layout
+
+\begin_layout Plain Layout
+
+    C extends Comparable<? super C>
+\end_layout
+
+\begin_layout Plain Layout
+
+> 
+\end_layout
+
+\begin_layout Plain Layout
+
+    extends Stream<EvolutionResult<G, C>>
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    public EvolutionStream<G, C>
+\end_layout
+
+\begin_layout Plain Layout
+
+    limit(Predicate<? super EvolutionResult<G, C>> proceed);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\family typewriter
+EvolutionStream
+\family default
+ class
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:EvolutionStream-class"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:EvolutionStream-class"
+
+\end_inset
+
+ shows the whole 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+ interface.
+ As it can be seen, it only adds one additional method.
+ But this additional 
+\family typewriter
+limit
+\family default
+ method allows to truncate the 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+ based on a 
+\family typewriter
+Predicate
+\family default
+ which takes an 
+\family typewriter
+Evolution\SpecialChar \-
+Result
+\family default
+.
+ Once the 
+\family typewriter
+Predicate
+\family default
+ returns 
+\family typewriter
+false
+\family default
+, the evolution process is stopped.
+ Since the limit method returns an EvolutionStream, it is possible to define
+ more than one Predicate, which both must be fulfilled to continue the evolution
+ process.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Engine<DobuleGene, Double> engine = ...
+\end_layout
+
+\begin_layout Plain Layout
+
+EvolutionStream<DoubleGene, Double> stream = engine.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+    .limit(predicate1)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .limit(predicate2)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .limit(100);
+\end_layout
+
+\end_inset
+
+The 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+, created in the example above, will be truncated if one of the two predicates
+ is 
+\family typewriter
+false
+\family default
+ or if the maximal allowed generations, of 100, is reached.
+ An 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+ can only be created via the 
+\family typewriter
+Engine\SpecialChar \-
+.stream()
+\family default
+ method, but it is possible to create more than one stream from the same
+ 
+\family typewriter
+Engine
+\family default
+ instance.
 \end_layout
 
 \begin_layout Subsubsection
 EvolutionResult
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:EvolutionResult"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -5956,13 +6188,151 @@ EvolutionResult
 \begin_layout Standard
 The 
 \family typewriter
+Evolution\SpecialChar \-
+Result
+\family default
+ collects the result data of an evolution step into an immutable 
+\emph on
+value
+\emph default
+ class.
+ This class is the type of the stream elements of the EvolutionStream, as
+ described in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:EvolutionStream"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public final class EvolutionResult<
+\end_layout
+
+\begin_layout Plain Layout
+
+    G extends Gene<?, G>,
+\end_layout
+
+\begin_layout Plain Layout
+
+    C extends Comparable<? super C>
+\end_layout
+
+\begin_layout Plain Layout
+
+> 
+\end_layout
+
+\begin_layout Plain Layout
+
+    implements Comparable<EvolutionResult<G, C>>
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    Population<G,C> getPopulation();
+\end_layout
+
+\begin_layout Plain Layout
+
+    long getGeneration();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\family typewriter
 EvolutionResult
 \family default
- is the intermediate result of one evolution step.
+ class
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:EvolutionResult-class"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:EvolutionResult"
+
+\end_inset
+
+ shows the two most important properties, the 
+\family typewriter
+population
+\family default
+ and the 
+\family typewriter
+generation
+\family default
+ the result belongs to.
+ This are also the two properties needed for the next evolution step.
+ The 
+\family typewriter
+generation
+\family default
+ is, of course, incremented by one.
+ To make collecting the 
+\family typewriter
+Evolution\SpecialChar \-
+Result
+\family default
+ object easier, it also implements the 
+\family typewriter
+Comparable
+\family default
+ interface.
+ Two 
+\family typewriter
+Evolution\SpecialChar \-
+Result
+\family default
+s are compared by its best 
+\family typewriter
+Phenotype
+\family default
+.
 \end_layout
 
 \begin_layout Subsubsection
 EvolutionStatistics
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:EvolutionStatistics"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
