@@ -4199,7 +4199,7 @@ select a chromosome
 \begin_inset Formula $G[i]$
 \end_inset
 
- with probability
+ with probability 
 \begin_inset Formula $P_{C}(m)$
 \end_inset
 
