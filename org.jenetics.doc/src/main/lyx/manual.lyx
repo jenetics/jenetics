@@ -5086,11 +5086,7 @@ Function
 \family typewriter
 Phenotype
 \family default
-s, it is required that the 
-\family typewriter
-Function
-\family default
- is thread-safe.
+s, it has to be thread-safe.
  Ideally, this is achieved by a 
 \family typewriter
 Function
