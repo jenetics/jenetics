@@ -6324,6 +6324,146 @@ Phenotype
 .
 \end_layout
 
+\begin_layout Standard
+The 
+\family typewriter
+Evolution\SpecialChar \-
+Result
+\family default
+ classes has three predefined factory methods, which will return 
+\family typewriter
+Collector
+\family default
+s usable for the 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+:
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+toBestEvolutionResult()
+\family default
+ Collects the best 
+\family typewriter
+Evolution\SpecialChar \-
+Result
+\family default
+ of an 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+ according to the defined optimization strategy.
+ 
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+toBestPhenotype()
+\family default
+ This collector can be used if you are only interested in the best 
+\family typewriter
+Phenotype
+\family default
+.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+toBestGenotype()
+\family default
+ Use this collector if you only need the best 
+\family typewriter
+Genotype
+\family default
+ of the 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+The following code snippets shows how to use the different 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+ collectors.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+// Collecting the best EvolutionResult of the EvolutionStream
+\end_layout
+
+\begin_layout Plain Layout
+
+EvolutionResult<DoubleGene, Double> result = stream
+\end_layout
+
+\begin_layout Plain Layout
+
+    .collect(EvolutionResult.toBestEvolutionResult());
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+// Collecting the best Phenotype of the EvolutionStream
+\end_layout
+
+\begin_layout Plain Layout
+
+Phenotype<DoubleGene, Double> result = stream
+\end_layout
+
+\begin_layout Plain Layout
+
+    .collect(EvolutionResult.toBestPhenotype());
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+// Collecting the best Genotype of the EvolutionStream
+\end_layout
+
+\begin_layout Plain Layout
+
+Genotype<DoubleGene> result = stream
+\end_layout
+
+\begin_layout Plain Layout
+
+    .collect(EvolutionResult.toBestPhenotype());
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsubsection
 EvolutionStatistics
 \begin_inset CommandInset label
@@ -6556,180 +6696,6 @@ Nuts and bolts
 \end_layout
 
 \begin_layout Subsection
-Collectors
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Collectors
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection
-Stream truncation
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-limit
-\end_layout
-
-\end_inset
-
-
-\begin_inset Index idx
-status open
-
-\begin_layout Plain Layout
-Stream truncation
-\end_layout
-
-\end_inset
-
-
-\begin_inset CommandInset label
-LatexCommand label
-name "sub:Termination"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The easiest way to terminate an evolution stream is to evolve a specific
- number of generations.
- This might work well for most problems and termination is guaranteed.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-Engine<DoubleGene, Double> engine = ...
-\end_layout
-
-\begin_layout Plain Layout
-
-Phenotype<DoubleGene, Double> result = engine.stream()
-\end_layout
-
-\begin_layout Plain Layout
-
-    .limit(25)
-\end_layout
-
-\begin_layout Plain Layout
-
-    .collect(toBestPhenotype());
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-A better way for way for truncating the evolution stream is to use to call
- the 
-\family typewriter
-limit(Predicate)
-\family default
- method of the 
-\family typewriter
-EvolutionStream
-\family default
- class.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-Engine<DoubleGene, Double> engine = ...
-\end_layout
-
-\begin_layout Plain Layout
-
-LongAdder counter = new LongAdder();
-\end_layout
-
-\begin_layout Plain Layout
-
-Phenotype<DoubleGene, Double> result = engine.stream()
-\end_layout
-
-\begin_layout Plain Layout
-
-    .limit(bySteadyFitness(5))
-\end_layout
-
-\begin_layout Plain Layout
-
-    // Counting the generations.
-\end_layout
-
-\begin_layout Plain Layout
-
-    .peek(r -> counter.increment())
-\end_layout
-
-\begin_layout Plain Layout
-
-    .collect(toBestPhenotype());
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The evolution stream is truncated when the 
-\emph on
-limit
-\emph default
- predicate (
-\family typewriter
-by\SpecialChar \-
-Steady\SpecialChar \-
-Fitness(5)
-\family default
-) returns false.
-
-\family sans
-\series bold
-\shape smallcaps
- Jenetics
-\family default
-\series default
-\shape default
- comes with some default limit predicates implemented in the
-\family typewriter
- limit
-\family default
- class in the
-\family typewriter
- org.jenetics.engine
-\family default
- package.
- The steady-fitness terminator for example, truncates the stream if the
- best fitness value doesn't increase for 5 consecutive generations.
-\end_layout
-
-\begin_layout Subsection
 Concurrency
 \begin_inset Index idx
 status collapsed
@@ -6825,7 +6791,22 @@ public class Main {
 
 \begin_layout Plain Layout
 
-        Factory<Genotype<DoubleGene>> gtf = ...
+        // Creating an fixed size ExecutorService
+\end_layout
+
+\begin_layout Plain Layout
+
+        final ExecutorService executor = Executors
+\end_layout
+
+\begin_layout Plain Layout
+
+            .newFixedThreadPool(10)
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Factory<Genotype<DoubleGene>> gtf = ...
 \end_layout
 
 \begin_layout Plain Layout
@@ -6845,7 +6826,7 @@ public class Main {
 
 \begin_layout Plain Layout
 
-            .executor(Executors.newFixedThreadPool(10))
+            .executor(executor)
 \end_layout
 
 \begin_layout Plain Layout
@@ -8784,8 +8765,273 @@ org.jenetics.stat
 \end_layout
 
 \begin_layout Standard
-This package contains classes and collectors for calculating statistical
- moments.
+This package contains classes for calculating statistical moments.
+ They are designed to work smoothly with the Java streaming API and are
+ divided into mutable (number) consumers and immutable value classes, which
+ holds the statistical moments.
+ The additional classes calculate the 
+\end_layout
+
+\begin_layout Itemize
+minimum, 
+\end_layout
+
+\begin_layout Itemize
+maximum, 
+\end_layout
+
+\begin_layout Itemize
+sum, 
+\end_layout
+
+\begin_layout Itemize
+mean, 
+\end_layout
+
+\begin_layout Itemize
+variance,
+\end_layout
+
+\begin_layout Itemize
+skewness and 
+\end_layout
+
+\begin_layout Itemize
+kurtosis value.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="3">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0">
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Numeric type
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Consumer class
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Value class
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+int
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+IntMomentStatistics
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+IntMoments
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+long
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+LongMomentStatistics
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+LongMoments
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+double
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+DoubleMomentStatistics
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+DoubleMoments
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Statistics classes
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Statistics-classes"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+Table 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "tab:Statistics-classes"
+
+\end_inset
+
+ contains the available statistical moments for the different numeric types.
+ The following code snippet shows an example on how to collect double statistics
+ from an given 
+\family typewriter
+Double\SpecialChar \-
+Gene
+\family default
+ stream.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+// Collecting into an statistics object.
+\end_layout
+
+\begin_layout Plain Layout
+
+DoubleChromosome chromosome = ...
+\end_layout
+
+\begin_layout Plain Layout
+
+DoubleMomentStatistics statistics = chromosome.toSeq().stream() 
+\end_layout
+
+\begin_layout Plain Layout
+
+    .collect(DoubleMomentStatistics
+\end_layout
+
+\begin_layout Plain Layout
+
+        .toDoubleMomentStatistics(v -> v.doubleValue()));
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+// Collecting into an moments object.
+\end_layout
+
+\begin_layout Plain Layout
+
+DoubleMoments moments = chromosome.toSeq().stream() 
+\end_layout
+
+\begin_layout Plain Layout
+
+    .collect(DoubleMoments.toDoubleMoments(v -> v.doubleValue()));
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
