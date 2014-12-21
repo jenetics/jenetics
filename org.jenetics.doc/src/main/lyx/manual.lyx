@@ -2644,18 +2644,18 @@ Gene
 \family default
 s (depending on the 
 \family typewriter
-Chromo
+Chromosome
 \family default
-some).
+).
  The overall number of 
 \family typewriter
 Gene
 \family default
 s of a 
 \family typewriter
-Geno
+Genotype
 \family default
-type is given by the sum of the 
+ is given by the sum of the 
 \family typewriter
 Chromosome
 \family default
@@ -4407,9 +4407,9 @@ The recombination probability,
 \end_inset
 
  is the order of the recombination, which is the number of individuals involved
- in the
+ in there
 \family typewriter
-re combine
+ combine
 \family default
  method.
 \end_layout
@@ -5121,7 +5121,7 @@ The following example shows the simplest possible fitness
 Function
 \family default
 .
- It's the identity function and returns the allele of an
+ It's the identity function and returns the allele of a 
 \begin_inset Formula $1\mathsf{x}1$
 \end_inset
 
@@ -6408,7 +6408,7 @@ status open
 
 \begin_layout Plain Layout
 
-// Collecting the best EvolutionResult of the EvolutionStream
+// Collecting the best EvolutionResult of the EvolutionStream.
 \end_layout
 
 \begin_layout Plain Layout
@@ -6427,7 +6427,7 @@ EvolutionResult<DoubleGene, Double> result = stream
 
 \begin_layout Plain Layout
 
-// Collecting the best Phenotype of the EvolutionStream
+// Collecting the best Phenotype of the EvolutionStream.
 \end_layout
 
 \begin_layout Plain Layout
@@ -6446,7 +6446,7 @@ Phenotype<DoubleGene, Double> result = stream
 
 \begin_layout Plain Layout
 
-// Collecting the best Genotype of the EvolutionStream
+// Collecting the best Genotype of the EvolutionStream.
 \end_layout
 
 \begin_layout Plain Layout
@@ -6456,7 +6456,7 @@ Genotype<DoubleGene> result = stream
 
 \begin_layout Plain Layout
 
-    .collect(EvolutionResult.toBestPhenotype());
+    .collect(EvolutionResult.toBestGenotype());
 \end_layout
 
 \end_inset
@@ -8290,14 +8290,20 @@ CharacterChromosome
 \end_layout
 
 \begin_layout Itemize
+
+\family typewriter
 IntegerGene
 \end_layout
 
 \begin_layout Itemize
+
+\family typewriter
 IntegerChromosome
 \end_layout
 
 \begin_layout Itemize
+
+\family typewriter
 LongGene
 \end_layout
 
@@ -8461,8 +8467,15 @@ EvolutionStream<DoubleGene, Double> stream = Engine
 \end_layout
 
 \begin_layout Standard
-The following listing shows the XML serialization of a population which
- consists of genotypes as shown in figure 
+The following listing shows the XML serialization of a 
+\family typewriter
+Population
+\family default
+ which consists of 
+\family typewriter
+Genotype
+\family default
+s as shown in figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Genotype-structure"
@@ -8476,7 +8489,11 @@ reference "sub:Domain-classes-Genotype"
 
 \end_inset
 
-; only the first phenotype is shown.
+; only the first 
+\family typewriter
+Phenotype
+\family default
+ is shown.
 \end_layout
 
 \begin_layout Standard
@@ -8518,8 +8535,20 @@ footnotesize}
 \begin_layout Standard
 When serializing a whole population the fitness function and fitness scaler
  are not part of the serialized XML file.
- If a GA is initialized with a previously serialized population, the GA's
- current fitness function and fitness scaler are used for
+ If an 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+ is initialized with a previously serialized 
+\family typewriter
+Population
+\family default
+, the 
+\family typewriter
+Engine
+\family default
+'s current fitness function and fitness scaler are used for
 \emph on
  re
 \emph default
@@ -8579,8 +8608,11 @@ s and
  Chromosome
 \family default
 s, respectively.
- The Seq interface itself represents a fixed-sized, ordered sequence of
- elements.
+ The 
+\family typewriter
+Seq
+\family default
+ interface itself represents a fixed-sized, ordered sequence of elements.
  It is an abstraction over the Java build-in
 \emph on
  array
@@ -11246,7 +11278,11 @@ Weighted graph and adjacency matrix
 
 \end_inset
 
-The genotype creation...
+The following code snippet shows how the 
+\family typewriter
+Genotype
+\family default
+ of the matrix is created.
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -11279,7 +11315,19 @@ final Genotype<DoubleGene> gt = Genotype
 
 \end_inset
 
-Matrix extraction...
+For accessing the single matrix elements, you can simply call 
+\family typewriter
+Genotype\SpecialChar \-
+.get(i, j)\SpecialChar \-
+.doubleValue()
+\family default
+.
+ If the interaction with another library requires an 
+\family typewriter
+double\SpecialChar \-
+[][]
+\family default
+ array, the following code can be used.
 \begin_inset listings
 lstparams "language=Java"
 inline false
