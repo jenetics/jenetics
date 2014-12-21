@@ -9054,7 +9054,7 @@ The
  library was designed to give you a great flexibility in transforming your
  problem into a structure that can be solved by an GA.
  It also comes with different implementations for the base data-types (genes
- and chromosomes) and genetic operators (alterers and selectors).
+ and chromosomes) and operators (alterers and selectors).
  If it is still some functionality missing, this section describes how you
  can extend the existing classes.
  Most of the
@@ -9087,8 +9087,12 @@ name "sub:Genes"
 \end_layout
 
 \begin_layout Standard
-Genes are the starting point in the class hierarchy.
- They hold the actual information, the alleles, of your problem domain.
+
+\family typewriter
+Gene
+\family default
+s are the starting point in the class hierarchy.
+ They hold the actual information, the alleles, of the problem domain.
  Beside the
 \emph on
  classical
@@ -9101,8 +9105,19 @@ Genes are the starting point in the class hierarchy.
 \family default
 \series default
 \shape default
- comes with gene implementations for numbers (double- and long values),
- characters and enumeration types.
+ comes with gene implementations for numbers (
+\family typewriter
+double
+\family default
+-, 
+\family typewriter
+int
+\family default
+- and 
+\family typewriter
+long
+\family default
+ values), characters and enumeration types.
 \end_layout
 
 \begin_layout Standard
@@ -9142,10 +9157,15 @@ Allele
 g.
  a gene which holds complex values, you may want extend it from the abstract
 \family typewriter
- NumericGene
+ Numeric\SpecialChar \-
+Gene
 \family default
  class.
- Every gene extends the
+ Every 
+\family typewriter
+Gene
+\family default
+ extends the
 \family typewriter
  Serializable
 \family default
@@ -9187,9 +9207,28 @@ The most important part of a chromosome is the factory method
  new\SpecialChar \-
 Instance
 \family default
-, which lets the GA create a new chromosome instance from a sequence of
- genes.
- This method is used by the alterers when creating new, combined chromosomes.
+, which lets the evolution 
+\family typewriter
+Engine
+\family default
+ create a new 
+\family typewriter
+Chromosome
+\family default
+ instance from a sequence of 
+\family typewriter
+Gene
+\family default
+s.
+ This method is used by the 
+\family typewriter
+Alterer
+\family default
+s when creating new, combined 
+\family typewriter
+Chromosome
+\family default
+s.
  The other methods should be self-explanatory.
  The chromosome has the same serialization mechanism as the gene.
  For the minimal case it extends the
@@ -9341,9 +9380,14 @@ count
 Before implementing a selector from scratch, consider to extend your selector
  from the
 \family typewriter
- ProbabilitySelector
+ Probability\SpecialChar \-
+Selector
 \family default
- (or any other available selector implementation).
+ (or any other available 
+\family typewriter
+Selector
+\family default
+ implementation).
  It is worth the effort to try to express your selection strategy in terms
  of selection property 
 \begin_inset Formula $P(i)$
@@ -9372,8 +9416,11 @@ For implementing a new alterer class it is necessary to implement the
  Alterer
 \family default
  interface.
- You might do this if your new gene type needs a special kind of alterer
- not available in the
+ You might do this if your new 
+\family typewriter
+Gene
+\family default
+ type needs a special kind of alterer not available in the
 \family sans
 \series bold
 \shape smallcaps
@@ -9447,7 +9494,7 @@ The first parameter of the
 \family default
  method is the
 \family typewriter
- population
+ Population
 \family default
  which has to be altered.
  Since the the
@@ -9464,7 +9511,7 @@ The first parameter of the
 \end_layout
 
 \begin_layout Subsection
-Statistics/Collectors
+Statistics
 \begin_inset Index idx
 status collapsed
 
@@ -9486,7 +9533,7 @@ Jenetics
 \family default
 \series default
 \shape default
- library additional statistical data about the evolution process is crucial.
+ library, additional statistical data about the evolution process is crucial.
  Such data can help to optimize the parametrization of the evolution Engine.
  A good starting point is to use the 
 \family typewriter
@@ -9500,11 +9547,7 @@ jenetics.\SpecialChar \-
 engine
 \family default
  package.
- The basic usage of this class is described in xxx.
-\end_layout
-
-\begin_layout Standard
-If the data in the EvolutionStatistics class doesn't fit your needs, you
+ If the data in the EvolutionStatistics class doesn't fit your needs, you
  simply have to write your own statistics class.
  It is not possible to derive from the existing Evolution\SpecialChar \-
 Statistics class.
@@ -11267,14 +11310,6 @@ final double[][] array = gt.toSeq().stream()
 
 \end_layout
 
-\begin_layout Subsubsection
-Scheduling
-\end_layout
-
-\begin_layout Standard
-How to encode the problem for finding the best schedule of lessons.
-\end_layout
-
 \begin_layout Subsection
 Termination
 \end_layout
@@ -11532,15 +11567,15 @@ org\SpecialChar \-
 , which possible holds and internal state.
 \end_layout
 
-\begin_layout Subsubsection
-Steady population
-\end_layout
+\begin_layout Standard
+\begin_inset Note Comment
+status collapsed
 
 \begin_layout Subsubsection
 Evolution time
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 A termination method that stops the evolution when the elapsed evolution
  time exceeds the user-specified max evolution time.
  By default, the evolution is not stopped until the evolution of the current
@@ -11552,7 +11587,7 @@ A termination method that stops the evolution when the elapsed evolution
 Fitness threshold
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 A termination method that stops the evolution when the best fitness in the
  current population becomes less than the user-specified fitness threshold
  and the objective is set to minimize the fitness.
@@ -11565,7 +11600,7 @@ A termination method that stops the evolution when the best fitness in the
 Fitness convergence
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 A termination method that stops the evolution when the fitness is deemed
  as converged.
  Two filters of different lengths are used to smooth the best fitness across
@@ -11579,7 +11614,7 @@ ed percentage away from the smoothed best fitness from the short filter,
 Population convergence
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 A termination method that stops the evolution when the population is deemed
  as converged.
  The population is deemed as converged when the average fitness across the
@@ -11591,12 +11626,17 @@ A termination method that stops the evolution when the population is deemed
 Gene convergence
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 A termination method that stops the evolution when a user-specified percentage
  of the genes that make up a chromosome are deemed as converged.
  A gene is deemed as converged when the average value of that gene across
  all of the chromosomes in the current population is less than a user-specified
  percentage away from the maximum gene value across the chromosomes.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
