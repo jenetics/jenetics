@@ -1172,7 +1172,7 @@ Engine
  and selectors (see section 
 \begin_inset CommandInset ref
 LatexCommand vref
-reference "sec:Genetic-operators"
+reference "sub:Operation-classes"
 
 \end_inset
 
@@ -3127,6 +3127,13 @@ Population
 
 \begin_layout Subsection
 Operation classes
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Operation-classes"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
