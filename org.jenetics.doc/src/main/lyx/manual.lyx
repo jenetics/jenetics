@@ -606,7 +606,7 @@ Stream
 \family typewriter
 Stream
 \family default
- interface, it works smoothly with the rest of the Java streaming API.
+ interface, it works smoothly with the rest of the Java Stream API.
  This manual describes the concepts implemented in the
 \family sans
 \series bold
@@ -1043,7 +1043,7 @@ Stream
 \family typewriter
 Stream
 \family default
- interface, it works smoothly with the rest of the Java streaming API.
+ interface, it works smoothly with the rest of the Java Stream API.
  Now let's have a closer look at listing 
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -1248,7 +1248,7 @@ util.\SpecialChar \-
 stream.\SpecialChar \-
 Stream
 \family default
- interface, it integrates smoothly with the rest of the Java streaming API.
+ interface, it integrates smoothly with the rest of the Java Stream API.
  The final result, the best 
 \family typewriter
 Genotype
@@ -1456,7 +1456,7 @@ Jenetics
 \emph on
 Evolution Stream
 \emph default
-, implemented via the Java 8 streaming API.
+, implemented via the Java 8 Stream API.
  Therefore it is no longer necessary (and advised) to perform the evolution
  steps in an 
 \emph on
@@ -5964,12 +5964,12 @@ Stream
 \family typewriter
 Stream
 \family default
- interface, it integrates smoothly with the rest of the Java streaming API.
+ interface, it integrates smoothly with the rest of the Java Stream API.
 \begin_inset Foot
 status collapsed
 
 \begin_layout Plain Layout
-It is recommended to make yourself familiar with the Java streaming API.
+It is recommended to make yourself familiar with the Java Stream API.
  A good introduction can be found here: 
 \begin_inset Flex URL
 status open
@@ -8805,9 +8805,9 @@ org.jenetics.stat
 
 \begin_layout Standard
 This package contains classes for calculating statistical moments.
- They are designed to work smoothly with the Java streaming API and are
- divided into mutable (number) consumers and immutable value classes, which
- holds the statistical moments.
+ They are designed to work smoothly with the Java Stream API and are divided
+ into mutable (number) consumers and immutable value classes, which holds
+ the statistical moments.
  The additional classes calculate the 
 \end_layout
 
@@ -9401,7 +9401,7 @@ The first parameter is the original
 -population is selected.
  The second parameter,
 \family typewriter
-count
+ count
 \family default
 , is the number of individuals of the returned sub-population.
  Depending on the selection algorithm, it is possible that the sub-population
@@ -9586,10 +9586,19 @@ jenetics.\SpecialChar \-
 engine
 \family default
  package.
- If the data in the EvolutionStatistics class doesn't fit your needs, you
- simply have to write your own statistics class.
- It is not possible to derive from the existing Evolution\SpecialChar \-
-Statistics class.
+ If the data in the 
+\family typewriter
+Evolution\SpecialChar \-
+Statistics
+\family default
+ class doesn't fit your needs, you simply have to write your own statistics
+ class.
+ It is not possible to derive from the existing 
+\family typewriter
+Evolution\SpecialChar \-
+Statistics
+\family default
+ class.
  This is not a real restriction, since you still can use the class by delegation.
  Just implement the Java 
 \family typewriter
@@ -10183,8 +10192,8 @@ Genotype.of(
 
 \end_inset
 
-With the help of the new Java streaming API, the decoding of the Genotype
- can be done in a view lines.
+With the help of the new Java Stream API, the decoding of the Genotype can
+ be done in a view lines.
  The 
 \family typewriter
 Double\SpecialChar \-
@@ -10347,7 +10356,7 @@ Genotype.of(
 
 \end_inset
 
-The decoding of the vectors is quite easy with the help of the Java streaming
+The decoding of the vectors is quite easy with the help of the Java Stream
  API.
  In the first 
 \family typewriter
