@@ -90,28 +90,28 @@ new random `Genotypes`.
 
 	public class HelloWorld {
 		// 2.) Definition of the fitness function.
-		private static Integer eval(Genotype&lt;BitGene&gt; gt) {
+		private static Integer eval(Genotype<BitGene> gt) {
 			return ((BitChromosome)gt.getChromosome()).bitCount();
 		}
 
 		public static void main(String[] args) {
 			// 1.) Define the genotype (factory) suitable
 			//     for the problem.
-			Factory&lt;Genotype&lt;BitGene&gt;&gt; gtf =
+			Factory<Genotype<BitGene>> gtf =
 				Genotype.of(BitChromosome.of(10, 0.5));
 
 			// 3.) Create the execution environment.
-			Engine&lt;BitGene, Integer&gt; engine = Engine
+			Engine<BitGene, Integer> engine = Engine
 				.builder(HelloWorld::eval, gtf)
 				.build();
 
 			// 4.) Start the execution (evolution) and
 			//     collect the result.
-			Genotype&lt;BitGene&gt; result = engine.stream()
+			Genotype<BitGene> result = engine.stream()
 				.limit(100)
 				.collect(EvolutionResult.toBestGenotype());
 
-			System.out.println(&quot;Hello World:\n&quot; + result);
+			System.out.println("Hello World:\n" + result);
 		}
 	}
 
