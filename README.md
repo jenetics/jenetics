@@ -13,6 +13,9 @@ it works smoothly with the rest of the Java Stream API.
 
 ## Requirements
 
+### Runtime
+*  **JRE 8**: Java runtime version 8 is needed for using the library, respectively for running the examples.
+
 ### Build time
 *  **JDK 8**: The `JAVA_HOME` variable must be set to your java installation directory.
 *  **Gradle 2.0**: [Gradle](http://www.gradle.org/) is used for building the library. (Gradle is download automatically, if you are using the Gradle Wrapper script `gradlew`, located in the base directory, for building the library.)
@@ -20,9 +23,6 @@ it works smoothly with the rest of the Java Stream API.
 ### Test compile/execution
 *  **TestNG 8.8**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
 *  **Apache Commons Math 3.3**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical accumulators.
-
-### Runtime
-*  **JRE 8**: Java runtime version 8 is needed for using the library, respectively for running the examples.
 
 ## Download
 *  **Sourceforge**:  <https://sourceforge.net/projects/jenetics/files/latest/download>
