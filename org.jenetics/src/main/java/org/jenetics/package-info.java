@@ -19,6 +19,12 @@
  */
 
 /**
+ * This is the base package of the Jenetics library and contains all domain
+ * classes, like Gene, Chromosome or Genotype. Most of this types are immutable
+ * data classes and doesn't implement any behavior. It also contains the Selector
+ * and Alterer interfaces and its implementations. The classes in this package
+ * are (almost) sufficient to implement an own GA.
+ *
  * <h3>Introduction</h3>
  * <p><strong>Jenetics</strong> is an <strong>Genetic Algorithm</strong>,
  * respectively an <strong>Evolutionary Algorithm</strong>, library written in
@@ -114,7 +120,7 @@
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-12-21 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-12-27 $</em>
  */
 package org.jenetics;
 
