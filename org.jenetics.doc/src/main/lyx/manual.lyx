@@ -505,7 +505,7 @@ License
 \end_inset
 
  Attribution-ShareAlike 3.0 Austria License.
- To view a copy of this license, visit
+ To view a copy of this license, visit 
 \begin_inset Flex URL
 status collapsed
 
@@ -1010,6 +1010,16 @@ Hello World
 \end_inset
 
  GA
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Hello World
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -1086,13 +1096,15 @@ ones
 \emph default
  of a 
 \family typewriter
-BitChromosome
+Bit\SpecialChar \-
+Chromosome
 \family default
 .
  Since we are counting only the ones of one chromosome, we are adding only
  one 
 \family typewriter
-BitChromosome
+Bit\SpecialChar \-
+Chromosome
 \family default
  to our 
 \family typewriter
@@ -1127,7 +1139,8 @@ bitCount()
 \family default
 , we have to cast the 
 \family typewriter
-Chromosome<BitGene>
+Chromosome\SpecialChar \-
+<BitGene>
 \family default
  class to the actual used 
 \family typewriter
@@ -1214,7 +1227,7 @@ Engine
 Evolution\SpecialChar \-
 Stream
 \family default
- is the model or view of the 
+ is the model (or view) of the 
 \emph on
 evolutionary
 \emph default
@@ -1236,19 +1249,6 @@ Evolution\SpecialChar \-
 Stream
 \family default
  will not terminate and run forever.
- Since the 
-\family typewriter
-Evolution\SpecialChar \-
-Stream
-\family default
- extends the 
-\family typewriter
-java.\SpecialChar \-
-util.\SpecialChar \-
-stream.\SpecialChar \-
-Stream
-\family default
- interface, it integrates smoothly with the rest of the Java Stream API.
  The final result, the best 
 \family typewriter
 Genotype
@@ -1463,7 +1463,7 @@ Evolution Stream
 imperative
 \emph default
  way.
- An evolution stream is powered by---and bound to respectively---an 
+ An evolution stream is powered by---and bound to---an 
 \emph on
 Evolution Engine
 \emph default
@@ -1704,7 +1704,7 @@ Alterer
 \family default
  interfaces and its implementations.
  The classes in this package are (almost) sufficient to implement an own
- GA implementation.
+ GA.
 \end_layout
 
 \begin_layout Description
@@ -1748,7 +1748,11 @@ org.jenetics.stat
 This package contains additional statistics classes which are not available
  in the Java core library.
  Java only includes classes for calculating the sum and the average of a
- given numeric stream (e.
+ given 
+\emph on
+numeric
+\emph default
+ stream (e.
 \begin_inset space ~
 \end_inset
 
@@ -1942,6 +1946,16 @@ org\SpecialChar \-
 
 \begin_layout Subsection
 Domain classes
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Domain classes
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2963,7 +2977,7 @@ evaluate
 Engine
 \family default
  is calling the evaluate method in a separate step and makes the fitness
- evaluation time available through the value-based 
+ evaluation time available through the 
 \family typewriter
 Evolution\SpecialChar \-
 Durations
@@ -3134,6 +3148,16 @@ name "sub:Operation-classes"
 \end_inset
 
 
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Operation classes
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -3152,7 +3176,7 @@ target "https://en.wikipedia.org/wiki/Genetic_operator"
 \family typewriter
 Alterer
 \family default
-) and select potentially useful solutions for recombination (
+) and selecting potentially useful solutions for recombination (
 \family typewriter
 Selector
 \family default
@@ -3177,6 +3201,16 @@ theoretical
 
 \begin_layout Subsubsection
 Selector
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Selector
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -3813,7 +3847,7 @@ P(i)=\left(c-1\right)\frac{c^{i-1}}{c^{N}-1},
 
 \end_inset
 
-where
+where 
 \begin_inset Formula $c$
 \end_inset
 
@@ -4001,6 +4035,16 @@ key "Sivanandam2010"
 
 \begin_layout Subsubsection
 Alterer
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Alterer
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -4060,6 +4104,19 @@ target "https://en.wikipedia.org/wiki/Crossover_(genetic_algorithm)"
 \end_inset
 
 ).
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "75col%"
+height "1pt"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -4312,9 +4369,19 @@ g.
 \end_layout
 
 \begin_layout Standard
-\begin_inset VSpace 10mm
+\align center
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "75col%"
+height "1pt"
+
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 
 \series bold
 The second alterer type is the recombination
@@ -4371,9 +4438,27 @@ height "1pt"
 \family sans
 \shape italic
 \emph on
-Because of the possible different chromosome length and/or chromosome constraint
-s within a genotype, only chromosomes with the same genotype position are
- recombined.
+Because of the possible different 
+\family typewriter
+Chromosome
+\family sans
+ length and/or 
+\family typewriter
+Chromosome
+\family sans
+ constraints within a 
+\family typewriter
+Genotype
+\family sans
+, only 
+\family typewriter
+Chromosome
+\family sans
+s with the same 
+\family typewriter
+Genotype
+\family sans
+ position are recombined.
 \end_layout
 
 \begin_layout Plain Layout
@@ -4414,7 +4499,7 @@ The recombination probability,
 \end_inset
 
  is the order of the recombination, which is the number of individuals involved
- in there
+ in the
 \family typewriter
  combine
 \family default
@@ -4887,7 +4972,7 @@ reference "fig:Partially-matched-crossover"
  b
 \emph default
 )).
- Chromosome
+ Chromosome 
 \begin_inset Formula $1$
 \end_inset
 
@@ -4940,6 +5025,16 @@ c
 
 \begin_layout Subsection
 Engine classes
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Engine classes
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -6104,9 +6199,20 @@ Predicate
 false
 \family default
 , the evolution process is stopped.
- Since the limit method returns an EvolutionStream, it is possible to define
- more than one Predicate, which both must be fulfilled to continue the evolution
- process.
+ Since the 
+\family typewriter
+limit
+\family default
+ method returns an 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+, it is possible to define more than one 
+\family typewriter
+Predicate
+\family default
+, which both must be fulfilled to continue the evolution process.
 \end_layout
 
 \begin_layout Standard
@@ -7175,8 +7281,7 @@ The parallel nature of the GA implementation requires the creation of streams
 \begin_inset Formula $j=1,2,3,...,p$
 \end_inset
 
-.
- 
+, 
 \begin_inset Formula $p$
 \end_inset
 
@@ -7880,21 +7985,9 @@ reference "tab:PRNG-performance"
 
  shows the random number
 \family typewriter
- (int
+ 
 \family default
-,
-\family typewriter
- long
-\family default
-,
-\family typewriter
- float
-\family default
- and
-\family typewriter
- double
-\family default
-) generation speed for the different PRNG implementations.
+generation speed for the different PRNG implementations.
 \begin_inset Foot
 status open
 
@@ -8380,7 +8473,12 @@ end{multicols}
 
 \begin_layout Standard
 With the serialization mechanism you can write a population to disk and
- load it into an new evolution stream at a later time.
+ load it into an new 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+ at a later time.
  It can also be used to transfer populations to evolution engines, running
  on different hosts, over a network link.
  The
@@ -8801,6 +8899,16 @@ target "http://jenetics.sourceforge.net/javadoc/index.html"
 
 \family typewriter
 org.jenetics.stat
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Statistics
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -8887,6 +8995,8 @@ Value class
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\family typewriter
 int
 \end_layout
 
@@ -8896,6 +9006,8 @@ int
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\family typewriter
 IntMomentStatistics
 \end_layout
 
@@ -8905,6 +9017,8 @@ IntMomentStatistics
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\family typewriter
 IntMoments
 \end_layout
 
@@ -8916,6 +9030,8 @@ IntMoments
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\family typewriter
 long
 \end_layout
 
@@ -8925,6 +9041,8 @@ long
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\family typewriter
 LongMomentStatistics
 \end_layout
 
@@ -8934,6 +9052,8 @@ LongMomentStatistics
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\family typewriter
 LongMoments
 \end_layout
 
@@ -8945,6 +9065,8 @@ LongMoments
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\family typewriter
 double
 \end_layout
 
@@ -8954,6 +9076,8 @@ double
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\family typewriter
 DoubleMomentStatistics
 \end_layout
 
@@ -8963,6 +9087,8 @@ DoubleMomentStatistics
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\family typewriter
 DoubleMoments
 \end_layout
 
@@ -9217,6 +9343,83 @@ Gene
  
 \end_layout
 
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90text%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+The customer 
+\family typewriter
+Gene
+\family sans
+s and 
+\family typewriter
+Chromosome
+\family sans
+s implementations must use the 
+\family typewriter
+Random
+\family sans
+ engine available from the 
+\family typewriter
+Random\SpecialChar \-
+Registry
+\family sans
+ when implementing their factory methods.
+ Otherwise it is not possible to seamlessly change the 
+\family typewriter
+Random
+\family sans
+ engine by using the 
+\family typewriter
+Random\SpecialChar \-
+Registry\SpecialChar \-
+.setRandom
+\family sans
+ method.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsection
 Chromosomes
 \begin_inset Index idx
@@ -9233,15 +9436,7 @@ Chromosome
 
 \begin_layout Standard
 A new gene type normally needs a corresponding chromosome implementation.
- The following listing shows the
-\family typewriter
- Chromosome
-\family default
- interface and the methods that must be implemented.
-\end_layout
-
-\begin_layout Standard
-The most important part of a chromosome is the factory method
+ The most important part of a chromosome is the factory method
 \family typewriter
  new\SpecialChar \-
 Instance
@@ -9624,6 +9819,16 @@ Encoding
 \begin_inset CommandInset label
 LatexCommand label
 name "sub:Encoding"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Encoding
+\end_layout
 
 \end_inset
 
@@ -10060,8 +10265,20 @@ Genotype.of(
 
 \end_inset
 
-The decoding of the Genotype requires a cast of the first Chromosome to
- a DoubleChromosome.
+The decoding of the 
+\family typewriter
+Genotype
+\family default
+ requires a cast of the first 
+\family typewriter
+Chromosome
+\family default
+ to a 
+\family typewriter
+Double\SpecialChar \-
+Chromosome
+\family default
+.
  With a call to the 
 \family typewriter
 DoubleChromosome.\SpecialChar \-
@@ -10102,7 +10319,7 @@ With the
 \emph on
 first
 \emph default
- encoding you have the possibility use all available alterers, including
+ encoding you have the possibility to use all available alterers, including
  all 
 \family typewriter
 Crossover
@@ -10192,8 +10409,11 @@ Genotype.of(
 
 \end_inset
 
-With the help of the new Java Stream API, the decoding of the Genotype can
- be done in a view lines.
+With the help of the new Java Stream API, the decoding of the 
+\family typewriter
+Genotype
+\family default
+ can be done in a view lines.
  The 
 \family typewriter
 Double\SpecialChar \-
@@ -10255,6 +10475,42 @@ GaussianAlterer
 Mutator
 \family default
  alterer class.
+\end_layout
+
+\begin_layout Standard
+If there are performance issues in converting the 
+\family typewriter
+Genotype
+\family default
+ into a 
+\family typewriter
+double[]
+\family default
+ array, or any other numeric array, you can access the 
+\family typewriter
+Gene
+\family default
+s directly via the 
+\family typewriter
+Genotype\SpecialChar \-
+.get(i, j)
+\family default
+ method and than convert it to the desired numeric value, by calling 
+\family typewriter
+int\SpecialChar \-
+Value()
+\family default
+, 
+\family typewriter
+long\SpecialChar \-
+Value()
+\family default
+ or 
+\family typewriter
+double\SpecialChar \-
+Value()
+\family default
+.
 \end_layout
 
 \begin_layout Subsubsection
@@ -10446,8 +10702,12 @@ For the special case of
 \begin_inset Formula $n=1$
 \end_inset
 
-, the decoding of the Genotype can be simplified to the decoding we introduced
- for scalar functions in section 
+, the decoding of the 
+\family typewriter
+Genotype
+\family default
+ can be simplified to the decoding we introduced for scalar functions in
+ section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sub:Scalar-function"
@@ -10522,7 +10782,7 @@ https://en.wikipedia.org/wiki/Affine_transformation
 
 \end_inset
 
-
+, 
 \begin_inset Foot
 status collapsed
 
@@ -10652,7 +10912,7 @@ invalid
 \emph default
  (non-affine transformation matrices) during the evolution process, which
  must be detected and discarded.
- It is also difficult find the right parameters for the 
+ It is also difficult to find the right parameters for the 
 \emph on
 min
 \emph default
@@ -10959,7 +11219,8 @@ static double[][] toMatrix(final Genotype<DoubleGene> gt) {
 For the introduced encoding all kind of alterers can be used.
  Since we have one scalar 
 \family typewriter
-DoubleChromosome
+Double\SpecialChar \-
+Chromosome
 \family default
 , the rotation angle 
 \begin_inset Formula $\theta$
@@ -10967,17 +11228,39 @@ DoubleChromosome
 
 , it is recommended also to add an 
 \family typewriter
-MeanAlterer
+Mean\SpecialChar \-
+Alterer
 \family default
  or 
 \family typewriter
-GaussianAlterer
+Gaussian\SpecialChar \-
+Alterer
 \family default
  to the list of alterers.
 \end_layout
 
 \begin_layout Subsubsection
 Graph
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Graph
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Encoding!Graph
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -10990,10 +11273,30 @@ A graph can be represented in many different ways.
 
 \begin_layout Paragraph
 Undirected graph
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Undirected graph
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Encoding!Undirected graph
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-In an undirected graph the edges between the vertices between have no direction.
+In an undirected graph the edges between the vertices have no direction.
  If there is a path between nodes 
 \begin_inset Formula $i$
 \end_inset
@@ -11187,6 +11490,26 @@ final int[][] array = gt.toSeq().stream()
 
 \begin_layout Paragraph
 Directed graph
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Directed graph
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Encoding!Directed graph
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -11251,6 +11574,26 @@ reference "fig:Directed-graph"
 
 \begin_layout Paragraph
 Weighted directed graph
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Weighted graph
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Encoding!Weighted graph
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -11376,6 +11719,16 @@ final double[][] array = gt.toSeq().stream()
 
 \begin_layout Subsection
 Termination
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Termination
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -11387,6 +11740,26 @@ Termination is the criterion by which the evolution stream decides whether
 
 \begin_layout Subsubsection
 Generation number
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Termination!Generation number
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Fixed generation
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -11428,6 +11801,26 @@ This kind of termination method should always be applied, to guarantee the
 
 \begin_layout Subsubsection
 Steady fitness
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Termination!Steady fitness
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Steady fitness
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -11915,6 +12308,12 @@ footnotesize}
 
 \begin_layout Standard
 The given example will print the overall timing statistics onto the console.
+ In the 
+\emph on
+Evolution statistics
+\emph default
+ section you can see that it actually takes 15 generations to fulfill the
+ termination criteria---finding no better result after 7 consecutive generations.
 \end_layout
 
 \begin_layout Subsection
@@ -12046,15 +12445,6 @@ s whose values are restricted to the range
 \begin_inset Formula $[0,2\pi]$
 \end_inset
 
-.
- Without this restriction, the search space of the chromosome will be between
-\family typewriter
- Double.MIN_VALUE
-\family default
- and
-\family typewriter
- Double.MAX_VALUE
-\family default
 .
 \end_layout
 
@@ -13022,7 +13412,7 @@ Version
 \series default
 :
 \emph on
- 6.8.8
+ 6.8.13
 \end_layout
 
 \begin_layout Itemize
@@ -13039,27 +13429,6 @@ status collapsed
 \begin_layout Plain Layout
 
 http://testng.org/doc/index.html
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-Download
-\series default
-:
-\emph on
- 
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-http://testng.org/testng-6.8.8.zip
 \end_layout
 
 \end_inset
