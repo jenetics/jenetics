@@ -21,17 +21,17 @@ package org.jenetics;
 
 import java.util.Random;
 
-import org.jenetics.internal.util.ArrayProxy;
-import org.jenetics.internal.util.ArrayProxyTestBase;
+import org.jenetics.internal.collection.ArrayProxy;
+import org.jenetics.internal.collection.ArrayProxyTestBase;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-17 $</em>
+ * @version <em>$Date: 2014-04-20 $</em>
  */
 public class BitGeneArrayProxyTest extends ArrayProxyTestBase<BitGene> {
 
 	@Override
-	public ArrayProxy<BitGene> newArrayProxy(final int length) {
+	public ArrayProxy<BitGene, ?, ?> newArrayProxy(final int length) {
 		return new BitGeneArray.Proxy(length);
 	}
 

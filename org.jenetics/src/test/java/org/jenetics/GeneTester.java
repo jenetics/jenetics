@@ -22,18 +22,33 @@ package org.jenetics;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.Array;
+import org.jenetics.util.MSeq;
 import org.jenetics.util.ObjectTester;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-10 $</em>
+ * @version <em>$Date: 2014-07-01 $</em>
  */
 public abstract class GeneTester<G extends Gene<?, G>> extends ObjectTester<G> {
 
 	@Test
+	public void newInstance() {
+		for (int i = 0; i < 1000; ++i) {
+			final G gene = factory().newInstance();
+			Assert.assertNotNull(gene);
+			Assert.assertNotNull(gene.getAllele());
+			Assert.assertTrue(gene.isValid());
+
+			final G gene2 = gene.newInstance();
+			Assert.assertNotNull(gene2);
+			Assert.assertNotNull(gene2.getAllele());
+			Assert.assertTrue(gene2.isValid());
+		}
+	}
+
+	@Test
 	public void equalsAllele() {
-		final Array<G> same = newSameObjects(5);
+		final MSeq<G> same = newSameObjects(5);
 
 		final G that = same.get(0);
 		for (int i = 1; i < same.length(); ++i) {
@@ -42,21 +57,34 @@ public abstract class GeneTester<G extends Gene<?, G>> extends ObjectTester<G> {
 			Assert.assertEquals(other.getAllele(), other.getAllele());
 			Assert.assertEquals(other.getAllele(), that.getAllele());
 			Assert.assertEquals(that.getAllele(), other.getAllele());
-			Assert.assertFalse(other.getAllele().equals(null));
 		}
 	}
 
 	@Test
+	public void alleleNotNull() {
+		for (int i = 0; i < 1000; ++i) {
+			Assert.assertNotNull(factory().newInstance().getAllele());
+		}
+	}
+
+	@Test
+	public void notEqualsAlleleNull() {
+		final Object that = factory().newInstance().getAllele();
+		Assert.assertFalse(that.equals(null));
+	}
+
+	@Test
 	public void notEqualsAllele() {
-		for (int i = 0; i < 10; ++i) {
-			final G that = getFactory().newInstance();
-			final G other = getFactory().newInstance();
+		for (int i = 0; i < 1000; ++i) {
+			final Object that = factory().newInstance().getAllele();
+			final Object other = factory().newInstance().getAllele();
 
 			if (that.equals(other)) {
-				Assert.assertTrue(other.getAllele().equals(that.getAllele()));
-				Assert.assertEquals(that.getAllele().hashCode(), other.getAllele().hashCode());
+				Assert.assertTrue(other.equals(that));
+				Assert.assertEquals(that.hashCode(), other.hashCode());
 			} else {
-				Assert.assertFalse(other.getAllele().equals(that.getAllele()));
+				Assert.assertFalse(other.equals(that));
+				Assert.assertFalse(that.equals(other));
 			}
 		}
 	}

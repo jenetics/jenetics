@@ -19,6 +19,8 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.ISeq.toISeq;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -34,22 +36,22 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 
-import org.jenetics.util.Array;
-import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 
 /**
  * Numeric chromosome implementation which holds 64 bit integer numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-31 $</em>
  * @since 1.6
+ * @version 3.0 &mdash; <em>$Date: 2014-12-08 $</em>
  */
 @XmlJavaTypeAdapter(LongChromosome.Model.Adapter.class)
 public class LongChromosome
-	extends AbstractNumericChromosome<Long, LongGene>
+	extends AbstractBoundedChromosome<Long, LongGene>
 	implements
 		NumericChromosome<Long, LongGene>,
 		Serializable
@@ -86,6 +88,43 @@ public class LongChromosome
 	}
 
 	/**
+	 * Returns an long array containing all of the elements in this chromosome
+	 * in proper sequence.  If the chromosome fits in the specified array, it is
+	 * returned therein. Otherwise, a new array is allocated with the length of
+	 * this chromosome.
+	 *
+	 * @since 3.0
+	 *
+	 * @param array the array into which the elements of this chromosomes are to
+	 *        be stored, if it is big enough; otherwise, a new array is
+	 *        allocated for this purpose.
+	 * @return an array containing the elements of this chromosome
+	 * @throws NullPointerException if the given {@code array} is {@code null}
+	 */
+	public long[] toArray(final long[] array) {
+		final long[] a = array.length >= length() ?
+			array : new long[length()];
+
+		for (int i = length(); --i >= 0;) {
+			a[i] = longValue(i);
+		}
+
+		return a;
+	}
+
+	/**
+	 * Returns an long array containing all of the elements in this chromosome
+	 * in proper sequence.
+	 *
+	 * @since 3.0
+	 *
+	 * @return an array containing the elements of this chromosome
+	 */
+	public long[] toArray() {
+		return toArray(new long[length()]);
+	}
+
+	/**
 	 * Create a new {@code LongChromosome} with the given genes.
 	 *
 	 * @param genes the genes of the chromosome.
@@ -94,7 +133,7 @@ public class LongChromosome
 	 *         empty.
 	 */
 	public static LongChromosome of(final LongGene... genes) {
-		return new LongChromosome(Array.of(genes).toISeq());
+		return new LongChromosome(ISeq.of(genes));
 	}
 
 	/**
@@ -136,12 +175,12 @@ public class LongChromosome
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(super.hashCode()).value();
+		return Hash.of(getClass()).and(super.hashCode()).value();
 	}
 
 	@Override
-	public boolean equals(final Object o) {
-		return o == this || o instanceof LongChromosome && super.equals(o);
+	public boolean equals(final Object obj) {
+		return Equality.of(this, obj).test(super::equals);
 	}
 
 	/* *************************************************************************
@@ -167,7 +206,7 @@ public class LongChromosome
 	{
 		in.defaultReadObject();
 
-		final Array<LongGene> genes = new Array<>(in.readInt());
+		final MSeq<LongGene> genes = MSeq.ofLength(in.readInt());
 		_min = in.readLong();
 		_max = in.readLong();
 
@@ -208,7 +247,7 @@ public class LongChromosome
 				m.length = c.length();
 				m.min = c._min;
 				m.max = c._max;
-				m.values = c.toSeq().map(Allele).asList();
+				m.values = c.toSeq().map(LongGene::getAllele).asList();
 				return m;
 			}
 
@@ -217,28 +256,11 @@ public class LongChromosome
 				final Long min = model.min;
 				final Long max = model.max;
 				return new LongChromosome(
-					Array.of(model.values).map(Gene(min, max)).toISeq()
+					model.values.stream()
+						.map(value -> new LongGene(value, min, max))
+						.collect(toISeq())
 				);
 			}
 		}
-
-		private static final Function<LongGene, Long> Allele =
-			new Function<LongGene, Long>() {
-				@Override
-				public Long apply(LongGene value) {
-					return value.getAllele();
-				}
-			};
-
-		private static Function<Long, LongGene>
-		Gene(final Long min, final Long max) {
-			return new Function<Long, LongGene>() {
-				@Override
-				public LongGene apply(final Long value) {
-					return new LongGene(value, min, max);
-				}
-			};
-		}
-
 	}
 }

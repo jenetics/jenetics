@@ -19,8 +19,24 @@
  */
 package org.jenetics.util;
 
+import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.joining;
+
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
+import java.util.RandomAccess;
+import java.util.Spliterator;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+import java.util.stream.Collector;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
+import org.jenetics.internal.collection.SeqSpliterator;
 
 /**
  * General interface for a ordered, fixed sized, object sequence.
@@ -31,7 +47,7 @@ import java.util.List;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-31 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-12-08 $</em>
  */
 public interface Seq<T> extends Iterable<T> {
 
@@ -54,37 +70,67 @@ public interface Seq<T> extends Iterable<T> {
 	public int length();
 
 	/**
-	 * Return an iterator with the new type {@code B}.
-	 *
-	 * @param <B> the component type of the returned type.
-	 * @param mapper the converter for converting from {@code T} to {@code B}.
-	 * @return the iterator of the converted type.
-	 * @throws NullPointerException if the given {@code converter} is {@code null}.
+	 * @see #length()
+	 * @return the size of this sequence
 	 */
-	public <B> Iterator<B> iterator(
-		final Function<? super T, ? extends B> mapper
-	);
-
-	/**
-	 * Applies a {@code function} to all elements of this sequence.
-	 *
-	 * @param <R> the return value of the applied function
-	 * @param function the function to apply to the elements.
-	 * @throws NullPointerException if the given {@code function} is
-	 *         {@code null}.
-	 */
-	public <R> void forEach(final Function<? super T, ? extends R> function);
+	public default int size() {
+		return length();
+	}
 
 	/**
 	 * Tests whether a predicate holds for all elements of this sequence.
 	 *
 	 * @param predicate the predicate to use to test the elements.
 	 * @return {@code true} if the given predicate p holds for all elements of
-	 *          this sequence, {@code false} otherwise.
+	 *         this sequence, {@code false} otherwise.
 	 * @throws NullPointerException if the given {@code predicate} is
 	 *         {@code null}.
 	 */
-	public boolean forAll(final Function<? super T, Boolean> predicate);
+	public default boolean forAll(final Predicate<? super T> predicate) {
+		boolean valid = true;
+
+		if (this instanceof RandomAccess) {
+			for (int i = 0, n = length(); i < n && valid; ++i) {
+				valid = predicate.test(get(i));
+			}
+		} else {
+			final Iterator<T> it = iterator();
+			while (it.hasNext() && valid) {
+				valid = predicate.test(it.next());
+			}
+		}
+
+		return valid;
+	}
+
+	/**
+	 * Returns a sequential Stream with this sequence as its source.
+	 *
+	 * @since 3.0
+	 *
+	 * @return a sequential Stream over the elements in this sequence
+	 */
+	public default Stream<T> stream() {
+		return StreamSupport.stream(new SeqSpliterator<>(this), false);
+	}
+
+	/**
+	 * Returns a possibly parallel {@code Stream} with this sequence as its
+	 * source.  It is allowable for this method to return a sequential stream.
+	 *
+	 * @since 3.0
+	 *
+	 * @return a possibly parallel {@code Stream} over the elements in this
+	 * collection
+	 */
+	public default Stream<T> parallelStream() {
+		return StreamSupport.stream(new SeqSpliterator<>(this), true);
+	}
+
+	@Override
+	public default Spliterator<T> spliterator() {
+		return new SeqSpliterator<T>(this);
+	}
 
 	/**
 	 * Returns {@code true} if this sequence contains the specified element.
@@ -93,7 +139,9 @@ public interface Seq<T> extends Iterable<T> {
 	 *        The tested element can be {@code null}.
 	 * @return {@code true} if this sequence contains the specified element
 	 */
-	public boolean contains(final Object element);
+	public default boolean contains(final Object element) {
+		return indexOf(element) != -1;
+	}
 
 	/**
 	 * Returns the index of the first occurrence of the specified element
@@ -101,9 +149,11 @@ public interface Seq<T> extends Iterable<T> {
 	 *
 	 * @param element element to search for, can be {@code null}
 	 * @return the index of the first occurrence of the specified element in
-	 *         this sequence, or -1 if this sequence does not contain the element
+	 *          this sequence, or -1 if this sequence does not contain the element
 	 */
-	public int indexOf(final Object element);
+	public default int indexOf(final Object element) {
+		return indexOf(element, 0, length());
+	}
 
 	/**
 	 * Returns the index of the first occurrence of the specified element
@@ -112,11 +162,13 @@ public interface Seq<T> extends Iterable<T> {
 	 * @param element element to search for, can be {@code null}
 	 * @param start the start index (inclusively) for the element search.
 	 * @return the index of the first occurrence of the specified element in
-	 *         this sequence, or -1 if this sequence does not contain the element
+	 *          this sequence, or -1 if this sequence does not contain the element
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
-	 *         ({@code start < 0 || start > length()}).
+	 *          ({@code start < 0 || start > length()}).
 	 */
-	public int indexOf(final Object element, final int start);
+	public default int indexOf(final Object element, final int start) {
+		return indexOf(element, start, length());
+	}
 
 	/**
 	 * Returns the index of the first occurrence of the specified element
@@ -126,128 +178,158 @@ public interface Seq<T> extends Iterable<T> {
 	 * @param start the start index (inclusively) for the element search.
 	 * @param end the end index (exclusively) for the element search.
 	 * @return the index of the first occurrence of the specified element in
+	 *          this sequence, or -1 if this sequence does not contain the element
+	 * @throws IndexOutOfBoundsException for an illegal end point index value
+	 *          ({@code start < 0 || end > length() || start > end}).
+	 */
+	public default int indexOf(final Object element, final int start, final int end) {
+		return element != null ?
+			indexWhere(element::equals, start, end) :
+			indexWhere(Objects::isNull, start, end);
+	}
+
+	/**
+	 * <p>
+	 * Returns the index of the first element on which the given predicate
+	 * returns {@code true}, or -1 if the predicate returns false for every
+	 * sequence element.
+	 * </p>
+	 * [code]
+	 * // Finding index of first null value.
+	 * final int index = seq.indexOf(o -&gt; o == null);
+	 *
+	 * // Assert of no null values.
+	 * assert (sequence.indexOf(o -&gt; o == null) == -1);
+	 * [/code]
+	 *
+	 * @param predicate the search predicate.
+	 * @return the index of the first element on which the given predicate
+	 *          returns {@code true}, or -1 if the predicate returns {@code false}
+	 *          for every sequence element.
+	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
+	 */
+	public default int indexWhere(final Predicate<? super T> predicate) {
+		return indexWhere(predicate, 0, length());
+	}
+
+	/**
+	 * <p>
+	 * Returns the index of the first element on which the given predicate
+	 * returns {@code true}, or -1 if the predicate returns false for every
+	 * sequence element.
+	 * </p>
+	 * [code]
+	 * // Finding index of first null value.
+	 * final int index = seq.indexOf(o -&gt; o == null);
+	 *
+	 * // Assert of no null values.
+	 * assert (sequence.indexOf(o -&gt; o == null) == -1);
+	 * [/code]
+	 *
+	 * @param predicate the search predicate.
+	 * @param start the search start index
+	 * @return the index of the first element on which the given predicate
+	 *          returns {@code true}, or -1 if the predicate returns {@code false}
+	 *          for every sequence element.
+	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
+	 * @throws IndexOutOfBoundsException for an illegal end point index value
+	 *          ({@code start < 0 || start > length()}).
+	 */
+	public default int indexWhere(
+		final Predicate<? super T> predicate,
+		final int start
+	) {
+		return indexWhere(predicate, start, length());
+	}
+
+	/**
+	 * <p>
+	 * Returns the index of the first element on which the given predicate
+	 * returns {@code true}, or -1 if the predicate returns false for every
+	 * sequence element.
+	 * </p>
+	 * [code]
+	 * // Finding index of first null value.
+	 * final int index = seq.indexOf(o -&gt; o == null);
+	 *
+	 * // Assert of no null values.
+	 * assert (sequence.indexOf(o -&gt; o == null) == -1);
+	 * [/code]
+	 *
+	 * @param predicate the search predicate.
+	 * @param start the search start index
+	 * @param end the search end index
+	 * @return the index of the first element on which the given predicate
+	 *          returns {@code true}, or -1 if the predicate returns {@code false}
+	 *          for every sequence element.
+	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
+	 * @throws IndexOutOfBoundsException for an illegal end point index value
+	 *          ({@code start < 0 || end > length() || start > end}).
+	 */
+	public default int indexWhere(
+		final Predicate<? super T> predicate,
+		final int start,
+		final int end
+	) {
+		requireNonNull(predicate, "Predicate");
+
+		int index = -1;
+		for (int i = 0, n = length(); i < n && index == -1; ++i) {
+			if (predicate.test(get(i))) {
+				index = i;
+			}
+		}
+		return index;
+	}
+
+	/**
+	 * Returns the index of the last occurrence of the specified element
+	 * in this sequence, or -1 if this sequence does not contain the element.
+	 *
+	 * @param element element to search for, can be {@code null}
+	 * @return the index of the last occurrence of the specified element in
+	 *         this sequence, or -1 if this sequence does not contain the element
+	 */
+	public default int lastIndexOf(final Object element) {
+		return lastIndexOf(element, 0, length());
+	}
+
+	/**
+	 * Returns the index of the last occurrence of the specified element
+	 * in this sequence, or -1 if this sequence does not contain the element.
+	 *
+	 * @param element element to search for, can be {@code null}
+	 * @param end the search end index
+	 * @return the index of the last occurrence of the specified element in
 	 *         this sequence, or -1 if this sequence does not contain the element
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
-	 *         ({@code start < 0 || end > length() || start > end}).
+	 *          ({@code end < 0 || end > length()}).
 	 */
-	public int indexOf(final Object element, final int start, final int end);
+	public default int lastIndexOf(final Object element, final int end) {
+		return lastIndexOf(element, 0, end);
+	}
 
 	/**
-	 * <p>
-	 * Returns the index of the first element on which the given predicate
-	 * returns {@code true}, or -1 if the predicate returns false for every
-	 * sequence element.
-	 * </p>
-	 * [code]
-	 * // Finding index of first null value.
-	 * final int index = seq.indexOf(new Predicates.Nil());
+	 * Returns the index of the last occurrence of the specified element
+	 * in this sequence, or -1 if this sequence does not contain the element.
 	 *
-	 * // Assert of no null values.
-	 * assert (sequence.indexOf(new Predicates.Nil()) == -1);
-	 * [/code]
-	 *
-	 * @param predicate the search predicate.
-	 * @return the index of the first element on which the given predicate
-	 *         returns {@code true}, or -1 if the predicate returns {@code false}
-	 *         for every sequence element.
-	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
-	 */
-	public int indexWhere(final Function<? super T, Boolean> predicate);
-
-	/**
-	 * <p>
-	 * Returns the index of the first element on which the given predicate
-	 * returns {@code true}, or -1 if the predicate returns false for every
-	 * sequence element.
-	 * </p>
-	 * [code]
-	 * // Finding index of first null value.
-	 * final int index = seq.indexOf(new Predicates.Nil());
-	 *
-	 * // Assert of no null values.
-	 * assert (sequence.indexOf(new Predicates.Nil()) == -1);
-	 * [/code]
-	 *
-	 * @param predicate the search predicate.
-	 * @param start the search start index
-	 * @return the index of the first element on which the given predicate
-	 *         returns {@code true}, or -1 if the predicate returns {@code false}
-	 *         for every sequence element.
-	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
-	 * @throws IndexOutOfBoundsException for an illegal end point index value
-	 *         ({@code start < 0 || start > length()}).
-	 */
-	public int indexWhere(
-		final Function<? super T, Boolean> predicate,
-		final int start
-	);
-
-	/**
-	 * <p>
-	 * Returns the index of the first element on which the given predicate
-	 * returns {@code true}, or -1 if the predicate returns false for every
-	 * sequence element.
-	 * </p>
-	 * [code]
-	 * // Finding index of first null value.
-	 * final int index = seq.indexOf(new Predicates.Nil());
-	 *
-	 * // Assert of no null values.
-	 * assert (sequence.indexOf(new Predicates.Nil()) == -1);
-	 * [/code]
-	 *
-	 * @param predicate the search predicate.
+	 * @param element element to search for, can be {@code null}
 	 * @param start the search start index
 	 * @param end the search end index
-	 * @return the index of the first element on which the given predicate
-	 *         returns {@code true}, or -1 if the predicate returns {@code false}
-	 *         for every sequence element.
-	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
+	 * @return the index of the last occurrence of the specified element in
+	 *         this sequence, or -1 if this sequence does not contain the element
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
-	 *         ({@code start < 0 || end > length() || start > end}).
+	 *          ({@code start < 0 || end > length() || start > end}).
 	 */
-	public int indexWhere(
-		final Function<? super T, Boolean> predicate,
+	public default int lastIndexOf(
+		final Object element,
 		final int start,
 		final int end
-	);
-
-	/**
-	 * Returns the index of the last occurrence of the specified element
-	 * in this sequence, or -1 if this sequence does not contain the element.
-	 *
-	 * @param element element to search for, can be {@code null}
-	 * @return the index of the last occurrence of the specified element in
-	 * 		   this sequence, or -1 if this sequence does not contain the element
-	 */
-	public int lastIndexOf(final Object element);
-
-	/**
-	 * Returns the index of the last occurrence of the specified element
-	 * in this sequence, or -1 if this sequence does not contain the element.
-	 *
-	 * @param element element to search for, can be {@code null}
-	 * @param end the search end index
-	 * @return the index of the last occurrence of the specified element in
-	 * 		   this sequence, or -1 if this sequence does not contain the element
-	 * @throws IndexOutOfBoundsException for an illegal end point index value
-	 *         ({@code end < 0 || end > length()}).
-	 */
-	public int lastIndexOf(final Object element, final int end);
-
-	/**
-	 * Returns the index of the last occurrence of the specified element
-	 * in this sequence, or -1 if this sequence does not contain the element.
-	 *
-	 * @param element element to search for, can be {@code null}
-	 * @param start the search start index
-	 * @param end the search end index
-	 * @return the index of the last occurrence of the specified element in
-	 * 		   this sequence, or -1 if this sequence does not contain the element
-	 * @throws IndexOutOfBoundsException for an illegal end point index value
-	 *         ({@code start < 0 || end > length() || start > end}).
-	 */
-	public int lastIndexOf(final Object element, final int start, final int end);
+	) {
+		return element != null ?
+			lastIndexWhere(element::equals, start, end) :
+			lastIndexWhere(Objects::isNull, start, end);
+	}
 
 	/**
 	 * Returns the index of the last element on which the given predicate
@@ -256,11 +338,13 @@ public interface Seq<T> extends Iterable<T> {
 	 *
 	 * @param predicate the search predicate.
 	 * @return the index of the last element on which the given predicate
-	 *         returns {@code true}, or -1 if the predicate returns false for
-	 *         every sequence element.
+	 *          returns {@code true}, or -1 if the predicate returns false for
+	 *          every sequence element.
 	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
 	 */
-	public int lastIndexWhere(final Function<? super T, Boolean> predicate);
+	public default int lastIndexWhere(final Predicate<? super T> predicate) {
+		return lastIndexWhere(predicate, 0, length());
+	}
 
 	/**
 	 * Returns the index of the last element on which the given predicate
@@ -270,16 +354,18 @@ public interface Seq<T> extends Iterable<T> {
 	 * @param predicate the search predicate.
 	 * @param end the search end index
 	 * @return the index of the last element on which the given predicate
-	 *         returns {@code true}, or -1 if the predicate returns false for
-	 *         every sequence element.
+	 *          returns {@code true}, or -1 if the predicate returns false for
+	 *          every sequence element.
 	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
-	 *         ({@code end < 0 || end > length()}).
+	 *          ({@code end < 0 || end > length()}).
 	 */
-	public int lastIndexWhere(
-		final Function<? super T, Boolean> predicate,
+	public default int lastIndexWhere(
+		final Predicate<? super T> predicate,
 		final int end
-	);
+	) {
+		return lastIndexWhere(predicate, 0, end);
+	}
 
 	/**
 	 * Returns the index of the last element on which the given predicate
@@ -290,22 +376,32 @@ public interface Seq<T> extends Iterable<T> {
 	 * @param start the search start index
 	 * @param end the search end index
 	 * @return the index of the last element on which the given predicate
-	 *         returns {@code true}, or -1 if the predicate returns false for
-	 *         every sequence element.
+	 *          returns {@code true}, or -1 if the predicate returns false for
+	 *          every sequence element.
 	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
-	 *         ({@code start < 0 || end > length() || start > end}).
+	 *          ({@code start < 0 || end > length() || start > end}).
 	 */
-	public int lastIndexWhere(
-		final Function<? super T, Boolean> predicate,
+	public default int lastIndexWhere(
+		final Predicate<? super T> predicate,
 		final int start,
 		final int end
-	);
+	) {
+		requireNonNull(predicate, "Predicate");
+
+		int index = -1;
+		for (int i = length(); --i >= 0 && index == -1;) {
+			if (predicate.test(get(i))) {
+				index = i;
+			}
+		}
+		return index;
+	}
 
 	/**
 	 * Returns a fixed-size list backed by the specified sequence. (Changes to
 	 * the returned list "write through" to the array.) The returned list is
-	 * fixed size, serializable and implements {@link java.util.RandomAccess}.
+	 * fixed size, serializable and implements {@link RandomAccess}.
 	 *
 	 * @return a list view of this sequence
 	 */
@@ -334,19 +430,25 @@ public interface Seq<T> extends Iterable<T> {
 	 * @see java.util.Collection#toArray()
 	 *
 	 * @return an array containing all of the elements in this list in right
-	 *         order
+	 *          order
 	 */
-	public Object[] toArray();
+	public default Object[] toArray() {
+		final Object[] array = new Object[size()];
+		for (int i = size(); --i >= 0;) {
+			array[i] = get(i);
+		}
+		return array;
+	}
 
 	/**
 	 * Return an array containing all of the elements in this sequence in right
 	 * order; the runtime type of the returned array is that of the specified
-	 * array. If this sequence fits in the specified array, it is returned therein.
-	 * Otherwise, a new array is allocated with the runtime type of the specified
-	 * array and the length of this array.
+	 * array. If this sequence fits in the specified array, it is returned
+	 * therein. Otherwise, a new array is allocated with the runtime type of the
+	 * specified array and the length of this array.
 	 * <p>
-	 * If this sequence fits in the specified array with room to spare (i.e., the
-	 * array has more elements than this array), the element in the array
+	 * If this sequence fits in the specified array with room to spare (i.e.,
+	 * the array has more elements than this array), the element in the array
 	 * immediately following the end of this array is set to null. (This is
 	 * useful in determining the length of the array only if the caller knows
 	 * that the list does not contain any null elements.)
@@ -354,53 +456,110 @@ public interface Seq<T> extends Iterable<T> {
 	 * @see java.util.Collection#toArray(Object[])
 	 *
 	 * @param array the array into which the elements of this array are to be
-	 *        stored, if it is big enough; otherwise, a new array of the same
-	 *        runtime type is allocated for this purpose.
+	 *         stored, if it is big enough; otherwise, a new array of the same
+	 *         runtime type is allocated for this purpose.
 	 * @return an array containing the elements of this array
 	 * @throws ArrayStoreException if the runtime type of the specified array is
-	 *         not a super type of the runtime type of every element in this array
+	 *         not a super type of the runtime type of every element in this
+	 *         array
 	 * @throws NullPointerException if the given array is {@code null}.
 	 */
-	public T[] toArray(final T[] array);
+	@SuppressWarnings("unchecked")
+	public default T[] toArray(final T[] array) {
+		if (array.length < length()) {
+			final T[] copy = (T[])java.lang.reflect.Array.newInstance(
+				array.getClass().getComponentType(), length()
+			);
+			for (int i = length(); --i >= 0;) {
+				copy[i] = get(i);
+			}
+
+			return copy;
+		}
+
+		for (int i = 0, n = length(); i < n; ++i) {
+			array[i] = get(i);
+		}
+		return array;
+	}
 
 	/**
 	 * Returns a view of the portion of this sequence between the specified
 	 * {@code start}, inclusive, and {@code end}, exclusive. (If {@code start}
-	 * and {@code end} are equal, the returned sequence has the length zero.) The
-	 * returned sequence is backed by this sequence, so non-structural changes
-	 * in the returned sequence are reflected in this sequence, and vice-versa.
+	 * and {@code end} are equal, the returned sequence has the length zero.)
+	 * The returned sequence is backed by this sequence, so non-structural
+	 * changes in the returned sequence are reflected in this sequence, and
+	 * vice-versa.
 	 * <p>
 	 * This method eliminates the need for explicit range operations (of the
-	 * sort that commonly exist for arrays). Any operation that expects an sequence
-	 * can be used as a range operation by passing an sub sequence view instead of
-	 * an whole sequence.
+	 * populationSort that commonly exist for arrays). Any operation that
+	 * expects an sequence can be used as a range operation by passing an sub
+	 * sequence view instead of an whole sequence.
 	 *
 	 * @param start low end point (inclusive) of the sub array.
 	 * @return a view of the specified range within this array.
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
-	 *         ({@code start < 0 || start > length()}).
+	 *          ({@code start < 0 || start > length()}).
 	 */
 	public Seq<T> subSeq(final int start);
 
 	/**
 	 * Returns a view of the portion of this sequence between the specified
 	 * {@code start}, inclusive, and {@code end}, exclusive. (If {@code start}
-	 * and {@code end} are equal, the returned sequence has the length zero.) The
-	 * returned sequence is backed by this sequence, so non-structural changes in the
-	 * returned sequence are reflected in this array, and vice-versa.
+	 * and {@code end} are equal, the returned sequence has the length zero.)
+	 * The returned sequence is backed by this sequence, so non-structural
+	 * changes in the returned sequence are reflected in this array, and
+	 * vice-versa.
 	 * <p>
 	 * This method eliminates the need for explicit range operations (of the
-	 * sort that commonly exist for arrays). Any operation that expects an array
-	 * can be used as a range operation by passing an sub sequence view instead of
-	 * an whole sequence.
+	 * populationSort that commonly exist for arrays). Any operation that
+	 * expects an array can be used as a range operation by passing an sub
+	 * sequence view instead of an whole sequence.
 	 *
 	 * @param start low end point (inclusive) of the sub sequence.
 	 * @param end high end point (exclusive) of the sub sequence.
 	 * @return a view of the specified range within this sequence.
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
-	 *         ({@code start < 0 || end > length() || start > end}).
+	 *          ({@code start < 0 || end > length() || start > end}).
 	 */
 	public Seq<T> subSeq(final int start, final int end);
+
+	/**
+	 * Test whether the given array is sorted in ascending order.
+	 *
+	 * @return {@code true} if the given {@code array} is sorted in ascending
+	 *         order, {@code false} otherwise.
+	 * @throws NullPointerException if the given array or one of it's element is
+	 *         {@code null}.
+	 */
+	@SuppressWarnings("unchecked")
+	public default boolean isSorted() {
+		boolean sorted = true;
+		for (int i = 0, n = length() - 1; i < n && sorted; ++i) {
+			sorted = ((Comparable<T>)get(i)).compareTo(get(i + 1)) <= 0;
+		}
+
+		return sorted;
+	}
+
+	/**
+	 * Test whether the given array is sorted in ascending order. The order of
+	 * the array elements is defined by the given comparator.
+	 *
+	 * @param comparator the comparator which defines the order.
+	 * @return {@code true} if the given {@code array} is sorted in ascending
+	 *         order, {@code false} otherwise.
+	 * @throws NullPointerException if the given array or one of it's element or
+	 *         the comparator is {@code null}.
+	 */
+	public default boolean isSorted(final Comparator<? super T> comparator) {
+		boolean sorted = true;
+		for (int i = 0, n = length() - 1; i < n && sorted; ++i) {
+			sorted = comparator.compare(get(i), get(i + 1)) <= 0;
+		}
+
+		return sorted;
+	}
 
 	/**
 	 * Returns the hash code value for this sequence. The hash code is defined
@@ -416,6 +575,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * [/code]
 	 *
 	 * @see List#hashCode()
+	 * @see Seq#hashCode(Seq)
 	 *
 	 * @return the hash code value for this list
 	 */
@@ -432,6 +592,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * interface.
 	 *
 	 * @see List#equals(Object)
+	 * @see Seq#equals(Seq, Object)
 	 *
 	 * @param object the object to be compared for equality with this sequence.
 	 * @return {@code true} if the specified object is equal to this sequence,
@@ -448,9 +609,15 @@ public interface Seq<T> extends Iterable<T> {
 	 * @param suffix the suffix of the string representation; e.g. {@code ']'}.
 	 * @return the string representation of this sequence.
 	 */
-	public String toString(
-			final String prefix, final String separator, final String suffix
-		);
+	public default String toString(
+		final String prefix,
+		final String separator,
+		final String suffix
+	) {
+		return stream()
+			.map(Object::toString)
+			.collect(joining(separator, prefix, suffix));
+	}
 
 	/**
 	 * Create a string representation of the given sequence.
@@ -458,6 +625,112 @@ public interface Seq<T> extends Iterable<T> {
 	 * @param separator the separator of the array elements; e.g. {@code ','}.
 	 * @return the string representation of this sequence.
 	 */
-	public String toString(final String separator);
+	public default String toString(final String separator) {
+		return toString("", separator, "");
+	}
+
+	/**
+	 * Unified method for calculating the hash code of every {@link Seq}
+	 * implementation. The hash code is defined as followed:
+	 *
+	 * [code]
+	 * int hashCode = 1;
+	 * final Iterator&lt;E&gt; it = seq.iterator();
+	 * while (it.hasNext()) {
+	 *     final E obj = it.next();
+	 *     hashCode = 31*hashCode + (obj == null ? 0 : obj.hashCode());
+	 * }
+	 * [/code]
+	 *
+	 * @see Seq#hashCode()
+	 * @see List#hashCode()
+	 *
+	 * @param seq the sequence to calculate the hash code for.
+	 * @return the hash code of the given sequence.
+	 */
+	public static int hashCode(final Seq<?> seq) {
+		int hash = 1;
+		for (Object element : seq) {
+			hash = 31*hash + (element == null ? 0: element.hashCode());
+		}
+		return hash;
+	}
+
+	/**
+	 * Unified method for compare to sequences for equality.
+	 *
+	 * @see Seq#equals(Object)
+	 *
+	 * @param seq the sequence to test for equality.
+	 * @param obj the object to test for equality with the sequence.
+	 * @return {@code true} if the given objects are sequences and contain the
+	 *          same objects in the same order, {@code false} otherwise.
+	 */
+	public static boolean equals(final Seq<?> seq, final Object obj) {
+		if (obj == seq) {
+			return true;
+		}
+		if (!(obj instanceof Seq<?>)) {
+			return false;
+		}
+
+		final Seq<?> other = (Seq<?>)obj;
+		boolean equals = (seq.length() == other.length());
+		for (int i = seq.length(); equals && --i >= 0;) {
+			final Object element = seq.get(i);
+			if (element != null) {
+				equals = element.equals(other.get(i));
+			} else {
+				equals = other.get(i) == null;
+			}
+		}
+		return equals;
+	}
+
+	/* *************************************************************************
+	 *  Some static factory methods.
+	 * ************************************************************************/
+
+	/**
+	 * Returns a {@code Collector} that accumulates the input elements into a
+	 * new {@code Seq}.
+	 *
+	 * @param <T> the type of the input elements
+	 * @return a {@code Collector} which collects all the input elements into a
+	 *         {@code Seq}, in encounter order
+	 */
+	public static <T> Collector<T, ?, Seq<T>> toSeq() {
+		return Collector.of(
+			(Supplier<List<T>>)ArrayList::new,
+			List::add,
+			(left, right) -> { left.addAll(right); return left; },
+			Seq::of
+		);
+	}
+
+	/**
+	 * Create a new {@code Seq} from the given values.
+	 *
+	 * @param <T> the element type
+	 * @param values the array values.
+	 * @return a new {@code Seq} with the given values.
+	 * @throws NullPointerException if the {@code values} array is {@code null}.
+	 */
+	@SafeVarargs
+	public static <T> Seq<T> of(final T... values) {
+		return ISeq.of(values);
+	}
+
+	/**
+	 * Create a new {@code Seq} from the given values.
+	 *
+	 * @param <T> the element type
+	 * @param values the array values.
+	 * @return a new {@code Seq} with the given values.
+	 * @throws NullPointerException if the {@code values} array is {@code null}.
+	 */
+	public static <T> Seq<T> of(final Iterable<? extends T> values) {
+		return ISeq.of(values);
+	}
 
 }

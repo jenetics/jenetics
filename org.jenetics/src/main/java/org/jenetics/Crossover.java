@@ -37,9 +37,14 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-30 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-25 $</em>
  */
-public abstract class Crossover<G extends Gene<?, G>> extends Recombinator<G> {
+public abstract class Crossover<
+	G extends Gene<?, G>,
+	C extends Comparable<? super C>
+>
+	extends Recombinator<G, C>
+{
 
 	/**
 	 * Constructs an alterer with a given recombination probability.
@@ -53,10 +58,10 @@ public abstract class Crossover<G extends Gene<?, G>> extends Recombinator<G> {
 	}
 
 	@Override
-	protected final <C extends Comparable<? super C>> int recombine(
+	protected final int recombine(
 		final Population<G, C> population,
 		final int[] individuals,
-		final int generation
+		final long generation
 	) {
 		final Random random = RandomRegistry.getRandom();
 
@@ -68,24 +73,24 @@ public abstract class Crossover<G extends Gene<?, G>> extends Recombinator<G> {
 		//Choosing the Chromosome for crossover.
 		final int chIndex = random.nextInt(gt1.length());
 
-		final MSeq<Chromosome<G>> chroms1 = gt1.toSeq().copy();
-		final MSeq<Chromosome<G>> chroms2 = gt2.toSeq().copy();
-		final MSeq<G> genes1 = chroms1.get(chIndex).toSeq().copy();
-		final MSeq<G> genes2 = chroms2.get(chIndex).toSeq().copy();
+		final MSeq<Chromosome<G>> c1 = gt1.toSeq().copy();
+		final MSeq<Chromosome<G>> c2 = gt2.toSeq().copy();
+		final MSeq<G> genes1 = c1.get(chIndex).toSeq().copy();
+		final MSeq<G> genes2 = c2.get(chIndex).toSeq().copy();
 
 		crossover(genes1, genes2);
 
-		chroms1.set(chIndex, chroms1.get(chIndex).newInstance(genes1.toISeq()));
-		chroms2.set(chIndex, chroms2.get(chIndex).newInstance(genes2.toISeq()));
+		c1.set(chIndex, c1.get(chIndex).newInstance(genes1.toISeq()));
+		c2.set(chIndex, c2.get(chIndex).newInstance(genes2.toISeq()));
 
 		//Creating two new Phenotypes and exchanging it with the old.
 		population.set(
 			individuals[0],
-			pt1.newInstance(gt1.newInstance(chroms1.toISeq()), generation)
+			pt1.newInstance(gt1.newInstance(c1.toISeq()), generation)
 		);
 		population.set(
 			individuals[1],
-			pt2.newInstance(gt1.newInstance(chroms2.toISeq()), generation)
+			pt2.newInstance(gt1.newInstance(c2.toISeq()), generation)
 		);
 
 		return getOrder();

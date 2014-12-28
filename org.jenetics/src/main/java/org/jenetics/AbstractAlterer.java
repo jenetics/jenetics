@@ -19,57 +19,25 @@
  */
 package org.jenetics;
 
-import static org.jenetics.internal.util.object.checkProbability;
-import static org.jenetics.internal.util.object.eq;
+import static org.jenetics.internal.util.Equality.eq;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
+import org.jenetics.internal.util.require;
 
 /**
  * Abstract implementation of the alterer interface.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-30 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-12-07 $</em>
  */
-public abstract class AbstractAlterer<G extends Gene<?, G>>
-	implements Alterer<G>
+public abstract class AbstractAlterer<
+	G extends Gene<?, G>,
+	C extends Comparable<? super C>
+>
+	implements Alterer<G, C>
 {
-
-	/**
-	 * Return an alterer which does nothing.
-	 *
-	 * @param <G> the <i>gene</i> typ
-	 * @return an alterer which does nothing.
-	 */
-	public static <G extends Gene<?, G>> Alterer<G> Null() {
-		return new Alterer<G>() {
-			@Override
-			public <C extends Comparable<? super C>> int alter(
-				final Population<G, C> population,
-				final int generation
-			) {
-				return 0;
-			}
-
-			@Override
-			public int hashCode() {
-				return HashBuilder.of(getClass()).value();
-			}
-
-			@Override
-			public boolean equals(final Object obj) {
-				return obj == this ||
-						obj != null && obj.getClass() == getClass();
-			}
-
-			@Override
-			public String toString() {
-				return "Alterer.Null";
-			}
-		};
-	}
-
-	public static final double DEFAULT_ALTER_PROBABILITY = 0.2;
 
 	/**
 	 * The altering probability.
@@ -84,7 +52,7 @@ public abstract class AbstractAlterer<G extends Gene<?, G>>
 	 *         valid range of {@code [0, 1]}.
 	 */
 	protected AbstractAlterer(final double probability) {
-		_probability = checkProbability(probability);
+		_probability = require.probability(probability);
 	}
 
 	/**
@@ -98,19 +66,13 @@ public abstract class AbstractAlterer<G extends Gene<?, G>>
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(_probability).value();
+		return Hash.of(getClass()).and(_probability).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (!(obj instanceof AbstractAlterer<?>)) {
-			return false;
-		}
-
-		final AbstractAlterer<?> alterer = (AbstractAlterer<?>)obj;
-		return eq(_probability, alterer._probability);
+		return Equality.of(this, obj).test(alterer ->
+			eq(_probability, alterer._probability)
+		);
 	}
 }

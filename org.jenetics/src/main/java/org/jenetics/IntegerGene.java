@@ -19,7 +19,7 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.math.random.nextInt;
+import static org.jenetics.internal.math.random.nextInt;
 
 import java.util.Random;
 
@@ -32,24 +32,31 @@ import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.jenetics.util.Array;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 import org.jenetics.util.Mean;
 import org.jenetics.util.RandomRegistry;
 
 /**
  * NumericGene implementation which holds a 32 bit integer number.
  *
+ * <p>This is a <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/doc-files/ValueBased.html">
+ * value-based</a> class; use of identity-sensitive operations (including
+ * reference equality ({@code ==}), identity hash code, or synchronization) on
+ * instances of {@code IntegerGene} may have unpredictable results and should
+ * be avoided.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-04-10 $</em>
  * @since 2.0
+ * @version 3.0 &mdash; <em>$Date: 2014-11-12 $</em>
  */
 @XmlJavaTypeAdapter(IntegerGene.Model.Adapter.class)
 public final class IntegerGene
 	extends AbstractNumericGene<Integer, IntegerGene>
 	implements
-			NumericGene<Integer, IntegerGene>,
-			Mean<IntegerGene>
+		NumericGene<Integer, IntegerGene>,
+		Mean<IntegerGene>,
+		Comparable<IntegerGene>
 {
 
 	private static final long serialVersionUID = 1L;
@@ -65,8 +72,13 @@ public final class IntegerGene
 	 * @param max the maximal valid value of this gene (inclusively).
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	public IntegerGene(final Integer value, final Integer min, final Integer max) {
+	IntegerGene(final Integer value, final Integer min, final Integer max) {
 		super(value, min, max);
+	}
+
+	@Override
+	public int compareTo(final IntegerGene other) {
+		return _value.compareTo(other._value);
 	}
 
 	/**
@@ -78,6 +90,7 @@ public final class IntegerGene
 	 * @param value the value of the gene.
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (inclusively).
+	 * @return a new random {@code IntegerGene}
 	 */
 	public static IntegerGene of(final int value, final int min, final int max) {
 		return new IntegerGene(value, min, max);
@@ -89,6 +102,7 @@ public final class IntegerGene
 	 *
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (inclusively).
+	 * @return a new random {@code IntegerGene}
 	 */
 	public static IntegerGene of(final int min, final int max) {
 		return of(nextInt(RandomRegistry.getRandom(), min, max), min, max);
@@ -103,11 +117,9 @@ public final class IntegerGene
 		final int max = maximum;
 		final Random r = RandomRegistry.getRandom();
 
-		final Array<IntegerGene> genes = new Array<>(length);
-		for (int i = 0; i < length; ++i) {
-			genes.set(i, new IntegerGene(nextInt(r, min, max), minimum, maximum));
-		}
-		return genes.toISeq();
+		return MSeq.<IntegerGene>ofLength(length)
+			.fill(() -> new IntegerGene(nextInt(r, min, max), minimum, maximum))
+			.toISeq();
 	}
 
 	@Override
@@ -124,7 +136,7 @@ public final class IntegerGene
 
 	@Override
 	public IntegerGene mean(final IntegerGene that) {
-		return new IntegerGene(_value + (that._value - _value) / 2, _min, _max);
+		return new IntegerGene(_value + (that._value - _value)/2, _min, _max);
 	}
 
 	/* *************************************************************************

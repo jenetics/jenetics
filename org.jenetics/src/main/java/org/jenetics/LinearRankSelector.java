@@ -20,11 +20,10 @@
 package org.jenetics;
 
 import static java.lang.String.format;
-import static org.jenetics.internal.util.object.eq;
+import static org.jenetics.internal.util.Equality.eq;
 
-import java.util.Arrays;
-
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 
 /**
  * <p>
@@ -51,14 +50,14 @@ import org.jenetics.internal.util.HashBuilder;
  * <i>
  * T. Blickle, L. Thiele, A comparison of selection schemes used
  * in evolutionary algorithms, Technical Report, ETH Zurich, 1997, page 37.
- * <a href="http://citeseer.ist.psu.edu/blickle97comparison.html">
+ * <a href="http://citeseer.ist.psu.edu/viewdoc/summary?doi=10.1.1.15.9584&rank=1">
  *	http://citeseer.ist.psu.edu/blickle97comparison.html
  * </a>
  * </i>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-08-27 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-12-28 $</em>
  */
 public final class LinearRankSelector<
 	G extends Gene<?, G>,
@@ -78,6 +77,7 @@ public final class LinearRankSelector<
 	 */
 	public LinearRankSelector(final double nminus) {
 		super(true);
+
 		if (nminus < 0) {
 			throw new IllegalArgumentException(format(
 				"nminus is smaller than zero: %s", nminus
@@ -97,7 +97,7 @@ public final class LinearRankSelector<
 
 	/**
 	 * This method sorts the population in descending order while calculating the
-	 * selection probabilities. (The method {@link Population#sort()} is called
+	 * selection probabilities. (The method {@link Population#populationSort()} is called
 	 * by this method.)
 	 */
 	@Override
@@ -109,7 +109,7 @@ public final class LinearRankSelector<
 		assert(count > 0) : "Population to select must be greater than zero. ";
 
 		//Sort the population.
-		population.sort();
+		population.populationSort();
 
 		final double N = population.size();
 		final double[] probabilities = new double[population.size()];
@@ -129,26 +129,21 @@ public final class LinearRankSelector<
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(_nminus).and(_nplus).value();
+		return Hash.of(getClass()).and(_nminus).and(_nplus).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (!(obj instanceof LinearRankSelector<?, ?>)) {
-			return false;
-		}
-
-		final LinearRankSelector<?, ?> selector = (LinearRankSelector<?, ?>)obj;
-		return eq(_nminus, selector._nminus) && eq(_nplus, selector._nplus);
+		return Equality.of(this, obj).test(selector ->
+			eq(_nminus, selector._nminus) &&
+			eq(_nplus, selector._nplus)
+		);
 	}
 
 	@Override
 	public String toString() {
 		return format(
-			"%s[n-=%f, n+=%f]",
+			"%s[(n-)=%f, (n+)=%f]",
 			getClass().getSimpleName(), _nminus, _nplus
 		);
 	}

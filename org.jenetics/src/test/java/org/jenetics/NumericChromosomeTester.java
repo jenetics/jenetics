@@ -24,7 +24,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-05 $</em>
+ * @version <em>$Date: 2014-12-08 $</em>
  */
 public abstract class NumericChromosomeTester<
 	N extends Number & Comparable<N>,
@@ -37,12 +37,12 @@ public abstract class NumericChromosomeTester<
 	@Test
 	public void minMax() {
 		@SuppressWarnings("unchecked")
-		final AbstractNumericChromosome<N, G>
-			c1 = (AbstractNumericChromosome<N, G>)getFactory().newInstance();
+		final NumericChromosome<N, G>
+			c1 = (NumericChromosome<N, G>) factory().newInstance();
 
 		@SuppressWarnings("unchecked")
-		final AbstractNumericChromosome<N, G>
-			c2 = (AbstractNumericChromosome<N, G>)getFactory().newInstance();
+		final NumericChromosome<N, G>
+			c2 = (NumericChromosome<N, G>) factory().newInstance();
 
 
 		assertMinMax(c1, c2);
@@ -53,8 +53,8 @@ public abstract class NumericChromosomeTester<
 	@Test
 	public void geneMinMax() {
 		@SuppressWarnings("unchecked")
-		final AbstractNumericChromosome<N, G>
-			c = (AbstractNumericChromosome<N, G>)getFactory().newInstance();
+		final NumericChromosome<N, G>
+			c = (NumericChromosome<N, G>) factory().newInstance();
 
 		for (G gene : c) {
 			Assert.assertSame(gene.getMin(), c.getMin());
@@ -65,8 +65,8 @@ public abstract class NumericChromosomeTester<
 	@Test
 	public void primitiveTypeAccess() {
 		@SuppressWarnings("unchecked")
-		final AbstractNumericChromosome<N, G>
-			c = (AbstractNumericChromosome<N, G>)getFactory().newInstance();
+		final NumericChromosome<N, G>
+			c = (NumericChromosome<N, G>) factory().newInstance();
 
 		Assert.assertEquals(c.byteValue(), c.byteValue(0));
 		Assert.assertEquals(c.shortValue(), c.shortValue(0));
@@ -76,14 +76,14 @@ public abstract class NumericChromosomeTester<
 	}
 
 	public void assertMinMax(
-		final AbstractNumericChromosome<N, G> c1,
-		final AbstractNumericChromosome<N, G> c2
+		final NumericChromosome<N, G> c1,
+		final NumericChromosome<N, G> c2
 	) {
 		Assert.assertEquals(c1.getMin(), c2.getMin());
 		Assert.assertEquals(c1.getMax(), c2.getMax());
 	}
 
-	public void assertValid(final AbstractNumericChromosome<N, G> c) {
+	public void assertValid(final NumericChromosome<N, G> c) {
 		if (c.isValid()) {
 			for (G gene: c) {
 				Assert.assertTrue(gene.getAllele().compareTo(c.getMin()) >= 0);

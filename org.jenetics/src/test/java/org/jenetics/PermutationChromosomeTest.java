@@ -25,27 +25,31 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import org.jenetics.util.Factory;
+import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-13 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public class PermutationChromosomeTest
 	extends ChromosomeTester<EnumGene<Integer>>
 {
-
-	private final Factory<Chromosome<EnumGene<Integer>>>
-	_factory = new Factory<Chromosome<EnumGene<Integer>>>() {
-		@Override
-		public PermutationChromosome<Integer> newInstance() {
-			return PermutationChromosome.ofInteger(100);
-		}
-	};
-
 	@Override
-	protected Factory<Chromosome<EnumGene<Integer>>> getFactory() {
-		return _factory;
+	protected Factory<Chromosome<EnumGene<Integer>>> factory() {
+		return () -> PermutationChromosome.ofInteger(100);
+	}
+
+	@Test
+	public void invalidChromosome() {
+		final ISeq<Integer> alleles = ISeq.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+		final EnumGene<Integer> gene = new EnumGene<>(3, alleles);
+		final ISeq<EnumGene<Integer>> genes = MSeq.<EnumGene<Integer>>ofLength(10)
+			.fill(() -> gene)
+			.toISeq();
+
+		final PermutationChromosome<Integer> chromosome = new PermutationChromosome<>(genes);
+		Assert.assertFalse(chromosome.isValid());
 	}
 
 	@Test

@@ -24,7 +24,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-05 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public abstract class NumericGeneTester<
 	N extends Number & Comparable<N>,
@@ -36,7 +36,7 @@ public abstract class NumericGeneTester<
 	@Test
 	public void newInstanceFromNumber() {
 		for (int i = 0; i < 100; ++i) {
-			final G gene1 = getFactory().newInstance();
+			final G gene1 = factory().newInstance();
 			final G gene2 = gene1.newInstance(gene1.getAllele());
 
 			Assert.assertEquals(gene2, gene1);
@@ -46,7 +46,7 @@ public abstract class NumericGeneTester<
 	@Test
 	public void minMax() {
 		for (int i = 0; i < 100; ++i) {
-			final G gene = getFactory().newInstance();
+			final G gene = factory().newInstance();
 
 			Assert.assertTrue(gene.getAllele().compareTo(gene.getMin()) >= 0);
 			Assert.assertTrue(gene.getAllele().compareTo(gene.getMax()) <= 0);
@@ -56,8 +56,8 @@ public abstract class NumericGeneTester<
 	@Test
 	public void compareTo() {
 		for (int i = 0; i < 100; ++i) {
-			final G gene1 = getFactory().newInstance();
-			final G gene2 = getFactory().newInstance();
+			final G gene1 = factory().newInstance();
+			final G gene2 = factory().newInstance();
 
 			if (gene1.getAllele().compareTo(gene2.getAllele()) > 0) {
 				Assert.assertTrue(gene1.compareTo(gene2) > 0);

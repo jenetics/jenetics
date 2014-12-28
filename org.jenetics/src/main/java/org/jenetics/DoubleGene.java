@@ -19,7 +19,7 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.math.random.nextDouble;
+import static org.jenetics.internal.math.random.nextDouble;
 
 import java.util.Random;
 
@@ -32,24 +32,31 @@ import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.jenetics.util.Array;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 import org.jenetics.util.Mean;
 import org.jenetics.util.RandomRegistry;
 
 /**
  * Implementation of the NumericGene which holds a 64 bit floating point number.
  *
+ * <p>This is a <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/doc-files/ValueBased.html">
+ * value-based</a> class; use of identity-sensitive operations (including
+ * reference equality ({@code ==}), identity hash code, or synchronization) on
+ * instances of {@code DoubleGene} may have unpredictable results and should
+ * be avoided.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-30 $</em>
  * @since 1.6
+ * @version 3.0 &mdash; <em>$Date: 2014-11-12 $</em>
  */
 @XmlJavaTypeAdapter(DoubleGene.Model.Adapter.class)
 public final class DoubleGene
 	extends AbstractNumericGene<Double, DoubleGene>
 	implements
 		NumericGene<Double, DoubleGene>,
-		Mean<DoubleGene>
+		Mean<DoubleGene>,
+		Comparable<DoubleGene>
 {
 
 	private static final long serialVersionUID = 1L;
@@ -65,8 +72,13 @@ public final class DoubleGene
 	 * @param max the maximal valid value of this gene (exclusively).
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	public DoubleGene(final Double value, final Double min, final Double max) {
+	DoubleGene(final Double value, final Double min, final Double max) {
 		super(value, min, max);
+	}
+
+	@Override
+	public int compareTo(final DoubleGene other) {
+		return _value.compareTo(other._value);
 	}
 
 	/**
@@ -109,11 +121,9 @@ public final class DoubleGene
 		final double max = maximum;
 		final Random r = RandomRegistry.getRandom();
 
-		final Array<DoubleGene> genes = new Array<>(length);
-		for (int i = 0; i < length; ++i) {
-			genes.set(i, new DoubleGene(nextDouble(r, min, max), minimum, maximum));
-		}
-		return genes.toISeq();
+		return MSeq.<DoubleGene>ofLength(length)
+			.fill(() -> new DoubleGene(nextDouble(r, min, max), minimum, maximum))
+			.toISeq();
 	}
 
 	@Override
@@ -130,7 +140,7 @@ public final class DoubleGene
 
 	@Override
 	public DoubleGene mean(final DoubleGene that) {
-		return new DoubleGene(_value + (that._value - _value) / 2.0, _min, _max);
+		return new DoubleGene(_value + (that._value - _value)/2.0, _min, _max);
 	}
 
 	/* *************************************************************************

@@ -21,44 +21,19 @@ package org.jenetics.stat;
 
 import java.util.Arrays;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.Factory;
-import org.jenetics.util.MappedAccumulatorTester;
+import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-11 $</em>
+ * @version <em>$Date: 2014-08-24 $</em>
  */
-public class HistogramTest
-	extends MappedAccumulatorTester<Histogram<Double>>
-{
-
-	private final Factory<Histogram<Double>>
-	_factory = new Factory<Histogram<Double>>() {
-		@Override
-		public Histogram<Double> newInstance() {
-			final Random random = RandomRegistry.getRandom();
-			final double min = random.nextInt(100) + 100;
-			final double max = random.nextInt(100) + 100 + min;
-
-			final Histogram<Double> histogram = Histogram.of(
-						min, max, random.nextInt(10) + 5
-					);
-			for (int i = 0; i < 1000; ++i) {
-				histogram.accumulate(random.nextGaussian()*(max - min) + min);
-			}
-
-			return histogram;
-		}
-	};
-	@Override
-	protected Factory<Histogram<Double>> getFactory() {
-		return _factory;
-	}
+public class HistogramTest {
 
 	@Test
 	public void createDouble() {
@@ -90,7 +65,7 @@ public class HistogramTest
 
 		Histogram<Long> histogram = Histogram.of(begin, end, elements);
 		for (int i = 0; i < elements*1000; ++i) {
-			histogram.accumulate((long)(i%elements));
+			histogram.accept((long)(i%elements));
 		}
 
 		final long[] expected = new long[9];
@@ -151,7 +126,7 @@ public class HistogramTest
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void histogramEmptyClasses() {
-		Histogram.of(new Double[0]);
+		Histogram.<Double>of();
 	}
 
 	@Test
@@ -160,14 +135,42 @@ public class HistogramTest
 		final Histogram<Double> histogram = Histogram.of(1d, 2d, 3d, 4d, 5d);
 
 		for (int i = 0; i < 600000; ++i) {
-			histogram.accumulate(random.nextDouble()*6);
+			histogram.accept(random.nextDouble()*6);
 		}
-		Assert.assertEquals(histogram.getSamples(), 600000);
+		Assert.assertEquals(histogram.getCount(), 600000);
 
 		final long[] hist = histogram.getHistogram();
 		for (int i = 0; i < hist.length; ++i) {
 			Assert.assertEquals(hist[i], 100000.0, 1000.0);
 		}
+	}
+
+	@Test
+	public void collector() {
+		final double min = 0.0;
+		final double max = 1_000.0;
+		final int nclasses = 71;
+
+		final LCG64ShiftRandom random = new LCG64ShiftRandom();
+		final double[] values = new double[100_000];
+		for (int i = 0; i < values.length; ++i) {
+			values[i] = random.nextDouble(min, max);
+		}
+
+		final Histogram<Double> serial = Histogram.of(min, max, nclasses);
+		Arrays.stream(values).forEach(serial::accept);
+
+		final Histogram<Double> parallel =
+			IntStream.range(0, values.length).parallel().mapToObj(i -> {
+				final Histogram<Double> hist = Histogram.of(min, max, nclasses);
+				hist.accept(values[i]);
+				return hist;
+			}).collect(Histogram.toDoubleHistogram(min, max, nclasses));
+
+		Assert.assertEquals(
+			Arrays.toString(parallel.getHistogram()),
+			Arrays.toString(serial.getHistogram())
+		);
 	}
 
 }

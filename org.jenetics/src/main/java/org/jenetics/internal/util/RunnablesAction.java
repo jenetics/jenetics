@@ -28,7 +28,7 @@ import java.util.concurrent.RecursiveAction;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-04-05 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-10-17 $</em>
  * @since 2.0
  */
 final class RunnablesAction extends RecursiveAction {
@@ -56,8 +56,11 @@ final class RunnablesAction extends RecursiveAction {
 	public RunnablesAction(final List<? extends Runnable> runnables) {
 		this(
 			runnables instanceof RandomAccess ?
-				runnables : new ArrayList<>(runnables),
-			0, runnables.size(), null
+				runnables :
+				new ArrayList<>(runnables),
+			0,
+			runnables.size(),
+			null
 		);
 	}
 
