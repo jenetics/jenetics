@@ -23,14 +23,14 @@ package org.jenetics;
  * Numeric chromosome interface.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-05 $</em>
  * @since 1.6
+ * @version 3.0 &mdash; <em>$Date: 2014-12-08 $</em>
  */
 public interface NumericChromosome<
 	N extends Number & Comparable<? super N>,
 	G extends NumericGene<N, G>
 >
-	extends Chromosome<G>
+	extends BoundedChromosome<N, G>
 {
 
 	/**
@@ -42,7 +42,9 @@ public interface NumericChromosome<
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         (index &lt; 0 || index &gt;= length()).
 	 */
-	public byte byteValue(int index);
+	public default byte byteValue(int index) {
+		return getGene(index).getAllele().byteValue();
+	}
 
 	/**
 	 * Return the byte value of this {@code NumericChromosome} at the
@@ -50,7 +52,9 @@ public interface NumericChromosome<
 	 *
 	 * @return the byte value of the {@link Gene} with {@code index} 0.
 	 */
-	public byte byteValue();
+	public default byte byteValue() {
+		return byteValue(0);
+	}
 
 	/**
 	 * Return the short value of this {@code NumericChromosome} at the given
@@ -61,7 +65,9 @@ public interface NumericChromosome<
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         (index &lt; 0 || index &gt;= length()).
 	 */
-	public short shortValue(int index);
+	public default short shortValue(int index) {
+		return getGene(index).getAllele().shortValue();
+	}
 
 	/**
 	 * Return the short value of this {@code NumericChromosome} at the
@@ -69,7 +75,9 @@ public interface NumericChromosome<
 	 *
 	 * @return the short value of the {@link Gene} with {@code index} 0.
 	 */
-	public short shortValue();
+	public default short shortValue() {
+		return shortValue(0);
+	}
 
 	/**
 	 * Return the int value of this {@code NumericChromosome} at the given
@@ -80,7 +88,9 @@ public interface NumericChromosome<
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         (index &lt; 0 || index &gt;= length()).
 	 */
-	public int intValue(int index);
+	public default int intValue(int index) {
+		return getGene(index).getAllele().intValue();
+	}
 
 	/**
 	 * Return the int value of this {@code NumericChromosome} at the
@@ -88,7 +98,9 @@ public interface NumericChromosome<
 	 *
 	 * @return the int value of the {@link Gene} with {@code index} 0.
 	 */
-	public int intValue();
+	public default int intValue() {
+		return intValue(0);
+	}
 
 	/**
 	 * Return the long value of this {@code NumericChromosome} at the given
@@ -99,7 +111,9 @@ public interface NumericChromosome<
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         (index &lt; 0 || index &gt;= length()).
 	 */
-	public long longValue(int index);
+	public default long longValue(int index) {
+		return getGene(index).getAllele().longValue();
+	}
 
 	/**
 	 * Return the long value of this {@code NumericChromosome} at the
@@ -107,7 +121,9 @@ public interface NumericChromosome<
 	 *
 	 * @return the long value of the {@link Gene} with {@code index} 0.
 	 */
-	public long longValue();
+	public default long longValue() {
+		return longValue(0);
+	}
 
 	/**
 	 * Return the float value of this {@code NumericChromosome} at the given
@@ -118,7 +134,9 @@ public interface NumericChromosome<
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         (index &lt; 0 || index &gt;= length()).
 	 */
-	public float floatValue(int index);
+	public default float floatValue(int index) {
+		return getGene(index).getAllele().floatValue();
+	}
 
 	/**
 	 * Return the float value of this {@code NumericChromosome} at the
@@ -126,7 +144,9 @@ public interface NumericChromosome<
 	 *
 	 * @return the float value of the {@link Gene} with {@code index} 0.
 	 */
-	public float floatValue();
+	public default float floatValue() {
+		return floatValue(0);
+	}
 
 	/**
 	 * Return the double value of this {@code NumericChromosome} at the given
@@ -137,7 +157,9 @@ public interface NumericChromosome<
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         (index &lt; 0 || index &gt;= length()).
 	 */
-	public double doubleValue(int index);
+	public default double doubleValue(int index) {
+		return getGene(index).getAllele().doubleValue();
+	}
 
 	/**
 	 * Return the double value of this {@code NumericChromosome} at the
@@ -145,6 +167,8 @@ public interface NumericChromosome<
 	 *
 	 * @return the double value of the {@link Gene} with {@code index} 0.
 	 */
-	public double doubleValue();
+	public default double doubleValue() {
+		return doubleValue(0);
+	}
 
 }

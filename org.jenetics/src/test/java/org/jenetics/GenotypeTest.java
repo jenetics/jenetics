@@ -22,24 +22,17 @@ package org.jenetics;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 
-import java.util.Random;
-
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import org.jenetics.util.Factory;
-import org.jenetics.util.IO;
-import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.ObjectTester;
-import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-12 $</em>
+ * @version <em>$Date: 2014-10-03 $</em>
  */
 public class GenotypeTest extends ObjectTester<Genotype<DoubleGene>> {
-
 
 	private final Factory<Genotype<DoubleGene>> _factory = Genotype.of(
 		DoubleChromosome.of(0, 1, 50),
@@ -47,12 +40,12 @@ public class GenotypeTest extends ObjectTester<Genotype<DoubleGene>> {
 		DoubleChromosome.of(0, 1, 100),
 		DoubleChromosome.of(0, 1, 50)
 	);
-	@Override protected Factory<Genotype<DoubleGene>> getFactory() {
+	@Override protected Factory<Genotype<DoubleGene>> factory() {
 		return _factory;
 	}
 
 	@Test
-	public void factory() {
+	public void factoryTest() {
 		final Genotype<DoubleGene> factory = (Genotype<DoubleGene>)_factory;
 		final Genotype<DoubleGene> gt = _factory.newInstance();
 
@@ -66,53 +59,53 @@ public class GenotypeTest extends ObjectTester<Genotype<DoubleGene>> {
 		}
 	}
 
-    @Test
-    public void testGenotypeGenotypeOfT() {
-        final BitChromosome c1 = BitChromosome.of(12);
-        final BitChromosome c2 = BitChromosome.of(12);
-        final Genotype<BitGene> g2 = Genotype.of(c1, c2, c2);
-        final Genotype<BitGene> g4 = g2;
+	@Test
+	public void testGenotypeGenotypeOfT() {
+		final BitChromosome c1 = BitChromosome.of(12);
+		final BitChromosome c2 = BitChromosome.of(12);
+		final Genotype<BitGene> g2 = Genotype.of(c1, c2, c2);
+		final Genotype<BitGene> g4 = g2;
 
-        assertEquals(g2, g4);
-        assertEquals(g2.hashCode(), g4.hashCode());
-    }
+		assertEquals(g2, g4);
+		assertEquals(g2.hashCode(), g4.hashCode());
+	}
 
-    @Test
-    public void testSetGetChromosome() {
-        LongChromosome c1 = LongChromosome.of(0, 100, 10);
-        LongChromosome c2 = LongChromosome.of(0, 100, 10);
-        @SuppressWarnings("unused")
+	@Test
+	public void testSetGetChromosome() {
+		LongChromosome c1 = LongChromosome.of(0, 100, 10);
+		LongChromosome c2 = LongChromosome.of(0, 100, 10);
+		@SuppressWarnings("unused")
 		LongChromosome c3 = LongChromosome.of(0, 100, 10);
-        @SuppressWarnings("unused")
+		@SuppressWarnings("unused")
 		Genotype<LongGene> g = Genotype.of(c1, c2);
-    }
+	}
 
 
-    @Test
-    public void testCreate() {
-        LongChromosome c1 = LongChromosome.of(0, 100, 10);
-        LongChromosome c2 = LongChromosome.of(0, 100, 10);
-        Genotype<LongGene> g1 = Genotype.of(c1, c2);
-        Genotype<LongGene> g2 = g1.newInstance();
+	@Test
+	public void testCreate() {
+		LongChromosome c1 = LongChromosome.of(0, 100, 10);
+		LongChromosome c2 = LongChromosome.of(0, 100, 10);
+		Genotype<LongGene> g1 = Genotype.of(c1, c2);
+		Genotype<LongGene> g2 = g1.newInstance();
 
-        assertFalse(g1 == g2);
-        assertFalse(g1.equals(g2));
-    }
+		assertFalse(g1 == g2);
+		assertFalse(g1.equals(g2));
+	}
 
     @Test
     public void numberOfGenes() {
 		final Genotype<DoubleGene> genotype = Genotype.of(
-			new DoubleChromosome(0.0, 1.0, 8),
-			new DoubleChromosome(1.0, 2.0, 10),
-			new DoubleChromosome(0.0, 10.0, 9),
-			new DoubleChromosome(0.1, 0.9, 5)
+			DoubleChromosome.of(0.0, 1.0, 8),
+			DoubleChromosome.of(1.0, 2.0, 10),
+			DoubleChromosome.of(0.0, 10.0, 9),
+			DoubleChromosome.of(0.1, 0.9, 5)
 		);
 		Assert.assertEquals(genotype.getNumberOfGenes(), 32);
     }
 
-    @Test
-    public void newInstance() {
-    	final Genotype<DoubleGene> gt1 = Genotype.of(
+	@Test
+	public void newInstance() {
+		final Genotype<DoubleGene> gt1 = Genotype.of(
 			//Rotation
 			DoubleChromosome.of(DoubleGene.of(-Math.PI, Math.PI)),
 
@@ -123,31 +116,13 @@ public class GenotypeTest extends ObjectTester<Genotype<DoubleGene>> {
 			DoubleChromosome.of(DoubleGene.of(-0.5, 0.5), DoubleGene.of(-0.5, 0.5))
 		);
 
-    	final Genotype<DoubleGene> gt2 = gt1.newInstance();
+		final Genotype<DoubleGene> gt2 = gt1.newInstance();
 
-    	Assert.assertEquals(gt1.length(), gt2.length());
-    	for (int i = 0; i < gt1.length(); ++i) {
-    		Chromosome<DoubleGene> ch1 = gt1.getChromosome(i);
-    		Chromosome<DoubleGene> ch2 = gt2.getChromosome(i);
-    		Assert.assertEquals(ch1.length(), ch2.length());
-    	}
-    }
-
-	public static void main(final String[] args) throws Exception {
-		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
-		try (Scoped<?> s = RandomRegistry.scope(random)) {
-			final BitChromosome chromosome = BitChromosome.of(30, 0.5);
-			final Genotype<?> genotype = Genotype.of(chromosome, chromosome);
-
-			/*
-			JAXBContext jc = JAXBContext.newInstance("org.jenetics");
-			Marshaller marshaller = jc.createMarshaller();
-			marshaller.setAdapter(new GenotypeXML.Adapter());
-			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-			marshaller.marshal(genotype, System.out);
-			*/
-
-			IO.jaxb.write(genotype, System.out);
+		Assert.assertEquals(gt1.length(), gt2.length());
+		for (int i = 0; i < gt1.length(); ++i) {
+			Chromosome<DoubleGene> ch1 = gt1.getChromosome(i);
+			Chromosome<DoubleGene> ch2 = gt2.getChromosome(i);
+			Assert.assertEquals(ch1.length(), ch2.length());
 		}
 	}
 

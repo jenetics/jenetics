@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <population size="7">
-    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="1062647474">
+    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="1547095804">
         <genotype length="5" ngenes="75">
             <chromosome xsi:type="org.jenetics.PermutationChromosome" length="15">
                 <valid-alleles>
@@ -103,10 +103,10 @@
                 <order>14 13 0 9 1 4 11 12 8 2 10 3 5 7 6</order>
             </chromosome>
         </genotype>
-        <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.5744673858305598</fitness>
-        <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.5744673858305598</raw-fitness>
+        <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.5803973326494627</fitness>
+        <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.5803973326494627</raw-fitness>
     </phenotype>
-    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="1508766586">
+    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="230932764">
         <genotype length="5" ngenes="75">
             <chromosome xsi:type="org.jenetics.PermutationChromosome" length="15">
                 <valid-alleles>
@@ -209,10 +209,10 @@
                 <order>13 12 6 11 3 10 9 1 2 8 14 5 4 0 7</order>
             </chromosome>
         </genotype>
-        <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.23464628929932063</fitness>
-        <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.23464628929932063</raw-fitness>
+        <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.8719433251822393</fitness>
+        <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.8719433251822393</raw-fitness>
     </phenotype>
-    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="372226083">
+    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="386693823">
         <genotype length="5" ngenes="75">
             <chromosome xsi:type="org.jenetics.PermutationChromosome" length="15">
                 <valid-alleles>
@@ -315,10 +315,10 @@
                 <order>11 14 1 12 9 6 8 10 2 0 3 13 4 7 5</order>
             </chromosome>
         </genotype>
-        <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.7799674580232561</fitness>
-        <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.7799674580232561</raw-fitness>
+        <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.017545496265336746</fitness>
+        <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.017545496265336746</raw-fitness>
     </phenotype>
-    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="473325477">
+    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="1209261909">
         <genotype length="5" ngenes="75">
             <chromosome xsi:type="org.jenetics.PermutationChromosome" length="15">
                 <valid-alleles>
@@ -421,10 +421,10 @@
                 <order>1 3 9 12 14 7 10 8 6 13 11 2 0 4 5</order>
             </chromosome>
         </genotype>
-        <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.24202516231473248</fitness>
-        <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.24202516231473248</raw-fitness>
+        <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.3983507550691352</fitness>
+        <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.3983507550691352</raw-fitness>
     </phenotype>
-    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="846807757">
+    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="1785832700">
         <genotype length="5" ngenes="75">
             <chromosome xsi:type="org.jenetics.PermutationChromosome" length="15">
                 <valid-alleles>
@@ -527,10 +527,10 @@
                 <order>12 8 0 4 14 5 11 10 2 1 13 7 6 3 9</order>
             </chromosome>
         </genotype>
-        <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.8972208702547864</fitness>
-        <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.8972208702547864</raw-fitness>
+        <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.42119166637007077</fitness>
+        <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.42119166637007077</raw-fitness>
     </phenotype>
-    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="1261495656">
+    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="664577305">
         <genotype length="5" ngenes="75">
             <chromosome xsi:type="org.jenetics.PermutationChromosome" length="15">
                 <valid-alleles>
@@ -633,10 +633,10 @@
                 <order>8 6 12 4 7 9 0 3 11 13 14 1 10 2 5</order>
             </chromosome>
         </genotype>
-        <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.20969350993096247</fitness>
-        <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.20969350993096247</raw-fitness>
+        <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.056007789201267366</fitness>
+        <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.056007789201267366</raw-fitness>
     </phenotype>
-    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="405755857">
+    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="1243863410">
         <genotype length="5" ngenes="75">
             <chromosome xsi:type="org.jenetics.PermutationChromosome" length="15">
                 <valid-alleles>
@@ -739,7 +739,7 @@
                 <order>11 0 9 5 12 1 2 10 13 4 6 3 7 8 14</order>
             </chromosome>
         </genotype>
-        <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.75941308842711</fitness>
-        <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.75941308842711</raw-fitness>
+        <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.9589398424881892</fitness>
+        <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.9589398424881892</raw-fitness>
     </phenotype>
 </population>

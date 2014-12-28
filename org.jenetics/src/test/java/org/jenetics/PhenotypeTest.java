@@ -23,28 +23,20 @@ import static java.lang.Math.sin;
 import static java.lang.Math.toRadians;
 
 import java.io.Serializable;
+import java.util.function.Function;
 
 import org.jenetics.util.Factory;
-import org.jenetics.util.Function;
 import org.jenetics.util.ObjectTester;
-import org.jenetics.util.functions;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-17 $</em>
+ * @version <em>$Date: 2014-11-28 $</em>
  */
 public class PhenotypeTest extends ObjectTester<Phenotype<DoubleGene, Double>> {
 
-	private static final class FF
-		implements Function<Genotype<DoubleGene>, Double>,
-					Serializable
-	{
-		private static final long serialVersionUID = 2793605351118238308L;
-		@Override public Double apply(final Genotype<DoubleGene> genotype) {
-			final DoubleGene gene = genotype.getChromosome().getGene(0);
-			return sin(toRadians(gene.getAllele()));
-		}
-	}
+	private final Function<Genotype<DoubleGene>, Double> _ff =
+		(Function<Genotype<DoubleGene>, Double>  & Serializable)
+			gt -> sin(toRadians(gt.getGene().getAllele()));
 
 	private final Factory<Genotype<DoubleGene>> _genotype = Genotype.of(
 		DoubleChromosome.of(0, 1, 50),
@@ -52,17 +44,10 @@ public class PhenotypeTest extends ObjectTester<Phenotype<DoubleGene, Double>> {
 		DoubleChromosome.of(0, 1, 100),
 		DoubleChromosome.of(0, 1, 50)
 	);
-	private final Function<Genotype<DoubleGene>, Double> _ff = new FF();
-	private final Function<Double, Double> _scaler = functions.Identity();
-	private final Factory<Phenotype<DoubleGene, Double>>
-	_factory = new Factory<Phenotype<DoubleGene, Double>>() {
-		@Override public Phenotype<DoubleGene, Double> newInstance() {
-			return Phenotype.of(_genotype.newInstance(), _ff, _scaler, 0).evaluate();
-		}
-	};
 
-	@Override protected Factory<Phenotype<DoubleGene, Double>> getFactory() {
-		return _factory;
+	@Override
+	protected Factory<Phenotype<DoubleGene, Double>> factory() {
+		return () -> Phenotype.of(_genotype.newInstance(), 0, _ff).evaluate();
 	}
 
 }

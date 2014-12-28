@@ -19,36 +19,22 @@
  */
 package org.jenetics;
 
-import java.io.Serializable;
 import java.util.Comparator;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.Function;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-17 $</em>
+ * @version <em>$Date: 2014-11-28 $</em>
  */
 public class OptimizeTest {
 
-	private static class FF
-		implements Function<Genotype<DoubleGene>, Double>,
-					Serializable
-	{
-		private static final long serialVersionUID = 6215331666272441749L;
-
-		@Override
-		public Double apply(Genotype<DoubleGene> genotype) {
-			return genotype.getGene().getAllele();
-		}
-	}
-
-	private static final FF _ff = new FF();
-
 	private static Phenotype<DoubleGene, Double> pt(double value) {
-		return Phenotype.of(Genotype.of(DoubleChromosome.of(DoubleGene.of(value, 0, 10))), _ff, 0);
+		return Phenotype.of(
+			Genotype.of(DoubleChromosome.of(DoubleGene.of(value, 0, 10))),
+			0, gt -> gt.getGene().getAllele()
+		);
 	}
 
 	@Test
@@ -67,13 +53,18 @@ public class OptimizeTest {
 
 	@Test
 	public void compare() {
-		final FF ff = new FF();
 		final Phenotype<DoubleGene, Double> pt1 = Phenotype.of(Genotype.of(
-			DoubleChromosome.of(DoubleGene.of(5, 0, 10))), ff, 0);
+			DoubleChromosome.of(DoubleGene.of(5, 0, 10))),
+			0, gt -> gt.getGene().getAllele()
+		);
 		final Phenotype<DoubleGene, Double> pt2 = Phenotype.of(Genotype.of(
-			DoubleChromosome.of(DoubleGene.of(7, 0, 10))), ff, 0);
+			DoubleChromosome.of(DoubleGene.of(7, 0, 10))),
+			0, gt -> gt.getGene().getAllele()
+		);
 		final Phenotype<DoubleGene, Double> pt3 = Phenotype.of(Genotype.of(
-			DoubleChromosome.of(DoubleGene.of(7, 0, 10))), ff, 0);
+			DoubleChromosome.of(DoubleGene.of(7, 0, 10))),
+			0, gt -> gt.getGene().getAllele()
+		);
 
 		Assert.assertTrue(Optimize.MINIMUM.compare(pt1, pt2) > 0);
 		Assert.assertTrue(Optimize.MAXIMUM.compare(pt1, pt2) < 0);
@@ -83,13 +74,18 @@ public class OptimizeTest {
 
 	@Test
 	public void best() {
-		final FF ff = new FF();
 		final Phenotype<DoubleGene, Double> pt1 = Phenotype.of(Genotype.of(
-			DoubleChromosome.of(DoubleGene.of(5, 0, 10))), ff, 0);
+			DoubleChromosome.of(DoubleGene.of(5, 0, 10))),
+			0, gt -> gt.getGene().getAllele()
+		);
 		final Phenotype<DoubleGene, Double> pt2 = Phenotype.of(Genotype.of(
-			DoubleChromosome.of(DoubleGene.of(7, 0, 10))), ff, 0);
+			DoubleChromosome.of(DoubleGene.of(7, 0, 10))),
+			0, gt -> gt.getGene().getAllele()
+		);
 		final Phenotype<DoubleGene, Double> pt3 = Phenotype.of(Genotype.of(
-			DoubleChromosome.of(DoubleGene.of(7, 0, 10))), ff, 0);
+			DoubleChromosome.of(DoubleGene.of(7, 0, 10))),
+			0, gt -> gt.getGene().getAllele()
+		);
 
 		Assert.assertSame(Optimize.MINIMUM.best(pt1, pt2), pt1);
 		Assert.assertSame(Optimize.MAXIMUM.best(pt1, pt2), pt2);
@@ -98,13 +94,18 @@ public class OptimizeTest {
 
 	@Test
 	public void worst() {
-		final FF ff = new FF();
 		final Phenotype<DoubleGene, Double> pt1 = Phenotype.of(Genotype.of(
-			DoubleChromosome.of(DoubleGene.of(5, 0, 10))), ff, 0);
+			DoubleChromosome.of(DoubleGene.of(5, 0, 10))),
+			0, gt -> gt.getGene().getAllele()
+		);
 		final Phenotype<DoubleGene, Double> pt2 = Phenotype.of(Genotype.of(
-			DoubleChromosome.of(DoubleGene.of(7, 0, 10))), ff, 0);
+			DoubleChromosome.of(DoubleGene.of(7, 0, 10))),
+			0, gt -> gt.getGene().getAllele()
+		);
 		final Phenotype<DoubleGene, Double> pt3 = Phenotype.of(Genotype.of(
-			DoubleChromosome.of(DoubleGene.of(7, 0, 10))), ff, 0);
+			DoubleChromosome.of(DoubleGene.of(7, 0, 10))),
+			0, gt -> gt.getGene().getAllele()
+		);
 
 		Assert.assertSame(Optimize.MINIMUM.worst(pt1, pt2), pt2);
 		Assert.assertSame(Optimize.MAXIMUM.worst(pt1, pt2), pt1);

@@ -20,15 +20,15 @@
 package org.jenetics;
 
 import static java.lang.Math.abs;
-import static org.jenetics.util.math.pow;
-import static org.jenetics.util.math.statistics.min;
-import static org.jenetics.util.math.statistics.sum;
-import static org.jenetics.util.math.ulpDistance;
+import static org.jenetics.internal.math.arithmetic.pow;
+import static org.jenetics.internal.math.base.ulpDistance;
+import static org.jenetics.internal.math.statistics.min;
 
 import java.util.Arrays;
 
-import org.jenetics.internal.util.HashBuilder;
-
+import org.jenetics.internal.math.DoubleAdder;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 
 /**
  * The roulette-wheel selector is also known as fitness proportional selector,
@@ -41,7 +41,7 @@ import org.jenetics.internal.util.HashBuilder;
  *      </a>
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-12-08 $</em>
  */
 public class RouletteWheelSelector<
 	G extends Gene<?, G>,
@@ -64,34 +64,34 @@ public class RouletteWheelSelector<
 		assert(count > 0) : "Population to select must be greater than zero. ";
 
 		// Copy the fitness values to probabilities arrays.
-		final double[] probabilities = new double[population.size()];
+		final double[] fitness = new double[population.size()];
 		for (int i = population.size(); --i >= 0;) {
-			probabilities[i] = population.get(i).getFitness().doubleValue();
+			fitness[i] = population.get(i).getFitness().doubleValue();
 		}
 
-		final double worst = Math.min(min(probabilities), 0.0);
-		final double sum = sum(probabilities) - worst*population.size();
+		final double worst = Math.min(min(fitness), 0.0);
+		final double sum = DoubleAdder.sum(fitness) - worst*population.size();
 
 		if (abs(ulpDistance(sum, 0.0)) > MAX_ULP_DISTANCE) {
 			for (int i = population.size(); --i >= 0;) {
-				probabilities[i] = (probabilities[i] - worst)/sum;
+				fitness[i] = (fitness[i] - worst)/sum;
 			}
 		} else {
-			Arrays.fill(probabilities, 1.0/population.size());
+			Arrays.fill(fitness, 1.0/population.size());
 		}
 
-		assert (sum2one(probabilities)) : "Probabilities doesn't sum to one.";
-		return probabilities;
+		assert (sum2one(fitness)) : "Probabilities doesn't sum to one.";
+		return fitness;
 	}
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).value();
+		return Hash.of(getClass()).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this || obj != null && obj.getClass() == getClass();
+		return Equality.ofType(this, obj);
 	}
 
 	@Override

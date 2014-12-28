@@ -32,7 +32,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-10-17 $</em>
+ * @version <em>$Date: 2014-08-01 $</em>
  */
 public abstract class RandomTestBase {
 
@@ -67,9 +67,9 @@ public abstract class RandomTestBase {
 		final byte[] bytes = new byte[8];
 		for (int i = 0; i < 1234; ++i) {
 			rand1.nextBytes(bytes);
-			bit.reverse(bytes);
+			org.jenetics.internal.util.bit.reverse(bytes);
 
-			Assert.assertEquals(bit.toLong(bytes), rand2.nextLong());
+			Assert.assertEquals(org.jenetics.internal.util.bit.toLong(bytes), rand2.nextLong());
 		}
 	}
 

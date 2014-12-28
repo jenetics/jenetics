@@ -25,17 +25,17 @@ import static java.lang.Math.exp;
 import static java.lang.Math.log;
 import static java.lang.Math.sqrt;
 
-import org.jenetics.util.StaticObject;
+import org.jenetics.internal.util.require;
 
 /**
- * Some statistical special functions.
+ * Some statistical (special) functions.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.4 &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-06 $</em>
  */
-public final class statistics extends StaticObject {
-	private statistics() {}
+public final class statistics {
+	private statistics() {require.noInstance();}
 
 
 	/**
@@ -197,6 +197,75 @@ public final class statistics extends StaticObject {
 	 */
 	public static double Φ(final double z, final double µ, final double σ) {
 		return Phi(z, µ, σ);
+	}
+
+	public static <C extends Comparable<? super C>> C min(final C a, final C b) {
+		return a != null ? b != null ? a.compareTo(b) <= 0 ? a : b : a : b;
+	}
+
+	public static <C extends Comparable<? super C>> C max(final C a, final C b) {
+		return a != null ? b != null ? a.compareTo(b) >= 0 ? a : b : a : b;
+	}
+
+	/**
+	 * Return the minimum value of the given double array.
+	 *
+	 * @param values the double array.
+	 * @return the minimum value or {@link Double#NaN} if the given array is
+	 *         empty.
+	 * @throws NullPointerException if the given array is {@code null}.
+	 */
+	public static double min(final double[] values) {
+		double min = Double.NaN;
+		if (values.length > 0) {
+			min = values[0];
+
+			for (int i = values.length; --i >= 1;) {
+				if (values[i] < min) {
+					min = values[i];
+				}
+			}
+		}
+
+		return min;
+	}
+
+	/**
+	 * Return the maximum value of the given double array.
+	 *
+	 * @param values the double array.
+	 * @return the maximum value or {@link Double#NaN} if the given array is
+	 *         empty.
+	 * @throws NullPointerException if the given array is {@code null}.
+	 */
+	public static double max(final double[] values) {
+		double max = Double.NaN;
+		if (values.length > 0) {
+			max = values[0];
+
+			for (int i = values.length; --i >= 1;) {
+				if (values[i] > max) {
+					max = values[i];
+				}
+			}
+		}
+
+		return max;
+	}
+
+	/**
+	 * Add the values of the given array.
+	 *
+	 * @param values the values to add.
+	 * @return the values sum.
+	 * @throws NullPointerException if the values are null;
+	 */
+	public static long sum(final long[] values) {
+		long sum = 0;
+		for (int i = values.length; --i >= 0;) {
+			sum += values[i];
+		}
+		return sum;
 	}
 
 }

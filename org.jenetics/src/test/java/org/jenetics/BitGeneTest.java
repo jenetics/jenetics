@@ -28,11 +28,11 @@ import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-01-29 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public class BitGeneTest extends GeneTester<BitGene> {
 
-	@Override protected Factory<BitGene> getFactory() {
+	@Override protected Factory<BitGene> factory() {
 		return BitGene.FALSE;
 	}
 

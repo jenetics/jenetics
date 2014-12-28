@@ -20,9 +20,15 @@
 package org.jenetics.util;
 
 /**
+ * This interface indicates, that a class can create a copy of type {@code T}.
+ * Typically, classes which implement this interface, are able to create a copy
+ * from itself.
+ *
+ * @param <T> the type of the copied object
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-04-12 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-12-08 $</em>
  */
 public interface  Copyable<T> {
 

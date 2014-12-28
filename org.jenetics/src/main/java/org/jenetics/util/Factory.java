@@ -19,20 +19,32 @@
  */
 package org.jenetics.util;
 
+import java.util.stream.Stream;
+
 /**
  * @param <T> the object type this factory creates.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-04-12 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-08 $</em>
  */
+@FunctionalInterface
 public interface Factory<T> {
 
 	/**
 	 * Create a new instance of type T.
 	 *
-	 * @return a new instance of type T.
+	 * @return a new instance of type T
 	 */
 	public T newInstance();
+
+	/**
+	 * Return a new stream of object instances, created by this factory.
+	 *
+	 * @return a stream of objects, created by this factory
+	 */
+	public default Stream<T> instances() {
+		return Stream.generate(this::newInstance);
+	}
 
 }

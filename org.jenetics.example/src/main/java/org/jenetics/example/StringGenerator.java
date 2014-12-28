@@ -19,92 +19,55 @@
  */
 package org.jenetics.example;
 
-import java.io.Serializable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import static org.jenetics.engine.EvolutionResult.toBestPhenotype;
 
 import org.jenetics.CharacterChromosome;
 import org.jenetics.CharacterGene;
-import org.jenetics.CompositeAlterer;
-import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.Mutator;
+import org.jenetics.Phenotype;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.StochasticUniversalSelector;
 import org.jenetics.TournamentSelector;
+import org.jenetics.engine.Engine;
 import org.jenetics.util.CharSeq;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-09-22 $</em>
  */
 public class StringGenerator {
 
-	private static class Gen
-		implements Function<Genotype<CharacterGene>, Integer>,
-					Serializable
-	{
-		private static final long serialVersionUID = 1L;
+	private static final String TARGET_STRING = "jenetics";
 
-		private final String value;
-
-		public Gen(final String value) {
-			this.value = value;
-		}
-
-		@Override
-		public Integer apply(final Genotype<CharacterGene> gt) {
-			return value.length() - levenshtein(
-				value, (CharacterChromosome)gt.getChromosome()
-			);
-		}
-
-		@Override
-		public String toString() {
-			return value;
-		}
+	private static Integer evaluate(final Genotype<CharacterGene> gt) {
+		return TARGET_STRING.length() - levenshtein(
+			TARGET_STRING, (CharacterChromosome)gt.getChromosome()
+		);
 	}
 
 	public static void main(String[] args) throws Exception {
-		final int maxThreads = Runtime.getRuntime().availableProcessors() + 2;
-		final ExecutorService pool = Executors.newFixedThreadPool(maxThreads);
-
-		final String value = "jenetics";
-
 		final CharSeq chars = CharSeq.of("a-z");
 		final Factory<Genotype<CharacterGene>> gtf = Genotype.of(
-			new CharacterChromosome(chars, value.length())
+			new CharacterChromosome(chars, TARGET_STRING.length())
 		);
-		final Gen ff = new Gen(value);
-		final GeneticAlgorithm<CharacterGene, Integer> ga = new GeneticAlgorithm<>(gtf, ff);
 
-		ga.setPopulationSize(500);
-		ga.setSurvivorSelector(
-			new StochasticUniversalSelector<CharacterGene, Integer>()
-		);
-		ga.setOffspringSelector(
-			new TournamentSelector<CharacterGene, Integer>(5)
-		);
-		ga.setAlterer(CompositeAlterer.of(
-			new Mutator<CharacterGene>(0.1),
-			new SinglePointCrossover<CharacterGene>(0.5)
-		));
+		final Engine<CharacterGene, Integer> engine = Engine
+			.builder(StringGenerator::evaluate, gtf)
+			.populationSize(500)
+			.survivorsSelector(new StochasticUniversalSelector<>())
+			.offspringSelector(new TournamentSelector<>(5))
+			.alterers(
+				new Mutator<>(0.1),
+				new SinglePointCrossover<>(0.5))
+			.build();
 
-		final int generations = 100;
+		final Phenotype<CharacterGene, Integer> result = engine.stream().limit(100)
+			.collect(toBestPhenotype());
 
-		GAUtils.printConfig(
-				"String generator",
-				ga,
-				generations,
-				((CompositeAlterer<?>)ga.getAlterer()).getAlterers().toArray()
-			);
-
-		GAUtils.execute(ga, generations, 20);
-
-		pool.shutdown();
+		System.out.println(result);
 	}
 
 

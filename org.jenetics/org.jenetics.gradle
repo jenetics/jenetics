@@ -20,23 +20,46 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 2.0 &mdash; <em>$Date: 2014-04-15 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-10-17 $</em>
  */
+
+plugins {
+    id "me.champeau.gradle.jmh" version "0.1.2"
+}
 
 apply plugin: 'packaging'
 apply plugin: 'nexus'
 
 repositories {
-	mavenCentral ()
+    mavenCentral()
+    jcenter()
 }
 
 dependencies {
 	testCompile Include.Apache.Commons.Math
 	testCompile Include.TestNG
+
+    jmh Include.JMH.Core
+    jmh Include.JMH.Processor
+    jmh files('build/classes/main')
 }
+
+/*
+javadoc {
+    options.docletpath = files(
+            "${project.rootDir}/buildSrc/build/libs/buildSrc.jar"
+            //"${project.rootDir}/buildSrc/lib/publishedApiDoclet1.5-0.4.jar"
+        ).asType(List)
+
+    //options.doclet = 'org.jenetics.doclet.ExcludeInternalDoclet'
+    //options.doclet = 'de.kruis.padoclet.PublishedApiDoclet'
+    //options.addStringOption('-padExcludeTag', 'exclude')
+}
+*/
 
 jar.manifest.instruction('Export-Package',
 	'org.jenetics',
+	'org.jenetics.engine',
 	'org.jenetics.util',
 	'org.jenetics.stat'
 )
@@ -92,7 +115,11 @@ nexus {
     //snapshotRepository = "file://$buildDir/repo"
 }
 
-
+idea {
+    module{
+        scopes.COMPILE.plus += [configurations.jmh]
+    }
+}
 
 
 
