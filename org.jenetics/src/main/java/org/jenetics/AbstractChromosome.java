@@ -19,7 +19,6 @@
  */
 package org.jenetics;
 
-import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.Equality.eq;
 
@@ -43,7 +42,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-12-22 $</em>
  */
 public abstract class AbstractChromosome<G extends Gene<?, G>>
 	implements
@@ -78,10 +77,10 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 		requireNonNull(genes, "Gene array");
 		assert (genes.forAll(Objects::nonNull)) : "Found at least on null gene.";
 
-		if (genes.length() < 1) {
-			throw new IllegalArgumentException(format(
-				"Chromosome length < 1: %d", genes.length()
-			));
+		if (genes.length() == 0) {
+			throw new IllegalArgumentException(
+				"The genes sequence must contain at least one gene."
+			);
 		}
 
 		_genes = reflect.cast(genes);

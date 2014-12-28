@@ -40,16 +40,23 @@ import org.jenetics.util.RandomRegistry;
 /**
  * NumericGene implementation which holds a 32 bit integer number.
  *
+ * <p>This is a <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/doc-files/ValueBased.html">
+ * value-based</a> class; use of identity-sensitive operations (including
+ * reference equality ({@code ==}), identity hash code, or synchronization) on
+ * instances of {@code IntegerGene} may have unpredictable results and should
+ * be avoided.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-08-30 $</em>
  * @since 2.0
+ * @version 3.0 &mdash; <em>$Date: 2014-11-12 $</em>
  */
 @XmlJavaTypeAdapter(IntegerGene.Model.Adapter.class)
 public final class IntegerGene
 	extends AbstractNumericGene<Integer, IntegerGene>
 	implements
-			NumericGene<Integer, IntegerGene>,
-			Mean<IntegerGene>
+		NumericGene<Integer, IntegerGene>,
+		Mean<IntegerGene>,
+		Comparable<IntegerGene>
 {
 
 	private static final long serialVersionUID = 1L;
@@ -65,8 +72,13 @@ public final class IntegerGene
 	 * @param max the maximal valid value of this gene (inclusively).
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	public IntegerGene(final Integer value, final Integer min, final Integer max) {
+	IntegerGene(final Integer value, final Integer min, final Integer max) {
 		super(value, min, max);
+	}
+
+	@Override
+	public int compareTo(final IntegerGene other) {
+		return _value.compareTo(other._value);
 	}
 
 	/**

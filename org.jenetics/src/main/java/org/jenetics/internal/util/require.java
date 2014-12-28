@@ -28,7 +28,7 @@ import java.util.function.Supplier;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-10-21 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-12-01 $</em>
  */
 public final class require {
 	private require() { noInstance(); }
@@ -106,6 +106,15 @@ public final class require {
 	 *         or equal zero.
 	 */
 	public static int positive(final int value) {
+		if (value <= 0) {
+			throw new IllegalArgumentException(format(
+				"Value is not positive: %d", value
+			));
+		}
+		return value;
+	}
+
+	public static long positive(final long value) {
 		if (value <= 0) {
 			throw new IllegalArgumentException(format(
 				"Value is not positive: %d", value

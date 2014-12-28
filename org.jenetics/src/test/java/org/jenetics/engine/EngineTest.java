@@ -17,19 +17,31 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.util;
+package org.jenetics.engine;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import org.jenetics.DoubleChromosome;
+import org.jenetics.DoubleGene;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-25 $</em>
+ * @version <em>$Date: 2014-12-02 $</em>
  */
-@Retention(RetentionPolicy.SOURCE)
-@Target({ElementType.CONSTRUCTOR})
-public @interface PrimaryConstructor {
+public class EngineTest {
+
+	@Test
+	public void generationCount() {
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
+			.build();
+
+		final EvolutionResult<DoubleGene, Double> result = engine.stream()
+			.limit(123)
+			.collect(EvolutionResult.toBestEvolutionResult());
+
+		Assert.assertEquals(123L, result.getTotalGenerations());
+	}
+
 }

@@ -26,7 +26,6 @@ import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.RandomRegistry;
 
-
 /**
  * {@code StochasticUniversalSelector} is a method for selecting a
  * population according to some given probability in a way that minimize chance
@@ -47,7 +46,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-08-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-12-08 $</em>
  */
 public class StochasticUniversalSelector<
 	G extends Gene<?, G>,

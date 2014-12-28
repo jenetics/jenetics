@@ -45,9 +45,15 @@ import org.jenetics.util.RandomRegistry;
 /**
  * Character gene implementation.
  *
+ * <p>This is a <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/doc-files/ValueBased.html">
+ * value-based</a> class; use of identity-sensitive operations (including
+ * reference equality ({@code ==}), identity hash code, or synchronization) on
+ * instances of {@code CharacterGene} may have unpredictable results and should
+ * be avoided.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-12-07 $</em>
  */
 @XmlJavaTypeAdapter(CharacterGene.Model.Adapter.class)
 public final class CharacterGene
@@ -84,7 +90,7 @@ public final class CharacterGene
 	 * @param validChars the set of valid characters.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	public CharacterGene(final Character character, final CharSeq validChars) {
+	CharacterGene(final Character character, final CharSeq validChars) {
 		_character = requireNonNull(character);
 		_validCharacters = requireNonNull(validChars);
 		_valid = _validCharacters.contains(_character);
@@ -145,7 +151,9 @@ public final class CharacterGene
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass()).and(_character).and(_validCharacters).value();
+		return Hash.of(getClass())
+			.and(_character)
+			.and(_validCharacters).value();
 	}
 
 	@Override

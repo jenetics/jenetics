@@ -19,6 +19,7 @@
  */
 package org.jenetics;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.Equality.eq;
 
@@ -52,7 +53,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-10-25 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-11-28 $</em>
  */
 @XmlJavaTypeAdapter(Phenotype.Model.Adapter.class)
 public final class Phenotype<
@@ -69,12 +70,12 @@ public final class Phenotype<
 
 	private final Genotype<G> _genotype;
 
-	private final Function<? super Genotype<G>, ? extends C> _fitnessFunction;
-	private final Function<? super C, ? extends C> _fitnessScaler;
+	private final Function<? super Genotype<G>, ? extends C> _function;
+	private final Function<? super C, ? extends C> _scaler;
 
 	private final long _generation;
 
-	//Storing the fitness value for lazy evaluation.
+	// Storing the fitness value for lazy evaluation.
 	private C _rawFitness = null;
 	private C _fitness = null;
 
@@ -82,26 +83,26 @@ public final class Phenotype<
 	 * Create a new phenotype from the given arguments.
 	 *
 	 * @param genotype the genotype of this phenotype.
-	 * @param fitnessFunction the fitness function of this phenotype.
-	 * @param fitnessScaler the fitness scaler.
 	 * @param generation the current generation of the generated phenotype.
+	 * @param function the fitness function of this phenotype.
+	 * @param scaler the fitness scaler.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the given {@code generation} is
 	 *         {@code < 0}.
 	 */
-	public Phenotype(
+	private Phenotype(
 		final Genotype<G> genotype,
-		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
-		final Function<? super C, ? extends C> fitnessScaler,
-		final long generation
+		final long generation,
+		final Function<? super Genotype<G>, ? extends C> function,
+		final Function<? super C, ? extends C> scaler
 	) {
 		_genotype = requireNonNull(genotype, "Genotype");
-		_fitnessFunction = requireNonNull(fitnessFunction, "Fitness function");
-		_fitnessScaler = requireNonNull(fitnessScaler, "Fitness scaler");
+		_function = requireNonNull(function, "Fitness function");
+		_scaler = requireNonNull(scaler, "Fitness scaler");
 		if (generation < 0) {
-			throw new IllegalArgumentException(
-				"Generation must not < 0: " + generation
-			);
+			throw new IllegalArgumentException(format(
+				"Generation must not < 0 and was %s.", generation
+			));
 		}
 		_generation = generation;
 	}
@@ -125,8 +126,8 @@ public final class Phenotype<
 	 */
 	public Phenotype<G, C> evaluate() {
 		if (_rawFitness == null) {
-			_rawFitness = _fitnessFunction.apply(_genotype);
-			_fitness = _fitnessScaler.apply(_rawFitness);
+			_rawFitness = _function.apply(_genotype);
+			_fitness = _scaler.apply(_rawFitness);
 		}
 		return this;
 	}
@@ -148,7 +149,7 @@ public final class Phenotype<
 	 * @return the fitness function.
 	 */
 	public Function<? super Genotype<G>, ? extends C> getFitnessFunction() {
-		return _fitnessFunction;
+		return _function;
 	}
 
 	/**
@@ -158,7 +159,7 @@ public final class Phenotype<
 	 * @return the fitness scaler.
 	 */
 	public Function<? super C, ? extends C> getFitnessScaler() {
-		return _fitnessScaler;
+		return _scaler;
 	}
 
 	/**
@@ -250,47 +251,49 @@ public final class Phenotype<
 	 * @return New {@link Phenotype} with the same fitness {@link Function}.
 	 * @throws NullPointerException if the {@code genotype} is {@code null}.
 	 */
-	Phenotype<G, C> newInstance(final Genotype<G> genotype, final long generation) {
-		requireNonNull(genotype, "Genotype");
-		return of(genotype, _fitnessFunction, _fitnessScaler, generation);
+	Phenotype<G, C> newInstance(
+		final Genotype<G> genotype,
+		final long generation
+	) {
+		return of(genotype, generation, _function, _scaler);
 	}
 
 	/**
 	 * Return a new phenotype with the the genotype of this and with new
 	 * fitness function, fitness scaler and generation.
 	 *
+	 * @param generation the generation of the new phenotype.
 	 * @param function the (new) fitness scaler of the created phenotype.
 	 * @param scaler the (new) fitness scaler of the created phenotype
-	 * @param generation the generation of the new phenotype.
 	 * @return a new phenotype with the given values.
 	 * @throws NullPointerException if one of the values is {@code null}.
 	 * @throws IllegalArgumentException if the given {@code generation} is
 	 *         {@code < 0}.
 	 */
 	public Phenotype<G, C> newInstance(
+		final long generation,
 		final Function<? super Genotype<G>, ? extends C> function,
-		final Function<? super C, ? extends C> scaler,
-		final int generation
+		final Function<? super C, ? extends C> scaler
 	) {
-		return of(_genotype, function, scaler, generation);
+		return of(_genotype, generation, function, scaler);
 	}
 
 	/**
 	 * Return a new phenotype with the the genotype of this and with new
 	 * fitness function and generation.
 	 *
-	 * @param function the (new) fitness scaler of the created phenotype.
 	 * @param generation the generation of the new phenotype.
+	 * @param function the (new) fitness scaler of the created phenotype.
 	 * @return a new phenotype with the given values.
 	 * @throws NullPointerException if one of the values is {@code null}.
 	 * @throws IllegalArgumentException if the given {@code generation} is
 	 *         {@code < 0}.
 	 */
 	public Phenotype<G, C> newInstance(
-		final Function<? super Genotype<G>, ? extends C> function,
-		final int generation
+		final long generation,
+		final Function<? super Genotype<G>, ? extends C> function
 	) {
-		return of(_genotype, function, a -> a, generation);
+		return of(_genotype, generation, function, a -> a);
 	}
 
 	/**
@@ -300,8 +303,8 @@ public final class Phenotype<
 	 * @param <G> the gene type of the chromosome
 	 * @param <C> the fitness value type
 	 * @param genotype the genotype of this phenotype.
-	 * @param fitnessFunction the fitness function of this phenotype.
 	 * @param generation the current generation of the generated phenotype.
+	 * @param function the fitness function of this phenotype.
 	 * @return a new phenotype from the given parameters
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the given {@code generation} is
@@ -310,16 +313,17 @@ public final class Phenotype<
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Phenotype<G, C> of(
 		final Genotype<G> genotype,
-		final Function<? super Genotype<G>, C> fitnessFunction,
-		final int generation
+		final long generation,
+		final Function<? super Genotype<G>, C> function
 	) {
 		return of(
 			genotype,
-			fitnessFunction,
-			fitnessFunction instanceof Serializable ?
+			generation,
+			function,
+			function instanceof Serializable ?
 				(Function<? super C, ? extends C> & Serializable)a -> a :
-				a -> a,
-			generation);
+				a -> a
+		);
 	}
 
 	/**
@@ -328,9 +332,9 @@ public final class Phenotype<
 	 * @param <G> the gene type of the chromosome
 	 * @param <C> the fitness value type
 	 * @param genotype the genotype of this phenotype.
-	 * @param fitnessFunction the fitness function of this phenotype.
-	 * @param fitnessScaler the fitness scaler.
 	 * @param generation the current generation of the generated phenotype.
+	 * @param function the fitness function of this phenotype.
+	 * @param scaler the fitness scaler.
 	 * @return a new phenotype object
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the given {@code generation} is
@@ -339,15 +343,15 @@ public final class Phenotype<
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Phenotype<G, C> of(
 		final Genotype<G> genotype,
-		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
-		final Function<? super C, ? extends C> fitnessScaler,
-		final long generation
+		final long generation,
+		final Function<? super Genotype<G>, ? extends C> function,
+		final Function<? super C, ? extends C> scaler
 	) {
 		return new Phenotype<>(
 			genotype,
-			fitnessFunction,
-			fitnessScaler,
-			generation
+			generation,
+			function,
+			scaler
 		);
 	}
 
@@ -390,9 +394,9 @@ public final class Phenotype<
 			public Phenotype unmarshal(final Model m) throws Exception {
 				final Phenotype pt = new Phenotype(
 					Genotype.Model.ADAPTER.unmarshal(m.genotype),
+					m.generation,
 					Function.identity(),
-					Function.identity(),
-					m.generation
+					Function.identity()
 				);
 				pt._fitness = (Comparable)m.fitness;
 				pt._rawFitness = (Comparable)m.rawFitness;

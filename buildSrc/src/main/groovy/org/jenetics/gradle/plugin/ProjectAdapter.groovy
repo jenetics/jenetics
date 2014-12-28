@@ -44,7 +44,7 @@ import org.gradle.process.ExecResult
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5 &mdash; <em>$Date: 2014-06-25 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-11-10 $</em>
  */
 class ProjectAdapter implements Project {
 
@@ -213,6 +213,11 @@ class ProjectAdapter implements Project {
 	@Override
 	public ExecResult exec(final Closure closure) {
 		return project.exec(closure)
+	}
+
+	@Override
+	public ExecResult exec(Action action) {
+		return project.exec(action)
 	}
 
 	@Override
@@ -450,6 +455,11 @@ class ProjectAdapter implements Project {
 	@Override
 	public ExecResult javaexec(final Closure exec) {
 		return project.javaexec(exec)
+	}
+
+	@Override
+	public ExecResult javaexec(Action action) {
+		return project.javaexec(action)
 	}
 
 	@Override

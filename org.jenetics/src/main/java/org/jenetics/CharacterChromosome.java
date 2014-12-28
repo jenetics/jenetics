@@ -51,7 +51,7 @@ import org.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-11-06 $</em>
  */
 @XmlJavaTypeAdapter(CharacterChromosome.Model.Adapter.class)
 public class CharacterChromosome
@@ -98,7 +98,7 @@ public class CharacterChromosome
 
 	@Override
 	public char charAt(final int index) {
-		return getGene(index).getAllele();
+		return getGene(index).charValue();
 	}
 
 	@Override
@@ -142,6 +142,43 @@ public class CharacterChromosome
 		return toSeq().stream()
 			.map(Object::toString)
 			.collect(Collectors.joining());
+	}
+
+	/**
+	 * Returns an char array containing all of the elements in this chromosome
+	 * in proper sequence.  If the chromosome fits in the specified array, it is
+	 * returned therein. Otherwise, a new array is allocated with the length of
+	 * this chromosome.
+	 *
+	 * @since 3.0
+	 *
+	 * @param array the array into which the elements of this chromosomes are to
+	 *        be stored, if it is big enough; otherwise, a new array is
+	 *        allocated for this purpose.
+	 * @return an array containing the elements of this chromosome
+	 * @throws NullPointerException if the given {@code array} is {@code null}
+	 */
+	public char[] toArray(final char[] array) {
+		final char[] a = array.length >= length() ?
+			array : new char[length()];
+
+		for (int i = length(); --i >= 0;) {
+			a[i] = charAt(i);
+		}
+
+		return a;
+	}
+
+	/**
+	 * Returns an char array containing all of the elements in this chromosome
+	 * in proper sequence.
+	 *
+	 * @since 3.0
+	 *
+	 * @return an array containing the elements of this chromosome
+	 */
+	public char[] toArray() {
+		return toArray(new char[length()]);
 	}
 
 

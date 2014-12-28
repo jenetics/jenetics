@@ -29,12 +29,16 @@ import org.jenetics.util.Verifiable;
  * A chromosome consists of one or more genes. It also provides a factory
  * method for creating new, random chromosome instances of the same type and the
  * same constraint.
+ * <p>
+ * <span class="simpleTagLabel">API Note: </span>
+ * Implementations of the {@code Chromosome} interface must be <em>immutable</em>
+ * and guarantee an efficient random access ({@code O(1)}) to the genes.
  *
  * @see <a href="http://en.wikipedia.org/wiki/Chromosome">Wikipdida: Chromosome</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-16 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-12-22 $</em>
  */
 public interface Chromosome<G extends Gene<?, G>>
 	extends
@@ -51,6 +55,8 @@ public interface Chromosome<G extends Gene<?, G>>
 	 *         not copied.
 	 * @return A new {@link Chromosome} of the same type with the given genes.
 	 * @throws NullPointerException if the given {@code gene}s are {@code null}.
+	 * @throws IllegalArgumentException if the length of the given gene sequence
+	 *        is smaller than one.
 	 */
 	public Chromosome<G> newInstance(final ISeq<G> genes);
 

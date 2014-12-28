@@ -50,7 +50,7 @@ import org.jenetics.internal.util.DieHarder.Result.Assessment;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 3.0 &mdash; <em>$Date: 2014-10-18 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-12-22 $</em>
  */
 public final class DieHarder {
 
@@ -59,7 +59,7 @@ public final class DieHarder {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.5
-	 * @version 3.0 &mdash; <em>$Date: 2014-10-18 $</em>
+	 * @version 3.0 &mdash; <em>$Date: 2014-12-22 $</em>
 	 */
 	private static final class Randomizer implements Runnable {
 		private final Random _random;
@@ -122,8 +122,8 @@ public final class DieHarder {
 		final Process dieharder = builder.start();
 
 		final Randomizer randomizer = new Randomizer(
-				random,
-				dieharder.getOutputStream()
+			random,
+			dieharder.getOutputStream()
 		);
 		final Thread randomizerThread = new Thread(randomizer);
 		randomizerThread.start();
@@ -150,9 +150,9 @@ public final class DieHarder {
 		final Map<Assessment, Long> grouped = results.stream()
 			.collect(groupingBy(r -> r.assessment, counting()));
 
-		final long passed = grouped.get(Assessment.PASSED);
-		final long weak = grouped.get(Assessment.WEAK);
-		final long failed = grouped.get(Assessment.FAILED);
+		final long passed = grouped.getOrDefault(Assessment.PASSED, 0L);
+		final long weak = grouped.getOrDefault(Assessment.WEAK, 0L);
+		final long failed = grouped.getOrDefault(Assessment.FAILED, 0L);
 
 		final NumberFormat formatter = NumberFormat.getIntegerInstance();
 		formatter.setMinimumFractionDigits(3);
@@ -217,7 +217,7 @@ public final class DieHarder {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 3.0
-	 * @version 3.0 &mdash; <em>$Date: 2014-10-18 $</em>
+	 * @version 3.0 &mdash; <em>$Date: 2014-12-22 $</em>
 	 */
 	static final class Result {
 
@@ -343,7 +343,7 @@ public final class DieHarder {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 3.0
-	 * @version 3.0 &mdash; <em>$Date: 2014-10-18 $</em>
+	 * @version 3.0 &mdash; <em>$Date: 2014-12-22 $</em>
 	 */
 	private static final class CountingOutputStream extends OutputStream {
 		private final OutputStream _delegate;
