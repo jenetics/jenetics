@@ -20,12 +20,14 @@
 package org.jenetics;
 
 import static org.jenetics.CharacterGene.DEFAULT_CHARACTERS;
-import static org.jenetics.internal.util.object.eq;
+import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -36,20 +38,20 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
+import org.jenetics.internal.util.IntRef;
 
-import org.jenetics.util.Array;
 import org.jenetics.util.CharSeq;
-import org.jenetics.util.Factory;
-import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 
 /**
  * CharacterChromosome which represents character sequences.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-30 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-11-06 $</em>
  */
 @XmlJavaTypeAdapter(CharacterChromosome.Model.Adapter.class)
 public class CharacterChromosome
@@ -96,7 +98,7 @@ public class CharacterChromosome
 
 	@Override
 	public char charAt(final int index) {
-		return getGene(index).getAllele();
+		return getGene(index).charValue();
 	}
 
 	@Override
@@ -122,31 +124,61 @@ public class CharacterChromosome
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).
-				and(super.hashCode()).
-				and(_validCharacters).value();
+		return Hash.of(getClass())
+				.and(super.hashCode())
+				.and(_validCharacters).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null || getClass() != obj.getClass()) {
-			return false;
-		}
-
-		final CharacterChromosome cc = (CharacterChromosome)obj;
-		return super.equals(obj) && eq(_validCharacters, cc._validCharacters);
+		return Equality.of(this, obj).test(cc ->
+			super.equals(obj) &&
+			eq(_validCharacters, cc._validCharacters)
+		);
 	}
 
 	@Override
 	public String toString() {
-		final StringBuilder out = new StringBuilder();
-		for (CharacterGene gene : this) {
-			out.append(gene);
+		return toSeq().stream()
+			.map(Object::toString)
+			.collect(Collectors.joining());
+	}
+
+	/**
+	 * Returns an char array containing all of the elements in this chromosome
+	 * in proper sequence.  If the chromosome fits in the specified array, it is
+	 * returned therein. Otherwise, a new array is allocated with the length of
+	 * this chromosome.
+	 *
+	 * @since 3.0
+	 *
+	 * @param array the array into which the elements of this chromosomes are to
+	 *        be stored, if it is big enough; otherwise, a new array is
+	 *        allocated for this purpose.
+	 * @return an array containing the elements of this chromosome
+	 * @throws NullPointerException if the given {@code array} is {@code null}
+	 */
+	public char[] toArray(final char[] array) {
+		final char[] a = array.length >= length() ?
+			array : new char[length()];
+
+		for (int i = length(); --i >= 0;) {
+			a[i] = charAt(i);
 		}
-		return out.toString();
+
+		return a;
+	}
+
+	/**
+	 * Returns an char array containing all of the elements in this chromosome
+	 * in proper sequence.
+	 *
+	 * @since 3.0
+	 *
+	 * @return an array containing the elements of this chromosome
+	 */
+	public char[] toArray() {
+		return toArray(new char[length()]);
 	}
 
 
@@ -177,22 +209,17 @@ public class CharacterChromosome
 		final String alleles,
 		final CharSeq validChars
 	) {
-		final Array<CharacterGene> genes = new Array<>(alleles.length());
-		genes.fill(GeneFactory(alleles, validChars));
-		return new CharacterChromosome(genes.toISeq());
-	}
+		final IntRef index = new IntRef();
+		final Supplier<CharacterGene> geneFactory = () -> CharacterGene.of(
+			alleles.charAt(index.value++), validChars
+		);
 
-	private static Factory<CharacterGene>
-	GeneFactory(final String alleles, final CharSeq validChars) {
-		return new Factory<CharacterGene>() {
-			private int _index = 0;
-			@Override
-			public CharacterGene newInstance() {
-				return CharacterGene.of(
-					alleles.charAt(_index++), validChars
-				);
-			}
-		};
+		final ISeq<CharacterGene> genes =
+			MSeq.<CharacterGene>ofLength(alleles.length())
+				.fill(geneFactory)
+				.toISeq();
+
+		return new CharacterChromosome(genes);
 	}
 
 	/**
@@ -204,37 +231,6 @@ public class CharacterChromosome
 	 */
 	public static CharacterChromosome of(final String alleles) {
 		return of(alleles, DEFAULT_CHARACTERS);
-	}
-
-	/* *************************************************************************
-	 *  Property access methods
-	 * ************************************************************************/
-
-	/**
-	 * Return a {@link Function} which returns the gene array from this
-	 * {@link Chromosome}.
-	 */
-	public static final Function<Chromosome<CharacterGene>, ISeq<CharacterGene>>
-		Genes = AbstractChromosome.genes();
-
-	/**
-	 * Return a {@link Function} which returns the first {@link Gene} from this
-	 * {@link Chromosome}.
-	 */
-	public static final Function<Chromosome<CharacterGene>, CharacterGene>
-		Gene = AbstractChromosome.gene();
-
-	/**
-	 * Return a {@link Function} which returns the {@link Gene} with the given
-	 * {@code index} from this {@link Chromosome}.
-	 *
-	 * @param index the gene index within the chromosome
-	 * @return a function witch returns the gene at the given index
-	 */
-	public static Function<Chromosome<CharacterGene>, CharacterGene>
-	Gene(final int index)
-	{
-		return AbstractChromosome.gene(index);
 	}
 
 
@@ -263,7 +259,7 @@ public class CharacterChromosome
 		final int length = in.readInt();
 		_validCharacters = (CharSeq)in.readObject();
 
-		final Array<CharacterGene> genes = new Array<>(length);
+		final MSeq<CharacterGene> genes = MSeq.ofLength(length);
 		for (int i = 0; i < length; ++i) {
 			final CharacterGene gene = CharacterGene.of(
 				in.readChar(),

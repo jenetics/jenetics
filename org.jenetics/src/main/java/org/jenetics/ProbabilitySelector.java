@@ -22,16 +22,17 @@ package org.jenetics;
 import static java.lang.Math.abs;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.util.math.pow;
-import static org.jenetics.util.math.statistics.sum;
-import static org.jenetics.util.math.ulpDistance;
+import static org.jenetics.internal.math.arithmetic.pow;
+import static org.jenetics.internal.math.base.ulpDistance;
+import static org.jenetics.internal.util.IndexSorter.sort;
 
 import java.util.Random;
+import java.util.function.Function;
 
-import org.jenetics.util.Factory;
-import org.jenetics.util.Function;
+import org.jenetics.internal.math.DoubleAdder;
+import org.jenetics.internal.util.array;
+
 import org.jenetics.util.RandomRegistry;
-
 
 /**
  * Probability selectors are a variation of fitness proportional selectors and
@@ -48,7 +49,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 — <em>$Date: 2014-08-27 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-12-08 $</em>
  */
 public abstract class ProbabilitySelector<
 	G extends Gene<?, G>,
@@ -56,9 +57,11 @@ public abstract class ProbabilitySelector<
 >
 	implements Selector<G, C>
 {
+	private static final int SERIAL_INDEX_THRESHOLD = 35;
+
 	private static final long MAX_ULP_DISTANCE = pow(10, 10);
 
-	private final Function<double[], double[]> _revert;
+	private final Function<double[], double[]> _reverter;
 
 	/**
 	 * Create a new {@code ProbabilitySelector} with the given {@code sorting}
@@ -71,17 +74,7 @@ public abstract class ProbabilitySelector<
 	 *        {@code false} otherwise.
 	 */
 	protected ProbabilitySelector(final boolean sorted) {
-		_revert = sorted ?
-			new Function<double[], double[]>() {
-				@Override public double[] apply(final double[] values) {
-					return revert(values);
-				}
-			} :
-			new Function<double[], double[]>() {
-				@Override public double[] apply(final double[] values) {
-					return sortAndRevert(values);
-				}
-			};
+		_reverter = sorted ? array::revert : ProbabilitySelector::sortAndRevert;
 	}
 
 	/**
@@ -109,51 +102,21 @@ public abstract class ProbabilitySelector<
 		final Population<G, C> selection = new Population<>(count);
 
 		if (count > 0) {
-			final double[] probabilities = probabilities(population, count, opt);
-			assert (population.size() == probabilities.length) :
+			final double[] prob = probabilities(population, count, opt);
+			assert (population.size() == prob.length) :
 				"Population size and probability length are not equal.";
-			assert (sum2one(probabilities)) : "Probabilities doesn't sum to one.";
+			assert (sum2one(prob)) : "Probabilities doesn't sum to one.";
 
-			incremental(probabilities);
-			final Factory<Phenotype<G, C>> factory = factory(
-				population, probabilities, RandomRegistry.getRandom()
+			incremental(prob);
+
+			final Random random = RandomRegistry.getRandom();
+			selection.fill(
+				() -> population.get(indexOf(prob, random.nextDouble())),
+				count
 			);
-
-			selection.fill(factory, count);
-			assert (count == selection.size());
 		}
 
 		return selection;
-	}
-
-	private static <
-		G extends Gene<?, G>,
-		C extends Comparable<? super C>
-	>
-	Factory<Phenotype<G, C>> factory(
-		final Population<G, C> population,
-		final double[] probabilities,
-		final Random random
-	) {
-		return new Factory<Phenotype<G, C>>() {
-			@Override
-			public Phenotype<G, C> newInstance() {
-				return select(population, probabilities, random);
-			}
-		};
-	}
-
-	private static <
-		G extends Gene<?, G>,
-		C extends Comparable<? super C>
-	>
-	Phenotype<G, C> select(
-		final Population<G, C> population,
-		final double[] probabilities,
-		final Random random
-	) {
-		final double value = random.nextDouble();
-		return population.get(indexOf(probabilities, value));
 	}
 
 	/**
@@ -174,101 +137,21 @@ public abstract class ProbabilitySelector<
 		final Optimize opt
 	) {
 		return requireNonNull(opt) == Optimize.MINIMUM ?
-			_revert.apply(probabilities(population, count)) :
+			_reverter.apply(probabilities(population, count)) :
 			probabilities(population, count);
 	}
 
 	// Package private for testing.
-	static double[] sortAndRevert(final double[] probabilities) {
-		final int N = probabilities.length;
-		final int[] indexes = sort(probabilities);
-		final double[] result = new double[N];
+	static double[] sortAndRevert(final double[] array) {
+		final int[] indexes = sort(array);
 
-		for (int i = 0; i < N; ++i) {
-			result[indexes[N - i - 1]] = probabilities[indexes[i]];
+		// Copy the elements in reversed order.
+		final double[] result = new double[array.length];
+		for (int i = 0; i < result.length; ++i) {
+			result[indexes[result.length - 1 - i]] = array[indexes[i]];
 		}
 
 		return result;
-	}
-
-	private static final int INSERTION_SORT_THRESHOLD = 75;
-
-	// Package private for testing.
-	static int[] sort(final double[] values) {
-		return values.length < INSERTION_SORT_THRESHOLD ?
-			insertionSort(values) :
-			quickSort(values);
-	}
-
-	private static int[] indexes(final int length) {
-		final int[] indexes = new int[length];
-		for (int i = 0; i < indexes.length; ++i) {
-			indexes[i] = i;
-		}
-		return indexes;
-	}
-
-	// Package private for testing.
-	static int[] quickSort(final double[] array) {
-		final int[] indexes = indexes(array.length);
-		quickSort(array, indexes, 0, array.length - 1);
-		return indexes;
-	}
-
-	private static void quickSort(
-		final double[] array,
-		final int[] indexes,
-		final int left, final int right
-	) {
-		if (right > left) {
-			final int j = partition(array, indexes, left, right);
-			quickSort(array, indexes, left, j - 1);
-			quickSort(array, indexes, j + 1, right);
-		}
-	}
-
-	private static int partition(
-		final double[] array, final int[] indexes,
-		final int left, final int right
-	) {
-		final double pivot = array[indexes[left]];
-		int i = left;
-		int j = right + 1;
-
-		while (true) {
-			do ++i; while (i < right && array[indexes[i]] < pivot);
-			do --j; while (j > left && array[indexes[j]] > pivot);
-			if (j <= i) break;
-			swap(indexes, i, j);
-		}
-		swap(indexes, left, j);
-
-		return j;
-	}
-
-	private static void swap(final int[] indexes, final int i, final int j) {
-		final int temp = indexes[i];
-		indexes[i] = indexes[j];
-		indexes[j] = temp;
-	}
-
-	// Package private for testing.
-	static int[] insertionSort(final double[] array) {
-		final int[] indexes = indexes(array.length);
-
-		for (int sz = array.length, i = 1; i < sz; ++i) {
-			int j = i;
-			while (j > 0) {
-				if (array[indexes[j - 1]] > array[indexes[j]]) {
-					swap(indexes, j - 1, j);
-				} else {
-					break;
-				}
-				--j;
-			}
-		}
-
-		return indexes;
 	}
 
 	/**
@@ -304,32 +187,51 @@ public abstract class ProbabilitySelector<
 	 *         range, {@code false} otherwise.
 	 */
 	static boolean sum2one(final double[] probabilities) {
-		final double sum = sum(probabilities);
+		final double sum = DoubleAdder.sum(probabilities);
 		return abs(ulpDistance(sum, 1.0)) < MAX_ULP_DISTANCE;
+	}
+
+	static int indexOf(final double[] incr, final double v) {
+		return incr.length <= SERIAL_INDEX_THRESHOLD ?
+			indexOfSerial(incr, v) :
+			indexOfBinary(incr, v);
 	}
 
 	/**
 	 * Perform a binary-search on the summed probability array.
 	 */
-	static int indexOf(final double[] incremental, final double v) {
+	static int indexOfBinary(final double[] incr, final double v) {
 		int imin = 0;
-		int imax = incremental.length;
+		int imax = incr.length;
+		int index = -1;
 
-		while (imax > imin) {
-			int imid = (imin + imax) >>> 1;
+		while (imax > imin && index == -1) {
+			final int imid = (imin + imax) >>> 1;
 
-			if (imid == 0) {
-				return imid;
-			} else if (incremental[imid] >= v && incremental[imid - 1] < v) {
-				return imid;
-			} else if (incremental[imid] <= v) {
+			if (imid == 0 || (incr[imid] >= v && incr[imid - 1] < v)) {
+				index = imid;
+			} else if (incr[imid] <= v) {
 				imin = imid + 1;
-			} else if (incremental[imid] > v) {
+			} else if (incr[imid] > v) {
 				imax = imid;
 			}
 		}
 
-		return incremental.length - 1;
+		return index;
+	}
+
+	/**
+	 * Perform a serial-search on the summed probability array.
+	 */
+	static int indexOfSerial(final double[] incr, final double v) {
+		int index = -1;
+		for (int i = 0; i < incr.length && index == -1; ++i) {
+			if (incr[i] >= v) {
+				index = i;
+			}
+		}
+
+		return index;
 	}
 
 	/**
@@ -340,20 +242,6 @@ public abstract class ProbabilitySelector<
 			values[i] = values[i - 1] + values[i];
 		}
 		return values;
-	}
-
-	public static double[] revert(final double[] array) {
-		for (int i = 0, j = array.length - 1; i < j; ++i, --j) {
-			swap(array, i, j);
-		}
-
-		return array;
-	}
-
-	public static void swap(final double[] array, final int i, final int j) {
-		final double temp = array[i];
-		array[i] = array[j];
-		array[j] = temp;
 	}
 
 }

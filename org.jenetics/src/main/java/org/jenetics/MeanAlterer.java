@@ -23,7 +23,8 @@ import static java.lang.String.format;
 
 import java.util.Random;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
@@ -38,10 +39,13 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-12 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-25 $</em>
  */
-public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
-	extends Recombinator<G>
+public final class MeanAlterer<
+	G extends Gene<?, G> & Mean<G>,
+	C extends Comparable<? super C>
+>
+	extends Recombinator<G, C>
 {
 
 	/**
@@ -63,10 +67,10 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 	}
 
 	@Override
-	protected <C extends Comparable<? super C>> int recombine(
+	protected int recombine(
 		final Population<G, C> population,
 		final int[] individuals,
-		final int generation
+		final long generation
 	) {
 		final Random random = RandomRegistry.getRandom();
 
@@ -105,12 +109,12 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(super.hashCode()).value();
+		return Hash.of(getClass()).and(super.hashCode()).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this || obj instanceof MeanAlterer<?> && super.equals(obj);
+		return Equality.of(this, obj).test(super::equals);
 	}
 
 	@Override

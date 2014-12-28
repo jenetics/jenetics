@@ -23,14 +23,16 @@ package org.jenetics;
  * Base interface for numeric genes.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-05 $</em>
  * @since 1.6
+ * @version 3.0 &mdash; <em>$Date: 2014-11-12 $</em>
  */
 public interface NumericGene<
 	N extends Number & Comparable<? super N>,
 	G extends NumericGene<N, G>
 >
-	extends BoundedGene<N, G>
+	extends
+		BoundedGene<N, G>,
+		Comparable<G>
 {
 
 	/**
@@ -40,7 +42,9 @@ public interface NumericGene<
 	 * @return the numeric value represented by this object after conversion to
 	 *         type {@code byte}.
 	 */
-	public byte byteValue();
+	public default byte byteValue() {
+		return getAllele().byteValue();
+	}
 
 	/**
 	 * Returns the value of the specified gene as an short. This may involve
@@ -49,7 +53,9 @@ public interface NumericGene<
 	 * @return the numeric value represented by this object after conversion to
 	 *         type {@code short}.
 	 */
-	public short shortValue();
+	public default short shortValue() {
+		return getAllele().shortValue();
+	}
 
 	/**
 	 * Returns the value of the specified gene as an int. This may involve
@@ -58,7 +64,9 @@ public interface NumericGene<
 	 * @return the numeric value represented by this object after conversion to
 	 *         type {@code int}.
 	 */
-	public int intValue();
+	public default int intValue() {
+		return getAllele().intValue();
+	}
 
 	/**
 	 * Returns the value of the specified gene as an long. This may involve
@@ -67,7 +75,9 @@ public interface NumericGene<
 	 * @return the numeric value represented by this object after conversion to
 	 *         type {@code long}.
 	 */
-	public long longValue();
+	public default long longValue() {
+		return getAllele().longValue();
+	}
 
 	/**
 	 * Returns the value of the specified gene as an float. This may involve
@@ -76,7 +86,9 @@ public interface NumericGene<
 	 * @return the numeric value represented by this object after conversion to
 	 *         type {@code float}.
 	 */
-	public float floatValue();
+	public default float floatValue() {
+		return getAllele().floatValue();
+	}
 
 	/**
 	 * Returns the value of the specified gene as an double. This may involve
@@ -85,7 +97,9 @@ public interface NumericGene<
 	 * @return the numeric value represented by this object after conversion to
 	 *         type {@code double}.
 	 */
-	public double doubleValue();
+	public default double doubleValue() {
+		return getAllele().doubleValue();
+	}
 
 	@Override
 	public G newInstance(final Number number);

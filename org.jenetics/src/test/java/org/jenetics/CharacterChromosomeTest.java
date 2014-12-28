@@ -20,6 +20,7 @@
 package org.jenetics;
 
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
+import static org.jenetics.util.RandomRegistry.using;
 
 import java.util.Random;
 
@@ -28,39 +29,35 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import org.jenetics.stat.Histogram;
-import org.jenetics.stat.UniformDistribution;
+import org.jenetics.stat.dist;
 import org.jenetics.util.CharSeq;
 import org.jenetics.util.Factory;
-import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-03 $</em>
+ * @version <em>$Date: 2014-10-19 $</em>
  */
 public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 
-	private final Factory<Chromosome<CharacterGene>>
-	_factory = CharacterChromosome.of(500);
-	@Override protected Factory<Chromosome<CharacterGene>> getFactory() {
-		return _factory;
+	@Override
+	protected Factory<Chromosome<CharacterGene>> factory() {
+		return () -> CharacterChromosome.of(500);
 	}
 
-
 	@Test(invocationCount = 20, successPercentage = 95)
-    public void newInstanceDistribution() {
-		try (Scoped<Random> s = RandomRegistry.scope(new Random(12345))) {
+	public void newInstanceDistribution() {
+		using(new Random(12345), r -> {
 			final CharSeq characters = new CharSeq("0123456789");
 			final CharacterChromosome chromosome = new CharacterChromosome(characters, 5000);
 
 			final Histogram<Long> histogram = Histogram.of(0L, 10L, 10);
+			chromosome.toSeq().stream()
+				.map(g -> Long.valueOf(g.getAllele().toString()))
+				.forEach(histogram::accept);
 
-			for (CharacterGene gene : chromosome) {
-				histogram.accumulate(Long.valueOf(gene.getAllele().toString()));
-			}
-
-			assertDistribution(histogram, new UniformDistribution<>(0L, 10L));
-		}
+			final double[] expected = dist.uniform(histogram.length());
+			assertDistribution(histogram, expected);
+		});
     }
 
 	@Test(dataProvider = "genes")

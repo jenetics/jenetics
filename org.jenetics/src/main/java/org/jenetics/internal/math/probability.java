@@ -19,19 +19,19 @@
  */
 package org.jenetics.internal.math;
 
-import static org.jenetics.util.math.pow;
+import static org.jenetics.internal.math.arithmetic.pow;
 
-import org.jenetics.util.StaticObject;
+import org.jenetics.internal.util.require;
 
 /**
  * Mathematical functions regarding probabilities.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-09-01 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2014-08-05 $</em>
  */
-public final class probability extends StaticObject {
-	private probability() {}
+public final class probability {
+	private probability() {require.noInstance();}
 
 	private static final long INT_RANGE = pow(2, 32) - 1;
 
@@ -39,8 +39,8 @@ public final class probability extends StaticObject {
 	 * Maps the probability, given in the range {@code [0, 1]}, to an
 	 * integer in the range {@code [Integer.MIN_VALUE, Integer.MAX_VALUE]}.
 	 *
-	 * @see {@link #toInt(double)}
-	 * @see {@link #toFloat(int)}
+	 * @see #toInt(double)
+	 * @see #toFloat(int)
 	 *
 	 * @param probability the probability to widen.
 	 * @return the widened probability.
@@ -53,8 +53,8 @@ public final class probability extends StaticObject {
 	 * Maps the probability, given in the range {@code [0, 1]}, to an
 	 * integer in the range {@code [Integer.MIN_VALUE, Integer.MAX_VALUE]}.
 	 *
-	 * @see {@link #toInt(float)}
-	 * @see {@link #toFloat(int)}
+	 * @see #toInt(float)
+	 * @see #toFloat(int)
 	 *
 	 * @param probability the probability to widen.
 	 * @return the widened probability.
@@ -68,8 +68,8 @@ public final class probability extends StaticObject {
 	 * {@code [Integer.MIN_VALUE, Integer.MAX_VALUE]} back to a float
 	 * probability within the range {@code [0, 1]}.
 	 *
-	 * @see {@link #toInt(float)}
-	 * @see {@link #toInt(double)}
+	 * @see #toInt(float)
+	 * @see  #toInt(double)
 	 *
 	 * @param probability the <i>integer</i> probability to map.
 	 * @return the mapped probability within the range {@code [0, 1]}.

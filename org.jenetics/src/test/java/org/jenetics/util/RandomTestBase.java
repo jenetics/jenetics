@@ -32,7 +32,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-01-20 $</em>
+ * @version <em>$Date: 2014-12-28 $</em>
  */
 public abstract class RandomTestBase {
 
@@ -59,6 +59,17 @@ public abstract class RandomTestBase {
 
 		for (int i = 0; i < 1234; ++i) {
 			Assert.assertEquals(rand1.nextLong(), rand2.nextLong());
+		}
+	}
+
+	@Test(dataProvider = "seededPRNGPair")
+	public void sameByteLongValueSequence(final Random rand1, final Random rand2) {
+		final byte[] bytes = new byte[8];
+		for (int i = 0; i < 1234; ++i) {
+			rand1.nextBytes(bytes);
+			org.jenetics.internal.util.bit.reverse(bytes);
+
+			Assert.assertEquals(org.jenetics.internal.util.bit.toLong(bytes), rand2.nextLong());
 		}
 	}
 

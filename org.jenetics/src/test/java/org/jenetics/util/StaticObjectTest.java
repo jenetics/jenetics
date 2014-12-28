@@ -22,9 +22,11 @@ package org.jenetics.util;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import org.jenetics.internal.util.require;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-15 $</em>
+ * @version <em>$Date: 2014-08-05 $</em>
  */
 public class StaticObjectTest {
 
@@ -32,17 +34,6 @@ public class StaticObjectTest {
 	public void instantiation()
 		throws InstantiationException, IllegalAccessException
 	{
-		try {
-			new StaticObject() {};
-			Assert.assertFalse(true);
-		} catch (AssertionError e) {
-			final String expected = String.format(
-				"Instantiation of '%s' is not allowed.",
-				"org.jenetics.util.StaticObjectTest$1"
-			);
-
-			Assert.assertEquals(e.getMessage(), expected);
-		}
 
 		try {
 			new SomeStaticObject();
@@ -71,4 +62,6 @@ public class StaticObjectTest {
 
 }
 
-final class SomeStaticObject extends StaticObject {}
+final class SomeStaticObject {
+	SomeStaticObject() {require.noInstance();}
+}

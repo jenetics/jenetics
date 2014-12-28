@@ -24,19 +24,19 @@ import static org.jenetics.util.factories.Int;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-11 $</em>
+ * @version <em>$Date: 2014-06-02 $</em>
  */
 public class EnumGeneTest extends GeneTester<EnumGene<Integer>> {
 
 	private final Factory<EnumGene<Integer>>
 	_factory = new Factory<EnumGene<Integer>>() {
-		private ISeq<Integer> _alleles = new Array<Integer>(100).fill(Int()).toISeq();
+		private ISeq<Integer> _alleles = MSeq.<Integer>ofLength(100).fill(Int()).toISeq();
 
 		@Override
 		public EnumGene<Integer> newInstance() {
@@ -46,14 +46,14 @@ public class EnumGeneTest extends GeneTester<EnumGene<Integer>> {
 	};
 
 	@Override
-	protected Factory<EnumGene<Integer>> getFactory() {
+	protected Factory<EnumGene<Integer>> factory() {
 		return _factory;
 	}
 
 	@Test
 	public void valueOf() {
 		final int length = 100;
-		final ISeq<Integer> alleles = new Array<Integer>(length).fill(Int()).toISeq();
+		final ISeq<Integer> alleles = MSeq.<Integer>ofLength(length).fill(Int()).toISeq();
 
 		Assert.assertEquals(alleles.length(), length);
 		for (int i = 0; i < alleles.length(); ++i) {
@@ -69,7 +69,7 @@ public class EnumGeneTest extends GeneTester<EnumGene<Integer>> {
 	@Test(expectedExceptions = IndexOutOfBoundsException.class)
 	public void valueOfIndexOutOfBounds1() {
 		final int length = 100;
-		final ISeq<Integer> alleles = new Array<Integer>(length).fill(Int()).toISeq();
+		final ISeq<Integer> alleles = MSeq.<Integer>ofLength(length).fill(Int()).toISeq();
 
 		new EnumGene<>(length + 1, alleles);
 	}
@@ -77,7 +77,7 @@ public class EnumGeneTest extends GeneTester<EnumGene<Integer>> {
 	@Test(expectedExceptions = IndexOutOfBoundsException.class)
 	public void valueOfIndexOutOfBounds2() {
 		final int length = 100;
-		final ISeq<Integer> alleles = new Array<Integer>(length).fill(Int()).toISeq();
+		final ISeq<Integer> alleles = MSeq.<Integer>ofLength(length).fill(Int()).toISeq();
 
 		new EnumGene<>(-1, alleles);
 	}
@@ -85,7 +85,7 @@ public class EnumGeneTest extends GeneTester<EnumGene<Integer>> {
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void valueOfZeroLength() {
 		final int length = 0;
-		final ISeq<Integer> alleles = new Array<Integer>(length).fill(Int()).toISeq();
+		final ISeq<Integer> alleles = MSeq.<Integer>ofLength(length).fill(Int()).toISeq();
 
 		EnumGene.of(alleles);
 	}

@@ -19,79 +19,43 @@
  */
 package org.jenetics;
 
-import static org.jenetics.stat.StatisticsAssert.assertDistribution;
+import static org.jenetics.stat.StatisticsAssert.assertUniformDistribution;
+import static org.jenetics.util.RandomRegistry.using;
 import static org.testng.Assert.assertEquals;
 
 import java.util.Random;
+import java.util.stream.IntStream;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import org.jenetics.stat.Histogram;
-import org.jenetics.stat.UniformDistribution;
-import org.jenetics.stat.Variance;
 import org.jenetics.util.Factory;
-import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-24 $</em>
+ * @version <em>$Date: 2014-10-19 $</em>
  */
 public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 
 	private final Factory<IntegerGene> _factory = IntegerGene.of(0, Integer.MAX_VALUE);
-	@Override protected Factory<IntegerGene> getFactory() {
+	@Override protected Factory<IntegerGene> factory() {
 		return _factory;
 	}
 
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstanceDistribution() {
-		try (Scoped<?> s = RandomRegistry.scope(new Random(12345))) {
+		final Integer min = 0;
+		final Integer max = Integer.MAX_VALUE;
+		final Histogram<Integer> histogram = Histogram.of(min, max, 10);
 
-			final Integer min = 0;
-			final Integer max = Integer.MAX_VALUE;
-			final Factory<IntegerGene> factory = IntegerGene.of(min, max);
+		using(new Random(12345), r ->
+			IntStream.range(0, 200_000)
+				.mapToObj(i -> IntegerGene.of(min, max).getAllele())
+				.forEach(histogram::accept)
+		);
 
-			final Variance<Integer> variance = new Variance<>();
-
-			final Histogram<Integer> histogram = Histogram.of(min, max, 10);
-
-			final int samples = 10000;
-			for (int i = 0; i < samples; ++i) {
-				final IntegerGene g1 = factory.newInstance();
-				final IntegerGene g2 = factory.newInstance();
-
-				Assert.assertTrue(g1.getAllele().compareTo(min) >= 0);
-				Assert.assertTrue(g1.getAllele().compareTo(max) <= 0);
-				Assert.assertTrue(g2.getAllele().compareTo(min) >= 0);
-				Assert.assertTrue(g2.getAllele().compareTo(max) <= 0);
-				Assert.assertNotSame(g1, g2);
-
-				variance.accumulate(g1.getAllele());
-				variance.accumulate(g2.getAllele());
-				histogram.accumulate(g1.getAllele());
-				histogram.accumulate(g2.getAllele());
-			}
-
-			assertDistribution(histogram, new UniformDistribution<>(min, max));
-		}
-	}
-
-	@Test
-	public void createNumber() {
-		IntegerGene gene = IntegerGene.of(1, 0, 12);
-		IntegerGene g2 = gene.newInstance(5L);
-
-		assertEquals(g2.getAllele().longValue(), 5);
-		assertEquals(g2.getMin().longValue(), 0);
-		assertEquals(g2.getMax().longValue(), 12);
-	}
-
-	@Test
-	public void createInvalidNumber() {
-		final IntegerGene gene = IntegerGene.of(0, 1, 2);
-		Assert.assertFalse(gene.isValid());
+		assertUniformDistribution(histogram);
 	}
 
 	@Test
@@ -113,6 +77,22 @@ public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 			assertEquals(c.getMax().longValue(), max);
 			assertEquals(c.getAllele().longValue(), ((i - 50) + ((i - 100)*3))/2);
 		}
+	}
+
+	@Test
+	public void createNumber() {
+		IntegerGene gene = IntegerGene.of(1, 0, 12);
+		IntegerGene g2 = gene.newInstance(5L);
+
+		assertEquals(g2.getAllele().longValue(), 5);
+		assertEquals(g2.getMin().longValue(), 0);
+		assertEquals(g2.getMax().longValue(), 12);
+	}
+
+	@Test
+	public void createInvalidNumber() {
+		final IntegerGene gene = IntegerGene.of(0, 1, 2);
+		Assert.assertFalse(gene.isValid());
 	}
 
 	@Test

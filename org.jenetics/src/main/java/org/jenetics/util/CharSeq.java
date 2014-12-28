@@ -19,17 +19,17 @@
  */
 package org.jenetics.util;
 
-import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.object.eq;
+import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
 import java.util.regex.PatternSyntaxException;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.collection.ArrayProxyISeq;
+import org.jenetics.internal.collection.CharArrayProxy;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 
 /**
  * This class is used for holding the valid characters of an
@@ -45,10 +45,10 @@ import org.jenetics.internal.util.HashBuilder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-08 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
  */
 public final class CharSeq
-	extends AbstractCharSeq
+	extends CharSeqBase
 	implements
 		CharSequence,
 		ISeq<Character>,
@@ -134,22 +134,22 @@ public final class CharSeq
 	 *          {@code false} otherwise.
 	 */
 	public boolean contains(final char c) {
-		return Arrays.binarySearch(_characters, c) >= 0;
+		return Arrays.binarySearch(proxy.array, c) >= 0;
 	}
 
 	@Override
 	public char charAt(int index) {
-		return _characters[index];
+		return proxy.array[index];
 	}
 
 	@Override
 	public int length() {
-		return _characters.length;
+		return proxy.array.length;
 	}
 
 	@Override
 	public CharSeq subSequence(int start, int end) {
-		return new CharSeq(new String(_characters, start, end - start));
+		return new CharSeq(new String(proxy.array, start, end - start));
 	}
 
 	/**
@@ -159,59 +159,29 @@ public final class CharSeq
 	 *          otherwise.
 	 */
 	public boolean isEmpty() {
-		return _characters.length == 0;
-	}
-
-	@Override
-	public Iterator<Character> iterator() {
-		return new Iterator<Character>() {
-			private int _pos = 0;
-			@Override public boolean hasNext() {
-				return _pos < _characters.length;
-			}
-			@Override public Character next() {
-				if (!hasNext()) {
-					throw new NoSuchElementException(format(
-						"Index %s is out of range [0, %s)",
-						_pos, _characters.length
-					));
-				}
-				return _characters[_pos++];
-			}
-			@Override public void remove() {
-				throw new UnsupportedOperationException();
-			}
-		};
+		return proxy.array.length == 0;
 	}
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(_characters).value();
+		return Hash.of(getClass()).and(proxy.array).value();
 	}
 
 	@Override
-	public boolean equals(final Object object) {
-		if (object == this) {
-			return true;
-		}
-		if (!(object instanceof CharSeq)) {
-			return false;
-		}
-
-		final CharSeq ch = (CharSeq)object;
-		return eq(_characters, ch._characters);
+	public boolean equals(final Object obj) {
+		return Equality.of(this, obj).test(ch -> eq(proxy.array, ch.proxy.array));
 	}
 
 	@Override
 	public int compareTo(final CharSeq set) {
 		int result = 0;
 
-		final int n = Math.min(_characters.length, set._characters.length);
+		final int n = Math.min(proxy.array.length, set.proxy.array.length);
 		for (int i = 0; i < n && result == 0; ++i) {
-			result = _characters[i] - set._characters[i];
+			result = proxy.array[i] - set.proxy.array[i];
 		}
 		if (result == 0) {
-			result = _characters.length - set._characters.length;
+			result = proxy.array.length - set.proxy.array.length;
 		}
 
 		return result;
@@ -219,7 +189,7 @@ public final class CharSeq
 
 	@Override
 	public String toString() {
-		return new String(_characters);
+		return new String(proxy.array);
 	}
 
 	/**
@@ -331,12 +301,18 @@ public final class CharSeq
 	 *         order.
 	 */
 	public static ISeq<Character> toISeq(final CharSequence chars) {
-		final Array<Character> seq = new Array<>(chars.length());
+		final MSeq<Character> seq = MSeq.ofLength(chars.length());
 		for (int i = 0; i < chars.length(); ++i) {
 			seq.set(i, chars.charAt(i));
 		}
 
 		return seq.toISeq();
 	}
+}
 
+abstract class CharSeqBase extends ArrayProxyISeq<Character, CharArrayProxy> {
+	private static final long serialVersionUID = 1L;
+	protected CharSeqBase(final char[] characters) {
+		super(new CharArrayProxy(characters, 0, characters.length));
+	}
 }

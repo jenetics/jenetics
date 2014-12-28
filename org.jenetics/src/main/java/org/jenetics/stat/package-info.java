@@ -19,10 +19,17 @@
  */
 
 /**
- * Provides statistics <i>helper</i> classes.
+ * This package contains additional statistics classes which are not available
+ * in the Java core library. Java only includes classes for calculating the sum
+ * and the average of a given numeric stream (e. g.
+ * {@code DoubleSummaryStatistics}). With the additions in this package it is
+ * also possible to calculate the variance, skewness and kurtosis---using the
+ * {@code DoubleMomentStatistics} class. The {@code EvolutionStatistics} object,
+ * which can be calculated for every generation, relies on the classes of this
+ * package.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-07 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-12-27 $</em>
  */
 package org.jenetics.stat;

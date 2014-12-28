@@ -22,13 +22,21 @@ package org.jenetics.internal.util;
 import org.jenetics.util.Seq;
 
 /**
+ * Interface for calculating the object hash value.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-03 $</em>
  * @since 1.6
+ * @version 3.0 &mdash; <em>$Date: 2014-07-31 $</em>
  */
 public interface Hash {
 
-	public abstract Hash and(final boolean value);
+	/**
+	 * Add hash code for a {@code boolean} value.
+	 *
+	 * @param value the value to add to the hash code.
+	 * @return {@code this}
+	 */
+	public Hash and(final boolean value);
 
 	/**
 	 * Add hash code for an {@code boolean} array.
@@ -36,7 +44,7 @@ public interface Hash {
 	 * @param values the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public abstract Hash and(final boolean[] values);
+	public Hash and(final boolean[] values);
 
 	/**
 	 * Add hash code for a {@code byte}.
@@ -44,7 +52,7 @@ public interface Hash {
 	 * @param value the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public abstract Hash and(final byte value);
+	public Hash and(final byte value);
 
 	/**
 	 * Add hash code for an {@code byte} arrays.
@@ -52,7 +60,7 @@ public interface Hash {
 	 * @param values the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public abstract Hash and(final byte[] values);
+	public Hash and(final byte[] values);
 
 	/**
 	 * Add hash code for a {@code char}.
@@ -60,7 +68,7 @@ public interface Hash {
 	 * @param value the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public abstract Hash and(final char value);
+	public Hash and(final char value);
 
 	/**
 	 * Add hash code for an {@code char} array.
@@ -68,7 +76,7 @@ public interface Hash {
 	 * @param values the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public abstract Hash and(final char[] values);
+	public Hash and(final char[] values);
 
 	/**
 	 * Add hash code for a {@code short}.
@@ -76,7 +84,7 @@ public interface Hash {
 	 * @param value the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public abstract Hash and(final short value);
+	public Hash and(final short value);
 
 	/**
 	 * Add hash code for an {@code short} array.
@@ -84,7 +92,7 @@ public interface Hash {
 	 * @param values the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public abstract Hash and(final short[] values);
+	public Hash and(final short[] values);
 
 	/**
 	 * Add hash code for an {@code int}.
@@ -92,7 +100,7 @@ public interface Hash {
 	 * @param value the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public abstract Hash and(final int value);
+	public Hash and(final int value);
 
 	/**
 	 * Add hash code for an {@code int} array.
@@ -100,7 +108,7 @@ public interface Hash {
 	 * @param values the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public abstract Hash and(final int[] values);
+	public Hash and(final int[] values);
 
 	/**
 	 * Add hash code for a {@code long}.
@@ -108,7 +116,7 @@ public interface Hash {
 	 * @param value the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public abstract Hash and(final long value);
+	public Hash and(final long value);
 
 	/**
 	 * Add hash code for an {@code long} array.
@@ -116,7 +124,7 @@ public interface Hash {
 	 * @param values the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public abstract Hash and(final long[] values);
+	public Hash and(final long[] values);
 
 	/**
 	 * Add hash code for a {@code float}.
@@ -124,7 +132,7 @@ public interface Hash {
 	 * @param value the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public abstract Hash and(final float value);
+	public Hash and(final float value);
 
 	/**
 	 * Add hash code for an {@code float} array.
@@ -132,7 +140,7 @@ public interface Hash {
 	 * @param values the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public abstract Hash and(final float[] values);
+	public Hash and(final float[] values);
 
 	/**
 	 * Add hash code for a {@code double}.
@@ -140,7 +148,7 @@ public interface Hash {
 	 * @param value the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public abstract Hash and(final double value);
+	public Hash and(final double value);
 
 	/**
 	 * Add hash code for an {@code double} array.
@@ -148,7 +156,7 @@ public interface Hash {
 	 * @param values the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public abstract Hash and(final double[] values);
+	public Hash and(final double[] values);
 
 	/**
 	 * Add hash code for a {@code Object}.
@@ -156,7 +164,7 @@ public interface Hash {
 	 * @param value the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public abstract Hash and(final Object value);
+	public Hash and(final Object value);
 
 	/**
 	 * Add hash code for an {@code Object}.
@@ -164,7 +172,7 @@ public interface Hash {
 	 * @param values the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public abstract Hash and(final Object[] values);
+	public Hash and(final Object[] values);
 
 	/**
 	 * Add hash code for a {@code Seq}.
@@ -172,7 +180,7 @@ public interface Hash {
 	 * @param values the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public abstract Hash and(final Seq<?> values);
+	public Hash and(final Seq<?> values);
 
 	/**
 	 * Return the calculated hash value.
@@ -180,4 +188,14 @@ public interface Hash {
 	 * @return the calculated hash value.
 	 */
 	public int value();
+
+	/**
+	 * Create a HashCodeBuilder for the given type.
+	 *
+	 * @param type the type the {@code Hash} is created for.
+	 * @return a new default {@code Hash} implementation.
+	 */
+	public static Hash of(final Class<?> type) {
+		return new DefaultHashCodeBuilder(type);
+	}
 }

@@ -22,6 +22,7 @@ package org.jenetics;
 import static java.lang.Math.min;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.joining;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -31,6 +32,7 @@ import java.math.BigInteger;
 import java.util.BitSet;
 import java.util.Iterator;
 import java.util.ListIterator;
+import java.util.stream.IntStream;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -41,18 +43,18 @@ import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.jenetics.internal.util.HashBuilder;
-import org.jenetics.internal.util.internalbit;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
+import org.jenetics.internal.util.bit;
 
 import org.jenetics.util.ISeq;
-import org.jenetics.util.bit;
 
 /**
  * Implementation of the <i>classical</i> BitChromosome.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-04-02 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-12-28 $</em>
  */
 @XmlJavaTypeAdapter(BitChromosome.Model.Adapter.class)
 public class BitChromosome extends Number
@@ -65,7 +67,7 @@ public class BitChromosome extends Number
 
 
 	/**
-	 * The one's probability of the randomly generated Chromosome.
+	 * The ones probability of the randomly generated Chromosome.
 	 */
 	protected double _p;
 
@@ -106,7 +108,7 @@ public class BitChromosome extends Number
 	 */
 	public BitChromosome(final byte[] bits, final int start, final int end) {
 		this(
-			internalbit.copy(bits, start, end),
+			bit.copy(bits, start, end),
 			min(bits.length << 3, end) - start,
 			0.0
 		);
@@ -307,7 +309,6 @@ public class BitChromosome extends Number
 		}
 
 		System.arraycopy(_genes, 0, bytes, 0, _genes.length);
-
 		return _genes.length;
 	}
 
@@ -336,9 +337,38 @@ public class BitChromosome extends Number
 		return set;
 	}
 
+	/**
+	 * Return the indexes of the <i>ones</i> of this bit-chromosome as stream.
+	 *
+	 * @since 3.0
+	 *
+	 * @return the indexes of the <i>ones</i> of this bit-chromosome
+	 */
+	public IntStream ones() {
+		return IntStream.range(0, length())
+			.filter(index -> bit.get(_genes, index));
+	}
+
+	/**
+	 * Return the indexes of the <i>zeros</i> of this bit-chromosome as stream.
+	 *
+	 * @since 3.0
+	 *
+	 * @return the indexes of the <i>zeros</i> of this bit-chromosome
+	 */
+	public IntStream zeros() {
+		return IntStream.range(0, length())
+			.filter(index -> !bit.get(_genes, index));
+	}
+
 	@Override
 	public BitChromosome newInstance(final ISeq<BitGene> genes) {
 		requireNonNull(genes, "Genes");
+		if (genes.length() == 0) {
+			throw new IllegalArgumentException(
+				"The genes sequence must contain at least one gene."
+			);
+		}
 
 		final BitChromosome chromosome = new BitChromosome(
 			bit.newArray(genes.length()), genes.length()
@@ -376,11 +406,9 @@ public class BitChromosome extends Number
 	 *         BitChromosome.
 	 */
 	public String toCanonicalString() {
-		final StringBuilder out = new StringBuilder(length());
-		for (int i = 0; i < _length; ++i) {
-			out.append(bit.get(_genes, i) ? '1' : '0');
-		}
-		return out.toString();
+		return toSeq().stream()
+			.map(g -> g.booleanValue() ? "1" : "0")
+			.collect(joining());
 	}
 
 	@Override
@@ -450,8 +478,7 @@ public class BitChromosome extends Number
 	/**
 	 * Constructing a new BitChromosome from a given BitSet.
 	 * The BitSet is copied while construction. The length of the constructed
-	 * BitChromosome will be {@code bitSet.length()}
-	 * (@see BitSet#length).
+	 * BitChromosome will be {@code bitSet.length()} ({@link BitSet#length}).
 	 *
 	 * @param bits the bit-set which initializes the chromosome
 	 * @return a new {@code BitChromosome} with the given parameter
@@ -490,24 +517,18 @@ public class BitChromosome extends Number
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(_genes).value();
+		return Hash.of(getClass()).and(_genes).value();
 	}
 
 	@Override
-	public boolean equals(final Object o) {
-		if (o == this) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-
-		final BitChromosome c = (BitChromosome)o;
-		boolean equals = length() == c.length();
-		for (int i = 0, n = length(); equals && i < n; ++i) {
-			equals = getGene(i) == c.getGene(i);
-		}
-		return equals;
+	public boolean equals(final Object obj) {
+		return Equality.of(this, obj).test(c -> {
+			boolean equals = length() == c.length();
+			for (int i = 0, n = length(); equals && i < n; ++i) {
+				equals = getGene(i) == c.getGene(i);
+			}
+			return equals;
+		});
 	}
 
 	@Override

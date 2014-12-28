@@ -19,24 +19,23 @@
  */
 package org.jenetics.internal.util;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.List;
+import static java.util.Arrays.stream;
+import static java.util.stream.Stream.concat;
 
-import org.jenetics.util.StaticObject;
+import java.util.Optional;
+import java.util.stream.Stream;
+
+import org.jenetics.util.ISeq;
 
 /**
  * Helper methods concerning Java reflection.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-02-02 $</em>
  * @since 1.6
+ * @version 3.0 &mdash; <em>$Date: 2014-08-05 $</em>
  */
-public class reflect extends StaticObject {
-	private reflect() {}
+public class reflect {
+	private reflect() {require.noInstance();}
 
 	/**
 	 * Return all declared classes of the given class, with arbitrary nested
@@ -45,72 +44,11 @@ public class reflect extends StaticObject {
 	 * @param cls the class for which the declared classes are retrieved.
 	 * @return all nested classes
 	 */
-	public static List<Class<?>> allDeclaredClasses(final Class<?> cls) {
-		final Deque<Class<?>> stack = new LinkedList<>();
-		stack.addFirst(cls);
-
-		final List<Class<?>> result = new ArrayList<>();
-		while (!stack.isEmpty()) {
-			final Class<?>[] classes = stack.pollFirst().getDeclaredClasses();
-			for (final Class<?> c : classes) {
-				result.add(c);
-				stack.addFirst(c);
-			}
-		}
-
-		return Collections.unmodifiableList(result);
-	}
-
-	/**
-	 * Returns a Method object that reflects the specified public member method
-	 * of the class or interface represented by this Class object.
-	 *
-	 * @param type the class for getting the desired method.
-	 * @param name the method name
-	 * @param parameterTypes the method parameter types.
-	 * @return the method, or {@code null} if no such method can be found.
-	 */
-	public static Method getMethod(
-		final Class<?> type,
-		final String name,
-		Class<?>[] parameterTypes
-	) {
-		Method method = null;
-		final Method[] methods = type.getMethods();
-
-		for (int i = 0; i < methods.length && method == null; ++i) {
-			if (name.equals(methods[i].getName()) &&
-				equals(parameterTypes, methods[i].getParameterTypes()))
-			{
-				method = methods[i];
-			}
-		}
-
-		return method;
-	}
-
-	private static boolean equals(final Class<?>[] p1, final Class<?>[] p2) {
-		boolean equals = p1.length == p2.length;
-		for (int i = 0; i < p1.length && equals; ++i) {
-			equals = toClassType(p1[i]) == toClassType(p2[i]);
-		}
-
-		return equals;
-	}
-
-	private static Class<?> toClassType(final Class<?> type) {
-		switch (type.getCanonicalName()) {
-			case "void": return Void.class;
-			case "boolean": return Boolean.class;
-			case "byte": return Byte.class;
-			case "char": return Character.class;
-			case "short": return Short.class;
-			case "int": return Integer.class;
-			case "long": return Long.class;
-			case "float": return Float.class;
-			case "double": return Double.class;
-			default: return type;
-		}
+	public static Stream<Class<?>> innerClasses(final Class<?> cls) {
+		return concat(
+			stream(cls.getDeclaredClasses()).flatMap(reflect::innerClasses),
+			stream(cls.getDeclaredClasses())
+		);
 	}
 
 	/**
@@ -125,4 +63,17 @@ public class reflect extends StaticObject {
 		return value instanceof Class<?> ? (Class<?>)value : value.getClass();
 	}
 
+	@SuppressWarnings("unchecked")
+	public static <T> Optional<T> newInstance(final Class<?> type) {
+		try {
+			return Optional.of((T)type.newInstance());
+		} catch (InstantiationException | IllegalAccessException e) {
+			return Optional.empty();
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <A, B extends A> ISeq<A> cast(final ISeq<B> seq) {
+		return (ISeq<A>)seq;
+	}
 }

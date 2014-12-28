@@ -25,152 +25,55 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-07 $</em>
+ * @version <em>$Date: 2014-12-28 $</em>
  */
 public class LCG64ShiftRandomCompatibilityTest {
 
-	private final static String TEST_RESOURCE =
-			"/org/jenetics/util/LCG64ShiftRandom.dat/%d-%d-%d-%d-%d";
+	@Test(dataProvider = "data")
+	public void random(final TestData data) {
+		final String[] parameters = data.getParameters();
+		final long seed = Long.parseLong(parameters[0]);
+		final int splitp = Integer.parseInt(parameters[1]);
+		final int splits = Integer.parseInt(parameters[2]);
+		final long jump = Long.parseLong(parameters[3]);
+		final int jump2 = Integer.parseInt(parameters[4]);
 
-	private static TestData testData(
-		final Long seed,
-		final Integer splitp,
-		final Integer splits,
-		final Long jump,
-		final Integer jump2
-	) {
-		final String resource = String.format(
-			TEST_RESOURCE, seed, splitp, splits, jump, jump2
-		);
-		return new TestData(resource);
-	}
-
-	@Test(dataProvider = "parameters")
-	public void random(
-		final Long seed,
-		final Integer splitp,
-		final Integer splits,
-		final Long jump,
-		final Integer jump2
-	) {
 		final LCG64ShiftRandom random = new LCG64ShiftRandom(seed);
 		random.split(splitp, splits);
 		random.jump(jump);
 		random.jump2(jump2);
 
-		for (final String[] value : testData(seed, splitp, splits, jump, jump2)) {
+		for (final String[] value : data) {
 			final long expected = Long.parseLong(value[0]);
 			Assert.assertEquals(random.nextLong(), expected);
 		}
 	}
 
-	@Test(dataProvider = "parameters")
-	public void threadSafeRandom(
-		final Long seed,
-		final Integer splitp,
-		final Integer splits,
-		final Long jump,
-		final Integer jump2
-	) {
+	@Test(dataProvider = "data")
+	public void threadSafeRandom(final TestData data) {
+		final String[] parameters = data.getParameters();
+		final long seed = Long.parseLong(parameters[0]);
+		final int splitp = Integer.parseInt(parameters[1]);
+		final int splits = Integer.parseInt(parameters[2]);
+		final long jump = Long.parseLong(parameters[3]);
+		final int jump2 = Integer.parseInt(parameters[4]);
+
 		final LCG64ShiftRandom random = new LCG64ShiftRandom.ThreadSafe(seed);
 		random.split(splitp, splits);
 		random.jump(jump);
 		random.jump2(jump2);
 
-		for (final String[] value : testData(seed, splitp, splits, jump, jump2)) {
+		for (final String[] value : data) {
 			final long expected = Long.parseLong(value[0]);
 			Assert.assertEquals(random.nextLong(), expected);
 		}
 	}
 
-	@DataProvider(name = "parameters")
-	public Object[][] parameters() {
-		return new Object[][] {
-			{0L, 5, 0, 0L, 0},
-			{0L, 5, 0, 0L, 23},
-			{0L, 5, 0, 0L, 46},
-			{0L, 5, 0, 948392782247324L, 0},
-			{0L, 5, 0, 948392782247324L, 23},
-			{0L, 5, 0, 948392782247324L, 46},
-			{0L, 5, 2, 0L, 0},
-			{0L, 5, 2, 0L, 23},
-			{0L, 5, 2, 0L, 46},
-			{0L, 5, 2, 948392782247324L, 0},
-			{0L, 5, 2, 948392782247324L, 23},
-			{0L, 5, 2, 948392782247324L, 46},
-			{0L, 5, 4, 0L, 0},
-			{0L, 5, 4, 0L, 23},
-			{0L, 5, 4, 0L, 46},
-			{0L, 5, 4, 948392782247324L, 0},
-			{0L, 5, 4, 948392782247324L, 23},
-			{0L, 5, 4, 948392782247324L, 46},
-			{0L, 8, 0, 0L, 0},
-			{0L, 8, 0, 0L, 23},
-			{0L, 8, 0, 0L, 46},
-			{0L, 8, 0, 948392782247324L, 0},
-			{0L, 8, 0, 948392782247324L, 23},
-			{0L, 8, 0, 948392782247324L, 46},
-			{0L, 8, 2, 0L, 0},
-			{0L, 8, 2, 0L, 23},
-			{0L, 8, 2, 0L, 46},
-			{0L, 8, 2, 948392782247324L, 0},
-			{0L, 8, 2, 948392782247324L, 23},
-			{0L, 8, 2, 948392782247324L, 46},
-			{0L, 8, 4, 0L, 0},
-			{0L, 8, 4, 0L, 23},
-			{0L, 8, 4, 0L, 46},
-			{0L, 8, 4, 948392782247324L, 0},
-			{0L, 8, 4, 948392782247324L, 23},
-			{0L, 8, 4, 948392782247324L, 46},
-			{0L, 8, 6, 0L, 0},
-			{0L, 8, 6, 0L, 23},
-			{0L, 8, 6, 0L, 46},
-			{0L, 8, 6, 948392782247324L, 0},
-			{0L, 8, 6, 948392782247324L, 23},
-			{0L, 8, 6, 948392782247324L, 46},
-			{74236788222246L, 5, 0, 0L, 0},
-			{74236788222246L, 5, 0, 0L, 23},
-			{74236788222246L, 5, 0, 0L, 46},
-			{74236788222246L, 5, 0, 948392782247324L, 0},
-			{74236788222246L, 5, 0, 948392782247324L, 23},
-			{74236788222246L, 5, 0, 948392782247324L, 46},
-			{74236788222246L, 5, 2, 0L, 0},
-			{74236788222246L, 5, 2, 0L, 23},
-			{74236788222246L, 5, 2, 0L, 46},
-			{74236788222246L, 5, 2, 948392782247324L, 0},
-			{74236788222246L, 5, 2, 948392782247324L, 23},
-			{74236788222246L, 5, 2, 948392782247324L, 46},
-			{74236788222246L, 5, 4, 0L, 0},
-			{74236788222246L, 5, 4, 0L, 23},
-			{74236788222246L, 5, 4, 0L, 46},
-			{74236788222246L, 5, 4, 948392782247324L, 0},
-			{74236788222246L, 5, 4, 948392782247324L, 23},
-			{74236788222246L, 5, 4, 948392782247324L, 46},
-			{74236788222246L, 8, 0, 0L, 0},
-			{74236788222246L, 8, 0, 0L, 23},
-			{74236788222246L, 8, 0, 0L, 46},
-			{74236788222246L, 8, 0, 948392782247324L, 0},
-			{74236788222246L, 8, 0, 948392782247324L, 23},
-			{74236788222246L, 8, 0, 948392782247324L, 46},
-			{74236788222246L, 8, 2, 0L, 0},
-			{74236788222246L, 8, 2, 0L, 23},
-			{74236788222246L, 8, 2, 0L, 46},
-			{74236788222246L, 8, 2, 948392782247324L, 0},
-			{74236788222246L, 8, 2, 948392782247324L, 23},
-			{74236788222246L, 8, 2, 948392782247324L, 46},
-			{74236788222246L, 8, 4, 0L, 0},
-			{74236788222246L, 8, 4, 0L, 23},
-			{74236788222246L, 8, 4, 0L, 46},
-			{74236788222246L, 8, 4, 948392782247324L, 0},
-			{74236788222246L, 8, 4, 948392782247324L, 23},
-			{74236788222246L, 8, 4, 948392782247324L, 46},
-			{74236788222246L, 8, 6, 0L, 0},
-			{74236788222246L, 8, 6, 0L, 23},
-			{74236788222246L, 8, 6, 0L, 46},
-			{74236788222246L, 8, 6, 948392782247324L, 0},
-			{74236788222246L, 8, 6, 948392782247324L, 23},
-			{74236788222246L, 8, 6, 948392782247324L, 46}
-		};
-
+	@DataProvider(name = "data")
+	public Object[][] data() {
+		return TestData.list("/org/jenetics/util/LCG64ShiftRandom")
+			.map(data -> new Object[]{data})
+			.toArray(Object[][]::new);
 	}
+
 }

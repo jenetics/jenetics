@@ -30,7 +30,7 @@ import java.text.SimpleDateFormat
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.5 &mdash; <em>$Date: 2014-03-28 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-11-10 $</em>
  */
 new PropertiesLoader(ext).load(file('project.properties'))
 new PropertiesLoader(ext).load(file('include.properties'))
@@ -40,7 +40,7 @@ apply plugin: 'signing'
 apply plugin: 'packaging'
 
 ext {
-	javaVersion = '1.7'
+	javaVersion = '1.8'
 
 	now = Calendar.getInstance()
 	year = now.get(Calendar.YEAR);
@@ -73,21 +73,21 @@ allprojects { Project prj ->
 }
 
 task wrapper(type: Wrapper) {
-	gradleVersion = '1.10'
+	gradleVersion = '2.2'
 }
 
 task trimLineFeed(type: TrimLineFeedTask) {
-    directory = project.rootDir
-    outputs.upToDateWhen {
-        false
-    }
+	directory = project.rootDir
+	outputs.upToDateWhen {
+		false
+	}
 }
 
 task fixCodeBlock(type: FixJavadocCodeBlockTask) {
-    directory = project.rootDir
-    outputs.upToDateWhen {
-        false
-    }
+	directory = project.rootDir
+	outputs.upToDateWhen {
+		false
+	}
 }
 
 task alljavadoc(type: Javadoc) {

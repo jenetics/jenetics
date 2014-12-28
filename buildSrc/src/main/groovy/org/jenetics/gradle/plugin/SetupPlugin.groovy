@@ -35,7 +35,7 @@ import java.text.SimpleDateFormat
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5 &mdash; <em>$Date: 2014-10-03 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2014-11-12 $</em>
  */
 class SetupPlugin extends JeneticsPlugin {
 
@@ -121,6 +121,7 @@ class SetupPlugin extends JeneticsPlugin {
                     )
 			}
 		}
+
 		project.jacocoTestReport {
 			reports {
 				xml.enabled true
@@ -142,20 +143,21 @@ class SetupPlugin extends JeneticsPlugin {
 				charSet = 'UTF-8'
 				linkSource = true
 				links = [
-					'http://download.oracle.com/javase/7/docs/api/'
+					'https://docs.oracle.com/javase/8/docs/api'
 				]
 				windowTitle = "Jenetics ${project.version}"
 				docTitle = "<h1>Jenetics ${project.version}</h1>"
 				bottom = "&copy; ${copyrightYear} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${dateformat.format(now.time)})</i>"
 				stylesheetFile = project.file("${rootDir}/buildSrc/resources/javadoc/stylesheet.css")
 
-				exclude 'org/*/internal/**'
+				exclude '**/internal/**'
 
-				//options.addStringOption('-subpackages', 'org.jenetics')
-				//options.addStringOption('-exclude', 'org.jenetics.internal.util')
+				//options.addStringOption('subpackages', 'org.jenetics')
+                //options.addStringOption('excludedocfilessubdir', 'org/jenetics/internal')
+				options.addStringOption('noqualifier', 'org.jenetics.internal.collection')
 
-				//group('Core API', ['org.jenetics']).
-				//group('Utilities', ['org.jenetics.util', 'org.jenetics.stat'])
+				group('Core API', ['org.jenetics', 'org.jenetics.engine'])
+				group('Utilities', ['org.jenetics.util', 'org.jenetics.stat'])
 			}
 
 			// Copy the doc-files.
@@ -207,7 +209,7 @@ class SetupPlugin extends JeneticsPlugin {
 		'finally',
 		'overrides',
 		'rawtypes',
-		'serial',
+		//'serial',
 		//'try',
 		'unchecked'
 	]
