@@ -19,292 +19,108 @@
  */
 
 /**
+ * This is the base package of the Jenetics library and contains all domain
+ * classes, like Gene, Chromosome or Genotype. Most of this types are immutable
+ * data classes and doesn't implement any behavior. It also contains the Selector
+ * and Alterer interfaces and its implementations. The classes in this package
+ * are (almost) sufficient to implement an own GA.
+ *
  * <h3>Introduction</h3>
+ * <p><strong>Jenetics</strong> is an <strong>Genetic Algorithm</strong>,
+ * respectively an <strong>Evolutionary Algorithm</strong>, library written in
+ * Java. It is designed with a clear separation of the several concepts of the
+ * algorithm, e.&nbsp;g. Gene, Chromosome, Genotype, Phenotype, Population and
+ * fitness Function. <strong>Jenetics</strong> allows you to minimize and
+ * maximize the given fitness function without tweaking it. In contrast to other
+ * GA implementations, the library uses the concept of an evolution stream
+ * (EvolutionStream) for executing the evolution steps. Since the
+ * EvolutionStream implements the Java Stream interface, it works smoothly with
+ * the rest of the Java streaming API.</p>
  *
- * The <em>Jenetics</em> project provides a
- * <a href="http://en.wikipedia.org/wiki/Genetic_algorithm" >Genetic Algorithm</a>
- * (GA) implementation. The project has very few dependencies to other libraries.
- * At runtime it only depends on the <em>Jenetics</em> library.
- * <p>
- * The order of the single execution steps of genetic algorithms may slightlyh
- * differ from implementation to implementation. The following pseudo-code shows
- * the <em>Jenetics</em> genetic algorithm steps.
-
- * <img width="556" alt="Genetic algorithm"
- *      src="doc-files/genetic-algorithm.png" >
- *
- * <p>
- * Line (1) creates the initial population and the line (2) calculates the
- * fitness value of the individuals. (This is done by the
- * {@code GeneticAlgorithm.setup()} method.) Line (4) increases the generation
- * number and line (5) and (6) selects the survivor and the offspring population.
- * The offspring/survivor fraction is determined by the {@code offspringFraction}
- * property of the GA. The selected offspring are altered in line (7). The next
- * line combines the survivor population and the altered offspring population--
- * after removing the died individuals--to the new population. The steps from
- * line (4) to (9) are repeated until a given termination criterion is fulfilled.
- *
- *
- * <h3>Data structures</h3>
- * <p><img alt="Structure Diagram" src="doc-files/StructureClassDiagram.svg" ></p>
- *
- * The diagram above shows the main data structures of the GA implementation.
- * The {@link org.jenetics.Gene} is the base of the building block. Genes are
- * aggregated in {@link org.jenetics.Chromosome}s. One to n Chromosomes are
- * aggregated in {@link org.jenetics.Genotype}s. A Genotype and a fitness
- * {@link org.jenetics.util.Function} form the {@link org.jenetics.Phenotype}.
- * Phenotypes are collected into a {@link org.jenetics.Population}.
- *
- * <h3>Getting started</h3>
- *
- * The minimum GA setup needs a genotype factory, {@code Factory<Genotype<?>>},
- * and a fitness {@code Function}. The {@code Genotype} implements the
- * {@code Factory} interface and can therefore be used as prototype for creating
- * the initial Population and for creating new random Genotypes.
- *
- * [code]
- * public static void main(final String[] args) {
- *     final Factory&lt;Genotype&lt;BitGene&gt;&gt; gtf = Genotype.of(
- *         BitChromosome.of(10, 0.5)
- *     );
- *     final Function&lt;Genotype&lt;BitGene&gt; Double&gt; ff = ...
- *     final GeneticAlgorithm&lt;BitGene, Double&gt;
- *     ga = new GeneticAlgorithm&lt;&gt;(gtf, ff, Optimize.MAXIMUM)
- *
- *     ga.setup();
- *     ga.evolve(100);
- *     System.out.println(ga.getBestPhenotype());
- * }
- * [/code]
- *
- * <p>
- * The genotype factory, {@code gtf}, in the example above will create genotypes
- * which consists of one {@code BitChromosome} with length 10. The one to zero
- * probability of the newly created genotypes is set to 0.5. The fitness function
- * is parameterized with a {@code BitGene} and a {@code Double}. That means
- * that the fitness function is calculating the fitness value as {@code Double}.
- * The return type of the fitness function must be at least a {@code Comparable}.
- * The {@code GeneticAlgorithm} object is then created with the genotype factory
- * and the fitness function. In this example the GA tries to maximize the fitness
- * function. If you want to find the minimal value you have to change the optimize
- * parameter from {@code Optimize.MAXIMUM} to {@code Optimize.MINIMUM}. The
- * {@code ga.setup()} call creates the initial population and calculates its
- * fitness value. Then the GA evolves 100 generations ({@code ga.evolve(100)})
- * an prints the best phenotype found so far onto the console.
- * </p>
- * In a more advanced setup you may want to change the default mutation and/or
- * selection strategies.
- *
- * [code]
- * public static void main(final String[] args) {
- *     ...
- *     ga.setSelectors(new RouletteWheelSelector&lt;BitGene&gt;());
- *     ga.setAlterers(
- *         new SinglePointCrossover&lt;BitGene&gt;(0.1),
- *         new Mutator&lt;BitGene&gt;(0.01)
- *     );
- *
- *     ga.setup();
- *     ga.evolve(100);
- *     System.out.println(ga.getBestPhenotype());
- * }
- * [/code]
- *
- * <p>
- * The selection strategy for offspring and survivors are set to the
- * roulette-wheel selector. It is also possible to set the selector for
- * offspring and survivors independently with the {@code setOffspringSelector}
- * and {@code setSurvivorSelector} methods. The alterers are concatenated, at
- * first the crossover (with probability 0.1) is performed and then the
- * chromosomes are mutated (with probability 0.01).
- * </p>
- *
- * <h3>Serialization</h3>
- *
- * With the serialization mechanism you can write a population to disk and load
- * it into an GA at a later time. It can also be used to transfer populations to
- * GAs, running on different hosts, over a network link. The IO class, located
- * in the {@code org.jenetics.util} package, supports native Java serialization
- * and XML serialization. For XML marshaling <em>Jenetics</em> internally uses
- * the XML support from the Javolution project.
- *
- * [code]
- * // Writing the population to disk.
- * final File file = new File("population.xml");
- * IO.jaxb.write(ga.getPopulation(), file);
- *
- * // Reading the population from disk.
- * final Population&lt;DoubleGene,Double&gt; population =
- *     (Population&lt;DoubleGene, Double&gt;)IO.jaxb.read(file);
- * ga.setPopulation(population);
- * [/code]
- *
- *
- * <h3>Examples</h3>
- *
- * <h4>Ones Counting</h4>
- * Ones counting is one of the simplest model-problem. It uses a binary
- * chromosome and forms a classic genetic algorithm. In the classic genetic
- * algorithm the problem is a maximization problem and the fitness function is
- * positive. The domain of the fitness function is a bit-chromosome. The fitness
- * of a Genotype is proportional to the number of ones.
- *
+ * <h3>Getting Started</h3>
+ * <p>The minimum evolution Engine setup needs a genotype factory,
+ * Factory&lt;Genotype&lt;?&gt;&gt;, and a fitness Function. The Genotype
+ * implements the Factory interface and can therefore be used as prototype for
+ * creating the initial Population and for creating new random Genotypes.</p>
  * [code]
  * import org.jenetics.BitChromosome;
  * import org.jenetics.BitGene;
- * import org.jenetics.GeneticAlgorithm;
  * import org.jenetics.Genotype;
- * import org.jenetics.Mutator;
- * import org.jenetics.NumberStatistics;
- * import org.jenetics.Optimize;
- * import org.jenetics.RouletteWheelSelector;
- * import org.jenetics.SinglePointCrossover;
- * import org.jenetics.util.Factory;
- * import org.jenetics.util.Function;
+ * import org.jenetics.engine.Engine;
+ * import org.jenetics.engine.EvolutionResult;
  *
- * final class OneCounter
- *     implements Function&lt;Genotype&lt;BitGene&gt;, Integer&gt;
- * {
- *     \@Override
- *     public Integer apply(final Genotype&lt;BitGene&gt; genotype) {
- *         return ((BitChromosome)genotype.getChromosome()).bitCount();
+ * public class HelloWorld {
+ *      // 2.) Definition of the fitness function.
+ *     private static Integer eval(Genotype&lt;BitGene&gt; gt) {
+ *         return ((BitChromosome)gt.getChromosome()).bitCount();
  *     }
- * }
  *
- * public class OnesCounting {
  *     public static void main(String[] args) {
- *         final Factory&lt;Genotype&lt;BitGene&gt;&gt; gtf = Genotype.of(
- *             BitChromosome.of(20, 0.15)
- *         );
- *         final Function&lt;Genotype&lt;BitGene&gt;, Integer&gt; ff = new OneCounter();
- *         final GeneticAlgorithm&lt;BitGene, Integer&gt; ga =
- *             new GeneticAlgorithm&lt;&gt;(gtf, ff, Optimize.MAXIMUM);
+ *         // 1.) Define the genotype (factory) suitable
+ *         //     for the problem.
+ *         Factory&lt;Genotype&lt;BitGene&gt;&gt; gtf =
+ *         Genotype.of(BitChromosome.of(10, 0.5));
  *
- *         ga.setStatisticsCalculator(
- *             new NumberStatistics.Calculator&lt;BitGene, Integer&gt;()
- *         );
- *         ga.setPopulationSize(50);
- *         ga.setSelectors(
- *             new RouletteWheelSelector&lt;BitGene, Integer&gt;()
- *         );
- *         ga.setAlterers(
- *             new Mutator&lt;BitGene&gt;(0.55),
- *             new SinglePointCrossover&lt;BitGene&gt;(0.06)
- *         );
+ *         // 3.) Create the execution environment.
+ *         Engine&lt;BitGene, Integer&gt; engine = Engine
+ *            .builder(HelloWorld::eval, gtf)
+ *            .build();
  *
- *         ga.setup();
- *         ga.evolve(100);
- *         System.out.println(ga.getBestStatistics());
+ *         // 4.) Start the execution (evolution) and
+ *         //     collect the result.
+ *         Genotype&lt;BitGene&gt; result = engine.stream()
+ *             .limit(100)
+ *             .collect(EvolutionResult.toBestGenotype());
+ *
+ *         System.out.println(&quot;Hello World:\n&quot; + result);
  *     }
  * }
  * [/code]
  *
- * The genotype in this example consists of one BitChromosome with a ones
- * probability of 0.15. The altering of the offspring population is performed
- * by mutation, with mutation probability of 0.55, and then by a single-point
- * crossover, with crossover probability of 0.06. After creating the initial
- * population, with the ga.setup() call, 100 generations are evolved. The
- * tournament selector is used for both, the offspring- and the survivor
- * selection---this is the default selector.
- *
- *
- * <h4>Traveling Salesman</h4>
- *
- * The Traveling Salesman problem is one of the classical problems in
- * computational mathematics and it is the most notorious NP-complete problem.
- * The goal is to find the shortest distance, or the path, with the least costs,
- * between N  different cities. Testing all possible path for N  cities would
- * lead to N!  checks to find the shortest one.
- * The following example uses a path where the cities are lying on a circle.
- * That means, the optimal path will be a polygon. This makes it easier to check
- * the quality of the found solution.
- *
- * [code]
- * import static java.lang.Math.PI;
- * import static java.lang.Math.abs;
- * import static java.lang.Math.sin;
- *
- * import org.jenetics.Chromosome;
- * import org.jenetics.EnumGene;
- * import org.jenetics.GeneticAlgorithm;
- * import org.jenetics.Genotype;
- * import org.jenetics.NumberStatistics.Calculator;
- * import org.jenetics.Optimize;
- * import org.jenetics.PartiallyMatchedCrossover;
- * import org.jenetics.PermutationChromosome;
- * import org.jenetics.SwapMutator;
- * import org.jenetics.util.Factory;
- * import org.jenetics.util.Function;
- *
- * class FF
- *     implements Function&lt;Genotype&lt;EnumGene&lt;Integer&gt;&gt;, Double&gt;
- * {
- *     private final double[][] _adjacence;
- *     public FF(final double[][] adjacence) {
- *         _adjacence = adjacence;
- *     }
- *
- *     \@Override
- *     public Double apply(final Genotype&lt;EnumGene&lt;Integer&gt;&gt; genotype) {
- *         final Chromosome&lt;EnumGene&lt;Integer&gt;&gt; path =
- *             genotype.getChromosome();
- *
- *         double length = 0.0;
- *         for (int i = 0, n = path.length(); i &lt; n; ++i) {
- *             final int from = path.getGene(i).getAllele();
- *             final int to = path.getGene((i + 1)%n).getAllele();
- *             length += _adjacence[from][to];
- *         }
- *         return length;
- *     }
- * }
- *
- * public class TravelingSalesman {
- *
- *     public static void main(String[] args) {
- *         final int stops = 20;
- *
- *         final Function&lt;Genotype&lt;EnumGene&lt;Integer&gt;&gt;, Double&gt; ff =
- *             new FF(adjacencyMatrix(stops));
- *         final Factory&lt;Genotype&lt;EnumGene&lt;Integer&gt;&gt;&gt; gt = Genotype.of(
- *             PermutationChromosome.ofInteger(stops)
- *         );
- *         final GeneticAlgorithm&lt;EnumGene&lt;Integer&gt;, Double&gt;
- *             ga = new GeneticAlgorithm&lt;&gt;(gt, ff, Optimize.MINIMUM);
- *         ga.setStatisticsCalculator(
- *             new Calculator&lt;EnumGene&lt;Integer&gt;, Double&gt;()
- *         );
- *         ga.setPopulationSize(300);
- *         ga.setAlterers(
- *             new SwapMutator&lt;EnumGene&lt;Integer&gt;&gt;(0.2),
- *             new PartiallyMatchedCrossover&lt;Integer&gt;(0.3)
- *         );
- *
- *         ga.setup();
- *         ga.evolve(700);
- *         System.out.println(ga.getBestStatistics());
- *         System.out.println(ga.getBestPhenotype());
- *     }
- *
- *     private static double[][] adjacencyMatrix(int stops) {
- *         double[][] matrix = new double[stops][stops];
- *         for (int i = 0; i &lt; stops; ++i) {
- *             for (int j = 0; j &lt; stops; ++j) {
- *                 matrix[i][j] = chord(stops, abs(i - j), RADIUS);
- *             }
- *         }
- *         return matrix;
- *     }
- *     private static double chord(int stops, int i, double r) {
- *         return 2.0*r*abs(sin((PI*i)/stops));
- *     }
- *     private static double RADIUS = 10.0;
- * }
- * [/code]
+ * <p>In contrast to other GA implementations, the library uses the concept of
+ * an evolution stream (EvolutionStream) for executing the evolution steps.
+ * Since the EvolutionStream implements the Java Stream interface, it works
+ * smoothly with the rest of the Java streaming API. Now let's have a closer
+ * look at listing above and discuss this simple program step by step:</p>
+ * <ol>
+ * <li>The probably most challenging part, when setting up a new evolution
+ * Engine, is to transform the problem domain into a appropriate Genotype
+ * (factory) representation. In our example we want to count the number of ones
+ * of a BitChromosome. Since we are counting only the ones of one chromosome,
+ * we are adding only one BitChromosome to our Genotype. In general, the
+ * Genotype can be created with 1 to n chromosomes.</li>
+ * <li>Once this is done, the fitness function which should be maximized, can be
+ * defined. Utilizing the new language features introduced in Java 8, we simply
+ * write a private static method, which takes the genotype we defined and
+ * calculate it's fitness value. If we want to use the optimized bit-counting
+ * method, bitCount(), we have to cast the Chromosome&lt;BitGene&gt; class to
+ * the actual used BitChromosome class. Since we know for sure that we created
+ * the Genotype with a BitChromosome, this can be done safely. A reference to
+ * the eval method is then used as fitness function and passed to the
+ * Engine.build method.</li>
+ * <li>In the third step we are creating the evolution Engine, which is
+ * responsible for changing, respectively evolving, a given population. The
+ * Engine is highly configurable and takes parameters for controlling the
+ * evolutionary and the computational environment. For changing the evolutionary
+ * behavior, you can set different alterers and selectors. By changing the used
+ * Executor service, you control the number of threads, the Engine is allowed to
+ * use. An new Engine instance can only be created via its builder, which is
+ * created by calling the Engine.builder method.</li>
+ * <li>In the last step, we can create a new EvolutionStream from our Engine.
+ * The EvolutionStream is the model or view of the evolutionary process. It
+ * serves as a »process handle« and also allows you, among other things, to
+ * control the termination of the evolution. In our example, we simply truncate
+ * the stream after 100 generations. If you don't limit the stream, the
+ * EvolutionStream will not terminate and run forever. Since the EvolutionStream
+ * extends the java.util.stream.Stream interface, it integrates smoothly with
+ * the rest of the Java streaming API. The final result, the best Genotype in
+ * our example, is then collected with one of the predefined collectors of the
+ * EvolutionResult class.</li>
+ * </ol>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-30 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-12-27 $</em>
  */
 package org.jenetics;
 

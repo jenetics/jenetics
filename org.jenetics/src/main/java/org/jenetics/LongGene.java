@@ -19,8 +19,6 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.math.random.nextLong;
-
 import java.util.Random;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -32,24 +30,33 @@ import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.jenetics.util.Array;
+import org.jenetics.internal.math.random;
+
 import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 import org.jenetics.util.Mean;
 import org.jenetics.util.RandomRegistry;
 
 /**
  * NumericGene implementation which holds a 64 bit integer number.
  *
+ * <p>This is a <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/doc-files/ValueBased.html">
+ * value-based</a> class; use of identity-sensitive operations (including
+ * reference equality ({@code ==}), identity hash code, or synchronization) on
+ * instances of {@code LongGene} may have unpredictable results and should
+ * be avoided.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-04-09 $</em>
  * @since 1.6
+ * @version 3.0 &mdash; <em>$Date: 2014-11-12 $</em>
  */
 @XmlJavaTypeAdapter(LongGene.Model.Adapter.class)
 public final class LongGene
 	extends AbstractNumericGene<Long, LongGene>
 	implements
-			NumericGene<Long, LongGene>,
-			Mean<LongGene>
+		NumericGene<Long, LongGene>,
+		Mean<LongGene>,
+		Comparable<LongGene>
 {
 
 	private static final long serialVersionUID = 1L;
@@ -65,8 +72,13 @@ public final class LongGene
 	 * @param max the maximal valid value of this gene (inclusively).
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	public LongGene(final Long value, final Long min, final Long max) {
+	LongGene(final Long value, final Long min, final Long max) {
 		super(value, min, max);
+	}
+
+	@Override
+	public int compareTo(final LongGene other) {
+		return _value.compareTo(other._value);
 	}
 
 	/**
@@ -93,7 +105,7 @@ public final class LongGene
 	 * @return a new {@code LongGene} with the given parameters.
 	 */
 	public static LongGene of(final long min, final long max) {
-		return of(nextLong(RandomRegistry.getRandom(), min, max), min, max);
+		return of(random.nextLong(RandomRegistry.getRandom(), min, max), min, max);
 	}
 
 	static ISeq<LongGene> seq(
@@ -105,11 +117,9 @@ public final class LongGene
 		final long max = maximum;
 		final Random r = RandomRegistry.getRandom();
 
-		final Array<LongGene> genes = new Array<>(length);
-		for (int i = 0; i < length; ++i) {
-			genes.set(i, new LongGene(nextLong(r, min, max), minimum, maximum));
-		}
-		return genes.toISeq();
+		return MSeq.<LongGene>ofLength(length)
+			.fill(() -> new LongGene(random.nextLong(r, min, max), minimum, maximum))
+			.toISeq();
 	}
 
 	@Override
@@ -120,13 +130,13 @@ public final class LongGene
 	@Override
 	public LongGene newInstance() {
 		return new LongGene(
-			nextLong(RandomRegistry.getRandom(), _min, _max), _min, _max
+			random.nextLong(RandomRegistry.getRandom(), _min, _max), _min, _max
 		);
 	}
 
 	@Override
 	public LongGene mean(final LongGene that) {
-		return new LongGene(_value + (that._value - _value) / 2, _min, _max);
+		return new LongGene(_value + (that._value - _value)/2, _min, _max);
 	}
 
 	/* *************************************************************************

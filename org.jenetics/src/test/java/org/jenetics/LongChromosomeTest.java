@@ -19,27 +19,20 @@
  */
 package org.jenetics;
 
-import static org.jenetics.stat.StatisticsAssert.assertDistribution;
-import static org.jenetics.util.accumulators.accumulate;
+import static org.jenetics.stat.StatisticsAssert.assertUniformDistribution;
+import static org.jenetics.util.RandomRegistry.using;
 
 import java.util.Random;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.internal.util.Concurrency;
-
 import org.jenetics.stat.Histogram;
-import org.jenetics.stat.UniformDistribution;
-import org.jenetics.stat.Variance;
-import org.jenetics.util.Function;
-import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Scoped;
-import org.jenetics.util.accumulators.MinMax;
+import org.jenetics.stat.MinMax;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-05 $</em>
+ * @version <em>$Date: 2014-10-19 $</em>
  */
 public class LongChromosomeTest
 	extends NumericChromosomeTester<Long, LongGene>
@@ -50,44 +43,31 @@ public class LongChromosomeTest
 	);
 
 	@Override
-	protected LongChromosome getFactory() {
+	protected LongChromosome factory() {
 		return _factory;
 	}
 
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstanceDistribution() {
-		try (Scoped<?> s = RandomRegistry.scope(new Random(12345))) {
-
+		using(new Random(12345), r -> {
 			final long min = 0;
 			final long max = 10000000;
 
-			final MinMax<Long> mm = new MinMax<>();
-			final Variance<Long> variance = new Variance<>();
+			final MinMax<Long> mm = MinMax.of();
 			final Histogram<Long> histogram = Histogram.of(min, max, 10);
 
 			for (int i = 0; i < 1000; ++i) {
 				final LongChromosome chromosome = new LongChromosome(min, max, 500);
-
-				accumulate(
-					Concurrency.commonPool(),
-					chromosome,
-					mm.map(Allele),
-					variance.map(Allele),
-					histogram.map(Allele)
-				);
+				for (LongGene gene : chromosome) {
+					mm.accept(gene.getAllele());
+					histogram.accept(gene.getAllele());
+				}
 			}
 
 			Assert.assertTrue(mm.getMin().compareTo(0L) >= 0);
 			Assert.assertTrue(mm.getMax().compareTo(100L) <= 100);
-			assertDistribution(histogram, new UniformDistribution<>(min, max));
-		}
+			assertUniformDistribution(histogram);
+		});
 	}
-
-	private static final Function<LongGene, Long> Allele =
-		new Function<LongGene, Long>() {
-			@Override public Long apply(final LongGene value) {
-				return value.getAllele();
-			}
-		};
 
 }

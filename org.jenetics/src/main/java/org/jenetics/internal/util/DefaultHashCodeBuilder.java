@@ -22,14 +22,13 @@ package org.jenetics.internal.util;
 import java.util.Arrays;
 
 import org.jenetics.util.Seq;
-import org.jenetics.util.arrays;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-10 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-06-05 $</em>
  */
-public final class DefaultHashCodeBuilder implements Hash {
+final class DefaultHashCodeBuilder implements Hash {
 	private static final int P1 = 47;
 	private static final int P2 = 103;
 	private static final int P3 = 1231;
@@ -38,7 +37,7 @@ public final class DefaultHashCodeBuilder implements Hash {
 
 	protected int _hash = 0;
 
-	protected DefaultHashCodeBuilder(final Class<?> type) {
+	DefaultHashCodeBuilder(final Class<?> type) {
 		_hash = type.hashCode();
 	}
 
@@ -94,7 +93,7 @@ public final class DefaultHashCodeBuilder implements Hash {
 
 	@Override
 	public DefaultHashCodeBuilder and(final long value) {
-		_hash += P1*(int)(value^(value >>> 32)); return this;
+		_hash += P1*Long.hashCode(value); return this;
 	}
 
 	@Override
@@ -104,7 +103,7 @@ public final class DefaultHashCodeBuilder implements Hash {
 
 	@Override
 	public DefaultHashCodeBuilder and(final float value) {
-		_hash += P1*Float.floatToIntBits(value); return this;
+		_hash += P1*Float.hashCode(value); return this;
 	}
 
 	@Override
@@ -114,9 +113,7 @@ public final class DefaultHashCodeBuilder implements Hash {
 
 	@Override
 	public DefaultHashCodeBuilder and(final double value) {
-		long bits = Double.doubleToLongBits(value);
-		_hash += (int)(bits^(bits >>> 32));
-		return this;
+		_hash += P1*Double.hashCode(value); return this;
 	}
 
 	@Override
@@ -136,7 +133,7 @@ public final class DefaultHashCodeBuilder implements Hash {
 
 	@Override
 	public DefaultHashCodeBuilder and(final Seq<?> values) {
-		_hash += arrays.hashCode(values); return this;
+		_hash += Seq.hashCode(values); return this;
 	}
 
 	@Override

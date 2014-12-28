@@ -19,23 +19,20 @@
  */
 package org.jenetics;
 
-//import static org.jenetics.TestUtils.diff;
-
 import static org.jenetics.TestUtils.newDoubleGenePopulation;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-15 $</em>
+ * @version <em>$Date: 2014-08-28 $</em>
  */
 public class SwapMutatorTest extends MutatorTestBase {
 
 	@Override
-	public Alterer<DoubleGene> newAlterer(double p) {
+	public Alterer<DoubleGene, Double> newAlterer(double p) {
 		return new SwapMutator<>(p);
 	}
 
@@ -46,13 +43,12 @@ public class SwapMutatorTest extends MutatorTestBase {
 		final Integer nchromosomes,
 		final Integer npopulation
 	) {
-		final Population<DoubleGene, Double> p1 = newDoubleGenePopulation(
-					ngenes, nchromosomes, npopulation
-				);
+		final Population<DoubleGene, Double> p1 =
+			newDoubleGenePopulation(ngenes, nchromosomes, npopulation);
 		final Population<DoubleGene, Double> p2 = p1.copy();
 		Assert.assertEquals(p2, p1);
 
-		final Alterer<DoubleGene> mutator = newAlterer(0.01);
+		final Alterer<DoubleGene, Double> mutator = newAlterer(0.01);
 
 		final int alterations = mutator.alter(p1, 1);
 		//final int diff = diff(p1, p2);
@@ -81,18 +77,18 @@ public class SwapMutatorTest extends MutatorTestBase {
 	@DataProvider(name = "alterProbabilityParameters")
 	public Object[][] alterProbabilityParameters() {
 		return new Object[][] {
-				//    ngenes,       nchromosomes     npopulation
-				{ new Integer(180),  new Integer(1),  new Integer(150), new Double(0.15) },
-				{ new Integer(180),  new Integer(2),  new Integer(150), new Double(0.15) },
-				{ new Integer(180),  new Integer(15), new Integer(150), new Double(0.15) },
+			//    ngenes,       nchromosomes     npopulation
+			{180, 1,  150, 0.15},
+			{180, 2,  150, 0.15},
+			{180, 15, 150, 0.15},
 
-				{ new Integer(180),  new Integer(1),  new Integer(150), new Double(0.5) },
-				{ new Integer(180),  new Integer(2),  new Integer(150), new Double(0.5) },
-				{ new Integer(180),  new Integer(15), new Integer(150), new Double(0.5) },
+			{180, 1,  150, 0.5},
+			{180, 2,  150, 0.5},
+			{180, 15, 150, 0.5},
 
-				{ new Integer(180),  new Integer(1),  new Integer(150), new Double(0.85) },
-				{ new Integer(180),  new Integer(2),  new Integer(150), new Double(0.85) },
-				{ new Integer(180),  new Integer(15), new Integer(150), new Double(0.85) }
+			{180, 1,  150, 0.85},
+			{180, 2,  150, 0.85},
+			{180, 15, 150, 0.85}
 		};
 	}
 

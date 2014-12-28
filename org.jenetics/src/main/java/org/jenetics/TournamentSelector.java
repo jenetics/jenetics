@@ -21,12 +21,14 @@ package org.jenetics;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.maxBy;
 
 import java.util.Random;
+import java.util.stream.IntStream;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 
-import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -43,7 +45,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-08-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-10-28 $</em>
  */
 public class TournamentSelector<
 	G extends Gene<?, G>,
@@ -92,72 +94,33 @@ public class TournamentSelector<
 			));
 		}
 
-		final Population<G, C> pop = new Population<>(count);
-		final Factory<Phenotype<G, C>> factory = factory(
-			population, opt, _sampleSize, RandomRegistry.getRandom()
+		final Random random = RandomRegistry.getRandom();
+		return new Population<G, C>(count).fill(
+			() -> select(population, opt, _sampleSize, random),
+			count
 		);
-
-		return pop.fill(factory, count);
 	}
 
-	private static <
-		G extends Gene<?, G>,
-		C extends Comparable<? super C>
-	>
-	Factory<Phenotype<G, C>> factory(
-		final Population<G, C> population,
-		final Optimize opt,
-		final int sampleSize,
-		final Random random
-	) {
-		return new Factory<Phenotype<G, C>>() {
-			@Override
-			public Phenotype<G, C> newInstance() {
-				return select(population, opt, sampleSize, random);
-			}
-		};
-	}
-
-	private static <
-		G extends Gene<?, G>,
-		C extends Comparable<? super C>
-	>
-	Phenotype<G, C> select(
+	private Phenotype<G, C> select(
 		final Population<G, C> population,
 		final Optimize opt,
 		final int sampleSize,
 		final Random random
 	) {
 		final int N = population.size();
-		Phenotype<G, C> winner = population.get(random.nextInt(N));
-
-		for (int j = 0; j < sampleSize; ++j) {
-			final Phenotype<G, C> selection = population.get(random.nextInt(N));
-			if (opt.compare(selection, winner) > 0) {
-				winner = selection;
-			}
-		}
-		assert (winner != null);
-
-		return winner;
+		return IntStream.range(0, sampleSize)
+			.mapToObj(i -> population.get(random.nextInt(N)))
+			.collect(maxBy(opt.ascending())).get();
 	}
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(_sampleSize).value();
+		return Hash.of(getClass()).and(_sampleSize).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null || obj.getClass() != getClass()) {
-			return false;
-		}
-
-		final TournamentSelector<?, ?> selector = (TournamentSelector<?, ?>)obj;
-		return _sampleSize == selector._sampleSize;
+		return Equality.of(this, obj).test(s -> _sampleSize == s._sampleSize);
 	}
 
 	@Override

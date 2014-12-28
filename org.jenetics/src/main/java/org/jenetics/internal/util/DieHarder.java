@@ -20,18 +20,28 @@
 package org.jenetics.internal.util;
 
 import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
+import static java.util.regex.Pattern.quote;
+import static java.util.stream.Collectors.counting;
+import static java.util.stream.Collectors.groupingBy;
+import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
+import java.util.Optional;
+import java.util.OptionalDouble;
+import java.util.OptionalInt;
 import java.util.Random;
 
+import org.jenetics.internal.util.DieHarder.Result.Assessment;
 
 /**
  * Class for testing a given random engine using the
@@ -40,7 +50,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-12-22 $</em>
  */
 public final class DieHarder {
 
@@ -49,15 +59,15 @@ public final class DieHarder {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.5
-	 * @version 1.5 &mdash; <em>$Date: 2014-02-15 $</em>
+	 * @version 3.0 &mdash; <em>$Date: 2014-12-22 $</em>
 	 */
 	private static final class Randomizer implements Runnable {
 		private final Random _random;
-		private final OutputStream _out;
+		private final CountingOutputStream _out;
 
-		public Randomizer(final Random random, final OutputStream out) {
-			_random = Objects.requireNonNull(random);
-			_out = Objects.requireNonNull(out);
+		Randomizer(final Random random, final OutputStream out) {
+			_random = requireNonNull(random);
+			_out = new CountingOutputStream(out);
 		}
 
 		@Override
@@ -72,6 +82,9 @@ public final class DieHarder {
 			}
 		}
 
+		long getCount() {
+			return _out.getCount();
+		}
 	}
 
 	public static void main(final String[] args) throws Exception {
@@ -108,24 +121,56 @@ public final class DieHarder {
 		final ProcessBuilder builder = new ProcessBuilder(dieharderArgs);
 		final Process dieharder = builder.start();
 
-		final Thread randomizer = new Thread(new Randomizer(
+		final Randomizer randomizer = new Randomizer(
 			random,
 			dieharder.getOutputStream()
-		));
-		randomizer.start();
+		);
+		final Thread randomizerThread = new Thread(randomizer);
+		randomizerThread.start();
 
+		// The dieharder console output.
 		final BufferedReader stdout = new BufferedReader (
 			new InputStreamReader(dieharder.getInputStream())
 		);
-		String line = null;
-		while ((line = stdout.readLine()) != null) {
-			System.out.println(line);
+
+		final List<Result> results = new ArrayList<>();
+		for (String l = stdout.readLine(); l != null; l = stdout.readLine()) {
+			Result.parse(l).ifPresent(results::add);
+			System.out.println(l);
 		}
 
 		dieharder.waitFor();
-		randomizer.interrupt();
-		final long sec = (System.currentTimeMillis() - start)/1000;
+		randomizerThread.interrupt();
 
+		final long millis = System.currentTimeMillis() - start;
+		final long sec = (millis)/1000;
+		final double megaBytes = randomizer.getCount()/(1024.0*1024.0);
+
+		// Calculate statistics.
+		final Map<Assessment, Long> grouped = results.stream()
+			.collect(groupingBy(r -> r.assessment, counting()));
+
+		final long passed = grouped.getOrDefault(Assessment.PASSED, 0L);
+		final long weak = grouped.getOrDefault(Assessment.WEAK, 0L);
+		final long failed = grouped.getOrDefault(Assessment.FAILED, 0L);
+
+		final NumberFormat formatter = NumberFormat.getIntegerInstance();
+		formatter.setMinimumFractionDigits(3);
+		formatter.setMaximumFractionDigits(3);
+
+		println("#=============================================================================#");
+		println(
+			"# %-76s#",
+			format("Summary: PASSED=%d, WEAK=%d, FAILED=%d", passed, weak, failed)
+		);
+		println(
+			"# %-76s#",
+			format("         %s MB of random data created with %s MB/sec",
+				formatter.format(megaBytes),
+				formatter.format(megaBytes/(millis/1000.0))
+			)
+		);
+		println("#=============================================================================#");
 		printt("Runtime: %d:%02d:%02d", sec/3600, (sec%3600)/60, (sec%60));
 
 	}
@@ -163,6 +208,175 @@ public final class DieHarder {
 
 	private static void println(final String pattern, final Object... args) {
 		System.out.println(format(pattern, args));
+	}
+
+
+
+	/**
+	 * Represents one DieHarder test result.
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since 3.0
+	 * @version 3.0 &mdash; <em>$Date: 2014-12-22 $</em>
+	 */
+	static final class Result {
+
+		static enum Assessment {
+			PASSED,
+			FAILED,
+			WEAK;
+
+			static Optional<Assessment> of(final String assessment) {
+				switch (assessment) {
+					case "PASSED": return Optional.of(PASSED);
+					case "FAILED": return Optional.of(FAILED);
+					case "WEAK": return Optional.of(WEAK);
+					default: return Optional.empty();
+				}
+			}
+		}
+
+		final String testName;
+		final int ntup;
+		final int tsamples;
+		final int psamples;
+		final double pvalue;
+		final Assessment assessment;
+
+		private Result(
+			final String testName,
+			final int ntup,
+			final int tsamples,
+			final int psamples,
+			final double pvalue,
+			final Assessment assessment
+		) {
+			this.testName = testName;
+			this.ntup = ntup;
+			this.tsamples = tsamples;
+			this.psamples = psamples;
+			this.pvalue = pvalue;
+			this.assessment = assessment;
+		}
+
+		static Optional<Result> parse(final String line) {
+			final String[] parts = line.split(quote("|"));
+
+			if (parts.length == 6) {
+				final String name = parts[0].trim();
+				final OptionalInt ntup = toOptionalInt(parts[1].trim());
+				final OptionalInt tsamples = toOptionalInt(parts[2].trim());
+				final OptionalInt psamples = toOptionalInt(parts[3].trim());
+				final OptionalDouble pvalue = toOptionalDouble(parts[4].trim());
+				final Optional<Assessment> assessment = Assessment.of(parts[5].trim());
+
+				if (ntup.isPresent() &&
+					tsamples.isPresent() &&
+					psamples.isPresent() &&
+					pvalue.isPresent() &&
+					assessment.isPresent())
+				{
+					return Optional.of(new Result(
+						name,
+						ntup.getAsInt(),
+						tsamples.getAsInt(),
+						psamples.getAsInt(),
+						pvalue.getAsDouble(),
+						assessment.get()
+					));
+				}
+			}
+
+			return Optional.empty();
+		}
+
+		private static OptionalInt toOptionalInt(final String value) {
+			try {
+				return OptionalInt.of(Integer.parseInt(value));
+			} catch (NumberFormatException e) {
+				return OptionalInt.empty();
+			}
+		}
+
+		private static OptionalDouble toOptionalDouble(final String value) {
+			try {
+				return OptionalDouble.of(Double.parseDouble(value));
+			} catch (NumberFormatException e) {
+				return OptionalDouble.empty();
+			}
+		}
+
+		@Override
+		public int hashCode() {
+			return Hash.of(getClass())
+				.and(testName)
+				.and(ntup)
+				.and(tsamples)
+				.and(psamples)
+				.and(pvalue)
+				.and(assessment).value();
+		}
+
+		@Override
+		public boolean equals(final Object obj) {
+			return Equality.of(this, obj).test(result ->
+				eq(testName, result.testName) &&
+				eq(ntup, result.ntup) &&
+				eq(tsamples, result.tsamples) &&
+				eq(psamples, result.psamples) &&
+				eq(pvalue, result.psamples) &&
+				eq(assessment, result.assessment)
+			);
+		}
+
+		@Override
+		public String toString() {
+			return format(
+				"%s[ntup=%d, tsamples=%d, psamples=%d, pvalue=%f, assessment=%s]",
+				testName, ntup, tsamples, psamples, pvalue, assessment
+			);
+		}
+	}
+
+	/**
+	 * Counts the written bytes.
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since 3.0
+	 * @version 3.0 &mdash; <em>$Date: 2014-12-22 $</em>
+	 */
+	private static final class CountingOutputStream extends OutputStream {
+		private final OutputStream _delegate;
+		private long _count;
+
+		CountingOutputStream(final OutputStream delegate) {
+			_delegate = requireNonNull(delegate);
+		}
+
+		@Override
+		public void write(final byte[] b) throws IOException {
+			_delegate.write(b);
+			_count += b.length;
+		}
+
+		@Override
+		public void write(final byte[] b, final int offset, final int length)
+			throws IOException
+		{
+			_delegate.write(b, offset, length);
+			_count += length;
+		}
+
+		@Override
+		public void write(final int b) throws IOException {
+			_delegate.write(b);
+			_count += 1;
+		}
+
+		long getCount() {
+			return _count;
+		}
+
 	}
 
 }

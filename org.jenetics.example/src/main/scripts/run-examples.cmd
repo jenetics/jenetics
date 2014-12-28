@@ -24,5 +24,4 @@ java -cp %CLS_PATH% org.jenetics.example.Knapsack
 java -cp %CLS_PATH% org.jenetics.example.OnesCounting
 java -cp %CLS_PATH% org.jenetics.example.RealFunction
 java -cp %CLS_PATH% org.jenetics.example.StringGenerator
-java -cp %CLS_PATH% org.jenetics.example.Transformation
 java -cp %CLS_PATH% org.jenetics.example.TravelingSalesman

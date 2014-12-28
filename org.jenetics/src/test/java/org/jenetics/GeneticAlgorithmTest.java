@@ -19,127 +19,257 @@
  */
 package org.jenetics;
 
-import java.io.Serializable;
-import java.util.Random;
-import java.util.concurrent.ForkJoinPool;
-
-import org.testng.Assert;
-import org.testng.Reporter;
-import org.testng.annotations.Test;
-
-import org.jenetics.internal.util.Concurrency;
-
-import org.jenetics.util.Factory;
-import org.jenetics.util.Function;
-import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Scoped;
+//import static java.lang.String.format;
+//
+//import java.util.ArrayList;
+//import java.util.Arrays;
+//import java.util.List;
+//import java.util.Random;
+//import java.util.concurrent.ForkJoinPool;
+//import java.util.function.Function;
+//
+//import org.testng.Assert;
+//import org.testng.Reporter;
+//import org.testng.annotations.DataProvider;
+//import org.testng.annotations.Test;
+//
+//import org.jenetics.internal.util.Concurrency;
+//
+//import org.jenetics.util.Factory;
+//import org.jenetics.util.LCG64ShiftRandom;
+//import org.jenetics.util.RandomRegistry;
+//import org.jenetics.util.Scoped;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-05 $</em>
+ * @version <em>$Date: 2014-09-17 $</em>
  */
 public class GeneticAlgorithmTest {
 
-	private static class FF
-		implements Function<Genotype<DoubleGene>, Double>,
-					Serializable
-	{
-		private static final long serialVersionUID = 618089611921083000L;
-
-		@Override
-		public Double apply(final Genotype<DoubleGene> genotype) {
-			return genotype.getGene().getAllele();
-		}
-	}
-
-	@Test
-	public void optimize() {
-		final Random random = new Random(123456);
-		try (Scoped<Random> rs = RandomRegistry.scope(random)) {
-			Assert.assertSame(random, RandomRegistry.getRandom());
-			Assert.assertSame(random, rs.get());
-
-			final Factory<Genotype<DoubleGene>> factory = Genotype.of(
-				DoubleChromosome.of(0, 1)
-			);
-			final Function<Genotype<DoubleGene>, Double> ff = new FF();
-
-			final GeneticAlgorithm<DoubleGene, Double> ga = new GeneticAlgorithm<>(
-				factory, ff, Concurrency.SERIAL_EXECUTOR
-			);
-			ga.setPopulationSize(200);
-			ga.setAlterer(new MeanAlterer<DoubleGene>());
-			ga.setOffspringFraction(0.3);
-			ga.setOffspringSelector(new RouletteWheelSelector<DoubleGene, Double>());
-			ga.setSurvivorSelector(new TournamentSelector<DoubleGene, Double>());
-
-			ga.setup();
-			ga.evolve(100);
-
-			Statistics<DoubleGene, Double> s = ga.getBestStatistics();
-			Reporter.log(s.toString());
-			Assert.assertEquals(s.getAgeMean(), 21.40500000000002);
-			Assert.assertEquals(s.getAgeVariance(), 648.051231155779);
-			Assert.assertEquals(s.getSamples(), 200);
-			Assert.assertEquals(s.getBestFitness(), 0.9955101231254028, 0.00000001);
-			Assert.assertEquals(s.getWorstFitness(), 0.03640144995042627, 0.00000001);
-
-			s = ga.getStatistics();
-			Reporter.log(s.toString());
-
-			Assert.assertEquals(s.getAgeMean(), 23.15500000000001, 0.000001);
-			Assert.assertEquals(s.getAgeVariance(), 82.23213567839196, 0.000001);
-			Assert.assertEquals(s.getSamples(), 200);
-			Assert.assertEquals(s.getBestFitness(), 0.9955101231254028, 0.00000001);
-			Assert.assertEquals(s.getWorstFitness(), 0.9955101231254028, 0.00000001);
-		}
-	}
-
-	private static class Base implements Comparable<Base> {
-		@Override public int compareTo(Base o) {
-			return 0;
-		}
-	}
-
-	public static class Derived extends Base {
-	}
-
-	@SuppressWarnings("null")
-	public void evolve() {
-		Function<Statistics<? extends DoubleGene, ? extends Base>, Boolean> until = null;
-		GeneticAlgorithm<DoubleGene, Derived> ga = null;
-
-		ga.evolve(until);
-		ga.evolve(termination.Generation(1));
-
-		GeneticAlgorithm<DoubleGene, Double> ga2 = null;
-		ga2.evolve(termination.<Double>SteadyFitness(10));
-	}
-
-	@Test(invocationCount = 10)
-	public void evolveForkJoinPool() {
-		final ForkJoinPool pool = new ForkJoinPool(10);
-
-		try {
-			final Factory<Genotype<DoubleGene>> factory = Genotype.of(DoubleChromosome.of(-1, 1));
-			final Function<Genotype<DoubleGene>, Double> ff = new FF();
-
-			final GeneticAlgorithm<DoubleGene, Double> ga = new GeneticAlgorithm<>(
-				factory, ff, pool
-			);
-			ga.setPopulationSize(1000);
-			ga.setAlterer(new MeanAlterer<DoubleGene>());
-			ga.setOffspringFraction(0.3);
-			ga.setOffspringSelector(new RouletteWheelSelector<DoubleGene, Double>());
-			ga.setSurvivorSelector(new StochasticUniversalSelector<DoubleGene, Double>());
-
-			ga.setup();
-			for (int i = 0; i < 10; ++i) {
-				ga.evolve();
-			}
-		} finally {
-			pool.shutdown();
-		}
-	}
+//	@Test
+//	public void optimize() {
+//		final Random random = new Random(123456);
+//		try (Scoped<Random> rs = RandomRegistry.scope(random)) {
+//			Assert.assertSame(random, RandomRegistry.getRandom());
+//			Assert.assertSame(random, rs.get());
+//
+//			final GeneticAlgorithm<DoubleGene, Double> ga = new GeneticAlgorithm<>(
+//				Genotype.of(DoubleChromosome.of(0, 1)),
+//				gt -> gt.getGene().getAllele(),
+//				Concurrency.SERIAL_EXECUTOR
+//			);
+//			ga.setPopulationSize(200);
+//			ga.setAlterer(new MeanAlterer<>());
+//			ga.setOffspringFraction(0.3);
+//			ga.setOffspringSelector(new RouletteWheelSelector<>());
+//			ga.setSurvivorSelector(new TournamentSelector<>());
+//
+//			ga.setup();
+//			ga.evolve(100);
+//
+//			Statistics<DoubleGene, Double> s = ga.getBestStatistics();
+//			Reporter.log(s.toString());
+//			Assert.assertEquals(s.getAgeMean(), 19.895);
+//			Assert.assertEquals(s.getAgeVariance(), 521.9135427135678);
+//			Assert.assertEquals(s.getSamples(), 200);
+//			Assert.assertEquals(s.getBestFitness(), 0.9928706649747477, 0.00000001);
+//			Assert.assertEquals(s.getWorstFitness(), 0.02638061798078739, 0.00000001);
+//
+//			s = ga.getStatistics();
+//			Reporter.log(s.toString());
+//		}
+//	}
+//
+//	@Test(dataProvider = "configuration")
+//	public void testMaximize(
+//		final Factory<Genotype<IntegerGene>> gtf,
+//		final Selector<IntegerGene, Long> survivorsSelector,
+//		final Selector<IntegerGene, Long> offspringSelector,
+//		final Alterer<IntegerGene, Long> alterer,
+//		final Double offspringFraction,
+//		final Integer populationSize
+//	) {
+//		final Function<Genotype<IntegerGene>, Long> ff = gt -> {
+//			long sum = 0;
+//			for (int i = 0, n = gt.length(); i < n; ++i) {
+//				final Chromosome<IntegerGene> ch = gt.getChromosome(i);
+//				for (int j = 0, m = ch.length(); j < m; ++j) {
+//					sum += ch.getGene(j).longValue()*(i + 1)*(j + 1);
+//				}
+//			}
+//
+//			return sum;
+//		};
+//
+//		try (Scoped<Random> sr = RandomRegistry.scope(new LCG64ShiftRandom(7345))) {
+//			final GeneticAlgorithm<IntegerGene, Long> ga = new GeneticAlgorithm<>(
+//				gtf,
+//				ff,
+//				Optimize.MAXIMUM,
+//				Concurrency.SERIAL_EXECUTOR
+//			);
+//			ga.setPopulationSize(populationSize);
+//			ga.setAlterer(alterer);
+//			ga.setOffspringFraction(offspringFraction);
+//			ga.setOffspringSelector(offspringSelector);
+//			ga.setSurvivorSelector(survivorsSelector);
+//
+//			ga.setup();
+//			final Phenotype<IntegerGene, Long> start = ga.getBestPhenotype();
+//			Phenotype<IntegerGene, Long> last = start;
+//			for (int i = 0; i < 500; ++i) {
+//				ga.evolve();
+//
+//				final Phenotype<IntegerGene, Long> value = ga.getBestPhenotype();
+//				if (value.compareTo(last) < 0) {
+//					throw new AssertionError(format(
+//						"Value %s is smaller than last value %s.", value, last
+//					));
+//				}
+//
+//				last = value;
+//			}
+//
+//			if (last.compareTo(start) <= 0) {
+//				throw new AssertionError(format(
+//					"Evolved value %s is smaller or equal than start value %s.",
+//					last, start
+//				));
+//			}
+//		}
+//	}
+//
+//	@Test(dataProvider = "configuration")
+//	public void testMinimize(
+//		final Factory<Genotype<IntegerGene>> gtf,
+//		final Selector<IntegerGene, Long> survivorsSelector,
+//		final Selector<IntegerGene, Long> offspringSelector,
+//		final Alterer<IntegerGene, Long> alterer,
+//		final Double offspringFraction,
+//		final Integer populationSize
+//	) {
+//		final Function<Genotype<IntegerGene>, Long> ff = gt -> {
+//			long sum = 0;
+//			for (int i = 0, n = gt.length(); i < n; ++i) {
+//				final Chromosome<IntegerGene> ch = gt.getChromosome(i);
+//				for (int j = 0, m = ch.length(); j < m; ++j) {
+//					sum += ch.getGene(j).longValue()*(i + 1)*(j + 1);
+//				}
+//			}
+//
+//			return sum;
+//		};
+//
+//		try (Scoped<Random> sr = RandomRegistry.scope(new LCG64ShiftRandom(7345))) {
+//			final GeneticAlgorithm<IntegerGene, Long> ga = new GeneticAlgorithm<>(
+//				gtf,
+//				ff,
+//				Optimize.MINIMUM,
+//				Concurrency.SERIAL_EXECUTOR
+//			);
+//			ga.setPopulationSize(populationSize);
+//			ga.setAlterer(alterer);
+//			ga.setOffspringFraction(offspringFraction);
+//			ga.setOffspringSelector(offspringSelector);
+//			ga.setSurvivorSelector(survivorsSelector);
+//
+//			ga.setup();
+//			final Phenotype<IntegerGene, Long> start = ga.getBestPhenotype();
+//			Phenotype<IntegerGene, Long> last = start;
+//			for (int i = 0; i < 500; ++i) {
+//				ga.evolve();
+//
+//				final Phenotype<IntegerGene, Long> value = ga.getBestPhenotype();
+//				if (value.compareTo(last) > 0) {
+//					throw new AssertionError(format(
+//						"Generation %d: value %s is smaller than last value %s.",
+//						i, value, last
+//					));
+//				}
+//
+//				last = value;
+//			}
+//
+//			if (last.compareTo(start) >= 0) {
+//				throw new AssertionError(format(
+//					"Evolved value %s is smaller or equal than start value %s.",
+//					last, start
+//				));
+//			}
+//		}
+//	}
+//
+//	@DataProvider(name = "configuration")
+//	public Object[][] configuration() {
+//		List<Factory<Genotype<IntegerGene>>> factories = null;
+//		try (Scoped<Random> sr = RandomRegistry.scope(new LCG64ShiftRandom(17345))) {
+//			factories = Arrays.asList(
+//				Genotype.of(IntegerChromosome.of(0, 100_000, 25)),
+//				Genotype.of(IntegerChromosome.of(0, 100_000, 50))
+//			);
+//		}
+//		final List<Selector<IntegerGene, Long>> selectors = Arrays.asList(
+//			new RouletteWheelSelector<>(),
+//			new TournamentSelector<>(),
+//			new BoltzmannSelector<>(),
+//			new ExponentialRankSelector<>(0.12),
+//			new LinearRankSelector<>(0.12),
+//			new MonteCarloSelector<>(),
+//			new StochasticUniversalSelector<>(),
+//			new TournamentSelector<>(),
+//			new TruncationSelector<>()
+//		);
+//		final List<Alterer<IntegerGene, Long>> alterers = Arrays.asList(
+//			CompositeAlterer.<IntegerGene, Long>of(new GaussianMutator<>(), new Mutator<>(0.1)),
+//			CompositeAlterer.<IntegerGene, Long>of(new MeanAlterer<>(), new Mutator<>(0.1)),
+//			CompositeAlterer.<IntegerGene, Long>of(new MultiPointCrossover<>(), new Mutator<>(0.1)),
+//			CompositeAlterer.<IntegerGene, Long>of(new SwapMutator<>(), new Mutator<>(0.1)),
+//			CompositeAlterer.<IntegerGene, Long>of(new SinglePointCrossover<>(), new Mutator<>(0.1))
+//		);
+//		final List<Double> fractions = Arrays.asList(0.4, 0.7);
+//		final List<Integer> sizes = Arrays.asList(70, 150);
+//
+//		final List<Object[]> result = new ArrayList<>();
+//		for (Object gtf : factories) {
+//			for (Object selector : selectors) {
+//				for (Object alterer : alterers) {
+//					for (Object fraction : fractions) {
+//						for (Object size : sizes) {
+//							result.add(new Object[] {
+//								gtf, selector, selector, alterer, fraction, size
+//							});
+//						}
+//					}
+//				}
+//			}
+//		}
+//
+//		return result.toArray(new Object[0][]);
+//	}
+//
+//	@Test(invocationCount = 10)
+//	public void evolveForkJoinPool() {
+//		final ForkJoinPool pool = new ForkJoinPool(10);
+//
+//		try {
+//			final GeneticAlgorithm<DoubleGene, Double> ga = new GeneticAlgorithm<>(
+//				Genotype.of(DoubleChromosome.of(-1, 1)),
+//				gt -> gt.getGene().getAllele(),
+//				pool
+//			);
+//			ga.setPopulationSize(1000);
+//			ga.setAlterer(new MeanAlterer<>());
+//			ga.setOffspringFraction(0.3);
+//			ga.setOffspringSelector(new RouletteWheelSelector<>());
+//			ga.setSurvivorSelector(new StochasticUniversalSelector<>());
+//
+//			ga.setup();
+//			for (int i = 0; i < 10; ++i) {
+//				ga.evolve();
+//			}
+//		} finally {
+//			pool.shutdown();
+//		}
+//	}
 
 }

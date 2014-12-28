@@ -21,28 +21,28 @@ package org.jenetics;
 
 import static java.lang.Math.pow;
 import static java.lang.String.format;
+import static org.jenetics.internal.math.random.indexes;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
+import org.jenetics.internal.util.IntRef;
 
-import org.jenetics.internal.util.HashBuilder;
-
-import org.jenetics.util.IndexStream;
 import org.jenetics.util.MSeq;
-
+import org.jenetics.util.RandomRegistry;
 
 /**
  * This class is for mutating a chromosomes of an given population. There are
  * two distinct roles mutation plays
  * <ul>
- *	<li>Exploring the search space. By making small moves mutation allows a
- *	population to explore the search space. This exploration is often slow
- *	compared to crossover, but in problems where crossover is disruptive this
- *	can be an important way to explore the landscape.
- *	</li>
- *	<li>Maintaining diversity. Mutation prevents a population from
- *	correlating. Even if most of the search is being performed by crossover,
- *	mutation can be vital to provide the diversity which crossover needs.
- *	</li>
+ *     <li>Exploring the search space. By making small moves mutation allows a
+ *     population to explore the search space. This exploration is often slow
+ *     compared to crossover, but in problems where crossover is disruptive this
+ *     can be an important way to explore the landscape.
+ *     </li>
+ *     <li>Maintaining diversity. Mutation prevents a population from
+ *     correlating. Even if most of the search is being performed by crossover,
+ *     mutation can be vital to provide the diversity which crossover needs.
+ *     </li>
  * </ul>
  *
  * <p>
@@ -66,9 +66,14 @@ import org.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-30 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-10-25 $</em>
  */
-public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
+public class Mutator<
+	G extends Gene<?, G>,
+	C extends Comparable<? super C>
+>
+	extends AbstractAlterer<G, C>
+{
 
 	/**
 	 * Construct a Mutation object which a given mutation probability.
@@ -94,17 +99,16 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 * Concrete implementation of the alter method.
 	 */
 	@Override
-	public <C extends Comparable<? super C>> int alter(
+	public int alter(
 		final Population<G, C> population,
-		final int generation
+		final long generation
 	) {
 		assert(population != null) : "Not null is guaranteed from base class.";
 
 		final double p = pow(_probability, 1.0/3.0);
-		final AtomicInteger alterations = new AtomicInteger(0);
+		final IntRef alterations = new IntRef(0);
 
-		final IndexStream stream = IndexStream.Random(population.size(), p);
-		for (int i = stream.next(); i != -1; i = stream.next()) {
+		indexes(RandomRegistry.getRandom(), population.size(), p).forEach(i -> {
 			final Phenotype<G, C> pt = population.get(i);
 
 			final Genotype<G> gt = pt.getGenotype();
@@ -112,39 +116,35 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 
 			final Phenotype<G, C> mpt = pt.newInstance(mgt, generation);
 			population.set(i, mpt);
-		}
+		});
 
-		return alterations.get();
+		return alterations.value;
 	}
 
 	private Genotype<G> mutate(
 		final Genotype<G> genotype,
 		final double p,
-		final AtomicInteger alterations
+		final IntRef alterations
 	) {
-		Genotype<G> gt = genotype;
+		final MSeq<Chromosome<G>> chromosomes = genotype.toSeq().copy();
 
-		final IndexStream stream = IndexStream.Random(genotype.length(), p);
-		final int start = stream.next();
+		alterations.value +=
+			indexes(RandomRegistry.getRandom(), genotype.length(), p)
+				.map(i -> mutate(chromosomes, i, p))
+				.sum();
 
-		if (start != -1) {
-			final MSeq<Chromosome<G>> chromosomes = genotype.toSeq().copy();
+		return genotype.newInstance(chromosomes.toISeq());
+	}
 
-			for (int i = start; i != -1; i = stream.next()) {
-				final Chromosome<G> chromosome = chromosomes.get(i);
-				final MSeq<G> genes = chromosome.toSeq().copy();
+	private int mutate(final MSeq<Chromosome<G>> c, final int i, final double p) {
+		final Chromosome<G> chromosome = c.get(i);
+		final MSeq<G> genes = chromosome.toSeq().copy();
 
-				final int mutations = mutate(genes, p);
-				if (mutations > 0) {
-					alterations.addAndGet(mutations);
-					chromosomes.set(i, chromosome.newInstance(genes.toISeq()));
-				}
-			}
-
-			gt = genotype.newInstance(chromosomes.toISeq());
+		final int mutations = mutate(genes, p);
+		if (mutations > 0) {
+			c.set(i, chromosome.newInstance(genes.toISeq()));
 		}
-
-		return gt;
+		return mutations;
 	}
 
 	/**
@@ -152,45 +152,25 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 * Template method which gives an (re)implementation of the mutation class
 	 * the possibility to perform its own mutation operation, based on a
 	 * writable gene array and the gene mutation probability <i>p</i>.
-	 * </p>
-	 * This implementation, for example, does it in this way:
-	 * [code]
-	 * protected int mutate(final MSeq&lt;G&gt; genes, final double p) {
-	 *     final IndexStream stream = IndexStream.Random(genes.length(), p);
-	 *
-	 *     int alterations = 0;
-	 *     for (int i = stream.next(); i != -1; i = stream.next()) {
-	 *         genes.set(i, genes.get(i).newInstance());
-	 *         ++alterations;
-	 *     }
-	 *     return alterations;
-	 * }
-	 * [/code]
 	 *
 	 * @param genes the genes to mutate.
 	 * @param p the gene mutation probability.
 	 * @return the number of performed mutations
 	 */
 	protected int mutate(final MSeq<G> genes, final double p) {
-		final IndexStream stream = IndexStream.Random(genes.length(), p);
-
-		int alterations = 0;
-		for (int i = stream.next(); i != -1; i = stream.next()) {
-			genes.set(i, genes.get(i).newInstance());
-			++alterations;
-		}
-
-		return alterations;
+		return (int)indexes(RandomRegistry.getRandom(), genes.length(), p)
+			.peek(i -> genes.set(i, genes.get(i).newInstance()))
+			.count();
 	}
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(super.hashCode()).value();
+		return Hash.of(getClass()).and(super.hashCode()).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this || obj instanceof Mutator<?>;
+		return Equality.of(this, obj).test(super::equals);
 	}
 
 	@Override

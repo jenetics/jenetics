@@ -29,7 +29,6 @@ import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.jenetics.util.Function;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -37,7 +36,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-18 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-05-13 $</em>
  */
 @XmlJavaTypeAdapter(BitGene.Model.Adapter.class)
 public enum BitGene
@@ -130,21 +129,6 @@ public enum BitGene
 	public static BitGene of(final boolean value) {
 		return value ? TRUE : FALSE;
 	}
-
-
-	/* *************************************************************************
-	 *  Property access methods methods
-	 * ************************************************************************/
-
-	/**
-	 * Converter for accessing the allele from a given gene.
-	 */
-	public static final Function<BitGene, Boolean> Allele =
-		new Function<BitGene, Boolean>() {
-			@Override public Boolean apply(final BitGene value) {
-				return value._value;
-			}
-		};
 
 
 	/* *************************************************************************

@@ -20,19 +20,16 @@
 package org.jenetics;
 
 import static java.lang.String.format;
-import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.object.NonNull;
-import static org.jenetics.internal.util.object.eq;
+import static org.jenetics.internal.util.Equality.eq;
+import static org.jenetics.util.ISeq.toISeq;
 
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 
-import org.jenetics.util.Array;
-import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Seq;
 
@@ -41,13 +38,16 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-30 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-12-01 $</em>
  */
-public final class CompositeAlterer<G extends Gene<?, G>>
-	extends AbstractAlterer<G>
+final class CompositeAlterer<
+	G extends Gene<?, G>,
+	C extends Comparable<? super C>
+>
+	extends AbstractAlterer<G, C>
 {
 
-	private final ISeq<Alterer<G>> _alterers;
+	private final ISeq<Alterer<G, C>> _alterers;
 
 	/**
 	 * Combine the given alterers.
@@ -55,60 +55,28 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	 * @param alterers the alterers to combine.
 	 * @throws NullPointerException if one of the alterers is {@code null}.
 	 */
-	public CompositeAlterer(final Seq<Alterer<G>> alterers) {
+	public CompositeAlterer(final Seq<Alterer<G, C>> alterers) {
 		super(1.0);
-
-		alterers.forAll(NonNull("Alterer"));
-		_alterers = normalize(alterers).toISeq();
+		_alterers = normalize(alterers);
 	}
 
-	private static <G extends Gene<?, G>>
-	Array<Alterer<G>> normalize(final Seq<Alterer<G>> alterers) {
-		final Deque<Alterer<G>> stack = new LinkedList<>(alterers.asList());
+	private static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	ISeq<Alterer<G, C>> normalize(final Seq<Alterer<G, C>> alterers) {
+		final Function<Alterer<G, C>, Stream<Alterer<G, C>>> mapper =
+			a -> a instanceof CompositeAlterer<?, ?> ?
+				((CompositeAlterer<G, C>)a).getAlterers().stream() :
+				Stream.of(a);
 
-		final List<Alterer<G>> normalized = new LinkedList<>();
-
-		while (!stack.isEmpty()) {
-			final Alterer<G> alterer = stack.pollFirst();
-
-			if (alterer instanceof CompositeAlterer<?>) {
-				final CompositeAlterer<G> calterer = (CompositeAlterer<G>)alterer;
-
-				for (int i = calterer.getAlterers().length(); --i >= 0;) {
-					stack.addFirst(calterer.getAlterers().get(i));
-				}
-			} else {
-				normalized.add(alterer);
-			}
-		}
-
-		return Array.of(normalized);
+		return alterers.stream()
+			.flatMap(mapper)
+			.collect(toISeq());
 	}
 
 	@Override
-	public <C extends Comparable<? super C>>
-	int alter(final Population<G, C> population, final int generation) {
-		final AtomicInteger alterations = new AtomicInteger(0);
-
-		_alterers.forEach(new Function<Alterer<G>, Void>() {
-			@Override public Void apply(final Alterer<G> alterer) {
-				alterations.addAndGet(alterer.alter(population, generation));
-				return null;
-			}
-		});
-
-		return alterations.get();
-	}
-
-	/**
-	 * Create a new CompositeAlterer with the given alterer appended.
-	 *
-	 * @param alterer the alterer to append.
-	 * @return a new CompositeAlterer.
-	 * @throws NullPointerException if the given alterer is {@code null}.
-	 */
-	public CompositeAlterer<G> append(final Alterer<G> alterer) {
-		return CompositeAlterer.of(this, requireNonNull(alterer, "Alterer"));
+	public int alter(final Population<G, C> population, final long generation) {
+		return _alterers.stream()
+			.mapToInt(a -> a.alter(population, generation))
+			.sum();
 	}
 
 	/**
@@ -117,45 +85,43 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	 *
 	 * @return the alterers this alterer consists of.
 	 */
-	public ISeq<Alterer<G>> getAlterers() {
+	public ISeq<Alterer<G, C>> getAlterers() {
 		return _alterers;
 	}
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(_alterers).value();
+		return Hash.of(getClass()).and(_alterers).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null || obj.getClass() != getClass()) {
-			return false;
-		}
-
-		final CompositeAlterer<?> alterer = (CompositeAlterer<?>)obj;
-		return eq(_alterers, alterer._alterers);
+		return Equality.of(this, obj).test(a -> eq(_alterers, a._alterers));
 	}
 
 	@Override
 	public String toString() {
-		return format("%s[%s]", getClass().getSimpleName(), _alterers);
+		return format(
+			"%s:\n%s", getClass().getSimpleName(),
+			_alterers.stream()
+				.map(a -> "   - " + a.toString())
+				.collect(Collectors.joining("\n"))
+		);
 	}
 
 	/**
 	 * Combine the given alterers.
 	 *
 	 * @param <G> the gene type
+	 * @param <C> the fitness function result type
 	 * @param alterers the alterers to combine.
 	 * @return a new alterer which consists of the given one
 	 * @throws NullPointerException if one of the alterers is {@code null}.
 	 */
 	@SafeVarargs
-	public static <G extends Gene<?, G>>
-	CompositeAlterer<G> of(final Alterer<G>... alterers) {
-		return new CompositeAlterer<>(Array.of(alterers));
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	CompositeAlterer<G, C> of(final Alterer<G, C>... alterers) {
+		return new CompositeAlterer<G, C>(ISeq.of(alterers));
 	}
 
 	/**
@@ -164,14 +130,17 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	 * unpacked and appended to the newly created CompositeAlterer.
 	 *
 	 * @param <T> the gene type of the alterers.
+	 *
+	 * @param <C> the fitness function result type
 	 * @param a1 the first alterer.
 	 * @param a2 the second alterer.
 	 * @return a new CompositeAlterer object.
 	 * @throws NullPointerException if one of the given alterer is {@code null}.
 	 */
-	public static <T extends Gene<?, T>> CompositeAlterer<T> join(
-		final Alterer<T> a1,
-		final Alterer<T> a2
+	public static <T extends Gene<?, T>, C extends Comparable<? super C>>
+	CompositeAlterer<T, C> join(
+		final Alterer<T, C> a1,
+		final Alterer<T, C> a2
 	) {
 		return CompositeAlterer.of(a1, a2);
 	}

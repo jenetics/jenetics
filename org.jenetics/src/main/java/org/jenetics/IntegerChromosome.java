@@ -34,22 +34,22 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 
-import org.jenetics.util.Array;
-import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 
 /**
  * Numeric chromosome implementation which holds 32 bit integer numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz  Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-04-10 $</em>
  * @since 2.0
+ * @version 3.0 &mdash; <em>$Date: 2014-12-08 $</em>
  */
 @XmlJavaTypeAdapter(IntegerChromosome.Model.Adapter.class)
 public class IntegerChromosome
-	extends AbstractNumericChromosome<Integer, IntegerGene>
+	extends AbstractBoundedChromosome<Integer, IntegerGene>
 	implements
 			NumericChromosome<Integer, IntegerGene>,
 			Serializable
@@ -86,6 +86,43 @@ public class IntegerChromosome
 	}
 
 	/**
+	 * Returns an int array containing all of the elements in this chromosome
+	 * in proper sequence.  If the chromosome fits in the specified array, it is
+	 * returned therein. Otherwise, a new array is allocated with the length of
+	 * this chromosome.
+	 *
+	 * @since 3.0
+	 *
+	 * @param array the array into which the elements of this chromosomes are to
+	 *        be stored, if it is big enough; otherwise, a new array is
+	 *        allocated for this purpose.
+	 * @return an array containing the elements of this chromosome
+	 * @throws NullPointerException if the given {@code array} is {@code null}
+	 */
+	public int[] toArray(final int[] array) {
+		final int[] a = array.length >= length() ?
+			array : new int[length()];
+
+		for (int i = length(); --i >= 0;) {
+			a[i] = intValue(i);
+		}
+
+		return a;
+	}
+
+	/**
+	 * Returns an int array containing all of the elements in this chromosome
+	 * in proper sequence.
+	 *
+	 * @since 3.0
+	 *
+	 * @return an array containing the elements of this chromosome
+	 */
+	public int[] toArray() {
+		return toArray(new int[length()]);
+	}
+
+	/**
 	 * Create a new {@code IntegerChromosome} with the given genes.
 	 *
 	 * @param genes the genes of the chromosome.
@@ -94,7 +131,7 @@ public class IntegerChromosome
 	 *         empty.
 	 */
 	public static IntegerChromosome of(final IntegerGene... genes) {
-		return new IntegerChromosome(Array.of(genes).toISeq());
+		return new IntegerChromosome(ISeq.of(genes));
 	}
 
 	/**
@@ -103,6 +140,7 @@ public class IntegerChromosome
 	 * @param min the min value of the {@link IntegerGene}s (inclusively).
 	 * @param max the max value of the {@link IntegerGene}s (inclusively).
 	 * @param length the length of the chromosome.
+	 * @return a new random {@code IntegerChromosome}
 	 */
 	public static IntegerChromosome of(
 		final int min,
@@ -117,6 +155,7 @@ public class IntegerChromosome
 	 *
 	 * @param min the minimal value of this chromosome (inclusively).
 	 * @param max the maximal value of this chromosome (inclusively).
+	 * @return a new random {@code IntegerChromosome} of length one
 	 */
 	public static IntegerChromosome of(final int min, final int max) {
 		return new IntegerChromosome(min, max);
@@ -134,12 +173,12 @@ public class IntegerChromosome
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(super.hashCode()).value();
+		return Hash.of(getClass()).and(super.hashCode()).value();
 	}
 
 	@Override
-	public boolean equals(final Object o) {
-		return o == this || o instanceof IntegerChromosome && super.equals(o);
+	public boolean equals(final Object obj) {
+		return Equality.of(this, obj).test(super::equals);
 	}
 
 	/* *************************************************************************
@@ -165,7 +204,7 @@ public class IntegerChromosome
 	{
 		in.defaultReadObject();
 
-		final Array<IntegerGene> genes = new Array<>(in.readInt());
+		final MSeq<IntegerGene> genes = MSeq.ofLength(in.readInt());
 		_min = in.readInt();
 		_max = in.readInt();
 
@@ -206,7 +245,7 @@ public class IntegerChromosome
 				m.length = c.length();
 				m.min = c._min;
 				m.max = c._max;
-				m.values = c.toSeq().map(Allele).asList();
+				m.values = c.toSeq().map(IntegerGene::getAllele).asList();
 				return m;
 			}
 
@@ -215,27 +254,10 @@ public class IntegerChromosome
 				final Integer min = model.min;
 				final Integer max = model.max;
 				return new IntegerChromosome(
-					Array.of(model.values).map(Gene(min, max)).toISeq()
+					ISeq.of(model.values)
+						.map(a -> new IntegerGene(a, min, max))
 				);
 			}
-		}
-
-		private static final Function<IntegerGene, Integer> Allele =
-			new Function<IntegerGene, Integer>() {
-				@Override
-				public Integer apply(IntegerGene value) {
-					return value.getAllele();
-				}
-			};
-
-		private static Function<Integer, IntegerGene>
-		Gene(final Integer min, final Integer max) {
-			return new Function<Integer, IntegerGene>() {
-				@Override
-				public IntegerGene apply(final Integer value) {
-					return new IntegerGene(value, min, max);
-				}
-			};
 		}
 
 	}
