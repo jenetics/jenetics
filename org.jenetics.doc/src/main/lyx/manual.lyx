@@ -9384,12 +9384,13 @@ s implementations must use the
 \family typewriter
 Random
 \family sans
- engine available from the 
+ engine available via the 
 \family typewriter
 Random\SpecialChar \-
-Registry
+Registry\SpecialChar \-
+.getRandom
 \family sans
- when implementing their factory methods.
+ method when implementing their factory methods.
  Otherwise it is not possible to seamlessly change the 
 \family typewriter
 Random
