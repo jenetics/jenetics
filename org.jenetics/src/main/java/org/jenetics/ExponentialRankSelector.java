@@ -21,9 +21,10 @@ package org.jenetics;
 
 import static java.lang.Math.pow;
 import static java.lang.String.format;
-import static org.jenetics.internal.util.object.eq;
+import static org.jenetics.internal.util.Equality.eq;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 
 /**
  * <p>
@@ -71,6 +72,7 @@ public final class ExponentialRankSelector<
 	 */
 	public ExponentialRankSelector(final double c) {
 		super(true);
+
 		if (c < 0.0 || c >= 1.0) {
 			throw new IllegalArgumentException(format(
 				"Value %s is out of range [0..1): ", c
@@ -80,8 +82,15 @@ public final class ExponentialRankSelector<
 	}
 
 	/**
+	 * Create a new selector with default value of 0.975.
+	 */
+	public ExponentialRankSelector() {
+		this(0.975);
+	}
+
+	/**
 	 * This method sorts the population in descending order while calculating the
-	 * selection probabilities. (The method {@link Population#sort()} is called
+	 * selection probabilities. (The method {@link Population#populationSort()} is called
 	 * by this method.)
 	 */
 	@Override
@@ -93,14 +102,14 @@ public final class ExponentialRankSelector<
 		assert(count > 0) : "Population to select must be greater than zero. ";
 
 		//Sorted population required.
-		population.sort();
+		population.populationSort();
 
 		final double N = population.size();
 		final double[] probabilities = new double[population.size()];
 
-		final double b = pow(_c, N) - 1;
-		for (int i = probabilities.length; --i >= 0;) {
-			probabilities[i] = ((_c - 1)*pow(_c, i))/b;
+		final double b = (_c - 1.0)/(pow(_c, N) - 1.0);
+		for (int i = 0; i < probabilities.length; ++i) {
+			probabilities[i] = pow(_c, i)*b;
 		}
 
 		assert (sum2one(probabilities)) : "Probabilities doesn't sum to one.";
@@ -109,20 +118,12 @@ public final class ExponentialRankSelector<
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(_c).value();
+		return Hash.of(getClass()).and(_c).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null || obj.getClass() != getClass()) {
-			return false;
-		}
-
-		final ExponentialRankSelector<?, ?> selector = (ExponentialRankSelector<?, ?>)obj;
-		return eq(_c, selector._c);
+		return Equality.of(this, obj).test(s -> eq(_c, s._c));
 	}
 
 	@Override

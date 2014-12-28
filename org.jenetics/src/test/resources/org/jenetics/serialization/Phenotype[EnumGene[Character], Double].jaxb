@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<phenotype generation="1946846076">
+<phenotype generation="1454474561">
     <genotype length="5" ngenes="75">
         <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.PermutationChromosome" length="15">
             <valid-alleles>
@@ -102,6 +102,6 @@
             <order>3 8 0 4 6 13 5 2 9 7 10 11 1 14 12</order>
         </chromosome>
     </genotype>
-    <fitness xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.09503343162969657</fitness>
-    <raw-fitness xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.09503343162969657</raw-fitness>
+    <fitness xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.6571011493988581</fitness>
+    <raw-fitness xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.6571011493988581</raw-fitness>
 </phenotype>

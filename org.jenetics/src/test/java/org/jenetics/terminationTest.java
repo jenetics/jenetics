@@ -19,88 +19,80 @@
  */
 package org.jenetics;
 
-import java.util.Collections;
-import java.util.LinkedList;
-
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
-import org.jenetics.util.Function;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-02-17 $</em>
+ * @version <em>$Date: 2014-09-19 $</em>
  */
 public class terminationTest {
 
-	@Test
-	public void generation() {
-		final GeneticAlgorithm<DoubleGene, Double> ga = TestUtils.GA();
-		ga.setup();
-		ga.evolve(termination.Generation(10));
-		Assert.assertEquals(ga.getGeneration(), 10);
-
-		ga.evolve(5);
-		ga.evolve(termination.Generation(10));
-		Assert.assertEquals(ga.getGeneration(), 15);
-
-		ga.evolve(6);
-		ga.evolve(termination.Generation(50));
-		Assert.assertEquals(ga.getGeneration(), 50);
-	}
-
-	static final Function<Genotype<DoubleGene>, Double> FF =
-		new Function<Genotype<DoubleGene>, Double>()
-	{
-		@Override
-		public Double apply(final Genotype<DoubleGene> genotype) {
-			final double value = genotype.getChromosome().getGene().getAllele();
-			return Math.sin(value);
-		}
-	};
-
-	static GeneticAlgorithm<DoubleGene, Double> GA() {
-		return new GeneticAlgorithm<>(
-				Genotype.of(DoubleChromosome.of(0, 10)), FF
-			);
-	}
-
-	@Test
-	public void steadyState() {
-		final int steadyGenerations = 11;
-		final LinkedList<Double> values = new LinkedList<>();
-		values.addFirst(-100.0);
-
-		final GeneticAlgorithm<DoubleGene, Double> ga = GA();
-		ga.setPopulationSize(20);
-		ga.setAlterers(
-			ga.getAlterer(),
-			new Mutator<DoubleGene>(0.999)
-		);
-		ga.setup();
-		values.addFirst(ga.getBestPhenotype().getFitness());
-
-		final Function<Statistics<?, Double>, Boolean> until =
-			termination.<Double>SteadyFitness(steadyGenerations);
-
-		while (until.apply(ga.getStatistics())) {
-			ga.evolve();
-			values.addFirst(ga.getBestPhenotype().getFitness());
-
-			if (values.size() > steadyGenerations) {
-				values.removeLast();
-			}
-		}
-
-		Assert.assertEquals(values.size(), steadyGenerations);
-		Assert.assertTrue(ga.getGeneration() > steadyGenerations);
-
-		Collections.sort(values);
-		Double value = values.removeFirst();
-		for (Double f : values) {
-			Assert.assertEquals(f, value);
-		}
-
-	}
+//	@Test
+//	public void generation() {
+//		final GeneticAlgorithm<DoubleGene, Double> ga = TestUtils.GA();
+//		ga.setup();
+//		ga.evolve(termination.Generation(10));
+//		Assert.assertEquals(ga.getGeneration(), 10);
+//
+//		ga.evolve(5);
+//		ga.evolve(termination.Generation(10));
+//		Assert.assertEquals(ga.getGeneration(), 15);
+//
+//		ga.evolve(6);
+//		ga.evolve(termination.Generation(50));
+//		Assert.assertEquals(ga.getGeneration(), 50);
+//	}
+//
+//	static final Function<Genotype<DoubleGene>, Double> FF =
+//		new Function<Genotype<DoubleGene>, Double>()
+//	{
+//		@Override
+//		public Double apply(final Genotype<DoubleGene> genotype) {
+//			final double value = genotype.getChromosome().getGene().getAllele();
+//			return Math.sin(value);
+//		}
+//	};
+//
+//	static GeneticAlgorithm<DoubleGene, Double> GA() {
+//		return new GeneticAlgorithm<>(
+//				Genotype.of(DoubleChromosome.of(0, 10)), FF
+//			);
+//	}
+//
+//	@Test
+//	public void steadyState() {
+//		final int steadyGenerations = 11;
+//		final LinkedList<Double> values = new LinkedList<>();
+//		values.addFirst(-100.0);
+//
+//		final GeneticAlgorithm<DoubleGene, Double> ga = GA();
+//		ga.setPopulationSize(20);
+//		ga.setAlterers(
+//			ga.getAlterer(),
+//			new Mutator<DoubleGene, Double>(0.999)
+//		);
+//		ga.setup();
+//		values.addFirst(ga.getBestPhenotype().getFitness());
+//
+//		final Predicate<Statistics<?, Double>> until =
+//			termination.SteadyFitness(steadyGenerations);
+//
+//		while (until.test(ga.getStatistics())) {
+//			ga.evolve();
+//			values.addFirst(ga.getBestPhenotype().getFitness());
+//
+//			if (values.size() > steadyGenerations) {
+//				values.removeLast();
+//			}
+//		}
+//
+//		Assert.assertEquals(values.size(), steadyGenerations);
+//		Assert.assertTrue(ga.getGeneration() > steadyGenerations);
+//
+//		Collections.sort(values);
+//		Double value = values.removeFirst();
+//		for (Double f : values) {
+//			Assert.assertEquals(f, value);
+//		}
+//
+//	}
 
 }

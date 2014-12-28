@@ -19,27 +19,20 @@
  */
 package org.jenetics;
 
-import static org.jenetics.stat.StatisticsAssert.assertDistribution;
-import static org.jenetics.util.accumulators.accumulate;
+import static org.jenetics.stat.StatisticsAssert.assertUniformDistribution;
+import static org.jenetics.util.RandomRegistry.using;
 
 import java.util.Random;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.internal.util.Concurrency;
-
 import org.jenetics.stat.Histogram;
-import org.jenetics.stat.UniformDistribution;
-import org.jenetics.stat.Variance;
-import org.jenetics.util.Function;
-import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Scoped;
-import org.jenetics.util.accumulators.MinMax;
+import org.jenetics.stat.MinMax;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-05 $</em>
+ * @version <em>$Date: 2014-10-19 $</em>
  */
 public class DoubleChromosomeTest
 	extends NumericChromosomeTester<Double, DoubleGene>
@@ -50,45 +43,32 @@ public class DoubleChromosomeTest
 	);
 
 	@Override
-	protected DoubleChromosome getFactory() {
+	protected DoubleChromosome factory() {
 		return _factory;
 	}
 
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstanceDistribution() {
-		try (Scoped<?> s = RandomRegistry.scope(new Random(12345))) {
-
+		using(new Random(12345), r -> {
 			final double min = 0;
 			final double max = 100;
 
 
-			final MinMax<Double> mm = new MinMax<>();
+			final MinMax<Double> mm = MinMax.of();
 			final Histogram<Double> histogram = Histogram.of(min, max, 10);
-			final Variance<Double> variance = new Variance<>();
 
 			for (int i = 0; i < 1000; ++i) {
 				final DoubleChromosome chromosome = new DoubleChromosome(min, max, 500);
-
-				accumulate(
-					Concurrency.commonPool(),
-					chromosome,
-					mm.map(Allele),
-					histogram.map(Allele),
-					variance.map(Allele)
-				);
+				for (DoubleGene gene : chromosome) {
+					mm.accept(gene.getAllele());
+					histogram.accept(gene.getAllele());
+				}
 			}
 
 			Assert.assertTrue(mm.getMin().compareTo(0.0) >= 0);
 			Assert.assertTrue(mm.getMax().compareTo(100.0) <= 100);
-			assertDistribution(histogram, new UniformDistribution<>(min, max));
-		}
+			assertUniformDistribution(histogram);
+		});
 	}
-
-	private static final Function<DoubleGene, Double> Allele =
-		new Function<DoubleGene, Double>() {
-			@Override public Double apply(final DoubleGene value) {
-				return value.getAllele();
-			}
-		};
 
 }

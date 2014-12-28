@@ -19,47 +19,112 @@
  */
 package org.jenetics;
 
-import java.util.Random;
+import static java.lang.String.format;
+import static org.jenetics.util.RandomRegistry.using;
 
+import java.util.Arrays;
+import java.util.stream.IntStream;
+
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jenetics.stat.Distribution;
-import org.jenetics.stat.UniformDistribution;
+import org.jenetics.internal.util.Named;
+
+import org.jenetics.stat.Histogram;
+import org.jenetics.stat.StatisticsAssert;
 import org.jenetics.util.Factory;
-import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.LCG64ShiftRandom;
+import org.jenetics.util.TestData;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-07 $</em>
+ * @version <em>$Date: 2014-10-19 $</em>
  */
 public class TournamentSelectorTest
 	extends SelectorTester<TournamentSelector<DoubleGene, Double>>
 {
 
-	final Factory<TournamentSelector<DoubleGene, Double>>
-	_factory = new Factory<TournamentSelector<DoubleGene,Double>>()
-	{
-		@Override
-		public TournamentSelector<DoubleGene, Double> newInstance() {
-			final Random random = RandomRegistry.getRandom();
-			return new TournamentSelector<>(random.nextInt(10) + 2);
+	@Override
+	protected Factory<TournamentSelector<DoubleGene, Double>> factory() {
+		return () -> new TournamentSelector<>(3);
+	}
+
+	@Test(dataProvider = "expectedDistribution", invocationCount = 20, successPercentage = 95)
+	public void selectDistribution(
+		final Integer tournamentSize,
+		final Named<double[]> expected,
+		final Optimize opt
+	) {
+		final int loops = (int)(tournamentSize*1.7);
+		final int npopulation = POPULATION_COUNT;
+
+		using(new LCG64ShiftRandom.ThreadLocal(), r -> {
+			final Histogram<Double> distribution = SelectorTester.distribution(
+				new TournamentSelector<DoubleGene, Double>(tournamentSize),
+				opt,
+				npopulation,
+				loops
+			);
+
+			StatisticsAssert.assertDistribution(distribution, expected.value, 0.00001);
+		});
+	}
+
+	@DataProvider(name = "expectedDistribution")
+	public Object[][] expectedDistribution() {
+		final String resource =
+			"/org/jenetics/selector/distribution/TournamentSelector";
+
+		return Arrays.stream(Optimize.values())
+			.flatMap(opt -> {
+				final TestData data = TestData.of(resource, opt.toString());
+				final double[][] csv = data.stream()
+					.map(TestData::toDouble)
+					.toArray(double[][]::new);
+
+				final int[] sizes = TestData.toInt(csv[0]);
+
+				return IntStream.range(0, sizes.length)
+					.mapToObj(i -> new Object[]{
+						sizes[i],
+						Named.of(
+							format("distribution[%d]", sizes[i]),
+							expected(csv, i)
+						),
+						opt
+					});
+			}).toArray(Object[][]::new);
+	}
+
+	private static double[] expected(final double[][] csv, final int c) {
+		final double[] col = new double[csv.length - 1];
+		for (int i = 0; i < col.length; ++i) {
+			col[i] = Math.max(csv[i + 1][c], Double.MIN_VALUE);
 		}
-	};
-	@Override
-	protected Factory<TournamentSelector<DoubleGene, Double>> getFactory() {
-		return _factory;
+		return col;
 	}
 
-	@Override
-	protected Distribution<Double> getDistribution() {
-		return new UniformDistribution<>(getDomain());
+	public static void main(final String[] args) {
+		writeDistributionData(Optimize.MAXIMUM);
+        writeDistributionData(Optimize.MINIMUM);
 	}
 
-	// TODO: implement select-distribution test.
-	@Override
-	@Test
-	public void selectDistribution() {
-		//super.selectDistribution();
+	private static void writeDistributionData(final Optimize opt) {
+		using(new LCG64ShiftRandom.ThreadLocal(), r -> {
+			final int npopulation = POPULATION_COUNT;
+			final int loops = 5_000_000;
+			//final int loops = 100_000;
+
+			printDistributions(
+				System.out,
+				Arrays.asList(2, 3, 4, 5, 6, 7, 13, 23, 37),
+				TournamentSelector::new,
+				opt,
+				npopulation,
+				loops
+			);
+		});
 	}
+
 
 }

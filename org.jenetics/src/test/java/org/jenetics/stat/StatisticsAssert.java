@@ -19,18 +19,22 @@
  */
 package org.jenetics.stat;
 
+import static java.lang.String.format;
+
+import java.util.Arrays;
+
 import org.apache.commons.math3.distribution.ChiSquaredDistribution;
+import org.apache.commons.math3.stat.inference.ChiSquareTest;
 import org.testng.Assert;
 
-import org.jenetics.util.StaticObject;
+import org.jenetics.internal.util.require;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-11-19 $</em>
+ * @version <em>$Date: 2014-09-09 $</em>
  */
-public final class StatisticsAssert extends StaticObject {
-
-	private StatisticsAssert() {}
+public final class StatisticsAssert {
+	private StatisticsAssert() {require.noInstance();}
 
 	public static <C extends Comparable<? super C>> void assertDistribution(
 		final Histogram<C> histogram,
@@ -43,9 +47,9 @@ public final class StatisticsAssert extends StaticObject {
 		final double maxChi = chi(0.999, degreeOfFreedom)*2;
 
 		if (χ2 > maxChi) {
-			System.out.println(String.format(
+			System.out.println(format(
 				"The histogram %s doesn't follow the distribution %s. \n" +
-				"χ2 must be smaller than %f but was %f",
+					"χ2 must be smaller than %f but was %f",
 				histogram, distribution,
 				maxChi, χ2
 			));
@@ -53,17 +57,58 @@ public final class StatisticsAssert extends StaticObject {
 
 		Assert.assertTrue(
 				χ2 <= maxChi,
-				String.format(
+				format(
 					"The histogram %s doesn't follow the distribution %s. \n" +
-					"χ2 must be smaller than %f but was %f",
+						"χ2 must be smaller than %f but was %f",
 					histogram, distribution,
 					maxChi, χ2
 				)
 			);
 	}
 
-	public static double chi(final double p, final int dof) {
-		return new ChiSquaredDistribution(dof).inverseCumulativeProbability(p);
+	public static <C extends Comparable<? super C>> void assertDistribution(
+		final Histogram<C> distribution,
+		final double[] expected
+	) {
+		assertDistribution(distribution, expected, 0.05);
+	}
+
+	public static <C extends Comparable<? super C>> void assertDistribution(
+		final Histogram<C> distribution,
+		final double[] expected,
+		final double alpha
+	) {
+		final double[] exp = Arrays.stream(expected)
+			.map(v -> Math.max(v, Double.MIN_VALUE))
+			.toArray();
+
+		final long[] dist = distribution.getHistogram();
+
+		final double χ2 = new ChiSquareTest().chiSquare(exp, dist);
+		final double max_χ2 = chi(1 - alpha, distribution.length());
+		final boolean reject = χ2 > max_χ2*1.75;
+		//final boolean reject = new ChiSquareTest().chiSquareTest(exp, dist, alpha);
+
+		Assert.assertFalse(
+			reject,
+			format(
+				"The histogram doesn't follow the given distribution." +
+					"χ2 must be smaller than %f but was %f",
+				max_χ2, χ2
+			)
+		);
+	}
+
+	private static double chi(final double p, final int degreeOfFreedom) {
+		return new ChiSquaredDistribution(degreeOfFreedom)
+			.inverseCumulativeProbability(p);
+	}
+
+	public static <C extends Comparable<? super C>> void assertUniformDistribution(
+		final Histogram<C> histogram
+	) {
+		final double[] expected = dist.uniform(histogram.length());
+		assertDistribution(histogram, expected);
 	}
 
 }

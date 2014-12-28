@@ -32,21 +32,21 @@ import org.testng.Reporter;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import org.jenetics.internal.util.bit;
+
 import org.jenetics.util.Factory;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.bit;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-11 $</em>
+ * @version <em>$Date: 2014-10-19 $</em>
  */
 public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
-	private final Factory<Chromosome<BitGene>>
-	_factory = BitChromosome.of(500, 0.3);
-	@Override protected Factory<Chromosome<BitGene>> getFactory() {
-		return _factory;
+	@Override
+	protected Factory<Chromosome<BitGene>> factory() {
+		return () -> BitChromosome.of(500, 0.3);
 	}
 
 	@Test(invocationCount = 20, successPercentage = 90)
@@ -131,6 +131,24 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 		for (int i = 0; i < bits.length(); ++i) {
 			assertEquals(c.getGene(i).getBit(), i % 2 == 0);
 		}
+	}
+
+	@Test
+	public void ones() {
+		final BitChromosome c = BitChromosome.of(1000, 0.5);
+
+		final int ones = (int)c.ones().count();
+		assertEquals(ones, c.bitCount());
+		assertTrue(c.ones().allMatch(c::get));
+	}
+
+	@Test
+	public void zeros() {
+		final BitChromosome c = BitChromosome.of(1000, 0.5);
+
+		final int zeros = (int)c.zeros().count();
+		assertEquals(zeros, c.length() - c.bitCount());
+		assertTrue(c.zeros().allMatch(i -> !c.get(i)));
 	}
 
 	@Test(invocationCount = 5)

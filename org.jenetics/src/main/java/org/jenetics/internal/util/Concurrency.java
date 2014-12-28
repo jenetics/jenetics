@@ -19,9 +19,7 @@
  */
 package org.jenetics.internal.util;
 
-import static java.lang.Math.max;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.util.arrays.partition;
 
 import java.util.List;
 import java.util.concurrent.CancellationException;
@@ -33,9 +31,11 @@ import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 
+import org.jenetics.internal.collection.Stack;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-04-05 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-08-15 $</em>
  * @since 2.0
  */
 public abstract class Concurrency implements Executor, AutoCloseable {
@@ -44,19 +44,20 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 
 	public static final Concurrency SERIAL_EXECUTOR = new SerialConcurrency();
 
-	private static final class LazyPoolHolder {
-		public static final ForkJoinPool FORK_JOIN_POOL =
-			new ForkJoinPool(max(CORES - 1, 1));
-	}
-
-	public static ForkJoinPool commonPool() {
-		return LazyPoolHolder.FORK_JOIN_POOL;
-	}
-
 	public abstract void execute(final List<? extends Runnable> runnables);
 
 	@Override
 	public abstract void close();
+
+	/**
+	 * Return the underlying {@code Executor}, which is used for performing the
+	 * actual task execution.
+	 *
+	 * @return the underlying {@code Executor} object
+	 */
+	public Executor getInnerExecutor() {
+		return this;
+	}
 
 	/**
 	 * Return an new Concurrency object from the given executor.
@@ -82,7 +83,7 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 	 * @return a new Concurrency object using the new ForkJoinPool
 	 */
 	public static Concurrency withCommonPool() {
-		return with(commonPool());
+		return with(ForkJoinPool.commonPool());
 	}
 
 
@@ -105,6 +106,11 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 		@Override
 		public void execute(final List<? extends Runnable> runnables) {
 			_tasks.push(_pool.submit(new RunnablesAction(runnables)));
+		}
+
+		@Override
+		public Executor getInnerExecutor() {
+			return _pool;
 		}
 
 		@Override
@@ -137,6 +143,11 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 			for (int i = 0; i < parts.length - 1; ++i) {
 				execute(new RunnablesRunnable(runnables, parts[i], parts[i + 1]));
 			}
+		}
+
+		@Override
+		public Executor getInnerExecutor() {
+			return _service;
 		}
 
 		@Override
@@ -209,6 +220,85 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 		@Override
 		public void close() {
 		}
+	}
+
+
+	/**
+	 * Return a array with the indexes of the partitions of an array with the
+	 * given size. The length of the returned array is {@code min(size, prts) + 1}.
+	 * <p>
+	 * Some examples:
+	 * <pre>
+	 * 	 partition(10, 3): [0, 3, 6, 10]
+	 * 	 partition(15, 6): [0, 2, 4, 6, 9, 12, 15]
+	 * 	 partition(5, 10): [0, 1, 2, 3, 4, 5]
+	 * </pre>
+	 *
+	 * The following examples prints the start index (inclusive) and the end
+	 * index (exclusive) of the {@code partition(15, 6)}.
+	 * [code]
+	 * int[] parts = partition(15, 6);
+	 * for (int i = 0; i &lt; parts.length - 1; ++i) {
+	 *     System.out.println(i + ": " + parts[i] + "\t" + parts[i + 1]);
+	 * }
+	 * [/code]
+	 * <pre>
+	 * 	 0: 0 	2
+	 * 	 1: 2 	4
+	 * 	 2: 4 	6
+	 * 	 3: 6 	9
+	 * 	 4: 9 	12
+	 * 	 5: 12	15
+	 * </pre>
+	 *
+	 * This example shows how this can be used in an concurrent environment:
+	 * [code]
+	 * try (final Concurrency c = Concurrency.start()) {
+	 *     final int[] parts = arrays.partition(population.size(), _maxThreads);
+	 *
+	 *     for (int i = 0; i &lt; parts.length - 1; ++i) {
+	 *         final int part = i;
+	 *         c.execute(new Runnable() { @Override public void run() {
+	 *             for (int j = parts[part + 1]; --j &gt;= parts[part];) {
+	 *                 population.get(j).evaluate();
+	 *             }
+	 *         }});
+	 *     }
+	 * }
+	 * [/code]
+	 *
+	 * @param size the size of the array to partition.
+	 * @param parts the number of parts the (virtual) array should be partitioned.
+	 * @return the partition array with the length of {@code min(size, parts) + 1}.
+	 * @throws IllegalArgumentException if {@code size} or {@code p} is less than one.
+	 */
+	private static int[] partition(final int size, final int parts) {
+		if (size < 1) {
+			throw new IllegalArgumentException(
+				"Size must greater than zero: " + size
+			);
+		}
+		if (parts < 1) {
+			throw new IllegalArgumentException(
+				"Number of partitions must greater than zero: " + parts
+			);
+		}
+
+		final int pts = Math.min(size, parts);
+		final int[] partition = new int[pts + 1];
+
+		final int bulk = size/pts;
+		final int rest = size%pts;
+		assert ((bulk*pts + rest) == size);
+
+		for (int i = 0, n = pts - rest; i < n; ++i) {
+			partition[i] = i*bulk;
+		}
+		for (int i = 0, n = rest + 1; i < n; ++i) {
+			partition[pts - rest + i] = (pts - rest)*bulk + i*(bulk + 1);
+		}
+
+		return partition;
 	}
 
 }

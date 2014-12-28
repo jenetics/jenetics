@@ -24,8 +24,8 @@ package org.jenetics;
  * maximum value.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-03-05 $</em>
  * @since 1.6
+ * @version 3.0 &mdash; <em>$Date: 2014-08-05 $</em>
  */
 public interface BoundedGene<
 	A extends Comparable<? super A>,
@@ -48,6 +48,18 @@ public interface BoundedGene<
 	 */
 	public A getMax();
 
+	@Override
+	public default boolean isValid() {
+		return
+			getAllele().compareTo(getMin()) >= 0 &&
+			getAllele().compareTo(getMax()) <= 0;
+	}
+
+	@Override
+	public default int compareTo(final G other) {
+		return getAllele().compareTo(other.getAllele());
+	}
+
 	/**
 	 * Create a new gene from the given {@code value} and the current bounds.
 	 *
@@ -55,4 +67,5 @@ public interface BoundedGene<
 	 * @return a new gene with the given value.
 	 */
 	public G newInstance(final A value);
+
 }

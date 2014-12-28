@@ -27,7 +27,7 @@ import java.util.Comparator;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-04-29 $</em>
  */
 public enum Optimize {
 
@@ -37,9 +37,9 @@ public enum Optimize {
 	MINIMUM {
 		@Override
 		public <T extends Comparable<? super T>>
-		int compare(final T o1, final T o2)
+		int compare(final T a, final T b)
 		{
-			return o2.compareTo(o1);
+			return b.compareTo(a);
 		}
 	},
 
@@ -49,9 +49,9 @@ public enum Optimize {
 	MAXIMUM {
 		@Override
 		public <T extends Comparable<? super T>>
-		int compare(final T o1, final T o2)
+		int compare(final T a, final T b)
 		{
-			return o1.compareTo(o2);
+			return a.compareTo(b);
 		}
 	};
 
@@ -61,14 +61,14 @@ public enum Optimize {
 	 * than the second.
 	 *
 	 * @param <T> the comparable type
-	 * @param o1 the first object to be compared.
-	 * @param o2 the second object to be compared.
+	 * @param a the first object to be compared.
+	 * @param b the second object to be compared.
 	 * @return a negative integer, zero, or a positive integer as the first
 	 *          argument is better than, equal to, or worse than the second.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public abstract <T extends Comparable<? super T>>
-	int compare(final T o1, final T o2);
+	int compare(final T a, final T b);
 
 	/**
 	 * Create an appropriate comparator of the given optimization strategy. A
@@ -81,7 +81,7 @@ public enum Optimize {
 	 * population.sort(Optimize.MINIMUM.&lt;Double&gt;descending());
 	 * [/code]
 	 *
-	 * The code example above will sort the population according it's fitness
+	 * The code example above will populationSort the population according it's fitness
 	 * values in ascending order, since lower values are <i>better</i> in this
 	 * case.
 	 *
@@ -89,12 +89,7 @@ public enum Optimize {
 	 * @return a new {@link Comparator} for the type {@code T}.
 	 */
 	public <T extends Comparable<? super T>> Comparator<T> descending() {
-		return new Comparator<T>() {
-			@Override
-			public int compare(final T o1, final T o2) {
-				return Optimize.this.compare(o2, o1);
-			}
-		};
+		return (a, b) -> Optimize.this.compare(b, a);
 	}
 
 	/**
@@ -108,7 +103,7 @@ public enum Optimize {
 	 * population.sort(Optimize.MINIMUM.&lt;Double&gt;ascending());
 	 * [/code]
 	 *
-	 * The code example above will sort the population according it's fitness
+	 * The code example above will populationSort the population according it's fitness
 	 * values in descending order, since lower values are <i>better</i> in this
 	 * case.
 	 *
@@ -116,12 +111,7 @@ public enum Optimize {
 	 * @return a new {@link Comparator} for the type {@code T}.
 	 */
 	public <T extends Comparable<? super T>> Comparator<T> ascending() {
-		return new Comparator<T>() {
-			@Override
-			public int compare(final T o1, final T o2) {
-				return Optimize.this.compare(o1, o2);
-			}
-		};
+		return this::compare;
 	}
 
 	/**

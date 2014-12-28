@@ -20,10 +20,11 @@
 package org.jenetics.internal.util;
 
 import static org.jenetics.internal.util.reflect.classOf;
+import static org.jenetics.internal.util.reflect.innerClasses;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.function.Function;
 
 import javax.xml.bind.DataBindingException;
 import javax.xml.bind.JAXBContext;
@@ -32,18 +33,15 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.jenetics.internal.util.model.CharacterModel;
 
-import org.jenetics.util.Function;
-import org.jenetics.util.StaticObject;
-
 /**
  * JAXB helper methods.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-04-12 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-08-05 $</em>
  * @since 2.0
  */
-public class jaxb extends StaticObject {
-	private jaxb() {}
+public class jaxb {
+	private jaxb() {require.noInstance();}
 
 	private static final class JAXBContextHolder {
 		private static final JAXBContext CONTEXT; static {
@@ -63,7 +61,7 @@ public class jaxb extends StaticObject {
 		return JAXBContextHolder.CONTEXT;
 	}
 
-	private static final XmlAdapter<Object, Object> IdentityAdapter =
+	private static final XmlAdapter<Object, Object> IDENTITY_ADAPTER =
 		new XmlAdapter<Object, Object>() {
 			@Override public Object unmarshal(final Object value) {
 				return value;
@@ -73,7 +71,8 @@ public class jaxb extends StaticObject {
 			}
 		};
 
-	private static final Map<Class<?>, XmlAdapter<?, ?>> ADAPTERS = new HashMap<>();
+	private static final ConcurrentMap<Class<?>, XmlAdapter<?, ?>> ADAPTERS =
+		new ConcurrentHashMap<>();
 
 	static {
 		ADAPTERS.put(Character.class, CharacterModel.ADAPTER);
@@ -90,33 +89,17 @@ public class jaxb extends StaticObject {
 	 */
 	@SuppressWarnings("unchecked")
 	public static XmlAdapter<Object, Object> adapterFor(final Object value) {
-		final Class<?> cls = classOf(value);
-
-		synchronized (ADAPTERS) {
-			if (!ADAPTERS.containsKey(cls)) {
-				ADAPTERS.put(cls, newXmlAdapter(cls));
-			}
-
-			return (XmlAdapter<Object, Object>) ADAPTERS.get(cls);
-		}
+		return (XmlAdapter<Object, Object>)ADAPTERS.computeIfAbsent(
+			classOf(value), jaxb::newXmlAdapter
+		);
 	}
 
-	@SuppressWarnings("unchecked")
 	private static XmlAdapter<Object, Object> newXmlAdapter(final Class<?> cls) {
-		final List<Class<?>> classes = reflect.allDeclaredClasses(cls);
-
-		XmlAdapter<Object, Object> adapter = IdentityAdapter;
-		for (int i = 0; i < classes.size() && adapter == IdentityAdapter; ++i) {
-			if (XmlAdapter.class.isAssignableFrom(classes.get(i))) {
-				try {
-					adapter = (XmlAdapter<Object, Object>)classes.get(i).newInstance();
-				} catch (InstantiationException | IllegalAccessException e) {
-					// ignore exception
-				}
-			}
-		}
-
-		return adapter;
+		return innerClasses(cls)
+			.filter(XmlAdapter.class::isAssignableFrom)
+			.findFirst()
+			.flatMap(reflect::<XmlAdapter<Object, Object>>newInstance)
+			.orElse(IDENTITY_ADAPTER);
 	}
 
 	/**
@@ -141,14 +124,11 @@ public class jaxb extends StaticObject {
 	 * @return the marshaller function
 	 */
 	public static <V, B> Function<B, V> Marshaller(final XmlAdapter<V, B> a) {
-		return new Function<B, V>() {
-			@Override
-			public V apply(final B value) {
-				try {
-					return a.marshal(value);
-				} catch (Exception e) {
-					throw new RuntimeException(e);
-				}
+		return value -> {
+			try {
+				return a.marshal(value);
+			} catch (Exception e) {
+				throw new RuntimeException(e);
 			}
 		};
 	}
@@ -161,14 +141,11 @@ public class jaxb extends StaticObject {
 	 * @return the unmarshaller function
 	 */
 	public static <V, B> Function<V, B> Unmarshaller(final XmlAdapter<V, B> a) {
-		return new Function<V, B>() {
-			@Override
-			public B apply(final V value) {
-				try {
-					return a.unmarshal(value);
-				} catch (Exception e) {
-					throw new RuntimeException(e);
-				}
+		return value -> {
+			try {
+				return a.unmarshal(value);
+			} catch (Exception e) {
+				throw new RuntimeException(e);
 			}
 		};
 	}

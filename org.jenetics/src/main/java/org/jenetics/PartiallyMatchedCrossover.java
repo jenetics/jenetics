@@ -23,11 +23,12 @@ import static java.lang.String.format;
 
 import java.util.Random;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.math.base;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.math;
 
 /**
  * The {@code PartiallyMatchedCrossover} (PMX) guarantees that all {@link Gene}s
@@ -70,9 +71,11 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-28 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-01 $</em>
  */
-public final class PartiallyMatchedCrossover<T> extends Crossover<EnumGene<T>> {
+public final class PartiallyMatchedCrossover<T, C extends Comparable<? super C>>
+	extends Crossover<EnumGene<T>, C>
+{
 
 	public PartiallyMatchedCrossover(final double probability) {
 		super(probability);
@@ -87,7 +90,7 @@ public final class PartiallyMatchedCrossover<T> extends Crossover<EnumGene<T>> {
 
 		if (that.length() >= 2) {
 			final Random random = RandomRegistry.getRandom();
-			final int[] points = math.subset(that.length(), 2, random);
+			final int[] points = base.subset(that.length(), 2, random);
 
 			that.swap(points[0], points[1], other, points[0]);
 			repair(that, other, points[0], points[1]);
@@ -119,19 +122,12 @@ public final class PartiallyMatchedCrossover<T> extends Crossover<EnumGene<T>> {
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).and(super.hashCode()).value();
+		return Hash.of(getClass()).and(super.hashCode()).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null || obj.getClass() != getClass()) {
-			return false;
-		}
-
-		return super.equals(obj);
+		return Equality.of(this, obj).test(super::equals);
 	}
 
 	@Override

@@ -19,6 +19,10 @@
  */
 package org.jenetics.util;
 
+import static java.util.stream.Collectors.toList;
+import static org.jenetics.util.RandomRegistry.using;
+
+import java.util.List;
 import java.util.Random;
 
 import org.testng.Assert;
@@ -26,9 +30,13 @@ import org.testng.annotations.Test;
 
 import org.jenetics.internal.util.Concurrency;
 
+import org.jenetics.DoubleChromosome;
+import org.jenetics.DoubleGene;
+import org.jenetics.Genotype;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-05 $</em>
+ * @version <em>$Date: 2014-10-19 $</em>
  */
 public class RandomRegistryTest {
 
@@ -77,14 +85,14 @@ public class RandomRegistryTest {
 		final Random random = RandomRegistry.getRandom();
 
 		final Random random1 = new Random();
-		try (Scoped<Random> s = RandomRegistry.scope(random1)) {
+		using(random1, r1 -> {
 			final Random random2 = new Random();
-			try (Scoped<Random> s2 = RandomRegistry.scope(random2)) {
+			using(random2, r2 -> {
 				Assert.assertSame(RandomRegistry.getRandom(), random2);
-			}
+			});
 
 			Assert.assertSame(RandomRegistry.getRandom(), random1);
-		}
+		});
 
 		Assert.assertSame(RandomRegistry.getRandom(), random);
 	}
@@ -101,36 +109,54 @@ public class RandomRegistryTest {
 	private static final class ContextRunnable implements Runnable {
 		@Override
 		public void run() {
-			try (Scoped<Random> c = RandomRegistry.scope(new Random())) {
+			using(new Random(), r -> {
 				try {
 					Thread.sleep(1);
 				} catch (InterruptedException e) {
 					throw new RuntimeException(e);
 				}
-				Assert.assertSame(c.get(), RandomRegistry.getRandom());
+				Assert.assertSame(r, RandomRegistry.getRandom());
 
 				final Random random2 = new Random();
-				try (Scoped<Random> c2 = RandomRegistry.scope(random2)) {
+				using(random2, r2 -> {
 					Assert.assertSame(RandomRegistry.getRandom(), random2);
-					Assert.assertSame(c2.get(), random2);
+					Assert.assertSame(r2, random2);
 
 					final Random random2_2 = new Random();
 					RandomRegistry.setRandom(random2_2);
 					Assert.assertSame(RandomRegistry.getRandom(), random2_2);
 
 					final Random random3 = new Random();
-					try (Scoped<Random> c3 = RandomRegistry.scope(random3)) {
+					using(random3, r3 -> {
 						Assert.assertSame(RandomRegistry.getRandom(), random3);
-						Assert.assertSame(c3.get(), random3);
-					}
+						Assert.assertSame(r3, random3);
+					});
 
 					Assert.assertSame(RandomRegistry.getRandom(), random2_2);
-					Assert.assertNotEquals(c.get(), RandomRegistry.getRandom());
-				}
+					Assert.assertNotEquals(r, RandomRegistry.getRandom());
+				});
 
-				Assert.assertSame(c.get(), RandomRegistry.getRandom());
-			}
+				Assert.assertSame(r, RandomRegistry.getRandom());
+			});
 		}
+	}
+
+	@Test
+	public void withScope() {
+		final List<Genotype<DoubleGene>> genotypes1 =
+			RandomRegistry.with(new LCG64ShiftRandom(123), random ->
+				Genotype.of(DoubleChromosome.of(0, 10)).instances()
+					.limit(100)
+					.collect(toList())
+			);
+		final List<Genotype<DoubleGene>> genotypes2 =
+			RandomRegistry.with(new LCG64ShiftRandom(123), random ->
+				Genotype.of(DoubleChromosome.of(0, 10)).instances()
+					.limit(100)
+					.collect(toList())
+			);
+
+		Assert.assertEquals(genotypes1, genotypes2);
 	}
 
 }

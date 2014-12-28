@@ -19,36 +19,47 @@
  */
 package org.jenetics;
 
+import org.jenetics.util.ISeq;
+
 /**
  * The Alterer is responsible for the changing/recombining the Population.
  * Alterers can be chained by appending a list of alterers with the
- * {@link GeneticAlgorithm#setAlterers(Alterer...)} method.
+ * {@link org.jenetics.engine.Engine.Builder#alterers(Alterer, Alterer[])} method.
  *
  * [code]
- * final GeneticAlgorithm&lt;DoubleGene, Double&gt; ga = ...
- * ga.setAlterers(
- *     new Crossover&lt;DoubleGene&gt;(0.1),
- *     new Mutator&lt;DoubleGene&gt;(0.05),
- *     new MeanAlterer&lt;DoubleGene&gt;(0.2)
- * );
+ * final Engine&lt;DoubleGene, Double&gt; engine = Engine
+ *     .builder(gtf, ff)
+ *     .alterers(
+ *         new Crossover&lt;&gt;(0.1),
+ *         new Mutator&lt;&gt;(0.05),
+ *         new MeanAlterer&lt;&gt;(0.2))
+ *     .build();
+ * final EvolutionStream&lt;DoubleGene, Double&gt; stream = engine.stream();
  * [/code]
  *
  * The order of the alterer calls is: Crossover, Mutation and MeanAlterer.
  *
- * @param <G> the gene type.
+ * @param <G> the gene type
+ * @param <C> the fitness function result type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-03-30 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-12-28 $</em>
  */
-public interface Alterer<G extends Gene<?, G>> {
+@FunctionalInterface
+public interface Alterer<
+	G extends Gene<?, G>,
+	C extends Comparable<? super C>
+>
+{
 
+	public static final double DEFAULT_ALTER_PROBABILITY = 0.2;
 
 	/**
-	 * Alters (recombine) a given population. If the {@code population}
-	 * is empty, nothing is altered.
+	 * Alters (recombine) a given population. If the {@code population} is empty,
+	 * nothing is altered. The altering of the population is done in place; the
+	 * given <i>population</i> is altered.
 	 *
-	 * @param <C> the fitness function result type
 	 * @param population The Population to be altered. If the
 	 *        {@code population} is {@code null} or empty, nothing is altered.
 	 * @param generation the date of birth (generation) of the altered phenotypes.
@@ -56,9 +67,47 @@ public interface Alterer<G extends Gene<?, G>> {
 	 * @throws NullPointerException if the given {@code population} is
 	 *        {@code null}.
 	 */
-	public <C extends Comparable<? super C>> int alter(
-		final Population<G, C> population,
-		final int generation
-	);
+	public int alter(final Population<G, C> population, final long generation);
+
+	/**
+	 * Returns a composed alterer that first applies the {@code before} alterer
+	 * to its input, and then applies {@code this} alterer to the result.
+	 *
+	 * @param before the alterer to apply first
+	 * @return the new composed alterer
+	 */
+	public default Alterer<G, C> compose(final Alterer<G, C> before) {
+		return of(before, this);
+	}
+
+	/**
+	 * Returns a composed alterer that applies the {@code this} alterer
+	 * to its input, and then applies the {@code after} alterer to the result.
+	 *
+	 * @param after the alterer to apply first
+	 * @return the new composed alterer
+	 */
+	public default Alterer<G, C> andThen(final Alterer<G, C> after) {
+		return of(this, after);
+	}
+
+	/**
+	 * Combine the given alterers.
+	 *
+	 * @param <G> the gene type
+	 * @param <C> the fitness function result type
+	 * @param alterers the alterers to combine.
+	 * @return a new alterer which consists of the given one
+	 * @throws NullPointerException if one of the alterers is {@code null}.
+	 */
+	@SafeVarargs
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Alterer<G, C> of(final Alterer<G, C>... alterers) {
+		return alterers.length == 0 ?
+			(p, g) -> 0 :
+			alterers.length == 1 ?
+				alterers[0] :
+				new CompositeAlterer<G, C>(ISeq.of(alterers));
+	}
 
 }

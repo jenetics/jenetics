@@ -19,15 +19,26 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.RandomRegistry.using;
+
+import java.util.Arrays;
+import java.util.function.Function;
+import java.util.stream.IntStream;
+
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jenetics.stat.Distribution;
-import org.jenetics.stat.UniformDistribution;
+import org.jenetics.internal.util.Named;
+
+import org.jenetics.stat.Histogram;
+import org.jenetics.stat.StatisticsAssert;
 import org.jenetics.util.Factory;
+import org.jenetics.util.LCG64ShiftRandom;
+import org.jenetics.util.TestData;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-07 $</em>
+ * @version <em>$Date: 2014-11-28 $</em>
  */
 public class StochasticUniversalSelectorTest
 	extends ProbabilitySelectorTester<StochasticUniversalSelector<DoubleGene,Double>>
@@ -38,28 +49,89 @@ public class StochasticUniversalSelectorTest
 		return true;
 	}
 
-	final Factory<StochasticUniversalSelector<DoubleGene,Double>>
-	_factory = new Factory<StochasticUniversalSelector<DoubleGene,Double>>() {
-		@Override
-		public StochasticUniversalSelector<DoubleGene, Double> newInstance() {
-			return new StochasticUniversalSelector<>();
-		}
-	};
 	@Override
-	protected Factory<StochasticUniversalSelector<DoubleGene, Double>> getFactory() {
-		return _factory;
+	protected Factory<StochasticUniversalSelector<DoubleGene, Double>> factory() {
+		return StochasticUniversalSelector::new;
 	}
 
-	@Override
-	protected Distribution<Double> getDistribution() {
-		return new UniformDistribution<>(getDomain());
-	}
-
-	// TODO: implement select-distribution test.
-	@Override
 	@Test
-	public void selectDistribution() {
-		//super.selectDistribution();
+	public void selectMinimum() {
+		final Function<Genotype<IntegerGene>, Integer> ff = gt ->
+			gt.getChromosome().toSeq().stream()
+				.mapToInt(IntegerGene::intValue)
+				.sum();
+
+		Factory<Genotype<IntegerGene>> gtf =
+			Genotype.of(IntegerChromosome.of(0, 100, 10));
+
+		final Population<IntegerGene, Integer> population = IntStream.range(0, 50)
+			.mapToObj(i -> Phenotype.of(gtf.newInstance(), 50, ff))
+			.collect(Population.toPopulation());
+
+		final StochasticUniversalSelector<IntegerGene, Integer> selector =
+			new StochasticUniversalSelector<>();
+
+		final Population<IntegerGene, Integer> selection = selector.select(
+			population, 50, Optimize.MINIMUM
+		);
+	}
+
+	@Test(dataProvider = "expectedDistribution", invocationCount = 20)
+	public void selectDistribution(final Named<double[]> expected, final Optimize opt) {
+		final int loops = 5;
+		final int npopulation = POPULATION_COUNT;
+
+		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
+		using(random, r -> {
+			final Histogram<Double> distribution = SelectorTester.distribution(
+				new StochasticUniversalSelector<>(),
+				opt,
+				npopulation,
+				loops
+			);
+
+			StatisticsAssert.assertDistribution(distribution, expected.value);
+		});
+	}
+
+	@DataProvider(name = "expectedDistribution")
+	public Object[][] expectedDistribution() {
+		final String resource =
+			"/org/jenetics/selector/distribution/StochasticUniversalSelector";
+
+		return Arrays.stream(Optimize.values())
+			.map(opt -> {
+				final TestData data = TestData.of(resource, opt.toString());
+				final double[] expected = data.stream()
+					.map(line -> line[0])
+					.mapToDouble(Double::parseDouble)
+					.toArray();
+
+				return new Object[]{Named.of("distribution", expected), opt};
+			}).toArray(Object[][]::new);
+	}
+
+	public static void main(final String[] args) {
+		writeDistributionData(Optimize.MAXIMUM);
+		writeDistributionData(Optimize.MINIMUM);
+	}
+
+	private static void writeDistributionData(final Optimize opt) {
+		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
+		using(random, r -> {
+			final int npopulation = POPULATION_COUNT;
+			//final int loops = 2_500_000;
+			final int loops = 100_000;
+
+			printDistributions(
+				System.out,
+				Arrays.asList(""),
+				value -> new StochasticUniversalSelector<DoubleGene, Double>(),
+				opt,
+				npopulation,
+				loops
+			);
+		});
 	}
 
 }

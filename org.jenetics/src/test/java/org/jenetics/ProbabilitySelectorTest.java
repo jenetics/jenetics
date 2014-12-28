@@ -19,6 +19,9 @@
  */
 package org.jenetics;
 
+import static org.jenetics.internal.math.arithmetic.normalize;
+import static org.jenetics.internal.util.array.shuffle;
+
 import java.util.Arrays;
 import java.util.Random;
 
@@ -40,18 +43,6 @@ public class ProbabilitySelectorTest {
 
 		shuffle(array, random);
 		return array;
-	}
-
-	public static void shuffle(final double[] array, final Random random) {
-		for (int i = array.length; --i >=0;) {
-			swap(array, i, random.nextInt(array.length));
-		}
-	}
-
-	public static void swap(final double[] array, final int i, final int j) {
-		final double temp = array[i];
-		array[i] = array[j];
-		array[j] = temp;
 	}
 
 	@DataProvider(name = "arraySize")
@@ -88,5 +79,16 @@ public class ProbabilitySelectorTest {
 		}
 	}
 
+	@Test(dataProvider = "arraySize")
+	public void indexOfSerialEqualBinary(final Integer size) {
+		final double[] probabilities = array(size, new Random(12));
+		normalize(probabilities);
+		ProbabilitySelector.incremental(probabilities);
+
+		Assert.assertEquals(
+			ProbabilitySelector.indexOfSerial(probabilities, 0.5),
+			ProbabilitySelector.indexOfBinary(probabilities, 0.5)
+		);
+	}
 
 }

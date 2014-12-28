@@ -20,7 +20,7 @@
  # Author:
  #    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  #
- # Version: <em>$Date: 2014-04-09 $</em>
+ # Version: <em>$Date: 2014-12-02 $</em>
  #
  ###############################################################################
 -->
@@ -62,22 +62,17 @@
 	</test>
 	<test name="org.jenetics.DoubleChromosome">
 		<classes>
-            <class name="org.jenetics.DoubleChromosomeTest" />
+			<class name="org.jenetics.DoubleChromosomeTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.DoubleGene">
 		<classes>
-            <class name="org.jenetics.DoubleGeneTest" />
+			<class name="org.jenetics.DoubleGeneTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.GaussianMutator">
 		<classes>
 			<class name="org.jenetics.GaussianMutatorTest" />
-		</classes>
-	</test>
-	<test name="org.jenetics.GeneticAlgorithm">
-		<classes>
-			<class name="org.jenetics.GeneticAlgorithmTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.ExponentialRankSelector">
@@ -95,19 +90,19 @@
 			<class name="org.jenetics.GenotypeTest" />
 		</classes>
 	</test>
-    <test name="org.jenetics.IntegerChromosome">
-        <classes>
-            <class name="org.jenetics.IntegerChromosomeTest" />
-        </classes>
-    </test>
-    <test name="org.jenetics.IntegerGene">
-        <classes>
-            <class name="org.jenetics.IntegerGeneTest" />
-        </classes>
-    </test>
+	<test name="org.jenetics.IntegerChromosome">
+		<classes>
+			<class name="org.jenetics.IntegerChromosomeTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.IntegerGene">
+		<classes>
+			<class name="org.jenetics.IntegerGeneTest" />
+		</classes>
+	</test>
 	<test name="org.jenetics.LongChromosome">
 		<classes>
-            <class name="org.jenetics.LongChromosomeTest" />
+			<class name="org.jenetics.LongChromosomeTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.LongGene">
@@ -161,32 +156,20 @@
 			<class name="org.jenetics.PopulationTest" />
 		</classes>
 	</test>
+	<test name="org.jenetics.ProbabilitySelector">
+		<classes>
+			<class name="org.jenetics.ProbabilitySelectorTest" />
+		</classes>
+	</test>
 	<test name="org.jenetics.RouletteWheelSelector">
 		<classes>
 			<class name="org.jenetics.RouletteWheelSelectorTest" />
-			<class name="org.jenetics.RouletteWheelSelector_range_1000_3000_Test" />
-			<class name="org.jenetics.RouletteWheelSelector_range_m1000_3000_Test" />
 		</classes>
 	</test>
 	<test name="org.jenetics.Crossover">
 		<classes>
 			<class name="org.jenetics.SinglePointCrossoverTest" />
 			<class name="org.jenetics.MultiPointCrossoverTest" />
-		</classes>
-	</test>
-	<test name="org.jenetics.Statistics">
-		<classes>
-			<class name="org.jenetics.StatisticsTest" />
-			<class name="org.jenetics.StatisticsBuilderTest" />
-			<class name="org.jenetics.StatisticsCalculatorTest" />
-			<class name="org.jenetics.StatisticsTimeTest" />
-		</classes>
-	</test>
-	<test name="org.jenetics.NumberStatistics">
-		<classes>
-			<class name="org.jenetics.NumberStatisticsTest" />
-			<class name="org.jenetics.NumberStatisticsCalculatorTest" />
-			<class name="org.jenetics.NumberStatisticsBuilderTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.Optimize">
@@ -204,11 +187,6 @@
 			<class name="org.jenetics.SwapMutatorTest" />
 		</classes>
 	</test>
-	<test name="org.jenetics.termination">
-		<classes>
-			<class name="org.jenetics.terminationTest" />
-		</classes>
-	</test>
 	<test name="org.jenetics.TournamentSelector">
 		<classes>
 			<class name="org.jenetics.TournamentSelectorTest" />
@@ -219,15 +197,34 @@
 			<class name="org.jenetics.TruncationSelectorTest" />
 		</classes>
 	</test>
-    <test name="org.jenetics.util.Marshalling">
-        <classes>
-            <class name="org.jenetics.MarshallingTest" />
-        </classes>
-    </test>
-	<test name="org.jenetics.stat.Accumulators">
+	<test name="org.jenetics.util.Marshalling">
 		<classes>
-			<class name="org.jenetics.stat.MeanTest" />
-			<class name="org.jenetics.stat.VarianceTest" />
+			<class name="org.jenetics.MarshallingTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.engine.EngineBuilder">
+		<classes>
+			<class name="org.jenetics.engine.EngineBuilderTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.engine.Engine">
+		<classes>
+			<class name="org.jenetics.engine.EngineTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.engine.EvolutionDurations">
+		<classes>
+			<class name="org.jenetics.engine.EvolutionDurationsTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.engine.EvolutionResult">
+		<classes>
+			<class name="org.jenetics.engine.EvolutionResultTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.engine.EvolutionStreamImpl">
+		<classes>
+			<class name="org.jenetics.engine.EvolutionStreamImplTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.stat.Histogram">
@@ -240,9 +237,19 @@
 			<class name="org.jenetics.stat.LinearDistributionTest" />
 		</classes>
 	</test>
-	<test name="org.jenetics.stat.NormalDistribution">
+	<test name="org.jenetics.stat.Moments">
 		<classes>
-			<class name="org.jenetics.stat.NormalDistributionTest" />
+			<class name="org.jenetics.stat.IntMomentStatisticsTest" />
+			<class name="org.jenetics.stat.IntMomentsTest" />
+			<class name="org.jenetics.stat.LongMomentStatisticsTest" />
+			<class name="org.jenetics.stat.LongMomentsTest" />
+			<class name="org.jenetics.stat.DoubleMomentStatisticsTest" />
+			<class name="org.jenetics.stat.DoubleMomentsTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.stat.MinMax">
+		<classes>
+			<class name="org.jenetics.stat.MinMaxTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.stat.Quantile">
@@ -255,24 +262,21 @@
 			<class name="org.jenetics.stat.UniformDistributionTest" />
 		</classes>
 	</test>
-	<test name="org.jenetics.util.accumulatorsTest">
+	<test name="org.jenetics.internal.collection.ArrayProxy">
 		<classes>
-			<class name="org.jenetics.util.accumulatorsTest" />
-			<class name="org.jenetics.util.accumulatorsMaxTest" />
-			<class name="org.jenetics.util.accumulatorsMinMaxTest" />
-			<class name="org.jenetics.util.accumulatorsMinTest" />
+			<class name="org.jenetics.internal.collection.ObjectArrayProxyTest" />
+			<class name="org.jenetics.internal.collection.ArrayProxySeqTest" />
+			<class name="org.jenetics.internal.collection.ArrayProxyISeqTest" />
+			<class name="org.jenetics.internal.collection.ArrayProxyMListTest" />
+			<class name="org.jenetics.internal.collection.ArrayProxyListTest" />
+			<class name="org.jenetics.internal.collection.ArrayProxyIteratorTest" />
+			<class name="org.jenetics.internal.collection.ArrayProxyMIteratorTest" />
+			<class name="org.jenetics.internal.collection.ArrayProxyMSeqTest" />
 		</classes>
 	</test>
-	<test name="org.jenetics.internal.util.ArrayProxy">
+	<test name="org.jenetics.internal.math.DoubleAdder">
 		<classes>
-			<class name="org.jenetics.internal.util.ArrayProxyImplTest" />
-			<class name="org.jenetics.internal.util.ArrayProxySeqTest" />
-			<class name="org.jenetics.internal.util.ArrayProxyISeqTest" />
-			<class name="org.jenetics.internal.util.ArrayProxyMListTest" />
-			<class name="org.jenetics.internal.util.ArrayProxyListTest" />
-			<class name="org.jenetics.internal.util.ArrayProxyIteratorTest" />
-			<class name="org.jenetics.internal.util.ArrayProxyMIteratorTest" />
-			<class name="org.jenetics.internal.util.ArrayProxyMSeqTest" />
+			<class name="org.jenetics.internal.math.DoubleAdderTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.internal.math.probability">
@@ -280,28 +284,29 @@
 			<class name="org.jenetics.internal.math.probabilityTest" />
 		</classes>
 	</test>
-    <test name="org.jenetics.internal.util.internalbit">
-        <classes>
-            <class name="org.jenetics.internal.util.internalbitTest" />
-        </classes>
-    </test>
-	<test name="org.jenetics.util.Array">
+	<test name="org.jenetics.internal.math.util">
 		<classes>
-			<class name="org.jenetics.util.ArraySeqTest" />
-			<class name="org.jenetics.util.ArrayISeqTest" />
-			<class name="org.jenetics.util.ArrayMSeqTest" />
-			<class name="org.jenetics.util.ArrayTest" />
-			<class name="org.jenetics.util.ArraySeqIteratorTest" />
+			<class name="org.jenetics.internal.util.LazyTest" />
 		</classes>
 	</test>
-	<test name="org.jenetics.util.arrays">
+	<test name="org.jenetics.internal.collection.Stack">
 		<classes>
-			<class name="org.jenetics.util.arraysTest" />
+			<class name="org.jenetics.internal.collection.StackTest" />
 		</classes>
 	</test>
-	<test name="org.jenetics.util.bit">
+	<test name="org.jenetics.internal.util.bit">
 		<classes>
-			<class name="org.jenetics.util.bitTest" />
+			<class name="org.jenetics.internal.util.bitTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.internal.util.IndexSorter">
+		<classes>
+			<class name="org.jenetics.internal.util.IndexSorterTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.internal.util.reflect">
+		<classes>
+			<class name="org.jenetics.internal.util.reflectTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.util.CharSeq">
@@ -309,10 +314,10 @@
 			<class name="org.jenetics.util.CharSeqTest" />
 		</classes>
 	</test>
-	<test name="org.jenetics.util.math">
+	<test name="org.jenetics.internal.math.base">
 		<classes>
-			<class name="org.jenetics.util.mathRandomTest" />
-			<class name="org.jenetics.util.mathTest" />
+			<class name="org.jenetics.util.baseRandomTest" />
+			<class name="org.jenetics.util.baseTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.util.Random">
@@ -332,19 +337,21 @@
 			<class name="org.jenetics.util.RandomRegistryTest" />
 		</classes>
 	</test>
+	<test name="org.jenetics.util.Seq">
+		<classes>
+			<class name="org.jenetics.util.SeqTest" />
+			<class name="org.jenetics.util.ISeqTest" />
+			<class name="org.jenetics.util.MSeqTest" />
+		</classes>
+	</test>
 	<test name="org.jenetics.util.StaticObject">
 		<classes>
 			<class name="org.jenetics.util.StaticObjectTest" />
 		</classes>
 	</test>
-	<test name="org.jenetics.util.Timer">
-		<classes>
-			<class name="org.jenetics.util.TimerTest" />
-		</classes>
-	</test>
 	<test name="org.jenetics.util.object">
 		<classes>
-			<class name="org.jenetics.util.objectTest" />
+			<class name="org.jenetics.util.requireTest" />
 		</classes>
 	</test>
 </suite>

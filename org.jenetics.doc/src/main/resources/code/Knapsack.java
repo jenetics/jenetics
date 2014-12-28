@@ -1,23 +1,25 @@
-import static org.jenetics.util.math.random.nextDouble;
+import static org.jenetics.engine.EvolutionResult.toBestPhenotype;
+import static org.jenetics.engine.limit.bySteadyFitness;
 
 import java.util.Random;
+import java.util.function.Function;
+import java.util.stream.Collector;
+import java.util.stream.Stream;
 
 import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;
-import org.jenetics.Chromosome;
-import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.Mutator;
-import org.jenetics.NumberStatistics;
+import org.jenetics.Phenotype;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.TournamentSelector;
-import org.jenetics.util.Factory;
-import org.jenetics.util.Function;
-import org.jenetics.util.LCG64ShiftRandom;
+import org.jenetics.engine.Engine;
+import org.jenetics.engine.EvolutionStatistics;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Scoped;
 
+// This class represents a knapsack item, with a specific
+// "size" and "value".
 final class Item {
 	public final double size;
 	public final double value;
@@ -26,83 +28,91 @@ final class Item {
 		this.size = size;
 		this.value = value;
 	}
+
+	// Create a new random knapsack item.
+	static Item random() {
+		final Random r = RandomRegistry.getRandom();
+		return new Item(r.nextDouble()*100, r.nextDouble()*100);
+	}
+
+	// Create a new collector for summing up the knapsack items.
+	static Collector<Item, ?, Item> toSum() {
+		return Collector.of(
+			() -> new double[2],
+			(a, b) -> {a[0] += b.size; a[1] += b.value;},
+			(a, b) -> {a[0] += b[0]; a[1] += b[1]; return a;},
+			r -> new Item(r[0], r[1])
+		);
+	}
 }
 
-final class KnapsackFunction
+// The knapsack fitness function class, which is parametrized with
+// the available items and the size of the knapsack.
+final class FF
 	implements Function<Genotype<BitGene>, Double>
 {
 	private final Item[] items;
 	private final double size;
 
-	public KnapsackFunction(final Item[] items, double size) {
+	public FF(final Item[] items, final double size) {
 		this.items = items;
 		this.size = size;
 	}
 
 	@Override
-	public Double apply(final Genotype<BitGene> genotype) {
-		final Chromosome<BitGene> ch = genotype.getChromosome();
-		double size = 0;
-		double value = 0;
-		for (int i = 0, n = ch.length(); i < n; ++i) {
-			if (ch.getGene(i).getBit()) {
-				size += items[i].size;
-				value += items[i].value;
-			}
-		}
+	public Double apply(final Genotype<BitGene> gt) {
+		final Item sum = ((BitChromosome)gt.getChromosome()).ones()
+			.mapToObj(i -> items[i])
+			.collect(Item.toSum());
 
-		return size <= this.size ? value : 0;
+		return sum.size <= this.size ? sum.value : 0;
 	}
 }
 
+// The main class.
 public class Knapsack {
 
-	private static KnapsackFunction FF(final int n, final double size) {
-		final Item[] items = new Item[n];
-		try (Scoped<? extends Random> random =
-			RandomRegistry.scope(new LCG64ShiftRandom(123)))
-		{
-			for (int i = 0; i < items.length; ++i) {
-				items[i] = new Item(
-					nextDouble(random.get(), 0, 100),
-					nextDouble(random.get(), 0, 100)
-				);
-			}
-		}
-
-		return new KnapsackFunction(items, size);
-	}
-
-	public static void main(String[] args) throws Exception {
+	public static void main(final String[] args) {
 		final int nitems = 15;
 		final double kssize = nitems*100.0/3.0;
 
-		final KnapsackFunction ff = FF(nitems, kssize);
-		final Factory<Genotype<BitGene>> genotype = Genotype.of(
-			BitChromosome.of(nitems, 0.5)
+		final FF ff = new FF(
+			Stream.generate(Item::random)
+				.limit(nitems)
+				.toArray(Item[]::new),
+			kssize
 		);
 
-		final GeneticAlgorithm<BitGene, Double> ga = new GeneticAlgorithm<>(
-			genotype, ff
-		);
-		ga.setPopulationSize(500);
-		ga.setStatisticsCalculator(
-			new NumberStatistics.Calculator<BitGene, Double>()
-		);
-		ga.setSurvivorSelector(
-			new TournamentSelector<BitGene, Double>(5)
-		);
-		ga.setOffspringSelector(
-			new RouletteWheelSelector<BitGene, Double>()
-		);
-		ga.setAlterers(
-			 new Mutator<BitGene>(0.115),
-			 new SinglePointCrossover<BitGene>(0.16)
-		);
+		// Configure and build the evolution engine.
+		final Engine<BitGene, Double> engine = Engine
+			.builder(ff, BitChromosome.of(nitems, 0.5))
+			.populationSize(500)
+			.survivorsSelector(new TournamentSelector<>(5))
+			.offspringSelector(new RouletteWheelSelector<>())
+			.alterers(
+				new Mutator<>(0.115),
+				new SinglePointCrossover<>(0.16))
+			.build();
 
-		ga.setup();
-		ga.evolve(100);
-		System.out.println(ga.getBestStatistics());
-		System.out.println(ga.getBestPhenotype());
+		// Create evolution statistics consumer.
+		final EvolutionStatistics<Double, ?>
+			statistics = EvolutionStatistics.ofNumber();
+
+		final Phenotype<BitGene, Double> best = engine.stream()
+			// Truncate the evolution stream after 7 "steady"
+			// generations.
+			.limit(bySteadyFitness(7))
+			// The evolution will stop after maximal 100
+			// generations.
+			.limit(100)
+			// Update the evaluation statistics after
+			// each generation
+			.peek(statistics)
+			// Collect (reduce) the evolution stream to
+			// its best phenotype.
+			.collect(toBestPhenotype());
+
+		System.out.println(statistics);
+		System.out.println(best);
 	}
 }

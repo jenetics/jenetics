@@ -23,20 +23,20 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.Array;
+import org.jenetics.util.MSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-03-05 $</em>
+ * @version <em>$Date: 2014-11-28 $</em>
  */
 public class CompositeAltererTest {
 
-	public Alterer<DoubleGene> newAlterer(double p) {
+	public Alterer<DoubleGene, Double> newAlterer(double p) {
 		final double p3 = Math.pow(p, 3);
 		return CompositeAlterer.of(
-			new Mutator<DoubleGene>(p3),
-			new Mutator<DoubleGene>(p3),
-			new Mutator<DoubleGene>(p3)
+			new Mutator<DoubleGene, Double>(p3),
+			new Mutator<DoubleGene, Double>(p3),
+			new Mutator<DoubleGene, Double>(p3)
 		);
 	}
 
@@ -52,7 +52,7 @@ public class CompositeAltererTest {
 		final Population<DoubleGene, Double> p2 = p1.copy();
 		Assert.assertEquals(p2, p1);
 
-		final Alterer<DoubleGene> mutator = newAlterer(0.01);
+		final Alterer<DoubleGene, Double> mutator = newAlterer(0.01);
 
 		Assert.assertEquals(mutator.alter(p1, 1), diff(p1, p2));
 	}
@@ -62,7 +62,7 @@ public class CompositeAltererTest {
 		final int nchromosomes,
 		final int npopulation
 	) {
-		final Array<DoubleChromosome> chromosomes = new Array<>(nchromosomes);
+		final MSeq<DoubleChromosome> chromosomes = MSeq.ofLength(nchromosomes);
 
 		for (int i = 0; i < nchromosomes; ++i) {
 			chromosomes.set(i, DoubleChromosome.of(0, 10, ngenes));
@@ -72,7 +72,7 @@ public class CompositeAltererTest {
 		final Population<DoubleGene, Double> population = new Population<>(npopulation);
 
 		for (int i = 0; i < npopulation; ++i) {
-			population.add(Phenotype.of(genotype.newInstance(), TestUtils.FF, 0));
+			population.add(Phenotype.of(genotype.newInstance(), 0, TestUtils.FF));
 		}
 
 		return population;
@@ -108,69 +108,70 @@ public class CompositeAltererTest {
 	public Object[][] alterCountParameters() {
 		return new Object[][] {
 				//    ngenes,       nchromosomes     npopulation
-				{ new Integer(1),   new Integer(1),  new Integer(100) },
-				{ new Integer(5),   new Integer(1),  new Integer(100) },
-				{ new Integer(80),  new Integer(1),  new Integer(100) },
-				{ new Integer(1),   new Integer(2),  new Integer(100) },
-				{ new Integer(5),   new Integer(2),  new Integer(100) },
-				{ new Integer(80),  new Integer(2),  new Integer(100) },
-				{ new Integer(1),   new Integer(15), new Integer(100) },
-				{ new Integer(5),   new Integer(15), new Integer(100) },
-				{ new Integer(80),  new Integer(15), new Integer(100) },
+				{ 1,   1,  100 },
+				{ 5,   1,  100 },
+				{ 80,  1,  100 },
+				{ 1,   2,  100 },
+				{ 5,   2,  100 },
+				{ 80,  2,  100 },
+				{ 1,   15, 100 },
+				{ 5,   15, 100 },
+				{ 80,  15, 100 },
 
-				{ new Integer(1),   new Integer(1),  new Integer(150) },
-				{ new Integer(5),   new Integer(1),  new Integer(150) },
-				{ new Integer(80),  new Integer(1),  new Integer(150) },
-				{ new Integer(1),   new Integer(2),  new Integer(150) },
-				{ new Integer(5),   new Integer(2),  new Integer(150) },
-				{ new Integer(80),  new Integer(2),  new Integer(150) },
-				{ new Integer(1),   new Integer(15), new Integer(150) },
-				{ new Integer(5),   new Integer(15), new Integer(150) },
-				{ new Integer(80),  new Integer(15), new Integer(150) },
+				{ 1,   1,  150 },
+				{ 5,   1,  150 },
+				{ 80,  1,  150 },
+				{ 1,   2,  150 },
+				{ 5,   2,  150 },
+				{ 80,  2,  150 },
+				{ 1,   15, 150 },
+				{ 5,   15, 150 },
+				{ 80,  15, 150 },
 
-				{ new Integer(1),   new Integer(1),  new Integer(500) },
-				{ new Integer(5),   new Integer(1),  new Integer(500) },
-				{ new Integer(80),  new Integer(1),  new Integer(500) },
-				{ new Integer(1),   new Integer(2),  new Integer(500) },
-				{ new Integer(5),   new Integer(2),  new Integer(500) },
-				{ new Integer(80),  new Integer(2),  new Integer(500) },
-				{ new Integer(1),   new Integer(15), new Integer(500) },
-				{ new Integer(5),   new Integer(15), new Integer(500) },
-				{ new Integer(80),  new Integer(15), new Integer(500) }
+				{ 1,   1,  500 },
+				{ 5,   1,  500 },
+				{ 80,  1,  500 },
+				{ 1,   2,  500 },
+				{ 5,   2,  500 },
+				{ 80,  2,  500 },
+				{ 1,   15, 500 },
+				{ 5,   15, 500 },
+				{ 80,  15, 500 }
 		};
 	}
+
 	@Test
 	public void join() {
-		CompositeAlterer<DoubleGene> alterer = CompositeAlterer.join(
-				new Mutator<DoubleGene>(),
-				new SwapMutator<DoubleGene>()
+		CompositeAlterer<DoubleGene, Double> alterer = CompositeAlterer.join(
+				new Mutator<DoubleGene, Double>(),
+				new SwapMutator<DoubleGene, Double>()
 			);
 
 		Assert.assertEquals(alterer.getAlterers().length(), 2);
-		Assert.assertEquals(alterer.getAlterers().get(0), new Mutator<DoubleGene>());
-		Assert.assertEquals(alterer.getAlterers().get(1), new SwapMutator<DoubleGene>());
+		Assert.assertEquals(alterer.getAlterers().get(0), new Mutator<DoubleGene, Double>());
+		Assert.assertEquals(alterer.getAlterers().get(1), new SwapMutator<DoubleGene, Double>());
 
-		alterer = CompositeAlterer.join(alterer, new MeanAlterer<DoubleGene>());
+		alterer = CompositeAlterer.join(alterer, new MeanAlterer<>());
 
 		Assert.assertEquals(alterer.getAlterers().length(), 3);
-		Assert.assertEquals(alterer.getAlterers().get(0), new Mutator<DoubleGene>());
-		Assert.assertEquals(alterer.getAlterers().get(1), new SwapMutator<DoubleGene>());
-		Assert.assertEquals(alterer.getAlterers().get(2), new MeanAlterer<DoubleGene>());
+		Assert.assertEquals(alterer.getAlterers().get(0), new Mutator<DoubleGene, Double>());
+		Assert.assertEquals(alterer.getAlterers().get(1), new SwapMutator<DoubleGene, Double>());
+		Assert.assertEquals(alterer.getAlterers().get(2), new MeanAlterer<DoubleGene, Double>());
 
 		alterer = CompositeAlterer.of(
-			new MeanAlterer<DoubleGene>(),
-			new SwapMutator<DoubleGene>(),
+			new MeanAlterer<>(),
+			new SwapMutator<>(),
 			alterer,
-			new SwapMutator<DoubleGene>()
+			new SwapMutator<>()
 		);
 
 		Assert.assertEquals(alterer.getAlterers().length(), 6);
-		Assert.assertEquals(alterer.getAlterers().get(0), new MeanAlterer<DoubleGene>());
-		Assert.assertEquals(alterer.getAlterers().get(1), new SwapMutator<DoubleGene>());
-		Assert.assertEquals(alterer.getAlterers().get(2), new Mutator<DoubleGene>());
-		Assert.assertEquals(alterer.getAlterers().get(3), new SwapMutator<DoubleGene>());
-		Assert.assertEquals(alterer.getAlterers().get(4), new MeanAlterer<DoubleGene>());
-		Assert.assertEquals(alterer.getAlterers().get(5), new SwapMutator<DoubleGene>());
+		Assert.assertEquals(alterer.getAlterers().get(0), new MeanAlterer<DoubleGene, Double>());
+		Assert.assertEquals(alterer.getAlterers().get(1), new SwapMutator<DoubleGene, Double>());
+		Assert.assertEquals(alterer.getAlterers().get(2), new Mutator<DoubleGene, Double>());
+		Assert.assertEquals(alterer.getAlterers().get(3), new SwapMutator<DoubleGene, Double>());
+		Assert.assertEquals(alterer.getAlterers().get(4), new MeanAlterer<DoubleGene, Double>());
+		Assert.assertEquals(alterer.getAlterers().get(5), new SwapMutator<DoubleGene, Double>());
 	}
 
 }

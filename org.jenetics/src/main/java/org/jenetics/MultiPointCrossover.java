@@ -24,11 +24,12 @@ import static java.lang.String.format;
 
 import java.util.Random;
 
-import org.jenetics.internal.util.HashBuilder;
+import org.jenetics.internal.math.base;
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.math;
 
 /**
  * <p><strong>Multiple point crossover</strong></p>
@@ -52,9 +53,14 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 2.0 &mdash; <em>$Date: 2014-03-28 $ </em>
+ * @version 3.0 &mdash; <em>$Date: 2014-08-01 $ </em>
  */
-public class MultiPointCrossover<G extends Gene<?, G>> extends Crossover<G> {
+public class MultiPointCrossover<
+	G extends Gene<?, G>,
+	C extends Comparable<? super C>
+>
+	extends Crossover<G, C>
+{
 
 	private final int _n;
 
@@ -123,7 +129,7 @@ public class MultiPointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 		final int k = min(n, _n);
 
 		final Random random = RandomRegistry.getRandom();
-		final int[] points = k > 0 ? math.subset(n, k, random) : new int[0];
+		final int[] points = k > 0 ? base.subset(n, k, random) : new int[0];
 
 		crossover(that, other, points);
 		return 2;
@@ -149,22 +155,17 @@ public class MultiPointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 
 	@Override
 	public int hashCode() {
-		return HashBuilder.of(getClass()).
-				and(super.hashCode()).
-				and(_n).value();
+		return Hash.of(getClass())
+				.and(super.hashCode())
+				.and(_n).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null || obj.getClass() != getClass()) {
-			return false;
-		}
-
-		final MultiPointCrossover<?> mpc = (MultiPointCrossover<?>)obj;
-		return _n == mpc._n && super.equals(obj);
+		return Equality.of(this, obj).test(mpc ->
+			_n == mpc._n &&
+			super.equals(obj)
+		);
 	}
 
 	@Override
