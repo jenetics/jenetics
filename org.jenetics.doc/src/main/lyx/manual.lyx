@@ -99,7 +99,7 @@ figs-within-sections
 \pdf_title "Jenetics"
 \pdf_author "Franz Wilhelmstötter"
 \pdf_subject "Genetic Algorithm"
-\pdf_keywords "Research, Artificial Intelligence, Bio-Informatics, evolutionaryalgorithm, optimization, geneticalgorithm, parallelized, algorithms, evolutionary, artificialintelligence, heuristicalgorithm"
+\pdf_keywords "Research, Artificial Intelligence, Bio-Informatics, evolutionaryalgorithm, optimization, geneticalgorithm, parallelized, algorithms, evolutionary, artificialintelligence, heuristicalgorithm, stream, streaming, evolutionstream, evolution"
 \pdf_bookmarks true
 \pdf_bookmarksnumbered false
 \pdf_bookmarksopen false
@@ -9806,7 +9806,7 @@ Result<G, C>\SpecialChar \-
 \end_layout
 
 \begin_layout Section
-Advanced configurations
+Advanced topics
 \end_layout
 
 \begin_layout Standard
@@ -9927,7 +9927,11 @@ Chromosome
 \begin_layout Itemize
 
 \family typewriter
-LongGene/Chromosome
+LongGene
+\family default
+/
+\family typewriter
+Chromosome
 \family default
  and 
 \end_layout
@@ -11739,22 +11743,12 @@ Termination is the criterion by which the evolution stream decides whether
 \end_layout
 
 \begin_layout Subsubsection
-Generation number
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Termination!Generation number
-\end_layout
-
-\end_inset
-
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
 Fixed generation
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Termination!Fixed generation
 \end_layout
 
 \end_inset
