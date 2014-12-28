@@ -30,11 +30,11 @@ import org.jenetics.util.ISeq;
  * final Engine&lt;DoubleGene, Double&gt; engine = Engine
  *     .builder(gtf, ff)
  *     .alterers(
- *         new Crossover&lt;DoubleGene, Double&gt;(0.1),
- *         new Mutator&lt;DoubleGene, Double&gt;(0.05),
- *         new MeanAlterer&lt;DoubleGene, Double&gt;(0.2))
+ *         new Crossover&lt;&gt;(0.1),
+ *         new Mutator&lt;&gt;(0.05),
+ *         new MeanAlterer&lt;&gt;(0.2))
  *     .build();
- * final GeneticAlgorithm&lt;DoubleGene, Double&gt; ga = ...
+ * final EvolutionStream&lt;DoubleGene, Double&gt; stream = engine.stream();
  * [/code]
  *
  * The order of the alterer calls is: Crossover, Mutation and MeanAlterer.
@@ -44,7 +44,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-12-07 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-12-28 $</em>
  */
 @FunctionalInterface
 public interface Alterer<

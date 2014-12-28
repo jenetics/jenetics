@@ -19,8 +19,6 @@
  */
 package org.jenetics.example;
 
-import static java.lang.Math.abs;
-
 import java.util.stream.IntStream;
 
 import org.jenetics.Chromosome;
@@ -29,10 +27,7 @@ import org.jenetics.Genotype;
 import org.jenetics.Optimize;
 import org.jenetics.PartiallyMatchedCrossover;
 import org.jenetics.PermutationChromosome;
-import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SwapMutator;
-import org.jenetics.TournamentSelector;
-import org.jenetics.TruncationSelector;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
 import org.jenetics.engine.EvolutionStatistics;

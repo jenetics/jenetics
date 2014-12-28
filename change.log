@@ -1,3 +1,7 @@
+Jenetics-3.0.0
+
+- Rewrite of *engine* classes to make use of Java 8 Stream API.
+
 Jenetics-2.0.2
 
 - Stabilization of ProbabilitySelector.probabilities method when minimizing the fitness function.

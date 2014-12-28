@@ -50,14 +50,14 @@ import org.jenetics.internal.util.Hash;
  * <i>
  * T. Blickle, L. Thiele, A comparison of selection schemes used
  * in evolutionary algorithms, Technical Report, ETH Zurich, 1997, page 37.
- * <a href="http://citeseer.ist.psu.edu/blickle97comparison.html">
+ * <a href="http://citeseer.ist.psu.edu/viewdoc/summary?doi=10.1.1.15.9584&rank=1">
  *	http://citeseer.ist.psu.edu/blickle97comparison.html
  * </a>
  * </i>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-08-27 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-12-28 $</em>
  */
 public final class LinearRankSelector<
 	G extends Gene<?, G>,

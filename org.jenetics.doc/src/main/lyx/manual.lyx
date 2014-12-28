@@ -99,7 +99,7 @@ figs-within-sections
 \pdf_title "Jenetics"
 \pdf_author "Franz Wilhelmstötter"
 \pdf_subject "Genetic Algorithm"
-\pdf_keywords "Research, Artificial Intelligence, Bio-Informatics, evolutionaryalgorithm, optimization, geneticalgorithm, parallelized, algorithms, evolutionary, artificialintelligence, heuristicalgorithm"
+\pdf_keywords "Research, Artificial Intelligence, Bio-Informatics, evolutionaryalgorithm, optimization, geneticalgorithm, parallelized, algorithms, evolutionary, artificialintelligence, heuristicalgorithm, stream, streaming, evolutionstream, evolution"
 \pdf_bookmarks true
 \pdf_bookmarksnumbered false
 \pdf_bookmarksopen false
@@ -403,9 +403,26 @@ status open
 \end_layout
 
 \begin_layout Standard
+\paragraph_spacing single
 \noindent
+\align left
 \begin_inset Flex URL
-status open
+status collapsed
+
+\begin_layout Plain Layout
+
+https://github.com/jenetics/jenetics
+\end_layout
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Flex URL
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -415,12 +432,12 @@ https://sourceforge.net/projects/jenetics
 \end_inset
 
 
-\end_layout
+\begin_inset Newline newline
+\end_inset
 
-\begin_layout Standard
-\noindent
+
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -488,7 +505,7 @@ License
 \end_inset
 
  Attribution-ShareAlike 3.0 Austria License.
- To view a copy of this license, visit
+ To view a copy of this license, visit 
 \begin_inset Flex URL
 status collapsed
 
@@ -589,7 +606,7 @@ Stream
 \family typewriter
 Stream
 \family default
- interface, it works smoothly with the rest of the Java streaming API.
+ interface, it works smoothly with the rest of the Java Stream API.
  This manual describes the concepts implemented in the
 \family sans
 \series bold
@@ -598,7 +615,7 @@ Stream
 \family default
 \series default
 \shape default
- project and gives you examples and best practice tips.
+ project and gives examples and best practice tips.
 \end_layout
 
 \begin_layout Standard
@@ -993,6 +1010,16 @@ Hello World
 \end_inset
 
  GA
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Hello World
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -1026,7 +1053,7 @@ Stream
 \family typewriter
 Stream
 \family default
- interface, it works smoothly with the rest of the Java streaming API.
+ interface, it works smoothly with the rest of the Java Stream API.
  Now let's have a closer look at listing 
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -1069,13 +1096,15 @@ ones
 \emph default
  of a 
 \family typewriter
-BitChromosome
+Bit\SpecialChar \-
+Chromosome
 \family default
 .
  Since we are counting only the ones of one chromosome, we are adding only
  one 
 \family typewriter
-BitChromosome
+Bit\SpecialChar \-
+Chromosome
 \family default
  to our 
 \family typewriter
@@ -1091,7 +1120,7 @@ Genotype
  
 \begin_inset CommandInset ref
 LatexCommand vref
-reference "sub:Genotype"
+reference "sub:Domain-classes-Genotype"
 
 \end_inset
 
@@ -1110,7 +1139,8 @@ bitCount()
 \family default
 , we have to cast the 
 \family typewriter
-Chromosome<BitGene>
+Chromosome\SpecialChar \-
+<BitGene>
 \family default
  class to the actual used 
 \family typewriter
@@ -1155,7 +1185,7 @@ Engine
  and selectors (see section 
 \begin_inset CommandInset ref
 LatexCommand vref
-reference "sec:Genetic-operators"
+reference "sub:Operation-classes"
 
 \end_inset
 
@@ -1197,7 +1227,7 @@ Engine
 Evolution\SpecialChar \-
 Stream
 \family default
- is the model or view of the 
+ is the model (or view) of the 
 \emph on
 evolutionary
 \emph default
@@ -1219,19 +1249,6 @@ Evolution\SpecialChar \-
 Stream
 \family default
  will not terminate and run forever.
- Since the 
-\family typewriter
-Evolution\SpecialChar \-
-Stream
-\family default
- extends the 
-\family typewriter
-java.\SpecialChar \-
-util.\SpecialChar \-
-stream.\SpecialChar \-
-Stream
-\family default
- interface, it integrates smoothly with the rest of the Java streaming API.
  The final result, the best 
 \family typewriter
 Genotype
@@ -1439,14 +1456,14 @@ Jenetics
 \emph on
 Evolution Stream
 \emph default
-, implemented via the Java 8 streaming API.
+, implemented via the Java 8 Stream API.
  Therefore it is no longer necessary (and advised) to perform the evolution
  steps in an 
 \emph on
 imperative
 \emph default
  way.
- An evolution stream is powered by---and bound to respectively---an 
+ An evolution stream is powered by---and bound to---an 
 \emph on
 Evolution Engine
 \emph default
@@ -1687,7 +1704,7 @@ Alterer
 \family default
  interfaces and its implementations.
  The classes in this package are (almost) sufficient to implement an own
- GA implementation.
+ GA.
 \end_layout
 
 \begin_layout Description
@@ -1731,7 +1748,11 @@ org.jenetics.stat
 This package contains additional statistics classes which are not available
  in the Java core library.
  Java only includes classes for calculating the sum and the average of a
- given numeric stream (e.
+ given 
+\emph on
+numeric
+\emph default
+ stream (e.
 \begin_inset space ~
 \end_inset
 
@@ -1869,7 +1890,15 @@ Domain
 \end_inset
 
 classes This classes form the domain model of the evolutionary algorithm
- and contain the structural classes.
+ and contain the structural classes like 
+\family typewriter
+Gene
+\family default
+ and 
+\family typewriter
+Chromosome
+\family default
+.
  They are located in the 
 \family typewriter
 org\SpecialChar \-
@@ -1883,8 +1912,15 @@ Operation
 \begin_inset space ~
 \end_inset
 
-classes This classes operates on the domain classes and includes the alterer
- and selector classes.
+classes This classes operates on the domain classes and includes the 
+\family typewriter
+Alterer
+\family default
+ and 
+\family typewriter
+Selector
+\family default
+ classes.
  They are also located in the 
 \family typewriter
 org\SpecialChar \-
@@ -1910,6 +1946,16 @@ org\SpecialChar \-
 
 \begin_layout Subsection
 Domain classes
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Domain classes
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1992,6 +2038,16 @@ name "fig:Domain-model"
 \end_inset
 
 Domain model
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Domain model
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -2008,8 +2064,8 @@ reference "fig:Domain-model"
 
 \end_inset
 
- shows the class-diagram of the main structures of the data classes.
- All structural GA classes are located in the 
+ shows the class diagram of the domain classes.
+ All domain classes are located in the 
 \family typewriter
 org.jenetics
 \family default
@@ -2058,6 +2114,13 @@ s.
 
 \begin_layout Subsubsection
 Gene
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Domain-classes-Gene"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -2231,7 +2294,7 @@ Gene
 
 Listing 
 \begin_inset CommandInset ref
-LatexCommand ref
+LatexCommand vref
 reference "lis:Gene-interface"
 
 \end_inset
@@ -2249,7 +2312,7 @@ isValid
 \family typewriter
 Verifiable
 \family default
-, allows the gene to mark itself as invalid or invalid receptively.
+ interface, allows the gene to mark itself as invalid.
  All invalid genes are replaced with new ones during the evolution phase.
  
 \end_layout
@@ -2259,7 +2322,15 @@ The available
 \family typewriter
 Gene
 \family default
- implementations should cover a wide range of problem encodings.
+ implementations in the
+\family sans
+\series bold
+\shape smallcaps
+ Jenetics
+\family default
+\series default
+\shape default
+ library should cover a wide range of problem encodings.
  Refer to chapter
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -2276,13 +2347,62 @@ Gene
 
 \begin_layout Subsubsection
 Chromosome
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Domain-classes-Chromosome"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Chromosome
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-A Chromosome serves as a container for Genes and is the main target of alteratio
-n step.
- This means, that only chromosomes with the same position within a Genotype
- are used by the crossover alterer.
+A 
+\family typewriter
+Chromosome
+\family default
+ is a collection of 
+\family typewriter
+Gene
+\family default
+s which contains at least one 
+\family typewriter
+Gene
+\family default
+.
+ This allows to encode problems which requires more than one 
+\family typewriter
+Gene
+\family default
+.
+ Like the 
+\family typewriter
+Gene
+\family default
+ interface, the 
+\family typewriter
+Chromosome
+\family default
+ is also it's own factory and allows to create a new 
+\family typewriter
+Chromosome
+\family default
+ from a given 
+\family typewriter
+Gene
+\family default
+ sequence.
+ 
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -2295,7 +2415,12 @@ public interface Chromosome<G extends Gene<?, G>>
 
 \begin_layout Plain Layout
 
-    extends Factory<Chromosome<G>>, Serializable, Verifiable
+	extends Factory<Chromosome<G>>, Iterable<G>, 
+\end_layout
+
+\begin_layout Plain Layout
+
+        Verifiable, Serializable
 \end_layout
 
 \begin_layout Plain Layout
@@ -2305,22 +2430,22 @@ public interface Chromosome<G extends Gene<?, G>>
 
 \begin_layout Plain Layout
 
-    public G getAllele();
+    public Chromosome<G> newInstance(ISeq<G> genes);
 \end_layout
 
 \begin_layout Plain Layout
 
-    public G newInstance();
+    public G getGene(int index);
 \end_layout
 
 \begin_layout Plain Layout
 
-    public G newInstance(A allele);
+    public ISeq<G> toSeq();
 \end_layout
 
 \begin_layout Plain Layout
 
-    public boolean isValid();
+    public int length();
 \end_layout
 
 \begin_layout Plain Layout
@@ -2329,6 +2454,12 @@ public interface Chromosome<G extends Gene<?, G>>
 \begin_inset Caption
 
 \begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Chromosome-interface"
+
+\end_inset
+
 
 \family typewriter
 Chromosome
@@ -2343,11 +2474,59 @@ Chromosome
 
 \end_inset
 
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Chromosome-interface"
 
+\end_inset
+
+ shows the main methods of the 
+\family typewriter
+Chromosome
+\family default
+ interface.
+ This are the methods for accessing single 
+\family typewriter
+Gene
+\family default
+s by index and as an 
+\family typewriter
+ISeq
+\family default
+ respectively, and the factory method for creating a new 
+\family typewriter
+Chromosome
+\family default
+ from a given sequence of 
+\family typewriter
+Gene
+\family default
+s.
+ The factory method is used by the 
+\family typewriter
+Alterer
+\family default
+ classes which were able to create altered 
+\family typewriter
+Chromosome
+\family default
+ from a (changed) 
+\family typewriter
+Gene
+\family default
+ sequence.
 \end_layout
 
 \begin_layout Subsubsection
 Genotype
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Domain-classes-Genotype"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -2358,17 +2537,14 @@ Genotype
 \end_inset
 
 
-\begin_inset CommandInset label
-LatexCommand label
-name "sub:Genotype"
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
-The central class, the GA is working with, is the
+The central class, the evolution 
+\family typewriter
+Engine
+\family default
+ is working with, is the
 \family typewriter
  Genotype
 \family default
@@ -2377,32 +2553,26 @@ The central class, the GA is working with, is the
 \emph on
  structural
 \emph default
- representative of an individual, whereas the
-\family typewriter
- Phenotype
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Phenotype
-\end_layout
-
+ and immutable representative of an individual and consists of one to 
+\begin_inset Formula $n$
 \end_inset
 
-
+ 
+\family typewriter
+Chromo\SpecialChar \-
+some
 \family default
- is the
-\emph on
- actual
-\emph default
- representative of an individual.
- but only consists of the genotype and the fitness function and doesn't
- change the basic structure.
- The phenotype is
-\emph on
- only
-\emph default
- a container which forms the environment of the genotype.
+s.
+ All 
+\family typewriter
+Chromo\SpecialChar \-
+some
+\family default
+s must be parameterized with the same 
+\family typewriter
+Gene
+\family default
+ type, but it is allowed to have different lengths and constraints.
 \end_layout
 
 \begin_layout Standard
@@ -2450,10 +2620,6 @@ Genotype
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 Figure 
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -2461,21 +2627,63 @@ reference "fig:Genotype-structure"
 
 \end_inset
 
- shows the genotype structure.
- A genotype consists of 
+ shows the 
+\family typewriter
+Genotype
+\family default
+ structure.
+ A 
+\family typewriter
+Genotype
+\family default
+ consists of 
 \begin_inset Formula $N_{G}$
 \end_inset
 
- chromosomes and a chromosome consists of 
+ 
+\family typewriter
+Chromosome
+\family default
+s and a 
+\family typewriter
+Chromosome
+\family default
+ consists of 
 \begin_inset Formula $N_{C[i]}$
 \end_inset
 
- genes (depending on the chromosome).
- The overall number of genes of a genotype is given by the sum of the chromosome
-'s genes, which can be accessed via the
+ 
+\family typewriter
+Gene
+\family default
+s (depending on the 
+\family typewriter
+Chromosome
+\family default
+).
+ The overall number of 
+\family typewriter
+Gene
+\family default
+s of a 
+\family typewriter
+Genotype
+\family default
+ is given by the sum of the 
+\family typewriter
+Chromosome
+\family default
+'s 
+\family typewriter
+Gene
+\family default
+s, which can be accessed via the
 \family typewriter
  Genotype\SpecialChar \-
-.getNumberOfGenes()
+.get\SpecialChar \-
+Number\SpecialChar \-
+Of\SpecialChar \-
+Genes()
 \family default
  method:
 \begin_inset Formula 
@@ -2485,24 +2693,33 @@ N_{g}=\sum_{i=0}^{N_{G}-1}N_{C[i]}\label{eq:Number of genes}
 
 \end_inset
 
-The chromosomes
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
+As already mentioned, the 
+\family typewriter
 Chromosome
-\end_layout
-
-\end_inset
-
- of a genotype doesn't have to have necessarily the same size.
- It is only required that all genes are from the same type and the genes
- within a chromosome have the same constraints; e.
+\family default
+s of a 
+\family typewriter
+Genotype
+\family default
+ doesn't have to have necessarily the same size.
+ It is only required that all genes are from the same type and the 
+\family typewriter
+Gene
+\family default
+s within a 
+\family typewriter
+Chromosome
+\family default
+ have the same constraints; e.
 \begin_inset space ~
 \end_inset
 
 g.
- the same min- and max values for numerical genes.
+ the same min- and max values for numerical 
+\family typewriter
+Gene
+\family default
+s.
 \end_layout
 
 \begin_layout Standard
@@ -2518,22 +2735,22 @@ Genotype<DoubleGene> genotype = Genotype.of(
 
 \begin_layout Plain Layout
 
-    DoubleChromosome.of(0.0, 1.0, 8),
+    DoubleChromosome.of(0.0,  1.0,  8),
 \end_layout
 
 \begin_layout Plain Layout
 
-    DoubleChromosome.of(1.0, 2.0, 10),
+    DoubleChromosome.of(1.0,  2.0, 10),
 \end_layout
 
 \begin_layout Plain Layout
 
-    DoubleChromosome.of(0.0, 10.0, 9),
+    DoubleChromosome.of(0.0, 10.0,  9),
 \end_layout
 
 \begin_layout Plain Layout
 
-    DoubleChromosome.of(0.1, 0.9, 5)
+    DoubleChromosome.of(0.1,  0.9,  5)
 \end_layout
 
 \begin_layout Plain Layout
@@ -2547,8 +2764,11 @@ Genotype<DoubleGene> genotype = Genotype.of(
 \end_layout
 
 \begin_layout Standard
-The code snippet in the listing above creates a genotype with the same structure
- as shown in figure 
+The code snippet in the listing above creates a 
+\family typewriter
+Genotype
+\family default
+ with the same structure as shown in figure 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Genotype-structure"
@@ -2558,31 +2778,77 @@ reference "fig:Genotype-structure"
 .
  In this example the
 \family typewriter
- DoubleGene
+ Double\SpecialChar \-
+Gene
 \family default
- has been chosen for gene type.
+ has been chosen for 
+\family typewriter
+Gene
+\family default
+ type.
 \end_layout
 
 \begin_layout Subsubsection
 Phenotype
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Domain-classes-Phenotype"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Phenotype
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-The 
+The
+\family typewriter
+ Phenotype
+\family default
+ is the
+\emph on
+ actual
+\emph default
+ representative of an individual and consists of the 
+\family typewriter
+Genotype
+\family default
+ and the fitness 
+\family typewriter
+Function
+\family default
+.
+ It is
+\emph on
+ only
+\emph default
+ a container which forms the 
+\emph on
+environment
+\emph default
+ of the 
+\family typewriter
+Genotype
+\family default
+ and doesn't change the structure.
+ Like the 
+\family typewriter
+Genotype
+\family default
+, the 
 \family typewriter
 Phenotype
 \family default
- is a composite of the 
-\family typewriter
-Genotype
-\family default
- and the fitness function, where the fitness function represents the environment
- the 
-\family typewriter
-Genotype
-\family default
- lives in.
- It
+ is immutable and can't be changed after creation.
 \end_layout
 
 \begin_layout Standard
@@ -2613,7 +2879,7 @@ public final class Phenotype<
 
 \begin_layout Plain Layout
 
-    implements Comparable<Phenotype<G, C>>, Verifiable
+    implements Comparable<Phenotype<G, C>>
 \end_layout
 
 \begin_layout Plain Layout
@@ -2623,22 +2889,22 @@ public final class Phenotype<
 
 \begin_layout Plain Layout
 
-    public G getAllele();
+    public C getFitness();
 \end_layout
 
 \begin_layout Plain Layout
 
-    public G newInstance();
+    public Genotype<G> getGenotype();
 \end_layout
 
 \begin_layout Plain Layout
 
-    public G newInstance(A allele);
+    public long getAge(long currentGeneration);
 \end_layout
 
 \begin_layout Plain Layout
 
-    public boolean isValid();
+    public void evaluate();
 \end_layout
 
 \begin_layout Plain Layout
@@ -2649,6 +2915,12 @@ public final class Phenotype<
 \begin_layout Plain Layout
 
 \family typewriter
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Phenotype-class"
+
+\end_inset
+
 Phenotype
 \family default
  class
@@ -2661,20 +2933,231 @@ Phenotype
 
 \end_inset
 
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Phenotype-class"
 
+\end_inset
+
+ shows the main methods of the 
+\family typewriter
+Pheno\SpecialChar \-
+type
+\family default
+.
+ The 
+\family typewriter
+fitness
+\family default
+ property will return the actual fitness value of the 
+\family typewriter
+Genotype
+\family default
+, which can be fetched with the 
+\family typewriter
+get\SpecialChar \-
+Geno\SpecialChar \-
+type
+\family default
+ method.
+ To make the runtime behavior predictable, the fitness value is evaluated
+ lazily.
+ Either by querying the 
+\family typewriter
+fitness
+\family default
+ property or through the call of the 
+\family typewriter
+evaluate
+\family default
+ method.
+ The evolution 
+\family typewriter
+Engine
+\family default
+ is calling the evaluate method in a separate step and makes the fitness
+ evaluation time available through the 
+\family typewriter
+Evolution\SpecialChar \-
+Durations
+\family default
+ class.
+ Additionally to the fitness value, the Phenotype contains the generation
+ when it was created.
+ This allows to calculate the current age and the removal of overaged individual
+s from the 
+\family typewriter
+Population
+\family default
+.
 \end_layout
 
 \begin_layout Subsubsection
 Population
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Domain-classes-Population"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Population
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-A population is a collection of Phenotypes.
- 
+The end of the class hierarchy of the domain model is the Population.
+ It is a collection of individuals and forms the start and the end of an
+ evolution step.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public final class Population<
+\end_layout
+
+\begin_layout Plain Layout
+
+    G extends Gene<?, G>,
+\end_layout
+
+\begin_layout Plain Layout
+
+    C extends Comparable<? super C>
+\end_layout
+
+\begin_layout Plain Layout
+
+>
+\end_layout
+
+\begin_layout Plain Layout
+
+    implements List<Phenotype<G, C>>
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    public Phenotype<G, C> get(int index);
+\end_layout
+
+\begin_layout Plain Layout
+
+    public void add(Phenotype<G, C> phenotype);
+\end_layout
+
+\begin_layout Plain Layout
+
+    public void sortWith(Comparator<? super C> comparator);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Population-class"
+
+\end_inset
+
+Population
+\family default
+ class
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Population-class"
+
+\end_inset
+
+ gives on overview of the most important methods of the 
+\family typewriter
+Population
+\family default
+ class.
+ In addition to the 
+\family typewriter
+List
+\family default
+ methods, it provides a method for sorting the 
+\family typewriter
+Phenotype
+\family default
+s.
+ Some 
+\family typewriter
+Selector
+\family default
+ implementations require a sorted list of individuals according its fitness
+ value.
+ Calling 
+\family typewriter
+population.\SpecialChar \-
+sortWith(\SpecialChar \-
+optimize\SpecialChar \-
+.descending()\SpecialChar \-
+)
+\family default
+ will sort the 
+\family typewriter
+Population
+\family default
+, so that the first element will be the individual with the best fitness.
 \end_layout
 
 \begin_layout Subsection
 Operation classes
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Operation-classes"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Operation classes
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2693,13 +3176,13 @@ target "https://en.wikipedia.org/wiki/Genetic_operator"
 \family typewriter
 Alterer
 \family default
-) and select potentially useful solutions for recombination (
+) and selecting potentially useful solutions for recombination (
 \family typewriter
 Selector
 \family default
 ).
- This section gives you an overview about the genetic operators available
- in the
+ This section gives an overview about the genetic operators available in
+ the
 \family sans
 \series bold
 \shape smallcaps
@@ -2708,13 +3191,26 @@ Selector
 \series default
 \shape default
  library.
- It also contains some theoretical information, which should help you to
- choose the right combination of operators and parameters, for the problem
- to be solved.
+ It also contains some 
+\emph on
+theoretical
+\emph default
+ information, which should help you to choose the right combination of operators
+ and parameters, for the problem to be solved.
 \end_layout
 
 \begin_layout Subsubsection
 Selector
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Selector
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2805,7 +3301,15 @@ N_{S_{g}}=\left\Vert S_{g}\right\Vert =\left\Vert P_{g}\right\Vert -\left\Vert O
 \end_layout
 
 \begin_layout Standard
-Jenetics comes with the following selectors:
+The 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library contains the following selector implementations:
 \end_layout
 
 \begin_layout Standard
@@ -2895,17 +3399,7 @@ end{multicols}
 \end_layout
 
 \begin_layout Standard
-Figure ### shows the whole class hierarchy of the currently available selectors.
- On the top the hierarchy is the
-\family typewriter
- Selector
-\family default
- interface with the
-\family typewriter
- select
-\family default
- method.
- Beside the well known standard selector implementation the
+Beside the well known standard selector implementation the
 \family typewriter
  Probability\SpecialChar \-
 Selector
@@ -2990,7 +3484,17 @@ target "https://en.wikipedia.org/wiki/Truncation_selection"
 \end_inset
 
  individuals are sorted according to their fitness.
- Only the 
+ (This is one of the selectors, which relies on the 
+\family typewriter
+sort\SpecialChar \-
+With
+\family default
+ method of the 
+\family typewriter
+Pop\SpecialChar \-
+ulation
+\family default
+ class.) Only the 
 \begin_inset Formula $n$
 \end_inset
 
@@ -3343,7 +3847,7 @@ P(i)=\left(c-1\right)\frac{c^{i-1}}{c^{N}-1},
 
 \end_inset
 
-where
+where 
 \begin_inset Formula $c$
 \end_inset
 
@@ -3531,13 +4035,39 @@ key "Sivanandam2010"
 
 \begin_layout Subsubsection
 Alterer
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Alterer
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-The representation determines the bounds of the search space, but the alterers
- determine how the space can be traversed: alterers are responsible for
- the genetic diversity of the genetic algorithm.
- The two alterer types used in
+The problem encoding (representation) determines the bounds of the search
+ space, but the 
+\family typewriter
+Alterer
+\family default
+s determine how the space can be traversed: 
+\family typewriter
+Alterer
+\family default
+s are responsible for the genetic diversity of the 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+.
+ The two 
+\family typewriter
+Alterer
+\family default
+ types used in
 \family sans
 \series bold
 \shape smallcaps
@@ -3577,7 +4107,24 @@ target "https://en.wikipedia.org/wiki/Crossover_(genetic_algorithm)"
 \end_layout
 
 \begin_layout Standard
-First we will have a look at the mutation: There are two distinct roles
+\align center
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "75col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+First we will have a look at the mutation
+\series default
+ --- There are two distinct roles
 \emph on
  mutation
 \emph default
@@ -3591,18 +4138,26 @@ Mutation
 
 \end_inset
 
- plays in an Genetic algorithm:
+ plays in the evolution process:
 \end_layout
 
 \begin_layout Enumerate
-Exploring the search space: By making small moves, mutation allows a population
- to explore the search space.
+
+\series bold
+Exploring the search space
+\series default
+: By making small moves, mutation allows a population to explore the search
+ space.
  This exploration is often slow compared to crossover, but in problems where
  crossover is disruptive this can be an important way to explore the landscape.
 \end_layout
 
 \begin_layout Enumerate
-Maintaining diversity: Mutation prevents a population from correlating.
+
+\series bold
+Maintaining diversity
+\series default
+: Mutation prevents a population from correlating.
  Even if most of the search is being performed by crossover, mutation can
  be vital to provide the diversity which crossover needs.
 \end_layout
@@ -3679,7 +4234,7 @@ The mutator has to deal with the problem, that the genes are arranged in
  structure (see chapter 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "sub:Genotype"
+reference "sub:Domain-classes-Genotype"
 
 \end_inset
 
@@ -3708,7 +4263,7 @@ select a chromosome
 \begin_inset Formula $G[i]$
 \end_inset
 
- with probability
+ with probability 
 \begin_inset Formula $P_{C}(m)$
 \end_inset
 
@@ -3814,10 +4369,24 @@ g.
 \end_layout
 
 \begin_layout Standard
-\begin_inset VSpace 10mm
+\align center
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "75col%"
+height "1pt"
+
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
+
+\series bold
 The second alterer type is the recombination
+\series default
+
 \begin_inset Index idx
 status collapsed
 
@@ -3827,7 +4396,7 @@ Recombination
 
 \end_inset
 
-: An enhanced genetic algorithm (EGA) combine elements of existing solutions
+ --- An enhanced genetic algorithm (EGA) combine elements of existing solutions
  in order to create a new solution, with some of the properties of each
  parents.
  Recombination creates a new chromosome by combining parts of two (or more)
@@ -3869,9 +4438,27 @@ height "1pt"
 \family sans
 \shape italic
 \emph on
-Because of the possible different chromosome length and/or chromosome constraint
-s within a genotype, only chromosomes with the same genotype position are
- recombined.
+Because of the possible different 
+\family typewriter
+Chromosome
+\family sans
+ length and/or 
+\family typewriter
+Chromosome
+\family sans
+ constraints within a 
+\family typewriter
+Genotype
+\family sans
+, only 
+\family typewriter
+Chromosome
+\family sans
+s with the same 
+\family typewriter
+Genotype
+\family sans
+ position are recombined.
 \end_layout
 
 \begin_layout Plain Layout
@@ -3914,7 +4501,7 @@ The recombination probability,
  is the order of the recombination, which is the number of individuals involved
  in the
 \family typewriter
-re combine
+ combine
 \family default
  method.
 \end_layout
@@ -4385,7 +4972,7 @@ reference "fig:Partially-matched-crossover"
  b
 \emph default
 )).
- Chromosome
+ Chromosome 
 \begin_inset Formula $1$
 \end_inset
 
@@ -4438,11 +5025,24 @@ c
 
 \begin_layout Subsection
 Engine classes
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Engine classes
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-The dynamic classes, which perform the actual evolution, are located in
- the 
+The 
+\emph on
+executing
+\emph default
+ classes, which perform the actual evolution, are located in the 
 \family typewriter
 org.\SpecialChar \-
 jenetics.\SpecialChar \-
@@ -4452,16 +5052,45 @@ engine
  The 
 \emph on
 evolution stream
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Evolution!Stream
+\end_layout
+
+\end_inset
+
+
 \emph default
- is the base metaphor for performing an GA.
- On the evolution stream you can define the termination predicate and than
- collect the final evolution result.
- This decouples the static data structure from the dynamic evolution part.
- The evolution stream is also very flexible, when it comes to collecting
- the final result.
+ (
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+) is the base metaphor for performing an GA.
+ On the 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+ you can define the termination predicate and than collect the final 
+\family typewriter
+Evolution\SpecialChar \-
+Result
+\family default
+.
+ This decouples the static data structure from the executing evolution part.
  The 
 \family typewriter
-EvolutionResult
+Evolution\SpecialChar \-
+Stream
+\family default
+ is also very flexible, when it comes to collecting the final result.
+ The 
+\family typewriter
+Evolution\SpecialChar \-
+Result
 \family default
  class has several predefined collectors, but you are free to create your
  own one, which can be seamlessly 
@@ -4469,11 +5098,17 @@ EvolutionResult
 plugged
 \emph default
  into the existing stream.
- Figure ...
 \end_layout
 
 \begin_layout Subsubsection
 Fitness function
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Fitness-function"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -4487,14 +5122,30 @@ Fitness function
 \end_layout
 
 \begin_layout Standard
-The fitness function is also an important part when modeling the GA.
- It takes a genotype as argument and returns, at least, a
+The fitness 
+\family typewriter
+Function
+\family default
+ is also an important part when modeling an genetic algorithm.
+ It takes a 
+\family typewriter
+Genotype
+\family default
+ as argument and returns, at least, a
 \family typewriter
  Comparable
 \family default
  object as result---the fitness value.
- This allows the GA, respectively the selection operators, to select the
- offspring- and survivor population.
+ This allows the evolution 
+\family typewriter
+Engine
+\family default
+, respectively the selection operators, to select the offspring- and survivor
+ 
+\family typewriter
+Population
+\family default
+.
  Some selectors have stronger requirements to the fitness value than a
 \family typewriter
  Comparable
@@ -4503,8 +5154,76 @@ The fitness function is also an important part when modeling the GA.
 \end_layout
 
 \begin_layout Standard
-The following example shows the simplest possible fitness function.
- It's the identity function and returns the allele of an
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+Since the fitness 
+\family typewriter
+Function
+\family default
+ is shared by all 
+\family typewriter
+Phenotype
+\family default
+s, it has to be thread-safe.
+ Ideally, this is achieved by a 
+\family typewriter
+Function
+\family default
+ which doesn't contain any global 
+\shape italic
+mutable
+\shape default
+ state.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The following example shows the simplest possible fitness 
+\family typewriter
+Function
+\family default
+.
+ It's the identity function and returns the allele of a 
 \begin_inset Formula $1\mathsf{x}1$
 \end_inset
 
@@ -4512,7 +5231,11 @@ The following example shows the simplest possible fitness function.
 \shape italic
  float
 \shape default
- genotype.
+ 
+\family typewriter
+Genotype
+\family default
+.
 \end_layout
 
 \begin_layout Standard
@@ -4601,11 +5324,23 @@ The first type parameter of the
  Function
 \family default
  defines the kind of genotype from which the fitness value is calculated
- and the second type parameter determines the return type.
+ and the second type parameter determines the return type, which must be,
+ at least, a 
+\family typewriter
+Comparable
+\family default
+ type.
 \end_layout
 
 \begin_layout Subsubsection
 Fitness scaler
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Fitness-scaler"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -4654,22 +5389,27 @@ status open
 
 \begin_layout Plain Layout
 
-class Sqrt extends Function<Double, Double> {
+class Main {
 \end_layout
 
 \begin_layout Plain Layout
 
-    @Override
+    public static void main(final String[] args) {
 \end_layout
 
 \begin_layout Plain Layout
 
-    public Double apply(final Double value) {
+        Engine<DoubleGene, Double> engine = Engine.builder(...)
 \end_layout
 
 \begin_layout Plain Layout
 
-        return sqrt(value);
+            .fitnessScaler(Math::sqrt)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .build();
 \end_layout
 
 \begin_layout Plain Layout
@@ -4706,7 +5446,7 @@ width "90col%"
 special "none"
 height "1in"
 height_special "totalheight"
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset CommandInset line
@@ -4752,50 +5492,1110 @@ height "1pt"
 
 \begin_layout Subsubsection
 Engine
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Engine
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Evolution!Engine
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-The evolution Engine controls the how the evolution steps are executed.
- The evolution Engine is used for performing the actual evolution of a give
- population.
- One evolution step is executed by calling the Engine.\SpecialChar \-
-evolve method, which
- returns an EvolutionResult object.
- This object contains the evolved Population plus additional information
- like execution duration of the several evolution sub-steps and information
- about the killed and as invalid marked individuals.
- The Engine object doesn't contain any mutable global state and can therefore
- safely used/called from different threads.
- It is also possible to create more than one EvolutionStream from the Engine
- and execute it in parallel.
+The 
+\emph on
+evolution
+\emph default
+ 
+\family typewriter
+Engine
+\family default
+ controls how the evolution steps are executed.
+ Once the Engine is created, via a 
+\family typewriter
+Builder
+\family default
+ class, it can't be changed.
+ It doesn't contain any mutable global state and can therefore safely used/calle
+d from different threads.
+ This allows to create more than one 
+\family typewriter
+Evolution\SpecialChar \-
+Streams
+\family default
+ from the 
+\family typewriter
+Engine
+\family default
+ and execute them in parallel.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public final class Engine<
+\end_layout
+
+\begin_layout Plain Layout
+
+    G extends Gene<?, G>,
+\end_layout
+
+\begin_layout Plain Layout
+
+    C extends Comparable<? super C>
+\end_layout
+
+\begin_layout Plain Layout
+
+> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    EvolutionResult<G,C> evolve(
+\end_layout
+
+\begin_layout Plain Layout
+
+        Population<G,C> population, 
+\end_layout
+
+\begin_layout Plain Layout
+
+        long generation);
+\end_layout
+
+\begin_layout Plain Layout
+
+    EvolutionStream<G,C> stream();
+\end_layout
+
+\begin_layout Plain Layout
+
+    Iterator<EvolutionResult<G,C>> iterator();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\family typewriter
+Engine
+\family default
+ class
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Engine-class"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Engine-class"
+
+\end_inset
+
+ shows the main methods of the 
+\family typewriter
+Engine
+\family default
+ class.
+ It is used for performing the actual evolution of a give population.
+ One evolution step is executed by calling the 
+\family typewriter
+Engine.\SpecialChar \-
+evolve
+\family default
+ method, which returns an 
+\family typewriter
+Evolution\SpecialChar \-
+Result
+\family default
+ object.
+ This object contains the evolved 
+\family typewriter
+Population
+\family default
+ plus additional information like execution duration of the several evolution
+ sub-steps and information about the killed and as invalid marked individuals.
+ With the 
+\family typewriter
+stream
+\family default
+ method you create a new 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+, which is used for controlling the evolution process---see section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:EvolutionStream"
+
+\end_inset
+
+.
+ Alternatively it is possible to iterate through the evolution process in
+ an imperative way (for whatever reasons this should be necessary).
+ Just create an 
+\family typewriter
+Iterator
+\family default
+ of 
+\family typewriter
+Evolution\SpecialChar \-
+Result
+\family default
+ object by calling the 
+\family typewriter
+iterator
+\family default
+ method.
+\end_layout
+
+\begin_layout Standard
+As already shown in previous examples, the 
+\family typewriter
+Engine
+\family default
+ can only be created via its 
+\family typewriter
+Builder
+\family default
+ class.
+ Only the fitness 
+\family typewriter
+Function
+\family default
+ and the 
+\family typewriter
+Chromosome
+\family default
+s, which represents the problem encoding, must be specified for creating
+ an Engine instance.
+ For the rest of the parameters default values are specified.
+ This are the 
+\family typewriter
+Engine
+\family default
+ parameters which can configured:
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+alterers
+\family default
+ A list of 
+\family typewriter
+Alterer
+\family default
+s which are applied to the offspring 
+\family typewriter
+Population
+\family default
+, in the defined order.
+ The default value of this property is set to 
+\family typewriter
+Single\SpecialChar \-
+Point\SpecialChar \-
+Crossover<>(0.2)
+\family default
+ followed by 
+\family typewriter
+Mutator<>(0.15)
+\family default
+.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+clock
+\family default
+ The 
+\family typewriter
+java\SpecialChar \-
+.time\SpecialChar \-
+.Clock
+\family default
+ used for calculating the execution durations.
+ A 
+\family typewriter
+Clock
+\family default
+ with nanosecond precision (
+\family typewriter
+System\SpecialChar \-
+.nanoTime()
+\family default
+) is used as default.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+executor
+\family default
+ With this property it is possible to change the 
+\family typewriter
+java\SpecialChar \-
+.util\SpecialChar \-
+.concur\SpecialChar \-
+rent\SpecialChar \-
+.Executor
+\family default
+ engine used for evaluating the evolution steps.
+ This property can be used to define an application wide 
+\family typewriter
+Executor
+\family default
+ or for controlling the number of execution threads.
+ The default value is set to 
+\family typewriter
+Fork\SpecialChar \-
+Join\SpecialChar \-
+Pool\SpecialChar \-
+.common\SpecialChar \-
+Pool()
+\family default
+.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+fitnessFunction
+\family default
+ This property defines the fitness 
+\family typewriter
+Function
+\family default
+ used by the evolution 
+\family typewriter
+Engine
+\family default
+.
+ (See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Fitness-function"
+
+\end_inset
+
+.)
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+fitnessScaler
+\family default
+ This property defines the fitness scaler used by the evolution 
+\family typewriter
+Engine
+\family default
+.
+ The default value is set to the identity function.
+ (See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Fitness-scaler"
+
+\end_inset
+
+.)
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+genotypeFactory
+\family default
+ Defines the 
+\family typewriter
+Genotype
+\family default
+ 
+\family typewriter
+Facto
+\family default
+ry used for creating new individuals.
+ Since the 
+\family typewriter
+Genotype
+\family default
+ is its own 
+\family typewriter
+Fact
+\family default
+ory, it is sufficient to create a 
+\family typewriter
+Genotype
+\family default
+, which then serves as template.
+ 
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+maximalPhenotypeAge
+\family default
+ Set the maximal allowed age of an individual (Phenotype).
+ This prevents 
+\emph on
+super
+\emph default
+ individuals to live 
+\emph on
+forever
+\emph default
+.
+ The default value is set to 70.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+offspringFraction
+\family default
+ Through this property it is possible to define the fraction of offspring
+ (and survivors) for evaluating the next generation.
+ The fraction value must within the interval 
+\begin_inset Formula $[0,1]$
+\end_inset
+
+.
+ The default value is set to 
+\begin_inset Formula $0.6$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+offspringSelector
+\family default
+ This property defines the 
+\family typewriter
+Selector
+\family default
+ used for selecting the offspring 
+\family typewriter
+Population
+\family default
+.
+ The default values is set to 
+\family typewriter
+Tournament\SpecialChar \-
+Select\SpecialChar \-
+or<>(3)
+\family default
+.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+optimize
+\family default
+ With this property it is possible to define whether the fitness 
+\family typewriter
+Function
+\family default
+ should be maximized of minimized.
+ By default, the fitness 
+\family typewriter
+Function
+\family default
+ is maximized.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+populationSize
+\family default
+ Defines the number of individuals of a 
+\family typewriter
+Population
+\family default
+.
+ The evolution 
+\family typewriter
+Engine
+\family default
+ keeps the number of individuals constant.
+ That means, the 
+\family typewriter
+Population
+\family default
+ of the 
+\family typewriter
+Evolution\SpecialChar \-
+Result
+\family default
+ always contains the number of entries defined by this property.
+ The default value is set to 
+\begin_inset Formula $50$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+survivorsSelector
+\family default
+ This property defines the 
+\family typewriter
+Selector
+\family default
+ used for selecting the survivors 
+\family typewriter
+Population
+\family default
+.
+ The default values is set to 
+\family typewriter
+Tournament\SpecialChar \-
+Select\SpecialChar \-
+or<>(3)
+\family default
+.
 \end_layout
 
 \begin_layout Subsubsection
 EvolutionStream
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:EvolutionStream"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+EvolutionStream
 \end_layout
 
-\begin_layout Standard
-The EvolutionStream is a kind of execution handle, where you can define
- termination condition of the evolution process and the final result.
- The stream can be truncated with the limit methods of the EvolutionStream.
- The final evolution result is determined by the collector applied to the
- collect method.
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Evolution!Stream
 \end_layout
 
-\begin_layout Subsubsection
-EvolutionResult
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
 The 
 \family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+ controls the execution of the evolution process and can be seen as a kind
+ of execution 
+\emph on
+handle
+\emph default
+.
+ This handle can be used to define the termination criteria and to 
+\emph on
+collect
+\emph default
+ the final evolution result.
+ Since the 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+ extends the Java 
+\family typewriter
+Stream
+\family default
+ interface, it integrates smoothly with the rest of the Java Stream API.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+It is recommended to make yourself familiar with the Java Stream API.
+ A good introduction can be found here: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://winterbe.com/posts/2014/07/31/java8-stream-tutorial-examples/
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface EvolutionStream<
+\end_layout
+
+\begin_layout Plain Layout
+
+    G extends Gene<?, G>,
+\end_layout
+
+\begin_layout Plain Layout
+
+    C extends Comparable<? super C>
+\end_layout
+
+\begin_layout Plain Layout
+
+> 
+\end_layout
+
+\begin_layout Plain Layout
+
+    extends Stream<EvolutionResult<G, C>>
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    public EvolutionStream<G, C>
+\end_layout
+
+\begin_layout Plain Layout
+
+    limit(Predicate<? super EvolutionResult<G, C>> proceed);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\family typewriter
+EvolutionStream
+\family default
+ class
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:EvolutionStream-class"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:EvolutionStream-class"
+
+\end_inset
+
+ shows the whole 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+ interface.
+ As it can be seen, it only adds one additional method.
+ But this additional 
+\family typewriter
+limit
+\family default
+ method allows to truncate the 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+ based on a 
+\family typewriter
+Predicate
+\family default
+ which takes an 
+\family typewriter
+Evolution\SpecialChar \-
+Result
+\family default
+.
+ Once the 
+\family typewriter
+Predicate
+\family default
+ returns 
+\family typewriter
+false
+\family default
+, the evolution process is stopped.
+ Since the 
+\family typewriter
+limit
+\family default
+ method returns an 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+, it is possible to define more than one 
+\family typewriter
+Predicate
+\family default
+, which both must be fulfilled to continue the evolution process.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Engine<DobuleGene, Double> engine = ...
+\end_layout
+
+\begin_layout Plain Layout
+
+EvolutionStream<DoubleGene, Double> stream = engine.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+    .limit(predicate1)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .limit(predicate2)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .limit(100);
+\end_layout
+
+\end_inset
+
+The 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+, created in the example above, will be truncated if one of the two predicates
+ is 
+\family typewriter
+false
+\family default
+ or if the maximal allowed generations, of 100, is reached.
+ An 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+ can only be created via the 
+\family typewriter
+Engine\SpecialChar \-
+.stream()
+\family default
+ method, but it is possible to create more than one stream from the same
+ 
+\family typewriter
+Engine
+\family default
+ instance.
+\end_layout
+
+\begin_layout Subsubsection
+EvolutionResult
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:EvolutionResult"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+EvolutionResult
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+Evolution\SpecialChar \-
+Result
+\family default
+ collects the result data of an evolution step into an immutable 
+\emph on
+value
+\emph default
+ class.
+ This class is the type of the stream elements of the EvolutionStream, as
+ described in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:EvolutionStream"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public final class EvolutionResult<
+\end_layout
+
+\begin_layout Plain Layout
+
+    G extends Gene<?, G>,
+\end_layout
+
+\begin_layout Plain Layout
+
+    C extends Comparable<? super C>
+\end_layout
+
+\begin_layout Plain Layout
+
+> 
+\end_layout
+
+\begin_layout Plain Layout
+
+    implements Comparable<EvolutionResult<G, C>>
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    Population<G,C> getPopulation();
+\end_layout
+
+\begin_layout Plain Layout
+
+    long getGeneration();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\family typewriter
 EvolutionResult
 \family default
- is the intermediate result of one evolution step.
+ class
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:EvolutionResult-class"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:EvolutionResult"
+
+\end_inset
+
+ shows the two most important properties, the 
+\family typewriter
+population
+\family default
+ and the 
+\family typewriter
+generation
+\family default
+ the result belongs to.
+ This are also the two properties needed for the next evolution step.
+ The 
+\family typewriter
+generation
+\family default
+ is, of course, incremented by one.
+ To make collecting the 
+\family typewriter
+Evolution\SpecialChar \-
+Result
+\family default
+ object easier, it also implements the 
+\family typewriter
+Comparable
+\family default
+ interface.
+ Two 
+\family typewriter
+Evolution\SpecialChar \-
+Result
+\family default
+s are compared by its best 
+\family typewriter
+Phenotype
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+Evolution\SpecialChar \-
+Result
+\family default
+ classes has three predefined factory methods, which will return 
+\family typewriter
+Collector
+\family default
+s usable for the 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+:
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+toBestEvolutionResult()
+\family default
+ Collects the best 
+\family typewriter
+Evolution\SpecialChar \-
+Result
+\family default
+ of an 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+ according to the defined optimization strategy.
+ 
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+toBestPhenotype()
+\family default
+ This collector can be used if you are only interested in the best 
+\family typewriter
+Phenotype
+\family default
+.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+toBestGenotype()
+\family default
+ Use this collector if you only need the best 
+\family typewriter
+Genotype
+\family default
+ of the 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+The following code snippets shows how to use the different 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+ collectors.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+// Collecting the best EvolutionResult of the EvolutionStream.
+\end_layout
+
+\begin_layout Plain Layout
+
+EvolutionResult<DoubleGene, Double> result = stream
+\end_layout
+
+\begin_layout Plain Layout
+
+    .collect(EvolutionResult.toBestEvolutionResult());
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+// Collecting the best Phenotype of the EvolutionStream.
+\end_layout
+
+\begin_layout Plain Layout
+
+Phenotype<DoubleGene, Double> result = stream
+\end_layout
+
+\begin_layout Plain Layout
+
+    .collect(EvolutionResult.toBestPhenotype());
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+// Collecting the best Genotype of the EvolutionStream.
+\end_layout
+
+\begin_layout Plain Layout
+
+Genotype<DoubleGene> result = stream
+\end_layout
+
+\begin_layout Plain Layout
+
+    .collect(EvolutionResult.toBestGenotype());
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
 EvolutionStatistics
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:EvolutionStatistics"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+EvolutionStatistics
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -4805,25 +6605,53 @@ Evolution\SpecialChar \-
 Statistics
 \family default
  class allows you to gather additional statistical information from the
- evolution stream.
- This is especially useful during the development phase of your application,
+ 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+.
+ This is especially useful during the development phase of the application,
  when you have to find the right parametrization of the evolution 
 \family typewriter
 Engine
 \family default
 .
- There are two different specializations of the EvolutionStatistics object
- available.
- The first is the general one, which will be working for every kind of genes
- and fitness types.
- It can be created via the Evolution\SpecialChar \-
-Statistics.\SpecialChar \-
-ofComparable() method.
- The second one collects additional statistical data for numeric fitness
- values.
- This can be created with the Evolution\SpecialChar \-
-Statistics.\SpecialChar \-
-ofNumber() method.
+ Besides other informations, the 
+\family typewriter
+Evolution\SpecialChar \-
+Statistics
+\family default
+ contains (statistical) information about the fitness, invalid and killed
+ 
+\family typewriter
+Phenotypes
+\family default
+ and runtime information of the different evolution steps.
+ Since the 
+\family typewriter
+Evolution\SpecialChar \-
+Statistics
+\family default
+ class implements the 
+\family typewriter
+Consumer<\SpecialChar \-
+Evolution\SpecialChar \-
+Result<?,C>>
+\family default
+ interface, it can be easily plugged into the 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+, adding it with the 
+\family typewriter
+peek
+\family default
+ method of the stream.
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -4862,6 +6690,21 @@ engine.stream()
 \begin_layout Plain Layout
 
     .collect(toBestGenotype());
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\family typewriter
+EvolutionStatistics
+\family default
+ usage
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:EvolutionStatistics-usage"
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -4869,468 +6712,100 @@ engine.stream()
 
 \end_layout
 
-\begin_layout Standard
+\end_inset
 
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:EvolutionStatistics-usage"
+
+\end_inset
+
+ shows how to add the the 
+\family typewriter
+Evolution\SpecialChar \-
+Statistics
+\family default
+ to the 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+.
+ Once the algorithm tuning is finished, it can be removed in the production
+ environment.
+\end_layout
+
+\begin_layout Standard
+There are two different specializations of the 
+\family typewriter
+Evolution\SpecialChar \-
+Statistics
+\family default
+ object available.
+ The first is the general one, which will be working for every kind of 
+\family typewriter
+Gene
+\family default
+s and fitness types.
+ It can be created via the 
+\family typewriter
+Evolution\SpecialChar \-
+Statistics.\SpecialChar \-
+ofComparable()
+\family default
+ method.
+ The second one collects additional statistical data for numeric fitness
+ values.
+ This can be created with the 
+\family typewriter
+Evolution\SpecialChar \-
+Statistics.\SpecialChar \-
+ofNumber()
+\family default
+ method.
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+scriptsize
+\backslash
+ttfamily}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstinputlisting{../resources/code/NumberEvolutionStatisitcs.out}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+footnotesize}
+\end_layout
+
+\end_inset
+
+A typical output of an number 
+\family typewriter
+Evolution\SpecialChar \-
+Statistics
+\family default
+ object will look like the example above.
 \end_layout
 
 \begin_layout Section
 Nuts and bolts
-\end_layout
-
-\begin_layout Subsection
-Collectors
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Collectors
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The
-\family typewriter
- GeneticAlgorithm
-\family default
- class offers population- and timing-statistics after every evolve step.
- This information can be used to measure the performance of the GA, or to
- implement a more sophisticated termination strategy than
-\family typewriter
- evolve(100)
-\family default
-.
- Have a look at chapter 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "sub:Termination"
-
-\end_inset
-
- for more information about GA termination.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-GeneticAlgorithm<DoubleGene, Double> ga = ...
-\end_layout
-
-\begin_layout Plain Layout
-
-ga.setup();
-\end_layout
-
-\begin_layout Plain Layout
-
-for (int i = 0; i < 100; ++i) {
-\end_layout
-
-\begin_layout Plain Layout
-
-    ga.evolve();
-\end_layout
-
-\begin_layout Plain Layout
-
-    System.out.println(ga.getStatistics());
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The statistics object returned by the GA stores information---among other
- things---about the best- and the worst phenotype and some timing information,
- for performance analysis.
- The following listing shows the console output of an actual GA statistics.
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-lstset{basicstyle=
-\backslash
-scriptsize
-\backslash
-ttfamily}
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-lstinputlisting{../resources/code/Statistics.out}
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-lstset{basicstyle=
-\backslash
-footnotesize}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-If the fitness value is a number type you can change the statistics calculator
- of the GA to get more specific statistics information.
- The listing shows how to set the number-statistics calculator for the GA.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-final GeneticAlgorithm<DoubleGene, Double> ga = ...
-\end_layout
-
-\begin_layout Plain Layout
-
-ga.setStatisticsCalculator(
-\end_layout
-
-\begin_layout Plain Layout
-
-    new NumberStatistics.Calculator<DoubleGene, Double>()
-\end_layout
-
-\begin_layout Plain Layout
-
-);
-\end_layout
-
-\begin_layout Plain Layout
-
-ga.setup();
-\end_layout
-
-\begin_layout Plain Layout
-
-for (int i = 0; i < 100; ++i) {
-\end_layout
-
-\begin_layout Plain Layout
-
-    ga.evolve();
-\end_layout
-
-\begin_layout Plain Layout
-
-    System.out.println(ga.getStatistics());
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-With the new statistics calculator the console output for an statistics
- object will look like the following listing.
- This is because instead of an
-\family typewriter
- Statistics
-\family default
- object an
-\family typewriter
- NumberStatistics
-\family default
- object is returned by the
-\family typewriter
- getStatistics()
-\family default
- method.
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-lstset{basicstyle=
-\backslash
-scriptsize
-\backslash
-ttfamily}
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-lstinputlisting{../resources/code/NumberStatistics.out}
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-lstset{basicstyle=
-\backslash
-footnotesize}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-For computation-performance analysis it might be interesting in which processing
- steps the computation time is spent.
- On
-\emph on
- generation
-\emph default
- basis this can be accessed via the
-\family typewriter
- ga.getStatistics().getTime()
-\family default
- property.
- The overall calculation time statistics is available via the
-\family typewriter
- ga.getTimeStatistics()
-\family default
- method.
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-lstset{basicstyle=
-\backslash
-scriptsize
-\backslash
-ttfamily}
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-lstinputlisting{../resources/code/TimeStatistics.out}
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-lstset{basicstyle=
-\backslash
-footnotesize}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The console output of the time statistics looks like listing above and has
- the same format for the overall- and the generation time statistics.
-\end_layout
-
-\begin_layout Subsection
-Stream truncation
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-limit
-\end_layout
-
-\end_inset
-
-
-\begin_inset Index idx
-status open
-
-\begin_layout Plain Layout
-Stream truncation
-\end_layout
-
-\end_inset
-
-
-\begin_inset CommandInset label
-LatexCommand label
-name "sub:Termination"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The easiest way to terminate an evolution stream is to evolve a specific
- number of generations.
- This might work well for most problems and termination is guaranteed.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-Engine<DoubleGene, Double> engine = ...
-\end_layout
-
-\begin_layout Plain Layout
-
-Phenotype<DoubleGene, Double> result = engine.stream()
-\end_layout
-
-\begin_layout Plain Layout
-
-    .limit(25)
-\end_layout
-
-\begin_layout Plain Layout
-
-    .collect(toBestPhenotype());
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-A better way for way for truncating the evolution stream is to use to call
- the 
-\family typewriter
-limit(Predicate)
-\family default
- method of the 
-\family typewriter
-EvolutionStream
-\family default
- class.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-Engine<DoubleGene, Double> engine = ...
-\end_layout
-
-\begin_layout Plain Layout
-
-LongAdder counter = new LongAdder();
-\end_layout
-
-\begin_layout Plain Layout
-
-Phenotype<DoubleGene, Double> result = engine.stream()
-\end_layout
-
-\begin_layout Plain Layout
-
-    .limit(bySteadyFitness(5))
-\end_layout
-
-\begin_layout Plain Layout
-
-    // Counting the generations.
-\end_layout
-
-\begin_layout Plain Layout
-
-    .peek(r -> counter.increment())
-\end_layout
-
-\begin_layout Plain Layout
-
-    .collect(toBestPhenotype());
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The evolution stream is truncated when the 
-\emph on
-limit
-\emph default
- predicate (
-\family typewriter
-by\SpecialChar \-
-Steady\SpecialChar \-
-Fitness(5)
-\family default
-) returns false.
-
-\family sans
-\series bold
-\shape smallcaps
- Jenetics
-\family default
-\series default
-\shape default
- comes with some default limit predicates implemented in the
-\family typewriter
- limit
-\family default
- class in the
-\family typewriter
- org.jenetics.engine
-\family default
- package.
- The steady-fitness terminator for example, truncates the stream if the
- best fitness value doesn't increase for 5 consecutive generations.
 \end_layout
 
 \begin_layout Subsection
@@ -5429,7 +6904,22 @@ public class Main {
 
 \begin_layout Plain Layout
 
-        Factory<Genotype<DoubleGene>> gtf = ...
+        // Creating an fixed size ExecutorService
+\end_layout
+
+\begin_layout Plain Layout
+
+        final ExecutorService executor = Executors
+\end_layout
+
+\begin_layout Plain Layout
+
+            .newFixedThreadPool(10)
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Factory<Genotype<DoubleGene>> gtf = ...
 \end_layout
 
 \begin_layout Plain Layout
@@ -5449,7 +6939,7 @@ public class Main {
 
 \begin_layout Plain Layout
 
-            .executor(Executors.newFixedThreadPool(10))
+            .executor(executor)
 \end_layout
 
 \begin_layout Plain Layout
@@ -5791,8 +7281,7 @@ The parallel nature of the GA implementation requires the creation of streams
 \begin_inset Formula $j=1,2,3,...,p$
 \end_inset
 
-.
- 
+, 
 \begin_inset Formula $p$
 \end_inset
 
@@ -6373,7 +7862,11 @@ name "lis:LCG64ShiftRandom-class"
 
 \end_inset
 
-LCG64ShiftRandom class
+
+\family typewriter
+LCG64ShiftRandom
+\family default
+ class
 \end_layout
 
 \end_inset
@@ -6456,6 +7949,7 @@ jump
 jump2
 \family default
  Changes the internal state of the PRNG in such a way that the engine jumps
+ 
 \begin_inset Formula $2^{s}$
 \end_inset
 
@@ -6491,28 +7985,17 @@ reference "tab:PRNG-performance"
 
  shows the random number
 \family typewriter
- (int
+ 
 \family default
-,
-\family typewriter
- long
-\family default
-,
-\family typewriter
- float
-\family default
- and
-\family typewriter
- double
-\family default
-) generation speed for the different PRNG implementations.
+generation speed for the different PRNG implementations.
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Measured on a Intel(R) Core(TM) i5-3427U CPU @ 1.80GHz with Java(TM) SE Runtime
- Environment (build 1.8.0_05-b13)---Java HotSpot(TM) 64-Bit Server VM (build
- 25.5-b02, mixed mode)
+ Environment (build 1.8.0_25-b17)---Java HotSpot(TM) 64-Bit Server VM (build
+ 25.25-b02, mixed mode)---, using the JHM micro-benchmark library.
+ 
 \end_layout
 
 \end_inset
@@ -6615,7 +8098,7 @@ Random
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $70\cdot10^{6}$
+\begin_inset Formula $67\cdot10^{6}$
 \end_inset
 
 
@@ -6627,7 +8110,7 @@ Random
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $35\cdot10^{6}$
+\begin_inset Formula $33\cdot10^{6}$
 \end_inset
 
 
@@ -6639,7 +8122,7 @@ Random
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $70\cdot10^{6}$
+\begin_inset Formula $67\cdot10^{6}$
 \end_inset
 
 
@@ -6651,7 +8134,7 @@ Random
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $35\cdot10^{6}$
+\begin_inset Formula $33\cdot10^{6}$
 \end_inset
 
 
@@ -6676,7 +8159,7 @@ ThreadLocalRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $253\cdot10^{6}$
+\begin_inset Formula $333\cdot10^{6}$
 \end_inset
 
 
@@ -6688,7 +8171,7 @@ ThreadLocalRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $365\cdot10^{6}$
+\begin_inset Formula $344\cdot10^{6}$
 \end_inset
 
 
@@ -6700,7 +8183,7 @@ ThreadLocalRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $249\cdot10^{6}$
+\begin_inset Formula $237\cdot10^{6}$
 \end_inset
 
 
@@ -6712,7 +8195,7 @@ ThreadLocalRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $229\cdot10^{6}$
+\begin_inset Formula $220\cdot10^{6}$
 \end_inset
 
 
@@ -6737,7 +8220,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $266\cdot10^{6}$
+\begin_inset Formula $243\cdot10^{6}$
 \end_inset
 
 
@@ -6749,7 +8232,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $270\cdot10^{6}$
+\begin_inset Formula $251\cdot10^{6}$
 \end_inset
 
 
@@ -6761,7 +8244,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $227\cdot10^{6}$
+\begin_inset Formula $196\cdot10^{6}$
 \end_inset
 
 
@@ -6773,7 +8256,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $233\cdot10^{6}$
+\begin_inset Formula $199\cdot10^{6}$
 \end_inset
 
 
@@ -6907,14 +8390,20 @@ CharacterChromosome
 \end_layout
 
 \begin_layout Itemize
+
+\family typewriter
 IntegerGene
 \end_layout
 
 \begin_layout Itemize
+
+\family typewriter
 IntegerChromosome
 \end_layout
 
 \begin_layout Itemize
+
+\family typewriter
 LongGene
 \end_layout
 
@@ -6984,7 +8473,12 @@ end{multicols}
 
 \begin_layout Standard
 With the serialization mechanism you can write a population to disk and
- load it into an new evolution stream at a later time.
+ load it into an new 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+ at a later time.
  It can also be used to transfer populations to evolution engines, running
  on different hosts, over a network link.
  The
@@ -7078,8 +8572,15 @@ EvolutionStream<DoubleGene, Double> stream = Engine
 \end_layout
 
 \begin_layout Standard
-The following listing shows the XML serialization of a population which
- consists of genotypes as shown in figure 
+The following listing shows the XML serialization of a 
+\family typewriter
+Population
+\family default
+ which consists of 
+\family typewriter
+Genotype
+\family default
+s as shown in figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Genotype-structure"
@@ -7089,11 +8590,15 @@ reference "fig:Genotype-structure"
  on page 
 \begin_inset CommandInset ref
 LatexCommand pageref
-reference "sub:Genotype"
+reference "sub:Domain-classes-Genotype"
 
 \end_inset
 
-; only the first phenotype is shown.
+; only the first 
+\family typewriter
+Phenotype
+\family default
+ is shown.
 \end_layout
 
 \begin_layout Standard
@@ -7135,8 +8640,20 @@ footnotesize}
 \begin_layout Standard
 When serializing a whole population the fitness function and fitness scaler
  are not part of the serialized XML file.
- If a GA is initialized with a previously serialized population, the GA's
- current fitness function and fitness scaler are used for
+ If an 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+ is initialized with a previously serialized 
+\family typewriter
+Population
+\family default
+, the 
+\family typewriter
+Engine
+\family default
+'s current fitness function and fitness scaler are used for
 \emph on
  re
 \emph default
@@ -7196,8 +8713,11 @@ s and
  Chromosome
 \family default
 s, respectively.
- The Seq interface itself represents a fixed-sized, ordered sequence of
- elements.
+ The 
+\family typewriter
+Seq
+\family default
+ interface itself represents a fixed-sized, ordered sequence of elements.
  It is an abstraction over the Java build-in
 \emph on
  array
@@ -7379,11 +8899,304 @@ target "http://jenetics.sourceforge.net/javadoc/index.html"
 
 \family typewriter
 org.jenetics.stat
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Statistics
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-This package contains classes and collectors for calculating statistical
- moments.
+This package contains classes for calculating statistical moments.
+ They are designed to work smoothly with the Java Stream API and are divided
+ into mutable (number) consumers and immutable value classes, which holds
+ the statistical moments.
+ The additional classes calculate the 
+\end_layout
+
+\begin_layout Itemize
+minimum, 
+\end_layout
+
+\begin_layout Itemize
+maximum, 
+\end_layout
+
+\begin_layout Itemize
+sum, 
+\end_layout
+
+\begin_layout Itemize
+mean, 
+\end_layout
+
+\begin_layout Itemize
+variance,
+\end_layout
+
+\begin_layout Itemize
+skewness and 
+\end_layout
+
+\begin_layout Itemize
+kurtosis value.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="3">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0">
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Numeric type
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Consumer class
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Value class
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+int
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+IntMomentStatistics
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+IntMoments
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+long
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+LongMomentStatistics
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+LongMoments
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+double
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+DoubleMomentStatistics
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+DoubleMoments
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Statistics classes
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Statistics-classes"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+Table 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "tab:Statistics-classes"
+
+\end_inset
+
+ contains the available statistical moments for the different numeric types.
+ The following code snippet shows an example on how to collect double statistics
+ from an given 
+\family typewriter
+Double\SpecialChar \-
+Gene
+\family default
+ stream.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+// Collecting into an statistics object.
+\end_layout
+
+\begin_layout Plain Layout
+
+DoubleChromosome chromosome = ...
+\end_layout
+
+\begin_layout Plain Layout
+
+DoubleMomentStatistics statistics = chromosome.toSeq().stream() 
+\end_layout
+
+\begin_layout Plain Layout
+
+    .collect(DoubleMomentStatistics
+\end_layout
+
+\begin_layout Plain Layout
+
+        .toDoubleMomentStatistics(v -> v.doubleValue()));
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+// Collecting into an moments object.
+\end_layout
+
+\begin_layout Plain Layout
+
+DoubleMoments moments = chromosome.toSeq().stream() 
+\end_layout
+
+\begin_layout Plain Layout
+
+    .collect(DoubleMoments.toDoubleMoments(v -> v.doubleValue()));
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -7406,7 +9219,7 @@ The
  library was designed to give you a great flexibility in transforming your
  problem into a structure that can be solved by an GA.
  It also comes with different implementations for the base data-types (genes
- and chromosomes) and genetic operators (alterers and selectors).
+ and chromosomes) and operators (alterers and selectors).
  If it is still some functionality missing, this section describes how you
  can extend the existing classes.
  Most of the
@@ -7439,8 +9252,12 @@ name "sub:Genes"
 \end_layout
 
 \begin_layout Standard
-Genes are the starting point in the class hierarchy.
- They hold the actual information, the alleles, of your problem domain.
+
+\family typewriter
+Gene
+\family default
+s are the starting point in the class hierarchy.
+ They hold the actual information, the alleles, of the problem domain.
  Beside the
 \emph on
  classical
@@ -7453,8 +9270,19 @@ Genes are the starting point in the class hierarchy.
 \family default
 \series default
 \shape default
- comes with gene implementations for numbers (double- and long values),
- characters and enumeration types.
+ comes with gene implementations for numbers (
+\family typewriter
+double
+\family default
+-, 
+\family typewriter
+int
+\family default
+- and 
+\family typewriter
+long
+\family default
+ values), characters and enumeration types.
 \end_layout
 
 \begin_layout Standard
@@ -7494,10 +9322,15 @@ Allele
 g.
  a gene which holds complex values, you may want extend it from the abstract
 \family typewriter
- NumericGene
+ Numeric\SpecialChar \-
+Gene
 \family default
  class.
- Every gene extends the
+ Every 
+\family typewriter
+Gene
+\family default
+ extends the
 \family typewriter
  Serializable
 \family default
@@ -7508,6 +9341,84 @@ g.
 \emph default
  genes there is no more work to do for using the Java serialization mechanism.
  
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90text%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+The customer 
+\family typewriter
+Gene
+\family sans
+s and 
+\family typewriter
+Chromosome
+\family sans
+s implementations must use the 
+\family typewriter
+Random
+\family sans
+ engine available via the 
+\family typewriter
+Random\SpecialChar \-
+Registry\SpecialChar \-
+.getRandom
+\family sans
+ method when implementing their factory methods.
+ Otherwise it is not possible to seamlessly change the 
+\family typewriter
+Random
+\family sans
+ engine by using the 
+\family typewriter
+Random\SpecialChar \-
+Registry\SpecialChar \-
+.setRandom
+\family sans
+ method.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -7526,102 +9437,33 @@ Chromosome
 
 \begin_layout Standard
 A new gene type normally needs a corresponding chromosome implementation.
- The following listing shows the
-\family typewriter
- Chromosome
-\family default
- interface and the methods that must be implemented.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-public interface Chromosome<G extends Gene<?, G>>
-\end_layout
-
-\begin_layout Plain Layout
-
-	extends Factory<Chromosome<G>>, Iterable<G>, Verifiable,
-\end_layout
-
-\begin_layout Plain Layout
-
-            Immutable, Serializable
-\end_layout
-
-\begin_layout Plain Layout
-
-{
-\end_layout
-
-\begin_layout Plain Layout
-
-    public Chromosome<G> newInstance(ISeq<G> genes);
-\end_layout
-
-\begin_layout Plain Layout
-
-    public G getGene();
-\end_layout
-
-\begin_layout Plain Layout
-
-    public G getGene(int index);
-\end_layout
-
-\begin_layout Plain Layout
-
-    public ISeq<G> toSeq();
-\end_layout
-
-\begin_layout Plain Layout
-
-    public int length();
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "lis:Chromosome-interface"
-
-\end_inset
-
-
-\family typewriter
-Chromosome
-\family default
- interface
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The most important part of a chromosome is the factory method
+ The most important part of a chromosome is the factory method
 \family typewriter
  new\SpecialChar \-
 Instance
 \family default
-, which lets the GA create a new chromosome instance from a sequence of
- genes.
- This method is used by the alterers when creating new, combined chromosomes.
+, which lets the evolution 
+\family typewriter
+Engine
+\family default
+ create a new 
+\family typewriter
+Chromosome
+\family default
+ instance from a sequence of 
+\family typewriter
+Gene
+\family default
+s.
+ This method is used by the 
+\family typewriter
+Alterer
+\family default
+s when creating new, combined 
+\family typewriter
+Chromosome
+\family default
+s.
  The other methods should be self-explanatory.
  The chromosome has the same serialization mechanism as the gene.
  For the minimal case it extends the
@@ -7755,7 +9597,7 @@ The first parameter is the original
 -population is selected.
  The second parameter,
 \family typewriter
-count
+ count
 \family default
 , is the number of individuals of the returned sub-population.
  Depending on the selection algorithm, it is possible that the sub-population
@@ -7773,9 +9615,14 @@ count
 Before implementing a selector from scratch, consider to extend your selector
  from the
 \family typewriter
- ProbabilitySelector
+ Probability\SpecialChar \-
+Selector
 \family default
- (or any other available selector implementation).
+ (or any other available 
+\family typewriter
+Selector
+\family default
+ implementation).
  It is worth the effort to try to express your selection strategy in terms
  of selection property 
 \begin_inset Formula $P(i)$
@@ -7804,8 +9651,11 @@ For implementing a new alterer class it is necessary to implement the
  Alterer
 \family default
  interface.
- You might do this if your new gene type needs a special kind of alterer
- not available in the
+ You might do this if your new 
+\family typewriter
+Gene
+\family default
+ type needs a special kind of alterer not available in the
 \family sans
 \series bold
 \shape smallcaps
@@ -7879,7 +9729,7 @@ The first parameter of the
 \family default
  method is the
 \family typewriter
- population
+ Population
 \family default
  which has to be altered.
  Since the the
@@ -7896,7 +9746,7 @@ The first parameter of the
 \end_layout
 
 \begin_layout Subsection
-Statistics/Collectors
+Statistics
 \begin_inset Index idx
 status collapsed
 
@@ -7918,7 +9768,7 @@ Jenetics
 \family default
 \series default
 \shape default
- library additional statistical data about the evolution process is crucial.
+ library, additional statistical data about the evolution process is crucial.
  Such data can help to optimize the parametrization of the evolution Engine.
  A good starting point is to use the 
 \family typewriter
@@ -7932,14 +9782,19 @@ jenetics.\SpecialChar \-
 engine
 \family default
  package.
- The basic usage of this class is described in xxx.
-\end_layout
-
-\begin_layout Standard
-If the data in the EvolutionStatistics class doesn't fit your needs, you
- simply have to write your own statistics class.
- It is not possible to derive from the existing Evolution\SpecialChar \-
-Statistics class.
+ If the data in the 
+\family typewriter
+Evolution\SpecialChar \-
+Statistics
+\family default
+ class doesn't fit your needs, you simply have to write your own statistics
+ class.
+ It is not possible to derive from the existing 
+\family typewriter
+Evolution\SpecialChar \-
+Statistics
+\family default
+ class.
  This is not a real restriction, since you still can use the class by delegation.
  Just implement the Java 
 \family typewriter
@@ -7952,7 +9807,7 @@ Result<G, C>\SpecialChar \-
 \end_layout
 
 \begin_layout Section
-Advanced configurations
+Advanced topics
 \end_layout
 
 \begin_layout Standard
@@ -7965,6 +9820,16 @@ Encoding
 \begin_inset CommandInset label
 LatexCommand label
 name "sub:Encoding"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Encoding
+\end_layout
 
 \end_inset
 
@@ -8063,7 +9928,11 @@ Chromosome
 \begin_layout Itemize
 
 \family typewriter
-LongGene/Chromosome
+LongGene
+\family default
+/
+\family typewriter
+Chromosome
 \family default
  and 
 \end_layout
@@ -8401,8 +10270,20 @@ Genotype.of(
 
 \end_inset
 
-The decoding of the Genotype requires a cast of the first Chromosome to
- a DoubleChromosome.
+The decoding of the 
+\family typewriter
+Genotype
+\family default
+ requires a cast of the first 
+\family typewriter
+Chromosome
+\family default
+ to a 
+\family typewriter
+Double\SpecialChar \-
+Chromosome
+\family default
+.
  With a call to the 
 \family typewriter
 DoubleChromosome.\SpecialChar \-
@@ -8443,7 +10324,7 @@ With the
 \emph on
 first
 \emph default
- encoding you have the possibility use all available alterers, including
+ encoding you have the possibility to use all available alterers, including
  all 
 \family typewriter
 Crossover
@@ -8533,7 +10414,10 @@ Genotype.of(
 
 \end_inset
 
-With the help of the new Java streaming API, the decoding of the Genotype
+With the help of the new Java Stream API, the decoding of the 
+\family typewriter
+Genotype
+\family default
  can be done in a view lines.
  The 
 \family typewriter
@@ -8596,6 +10480,42 @@ GaussianAlterer
 Mutator
 \family default
  alterer class.
+\end_layout
+
+\begin_layout Standard
+If there are performance issues in converting the 
+\family typewriter
+Genotype
+\family default
+ into a 
+\family typewriter
+double[]
+\family default
+ array, or any other numeric array, you can access the 
+\family typewriter
+Gene
+\family default
+s directly via the 
+\family typewriter
+Genotype\SpecialChar \-
+.get(i, j)
+\family default
+ method and than convert it to the desired numeric value, by calling 
+\family typewriter
+int\SpecialChar \-
+Value()
+\family default
+, 
+\family typewriter
+long\SpecialChar \-
+Value()
+\family default
+ or 
+\family typewriter
+double\SpecialChar \-
+Value()
+\family default
+.
 \end_layout
 
 \begin_layout Subsubsection
@@ -8697,7 +10617,7 @@ Genotype.of(
 
 \end_inset
 
-The decoding of the vectors is quite easy with the help of the Java streaming
+The decoding of the vectors is quite easy with the help of the Java Stream
  API.
  In the first 
 \family typewriter
@@ -8787,8 +10707,12 @@ For the special case of
 \begin_inset Formula $n=1$
 \end_inset
 
-, the decoding of the Genotype can be simplified to the decoding we introduced
- for scalar functions in section 
+, the decoding of the 
+\family typewriter
+Genotype
+\family default
+ can be simplified to the decoding we introduced for scalar functions in
+ section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sub:Scalar-function"
@@ -8863,7 +10787,7 @@ https://en.wikipedia.org/wiki/Affine_transformation
 
 \end_inset
 
-
+, 
 \begin_inset Foot
 status collapsed
 
@@ -8993,7 +10917,7 @@ invalid
 \emph default
  (non-affine transformation matrices) during the evolution process, which
  must be detected and discarded.
- It is also difficult find the right parameters for the 
+ It is also difficult to find the right parameters for the 
 \emph on
 min
 \emph default
@@ -9300,7 +11224,8 @@ static double[][] toMatrix(final Genotype<DoubleGene> gt) {
 For the introduced encoding all kind of alterers can be used.
  Since we have one scalar 
 \family typewriter
-DoubleChromosome
+Double\SpecialChar \-
+Chromosome
 \family default
 , the rotation angle 
 \begin_inset Formula $\theta$
@@ -9308,17 +11233,39 @@ DoubleChromosome
 
 , it is recommended also to add an 
 \family typewriter
-MeanAlterer
+Mean\SpecialChar \-
+Alterer
 \family default
  or 
 \family typewriter
-GaussianAlterer
+Gaussian\SpecialChar \-
+Alterer
 \family default
  to the list of alterers.
 \end_layout
 
 \begin_layout Subsubsection
 Graph
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Graph
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Encoding!Graph
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -9331,10 +11278,30 @@ A graph can be represented in many different ways.
 
 \begin_layout Paragraph
 Undirected graph
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Undirected graph
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Encoding!Undirected graph
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-In an undirected graph the edges between the vertices between have no direction.
+In an undirected graph the edges between the vertices have no direction.
  If there is a path between nodes 
 \begin_inset Formula $i$
 \end_inset
@@ -9528,6 +11495,26 @@ final int[][] array = gt.toSeq().stream()
 
 \begin_layout Paragraph
 Directed graph
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Directed graph
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Encoding!Directed graph
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -9592,6 +11579,26 @@ reference "fig:Directed-graph"
 
 \begin_layout Paragraph
 Weighted directed graph
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Weighted graph
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Encoding!Weighted graph
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -9635,7 +11642,11 @@ Weighted graph and adjacency matrix
 
 \end_inset
 
-The genotype creation...
+The following code snippet shows how the 
+\family typewriter
+Genotype
+\family default
+ of the matrix is created.
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -9668,7 +11679,19 @@ final Genotype<DoubleGene> gt = Genotype
 
 \end_inset
 
-Matrix extraction...
+For accessing the single matrix elements, you can simply call 
+\family typewriter
+Genotype\SpecialChar \-
+.get(i, j)\SpecialChar \-
+.doubleValue()
+\family default
+.
+ If the interaction with another library requires an 
+\family typewriter
+double\SpecialChar \-
+[][]
+\family default
+ array, the following code can be used.
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -9699,16 +11722,18 @@ final double[][] array = gt.toSeq().stream()
 
 \end_layout
 
-\begin_layout Subsubsection
-Scheduling
-\end_layout
-
-\begin_layout Standard
-How to encode the problem for finding the best schedule of lessons.
-\end_layout
-
 \begin_layout Subsection
 Termination
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Termination
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -9719,7 +11744,17 @@ Termination is the criterion by which the evolution stream decides whether
 \end_layout
 
 \begin_layout Subsubsection
-Generation number
+Fixed generation
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Termination!Fixed generation
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -9761,6 +11796,26 @@ This kind of termination method should always be applied, to guarantee the
 
 \begin_layout Subsubsection
 Steady fitness
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Termination!Steady fitness
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Steady fitness
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -9925,14 +11980,13 @@ final class SteadyFitnessLimit<C extends Comparable<? super C>>
 \begin_inset Caption
 
 \begin_layout Plain Layout
-
 \begin_inset CommandInset label
 LatexCommand label
 name "lis:Steady-fitness-limit"
 
 \end_inset
 
-Steady fitness limit
+Steady fitness
 \end_layout
 
 \end_inset
@@ -9965,15 +12019,15 @@ org\SpecialChar \-
 , which possible holds and internal state.
 \end_layout
 
-\begin_layout Subsubsection
-Steady population
-\end_layout
+\begin_layout Standard
+\begin_inset Note Comment
+status collapsed
 
 \begin_layout Subsubsection
 Evolution time
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 A termination method that stops the evolution when the elapsed evolution
  time exceeds the user-specified max evolution time.
  By default, the evolution is not stopped until the evolution of the current
@@ -9985,7 +12039,7 @@ A termination method that stops the evolution when the elapsed evolution
 Fitness threshold
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 A termination method that stops the evolution when the best fitness in the
  current population becomes less than the user-specified fitness threshold
  and the objective is set to minimize the fitness.
@@ -9998,7 +12052,7 @@ A termination method that stops the evolution when the best fitness in the
 Fitness convergence
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 A termination method that stops the evolution when the fitness is deemed
  as converged.
  Two filters of different lengths are used to smooth the best fitness across
@@ -10012,7 +12066,7 @@ ed percentage away from the smoothed best fitness from the short filter,
 Population convergence
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 A termination method that stops the evolution when the population is deemed
  as converged.
  The population is deemed as converged when the average fitness across the
@@ -10024,12 +12078,17 @@ A termination method that stops the evolution when the population is deemed
 Gene convergence
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 A termination method that stops the evolution when a user-specified percentage
  of the genes that make up a chromosome are deemed as converged.
  A gene is deemed as converged when the average value of that gene across
  all of the chromosomes in the current population is less than a user-specified
  percentage away from the maximum gene value across the chromosomes.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -10244,6 +12303,12 @@ footnotesize}
 
 \begin_layout Standard
 The given example will print the overall timing statistics onto the console.
+ In the 
+\emph on
+Evolution statistics
+\emph default
+ section you can see that it actually takes 15 generations to fulfill the
+ termination criteria---finding no better result after 7 consecutive generations.
 \end_layout
 
 \begin_layout Subsection
@@ -10375,15 +12440,6 @@ s whose values are restricted to the range
 \begin_inset Formula $[0,2\pi]$
 \end_inset
 
-.
- Without this restriction, the search space of the chromosome will be between
-\family typewriter
- Double.MIN_VALUE
-\family default
- and
-\family typewriter
- Double.MAX_VALUE
-\family default
 .
 \end_layout
 
@@ -11351,7 +13407,7 @@ Version
 \series default
 :
 \emph on
- 6.8.8
+ 6.8.13
 \end_layout
 
 \begin_layout Itemize
@@ -11368,27 +13424,6 @@ status collapsed
 \begin_layout Plain Layout
 
 http://testng.org/doc/index.html
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-Download
-\series default
-:
-\emph on
- 
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-http://testng.org/testng-6.8.8.zip
 \end_layout
 
 \end_inset

@@ -53,7 +53,6 @@ main() {
 	java ${opts} -agentpath:`agent_param OnesCounting.jgrind` -cp $CLS_PATH org.jenetics.example.OnesCounting
 	java ${opts} -agentpath:`agent_param RealFunction.jgrind` -cp $CLS_PATH org.jenetics.example.RealFunction
 	java ${opts} -agentpath:`agent_param StringGenerator.jgrind` -cp $CLS_PATH org.jenetics.example.StringGenerator
-	java ${opts} -agentpath:`agent_param Transformation.jgrind` -cp $CLS_PATH org.jenetics.example.Transformation
 	java ${opts} -agentpath:`agent_param TravelingSalesman.jgrind` -cp $CLS_PATH org.jenetics.example.TravelingSalesman
 }
 
