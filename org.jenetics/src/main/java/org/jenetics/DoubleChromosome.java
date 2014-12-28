@@ -46,12 +46,12 @@ import org.jenetics.util.MSeq;
  * Numeric chromosome implementation which holds 64 bit floating point numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-06-30 $</em>
  * @since 1.6
+ * @version 3.0 &mdash; <em>$Date: 2014-12-08 $</em>
  */
 @XmlJavaTypeAdapter(DoubleChromosome.Model.Adapter.class)
 public class DoubleChromosome
-	extends AbstractNumericChromosome<Double, DoubleGene>
+	extends AbstractBoundedChromosome<Double, DoubleGene>
 	implements
 		NumericChromosome<Double, DoubleGene>,
 		Serializable
@@ -85,6 +85,43 @@ public class DoubleChromosome
 	 */
 	public DoubleChromosome(final Double min, final Double max) {
 		this(min, max, 1);
+	}
+
+	/**
+	 * Returns an double array containing all of the elements in this chromosome
+	 * in proper sequence.  If the chromosome fits in the specified array, it is
+	 * returned therein. Otherwise, a new array is allocated with the length of
+	 * this chromosome.
+	 *
+	 * @since 3.0
+	 *
+	 * @param array the array into which the elements of this chromosomes are to
+	 *        be stored, if it is big enough; otherwise, a new array is
+	 *        allocated for this purpose.
+	 * @return an array containing the elements of this chromosome
+	 * @throws NullPointerException if the given {@code array} is {@code null}
+	 */
+	public double[] toArray(final double[] array) {
+		final double[] a = array.length >= length() ?
+			array : new double[length()];
+
+		for (int i = length(); --i >= 0;) {
+			a[i] = doubleValue(i);
+		}
+
+		return a;
+	}
+
+	/**
+	 * Returns an double array containing all of the elements in this chromosome
+	 * in proper sequence.
+	 *
+	 * @since 3.0
+	 *
+	 * @return an array containing the elements of this chromosome
+	 */
+	public double[] toArray() {
+		return toArray(new double[length()]);
 	}
 
 	/**

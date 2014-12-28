@@ -74,10 +74,10 @@ public class TravelingSalesman {
 
 		final Phenotype<EnumGene<Integer>, Double> best =
 			engine.stream()
-			// Truncate the evolution stream after 7 "steady"
+			// Truncate the evolution stream after 15 "steady"
 			// generations.
 			.limit(bySteadyFitness(15))
-			// The evolution will stop after maximal 100
+			// The evolution will stop after maximal 250
 			// generations.
 			.limit(250)
 			// Update the evaluation statistics after

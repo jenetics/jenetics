@@ -25,14 +25,11 @@ package org.jenetics;
  * survivors and offspring. The selectors for offspring and for the survivors
  * can be chosen independently.
  * [code]
- * final GeneticAlgorithm&lt;DoubleGene, Double&gt; ga = ...
- * ga.setOffspringFraction(0.7);
- * ga.setSurvivorSelector(
- *     new RouletteWheelSelector&lt;DoubleGene, Double&gt;()
- * );
- * ga.setOffspringSelector(
- *     new TournamentSelector&lt;DoubleGene, Double&gt;()
- * );
+ * final Engine&lt;DoubleGene, Double&gt; engine = Engine
+ *     .builder(gtf, ff)
+ *     .offspringSelector(new RouletteWheelSelector&lt;&gt;())
+ *     .survivorsSelector(new TournamentSelector&lt;&gt;())
+ *     .build();
  * [/code]
  *
  * @param <G> The gene type this GA evaluates,
@@ -40,7 +37,7 @@ package org.jenetics;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2014-05-31 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2014-12-28 $</em>
  */
 @FunctionalInterface
 public interface Selector<

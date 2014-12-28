@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<phenotype generation="294024316">
+<phenotype generation="1098457242">
     <genotype length="5" ngenes="100">
         <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.CharacterChromosome" length="20">
             <valid-alleles> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
@@ -22,6 +22,6 @@
             <alleles>VV0S}5)%+YsN:dA=ObJ(</alleles>
         </chromosome>
     </genotype>
-    <fitness xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">1098457242</fitness>
-    <raw-fitness xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">1098457242</raw-fitness>
+    <fitness xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">-294024316</fitness>
+    <raw-fitness xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">-294024316</raw-fitness>
 </phenotype>

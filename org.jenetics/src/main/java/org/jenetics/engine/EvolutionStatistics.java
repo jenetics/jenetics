@@ -83,12 +83,12 @@ import org.jenetics.stat.MinMax;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-25 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-12-12 $</em>
  */
 public abstract class EvolutionStatistics<
 	C extends Comparable<? super C>,
 	FitnessStatistics
->
+	>
 	implements Consumer<EvolutionResult<?, C>>
 {
 
@@ -134,10 +134,10 @@ public abstract class EvolutionStatistics<
 	private void accept(final EvolutionDurations durations) {
 		final double selection =
 			toSeconds(durations.getOffspringSelectionDuration()) +
-			toSeconds(durations.getSurvivorsSelectionDuration());
+				toSeconds(durations.getSurvivorsSelectionDuration());
 		final double alter =
 			toSeconds(durations.getOffspringAlterDuration()) +
-			toSeconds(durations.getOffspringFilterDuration());
+				toSeconds(durations.getOffspringFilterDuration());
 
 		_selectionDuration.accept(selection);
 		_alterDuration.accept(alter);
@@ -256,20 +256,20 @@ public abstract class EvolutionStatistics<
 	@Override
 	public String toString() {
 		return
-		"+---------------------------------------------------------------------------+\n" +
-		"|  Time statistics                                                          |\n" +
-		"+---------------------------------------------------------------------------+\n" +
-		format(cpattern, "Selection:", d(_selectionDuration)) +
-		format(cpattern, "Altering:", d(_alterDuration)) +
-		format(cpattern, "Fitness calculation:", d(_evaluationDuration)) +
-		format(cpattern, "Overall execution:", d(_evolveDuration)) +
-		"+---------------------------------------------------------------------------+\n" +
-		"|  Evolution statistics                                                     |\n" +
-		"+---------------------------------------------------------------------------+\n" +
-		format(cpattern, "Generations:", i(_altered.getCount())) +
-		format(cpattern, "Altered:", i(_altered)) +
-		format(cpattern, "Killed:", i(_killed)) +
-		format(cpattern, "Invalids:", i(_invalids));
+			"+---------------------------------------------------------------------------+\n" +
+			"|  Time statistics                                                          |\n" +
+			"+---------------------------------------------------------------------------+\n" +
+			format(cpattern, "Selection:", d(_selectionDuration)) +
+			format(cpattern, "Altering:", d(_alterDuration)) +
+			format(cpattern, "Fitness calculation:", d(_evaluationDuration)) +
+			format(cpattern, "Overall execution:", d(_evolveDuration)) +
+			"+---------------------------------------------------------------------------+\n" +
+			"|  Evolution statistics                                                     |\n" +
+			"+---------------------------------------------------------------------------+\n" +
+			format(cpattern, "Generations:", i(_altered.getCount())) +
+			format(cpattern, "Altered:", i(_altered)) +
+			format(cpattern, "Killed:", i(_killed)) +
+			format(cpattern, "Invalids:", i(_invalids));
 	}
 
 	private static String d(final DoubleMomentStatistics statistics) {
@@ -314,7 +314,7 @@ public abstract class EvolutionStatistics<
 
 	private static final class Comp<
 		C extends Comparable<? super C>
-	>
+		>
 		extends EvolutionStatistics<C, MinMax<C>>
 	{
 		private Comp() {
@@ -339,14 +339,14 @@ public abstract class EvolutionStatistics<
 		@Override
 		public String toString() {
 			return super.toString() +
-			"+---------------------------------------------------------------------------+\n" +
-			"|  Population statistics                                                    |\n" +
-			"+---------------------------------------------------------------------------+\n" +
-			format(cpattern, "Age:", p(_age)) +
-			format(cpattern, "Fitness", "") +
-			format(spattern, "min =", _fitness.getMin()) +
-			format(spattern, "max =", _fitness.getMax()) +
-			"+---------------------------------------------------------------------------+";
+				"+---------------------------------------------------------------------------+\n" +
+				"|  Population statistics                                                    |\n" +
+				"+---------------------------------------------------------------------------+\n" +
+				format(cpattern, "Age:", p(_age)) +
+				format(cpattern, "Fitness", "") +
+				format(spattern, "min =", _fitness.getMin()) +
+				format(spattern, "max =", _fitness.getMax()) +
+				"+---------------------------------------------------------------------------+";
 		}
 	}
 
@@ -366,16 +366,16 @@ public abstract class EvolutionStatistics<
 		@Override
 		public String toString() {
 			return super.toString() +
-			"+---------------------------------------------------------------------------+\n" +
-			"|  Population statistics                                                    |\n" +
-			"+---------------------------------------------------------------------------+\n" +
-			format(cpattern, "Age:", p(_age)) +
-			format(cpattern, "Fitness:", "") +
-			format(spattern, "min  =", d(_fitness.getMin())) +
-			format(spattern, "max  =", d(_fitness.getMax())) +
-			format(spattern, "mean =", d(_fitness.getMean())) +
-			format(spattern, "var  =", d(_fitness.getVariance())) +
-			"+---------------------------------------------------------------------------+";
+				"+---------------------------------------------------------------------------+\n" +
+				"|  Population statistics                                                    |\n" +
+				"+---------------------------------------------------------------------------+\n" +
+				format(cpattern, "Age:", p(_age)) +
+				format(cpattern, "Fitness:", "") +
+				format(spattern, "min  =", d(_fitness.getMin())) +
+				format(spattern, "max  =", d(_fitness.getMax())) +
+				format(spattern, "mean =", d(_fitness.getMean())) +
+				format(spattern, "var  =", d(_fitness.getVariance())) +
+				"+---------------------------------------------------------------------------+";
 		}
 
 		private static String d(final double value) {

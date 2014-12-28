@@ -30,14 +30,16 @@ import org.jenetics.util.ISeq;
  * Abstract chromosome for {@code BoundedGene}s.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-07-10 $</em>
+ * @version 1.6 &mdash; <em>$Date: 2014-12-07 $</em>
  * @since 1.6
  */
 abstract class AbstractBoundedChromosome<
 	A extends Comparable<? super A>,
 	G extends AbstractBoundedGene<A, G>
 >
-	extends AbstractChromosome<G> implements BoundedChromosome<A, G> {
+	extends AbstractChromosome<G>
+	implements BoundedChromosome<A, G>
+{
 
 	private static final long serialVersionUID = 1L;
 

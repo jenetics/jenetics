@@ -32,7 +32,7 @@ import org.jenetics.Gene;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-21 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-12-01 $</em>
  */
 final class EvolutionStreamImpl<
 	G extends Gene<?, G>,
@@ -66,20 +66,21 @@ final class EvolutionStreamImpl<
 			evolution,
 			initial,
 			StreamSupport.stream(
-				new EvolutionSpliterator<>(evolution, initial, r -> true),
+				new EvolutionSpliterator<>(evolution, initial, TRUE()),
 				false
 			),
-			r -> true
+			TRUE()
 		);
 	}
 
 	@Override
 	public EvolutionStream<G, C>
 	limit(final Predicate<? super EvolutionResult<G, C>> proceed) {
-		final Predicate<? super EvolutionResult<G, C>> prcd = r ->
-			proceed.test(r) & _proceed.test(r);
+		final Predicate<? super EvolutionResult<G, C>> prcd =
+			_proceed == TRUE ? proceed :
+				r -> proceed.test(r) & _proceed.test(r);
 
-		return new EvolutionStreamImpl<G, C>(
+		return new EvolutionStreamImpl<>(
 			_evolution,
 			_initial,
 			StreamSupport.stream(
@@ -88,6 +89,13 @@ final class EvolutionStreamImpl<
 			),
 			prcd
 		);
+	}
+
+	private static final Predicate<?> TRUE = a -> true;
+
+	@SuppressWarnings("unchecked")
+	private static <T> Predicate<T> TRUE() {
+		return (Predicate<T>)TRUE;
 	}
 
 }

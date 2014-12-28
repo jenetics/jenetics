@@ -46,7 +46,7 @@ import org.jenetics.util.ObjectTester;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-10-19 $</em>
+ * @version <em>$Date: 2014-11-28 $</em>
  */
 public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 	extends ObjectTester<S>
@@ -71,7 +71,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 			new Population<>(2);
 
 		for (int i = 0, n = 2; i < n; ++i) {
-			population.add(Phenotype.of(gtf.newInstance(), TestUtils.FF, 12));
+			population.add(Phenotype.of(gtf.newInstance(), 12, TestUtils.FF));
 		}
 
 		selector().select(population, -1, Optimize.MAXIMUM);
@@ -91,7 +91,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 			new Population<>(2);
 
 		for (int i = 0, n = 2; i < n; ++i) {
-			population.add(Phenotype.of(gtf.newInstance(), TestUtils.FF, 12));
+			population.add(Phenotype.of(gtf.newInstance(), 12, TestUtils.FF));
 		}
 
 		selector().select(population, 1, null);
@@ -107,7 +107,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 			g -> g.getGene().getAllele();
 
 		final Factory<Phenotype<DoubleGene, Double>> ptf = () ->
-			Phenotype.of(Genotype.of(DoubleChromosome.of(0.0, 100.0)), ff, 1);
+			Phenotype.of(Genotype.of(DoubleChromosome.of(0.0, 100.0)), 1, ff);
 
 		using(new LCG64ShiftRandom(543455), r -> {
 			final Population<DoubleGene, Double> population = IntStream.range(0, size)
@@ -160,7 +160,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 			gt -> gt.getGene().getAllele();
 
 		final Factory<Phenotype<DoubleGene, Double>> ptf = () ->
-			Phenotype.of(Genotype.of(DoubleChromosome.of(0.0, 1_000.0)), ff, 1);
+			Phenotype.of(Genotype.of(DoubleChromosome.of(0.0, 1_000.0)), 1, ff);
 
 		final Population<DoubleGene, Double> population = IntStream.range(0, size)
 			.mapToObj(i -> ptf.newInstance())
@@ -281,7 +281,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 			gt -> gt.getGene().getAllele();
 
 		final Factory<Phenotype<DoubleGene, Double>> ptf = () ->
-			Phenotype.of(Genotype.of(DoubleChromosome.of(MIN, MAX)), ff, 1);
+			Phenotype.of(Genotype.of(DoubleChromosome.of(MIN, MAX)), 1, ff);
 
 		return IntStream.range(0, loops).parallel().mapToObj(j -> {
 			final Histogram<Double> hist = Histogram.of(MIN, MAX, CLASS_COUNT);

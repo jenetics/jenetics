@@ -37,7 +37,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-08-27 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2014-12-07 $</em>
  */
 public final class ExponentialScaler
 	implements
@@ -93,7 +93,10 @@ public final class ExponentialScaler
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass()).and(_a).and(_b).and(_c).value();
+		return Hash.of(getClass())
+			.and(_a)
+			.and(_b)
+			.and(_c).value();
 	}
 
 	@Override

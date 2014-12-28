@@ -30,7 +30,7 @@ import org.jenetics.internal.util.require;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-28 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-12-07 $</em>
  */
 public abstract class AbstractAlterer<
 	G extends Gene<?, G>,
@@ -51,7 +51,6 @@ public abstract class AbstractAlterer<
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
 	 *         valid range of {@code [0, 1]}.
 	 */
-	// Primary constructor
 	protected AbstractAlterer(final double probability) {
 		_probability = require.probability(probability);
 	}

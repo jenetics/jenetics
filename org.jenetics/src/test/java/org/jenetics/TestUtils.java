@@ -30,7 +30,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-09-17 $</em>
+ * @version <em>$Date: 2014-11-28 $</em>
  */
 class TestUtils {
 	private TestUtils() {require.noInstance();}
@@ -131,7 +131,7 @@ class TestUtils {
 			new Population<>(npopulation);
 
 		for (int i = 0; i < npopulation; ++i) {
-			population.add(Phenotype.of(genotype.newInstance(), FF, 0).evaluate());
+			population.add(Phenotype.of(genotype.newInstance(), 0, FF).evaluate());
 		}
 
 		return population;
@@ -160,7 +160,7 @@ class TestUtils {
 			new Population<>(npopulation);
 
 		for (int i = 0; i < npopulation; ++i) {
-			population.add(Phenotype.of(genotype.newInstance(), PFF, 0));
+			population.add(Phenotype.of(genotype.newInstance(), 0, PFF));
 		}
 
 		return population;
@@ -204,7 +204,7 @@ class TestUtils {
 
 	public static Phenotype<DoubleGene, Double> newDoublePhenotype(final double value) {
 		return Phenotype.of(Genotype.of(
-			DoubleChromosome.of(DoubleGene.of(value, 0, 10))), FF, 0
+			DoubleChromosome.of(DoubleGene.of(value, 0, 10))), 0, FF
 		).evaluate();
 	}
 
