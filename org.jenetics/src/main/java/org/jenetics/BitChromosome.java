@@ -54,7 +54,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-12-07 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-12-28 $</em>
  */
 @XmlJavaTypeAdapter(BitChromosome.Model.Adapter.class)
 public class BitChromosome extends Number
@@ -478,8 +478,7 @@ public class BitChromosome extends Number
 	/**
 	 * Constructing a new BitChromosome from a given BitSet.
 	 * The BitSet is copied while construction. The length of the constructed
-	 * BitChromosome will be {@code bitSet.length()}
-	 * (@see BitSet#length).
+	 * BitChromosome will be {@code bitSet.length()} ({@link BitSet#length}).
 	 *
 	 * @param bits the bit-set which initializes the chromosome
 	 * @return a new {@code BitChromosome} with the given parameter
