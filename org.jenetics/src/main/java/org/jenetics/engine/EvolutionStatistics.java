@@ -39,6 +39,8 @@ import org.jenetics.stat.LongMomentStatistics;
 import org.jenetics.stat.MinMax;
 
 /**
+ * TODO: Finish class simplification
+ *
  * This class can be used to gather additional statistic information of an
  * evolution process. The additional information can be useful during the
  * development phase of the GA or while testing the GA's performance. The
@@ -93,7 +95,7 @@ import org.jenetics.stat.MinMax;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-12-12 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-12-29 $</em>
  */
 public final class EvolutionStatistics<C extends Comparable<? super C>, S>
 	implements Consumer<EvolutionResult<?, C>>
