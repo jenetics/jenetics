@@ -33,12 +33,9 @@ import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
-import org.jenetics.util.Random32;
-import org.jenetics.util.Random64;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz  Wilhelmstötter</a>
- * @version !__version__! &mdash; <em>$Date$</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-12-29 $</em>
  * @since !__version__!
  */
 public class RandomEnginePerf {

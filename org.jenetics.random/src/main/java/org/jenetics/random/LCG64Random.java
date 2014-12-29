@@ -21,20 +21,17 @@ package org.jenetics.random;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.Equality.eq;
+import static org.jenetics.random.internal.util.Equality.eq;
 
 import java.io.Serializable;
 
-import org.jenetics.internal.math.random;
-import org.jenetics.internal.util.Equality;
-import org.jenetics.internal.util.Hash;
-
-import org.jenetics.util.Random64;
+import org.jenetics.random.internal.util.Equality;
+import org.jenetics.random.internal.util.Hash;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date$</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-12-29 $</em>
  */
 public class LCG64Random extends Random64 {
 
@@ -144,7 +141,7 @@ public class LCG64Random extends Random64 {
 	}
 
 	public LCG64Random(final Param param) {
-		this(param, random.seed());
+		this(param, math.seed());
 	}
 
 	public LCG64Random(final long seed) {
@@ -152,7 +149,7 @@ public class LCG64Random extends Random64 {
 	}
 
 	public LCG64Random() {
-		this(Param.DEFAULT, random.seed());
+		this(Param.DEFAULT, math.seed());
 	}
 
 	@Override

@@ -23,8 +23,8 @@ import java.util.Arrays;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-12-29 $</em>
+ * @since !__version__!
+ * @version !__version__! &mdash; <em>$Date: 2014-12-29 $</em>
  */
 final class DefaultHashCodeBuilder implements Hash {
 	private static final int P1 = 47;

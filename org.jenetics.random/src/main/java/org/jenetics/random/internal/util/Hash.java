@@ -23,8 +23,8 @@ package org.jenetics.random.internal.util;
  * Interface for calculating the object hash value.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.6
- * @version 3.0 &mdash; <em>$Date: 2014-12-29 $</em>
+ * @since !__version__!
+ * @version !__version__! &mdash; <em>$Date: 2014-12-29 $</em>
  */
 public interface Hash {
 

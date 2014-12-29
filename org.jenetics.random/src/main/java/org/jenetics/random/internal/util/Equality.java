@@ -27,8 +27,8 @@ import java.util.function.Predicate;
  * Helper object for calculating object equality.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-12-29 $</em>
+ * @since !__version__!
+ * @version !__version__! &mdash; <em>$Date: 2014-12-29 $</em>
  */
 public final class Equality {
 	private Equality() {}

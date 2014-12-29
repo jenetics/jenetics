@@ -19,13 +19,10 @@
  */
 package org.jenetics.random;
 
-import static org.jenetics.internal.util.Equality.eq;
+import static org.jenetics.random.internal.util.Equality.eq;
 
-import org.jenetics.internal.math.random;
-import org.jenetics.internal.util.Equality;
-import org.jenetics.internal.util.Hash;
-
-import org.jenetics.util.Random64;
+import org.jenetics.random.internal.util.Equality;
+import org.jenetics.random.internal.util.Hash;
 
 /**
  * <p><em>
@@ -54,7 +51,7 @@ import org.jenetics.util.Random64;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date$</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-12-29 $</em>
  */
 public class XOR64ShiftRandom extends Random64 {
 
@@ -62,10 +59,6 @@ public class XOR64ShiftRandom extends Random64 {
 
 
 	/**
-	 * This field can be used to initial the {@link org.jenetics.util.RandomRegistry}
-	 * with a fast and thread safe random engine of this type; each thread gets
-	 * a <i>local</i> copy of the {@code XORShiftRandom} engine.
-	 *
 	 * [code]
 	 * RandomRegistry.setRandom(new XORShiftRandom.ThreadLocal());
 	 * [/code]
@@ -75,17 +68,17 @@ public class XOR64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date$</em>
+	 * @version 1.1 &mdash; <em>$Date: 2014-12-29 $</em>
 	 */
 	public static final class ThreadLocal
 		extends java.lang.ThreadLocal<XOR64ShiftRandom>
 	{
 
-		private final long _seed = random.seed();
+		private final long _seed = math.seed();
 
 		@Override
 		protected XOR64ShiftRandom initialValue() {
-			return new TLXOR64ShiftRandom(random.seed(_seed));
+			return new TLXOR64ShiftRandom(math.seed(_seed));
 		}
 	}
 
@@ -127,7 +120,7 @@ public class XOR64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date$</em>
+	 * @version 1.1 &mdash; <em>$Date: 2014-12-29 $</em>
 	 */
 	public static final class ThreadSafe extends XOR64ShiftRandom {
 		private static final long serialVersionUID = 1L;
@@ -167,7 +160,7 @@ public class XOR64ShiftRandom extends Random64 {
 	 * an seed of {@link System#nanoTime()}.
 	 */
 	public XOR64ShiftRandom() {
-		this(random.seed());
+		this(math.seed());
 	}
 
 	/**

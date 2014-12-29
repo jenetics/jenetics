@@ -19,20 +19,17 @@
  */
 package org.jenetics.random;
 
-import static org.jenetics.internal.util.Equality.eq;
+import static org.jenetics.random.internal.util.Equality.eq;
 
 import java.io.Serializable;
 
-import org.jenetics.internal.math.random;
-import org.jenetics.internal.util.Equality;
-import org.jenetics.internal.util.Hash;
-
-import org.jenetics.util.Random64;
+import org.jenetics.random.internal.util.Equality;
+import org.jenetics.random.internal.util.Hash;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date$</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-12-29 $</em>
  */
 public class MT19937_64Random extends Random64 {
 
@@ -94,7 +91,7 @@ public class MT19937_64Random extends Random64 {
 	 * Return a new random engine with a safe seed value.
 	 */
 	public MT19937_64Random() {
-		this(random.seed());
+		this(math.seed());
 	}
 
 	@Override

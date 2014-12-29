@@ -20,21 +20,18 @@
 package org.jenetics.random;
 
 import static java.lang.String.format;
-import static org.jenetics.internal.util.Equality.eq;
-import static org.jenetix.random.utils.mix;
+import static org.jenetics.random.internal.util.Equality.eq;
+import static org.jenetics.random.utils.mix;
 
 import java.io.Serializable;
 
-import org.jenetics.internal.math.random;
-import org.jenetics.internal.util.Equality;
-import org.jenetics.internal.util.Hash;
-
-import org.jenetics.util.Random64;
+import org.jenetics.random.internal.util.Equality;
+import org.jenetics.random.internal.util.Hash;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date$</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-12-29 $</em>
  */
 public class KISS64Random extends Random64 {
 
@@ -102,7 +99,7 @@ public class KISS64Random extends Random64 {
 	}
 
 	public KISS64Random() {
-		this(random.seed());
+		this(math.seed());
 	}
 
 	@Override

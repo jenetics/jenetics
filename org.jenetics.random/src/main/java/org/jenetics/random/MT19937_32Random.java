@@ -19,15 +19,12 @@
  */
 package org.jenetics.random;
 
-import static org.jenetics.internal.util.Equality.eq;
+import static org.jenetics.random.internal.util.Equality.eq;
 
 import java.io.Serializable;
 
-import org.jenetics.internal.math.random;
-import org.jenetics.internal.util.Equality;
-import org.jenetics.internal.util.Hash;
-
-import org.jenetics.util.Random32;
+import org.jenetics.random.internal.util.Equality;
+import org.jenetics.random.internal.util.Hash;
 
 /**
  * This is a 32-bit version of Mersenne Twister pseudorandom number generator.
@@ -50,7 +47,7 @@ import org.jenetics.util.Random32;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date$</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-12-29 $</em>
  */
 public class MT19937_32Random extends Random32 {
 
@@ -85,14 +82,14 @@ public class MT19937_32Random extends Random32 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since !__version__!
-	 * @version !__version__! &mdash; <em>$Date$</em>
+	 * @version !__version__! &mdash; <em>$Date: 2014-12-29 $</em>
 	 */
 	public static class ThreadLocal
 		extends java.lang.ThreadLocal<MT19937_32Random>
 	{
 		@Override
 		protected synchronized MT19937_32Random initialValue() {
-			return new TLMT19937_32Random(random.seed());
+			return new TLMT19937_32Random(math.seed());
 		}
 	}
 
@@ -123,7 +120,7 @@ public class MT19937_32Random extends Random32 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since !__version__!
-	 * @version !__version__! &mdash; <em>$Date$</em>
+	 * @version !__version__! &mdash; <em>$Date: 2014-12-29 $</em>
 	 */
 	public static class ThreadSafe extends MT19937_32Random {
 		private static final long serialVersionUID = 1L;
@@ -198,7 +195,7 @@ public class MT19937_32Random extends Random32 {
 	 * Return a new random engine with a safe seed value.
 	 */
 	public MT19937_32Random() {
-		this(random.seed());
+		this(math.seed());
 	}
 
 	@Override

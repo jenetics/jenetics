@@ -23,12 +23,10 @@ import java.text.NumberFormat;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-import org.jenetics.util.LCG64ShiftRandom;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date$</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-12-29 $</em>
  */
 public class RandomPerformanceTests {
 
@@ -39,7 +37,6 @@ public class RandomPerformanceTests {
 		test(new Random(), loops);
 		test(ThreadLocalRandom.current(), loops);
 		test(new XORShiftRandom(), loops);
-		test(new LCG64ShiftRandom(), loops);
 	}
 
 	private static void test(final Random random, final int loops) {
