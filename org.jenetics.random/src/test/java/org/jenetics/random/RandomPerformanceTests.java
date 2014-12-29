@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetix.random;
+package org.jenetics.random;
 
 import java.text.NumberFormat;
 import java.util.Random;
@@ -28,7 +28,7 @@ import org.jenetics.util.LCG64ShiftRandom;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-12-29 $</em>
+ * @version !__version__! &mdash; <em>$Date$</em>
  */
 public class RandomPerformanceTests {
 

@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetix.random;
+package org.jenetics.random;
 
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -31,7 +31,7 @@ import org.jenetics.util.TestData;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-12-29 $</em>
+ * @version <em>$Date$</em>
  */
 public class MT19937_64RandomCompatibilityTest {
 

@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetix.random;
+package org.jenetics.random;
 
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -37,7 +37,7 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-12-29 $</em>
+ * @version !__version__! &mdash; <em>$Date$</em>
  */
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.AverageTime)
