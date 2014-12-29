@@ -21,9 +21,9 @@ package org.jenetics.random;
 
 import static java.lang.String.format;
 import static org.jenetics.internal.util.Equality.eq;
-import static org.jenetix.random.utils.highInt;
-import static org.jenetix.random.utils.lowInt;
-import static org.jenetix.random.utils.mix;
+import static org.jenetics.random.utils.highInt;
+import static org.jenetics.random.utils.lowInt;
+import static org.jenetics.random.utils.mix;
 
 import java.io.Serializable;
 
@@ -36,7 +36,7 @@ import org.jenetics.util.Random32;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date$</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-12-29 $</em>
  */
 public class KISS32Random extends Random32 {
 

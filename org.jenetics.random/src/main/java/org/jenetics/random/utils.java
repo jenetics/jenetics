@@ -19,14 +19,12 @@
  */
 package org.jenetics.random;
 
-import org.jenetics.util.StaticObject;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date$</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-12-29 $</em>
  */
-final class utils extends StaticObject {
+final class utils {
 	private utils() {}
 
 	static long mix(final long a) {
