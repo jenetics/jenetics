@@ -74,10 +74,6 @@ public class RandomEnginePerf {
 		random = new LCG64ShiftRandom();
 	}}
 
-	public static class XOR32ShiftRandomPerf extends Base {{
-		random = new XOR32ShiftRandom();
-	}}
-
 	public static class RandomPerf extends Base {{
 		random = new Random();
 	}}

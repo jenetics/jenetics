@@ -24,8 +24,6 @@ import static java.util.Objects.requireNonNull;
 import java.io.Serializable;
 import java.util.Arrays;
 
-import org.jenetics.internal.math.random;
-
 /**
  * Implementation of the XOR shift PRNG.
  *
@@ -34,7 +32,7 @@ import org.jenetics.internal.math.random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date$</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-12-29 $</em>
  */
 public class XOR32ShiftRandom extends Random32 {
 	private static final long serialVersionUID = 1L;
@@ -53,7 +51,7 @@ public class XOR32ShiftRandom extends Random32 {
 	 * [/code]
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version @__version__@ &mdash; <em>$Date$</em>
+	 * @version @__version__@ &mdash; <em>$Date: 2014-12-29 $</em>
 	 * @since @__version__@
 	 */
 	public static final class Param implements Serializable {
@@ -250,7 +248,7 @@ public class XOR32ShiftRandom extends Random32 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date$</em>
+	 * @version 1.1 &mdash; <em>$Date: 2014-12-29 $</em>
 	 */
 	public static class ThreadLocal
 		extends java.lang.ThreadLocal<XOR32ShiftRandom>
@@ -268,7 +266,7 @@ public class XOR32ShiftRandom extends Random32 {
 		 */
 		@Override
 		protected synchronized XOR32ShiftRandom initialValue() {
-			return new XOR32ShiftRandom(random.seed(), nextParam());
+			return new XOR32ShiftRandom(math.seed(), nextParam());
 		}
 
 		private Param nextParam() {
@@ -283,7 +281,7 @@ public class XOR32ShiftRandom extends Random32 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date$</em>
+	 * @version 1.1 &mdash; <em>$Date: 2014-12-29 $</em>
 	 */
 	public static class ThreadSafe extends XOR32ShiftRandom {
 		private static final long serialVersionUID = 1L;
@@ -317,7 +315,7 @@ public class XOR32ShiftRandom extends Random32 {
 		 * @throws NullPointerException if the given {@code param} is null.
 		 */
 		public ThreadSafe(final Param param) {
-			this(random.seed(), param);
+			this(math.seed(), param);
 		}
 
 		/**
@@ -325,7 +323,7 @@ public class XOR32ShiftRandom extends Random32 {
 		 * a safe seed.
 		 */
 		public ThreadSafe() {
-			this(random.seed(), Param.DEFAULT);
+			this(math.seed(), Param.DEFAULT);
 		}
 
 		@Override
@@ -363,11 +361,11 @@ public class XOR32ShiftRandom extends Random32 {
 	}
 
 	public XOR32ShiftRandom(final Param param) {
-		this(random.seed(), Param.DEFAULT);
+		this(math.seed(), Param.DEFAULT);
 	}
 
 	public XOR32ShiftRandom() {
-		this(random.seed(), Param.DEFAULT);
+		this(math.seed(), Param.DEFAULT);
 	}
 
 	private static int toSafeSeed(final int seed) {

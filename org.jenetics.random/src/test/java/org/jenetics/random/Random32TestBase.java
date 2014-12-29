@@ -24,24 +24,22 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.internal.util.bit;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__! &mdash; <em>$Date$</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-12-29 $</em>
  * @since !__version__!
  */
 public abstract class Random32TestBase extends RandomTestBase {
 
-	@Test(dataProvider = "seededPRNGPair")
-	public void sameByteIntValueSequence(final Random rand1, final Random rand2) {
-		final byte[] bytes = new byte[4];
-		for (int i = 0; i < 1234; ++i) {
-			rand1.nextBytes(bytes);
-			bit.reverse(bytes);
-
-			Assert.assertEquals(bit.toInt(bytes), rand2.nextInt());
-		}
-	}
+//	@Test(dataProvider = "seededPRNGPair")
+//	public void sameByteIntValueSequence(final Random rand1, final Random rand2) {
+//		final byte[] bytes = new byte[4];
+//		for (int i = 0; i < 1234; ++i) {
+//			rand1.nextBytes(bytes);
+//			bit.reverse(bytes);
+//
+//			Assert.assertEquals(bit.toInt(bytes), rand2.nextInt());
+//		}
+//	}
 
 }

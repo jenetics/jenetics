@@ -21,18 +21,16 @@ package org.jenetics.random;
 
 import org.testng.annotations.DataProvider;
 
-import org.jenetics.internal.math.random;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__! &mdash; <em>$Date$</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-12-29 $</em>
  * @since !__version__!
  */
 public class XOR32ShiftRandomTest extends RandomTestBase {
 
 	@Override @DataProvider(name = "seededPRNGPair")
 	protected Object[][] getSeededPRNGPair() {
-		final long seed = random.seed();
+		final long seed = math.seed();
 		return new Object[][]{
 			{new XOR32ShiftRandom(seed), new XOR32ShiftRandom(seed)},
 			{new XOR32ShiftRandom.ThreadSafe(seed), new XOR32ShiftRandom.ThreadSafe(seed)}
@@ -41,7 +39,7 @@ public class XOR32ShiftRandomTest extends RandomTestBase {
 
 	@Override @DataProvider(name = "PRNG")
 	protected Object[][] getPRNG() {
-		final long seed = random.seed();
+		final long seed = math.seed();
 		return new Object[][]{
 			{new XOR32ShiftRandom(seed)},
 			{new XOR32ShiftRandom.ThreadSafe(seed)},
