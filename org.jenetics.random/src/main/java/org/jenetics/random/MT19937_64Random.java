@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetix.random;
+package org.jenetics.random;
 
 import static org.jenetics.internal.util.Equality.eq;
 
@@ -32,7 +32,7 @@ import org.jenetics.util.Random64;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-12-29 $</em>
+ * @version !__version__! &mdash; <em>$Date$</em>
  */
 public class MT19937_64Random extends Random64 {
 
