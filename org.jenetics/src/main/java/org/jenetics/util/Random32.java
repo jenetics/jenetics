@@ -27,8 +27,8 @@ import org.jenetics.internal.math.random;
  * Base class for random generators which create 32 bit random values natively.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since @__version__@
- * @version @__version__@ &mdash; <em>$Date: 2014-01-23 $</em>
+ * @since !__version__!
+ * @version !__version__! &mdash; <em>$Date: 2014-12-29 $</em>
  */
 public abstract class Random32 extends PRNG {
 
@@ -39,7 +39,7 @@ public abstract class Random32 extends PRNG {
 	}
 
 	protected Random32() {
-		this(math.random.seed());
+		this(random.seed());
 	}
 
 	/**

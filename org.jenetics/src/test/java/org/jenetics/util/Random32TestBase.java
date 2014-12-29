@@ -24,10 +24,12 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import org.jenetics.internal.util.bit;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-01-20 $</em>
- * @since @__version__@
+ * @version !__version__! &mdash; <em>$Date: 2014-12-29 $</em>
+ * @since !__version__!
  */
 public abstract class Random32TestBase extends RandomTestBase {
 
