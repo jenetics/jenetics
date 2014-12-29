@@ -17,23 +17,13 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.util.Random;
-
-import org.testng.Assert;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-
-import org.jenetics.util.XOR32ShiftRandom.Param;
+package org.jenetics.random;
 
 /**
  * TODO: Fix tests
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__! &mdash; <em>$Date: 2014-12-29 $</em>
+ * @version !__version__! &mdash; <em>$Date$</em>
  * @since !__version__!
  */
 public class XOR32ShiftRandomCompatibilityTest {

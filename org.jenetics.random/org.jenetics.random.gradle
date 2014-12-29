@@ -17,36 +17,45 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
-
-import org.testng.annotations.DataProvider;
-
-import org.jenetics.internal.math.random;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__! &mdash; <em>$Date: 2014-12-29 $</em>
  * @since !__version__!
+ * @version !__version__! &mdash; <em>$Date: 2014-12-29 $</em>
  */
-public class XOR32ShiftRandomTest extends RandomTestBase {
 
-	@Override @DataProvider(name = "seededPRNGPair")
-	protected Object[][] getSeededPRNGPair() {
-		final long seed = random.seed();
-		return new Object[][]{
-			{new XOR32ShiftRandom(seed), new XOR32ShiftRandom(seed)},
-			{new XOR32ShiftRandom.ThreadSafe(seed), new XOR32ShiftRandom.ThreadSafe(seed)}
-		};
-	}
+plugins {
+    id "me.champeau.gradle.jmh" version "0.1.2"
+}
 
-	@Override @DataProvider(name = "PRNG")
-	protected Object[][] getPRNG() {
-		final long seed = random.seed();
-		return new Object[][]{
-			{new XOR32ShiftRandom(seed)},
-			{new XOR32ShiftRandom.ThreadSafe(seed)},
-			{new XOR32ShiftRandom.ThreadLocal().get()}
-		};
-	}
+apply plugin: 'packaging'
+apply plugin: 'nexus'
 
+dependencies {
+	testCompile Include.Apache.Commons.Math
+	testCompile Include.TestNG
+
+    jmh Include.JMH.Core
+    jmh Include.JMH.Processor
+    jmh files('build/classes/main')
+}
+
+jmhJar {
+    appendix = 'jmh'
+}
+
+jar.manifest.instruction('Export-Package',
+	'org.jenetics.random'
+)
+
+packaging {
+	name = 'Jenetix'
+	author = 'Franz Wilhelmstötter'
+	url = 'http://jenetics.sourceforge.net'
+}
+
+idea {
+    module{
+        scopes.COMPILE.plus += [configurations.jmh]
+    }
 }

@@ -17,24 +17,31 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
+package org.jenetics.random;
+
+import java.util.Random;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import org.jenetics.internal.util.bit;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.2
- * @version 1.4 &mdash; <em>$Date: 2014-12-29 $</em>
+ * @version !__version__! &mdash; <em>$Date$</em>
+ * @since !__version__!
  */
- 
-// The Jenetics projects.
-include 'org.jenetics'
-include 'org.jenetics.doc'
-include 'org.jenetics.example'
-include 'org.jenetics.random'
+public abstract class Random32TestBase extends RandomTestBase {
 
-rootProject.name = 'jenetics'
+	@Test(dataProvider = "seededPRNGPair")
+	public void sameByteIntValueSequence(final Random rand1, final Random rand2) {
+		final byte[] bytes = new byte[4];
+		for (int i = 0; i < 1234; ++i) {
+			rand1.nextBytes(bytes);
+			bit.reverse(bytes);
 
-// Rename the build scripts of the projects to ${project.name}.gradle
-rootProject.children.each {
-	it.buildFileName = it.name + '.gradle'
+			Assert.assertEquals(bit.toInt(bytes), rand2.nextInt());
+		}
+	}
+
 }
-
-

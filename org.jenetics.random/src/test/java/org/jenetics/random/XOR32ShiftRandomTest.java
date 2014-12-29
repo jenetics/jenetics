@@ -17,31 +17,36 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package org.jenetics.random;
 
-import java.util.Random;
+import org.testng.annotations.DataProvider;
 
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
-import org.jenetics.internal.util.bit;
+import org.jenetics.internal.math.random;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__! &mdash; <em>$Date: 2014-12-29 $</em>
+ * @version !__version__! &mdash; <em>$Date$</em>
  * @since !__version__!
  */
-public abstract class Random32TestBase extends RandomTestBase {
+public class XOR32ShiftRandomTest extends RandomTestBase {
 
-	@Test(dataProvider = "seededPRNGPair")
-	public void sameByteIntValueSequence(final Random rand1, final Random rand2) {
-		final byte[] bytes = new byte[4];
-		for (int i = 0; i < 1234; ++i) {
-			rand1.nextBytes(bytes);
-			bit.reverse(bytes);
+	@Override @DataProvider(name = "seededPRNGPair")
+	protected Object[][] getSeededPRNGPair() {
+		final long seed = random.seed();
+		return new Object[][]{
+			{new XOR32ShiftRandom(seed), new XOR32ShiftRandom(seed)},
+			{new XOR32ShiftRandom.ThreadSafe(seed), new XOR32ShiftRandom.ThreadSafe(seed)}
+		};
+	}
 
-			Assert.assertEquals(bit.toInt(bytes), rand2.nextInt());
-		}
+	@Override @DataProvider(name = "PRNG")
+	protected Object[][] getPRNG() {
+		final long seed = random.seed();
+		return new Object[][]{
+			{new XOR32ShiftRandom(seed)},
+			{new XOR32ShiftRandom.ThreadSafe(seed)},
+			{new XOR32ShiftRandom.ThreadLocal().get()}
+		};
 	}
 
 }
