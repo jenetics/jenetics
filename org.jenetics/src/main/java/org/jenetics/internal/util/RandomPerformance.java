@@ -17,29 +17,31 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util.performance;
+package org.jenetics.internal.util;
 
 import java.text.NumberFormat;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.jenetics.util.LCG64ShiftRandom;
-//import org.jenetics.util.XORShiftRandom;
+import org.jenetics.util.XOR32ShiftRandom;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-01 $</em>
+ * @version <em>$Date: 2014-01-09 $</em>
  */
-public class RandomPerformanceTests {
+public class RandomPerformance {
 
 
 	public static void main(final String[] args) {
-		final int loops = Integer.MAX_VALUE;//1_000_000_000;
+		final int loops = Integer.MAX_VALUE;//100_000_000;
 
-		test(new Random(), loops);
-		test(ThreadLocalRandom.current(), loops);
-		//test(new XORShiftRandom(), loops);
-		test(new LCG64ShiftRandom(), loops);
+		for (int i = 0; i < 1; ++i) {
+			test(new Random(), loops);
+			test(new XOR32ShiftRandom(), loops);
+			test(new LCG64ShiftRandom(), loops);
+			test(ThreadLocalRandom.current(), loops);
+		}
 	}
 
 	private static void test(final Random random, final int loops) {
@@ -54,51 +56,52 @@ public class RandomPerformanceTests {
 	}
 
 	private static String testNextInt(final Random random, final int loops) {
-		long start = System.nanoTime();
+		long start = System.currentTimeMillis();
 		for (int i = loops; --i >= 0;) {
 			random.nextInt();
 		}
-		long end = System.nanoTime();
+		long end = System.currentTimeMillis();
 
 		final NumberFormat format = NumberFormat.getIntegerInstance();
 		return String.format("%11s i/sec", format.format(perSec(loops, start, end)));
 	}
 
 	private static String testNextLong(final Random random, final int loops) {
-		long start = System.nanoTime();
+		long start = System.currentTimeMillis();
 		for (int i = loops; --i >= 0;) {
 			random.nextLong();
 		}
-		long end = System.nanoTime();
+		long end = System.currentTimeMillis();
 
 		final NumberFormat format = NumberFormat.getIntegerInstance();
 		return String.format("%11s l/sec", format.format(perSec(loops, start, end)));
 	}
 
 	private static String testNextFloat(final Random random, final int loops) {
-		long start = System.nanoTime();
+		long start = System.currentTimeMillis();
 		for (int i = loops; --i >= 0;) {
 			random.nextFloat();
 		}
-		long end = System.nanoTime();
+		long end = System.currentTimeMillis();
 
 		final NumberFormat format = NumberFormat.getIntegerInstance();
 		return String.format("%11s f/sec", format.format(perSec(loops, start, end)));
 	}
 
 	private static String testNextDouble(final Random random, final int loops) {
-		long start = System.nanoTime();
+		long start = System.currentTimeMillis();
 		for (int i = loops; --i >= 0;) {
 			random.nextDouble();
 		}
-		long end = System.nanoTime();
+		long end = System.currentTimeMillis();
 
 		final NumberFormat format = NumberFormat.getIntegerInstance();
 		return String.format("%11s d/sec", format.format(perSec(loops, start, end)));
 	}
 
 	private static long perSec(final long loops, final long start, final long end) {
-		final double seconds = (end - start)/1_000_000_000.0;
+		//final double seconds = (end - start)/1_000_000_000.0;
+		final double seconds = (end - start)/1_000.0;
 		return (long)(loops/seconds);
 	}
 

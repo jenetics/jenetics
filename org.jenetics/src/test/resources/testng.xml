@@ -20,7 +20,7 @@
  # Author:
  #    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  #
- # Version: <em>$Date: 2014-12-02 $</em>
+ # Version: <em>$Date: 2014-12-28 $</em>
  #
  ###############################################################################
 -->
@@ -322,9 +322,11 @@
 	</test>
 	<test name="org.jenetics.util.Random">
 		<classes>
+            <class name="org.jenetics.util.PRNGTest" />
 			<class name="org.jenetics.util.LCG64ShiftRandomTest" />
 			<class name="org.jenetics.util.LCG64ShiftRandomCompatibilityTest" />
-			<class name="org.jenetics.util.PRNGTest" />
+            <class name="org.jenetics.util.XOR32ShiftRandomTest" />
+            <class name="org.jenetics.util.XOR32ShiftRandomCompatibilityTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.util.RandomIndexStream">

@@ -41,7 +41,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-10 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2014-12-29 $</em>
  */
 public final class bit {
 	private bit() {require.noInstance();}
@@ -531,6 +531,14 @@ public final class bit {
 	 */
 	public static int toByteLength(final int bitLength) {
 		return (bitLength & 7) == 0 ? (bitLength >>> 3) : (bitLength >>> 3) + 1;
+	}
+
+	public static int toInt(final byte[] data) {
+		return
+			(data[0] << 24) +
+			(data[1] << 16) +
+			(data[2] << 8) +
+			(data[3]);
 	}
 
 	public static long toLong(final byte[] data) {

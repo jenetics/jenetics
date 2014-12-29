@@ -25,9 +25,9 @@ import org.jenetics.internal.math.random;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-01 $</em>
+ * @version <em>$Date: 2014-12-28 $</em>
  */
-public class LCG64ShiftRandomTest extends RandomTestBase {
+public class LCG64ShiftRandomTest extends Random64TestBase {
 
 	@Override @DataProvider(name = "seededPRNGPair")
 	protected Object[][] getSeededPRNGPair() {
