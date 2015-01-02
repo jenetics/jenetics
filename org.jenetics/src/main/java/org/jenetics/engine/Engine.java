@@ -109,7 +109,7 @@ import org.jenetics.util.Factory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-12-28 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2015-01-02 $</em>
  */
 public final class Engine<
 	G extends Gene<?, G>,
@@ -649,6 +649,26 @@ public final class Engine<
 		return _optimize;
 	}
 
+	/**
+	 * Return the {@link Clock} the engine is using for measuring the execution
+	 * time.
+	 *
+	 * @return the clock used for measuring the execution time
+	 */
+	public Clock getClock() {
+		return _clock;
+	}
+
+	/**
+	 * Return the {@link Executor} the engine is using for executing the
+	 * evolution steps.
+	 *
+	 * @return the executor used for performing the evolution steps
+	 */
+	public Executor getExecutor() {
+		return _executor.get();
+	}
+
 
 	/* *************************************************************************
 	 * Builder methods.
@@ -734,7 +754,7 @@ public final class Engine<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 3.0
-	 * @version 3.0 &mdash; <em>$Date: 2014-12-28 $</em>
+	 * @version 3.0 &mdash; <em>$Date: 2015-01-02 $</em>
 	 */
 	public static final class Builder<
 		G extends Gene<?, G>,
