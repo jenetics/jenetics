@@ -17,14 +17,16 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.random.internal.util;
+package org.jenetics.internal.util;
 
 import java.util.Arrays;
 
+import org.jenetics.util.Seq;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-12-29 $</em>
+ * @since 1.0
+ * @version 3.0 &mdash; <em>$Date$</em>
  */
 final class DefaultHashCodeBuilder implements Hash {
 	private static final int P1 = 47;
@@ -127,6 +129,11 @@ final class DefaultHashCodeBuilder implements Hash {
 	@Override
 	public DefaultHashCodeBuilder and(final Object[] values) {
 		_hash += Arrays.hashCode(values); return this;
+	}
+
+	@Override
+	public DefaultHashCodeBuilder and(final Seq<?> values) {
+		_hash += Seq.hashCode(values); return this;
 	}
 
 	@Override

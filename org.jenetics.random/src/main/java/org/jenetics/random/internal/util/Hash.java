@@ -17,14 +17,16 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.random.internal.util;
+package org.jenetics.internal.util;
+
+import org.jenetics.util.Seq;
 
 /**
  * Interface for calculating the object hash value.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-12-29 $</em>
+ * @since 1.6
+ * @version 3.0 &mdash; <em>$Date$</em>
  */
 public interface Hash {
 
@@ -171,6 +173,14 @@ public interface Hash {
 	 * @return {@code this}
 	 */
 	public Hash and(final Object[] values);
+
+	/**
+	 * Add hash code for a {@code Seq}.
+	 *
+	 * @param values the value to add to the hash code.
+	 * @return {@code this}
+	 */
+	public Hash and(final Seq<?> values);
 
 	/**
 	 * Return the calculated hash value.

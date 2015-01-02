@@ -17,21 +17,23 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.random.internal.util;
+package org.jenetics.internal.util;
 
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Predicate;
 
+import org.jenetics.util.Seq;
+
 /**
  * Helper object for calculating object equality.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-12-29 $</em>
+ * @since 3.0
+ * @version 3.0 &mdash; <em>$Date$</em>
  */
 public final class Equality {
-	private Equality() {}
+	private Equality() {require.noInstance();}
 
 	/**
 	 * Create a new {@code Equality} object for testing object equality.
@@ -296,4 +298,15 @@ public final class Equality {
 		return Arrays.equals(a, b);
 	}
 
+	/**
+	 * Compares the two given {@code Seq} values.
+	 *
+	 * @param a first value to compare.
+	 * @param b second value to compare.
+	 * @return {@code true} if the given values are equal, {@code false}
+	 *          otherwise.
+	 */
+	public static boolean eq(final Seq<?> a, final Seq<?> b) {
+		return Seq.equals(a, b);
+	}
 }
