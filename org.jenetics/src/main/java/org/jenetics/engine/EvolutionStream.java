@@ -71,7 +71,9 @@ public interface EvolutionStream<
 
 	/**
 	 * Create a new {@code EvolutionStream} from the given {@code start}
-	 * population and {@code evolution} function.
+	 * population and {@code evolution} function. The main purpose of this
+	 * factory method is to simplify the creation of an {@code EvolutionStream}
+	 * from an own evolution (GA) engine.
 	 *
 	 * @param <G> the gene type
 	 * @param <C> the fitness type

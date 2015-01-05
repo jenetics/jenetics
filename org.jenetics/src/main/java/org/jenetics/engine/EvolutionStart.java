@@ -33,6 +33,8 @@ import org.jenetics.Population;
 /**
  * Represents a state of the GA at the start of an evolution step.
  *
+ * @see EvolutionResult
+ *
  * @param <G> the gene type
  * @param <C> the fitness type
  *
