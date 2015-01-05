@@ -28,11 +28,12 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import org.jenetics.Gene;
+import org.jenetics.Phenotype;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-23 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2015-01-05 $</em>
  */
 final class EvolutionSpliterator<
 	G extends Gene<?, G>,
@@ -41,15 +42,15 @@ final class EvolutionSpliterator<
 	implements Spliterator<EvolutionResult<G, C>>
 {
 
-	private final Function<EvolutionStart<G, C>, EvolutionResult<G, C>> _evolution;
 	private final Supplier<EvolutionStart<G, C>> _initial;
+	private final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> _evolution;
 	private final Predicate<? super EvolutionResult<G, C>> _proceed;
 
 	private EvolutionStart<G, C> _start;
 
 	EvolutionSpliterator(
-		final Function<EvolutionStart<G, C>, EvolutionResult<G, C>> evolution,
 		final Supplier<EvolutionStart<G, C>> initial,
+		final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> evolution,
 		final Predicate<? super EvolutionResult<G, C>> proceed
 	) {
 		_evolution = requireNonNull(evolution);
@@ -63,6 +64,7 @@ final class EvolutionSpliterator<
 	) {
 		if (_start == null) {
 			_start = _initial.get();
+			_start.getPopulation().forEach(Phenotype::evaluate);
 		}
 
 		final EvolutionResult<G, C> result = _evolution.apply(_start);

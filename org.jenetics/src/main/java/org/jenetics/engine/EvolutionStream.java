@@ -19,7 +19,9 @@
  */
 package org.jenetics.engine;
 
+import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import org.jenetics.Gene;
@@ -33,7 +35,7 @@ import org.jenetics.Gene;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-22 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2015-01-05 $</em>
  */
 public interface EvolutionStream<
 	G extends Gene<?, G>,
@@ -66,5 +68,26 @@ public interface EvolutionStream<
 	 */
 	public EvolutionStream<G, C>
 	limit(final Predicate<? super EvolutionResult<G, C>> proceed);
+
+	/**
+	 * Create a new {@code EvolutionStream} from the given {@code start}
+	 * population and {@code evolution} function.
+	 *
+	 * @param <G> the gene type
+	 * @param <C> the fitness type
+	 * @param start the evolution start
+	 * @param evolution the evolution function
+	 * @return a new {@code EvolutionStream} with the given {@code start} and
+	 *         {@code evolution} function
+	 * @throws java.lang.NullPointerException if one of the arguments is
+	 *         {@code null}
+	 */
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	EvolutionStream<G, C> of(
+		final Supplier<EvolutionStart<G, C>> start,
+		final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> evolution
+	) {
+		return new EvolutionStreamImpl<>(start, evolution);
+	}
 
 }

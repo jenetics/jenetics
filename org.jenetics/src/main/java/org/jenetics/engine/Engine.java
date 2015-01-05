@@ -186,9 +186,11 @@ public final class Engine<
 	/**
 	 * Perform one evolution step with the given {@code population} and
 	 * {@code generation}. New phenotypes are created with the fitness function
-	 * and fitness scaler defined by this <em>engine</em>.
-     * <p>
-     * <em>This method is thread-safe.</em>
+	 * and fitness scaler defined by this <em>engine</em>
+	 * <p>
+	 * <em>This method is thread-safe.</em>
+	 *
+	 * @see #evolve(EvolutionStart)
 	 *
 	 * @param population the population to evolve
 	 * @param generation the current generation; used for calculating the
@@ -196,6 +198,8 @@ public final class Engine<
 	 * @return the evolution result
 	 * @throws java.lang.NullPointerException if the given {@code population} is
 	 *         {@code null}
+	 * @throws IllegalArgumentException if the given {@code generation} is
+	 *         smaller then one
 	 */
 	public EvolutionResult<G, C> evolve(
 		final Population<G, C> population,
@@ -205,12 +209,20 @@ public final class Engine<
 	}
 
 	/**
-	 * Performs one generation step.
+	 * Perform one evolution step with the given evolution {@code start} object
+	 * New phenotypes are created with the fitness function and fitness scaler
+	 * defined by this <em>engine</em>
+	 * <p>
+	 * <em>This method is thread-safe.</em>
 	 *
-	 * @param start the evolution start state
-	 * @return the resulting evolution state
+	 * @see #evolve(org.jenetics.Population, long)
+	 *
+	 * @param start the evolution start object
+	 * @return the evolution result
+	 * @throws java.lang.NullPointerException if the given evolution
+	 *         {@code start} is {@code null}
 	 */
-	EvolutionResult<G, C> evolve(final EvolutionStart<G, C> start) {
+	public EvolutionResult<G, C> evolve(final EvolutionStart<G, C> start) {
 		final Timer timer = Timer.of().start();
 
 		// Select the offspring population.
@@ -375,10 +387,7 @@ public final class Engine<
 	 * @return a new evolution stream.
 	 */
 	public EvolutionStream<G, C> stream() {
-		return new EvolutionStreamImpl<>(
-			this::evolve,
-			this::evolutionStart
-		);
+		return EvolutionStream.of(this::evolutionStart, this::evolve);
 	}
 
 	private EvolutionStart<G, C> evolutionStart() {
@@ -409,9 +418,9 @@ public final class Engine<
 	) {
 		requireNonNull(genotypes);
 
-		return new EvolutionStreamImpl<>(
-			this::evolve,
-			() -> evolutionStart(genotypes, 1)
+		return EvolutionStream.of(
+			() -> evolutionStart(genotypes, 1),
+			this::evolve
 		);
 	}
 
@@ -484,8 +493,7 @@ public final class Engine<
 		require.positive(generation);
 
 		return new EvolutionStreamImpl<>(
-			this::evolve,
-			() -> evolutionStart(population, generation)
+			() -> evolutionStart(population, generation), this::evolve
 		);
 	}
 

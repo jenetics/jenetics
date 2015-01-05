@@ -25,6 +25,7 @@ import static org.jenetics.internal.util.Equality.eq;
 
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
+import org.jenetics.internal.util.require;
 
 import org.jenetics.Gene;
 import org.jenetics.Population;
@@ -53,7 +54,7 @@ public final class EvolutionStart<
 		final long generation
 	) {
 		_population = requireNonNull(population);
-		_generation = generation;
+		_generation = require.positive(generation);
 	}
 
 	/**
@@ -92,14 +93,30 @@ public final class EvolutionStart<
 	@Override
 	public String toString() {
 		return format(
-			"EvolutionStart[population-size=%d, generation=%d",
+			"EvolutionStart[population-size=%d, generation=%d]",
 			_population.size(), _generation
 		);
 	}
 
+	/**
+	 * Create a new evolution start object with the given population and for the
+	 * given generation.
+	 *
+	 * @param <G> the gene type
+	 * @param <C> the fitness type
+	 * @param population the start population.
+	 * @param generation the start generation of the population
+	 * @return a new evolution start object
+	 * @throws java.lang.NullPointerException if the given {@code population} is
+	 *         {@code null}.
+	 * @throws IllegalArgumentException if the given {@code generation} is
+	 *         smaller then one
+	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	EvolutionStart<G, C>
-	of(final Population<G, C> population, final long generation) {
+	EvolutionStart<G, C> of(
+		final Population<G, C> population,
+		final long generation
+	) {
 		return new EvolutionStart<>(population, generation);
 	}
 
