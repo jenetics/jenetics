@@ -109,7 +109,7 @@ import org.jenetics.util.Factory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-12-28 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2015-01-05 $</em>
  */
 public final class Engine<
 	G extends Gene<?, G>,
@@ -216,35 +216,35 @@ public final class Engine<
 		// Select the offspring population.
 		final CompletableFuture<TimedResult<Population<G, C>>> offspring =
 			_executor.async(() ->
-				selectOffspring(start.population),
+				selectOffspring(start.getPopulation()),
 				_clock
 			);
 
 		// Select the survivor population.
 		final CompletableFuture<TimedResult<Population<G, C>>> survivors =
 			_executor.async(() ->
-				selectSurvivors(start.population),
+				selectSurvivors(start.getPopulation()),
 				_clock
 			);
 
 		// Altering the offspring population.
 		final CompletableFuture<TimedResult<AlterResult<G, C>>> alteredOffspring =
 			_executor.thenApply(offspring, p ->
-				alter(p.result, start.generation),
+				alter(p.result, start.getGeneration()),
 				_clock
 			);
 
 		// Filter and replace invalid and to old survivor individuals.
 		final CompletableFuture<TimedResult<FilterResult<G, C>>> filteredSurvivors =
 			_executor.thenApply(survivors, pop ->
-				filter(pop.result, start.generation),
+				filter(pop.result, start.getGeneration()),
 				_clock
 			);
 
 		// Filter and replace invalid and to old offspring individuals.
 		final CompletableFuture<TimedResult<FilterResult<G, C>>> filteredOffspring =
 			_executor.thenApply(alteredOffspring, pop ->
-				filter(pop.result.population, start.generation),
+				filter(pop.result.population, start.getGeneration()),
 				_clock
 			);
 
@@ -284,7 +284,7 @@ public final class Engine<
 		return EvolutionResult.of(
 			_optimize,
 			result.result,
-			start.generation,
+			start.getGeneration(),
 			durations,
 			killCount,
 			invalidCount,
@@ -734,7 +734,7 @@ public final class Engine<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 3.0
-	 * @version 3.0 &mdash; <em>$Date: 2014-12-28 $</em>
+	 * @version 3.0 &mdash; <em>$Date: 2015-01-05 $</em>
 	 */
 	public static final class Builder<
 		G extends Gene<?, G>,
