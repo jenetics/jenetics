@@ -1,15 +1,6 @@
 # Jenetics (_3.0.0_)
 
-**Jenetics** is an **Genetic Algorithm**, respectively an **Evolutionary
-Algorithm**, library written in Java. It is designed with a
-clear separation of the several concepts of the algorithm,
-e.g. `Gene`, `Chromosome`, `Genotype`, `Phenotype`, `Population` and
-fitness `Function`. **Jenetics** allows you to minimize
-and maximize the given fitness function without tweaking it. In contrast
-to other GA implementations, the library uses the concept of an
-evolution stream (`EvolutionStream`) for executing the evolution steps.
-Since the `EvolutionStream` implements the Java Stream interface,
-it works smoothly with the rest of the Java Stream API.
+**Jenetics** is an **Genetic Algorithm**, respectively an **Evolutionary Algorithm**, library written in Java. It is designed with a clear separation of the several concepts of the algorithm,e.g. `Gene`, `Chromosome`, `Genotype`, `Phenotype`, `Population` and fitness `Function`. **Jenetics** allows you to minimize and maximize the given fitness function without tweaking it. In contrast to other GA implementations, the library uses the concept of an evolution stream (`EvolutionStream`) for executing the evolution steps. Since the `EvolutionStream` implements the Java Stream interface, it works smoothly with the rest of the Java Stream API.
 
 ## Requirements
 
@@ -75,11 +66,7 @@ for creating the project files for Eclipse or IntelliJ, respectively.
 
 ## Example
 
-The minimum evolution Engine setup needs a genotype factory,
-`Factory<Genotype<?>>`, and a fitness `Function`. The `Genotype` implements the
-`Factory` interface and can therefore be used
-as prototype for creating the initial `Population` and for creating
-new random `Genotypes`.
+The minimum evolution Engine setup needs a genotype factory, `Factory<Genotype<?>>`, and a fitness `Function`. The `Genotype` implements the `Factory` interface and can therefore be used as prototype for creating the initial `Population` and for creating new random `Genotypes`.
 
 	import org.jenetics.BitChromosome;
 	import org.jenetics.BitGene;
@@ -114,12 +101,7 @@ new random `Genotypes`.
 		}
 	}
 
-In contrast to other GA implementations, the library uses
-the concept of an evolution stream (`EvolutionStream`) for
-executing the evolution steps. Since the `EvolutionStream`
-implements the Java Stream interface, it works smoothly with
-the rest of the Java streaming API. Now let's have a closer
-look at listing above and discuss this simple program step by step:
+In contrast to other GA implementations, the library uses the concept of an evolution stream (`EvolutionStream`) for executing the evolution steps. Since the `EvolutionStream` implements the Java Stream interface, it works smoothly with the rest of the Java streaming API. Now let's have a closer look at listing above and discuss this simple program step by step:
 
 1. The probably most challenging part, when setting up a new evolution `Engine`, is to transform the problem domain into a appropriate `Genotype` (factory) representation. In our example we want to count the number of ones of a `BitChromosome`. Since we are counting only the ones of one chromosome, we are adding only one `BitChromosome` to our `Genotype`. In general, the `Genotype` can be created with 1 to n chromosomes.
 
