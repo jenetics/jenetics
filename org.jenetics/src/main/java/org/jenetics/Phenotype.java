@@ -134,10 +134,8 @@ public final class Phenotype<
 
 	private synchronized void eval() {
 		if (!_evaluated) {
-			_rawFitness = _rawFitness == null ?
-				_function.apply(_genotype) : _rawFitness;
-			_fitness = _fitness == null ?
-				_scaler.apply(_rawFitness): _fitness;
+			if (_rawFitness == null) _function.apply(_genotype);
+			if (_fitness == null) _scaler.apply(_rawFitness);
 			_evaluated = true;
 		}
 	}
