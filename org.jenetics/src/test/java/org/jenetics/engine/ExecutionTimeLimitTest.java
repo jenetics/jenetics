@@ -25,8 +25,6 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -60,7 +58,7 @@ public class ExecutionTimeLimitTest {
 		final Duration duration = Duration.ofMillis(millis);
 
 		final AtomicInteger count = new AtomicInteger();
-		stream().limit(new ExecutionTimeLimit(duration, clock))
+		stream().limit(limit.byExecutionTime(duration, clock))
 			.forEach(s -> count.incrementAndGet());
 
 		Assert.assertEquals(count.get(), Math.max(millis.intValue(), 1));
