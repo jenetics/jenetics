@@ -109,7 +109,8 @@ public final class limit {
 	 * @param duration the duration after the evolution stream will be truncated
 	 * @return a predicate, which will truncate the evolution stream, based on
 	 *         the exceeded execution time
-	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws NullPointerException if the evolution {@code duration} is
+	 *         {@code null}
 	 */
 	public static Predicate<Object>
 	byExecutionTime(final Duration duration) {
