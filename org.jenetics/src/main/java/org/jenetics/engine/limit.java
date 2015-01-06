@@ -19,8 +19,11 @@
  */
 package org.jenetics.engine;
 
+import java.time.Clock;
+import java.time.Duration;
 import java.util.function.Predicate;
 
+import org.jenetics.internal.util.NanoClock;
 import org.jenetics.internal.util.require;
 
 /**
@@ -31,7 +34,7 @@ import org.jenetics.internal.util.require;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-22 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2015-01-06 $</em>
  */
 public final class limit {
 	private limit() {require.noInstance();}
@@ -62,6 +65,55 @@ public final class limit {
 	public static <C extends Comparable<? super C>>
 	Predicate<EvolutionResult<?, C>> bySteadyFitness(final int generations) {
 		return new SteadyFitnessLimit<>(generations);
+	}
+
+	/**
+	 * Return a predicate, which will truncate the evolution stream if the GA
+	 * execution exceeds a given time duration. This predicate is (normally)
+	 * used as safety net, for guaranteed stream truncation.
+	 *
+	 * [code]
+	 * final Phenotype&lt;DoubleGene, Double&gt; result = engine.stream()
+	 *      // Truncate the evolution stream after 5 "steady" generations.
+	 *     .limit(bySteadyFitness(5))
+	 *      // The evolution will stop after maximal 500 ms.
+	 *     .limit(byExecutionTime(Duration.ofMillis(500), Clock.systemUTC())
+	 *     .collect(toBestPhenotype());
+	 * [/code]
+	 *
+	 * @param duration the duration after the evolution stream will be truncated
+	 * @param clock the clock used for measure the execution time
+	 * @return a predicate, which will truncate the evolution stream, based on
+	 *         the exceeded execution time
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static Predicate<EvolutionResult<?, ?>>
+	byExecutionTime(final Duration duration, final Clock clock) {
+		return new ExecutionTimeLimit(duration, clock);
+	}
+
+	/**
+	 * Return a predicate, which will truncate the evolution stream if the GA
+	 * execution exceeds a given time duration. This predicate is (normally)
+	 * used as safety net, for guaranteed stream truncation.
+	 *
+	 * [code]
+	 * final Phenotype&lt;DoubleGene, Double&gt; result = engine.stream()
+	 *      // Truncate the evolution stream after 5 "steady" generations.
+	 *     .limit(bySteadyFitness(5))
+	 *      // The evolution will stop after maximal 500 ms.
+	 *     .limit(byExecutionTime(Duration.ofMillis(500))
+	 *     .collect(toBestPhenotype());
+	 * [/code]
+	 *
+	 * @param duration the duration after the evolution stream will be truncated
+	 * @return a predicate, which will truncate the evolution stream, based on
+	 *         the exceeded execution time
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static Predicate<EvolutionResult<?, ?>>
+	byExecutionTime(final Duration duration) {
+		return new ExecutionTimeLimit(duration, NanoClock.INSTANCE);
 	}
 
 }
