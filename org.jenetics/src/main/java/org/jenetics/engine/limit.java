@@ -87,7 +87,7 @@ public final class limit {
 	 *         the exceeded execution time
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static Predicate<EvolutionResult<?, ?>>
+	public static Predicate<Object>
 	byExecutionTime(final Duration duration, final Clock clock) {
 		return new ExecutionTimeLimit(duration, clock);
 	}
@@ -111,7 +111,7 @@ public final class limit {
 	 *         the exceeded execution time
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static Predicate<EvolutionResult<?, ?>>
+	public static Predicate<Object>
 	byExecutionTime(final Duration duration) {
 		return new ExecutionTimeLimit(duration, NanoClock.INSTANCE);
 	}

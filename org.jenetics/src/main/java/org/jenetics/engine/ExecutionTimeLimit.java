@@ -31,7 +31,7 @@ import java.util.function.Predicate;
  * @since !__version__!
  * @version !__version__! &mdash; <em>$Date: 2015-01-06 $</em>
  */
-final class ExecutionTimeLimit implements Predicate<EvolutionResult<?, ?>>  {
+final class ExecutionTimeLimit implements Predicate<Object>  {
 
 	private final Duration _duration;
 	private final Clock _clock;
@@ -44,7 +44,7 @@ final class ExecutionTimeLimit implements Predicate<EvolutionResult<?, ?>>  {
 	}
 
 	@Override
-	public boolean test(final EvolutionResult<?, ?> result) {
+	public boolean test(final Object ignore) {
 		if (_start == Instant.MIN) {
 			_start = _clock.instant();
 		}
