@@ -48,7 +48,7 @@ import org.jenetics.stat.MinMax;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2015-01-05 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2015-01-06 $</em>
  */
 public final class EvolutionResult<
 	G extends Gene<?, G>,
@@ -217,7 +217,7 @@ public final class EvolutionResult<
 	 * @return the next evolution start object
 	 */
 	EvolutionStart<G, C> next() {
-		return new EvolutionStart<>(_population, _generation + 1);
+		return EvolutionStart.of(_population, _generation + 1);
 	}
 
 	/**

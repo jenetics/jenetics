@@ -110,7 +110,7 @@ import org.jenetics.util.Factory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2015-01-06 $</em>
+ * @version !__version__! &mdash; <em>$Date: 2015-01-06 $</em>
  */
 public final class Engine<
 	G extends Gene<?, G>,
@@ -216,6 +216,7 @@ public final class Engine<
 	 * <p>
 	 * <em>This method is thread-safe.</em>
 	 *
+	 * @since !__version__!
 	 * @see #evolve(org.jenetics.Population, long)
 	 *
 	 * @param start the evolution start object

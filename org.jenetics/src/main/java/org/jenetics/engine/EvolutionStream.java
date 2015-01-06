@@ -35,7 +35,7 @@ import org.jenetics.Gene;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2015-01-05 $</em>
+ * @version !__version__! &mdash; <em>$Date: 2015-01-06 $</em>
  */
 public interface EvolutionStream<
 	G extends Gene<?, G>,
@@ -74,6 +74,8 @@ public interface EvolutionStream<
 	 * population and {@code evolution} function. The main purpose of this
 	 * factory method is to simplify the creation of an {@code EvolutionStream}
 	 * from an own evolution (GA) engine.
+	 *
+	 * @since !__version__!
 	 *
 	 * @param <G> the gene type
 	 * @param <C> the fitness type
