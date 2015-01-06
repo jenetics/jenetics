@@ -51,7 +51,7 @@ public final class EvolutionStart<
 	private final Population<G, C> _population;
 	private final long _generation;
 
-	EvolutionStart(
+	private EvolutionStart(
 		final Population<G, C> population,
 		final long generation
 	) {
