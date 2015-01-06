@@ -20,7 +20,7 @@
  # Author:
  #    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  #
- # Version: <em>$Date: 2014-12-02 $</em>
+ # Version: <em>$Date: 2015-01-06 $</em>
  #
  ###############################################################################
 -->
@@ -225,6 +225,11 @@
 	<test name="org.jenetics.engine.EvolutionStreamImpl">
 		<classes>
 			<class name="org.jenetics.engine.EvolutionStreamImplTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.engine.ExecutionTimeLimit">
+		<classes>
+			<class name="org.jenetics.engine.ExecutionTimeLimitTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.stat.Histogram">
