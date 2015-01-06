@@ -206,7 +206,7 @@ public final class Engine<
 		final Population<G, C> population,
 		final long generation
 	) {
-		return evolve(new EvolutionStart<>(population, generation));
+		return evolve(EvolutionStart.of(population, generation));
 	}
 
 	/**
@@ -399,7 +399,7 @@ public final class Engine<
 			.fill(() -> newPhenotype(generation), size);
 		evaluate(population);
 
-		return new EvolutionStart<>(population, generation);
+		return EvolutionStart.of(population, generation);
 	}
 
 	/**
@@ -464,7 +464,7 @@ public final class Engine<
 			.collect(toPopulation());
 		evaluate(population);
 
-		return new EvolutionStart<>(population, generation);
+		return EvolutionStart.of(population, generation);
 	}
 
 	/**
@@ -549,7 +549,7 @@ public final class Engine<
 			.collect(toPopulation());
 		evaluate(pop);
 
-		return new EvolutionStart<>(pop, generation);
+		return EvolutionStart.of(pop, generation);
 	}
 
 
