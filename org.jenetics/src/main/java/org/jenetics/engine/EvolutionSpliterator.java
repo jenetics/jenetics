@@ -28,12 +28,11 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import org.jenetics.Gene;
-import org.jenetics.Phenotype;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2015-01-05 $</em>
+ * @version 3.0 &mdash; <em>$Date: 2015-01-06 $</em>
  */
 final class EvolutionSpliterator<
 	G extends Gene<?, G>,
@@ -64,7 +63,6 @@ final class EvolutionSpliterator<
 	) {
 		if (_start == null) {
 			_start = _initial.get();
-			_start.getPopulation().forEach(Phenotype::evaluate);
 		}
 
 		final EvolutionResult<G, C> result = _evolution.apply(_start);
@@ -86,6 +84,6 @@ final class EvolutionSpliterator<
 
 	@Override
 	public int characteristics() {
-		return Spliterator.NONNULL | Spliterator.IMMUTABLE;
+		return NONNULL | IMMUTABLE;
 	}
 }
