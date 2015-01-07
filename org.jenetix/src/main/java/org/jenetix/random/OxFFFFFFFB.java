@@ -19,14 +19,12 @@
  */
 package org.jenetix.random;
 
-import org.jenetics.util.StaticObject;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date$</em>
+ * @version !__version__! &mdash; <em>$Date: 2015-01-07 $</em>
  */
-final class OxFFFFFFFB extends StaticObject {
+final class OxFFFFFFFB {
 	private OxFFFFFFFB() {}
 
 	// Largest prime number smaller than 2^32.

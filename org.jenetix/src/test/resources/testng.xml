@@ -20,14 +20,13 @@
  # Author:
  #    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  #
- # Version: <em>$Date: 2014-07-11 $</em>
+ # Version: <em>$Date: 2015-01-07 $</em>
  #
  ###############################################################################
 -->
 <suite name="Jenetix" verbose="2" parallel="tests" thread-count="5" >
 	<test name="org.jenetix.util.NumberRandom">
 		<classes>
-			<class name="org.jenetix.util.LargeIntegerRandomTest" />
 			<class name="org.jenetix.util.LCG32ShiftRandomTest" />
 		</classes>
 	</test>

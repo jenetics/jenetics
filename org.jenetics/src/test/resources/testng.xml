@@ -20,7 +20,7 @@
  # Author:
  #    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  #
- # Version: <em>$Date: 2014-12-28 $</em>
+ # Version: <em>$Date: 2015-01-07 $</em>
  #
  ###############################################################################
 -->
@@ -342,11 +342,6 @@
 			<class name="org.jenetics.util.SeqTest" />
 			<class name="org.jenetics.util.ISeqTest" />
 			<class name="org.jenetics.util.MSeqTest" />
-		</classes>
-	</test>
-	<test name="org.jenetics.util.StaticObject">
-		<classes>
-			<class name="org.jenetics.util.StaticObjectTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.util.object">
