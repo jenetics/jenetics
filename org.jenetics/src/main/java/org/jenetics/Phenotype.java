@@ -53,7 +53,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version !__version__! &mdash; <em>$Date: 2015-01-06 $</em>
+ * @version !__version__! &mdash; <em>$Date: 2015-01-07 $</em>
  */
 @XmlJavaTypeAdapter(Phenotype.Model.Adapter.class)
 public final class Phenotype<
@@ -134,8 +134,8 @@ public final class Phenotype<
 
 	private synchronized void eval() {
 		if (!_evaluated) {
-			if (_rawFitness == null) _function.apply(_genotype);
-			if (_fitness == null) _scaler.apply(_rawFitness);
+			if (_rawFitness == null) _rawFitness = _function.apply(_genotype);
+			if (_fitness == null) _fitness = _scaler.apply(_rawFitness);
 			_evaluated = true;
 		}
 	}
