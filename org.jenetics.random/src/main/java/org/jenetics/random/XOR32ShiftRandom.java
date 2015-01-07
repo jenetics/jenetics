@@ -32,7 +32,7 @@ import java.util.Arrays;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-12-29 $</em>
+ * @version !__version__! &mdash; <em>$Date: 2015-01-07 $</em>
  */
 public class XOR32ShiftRandom extends Random32 {
 	private static final long serialVersionUID = 1L;
@@ -44,15 +44,15 @@ public class XOR32ShiftRandom extends Random32 {
 	 * [code]
 	 * int y = seed();
 	 * public int nextInt() {
-	 *     y ^= y << a;
-	 *     y ^= y >> b;
-	 *     return y ^= y << c;
+	 *     y ^= y &lt;&lt; a;
+	 *     y ^= y &gt;&gt; b;
+	 *     return y ^= y &lt;&lt; c;
 	 * }
 	 * [/code]
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version @__version__@ &mdash; <em>$Date: 2014-12-29 $</em>
-	 * @since @__version__@
+	 * @version !__version__! &mdash; <em>$Date: 2015-01-07 $</em>
+	 * @since !__version__!
 	 */
 	public static final class Param implements Serializable {
 		private static final long serialVersionUID = 1L;
@@ -248,7 +248,7 @@ public class XOR32ShiftRandom extends Random32 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2014-12-29 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2015-01-07 $</em>
 	 */
 	public static class ThreadLocal
 		extends java.lang.ThreadLocal<XOR32ShiftRandom>
@@ -281,7 +281,7 @@ public class XOR32ShiftRandom extends Random32 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2014-12-29 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2015-01-07 $</em>
 	 */
 	public static class ThreadSafe extends XOR32ShiftRandom {
 		private static final long serialVersionUID = 1L;

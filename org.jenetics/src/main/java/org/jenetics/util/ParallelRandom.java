@@ -21,8 +21,8 @@ package org.jenetics.util;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since @__version__@
- * @version @__version__@ &mdash; <em>$Date: 2014-01-22 $</em>
+ * @since !__version__!
+ * @version !__version__! &mdash; <em>$Date: 2015-01-07 $</em>
  */
 public interface ParallelRandom {
 
@@ -61,49 +61,22 @@ public interface ParallelRandom {
 	 * Duplicate the java.util.Random interface.
 	 */
 
-	/**
-	 * @see java.util.Random#setSeed(long)
-	 */
 	public void setSeed(final long seed);
 
-	/**
-	 * @see java.util.Random#nextBytes(byte[])
-	 */
 	public void nextBytes(final byte[] bytes);
 
-	/**
-	 * @see java.util.Random#nextInt()
-	 */
 	public int nextInt();
 
-	/**
-	 * @see java.util.Random#nextInt(int)
-	 */
 	public int nextInt(int n);
 
-	/**
-	 * @see java.util.Random#nextLong()
-	 */
 	public long nextLong();
 
-	/**
-	 * @see java.util.Random#nextBoolean()
-	 */
 	public boolean nextBoolean();
 
-	/**
-	 * @see java.util.Random#nextFloat()
-	 */
 	public float nextFloat();
 
-	/**
-	 * @see java.util.Random#nextDouble()
-	 */
 	public double nextDouble();
 
-	/**
-	 * @see java.util.Random#nextGaussian()
-	 */
 	public double nextGaussian();
 
 }
