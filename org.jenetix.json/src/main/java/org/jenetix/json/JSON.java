@@ -19,7 +19,7 @@
  */
 package org.jenetix.json;
 
-import static org.jenetics.internal.util.jaxb.CONTEXT;
+import static org.jenetics.internal.util.jaxb.context;
 import static org.jenetics.internal.util.jaxb.adapterFor;
 
 import java.io.BufferedReader;
@@ -43,21 +43,20 @@ import org.codehaus.jettison.mapped.MappedXMLStreamReader;
 import org.codehaus.jettison.mapped.MappedXMLStreamWriter;
 
 import org.jenetics.util.IO;
-import org.jenetics.util.StaticObject;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-02-15 $</em>
- * @since @__version__@
+ * @version !__version__! &mdash; <em>$Date: 2015-01-07 $</em>
+ * @since !__version__!
  */
-public final class JSON extends StaticObject {
+public final class JSON {
 	private JSON() {}
 
 	public static final IO json = new IO() {
 		@Override
 		public void write(Object object, OutputStream out) throws IOException {
 			try {
-				final Marshaller marshaller = CONTEXT.createMarshaller();
+				final Marshaller marshaller = context().createMarshaller();
 				marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
 				final XMLStreamWriter writer = new MappedXMLStreamWriter(
@@ -82,7 +81,7 @@ public final class JSON extends StaticObject {
 		@Override
 		public <T> T read(Class<T> type, InputStream in) throws IOException {
 			try {
-				final Unmarshaller unmarshaller = CONTEXT.createUnmarshaller();
+				final Unmarshaller unmarshaller = context().createUnmarshaller();
 
 				final XMLStreamReader reader = new MappedXMLStreamReader(
 					new JSONObject(toText(in)),
