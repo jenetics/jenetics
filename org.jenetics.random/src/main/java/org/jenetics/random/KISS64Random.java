@@ -29,9 +29,11 @@ import org.jenetics.random.internal.util.Equality;
 import org.jenetics.random.internal.util.Hash;
 
 /**
+ * http://www0.cs.ucl.ac.uk/staff/d.jones/GoodPracticeRNG.pdf
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-12-29 $</em>
+ * @version !__version__! &mdash; <em>$Date: 2015-01-09 $</em>
  */
 public class KISS64Random extends Random64 {
 
