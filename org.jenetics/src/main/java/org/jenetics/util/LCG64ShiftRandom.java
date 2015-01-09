@@ -75,7 +75,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 2.0 &mdash; <em>$Date: 2014-12-22 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2015-01-09 $</em>
  */
 public class LCG64ShiftRandom extends Random64 {
 
@@ -109,7 +109,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 3.0 &mdash; <em>$Date: 2014-12-22 $</em>
+	 * @version 3.0 &mdash; <em>$Date: 2015-01-09 $</em>
 	 */
 	public static final class ThreadLocal
 		extends java.lang.ThreadLocal<LCG64ShiftRandom>
@@ -171,7 +171,6 @@ public class LCG64ShiftRandom extends Random64 {
 	}
 
 	private static final class TLLCG64ShiftRandom extends LCG64ShiftRandom {
-
 		private static final long serialVersionUID = 1L;
 
 		private final Boolean _sentry = Boolean.TRUE;
@@ -198,7 +197,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 3.0 &mdash; <em>$Date: 2014-12-22 $</em>
+	 * @version 3.0 &mdash; <em>$Date: 2015-01-09 $</em>
 	 */
 	public static final class ThreadSafe extends LCG64ShiftRandom {
 		private static final long serialVersionUID = 1L;
@@ -209,8 +208,22 @@ public class LCG64ShiftRandom extends Random64 {
 		 * @param seed the seed of the PRNG.
 		 * @param param the parameter of the PRNG.
 		 * @throws NullPointerException if the given {@code param} is null.
+		 *
+		 * @deprecated Use {@link LCG64ShiftRandom.ThreadSafe#ThreadSafe(Param, long)}
 		 */
+		@Deprecated
 		public ThreadSafe(final long seed, final Param param) {
+			super(param, seed);
+		}
+
+		/**
+		 * Create a new PRNG instance with the given parameter and seed.
+		 *
+		 * @param seed the seed of the PRNG.
+		 * @param param the parameter of the PRNG.
+		 * @throws NullPointerException if the given {@code param} is null.
+		 */
+		public ThreadSafe(final Param param, final long seed) {
 			super(param, seed);
 		}
 
@@ -221,7 +234,7 @@ public class LCG64ShiftRandom extends Random64 {
 		 * @param seed the seed of the PRNG
 		 */
 		public ThreadSafe(final long seed) {
-			this(seed, Param.DEFAULT);
+			this(Param.DEFAULT, seed);
 		}
 
 		/**
@@ -232,7 +245,7 @@ public class LCG64ShiftRandom extends Random64 {
 		 * @throws NullPointerException if the given {@code param} is null.
 		 */
 		public ThreadSafe(final Param param) {
-			this(random.seed(), param);
+			this(param, random.seed());
 		}
 
 		/**
@@ -240,7 +253,7 @@ public class LCG64ShiftRandom extends Random64 {
 		 * a safe seed.
 		 */
 		public ThreadSafe() {
-			this(random.seed(), Param.DEFAULT);
+			this(Param.DEFAULT, random.seed());
 		}
 
 		@Override
@@ -277,7 +290,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 2.0 &mdash; <em>$Date: 2014-12-22 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2015-01-09 $</em>
 	 */
 	public static final class Param implements Serializable {
 
