@@ -47,7 +47,7 @@ import org.jenetics.random.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-12-29 $</em>
+ * @version !__version__! &mdash; <em>$Date: 2015-01-09 $</em>
  */
 public class MT19937_32Random extends Random32 {
 
@@ -82,13 +82,13 @@ public class MT19937_32Random extends Random32 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since !__version__!
-	 * @version !__version__! &mdash; <em>$Date: 2014-12-29 $</em>
+	 * @version !__version__! &mdash; <em>$Date: 2015-01-09 $</em>
 	 */
 	public static class ThreadLocal
 		extends java.lang.ThreadLocal<MT19937_32Random>
 	{
 		@Override
-		protected synchronized MT19937_32Random initialValue() {
+		protected MT19937_32Random initialValue() {
 			return new TLMT19937_32Random(math.seed());
 		}
 	}
@@ -120,7 +120,7 @@ public class MT19937_32Random extends Random32 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since !__version__!
-	 * @version !__version__! &mdash; <em>$Date: 2014-12-29 $</em>
+	 * @version !__version__! &mdash; <em>$Date: 2015-01-09 $</em>
 	 */
 	public static class ThreadSafe extends MT19937_32Random {
 		private static final long serialVersionUID = 1L;
