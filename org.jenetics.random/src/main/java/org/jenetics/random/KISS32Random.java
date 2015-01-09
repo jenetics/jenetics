@@ -31,13 +31,95 @@ import org.jenetics.random.internal.util.Equality;
 import org.jenetics.random.internal.util.Hash;
 
 /**
+ * Implementation of an simple PRNG as proposed in
+ * <a href="http://www0.cs.ucl.ac.uk/staff/d.jones/GoodPracticeRNG.pdf">
+ * Good Practice in (Pseudo) Random Number Generation for Bioinformatics
+ * Applications</a> (page 3) by <em><a href="mailto:d.jones@cs.ucl.ac.uk">
+ * David Jones</a>, UCL Bioinformatics Group</em>.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-12-29 $</em>
+ * @version !__version__! &mdash; <em>$Date: 2015-01-09 $</em>
  */
 public class KISS32Random extends Random32 {
 
 	private static final long serialVersionUID = 1L;
+
+	/**
+	 * This class represents a <i>thread local</i> implementation of the
+	 * {@code KISS32Random} PRNG.
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since !__version__!
+	 * @version !__version__! &mdash; <em>$Date: 2015-01-09 $</em>
+	 */
+	public static final class ThreadLocal
+		extends java.lang.ThreadLocal<KISS32Random>
+	{
+		@Override
+		protected KISS32Random initialValue() {
+			return new TLKISS32Random(math.seed());
+		}
+	}
+
+	private static final class TLKISS32Random extends KISS32Random {
+		private static final long serialVersionUID = 1L;
+
+		private final Boolean _sentry = Boolean.TRUE;
+
+		private TLKISS32Random(final long seed) {
+			super(seed);
+		}
+
+		@Override
+		public void setSeed(final long seed) {
+			if (_sentry != null) {
+				throw new UnsupportedOperationException(
+					"The 'setSeed(long)' method is not supported " +
+						"for thread local instances."
+				);
+			}
+		}
+	}
+
+
+	/**
+	 * This is a <i>thread safe</i> variation of the this PRNG&mdash;by
+	 * synchronizing the random number generation.
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since !__version__!
+	 * @version !__version__! &mdash; <em>$Date: 2015-01-09 $</em>
+	 */
+	public static final class ThreadSafe extends KISS32Random {
+		private static final long serialVersionUID = 1L;
+
+		/**
+		 * Create a new PRNG instance with the given seed.
+		 *
+		 * @param seed the seed of the PRNG.
+		 */
+		public ThreadSafe(final long seed) {
+			super(seed);
+		}
+
+		/**
+		 * Create a new PRNG instance with a safe seed.
+		 */
+		public ThreadSafe() {
+			this(math.seed());
+		}
+
+		@Override
+		public synchronized void setSeed(final long seed) {
+			super.setSeed(seed);
+		}
+
+		@Override
+		public synchronized int nextInt() {
+			return super.nextInt();
+		}
+	}
 
 	/**
 	 * The state of this random engine.
