@@ -77,7 +77,7 @@ modifyPom {
 		name jenetics.name
 		description jenetics.description
 		url jenetics.url
-		inceptionYear '2014'
+		inceptionYear year
 
 		scm {
 			url jenetics.maven.scm.url
