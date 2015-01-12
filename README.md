@@ -113,12 +113,7 @@ new random `Genotypes`.
 		}
 	}
 
-In contrast to other GA implementations, the library uses
-the concept of an evolution stream (`EvolutionStream`) for
-executing the evolution steps. Since the `EvolutionStream`
-implements the Java Stream interface, it works smoothly with
-the rest of the Java streaming API. Now let's have a closer
-look at listing above and discuss this simple program step by step:
+In contrast to other GA implementations, the library uses the concept of an evolution stream (`EvolutionStream`) for executing the evolution steps. Since the `EvolutionStream` implements the Java Stream interface, it works smoothly with the rest of the Java streaming API. Now let's have a closer look at listing above and discuss this simple program step by step:
 
 1. The probably most challenging part, when setting up a new evolution `Engine`, is to transform the problem domain into a appropriate `Genotype` (factory) representation. In our example we want to count the number of ones of a `BitChromosome`. Since we are counting only the ones of one chromosome, we are adding only one `BitChromosome` to our `Genotype`. In general, the `Genotype` can be created with 1 to n chromosomes.
 
