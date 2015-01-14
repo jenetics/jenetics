@@ -33,8 +33,6 @@ For building the Jenetics library from source, download the most recent, stable 
     $ git clone https://github.com/jenetics/jenetics.git <builddir>
     # or
     $ hg clone https://bitbucket.org/fwilhelm/jenetics <builddir>
-    # or
-    $ hg clone http://hg.code.sf.net/p/jenetics/main <builddir>
 
 Jenetics uses [Gradle](http://www.gradle.org/downloads) as build system and organizes the source into *sub*-projects (modules). Each sub-project is located in it’s own sub-directory:
 
