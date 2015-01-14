@@ -36,7 +36,7 @@ import org.jenetics.util.Copyable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0 &mdash; <em>$Date: 2014-09-11 $</em>
+ * @version 3.0
  */
 public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	implements

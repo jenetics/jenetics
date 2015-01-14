@@ -30,7 +30,7 @@ import org.jenetics.internal.util.Hash;
  * value.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-07-16 $</em>
+ * @version 1.6
  * @since 1.6
  */
 abstract class AbstractBoundedGene<

@@ -53,7 +53,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-11-28 $</em>
+ * @version 2.0
  */
 @XmlJavaTypeAdapter(Phenotype.Model.Adapter.class)
 public final class Phenotype<

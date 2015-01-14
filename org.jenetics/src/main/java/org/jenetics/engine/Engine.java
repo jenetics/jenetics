@@ -109,7 +109,7 @@ import org.jenetics.util.Factory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2015-01-02 $</em>
+ * @version 3.0
  */
 public final class Engine<
 	G extends Gene<?, G>,
@@ -754,7 +754,7 @@ public final class Engine<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 3.0
-	 * @version 3.0 &mdash; <em>$Date: 2015-01-02 $</em>
+	 * @version 3.0
 	 */
 	public static final class Builder<
 		G extends Gene<?, G>,

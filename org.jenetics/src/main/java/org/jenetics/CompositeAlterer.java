@@ -38,7 +38,7 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-12-01 $</em>
+ * @version 3.0
  */
 final class CompositeAlterer<
 	G extends Gene<?, G>,

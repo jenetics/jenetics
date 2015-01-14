@@ -35,7 +35,7 @@ import java.text.SimpleDateFormat
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5 &mdash; <em>$Date: 2014-11-12 $</em>
+ * @version 1.5
  */
 class SetupPlugin extends JeneticsPlugin {
 

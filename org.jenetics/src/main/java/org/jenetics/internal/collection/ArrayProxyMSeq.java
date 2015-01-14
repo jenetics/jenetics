@@ -35,7 +35,7 @@ import org.jenetics.util.MSeq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0 &mdash; <em>$Date: 2014-10-07 $</em>
+ * @version 3.0
  */
 public class ArrayProxyMSeq<T, P extends ArrayProxy<T, ?, ?>>
 	extends ArrayProxySeq<T, P>
