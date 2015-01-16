@@ -28,7 +28,7 @@ import java.util.function.Supplier;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-12-01 $</em>
+ * @version 1.6
  */
 public final class require {
 	private require() { noInstance(); }

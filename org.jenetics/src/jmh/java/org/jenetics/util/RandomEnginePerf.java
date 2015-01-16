@@ -36,7 +36,7 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.0 &mdash; <em>$Date: 2014-12-29 $</em>
+ * @version 3.0
  * @since 3.0
  */
 public class RandomEnginePerf {

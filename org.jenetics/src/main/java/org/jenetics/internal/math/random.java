@@ -36,7 +36,7 @@ import org.jenetics.internal.util.require;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0 &mdash; <em>$Date: 2014-10-18 $</em>
+ * @version 3.0
  */
 public final class random {
 	private random() {require.noInstance();}

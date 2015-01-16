@@ -37,7 +37,7 @@ import org.jenetics.internal.util.model.CharacterModel;
  * JAXB helper methods.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-08-05 $</em>
+ * @version 1.6
  * @since 2.0
  */
 public class jaxb {

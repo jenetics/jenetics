@@ -49,7 +49,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2015-01-02 $</em>
+ * @version 3.0
  */
 public abstract class ProbabilitySelector<
 	G extends Gene<?, G>,

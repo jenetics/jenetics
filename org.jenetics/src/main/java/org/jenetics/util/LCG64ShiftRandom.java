@@ -75,7 +75,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 2.0 &mdash; <em>$Date: 2015-01-09 $</em>
+ * @version 2.0
  */
 public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 
@@ -109,7 +109,7 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 3.0 &mdash; <em>$Date: 2015-01-09 $</em>
+	 * @version 3.0
 	 */
 	public static final class ThreadLocal
 		extends java.lang.ThreadLocal<LCG64ShiftRandom>
@@ -197,7 +197,7 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 3.0 &mdash; <em>$Date: 2015-01-09 $</em>
+	 * @version 3.0
 	 */
 	public static final class ThreadSafe extends LCG64ShiftRandom {
 		private static final long serialVersionUID = 1L;
@@ -290,7 +290,7 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 2.0 &mdash; <em>$Date: 2015-01-09 $</em>
+	 * @version 2.0
 	 */
 	public static final class Param implements Serializable {
 

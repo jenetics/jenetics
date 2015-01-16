@@ -28,7 +28,7 @@ import static org.jenetics.internal.util.array.swap;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-26 $</em>
+ * @version 3.0
  */
 public abstract class IndexSorter {
 
