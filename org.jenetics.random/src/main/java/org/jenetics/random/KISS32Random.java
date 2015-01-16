@@ -34,7 +34,7 @@ import org.jenetics.random.internal.util.Hash;
  * Implementation of an simple PRNG as proposed in
  * <a href="http://www0.cs.ucl.ac.uk/staff/d.jones/GoodPracticeRNG.pdf">
  * Good Practice in (Pseudo) Random Number Generation for Bioinformatics
- * Applications</a> (page 3) by <em><a href="mailto:d.jones@cs.ucl.ac.uk">
+ * Applications</a> (JKISS32, page 3) by <em><a href="mailto:d.jones@cs.ucl.ac.uk">
  * David Jones</a>, UCL Bioinformatics Group</em>.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
