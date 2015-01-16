@@ -28,7 +28,7 @@ import java.util.function.Predicate;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2015-01-02 $</em>
+ * @version !__version__!
  */
 public final class Equality {
 	private Equality() {}

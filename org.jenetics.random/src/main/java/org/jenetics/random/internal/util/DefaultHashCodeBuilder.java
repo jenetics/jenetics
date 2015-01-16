@@ -24,7 +24,7 @@ import java.util.Arrays;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2015-01-02 $</em>
+ * @version !__version__!
  */
 final class DefaultHashCodeBuilder implements Hash {
 	private static final int P1 = 47;

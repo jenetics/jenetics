@@ -23,7 +23,7 @@ import org.jenetics.util.Random64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-01-20 $</em>
+ * @version @__version__@
  * @since @__version__@
  */
 public class NanoTimeRandom extends Random64 {

@@ -28,7 +28,7 @@ import org.jenetics.internal.util.bit;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2014-12-29 $</em>
+ * @version @__version__@
  * @since @__version__@
  */
 public abstract class Random64TestBase extends RandomTestBase {

@@ -31,7 +31,7 @@ import org.jenetics.random.internal.util.Hash;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-12-29 $</em>
+ * @version !__version__!
  */
 public class MRG2Random extends Random32 {
 

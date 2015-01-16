@@ -37,7 +37,7 @@ import org.jenetics.random.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2015-01-09 $</em>
+ * @version !__version__!
  */
 public class KISS64Random extends Random64 {
 
@@ -49,7 +49,7 @@ public class KISS64Random extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since !__version__!
-	 * @version !__version__! &mdash; <em>$Date: 2015-01-09 $</em>
+	 * @version !__version__!
 	 */
 	public static final class ThreadLocal
 		extends java.lang.ThreadLocal<KISS64Random>
@@ -87,7 +87,7 @@ public class KISS64Random extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since !__version__!
-	 * @version !__version__! &mdash; <em>$Date: 2015-01-09 $</em>
+	 * @version !__version__!
 	 */
 	public static final class ThreadSafe extends KISS64Random {
 		private static final long serialVersionUID = 1L;
