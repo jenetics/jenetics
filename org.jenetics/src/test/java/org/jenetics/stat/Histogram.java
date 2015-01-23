@@ -65,8 +65,6 @@ import org.jenetics.internal.util.Hash;
  * threads modifies it, it must be synchronized externally.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.0
- * @version 2.0 &mdash; <em>$Date$</em>
  */
 public class Histogram<C> implements Consumer<C> {
 

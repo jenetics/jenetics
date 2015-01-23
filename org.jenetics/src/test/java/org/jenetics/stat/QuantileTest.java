@@ -30,7 +30,6 @@ import org.jenetics.util.LCG64ShiftRandom;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-05-02 $</em>
  */
 public class QuantileTest {
 

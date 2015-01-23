@@ -32,7 +32,6 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-09-17 $</em>
  */
 public class IntMomentStatisticsTest {
 
