@@ -13662,7 +13662,7 @@ Version
 \series default
 :
 \emph on
- 3.3
+ 3.4.1
 \end_layout
 
 \begin_layout Itemize
@@ -13674,7 +13674,7 @@ Homepage
 \emph on
  
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -13695,11 +13695,11 @@ Download
 \emph on
 
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
-http://tweedo.com/mirror/apache/commons/math/binaries/commons-math3-3.3-bin.zip
+http://tweedo.com/mirror/apache/commons/math/binaries/commons-math3-3.4.1-bin.zip
 \end_layout
 
 \end_inset
