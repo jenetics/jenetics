@@ -21,3 +21,24 @@ To test the statistical quality for this kind of seed values, I treated it as *s
 #=============================================================================#
 -----------------
 
+After this failure, I was searching for a different entropy source. For Linux system you probably want to choose `/dev/random` or `/dev/urandom` as source for your seeds. But this approach is not portable, which was a prerequisite for the Jenetics library. Since the hash code of an Object is available for every operating system, I tried to combine two `Object` hash codes to one seed value:
+
+.Using `Object.hashCode()` as seed value
+[source,java]
+-------------
+public static long seed() {
+    return ((long)(new Object().hashCode()) << 32) |
+        new Object().hashCode();
+}
+-------------
+
+Running the same *dieharder* tests, lead to the following result:
+
+.Dieharder result for `Object.hashCode()` seed
+[source,bash]
+-----------------
+#=============================================================================#
+# Summary: PASSED=28, WEAK=0, FAILED=86                                       #
+#          234,759.406 MB of random data created with 43.149 MB/sec           #
+#=============================================================================#
+-----------------

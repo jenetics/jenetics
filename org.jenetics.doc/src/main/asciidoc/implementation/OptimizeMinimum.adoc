@@ -1,0 +1,3 @@
+== How the minimization is implemented
+
+Describe the implementation of the fitness minimization.
