@@ -1,0 +1,13 @@
+= Implementation details
+Franz Wilhelmstötter <franz.wilhelmstoetter@gmail.com>
+:Author Initials: FWi
+:toc:
+:icons:
+:numbered:
+:website: http://jenetics.io/
+
+This site contains selected description of implementation details.
+
+include::CreateRandomSeed.adoc[]
+
+include::OptimizeMinimum.adoc[]

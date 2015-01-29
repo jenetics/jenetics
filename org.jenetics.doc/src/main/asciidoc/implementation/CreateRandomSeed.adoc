@@ -1,0 +1,23 @@
+== Creating random seeds
+
+While implementing the http://jenetics.io/[Jenetics] library, I faced the problem of creating seed values for the Random engines I used. The usual way for doing this, is to take the current time stamp.
+
+.Using timestamp as seed value
+[source,java]
+--------------
+public static long seed() {
+    return System.nanoTime();
+}
+--------------
+
+To test the statistical quality for this kind of seed values, I treated it as *special* random engine and applied the http://www.phy.duke.edu/~rgb/General/dieharder.php[dieharder] test suite to it. As you might expect, the quality of this random engine was    disastrous. It didn't pass a single *dieharder* test:
+
+.Dieharder result for timestamp seed
+[source,bash]
+-----------------
+#=============================================================================#
+# Summary: PASSED=0, WEAK=0, FAILED=114                                       #
+#          233,969.062 MB of random data created with 58.038 MB/sec           #
+#=============================================================================#
+-----------------
+
