@@ -59,11 +59,11 @@ public final class random {
 	}
 
 	/**
-	 * Returns a pseudo-random, uniformly distributed int value between min
-	 * and max (min and max included).
+	 * Returns a pseudo-random, uniformly distributed int value between min and
+	 * max (min and max included).
 	 *
-	 * @param random the random engine to use for calculating the random
-	 *        int value
+	 * @param random the random engine to use for calculating the random int
+	 *        value
 	 * @param min lower bound for generated integer
 	 * @param max upper bound for generated integer
 	 * @return a random integer greater than or equal to {@code min} and
