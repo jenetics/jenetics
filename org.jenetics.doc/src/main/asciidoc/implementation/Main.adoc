@@ -6,7 +6,7 @@ Franz Wilhelmstötter <franz.wilhelmstoetter@gmail.com>
 :numbered:
 :website: http://jenetics.io/
 
-While implementing the library, a lot of concrete implementation decisions have been made. This document gives a more detailed description of some selected implementation details.
+While implementing the library, a lot of concrete implementation decisions have been made. This document gives a more detailed description of selected implementation details.
 
 include::CreateRandomSeed.adoc[]
 
