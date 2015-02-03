@@ -1,4 +1,4 @@
-= Implementation details
+= Implementation protocols
 Franz Wilhelmstötter <franz.wilhelmstoetter@gmail.com>
 :Author Initials: FWi
 :toc:
@@ -6,7 +6,7 @@ Franz Wilhelmstötter <franz.wilhelmstoetter@gmail.com>
 :numbered:
 :website: http://jenetics.io/
 
-This site contains selected description of implementation details.
+While implementing the library, a lot of concrete implementation decisions have been made. This document gives a more detailed description of some selected implementation details.
 
 include::CreateRandomSeed.adoc[]
 
