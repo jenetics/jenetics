@@ -29,11 +29,11 @@ apply plugin: 'packaging'
 
 
 task asciidoc(type: Exec) {
-	def mainDoc = "$projectDir/src/main/asciidoc/implementation/Main.adoc"
+	def mainDoc = file("$projectDir/src/main/asciidoc/implementation/Main.adoc")
 	def outputFile = file("$buildDir/asciidoc/ImplementationProtocol.html")
 
 	outputFile.parentFile.mkdirs()
-	inputs.file mainDoc
+	inputs.dir mainDoc.parentFile
 	outputs.file outputFile
 
 	commandLine([
