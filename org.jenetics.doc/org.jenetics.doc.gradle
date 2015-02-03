@@ -22,10 +22,25 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.5 &mdash; <em>$Date: 2013-12-18 $</em>
+ * @version !__version__!
  */
 
 apply plugin: 'packaging'
 
 
+task asciidoc(type: Exec) {
+	def mainDoc = "$projectDir/src/main/asciidoc/implementation/Main.adoc"
+	def outputFile = file("$buildDir/asciidoc/Main.html")
+
+	outputFile.parentFile.mkdirs()
+	inputs.file mainDoc
+	outputs.file outputFile
+
+	commandLine([
+		'asciidoc',
+		'--theme', 'volnitsky',
+		'-o', outputFile,
+		mainDoc
+	])
+}
 
