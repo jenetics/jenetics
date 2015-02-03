@@ -50,6 +50,7 @@ import org.jenetics.Population;
 import org.jenetics.Selector;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.TournamentSelector;
+import org.jenetics.util.Copyable;
 import org.jenetics.util.Factory;
 
 /**
@@ -760,6 +761,7 @@ public final class Engine<
 		G extends Gene<?, G>,
 		C extends Comparable<? super C>
 	>
+		implements Copyable<Builder<G, C>>
 	{
 
 		// No default values for this properties.
@@ -1012,6 +1014,28 @@ public final class Engine<
 
 		private int getOffspringCount() {
 			return (int)round(_offspringFraction*_populationSize);
+		}
+
+		/**
+		 * Create a new builder, with the current configuration.
+		 *
+		 * @since 3.1
+		 *
+		 * @return a new builder, with the current configuration
+		 */
+		@Override
+		public Builder<G, C> copy() {
+			return new Builder<>(_genotypeFactory, _fitnessFunction)
+				.alterers(_alterer)
+				.clock(_clock)
+				.executor(_executor)
+				.fitnessScaler(_fitnessScaler)
+				.maximalPhenotypeAge(_maximalPhenotypeAge)
+				.offspringFraction(_offspringFraction)
+				.offspringSelector(_offspringSelector)
+				.optimize(_optimize)
+				.populationSize(_populationSize)
+				.survivorsSelector(_survivorsSelector);
 		}
 
 	}
