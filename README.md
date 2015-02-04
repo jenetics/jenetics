@@ -13,9 +13,10 @@
 
 ### Test compile/execution
 *  **TestNG 8.8**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
-*  **Apache Commons Math 3.3**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical accumulators.
+*  **Apache Commons Math 3.4**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical accumulators.
 
 ## Download
+* **Github**: <https://github.com/jenetics/jenetics/releases/download/v3.1.0/jenetics-3.1.0.zip>
 *  **Sourceforge**:  <https://sourceforge.net/projects/jenetics/files/latest/download>
 *  **Maven**: `org.bitbucket.fwilhelm:org.jenetics:3.0.0` on [Maven Central](http://search.maven.org/#search|ga|1|a%3A%22org.jenetics%22)
 
@@ -23,11 +24,11 @@
 
 [![Build Status](https://travis-ci.org/jenetics/jenetics.svg?branch=master)](https://travis-ci.org/jenetics/jenetics)
 
-For building the Jenetics library from source, download the most recent, stable package version from [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download) or [Bitbucket](https://bitbucket.org/fwilhelm/jenetics/downloads) and extract it to some build directory.
+For building the Jenetics library from source, download the most recent, stable package version from [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download) and extract it to some build directory.
 
     $ unzip jenetics-<version>.zip -d <builddir>
 
-`<version>` denotes the actual Jenetics version and `<builddir>` the actual build directory. Alternatively you can check out the latest-unstable-version from the Mercurial default branch.
+`<version>` denotes the actual Jenetics version and `<builddir>` the actual build directory. Alternatively you can check out the master branch from Github.
 
     $ git clone https://github.com/jenetics/jenetics.git <builddir>
 
@@ -69,6 +70,7 @@ The minimum evolution Engine setup needs a genotype factory, `Factory<Genotype<?
 	import org.jenetics.Genotype;
 	import org.jenetics.engine.Engine;
 	import org.jenetics.engine.EvolutionResult;
+	import org.jenetics.util.Factory;
 
 	public class HelloWorld {
 		// 2.) Definition of the fitness function.
@@ -127,6 +129,11 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 
 
 ## Release notes
+
+### 3.1.0
+
+* Minor code streamlining and bug-fixing.
+* Improve termination strategies.
 
 ### 3.0.0
 
