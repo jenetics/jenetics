@@ -1,3 +1,8 @@
+Jenetics-3.1.0
+
+- Minor code streamlining and bug-fixing.
+- Improve termination strategies.
+
 Jenetics-3.0.0
 
 - Rewrite of *engine* classes to make use of Java 8 Stream API.
