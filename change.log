@@ -1,3 +1,6 @@
+
+- Add 'EvolutionStream.of' factory method as an alternative way for creating an evolution stream.
+
 Jenetics-3.0.0
 
 - Rewrite of *engine* classes to make use of Java 8 Stream API.
