@@ -77,7 +77,7 @@ final class TimedResult<T> {
 		final Clock clock
 	) {
 		return value -> {
-			final Timer timer = Timer.of().start();
+			final Timer timer = Timer.of(clock).start();
 			final R result = function.apply(value);
 			return new TimedResult<>(timer.stop().getTime(), result);
 		};
