@@ -75,6 +75,16 @@ public interface EvolutionStream<
 	 * factory method is to simplify the creation of an {@code EvolutionStream}
 	 * from an own evolution (GA) engine.
 	 *
+	 * [code]
+	 * final Function&lt;
+	 *     EvolutionStart&lt;DoubleGene, Double&gt;,
+	 *     EvolutionResult&lt;DoubleGene, Double&gt;&gt; engine = new MySpecialEngine();
+	 * final Supplier&lt;EvolutionStart&lt;DoubleGene, Double&gt;&gt; start = ...
+	 *
+	 * final EvolutionStream&lt;DoubleGene, Double&gt; stream =
+	 *     EvolutionStream.of(start, engine);
+	 * [/code]
+	 *
 	 * @since !__version__!
 	 *
 	 * @param <G> the gene type
