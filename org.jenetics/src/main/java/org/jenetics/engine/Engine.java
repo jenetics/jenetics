@@ -116,6 +116,7 @@ public final class Engine<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
+	implements Function<EvolutionStart<G, C>, EvolutionResult<G, C>>
 {
 
 	// Needed context for population evolving.
@@ -304,6 +305,17 @@ public final class Engine<
 			invalidCount,
 			alteredOffspring.join().result.alterCount
 		);
+	}
+
+	/**
+	 * This method is an <i>alias</i> for the {@link #evolve(EvolutionStart)}
+	 * method.
+	 *
+	 * @since !__version__!
+	 */
+	@Override
+	public EvolutionResult<G, C> apply(final EvolutionStart<G, C> start) {
+		return evolve(start);
 	}
 
 	// Selects the survivors population. A new population object is returned.
