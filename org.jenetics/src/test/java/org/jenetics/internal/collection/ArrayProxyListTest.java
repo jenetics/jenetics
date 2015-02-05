@@ -60,6 +60,23 @@ public class ArrayProxyListTest {
 		}
 	}
 
+	@Test
+	public void sliceGet() {
+		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
+		for (int i = 0; i < proxy.length; ++i) {
+			proxy.set(i, i);
+		}
+
+		final int sliceStart = 50;
+		final int sliceEnd = 500;
+		final ArrayProxy<Integer, ?, ?> slice = proxy.slice(sliceStart, sliceEnd);
+		final List<Integer> list = new ArrayProxyList<>(slice);
+
+		for (int i = 0; i < list.size(); ++i) {
+			Assert.assertEquals(slice.get(i), Integer.valueOf(i + sliceStart));
+		}
+	}
+
 	@Test(expectedExceptions = UnsupportedOperationException.class)
 	public void set() {
 		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
@@ -70,7 +87,7 @@ public class ArrayProxyListTest {
 
 	@Test
 	public void indexOf() {
-		long seed = random.seed();
+		long seed = 12341234;
 		final Random random = new Random(seed);
 
 		final ArrayProxy<Long, ?, ?> proxy = new ObjectArrayProxy<>(1000);
@@ -83,6 +100,61 @@ public class ArrayProxyListTest {
 		random.setSeed(seed);
 		for (int i = 0; i < proxy.length; ++i) {
 			final int index = list.indexOf(random.nextLong());
+			Assert.assertEquals(index, i);
+		}
+	}
+
+	@Test
+	public void lastIndexOf() {
+		long seed = 12341234;
+		final Random random = new Random(seed);
+
+		final ArrayProxy<Long, ?, ?> proxy = new ObjectArrayProxy<>(1000);
+		for (int i = 0; i < proxy.length; ++i) {
+			proxy.set(i, random.nextLong());
+		}
+
+		final List<Long> list = new ArrayProxyList<>(proxy);
+
+		random.setSeed(seed);
+		for (int i = 0; i < proxy.length; ++i) {
+			final int index = list.lastIndexOf(random.nextLong());
+			Assert.assertEquals(index, i);
+		}
+	}
+
+	@Test
+	public void sliceIndexOf() {
+		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
+		for (int i = 0; i < proxy.length; ++i) {
+			proxy.set(i, i);
+		}
+
+		final int sliceStart = 50;
+		final int sliceEnd = 500;
+		final ArrayProxy<Integer, ?, ?> slice = proxy.slice(sliceStart, sliceEnd);
+		final List<Integer> list = new ArrayProxyList<>(slice);
+
+		for (int i = 0; i < list.size(); ++i) {
+			final int index = list.indexOf(sliceStart + i);
+			Assert.assertEquals(index, i);
+		}
+	}
+
+	@Test
+	public void sliceLastIndexOf() {
+		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
+		for (int i = 0; i < proxy.length; ++i) {
+			proxy.set(i, i);
+		}
+
+		final int sliceStart = 50;
+		final int sliceEnd = 500;
+		final ArrayProxy<Integer, ?, ?> slice = proxy.slice(sliceStart, sliceEnd);
+		final List<Integer> list = new ArrayProxyList<>(slice);
+
+		for (int i = 0; i < list.size(); ++i) {
+			final int index = list.lastIndexOf(sliceStart + i);
 			Assert.assertEquals(index, i);
 		}
 	}
