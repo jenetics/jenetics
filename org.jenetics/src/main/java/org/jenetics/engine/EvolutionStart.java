@@ -39,8 +39,8 @@ import org.jenetics.Population;
  * @param <C> the fitness type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2015-01-06 $</em>
+ * @since 3.1
+ * @version 3.1
  */
 public final class EvolutionStart<
 	G extends Gene<?, G>,

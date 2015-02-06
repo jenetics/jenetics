@@ -111,7 +111,7 @@ import org.jenetics.util.Factory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version !__version__! &mdash; <em>$Date: 2015-01-06 $</em>
+ * @version 3.1
  */
 public final class Engine<
 	G extends Gene<?, G>,
@@ -218,7 +218,7 @@ public final class Engine<
 	 * <p>
 	 * <em>This method is thread-safe.</em>
 	 *
-	 * @since !__version__!
+	 * @since 3.1
 	 * @see #evolve(org.jenetics.Population, long)
 	 *
 	 * @param start the evolution start object
@@ -312,7 +312,7 @@ public final class Engine<
 	 * This method is an <i>alias</i> for the {@link #evolve(EvolutionStart)}
 	 * method.
 	 *
-	 * @since !__version__!
+	 * @since 3.1
 	 */
 	@Override
 	public EvolutionResult<G, C> apply(final EvolutionStart<G, C> start) {

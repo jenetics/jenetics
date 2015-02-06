@@ -35,7 +35,7 @@ import org.jenetics.Gene;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version !__version__! &mdash; <em>$Date: 2015-01-06 $</em>
+ * @version 3.1
  */
 public interface EvolutionStream<
 	G extends Gene<?, G>,
@@ -85,7 +85,7 @@ public interface EvolutionStream<
 	 *     EvolutionStream.of(start, engine);
 	 * [/code]
 	 *
-	 * @since !__version__!
+	 * @since 3.1
 	 *
 	 * @param <G> the gene type
 	 * @param <C> the fitness type
