@@ -31,6 +31,7 @@ it works smoothly with the rest of the Java Stream API.
 
 ## Build Jenetics
 
+[![Build Status](https://travis-ci.org/jenetics/jenetics.svg?branch=master)](https://travis-ci.org/jenetics/jenetics)
 
 For building the Jenetics library from source, download the most recent, stable package version from [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download) or [Bitbucket](https://bitbucket.org/fwilhelm/jenetics/downloads) and extract it to some build directory.
 
@@ -41,8 +42,6 @@ For building the Jenetics library from source, download the most recent, stable 
     $ git clone https://github.com/jenetics/jenetics.git <builddir>
     # or
     $ hg clone https://bitbucket.org/fwilhelm/jenetics <builddir>
-    # or
-    $ hg clone http://hg.code.sf.net/p/jenetics/main <builddir>
 
 Jenetics uses [Gradle](http://www.gradle.org/downloads) as build system and organizes the source into *sub*-projects (modules). Each sub-project is located in it’s own sub-directory:
 
@@ -114,12 +113,7 @@ new random `Genotypes`.
 		}
 	}
 
-In contrast to other GA implementations, the library uses
-the concept of an evolution stream (`EvolutionStream`) for
-executing the evolution steps. Since the `EvolutionStream`
-implements the Java Stream interface, it works smoothly with
-the rest of the Java streaming API. Now let's have a closer
-look at listing above and discuss this simple program step by step:
+In contrast to other GA implementations, the library uses the concept of an evolution stream (`EvolutionStream`) for executing the evolution steps. Since the `EvolutionStream` implements the Java Stream interface, it works smoothly with the rest of the Java streaming API. Now let's have a closer look at listing above and discuss this simple program step by step:
 
 1. The probably most challenging part, when setting up a new evolution `Engine`, is to transform the problem domain into a appropriate `Genotype` (factory) representation. In our example we want to count the number of ones of a `BitChromosome`. Since we are counting only the ones of one chromosome, we are adding only one `BitChromosome` to our `Genotype`. In general, the `Genotype` can be created with 1 to n chromosomes.
 
