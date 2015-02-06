@@ -41,6 +41,8 @@ import org.jenetics.stat.MinMax;
 /**
  * Represents a state of the GA after an evolution step.
  *
+ * @see EvolutionStart
+ *
  * @param <G> the gene type
  * @param <C> the fitness type
  *
@@ -215,7 +217,7 @@ public final class EvolutionResult<
 	 * @return the next evolution start object
 	 */
 	EvolutionStart<G, C> next() {
-		return new EvolutionStart<>(_population, _generation + 1);
+		return EvolutionStart.of(_population, _generation + 1);
 	}
 
 	/**

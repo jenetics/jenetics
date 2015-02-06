@@ -2,6 +2,7 @@ Jenetics-3.1.0
 
 - Minor code streamlining and bug-fixing.
 - Improve termination strategies.
+- Add 'EvolutionStream.of' factory method as an alternative way for creating an evolution stream.
 
 Jenetics-3.0.0
 

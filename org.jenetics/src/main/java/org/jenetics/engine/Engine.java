@@ -104,18 +104,20 @@ import org.jenetics.util.Factory;
  * </em>
  *
  * @see Engine.Builder
+ * @see EvolutionStart
  * @see EvolutionResult
  * @see EvolutionStream
  * @see EvolutionStatistics
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0
+ * @version !__version__! &mdash; <em>$Date: 2015-01-06 $</em>
  */
 public final class Engine<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
+	implements Function<EvolutionStart<G, C>, EvolutionResult<G, C>>
 {
 
 	// Needed context for population evolving.
@@ -187,9 +189,11 @@ public final class Engine<
 	/**
 	 * Perform one evolution step with the given {@code population} and
 	 * {@code generation}. New phenotypes are created with the fitness function
-	 * and fitness scaler defined by this <em>engine</em>.
-     * <p>
-     * <em>This method is thread-safe.</em>
+	 * and fitness scaler defined by this <em>engine</em>
+	 * <p>
+	 * <em>This method is thread-safe.</em>
+	 *
+	 * @see #evolve(EvolutionStart)
 	 *
 	 * @param population the population to evolve
 	 * @param generation the current generation; used for calculating the
@@ -197,55 +201,66 @@ public final class Engine<
 	 * @return the evolution result
 	 * @throws java.lang.NullPointerException if the given {@code population} is
 	 *         {@code null}
+	 * @throws IllegalArgumentException if the given {@code generation} is
+	 *         smaller then one
 	 */
 	public EvolutionResult<G, C> evolve(
 		final Population<G, C> population,
 		final long generation
 	) {
-		return evolve(new EvolutionStart<>(population, generation));
+		return evolve(EvolutionStart.of(population, generation));
 	}
 
 	/**
-	 * Performs one generation step.
+	 * Perform one evolution step with the given evolution {@code start} object
+	 * New phenotypes are created with the fitness function and fitness scaler
+	 * defined by this <em>engine</em>
+	 * <p>
+	 * <em>This method is thread-safe.</em>
 	 *
-	 * @param start the evolution start state
-	 * @return the resulting evolution state
+	 * @since !__version__!
+	 * @see #evolve(org.jenetics.Population, long)
+	 *
+	 * @param start the evolution start object
+	 * @return the evolution result
+	 * @throws java.lang.NullPointerException if the given evolution
+	 *         {@code start} is {@code null}
 	 */
-	EvolutionResult<G, C> evolve(final EvolutionStart<G, C> start) {
+	public EvolutionResult<G, C> evolve(final EvolutionStart<G, C> start) {
 		final Timer timer = Timer.of().start();
 
 		// Select the offspring population.
 		final CompletableFuture<TimedResult<Population<G, C>>> offspring =
 			_executor.async(() ->
-				selectOffspring(start.population),
+				selectOffspring(start.getPopulation()),
 				_clock
 			);
 
 		// Select the survivor population.
 		final CompletableFuture<TimedResult<Population<G, C>>> survivors =
 			_executor.async(() ->
-				selectSurvivors(start.population),
+				selectSurvivors(start.getPopulation()),
 				_clock
 			);
 
 		// Altering the offspring population.
 		final CompletableFuture<TimedResult<AlterResult<G, C>>> alteredOffspring =
 			_executor.thenApply(offspring, p ->
-				alter(p.result, start.generation),
+				alter(p.result, start.getGeneration()),
 				_clock
 			);
 
 		// Filter and replace invalid and to old survivor individuals.
 		final CompletableFuture<TimedResult<FilterResult<G, C>>> filteredSurvivors =
 			_executor.thenApply(survivors, pop ->
-				filter(pop.result, start.generation),
+				filter(pop.result, start.getGeneration()),
 				_clock
 			);
 
 		// Filter and replace invalid and to old offspring individuals.
 		final CompletableFuture<TimedResult<FilterResult<G, C>>> filteredOffspring =
 			_executor.thenApply(alteredOffspring, pop ->
-				filter(pop.result.population, start.generation),
+				filter(pop.result.population, start.getGeneration()),
 				_clock
 			);
 
@@ -285,12 +300,23 @@ public final class Engine<
 		return EvolutionResult.of(
 			_optimize,
 			result.result,
-			start.generation,
+			start.getGeneration(),
 			durations,
 			killCount,
 			invalidCount,
 			alteredOffspring.join().result.alterCount
 		);
+	}
+
+	/**
+	 * This method is an <i>alias</i> for the {@link #evolve(EvolutionStart)}
+	 * method.
+	 *
+	 * @since !__version__!
+	 */
+	@Override
+	public EvolutionResult<G, C> apply(final EvolutionStart<G, C> start) {
+		return evolve(start);
 	}
 
 	// Selects the survivors population. A new population object is returned.
@@ -376,10 +402,7 @@ public final class Engine<
 	 * @return a new evolution stream.
 	 */
 	public EvolutionStream<G, C> stream() {
-		return new EvolutionStreamImpl<>(
-			this::evolve,
-			this::evolutionStart
-		);
+		return EvolutionStream.of(this::evolutionStart, this::evolve);
 	}
 
 	private EvolutionStart<G, C> evolutionStart() {
@@ -390,7 +413,7 @@ public final class Engine<
 			.fill(() -> newPhenotype(generation), size);
 		evaluate(population);
 
-		return new EvolutionStart<>(population, generation);
+		return EvolutionStart.of(population, generation);
 	}
 
 	/**
@@ -410,9 +433,9 @@ public final class Engine<
 	) {
 		requireNonNull(genotypes);
 
-		return new EvolutionStreamImpl<>(
-			this::evolve,
-			() -> evolutionStart(genotypes, 1)
+		return EvolutionStream.of(
+			() -> evolutionStart(genotypes, 1),
+			this::evolve
 		);
 	}
 
@@ -455,7 +478,7 @@ public final class Engine<
 			.collect(toPopulation());
 		evaluate(population);
 
-		return new EvolutionStart<>(population, generation);
+		return EvolutionStart.of(population, generation);
 	}
 
 	/**
@@ -484,9 +507,9 @@ public final class Engine<
 		requireNonNull(population);
 		require.positive(generation);
 
-		return new EvolutionStreamImpl<>(
-			this::evolve,
-			() -> evolutionStart(population, generation)
+		return EvolutionStream.of(
+			() -> evolutionStart(population, generation),
+			this::evolve
 		);
 	}
 
@@ -540,7 +563,7 @@ public final class Engine<
 			.collect(toPopulation());
 		evaluate(pop);
 
-		return new EvolutionStart<>(pop, generation);
+		return EvolutionStart.of(pop, generation);
 	}
 
 
