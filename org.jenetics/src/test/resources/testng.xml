@@ -232,6 +232,11 @@
 			<class name="org.jenetics.engine.ExecutionTimeLimitTest" />
 		</classes>
 	</test>
+    <test name="org.jenetics.engine.FitnessThresholdLimit">
+        <classes>
+            <class name="org.jenetics.engine.FitnessThresholdLimitTest" />
+        </classes>
+    </test>
 	<test name="org.jenetics.stat.Histogram">
 		<classes>
 			<class name="org.jenetics.stat.HistogramTest" />

@@ -34,7 +34,7 @@ import org.jenetics.internal.util.require;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2015-01-06 $</em>
+ * @version !__version__!
  */
 public final class limit {
 	private limit() {require.noInstance();}
@@ -81,6 +81,8 @@ public final class limit {
 	 *     .collect(toBestPhenotype());
 	 * [/code]
 	 *
+	 * @since !__version__!
+	 *
 	 * @param duration the duration after the evolution stream will be truncated
 	 * @param clock the clock used for measure the execution time
 	 * @return a predicate, which will truncate the evolution stream, based on
@@ -106,6 +108,8 @@ public final class limit {
 	 *     .collect(toBestPhenotype());
 	 * [/code]
 	 *
+	 * @since !__version__!
+	 *
 	 * @param duration the duration after the evolution stream will be truncated
 	 * @return a predicate, which will truncate the evolution stream, based on
 	 *         the exceeded execution time
@@ -114,7 +118,41 @@ public final class limit {
 	 */
 	public static Predicate<Object>
 	byExecutionTime(final Duration duration) {
-		return new ExecutionTimeLimit(duration, NanoClock.INSTANCE);
+		return byExecutionTime(duration, NanoClock.INSTANCE);
 	}
+
+	/**
+	 * Return a predicate, which will truncated the evolution stream if the
+	 * best fitness of the current population becomes less than the specified
+	 * threshold and the objective is set to minimize the fitness. This
+	 * predicate also stops the evolution if the best fitness in the current
+	 * population becomes greater than the user-specified fitness threshold when
+	 * the objective is to maximize the fitness.
+	 *
+	 * [code]
+	 * final Phenotype&lt;DoubleGene, Double&gt; result = engine.stream()
+	 *      // Truncate the evolution stream if the best fitness is higher than
+	 *      // the given threshold of '2.3'.      .
+	 *     .limit(byFitnessThreshold(2.3))
+	 *      // The evolution will stop after maximal 250 generations; guarantees
+	 *      // the termination (truncation) of the evolution stream.
+	 *     .limit(250)
+	 *     .collect(toBestPhenotype());
+	 * [/code]
+	 *
+	 * @since !__version__!
+	 *
+	 * @param threshold the desired threshold
+	 * @param <C> the fitness type
+	 * @return the predicate which truncates the evolution stream based on the
+	 *         given {@code threshold}.
+	 * @throws NullPointerException if the given {@code threshold} is
+	 *        {@code null}.
+	 */
+	public static <C extends Comparable<? super C>>
+	Predicate<EvolutionResult<?, C>> byFitnessThreshold(final C threshold) {
+		return new FitnessThresholdLimit<>(threshold);
+	}
+
 
 }
