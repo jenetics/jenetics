@@ -209,7 +209,8 @@ public class LCG64ShiftRandom extends Random64 {
 		 * @param param the parameter of the PRNG.
 		 * @throws NullPointerException if the given {@code param} is null.
 		 *
-		 * @deprecated Use {@link LCG64ShiftRandom.ThreadSafe#ThreadSafe(Param, long)}
+		 * @deprecated Use {@code LCG64ShiftRandom#ThreadSafe(Param, long)}
+		 *             instead.
 		 */
 		@Deprecated
 		public ThreadSafe(final long seed, final Param param) {
