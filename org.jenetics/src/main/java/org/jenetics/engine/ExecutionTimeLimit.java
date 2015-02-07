@@ -29,7 +29,7 @@ import java.util.function.Predicate;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2015-01-06 $</em>
+ * @version !__version__!
  */
 final class ExecutionTimeLimit implements Predicate<Object>  {
 
@@ -49,8 +49,7 @@ final class ExecutionTimeLimit implements Predicate<Object>  {
 			_start = _clock.instant();
 		}
 
-		final Instant now = _clock.instant();
-		return _start.plus(_duration).isAfter(now);
+		return _start.plus(_duration).isAfter(_clock.instant());
 	}
 
 }
