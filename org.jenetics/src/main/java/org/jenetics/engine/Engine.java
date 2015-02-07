@@ -1040,6 +1040,138 @@ public final class Engine<
 		}
 
 		/**
+		 * Return the used {@link Alterer} of the GA.
+		 *
+		 * @return the used {@link Alterer} of the GA.
+		 */
+		public Alterer<G, C> getAlterers() {
+			return _alterer;
+		}
+
+		/**
+		 * Return the {@link Clock} the engine is using for measuring the execution
+		 * time.
+		 *
+		 * @since 3.1
+		 *
+		 * @return the clock used for measuring the execution time
+		 */
+		public Clock getClock() {
+			return _clock;
+		}
+
+		/**
+		 * Return the {@link Executor} the engine is using for executing the
+		 * evolution steps.
+		 *
+		 * @since 3.1
+		 *
+		 * @return the executor used for performing the evolution steps
+		 */
+		public Executor getExecutor() {
+			return _executor;
+		}
+
+		/**
+		 * Return the fitness function of the GA engine.
+		 *
+		 * @since 3.1
+		 *
+		 * @return the fitness function
+		 */
+		public Function<? super Genotype<G>, ? extends C> getFitnessFunction() {
+			return _fitnessFunction;
+		}
+
+		/**
+		 * Return the fitness scaler of the GA engine.
+		 *
+		 * @since 3.1
+		 *
+		 * @return the fitness scaler
+		 */
+		public Function<? super C, ? extends C> getFitnessScaler() {
+			return _fitnessScaler;
+		}
+
+		/**
+		 * Return the used genotype {@link Factory} of the GA. The genotype factory
+		 * is used for creating the initial population and new, random individuals
+		 * when needed (as replacement for invalid and/or died genotypes).
+		 *
+		 * @since 3.1
+		 *
+		 * @return the used genotype {@link Factory} of the GA.
+		 */
+		public Factory<Genotype<G>> getGenotypeFactory() {
+			return _genotypeFactory;
+		}
+
+		/**
+		 * Return the maximal allowed phenotype age.
+		 *
+		 * @since 3.1
+		 *
+		 * @return the maximal allowed phenotype age
+		 */
+		public long getMaximalPhenotypeAge() {
+			return _maximalPhenotypeAge;
+		}
+
+		/**
+		 * Return the offspring fraction.
+		 *
+		 * @return the offspring fraction.
+		 */
+		public double getOffspringFraction() {
+			return _offspringFraction;
+		}
+
+		/**
+		 * Return the used offspring {@link Selector} of the GA.
+		 *
+		 * @since 3.1
+		 *
+		 * @return the used offspring {@link Selector} of the GA.
+		 */
+		public Selector<G, C> getOffspringSelector() {
+			return _offspringSelector;
+		}
+
+		/**
+		 * Return the used survivor {@link Selector} of the GA.
+		 *
+		 * @since 3.1
+		 *
+		 * @return the used survivor {@link Selector} of the GA.
+		 */
+		public Selector<G, C> getSurvivorsSelector() {
+			return _survivorsSelector;
+		}
+
+		/**
+		 * Return the optimization strategy.
+		 *
+		 * @since 3.1
+		 *
+		 * @return the optimization strategy
+		 */
+		public Optimize getOptimize() {
+			return _optimize;
+		}
+
+		/**
+		 * Return the number of individuals of a population.
+		 *
+		 * @since 3.1
+		 *
+		 * @return the number of individuals of a population
+		 */
+		public int getPopulationSize() {
+			return _populationSize;
+		}
+
+		/**
 		 * Create a new builder, with the current configuration.
 		 *
 		 * @since 3.1
