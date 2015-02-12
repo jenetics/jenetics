@@ -81,6 +81,8 @@ public final class MinMax<C> implements Consumer<C> {
 	 *
 	 * @param other the other {@code MinMax} object to combine
 	 * @return {@code this}
+	 * @throws java.lang.NullPointerException if the {@code other} object is
+	 *         {@code null}.
 	 */
 	public MinMax<C> combine(final MinMax<C> other) {
 		_min = min(_comparator, _min, other._min);
