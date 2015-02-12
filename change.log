@@ -1,5 +1,5 @@
 Jenetics-3.1.0
-
+- Add 'combine' method to 'Quantile' object. This makes the class usable for (parallel) streams.
 - Minor code streamlining and bug-fixing.
 - Improve termination strategies.
 - Add 'EvolutionStream.of' factory method as an alternative way for creating an evolution stream.

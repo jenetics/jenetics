@@ -29,7 +29,6 @@ import java.util.function.DoubleConsumer;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
-
 /**
  * Implementation of the quantile estimation algorithm published by
  * <p>
@@ -42,15 +41,30 @@ import org.jenetics.internal.util.Hash;
  * [<a href="http://www.cse.wustl.edu/~jain/papers/ftp/psqr.pdf">Communications
  * of the ACM; October 1985, Volume 28, Number 10</a>]
  * <p>
- * <strong>Note that this implementation is not synchronized.</strong> If
- * multiple threads access this object concurrently, and at least one of the
- * threads modifies it, it must be synchronized externally.
+ * This class is designed to work with (though does not require) streams. For
+ * example, you can compute the quantile with:
+ * [code]
+ * final DoubleStream stream = ...
+ * final Quantile quantile = stream.collect(
+ *         () -&gt; new Quantile(0.23),
+ *         Quantile::accept,
+ *         Quantile::combine
+ *     );
+ * [/code]
+ *
+ * <p>
+ * <b>Implementation note:</b>
+ * <i>This implementation is not thread safe. However, it is safe to use on a
+ * parallel stream, because the parallel implementation of
+ * {@link java.util.stream.Stream#collect Stream.collect()}provides the
+ * necessary partitioning, isolation, and merging of results for safe and
+ * efficient parallel execution.</i>
  *
  * @see <a href="http://en.wikipedia.org/wiki/Quantile">Wikipedia: Quantile</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0
+ * @version 3.1
  */
 public class Quantile implements DoubleConsumer {
 
@@ -99,8 +113,10 @@ public class Quantile implements DoubleConsumer {
 
 		_n[0] = -1.0;
 		_q[2] = 0.0;
-		_initialized = compare(quantile, 0.0) == 0 ||
-						compare(quantile, 1.0) == 0;
+		_initialized =
+			compare(quantile, 0.0) == 0 ||
+			compare(quantile, 1.0) == 0;
+
 		_samples = 0;
 	}
 
@@ -135,6 +151,56 @@ public class Quantile implements DoubleConsumer {
 		++_samples;
 	}
 
+	/**
+	 * Combine two {@code Quantile} objects.
+	 *
+	 * @since 3.1
+	 *
+	 * @param other the other {@code Quantile} object to combine
+	 * @return {@code this}
+	 * @throws java.lang.NullPointerException if the {@code other} object is
+	 *         {@code null}.
+	 * @throws java.lang.IllegalArgumentException if the quantile value of the
+	 *         {@code other} object differs from {@code this} one.
+	 */
+	public Quantile combine(final Quantile other) {
+		if (_quantile != other._quantile) {
+			throw new IllegalArgumentException(format(
+				"Can't perform combine, the quantile are not equal: %f != %f",
+				_quantile, other._quantile
+			));
+		}
+
+		_samples += other._samples;
+
+		if (_quantile == 0.0) {
+			_q[2] = Math.min(_q[2], other._q[2]);
+		} else if (_quantile == 1.0) {
+			_q[2] = Math.max(_q[2], other._q[2]);
+		} else {
+			// Combine the marker positions.
+			_n[1] += other._n[1];
+			_n[2] += other._n[2];
+			_n[3] += other._n[3];
+			_n[4] += other._n[4];
+
+			// Combine the marker height.
+			_q[0] = Math.min(_q[0], other._q[0]);
+			_q[1] = (_q[1] + other._q[1])*0.5;
+			_q[2] = (_q[2] + other._q[2])*0.5;
+			_q[3] = (_q[3] + other._q[3])*0.5;
+			_q[4] = Math.max(_q[4], other._q[4]);
+
+			// Combine position of markers.
+			_nn[0] += other._nn[0];
+			_nn[1] += other._nn[1];
+			_nn[2] += other._nn[2];
+
+			adjustMarkerHeights();
+		}
+
+		return this;
+	}
 
 	private void initialize(double value) {
 		if (_n[0] < 0.0) {
@@ -202,36 +268,40 @@ public class Quantile implements DoubleConsumer {
 			_nn[1] += _dn[1];
 			_nn[2] += _dn[2];
 
-			// Adjust heights of markers 0 to 2 if necessary
-			double mm = _n[1] - 1.0;
-			double mp = _n[1] + 1.0;
-			if (_nn[0] >= mp && _n[2] > mp) {
-				_q[1] = qPlus(mp, _n[0], _n[1], _n[2], _q[0], _q[1], _q[2]);
-				_n[1] = mp;
-			} else if (_nn[0] <= mm && _n[0] < mm) {
-				_q[1] = qMinus(mm, _n[0], _n[1], _n[2], _q[0], _q[1], _q[2]);
-				_n[1] = mm;
-			}
+			adjustMarkerHeights();
+		}
+	}
 
-			mm = _n[2] - 1.0;
-			mp = _n[2] + 1.0;
-			if (_nn[1] >= mp && _n[3] > mp) {
-				_q[2] = qPlus(mp, _n[1], _n[2], _n[3], _q[1], _q[2], _q[3]);
-				_n[2] = mp;
-			} else if (_nn[1] <= mm && _n[1] < mm) {
-				_q[2] = qMinus(mm, _n[1], _n[2], _n[3], _q[1], _q[2], _q[3]);
-				_n[2] = mm;
-			}
+	// Adjust heights of markers 0 to 2 if necessary
+	private void adjustMarkerHeights() {
+		double mm = _n[1] - 1.0;
+		double mp = _n[1] + 1.0;
+		if (_nn[0] >= mp && _n[2] > mp) {
+			_q[1] = qPlus(mp, _n[0], _n[1], _n[2], _q[0], _q[1], _q[2]);
+			_n[1] = mp;
+		} else if (_nn[0] <= mm && _n[0] < mm) {
+			_q[1] = qMinus(mm, _n[0], _n[1], _n[2], _q[0], _q[1], _q[2]);
+			_n[1] = mm;
+		}
 
-			mm = _n[3] - 1.0;
-			mp = _n[3] + 1.0;
-			if (_nn[2] >= mp && _n[4] > mp) {
-				_q[3] = qPlus(mp, _n[2], _n[3], _n[4], _q[2], _q[3], _q[4]);
-				_n[3] = mp;
-			} else if (_nn[2] <= mm && _n[2] < mm) {
-				_q[3] = qMinus(mm, _n[2], _n[3], _n[4], _q[2], _q[3], _q[4]);
-				_n[3] = mm;
-			}
+		mm = _n[2] - 1.0;
+		mp = _n[2] + 1.0;
+		if (_nn[1] >= mp && _n[3] > mp) {
+			_q[2] = qPlus(mp, _n[1], _n[2], _n[3], _q[1], _q[2], _q[3]);
+			_n[2] = mp;
+		} else if (_nn[1] <= mm && _n[1] < mm) {
+			_q[2] = qMinus(mm, _n[1], _n[2], _n[3], _q[1], _q[2], _q[3]);
+			_n[2] = mm;
+		}
+
+		mm = _n[3] - 1.0;
+		mp = _n[3] + 1.0;
+		if (_nn[2] >= mp && _n[4] > mp) {
+			_q[3] = qPlus(mp, _n[2], _n[3], _n[4], _q[2], _q[3], _q[4]);
+			_n[3] = mp;
+		} else if (_nn[2] <= mm && _n[2] < mm) {
+			_q[3] = qMinus(mm, _n[2], _n[3], _n[4], _q[2], _q[3], _q[4]);
+			_n[3] = mm;
 		}
 	}
 

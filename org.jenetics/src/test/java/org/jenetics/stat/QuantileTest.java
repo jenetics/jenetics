@@ -22,6 +22,8 @@ package org.jenetics.stat;
 import static java.lang.Math.floor;
 import static java.lang.Math.sqrt;
 
+import java.util.stream.IntStream;
+
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -42,6 +44,17 @@ public class QuantileTest {
 		}
 	}
 
+	@Test
+	public void parallelMedian() {
+		final Quantile quantile = IntStream.range(0, 1000).asDoubleStream().parallel()
+			.collect(
+				Quantile::median,
+				Quantile::accept,
+				Quantile::combine
+			);
+		Assert.assertEquals(quantile.getValue(), floor(1000/2.0), 1.0);
+	}
+
 	@Test(dataProvider = "quantiles")
 	public void quantile(final Double q) {
 		final int N = 2_000_000;
@@ -53,9 +66,24 @@ public class QuantileTest {
 		Assert.assertEquals(quantile.getValue(), q, 1.0/sqrt(N));
 	}
 
+	@Test(dataProvider = "quantiles")
+	public void parallelQuantile(final Double q) {
+		final int N = 2_000_000;
+		final Quantile quantile = new LCG64ShiftRandom(1234).doubles().limit(N).parallel()
+			.collect(
+				() -> new Quantile(q),
+				Quantile::accept,
+				Quantile::combine
+			);
+
+		Assert.assertEquals(quantile.getSamples(), N);
+		Assert.assertEquals(quantile.getValue(), q, 1.3/sqrt(N));
+	}
+
 	@DataProvider(name = "quantiles")
 	public Object[][] getQuantiles() {
 		return new Double[][] {
+			{0.0},
 			{0.01},
 			{0.0123},
 			{0.1},
@@ -65,7 +93,8 @@ public class QuantileTest {
 			{0.5},
 			{0.57},
 			{0.83},
-			{0.93}
+			{0.93},
+			{1.0}
 		};
 	}
 
@@ -85,5 +114,10 @@ public class QuantileTest {
 		}
 	}
 
+	@Test
+	public void combine() {
+
+
+	}
 
 }
