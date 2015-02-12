@@ -52,7 +52,7 @@ public class QuantileTest {
 				Quantile::accept,
 				Quantile::combine
 			);
-		Assert.assertEquals(quantile.getValue(), floor(1000/2.0), 1.0);
+		Assert.assertEquals(quantile.getValue(), floor(1000/2.0), 1.5);
 	}
 
 	@Test(dataProvider = "quantiles")
