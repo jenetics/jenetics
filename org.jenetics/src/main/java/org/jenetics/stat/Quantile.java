@@ -166,7 +166,7 @@ public class Quantile implements DoubleConsumer {
 	public Quantile combine(final Quantile other) {
 		if (_quantile != other._quantile) {
 			throw new IllegalArgumentException(format(
-				"Can't perform combine, the quantile are not equal: %f != %f",
+				"Can't perform combine, the quantile are not equal: %s != %s",
 				_quantile, other._quantile
 			));
 		}
