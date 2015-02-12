@@ -28,6 +28,25 @@ import java.util.stream.Collector;
 /**
  * This <i>consumer</i> class is used for calculating the min and max value
  * according to the given {@code Comparator}.
+ * <p>
+ * This class is designed to work with (though does not require) streams. For
+ * example, you can compute minimum and maximum values with:
+ * [code]
+ * final Stream&lt;Integer&gt; stream = ...
+ * final MinMax&lt;Integer&gt; minMax = stream.collect(
+ *         MinMax::of,
+ *         MinMax::accept,
+ *         MinMax::combine
+ *     );
+ * [/code]
+ *
+ * <p>
+ * <b>Implementation note:</b>
+ * <i>This implementation is not thread safe. However, it is safe to use on a
+ * parallel stream, because the parallel implementation of
+ * {@link java.util.stream.Stream#collect Stream.collect()}provides the
+ * necessary partitioning, isolation, and merging of results for safe and
+ * efficient parallel execution.</i>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0

@@ -22,6 +22,8 @@ package org.jenetics.stat;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Random;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import org.apache.commons.math3.stat.StatUtils;
 import org.testng.Assert;
@@ -158,6 +160,20 @@ public class MinMaxTest {
 
 		Assert.assertEquals(minMax.getMin(), StatUtils.max(numbers));
 		Assert.assertEquals(minMax.getMax(), StatUtils.min(numbers));
+	}
+
+	@Test
+	public void parallelMinMax() {
+		final Stream<Integer> stream = IntStream.range(0, 100).boxed().parallel();
+		final MinMax<Integer> minMax = stream.collect(
+			MinMax::of,
+			MinMax::accept,
+			MinMax::combine
+		);
+
+		Assert.assertEquals(minMax.getMax(), Integer.valueOf(99));
+		Assert.assertEquals(minMax.getMin(), Integer.valueOf(0));
+		Assert.assertEquals(100, minMax.getCount());
 	}
 
 }
