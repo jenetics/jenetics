@@ -68,7 +68,7 @@ public class QuantileTest {
 
 	@Test(dataProvider = "quantiles")
 	public void parallelQuantile(final Double q) {
-		final int N = 2_000_000;
+		final int N = 3_000_000;
 		final Quantile quantile = new LCG64ShiftRandom(1234).doubles().limit(N).parallel()
 			.collect(
 				() -> new Quantile(q),
@@ -77,8 +77,9 @@ public class QuantileTest {
 			);
 
 		Assert.assertEquals(quantile.getSamples(), N);
-		System.out.println(quantile.getValue() + ": " + q);
-		Assert.assertEquals(quantile.getValue(), q, 2/sqrt(N));
+		Assert.assertEquals(
+			quantile.getValue(), q, q*0.1
+		);
 	}
 
 	@DataProvider(name = "quantiles")
