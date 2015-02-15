@@ -128,11 +128,13 @@ public class Quantile implements DoubleConsumer {
 	}
 
 	/**
-	 * Return the <em>quantile</em> {@code this} object has been parametrized.
+	 * Return the <em>quantile</em> {@code this} object has been parametrized
+	 * with.
 	 *
 	 * @since 3.1
 	 *
 	 * @return the <em>quantile</em> {@code this} object has been parametrized
+	 *         with
 	 */
 	public double getQuantile() {
 		return _quantile;
