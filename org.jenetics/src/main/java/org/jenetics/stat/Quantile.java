@@ -128,6 +128,17 @@ public class Quantile implements DoubleConsumer {
 	}
 
 	/**
+	 * Return the <em>quantile</em> {@code this} object has been parametrized.
+	 *
+	 * @since 3.1
+	 *
+	 * @return the <em>quantile</em> {@code this} object has been parametrized
+	 */
+	public double getQuantile() {
+		return _quantile;
+	}
+
+	/**
 	 * Return the computed quantile value.
 	 *
 	 * @return the quantile value.
@@ -136,6 +147,12 @@ public class Quantile implements DoubleConsumer {
 		return _q[2];
 	}
 
+	/**
+	 * Return the number of samples the quantile value  was calculated of.
+	 *
+	 *
+	 * @return the number of samples the quantile value  was calculated of
+	 */
 	public long getSamples() {
 		return _samples;
 	}
@@ -160,8 +177,8 @@ public class Quantile implements DoubleConsumer {
 	 * @return {@code this}
 	 * @throws java.lang.NullPointerException if the {@code other} object is
 	 *         {@code null}.
-	 * @throws java.lang.IllegalArgumentException if the quantile value of the
-	 *         {@code other} object differs from {@code this} one.
+	 * @throws java.lang.IllegalArgumentException if the {@link #getQuantile}
+	 *         of the {@code other} object differs from {@code this} one.
 	 */
 	public Quantile combine(final Quantile other) {
 		if (_quantile != other._quantile) {
