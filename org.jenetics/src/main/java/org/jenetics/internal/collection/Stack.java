@@ -60,6 +60,10 @@ public final class Stack<T> {
 		return value;
 	}
 
+	public void clear() {
+		_tail = null;
+		length = 0;
+	}
 
 	private static final class Node<T> {
 		final T _value;
