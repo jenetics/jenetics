@@ -19,22 +19,28 @@
  */
 package org.jenetics.internal.collection;
 
-import org.jenetics.util.MSeq;
-import org.jenetics.util.MSeqTestBase;
+import java.util.Arrays;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-21 $</em>
+ * @version !__version__!
+ * @since !__version__!
  */
-public class ArrayProxyMSeqTest extends MSeqTestBase {
+public final class CharArray extends Array {
+	private static final long serialVersionUID = 1L;
 
-	@Override
-	protected MSeq<Integer> newSeq(final int length) {
-		final ObjectArrayProxy<Integer> impl = new ObjectArrayProxy<>(length);
-		for (int i = 0; i < length; ++i) {
-			impl.array.values[i] = i;
-		}
-		return new ArrayProxyMSeq<>(impl);
+	public final char[] values;
+
+	public CharArray(final char[] values) {
+		this.values = values;
+	}
+
+	public CharArray(final int length) {
+		this(new char[length]);
+	}
+
+	static CharArray copy(final CharArray array, final int from, final int to) {
+		return new CharArray(Arrays.copyOfRange(array.values, from, to));
 	}
 
 }

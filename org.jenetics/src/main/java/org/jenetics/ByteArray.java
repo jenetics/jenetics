@@ -17,24 +17,32 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.collection;
+package org.jenetics;
 
-import org.jenetics.util.MSeq;
-import org.jenetics.util.MSeqTestBase;
+import org.jenetics.internal.collection.Array;
+import org.jenetics.internal.util.bit;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-21 $</em>
+ * @version !__version__!
+ * @since !__version__!
  */
-public class ArrayProxyMSeqTest extends MSeqTestBase {
+final class ByteArray extends Array {
 
-	@Override
-	protected MSeq<Integer> newSeq(final int length) {
-		final ObjectArrayProxy<Integer> impl = new ObjectArrayProxy<>(length);
-		for (int i = 0; i < length; ++i) {
-			impl.array.values[i] = i;
-		}
-		return new ArrayProxyMSeq<>(impl);
+	private static final long serialVersionUID = 1L;
+
+	public final byte[] values;
+
+	ByteArray(final byte[] values) {
+		this.values = values;
+	}
+
+	ByteArray(final int length) {
+		this(new byte[length]);
+	}
+
+	static ByteArray copy(final ByteArray array, final int from, final int to) {
+		return new ByteArray(bit.copy(array.values, from, to));
 	}
 
 }

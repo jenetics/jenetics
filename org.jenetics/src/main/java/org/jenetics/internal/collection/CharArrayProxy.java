@@ -19,34 +19,32 @@
  */
 package org.jenetics.internal.collection;
 
-import java.util.Arrays;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
  * @version 3.0 &mdash; <em>$Date: 2014-08-01 $</em>
  */
 public final class CharArrayProxy
-	extends ArrayProxy<Character, char[], CharArrayProxy>
+	extends ArrayProxy<Character, CharArray, CharArrayProxy>
 {
 	private static final long serialVersionUID = 1L;
 
-	public CharArrayProxy(final char[] chars, final int start, final int end) {
-		super(chars, start, end, CharArrayProxy::new, Arrays::copyOfRange);
+	public CharArrayProxy(final CharArray chars, final int start, final int end) {
+		super(chars, start, end, CharArrayProxy::new, CharArray::copy);
 	}
 
 	public CharArrayProxy(final int length) {
-		this(new char[length], 0, length);
+		this(new CharArray(length), 0, length);
 	}
 
 	@Override
 	public Character __get__(int index) {
-		return array[index];
+		return array.values[index];
 	}
 
 	@Override
 	public void __set__(int index, Character value) {
-		array[index] = value;
+		array.values[index] = value;
 	}
 
 }

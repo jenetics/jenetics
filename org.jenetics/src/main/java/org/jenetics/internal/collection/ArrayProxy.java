@@ -38,7 +38,7 @@ import org.jenetics.util.Copyable;
  * @since 1.4
  * @version 3.0 &mdash; <em>$Date: 2014-09-11 $</em>
  */
-public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
+public abstract class ArrayProxy<T, A extends Array, P extends ArrayProxy<T, A, P>>
 	implements
 		Copyable<P>,
 		Serializable
@@ -46,11 +46,9 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	private static final long serialVersionUID = 1L;
 
 	public A array;
+	public int start;
+	public int end;
 	public final int length;
-	public final int start;
-	public final int end;
-
-	private boolean _sealed = false;
 
 	private final ArrayProxyFactory<A, P> _factory;
 	private final ArrayCopier<A> _copier;
@@ -281,12 +279,20 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	 * sealed.
 	 */
 	public final void cloneIfSealed() {
-		if (_sealed) {
-			array = _copier.copy(array, 0, end);
-			_sealed = false;
+		if (array.immutables.length > 0) {
+			for (ArrayProxy<?, ?, ?> p = array.immutables.pop();
+				 p != null; p = array.immutables.pop())
+			{
+				p.copyArray();
+			}
 		}
 	}
 
+	private void copyArray() {
+		array = _copier.copy(array, start, end);
+		start = 0;
+		end = length;
+	}
 
 	/**
 	 * Set the seal flag for this {@code ArrayProxy} instance and return a new
@@ -296,8 +302,9 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	 * @return a new {@code ArrayProxy} instance; for command chaining.
 	 */
 	public final P seal() {
-		_sealed = true;
-		return _factory.create(array, start, end);
+		final P proxy = _factory.create(array, start, end);
+		array.immutables.push(proxy);
+		return proxy;
 	}
 
 	@Override

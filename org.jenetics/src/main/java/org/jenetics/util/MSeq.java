@@ -32,6 +32,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collector;
 
 import org.jenetics.internal.collection.ArrayProxyMSeq;
+import org.jenetics.internal.collection.ObjectArray;
 import org.jenetics.internal.collection.ObjectArrayProxy;
 
 /**
@@ -275,7 +276,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	@SafeVarargs
 	public static <T> MSeq<T> of(final T... values) {
 		final ObjectArrayProxy<T> proxy = new ObjectArrayProxy<>(
-			values.clone(), 0, values.length
+			new ObjectArray(values.clone()), 0, values.length
 		);
 		return new ArrayProxyMSeq<>(proxy);
 	}
