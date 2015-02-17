@@ -29,6 +29,6 @@ import java.io.Serializable;
 public abstract class Array implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	final Stack<ArrayProxy<?, ?, ?>> immutables = new Stack<>();
+	final transient Stack<ArrayProxy<?, ?, ?>> immutables = new Stack<>();
 
 }
