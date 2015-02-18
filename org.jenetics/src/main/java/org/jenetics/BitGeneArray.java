@@ -19,6 +19,7 @@
  */
 package org.jenetics;
 
+import org.jenetics.internal.collection.ArrayHolder;
 import org.jenetics.internal.collection.ArrayProxy;
 import org.jenetics.internal.collection.ArrayProxyISeq;
 import org.jenetics.internal.collection.ArrayProxyMSeq;
@@ -39,8 +40,8 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene, Proxy> {
 		super(proxy);
 	}
 
-	BitGeneArray(final ByteArray array, final int start, final int end) {
-		this(new Proxy(array, start, end));
+	BitGeneArray(final byte[] array, final int start, final int end) {
+		this(new Proxy(ArrayHolder.of(array), start, end));
 	}
 
 	@Override
@@ -81,15 +82,15 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene, Proxy> {
 	 * @since 1.4
 	 * @version 3.0 &mdash; <em>$Date: 2014-08-01 $</em>
 	 */
-	static final class Proxy extends ArrayProxy<BitGene, ByteArray, Proxy> {
+	static final class Proxy extends ArrayProxy<BitGene, byte[], Proxy> {
 		private static final long serialVersionUID = 1L;
 
-		Proxy(final ByteArray array, final int start, final int end) {
-			super(array, start, end, Proxy::new, ByteArray::copy);
+		Proxy(final ArrayHolder<byte[]> array, final int start, final int end) {
+			super(array, start, end, Proxy::new, bit::copy);
 		}
 
 		Proxy(final int length) {
-			this(new ByteArray(bit.newArray(length)), 0, length);
+			this(ArrayHolder.of(bit.newArray(length)), 0, length);
 		}
 
 		@Override

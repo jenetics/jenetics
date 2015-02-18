@@ -38,14 +38,14 @@ import org.jenetics.util.Copyable;
  * @since 1.4
  * @version 3.0 &mdash; <em>$Date: 2014-09-11 $</em>
  */
-public abstract class ArrayProxy<T, A extends Array, P extends ArrayProxy<T, A, P>>
+public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	implements
 		Copyable<P>,
 		Serializable
 {
 	private static final long serialVersionUID = 1L;
 
-	public A array;
+	public ArrayHolder<A> array;
 	public int start;
 	public int end;
 	public final int length;
@@ -67,7 +67,7 @@ public abstract class ArrayProxy<T, A extends Array, P extends ArrayProxy<T, A, 
 	 *         are invalid.
 	 */
 	protected ArrayProxy(
-		final A array,
+		final ArrayHolder<A> array,
 		final int start,
 		final int end,
 		final ArrayProxyFactory<A, P> factory,
@@ -289,7 +289,7 @@ public abstract class ArrayProxy<T, A extends Array, P extends ArrayProxy<T, A, 
 	}
 
 	private void copyArray() {
-		array = _copier.copy(array, start, end);
+		array = ArrayHolder.of(_copier.copy(array.values, start, end));
 		start = 0;
 		end = length;
 	}
@@ -309,7 +309,10 @@ public abstract class ArrayProxy<T, A extends Array, P extends ArrayProxy<T, A, 
 
 	@Override
 	public P copy() {
-		return _factory.create(_copier.copy(array, start, end), 0, end - start);
+		return _factory.create(
+			ArrayHolder.of(_copier.copy(array.values, start, end)),
+			0, end - start
+		);
 	}
 
 	/**

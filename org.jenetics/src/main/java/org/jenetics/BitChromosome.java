@@ -89,7 +89,7 @@ public class BitChromosome extends Number
 		_genes = bits;
 		_length = length;
 		_p = p;
-		_seq = new BitGeneArray(new ByteArray(_genes), 0, _length);
+		_seq = new BitGeneArray(_genes, 0, _length);
 
 	}
 
@@ -563,7 +563,7 @@ public class BitChromosome extends Number
 		_genes = new byte[bytes];
 		in.readFully(_genes);
 
-		_seq = new BitGeneArray(new ByteArray(_genes), 0, _length);
+		_seq = new BitGeneArray(_genes, 0, _length);
 	}
 
 	/* *************************************************************************

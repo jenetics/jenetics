@@ -19,28 +19,24 @@
  */
 package org.jenetics.internal.collection;
 
-import java.util.Arrays;
+import static java.util.Objects.requireNonNull;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public final class CharArray extends Array {
-	private static final long serialVersionUID = 1L;
+public final class ArrayHolder<A> {
 
-	public final char[] values;
+	public final A values;
+	final Stack<ArrayProxy<?, ?, ?>> immutables = new Stack<>();
 
-	public CharArray(final char[] values) {
-		this.values = values;
+	private ArrayHolder(final A values) {
+		this.values = requireNonNull(values);
 	}
 
-	public CharArray(final int length) {
-		this(new char[length]);
-	}
-
-	static CharArray copy(final CharArray array, final int from, final int to) {
-		return new CharArray(Arrays.copyOfRange(array.values, from, to));
+	public static <A> ArrayHolder<A> of(final A values) {
+		return new ArrayHolder<>(values);
 	}
 
 }

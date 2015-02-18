@@ -19,22 +19,24 @@
  */
 package org.jenetics.internal.collection;
 
+import java.util.Arrays;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
  * @version 3.0 &mdash; <em>$Date: 2014-08-01 $</em>
  */
 public final class CharArrayProxy
-	extends ArrayProxy<Character, CharArray, CharArrayProxy>
+	extends ArrayProxy<Character, char[], CharArrayProxy>
 {
 	private static final long serialVersionUID = 1L;
 
-	public CharArrayProxy(final CharArray chars, final int start, final int end) {
-		super(chars, start, end, CharArrayProxy::new, CharArray::copy);
+	public CharArrayProxy(final ArrayHolder<char[]> chars, final int start, final int end) {
+		super(chars, start, end, CharArrayProxy::new, Arrays::copyOfRange);
 	}
 
 	public CharArrayProxy(final int length) {
-		this(new CharArray(length), 0, length);
+		this(ArrayHolder.of(new char[length]), 0, length);
 	}
 
 	@Override

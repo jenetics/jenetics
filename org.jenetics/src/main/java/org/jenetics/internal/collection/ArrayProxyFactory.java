@@ -28,5 +28,5 @@ import java.io.Serializable;
  */
 @FunctionalInterface
 public interface ArrayProxyFactory<A, P> extends Serializable {
-	public P create(final A array, final int start, final int end);
+	public P create(final ArrayHolder<A> array, final int start, final int end);
 }

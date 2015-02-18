@@ -22,6 +22,7 @@ package org.jenetics.internal.collection;
 import static java.util.Spliterator.IMMUTABLE;
 import static java.util.Spliterator.ORDERED;
 
+import java.util.Arrays;
 import java.util.Spliterators;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -34,7 +35,7 @@ import java.util.stream.StreamSupport;
  * @version 3.0 &mdash; <em>$Date: 2014-10-07 $</em>
  */
 public final class ObjectArrayProxy<T>
-	extends ArrayProxy<T, ObjectArray, ObjectArrayProxy<T>>
+	extends ArrayProxy<T, Object[], ObjectArrayProxy<T>>
 {
 
 	private static final long serialVersionUID = 1L;
@@ -46,8 +47,11 @@ public final class ObjectArrayProxy<T>
 	 * @param start the start index of the array proxy, inclusively.
 	 * @param end the end index of the array proxy, exclusively.
 	 */
-	public ObjectArrayProxy(final ObjectArray array, final int start, final int end) {
-		super(array, start, end, ObjectArrayProxy<T>::new, ObjectArray::copy);
+	public ObjectArrayProxy(
+		final ArrayHolder<Object[]> array,
+		final int start, final int end
+	) {
+		super(array, start, end, ObjectArrayProxy<T>::new, Arrays::copyOfRange);
 	}
 
 	/**
@@ -56,7 +60,7 @@ public final class ObjectArrayProxy<T>
 	 * @param length the length of the array proxy.
 	 */
 	public ObjectArrayProxy(final int length) {
-		this(new ObjectArray(length), 0, length);
+		this(ArrayHolder.of(new Object[length]), 0, length);
 	}
 
 	@Override
