@@ -45,13 +45,38 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 {
 	private static final long serialVersionUID = 1L;
 
-	public ArrayHolder<A> array;
+	transient ArrayHolder<A> arrayHolder;
+
+	public A array;
 	public int start;
 	public int end;
 	public final int length;
 
 	private final ArrayProxyFactory<A, P> _factory;
 	private final ArrayCopier<A> _copier;
+
+	private ArrayProxy(
+		final ArrayHolder<A> array,
+		final int start,
+		final int end,
+		final ArrayProxyFactory<A, P> factory,
+		final ArrayCopier<A> copier
+	) {
+		if (start < 0 || end < 0 || end < start) {
+			throw new IllegalArgumentException(format(
+				"Invalid indexes [%d, %d)", start, end
+			));
+		}
+
+		this.arrayHolder = requireNonNull(array);
+		this.array = arrayHolder.values;
+		this.length = end - start;
+		this.start = start;
+		this.end = end;
+
+		_factory = requireNonNull(factory);
+		_copier = requireNonNull(copier);
+	}
 
 	/**
 	 * Create a new array proxy.
@@ -67,25 +92,19 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	 *         are invalid.
 	 */
 	protected ArrayProxy(
-		final ArrayHolder<A> array,
+		final A array,
 		final int start,
 		final int end,
 		final ArrayProxyFactory<A, P> factory,
 		final ArrayCopier<A> copier
 	) {
-		if (start < 0 || end < 0 || end < start) {
-			throw new IllegalArgumentException(format(
-				"Invalid indexes [%d, %d)", start, end
-			));
-		}
-
-		this.array = requireNonNull(array);
-		this.length = end - start;
-		this.start = start;
-		this.end = end;
-
-		_factory = requireNonNull(factory);
-		_copier = requireNonNull(copier);
+		this(
+			ArrayHolder.of(array),
+			start,
+			end,
+			factory,
+			copier
+		);
 	}
 
 	/**
@@ -170,7 +189,9 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	 * @throws IndexOutOfBoundsException if the given indexes are out of bounds.
 	 */
 	public final P slice(final int from, final int until) {
-		return _factory.create(array, from + start, until + start);
+		final P slice = _factory.create(array, from + start, until + start);
+		slice.arrayHolder = arrayHolder;
+		return slice;
 	}
 
 	/**
@@ -279,9 +300,9 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	 * sealed.
 	 */
 	public final void cloneIfSealed() {
-		if (array.immutables.length > 0) {
-			for (ArrayProxy<?, ?, ?> p = array.immutables.pop();
-				 p != null; p = array.immutables.pop())
+		if (arrayHolder.immutables.length > 0) {
+			for (ArrayProxy<?, ?, ?> p = arrayHolder.immutables.pop();
+				 p != null; p = arrayHolder.immutables.pop())
 			{
 				p.copyArray();
 			}
@@ -289,7 +310,8 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	}
 
 	private void copyArray() {
-		array = ArrayHolder.of(_copier.copy(array.values, start, end));
+		arrayHolder = ArrayHolder.of(_copier.copy(arrayHolder.values, start, end));
+		array = arrayHolder.values;
 		start = 0;
 		end = length;
 	}
@@ -303,16 +325,14 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	 */
 	public final P seal() {
 		final P proxy = _factory.create(array, start, end);
-		array.immutables.push(proxy);
+		proxy.arrayHolder = arrayHolder;
+		arrayHolder.immutables.push(proxy);
 		return proxy;
 	}
 
 	@Override
 	public P copy() {
-		return _factory.create(
-			ArrayHolder.of(_copier.copy(array.values, start, end)),
-			0, end - start
-		);
+		return _factory.create(_copier.copy(array, start, end), 0, end - start);
 	}
 
 	/**

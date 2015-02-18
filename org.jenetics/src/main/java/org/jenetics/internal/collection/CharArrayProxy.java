@@ -31,22 +31,22 @@ public final class CharArrayProxy
 {
 	private static final long serialVersionUID = 1L;
 
-	public CharArrayProxy(final ArrayHolder<char[]> chars, final int start, final int end) {
+	public CharArrayProxy(final char[] chars, final int start, final int end) {
 		super(chars, start, end, CharArrayProxy::new, Arrays::copyOfRange);
 	}
 
 	public CharArrayProxy(final int length) {
-		this(ArrayHolder.of(new char[length]), 0, length);
+		this(new char[length], 0, length);
 	}
 
 	@Override
 	public Character __get__(int index) {
-		return array.values[index];
+		return array[index];
 	}
 
 	@Override
 	public void __set__(int index, Character value) {
-		array.values[index] = value;
+		array[index] = value;
 	}
 
 }

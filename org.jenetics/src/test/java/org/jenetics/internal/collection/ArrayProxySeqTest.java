@@ -44,7 +44,7 @@ public class ArrayProxySeqTest extends SeqTestBase {
 		public <B> ISeq<B> map(final Function<? super T, ? extends B> mapper) {
 			final ObjectArrayProxy<B> p = new ObjectArrayProxy<>(proxy.length);
 			for (int i = 0; i < p.length; ++i) {
-				p.array.values[i] = mapper.apply(proxy.__get(i));
+				p.array[i] = mapper.apply(proxy.__get(i));
 			}
 			return new ArrayProxyISeq<>(p);
 		}
@@ -65,7 +65,7 @@ public class ArrayProxySeqTest extends SeqTestBase {
 	protected Seq<Integer> newSeq(final int length) {
 		final ObjectArrayProxy<Integer> impl = new ObjectArrayProxy<>(length);
 		for (int i = 0; i < length; ++i) {
-			impl.array.values[i] = i;
+			impl.array[i] = i;
 		}
 		return new ArrayProxySeqImpl<>(impl);
 	}

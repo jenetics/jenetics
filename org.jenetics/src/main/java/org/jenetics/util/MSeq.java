@@ -276,7 +276,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	@SafeVarargs
 	public static <T> MSeq<T> of(final T... values) {
 		final ObjectArrayProxy<T> proxy = new ObjectArrayProxy<>(
-			ArrayHolder.of(values.clone()), 0, values.length
+			values.clone(), 0, values.length
 		);
 		return new ArrayProxyMSeq<>(proxy);
 	}

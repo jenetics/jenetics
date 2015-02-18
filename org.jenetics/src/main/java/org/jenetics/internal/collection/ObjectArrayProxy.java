@@ -48,7 +48,7 @@ public final class ObjectArrayProxy<T>
 	 * @param end the end index of the array proxy, exclusively.
 	 */
 	public ObjectArrayProxy(
-		final ArrayHolder<Object[]> array,
+		final Object[] array,
 		final int start, final int end
 	) {
 		super(array, start, end, ObjectArrayProxy<T>::new, Arrays::copyOfRange);
@@ -60,24 +60,24 @@ public final class ObjectArrayProxy<T>
 	 * @param length the length of the array proxy.
 	 */
 	public ObjectArrayProxy(final int length) {
-		this(ArrayHolder.of(new Object[length]), 0, length);
+		this(new Object[length], 0, length);
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public T __get__(final int index) {
-		return (T)array.values[index];
+		return (T)array[index];
 	}
 
 	@Override
 	public void __set__(final int index, final T value) {
-		array.values[index] = value;
+		array[index] = value;
 	}
 
 	@Override
 	public Stream<T> stream() {
 		return StreamSupport.stream(
-			Spliterators.spliterator(array.values, start, end, ORDERED|IMMUTABLE),
+			Spliterators.spliterator(array, start, end, ORDERED|IMMUTABLE),
 			false
 		);
 	}
@@ -85,7 +85,7 @@ public final class ObjectArrayProxy<T>
 	@Override
 	public Stream<T> parallelStream() {
 		return StreamSupport.stream(
-			Spliterators.spliterator(array.values, start, end, ORDERED|IMMUTABLE),
+			Spliterators.spliterator(array, start, end, ORDERED|IMMUTABLE),
 			true
 		);
 	}
