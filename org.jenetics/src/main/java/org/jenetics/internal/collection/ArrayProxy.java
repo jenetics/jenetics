@@ -45,7 +45,16 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 {
 	private static final long serialVersionUID = 1L;
 
-	transient ArrayHolder<A> arrayHolder;
+	/**
+	 * This flag determines if {@code this} represents a sealed proxy instance.
+	 */
+	transient boolean isSealedProxy = false;
+
+	/**
+	 * Contains all sealed proxies, which share the same {@code array} as
+	 * {@code this} proxy instance.
+	 */
+	transient Stack<ArrayProxy<?, ?, ?>> sealedProxies = new Stack<>();
 
 	public A array;
 	public int start;
@@ -54,29 +63,6 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 
 	private final ArrayProxyFactory<A, P> _factory;
 	private final ArrayCopier<A> _copier;
-
-	private ArrayProxy(
-		final ArrayHolder<A> array,
-		final int start,
-		final int end,
-		final ArrayProxyFactory<A, P> factory,
-		final ArrayCopier<A> copier
-	) {
-		if (start < 0 || end < 0 || end < start) {
-			throw new IllegalArgumentException(format(
-				"Invalid indexes [%d, %d)", start, end
-			));
-		}
-
-		this.arrayHolder = requireNonNull(array);
-		this.array = arrayHolder.values;
-		this.length = end - start;
-		this.start = start;
-		this.end = end;
-
-		_factory = requireNonNull(factory);
-		_copier = requireNonNull(copier);
-	}
 
 	/**
 	 * Create a new array proxy.
@@ -98,13 +84,19 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 		final ArrayProxyFactory<A, P> factory,
 		final ArrayCopier<A> copier
 	) {
-		this(
-			ArrayHolder.of(array),
-			start,
-			end,
-			factory,
-			copier
-		);
+		if (start < 0 || end < 0 || end < start) {
+			throw new IllegalArgumentException(format(
+				"Invalid indexes [%d, %d)", start, end
+			));
+		}
+
+		this.array = requireNonNull(array);
+		this.length = end - start;
+		this.start = start;
+		this.end = end;
+
+		_factory = requireNonNull(factory);
+		_copier = requireNonNull(copier);
 	}
 
 	/**
@@ -190,7 +182,13 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	 */
 	public final P slice(final int from, final int until) {
 		final P slice = _factory.create(array, from + start, until + start);
-		slice.arrayHolder = arrayHolder;
+		slice.isSealedProxy = isSealedProxy;
+		slice.sealedProxies = sealedProxies;
+		
+		if (isSealedProxy) {
+			sealedProxies.push(slice);
+		}
+
 		return slice;
 	}
 
@@ -206,6 +204,46 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	 */
 	public final P slice(final int from) {
 		return slice(from, length);
+	}
+
+	/**
+	 * Set the seal flag for this {@code ArrayProxy} instance and return a new
+	 * {@code ArrayProxy} object with an not set <i>seal</i> flag but with the
+	 * same underlying data structure.
+	 *
+	 * @return a new {@code ArrayProxy} instance; for command chaining.
+	 */
+	public final P seal() {
+		assert(!isSealedProxy) : "Must not be called on sealed proxies";
+
+		final P proxy = _factory.create(array, start, end);
+		proxy.sealedProxies = sealedProxies;
+		proxy.isSealedProxy = true;
+		sealedProxies.push(proxy);
+
+		return proxy;
+	}
+
+	/**
+	 * Clone the underlying data structure of this {@code ArrayProxy} if it is
+	 * sealed.
+	 */
+	public final void cloneIfSealed() {
+		assert(!isSealedProxy) : "Must not be called on sealed proxies";
+
+		if (sealedProxies.length > 0) {
+			sealedProxies.popAll(ArrayProxy::copyArray);
+		}
+	}
+
+	private void copyArray() {
+		assert(isSealedProxy) : "Must only be called on sealed proxies";
+
+		array = _copier.copy(array, start, end);
+		sealedProxies = new Stack<>();
+		isSealedProxy = false;
+		start = 0;
+		end = length;
 	}
 
 	/**
@@ -293,41 +331,6 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 			result.__set__(i, mapper.apply(__get(i)));
 		}
 		return result;
-	}
-
-	/**
-	 * Clone the underlying data structure of this {@code ArrayProxy} if it is
-	 * sealed.
-	 */
-	public final void cloneIfSealed() {
-		if (arrayHolder.immutables.length > 0) {
-			for (ArrayProxy<?, ?, ?> p = arrayHolder.immutables.pop();
-				 p != null; p = arrayHolder.immutables.pop())
-			{
-				p.copyArray();
-			}
-		}
-	}
-
-	private void copyArray() {
-		arrayHolder = ArrayHolder.of(_copier.copy(arrayHolder.values, start, end));
-		array = arrayHolder.values;
-		start = 0;
-		end = length;
-	}
-
-	/**
-	 * Set the seal flag for this {@code ArrayProxy} instance and return a new
-	 * {@code ArrayProxy} object with an not set <i>seal</i> flag but with the
-	 * same underlying data structure.
-	 *
-	 * @return a new {@code ArrayProxy} instance; for command chaining.
-	 */
-	public final P seal() {
-		final P proxy = _factory.create(array, start, end);
-		proxy.arrayHolder = arrayHolder;
-		arrayHolder.immutables.push(proxy);
-		return proxy;
 	}
 
 	@Override

@@ -85,8 +85,10 @@ public class MSeqTest {
 	@Test(dataProvider = "subSequences")
 	public void subSubSeqImmutable(final Named<MSeq<Integer>> parameter) {
 		final MSeq<Integer> seq = parameter.value;
+
 		final Integer second = seq.get(1);
 		final Integer third = seq.get(2);
+		final Integer fourth = seq.get(3);
 
 		final MSeq<Integer> slice = seq.subSeq(1);
 		Assert.assertEquals(slice.get(0), second);
@@ -98,7 +100,9 @@ public class MSeqTest {
 		Assert.assertEquals(islice.get(0), second);
 
 		final ISeq<Integer> isliceSlice = sliceSlice.toISeq();
+		final ISeq<Integer> isliceSlice2 = islice.subSeq(1);
 		Assert.assertEquals(isliceSlice.get(0), third);
+		Assert.assertEquals(isliceSlice2.get(0), third);
 
 		final Integer newSecond = -22;
 		seq.set(1, newSecond);
@@ -109,11 +113,50 @@ public class MSeqTest {
 		seq.set(2, newThird);
 		Assert.assertEquals(sliceSlice.get(0), newThird);
 		Assert.assertEquals(isliceSlice.get(0), third);
+		Assert.assertEquals(isliceSlice2.get(0), third);
+
+		final Integer newFourth = -4444;
+		seq.set(3, newFourth);
+		Assert.assertEquals(sliceSlice.get(1), newFourth);
+		Assert.assertEquals(isliceSlice2.subSeq(1).get(0), fourth);
+	}
+
+	@Test(dataProvider = "subSequences")
+	public void subSubSeqImmutable2(final Named<MSeq<Integer>> parameter) {
+		final MSeq<Integer> seq = parameter.value;
+		final Integer[] values = seq.toArray(new Integer[seq.length()]);
+		final Integer[] newValues = seq
+			.map(i -> -i)
+			.toArray(new Integer[seq.length()]);
+		final Integer[] newValues2 = seq
+			.map(i -> -i - 1000)
+			.toArray(new Integer[seq.length()]);
+
+		ISeq<Integer> iseq = seq.toISeq();
+		MSeq<Integer> mseq = seq;
+		for (int i = 0; i < seq.length(); ++i) {
+			Assert.assertEquals(seq.get(i), values[i]);
+			Assert.assertEquals(mseq.get(0), values[i]);
+			Assert.assertEquals(iseq.get(0), values[i]);
+
+			seq.set(i, newValues[i]);
+			Assert.assertEquals(seq.get(i), newValues[i]);
+			Assert.assertEquals(mseq.get(0), newValues[i]);
+			Assert.assertEquals(iseq.get(0), values[i]);
+
+			mseq.set(0, newValues2[i]);
+			Assert.assertEquals(seq.get(i), newValues2[i]);
+			Assert.assertEquals(mseq.get(0), newValues2[i]);
+			Assert.assertEquals(iseq.get(0), values[i]);
+
+			iseq = iseq.subSeq(1);
+			mseq = mseq.subSeq(1);
+		}
 	}
 
 	@DataProvider(name = "subSequences")
 	public Object[][] subSequences() {
-		final MSeq<Integer> mseq = MSeq.ofLength(10);
+		final MSeq<Integer> mseq = MSeq.ofLength(20);
 		for (int i = 0; i < mseq.length(); ++i) {
 			mseq.set(i, i + 1);
 		}
@@ -121,7 +164,7 @@ public class MSeqTest {
 
 		final List<MSeq<Integer>> sequences = new ArrayList<>();
 		MSeq<Integer> next = mseq;
-		for (int i = 2; i < mseq.length(); ++i) {
+		for (int i = 3; i < mseq.length(); ++i) {
 			sequences.add(next);
 			next = next.subSeq(1);
 		}

@@ -26,7 +26,6 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.regex.PatternSyntaxException;
 
-import org.jenetics.internal.collection.ArrayHolder;
 import org.jenetics.internal.collection.ArrayProxyISeq;
 import org.jenetics.internal.collection.CharArrayProxy;
 import org.jenetics.internal.util.Equality;

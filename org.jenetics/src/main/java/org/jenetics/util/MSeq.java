@@ -31,7 +31,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 
-import org.jenetics.internal.collection.ArrayHolder;
 import org.jenetics.internal.collection.ArrayProxyMSeq;
 import org.jenetics.internal.collection.ObjectArrayProxy;
 

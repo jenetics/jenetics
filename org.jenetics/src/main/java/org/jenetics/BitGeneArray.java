@@ -19,7 +19,6 @@
  */
 package org.jenetics;
 
-import org.jenetics.internal.collection.ArrayHolder;
 import org.jenetics.internal.collection.ArrayProxy;
 import org.jenetics.internal.collection.ArrayProxyISeq;
 import org.jenetics.internal.collection.ArrayProxyMSeq;
