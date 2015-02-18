@@ -37,6 +37,13 @@ import org.jenetics.internal.collection.ObjectArrayProxy;
 /**
  * Mutable, ordered, fixed sized sequence.
  *
+ * <p>
+ * <b>Implementation note:</b>
+ * <i>This implementation is not thread safe. All created {@link ISeq} and
+ * {@link MSeq} instances created by {@link MSeq#toISeq} and
+ * {@link MSeq#subSeq(int)}, respectively, must be protected by the same lock,
+ * when they are accessed (get/set) by different threads.</i>
+ *
  * @see ISeq
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
