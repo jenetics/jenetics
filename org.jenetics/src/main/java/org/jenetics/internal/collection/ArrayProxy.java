@@ -36,7 +36,7 @@ import org.jenetics.util.Copyable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0
+ * @version 3.1
  */
 public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	implements
@@ -184,7 +184,7 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 		final P slice = _factory.create(array, from + start, until + start);
 		slice.isSealedProxy = isSealedProxy;
 		slice.sealedProxies = sealedProxies;
-		
+
 		if (isSealedProxy) {
 			sealedProxies.push(slice);
 		}
