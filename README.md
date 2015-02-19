@@ -1,15 +1,6 @@
-# Jenetics (_3.0.0_)
+# Jenetics (_3.1.0_)
 
-**Jenetics** is an **Genetic Algorithm**, respectively an **Evolutionary
-Algorithm**, library written in Java. It is designed with a
-clear separation of the several concepts of the algorithm,
-e.g. `Gene`, `Chromosome`, `Genotype`, `Phenotype`, `Population` and
-fitness `Function`. **Jenetics** allows you to minimize
-and maximize the given fitness function without tweaking it. In contrast
-to other GA implementations, the library uses the concept of an
-evolution stream (`EvolutionStream`) for executing the evolution steps.
-Since the `EvolutionStream` implements the Java Stream interface,
-it works smoothly with the rest of the Java Stream API.
+**Jenetics** is an **Genetic Algorithm**, respectively an **Evolutionary Algorithm**, library written in Java. It is designed with a clear separation of the several concepts of the algorithm,e.g. `Gene`, `Chromosome`, `Genotype`, `Phenotype`, `Population` and fitness `Function`. **Jenetics** allows you to minimize and maximize the given fitness function without tweaking it. In contrast to other GA implementations, the library uses the concept of an evolution stream (`EvolutionStream`) for executing the evolution steps. Since the `EvolutionStream` implements the Java Stream interface, it works smoothly with the rest of the Java Stream API.
 
 ## Requirements
 
@@ -22,26 +13,24 @@ it works smoothly with the rest of the Java Stream API.
 
 ### Test compile/execution
 *  **TestNG 8.8**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
-*  **Apache Commons Math 3.3**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical accumulators.
+*  **Apache Commons Math 3.4**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical accumulators.
 
 ## Download
+* **Github**: <https://github.com/jenetics/jenetics/releases/download/v3.1.0/jenetics-3.1.0.zip>
 *  **Sourceforge**:  <https://sourceforge.net/projects/jenetics/files/latest/download>
-*  **Bitbucket**:  <https://bitbucket.org/fwilhelm/jenetics/downloads>
-*  **Maven**: `org.bitbucket.fwilhelm:org.jenetics:3.0.0` on [Maven Central](http://search.maven.org/#search|ga|1|a%3A%22org.jenetics%22)
+*  **Maven**: `org.bitbucket.fwilhelm:org.jenetics:3.1.0` on [Maven Central](http://search.maven.org/#search|ga|1|a%3A%22org.jenetics%22)
 
 ## Build Jenetics
 
 [![Build Status](https://travis-ci.org/jenetics/jenetics.svg?branch=master)](https://travis-ci.org/jenetics/jenetics)
 
-For building the Jenetics library from source, download the most recent, stable package version from [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download) or [Bitbucket](https://bitbucket.org/fwilhelm/jenetics/downloads) and extract it to some build directory.
+For building the Jenetics library from source, download the most recent, stable package version from [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download) and extract it to some build directory.
 
     $ unzip jenetics-<version>.zip -d <builddir>
 
-`<version>` denotes the actual Jenetics version and `<builddir>` the actual build directory. Alternatively you can check out the latest-unstable-version from the Mercurial default branch.
+`<version>` denotes the actual Jenetics version and `<builddir>` the actual build directory. Alternatively you can check out the master branch from Github.
 
     $ git clone https://github.com/jenetics/jenetics.git <builddir>
-    # or
-    $ hg clone https://bitbucket.org/fwilhelm/jenetics <builddir>
 
 Jenetics uses [Gradle](http://www.gradle.org/downloads) as build system and organizes the source into *sub*-projects (modules). Each sub-project is located in it’s own sub-directory:
 
@@ -70,21 +59,18 @@ Gradle has tasks which creates the project file for Eclipse and IntelliJ IDEA. C
 
     $ ./gradlew [eclipse|idea]
 
-for creating the project files for Eclipse or IntelliJ, respectively.
+for creating the project files for Eclipse or IntelliJ, respectively. Whereas the latest version of [IntelliJ IDEA](https://www.jetbrains.com/idea/) has decent native Gradle support.
 
 ## Example
 
-The minimum evolution Engine setup needs a genotype factory,
-`Factory<Genotype<?>>`, and a fitness `Function`. The `Genotype` implements the
-`Factory` interface and can therefore be used
-as prototype for creating the initial `Population` and for creating
-new random `Genotypes`.
+The minimum evolution Engine setup needs a genotype factory, `Factory<Genotype<?>>`, and a fitness `Function`. The `Genotype` implements the `Factory` interface and can therefore be used as prototype for creating the initial `Population` and for creating new random `Genotypes`.
 
 	import org.jenetics.BitChromosome;
 	import org.jenetics.BitGene;
 	import org.jenetics.Genotype;
 	import org.jenetics.engine.Engine;
 	import org.jenetics.engine.EvolutionResult;
+	import org.jenetics.util.Factory;
 
 	public class HelloWorld {
 		// 2.) Definition of the fitness function.
@@ -143,6 +129,12 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 
 
 ## Release notes
+
+### 3.1.0
+
+* Minor code streamlining and bug-fixing.
+* Improve termination strategies.
+* Fixes: [#2](https://github.com/jenetics/jenetics/issues/2), [#7](https://github.com/jenetics/jenetics/issues/7)
 
 ### 3.0.0
 

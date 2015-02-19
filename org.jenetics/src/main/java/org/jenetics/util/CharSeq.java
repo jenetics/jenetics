@@ -45,7 +45,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
+ * @version 2.0
  */
 public final class CharSeq
 	extends CharSeqBase
@@ -164,12 +164,15 @@ public final class CharSeq
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass()).and(proxy.array).value();
+		return Hash.of(getClass())
+			.and(proxy.array).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(ch -> eq(proxy.array, ch.proxy.array));
+		return Equality.of(this, obj).test(ch ->
+			eq(proxy.array, ch.proxy.array)
+		);
 	}
 
 	@Override

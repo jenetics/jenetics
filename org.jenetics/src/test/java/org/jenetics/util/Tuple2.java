@@ -24,11 +24,8 @@ import static org.jenetics.internal.util.Equality.eq;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.0
- * @version 2.0 &mdash; <em>$Date$</em>
  */
 class Tuple2<T1, T2> {
 

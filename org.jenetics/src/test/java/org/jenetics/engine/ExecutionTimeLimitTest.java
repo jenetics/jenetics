@@ -74,8 +74,9 @@ public class ExecutionTimeLimitTest {
 			);
 
 		return new EvolutionStreamImpl<DoubleGene, Double>(
-				ff, () -> new EvolutionStart<DoubleGene, Double>(new Population<>(), 1)
-			);
+			() -> EvolutionStart.of(new Population<DoubleGene, Double>(), 1),
+			ff
+		);
 	}
 
 	@DataProvider(name = "durations")

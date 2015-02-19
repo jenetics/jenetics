@@ -20,8 +20,6 @@
  # Author:
  #    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  #
- # Version: <em>$Date: 2015-01-06 $</em>
- #
  ###############################################################################
 -->
 <suite name="Jenetics" verbose="2" parallel="tests" thread-count="5">

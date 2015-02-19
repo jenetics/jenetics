@@ -31,7 +31,6 @@ import org.jenetics.internal.util.require;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-09-09 $</em>
  */
 public final class StatisticsAssert {
 	private StatisticsAssert() {require.noInstance();}

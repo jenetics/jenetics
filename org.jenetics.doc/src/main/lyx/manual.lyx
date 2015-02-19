@@ -1,5 +1,5 @@
-#LyX 2.0 created this file. For more info see http://www.lyx.org/
-\lyxformat 413
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
 \begin_document
 \begin_header
 \textclass article
@@ -71,6 +71,7 @@
 theorems-ams
 eqs-within-sections
 figs-within-sections
+tabs-within-sections
 \end_modules
 \maintain_unincluded_children false
 \language english
@@ -80,13 +81,13 @@ figs-within-sections
 \font_roman default
 \font_sans default
 \font_typewriter default
+\font_math auto
 \font_default_family default
 \use_non_tex_fonts false
 \font_sc false
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
-
 \graphics default
 \default_output_format pdf2
 \output_sync 0
@@ -111,15 +112,24 @@ figs-within-sections
 \pdf_pdfusetitle true
 \papersize a4paper
 \use_geometry false
-\use_amsmath 1
-\use_esint 1
-\use_mhchem 1
-\use_mathdots 1
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
 \cite_engine basic
+\cite_engine_type default
+\biblio_style plain
 \use_bibtopic false
 \use_indices false
 \paperorientation portrait
 \suppress_date false
+\justification true
 \use_refstyle 1
 \boxbgcolor #ffffff
 \index Index
@@ -136,9 +146,10 @@ figs-within-sections
 \paperpagestyle fancy
 \tracking_changes false
 \output_changes false
-\html_math_output 0
-\html_css_as_file 0
+\html_math_output 2
+\html_css_as_file 1
 \html_be_strict true
+\html_math_img_scale 1.2
 \end_header
 
 \begin_body
@@ -544,7 +555,7 @@ Jenetics
 \series bold
  Evolutionary Algorithm
 \series default
- library respectively written in Java.
+ library respectively, written in modern day Java.
  It is designed with a clear separation of the several algorithm concepts,
  e.
 \begin_inset space ~
@@ -831,6 +842,9 @@ Hello World
 
  program.
  This first example implements the well known bit-counting problem.
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 lstparams "extendedchars=true,language=Java,numbers=left,stepnumber=1,tabsize=4"
 inline false
@@ -859,6 +873,11 @@ import org.jenetics.engine.Engine;
 \begin_layout Plain Layout
 
 import org.jenetics.engine.EvolutionResult;
+\end_layout
+
+\begin_layout Plain Layout
+
+import org.jenetics.util.Factory;
 \end_layout
 
 \begin_layout Plain Layout
@@ -992,7 +1011,7 @@ n" + result);
 \begin_layout Plain Layout
 
 }
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -1383,7 +1402,7 @@ ge g_{max}](O_g)$
 
 \begin_layout Plain Layout
 
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -1529,7 +1548,7 @@ status open
 \end_inset
 
 
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -1622,7 +1641,7 @@ status open
 \end_inset
 
 
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -2028,7 +2047,7 @@ status open
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -2269,7 +2288,7 @@ public interface Gene<A, G extends Gene<A, G>>
 \begin_layout Plain Layout
 
 }
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -2292,6 +2311,10 @@ Gene
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 Listing 
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -2402,7 +2425,9 @@ Chromosome
 Gene
 \family default
  sequence.
- 
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -2451,7 +2476,7 @@ public interface Chromosome<G extends Gene<?, G>>
 \begin_layout Plain Layout
 
 }
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -2474,6 +2499,10 @@ Chromosome
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 Listing 
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -2591,7 +2620,7 @@ status open
 \end_inset
 
 
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -2910,7 +2939,7 @@ public final class Phenotype<
 \begin_layout Plain Layout
 
 }
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 
@@ -2933,6 +2962,10 @@ Phenotype
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 Listing 
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -3074,7 +3107,7 @@ public final class Population<
 \begin_layout Plain Layout
 
 }
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 
@@ -3097,6 +3130,10 @@ Population
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 Listing 
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -3273,6 +3310,10 @@ Engine<DoubleGene, Double> engine = Engine.builder(...)
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 The
 \family typewriter
  offspringFraction
@@ -3585,7 +3626,7 @@ status open
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -3991,7 +4032,7 @@ status open
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -4561,7 +4602,7 @@ status open
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -4697,7 +4738,7 @@ status open
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 2-point crossover
@@ -4759,7 +4800,7 @@ status open
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -4920,7 +4961,7 @@ status open
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -5319,6 +5360,10 @@ public class Main {
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 The first type parameter of the
 \family typewriter
  Function
@@ -5382,6 +5427,9 @@ reference "par:Probability-selectors"
  selecting offspring and survivors.
  In the default configuration the raw-fitness is equal to the actual fitness
  value, that means, the used fitness scaler is the identity function.
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -5424,6 +5472,10 @@ class Main {
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 The given listing shows a fitness scaler which reduces the the raw-fitness
  to its square root.
  This gives weaker individuals a greater changes being selected and weakens
@@ -5446,7 +5498,7 @@ width "90col%"
 special "none"
 height "1in"
 height_special "totalheight"
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset CommandInset line
@@ -5597,7 +5649,7 @@ public final class Engine<
 \begin_layout Plain Layout
 
 }
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 
@@ -5621,6 +5673,10 @@ name "lis:Engine-class"
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 Listing 
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -6133,7 +6189,7 @@ public interface EvolutionStream<
 \begin_layout Plain Layout
 
 }
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 
@@ -6157,6 +6213,10 @@ name "lis:EvolutionStream-class"
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 Listing 
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -6248,6 +6308,10 @@ EvolutionStream<DoubleGene, Double> stream = engine.stream()
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 The 
 \family typewriter
 Evolution\SpecialChar \-
@@ -6369,7 +6433,7 @@ public final class EvolutionResult<
 \begin_layout Plain Layout
 
 }
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 
@@ -6393,6 +6457,10 @@ name "lis:EvolutionResult-class"
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 Listing 
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -6690,7 +6758,7 @@ engine.stream()
 \begin_layout Plain Layout
 
     .collect(toBestGenotype());
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 
@@ -6714,6 +6782,10 @@ name "lis:EvolutionStatistics-usage"
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 Listing 
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -6964,6 +7036,10 @@ public class Main {
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 If no 
 \family typewriter
 Executor
@@ -7156,6 +7232,10 @@ List<Genotype<DoubleGene>> genotypes =
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 With the previous listing, a random, but reproducible, list of genotypes
  is created.
  This might be useful while testing your application or when you want to
@@ -7205,6 +7285,10 @@ Phenotype<DoubleGene, Double> best = engine.stream(genotypes)
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 The example above uses the generated genotypes for creating the 
 \family typewriter
 Evolution\SpecialChar \-
@@ -7593,7 +7677,7 @@ status open
 \end_inset
 
 
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -7693,7 +7777,7 @@ status open
 \end_inset
 
 
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -7853,7 +7937,7 @@ public class LCG64ShiftRandom extends Random {
 
 \begin_layout Plain Layout
 
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -8013,7 +8097,7 @@ status open
 \align center
 \begin_inset Tabular
 <lyxtabular version="3" rows="4" columns="5">
-<features tabularvalignment="middle">
+<features rotate="0" tabularvalignment="middle">
 <column alignment="left" valignment="top" width="0pt">
 <column alignment="right" valignment="top" width="0pt">
 <column alignment="right" valignment="top" width="0pt">
@@ -8273,7 +8357,7 @@ LCG64ShiftRandom
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -8750,7 +8834,7 @@ status open
 \end_inset
 
 
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 
@@ -8870,7 +8954,11 @@ assert(a3.equals(a4) && a3 != a4);
 
 \end_inset
 
- How to create instances of the three
+
+\end_layout
+
+\begin_layout Standard
+How to create instances of the three
 \family typewriter
  Seq
 \family default
@@ -8957,10 +9045,10 @@ status open
 \align center
 \begin_inset Tabular
 <lyxtabular version="3" rows="4" columns="3">
-<features tabularvalignment="middle">
-<column alignment="left" valignment="top" width="0">
-<column alignment="left" valignment="top" width="0">
-<column alignment="left" valignment="top" width="0">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="left" valignment="top">
+<column alignment="left" valignment="top">
+<column alignment="left" valignment="top">
 <row>
 <cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
@@ -9103,7 +9191,7 @@ DoubleMoments
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 Statistics classes
@@ -9559,7 +9647,7 @@ public interface Selector<
 \begin_layout Plain Layout
 
 }
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -9700,7 +9788,7 @@ public interface Alterer<G extends Gene<?, G>> {
 \begin_layout Plain Layout
 
 }
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -9723,6 +9811,10 @@ Alterer
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 The first parameter of the
 \family typewriter
  alter
@@ -9987,6 +10079,10 @@ Genotype.of(
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 Decoding the double value from the Genotype is also straight forward.
  Just get the first gene from the first chromosome, with the 
 \family typewriter
@@ -9997,6 +10093,9 @@ getGene()
 double
 \family default
 .
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -10019,6 +10118,10 @@ static double toDouble(final Genotype<DoubleGene> gt) {
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 When the 
 \family typewriter
 Genotype
@@ -10248,6 +10351,9 @@ Chromosome
 \end_inset
 
 .
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -10270,6 +10376,10 @@ Genotype.of(
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 The decoding of the 
 \family typewriter
 Genotype
@@ -10298,6 +10408,9 @@ toArray()
 double[]
 \family default
  array.
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -10320,6 +10433,10 @@ static double[] toScalars(final Genotype<DoubleGene> gt) {
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 With the 
 \emph on
 first
@@ -10376,7 +10493,9 @@ Genotype
 Chromosome
 \family default
 s with length one.
- 
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -10414,6 +10533,10 @@ Genotype.of(
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 With the help of the new Java Stream API, the decoding of the 
 \family typewriter
 Genotype
@@ -10433,7 +10556,9 @@ Seq
 double
 \family default
  values and then collected into an array.
- 
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -10466,6 +10591,10 @@ static double[] toScalars(final Genotype<DoubleGene> gt) {
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 As already mentioned, with the use of scalar chromosomes we can only use
  the 
 \family typewriter
@@ -10617,6 +10746,10 @@ Genotype.of(
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 The decoding of the vectors is quite easy with the help of the Java Stream
  API.
  In the first 
@@ -10662,6 +10795,9 @@ m
 ]
 \family default
  array afterwards.
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -10720,6 +10856,9 @@ reference "sub:Scalar-function"
 \end_inset
 
 .
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -10882,7 +11021,9 @@ s with a length of
 \end_inset
 
 .
- 
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -10910,6 +11051,10 @@ Genotype.of(
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 The drawback with this kind of encoding is, that we will create a lot of
  
 \emph on
@@ -11017,6 +11162,9 @@ This parameters can then be represented by the following
 Genotype
 \family default
 .
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -11074,6 +11222,10 @@ Genotype.of(
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 This encoding ensures that no invalid 
 \family typewriter
 Genotype
@@ -11338,7 +11490,7 @@ status open
 \end_inset
 
 
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -11420,6 +11572,10 @@ final Genotype<BitGene> gt = Genotype
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 The code snippet above shows how to create an adjacency matrix for a graph
  with 
 \begin_inset Formula $n=6$
@@ -11543,7 +11699,7 @@ status open
 \end_inset
 
 
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -11623,7 +11779,7 @@ status open
 \end_inset
 
 
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -11647,6 +11803,9 @@ The following code snippet shows how the
 Genotype
 \family default
  of the matrix is created.
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -11679,6 +11838,10 @@ final Genotype<DoubleGene> gt = Genotype
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 For accessing the single matrix elements, you can simply call 
 \family typewriter
 Genotype\SpecialChar \-
@@ -11692,6 +11855,9 @@ double\SpecialChar \-
 [][]
 \family default
  array, the following code can be used.
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -11790,6 +11956,10 @@ EvolutionStream<DoubleGene, Double> stream = engine.stream()
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 This kind of termination method should always be applied, to guarantee the
  truncation of the evolution stream.
 \end_layout
@@ -11977,7 +12147,7 @@ final class SteadyFitnessLimit<C extends Comparable<? super C>>
 \begin_layout Plain Layout
 
 }
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -11996,6 +12166,10 @@ Steady fitness
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 Listing 
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -12366,7 +12540,7 @@ status open
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -13488,7 +13662,7 @@ Version
 \series default
 :
 \emph on
- 3.3
+ 3.4.1
 \end_layout
 
 \begin_layout Itemize
@@ -13500,7 +13674,7 @@ Homepage
 \emph on
  
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -13521,11 +13695,11 @@ Download
 \emph on
 
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
-http://tweedo.com/mirror/apache/commons/math/binaries/commons-math3-3.3-bin.zip
+http://tweedo.com/mirror/apache/commons/math/binaries/commons-math3-3.4.1-bin.zip
 \end_layout
 
 \end_inset
@@ -13811,7 +13985,7 @@ Maven Central
 \end_layout
 
 \begin_layout LyX-Code
-    <version>3.0.0</version>
+    <version>3.1.0</version>
 \end_layout
 
 \begin_layout LyX-Code

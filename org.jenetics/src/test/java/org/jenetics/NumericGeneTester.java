@@ -24,7 +24,6 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-06-02 $</em>
  */
 public abstract class NumericGeneTester<
 	N extends Number & Comparable<N>,
