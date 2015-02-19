@@ -359,11 +359,12 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 
 	@Override
 	public P copy() {
-		return _proxyFactory.create(_arrayCopier.copy(array, start, end), 0, end - start);
+		return _proxyFactory
+			.create(_arrayCopier.copy(array, start, end), 0, end - start);
 	}
 
 	/**
-	 * Checks the given index.
+	 * Checks the given index.s
 	 *
 	 * @param start the index to check.
 	 * @throws java.lang.ArrayIndexOutOfBoundsException if the given index is
