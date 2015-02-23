@@ -48,6 +48,7 @@ import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
 import org.jenetics.engine.EvolutionStream;
 import org.jenetics.stat.DoubleMomentStatistics;
+import org.jenetics.stat.Quantile;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -74,7 +75,7 @@ public class SteadyFitness {
 		// Configure and build the evolution engine.
 		return Engine
 			.builder(ff, BitChromosome.of(nitems, 0.5))
-			.populationSize(500)
+			.populationSize(250)
 			.survivorsSelector(new TournamentSelector<>(5))
 			.offspringSelector(new RouletteWheelSelector<>())
 			.alterers(
@@ -89,26 +90,44 @@ public class SteadyFitness {
 		data.add(new Object[]{"Stable generation", "Evolved generation", "Fitness"});
 
 		final Engine<BitGene, Double> engine = engine();
-		final DoubleMomentStatistics generations = new DoubleMomentStatistics();
-		final DoubleMomentStatistics fitness = new DoubleMomentStatistics();
 
-		for (int i = 1; i <= 50; ++i) {
-			System.out.println(format("%d steady generations", i));
-			for (int j = 0; j < 50; ++j) {
+		double di = 1;
+		for (int i = 1; i <= 40; ++i) {
+			final int gen = Math.max(i, (int)di);
+			System.out.println(format("%d steady generations", gen));
+
+			final DoubleMomentStatistics generations = new DoubleMomentStatistics();
+			final Quantile quartileUpper = new Quantile(0.75);
+			final Quantile quartileLower = new Quantile(0.25);
+			final DoubleMomentStatistics fitness = new DoubleMomentStatistics();
+
+			for (int j = 0; j < 20; ++j) {
 				final EvolutionStream<BitGene, Double> stream = engine.stream()
-					.limit(bySteadyFitness(i));
+					.limit(bySteadyFitness(gen));
 
 				final EvolutionResult<BitGene, Double> result = stream
 					.collect(EvolutionResult.toBestEvolutionResult());
 
+				quartileLower.accept(result.getTotalGenerations());
+				quartileUpper.accept(result.getTotalGenerations());
 				generations.accept(result.getTotalGenerations());
 				fitness.accept(result.getBestFitness());
 			}
 
-			data.add(new Object[]{i, generations.getMean(), fitness.getMean()});
+			data.add(new Object[]{
+				gen, // 1
+				generations.getMean(), // 2
+				fitness.getMean(), // 3
+				quartileLower.getValue(), // 4
+				quartileUpper.getValue(), // 5
+				generations.getMin(), // 6
+				generations.getMax() // 7
+			});
+
+			di = di*1.0;
 		}
 
-		write(new File("/home/fwilhelm/data.txt"), data);
+		write(new File("org.jenetics/src/test/scripts/diagram/steady_fitness_termination.dat"), data);
 
 		System.out.println("Ready");
 	}
