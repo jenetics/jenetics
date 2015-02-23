@@ -19,11 +19,159 @@
  */
 package org.jenetics.diagram;
 
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+import static java.lang.String.format;
+import static java.util.stream.Collectors.joining;
+import static org.jenetics.engine.limit.bySteadyFitness;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Random;
+import java.util.function.Function;
+import java.util.stream.Collector;
+import java.util.stream.Stream;
+
+import org.jenetics.BitChromosome;
+import org.jenetics.BitGene;
+import org.jenetics.DoubleGene;
+import org.jenetics.Genotype;
+import org.jenetics.Mutator;
+import org.jenetics.RouletteWheelSelector;
+import org.jenetics.SinglePointCrossover;
+import org.jenetics.TournamentSelector;
+import org.jenetics.engine.Engine;
+import org.jenetics.engine.EvolutionResult;
+import org.jenetics.engine.EvolutionStream;
+import org.jenetics.stat.DoubleMomentStatistics;
+import org.jenetics.util.RandomRegistry;
+
 /**
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz
- *         Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
 public class SteadyFitness {
+
+	private static Double eval(final Genotype<DoubleGene> gt) {
+		final double x = gt.getGene().doubleValue();
+		return cos(0.5 + sin(x))*cos(x);
+	}
+
+	private static Engine<BitGene, Double> engine() {
+		final int nitems = 50;
+		final double kssize = nitems*100.0/3.0;
+
+		final FF ff = new FF(
+			Stream.generate(Item::random)
+				.limit(nitems)
+				.toArray(Item[]::new),
+			kssize
+		);
+
+		// Configure and build the evolution engine.
+		return Engine
+			.builder(ff, BitChromosome.of(nitems, 0.5))
+			.populationSize(500)
+			.survivorsSelector(new TournamentSelector<>(5))
+			.offspringSelector(new RouletteWheelSelector<>())
+			.alterers(
+				new Mutator<>(0.115),
+				new SinglePointCrossover<>(0.16))
+			.build();
+	}
+
+
+	public static void main(final String[] args) throws IOException {
+		final List<Object[]> data = new ArrayList<>();
+		data.add(new Object[]{"Stable generation", "Evolved generation", "Fitness"});
+
+		final Engine<BitGene, Double> engine = engine();
+		final DoubleMomentStatistics generations = new DoubleMomentStatistics();
+		final DoubleMomentStatistics fitness = new DoubleMomentStatistics();
+
+		for (int i = 1; i <= 50; ++i) {
+			System.out.println(format("%d steady generations", i));
+			for (int j = 0; j < 50; ++j) {
+				final EvolutionStream<BitGene, Double> stream = engine.stream()
+					.limit(bySteadyFitness(i));
+
+				final EvolutionResult<BitGene, Double> result = stream
+					.collect(EvolutionResult.toBestEvolutionResult());
+
+				generations.accept(result.getTotalGenerations());
+				fitness.accept(result.getBestFitness());
+			}
+
+			data.add(new Object[]{i, generations.getMean(), fitness.getMean()});
+		}
+
+		write(new File("/home/fwilhelm/data.txt"), data);
+
+		System.out.println("Ready");
+	}
+
+	private static void write(final File file, final List<Object[]> data)
+		throws IOException
+	{
+		try (PrintWriter writer = new PrintWriter(file)) {
+			writer.println("# " + Stream.of(data.get(0)).map(Objects::toString).collect(joining(" ")));
+			data.subList(1, data.size())
+				.forEach(d -> writer.println(Stream.of(d).map(Objects::toString).collect(joining(" "))));
+		}
+	}
+
+}
+
+// This class represents a knapsack item, with a specific
+// "size" and "value".
+final class Item {
+	public final double size;
+	public final double value;
+
+	Item(final double size, final double value) {
+		this.size = size;
+		this.value = value;
+	}
+
+	// Create a new random knapsack item.
+	static Item random() {
+		final Random r = RandomRegistry.getRandom();
+		return new Item(r.nextDouble()*100, r.nextDouble()*100);
+	}
+
+	// Create a new collector for summing up the knapsack items.
+	static Collector<Item, ?, Item> toSum() {
+		return Collector.of(
+			() -> new double[2],
+			(a, b) -> {a[0] += b.size; a[1] += b.value;},
+			(a, b) -> {a[0] += b[0]; a[1] += b[1]; return a;},
+			r -> new Item(r[0], r[1])
+		);
+	}
+}
+
+// The knapsack fitness function class, which is parametrized with
+// the available items and the size of the knapsack.
+final class FF
+	implements Function<Genotype<BitGene>, Double>
+{
+	private final Item[] items;
+	private final double size;
+
+	public FF(final Item[] items, final double size) {
+		this.items = items;
+		this.size = size;
+	}
+
+	@Override
+	public Double apply(final Genotype<BitGene> gt) {
+		final Item sum = ((BitChromosome)gt.getChromosome()).ones()
+			.mapToObj(i -> items[i])
+			.collect(Item.toSum());
+
+		return sum.size <= this.size ? sum.value : 0;
+	}
 }
