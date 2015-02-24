@@ -92,7 +92,7 @@ public class SteadyFitness {
 		final Engine<BitGene, Double> engine = engine();
 
 		double di = 1;
-		for (int i = 1; i <= 40; ++i) {
+		for (int i = 1; i <= 100; ++i) {
 			final int gen = Math.max(i, (int)di);
 			System.out.println(format("%d steady generations", gen));
 
@@ -101,7 +101,7 @@ public class SteadyFitness {
 			final Quantile quartileLower = new Quantile(0.25);
 			final DoubleMomentStatistics fitness = new DoubleMomentStatistics();
 
-			for (int j = 0; j < 20; ++j) {
+			for (int j = 0; j < 500; ++j) {
 				final EvolutionStream<BitGene, Double> stream = engine.stream()
 					.limit(bySteadyFitness(gen));
 
