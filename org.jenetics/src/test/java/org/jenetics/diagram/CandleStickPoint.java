@@ -19,6 +19,7 @@
  */
 package org.jenetics.diagram;
 
+import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
 
 import org.jenetics.stat.DoubleMomentStatistics;
@@ -28,20 +29,20 @@ import org.jenetics.stat.Quantile;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
 public final class CandleStickPoint {
-	public final double mean;
+	public final double median;
 	public final double low;
 	public final double high;
 	public final double min;
 	public final double max;
 
 	private CandleStickPoint(
-		final double mean,
+		final double median,
 		final double low,
 		final double high,
 		final double min,
 		final double max
 	) {
-		this.mean = mean;
+		this.median = median;
 		this.low = low;
 		this.high = high;
 		this.min = min;
@@ -49,37 +50,58 @@ public final class CandleStickPoint {
 	}
 
 	public static CandleStickPoint of(
-		final double mean,
+		final double median,
 		final double low,
 		final double high,
 		final double min,
 		final double max
 	) {
-		return new CandleStickPoint(mean, low, high, min, max);
+		return new CandleStickPoint(median, low, high, min, max);
 	}
 
-	public static Collector<IntDoublePair, ?, CandleStickPoint> toCandleStickPoint() {
+	public static <T> Collector<T, ?, CandleStickPoint>
+	toCandleStickPoint(final ToDoubleFunction<T> function) {
 		return Collector.of(
 			Statistics::new,
-			(r, t) -> r.accept(t._1),
+			(r, t) -> r.accept(function.applyAsDouble(t)),
 			Statistics::combine,
 			Statistics::toPoint
 		);
 	}
 
+	public static <T> Collector<T, ?, CandleStickPoint[]>
+	toCandleStickPoint(final ToDoubleFunction<T> f1, final ToDoubleFunction<T> f2) {
+		return Collector.of(
+			() -> new Statistics[]{new Statistics(), new Statistics()},
+			(r, t) -> {
+				r[0].accept(f1.applyAsDouble(t));
+				r[1].accept(f2.applyAsDouble(t));
+			},
+			(a, b) -> {
+				a[0].combine(b[0]);
+				a[1].combine(b[1]);
+				return a;
+			},
+			s -> new CandleStickPoint[]{s[0].toPoint(), s[1].toPoint()}
+		);
+	}
+
 	private static final class Statistics {
 		private final DoubleMomentStatistics data = new DoubleMomentStatistics();
+		private final Quantile median = new Quantile(0.5);
 		private final Quantile low = new Quantile(0.25);
 		private final Quantile high = new Quantile(0.75);
 
 		void accept(final double value) {
 			data.accept(value);
+			median.accept(value);
 			low.accept(value);
 			high.accept(value);
 		}
 
 		Statistics combine(final Statistics other) {
 			data.combine(other.data);
+			median.combine(other.median);
 			low.combine(other.low);
 			high.combine(other.high);
 
@@ -88,7 +110,7 @@ public final class CandleStickPoint {
 
 		CandleStickPoint toPoint() {
 			return CandleStickPoint.of(
-				data.getMean(),
+				median.getValue(),
 				low.getValue(),
 				high.getValue(),
 				data.getMin(),

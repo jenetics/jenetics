@@ -34,6 +34,7 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.Collector;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import org.jenetics.BitChromosome;
@@ -86,6 +87,40 @@ public class SteadyFitness {
 	}
 
 	public static void main(final String[] args) throws IOException {
+		final SteadyFitnessTermination<BitGene> test =
+			new SteadyFitnessTermination<>(engine(), 10);
+
+		final String[] header = new String[]{
+			"Generation",
+			"Total generation median", "lower quartile", "upper quartile", "min", "max",
+			"Fitness median", "lower quartile", "upper quartile", "min", "max"
+		};
+		final Stream<String[]> headerStream = Stream.<String[]>builder().add(header).build();
+
+		IntStream generations = IntStream.range(1, 10)
+			.map(i -> Math.max((int) Math.pow(1.115, i), i));
+
+		Object[][] data = Stream
+			.concat(
+				headerStream,
+				generations.mapToObj(test::run))
+			.toArray(Object[][]::new);
+
+		SteadyFitnessTermination.write(null, data);
+
+
+		/*
+		final Object[][] data = new Object[][] {
+			{"1", "22", "333", "4444", "55555" },
+			{1, 8234234, 3, 4, 5}
+		};
+		*/
+
+
+
+
+
+		/*
 		final List<Object[]> data = new ArrayList<>();
 		data.add(new Object[]{"Stable generation", "Evolved generation", "Fitness"});
 
@@ -130,6 +165,7 @@ public class SteadyFitness {
 		write(new File("org.jenetics/src/test/scripts/diagram/steady_fitness_termination.dat"), data);
 
 		System.out.println("Ready");
+		*/
 	}
 
 	private static void write(final File file, final List<Object[]> data)
