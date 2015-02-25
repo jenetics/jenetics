@@ -75,8 +75,12 @@ public class SteadyFitnessTermination<G extends Gene<?, G>> {
 
 		try (PrintWriter writer = new PrintWriter(file)) {
 			System.out.println("#" + format(pattern, sdata[0]));
-			Stream.of(sdata).skip(1)
-				.forEach(d -> System.out.println(" " + format(pattern, d)));
+			writer.println("#" + format(pattern, sdata[0]));
+
+			Stream.of(sdata).skip(1).forEach(d -> {
+				System.out.println(" " + format(pattern, d));
+				writer.println(" " + format(pattern, d));
+			});
 		}
 
 	}
@@ -96,6 +100,7 @@ public class SteadyFitnessTermination<G extends Gene<?, G>> {
 	}
 
 	Object[] run(final int generation) {
+		System.out.println("Generation: " + generation);
 		final CandleStickPoint[] result = eval(generation);
 		final Object[] data = new Object[11];
 
@@ -123,7 +128,7 @@ public class SteadyFitnessTermination<G extends Gene<?, G>> {
 		format.setMaximumFractionDigits(7);
 		format.setMinimumFractionDigits(7);
 
-		return format.format(value);
+		return format.format(value).replace(",", "");
 	}
 
 	private CandleStickPoint[] eval(final int generation) {

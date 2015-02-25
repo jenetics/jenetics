@@ -88,16 +88,16 @@ public class SteadyFitness {
 
 	public static void main(final String[] args) throws IOException {
 		final SteadyFitnessTermination<BitGene> test =
-			new SteadyFitnessTermination<>(engine(), 10);
+			new SteadyFitnessTermination<>(engine(), 150);
 
 		final String[] header = new String[]{
-			"Generation",
-			"Total generation median", "lower quartile", "upper quartile", "min", "max",
-			"Fitness median", "lower quartile", "upper quartile", "min", "max"
+			"1: Generation",
+			"2: Total generation median", "3: lower quartile", "4: upper quartile", "5: min", "6: max",
+			"7: Fitness median", "8: lower quartile", "9: upper quartile", "10: min", "11: max"
 		};
 		final Stream<String[]> headerStream = Stream.<String[]>builder().add(header).build();
 
-		IntStream generations = IntStream.range(1, 10)
+		IntStream generations = IntStream.range(1, 50)
 			.map(i -> Math.max((int) Math.pow(1.115, i), i));
 
 		Object[][] data = Stream
@@ -106,76 +106,10 @@ public class SteadyFitness {
 				generations.mapToObj(test::run))
 			.toArray(Object[][]::new);
 
-		SteadyFitnessTermination.write(null, data);
-
-
-		/*
-		final Object[][] data = new Object[][] {
-			{"1", "22", "333", "4444", "55555" },
-			{1, 8234234, 3, 4, 5}
-		};
-		*/
-
-
-
-
-
-		/*
-		final List<Object[]> data = new ArrayList<>();
-		data.add(new Object[]{"Stable generation", "Evolved generation", "Fitness"});
-
-		final Engine<BitGene, Double> engine = engine();
-
-		double di = 1;
-		for (int i = 1; i <= 100; ++i) {
-			final int gen = Math.max(i, (int)di);
-			System.out.println(format("%d steady generations", gen));
-
-			final DoubleMomentStatistics generations = new DoubleMomentStatistics();
-			final Quantile quartileUpper = new Quantile(0.75);
-			final Quantile quartileLower = new Quantile(0.25);
-			final DoubleMomentStatistics fitness = new DoubleMomentStatistics();
-
-			for (int j = 0; j < 500; ++j) {
-				final EvolutionStream<BitGene, Double> stream = engine.stream()
-					.limit(bySteadyFitness(gen));
-
-				final EvolutionResult<BitGene, Double> result = stream
-					.collect(EvolutionResult.toBestEvolutionResult());
-
-				quartileLower.accept(result.getTotalGenerations());
-				quartileUpper.accept(result.getTotalGenerations());
-				generations.accept(result.getTotalGenerations());
-				fitness.accept(result.getBestFitness());
-			}
-
-			data.add(new Object[]{
-				gen, // 1
-				generations.getMean(), // 2
-				fitness.getMean(), // 3
-				quartileLower.getValue(), // 4
-				quartileUpper.getValue(), // 5
-				generations.getMin(), // 6
-				generations.getMax() // 7
-			});
-
-			di = di*1.0;
-		}
-
-		write(new File("org.jenetics/src/test/scripts/diagram/steady_fitness_termination.dat"), data);
-
-		System.out.println("Ready");
-		*/
-	}
-
-	private static void write(final File file, final List<Object[]> data)
-		throws IOException
-	{
-		try (PrintWriter writer = new PrintWriter(file)) {
-			writer.println("# " + Stream.of(data.get(0)).map(Objects::toString).collect(joining(" ")));
-			data.subList(1, data.size())
-				.forEach(d -> writer.println(Stream.of(d).map(Objects::toString).collect(joining(" "))));
-		}
+		SteadyFitnessTermination.write(
+			new File("org.jenetics/src/test/scripts/diagram/steady_fitness_termination.dat"),
+			data
+		);
 	}
 
 }

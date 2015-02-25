@@ -121,15 +121,3 @@ public final class CandleStickPoint {
 
 
 }
-
-/*
-	gen, // 1
-	generations.getMean(), // 2
-	fitness.getMean(), // 3
-	quartileLower.getValue(), // 4
-	quartileUpper.getValue(), // 5
-	generations.getMin(), // 6
-	generations.getMax() // 7
-
-	1:4:6:7:5
-*/
