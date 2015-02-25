@@ -39,6 +39,7 @@ import java.util.stream.Stream;
 import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;
 import org.jenetics.DoubleGene;
+import org.jenetics.Gene;
 import org.jenetics.Genotype;
 import org.jenetics.Mutator;
 import org.jenetics.RouletteWheelSelector;
@@ -83,7 +84,6 @@ public class SteadyFitness {
 				new SinglePointCrossover<>(0.16))
 			.build();
 	}
-
 
 	public static void main(final String[] args) throws IOException {
 		final List<Object[]> data = new ArrayList<>();
