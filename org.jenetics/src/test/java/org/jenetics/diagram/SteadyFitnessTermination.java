@@ -106,10 +106,10 @@ public class SteadyFitnessTermination<G extends Gene<?, G>> {
 		data[9] = (int)result[0].max;
 
 		// Fitness
-		data[10] = df(result[0].mean);
-		data[11] = df(result[0].variance);
-		data[12] = df(result[0].skewness);
-		data[13] = df(result[0].kurtosis);
+		data[10] = df(result[1].mean);
+		data[11] = df(result[1].variance);
+		data[12] = df(result[1].skewness);
+		data[13] = df(result[1].kurtosis);
 		data[14] = df(result[1].median);
 		data[15] = df(result[1].low);
 		data[16] = df(result[1].high);
