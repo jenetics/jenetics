@@ -51,6 +51,7 @@ import org.jenetics.engine.EvolutionResult;
 import org.jenetics.engine.EvolutionStream;
 import org.jenetics.stat.DoubleMomentStatistics;
 import org.jenetics.stat.Quantile;
+import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -87,8 +88,9 @@ public class SteadyFitness {
 	}
 
 	public static void main(final String[] args) throws IOException {
+		RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
 		final SteadyFitnessTermination<BitGene> test =
-			new SteadyFitnessTermination<>(engine(), 150);
+			new SteadyFitnessTermination<>(engine(), 500);
 
 		final String[] header = new String[]{
 			"1: Generation",
@@ -97,7 +99,7 @@ public class SteadyFitness {
 		};
 		final Stream<String[]> headerStream = Stream.<String[]>builder().add(header).build();
 
-		IntStream generations = IntStream.range(1, 50)
+		IntStream generations = IntStream.range(1, 30)
 			.map(i -> Math.max((int) Math.pow(1.115, i), i));
 
 		Object[][] data = Stream
