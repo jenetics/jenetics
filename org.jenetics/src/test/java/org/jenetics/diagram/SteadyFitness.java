@@ -78,17 +78,19 @@ public class SteadyFitness {
 	public static void main(final String[] args) throws IOException {
 		RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
 
-		final int samples = 1000;
+		final int samples = 2500;
 		final SteadyFitnessTermination<BitGene> test =
 			new SteadyFitnessTermination<>(engine(), samples);
 
-		IntStream.range(1, 50)
+		IntStream.range(1, 55)
+			.peek(i -> System.out.print(i + ": "))
 			.map(i -> Math.max((int) Math.pow(1.115, i), i))
 			.peek(i -> System.out.println("Generation: " + i))
 			.forEach(test::execute);
 
 		test.write(new File(
-			"org.jenetics/src/test/scripts/diagram/steady_fitness_termination.dat"
+			"org.jenetics/src/test/scripts/diagram/" +
+			"steady_fitness_termination.dat"
 		));
 		System.out.println("Ready");
 	}
