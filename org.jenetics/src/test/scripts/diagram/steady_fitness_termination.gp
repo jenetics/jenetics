@@ -8,6 +8,7 @@ set key center top title " "
 #set xlabel "Steady generation"
 set ylabel "Total generation"
 #set y2label "Fitness"
+set grid
 
 #set label 1 "Samples: 1000"
 #set label 1 at graph 0.02, 0.94 tc lt 3
@@ -20,8 +21,8 @@ set style fill empty
 data = "steady_fitness_termination.dat"
 
 set multiplot
-set size 1, 0.7
-set origin 0, 0.3
+set size 1, 0.67
+set origin 0, 0.33
 set bmargin 0
 set format x ""
 
@@ -40,7 +41,7 @@ set ylabel ""
 set xlabel "Steady generation"
 set bmargin
 set format x
-set size 1.0, 0.3
+set size 1.0, 0.33
 set origin 0.0, 0.0
 set tmargin 0
 unset logscale y
