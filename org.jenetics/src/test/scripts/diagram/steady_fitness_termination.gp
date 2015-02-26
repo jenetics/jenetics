@@ -25,7 +25,7 @@ set style fill empty
 
 data = "steady_fitness_termination.dat"
 
-set xrange [ 0.00000 : 35.0000 ]
+set xrange [ 0.00000 : 30.0000 ]
 #set x2range [ 0.00000 : 55.0000 ]
 #set yrange [ 0.00000 : 210.0000 ] noreverse nowriteback
 
@@ -35,11 +35,12 @@ set xrange [ 0.00000 : 35.0000 ]
 #plot data using 1:2 with lines title "Total generations" axes x1y1, \
 #     data using 1:3 with lines title "Best fitness" axes x2y2
 
-#1: Generation    2: Total generation median    3: lower quartile    
-#4: upper quartile    5: min    6: max    7: Fitness median    8: lower quartile    
+#1: Generation    2: Total generation median    3: lower quartile
+#4: upper quartile    5: min    6: max    7: Fitness median    8: lower quartile
 #9: upper quartile         10: min         11: max
 
-plot data using 1:3:5:6:4 with candlesticks title "Total generations" axes x1y1 whiskerbars, \
+plot data using 1:7:9:10:8 with candlesticks title "Total generations" axes x1y1 whiskerbars, \
+     data using 1:6:6:6:6 with candlesticks lw 2 notitle axes x1y1, \
      data using 1:2 with lines notitle axes x1y1
      #data using 1:8:10:11:9 with candlesticks title "Best fitness" axes x2y2 whiskerbars, \
      #data using 1:7 with lines notitle axes x2y2

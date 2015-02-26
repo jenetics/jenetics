@@ -21,16 +21,9 @@ package org.jenetics.diagram;
 
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
-import static java.lang.String.format;
-import static java.util.stream.Collectors.joining;
-import static org.jenetics.engine.limit.bySteadyFitness;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.Collector;
@@ -40,17 +33,12 @@ import java.util.stream.Stream;
 import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;
 import org.jenetics.DoubleGene;
-import org.jenetics.Gene;
 import org.jenetics.Genotype;
 import org.jenetics.Mutator;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.TournamentSelector;
 import org.jenetics.engine.Engine;
-import org.jenetics.engine.EvolutionResult;
-import org.jenetics.engine.EvolutionStream;
-import org.jenetics.stat.DoubleMomentStatistics;
-import org.jenetics.stat.Quantile;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
 
@@ -89,29 +77,20 @@ public class SteadyFitness {
 
 	public static void main(final String[] args) throws IOException {
 		RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
+
+		final int samples = 1000;
 		final SteadyFitnessTermination<BitGene> test =
-			new SteadyFitnessTermination<>(engine(), 500);
+			new SteadyFitnessTermination<>(engine(), samples);
 
-		final String[] header = new String[]{
-			"1: Generation",
-			"2: Total generation median", "3: lower quartile", "4: upper quartile", "5: min", "6: max",
-			"7: Fitness median", "8: lower quartile", "9: upper quartile", "10: min", "11: max"
-		};
-		final Stream<String[]> headerStream = Stream.<String[]>builder().add(header).build();
+		IntStream.range(1, 50)
+			.map(i -> Math.max((int) Math.pow(1.115, i), i))
+			.peek(i -> System.out.println("Generation: " + i))
+			.forEach(test::execute);
 
-		IntStream generations = IntStream.range(1, 30)
-			.map(i -> Math.max((int) Math.pow(1.115, i), i));
-
-		Object[][] data = Stream
-			.concat(
-				headerStream,
-				generations.mapToObj(test::run))
-			.toArray(Object[][]::new);
-
-		SteadyFitnessTermination.write(
-			new File("org.jenetics/src/test/scripts/diagram/steady_fitness_termination.dat"),
-			data
-		);
+		test.write(new File(
+			"org.jenetics/src/test/scripts/diagram/steady_fitness_termination.dat"
+		));
+		System.out.println("Ready");
 	}
 
 }

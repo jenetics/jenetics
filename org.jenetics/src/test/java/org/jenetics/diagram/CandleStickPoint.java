@@ -29,6 +29,10 @@ import org.jenetics.stat.Quantile;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
 public final class CandleStickPoint {
+	public final double mean;
+	public final double variance;
+	public final double skewness;
+	public final double kurtosis;
 	public final double median;
 	public final double low;
 	public final double high;
@@ -36,12 +40,20 @@ public final class CandleStickPoint {
 	public final double max;
 
 	private CandleStickPoint(
+		final double mean,
+		final double variance,
+		final double skewness,
+		final double kurtosis,
 		final double median,
 		final double low,
 		final double high,
 		final double min,
 		final double max
 	) {
+		this.mean = mean;
+		this.variance = variance;
+		this.skewness = skewness;
+		this.kurtosis = kurtosis;
 		this.median = median;
 		this.low = low;
 		this.high = high;
@@ -50,13 +62,27 @@ public final class CandleStickPoint {
 	}
 
 	public static CandleStickPoint of(
+		final double mean,
+		final double variance,
+		final double skewness,
+		final double kurtosis,
 		final double median,
 		final double low,
 		final double high,
 		final double min,
 		final double max
 	) {
-		return new CandleStickPoint(median, low, high, min, max);
+		return new CandleStickPoint(
+			mean,
+			variance,
+			skewness,
+			kurtosis,
+			median,
+			low,
+			high,
+			min,
+			max
+		);
 	}
 
 	public static <T> Collector<T, ?, CandleStickPoint>
@@ -110,6 +136,10 @@ public final class CandleStickPoint {
 
 		CandleStickPoint toPoint() {
 			return CandleStickPoint.of(
+				data.getMean(),
+				data.getVariance(),
+				data.getSkewness(),
+				data.getKurtosis(),
 				median.getValue(),
 				low.getValue(),
 				high.getValue(),
