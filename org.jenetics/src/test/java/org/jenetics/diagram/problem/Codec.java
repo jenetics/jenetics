@@ -23,19 +23,14 @@ import java.util.function.Function;
 
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
-import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public interface Problem<
-	G extends Gene<?, G>,
-	C extends Comparable<? super C>
->
-{
+public interface Codec<G extends Gene<?, G>, S> {
 
-	public Factory<Genotype<G>> genotype();
+	public Function<S, Genotype<G>> encoder();
 
-	public Function<Genotype<G>, C> function();
+	public Function<Genotype<G>, S> decoder();
 
 }
