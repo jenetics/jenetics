@@ -26,7 +26,7 @@ set origin 0, 0.33
 set bmargin 0
 set format x ""
 
-set xrange [ 0.00000 : 33.0000 ]
+set xrange [ 30.00000 : 250.0000 ]
 #set x2range [ 0.00000 : 190.0000 ]
 set lmargin 9
 set rmargin 2
