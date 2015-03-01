@@ -41,16 +41,15 @@ Jenetics uses [Gradle](http://www.gradle.org/downloads) as build system and orga
 For building the library change into the `<builddir>` directory (or one of the module directory) and call one of the available tasks:
 
 * **compileJava**: Compiles the Jenetics sources and copies the class files to the `<builddir>/<module-dir>/build/classes/main` directory.
-* **test**: Compiles and executes the unit tests. The test results are printed onto the console and a test-report, created by TestNG, is written to `<builddir>/<module-dir>` directory.
-* **javadoc**: Generates the API documentation. The Javadoc is stored in the `<builddir>/<module-dir>/build/docs` directory
 * **jar**: Compiles the sources and creates the JAR files. The artifacts are copied to the `<builddir>/<module-dir>/build/libs` directory.
-* **packaging**: Compiles the sources of all modules, creates the JAR files and the Javadoc and creates a complete library package--the same which you can download from the home page. The build artifacts are copied into the `<builddir>/build/package/jenetics-<version>` directory.
+* **javadoc**: Generates the API documentation. The Javadoc is stored in the `<builddir>/<module-dir>/build/docs` directory
+* **test**: Compiles and executes the unit tests. The test results are printed onto the console and a test-report, created by TestNG, is written to `<builddir>/<module-dir>` directory.
 * **clean**: Deletes the `<builddir>/build/*` directories and removes all generated artifacts.
 
-For packaging (building)  the source call
+For building the library jar from the source call
 
     $ cd <build-dir>
-    $ ./gradlew packaging
+    $ ./gradlew jar
 
 
 **IDE Integration**
