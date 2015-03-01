@@ -13,7 +13,7 @@
 
 ### Test compile/execution
 *  **TestNG 8.8**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
-*  **Apache Commons Math 3.4**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical accumulators.
+*  **Apache Commons Math 3.4.1**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical accumulators.
 
 ## Download
 * **Github**: <https://github.com/jenetics/jenetics/releases/download/v3.1.0/jenetics-3.1.0.zip>
@@ -60,6 +60,8 @@ Gradle has tasks which creates the project file for Eclipse and IntelliJ IDEA. C
     $ ./gradlew [eclipse|idea]
 
 for creating the project files for Eclipse or IntelliJ, respectively. Whereas the latest version of [IntelliJ IDEA](https://www.jetbrains.com/idea/) has decent native Gradle support.
+
+The latest Eclipse version (4.4.2) has problems compiling some _valid_ lambda expressions; e.g. the `HelloWorld::eval` function in the example below. If you have such problems when trying to compile the library with Eclipse, you can fix this by using [IntelliJ 14](https://www.jetbrains.com/idea/download/).
 
 ## Example
 
