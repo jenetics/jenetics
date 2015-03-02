@@ -9,11 +9,11 @@
 
 ### Build time
 *  **JDK 8**: The `JAVA_HOME` variable must be set to your java installation directory.
-*  **Gradle 2.0**: [Gradle](http://www.gradle.org/) is used for building the library. (Gradle is download automatically, if you are using the Gradle Wrapper script `gradlew`, located in the base directory, for building the library.)
+*  **Gradle 2.x**: [Gradle](http://www.gradle.org/) is used for building the library. (Gradle is download automatically, if you are using the Gradle Wrapper script `gradlew`, located in the base directory, for building the library.)
 
 ### Test compile/execution
 *  **TestNG 8.8**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
-*  **Apache Commons Math 3.4**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical accumulators.
+*  **Apache Commons Math 3.4.1**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical collectors.
 
 ## Download
 * **Github**: <https://github.com/jenetics/jenetics/releases/download/v3.1.0/jenetics-3.1.0.zip>
@@ -41,16 +41,15 @@ Jenetics uses [Gradle](http://www.gradle.org/downloads) as build system and orga
 For building the library change into the `<builddir>` directory (or one of the module directory) and call one of the available tasks:
 
 * **compileJava**: Compiles the Jenetics sources and copies the class files to the `<builddir>/<module-dir>/build/classes/main` directory.
-* **test**: Compiles and executes the unit tests. The test results are printed onto the console and a test-report, created by TestNG, is written to `<builddir>/<module-dir>` directory.
-* **javadoc**: Generates the API documentation. The Javadoc is stored in the `<builddir>/<module-dir>/build/docs` directory
 * **jar**: Compiles the sources and creates the JAR files. The artifacts are copied to the `<builddir>/<module-dir>/build/libs` directory.
-* **packaging**: Compiles the sources of all modules, creates the JAR files and the Javadoc and creates a complete library package--the same which you can download from the home page. The build artifacts are copied into the `<builddir>/build/package/jenetics-<version>` directory.
+* **javadoc**: Generates the API documentation. The Javadoc is stored in the `<builddir>/<module-dir>/build/docs` directory
+* **test**: Compiles and executes the unit tests. The test results are printed onto the console and a test-report, created by TestNG, is written to `<builddir>/<module-dir>` directory.
 * **clean**: Deletes the `<builddir>/build/*` directories and removes all generated artifacts.
 
-For packaging (building)  the source call
+For building the library jar from the source call
 
     $ cd <build-dir>
-    $ ./gradlew packaging
+    $ ./gradlew jar
 
 
 **IDE Integration**
@@ -60,6 +59,8 @@ Gradle has tasks which creates the project file for Eclipse and IntelliJ IDEA. C
     $ ./gradlew [eclipse|idea]
 
 for creating the project files for Eclipse or IntelliJ, respectively. Whereas the latest version of [IntelliJ IDEA](https://www.jetbrains.com/idea/) has decent native Gradle support.
+
+The latest Eclipse version (4.4.2) has problems compiling some _valid_ lambda expressions; e.g. the `HelloWorld::eval` function in the example below. If you have such problems when trying to compile the library with Eclipse, you can fix this by using [IntelliJ 14](https://www.jetbrains.com/idea/download/).
 
 ## Example
 
