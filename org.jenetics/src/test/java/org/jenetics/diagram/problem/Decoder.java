@@ -19,21 +19,28 @@
  */
 package org.jenetics.diagram.problem;
 
-import org.jenetics.BitChromosome;
-import org.jenetics.BitGene;
+import java.util.function.Function;
+
+import org.jenetics.DoubleGene;
+import org.jenetics.Gene;
 import org.jenetics.Genotype;
+import org.jenetics.IntegerGene;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
-public class OnesCounting {
+public class Decoder {
 
-	public static Problem<BitGene, Integer> of(final int length) {
-		return Problem.<BitGene, Integer>of(
-			Genotype.of(BitChromosome.of(length, 0.5)),
-			gt -> ((BitChromosome)gt.getChromosome()).bitCount()
-		);
+	public static <G extends Gene<?, G>> Function<Genotype<IntegerGene>, Integer>
+	ofInteger() {
+		return  gt -> gt.getChromosome().getGene().getAllele();
+	}
 
+	public static <G extends Gene<?, G>> Function<Genotype<DoubleGene>, Double>
+	ofDouble() {
+		return  gt -> gt.getChromosome().getGene().getAllele();
 	}
 
 }
