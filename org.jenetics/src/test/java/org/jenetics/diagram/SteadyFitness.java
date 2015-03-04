@@ -60,7 +60,7 @@ public class SteadyFitness {
 		final SteadyFitnessTermination<BitGene> test =
 			new SteadyFitnessTermination<>(engine(), samples);
 
-		IntStream.range(1, 55)
+		IntStream.range(1, 20)
 			.peek(i -> System.out.print(i + ": "))
 			.map(i -> Math.max((int) Math.pow(1.115, i), i))
 			.peek(i -> System.out.println("Generation: " + i))

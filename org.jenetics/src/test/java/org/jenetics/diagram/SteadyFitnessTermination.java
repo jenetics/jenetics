@@ -20,6 +20,7 @@
 package org.jenetics.diagram;
 
 import static java.lang.String.format;
+import static java.util.Collections.synchronizedList;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.joining;
 import static org.jenetics.diagram.CandleStickPoint.toCandleStickPoint;
@@ -72,7 +73,7 @@ public class SteadyFitnessTermination<G extends Gene<?, G>> {
 	private final int _samples;
 	private final Engine<G, Double> _engine;
 
-	private final List<Object[]> _result = new ArrayList<>();
+	private final List<Object[]> _result = synchronizedList(new ArrayList<>());
 
 	public SteadyFitnessTermination(
 		final Engine<G, Double> engine,
@@ -87,7 +88,7 @@ public class SteadyFitnessTermination<G extends Gene<?, G>> {
 	}
 
 	private Object[] exec(final int generation) {
-		final CandleStickPoint[] result = IntStream.range(0, _samples)
+		final CandleStickPoint[] result = IntStream.range(0, _samples).parallel()
 			.mapToObj(i -> toResult(generation))
 			.collect(toCandleStickPoint(a -> a._1, a -> a._2));
 

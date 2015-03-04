@@ -23,7 +23,6 @@ import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
 
 import org.jenetics.stat.DoubleMomentStatistics;
-import org.jenetics.stat.Quantile;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -114,22 +113,16 @@ public final class CandleStickPoint {
 
 	private static final class Statistics {
 		private final DoubleMomentStatistics data = new DoubleMomentStatistics();
-		private final Quantile median = new Quantile(0.5);
-		private final Quantile low = new Quantile(0.25);
-		private final Quantile high = new Quantile(0.75);
+		private final ExactQuantile quantile = new ExactQuantile();
 
 		void accept(final double value) {
 			data.accept(value);
-			median.accept(value);
-			low.accept(value);
-			high.accept(value);
+			quantile.accept(value);
 		}
 
 		Statistics combine(final Statistics other) {
 			data.combine(other.data);
-			median.combine(other.median);
-			low.combine(other.low);
-			high.combine(other.high);
+			quantile.combine(other.quantile);
 
 			return this;
 		}
@@ -140,9 +133,9 @@ public final class CandleStickPoint {
 				data.getVariance(),
 				data.getSkewness(),
 				data.getKurtosis(),
-				median.getValue(),
-				low.getValue(),
-				high.getValue(),
+				quantile.quantile(0.5),
+				quantile.quantile(0.25),
+				quantile.quantile(0.75),
 				data.getMin(),
 				data.getMax()
 			);

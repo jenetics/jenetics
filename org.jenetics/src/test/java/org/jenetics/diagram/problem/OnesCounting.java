@@ -19,42 +19,16 @@
  */
 package org.jenetics.diagram.problem;
 
-import java.util.function.Function;
-
-import org.jenetics.Gene;
-import org.jenetics.Genotype;
-import org.jenetics.util.Factory;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public interface Problem<
-	G extends Gene<?, G>,
-	C extends Comparable<? super C>
->
-{
+public class OnesCounting {
 
-	public Factory<Genotype<G>> genotype();
-
-	public Function<Genotype<G>, C> function();
-
-
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Problem<G, C> of(
-		final Factory<Genotype<G>> genotype,
-		final Function<Genotype<G>, C> function
+	public static void foo(
+		
+		
 	) {
-		return new Problem<G, C>() {
-			@Override
-			public Factory<Genotype<G>> genotype() {
-				return genotype;
-			}
 
-			@Override
-			public Function<Genotype<G>, C> function() {
-				return function;
-			}
-		};
 	}
 
 }

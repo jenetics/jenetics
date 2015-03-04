@@ -21,6 +21,8 @@ package org.jenetics.diagram.problem;
 
 import java.util.function.Function;
 
+import org.jenetics.DoubleChromosome;
+import org.jenetics.DoubleGene;
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
 
@@ -32,5 +34,33 @@ public interface Codec<G extends Gene<?, G>, S> {
 	public Function<S, Genotype<G>> encoder();
 
 	public Function<Genotype<G>, S> decoder();
+
+	public static <G extends Gene<?, G>, S> Codec<G, S> of(
+		final Function<S, Genotype<G>> encoder,
+		final Function<Genotype<G>, S> decoder
+	) {
+		return new Codec<G, S>() {
+			@Override
+			public Function<S, Genotype<G>> encoder() {
+				return encoder;
+			}
+
+			@Override
+			public Function<Genotype<G>, S> decoder() {
+				return decoder;
+			}
+		};
+	}
+
+	public static Codec<DoubleGene, Double> ofDouble(
+		final double min,
+		final double max
+	) {
+		return of(
+			value -> Genotype
+				.of(DoubleChromosome.of(DoubleGene.of(value, min, max))),
+			gt -> gt.getChromosome().getGene().getAllele()
+		);
+	}
 
 }
