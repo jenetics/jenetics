@@ -25,24 +25,29 @@ import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
+import org.jenetics.IntegerChromosome;
+import org.jenetics.IntegerGene;
+import org.jenetics.LongChromosome;
+import org.jenetics.LongGene;
+import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
 public interface Codec<G extends Gene<?, G>, S> {
 
-	public Function<S, Genotype<G>> encoder();
+	public Factory<Genotype<G>> genotype();
 
 	public Function<Genotype<G>, S> decoder();
 
 	public static <G extends Gene<?, G>, S> Codec<G, S> of(
-		final Function<S, Genotype<G>> encoder,
+		final Factory<Genotype<G>> genotype,
 		final Function<Genotype<G>, S> decoder
 	) {
 		return new Codec<G, S>() {
 			@Override
-			public Function<S, Genotype<G>> encoder() {
-				return encoder;
+			public Factory<Genotype<G>> genotype() {
+				return genotype;
 			}
 
 			@Override
@@ -52,13 +57,32 @@ public interface Codec<G extends Gene<?, G>, S> {
 		};
 	}
 
+	public static Codec<IntegerGene, Integer> ofInteger(
+		final int min,
+		final int max
+	) {
+		return of(
+			Genotype.of(IntegerChromosome.of(IntegerGene.of(min, max))),
+			gt -> gt.getChromosome().getGene().getAllele()
+		);
+	}
+
+	public static Codec<LongGene, Long> ofLong(
+		final long min,
+		final long max
+	) {
+		return of(
+			Genotype.of(LongChromosome.of(LongGene.of(min, max))),
+			gt -> gt.getChromosome().getGene().getAllele()
+		);
+	}
+
 	public static Codec<DoubleGene, Double> ofDouble(
 		final double min,
 		final double max
 	) {
 		return of(
-			value -> Genotype
-				.of(DoubleChromosome.of(DoubleGene.of(value, min, max))),
+			Genotype.of(DoubleChromosome.of(DoubleGene.of(min, max))),
 			gt -> gt.getChromosome().getGene().getAllele()
 		);
 	}
