@@ -19,28 +19,8 @@
  */
 package org.jenetics.diagram.problem;
 
-import java.util.function.Function;
-
-import org.jenetics.DoubleGene;
-import org.jenetics.Gene;
-import org.jenetics.Genotype;
-import org.jenetics.IntegerGene;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
  */
-public class Decoder {
-
-	public static <G extends Gene<?, G>> Function<Genotype<IntegerGene>, Integer>
-	ofInteger() {
-		return  gt -> gt.getChromosome().getGene().getAllele();
-	}
-
-	public static <G extends Gene<?, G>> Function<Genotype<DoubleGene>, Double>
-	ofDouble() {
-		return  gt -> gt.getChromosome().getGene().getAllele();
-	}
-
+public interface Config {
 }

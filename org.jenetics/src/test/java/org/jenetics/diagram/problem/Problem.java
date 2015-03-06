@@ -37,8 +37,16 @@ public interface Problem<
 	public Factory<Genotype<G>> genotype();
 
 	public Function<Genotype<G>, C> function();
-
-
+	
+	
+	/**
+	 * 
+	 * @param genotype
+	 * @param function
+	 * @param <G>
+	 * @param <C>
+	 * @return
+	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Problem<G, C> of(
 		final Factory<Genotype<G>> genotype,
@@ -66,6 +74,17 @@ public interface Problem<
 		return of(
 			genotype,
 			function.compose(decoder)
+		);
+	}
+
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>, S>
+	Problem<G, C> of(
+		final Function<S, C> function,
+		final Codec<G, S> codec
+	) {
+		return of(
+			codec.genotype(),
+			function.compose(codec.decoder())
 		);
 	}
 

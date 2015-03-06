@@ -29,11 +29,10 @@ import org.jenetics.Genotype;
 public class OnesCounting {
 
 	public static Problem<BitGene, Integer> of(final int length) {
-		return Problem.<BitGene, Integer>of(
+		return Problem.of(
 			Genotype.of(BitChromosome.of(length, 0.5)),
 			gt -> ((BitChromosome)gt.getChromosome()).bitCount()
 		);
-
 	}
 
 }
