@@ -42,6 +42,8 @@ import java.util.stream.Stream;
 import org.jenetics.Gene;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
+import org.jenetics.engine.EvolutionStatistics;
+import org.jenetics.stat.DoubleMomentStatistics;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz  Wilhelmstötter</a>
@@ -121,8 +123,12 @@ public class SteadyFitnessTermination<G extends Gene<?, G>> {
 	}
 
 	private IntDoublePair toResult(final int generation) {
+		final EvolutionStatistics<Double, DoubleMomentStatistics> statistics =
+			EvolutionStatistics.ofNumber();
+
 		final EvolutionResult<G, Double> result = _engine.stream()
 			.limit(bySteadyFitness(generation))
+			.peek(statistics)
 			.collect(toBestEvolutionResult());
 
 		return IntDoublePair.of(

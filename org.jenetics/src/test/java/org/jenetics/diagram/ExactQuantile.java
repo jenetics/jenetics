@@ -61,5 +61,4 @@ final class ExactQuantile implements DoubleConsumer {
 		return _array.get()[index];
 	}
 
-
 }

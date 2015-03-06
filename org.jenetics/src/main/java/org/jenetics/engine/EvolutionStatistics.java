@@ -88,7 +88,7 @@ import org.jenetics.stat.MinMax;
 public abstract class EvolutionStatistics<
 	C extends Comparable<? super C>,
 	FitnessStatistics
-	>
+>
 	implements Consumer<EvolutionResult<?, C>>
 {
 
