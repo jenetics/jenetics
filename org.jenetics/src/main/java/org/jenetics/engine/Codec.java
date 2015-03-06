@@ -32,14 +32,38 @@ import org.jenetics.LongGene;
 import org.jenetics.util.Factory;
 
 /**
+ * A problem {@code Codec} contains the information about.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
 public interface Codec<G extends Gene<?, G>, S> {
 
+	/**
+	 * Return the genotype factory, which represents the encoded problem domain.
+	 *
+	 * @return the genotype (factory) representation of the problem domain
+	 */
 	public Factory<Genotype<G>> genotype();
 
+	/**
+	 * Return the <em>decoder</em> function which transforms the genotype back
+	 * to the original problem domain representation.
+	 *
+	 * @return genotype decoder
+	 */
 	public Function<Genotype<G>, S> decoder();
 
+
+	/**
+	 *  
+	 * @param genotype
+	 * @param decoder
+	 * @param <G>
+	 * @param <S>
+	 * @return
+	 */
 	public static <G extends Gene<?, G>, S> Codec<G, S> of(
 		final Factory<Genotype<G>> genotype,
 		final Function<Genotype<G>, S> decoder
