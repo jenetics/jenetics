@@ -25,6 +25,7 @@ import java.util.function.Function;
 
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
+import org.jenetics.Optimize;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -44,10 +45,11 @@ public final class Optimizer<ARG_TYPE> {
 		argmin(final Function<ARG_TYPE, R> function) {
 			final Engine<G, R> engine = Engine
 				.builder(function.compose(_codec.decoder()), _codec.genotype())
+				.optimize(Optimize.MINIMUM)
 				.build();
 
 			final Genotype<G> bgt = engine.stream()
-				.limit(100)
+				.limit(limit.bySteadyFitness(30))
 				.collect(EvolutionResult.toBestGenotype());
 
 			return _codec.decoder().apply(bgt);
@@ -65,7 +67,7 @@ public final class Optimizer<ARG_TYPE> {
 	}
 
 
-	public static <G extends Gene<?, G>, S> Optimizer<S> 
+	public static <G extends Gene<?, G>, S> Optimizer<S>
 	of(final Codec<G, S> codec) {
 		final Optimizer<S> optimizer = new Optimizer<>();
 		optimizer._inner = optimizer.new Inner<>(codec);
@@ -78,5 +80,11 @@ public final class Optimizer<ARG_TYPE> {
 		final double max
 	) {
 		return of(Codec.ofDouble(min, max));
+	}
+
+	public static void main(final String[] args) {
+		final double result = Optimizer.ofDouble(0, 100).argmin(i -> i);
+
+		System.out.println(result);
 	}
 }
