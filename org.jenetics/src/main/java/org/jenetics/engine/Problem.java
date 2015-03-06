@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.diagram.problem;
+package org.jenetics.engine;
 
 import java.util.function.Function;
 
