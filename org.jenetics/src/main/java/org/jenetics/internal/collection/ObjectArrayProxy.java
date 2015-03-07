@@ -47,7 +47,10 @@ public final class ObjectArrayProxy<T>
 	 * @param start the start index of the array proxy, inclusively.
 	 * @param end the end index of the array proxy, exclusively.
 	 */
-	public ObjectArrayProxy(final Object[] array, final int start, final int end) {
+	public ObjectArrayProxy(
+		final Object[] array,
+		final int start, final int end
+	) {
 		super(array, start, end, ObjectArrayProxy<T>::new, Arrays::copyOfRange);
 	}
 
@@ -63,7 +66,7 @@ public final class ObjectArrayProxy<T>
 	@Override
 	@SuppressWarnings("unchecked")
 	public T __get__(final int index) {
-		return (T) array[index];
+		return (T)array[index];
 	}
 
 	@Override

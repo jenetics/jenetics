@@ -29,7 +29,7 @@ import org.jenetics.BitGeneArray.Proxy;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0 &mdash; <em>$Date: 2014-08-01 $</em>
+ * @version !__version__! &mdash; <em>$Date: 2014-08-01 $</em>
  */
 final class BitGeneArray extends ArrayProxyMSeq<BitGene, Proxy> {
 
