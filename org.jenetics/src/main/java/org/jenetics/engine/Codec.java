@@ -45,7 +45,7 @@ public interface Codec<G extends Gene<?, G>, S> {
 	 *
 	 * @return the genotype (factory) representation of the problem domain
 	 */
-	public Factory<Genotype<G>> genotype();
+	public Factory<Genotype<G>> encoding();
 
 	/**
 	 * Return the <em>decoder</em> function which transforms the genotype back
@@ -57,21 +57,21 @@ public interface Codec<G extends Gene<?, G>, S> {
 
 
 	/**
-	 *  
-	 * @param genotype
+	 *
+	 * @param encoding
 	 * @param decoder
 	 * @param <G>
 	 * @param <S>
 	 * @return
 	 */
 	public static <G extends Gene<?, G>, S> Codec<G, S> of(
-		final Factory<Genotype<G>> genotype,
+		final Factory<Genotype<G>> encoding,
 		final Function<Genotype<G>, S> decoder
 	) {
 		return new Codec<G, S>() {
 			@Override
-			public Factory<Genotype<G>> genotype() {
-				return genotype;
+			public Factory<Genotype<G>> encoding() {
+				return encoding;
 			}
 
 			@Override

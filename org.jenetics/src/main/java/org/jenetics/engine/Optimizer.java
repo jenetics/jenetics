@@ -44,7 +44,7 @@ public final class Optimizer<ARG_TYPE> {
 		<R extends Comparable<? super R>> ARG_TYPE
 		argmin(final Function<ARG_TYPE, R> function) {
 			final Engine<G, R> engine = Engine
-				.builder(function.compose(_codec.decoder()), _codec.genotype())
+				.builder(function.compose(_codec.decoder()), _codec.encoding())
 				.optimize(Optimize.MINIMUM)
 				.build();
 

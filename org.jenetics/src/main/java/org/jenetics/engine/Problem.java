@@ -85,7 +85,7 @@ public interface Problem<
 		final Codec<G, S> codec
 	) {
 		return of(
-			codec.genotype(),
+			codec.encoding(),
 			function.compose(codec.decoder())
 		);
 	}
