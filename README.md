@@ -1,4 +1,4 @@
-# Jenetics (_3.0.0_)
+# Jenetics (_3.0.1_)
 
 **Jenetics** is an **Genetic Algorithm**, respectively an **Evolutionary
 Algorithm**, library written in Java. It is designed with a
@@ -22,26 +22,26 @@ it works smoothly with the rest of the Java Stream API.
 
 ### Test compile/execution
 *  **TestNG 8.8**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
-*  **Apache Commons Math 3.3**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical accumulators.
+*  **Apache Commons Math 3.4.1**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical accumulators.
+
 
 ## Download
+* **Github**: <https://github.com/jenetics/jenetics/releases/download/v3.0.1/jenetics-3.0.1.zip>
 *  **Sourceforge**:  <https://sourceforge.net/projects/jenetics/files/latest/download>
-*  **Bitbucket**:  <https://bitbucket.org/fwilhelm/jenetics/downloads>
-*  **Maven**: `org.bitbucket.fwilhelm:org.jenetics:3.0.0` on [Maven Central](http://search.maven.org/#search|ga|1|a%3A%22org.jenetics%22)
+*  **Maven**: `org.bitbucket.fwilhelm:org.jenetics:3.0.1` on [Maven Central](http://search.maven.org/#search|ga|1|a%3A%22org.jenetics%22)
+
 
 ## Build Jenetics
 
 [![Build Status](https://travis-ci.org/jenetics/jenetics.svg?branch=master)](https://travis-ci.org/jenetics/jenetics)
 
-For building the Jenetics library from source, download the most recent, stable package version from [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download) or [Bitbucket](https://bitbucket.org/fwilhelm/jenetics/downloads) and extract it to some build directory.
+For building the Jenetics library from source, download the most recent, stable package version from [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download) and extract it to some build directory.
 
     $ unzip jenetics-<version>.zip -d <builddir>
 
-`<version>` denotes the actual Jenetics version and `<builddir>` the actual build directory. Alternatively you can check out the latest-unstable-version from the Mercurial default branch.
+`<version>` denotes the actual Jenetics version and `<builddir>` the actual build directory. Alternatively you can check out the master branch from Github.
 
     $ git clone https://github.com/jenetics/jenetics.git <builddir>
-    # or
-    $ hg clone https://bitbucket.org/fwilhelm/jenetics <builddir>
 
 Jenetics uses [Gradle](http://www.gradle.org/downloads) as build system and organizes the source into *sub*-projects (modules). Each sub-project is located in it’s own sub-directory:
 
@@ -52,16 +52,15 @@ Jenetics uses [Gradle](http://www.gradle.org/downloads) as build system and orga
 For building the library change into the `<builddir>` directory (or one of the module directory) and call one of the available tasks:
 
 * **compileJava**: Compiles the Jenetics sources and copies the class files to the `<builddir>/<module-dir>/build/classes/main` directory.
-* **test**: Compiles and executes the unit tests. The test results are printed onto the console and a test-report, created by TestNG, is written to `<builddir>/<module-dir>` directory.
-* **javadoc**: Generates the API documentation. The Javadoc is stored in the `<builddir>/<module-dir>/build/docs` directory
 * **jar**: Compiles the sources and creates the JAR files. The artifacts are copied to the `<builddir>/<module-dir>/build/libs` directory.
-* **packaging**: Compiles the sources of all modules, creates the JAR files and the Javadoc and creates a complete library package--the same which you can download from the home page. The build artifacts are copied into the `<builddir>/build/package/jenetics-<version>` directory.
+* **javadoc**: Generates the API documentation. The Javadoc is stored in the `<builddir>/<module-dir>/build/docs` directory
+* **test**: Compiles and executes the unit tests. The test results are printed onto the console and a test-report, created by TestNG, is written to `<builddir>/<module-dir>` directory.
 * **clean**: Deletes the `<builddir>/build/*` directories and removes all generated artifacts.
 
-For packaging (building)  the source call
+For building the library jar from the source call
 
     $ cd <build-dir>
-    $ ./gradlew packaging
+    $ ./gradlew jar
 
 
 **IDE Integration**
@@ -70,21 +69,20 @@ Gradle has tasks which creates the project file for Eclipse and IntelliJ IDEA. C
 
     $ ./gradlew [eclipse|idea]
 
-for creating the project files for Eclipse or IntelliJ, respectively.
+for creating the project files for Eclipse or IntelliJ, respectively. Whereas the latest version of [IntelliJ IDEA](https://www.jetbrains.com/idea/) has decent native Gradle support.
+
+The latest Eclipse version (4.4.2) has problems compiling some _valid_ lambda expressions; e.g. the `HelloWorld::eval` function in the example below. If you have such problems when trying to compile the library with Eclipse, you can fix this by using [IntelliJ 14](https://www.jetbrains.com/idea/download/).
 
 ## Example
 
-The minimum evolution Engine setup needs a genotype factory,
-`Factory<Genotype<?>>`, and a fitness `Function`. The `Genotype` implements the
-`Factory` interface and can therefore be used
-as prototype for creating the initial `Population` and for creating
-new random `Genotypes`.
+The minimum evolution Engine setup needs a genotype factory, `Factory<Genotype<?>>`, and a fitness `Function`. The `Genotype` implements the `Factory` interface and can therefore be used as prototype for creating the initial `Population` and for creating new random `Genotypes`.
 
 	import org.jenetics.BitChromosome;
 	import org.jenetics.BitGene;
 	import org.jenetics.Genotype;
 	import org.jenetics.engine.Engine;
 	import org.jenetics.engine.EvolutionResult;
+	import org.jenetics.util.Factory;
 
 	public class HelloWorld {
 		// 2.) Definition of the fitness function.
@@ -143,6 +141,11 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 
 
 ## Release notes
+
+
+### 3.0.1
+
+* Fixes: [#2](https://github.com/jenetics/jenetics/issues/2), [#7](https://github.com/jenetics/jenetics/issues/7)
 
 ### 3.0.0
 
