@@ -4,6 +4,11 @@ Jenetics-3.1.0
 - Improve termination strategies.
 - Add 'EvolutionStream.of' factory method as an alternative way for creating an evolution stream.
 
+Jenetics-3.0.1
+
+- Fixes: * https://github.com/jenetics/jenetics/issues/2
+         * https://github.com/jenetics/jenetics/issues/7
+
 Jenetics-3.0.0
 
 - Rewrite of *engine* classes to make use of Java 8 Stream API.
