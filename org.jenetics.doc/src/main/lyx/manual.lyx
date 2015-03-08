@@ -179,10 +179,34 @@ begin{adjustwidth*}{-4.5cm}{-4.5cm}
 
 \begin_layout Standard
 \align center
-\begin_inset Graphics
-	filename ../resources/graphic/Jenetics.png
-	lyxscale 60
-	height 20mm
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+fontsize{100pt}{100pt}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+textsf{
+\backslash
+textbf{
+\backslash
+textsc{J}}}
+\backslash
+fontsize{85pt}{85pt}
+\backslash
+textsf{
+\backslash
+textbf{
+\backslash
+textsc{ENETICS}}}
+\end_layout
 
 \end_inset
 
