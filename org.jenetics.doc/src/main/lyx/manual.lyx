@@ -442,7 +442,7 @@ status open
 \noindent
 \align left
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -457,26 +457,11 @@ https://github.com/jenetics/jenetics
 
 
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
 https://sourceforge.net/projects/jenetics
-\end_layout
-
-\end_inset
-
-
-\begin_inset Newline newline
-\end_inset
-
-
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-https://bitbucket.org/fwilhelm/jenetics
 \end_layout
 
 \end_inset
