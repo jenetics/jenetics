@@ -737,7 +737,7 @@ If you are using Gradle, you can use the following dependency string:
 \family typewriter
 'org.bitbucket.fwilhelm:\SpecialChar \-
 org.jenetics:\SpecialChar \-
-3.0.0'
+3.0.1'
 \family default
 .
 \end_layout
@@ -10906,7 +10906,7 @@ Encoding!Affine transformation
 \end_layout
 
 \begin_layout Standard
-An affine transformation
+3.0An affine transformation
 \begin_inset Foot
 status collapsed
 
@@ -13370,6 +13370,24 @@ classes/main
 
 \family typewriter
 \series bold
+jar
+\family default
+\series default
+: Compiles the sources and creates the JAR files.
+ The artifacts are copied to the
+\family typewriter
+ <build\SpecialChar \-
+dir>/<module-dir>\SpecialChar \slash{}
+build\SpecialChar \slash{}
+libs
+\family default
+ directory.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
 test
 \family default
 \series default
@@ -13409,41 +13427,6 @@ docs
 
 \family typewriter
 \series bold
-jar
-\family default
-\series default
-: Compiles the sources and creates the JAR files.
- The artifacts are copied to the
-\family typewriter
- <build\SpecialChar \-
-dir>/<module-dir>\SpecialChar \slash{}
-build\SpecialChar \slash{}
-libs
-\family default
- directory.
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-\series bold
-packaging
-\family default
-\series default
-: Compiles the sources of all modules, creates the JAR files and the Javadoc
- and creates a complete library package---the very same which you can download
- from the home page.
- The build artifacts are copied into the
-\family typewriter
- <build\SpecialChar \-
-dir>\SpecialChar \slash{}
-build/package/jenetics-<version> directory.
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-\series bold
 clean
 \family default
 \series default
@@ -13459,9 +13442,9 @@ build/*
 \begin_layout Standard
 For
 \family typewriter
- packaging
+ building the library from
 \family default
- (building) the source, call
+ the source, call
 \end_layout
 
 \begin_layout LyX-Code
@@ -13469,7 +13452,7 @@ $ cd <build-dir>
 \end_layout
 
 \begin_layout LyX-Code
-$ gradle packaging
+$ gradle jar
 \end_layout
 
 \begin_layout Standard
@@ -13477,7 +13460,7 @@ or
 \end_layout
 
 \begin_layout LyX-Code
-$ ./gradlew packaging
+$ ./gradlew jar
 \end_layout
 
 \begin_layout Standard
