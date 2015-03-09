@@ -1888,7 +1888,7 @@ Jenetics
 \shape default
 
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 The documentation of the whole API is part of the download package or can
@@ -1898,7 +1898,7 @@ status open
 
 \begin_layout Plain Layout
 
-http://jenetics.sourceforge.net/javadoc/index.html
+http://jenetics.io/javadoc/org.jenetics/index.html
 \end_layout
 
 \end_inset
@@ -1993,7 +1993,7 @@ value
 \emph default
  objects
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
