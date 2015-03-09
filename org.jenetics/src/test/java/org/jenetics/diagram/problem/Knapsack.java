@@ -121,13 +121,6 @@ public final class Knapsack
 		return this;
 	}
 
-//	@Override
-//	public Function<Genotype<BitGene>, ISeq<Item>> decoder() {
-//		return gt -> ((BitChromosome)gt.getChromosome()).ones()
-//			.mapToObj(_items::get)
-//			.collect(ISeq.toISeq());
-//	}
-
 	public static Knapsack of(final ISeq<Item> items, final double size) {
 		return new Knapsack(items, size);
 	}
