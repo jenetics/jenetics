@@ -39,27 +39,28 @@ import org.jenetics.util.RandomRegistry;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class SteadyFitness {
+public class KnapsackSteadyFitness {
 
 	private static Engine<BitGene, Double> engine() {
-		final Knapsack knapsack = Knapsack.of(500);
+		// Search space fo 2²⁵⁰.
+		final Knapsack knapsack = Knapsack.of(250);
 
 		// Configure and build the evolution engine.
 		return Engine
 			.builder(knapsack.function(), knapsack.genotype())
 			.populationSize(150)
-			.survivorsSelector(new TournamentSelector<>(3))
+			.survivorsSelector(new TournamentSelector<>(5))
 			.offspringSelector(new RouletteWheelSelector<>())
 			.alterers(
-				new Mutator<>(0.15),
-				new SinglePointCrossover<>(0.20))
+				new Mutator<>(0.03),
+				new SinglePointCrossover<>(0.125))
 			.build();
 	}
 
 	public static void main(final String[] args) throws IOException {
 		RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
 
-		final int samples = 3;
+		final int samples = 100;
 		final SteadyFitnessTermination<BitGene> test =
 			new SteadyFitnessTermination<>(engine(), samples);
 
