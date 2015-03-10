@@ -20,10 +20,13 @@
 package org.jenetics.diagram;
 
 import static java.lang.Math.log10;
+import static java.lang.Math.max;
 import static java.lang.Math.pow;
+import static java.lang.String.format;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.stream.IntStream;
 
 import org.jenetics.BitGene;
@@ -61,18 +64,31 @@ public class KnapsackSteadyFitness {
 	}
 
 	public static void main(final String[] args) throws IOException {
-		RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
+		final double base = pow(10, log10(100)/20.0);
 
-		final int samples = 100;
+		RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
+		final int samples = 50;
 		final SteadyFitnessTermination<BitGene> test =
 			new SteadyFitnessTermination<>(engine(), samples);
 
-		final double base = pow(10, log10(100)/20.0);
-		IntStream.rangeClosed(1, 30)
+		final long start = System.nanoTime();
+		final int generations = IntStream.rangeClosed(1, 30)
 			.peek(i -> System.out.print(i + ": "))
-			.map(i -> Math.max((int) pow(base, i), i))
+			.map(i -> max((int) pow(base, i), i))
 			.peek(i -> System.out.println("Generation: " + i))
-			.forEach(test::execute);
+			.peek(test::execute)
+			.sum();
+		final long end = System.nanoTime();
+
+		System.out.println(format(
+			"Executed %d generations in %s",
+			generations,
+			DurationFormat.format(Duration.ofNanos(end - start))
+		));
+		System.out.println(format(
+			"%s sec per generation.",
+			(end - start)/(1_000_000_000.0*generations)
+		));
 
 		test.write(new File(
 			"org.jenetics/src/test/scripts/diagram/" +
