@@ -124,7 +124,7 @@
 		M510.7,333.5 L510.7,329.8 M510.7,45.1 L510.7,48.8 M518.2,333.5 L518.2,329.8 M518.2,45.1 L518.2,48.8 
 		 '/></g>
 <g style="fill:none; color:gray; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
-	<path stroke='gray' stroke-dasharray=' 2,4' class="gridline"  d='M524.9,333.5 L524.9,326.0 M524.9,296.0 L524.9,45.1  '/></g>
+	<path stroke='gray' stroke-dasharray=' 2,4' class="gridline"  d='M524.9,333.5 L524.9,45.1  '/></g>
 <g style="fill:none; color:black; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
 	<path stroke='black'  d='M524.9,333.5 L524.9,326.0 M524.9,45.1 L524.9,52.6  '/>	<g transform="translate(524.9,352.2)" style="stroke:none; fill:black; font-family:Times Roman; font-size:10.00pt; text-anchor:middle">
 		<text></text>
@@ -146,16 +146,10 @@
 	<g transform="translate(377.9,28.6)" style="stroke:none; fill:black; font-family:Times Roman; font-size:16.00pt; text-anchor:middle">
 		<text><tspan>Steady fitness termination</tspan></text>
 	</g>
-	<g transform="translate(584.1,307.2)" style="stroke:none; fill:black; font-family:Times Roman; font-size:10.00pt; text-anchor:middle">
-		<text><tspan> </tspan></text>
-	</g>
 </g>
 	<g id="gnuplot_plot_1a" ><title>gnuplot_plot_1a</title>
 <g style="fill:none; color:red; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
-	<g transform="translate(615.4,322.2)" style="stroke:none; fill:black; font-family:Times Roman; font-size:10.00pt; text-anchor:end">
-		<text><tspan>Total generation</tspan></text>
-	</g>
-	<path stroke='rgb(255,   0,   0)'  d='M622.4,322.2 L657.9,322.2 L657.9,314.8 L622.4,314.8 L622.4,322.2 Z  '/>	<path stroke='rgb(255,   0,   0)'  d='M84.0,319.0 M84.0,310.6 L84.0,283.4 M82.2,319.0 L85.8,319.0 L85.8,310.6 L82.2,310.6 L82.2,319.0 
+	<path stroke='rgb(255,   0,   0)'  d='M84.0,319.0 M84.0,310.6 L84.0,283.4 M82.2,319.0 L85.8,319.0 L85.8,310.6 L82.2,310.6 L82.2,319.0 
 		Z  '/>	<path stroke='rgb(255,   0,   0)'  d='M82.2,283.4 L85.8,283.4 M82.2,319.0 L85.8,319.0 M128.2,310.6 M128.2,292.9 L128.2,268.0 M126.4,310.6 
 		L130.0,310.6 L130.0,292.9 L126.4,292.9 L126.4,310.6 Z  '/>	<path stroke='rgb(255,   0,   0)'  d='M126.4,268.0 L130.0,268.0 M126.4,310.6 L130.0,310.6 M154.1,304.6 L154.1,285.4 M154.1,273.2 L154.1,254.0 
 		M152.3,285.4 L155.9,285.4 L155.9,273.2 L152.3,273.2 L152.3,285.4 Z  '/>	<path stroke='rgb(255,   0,   0)'  d='M152.3,254.0 L155.9,254.0 M152.3,304.6 L155.9,304.6 M172.5,299.9 L172.5,281.6 M172.5,267.2 L172.5,248.7 
@@ -224,14 +218,14 @@
 	</g>
 </g>
 <g style="fill:none; color:gray; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
-	<path stroke='gray' stroke-dasharray=' 2,4' class="gridline"  d='M84.0,437.4 L566.4,437.4 M664.9,437.4 L671.9,437.4  '/></g>
+	<path stroke='gray' stroke-dasharray=' 2,4' class="gridline"  d='M84.0,437.4 L671.9,437.4  '/></g>
 <g style="fill:none; color:black; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
 	<path stroke='black'  d='M84.0,437.4 L91.5,437.4 M671.9,437.4 L664.4,437.4  '/>	<g transform="translate(77.0,441.1)" style="stroke:none; fill:black; font-family:Times Roman; font-size:10.00pt; text-anchor:end">
 		<text><tspan> 8.0</tspan></text>
 	</g>
 </g>
 <g style="fill:none; color:gray; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
-	<path stroke='gray' stroke-dasharray=' 2,4' class="gridline"  d='M84.0,422.9 L566.4,422.9 M664.9,422.9 L671.9,422.9  '/></g>
+	<path stroke='gray' stroke-dasharray=' 2,4' class="gridline"  d='M84.0,422.9 L671.9,422.9  '/></g>
 <g style="fill:none; color:black; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
 	<path stroke='black'  d='M84.0,422.9 L91.5,422.9 M671.9,422.9 L664.4,422.9  '/>	<g transform="translate(77.0,426.6)" style="stroke:none; fill:black; font-family:Times Roman; font-size:10.00pt; text-anchor:end">
 		<text><tspan> 8.5</tspan></text>
@@ -328,21 +322,15 @@
 	<g transform="translate(377.9,493.6)" style="stroke:none; fill:black; font-family:Times Roman; font-size:11.00pt; text-anchor:middle">
 		<text><tspan>Steady generation</tspan></text>
 	</g>
-	<g transform="translate(615.6,425.7)" style="stroke:none; fill:black; font-family:Times Roman; font-size:10.00pt; text-anchor:middle">
-		<text><tspan> </tspan></text>
-	</g>
 </g>
 	<g id="gnuplot_plot_1b" ><title>gnuplot_plot_1b</title>
 <g style="fill:none; color:red; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
-	<g transform="translate(615.4,440.7)" style="stroke:none; fill:black; font-family:Times Roman; font-size:10.00pt; text-anchor:end">
-		<text><tspan>Fitness</tspan></text>
-	</g>
-	<path stroke='rgb(  0,   0, 255)'  d='M622.4,437.0 L657.9,437.0 M84.0,451.0 L128.2,444.7 L154.1,435.4 L172.5,429.3 L186.7,422.9 L198.4,419.7 
-		L208.2,415.3 L216.7,414.0 L224.2,412.3 L231.0,411.8 L242.6,409.9 L256.9,406.9 L271.9,405.6 L289.5,402.1 
-		L303.2,400.3 L317.8,397.8 L333.7,395.3 L348.5,392.2 L362.9,389.5 L378.0,387.7 L392.2,385.7 L407.1,383.2 
-		L421.9,380.5 L436.7,377.9 L451.4,376.0 L466.1,374.0 L480.8,371.8 L495.4,368.8 L510.2,367.8 L524.9,365.1 
-		L539.6,363.4 L554.3,361.8 L569.0,360.2 L583.7,359.0 L598.4,357.4 L613.1,356.3 L627.8,355.3 L642.5,354.5 
-		L657.2,353.6 L671.9,352.9  '/></g>
+	<path stroke='rgb(  0,   0, 255)'  d='M84.0,451.0 L128.2,444.7 L154.1,435.4 L172.5,429.3 L186.7,422.9 L198.4,419.7 L208.2,415.3 L216.7,414.0 
+		L224.2,412.3 L231.0,411.8 L242.6,409.9 L256.9,406.9 L271.9,405.6 L289.5,402.1 L303.2,400.3 L317.8,397.8 
+		L333.7,395.3 L348.5,392.2 L362.9,389.5 L378.0,387.7 L392.2,385.7 L407.1,383.2 L421.9,380.5 L436.7,377.9 
+		L451.4,376.0 L466.1,374.0 L480.8,371.8 L495.4,368.8 L510.2,367.8 L524.9,365.1 L539.6,363.4 L554.3,361.8 
+		L569.0,360.2 L583.7,359.0 L598.4,357.4 L613.1,356.3 L627.8,355.3 L642.5,354.5 L657.2,353.6 L671.9,352.9 
+		 '/></g>
 	</g>
 <g style="fill:none; color:black; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
 	<path stroke='black'  d='M84.0,350.0 L84.0,452.0 L671.9,452.0 L671.9,350.0 L84.0,350.0 Z  '/></g>
