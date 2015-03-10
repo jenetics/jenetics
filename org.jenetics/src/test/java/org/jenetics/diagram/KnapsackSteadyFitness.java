@@ -43,7 +43,10 @@ public class KnapsackSteadyFitness {
 
 	private static Engine<BitGene, Double> engine() {
 		// Search space fo 2²⁵⁰.
-		final Knapsack knapsack = Knapsack.of(250);
+		final Knapsack knapsack =
+			RandomRegistry.with(new LCG64ShiftRandom(10101), r ->
+				Knapsack.of(250)
+			);
 
 		// Configure and build the evolution engine.
 		return Engine
