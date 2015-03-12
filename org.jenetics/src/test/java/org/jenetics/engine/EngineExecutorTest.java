@@ -19,10 +19,47 @@
  */
 package org.jenetics.engine;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ForkJoinPool;
+import java.util.stream.IntStream;
+
+import org.jenetics.DoubleChromosome;
+import org.jenetics.DoubleGene;
+import org.jenetics.Genotype;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
  */
 public class EngineExecutorTest {
+
+	private static double f(final Genotype<DoubleGene> gt) {
+		return IntStream.range(0, 50000)
+			.mapToDouble(Math::sinh)
+			.sum()*gt.getGene().getAllele();
+	}
+
+	public static void main(final String[] args) {
+		//final ExecutorService executor = Executors.newFixedThreadPool(2);
+
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(EngineExecutorTest::f, DoubleChromosome.of(0, 1))
+			.executor(new ForkJoinPool(1))
+			.build();
+
+		for (int i = 0; i < 1000; ++i) {
+			final Double result = engine.stream()
+				.limit(100)
+				.collect(EvolutionResult.toBestGenotype())
+				.getGene().getAllele();
+
+			System.out.println("Gen: " + i + ": " + result);
+		}
+
+		//executor.shutdown();
+		System.out.println("READY");
+	}
+
+
 }
