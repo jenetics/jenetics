@@ -25,7 +25,6 @@ import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.joining;
 import static org.jenetics.diagram.CandleStickPoint.toCandleStickPoint;
 import static org.jenetics.engine.EvolutionResult.toBestEvolutionResult;
-import static org.jenetics.engine.limit.bySteadyFitness;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,6 +34,8 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collector;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -48,7 +49,7 @@ import org.jenetics.stat.DoubleMomentStatistics;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz  Wilhelmstötter</a>
  */
-public class SteadyFitnessTermination<G extends Gene<?, G>> {
+public class SteadyFitnessTermination<G extends Gene<?, G>, P> {
 
 	private static final String[] HEADER = {
 		"1-G",
@@ -74,28 +75,31 @@ public class SteadyFitnessTermination<G extends Gene<?, G>> {
 
 	private final int _samples;
 	private final Engine<G, Double> _engine;
+	private final Function<P, Predicate<? super EvolutionResult<G, Double>>> _limit;
 
 	private final List<Object[]> _result = synchronizedList(new ArrayList<>());
 
 	public SteadyFitnessTermination(
+		final int samples,
 		final Engine<G, Double> engine,
-		final int samples
+		final Function<P, Predicate<? super EvolutionResult<G, Double>>> limit
 	) {
-		_engine = requireNonNull(engine);
 		_samples = samples;
+		_engine = requireNonNull(engine);
+		_limit = requireNonNull(limit);
 	}
 
-	public void execute(final int generation) {
-		_result.add(exec(generation));
+	public void execute(final P parameter) {
+		_result.add(exec(requireNonNull(parameter)));
 	}
 
-	private Object[] exec(final int generation) {
+	private Object[] exec(final P parameter) {
 		final CandleStickPoint[] result = IntStream.range(0, _samples).parallel()
-			.mapToObj(i -> toResult(generation))
+			.mapToObj(i -> toResult(parameter))
 			.collect(toCandleStickPoint(a -> a._1, a -> a._2));
 
 		final Object[] data = new Object[19];
-		data[0] = generation;
+		data[0] = parameter;
 
 		// Total generation
 		data[1] = df(result[0].mean);
@@ -122,12 +126,12 @@ public class SteadyFitnessTermination<G extends Gene<?, G>> {
 		return data;
 	}
 
-	private IntDoublePair toResult(final int generation) {
+	private IntDoublePair toResult(final P parameter) {
 		final EvolutionStatistics<Double, DoubleMomentStatistics> statistics =
 			EvolutionStatistics.ofNumber();
 
 		final EvolutionResult<G, Double> result = _engine.stream()
-			.limit(bySteadyFitness(generation))
+			.limit(_limit.apply(parameter))
 			.peek(statistics)
 			.collect(toBestEvolutionResult());
 

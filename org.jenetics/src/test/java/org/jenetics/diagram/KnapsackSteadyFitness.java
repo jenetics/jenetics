@@ -27,6 +27,8 @@ import static java.lang.String.format;
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
 import org.jenetics.BitGene;
@@ -36,6 +38,8 @@ import org.jenetics.SinglePointCrossover;
 import org.jenetics.TournamentSelector;
 import org.jenetics.diagram.problem.Knapsack;
 import org.jenetics.engine.Engine;
+import org.jenetics.engine.EvolutionResult;
+import org.jenetics.engine.limit;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
 
@@ -67,12 +71,20 @@ public class KnapsackSteadyFitness {
 		final double base = pow(10, log10(100)/20.0);
 
 		RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
-		final int samples = 50;
-		final SteadyFitnessTermination<BitGene> test =
-			new SteadyFitnessTermination<>(engine(), samples);
+		final int samples = 10;
+
+		final Function<Integer, Predicate<? super EvolutionResult<BitGene, Double>>>
+			terminator = limit::bySteadyFitness;
+
+		final SteadyFitnessTermination<BitGene, Integer> test =
+			new SteadyFitnessTermination<>(
+				samples,
+				engine(),
+				terminator
+			);
 
 		final long start = System.nanoTime();
-		final int generations = IntStream.rangeClosed(1, 30)
+		final int generations = IntStream.rangeClosed(1, 20)
 			.peek(i -> System.out.print(i + ": "))
 			.map(i -> max((int) pow(base, i), i))
 			.peek(i -> System.out.println("Generation: " + i))
