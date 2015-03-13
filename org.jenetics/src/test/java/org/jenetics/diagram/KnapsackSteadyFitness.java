@@ -76,8 +76,8 @@ public class KnapsackSteadyFitness {
 		final Function<Integer, Predicate<? super EvolutionResult<BitGene, Double>>>
 			terminator = limit::bySteadyFitness;
 
-		final SteadyFitnessTermination<BitGene, Integer> test =
-			new SteadyFitnessTermination<>(
+		final TerminationStatistics<BitGene, Integer> test =
+			new TerminationStatistics<>(
 				samples,
 				engine(),
 				terminator

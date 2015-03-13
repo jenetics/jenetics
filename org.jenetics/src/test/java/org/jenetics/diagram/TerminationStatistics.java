@@ -49,7 +49,7 @@ import org.jenetics.stat.DoubleMomentStatistics;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz  Wilhelmstötter</a>
  */
-public class SteadyFitnessTermination<G extends Gene<?, G>, P> {
+public class TerminationStatistics<G extends Gene<?, G>, P> {
 
 	private static final String[] HEADER = {
 		"1-G",
@@ -79,7 +79,7 @@ public class SteadyFitnessTermination<G extends Gene<?, G>, P> {
 
 	private final List<Object[]> _result = synchronizedList(new ArrayList<>());
 
-	public SteadyFitnessTermination(
+	public TerminationStatistics(
 		final int samples,
 		final Engine<G, Double> engine,
 		final Function<P, Predicate<? super EvolutionResult<G, Double>>> limit
@@ -192,8 +192,8 @@ public class SteadyFitnessTermination<G extends Gene<?, G>, P> {
 
 	private static Collector<int[], ?, int[]> toWidth(final int length) {
 		return Collector.of(() -> new int[length],
-			SteadyFitnessTermination::max,
-			SteadyFitnessTermination::max
+			TerminationStatistics::max,
+			TerminationStatistics::max
 		);
 	}
 
