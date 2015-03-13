@@ -109,7 +109,7 @@ public class TerminationStatistics<G extends Gene<?, G>, P>
 	}
 
 	private Object[] exec(final P parameter) {
-		final CandleStickPoint[] result = IntStream.range(0, _samples).parallel()
+		final CandleStickPoint[] result = IntStream.range(0, _samples)
 			.mapToObj(i -> toResult(parameter))
 			.collect(toCandleStickPoint(a -> a._1, a -> a._2));
 
