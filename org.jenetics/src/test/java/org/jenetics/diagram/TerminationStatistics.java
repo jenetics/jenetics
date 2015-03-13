@@ -34,6 +34,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collector;
@@ -49,19 +50,21 @@ import org.jenetics.stat.DoubleMomentStatistics;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz  Wilhelmstötter</a>
  */
-public class TerminationStatistics<G extends Gene<?, G>, P> {
+public class TerminationStatistics<G extends Gene<?, G>, P>
+	implements Consumer<P>
+{
 
 	private static final String[] HEADER = {
-		"1-G",
-		"2-TG-mean",
-		"3-TG-variance",
-		"4-TG-skewness",
-		"5-TG-kurtosis",
-		"6-TG-median",
-		"7-TG-low",
-		"8-TG-high",
-		"9-TG-min",
-		"10-TG-max",
+		"1-P",
+		"2-TP-mean",
+		"3-TP-variance",
+		"4-TP-skewness",
+		"5-TP-kurtosis",
+		"6-TP-median",
+		"7-TP-low",
+		"8-TP-high",
+		"9-TP-min",
+		"10-TP-max",
 		"11-F-mean",
 		"12-F-variance",
 		"13-F-skewness",
@@ -89,7 +92,8 @@ public class TerminationStatistics<G extends Gene<?, G>, P> {
 		_limit = requireNonNull(limit);
 	}
 
-	public void execute(final P parameter) {
+	@Override
+	public void accept(final P parameter) {
 		_result.add(exec(requireNonNull(parameter)));
 	}
 

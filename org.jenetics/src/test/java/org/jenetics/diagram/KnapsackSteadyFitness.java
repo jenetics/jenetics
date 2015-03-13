@@ -76,19 +76,15 @@ public class KnapsackSteadyFitness {
 		final Function<Integer, Predicate<? super EvolutionResult<BitGene, Double>>>
 			terminator = limit::bySteadyFitness;
 
-		final TerminationStatistics<BitGene, Integer> test =
-			new TerminationStatistics<>(
-				samples,
-				engine(),
-				terminator
-			);
+		final TerminationStatistics<BitGene, Integer> statistics =
+			new TerminationStatistics<>(samples, engine(), terminator);
 
 		final long start = System.nanoTime();
 		final int generations = IntStream.rangeClosed(1, 20)
 			.peek(i -> System.out.print(i + ": "))
 			.map(i -> max((int) pow(base, i), i))
 			.peek(i -> System.out.println("Generation: " + i))
-			.peek(test::execute)
+			.peek(statistics::accept)
 			.sum();
 		final long end = System.nanoTime();
 
@@ -102,9 +98,9 @@ public class KnapsackSteadyFitness {
 			(end - start)/(1_000_000_000.0*generations)
 		));
 
-		test.write(new File(
+		statistics.write(new File(
 			"org.jenetics/src/test/scripts/diagram/" +
-			"steady_fitness_termination.dat"
+				"steady_fitness_termination.dat"
 		));
 		System.out.println("Ready");
 
