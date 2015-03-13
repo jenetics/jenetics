@@ -56,15 +56,15 @@ public class TerminationStatistics<G extends Gene<?, G>, P>
 
 	private static final String[] HEADER = {
 		"1-P",
-		"2-TP-mean",
-		"3-TP-variance",
-		"4-TP-skewness",
-		"5-TP-kurtosis",
-		"6-TP-median",
-		"7-TP-low",
-		"8-TP-high",
-		"9-TP-min",
-		"10-TP-max",
+		"2-TG-mean",
+		"3-TG-variance",
+		"4-TG-skewness",
+		"5-TG-kurtosis",
+		"6-TG-median",
+		"7-TG-low",
+		"8-TG-high",
+		"9-TG-min",
+		"10-TG-max",
 		"11-F-mean",
 		"12-F-variance",
 		"13-F-skewness",
@@ -79,17 +79,28 @@ public class TerminationStatistics<G extends Gene<?, G>, P>
 	private final int _samples;
 	private final Engine<G, Double> _engine;
 	private final Function<P, Predicate<? super EvolutionResult<G, Double>>> _limit;
+	private final Function<? super P, ? extends Comparable<?>> _parameterString;
 
 	private final List<Object[]> _result = synchronizedList(new ArrayList<>());
 
 	public TerminationStatistics(
 		final int samples,
 		final Engine<G, Double> engine,
-		final Function<P, Predicate<? super EvolutionResult<G, Double>>> limit
+		final Function<P, Predicate<? super EvolutionResult<G, Double>>> limit,
+		final Function<? super P, ? extends Comparable<?>> parameterString
 	) {
 		_samples = samples;
 		_engine = requireNonNull(engine);
 		_limit = requireNonNull(limit);
+		_parameterString = requireNonNull(parameterString);
+	}
+
+	public TerminationStatistics(
+		final int samples,
+		final Engine<G, Double> engine,
+		final Function<P, Predicate<? super EvolutionResult<G, Double>>> limit
+	) {
+		this(samples, engine, limit, Objects::toString);
 	}
 
 	@Override
@@ -103,7 +114,7 @@ public class TerminationStatistics<G extends Gene<?, G>, P>
 			.collect(toCandleStickPoint(a -> a._1, a -> a._2));
 
 		final Object[] data = new Object[19];
-		data[0] = parameter;
+		data[0] = _parameterString.apply(parameter);
 
 		// Total generation
 		data[1] = df(result[0].mean);
@@ -145,9 +156,10 @@ public class TerminationStatistics<G extends Gene<?, G>, P>
 		);
 	}
 
+	@SuppressWarnings("unchecked")
 	public Object[][] getResult() {
 		final List<Object[]> result = new ArrayList<>(_result);
-		result.sort((a, b) -> ((Integer)a[0]).compareTo((Integer)b[0]));
+		result.sort((a, b) -> ((Comparable)a[0]).compareTo((Comparable)b[0]));
 		result.add(0, HEADER);
 
 		return result.toArray(new Object[0][]);

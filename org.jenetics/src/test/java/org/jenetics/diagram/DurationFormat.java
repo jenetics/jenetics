@@ -19,6 +19,7 @@
  */
 package org.jenetics.diagram;
 
+import java.text.NumberFormat;
 import java.time.Duration;
 
 /**
@@ -32,9 +33,15 @@ final class DurationFormat {
 		final long seconds = duration.getSeconds() - hours*3600 - minutes*60;
 		final long nanos = duration.getNano();
 
+		final NumberFormat nf = NumberFormat.getNumberInstance();
+		nf.setMinimumIntegerDigits(0);
+		nf.setMaximumIntegerDigits(0);
+		nf.setMinimumFractionDigits(6);
+		nf.setMaximumFractionDigits(6);
+
 		return String.format(
-			"%2d:%2d:%2d.%d",
-			hours, minutes, seconds, nanos
+			"%2d:%2d:%2d%s",
+			hours, minutes, seconds, nf.format(nanos/1_000_000_000.0)
 		).replace(' ', '0');
 	}
 

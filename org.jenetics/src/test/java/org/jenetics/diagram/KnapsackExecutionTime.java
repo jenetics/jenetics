@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 import org.jenetics.BitGene;
 import org.jenetics.engine.EvolutionResult;
@@ -40,7 +40,7 @@ import org.jenetics.util.RandomRegistry;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class KnapsackSteadyFitness extends Knapsack {
+public class KnapsackExecutionTime extends Knapsack {
 
 	public static void main(final String[] args) throws IOException {
 		final KnapsackSteadyFitness instance = new KnapsackSteadyFitness();
@@ -48,36 +48,38 @@ public class KnapsackSteadyFitness extends Knapsack {
 		final double base = pow(10, log10(100)/20.0);
 
 		RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
-		final int samples = 10;
+		final int samples = 50;
 
-		final Function<Integer, Predicate<? super EvolutionResult<BitGene, Double>>>
-			terminator = limit::bySteadyFitness;
+		final Function<Duration, Predicate<? super EvolutionResult<BitGene, Double>>>
+			terminator = limit::byExecutionTime;
 
-		final TerminationStatistics<BitGene, Integer> statistics =
-			new TerminationStatistics<>(samples, instance.engine(), terminator);
+		final TerminationStatistics<BitGene, Duration> statistics =
+			new TerminationStatistics<>(
+				samples,
+				instance.engine(),
+				terminator,
+				Duration::toMillis
+			);
 
 		final long start = System.nanoTime();
-		final int generations = IntStream.rangeClosed(1, 20)
+		final long time = LongStream.rangeClosed(1, 40)
 			.peek(i -> System.out.print(i + ": "))
-			.map(i -> max((int) pow(base, i), i))
-			.peek(i -> System.out.println("Generation: " + i))
-			.peek(statistics::accept)
+			.map(i -> max((long) pow(base, i), i))
+			.peek(i -> System.out.println(
+				"Execution time: " + DurationFormat.format(Duration.ofMillis(i))))
+			.peek(d -> statistics.accept(Duration.ofMillis(d)))
 			.sum();
 		final long end = System.nanoTime();
 
 		System.out.println(format(
-			"Executed %d generations in %s",
-			generations,
+			"Executed %s execution time in %s",
+			DurationFormat.format(Duration.ofMillis(time)),
 			DurationFormat.format(Duration.ofNanos(end - start))
-		));
-		System.out.println(format(
-			"%s sec per generation.",
-			(end - start)/(1_000_000_000.0*generations)
 		));
 
 		statistics.write(new File(
 			"org.jenetics/src/test/scripts/diagram/" +
-				"steady_fitness_termination.dat"
+				"execution_time_termination.dat"
 		));
 		System.out.println("Ready");
 
