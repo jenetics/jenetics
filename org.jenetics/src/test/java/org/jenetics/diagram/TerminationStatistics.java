@@ -228,4 +228,19 @@ public class TerminationStatistics<G extends Gene<?, G>, P>
 		return format.format(value).replace(",", "");
 	}
 
+	public void warmup(final Engine<?, ?> engine) {
+		System.out.print("Warmup");
+
+		final long start = System.currentTimeMillis();
+		for (int i = 0; i < 700; ++i) {
+			engine.stream()
+				.limit(300)
+				.mapToInt(r -> r.getAlterCount())
+				.sum();
+		}
+		final long end = System.currentTimeMillis();
+
+		System.out.println(format(": %f sec.", (end - start)/1_000.0));
+	}
+
 }

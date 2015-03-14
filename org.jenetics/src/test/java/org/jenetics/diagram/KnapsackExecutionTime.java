@@ -32,6 +32,7 @@ import java.util.function.Predicate;
 import java.util.stream.LongStream;
 
 import org.jenetics.BitGene;
+import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
 import org.jenetics.engine.limit;
 import org.jenetics.util.LCG64ShiftRandom;
@@ -48,7 +49,7 @@ public class KnapsackExecutionTime extends Knapsack {
 		final double base = pow(10, log10(100)/20.0);
 
 		RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
-		final int samples = 50;
+		final int samples = 500;
 
 		final Function<Duration, Predicate<? super EvolutionResult<BitGene, Double>>>
 			terminator = limit::byExecutionTime;
@@ -61,8 +62,10 @@ public class KnapsackExecutionTime extends Knapsack {
 				Duration::toMillis
 			);
 
+		statistics.warmup(instance.engine());
+
 		final long start = System.nanoTime();
-		final long time = LongStream.rangeClosed(1, 40)
+		final long time = LongStream.rangeClosed(1, 15)
 			.peek(i -> System.out.print(i + ": "))
 			.map(i -> max((long) pow(base, i), i))
 			.peek(i -> System.out.println(
@@ -79,7 +82,7 @@ public class KnapsackExecutionTime extends Knapsack {
 
 		statistics.write(new File(
 			"org.jenetics/src/test/scripts/diagram/" +
-				"execution_time_termination.dat"
+				"execution_time_termination1.dat"
 		));
 		System.out.println("Ready");
 
