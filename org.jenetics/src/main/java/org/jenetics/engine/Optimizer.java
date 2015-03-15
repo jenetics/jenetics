@@ -69,35 +69,13 @@ public final class Optimizer<ARG_TYPE> {
 
 		private final Codec<G, ARG_TYPE> _codec;
 
-		private Worker(final Codec<G, ARG_TYPE> codec) {
+		Worker(final Codec<G, ARG_TYPE> codec) {
 			_codec = requireNonNull(codec);
-		}
-
-		<R extends Comparable<? super R>> EvolutionParam<G, R> param() {
-			return new EvolutionParam<>();
 		}
 
 		private <R extends Comparable<? super R>> ARG_TYPE
 		optimize(final Function<ARG_TYPE, R> function, final Optimize optimize) {
-			final EvolutionParam<G, R> param = param();
-
-			final Engine<G, R> engine = Engine
-				.builder(function.compose(_codec.decoder()), _codec.encoding())
-				.fitnessScaler(param.getFitnessScaler())
-				.survivorsSelector(param.getSurvivorsSelector())
-				.offspringSelector(param.getOffspringSelector())
-				.alterers(param.getAlterers())
-				.optimize(optimize)
-				.offspringFraction(param.getOffspringFraction())
-				.populationSize(param.getPopulationSize())
-				.maximalPhenotypeAge(param.getMaximalPhenotypeAge())
-				.build();
-
-			final Genotype<G> bgt = engine.stream()
-				.limit(limit.bySteadyFitness(30))
-				.collect(EvolutionResult.toBestGenotype());
-
-			return _codec.decoder().apply(bgt);
+			return new Exec<R>().optimize(function, optimize);
 		}
 
 		<R extends Comparable<? super R>> ARG_TYPE
@@ -116,6 +94,8 @@ public final class Optimizer<ARG_TYPE> {
 
 	private Optimizer() {
 	}
+
+
 
 	public <R extends Comparable<? super R>> ARG_TYPE
 	argmin(final Function<ARG_TYPE, R> function) {
@@ -138,6 +118,8 @@ public final class Optimizer<ARG_TYPE> {
 	of(final Codec<G, S> codec) {
 		final Optimizer<S> optimizer = new Optimizer<>();
 		optimizer._worker = optimizer.new Worker<>(codec);
+		
+		optimizer._worker.new Exec<>();
 
 		return optimizer;
 	}
