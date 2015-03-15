@@ -41,7 +41,7 @@ import org.jenetics.TournamentSelector;
  * @version !__version__!
  * @since !__version__!
  */
-class EvolutionConfig<
+class EvolutionParam<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
@@ -66,7 +66,7 @@ class EvolutionConfig<
 	 * @param scaler the fitness scale to use in the GA {@code Engine}
 	 * @return {@code this} builder, for command chaining
 	 */
-	public EvolutionConfig<G, C> fitnessScaler(
+	public EvolutionParam<G, C> fitnessScaler(
 		final Function<? super C, ? extends C> scaler
 	) {
 		_fitnessScaler = requireNonNull(scaler);
@@ -80,7 +80,7 @@ class EvolutionConfig<
 	 * @param selector used for selecting the offspring population
 	 * @return {@code this} builder, for command chaining
 	 */
-	public EvolutionConfig<G, C> offspringSelector(
+	public EvolutionParam<G, C> offspringSelector(
 		final Selector<G, C> selector
 	) {
 		_offspringSelector = requireNonNull(selector);
@@ -94,7 +94,7 @@ class EvolutionConfig<
 	 * @param selector used for selecting survivors population
 	 * @return {@code this} builder, for command chaining
 	 */
-	public EvolutionConfig<G, C> survivorsSelector(
+	public EvolutionParam<G, C> survivorsSelector(
 		final Selector<G, C> selector
 	) {
 		_survivorsSelector = requireNonNull(selector);
@@ -109,7 +109,7 @@ class EvolutionConfig<
 	 * @param selector used for selecting survivors and offspring population
 	 * @return {@code this} builder, for command chaining
 	 */
-	public EvolutionConfig<G, C> selector(final Selector<G, C> selector) {
+	public EvolutionParam<G, C> selector(final Selector<G, C> selector) {
 		_offspringSelector = requireNonNull(selector);
 		_survivorsSelector = requireNonNull(selector);
 		return this;
@@ -129,7 +129,7 @@ class EvolutionConfig<
 	 *         {@code null}.
 	 */
 	@SafeVarargs
-	public final EvolutionConfig<G, C> alterers(
+	public final EvolutionParam<G, C> alterers(
 		final Alterer<G, C> first,
 		final Alterer<G, C>... rest
 	) {
@@ -150,7 +150,7 @@ class EvolutionConfig<
 	 * @param optimize the optimization strategy used by the engine
 	 * @return {@code this} builder, for command chaining
 	 */
-	public EvolutionConfig<G, C> optimize(final Optimize optimize) {
+	public EvolutionParam<G, C> optimize(final Optimize optimize) {
 		_optimize = requireNonNull(optimize);
 		return this;
 	}
@@ -163,7 +163,7 @@ class EvolutionConfig<
 	 * @throws java.lang.IllegalArgumentException if the fraction is not
 	 *         within the range [0, 1].
 	 */
-	public EvolutionConfig<G, C> offspringFraction(final double fraction) {
+	public EvolutionParam<G, C> offspringFraction(final double fraction) {
 		_offspringFraction = probability(fraction);
 		return this;
 	}
@@ -176,7 +176,7 @@ class EvolutionConfig<
 	 * @return {@code this} builder, for command chaining
 	 * @throws java.lang.IllegalArgumentException if {@code size < 1}
 	 */
-	public EvolutionConfig<G, C> populationSize(final int size) {
+	public EvolutionParam<G, C> populationSize(final int size) {
 		if (size < 1) {
 			throw new IllegalArgumentException(format(
 				"Population size must be greater than zero, but was %s.", size
@@ -194,7 +194,7 @@ class EvolutionConfig<
 	 * @return {@code this} builder, for command chaining
 	 * @throws java.lang.IllegalArgumentException if {@code age < 1}
 	 */
-	public EvolutionConfig<G, C> maximalPhenotypeAge(final long age) {
+	public EvolutionParam<G, C> maximalPhenotypeAge(final long age) {
 		if (age < 1) {
 			throw new IllegalArgumentException(format(
 				"Phenotype age must be greater than one, but was %s.", age

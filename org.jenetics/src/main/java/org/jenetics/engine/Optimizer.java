@@ -23,6 +23,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.function.Function;
 
+import org.jenetics.DoubleGene;
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
 import org.jenetics.Optimize;
@@ -34,18 +35,62 @@ import org.jenetics.Optimize;
  */
 public final class Optimizer<ARG_TYPE> {
 
-	private final class Inner<G extends Gene<?, G>> {
+	/**
+	 * Worker class used for hiding the gene type.
+	 *
+	 * @param <G> the gene type
+	 */
+	private class Worker<G extends Gene<?, G>> {
+
+		private class Exec<R extends Comparable<? super R>> {
+
+			EvolutionParam<G, R> _param;
+
+			ARG_TYPE optimize(final Function<ARG_TYPE, R> function, final Optimize optimize) {
+				final Engine<G, R> engine = Engine
+					.builder(function.compose(_codec.decoder()), _codec.encoding())
+					.fitnessScaler(_param.getFitnessScaler())
+					.survivorsSelector(_param.getSurvivorsSelector())
+					.offspringSelector(_param.getOffspringSelector())
+					.alterers(_param.getAlterers())
+					.optimize(optimize)
+					.offspringFraction(_param.getOffspringFraction())
+					.populationSize(_param.getPopulationSize())
+					.maximalPhenotypeAge(_param.getMaximalPhenotypeAge())
+					.build();
+
+				final Genotype<G> bgt = engine.stream()
+					.limit(limit.bySteadyFitness(30))
+					.collect(EvolutionResult.toBestGenotype());
+
+				return _codec.decoder().apply(bgt);
+			}
+		}
+
 		private final Codec<G, ARG_TYPE> _codec;
 
-		Inner(final Codec<G, ARG_TYPE> codec) {
+		private Worker(final Codec<G, ARG_TYPE> codec) {
 			_codec = requireNonNull(codec);
 		}
 
-		<R extends Comparable<? super R>> ARG_TYPE
-		argmin(final Function<ARG_TYPE, R> function) {
+		<R extends Comparable<? super R>> EvolutionParam<G, R> param() {
+			return new EvolutionParam<>();
+		}
+
+		private <R extends Comparable<? super R>> ARG_TYPE
+		optimize(final Function<ARG_TYPE, R> function, final Optimize optimize) {
+			final EvolutionParam<G, R> param = param();
+
 			final Engine<G, R> engine = Engine
 				.builder(function.compose(_codec.decoder()), _codec.encoding())
-				.optimize(Optimize.MINIMUM)
+				.fitnessScaler(param.getFitnessScaler())
+				.survivorsSelector(param.getSurvivorsSelector())
+				.offspringSelector(param.getOffspringSelector())
+				.alterers(param.getAlterers())
+				.optimize(optimize)
+				.offspringFraction(param.getOffspringFraction())
+				.populationSize(param.getPopulationSize())
+				.maximalPhenotypeAge(param.getMaximalPhenotypeAge())
 				.build();
 
 			final Genotype<G> bgt = engine.stream()
@@ -54,23 +99,45 @@ public final class Optimizer<ARG_TYPE> {
 
 			return _codec.decoder().apply(bgt);
 		}
+
+		<R extends Comparable<? super R>> ARG_TYPE
+		argmin(final Function<ARG_TYPE, R> function) {
+			return optimize(function, Optimize.MINIMUM);
+		}
+
+		<R extends Comparable<? super R>> ARG_TYPE
+		argmax(final Function<ARG_TYPE, R> function) {
+			return optimize(function, Optimize.MAXIMUM);
+		}
+
 	}
 
-	private Inner<?> _inner;
+	private Worker<?> _worker;
 
 	private Optimizer() {
 	}
 
 	public <R extends Comparable<? super R>> ARG_TYPE
 	argmin(final Function<ARG_TYPE, R> function) {
-		return _inner.argmin(function);
+		return _worker.argmin(function);
 	}
 
+	public <R extends Comparable<? super R>> ARG_TYPE
+	argmax(final Function<ARG_TYPE, R> function) {
+		return _worker.argmax(function);
+	}
 
+	/**
+	 *
+	 * @param codec
+	 * @param <G>
+	 * @param <S>
+	 * @return
+	 */
 	public static <G extends Gene<?, G>, S> Optimizer<S>
 	of(final Codec<G, S> codec) {
 		final Optimizer<S> optimizer = new Optimizer<>();
-		optimizer._inner = optimizer.new Inner<>(codec);
+		optimizer._worker = optimizer.new Worker<>(codec);
 
 		return optimizer;
 	}
@@ -79,6 +146,10 @@ public final class Optimizer<ARG_TYPE> {
 		final double min,
 		final double max
 	) {
+		final Codec<DoubleGene, Double> codec = Codec.ofDouble(min, max);
+		final Optimizer<Double> optimizer = new Optimizer<>();
+		optimizer._worker = optimizer.new Worker<>(codec);
+
 		return of(Codec.ofDouble(min, max));
 	}
 
