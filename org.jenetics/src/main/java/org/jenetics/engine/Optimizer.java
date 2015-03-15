@@ -90,6 +90,11 @@ public final class Optimizer<T, R extends Comparable<? super R>> {
 		return _worker.argmin(function);
 	}
 
+	public static <R extends Comparable<? super R>> Double
+	sargmin(final double min, final double max, final Function<Double, R> f) {
+		return null;
+	}
+
 	public T argmax(final Function<T, R> function) {
 		return _worker.argmax(function);
 	}
