@@ -26,6 +26,8 @@ import java.util.function.Function;
 import org.jenetics.DoubleGene;
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
+import org.jenetics.MeanAlterer;
+import org.jenetics.Mutator;
 import org.jenetics.Optimize;
 
 /**
@@ -33,7 +35,7 @@ import org.jenetics.Optimize;
  * @version !__version__!
  * @since !__version__!
  */
-public final class Optimizer<ARG_TYPE, R extends Comparable<? super R>> {
+public final class Optimizer<T, R extends Comparable<? super R>> {
 
 	/**
 	 * Worker class used for hiding the gene type.
@@ -41,15 +43,15 @@ public final class Optimizer<ARG_TYPE, R extends Comparable<? super R>> {
 	 * @param <G> the gene type
 	 */
 	private class Worker<G extends Gene<?, G>> {
-		private final Codec<G, ARG_TYPE> _codec;
-		EvolutionParam<G, R> _param;
+		private final Codec<G, T> _codec;
+		private final EvolutionParam<G, R> _param;
 
-		Worker(final Codec<G, ARG_TYPE> codec) {
+		Worker(final Codec<G, T> codec, final EvolutionParam<G, R> param) {
 			_codec = requireNonNull(codec);
+			_param = requireNonNull(param);
 		}
 
-		private ARG_TYPE
-		optimize(final Function<ARG_TYPE, R> function, final Optimize optimize) {
+		private T optimize(final Function<T, R> function, final Optimize optimize) {
 			final Engine<G, R> engine = Engine
 				.builder(function.compose(_codec.decoder()), _codec.encoding())
 				.fitnessScaler(_param.getFitnessScaler())
@@ -69,11 +71,11 @@ public final class Optimizer<ARG_TYPE, R extends Comparable<? super R>> {
 			return _codec.decoder().apply(bgt);
 		}
 
-		ARG_TYPE argmin(final Function<ARG_TYPE, R> function) {
+		T argmin(final Function<T, R> function) {
 			return optimize(function, Optimize.MINIMUM);
 		}
 
-		ARG_TYPE argmax(final Function<ARG_TYPE, R> function) {
+		T argmax(final Function<T, R> function) {
 			return optimize(function, Optimize.MAXIMUM);
 		}
 
@@ -84,54 +86,54 @@ public final class Optimizer<ARG_TYPE, R extends Comparable<? super R>> {
 	private Optimizer() {
 	}
 
-	public ARG_TYPE argmin(final Function<ARG_TYPE, R> function) {
+	public T argmin(final Function<T, R> function) {
 		return _worker.argmin(function);
 	}
 
-	public ARG_TYPE argmax(final Function<ARG_TYPE, R> function) {
+	public T argmax(final Function<T, R> function) {
 		return _worker.argmax(function);
 	}
 
-	/**
-	 *
-	 * @param codec
-	 * @param <G>
-	 * @param <S>
-	 * @return
-	 */
-	public static <
+	private static <
+		G extends Gene<?, G>,
+		S,
+		R extends Comparable<? super R>
+	>
+	Optimizer<S, R> of(final Codec<G, S> codec, final EvolutionParam<G, R> param) {
+		final Optimizer<S, R> optimizer = new Optimizer<>();
+		optimizer._worker = optimizer.new Worker<>(codec, param);
+
+		return optimizer;
+	}
+
+	private static <
 		G extends Gene<?, G>,
 		S,
 		R extends Comparable<? super R>
 	>
 	Optimizer<S, R> of(final Codec<G, S> codec) {
-		/*
-		final Optimizer<S> optimizer = new Optimizer<>();
-		optimizer._worker = optimizer.new Worker<>(codec);
-
-		optimizer._worker.new Exec<>();
-
-		return optimizer;
-		*/
-		return null;
+		return of(codec, new EvolutionParam<G, R>());
 	}
 
-	/*
-	public static <R extends Comparable<? super R>> Optimizer<Double> ofDouble(
+	public static <R extends Comparable<? super R>> Optimizer<Double, R> ofDouble(
 		final double min,
 		final double max
 	) {
 		final Codec<DoubleGene, Double> codec = Codec.ofDouble(min, max);
-		final Optimizer<Double> optimizer = new Optimizer<>();
-		optimizer._worker = optimizer.new Worker<>(codec);
+		final EvolutionParam<DoubleGene, R> param =
+			new EvolutionParam<DoubleGene, R>()
+				.alterers(
+					new Mutator<>(0.15),
+					new MeanAlterer<>()
+				);
 
-		return of(Codec.ofDouble(min, max));
+		return of(codec, param);
 	}
 
 	public static void main(final String[] args) {
-		final double result = Optimizer.ofDouble(0, 100).argmin(i -> i);
+		final Double result = Optimizer.<Double>ofDouble(0, Math.PI)
+			.argmin(Math::sin);
 
 		System.out.println(result);
 	}
-	*/
 }
