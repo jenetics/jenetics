@@ -33,7 +33,7 @@ import org.jenetics.Optimize;
  * @version !__version__!
  * @since !__version__!
  */
-public final class Optimizer<ARG_TYPE> {
+public final class Optimizer<ARG_TYPE, R extends Comparable<? super R>> {
 
 	/**
 	 * Worker class used for hiding the gene type.
@@ -41,50 +41,39 @@ public final class Optimizer<ARG_TYPE> {
 	 * @param <G> the gene type
 	 */
 	private class Worker<G extends Gene<?, G>> {
-
-		private class Exec<R extends Comparable<? super R>> {
-
-			EvolutionParam<G, R> _param;
-
-			ARG_TYPE optimize(final Function<ARG_TYPE, R> function, final Optimize optimize) {
-				final Engine<G, R> engine = Engine
-					.builder(function.compose(_codec.decoder()), _codec.encoding())
-					.fitnessScaler(_param.getFitnessScaler())
-					.survivorsSelector(_param.getSurvivorsSelector())
-					.offspringSelector(_param.getOffspringSelector())
-					.alterers(_param.getAlterers())
-					.optimize(optimize)
-					.offspringFraction(_param.getOffspringFraction())
-					.populationSize(_param.getPopulationSize())
-					.maximalPhenotypeAge(_param.getMaximalPhenotypeAge())
-					.build();
-
-				final Genotype<G> bgt = engine.stream()
-					.limit(limit.bySteadyFitness(30))
-					.collect(EvolutionResult.toBestGenotype());
-
-				return _codec.decoder().apply(bgt);
-			}
-		}
-
 		private final Codec<G, ARG_TYPE> _codec;
+		EvolutionParam<G, R> _param;
 
 		Worker(final Codec<G, ARG_TYPE> codec) {
 			_codec = requireNonNull(codec);
 		}
 
-		private <R extends Comparable<? super R>> ARG_TYPE
+		private ARG_TYPE
 		optimize(final Function<ARG_TYPE, R> function, final Optimize optimize) {
-			return new Exec<R>().optimize(function, optimize);
+			final Engine<G, R> engine = Engine
+				.builder(function.compose(_codec.decoder()), _codec.encoding())
+				.fitnessScaler(_param.getFitnessScaler())
+				.survivorsSelector(_param.getSurvivorsSelector())
+				.offspringSelector(_param.getOffspringSelector())
+				.alterers(_param.getAlterers())
+				.optimize(optimize)
+				.offspringFraction(_param.getOffspringFraction())
+				.populationSize(_param.getPopulationSize())
+				.maximalPhenotypeAge(_param.getMaximalPhenotypeAge())
+				.build();
+
+			final Genotype<G> bgt = engine.stream()
+				.limit(limit.bySteadyFitness(30))
+				.collect(EvolutionResult.toBestGenotype());
+
+			return _codec.decoder().apply(bgt);
 		}
 
-		<R extends Comparable<? super R>> ARG_TYPE
-		argmin(final Function<ARG_TYPE, R> function) {
+		ARG_TYPE argmin(final Function<ARG_TYPE, R> function) {
 			return optimize(function, Optimize.MINIMUM);
 		}
 
-		<R extends Comparable<? super R>> ARG_TYPE
-		argmax(final Function<ARG_TYPE, R> function) {
+		ARG_TYPE argmax(final Function<ARG_TYPE, R> function) {
 			return optimize(function, Optimize.MAXIMUM);
 		}
 
@@ -95,15 +84,11 @@ public final class Optimizer<ARG_TYPE> {
 	private Optimizer() {
 	}
 
-
-
-	public <R extends Comparable<? super R>> ARG_TYPE
-	argmin(final Function<ARG_TYPE, R> function) {
+	public ARG_TYPE argmin(final Function<ARG_TYPE, R> function) {
 		return _worker.argmin(function);
 	}
 
-	public <R extends Comparable<? super R>> ARG_TYPE
-	argmax(final Function<ARG_TYPE, R> function) {
+	public ARG_TYPE argmax(final Function<ARG_TYPE, R> function) {
 		return _worker.argmax(function);
 	}
 
@@ -114,17 +99,25 @@ public final class Optimizer<ARG_TYPE> {
 	 * @param <S>
 	 * @return
 	 */
-	public static <G extends Gene<?, G>, S> Optimizer<S>
-	of(final Codec<G, S> codec) {
+	public static <
+		G extends Gene<?, G>,
+		S,
+		R extends Comparable<? super R>
+	>
+	Optimizer<S, R> of(final Codec<G, S> codec) {
+		/*
 		final Optimizer<S> optimizer = new Optimizer<>();
 		optimizer._worker = optimizer.new Worker<>(codec);
-		
+
 		optimizer._worker.new Exec<>();
 
 		return optimizer;
+		*/
+		return null;
 	}
 
-	public static Optimizer<Double> ofDouble(
+	/*
+	public static <R extends Comparable<? super R>> Optimizer<Double> ofDouble(
 		final double min,
 		final double max
 	) {
@@ -140,4 +133,5 @@ public final class Optimizer<ARG_TYPE> {
 
 		System.out.println(result);
 	}
+	*/
 }
