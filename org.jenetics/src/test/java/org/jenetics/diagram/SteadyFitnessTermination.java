@@ -175,12 +175,12 @@ public class SteadyFitnessTermination<G extends Gene<?, G>> {
 		final UncheckedAppendable uout = new UncheckedAppendable(out);
 
 		uout.append("#")
-			.append(format(pattern, sdata[0]))
+			.append(format(pattern, (Object)sdata[0]))
 			.append('\n');
 
 		Stream.of(sdata).skip(1).forEach(d ->
 			uout.append(" ")
-				.append(format(pattern, d))
+				.append(format(pattern, (Object)d))
 				.append('\n')
 		);
 
