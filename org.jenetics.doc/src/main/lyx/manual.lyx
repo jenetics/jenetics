@@ -12210,7 +12210,7 @@ org\SpecialChar \-
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
@@ -12227,11 +12227,101 @@ status open
 \begin_layout Plain Layout
 \begin_inset CommandInset label
 LatexCommand label
-name "fig:Directed-graph-1"
+name "fig:Steady-fitness-diagram"
 
 \end_inset
 
-Directed graph and adjacency matrix
+Steady fitness termination diagram
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+Diagram 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Steady-fitness-diagram"
+
+\end_inset
+
+ shows the actual total executed generation depending on the desired number
+ of steady fitness generations.
+ The variation of the total generation might be quite big, as shown by the
+ candle-sticks
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+[min, 
+\begin_inset Formula $25^{th}$
+\end_inset
+
+percentile, median, 
+\begin_inset Formula $75^{th}$
+\end_inset
+
+ percentile, max]
+\end_layout
+
+\end_inset
+
+.
+ Though the variation can be quite big---the termination test has been repeated
+ 250 times for each data point---, the test shows that the 
+\emph on
+steady fitness
+\emph default
+ termination strategy always terminates.
+ The lower diagram give an overview of the fitness progression.
+ Only the mean values of the maximal fitness is shown.
+\end_layout
+
+\begin_layout Subsubsection
+Evolution time
+\end_layout
+
+\begin_layout Standard
+A termination method that stops the evolution when the elapsed evolution
+ time exceeds the user-specified max evolution time.
+ By default, the evolution is not stopped until the evolution of the current
+ generation has completed, but this behavior can be changed so that the
+ evolution can be stopped within a generation.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/diagram/SteadyFitnessTermination.svg
+	lyxscale 80
+	width 100text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Steady-fitness-diagram-1"
+
+\end_inset
+
+Steady fitness termination diagram
 \end_layout
 
 \end_inset
@@ -12247,18 +12337,6 @@ Directed graph and adjacency matrix
 \begin_layout Standard
 \begin_inset Note Comment
 status collapsed
-
-\begin_layout Subsubsection
-Evolution time
-\end_layout
-
-\begin_layout Plain Layout
-A termination method that stops the evolution when the elapsed evolution
- time exceeds the user-specified max evolution time.
- By default, the evolution is not stopped until the evolution of the current
- generation has completed, but this behavior can be changed so that the
- evolution can be stopped within a generation.
-\end_layout
 
 \begin_layout Subsubsection
 Fitness threshold

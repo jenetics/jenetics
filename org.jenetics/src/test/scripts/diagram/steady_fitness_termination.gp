@@ -2,10 +2,10 @@
 
 data = "steady_fitness_termination.dat"
 
-set terminal svg size 700,500 enhanced fname "Times Roman" fsize 10
-set output "steady_fitness_termination.svg"
+set terminal svg size 700,500 enhanced fname "Times Roman" fsize 12
+set output "SteadyFitnessTermination.svg"
 
-set title "Steady fitness termination" font ",16"
+#set title "Steady fitness termination" font ",16"
 set grid
 
 set logscale x
@@ -20,7 +20,7 @@ set size 1, 0.67
 set origin 0, 0.33
 set bmargin 0.1
 set format x ""
-set ylabel "Total generation" font ",11"
+set ylabel "Total generation" font ",12"
 
 set lmargin 12
 set rmargin 4
@@ -38,7 +38,7 @@ unset title
 unset logscale y
 set autoscale y
 set ylabel "Fitness"
-set xlabel "Steady generation" font ",11"
+set xlabel "Steady generation" font ",12"
 set bmargin
 set format x "10^{%L}"
 set size 1.0, 0.33
