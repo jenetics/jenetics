@@ -12215,7 +12215,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/graphic/SteadyFitnessTermination.svg
+	filename ../resources/diagram/SteadyFitnessTermination.svg
 	lyxscale 80
 	width 100text%
 
