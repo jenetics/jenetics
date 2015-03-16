@@ -11487,7 +11487,7 @@ In an undirected graph the edges between the vertices have no direction.
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
@@ -11696,7 +11696,7 @@ A directed graph (digraph) is a graph where the path between the nodes have
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
@@ -11776,7 +11776,7 @@ A weighted graph associates a weight (label) with every path in the graph.
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
@@ -11807,6 +11807,10 @@ Weighted graph and adjacency matrix
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 The following code snippet shows how the 
 \family typewriter
 Genotype
@@ -12200,6 +12204,44 @@ org\SpecialChar \-
  package.
  It should give you an impression of how to implement own termination strategies
 , which possible holds and internal state.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/SteadyFitnessTermination.svg
+	lyxscale 80
+	width 100text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Directed-graph-1"
+
+\end_inset
+
+Directed graph and adjacency matrix
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ 
 \end_layout
 
 \begin_layout Standard
