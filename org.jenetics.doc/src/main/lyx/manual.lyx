@@ -10793,7 +10793,9 @@ double[]
 
 -dimensional 
 \family typewriter
-double[
+dou\SpecialChar \-
+ble\SpecialChar \-
+[
 \emph on
 n
 \emph default
