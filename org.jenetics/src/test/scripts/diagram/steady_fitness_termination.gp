@@ -2,7 +2,7 @@
 
 data = "steady_fitness_termination.dat"
 
-set terminal svg size 700,500 enhanced fname "Times Roman" fsize 12
+set terminal svg size 700,500 enhanced fname "Times Roman" fsize 11
 set output "SteadyFitnessTermination.svg"
 
 set grid

@@ -2,12 +2,10 @@
 
 data = "execution_time_termination.dat"
 
-set terminal svg size 700,500 enhanced fname "Times Roman" fsize 10
-set output "execution_time_termination.svg"
+set terminal svg size 700,500 enhanced fname "Times Roman" fsize 11
+set output "ExecutionTimeTermination.svg"
 
-set title "Execution time termination" font ",16"
 set grid
-
 set logscale x
 set logscale y
 set yrange[1:]
@@ -20,7 +18,7 @@ set size 1, 0.67
 set origin 0, 0.33
 set bmargin 0.1
 set format x ""
-set ylabel "Total generation" font ",11"
+set ylabel "Total generation" font ",12"
 
 set lmargin 12
 set rmargin 4
@@ -38,7 +36,7 @@ unset title
 unset logscale y
 set autoscale y
 set ylabel "Fitness"
-set xlabel "Execution time [ms]" font ",11"
+set xlabel "Execution time [ms]" font ",12"
 set bmargin
 set format x "10^{%L}"
 set size 1.0, 0.33

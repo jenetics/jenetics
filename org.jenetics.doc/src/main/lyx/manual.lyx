@@ -11980,7 +11980,7 @@ This kind of termination method should always be applied, to guarantee the
 \begin_layout Subsubsection
 Steady fitness
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Termination!Steady fitness
@@ -11990,7 +11990,7 @@ Termination!Steady fitness
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Steady fitness
@@ -12002,8 +12002,12 @@ Steady fitness
 \end_layout
 
 \begin_layout Standard
-The steady fitness strategy truncates the evolution stream if its best fitness
- hasn't changed after a given number of generations.
+The 
+\emph on
+steady fitness
+\emph default
+ strategy truncates the evolution stream if its best fitness hasn't changed
+ after a given number of generations.
  The predicate maintains an internal state, the number of generations with
  non increasing fitness, and must be created for every evolution stream.
 \end_layout
@@ -12204,6 +12208,47 @@ org\SpecialChar \-
  package.
  It should give you an impression of how to implement own termination strategies
 , which possible holds and internal state.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Engine<DobuleGene, Double> engine = ...
+\end_layout
+
+\begin_layout Plain Layout
+
+EvolutionStream<DoubleGene, Double> stream = engine.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+    .limit(limit.bySteadyFitness(15));
+\end_layout
+
+\end_inset
+
+The steady fitness terminator can be created by the 
+\family typewriter
+by\SpecialChar \-
+Steady\SpecialChar \-
+Fitness
+\family default
+ factory method of the 
+\family typewriter
+org.\SpecialChar \-
+jenetics.\SpecialChar \-
+engine.\SpecialChar \-
+limit
+\family default
+ object.
+ In the example above, the evolution stream is terminated after 
+\begin_inset Formula $15$
+\end_inset
+
+ stable generations.
 \end_layout
 
 \begin_layout Standard
@@ -12254,8 +12299,8 @@ reference "fig:Steady-fitness-diagram"
 
  shows the actual total executed generation depending on the desired number
  of steady fitness generations.
- The variation of the total generation might be quite big, as shown by the
- candle-sticks
+ The variation of the total generation is quite big, as shown by the candle-stic
+ks
 \begin_inset Foot
 status collapsed
 
@@ -12286,26 +12331,93 @@ steady fitness
 
 \begin_layout Subsubsection
 Evolution time
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Termination!Evolution time
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Evolution time
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-A termination method that stops the evolution when the elapsed evolution
- time exceeds the user-specified max evolution time.
- By default, the evolution is not stopped until the evolution of the current
- generation has completed, but this behavior can be changed so that the
- evolution can be stopped within a generation.
+This termination strategy stops the evolution when the elapsed evolution
+ time exceeds the user-specified maximal value.
+ The evolution is not stopped until the evolution of the current generation
+ has completed.
+ In an time-critical environment, where a solution must be found within
+ a maximal execution time, this terminator let you define the desired guarantees.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Engine<DobuleGene, Double> engine = ...
+\end_layout
+
+\begin_layout Plain Layout
+
+EvolutionStream<DoubleGene, Double> stream = engine.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+    .limit(limit.byExecutionTime(Duration.ofMillis(500));
+\end_layout
+
+\end_inset
+
+In the code example above, the 
+\family typewriter
+by\SpecialChar \-
+Execution\SpecialChar \-
+Time(\SpecialChar \-
+Duration\SpecialChar \-
+)
+\family default
+ method is used for creating the termination object.
+ A other method, 
+\family typewriter
+by\SpecialChar \-
+Execution\SpecialChar \-
+Time\SpecialChar \-
+(Du\SpecialChar \-
+ration, Clock)
+\family default
+, lets you define the 
+\family typewriter
+java.\SpecialChar \-
+time.\SpecialChar \-
+Clock
+\family default
+, which is used for measure the execution time.
 \end_layout
 
 \begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/diagram/SteadyFitnessTermination.svg
+	filename ../resources/diagram/ExecutionTimeTermination.svg
 	lyxscale 80
 	width 100text%
 
@@ -12317,11 +12429,11 @@ status collapsed
 \begin_layout Plain Layout
 \begin_inset CommandInset label
 LatexCommand label
-name "fig:Steady-fitness-diagram-1"
+name "fig:Execution-time-diagram"
 
 \end_inset
 
-Steady fitness termination diagram
+Execution time termination diagram
 \end_layout
 
 \end_inset
@@ -12332,6 +12444,18 @@ Steady fitness termination diagram
 \end_inset
 
  
+\end_layout
+
+\begin_layout Standard
+Diagram 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Execution-time-diagram"
+
+\end_inset
+
+ shows the evaluated generations depending on the execution time.
+ Except for very small execution times, the ...
 \end_layout
 
 \begin_layout Standard
