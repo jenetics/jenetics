@@ -5,9 +5,7 @@ data = "steady_fitness_termination.dat"
 set terminal svg size 700,500 enhanced fname "Times Roman" fsize 12
 set output "SteadyFitnessTermination.svg"
 
-#set title "Steady fitness termination" font ",16"
 set grid
-
 set logscale x
 set logscale y
 set yrange[1:]
