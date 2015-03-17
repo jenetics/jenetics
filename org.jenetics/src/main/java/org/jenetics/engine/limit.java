@@ -118,7 +118,7 @@ public final class limit {
 	 */
 	public static Predicate<Object>
 	byExecutionTime(final Duration duration) {
-		return byExecutionTime(duration, NanoClock.INSTANCE);
+		return byExecutionTime(duration, NanoClock.systemUTC());
 	}
 
 	/**

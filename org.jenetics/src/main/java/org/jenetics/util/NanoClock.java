@@ -21,45 +21,37 @@ package org.jenetics.util;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serializable;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 
+import org.jenetics.internal.util.Equality;
+
 /**
  * Clock implementation with <i>nano</i> second precision.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 3.0
- * @version 3.0
+ * @since !__version__!
+ * @version !__version__!
  */
-public final class NanoClock extends Clock {
+public final class NanoClock extends Clock implements Serializable {
 
-	public static final long NANOS_PER_SECOND = 1_000_000_000;
+	private static final long serialVersionUID = -2456014222030125954L;
 
 	private static final long EPOCH_NANOS = System.currentTimeMillis()*1_000_000;
 	private static final long NANO_START = System.nanoTime();
 
-	public static final NanoClock INSTANCE = new NanoClock(ZoneOffset.UTC);
+	/**
+	 * This constants holds the number of nano seconds of one second.
+	 */
+	public static final long NANOS_PER_SECOND = 1_000_000_000;
 
 	private final ZoneId _zone;
 
-	/**
-	 * Create an new clock instance with the given zone.
-	 *
-	 * @param zone the clock zone
-	 * @throws java.lang.NullPointerException if the given {@code zone} is
-	 *         {@code null}.
-	 */
-	public NanoClock(final ZoneId zone)  {
-		_zone = requireNonNull(zone);
-	}
-
-	/**
-	 * Create an new clock instance with UTC zone.
-	 */
-	public NanoClock() {
-		this(ZoneOffset.UTC);
+	private NanoClock(final ZoneId zone)  {
+		_zone = requireNonNull(zone, "zone");
 	}
 
 	@Override
@@ -69,13 +61,89 @@ public final class NanoClock extends Clock {
 
 	@Override
 	public Clock withZone(final ZoneId zone) {
-		return new NanoClock(zone);
+		return zone.equals(_zone) ? this : new NanoClock(zone);
+	}
+
+	@Override
+	public long millis() {
+		return System.currentTimeMillis();
 	}
 
 	@Override
 	public Instant instant() {
 		final long now = System.nanoTime() - NANO_START + EPOCH_NANOS;
 		return Instant.ofEpochSecond(now/NANOS_PER_SECOND, now%NANOS_PER_SECOND);
+	}
+
+	@Override
+	public int hashCode() {
+		return _zone.hashCode() + 1;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return Equality.of(this, obj)
+			.test(clock -> _zone.equals(clock._zone));
+	}
+
+	@Override
+	public String toString() {
+		return "NanoClock[" + _zone + "]";
+	}
+
+	/**
+	 * This clock is based on the <i>nano</i> system clock. It uses
+	 * {@link System#nanoTime()} resolution
+	 * <p>
+	 * Conversion from instant to date or time uses the specified time-zone.
+	 * <p>
+	 * The returned implementation is immutable, thread-safe and
+	 * {@code Serializable}.
+	 *
+	 * @param zone  the time-zone to use to convert the instant to date-time
+	 * @return a clock that uses the best available system clock in the
+	 *         specified zone
+	 * @throws java.lang.NullPointerException if the given {@code zone} is
+	 *         {@code null}
+	 */
+	public static Clock system(final ZoneId zone) {
+		return new NanoClock(zone);
+	}
+
+	/**
+	 * This clock is based on the <i>nano</i> system clock. It uses
+	 * {@link System#nanoTime()} resolution
+	 * <p>
+	 * Conversion from instant to date or time uses the specified time-zone.
+	 * <p>
+	 * The returned implementation is immutable, thread-safe and
+	 * {@code Serializable}.
+	 *
+	 * @return a clock that uses the best available system clock in the
+	 *         UTC zone
+	 * @throws java.lang.NullPointerException if the given {@code zone} is
+	 *         {@code null}
+	 */
+	public static Clock systemUTC() {
+		return system(ZoneOffset.UTC);
+	}
+
+	/**
+	 * This clock is based on the <i>nano</i> system clock. It uses
+	 * {@link System#nanoTime()} resolution
+	 * <p>
+	 * Conversion from instant to date or time uses the specified time-zone.
+	 * <p>
+	 * The returned implementation is immutable, thread-safe and
+	 * {@code Serializable}.
+	 *
+	 * @return a clock that uses the best available system clock in the
+	 *         default zone
+	 * @throws java.lang.NullPointerException if the given {@code zone} is
+	 *         {@code null}
+	 */
+	public static Clock systemDefaultZone() {
+		return system(ZoneId.systemDefault());
 	}
 
 }

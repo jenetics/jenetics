@@ -805,7 +805,7 @@ public final class Engine<
 		private long _maximalPhenotypeAge = 70;
 
 		private Executor _executor = ForkJoinPool.commonPool();
-		private Clock _clock = NanoClock.INSTANCE;
+		private Clock _clock = NanoClock.systemUTC();
 
 		private Builder(
 			final Factory<Genotype<G>> genotypeFactory,

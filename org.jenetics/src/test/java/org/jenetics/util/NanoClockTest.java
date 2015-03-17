@@ -32,15 +32,13 @@ public class NanoClockTest {
 
 	@Test
 	public void millis() {
-		final Clock nano = org.jenetics.util.NanoClock.INSTANCE;
-		final Clock system = Clock.systemUTC();
+		final Clock nano = NanoClock.systemUTC();
 
 		for (int i = 0; i < 10_000; ++i) {
-			final long t1 = nano.millis();
-			final long t2 = system.millis();
+			final long t2 = System.currentTimeMillis();
+			final long t1 = nano.instant().toEpochMilli();
 
-
-			assertEquals(t1, t2, 15);
+			assertEquals(t1, t2, 2);
 		}
 	}
 

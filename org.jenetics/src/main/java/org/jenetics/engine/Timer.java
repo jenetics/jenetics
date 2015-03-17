@@ -99,7 +99,7 @@ final class Timer {
 	 * @return a new timer
 	 */
 	public static Timer of() {
-		return of(NanoClock.INSTANCE);
+		return of(NanoClock.systemUTC());
 	}
 
 }
