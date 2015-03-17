@@ -40,7 +40,7 @@ public final class NanoClock extends Clock {
 	private static final long EPOCH_NANOS = System.currentTimeMillis()*1_000_000;
 	private static final long NANO_START = System.nanoTime();
 
-	public static final NanoClock INSTANCE = new NanoClock();
+	public static final NanoClock INSTANCE = new NanoClock(ZoneOffset.UTC);
 
 	private final ZoneId _zone;
 
