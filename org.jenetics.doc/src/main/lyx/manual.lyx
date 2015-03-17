@@ -12257,7 +12257,7 @@ limit
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -12322,11 +12322,11 @@ percentile, median,
 
 .
  Though the variation can be quite big---the termination test has been repeated
- 250 times for each data point---, the test shows that the 
+ 250 times for each data point---, the tests showed that the 
 \emph on
 steady fitness
 \emph default
- termination strategy always terminates.
+ termination strategy always terminated.
  The lower diagram give an overview of the fitness progression.
  Only the mean values of the maximal fitness is shown.
 \end_layout
@@ -12361,7 +12361,7 @@ This termination strategy stops the evolution when the elapsed evolution
  The evolution is not stopped until the evolution of the current generation
  has completed.
  In an time-critical environment, where a solution must be found within
- a maximal execution time, this terminator let you define the desired guarantees.
+ a maximal time period, this terminator let you define the desired guarantees.
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -12393,7 +12393,7 @@ Duration\SpecialChar \-
 )
 \family default
  method is used for creating the termination object.
- A other method, 
+ Another method, 
 \family typewriter
 by\SpecialChar \-
 Execution\SpecialChar \-
@@ -12457,7 +12457,19 @@ reference "fig:Execution-time-diagram"
 \end_inset
 
  shows the evaluated generations depending on the execution time.
- Except for very small execution times, the ...
+ Except for very small execution times, the evaluated generations per time
+ unit stays quite stable.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+While running the tests, all other CPU intensive process has been stopped.
+ The measuring started after a warm-up phase.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
