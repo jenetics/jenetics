@@ -340,6 +340,16 @@
 			<class name="org.jenetics.util.RandomIndexStreamTest" />
 		</classes>
 	</test>
+	<test name="org.jenetics.util.NanoClock">
+		<classes>
+			<class name="org.jenetics.util.NanoClockTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.util.PRNG">
+		<classes>
+			<class name="org.jenetics.util.PRNGTest" />
+		</classes>
+	</test>
 	<test name="org.jenetics.util.RandomRegistry">
 		<classes>
 			<class name="org.jenetics.util.RandomRegistryTest" />
