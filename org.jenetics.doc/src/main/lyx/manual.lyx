@@ -11976,7 +11976,8 @@ EvolutionStream<DoubleGene, Double> stream = engine.stream()
 
 \begin_layout Standard
 This kind of termination method should always be applied, to guarantee the
- truncation of the evolution stream.
+ truncation of the evolution stream and to define an upper limit of the
+ executed generations.
 \end_layout
 
 \begin_layout Subsubsection
@@ -12322,7 +12323,11 @@ percentile, median,
 
 .
  Though the variation can be quite big---the termination test has been repeated
- 250 times for each data point---, the tests showed that the 
+ 
+\begin_inset Formula $250$
+\end_inset
+
+ times for each data point---, the tests showed that the 
 \emph on
 steady fitness
 \emph default
@@ -12408,6 +12413,23 @@ time.\SpecialChar \-
 Clock
 \family default
 , which is used for measure the execution time.
+ 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ uses the nano precision clock 
+\family typewriter
+org.\SpecialChar \-
+jenetics.\SpecialChar \-
+util.\SpecialChar \-
+Nano\SpecialChar \-
+Clock
+\family default
+ for measuring the time.
 \end_layout
 
 \begin_layout Standard
