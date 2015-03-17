@@ -23,8 +23,9 @@ import java.time.Clock;
 import java.time.Duration;
 import java.util.function.Predicate;
 
-import org.jenetics.util.NanoClock;
 import org.jenetics.internal.util.require;
+
+import org.jenetics.util.NanoClock;
 
 /**
  * This class contains factory methods for creating predicates, which can be

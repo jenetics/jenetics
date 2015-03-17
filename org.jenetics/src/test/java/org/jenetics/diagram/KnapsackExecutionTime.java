@@ -32,7 +32,6 @@ import java.util.function.Predicate;
 import java.util.stream.LongStream;
 
 import org.jenetics.BitGene;
-import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
 import org.jenetics.engine.limit;
 import org.jenetics.util.LCG64ShiftRandom;

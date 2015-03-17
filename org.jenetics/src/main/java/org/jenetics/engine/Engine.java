@@ -36,7 +36,6 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import org.jenetics.internal.util.Concurrency;
-import org.jenetics.util.NanoClock;
 import org.jenetics.internal.util.require;
 
 import org.jenetics.Alterer;
@@ -52,6 +51,7 @@ import org.jenetics.SinglePointCrossover;
 import org.jenetics.TournamentSelector;
 import org.jenetics.util.Copyable;
 import org.jenetics.util.Factory;
+import org.jenetics.util.NanoClock;
 
 /**
  * Genetic algorithm <em>engine</em> which is the main class. The following
