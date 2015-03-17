@@ -25,7 +25,7 @@ import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
 
-import org.jenetics.internal.util.NanoClock;
+import org.jenetics.util.NanoClock;
 
 /**
  * Timer implementation for measuring execution durations.

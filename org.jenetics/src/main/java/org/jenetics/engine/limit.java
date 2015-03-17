@@ -23,7 +23,7 @@ import java.time.Clock;
 import java.time.Duration;
 import java.util.function.Predicate;
 
-import org.jenetics.internal.util.NanoClock;
+import org.jenetics.util.NanoClock;
 import org.jenetics.internal.util.require;
 
 /**
