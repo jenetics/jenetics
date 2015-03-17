@@ -133,7 +133,7 @@ public final class limit {
 	 * [code]
 	 * final Phenotype&lt;DoubleGene, Double&gt; result = engine.stream()
 	 *      // Truncate the evolution stream if the best fitness is higher than
-	 *      // the given threshold of '2.3'.      .
+	 *      // the given threshold of '2.3'.
 	 *     .limit(byFitnessThreshold(2.3))
 	 *      // The evolution will stop after maximal 250 generations; guarantees
 	 *      // the termination (truncation) of the evolution stream.
