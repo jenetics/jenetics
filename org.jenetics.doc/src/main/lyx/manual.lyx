@@ -12819,9 +12819,9 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/graphic/RealFunction2D.eps
+	filename ../resources/graphic/RealFunction2D.svg
 	lyxscale 70
-	width 90text%
+	width 100text%
 
 \end_inset
 
