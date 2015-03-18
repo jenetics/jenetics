@@ -12246,7 +12246,7 @@ jenetics.\SpecialChar \-
 engine.\SpecialChar \-
 limit
 \family default
- object.
+ class.
  In the example above, the evolution stream is terminated after 
 \begin_inset Formula $15$
 \end_inset
