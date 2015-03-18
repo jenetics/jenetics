@@ -12279,7 +12279,7 @@ name "fig:Steady-fitness-diagram"
 
 \end_inset
 
-Steady fitness termination diagram
+Steady fitness termination
 \end_layout
 
 \end_inset
@@ -12457,7 +12457,7 @@ name "fig:Execution-time-diagram"
 
 \end_inset
 
-Execution time termination diagram
+Execution time termination
 \end_layout
 
 \end_inset
@@ -12496,6 +12496,26 @@ While running the tests, all other CPU intensive process has been stopped.
 
 \begin_layout Subsubsection
 Fitness threshold
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Termination!Fitness threshold
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Fitness threshold
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -12532,7 +12552,7 @@ name "fig:Fitness-threshold-diagram"
 
 \end_inset
 
-Fitness threshold termination diagram
+Fitness threshold termination
 \end_layout
 
 \end_inset
