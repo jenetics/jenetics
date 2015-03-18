@@ -12494,15 +12494,11 @@ While running the tests, all other CPU intensive process has been stopped.
 
 \end_layout
 
-\begin_layout Standard
-\begin_inset Note Comment
-status collapsed
-
 \begin_layout Subsubsection
 Fitness threshold
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 A termination method that stops the evolution when the best fitness in the
  current population becomes less than the user-specified fitness threshold
  and the objective is set to minimize the fitness.
@@ -12510,6 +12506,48 @@ A termination method that stops the evolution when the best fitness in the
  in the current population becomes greater than the user-specified fitness
  threshold when the objective is to maximize the fitness.
 \end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/diagram/FitnessThresholdTermination.svg
+	lyxscale 80
+	width 100text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Fitness-threshold-diagram"
+
+\end_inset
+
+Fitness threshold termination diagram
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Comment
+status collapsed
 
 \begin_layout Subsubsection
 Fitness convergence
