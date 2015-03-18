@@ -77,7 +77,7 @@ public class KnapsackSteadyFitness extends Knapsack {
 
 		statistics.write(new File(
 			"org.jenetics/src/test/scripts/diagram/" +
-				"steady_fitness_termination.dat"
+				"SteadyFitnessTermination.dat"
 		));
 		System.out.println("Ready");
 

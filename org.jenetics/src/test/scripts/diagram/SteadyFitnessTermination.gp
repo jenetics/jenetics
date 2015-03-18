@@ -1,6 +1,6 @@
 #!/usr/bin/gnuplot -p
 
-data = "steady_fitness_termination.dat"
+data = "SteadyFitnessTermination.dat"
 
 set terminal svg size 700,500 enhanced fname "Times Roman" fsize 11
 set output "SteadyFitnessTermination.svg"

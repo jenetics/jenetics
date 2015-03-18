@@ -1,6 +1,6 @@
 #!/usr/bin/gnuplot -p
 
-data = "execution_time_termination.dat"
+data = "ExecutionTimeTermination.dat"
 
 set terminal svg size 700,500 enhanced fname "Times Roman" fsize 11
 set output "ExecutionTimeTermination.svg"

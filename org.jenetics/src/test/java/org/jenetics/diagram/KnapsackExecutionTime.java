@@ -81,7 +81,7 @@ public class KnapsackExecutionTime extends Knapsack {
 
 		statistics.write(new File(
 			"org.jenetics/src/test/scripts/diagram/" +
-				"execution_time_termination1.dat"
+				"ExecutionTimeTermination.dat"
 		));
 		System.out.println("Ready");
 
