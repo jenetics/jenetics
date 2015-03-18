@@ -37,7 +37,7 @@ public class Knapsack {
 		// Search space fo 2²⁵⁰.
 		final org.jenetics.diagram.problem.Knapsack knapsack =
 			RandomRegistry.with(new LCG64ShiftRandom(10101), r ->
-					org.jenetics.diagram.problem.Knapsack.of(250)
+				org.jenetics.diagram.problem.Knapsack.of(250)
 			);
 
 		// Configure and build the evolution engine.
