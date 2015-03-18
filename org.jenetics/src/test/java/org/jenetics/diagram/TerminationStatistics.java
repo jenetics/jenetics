@@ -79,7 +79,7 @@ public class TerminationStatistics<G extends Gene<?, G>, P>
 	private final int _samples;
 	private final Engine<G, Double> _engine;
 	private final Function<P, Predicate<? super EvolutionResult<G, Double>>> _limit;
-	private final Function<? super P, ? extends Comparable<?>> _parameterString;
+	private final Function<? super P, ? extends Comparable<?>> _parameterConverter;
 
 	private final List<Object[]> _result = synchronizedList(new ArrayList<>());
 
@@ -87,12 +87,12 @@ public class TerminationStatistics<G extends Gene<?, G>, P>
 		final int samples,
 		final Engine<G, Double> engine,
 		final Function<P, Predicate<? super EvolutionResult<G, Double>>> limit,
-		final Function<? super P, ? extends Comparable<?>> parameterString
+		final Function<? super P, ? extends Comparable<?>> parameterConverter
 	) {
 		_samples = samples;
 		_engine = requireNonNull(engine);
 		_limit = requireNonNull(limit);
-		_parameterString = requireNonNull(parameterString);
+		_parameterConverter = requireNonNull(parameterConverter);
 	}
 
 	public TerminationStatistics(
@@ -100,7 +100,13 @@ public class TerminationStatistics<G extends Gene<?, G>, P>
 		final Engine<G, Double> engine,
 		final Function<P, Predicate<? super EvolutionResult<G, Double>>> limit
 	) {
-		this(samples, engine, limit, Objects::toString);
+		this(samples, engine, limit, TerminationStatistics::defaultParameterConverter);
+	}
+
+	private static Comparable<?> defaultParameterConverter(final Object parameter) {
+		return parameter instanceof Comparable<?>
+			? (Comparable<?>)parameter
+			: Objects.toString(parameter);
 	}
 
 	@Override
@@ -114,7 +120,7 @@ public class TerminationStatistics<G extends Gene<?, G>, P>
 			.collect(toCandleStickPoint(a -> a._1, a -> a._2));
 
 		final Object[] data = new Object[19];
-		data[0] = _parameterString.apply(parameter);
+		data[0] = _parameterConverter.apply(parameter);
 
 		// Total generation
 		data[1] = df(result[0].mean);
