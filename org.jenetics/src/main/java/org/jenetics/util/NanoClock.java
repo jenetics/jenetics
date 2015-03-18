@@ -43,6 +43,11 @@ public final class NanoClock extends Clock implements Serializable {
 	private static final long EPOCH_NANOS = System.currentTimeMillis()*1_000_000;
 	private static final long NANO_START = System.nanoTime();
 
+	private static final NanoClock UTC_INSTANCE = new NanoClock(ZoneOffset.UTC);
+
+	private static final NanoClock DEFAULT_INSTANCE =
+		new NanoClock(ZoneId.systemDefault());
+
 	/**
 	 * This constants holds the number of nano seconds of one second.
 	 */
@@ -77,7 +82,7 @@ public final class NanoClock extends Clock implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return _zone.hashCode() + 1;
+		return _zone.hashCode() + 11;
 	}
 
 	@Override
@@ -125,7 +130,7 @@ public final class NanoClock extends Clock implements Serializable {
 	 *         {@code null}
 	 */
 	public static Clock systemUTC() {
-		return system(ZoneOffset.UTC);
+		return UTC_INSTANCE;
 	}
 
 	/**
@@ -143,7 +148,7 @@ public final class NanoClock extends Clock implements Serializable {
 	 *         {@code null}
 	 */
 	public static Clock systemDefaultZone() {
-		return system(ZoneId.systemDefault());
+		return DEFAULT_INSTANCE;
 	}
 
 }
