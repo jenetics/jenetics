@@ -19,9 +19,6 @@
  */
 package org.jenetics.diagram;
 
-import static java.lang.Math.log10;
-import static java.lang.Math.max;
-import static java.lang.Math.pow;
 import static java.lang.String.format;
 
 import java.io.File;
