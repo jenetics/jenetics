@@ -43,18 +43,25 @@ import org.jenetics.util.RandomRegistry;
  */
 public class KnapsackExecutionTime {
 
+	private static final double GEN_BASE = pow(10, log10(100)/20.0);
+	private static final File BASE_OUTPUT_DIR =
+		new File("org.jenetics/src/test/scripts/diagram");
+
 	public static void main(final String[] args) throws IOException {
-		final double base = pow(10, log10(100)/20.0);
+		final GenerationParam param = GenerationParam.of(
+			args,
+			250,
+			50,
+			new File(BASE_OUTPUT_DIR, "ExecutionTimeTermination.dat"));
 
 		RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
-		final int samples = 500;
 
 		final Function<Duration, Predicate<? super EvolutionResult<BitGene, Double>>>
 			terminator = limit::byExecutionTime;
 
 		final TerminationStatistics<BitGene, Duration> statistics =
 			new TerminationStatistics<>(
-				samples,
+				param.getSamples(),
 				Knapsack.engine(new LCG64ShiftRandom(10101)),
 				terminator,
 				Duration::toMillis);
@@ -62,9 +69,9 @@ public class KnapsackExecutionTime {
 		statistics.warmup(Knapsack.engine(new LCG64ShiftRandom(10101)));
 
 		final long start = System.nanoTime();
-		final long time = LongStream.rangeClosed(1, 15)
+		final long time = LongStream.rangeClosed(1, param.getGenerations())
 			.peek(i -> System.out.print(i + ": "))
-			.map(i -> max((long) pow(base, i), i))
+			.map(i -> max((long) pow(GEN_BASE, i), i))
 			.peek(i -> System.out.println(
 				"Execution time: " + DurationFormat.format(Duration.ofMillis(i))))
 			.peek(d -> statistics.accept(Duration.ofMillis(d)))
@@ -77,10 +84,7 @@ public class KnapsackExecutionTime {
 			DurationFormat.format(Duration.ofNanos(end - start))
 		));
 
-		statistics.write(new File(
-			"org.jenetics/src/test/scripts/diagram/" +
-				"ExecutionTimeTermination.dat"
-		));
+		statistics.write(param.getOutputFile());
 		System.out.println("Ready");
 
 	}

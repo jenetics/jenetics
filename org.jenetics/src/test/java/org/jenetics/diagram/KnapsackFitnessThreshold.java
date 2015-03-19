@@ -45,16 +45,24 @@ public class KnapsackFitnessThreshold {
 	private static final double MAX_FITNESS = 10500; //11000;
 	private static final int POINTS = 20;
 
+	private static final File BASE_OUTPUT_DIR =
+		new File("org.jenetics/src/test/scripts/diagram");
+
 	public static void main(final String[] args) throws IOException {
+		final GenerationParam param = GenerationParam.of(
+			args,
+			250,
+			50,
+			new File(BASE_OUTPUT_DIR, "SteadyFitnessTermination.dat"));
+
 		RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
-		final int samples = 50;
 
 		final Function<Double, Predicate<? super EvolutionResult<BitGene, Double>>>
 			terminator = limit::byFitnessThreshold;
 
 		final TerminationStatistics<BitGene, Double>
 			statistics = new TerminationStatistics<>(
-				samples,
+				param.getSamples(),
 				Knapsack.engine(new LCG64ShiftRandom(10101)),
 				terminator);
 
@@ -75,10 +83,7 @@ public class KnapsackFitnessThreshold {
 			DurationFormat.format(Duration.ofNanos(end - start))
 		));
 
-		statistics.write(new File(
-			"org.jenetics/src/test/scripts/diagram/" +
-				"FitnessThresholdTermination.dat"
-		));
+		statistics.write(param.getOutputFile());
 		System.out.println("Ready");
 
 	}
