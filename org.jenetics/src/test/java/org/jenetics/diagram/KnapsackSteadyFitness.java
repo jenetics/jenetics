@@ -32,6 +32,7 @@ import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
 import org.jenetics.BitGene;
+import org.jenetics.diagram.problem.Knapsack;
 import org.jenetics.engine.EvolutionResult;
 import org.jenetics.engine.limit;
 import org.jenetics.util.LCG64ShiftRandom;
@@ -40,11 +41,9 @@ import org.jenetics.util.RandomRegistry;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class KnapsackSteadyFitness extends Knapsack {
+public class KnapsackSteadyFitness {
 
 	public static void main(final String[] args) throws IOException {
-		final KnapsackSteadyFitness instance = new KnapsackSteadyFitness();
-
 		final double base = pow(10, log10(100)/20.0);
 
 		RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
@@ -54,7 +53,10 @@ public class KnapsackSteadyFitness extends Knapsack {
 			terminator = limit::bySteadyFitness;
 
 		final TerminationStatistics<BitGene, Integer> statistics =
-			new TerminationStatistics<>(samples, instance.engine(), terminator);
+			new TerminationStatistics<>(
+				samples, 
+				Knapsack.engine(new LCG64ShiftRandom(10101)), 
+				terminator);
 
 		final long start = System.nanoTime();
 		final int generations = IntStream.rangeClosed(1, 20)

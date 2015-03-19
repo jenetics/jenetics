@@ -19,20 +19,32 @@
  */
 package org.jenetics.diagram.problem;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static org.jenetics.internal.util.Equality.eq;
 
 import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 
+import org.jenetics.internal.util.Equality;
+import org.jenetics.internal.util.Hash;
+
 import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;
 import org.jenetics.Genotype;
+import org.jenetics.Mutator;
+import org.jenetics.RouletteWheelSelector;
+import org.jenetics.SinglePointCrossover;
+import org.jenetics.TournamentSelector;
+import org.jenetics.engine.Engine;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
 
 /**
+ * This class implements the coding of the <i>Knapsack</i> problem.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz  Wilhelmstötter</a>
  */
 public final class Knapsack
@@ -40,10 +52,12 @@ public final class Knapsack
 		Problem<BitGene, Double>,
 		Function<Genotype<BitGene>, Double>
 {
-
+	/**
+	 * Represents an Knapsack-Item
+	 */
 	public static final class Item {
-		public final double _size;
-		public final double _value;
+		private final double _size;
+		private final double _value;
 
 		private Item(final double size, final double value) {
 			_size = size;
@@ -56,6 +70,24 @@ public final class Knapsack
 
 		public double getValue() {
 			return _value;
+		}
+
+		@Override
+		public int hashCode() {
+			return Hash.of(getClass()).and(_size).and(_value).value();
+		}
+
+		@Override
+		public boolean equals(final Object obj) {
+			return Equality.of(this, obj).test(item ->
+				eq(_size, item._size) &&
+				eq(_value, item._value)
+			);
+		}
+
+		@Override
+		public String toString() {
+			return format("Item[%f, %f]", _size, _value);
 		}
 
 		// Create a new random knapsack item.
@@ -134,6 +166,34 @@ public final class Knapsack
 				.collect(ISeq.toISeq()),
 			kssize
 		);
+	}
+
+	public static Knapsack of(final int nitems, final Random random) {
+		return RandomRegistry.with(random, r -> of(nitems));
+	}
+
+	public static Engine<BitGene, Double> engine(final Random random) {
+		// Search space fo 2²⁵⁰ ~ 10⁷⁵.
+		final Knapsack knapsack = of(250, random);
+
+		// Configure and build the evolution engine.
+		return Engine
+			.builder(knapsack.function(), knapsack.genotype())
+			.populationSize(150)
+			.survivorsSelector(new TournamentSelector<>(5))
+			.offspringSelector(new RouletteWheelSelector<>())
+			.alterers(
+				new Mutator<>(0.03),
+				new SinglePointCrossover<>(0.125))
+			.build();
+	}
+
+	public static void main(final String[] args) {
+		final Knapsack knapsack = Knapsack.of(5, new Random(12));
+
+		System.out.println(knapsack.getSize());
+		System.out.println(knapsack.getItems().stream().collect(Item.toSum()));
+		System.out.println(knapsack.getItems());
 	}
 
 }
