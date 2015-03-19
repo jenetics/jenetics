@@ -19,6 +19,8 @@
  */
 package org.jenetics.engine;
 
+import static java.lang.String.format;
+
 import java.time.Clock;
 import java.time.Duration;
 import java.util.function.Predicate;
@@ -40,7 +42,29 @@ import org.jenetics.util.NanoClock;
 public final class limit {
 	private limit() {require.noInstance();}
 
+	/**
+	 * Return a predicate, which will truncate the evolution stream after the
+	 * given number of generations. The returned predicate behaves like a call
+	 * of the {@link java.util.stream.Stream#limit(long)} and exists for
+	 * <i>completeness</i> reasons.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param generation the number of generations after the evolution stream is
+	 *        truncated
+	 * @return a predicate which truncates the evolution stream after the given
+	 *        number of generations
+	 * @throws java.lang.IllegalArgumentException if the given {@code generation}
+	 *         is smaller than zero.
+	 */
 	public static Predicate<Object> byFixedGeneration(final long generation) {
+		if (generation < 0) {
+			throw new IllegalArgumentException(format(
+				"The number of generations must greater than one, but was %d",
+				generation
+			));
+		}
+
 		return new Predicate<Object>() {
 			private long _current;
 			@Override
