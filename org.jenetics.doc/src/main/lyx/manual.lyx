@@ -12003,6 +12003,44 @@ This kind of termination method should always be applied, to guarantee the
  executed generations.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/diagram/FixedGenerationTermination.svg
+	lyxscale 80
+	width 100text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Fixed-generation-diagram"
+
+\end_inset
+
+Fixed generation termination
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
 \begin_layout Subsubsection
 Steady fitness
 \begin_inset Index idx
@@ -12459,7 +12497,7 @@ Clock
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
