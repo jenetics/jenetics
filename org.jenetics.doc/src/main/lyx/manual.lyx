@@ -11924,6 +11924,29 @@ Termination is the criterion by which the evolution stream decides whether
  or truncating the evolution stream, respectively.
 \end_layout
 
+\begin_layout Standard
+The termination strategies in the following sub-sections were tested by
+ solving the Knapsack problem (see section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:0/1-Knapsack-example"
+
+\end_inset
+
+) with 
+\begin_inset Formula $250$
+\end_inset
+
+ items.
+ This makes it a real problem with a search-space size of 
+\begin_inset Formula $2^{250}\thickapprox10^{75}$
+\end_inset
+
+ elements.
+ To make the tests comparable, all runs uses the very same set of knapsack
+ items.
+\end_layout
+
 \begin_layout Subsubsection
 Fixed generation
 \begin_inset Index idx
@@ -11983,7 +12006,7 @@ This kind of termination method should always be applied, to guarantee the
 \begin_layout Subsubsection
 Steady fitness
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Termination!Steady fitness
@@ -11993,7 +12016,7 @@ Termination!Steady fitness
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Steady fitness
@@ -12693,6 +12716,13 @@ reference "sec:Build"
 
 \begin_layout Subsection
 Ones counting
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Ones-counting-example"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -12834,6 +12864,13 @@ Evolution statistics
 
 \begin_layout Subsection
 Real function
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Real-function-example"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -13015,6 +13052,13 @@ exact
 
 \begin_layout Subsection
 0/1 Knapsack
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:0/1-Knapsack-example"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -13135,6 +13179,13 @@ footnotesize}
 
 \begin_layout Subsection
 Traveling salesman
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Traveling-salesman-example"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 

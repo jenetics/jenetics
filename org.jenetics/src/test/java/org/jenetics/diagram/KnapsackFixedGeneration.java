@@ -41,16 +41,16 @@ import org.jenetics.util.RandomRegistry;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class KnapsackSteadyFitness {
+public class KnapsackFixedGeneration {
 
 	public static void main(final String[] args) throws IOException {
 		final double base = pow(10, log10(100)/20.0);
 
 		RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
-		final int samples = 10;
+		final int samples = 50;
 
 		final Function<Integer, Predicate<? super EvolutionResult<BitGene, Double>>>
-			terminator = limit::bySteadyFitness;
+			terminator = limit::byFixedGeneration;
 
 		final TerminationStatistics<BitGene, Integer> statistics =
 			new TerminationStatistics<>(
@@ -59,7 +59,7 @@ public class KnapsackSteadyFitness {
 				terminator);
 
 		final long start = System.nanoTime();
-		final int generations = IntStream.rangeClosed(1, 20)
+		final int generations = IntStream.rangeClosed(1, 40)
 			.peek(i -> System.out.print(i + ": "))
 			.map(i -> max((int) pow(base, i), i))
 			.peek(i -> System.out.println("Generation: " + i))
@@ -79,7 +79,7 @@ public class KnapsackSteadyFitness {
 
 		statistics.write(new File(
 			"org.jenetics/src/test/scripts/diagram/" +
-				"SteadyFitnessTermination.dat"
+				"FixedGenerationTermination.dat"
 		));
 		System.out.println("Ready");
 
