@@ -40,6 +40,15 @@ import org.jenetics.util.NanoClock;
 public final class limit {
 	private limit() {require.noInstance();}
 
+	public static Predicate<Object> byFixedGeneration(final long generation) {
+		return new Predicate<Object>() {
+			private long _current;
+			@Override
+			public boolean test(final Object o) {
+				return ++_current < generation;
+			}
+		};
+	}
 
 	/**
 	 * Return a predicate, which will truncate the evolution stream if no
