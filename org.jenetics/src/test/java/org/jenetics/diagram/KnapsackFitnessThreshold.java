@@ -42,7 +42,7 @@ import org.jenetics.util.RandomRegistry;
 public class KnapsackFitnessThreshold {
 
 	private static final double MIN_FITNESS = 7000;
-	private static final double MAX_FITNESS = 10500; //11000;
+	private static final double MAX_FITNESS = 10900; //11000;
 	private static final int POINTS = 20;
 
 	private static final File BASE_OUTPUT_DIR =
@@ -53,7 +53,7 @@ public class KnapsackFitnessThreshold {
 			args,
 			250,
 			50,
-			new File(BASE_OUTPUT_DIR, "SteadyFitnessTermination.dat"));
+			new File(BASE_OUTPUT_DIR, "FitnessThresholdTermination.dat"));
 
 		RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
 

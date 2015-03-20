@@ -18,7 +18,7 @@ set origin 0, 0.33
 set bmargin 0.1
 set format x ""
 set ylabel "Total generation" font ",12"
-set xrange[7000:10700]
+set xrange[7000:11000]
 
 set lmargin 12
 set rmargin 4
@@ -38,7 +38,7 @@ set origin 0.0, 0.0
 set tmargin 1
 set format y " %2.1f"
 set format x "%2.1f"
-set xrange[7:10.7]
+set xrange[7:11]
 
 plot data using (0.001*$1):(0.001*$11) with lines lt rgb "blue" notitle axes x1y1
 
