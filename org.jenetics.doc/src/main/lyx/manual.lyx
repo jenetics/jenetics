@@ -11998,9 +11998,9 @@ EvolutionStream<DoubleGene, Double> stream = engine.stream()
 \end_layout
 
 \begin_layout Standard
-This kind of termination method should always be applied, to guarantee the
- truncation of the evolution stream and to define an upper limit of the
- executed generations.
+This kind of termination method should always be applied---usually additional
+ with other evolution terminators---, to guarantee the truncation of the
+ evolution stream and to define an upper limit of the executed generations.
 \end_layout
 
 \begin_layout Standard
@@ -12038,7 +12038,56 @@ Fixed generation termination
 
 \end_inset
 
- 
+
+\end_layout
+
+\begin_layout Standard
+Diagram 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Fixed-generation-diagram"
+
+\end_inset
+
+ shows the best fitness values of the used Knapsack problem after a given
+ number of generations, whereas the candle-stick points represents the 
+\emph on
+min
+\emph default
+, 
+\emph on
+
+\begin_inset Formula $25^{th}$
+\end_inset
+
+percentile
+\emph default
+, 
+\emph on
+median
+\emph default
+, 
+\emph on
+
+\begin_inset Formula $75^{th}$
+\end_inset
+
+ percentile
+\emph default
+ and 
+\emph on
+max
+\emph default
+ fitness after 
+\begin_inset Formula $250$
+\end_inset
+
+ repetitions per generation.
+ The solid line shows for the 
+\emph on
+mean
+\emph default
+ of the best fitness values.
 \end_layout
 
 \begin_layout Subsubsection
@@ -12364,25 +12413,7 @@ reference "fig:Steady-fitness-diagram"
  shows the actual total executed generation depending on the desired number
  of steady fitness generations.
  The variation of the total generation is quite big, as shown by the candle-stic
-ks
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-[min, 
-\begin_inset Formula $25^{th}$
-\end_inset
-
-percentile, median, 
-\begin_inset Formula $75^{th}$
-\end_inset
-
- percentile, max]
-\end_layout
-
-\end_inset
-
-.
+ks.
  Though the variation can be quite big---the termination test has been repeated
  
 \begin_inset Formula $250$
