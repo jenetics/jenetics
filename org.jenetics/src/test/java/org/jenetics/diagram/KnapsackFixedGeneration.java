@@ -81,7 +81,7 @@ public class KnapsackFixedGeneration {
 		));
 		System.out.println(format(
 			"%s sec per generation.",
-			(end - start)/(1_000_000_000.0*generations)
+			(end - start)/(1_000_000_000.0*generations*param.getSamples())
 		));
 
 		statistics.write(param.getOutputFile());
