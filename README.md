@@ -71,7 +71,13 @@ Gradle has tasks which creates the project file for Eclipse and IntelliJ IDEA. C
 
 for creating the project files for Eclipse or IntelliJ, respectively. Whereas the latest version of [IntelliJ IDEA](https://www.jetbrains.com/idea/) has decent native Gradle support.
 
-The latest Eclipse version (4.4.2) has problems compiling some _valid_ lambda expressions; e.g. the `HelloWorld::eval` function in the example below. If you have such problems when trying to compile the library with Eclipse, you can fix this by using [IntelliJ 14](https://www.jetbrains.com/idea/download/).
+The latest Eclipse version (4.4.2) has problems compiling some _valid_ lambda expressions; e.g. the `HelloWorld::eval` function in the example below. If you have such problems when trying to compile the library with Eclipse, you can fix this by adding an explicit cast to the method reference:
+
+     Engine
+         .builder((Function<Genotype<BitGene>, Integer>)HelloWorld::eval, gtf)
+         .build();
+
+ Or you are using [IntelliJ 14](https://www.jetbrains.com/idea/download/) instead.
 
 ## Example
 
