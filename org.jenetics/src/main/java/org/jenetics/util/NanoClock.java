@@ -65,7 +65,7 @@ public final class NanoClock extends Clock implements Serializable {
 	}
 
 	@Override
-	public Clock withZone(final ZoneId zone) {
+	public NanoClock withZone(final ZoneId zone) {
 		return zone.equals(_zone) ? this : new NanoClock(zone);
 	}
 
@@ -74,9 +74,20 @@ public final class NanoClock extends Clock implements Serializable {
 		return System.currentTimeMillis();
 	}
 
+	/**
+	 * This returns the nanosecond-based instant, measured from
+	 * 1970-01-01T00:00Z (UTC). This method will return valid values till the
+	 * year 2262.
+	 *
+	 * @return the nanosecond-based instant, measured from 1970-01-01T00:00Z (UTC)
+	 */
+	public long nanos() {
+		return System.nanoTime() - NANO_START + EPOCH_NANOS;
+	}
+
 	@Override
 	public Instant instant() {
-		final long now = System.nanoTime() - NANO_START + EPOCH_NANOS;
+		final long now = nanos();
 		return Instant.ofEpochSecond(now/NANOS_PER_SECOND, now%NANOS_PER_SECOND);
 	}
 
@@ -111,7 +122,7 @@ public final class NanoClock extends Clock implements Serializable {
 	 * @throws java.lang.NullPointerException if the given {@code zone} is
 	 *         {@code null}
 	 */
-	public static Clock system(final ZoneId zone) {
+	public static NanoClock system(final ZoneId zone) {
 		return new NanoClock(zone);
 	}
 
@@ -129,7 +140,7 @@ public final class NanoClock extends Clock implements Serializable {
 	 * @throws java.lang.NullPointerException if the given {@code zone} is
 	 *         {@code null}
 	 */
-	public static Clock systemUTC() {
+	public static NanoClock systemUTC() {
 		return UTC_INSTANCE;
 	}
 
@@ -147,7 +158,7 @@ public final class NanoClock extends Clock implements Serializable {
 	 * @throws java.lang.NullPointerException if the given {@code zone} is
 	 *         {@code null}
 	 */
-	public static Clock systemDefaultZone() {
+	public static NanoClock systemDefaultZone() {
 		return DEFAULT_INSTANCE;
 	}
 
