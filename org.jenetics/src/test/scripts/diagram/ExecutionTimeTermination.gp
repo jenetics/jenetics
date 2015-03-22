@@ -5,6 +5,9 @@ data = "ExecutionTimeTermination.dat"
 set terminal svg size 700,500 enhanced fname "Times Roman" fsize 11
 set output "ExecutionTimeTermination.svg"
 
+#set loadpath '.'
+#load "svg.cfg"
+
 set grid
 set logscale x
 set logscale y
