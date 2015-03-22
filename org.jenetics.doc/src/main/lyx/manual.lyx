@@ -13509,6 +13509,17 @@ https://sourceforge.net/projects/jenetics/files/latest/download
 
 \end_inset
 
+ or 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://github.com/jenetics/jenetics/releases
+\end_layout
+
+\end_inset
+
  and extract it to some build directory.
 \end_layout
 
@@ -13536,84 +13547,15 @@ dir>
 dir>
 \family default
  the actual build directory.
- Alternatively you can check out the latest--unstable--version from the
- Mercurial
+ Alternatively you can check out the latest version from the Git
 \family typewriter
- default
+ master
 \family default
  branch.
 \end_layout
 
 \begin_layout LyX-Code
-$ hg clone https://fwilhelm@bitbucket.org/fwilhelm/jenetics
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-           <builddir>
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Mercurial repository
-\end_layout
-
-\end_inset
-
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Source code
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout LyX-Code
-# or
-\end_layout
-
-\begin_layout LyX-Code
-$ hg clone http://hg.code.sf.net/p/jenetics/main
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-           <builddir>
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Mercurial repository
-\end_layout
-
-\end_inset
-
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Source code
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout LyX-Code
-# or
-\end_layout
-
-\begin_layout LyX-Code
-$ git clone https://github.com/jenetics/jenetics.git
+$ git clone https://github.com/jenetics/jenetics.git 
 \backslash
 
 \end_layout
