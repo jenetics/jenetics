@@ -11557,7 +11557,7 @@ reference "sub:Encoding"
 
 \end_inset
 
- 
+
 \end_layout
 
 \begin_layout Standard
@@ -11691,7 +11691,6 @@ A directed graph (digraph) is a graph where the path between the nodes have
  undirected graph.
  This time the whole matrix is used and the second diagonal matrix is no
  longer ignored.
- 
 \end_layout
 
 \begin_layout Standard
@@ -11954,6 +11953,16 @@ status collapsed
 
 \begin_layout Plain Layout
 Termination!Fixed generation
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Fixed generation
 \end_layout
 
 \end_inset
@@ -12654,7 +12663,19 @@ Fitness threshold termination
 
 \end_inset
 
- 
+
+\end_layout
+
+\begin_layout Standard
+Diagram 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Fitness-threshold-diagram"
+
+\end_inset
+
+ shows executed generations depending on the minimal fitness value.
+ The total generations grows exponentially with the desired fitness value.
 \end_layout
 
 \begin_layout Standard
@@ -14124,7 +14145,7 @@ Homepage
 \emph on
  
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -14145,7 +14166,7 @@ Download
 \emph on
 
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
