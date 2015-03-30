@@ -19,8 +19,6 @@
  */
 package org.jenetics;
 
-import java.io.Serializable;
-
 import org.jenetics.util.Factory;
 import org.jenetics.util.Verifiable;
 
@@ -44,7 +42,6 @@ import org.jenetics.util.Verifiable;
 public interface Gene<A, G extends Gene<A, G>>
 	extends
 		Factory<G>,
-		Serializable,
 		Verifiable
 {
 

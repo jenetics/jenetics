@@ -22,6 +22,8 @@ package org.jenetics;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.Equality.eq;
 
+import java.io.Serializable;
+
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
@@ -37,7 +39,7 @@ abstract class AbstractBoundedGene<
 	A extends Comparable<? super A>,
 	G extends AbstractBoundedGene<A, G>
 >
-	implements BoundedGene<A, G>
+	implements BoundedGene<A, G>, Serializable
 {
 
 	private static final long serialVersionUID = 1L;

@@ -21,6 +21,7 @@ package org.jenetics;
 
 import static org.jenetics.internal.math.random.nextInt;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -56,7 +57,8 @@ public final class IntegerGene
 	implements
 		NumericGene<Integer, IntegerGene>,
 		Mean<IntegerGene>,
-		Comparable<IntegerGene>
+		Comparable<IntegerGene>,
+		Serializable
 {
 
 	private static final long serialVersionUID = 1L;

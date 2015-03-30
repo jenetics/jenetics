@@ -22,6 +22,7 @@ package org.jenetics;
 import static java.lang.String.format;
 import static org.jenetics.internal.util.Equality.eq;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -79,7 +80,8 @@ import org.jenetics.util.RandomRegistry;
 public final class EnumGene<A>
 	implements
 		Gene<A, EnumGene<A>>,
-		Comparable<EnumGene<A>>
+		Comparable<EnumGene<A>>,
+		Serializable
 {
 
 	private static final long serialVersionUID = 2L;

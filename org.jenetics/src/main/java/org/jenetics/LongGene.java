@@ -19,6 +19,7 @@
  */
 package org.jenetics;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -56,7 +57,8 @@ public final class LongGene
 	implements
 		NumericGene<Long, LongGene>,
 		Mean<LongGene>,
-		Comparable<LongGene>
+		Comparable<LongGene>,
+		Serializable
 {
 
 	private static final long serialVersionUID = 1L;
