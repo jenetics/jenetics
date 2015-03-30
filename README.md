@@ -1,15 +1,11 @@
 # Jenetics (_3.0.1_)
 
-**Jenetics** is an **Genetic Algorithm**, respectively an **Evolutionary
-Algorithm**, library written in Java. It is designed with a
-clear separation of the several concepts of the algorithm,
-e.g. `Gene`, `Chromosome`, `Genotype`, `Phenotype`, `Population` and
-fitness `Function`. **Jenetics** allows you to minimize
-and maximize the given fitness function without tweaking it. In contrast
-to other GA implementations, the library uses the concept of an
-evolution stream (`EvolutionStream`) for executing the evolution steps.
-Since the `EvolutionStream` implements the Java Stream interface,
-it works smoothly with the rest of the Java Stream API.
+**Jenetics** is an **Genetic Algorithm**, respectively an **Evolutionary Algorithm**, library written in Java. It is designed with a clear separation of the several concepts of the algorithm, e.g. `Gene`, `Chromosome`, `Genotype`, `Phenotype`, `Population` and fitness `Function`. **Jenetics** allows you to minimize and maximize the given fitness function without tweaking it. In contrast to other GA implementations, the library uses the concept of an evolution stream (`EvolutionStream`) for executing the evolution steps. Since the `EvolutionStream` implements the Java Stream interface, it works smoothly with the rest of the Java Stream API.
+
+## Documentation
+
+The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jenetics/index.html)) and comes with a user manual ([pdf](http://jenetics.io/manual/manual-3.0.1.pdf)).
+
 
 ## Requirements
 
