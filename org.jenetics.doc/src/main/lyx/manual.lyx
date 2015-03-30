@@ -3669,7 +3669,7 @@ reference "fig:Fitness-proportional-selection"
  specifies which individual is selected, by argument minimization:
 \begin_inset Formula 
 \begin{equation}
-i\leftarrow\underset{n\in\left[0,N\right)}{\textrm{minarg}}\left\{ r<\sum_{i=0}^{n}f_{i}\right\} ,
+i\leftarrow\underset{n\in\left[0,N\right)}{\textrm{argmin}}\left\{ r<\sum_{i=0}^{n}f_{i}\right\} ,
 \end{equation}
 
 \end_inset
@@ -7681,7 +7681,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename ../resources/graphic/BlockSplitting.eps
-	width 80text%
+	width 85text%
 
 \end_inset
 
