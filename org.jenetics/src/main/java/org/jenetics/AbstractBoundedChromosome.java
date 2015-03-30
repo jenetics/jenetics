@@ -21,6 +21,8 @@ package org.jenetics;
 
 import static org.jenetics.internal.util.Equality.eq;
 
+import java.io.Serializable;
+
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
@@ -38,7 +40,7 @@ abstract class AbstractBoundedChromosome<
 	G extends AbstractBoundedGene<A, G>
 >
 	extends AbstractChromosome<G>
-	implements BoundedChromosome<A, G>
+	implements BoundedChromosome<A, G>, Serializable
 {
 
 	private static final long serialVersionUID = 1L;
