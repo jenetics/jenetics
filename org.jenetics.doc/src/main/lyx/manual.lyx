@@ -9469,7 +9469,7 @@ height "1pt"
 \begin_layout Plain Layout
 
 \family sans
-The customer 
+The custom 
 \family typewriter
 Gene
 \family sans
@@ -10194,7 +10194,7 @@ Scalar genotype
 Alterer
 \family default
 .
- That means, that non of the 
+ That means, that none of the 
 \family typewriter
 Crossover
 \family default
@@ -10263,7 +10263,7 @@ or
 \family typewriter
 Genotype
 \family sans
-s can only be altererd by 
+s can only be altered by 
 \family typewriter
 MeanAlterer
 \family sans
