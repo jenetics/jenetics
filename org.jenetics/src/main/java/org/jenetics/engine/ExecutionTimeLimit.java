@@ -28,8 +28,8 @@ import java.util.function.Predicate;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__!
+ * @since 3.1
+ * @version 3.1
  */
 final class ExecutionTimeLimit implements Predicate<Object>  {
 

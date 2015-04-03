@@ -37,7 +37,7 @@ import org.jenetics.util.NanoClock;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version !__version__!
+ * @version 3.1
  */
 public final class limit {
 	private limit() {require.noInstance();}
@@ -48,7 +48,7 @@ public final class limit {
 	 * of the {@link java.util.stream.Stream#limit(long)} and exists for
 	 * <i>completeness</i> reasons.
 	 *
-	 * @since !__version__!
+	 * @since 3.1
 	 *
 	 * @param generation the number of generations after the evolution stream is
 	 *        truncated
@@ -115,7 +115,7 @@ public final class limit {
 	 *     .collect(toBestPhenotype());
 	 * [/code]
 	 *
-	 * @since !__version__!
+	 * @since 3.1
 	 *
 	 * @param duration the duration after the evolution stream will be truncated
 	 * @param clock the clock used for measure the execution time
@@ -142,7 +142,7 @@ public final class limit {
 	 *     .collect(toBestPhenotype());
 	 * [/code]
 	 *
-	 * @since !__version__!
+	 * @since 3.1
 	 *
 	 * @param duration the duration after the evolution stream will be truncated
 	 * @return a predicate, which will truncate the evolution stream, based on
@@ -174,7 +174,7 @@ public final class limit {
 	 *     .collect(toBestPhenotype());
 	 * [/code]
 	 *
-	 * @since !__version__!
+	 * @since 3.1
 	 *
 	 * @param threshold the desired threshold
 	 * @param <C> the fitness type

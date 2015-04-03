@@ -33,8 +33,8 @@ import org.jenetics.internal.util.Equality;
  * Clock implementation with <i>nano</i> second precision.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__!
+ * @since 3.1
+ * @version 3.1
  */
 public final class NanoClock extends Clock implements Serializable {
 
