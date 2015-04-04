@@ -162,7 +162,7 @@ rgb_minimum_distance|   5|     10000|    1000|0.01869072|  PASSED
       rgb_lagged_sum|  29|   1000000|     100|0.22281449|  PASSED
       rgb_lagged_sum|  30|   1000000|     100|0.31092836|  PASSED
       rgb_lagged_sum|  31|   1000000|     100|0.34047610|  PASSED
-      rgb_lagged_sum|  32|   1000000|     100|0.11346238|  PASSED  
+      rgb_lagged_sum|  32|   1000000|     100|0.11346238|  PASSED
      rgb_kstest_test|   0|     10000|    1000|0.89265175|  PASSED
      dab_bytedistrib|   0|  51200000|       1|0.96306035|  PASSED
              dab_dct| 256|     50000|       1|0.42000023|  PASSED
