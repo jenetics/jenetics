@@ -39,7 +39,6 @@ import org.jenetics.util.TestData;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-11-28 $</em>
  */
 public class RouletteWheelSelectorTest
 	extends ProbabilitySelectorTester<RouletteWheelSelector<DoubleGene, Double>>

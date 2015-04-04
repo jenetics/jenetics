@@ -36,7 +36,7 @@ import org.jenetics.util.Copyable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0
+ * @version 3.1
  */
 public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	implements
@@ -45,15 +45,48 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 {
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * This flag determines if {@code this} represents a sealed proxy instance.
+	 */
+	transient boolean _isSealedProxy = false;
+
+	/**
+	 * Contains all sealed proxies, which share the same {@code array} as
+	 * {@code this} proxy instance.
+	 */
+	transient Stack<ArrayProxy<?, ?, ?>> _sealedProxies = new Stack<>();
+
+	/**
+	 * Used for creating new array proxy instances.
+	 */
+	private final ArrayProxyFactory<A, P> _proxyFactory;
+
+	/**
+	 * Used for creating copies of the current array.
+	 */
+	private final ArrayCopier<A> _arrayCopier;
+
+	/**
+	 * The actual array, where the elements are stored.
+	 */
 	public A array;
+
+	/**
+	 * The start index of the array view, inclusively.
+	 */
+	public int start;
+
+	/**
+	 * The end index of the array view, exclusively.
+	 */
+	public int end;
+
+	/**
+	 * The actual array length.
+	 */
 	public final int length;
-	public final int start;
-	public final int end;
 
-	private boolean _sealed = false;
 
-	private final ArrayProxyFactory<A, P> _factory;
-	private final ArrayCopier<A> _copier;
 
 	/**
 	 * Create a new array proxy.
@@ -86,8 +119,8 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 		this.start = start;
 		this.end = end;
 
-		_factory = requireNonNull(factory);
-		_copier = requireNonNull(copier);
+		_proxyFactory = requireNonNull(factory);
+		_arrayCopier = requireNonNull(copier);
 	}
 
 	/**
@@ -172,7 +205,15 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	 * @throws IndexOutOfBoundsException if the given indexes are out of bounds.
 	 */
 	public final P slice(final int from, final int until) {
-		return _factory.create(array, from + start, until + start);
+		final P slice = _proxyFactory.create(array, from + start, until + start);
+		slice._isSealedProxy = _isSealedProxy;
+		slice._sealedProxies = _sealedProxies;
+
+		if (_isSealedProxy) {
+			_sealedProxies.push(slice);
+		}
+
+		return slice;
 	}
 
 	/**
@@ -187,6 +228,46 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	 */
 	public final P slice(final int from) {
 		return slice(from, length);
+	}
+
+	/**
+	 * Set the seal flag for this {@code ArrayProxy} instance and return a new
+	 * {@code ArrayProxy} object with an not set <i>seal</i> flag but with the
+	 * same underlying data structure.
+	 *
+	 * @return a new {@code ArrayProxy} instance; for command chaining.
+	 */
+	public final P seal() {
+		assert(!_isSealedProxy) : "Must not be called on sealed proxies";
+
+		final P proxy = _proxyFactory.create(array, start, end);
+		proxy._sealedProxies = _sealedProxies;
+		proxy._isSealedProxy = true;
+		_sealedProxies.push(proxy);
+
+		return proxy;
+	}
+
+	/**
+	 * Clone the underlying data structure of this {@code ArrayProxy} if it is
+	 * sealed.
+	 */
+	public final void cloneIfSealed() {
+		assert(!_isSealedProxy) : "Must not be called on sealed proxies";
+
+		if (_sealedProxies.length > 0) {
+			_sealedProxies.popAll(ArrayProxy::copyArray);
+		}
+	}
+
+	private void copyArray() {
+		assert(_isSealedProxy) : "Must only be called on sealed proxies";
+
+		array = _arrayCopier.copy(array, start, end);
+		_sealedProxies = new Stack<>();
+		_isSealedProxy = false;
+		start = 0;
+		end = length;
 	}
 
 	/**
@@ -276,37 +357,14 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 		return result;
 	}
 
-	/**
-	 * Clone the underlying data structure of this {@code ArrayProxy} if it is
-	 * sealed.
-	 */
-	public final void cloneIfSealed() {
-		if (_sealed) {
-			array = _copier.copy(array, 0, end);
-			_sealed = false;
-		}
-	}
-
-
-	/**
-	 * Set the seal flag for this {@code ArrayProxy} instance and return a new
-	 * {@code ArrayProxy} object with an not set <i>seal</i> flag but with the
-	 * same underlying data structure.
-	 *
-	 * @return a new {@code ArrayProxy} instance; for command chaining.
-	 */
-	public final P seal() {
-		_sealed = true;
-		return _factory.create(array, start, end);
-	}
-
 	@Override
 	public P copy() {
-		return _factory.create(_copier.copy(array, start, end), 0, end - start);
+		return _proxyFactory
+			.create(_arrayCopier.copy(array, start, end), 0, end - start);
 	}
 
 	/**
-	 * Checks the given index.
+	 * Checks the given index.s
 	 *
 	 * @param start the index to check.
 	 * @throws java.lang.ArrayIndexOutOfBoundsException if the given index is

@@ -19,7 +19,10 @@
  */
 package org.jenetics.engine;
 
+import java.util.stream.LongStream;
+
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import org.jenetics.DoubleChromosome;
@@ -27,21 +30,40 @@ import org.jenetics.DoubleGene;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-12-02 $</em>
  */
 public class EngineTest {
 
-	@Test
-	public void generationCount() {
+	@Test(dataProvider = "generations")
+	public void generationCount(final Long generations) {
 		final Engine<DoubleGene, Double> engine = Engine
 			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
 			.build();
 
 		final EvolutionResult<DoubleGene, Double> result = engine.stream()
-			.limit(123)
+			.limit(generations)
 			.collect(EvolutionResult.toBestEvolutionResult());
 
-		Assert.assertEquals(123L, result.getTotalGenerations());
+		Assert.assertEquals(generations.longValue(), result.getTotalGenerations());
+	}
+
+	@Test(dataProvider = "generations")
+	public void generationLimit(final Long generations) {
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
+			.build();
+
+		final EvolutionResult<DoubleGene, Double> result = engine.stream()
+			.limit(limit.byFixedGeneration(generations))
+			.collect(EvolutionResult.toBestEvolutionResult());
+
+		Assert.assertEquals(generations.longValue(), result.getTotalGenerations());
+	}
+
+	@DataProvider(name = "generations")
+	public Object[][] generations() {
+		return LongStream.rangeClosed(1, 10)
+			.mapToObj(i -> new Object[]{i})
+			.toArray(Object[][]::new);
 	}
 
 }

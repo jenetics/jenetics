@@ -109,7 +109,7 @@ public final class DieHarder {
 
 		final List<String> dieharderArgs = new ArrayList<>();
 		dieharderArgs.add("dieharder");
-		for (int i  = 1; i < args.length; ++i) {
+		for (int i = 1; i < args.length; ++i) {
 			dieharderArgs.add(args[i]);
 		}
 		dieharderArgs.add("-g");

@@ -25,7 +25,7 @@ import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
 
-import org.jenetics.internal.util.NanoClock;
+import org.jenetics.util.NanoClock;
 
 /**
  * Timer implementation for measuring execution durations.
@@ -99,7 +99,7 @@ final class Timer {
 	 * @return a new timer
 	 */
 	public static Timer of() {
-		return of(NanoClock.INSTANCE);
+		return of(NanoClock.systemUTC());
 	}
 
 }

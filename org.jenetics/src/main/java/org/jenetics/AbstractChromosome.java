@@ -22,6 +22,7 @@ package org.jenetics;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.Equality.eq;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.RandomAccess;
@@ -47,9 +48,10 @@ import org.jenetics.util.Verifiable;
 public abstract class AbstractChromosome<G extends Gene<?, G>>
 	implements
 		Chromosome<G>,
-		RandomAccess
+		RandomAccess,
+		Serializable
 {
-	private static final long serialVersionUID = 1;
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Array of genes which forms the chromosome. This array must

@@ -78,7 +78,7 @@ public final class CharSeq
 	 * @throws NullPointerException if the {@code characters} are {@code null}.
 	 */
 	public CharSeq(final CharSequence characters) {
-		this(toCharArray(characters));
+		super(distinct(toCharArray(characters)));
 	}
 
 	private static char[] toCharArray(final CharSequence characters) {
@@ -164,12 +164,15 @@ public final class CharSeq
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass()).and(proxy.array).value();
+		return Hash.of(getClass())
+			.and(proxy.array).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(ch -> eq(proxy.array, ch.proxy.array));
+		return Equality.of(this, obj).test(ch ->
+			eq(proxy.array, ch.proxy.array)
+		);
 	}
 
 	@Override
