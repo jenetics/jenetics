@@ -1,5 +1,6 @@
 #!/bin/bash
 
 CLASSPATH="org.jenetics/build/classes/main:org.jenetics/build/classes/test"
+CLASSPATH="org.jenetics.random/build/classes/main:org.jenetics.random/build/classes/test:${CLASSPATH}"
 
 java -cp ${CLASSPATH} $*
