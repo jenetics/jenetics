@@ -38,7 +38,7 @@ import org.jenetics.internal.util.Equality;
  */
 public final class NanoClock extends Clock implements Serializable {
 
-	private static final long serialVersionUID = -2456014222030125954L;
+	private static final long serialVersionUID = 1L;
 
 	private static final long EPOCH_NANOS = System.currentTimeMillis()*1_000_000;
 	private static final long NANO_START = System.nanoTime();
