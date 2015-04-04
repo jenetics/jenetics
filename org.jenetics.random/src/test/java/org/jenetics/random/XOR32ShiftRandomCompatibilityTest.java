@@ -23,8 +23,6 @@ package org.jenetics.random;
  * TODO: Fix tests
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__! &mdash; <em>$Date$</em>
- * @since !__version__!
  */
 public class XOR32ShiftRandomCompatibilityTest {
 	private final static String TEST_RESOURCE =

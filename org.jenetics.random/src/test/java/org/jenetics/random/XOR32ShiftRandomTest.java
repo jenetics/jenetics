@@ -23,8 +23,6 @@ import org.testng.annotations.DataProvider;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
  */
 public class XOR32ShiftRandomTest extends RandomTestBase {
 

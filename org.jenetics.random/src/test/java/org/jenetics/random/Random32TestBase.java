@@ -26,8 +26,6 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
  */
 public abstract class Random32TestBase extends RandomTestBase {
 
