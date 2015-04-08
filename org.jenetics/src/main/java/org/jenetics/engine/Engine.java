@@ -32,6 +32,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -127,6 +128,7 @@ public final class Engine<
 	private final Selector<G, C> _survivorsSelector;
 	private final Selector<G, C> _offspringSelector;
 	private final Alterer<G, C> _alterer;
+	private final Predicate<? super Phenotype<G, C>> _validator;
 	private final Optimize _optimize;
 	private final int _offspringCount;
 	private final int _survivorsCount;
@@ -146,6 +148,8 @@ public final class Engine<
 	 * @param survivorsSelector the selector used for selecting the survivors
 	 * @param offspringSelector the selector used for selecting the offspring
 	 * @param alterer the alterer used for altering the offspring
+	 * @param validator phenotype validator which can override the default
+	 *        implementation the {@link Phenotype#isValid()} method.
 	 * @param optimize the kind of optimization (minimize or maximize)
 	 * @param offspringCount the number of the offspring individuals
 	 * @param survivorsCount the number of the survivor individuals
@@ -163,6 +167,7 @@ public final class Engine<
 		final Selector<G, C> survivorsSelector,
 		final Selector<G, C> offspringSelector,
 		final Alterer<G, C> alterer,
+		final Predicate<? super Phenotype<G, C>> validator,
 		final Optimize optimize,
 		final int offspringCount,
 		final int survivorsCount,
@@ -176,6 +181,7 @@ public final class Engine<
 		_survivorsSelector = requireNonNull(survivorsSelector);
 		_offspringSelector = requireNonNull(offspringSelector);
 		_alterer = requireNonNull(alterer);
+		_validator = requireNonNull(validator);
 		_optimize = requireNonNull(optimize);
 
 		_offspringCount = require.positive(offspringCount);
@@ -340,7 +346,7 @@ public final class Engine<
 		for (int i = 0, n = population.size(); i < n; ++i) {
 			final Phenotype<G, C> individual = population.get(i);
 
-			if (!individual.isValid()) {
+			if (!_validator.test(individual)) {
 				population.set(i, newPhenotype(generation));
 				++invalidCount;
 			} else if (individual.getAge(generation) > _maximalPhenotypeAge) {
@@ -799,6 +805,7 @@ public final class Engine<
 			new SinglePointCrossover<G, C>(0.2),
 			new Mutator<>(0.15)
 		);
+		private Predicate<? super Phenotype<G, C>> _validator = Phenotype::isValid;
 		private Optimize _optimize = Optimize.MAXIMUM;
 		private double _offspringFraction = 0.6;
 		private int _populationSize = 50;
@@ -927,6 +934,42 @@ public final class Engine<
 		}
 
 		/**
+		 * The phenotype validator used for detecting invalid individuals.
+		 * <i>Default value is set to {@code Phenotype::isValue}.</i>
+		 *
+		 * @param validator the {@code validator} used for validating the
+		 *        individuals (phenotypes).
+		 * @return {@code this} builder, for command chaining
+		 * @throws java.lang.NullPointerException if the {@code validator} is
+		 *         {@code null}.
+		 */
+		public Builder<G, C> phenotypeValidator(
+			final Predicate<? super Phenotype<G, C>> validator
+		) {
+			_validator = requireNonNull(validator);
+			return this;
+		}
+
+		/**
+		 * The phenotype validator used for detecting invalid individuals.
+		 * <i>Default value is set to {@code Genotype::isValue}.</i>
+		 *
+		 * @param validator the {@code validator} used for validating the
+		 *        individuals (genotypes).
+		 * @return {@code this} builder, for command chaining
+		 * @throws java.lang.NullPointerException if the {@code validator} is
+		 *         {@code null}.
+		 */
+		public Builder<G, C> genotypeValidator(
+			final Predicate<? super Genotype<G>> validator
+		) {
+			requireNonNull(validator);
+
+			_validator = pt -> validator.test(pt.getGenotype());
+			return this;
+		}
+
+		/**
 		 * The optimization strategy used by the engine. <i>Default values is
 		 * set to {@code Optimize.MAXIMUM}.</i>
 		 *
@@ -1022,6 +1065,7 @@ public final class Engine<
 				_survivorsSelector,
 				_offspringSelector,
 				_alterer,
+				_validator,
 				_optimize,
 				getOffspringCount(),
 				getSurvivorsCount(),

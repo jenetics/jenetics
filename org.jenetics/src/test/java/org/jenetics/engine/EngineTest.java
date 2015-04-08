@@ -66,4 +66,38 @@ public class EngineTest {
 			.toArray(Object[][]::new);
 	}
 
+	@Test
+	public void phenotypeValidator() {
+		final int populationSize = 100;
+
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
+			.phenotypeValidator(pt -> false)
+			.populationSize(populationSize)
+			.build();
+
+		final EvolutionResult<DoubleGene, Double> result = engine.stream()
+			.limit(10)
+			.collect(EvolutionResult.toBestEvolutionResult());
+
+		Assert.assertEquals(result.getInvalidCount(), populationSize);
+	}
+
+	@Test
+	public void genotypeValidator() {
+		final int populationSize = 100;
+
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
+			.genotypeValidator(pt -> false)
+			.populationSize(populationSize)
+			.build();
+
+		final EvolutionResult<DoubleGene, Double> result = engine.stream()
+			.limit(10)
+			.collect(EvolutionResult.toBestEvolutionResult());
+
+		Assert.assertEquals(result.getInvalidCount(), populationSize);
+	}
+
 }
