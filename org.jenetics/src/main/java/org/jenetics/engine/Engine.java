@@ -937,6 +937,8 @@ public final class Engine<
 		 * The phenotype validator used for detecting invalid individuals.
 		 * <i>Default value is set to {@code Phenotype::isValue}.</i>
 		 *
+		 * @since 3.1
+		 *
 		 * @param validator the {@code validator} used for validating the
 		 *        individuals (phenotypes).
 		 * @return {@code this} builder, for command chaining
@@ -953,6 +955,8 @@ public final class Engine<
 		/**
 		 * The phenotype validator used for detecting invalid individuals.
 		 * <i>Default value is set to {@code Genotype::isValue}.</i>
+		 *
+		 * @since 3.1
 		 *
 		 * @param validator the {@code validator} used for validating the
 		 *        individuals (genotypes).
