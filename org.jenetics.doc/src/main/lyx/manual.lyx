@@ -2339,6 +2339,26 @@ Gene
  The 
 \family typewriter
 isValid
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Gene!validation
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Validation
+\end_layout
+
+\end_inset
+
+
 \family default
  method, introduced by the 
 \family typewriter
@@ -2346,7 +2366,57 @@ Verifiable
 \family default
  interface, allows the gene to mark itself as invalid.
  All invalid genes are replaced with new ones during the evolution phase.
- 
+ The validity property passed to the 
+\family typewriter
+Chromosome
+\family default
+ and 
+\family typewriter
+Genotype
+\family default
+.
+ A 
+\family typewriter
+Chromosome
+\family default
+ is considered to be valid if all its 
+\family typewriter
+Gene
+\family default
+s are valid.
+ The same holds for the 
+\family typewriter
+Genotype
+\family default
+, it is valid if all of its 
+\family typewriter
+Chromosomes
+\family default
+ are valid.
+ See also the 
+\family typewriter
+Engine\SpecialChar \-
+.Builder\SpecialChar \-
+.genotype\SpecialChar \-
+Validator
+\family default
+ property description in chapter 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "Engine-genotypeValidator"
+
+\end_inset
+
+, which allows you to 
+\emph on
+override
+\emph default
+ the validity property.
+ This might be useful if the validity of the 
+\family typewriter
+Genotype
+\family default
+ not only depends on the validity of its elements.
 \end_layout
 
 \begin_layout Standard
@@ -5938,6 +6008,56 @@ Genotype
 \begin_layout Description
 
 \family typewriter
+genotypeValidator
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Validation
+\end_layout
+
+\end_inset
+
+
+\family default
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Genotype!Validation
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "Engine-genotypeValidator"
+
+\end_inset
+
+ This property lets you 
+\emph on
+override
+\emph default
+ the default implementation of the 
+\family typewriter
+Geno\SpecialChar \-
+type\SpecialChar \-
+.isValid
+\family default
+ method, which is useful if the 
+\family typewriter
+Genotype
+\family default
+ validity not only depends on valid property of the elements it consists
+ of.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
 maximalPhenotypeAge
 \family default
  Set the maximal allowed age of an individual (Phenotype).
@@ -6010,6 +6130,49 @@ Function
 Function
 \family default
  is maximized.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+phenotypeValidator
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Validation
+\end_layout
+
+\end_inset
+
+
+\family default
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Phenotype!Validation
+\end_layout
+
+\end_inset
+
+ This property lets you 
+\emph on
+override
+\emph default
+ the default implementation of the 
+\family typewriter
+Pheno\SpecialChar \-
+type\SpecialChar \-
+.isValid
+\family default
+ method, which is useful if the 
+\family typewriter
+Phenotype
+\family default
+ validity not only depends on valid property of the elements it consists
+ of.
 \end_layout
 
 \begin_layout Description
