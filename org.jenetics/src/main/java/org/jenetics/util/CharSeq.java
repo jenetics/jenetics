@@ -45,7 +45,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
+ * @version 2.0
  */
 public final class CharSeq
 	extends CharSeqBase
@@ -78,7 +78,7 @@ public final class CharSeq
 	 * @throws NullPointerException if the {@code characters} are {@code null}.
 	 */
 	public CharSeq(final CharSequence characters) {
-		this(toCharArray(characters));
+		super(distinct(toCharArray(characters)));
 	}
 
 	private static char[] toCharArray(final CharSequence characters) {

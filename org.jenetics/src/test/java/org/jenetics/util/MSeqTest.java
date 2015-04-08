@@ -33,7 +33,6 @@ import org.jenetics.internal.util.Named;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-05-14 $</em>
  */
 public class MSeqTest {
 

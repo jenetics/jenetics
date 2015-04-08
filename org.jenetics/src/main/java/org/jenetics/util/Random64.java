@@ -44,7 +44,7 @@ import org.jenetics.internal.math.random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 2.0 &mdash; <em>$Date: 2014-08-01 $</em>
+ * @version 2.0
  */
 public abstract class Random64 extends PRNG {
 

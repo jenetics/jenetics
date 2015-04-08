@@ -35,7 +35,7 @@ import org.jenetics.internal.collection.Stack;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-08-15 $</em>
+ * @version 2.0
  * @since 2.0
  */
 public abstract class Concurrency implements Executor, AutoCloseable {

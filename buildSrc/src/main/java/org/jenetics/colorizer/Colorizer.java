@@ -42,7 +42,7 @@ import java.util.Set;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.4 &mdash; <em>$Date: 2014-03-28 $</em>
+ * @version 1.4
  */
 public final class Colorizer extends SimpleFileVisitor<Path> {
 
@@ -144,7 +144,7 @@ public final class Colorizer extends SimpleFileVisitor<Path> {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.4 &mdash; <em>$Date: 2014-03-28 $</em>
+	 * @version 1.4
 	 */
 	private static enum State {
 

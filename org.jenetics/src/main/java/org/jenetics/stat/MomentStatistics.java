@@ -33,9 +33,9 @@ import org.jenetics.internal.math.DoubleAdder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-05-07 $</em>
+ * @version 3.1
  */
-class MomentStatistics {
+abstract class MomentStatistics {
 
 	// the sample count.
 	private long _n = 0L;

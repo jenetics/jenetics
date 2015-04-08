@@ -1,4 +1,4 @@
-# Jenetics (_3.0.1_)
+# Jenetics (_3.1.0_)
 
 **Jenetics** is an **Genetic Algorithm**, respectively an **Evolutionary Algorithm**, library written in Java. It is designed with a clear separation of the several concepts of the algorithm, e.g. `Gene`, `Chromosome`, `Genotype`, `Phenotype`, `Population` and fitness `Function`. **Jenetics** allows you to minimize and maximize the given fitness function without tweaking it. In contrast to other GA implementations, the library uses the concept of an evolution stream (`EvolutionStream`) for executing the evolution steps. Since the `EvolutionStream` implements the Java Stream interface, it works smoothly with the rest of the Java Stream API.
 
@@ -14,18 +14,16 @@ The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jeneti
 
 ### Build time
 *  **JDK 8**: The `JAVA_HOME` variable must be set to your java installation directory.
-*  **Gradle 2.0**: [Gradle](http://www.gradle.org/) is used for building the library. (Gradle is download automatically, if you are using the Gradle Wrapper script `gradlew`, located in the base directory, for building the library.)
+*  **Gradle 2.x**: [Gradle](http://www.gradle.org/) is used for building the library. (Gradle is download automatically, if you are using the Gradle Wrapper script `gradlew`, located in the base directory, for building the library.)
 
 ### Test compile/execution
 *  **TestNG 8.8**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
-*  **Apache Commons Math 3.4.1**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical accumulators.
-
+*  **Apache Commons Math 3.4.1**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical collectors.
 
 ## Download
-* **Github**: <https://github.com/jenetics/jenetics/releases/download/v3.0.1/jenetics-3.0.1.zip>
+* **Github**: <https://github.com/jenetics/jenetics/releases/download/v3.1.0/jenetics-3.1.0.zip>
 *  **Sourceforge**:  <https://sourceforge.net/projects/jenetics/files/latest/download>
-*  **Maven**: `org.bitbucket.fwilhelm:org.jenetics:3.0.1` on [Maven Central](http://search.maven.org/#search|ga|1|a%3A%22org.jenetics%22)
-
+*  **Maven**: `org.bitbucket.fwilhelm:org.jenetics:3.1.0` on [Maven Central](http://search.maven.org/#search|ga|1|a%3A%22org.jenetics%22)
 
 ## Build Jenetics
 
@@ -144,6 +142,10 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 
 ## Release notes
 
+### 3.1.0
+
+* Minor code streamlining and bug-fixing.
+* Improve termination strategies.
 
 ### 3.0.1
 

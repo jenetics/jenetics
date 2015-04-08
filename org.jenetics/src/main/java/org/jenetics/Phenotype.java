@@ -53,7 +53,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-11-28 $</em>
+ * @version 3.1
  */
 @XmlJavaTypeAdapter(Phenotype.Model.Adapter.class)
 public final class Phenotype<
@@ -76,6 +76,7 @@ public final class Phenotype<
 	private final long _generation;
 
 	// Storing the fitness value for lazy evaluation.
+	private transient volatile boolean _evaluated = false;
 	private C _rawFitness = null;
 	private C _fitness = null;
 
@@ -125,11 +126,18 @@ public final class Phenotype<
 	 * @return this phenotype, for method chaining.
 	 */
 	public Phenotype<G, C> evaluate() {
-		if (_rawFitness == null) {
-			_rawFitness = _function.apply(_genotype);
-			_fitness = _scaler.apply(_rawFitness);
+		if (!_evaluated) {
+			eval();
 		}
 		return this;
+	}
+
+	private synchronized void eval() {
+		if (!_evaluated) {
+			if (_rawFitness == null) _rawFitness = _function.apply(_genotype);
+			if (_fitness == null) _fitness = _scaler.apply(_rawFitness);
+			_evaluated = true;
+		}
 	}
 
 	/**

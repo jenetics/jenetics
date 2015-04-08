@@ -32,7 +32,6 @@ import org.jenetics.internal.util.IntRef;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-01 $</em>
  */
 public abstract class ArrayProxyTestBase<T> {
 

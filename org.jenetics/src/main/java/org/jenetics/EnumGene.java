@@ -22,6 +22,7 @@ package org.jenetics;
 import static java.lang.String.format;
 import static org.jenetics.internal.util.Equality.eq;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -73,13 +74,14 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-12-07 $</em>
+ * @version 2.0
  */
 @XmlJavaTypeAdapter(EnumGene.Model.Adapter.class)
 public final class EnumGene<A>
 	implements
 		Gene<A, EnumGene<A>>,
-		Comparable<EnumGene<A>>
+		Comparable<EnumGene<A>>,
+		Serializable
 {
 
 	private static final long serialVersionUID = 2L;

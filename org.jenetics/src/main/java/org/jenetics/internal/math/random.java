@@ -36,7 +36,7 @@ import org.jenetics.internal.util.require;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0 &mdash; <em>$Date: 2014-10-18 $</em>
+ * @version 3.0
  */
 public final class random {
 	private random() {require.noInstance();}
@@ -59,11 +59,11 @@ public final class random {
 	}
 
 	/**
-	 * Returns a pseudo-random, uniformly distributed int value between min
-	 * and max (min and max included).
+	 * Returns a pseudo-random, uniformly distributed int value between min and
+	 * max (min and max included).
 	 *
-	 * @param random the random engine to use for calculating the random
-	 *        int value
+	 * @param random the random engine to use for calculating the random int
+	 *        value
 	 * @param min lower bound for generated integer
 	 * @param max upper bound for generated integer
 	 * @return a random integer greater than or equal to {@code min} and
@@ -395,11 +395,11 @@ public final class random {
 		probability(p);
 		final int P = probability.toInt(p);
 
-		return equals(p, 0, 1E-20) ?
-			IntStream.empty() :
-			equals(p, 1, 1E-20) ?
-				IntStream.range(start, end) :
-				IntStream.range(start, end)
+		return equals(p, 0, 1E-20)
+			? IntStream.empty()
+			: equals(p, 1, 1E-20)
+				? IntStream.range(start, end)
+				: IntStream.range(start, end)
 					.filter(i -> random.nextInt() < P);
 	}
 
