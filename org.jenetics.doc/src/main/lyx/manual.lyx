@@ -2366,57 +2366,7 @@ Verifiable
 \family default
  interface, allows the gene to mark itself as invalid.
  All invalid genes are replaced with new ones during the evolution phase.
- The validity property passed to the 
-\family typewriter
-Chromosome
-\family default
- and 
-\family typewriter
-Genotype
-\family default
-.
- A 
-\family typewriter
-Chromosome
-\family default
- is considered to be valid if all its 
-\family typewriter
-Gene
-\family default
-s are valid.
- The same holds for the 
-\family typewriter
-Genotype
-\family default
-, it is valid if all of its 
-\family typewriter
-Chromosomes
-\family default
- are valid.
- See also the 
-\family typewriter
-Engine\SpecialChar \-
-.Builder\SpecialChar \-
-.genotype\SpecialChar \-
-Validator
-\family default
- property description in chapter 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "Engine-genotypeValidator"
-
-\end_inset
-
-, which allows you to 
-\emph on
-override
-\emph default
- the validity property.
- This might be useful if the validity of the 
-\family typewriter
-Genotype
-\family default
- not only depends on the validity of its elements.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -5145,6 +5095,13 @@ c
 
 \begin_layout Subsection
 Engine classes
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Engine-classes"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -5623,6 +5580,13 @@ height "1pt"
 
 \begin_layout Subsubsection
 Engine
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Engine"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -6227,6 +6191,41 @@ Tournament\SpecialChar \-
 Select\SpecialChar \-
 or<>(3)
 \family default
+.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+validIndividualCreationRetryCount
+\family default
+ The evolution 
+\family typewriter
+Engine
+\family default
+ tries to create only valid individuals.
+ If a newly created 
+\family typewriter
+Genotype
+\family default
+ is not valid, the 
+\family typewriter
+Engine
+\family default
+ creates another one, till the created 
+\family typewriter
+Genotype
+\family default
+ is valid.
+ This parameter sets the maximal number of retries before the 
+\family typewriter
+Engine
+\family default
+ gives up and accept invalid individuals.
+ The default value is set to 
+\begin_inset Formula $10$
+\end_inset
+
 .
 \end_layout
 
@@ -9465,6 +9464,13 @@ Extending
 \series bold
 \shape smallcaps
  Jenetics
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Extending-Jenetics"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -11572,6 +11578,13 @@ Alterer
 
 \begin_layout Subsubsection
 Graph
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Graph"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -12066,7 +12079,430 @@ final double[][] array = gt.toSeq().stream()
 \end_layout
 
 \begin_layout Subsection
+Validation
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Validation"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Validation
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A given problem should usually encoded in a way, that it is not possible
+ for the evolution 
+\family typewriter
+Engine
+\family default
+ to create 
+\emph on
+invalid
+\emph default
+ individuals (
+\family typewriter
+Genotypes
+\family default
+).
+ Some possible encodings for common data-structures are described in section
+ 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Encoding"
+
+\end_inset
+
+.
+ The 
+\family typewriter
+Engine
+\family default
+ creates new individuals in the 
+\emph on
+altering
+\emph default
+ step by rearranging (or creating new) 
+\family typewriter
+Genes
+\family default
+ within a 
+\family typewriter
+Chromosome
+\family default
+.
+ Since a 
+\family typewriter
+Genotype
+\family default
+ is treated as 
+\emph on
+valid
+\emph default
+ if every single 
+\family typewriter
+Gene
+\family default
+ in every 
+\family typewriter
+Chromosome
+\family default
+ is 
+\emph on
+valid
+\emph default
+, the validity property of the 
+\family typewriter
+Gene
+\family default
+s determines the validity of the whole 
+\family typewriter
+Genotype
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+The Engine tries to create only valid individuals when creating the initial
+ Population and when it replaces Genotypes which has been 
+\emph on
+destroyed
+\emph default
+ by the altering step.
+ Individuals which has exceeded its lifetime are also replaced by new valid
+ ones.
+ To guarantee the termination of the Genotype creation, the Engine is parameteri
+zed with the maximal number of retries (
+\family typewriter
+valid\SpecialChar \-
+Indi\SpecialChar \-
+vidual\SpecialChar \-
+Crea\SpecialChar \-
+tion\SpecialChar \-
+Re\SpecialChar \-
+try\SpecialChar \-
+Cou\SpecialChar \-
+nt
+\family default
+)
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Engine"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+If the described validation mechanism doesn't fulfill your needs, you can
+ 
+\emph on
+override
+\emph default
+ the validation mechanism by creating the 
+\family typewriter
+Engine
+\family default
+ with an external 
+\family typewriter
+Genotype
+\family default
+ 
+\emph on
+validator
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Predicate<? super Genotype<DoubleGene>> validator = gt -> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Implement advanced Genotype check.
+\end_layout
+
+\begin_layout Plain Layout
+
+    boolean valid = ...;
+\end_layout
+
+\begin_layout Plain Layout
+
+    return valid;
+\end_layout
+
+\begin_layout Plain Layout
+
+};
+\end_layout
+
+\begin_layout Plain Layout
+
+final Engine<DoubleGene, Double> engine = Engine.builder(gtf, ff)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .limit(100)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .genotypeValidator(validator)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .validIndividualCreationRetryCount(15)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .build();
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Having the possibility to replace the default validation check is a nice
+ thing, but it is better to not create invalid individuals in the first
+ place.
+ For achieving this goal, you have two possibilities:
+\end_layout
+
+\begin_layout Enumerate
+Creating an explicit 
+\family typewriter
+Genotype
+\family default
+ factory and
+\end_layout
+
+\begin_layout Enumerate
+implementing new 
+\family typewriter
+Gene
+\family default
+/
+\family typewriter
+Chromosome
+\family default
+/
+\family typewriter
+Alterer
+\family default
+ classes.
+\end_layout
+
+\begin_layout Paragraph
+
+\family typewriter
+Genotype
+\family default
+ factory
+\end_layout
+
+\begin_layout Standard
+The usual mechanism for defining an encoding is to create a 
+\family typewriter
+Genotype
+\family default
+ 
+\emph on
+prototype
+\emph default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Prototype_pattern
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+ Since the 
+\family typewriter
+Genotype
+\family default
+ implements the 
+\family typewriter
+Factory
+\family default
+ interface, an prototype instance can easily passed to the 
+\family typewriter
+Engine\SpecialChar \-
+.builder
+\family default
+ method.
+ For a more advanced 
+\family typewriter
+Genotype
+\family default
+ creation, you 
+\emph on
+only
+\emph default
+ have to create an explicit 
+\family typewriter
+Genotype
+\family default
+ factory.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Factory<Genotype<DoubleGene>> gtf = () -> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Implement your advanced Genotype factory.
+\end_layout
+
+\begin_layout Plain Layout
+
+    Genotype<DoubleGene> genotype = ...;
+\end_layout
+
+\begin_layout Plain Layout
+
+    return genotype;
+\end_layout
+
+\begin_layout Plain Layout
+
+};
+\end_layout
+
+\begin_layout Plain Layout
+
+final Engine<DoubleGene, Double> engine = Engine.builder(gtf, ff)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .limit(100)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .validIndividualCreationRetryCount(15)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .build();
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+With this method you can avoid that the 
+\family typewriter
+Engine
+\family default
+ creates invalid individuals in the first place, but it is still possible
+ that the alterer step will destroy your 
+\family typewriter
+Genotype
+\family default
+s.
+\end_layout
+
+\begin_layout Paragraph
+
+\family typewriter
+Gene
+\family default
+/
+\family typewriter
+Chromosome
+\family default
+/
+\family typewriter
+Alterer
+\end_layout
+
+\begin_layout Standard
+Creating your own Gene, Chromosome and Alterer classes is the most heavy-wighted
+ possibility for solving the 
+\emph on
+validity
+\emph default
+ problem.
+ Refer to section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sec:Extending-Jenetics"
+
+\end_inset
+
+ for a more detailed description on how to implement this classes.
+\end_layout
+
+\begin_layout Subsection
 Termination
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Termination"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
