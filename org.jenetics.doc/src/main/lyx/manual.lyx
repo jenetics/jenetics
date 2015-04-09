@@ -324,7 +324,7 @@ FRANZ WILHELMSTÖTTER
 
 \series default
 \noun default
-VERSION 3
+VERSION 3.1
 \size large
 \noun on
 
@@ -9176,34 +9176,91 @@ This package contains classes for calculating statistical moments.
  into mutable (number) consumers and immutable value classes, which holds
  the statistical moments.
  The additional classes calculate the 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{multicols}{3}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
-minimum, 
+
+\emph on
+minimum
+\emph default
+, 
 \end_layout
 
 \begin_layout Itemize
-maximum, 
+
+\emph on
+maximum
+\emph default
+, 
 \end_layout
 
 \begin_layout Itemize
-sum, 
+
+\emph on
+sum
+\emph default
+, 
 \end_layout
 
 \begin_layout Itemize
-mean, 
+
+\emph on
+mean
+\emph default
+, 
 \end_layout
 
 \begin_layout Itemize
-variance,
+
+\emph on
+variance
+\emph default
+,
 \end_layout
 
 \begin_layout Itemize
-skewness and 
+
+\emph on
+skewness
+\emph default
+ and 
 \end_layout
 
 \begin_layout Itemize
-kurtosis value.
+
+\emph on
+kurtosis
+\emph default
+ value.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{multicols}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -10081,8 +10138,21 @@ Advanced topics
 \end_layout
 
 \begin_layout Standard
-This section describes some advanced topics when setting up an evolution
- engine or stream.
+This section describes some advanced topics for setting up an evolution
+ 
+\family typewriter
+Engine
+\family default
+ or 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+.
+ It contains some problem encoding examples and how to override the default
+ validation strategy of the given Genotypes.
+ The last section contains a detailed description of the implemented termination
+ strategies.
 \end_layout
 
 \begin_layout Subsection
