@@ -138,6 +138,9 @@ public final class Engine<
 	private final TimedExecutor _executor;
 	private final Clock _clock;
 
+	// Additional parameters.
+	private final int _validIndividualCreationRetryCount;
+
 
 	/**
 	 * Create a new GA engine with the given parameters.
@@ -156,6 +159,8 @@ public final class Engine<
 	 * @param maximalPhenotypeAge the maximal age of an individual
 	 * @param executor the executor used for executing the single evolve steps
 	 * @param clock the clock used for calculating the timing results
+	 * @param validIndividualCreationRetryCount the maximal number of attempts
+	 *        for creating a valid individual.
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if the given integer values are smaller
 	 *         than one.
@@ -173,7 +178,8 @@ public final class Engine<
 		final int survivorsCount,
 		final long maximalPhenotypeAge,
 		final Executor executor,
-		final Clock clock
+		final Clock clock,
+		final int validIndividualCreationRetryCount
 	) {
 		_fitnessFunction = requireNonNull(fitnessFunction);
 		_fitnessScaler = requireNonNull(fitnessScaler);
@@ -190,6 +196,14 @@ public final class Engine<
 
 		_executor = new TimedExecutor(requireNonNull(executor));
 		_clock = requireNonNull(clock);
+
+		if (validIndividualCreationRetryCount < 0) {
+			throw new IllegalArgumentException(format(
+				"Retry count must not be negative: %d",
+				validIndividualCreationRetryCount
+			));
+		}
+		_validIndividualCreationRetryCount = validIndividualCreationRetryCount;
 	}
 
 	/**
@@ -358,14 +372,21 @@ public final class Engine<
 		return new FilterResult<>(population, killCount, invalidCount);
 	}
 
-	// Create a new phenotype
+	// Create a new and valid phenotype
 	private Phenotype<G, C> newPhenotype(final long generation) {
-		return Phenotype.of(
-			_genotypeFactory.newInstance(),
-			generation,
-			_fitnessFunction,
-			_fitnessScaler
-		);
+		int count = 0;
+		Phenotype<G, C> phenotype;
+		do {
+			phenotype = Phenotype.of(
+				_genotypeFactory.newInstance(),
+				generation,
+				_fitnessFunction,
+				_fitnessScaler
+			);
+		} while (++count < _validIndividualCreationRetryCount &&
+				!_validator.test(phenotype));
+
+		return phenotype;
 	}
 
 	// Alters the given population. The altering is done in place.
@@ -814,6 +835,8 @@ public final class Engine<
 		private Executor _executor = ForkJoinPool.commonPool();
 		private Clock _clock = NanoClock.systemUTC();
 
+		private int _validIndividualCreationRetryCount = 10;
+
 		private Builder(
 			final Factory<Genotype<G>> genotypeFactory,
 			final Function<? super Genotype<G>, ? extends C> fitnessFunction
@@ -1057,6 +1080,29 @@ public final class Engine<
 		}
 
 		/**
+		 * The maximal number of attempt before the {@code Engine} gives up
+		 * creating a valid individual ({@code Phenotype}). <i>Default values is
+		 * set to {@code 10}.</i>
+		 *
+		 * @since 3.1
+		 *
+		 * @param count the maximal retry count
+		 * @throws IllegalArgumentException if the given retry {@code count} is
+		 *         smaller than zero.
+		 * @return {@code this} builder, for command chaining
+		 */
+		public Builder<G, C> validIndividualCreationRetryCount(final int count) {
+			if (count < 0) {
+				throw new IllegalArgumentException(format(
+					"Retry count must not be negative: %d",
+					count
+				));
+			}
+			_validIndividualCreationRetryCount = count;
+			return this;
+		}
+
+		/**
 		 * Builds an new {@code Engine} instance from the set properties.
 		 *
 		 * @return an new {@code Engine} instance from the set properties
@@ -1075,7 +1121,8 @@ public final class Engine<
 				getSurvivorsCount(),
 				_maximalPhenotypeAge,
 				_executor,
-				_clock
+				_clock,
+				_validIndividualCreationRetryCount
 			);
 		}
 
@@ -1220,6 +1267,18 @@ public final class Engine<
 		}
 
 		/**
+		 * Return the maximal number of attempt before the {@code Engine} gives
+		 * up creating a valid individual ({@code Phenotype}).
+		 *
+		 * @since 3.1
+		 *
+		 * @return the maximal number of {@code Phenotype} creation attempts
+		 */
+		public int getValidIndividualCreationRetryCount() {
+			return _validIndividualCreationRetryCount;
+		}
+
+		/**
 		 * Create a new builder, with the current configuration.
 		 *
 		 * @since 3.1
@@ -1239,7 +1298,8 @@ public final class Engine<
 				.phenotypeValidator(_validator)
 				.optimize(_optimize)
 				.populationSize(_populationSize)
-				.survivorsSelector(_survivorsSelector);
+				.survivorsSelector(_survivorsSelector)
+				.validIndividualCreationRetryCount(_validIndividualCreationRetryCount);
 		}
 
 	}
