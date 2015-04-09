@@ -105,7 +105,7 @@ tabs-within-sections
 \pdf_bookmarksnumbered false
 \pdf_bookmarksopen false
 \pdf_bookmarksopenlevel 1
-\pdf_breaklinks false
+\pdf_breaklinks true
 \pdf_pdfborder false
 \pdf_colorlinks false
 \pdf_backref false
