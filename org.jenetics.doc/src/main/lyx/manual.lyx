@@ -560,7 +560,7 @@ Jenetics
 \series bold
  Genetic Algorithm
 \series default
- and/or
+ and
 \series bold
  Evolutionary Algorithm
 \series default
@@ -739,14 +739,14 @@ target "http://en.wikipedia.org/wiki/Genetic_algorithm"
  It has no runtime dependencies to other libraries, except the Java 8 runtime.
  Since the library is available on maven central repository
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 If you are using Gradle, you can use the following dependency string: 
 \family typewriter
 'org.bitbucket.fwilhelm:\SpecialChar \-
 org.jenetics:\SpecialChar \-
-3.0.1'
+3.1.0'
 \family default
 .
 \end_layout
@@ -1103,7 +1103,7 @@ Genotype
 \family default
  (factory) representation.
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Section 
@@ -2266,7 +2266,7 @@ public interface Gene<A, G extends Gene<A, G>>
 
 \begin_layout Plain Layout
 
-    extends Factory<G>, Serializable, Verifiable
+    extends Factory<G>, Verifiable
 \end_layout
 
 \begin_layout Plain Layout
@@ -2469,12 +2469,7 @@ public interface Chromosome<G extends Gene<?, G>>
 
 \begin_layout Plain Layout
 
-	extends Factory<Chromosome<G>>, Iterable<G>, 
-\end_layout
-
-\begin_layout Plain Layout
-
-        Verifiable, Serializable
+	extends Factory<Chromosome<G>>, Iterable<G>, Verifiable
 \end_layout
 
 \begin_layout Plain Layout
@@ -9789,7 +9784,7 @@ Chromosome
 s.
  The other methods should be self-explanatory.
  The chromosome has the same serialization mechanism as the gene.
- For the minimal case it extends the
+ For the minimal case it can extends the
 \family typewriter
  Serializable
 \family default
@@ -12874,7 +12869,7 @@ final class SteadyFitnessLimit<C extends Comparable<? super C>>
 
 \begin_layout Plain Layout
 
-    public boolean test(final EvolutionResult<?, C> result) {
+    public boolean test(final EvolutionResult<?, C> er) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -12889,7 +12884,7 @@ final class SteadyFitnessLimit<C extends Comparable<? super C>>
 
 \begin_layout Plain Layout
 
-            _fitness = result.getBestFitness();
+            _fitness = er.getBestFitness();
 \end_layout
 
 \begin_layout Plain Layout
@@ -12909,7 +12904,7 @@ final class SteadyFitnessLimit<C extends Comparable<? super C>>
 
 \begin_layout Plain Layout
 
-            if (opt.compare(_fitness, result.getBestFitness()) >= 0) {
+            if (opt.compare(_fitness, er.getBestFitness()) >= 0) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -12924,7 +12919,7 @@ final class SteadyFitnessLimit<C extends Comparable<? super C>>
 
 \begin_layout Plain Layout
 
-                _fitness = result.getBestFitness();
+                _fitness = er.getBestFitness();
 \end_layout
 
 \begin_layout Plain Layout
