@@ -139,7 +139,7 @@ public final class Engine<
 	private final Clock _clock;
 
 	// Additional parameters.
-	private final int _validIndividualCreationRetryCount;
+	private final int _individualCreationRetries;
 
 
 	/**
@@ -159,8 +159,8 @@ public final class Engine<
 	 * @param maximalPhenotypeAge the maximal age of an individual
 	 * @param executor the executor used for executing the single evolve steps
 	 * @param clock the clock used for calculating the timing results
-	 * @param validIndividualCreationRetryCount the maximal number of attempts
-	 *        for creating a valid individual.
+	 * @param individualCreationRetries the maximal number of attempts for
+	 *        creating a valid individual.
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if the given integer values are smaller
 	 *         than one.
@@ -179,7 +179,7 @@ public final class Engine<
 		final long maximalPhenotypeAge,
 		final Executor executor,
 		final Clock clock,
-		final int validIndividualCreationRetryCount
+		final int individualCreationRetries
 	) {
 		_fitnessFunction = requireNonNull(fitnessFunction);
 		_fitnessScaler = requireNonNull(fitnessScaler);
@@ -197,13 +197,13 @@ public final class Engine<
 		_executor = new TimedExecutor(requireNonNull(executor));
 		_clock = requireNonNull(clock);
 
-		if (validIndividualCreationRetryCount < 0) {
+		if (individualCreationRetries < 0) {
 			throw new IllegalArgumentException(format(
 				"Retry count must not be negative: %d",
-				validIndividualCreationRetryCount
+				individualCreationRetries
 			));
 		}
-		_validIndividualCreationRetryCount = validIndividualCreationRetryCount;
+		_individualCreationRetries = individualCreationRetries;
 	}
 
 	/**
@@ -383,7 +383,7 @@ public final class Engine<
 				_fitnessFunction,
 				_fitnessScaler
 			);
-		} while (++count < _validIndividualCreationRetryCount &&
+		} while (++count < _individualCreationRetries &&
 				!_validator.test(phenotype));
 
 		return phenotype;
@@ -835,7 +835,7 @@ public final class Engine<
 		private Executor _executor = ForkJoinPool.commonPool();
 		private Clock _clock = NanoClock.systemUTC();
 
-		private int _validIndividualCreationRetryCount = 10;
+		private int _individualCreationRetries = 10;
 
 		private Builder(
 			final Factory<Genotype<G>> genotypeFactory,
@@ -1086,19 +1086,19 @@ public final class Engine<
 		 *
 		 * @since 3.1
 		 *
-		 * @param count the maximal retry count
+		 * @param retries the maximal retry count
 		 * @throws IllegalArgumentException if the given retry {@code count} is
 		 *         smaller than zero.
 		 * @return {@code this} builder, for command chaining
 		 */
-		public Builder<G, C> validIndividualCreationRetryCount(final int count) {
-			if (count < 0) {
+		public Builder<G, C> individualCreationRetries(final int retries) {
+			if (retries < 0) {
 				throw new IllegalArgumentException(format(
 					"Retry count must not be negative: %d",
-					count
+					retries
 				));
 			}
-			_validIndividualCreationRetryCount = count;
+			_individualCreationRetries = retries;
 			return this;
 		}
 
@@ -1122,7 +1122,7 @@ public final class Engine<
 				_maximalPhenotypeAge,
 				_executor,
 				_clock,
-				_validIndividualCreationRetryCount
+				_individualCreationRetries
 			);
 		}
 
@@ -1274,8 +1274,8 @@ public final class Engine<
 		 *
 		 * @return the maximal number of {@code Phenotype} creation attempts
 		 */
-		public int getValidIndividualCreationRetryCount() {
-			return _validIndividualCreationRetryCount;
+		public int getIndividualCreationRetries() {
+			return _individualCreationRetries;
 		}
 
 		/**
@@ -1299,7 +1299,7 @@ public final class Engine<
 				.optimize(_optimize)
 				.populationSize(_populationSize)
 				.survivorsSelector(_survivorsSelector)
-				.validIndividualCreationRetryCount(_validIndividualCreationRetryCount);
+				.individualCreationRetries(_individualCreationRetries);
 		}
 
 	}

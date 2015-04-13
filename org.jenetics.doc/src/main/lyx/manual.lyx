@@ -739,7 +739,7 @@ target "http://en.wikipedia.org/wiki/Genetic_algorithm"
  It has no runtime dependencies to other libraries, except the Java 8 runtime.
  Since the library is available on maven central repository
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 If you are using Gradle, you can use the following dependency string: 
@@ -6192,7 +6192,7 @@ or<>(3)
 \begin_layout Description
 
 \family typewriter
-validIndividualCreationRetryCount
+individualCreationRetries
 \family default
  The evolution 
 \family typewriter
@@ -12249,17 +12249,14 @@ destroyed
  To guarantee the termination of the Genotype creation, the Engine is parameteri
 zed with the maximal number of retries (
 \family typewriter
-valid\SpecialChar \-
-Indi\SpecialChar \-
+indi\SpecialChar \-
 vidual\SpecialChar \-
 Crea\SpecialChar \-
 tion\SpecialChar \-
 Re\SpecialChar \-
-try\SpecialChar \-
-Cou\SpecialChar \-
-nt
+tr
 \family default
-)
+ies)
 \begin_inset Foot
 status collapsed
 
@@ -12348,7 +12345,7 @@ final Engine<DoubleGene, Double> engine = Engine.builder(gtf, ff)
 
 \begin_layout Plain Layout
 
-    .validIndividualCreationRetryCount(15)
+    .individualCreationRetries(15)
 \end_layout
 
 \begin_layout Plain Layout
@@ -12502,7 +12499,7 @@ final Engine<DoubleGene, Double> engine = Engine.builder(gtf, ff)
 
 \begin_layout Plain Layout
 
-    .validIndividualCreationRetryCount(15)
+    .individualCreationRetries(15)
 \end_layout
 
 \begin_layout Plain Layout
