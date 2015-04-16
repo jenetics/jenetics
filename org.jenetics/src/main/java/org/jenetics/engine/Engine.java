@@ -742,8 +742,10 @@ public final class Engine<
 			.offspringFraction((double)_offspringCount/(double)getPopulationSize())
 			.offspringSelector(_offspringSelector)
 			.optimize(_optimize)
+			.phenotypeValidator(_validator)
 			.populationSize(getPopulationSize())
-			.survivorsSelector(_survivorsSelector);
+			.survivorsSelector(_survivorsSelector)
+			.individualCreationRetries(_individualCreationRetries);
 	}
 
 	/**
