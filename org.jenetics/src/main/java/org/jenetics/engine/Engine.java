@@ -958,9 +958,15 @@ public final class Engine<
 
 		/**
 		 * The phenotype validator used for detecting invalid individuals.
-		 * <i>Default value is set to {@code Phenotype::isValue}.</i>
+		 * Alternatively it is also possible to set the genotype validator with
+		 * {@link #genotypeFactory(Factory)}, which will replace any
+		 * previously set phenotype validators.
+		 *
+		 * <p><i>Default value is set to {@code Phenotype::isValid}.</i></p>
 		 *
 		 * @since 3.1
+		 *
+		 * @see #genotypeValidator(Predicate)
 		 *
 		 * @param validator the {@code validator} used for validating the
 		 *        individuals (phenotypes).
@@ -976,10 +982,16 @@ public final class Engine<
 		}
 
 		/**
-		 * The phenotype validator used for detecting invalid individuals.
-		 * <i>Default value is set to {@code Genotype::isValue}.</i>
+		 * The genotype validator used for detecting invalid individuals.
+		 * Alternatively it is also possible to set the phenotype validator with
+		 * {@link #phenotypeValidator(Predicate)}, which will replace any
+		 * previously set genotype validators.
+		 *
+		 * <p><i>Default value is set to {@code Genotype::isValid}.</i></p>
 		 *
 		 * @since 3.1
+		 *
+		 * @see #phenotypeValidator(Predicate)
 		 *
 		 * @param validator the {@code validator} used for validating the
 		 *        individuals (genotypes).
