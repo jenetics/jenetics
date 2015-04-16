@@ -265,11 +265,11 @@ public final class DoubleMoments implements Serializable {
 	 * function to each input element, and returns moments-statistics for the
 	 * resulting values.
 	 *
-	 * [code]
-	 * final Stream&lt;SomeObject&gt; stream = ...
+	 * <pre>{@code
+	 * final Stream<SomeObject> stream = ...
 	 * final DoubleMoments moments = stream
-	 *     .collect(toDoubleMoments(v -&gt; v.doubleValue()));
-	 * [/code]
+	 *     .collect(toDoubleMoments(v -> v.doubleValue()));
+	 * }</pre>
 	 *
 	 * @param mapper a mapping function to apply to each element
 	 * @param <T> the type of the input elements

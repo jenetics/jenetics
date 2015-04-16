@@ -49,14 +49,14 @@ public interface EvolutionStream<
 	 * when the given {@code proceed} predicate returns {@code false}.
 	 * <p>
 	 * <i>General usage example:</i>
-	 * [code]
-	 * final Phenotype&lt;DoubleGene, Double&gt; result = engine.stream()
+	 * <pre>{@code
+	 * final Phenotype<DoubleGene, Double> result = engine.stream()
 	 *      // Truncate the evolution stream after 5 "steady" generations.
 	 *     .limit(bySteadyFitness(5))
 	 *      // The evolution will stop after maximal 100 generations.
 	 *     .limit(100)
 	 *     .collect(toBestPhenotype());
-	 * [/code]
+	 * }</pre>
 	 *
 	 * @see limit
 	 *
@@ -75,15 +75,16 @@ public interface EvolutionStream<
 	 * factory method is to simplify the creation of an {@code EvolutionStream}
 	 * from an own evolution (GA) engine.
 	 *
-	 * [code]
-	 * final Function&lt;
-	 *     EvolutionStart&lt;DoubleGene, Double&gt;,
-	 *     EvolutionResult&lt;DoubleGene, Double&gt;&gt; engine = new MySpecialEngine();
-	 * final Supplier&lt;EvolutionStart&lt;DoubleGene, Double&gt;&gt; start = ...
+	 * <pre>{@code
+	 * final Function<
+	 *     EvolutionStart<DoubleGene, Double>,
+	 *     EvolutionResult<DoubleGene, Double>
+	 * > engine = new MySpecialEngine();
+	 * final Supplier<EvolutionStart<DoubleGene, Double>> start = ...
 	 *
-	 * final EvolutionStream&lt;DoubleGene, Double&gt; stream =
+	 * final EvolutionStream<DoubleGene, Double> stream =
 	 *     EvolutionStream.of(start, engine);
-	 * [/code]
+	 * }</pre>
 	 *
 	 * @since 3.1
 	 *

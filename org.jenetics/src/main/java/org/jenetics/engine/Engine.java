@@ -58,29 +58,29 @@ import org.jenetics.util.NanoClock;
  * Genetic algorithm <em>engine</em> which is the main class. The following
  * example shows the main steps in initializing and executing the GA.
  *
- * [code]
+ * <pre>{@code
  * public class RealFunction {
  *    // Definition of the fitness function.
- *    private static Double evaluate(final Genotype&lt;DoubleGene&gt; gt) {
+ *    private static Double evaluate(final Genotype<DoubleGene> gt) {
  *        final double x = gt.getGene().doubleValue();
  *        return cos(0.5 + sin(x)) * cos(x);
  *    }
  *
  *    public static void main(String[] args) {
  *        // Create/configuring the engine via its builder.
- *        final Engine&lt;DoubleGene, Double&gt; engine = Engine
+ *        final Engine<DoubleGene, Double> engine = Engine
  *            .builder(
  *                RealFunction::evaluate,
  *                DoubleChromosome.of(0.0, 2.0*PI))
  *            .populationSize(500)
  *            .optimize(Optimize.MINIMUM)
  *            .alterers(
- *                new Mutator&lt;&gt;(0.03),
- *                new MeanAlterer&lt;&gt;(0.6))
+ *                new Mutator<>(0.03),
+ *                new MeanAlterer<>(0.6))
  *            .build();
  *
  *        // Execute the GA (engine).
- *        final Phenotype&lt;DoubleGene, Double&gt; result = engine.stream()
+ *        final Phenotype<DoubleGene, Double> result = engine.stream()
  *             // Truncate the evolution stream if no better individual could
  *             // be found after 5 consecutive generations.
  *            .limit(bySteadyFitness(5))
@@ -89,7 +89,7 @@ import org.jenetics.util.NanoClock;
  *            .collect(toBestPhenotype());
  *     }
  * }
- * [/code]
+ * }</pre>
  *
  * The architecture allows to decouple the configuration of the engine from the
  * execution. The {@code Engine} is configured via the {@code Engine.Builder}

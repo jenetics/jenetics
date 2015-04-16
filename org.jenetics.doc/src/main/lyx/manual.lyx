@@ -13425,6 +13425,22 @@ reference "fig:Fitness-threshold-diagram"
 
  shows executed generations depending on the minimal fitness value.
  The total generations grows exponentially with the desired fitness value.
+ This means, that this termination strategy will (practically) not terminate,
+ if the value for the fitness threshold is chosen to high.
+ It will be a 
+\emph on
+perfect
+\emph default
+ strategy if you can define some 
+\emph on
+good enough
+\emph default
+ fitness value, which can be 
+\emph on
+easily
+\emph default
+ achieved.
+ 
 \end_layout
 
 \begin_layout Standard

@@ -35,21 +35,21 @@ import java.util.stream.Collector;
  * <p>
  * This class is designed to work with (though does not require) streams. For
  * example, you can compute moments-statistics on a stream of longs with:
- * [code]
+ * <pre>{@code
  * final LongStream stream = ...
  * final LongMomentStatistics statistics = stream.collect(
  *         LongMomentStatistics::new,
  *         LongMomentStatistics::accept,
  *         LongMomentStatistics::combine
  *     );
- * [/code]
+ * }</pre>
  *
  * For a non long stream, you can use a collector:
- * [code]
- * final Stream&lt;SomeObject&gt; stream = ...
+ * <pre>{@code
+ * final Stream<SomeObject> stream = ...
  * final LongMomentStatistics statistics = stream
- *     .collect(toLongMomentStatistics(v -&gt; v.longValue()));
- * [/code]
+ *     .collect(toLongMomentStatistics(v -> v.longValue()));
+ * }</pre>
  *
  * <p>
  * <b>Implementation note:</b>
@@ -168,11 +168,11 @@ public class LongMomentStatistics
 	 * function to each input element, and returns moments-statistics for the
 	 * resulting values.
 	 *
-	 * [code]
-	 * final Stream&lt;SomeObject&gt; stream = ...
+	 * <pre>{@code
+	 * final Stream<SomeObject> stream = ...
 	 * final LongMomentStatistics statistics = stream
-	 *     .collect(toLongMomentStatistics(v -&gt; v.longValue()));
-	 * [/code]
+	 *     .collect(toLongMomentStatistics(v -> v.longValue()));
+	 * }</pre>
 	 *
 	 * @param mapper a mapping function to apply to each element
 	 * @param <T> the type of the input elements

@@ -43,14 +43,14 @@ import org.jenetics.internal.util.Hash;
  * <p>
  * This class is designed to work with (though does not require) streams. For
  * example, you can compute the quantile with:
- * [code]
+ * <pre>{@code
  * final DoubleStream stream = ...
  * final Quantile quantile = stream.collect(
- *         () -&gt; new Quantile(0.23),
+ *         () -> new Quantile(0.23),
  *         Quantile::accept,
  *         Quantile::combine
  *     );
- * [/code]
+ * }</pre>
  *
  * <p>
  * <b>Implementation note:</b>

@@ -38,23 +38,23 @@ import org.jenetics.stat.MinMax;
  * following example shows how to integrate the <i>statistics</i> object into
  * your evolution <i>stream</i>.
  *
- * [code]
- * final Engine&lt;DoubleGene, Double&gt; engine = ...
- * final EvolutionStatistics&lt;Double, DoubleMomentStatistics&gt; statistics =
+ * <pre>{@code
+ * final Engine<DoubleGene, Double> engine = ...
+ * final EvolutionStatistics<Double, DoubleMomentStatistics> statistics =
  *     EvolutionStatistics.ofNumber();
  *
- * final Phenotype&lt;DoubleGene, Double&gt; result = engine.stream()
+ * final Phenotype<DoubleGene, Double> result = engine.stream()
  *     .limit(bySteadyFitness(7))
  *     .limit(100)
  *     .peek(statistics)
  *     .collect(toBestPhenotype());
  *
  * System.println(statistics);
- * [/code]
+ * }</pre>
  *
  * <b>Example output</b>
  *
- * [code]
+ * <pre>{@code
  +---------------------------------------------------------------------------+
  |  Time statistics                                                          |
  +---------------------------------------------------------------------------+
@@ -79,7 +79,7 @@ import org.jenetics.stat.MinMax;
  |                      mean = 384.430345078660                              |
  |                      var  = 13006.132537301528                            |
  +---------------------------------------------------------------------------+
- * [/code]
+ * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0

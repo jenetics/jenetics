@@ -88,7 +88,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 * It's recommended to initialize the {@code RandomRegistry} the following
 	 * way:
 	 *
-	 * [code]
+	 * <pre>{@code
 	 * // Register the PRNG with the default parameters.
 	 * RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
 	 *
@@ -96,16 +96,16 @@ public class LCG64ShiftRandom extends Random64 {
 	 * RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal(
 	 *     LCG64ShiftRandom.LECUYER3
 	 * ));
-	 * [/code]
+	 * }</pre>
 	 *
 	 * Be aware, that calls of the {@code setSeed(long)} method will throw an
 	 * {@code UnsupportedOperationException} for <i>thread local</i> instances.
-	 * [code]
+	 * <pre>{@code
 	 * RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
 	 *
 	 * // Will throw 'UnsupportedOperationException'.
 	 * RandomRegistry.getRandom().setSeed(1234);
-	 * [/code]
+	 * }</pre>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1

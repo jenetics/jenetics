@@ -79,14 +79,14 @@ public final class limit {
 	 * better phenotype could be found after the given number of
 	 * {@code generations}.
 	 *
-	 * [code]
-	 * final Phenotype&lt;DoubleGene, Double&gt; result = engine.stream()
+	 * <pre>{@code
+	 * final Phenotype<DoubleGene, Double> result = engine.stream()
 	 *      // Truncate the evolution stream after 5 "steady" generations.
 	 *     .limit(bySteadyFitness(5))
 	 *      // The evolution will stop after maximal 100 generations.
 	 *     .limit(100)
 	 *     .collect(toBestPhenotype());
-	 * [/code]
+	 * }</pre>
 	 *
 	 * @param generations the number of <i>steady</i> generations
 	 * @param <C> the fitness type
@@ -106,14 +106,14 @@ public final class limit {
 	 * execution exceeds a given time duration. This predicate is (normally)
 	 * used as safety net, for guaranteed stream truncation.
 	 *
-	 * [code]
-	 * final Phenotype&lt;DoubleGene, Double&gt; result = engine.stream()
+	 * <pre>{@code
+	 * final Phenotype<DoubleGene, Double> result = engine.stream()
 	 *      // Truncate the evolution stream after 5 "steady" generations.
 	 *     .limit(bySteadyFitness(5))
 	 *      // The evolution will stop after maximal 500 ms.
 	 *     .limit(byExecutionTime(Duration.ofMillis(500), Clock.systemUTC())
 	 *     .collect(toBestPhenotype());
-	 * [/code]
+	 * }</pre>
 	 *
 	 * @since 3.1
 	 *
@@ -133,14 +133,14 @@ public final class limit {
 	 * execution exceeds a given time duration. This predicate is (normally)
 	 * used as safety net, for guaranteed stream truncation.
 	 *
-	 * [code]
-	 * final Phenotype&lt;DoubleGene, Double&gt; result = engine.stream()
+	 * <pre>{@code
+	 * final Phenotype<DoubleGene, Double> result = engine.stream()
 	 *      // Truncate the evolution stream after 5 "steady" generations.
 	 *     .limit(bySteadyFitness(5))
 	 *      // The evolution will stop after maximal 500 ms.
 	 *     .limit(byExecutionTime(Duration.ofMillis(500))
 	 *     .collect(toBestPhenotype());
-	 * [/code]
+	 * }</pre>
 	 *
 	 * @since 3.1
 	 *
@@ -163,8 +163,8 @@ public final class limit {
 	 * population becomes greater than the user-specified fitness threshold when
 	 * the objective is to maximize the fitness.
 	 *
-	 * [code]
-	 * final Phenotype&lt;DoubleGene, Double&gt; result = engine.stream()
+	 * <pre>{@code
+	 * final Phenotype<DoubleGene, Double> result = engine.stream()
 	 *      // Truncate the evolution stream if the best fitness is higher than
 	 *      // the given threshold of '2.3'.
 	 *     .limit(byFitnessThreshold(2.3))
@@ -172,7 +172,7 @@ public final class limit {
 	 *      // the termination (truncation) of the evolution stream.
 	 *     .limit(250)
 	 *     .collect(toBestPhenotype());
-	 * [/code]
+	 * }</pre>
 	 *
 	 * @since 3.1
 	 *

@@ -25,8 +25,8 @@ import java.util.function.Consumer;
  * Minimal implementation of stack data-structure. {@code Null} values are not
  * permitted, but not checked.
  *
- * [code]
- * final Stack&lt;Integer&gt; stack = new Stack&lt;&gt;();
+ * <pre>{@code
+ * final Stack<Integer> stack = new Stack<>();
  * for (int i = 0; i &lt; 10; ++i) {
  *     stack.push(i);
  * }
@@ -34,7 +34,7 @@ import java.util.function.Consumer;
  * for (Integer i = stack.pop(); i != null; i = stack.pop()) {
  *     System.out.println(i);
  * }
- * [/code]
+ * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version 2.0 &mdash; <em>$Date$</em>

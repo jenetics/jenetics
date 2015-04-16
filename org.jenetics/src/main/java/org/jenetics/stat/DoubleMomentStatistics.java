@@ -36,21 +36,21 @@ import org.jenetics.internal.math.DoubleAdder;
  * <p>
  * This class is designed to work with (though does not require) streams. For
  * example, you can compute moments-statistics on a stream of doubles with:
- * [code]
+ * <pre>{@code
  * final DoubleStream stream = ...
  * final DoubleMomentStatistics statistics = stream.collect(
  *         DoubleMomentStatistics::new,
  *         DoubleMomentStatistics::accept,
  *         DoubleMomentStatistics::combine
  *     );
- * [/code]
+ * }</pre>
  *
  * For a non double stream, you can use a collector:
- * [code]
- * final Stream&lt;SomeObject&gt; stream = ...
+ * <pre>{@code
+ * final Stream<SomeObject> stream = ...
  * final DoubleMomentStatistics statistics = stream
- *     .collect(toDoubleMomentStatistics(v -&gt; v.doubleValue()));
- * [/code]
+ *     .collect(toDoubleMomentStatistics(v -> v.doubleValue()));
+ * }</pre>
  *
  * <p>
  * <b>Implementation note:</b>
@@ -161,11 +161,11 @@ public class DoubleMomentStatistics
 	 * function to each input element, and returns moments-statistics for the
 	 * resulting values.
 	 *
-	 * [code]
-	 * final Stream&lt;SomeObject&gt; stream = ...
+	 * <pre>{@code
+	 * final Stream<SomeObject> stream = ...
 	 * final DoubleMomentStatistics statistics = stream
-	 *     .collect(toDoubleMomentStatistics(v -&gt; v.doubleValue()));
-	 * [/code]
+	 *     .collect(toDoubleMomentStatistics(v -> v.doubleValue()));
+	 * }</pre>
 	 *
 	 * @param mapper a mapping function to apply to each element
 	 * @param <T> the type of the input elements

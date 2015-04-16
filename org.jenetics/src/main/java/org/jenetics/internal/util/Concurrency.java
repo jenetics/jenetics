@@ -236,12 +236,12 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 	 *
 	 * The following examples prints the start index (inclusive) and the end
 	 * index (exclusive) of the {@code partition(15, 6)}.
-	 * [code]
+	 * <pre>{@code
 	 * int[] parts = partition(15, 6);
-	 * for (int i = 0; i &lt; parts.length - 1; ++i) {
+	 * for (int i = 0; i < parts.length - 1; ++i) {
 	 *     System.out.println(i + ": " + parts[i] + "\t" + parts[i + 1]);
 	 * }
-	 * [/code]
+	 * }</pre>
 	 * <pre>
 	 * 	 0: 0 	2
 	 * 	 1: 2 	4
@@ -252,20 +252,20 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 	 * </pre>
 	 *
 	 * This example shows how this can be used in an concurrent environment:
-	 * [code]
+	 * <pre>{@code
 	 * try (final Concurrency c = Concurrency.start()) {
 	 *     final int[] parts = arrays.partition(population.size(), _maxThreads);
 	 *
-	 *     for (int i = 0; i &lt; parts.length - 1; ++i) {
+	 *     for (int i = 0; i < parts.length - 1; ++i) {
 	 *         final int part = i;
 	 *         c.execute(new Runnable() { @Override public void run() {
-	 *             for (int j = parts[part + 1]; --j &gt;= parts[part];) {
+	 *             for (int j = parts[part + 1]; --j <= parts[part];) {
 	 *                 population.get(j).evaluate();
 	 *             }
 	 *         }});
 	 *     }
 	 * }
-	 * [/code]
+	 * }</pre>
 	 *
 	 * @param size the size of the array to partition.
 	 * @param parts the number of parts the (virtual) array should be partitioned.
