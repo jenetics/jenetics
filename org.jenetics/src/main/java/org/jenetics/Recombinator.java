@@ -128,5 +128,4 @@ public abstract class Recombinator<
 		final long generation
 	);
 
-
 }
