@@ -442,7 +442,7 @@ status open
 \noindent
 \align left
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -4457,6 +4457,98 @@ Recombination
 \end_layout
 
 \begin_layout Standard
+\begin_inset listings
+lstparams "extendedchars=true,language=C,mathescape=true,numbers=left,showstringspaces=false,tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Genotype[2] genotypes = select(population)
+\end_layout
+
+\begin_layout Plain Layout
+
+int index = random.nextInt(genotypes[0].length())
+\end_layout
+
+\begin_layout Plain Layout
+
+Chromosomes[2] chromosomes = new Chromosome[]{
+\end_layout
+
+\begin_layout Plain Layout
+
+    genotypes[0].getChromosome(index),
+\end_layout
+
+\begin_layout Plain Layout
+
+    genotypes[1].getChromosome(index)
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+Chromosome[2] recombined = recombine(chromosomes)
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Chromosome-selection-recombination"
+
+\end_inset
+
+Chromosome selection for recombination
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Chromosome!recombination
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Chromosome-selection-recombination"
+
+\end_inset
+
+ shows, in Java like pseudo\SpecialChar \-
+code, how two chromosomes are selected for 
+\emph on
+recombination
+\emph default
+.
+ It is done this way for preserving the given 
+\emph on
+constraints
+\emph default
+ and to avoid the creation of invalid individuals.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Box Shaded
 position "t"
 hor_pos "c"
@@ -4508,7 +4600,18 @@ s with the same
 \family typewriter
 Genotype
 \family sans
- position are recombined.
+ position are recombined
+\family default
+\shape default
+\emph default
+ (see listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Chromosome-selection-recombination"
+
+\end_inset
+
+).
 \end_layout
 
 \begin_layout Plain Layout
