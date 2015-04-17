@@ -78,8 +78,8 @@ public interface EvolutionStream<
 	 * <pre>{@code
 	 * final Function<
 	 *     EvolutionStart<DoubleGene, Double>,
-	 *     EvolutionResult<DoubleGene, Double>
-	 * > engine = new MySpecialEngine();
+	 *     EvolutionResult<DoubleGene, Double>>
+	 * engine = new MySpecialEngine();
 	 * final Supplier<EvolutionStart<DoubleGene, Double>> start = ...
 	 *
 	 * final EvolutionStream<DoubleGene, Double> stream =
