@@ -6582,17 +6582,144 @@ false
 Evolution\SpecialChar \-
 Stream
 \family default
- can only be created via the 
+ is usually created via the 
 \family typewriter
 Engine\SpecialChar \-
 .stream()
 \family default
- method, but it is possible to create more than one stream from the same
- 
+ method.
+ The 
+\emph on
+imm
+\emph default
+utable and 
+\emph on
+stateless
+\emph default
+ nature of the evolution 
+\family typewriter
+Engine
+\family default
+ allows to create more than one 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+ with the same 
 \family typewriter
 Engine
 \family default
  instance.
+\end_layout
+
+\begin_layout Standard
+In cases where you appreciate the usage of the 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+ but need a different 
+\family typewriter
+Engine
+\family default
+ implementation, you can use the 
+\family typewriter
+Evolution\SpecialChar \-
+Stream\SpecialChar \-
+.of
+\family default
+ factory method for creating an new 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static <G extends Gene<?, G>, C extends Comparable<? super C>>
+\end_layout
+
+\begin_layout Plain Layout
+
+EvolutionStream<G, C> of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    Supplier<EvolutionStart<G, C>> start,
+\end_layout
+
+\begin_layout Plain Layout
+
+    Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> f
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+This factory method takes a start value, of type 
+\family typewriter
+Evolution\SpecialChar \-
+Start
+\family default
+, and an evolution 
+\family typewriter
+Function
+\family default
+.
+ The evolution 
+\family typewriter
+Function
+\family default
+ takes the start value and returns an 
+\family typewriter
+Evolution\SpecialChar \-
+Result
+\family default
+ object.
+ To make the runtime behavior more predictable, the start value is fetched/creat
+ed lazily at the evolution start time.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Supplier<EvolutionStart<DoubleGene, Double>> start = ...
+ 	
+\end_layout
+
+\begin_layout Plain Layout
+
+final EvolutionStream<DoubleGene, Double> stream =
+\end_layout
+
+\begin_layout Plain Layout
+
+    EvolutionStream.of(start, new MySpecialEngine());
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
@@ -9258,7 +9385,10 @@ This package contains classes for calculating statistical moments.
  They are designed to work smoothly with the Java Stream API and are divided
  into mutable (number) consumers and immutable value classes, which holds
  the statistical moments.
- The additional classes calculate the 
+ The additional classes calculate the
+\end_layout
+
+\begin_layout Standard
 \begin_inset ERT
 status open
 
@@ -9266,7 +9396,7 @@ status open
 
 
 \backslash
-begin{multicols}{3}
+begin{multicols}{2}
 \end_layout
 
 \end_inset
@@ -10214,6 +10344,312 @@ Result<G, C>\SpecialChar \-
 >
 \family default
  interface.
+\end_layout
+
+\begin_layout Subsection
+Engine
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Engine
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The evolution 
+\family typewriter
+Engine
+\family default
+ itself can't be extended, but it is still possible to create an 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+ without using the 
+\family typewriter
+Engine
+\family default
+ class.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Refer to section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:EvolutionStream"
+
+\end_inset
+
+ on how to create an 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+ from an evolution 
+\family typewriter
+Function
+\family default
+.
+\end_layout
+
+\end_inset
+
+ Because the 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+ has no direct dependency to the 
+\family typewriter
+Engine
+\family default
+, it is possible to use an own, special evolution 
+\family typewriter
+Function
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public class SpecialEvolutionEngine {
+\end_layout
+
+\begin_layout Plain Layout
+
+    // The Genotype factory.
+\end_layout
+
+\begin_layout Plain Layout
+
+    private static final Factory<Genotype<DoubleGene>> GTF =
+\end_layout
+
+\begin_layout Plain Layout
+
+        Genotype.of(DoubleChromosome.of(0, 1));
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // The fitness function.
+    
+\end_layout
+
+\begin_layout Plain Layout
+
+    private static Double fitness(final Genotype<DoubleGene> gt) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        return gt.getGene().getAllele();
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Create new evolution start object.
+\end_layout
+
+\begin_layout Plain Layout
+
+    private static EvolutionStart<DoubleGene, Double>
+\end_layout
+
+\begin_layout Plain Layout
+
+    start(final int populationSize, final long generation) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Population<DoubleGene, Double> population = GTF
+\end_layout
+
+\begin_layout Plain Layout
+
+                .instances()
+\end_layout
+
+\begin_layout Plain Layout
+
+                .map(gt -> Phenotype.of(gt, generation,
+\end_layout
+
+\begin_layout Plain Layout
+
+                        SpecialEvolutionEngine::fitness))
+\end_layout
+
+\begin_layout Plain Layout
+
+                .limit(populationSize)
+\end_layout
+
+\begin_layout Plain Layout
+
+                .collect(Population.toPopulation());
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        return EvolutionStart.of(population, generation);
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // The special evolution function.
+\end_layout
+
+\begin_layout Plain Layout
+
+    private static EvolutionResult<DoubleGene, Double>
+\end_layout
+
+\begin_layout Plain Layout
+
+    evolve(final EvolutionStart<DoubleGene, Double> start) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        return ...; // Add implementation!
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    public static void main(final String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Genotype<DoubleGene> best = EvolutionStream
+\end_layout
+
+\begin_layout Plain Layout
+
+            .of(() -> start(50, 0), SpecialEngine::evolve)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .limit(limit.bySteadyFitness(10))
+\end_layout
+
+\begin_layout Plain Layout
+
+            .limit(1000)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .collect(EvolutionResult.toBestGenotype());
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        System.out.println("Best Genotype: " + best));
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Special-evolution-engine"
+
+\end_inset
+
+Special evolution engine
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Special-evolution-engine"
+
+\end_inset
+
+ shows a 
+\emph on
+complete
+\emph default
+ implementation stub for using an own special evolution 
+\family typewriter
+Function
+\family default
+.
 \end_layout
 
 \begin_layout Section
@@ -11976,7 +12412,12 @@ final int[][] array = gt.toSeq().stream()
 
 \begin_layout Plain Layout
 
-        .mapToInt(BitGene::ordinal).toArray())
+        .mapToInt(BitGene::ordinal)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .toArray())
 \end_layout
 
 \begin_layout Plain Layout
@@ -15134,7 +15575,7 @@ Scope
 \series default
 :
 \emph on
- build
+ build3.
 \end_layout
 
 \end_deeper
