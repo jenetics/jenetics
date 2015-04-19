@@ -36,7 +36,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0
+ * @version 3.1
  */
 public interface Chromosome<G extends Gene<?, G>>
 	extends
