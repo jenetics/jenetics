@@ -1,8 +1,16 @@
 Jenetics-3.1.0
+
 - Add 'combine' method to 'Quantile' object. This makes the class usable for (parallel) streams.
 - Minor code streamlining and bug-fixing.
 - Improve termination strategies.
 - Add 'EvolutionStream.of' factory method as an alternative way for creating an evolution stream.
+- https://github.com/jenetics/jenetics/issues/12: Fix typos in user manual.
+- https://github.com/jenetics/jenetics/issues/13: Add link to Javadoc and manual to README file.
+- https://github.com/jenetics/jenetics/issues/14: Remove `Serialize` interface from `Gene` and `Chromosome`.
+- https://github.com/jenetics/jenetics/issues/16: Make code examples in Javadoc standard conform.
+- https://github.com/jenetics/jenetics/issues/17: Improve recombination section in manual.
+- https://github.com/jenetics/jenetics/issues/20: Advance `Genotype` validity checks.
+
 
 Jenetics-3.0.1
 
