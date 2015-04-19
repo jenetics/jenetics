@@ -54,7 +54,7 @@ import org.gradle.process.ExecResult
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5
+ * @version 3.1
  */
 class ProjectAdapter implements Project {
 
