@@ -42,12 +42,14 @@
  * Factory&lt;Genotype&lt;?&gt;&gt;, and a fitness Function. The Genotype
  * implements the Factory interface and can therefore be used as prototype for
  * creating the initial Population and for creating new random Genotypes.</p>
+ *
  * <pre>{@code
  * import org.jenetics.BitChromosome;
  * import org.jenetics.BitGene;
  * import org.jenetics.Genotype;
  * import org.jenetics.engine.Engine;
  * import org.jenetics.engine.EvolutionResult;
+ * import org.jenetics.util.Factory;
  *
  * public class HelloWorld {
  *      // 2.) Definition of the fitness function.
@@ -120,7 +122,7 @@
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0
+ * @version 3.1
  */
 package org.jenetics;
 
