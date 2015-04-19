@@ -1978,7 +1978,7 @@ value
 \emph default
  objects
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
@@ -4458,7 +4458,7 @@ Recombination
 
 \begin_layout Standard
 \begin_inset listings
-lstparams "extendedchars=true,language=C,mathescape=true,numbers=left,showstringspaces=false,tabsize=4"
+lstparams "language=Java,numbers=left,showstringspaces=false,tabsize=4,extendedchars=true,mathescape=true"
 inline false
 status open
 
@@ -5754,7 +5754,7 @@ public final class Engine<
 
 \begin_layout Plain Layout
 
-        Population<G,C> population, 
+        Population<G,C> population,
 \end_layout
 
 \begin_layout Plain Layout
@@ -6704,7 +6704,6 @@ status open
 \begin_layout Plain Layout
 
 final Supplier<EvolutionStart<DoubleGene, Double>> start = ...
- 	
 \end_layout
 
 \begin_layout Plain Layout
@@ -7377,7 +7376,7 @@ public class Main {
 
 \begin_layout Plain Layout
 
-        final Engine<DoubleGene, Double> engine = Engine 			
+        final Engine<DoubleGene, Double> engine = Engine
 \end_layout
 
 \begin_layout Plain Layout
@@ -9282,7 +9281,7 @@ status open
 
 \begin_layout Plain Layout
 
-// Create 'different' sequences.
+// Create "different" sequences.
 \end_layout
 
 \begin_layout Plain Layout
@@ -10379,7 +10378,7 @@ Engine
 status collapsed
 
 \begin_layout Plain Layout
-Refer to section 
+Also refer to section 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "sub:EvolutionStream"
@@ -10424,7 +10423,7 @@ status open
 
 \begin_layout Plain Layout
 
-public class SpecialEvolutionEngine {
+public final class SpecialEngine {
 \end_layout
 
 \begin_layout Plain Layout
@@ -10449,7 +10448,6 @@ public class SpecialEvolutionEngine {
 \begin_layout Plain Layout
 
     // The fitness function.
-    
 \end_layout
 
 \begin_layout Plain Layout
@@ -10493,27 +10491,27 @@ public class SpecialEvolutionEngine {
 
 \begin_layout Plain Layout
 
-                .instances()
+            .instances()
 \end_layout
 
 \begin_layout Plain Layout
 
-                .map(gt -> Phenotype.of(gt, generation,
+            .map(gt -> Phenotype
 \end_layout
 
 \begin_layout Plain Layout
 
-                        SpecialEvolutionEngine::fitness))
+                .of(gt, generation, SpecialEngine::fitness))
 \end_layout
 
 \begin_layout Plain Layout
 
-                .limit(populationSize)
+            .limit(populationSize)
 \end_layout
 
 \begin_layout Plain Layout
 
-                .collect(Population.toPopulation());
+            .collect(Population.toPopulation());
 \end_layout
 
 \begin_layout Plain Layout
@@ -10585,7 +10583,7 @@ public class SpecialEvolutionEngine {
 
 \begin_layout Plain Layout
 
-            .limit(1000)
+            .limit(100)
 \end_layout
 
 \begin_layout Plain Layout
@@ -12254,7 +12252,7 @@ In an undirected graph the edges between the vertices have no direction.
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -12467,7 +12465,7 @@ A directed graph (digraph) is a graph where the path between the nodes have
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -12547,7 +12545,7 @@ A weighted graph associates a weight (label) with every path in the graph.
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -13332,17 +13330,17 @@ status open
 
 \begin_layout Plain Layout
 
-final class SteadyFitnessLimit<C extends Comparable<? super C>> 	
+final class SteadyFitnessLimit<C extends Comparable<? super C>>
 \end_layout
 
 \begin_layout Plain Layout
 
-    implements Predicate<EvolutionResult<?, C>> 
+    implements Predicate<EvolutionResult<?, C>>
 \end_layout
 
 \begin_layout Plain Layout
 
-{ 	
+{
 \end_layout
 
 \begin_layout Plain Layout
@@ -13881,7 +13879,6 @@ good enough
 easily
 \emph default
  achieved.
- 
 \end_layout
 
 \begin_layout Standard
