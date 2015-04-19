@@ -59,13 +59,15 @@ public class TournamentSelectorTest
 
 		using(new LCG64ShiftRandom.ThreadLocal(), r -> {
 			final Histogram<Double> distribution = SelectorTester.distribution(
-				new TournamentSelector<DoubleGene, Double>(tournamentSize),
+				new TournamentSelector<>(tournamentSize),
 				opt,
 				npopulation,
 				loops
 			);
 
-			StatisticsAssert.assertDistribution(distribution, expected.value, 0.00001);
+			StatisticsAssert.assertDistribution(
+				distribution, expected.value, 0.001, 15
+			);
 		});
 	}
 
@@ -111,8 +113,8 @@ public class TournamentSelectorTest
 	private static void writeDistributionData(final Optimize opt) {
 		using(new LCG64ShiftRandom.ThreadLocal(), r -> {
 			final int npopulation = POPULATION_COUNT;
-			final int loops = 5_000_000;
-			//final int loops = 100_000;
+			//final int loops = 5_000_000;
+			final int loops = 100_000;
 
 			printDistributions(
 				System.out,

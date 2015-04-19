@@ -38,7 +38,7 @@ public class NanoClockTest {
 			final long t2 = System.currentTimeMillis();
 			final long t1 = nano.instant().toEpochMilli();
 
-			assertEquals(t1, t2, 3);
+			assertEquals(t1, t2, 15);
 		}
 	}
 
