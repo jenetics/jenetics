@@ -21,10 +21,13 @@ package org.jenetics.stat;
 
 import static java.lang.Double.compare;
 import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.Equality.eq;
 
 import java.util.Arrays;
 import java.util.function.DoubleConsumer;
+import java.util.function.ToDoubleFunction;
+import java.util.stream.Collector;
 
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
@@ -59,6 +62,11 @@ import org.jenetics.internal.util.Hash;
  * {@link java.util.stream.Stream#collect Stream.collect()}provides the
  * necessary partitioning, isolation, and merging of results for safe and
  * efficient parallel execution.</i>
+ * <br>
+ * <i>Using this class in the {@code collect} method of an parallel stream can
+ * lead to an reduced accuracy of the quantile value. Since this implementation
+ * is an estimation algorithm, combining the estimations will only work for
+ * large streams ({@code size >> 1000}).</i>
  *
  * @see <a href="http://en.wikipedia.org/wiki/Quantile">Wikipedia: Quantile</a>
  *
@@ -100,11 +108,7 @@ public class Quantile implements DoubleConsumer {
 	}
 
 	private void init(final double quantile) {
-		if (quantile < 0.0 || quantile > 1) {
-			throw new IllegalArgumentException(format(
-					"Quantile (%s) not in the valid range of [0, 1]", quantile
-				));
-		}
+		check(quantile);
 
 		Arrays.fill(_q, 0);
 		Arrays.fill(_n, 0);
@@ -118,6 +122,14 @@ public class Quantile implements DoubleConsumer {
 			compare(quantile, 1.0) == 0;
 
 		_samples = 0;
+	}
+
+	private static void check(final double quantile) {
+		if (quantile < 0.0 || quantile > 1) {
+			throw new IllegalArgumentException(format(
+				"Quantile (%s) not in the valid range of [0, 1]", quantile
+			));
+		}
 	}
 
 	/**
@@ -367,12 +379,12 @@ public class Quantile implements DoubleConsumer {
 	@Override
 	public int hashCode() {
 		return Hash.of(getClass()).
-				and(super.hashCode()).
-				and(_quantile).
-				and(_dn).
-				and(_n).
-				and(_nn).
-				and(_q).value();
+			and(super.hashCode()).
+			and(_quantile).
+			and(_dn).
+			and(_n).
+			and(_nn).
+			and(_q).value();
 	}
 
 	@Override
@@ -398,6 +410,68 @@ public class Quantile implements DoubleConsumer {
 
 	static Quantile median() {
 		return new Quantile(0.5);
+	}
+
+	/**
+	 * Return a {@code Collector} which applies an double-producing mapping
+	 * function to each input element, and returns quantiles for the resulting
+	 * values.
+	 *
+	 * <pre>{@code
+	 * final Stream<SomeObject> stream = ...
+	 * final Quantile quantile = stream
+	 *     .collect(toQuantile(0.25, v -> v.doubleValue()));
+	 * }</pre>
+	 *
+	 * @param quantile the wished quantile value.
+	 * @param mapper a mapping function to apply to each element
+	 * @param <T> the type of the input elements
+	 * @return a {@code Collector} implementing the quantiles reduction
+	 * @throws java.lang.NullPointerException if the given {@code mapper} is
+	 *         {@code null}
+	 * @throws IllegalArgumentException if the {@code quantile} is not in the
+	 *         range {@code [0, 1]}.
+	 */
+	public static <T> Collector<T, ?, Quantile> toQuantile(
+		final double quantile,
+		final ToDoubleFunction<? super T> mapper
+	) {
+		check(quantile);
+		requireNonNull(mapper);
+
+		return Collector.of(
+			() -> new Quantile(quantile),
+			(r, t) -> r.accept(mapper.applyAsDouble(t)),
+			Quantile::combine
+		);
+	}
+
+	/**
+	 * Return a {@code Collector} which applies an double-producing mapping
+	 * function to each input element, and returns the median for the resulting
+	 * values.
+	 *
+	 * <pre>{@code
+	 * final Stream<SomeObject> stream = ...
+	 * final Quantile median = stream.collect(toMedian(v -> v.doubleValue()));
+	 * }</pre>
+	 *
+	 * @param mapper a mapping function to apply to each element
+	 * @param <T> the type of the input elements
+	 * @return a {@code Collector} implementing the quantiles reduction
+	 * @throws java.lang.NullPointerException if the given {@code mapper} is
+	 *         {@code null}
+	 */
+	public static <T> Collector<T, ?, Quantile> toMedian(
+		final ToDoubleFunction<? super T> mapper
+	) {
+		requireNonNull(mapper);
+
+		return Collector.of(
+			Quantile::median,
+			(r, t) -> r.accept(mapper.applyAsDouble(t)),
+			Quantile::combine
+		);
 	}
 
 }
