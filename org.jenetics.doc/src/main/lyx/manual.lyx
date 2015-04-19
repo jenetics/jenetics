@@ -15196,7 +15196,7 @@ Version
 \series default
 :
 \emph on
- 6.8.13
+ 6.8.21
 \end_layout
 
 \begin_layout Itemize
@@ -15208,7 +15208,7 @@ Homepage
 \emph on
  
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
