@@ -76,15 +76,52 @@ public interface EvolutionStream<
 	 * from an own evolution (GA) engine.
 	 *
 	 * <pre>{@code
-	 * final Function<
-	 *     EvolutionStart<DoubleGene, Double>,
-	 *     EvolutionResult<DoubleGene, Double>>
-	 * engine = new MySpecialEngine();
 	 * final Supplier<EvolutionStart<DoubleGene, Double>> start = ...
-	 *
 	 * final EvolutionStream<DoubleGene, Double> stream =
-	 *     EvolutionStream.of(start, engine);
+	 *     EvolutionStream.of(start, new MySpecialEngine());
 	 * }</pre>
+	 *
+	 * A more complete example for would look like as:
+	 *
+	 * <pre>{@code
+	 * public final class SpecialEngine {
+	 *
+	 *     // The fitness function.
+	 *     private static Double fitness(final Genotype<DoubleGene> gt) {
+	 *         return gt.getGene().getAllele();
+	 *     }
+	 *
+	 *     // Create new evolution start object.
+	 *     private static EvolutionStart<DoubleGene, Double>
+	 *     start(final int populationSize, final long generation) {
+	 *         final Population<DoubleGene, Double> population =
+	 *             Genotype.of(DoubleChromosome.of(0, 1)).instances()
+	 *                 .map(gt -> Phenotype.of(gt, generation, SpecialEngine::fitness))
+	 *                 .limit(populationSize)
+	 *                 .collect(Population.toPopulation());
+	 *
+	 *         return EvolutionStart.of(population, generation);
+	 *     }
+	 *
+	 *     // The special evolution function.
+	 *     private static EvolutionResult<DoubleGene, Double>
+	 *     evolve(final EvolutionStart<DoubleGene, Double> start) {
+	 *         // Your special evolution implementation comes here!
+	 *         return null;
+	 *     }
+	 *
+	 *     public static void main(final String[] args) {
+	 *         final Genotype<DoubleGene> best = EvolutionStream
+	 *             .of(() -> start(50, 0), SpecialEngine::evolve)
+	 *             .limit(limit.bySteadyFitness(10))
+	 *             .limit(1000)
+	 *             .collect(EvolutionResult.toBestGenotype());
+	 *
+	 *         System.out.println(String.format("Best Genotype: %s", best));
+	 *     }
+	 * }
+	 * }</pre>
+	 *
 	 *
 	 * @since 3.1
 	 *
