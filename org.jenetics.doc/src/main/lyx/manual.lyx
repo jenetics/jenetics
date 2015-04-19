@@ -15208,7 +15208,7 @@ Homepage
 \emph on
  
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -15497,7 +15497,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 2.2 (
+: 2.3 (
 \emph on
 or later
 \emph default
