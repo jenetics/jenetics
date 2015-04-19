@@ -157,7 +157,7 @@ public class DoubleMomentStatistics
 	}
 
 	/**
-	 * Return a {@code Collector} which applies an long-producing mapping
+	 * Return a {@code Collector} which applies an double-producing mapping
 	 * function to each input element, and returns moments-statistics for the
 	 * resulting values.
 	 *
