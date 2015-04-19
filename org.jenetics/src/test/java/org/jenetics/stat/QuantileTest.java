@@ -46,12 +46,13 @@ public class QuantileTest {
 
 	@Test
 	public void parallelMedian() {
-		final Quantile quantile = IntStream.range(0, 1000).asDoubleStream().parallel()
+		final Quantile quantile = IntStream.range(0, 1000)
+			.asDoubleStream().parallel()
 			.collect(
 				Quantile::median,
 				Quantile::accept,
-				Quantile::combine
-			);
+				Quantile::combine);
+
 		Assert.assertEquals(quantile.getValue(), floor(1000/2.0), 1.5);
 	}
 
