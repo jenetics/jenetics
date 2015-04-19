@@ -924,7 +924,7 @@ public class HelloWorld {
 
 \begin_layout Plain Layout
 
-        Factory<Genotype<BitGene>> gtf = 
+        Factory<Genotype<BitGene>> gtf =
 \end_layout
 
 \begin_layout Plain Layout
@@ -1074,7 +1074,7 @@ reference "lis:Hello-World-GA"
 
 \end_inset
 
- and discuss this simple program step by step: 
+ and discuss this simple program step by step:
 \end_layout
 
 \begin_layout Enumerate
@@ -1294,7 +1294,6 @@ Collector
  classes in Java 8.
  Also the newly introduced lambda expressions and the functional interfaces
  (SAM types) play an important roll in the library design.
- 
 \end_layout
 
 \begin_layout Standard
@@ -2216,7 +2215,7 @@ http://blog.joda.org/2014/03/valjos-value-java-objects.html
 
 \end_inset
 
- 
+
 \end_layout
 
 \begin_layout Standard
@@ -5440,7 +5439,7 @@ public class Main {
 
 \begin_layout Plain Layout
 
-        Function<Genotype<DoubleGene>, Double> ff1 = 
+        Function<Genotype<DoubleGene>, Double>> ff1 = 
 \end_layout
 
 \begin_layout Plain Layout
@@ -5459,7 +5458,7 @@ public class Main {
 
 \begin_layout Plain Layout
 
-        Function<Genotype<DoubleGene>, Double> ff2 = gt -> 
+        Function<Genotype<DoubleGene>, Double>> ff2 = gt -> 
 \end_layout
 
 \begin_layout Plain Layout
@@ -7112,7 +7111,7 @@ Engine<DoubleGene, Double> engine = ...
 
 \begin_layout Plain Layout
 
-EvolutionStatistics<?, Double> statistics = 
+EvolutionStatistics<?, Double> statistics =
 \end_layout
 
 \begin_layout Plain Layout
