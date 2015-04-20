@@ -549,7 +549,7 @@ Jenetics
 \series bold
  Evolutionary Algorithm
 \series default
- library respectively, written in modern day Java.
+ library, respectively, written in modern day Java.
  It is designed with a clear separation of the several algorithm concepts,
  e.
 \begin_inset space ~
@@ -696,9 +696,9 @@ Jenetics
 status collapsed
 
 \begin_layout Plain Layout
-The library is build with and depends on Java SE 8:
+The library is build with and depends on Java SE 8: 
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -1878,7 +1878,7 @@ status open
 The documentation of the whole API is part of the download package or can
  be viewed online: 
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -3821,7 +3821,7 @@ In linear-ranking selection the individuals are sorted according to their
 \begin_inset Formula $P(i)$
 \end_inset
 
- of individual
+ of individual 
 \begin_inset Formula $i$
 \end_inset
 
@@ -10407,7 +10407,7 @@ Stream
 \family typewriter
 Engine
 \family default
-, it is possible to use an own, special evolution 
+, it is possible to use an different, special evolution 
 \family typewriter
 Function
 \family default
