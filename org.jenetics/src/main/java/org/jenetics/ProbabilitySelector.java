@@ -103,8 +103,8 @@ public abstract class ProbabilitySelector<
 
 		if (count > 0) {
 			final double[] prob = probabilities(population, count, opt);
-			assert (population.size() == prob.length) :
-				"Population size and probability length are not equal.";
+			assert (population.size() == prob.length)
+				: "Population size and probability length are not equal.";
 			assert (sum2one(prob)) : "Probabilities doesn't sum to one.";
 
 			incremental(prob);
