@@ -105,7 +105,7 @@ tabs-within-sections
 \pdf_bookmarksnumbered false
 \pdf_bookmarksopen false
 \pdf_bookmarksopenlevel 1
-\pdf_breaklinks false
+\pdf_breaklinks true
 \pdf_pdfborder false
 \pdf_colorlinks false
 \pdf_backref false
@@ -179,10 +179,34 @@ begin{adjustwidth*}{-4.5cm}{-4.5cm}
 
 \begin_layout Standard
 \align center
-\begin_inset Graphics
-	filename ../resources/graphic/Jenetics.png
-	lyxscale 60
-	height 20mm
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+fontsize{100pt}{100pt}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+textsf{
+\backslash
+textbf{
+\backslash
+textsc{J}}}
+\backslash
+fontsize{85pt}{85pt}
+\backslash
+textsf{
+\backslash
+textbf{
+\backslash
+textsc{ENETICS}}}
+\end_layout
 
 \end_inset
 
@@ -300,7 +324,7 @@ FRANZ WILHELMSTÖTTER
 
 \series default
 \noun default
-VERSION 3
+VERSION 3.1
 \size large
 \noun on
 
@@ -422,37 +446,7 @@ status collapsed
 
 \begin_layout Plain Layout
 
-https://github.com/jenetics/jenetics
-\end_layout
-
-\end_inset
-
-
-\begin_inset Newline newline
-\end_inset
-
-
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-https://sourceforge.net/projects/jenetics
-\end_layout
-
-\end_inset
-
-
-\begin_inset Newline newline
-\end_inset
-
-
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-https://bitbucket.org/fwilhelm/jenetics
+http://jenetics.io
 \end_layout
 
 \end_inset
@@ -551,11 +545,11 @@ Jenetics
 \series bold
  Genetic Algorithm
 \series default
- and/or
+ and
 \series bold
  Evolutionary Algorithm
 \series default
- library respectively, written in modern day Java.
+ library, respectively, written in modern day Java.
  It is designed with a clear separation of the several algorithm concepts,
  e.
 \begin_inset space ~
@@ -702,9 +696,9 @@ Jenetics
 status collapsed
 
 \begin_layout Plain Layout
-The library is build with and depends on Java SE 8:
+The library is build with and depends on Java SE 8: 
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -737,7 +731,7 @@ If you are using Gradle, you can use the following dependency string:
 \family typewriter
 'org.bitbucket.fwilhelm:\SpecialChar \-
 org.jenetics:\SpecialChar \-
-3.0.1'
+3.1.0'
 \family default
 .
 \end_layout
@@ -930,7 +924,7 @@ public class HelloWorld {
 
 \begin_layout Plain Layout
 
-        Factory<Genotype<BitGene>> gtf = 
+        Factory<Genotype<BitGene>> gtf =
 \end_layout
 
 \begin_layout Plain Layout
@@ -1080,7 +1074,7 @@ reference "lis:Hello-World-GA"
 
 \end_inset
 
- and discuss this simple program step by step: 
+ and discuss this simple program step by step:
 \end_layout
 
 \begin_layout Enumerate
@@ -1094,7 +1088,7 @@ Genotype
 \family default
  (factory) representation.
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Section 
@@ -1300,7 +1294,6 @@ Collector
  classes in Java 8.
  Also the newly introduced lambda expressions and the functional interfaces
  (SAM types) play an important roll in the library design.
- 
 \end_layout
 
 \begin_layout Standard
@@ -1879,17 +1872,17 @@ Jenetics
 \shape default
 
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 The documentation of the whole API is part of the download package or can
  be viewed online: 
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
-http://jenetics.sourceforge.net/javadoc/index.html
+http://jenetics.io/javadoc/org.jenetics/index.html
 \end_layout
 
 \end_inset
@@ -2222,7 +2215,7 @@ http://blog.joda.org/2014/03/valjos-value-java-objects.html
 
 \end_inset
 
- 
+
 \end_layout
 
 \begin_layout Standard
@@ -2257,7 +2250,7 @@ public interface Gene<A, G extends Gene<A, G>>
 
 \begin_layout Plain Layout
 
-    extends Factory<G>, Serializable, Verifiable
+    extends Factory<G>, Verifiable
 \end_layout
 
 \begin_layout Plain Layout
@@ -2330,6 +2323,26 @@ Gene
  The 
 \family typewriter
 isValid
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Gene!validation
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Validation
+\end_layout
+
+\end_inset
+
+
 \family default
  method, introduced by the 
 \family typewriter
@@ -2440,12 +2453,7 @@ public interface Chromosome<G extends Gene<?, G>>
 
 \begin_layout Plain Layout
 
-	extends Factory<Chromosome<G>>, Iterable<G>, 
-\end_layout
-
-\begin_layout Plain Layout
-
-        Verifiable, Serializable
+	extends Factory<Chromosome<G>>, Iterable<G>, Verifiable
 \end_layout
 
 \begin_layout Plain Layout
@@ -3660,7 +3668,7 @@ reference "fig:Fitness-proportional-selection"
  specifies which individual is selected, by argument minimization:
 \begin_inset Formula 
 \begin{equation}
-i\leftarrow\underset{n\in\left[0,N\right)}{\textrm{minarg}}\left\{ r<\sum_{i=0}^{n}f_{i}\right\} ,
+i\leftarrow\underset{n\in\left[0,N\right)}{\textrm{argmin}}\left\{ r<\sum_{i=0}^{n}f_{i}\right\} ,
 \end{equation}
 
 \end_inset
@@ -3813,7 +3821,7 @@ In linear-ranking selection the individuals are sorted according to their
 \begin_inset Formula $P(i)$
 \end_inset
 
- of individual
+ of individual 
 \begin_inset Formula $i$
 \end_inset
 
@@ -4448,6 +4456,98 @@ Recombination
 \end_layout
 
 \begin_layout Standard
+\begin_inset listings
+lstparams "language=Java,numbers=left,showstringspaces=false,tabsize=4,extendedchars=true,mathescape=true"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Genotype[2] genotypes = select(population)
+\end_layout
+
+\begin_layout Plain Layout
+
+int index = random.nextInt(genotypes[0].length())
+\end_layout
+
+\begin_layout Plain Layout
+
+Chromosomes[2] chromosomes = new Chromosome[]{
+\end_layout
+
+\begin_layout Plain Layout
+
+    genotypes[0].getChromosome(index),
+\end_layout
+
+\begin_layout Plain Layout
+
+    genotypes[1].getChromosome(index)
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+Chromosome[2] recombined = recombine(chromosomes)
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Chromosome-selection-recombination"
+
+\end_inset
+
+Chromosome selection for recombination
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Chromosome!recombination
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Chromosome-selection-recombination"
+
+\end_inset
+
+ shows, in Java like pseudo\SpecialChar \-
+code, how two chromosomes are selected for 
+\emph on
+recombination
+\emph default
+.
+ It is done this way for preserving the given 
+\emph on
+constraints
+\emph default
+ and to avoid the creation of invalid individuals.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Box Shaded
 position "t"
 hor_pos "c"
@@ -4499,7 +4599,18 @@ s with the same
 \family typewriter
 Genotype
 \family sans
- position are recombined.
+ position are recombined
+\family default
+\shape default
+\emph default
+ (see listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Chromosome-selection-recombination"
+
+\end_inset
+
+).
 \end_layout
 
 \begin_layout Plain Layout
@@ -5066,6 +5177,13 @@ c
 
 \begin_layout Subsection
 Engine classes
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Engine-classes"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -5321,7 +5439,7 @@ public class Main {
 
 \begin_layout Plain Layout
 
-        Function<Genotype<DoubleGene>, Double> ff1 = 
+        Function<Genotype<DoubleGene>, Double>> ff1 = 
 \end_layout
 
 \begin_layout Plain Layout
@@ -5340,7 +5458,7 @@ public class Main {
 
 \begin_layout Plain Layout
 
-        Function<Genotype<DoubleGene>, Double> ff2 = gt -> 
+        Function<Genotype<DoubleGene>, Double>> ff2 = gt -> 
 \end_layout
 
 \begin_layout Plain Layout
@@ -5544,6 +5662,13 @@ height "1pt"
 
 \begin_layout Subsubsection
 Engine
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Engine"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -5628,7 +5753,7 @@ public final class Engine<
 
 \begin_layout Plain Layout
 
-        Population<G,C> population, 
+        Population<G,C> population,
 \end_layout
 
 \begin_layout Plain Layout
@@ -5929,6 +6054,56 @@ Genotype
 \begin_layout Description
 
 \family typewriter
+genotypeValidator
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Validation
+\end_layout
+
+\end_inset
+
+
+\family default
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Genotype!Validation
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "Engine-genotypeValidator"
+
+\end_inset
+
+ This property lets you 
+\emph on
+override
+\emph default
+ the default implementation of the 
+\family typewriter
+Geno\SpecialChar \-
+type\SpecialChar \-
+.isValid
+\family default
+ method, which is useful if the 
+\family typewriter
+Genotype
+\family default
+ validity not only depends on valid property of the elements it consists
+ of.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
 maximalPhenotypeAge
 \family default
  Set the maximal allowed age of an individual (Phenotype).
@@ -6006,6 +6181,49 @@ Function
 \begin_layout Description
 
 \family typewriter
+phenotypeValidator
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Validation
+\end_layout
+
+\end_inset
+
+
+\family default
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Phenotype!Validation
+\end_layout
+
+\end_inset
+
+ This property lets you 
+\emph on
+override
+\emph default
+ the default implementation of the 
+\family typewriter
+Pheno\SpecialChar \-
+type\SpecialChar \-
+.isValid
+\family default
+ method, which is useful if the 
+\family typewriter
+Phenotype
+\family default
+ validity not only depends on valid property of the elements it consists
+ of.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
 populationSize
 \family default
  Defines the number of individuals of a 
@@ -6055,6 +6273,41 @@ Tournament\SpecialChar \-
 Select\SpecialChar \-
 or<>(3)
 \family default
+.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+individualCreationRetries
+\family default
+ The evolution 
+\family typewriter
+Engine
+\family default
+ tries to create only valid individuals.
+ If a newly created 
+\family typewriter
+Genotype
+\family default
+ is not valid, the 
+\family typewriter
+Engine
+\family default
+ creates another one, till the created 
+\family typewriter
+Genotype
+\family default
+ is valid.
+ This parameter sets the maximal number of retries before the 
+\family typewriter
+Engine
+\family default
+ gives up and accept invalid individuals.
+ The default value is set to 
+\begin_inset Formula $10$
+\end_inset
+
 .
 \end_layout
 
@@ -6328,17 +6581,143 @@ false
 Evolution\SpecialChar \-
 Stream
 \family default
- can only be created via the 
+ is usually created via the 
 \family typewriter
 Engine\SpecialChar \-
 .stream()
 \family default
- method, but it is possible to create more than one stream from the same
- 
+ method.
+ The 
+\emph on
+imm
+\emph default
+utable and 
+\emph on
+stateless
+\emph default
+ nature of the evolution 
+\family typewriter
+Engine
+\family default
+ allows to create more than one 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+ with the same 
 \family typewriter
 Engine
 \family default
  instance.
+\end_layout
+
+\begin_layout Standard
+In cases where you appreciate the usage of the 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+ but need a different 
+\family typewriter
+Engine
+\family default
+ implementation, you can use the 
+\family typewriter
+Evolution\SpecialChar \-
+Stream\SpecialChar \-
+.of
+\family default
+ factory method for creating an new 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static <G extends Gene<?, G>, C extends Comparable<? super C>>
+\end_layout
+
+\begin_layout Plain Layout
+
+EvolutionStream<G, C> of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    Supplier<EvolutionStart<G, C>> start,
+\end_layout
+
+\begin_layout Plain Layout
+
+    Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> f
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+This factory method takes a start value, of type 
+\family typewriter
+Evolution\SpecialChar \-
+Start
+\family default
+, and an evolution 
+\family typewriter
+Function
+\family default
+.
+ The evolution 
+\family typewriter
+Function
+\family default
+ takes the start value and returns an 
+\family typewriter
+Evolution\SpecialChar \-
+Result
+\family default
+ object.
+ To make the runtime behavior more predictable, the start value is fetched/creat
+ed lazily at the evolution start time.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Supplier<EvolutionStart<DoubleGene, Double>> start = ...
+\end_layout
+
+\begin_layout Plain Layout
+
+final EvolutionStream<DoubleGene, Double> stream =
+\end_layout
+
+\begin_layout Plain Layout
+
+    EvolutionStream.of(start, new MySpecialEngine());
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
@@ -6732,7 +7111,7 @@ Engine<DoubleGene, Double> engine = ...
 
 \begin_layout Plain Layout
 
-EvolutionStatistics<?, Double> statistics = 
+EvolutionStatistics<?, Double> statistics =
 \end_layout
 
 \begin_layout Plain Layout
@@ -6996,7 +7375,7 @@ public class Main {
 
 \begin_layout Plain Layout
 
-        final Engine<DoubleGene, Double> engine = Engine 			
+        final Engine<DoubleGene, Double> engine = Engine
 \end_layout
 
 \begin_layout Plain Layout
@@ -7672,7 +8051,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename ../resources/graphic/BlockSplitting.eps
-	width 80text%
+	width 85text%
 
 \end_inset
 
@@ -8901,7 +9280,7 @@ status open
 
 \begin_layout Plain Layout
 
-// Create 'different' sequences.
+// Create "different" sequences.
 \end_layout
 
 \begin_layout Plain Layout
@@ -9004,35 +9383,95 @@ This package contains classes for calculating statistical moments.
  They are designed to work smoothly with the Java Stream API and are divided
  into mutable (number) consumers and immutable value classes, which holds
  the statistical moments.
- The additional classes calculate the 
+ The additional classes calculate the
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{multicols}{2}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
-minimum, 
+
+\emph on
+minimum
+\emph default
+, 
 \end_layout
 
 \begin_layout Itemize
-maximum, 
+
+\emph on
+maximum
+\emph default
+, 
 \end_layout
 
 \begin_layout Itemize
-sum, 
+
+\emph on
+sum
+\emph default
+, 
 \end_layout
 
 \begin_layout Itemize
-mean, 
+
+\emph on
+mean
+\emph default
+, 
 \end_layout
 
 \begin_layout Itemize
-variance,
+
+\emph on
+variance
+\emph default
+,
 \end_layout
 
 \begin_layout Itemize
-skewness and 
+
+\emph on
+skewness
+\emph default
+ and 
 \end_layout
 
 \begin_layout Itemize
-kurtosis value.
+
+\emph on
+kurtosis
+\emph default
+ value.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{multicols}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -9293,6 +9732,13 @@ Extending
 \series bold
 \shape smallcaps
  Jenetics
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Extending-Jenetics"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -9460,7 +9906,7 @@ height "1pt"
 \begin_layout Plain Layout
 
 \family sans
-The customer 
+The custom 
 \family typewriter
 Gene
 \family sans
@@ -9554,7 +10000,7 @@ Chromosome
 s.
  The other methods should be self-explanatory.
  The chromosome has the same serialization mechanism as the gene.
- For the minimal case it extends the
+ For the minimal case it can extends the
 \family typewriter
  Serializable
 \family default
@@ -9898,13 +10344,331 @@ Result<G, C>\SpecialChar \-
  interface.
 \end_layout
 
+\begin_layout Subsection
+Engine
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Engine
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The evolution 
+\family typewriter
+Engine
+\family default
+ itself can't be extended, but it is still possible to create an 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+ without using the 
+\family typewriter
+Engine
+\family default
+ class.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Also refer to section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:EvolutionStream"
+
+\end_inset
+
+ on how to create an 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+ from an evolution 
+\family typewriter
+Function
+\family default
+.
+\end_layout
+
+\end_inset
+
+ Because the 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+ has no direct dependency to the 
+\family typewriter
+Engine
+\family default
+, it is possible to use an different, special evolution 
+\family typewriter
+Function
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public final class SpecialEngine {
+\end_layout
+
+\begin_layout Plain Layout
+
+    // The Genotype factory.
+\end_layout
+
+\begin_layout Plain Layout
+
+    private static final Factory<Genotype<DoubleGene>> GTF =
+\end_layout
+
+\begin_layout Plain Layout
+
+        Genotype.of(DoubleChromosome.of(0, 1));
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // The fitness function.
+\end_layout
+
+\begin_layout Plain Layout
+
+    private static Double fitness(final Genotype<DoubleGene> gt) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        return gt.getGene().getAllele();
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Create new evolution start object.
+\end_layout
+
+\begin_layout Plain Layout
+
+    private static EvolutionStart<DoubleGene, Double>
+\end_layout
+
+\begin_layout Plain Layout
+
+    start(final int populationSize, final long generation) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Population<DoubleGene, Double> population = GTF
+\end_layout
+
+\begin_layout Plain Layout
+
+            .instances()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .map(gt -> Phenotype
+\end_layout
+
+\begin_layout Plain Layout
+
+                .of(gt, generation, SpecialEngine::fitness))
+\end_layout
+
+\begin_layout Plain Layout
+
+            .limit(populationSize)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .collect(Population.toPopulation());
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        return EvolutionStart.of(population, generation);
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // The special evolution function.
+\end_layout
+
+\begin_layout Plain Layout
+
+    private static EvolutionResult<DoubleGene, Double>
+\end_layout
+
+\begin_layout Plain Layout
+
+    evolve(final EvolutionStart<DoubleGene, Double> start) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        return ...; // Add implementation!
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    public static void main(final String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Genotype<DoubleGene> best = EvolutionStream
+\end_layout
+
+\begin_layout Plain Layout
+
+            .of(() -> start(50, 0), SpecialEngine::evolve)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .limit(limit.bySteadyFitness(10))
+\end_layout
+
+\begin_layout Plain Layout
+
+            .limit(100)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .collect(EvolutionResult.toBestGenotype());
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        System.out.println("Best Genotype: " + best));
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Special-evolution-engine"
+
+\end_inset
+
+Special evolution engine
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Special-evolution-engine"
+
+\end_inset
+
+ shows a 
+\emph on
+complete
+\emph default
+ implementation stub for using an own special evolution 
+\family typewriter
+Function
+\family default
+.
+\end_layout
+
 \begin_layout Section
 Advanced topics
 \end_layout
 
 \begin_layout Standard
-This section describes some advanced topics when setting up an evolution
- engine or stream.
+This section describes some advanced topics for setting up an evolution
+ 
+\family typewriter
+Engine
+\family default
+ or 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+.
+ It contains some problem encoding examples and how to override the default
+ validation strategy of the given Genotypes.
+ The last section contains a detailed description of the implemented termination
+ strategies.
 \end_layout
 
 \begin_layout Subsection
@@ -10185,7 +10949,7 @@ Scalar genotype
 Alterer
 \family default
 .
- That means, that non of the 
+ That means, that none of the 
 \family typewriter
 Crossover
 \family default
@@ -10254,7 +11018,7 @@ or
 \family typewriter
 Genotype
 \family sans
-s can only be altererd by 
+s can only be altered by 
 \family typewriter
 MeanAlterer
 \family sans
@@ -10784,7 +11548,9 @@ double[]
 
 -dimensional 
 \family typewriter
-double[
+dou\SpecialChar \-
+ble\SpecialChar \-
+[
 \emph on
 n
 \emph default
@@ -11398,6 +12164,13 @@ Alterer
 
 \begin_layout Subsubsection
 Graph
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Graph"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -11546,7 +12319,7 @@ reference "sub:Encoding"
 
 \end_inset
 
- 
+
 \end_layout
 
 \begin_layout Standard
@@ -11636,7 +12409,12 @@ final int[][] array = gt.toSeq().stream()
 
 \begin_layout Plain Layout
 
-        .mapToInt(BitGene::ordinal).toArray())
+        .mapToInt(BitGene::ordinal)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .toArray())
 \end_layout
 
 \begin_layout Plain Layout
@@ -11680,7 +12458,6 @@ A directed graph (digraph) is a graph where the path between the nodes have
  undirected graph.
  This time the whole matrix is used and the second diagonal matrix is no
  longer ignored.
- 
 \end_layout
 
 \begin_layout Standard
@@ -11798,6 +12575,10 @@ Weighted graph and adjacency matrix
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 The following code snippet shows how the 
 \family typewriter
 Genotype
@@ -11889,7 +12670,427 @@ final double[][] array = gt.toSeq().stream()
 \end_layout
 
 \begin_layout Subsection
+Validation
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Validation"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Validation
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A given problem should usually encoded in a way, that it is not possible
+ for the evolution 
+\family typewriter
+Engine
+\family default
+ to create 
+\emph on
+invalid
+\emph default
+ individuals (
+\family typewriter
+Genotypes
+\family default
+).
+ Some possible encodings for common data-structures are described in section
+ 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Encoding"
+
+\end_inset
+
+.
+ The 
+\family typewriter
+Engine
+\family default
+ creates new individuals in the 
+\emph on
+altering
+\emph default
+ step by rearranging (or creating new) 
+\family typewriter
+Genes
+\family default
+ within a 
+\family typewriter
+Chromosome
+\family default
+.
+ Since a 
+\family typewriter
+Genotype
+\family default
+ is treated as 
+\emph on
+valid
+\emph default
+ if every single 
+\family typewriter
+Gene
+\family default
+ in every 
+\family typewriter
+Chromosome
+\family default
+ is 
+\emph on
+valid
+\emph default
+, the validity property of the 
+\family typewriter
+Gene
+\family default
+s determines the validity of the whole 
+\family typewriter
+Genotype
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+The Engine tries to create only valid individuals when creating the initial
+ Population and when it replaces Genotypes which has been 
+\emph on
+destroyed
+\emph default
+ by the altering step.
+ Individuals which has exceeded its lifetime are also replaced by new valid
+ ones.
+ To guarantee the termination of the Genotype creation, the Engine is parameteri
+zed with the maximal number of retries (
+\family typewriter
+indi\SpecialChar \-
+vidual\SpecialChar \-
+Crea\SpecialChar \-
+tion\SpecialChar \-
+Re\SpecialChar \-
+tr
+\family default
+ies)
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Engine"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+If the described validation mechanism doesn't fulfill your needs, you can
+ 
+\emph on
+override
+\emph default
+ the validation mechanism by creating the 
+\family typewriter
+Engine
+\family default
+ with an external 
+\family typewriter
+Genotype
+\family default
+ 
+\emph on
+validator
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Predicate<? super Genotype<DoubleGene>> validator = gt -> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Implement advanced Genotype check.
+\end_layout
+
+\begin_layout Plain Layout
+
+    boolean valid = ...;
+\end_layout
+
+\begin_layout Plain Layout
+
+    return valid;
+\end_layout
+
+\begin_layout Plain Layout
+
+};
+\end_layout
+
+\begin_layout Plain Layout
+
+final Engine<DoubleGene, Double> engine = Engine.builder(gtf, ff)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .limit(100)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .genotypeValidator(validator)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .individualCreationRetries(15)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .build();
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Having the possibility to replace the default validation check is a nice
+ thing, but it is better to not create invalid individuals in the first
+ place.
+ For achieving this goal, you have two possibilities:
+\end_layout
+
+\begin_layout Enumerate
+Creating an explicit 
+\family typewriter
+Genotype
+\family default
+ factory and
+\end_layout
+
+\begin_layout Enumerate
+implementing new 
+\family typewriter
+Gene
+\family default
+/
+\family typewriter
+Chromosome
+\family default
+/
+\family typewriter
+Alterer
+\family default
+ classes.
+\end_layout
+
+\begin_layout Paragraph
+
+\family typewriter
+Genotype
+\family default
+ factory
+\end_layout
+
+\begin_layout Standard
+The usual mechanism for defining an encoding is to create a 
+\family typewriter
+Genotype
+\family default
+ 
+\emph on
+prototype
+\emph default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Prototype_pattern
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+ Since the 
+\family typewriter
+Genotype
+\family default
+ implements the 
+\family typewriter
+Factory
+\family default
+ interface, an prototype instance can easily passed to the 
+\family typewriter
+Engine\SpecialChar \-
+.builder
+\family default
+ method.
+ For a more advanced 
+\family typewriter
+Genotype
+\family default
+ creation, you 
+\emph on
+only
+\emph default
+ have to create an explicit 
+\family typewriter
+Genotype
+\family default
+ factory.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Factory<Genotype<DoubleGene>> gtf = () -> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Implement your advanced Genotype factory.
+\end_layout
+
+\begin_layout Plain Layout
+
+    Genotype<DoubleGene> genotype = ...;
+\end_layout
+
+\begin_layout Plain Layout
+
+    return genotype;
+\end_layout
+
+\begin_layout Plain Layout
+
+};
+\end_layout
+
+\begin_layout Plain Layout
+
+final Engine<DoubleGene, Double> engine = Engine.builder(gtf, ff)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .limit(100)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .individualCreationRetries(15)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .build();
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+With this method you can avoid that the 
+\family typewriter
+Engine
+\family default
+ creates invalid individuals in the first place, but it is still possible
+ that the alterer step will destroy your 
+\family typewriter
+Genotype
+\family default
+s.
+\end_layout
+
+\begin_layout Paragraph
+
+\family typewriter
+Gene
+\family default
+/
+\family typewriter
+Chromosome
+\family default
+/
+\family typewriter
+Alterer
+\end_layout
+
+\begin_layout Standard
+Creating your own Gene, Chromosome and Alterer classes is the most heavy-wighted
+ possibility for solving the 
+\emph on
+validity
+\emph default
+ problem.
+ Refer to section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sec:Extending-Jenetics"
+
+\end_inset
+
+ for a more detailed description on how to implement this classes.
+\end_layout
+
+\begin_layout Subsection
 Termination
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Termination"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -11909,6 +13110,29 @@ Termination is the criterion by which the evolution stream decides whether
  or truncating the evolution stream, respectively.
 \end_layout
 
+\begin_layout Standard
+The termination strategies in the following sub-sections were tested by
+ solving the Knapsack problem (see section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:0/1-Knapsack-example"
+
+\end_inset
+
+) with 
+\begin_inset Formula $250$
+\end_inset
+
+ items.
+ This makes it a real problem with a search-space size of 
+\begin_inset Formula $2^{250}\thickapprox10^{75}$
+\end_inset
+
+ elements.
+ To make the tests comparable, all runs uses the very same set of knapsack
+ items.
+\end_layout
+
 \begin_layout Subsubsection
 Fixed generation
 \begin_inset Index idx
@@ -11916,6 +13140,16 @@ status collapsed
 
 \begin_layout Plain Layout
 Termination!Fixed generation
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Fixed generation
 \end_layout
 
 \end_inset
@@ -11960,8 +13194,96 @@ EvolutionStream<DoubleGene, Double> stream = engine.stream()
 \end_layout
 
 \begin_layout Standard
-This kind of termination method should always be applied, to guarantee the
- truncation of the evolution stream.
+This kind of termination method should always be applied---usually additional
+ with other evolution terminators---, to guarantee the truncation of the
+ evolution stream and to define an upper limit of the executed generations.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/diagram/FixedGenerationTermination.svg
+	lyxscale 80
+	width 100text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Fixed-generation-diagram"
+
+\end_inset
+
+Fixed generation termination
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Diagram 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Fixed-generation-diagram"
+
+\end_inset
+
+ shows the best fitness values of the used Knapsack problem after a given
+ number of generations, whereas the candle-stick points represents the 
+\emph on
+min
+\emph default
+, 
+\emph on
+
+\begin_inset Formula $25^{th}$
+\end_inset
+
+percentile
+\emph default
+, 
+\emph on
+median
+\emph default
+, 
+\emph on
+
+\begin_inset Formula $75^{th}$
+\end_inset
+
+ percentile
+\emph default
+ and 
+\emph on
+max
+\emph default
+ fitness after 
+\begin_inset Formula $250$
+\end_inset
+
+ repetitions per generation.
+ The solid line shows for the 
+\emph on
+mean
+\emph default
+ of the best fitness values.
 \end_layout
 
 \begin_layout Subsubsection
@@ -11989,8 +13311,12 @@ Steady fitness
 \end_layout
 
 \begin_layout Standard
-The steady fitness strategy truncates the evolution stream if its best fitness
- hasn't changed after a given number of generations.
+The 
+\emph on
+steady fitness
+\emph default
+ strategy truncates the evolution stream if its best fitness hasn't changed
+ after a given number of generations.
  The predicate maintains an internal state, the number of generations with
  non increasing fitness, and must be created for every evolution stream.
 \end_layout
@@ -12003,17 +13329,17 @@ status open
 
 \begin_layout Plain Layout
 
-final class SteadyFitnessLimit<C extends Comparable<? super C>> 	
+final class SteadyFitnessLimit<C extends Comparable<? super C>>
 \end_layout
 
 \begin_layout Plain Layout
 
-    implements Predicate<EvolutionResult<?, C>> 
+    implements Predicate<EvolutionResult<?, C>>
 \end_layout
 
 \begin_layout Plain Layout
 
-{ 	
+{
 \end_layout
 
 \begin_layout Plain Layout
@@ -12066,7 +13392,7 @@ final class SteadyFitnessLimit<C extends Comparable<? super C>>
 
 \begin_layout Plain Layout
 
-    public boolean test(final EvolutionResult<?, C> result) {
+    public boolean test(final EvolutionResult<?, C> er) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -12081,7 +13407,7 @@ final class SteadyFitnessLimit<C extends Comparable<? super C>>
 
 \begin_layout Plain Layout
 
-            _fitness = result.getBestFitness();
+            _fitness = er.getBestFitness();
 \end_layout
 
 \begin_layout Plain Layout
@@ -12101,7 +13427,7 @@ final class SteadyFitnessLimit<C extends Comparable<? super C>>
 
 \begin_layout Plain Layout
 
-            if (opt.compare(_fitness, result.getBestFitness()) >= 0) {
+            if (opt.compare(_fitness, er.getBestFitness()) >= 0) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -12116,7 +13442,7 @@ final class SteadyFitnessLimit<C extends Comparable<? super C>>
 
 \begin_layout Plain Layout
 
-                _fitness = result.getBestFitness();
+                _fitness = er.getBestFitness();
 \end_layout
 
 \begin_layout Plain Layout
@@ -12191,29 +13517,296 @@ org\SpecialChar \-
  package.
  It should give you an impression of how to implement own termination strategies
 , which possible holds and internal state.
-\end_layout
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
 
-\begin_layout Standard
-\begin_inset Note Comment
-status collapsed
+\begin_layout Plain Layout
 
-\begin_layout Subsubsection
-Evolution time
+Engine<DobuleGene, Double> engine = ...
 \end_layout
 
 \begin_layout Plain Layout
-A termination method that stops the evolution when the elapsed evolution
- time exceeds the user-specified max evolution time.
- By default, the evolution is not stopped until the evolution of the current
- generation has completed, but this behavior can be changed so that the
- evolution can be stopped within a generation.
+
+EvolutionStream<DoubleGene, Double> stream = engine.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+    .limit(limit.bySteadyFitness(15));
+\end_layout
+
+\end_inset
+
+The steady fitness terminator can be created by the 
+\family typewriter
+by\SpecialChar \-
+Steady\SpecialChar \-
+Fitness
+\family default
+ factory method of the 
+\family typewriter
+org.\SpecialChar \-
+jenetics.\SpecialChar \-
+engine.\SpecialChar \-
+limit
+\family default
+ class.
+ In the example above, the evolution stream is terminated after 
+\begin_inset Formula $15$
+\end_inset
+
+ stable generations.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/diagram/SteadyFitnessTermination.svg
+	lyxscale 80
+	width 100text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Steady-fitness-diagram"
+
+\end_inset
+
+Steady fitness termination
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+Diagram 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Steady-fitness-diagram"
+
+\end_inset
+
+ shows the actual total executed generation depending on the desired number
+ of steady fitness generations.
+ The variation of the total generation is quite big, as shown by the candle-stic
+ks.
+ Though the variation can be quite big---the termination test has been repeated
+ 
+\begin_inset Formula $250$
+\end_inset
+
+ times for each data point---, the tests showed that the 
+\emph on
+steady fitness
+\emph default
+ termination strategy always terminated.
+ The lower diagram give an overview of the fitness progression.
+ Only the mean values of the maximal fitness is shown.
+\end_layout
+
+\begin_layout Subsubsection
+Evolution time
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Termination!Evolution time
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Evolution time
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This termination strategy stops the evolution when the elapsed evolution
+ time exceeds the user-specified maximal value.
+ The evolution is not stopped until the evolution of the current generation
+ has completed.
+ In an time-critical environment, where a solution must be found within
+ a maximal time period, this terminator let you define the desired guarantees.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Engine<DobuleGene, Double> engine = ...
+\end_layout
+
+\begin_layout Plain Layout
+
+EvolutionStream<DoubleGene, Double> stream = engine.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+    .limit(limit.byExecutionTime(Duration.ofMillis(500));
+\end_layout
+
+\end_inset
+
+In the code example above, the 
+\family typewriter
+by\SpecialChar \-
+Execution\SpecialChar \-
+Time(\SpecialChar \-
+Duration\SpecialChar \-
+)
+\family default
+ method is used for creating the termination object.
+ Another method, 
+\family typewriter
+by\SpecialChar \-
+Execution\SpecialChar \-
+Time\SpecialChar \-
+(Du\SpecialChar \-
+ration, Clock)
+\family default
+, lets you define the 
+\family typewriter
+java.\SpecialChar \-
+time.\SpecialChar \-
+Clock
+\family default
+, which is used for measure the execution time.
+ 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ uses the nano precision clock 
+\family typewriter
+org.\SpecialChar \-
+jenetics.\SpecialChar \-
+util.\SpecialChar \-
+Nano\SpecialChar \-
+Clock
+\family default
+ for measuring the time.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/diagram/ExecutionTimeTermination.svg
+	lyxscale 80
+	width 100text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Execution-time-diagram"
+
+\end_inset
+
+Execution time termination
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+Diagram 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Execution-time-diagram"
+
+\end_inset
+
+ shows the evaluated generations depending on the execution time.
+ Except for very small execution times, the evaluated generations per time
+ unit stays quite stable.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+While running the tests, all other CPU intensive process has been stopped.
+ The measuring started after a warm-up phase.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
 Fitness threshold
-\end_layout
+\begin_inset Index idx
+status collapsed
 
 \begin_layout Plain Layout
+Termination!Fitness threshold
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Fitness threshold
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 A termination method that stops the evolution when the best fitness in the
  current population becomes less than the user-specified fitness threshold
  and the objective is set to minimize the fitness.
@@ -12221,6 +13814,75 @@ A termination method that stops the evolution when the best fitness in the
  in the current population becomes greater than the user-specified fitness
  threshold when the objective is to maximize the fitness.
 \end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/diagram/FitnessThresholdTermination.svg
+	lyxscale 80
+	width 100text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Fitness-threshold-diagram"
+
+\end_inset
+
+Fitness threshold termination
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Diagram 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Fitness-threshold-diagram"
+
+\end_inset
+
+ shows executed generations depending on the minimal fitness value.
+ The total generations grows exponentially with the desired fitness value.
+ This means, that this termination strategy will (practically) not terminate,
+ if the value for the fitness threshold is chosen to high.
+ It will be a 
+\emph on
+perfect
+\emph default
+ strategy if you can define some 
+\emph on
+good enough
+\emph default
+ fitness value, which can be 
+\emph on
+easily
+\emph default
+ achieved.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Comment
+status collapsed
 
 \begin_layout Subsubsection
 Fitness convergence
@@ -12346,6 +14008,13 @@ reference "sec:Build"
 
 \begin_layout Subsection
 Ones counting
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Ones-counting-example"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -12487,6 +14156,13 @@ Evolution statistics
 
 \begin_layout Subsection
 Real function
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Real-function-example"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -12530,9 +14206,9 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/graphic/RealFunction2D.eps
+	filename ../resources/graphic/RealFunction2D.svg
 	lyxscale 70
-	width 90text%
+	width 100text%
 
 \end_inset
 
@@ -12668,6 +14344,13 @@ exact
 
 \begin_layout Subsection
 0/1 Knapsack
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:0/1-Knapsack-example"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -12788,6 +14471,13 @@ footnotesize}
 
 \begin_layout Subsection
 Traveling salesman
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Traveling-salesman-example"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -13021,6 +14711,17 @@ https://sourceforge.net/projects/jenetics/files/latest/download
 
 \end_inset
 
+ or 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://github.com/jenetics/jenetics/releases
+\end_layout
+
+\end_inset
+
  and extract it to some build directory.
 \end_layout
 
@@ -13048,84 +14749,15 @@ dir>
 dir>
 \family default
  the actual build directory.
- Alternatively you can check out the latest--unstable--version from the
- Mercurial
+ Alternatively you can check out the latest version from the Git
 \family typewriter
- default
+ master
 \family default
  branch.
 \end_layout
 
 \begin_layout LyX-Code
-$ hg clone https://fwilhelm@bitbucket.org/fwilhelm/jenetics
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-           <builddir>
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Mercurial repository
-\end_layout
-
-\end_inset
-
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Source code
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout LyX-Code
-# or
-\end_layout
-
-\begin_layout LyX-Code
-$ hg clone http://hg.code.sf.net/p/jenetics/main
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-           <builddir>
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Mercurial repository
-\end_layout
-
-\end_inset
-
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Source code
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout LyX-Code
-# or
-\end_layout
-
-\begin_layout LyX-Code
-$ git clone https://github.com/jenetics/jenetics.git
+$ git clone https://github.com/jenetics/jenetics.git 
 \backslash
 
 \end_layout
@@ -13564,7 +15196,7 @@ Version
 \series default
 :
 \emph on
- 6.8.13
+ 6.8.21
 \end_layout
 
 \begin_layout Itemize
@@ -13657,7 +15289,7 @@ Homepage
 \emph on
  
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -13678,7 +15310,7 @@ Download
 \emph on
 
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -13865,7 +15497,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 2.2 (
+: 2.3 (
 \emph on
 or later
 \emph default
@@ -13939,7 +15571,7 @@ Scope
 \series default
 :
 \emph on
- build
+ build.
 \end_layout
 
 \end_deeper

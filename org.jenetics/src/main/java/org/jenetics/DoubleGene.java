@@ -21,6 +21,7 @@ package org.jenetics;
 
 import static org.jenetics.internal.math.random.nextDouble;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -56,7 +57,8 @@ public final class DoubleGene
 	implements
 		NumericGene<Double, DoubleGene>,
 		Mean<DoubleGene>,
-		Comparable<DoubleGene>
+		Comparable<DoubleGene>,
+		Serializable
 {
 
 	private static final long serialVersionUID = 1L;

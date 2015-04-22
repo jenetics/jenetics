@@ -265,11 +265,11 @@ public final class LongMoments implements Serializable {
 	 * function to each input element, and returns moments-statistics for the
 	 * resulting values.
 	 *
-	 * [code]
-	 * final Stream&lt;SomeObject&gt; stream = ...
+	 * <pre>{@code
+	 * final Stream<SomeObject> stream = ...
 	 * final LongMoments moments = stream
-	 *     .collect(toLongMoments(v -&gt; v.longValue()));
-	 * [/code]
+	 *     .collect(toLongMoments(v -> v.longValue()));
+	 * }</pre>
 	 *
 	 * @param mapper a mapping function to apply to each element
 	 * @param <T> the type of the input elements

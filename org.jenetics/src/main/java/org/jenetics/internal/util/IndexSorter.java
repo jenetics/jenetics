@@ -65,9 +65,9 @@ public abstract class IndexSorter {
 	 * @return the index lookup array
 	 */
 	public static int[] sort(final double[] array) {
-		final IndexSorter sorter = array.length < INSERTION_SORT_THRESHOLD ?
-			INSERTION_SORTER :
-			HEAP_SORTER;
+		final IndexSorter sorter = array.length < INSERTION_SORT_THRESHOLD
+			? INSERTION_SORTER
+			: HEAP_SORTER;
 
 		return sorter.sort(array, indexes(array.length));
 	}
@@ -93,11 +93,13 @@ public abstract class IndexSorter {
 final class HeapSorter extends IndexSorter {
 	@Override
 	int[] sort(final double[] array, final int[] indexes) {
+		// Heapify
 		int n = array.length;
 		for (int k = n/2; k >= 0; k--) {
 			sink(array, indexes, k, n);
 		}
 
+		// Sort down.
 		while (n > 0) {
 			swap(indexes, 0, --n);
 			sink(array, indexes, 0, n);

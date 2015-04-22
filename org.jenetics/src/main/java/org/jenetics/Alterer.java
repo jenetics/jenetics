@@ -26,16 +26,16 @@ import org.jenetics.util.ISeq;
  * Alterers can be chained by appending a list of alterers with the
  * {@link org.jenetics.engine.Engine.Builder#alterers(Alterer, Alterer[])} method.
  *
- * [code]
- * final Engine&lt;DoubleGene, Double&gt; engine = Engine
+ * <pre>{@code
+ * final Engine<DoubleGene, Double>; engine = Engine
  *     .builder(gtf, ff)
  *     .alterers(
- *         new Crossover&lt;&gt;(0.1),
- *         new Mutator&lt;&gt;(0.05),
- *         new MeanAlterer&lt;&gt;(0.2))
+ *         new Crossover<>(0.1),
+ *         new Mutator<>(0.05),
+ *         new MeanAlterer<>(0.2))
  *     .build();
- * final EvolutionStream&lt;DoubleGene, Double&gt; stream = engine.stream();
- * [/code]
+ * final EvolutionStream<DoubleGene, Double> stream = engine.stream();
+ * }</pre>
  *
  * The order of the alterer calls is: Crossover, Mutation and MeanAlterer.
  *

@@ -19,20 +19,9 @@
  */
 package org.jenetics.diagram.problem;
 
-import org.jenetics.BitChromosome;
-import org.jenetics.BitGene;
-import org.jenetics.Genotype;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
 public class OnesCounting {
-
-	public static Problem<BitGene, Integer> of(final int length) {
-		return Problem.of(
-			Genotype.of(BitChromosome.of(length, 0.5)),
-			gt -> ((BitChromosome)gt.getChromosome()).bitCount()
-		);
-	}
 
 }

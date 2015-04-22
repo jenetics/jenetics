@@ -251,6 +251,21 @@ public final class Phenotype<
 	}
 
 	/**
+	 * Create a new {@code Phenotype} with a different {@code Genotype} but the
+	 * same {@code generation}, fitness {@code function} and fitness
+	 * {@code scaler}.
+	 *
+	 * @since 3.1
+	 *
+	 * @param genotype the new genotype
+	 * @return a new {@code phenotype} with replaced {@code genotype}
+	 * @throws NullPointerException if the given {@code genotype} is {@code null}.
+	 */
+	public Phenotype<G, C> newInstance(final Genotype<G> genotype) {
+		return of(genotype, _generation, _function, _scaler);
+	}
+
+	/**
 	 * Factory method for creating a new {@link Phenotype} with the same
 	 * {@link Function} and age as this {@link Phenotype}.
 	 *
@@ -328,9 +343,9 @@ public final class Phenotype<
 			genotype,
 			generation,
 			function,
-			function instanceof Serializable ?
-				(Function<? super C, ? extends C> & Serializable)a -> a :
-				a -> a
+			function instanceof Serializable
+				? (Function<? super C, ? extends C> & Serializable)a -> a
+				: a -> a
 		);
 	}
 

@@ -19,6 +19,8 @@
  */
 package org.jenetics;
 
+import java.io.Serializable;
+
 /**
  * Abstract base class for implementing concrete NumericGenes.
  *
@@ -31,7 +33,7 @@ abstract class AbstractNumericGene<
 	G extends AbstractNumericGene<N, G>
 >
 	extends AbstractBoundedGene<N, G>
-	implements NumericGene<N, G>
+	implements NumericGene<N, G>, Serializable
 {
 	private static final long serialVersionUID = 1L;
 

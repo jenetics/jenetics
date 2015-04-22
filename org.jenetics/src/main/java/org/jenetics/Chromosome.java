@@ -19,8 +19,6 @@
  */
 package org.jenetics;
 
-import java.io.Serializable;
-
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Verifiable;
@@ -38,14 +36,13 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0
+ * @version 3.1
  */
 public interface Chromosome<G extends Gene<?, G>>
 	extends
 		Verifiable,
 		Iterable<G>,
-		Factory<Chromosome<G>>,
-		Serializable
+		Factory<Chromosome<G>>
 {
 	/**
 	 * A factory method which creates a new {@link Chromosome} of specific type

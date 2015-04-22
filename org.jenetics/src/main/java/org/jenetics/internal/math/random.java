@@ -476,11 +476,11 @@ public final class random {
 	 * and {@code new Object().hashCode()} calls to create a reasonable safe
 	 * seed value:
 	 * <p>
-	 * [code]
+	 * <pre>{@code
 	 * public static long seed() {
 	 *     return seed(System.nanoTime());
 	 * }
-	 * [/code]
+	 * }</pre>
 	 * <p>
 	 * This method passes all of the statistical tests of the
 	 * <a href="http://www.phy.duke.edu/~rgb/General/dieharder.php">
@@ -502,17 +502,17 @@ public final class random {
 	 * value. This is done by combining it with values of
 	 * {@code new Object().hashCode()}:
 	 * <p>
-	 * [code]
+	 * <pre>{@code
 	 * public static long seed(final long base) {
-	 *     final long objectHashSeed = ((long)(new Object().hashCode()) &lt;&lt; 32) |
+	 *     final long objectHashSeed = ((long)(new Object().hashCode()) << 32) |
 	 *                                         new Object().hashCode();
-	 *     long seed = base ^ objectHashSeed;
-	 *     seed ^= seed &lt;&lt; 17;
-	 *     seed ^= seed &gt;&gt;&gt; 31;
-	 *     seed ^= seed &lt;&lt; 8;
+	 *     long seed = base^objectHashSeed;
+	 *     seed ^= seed << 17;
+	 *     seed ^= seed >>> 31;
+	 *     seed ^= seed << 8;
 	 *     return seed;
 	 * }
-	 * [/code]
+	 * }</pre>
 	 *
 	 * @param base the base value of the seed to create
 	 * @return the created seed value.

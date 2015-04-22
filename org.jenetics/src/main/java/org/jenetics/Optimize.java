@@ -76,10 +76,10 @@ public enum Optimize {
 	 * sorted in <b>descending</b> order, according to the given definition
 	 * of <i>better</i> and <i>worse</i>.
 	 *
-	 * [code]
-	 * Population&lt;DoubleGene, Double&gt; population = ...
-	 * population.sort(Optimize.MINIMUM.&lt;Double&gt;descending());
-	 * [/code]
+	 * <pre>{@code
+	 * Population<DoubleGene, Double> population = ...
+	 * population.sort(Optimize.MINIMUM.<Double>descending());
+	 * }</pre>
 	 *
 	 * The code example above will populationSort the population according it's fitness
 	 * values in ascending order, since lower values are <i>better</i> in this
@@ -98,10 +98,10 @@ public enum Optimize {
 	 * sorted in <b>ascending</b> order, according to the given definition
 	 * of <i>better</i> and <i>worse</i>.
 	 *
-	 * [code]
-	 * Population&lt;DoubleGene, Double&gt; population = ...
-	 * population.sort(Optimize.MINIMUM.&lt;Double&gt;ascending());
-	 * [/code]
+	 * <pre>{@code
+	 * Population<DoubleGene, Double> population = ...
+	 * population.sort(Optimize.MINIMUM.<Double>ascending());
+	 * }</pre>
 	 *
 	 * The code example above will populationSort the population according it's fitness
 	 * values in descending order, since lower values are <i>better</i> in this

@@ -37,11 +37,11 @@ import org.jenetics.internal.util.Hash;
  * classical sense. The characters of this sequence are sorted and doesn't
  * contain duplicate values, like a set.
  *
- * [code]
+ * <pre>{@code
  * final CharSeq cs1 = new CharSeq("abcdeaafg");
  * final CharSeq cs2 = new CharSeq("gfedcbabb");
  * assert(cs1.equals(cs2));
- * [/code]
+ * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
@@ -78,7 +78,7 @@ public final class CharSeq
 	 * @throws NullPointerException if the {@code characters} are {@code null}.
 	 */
 	public CharSeq(final CharSequence characters) {
-		this(toCharArray(characters));
+		super(distinct(toCharArray(characters)));
 	}
 
 	private static char[] toCharArray(final CharSequence characters) {

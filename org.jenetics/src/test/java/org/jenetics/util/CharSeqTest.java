@@ -36,16 +36,12 @@ import org.jenetics.internal.math.random;
  */
 public class CharSeqTest extends ObjectTester<CharSeq> {
 
-	private final Factory<CharSeq> _factory = new Factory<CharSeq>() {
-		@Override
-		public CharSeq newInstance() {
-			final Random r = RandomRegistry.getRandom();
-			return new CharSeq(random.nextString(r, r.nextInt(200) + 100));
-		}
-	};
 	@Override
 	protected Factory<CharSeq> factory() {
-		return _factory;
+		return () -> {
+			final Random r = RandomRegistry.getRandom();
+			return new CharSeq(random.nextString(r, r.nextInt(200) + 100));
+		};
 	}
 
 	@Test

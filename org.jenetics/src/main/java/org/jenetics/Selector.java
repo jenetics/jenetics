@@ -24,13 +24,13 @@ package org.jenetics;
  * the population. The selectors are used to divide the population into
  * survivors and offspring. The selectors for offspring and for the survivors
  * can be chosen independently.
- * [code]
- * final Engine&lt;DoubleGene, Double&gt; engine = Engine
+ * <pre>{@code
+ * final Engine<DoubleGene, Double> engine = Engine
  *     .builder(gtf, ff)
- *     .offspringSelector(new RouletteWheelSelector&lt;&gt;())
- *     .survivorsSelector(new TournamentSelector&lt;&gt;())
+ *     .offspringSelector(new RouletteWheelSelector<>())
+ *     .survivorsSelector(new TournamentSelector<>())
  *     .build();
- * [/code]
+ * }</pre>
  *
  * @param <G> The gene type this GA evaluates,
  * @param <C> The result type (of the fitness function).

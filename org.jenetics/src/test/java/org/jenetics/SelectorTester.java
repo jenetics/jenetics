@@ -283,7 +283,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 			Phenotype.of(Genotype.of(DoubleChromosome.of(MIN, MAX)), 1, ff);
 
 		return IntStream.range(0, loops).parallel().mapToObj(j -> {
-			final Histogram<Double> hist = Histogram.of(MIN, MAX, CLASS_COUNT);
+			final Histogram<Double> hist = Histogram.ofDouble(MIN, MAX, CLASS_COUNT);
 
 			final Population<DoubleGene, Double> population =
 				IntStream.range(0, populationCount)

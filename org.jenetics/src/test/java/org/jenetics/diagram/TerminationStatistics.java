@@ -25,7 +25,6 @@ import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.joining;
 import static org.jenetics.diagram.CandleStickPoint.toCandleStickPoint;
 import static org.jenetics.engine.EvolutionResult.toBestEvolutionResult;
-import static org.jenetics.engine.limit.bySteadyFitness;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,6 +34,9 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collector;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -48,10 +50,12 @@ import org.jenetics.stat.DoubleMomentStatistics;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz  Wilhelmstötter</a>
  */
-public class SteadyFitnessTermination<G extends Gene<?, G>> {
+public class TerminationStatistics<G extends Gene<?, G>, P>
+	implements Consumer<P>
+{
 
 	private static final String[] HEADER = {
-		"1-G",
+		"1-P",
 		"2-TG-mean",
 		"3-TG-variance",
 		"4-TG-skewness",
@@ -74,28 +78,49 @@ public class SteadyFitnessTermination<G extends Gene<?, G>> {
 
 	private final int _samples;
 	private final Engine<G, Double> _engine;
+	private final Function<P, Predicate<? super EvolutionResult<G, Double>>> _limit;
+	private final Function<? super P, ? extends Comparable<?>> _parameterConverter;
 
 	private final List<Object[]> _result = synchronizedList(new ArrayList<>());
 
-	public SteadyFitnessTermination(
+	public TerminationStatistics(
+		final int samples,
 		final Engine<G, Double> engine,
-		final int samples
+		final Function<P, Predicate<? super EvolutionResult<G, Double>>> limit,
+		final Function<? super P, ? extends Comparable<?>> parameterConverter
 	) {
-		_engine = requireNonNull(engine);
 		_samples = samples;
+		_engine = requireNonNull(engine);
+		_limit = requireNonNull(limit);
+		_parameterConverter = requireNonNull(parameterConverter);
 	}
 
-	public void execute(final int generation) {
-		_result.add(exec(generation));
+	public TerminationStatistics(
+		final int samples,
+		final Engine<G, Double> engine,
+		final Function<P, Predicate<? super EvolutionResult<G, Double>>> limit
+	) {
+		this(samples, engine, limit, TerminationStatistics::defaultParameterConverter);
 	}
 
-	private Object[] exec(final int generation) {
-		final CandleStickPoint[] result = IntStream.range(0, _samples).parallel()
-			.mapToObj(i -> toResult(generation))
+	private static Comparable<?> defaultParameterConverter(final Object parameter) {
+		return parameter instanceof Comparable<?>
+			? (Comparable<?>)parameter
+			: Objects.toString(parameter);
+	}
+
+	@Override
+	public void accept(final P parameter) {
+		_result.add(exec(requireNonNull(parameter)));
+	}
+
+	private Object[] exec(final P parameter) {
+		final CandleStickPoint[] result = IntStream.range(0, _samples)
+			.mapToObj(i -> toResult(parameter))
 			.collect(toCandleStickPoint(a -> a._1, a -> a._2));
 
 		final Object[] data = new Object[19];
-		data[0] = generation;
+		data[0] = _parameterConverter.apply(parameter);
 
 		// Total generation
 		data[1] = df(result[0].mean);
@@ -122,12 +147,12 @@ public class SteadyFitnessTermination<G extends Gene<?, G>> {
 		return data;
 	}
 
-	private IntDoublePair toResult(final int generation) {
+	private IntDoublePair toResult(final P parameter) {
 		final EvolutionStatistics<Double, DoubleMomentStatistics> statistics =
 			EvolutionStatistics.ofNumber();
 
 		final EvolutionResult<G, Double> result = _engine.stream()
-			.limit(bySteadyFitness(generation))
+			.limit(_limit.apply(parameter))
 			.peek(statistics)
 			.collect(toBestEvolutionResult());
 
@@ -137,9 +162,10 @@ public class SteadyFitnessTermination<G extends Gene<?, G>> {
 		);
 	}
 
+	@SuppressWarnings("unchecked")
 	public Object[][] getResult() {
 		final List<Object[]> result = new ArrayList<>(_result);
-		result.sort((a, b) -> ((Integer)a[0]).compareTo((Integer)b[0]));
+		result.sort((a, b) -> ((Comparable)a[0]).compareTo((Comparable)b[0]));
 		result.add(0, HEADER);
 
 		return result.toArray(new Object[0][]);
@@ -175,12 +201,12 @@ public class SteadyFitnessTermination<G extends Gene<?, G>> {
 		final UncheckedAppendable uout = new UncheckedAppendable(out);
 
 		uout.append("#")
-			.append(format(pattern, (Object)sdata[0]))
+			.append(format(pattern, (Object[])sdata[0]))
 			.append('\n');
 
 		Stream.of(sdata).skip(1).forEach(d ->
 			uout.append(" ")
-				.append(format(pattern, (Object)d))
+				.append(format(pattern, (Object[])d))
 				.append('\n')
 		);
 
@@ -188,8 +214,8 @@ public class SteadyFitnessTermination<G extends Gene<?, G>> {
 
 	private static Collector<int[], ?, int[]> toWidth(final int length) {
 		return Collector.of(() -> new int[length],
-			SteadyFitnessTermination::max,
-			SteadyFitnessTermination::max
+			TerminationStatistics::max,
+			TerminationStatistics::max
 		);
 	}
 
@@ -206,6 +232,21 @@ public class SteadyFitnessTermination<G extends Gene<?, G>> {
 		format.setMinimumFractionDigits(7);
 
 		return format.format(value).replace(",", "");
+	}
+
+	public void warmup(final Engine<?, ?> engine) {
+		System.out.print("Warmup");
+
+		final long start = System.currentTimeMillis();
+		for (int i = 0; i < 700; ++i) {
+			engine.stream()
+				.limit(300)
+				.mapToInt(r -> r.getAlterCount())
+				.sum();
+		}
+		final long end = System.currentTimeMillis();
+
+		System.out.println(format(": %f sec.", (end - start)/1_000.0));
 	}
 
 }

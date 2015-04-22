@@ -198,11 +198,11 @@ public final class IntSummary implements Serializable {
 	 * function to each input element, and returns summary-statistics for the
 	 * resulting values.
 	 *
-	 * [code]
-	 * final Stream&lt;SomeObject&gt; stream = ...
+	 * <pre>{@code
+	 * final Stream<SomeObject> stream = ...
 	 * final IntSummary summary = stream
-	 *     .collect(toIntSummary(v -&gt; v.intValue()));
-	 * [/code]
+	 *     .collect(toIntSummary(v -> v.intValue()));
+	 * }</pre>
 	 *
 	 * @param mapper a mapping function to apply to each element
 	 * @param <T> the type of the input elements

@@ -71,7 +71,7 @@ public class ExponentialRankSelectorTest
 				loops
 			);
 
-			StatisticsAssert.assertDistribution(distribution, expected.value, 0.001);
+			StatisticsAssert.assertDistribution(distribution, expected.value, 0.001, 10);
 		});
 	}
 

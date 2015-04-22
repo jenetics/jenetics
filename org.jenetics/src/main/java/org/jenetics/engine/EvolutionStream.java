@@ -49,14 +49,14 @@ public interface EvolutionStream<
 	 * when the given {@code proceed} predicate returns {@code false}.
 	 * <p>
 	 * <i>General usage example:</i>
-	 * [code]
-	 * final Phenotype&lt;DoubleGene, Double&gt; result = engine.stream()
+	 * <pre>{@code
+	 * final Phenotype<DoubleGene, Double> result = engine.stream()
 	 *      // Truncate the evolution stream after 5 "steady" generations.
 	 *     .limit(bySteadyFitness(5))
 	 *      // The evolution will stop after maximal 100 generations.
 	 *     .limit(100)
 	 *     .collect(toBestPhenotype());
-	 * [/code]
+	 * }</pre>
 	 *
 	 * @see limit
 	 *
@@ -75,15 +75,53 @@ public interface EvolutionStream<
 	 * factory method is to simplify the creation of an {@code EvolutionStream}
 	 * from an own evolution (GA) engine.
 	 *
-	 * [code]
-	 * final Function&lt;
-	 *     EvolutionStart&lt;DoubleGene, Double&gt;,
-	 *     EvolutionResult&lt;DoubleGene, Double&gt;&gt; engine = new MySpecialEngine();
-	 * final Supplier&lt;EvolutionStart&lt;DoubleGene, Double&gt;&gt; start = ...
+	 * <pre>{@code
+	 * final Supplier<EvolutionStart<DoubleGene, Double>> start = ...
+	 * final EvolutionStream<DoubleGene, Double> stream =
+	 *     EvolutionStream.of(start, new MySpecialEngine());
+	 * }</pre>
 	 *
-	 * final EvolutionStream&lt;DoubleGene, Double&gt; stream =
-	 *     EvolutionStream.of(start, engine);
-	 * [/code]
+	 * A more complete example for would look like as:
+	 *
+	 * <pre>{@code
+	 * public final class SpecialEngine {
+	 *
+	 *     // The fitness function.
+	 *     private static Double fitness(final Genotype<DoubleGene> gt) {
+	 *         return gt.getGene().getAllele();
+	 *     }
+	 *
+	 *     // Create new evolution start object.
+	 *     private static EvolutionStart<DoubleGene, Double>
+	 *     start(final int populationSize, final long generation) {
+	 *         final Population<DoubleGene, Double> population =
+	 *             Genotype.of(DoubleChromosome.of(0, 1)).instances()
+	 *                 .map(gt -> Phenotype.of(gt, generation, SpecialEngine::fitness))
+	 *                 .limit(populationSize)
+	 *                 .collect(Population.toPopulation());
+	 *
+	 *         return EvolutionStart.of(population, generation);
+	 *     }
+	 *
+	 *     // The special evolution function.
+	 *     private static EvolutionResult<DoubleGene, Double>
+	 *     evolve(final EvolutionStart<DoubleGene, Double> start) {
+	 *         // Your special evolution implementation comes here!
+	 *         return null;
+	 *     }
+	 *
+	 *     public static void main(final String[] args) {
+	 *         final Genotype<DoubleGene> best = EvolutionStream
+	 *             .of(() -> start(50, 0), SpecialEngine::evolve)
+	 *             .limit(limit.bySteadyFitness(10))
+	 *             .limit(1000)
+	 *             .collect(EvolutionResult.toBestGenotype());
+	 *
+	 *         System.out.println(String.format("Best Genotype: %s", best));
+	 *     }
+	 * }
+	 * }</pre>
+	 *
 	 *
 	 * @since 3.1
 	 *

@@ -46,7 +46,7 @@ public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 	public void newInstanceDistribution() {
 		final Integer min = 0;
 		final Integer max = Integer.MAX_VALUE;
-		final Histogram<Integer> histogram = Histogram.of(min, max, 10);
+		final Histogram<Integer> histogram = Histogram.ofInteger(min, max, 10);
 
 		using(new Random(12345), r ->
 			IntStream.range(0, 200_000)

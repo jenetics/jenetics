@@ -17,10 +17,36 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.diagram.problem;
+package org.jenetics.util;
+
+import static java.lang.String.format;
+
+import java.time.Clock;
+
+import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public interface Config {
+public class NanoClockTest {
+
+	@Test
+	public void millis() {
+		final Clock nano = NanoClock.systemUTC();
+
+		for (int i = 0; i < 10_000; ++i) {
+			final long t2 = System.currentTimeMillis();
+			final long t1 = nano.instant().toEpochMilli();
+
+			assertEquals(t1, t2, 15);
+		}
+	}
+
+	private static void assertEquals(final long v1, final long v2, final long epsilon) {
+		final long diff = Math.abs(v1 - v2);
+		if (diff > epsilon) {
+			throw new AssertionError(format("Got %d but expected %d.", v1, v2));
+		}
+	}
+
 }
