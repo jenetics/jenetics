@@ -57,7 +57,7 @@ public class TournamentSelectorTest
 		final int loops = (int)(tournamentSize*1.7);
 		final int npopulation = POPULATION_COUNT;
 
-		using(new LCG64ShiftRandom.ThreadLocal(), r -> {
+		using(new LCG64ShiftRandom(1234), r -> {
 			final Histogram<Double> distribution = SelectorTester.distribution(
 				new TournamentSelector<>(tournamentSize),
 				opt,
