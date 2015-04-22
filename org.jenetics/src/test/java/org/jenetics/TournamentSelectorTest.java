@@ -66,7 +66,7 @@ public class TournamentSelectorTest
 			);
 
 			StatisticsAssert.assertDistribution(
-				distribution, expected.value, 0.001, 20
+				distribution, expected.value, 0.0001, 20
 			);
 		});
 	}
