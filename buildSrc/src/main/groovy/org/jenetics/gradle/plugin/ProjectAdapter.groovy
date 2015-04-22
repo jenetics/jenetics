@@ -19,7 +19,16 @@
  */
 package org.jenetics.gradle.plugin
 
-import org.gradle.api.*
+import org.gradle.api.Action
+import org.gradle.api.AntBuilder
+import org.gradle.api.InvalidUserDataException
+import org.gradle.api.NamedDomainObjectContainer
+import org.gradle.api.NamedDomainObjectFactory
+import org.gradle.api.PathValidation
+import org.gradle.api.Project
+import org.gradle.api.ProjectState
+import org.gradle.api.Task
+import org.gradle.api.UnknownProjectException
 import org.gradle.api.artifacts.ConfigurationContainer
 import org.gradle.api.artifacts.dsl.ArtifactHandler
 import org.gradle.api.artifacts.dsl.DependencyHandler
@@ -36,6 +45,7 @@ import org.gradle.api.logging.LoggingManager
 import org.gradle.api.plugins.Convention
 import org.gradle.api.plugins.ExtensionContainer
 import org.gradle.api.plugins.PluginContainer
+import org.gradle.api.plugins.PluginManager
 import org.gradle.api.resources.ResourceHandler
 import org.gradle.api.tasks.TaskContainer
 import org.gradle.api.tasks.WorkResult
@@ -44,7 +54,7 @@ import org.gradle.process.ExecResult
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5
+ * @version 3.1
  */
 class ProjectAdapter implements Project {
 
@@ -90,6 +100,11 @@ class ProjectAdapter implements Project {
 	@Override
 	public void apply(final Closure closure) {
 		project.apply(closure)
+	}
+
+	@Override
+	public void apply(Action action) {
+		project.apply(action)
 	}
 
 	@Override
@@ -445,6 +460,11 @@ class ProjectAdapter implements Project {
 	@Override
 	public Object getVersion() {
 		return project.getVersion()
+	}
+
+	@Override
+	public PluginManager getPluginManager() {
+		return project.getPluginManager()
 	}
 
 	@Override

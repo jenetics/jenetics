@@ -265,11 +265,11 @@ public final class IntMoments implements Serializable {
 	 * function to each input element, and returns moments-statistics for the
 	 * resulting values.
 	 *
-	 * [code]
-	 * final Stream&lt;SomeObject&gt; stream = ...
+	 * <pre>{@code
+	 * final Stream<SomeObject> stream = ...
 	 * final IntMoments moments = stream
-	 *     .collect(toIntMoments(v -&gt; v.intValue()));
-	 * [/code]
+	 *     .collect(toIntMoments(v -> v.intValue()));
+	 * }</pre>
 	 *
 	 * @param mapper a mapping function to apply to each element
 	 * @param <T> the type of the input elements

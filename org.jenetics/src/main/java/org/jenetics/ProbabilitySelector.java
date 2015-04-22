@@ -103,8 +103,8 @@ public abstract class ProbabilitySelector<
 
 		if (count > 0) {
 			final double[] prob = probabilities(population, count, opt);
-			assert (population.size() == prob.length) :
-				"Population size and probability length are not equal.";
+			assert (population.size() == prob.length)
+				: "Population size and probability length are not equal.";
 			assert (sum2one(prob)) : "Probabilities doesn't sum to one.";
 
 			incremental(prob);
@@ -136,9 +136,9 @@ public abstract class ProbabilitySelector<
 		final int count,
 		final Optimize opt
 	) {
-		return requireNonNull(opt) == Optimize.MINIMUM ?
-			_reverter.apply(probabilities(population, count)) :
-			probabilities(population, count);
+		return requireNonNull(opt) == Optimize.MINIMUM
+			? _reverter.apply(probabilities(population, count))
+			: probabilities(population, count);
 	}
 
 	// Package private for testing.
@@ -192,9 +192,9 @@ public abstract class ProbabilitySelector<
 	}
 
 	static int indexOf(final double[] incr, final double v) {
-		return incr.length <= SERIAL_INDEX_THRESHOLD ?
-			indexOfSerial(incr, v) :
-			indexOfBinary(incr, v);
+		return incr.length <= SERIAL_INDEX_THRESHOLD
+			? indexOfSerial(incr, v)
+			: indexOfBinary(incr, v);
 	}
 
 	/**

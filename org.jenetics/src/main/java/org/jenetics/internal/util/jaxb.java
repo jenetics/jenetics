@@ -89,9 +89,8 @@ public class jaxb {
 	 */
 	@SuppressWarnings("unchecked")
 	public static XmlAdapter<Object, Object> adapterFor(final Object value) {
-		return (XmlAdapter<Object, Object>)ADAPTERS.computeIfAbsent(
-			classOf(value), jaxb::newXmlAdapter
-		);
+		return (XmlAdapter<Object, Object>)ADAPTERS
+			.computeIfAbsent(classOf(value), jaxb::newXmlAdapter);
 	}
 
 	private static XmlAdapter<Object, Object> newXmlAdapter(final Class<?> cls) {

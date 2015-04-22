@@ -49,7 +49,7 @@ public class GaussianMutatorTest extends MutatorTestBase {
 		final DoubleGene gene = DoubleGene.of(mean, min, max);
 		final GaussianMutator<DoubleGene, Double> mutator = new GaussianMutator<>();
 
-		final Histogram<Double> histogram = Histogram.of(0.0, 10.0, 10);
+		final Histogram<Double> histogram = Histogram.ofDouble(0.0, 10.0, 10);
 
 		for (int i = 0; i < 10000; ++i) {
 			final double value = mutator.mutate(gene, random).getAllele();

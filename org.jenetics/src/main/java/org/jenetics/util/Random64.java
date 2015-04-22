@@ -32,7 +32,7 @@ import org.jenetics.internal.math.random;
  * objects which natively creates random {@code long} values. All other
  * {@code Random} functions are optimized using this {@code long} values.
  *
- * [code]
+ * <pre>{@code
  * public class MyRandom64 extends Random64 {
  *     \@Override
  *     public long nextLong() {
@@ -40,7 +40,7 @@ import org.jenetics.internal.math.random;
  *         ...
  *     }
  * }
- * [/code]
+ * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1

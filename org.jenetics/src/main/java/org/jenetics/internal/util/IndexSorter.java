@@ -65,9 +65,9 @@ public abstract class IndexSorter {
 	 * @return the index lookup array
 	 */
 	public static int[] sort(final double[] array) {
-		final IndexSorter sorter = array.length < INSERTION_SORT_THRESHOLD ?
-			INSERTION_SORTER :
-			HEAP_SORTER;
+		final IndexSorter sorter = array.length < INSERTION_SORT_THRESHOLD
+			? INSERTION_SORTER
+			: HEAP_SORTER;
 
 		return sorter.sort(array, indexes(array.length));
 	}
