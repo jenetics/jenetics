@@ -562,7 +562,8 @@ g.
 \family default
 ,
 \family typewriter
- Chromosome
+ Chromo\SpecialChar \-
+some
 \family default
 ,
 \family typewriter
@@ -10610,7 +10611,6 @@ public final class SpecialEngine {
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-
 \begin_inset CommandInset label
 LatexCommand label
 name "lis:Special-evolution-engine"
