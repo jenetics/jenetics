@@ -167,6 +167,8 @@ public final class RandomRegistry {
 	 * The example above shuffles the given integer {@code seq} <i>using</i> the
 	 * given {@code Random(123)} engine.
 	 *
+	 * @since 3.0
+	 *
 	 * @param random the PRNG used within the consumer
 	 * @param consumer the consumer which is executed with the <i>scope</i> of
 	 *        the given {@code random} engine.
@@ -188,13 +190,15 @@ public final class RandomRegistry {
 	 *
 	 * <pre>{@code
 	 * final MSeq<Integer> seq = ...
-	 * using(new LCG64ShiftRandom.ThreadLocal(), r -&gt; {
+	 * using(new LCG64ShiftRandom.ThreadLocal(), r -> {
 	 *     seq.shuffle();
 	 * });
 	 * }</pre>
 	 *
 	 * The example above shuffles the given integer {@code seq} <i>using</i> the
 	 * given {@code LCG64ShiftRandom.ThreadLocal()} engine.
+	 *
+	 * @since 3.0
 	 *
 	 * @param random the PRNG used within the consumer
 	 * @param consumer the consumer which is executed with the <i>scope</i> of
@@ -225,6 +229,8 @@ public final class RandomRegistry {
 	 *     );
 	 * }</pre>
 	 *
+	 * @since 3.0
+	 *
 	 * @param <R> the type of the random engine
 	 * @param <T> the function return type
 	 * @param random the PRNG used for the opened scope
@@ -251,6 +257,8 @@ public final class RandomRegistry {
 	 *            .collect(toList())
 	 *     );
 	 * }</pre>
+	 *
+	 * @since 3.0
 	 *
 	 * @param <R> the type of the random engine
 	 * @param <T> the function return type
