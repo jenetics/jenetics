@@ -103,11 +103,11 @@ public interface ISeq<T>
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> ISeq<T> of(final Iterable<? extends T> values) {
-		return values instanceof ISeq<?> ?
-			(ISeq<T>)values :
-			values instanceof MSeq<?> ?
-				((MSeq<T>)values).toISeq() :
-				MSeq.of(values).toISeq();
+		return values instanceof ISeq<?>
+			? (ISeq<T>)values
+			: values instanceof MSeq<?>
+				? ((MSeq<T>)values).toISeq()
+				: MSeq.of(values).toISeq();
 	}
 
 	public static <T> ISeq<T> of(Supplier<? extends T> supplier, final int length) {
