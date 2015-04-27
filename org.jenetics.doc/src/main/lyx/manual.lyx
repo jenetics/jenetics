@@ -146,7 +146,7 @@ tabs-within-sections
 \paperpagestyle fancy
 \tracking_changes false
 \output_changes false
-\html_math_output 2
+\html_math_output 0
 \html_css_as_file 1
 \html_be_strict true
 \html_math_img_scale 1.2
@@ -725,15 +725,23 @@ target "http://en.wikipedia.org/wiki/Genetic_algorithm"
  It has no runtime dependencies to other libraries, except the Java 8 runtime.
  Since the library is available on maven central repository
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 If you are using Gradle, you can use the following dependency string: 
 \family typewriter
-'org.bitbucket.fwilhelm:\SpecialChar \-
+
+\begin_inset Quotes ald
+\end_inset
+
+org.bitbucket.fwilhelm:\SpecialChar \-
 org.jenetics:\SpecialChar \-
-3.1.0'
+3.1.0
 \family default
+
+\begin_inset Quotes ard
+\end_inset
+
 .
 \end_layout
 
@@ -995,7 +1003,9 @@ public class HelloWorld {
 
         System.out.println("Hello World:
 \backslash
-n" + result);
+n
+\backslash
+t" + result);
 \end_layout
 
 \begin_layout Plain Layout
