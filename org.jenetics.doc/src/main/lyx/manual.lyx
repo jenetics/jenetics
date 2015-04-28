@@ -269,7 +269,7 @@ LIBRARY USER'S MANUAL
 \align center
 \begin_inset Graphics
 	filename ../resources/graphic/title.png
-	lyxscale 50
+	lyxscale 15
 	height 47pheight%
 
 \end_inset
@@ -725,7 +725,7 @@ target "http://en.wikipedia.org/wiki/Genetic_algorithm"
  It has no runtime dependencies to other libraries, except the Java 8 runtime.
  Since the library is available on maven central repository
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 If you are using Gradle, you can use the following dependency string: 
