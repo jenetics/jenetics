@@ -35,6 +35,7 @@ import org.jenetics.internal.util.Named;
 import org.jenetics.stat.Histogram;
 import org.jenetics.util.Factory;
 import org.jenetics.util.LCG64ShiftRandom;
+import org.jenetics.util.Retry;
 import org.jenetics.util.TestData;
 
 /**
@@ -98,7 +99,7 @@ public class RouletteWheelSelectorTest
 
 	@Test(
 		dataProvider = "expectedDistribution",
-		retryAnalyzer = SelectorTestRetryAnalyzer.class
+		retryAnalyzer = Retry.Five.class
 	)
 	public void selectDistribution(final Named<double[]> expected, final Optimize opt) {
 		final int loops = 50;

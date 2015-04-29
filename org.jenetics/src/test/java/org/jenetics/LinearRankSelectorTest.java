@@ -20,6 +20,7 @@
 package org.jenetics;
 
 import static java.lang.String.format;
+import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 import static org.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
@@ -31,9 +32,9 @@ import org.testng.annotations.Test;
 import org.jenetics.internal.util.Named;
 
 import org.jenetics.stat.Histogram;
-import org.jenetics.stat.StatisticsAssert;
 import org.jenetics.util.Factory;
 import org.jenetics.util.LCG64ShiftRandom;
+import org.jenetics.util.Retry;
 import org.jenetics.util.TestData;
 
 /**
@@ -58,13 +59,16 @@ public class LinearRankSelectorTest
 		return new LinearRankSelector<>(0.0);
 	}
 
-	@Test(dataProvider = "expectedDistribution", invocationCount = 20, successPercentage = 95)
+	@Test(
+		dataProvider = "expectedDistribution",
+		retryAnalyzer = Retry.Five.class
+	)
 	public void selectDistribution(
 		final Double nminus,
 		final Named<double[]> expected,
 		final Optimize opt
 	) {
-		final int loops = (int)(nminus*1.7);
+		final int loops = 50;
 		final int npopulation = POPULATION_COUNT;
 
 		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
@@ -76,7 +80,7 @@ public class LinearRankSelectorTest
 				loops
 			);
 
-			StatisticsAssert.assertDistribution(distribution, expected.value, 0.001);
+			assertDistribution(distribution, expected.value);
 		});
 	}
 

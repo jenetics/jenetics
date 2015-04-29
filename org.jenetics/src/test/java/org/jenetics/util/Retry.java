@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package org.jenetics.util;
 
 import org.testng.IRetryAnalyzer;
 import org.testng.ITestResult;
@@ -25,13 +25,36 @@ import org.testng.ITestResult;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class SelectorTestRetryAnalyzer implements IRetryAnalyzer {
+public abstract class Retry implements IRetryAnalyzer {
+
+	public static final class One extends Retry {{
+		retry = 1;
+	}}
+
+	public static final class Two extends Retry {{
+		retry = 2;
+	}}
+
+	public static final class Three extends Retry {{
+		retry = 3;
+	}}
+
+	public static final class Four extends Retry {{
+		retry = 4;
+	}}
+
+	public static final class Five extends Retry {{
+		retry = 5;
+	}}
+
+
+	int retry;
 
 	@Override
 	public boolean retry(final ITestResult result) {
 		return
 			!result.isSuccess() &&
-			result.getMethod().getFailedInvocationNumbers().size() < 5;
+			result.getMethod().getFailedInvocationNumbers().size() < retry;
 	}
 
 }
