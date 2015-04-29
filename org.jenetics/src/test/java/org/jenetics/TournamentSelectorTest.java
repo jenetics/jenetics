@@ -20,6 +20,7 @@
 package org.jenetics;
 
 import static java.lang.String.format;
+import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 import static org.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
@@ -31,7 +32,6 @@ import org.testng.annotations.Test;
 import org.jenetics.internal.util.Named;
 
 import org.jenetics.stat.Histogram;
-import org.jenetics.stat.StatisticsAssert;
 import org.jenetics.util.Factory;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.TestData;
@@ -48,16 +48,19 @@ public class TournamentSelectorTest
 		return () -> new TournamentSelector<>(3);
 	}
 
-	@Test(dataProvider = "expectedDistribution", invocationCount = 20, successPercentage = 95)
+	@Test(
+		dataProvider = "expectedDistribution",
+		retryAnalyzer = SelectorTestRetryAnalyzer.class
+	)
 	public void selectDistribution(
 		final Integer tournamentSize,
 		final Named<double[]> expected,
 		final Optimize opt
 	) {
-		final int loops = (int)(tournamentSize*1.7);
+		final int loops = 1;
 		final int npopulation = POPULATION_COUNT;
 
-		using(new LCG64ShiftRandom(1234), r -> {
+		using(new LCG64ShiftRandom.ThreadLocal(), r -> {
 			final Histogram<Double> distribution = SelectorTester.distribution(
 				new TournamentSelector<>(tournamentSize),
 				opt,
@@ -65,9 +68,7 @@ public class TournamentSelectorTest
 				loops
 			);
 
-			StatisticsAssert.assertDistribution(
-				distribution, expected.value, 0.0001, 20
-			);
+			assertDistribution(distribution, expected.value, 0.001, 10);
 		});
 	}
 
