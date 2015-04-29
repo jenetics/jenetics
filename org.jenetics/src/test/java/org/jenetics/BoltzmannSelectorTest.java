@@ -75,7 +75,7 @@ public class BoltzmannSelectorTest
 				loops
 			);
 
-			assertDistribution(distribution, expected.value);
+			assertDistribution(distribution, expected.value, 0.001, 5);
 		});
 	}
 

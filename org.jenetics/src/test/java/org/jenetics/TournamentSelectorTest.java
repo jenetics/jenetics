@@ -69,7 +69,7 @@ public class TournamentSelectorTest
 				loops
 			);
 
-			assertDistribution(distribution, expected.value, 0.001, 10);
+			assertDistribution(distribution, expected.value, 0.001, 20);
 		});
 	}
 
