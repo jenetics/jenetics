@@ -764,7 +764,7 @@ width "90col%"
 special "none"
 height "1in"
 height_special "totalheight"
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset CommandInset line
@@ -1883,7 +1883,7 @@ Jenetics
 \shape default
 
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 The documentation of the whole API is part of the download package or can
@@ -3294,6 +3294,78 @@ Selectors are responsible for selecting a given number of individuals from
 \shape default
 \emph default
  can be chosen independently.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+The selection process of the 
+\series bold
+\shape smallcaps
+Jenetics
+\series default
+\shape default
+ library acts on 
+\family typewriter
+Phenotype
+\family sans
+s and indirectly, via the fitness function, on 
+\family typewriter
+Genotype
+\family sans
+s.
+ Direct 
+\family typewriter
+Gene
+\family sans
+- or 
+\family typewriter
+Population
+\family sans
+ selection is not supported by the library.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
