@@ -95,14 +95,14 @@ public final class CharSeq
 	private static char[] distinct(final char[] chars) {
 		Arrays.sort(chars);
 
-		int size = 0;
-		for (int i = 0, j = 0, n = chars.length; i < n && j < n; ++i) {
-			chars[i] = chars[j];
-			++size;
-
-			while (j < n && chars[j] == chars[i]) ++j;
+		int j = 0;
+		for (int i = 1; i < chars.length; ++i) {
+			if (chars[j] != chars[i]) {
+				chars[++j] = chars[i];
+			}
 		}
 
+		final int size = Math.min(chars.length, j + 1);
 		final char[] array = new char[size];
 		System.arraycopy(chars, 0, array, 0, size);
 		return array;
