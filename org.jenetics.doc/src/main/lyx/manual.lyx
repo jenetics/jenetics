@@ -2874,7 +2874,40 @@ Genotype
 \family typewriter
 Function
 \family default
+, which is used to (lazily) calculate the 
+\family typewriter
+Genotype
+\family default
+'s fitness value.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Since the fitness 
+\family typewriter
+Function
+\family default
+ is shared by all 
+\family typewriter
+Phenotype
+\family default
+s, calls of the fitness 
+\family typewriter
+Function
+\family default
+ must be idempotent.
+ See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Fitness-function"
+
+\end_inset
+
 .
+\end_layout
+
+\end_inset
+
  It is
 \emph on
  only
@@ -5430,10 +5463,23 @@ Function
 \family typewriter
 Phenotype
 \family default
-s, it has to be thread-safe.
- Ideally, this is achieved by a 
+s, calls to the fitness 
 \family typewriter
 Function
+\family default
+ has to be idempotent.
+ A fitness 
+\family typewriter
+Function
+\family default
+ is idempotent if, whenever it is applied twice to any 
+\family typewriter
+Genotype
+\family default
+, it returns the same fitness value as if it were applied once.
+ In the simplest case, this is achieved by 
+\family typewriter
+Functions
 \family default
  which doesn't contain any global 
 \shape italic
@@ -5465,7 +5511,11 @@ The following example shows the simplest possible fitness
 Function
 \family default
 .
- It's the identity function and returns the allele of a 
+ This 
+\family typewriter
+Function
+\family default
+ simply returns the allele of a 
 \begin_inset Formula $1\mathsf{x}1$
 \end_inset
 
@@ -5522,7 +5572,7 @@ public class Main {
 
 \begin_layout Plain Layout
 
-        Function<Genotype<DoubleGene>, Double>> ff1 = 
+        Function<Genotype<DoubleGene>, Double>> ff1 =
 \end_layout
 
 \begin_layout Plain Layout
@@ -5569,9 +5619,12 @@ The first type parameter of the
 \family typewriter
  Function
 \family default
- defines the kind of genotype from which the fitness value is calculated
- and the second type parameter determines the return type, which must be,
- at least, a 
+ defines the kind of 
+\family typewriter
+Genotype
+\family default
+ from which the fitness value is calculated and the second type parameter
+ determines the return type, which must be, at least, a 
 \family typewriter
 Comparable
 \family default
@@ -5600,7 +5653,11 @@ Fitness scaler
 \end_layout
 
 \begin_layout Standard
-The fitness value, calculated by the fitness function, is treated as the
+The fitness value, calculated by the fitness 
+\family typewriter
+Function
+\family default
+, is treated as the
 \shape italic
  raw
 \shape default
@@ -5826,7 +5883,17 @@ public final class Engine<
 
 \begin_layout Plain Layout
 
-> {
+> 
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    // The evolution function, performs one evolution step.
 \end_layout
 
 \begin_layout Plain Layout
@@ -5841,12 +5908,35 @@ public final class Engine<
 
 \begin_layout Plain Layout
 
-        long generation);
+        long generation
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Evolution stream for "normal" evolution execution.
 \end_layout
 
 \begin_layout Plain Layout
 
     EvolutionStream<G,C> stream();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Evolution iterator for external evolution iteration.
 \end_layout
 
 \begin_layout Plain Layout
@@ -7167,7 +7257,7 @@ Statistics
 \family typewriter
 Consumer<\SpecialChar \-
 Evolution\SpecialChar \-
-Result<?,C>>
+Result<?, C>>
 \family default
  interface, it can be easily plugged into the 
 \family typewriter
@@ -7518,12 +7608,22 @@ Jenetics
 \family typewriter
 ForkJoinPool
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
 \family typewriter
-ForkJoinPool.commonPool()
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ForkJoinPool.html
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -7796,7 +7896,7 @@ Setting the PRNG to a Random object with a defined seed has the effect,
 \emph on
 stream
 \emph default
- will produce the same result---in a single threaded environment.
+ will produce the same result---in an single threaded environment.
 \end_layout
 
 \begin_layout Plain Layout
@@ -9238,8 +9338,12 @@ The
 \family typewriter
  org.jenetics.util
 \family default
- package of the library contains utility classes which are also very important
- for the GA implementation.
+ and the 
+\family typewriter
+org.jenetics.stat
+\family default
+ package of the library contains utility and helper classes which are essential
+ for the implementation of the GA.
 \end_layout
 
 \begin_layout Paragraph
