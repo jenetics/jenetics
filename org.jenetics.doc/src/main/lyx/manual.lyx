@@ -2829,7 +2829,7 @@ reference "fig:Genotype-structure"
  Double\SpecialChar \-
 Gene
 \family default
- has been chosen for 
+ has been chosen as 
 \family typewriter
 Gene
 \family default
@@ -8892,7 +8892,29 @@ Jenetics
 \family typewriter
  org.jenetics
 \family default
- package:
+ package.
+ Only the concrete implementations of the 
+\family typewriter
+Gene
+\family default
+ and the 
+\family typewriter
+Chromosome
+\family default
+ interfaces implements the 
+\family typewriter
+Serializable
+\family default
+ interface.
+ This gives a greater flexibility when implementing own 
+\family typewriter
+Gene
+\family default
+s and 
+\family typewriter
+Chromosome
+\family default
+s.
 \end_layout
 
 \begin_layout Standard
@@ -10125,6 +10147,11 @@ status open
 
 \begin_layout Plain Layout
 
+@FunctionalInterface
+\end_layout
+
+\begin_layout Plain Layout
+
 public interface Selector<
 \end_layout
 
@@ -10291,12 +10318,37 @@ status open
 
 \begin_layout Plain Layout
 
-public interface Alterer<G extends Gene<?, G>> {
+@FunctionalInterface
 \end_layout
 
 \begin_layout Plain Layout
 
-    public <C extends Comparable<? super C>> int alter(
+public interface Alterer<
+\end_layout
+
+\begin_layout Plain Layout
+
+    G extends Gene<?, G>,
+\end_layout
+
+\begin_layout Plain Layout
+
+    C extends Comparable<? super C>
+\end_layout
+
+\begin_layout Plain Layout
+
+>
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    public int alter(
 \end_layout
 
 \begin_layout Plain Layout
@@ -10306,7 +10358,7 @@ public interface Alterer<G extends Gene<?, G>> {
 
 \begin_layout Plain Layout
 
-        int generation
+        long generation
 \end_layout
 
 \begin_layout Plain Layout
@@ -11754,7 +11806,7 @@ Encoding!Affine transformation
 \end_layout
 
 \begin_layout Standard
-3.0An affine transformation
+An affine transformation
 \begin_inset Foot
 status collapsed
 
@@ -12045,7 +12097,7 @@ Genotype.of(
 
 \begin_layout Plain Layout
 
-    // Rotation 			
+    // Rotation
 \end_layout
 
 \begin_layout Plain Layout
@@ -12280,7 +12332,6 @@ A graph can be represented in many different ways.
  The most known graph representation is the adjacency matrix.
  The following encoding examples uses adjacency matrices with different
  characteristics.
- 
 \end_layout
 
 \begin_layout Paragraph
@@ -12326,7 +12377,6 @@ In an undirected graph the edges between the vertices have no direction.
 \end_inset
 
 .
- 
 \end_layout
 
 \begin_layout Standard
@@ -12804,7 +12854,7 @@ Engine
 \emph on
 altering
 \emph default
- step by rearranging (or creating new) 
+ step, by rearranging (or creating new) 
 \family typewriter
 Genes
 \family default
@@ -12842,20 +12892,34 @@ s determines the validity of the whole
 Genotype
 \family default
 .
- 
 \end_layout
 
 \begin_layout Standard
-The Engine tries to create only valid individuals when creating the initial
- Population and when it replaces Genotypes which has been 
+The 
+\family typewriter
+Engine
+\family default
+ tries to create only valid individuals when creating the initial 
+\family typewriter
+Population
+\family default
+ and when it replaces 
+\family typewriter
+Genotype
+\family default
+s which has been 
 \emph on
 destroyed
 \emph default
  by the altering step.
  Individuals which has exceeded its lifetime are also replaced by new valid
  ones.
- To guarantee the termination of the Genotype creation, the Engine is parameteri
-zed with the maximal number of retries (
+ To guarantee the termination of the 
+\family typewriter
+Genotype
+\family default
+ creation, the Engine is parameterized with the maximal number of retries
+ (
 \family typewriter
 indi\SpecialChar \-
 vidual\SpecialChar \-
@@ -13148,8 +13212,20 @@ Alterer
 \end_layout
 
 \begin_layout Standard
-Creating your own Gene, Chromosome and Alterer classes is the most heavy-wighted
- possibility for solving the 
+Creating your own 
+\family typewriter
+Gene
+\family default
+, 
+\family typewriter
+Chromosome
+\family default
+ and 
+\family typewriter
+Alter\SpecialChar \-
+er
+\family default
+ classes is the most heavy-wighted possibility for solving the 
 \emph on
 validity
 \emph default
@@ -13188,7 +13264,7 @@ Termination
 \begin_layout Standard
 Termination is the criterion by which the evolution stream decides whether
  to continue or truncate the stream.
- This section gives a deeper look into the different ways of terminating
+ This section gives a deeper insight into the different ways of terminating
  or truncating the evolution stream, respectively.
 \end_layout
 
@@ -13247,6 +13323,15 @@ Evolution\SpecialChar \-
 Stream
 \family default
 .
+ It just uses the existing 
+\family typewriter
+limit
+\family default
+ method of the Java 
+\family typewriter
+Stream
+\family default
+ interface.
 \end_layout
 
 \begin_layout Standard
@@ -13366,6 +13451,13 @@ max
 mean
 \emph default
  of the best fitness values.
+ For a small increase of the fitness value, the needed generations grows
+ exponentially.
+ This is especially the case when the fitness is approaching to its 
+\emph on
+maximal
+\emph default
+ value.
 \end_layout
 
 \begin_layout Subsubsection
@@ -13400,7 +13492,7 @@ steady fitness
  strategy truncates the evolution stream if its best fitness hasn't changed
  after a given number of generations.
  The predicate maintains an internal state, the number of generations with
- non increasing fitness, and must be created for every evolution stream.
+ non increasing fitness, and must be newly created for every evolution stream.
 \end_layout
 
 \begin_layout Standard
@@ -13677,7 +13769,7 @@ Steady fitness termination
 
 \end_inset
 
- 
+
 \end_layout
 
 \begin_layout Standard
@@ -13701,7 +13793,7 @@ ks.
 \emph on
 steady fitness
 \emph default
- termination strategy always terminated.
+ termination strategy always terminated, at least for the given test setup.
  The lower diagram give an overview of the fitness progression.
  Only the mean values of the maximal fitness is shown.
 \end_layout
@@ -13732,9 +13824,10 @@ Evolution time
 
 \begin_layout Standard
 This termination strategy stops the evolution when the elapsed evolution
- time exceeds the user-specified maximal value.
- The evolution is not stopped until the evolution of the current generation
- has completed.
+ time exceeds an user-specified maximal value.
+ The evolution stream is only truncated at the end of an generation and
+ will not interrupt the current evolution step.
+ An maximal evolution time of zero ms will at least evaluate one generation.
  In an time-critical environment, where a solution must be found within
  a maximal time period, this terminator let you define the desired guarantees.
 \begin_inset listings
@@ -13800,13 +13893,15 @@ Nano\SpecialChar \-
 Clock
 \family default
  for measuring the time.
+ To have the possibility to define a different Clock implementation is especiall
+y useful for testing purposes.
 \end_layout
 
 \begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -13837,7 +13932,7 @@ Execution time termination
 
 \end_inset
 
- 
+
 \end_layout
 
 \begin_layout Standard
@@ -13861,7 +13956,8 @@ While running the tests, all other CPU intensive process has been stopped.
 
 \end_inset
 
-
+ That means that a doubling of the execution time will double the number
+ of evolved generations.
 \end_layout
 
 \begin_layout Subsubsection
@@ -13947,6 +14043,12 @@ reference "fig:Fitness-threshold-diagram"
  The total generations grows exponentially with the desired fitness value.
  This means, that this termination strategy will (practically) not terminate,
  if the value for the fitness threshold is chosen to high.
+ And it will definitely not terminate if the fitness threshold is higher
+ than the 
+\emph on
+global
+\emph default
+ maximum of the fitness function.
  It will be a 
 \emph on
 perfect
