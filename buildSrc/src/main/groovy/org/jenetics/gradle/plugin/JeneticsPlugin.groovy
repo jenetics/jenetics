@@ -22,11 +22,10 @@ package org.jenetics.gradle.plugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5 &mdash; <em>$Date: 2013-11-19 $</em>
+ * @version 1.5
  */
 protected class JeneticsPlugin
 	extends ProjectAdapter

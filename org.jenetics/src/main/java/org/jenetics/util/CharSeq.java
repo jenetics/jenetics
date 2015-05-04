@@ -37,15 +37,15 @@ import org.jenetics.internal.util.Hash;
  * classical sense. The characters of this sequence are sorted and doesn't
  * contain duplicate values, like a set.
  *
- * [code]
+ * <pre>{@code
  * final CharSeq cs1 = new CharSeq("abcdeaafg");
  * final CharSeq cs2 = new CharSeq("gfedcbabb");
  * assert(cs1.equals(cs2));
- * [/code]
+ * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
+ * @version 2.0
  */
 public final class CharSeq
 	extends CharSeqBase
@@ -78,7 +78,7 @@ public final class CharSeq
 	 * @throws NullPointerException if the {@code characters} are {@code null}.
 	 */
 	public CharSeq(final CharSequence characters) {
-		this(toCharArray(characters));
+		super(distinct(toCharArray(characters)));
 	}
 
 	private static char[] toCharArray(final CharSequence characters) {
@@ -95,14 +95,14 @@ public final class CharSeq
 	private static char[] distinct(final char[] chars) {
 		Arrays.sort(chars);
 
-		int size = 0;
-		for (int i = 0, j = 0, n = chars.length; i < n && j < n; ++i) {
-			chars[i] = chars[j];
-			++size;
-
-			while (j < n && chars[j] == chars[i]) ++j;
+		int j = 0;
+		for (int i = 1; i < chars.length; ++i) {
+			if (chars[j] != chars[i]) {
+				chars[++j] = chars[i];
+			}
 		}
 
+		final int size = Math.min(chars.length, j + 1);
 		final char[] array = new char[size];
 		System.arraycopy(chars, 0, array, 0, size);
 		return array;

@@ -1,10 +1,10 @@
-# Jenetics (_3.0.1_)
+# Jenetics (_3.1.0_)
 
 **Jenetics** is an **Genetic Algorithm**, respectively an **Evolutionary Algorithm**, library written in Java. It is designed with a clear separation of the several concepts of the algorithm, e.g. `Gene`, `Chromosome`, `Genotype`, `Phenotype`, `Population` and fitness `Function`. **Jenetics** allows you to minimize and maximize the given fitness function without tweaking it. In contrast to other GA implementations, the library uses the concept of an evolution stream (`EvolutionStream`) for executing the evolution steps. Since the `EvolutionStream` implements the Java Stream interface, it works smoothly with the rest of the Java Stream API.
 
 ## Documentation
 
-The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jenetics/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-3.0.1.pdf)).
+The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jenetics/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-3.1.0.pdf)).
 
 
 ## Requirements
@@ -14,24 +14,22 @@ The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jeneti
 
 ### Build time
 *  **JDK 8**: The `JAVA_HOME` variable must be set to your java installation directory.
-*  **Gradle 2.0**: [Gradle](http://www.gradle.org/) is used for building the library. (Gradle is download automatically, if you are using the Gradle Wrapper script `gradlew`, located in the base directory, for building the library.)
+*  **Gradle 2.x**: [Gradle](http://www.gradle.org/) is used for building the library. (Gradle is download automatically, if you are using the Gradle Wrapper script `gradlew`, located in the base directory, for building the library.)
 
 ### Test compile/execution
 *  **TestNG 8.8**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
-*  **Apache Commons Math 3.4.1**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical accumulators.
-
+*  **Apache Commons Math 3.4.1**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical collectors.
 
 ## Download
-* **Github**: <https://github.com/jenetics/jenetics/releases/download/v3.0.1/jenetics-3.0.1.zip>
+* **Github**: <https://github.com/jenetics/jenetics/releases/download/v3.1.0/jenetics-3.1.0.zip>
 *  **Sourceforge**:  <https://sourceforge.net/projects/jenetics/files/latest/download>
-*  **Maven**: `org.bitbucket.fwilhelm:org.jenetics:3.0.1` on [Maven Central](http://search.maven.org/#search|ga|1|a%3A%22org.jenetics%22)
-
+*  **Maven**: `org.bitbucket.fwilhelm:org.jenetics:3.1.0` on [Maven Central](http://search.maven.org/#search|ga|1|a%3A%22org.jenetics%22)
 
 ## Build Jenetics
 
 [![Build Status](https://travis-ci.org/jenetics/jenetics.svg?branch=master)](https://travis-ci.org/jenetics/jenetics)
 
-For building the Jenetics library from source, download the most recent, stable package version from [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download) and extract it to some build directory.
+For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v3.1.0/jenetics-3.1.0.zip) (or [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download)) and extract it to some build directory.
 
     $ unzip jenetics-<version>.zip -d <builddir>
 
@@ -144,6 +142,20 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 
 ## Release notes
 
+### 3.1.0
+
+#### Improvements
+
+* Additional termination strategies in `org.jenetics.engine.limit` class.
+* Add `EvolutionStream.of` factory method. This allows to use other _evolution_ functions than the `Engine` class.
+* `org.jenetics.stat.Quantile` has now a `combine` method which lets them use in a parallel stream.
+* [#12](https://github.com/jenetics/jenetics/issues/12): Fix typos in user manual.
+* [#13](https://github.com/jenetics/jenetics/issues/13): Add link to Javadoc and manual to README file.
+* [#14](https://github.com/jenetics/jenetics/issues/14): Remove `Serializable` interface from `Gene` and `Chromosome`.
+* [#16](https://github.com/jenetics/jenetics/issues/16): Make code examples in Javadoc standard conform.
+* [#17](https://github.com/jenetics/jenetics/issues/17): Improve recombination section in manual.
+* [#20](https://github.com/jenetics/jenetics/issues/20): Advance `Genotype` validity checks.
+    
 
 ### 3.0.1
 

@@ -58,21 +58,21 @@ import org.jenetics.util.Verifiable;
  * a chromosome have the same constraints; e. g. the same min- and max values
  * for number genes.
  *
- * [code]
- * final Genotype&lt;DoubleGene&gt; genotype = Genotype.of(
+ * <pre>{@code
+ * final Genotype<DoubleGene> genotype = Genotype.of(
  *     DoubleChromosome.of(0.0, 1.0, 8),
  *     DoubleChromosome.of(1.0, 2.0, 10),
  *     DoubleChromosome.of(0.0, 10.0, 9),
  *     DoubleChromosome.of(0.1, 0.9, 5)
  * );
- * [/code]
+ * }</pre>
  * The code snippet above creates a genotype with the same structure as shown in
  * the figure above. In this example the {@link DoubleGene} has been chosen as
  * gene type.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-12-03 $</em>
+ * @version 3.0
  */
 @XmlJavaTypeAdapter(Genotype.Model.Adapter.class)
 public final class Genotype<G extends Gene<?, G>>
@@ -139,10 +139,10 @@ public final class Genotype<G extends Gene<?, G>>
 
 	/**
 	 * Return the first chromosome. This is a shortcut for
-	 * [code]
-	 * final Genotype&lt;DoubleGene&gt; gt = ...
-	 * final Chromosome&lt;DoubleGene&gt; chromosome = gt.getChromosome(0);
-	 * [/code]
+	 * <pre>{@code
+	 * final Genotype<DoubleGene>; gt = ...
+	 * final Chromosome<DoubleGene> chromosome = gt.getChromosome(0);
+	 * }</pre>
 	 *
 	 * @return The first chromosome.
 	 */
@@ -156,10 +156,10 @@ public final class Genotype<G extends Gene<?, G>>
 	/**
 	 * Return the first {@link Gene} of the first {@link Chromosome} of this
 	 * {@code Genotype}. This is a shortcut for
-	 * [code]
-	 * final Genotype&lt;DoubleGene&gt; gt = ...
+	 * <pre>{@code
+	 * final Genotype<DoubleGene> gt = ...
 	 * final DoubleGene gene = gt.getChromosome(0).getGene(0);
-	 * [/code]
+	 * }</pre>
 	 *
 	 * @return the first {@link Gene} of the first {@link Chromosome} of this
 	 *         {@code Genotype}.
@@ -291,10 +291,10 @@ public final class Genotype<G extends Gene<?, G>>
 	 * for easily creating a <i>gene matrix</i>. The following example will
 	 * create a 10x5 {@code DoubleGene} <i>matrix</i>.
 	 *
-	 * [code]
-	 * final Genotype&lt;DoubleGene&gt; gt = Genotype
+	 * <pre>{@code
+	 * final Genotype<DoubleGene> gt = Genotype
 	 *     .of(DoubleChromosome.of(0.0, 1.0, 10), 5);
-	 * [/code]
+	 * }</pre>
 	 *
 	 * @since 3.0
 	 *

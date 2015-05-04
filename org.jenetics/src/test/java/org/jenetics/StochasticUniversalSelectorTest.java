@@ -19,6 +19,7 @@
  */
 package org.jenetics;
 
+import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 import static org.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
@@ -31,14 +32,13 @@ import org.testng.annotations.Test;
 import org.jenetics.internal.util.Named;
 
 import org.jenetics.stat.Histogram;
-import org.jenetics.stat.StatisticsAssert;
 import org.jenetics.util.Factory;
 import org.jenetics.util.LCG64ShiftRandom;
+import org.jenetics.util.Retry;
 import org.jenetics.util.TestData;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-11-28 $</em>
  */
 public class StochasticUniversalSelectorTest
 	extends ProbabilitySelectorTester<StochasticUniversalSelector<DoubleGene,Double>>
@@ -76,9 +76,12 @@ public class StochasticUniversalSelectorTest
 		);
 	}
 
-	@Test(dataProvider = "expectedDistribution", invocationCount = 20)
+	@Test(
+		dataProvider = "expectedDistribution",
+		retryAnalyzer = Retry.Five.class
+	)
 	public void selectDistribution(final Named<double[]> expected, final Optimize opt) {
-		final int loops = 5;
+		final int loops = 50;
 		final int npopulation = POPULATION_COUNT;
 
 		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
@@ -90,7 +93,7 @@ public class StochasticUniversalSelectorTest
 				loops
 			);
 
-			StatisticsAssert.assertDistribution(distribution, expected.value);
+			assertDistribution(distribution, expected.value, 0.001, 5);
 		});
 	}
 

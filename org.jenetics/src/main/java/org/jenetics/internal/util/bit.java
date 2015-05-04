@@ -41,7 +41,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-10 $</em>
+ * @version 3.0
  */
 public final class bit {
 	private bit() {require.noInstance();}
@@ -516,9 +516,8 @@ public final class bit {
 	public static byte[] newArray(final int length, final double p) {
 		final byte[] bytes = newArray(length);
 
-		random.indexes(RandomRegistry.getRandom(), length, p).forEach(i -> {
-			bytes[i >>> 3] |= 1 << (i & 7);
-		});
+		random.indexes(RandomRegistry.getRandom(), length, p)
+			.forEach(i -> bytes[i >>> 3] |= 1 << (i & 7));
 
 		return bytes;
 	}

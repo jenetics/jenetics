@@ -32,7 +32,6 @@ import org.jenetics.stat.MinMax;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-10-19 $</em>
  */
 public class DoubleChromosomeTest
 	extends NumericChromosomeTester<Double, DoubleGene>
@@ -55,7 +54,7 @@ public class DoubleChromosomeTest
 
 
 			final MinMax<Double> mm = MinMax.of();
-			final Histogram<Double> histogram = Histogram.of(min, max, 10);
+			final Histogram<Double> histogram = Histogram.ofDouble(min, max, 10);
 
 			for (int i = 0; i < 1000; ++i) {
 				final DoubleChromosome chromosome = new DoubleChromosome(min, max, 500);

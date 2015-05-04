@@ -35,7 +35,6 @@ import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-10-19 $</em>
  */
 public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 
@@ -50,7 +49,7 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 			final CharSeq characters = new CharSeq("0123456789");
 			final CharacterChromosome chromosome = new CharacterChromosome(characters, 5000);
 
-			final Histogram<Long> histogram = Histogram.of(0L, 10L, 10);
+			final Histogram<Long> histogram = Histogram.ofLong(0L, 10L, 10);
 			chromosome.toSeq().stream()
 				.map(g -> Long.valueOf(g.getAllele().toString()))
 				.forEach(histogram::accept);

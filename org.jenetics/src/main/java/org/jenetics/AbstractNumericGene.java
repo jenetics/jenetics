@@ -25,7 +25,7 @@ import java.io.Serializable;
  * Abstract base class for implementing concrete NumericGenes.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-07-16 $</em>
+ * @version 1.6
  * @since 1.6
  */
 abstract class AbstractNumericGene<
