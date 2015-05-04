@@ -229,10 +229,10 @@ public final class Phenotype<
 	@Override
 	public int hashCode() {
 		return Hash.of(getClass())
-				.and(_generation)
-				.and(getFitness())
-				.and(getRawFitness())
-				.and(_genotype).value();
+			.and(_generation)
+			.and(getFitness())
+			.and(getRawFitness())
+			.and(_genotype).value();
 	}
 
 	@Override

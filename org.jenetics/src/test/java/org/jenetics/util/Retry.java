@@ -19,32 +19,42 @@
  */
 package org.jenetics.util;
 
-import static java.lang.String.format;
-
-import java.time.Clock;
-
-import org.testng.annotations.Test;
+import org.testng.IRetryAnalyzer;
+import org.testng.ITestResult;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class NanoClockTest {
+public abstract class Retry implements IRetryAnalyzer {
 
-	@Test(retryAnalyzer = Retry.Five.class)
-	public void millis() {
-		final Clock nano = NanoClock.systemUTC();
+	public static final class One extends Retry {{
+		retry = 1;
+	}}
 
-		final long t2 = System.currentTimeMillis();
-		final long t1 = nano.instant().toEpochMilli();
+	public static final class Two extends Retry {{
+		retry = 2;
+	}}
 
-		assertEquals(t1, t2, 15);
-	}
+	public static final class Three extends Retry {{
+		retry = 3;
+	}}
 
-	private static void assertEquals(final long v1, final long v2, final long epsilon) {
-		final long diff = Math.abs(v1 - v2);
-		if (diff > epsilon) {
-			throw new AssertionError(format("Got %d but expected %d.", v1, v2));
-		}
+	public static final class Four extends Retry {{
+		retry = 4;
+	}}
+
+	public static final class Five extends Retry {{
+		retry = 5;
+	}}
+
+
+	int retry;
+
+	@Override
+	public boolean retry(final ITestResult result) {
+		return
+			!result.isSuccess() &&
+			result.getMethod().getFailedInvocationNumbers().size() < retry;
 	}
 
 }

@@ -19,6 +19,7 @@
  */
 package org.jenetics;
 
+import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 import static org.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
@@ -32,9 +33,9 @@ import org.testng.annotations.Test;
 import org.jenetics.internal.util.Named;
 
 import org.jenetics.stat.Histogram;
-import org.jenetics.stat.StatisticsAssert;
 import org.jenetics.util.Factory;
 import org.jenetics.util.LCG64ShiftRandom;
+import org.jenetics.util.Retry;
 import org.jenetics.util.TestData;
 
 /**
@@ -96,7 +97,10 @@ public class RouletteWheelSelectorTest
 		});
 	}
 
-	@Test(dataProvider = "expectedDistribution", invocationCount = 20, successPercentage = 95)
+	@Test(
+		dataProvider = "expectedDistribution",
+		retryAnalyzer = Retry.Five.class
+	)
 	public void selectDistribution(final Named<double[]> expected, final Optimize opt) {
 		final int loops = 50;
 		final int npopulation = POPULATION_COUNT;
@@ -110,7 +114,7 @@ public class RouletteWheelSelectorTest
 				loops
 			);
 
-			StatisticsAssert.assertDistribution(distribution, expected.value);
+			assertDistribution(distribution, expected.value, 0.001, 5);
 		});
 	}
 
