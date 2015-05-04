@@ -146,7 +146,7 @@ tabs-within-sections
 \paperpagestyle fancy
 \tracking_changes false
 \output_changes false
-\html_math_output 2
+\html_math_output 0
 \html_css_as_file 1
 \html_be_strict true
 \html_math_img_scale 1.2
@@ -269,7 +269,7 @@ LIBRARY USER'S MANUAL
 \align center
 \begin_inset Graphics
 	filename ../resources/graphic/title.png
-	lyxscale 50
+	lyxscale 15
 	height 47pheight%
 
 \end_inset
@@ -562,7 +562,8 @@ g.
 \family default
 ,
 \family typewriter
- Chromosome
+ Chromo\SpecialChar \-
+some
 \family default
 ,
 \family typewriter
@@ -729,10 +730,18 @@ status collapsed
 \begin_layout Plain Layout
 If you are using Gradle, you can use the following dependency string: 
 \family typewriter
-'org.bitbucket.fwilhelm:\SpecialChar \-
+
+\begin_inset Quotes ald
+\end_inset
+
+org.bitbucket.fwilhelm:\SpecialChar \-
 org.jenetics:\SpecialChar \-
-3.1.0'
+3.1.0
 \family default
+
+\begin_inset Quotes ard
+\end_inset
+
 .
 \end_layout
 
@@ -755,7 +764,7 @@ width "90col%"
 special "none"
 height "1in"
 height_special "totalheight"
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset CommandInset line
@@ -994,7 +1003,9 @@ public class HelloWorld {
 
         System.out.println("Hello World:
 \backslash
-n" + result);
+n
+\backslash
+t" + result);
 \end_layout
 
 \begin_layout Plain Layout
@@ -1872,7 +1883,7 @@ Jenetics
 \shape default
 
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 The documentation of the whole API is part of the download package or can
@@ -2818,7 +2829,7 @@ reference "fig:Genotype-structure"
  Double\SpecialChar \-
 Gene
 \family default
- has been chosen for 
+ has been chosen as 
 \family typewriter
 Gene
 \family default
@@ -2863,7 +2874,40 @@ Genotype
 \family typewriter
 Function
 \family default
+, which is used to (lazily) calculate the 
+\family typewriter
+Genotype
+\family default
+'s fitness value.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Since the fitness 
+\family typewriter
+Function
+\family default
+ is shared by all 
+\family typewriter
+Phenotype
+\family default
+s, calls to the fitness 
+\family typewriter
+Function
+\family default
+ must be idempotent.
+ See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Fitness-function"
+
+\end_inset
+
 .
+\end_layout
+
+\end_inset
+
  It is
 \emph on
  only
@@ -3283,6 +3327,78 @@ Selectors are responsible for selecting a given number of individuals from
 \shape default
 \emph default
  can be chosen independently.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+The selection process of the 
+\series bold
+\shape smallcaps
+Jenetics
+\series default
+\shape default
+ library acts on 
+\family typewriter
+Phenotype
+\family sans
+s and indirectly, via the fitness function, on 
+\family typewriter
+Genotype
+\family sans
+s.
+ Direct 
+\family typewriter
+Gene
+\family sans
+- or 
+\family typewriter
+Population
+\family sans
+ selection is not supported by the library.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -4463,37 +4579,129 @@ status open
 
 \begin_layout Plain Layout
 
-Genotype[2] genotypes = select(population)
+void recombine(final Population<G, C> pop) {
 \end_layout
 
 \begin_layout Plain Layout
 
-int index = random.nextInt(genotypes[0].length())
+    // Select the Genotypes for crossover.
 \end_layout
 
 \begin_layout Plain Layout
 
-Chromosomes[2] chromosomes = new Chromosome[]{
+    final Random random = RandomRegistry.getRandom();
 \end_layout
 
 \begin_layout Plain Layout
 
-    genotypes[0].getChromosome(index),
+    final int i1 = random.nextInt(pop.length());
 \end_layout
 
 \begin_layout Plain Layout
 
-    genotypes[1].getChromosome(index)
+    final int i2 = random.nextInt(pop.length());
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Phenotype<G, C> pt1 = pop.get(i1);
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Phenotype<G, C> pt2 = pop.get(2);
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Genotype<G> gt1 = pt1.getGenotype();
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Genotype<G> gt2 = pt2.getGenotype();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    //Choosing the Chromosome for crossover.
+\end_layout
+
+\begin_layout Plain Layout
+
+    final int chIndex = random.nextInt(gt1.length());
+\end_layout
+
+\begin_layout Plain Layout
+
+    final MSeq<Chromosome<G>> c1 = gt1.toSeq().copy();
+\end_layout
+
+\begin_layout Plain Layout
+
+    final MSeq<Chromosome<G>> c2 = gt2.toSeq().copy();
+\end_layout
+
+\begin_layout Plain Layout
+
+    final MSeq<G> genes1 = c1.get(chIndex).toSeq().copy();
+\end_layout
+
+\begin_layout Plain Layout
+
+    final MSeq<G> genes2 = c2.get(chIndex).toSeq().copy();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Perform the crossover.
+\end_layout
+
+\begin_layout Plain Layout
+
+    crossover(genes1, genes2);
+\end_layout
+
+\begin_layout Plain Layout
+
+    c1.set(chIndex, c1.get(chIndex).newInstance(genes1.toISeq()));
+\end_layout
+
+\begin_layout Plain Layout
+
+    c2.set(chIndex, c2.get(chIndex).newInstance(genes2.toISeq()));
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    //Creating two new Phenotypes and replace the old one.
+\end_layout
+
+\begin_layout Plain Layout
+
+    pop.set(i1, pt1.newInstance(gt1.newInstance(c1.toISeq())));
+\end_layout
+
+\begin_layout Plain Layout
+
+    pop.set(i2, pt2.newInstance(gt1.newInstance(c2.toISeq())));
 \end_layout
 
 \begin_layout Plain Layout
 
 }
-\end_layout
-
-\begin_layout Plain Layout
-
-Chromosome[2] recombined = recombine(chromosomes)
 \end_layout
 
 \begin_layout Plain Layout
@@ -4534,8 +4742,7 @@ reference "lis:Chromosome-selection-recombination"
 
 \end_inset
 
- shows, in Java like pseudo\SpecialChar \-
-code, how two chromosomes are selected for 
+ shows how two chromosomes are selected for 
 \emph on
 recombination
 \emph default
@@ -5347,10 +5554,23 @@ Function
 \family typewriter
 Phenotype
 \family default
-s, it has to be thread-safe.
- Ideally, this is achieved by a 
+s, calls to the fitness 
 \family typewriter
 Function
+\family default
+ has to be idempotent.
+ A fitness 
+\family typewriter
+Function
+\family default
+ is idempotent if, whenever it is applied twice to any 
+\family typewriter
+Genotype
+\family default
+, it returns the same fitness value as if it were applied once.
+ In the simplest case, this is achieved by 
+\family typewriter
+Functions
 \family default
  which doesn't contain any global 
 \shape italic
@@ -5382,7 +5602,11 @@ The following example shows the simplest possible fitness
 Function
 \family default
 .
- It's the identity function and returns the allele of a 
+ This 
+\family typewriter
+Function
+\family default
+ simply returns the allele of a 
 \begin_inset Formula $1\mathsf{x}1$
 \end_inset
 
@@ -5439,7 +5663,7 @@ public class Main {
 
 \begin_layout Plain Layout
 
-        Function<Genotype<DoubleGene>, Double>> ff1 = 
+        Function<Genotype<DoubleGene>, Double>> ff1 =
 \end_layout
 
 \begin_layout Plain Layout
@@ -5486,9 +5710,12 @@ The first type parameter of the
 \family typewriter
  Function
 \family default
- defines the kind of genotype from which the fitness value is calculated
- and the second type parameter determines the return type, which must be,
- at least, a 
+ defines the kind of 
+\family typewriter
+Genotype
+\family default
+ from which the fitness value is calculated and the second type parameter
+ determines the return type, which must be, at least, a 
 \family typewriter
 Comparable
 \family default
@@ -5517,7 +5744,11 @@ Fitness scaler
 \end_layout
 
 \begin_layout Standard
-The fitness value, calculated by the fitness function, is treated as the
+The fitness value, calculated by the fitness 
+\family typewriter
+Function
+\family default
+, is treated as the
 \shape italic
  raw
 \shape default
@@ -5743,7 +5974,17 @@ public final class Engine<
 
 \begin_layout Plain Layout
 
-> {
+> 
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    // The evolution function, performs one evolution step.
 \end_layout
 
 \begin_layout Plain Layout
@@ -5758,12 +5999,35 @@ public final class Engine<
 
 \begin_layout Plain Layout
 
-        long generation);
+        long generation
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Evolution stream for "normal" evolution execution.
 \end_layout
 
 \begin_layout Plain Layout
 
     EvolutionStream<G,C> stream();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Evolution iterator for external evolution iteration.
 \end_layout
 
 \begin_layout Plain Layout
@@ -7084,7 +7348,7 @@ Statistics
 \family typewriter
 Consumer<\SpecialChar \-
 Evolution\SpecialChar \-
-Result<?,C>>
+Result<?, C>>
 \family default
  interface, it can be easily plugged into the 
 \family typewriter
@@ -7440,7 +7704,17 @@ status collapsed
 \begin_layout Plain Layout
 
 \family typewriter
-ForkJoinPool.commonPool()
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ForkJoinPool.html
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -7713,7 +7987,7 @@ Setting the PRNG to a Random object with a defined seed has the effect,
 \emph on
 stream
 \emph default
- will produce the same result---in a single threaded environment.
+ will produce the same result---in an single threaded environment.
 \end_layout
 
 \begin_layout Plain Layout
@@ -8809,7 +9083,29 @@ Jenetics
 \family typewriter
  org.jenetics
 \family default
- package:
+ package.
+ Only the concrete implementations of the 
+\family typewriter
+Gene
+\family default
+ and the 
+\family typewriter
+Chromosome
+\family default
+ interfaces implements the 
+\family typewriter
+Serializable
+\family default
+ interface.
+ This gives a greater flexibility when implementing own 
+\family typewriter
+Gene
+\family default
+s and 
+\family typewriter
+Chromosome
+\family default
+s.
 \end_layout
 
 \begin_layout Standard
@@ -9133,8 +9429,12 @@ The
 \family typewriter
  org.jenetics.util
 \family default
- package of the library contains utility classes which are also very important
- for the GA implementation.
+ and the 
+\family typewriter
+org.jenetics.stat
+\family default
+ package of the library contains utility and helper classes which are essential
+ for the implementation of the GA.
 \end_layout
 
 \begin_layout Paragraph
@@ -10042,6 +10342,11 @@ status open
 
 \begin_layout Plain Layout
 
+@FunctionalInterface
+\end_layout
+
+\begin_layout Plain Layout
+
 public interface Selector<
 \end_layout
 
@@ -10208,12 +10513,37 @@ status open
 
 \begin_layout Plain Layout
 
-public interface Alterer<G extends Gene<?, G>> {
+@FunctionalInterface
 \end_layout
 
 \begin_layout Plain Layout
 
-    public <C extends Comparable<? super C>> int alter(
+public interface Alterer<
+\end_layout
+
+\begin_layout Plain Layout
+
+    G extends Gene<?, G>,
+\end_layout
+
+\begin_layout Plain Layout
+
+    C extends Comparable<? super C>
+\end_layout
+
+\begin_layout Plain Layout
+
+>
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    public int alter(
 \end_layout
 
 \begin_layout Plain Layout
@@ -10223,7 +10553,7 @@ public interface Alterer<G extends Gene<?, G>> {
 
 \begin_layout Plain Layout
 
-        int generation
+        long generation
 \end_layout
 
 \begin_layout Plain Layout
@@ -10610,7 +10940,6 @@ public final class SpecialEngine {
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-
 \begin_inset CommandInset label
 LatexCommand label
 name "lis:Special-evolution-engine"
@@ -11672,7 +12001,7 @@ Encoding!Affine transformation
 \end_layout
 
 \begin_layout Standard
-3.0An affine transformation
+An affine transformation
 \begin_inset Foot
 status collapsed
 
@@ -11963,7 +12292,7 @@ Genotype.of(
 
 \begin_layout Plain Layout
 
-    // Rotation 			
+    // Rotation
 \end_layout
 
 \begin_layout Plain Layout
@@ -12198,7 +12527,6 @@ A graph can be represented in many different ways.
  The most known graph representation is the adjacency matrix.
  The following encoding examples uses adjacency matrices with different
  characteristics.
- 
 \end_layout
 
 \begin_layout Paragraph
@@ -12244,7 +12572,6 @@ In an undirected graph the edges between the vertices have no direction.
 \end_inset
 
 .
- 
 \end_layout
 
 \begin_layout Standard
@@ -12722,7 +13049,7 @@ Engine
 \emph on
 altering
 \emph default
- step by rearranging (or creating new) 
+ step, by rearranging (or creating new) 
 \family typewriter
 Genes
 \family default
@@ -12760,20 +13087,34 @@ s determines the validity of the whole
 Genotype
 \family default
 .
- 
 \end_layout
 
 \begin_layout Standard
-The Engine tries to create only valid individuals when creating the initial
- Population and when it replaces Genotypes which has been 
+The 
+\family typewriter
+Engine
+\family default
+ tries to create only valid individuals when creating the initial 
+\family typewriter
+Population
+\family default
+ and when it replaces 
+\family typewriter
+Genotype
+\family default
+s which has been 
 \emph on
 destroyed
 \emph default
  by the altering step.
  Individuals which has exceeded its lifetime are also replaced by new valid
  ones.
- To guarantee the termination of the Genotype creation, the Engine is parameteri
-zed with the maximal number of retries (
+ To guarantee the termination of the 
+\family typewriter
+Genotype
+\family default
+ creation, the Engine is parameterized with the maximal number of retries
+ (
 \family typewriter
 indi\SpecialChar \-
 vidual\SpecialChar \-
@@ -13066,8 +13407,20 @@ Alterer
 \end_layout
 
 \begin_layout Standard
-Creating your own Gene, Chromosome and Alterer classes is the most heavy-wighted
- possibility for solving the 
+Creating your own 
+\family typewriter
+Gene
+\family default
+, 
+\family typewriter
+Chromosome
+\family default
+ and 
+\family typewriter
+Alter\SpecialChar \-
+er
+\family default
+ classes is the most heavy-wighted possibility for solving the 
 \emph on
 validity
 \emph default
@@ -13106,7 +13459,7 @@ Termination
 \begin_layout Standard
 Termination is the criterion by which the evolution stream decides whether
  to continue or truncate the stream.
- This section gives a deeper look into the different ways of terminating
+ This section gives a deeper insight into the different ways of terminating
  or truncating the evolution stream, respectively.
 \end_layout
 
@@ -13165,6 +13518,15 @@ Evolution\SpecialChar \-
 Stream
 \family default
 .
+ It just uses the existing 
+\family typewriter
+limit
+\family default
+ method of the Java 
+\family typewriter
+Stream
+\family default
+ interface.
 \end_layout
 
 \begin_layout Standard
@@ -13284,6 +13646,13 @@ max
 mean
 \emph default
  of the best fitness values.
+ For a small increase of the fitness value, the needed generations grows
+ exponentially.
+ This is especially the case when the fitness is approaching to its 
+\emph on
+maximal
+\emph default
+ value.
 \end_layout
 
 \begin_layout Subsubsection
@@ -13318,7 +13687,7 @@ steady fitness
  strategy truncates the evolution stream if its best fitness hasn't changed
  after a given number of generations.
  The predicate maintains an internal state, the number of generations with
- non increasing fitness, and must be created for every evolution stream.
+ non increasing fitness, and must be newly created for every evolution stream.
 \end_layout
 
 \begin_layout Standard
@@ -13595,7 +13964,7 @@ Steady fitness termination
 
 \end_inset
 
- 
+
 \end_layout
 
 \begin_layout Standard
@@ -13619,7 +13988,7 @@ ks.
 \emph on
 steady fitness
 \emph default
- termination strategy always terminated.
+ termination strategy always terminated, at least for the given test setup.
  The lower diagram give an overview of the fitness progression.
  Only the mean values of the maximal fitness is shown.
 \end_layout
@@ -13650,9 +14019,10 @@ Evolution time
 
 \begin_layout Standard
 This termination strategy stops the evolution when the elapsed evolution
- time exceeds the user-specified maximal value.
- The evolution is not stopped until the evolution of the current generation
- has completed.
+ time exceeds an user-specified maximal value.
+ The evolution stream is only truncated at the end of an generation and
+ will not interrupt the current evolution step.
+ An maximal evolution time of zero ms will at least evaluate one generation.
  In an time-critical environment, where a solution must be found within
  a maximal time period, this terminator let you define the desired guarantees.
 \begin_inset listings
@@ -13718,13 +14088,15 @@ Nano\SpecialChar \-
 Clock
 \family default
  for measuring the time.
+ To have the possibility to define a different Clock implementation is especiall
+y useful for testing purposes.
 \end_layout
 
 \begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -13755,7 +14127,7 @@ Execution time termination
 
 \end_inset
 
- 
+
 \end_layout
 
 \begin_layout Standard
@@ -13779,7 +14151,8 @@ While running the tests, all other CPU intensive process has been stopped.
 
 \end_inset
 
-
+ That means that a doubling of the execution time will double the number
+ of evolved generations.
 \end_layout
 
 \begin_layout Subsubsection
@@ -13865,6 +14238,12 @@ reference "fig:Fitness-threshold-diagram"
  The total generations grows exponentially with the desired fitness value.
  This means, that this termination strategy will (practically) not terminate,
  if the value for the fitness threshold is chosen to high.
+ And it will definitely not terminate if the fitness threshold is higher
+ than the 
+\emph on
+global
+\emph default
+ maximum of the fitness function.
  It will be a 
 \emph on
 perfect

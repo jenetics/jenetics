@@ -48,14 +48,13 @@ class LyxPlugin extends JeneticsPlugin {
 		task(BUILD, dependsOn: LYX) << {
 		}
 
-		task('preparyPDFGeneration') << {
+		task('preparePDFGeneration') << {
 			copy {
 				from("${project.projectDir}/src/main") {
 					include 'lyx/manual.lyx'
 				}
 				into project.build.temporaryDir
 				filter(ReplaceTokens, tokens: [
-					__identifier__: project.identifier,
 					__year__: project.copyrightYear,
 					__identifier__: project.manualIdentifier
 				])
@@ -68,7 +67,7 @@ class LyxPlugin extends JeneticsPlugin {
 			}
 		}
 
-		task(LYX, type: Lyx2PDFTask, dependsOn: 'preparyPDFGeneration') {
+		task(LYX, type: Lyx2PDFTask, dependsOn: 'preparePDFGeneration') {
 			document = new File("${project.build.temporaryDir}/lyx/manual.lyx")
 
 			doLast {

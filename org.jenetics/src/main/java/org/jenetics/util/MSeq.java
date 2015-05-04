@@ -39,9 +39,9 @@ import org.jenetics.internal.collection.ObjectArrayProxy;
  *
  * <p>
  * <b>Implementation note:</b>
- * <i>This implementation is not thread safe. All {@link ISeq} and {@link MSeq} 
- * instances created by {@link MSeq#toISeq} and {@link MSeq#subSeq(int)}, 
- * respectively, must be protected by the same lock, when they are accessed 
+ * <i>This implementation is not thread safe. All {@link ISeq} and {@link MSeq}
+ * instances created by {@link MSeq#toISeq} and {@link MSeq#subSeq(int)},
+ * respectively, must be protected by the same lock, when they are accessed
  * (get/set) by different threads.</i>
  *
  * @see ISeq
@@ -326,9 +326,9 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
 	public static <T> MSeq<T> of(final Seq<T> values) {
-		return values instanceof ArrayProxyMSeq<?, ?> ?
-			((ArrayProxyMSeq<T, ?>)values).copy() :
-			MSeq.<T>ofLength(values.length()).setAll(values);
+		return values instanceof ArrayProxyMSeq<?, ?>
+			? ((ArrayProxyMSeq<T, ?>)values).copy()
+			: MSeq.<T>ofLength(values.length()).setAll(values);
 	}
 
 }
