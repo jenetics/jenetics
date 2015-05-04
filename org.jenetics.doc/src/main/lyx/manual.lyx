@@ -2891,7 +2891,7 @@ Function
 \family typewriter
 Phenotype
 \family default
-s, calls of the fitness 
+s, calls to the fitness 
 \family typewriter
 Function
 \family default
@@ -4579,37 +4579,129 @@ status open
 
 \begin_layout Plain Layout
 
-Genotype[2] genotypes = select(population)
+void recombine(final Population<G, C> pop) {
 \end_layout
 
 \begin_layout Plain Layout
 
-int index = random.nextInt(genotypes[0].length())
+    // Select the Genotypes for crossover.
 \end_layout
 
 \begin_layout Plain Layout
 
-Chromosomes[2] chromosomes = new Chromosome[]{
+    final Random random = RandomRegistry.getRandom();
 \end_layout
 
 \begin_layout Plain Layout
 
-    genotypes[0].getChromosome(index),
+    final int i1 = random.nextInt(pop.length());
 \end_layout
 
 \begin_layout Plain Layout
 
-    genotypes[1].getChromosome(index)
+    final int i2 = random.nextInt(pop.length());
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Phenotype<G, C> pt1 = pop.get(i1);
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Phenotype<G, C> pt2 = pop.get(2);
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Genotype<G> gt1 = pt1.getGenotype();
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Genotype<G> gt2 = pt2.getGenotype();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    //Choosing the Chromosome for crossover.
+\end_layout
+
+\begin_layout Plain Layout
+
+    final int chIndex = random.nextInt(gt1.length());
+\end_layout
+
+\begin_layout Plain Layout
+
+    final MSeq<Chromosome<G>> c1 = gt1.toSeq().copy();
+\end_layout
+
+\begin_layout Plain Layout
+
+    final MSeq<Chromosome<G>> c2 = gt2.toSeq().copy();
+\end_layout
+
+\begin_layout Plain Layout
+
+    final MSeq<G> genes1 = c1.get(chIndex).toSeq().copy();
+\end_layout
+
+\begin_layout Plain Layout
+
+    final MSeq<G> genes2 = c2.get(chIndex).toSeq().copy();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Perform the crossover.
+\end_layout
+
+\begin_layout Plain Layout
+
+    crossover(genes1, genes2);
+\end_layout
+
+\begin_layout Plain Layout
+
+    c1.set(chIndex, c1.get(chIndex).newInstance(genes1.toISeq()));
+\end_layout
+
+\begin_layout Plain Layout
+
+    c2.set(chIndex, c2.get(chIndex).newInstance(genes2.toISeq()));
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    //Creating two new Phenotypes and replace the old one.
+\end_layout
+
+\begin_layout Plain Layout
+
+    pop.set(i1, pt1.newInstance(gt1.newInstance(c1.toISeq())));
+\end_layout
+
+\begin_layout Plain Layout
+
+    pop.set(i2, pt2.newInstance(gt1.newInstance(c2.toISeq())));
 \end_layout
 
 \begin_layout Plain Layout
 
 }
-\end_layout
-
-\begin_layout Plain Layout
-
-Chromosome[2] recombined = recombine(chromosomes)
 \end_layout
 
 \begin_layout Plain Layout
@@ -4650,8 +4742,7 @@ reference "lis:Chromosome-selection-recombination"
 
 \end_inset
 
- shows, in Java like pseudo\SpecialChar \-
-code, how two chromosomes are selected for 
+ shows how two chromosomes are selected for 
 \emph on
 recombination
 \emph default
@@ -7608,7 +7699,7 @@ Jenetics
 \family typewriter
 ForkJoinPool
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
