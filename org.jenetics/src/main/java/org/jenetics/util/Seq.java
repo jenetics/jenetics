@@ -47,7 +47,7 @@ import org.jenetics.internal.collection.SeqSpliterator;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-12-28 $</em>
+ * @version 3.0
  */
 public interface Seq<T> extends Iterable<T> {
 
@@ -194,13 +194,13 @@ public interface Seq<T> extends Iterable<T> {
 	 * returns {@code true}, or -1 if the predicate returns false for every
 	 * sequence element.
 	 * </p>
-	 * [code]
+	 * <pre>{@code
 	 * // Finding index of first null value.
-	 * final int index = seq.indexOf(o -&gt; o == null);
+	 * final int index = seq.indexOf(o -> o == null);
 	 *
 	 * // Assert of no null values.
-	 * assert (sequence.indexOf(o -&gt; o == null) == -1);
-	 * [/code]
+	 * assert (sequence.indexOf(o -> o == null) == -1);
+	 * }</pre>
 	 *
 	 * @param predicate the search predicate.
 	 * @return the index of the first element on which the given predicate
@@ -218,13 +218,13 @@ public interface Seq<T> extends Iterable<T> {
 	 * returns {@code true}, or -1 if the predicate returns false for every
 	 * sequence element.
 	 * </p>
-	 * [code]
+	 * <pre>{@code
 	 * // Finding index of first null value.
-	 * final int index = seq.indexOf(o -&gt; o == null);
+	 * final int index = seq.indexOf(o -> o == null);
 	 *
 	 * // Assert of no null values.
-	 * assert (sequence.indexOf(o -&gt; o == null) == -1);
-	 * [/code]
+	 * assert (sequence.indexOf(o -> o == null) == -1);
+	 * }</pre>
 	 *
 	 * @param predicate the search predicate.
 	 * @param start the search start index
@@ -248,13 +248,13 @@ public interface Seq<T> extends Iterable<T> {
 	 * returns {@code true}, or -1 if the predicate returns false for every
 	 * sequence element.
 	 * </p>
-	 * [code]
+	 * <pre>{@code
 	 * // Finding index of first null value.
-	 * final int index = seq.indexOf(o -&gt; o == null);
+	 * final int index = seq.indexOf(o -> o == null);
 	 *
 	 * // Assert of no null values.
-	 * assert (sequence.indexOf(o -&gt; o == null) == -1);
-	 * [/code]
+	 * assert (sequence.indexOf(o -> o == null) == -1);
+	 * }</pre>
 	 *
 	 * @param predicate the search predicate.
 	 * @param start the search start index
@@ -565,14 +565,14 @@ public interface Seq<T> extends Iterable<T> {
 	 * Returns the hash code value for this sequence. The hash code is defined
 	 * as followed:
 	 *
-	 * [code]
+	 * <pre>{@code
 	 * int hashCode = 1;
-	 * final Iterator&lt;E&gt; it = seq.iterator();
+	 * final Iterator<E> it = seq.iterator();
 	 * while (it.hasNext()) {
 	 *     final E obj = it.next();
 	 *     hashCode = 31*hashCode + (obj == null ? 0 : obj.hashCode());
 	 * }
-	 * [/code]
+	 * }</pre>
 	 *
 	 * @see List#hashCode()
 	 * @see Seq#hashCode(Seq)
@@ -633,14 +633,14 @@ public interface Seq<T> extends Iterable<T> {
 	 * Unified method for calculating the hash code of every {@link Seq}
 	 * implementation. The hash code is defined as followed:
 	 *
-	 * [code]
+	 * <pre>{@code
 	 * int hashCode = 1;
-	 * final Iterator&lt;E&gt; it = seq.iterator();
+	 * final Iterator<E> it = seq.iterator();
 	 * while (it.hasNext()) {
 	 *     final E obj = it.next();
 	 *     hashCode = 31*hashCode + (obj == null ? 0 : obj.hashCode());
 	 * }
-	 * [/code]
+	 * }</pre>
 	 *
 	 * @see Seq#hashCode()
 	 * @see List#hashCode()

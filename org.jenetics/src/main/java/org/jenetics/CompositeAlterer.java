@@ -38,7 +38,7 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-12-28 $</em>
+ * @version 3.0
  */
 final class CompositeAlterer<
 	G extends Gene<?, G>,
@@ -63,9 +63,9 @@ final class CompositeAlterer<
 	private static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	ISeq<Alterer<G, C>> normalize(final Seq<Alterer<G, C>> alterers) {
 		final Function<Alterer<G, C>, Stream<Alterer<G, C>>> mapper =
-			a -> a instanceof CompositeAlterer<?, ?> ?
-				((CompositeAlterer<G, C>)a).getAlterers().stream() :
-				Stream.of(a);
+			a -> a instanceof CompositeAlterer<?, ?>
+				? ((CompositeAlterer<G, C>)a).getAlterers().stream()
+				: Stream.of(a);
 
 		return alterers.stream()
 			.flatMap(mapper)

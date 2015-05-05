@@ -41,9 +41,9 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
  * Class for object serialization. The following example shows how to write and
  * reload a given population.
  *
- * [code]
+ * <pre>{@code
  * // Creating result population.
- * EvolutionResult&lt;DoubleGene, Double&gt; result = stream
+ * EvolutionResult<DoubleGene, Double> result = stream
  *     .collect(toBestEvolutionResult());
  *
  * // Writing the population to disk.
@@ -51,16 +51,16 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
  * IO.jaxb.write(result.getPopulation(), file);
  *
  * // Reading the population from disk.
- * Population&lt;DoubleGene, Double&gt; population =
- *     (Population&lt;DoubleGene, Double&gt;)IO.jaxb.read(file);
- * EvolutionStream&lt;DoubleGene, Double&gt; stream = Engine
+ * Population<DoubleGene, Double> population =
+ *     (Population<DoubleGene, Double>)IO.jaxb.read(file);
+ * EvolutionStream<DoubleGene, Double> stream = Engine
  *     .build(ff, gtf)
  *     .stream(population, 1);
- * [/code]
+ * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-12-28 $</em>
+ * @version 2.0
  */
 public abstract class IO {
 

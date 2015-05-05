@@ -40,7 +40,6 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-10-30 $</em>
  */
 public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 

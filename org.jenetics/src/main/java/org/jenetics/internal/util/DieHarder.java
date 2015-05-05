@@ -50,7 +50,7 @@ import org.jenetics.internal.util.DieHarder.Result.Assessment;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 3.0 &mdash; <em>$Date: 2014-12-28 $</em>
+ * @version 3.0
  */
 public final class DieHarder {
 
@@ -59,7 +59,7 @@ public final class DieHarder {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.5
-	 * @version 3.0 &mdash; <em>$Date: 2014-12-28 $</em>
+	 * @version 3.0
 	 */
 	private static final class Randomizer implements Runnable {
 		private final Random _random;
@@ -110,7 +110,7 @@ public final class DieHarder {
 
 		final List<String> dieharderArgs = new ArrayList<>();
 		dieharderArgs.add("dieharder");
-		for (int i  = 1; i < args.length; ++i) {
+		for (int i = 1; i < args.length; ++i) {
 			dieharderArgs.add(args[i]);
 		}
 		dieharderArgs.add("-g");
@@ -218,7 +218,7 @@ public final class DieHarder {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 3.0
-	 * @version 3.0 &mdash; <em>$Date: 2014-12-28 $</em>
+	 * @version 3.0
 	 */
 	static final class Result {
 
@@ -344,7 +344,7 @@ public final class DieHarder {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 3.0
-	 * @version 3.0 &mdash; <em>$Date: 2014-12-28 $</em>
+	 * @version 3.0
 	 */
 	private static final class CountingOutputStream extends OutputStream {
 		private final OutputStream _delegate;

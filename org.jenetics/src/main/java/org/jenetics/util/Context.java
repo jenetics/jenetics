@@ -24,7 +24,7 @@ import java.util.function.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-10-20 $</em>
+ * @version 2.0
  * @since 3.0
  */
 final class Context<T> {
@@ -69,7 +69,7 @@ final class Context<T> {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version 2.0 &mdash; <em>$Date: 2014-10-20 $</em>
+	 * @version 2.0
 	 * @since 2.0
 	 */
 	private static final class Entry<T> {

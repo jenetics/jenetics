@@ -20,6 +20,7 @@
 package org.jenetics;
 
 import static java.lang.String.format;
+import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 import static org.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
@@ -31,14 +32,13 @@ import org.testng.annotations.Test;
 import org.jenetics.internal.util.Named;
 
 import org.jenetics.stat.Histogram;
-import org.jenetics.stat.StatisticsAssert;
 import org.jenetics.util.Factory;
 import org.jenetics.util.LCG64ShiftRandom;
+import org.jenetics.util.Retry;
 import org.jenetics.util.TestData;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-10-19 $</em>
  */
 public class ExponentialRankSelectorTest
 	extends ProbabilitySelectorTester<ExponentialRankSelector<DoubleGene, Double>>
@@ -54,13 +54,16 @@ public class ExponentialRankSelectorTest
 		return ExponentialRankSelector::new;
 	}
 
-	@Test(dataProvider = "expectedDistribution", invocationCount = 20, successPercentage = 95)
+	@Test(
+		dataProvider = "expectedDistribution",
+		retryAnalyzer = Retry.Five.class
+	)
 	public void selectDistribution(
 		final Double c,
 		final Named<double[]> expected,
 		final Optimize opt
 	) {
-		final int loops = (int)(c*1.7);
+		final int loops = 50;
 		final int npopulation = POPULATION_COUNT;
 
 		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
@@ -72,7 +75,7 @@ public class ExponentialRankSelectorTest
 				loops
 			);
 
-			StatisticsAssert.assertDistribution(distribution, expected.value, 0.001);
+			assertDistribution(distribution, expected.value, 0.001, 5);
 		});
 	}
 

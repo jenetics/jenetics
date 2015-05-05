@@ -20,8 +20,6 @@
  # Author:
  #    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  #
- # Version: <em>$Date: 2015-01-07 $</em>
- #
  ###############################################################################
 -->
 <suite name="Jenetics" verbose="2" parallel="tests" thread-count="5">
@@ -227,6 +225,16 @@
 			<class name="org.jenetics.engine.EvolutionStreamImplTest" />
 		</classes>
 	</test>
+	<test name="org.jenetics.engine.ExecutionTimeLimit">
+		<classes>
+			<class name="org.jenetics.engine.ExecutionTimeLimitTest" />
+		</classes>
+	</test>
+    <test name="org.jenetics.engine.FitnessThresholdLimit">
+        <classes>
+            <class name="org.jenetics.engine.FitnessThresholdLimitTest" />
+        </classes>
+    </test>
 	<test name="org.jenetics.stat.Histogram">
 		<classes>
 			<class name="org.jenetics.stat.HistogramTest" />
@@ -330,6 +338,16 @@
 	<test name="org.jenetics.util.RandomIndexStream">
 		<classes>
 			<class name="org.jenetics.util.RandomIndexStreamTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.util.NanoClock">
+		<classes>
+			<class name="org.jenetics.util.NanoClockTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.util.PRNG">
+		<classes>
+			<class name="org.jenetics.util.PRNGTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.util.RandomRegistry">

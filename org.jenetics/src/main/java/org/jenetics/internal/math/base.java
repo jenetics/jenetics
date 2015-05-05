@@ -34,7 +34,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-10 $</em>
+ * @version 3.0
  */
 public final class base {
 	private base() {require.noInstance();}
@@ -75,19 +75,19 @@ public final class base {
 	 * Calculating the <a href="http://en.wikipedia.org/wiki/Unit_in_the_last_place">ULP</a>
 	 * position of a double number.
 	 *
-	 * [code]
+	 * <pre>{@code
 	 * double a = 0.0;
-	 * for (int i = 0; i &lt; 10; ++i) {
+	 * for (int i = 0; i < 10; ++i) {
 	 *     a = Math.nextAfter(a, Double.POSITIVE_INFINITY);
 	 * }
 	 *
-	 * for (int i = 0; i &lt; 19; ++i) {
+	 * for (int i = 0; i < 19; ++i) {
 	 *     a = Math.nextAfter(a, Double.NEGATIVE_INFINITY);
 	 *     System.out.println(
 	 *          a + "\t" + ulpPosition(a) + "\t" + ulpDistance(0.0, a)
 	 *     );
 	 * }
-	 * [/code]
+	 * }</pre>
 	 *
 	 * The code fragment above will create the following output:
 	 * <pre>

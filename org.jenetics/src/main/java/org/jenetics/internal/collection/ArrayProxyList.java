@@ -29,7 +29,7 @@ import java.util.RandomAccess;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0 &mdash; <em>$Date: 2014-04-21 $</em>
+ * @version 3.0
  */
 public class ArrayProxyList<T, P extends ArrayProxy<T, ?, ?>>
 	extends AbstractList<T>
@@ -61,13 +61,33 @@ public class ArrayProxyList<T, P extends ArrayProxy<T, ?, ?>>
 		if (element == null) {
 			for (int i = proxy.start; i < proxy.end && index == -1; ++i) {
 				if (proxy.__get__(i) == null) {
-					index = i;
+					index = i - proxy.start;
 				}
 			}
 		} else {
 			for (int i = proxy.start; i < proxy.end && index == -1; ++i) {
 				if (element.equals(proxy.__get__(i))) {
-					index = i;
+					index = i - proxy.start;
+				}
+			}
+		}
+
+		return index;
+	}
+
+	@Override
+	public int lastIndexOf(final Object element) {
+		int index = -1;
+		if (element == null) {
+			for (int i = proxy.end; --i >= proxy.start && index == -1;) {
+				if (proxy.__get__(i) == null) {
+					index = i - proxy.start;
+				}
+			}
+		} else {
+			for (int i = proxy.end; --i >= proxy.start && index == -1;) {
+				if (element.equals(proxy.__get__(i))) {
+					index = i - proxy.start;
 				}
 			}
 		}

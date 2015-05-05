@@ -30,7 +30,7 @@ import java.util.function.Supplier;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-19 $</em>
+ * @version 3.0
  */
 public final class Lazy<T> implements Supplier<T>, Serializable {
 	private static final long serialVersionUID = 1L;

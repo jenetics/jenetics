@@ -21,9 +21,9 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date: 2013-12-09 $</em>
+ * @version 1.4
  */
- 
+
 // The Jenetics projects.
 include 'org.jenetics'
 include 'org.jenetics.example'

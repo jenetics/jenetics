@@ -28,10 +28,29 @@ import java.util.stream.Collector;
 /**
  * This <i>consumer</i> class is used for calculating the min and max value
  * according to the given {@code Comparator}.
+ * <p>
+ * This class is designed to work with (though does not require) streams. For
+ * example, you can compute minimum and maximum values with:
+ * <pre>{@code
+ * final Stream<Integer> stream = ...
+ * final MinMax<Integer> minMax = stream.collect(
+ *         MinMax::of,
+ *         MinMax::accept,
+ *         MinMax::combine
+ *     );
+ * }</pre>
+ *
+ * <p>
+ * <b>Implementation note:</b>
+ * <i>This implementation is not thread safe. However, it is safe to use on a
+ * parallel stream, because the parallel implementation of
+ * {@link java.util.stream.Stream#collect Stream.collect()}provides the
+ * necessary partitioning, isolation, and merging of results for safe and
+ * efficient parallel execution.</i>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-12-07 $</em>
+ * @version 3.0
  */
 public final class MinMax<C> implements Consumer<C> {
 
@@ -62,6 +81,8 @@ public final class MinMax<C> implements Consumer<C> {
 	 *
 	 * @param other the other {@code MinMax} object to combine
 	 * @return {@code this}
+	 * @throws java.lang.NullPointerException if the {@code other} object is
+	 *         {@code null}.
 	 */
 	public MinMax<C> combine(final MinMax<C> other) {
 		_min = min(_comparator, _min, other._min);
@@ -147,12 +168,12 @@ public final class MinMax<C> implements Consumer<C> {
 	 * Return a {@code Collector} which calculates the minimum and maximum value.
 	 * The given {@code comparator} is used for comparing two objects.
 	 *
-	 * [code]
-	 * final Comparator&lt;SomeObject&gt; comparator = ...
-	 * final Stream&lt;SomeObject&gt; stream = ...
-	 * final MinMax&lt;SomeObject&gt; moments = stream
+	 * <pre>{@code
+	 * final Comparator<SomeObject> comparator = ...
+	 * final Stream<SomeObject> stream = ...
+	 * final MinMax<SomeObject> moments = stream
 	 *     .collect(doubleMoments.toMinMax(comparator));
-	 * [/code]
+	 * }</pre>
 	 *
 	 * @param comparator the {@code Comparator} to use
 	 * @param <T> the type of the input elements
@@ -173,11 +194,11 @@ public final class MinMax<C> implements Consumer<C> {
 	 * Return a {@code Collector} which calculates the minimum and maximum value.
 	 * The <i>reducing</i> objects must be comparable.
 	 *
-	 * [code]
-	 * final Stream&lt;SomeObject&gt; stream = ...
-	 * final MinMax&lt;SomeObject&gt; moments = stream
+	 * <pre>{@code
+	 * final Stream<SomeObject> stream = ...
+	 * final MinMax<SomeObject> moments = stream
 	 *     .collect(doubleMoments.toMinMax(comparator));
-	 * [/code]
+	 * }</pre>
 	 *
 	 * @param <C> the type of the input elements
 	 * @return a {@code Collector} implementing the min-max reduction

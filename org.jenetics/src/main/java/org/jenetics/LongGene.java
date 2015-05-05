@@ -19,6 +19,7 @@
  */
 package org.jenetics;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -48,7 +49,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 3.0 &mdash; <em>$Date: 2014-11-12 $</em>
+ * @version 3.0
  */
 @XmlJavaTypeAdapter(LongGene.Model.Adapter.class)
 public final class LongGene
@@ -56,7 +57,8 @@ public final class LongGene
 	implements
 		NumericGene<Long, LongGene>,
 		Mean<LongGene>,
-		Comparable<LongGene>
+		Comparable<LongGene>,
+		Serializable
 {
 
 	private static final long serialVersionUID = 1L;
