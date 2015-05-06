@@ -27,7 +27,7 @@ import org.jenetics.util.ISeq;
  * {@link org.jenetics.engine.Engine.Builder#alterers(Alterer, Alterer[])} method.
  *
  * <pre>{@code
- * final Engine<DoubleGene, Double>; engine = Engine
+ * final Engine<DoubleGene, Double> engine = Engine
  *     .builder(gtf, ff)
  *     .alterers(
  *         new Crossover<>(0.1),
