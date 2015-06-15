@@ -157,7 +157,9 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 					f.get();
 				}
 			} catch (InterruptedException|ExecutionException e) {
-				throw new CancellationException(e.getMessage());
+				final String msg = e.getMessage();
+				throw (CancellationException)new CancellationException(msg)
+					.initCause(e);
 			}
 		}
 	}
@@ -195,7 +197,9 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 					t.get();
 				}
 			} catch (InterruptedException|ExecutionException e) {
-				throw new CancellationException(e.getMessage());
+				final String msg = e.getMessage();
+				throw (CancellationException)new CancellationException(msg)
+					.initCause(e);
 			}
 		}
 	}
