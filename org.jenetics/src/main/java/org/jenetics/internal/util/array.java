@@ -61,6 +61,14 @@ public final class array {
 		return array;
 	}
 
+	/**
+	 * Randomize the {@code array} using the given {@link Random} object. The used
+	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
+	 * Third edition, page 142, Algorithm S (Selection sampling technique).
+	 *
+	 * @param array the array to shuffle
+	 * @param random the PRNG
+	 */
 	public static void shuffle(final double[] array, final Random random) {
 		for (int j = array.length - 1; j > 0; --j) {
 			swap(array, j, random.nextInt(j + 1));
