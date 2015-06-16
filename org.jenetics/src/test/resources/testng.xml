@@ -23,6 +23,7 @@
  ###############################################################################
 -->
 <suite name="Jenetics" verbose="2" parallel="tests" thread-count="5">
+	<!--
 	<test name="org.jenetics.BitChromosome">
 		<classes>
 			<class name="org.jenetics.BitChromosomeTest" />
@@ -268,6 +269,12 @@
 	<test name="org.jenetics.stat.UniformDistribution">
 		<classes>
 			<class name="org.jenetics.stat.UniformDistributionTest" />
+		</classes>
+	</test>
+	-->
+	<test name="org.jenetics.test">
+		<classes>
+			<class name="org.jenetics.test.RetryTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.internal.collection.ArrayProxy">

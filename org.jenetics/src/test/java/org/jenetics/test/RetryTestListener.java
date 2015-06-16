@@ -17,44 +17,31 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package org.jenetics.test;
 
-import org.testng.IRetryAnalyzer;
 import org.testng.ITestResult;
+import org.testng.Reporter;
+import org.testng.TestListenerAdapter;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public abstract class Retry implements IRetryAnalyzer {
-
-	public static final class One extends Retry {{
-		retry = 1;
-	}}
-
-	public static final class Two extends Retry {{
-		retry = 2;
-	}}
-
-	public static final class Three extends Retry {{
-		retry = 3;
-	}}
-
-	public static final class Four extends Retry {{
-		retry = 4;
-	}}
-
-	public static final class Five extends Retry {{
-		retry = 5;
-	}}
-
-
-	int retry;
+public class RetryTestListener extends TestListenerAdapter {
 
 	@Override
-	public boolean retry(final ITestResult result) {
-		return
-			!result.isSuccess() &&
-			result.getMethod().getFailedInvocationNumbers().size() < retry;
+	public void onTestFailure(final ITestResult result) {
+		if (result.getMethod().getRetryAnalyzer() != null) {
+			final Retry retryAnalyzer = (Retry)result
+				.getMethod()
+				.getRetryAnalyzer();
+
+			if (retryAnalyzer.isRetryAvailable()) {
+				result.setStatus(ITestResult.SKIP);
+			} else {
+				result.setStatus(ITestResult.FAILURE);
+			}
+			Reporter.setCurrentTestResult(result);
+		}
 	}
 
 }

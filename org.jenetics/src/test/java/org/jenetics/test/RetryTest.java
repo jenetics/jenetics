@@ -17,35 +17,26 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package org.jenetics.test;
 
-import static java.lang.String.format;
+import java.util.concurrent.atomic.AtomicInteger;
 
-import java.time.Clock;
-
+import org.testng.Assert;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-
-import org.jenetics.test.Retry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class NanoClockTest {
+//@Listeners(RetryTestListener.class)
+public class RetryTest {
+
+	private static final AtomicInteger _retryCount = new AtomicInteger();
 
 	@Test(retryAnalyzer = Retry.Five.class)
-	public void millis() {
-		final Clock nano = NanoClock.systemUTC();
-
-		final long t2 = System.currentTimeMillis();
-		final long t1 = nano.instant().toEpochMilli();
-
-		assertEquals(t1, t2, 15);
-	}
-
-	private static void assertEquals(final long v1, final long v2, final long epsilon) {
-		final long diff = Math.abs(v1 - v2);
-		if (diff > epsilon) {
-			throw new AssertionError(format("Got %d but expected %d.", v1, v2));
+	public void retry() {
+		if (_retryCount.incrementAndGet() < 3) {
+			Assert.assertFalse(true);
 		}
 	}
 
