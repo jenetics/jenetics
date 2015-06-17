@@ -34,7 +34,6 @@ import org.jenetics.internal.util.Named;
 import org.jenetics.stat.Histogram;
 import org.jenetics.util.Factory;
 import org.jenetics.util.LCG64ShiftRandom;
-import org.jenetics.test.Retry;
 import org.jenetics.util.TestData;
 
 /**
@@ -49,27 +48,26 @@ public class TournamentSelectorTest
 		return () -> new TournamentSelector<>(3);
 	}
 
-	@Test(
-		dataProvider = "expectedDistribution",
-		retryAnalyzer = Retry.Five.class
-	)
+	@Test(dataProvider = "expectedDistribution")
 	public void selectDistribution(
 		final Integer tournamentSize,
 		final Named<double[]> expected,
 		final Optimize opt
 	) {
-		final int loops = 1;
-		final int npopulation = POPULATION_COUNT;
+		retry(3, () -> {
+			final int loops = 1;
+			final int npopulation = POPULATION_COUNT;
 
-		using(new LCG64ShiftRandom.ThreadLocal(), r -> {
-			final Histogram<Double> distribution = SelectorTester.distribution(
-				new TournamentSelector<>(tournamentSize),
-				opt,
-				npopulation,
-				loops
-			);
+			using(new LCG64ShiftRandom.ThreadLocal(), r -> {
+				final Histogram<Double> distribution = SelectorTester.distribution(
+					new TournamentSelector<>(tournamentSize),
+					opt,
+					npopulation,
+					loops
+				);
 
-			assertDistribution(distribution, expected.value, 0.001, 20);
+				assertDistribution(distribution, expected.value, 0.001, 20);
+			});
 		});
 	}
 

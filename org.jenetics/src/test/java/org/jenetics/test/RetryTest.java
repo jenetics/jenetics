@@ -19,25 +19,35 @@
  */
 package org.jenetics.test;
 
+import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.testng.Assert;
-import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-//@Listeners(RetryTestListener.class)
-public class RetryTest {
+public class RetryTest extends Retry {
 
-	private static final AtomicInteger _retryCount = new AtomicInteger();
+	private final AtomicInteger _retryCount = new AtomicInteger();
 
-	@Test(retryAnalyzer = Retry.Five.class)
-	public void retry() {
-		if (_retryCount.incrementAndGet() < 3) {
-			Assert.assertFalse(true);
-		}
+	@Test
+	public void method() throws IOException {
+		retry(5, () -> {
+			if (_retryCount.incrementAndGet() < 3) {
+				throw new IOException("io-error");
+			}
+		});
+	}
+
+	@Test(expectedExceptions = IOException.class, dependsOnMethods = "method")
+	public void retryFailed() throws Exception {
+		_retryCount.set(0);
+		retry(2, () -> {
+			if (_retryCount.incrementAndGet() < 3) {
+				throw new IOException("io-error");
+			}
+		});
 	}
 
 }

@@ -30,17 +30,17 @@ import org.jenetics.test.Retry;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class NanoClockTest {
+public class NanoClockTest extends Retry {
 
-	@Test(retryAnalyzer = Retry.Five.class)
-	public void millis() {
+	@Test
+	public void millis() { retry(3, () -> {
 		final Clock nano = NanoClock.systemUTC();
 
 		final long t2 = System.currentTimeMillis();
 		final long t1 = nano.instant().toEpochMilli();
 
 		assertEquals(t1, t2, 15);
-	}
+	});}
 
 	private static void assertEquals(final long v1, final long v2, final long epsilon) {
 		final long diff = Math.abs(v1 - v2);

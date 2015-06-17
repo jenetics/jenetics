@@ -19,58 +19,26 @@
  */
 package org.jenetics.test;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
-import org.testng.IRetryAnalyzer;
-import org.testng.ITestResult;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public abstract class Retry implements IRetryAnalyzer {
+public abstract class Retry {
 
-	public static final class One extends Retry {{
-		_retry = 1;
-	}}
-
-	public static final class Two extends Retry {{
-		_retry = 2;
-	}}
-
-	public static final class Three extends Retry {{
-		_retry = 3;
-	}}
-
-	public static final class Four extends Retry {{
-		_retry = 4;
-	}}
-
-	public static final class Five extends Retry {{
-		_retry = 5;
-	}}
-
-
-	int _retry = 3;
-
-	private final AtomicInteger _retryCount = new AtomicInteger();
-
-	public boolean isRetryAvailable() {
-		return _retryCount.intValue() <= 5;
+	public static interface Block<E extends Exception> {
+		public void call() throws E;
 	}
 
-	@Override
-	public boolean retry(final ITestResult result) {
-		boolean retry = false;
-		if (!result.isSuccess() && isRetryAvailable()) {
-			System.out.println("Going to retry test case: " +
-				result.getMethod() + ", " +
-				(_retry - _retryCount.intValue()) + " out of " + _retry);
-			retry = true;
-			_retryCount.incrementAndGet();
-			result.setStatus(ITestResult.SKIP);
+	protected <E extends Exception>
+	void retry(final int count, final Block<E> block) throws E {
+		if (count > 1) {
+			try {
+				block.call();
+			} catch (Throwable e) {
+				retry(count - 1, block);
+			}
+		} else {
+			block.call();
 		}
-
-		return retry;
 	}
 
 }
