@@ -96,6 +96,6 @@ public final class arithmetic {
 
 	static boolean isMultiplicationSave(final int a, final int b) {
 		final long m = (long)a*(long)b;
-		return ((int)m) == m;
+		return (int)m == m;
 	}
 }

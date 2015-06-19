@@ -33,7 +33,6 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
-import java.util.stream.Stream;
 
 import org.jenetics.internal.math.statistics;
 import org.jenetics.internal.util.Equality;

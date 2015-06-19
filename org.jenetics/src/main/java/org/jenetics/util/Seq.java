@@ -675,7 +675,7 @@ public interface Seq<T> extends Iterable<T> {
 		}
 
 		final Seq<?> other = (Seq<?>)obj;
-		boolean equals = (seq.length() == other.length());
+		boolean equals = seq.length() == other.length();
 		for (int i = seq.length(); equals && --i >= 0;) {
 			final Object element = seq.get(i);
 			if (element != null) {

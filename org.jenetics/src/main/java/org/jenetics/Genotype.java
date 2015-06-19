@@ -131,8 +131,8 @@ public final class Genotype<G extends Gene<?, G>>
 	 *         {@code (index < 0 || index >= _length)}.
 	 */
 	public Chromosome<G> getChromosome(final int index) {
-		assert(_chromosomes != null);
-		assert(_chromosomes.get(index) != null);
+		assert (_chromosomes != null);
+		assert (_chromosomes.get(index) != null);
 
 		return _chromosomes.get(index);
 	}
@@ -147,8 +147,8 @@ public final class Genotype<G extends Gene<?, G>>
 	 * @return The first chromosome.
 	 */
 	public Chromosome<G> getChromosome() {
-		assert(_chromosomes != null);
-		assert(_chromosomes.get(0) != null);
+		assert (_chromosomes != null);
+		assert (_chromosomes.get(0) != null);
 
 		return _chromosomes.get(0);
 	}
@@ -165,8 +165,8 @@ public final class Genotype<G extends Gene<?, G>>
 	 *         {@code Genotype}.
 	 */
 	public G getGene() {
-		assert(_chromosomes != null);
-		assert(_chromosomes.get(0) != null);
+		assert (_chromosomes != null);
+		assert (_chromosomes.get(0) != null);
 
 		return _chromosomes.get(0).getGene();
 	}
@@ -277,7 +277,7 @@ public final class Genotype<G extends Gene<?, G>>
 		final Chromosome<G> first,
 		final Chromosome<G>... rest
 	) {
-		final MSeq<Chromosome<G>> seq = MSeq.ofLength(1 +  rest.length);
+		final MSeq<Chromosome<G>> seq = MSeq.ofLength(1 + rest.length);
 		seq.set(0, first);
 		for (int i = 0; i < rest.length; ++i) {
 			seq.set(i + 1, rest[i]);

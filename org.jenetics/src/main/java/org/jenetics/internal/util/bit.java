@@ -179,7 +179,7 @@ public final class bit {
 		final byte[] data, final int start, final int end,
 		final byte[] otherData, final int otherStart
 	) {
-		for (int i = (end - start); --i >= 0;) {
+		for (int i = end - start; --i >= 0;) {
 			final boolean temp = get(data, i + start);
 			set(data, i + start, get(otherData, otherStart + i));
 			set(otherData, otherStart + i, temp);
@@ -239,7 +239,7 @@ public final class bit {
 
 			for (int i = data.length; --i >= 0;) {
 				int d = data[i] & 0xFF;
-				nextCarry = (d << (8 - bits));
+				nextCarry = d << (Byte.SIZE - bits);
 
 				d >>>= bits;
 				d |= carry;
@@ -280,7 +280,7 @@ public final class bit {
 
 			for (int i = bytes; i < data.length; ++i) {
 				int d = data[i] & 0xFF;
-				nextCarry = (d >>> (8 - bits));
+				nextCarry = d >>> (Byte.SIZE - bits);
 
 				d <<= bits;
 				d |= carry;
@@ -408,7 +408,7 @@ public final class bit {
 			// Add the 'lost' bits from the next byte, if available.
 			if (data.length > copy.length + byteStart) {
 				copy[copy.length - 1] |= (byte)(data[byteStart + copy.length]
-					<< (8 - bitStart));
+					<< (Byte.SIZE - bitStart));
 			}
 
 			// Trim (delete) the overhanging bits.
@@ -475,7 +475,7 @@ public final class bit {
 		final byte[] bytes = new byte[parts.length];
 
 		for (int i = 0; i < parts.length; ++i) {
-			if (parts[i].length() != 8) {
+			if (parts[i].length() != Byte.SIZE) {
 				throw new IllegalArgumentException(
 					"Byte value doesn't contain 8 bit: " + parts[i]
 				);
