@@ -28,7 +28,7 @@ import org.jenetics.Selector;
  * @version !__version__!
  * @since !__version__!
  */
-public interface EngineParam<
+public interface Parameters<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 > {
@@ -42,8 +42,6 @@ public interface EngineParam<
 	public double offspringFraction();
 
 	public int populationSize();
-
-	public int individualCreationRetries();
 
 	public long maximalPhenotypeAge();
 
