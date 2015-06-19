@@ -19,6 +19,10 @@
  */
 package org.jenetics.engine;
 
+import static java.util.Objects.requireNonNull;
+
+import java.io.Serializable;
+
 import org.jenetics.Alterer;
 import org.jenetics.Gene;
 import org.jenetics.Selector;
@@ -28,21 +32,78 @@ import org.jenetics.Selector;
  * @version !__version__!
  * @since !__version__!
  */
-public interface Parameters<
+public final class Parameters<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
-> {
+>
+	implements Serializable
+{
+	private static final long serialVersionUID = 1L;
 
-	public Alterer<G, C> alterer();
+	private final  Alterer<G, C> _alterer;
+	private final Selector<G, C> _offspringSelector;
+	private final Selector<G, C> _survivorsSelector;
+	private final double _offspringFraction;
+	private final int _populationSize;
+	private final long _maximalPhenotypeAge;
 
-	public Selector<G, C> offspringSelector();
+	private Parameters(
+		final Alterer<G, C> alterer,
+		final Selector<G, C> offspringSelector,
+		final Selector<G, C> survivorsSelector,
+		final double offspringFraction,
+		final int populationSize,
+		final long maximalPhenotypeAge
+	) {
+		_alterer = requireNonNull(alterer);
+		_offspringSelector = requireNonNull(offspringSelector);
+		_survivorsSelector = requireNonNull(survivorsSelector);
+		_offspringFraction = offspringFraction;
+		_populationSize = populationSize;
+		_maximalPhenotypeAge = maximalPhenotypeAge;
+	}
 
-	public Selector<G, C> survivorsSelector();
+	public Alterer<G, C> getAlterer() {
+		return _alterer;
+	}
 
-	public double offspringFraction();
+	public Selector<G, C> getOffspringSelector() {
+		return _offspringSelector;
+	}
 
-	public int populationSize();
+	public Selector<G, C> getSurvivorsSelector() {
+		return _survivorsSelector;
+	}
 
-	public long maximalPhenotypeAge();
+	public double getOffspringFraction() {
+		return _offspringFraction;
+	}
+
+	public int getPopulationSize() {
+		return _populationSize;
+	}
+
+	public long getMaximalPhenotypeAge() {
+		return _maximalPhenotypeAge;
+	}
+
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Parameters<G, C> of(
+		final Alterer<G, C> alterer,
+		final Selector<G, C> offspringSelector,
+		final Selector<G, C> survivorsSelector,
+		final double offspringFraction,
+		final int populationSize,
+		final long maximalPhenotypeAge
+	) {
+		return new Parameters<>(
+			alterer,
+			offspringSelector,
+			survivorsSelector,
+			offspringFraction,
+			populationSize,
+			maximalPhenotypeAge
+		);
+	}
 
 }
