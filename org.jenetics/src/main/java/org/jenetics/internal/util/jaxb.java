@@ -37,7 +37,7 @@ import org.jenetics.internal.util.model.CharacterModel;
  * JAXB helper methods.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-08-05 $</em>
+ * @version 1.6
  * @since 2.0
  */
 public class jaxb {
@@ -89,9 +89,8 @@ public class jaxb {
 	 */
 	@SuppressWarnings("unchecked")
 	public static XmlAdapter<Object, Object> adapterFor(final Object value) {
-		return (XmlAdapter<Object, Object>)ADAPTERS.computeIfAbsent(
-			classOf(value), jaxb::newXmlAdapter
-		);
+		return (XmlAdapter<Object, Object>)ADAPTERS
+			.computeIfAbsent(classOf(value), jaxb::newXmlAdapter);
 	}
 
 	private static XmlAdapter<Object, Object> newXmlAdapter(final Class<?> cls) {

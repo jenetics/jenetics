@@ -21,14 +21,16 @@ package org.jenetics.internal.collection;
 
 import java.util.function.Function;
 
+import org.testng.annotations.Test;
+
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Seq;
 import org.jenetics.util.SeqTestBase;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-21 $</em>
  */
+@Test
 public class ArrayProxySeqTest extends SeqTestBase {
 
 	private static final class ArrayProxySeqImpl<T, P extends ArrayProxy<T, ?, ?>>

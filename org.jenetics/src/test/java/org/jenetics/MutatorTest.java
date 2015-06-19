@@ -19,10 +19,12 @@
  */
 package org.jenetics;
 
+import org.testng.annotations.Test;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-06-01 $</em>
  */
+@Test
 public class MutatorTest extends MutatorTestBase {
 
 	@Override

@@ -19,13 +19,15 @@
  */
 package org.jenetics.internal.collection;
 
+import org.testng.annotations.Test;
+
 import org.jenetics.util.ISeq;
 import org.jenetics.util.ISeqTestBase;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-04-21 $</em>
  */
+@Test
 public class ArrayProxyISeqTest extends ISeqTestBase {
 
 	@Override

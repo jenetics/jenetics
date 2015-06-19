@@ -19,8 +19,6 @@
  */
 package org.jenetics;
 
-import java.io.Serializable;
-
 import org.jenetics.util.Factory;
 import org.jenetics.util.Verifiable;
 
@@ -39,12 +37,11 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-11-13 $</em>
+ * @version 3.1
  */
 public interface Gene<A, G extends Gene<A, G>>
 	extends
 		Factory<G>,
-		Serializable,
 		Verifiable
 {
 

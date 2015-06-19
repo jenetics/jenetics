@@ -2,4 +2,4 @@
 
 CLASSPATH="org.jenetics/build/classes/main:org.jenetics/build/classes/test"
 
-java -cp $CLASSPATH $*
+java -cp ${CLASSPATH} $*

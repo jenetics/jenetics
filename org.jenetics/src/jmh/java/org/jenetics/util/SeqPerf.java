@@ -37,7 +37,7 @@ import org.jenetics.internal.util.IntRef;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.0 &mdash; <em>$Date: 2014-07-17 $</em>
+ * @version 3.0
  * @since 3.0
  */
 @State(Scope.Benchmark)

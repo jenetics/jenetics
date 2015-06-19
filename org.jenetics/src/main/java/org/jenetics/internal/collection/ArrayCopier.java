@@ -27,7 +27,7 @@ import java.io.Serializable;
  * @param <A> the array type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.0 &mdash; <em>$Date: 2014-04-21 $</em>
+ * @version 3.0
  * @since 3.0
  */
 @FunctionalInterface

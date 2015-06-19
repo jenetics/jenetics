@@ -49,7 +49,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-12-08 $</em>
+ * @version 3.0
  */
 public abstract class ProbabilitySelector<
 	G extends Gene<?, G>,
@@ -103,8 +103,8 @@ public abstract class ProbabilitySelector<
 
 		if (count > 0) {
 			final double[] prob = probabilities(population, count, opt);
-			assert (population.size() == prob.length) :
-				"Population size and probability length are not equal.";
+			assert (population.size() == prob.length)
+				: "Population size and probability length are not equal.";
 			assert (sum2one(prob)) : "Probabilities doesn't sum to one.";
 
 			incremental(prob);
@@ -136,9 +136,9 @@ public abstract class ProbabilitySelector<
 		final int count,
 		final Optimize opt
 	) {
-		return requireNonNull(opt) == Optimize.MINIMUM ?
-			_reverter.apply(probabilities(population, count)) :
-			probabilities(population, count);
+		return requireNonNull(opt) == Optimize.MINIMUM
+			? _reverter.apply(probabilities(population, count))
+			: probabilities(population, count);
 	}
 
 	// Package private for testing.
@@ -162,8 +162,8 @@ public abstract class ProbabilitySelector<
 	 * subclass is responsible to sort the population.
 	 * </p>
 	 * The implementer always assumes that higher fitness values are better. The
-	 * base class inverts the probabilities ({@code p = 1.0 - p }) if the GA is
-	 * supposed to minimize the fitness function.
+	 * base class inverts the probabilities, by reverting the returned
+	 * probability array, if the GA is supposed to minimize the fitness function.
 	 *
 	 * @param population The <em>unsorted</em> population.
 	 * @param count The number of phenotypes to select. <i>This parameter is not
@@ -192,9 +192,9 @@ public abstract class ProbabilitySelector<
 	}
 
 	static int indexOf(final double[] incr, final double v) {
-		return incr.length <= SERIAL_INDEX_THRESHOLD ?
-			indexOfSerial(incr, v) :
-			indexOfBinary(incr, v);
+		return incr.length <= SERIAL_INDEX_THRESHOLD
+			? indexOfSerial(incr, v)
+			: indexOfBinary(incr, v);
 	}
 
 	/**
@@ -238,8 +238,9 @@ public abstract class ProbabilitySelector<
 	 * In-place summation of the probability array.
 	 */
 	static double[] incremental(final double[] values) {
+		final DoubleAdder adder = new DoubleAdder(values[0]);
 		for (int i = 1; i < values.length; ++i) {
-			values[i] = values[i - 1] + values[i];
+			values[i] = adder.add(values[i]).doubleValue();
 		}
 		return values;
 	}

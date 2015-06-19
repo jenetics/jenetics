@@ -30,11 +30,12 @@ import java.util.stream.Stream;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import org.jenetics.test.Retry;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-10-19 $</em>
  */
-public abstract class ObjectTester<T> {
+public abstract class ObjectTester<T> extends Retry {
 
 	protected abstract Factory<T> factory();
 
