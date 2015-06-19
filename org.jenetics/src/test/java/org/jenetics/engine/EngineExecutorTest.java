@@ -45,7 +45,7 @@ public class EngineExecutorTest {
 
 		final Engine<DoubleGene, Double> engine = Engine
 			.builder(EngineExecutorTest::f, DoubleChromosome.of(0, 1))
-			.executor(new ForkJoinPool(1))
+			.executor(new ForkJoinPool(10))
 			.build();
 
 		for (int i = 0; i < 1000; ++i) {
