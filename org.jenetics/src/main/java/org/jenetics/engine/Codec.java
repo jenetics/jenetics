@@ -56,31 +56,6 @@ public interface Codec<G extends Gene<?, G>, S> {
 	public Function<Genotype<G>, S> decoder();
 
 
-	/**
-	 *
-	 * @param encoding
-	 * @param decoder
-	 * @param <G>
-	 * @param <S>
-	 * @return
-	 */
-	public static <G extends Gene<?, G>, S> Codec<G, S> of(
-		final Factory<Genotype<G>> encoding,
-		final Function<Genotype<G>, S> decoder
-	) {
-		return new Codec<G, S>() {
-			@Override
-			public Factory<Genotype<G>> encoding() {
-				return encoding;
-			}
-
-			@Override
-			public Function<Genotype<G>, S> decoder() {
-				return decoder;
-			}
-		};
-	}
-
 	public static Codec<IntegerGene, Integer> ofInteger(
 		final int min,
 		final int max
@@ -109,6 +84,31 @@ public interface Codec<G extends Gene<?, G>, S> {
 			Genotype.of(DoubleChromosome.of(DoubleGene.of(min, max))),
 			gt -> gt.getChromosome().getGene().getAllele()
 		);
+	}
+
+	/**
+	 *
+	 * @param encoding
+	 * @param decoder
+	 * @param <G>
+	 * @param <S>
+	 * @return
+	 */
+	public static <G extends Gene<?, G>, S> Codec<G, S> of(
+		final Factory<Genotype<G>> encoding,
+		final Function<Genotype<G>, S> decoder
+	) {
+		return new Codec<G, S>() {
+			@Override
+			public Factory<Genotype<G>> encoding() {
+				return encoding;
+			}
+
+			@Override
+			public Function<Genotype<G>, S> decoder() {
+				return decoder;
+			}
+		};
 	}
 
 }
