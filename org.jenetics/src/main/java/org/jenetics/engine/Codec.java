@@ -32,16 +32,22 @@ import org.jenetics.LongGene;
 import org.jenetics.util.Factory;
 
 /**
- * A problem {@code Codec} contains the information about.
+ * A problem {@code Codec} contains the information about how to encode a given
+ * argument type into a {@code Genotype}. It also lets convert the encoded
+ * {@code Genotype} back to the argument type.
+ *
+ * @param <T> the argument type of a given problem
+ * @param <G> the {@code Gene} type used for encoding the argument type {@code T}
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public interface Codec<G extends Gene<?, G>, S> {
+public interface Codec<G extends Gene<?, G>, T> {
 
 	/**
-	 * Return the genotype factory, which represents the encoded problem domain.
+	 * Return the genotype factory, which represents the encoded problem domain
+	 * and argument type, respectively.
 	 *
 	 * @return the genotype (factory) representation of the problem domain
 	 */
@@ -53,7 +59,7 @@ public interface Codec<G extends Gene<?, G>, S> {
 	 *
 	 * @return genotype decoder
 	 */
-	public Function<Genotype<G>, S> decoder();
+	public Function<Genotype<G>, T> decoder();
 
 
 	public static Codec<IntegerGene, Integer> ofInteger(
