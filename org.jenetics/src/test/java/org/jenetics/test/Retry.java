@@ -17,35 +17,27 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
-
-import static java.lang.String.format;
-
-import java.time.Clock;
-
-import org.testng.annotations.Test;
-
-import org.jenetics.test.Retry;
+package org.jenetics.test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class NanoClockTest extends Retry {
+public abstract class Retry {
 
-	@Test
-	public void millis() { retry(3, () -> {
-		final Clock nano = NanoClock.systemUTC();
+	public static interface Block<E extends Exception> {
+		public void call() throws E;
+	}
 
-		final long t2 = System.currentTimeMillis();
-		final long t1 = nano.instant().toEpochMilli();
-
-		assertEquals(t1, t2, 15);
-	});}
-
-	private static void assertEquals(final long v1, final long v2, final long epsilon) {
-		final long diff = Math.abs(v1 - v2);
-		if (diff > epsilon) {
-			throw new AssertionError(format("Got %d but expected %d.", v1, v2));
+	protected <E extends Exception>
+	void retry(final int count, final Block<E> block) throws E {
+		if (count > 1) {
+			try {
+				block.call();
+			} catch (Throwable e) {
+				retry(count - 1, block);
+			}
+		} else {
+			block.call();
 		}
 	}
 

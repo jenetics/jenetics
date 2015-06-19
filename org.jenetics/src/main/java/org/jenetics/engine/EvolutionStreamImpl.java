@@ -76,8 +76,7 @@ final class EvolutionStreamImpl<
 	public EvolutionStream<G, C>
 	limit(final Predicate<? super EvolutionResult<G, C>> proceed) {
 		final Predicate<? super EvolutionResult<G, C>> prcd =
-			_proceed == TRUE ? proceed :
-				r -> proceed.test(r) & _proceed.test(r);
+			_proceed == TRUE ? proceed : r -> proceed.test(r) & _proceed.test(r);
 
 		return new EvolutionStreamImpl<>(
 			_start,
