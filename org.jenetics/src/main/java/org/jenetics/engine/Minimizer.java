@@ -26,7 +26,7 @@ import java.util.function.Function;
  * @version !__version__!
  * @since !__version__!
  */
-public interface Optimizer<T, R extends Comparable<? super R>> {
+public interface Minimizer<T, R extends Comparable<? super R>> {
 
 	public T argmin(final Function<T, R> function);
 
