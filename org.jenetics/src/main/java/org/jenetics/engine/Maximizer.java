@@ -20,11 +20,6 @@
 package org.jenetics.engine;
 
 import java.util.function.Function;
-import java.util.function.Predicate;
-
-import org.jenetics.Gene;
-import org.jenetics.Genotype;
-import org.jenetics.Optimize;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -32,32 +27,8 @@ import org.jenetics.Optimize;
  * @since !__version__!
  */
 @FunctionalInterface
-public interface Minimizer<T, R extends Comparable<? super R>> {
+public interface Maximizer<T, R extends Comparable<? super R>> {
 
-	public T argmin(final Function<T, R> function);
-
-
-	public static <
-		T,
-		R extends Comparable<? super R>,
-		G extends Gene<?, G>
-	>
-	Minimizer<T, R> of(
-		final Engine.Builder<G, R> builder,
-		final Codec<G, T> codec,
-		final Predicate<? super EvolutionResult<G, R>> proceed
-	) {
-		return function -> {
-			final Genotype<G> gt = builder
-				.fitnessFunction(function.compose(codec.decoder()))
-				.optimize(Optimize.MINIMUM)
-				.build()
-				.stream()
-				.limit(proceed)
-				.collect(EvolutionResult.toBestGenotype());
-
-			return codec.decoder().apply(gt);
-		};
-	}
+	public T argmax(final Function<T, R> function);
 
 }

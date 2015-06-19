@@ -135,6 +135,11 @@ public final class optimize<T, R extends Comparable<? super R>> {
 		return of(codec, param);
 	}
 
+	public static <T, R extends Comparable<? super R>>
+	T _argmin(final Function<T, R> function) {
+		return null;
+	}
+
 	public static void main(final String[] args) {
 		final Double result = optimize.<Double>ofDouble(0, Math.PI)
 			.argmin(Math::sin);

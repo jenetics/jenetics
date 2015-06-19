@@ -19,45 +19,32 @@
  */
 package org.jenetics.engine;
 
-import java.util.function.Function;
-import java.util.function.Predicate;
-
+import org.jenetics.Alterer;
 import org.jenetics.Gene;
-import org.jenetics.Genotype;
-import org.jenetics.Optimize;
+import org.jenetics.Selector;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-@FunctionalInterface
-public interface Minimizer<T, R extends Comparable<? super R>> {
+public interface EngineParam<
+	G extends Gene<?, G>,
+	C extends Comparable<? super C>
+> {
 
-	public T argmin(final Function<T, R> function);
+	public Alterer<G, C> alterer();
 
+	public Selector<G, C> offspringSelector();
 
-	public static <
-		T,
-		R extends Comparable<? super R>,
-		G extends Gene<?, G>
-	>
-	Minimizer<T, R> of(
-		final Engine.Builder<G, R> builder,
-		final Codec<G, T> codec,
-		final Predicate<? super EvolutionResult<G, R>> proceed
-	) {
-		return function -> {
-			final Genotype<G> gt = builder
-				.fitnessFunction(function.compose(codec.decoder()))
-				.optimize(Optimize.MINIMUM)
-				.build()
-				.stream()
-				.limit(proceed)
-				.collect(EvolutionResult.toBestGenotype());
+	public Selector<G, C> survivorsSelector();
 
-			return codec.decoder().apply(gt);
-		};
-	}
+	public double offspringFraction();
+
+	public int populationSize();
+
+	public int individualCreationRetries();
+
+	public long maximalPhenotypeAge();
 
 }
