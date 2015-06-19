@@ -19,10 +19,15 @@
  */
 package org.jenetics.engine;
 
+import java.util.function.Function;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class Opt {
+public interface Opt<T, R extends Comparable<? super R>> {
+
+	public T argmin(final Function<T, R> function);
+
 }
