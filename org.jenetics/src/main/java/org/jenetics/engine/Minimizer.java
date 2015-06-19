@@ -43,17 +43,24 @@ public interface Minimizer<T, R extends Comparable<? super R>> {
 		G extends Gene<?, G>
 	>
 	Minimizer<T, R> of(
-		final Engine.Builder<G, R> builder,
 		final Codec<G, T> codec,
-		final Predicate<? super EvolutionResult<G, R>> proceed
+		final Parameters<G, R> parameters,
+		final Predicate<? super EvolutionResult<G, R>> limit
 	) {
 		return function -> {
-			final Genotype<G> gt = builder
-				.fitnessFunction(function.compose(codec.decoder()))
+			final Engine<G, R> engine = Engine
+				.builder(function.compose(codec.decoder()), codec.encoding())
 				.optimize(Optimize.MINIMUM)
-				.build()
-				.stream()
-				.limit(proceed)
+				.alterers(parameters.getAlterer())
+				.offspringSelector(parameters.getOffspringSelector())
+				.survivorsSelector(parameters.getSurvivorsSelector())
+				.offspringFraction(parameters.getOffspringFraction())
+				.populationSize(parameters.getPopulationSize())
+				.maximalPhenotypeAge(parameters.getMaximalPhenotypeAge())
+				.build();
+
+			final Genotype<G> gt = engine.stream()
+				.limit(limit)
 				.collect(EvolutionResult.toBestGenotype());
 
 			return codec.decoder().apply(gt);

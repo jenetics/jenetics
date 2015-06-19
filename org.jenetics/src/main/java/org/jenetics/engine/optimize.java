@@ -21,7 +21,10 @@ package org.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.function.DoubleFunction;
 import java.util.function.Function;
+import java.util.function.IntFunction;
+import java.util.function.LongFunction;
 
 import org.jenetics.DoubleGene;
 import org.jenetics.Gene;
@@ -140,10 +143,40 @@ public final class optimize<T, R extends Comparable<? super R>> {
 		return null;
 	}
 
+	public static <R extends Comparable<? super R>>
+	int argmin(final int min, final int max, final IntFunction<R> function) {
+		return 0;
+	}
+
+	public static <R extends Comparable<? super R>>
+	long argmin(final long min, final long max, final LongFunction<R> function) {
+		return 0;
+	}
+
+	public static <R extends Comparable<? super R>>
+	double argmin(final double min, final double max, final DoubleFunction<R> function) {
+		return 0;
+	}
+
+	static Object foo = null;
+
+	static <N extends Number & Comparable<? super N>>
+	MinFac<N> range(final N min, final N max) {
+		return (MinFac<N>)foo;
+	}
+
+	interface MinFac<T> {
+		<R extends Comparable<? super R>> T argmin(final Function<T, R> function);
+	}
+
 	public static void main(final String[] args) {
 		final Double result = optimize.<Double>ofDouble(0, Math.PI)
 			.argmin(Math::sin);
 
 		System.out.println(result);
+
+		argmin(0, 100, Integer::toHexString);
+
+		int r = optimize.range(1, 2).argmin(i -> "df");
 	}
 }
