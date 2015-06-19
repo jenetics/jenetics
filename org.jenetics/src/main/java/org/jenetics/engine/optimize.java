@@ -35,7 +35,7 @@ import org.jenetics.Optimize;
  * @version !__version__!
  * @since !__version__!
  */
-public final class Optimizer<T, R extends Comparable<? super R>> {
+public final class optimize<T, R extends Comparable<? super R>> {
 
 	/**
 	 * Worker class used for hiding the gene type.
@@ -83,7 +83,7 @@ public final class Optimizer<T, R extends Comparable<? super R>> {
 
 	private Worker<?> _worker;
 
-	private Optimizer() {
+	private optimize() {
 	}
 
 	public T argmin(final Function<T, R> function) {
@@ -104,8 +104,8 @@ public final class Optimizer<T, R extends Comparable<? super R>> {
 		S,
 		R extends Comparable<? super R>
 	>
-	Optimizer<S, R> of(final Codec<G, S> codec, final EvolutionParam<G, R> param) {
-		final Optimizer<S, R> optimizer = new Optimizer<>();
+	optimize<S, R> of(final Codec<G, S> codec, final EvolutionParam<G, R> param) {
+		final optimize<S, R> optimizer = new optimize<>();
 		optimizer._worker = optimizer.new Worker<>(codec, param);
 
 		return optimizer;
@@ -116,11 +116,11 @@ public final class Optimizer<T, R extends Comparable<? super R>> {
 		S,
 		R extends Comparable<? super R>
 	>
-	Optimizer<S, R> of(final Codec<G, S> codec) {
+	optimize<S, R> of(final Codec<G, S> codec) {
 		return of(codec, new EvolutionParam<G, R>());
 	}
 
-	public static <R extends Comparable<? super R>> Optimizer<Double, R> ofDouble(
+	public static <R extends Comparable<? super R>> optimize<Double, R> ofDouble(
 		final double min,
 		final double max
 	) {
@@ -136,7 +136,7 @@ public final class Optimizer<T, R extends Comparable<? super R>> {
 	}
 
 	public static void main(final String[] args) {
-		final Double result = Optimizer.<Double>ofDouble(0, Math.PI)
+		final Double result = optimize.<Double>ofDouble(0, Math.PI)
 			.argmin(Math::sin);
 
 		System.out.println(result);
