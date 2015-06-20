@@ -27,7 +27,6 @@ import org.jenetics.Genotype;
 import org.jenetics.Optimize;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
-import org.jenetics.engine.Parameters;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

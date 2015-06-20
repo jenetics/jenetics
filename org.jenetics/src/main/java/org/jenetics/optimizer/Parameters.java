@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.engine;
+package org.jenetics.optimizer;
 
 import static java.util.Objects.requireNonNull;
 
