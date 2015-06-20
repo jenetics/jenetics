@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.engine;
+package org.jenetics.optimizer;
 
 import java.util.function.Function;
 
@@ -82,7 +82,7 @@ public interface Problem<
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>, S>
 	Problem<G, C> of(
 		final Function<S, C> function,
-		final Codec<G, S> codec
+		final org.jenetics.optimizer.Codec<G, S> codec
 	) {
 		return of(
 			codec.encoding(),

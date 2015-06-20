@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.engine;
+package org.jenetics.optimizer;
 
 import static java.util.Objects.requireNonNull;
 
@@ -32,6 +32,9 @@ import org.jenetics.Genotype;
 import org.jenetics.MeanAlterer;
 import org.jenetics.Mutator;
 import org.jenetics.Optimize;
+import org.jenetics.engine.Engine;
+import org.jenetics.engine.EvolutionResult;
+import org.jenetics.engine.limit;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -46,10 +49,10 @@ public final class optimize<T, R extends Comparable<? super R>> {
 	 * @param <G> the gene type
 	 */
 	private class Worker<G extends Gene<?, G>> {
-		private final Codec<G, T> _codec;
+		private final org.jenetics.optimizer.Codec<G, T> _codec;
 		private final EvolutionParam<G, R> _param;
 
-		Worker(final Codec<G, T> codec, final EvolutionParam<G, R> param) {
+		Worker(final org.jenetics.optimizer.Codec<G, T> codec, final EvolutionParam<G, R> param) {
 			_codec = requireNonNull(codec);
 			_param = requireNonNull(param);
 		}
@@ -107,7 +110,7 @@ public final class optimize<T, R extends Comparable<? super R>> {
 		S,
 		R extends Comparable<? super R>
 	>
-	optimize<S, R> of(final Codec<G, S> codec, final EvolutionParam<G, R> param) {
+	optimize<S, R> of(final org.jenetics.optimizer.Codec<G, S> codec, final EvolutionParam<G, R> param) {
 		final optimize<S, R> optimizer = new optimize<>();
 		optimizer._worker = optimizer.new Worker<>(codec, param);
 
@@ -119,7 +122,7 @@ public final class optimize<T, R extends Comparable<? super R>> {
 		S,
 		R extends Comparable<? super R>
 	>
-	optimize<S, R> of(final Codec<G, S> codec) {
+	optimize<S, R> of(final org.jenetics.optimizer.Codec<G, S> codec) {
 		return of(codec, new EvolutionParam<G, R>());
 	}
 
@@ -127,7 +130,7 @@ public final class optimize<T, R extends Comparable<? super R>> {
 		final double min,
 		final double max
 	) {
-		final Codec<DoubleGene, Double> codec = Codec.ofDouble(min, max);
+		final org.jenetics.optimizer.Codec<DoubleGene, Double> codec = org.jenetics.optimizer.Codec.ofDouble(min, max);
 		final EvolutionParam<DoubleGene, R> param =
 			new EvolutionParam<DoubleGene, R>()
 				.alterers(
@@ -178,7 +181,7 @@ public final class optimize<T, R extends Comparable<? super R>> {
 	}
 
 	interface MinMaximizer<T, R extends Comparable<? super R>>
-		extends Minimizer<T, R>, Maximizer<T, R> {}
+		extends Minimizer<T, R>, org.jenetics.optimizer.Maximizer<T, R> {}
 
 
 	public static <T, R extends Comparable<? super R>>

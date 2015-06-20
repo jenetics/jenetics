@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.engine;
+package org.jenetics.optimizer;
 
 import static java.lang.Math.round;
 import static java.lang.String.format;
@@ -41,7 +41,7 @@ import org.jenetics.TournamentSelector;
  * @version !__version__!
  * @since !__version__!
  */
-class EvolutionParam<
+public class EvolutionParam<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
