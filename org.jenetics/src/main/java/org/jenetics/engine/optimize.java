@@ -160,13 +160,30 @@ public final class optimize<T, R extends Comparable<? super R>> {
 
 	static Object foo = null;
 
-	static <N extends Number & Comparable<? super N>>
-	MinFac<N> range(final N min, final N max) {
-		return (MinFac<N>)foo;
+	static MinFac<Integer> between(final int min, final int max) {
+		return (MinFac<Integer>)foo;
 	}
 
 	interface MinFac<T> {
-		<R extends Comparable<? super R>> T argmin(final Function<T, R> function);
+		default <R extends Comparable<? super R>> T argmin(final Function<T, R> function) {
+			//Minimizer.of(null, null, null).argmin(function);
+			return null;
+		}
+	}
+
+	static class IntegerMinFac implements MinFac<Integer> {
+		public <R extends Comparable<? super R>> Integer argmin(final Function<Integer, R> function) {
+			return null;
+		}
+	}
+
+	interface MinMaximizer<T, R extends Comparable<? super R>>
+		extends Minimizer<T, R>, Maximizer<T, R> {}
+
+
+	public static <T, R extends Comparable<? super R>>
+	MinMaximizer<T, R> range(int min, int max) {
+		return (MinMaximizer<T, R>)foo;
 	}
 
 	public static void main(final String[] args) {
@@ -175,8 +192,14 @@ public final class optimize<T, R extends Comparable<? super R>> {
 
 		System.out.println(result);
 
-		argmin(0, 100, Integer::toHexString);
+		argmin(0L, 100L, (long i) -> "");
 
-		int r = optimize.range(1, 2).argmin(i -> "df");
+		optimize.<Integer, String>range(0, 1).argmin(optimize::fitness);
+
+		int r = optimize.between(1, 2).argmin(i -> "df");
+	}
+
+	static String fitness(int i) {
+		return "";
 	}
 }

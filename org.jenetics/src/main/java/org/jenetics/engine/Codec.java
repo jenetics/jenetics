@@ -97,21 +97,21 @@ public interface Codec<G extends Gene<?, G>, T> {
 	 * @param encoding
 	 * @param decoder
 	 * @param <G>
-	 * @param <S>
+	 * @param <T>
 	 * @return
 	 */
-	public static <G extends Gene<?, G>, S> Codec<G, S> of(
+	public static <G extends Gene<?, G>, T> Codec<G, T> of(
 		final Factory<Genotype<G>> encoding,
-		final Function<Genotype<G>, S> decoder
+		final Function<Genotype<G>, T> decoder
 	) {
-		return new Codec<G, S>() {
+		return new Codec<G, T>() {
 			@Override
 			public Factory<Genotype<G>> encoding() {
 				return encoding;
 			}
 
 			@Override
-			public Function<Genotype<G>, S> decoder() {
+			public Function<Genotype<G>, T> decoder() {
 				return decoder;
 			}
 		};
