@@ -35,7 +35,7 @@ public class MultiPointCrossoverProxy<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	implements AltererProxy<G, C>
+	implements Proxy<Alterer<G, C>>
 {
 
 	private final double _probability;

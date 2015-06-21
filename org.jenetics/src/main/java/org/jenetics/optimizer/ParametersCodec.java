@@ -27,12 +27,14 @@ import java.util.stream.Stream;
 import org.jenetics.internal.util.IntRef;
 
 import org.jenetics.Alterer;
+import org.jenetics.Chromosome;
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -48,7 +50,9 @@ public class ParametersCodec<
 
 	private ISeq<Proxy<Alterer<G, C>>> _alterers;
 
-
+	public ParametersCodec(final ISeq<Proxy<Alterer<G, C>>> alterers) {
+		_alterers = alterers;
+	}
 
 	@Override
 	public Factory<Genotype<DoubleGene>> encoding() {
@@ -62,23 +66,37 @@ public class ParametersCodec<
 	@Override
 	public Function<Genotype<DoubleGene>, Parameters> decoder() {
 		return gt -> {
-			final ISeq<Double> parameters = gt.getChromosome(0).toSeq()
-				.map(DoubleGene::getAllele);
-
-			final Iterator<double[]> altererParams = split(parameters).iterator();
-
-			final ISeq<Alterer<G, C>> alterers = _alterers.stream()
-				.flatMap(a -> a.factory()
-					.apply(altererParams.next())
-					.map(Stream::of)
-					.orElse(Stream.empty()))
-				.collect(ISeq.toISeq());
+			final ISeq<Alterer<G, C>> alterers =
+				instances(_alterers, gt.getChromosome(0));
 
 			return null;
 		};
 	}
 
-	private ISeq<double[]> split(final int[] lengths, final ISeq<Double> args) {
+	private static <T> ISeq<T> instances(
+		final Seq<Proxy<T>> proxies,
+		final Chromosome<DoubleGene> chromosome
+	) {
+		final ISeq<Double> arguments = chromosome.toSeq()
+			.map(DoubleGene::getAllele);
+
+		final int[] lengths = proxies.stream()
+			.mapToInt(Proxy::argLength)
+			.toArray();
+
+		final Iterator<double[]> args = split(lengths, arguments).iterator();
+		return proxies.stream()
+			.flatMap(a -> a.factory()
+				.apply(args.next())
+				.map(Stream::of)
+				.orElse(Stream.empty()))
+			.collect(ISeq.toISeq());
+	}
+
+	private static ISeq<double[]> split(
+		final int[] lengths,
+		final Seq<Double> args
+	) {
 		final IntRef start = new IntRef();
 		return IntStream.of(lengths)
 			.mapToObj(l -> args
