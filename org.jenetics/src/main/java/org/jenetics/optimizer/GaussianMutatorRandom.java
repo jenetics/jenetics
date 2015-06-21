@@ -19,18 +19,34 @@
  */
 package org.jenetics.optimizer;
 
-import org.jenetics.Alterer;
-import org.jenetics.Gene;
+import static java.util.Objects.requireNonNull;
+
+import java.util.Random;
+
+import org.jenetics.GaussianMutator;
+import org.jenetics.NumericGene;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public interface AltererGene<
-	G extends Gene<?, G>,
+public class GaussianMutatorRandom<
+	G extends NumericGene<?, G>,
 	C extends Comparable<? super C>
 >
-	extends Gene<Alterer<G, C>, AltererGene<G, C>>
+	extends PROG<GaussianMutator<G, C>>
 {
+
+	private final Random _random;
+
+	public GaussianMutatorRandom(final Random random) {
+		_random = requireNonNull(random);
+	}
+
+	@Override
+	public GaussianMutator<G, C> next() {
+		return new GaussianMutator<>(_random.nextDouble());
+	}
+
 }

@@ -19,18 +19,39 @@
  */
 package org.jenetics.optimizer;
 
+import java.util.function.Function;
+
 import org.jenetics.Alterer;
+import org.jenetics.DoubleGene;
 import org.jenetics.Gene;
+import org.jenetics.Genotype;
+import org.jenetics.util.Factory;
+import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public interface AltererGene<
+public class ParametersCodec<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	extends Gene<Alterer<G, C>, AltererGene<G, C>>
+	implements Codec<DoubleGene, Parameters>
 {
+
+	//private final ISeq<Alterer<G, C>> _alterers;
+
+
+
+	@Override
+	public Factory<Genotype<DoubleGene>> encoding() {
+		return null;
+	}
+
+	@Override
+	public Function<Genotype<DoubleGene>, Parameters> decoder() {
+		return null;
+	}
+
 }

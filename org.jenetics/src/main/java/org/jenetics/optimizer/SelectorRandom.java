@@ -19,18 +19,18 @@
  */
 package org.jenetics.optimizer;
 
-import org.jenetics.Alterer;
 import org.jenetics.Gene;
+import org.jenetics.Selector;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public interface AltererGene<
-	G extends Gene<?, G>,
-	C extends Comparable<? super C>
->
-	extends Gene<Alterer<G, C>, AltererGene<G, C>>
-{
+public class SelectorRandom<G extends Gene<?, G>, C extends Comparable<? super C>> {
+
+	public Selector<G, C> next() {
+		return null;
+	}
+
 }

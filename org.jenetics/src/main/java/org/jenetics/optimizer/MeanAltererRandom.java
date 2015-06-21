@@ -19,18 +19,35 @@
  */
 package org.jenetics.optimizer;
 
-import org.jenetics.Alterer;
+import static java.util.Objects.requireNonNull;
+
+import java.util.Random;
+
 import org.jenetics.Gene;
+import org.jenetics.MeanAlterer;
+import org.jenetics.util.Mean;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public interface AltererGene<
-	G extends Gene<?, G>,
+public class MeanAltererRandom<
+	G extends Gene<?, G> & Mean<G>,
 	C extends Comparable<? super C>
 >
-	extends Gene<Alterer<G, C>, AltererGene<G, C>>
+	extends PROG<MeanAlterer<G, C>>
 {
+
+	private final Random _random;
+
+	public MeanAltererRandom(final Random random) {
+		_random = requireNonNull(random);
+	}
+
+	@Override
+	public MeanAlterer<G, C> next() {
+		return new MeanAlterer<>(_random.nextDouble());
+	}
+
 }

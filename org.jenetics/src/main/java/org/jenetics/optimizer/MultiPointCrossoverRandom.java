@@ -19,18 +19,45 @@
  */
 package org.jenetics.optimizer;
 
-import org.jenetics.Alterer;
+import static java.util.Objects.requireNonNull;
+
+import java.util.Random;
+
 import org.jenetics.Gene;
+import org.jenetics.MultiPointCrossover;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public interface AltererGene<
+public class MultiPointCrossoverRandom<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
->
-	extends Gene<Alterer<G, C>, AltererGene<G, C>>
+	>
+	extends PROG<MultiPointCrossover<G, C>>
 {
+
+	private final Random _random;
+	private final int _minPointCount;
+	private final int _maxPointCount;
+
+	public MultiPointCrossoverRandom(
+		final Random random,
+		final int minPointCount,
+		final int maxPointCount
+	) {
+		_random = requireNonNull(random);
+		_minPointCount = minPointCount;
+		_maxPointCount = maxPointCount;
+	}
+
+	@Override
+	public MultiPointCrossover<G, C> next() {
+		return new MultiPointCrossover<>(
+			_random.nextDouble(),
+			_random.nextInt(_maxPointCount + _minPointCount) + _minPointCount
+		);
+	}
+
 }

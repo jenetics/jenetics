@@ -19,6 +19,9 @@
  */
 package org.jenetics.optimizer;
 
+import java.util.Optional;
+import java.util.function.Function;
+
 import org.jenetics.Alterer;
 import org.jenetics.Gene;
 
@@ -27,10 +30,15 @@ import org.jenetics.Gene;
  * @version !__version__!
  * @since !__version__!
  */
-public interface AltererGene<
+public interface AltererProxy<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
->
-	extends Gene<Alterer<G, C>, AltererGene<G, C>>
-{
+> {
+
+	public Optional<Alterer<G, C>> factory(final double[] parameter);
+
+	public Function<double[], Optional<Alterer<G, C>>> factory();
+
+	public double[] parameters();
+
 }

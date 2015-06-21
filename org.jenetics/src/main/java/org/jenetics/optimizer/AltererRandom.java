@@ -27,10 +27,7 @@ import org.jenetics.Gene;
  * @version !__version__!
  * @since !__version__!
  */
-public interface AltererGene<
-	G extends Gene<?, G>,
-	C extends Comparable<? super C>
->
-	extends Gene<Alterer<G, C>, AltererGene<G, C>>
+public abstract class AltererRandom<G extends Gene<?, G>, C extends Comparable<? super C>>
+	extends PROG<Alterer<G, C>>
 {
 }

@@ -19,18 +19,34 @@
  */
 package org.jenetics.optimizer;
 
-import org.jenetics.Alterer;
+import static java.util.Objects.requireNonNull;
+
+import java.util.Random;
+
 import org.jenetics.Gene;
+import org.jenetics.SinglePointCrossover;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public interface AltererGene<
+public class SinglePointCrossoverRandom<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	extends Gene<Alterer<G, C>, AltererGene<G, C>>
+	extends PROG<SinglePointCrossover<G, C>>
 {
+
+	private final Random _random;
+
+	public SinglePointCrossoverRandom(final Random random) {
+		_random = requireNonNull(random);
+	}
+
+	@Override
+	public SinglePointCrossover<G, C> next() {
+		return new SinglePointCrossover<>(_random.nextDouble());
+	}
+
 }

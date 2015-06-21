@@ -40,7 +40,7 @@ public final class Parameters<
 {
 	private static final long serialVersionUID = 1L;
 
-	private final  Alterer<G, C> _alterer;
+	private final Alterer<G, C> _alterer;
 	private final Selector<G, C> _offspringSelector;
 	private final Selector<G, C> _survivorsSelector;
 	private final double _offspringFraction;
