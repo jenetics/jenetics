@@ -56,7 +56,7 @@ public interface Minimizer<T, R extends Comparable<? super R>> {
 			final Engine<G, R> engine = Engine
 				.builder(function.compose(codec.decoder()), codec.encoding())
 				.optimize(Optimize.MINIMUM)
-				.alterers(parameters.getAlterer())
+				.alterers(parameters.getAlterers().get(0))
 				.offspringSelector(parameters.getOffspringSelector())
 				.survivorsSelector(parameters.getSurvivorsSelector())
 				.offspringFraction(parameters.getOffspringFraction())
