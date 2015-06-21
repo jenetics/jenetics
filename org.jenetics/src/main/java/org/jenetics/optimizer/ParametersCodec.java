@@ -19,9 +19,15 @@
  */
 package org.jenetics.optimizer;
 
+import java.util.Iterator;
 import java.util.function.Function;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
+import org.jenetics.internal.util.IntRef;
 
 import org.jenetics.Alterer;
+import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
@@ -40,18 +46,46 @@ public class ParametersCodec<
 	implements Codec<DoubleGene, Parameters>
 {
 
-	//private final ISeq<Alterer<G, C>> _alterers;
+	private ISeq<Proxy<Alterer<G, C>>> _alterers;
 
 
 
 	@Override
 	public Factory<Genotype<DoubleGene>> encoding() {
-		return null;
+		final int length = _alterers.stream()
+			.mapToInt(Proxy::argLength)
+			.sum();
+
+		return () -> Genotype.of(DoubleChromosome.of(0.0, 1.0, length));
 	}
 
 	@Override
 	public Function<Genotype<DoubleGene>, Parameters> decoder() {
-		return null;
+		return gt -> {
+			final ISeq<Double> parameters = gt.getChromosome(0).toSeq()
+				.map(DoubleGene::getAllele);
+
+			final Iterator<double[]> altererParams = split(parameters).iterator();
+
+			final ISeq<Alterer<G, C>> alterers = _alterers.stream()
+				.flatMap(a -> a.factory()
+					.apply(altererParams.next())
+					.map(Stream::of)
+					.orElse(Stream.empty()))
+				.collect(ISeq.toISeq());
+
+			return null;
+		};
+	}
+
+	private ISeq<double[]> split(final int[] lengths, final ISeq<Double> args) {
+		final IntRef start = new IntRef();
+		return IntStream.of(lengths)
+			.mapToObj(l -> args
+				.subSeq(start.value, start.value += l).stream()
+				.mapToDouble(Double::doubleValue)
+				.toArray())
+			.collect(ISeq.toISeq());
 	}
 
 }

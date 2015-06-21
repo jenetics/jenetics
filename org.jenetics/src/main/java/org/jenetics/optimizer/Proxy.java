@@ -23,20 +23,15 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import org.jenetics.Alterer;
-import org.jenetics.Gene;
-import org.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public interface AltererProxy<
-	G extends Gene<?, G>,
-	C extends Comparable<? super C>
-> {
+public interface Proxy<T> {
 
-	public Function<double[], Optional<Alterer<G, C>>> factory();
+	public Function<double[], Optional<T>> factory();
 
 	public int argLength();
 

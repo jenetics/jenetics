@@ -24,20 +24,49 @@ import java.util.function.Function;
 
 import org.jenetics.Alterer;
 import org.jenetics.Gene;
-import org.jenetics.util.Seq;
+import org.jenetics.MultiPointCrossover;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public interface AltererProxy<
+public class MultiPointCrossoverProxy<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
-> {
+>
+	implements AltererProxy<G, C>
+{
 
-	public Function<double[], Optional<Alterer<G, C>>> factory();
+	private final double _probability;
+	private final int _minPointCount;
+	private final int _maxPointCount;
 
-	public int argLength();
+	public MultiPointCrossoverProxy(
+		final double probability,
+		final int minPointCount,
+		final int maxPointCount
+	) {
+		_probability = probability;
+		_minPointCount = minPointCount;
+		_maxPointCount = maxPointCount;
+	}
 
+	@Override
+	public Function<double[], Optional<Alterer<G, C>>> factory() {
+		return args -> Optional.ofNullable(
+			args[0] < _probability
+				? new MultiPointCrossover<>(args[1], crossoverPoints(args[2]))
+				: null
+		);
+	}
+
+	private int crossoverPoints(final double value) {
+		return (int)(value*(_maxPointCount - _minPointCount)) + _minPointCount;
+	}
+
+	@Override
+	public int argLength() {
+		return 2;
+	}
 }
