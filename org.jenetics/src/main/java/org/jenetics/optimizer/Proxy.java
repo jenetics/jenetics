@@ -22,8 +22,6 @@ package org.jenetics.optimizer;
 import java.util.Optional;
 import java.util.function.Function;
 
-import org.jenetics.Alterer;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -33,6 +31,23 @@ public interface Proxy<T> {
 
 	public Function<double[], Optional<T>> factory();
 
-	public int argLength();
+	public int argsLength();
+
+	public static <T> Proxy<T> of(
+		final Function<double[], Optional<T>> factory,
+		final int argsLength
+	) {
+		return new Proxy<T>() {
+			@Override
+			public Function<double[], Optional<T>> factory() {
+				return factory;
+			}
+
+			@Override
+			public int argsLength() {
+				return argsLength;
+			}
+		};
+	}
 
 }

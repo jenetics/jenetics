@@ -32,6 +32,7 @@ import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
+import org.jenetics.Selector;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Seq;
@@ -45,29 +46,90 @@ public class ParametersCodec<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	implements Codec<DoubleGene, Parameters>
+	implements Codec<DoubleGene, Parameters<G, C>>
 {
 
-	private ISeq<Proxy<Alterer<G, C>>> _alterers;
+	private final ISeq<Proxy<Alterer<G, C>>> _alterers;
+	private final ISeq<Proxy<Selector<G, C>>> _offspringSelectors;
+	private final ISeq<Proxy<Selector<G, C>>> _survivorsSelectors;
+	private final int _minPopulationSize;
+	private final int _maxPopulationSize;
+	private final long _minMaxPhenotypeAge;
+	private final long _maxMaxPhenotypeAge;
 
-	public ParametersCodec(final ISeq<Proxy<Alterer<G, C>>> alterers) {
+	public ParametersCodec(
+		final ISeq<Proxy<Alterer<G, C>>> alterers,
+		final ISeq<Proxy<Selector<G, C>>> offspringSelectors,
+		final ISeq<Proxy<Selector<G, C>>> survivorsSelectors,
+		final int minPopulationSize,
+		final int maxPopulationSize,
+		final long minMaxPhenotypeAge,
+		final long maxMaxPhenotypeAge
+	) {
 		_alterers = alterers;
+		_offspringSelectors = offspringSelectors;
+		_survivorsSelectors = survivorsSelectors;
+		_minPopulationSize = minPopulationSize;
+		_maxPopulationSize = maxPopulationSize;
+		_minMaxPhenotypeAge = minMaxPhenotypeAge;
+		_maxMaxPhenotypeAge = maxMaxPhenotypeAge;
 	}
 
 	@Override
 	public Factory<Genotype<DoubleGene>> encoding() {
-		final int length = _alterers.stream()
-			.mapToInt(Proxy::argLength)
-			.sum();
-
-		return () -> Genotype.of(DoubleChromosome.of(0.0, 1.0, length));
+		return () -> Genotype.of(
+			// Alterers
+			DoubleChromosome.of(0.0, 1.0,
+				_alterers.stream().mapToInt(Proxy::argsLength).sum()
+			),
+			// Offspring selectors
+			DoubleChromosome.of(0.0, 1.0,
+				_offspringSelectors.stream().mapToInt(Proxy::argsLength).sum()
+			),
+			// Survivors selectors
+			DoubleChromosome.of(0.0, 1.0,
+				_survivorsSelectors.stream().mapToInt(Proxy::argsLength).sum()
+			),
+			// Offspring fraction
+			DoubleChromosome.of(0.0, 1.0),
+			// Population size
+			DoubleChromosome.of(_minPopulationSize, _maxPopulationSize),
+			// Phenotype age
+			DoubleChromosome.of(_minMaxPhenotypeAge, _maxMaxPhenotypeAge)
+		);
 	}
 
 	@Override
-	public Function<Genotype<DoubleGene>, Parameters> decoder() {
+	public Function<Genotype<DoubleGene>, Parameters<G, C>> decoder() {
 		return gt -> {
 			final ISeq<Alterer<G, C>> alterers =
 				instances(_alterers, gt.getChromosome(0));
+
+			final ISeq<Selector<G, C>> offspringSelectors =
+				instances(_offspringSelectors, gt.getChromosome(1));
+
+			final ISeq<Selector<G, C>> survivorsSelectors =
+				instances(_offspringSelectors, gt.getChromosome(2));
+
+			final double offspringFraction = gt.getChromosome(3)
+				.getGene().doubleValue();
+
+			final int populationSize = gt.getChromosome(4)
+				.getGene().intValue();
+
+			final long maxPhenotypeAge = gt.getChromosome(5)
+				.getGene().longValue();
+
+			/*
+			return Parameters.<G, C>of(
+				alterers,
+				offspringSelectors,
+				survivorsSelectors,
+				offspringFraction,
+				populationSize,
+				maxPhenotypeAge
+			);
+			*/
 
 			return null;
 		};
@@ -81,7 +143,7 @@ public class ParametersCodec<
 			.map(DoubleGene::getAllele);
 
 		final int[] lengths = proxies.stream()
-			.mapToInt(Proxy::argLength)
+			.mapToInt(Proxy::argsLength)
 			.toArray();
 
 		final Iterator<double[]> args = split(lengths, arguments).iterator();
