@@ -40,7 +40,7 @@ import org.jenetics.util.Seq;
  * @since 1.0
  * @version 3.0
  */
-final class CompositeAlterer<
+public final class CompositeAlterer<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
