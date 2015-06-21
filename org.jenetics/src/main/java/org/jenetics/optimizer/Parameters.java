@@ -26,6 +26,7 @@ import java.io.Serializable;
 import org.jenetics.Alterer;
 import org.jenetics.Gene;
 import org.jenetics.Selector;
+import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -40,7 +41,7 @@ public final class Parameters<
 {
 	private static final long serialVersionUID = 1L;
 
-	private final Alterer<G, C> _alterer;
+	private final ISeq<Alterer<G, C>> _alterers;
 	private final Selector<G, C> _offspringSelector;
 	private final Selector<G, C> _survivorsSelector;
 	private final double _offspringFraction;
@@ -48,14 +49,14 @@ public final class Parameters<
 	private final long _maximalPhenotypeAge;
 
 	private Parameters(
-		final Alterer<G, C> alterer,
+		final ISeq<Alterer<G, C>> alterers,
 		final Selector<G, C> offspringSelector,
 		final Selector<G, C> survivorsSelector,
 		final double offspringFraction,
 		final int populationSize,
 		final long maximalPhenotypeAge
 	) {
-		_alterer = requireNonNull(alterer);
+		_alterers = requireNonNull(alterers);
 		_offspringSelector = requireNonNull(offspringSelector);
 		_survivorsSelector = requireNonNull(survivorsSelector);
 		_offspringFraction = offspringFraction;
@@ -63,8 +64,8 @@ public final class Parameters<
 		_maximalPhenotypeAge = maximalPhenotypeAge;
 	}
 
-	public Alterer<G, C> getAlterer() {
-		return _alterer;
+	public ISeq<Alterer<G, C>> getAlterers() {
+		return _alterers;
 	}
 
 	public Selector<G, C> getOffspringSelector() {
@@ -89,7 +90,7 @@ public final class Parameters<
 
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Parameters<G, C> of(
-		final Alterer<G, C> alterer,
+		final ISeq<Alterer<G, C>> alterers,
 		final Selector<G, C> offspringSelector,
 		final Selector<G, C> survivorsSelector,
 		final double offspringFraction,
@@ -97,7 +98,7 @@ public final class Parameters<
 		final long maximalPhenotypeAge
 	) {
 		return new Parameters<>(
-			alterer,
+			alterers,
 			offspringSelector,
 			survivorsSelector,
 			offspringFraction,
