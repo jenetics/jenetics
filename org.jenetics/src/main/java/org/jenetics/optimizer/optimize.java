@@ -180,13 +180,9 @@ public final class optimize<T, R extends Comparable<? super R>> {
 		}
 	}
 
-	interface MinMaximizer<T, R extends Comparable<? super R>>
-		extends Minimizer<T, R>, org.jenetics.optimizer.Maximizer<T, R> {}
-
-
-	public static <T, R extends Comparable<? super R>>
-	MinMaximizer<T, R> range(int min, int max) {
-		return (MinMaximizer<T, R>)foo;
+	public static <R extends Comparable<? super R>>
+	Optimizer<Integer, R> range(int min, int max) {
+		return (Optimizer<Integer, R>)foo;
 	}
 
 	public static void main(final String[] args) {
@@ -197,7 +193,10 @@ public final class optimize<T, R extends Comparable<? super R>> {
 
 		argmin(0L, 100L, (long i) -> "");
 
-		optimize.<Integer, String>range(0, 1).argmin(optimize::fitness);
+		optimize.<String>range(0, 1).argmin(optimize::fitness);
+
+		Minimizer<Integer, String> minimizer = range(0, 1);
+		minimizer.argmin(i -> "");
 
 		int r = optimize.between(1, 2).argmin(i -> "df");
 	}

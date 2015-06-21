@@ -19,9 +19,8 @@
  */
 package org.jenetics.optimizer;
 
-import java.util.function.Function;
-
 /**
+ *
  * @param <T> the argument type of function to optimize
  * @param <R> the result type of the function to optimize
  *
@@ -29,9 +28,5 @@ import java.util.function.Function;
  * @version !__version__!
  * @since !__version__!
  */
-@FunctionalInterface
-public interface Maximizer<T, R extends Comparable<? super R>> {
-
-	public T argmax(final Function<T, R> function);
-
-}
+public interface Optimizer<T, R extends Comparable<? super R>>
+	extends Minimizer<T, R>, Maximizer<T, R> {}

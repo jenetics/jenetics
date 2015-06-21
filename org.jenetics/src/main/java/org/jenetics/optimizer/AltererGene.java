@@ -19,19 +19,38 @@
  */
 package org.jenetics.optimizer;
 
-import java.util.function.Function;
+import org.jenetics.Alterer;
+import org.jenetics.Gene;
 
 /**
- * @param <T> the argument type of function to optimize
- * @param <R> the result type of the function to optimize
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-@FunctionalInterface
-public interface Maximizer<T, R extends Comparable<? super R>> {
+public class AltererGene<
+	G extends Gene<?, G>,
+	C extends Comparable<? super C>
+>
+	implements Gene<Alterer<G, C>, AltererGene<G, C>>
+{
+	@Override
+	public Alterer<G, C> getAllele() {
+		return null;
+	}
 
-	public T argmax(final Function<T, R> function);
+	@Override
+	public AltererGene<G, C> newInstance() {
+		return null;
+	}
+
+	@Override
+	public AltererGene<G, C> newInstance(Alterer<G, C> value) {
+		return null;
+	}
+
+	@Override
+	public boolean isValid() {
+		return true;
+	}
 
 }

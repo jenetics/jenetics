@@ -29,6 +29,9 @@ import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
 
 /**
+ * @param <T> the argument type of function to optimize
+ * @param <R> the result type of the function to optimize
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
