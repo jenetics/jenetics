@@ -19,15 +19,13 @@
  */
 package org.jenetics.optimizer;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.function.Function;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import org.jenetics.internal.util.IntRef;
-
 import org.jenetics.Alterer;
-import org.jenetics.Chromosome;
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
 import org.jenetics.Gene;
@@ -77,76 +75,76 @@ public class ParametersCodec<
 
 	@Override
 	public Factory<Genotype<DoubleGene>> encoding() {
-		return () -> Genotype.of(
-			// Alterers
-			DoubleChromosome.of(0.0, 1.0,
-				_alterers.stream().mapToInt(Proxy::argsLength).sum()
-			),
-			// Offspring selectors
-			DoubleChromosome.of(0.0, 1.0,
-				_offspringSelectors.stream().mapToInt(Proxy::argsLength).sum()
-			),
-			// Survivors selectors
-			DoubleChromosome.of(0.0, 1.0,
-				_survivorsSelectors.stream().mapToInt(Proxy::argsLength).sum()
-			),
-			// Offspring fraction
-			DoubleChromosome.of(0.0, 1.0),
-			// Population size
-			DoubleChromosome.of(_minPopulationSize, _maxPopulationSize),
-			// Phenotype age
-			DoubleChromosome.of(_minMaxPhenotypeAge, _maxMaxPhenotypeAge)
-		);
+		final List<DoubleChromosome> ch = new ArrayList<>();
+		ch.addAll(_alterers.map(ParametersCodec::toChromosome).asList());
+
+		ch.add(DoubleChromosome.of(0.0, _offspringSelectors.size() + 1));
+		ch.addAll(_offspringSelectors.map(ParametersCodec::toChromosome).asList());
+
+		ch.add(DoubleChromosome.of(0.0, _survivorsSelectors.size() + 1));
+		ch.addAll(_survivorsSelectors.map(ParametersCodec::toChromosome).asList());
+
+		ch.add(DoubleChromosome.of(0.0, 1.0));
+		ch.add(DoubleChromosome.of(_minPopulationSize, _maxPopulationSize));
+		ch.add(DoubleChromosome.of(_minMaxPhenotypeAge, _maxMaxPhenotypeAge));
+
+		return () -> Genotype.of(ISeq.of(ch));
+	}
+
+	private static DoubleChromosome toChromosome(final Proxy<?> proxy) {
+		return DoubleChromosome.of(0.0, 1.0, proxy.argsLength());
 	}
 
 	@Override
 	public Function<Genotype<DoubleGene>, Parameters<G, C>> decoder() {
 		return gt -> {
+			ISeq<double[]> values = gt.toSeq()
+				.map(DoubleChromosome.class::cast)
+				.map(DoubleChromosome::toArray);
+
 			final ISeq<Alterer<G, C>> alterers =
-				instances(_alterers, gt.getChromosome(0));
+				instances(_alterers, values.subSeq(0, _alterers.size()));
+			values = values.subSeq(_alterers.size());
 
-			final ISeq<Selector<G, C>> offspringSelectors =
-				instances(_offspringSelectors, gt.getChromosome(1));
+			final int offspringSelectorIndex = (int)Math.floor(values.get(0)[0]);
+			values = values.subSeq(1);
 
-			final ISeq<Selector<G, C>> survivorsSelectors =
-				instances(_offspringSelectors, gt.getChromosome(2));
+			final Selector<G, C> offspringSelector =
+				instance(offspringSelectorIndex, _offspringSelectors, values);
+			values = values.subSeq(_offspringSelectors.size());
 
-			final double offspringFraction = gt.getChromosome(3)
-				.getGene().doubleValue();
+			final int survivorsSelectorIndex = (int)Math.floor(values.get(0)[0]);
+			values = values.subSeq(1);
 
-			final int populationSize = gt.getChromosome(4)
-				.getGene().intValue();
+			final Selector<G, C> survivorsSelector =
+				instance(survivorsSelectorIndex, _survivorsSelectors, values);
+			values = values.subSeq(_survivorsSelectors.size());
 
-			final long maxPhenotypeAge = gt.getChromosome(5)
-				.getGene().longValue();
 
-			/*
-			return Parameters.<G, C>of(
+			final double offspringFraction = values.get(0)[0];
+			values = values.subSeq(1);
+
+			final int populationSize = (int)Math.floor(values.get(0)[0]);
+			values = values.subSeq(1);
+
+			final long maxPhenotypeAge = (long)Math.floor(values.get(0)[0]);
+
+			return Parameters.of(
 				alterers,
-				offspringSelectors,
-				survivorsSelectors,
+				offspringSelector,
+				survivorsSelector,
 				offspringFraction,
 				populationSize,
 				maxPhenotypeAge
 			);
-			*/
-
-			return null;
 		};
 	}
 
 	private static <T> ISeq<T> instances(
 		final Seq<Proxy<T>> proxies,
-		final Chromosome<DoubleGene> chromosome
+		final Seq<double[]> arguments
 	) {
-		final ISeq<Double> arguments = chromosome.toSeq()
-			.map(DoubleGene::getAllele);
-
-		final int[] lengths = proxies.stream()
-			.mapToInt(Proxy::argsLength)
-			.toArray();
-
-		final Iterator<double[]> args = split(lengths, arguments).iterator();
+		final Iterator<double[]> args = arguments.iterator();
 		return proxies.stream()
 			.flatMap(a -> a.factory()
 				.apply(args.next())
@@ -155,17 +153,12 @@ public class ParametersCodec<
 			.collect(ISeq.toISeq());
 	}
 
-	private static ISeq<double[]> split(
-		final int[] lengths,
-		final Seq<Double> args
+	private static <T> T instance(
+		final int index,
+		final Seq<Proxy<T>> proxy,
+		final Seq<double[]> arguments
 	) {
-		final IntRef start = new IntRef();
-		return IntStream.of(lengths)
-			.mapToObj(l -> args
-				.subSeq(start.value, start.value += l).stream()
-				.mapToDouble(Double::doubleValue)
-				.toArray())
-			.collect(ISeq.toISeq());
+		return proxy.get(index).factory().apply(arguments.get(index)).get();
 	}
 
 }

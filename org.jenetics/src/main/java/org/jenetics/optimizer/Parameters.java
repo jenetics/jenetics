@@ -88,6 +88,16 @@ public final class Parameters<
 		return _maximalPhenotypeAge;
 	}
 
+	@Override
+	public String toString() {
+		return _alterers.toString("", "\n", "") + "\n" +
+			_offspringSelector + "\n" +
+			_survivorsSelector + "\n" +
+			"Offspring fraction = " + _offspringFraction + "\n" +
+			"Phenotype age = " + _maximalPhenotypeAge + "\n" +
+			"Population size = " + _populationSize;
+	}
+
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Parameters<G, C> of(
 		final ISeq<Alterer<G, C>> alterers,

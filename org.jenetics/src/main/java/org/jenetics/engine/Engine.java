@@ -41,6 +41,7 @@ import org.jenetics.internal.util.require;
 
 import org.jenetics.Alterer;
 import org.jenetics.Chromosome;
+import org.jenetics.CompositeAlterer;
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
 import org.jenetics.Mutator;
@@ -52,6 +53,7 @@ import org.jenetics.SinglePointCrossover;
 import org.jenetics.TournamentSelector;
 import org.jenetics.util.Copyable;
 import org.jenetics.util.Factory;
+import org.jenetics.util.ISeq;
 import org.jenetics.util.NanoClock;
 
 /**
@@ -954,6 +956,16 @@ public final class Engine<
 			_alterer = rest.length == 0 ?
 				first :
 				Alterer.of(rest).compose(first);
+
+			return this;
+		}
+
+		public final Builder<G, C> alterers(final ISeq<Alterer<G, C>> alterers) {
+			if (alterers.size() >= 1) {
+				_alterer = alterers.size() == 1
+					? alterers.get(0)
+					: new CompositeAlterer<>(alterers);
+			}
 
 			return this;
 		}
