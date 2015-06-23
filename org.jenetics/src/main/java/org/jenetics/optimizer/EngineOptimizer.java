@@ -68,10 +68,31 @@ public class EngineOptimizer<
 		final Codec<DoubleGene, Double> problemCodec = Codec.ofDouble(0.0, 2*Math.PI);
 
 		final Codec<DoubleGene, Parameters<DoubleGene, Double>> parametersCodec =
-			new ParametersCodec<DoubleGene, Double>(
-				ISeq.of(new MultiPointCrossoverProxy<DoubleGene, Double>(1, 2, 2)),
-				ISeq.of(),
-				ISeq.of(),
+			new ParametersCodec<>(
+				ISeq.of(
+					new GaussianMutatorProxy<DoubleGene, Double>(0.5),
+					new MeanAltererProxy<DoubleGene, Double>(0.5),
+					new MultiPointCrossoverProxy<DoubleGene, Double>(0.5, 2, 5),
+					new MutatorProxy<DoubleGene, Double>(0.5)
+				),
+				ISeq.of(
+					new BoltzmannSelectorProxy<DoubleGene, Double>(1),
+					new ExponentialRankSelectorProxy<DoubleGene, Double>(1),
+					new LinearRankSelectorProxy<DoubleGene, Double>(1),
+					new RouletteWheelSelectorProxy<DoubleGene, Double>(1),
+					new StochasticUniversalSelectorProxy<DoubleGene, Double>(1),
+					new TournamentSelectorProxy<DoubleGene, Double>(1.0, 5),
+					new TruncationSelectorProxy<DoubleGene, Double>(1)
+				),
+				ISeq.of(
+					new BoltzmannSelectorProxy<DoubleGene, Double>(1),
+					new ExponentialRankSelectorProxy<DoubleGene, Double>(1),
+					new LinearRankSelectorProxy<DoubleGene, Double>(1),
+					new RouletteWheelSelectorProxy<DoubleGene, Double>(1),
+					new StochasticUniversalSelectorProxy<DoubleGene, Double>(1),
+					new TournamentSelectorProxy<DoubleGene, Double>(1.0, 5),
+					new TruncationSelectorProxy<DoubleGene, Double>(1)
+				),
 				50, 100,
 				10, 1000
 			);
@@ -81,11 +102,11 @@ public class EngineOptimizer<
 		};
 
 		final Engine<DoubleGene, Double> engine = Engine
-			.builder(pff.compose(parametersCodec.decoder()), problemCodec.encoding())
+			.builder(pff.compose(parametersCodec.decoder()), parametersCodec.encoding())
 			.build();
 
 		final Genotype<DoubleGene> gt = engine.stream()
-			.limit(19)
+			.limit(10)
 			.collect(EvolutionResult.toBestGenotype());
 
 		final Parameters<DoubleGene, Double> params = parametersCodec.decoder().apply(gt);

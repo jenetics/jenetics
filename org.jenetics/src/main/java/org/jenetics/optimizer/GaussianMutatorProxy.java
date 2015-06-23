@@ -23,49 +23,36 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import org.jenetics.Alterer;
-import org.jenetics.Gene;
-import org.jenetics.MultiPointCrossover;
+import org.jenetics.GaussianMutator;
+import org.jenetics.NumericGene;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class MultiPointCrossoverProxy<
-	G extends Gene<?, G>,
+public class GaussianMutatorProxy<
+	G extends NumericGene<?, G>,
 	C extends Comparable<? super C>
 >
 	implements Proxy<Alterer<G, C>>
 {
 
 	private final double _probability;
-	private final int _minPointCount;
-	private final int _maxPointCount;
 
-	public MultiPointCrossoverProxy(
-		final double probability,
-		final int minPointCount,
-		final int maxPointCount
-	) {
+	public GaussianMutatorProxy(final double probability) {
 		_probability = probability;
-		_minPointCount = minPointCount;
-		_maxPointCount = maxPointCount;
 	}
 
 	@Override
 	public Function<double[], Optional<Alterer<G, C>>> factory() {
 		return args -> args[0] < _probability
-			? Optional.of(new MultiPointCrossover<>(
-				args[1], crossoverPoints(args[2])))
+			? Optional.of(new GaussianMutator<>(args[1]))
 			: Optional.empty();
-	}
-
-	private int crossoverPoints(final double value) {
-		return (int)(value*(_maxPointCount - _minPointCount)) + _minPointCount;
 	}
 
 	@Override
 	public int argsLength() {
-		return 3;
+		return 2;
 	}
 }

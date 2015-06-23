@@ -19,7 +19,10 @@
  */
 package org.jenetics.optimizer;
 
+import static java.lang.String.format;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
@@ -55,6 +58,8 @@ public class ParametersCodec<
 	private final long _minMaxPhenotypeAge;
 	private final long _maxMaxPhenotypeAge;
 
+	private final Factory<Genotype<DoubleGene>> _encoding;
+
 	public ParametersCodec(
 		final ISeq<Proxy<Alterer<G, C>>> alterers,
 		final ISeq<Proxy<Selector<G, C>>> offspringSelectors,
@@ -71,24 +76,26 @@ public class ParametersCodec<
 		_maxPopulationSize = maxPopulationSize;
 		_minMaxPhenotypeAge = minMaxPhenotypeAge;
 		_maxMaxPhenotypeAge = maxMaxPhenotypeAge;
-	}
 
-	@Override
-	public Factory<Genotype<DoubleGene>> encoding() {
+		// Create Genotype factory.
 		final List<DoubleChromosome> ch = new ArrayList<>();
 		ch.addAll(_alterers.map(ParametersCodec::toChromosome).asList());
 
-		ch.add(DoubleChromosome.of(0.0, _offspringSelectors.size() + 1));
+		ch.add(DoubleChromosome.of(0.0, _offspringSelectors.size()));
 		ch.addAll(_offspringSelectors.map(ParametersCodec::toChromosome).asList());
 
-		ch.add(DoubleChromosome.of(0.0, _survivorsSelectors.size() + 1));
+		ch.add(DoubleChromosome.of(0.0, _survivorsSelectors.size()));
 		ch.addAll(_survivorsSelectors.map(ParametersCodec::toChromosome).asList());
 
 		ch.add(DoubleChromosome.of(0.0, 1.0));
 		ch.add(DoubleChromosome.of(_minPopulationSize, _maxPopulationSize));
 		ch.add(DoubleChromosome.of(_minMaxPhenotypeAge, _maxMaxPhenotypeAge));
+		_encoding = Genotype.of(ISeq.of(ch));
+	}
 
-		return () -> Genotype.of(ISeq.of(ch));
+	@Override
+	public Factory<Genotype<DoubleGene>> encoding() {
+		return _encoding;
 	}
 
 	private static DoubleChromosome toChromosome(final Proxy<?> proxy) {
@@ -98,9 +105,10 @@ public class ParametersCodec<
 	@Override
 	public Function<Genotype<DoubleGene>, Parameters<G, C>> decoder() {
 		return gt -> {
-			ISeq<double[]> values = gt.toSeq()
+			ISeq<double[]> values = gt.toSeq().stream()
 				.map(DoubleChromosome.class::cast)
-				.map(DoubleChromosome::toArray);
+				.map(DoubleChromosome::toArray)
+				.collect(ISeq.toISeq());
 
 			final ISeq<Alterer<G, C>> alterers =
 				instances(_alterers, values.subSeq(0, _alterers.size()));
@@ -144,6 +152,9 @@ public class ParametersCodec<
 		final Seq<Proxy<T>> proxies,
 		final Seq<double[]> arguments
 	) {
+		assert(proxies.size() == arguments.size()) :
+			format("Size not equals: %s != %s", proxies.size(), arguments.size());
+
 		final Iterator<double[]> args = arguments.iterator();
 		return proxies.stream()
 			.flatMap(a -> a.factory()

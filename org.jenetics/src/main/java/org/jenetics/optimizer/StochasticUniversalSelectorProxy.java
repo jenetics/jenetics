@@ -22,50 +22,37 @@ package org.jenetics.optimizer;
 import java.util.Optional;
 import java.util.function.Function;
 
-import org.jenetics.Alterer;
 import org.jenetics.Gene;
-import org.jenetics.MultiPointCrossover;
+import org.jenetics.Selector;
+import org.jenetics.StochasticUniversalSelector;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class MultiPointCrossoverProxy<
+public class StochasticUniversalSelectorProxy<
 	G extends Gene<?, G>,
-	C extends Comparable<? super C>
+	N extends Number & Comparable<? super N>
 >
-	implements Proxy<Alterer<G, C>>
+	implements Proxy<Selector<G, N>>
 {
 
 	private final double _probability;
-	private final int _minPointCount;
-	private final int _maxPointCount;
 
-	public MultiPointCrossoverProxy(
-		final double probability,
-		final int minPointCount,
-		final int maxPointCount
-	) {
+	public StochasticUniversalSelectorProxy(final double probability) {
 		_probability = probability;
-		_minPointCount = minPointCount;
-		_maxPointCount = maxPointCount;
 	}
 
 	@Override
-	public Function<double[], Optional<Alterer<G, C>>> factory() {
+	public Function<double[], Optional<Selector<G, N>>> factory() {
 		return args -> args[0] < _probability
-			? Optional.of(new MultiPointCrossover<>(
-				args[1], crossoverPoints(args[2])))
+			? Optional.of(new StochasticUniversalSelector<>())
 			: Optional.empty();
-	}
-
-	private int crossoverPoints(final double value) {
-		return (int)(value*(_maxPointCount - _minPointCount)) + _minPointCount;
 	}
 
 	@Override
 	public int argsLength() {
-		return 3;
+		return 1;
 	}
 }
