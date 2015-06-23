@@ -105,8 +105,8 @@ public final class LinearRankSelector<
 		final Population<G, C> population,
 		final int count
 	) {
-		assert(population != null) : "Population can not be null. ";
-		assert(count > 0) : "Population to select must be greater than zero. ";
+		assert population != null : "Population can not be null. ";
+		assert count > 0 : "Population to select must be greater than zero. ";
 
 		final double N = population.size();
 		final double[] probabilities = new double[population.size()];
@@ -116,11 +116,11 @@ public final class LinearRankSelector<
 		} else {
 			for (int i = probabilities.length; --i >= 0; ) {
 				probabilities[probabilities.length - i - 1] =
-					(_nminus + ((_nplus - _nminus)*i)/(N - 1))/N;
+					(_nminus + (_nplus - _nminus)*i/(N - 1))/N;
 			}
 		}
 
-		assert (sum2one(probabilities)) : "Probabilities doesn't sum to one.";
+		assert sum2one(probabilities) : "Probabilities doesn't sum to one.";
 		return probabilities;
 	}
 
