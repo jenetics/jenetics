@@ -46,7 +46,7 @@ public class BoltzmannSelectorProxy<
 
 	@Override
 	public Function<double[], Optional<Selector<G, N>>> factory() {
-		return args -> args[0] < _probability
+		return args -> args[0] <= _probability
 			? Optional.of(new BoltzmannSelector<>(b(args[1])))
 			: Optional.empty();
 	}

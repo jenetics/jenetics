@@ -19,19 +19,26 @@
  */
 package org.jenetics.optimizer;
 
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
 import static java.time.Duration.ofMillis;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.engine.EvolutionResult.toBestGenotype;
 import static org.jenetics.engine.limit.byExecutionTime;
 import static org.jenetics.engine.limit.byFixedGeneration;
+import static org.jenetics.engine.limit.bySteadyFitness;
 
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 import org.jenetics.DoubleGene;
+import org.jenetics.GaussianMutator;
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
+import org.jenetics.MeanAlterer;
+import org.jenetics.Mutator;
 import org.jenetics.NumericGene;
+import org.jenetics.SinglePointCrossover;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
 
@@ -64,10 +71,13 @@ public class EngineOptimizer<
 		final Codec<DoubleGene, Parameters<G, C>> codec,
 		final Predicate<? super EvolutionResult<?, C>> limit
 	) {
-		final Function<Parameters<G, C>, C> pff = this::opt;
-
 		final Engine<DoubleGene, C> engine = Engine
-			.builder(pff.compose(codec.decoder()), codec.encoding())
+			.builder(codec.decoder().andThen(this::opt), codec.encoding())
+			.alterers(
+				new MeanAlterer<>(),
+				new Mutator<>(),
+				new GaussianMutator<>(),
+				new SinglePointCrossover<>())
 			.build();
 
 		final Genotype<DoubleGene> gt = engine.stream()
@@ -77,6 +87,7 @@ public class EngineOptimizer<
 		return codec.decoder().apply(gt);
 	}
 
+	// The Engine parameter optimizer fitness function.
 	private C opt(final Parameters<G, C> params) {
 		// The fitness function used for optimizing the Engine.
 		final Function<Genotype<G>, C> ff = _fitness.compose(_codec.decoder());
@@ -97,94 +108,17 @@ public class EngineOptimizer<
 		return ff.apply(gt);
 	}
 
-
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-
-
-	static <G extends Gene<?, G>, C extends Comparable<? super C>> C fitness(
-		final int generations,
-		final Parameters<G, C> params,
-		final Codec<G, C> codec,
-		final Function<Genotype<G>, C> ff
-	) {
-		final Engine<G, C> engine = Engine.builder(ff, codec.encoding())
-			.alterers(params.getAlterers())
-			.offspringSelector(params.getOffspringSelector())
-			.survivorsSelector(params.getSurvivorsSelector())
-			.offspringFraction(params.getOffspringFraction())
-			.populationSize(params.getPopulationSize())
-			.maximalPhenotypeAge(params.getMaximalPhenotypeAge())
-			.build();
-
-		final Genotype<G> gt = engine.stream()
-			.limit(generations)
-			.collect(toBestGenotype());
-
-		return codec.decoder().apply(gt);
-	}
-
-	static double problemFitness(final Genotype<DoubleGene> gt) {
-		return Math.sin(gt.getGene().doubleValue());
-	}
-
 	public static void main(final String[] args) {
-		final Function<Double, Double> fitness = Math::sin;
+		final Function<Double, Double> fitness = x -> cos(0.5 + sin(x))*cos(x);
 		final Codec<DoubleGene, Double> codec = Codec.ofDouble(0.0, 2*Math.PI);
 
 		final EngineOptimizer<Double, DoubleGene, Double> optimizer =
-			new EngineOptimizer<>(fitness, codec, byExecutionTime(ofMillis(500)));
+			new EngineOptimizer<>(fitness, codec, byExecutionTime(ofMillis(50)));
 
 		final Parameters<DoubleGene, Double> params = optimizer
-			.optimize(numericNumberCodec(), byFixedGeneration(10));
+			.optimize(numericNumberCodec(), bySteadyFitness(150));
 
 		System.out.println(params);
-
-		/*
-		final Codec<DoubleGene, Double> problemCodec = Codec.ofDouble(0.0, 2*Math.PI);
-
-		final Codec<DoubleGene, Parameters<DoubleGene, Double>> parametersCodec =
-			new ParametersCodec<>(
-				Alterers.numericMean(),
-				ISeq.of(
-					new BoltzmannSelectorProxy<DoubleGene, Double>(1),
-					new ExponentialRankSelectorProxy<DoubleGene, Double>(1),
-					new LinearRankSelectorProxy<DoubleGene, Double>(1),
-					new RouletteWheelSelectorProxy<DoubleGene, Double>(1),
-					new StochasticUniversalSelectorProxy<DoubleGene, Double>(1),
-					new TournamentSelectorProxy<DoubleGene, Double>(1.0, 5),
-					new TruncationSelectorProxy<DoubleGene, Double>(1)
-				),
-				ISeq.of(
-					new BoltzmannSelectorProxy<DoubleGene, Double>(1),
-					new ExponentialRankSelectorProxy<DoubleGene, Double>(1),
-					new LinearRankSelectorProxy<DoubleGene, Double>(1),
-					new RouletteWheelSelectorProxy<DoubleGene, Double>(1),
-					new StochasticUniversalSelectorProxy<DoubleGene, Double>(1),
-					new TournamentSelectorProxy<DoubleGene, Double>(1.0, 5),
-					new TruncationSelectorProxy<DoubleGene, Double>(1)
-				),
-				50, 100,
-				10, 1000
-			);
-
-		final Function<Parameters<DoubleGene, Double>, Double> pff = p -> {
-			return fitness(20, p, problemCodec, EngineOptimizer::problemFitness);
-		};
-
-		final Engine<DoubleGene, Double> engine = Engine
-			.builder(pff.compose(parametersCodec.decoder()), parametersCodec.encoding())
-			.build();
-
-		final Genotype<DoubleGene> gt = engine.stream()
-			.limit(20)
-			.collect(toBestGenotype());
-
-		final Parameters<DoubleGene, Double> params = parametersCodec.decoder().apply(gt);
-		System.out.println(params);
-		System.out.println();
-		System.out.println();
-		*/
 	}
 
 
@@ -194,7 +128,7 @@ public class EngineOptimizer<
 			Alterers.<G, C>general(),
 			Selectors.<G, C>generic(),
 			Selectors.<G, C>generic(),
-			50, 100,
+			50, 1000,
 			10, 1000
 		);
 	}
@@ -205,7 +139,7 @@ public class EngineOptimizer<
 			Alterers.<G, C>numeric(),
 			Selectors.<G, C>generic(),
 			Selectors.<G, C>generic(),
-			50, 100,
+			50, 1000,
 			10, 1000
 		);
 	}
@@ -216,7 +150,7 @@ public class EngineOptimizer<
 			Alterers.<G, C>general(),
 			Selectors.<G, C>number(),
 			Selectors.<G, C>number(),
-			50, 100,
+			50, 1000,
 			10, 1000
 		);
 	}
@@ -227,7 +161,7 @@ public class EngineOptimizer<
 			Alterers.<G, C>numeric(),
 			Selectors.<G, C>number(),
 			Selectors.<G, C>number(),
-			50, 100,
+			5, 5000,
 			10, 1000
 		);
 	}

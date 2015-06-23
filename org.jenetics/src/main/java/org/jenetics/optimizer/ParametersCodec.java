@@ -114,14 +114,14 @@ public class ParametersCodec<
 				instances(_alterers, values.subSeq(0, _alterers.size()));
 			values = values.subSeq(_alterers.size());
 
-			final int offspringSelectorIndex = (int)Math.floor(values.get(0)[0]);
+			final int offspringSelectorIndex = toIndex(values.get(0)[0]);
 			values = values.subSeq(1);
 
 			final Selector<G, C> offspringSelector =
 				instance(offspringSelectorIndex, _offspringSelectors, values);
 			values = values.subSeq(_offspringSelectors.size());
 
-			final int survivorsSelectorIndex = (int)Math.floor(values.get(0)[0]);
+			final int survivorsSelectorIndex = toIndex(values.get(0)[0]);
 			values = values.subSeq(1);
 
 			final Selector<G, C> survivorsSelector =
@@ -132,10 +132,10 @@ public class ParametersCodec<
 			final double offspringFraction = values.get(0)[0];
 			values = values.subSeq(1);
 
-			final int populationSize = (int)Math.floor(values.get(0)[0]);
+			final int populationSize = toIndex(values.get(0)[0]);
 			values = values.subSeq(1);
 
-			final long maxPhenotypeAge = (long)Math.floor(values.get(0)[0]);
+			final long maxPhenotypeAge = toIndex(values.get(0)[0]);
 
 			return Parameters.of(
 				alterers,
@@ -146,6 +146,10 @@ public class ParametersCodec<
 				maxPhenotypeAge
 			);
 		};
+	}
+
+	private static int toIndex(final double value) {
+		return (int)Math.abs(value - 0.1);
 	}
 
 	private static <T> ISeq<T> instances(

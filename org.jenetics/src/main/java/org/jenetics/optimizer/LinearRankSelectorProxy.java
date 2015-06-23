@@ -46,7 +46,7 @@ public class LinearRankSelectorProxy<
 
 	@Override
 	public Function<double[], Optional<Selector<G, C>>> factory() {
-		return args -> args[0] < _probability
+		return args -> args[0] <= _probability
 			? Optional.of(new LinearRankSelector<>(args[1]))
 			: Optional.empty();
 	}

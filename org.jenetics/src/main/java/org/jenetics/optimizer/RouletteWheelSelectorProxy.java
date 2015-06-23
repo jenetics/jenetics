@@ -46,7 +46,7 @@ public class RouletteWheelSelectorProxy<
 
 	@Override
 	public Function<double[], Optional<Selector<G, N>>> factory() {
-		return args -> args[0] < _probability
+		return args -> args[0] <= _probability
 			? Optional.of(new RouletteWheelSelector<>())
 			: Optional.empty();
 	}

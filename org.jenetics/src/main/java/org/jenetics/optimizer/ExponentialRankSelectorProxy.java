@@ -46,9 +46,13 @@ public class ExponentialRankSelectorProxy<
 
 	@Override
 	public Function<double[], Optional<Selector<G, C>>> factory() {
-		return args -> args[0] < _probability
-			? Optional.of(new ExponentialRankSelector<>(args[1]))
+		return args -> args[0] <= _probability
+			? Optional.of(new ExponentialRankSelector<>(p(args[1])))
 			: Optional.empty();
+	}
+
+	private static double p(final double value) {
+		return value == 1.0 ? value - 0.00001 : value;
 	}
 
 	@Override
