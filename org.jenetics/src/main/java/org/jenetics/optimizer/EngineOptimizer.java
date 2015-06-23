@@ -106,11 +106,13 @@ public class EngineOptimizer<
 			.build();
 
 		final Genotype<DoubleGene> gt = engine.stream()
-			.limit(10)
+			.limit(20)
 			.collect(EvolutionResult.toBestGenotype());
 
 		final Parameters<DoubleGene, Double> params = parametersCodec.decoder().apply(gt);
 		System.out.println(params);
+		System.out.println();
+		System.out.println();
 	}
 
 }

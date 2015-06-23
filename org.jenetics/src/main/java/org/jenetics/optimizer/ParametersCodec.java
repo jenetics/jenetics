@@ -87,7 +87,7 @@ public class ParametersCodec<
 		ch.add(DoubleChromosome.of(0.0, _survivorsSelectors.size()));
 		ch.addAll(_survivorsSelectors.map(ParametersCodec::toChromosome).asList());
 
-		ch.add(DoubleChromosome.of(0.0, 1.0));
+		ch.add(DoubleChromosome.of(0.1, 0.9));
 		ch.add(DoubleChromosome.of(_minPopulationSize, _maxPopulationSize));
 		ch.add(DoubleChromosome.of(_minMaxPhenotypeAge, _maxMaxPhenotypeAge));
 		_encoding = Genotype.of(ISeq.of(ch));
