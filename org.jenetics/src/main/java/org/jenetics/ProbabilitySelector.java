@@ -102,31 +102,34 @@ public abstract class ProbabilitySelector<
 		}
 
 		final Population<G, C> selection = new Population<>(count);
-
 		if (count > 0) {
-			final Population<G, C> copy = _sorted
-				? population.copy()
-				: population;
+			final Population<G, C> pop = copy(population);
 
-			if (_sorted) {
-				copy.populationSort();
-			}
-
-			final double[] prob = probabilities(copy, count, opt);
-			assert (copy.size() == prob.length)
+			final double[] prob = probabilities(pop, count, opt);
+			assert pop.size() == prob.length
 				: "Population size and probability length are not equal.";
-			assert (sum2one(prob)) : "Probabilities doesn't sum to one.";
+			assert sum2one(prob) : "Probabilities doesn't sum to one.";
 
 			incremental(prob);
 
 			final Random random = RandomRegistry.getRandom();
 			selection.fill(
-				() -> copy.get(indexOf(prob, random.nextDouble())),
+				() -> pop.get(indexOf(prob, random.nextDouble())),
 				count
 			);
 		}
 
 		return selection;
+	}
+
+	Population<G, C> copy(final Population<G, C> population) {
+		Population<G, C> pop = population;
+		if (_sorted) {
+			pop = population.copy();
+			pop.populationSort();
+		}
+
+		return pop;
 	}
 
 	/**

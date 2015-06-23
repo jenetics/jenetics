@@ -65,8 +65,8 @@ public class RouletteWheelSelector<
 		final Population<G, N> population,
 		final int count
 	) {
-		assert(population != null) : "Population can not be null. ";
-		assert(count > 0) : "Population to select must be greater than zero. ";
+		assert population != null : "Population can not be null. ";
+		assert count > 0 : "Population to select must be greater than zero. ";
 
 		// Copy the fitness values to probabilities arrays.
 		final double[] fitness = new double[population.size()];
@@ -85,7 +85,7 @@ public class RouletteWheelSelector<
 			Arrays.fill(fitness, 1.0/population.size());
 		}
 
-		assert (sum2one(fitness)) : "Probabilities doesn't sum to one.";
+		assert sum2one(fitness) : "Probabilities doesn't sum to one.";
 		return fitness;
 	}
 
