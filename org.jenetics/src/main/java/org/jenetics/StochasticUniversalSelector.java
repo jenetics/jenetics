@@ -56,6 +56,7 @@ public class StochasticUniversalSelector<
 {
 
 	public StochasticUniversalSelector() {
+		super(true);
 	}
 
 	/**
@@ -111,7 +112,6 @@ public class StochasticUniversalSelector<
 		final Population<G, N> population,
 		final int count
 	) {
-		population.populationSort();
 		return super.probabilities(population, count);
 	}
 
