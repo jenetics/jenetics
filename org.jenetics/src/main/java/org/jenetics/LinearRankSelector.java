@@ -108,9 +108,6 @@ public final class LinearRankSelector<
 		assert(population != null) : "Population can not be null. ";
 		assert(count > 0) : "Population to select must be greater than zero. ";
 
-		//Sort the population.
-		population.populationSort();
-
 		final double N = population.size();
 		final double[] probabilities = new double[population.size()];
 
