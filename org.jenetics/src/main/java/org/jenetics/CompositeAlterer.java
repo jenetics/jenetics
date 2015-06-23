@@ -47,7 +47,7 @@ public final class CompositeAlterer<
 	extends AbstractAlterer<G, C>
 {
 
-	private final ISeq<Alterer<G, C>> _alterers;
+	private final ISeq<? extends Alterer<G, C>> _alterers;
 
 	/**
 	 * Combine the given alterers.
@@ -55,14 +55,14 @@ public final class CompositeAlterer<
 	 * @param alterers the alterers to combine.
 	 * @throws NullPointerException if one of the alterers is {@code null}.
 	 */
-	public CompositeAlterer(final Seq<Alterer<G, C>> alterers) {
+	public CompositeAlterer(final Seq<? extends Alterer<G, C>> alterers) {
 		super(1.0);
 		_alterers = normalize(alterers);
 	}
 
 	private static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	ISeq<Alterer<G, C>> normalize(final Seq<Alterer<G, C>> alterers) {
-		final Function<Alterer<G, C>, Stream<Alterer<G, C>>> mapper =
+	ISeq<Alterer<G, C>> normalize(final Seq<? extends Alterer<G, C>> alterers) {
+		final Function<Alterer<G, C>, Stream<? extends Alterer<G, C>>> mapper =
 			a -> a instanceof CompositeAlterer<?, ?>
 				? ((CompositeAlterer<G, C>)a).getAlterers().stream()
 				: Stream.of(a);
@@ -85,7 +85,7 @@ public final class CompositeAlterer<
 	 *
 	 * @return the alterers this alterer consists of.
 	 */
-	public ISeq<Alterer<G, C>> getAlterers() {
+	public ISeq<? extends Alterer<G, C>> getAlterers() {
 		return _alterers;
 	}
 

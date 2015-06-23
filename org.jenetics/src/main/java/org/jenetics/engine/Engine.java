@@ -960,7 +960,19 @@ public final class Engine<
 			return this;
 		}
 
-		public final Builder<G, C> alterers(final ISeq<Alterer<G, C>> alterers) {
+		/**
+		 * The alterers used for alter the offspring population. <i>Default
+		 * values is set to {@code new SinglePointCrossover<>(0.2)} followed by
+		 * {@code new Mutator<>(0.15)}.</i>
+		 *
+		 * @since !__version__!
+		 *
+		 * @param alterers the alterers to add
+		 * @return {@code this} builder, for command chaining
+		 * @throws java.lang.NullPointerException if one of the alterers is
+		 *         {@code null}.
+		 */
+		public final Builder<G, C> alterers(final ISeq<? extends Alterer<G, C>> alterers) {
 			if (alterers.size() >= 1) {
 				_alterer = alterers.size() == 1
 					? alterers.get(0)

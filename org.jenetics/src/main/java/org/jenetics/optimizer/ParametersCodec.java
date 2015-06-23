@@ -152,7 +152,7 @@ public class ParametersCodec<
 		final Seq<Proxy<T>> proxies,
 		final Seq<double[]> arguments
 	) {
-		assert(proxies.size() == arguments.size()) :
+		assert proxies.size() == arguments.size() :
 			format("Size not equals: %s != %s", proxies.size(), arguments.size());
 
 		final Iterator<double[]> args = arguments.iterator();

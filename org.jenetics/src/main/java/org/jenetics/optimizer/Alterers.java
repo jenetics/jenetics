@@ -19,26 +19,65 @@
  */
 package org.jenetics.optimizer;
 
-import java.util.Optional;
+import org.jenetics.internal.util.require;
 
-import org.jenetics.DoubleGene;
+import org.jenetics.Alterer;
 import org.jenetics.Gene;
-import org.jenetics.MultiPointCrossover;
+import org.jenetics.NumericGene;
+import org.jenetics.util.ISeq;
+import org.jenetics.util.Mean;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class Alterers {
+public final class Alterers {
+
+	private Alterers() {require.noInstance();}
 
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Optional<MultiPointCrossover<G, C>> multiPointCrossover(final double[] args) {
-		return null;
+	ISeq<Proxy<Alterer<G, C>>> general() {
+		return ISeq.of(
+			new MultiPointCrossoverProxy<G, C>(0.5, 2, 10),
+			new SinglePointCrossoverProxy<G, C>(0.5),
+			new MutatorProxy<G, C>(0.5),
+			new SwapMutatorProxy<G, C>(0.5)
+		);
 	}
 
-	static {
-		Proxy.of(Alterers::multiPointCrossover, 2).factory().apply(null);
+	public static <G extends NumericGene<?, G>, C extends Comparable<? super C>>
+	ISeq<Proxy<Alterer<G, C>>> numeric() {
+		return ISeq.of(
+			new GaussianMutatorProxy<G, C>(0.5),
+			new MultiPointCrossoverProxy<G, C>(0.5, 2, 10),
+			new SinglePointCrossoverProxy<G, C>(0.5),
+			new MutatorProxy<G, C>(0.5),
+			new SwapMutatorProxy<G, C>(0.5)
+		);
+	}
+
+	public static <G extends Gene<?, G> & Mean<G>, C extends Comparable<? super C>>
+	ISeq<Proxy<Alterer<G, C>>> mean() {
+		return ISeq.of(
+			new MeanAltererProxy<G, C>(0.5),
+			new MultiPointCrossoverProxy<G, C>(0.5, 2, 10),
+			new SinglePointCrossoverProxy<G, C>(0.5),
+			new MutatorProxy<G, C>(0.5),
+			new SwapMutatorProxy<G, C>(0.5)
+		);
+	}
+
+	public static <G extends NumericGene<?, G> & Mean<G>, C extends Comparable<? super C>>
+	ISeq<Proxy<Alterer<G, C>>> numericMean() {
+		return ISeq.of(
+			new GaussianMutatorProxy<G, C>(0.5),
+			new MeanAltererProxy<G, C>(0.5),
+			new MultiPointCrossoverProxy<G, C>(0.5, 2, 10),
+			new SinglePointCrossoverProxy<G, C>(0.5),
+			new MutatorProxy<G, C>(0.5),
+			new SwapMutatorProxy<G, C>(0.5)
+		);
 	}
 
 }
