@@ -156,7 +156,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	}
 
 	@Override
-	public synchronized boolean addAll(final Collection<? extends Phenotype<G, C>> c) {
+	public boolean addAll(final Collection<? extends Phenotype<G, C>> c) {
 		return _population.addAll(c);
 	}
 
@@ -222,7 +222,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 * @throws java.lang.NullPointerException if the {@code comparator} is
 	 *         {@code null}.
 	 */
-	public synchronized void sortWith(final Comparator<? super C> comparator) {
+	public void sortWith(final Comparator<? super C> comparator) {
 		_population.sort((a, b) ->
 			comparator.compare(a.getFitness(), b.getFitness())
 		);
@@ -286,7 +286,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	}
 
 	@Override
-	public synchronized List<Phenotype<G, C>> subList(final int fromIndex, final int toIndex) {
+	public List<Phenotype<G, C>> subList(final int fromIndex, final int toIndex) {
 		return _population.subList(fromIndex, toIndex);
 	}
 
