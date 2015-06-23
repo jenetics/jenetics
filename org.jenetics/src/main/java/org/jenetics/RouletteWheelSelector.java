@@ -53,6 +53,11 @@ public class RouletteWheelSelector<
 	private static final long MAX_ULP_DISTANCE = pow(10, 9);
 
 	public RouletteWheelSelector() {
+		this(false);
+	}
+
+	protected RouletteWheelSelector(final boolean sorted) {
+		super(sorted);
 	}
 
 	@Override
