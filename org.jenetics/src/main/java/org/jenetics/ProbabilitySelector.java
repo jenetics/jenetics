@@ -61,6 +61,7 @@ public abstract class ProbabilitySelector<
 
 	private static final long MAX_ULP_DISTANCE = pow(10, 10);
 
+	private final boolean _sorted;
 	private final Function<double[], double[]> _reverter;
 
 	/**
@@ -74,6 +75,7 @@ public abstract class ProbabilitySelector<
 	 *        {@code false} otherwise.
 	 */
 	protected ProbabilitySelector(final boolean sorted) {
+		_sorted = sorted;
 		_reverter = sorted ? array::revert : ProbabilitySelector::sortAndRevert;
 	}
 
@@ -102,8 +104,16 @@ public abstract class ProbabilitySelector<
 		final Population<G, C> selection = new Population<>(count);
 
 		if (count > 0) {
-			final double[] prob = probabilities(population, count, opt);
-			assert (population.size() == prob.length)
+			final Population<G, C> copy = _sorted
+				? population.copy()
+				: population;
+
+			if (_sorted) {
+				copy.populationSort();
+			}
+
+			final double[] prob = probabilities(copy, count, opt);
+			assert (copy.size() == prob.length)
 				: "Population size and probability length are not equal.";
 			assert (sum2one(prob)) : "Probabilities doesn't sum to one.";
 
@@ -111,7 +121,7 @@ public abstract class ProbabilitySelector<
 
 			final Random random = RandomRegistry.getRandom();
 			selection.fill(
-				() -> population.get(indexOf(prob, random.nextDouble())),
+				() -> copy.get(indexOf(prob, random.nextDouble())),
 				count
 			);
 		}

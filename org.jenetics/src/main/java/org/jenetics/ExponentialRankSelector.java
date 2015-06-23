@@ -101,9 +101,6 @@ public final class ExponentialRankSelector<
 		assert(population != null) : "Population can not be null. ";
 		assert(count > 0) : "Population to select must be greater than zero. ";
 
-		//Sorted population required.
-		population.populationSort();
-
 		final double N = population.size();
 		final double[] probabilities = new double[population.size()];
 
