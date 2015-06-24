@@ -30,6 +30,7 @@ import static org.jenetics.engine.limit.bySteadyFitness;
 
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import org.jenetics.DoubleGene;
 import org.jenetics.GaussianMutator;
@@ -55,12 +56,12 @@ public class EngineOptimizer<
 
 	private final Function<T, C> _fitness;
 	private final Codec<G, T> _codec;
-	private final Predicate<? super EvolutionResult<?, C>> _limit;
+	private final Supplier<Predicate<? super EvolutionResult<?, C>>> _limit;
 
 	public EngineOptimizer(
 		final Function<T, C> fitness,
 		final Codec<G, T> codec,
-		final Predicate<? super EvolutionResult<?, C>> limit
+		final Supplier<Predicate<? super EvolutionResult<?, C>>> limit
 	) {
 		_fitness = requireNonNull(fitness);
 		_codec = requireNonNull(codec);
@@ -102,7 +103,7 @@ public class EngineOptimizer<
 			.build();
 
 		final Genotype<G> gt = engine.stream()
-			.limit(_limit)
+			.limit(_limit.get())
 			.collect(toBestGenotype());
 
 		return ff.apply(gt);
@@ -113,7 +114,7 @@ public class EngineOptimizer<
 		final Codec<DoubleGene, Double> codec = Codec.ofDouble(0.0, 2*Math.PI);
 
 		final EngineOptimizer<Double, DoubleGene, Double> optimizer =
-			new EngineOptimizer<>(fitness, codec, byExecutionTime(ofMillis(50)));
+			new EngineOptimizer<>(fitness, codec, () -> byExecutionTime(ofMillis(50)));
 
 		final Parameters<DoubleGene, Double> params = optimizer
 			.optimize(numericNumberCodec(), bySteadyFitness(150));
