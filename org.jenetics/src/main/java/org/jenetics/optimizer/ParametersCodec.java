@@ -20,9 +20,9 @@
 package org.jenetics.optimizer;
 
 import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
@@ -53,10 +53,8 @@ public class ParametersCodec<
 	private final ISeq<Proxy<Alterer<G, C>>> _alterers;
 	private final ISeq<Proxy<Selector<G, C>>> _offspringSelectors;
 	private final ISeq<Proxy<Selector<G, C>>> _survivorsSelectors;
-	private final int _minPopulationSize;
-	private final int _maxPopulationSize;
-	private final long _minMaxPhenotypeAge;
-	private final long _maxMaxPhenotypeAge;
+	private final IntRange _populationSize;
+	private final IntRange _maxPhenotypeAge;
 
 	private final Factory<Genotype<DoubleGene>> _encoding;
 
@@ -64,32 +62,37 @@ public class ParametersCodec<
 		final ISeq<Proxy<Alterer<G, C>>> alterers,
 		final ISeq<Proxy<Selector<G, C>>> offspringSelectors,
 		final ISeq<Proxy<Selector<G, C>>> survivorsSelectors,
-		final int minPopulationSize,
-		final int maxPopulationSize,
-		final long minMaxPhenotypeAge,
-		final long maxMaxPhenotypeAge
+		final IntRange populationSize,
+		final IntRange maxPhenotypeAge
 	) {
 		_alterers = alterers;
-		_offspringSelectors = offspringSelectors;
-		_survivorsSelectors = survivorsSelectors;
-		_minPopulationSize = minPopulationSize;
-		_maxPopulationSize = maxPopulationSize;
-		_minMaxPhenotypeAge = minMaxPhenotypeAge;
-		_maxMaxPhenotypeAge = maxMaxPhenotypeAge;
+		_offspringSelectors = requireNonNull(offspringSelectors);
+		_survivorsSelectors = requireNonNull(survivorsSelectors);
+		_populationSize = requireNonNull(populationSize);
+		_maxPhenotypeAge = requireNonNull(maxPhenotypeAge);
 
 		// Create Genotype factory.
 		final List<DoubleChromosome> ch = new ArrayList<>();
+
+		// Alterers
 		ch.addAll(_alterers.map(ParametersCodec::toChromosome).asList());
 
-		ch.add(DoubleChromosome.of(0.0, _offspringSelectors.size()));
+		// Offspring selector.
+		ch.add(DoubleChromosome.of(0.0, 1.0));
 		ch.addAll(_offspringSelectors.map(ParametersCodec::toChromosome).asList());
 
-		ch.add(DoubleChromosome.of(0.0, _survivorsSelectors.size()));
+		// Survivors selector.
+		ch.add(DoubleChromosome.of(0.0, 1.0));
 		ch.addAll(_survivorsSelectors.map(ParametersCodec::toChromosome).asList());
 
-		ch.add(DoubleChromosome.of(0.1, 0.9));
-		ch.add(DoubleChromosome.of(_minPopulationSize, _maxPopulationSize));
-		ch.add(DoubleChromosome.of(_minMaxPhenotypeAge, _maxMaxPhenotypeAge));
+		// Offspring fraction
+		ch.add(DoubleChromosome.of(0.0, 1.0));
+
+		// Population size.
+		ch.add(DoubleChromosome.of(0.0, 1.0));
+
+		// Phenotype age.
+		ch.add(DoubleChromosome.of(0.0, 1.0));
 		_encoding = Genotype.of(ISeq.of(ch));
 	}
 
@@ -114,14 +117,16 @@ public class ParametersCodec<
 				instances(_alterers, values.subSeq(0, _alterers.size()));
 			values = values.subSeq(_alterers.size());
 
-			final int offspringSelectorIndex = toIndex(values.get(0)[0]);
+			final int offspringSelectorIndex = IntRange
+				.of(_offspringSelectors.size()).intValue(values.get(0)[0]);
 			values = values.subSeq(1);
 
 			final Selector<G, C> offspringSelector =
 				instance(offspringSelectorIndex, _offspringSelectors, values);
 			values = values.subSeq(_offspringSelectors.size());
 
-			final int survivorsSelectorIndex = toIndex(values.get(0)[0]);
+			final int survivorsSelectorIndex = IntRange
+				.of(_survivorsSelectors.size()).intValue(values.get(0)[0]);
 			values = values.subSeq(1);
 
 			final Selector<G, C> survivorsSelector =
@@ -132,10 +137,10 @@ public class ParametersCodec<
 			final double offspringFraction = values.get(0)[0];
 			values = values.subSeq(1);
 
-			final int populationSize = toIndex(values.get(0)[0]);
+			final int populationSize = _populationSize.intValue(values.get(0)[0]);
 			values = values.subSeq(1);
 
-			final long maxPhenotypeAge = toIndex(values.get(0)[0]);
+			final long maxPhenotypeAge = _maxPhenotypeAge.intValue(values.get(0)[0]);
 
 			return Parameters.of(
 				alterers,
@@ -146,10 +151,6 @@ public class ParametersCodec<
 				maxPhenotypeAge
 			);
 		};
-	}
-
-	private static int toIndex(final double value) {
-		return (int)Math.abs(value - 0.1);
 	}
 
 	private static <T> ISeq<T> instances(

@@ -19,19 +19,21 @@
  */
 package org.jenetics.optimizer;
 
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
 import static java.time.Duration.ofMillis;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.engine.EvolutionResult.toBestGenotype;
 import static org.jenetics.engine.limit.byExecutionTime;
-import static org.jenetics.engine.limit.byFixedGeneration;
 import static org.jenetics.engine.limit.bySteadyFitness;
 
+import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Collector;
+import java.util.stream.Stream;
 
+import org.jenetics.BitChromosome;
+import org.jenetics.BitGene;
 import org.jenetics.DoubleGene;
 import org.jenetics.GaussianMutator;
 import org.jenetics.Gene;
@@ -40,8 +42,10 @@ import org.jenetics.MeanAlterer;
 import org.jenetics.Mutator;
 import org.jenetics.NumericGene;
 import org.jenetics.SinglePointCrossover;
+import org.jenetics.TournamentSelector;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
+import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -79,6 +83,8 @@ public class EngineOptimizer<
 				new Mutator<>(),
 				new GaussianMutator<>(),
 				new SinglePointCrossover<>())
+			.offspringSelector(new TournamentSelector<>(3))
+			.survivorsSelector(new TournamentSelector<>(5))
 			.build();
 
 		final Genotype<DoubleGene> gt = engine.stream()
@@ -106,18 +112,38 @@ public class EngineOptimizer<
 			.limit(_limit.get())
 			.collect(toBestGenotype());
 
-		return ff.apply(gt);
+
+		final C value = ff.apply(gt);
+		System.out.println(params);
+		System.out.println("FITNESS: " + value + "\n");
+		System.out.flush();
+
+		return value;
 	}
 
 	public static void main(final String[] args) {
-		final Function<Double, Double> fitness = x -> cos(0.5 + sin(x))*cos(x);
-		final Codec<DoubleGene, Double> codec = Codec.ofDouble(0.0, 2*Math.PI);
+		//final Function<Double, Double> fitness = x -> cos(0.5 + sin(x))*cos(x);
+		//final Codec<DoubleGene, Double> codec = Codec.ofDouble(0.0, 2*Math.PI);
 
-		final EngineOptimizer<Double, DoubleGene, Double> optimizer =
-			new EngineOptimizer<>(fitness, codec, () -> byExecutionTime(ofMillis(50)));
+		final int nitems = 15;
+		final double kssize = nitems*100.0/3.0;
 
-		final Parameters<DoubleGene, Double> params = optimizer
-			.optimize(numericNumberCodec(), bySteadyFitness(150));
+		final FF fitness = new FF(
+			Stream.generate(Item::random)
+				.limit(nitems)
+				.toArray(Item[]::new),
+			kssize
+		);
+		final Codec<BitGene, Genotype<BitGene>> codec = Codec.of(
+			Genotype.of(BitChromosome.of(nitems, 0.5)),
+			Function.<Genotype<BitGene>>identity()
+		);
+
+		final EngineOptimizer<Genotype<BitGene>, BitGene, Double> optimizer =
+			new EngineOptimizer<>(fitness, codec, () -> byExecutionTime(ofMillis(30)));
+
+		final Parameters<BitGene, Double> params = optimizer
+			.optimize(numberCodec(), bySteadyFitness(150));
 
 		System.out.println(params);
 	}
@@ -129,8 +155,8 @@ public class EngineOptimizer<
 			Alterers.<G, C>general(),
 			Selectors.<G, C>generic(),
 			Selectors.<G, C>generic(),
-			50, 1000,
-			10, 1000
+			IntRange.of(10, 5000),
+			IntRange.of(5, 100)
 		);
 	}
 
@@ -140,8 +166,8 @@ public class EngineOptimizer<
 			Alterers.<G, C>numeric(),
 			Selectors.<G, C>generic(),
 			Selectors.<G, C>generic(),
-			50, 1000,
-			10, 1000
+			IntRange.of(10, 5000),
+			IntRange.of(5, 100)
 		);
 	}
 
@@ -151,8 +177,8 @@ public class EngineOptimizer<
 			Alterers.<G, C>general(),
 			Selectors.<G, C>number(),
 			Selectors.<G, C>number(),
-			50, 1000,
-			10, 1000
+			IntRange.of(10, 100),
+			IntRange.of(5, 100)
 		);
 	}
 
@@ -162,10 +188,67 @@ public class EngineOptimizer<
 			Alterers.<G, C>numeric(),
 			Selectors.<G, C>number(),
 			Selectors.<G, C>number(),
-			5, 5000,
-			10, 1000
+			IntRange.of(10, 5000),
+			IntRange.of(5, 100)
 		);
 	}
 
 
 }
+
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+// This class represents a knapsack item, with a specific
+// "size" and "value".
+final class Item {
+	public final double size;
+	public final double value;
+
+	Item(final double size, final double value) {
+		this.size = size;
+		this.value = value;
+	}
+
+	// Create a new random knapsack item.
+	static Item random() {
+		final Random r = RandomRegistry.getRandom();
+		return new Item(r.nextDouble()*100, r.nextDouble()*100);
+	}
+
+	// Create a new collector for summing up the knapsack items.
+	static Collector<Item, ?, Item> toSum() {
+		return Collector.of(
+			() -> new double[2],
+			(a, b) -> {a[0] += b.size; a[1] += b.value;},
+			(a, b) -> {a[0] += b[0]; a[1] += b[1]; return a;},
+			r -> new Item(r[0], r[1])
+		);
+	}
+}
+
+// The knapsack fitness function class, which is parametrized with
+// the available items and the size of the knapsack.
+final class FF
+	implements Function<Genotype<BitGene>, Double>
+{
+	private final Item[] items;
+	private final double size;
+
+	public FF(final Item[] items, final double size) {
+		this.items = items;
+		this.size = size;
+	}
+
+	@Override
+	public Double apply(final Genotype<BitGene> gt) {
+		final Item sum = ((BitChromosome)gt.getChromosome()).ones()
+			.mapToObj(i -> items[i])
+			.collect(Item.toSum());
+
+		return sum.size <= this.size ? sum.value : 0;
+	}
+}
+
