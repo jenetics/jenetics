@@ -33,7 +33,12 @@ import org.jenetics.util.Range;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class MeanAltererTest {
+public class MeanAltererTest extends AltererTester {
+
+	@Override
+	public Alterer<DoubleGene, Double> newAlterer(final double p) {
+		return new MeanAlterer<>(p);
+	}
 
 	@Test
 	public void recombinate() {

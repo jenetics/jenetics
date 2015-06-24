@@ -33,10 +33,7 @@ import org.jenetics.util.Range;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public abstract class MutatorTestBase {
-
-	public abstract Alterer<DoubleGene, Double> newAlterer(final double p);
-
+public abstract class MutatorTester extends AltererTester {
 
 	@Test(dataProvider = "alterCountParameters")
 	public void alterCount(
