@@ -98,11 +98,8 @@ public final class ExponentialRankSelector<
 		final Population<G, C> population,
 		final int count
 	) {
-		assert(population != null) : "Population can not be null. ";
-		assert(count > 0) : "Population to select must be greater than zero. ";
-
-		//Sorted population required.
-		population.populationSort();
+		assert population != null : "Population can not be null. ";
+		assert count > 0 : "Population to select must be greater than zero. ";
 
 		final double N = population.size();
 		final double[] probabilities = new double[population.size()];
@@ -112,7 +109,7 @@ public final class ExponentialRankSelector<
 			probabilities[i] = pow(_c, i)*b;
 		}
 
-		assert (sum2one(probabilities)) : "Probabilities doesn't sum to one.";
+		assert sum2one(probabilities) : "Probabilities doesn't sum to one.";
 		return probabilities;
 	}
 
