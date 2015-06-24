@@ -79,7 +79,7 @@ public class StochasticUniversalSelector<
 		}
 
 		final Population<G, N> selection = new Population<>(count);
-		if (count == 0) {
+		if (count == 0 || population.isEmpty()) {
 			return selection;
 		}
 
