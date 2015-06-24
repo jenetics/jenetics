@@ -111,10 +111,12 @@ public class BoltzmannSelectorTest
 		return col;
 	}
 
+	/*
 	public static void main(final String[] args) {
 		writeDistributionData(Optimize.MAXIMUM);
 		writeDistributionData(Optimize.MINIMUM);
 	}
+	*/
 
 	private static void writeDistributionData(final Optimize opt) {
 		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();

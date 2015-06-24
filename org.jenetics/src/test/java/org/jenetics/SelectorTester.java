@@ -168,7 +168,11 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		final Population<DoubleGene, Double> selection =
 			selector().select(population, count, opt);
 
-		Assert.assertEquals(selection.size(), count.intValue());
+		if (size == 0) {
+			Assert.assertEquals( selection.size(), 0 );
+		} else {
+			Assert.assertEquals(selection.size(), count.intValue());
+		}
 		for (Phenotype<DoubleGene, Double> pt : selection) {
 			Assert.assertTrue(
 				population.contains(pt),
@@ -180,7 +184,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 
 	@DataProvider(name = "selectParameters")
 	public Object[][] selectParameters() {
-		final List<Integer> sizes = Arrays.asList(1, 2, 3, 5, 11, 50, 100, 10_000);
+		final List<Integer> sizes = Arrays.asList(0, 1, 2, 3, 5, 11, 50, 100, 10_000);
 		final List<Integer> counts = Arrays.asList(0, 1, 2, 3, 5, 11, 50, 100, 10_000);
 
 		final List<Object[]> result = new ArrayList<>();
