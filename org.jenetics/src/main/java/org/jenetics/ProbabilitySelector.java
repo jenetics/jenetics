@@ -102,7 +102,7 @@ public abstract class ProbabilitySelector<
 		}
 
 		final Population<G, C> selection = new Population<>(count);
-		if (count > 0) {
+		if (count > 0 && !population.isEmpty()) {
 			final Population<G, C> pop = copy(population);
 
 			final double[] prob = probabilities(pop, count, opt);

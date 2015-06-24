@@ -95,8 +95,10 @@ public class TournamentSelector<
 		}
 
 		final Random random = RandomRegistry.getRandom();
-		return new Population<G, C>(count)
-			.fill(() -> select(population, opt, _sampleSize, random), count);
+		return population.isEmpty()
+			? new Population<G, C>(0)
+			: new Population<G, C>(count)
+				.fill(() -> select(population, opt, _sampleSize, random), count);
 	}
 
 	private Phenotype<G, C> select(
