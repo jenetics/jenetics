@@ -23,6 +23,7 @@ import static java.time.Duration.ofMillis;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.engine.EvolutionResult.toBestGenotype;
 import static org.jenetics.engine.limit.byExecutionTime;
+import static org.jenetics.engine.limit.byFixedGeneration;
 import static org.jenetics.engine.limit.bySteadyFitness;
 
 import java.util.Random;
@@ -35,6 +36,7 @@ import java.util.stream.Stream;
 import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;
 import org.jenetics.DoubleGene;
+import org.jenetics.ExponentialRankSelector;
 import org.jenetics.GaussianMutator;
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
@@ -79,19 +81,26 @@ public class EngineOptimizer<
 		final Engine<DoubleGene, C> engine = Engine
 			.builder(codec.decoder().andThen(this::opt), codec.encoding())
 			.alterers(
-				new MeanAlterer<>(),
-				new Mutator<>(),
-				new GaussianMutator<>(),
+				new MeanAlterer<>(0.1),
+				new Mutator<>(0.08),
+				//new GaussianMutator<>(),
 				new SinglePointCrossover<>())
-			.offspringSelector(new TournamentSelector<>(3))
-			.survivorsSelector(new TournamentSelector<>(5))
+			.offspringSelector(new TournamentSelector<>(2))
+			.survivorsSelector(new TournamentSelector<>(7))
+			.populationSize(25)
 			.build();
 
 		final Genotype<DoubleGene> gt = engine.stream()
 			.limit(limit)
+			.peek(r -> print(codec.decoder().apply(r.getBestPhenotype().getGenotype())))
+			.peek(r -> System.out.println("FITNESS: " + r.getBestPhenotype().getFitness() + "\n"))
 			.collect(toBestGenotype());
 
 		return codec.decoder().apply(gt);
+	}
+
+	private void print(final Parameters<G, C> params) {
+		System.out.println(params);
 	}
 
 	// The Engine parameter optimizer fitness function.
@@ -112,20 +121,14 @@ public class EngineOptimizer<
 			.limit(_limit.get())
 			.collect(toBestGenotype());
 
-
-		final C value = ff.apply(gt);
-		System.out.println(params);
-		System.out.println("FITNESS: " + value + "\n");
-		System.out.flush();
-
-		return value;
+		return ff.apply(gt);
 	}
 
 	public static void main(final String[] args) {
 		//final Function<Double, Double> fitness = x -> cos(0.5 + sin(x))*cos(x);
 		//final Codec<DoubleGene, Double> codec = Codec.ofDouble(0.0, 2*Math.PI);
 
-		final int nitems = 15;
+		final int nitems = 50;
 		final double kssize = nitems*100.0/3.0;
 
 		final FF fitness = new FF(
@@ -140,11 +143,13 @@ public class EngineOptimizer<
 		);
 
 		final EngineOptimizer<Genotype<BitGene>, BitGene, Double> optimizer =
-			new EngineOptimizer<>(fitness, codec, () -> byExecutionTime(ofMillis(30)));
+			new EngineOptimizer<>(fitness, codec, () -> byFixedGeneration(500));
 
 		final Parameters<BitGene, Double> params = optimizer
 			.optimize(numberCodec(), bySteadyFitness(150));
 
+		System.out.println();
+		System.out.println("Best parameters:");
 		System.out.println(params);
 	}
 
@@ -177,7 +182,7 @@ public class EngineOptimizer<
 			Alterers.<G, C>general(),
 			Selectors.<G, C>number(),
 			Selectors.<G, C>number(),
-			IntRange.of(10, 100),
+			IntRange.of(100, 120),
 			IntRange.of(5, 100)
 		);
 	}
