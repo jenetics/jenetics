@@ -103,7 +103,7 @@ public class Mutator<
 		final Population<G, C> population,
 		final long generation
 	) {
-		assert(population != null) : "Not null is guaranteed from base class.";
+		assert population != null : "Not null is guaranteed from base class.";
 
 		final double p = pow(_probability, 1.0/3.0);
 		final IntRef alterations = new IntRef(0);
