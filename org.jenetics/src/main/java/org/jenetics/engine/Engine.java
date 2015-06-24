@@ -192,8 +192,8 @@ public final class Engine<
 		_validator = requireNonNull(validator);
 		_optimize = requireNonNull(optimize);
 
-		_offspringCount = require.positive(offspringCount);
-		_survivorsCount = require.positive(survivorsCount);
+		_offspringCount = require.nonNegative(offspringCount);
+		_survivorsCount = require.nonNegative(survivorsCount);
 		_maximalPhenotypeAge = require.positive(maximalPhenotypeAge);
 
 		_executor = new TimedExecutor(requireNonNull(executor));
