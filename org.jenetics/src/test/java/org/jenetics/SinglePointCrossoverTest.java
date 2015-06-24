@@ -38,7 +38,7 @@ import org.jenetics.util.Range;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class SinglePointCrossoverTest {
+public class SinglePointCrossoverTest extends AltererTester {
 
 	private static final class ConstRandom extends Random {
 		private static final long serialVersionUID = 1L;
@@ -58,6 +58,11 @@ public class SinglePointCrossoverTest {
 			return _value;
 		}
 
+	}
+
+	@Override
+	public Alterer<DoubleGene, Double> newAlterer(final double p) {
+		return new SinglePointCrossover<>(p);
 	}
 
 	@Test

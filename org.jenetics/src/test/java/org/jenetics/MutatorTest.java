@@ -25,10 +25,10 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
 @Test
-public class MutatorTest extends MutatorTestBase {
+public class MutatorTest extends MutatorTester {
 
 	@Override
-	public Alterer<DoubleGene, Double> newAlterer(double p) {
+	public Alterer<DoubleGene, Double> newAlterer(final double p) {
 		return new Mutator<>(p);
 	}
 
