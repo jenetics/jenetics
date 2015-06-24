@@ -56,6 +56,7 @@ public class StochasticUniversalSelector<
 {
 
 	public StochasticUniversalSelector() {
+		super(true);
 	}
 
 	/**
@@ -82,8 +83,9 @@ public class StochasticUniversalSelector<
 			return selection;
 		}
 
-		final double[] probabilities = probabilities(population, count, opt);
-		assert (population.size() == probabilities.length);
+		final Population<G, N> pop = copy(population);
+		final double[] probabilities = probabilities(pop, count, opt);
+		assert  pop.size() == probabilities.length;
 
 		//Calculating the equally spaces random points.
 		final double delta = 1.0/count;
@@ -100,19 +102,10 @@ public class StochasticUniversalSelector<
 				prop += probabilities[j];
 				++j;
 			}
-			selection.add(population.get(j%population.size()));
+			selection.add(pop.get(j%pop.size()));
 		}
 
 		return selection;
-	}
-
-	@Override
-	protected double[] probabilities(
-		final Population<G, N> population,
-		final int count
-	) {
-		population.populationSort();
-		return super.probabilities(population, count);
 	}
 
 	@Override
