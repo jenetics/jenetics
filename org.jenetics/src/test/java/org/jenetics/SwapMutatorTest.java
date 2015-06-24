@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class SwapMutatorTest extends MutatorTestBase {
+public class SwapMutatorTest extends MutatorTester {
 
 	@Override
 	public Alterer<DoubleGene, Double> newAlterer(double p) {
