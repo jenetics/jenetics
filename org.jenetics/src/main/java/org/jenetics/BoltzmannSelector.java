@@ -101,14 +101,12 @@ public final class BoltzmannSelector<
 			probabilities[i] = population.get(i).getFitness().doubleValue();
 		}
 
-		// Scale the fitness values to avoid overflows.
-		divide(probabilities, max(probabilities));
-
 		for (int i = probabilities.length; --i >= 0;) {
 			probabilities[i] = exp(_b*probabilities[i]);
 		}
 
 		normalize(probabilities);
+		checkAndCorrect(probabilities);
 		assert sum2one(probabilities) : "Probabilities doesn't sum to one.";
 
 		return probabilities;

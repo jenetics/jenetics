@@ -55,10 +55,13 @@ public class BoltzmannSelectorTest
 
 	@Test
 	public void parameters() {
-		final BoltzmannSelector<DoubleGene, Double> selector = new BoltzmannSelector<>(-1);
+		final BoltzmannSelector<DoubleGene, Double> selector = new BoltzmannSelector<>(2);
+
+		// Create population with zero fitness.
 		final Population<DoubleGene, Double> population =
-			TestUtils.newDoublePopulation(20, -10, 0);
-		population.set(0, TestUtils.newDoublePhenotype(0, 0));
+			TestUtils.newDoublePopulation(20, 0, 0);
+
+		// Must select without exception.
 		selector.probabilities(population, 10);
 	}
 

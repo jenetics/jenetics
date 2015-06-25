@@ -193,6 +193,26 @@ public abstract class ProbabilitySelector<
 	);
 
 	/**
+	 * Checks if the given probability values are finite. If not, all values are
+	 * set to the same probability.
+	 *
+	 * @param probabilities the probabilities to check.
+	 */
+	static void checkAndCorrect(final double[] probabilities) {
+		boolean ok = true;
+		for (int i = probabilities.length; --i >= 0 && ok;) {
+			ok = Double.isFinite(probabilities[i]);
+		}
+
+		if (!ok) {
+			final double value = 1.0/probabilities.length;
+			for (int i = probabilities.length; --i >= 0;) {
+				probabilities[i] = value;
+			}
+		}
+	}
+
+	/**
 	 * Check if the given probabilities sum to one.
 	 *
 	 * @param probabilities the probabilities to check.
