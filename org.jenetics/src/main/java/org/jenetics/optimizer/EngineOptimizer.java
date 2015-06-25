@@ -33,6 +33,8 @@ import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 
+import org.jenetics.internal.util.IntRef;
+
 import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;
 import org.jenetics.DoubleGene;
@@ -47,6 +49,7 @@ import org.jenetics.SinglePointCrossover;
 import org.jenetics.TournamentSelector;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
+import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -81,17 +84,19 @@ public class EngineOptimizer<
 		final Engine<DoubleGene, C> engine = Engine
 			.builder(codec.decoder().andThen(this::opt), codec.encoding())
 			.alterers(
-				new MeanAlterer<>(0.1),
-				new Mutator<>(0.08),
-				//new GaussianMutator<>(),
+				new MeanAlterer<>(0.25),
+				new GaussianMutator<>(0.25),
+				new Mutator<>(0.5),
 				new SinglePointCrossover<>())
 			.offspringSelector(new TournamentSelector<>(2))
-			.survivorsSelector(new TournamentSelector<>(7))
-			.populationSize(25)
+			.survivorsSelector(new TournamentSelector<>(5))
+			.populationSize(50)
+			.maximalPhenotypeAge(5)
 			.build();
 
 		final Genotype<DoubleGene> gt = engine.stream()
 			.limit(limit)
+			.peek(r -> System.out.println("Generation: " + r.getTotalGenerations()))
 			.peek(r -> print(codec.decoder().apply(r.getBestPhenotype().getGenotype())))
 			.peek(r -> System.out.println("FITNESS: " + r.getBestPhenotype().getFitness() + "\n"))
 			.collect(toBestGenotype());
@@ -128,25 +133,30 @@ public class EngineOptimizer<
 		//final Function<Double, Double> fitness = x -> cos(0.5 + sin(x))*cos(x);
 		//final Codec<DoubleGene, Double> codec = Codec.ofDouble(0.0, 2*Math.PI);
 
-		final int nitems = 50;
+		final int nitems = 200;
 		final double kssize = nitems*100.0/3.0;
 
-		final FF fitness = new FF(
-			Stream.generate(Item::random)
-				.limit(nitems)
-				.toArray(Item[]::new),
-			kssize
-		);
+		final FF fitness =
+			RandomRegistry.with(new LCG64ShiftRandom(1234), r ->
+				new FF(
+					Stream.generate(Item::random)
+						.limit(nitems)
+						.toArray(Item[]::new),
+					kssize
+				)
+			);
+
+		RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
 		final Codec<BitGene, Genotype<BitGene>> codec = Codec.of(
 			Genotype.of(BitChromosome.of(nitems, 0.5)),
 			Function.<Genotype<BitGene>>identity()
 		);
 
 		final EngineOptimizer<Genotype<BitGene>, BitGene, Double> optimizer =
-			new EngineOptimizer<>(fitness, codec, () -> byFixedGeneration(500));
+			new EngineOptimizer<>(fitness, codec, () -> byFixedGeneration(100));
 
 		final Parameters<BitGene, Double> params = optimizer
-			.optimize(numberCodec(), bySteadyFitness(150));
+			.optimize(numberCodec(), bySteadyFitness(250));
 
 		System.out.println();
 		System.out.println("Best parameters:");

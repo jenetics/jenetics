@@ -47,7 +47,7 @@ public final class Selectors {
 	public static <G extends Gene<?, G>, C extends Number & Comparable<? super C>>
 	ISeq<Proxy<Selector<G, C>>> number() {
 		return ISeq.of(
-			new BoltzmannSelectorProxy<G, C>(1.0),
+			//new BoltzmannSelectorProxy<G, C>(1.0),
 			new ExponentialRankSelectorProxy<G, C>(1.0),
 			new LinearRankSelectorProxy<G, C>(1.0),
 			new RouletteWheelSelectorProxy<G, C>(1),
