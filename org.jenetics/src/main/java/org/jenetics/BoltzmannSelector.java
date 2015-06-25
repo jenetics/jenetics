@@ -26,6 +26,8 @@ import static org.jenetics.internal.math.arithmetic.normalize;
 import static org.jenetics.internal.math.statistics.max;
 import static org.jenetics.internal.util.Equality.eq;
 
+import java.util.Arrays;
+
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
@@ -109,6 +111,18 @@ public final class BoltzmannSelector<
 		}
 
 		normalize(probabilities);
+		/*
+		if (!sum2one(probabilities)) {
+			final double[] p = new double[population.size()];
+			for (int i = population.size(); --i >= 0;) {
+				p[i] = population.get(i).getFitness().doubleValue();
+			}
+
+			System.out.println("B: " + _b + ", c: " + count);
+			System.out.println("Fitness: " + Arrays.toString(p));
+			System.out.println("Probs: " + Arrays.toString(probabilities));
+		}
+		*/
 		assert sum2one(probabilities) : "Probabilities doesn't sum to one.";
 
 		return probabilities;
