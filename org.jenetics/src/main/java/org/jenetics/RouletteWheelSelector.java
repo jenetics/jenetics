@@ -85,6 +85,7 @@ public class RouletteWheelSelector<
 			Arrays.fill(fitness, 1.0/population.size());
 		}
 
+		checkAndCorrect(fitness);
 		assert sum2one(fitness) : "Probabilities doesn't sum to one.";
 		return fitness;
 	}
