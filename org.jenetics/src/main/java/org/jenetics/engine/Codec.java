@@ -30,6 +30,7 @@ import org.jenetics.IntegerGene;
 import org.jenetics.LongChromosome;
 import org.jenetics.LongGene;
 import org.jenetics.util.Factory;
+import org.jenetics.util.IntRange;
 
 /**
  * A problem {@code Codec} contains the information about how to encode a given
@@ -43,7 +44,7 @@ import org.jenetics.util.Factory;
  * @version !__version__!
  * @since !__version__!
  */
-public interface Codec<G extends Gene<?, G>, T> {
+public interface Codec<T, G extends Gene<?, G>> {
 
 	/**
 	 * Return the genotype factory, which represents the encoded problem domain
@@ -62,7 +63,59 @@ public interface Codec<G extends Gene<?, G>, T> {
 	public Function<Genotype<G>, T> decoder();
 
 
-	public static Codec<IntegerGene, Integer> ofInteger(
+
+
+
+	public static class Real {
+
+		public static Codec<Integer, IntegerGene> of(final IntRange domain) {
+			return Codec.of(
+				Genotype.of(IntegerChromosome.of(IntegerGene.of(domain.getMin(), domain.getMax()))),
+				gt -> gt.getChromosome().getGene().getAllele()
+			);
+		}
+
+		public static Codec<int[], IntegerGene> of(
+			final IntRange domain,
+			final int length
+		) {
+			return Codec.of(
+				Genotype.of(IntegerChromosome.of(domain.getMin(), domain.getMax(), length)),
+				gt -> ((IntegerChromosome) gt.getChromosome()).toArray()
+			);
+		}
+
+		public static Codec<int[], IntegerGene> of(
+			final IntRange domain1,
+			final IntRange domain2,
+			final IntRange... domainN
+		) {
+			return null;
+		}
+
+		public static Codec<Long, LongGene> of(
+			final long min,
+			final long max
+		) {
+			return Codec.of(
+				Genotype.of(LongChromosome.of(LongGene.of(min, max))),
+				gt -> gt.getChromosome().getGene().getAllele()
+			);
+		}
+
+		public static Codec<Double, DoubleGene> of(
+			final double min,
+			final double max
+		) {
+			return Codec.of(
+				Genotype.of(DoubleChromosome.of(DoubleGene.of(min, max))),
+				gt -> gt.getChromosome().getGene().getAllele()
+			);
+		}
+
+	}
+
+	public static Codec<Integer, IntegerGene> ofInteger(
 		final int min,
 		final int max
 	) {
@@ -72,7 +125,7 @@ public interface Codec<G extends Gene<?, G>, T> {
 		);
 	}
 
-	public static Codec<LongGene, Long> ofLong(
+	public static Codec<Long, LongGene> ofLong(
 		final long min,
 		final long max
 	) {
@@ -82,7 +135,7 @@ public interface Codec<G extends Gene<?, G>, T> {
 		);
 	}
 
-	public static Codec<DoubleGene, Double> ofDouble(
+	public static Codec<Double, DoubleGene> ofDouble(
 		final double min,
 		final double max
 	) {
@@ -93,6 +146,8 @@ public interface Codec<G extends Gene<?, G>, T> {
 	}
 
 	/**
+	 * Create a new {@code Codec} object with the given {@code encoding} and
+	 * {@code decoder} function.
 	 *
 	 * @param encoding
 	 * @param decoder
@@ -100,11 +155,11 @@ public interface Codec<G extends Gene<?, G>, T> {
 	 * @param <T>
 	 * @return
 	 */
-	public static <G extends Gene<?, G>, T> Codec<G, T> of(
+	public static <G extends Gene<?, G>, T> Codec<T, G> of(
 		final Factory<Genotype<G>> encoding,
 		final Function<Genotype<G>, T> decoder
 	) {
-		return new Codec<G, T>() {
+		return new Codec<T, G>() {
 			@Override
 			public Factory<Genotype<G>> encoding() {
 				return encoding;
