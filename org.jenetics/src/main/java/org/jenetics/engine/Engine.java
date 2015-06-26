@@ -752,7 +752,7 @@ public final class Engine<
 	 * Create a new evolution {@code Engine.Builder} with the given fitness
 	 * function and genotype factory.
 	 *
-	 * @param fitnessFunction the fitness function
+	 * @param ff the fitness function
 	 * @param genotypeFactory the genotype factory
 	 * @param <G> the gene type
 	 * @param <C> the fitness function result type
@@ -762,17 +762,17 @@ public final class Engine<
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Builder<G, C> builder(
-		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
+		final Function<? super Genotype<G>, ? extends C> ff,
 		final Factory<Genotype<G>> genotypeFactory
 	) {
-		return new Builder<>(genotypeFactory, fitnessFunction);
+		return new Builder<>(genotypeFactory, ff);
 	}
 
 	/**
 	 * Create a new evolution {@code Engine.Builder} with the given fitness
 	 * function and chromosome templates.
 	 *
-	 * @param fitnessFunction the fitness function
+	 * @param ff the fitness function
 	 * @param chromosome the first chromosome
 	 * @param chromosomes the chromosome templates
 	 * @param <G> the gene type
@@ -784,21 +784,18 @@ public final class Engine<
 	@SafeVarargs
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Builder<G, C> builder(
-		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
+		final Function<? super Genotype<G>, ? extends C> ff,
 		final Chromosome<G> chromosome,
 		final Chromosome<G>... chromosomes
 	) {
-		return new Builder<>(
-			Genotype.of(chromosome, chromosomes),
-			fitnessFunction
-		);
+		return new Builder<>(Genotype.of(chromosome, chromosomes), ff);
 	}
 
 	/**
 	 * Create a new evolution {@code Engine.Builder} with the given fitness
 	 * function and problem {@code codec}.
 	 *
-	 * @param fitnessFunction the fitness function
+	 * @param ff the fitness function
 	 * @param codec the problem codec
 	 * @param <T> the fitness function input type
 	 * @param <C> the fitness function result type
@@ -809,13 +806,10 @@ public final class Engine<
 	 */
 	public static <T, C extends Comparable<? super C>, G extends Gene<?, G>>
 	Builder<G, C> builder(
-		final Function<? super T, ? extends C> fitnessFunction,
-		final Codec<G, T> codec
+		final Function<? super T, ? extends C> ff,
+		final Codec<T, G> codec
 	) {
-		return builder(
-			fitnessFunction.compose(codec.decoder()),
-			codec.encoding()
-		);
+		return builder(ff.compose(codec.decoder()), codec.encoding());
 	}
 
 
