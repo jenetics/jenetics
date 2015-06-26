@@ -794,6 +794,29 @@ public final class Engine<
 		);
 	}
 
+	/**
+	 * Create a new evolution {@code Engine.Builder} with the given fitness
+	 * function and problem {@code codec}.
+	 *
+	 * @param fitnessFunction the fitness function
+	 * @param codec the problem codec
+	 * @param <T> the fitness function input type
+	 * @param <C> the fitness function result type
+	 * @param <G> the gene type
+	 * @return a new engine builder
+	 * @throws java.lang.NullPointerException if one of the arguments is
+	 *         {@code null}.
+	 */
+	public static <T, C extends Comparable<? super C>, G extends Gene<?, G>>
+	Builder<G, C> builder(
+		final Function<? super T, ? extends C> fitnessFunction,
+		final Codec<G, T> codec
+	) {
+		return builder(
+			fitnessFunction.compose(codec.decoder()),
+			codec.encoding()
+		);
+	}
 
 
 	/* *************************************************************************
