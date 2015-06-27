@@ -160,8 +160,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 		final IntRange domain2,
 		final IntRange... domains
 	) {
-		final IntegerGene[] genes = array
-			.toSeq(domain1, domain2, domains)
+		final IntegerGene[] genes = array.toSeq(domain1, domain2, domains)
 			.map(r -> IntegerGene.of(r.getMin(), r.getMax()))
 			.toArray(new IntegerGene[0]);
 
