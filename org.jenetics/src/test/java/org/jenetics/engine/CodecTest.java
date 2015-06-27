@@ -21,6 +21,7 @@ package org.jenetics.engine;
 
 import org.testng.annotations.Test;
 
+import org.jenetics.IntegerGene;
 import org.jenetics.util.IntRange;
 
 /**
@@ -30,14 +31,9 @@ public class CodecTest {
 
 	@Test
 	public void of() {
-		Codec.Real.of(IntRange.of(1, 2));
-		Codec.Real.of(1, 2L);
-		Codec.Real.of(1.0, 2);
 
-		Codec.Real.of(
-			IntRange.of(1, 2),
-			IntRange.of(4, 3)
-		);
+		final Codec<Integer, IntegerGene> ic = Codec.of(IntRange.of(0, 10));
+
 	}
 
 }

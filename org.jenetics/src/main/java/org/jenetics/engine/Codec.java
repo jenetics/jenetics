@@ -22,8 +22,8 @@ package org.jenetics.engine;
 import static java.util.Objects.requireNonNull;
 
 import java.util.function.Function;
-import java.util.stream.Stream;
 
+import org.jenetics.internal.util.array;
 import org.jenetics.internal.util.require;
 
 import org.jenetics.Gene;
@@ -120,7 +120,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	}
 
 	/**
-	 * Return an vector {@code Codec} for the given range. All vector values
+	 * Return a vector {@code Codec} for the given range. All vector values
 	 * are restricted by the same domain.
 	 *
 	 * @param domain the domain of the vector values
@@ -146,28 +146,30 @@ public interface Codec<T, G extends Gene<?, G>> {
 	}
 
 	/**
+	 * Create a vector {@code Codec} for the given ranges. Each vector element
+	 * might have a different domain.
 	 *
-	 * @param domain1
-	 * @param domain2
-	 * @param domainN
-	 * @return
+	 * @param domain1 the domain of the first vector element
+	 * @param domain2 the domain of the second vector element
+	 * @param domains the domains of the rest of the vector
+	 * @return a new vector {@code Codec}
+	 * @throws NullPointerException if one of the elements is {@code null}
 	 */
 	static Codec<int[], IntegerGene> of(
 		final IntRange domain1,
 		final IntRange domain2,
-		final IntRange... domainN
+		final IntRange... domains
 	) {
-		final IntegerGene[] genes = Stream
-			.concat(Stream.of(domain1, domain2), Stream.of(domainN))
-			.map(d -> IntegerGene.of(d.getMin(), d.getMin()))
-			.toArray(IntegerGene[]::new);
+		final IntegerGene[] genes = array
+			.toSeq(domain1, domain2, domains)
+			.map(r -> IntegerGene.of(r.getMin(), r.getMax()))
+			.toArray(new IntegerGene[0]);
 
-		final int length = 2 + domainN.length;
 		return Codec.of(
 			Genotype.of(IntegerChromosome.of(genes)),
 			gt -> {
-				final int[] args = new int[length];
-				for (int i = 2 + domainN.length; --i >= 0;) {
+				final int[] args = new int[genes.length];
+				for (int i = genes.length; --i >= 0;) {
 					args[i] = gt.getChromosome(i).getGene().intValue();
 				}
 				return args;
