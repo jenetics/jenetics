@@ -19,16 +19,17 @@
  */
 package org.jenetics.engine;
 
-import java.util.function.Function;
+import static java.util.Objects.requireNonNull;
 
-import org.jenetics.DoubleChromosome;
-import org.jenetics.DoubleGene;
+import java.util.function.Function;
+import java.util.stream.Stream;
+
+import org.jenetics.internal.util.require;
+
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
 import org.jenetics.IntegerChromosome;
 import org.jenetics.IntegerGene;
-import org.jenetics.LongChromosome;
-import org.jenetics.LongGene;
 import org.jenetics.util.Factory;
 import org.jenetics.util.IntRange;
 
@@ -52,7 +53,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 *
 	 * @return the genotype (factory) representation of the problem domain
 	 */
-	public Factory<Genotype<G>> encoding();
+	Factory<Genotype<G>> encoding();
 
 	/**
 	 * Return the <em>decoder</em> function which transforms the genotype back
@@ -60,105 +61,29 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 *
 	 * @return genotype decoder
 	 */
-	public Function<Genotype<G>, T> decoder();
+	Function<Genotype<G>, T> decoder();
 
-
-
-
-
-	public static class Real {
-
-		public static Codec<Integer, IntegerGene> of(final IntRange domain) {
-			return Codec.of(
-				Genotype.of(IntegerChromosome.of(IntegerGene.of(domain.getMin(), domain.getMax()))),
-				gt -> gt.getChromosome().getGene().getAllele()
-			);
-		}
-
-		public static Codec<int[], IntegerGene> of(
-			final IntRange domain,
-			final int length
-		) {
-			return Codec.of(
-				Genotype.of(IntegerChromosome.of(domain.getMin(), domain.getMax(), length)),
-				gt -> ((IntegerChromosome) gt.getChromosome()).toArray()
-			);
-		}
-
-		public static Codec<int[], IntegerGene> of(
-			final IntRange domain1,
-			final IntRange domain2,
-			final IntRange... domainN
-		) {
-			return null;
-		}
-
-		public static Codec<Long, LongGene> of(
-			final long min,
-			final long max
-		) {
-			return Codec.of(
-				Genotype.of(LongChromosome.of(LongGene.of(min, max))),
-				gt -> gt.getChromosome().getGene().getAllele()
-			);
-		}
-
-		public static Codec<Double, DoubleGene> of(
-			final double min,
-			final double max
-		) {
-			return Codec.of(
-				Genotype.of(DoubleChromosome.of(DoubleGene.of(min, max))),
-				gt -> gt.getChromosome().getGene().getAllele()
-			);
-		}
-
-	}
-
-	public static Codec<Integer, IntegerGene> ofInteger(
-		final int min,
-		final int max
-	) {
-		return of(
-			Genotype.of(IntegerChromosome.of(IntegerGene.of(min, max))),
-			gt -> gt.getChromosome().getGene().getAllele()
-		);
-	}
-
-	public static Codec<Long, LongGene> ofLong(
-		final long min,
-		final long max
-	) {
-		return of(
-			Genotype.of(LongChromosome.of(LongGene.of(min, max))),
-			gt -> gt.getChromosome().getGene().getAllele()
-		);
-	}
-
-	public static Codec<Double, DoubleGene> ofDouble(
-		final double min,
-		final double max
-	) {
-		return of(
-			Genotype.of(DoubleChromosome.of(DoubleGene.of(min, max))),
-			gt -> gt.getChromosome().getGene().getAllele()
-		);
-	}
 
 	/**
 	 * Create a new {@code Codec} object with the given {@code encoding} and
 	 * {@code decoder} function.
 	 *
-	 * @param encoding
-	 * @param decoder
-	 * @param <G>
-	 * @param <T>
-	 * @return
+	 * @param encoding the genotype factory used for creating new
+	 *        {@code Genotypes}.
+	 * @param decoder decoder function, which converts a {@code Genotype} to a
+	 *        value in the problem domain.
+	 * @param <G> the {@code Gene} type
+	 * @param <T> the fitness function argument type in the problem domain
+	 * @return a new {@code Codec} object with the given parameters.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	public static <G extends Gene<?, G>, T> Codec<T, G> of(
+	static <G extends Gene<?, G>, T> Codec<T, G> of(
 		final Factory<Genotype<G>> encoding,
 		final Function<Genotype<G>, T> decoder
 	) {
+		requireNonNull(encoding);
+		requireNonNull(decoder);
+
 		return new Codec<T, G>() {
 			@Override
 			public Factory<Genotype<G>> encoding() {
@@ -171,5 +96,84 @@ public interface Codec<T, G extends Gene<?, G>> {
 			}
 		};
 	}
+
+
+	/* *************************************************************************
+	 * Factory methods for commonly usable Codecs.
+	 **************************************************************************/
+
+
+	/**
+	 * Return a scalar {@code Codec} for the given range.
+	 *
+	 * @param domain the domain of the returned {@code Codec}
+	 * @return a new scalar {@code Codec} with the given domain.
+	 * @throws NullPointerException if the given {@code domain} is {@code null}
+	 */
+	static Codec<Integer, IntegerGene> of(final IntRange domain) {
+		requireNonNull(domain);
+
+		return Codec.of(
+			Genotype.of(IntegerChromosome.of(domain.getMin(), domain.getMax())),
+			gt -> gt.getChromosome().getGene().getAllele()
+		);
+	}
+
+	/**
+	 * Return an vector {@code Codec} for the given range. All vector values
+	 * are restricted by the same domain.
+	 *
+	 * @param domain the domain of the vector values
+	 * @param length the vector length
+	 * @return a new vector {@code Codec}
+	 * @throws NullPointerException if the given {@code domain} is {@code null}
+	 * @throws IllegalArgumentException if the {@code length} is smaller than
+	 *         one.
+	 */
+	static Codec<int[], IntegerGene> of(
+		final IntRange domain,
+		final int length
+	) {
+		requireNonNull(domain);
+		require.positive(length);
+
+		return Codec.of(
+			Genotype.of(IntegerChromosome.of(
+				domain.getMin(), domain.getMax(), length
+			)),
+			gt -> ((IntegerChromosome)gt.getChromosome()).toArray()
+		);
+	}
+
+	/**
+	 *
+	 * @param domain1
+	 * @param domain2
+	 * @param domainN
+	 * @return
+	 */
+	static Codec<int[], IntegerGene> of(
+		final IntRange domain1,
+		final IntRange domain2,
+		final IntRange... domainN
+	) {
+		final IntegerGene[] genes = Stream
+			.concat(Stream.of(domain1, domain2), Stream.of(domainN))
+			.map(d -> IntegerGene.of(d.getMin(), d.getMin()))
+			.toArray(IntegerGene[]::new);
+
+		final int length = 2 + domainN.length;
+		return Codec.of(
+			Genotype.of(IntegerChromosome.of(genes)),
+			gt -> {
+				final int[] args = new int[length];
+				for (int i = 2 + domainN.length; --i >= 0;) {
+					args[i] = gt.getChromosome(i).getGene().intValue();
+				}
+				return args;
+			}
+		);
+	}
+
 
 }
