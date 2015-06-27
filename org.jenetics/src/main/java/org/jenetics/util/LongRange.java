@@ -21,8 +21,6 @@ package org.jenetics.util;
 
 import java.io.Serializable;
 
-import org.jenetics.internal.util.Equality;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -59,9 +57,9 @@ public class LongRange implements Serializable {
 
 	@Override
 	public boolean equals(final Object other) {
-		return Equality.of(this, other).test(range ->
-			_min == range._min && _max == range._max
-		);
+		return other instanceof LongRange &&
+			_min == ((LongRange)other)._min &&
+			_max == ((LongRange)other)._max;
 	}
 
 	@Override

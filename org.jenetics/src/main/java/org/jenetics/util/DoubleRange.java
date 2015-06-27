@@ -23,8 +23,6 @@ import static java.lang.Double.doubleToLongBits;
 
 import java.io.Serializable;
 
-import org.jenetics.internal.util.Equality;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -61,9 +59,9 @@ public class DoubleRange implements Serializable {
 
 	@Override
 	public boolean equals(final Object other) {
-		return Equality.of(this, other).test(range ->
-			_min == range._min && _max == range._max
-		);
+		return other instanceof DoubleRange &&
+			Double.compare(_min, ((DoubleRange)other)._min) == 0 &&
+			Double.compare(_max, ((DoubleRange)other)._max) == 0;
 	}
 
 	@Override
