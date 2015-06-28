@@ -103,7 +103,7 @@ public final class ExponentialScaler
 		return obj instanceof ExponentialScaler &&
 			eq(((ExponentialScaler)obj)._a, _a) &&
 			eq(((ExponentialScaler)obj)._b, _b) &&
-			eq(((ExponentialScaler)obj)._c, _b);
+			eq(((ExponentialScaler)obj)._c, _c);
 	}
 
 	@Override
