@@ -19,9 +19,13 @@
  */
 package org.jenetics.util;
 
+import static java.lang.String.format;
+
 import java.io.Serializable;
 
 /**
+ * Long range class.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -34,18 +38,43 @@ public class LongRange implements Serializable {
 	private final long _max;
 
 	private LongRange(final long min, final long max) {
+		if (min > max) {
+			throw new IllegalArgumentException(format(
+				"Min greater than max: %s > %s", min, max
+			));
+		}
+
 		_min = min;
 		_max = max;
 	}
 
+	/**
+	 * Return the minimum value of the long range.
+	 *
+	 * @return the minimum value of the long range
+	 */
 	public long getMin() {
 		return _min;
 	}
 
+	/**
+	 * Return the maximum value of the long range.
+	 *
+	 * @return the maximum value of the long range
+	 */
 	public long getMax() {
 		return _max;
 	}
 
+	/**
+	 * Create a new {@code LongRange} object with the given {@code min} and
+	 * {@code max} values.
+	 *
+	 * @param min the lower bound of the long range
+	 * @param max the upper bound of the long range
+	 * @return a new {@code LongRange} object
+	 * @throws IllegalArgumentException if {@code min > max}
+	 */
 	public static LongRange of(final long min, final long max) {
 		return new LongRange(min, max);
 	}

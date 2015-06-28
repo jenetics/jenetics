@@ -19,9 +19,13 @@
  */
 package org.jenetics.util;
 
+import static java.lang.String.format;
+
 import java.io.Serializable;
 
 /**
+ * Integer range class.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -34,18 +38,43 @@ public final class IntRange implements Serializable {
 	private final int _max;
 
 	private IntRange(final int min, final int max) {
+		if (min > max) {
+			throw new IllegalArgumentException(format(
+				"Min greater than max: %s > %s", min, max
+			));
+		}
+
 		_min = min;
 		_max = max;
 	}
 
+	/**
+	 * Return the minimum value of the integer range.
+	 *
+	 * @return the minimum value of the integer range
+	 */
 	public int getMin() {
 		return _min;
 	}
 
+	/**
+	 * Return the maximum value of the integer range.
+	 *
+	 * @return the maximum value of the integer range
+	 */
 	public int getMax() {
 		return _max;
 	}
 
+	/**
+	 * Create a new {@code IntRange} object with the given {@code min} and
+	 * {@code max} values.
+	 *
+	 * @param min the lower bound of the integer range
+	 * @param max the upper bound of the integer range
+	 * @return a new {@code IntRange} object
+	 * @throws IllegalArgumentException if {@code min > max}
+	 */
 	public static IntRange of(final int min, final int max) {
 		return new IntRange(min, max);
 	}

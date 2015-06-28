@@ -20,10 +20,13 @@
 package org.jenetics.util;
 
 import static java.lang.Double.doubleToLongBits;
+import static java.lang.String.format;
 
 import java.io.Serializable;
 
 /**
+ * Double range class.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -36,18 +39,43 @@ public class DoubleRange implements Serializable {
 	private final double _max;
 
 	private DoubleRange(final double min, final double max) {
+		if (min > max) {
+			throw new IllegalArgumentException(format(
+				"Min greater than max: %s > %s", min, max
+			));
+		}
+
 		_min = min;
 		_max = max;
 	}
 
+	/**
+	 * Return the minimum value of the double range.
+	 *
+	 * @return the minimum value of the double range
+	 */
 	public double getMin() {
 		return _min;
 	}
 
+	/**
+	 * Return the maximum value of the double range.
+	 *
+	 * @return the maximum value of the double range
+	 */
 	public double getMax() {
 		return _max;
 	}
 
+	/**
+	 * Create a new {@code DoubleRange} object with the given {@code min} and
+	 * {@code max} values.
+	 *
+	 * @param min the lower bound of the double range
+	 * @param max the upper bound of the double range
+	 * @return a new {@code DoubleRange} object
+	 * @throws IllegalArgumentException if {@code min > max}
+	 */
 	public static DoubleRange of(final double min, final double max) {
 		return new DoubleRange(min, max);
 	}
