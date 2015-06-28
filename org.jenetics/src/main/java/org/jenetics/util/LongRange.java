@@ -30,7 +30,7 @@ import java.io.Serializable;
  * @version !__version__!
  * @since !__version__!
  */
-public class LongRange implements Serializable {
+public final class LongRange implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

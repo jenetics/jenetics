@@ -31,7 +31,7 @@ import java.io.Serializable;
  * @version !__version__!
  * @since !__version__!
  */
-public class DoubleRange implements Serializable {
+public final class DoubleRange implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
