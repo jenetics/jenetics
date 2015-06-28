@@ -23,7 +23,6 @@ import static java.lang.Math.pow;
 import static java.lang.String.format;
 import static org.jenetics.internal.util.Equality.eq;
 
-import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 /**
@@ -120,7 +119,8 @@ public final class ExponentialRankSelector<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(s -> eq(_c, s._c));
+		return obj instanceof ExponentialRankSelector &&
+			eq(((ExponentialRankSelector)obj)._c, _c);
 	}
 
 	@Override

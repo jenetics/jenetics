@@ -22,7 +22,6 @@ package org.jenetics;
 import static java.lang.String.format;
 import static org.jenetics.internal.util.Equality.eq;
 
-import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 /**
@@ -131,10 +130,9 @@ public final class LinearRankSelector<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(selector ->
-			eq(_nminus, selector._nminus) &&
-			eq(_nplus, selector._nplus)
-		);
+		return obj instanceof LinearRankSelector &&
+			eq(((LinearRankSelector)obj)._nminus, _nminus) &&
+			eq(((LinearRankSelector)obj)._nplus, _nplus);
 	}
 
 	@Override
