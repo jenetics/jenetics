@@ -102,6 +102,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * Factory methods for commonly usable Codecs.
 	 **************************************************************************/
 
+	class Numeric {
 
 	/**
 	 * Return a scalar {@code Codec} for the given range.
@@ -110,11 +111,11 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * @return a new scalar {@code Codec} with the given domain.
 	 * @throws NullPointerException if the given {@code domain} is {@code null}
 	 */
-	static Codec<Integer, IntegerGene> of(final IntRange domain) {
+	public static Codec<Integer, IntegerGene> of(final IntRange domain) {
 		requireNonNull(domain);
 
 		return Codec.of(
-			Genotype.of(IntegerChromosome.of(domain.getMin(), domain.getMax())),
+			Genotype.of(IntegerChromosome.of(domain)),
 			gt -> gt.getChromosome().getGene().getAllele()
 		);
 	}
@@ -130,7 +131,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * @throws IllegalArgumentException if the {@code length} is smaller than
 	 *         one.
 	 */
-	static Codec<int[], IntegerGene> of(
+	public static Codec<int[], IntegerGene> of(
 		final IntRange domain,
 		final int length
 	) {
@@ -138,9 +139,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 		require.positive(length);
 
 		return Codec.of(
-			Genotype.of(IntegerChromosome.of(
-				domain.getMin(), domain.getMax(), length
-			)),
+			Genotype.of(IntegerChromosome.of(domain, length)),
 			gt -> ((IntegerChromosome)gt.getChromosome()).toArray()
 		);
 	}
@@ -155,13 +154,13 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * @return a new vector {@code Codec}
 	 * @throws NullPointerException if one of the elements is {@code null}
 	 */
-	static Codec<int[], IntegerGene> of(
+	public static Codec<int[], IntegerGene> of(
 		final IntRange domain1,
 		final IntRange domain2,
 		final IntRange... domains
 	) {
 		final IntegerGene[] genes = array.toSeq(domain1, domain2, domains)
-			.map(r -> IntegerGene.of(r.getMin(), r.getMax()))
+			.map(IntegerGene::of)
 			.toArray(new IntegerGene[0]);
 
 		return Codec.of(
@@ -175,6 +174,6 @@ public interface Codec<T, G extends Gene<?, G>> {
 			}
 		);
 	}
-
+	}
 
 }
