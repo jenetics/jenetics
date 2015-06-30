@@ -23,15 +23,9 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.function.Function;
 
-import org.jenetics.internal.util.array;
-import org.jenetics.internal.util.require;
-
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
-import org.jenetics.IntegerChromosome;
-import org.jenetics.IntegerGene;
 import org.jenetics.util.Factory;
-import org.jenetics.util.IntRange;
 
 /**
  * A problem {@code Codec} contains the information about how to encode a given
@@ -95,85 +89,6 @@ public interface Codec<T, G extends Gene<?, G>> {
 				return decoder;
 			}
 		};
-	}
-
-
-	/* *************************************************************************
-	 * Factory methods for commonly usable Codecs.
-	 **************************************************************************/
-
-	class Numeric {
-
-	/**
-	 * Return a scalar {@code Codec} for the given range.
-	 *
-	 * @param domain the domain of the returned {@code Codec}
-	 * @return a new scalar {@code Codec} with the given domain.
-	 * @throws NullPointerException if the given {@code domain} is {@code null}
-	 */
-	public static Codec<Integer, IntegerGene> of(final IntRange domain) {
-		requireNonNull(domain);
-
-		return Codec.of(
-			Genotype.of(IntegerChromosome.of(domain)),
-			gt -> gt.getChromosome().getGene().getAllele()
-		);
-	}
-
-	/**
-	 * Return a vector {@code Codec} for the given range. All vector values
-	 * are restricted by the same domain.
-	 *
-	 * @param domain the domain of the vector values
-	 * @param length the vector length
-	 * @return a new vector {@code Codec}
-	 * @throws NullPointerException if the given {@code domain} is {@code null}
-	 * @throws IllegalArgumentException if the {@code length} is smaller than
-	 *         one.
-	 */
-	public static Codec<int[], IntegerGene> of(
-		final IntRange domain,
-		final int length
-	) {
-		requireNonNull(domain);
-		require.positive(length);
-
-		return Codec.of(
-			Genotype.of(IntegerChromosome.of(domain, length)),
-			gt -> ((IntegerChromosome)gt.getChromosome()).toArray()
-		);
-	}
-
-	/**
-	 * Create a vector {@code Codec} for the given ranges. Each vector element
-	 * might have a different domain.
-	 *
-	 * @param domain1 the domain of the first vector element
-	 * @param domain2 the domain of the second vector element
-	 * @param domains the domains of the rest of the vector
-	 * @return a new vector {@code Codec}
-	 * @throws NullPointerException if one of the elements is {@code null}
-	 */
-	public static Codec<int[], IntegerGene> of(
-		final IntRange domain1,
-		final IntRange domain2,
-		final IntRange... domains
-	) {
-		final IntegerGene[] genes = array.toSeq(domain1, domain2, domains)
-			.map(IntegerGene::of)
-			.toArray(new IntegerGene[0]);
-
-		return Codec.of(
-			Genotype.of(IntegerChromosome.of(genes)),
-			gt -> {
-				final int[] args = new int[genes.length];
-				for (int i = genes.length; --i >= 0;) {
-					args[i] = gt.getChromosome(i).getGene().intValue();
-				}
-				return args;
-			}
-		);
-	}
 	}
 
 }

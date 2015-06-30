@@ -31,9 +31,6 @@ public class CodecTest {
 
 	@Test
 	public void of() {
-
-		final Codec<Integer, IntegerGene> ic = Codec.of(IntRange.of(0, 10));
-
 	}
 
 }
