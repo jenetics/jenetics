@@ -19,20 +19,25 @@
  */
 package org.jenetics.engine;
 
+import static java.lang.reflect.Array.newInstance;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Stream.concat;
 
+import java.awt.geom.AffineTransform;
+import java.util.function.IntFunction;
 import java.util.stream.Stream;
 
 import org.jenetics.internal.util.require;
 
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
+import org.jenetics.EnumGene;
 import org.jenetics.Genotype;
 import org.jenetics.IntegerChromosome;
 import org.jenetics.IntegerGene;
 import org.jenetics.LongChromosome;
 import org.jenetics.LongGene;
+import org.jenetics.PermutationChromosome;
 import org.jenetics.util.DoubleRange;
 import org.jenetics.util.IntRange;
 import org.jenetics.util.LongRange;
@@ -173,16 +178,17 @@ public final class codecs {
 	 * might have a different domain. The vector length is equal to the number
 	 * of domains.
 	 *
-	 * @param first the first domain range
-	 * @param rest the rest of the domain ranges
+	 * @param domains the domain ranges
 	 * @return a new vector {@code Codec}
 	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if the {@code domains} array is empty
 	 */
-	public static Codec<int[], IntegerGene> ofVector(
-		final IntRange first,
-		final IntRange... rest
-	) {
-		final IntegerGene[] genes = concat(Stream.of(first), Stream.of(rest))
+	public static Codec<int[], IntegerGene> ofVector(final IntRange... domains) {
+		if (domains.length == 0) {
+			throw new IllegalArgumentException("Domains must not be empty.");
+		}
+
+		final IntegerGene[] genes = Stream.of(domains)
 			.map(IntegerGene::of)
 			.toArray(IntegerGene[]::new);
 
@@ -203,16 +209,17 @@ public final class codecs {
 	 * might have a different domain. The vector length is equal to the number
 	 * of domains.
 	 *
-	 * @param first the first domain range
-	 * @param rest the rest of the domain ranges
+	 * @param domains the domain ranges
 	 * @return a new vector {@code Codec}
 	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if the {@code domains} array is empty
 	 */
-	public static Codec<long[], LongGene> ofVector(
-		final LongRange first,
-		final LongRange... rest
-	) {
-		final LongGene[] genes = concat(Stream.of(first), Stream.of(rest))
+	public static Codec<long[], LongGene> ofVector(final LongRange... domains) {
+		if (domains.length == 0) {
+			throw new IllegalArgumentException("Domains must not be empty.");
+		}
+
+		final LongGene[] genes = Stream.of(domains)
 			.map(LongGene::of)
 			.toArray(LongGene[]::new);
 
@@ -233,16 +240,19 @@ public final class codecs {
 	 * might have a different domain. The vector length is equal to the number
 	 * of domains.
 	 *
-	 * @param first the first domain range
-	 * @param rest the rest of the domain ranges
+	 * @param domains the domain ranges
 	 * @return a new vector {@code Codec}
 	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if the {@code domains} array is empty
 	 */
 	public static Codec<double[], DoubleGene> ofVector(
-		final DoubleRange first,
-		final DoubleRange... rest
+		final DoubleRange... domains
 	) {
-		final DoubleGene[] genes = concat(Stream.of(first), Stream.of(rest))
+		if (domains.length == 0) {
+			throw new IllegalArgumentException("Domains must not be empty.");
+		}
+
+		final DoubleGene[] genes = Stream.of(domains)
 			.map(DoubleGene::of)
 			.toArray(DoubleGene[]::new);
 
@@ -254,6 +264,74 @@ public final class codecs {
 					args[i] = gt.getChromosome(i).getGene().doubleValue();
 				}
 				return args;
+			}
+		);
+	}
+
+	@SafeVarargs
+	public static <T>
+	Codec<T[], EnumGene<T>> ofPermutation(final T... alleles) {
+		if (alleles.length == 0) {
+			throw new IllegalArgumentException("Empty alleles are not allowed.");
+		}
+
+		final IntFunction<T[]> newArray = length -> {
+			@SuppressWarnings("unchecked")
+			final T[] values = (T[])newInstance(alleles[0].getClass(), length);
+			return values;
+		};
+
+		return Codec.of(
+			Genotype.of(PermutationChromosome.of(alleles)),
+			gt -> gt.getChromosome().toSeq().stream()
+						.map(EnumGene::getAllele)
+						.toArray(newArray)
+		);
+	}
+
+	public static Codec<int[], EnumGene<Integer>> ofPermutation(final int length) {
+		return Codec.of(
+			Genotype.of(PermutationChromosome.ofInteger(length)),
+			gt -> gt.getChromosome().toSeq().stream()
+						.mapToInt(EnumGene<Integer>::getAllele)
+						.toArray()
+		);
+	}
+
+	static Codec<AffineTransform, DoubleGene> ofAffineTransform(
+		final DoubleRange sx, final DoubleRange sy,
+		final DoubleRange tx, final DoubleRange ty,
+		final DoubleRange phi,
+		final DoubleRange kx, final DoubleRange ky
+	) {
+		return Codec.of(
+			Genotype.of(
+				// Scale
+				DoubleChromosome.of(sx), DoubleChromosome.of(sy),
+				// Translation
+				DoubleChromosome.of(tx), DoubleChromosome.of(ty),
+				// Rotation
+				DoubleChromosome.of(phi),
+				// Shear
+				DoubleChromosome.of(kx), DoubleChromosome.of(ky)
+			),
+			gt -> {
+				final AffineTransform at = new AffineTransform();
+				at.scale(
+					gt.getChromosome(0).getGene().doubleValue(),
+					gt.getChromosome(1).getGene().doubleValue()
+				);
+				at.translate(
+					gt.getChromosome(2).getGene().doubleValue(),
+					gt.getChromosome(3).getGene().doubleValue()
+				);
+				at.rotate(gt.getChromosome(4).getGene().doubleValue());
+				at.shear(
+					gt.getChromosome(5).getGene().doubleValue(),
+					gt.getChromosome(6).getGene().doubleValue()
+				);
+
+				return at;
 			}
 		);
 	}
