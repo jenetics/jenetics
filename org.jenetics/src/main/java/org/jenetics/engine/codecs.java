@@ -39,6 +39,7 @@ import org.jenetics.LongChromosome;
 import org.jenetics.LongGene;
 import org.jenetics.PermutationChromosome;
 import org.jenetics.util.DoubleRange;
+import org.jenetics.util.ISeq;
 import org.jenetics.util.IntRange;
 import org.jenetics.util.LongRange;
 
@@ -188,15 +189,16 @@ public final class codecs {
 			throw new IllegalArgumentException("Domains must not be empty.");
 		}
 
-		final IntegerGene[] genes = Stream.of(domains)
+		final ISeq<IntegerChromosome> chromosomes = Stream.of(domains)
 			.map(IntegerGene::of)
-			.toArray(IntegerGene[]::new);
+			.map(IntegerChromosome::of)
+			.collect(ISeq.toISeq());
 
 		return Codec.of(
-			Genotype.of(IntegerChromosome.of(genes)),
+			Genotype.of(chromosomes),
 			gt -> {
-				final int[] args = new int[genes.length];
-				for (int i = genes.length; --i >= 0;) {
+				final int[] args = new int[chromosomes.length()];
+				for (int i = chromosomes.length(); --i >= 0;) {
 					args[i] = gt.getChromosome(i).getGene().intValue();
 				}
 				return args;
@@ -219,15 +221,16 @@ public final class codecs {
 			throw new IllegalArgumentException("Domains must not be empty.");
 		}
 
-		final LongGene[] genes = Stream.of(domains)
+		final ISeq<LongChromosome> chromosomes = Stream.of(domains)
 			.map(LongGene::of)
-			.toArray(LongGene[]::new);
+			.map(LongChromosome::of)
+			.collect(ISeq.toISeq());
 
 		return Codec.of(
-			Genotype.of(LongChromosome.of(genes)),
+			Genotype.of(chromosomes),
 			gt -> {
-				final long[] args = new long[genes.length];
-				for (int i = genes.length; --i >= 0;) {
+				final long[] args = new long[chromosomes.length()];
+				for (int i = chromosomes.length(); --i >= 0;) {
 					args[i] = gt.getChromosome(i).getGene().longValue();
 				}
 				return args;
@@ -252,15 +255,16 @@ public final class codecs {
 			throw new IllegalArgumentException("Domains must not be empty.");
 		}
 
-		final DoubleGene[] genes = Stream.of(domains)
+		final ISeq<DoubleChromosome> chromosomes = Stream.of(domains)
 			.map(DoubleGene::of)
-			.toArray(DoubleGene[]::new);
+			.map(DoubleChromosome::of)
+			.collect(ISeq.toISeq());
 
 		return Codec.of(
-			Genotype.of(DoubleChromosome.of(genes)),
+			Genotype.of(chromosomes),
 			gt -> {
-				final double[] args = new double[genes.length];
-				for (int i = genes.length; --i >= 0;) {
+				final double[] args = new double[chromosomes.length()];
+				for (int i = chromosomes.length(); --i >= 0;) {
 					args[i] = gt.getChromosome(i).getGene().doubleValue();
 				}
 				return args;
