@@ -21,7 +21,6 @@ package org.jenetics.engine;
 
 import static java.lang.reflect.Array.newInstance;
 import static java.util.Objects.requireNonNull;
-import static java.util.stream.Stream.concat;
 
 import java.awt.geom.AffineTransform;
 import java.util.function.IntFunction;
@@ -272,9 +271,17 @@ public final class codecs {
 		);
 	}
 
+	/**
+	 * Create a permutation {@code Codec} with the given alleles.
+	 *
+	 * @param alleles the alleles of the permutation
+	 * @param <T> the allele type
+	 * @return a new permutation {@code Codec}
+	 * @throws IllegalArgumentException if the given allele array is empty
+	 * @throws NullPointerException if one of the alleles is {@code null}
+	 */
 	@SafeVarargs
-	public static <T>
-	Codec<T[], EnumGene<T>> ofPermutation(final T... alleles) {
+	static <T> Codec<T[], EnumGene<T>> ofPermutation(final T... alleles) {
 		if (alleles.length == 0) {
 			throw new IllegalArgumentException("Empty alleles are not allowed.");
 		}
@@ -302,6 +309,7 @@ public final class codecs {
 		);
 	}
 
+	// https://trac.osgeo.org/postgis/wiki/DevWikiAffineParameters
 	static Codec<AffineTransform, DoubleGene> ofAffineTransform(
 		final DoubleRange sx, final DoubleRange sy,
 		final DoubleRange tx, final DoubleRange ty,
@@ -321,22 +329,39 @@ public final class codecs {
 			),
 			gt -> {
 				final AffineTransform at = new AffineTransform();
-				at.scale(
-					gt.getChromosome(0).getGene().doubleValue(),
-					gt.getChromosome(1).getGene().doubleValue()
-				);
-				at.translate(
-					gt.getChromosome(2).getGene().doubleValue(),
-					gt.getChromosome(3).getGene().doubleValue()
-				);
-				at.rotate(gt.getChromosome(4).getGene().doubleValue());
-				at.shear(
-					gt.getChromosome(5).getGene().doubleValue(),
-					gt.getChromosome(6).getGene().doubleValue()
-				);
+
+				translate(at, gt);
+				shear(at, gt);
+				scale(at, gt);
+				rotate(at, gt);
 
 				return at;
 			}
+		);
+	}
+
+	private static void translate(final AffineTransform at, final Genotype<DoubleGene> gt) {
+		at.translate(
+			gt.getChromosome(2).getGene().doubleValue(),
+			gt.getChromosome(3).getGene().doubleValue()
+		);
+	}
+
+	private static void scale(final AffineTransform at, final Genotype<DoubleGene> gt) {
+		at.scale(
+			gt.getChromosome(0).getGene().doubleValue(),
+			gt.getChromosome(1).getGene().doubleValue()
+		);
+	}
+
+	private static void rotate(final AffineTransform at, final Genotype<DoubleGene> gt) {
+		at.rotate(gt.getChromosome(4).getGene().doubleValue());
+	}
+
+	private static void shear(final AffineTransform at, final Genotype<DoubleGene> gt) {
+		at.shear(
+			gt.getChromosome(5).getGene().doubleValue(),
+			gt.getChromosome(6).getGene().doubleValue()
 		);
 	}
 

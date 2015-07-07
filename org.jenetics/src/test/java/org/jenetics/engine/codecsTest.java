@@ -19,6 +19,11 @@
  */
 package org.jenetics.engine;
 
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+
+import java.awt.geom.AffineTransform;
+import java.util.Arrays;
 import java.util.function.Function;
 
 import org.testng.Assert;
@@ -27,6 +32,7 @@ import org.testng.annotations.Test;
 
 import org.jenetics.Chromosome;
 import org.jenetics.DoubleGene;
+import org.jenetics.EnumGene;
 import org.jenetics.Genotype;
 import org.jenetics.IntegerGene;
 import org.jenetics.LongGene;
@@ -326,6 +332,77 @@ public class codecsTest {
 			{new DoubleRange[]{DoubleRange.of(10, 1000), DoubleRange.of(0, 1), DoubleRange.of(1000, 10000), DoubleRange.of(10, 100)}},
 			{new DoubleRange[]{DoubleRange.of(1000, 10000), DoubleRange.of(0, 1)}}
 		};
+	}
+
+	@Test
+	public void ofPermutation() {
+		final Codec<String[], EnumGene<String>> codec = codecs.ofPermutation(
+			"foo", "bar", "zoo"
+		);
+
+		final Genotype<EnumGene<String>> gt = codec.encoding().newInstance();
+		Assert.assertEquals(gt.length(), 1);
+
+		final Function<Genotype<EnumGene<String>>, String[]> f = codec.decoder();
+		final String[] value = f.apply(gt);
+		Assert.assertEquals(value.length, gt.getChromosome().length());
+
+		for (int i = 0; i < value.length; ++i) {
+			Assert.assertEquals(value[i], gt.get(0, i).toString());
+		}
+	}
+
+
+	@Test
+	public void ofAffineTransform() {
+		final DoubleRange sxr = DoubleRange.of(0, 100);
+		final DoubleRange syr = DoubleRange.of(0, 200);
+		final DoubleRange txr = DoubleRange.of(0, 50);
+		final DoubleRange tyr = DoubleRange.of(0, 100);
+		final DoubleRange phir = DoubleRange.of(0, 2*Math.PI);
+		final DoubleRange kxr = DoubleRange.of(0, 10);
+		final DoubleRange kyr = DoubleRange.of(0, 15);
+
+		final Codec<AffineTransform, DoubleGene> codec = codecs.ofAffineTransform(
+			sxr, syr, txr, tyr, phir, kxr, kyr
+		);
+
+		final Genotype<DoubleGene> gt = codec.encoding().newInstance();
+		final double sx = gt.get(0, 0).doubleValue();
+		final double sy = gt.get(1, 0).doubleValue();
+		final double tx = gt.get(2, 0).doubleValue();
+		final double ty = gt.get(3, 0).doubleValue();
+		final double th = gt.get(4, 0).doubleValue();
+		final double kx = gt.get(5, 0).doubleValue();
+		final double ky = gt.get(6, 0).doubleValue();
+
+		/*
+		final double a11 = sx*((1 + kx*ky)*cos(th) + ky*sin(th));
+		final double a12 = sx*(kx*cos(th) + sin(th));
+		final double a21 = sy*(-(1 + kx*ky)*sin(th) + ky*cos(th));
+		final double a22 = sy*(-kx*sin(th) + cos(th));
+		*/
+
+		final double cos_th = cos(th);
+		final double sin_th = sin(th);
+		final double a11 = cos_th*sx + kx*sy*sin_th;
+		final double a12 = cos_th*kx*sy - sx*sin_th;
+		final double a21 = cos_th*ky*sx + sy*sin_th;
+		final double a22 = cos_th*sy - ky*sx*sin_th;
+
+		final double[][] m = new double[][] {
+			{a11, a12, tx},
+			{a21, a22, ty},
+			{0.0, 0.0, 1.0}
+		};
+		System.out.println(Arrays.toString(m[0]));
+		System.out.println(Arrays.toString(m[1]));
+
+		final AffineTransform at1 = new AffineTransform(a11, a21, a12, a22, tx, ty);
+		System.out.println(at1);
+
+		final AffineTransform at = codec.decoder().apply(gt);
+		System.out.println(at);
 	}
 
 }
