@@ -23,7 +23,6 @@ import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
 import java.awt.geom.AffineTransform;
-import java.util.Arrays;
 import java.util.function.Function;
 
 import org.testng.Assert;
@@ -359,12 +358,12 @@ public class codecsTest {
 		final DoubleRange syr = DoubleRange.of(0, 200);
 		final DoubleRange txr = DoubleRange.of(0, 50);
 		final DoubleRange tyr = DoubleRange.of(0, 100);
-		final DoubleRange phir = DoubleRange.of(0, 2*Math.PI);
+		final DoubleRange thr = DoubleRange.of(0, 2*Math.PI);
 		final DoubleRange kxr = DoubleRange.of(0, 10);
 		final DoubleRange kyr = DoubleRange.of(0, 15);
 
 		final Codec<AffineTransform, DoubleGene> codec = codecs.ofAffineTransform(
-			sxr, syr, txr, tyr, phir, kxr, kyr
+			sxr, syr, txr, tyr, thr, kxr, kyr
 		);
 
 		final Genotype<DoubleGene> gt = codec.encoding().newInstance();
@@ -376,13 +375,6 @@ public class codecsTest {
 		final double kx = gt.get(5, 0).doubleValue();
 		final double ky = gt.get(6, 0).doubleValue();
 
-		/*
-		final double a11 = sx*((1 + kx*ky)*cos(th) + ky*sin(th));
-		final double a12 = sx*(kx*cos(th) + sin(th));
-		final double a21 = sy*(-(1 + kx*ky)*sin(th) + ky*cos(th));
-		final double a22 = sy*(-kx*sin(th) + cos(th));
-		*/
-
 		final double cos_th = cos(th);
 		final double sin_th = sin(th);
 		final double a11 = cos_th*sx + kx*sy*sin_th;
@@ -390,19 +382,17 @@ public class codecsTest {
 		final double a21 = cos_th*ky*sx + sy*sin_th;
 		final double a22 = cos_th*sy - ky*sx*sin_th;
 
-		final double[][] m = new double[][] {
-			{a11, a12, tx},
-			{a21, a22, ty},
-			{0.0, 0.0, 1.0}
-		};
-		System.out.println(Arrays.toString(m[0]));
-		System.out.println(Arrays.toString(m[1]));
-
-		final AffineTransform at1 = new AffineTransform(a11, a21, a12, a22, tx, ty);
-		System.out.println(at1);
-
+		final AffineTransform eat = new AffineTransform(a11, a21, a12, a22, tx, ty);
 		final AffineTransform at = codec.decoder().apply(gt);
-		System.out.println(at);
+
+		final double[] expectedMatrix = new double[6];
+		final double[] matrix = new double[6];
+		eat.getMatrix(expectedMatrix);
+		at.getMatrix(matrix);
+
+		for (int i = 0; i < matrix.length; ++i) {
+			Assert.assertEquals(matrix[i], expectedMatrix[i], 0.0001);
+		}
 	}
 
 }
