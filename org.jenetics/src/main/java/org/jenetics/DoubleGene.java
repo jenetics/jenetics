@@ -136,6 +136,8 @@ public final class DoubleGene
 	 * Create a new random {@code DoubleGene}. It is guaranteed that the value
 	 * of the {@code DoubleGene} lies in the interval [min, max).
 	 *
+	 * @since !__version__!
+	 *
 	 * @param range the double range to use
 	 * @return a new {@code DoubleGene} with the given parameter
 	 * @throws NullPointerException if the given {@code range} is {@code null}.
