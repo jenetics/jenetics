@@ -48,7 +48,7 @@ import org.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 3.0
+ * @version 3.2
  */
 @XmlJavaTypeAdapter(LongChromosome.Model.Adapter.class)
 public class LongChromosome

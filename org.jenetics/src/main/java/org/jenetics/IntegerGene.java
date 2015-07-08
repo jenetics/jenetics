@@ -50,7 +50,7 @@ import org.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 2.0
- * @version 3.0
+ * @version 3.2
  */
 @XmlJavaTypeAdapter(IntegerGene.Model.Adapter.class)
 public final class IntegerGene
