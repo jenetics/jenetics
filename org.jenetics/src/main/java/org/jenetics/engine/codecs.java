@@ -300,6 +300,13 @@ public final class codecs {
 		);
 	}
 
+	/**
+	 * Create a permutation {@code Codec} of integer in the range
+	 * {@code [0, length)}.
+	 *
+	 * @param length the number of permutation elements
+	 * @return a permutation {@code Codec} of integers
+	 */
 	public static Codec<int[], EnumGene<Integer>> ofPermutation(final int length) {
 		return Codec.of(
 			Genotype.of(PermutationChromosome.ofInteger(length)),
