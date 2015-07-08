@@ -64,6 +64,7 @@ public abstract class ProbabilitySelector<
 	private final boolean _sorted;
 	private final Function<double[], double[]> _reverter;
 
+
 	/**
 	 * Create a new {@code ProbabilitySelector} with the given {@code sorting}
 	 * flag. <em>This flag must set to {@code true} if the selector
@@ -222,6 +223,10 @@ public abstract class ProbabilitySelector<
 	static boolean sum2one(final double[] probabilities) {
 		final double sum = DoubleAdder.sum(probabilities);
 		return abs(ulpDistance(sum, 1.0)) < MAX_ULP_DISTANCE;
+	}
+
+	static boolean eq(final double a, final double b) {
+		return abs(ulpDistance(a, b)) < MAX_ULP_DISTANCE;
 	}
 
 	static int indexOf(final double[] incr, final double v) {

@@ -21,9 +21,9 @@ package org.jenetics;
 
 import static java.lang.Math.exp;
 import static java.lang.String.format;
-import static org.jenetics.internal.math.arithmetic.divide;
 import static org.jenetics.internal.math.arithmetic.normalize;
-import static org.jenetics.internal.math.statistics.max;
+
+import java.util.Arrays;
 
 import org.jenetics.internal.util.Hash;
 
@@ -94,20 +94,36 @@ public final class BoltzmannSelector<
 		assert count > 0 : "Population to select must be greater than zero. ";
 
 		// Copy the fitness values to probabilities arrays.
-		final double[] probabilities = new double[population.size()];
+		double min = Double.MAX_VALUE;
+		double max = -Double.MAX_VALUE;
+		final double[] fitness = new double[population.size()];
 		for (int i = population.size(); --i >= 0;) {
-			probabilities[i] = population.get(i).getFitness().doubleValue();
+			fitness[i] = population.get(i).getFitness().doubleValue();
+			if (fitness[i] < min) min = fitness[i];
+			if (fitness[i] > max) max = fitness[i];
 		}
 
-		for (int i = probabilities.length; --i >= 0;) {
-			probabilities[i] = exp(_b*probabilities[i]);
+		final double diff = max - min;
+		if (eq(diff, 0.0)) {
+			// Set equal probabilities if diff (almost) zero.
+			Arrays.fill(fitness, 1.0/fitness.length);
+		} else {
+			// Scale fitness values to avoid overflow.
+			for (int i = fitness.length; --i >= 0;) {
+				fitness[i] = (fitness[i] - min)/diff;
+			}
+
+			// Apply the "Boltzmann" function.
+			for (int i = fitness.length; --i >= 0;) {
+				fitness[i] = exp(_b*fitness[i]);
+			}
+
+			normalize(fitness);
+			checkAndCorrect(fitness);
 		}
 
-		normalize(probabilities);
-		checkAndCorrect(probabilities);
-		assert sum2one(probabilities) : "Probabilities doesn't sum to one.";
-
-		return probabilities;
+		assert sum2one(fitness) : "Probabilities doesn't sum to one.";
+		return fitness;
 	}
 
 	@Override
