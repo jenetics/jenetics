@@ -113,7 +113,7 @@ import org.jenetics.util.NanoClock;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version !__version__!
+ * @version 3.2
  */
 public final class Engine<
 	G extends Gene<?, G>,
@@ -796,7 +796,7 @@ public final class Engine<
 	 * Create a new evolution {@code Engine.Builder} with the given fitness
 	 * function and problem {@code codec}.
 	 *
-	 * @since !__version__!
+	 * @since 3.2
 	 *
 	 * @param ff the fitness function
 	 * @param codec the problem codec

@@ -105,7 +105,7 @@ public final class IntegerGene
 	 * no exception is thrown. In this case the method
 	 * {@link IntegerGene#isValid()} returns {@code false}.
 	 *
-	 * @since !__version__!
+	 * @since 3.2
 	 *
 	 * @param value the value of the gene.
 	 * @param range the integer range to use
@@ -132,7 +132,7 @@ public final class IntegerGene
 	 * Create a new random {@code IntegerGene}. It is guaranteed that the value of
 	 * the {@code IntegerGene} lies in the interval [min, max].
 	 *
-	 * @since !__version__!
+	 * @since 3.2
 	 *
 	 * @param range the integer range to use
 	 * @return a new random {@code IntegerGene}

@@ -156,7 +156,7 @@ public class LongChromosome
 	/**
 	 * Create a new random {@code LongChromosome}.
 	 *
-	 * @since !__version__!
+	 * @since 3.2
 	 *
 	 * @param range the long range of the chromosome.
 	 * @param length the length of the chromosome.
@@ -181,7 +181,7 @@ public class LongChromosome
 	/**
 	 * Create a new random {@code LongChromosome} of length one.
 	 *
-	 * @since !__version__!
+	 * @since 3.2
 	 *
 	 * @param range the long range of the chromosome.
 	 * @return a new random {@code LongChromosome} of length one

@@ -63,8 +63,8 @@ import org.jenetics.util.Factory;
  * @param <G> the {@code Gene} type used for encoding the argument type {@code T}
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.2
+ * @since 3.2
  */
 public interface Codec<T, G extends Gene<?, G>> {
 
