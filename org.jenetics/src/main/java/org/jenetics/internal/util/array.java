@@ -21,7 +21,9 @@ package org.jenetics.internal.util;
 
 import java.util.Random;
 
+import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Seq;
 
 /**
  * Helper class which contains array helper methods.
@@ -78,4 +80,17 @@ public final class array {
 	public static void shuffle(final double[] array) {
 		shuffle(array, RandomRegistry.getRandom());
 	}
+
+	@SafeVarargs
+	public static <T> Seq<T> toSeq(final T first, final T second, final T... rest) {
+		final MSeq<T> seq = MSeq.ofLength(2 + rest.length);
+		seq.set(0, first);
+		seq.set(1, second);
+		for (int i = 0; i < rest.length; ++i) {
+			seq.set(i + 2, rest[i]);
+		}
+
+		return seq;
+	}
+
 }

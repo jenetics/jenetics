@@ -19,6 +19,9 @@
  */
 package org.jenetics;
 
+import static org.jenetics.internal.math.random.nextLong;
+import static org.jenetics.util.RandomRegistry.getRandom;
+
 import java.io.Serializable;
 import java.util.Random;
 
@@ -31,12 +34,10 @@ import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.jenetics.internal.math.random;
-
 import org.jenetics.util.ISeq;
+import org.jenetics.util.LongRange;
 import org.jenetics.util.MSeq;
 import org.jenetics.util.Mean;
-import org.jenetics.util.RandomRegistry;
 
 /**
  * NumericGene implementation which holds a 64 bit integer number.
@@ -99,6 +100,23 @@ public final class LongGene
 	}
 
 	/**
+	 * Create a new random {@code LongGene} with the given value and the
+	 * given range. If the {@code value} isn't within the interval [min, max],
+	 * no exception is thrown. In this case the method
+	 * {@link LongGene#isValid()} returns {@code false}.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param value the value of the gene.
+	 * @param range the long range to use
+	 * @return a new random {@code LongGene}
+	 * @throws NullPointerException if the given {@code range} is {@code null}.
+	 */
+	public static LongGene of(final long value, final LongRange range) {
+		return new LongGene(value, range.getMin(), range.getMax());
+	}
+
+	/**
 	 * Create a new random {@code LongGene}. It is guaranteed that the value of
 	 * the {@code LongGene} lies in the interval [min, max].
 	 *
@@ -107,7 +125,21 @@ public final class LongGene
 	 * @return a new {@code LongGene} with the given parameters.
 	 */
 	public static LongGene of(final long min, final long max) {
-		return of(random.nextLong(RandomRegistry.getRandom(), min, max), min, max);
+		return of(nextLong(getRandom(), min, max), min, max);
+	}
+
+	/**
+	 * Create a new random {@code LongGene}. It is guaranteed that the value of
+	 * the {@code LongGene} lies in the interval [min, max].
+	 *
+	 * @since !__version__!
+	 *
+	 * @param range the long range to use
+	 * @return a new random {@code LongGene}
+	 * @throws NullPointerException if the given {@code range} is {@code null}.
+	 */
+	public static LongGene of(final LongRange range) {
+		return of(nextLong(getRandom(), range.getMin(), range.getMax()), range);
 	}
 
 	static ISeq<LongGene> seq(
@@ -117,10 +149,10 @@ public final class LongGene
 	) {
 		final long min = minimum;
 		final long max = maximum;
-		final Random r = RandomRegistry.getRandom();
+		final Random r = getRandom();
 
 		return MSeq.<LongGene>ofLength(length)
-			.fill(() -> new LongGene(random.nextLong(r, min, max), minimum, maximum))
+			.fill(() -> new LongGene(nextLong(r, min, max), minimum, maximum))
 			.toISeq();
 	}
 
@@ -132,7 +164,7 @@ public final class LongGene
 	@Override
 	public LongGene newInstance() {
 		return new LongGene(
-			random.nextLong(RandomRegistry.getRandom(), _min, _max), _min, _max
+			nextLong(getRandom(), _min, _max), _min, _max
 		);
 	}
 

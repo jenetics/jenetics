@@ -77,7 +77,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 */
 	protected AbstractChromosome(final ISeq<? extends G> genes) {
 		requireNonNull(genes, "Gene array");
-		assert (genes.forAll(Objects::nonNull)) : "Found at least on null gene.";
+		assert genes.forAll(Objects::nonNull) : "Found at least on null gene.";
 
 		if (genes.length() == 0) {
 			throw new IllegalArgumentException(

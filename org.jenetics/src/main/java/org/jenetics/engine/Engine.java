@@ -63,7 +63,7 @@ import org.jenetics.util.NanoClock;
  * <pre>{@code
  * public class RealFunction {
  *    // Definition of the fitness function.
- *    private static Double evaluate(final Genotype<DoubleGene> gt) {
+ *    private static Double eval(final Genotype<DoubleGene> gt) {
  *        final double x = gt.getGene().doubleValue();
  *        return cos(0.5 + sin(x)) * cos(x);
  *    }
@@ -72,7 +72,7 @@ import org.jenetics.util.NanoClock;
  *        // Create/configuring the engine via its builder.
  *        final Engine<DoubleGene, Double> engine = Engine
  *            .builder(
- *                RealFunction::evaluate,
+ *                RealFunction::eval,
  *                DoubleChromosome.of(0.0, 2.0*PI))
  *            .populationSize(500)
  *            .optimize(Optimize.MINIMUM)
@@ -111,10 +111,11 @@ import org.jenetics.util.NanoClock;
  * @see EvolutionResult
  * @see EvolutionStream
  * @see EvolutionStatistics
+ * @see Codec
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.1
+ * @version !__version__!
  */
 public final class Engine<
 	G extends Gene<?, G>,
@@ -754,7 +755,7 @@ public final class Engine<
 	 * Create a new evolution {@code Engine.Builder} with the given fitness
 	 * function and genotype factory.
 	 *
-	 * @param fitnessFunction the fitness function
+	 * @param ff the fitness function
 	 * @param genotypeFactory the genotype factory
 	 * @param <G> the gene type
 	 * @param <C> the fitness function result type
@@ -764,17 +765,17 @@ public final class Engine<
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Builder<G, C> builder(
-		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
+		final Function<? super Genotype<G>, ? extends C> ff,
 		final Factory<Genotype<G>> genotypeFactory
 	) {
-		return new Builder<>(genotypeFactory, fitnessFunction);
+		return new Builder<>(genotypeFactory, ff);
 	}
 
 	/**
 	 * Create a new evolution {@code Engine.Builder} with the given fitness
 	 * function and chromosome templates.
 	 *
-	 * @param fitnessFunction the fitness function
+	 * @param ff the fitness function
 	 * @param chromosome the first chromosome
 	 * @param chromosomes the chromosome templates
 	 * @param <G> the gene type
@@ -786,16 +787,35 @@ public final class Engine<
 	@SafeVarargs
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Builder<G, C> builder(
-		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
+		final Function<? super Genotype<G>, ? extends C> ff,
 		final Chromosome<G> chromosome,
 		final Chromosome<G>... chromosomes
 	) {
-		return new Builder<>(
-			Genotype.of(chromosome, chromosomes),
-			fitnessFunction
-		);
+		return new Builder<>(Genotype.of(chromosome, chromosomes), ff);
 	}
 
+	/**
+	 * Create a new evolution {@code Engine.Builder} with the given fitness
+	 * function and problem {@code codec}.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param ff the fitness function
+	 * @param codec the problem codec
+	 * @param <T> the fitness function input type
+	 * @param <C> the fitness function result type
+	 * @param <G> the gene type
+	 * @return a new engine builder
+	 * @throws java.lang.NullPointerException if one of the arguments is
+	 *         {@code null}.
+	 */
+	public static <T, C extends Comparable<? super C>, G extends Gene<?, G>>
+	Builder<G, C> builder(
+		final Function<? super T, ? extends C> ff,
+		final Codec<T, G> codec
+	) {
+		return builder(ff.compose(codec.decoder()), codec.encoding());
+	}
 
 
 	/* *************************************************************************

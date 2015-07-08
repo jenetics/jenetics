@@ -64,6 +64,7 @@ public abstract class ProbabilitySelector<
 	private final boolean _sorted;
 	private final Function<double[], double[]> _reverter;
 
+
 	/**
 	 * Create a new {@code ProbabilitySelector} with the given {@code sorting}
 	 * flag. <em>This flag must set to {@code true} if the selector
@@ -108,6 +109,8 @@ public abstract class ProbabilitySelector<
 			final double[] prob = probabilities(pop, count, opt);
 			assert pop.size() == prob.length
 				: "Population size and probability length are not equal.";
+
+			checkAndCorrect(prob);
 			assert sum2one(prob) : "Probabilities doesn't sum to one.";
 
 			incremental(prob);
@@ -198,7 +201,7 @@ public abstract class ProbabilitySelector<
 	 *
 	 * @param probabilities the probabilities to check.
 	 */
-	static void checkAndCorrect(final double[] probabilities) {
+	private static void checkAndCorrect(final double[] probabilities) {
 		boolean ok = true;
 		for (int i = probabilities.length; --i >= 0 && ok;) {
 			ok = Double.isFinite(probabilities[i]);
@@ -220,8 +223,14 @@ public abstract class ProbabilitySelector<
 	 *         range, {@code false} otherwise.
 	 */
 	static boolean sum2one(final double[] probabilities) {
-		final double sum = DoubleAdder.sum(probabilities);
+		final double sum = probabilities.length > 0
+			? DoubleAdder.sum(probabilities)
+			: 1.0;
 		return abs(ulpDistance(sum, 1.0)) < MAX_ULP_DISTANCE;
+	}
+
+	static boolean eq(final double a, final double b) {
+		return abs(ulpDistance(a, b)) < MAX_ULP_DISTANCE;
 	}
 
 	static int indexOf(final double[] incr, final double v) {

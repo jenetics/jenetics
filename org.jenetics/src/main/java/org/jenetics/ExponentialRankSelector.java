@@ -23,7 +23,6 @@ import static java.lang.Math.pow;
 import static java.lang.String.format;
 import static org.jenetics.internal.util.Equality.eq;
 
-import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 /**
@@ -98,7 +97,8 @@ public final class ExponentialRankSelector<
 		final Population<G, C> population,
 		final int count
 	) {
-		assert population != null : "Population can not be null. ";
+		assert population != null : "Population must not be null. ";
+		assert !population.isEmpty() : "Population is empty.";
 		assert count > 0 : "Population to select must be greater than zero. ";
 
 		final double N = population.size();
@@ -109,8 +109,6 @@ public final class ExponentialRankSelector<
 			probabilities[i] = pow(_c, i)*b;
 		}
 
-		checkAndCorrect(probabilities);
-		assert sum2one(probabilities) : "Probabilities doesn't sum to one.";
 		return probabilities;
 	}
 
@@ -121,7 +119,8 @@ public final class ExponentialRankSelector<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(s -> eq(_c, s._c));
+		return obj instanceof ExponentialRankSelector &&
+			eq(((ExponentialRankSelector)obj)._c, _c);
 	}
 
 	@Override

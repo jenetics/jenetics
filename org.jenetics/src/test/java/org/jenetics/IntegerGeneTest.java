@@ -58,6 +58,14 @@ public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 	}
 
 	@Test
+	public void parameters() {
+		final IntegerGene gene = IntegerGene.of(10, 10);
+		Assert.assertEquals(gene.getMin().intValue(), 10);
+		Assert.assertEquals(gene.getMax().intValue(), 10);
+		Assert.assertEquals(gene.getAllele().intValue(), 10);
+	}
+
+	@Test
 	public void mean() {
 		final int min = -Integer.MAX_VALUE;
 		final int max = Integer.MAX_VALUE;

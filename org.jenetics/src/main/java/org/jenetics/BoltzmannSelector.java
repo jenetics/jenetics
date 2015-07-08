@@ -21,16 +21,10 @@ package org.jenetics;
 
 import static java.lang.Math.exp;
 import static java.lang.String.format;
-import static org.jenetics.internal.math.arithmetic.divide;
 import static org.jenetics.internal.math.arithmetic.normalize;
-import static org.jenetics.internal.math.statistics.max;
-import static org.jenetics.internal.math.statistics.sum;
-import static org.jenetics.internal.util.Equality.eq;
 
 import java.util.Arrays;
 
-import org.jenetics.internal.math.DoubleAdder;
-import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 /**
@@ -97,34 +91,38 @@ public final class BoltzmannSelector<
 		final int count
 	) {
 		assert population != null : "Population must not be null. ";
+		assert !population.isEmpty() : "Population is empty.";
 		assert count > 0 : "Population to select must be greater than zero. ";
 
 		// Copy the fitness values to probabilities arrays.
-		final double[] probabilities = new double[population.size()];
-		for (int i = population.size(); --i >= 0;) {
-			probabilities[i] = population.get(i).getFitness().doubleValue();
+		final double[] fitness = new double[population.size()];
+
+		fitness[0] = population.get(0).getFitness().doubleValue();
+		double min = fitness[0];
+		double max = fitness[0];
+		for (int i = 1; i < fitness.length; ++i) {
+			fitness[i] = population.get(i).getFitness().doubleValue();
+			if (fitness[i] < min) min = fitness[i];
+			if (fitness[i] > max) max = fitness[i];
 		}
 
-		for (int i = probabilities.length; --i >= 0;) {
-			probabilities[i] = exp(_b*probabilities[i]);
-		}
-
-		normalize(probabilities);
-		checkAndCorrect(probabilities);
-		if (!sum2one(probabilities)) {
-			final double[] p = new double[population.size()];
-			for (int i = population.size(); --i >= 0;) {
-				p[i] = population.get(i).getFitness().doubleValue();
+		final double diff = max - min;
+		if (eq(diff, 0.0)) {
+			// Set equal probabilities if diff (almost) zero.
+			Arrays.fill(fitness, 1.0/fitness.length);
+		} else {
+			// Scale fitness values to avoid overflow.
+			for (int i = fitness.length; --i >= 0;) {
+				fitness[i] = (fitness[i] - min)/diff;
 			}
 
-			System.out.println("B: " + _b + ", c: " + count);
-			System.out.println("Fitness: " + Arrays.toString(p));
-			System.out.println("Probs: " + Arrays.toString(probabilities));
+			// Apply the "Boltzmann" function.
+			for (int i = fitness.length; --i >= 0;) {
+				fitness[i] = exp(_b*fitness[i]);
+			}
 		}
-		assert sum2one(probabilities) : "Probabilities doesn't sum to one: " +
-			DoubleAdder.sum(probabilities);
 
-		return probabilities;
+		return normalize(fitness);
 	}
 
 	@Override
@@ -134,7 +132,8 @@ public final class BoltzmannSelector<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(selector -> eq(_b, selector._b));
+		return obj instanceof BoltzmannSelector &&
+			Double.compare(((BoltzmannSelector)obj)._b, _b) == 0;
 	}
 
 	@Override
