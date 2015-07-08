@@ -24,9 +24,7 @@ import static java.lang.String.format;
 import static org.jenetics.internal.math.arithmetic.divide;
 import static org.jenetics.internal.math.arithmetic.normalize;
 import static org.jenetics.internal.math.statistics.max;
-import static org.jenetics.internal.util.Equality.eq;
 
-import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 /**
@@ -119,7 +117,8 @@ public final class BoltzmannSelector<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(selector -> eq(_b, selector._b));
+		return obj instanceof BoltzmannSelector &&
+			Double.compare(((BoltzmannSelector)obj)._b, _b) == 0;
 	}
 
 	@Override

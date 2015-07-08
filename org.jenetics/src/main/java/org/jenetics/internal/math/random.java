@@ -68,7 +68,7 @@ public final class random {
 	 * @param max upper bound for generated integer
 	 * @return a random integer greater than or equal to {@code min} and
 	 *         less than or equal to {@code max}
-	 * @throws IllegalArgumentException if {@code min >= max}
+	 * @throws IllegalArgumentException if {@code min > max}
 	 * @throws NullPointerException if the given {@code random}
 	 *         engine is {@code null}.
 	 */
@@ -76,7 +76,7 @@ public final class random {
 		final Random random,
 		final int min, final int max
 	) {
-		if (min >= max) {
+		if (min > max) {
 			throw new IllegalArgumentException(format(
 				"Min >= max: %d >= %d", min, max
 			));
@@ -106,7 +106,7 @@ public final class random {
 	 * @param max upper bound for generated long integer
 	 * @return a random long integer greater than or equal to {@code min}
 	 *         and less than or equal to {@code max}
-	 * @throws IllegalArgumentException if {@code min >= max}
+	 * @throws IllegalArgumentException if {@code min > max}
 	 * @throws NullPointerException if the given {@code random}
 	 *         engine is {@code null}.
 	 */
@@ -114,7 +114,7 @@ public final class random {
 		final Random random,
 		final long min, final long max
 	) {
-		if (min >= max) {
+		if (min > max) {
 			throw new IllegalArgumentException(format(
 				"min >= max: %d >= %d.", min, max
 			));
