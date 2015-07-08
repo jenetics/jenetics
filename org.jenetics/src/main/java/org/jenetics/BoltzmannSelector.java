@@ -122,9 +122,7 @@ public final class BoltzmannSelector<
 			}
 		}
 
-		normalize(fitness);
-		assert sum2one(fitness) : "Probabilities doesn't sum to one.";
-		return fitness;
+		return normalize(fitness);
 	}
 
 	@Override
