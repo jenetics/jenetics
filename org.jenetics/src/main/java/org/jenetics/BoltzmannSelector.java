@@ -91,13 +91,16 @@ public final class BoltzmannSelector<
 		final int count
 	) {
 		assert population != null : "Population must not be null. ";
+		assert !population.isEmpty() : "Population is empty.";
 		assert count > 0 : "Population to select must be greater than zero. ";
 
 		// Copy the fitness values to probabilities arrays.
-		double min = Double.MAX_VALUE;
-		double max = -Double.MAX_VALUE;
 		final double[] fitness = new double[population.size()];
-		for (int i = population.size(); --i >= 0;) {
+
+		fitness[0] = population.get(0).getFitness().doubleValue();
+		double min = fitness[0];
+		double max = fitness[0];
+		for (int i = 1; i < fitness.length; ++i) {
 			fitness[i] = population.get(i).getFitness().doubleValue();
 			if (fitness[i] < min) min = fitness[i];
 			if (fitness[i] > max) max = fitness[i];
@@ -117,11 +120,9 @@ public final class BoltzmannSelector<
 			for (int i = fitness.length; --i >= 0;) {
 				fitness[i] = exp(_b*fitness[i]);
 			}
-
-			normalize(fitness);
-			checkAndCorrect(fitness);
 		}
 
+		normalize(fitness);
 		assert sum2one(fitness) : "Probabilities doesn't sum to one.";
 		return fitness;
 	}

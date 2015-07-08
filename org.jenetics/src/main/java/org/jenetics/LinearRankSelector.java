@@ -20,7 +20,6 @@
 package org.jenetics;
 
 import static java.lang.String.format;
-import static org.jenetics.internal.util.Equality.eq;
 
 import org.jenetics.internal.util.Hash;
 
@@ -104,7 +103,8 @@ public final class LinearRankSelector<
 		final Population<G, C> population,
 		final int count
 	) {
-		assert population != null : "Population can not be null. ";
+		assert population != null : "Population must not be null. ";
+		assert !population.isEmpty() : "Population is empty.";
 		assert count > 0 : "Population to select must be greater than zero. ";
 
 		final double N = population.size();
@@ -119,8 +119,6 @@ public final class LinearRankSelector<
 			}
 		}
 
-		checkAndCorrect(probabilities);
-		assert sum2one(probabilities) : "Probabilities doesn't sum to one.";
 		return probabilities;
 	}
 
