@@ -30,7 +30,34 @@ import org.jenetics.util.Factory;
 /**
  * A problem {@code Codec} contains the information about how to encode a given
  * argument type into a {@code Genotype}. It also lets convert the encoded
- * {@code Genotype} back to the argument type.
+ * {@code Genotype} back to the argument type. The engine creation and the
+ * implementation of the fitness function can be heavily simplified by using
+ * a {@code Codec} class. The example given in the {@link Engine} documentation
+ * can be simplified as follows:
+ *
+ * <pre>{@code
+ * public class RealFunction {
+ *     // The conversion from the 'Genotype' to the argument type of the fitness
+ *     // function is performed by the given 'Codec'. You can concentrate on the
+ *     // implementation, because you are not bothered with the conversion code.
+ *     private static double eval(final double x) {
+ *         return cos(0.5 + sin(x)) * cos(x);
+ *     }
+ *
+ *     public static void main(final String[] args) {
+ *         final Engine<DoubleGene, Double> engine = Engine
+ *              // Create an Engine.Builder with the "pure" fitness function
+ *              // and the appropriate Codec.
+ *             .build(RealFunction::eval, codecs.ofScalar(DoubleRange.of(0, 2*PI)))
+ *             .build()
+ *         ...
+ *     }
+ * }
+ * }</pre>
+ *
+ * @see codecs
+ * @see Engine
+ * @see Engine.Builder
  *
  * @param <T> the argument type of a given problem
  * @param <G> the {@code Gene} type used for encoding the argument type {@code T}

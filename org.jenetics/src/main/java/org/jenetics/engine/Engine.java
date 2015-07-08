@@ -61,7 +61,7 @@ import org.jenetics.util.NanoClock;
  * <pre>{@code
  * public class RealFunction {
  *    // Definition of the fitness function.
- *    private static Double evaluate(final Genotype<DoubleGene> gt) {
+ *    private static Double eval(final Genotype<DoubleGene> gt) {
  *        final double x = gt.getGene().doubleValue();
  *        return cos(0.5 + sin(x)) * cos(x);
  *    }
@@ -70,7 +70,7 @@ import org.jenetics.util.NanoClock;
  *        // Create/configuring the engine via its builder.
  *        final Engine<DoubleGene, Double> engine = Engine
  *            .builder(
- *                RealFunction::evaluate,
+ *                RealFunction::eval,
  *                DoubleChromosome.of(0.0, 2.0*PI))
  *            .populationSize(500)
  *            .optimize(Optimize.MINIMUM)
@@ -109,10 +109,11 @@ import org.jenetics.util.NanoClock;
  * @see EvolutionResult
  * @see EvolutionStream
  * @see EvolutionStatistics
+ * @see Codec
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.1
+ * @version !__version__!
  */
 public final class Engine<
 	G extends Gene<?, G>,
@@ -794,6 +795,8 @@ public final class Engine<
 	/**
 	 * Create a new evolution {@code Engine.Builder} with the given fitness
 	 * function and problem {@code codec}.
+	 *
+	 * @since !__version__!
 	 *
 	 * @param ff the fitness function
 	 * @param codec the problem codec

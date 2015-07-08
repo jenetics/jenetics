@@ -281,7 +281,7 @@ public final class codecs {
 	 * @throws NullPointerException if one of the alleles is {@code null}
 	 */
 	@SafeVarargs
-	static <T> Codec<T[], EnumGene<T>> ofPermutation(final T... alleles) {
+	public static <T> Codec<T[], EnumGene<T>> ofPermutation(final T... alleles) {
 		if (alleles.length == 0) {
 			throw new IllegalArgumentException("Empty alleles are not allowed.");
 		}
