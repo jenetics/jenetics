@@ -96,7 +96,7 @@ public class TournamentSelector<
 
 		final Random random = RandomRegistry.getRandom();
 		return population.isEmpty()
-			? new Population<G, C>(0)
+			? new Population<>(0)
 			: new Population<G, C>(count)
 				.fill(() -> select(population, opt, _sampleSize, random), count);
 	}

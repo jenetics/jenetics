@@ -84,7 +84,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 *
 	 * @return the genotype (factory) representation of the problem domain
 	 */
-	Factory<Genotype<G>> encoding();
+	public Factory<Genotype<G>> encoding();
 
 	/**
 	 * Return the <em>decoder</em> function which transforms the genotype back
@@ -94,7 +94,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 *
 	 * @return genotype decoder
 	 */
-	Function<Genotype<G>, T> decoder();
+	public Function<Genotype<G>, T> decoder();
 
 
 	/**
@@ -110,7 +110,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * @return a new {@code Codec} object with the given parameters.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	static <G extends Gene<?, G>, T> Codec<T, G> of(
+	public static <G extends Gene<?, G>, T> Codec<T, G> of(
 		final Factory<Genotype<G>> encoding,
 		final Function<Genotype<G>, T> decoder
 	) {

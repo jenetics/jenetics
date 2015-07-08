@@ -92,7 +92,7 @@ final class Context<T> {
 		}
 
 		Entry<T> inner(final T value) {
-			assert (thread == Thread.currentThread());
+			assert thread == Thread.currentThread();
 			return new Entry<>(value, this, thread);
 		}
 

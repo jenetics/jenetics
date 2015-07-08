@@ -41,13 +41,13 @@ public interface ISeq<T>
 {
 
 	@Override
-	ISeq<T> subSeq(final int start, final int end);
+	public ISeq<T> subSeq(final int start, final int end);
 
 	@Override
-	ISeq<T> subSeq(final int start);
+	public ISeq<T> subSeq(final int start);
 
 	@Override
-	<B> ISeq<B> map(final Function<? super T, ? extends B> mapper);
+	public <B> ISeq<B> map(final Function<? super T, ? extends B> mapper);
 
 	/**
 	 * Return a shallow copy of this sequence. The sequence elements are not
@@ -56,7 +56,7 @@ public interface ISeq<T>
 	 * @return a shallow copy of this sequence.
 	 */
 	@Override
-	MSeq<T> copy();
+	public MSeq<T> copy();
 
 
 	/* *************************************************************************
