@@ -324,7 +324,7 @@ FRANZ WILHELMSTÖTTER
 
 \series default
 \noun default
-VERSION 3.1
+VERSION 3.2
 \size large
 \noun on
 
@@ -694,7 +694,7 @@ Jenetics
 \shape default
  is a library, written in Java
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 The library is build with and depends on Java SE 8: 
@@ -725,7 +725,7 @@ target "http://en.wikipedia.org/wiki/Genetic_algorithm"
  It has no runtime dependencies to other libraries, except the Java 8 runtime.
  Since the library is available on maven central repository
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 If you are using Gradle, you can use the following dependency string: 
@@ -736,7 +736,7 @@ If you are using Gradle, you can use the following dependency string:
 
 org.bitbucket.fwilhelm:\SpecialChar \-
 org.jenetics:\SpecialChar \-
-3.1.0
+3.2.0
 \family default
 
 \begin_inset Quotes ard
@@ -15575,7 +15575,7 @@ Version
 \series default
 :
 \emph on
- 6.8.21
+ 6.9.4
 \end_layout
 
 \begin_layout Itemize
@@ -15656,7 +15656,7 @@ Version
 \series default
 :
 \emph on
- 3.4.1
+ 3.5
 \end_layout
 
 \begin_layout Itemize
@@ -15668,7 +15668,7 @@ Homepage
 \emph on
  
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -15689,11 +15689,11 @@ Download
 \emph on
 
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
-http://tweedo.com/mirror/apache/commons/math/binaries/commons-math3-3.4.1-bin.zip
+http://tweedo.com/mirror/apache/commons/math/binaries/commons-math3-3.5-bin.zip
 \end_layout
 
 \end_inset
@@ -15876,7 +15876,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 2.3 (
+: 2.4 (
 \emph on
 or later
 \emph default
@@ -15979,7 +15979,7 @@ Maven Central
 \end_layout
 
 \begin_layout LyX-Code
-    <version>3.1.0</version>
+    <version>3.2.0</version>
 \end_layout
 
 \begin_layout LyX-Code
