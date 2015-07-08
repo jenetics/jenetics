@@ -25,6 +25,7 @@ import java.util.function.Predicate;
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
 import org.jenetics.Optimize;
+import org.jenetics.engine.Codec;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
 
@@ -48,13 +49,13 @@ public interface Minimizer<T, R extends Comparable<? super R>> {
 		G extends Gene<?, G>
 	>
 	Minimizer<T, R> of(
-		final Codec<G, T> codec,
+		final Codec<T, G> codec,
 		final Parameters<G, R> parameters,
 		final Predicate<? super EvolutionResult<G, R>> limit
 	) {
 		return function -> {
 			final Engine<G, R> engine = Engine
-				.builder(function.compose(codec.decoder()), codec.encoding())
+				.builder(function, codec)
 				.optimize(Optimize.MINIMUM)
 				.alterers(parameters.getAlterers().get(0))
 				.offspringSelector(parameters.getOffspringSelector())

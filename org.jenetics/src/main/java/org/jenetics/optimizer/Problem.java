@@ -23,6 +23,7 @@ import java.util.function.Function;
 
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
+import org.jenetics.engine.Codec;
 import org.jenetics.util.Factory;
 
 /**
@@ -82,7 +83,7 @@ public interface Problem<
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>, S>
 	Problem<G, C> of(
 		final Function<S, C> function,
-		final org.jenetics.optimizer.Codec<G, S> codec
+		final Codec<S, G> codec
 	) {
 		return of(
 			codec.encoding(),

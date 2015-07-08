@@ -19,10 +19,8 @@
  */
 package org.jenetics.optimizer;
 
-import static java.time.Duration.ofMillis;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.engine.EvolutionResult.toBestGenotype;
-import static org.jenetics.engine.limit.byExecutionTime;
 import static org.jenetics.engine.limit.byFixedGeneration;
 import static org.jenetics.engine.limit.bySteadyFitness;
 
@@ -33,12 +31,9 @@ import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 
-import org.jenetics.internal.util.IntRef;
-
 import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;
 import org.jenetics.DoubleGene;
-import org.jenetics.ExponentialRankSelector;
 import org.jenetics.GaussianMutator;
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
@@ -47,6 +42,7 @@ import org.jenetics.Mutator;
 import org.jenetics.NumericGene;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.TournamentSelector;
+import org.jenetics.engine.Codec;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
 import org.jenetics.util.LCG64ShiftRandom;
@@ -64,12 +60,12 @@ public class EngineOptimizer<
 > {
 
 	private final Function<T, C> _fitness;
-	private final Codec<G, T> _codec;
+	private final Codec<T, G> _codec;
 	private final Supplier<Predicate<? super EvolutionResult<?, C>>> _limit;
 
 	public EngineOptimizer(
 		final Function<T, C> fitness,
-		final Codec<G, T> codec,
+		final Codec<T, G> codec,
 		final Supplier<Predicate<? super EvolutionResult<?, C>>> limit
 	) {
 		_fitness = requireNonNull(fitness);
@@ -78,7 +74,7 @@ public class EngineOptimizer<
 	}
 
 	public Parameters<G, C> optimize(
-		final Codec<DoubleGene, Parameters<G, C>> codec,
+		final Codec<Parameters<G, C>, DoubleGene> codec,
 		final Predicate<? super EvolutionResult<?, C>> limit
 	) {
 		final Engine<DoubleGene, C> engine = Engine
@@ -147,7 +143,7 @@ public class EngineOptimizer<
 			);
 
 		RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
-		final Codec<BitGene, Genotype<BitGene>> codec = Codec.of(
+		final Codec<Genotype<BitGene>, BitGene> codec = Codec.of(
 			Genotype.of(BitChromosome.of(nitems, 0.5)),
 			Function.<Genotype<BitGene>>identity()
 		);
@@ -165,7 +161,7 @@ public class EngineOptimizer<
 
 
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Codec<DoubleGene, Parameters<G, C>> codec() {
+	Codec<Parameters<G, C>, DoubleGene> codec() {
 		return new ParametersCodec<>(
 			Alterers.<G, C>general(),
 			Selectors.<G, C>generic(),
@@ -176,7 +172,7 @@ public class EngineOptimizer<
 	}
 
 	public static <G extends NumericGene<?, G>, C extends Comparable<? super C>>
-	Codec<DoubleGene, Parameters<G, C>> numericCodec() {
+	Codec<Parameters<G, C>, DoubleGene> numericCodec() {
 		return new ParametersCodec<>(
 			Alterers.<G, C>numeric(),
 			Selectors.<G, C>generic(),
@@ -187,7 +183,7 @@ public class EngineOptimizer<
 	}
 
 	public static <G extends Gene<?, G>, C extends Number & Comparable<? super C>>
-	Codec<DoubleGene, Parameters<G, C>> numberCodec() {
+	Codec<Parameters<G, C>, DoubleGene> numberCodec() {
 		return new ParametersCodec<>(
 			Alterers.<G, C>general(),
 			Selectors.<G, C>number(),
@@ -198,7 +194,7 @@ public class EngineOptimizer<
 	}
 
 	public static <G extends NumericGene<?, G>, C extends Number & Comparable<? super C>>
-	Codec<DoubleGene, Parameters<G, C>> numericNumberCodec() {
+	Codec<Parameters<G, C>, DoubleGene> numericNumberCodec() {
 		return new ParametersCodec<>(
 			Alterers.<G, C>numeric(),
 			Selectors.<G, C>number(),

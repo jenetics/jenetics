@@ -34,6 +34,7 @@ import org.jenetics.DoubleGene;
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
 import org.jenetics.Selector;
+import org.jenetics.engine.Codec;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Seq;
@@ -47,7 +48,7 @@ public class ParametersCodec<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	implements Codec<DoubleGene, Parameters<G, C>>
+	implements Codec<Parameters<G, C>, DoubleGene>
 {
 
 	private final ISeq<Proxy<Alterer<G, C>>> _alterers;
