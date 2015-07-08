@@ -320,7 +320,7 @@ public final class codecs {
 
 	/**
 	 * Creates a codec for a 2-dimensional affine transformation. The composed
-	 * order of the transformation is: {@code Tran(Shear(Scale(Rot(x))))}.
+	 * order of the transformation is: <i>R&bull;Sc&bull;Sh&bull;T</i>
 	 *
 	 * @param sx the scale factor range in x direction
 	 * @param sy the scale factor range in y direction
@@ -373,7 +373,7 @@ public final class codecs {
 
 	/**
 	 * Creates a codec for a 2-dimensional affine transformation. The composed
-	 * order of the transformation is: {@code Tran(Shear(Scale(Rot(x))))}.
+	 * order of the transformation is: <i>R&bull;Sc&bull;Sh&bull;T</i>
 	 *
 	 * @param s the scale factor range in x and y direction
 	 * @param t the translation range in x and y direction

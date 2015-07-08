@@ -69,8 +69,18 @@ import org.jenetics.util.Factory;
 public interface Codec<T, G extends Gene<?, G>> {
 
 	/**
-	 * Return the genotype factory, which represents the encoded problem domain
-	 * and argument type, respectively.
+	 * Return the genotype factory for creating genotypes with the right
+	 * encoding for the given problem. The genotype created with this factory
+	 * must work together with the {@link #decoder()} function, which transforms
+	 * the genotype into an object of the problem domain.
+	 *
+	 * <pre>{@code
+	 * final Codec<SomeObject, DoubleGene> codec = ...
+	 * final Genotype<DoubleGene> gt = codec.encoding().newInstance();
+	 * final SomeObject arg = codec.decoder().apply(gt);
+	 * }</pre>
+	 *
+	 * @see #decoder()
 	 *
 	 * @return the genotype (factory) representation of the problem domain
 	 */
@@ -79,6 +89,8 @@ public interface Codec<T, G extends Gene<?, G>> {
 	/**
 	 * Return the <em>decoder</em> function which transforms the genotype back
 	 * to the original problem domain representation.
+	 *
+	 * @see #encoding()
 	 *
 	 * @return genotype decoder
 	 */
