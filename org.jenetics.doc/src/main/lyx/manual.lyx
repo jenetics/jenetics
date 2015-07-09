@@ -7521,6 +7521,23 @@ Statistics
 
 \begin_layout Subsubsection
 Codec
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Codec
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Codec"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -7731,7 +7748,10 @@ static double eval(final double x) {
 
 \end_inset
 
-For simple encodings, the code savings doesn't seem to be that big...
+For simple encodings, the code savings doesn't seem to be that big.
+ The bigger benefit of the Codec usage is, if you can use one of the predefined
+ Codecs in the codecs class, or when you can.
+ Some predefined Codecs can be found in the codecs class.
 \end_layout
 
 \begin_layout Section
@@ -11273,6 +11293,39 @@ Chromosome
  fitness, not validity.
  An encoding that includes invalid individuals enlarges the search space
  and makes the search more costly.
+\end_layout
+
+\begin_layout Standard
+Some of the encodings represented in the following sections has been implemented
+ by Jenetics, using the 
+\family typewriter
+Codec
+\family default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Codec"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+ interface, and are available through static factory methods of the 
+\family typewriter
+org.\SpecialChar \-
+jenetics.\SpecialChar \-
+engine.\SpecialChar \-
+codecs
+\family default
+ class.
 \end_layout
 
 \begin_layout Subsubsection
