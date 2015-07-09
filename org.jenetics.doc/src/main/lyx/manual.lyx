@@ -7519,6 +7519,221 @@ Statistics
  object will look like the example above.
 \end_layout
 
+\begin_layout Subsubsection
+Codec
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+Codec
+\family default
+ interface narrows the gap between the fitness 
+\family typewriter
+Function
+\family default
+, which should be maximized/minimized, and the 
+\family typewriter
+Genotype
+\family default
+ representation, which can be understand by the evolution 
+\family typewriter
+Engine
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface Codec<T, G extends Gene<?, G>> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    public Factory<Genotype<G>> encoding();
+\end_layout
+
+\begin_layout Plain Layout
+
+    public Function<Genotype<G>, T> decoder();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+Codec
+\family default
+ interface
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Codec-interface"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Codec-interface"
+
+\end_inset
+
+ shows the 
+\family typewriter
+Codec
+\family default
+ interface.
+ The 
+\family typewriter
+encoding()
+\family default
+ method returns the 
+\family typewriter
+Genotype
+\family default
+ factory, which is used by the 
+\family typewriter
+Engine
+\family default
+ for creating new 
+\family typewriter
+Genotype
+\family default
+s.
+ The decoder 
+\family typewriter
+Function
+\family default
+, which is returned by the 
+\family typewriter
+decoder()
+\family default
+ method, transforms the 
+\family typewriter
+Genotype
+\family default
+ to the argument type of the fitness 
+\family typewriter
+Function
+\family default
+.
+ Without the Codec interface, the implementation of the fitness Function
+ is polluted with code, which transforms the 
+\family typewriter
+Genotype
+\family default
+ into the argument type of the actual fitness 
+\family typewriter
+Function
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static double eval(final Genotype<DoubleGene> gt) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    final double x = gt.getGene().doubleValue();
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Do some calculation with 'x'.
+\end_layout
+
+\begin_layout Plain Layout
+
+    return ...
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+When using an 
+\family typewriter
+Codec
+\family default
+ instance, the fitness 
+\family typewriter
+Function
+\family default
+ solely contains code from your actual problem domain; no dependencies to
+ classes of the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static double eval(final double x) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Do some calculation with 'x'.
+\end_layout
+
+\begin_layout Plain Layout
+
+    return ...
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+For simple encodings, the code savings doesn't seem to be that big...
+\end_layout
+
 \begin_layout Section
 Nuts and bolts
 \end_layout
@@ -15668,7 +15883,7 @@ Homepage
 \emph on
  
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -15689,7 +15904,7 @@ Download
 \emph on
 
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
