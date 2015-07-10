@@ -683,6 +683,11 @@ pagenumbering{arabic}
 Manual
 \end_layout
 
+\begin_layout Standard
+The first part contains information about the classes---public API---and
+ how it is used.
+\end_layout
+
 \begin_layout Section
 Introduction
 \end_layout
@@ -7760,6 +7765,13 @@ For simple encodings, the code savings doesn't seem to be that big.
 
 \begin_layout Section
 Nuts and bolts
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Nuts-and-bolts"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -7770,6 +7782,13 @@ status collapsed
 \begin_layout Plain Layout
 Concurrency
 \end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Concurrency"
 
 \end_inset
 
@@ -7981,6 +8000,13 @@ status collapsed
 \begin_layout Plain Layout
 Random
 \end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Randomness"
 
 \end_inset
 
@@ -8382,6 +8408,13 @@ Random seeding
 \end_inset
 
 
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Random-seeding"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -8511,6 +8544,13 @@ Block splitting
 \end_inset
 
 
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Block-splitting"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -8617,6 +8657,13 @@ status collapsed
 \begin_layout Plain Layout
 Leapfrog
 \end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Leapfrog"
 
 \end_inset
 
@@ -8729,6 +8776,13 @@ status collapsed
 \family typewriter
 LCG64ShiftRandom
 \end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "par:LCG64ShiftRandom"
 
 \end_inset
 
@@ -16374,12 +16428,64 @@ ng the library.
 \end_layout
 
 \begin_layout Section
-Seeding PRNGs
+Random seeding
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Seeding
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Random!Seeding
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-While implementing the Jenetics library, I faced the problem of creating
- seed values for the Random engines I used.
+The PRNGs
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Randomness"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "par:Random-seeding"
+
+\end_inset
+
+, respectively.
+\end_layout
+
+\end_inset
+
+, used by the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library, needs to be initialized with a proper seed value before they can
+ be used.
  The usual way for doing this, is to take the current time stamp.
 \end_layout
 
@@ -16410,19 +16516,135 @@ public static long seed() {
 \end_layout
 
 \begin_layout Standard
-To test the statistical quality for this kind of seed values, I treated
- it as special random engine and applied the dieharder test suite to it.
+Before applying this method throughout the whole library, I decided to perform
+ some statistical tests.
+ For this purpose I treated the 
+\family typewriter
+seed()
+\family default
+ method itself as PRNG and analyzed the created long values with the 
+\family typewriter
+dieharder
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
-asdf
+The 
+\family typewriter
+dieharder
+\family default
+ tool is a random number generator (RNG) testing suite and can be downloaded
+ here: 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.phy.duke.edu/~rgb/General/dieharder.php
 \end_layout
 
 \end_inset
 
- As you might expect, the quality of this random engine was disastrous.
- It didn't pass a single dieharder test:
+.
+\end_layout
+
+\end_inset
+
+
+\family default
+ command line tool.
+ To make the tests repeatable and have proper test reports, I used the 
+\family typewriter
+Die\SpecialChar \-
+Harder
+\family default
+ class, which is available in the 
+\family typewriter
+org.\SpecialChar \-
+jenetics.\SpecialChar \-
+internal.\SpecialChar \-
+util
+\family default
+ package.
+ The 
+\family typewriter
+seed()
+\family default
+ method itself has been wrapped into the 
+\family typewriter
+org.\SpecialChar \-
+jenetics.\SpecialChar \-
+internal.\SpecialChar \-
+util.\SpecialChar \-
+Nano\SpecialChar \-
+Time\SpecialChar \-
+Random
+\family default
+ class.
+ Assuming that the 
+\family typewriter
+dieharder
+\family default
+ tool is in the search path, calling
+\end_layout
+
+\begin_layout LyX-Code
+$ java -cp org.jenetics-3.2.0.jar 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      org.jenetics.internal.util.DieHarder 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      org.jenetics.internal.util.NanoTimeRandom -a
+\end_layout
+
+\begin_layout Standard
+will perform the statistical tests for the nano time random engine.
+ The statistical quality is rather bad: every single test failed.
+ Table 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "tab:Nano-time-seeding"
+
+\end_inset
+
+ shows the summary of the 
+\family typewriter
+dieharder
+\family default
+ report.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The detailed test report can be found in the source of the Nano\SpecialChar \-
+Time\SpecialChar \-
+Random
+ class.
+ 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://github.com/jenetics/jenetics/blob/master/org.jenetics/src/main/java/org/je
+netics/internal/util/NanoTimeRandom.java
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -16445,7 +16667,7 @@ status open
 \begin_inset Text
 
 \begin_layout Plain Layout
-Passed
+Passed tests
 \end_layout
 
 \end_inset
@@ -16454,7 +16676,7 @@ Passed
 \begin_inset Text
 
 \begin_layout Plain Layout
-Weak
+Weak tests 
 \end_layout
 
 \end_inset
@@ -16463,7 +16685,7 @@ Weak
 \begin_inset Text
 
 \begin_layout Plain Layout
-Failed
+Failed tests
 \end_layout
 
 \end_inset
@@ -16527,7 +16749,13 @@ Speed MB/sec
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-System.nanoType() quality.
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Nano-time-seeding"
+
+\end_inset
+
+Nano time seeding quality
 \end_layout
 
 \end_inset
@@ -16541,13 +16769,44 @@ System.nanoType() quality.
 \end_layout
 
 \begin_layout Standard
-After this failure, I was searching for a different entropy source.
- For Linux system you probably want to choose /dev/random or /dev/urandom
- as source for your seeds.
- But this approach is not portable, which was a prerequisite for the Jenetics
+An alternative source of entropy, for generating seed values, would be the
+ 
+\family typewriter
+/dev/random
+\family default
+ or 
+\family typewriter
+/dev/urandom
+\family default
+ file.
+ But this approach is not portable, which was a prerequisite for the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
  library.
- Since the hash code of an Object is available for every operating system,
- I tried to combine two Object hash codes to one seed value:
+\end_layout
+
+\begin_layout Standard
+The next attempt tries to fetch the seeds from the JVM, via the 
+\family typewriter
+Object.\SpecialChar \-
+hashCode()
+\family default
+ method.
+ Since the hash code of an Object is available for every operating system
+ and most likely 
+\begin_inset Quotes ald
+\end_inset
+
+randomly
+\begin_inset Quotes ard
+\end_inset
+
+ distributed.
 \end_layout
 
 \begin_layout Standard
@@ -16563,7 +16822,7 @@ public static long seed() {
 
 \begin_layout Plain Layout
 
-    return ((long)(new Object().hashCode()) << 32) |
+    return ((long)new Object().hashCode() << 32) |
 \end_layout
 
 \begin_layout Plain Layout
@@ -16578,11 +16837,45 @@ public static long seed() {
 
 \end_inset
 
+This seed method has been wrapped into the 
+\family typewriter
+Object\SpecialChar \-
+Hash\SpecialChar \-
+Random
+\family default
+ class and tested with
+\end_layout
+
+\begin_layout LyX-Code
+$ java -cp org.jenetics-3.2.0.jar 
+\backslash
 
 \end_layout
 
+\begin_layout LyX-Code
+      org.jenetics.internal.util.DieHarder 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      org.jenetics.internal.util.ObjectHashRandom -a
+\end_layout
+
 \begin_layout Standard
-Running the same dieharder tests, lead to the following result:
+Table 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "tab:Object-hash-seeding"
+
+\end_inset
+
+ shows the summary of the 
+\family typewriter
+dieharder
+\family default
+ report, which looks better than the nano time seeding, but 86 failing tests
+ was still not very satisfying.
 \end_layout
 
 \begin_layout Standard
@@ -16605,7 +16898,7 @@ status open
 \begin_inset Text
 
 \begin_layout Plain Layout
-Passed
+Passed tests
 \end_layout
 
 \end_inset
@@ -16614,7 +16907,7 @@ Passed
 \begin_inset Text
 
 \begin_layout Plain Layout
-Weak
+Weak tests
 \end_layout
 
 \end_inset
@@ -16623,7 +16916,7 @@ Weak
 \begin_inset Text
 
 \begin_layout Plain Layout
-Failed
+Failed tests
 \end_layout
 
 \end_inset
@@ -16687,7 +16980,13 @@ Speed MB/sec
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-System.nanoType() quality.
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Object-hash-seeding"
+
+\end_inset
+
+Object hash seeding quality
 \end_layout
 
 \end_inset
@@ -16701,12 +17000,14 @@ System.nanoType() quality.
 \end_layout
 
 \begin_layout Standard
-Looks better than the timestamp seed, but 86 failing tests are still not
- very satisfying.
- After additional experimentation, I tried to combine the timestamp and
- the object seeding.
- The rational behind this was, that the seed shouldn't rely on a single
- entropy source.
+After additional experimentation, a combination of the nano time seed and
+ the object hash seeding seems to be the 
+\emph on
+right
+\emph default
+ solution.
+ The rational behind this was, that the PRNG seed shouldn't rely on a single
+ source of entropy.
 \end_layout
 
 \begin_layout Standard
@@ -16722,7 +17023,7 @@ public static long seed() {
 
 \begin_layout Plain Layout
 
-    return mix(System.nanoTime(), objectHashSeed());
+    return mix(System.nanoType(), objectHashSeed());
 \end_layout
 
 \begin_layout Plain Layout
@@ -16780,7 +17081,7 @@ private static long objectHashSeed() {
 
 \begin_layout Plain Layout
 
-    return ((long)(new Object().hashCode()) << 32) |
+    return ((long)new Object().hashCode() << 32) |
 \end_layout
 
 \begin_layout Plain Layout
@@ -16795,14 +17096,75 @@ private static long objectHashSeed() {
 
 \end_inset
 
+ The code above shows how the nano time seed is mixed with the object seed.
+ The mix method was inspired by the mixing step of the 
+\family typewriter
+lcg64_shift
+\family default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+This class is part of the 
+\begin_inset CommandInset href
+LatexCommand href
+name "TRNG"
+target "http://numbercrunch.de/trng/"
+
+\end_inset
+
+ library: 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://github.com/rabauke/trng4/blob/master/src/lcg64_shift.hpp
+\end_layout
+
+\end_inset
+
 
 \end_layout
 
+\end_inset
+
+ random engine, which has been reimplemented in the 
+\family typewriter
+LCG64\SpecialChar \-
+Shift\SpecialChar \-
+Random
+\family default
+ class.
+ The test run with
+\end_layout
+
+\begin_layout LyX-Code
+$ java -cp org.jenetics-3.2.0.jar 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      org.jenetics.internal.util.DieHarder 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      org.jenetics.internal.util.SeedRandom -a
+\end_layout
+
 \begin_layout Standard
-The code above shows how the timestamp is mixed with the object seed.
- The mix method was inspired by the mixing step of the lcg64_shift random
- engine, which has been reimplemented in the LCG64ShiftRandom class.
- Testing this seed method leads to the following result:
+leads to the statistics summary, which is shown in 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "tab:Combined-random-seeding"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -16825,7 +17187,7 @@ status open
 \begin_inset Text
 
 \begin_layout Plain Layout
-Passed
+Passed tests
 \end_layout
 
 \end_inset
@@ -16834,7 +17196,7 @@ Passed
 \begin_inset Text
 
 \begin_layout Plain Layout
-Weak
+Weak tests
 \end_layout
 
 \end_inset
@@ -16843,7 +17205,7 @@ Weak
 \begin_inset Text
 
 \begin_layout Plain Layout
-Failed
+Failed tests
 \end_layout
 
 \end_inset
@@ -16907,7 +17269,13 @@ Speed MB/sec
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-System.nanoType() quality.
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Combined-random-seeding"
+
+\end_inset
+
+Combined random seeding quality
 \end_layout
 
 \end_inset
@@ -16922,10 +17290,28 @@ System.nanoType() quality.
 
 \begin_layout Standard
 The statistical performance of this seeding is better, according to the
- dieharder test suite, than most of the real random engines I tested, including
- the default Java Random engine.
- Using the proposed seed() method is in any case preferable to the simple
- System.nanoTime() call.
+ 
+\family typewriter
+die\SpecialChar \-
+harder
+\family default
+ test suite, than some of the real random engines, including the default
+ Java 
+\family typewriter
+Random
+\family default
+ engine.
+ Using the proposed 
+\family typewriter
+seed()
+\family default
+ method is in any case preferable to the simple 
+\family typewriter
+System.\SpecialChar \-
+nano\SpecialChar \-
+Time()
+\family default
+ call.
 \end_layout
 
 \begin_layout Paragraph
