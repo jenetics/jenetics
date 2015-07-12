@@ -15694,11 +15694,11 @@ Open questions
 \end_layout
 
 \begin_layout Itemize
-How does this method perform on operating systems other than Linux and 
+How does this method perform on operating systems other than Linux? 
 \end_layout
 
 \begin_layout Itemize
-how does this method perform on other JVM implementations?
+How does this method perform on other JVM implementations?
 \end_layout
 
 \begin_layout Standard
