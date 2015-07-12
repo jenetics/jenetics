@@ -28,6 +28,8 @@ import org.jenetics.util.Random64;
  */
 public final class ObjectHashRandom extends Random64 {
 
+	private static final long serialVersionUID = 1L;
+
 	@Override
 	public long nextLong() {
 		return ((long)new Object().hashCode() << 32) | new Object().hashCode();

@@ -28,6 +28,8 @@ import org.jenetics.util.Random64;
  */
 public final class NanoTimeRandom extends Random64 {
 
+	private static final long serialVersionUID = 1L;
+
 	@Override
 	public long nextLong() {
 		return System.nanoTime();
