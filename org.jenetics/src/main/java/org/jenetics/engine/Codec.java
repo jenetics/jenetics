@@ -49,7 +49,7 @@ import org.jenetics.util.Factory;
  *              // Create an Engine.Builder with the "pure" fitness function
  *              // and the appropriate Codec.
  *             .build(RealFunction::eval, codecs.ofScalar(DoubleRange.of(0, 2*PI)))
- *             .build()
+ *             .build();
  *         ...
  *     }
  * }
