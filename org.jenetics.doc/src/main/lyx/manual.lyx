@@ -7557,6 +7557,50 @@ Genotype
 Engine
 \family default
 .
+ Normally, the 
+\family typewriter
+Engine
+\family default
+ expects a fitness function which takes a 
+\family typewriter
+Genotype
+\family default
+ as input type.
+ This 
+\family typewriter
+Genotype
+\family default
+ has then to be 
+\emph on
+transformed
+\emph default
+ into an object of the problem domain.
+ The 
+\family typewriter
+Codec
+\family default
+ interface allows the tighter coupling of the 
+\family typewriter
+Genotype
+\family default
+ definition and the transformation code.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Encoding"
+
+\end_inset
+
+ describes some possible encodings for common optimization problems.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -7637,9 +7681,9 @@ Engine
 \family default
  for creating new 
 \family typewriter
-Genotype
+Genotypes
 \family default
-s.
+.
  The decoder 
 \family typewriter
 Function
@@ -7657,8 +7701,15 @@ Genotype
 Function
 \family default
 .
- Without the Codec interface, the implementation of the fitness Function
- is polluted with code, which transforms the 
+ Without the 
+\family typewriter
+Codec
+\family default
+ interface, the implementation of the fitness Function is 
+\emph on
+polluted
+\emph default
+ with code, which transforms the 
 \family typewriter
 Genotype
 \family default
@@ -7698,6 +7749,60 @@ static double eval(final Genotype<DoubleGene> gt) {
 \begin_layout Plain Layout
 
 }
+\end_layout
+
+\end_inset
+
+The 
+\family typewriter
+Codec
+\family default
+ for the example above is quite simple and is shown below.
+ It is not necessary to implement the 
+\family typewriter
+Codec
+\family default
+ interface, instead you can use the 
+\family typewriter
+Codec.\SpecialChar \-
+of
+\family default
+ factory method for creating new 
+\family typewriter
+Codec
+\family default
+ instances.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final DoubleRange domain = DoubleRange.of(0, 2*PI);
+\end_layout
+
+\begin_layout Plain Layout
+
+final Codec<Double, DoubleGene> codec = Codec.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    Genotype.of(DoubleChromosome.of(domain)),
+\end_layout
+
+\begin_layout Plain Layout
+
+    gt -> gt.getChromosome().getGene().getAllele()
+\end_layout
+
+\begin_layout Plain Layout
+
+);
 \end_layout
 
 \end_inset
@@ -7748,9 +7853,20 @@ static double eval(final double x) {
 \end_inset
 
 For simple encodings, the code savings doesn't seem to be that big.
- The bigger benefit of the Codec usage is, if you can use one of the predefined
- Codecs in the codecs class, or when you can.
- Some predefined Codecs can be found in the codecs class.
+ The bigger benefit of the 
+\family typewriter
+Codec
+\family default
+ usage is, if you can use one of the predefined 
+\family typewriter
+Codecs
+\family default
+ in the 
+\family typewriter
+codecs
+\family default
+ class, or when you can.
+ Some predefined Codecs can be found in the codecs class.....
 \end_layout
 
 \begin_layout Section
@@ -14833,7 +14949,7 @@ dieharder
 \family default
  report.
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 The detailed test report can be found in the source of the Nano\SpecialChar \-
@@ -14869,9 +14985,8 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Tabular
-<lyxtabular version="3" rows="2" columns="4">
+<lyxtabular version="3" rows="2" columns="3">
 <features rotate="0" tabularvalignment="middle">
-<column alignment="center" valignment="top">
 <column alignment="center" valignment="top">
 <column alignment="center" valignment="top">
 <column alignment="center" valignment="top">
@@ -14894,20 +15009,11 @@ Weak tests
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Failed tests
-\end_layout
-
-\end_inset
-</cell>
 <cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-Speed MB/sec
+Failed tests
 \end_layout
 
 \end_inset
@@ -14932,20 +15038,11 @@ Speed MB/sec
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-114
-\end_layout
-
-\end_inset
-</cell>
 <cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-58.038
+114
 \end_layout
 
 \end_inset
@@ -15087,8 +15184,30 @@ reference "tab:Object-hash-seeding"
 \family typewriter
 dieharder
 \family default
- report, which looks better than the nano time seeding, but 86 failing tests
- was still not very satisfying.
+ report
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Full report: 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://github.com/jenetics/jenetics/blob/master/org.jenetics/src/main/java/org/je
+netics/internal/util/ObjectHashRandom.java
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+, which looks better than the nano time seeding, but 86 failing tests was
+ still not very satisfying.
 \end_layout
 
 \begin_layout Standard
@@ -15100,9 +15219,8 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Tabular
-<lyxtabular version="3" rows="2" columns="4">
+<lyxtabular version="3" rows="2" columns="3">
 <features rotate="0" tabularvalignment="middle">
-<column alignment="center" valignment="top">
 <column alignment="center" valignment="top">
 <column alignment="center" valignment="top">
 <column alignment="center" valignment="top">
@@ -15125,20 +15243,11 @@ Weak tests
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Failed tests
-\end_layout
-
-\end_inset
-</cell>
 <cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-Speed MB/sec
+Failed tests
 \end_layout
 
 \end_inset
@@ -15163,20 +15272,11 @@ Speed MB/sec
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-86
-\end_layout
-
-\end_inset
-</cell>
 <cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-43.149
+86
 \end_layout
 
 \end_inset
@@ -15225,7 +15325,7 @@ right
 
 \begin_layout Standard
 \begin_inset listings
-lstparams "language=Java"
+lstparams "language=Java,tabsize=4"
 inline false
 status open
 
@@ -15305,11 +15405,33 @@ private static long objectHashSeed() {
 \begin_layout Plain Layout
 
 }
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Random-seeding"
+
+\end_inset
+
+Random seeding
 \end_layout
 
 \end_inset
 
- The code above shows how the nano time seed is mixed with the object seed.
+
+\end_layout
+
+\end_inset
+
+ The code in listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Random-seeding"
+
+\end_inset
+
+ shows how the nano time seed is mixed with the object seed.
  The mix method was inspired by the mixing step of the 
 \family typewriter
 lcg64_shift
@@ -15370,7 +15492,29 @@ $ java -cp org.jenetics-3.2.0.jar
 \end_layout
 
 \begin_layout Standard
-leads to the statistics summary, which is shown in table 
+leads to the statistics summary
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Full report: 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://github.com/jenetics/jenetics/blob/master/org.jenetics/src/main/java/org/je
+netics/internal/util/SeedRandom.java
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+, which is shown in table 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "tab:Combined-random-seeding"
@@ -15389,9 +15533,8 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Tabular
-<lyxtabular version="3" rows="2" columns="4">
+<lyxtabular version="3" rows="2" columns="3">
 <features rotate="0" tabularvalignment="middle">
-<column alignment="center" valignment="top">
 <column alignment="center" valignment="top">
 <column alignment="center" valignment="top">
 <column alignment="center" valignment="top">
@@ -15414,20 +15557,11 @@ Weak tests
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Failed tests
-\end_layout
-
-\end_inset
-</cell>
 <cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-Speed MB/sec
+Failed tests
 \end_layout
 
 \end_inset
@@ -15452,20 +15586,11 @@ Speed MB/sec
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0
-\end_layout
-
-\end_inset
-</cell>
 <cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-34.572
+0
 \end_layout
 
 \end_inset
@@ -15536,8 +15661,7 @@ How does this method perform on operating systems other than Linux and
 \end_layout
 
 \begin_layout Itemize
-how does this method perform on JMVs other then Java 8.
- 
+how does this method perform on other JVM implementations?
 \end_layout
 
 \begin_layout Standard
