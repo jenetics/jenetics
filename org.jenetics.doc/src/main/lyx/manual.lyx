@@ -8501,7 +8501,7 @@ Leapfrogging
 \family typewriter
 LCG64ShiftRandom
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Random!LCG64ShiftRandom
@@ -8511,7 +8511,7 @@ Random!LCG64ShiftRandom
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 PRNG!
@@ -8523,11 +8523,9 @@ LCG64ShiftRandom
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
-
-\family typewriter
 LCG64ShiftRandom
 \end_layout
 
@@ -14953,17 +14951,17 @@ Jenetics
 \family default
 \series default
 \shape default
- used the 
+ uses the 
 \emph on
-Dieharder
+dieharder
 \emph default
- tool for testing the statistical quality of the used PRNGs.
- Dieharder is a random number generator (RNG) testing suite.
- It is intended to test generators, not files of possibly random numbers.
+
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
+From Robert G.
+ Brown: 
 \begin_inset Flex URL
 status collapsed
 
@@ -14979,16 +14977,52 @@ http://www.phy.duke.edu/~rgb/General/dieharder.php
 
 \end_inset
 
+ command line tool for testing the statistical quality of the used PRNGs.
+ dieharder is a random number generator (RNG) testing suite.
+ It is intended to test generators, not files of possibly random numbers.
+ Since 
+\emph on
+dieharder
+\emph default
+ needs a huge amount of random data, for testing the quality of a RNG, it
+ is usually advisable to pipe the random numbers to the dieharder process:
+\end_layout
 
+\begin_layout LyX-Code
+$ cat /dev/urandom | dieharder -g 200 -a
 \end_layout
 
 \begin_layout Standard
-Since dieharder needs a huge amount of random numbers for testing the quality
- of a random engine it is usually not advisable to read the random data
- from a file.
- Instead I used the stdin interface for delivering the random numbers.
- For simplifying the testing of Java random engines I wrote a helper class,
- DieHarder, which heavily simplifies the usage of dieharder.
+The example above demonstrates how to stream a raw binary stream of bits
+ to the 
+\family typewriter
+stdin
+\family default
+ (raw) interface of dieharder.
+ With the 
+\family typewriter
+Die\SpecialChar \-
+Harder
+\family default
+ class, which is part of the 
+\family typewriter
+org.\SpecialChar \-
+jenetics.\SpecialChar \-
+internal.\SpecialChar \-
+util
+\family default
+ package, it is easily possible to test PRNGs extending the 
+\family typewriter
+java.\SpecialChar \-
+util.\SpecialChar \-
+Random
+\family default
+ class.
+ The only requirement is, that the PRNG must be 
+\emph on
+default
+\emph default
+-constructible.
 \end_layout
 
 \begin_layout LyX-Code
@@ -15004,15 +15038,72 @@ $ java -cp org.jenetics-@__version__@.jar
 \end_layout
 
 \begin_layout LyX-Code
-      <
-\emph on
-java.util.Random
-\emph default
-> -a
+      <random-engine-name> -a
 \end_layout
 
 \begin_layout Standard
-Testing the LCG64ShiftRangom
+Calling the command above will create an instance of the given random engine
+ and stream the random data (bytes) to the raw interface of dieharder process.
+ The tested Java random engine must be part of the classpath.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+tiny
+\backslash
+ttfamily}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstinputlisting[language=XML]{../resources/code/dieharder.protocol}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+footnotesize}
+\end_layout
+
+\end_inset
+
+In the listing above, a part of the created dieharder report is shown.
+ For testing the 
+\family typewriter
+LCG64\SpecialChar \-
+Shift\SpecialChar \-
+Random
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+LCG64ShiftRandom
+\end_layout
+
+\end_inset
+
+
+\family default
+ class, which is of the 
+\family typewriter
+org.\SpecialChar \-
+jenetics.\SpecialChar \-
+util
+\family default
+ package, the following command can be called:
 \end_layout
 
 \begin_layout LyX-Code
@@ -15029,6 +15120,30 @@ $ java -cp org.jenetics-@__version__@.jar
 
 \begin_layout LyX-Code
       org.jenetics.util.LCG64ShiftRandom -a
+\end_layout
+
+\begin_layout Standard
+Table 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "tab:LCG64ShiftRandom-quality"
+
+\end_inset
+
+ shows the summary of the dieharder tests.
+ The full report is part of the source file (
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://github.com/jenetics/jenetics/blob/master/org.jenetics/src/main/java/org/je
+netics/util/LCG64ShiftRandom.java
+\end_layout
+
+\end_inset
+
+).
 \end_layout
 
 \begin_layout Standard
@@ -15079,7 +15194,7 @@ Failed tests
 \begin_inset Text
 
 \begin_layout Plain Layout
-28
+110
 \end_layout
 
 \end_inset
@@ -15088,7 +15203,7 @@ Failed tests
 \begin_inset Text
 
 \begin_layout Plain Layout
-0
+4
 \end_layout
 
 \end_inset
@@ -15097,7 +15212,7 @@ Failed tests
 \begin_inset Text
 
 \begin_layout Plain Layout
-86
+0
 \end_layout
 
 \end_inset
@@ -15120,7 +15235,11 @@ name "tab:LCG64ShiftRandom-quality"
 
 \end_inset
 
-LCG64ShiftRandom quality
+
+\family typewriter
+LCG64ShiftRandom
+\family default
+ quality
 \end_layout
 
 \end_inset
@@ -15223,48 +15342,10 @@ seed()
 \family default
  method itself as PRNG and analyzed the created long values with the 
 \family typewriter
-dieharder
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-The 
-\family typewriter
-dieharder
-\family default
- tool is a random number generator (RNG) testing suite and can be downloaded
- here: 
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-http://www.phy.duke.edu/~rgb/General/dieharder.php
-\end_layout
-
-\end_inset
-
-.
-\end_layout
-
-\end_inset
-
-
-\family default
- command line tool.
- To make the tests repeatable and have proper test reports, I used the 
-\family typewriter
 Die\SpecialChar \-
-Harder
+Harder class
 \family default
- class, which is available in the 
-\family typewriter
-org.\SpecialChar \-
-jenetics.\SpecialChar \-
-internal.\SpecialChar \-
-util
-\family default
- package.
+.
  The 
 \family typewriter
 seed()
