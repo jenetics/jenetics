@@ -693,7 +693,7 @@ Jenetics
 \shape default
  is a library, written in Java
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 The library is build with and depends on Java SE 8: 
@@ -724,7 +724,7 @@ target "http://en.wikipedia.org/wiki/Genetic_algorithm"
  It has no runtime dependencies to other libraries, except the Java 8 runtime.
  Since the library is available on maven central repository
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 If you are using Gradle, you can use the following dependency string: 
@@ -1888,7 +1888,7 @@ status collapsed
 The documentation of the whole API is part of the download package or can
  be viewed online: 
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -2359,8 +2359,7 @@ Validation
 Verifiable
 \family default
  interface, allows the gene to mark itself as invalid.
- All invalid genes are replaced with new ones during the evolution phase.
- 
+ All invalid genes are replaced with new ones during the evolution phase.s
 \end_layout
 
 \begin_layout Standard
@@ -7852,21 +7851,140 @@ static double eval(final double x) {
 
 \end_inset
 
-For simple encodings, the code savings doesn't seem to be that big.
- The bigger benefit of the 
+
+\end_layout
+
+\begin_layout Standard
+The 
 \family typewriter
 Codec
 \family default
- usage is, if you can use one of the predefined 
-\family typewriter
-Codecs
+ interface also allows to implement commonly used encodings.
+ 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
 \family default
- in the 
+\series default
+\shape default
+ comes with a set of standard encodings, which are created via factory methods
+ of the 
 \family typewriter
+org.\SpecialChar \-
+jenetics.\SpecialChar \-
+engine.\SpecialChar \-
 codecs
 \family default
- class, or when you can.
- Some predefined Codecs can be found in the codecs class.....
+ class.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+codecs.ofScalar
+\family default
+\series default
+: Create 
+\family typewriter
+Codec
+\family default
+s for scalar problems
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The argument types of these problems are scalars.
+\end_layout
+
+\end_inset
+
+---
+\family typewriter
+Integer
+\family default
+, 
+\family typewriter
+Long
+\family default
+ or 
+\family typewriter
+Double
+\family default
+.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+codecs.ofVector
+\family default
+\series default
+: Create 
+\family typewriter
+Codec
+\family default
+s for vector problems---
+\family typewriter
+int[]
+\family default
+, 
+\family typewriter
+long[]
+\family default
+ or 
+\family typewriter
+double[]
+\family default
+.
+ It is possible to create vectors with the same range and vectors with a
+ different range for every vector component.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+codecs.ofPermutation
+\family default
+\series default
+: Create 
+\family typewriter
+Codec
+\family default
+s for permutation problems.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+codecs.ofAffineTransform
+\family default
+\series default
+: Create 
+\family typewriter
+Codec
+\family default
+s for affine transformation.
+ This 
+\family typewriter
+Codec
+\family default
+ uses the 
+\family typewriter
+Affine\SpecialChar \-
+Transform
+\family default
+ class of the 
+\family typewriter
+java.\SpecialChar \-
+awt.\SpecialChar \-
+geom
+\family default
+ package.
 \end_layout
 
 \begin_layout Section
@@ -14986,7 +15104,7 @@ dieharder
 \family default
  report.
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 The detailed test report can be found in the source of the Nano\SpecialChar \-
