@@ -7517,476 +7517,6 @@ Statistics
  object will look like the example above.
 \end_layout
 
-\begin_layout Subsubsection
-Codec
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Codec
-\end_layout
-
-\end_inset
-
-
-\begin_inset CommandInset label
-LatexCommand label
-name "sub:Codec"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The 
-\family typewriter
-Codec
-\family default
- interface narrows the gap between the fitness 
-\family typewriter
-Function
-\family default
-, which should be maximized/minimized, and the 
-\family typewriter
-Genotype
-\family default
- representation, which can be understand by the evolution 
-\family typewriter
-Engine
-\family default
-.
- Normally, the 
-\family typewriter
-Engine
-\family default
- expects a fitness function which takes a 
-\family typewriter
-Genotype
-\family default
- as input type.
- This 
-\family typewriter
-Genotype
-\family default
- has then to be 
-\emph on
-transformed
-\emph default
- into an object of the problem domain.
- The 
-\family typewriter
-Codec
-\family default
- interface allows the tighter coupling of the 
-\family typewriter
-Genotype
-\family default
- definition and the transformation code.
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-Section 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "sub:Encoding"
-
-\end_inset
-
- describes some possible encodings for common optimization problems.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-public interface Codec<T, G extends Gene<?, G>> {
-\end_layout
-
-\begin_layout Plain Layout
-
-    public Factory<Genotype<G>> encoding();
-\end_layout
-
-\begin_layout Plain Layout
-
-    public Function<Genotype<G>, T> decoder();
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-
-\family typewriter
-Codec
-\family default
- interface
-\begin_inset CommandInset label
-LatexCommand label
-name "lis:Codec-interface"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Listing 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "lis:Codec-interface"
-
-\end_inset
-
- shows the 
-\family typewriter
-Codec
-\family default
- interface.
- The 
-\family typewriter
-encoding()
-\family default
- method returns the 
-\family typewriter
-Genotype
-\family default
- factory, which is used by the 
-\family typewriter
-Engine
-\family default
- for creating new 
-\family typewriter
-Genotypes
-\family default
-.
- The decoder 
-\family typewriter
-Function
-\family default
-, which is returned by the 
-\family typewriter
-decoder()
-\family default
- method, transforms the 
-\family typewriter
-Genotype
-\family default
- to the argument type of the fitness 
-\family typewriter
-Function
-\family default
-.
- Without the 
-\family typewriter
-Codec
-\family default
- interface, the implementation of the fitness Function is 
-\emph on
-polluted
-\emph default
- with code, which transforms the 
-\family typewriter
-Genotype
-\family default
- into the argument type of the actual fitness 
-\family typewriter
-Function
-\family default
-.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-static double eval(final Genotype<DoubleGene> gt) {
-\end_layout
-
-\begin_layout Plain Layout
-
-    final double x = gt.getGene().doubleValue();
-\end_layout
-
-\begin_layout Plain Layout
-
-    // Do some calculation with 'x'.
-\end_layout
-
-\begin_layout Plain Layout
-
-    return ...
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-The 
-\family typewriter
-Codec
-\family default
- for the example above is quite simple and is shown below.
- It is not necessary to implement the 
-\family typewriter
-Codec
-\family default
- interface, instead you can use the 
-\family typewriter
-Codec.\SpecialChar \-
-of
-\family default
- factory method for creating new 
-\family typewriter
-Codec
-\family default
- instances.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-final DoubleRange domain = DoubleRange.of(0, 2*PI);
-\end_layout
-
-\begin_layout Plain Layout
-
-final Codec<Double, DoubleGene> codec = Codec.of(
-\end_layout
-
-\begin_layout Plain Layout
-
-    Genotype.of(DoubleChromosome.of(domain)),
-\end_layout
-
-\begin_layout Plain Layout
-
-    gt -> gt.getChromosome().getGene().getAllele()
-\end_layout
-
-\begin_layout Plain Layout
-
-);
-\end_layout
-
-\end_inset
-
-When using an 
-\family typewriter
-Codec
-\family default
- instance, the fitness 
-\family typewriter
-Function
-\family default
- solely contains code from your actual problem domain; no dependencies to
- classes of the 
-\family sans
-\series bold
-\shape smallcaps
-Jenetics
-\family default
-\series default
-\shape default
- library.
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-static double eval(final double x) {
-\end_layout
-
-\begin_layout Plain Layout
-
-    // Do some calculation with 'x'.
-\end_layout
-
-\begin_layout Plain Layout
-
-    return ...
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The 
-\family typewriter
-Codec
-\family default
- interface also allows to implement commonly used encodings.
- 
-\family sans
-\series bold
-\shape smallcaps
-Jenetics
-\family default
-\series default
-\shape default
- comes with a set of standard encodings, which are created via factory methods
- of the 
-\family typewriter
-org.\SpecialChar \-
-jenetics.\SpecialChar \-
-engine.\SpecialChar \-
-codecs
-\family default
- class.
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-\series bold
-codecs.ofScalar
-\family default
-\series default
-: Create 
-\family typewriter
-Codec
-\family default
-s for scalar problems
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-The argument types of these problems are scalars.
-\end_layout
-
-\end_inset
-
----
-\family typewriter
-Integer
-\family default
-, 
-\family typewriter
-Long
-\family default
- or 
-\family typewriter
-Double
-\family default
-.
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-\series bold
-codecs.ofVector
-\family default
-\series default
-: Create 
-\family typewriter
-Codec
-\family default
-s for vector problems---
-\family typewriter
-int[]
-\family default
-, 
-\family typewriter
-long[]
-\family default
- or 
-\family typewriter
-double[]
-\family default
-.
- It is possible to create vectors with the same range and vectors with a
- different range for every vector component.
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-\series bold
-codecs.ofPermutation
-\family default
-\series default
-: Create 
-\family typewriter
-Codec
-\family default
-s for permutation problems.
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-\series bold
-codecs.ofAffineTransform
-\family default
-\series default
-: Create 
-\family typewriter
-Codec
-\family default
-s for affine transformation.
- This 
-\family typewriter
-Codec
-\family default
- uses the 
-\family typewriter
-Affine\SpecialChar \-
-Transform
-\family default
- class of the 
-\family typewriter
-java.\SpecialChar \-
-awt.\SpecialChar \-
-geom
-\family default
- package.
-\end_layout
-
 \begin_layout Section
 Nuts and bolts
 \begin_inset CommandInset label
@@ -13581,6 +13111,498 @@ final double[][] array = gt.toSeq().stream()
 \end_inset
 
 
+\end_layout
+
+\begin_layout Subsection
+Codec
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Codec
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Codec"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+Codec
+\family default
+ interface---located in the 
+\family typewriter
+org.\SpecialChar \-
+jenetics.\SpecialChar \-
+engine
+\family default
+ package---narrows the gap between the fitness 
+\family typewriter
+Function
+\family default
+, which should be maximized/minimized, and the 
+\family typewriter
+Genotype
+\family default
+ representation, which can be understand by the evolution 
+\family typewriter
+Engine
+\family default
+.
+ With the 
+\family typewriter
+Codec
+\family default
+ interface it is possible to implement the encodings of section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Encoding"
+
+\end_inset
+
+ in a formalized way.
+ 
+\end_layout
+
+\begin_layout Standard
+Normally, the 
+\family typewriter
+Engine
+\family default
+ expects a fitness function which takes a 
+\family typewriter
+Genotype
+\family default
+ as input type.
+ This 
+\family typewriter
+Genotype
+\family default
+ has then to be 
+\emph on
+transformed
+\emph default
+ into an object of the problem domain.
+ The 
+\family typewriter
+Codec
+\family default
+ interface allows the tighter coupling of the 
+\family typewriter
+Genotype
+\family default
+ definition and the transformation code.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Encoding"
+
+\end_inset
+
+ describes some possible encodings for common optimization problems.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface Codec<T, G extends Gene<?, G>> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    public Factory<Genotype<G>> encoding();
+\end_layout
+
+\begin_layout Plain Layout
+
+    public Function<Genotype<G>, T> decoder();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+Codec
+\family default
+ interface
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Codec-interface"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Codec-interface"
+
+\end_inset
+
+ shows the 
+\family typewriter
+Codec
+\family default
+ interface.
+ The 
+\family typewriter
+encoding()
+\family default
+ method returns the 
+\family typewriter
+Genotype
+\family default
+ factory, which is used by the 
+\family typewriter
+Engine
+\family default
+ for creating new 
+\family typewriter
+Genotypes
+\family default
+.
+ The decoder 
+\family typewriter
+Function
+\family default
+, which is returned by the 
+\family typewriter
+decoder()
+\family default
+ method, transforms the 
+\family typewriter
+Genotype
+\family default
+ to the argument type of the fitness 
+\family typewriter
+Function
+\family default
+.
+ Without the 
+\family typewriter
+Codec
+\family default
+ interface, the implementation of the fitness Function is 
+\emph on
+polluted
+\emph default
+ with code, which transforms the 
+\family typewriter
+Genotype
+\family default
+ into the argument type of the actual fitness 
+\family typewriter
+Function
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static double eval(final Genotype<DoubleGene> gt) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    final double x = gt.getGene().doubleValue();
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Do some calculation with 'x'.
+\end_layout
+
+\begin_layout Plain Layout
+
+    return ...
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+The 
+\family typewriter
+Codec
+\family default
+ for the example above is quite simple and is shown below.
+ It is not necessary to implement the 
+\family typewriter
+Codec
+\family default
+ interface, instead you can use the 
+\family typewriter
+Codec.\SpecialChar \-
+of
+\family default
+ factory method for creating new 
+\family typewriter
+Codec
+\family default
+ instances.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final DoubleRange domain = DoubleRange.of(0, 2*PI);
+\end_layout
+
+\begin_layout Plain Layout
+
+final Codec<Double, DoubleGene> codec = Codec.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    Genotype.of(DoubleChromosome.of(domain)),
+\end_layout
+
+\begin_layout Plain Layout
+
+    gt -> gt.getChromosome().getGene().getAllele()
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+When using an 
+\family typewriter
+Codec
+\family default
+ instance, the fitness 
+\family typewriter
+Function
+\family default
+ solely contains code from your actual problem domain; no dependencies to
+ classes of the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static double eval(final double x) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Do some calculation with 'x'.
+\end_layout
+
+\begin_layout Plain Layout
+
+    return ...
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+Codec
+\family default
+ interface also allows to implement commonly used encodings.
+ 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ comes with a set of standard encodings, which are created via factory methods
+ of the 
+\family typewriter
+org.\SpecialChar \-
+jenetics.\SpecialChar \-
+engine.\SpecialChar \-
+codecs
+\family default
+ class.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+codecs.ofScalar
+\family default
+\series default
+: Create 
+\family typewriter
+Codec
+\family default
+s for scalar problems
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The argument types of these problems are scalars.
+\end_layout
+
+\end_inset
+
+---
+\family typewriter
+Integer
+\family default
+, 
+\family typewriter
+Long
+\family default
+ or 
+\family typewriter
+Double
+\family default
+.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+codecs.ofVector
+\family default
+\series default
+: Create 
+\family typewriter
+Codec
+\family default
+s for vector problems---
+\family typewriter
+int[]
+\family default
+, 
+\family typewriter
+long[]
+\family default
+ or 
+\family typewriter
+double[]
+\family default
+.
+ It is possible to create vectors with the same range and vectors with a
+ different range for every vector component.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+codecs.ofPermutation
+\family default
+\series default
+: Create 
+\family typewriter
+Codec
+\family default
+s for permutation problems.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+codecs.ofAffineTransform
+\family default
+\series default
+: Create 
+\family typewriter
+Codec
+\family default
+s for affine transformation.
+ This 
+\family typewriter
+Codec
+\family default
+ uses the 
+\family typewriter
+Affine\SpecialChar \-
+Transform
+\family default
+ class of the 
+\family typewriter
+java.\SpecialChar \-
+awt.\SpecialChar \-
+geom
+\family default
+ package.
 \end_layout
 
 \begin_layout Subsection
