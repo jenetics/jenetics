@@ -13494,7 +13494,7 @@ jenetics.\SpecialChar \-
 engine.\SpecialChar \-
 codecs
 \family default
- class.
+ class:
 \end_layout
 
 \begin_layout Itemize
@@ -14941,6 +14941,199 @@ Be aware that this classes can be changed and removed without announcement.
 \end_layout
 
 \begin_layout Subsection
+PRNG testing
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ used the 
+\emph on
+Dieharder
+\emph default
+ tool for testing the statistical quality of the used PRNGs.
+ Dieharder is a random number generator (RNG) testing suite.
+ It is intended to test generators, not files of possibly random numbers.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.phy.duke.edu/~rgb/General/dieharder.php
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Since dieharder needs a huge amount of random numbers for testing the quality
+ of a random engine it is usually not advisable to read the random data
+ from a file.
+ Instead I used the stdin interface for delivering the random numbers.
+ For simplifying the testing of Java random engines I wrote a helper class,
+ DieHarder, which heavily simplifies the usage of dieharder.
+\end_layout
+
+\begin_layout LyX-Code
+$ java -cp org.jenetics-@__version__@.jar 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      org.jenetics.internal.util.DieHarder 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      <
+\emph on
+java.util.Random
+\emph default
+> -a
+\end_layout
+
+\begin_layout Standard
+Testing the LCG64ShiftRangom
+\end_layout
+
+\begin_layout LyX-Code
+$ java -cp org.jenetics-@__version__@.jar 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      org.jenetics.internal.util.DieHarder 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      org.jenetics.util.LCG64ShiftRandom -a
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="3">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Passed tests
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Weak tests
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Failed tests
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+28
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+86
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:LCG64ShiftRandom-quality"
+
+\end_inset
+
+LCG64ShiftRandom quality
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
 Random seeding
 \begin_inset Index idx
 status collapsed
@@ -15391,7 +15584,7 @@ netics/internal/util/ObjectHashRandom.java
 \begin_inset Float table
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
@@ -15834,7 +16027,7 @@ Open questions
 \end_layout
 
 \begin_layout Itemize
-How does this method perform on operating systems other than Linux? 
+How does this method perform on operating systems other than Linux?
 \end_layout
 
 \begin_layout Itemize
