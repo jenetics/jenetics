@@ -735,7 +735,7 @@ If you are using Gradle, you can use the following dependency string:
 
 org.bitbucket.fwilhelm:\SpecialChar \-
 org.jenetics:\SpecialChar \-
-3.2.0
+@__version__@
 \family default
 
 \begin_inset Quotes ard
@@ -14955,7 +14955,7 @@ dieharder
 \end_layout
 
 \begin_layout LyX-Code
-$ java -cp org.jenetics-3.2.0.jar 
+$ java -cp org.jenetics-@__version__@.jar 
 \backslash
 
 \end_layout
@@ -15194,7 +15194,7 @@ Random
 \end_layout
 
 \begin_layout LyX-Code
-$ java -cp org.jenetics-3.2.0.jar 
+$ java -cp org.jenetics-@__version__@.jar 
 \backslash
 
 \end_layout
@@ -15513,7 +15513,7 @@ Random
 \end_layout
 
 \begin_layout LyX-Code
-$ java -cp org.jenetics-3.2.0.jar 
+$ java -cp org.jenetics-@__version__@.jar 
 \backslash
 
 \end_layout
@@ -17374,7 +17374,7 @@ Maven Central
 \end_layout
 
 \begin_layout LyX-Code
-    <version>3.2.0</version>
+    <version>@__version__@</version>
 \end_layout
 
 \begin_layout LyX-Code

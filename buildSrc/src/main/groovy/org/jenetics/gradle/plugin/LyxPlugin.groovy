@@ -56,7 +56,8 @@ class LyxPlugin extends JeneticsPlugin {
 				into project.build.temporaryDir
 				filter(ReplaceTokens, tokens: [
 					__year__: project.copyrightYear,
-					__identifier__: project.manualIdentifier
+					__identifier__: project.manualIdentifier,
+					__version__: project.version
 				])
 			}
 			copy {
