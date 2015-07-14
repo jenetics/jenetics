@@ -250,6 +250,11 @@ public final class Engine<
 	public EvolutionResult<G, C> evolve(final EvolutionStart<G, C> start) {
 		final Timer timer = Timer.of().start();
 
+		// Initial evaluation of the population.
+		final Timer evaluateTimer = Timer.of(_clock).start();
+		evaluate(start.getPopulation());
+		evaluateTimer.stop();
+
 		// Select the offspring population.
 		final CompletableFuture<TimedResult<Population<G, C>>> offspring =
 			_executor.async(() ->
@@ -306,7 +311,7 @@ public final class Engine<
 			alteredOffspring.join().duration,
 			filteredOffspring.join().duration,
 			filteredSurvivors.join().duration,
-			result.duration,
+			result.duration.plus(evaluateTimer.getTime()),
 			timer.stop().getTime()
 		);
 
@@ -439,7 +444,6 @@ public final class Engine<
 
 		final Population<G, C> population = new Population<G, C>(size)
 			.fill(() -> newPhenotype(generation), size);
-		evaluate(population);
 
 		return EvolutionStart.of(population, generation);
 	}
@@ -504,7 +508,6 @@ public final class Engine<
 		final Population<G, C> population = stream
 			.limit(getPopulationSize())
 			.collect(toPopulation());
-		evaluate(population);
 
 		return EvolutionStart.of(population, generation);
 	}
@@ -589,7 +592,6 @@ public final class Engine<
 		final Population<G, C> pop = stream
 			.limit(getPopulationSize())
 			.collect(toPopulation());
-		evaluate(pop);
 
 		return EvolutionStart.of(pop, generation);
 	}
