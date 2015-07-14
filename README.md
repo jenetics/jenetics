@@ -146,7 +146,18 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 
 #### Improvements
 
-#### Bugs
+* [#24](https://github.com/jenetics/jenetics/issues/24): Stabilize statistical selector tests.
+* [#25](https://github.com/jenetics/jenetics/issues/25): Remove `testng.xml` file. The test classes are now determined automatically.
+* [#40](https://github.com/jenetics/jenetics/issues/40): Introduce `Codec` interface for defining problem encodings.
+* Add _Internal_ section in manual, which describes implementation details.
+
+#### Bug fixes
+
+* [#33](https://github.com/jenetics/jenetics/issues/33): Selectors must not change the input population. This occasionally caused `ConcurrentModificationException`s.  Such selectors are now creating a defensive copy of the input population.
+* [#34](https://github.com/jenetics/jenetics/issues/34): `IndexOutOfBoundsException` when selecting to short populations.
+* [#35](https://github.com/jenetics/jenetics/issues/35): `IndexOutOfBoundsException` when altering to short populations.
+* [#39](https://github.com/jenetics/jenetics/issues/39): Numerical instabilities of `ProbabilitySelector`s.
+* [#47](https://github.com/jenetics/jenetics/issues/47): `Engine` deadlock for long running fitness functions.
 
 ### 3.1.0
 
