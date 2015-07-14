@@ -34,7 +34,6 @@ import org.jenetics.internal.util.Named;
 import org.jenetics.stat.Histogram;
 import org.jenetics.util.Factory;
 import org.jenetics.util.LCG64ShiftRandom;
-import org.jenetics.util.Retry;
 import org.jenetics.util.TestData;
 
 /**
@@ -54,28 +53,39 @@ public class BoltzmannSelectorTest
 		return BoltzmannSelector::new;
 	}
 
-	@Test(
-		dataProvider = "expectedDistribution",
-		retryAnalyzer = Retry.Five.class
-	)
+	@Test
+	public void parameters() {
+		final BoltzmannSelector<DoubleGene, Double> selector = new BoltzmannSelector<>(2);
+
+		// Create population with zero fitness.
+		final Population<DoubleGene, Double> population =
+			TestUtils.newDoublePopulation(20, 0, 0);
+
+		// Must select without exception.
+		selector.probabilities(population, 10);
+	}
+
+	@Test(dataProvider = "expectedDistribution")
 	public void selectDistribution(
 		final Double b,
 		final Named<double[]> expected,
 		final Optimize opt
 	) {
-		final int loops = 50;
-		final int npopulation = POPULATION_COUNT;
+		retry(3, () -> {
+			final int loops = 50;
+			final int npopulation = POPULATION_COUNT;
 
-		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
-		using(random, r -> {
-			final Histogram<Double> distribution = SelectorTester.distribution(
-				new BoltzmannSelector<>(b),
-				opt,
-				npopulation,
-				loops
-			);
+			final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
+			using(random, r -> {
+				final Histogram<Double> distribution = SelectorTester.distribution(
+					new BoltzmannSelector<>(b),
+					opt,
+					npopulation,
+					loops
+				);
 
-			assertDistribution(distribution, expected.value, 0.001, 5);
+				assertDistribution(distribution, expected.value, 0.001, 5);
+			});
 		});
 	}
 
@@ -111,10 +121,12 @@ public class BoltzmannSelectorTest
 		return col;
 	}
 
+	/*
 	public static void main(final String[] args) {
 		writeDistributionData(Optimize.MAXIMUM);
 		writeDistributionData(Optimize.MINIMUM);
 	}
+	*/
 
 	private static void writeDistributionData(final Optimize opt) {
 		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();

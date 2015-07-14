@@ -126,10 +126,10 @@ public abstract class ProbabilitySelectorTester<
 		final double[] props = selector.probabilities(population, 23);
 		Assert.assertEquals(props.length, population.size());
 
-		if (isSorted()) {
-			assertSortedDescending(population);
-			assertSortedDescending(props);
-		}
+//		if (isSorted()) {
+//			assertSortedDescending(population);
+//			assertSortedDescending(props);
+//		}
 		Assert.assertEquals(sum(props), 1.0, 0.000001);
 		assertPositive(props);
 	}

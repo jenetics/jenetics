@@ -157,7 +157,9 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 					f.get();
 				}
 			} catch (InterruptedException|ExecutionException e) {
-				throw new CancellationException(e.getMessage());
+				final String msg = e.getMessage();
+				throw (CancellationException)new CancellationException(msg)
+					.initCause(e);
 			}
 		}
 	}
@@ -195,7 +197,9 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 					t.get();
 				}
 			} catch (InterruptedException|ExecutionException e) {
-				throw new CancellationException(e.getMessage());
+				final String msg = e.getMessage();
+				throw (CancellationException)new CancellationException(msg)
+					.initCause(e);
 			}
 		}
 	}
@@ -289,7 +293,7 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 
 		final int bulk = size/pts;
 		final int rest = size%pts;
-		assert ((bulk*pts + rest) == size);
+		assert (bulk*pts + rest) == size;
 
 		for (int i = 0, n = pts - rest; i < n; ++i) {
 			partition[i] = i*bulk;

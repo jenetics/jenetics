@@ -30,7 +30,7 @@ import org.jenetics.util.Range;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class GaussianMutatorTest extends MutatorTestBase {
+public class GaussianMutatorTest extends MutatorTester {
 
 	@Override
 	public Alterer<DoubleGene, Double> newAlterer(double p) {

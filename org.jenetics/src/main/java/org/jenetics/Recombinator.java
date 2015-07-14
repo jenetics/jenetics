@@ -96,19 +96,24 @@ public abstract class Recombinator<
 		final Population<G, C> population,
 		final long generation
 	) {
-		final Random random = RandomRegistry.getRandom();
-		final int order = Math.min(_order, population.size());
+		int count = 0;
+		if (population.size() >= 2) {
+			final Random random = RandomRegistry.getRandom();
+			final int order = Math.min(_order, population.size());
 
-		final IntFunction<int[]> individuals = i -> {
-			final int[] ind = subset(population.size(), order, random);
-			ind[0] = i;
-			return ind;
-		};
+			final IntFunction<int[]> individuals = i -> {
+				final int[] ind = subset(population.size(), order, random);
+				ind[0] = i;
+				return ind;
+			};
 
-		return indexes(random, population.size(), _probability)
-			.mapToObj(individuals)
-			.mapToInt(i -> recombine(population, i, generation))
-			.sum();
+			count = indexes(random, population.size(), _probability)
+				.mapToObj(individuals)
+				.mapToInt(i -> recombine(population, i, generation))
+				.sum();
+		}
+
+		return count;
 	}
 
 	/**

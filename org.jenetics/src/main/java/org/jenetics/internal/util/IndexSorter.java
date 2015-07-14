@@ -74,7 +74,7 @@ public abstract class IndexSorter {
 
 	static int[] indexes(final int length) {
 		final int[] indexes = new int[length];
-		for (int i = 0; i < indexes.length; ++i) {
+		for (int i = length; --i >= 0;) {
 			indexes[i] = i;
 		}
 		return indexes;
@@ -91,31 +91,33 @@ public abstract class IndexSorter {
  * Heap sort implementation.
  */
 final class HeapSorter extends IndexSorter {
+
 	@Override
 	int[] sort(final double[] array, final int[] indexes) {
 		// Heapify
-		int n = array.length;
-		for (int k = n/2; k >= 0; k--) {
-			sink(array, indexes, k, n);
+		for (int k = array.length/2; k >= 0; --k) {
+			sink(array, indexes, k, array.length);
 		}
 
 		// Sort down.
-		while (n > 0) {
-			swap(indexes, 0, --n);
-			sink(array, indexes, 0, n);
+		for (int i = array.length; --i >= 1;) {
+			swap(indexes, 0, i);
+			sink(array, indexes, 0, i);
 		}
 
 		return indexes;
 	}
 
 	private static void sink(
-		final double[] array, final int[] indexes,
-		final int k, final int n
+		final double[] array,
+		final int[] indexes,
+		final int start,
+		final int end
 	) {
-		int m = k;
-		while (2*m < n) {
+		int m = start;
+		while (2*m < end) {
 			int j = 2*m;
-			if (j < n - 1 && array[indexes[j]] > array[indexes[j + 1]]) j++;
+			if (j < end - 1 && array[indexes[j]] > array[indexes[j + 1]]) ++j;
 			if (array[indexes[m]] <= array[indexes[j]]) break;
 			swap(indexes, m, j);
 			m = j;
@@ -128,6 +130,7 @@ final class HeapSorter extends IndexSorter {
  * Insertion sort implementation.
  */
 final class InsertionSorter extends IndexSorter {
+
 	@Override
 	int[] sort(final double[] array, final int[] indexes) {
 		for (int i = 1, n = array.length; i < n; ++i) {
@@ -144,4 +147,5 @@ final class InsertionSorter extends IndexSorter {
 
 		return indexes;
 	}
+
 }

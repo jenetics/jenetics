@@ -27,7 +27,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.ISeq;
@@ -96,7 +95,8 @@ final class CompositeAlterer<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(a -> eq(_alterers, a._alterers));
+		return obj instanceof CompositeAlterer &&
+			eq(((CompositeAlterer)obj)._alterers, _alterers);
 	}
 
 	@Override
@@ -104,7 +104,7 @@ final class CompositeAlterer<
 		return format(
 			"%s:\n%s", getClass().getSimpleName(),
 			_alterers.stream()
-				.map(a -> "   - " + a.toString())
+				.map(a -> "   - " + a)
 				.collect(Collectors.joining("\n"))
 		);
 	}
