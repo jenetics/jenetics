@@ -27,8 +27,8 @@ import java.io.Serializable;
  * Integer range class.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.2
+ * @since 3.2
  */
 public final class IntRange implements Serializable {
 

@@ -46,7 +46,7 @@ import org.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz  Wilhelmstötter</a>
  * @since 2.0
- * @version 3.0
+ * @version 3.2
  */
 @XmlJavaTypeAdapter(IntegerChromosome.Model.Adapter.class)
 public class IntegerChromosome
@@ -154,7 +154,7 @@ public class IntegerChromosome
 	/**
 	 * Create a new random {@code IntegerChromosome}.
 	 *
-	 * @since !__version__!
+	 * @since 3.2
 	 *
 	 * @param range the integer range of the chromosome.
 	 * @param length the length of the chromosome.
@@ -179,7 +179,7 @@ public class IntegerChromosome
 	/**
 	 * Create a new random {@code IntegerChromosome} of length one.
 	 *
-	 * @since !__version__!
+	 * @since 3.2
 	 *
 	 * @param range the integer range of the chromosome.
 	 * @return a new random {@code IntegerChromosome} of length one

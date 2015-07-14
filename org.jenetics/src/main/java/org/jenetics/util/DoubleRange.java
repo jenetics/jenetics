@@ -28,8 +28,8 @@ import java.io.Serializable;
  * Double range class.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.2
+ * @since 3.2
  */
 public final class DoubleRange implements Serializable {
 

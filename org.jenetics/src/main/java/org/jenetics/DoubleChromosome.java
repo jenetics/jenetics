@@ -48,7 +48,7 @@ import org.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 3.0
+ * @version 3.2
  */
 @XmlJavaTypeAdapter(DoubleChromosome.Model.Adapter.class)
 public class DoubleChromosome
@@ -152,7 +152,7 @@ public class DoubleChromosome
 	/**
 	 * Create a new random {@code DoubleChromosome}.
 	 *
-	 * @since !__version__!
+	 * @since 3.2
 	 *
 	 * @param range the integer range of the chromosome.
 	 * @param length the length of the chromosome.
@@ -177,7 +177,7 @@ public class DoubleChromosome
 	/**
 	 * Create a new random {@code DoubleChromosome} of length one.
 	 *
-	 * @since !__version__!
+	 * @since 3.2
 	 *
 	 * @param range the double range of the chromosome.
 	 * @return a new random {@code DoubleChromosome} of length one

@@ -238,7 +238,7 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	 * @return a new {@code ArrayProxy} instance; for command chaining.
 	 */
 	public final P seal() {
-		assert (!_isSealedProxy) : "Must not be called on sealed proxies";
+		assert !_isSealedProxy : "Must not be called on sealed proxies";
 
 		final P proxy = _proxyFactory.create(array, start, end);
 		proxy._sealedProxies = _sealedProxies;
@@ -253,7 +253,7 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	 * sealed.
 	 */
 	public final void cloneIfSealed() {
-		assert (!_isSealedProxy) : "Must not be called on sealed proxies";
+		assert !_isSealedProxy : "Must not be called on sealed proxies";
 
 		if (_sealedProxies.length > 0) {
 			_sealedProxies.popAll(ArrayProxy::copyArray);
@@ -261,7 +261,7 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	}
 
 	private void copyArray() {
-		assert (_isSealedProxy) : "Must only be called on sealed proxies";
+		assert _isSealedProxy : "Must only be called on sealed proxies";
 
 		array = _arrayCopier.copy(array, start, end);
 		_sealedProxies = new Stack<>();
@@ -349,7 +349,7 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 		final IntFunction<P> builder
 	) {
 		final P result = builder.apply(length);
-		assert (result.length == length);
+		assert result.length == length;
 
 		for (int i = 0; i < length; ++i) {
 			result.__set__(i, mapper.apply(__get(i)));

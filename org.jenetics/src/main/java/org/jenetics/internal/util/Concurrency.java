@@ -293,7 +293,7 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 
 		final int bulk = size/pts;
 		final int rest = size%pts;
-		assert ((bulk*pts + rest) == size);
+		assert (bulk*pts + rest) == size;
 
 		for (int i = 0, n = pts - rest; i < n; ++i) {
 			partition[i] = i*bulk;

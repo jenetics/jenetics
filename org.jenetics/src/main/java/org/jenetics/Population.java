@@ -76,8 +76,12 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 	private final List<Phenotype<G, C>> _population;
 
+	/**
+	 * Private <i>primary</i> constructor which assigns the underlying
+	 * population without copying and precondition check.
+	 */
 	private Population(final List<Phenotype<G, C>> population, boolean foo) {
-		_population = population;
+		_population = requireNonNull(population);
 	}
 
 	/**

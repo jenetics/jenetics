@@ -50,7 +50,7 @@ import org.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 3.0
+ * @version 3.2
  */
 @XmlJavaTypeAdapter(DoubleGene.Model.Adapter.class)
 public final class DoubleGene
@@ -109,7 +109,7 @@ public final class DoubleGene
 	 * no exception is thrown. In this case the method
 	 * {@link DoubleGene#isValid()} returns {@code false}.
 	 *
-	 * @since !__version__!
+	 * @since 3.2
 	 *
 	 * @param value the value of the gene.
 	 * @param range the double range to use
@@ -136,7 +136,7 @@ public final class DoubleGene
 	 * Create a new random {@code DoubleGene}. It is guaranteed that the value
 	 * of the {@code DoubleGene} lies in the interval [min, max).
 	 *
-	 * @since !__version__!
+	 * @since 3.2
 	 *
 	 * @param range the double range to use
 	 * @return a new {@code DoubleGene} with the given parameter

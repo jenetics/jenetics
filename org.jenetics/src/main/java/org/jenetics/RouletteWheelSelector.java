@@ -38,7 +38,7 @@ import org.jenetics.internal.util.Hash;
  *      </a>
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0
+ * @version 3.2
  */
 public class RouletteWheelSelector<
 	G extends Gene<?, G>,

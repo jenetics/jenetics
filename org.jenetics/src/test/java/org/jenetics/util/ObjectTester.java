@@ -39,7 +39,7 @@ public abstract class ObjectTester<T> extends Retry {
 
 	protected abstract Factory<T> factory();
 
-	protected MSeq<T> newSameObjects(final int length) {
+	protected MSeq<T> newEqualObjects(final int length) {
 		return Stream
 			.generate(() -> with(new Random(589), r -> factory().newInstance()))
 			.limit(length)
@@ -48,7 +48,7 @@ public abstract class ObjectTester<T> extends Retry {
 
 	@Test
 	public void equals() {
-		final MSeq<T> same = newSameObjects(5);
+		final MSeq<T> same = newEqualObjects(5);
 
 		final Object that = same.get(0);
 		for (int i = 1; i < same.length(); ++i) {
@@ -80,7 +80,7 @@ public abstract class ObjectTester<T> extends Retry {
 	@Test
 	public void notEqualsNull() {
 		final Object that = factory().newInstance();
-		Assert.assertFalse(that.equals(null));
+		Assert.assertFalse(that == null);
 	}
 
 	@Test
@@ -97,7 +97,7 @@ public abstract class ObjectTester<T> extends Retry {
 
 	@Test
 	public void hashCodeMethod() {
-		final MSeq<T> same = newSameObjects(5);
+		final MSeq<T> same = newEqualObjects(5);
 
 		final Object that = same.get(0);
 		for (int i = 1; i < same.length(); ++i) {
@@ -134,7 +134,7 @@ public abstract class ObjectTester<T> extends Retry {
 
 	@Test
 	public void toStringMethod() {
-		final MSeq<T> same = newSameObjects(5);
+		final MSeq<T> same = newEqualObjects(5);
 
 		final Object that = same.get(0);
 		for (int i = 1; i < same.length(); ++i) {

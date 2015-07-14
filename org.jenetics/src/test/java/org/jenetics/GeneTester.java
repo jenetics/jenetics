@@ -47,7 +47,7 @@ public abstract class GeneTester<G extends Gene<?, G>> extends ObjectTester<G> {
 
 	@Test
 	public void equalsAllele() {
-		final MSeq<G> same = newSameObjects(5);
+		final MSeq<G> same = newEqualObjects(5);
 
 		final G that = same.get(0);
 		for (int i = 1; i < same.length(); ++i) {

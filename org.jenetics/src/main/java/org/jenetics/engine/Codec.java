@@ -49,7 +49,7 @@ import org.jenetics.util.Factory;
  *              // Create an Engine.Builder with the "pure" fitness function
  *              // and the appropriate Codec.
  *             .build(RealFunction::eval, codecs.ofScalar(DoubleRange.of(0, 2*PI)))
- *             .build()
+ *             .build();
  *         ...
  *     }
  * }
@@ -63,8 +63,8 @@ import org.jenetics.util.Factory;
  * @param <G> the {@code Gene} type used for encoding the argument type {@code T}
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.2
+ * @since 3.2
  */
 public interface Codec<T, G extends Gene<?, G>> {
 
@@ -84,7 +84,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 *
 	 * @return the genotype (factory) representation of the problem domain
 	 */
-	Factory<Genotype<G>> encoding();
+	public Factory<Genotype<G>> encoding();
 
 	/**
 	 * Return the <em>decoder</em> function which transforms the genotype back
@@ -94,7 +94,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 *
 	 * @return genotype decoder
 	 */
-	Function<Genotype<G>, T> decoder();
+	public Function<Genotype<G>, T> decoder();
 
 
 	/**
@@ -110,7 +110,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * @return a new {@code Codec} object with the given parameters.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	static <G extends Gene<?, G>, T> Codec<T, G> of(
+	public static <G extends Gene<?, G>, T> Codec<T, G> of(
 		final Factory<Genotype<G>> encoding,
 		final Function<Genotype<G>, T> decoder
 	) {

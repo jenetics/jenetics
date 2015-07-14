@@ -104,7 +104,7 @@ public final class CompositeAlterer<
 		return format(
 			"%s:\n%s", getClass().getSimpleName(),
 			_alterers.stream()
-				.map(a -> "   - " + a.toString())
+				.map(a -> "   - " + a)
 				.collect(Collectors.joining("\n"))
 		);
 	}
