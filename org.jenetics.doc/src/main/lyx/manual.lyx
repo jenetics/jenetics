@@ -13167,7 +13167,7 @@ reference "sub:Encoding"
 
 \end_inset
 
- in a formalized way.
+ in a more formalized way.
  
 \end_layout
 
@@ -13180,7 +13180,7 @@ Engine
 \family typewriter
 Genotype
 \family default
- as input type.
+ as input.
  This 
 \family typewriter
 Genotype
@@ -13430,8 +13430,8 @@ Codec
 \family typewriter
 Function
 \family default
- solely contains code from your actual problem domain; no dependencies to
- classes of the 
+ solely contains code from your actual problem domain---no dependencies
+ to classes of the 
 \family sans
 \series bold
 \shape smallcaps
@@ -14921,7 +14921,7 @@ Internals
 This section contains internal implementation details which doesn't fit
  in one of the previous sections.
  They are not essential for using the library, but would give the user a
- deeper insights in some design decisions made when implementing the library.
+ deeper insight in some design decisions, made when implementing the library.
  It also introduces tools and classes which where developed for testing
  purpose.
  This classes resides below the 
@@ -14931,11 +14931,21 @@ jenetics.\SpecialChar \-
 internal
 \family default
  package.
- Though they are not part of the official API, they are packed into the
- delivered jar and can be used accordingly.
+ Though they are 
+\series bold
+not
+\series default
+ part of the official API, they are packed into the delivered jar and can
+ be used accordingly.
  
 \emph on
-Be aware that this classes can be changed and removed without announcement.
+Be aware that all classes below the 
+\family typewriter
+org.\SpecialChar \-
+jenetics.\SpecialChar \-
+internal
+\family default
+ package can be changed and removed without announcement.
 \end_layout
 
 \begin_layout Subsection
@@ -14952,9 +14962,9 @@ Jenetics
 \series default
 \shape default
  uses the 
-\emph on
+\family typewriter
 dieharder
-\emph default
+\family default
 
 \begin_inset Foot
 status collapsed
@@ -14977,15 +14987,27 @@ http://www.phy.duke.edu/~rgb/General/dieharder.php
 
 \end_inset
 
- command line tool for testing the statistical quality of the used PRNGs.
- dieharder is a random number generator (RNG) testing suite.
+ (command line) tool for testing the 
+\emph on
+randomness
+\emph default
+ of the used PRNGs.
+ 
+\family typewriter
+dieharder
+\family default
+ is a random number generator (RNG) testing suite.
  It is intended to test generators, not files of possibly random numbers.
  Since 
-\emph on
+\family typewriter
 dieharder
-\emph default
+\family default
  needs a huge amount of random data, for testing the quality of a RNG, it
- is usually advisable to pipe the random numbers to the dieharder process:
+ is usually advisable to pipe the random numbers to the 
+\family typewriter
+dieharder
+\family default
+ process:
 \end_layout
 
 \begin_layout LyX-Code
@@ -14998,7 +15020,11 @@ The example above demonstrates how to stream a raw binary stream of bits
 \family typewriter
 stdin
 \family default
- (raw) interface of dieharder.
+ (raw) interface of 
+\family typewriter
+dieharder
+\family default
+.
  With the 
 \family typewriter
 Die\SpecialChar \-
@@ -15022,7 +15048,7 @@ Random
 \emph on
 default
 \emph default
--constructible.
+-constructible and part of the classpath.
 \end_layout
 
 \begin_layout LyX-Code
@@ -15043,8 +15069,11 @@ $ java -cp org.jenetics-@__version__@.jar
 
 \begin_layout Standard
 Calling the command above will create an instance of the given random engine
- and stream the random data (bytes) to the raw interface of dieharder process.
- The tested Java random engine must be part of the classpath.
+ and stream the random data (bytes) to the raw interface of 
+\family typewriter
+dieharder
+\family default
+ process.
 \end_layout
 
 \begin_layout Standard
@@ -15066,7 +15095,7 @@ ttfamily}
 
 
 \backslash
-lstinputlisting[language=XML]{../resources/code/dieharder.protocol}
+lstinputlisting{../resources/code/dieharder.protocol}
 \end_layout
 
 \begin_layout Plain Layout
@@ -15080,7 +15109,11 @@ footnotesize}
 
 \end_inset
 
-In the listing above, a part of the created dieharder report is shown.
+In the listing above, a part of the created 
+\family typewriter
+dieharder
+\family default
+ report is shown.
  For testing the 
 \family typewriter
 LCG64\SpecialChar \-
@@ -15130,8 +15163,22 @@ reference "tab:LCG64ShiftRandom-quality"
 
 \end_inset
 
- shows the summary of the dieharder tests.
- The full report is part of the source file (
+ shows the summary of the 
+\family typewriter
+dieharder
+\family default
+ tests.
+ The full report is part of the source file of the 
+\family typewriter
+LCG64\SpecialChar \-
+Shift\SpecialChar \-
+Random
+\family default
+ class.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
 \begin_inset Flex URL
 status collapsed
 
@@ -15143,7 +15190,12 @@ netics/util/LCG64ShiftRandom.java
 
 \end_inset
 
-).
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
