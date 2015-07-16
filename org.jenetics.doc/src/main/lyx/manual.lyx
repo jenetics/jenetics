@@ -13573,6 +13573,10 @@ Codec
 s for permutation problems.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Note Comment
+status open
+
 \begin_layout Itemize
 
 \family typewriter
@@ -13601,6 +13605,11 @@ awt.\SpecialChar \-
 geom
 \family default
  package.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
