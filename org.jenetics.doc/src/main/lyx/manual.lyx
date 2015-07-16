@@ -8775,8 +8775,8 @@ status open
 
 \begin_layout Plain Layout
 Measured on a Intel(R) Core(TM) i5-3427U CPU @ 1.80GHz with Java(TM) SE Runtime
- Environment (build 1.8.0_25-b17)---Java HotSpot(TM) 64-Bit Server VM (build
- 25.25-b02, mixed mode)---, using the JHM micro-benchmark library.
+ Environment (build 1.8.0_51-b16)---Java HotSpot(TM) 64-Bit Server VM (build
+ 25.51-b03, mixed mode)---, using the JHM micro-benchmark library.
  
 \end_layout
 
@@ -8880,7 +8880,7 @@ Random
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $67\cdot10^{6}$
+\begin_inset Formula $69\cdot10^{6}$
 \end_inset
 
 
@@ -8892,7 +8892,7 @@ Random
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $33\cdot10^{6}$
+\begin_inset Formula $34\cdot10^{6}$
 \end_inset
 
 
@@ -8904,7 +8904,7 @@ Random
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $67\cdot10^{6}$
+\begin_inset Formula $69\cdot10^{6}$
 \end_inset
 
 
@@ -8916,7 +8916,7 @@ Random
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $33\cdot10^{6}$
+\begin_inset Formula $34\cdot10^{6}$
 \end_inset
 
 
@@ -8941,7 +8941,7 @@ ThreadLocalRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $333\cdot10^{6}$
+\begin_inset Formula $191\cdot10^{6}$
 \end_inset
 
 
@@ -8953,7 +8953,7 @@ ThreadLocalRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $344\cdot10^{6}$
+\begin_inset Formula $184\cdot10^{6}$
 \end_inset
 
 
@@ -8965,7 +8965,7 @@ ThreadLocalRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $237\cdot10^{6}$
+\begin_inset Formula $137\cdot10^{6}$
 \end_inset
 
 
@@ -8977,7 +8977,7 @@ ThreadLocalRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $220\cdot10^{6}$
+\begin_inset Formula $138\cdot10^{6}$
 \end_inset
 
 
@@ -9002,7 +9002,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $243\cdot10^{6}$
+\begin_inset Formula $153\cdot10^{6}$
 \end_inset
 
 
@@ -9014,7 +9014,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $251\cdot10^{6}$
+\begin_inset Formula $159\cdot10^{6}$
 \end_inset
 
 
@@ -9026,7 +9026,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $196\cdot10^{6}$
+\begin_inset Formula $118\cdot10^{6}$
 \end_inset
 
 
@@ -9038,7 +9038,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $199\cdot10^{6}$
+\begin_inset Formula $119\cdot10^{6}$
 \end_inset
 
 
