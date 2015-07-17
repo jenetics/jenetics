@@ -55,6 +55,15 @@ import org.jenetics.util.Factory;
  * }
  * }</pre>
  *
+ * The {@code Codec} needed for the above usage example, will look like this:
+ * <pre>{@code
+ * final DoubleRange domain = DoubleRange.of(0, 2*PI);
+ * final Codec<Double, DoubleGene> codec = Codec.of(
+ *     Genotype.of(DoubleChromosome.of(domain)),
+ *     gt -> gt.getChromosome().getGene().getAllele()
+ * );
+ * }</pre>
+ *
  * @see codecs
  * @see Engine
  * @see Engine.Builder
