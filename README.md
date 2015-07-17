@@ -153,10 +153,10 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 
 #### Bug fixes
 
-* [#33](https://github.com/jenetics/jenetics/issues/33): Selectors must not change the input population. This occasionally caused `ConcurrentModificationException`s.  Such selectors are now creating a defensive copy of the input population.
+* [#33](https://github.com/jenetics/jenetics/issues/33): Selectors must not change the input population. This occasionally caused `ConcurrentModificationException`.  Such selectors are now creating a defensive copy of the input population.
 * [#34](https://github.com/jenetics/jenetics/issues/34): `IndexOutOfBoundsException` when selecting populations which are too short.
 * [#35](https://github.com/jenetics/jenetics/issues/35): `IndexOutOfBoundsException` when altering populations which are too short.
-* [#39](https://github.com/jenetics/jenetics/issues/39): Numerical instabilities of `ProbabilitySelector`s.
+* [#39](https://github.com/jenetics/jenetics/issues/39): Numerical instabilities of `ProbabilitySelector`.
 * [#47](https://github.com/jenetics/jenetics/issues/47): `Engine` deadlock for long running fitness functions.
 
 ### 3.1.0
