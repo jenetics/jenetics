@@ -50,6 +50,13 @@ import org.jenetics.util.Verifiable;
  * {@code Phenotypes} is defined by its fitness value (given by the
  * fitness {@link Function}. The {@code Phenotype} is immutable and therefore
  * can't be changed after creation.
+ * <p>
+ * The evaluation of the fitness function is performed lazily. Either by calling
+ * one of the fitness accessors ({@link #getFitness()} or {@link #getRawFitness()})
+ * of through the <i>evaluation</i> methods {@link #run()} or {@link #evaluate()}.
+ * Since the {@code Phenotype} implements the {@link Runnable} interface, it is
+ * easily possible to perform the fitness function evaluation concurrently, by
+ * putting it into an {@link java.util.concurrent.ExecutorService}.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
@@ -247,7 +254,7 @@ public final class Phenotype<
 
 	@Override
 	public String toString() {
-		return _genotype.toString() + " --> " + getFitness();
+		return _genotype + " --> " + getFitness();
 	}
 
 	/**
