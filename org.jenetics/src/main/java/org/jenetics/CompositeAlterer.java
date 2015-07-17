@@ -121,7 +121,7 @@ final class CompositeAlterer<
 	@SafeVarargs
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	CompositeAlterer<G, C> of(final Alterer<G, C>... alterers) {
-		return new CompositeAlterer<G, C>(ISeq.of(alterers));
+		return new CompositeAlterer<>(ISeq.of(alterers));
 	}
 
 	/**
