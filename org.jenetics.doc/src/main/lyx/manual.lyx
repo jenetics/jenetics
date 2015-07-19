@@ -17836,7 +17836,15 @@ Maven Central
 \end_layout
 
 \begin_layout Standard
-The whole Jenetics package can also be downloaded from the 
+The whole 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ package can also be downloaded from the 
 \emph on
 Maven Central
 \emph default
