@@ -2359,7 +2359,7 @@ Validation
 Verifiable
 \family default
  interface, allows the gene to mark itself as invalid.
- All invalid genes are replaced with new ones during the evolution phase.s
+ All invalid genes are replaced with new ones during the evolution phase.
 \end_layout
 
 \begin_layout Standard
@@ -7180,7 +7180,6 @@ Evolution\SpecialChar \-
 Stream
 \family default
  according to the defined optimization strategy.
- 
 \end_layout
 
 \begin_layout Description
@@ -11192,7 +11191,7 @@ IntegerGene
 \family typewriter
 Chromosome
 \family default
-, 
+,
 \end_layout
 
 \begin_layout Itemize
@@ -11204,7 +11203,7 @@ LongGene
 \family typewriter
 Chromosome
 \family default
- and 
+ and
 \end_layout
 
 \begin_layout Itemize
@@ -13190,11 +13189,11 @@ Genotype
 transformed
 \emph default
  into an object of the problem domain.
- The 
+ The usage 
 \family typewriter
 Codec
 \family default
- interface allows the tighter coupling of the 
+ interface allows a tighter coupling of the 
 \family typewriter
 Genotype
 \family default
@@ -13484,8 +13483,8 @@ Jenetics
 \family default
 \series default
 \shape default
- comes with a set of standard encodings, which are created via factory methods
- of the 
+ comes with a set of standard encodings, which are created via static factory
+ methods of the 
 \family typewriter
 org.\SpecialChar \-
 jenetics.\SpecialChar \-
@@ -15139,7 +15138,7 @@ LCG64ShiftRandom
 
 
 \family default
- class, which is of the 
+ class, which is part of the 
 \family typewriter
 org.\SpecialChar \-
 jenetics.\SpecialChar \-
@@ -15185,7 +15184,7 @@ Random
 \family default
  class.
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
@@ -15411,7 +15410,7 @@ Harder class
 \family typewriter
 seed()
 \family default
- method itself has been wrapped into the 
+ method has been wrapped into the 
 \family typewriter
 org.\SpecialChar \-
 jenetics.\SpecialChar \-
@@ -15446,7 +15445,11 @@ $ java -cp org.jenetics-@__version__@.jar
 \end_layout
 
 \begin_layout Standard
-will perform the statistical tests for the nano time random engine.
+will perform the statistical tests for the nano time 
+\emph on
+random engine
+\emph default
+.
  The statistical quality is rather bad: every single test failed.
  Table 
 \begin_inset CommandInset ref
@@ -15665,7 +15668,7 @@ Object\SpecialChar \-
 Hash\SpecialChar \-
 Random
 \family default
- class and tested with
+ class and tested as well with
 \end_layout
 
 \begin_layout LyX-Code
@@ -15726,7 +15729,7 @@ netics/internal/util/ObjectHashRandom.java
 \begin_inset Float table
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -15832,7 +15835,11 @@ right
 \emph default
  solution.
  The rational behind this was, that the PRNG seed shouldn't rely on a single
- source of entropy.
+ 
+\emph on
+source
+\emph default
+ of entropy.
 \end_layout
 
 \begin_layout Standard
@@ -15944,7 +15951,11 @@ reference "lis:Random-seeding"
 \end_inset
 
  shows how the nano time seed is mixed with the object seed.
- The mix method was inspired by the mixing step of the 
+ The 
+\family typewriter
+mix
+\family default
+ method was inspired by the mixing step of the 
 \family typewriter
 lcg64_shift
 \family default
@@ -17706,7 +17717,7 @@ Scope
 \series default
 :
 \emph on
-javadoc
+ javadoc
 \end_layout
 
 \end_deeper
@@ -17746,11 +17757,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 2.4 (
-\emph on
-or later
-\emph default
-)
+: 2.4
 \end_layout
 
 \begin_layout Itemize
@@ -17836,6 +17843,12 @@ Maven Central
  repository:
 \end_layout
 
+\begin_layout Subparagraph
+
+\family typewriter
+pom.xml
+\end_layout
+
 \begin_layout LyX-Code
 <dependency>     
 \end_layout
@@ -17854,6 +17867,14 @@ Maven Central
 
 \begin_layout LyX-Code
 </dependency>
+\end_layout
+
+\begin_layout Subparagraph
+Gradle
+\end_layout
+
+\begin_layout LyX-Code
+'org.bitbucket.fwilhelm:org.jenetics:@__version__@'
 \end_layout
 
 \begin_layout Section
