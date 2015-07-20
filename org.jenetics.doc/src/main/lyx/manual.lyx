@@ -12182,11 +12182,11 @@ https://en.wikipedia.org/wiki/Transformation_matrix
 :
 \begin_inset Formula 
 \begin{equation}
-A=\left[\begin{array}{ccc}
+A=\left(\begin{array}{ccc}
 a_{11} & a_{12} & a_{13}\\
 a_{21} & a_{22} & a_{23}\\
 0 & 0 & 1
-\end{array}\right].\label{eq:Transformation matrix}
+\end{array}\right).\label{eq:Transformation matrix}
 \end{equation}
 
 \end_inset
@@ -12439,9 +12439,6 @@ Genotype
 \end_inset
 
 , the following equations can be used:
-\end_layout
-
-\begin_layout Standard
 \begin_inset Formula 
 \begin{eqnarray}
 a_{11} & = & s_{x}\cos\theta+k_{x}s_{y}\sin\theta\nonumber \\
@@ -12455,11 +12452,34 @@ a_{23} & = & t_{y}\nonumber
 \end_inset
 
 This corresponds to an transformation order of 
-\begin_inset Formula $R\circ S_{c}\circ S_{h}\circ T$
+\begin_inset Formula $T\cdot S_{h}\cdot S_{c}\cdot R$
 \end_inset
 
-.
- In Java code, the conversion from the 
+:
+\begin_inset Formula 
+\[
+\left(\begin{array}{ccc}
+1 & 0 & t_{x}\\
+0 & 1 & t_{y}\\
+0 & 0 & 1
+\end{array}\right)\cdot\left(\begin{array}{ccc}
+1 & k_{x} & 0\\
+k_{y} & 1 & 0\\
+0 & 0 & 1
+\end{array}\right)\cdot\left(\begin{array}{ccc}
+s_{x} & 0 & 0\\
+0 & s_{y} & 0\\
+0 & 0 & 1
+\end{array}\right)\cdot\left(\begin{array}{ccc}
+\cos\theta & -\sin\theta & 0\\
+\sin\theta & \cos\theta & 0\\
+0 & 0 & 1
+\end{array}\right).
+\]
+
+\end_inset
+
+In Java code, the conversion from the 
 \family typewriter
 Genotype
 \family default
