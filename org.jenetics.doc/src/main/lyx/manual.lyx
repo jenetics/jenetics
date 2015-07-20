@@ -17852,17 +17852,30 @@ Jenetics
 \emph on
 Maven Central
 \emph default
- repository:
+ repository 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://repo.maven.apache.org/maven2
+\end_layout
+
+\end_inset
+
+:
 \end_layout
 
 \begin_layout Subparagraph
 
 \family typewriter
-pom.xml
+pom.xml 
+\family default
+snippet for Maven
 \end_layout
 
 \begin_layout LyX-Code
-<dependency>     
+<dependency>
 \end_layout
 
 \begin_layout LyX-Code
