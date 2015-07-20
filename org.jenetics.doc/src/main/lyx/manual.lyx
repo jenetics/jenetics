@@ -323,9 +323,13 @@ FRANZ WILHELMSTÖTTER
 
 \series default
 \noun default
-VERSION 3.2
+VERSION 
+\family default
+@__minor_version__@
+\family sans
 \size large
 \noun on
+\lang english
 
 \begin_inset space \hspace{}
 \length 1.5cm
@@ -1892,7 +1896,7 @@ status open
 
 \begin_layout Plain Layout
 
-http://jenetics.io/javadoc/org.jenetics/index.html
+http://jenetics.io/javadoc/org.jenetics/@__minor_version__@/index.html
 \end_layout
 
 \end_inset
@@ -16355,7 +16359,7 @@ status open
 
 \begin_layout Plain Layout
 
-http://jenetics.sourceforge.net/javadoc/index.html
+http://jenetics.io/javadoc/org.jenetics/@__minor_version__@/index.html
 \end_layout
 
 \end_inset
