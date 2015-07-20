@@ -71,7 +71,7 @@ The latest Eclipse version (4.4.2) has problems compiling some _valid_ lambda ex
          .builder((Function<Genotype<BitGene>, Integer>)HelloWorld::eval, gtf)
          .build();
 
- Or you are using [IntelliJ 14](https://www.jetbrains.com/idea/download/) instead.
+ Or you are using ![IntelliJ 14](https://www.jetbrains.com/idea/download/) instead.
 
 ## Example
 
@@ -181,4 +181,8 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 ### 3.0.0
 
 * Rewrite of *engine* classes to make use of Java 8 Stream API.
+
+## Used software
+
+![IntelliJ](https://www.jetbrains.com/idea/docs/logo_intellij_idea.png)
 
