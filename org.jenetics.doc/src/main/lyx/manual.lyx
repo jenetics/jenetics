@@ -767,7 +767,7 @@ width "90col%"
 special "none"
 height "1in"
 height_special "totalheight"
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset CommandInset line
@@ -795,21 +795,21 @@ key "Sivanandam2010"
 
 \end_inset
 
-,
+, 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "michalewicz1996genetic"
 
 \end_inset
 
-,
+, 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Shiffman2012"
 
 \end_inset
 
- or
+ or 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Whitley94agenetic"
@@ -1060,8 +1060,15 @@ Hello World
 \end_layout
 
 \begin_layout Standard
-In contrast to other GA implementations, the library uses the concept of
- an evolution 
+In contrast to other GA implementations, 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ uses the concept of an evolution 
 \emph on
 stream
 \emph default
@@ -1096,7 +1103,7 @@ The probably most challenging part, when setting up a new evolution
 \family typewriter
 Engine
 \family default
-, is to transform the problem domain into a appropriate 
+, is to transform the problem domain into an appropriate 
 \family typewriter
 Genotype
 \family default
@@ -1138,7 +1145,11 @@ Chromosome
 Genotype
 \family default
 .
- In general, the Genotype can be created with 1 to 
+ In general, the 
+\family typewriter
+Genotype
+\family default
+ can be created with 1 to 
 \begin_inset Formula $n$
 \end_inset
 
@@ -1155,8 +1166,8 @@ reference "sub:Domain-classes-Genotype"
 \end_layout
 
 \begin_layout Enumerate
-Once this is done, the fitness function which should be maximized, can be
- defined.
+Once this is done, the fitness function, which should be maximized, can
+ be defined.
  Utilizing the new language features introduced in Java 8, we simply write
  a private static method, which takes the genotype we defined and calculate
  it's fitness value.
@@ -1498,7 +1509,7 @@ Evolution Engine
 evolution
 \emph default
  steps for one generation; the steps are described in the body of the while-loop
- in listing 
+ of listing 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:Genetic-algorithm"
@@ -2650,7 +2661,11 @@ name "fig:Genotype-structure"
 
 \end_inset
 
-Genotype structure
+
+\family typewriter
+Genotype
+\family default
+ structure
 \begin_inset Index idx
 status collapsed
 
@@ -3070,8 +3085,11 @@ Evolution\SpecialChar \-
 Durations
 \family default
  class.
- Additionally to the fitness value, the Phenotype contains the generation
- when it was created.
+ Additionally to the fitness value, the 
+\family typewriter
+Phenotype
+\family default
+ contains the generation when it was created.
  This allows to calculate the current age and the removal of overaged individual
 s from the 
 \family typewriter
@@ -3102,7 +3120,11 @@ Population
 \end_layout
 
 \begin_layout Standard
-The end of the class hierarchy of the domain model is the Population.
+The end of the class hierarchy of the domain model is the 
+\family typewriter
+Population
+\family default
+.
  It is a collection of individuals and forms the start and the end of an
  evolution step.
 \end_layout
@@ -5027,7 +5049,7 @@ If the
 \family default
  class is created with one crossover point, it behaves exactly like the
  single-point crossover.
- The following picture shows how the Multi-point crossover works with two
+ The following picture shows how the multi-point crossover works with two
  crossover points, defined at index 
 \begin_inset Formula $1$
 \end_inset
@@ -11316,7 +11338,7 @@ scalar
 status collapsed
 
 \begin_layout Plain Layout
-Scalar chromosomes contain only one gene.
+Scalar chromosomes contains only one gene.
 \end_layout
 
 \end_inset
@@ -12483,7 +12505,7 @@ In Java code, the conversion from the
 \family typewriter
 Genotype
 \family default
- to the transformation matrix will look like this:
+ to the transformation matrix, will look like this:
 \end_layout
 
 \begin_layout Standard
@@ -16369,11 +16391,11 @@ ty of 0.15.
  The tournament selector is used for both, the offspring- and the survivor
  selection---this is the default selector.
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 For the other default values (population size, maximal age, ...) have a look
- at the Javadoc:
+ at the Javadoc: 
 \begin_inset Flex URL
 status open
 
