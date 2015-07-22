@@ -329,7 +329,6 @@ VERSION
 \family sans
 \size large
 \noun on
-\lang english
 
 \begin_inset space \hspace{}
 \length 1.5cm
@@ -15140,7 +15139,7 @@ status open
 \backslash
 lstset{basicstyle=
 \backslash
-tiny
+fontsize{6.8}{8}
 \backslash
 ttfamily}
 \end_layout
