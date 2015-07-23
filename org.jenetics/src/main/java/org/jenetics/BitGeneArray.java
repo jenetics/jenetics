@@ -119,7 +119,7 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene, Proxy> {
 			final Proxy other, final int otherStart
 		) {
 			checkIndex(start, end);
-			other.checkIndex(otherStart, otherStart + (end - start));
+			other.checkIndex(otherStart, otherStart + end - start);
 			cloneIfSealed();
 			other.cloneIfSealed();
 

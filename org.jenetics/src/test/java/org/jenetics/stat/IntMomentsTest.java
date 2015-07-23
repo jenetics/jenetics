@@ -21,6 +21,8 @@ package org.jenetics.stat;
 
 import java.util.Random;
 
+import org.testng.annotations.Test;
+
 import org.jenetics.util.Factory;
 import org.jenetics.util.ObjectTester;
 import org.jenetics.util.RandomRegistry;
@@ -28,6 +30,7 @@ import org.jenetics.util.RandomRegistry;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
+@Test
 public class IntMomentsTest extends ObjectTester<IntMoments> {
 
 	@Override

@@ -208,20 +208,35 @@ class TestUtils {
 		).evaluate();
 	}
 
-	public static Phenotype<DoubleGene, Double> newDoublePhenotype() {
+	public static Phenotype<DoubleGene, Double> newDoublePhenotype(
+		final double min,
+		final double max
+	) {
 		final Random random = RandomRegistry.getRandom();
-		return newDoublePhenotype(random.nextDouble()*10);
+		return newDoublePhenotype(random.nextDouble()*(max - min) + min);
 	}
 
-	public static Population<DoubleGene, Double> newDoublePopulation(final int length) {
+	public static Phenotype<DoubleGene, Double> newDoublePhenotype() {
+		return newDoublePhenotype(0, 10);
+	}
+
+	public static Population<DoubleGene, Double> newDoublePopulation(
+		final int length,
+		final double min,
+		final double max
+	) {
 		final Population<DoubleGene, Double> population =
 			new Population<>(length);
 
 		for (int i = 0; i < length; ++i) {
-			population.add(newDoublePhenotype());
+			population.add(newDoublePhenotype(min, max));
 		}
 
 		return population;
+	}
+
+	public static Population<DoubleGene, Double> newDoublePopulation(final int length) {
+		return newDoublePopulation(length, 0, 10);
 	}
 
 }
