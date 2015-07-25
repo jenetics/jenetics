@@ -19,13 +19,37 @@
  */
 package org.jenetics.optimizer;
 
+import java.util.function.DoubleFunction;
+import java.util.function.Function;
+
+import org.jenetics.DoubleGene;
+import org.jenetics.Gene;
+import org.jenetics.RouletteWheelSelector;
+import org.jenetics.Selector;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public interface IntDoubleFunction<T> {
+public interface Constructor<T> {
 
-	public T apply(final int a, final double b);
+	public int argsLength();
+
+	public T cons(final double... args);
+
+	@SafeVarargs
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Constructor<Selector<G, C>> ofSelector(
+		final Class<? extends Selector> type,
+		DoubleFunction<Object>... args
+	) {
+		return null;
+	}
+
+
+	static void foo() {
+		Constructor<Selector<DoubleGene, Double>> c = ofSelector(RouletteWheelSelector.class);
+	}
 
 }

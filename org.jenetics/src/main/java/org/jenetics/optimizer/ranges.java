@@ -19,10 +19,19 @@
  */
 package org.jenetics.optimizer;
 
+import static java.lang.Math.round;
+
+import org.jenetics.util.IntRange;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class ranges {
+final class ranges {
+
+	int toInt(final IntRange range, final double p) {
+		return (int)round((range.getMax() - range.getMin())*p) + range.getMin();
+	}
+
 }

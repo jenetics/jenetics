@@ -19,10 +19,40 @@
  */
 package org.jenetics.optimizer;
 
+import java.util.function.DoubleFunction;
+import java.util.function.Function;
+
+import org.jenetics.DoubleGene;
+import org.jenetics.Gene;
+import org.jenetics.MultiPointCrossover;
+import org.jenetics.RouletteWheelSelector;
+import org.jenetics.Selector;
+import org.jenetics.util.DoubleRange;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class ArgumentConverter {
+public abstract class ArgumentConverter {
+
+	public abstract Object arg(final int index, final double value);
+
+	@SafeVarargs
+	final <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Function<double[], Selector<G, C>>
+	selector(final Class<? extends Selector> type, DoubleFunction<Object>... args) {
+
+		return null;
+	}
+
+
+	public void foo() {
+		final Function<double[], Selector<DoubleGene, Double>> s = selector(
+			RouletteWheelSelector.class,
+				d -> "",
+				d -> ""
+			);
+	}
+
 }
