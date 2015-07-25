@@ -4,7 +4,7 @@
 
 ## Documentation
 
-The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jenetics/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-3.2.0.pdf)).
+The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jenetics/3.2/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-3.2.0.pdf)).
 
 
 ## Requirements
@@ -71,7 +71,7 @@ The latest Eclipse version (4.4.2) has problems compiling some _valid_ lambda ex
          .builder((Function<Genotype<BitGene>, Integer>)HelloWorld::eval, gtf)
          .build();
 
- Or you are using [IntelliJ 14](https://www.jetbrains.com/idea/download/) instead.
+ Or you are using ![IntelliJ 14](https://www.jetbrains.com/idea/download/) instead.
 
 ## Example
 
@@ -146,7 +146,18 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 
 #### Improvements
 
-#### Bugs
+* [#24](https://github.com/jenetics/jenetics/issues/24): Stabilize statistical selector tests.
+* [#25](https://github.com/jenetics/jenetics/issues/25): Remove `testng.xml` file. The test classes are now determined automatically.
+* [#40](https://github.com/jenetics/jenetics/issues/40): Introduce `Codec` interface for defining problem encodings.
+* Add _Internal_ section in manual, which describes implementation details.
+
+#### Bug fixes
+
+* [#33](https://github.com/jenetics/jenetics/issues/33): Selectors must not change the input population. This occasionally caused `ConcurrentModificationException`.  Such selectors are now creating a defensive copy of the input population.
+* [#34](https://github.com/jenetics/jenetics/issues/34): `IndexOutOfBoundsException` when selecting populations which are too short.
+* [#35](https://github.com/jenetics/jenetics/issues/35): `IndexOutOfBoundsException` when altering populations which are too short.
+* [#39](https://github.com/jenetics/jenetics/issues/39): Numerical instabilities of `ProbabilitySelector`.
+* [#47](https://github.com/jenetics/jenetics/issues/47): `Engine` deadlock for long running fitness functions.
 
 ### 3.1.0
 
@@ -170,4 +181,8 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 ### 3.0.0
 
 * Rewrite of *engine* classes to make use of Java 8 Stream API.
+
+## Used software
+
+<a href="https://www.jetbrains.com/idea/">![IntelliJ](https://www.jetbrains.com/idea/docs/logo_intellij_idea.png)</a>
 

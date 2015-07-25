@@ -21,6 +21,7 @@ package org.jenetics.gradle.plugin
 
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.api.Project
+import org.jenetics.gradle.Version
 import org.jenetics.gradle.task.Lyx2PDFTask
 
 /**
@@ -57,7 +58,9 @@ class LyxPlugin extends JeneticsPlugin {
 				filter(ReplaceTokens, tokens: [
 					__year__: project.copyrightYear,
 					__identifier__: project.manualIdentifier,
-					__version__: project.version
+					__version__: project.version,
+					__minor_version__: Version.parse(project.version.toString())
+						.minorVersionString()
 				])
 			}
 			copy {

@@ -103,7 +103,7 @@ public final class BoltzmannSelector<
 		for (int i = 1; i < fitness.length; ++i) {
 			fitness[i] = population.get(i).getFitness().doubleValue();
 			if (fitness[i] < min) min = fitness[i];
-			if (fitness[i] > max) max = fitness[i];
+			else if (fitness[i] > max) max = fitness[i];
 		}
 
 		final double diff = max - min;

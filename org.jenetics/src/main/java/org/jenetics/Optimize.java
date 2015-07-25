@@ -77,7 +77,7 @@ public enum Optimize {
 	 * of <i>better</i> and <i>worse</i>.
 	 *
 	 * <pre>{@code
-	 * Population<DoubleGene, Double> population = ...
+	 * final Population<DoubleGene, Double> population = ...
 	 * population.sort(Optimize.MINIMUM.<Double>descending());
 	 * }</pre>
 	 *
@@ -89,7 +89,7 @@ public enum Optimize {
 	 * @return a new {@link Comparator} for the type {@code T}.
 	 */
 	public <T extends Comparable<? super T>> Comparator<T> descending() {
-		return (a, b) -> Optimize.this.compare(b, a);
+		return (a, b) -> compare(b, a);
 	}
 
 	/**
@@ -99,7 +99,7 @@ public enum Optimize {
 	 * of <i>better</i> and <i>worse</i>.
 	 *
 	 * <pre>{@code
-	 * Population<DoubleGene, Double> population = ...
+	 * final Population<DoubleGene, Double> population = ...
 	 * population.sort(Optimize.MINIMUM.<Double>ascending());
 	 * }</pre>
 	 *

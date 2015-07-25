@@ -323,7 +323,10 @@ FRANZ WILHELMSTÖTTER
 
 \series default
 \noun default
-VERSION 3.2
+VERSION 
+\family default
+@__minor_version__@
+\family sans
 \size large
 \noun on
 
@@ -763,7 +766,7 @@ width "90col%"
 special "none"
 height "1in"
 height_special "totalheight"
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset CommandInset line
@@ -791,21 +794,21 @@ key "Sivanandam2010"
 
 \end_inset
 
-,
+, 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "michalewicz1996genetic"
 
 \end_inset
 
-,
+, 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Shiffman2012"
 
 \end_inset
 
- or
+ or 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Whitley94agenetic"
@@ -1056,8 +1059,15 @@ Hello World
 \end_layout
 
 \begin_layout Standard
-In contrast to other GA implementations, the library uses the concept of
- an evolution 
+In contrast to other GA implementations, 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ uses the concept of an evolution 
 \emph on
 stream
 \emph default
@@ -1092,7 +1102,7 @@ The probably most challenging part, when setting up a new evolution
 \family typewriter
 Engine
 \family default
-, is to transform the problem domain into a appropriate 
+, is to transform the problem domain into an appropriate 
 \family typewriter
 Genotype
 \family default
@@ -1134,7 +1144,11 @@ Chromosome
 Genotype
 \family default
 .
- In general, the Genotype can be created with 1 to 
+ In general, the 
+\family typewriter
+Genotype
+\family default
+ can be created with 1 to 
 \begin_inset Formula $n$
 \end_inset
 
@@ -1151,8 +1165,8 @@ reference "sub:Domain-classes-Genotype"
 \end_layout
 
 \begin_layout Enumerate
-Once this is done, the fitness function which should be maximized, can be
- defined.
+Once this is done, the fitness function, which should be maximized, can
+ be defined.
  Utilizing the new language features introduced in Java 8, we simply write
  a private static method, which takes the genotype we defined and calculate
  it's fitness value.
@@ -1494,7 +1508,7 @@ Evolution Engine
 evolution
 \emph default
  steps for one generation; the steps are described in the body of the while-loop
- in listing 
+ of listing 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:Genetic-algorithm"
@@ -1892,7 +1906,7 @@ status open
 
 \begin_layout Plain Layout
 
-http://jenetics.io/javadoc/org.jenetics/index.html
+http://jenetics.io/javadoc/org.jenetics/@__minor_version__@/index.html
 \end_layout
 
 \end_inset
@@ -2359,7 +2373,7 @@ Validation
 Verifiable
 \family default
  interface, allows the gene to mark itself as invalid.
- All invalid genes are replaced with new ones during the evolution phase.s
+ All invalid genes are replaced with new ones during the evolution phase.
 \end_layout
 
 \begin_layout Standard
@@ -2646,7 +2660,11 @@ name "fig:Genotype-structure"
 
 \end_inset
 
-Genotype structure
+
+\family typewriter
+Genotype
+\family default
+ structure
 \begin_inset Index idx
 status collapsed
 
@@ -3066,8 +3084,11 @@ Evolution\SpecialChar \-
 Durations
 \family default
  class.
- Additionally to the fitness value, the Phenotype contains the generation
- when it was created.
+ Additionally to the fitness value, the 
+\family typewriter
+Phenotype
+\family default
+ contains the generation when it was created.
  This allows to calculate the current age and the removal of overaged individual
 s from the 
 \family typewriter
@@ -3098,7 +3119,11 @@ Population
 \end_layout
 
 \begin_layout Standard
-The end of the class hierarchy of the domain model is the Population.
+The end of the class hierarchy of the domain model is the 
+\family typewriter
+Population
+\family default
+.
  It is a collection of individuals and forms the start and the end of an
  evolution step.
 \end_layout
@@ -5023,7 +5048,7 @@ If the
 \family default
  class is created with one crossover point, it behaves exactly like the
  single-point crossover.
- The following picture shows how the Multi-point crossover works with two
+ The following picture shows how the multi-point crossover works with two
  crossover points, defined at index 
 \begin_inset Formula $1$
 \end_inset
@@ -7180,7 +7205,6 @@ Evolution\SpecialChar \-
 Stream
 \family default
  according to the defined optimization strategy.
- 
 \end_layout
 
 \begin_layout Description
@@ -8775,8 +8799,8 @@ status open
 
 \begin_layout Plain Layout
 Measured on a Intel(R) Core(TM) i5-3427U CPU @ 1.80GHz with Java(TM) SE Runtime
- Environment (build 1.8.0_25-b17)---Java HotSpot(TM) 64-Bit Server VM (build
- 25.25-b02, mixed mode)---, using the JHM micro-benchmark library.
+ Environment (build 1.8.0_51-b16)---Java HotSpot(TM) 64-Bit Server VM (build
+ 25.51-b03, mixed mode)---, using the JHM micro-benchmark library.
  
 \end_layout
 
@@ -8880,7 +8904,7 @@ Random
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $67\cdot10^{6}$
+\begin_inset Formula $69\cdot10^{6}$
 \end_inset
 
 
@@ -8892,7 +8916,7 @@ Random
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $33\cdot10^{6}$
+\begin_inset Formula $34\cdot10^{6}$
 \end_inset
 
 
@@ -8904,7 +8928,7 @@ Random
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $67\cdot10^{6}$
+\begin_inset Formula $69\cdot10^{6}$
 \end_inset
 
 
@@ -8916,7 +8940,7 @@ Random
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $33\cdot10^{6}$
+\begin_inset Formula $34\cdot10^{6}$
 \end_inset
 
 
@@ -8941,7 +8965,7 @@ ThreadLocalRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $333\cdot10^{6}$
+\begin_inset Formula $191\cdot10^{6}$
 \end_inset
 
 
@@ -8953,7 +8977,7 @@ ThreadLocalRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $344\cdot10^{6}$
+\begin_inset Formula $184\cdot10^{6}$
 \end_inset
 
 
@@ -8965,7 +8989,7 @@ ThreadLocalRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $237\cdot10^{6}$
+\begin_inset Formula $137\cdot10^{6}$
 \end_inset
 
 
@@ -8977,7 +9001,7 @@ ThreadLocalRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $220\cdot10^{6}$
+\begin_inset Formula $138\cdot10^{6}$
 \end_inset
 
 
@@ -9002,7 +9026,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $243\cdot10^{6}$
+\begin_inset Formula $153\cdot10^{6}$
 \end_inset
 
 
@@ -9014,7 +9038,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $251\cdot10^{6}$
+\begin_inset Formula $159\cdot10^{6}$
 \end_inset
 
 
@@ -9026,7 +9050,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $196\cdot10^{6}$
+\begin_inset Formula $118\cdot10^{6}$
 \end_inset
 
 
@@ -9038,7 +9062,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $199\cdot10^{6}$
+\begin_inset Formula $119\cdot10^{6}$
 \end_inset
 
 
@@ -11192,7 +11216,7 @@ IntegerGene
 \family typewriter
 Chromosome
 \family default
-, 
+,
 \end_layout
 
 \begin_layout Itemize
@@ -11204,7 +11228,7 @@ LongGene
 \family typewriter
 Chromosome
 \family default
- and 
+ and
 \end_layout
 
 \begin_layout Itemize
@@ -11313,7 +11337,7 @@ scalar
 status collapsed
 
 \begin_layout Plain Layout
-Scalar chromosomes contain only one gene.
+Scalar chromosomes contains only one gene.
 \end_layout
 
 \end_inset
@@ -12179,11 +12203,11 @@ https://en.wikipedia.org/wiki/Transformation_matrix
 :
 \begin_inset Formula 
 \begin{equation}
-A=\left[\begin{array}{ccc}
+A=\left(\begin{array}{ccc}
 a_{11} & a_{12} & a_{13}\\
 a_{21} & a_{22} & a_{23}\\
 0 & 0 & 1
-\end{array}\right].\label{eq:Transformation matrix}
+\end{array}\right).\label{eq:Transformation matrix}
 \end{equation}
 
 \end_inset
@@ -12436,9 +12460,6 @@ Genotype
 \end_inset
 
 , the following equations can be used:
-\end_layout
-
-\begin_layout Standard
 \begin_inset Formula 
 \begin{eqnarray}
 a_{11} & = & s_{x}\cos\theta+k_{x}s_{y}\sin\theta\nonumber \\
@@ -12452,15 +12473,38 @@ a_{23} & = & t_{y}\nonumber
 \end_inset
 
 This corresponds to an transformation order of 
-\begin_inset Formula $R\circ S_{c}\circ S_{h}\circ T$
+\begin_inset Formula $T\cdot S_{h}\cdot S_{c}\cdot R$
 \end_inset
 
-.
- In Java code, the conversion from the 
+:
+\begin_inset Formula 
+\[
+\left(\begin{array}{ccc}
+1 & 0 & t_{x}\\
+0 & 1 & t_{y}\\
+0 & 0 & 1
+\end{array}\right)\cdot\left(\begin{array}{ccc}
+1 & k_{x} & 0\\
+k_{y} & 1 & 0\\
+0 & 0 & 1
+\end{array}\right)\cdot\left(\begin{array}{ccc}
+s_{x} & 0 & 0\\
+0 & s_{y} & 0\\
+0 & 0 & 1
+\end{array}\right)\cdot\left(\begin{array}{ccc}
+\cos\theta & -\sin\theta & 0\\
+\sin\theta & \cos\theta & 0\\
+0 & 0 & 1
+\end{array}\right).
+\]
+
+\end_inset
+
+In Java code, the conversion from the 
 \family typewriter
 Genotype
 \family default
- to the transformation matrix will look like this:
+ to the transformation matrix, will look like this:
 \end_layout
 
 \begin_layout Standard
@@ -13167,7 +13211,7 @@ reference "sub:Encoding"
 
 \end_inset
 
- in a formalized way.
+ in a more formalized way.
  
 \end_layout
 
@@ -13180,7 +13224,7 @@ Engine
 \family typewriter
 Genotype
 \family default
- as input type.
+ as input.
  This 
 \family typewriter
 Genotype
@@ -13190,11 +13234,11 @@ Genotype
 transformed
 \emph default
  into an object of the problem domain.
- The 
+ The usage 
 \family typewriter
 Codec
 \family default
- interface allows the tighter coupling of the 
+ interface allows a tighter coupling of the 
 \family typewriter
 Genotype
 \family default
@@ -13430,8 +13474,8 @@ Codec
 \family typewriter
 Function
 \family default
- solely contains code from your actual problem domain; no dependencies to
- classes of the 
+ solely contains code from your actual problem domain---no dependencies
+ to classes of the 
 \family sans
 \series bold
 \shape smallcaps
@@ -13484,8 +13528,8 @@ Jenetics
 \family default
 \series default
 \shape default
- comes with a set of standard encodings, which are created via factory methods
- of the 
+ comes with a set of standard encodings, which are created via static factory
+ methods of the 
 \family typewriter
 org.\SpecialChar \-
 jenetics.\SpecialChar \-
@@ -13573,6 +13617,10 @@ Codec
 s for permutation problems.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Note Comment
+status open
+
 \begin_layout Itemize
 
 \family typewriter
@@ -13601,6 +13649,11 @@ awt.\SpecialChar \-
 geom
 \family default
  package.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -14921,7 +14974,7 @@ Internals
 This section contains internal implementation details which doesn't fit
  in one of the previous sections.
  They are not essential for using the library, but would give the user a
- deeper insights in some design decisions made when implementing the library.
+ deeper insight in some design decisions, made when implementing the library.
  It also introduces tools and classes which where developed for testing
  purpose.
  This classes resides below the 
@@ -14931,11 +14984,21 @@ jenetics.\SpecialChar \-
 internal
 \family default
  package.
- Though they are not part of the official API, they are packed into the
- delivered jar and can be used accordingly.
+ Though they are 
+\series bold
+not
+\series default
+ part of the official API, they are packed into the delivered jar and can
+ be used accordingly.
  
 \emph on
-Be aware that this classes can be changed and removed without announcement.
+Be aware that all classes below the 
+\family typewriter
+org.\SpecialChar \-
+jenetics.\SpecialChar \-
+internal
+\family default
+ package can be changed and removed without announcement.
 \end_layout
 
 \begin_layout Subsection
@@ -14952,9 +15015,9 @@ Jenetics
 \series default
 \shape default
  uses the 
-\emph on
+\family typewriter
 dieharder
-\emph default
+\family default
 
 \begin_inset Foot
 status collapsed
@@ -14977,15 +15040,27 @@ http://www.phy.duke.edu/~rgb/General/dieharder.php
 
 \end_inset
 
- command line tool for testing the statistical quality of the used PRNGs.
- dieharder is a random number generator (RNG) testing suite.
+ (command line) tool for testing the 
+\emph on
+randomness
+\emph default
+ of the used PRNGs.
+ 
+\family typewriter
+dieharder
+\family default
+ is a random number generator (RNG) testing suite.
  It is intended to test generators, not files of possibly random numbers.
  Since 
-\emph on
+\family typewriter
 dieharder
-\emph default
+\family default
  needs a huge amount of random data, for testing the quality of a RNG, it
- is usually advisable to pipe the random numbers to the dieharder process:
+ is usually advisable to pipe the random numbers to the 
+\family typewriter
+dieharder
+\family default
+ process:
 \end_layout
 
 \begin_layout LyX-Code
@@ -14998,7 +15073,11 @@ The example above demonstrates how to stream a raw binary stream of bits
 \family typewriter
 stdin
 \family default
- (raw) interface of dieharder.
+ (raw) interface of 
+\family typewriter
+dieharder
+\family default
+.
  With the 
 \family typewriter
 Die\SpecialChar \-
@@ -15022,7 +15101,7 @@ Random
 \emph on
 default
 \emph default
--constructible.
+-constructible and part of the classpath.
 \end_layout
 
 \begin_layout LyX-Code
@@ -15043,8 +15122,11 @@ $ java -cp org.jenetics-@__version__@.jar
 
 \begin_layout Standard
 Calling the command above will create an instance of the given random engine
- and stream the random data (bytes) to the raw interface of dieharder process.
- The tested Java random engine must be part of the classpath.
+ and stream the random data (bytes) to the raw interface of 
+\family typewriter
+dieharder
+\family default
+ process.
 \end_layout
 
 \begin_layout Standard
@@ -15057,7 +15139,7 @@ status open
 \backslash
 lstset{basicstyle=
 \backslash
-tiny
+fontsize{6.8}{8}
 \backslash
 ttfamily}
 \end_layout
@@ -15066,7 +15148,7 @@ ttfamily}
 
 
 \backslash
-lstinputlisting[language=XML]{../resources/code/dieharder.protocol}
+lstinputlisting{../resources/code/dieharder.protocol}
 \end_layout
 
 \begin_layout Plain Layout
@@ -15080,7 +15162,11 @@ footnotesize}
 
 \end_inset
 
-In the listing above, a part of the created dieharder report is shown.
+In the listing above, a part of the created 
+\family typewriter
+dieharder
+\family default
+ report is shown.
  For testing the 
 \family typewriter
 LCG64\SpecialChar \-
@@ -15097,7 +15183,7 @@ LCG64ShiftRandom
 
 
 \family default
- class, which is of the 
+ class, which is part of the 
 \family typewriter
 org.\SpecialChar \-
 jenetics.\SpecialChar \-
@@ -15130,8 +15216,22 @@ reference "tab:LCG64ShiftRandom-quality"
 
 \end_inset
 
- shows the summary of the dieharder tests.
- The full report is part of the source file (
+ shows the summary of the 
+\family typewriter
+dieharder
+\family default
+ tests.
+ The full report is part of the source file of the 
+\family typewriter
+LCG64\SpecialChar \-
+Shift\SpecialChar \-
+Random
+\family default
+ class.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
 \begin_inset Flex URL
 status collapsed
 
@@ -15143,7 +15243,12 @@ netics/util/LCG64ShiftRandom.java
 
 \end_inset
 
-).
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -15350,7 +15455,7 @@ Harder class
 \family typewriter
 seed()
 \family default
- method itself has been wrapped into the 
+ method has been wrapped into the 
 \family typewriter
 org.\SpecialChar \-
 jenetics.\SpecialChar \-
@@ -15385,7 +15490,11 @@ $ java -cp org.jenetics-@__version__@.jar
 \end_layout
 
 \begin_layout Standard
-will perform the statistical tests for the nano time random engine.
+will perform the statistical tests for the nano time 
+\emph on
+random engine
+\emph default
+.
  The statistical quality is rather bad: every single test failed.
  Table 
 \begin_inset CommandInset ref
@@ -15604,7 +15713,7 @@ Object\SpecialChar \-
 Hash\SpecialChar \-
 Random
 \family default
- class and tested with
+ class and tested as well with
 \end_layout
 
 \begin_layout LyX-Code
@@ -15665,7 +15774,7 @@ netics/internal/util/ObjectHashRandom.java
 \begin_inset Float table
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -15771,7 +15880,11 @@ right
 \emph default
  solution.
  The rational behind this was, that the PRNG seed shouldn't rely on a single
- source of entropy.
+ 
+\emph on
+source
+\emph default
+ of entropy.
 \end_layout
 
 \begin_layout Standard
@@ -15883,7 +15996,11 @@ reference "lis:Random-seeding"
 \end_inset
 
  shows how the nano time seed is mixed with the object seed.
- The mix method was inspired by the mixing step of the 
+ The 
+\family typewriter
+mix
+\family default
+ method was inspired by the mixing step of the 
 \family typewriter
 lcg64_shift
 \family default
@@ -16273,17 +16390,17 @@ ty of 0.15.
  The tournament selector is used for both, the offspring- and the survivor
  selection---this is the default selector.
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 For the other default values (population size, maximal age, ...) have a look
- at the Javadoc:
+ at the Javadoc: 
 \begin_inset Flex URL
 status open
 
 \begin_layout Plain Layout
 
-http://jenetics.sourceforge.net/javadoc/index.html
+http://jenetics.io/javadoc/org.jenetics/@__minor_version__@/index.html
 \end_layout
 
 \end_inset
@@ -17645,7 +17762,7 @@ Scope
 \series default
 :
 \emph on
-javadoc
+ javadoc
 \end_layout
 
 \end_deeper
@@ -17685,11 +17802,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 2.4 (
-\emph on
-or later
-\emph default
-)
+: 2.4
 \end_layout
 
 \begin_layout Itemize
@@ -17768,15 +17881,42 @@ Maven Central
 \end_layout
 
 \begin_layout Standard
-The whole Jenetics package can also be downloaded from the 
+The whole 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ package can also be downloaded from the 
 \emph on
 Maven Central
 \emph default
- repository:
+ repository 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://repo.maven.apache.org/maven2
+\end_layout
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Subparagraph
+
+\family typewriter
+pom.xml 
+\family default
+snippet for Maven
 \end_layout
 
 \begin_layout LyX-Code
-<dependency>     
+<dependency>
 \end_layout
 
 \begin_layout LyX-Code
@@ -17793,6 +17933,14 @@ Maven Central
 
 \begin_layout LyX-Code
 </dependency>
+\end_layout
+
+\begin_layout Subparagraph
+Gradle
+\end_layout
+
+\begin_layout LyX-Code
+'org.bitbucket.fwilhelm:org.jenetics:@__version__@'
 \end_layout
 
 \begin_layout Section

@@ -332,7 +332,7 @@ public final class codecs {
 	 * @return the affine transformation codec
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static Codec<AffineTransform, DoubleGene> ofAffineTransform(
+	static Codec<AffineTransform, DoubleGene> ofAffineTransform(
 		final DoubleRange sx, final DoubleRange sy,
 		final DoubleRange tx, final DoubleRange ty,
 		final DoubleRange th,
@@ -382,7 +382,7 @@ public final class codecs {
 	 * @return the affine transformation codec
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static Codec<AffineTransform, DoubleGene> ofAffineTransform(
+	static Codec<AffineTransform, DoubleGene> ofAffineTransform(
 		final DoubleRange s,
 		final DoubleRange t,
 		final DoubleRange th,
