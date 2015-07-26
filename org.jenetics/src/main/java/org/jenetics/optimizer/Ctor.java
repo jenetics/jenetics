@@ -20,11 +20,10 @@
 package org.jenetics.optimizer;
 
 import java.util.function.DoubleFunction;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
-import org.jenetics.DoubleGene;
-import org.jenetics.Gene;
-import org.jenetics.RouletteWheelSelector;
-import org.jenetics.Selector;
+import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -33,22 +32,27 @@ import org.jenetics.Selector;
  */
 public interface Ctor<T> {
 
-	public int argsLength();
+	public Class<T> type();
 
-	public T cons(final double... args);
-
-	@SafeVarargs
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Ctor<Selector<G, C>> ofSelector(
-		final Class<? extends Selector> type,
-		DoubleFunction<Object>... args
-	) {
-		return null;
-	}
+	public ISeq<DoubleFunction<Object>> parameters();
 
 
-	static void foo() {
-		Ctor<Selector<DoubleGene, Double>> c = ofSelector(RouletteWheelSelector.class);
+	public default T cons(final double... args) {
+		final Object[] parameters = IntStream.range(0, args.length)
+			.mapToObj(i -> parameters().get(i).apply(args[i]))
+			.toArray();
+
+		final Class<?>[] parameterTypes = Stream.of(parameters)
+			.map(Object::getClass)
+			.toArray(Class[]::new);
+
+		try {
+			return type()
+				.getConstructor(parameterTypes)
+				.newInstance(parameters);
+		} catch (ReflectiveOperationException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }
