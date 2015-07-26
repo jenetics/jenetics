@@ -20,7 +20,6 @@
 package org.jenetics.optimizer;
 
 import java.util.function.DoubleFunction;
-import java.util.function.Function;
 
 import org.jenetics.DoubleGene;
 import org.jenetics.Gene;
@@ -32,7 +31,7 @@ import org.jenetics.Selector;
  * @version !__version__!
  * @since !__version__!
  */
-public interface Constructor<T> {
+public interface Ctor<T> {
 
 	public int argsLength();
 
@@ -40,7 +39,7 @@ public interface Constructor<T> {
 
 	@SafeVarargs
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Constructor<Selector<G, C>> ofSelector(
+	Ctor<Selector<G, C>> ofSelector(
 		final Class<? extends Selector> type,
 		DoubleFunction<Object>... args
 	) {
@@ -49,7 +48,7 @@ public interface Constructor<T> {
 
 
 	static void foo() {
-		Constructor<Selector<DoubleGene, Double>> c = ofSelector(RouletteWheelSelector.class);
+		Ctor<Selector<DoubleGene, Double>> c = ofSelector(RouletteWheelSelector.class);
 	}
 
 }
