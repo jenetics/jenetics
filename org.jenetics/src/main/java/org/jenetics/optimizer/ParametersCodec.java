@@ -51,6 +51,8 @@ public class ParametersCodec<
 	implements Codec<Parameters<G, C>, DoubleGene>
 {
 
+	private ISeq<Codec<Selector<G, C>, DoubleGene>> _s;
+
 	private final ISeq<Proxy<Alterer<G, C>>> _alterers;
 	private final ISeq<Proxy<Selector<G, C>>> _offspringSelectors;
 	private final ISeq<Proxy<Selector<G, C>>> _survivorsSelectors;

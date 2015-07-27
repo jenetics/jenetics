@@ -36,7 +36,6 @@ public interface Ctor<T> {
 
 	public ISeq<DoubleFunction<Object>> parameters();
 
-
 	public default T cons(final double... args) {
 		final Object[] parameters = IntStream.range(0, args.length)
 			.mapToObj(i -> parameters().get(i).apply(args[i]))
