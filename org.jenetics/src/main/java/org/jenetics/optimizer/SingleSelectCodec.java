@@ -38,7 +38,7 @@ import org.jenetics.util.Seq;
  * @version !__version__!
  * @since !__version__!
  */
-public class UnionCodec<T> implements Codec<T, DoubleGene> {
+public class SingleSelectCodec<T> implements Codec<T, DoubleGene> {
 
 	private final ISeq<Codec<T, DoubleGene>> _codecs;
 
@@ -46,7 +46,7 @@ public class UnionCodec<T> implements Codec<T, DoubleGene> {
 	private final int[] _indexes;
 	private final Genotype<DoubleGene> _encoding;
 
-	public UnionCodec(final ISeq<Codec<T, DoubleGene>> codecs) {
+	public SingleSelectCodec(final ISeq<Codec<T, DoubleGene>> codecs) {
 		_codecs = codecs;
 
 		_chromosomes = _codecs.stream()
