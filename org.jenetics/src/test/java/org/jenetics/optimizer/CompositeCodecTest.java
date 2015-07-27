@@ -19,10 +19,51 @@
  */
 package org.jenetics.optimizer;
 
+import static java.lang.String.format;
+
+import java.util.Arrays;
+
+import org.testng.annotations.Test;
+
+import org.jenetics.DoubleGene;
+import org.jenetics.Genotype;
+import org.jenetics.engine.Codec;
+import org.jenetics.engine.codecs;
+import org.jenetics.util.DoubleRange;
+import org.jenetics.util.ISeq;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 public class CompositeCodecTest {
+
+	@Test
+	public void encoding() {
+		final Codec<String, DoubleGene> codec = new CompositeCodec<>(
+			ISeq.of(
+				codecs.ofScalar(DoubleRange.of(0, 1)),
+				codecs.ofVector(DoubleRange.of(10, 100), 3),
+				codecs.ofScalar(DoubleRange.of(2, 3)),
+				codecs.ofVector(DoubleRange.of(200, 500), DoubleRange.of(200, 500))
+			),
+			this::map
+		);
+
+		Genotype<DoubleGene> gt = codec.encoding().newInstance();
+		System.out.println(gt);
+		System.out.println(codec.decoder().apply(gt));
+	}
+
+	private String map(final ISeq<Object> values) {
+		final Double v1 = (Double)values.get(0);
+		final double[] v2 = (double[])values.get(1);
+		final Double v3 = (Double)values.get(2);
+		final double[] v4 = (double[])values.get(3);
+
+
+		return format("%s:::%s:::%s:::%s", v1, Arrays.toString(v2), v3, Arrays.toString(v4));
+ 	}
+
 }
