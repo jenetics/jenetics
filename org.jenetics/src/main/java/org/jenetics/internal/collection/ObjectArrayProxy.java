@@ -19,6 +19,7 @@
  */
 package org.jenetics.internal.collection;
 
+import static java.lang.String.format;
 import static java.util.Spliterator.IMMUTABLE;
 import static java.util.Spliterator.ORDERED;
 
@@ -52,6 +53,12 @@ public final class ObjectArrayProxy<T>
 		final int start, final int end
 	) {
 		super(array, start, end, ObjectArrayProxy<T>::new, Arrays::copyOfRange);
+		if (array.length < end) {
+			throw new ArrayIndexOutOfBoundsException(format(
+				"End index (%d) bigger than array length (%d).",
+				end, array.length
+			));
+		}
 	}
 
 	/**
