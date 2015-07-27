@@ -19,9 +19,6 @@
  */
 package org.jenetics.optimizer;
 
-import static java.lang.String.format;
-
-import java.util.Arrays;
 import java.util.function.Function;
 
 import org.jenetics.Chromosome;
@@ -43,8 +40,7 @@ public class CompositeCodec<T, G extends Gene<?, G>> implements Codec<T, G> {
 	private final ISeq<Codec<?, G>> _codecs;
 	private final Function<ISeq<Object>, T> _decoder;
 
-	private final ISeq<ISeq<Chromosome<G>>> _chromosomes;
-	private final int[] _indexes;
+	private final int[] _gtlengths;
 	private final Genotype<G> _encoding;
 
 	public CompositeCodec(
@@ -58,34 +54,16 @@ public class CompositeCodec<T, G extends Gene<?, G>> implements Codec<T, G> {
 			.map(c -> c.encoding().newInstance())
 			.collect(ISeq.toISeq());
 
-		_indexes = genotypes.stream()
+		_gtlengths = genotypes.stream()
 			.mapToInt(Genotype::length)
 			.toArray();
-		System.out.println(Arrays.toString(_indexes));
-
-		/*
-		for (int i = 1; i < _indexes.length; ++i) {
-			_indexes[i] += _indexes[i - 1];
-		}
-		System.out.println(Arrays.toString(_indexes));
-		 */
-
-		_chromosomes = genotypes.stream()
-			.map(Genotype::toSeq)
-			.collect(ISeq.toISeq());
-
-		/*
-		_indexes = new int[_chromosomes.size()];
-		_indexes[0] = _chromosomes.get(0).size();
-		for (int i = 1; i < _indexes.length; ++i) {
-			_indexes[i] = _indexes[i - 1] + _chromosomes.get(i).size();
-		}
-		*/
 
 		_encoding = Genotype.of(
-			_chromosomes.stream().flatMap(Seq::stream).collect(ISeq.toISeq())
+			genotypes.stream()
+				.map(Genotype::toSeq)
+				.flatMap(Seq::stream)
+				.collect(ISeq.toISeq())
 		);
-		System.out.println(_encoding + ": " +_encoding.length());
 	}
 
 	@Override
@@ -99,22 +77,14 @@ public class CompositeCodec<T, G extends Gene<?, G>> implements Codec<T, G> {
 	}
 
 	private ISeq<Object> groups(final Genotype<G> genotype) {
-		//System.out.println("GT: " + genotype);
 		final MSeq<Object> groups = MSeq.ofLength(_codecs.length());
-
 		final ISeq<Chromosome<G>> chromosomes = genotype.toSeq();
-		//System.out.println(chromosomes.subSeq(0, 1));
 
 		int start = 0;
 		for (int i = 0; i < _codecs.length(); ++i) {
-			final int end = start + _indexes[i];
+			final int end = start + _gtlengths[i];
 
-			System.out.println(format("i=%d, start=%d, end=%d, length=%d", i, start, end, _indexes[i]));
-			final Genotype<G> gt = Genotype
-				.of(
-					chromosomes.subSeq(start, end)
-				);
-
+			final Genotype<G> gt = Genotype.of(chromosomes.subSeq(start, end));
 			groups.set(i, _codecs.get(i).decoder().apply(gt));
 
 			start = end;
