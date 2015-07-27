@@ -51,9 +51,8 @@ public class CompositeCodec<T, G extends Gene<?, G>> implements Codec<T, G> {
 		_codecs = requireNonNull(codecs);
 		_decoder = requireNonNull(decoder);
 
-		final ISeq<Genotype<G>> genotypes = _codecs.stream()
-			.map(c -> c.encoding().newInstance())
-			.collect(ISeq.toISeq());
+		final ISeq<Genotype<G>> genotypes = _codecs
+			.map(c -> c.encoding().newInstance());
 
 		_lengths = genotypes.stream()
 			.mapToInt(Genotype::length)
