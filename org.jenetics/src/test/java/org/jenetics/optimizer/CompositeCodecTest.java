@@ -56,11 +56,11 @@ public class CompositeCodecTest {
 		System.out.println(codec.decoder().apply(gt));
 	}
 
-	private String map(final ISeq<Object> values) {
-		final Double v1 = (Double)values.get(0);
-		final double[] v2 = (double[])values.get(1);
-		final Double v3 = (Double)values.get(2);
-		final double[] v4 = (double[])values.get(3);
+	private String map(final Object[] values) {
+		final Double v1 = (Double)values[0];
+		final double[] v2 = (double[])values[1];
+		final Double v3 = (Double)values[2];
+		final double[] v4 = (double[])values[3];
 
 
 		return format("%s:::%s:::%s:::%s", v1, Arrays.toString(v2), v3, Arrays.toString(v4));
