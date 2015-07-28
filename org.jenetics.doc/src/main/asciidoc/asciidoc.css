@@ -39,7 +39,7 @@ a:visited {
 
 em {
     font-style: italic;
-    color: navy;
+    color: black;
 }
 
 strong {
@@ -90,7 +90,6 @@ hr {
 
 p {
     color: black;
-    /*font-size: 110%;*/
     text-align: justify;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
