@@ -78,7 +78,7 @@ Table <<LCG64ShiftRandom-quality, `LCG64ShiftRandom` quality>> shows the summary
 the source file of the `LCG64ShiftRandom` class.
 
 [[LCG64ShiftRandom-quality]]
-.`LCG64ShiftRandom` quality
+.`LCG64ShiftRandom` quality footnote:[https://github.com/jenetics/jenetics/blob/master/org.jenetics/src/main/java/org/jenetics/util/LCG64ShiftRandom.java]
 |===
 |Passed tests |Weak tests |Failed tests
 
