@@ -1,0 +1,12 @@
+= Internals
+Franz Wilhelmstötter <franz.wilhelmstoetter@gmail.com>
+:Author Initials: FWi
+:toc:
+:icons:
+:numbered:
+:website: http://jenetics.io/
+
+This section contains internal implementation details. They are not essential for using the library, but would give the user a deeper insight in some design decisions, made when implementing the library. It also introduces tools and classes which where developed for testing purpose. This classes resides below the org.jenetics.internal package. Though they are not part of the official API, they are packed into the delivered jar and can be used accordingly.
+
+include::prng_testing.adoc[]
+include::random_seeding.adoc[]

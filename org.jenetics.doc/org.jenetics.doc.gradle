@@ -29,8 +29,10 @@ apply plugin: 'packaging'
 
 
 task asciidoc(type: Exec) {
-	def mainDoc = file("$projectDir/src/main/asciidoc/implementation/Main.adoc")
-	def outputFile = file("$buildDir/asciidoc/ImplementationProtocol.html")
+	outputs.upToDateWhen { false }
+
+	def mainDoc = file("$projectDir/src/main/asciidoc/internals/main.adoc")
+	def outputFile = file("$buildDir/asciidoc/internals.html")
 
 	outputFile.parentFile.mkdirs()
 	inputs.dir mainDoc.parentFile
@@ -38,9 +40,15 @@ task asciidoc(type: Exec) {
 
 	commandLine([
 		'asciidoc',
-		'--theme', 'volnitsky',
+		//'-b', 'html5',
+		//'-a', 'linkcss',
+		'-a', "stylesdir=${projectDir}/src/main/asciidoc",
+		'-a', "stylesheet=${projectDir}/src/main/asciidoc/asciidoc.css",
+		//'--theme', 'volnitsky',
 		'-o', outputFile,
 		mainDoc
 	])
 }
+
+//asciidoc -b html5 -a linkcss -a stylesdir=$PWD myfile.txt
 
