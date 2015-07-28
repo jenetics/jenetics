@@ -28,6 +28,7 @@ $ java -cp org.jenetics-3.2.0.jar \
 Calling the command above will create an instance of the given random engine
 and stream the random data (bytes) to the raw interface of dieharder process.
 
+[source,bash]
 -----------------
 #=============================================================================#
 # Testing: <random-engine-name> (2015-07-11 23:48)                            #

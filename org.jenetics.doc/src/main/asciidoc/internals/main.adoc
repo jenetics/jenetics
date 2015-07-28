@@ -19,6 +19,8 @@ toc::[]
 include::prng_testing.adoc[]
 
 //////////////////////////////////////////
+:author: Franz Wilhelmstötter
+:email: franz.wilhelmstoetter@gmx.at
 include::random_seeding.adoc[]
 //////////////////////////////////////////
 
