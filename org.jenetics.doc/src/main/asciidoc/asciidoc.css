@@ -90,7 +90,7 @@ hr {
 
 p {
     color: black;
-    font-size: 110%;
+    /*font-size: 110%;*/
     text-align: justify;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
