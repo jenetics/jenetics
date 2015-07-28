@@ -42,6 +42,7 @@ task asciidoc(type: Exec) {
 		'asciidoc',
 		//'-b', 'html5',
 		//'-a', 'linkcss',
+		//'-a', 'docinfo',
 		'-a', 'toc-placement=manual',
 		'-a', "stylesdir=${projectDir}/src/main/asciidoc",
 		'-a', "scriptsdir=${projectDir}/src/main/asciidoc",
