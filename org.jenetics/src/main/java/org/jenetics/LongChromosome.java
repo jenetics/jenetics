@@ -40,6 +40,7 @@ import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.ISeq;
+import org.jenetics.util.LongRange;
 import org.jenetics.util.MSeq;
 
 /**
@@ -47,7 +48,7 @@ import org.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 3.0 &mdash; <em>$Date: 2014-12-08 $</em>
+ * @version 3.2
  */
 @XmlJavaTypeAdapter(LongChromosome.Model.Adapter.class)
 public class LongChromosome
@@ -153,6 +154,20 @@ public class LongChromosome
 	}
 
 	/**
+	 * Create a new random {@code LongChromosome}.
+	 *
+	 * @since 3.2
+	 *
+	 * @param range the long range of the chromosome.
+	 * @param length the length of the chromosome.
+	 * @return a new random {@code LongChromosome}
+	 * @throws NullPointerException if the given {@code range} is {@code null}
+	 */
+	public static LongChromosome of(final LongRange range, final int length) {
+		return new LongChromosome(range.getMin(), range.getMax(), length);
+	}
+
+	/**
 	 * Create a new random {@code LongChromosome} of length one.
 	 *
 	 * @param min the minimal value of this chromosome (inclusively).
@@ -161,6 +176,19 @@ public class LongChromosome
 	 */
 	public static LongChromosome of(final long min, final long max) {
 		return new LongChromosome(min, max);
+	}
+
+	/**
+	 * Create a new random {@code LongChromosome} of length one.
+	 *
+	 * @since 3.2
+	 *
+	 * @param range the long range of the chromosome.
+	 * @return a new random {@code LongChromosome} of length one
+	 * @throws NullPointerException if the given {@code range} is {@code null}
+	 */
+	public static LongChromosome of(final LongRange range) {
+		return new LongChromosome(range.getMin(), range.getMax());
 	}
 
 	@Override

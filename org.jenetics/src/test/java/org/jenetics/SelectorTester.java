@@ -46,7 +46,6 @@ import org.jenetics.util.ObjectTester;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-11-28 $</em>
  */
 public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 	extends ObjectTester<S>
@@ -169,7 +168,11 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		final Population<DoubleGene, Double> selection =
 			selector().select(population, count, opt);
 
-		Assert.assertEquals(selection.size(), count.intValue());
+		if (size == 0) {
+			Assert.assertEquals( selection.size(), 0 );
+		} else {
+			Assert.assertEquals(selection.size(), count.intValue());
+		}
 		for (Phenotype<DoubleGene, Double> pt : selection) {
 			Assert.assertTrue(
 				population.contains(pt),
@@ -181,7 +184,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 
 	@DataProvider(name = "selectParameters")
 	public Object[][] selectParameters() {
-		final List<Integer> sizes = Arrays.asList(1, 2, 3, 5, 11, 50, 100, 10_000);
+		final List<Integer> sizes = Arrays.asList(0, 1, 2, 3, 5, 11, 50, 100, 10_000);
 		final List<Integer> counts = Arrays.asList(0, 1, 2, 3, 5, 11, 50, 100, 10_000);
 
 		final List<Object[]> result = new ArrayList<>();
@@ -284,7 +287,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 			Phenotype.of(Genotype.of(DoubleChromosome.of(MIN, MAX)), 1, ff);
 
 		return IntStream.range(0, loops).parallel().mapToObj(j -> {
-			final Histogram<Double> hist = Histogram.of(MIN, MAX, CLASS_COUNT);
+			final Histogram<Double> hist = Histogram.ofDouble(MIN, MAX, CLASS_COUNT);
 
 			final Population<DoubleGene, Double> population =
 				IntStream.range(0, populationCount)

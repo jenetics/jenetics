@@ -34,21 +34,21 @@ import java.util.stream.Collector;
  * <p>
  * This class is designed to work with (though does not require) streams. For
  * example, you can compute moments-statistics on a stream of ints with:
- * [code]
+ * <pre>{@code
  * final IntStream stream = ...
  * final IntMomentStatistics statistics = stream.collect(
  *         IntMomentStatistics::new,
  *         IntMomentStatistics::accept,
  *         IntMomentStatistics::combine
  *     );
- * [/code]
+ * }</pre>
  *
  * For a non int stream, you can use a collector:
- * [code]
- * final Stream&lt;SomeObject&gt; stream = ...
+ * <pre>{@code
+ * final Stream<SomeObject> stream = ...
  * final IntMomentStatistics statistics = stream
- *     .collect(toIntMomentStatistics(v -&gt; v.intValue()));
- * [/code]
+ *     .collect(toIntMomentStatistics(v -> v.intValue()));
+ * }</pre>
  *
  * <p>
  * <b>Implementation note:</b>
@@ -65,7 +65,7 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-03 $</em>
+ * @version 3.0
  */
 public class IntMomentStatistics
 	extends MomentStatistics
@@ -157,11 +157,11 @@ public class IntMomentStatistics
 	 * function to each input element, and returns moments-statistics for the
 	 * resulting values.
 	 *
-	 * [code]
-	 * final Stream&lt;SomeObject&gt; stream = ...
+	 * <pre>{@code
+	 * final Stream<SomeObject> stream = ...
 	 * final IntMomentStatistics statistics = stream
-	 *     .collect(toIntMomentStatistics(v -&gt; v.intValue()));
-	 * [/code]
+	 *     .collect(toIntMomentStatistics(v -> v.intValue()));
+	 * }</pre>
 	 *
 	 * @param mapper a mapping function to apply to each element
 	 * @param <T> the type of the input elements

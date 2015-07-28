@@ -19,29 +19,112 @@
  */
 package org.jenetics.engine;
 
+import java.util.function.Function;
+import java.util.stream.LongStream;
+
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
+import org.jenetics.Genotype;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-12-02 $</em>
  */
 public class EngineTest {
 
-	@Test
-	public void generationCount() {
+	@Test(dataProvider = "generations")
+	public void generationCount(final Long generations) {
 		final Engine<DoubleGene, Double> engine = Engine
 			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
 			.build();
 
 		final EvolutionResult<DoubleGene, Double> result = engine.stream()
-			.limit(123)
+			.limit(generations)
 			.collect(EvolutionResult.toBestEvolutionResult());
 
-		Assert.assertEquals(123L, result.getTotalGenerations());
+		Assert.assertEquals(generations.longValue(), result.getTotalGenerations());
+	}
+
+	@Test(dataProvider = "generations")
+	public void generationLimit(final Long generations) {
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
+			.build();
+
+		final EvolutionResult<DoubleGene, Double> result = engine.stream()
+			.limit(limit.byFixedGeneration(generations))
+			.collect(EvolutionResult.toBestEvolutionResult());
+
+		Assert.assertEquals(generations.longValue(), result.getTotalGenerations());
+	}
+
+	@DataProvider(name = "generations")
+	public Object[][] generations() {
+		return LongStream.rangeClosed(1, 10)
+			.mapToObj(i -> new Object[]{i})
+			.toArray(Object[][]::new);
+	}
+
+	@Test
+	public void phenotypeValidator() {
+		final int populationSize = 100;
+
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
+			.phenotypeValidator(pt -> false)
+			.populationSize(populationSize)
+			.build();
+
+		final EvolutionResult<DoubleGene, Double> result = engine.stream()
+			.limit(10)
+			.collect(EvolutionResult.toBestEvolutionResult());
+
+		Assert.assertEquals(result.getInvalidCount(), populationSize);
+	}
+
+	@Test
+	public void genotypeValidator() {
+		final int populationSize = 100;
+
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
+			.genotypeValidator(pt -> false)
+			.populationSize(populationSize)
+			.build();
+
+		final EvolutionResult<DoubleGene, Double> result = engine.stream()
+			.limit(10)
+			.collect(EvolutionResult.toBestEvolutionResult());
+
+		Assert.assertEquals(result.getInvalidCount(), populationSize);
+	}
+
+	// https://github.com/jenetics/jenetics/issues/47
+	@Test(timeOut = 15_000L)
+	public void deadLock() {
+		final Function<Genotype<DoubleGene>, Double> ff = gt -> {
+			try {
+				Thread.sleep( 50 );
+			} catch (InterruptedException ignore) {
+				Thread.currentThread().interrupt();
+			}
+			return gt.getGene().getAllele();
+		};
+
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(ff, DoubleChromosome.of(0, 1))
+			//.executor(Executors.newFixedThreadPool(10))
+			.populationSize(10)
+			.build();
+
+		final EvolutionResult<DoubleGene, Double> result = engine.stream()
+			.limit(3)
+			.collect(EvolutionResult.toBestEvolutionResult());
+
+		//Assert.assertEquals(25L, result.getTotalGenerations());
 	}
 
 }

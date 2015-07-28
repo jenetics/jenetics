@@ -35,7 +35,7 @@ import org.jenetics.util.MSeq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0 &mdash; <em>$Date: 2014-10-07 $</em>
+ * @version 3.0
  */
 public class ArrayProxyMSeq<T, P extends ArrayProxy<T, ?, ?>>
 	extends ArrayProxySeq<T, P>
@@ -127,7 +127,7 @@ public class ArrayProxyMSeq<T, P extends ArrayProxy<T, ?, ?>>
 			} else {
 				proxy.cloneIfSealed();
 
-				for (int i = (end - start); --i >= 0;) {
+				for (int i = end - start; --i >= 0;) {
 					final T temp = proxy.__get(i + start);
 					proxy.__set(i + start, other.get(otherStart + i));
 					other.set(otherStart + i, temp);
@@ -148,7 +148,7 @@ public class ArrayProxyMSeq<T, P extends ArrayProxy<T, ?, ?>>
 		if (otherStart < 0 || (otherStart + (end - start)) > otherLength) {
 			throw new ArrayIndexOutOfBoundsException(format(
 				"Invalid index range: [%d, %d)",
-				otherStart, (otherStart + (end - start))
+				otherStart, otherStart + end - start
 			));
 		}
 	}

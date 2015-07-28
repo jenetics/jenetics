@@ -37,11 +37,18 @@ import org.jenetics.internal.collection.ObjectArrayProxy;
 /**
  * Mutable, ordered, fixed sized sequence.
  *
+ * <p>
+ * <b>Implementation note:</b>
+ * <i>This implementation is not thread safe. All {@link ISeq} and {@link MSeq}
+ * instances created by {@link MSeq#toISeq} and {@link MSeq#subSeq(int)},
+ * respectively, must be protected by the same lock, when they are accessed
+ * (get/set) by different threads.</i>
+ *
  * @see ISeq
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-12-12 $</em>
+ * @version 3.0
  */
 public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 
@@ -51,7 +58,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @param index the index of the new value.
 	 * @param value the new value.
 	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         <code>(index &lt; 0 || index &gt;= size())</code>.
+	 *         {@code (index < 0 || index >= size())}.
 	 */
 	public void set(final int index, final T value);
 
@@ -148,12 +155,12 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 		if (otherStart < 0 || (otherStart + (end - start)) > length()) {
 			throw new ArrayIndexOutOfBoundsException(format(
 				"Invalid index range: [%d, %d)",
-				otherStart, (otherStart + (end - start))
+				otherStart, otherStart + (end - start)
 			));
 		}
 
 		if (start < end) {
-			for (int i = (end - start); --i >= 0;) {
+			for (int i = end - start; --i >= 0;) {
 				final T temp = get(start + i);
 				set(start + i, other.get(otherStart + i));
 				other.set(otherStart + i, temp);
@@ -261,7 +268,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @return the new mutable sequence.
 	 */
 	public static <T> MSeq<T> ofLength(final int length) {
-		return new ArrayProxyMSeq<>(new ObjectArrayProxy<T>(length));
+		return new ArrayProxyMSeq<>(new ObjectArrayProxy<>(length));
 	}
 
 	/**
@@ -319,9 +326,9 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
 	public static <T> MSeq<T> of(final Seq<T> values) {
-		return values instanceof ArrayProxyMSeq<?, ?> ?
-			((ArrayProxyMSeq<T, ?>)values).copy() :
-			MSeq.<T>ofLength(values.length()).setAll(values);
+		return values instanceof ArrayProxyMSeq<?, ?>
+			? ((ArrayProxyMSeq<T, ?>)values).copy()
+			: MSeq.<T>ofLength(values.length()).setAll(values);
 	}
 
 }

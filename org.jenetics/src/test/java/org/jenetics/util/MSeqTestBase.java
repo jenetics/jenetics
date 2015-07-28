@@ -31,7 +31,6 @@ import org.jenetics.internal.math.random;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-01 $</em>
  */
 public abstract class MSeqTestBase extends SeqTestBase {
 
@@ -39,7 +38,7 @@ public abstract class MSeqTestBase extends SeqTestBase {
 	protected abstract MSeq<Integer> newSeq(final int length);
 
 	private Supplier<Integer> RandomInt(final Random random) {
-		return () -> random.nextInt();
+		return random::nextInt;
 	}
 
 	@Test

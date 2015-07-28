@@ -25,13 +25,15 @@ import static java.lang.Math.toRadians;
 import java.io.Serializable;
 import java.util.function.Function;
 
+import org.testng.annotations.Test;
+
 import org.jenetics.util.Factory;
 import org.jenetics.util.ObjectTester;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-11-28 $</em>
  */
+@Test
 public class PhenotypeTest extends ObjectTester<Phenotype<DoubleGene, Double>> {
 
 	private final Function<Genotype<DoubleGene>, Double> _ff =

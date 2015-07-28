@@ -42,11 +42,17 @@ import java.util.Set;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.4 &mdash; <em>$Date: 2014-03-28 $</em>
+ * @version 3.1
  */
 public final class Colorizer extends SimpleFileVisitor<Path> {
 
 	private static final Charset CHARSET = Charset.forName("UTF-8");
+
+	// Original start tag: <pre>{@code
+	private static final String START_TAG = "<pre><code>";
+
+	// Original end tag: }</pre>
+	private static final String END_TAG = "</code></pre>";
 
 	private File _baseDir;
 
@@ -144,7 +150,7 @@ public final class Colorizer extends SimpleFileVisitor<Path> {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.4 &mdash; <em>$Date: 2014-03-28 $</em>
+	 * @version 1.4
 	 */
 	private static enum State {
 
@@ -152,11 +158,12 @@ public final class Colorizer extends SimpleFileVisitor<Path> {
 			@Override
 			public State apply(final char ch, final StringBuilder out) {
 				State state = this;
-				if ((ch == ']') &&
-					(out.length() > 5) &&
-					out.substring(out.length() - 6).equalsIgnoreCase("[code]"))
+				if ((ch == '>') &&
+					(out.length() >= START_TAG.length()) &&
+					out.substring(out.length() - START_TAG.length())
+						.equalsIgnoreCase(START_TAG))
 				{
-					out.setLength(out.length() - 6);
+					out.setLength(out.length() - START_TAG.length());
 					out.append("<div class=\"code\"><code lang=\"java\">");
 					state = CODE_TAG;
 				}
@@ -216,8 +223,9 @@ public final class Colorizer extends SimpleFileVisitor<Path> {
 			@Override
 			public State apply(final char ch, final StringBuilder out) {
 				State state = this;
-				if ((ch == ']') &&
-					out.substring(out.length() - 7).equalsIgnoreCase("[/code]"))
+				if ((ch == '>') &&
+					out.substring(out.length() - END_TAG.length())
+						.equalsIgnoreCase(END_TAG))
 				{
 					int index = out.lastIndexOf("\n");
 					out.setLength(index);
@@ -315,6 +323,7 @@ public final class Colorizer extends SimpleFileVisitor<Path> {
 			"interface",
 			"long",
 			"native",
+			"null",
 			"new",
 			"package",
 			"private",

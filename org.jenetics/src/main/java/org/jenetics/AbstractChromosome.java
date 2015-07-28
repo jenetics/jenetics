@@ -22,6 +22,7 @@ package org.jenetics;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.Equality.eq;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.RandomAccess;
@@ -42,14 +43,15 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-12-22 $</em>
+ * @version 2.0
  */
 public abstract class AbstractChromosome<G extends Gene<?, G>>
 	implements
 		Chromosome<G>,
-		RandomAccess
+		RandomAccess,
+		Serializable
 {
-	private static final long serialVersionUID = 1;
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Array of genes which forms the chromosome. This array must
@@ -75,7 +77,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 */
 	protected AbstractChromosome(final ISeq<? extends G> genes) {
 		requireNonNull(genes, "Gene array");
-		assert (genes.forAll(Objects::nonNull)) : "Found at least on null gene.";
+		assert genes.forAll(Objects::nonNull) : "Found at least on null gene.";
 
 		if (genes.length() == 0) {
 			throw new IllegalArgumentException(

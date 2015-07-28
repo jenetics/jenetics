@@ -50,10 +50,17 @@ import org.jenetics.util.Verifiable;
  * {@code Phenotypes} is defined by its fitness value (given by the
  * fitness {@link Function}. The {@code Phenotype} is immutable and therefore
  * can't be changed after creation.
+ * <p>
+ * The evaluation of the fitness function is performed lazily. Either by calling
+ * one of the fitness accessors ({@link #getFitness()} or {@link #getRawFitness()})
+ * of through the <i>evaluation</i> methods {@link #run()} or {@link #evaluate()}.
+ * Since the {@code Phenotype} implements the {@link Runnable} interface, it is
+ * easily possible to perform the fitness function evaluation concurrently, by
+ * putting it into an {@link java.util.concurrent.ExecutorService}.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-11-28 $</em>
+ * @version 3.1
  */
 @XmlJavaTypeAdapter(Phenotype.Model.Adapter.class)
 public final class Phenotype<
@@ -76,6 +83,7 @@ public final class Phenotype<
 	private final long _generation;
 
 	// Storing the fitness value for lazy evaluation.
+	private transient volatile boolean _evaluated = false;
 	private C _rawFitness = null;
 	private C _fitness = null;
 
@@ -125,11 +133,18 @@ public final class Phenotype<
 	 * @return this phenotype, for method chaining.
 	 */
 	public Phenotype<G, C> evaluate() {
-		if (_rawFitness == null) {
-			_rawFitness = _function.apply(_genotype);
-			_fitness = _scaler.apply(_rawFitness);
+		if (!_evaluated) {
+			eval();
 		}
 		return this;
+	}
+
+	private synchronized void eval() {
+		if (!_evaluated) {
+			if (_rawFitness == null) _rawFitness = _function.apply(_genotype);
+			if (_fitness == null) _fitness = _scaler.apply(_rawFitness);
+			_evaluated = true;
+		}
 	}
 
 	/**
@@ -221,10 +236,10 @@ public final class Phenotype<
 	@Override
 	public int hashCode() {
 		return Hash.of(getClass())
-				.and(_generation)
-				.and(getFitness())
-				.and(getRawFitness())
-				.and(_genotype).value();
+			.and(_generation)
+			.and(getFitness())
+			.and(getRawFitness())
+			.and(_genotype).value();
 	}
 
 	@Override
@@ -239,7 +254,22 @@ public final class Phenotype<
 
 	@Override
 	public String toString() {
-		return _genotype.toString() + " --> " + getFitness();
+		return _genotype + " --> " + getFitness();
+	}
+
+	/**
+	 * Create a new {@code Phenotype} with a different {@code Genotype} but the
+	 * same {@code generation}, fitness {@code function} and fitness
+	 * {@code scaler}.
+	 *
+	 * @since 3.1
+	 *
+	 * @param genotype the new genotype
+	 * @return a new {@code phenotype} with replaced {@code genotype}
+	 * @throws NullPointerException if the given {@code genotype} is {@code null}.
+	 */
+	public Phenotype<G, C> newInstance(final Genotype<G> genotype) {
+		return of(genotype, _generation, _function, _scaler);
 	}
 
 	/**
@@ -320,9 +350,9 @@ public final class Phenotype<
 			genotype,
 			generation,
 			function,
-			function instanceof Serializable ?
-				(Function<? super C, ? extends C> & Serializable)a -> a :
-				a -> a
+			function instanceof Serializable
+				? (Function<? super C, ? extends C> & Serializable)a -> a
+				: a -> a
 		);
 	}
 

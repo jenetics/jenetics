@@ -32,7 +32,7 @@ import java.util.stream.StreamSupport;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0 &mdash; <em>$Date: 2014-10-07 $</em>
+ * @version 3.0
  */
 public final class ObjectArrayProxy<T>
 	extends ArrayProxy<T, Object[], ObjectArrayProxy<T>>
@@ -47,7 +47,10 @@ public final class ObjectArrayProxy<T>
 	 * @param start the start index of the array proxy, inclusively.
 	 * @param end the end index of the array proxy, exclusively.
 	 */
-	public ObjectArrayProxy(final Object[] array, final int start, final int end) {
+	public ObjectArrayProxy(
+		final Object[] array,
+		final int start, final int end
+	) {
 		super(array, start, end, ObjectArrayProxy<T>::new, Arrays::copyOfRange);
 	}
 
@@ -63,7 +66,7 @@ public final class ObjectArrayProxy<T>
 	@Override
 	@SuppressWarnings("unchecked")
 	public T __get__(final int index) {
-		return (T) array[index];
+		return (T)array[index];
 	}
 
 	@Override

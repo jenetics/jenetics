@@ -25,7 +25,6 @@ import static org.jenetics.internal.util.Equality.eq;
 import java.io.Serializable;
 import java.util.function.Function;
 
-import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 /**
@@ -37,7 +36,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-12-07 $</em>
+ * @version 2.0
  */
 public final class ExponentialScaler
 	implements
@@ -88,7 +87,7 @@ public final class ExponentialScaler
 
 	@Override
 	public Double apply(final Double value) {
-		return Math.pow((_a*value + _b), _c);
+		return Math.pow(_a*value + _b, _c);
 	}
 
 	@Override
@@ -101,11 +100,10 @@ public final class ExponentialScaler
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(selector ->
-			eq(_a, selector._a) &&
-			eq(_b, selector._b) &&
-			eq(_c, selector._c)
-		);
+		return obj instanceof ExponentialScaler &&
+			eq(((ExponentialScaler)obj)._a, _a) &&
+			eq(((ExponentialScaler)obj)._b, _b) &&
+			eq(((ExponentialScaler)obj)._c, _c);
 	}
 
 	@Override

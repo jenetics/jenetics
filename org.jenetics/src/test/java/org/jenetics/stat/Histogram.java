@@ -65,8 +65,6 @@ import org.jenetics.internal.util.Hash;
  * threads modifies it, it must be synchronized externally.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.0
- * @version 2.0 &mdash; <em>$Date$</em>
  */
 public class Histogram<C> implements Consumer<C> {
 
@@ -343,9 +341,9 @@ public class Histogram<C> implements Consumer<C> {
 	@Override
 	public boolean equals(final Object obj) {
 		return Equality.of(this, obj).test(histogram ->
-			eq(_separators, histogram._separators) &&
-			eq(_histogram, histogram._histogram) &&
-			super.equals(obj)
+				eq(_separators, histogram._separators) &&
+					eq(_histogram, histogram._histogram) &&
+					super.equals(obj)
 		);
 	}
 
@@ -395,7 +393,7 @@ public class Histogram<C> implements Consumer<C> {
 	 * @throws IllegalArgumentException if {@code min.compareTo(max) >= 0} or
 	 *         {@code nclasses < 2}.
 	 */
-	public static Histogram<Double> of(
+	public static Histogram<Double> ofDouble(
 		final Double min,
 		final Double max,
 		final int nclasses
@@ -454,12 +452,25 @@ public class Histogram<C> implements Consumer<C> {
 	 * @throws IllegalArgumentException if {@code min.compareTo(max) >= 0} or
 	 *         {@code nclasses < 2}.
 	 */
-	public static Histogram<Long> of(
+	public static Histogram<Long> ofLong(
 		final Long min,
 		final Long max,
 		final int nclasses
 	) {
 		return of(toSeparators(min, max, nclasses));
+	}
+
+	public static Histogram<Integer> ofInteger(
+		final Integer min,
+		final Integer max,
+		final int nclasses
+	) {
+		final Integer[] separators = Arrays
+			.stream(toSeparators(min.longValue(), max.longValue(), nclasses))
+			.map(Long::intValue)
+			.toArray(Integer[]::new);
+
+		return of(separators);
 	}
 
 	private static Long[] toSeparators(
@@ -490,8 +501,8 @@ public class Histogram<C> implements Consumer<C> {
 	public static Collector<Histogram<Double>, ?, Histogram<Double>>
 	toDoubleHistogram(final Double min, final Double max, final int classCount) {
 		return Collector.of(
-			() -> Histogram.of(min, max, classCount),
-			(a, b) -> a.combine(b),
+			() -> Histogram.ofDouble(min, max, classCount),
+			Histogram::combine,
 			(a, b) -> {a.combine(b); return a;}
 		);
 	}

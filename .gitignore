@@ -11,6 +11,7 @@ syntax: glob
 out/**
 test-output/**
 output/**
+*.jar
 
 # Gradle
 **/.gradle/**
