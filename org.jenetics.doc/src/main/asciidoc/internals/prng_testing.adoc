@@ -1,6 +1,6 @@
 == PRNG testing
 
-Jenetics uses the _dieharder_ footnote:[http://www.phy.duke.edu/~rgb/General/dieharder.php[From Robert G. Brown]] (command line) tool for testing the randomness
+http://jenetics.io[Jenetics] uses the _dieharder_ footnote:[http://www.phy.duke.edu/~rgb/General/dieharder.php[From Robert G. Brown]] (command line) tool for testing the randomness
 of the used PRNGs. _dieharder_ is a random number generator (RNG) testing
 suite. It is intended to test generators, not files of possibly random numbers.
 Since _dieharder_ needs a huge amount of random data, for testing the quality
@@ -76,10 +76,10 @@ $ java -cp org.jenetics-3.2.0.jar \
 -----------------
 
 Table <<LCG64ShiftRandom-quality, _LCG64ShiftRandom_ quality>> shows the summary of the _dieharder_ tests. The full report is part of
-the source file of the _LCG64ShiftRandom_ class.
+the source file of the _LCG64ShiftRandom_ footnote:[https://github.com/jenetics/jenetics/blob/master/org.jenetics/src/main/java/org/jenetics/util/LCG64ShiftRandom.java[Full report]] class.
 
 [[LCG64ShiftRandom-quality]]
-._LCG64ShiftRandom_ quality footnote:[https://github.com/jenetics/jenetics/blob/master/org.jenetics/src/main/java/org/jenetics/util/LCG64ShiftRandom.java[Full report]]
+._LCG64ShiftRandom_ quality
 |===
 |Passed tests |Weak tests |Failed tests
 
