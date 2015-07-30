@@ -17,10 +17,10 @@ This site contains internal implementation details. They are not essential for u
 toc::[]
 
 include::prng_testing.adoc[]
+include::random_seeding.adoc[]
 
 //////////////////////////////////////////
 :author: Franz Wilhelmstötter
 :email: franz.wilhelmstoetter@gmx.at
-include::random_seeding.adoc[]
 //////////////////////////////////////////
 

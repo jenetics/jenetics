@@ -1,6 +1,6 @@
 == PRNG testing
 
-http://jenetics.io[Jenetics] uses the _dieharder_ footnote:[http://www.phy.duke.edu/~rgb/General/dieharder.php[From Robert G. Brown]] (command line) tool for testing the randomness
+http://jenetics.io[Jenetics] uses the http://www.phy.duke.edu/~rgb/General/dieharder.php[_dieharder_] (command line) tool for testing the randomness
 of the used PRNGs. _dieharder_ is a random number generator (RNG) testing
 suite. It is intended to test generators, not files of possibly random numbers.
 Since _dieharder_ needs a huge amount of random data, for testing the quality
@@ -21,8 +21,8 @@ the PRNG must be default-constructable and part of the classpath.
 [source,bash]
 -----------------
 $ java -cp org.jenetics-3.2.0.jar \
-    org.jenetics.internal.util.DieHarder \
-    <random-engine-name> -a
+      org.jenetics.internal.util.DieHarder \
+      <random-engine-name> -a
 -----------------
 
 Calling the command above will create an instance of the given random engine
@@ -70,13 +70,12 @@ package, the following command can be called:
 [source,bash]
 -----------------
 $ java -cp org.jenetics-3.2.0.jar \
-    org.jenetics.internal.util.DieHarder \
-    org.jenetics.util.LCG64ShiftRandom -a
-
+      org.jenetics.internal.util.DieHarder \
+      org.jenetics.util.LCG64ShiftRandom -a
 -----------------
 
 Table <<LCG64ShiftRandom-quality, _LCG64ShiftRandom_ quality>> shows the summary of the _dieharder_ tests. The full report is part of
-the source file of the _LCG64ShiftRandom_ footnote:[https://github.com/jenetics/jenetics/blob/master/org.jenetics/src/main/java/org/jenetics/util/LCG64ShiftRandom.java[Full report]] class.
+the source file of the https://github.com/jenetics/jenetics/blob/master/org.jenetics/src/main/java/org/jenetics/util/LCG64ShiftRandom.java[_LCG64ShiftRandom_] class.
 
 [[LCG64ShiftRandom-quality]]
 ._LCG64ShiftRandom_ quality
