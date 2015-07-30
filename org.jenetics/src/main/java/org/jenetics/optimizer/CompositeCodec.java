@@ -83,10 +83,9 @@ public class CompositeCodec<T, G extends Gene<?, G>> implements Codec<T, G> {
 		int start = 0;
 		for (int i = 0; i < _codecs.length(); ++i) {
 			final int end = start + _lengths[i];
-
 			final Genotype<G> gt = Genotype.of(chromosomes.subSeq(start, end));
-			groups[i] = _codecs.get(i).decoder().apply(gt);
 
+			groups[i] = _codecs.get(i).decoder().apply(gt);
 			start = end;
 		}
 
