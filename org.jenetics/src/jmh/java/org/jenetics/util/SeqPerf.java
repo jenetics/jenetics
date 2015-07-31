@@ -25,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Mode;
+import org.openjdk.jmh.annotations.OperationsPerInvocation;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
@@ -33,6 +34,8 @@ import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
+import org.jenetics.internal.collection2.ArrayProxy;
+import org.jenetics.internal.collection2.ObjectArray;
 import org.jenetics.internal.util.IntRef;
 
 /**
@@ -60,11 +63,40 @@ public class SeqPerf {
 		}
 	}
 
+	private final ArrayProxy<Integer> proxy = ArrayProxy.of(ObjectArray.of(1000));
+	{
+		for (int i = 0; i < seq.length(); ++i) {
+			proxy.set(i, i);
+		}
+	}
+
+	private Integer proxyGet(final int index) {
+		return proxy.get(index);
+	}
+
+	@Benchmark
+	public Object newObject() {
+		return new Object();
+	}
+
+	@Benchmark
+	public Object[] arrayClone() {
+		return array.clone();
+	}
+
+	@Benchmark
+	public Object[] arrayCopy() {
+		final Object[] a = new Object[999];
+		System.arraycopy(array, 1, a, 0, 999);
+		return a;
+	}
+
 	@Benchmark
 	public Integer getFromArray() {
 		return array[index];
 	}
 
+	@OperationsPerInvocation(1000)
 	@Benchmark
 	public int forLoopArray() {
 		final IntRef sum = new IntRef();
@@ -80,6 +112,12 @@ public class SeqPerf {
 	}
 
 	@Benchmark
+	public Integer getFromProxy() {
+		return proxyGet(index);
+	}
+
+	@OperationsPerInvocation(1000)
+	@Benchmark
 	public int forLoopSeq() {
 		final IntRef sum = new IntRef();
 		for (int i = 0; i < seq.length(); ++i) {
@@ -88,6 +126,7 @@ public class SeqPerf {
 		return sum.value;
 	}
 
+	@OperationsPerInvocation(1000)
 	@Benchmark
 	public int forEachLoopSeq() {
 		final IntRef sum = new IntRef();
