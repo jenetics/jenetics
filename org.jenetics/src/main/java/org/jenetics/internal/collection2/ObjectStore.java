@@ -19,18 +19,26 @@
  */
 package org.jenetics.internal.collection2;
 
+import static java.lang.String.format;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public final class ObjectArray<T> extends Array<T> {
+public final class ObjectStore<T> extends Store<T> {
 
 	private final Object[] _array;
 	private final int _start;
 	private final int _length;
 
-	private ObjectArray(final Object[] array, final int start, final int end) {
+	private ObjectStore(final Object[] array, final int start, final int end) {
+		if (end > array.length) {
+			throw new ArrayIndexOutOfBoundsException(format(
+				"End index bigger than length: %d > %d", end, array.length
+			));
+		}
+
 		_array = array;
 		_start = start;
 		_length = end - start;
@@ -38,7 +46,16 @@ public final class ObjectArray<T> extends Array<T> {
 
 	@Override
 	public void set(int index, T value) {
+		checkIndex(index);
 		_array[index + _start] = value;
+	}
+
+	private void checkIndex(final int start) {
+		if (start < 0 || start >= _length) {
+			throw new ArrayIndexOutOfBoundsException(format(
+				"Index %s is out of bounds [0, %s)", start, _length
+			));
+		}
 	}
 
 	@Override
@@ -48,20 +65,25 @@ public final class ObjectArray<T> extends Array<T> {
 	}
 
 	@Override
-	public ObjectArray<T> slice(final int from, final int until) {
-		return new ObjectArray<>(_array, from + _start, until + _start);
+	public ObjectStore<T> slice(final int from, final int until) {
+		return new ObjectStore<>(_array, from + _start, until + _start);
 	}
 
 	@Override
-	public ObjectArray<T> copy() {
+	public ObjectStore<T> copy() {
 		final Object[] array = new Object[_length];
 		System.arraycopy(_array, _start, array, 0, _length);
 
-		return new ObjectArray<>(array, 0, _length);
+		return new ObjectStore<>(array, 0, _length);
 	}
 
-	public static <T> ObjectArray<T> of(final int length) {
-		return new ObjectArray<>(new Object[length], 0, length);
+	@Override
+	public int length() {
+		return _length;
+	}
+
+	public static <T> ObjectStore<T> of(final int length) {
+		return new ObjectStore<>(new Object[length], 0, length);
 	}
 
 }

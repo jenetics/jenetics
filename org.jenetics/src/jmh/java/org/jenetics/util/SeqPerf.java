@@ -36,8 +36,8 @@ import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
-import org.jenetics.internal.collection2.ArrayProxy;
-import org.jenetics.internal.collection2.ObjectArray;
+import org.jenetics.internal.collection2.Array;
+import org.jenetics.internal.collection2.ObjectStore;
 import org.jenetics.internal.util.IntRef;
 
 /**
@@ -67,7 +67,7 @@ public class SeqPerf {
 		}
 	}
 
-	private final ArrayProxy<Integer> proxy = ArrayProxy.of(ObjectArray.of(SIZE));
+	private final Array<Integer> proxy = Array.of(ObjectStore.of(SIZE));
 	{
 		for (int i = 0; i < seq.length(); ++i) {
 			proxy.set(i, i);

@@ -19,44 +19,68 @@
  */
 package org.jenetics.internal.collection2;
 
-import java.lang.ref.WeakReference;
-
-import org.jenetics.internal.collection.Stack;
-
-import org.jenetics.util.Copyable;
+import static java.util.Objects.requireNonNull;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public abstract class Array<T> implements Copyable<Array<T>> {
+public final class Array<T> {
 
-	private boolean _hasProxies = false;
-	private final Stack<WeakReference<ArrayProxy<T>>> _proxies = new Stack<>();
+	private volatile Store<T> _store;
+	private boolean _sealed;
 
-	final void add(final ArrayProxy<T> proxy) {
-		if (proxy.isSealed()) {
-			_proxies.push(new WeakReference<>(proxy));
-			_hasProxies = true;
-		}
+	private Array(final Store<T> store, final boolean sealed) {
+		_store = requireNonNull(store);
+		_sealed = sealed;
 	}
 
-	final void copySealedProxyArrays() {
-		if (_hasProxies) {
-			_proxies.popAll(reference -> {
-				final ArrayProxy<T> proxy = reference.get();
-				if (proxy != null) {
-					proxy.lazyArrayCopy();
-				}
-			});
-		}
+	public Array(final Store<T> store) {
+		this(store, false);
 	}
 
-	public abstract void set(final int index, final T value);
+	public void set(final int index, final T value) {
+		assert !_sealed : "Must not be called on sealed proxies";
+		_store.copySealedProxyArrays();
+		_store.set(index, value);
+	}
 
-	public abstract T get(final int index);
+	public T get(final int index) {
+		return _store.get(index);
+	}
 
-	public abstract Array<T> slice(final int from, final int until);
+	public Array<T> copy() {
+		return new Array<>(_store.copy());
+	}
+
+	public Array<T> slice(final int from, final int until) {
+		final Array<T> slice = new Array<>(
+			_store.slice(from, until),
+			_sealed
+		);
+		_store.add(slice);
+
+		return slice;
+	}
+
+	public final Array<T> seal() {
+		assert !_sealed : "Must not be called on sealed proxies";
+
+		final Array<T> proxy = new Array<>(_store, true);
+		_store.add(proxy);
+
+		return proxy;
+	}
+
+	boolean isSealed() {
+		return _sealed;
+	}
+
+	void lazyArrayCopy() {
+		assert _sealed : "Must only be called on sealed proxies";
+		_store = _store.copy();
+		_sealed = false;
+	}
 
 }
