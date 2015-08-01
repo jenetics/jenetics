@@ -34,7 +34,13 @@ public final class ArrayProxy<T> {
 		_sealed = sealed;
 	}
 
+	public ArrayProxy(final Array<T> array) {
+		this(array, false);
+	}
+
 	public void set(final int index, final T value) {
+		assert !_sealed : "Must not be called on sealed proxies";
+		_array.copySealedProxyArrays();
 		_array.set(index, value);
 	}
 
@@ -42,8 +48,8 @@ public final class ArrayProxy<T> {
 		return _array.get(index);
 	}
 
-	public boolean isSealed() {
-		return _sealed;
+	public ArrayProxy<T> copy() {
+		return new ArrayProxy<>(_array.copy());
 	}
 
 	public ArrayProxy<T> slice(final int from, final int until) {
@@ -65,23 +71,14 @@ public final class ArrayProxy<T> {
 		return proxy;
 	}
 
-	public final void cloneIfSealed() {
-		assert !_sealed : "Must not be called on sealed proxies";
-		_array.copySealedProxyArrays();
+	boolean isSealed() {
+		return _sealed;
 	}
 
 	void lazyArrayCopy() {
 		assert _sealed : "Must only be called on sealed proxies";
 		_array = _array.copy();
 		_sealed = false;
-	}
-
-	public ArrayProxy<T> copy() {
-		return of(_array.copy());
-	}
-
-	public static <T> ArrayProxy<T> of(final Array<T> array) {
-		return new ArrayProxy<>(array, false);
 	}
 
 }

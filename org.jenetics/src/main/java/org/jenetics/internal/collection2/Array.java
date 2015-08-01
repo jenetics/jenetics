@@ -35,14 +35,14 @@ public abstract class Array<T> implements Copyable<Array<T>> {
 	private boolean _hasProxies = false;
 	private final Stack<WeakReference<ArrayProxy<T>>> _proxies = new Stack<>();
 
-	void add(final ArrayProxy<T> proxy) {
+	final void add(final ArrayProxy<T> proxy) {
 		if (proxy.isSealed()) {
 			_proxies.push(new WeakReference<>(proxy));
 			_hasProxies = true;
 		}
 	}
 
-	void copySealedProxyArrays() {
+	final void copySealedProxyArrays() {
 		if (_hasProxies) {
 			_proxies.popAll(reference -> {
 				final ArrayProxy<T> proxy = reference.get();

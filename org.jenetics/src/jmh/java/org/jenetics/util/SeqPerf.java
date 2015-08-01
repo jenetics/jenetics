@@ -19,6 +19,8 @@
  */
 package org.jenetics.util;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
@@ -48,25 +50,34 @@ import org.jenetics.internal.util.IntRef;
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 public class SeqPerf {
 
-	private final int index = ThreadLocalRandom.current().nextInt(1000);
+	static final int SIZE = 1000;
 
-	private final Integer[] array = new Integer[1000];
+	private final int index = ThreadLocalRandom.current().nextInt(SIZE);
+
+	private final Integer[] array = new Integer[SIZE];
 	{
 		for (int i = 0; i < array.length; ++i) {
 			array[i] = i;
 		}
 	}
-	private final MSeq<Integer> seq = MSeq.ofLength(1000);
+	private final MSeq<Integer> seq = MSeq.ofLength(SIZE);
 	{
 		for (int i = 0; i < seq.length(); ++i) {
 			seq.set(i, i);
 		}
 	}
 
-	private final ArrayProxy<Integer> proxy = ArrayProxy.of(ObjectArray.of(1000));
+	private final ArrayProxy<Integer> proxy = ArrayProxy.of(ObjectArray.of(SIZE));
 	{
 		for (int i = 0; i < seq.length(); ++i) {
 			proxy.set(i, i);
+		}
+	}
+
+	private final List<Integer> arrayList = new ArrayList<>(SIZE);
+	{
+		for (int i = 0; i < seq.length(); ++i) {
+			arrayList.add(i);
 		}
 	}
 
@@ -96,7 +107,12 @@ public class SeqPerf {
 		return array[index];
 	}
 
-	@OperationsPerInvocation(1000)
+	@Benchmark
+	public Integer getFromArrayList() {
+		return arrayList.get(index);
+	}
+
+	@OperationsPerInvocation(SIZE)
 	@Benchmark
 	public int forLoopArray() {
 		final IntRef sum = new IntRef();
@@ -116,7 +132,7 @@ public class SeqPerf {
 		return proxyGet(index);
 	}
 
-	@OperationsPerInvocation(1000)
+	@OperationsPerInvocation(SIZE)
 	@Benchmark
 	public int forLoopSeq() {
 		final IntRef sum = new IntRef();
@@ -126,7 +142,7 @@ public class SeqPerf {
 		return sum.value;
 	}
 
-	@OperationsPerInvocation(1000)
+	@OperationsPerInvocation(SIZE)
 	@Benchmark
 	public int forEachLoopSeq() {
 		final IntRef sum = new IntRef();
