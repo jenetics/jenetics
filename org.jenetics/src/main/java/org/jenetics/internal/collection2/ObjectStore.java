@@ -26,16 +26,17 @@ import static java.lang.String.format;
  * @version !__version__!
  * @since !__version__!
  */
-public final class ObjectStore<T> extends Store<T> {
+public final class ObjectStore<T> extends Array.Store<T> {
 
 	private final Object[] _array;
 	private final int _start;
 	private final int _length;
 
 	private ObjectStore(final Object[] array, final int start, final int end) {
-		if (end > array.length) {
+		if (start < 0 || end > array.length || start > end) {
 			throw new ArrayIndexOutOfBoundsException(format(
-				"End index bigger than length: %d > %d", end, array.length
+				"Start index %s and/or end index %s are out of bounds [0, %s)",
+				start, end, array.length
 			));
 		}
 
@@ -45,23 +46,14 @@ public final class ObjectStore<T> extends Store<T> {
 	}
 
 	@Override
-	public void set(int index, T value) {
-		checkIndex(index);
-		_array[index + _start] = value;
-	}
-
-	private void checkIndex(final int start) {
-		if (start < 0 || start >= _length) {
-			throw new ArrayIndexOutOfBoundsException(format(
-				"Index %s is out of bounds [0, %s)", start, _length
-			));
-		}
+	public void set(final int i, T value) {
+		_array[i + _start] = value;
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public T get(int index) {
-		return (T)_array[index + _start];
+	public T get(final int i) {
+		return (T)_array[i + _start];
 	}
 
 	@Override
