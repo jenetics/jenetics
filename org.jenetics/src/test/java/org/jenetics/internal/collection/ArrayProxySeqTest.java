@@ -23,9 +23,6 @@ import java.util.function.Function;
 
 import org.testng.annotations.Test;
 
-import org.jenetics.internal.collection2.Array;
-import org.jenetics.internal.collection2.ObjectStore;
-
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Seq;
 import org.jenetics.util.SeqTestBase;

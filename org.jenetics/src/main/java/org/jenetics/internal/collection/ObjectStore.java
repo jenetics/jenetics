@@ -17,16 +17,18 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.collection2;
+package org.jenetics.internal.collection;
 
 import static java.util.Objects.requireNonNull;
+
+import org.jenetics.internal.collection2.Array.Store;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public final class ObjectStore<T> implements Array.Store<T> {
+public final class ObjectStore<T> implements Store<T> {
 
 	private final Object[] _array;
 

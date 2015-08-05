@@ -31,8 +31,6 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import org.jenetics.internal.collection2.Array;
-
 import org.jenetics.util.Seq;
 
 /**

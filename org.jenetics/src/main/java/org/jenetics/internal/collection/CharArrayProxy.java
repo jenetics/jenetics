@@ -19,8 +19,6 @@
  */
 package org.jenetics.internal.collection;
 
-import org.jenetics.internal.collection2.Array;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0

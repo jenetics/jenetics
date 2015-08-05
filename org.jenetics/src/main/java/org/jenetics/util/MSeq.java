@@ -32,8 +32,8 @@ import java.util.function.Supplier;
 import java.util.stream.Collector;
 
 import org.jenetics.internal.collection.ArrayProxyMSeq;
-import org.jenetics.internal.collection2.Array;
-import org.jenetics.internal.collection2.ObjectStore;
+import org.jenetics.internal.collection.Array;
+import org.jenetics.internal.collection.ObjectStore;
 
 /**
  * Mutable, ordered, fixed sized sequence.

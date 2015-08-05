@@ -29,9 +29,6 @@ import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import org.jenetics.internal.collection2.Array;
-import org.jenetics.internal.collection2.ObjectStore;
-
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
 

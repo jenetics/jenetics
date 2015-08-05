@@ -25,8 +25,6 @@ import java.io.Serializable;
 import java.util.AbstractList;
 import java.util.RandomAccess;
 
-import org.jenetics.internal.collection2.Array;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4

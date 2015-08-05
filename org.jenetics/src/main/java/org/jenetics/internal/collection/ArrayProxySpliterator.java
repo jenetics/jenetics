@@ -24,8 +24,6 @@ import static java.util.Objects.requireNonNull;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
-import org.jenetics.internal.collection2.Array;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0

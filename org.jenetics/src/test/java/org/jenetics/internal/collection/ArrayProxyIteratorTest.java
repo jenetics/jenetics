@@ -26,8 +26,6 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.internal.collection2.Array;
-import org.jenetics.internal.collection2.ObjectStore;
 import org.jenetics.internal.math.random;
 
 /**

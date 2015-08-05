@@ -24,8 +24,6 @@ import static java.util.Objects.requireNonNull;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
-import org.jenetics.internal.collection2.Array;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4

@@ -29,7 +29,7 @@ import java.util.stream.Collector;
 
 import org.jenetics.internal.collection.ArrayProxyISeq;
 import org.jenetics.internal.collection.CharArrayProxy;
-import org.jenetics.internal.collection2.Array;
+import org.jenetics.internal.collection.Array;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 

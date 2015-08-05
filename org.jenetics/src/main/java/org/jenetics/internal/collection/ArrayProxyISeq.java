@@ -21,9 +21,6 @@ package org.jenetics.internal.collection;
 
 import java.util.function.Function;
 
-import org.jenetics.internal.collection2.Array;
-import org.jenetics.internal.collection2.ObjectStore;
-
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
 

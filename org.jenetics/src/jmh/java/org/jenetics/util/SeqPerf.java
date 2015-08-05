@@ -36,8 +36,8 @@ import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
-import org.jenetics.internal.collection2.Array;
-import org.jenetics.internal.collection2.ObjectStore;
+import org.jenetics.internal.collection.Array;
+import org.jenetics.internal.collection.ObjectStore;
 import org.jenetics.internal.util.IntRef;
 
 /**

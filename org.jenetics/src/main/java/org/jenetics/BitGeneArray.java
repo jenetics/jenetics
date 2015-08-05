@@ -21,7 +21,7 @@ package org.jenetics;
 
 import org.jenetics.internal.collection.ArrayProxyISeq;
 import org.jenetics.internal.collection.ArrayProxyMSeq;
-import org.jenetics.internal.collection2.Array;
+import org.jenetics.internal.collection.Array;
 import org.jenetics.internal.util.bit;
 
 /**
