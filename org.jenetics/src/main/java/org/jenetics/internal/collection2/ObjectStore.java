@@ -35,14 +35,14 @@ public final class ObjectStore<T> implements Array.Store<T> {
 	}
 
 	@Override
-	public void set(final int i, T value) {
-		_array[i] = value;
+	public void set(final int index, T value) {
+		_array[index] = value;
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public T get(final int i) {
-		return (T)_array[i];
+	public T get(final int index) {
+		return (T)_array[index];
 	}
 
 	@Override

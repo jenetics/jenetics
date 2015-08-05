@@ -88,9 +88,9 @@ public final class Array<T> {
 
 		public T get(final int index);
 
-		public int length();
-
 		public Store<T> copy(final int from, final int until);
+
+		public int length();
 
 		public default Store<T> copy(final int from) {
 			return copy(from, length());
