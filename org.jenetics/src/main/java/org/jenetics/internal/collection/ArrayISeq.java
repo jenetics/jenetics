@@ -38,15 +38,16 @@ public class ArrayISeq<T>
 
 	public ArrayISeq(final Array<T> array) {
 		super(array);
+		assert array.isSealed();
 	}
 
 	@Override
 	public <B> ISeq<B> map(final Function<? super T, ? extends B> mapper) {
-		final Array<B> mapped = Array.of(ObjectStore.ofLength(length()));
+		final Array<B> mapped = Array.ofLength(length());
 		for (int i = 0; i < length(); ++i) {
 			mapped.set(i, mapper.apply(array.get(i)));
 		}
-		return new ArrayISeq<>(mapped);
+		return new ArrayISeq<>(mapped.seal());
 	}
 
 	@Override

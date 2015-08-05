@@ -28,15 +28,15 @@ import org.jenetics.util.ISeqTestBase;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
 @Test
-public class ArrayProxyISeqTest extends ISeqTestBase {
+public class ArrayISeqTest extends ISeqTestBase {
 
 	@Override
 	protected ISeq<Integer> newSeq(final int length) {
-		final Array<Integer> proxy = Array.of(ObjectStore.ofLength(1000));
+		final Array<Integer> array = Array.ofLength(1000);
 		for (int i = 0; i < length; ++i) {
-			proxy.set(i, i);
+			array.set(i, i);
 		}
-		return new ArrayISeq<>(proxy);
+		return new ArrayISeq<>(array.seal());
 	}
 
 }

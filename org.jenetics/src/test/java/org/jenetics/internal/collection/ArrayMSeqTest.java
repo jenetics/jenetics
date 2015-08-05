@@ -28,15 +28,15 @@ import org.jenetics.util.MSeqTestBase;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
 @Test
-public class ArrayProxyMSeqTest extends MSeqTestBase {
+public class ArrayMSeqTest extends MSeqTestBase {
 
 	@Override
 	protected MSeq<Integer> newSeq(final int length) {
-		final Array<Integer> impl = Array.of(ObjectStore.ofLength(length));
+		final Array<Integer> array = Array.ofLength(length);
 		for (int i = 0; i < length; ++i) {
-			impl.set(i, i);
+			array.set(i, i);
 		}
-		return new ArrayMSeq<>(impl);
+		return new ArrayMSeq<>(array);
 	}
 
 }

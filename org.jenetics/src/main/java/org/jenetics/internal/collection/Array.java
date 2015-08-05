@@ -48,6 +48,10 @@ public final class Array<T> {
 		return new Array<>(_store.seal(), _start, _length + _start);
 	}
 
+	public boolean isSealed() {
+		return _store.isSealed();
+	}
+
 	public void set(final int index, final T value) {
 		_store.set(index + _start, value);
 	}
