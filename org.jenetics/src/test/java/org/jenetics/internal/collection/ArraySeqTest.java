@@ -31,14 +31,14 @@ import org.jenetics.util.SeqTestBase;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
 @Test
-public class ArrayProxySeqTest extends SeqTestBase {
+public class ArraySeqTest extends SeqTestBase {
 
-	private static final class ArrayProxySeqImpl<T>
-		extends ArrayProxySeq<T>
+	private static final class ArraySeqImpl<T>
+		extends ArraySeq<T>
 	{
 		private static final long serialVersionUID = 1L;
 
-		ArrayProxySeqImpl(final Array<T> proxy) {
+		ArraySeqImpl(final Array<T> proxy) {
 			super(proxy);
 		}
 
@@ -48,17 +48,17 @@ public class ArrayProxySeqTest extends SeqTestBase {
 			for (int i = 0; i < length(); ++i) {
 				mapped.set(i, mapper.apply(array.get(i)));
 			}
-			return new ArrayProxyISeq<>(mapped);
+			return new ArrayISeq<>(mapped);
 		}
 
 		@Override
 		public ISeq<T> subSeq(final int start) {
-			return new ArrayProxyISeq<>(array.slice(start, length()));
+			return new ArrayISeq<>(array.slice(start, length()));
 		}
 
 		@Override
 		public ISeq<T> subSeq(int start, int end) {
-			return new ArrayProxyISeq<>(array.slice(start, end));
+			return new ArrayISeq<>(array.slice(start, end));
 		}
 
 	}
@@ -69,7 +69,7 @@ public class ArrayProxySeqTest extends SeqTestBase {
 		for (int i = 0; i < length; ++i) {
 			impl.set(i, i);
 		}
-		return new ArrayProxySeqImpl<>(impl);
+		return new ArraySeqImpl<>(impl);
 	}
 
 

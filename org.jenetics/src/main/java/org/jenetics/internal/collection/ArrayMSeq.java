@@ -37,20 +37,20 @@ import org.jenetics.util.MSeq;
  * @since 1.4
  * @version 3.0
  */
-public class ArrayProxyMSeq<T>
-	extends ArrayProxySeq<T>
+public class ArrayMSeq<T>
+	extends ArraySeq<T>
 	implements MSeq<T>
 {
 
 	private static final long serialVersionUID = 1L;
 
-	public ArrayProxyMSeq(final Array<T> array) {
+	public ArrayMSeq(final Array<T> array) {
 		super(array);
 	}
 
 	@Override
 	public MSeq<T> copy() {
-		return new ArrayProxyMSeq<>(array.copy());
+		return new ArrayMSeq<>(array.copy());
 	}
 
 	@Override
@@ -140,12 +140,12 @@ public class ArrayProxyMSeq<T>
 
 	@Override
 	public MSeq<T> subSeq(final int start, final int end) {
-		return new ArrayProxyMSeq<>(array.slice(start, end));
+		return new ArrayMSeq<>(array.slice(start, end));
 	}
 
 	@Override
 	public MSeq<T> subSeq(final int start) {
-		return new ArrayProxyMSeq<>(array.slice(start, length()));
+		return new ArrayMSeq<>(array.slice(start, length()));
 	}
 
 	@Override
@@ -154,12 +154,12 @@ public class ArrayProxyMSeq<T>
 		for (int i = 0; i < length(); ++i) {
 			mapped.set(i, mapper.apply(array.get(i)));
 		}
-		return new ArrayProxyMSeq<>(mapped);
+		return new ArrayMSeq<>(mapped);
 	}
 
 	@Override
 	public ISeq<T> toISeq() {
-		return new ArrayProxyISeq<>(array.seal());
+		return new ArrayISeq<>(array.seal());
 	}
 
 	@Override

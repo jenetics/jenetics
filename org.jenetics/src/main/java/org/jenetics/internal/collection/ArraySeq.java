@@ -38,7 +38,7 @@ import org.jenetics.util.Seq;
  * @since 1.4
  * @version 3.0
  */
-public abstract class ArrayProxySeq<T>
+public abstract class ArraySeq<T>
 	implements
 		Seq<T>,
 		Serializable
@@ -47,7 +47,7 @@ public abstract class ArrayProxySeq<T>
 
 	public final Array<T> array;
 
-	public ArrayProxySeq(final Array<T> array) {
+	public ArraySeq(final Array<T> array) {
 		this.array = requireNonNull(array, "Array must not be null.");
 	}
 

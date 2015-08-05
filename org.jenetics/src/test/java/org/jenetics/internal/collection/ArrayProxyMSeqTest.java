@@ -36,7 +36,7 @@ public class ArrayProxyMSeqTest extends MSeqTestBase {
 		for (int i = 0; i < length; ++i) {
 			impl.set(i, i);
 		}
-		return new ArrayProxyMSeq<>(impl);
+		return new ArrayMSeq<>(impl);
 	}
 
 }

@@ -27,7 +27,7 @@ import java.util.Arrays;
 import java.util.regex.PatternSyntaxException;
 import java.util.stream.Collector;
 
-import org.jenetics.internal.collection.ArrayProxyISeq;
+import org.jenetics.internal.collection.ArrayISeq;
 import org.jenetics.internal.collection.CharArrayProxy;
 import org.jenetics.internal.collection.Array;
 import org.jenetics.internal.util.Equality;
@@ -324,7 +324,7 @@ public final class CharSeq
 
 }
 
-abstract class CharSeqBase extends ArrayProxyISeq<Character> {
+abstract class CharSeqBase extends ArrayISeq<Character> {
 	private static final long serialVersionUID = 1L;
 
 	final char[] array;

@@ -36,7 +36,7 @@ public class ArrayProxyISeqTest extends ISeqTestBase {
 		for (int i = 0; i < length; ++i) {
 			proxy.set(i, i);
 		}
-		return new ArrayProxyISeq<>(proxy);
+		return new ArrayISeq<>(proxy);
 	}
 
 }

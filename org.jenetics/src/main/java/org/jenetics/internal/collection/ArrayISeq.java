@@ -29,14 +29,14 @@ import org.jenetics.util.MSeq;
  * @since 1.4
  * @version 3.0
  */
-public class ArrayProxyISeq<T>
-	extends ArrayProxySeq<T>
+public class ArrayISeq<T>
+	extends ArraySeq<T>
 	implements ISeq<T>
 {
 
 	private static final long serialVersionUID = 1L;
 
-	public ArrayProxyISeq(final Array<T> array) {
+	public ArrayISeq(final Array<T> array) {
 		super(array);
 	}
 
@@ -46,22 +46,22 @@ public class ArrayProxyISeq<T>
 		for (int i = 0; i < length(); ++i) {
 			mapped.set(i, mapper.apply(array.get(i)));
 		}
-		return new ArrayProxyISeq<>(mapped);
+		return new ArrayISeq<>(mapped);
 	}
 
 	@Override
 	public ISeq<T> subSeq(final int start) {
-		return new ArrayProxyISeq<>(array.slice(start, length()));
+		return new ArrayISeq<>(array.slice(start, length()));
 	}
 
 	@Override
 	public ISeq<T> subSeq(int start, int end) {
-		return new ArrayProxyISeq<>(array.slice(start, end));
+		return new ArrayISeq<>(array.slice(start, end));
 	}
 
 	@Override
 	public MSeq<T> copy() {
-		return new ArrayProxyMSeq<>(array.copy());
+		return new ArrayMSeq<>(array.copy());
 	}
 
 }

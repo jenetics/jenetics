@@ -19,8 +19,8 @@
  */
 package org.jenetics;
 
-import org.jenetics.internal.collection.ArrayProxyISeq;
-import org.jenetics.internal.collection.ArrayProxyMSeq;
+import org.jenetics.internal.collection.ArrayISeq;
+import org.jenetics.internal.collection.ArrayMSeq;
 import org.jenetics.internal.collection.Array;
 import org.jenetics.internal.util.bit;
 
@@ -29,7 +29,7 @@ import org.jenetics.internal.util.bit;
  * @since 1.4
  * @version 3.0
  */
-final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
+final class BitGeneArray extends ArrayMSeq<BitGene> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -52,7 +52,7 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 	 * @since 1.4
 	 * @version 1.4
 	 */
-	static final class BitGeneISeq extends ArrayProxyISeq<BitGene> {
+	static final class BitGeneISeq extends ArrayISeq<BitGene> {
 		private static final long serialVersionUID = 1L;
 
 		public BitGeneISeq(final Array<BitGene> array) {
