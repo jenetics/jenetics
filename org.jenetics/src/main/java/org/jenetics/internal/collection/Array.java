@@ -152,7 +152,6 @@ public final class Array<T> {
 			}
 
 			public Ref<T> seal() {
-				assert !_sealed : "Must not be called on sealed proxies";
 				_sealed = true;
 				return new Ref<>(_value, true);
 			}
