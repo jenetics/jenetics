@@ -39,7 +39,7 @@ public class ArraySeqTest extends SeqTestBase {
 		private static final long serialVersionUID = 1L;
 
 		ArraySeqImpl(final Array<T> array) {
-			super(array);
+			super(array.seal());
 		}
 
 		@Override

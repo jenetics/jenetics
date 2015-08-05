@@ -615,7 +615,7 @@ public interface Seq<T> extends Iterable<T> {
 		final String suffix
 	) {
 		return stream()
-			.map(Object::toString)
+			.map(Objects::toString)
 			.collect(joining(separator, prefix, suffix));
 	}
 

@@ -32,7 +32,7 @@ public class ArrayISeqTest extends ISeqTestBase {
 
 	@Override
 	protected ISeq<Integer> newSeq(final int length) {
-		final Array<Integer> array = Array.ofLength(1000);
+		final Array<Integer> array = Array.ofLength(length);
 		for (int i = 0; i < length; ++i) {
 			array.set(i, i);
 		}
