@@ -19,63 +19,47 @@
  */
 package org.jenetics.internal.collection2;
 
-import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public final class ObjectStore<T> extends Array.Store<T> {
+public final class ObjectStore<T> implements Array.Store<T> {
 
 	private final Object[] _array;
-	private final int _start;
-	private final int _length;
 
-	private ObjectStore(final Object[] array, final int start, final int end) {
-		if (start < 0 || end > array.length || start > end) {
-			throw new ArrayIndexOutOfBoundsException(format(
-				"Start index %s and/or end index %s are out of bounds [0, %s)",
-				start, end, array.length
-			));
-		}
-
-		_array = array;
-		_start = start;
-		_length = end - start;
+	private ObjectStore(final Object[] array) {
+		_array = requireNonNull(array);
 	}
 
 	@Override
 	public void set(final int i, T value) {
-		_array[i + _start] = value;
+		_array[i] = value;
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public T get(final int i) {
-		return (T)_array[i + _start];
+		return (T)_array[i];
 	}
 
 	@Override
-	public ObjectStore<T> slice(final int from, final int until) {
-		return new ObjectStore<>(_array, from + _start, until + _start);
-	}
+	public ObjectStore<T> copy(final int from, final int until) {
+		final Object[] array = new Object[until - from];
+		System.arraycopy(_array, from, array, 0, until - from);
 
-	@Override
-	public ObjectStore<T> copy() {
-		final Object[] array = new Object[_length];
-		System.arraycopy(_array, _start, array, 0, _length);
-
-		return new ObjectStore<>(array, 0, _length);
+		return new ObjectStore<>(array);
 	}
 
 	@Override
 	public int length() {
-		return _length;
+		return _array.length;
 	}
 
 	public static <T> ObjectStore<T> of(final int length) {
-		return new ObjectStore<>(new Object[length], 0, length);
+		return new ObjectStore<>(new Object[length]);
 	}
 
 }

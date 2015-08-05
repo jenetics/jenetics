@@ -22,8 +22,6 @@ package org.jenetics.internal.collection2;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import org.jenetics.util.Copyable;
-
 /**
  * @param <T>
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -32,18 +30,18 @@ import org.jenetics.util.Copyable;
  */
 public final class Array<T> {
 
-	private final StorageRef<T> _store;
+	private final Store.Ref<T> _store;
 	private final int _start;
 	private final int _length;
 
-	private Array(final StorageRef<T> store, final int from, final int until) {
+	private Array(final Store.Ref<T> store, final int from, final int until) {
 		_store = requireNonNull(store);
 		_start = from;
 		_length = until - from;
 	}
 
-	public Array(final Storage<T> store) {
-		this(StorageRef.of(store), 0, store.length());
+	public Array(final Store<T> store) {
+		this(Store.Ref.of(store), 0, store.length());
 	}
 
 	public final Array<T> seal() {
@@ -84,15 +82,79 @@ public final class Array<T> {
 	 * @version !__version__!
 	 * @since !__version__!
 	 */
-	public static abstract class Store<T> implements Copyable<Store<T>> {
+	public interface Store<T> {
 
-		public abstract void set(final int index, final T value);
+		public void set(final int index, final T value);
 
-		public abstract T get(final int index);
+		public T get(final int index);
 
-		public abstract Store<T> slice(final int from, final int until);
+		public int length();
 
-		public abstract int length();
+		public Store<T> copy(final int from, final int until);
+
+		public default Store<T> copy(final int from) {
+			return copy(from, length());
+		}
+
+		public default Store<T> copy() {
+			return copy(0, length());
+		}
+
+
+		/**
+		 * @param <T>
+		 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+		 * @version !__version__!
+		 * @since !__version__!
+		 */
+		public static final class Ref<T> implements Store<T> {
+
+			private Store<T> _value;
+			private boolean _sealed;
+
+			private Ref(final Store<T> value, final boolean sealed) {
+				_value = value;
+				_sealed = sealed;
+			}
+
+			public Ref<T> seal() {
+				assert !_sealed : "Must not be called on sealed proxies";
+				_sealed = true;
+				return new Ref<>(_value, true);
+			}
+
+			public boolean isSealed() {
+				return _sealed;
+			}
+
+			@Override
+			public void set(final int index, final T value) {
+				if (_sealed) {
+					_value = copy();
+					_sealed = false;
+				}
+				_value.set(index, value);
+			}
+
+			@Override
+			public T get(final int index) {
+				return _value.get(index);
+			}
+
+			@Override
+			public int length() {
+				return _value.length();
+			}
+
+			@Override
+			public Store<T> copy(final int from, final int until) {
+				return _value.copy(from, until);
+			}
+
+			public static <T> Ref<T> of(final Store<T> value) {
+				return new Ref<>(value, false);
+			}
+		}
 
 	}
 
