@@ -45,7 +45,7 @@ public class ArrayProxyMIteratorTest {
 
 		seed = org.jenetics.internal.math.random.seed();
 		random.setSeed(seed);
-		final ListIterator<Integer> it = new ArrayProxyMIterator<>(impl);
+		final ListIterator<Integer> it = new ArrayMIterator<>(impl);
 		while (it.hasNext()) {
 			it.next();
 			it.set(random.nextInt());
@@ -70,7 +70,7 @@ public class ArrayProxyMIteratorTest {
 		}
 
 		int count = 0;
-		final ListIterator<Integer> it = new ArrayProxyMIterator<>(proxy);
+		final ListIterator<Integer> it = new ArrayMIterator<>(proxy);
 		while (it.hasNext()) {
 			it.next();
 			it.set(222);
@@ -96,7 +96,7 @@ public class ArrayProxyMIteratorTest {
 			Assert.assertEquals(value, new Integer(111));
 		}
 
-		final ListIterator<Integer> it = new ArrayProxyMIterator<>(proxy);
+		final ListIterator<Integer> it = new ArrayMIterator<>(proxy);
 		while (it.hasNext()) {
 			it.next();
 		}

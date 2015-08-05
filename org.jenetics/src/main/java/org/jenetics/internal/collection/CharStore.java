@@ -21,21 +21,42 @@ package org.jenetics.internal.collection;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.4
+ * @since 3.0
  * @version 3.0
  */
-public class ArrayProxyMIterator<T> extends ArrayProxyIterator<T> {
+public final class CharStore implements Array.Store<Character> {
+	private static final long serialVersionUID = 1L;
 
-	public ArrayProxyMIterator(final Array<T> array) {
-		super(array);
+	public final char[] _array;
+
+	public CharStore(final char[] chars) {
+		_array = chars;
+	}
+
+	public CharStore(final int length) {
+		this(new char[length]);
 	}
 
 	@Override
-	public void set(final T value) {
-		if (lastElement < 0) {
-			throw new IllegalStateException();
-		}
-		array.set(lastElement, value);
+	public Character get(final int index) {
+		return _array[index];
+	}
+
+	@Override
+	public void set(final int index, final Character value) {
+		_array[index] = value;
+	}
+
+	@Override
+	public CharStore copy(final int from, final int until) {
+		final char[] array = new char[until - from];
+		System.arraycopy(_array, from, array, 0, until - from);
+		return new CharStore(array);
+	}
+
+	@Override
+	public int length() {
+		return _array.length;
 	}
 
 }

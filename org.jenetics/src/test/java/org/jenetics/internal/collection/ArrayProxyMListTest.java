@@ -42,7 +42,7 @@ public class ArrayProxyMListTest {
 			impl.set(i, random.nextInt());
 		}
 
-		final List<Integer> list = new ArrayProxyMList<>(impl);
+		final List<Integer> list = new ArrayMList<>(impl);
 
 		seed = org.jenetics.internal.math.random.seed();
 		random.setSeed(seed);

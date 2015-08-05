@@ -29,13 +29,13 @@ import java.util.function.Consumer;
  * @since 3.0
  * @version 3.0
  */
-public final class ArrayProxySpliterator<T> implements Spliterator<T> {
+public final class ArraySpliterator<T> implements Spliterator<T> {
 
 	private final Array<T> _array;
 	private final int _fence;
 	private int _index;
 
-	public ArrayProxySpliterator(
+	public ArraySpliterator(
 		final Array<T> array,
 		final int origin,
 		final int fence
@@ -45,7 +45,7 @@ public final class ArrayProxySpliterator<T> implements Spliterator<T> {
 		_fence = fence;
 	}
 
-	public ArrayProxySpliterator(final Array<T> array) {
+	public ArraySpliterator(final Array<T> array) {
 		this(array, 0, array.length());
 	}
 
@@ -82,7 +82,7 @@ public final class ArrayProxySpliterator<T> implements Spliterator<T> {
 
 		return (lo >= mid)
 			? null
-			: new ArrayProxySpliterator<>(_array, lo, _index = mid);
+			: new ArraySpliterator<>(_array, lo, _index = mid);
 	}
 
 	@Override

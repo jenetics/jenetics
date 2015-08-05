@@ -30,7 +30,7 @@ import java.util.RandomAccess;
  * @since 1.4
  * @version 3.0
  */
-public class ArrayProxyList<T>
+public class ArrayList<T>
 	extends AbstractList<T>
 	implements
 		RandomAccess,
@@ -40,7 +40,7 @@ public class ArrayProxyList<T>
 
 	public final Array<T> array;
 
-	public ArrayProxyList(final Array<T> array) {
+	public ArrayList(final Array<T> array) {
 		this.array = requireNonNull(array, "Array must not be null.");
 	}
 

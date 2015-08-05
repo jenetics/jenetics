@@ -29,14 +29,14 @@ import java.util.NoSuchElementException;
  * @since 1.4
  * @version 3.0
  */
-public class ArrayProxyIterator<T> implements ListIterator<T> {
+public class ArrayIterator<T> implements ListIterator<T> {
 
 	public final Array<T> array;
 
 	protected int cursor = 0;
 	protected int lastElement = -1;
 
-	public ArrayProxyIterator(final Array<T> array) {
+	public ArrayIterator(final Array<T> array) {
 		this.array = requireNonNull(array, "Array must not be null.");
 	}
 

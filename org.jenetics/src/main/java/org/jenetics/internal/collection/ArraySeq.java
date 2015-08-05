@@ -69,7 +69,7 @@ public abstract class ArraySeq<T>
 
 	@Override
 	public Spliterator<T> spliterator() {
-		return new ArrayProxySpliterator<T>(array);
+		return new ArraySpliterator<T>(array);
 	}
 
 	@Override
@@ -139,16 +139,16 @@ public abstract class ArraySeq<T>
 
 	@Override
 	public Iterator<T> iterator() {
-		return new ArrayProxyIterator<>(array);
+		return new ArrayIterator<>(array);
 	}
 
 	public ListIterator<T> listIterator() {
-		return new ArrayProxyIterator<>(array);
+		return new ArrayIterator<>(array);
 	}
 
 	@Override
 	public List<T> asList() {
-		return new ArrayProxyList<>(array);
+		return new ArrayList<>(array);
 	}
 
 	@Override

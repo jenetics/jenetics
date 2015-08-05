@@ -30,12 +30,12 @@ import org.jenetics.internal.math.random;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class ArrayProxyListTest {
+public class ArrayListTest {
 
 	@Test
 	public void size() {
 		final Array<Integer> proxy = Array.of(ObjectStore.ofLength(1000));
-		final List<Integer> list = new ArrayProxyList<>(proxy);
+		final List<Integer> list = new ArrayList<>(proxy);
 
 		Assert.assertEquals(list.size(), proxy.length());
 	}
@@ -50,7 +50,7 @@ public class ArrayProxyListTest {
 			proxy.set(i, random.nextInt());
 		}
 
-		final List<Integer> list = new ArrayProxyList<>(proxy);
+		final List<Integer> list = new ArrayList<>(proxy);
 
 		for (int i = 0; i < proxy.length(); ++i) {
 			final Integer actual = list.get(i);
@@ -69,7 +69,7 @@ public class ArrayProxyListTest {
 		final int sliceStart = 50;
 		final int sliceEnd = 500;
 		final Array<Integer> slice = proxy.slice(sliceStart, sliceEnd);
-		final List<Integer> list = new ArrayProxyList<>(slice);
+		final List<Integer> list = new ArrayList<>(slice);
 
 		for (int i = 0; i < list.size(); ++i) {
 			Assert.assertEquals(slice.get(i), Integer.valueOf(i + sliceStart));
@@ -79,7 +79,7 @@ public class ArrayProxyListTest {
 	@Test(expectedExceptions = UnsupportedOperationException.class)
 	public void set() {
 		final Array<Integer> proxy = Array.of(ObjectStore.ofLength(1000));
-		final List<Integer> list = new ArrayProxyList<>(proxy);
+		final List<Integer> list = new ArrayList<>(proxy);
 
 		list.set(34, 23);
 	}
@@ -94,7 +94,7 @@ public class ArrayProxyListTest {
 			proxy.set(i, random.nextLong());
 		}
 
-		final List<Long> list = new ArrayProxyList<>(proxy);
+		final List<Long> list = new ArrayList<>(proxy);
 
 		random.setSeed(seed);
 		for (int i = 0; i < proxy.length(); ++i) {
@@ -113,7 +113,7 @@ public class ArrayProxyListTest {
 			proxy.set(i, random.nextLong());
 		}
 
-		final List<Long> list = new ArrayProxyList<>(proxy);
+		final List<Long> list = new ArrayList<>(proxy);
 
 		random.setSeed(seed);
 		for (int i = 0; i < proxy.length(); ++i) {
@@ -132,7 +132,7 @@ public class ArrayProxyListTest {
 		final int sliceStart = 50;
 		final int sliceEnd = 500;
 		final Array<Integer> slice = proxy.slice(sliceStart, sliceEnd);
-		final List<Integer> list = new ArrayProxyList<>(slice);
+		final List<Integer> list = new ArrayList<>(slice);
 
 		for (int i = 0; i < list.size(); ++i) {
 			final int index = list.indexOf(sliceStart + i);
@@ -150,7 +150,7 @@ public class ArrayProxyListTest {
 		final int sliceStart = 50;
 		final int sliceEnd = 500;
 		final Array<Integer> slice = proxy.slice(sliceStart, sliceEnd);
-		final List<Integer> list = new ArrayProxyList<>(slice);
+		final List<Integer> list = new ArrayList<>(slice);
 
 		for (int i = 0; i < list.size(); ++i) {
 			final int index = list.lastIndexOf(sliceStart + i);
@@ -168,7 +168,7 @@ public class ArrayProxyListTest {
 			proxy.set(i, random.nextLong());
 		}
 
-		final List<Long> list = new ArrayProxyList<>(proxy);
+		final List<Long> list = new ArrayList<>(proxy);
 
 		random.setSeed(seed);
 		for (int i = 0; i < proxy.length(); ++i) {
@@ -189,7 +189,7 @@ public class ArrayProxyListTest {
 			proxy.set(i, random.nextLong());
 		}
 
-		final List<Long> list = new ArrayProxyList<>(proxy);
+		final List<Long> list = new ArrayList<>(proxy);
 		final Object[] array = list.toArray();
 
 		for (int i = 0; i < array.length; ++i) {
@@ -207,7 +207,7 @@ public class ArrayProxyListTest {
 			proxy.set(i, random.nextLong());
 		}
 
-		final List<Long> list = new ArrayProxyList<>(proxy);
+		final List<Long> list = new ArrayList<>(proxy);
 		final Long[] array = list.toArray(new Long[0]);
 
 		for (int i = 0; i < array.length; ++i) {

@@ -24,10 +24,10 @@ package org.jenetics.internal.collection;
  * @since 1.4
  * @version 1.4
  */
-public class ArrayProxyMList<T> extends ArrayProxyList<T> {
+public class ArrayMList<T> extends ArrayList<T> {
 	private static final long serialVersionUID = 1L;
 
-	public ArrayProxyMList(final Array<T> array) {
+	public ArrayMList(final Array<T> array) {
 		super(array);
 	}
 

@@ -28,7 +28,7 @@ import java.util.regex.PatternSyntaxException;
 import java.util.stream.Collector;
 
 import org.jenetics.internal.collection.ArrayISeq;
-import org.jenetics.internal.collection.CharArrayProxy;
+import org.jenetics.internal.collection.CharStore;
 import org.jenetics.internal.collection.Array;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
@@ -330,7 +330,7 @@ abstract class CharSeqBase extends ArrayISeq<Character> {
 	final char[] array;
 
 	protected CharSeqBase(final char[] characters) {
-		super(Array.of(new CharArrayProxy(characters)));
+		super(Array.of(new CharStore(characters)));
 		array = characters;
 	}
 }

@@ -31,7 +31,7 @@ import org.jenetics.internal.math.random;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class ArrayProxyIteratorTest {
+public class ArrayIteratorTest {
 
 	@Test
 	public void iterateForward() {
@@ -44,7 +44,7 @@ public class ArrayProxyIteratorTest {
 		}
 
 		random.setSeed(seed);
-		final Iterator<Integer> it = new ArrayProxyIterator<>(proxy);
+		final Iterator<Integer> it = new ArrayIterator<>(proxy);
 		int count = 0;
 		while (it.hasNext()) {
 			Assert.assertEquals(it.next().intValue(), random.nextInt());
@@ -65,7 +65,7 @@ public class ArrayProxyIteratorTest {
 		}
 
 		random.setSeed(seed);
-		final ListIterator<Integer> it = new ArrayProxyIterator<>(proxy);
+		final ListIterator<Integer> it = new ArrayIterator<>(proxy);
 		while (it.hasNext()) {
 			it.next();
 		}
@@ -91,7 +91,7 @@ public class ArrayProxyIteratorTest {
 		}
 
 		random.setSeed(seed);
-		final ListIterator<Integer> it = new ArrayProxyIterator<>(proxy);
+		final ListIterator<Integer> it = new ArrayIterator<>(proxy);
 		int count = 0;
 		while (it.hasNext()) {
 			Assert.assertEquals(it.nextIndex(), count);
@@ -106,7 +106,7 @@ public class ArrayProxyIteratorTest {
 	@Test(expectedExceptions = UnsupportedOperationException.class)
 	public void set() {
 		final Array<Integer> proxy = Array.of(ObjectStore.ofLength(1000));
-		final ListIterator<Integer> it = new ArrayProxyIterator<>(proxy);
+		final ListIterator<Integer> it = new ArrayIterator<>(proxy);
 
 		it.set(23);
 	}
@@ -121,7 +121,7 @@ public class ArrayProxyIteratorTest {
 			proxy.set(i, random.nextInt());
 		}
 
-		final ListIterator<Integer> it = new ArrayProxyIterator<>(proxy);
+		final ListIterator<Integer> it = new ArrayIterator<>(proxy);
 		while (it.hasNext()) {
 			it.next();
 		}

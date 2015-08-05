@@ -55,12 +55,12 @@ public class ArrayMSeq<T>
 
 	@Override
 	public Iterator<T> iterator() {
-		return new ArrayProxyMIterator<>(array);
+		return new ArrayMIterator<>(array);
 	}
 
 	@Override
 	public ListIterator<T> listIterator() {
-		return new ArrayProxyMIterator<>(array);
+		return new ArrayMIterator<>(array);
 	}
 
 	@Override
@@ -164,7 +164,7 @@ public class ArrayMSeq<T>
 
 	@Override
 	public List<T> asList() {
-		return new ArrayProxyMList<>(array);
+		return new ArrayMList<>(array);
 	}
 
 }
