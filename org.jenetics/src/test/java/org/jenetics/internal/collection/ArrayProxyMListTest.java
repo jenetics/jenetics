@@ -25,6 +25,8 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import org.jenetics.internal.collection2.Array;
+import org.jenetics.internal.collection2.ObjectStore;
 import org.jenetics.internal.math.random;
 
 /**
@@ -37,22 +39,22 @@ public class ArrayProxyMListTest {
 		long seed = random.seed();
 		final Random random = new Random(seed);
 
-		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
-		for (int i = 0; i < proxy.length; ++i) {
-			proxy.set(i, random.nextInt());
+		final Array<Integer> impl = Array.of(ObjectStore.of(1000));
+		for (int i = 0; i < impl.length(); ++i) {
+			impl.set(i, random.nextInt());
 		}
 
-		final List<Integer> list = new ArrayProxyMList<>(proxy);
+		final List<Integer> list = new ArrayProxyMList<>(impl);
 
 		seed = org.jenetics.internal.math.random.seed();
 		random.setSeed(seed);
-		for (int i = 0; i < proxy.length; ++i) {
+		for (int i = 0; i < impl.length(); ++i) {
 			list.set(i, random.nextInt());
 		}
 
 		random.setSeed(seed);
-		for (int i = 0; i < proxy.length; ++i) {
-			Assert.assertEquals(proxy.get(i), list.get(i));
+		for (int i = 0; i <impl.length(); ++i) {
+			Assert.assertEquals(impl.get(i), list.get(i));
 			Assert.assertEquals(list.get(i).intValue(), random.nextInt());
 		}
 	}

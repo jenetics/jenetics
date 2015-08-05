@@ -62,4 +62,8 @@ public final class ObjectStore<T> implements Array.Store<T> {
 		return new ObjectStore<>(new Object[length]);
 	}
 
+	public static <T> ObjectStore<T> of(final Object[] array) {
+		return new ObjectStore<>(array);
+	}
+
 }

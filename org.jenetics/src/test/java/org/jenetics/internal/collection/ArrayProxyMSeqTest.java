@@ -21,6 +21,9 @@ package org.jenetics.internal.collection;
 
 import org.testng.annotations.Test;
 
+import org.jenetics.internal.collection2.Array;
+import org.jenetics.internal.collection2.ObjectStore;
+
 import org.jenetics.util.MSeq;
 import org.jenetics.util.MSeqTestBase;
 
@@ -32,9 +35,9 @@ public class ArrayProxyMSeqTest extends MSeqTestBase {
 
 	@Override
 	protected MSeq<Integer> newSeq(final int length) {
-		final ObjectArrayProxy<Integer> impl = new ObjectArrayProxy<>(length);
+		final Array<Integer> impl = Array.of(ObjectStore.of(length));
 		for (int i = 0; i < length; ++i) {
-			impl.array[i] = i;
+			impl.set(i, i);
 		}
 		return new ArrayProxyMSeq<>(impl);
 	}

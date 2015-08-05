@@ -21,6 +21,9 @@ package org.jenetics.internal.collection;
 
 import org.testng.annotations.Test;
 
+import org.jenetics.internal.collection2.Array;
+import org.jenetics.internal.collection2.ObjectStore;
+
 import org.jenetics.util.ISeq;
 import org.jenetics.util.ISeqTestBase;
 
@@ -32,11 +35,11 @@ public class ArrayProxyISeqTest extends ISeqTestBase {
 
 	@Override
 	protected ISeq<Integer> newSeq(final int length) {
-		final ObjectArrayProxy<Integer> impl = new ObjectArrayProxy<>(length);
+		final Array<Integer> proxy = Array.of(ObjectStore.of(1000));
 		for (int i = 0; i < length; ++i) {
-			impl.array[i] = i;
+			proxy.set(i, i);
 		}
-		return new ArrayProxyISeq<>(impl);
+		return new ArrayProxyISeq<>(proxy);
 	}
 
 }

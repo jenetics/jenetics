@@ -43,6 +43,7 @@ import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.jenetics.internal.collection2.Array;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.bit;
@@ -89,7 +90,7 @@ public class BitChromosome extends Number
 		_genes = bits;
 		_length = length;
 		_p = p;
-		_seq = new BitGeneArray(_genes, 0, _length);
+		_seq = new BitGeneArray(Array.of(new BitGeneArray.BitGeneStore(_genes, length)));
 
 	}
 
@@ -565,7 +566,7 @@ public class BitChromosome extends Number
 		_genes = new byte[bytes];
 		in.readFully(_genes);
 
-		_seq = new BitGeneArray(_genes, 0, _length);
+		_seq = new BitGeneArray(Array.of(new BitGeneArray.BitGeneStore(_genes, _length)));
 	}
 
 	/* *************************************************************************

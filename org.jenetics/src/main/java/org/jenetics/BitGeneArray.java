@@ -19,38 +19,32 @@
  */
 package org.jenetics;
 
-import org.jenetics.internal.collection.ArrayProxy;
 import org.jenetics.internal.collection.ArrayProxyISeq;
 import org.jenetics.internal.collection.ArrayProxyMSeq;
+import org.jenetics.internal.collection2.Array;
 import org.jenetics.internal.util.bit;
-
-import org.jenetics.BitGeneArray.Proxy;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
  * @version 3.0
  */
-final class BitGeneArray extends ArrayProxyMSeq<BitGene, Proxy> {
+final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 
 	private static final long serialVersionUID = 1L;
 
-	BitGeneArray(final Proxy proxy) {
-		super(proxy);
-	}
-
-	BitGeneArray(final byte[] array, final int start, final int end) {
-		this(new Proxy(array, start, end));
+	BitGeneArray(final Array<BitGene> array) {
+		super(array);
 	}
 
 	@Override
 	public BitGeneArray copy() {
-		return new BitGeneArray(proxy.copy());
+		return new BitGeneArray(array.copy());
 	}
 
 	@Override
 	public BitGeneISeq toISeq() {
-		return new BitGeneISeq(proxy.seal());
+		return new BitGeneISeq(array.seal());
 	}
 
 	/**
@@ -58,20 +52,23 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene, Proxy> {
 	 * @since 1.4
 	 * @version 1.4
 	 */
-	static final class BitGeneISeq extends ArrayProxyISeq<BitGene, Proxy> {
+	static final class BitGeneISeq extends ArrayProxyISeq<BitGene> {
 		private static final long serialVersionUID = 1L;
 
-		public BitGeneISeq(final Proxy proxy) {
-			super(proxy);
+		public BitGeneISeq(final Array<BitGene> array) {
+			super(array);
 		}
 
 		void copyTo(final byte[] array) {
-			System.arraycopy(proxy.array, 0, array, 0, proxy.array.length);
+			for (int i = 0; i < length(); ++i) {
+				bit.set(array, i, get(i).booleanValue());
+			}
+			//System.arraycopy(this.array, 0, array, 0, this.array.array.length);
 		}
 
 		@Override
 		public BitGeneArray copy() {
-			return new BitGeneArray(proxy.copy());
+			return new BitGeneArray(array.copy());
 		}
 
 	}
@@ -81,52 +78,39 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene, Proxy> {
 	 * @since 1.4
 	 * @version 3.0
 	 */
-	static final class Proxy extends ArrayProxy<BitGene, byte[], Proxy> {
+	static final class BitGeneStore implements Array.Store<BitGene> {
 		private static final long serialVersionUID = 1L;
 
-		Proxy(final byte[] array, final int start, final int end) {
-			super(array, start, end, Proxy::new, bit::copy);
+		private final byte[] _array;
+		private final int _length;
+
+		BitGeneStore(final byte[] array, final int length) {
+			_array = array;
+			_length = length;
 		}
 
-		Proxy(final int length) {
-			this(bit.newArray(length), 0, length);
-		}
-
-		@Override
-		public BitGene __get__(final int index) {
-			return BitGene.of(bit.get(array, index));
-		}
-
-		@Override
-		public void __set__(final int index, final BitGene value) {
-			bit.set(array, index, value.booleanValue());
+		BitGeneStore(final int length) {
+			this(bit.newArray(length), length);
 		}
 
 		@Override
-		public void swap(
-			final int start, final int end,
-			final ArrayProxy<BitGene, ?, ?> other, final int otherStart
-		) {
-			if (other instanceof Proxy) {
-				swap(start, end, (Proxy)other, otherStart);
-			} else {
-				super.swap(start, end, other, otherStart);
-			}
+		public BitGene get(final int index) {
+			return BitGene.of(bit.get(_array, index));
 		}
 
-		private void swap(
-			final int start, final int end,
-			final Proxy other, final int otherStart
-		) {
-			checkIndex(start, end);
-			other.checkIndex(otherStart, otherStart + end - start);
-			cloneIfSealed();
-			other.cloneIfSealed();
+		@Override
+		public void set(final int index, final BitGene value) {
+			bit.set(_array, index, value.booleanValue());
+		}
 
-			bit.swap(
-				array, start + this.start, end + this.start,
-				other.array, otherStart + other.start
-			);
+		@Override
+		public BitGeneStore copy(final int from, final int until) {
+			return new BitGeneStore(bit.copy(_array, from, until), until - from);
+		}
+
+		@Override
+		public int length() {
+			return _length;
 		}
 
 	}

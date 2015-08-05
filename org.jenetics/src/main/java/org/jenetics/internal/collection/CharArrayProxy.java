@@ -19,34 +19,46 @@
  */
 package org.jenetics.internal.collection;
 
-import java.util.Arrays;
+import org.jenetics.internal.collection2.Array;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
  * @version 3.0
  */
-public final class CharArrayProxy
-	extends ArrayProxy<Character, char[], CharArrayProxy>
-{
+public final class CharArrayProxy implements Array.Store<Character> {
 	private static final long serialVersionUID = 1L;
 
-	public CharArrayProxy(final char[] chars, final int start, final int end) {
-		super(chars, start, end, CharArrayProxy::new, Arrays::copyOfRange);
+	public final char[] _array;
+
+	public CharArrayProxy(final char[] chars) {
+		_array = chars;
 	}
 
 	public CharArrayProxy(final int length) {
-		this(new char[length], 0, length);
+		this(new char[length]);
 	}
 
 	@Override
-	public Character __get__(int index) {
-		return array[index];
+	public Character get(final int index) {
+		return _array[index];
 	}
 
 	@Override
-	public void __set__(int index, Character value) {
-		array[index] = value;
+	public void set(final int index, final Character value) {
+		_array[index] = value;
+	}
+
+	@Override
+	public CharArrayProxy copy(final int from, final int until) {
+		final char[] array = new char[until - from];
+		System.arraycopy(_array, from, array, 0, until - from);
+		return new CharArrayProxy(array);
+	}
+
+	@Override
+	public int length() {
+		return _array.length;
 	}
 
 }

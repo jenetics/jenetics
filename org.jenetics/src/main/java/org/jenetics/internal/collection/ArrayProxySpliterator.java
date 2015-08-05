@@ -24,6 +24,8 @@ import static java.util.Objects.requireNonNull;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
+import org.jenetics.internal.collection2.Array;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
@@ -31,37 +33,37 @@ import java.util.function.Consumer;
  */
 public final class ArrayProxySpliterator<T> implements Spliterator<T> {
 
-	private final ArrayProxy<T, ?, ?> _proxy;
+	private final Array<T> _array;
 	private final int _fence;
 	private int _index;
 
 	public ArrayProxySpliterator(
-		final ArrayProxy<T, ?, ?> proxy,
+		final Array<T> array,
 		final int origin,
 		final int fence
 	) {
-		_proxy = requireNonNull(proxy);
+		_array = requireNonNull(array);
 		_index = origin;
 		_fence = fence;
 	}
 
-	public ArrayProxySpliterator(final ArrayProxy<T, ?, ?> proxy) {
-		this(proxy, 0, proxy.length);
+	public ArrayProxySpliterator(final Array<T> array) {
+		this(array, 0, array.length());
 	}
 
 	@Override
 	public void forEachRemaining(final Consumer<? super T> action) {
 		requireNonNull(action);
 
-		ArrayProxy<T, ?, ?> proxy;
+		Array<T> array;
 		int i;
 		int hi;
 
-		if ((proxy = _proxy).length >= (hi = _fence) &&
+		if ((array = _array).length() >= (hi = _fence) &&
 			(i = _index) >= 0 && i < (_index = hi))
 		{
 			do {
-				action.accept(proxy.__get(i));
+				action.accept(array.get(i));
 			} while (++i < hi);
 		}
 	}
@@ -69,7 +71,7 @@ public final class ArrayProxySpliterator<T> implements Spliterator<T> {
 	@Override
 	public boolean tryAdvance(final Consumer<? super T> action) {
 		if (_index >= 0 && _index < _fence) {
-			action.accept(_proxy.__get(_index++));
+			action.accept(_array.get(_index++));
 			return true;
 		}
 		return false;
@@ -82,7 +84,7 @@ public final class ArrayProxySpliterator<T> implements Spliterator<T> {
 
 		return (lo >= mid)
 			? null
-			: new ArrayProxySpliterator<>(_proxy, lo, _index = mid);
+			: new ArrayProxySpliterator<>(_array, lo, _index = mid);
 	}
 
 	@Override

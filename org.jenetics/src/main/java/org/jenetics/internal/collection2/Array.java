@@ -77,6 +77,32 @@ public final class Array<T> {
 	}
 
 	/**
+	 * Check the given {@code from} and {@code until} indices.
+	 *
+	 * @param start the start index, inclusively.
+	 * @param end the end index, exclusively.
+	 * @throws java.lang.ArrayIndexOutOfBoundsException if the given index is
+	 *         not in the valid range.
+	 */
+	public final void checkIndex(final int start, final int end) {
+		if (start > end) {
+			throw new ArrayIndexOutOfBoundsException(format(
+				"fromIndex(%d) > toIndex(%d)", start, end
+			));
+		}
+		if (start < 0 || end > length()) {
+			throw new ArrayIndexOutOfBoundsException(format(
+				"Invalid index range: [%d, %s)", start, end
+			));
+		}
+	}
+
+	public static <T> Array<T> of(final Store<T> store) {
+		return new Array<>(store);
+	}
+
+
+	/**
 	 * @param <T>
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version !__version__!

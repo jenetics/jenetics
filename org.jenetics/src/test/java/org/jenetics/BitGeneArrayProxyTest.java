@@ -23,23 +23,22 @@ import java.util.Random;
 
 import org.testng.annotations.Test;
 
-import org.jenetics.internal.collection.ArrayProxy;
 import org.jenetics.internal.collection.ArrayProxyTestBase;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-@Test
+//@Test
 public class BitGeneArrayProxyTest extends ArrayProxyTestBase<BitGene> {
 
-	@Override
-	public ArrayProxy<BitGene, ?, ?> newArrayProxy(final int length) {
-		return new BitGeneArray.Proxy(length);
-	}
-
-	@Override
-	public BitGene newArrayProxyElement(final Random random) {
-		return BitGene.of(random.nextBoolean());
-	}
+//	@Override
+//	public ArrayProxy<BitGene, ?, ?> newArrayProxy(final int length) {
+//		return new BitGeneArray.Proxy(length);
+//	}
+//
+//	@Override
+//	public BitGene newArrayProxyElement(final Random random) {
+//		return BitGene.of(random.nextBoolean());
+//	}
 
 }

@@ -32,7 +32,8 @@ import java.util.function.Supplier;
 import java.util.stream.Collector;
 
 import org.jenetics.internal.collection.ArrayProxyMSeq;
-import org.jenetics.internal.collection.ObjectArrayProxy;
+import org.jenetics.internal.collection2.Array;
+import org.jenetics.internal.collection2.ObjectStore;
 
 /**
  * Mutable, ordered, fixed sized sequence.
@@ -268,7 +269,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @return the new mutable sequence.
 	 */
 	public static <T> MSeq<T> ofLength(final int length) {
-		return new ArrayProxyMSeq<>(new ObjectArrayProxy<>(length));
+		return new ArrayProxyMSeq<>(Array.of(ObjectStore.of(length)));
 	}
 
 	/**
@@ -281,10 +282,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 */
 	@SafeVarargs
 	public static <T> MSeq<T> of(final T... values) {
-		final ObjectArrayProxy<T> proxy = new ObjectArrayProxy<>(
-			values.clone(), 0, values.length
-		);
-		return new ArrayProxyMSeq<>(proxy);
+		return new ArrayProxyMSeq<>(Array.of(ObjectStore.of(values.clone())));
 	}
 
 	/**
@@ -326,8 +324,8 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
 	public static <T> MSeq<T> of(final Seq<T> values) {
-		return values instanceof ArrayProxyMSeq<?, ?>
-			? ((ArrayProxyMSeq<T, ?>)values).copy()
+		return values instanceof ArrayProxyMSeq<?>
+			? ((ArrayProxyMSeq<T>)values).copy()
 			: MSeq.<T>ofLength(values.length()).setAll(values);
 	}
 

@@ -24,38 +24,38 @@ import static java.util.Objects.requireNonNull;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
+import org.jenetics.internal.collection2.Array;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
  * @version 3.0
  */
-public class ArrayProxyIterator<T, P extends ArrayProxy<T, ?, ?>>
-	implements ListIterator<T>
-{
+public class ArrayProxyIterator<T> implements ListIterator<T> {
 
-	public final P proxy;
+	public final Array<T> array;
 
 	protected int cursor = 0;
 	protected int lastElement = -1;
 
-	public ArrayProxyIterator(final P proxy) {
-		this.proxy = requireNonNull(proxy, "ArrayProxy must not be null.");
+	public ArrayProxyIterator(final Array<T> array) {
+		this.array = requireNonNull(array, "Array must not be null.");
 	}
 
 	@Override
 	public boolean hasNext() {
-		return cursor != proxy.length;
+		return cursor != array.length();
 	}
 
 	@Override
 	public T next() {
 		final int i = cursor;
-		if (cursor >= proxy.length) {
+		if (cursor >= array.length()) {
 			throw new NoSuchElementException();
 		}
 
 		cursor = i + 1;
-		return proxy.__get(lastElement = i);
+		return array.get(lastElement = i);
 	}
 
 	@Override
@@ -76,7 +76,7 @@ public class ArrayProxyIterator<T, P extends ArrayProxy<T, ?, ?>>
 		}
 
 		cursor = i;
-		return proxy.__get(lastElement = i);
+		return array.get(lastElement = i);
 	}
 
 	@Override

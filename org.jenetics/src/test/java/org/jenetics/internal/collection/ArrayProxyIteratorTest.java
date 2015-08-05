@@ -26,6 +26,8 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import org.jenetics.internal.collection2.Array;
+import org.jenetics.internal.collection2.ObjectStore;
 import org.jenetics.internal.math.random;
 
 /**
@@ -38,8 +40,8 @@ public class ArrayProxyIteratorTest {
 		final long seed = random.seed();
 		final Random random = new Random(seed);
 
-		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
-		for (int i = 0; i < proxy.length; ++i) {
+		final Array<Integer> proxy = Array.of(ObjectStore.of(1000));
+		for (int i = 0; i < proxy.length(); ++i) {
 			proxy.set(i, random.nextInt());
 		}
 
@@ -51,7 +53,7 @@ public class ArrayProxyIteratorTest {
 			++count;
 		}
 
-		Assert.assertEquals(count, proxy.length);
+		Assert.assertEquals(count, proxy.length());
 	}
 
 	@Test
@@ -59,8 +61,8 @@ public class ArrayProxyIteratorTest {
 		final long seed = random.seed();
 		final Random random = new Random(seed);
 
-		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
-		for (int i = proxy.length; --i >= 0;) {
+		final Array<Integer> proxy = Array.of(ObjectStore.of(1000));
+		for (int i = 0; i < proxy.length(); ++i) {
 			proxy.set(i, random.nextInt());
 		}
 
@@ -72,12 +74,12 @@ public class ArrayProxyIteratorTest {
 
 		int count = 0;
 		while (it.hasPrevious()) {
-			final int value = it.previous().intValue();
+			final int value = it.previous();
 			Assert.assertEquals(value, random.nextInt());
 			++count;
 		}
 
-		Assert.assertEquals(count, proxy.length);
+		Assert.assertEquals(count, proxy.length());
 	}
 
 	@Test
@@ -85,8 +87,8 @@ public class ArrayProxyIteratorTest {
 		final long seed = random.seed();
 		final Random random = new Random(seed);
 
-		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
-		for (int i = 0; i < proxy.length; ++i) {
+		final Array<Integer> proxy = Array.of(ObjectStore.of(1000));
+		for (int i = 0; i < proxy.length(); ++i) {
 			proxy.set(i, random.nextInt());
 		}
 
@@ -100,12 +102,12 @@ public class ArrayProxyIteratorTest {
 			++count;
 		}
 
-		Assert.assertEquals(count, proxy.length);
+		Assert.assertEquals(count, proxy.length());
 	}
 
 	@Test(expectedExceptions = UnsupportedOperationException.class)
 	public void set() {
-		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
+		final Array<Integer> proxy = Array.of(ObjectStore.of(1000));
 		final ListIterator<Integer> it = new ArrayProxyIterator<>(proxy);
 
 		it.set(23);
@@ -116,8 +118,8 @@ public class ArrayProxyIteratorTest {
 		final long seed = random.seed();
 		final Random random = new Random(seed);
 
-		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
-		for (int i = 0; i < proxy.length; ++i) {
+		final Array<Integer> proxy = Array.of(ObjectStore.of(1000));
+		for (int i = 0; i < proxy.length(); ++i) {
 			proxy.set(i, random.nextInt());
 		}
 
@@ -126,7 +128,7 @@ public class ArrayProxyIteratorTest {
 			it.next();
 		}
 
-		int count = proxy.length;
+		int count = proxy.length();
 		while (it.hasPrevious()) {
 			--count;
 

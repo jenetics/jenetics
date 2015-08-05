@@ -21,6 +21,9 @@ package org.jenetics.internal.collection;
 
 import java.util.function.Function;
 
+import org.jenetics.internal.collection2.Array;
+import org.jenetics.internal.collection2.ObjectStore;
+
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
 
@@ -29,35 +32,39 @@ import org.jenetics.util.MSeq;
  * @since 1.4
  * @version 3.0
  */
-public class ArrayProxyISeq<T, P extends ArrayProxy<T, ?, ?>>
-	extends ArrayProxySeq<T, P>
+public class ArrayProxyISeq<T>
+	extends ArrayProxySeq<T>
 	implements ISeq<T>
 {
 
 	private static final long serialVersionUID = 1L;
 
-	public ArrayProxyISeq(final P proxy) {
-		super(proxy);
+	public ArrayProxyISeq(final Array<T> array) {
+		super(array);
 	}
 
 	@Override
 	public <B> ISeq<B> map(final Function<? super T, ? extends B> mapper) {
-		return new ArrayProxyISeq<>(proxy.map(mapper));
+		final Array<B> mapped = Array.of(ObjectStore.of(length()));
+		for (int i = 0; i < length(); ++i) {
+			mapped.set(i, mapper.apply(array.get(i)));
+		}
+		return new ArrayProxyISeq<>(mapped);
 	}
 
 	@Override
 	public ISeq<T> subSeq(final int start) {
-		return new ArrayProxyISeq<>(proxy.slice(start));
+		return new ArrayProxyISeq<>(array.slice(start, length()));
 	}
 
 	@Override
 	public ISeq<T> subSeq(int start, int end) {
-		return new ArrayProxyISeq<>(proxy.slice(start, end));
+		return new ArrayProxyISeq<>(array.slice(start, end));
 	}
 
 	@Override
 	public MSeq<T> copy() {
-		return new ArrayProxyMSeq<>(proxy.copy());
+		return new ArrayProxyMSeq<>(array.copy());
 	}
 
 }

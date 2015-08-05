@@ -19,18 +19,17 @@
  */
 package org.jenetics.internal.collection;
 
+import org.jenetics.internal.collection2.Array;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
  * @version 3.0
  */
-public class ArrayProxyMIterator<T, P extends ArrayProxy<T, ?, ?>>
-	extends ArrayProxyIterator<T, P>
-{
+public class ArrayProxyMIterator<T> extends ArrayProxyIterator<T> {
 
-	public ArrayProxyMIterator(final P proxy) {
-		super(proxy);
+	public ArrayProxyMIterator(final Array<T> array) {
+		super(array);
 	}
 
 	@Override
@@ -38,7 +37,7 @@ public class ArrayProxyMIterator<T, P extends ArrayProxy<T, ?, ?>>
 		if (lastElement < 0) {
 			throw new IllegalStateException();
 		}
-		proxy.__set(lastElement, value);
+		array.set(lastElement, value);
 	}
 
 }

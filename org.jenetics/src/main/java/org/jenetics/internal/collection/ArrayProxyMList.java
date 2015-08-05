@@ -19,24 +19,24 @@
  */
 package org.jenetics.internal.collection;
 
+import org.jenetics.internal.collection2.Array;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
  * @version 1.4
  */
-public class ArrayProxyMList<T, P extends ArrayProxy<T, ?, ?>>
-	extends ArrayProxyList<T, P>
-{
+public class ArrayProxyMList<T> extends ArrayProxyList<T> {
 	private static final long serialVersionUID = 1L;
 
-	public ArrayProxyMList(final P proxy) {
-		super(proxy);
+	public ArrayProxyMList(final Array<T> array) {
+		super(array);
 	}
 
 	@Override
 	public T set(final int index, final T element) {
-		final T oldElement = proxy.get(index);
-		proxy.set(index, element);
+		final T oldElement = array.get(index);
+		array.set(index, element);
 		return oldElement;
 	}
 

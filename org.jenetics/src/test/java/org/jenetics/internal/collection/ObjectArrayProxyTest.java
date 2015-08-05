@@ -29,62 +29,62 @@ import org.testng.annotations.Test;
  */
 public class ObjectArrayProxyTest extends ArrayProxyTestBase<Integer> {
 
-	@Override
-	public ArrayProxy<Integer, ?, ?> newArrayProxy(final int length) {
-		return new ObjectArrayProxy<>(length);
-	}
-
-	@Override
-	public Integer newArrayProxyElement(final Random random) {
-		return random.nextInt();
-	}
-
-	@Test
-	public void slice() {
-		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
-		for (int i = 0; i < proxy.length; ++i) {
-			proxy.set(i, i);
-		}
-
-		final int sliceStart = 50;
-		final int sliceEnd = 500;
-		final ArrayProxy<Integer, ?, ?> slice = proxy.slice(sliceStart, sliceEnd);
-		Assert.assertEquals(sliceEnd - sliceStart, slice.length);
-
-		for (int i = 0; i < slice.length; ++i) {
-			Assert.assertEquals(slice.get(i), Integer.valueOf(i + sliceStart));
-		}
-	}
-
-	@Test
-	public void sliceGet() {
-		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
-		for (int i = 0; i < proxy.length; ++i) {
-			proxy.set(i, i);
-		}
-
-		final int sliceStart = 50;
-		final int sliceEnd = 500;
-		final ArrayProxy<Integer, ?, ?> slice = proxy.slice(sliceStart, sliceEnd);
-		for (int i = 0; i < slice.length; ++i) {
-			Assert.assertEquals(slice.get(i), Integer.valueOf(i + sliceStart));
-		}
-	}
-
-	@Test
-	public void sliceSet() {
-		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
-		for (int i = 0; i < proxy.length; ++i) {
-			proxy.set(i, i);
-		}
-
-		final int sliceStart = 50;
-		final int sliceEnd = 500;
-		final ArrayProxy<Integer, ?, ?> slice = proxy.slice(sliceStart, sliceEnd);
-		for (int i = 0; i < slice.length; ++i) {
-			slice.set(i, i*2);
-			Assert.assertEquals(slice.get(i), Integer.valueOf(i*2));
-		}
-	}
+//	@Override
+//	public ArrayProxy<Integer, ?, ?> newArrayProxy(final int length) {
+//		return new ObjectArrayProxy<>(length);
+//	}
+//
+//	@Override
+//	public Integer newArrayProxyElement(final Random random) {
+//		return random.nextInt();
+//	}
+//
+//	@Test
+//	public void slice() {
+//		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
+//		for (int i = 0; i < proxy.length; ++i) {
+//			proxy.set(i, i);
+//		}
+//
+//		final int sliceStart = 50;
+//		final int sliceEnd = 500;
+//		final ArrayProxy<Integer, ?, ?> slice = proxy.slice(sliceStart, sliceEnd);
+//		Assert.assertEquals(sliceEnd - sliceStart, slice.length);
+//
+//		for (int i = 0; i < slice.length; ++i) {
+//			Assert.assertEquals(slice.get(i), Integer.valueOf(i + sliceStart));
+//		}
+//	}
+//
+//	@Test
+//	public void sliceGet() {
+//		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
+//		for (int i = 0; i < proxy.length; ++i) {
+//			proxy.set(i, i);
+//		}
+//
+//		final int sliceStart = 50;
+//		final int sliceEnd = 500;
+//		final ArrayProxy<Integer, ?, ?> slice = proxy.slice(sliceStart, sliceEnd);
+//		for (int i = 0; i < slice.length; ++i) {
+//			Assert.assertEquals(slice.get(i), Integer.valueOf(i + sliceStart));
+//		}
+//	}
+//
+//	@Test
+//	public void sliceSet() {
+//		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
+//		for (int i = 0; i < proxy.length; ++i) {
+//			proxy.set(i, i);
+//		}
+//
+//		final int sliceStart = 50;
+//		final int sliceEnd = 500;
+//		final ArrayProxy<Integer, ?, ?> slice = proxy.slice(sliceStart, sliceEnd);
+//		for (int i = 0; i < slice.length; ++i) {
+//			slice.set(i, i*2);
+//			Assert.assertEquals(slice.get(i), Integer.valueOf(i*2));
+//		}
+//	}
 
 }

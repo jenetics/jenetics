@@ -25,6 +25,8 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import org.jenetics.internal.collection2.Array;
+import org.jenetics.internal.collection2.ObjectStore;
 import org.jenetics.internal.math.random;
 
 /**
@@ -34,10 +36,10 @@ public class ArrayProxyListTest {
 
 	@Test
 	public void size() {
-		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
+		final Array<Integer> proxy = Array.of(ObjectStore.of(1000));
 		final List<Integer> list = new ArrayProxyList<>(proxy);
 
-		Assert.assertEquals(list.size(), proxy.length);
+		Assert.assertEquals(list.size(), proxy.length());
 	}
 
 	@Test
@@ -45,14 +47,14 @@ public class ArrayProxyListTest {
 		final long seed = random.seed();
 		final Random random = new Random(seed);
 
-		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
-		for (int i = 0; i < proxy.length; ++i) {
+		final Array<Integer> proxy = Array.of(ObjectStore.of(1000));
+		for (int i = 0; i < proxy.length(); ++i) {
 			proxy.set(i, random.nextInt());
 		}
 
 		final List<Integer> list = new ArrayProxyList<>(proxy);
 
-		for (int i = 0; i < proxy.length; ++i) {
+		for (int i = 0; i < proxy.length(); ++i) {
 			final Integer actual = list.get(i);
 			final Integer expected = proxy.get(i);
 			Assert.assertEquals(actual, expected);
@@ -61,14 +63,14 @@ public class ArrayProxyListTest {
 
 	@Test
 	public void sliceGet() {
-		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
-		for (int i = 0; i < proxy.length; ++i) {
+		final Array<Integer> proxy = Array.of(ObjectStore.of(1000));
+		for (int i = 0; i < proxy.length(); ++i) {
 			proxy.set(i, i);
 		}
 
 		final int sliceStart = 50;
 		final int sliceEnd = 500;
-		final ArrayProxy<Integer, ?, ?> slice = proxy.slice(sliceStart, sliceEnd);
+		final Array<Integer> slice = proxy.slice(sliceStart, sliceEnd);
 		final List<Integer> list = new ArrayProxyList<>(slice);
 
 		for (int i = 0; i < list.size(); ++i) {
@@ -78,7 +80,7 @@ public class ArrayProxyListTest {
 
 	@Test(expectedExceptions = UnsupportedOperationException.class)
 	public void set() {
-		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
+		final Array<Integer> proxy = Array.of(ObjectStore.of(1000));
 		final List<Integer> list = new ArrayProxyList<>(proxy);
 
 		list.set(34, 23);
@@ -89,15 +91,15 @@ public class ArrayProxyListTest {
 		long seed = 12341234;
 		final Random random = new Random(seed);
 
-		final ArrayProxy<Long, ?, ?> proxy = new ObjectArrayProxy<>(1000);
-		for (int i = 0; i < proxy.length; ++i) {
+		final Array<Long> proxy = Array.of(ObjectStore.of(1000));
+		for (int i = 0; i < proxy.length(); ++i) {
 			proxy.set(i, random.nextLong());
 		}
 
 		final List<Long> list = new ArrayProxyList<>(proxy);
 
 		random.setSeed(seed);
-		for (int i = 0; i < proxy.length; ++i) {
+		for (int i = 0; i < proxy.length(); ++i) {
 			final int index = list.indexOf(random.nextLong());
 			Assert.assertEquals(index, i);
 		}
@@ -108,15 +110,15 @@ public class ArrayProxyListTest {
 		long seed = 12341234;
 		final Random random = new Random(seed);
 
-		final ArrayProxy<Long, ?, ?> proxy = new ObjectArrayProxy<>(1000);
-		for (int i = 0; i < proxy.length; ++i) {
+		final Array<Long> proxy = Array.of(ObjectStore.of(1000));
+		for (int i = 0; i < proxy.length(); ++i) {
 			proxy.set(i, random.nextLong());
 		}
 
 		final List<Long> list = new ArrayProxyList<>(proxy);
 
 		random.setSeed(seed);
-		for (int i = 0; i < proxy.length; ++i) {
+		for (int i = 0; i < proxy.length(); ++i) {
 			final int index = list.lastIndexOf(random.nextLong());
 			Assert.assertEquals(index, i);
 		}
@@ -124,14 +126,14 @@ public class ArrayProxyListTest {
 
 	@Test
 	public void sliceIndexOf() {
-		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
-		for (int i = 0; i < proxy.length; ++i) {
+		final Array<Integer> proxy = Array.of(ObjectStore.of(1000));
+		for (int i = 0; i < proxy.length(); ++i) {
 			proxy.set(i, i);
 		}
 
 		final int sliceStart = 50;
 		final int sliceEnd = 500;
-		final ArrayProxy<Integer, ?, ?> slice = proxy.slice(sliceStart, sliceEnd);
+		final Array<Integer> slice = proxy.slice(sliceStart, sliceEnd);
 		final List<Integer> list = new ArrayProxyList<>(slice);
 
 		for (int i = 0; i < list.size(); ++i) {
@@ -142,14 +144,14 @@ public class ArrayProxyListTest {
 
 	@Test
 	public void sliceLastIndexOf() {
-		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
-		for (int i = 0; i < proxy.length; ++i) {
+		final Array<Integer> proxy = Array.of(ObjectStore.of(1000));
+		for (int i = 0; i < proxy.length(); ++i) {
 			proxy.set(i, i);
 		}
 
 		final int sliceStart = 50;
 		final int sliceEnd = 500;
-		final ArrayProxy<Integer, ?, ?> slice = proxy.slice(sliceStart, sliceEnd);
+		final Array<Integer> slice = proxy.slice(sliceStart, sliceEnd);
 		final List<Integer> list = new ArrayProxyList<>(slice);
 
 		for (int i = 0; i < list.size(); ++i) {
@@ -163,15 +165,15 @@ public class ArrayProxyListTest {
 		long seed = random.seed();
 		final Random random = new Random(seed);
 
-		final ArrayProxy<Long, ?, ?> proxy = new ObjectArrayProxy<>(1000);
-		for (int i = 0; i < proxy.length; ++i) {
+		final Array<Long> proxy = Array.of(ObjectStore.of(1000));
+		for (int i = 0; i < proxy.length(); ++i) {
 			proxy.set(i, random.nextLong());
 		}
 
 		final List<Long> list = new ArrayProxyList<>(proxy);
 
 		random.setSeed(seed);
-		for (int i = 0; i < proxy.length; ++i) {
+		for (int i = 0; i < proxy.length(); ++i) {
 			Assert.assertTrue(
 				list.contains(random.nextLong()),
 				"Must contain the given value."
@@ -184,8 +186,8 @@ public class ArrayProxyListTest {
 		long seed = random.seed();
 		final Random random = new Random(seed);
 
-		final ArrayProxy<Long, ?, ?> proxy = new ObjectArrayProxy<>(1000);
-		for (int i = 0; i < proxy.length; ++i) {
+		final Array<Long> proxy = Array.of(ObjectStore.of(1000));
+		for (int i = 0; i < proxy.length(); ++i) {
 			proxy.set(i, random.nextLong());
 		}
 
@@ -202,8 +204,8 @@ public class ArrayProxyListTest {
 		long seed = random.seed();
 		final Random random = new Random(seed);
 
-		final ArrayProxy<Long, ?, ?> proxy = new ObjectArrayProxy<>(1000);
-		for (int i = 0; i < proxy.length; ++i) {
+		final Array<Long> proxy = Array.of(ObjectStore.of(1000));
+		for (int i = 0; i < proxy.length(); ++i) {
 			proxy.set(i, random.nextLong());
 		}
 
