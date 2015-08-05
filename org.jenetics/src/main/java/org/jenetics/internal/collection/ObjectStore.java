@@ -21,7 +21,7 @@ package org.jenetics.internal.collection;
 
 import static java.util.Objects.requireNonNull;
 
-import org.jenetics.internal.collection2.Array.Store;
+import org.jenetics.internal.collection.Array.Store;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -60,12 +60,12 @@ public final class ObjectStore<T> implements Store<T> {
 		return _array.length;
 	}
 
-	public static <T> ObjectStore<T> of(final int length) {
-		return new ObjectStore<>(new Object[length]);
-	}
-
 	public static <T> ObjectStore<T> of(final Object[] array) {
 		return new ObjectStore<>(array);
+	}
+
+	public static <T> ObjectStore<T> ofLength(final int length) {
+		return new ObjectStore<>(new Object[length]);
 	}
 
 }

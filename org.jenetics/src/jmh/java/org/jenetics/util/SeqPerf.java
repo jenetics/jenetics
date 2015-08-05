@@ -67,7 +67,7 @@ public class SeqPerf {
 		}
 	}
 
-	private final Array<Integer> proxy = Array.of(ObjectStore.of(SIZE));
+	private final Array<Integer> proxy = Array.of(ObjectStore.ofLength(SIZE));
 	{
 		for (int i = 0; i < seq.length(); ++i) {
 			proxy.set(i, i);

@@ -44,7 +44,7 @@ public class ArrayProxySeqTest extends SeqTestBase {
 
 		@Override
 		public <B> ISeq<B> map(final Function<? super T, ? extends B> mapper) {
-			final Array<B> mapped = Array.of(ObjectStore.of(length()));
+			final Array<B> mapped = Array.of(ObjectStore.ofLength(length()));
 			for (int i = 0; i < length(); ++i) {
 				mapped.set(i, mapper.apply(array.get(i)));
 			}
@@ -65,7 +65,7 @@ public class ArrayProxySeqTest extends SeqTestBase {
 
 	@Override
 	protected Seq<Integer> newSeq(final int length) {
-		final Array<Integer> impl = Array.of(ObjectStore.of(length));
+		final Array<Integer> impl = Array.of(ObjectStore.ofLength(length));
 		for (int i = 0; i < length; ++i) {
 			impl.set(i, i);
 		}

@@ -38,7 +38,7 @@ public class ArrayProxyIteratorTest {
 		final long seed = random.seed();
 		final Random random = new Random(seed);
 
-		final Array<Integer> proxy = Array.of(ObjectStore.of(1000));
+		final Array<Integer> proxy = Array.of(ObjectStore.ofLength(1000));
 		for (int i = 0; i < proxy.length(); ++i) {
 			proxy.set(i, random.nextInt());
 		}
@@ -59,7 +59,7 @@ public class ArrayProxyIteratorTest {
 		final long seed = random.seed();
 		final Random random = new Random(seed);
 
-		final Array<Integer> proxy = Array.of(ObjectStore.of(1000));
+		final Array<Integer> proxy = Array.of(ObjectStore.ofLength(1000));
 		for (int i = 0; i < proxy.length(); ++i) {
 			proxy.set(i, random.nextInt());
 		}
@@ -85,7 +85,7 @@ public class ArrayProxyIteratorTest {
 		final long seed = random.seed();
 		final Random random = new Random(seed);
 
-		final Array<Integer> proxy = Array.of(ObjectStore.of(1000));
+		final Array<Integer> proxy = Array.of(ObjectStore.ofLength(1000));
 		for (int i = 0; i < proxy.length(); ++i) {
 			proxy.set(i, random.nextInt());
 		}
@@ -105,7 +105,7 @@ public class ArrayProxyIteratorTest {
 
 	@Test(expectedExceptions = UnsupportedOperationException.class)
 	public void set() {
-		final Array<Integer> proxy = Array.of(ObjectStore.of(1000));
+		final Array<Integer> proxy = Array.of(ObjectStore.ofLength(1000));
 		final ListIterator<Integer> it = new ArrayProxyIterator<>(proxy);
 
 		it.set(23);
@@ -116,7 +116,7 @@ public class ArrayProxyIteratorTest {
 		final long seed = random.seed();
 		final Random random = new Random(seed);
 
-		final Array<Integer> proxy = Array.of(ObjectStore.of(1000));
+		final Array<Integer> proxy = Array.of(ObjectStore.ofLength(1000));
 		for (int i = 0; i < proxy.length(); ++i) {
 			proxy.set(i, random.nextInt());
 		}

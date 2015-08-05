@@ -37,7 +37,7 @@ public class ArrayProxyMListTest {
 		long seed = random.seed();
 		final Random random = new Random(seed);
 
-		final Array<Integer> impl = Array.of(ObjectStore.of(1000));
+		final Array<Integer> impl = Array.of(ObjectStore.ofLength(1000));
 		for (int i = 0; i < impl.length(); ++i) {
 			impl.set(i, random.nextInt());
 		}

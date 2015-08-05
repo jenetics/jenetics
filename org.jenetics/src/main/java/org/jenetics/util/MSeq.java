@@ -269,7 +269,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @return the new mutable sequence.
 	 */
 	public static <T> MSeq<T> ofLength(final int length) {
-		return new ArrayProxyMSeq<>(Array.of(ObjectStore.of(length)));
+		return new ArrayProxyMSeq<>(Array.of(ObjectStore.ofLength(length)));
 	}
 
 	/**

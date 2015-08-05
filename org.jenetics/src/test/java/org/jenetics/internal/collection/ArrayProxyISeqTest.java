@@ -32,7 +32,7 @@ public class ArrayProxyISeqTest extends ISeqTestBase {
 
 	@Override
 	protected ISeq<Integer> newSeq(final int length) {
-		final Array<Integer> proxy = Array.of(ObjectStore.of(1000));
+		final Array<Integer> proxy = Array.of(ObjectStore.ofLength(1000));
 		for (int i = 0; i < length; ++i) {
 			proxy.set(i, i);
 		}

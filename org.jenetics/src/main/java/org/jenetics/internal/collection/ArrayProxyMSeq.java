@@ -150,7 +150,7 @@ public class ArrayProxyMSeq<T>
 
 	@Override
 	public <B> MSeq<B> map(final Function<? super T, ? extends B> mapper) {
-		final Array<B> mapped = Array.of(ObjectStore.of(length()));
+		final Array<B> mapped = Array.of(ObjectStore.ofLength(length()));
 		for (int i = 0; i < length(); ++i) {
 			mapped.set(i, mapper.apply(array.get(i)));
 		}

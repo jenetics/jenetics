@@ -37,7 +37,7 @@ public class ArrayProxyMIteratorTest {
 		long seed = random.seed();
 		final Random random = new Random(seed);
 
-		final Array<Integer> impl = Array.of(ObjectStore.of(1000));
+		final Array<Integer> impl = Array.of(ObjectStore.ofLength(1000));
 		for (int i = 0; i < impl.length(); ++i) {
 			impl.set(i, random.nextInt());
 		}
@@ -59,7 +59,7 @@ public class ArrayProxyMIteratorTest {
 
 	@Test
 	public void setValueForward() {
-		final Array<Integer> proxy = Array.of(ObjectStore.of(1000));
+		final Array<Integer> proxy = Array.of(ObjectStore.ofLength(1000));
 		for (int i = 0; i < proxy.length(); ++i) {
 			proxy.set(i, 111);
 		}
@@ -86,7 +86,7 @@ public class ArrayProxyMIteratorTest {
 
 	@Test
 	public void setValueBackward() {
-		final Array<Integer> proxy = Array.of(ObjectStore.of(1000));
+		final Array<Integer> proxy = Array.of(ObjectStore.ofLength(1000));
 		for (int i = 0; i < proxy.length(); ++i) {
 			proxy.set(i, 111);
 		}

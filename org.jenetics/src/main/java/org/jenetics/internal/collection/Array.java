@@ -40,7 +40,7 @@ public final class Array<T> {
 		_length = until - from;
 	}
 
-	public Array(final Store<T> store) {
+	private Array(final Store<T> store) {
 		this(Store.Ref.of(store), 0, store.length());
 	}
 
@@ -99,6 +99,10 @@ public final class Array<T> {
 
 	public static <T> Array<T> of(final Store<T> store) {
 		return new Array<>(store);
+	}
+
+	public static <T> Array<T> ofLength(final int length) {
+		return new Array<T>(ObjectStore.ofLength(length));
 	}
 
 
