@@ -19,17 +19,13 @@
  */
 package org.jenetics;
 
-import java.util.Random;
-
-import org.testng.annotations.Test;
-
-import org.jenetics.internal.collection.ArrayProxyTestBase;
+import org.jenetics.internal.collection.ArrayTestBase;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
 //@Test
-public class BitGeneArrayProxyTest extends ArrayProxyTestBase<BitGene> {
+public class BitGeneArrayTest extends ArrayTestBase<BitGene> {
 
 //	@Override
 //	public ArrayProxy<BitGene, ?, ?> newArrayProxy(final int length) {

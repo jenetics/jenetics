@@ -30,7 +30,7 @@ import org.jenetics.internal.math.random;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class ArrayProxyMIteratorTest {
+public class ArrayMIteratorTest {
 
 	@Test
 	public void set() {

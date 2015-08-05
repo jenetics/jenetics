@@ -19,15 +19,10 @@
  */
 package org.jenetics.internal.collection;
 
-import java.util.Random;
-
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class ObjectArrayProxyTest extends ArrayProxyTestBase<Integer> {
+public class ObjectArrayTest extends ArrayTestBase<Integer> {
 
 //	@Override
 //	public ArrayProxy<Integer, ?, ?> newArrayProxy(final int length) {

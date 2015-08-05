@@ -33,7 +33,7 @@ import org.jenetics.internal.util.IntRef;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public abstract class ArrayProxyTestBase<T> {
+public abstract class ArrayTestBase<T> {
 
 //	public abstract ArrayProxy<T, ?, ?> newArrayProxy(final int length);
 //
