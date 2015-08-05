@@ -103,7 +103,7 @@ public abstract class ArraySeq<T>
 
 		int index = -1;
 
-		for (int i = 0; i < array.length() && index == -1; ++i) {
+		for (int i = start; i < end && index == -1; ++i) {
 			if (predicate.test(array.get(i))) {
 				index = i;
 			}
@@ -123,7 +123,7 @@ public abstract class ArraySeq<T>
 
 		int index = -1;
 
-		for (int i = array.length(); --i >= 0 && index == -1;) {
+		for (int i = end; --i >= start && index == -1;) {
 			if (predicate.test(array.get(i))) {
 				index = i;
 			}

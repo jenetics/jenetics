@@ -38,13 +38,13 @@ public class ArraySeqTest extends SeqTestBase {
 	{
 		private static final long serialVersionUID = 1L;
 
-		ArraySeqImpl(final Array<T> proxy) {
-			super(proxy);
+		ArraySeqImpl(final Array<T> array) {
+			super(array);
 		}
 
 		@Override
 		public <B> ISeq<B> map(final Function<? super T, ? extends B> mapper) {
-			final Array<B> mapped = Array.of(ObjectStore.ofLength(length()));
+			final Array<B> mapped = Array.ofLength(length());
 			for (int i = 0; i < length(); ++i) {
 				mapped.set(i, mapper.apply(array.get(i)));
 			}
@@ -65,7 +65,7 @@ public class ArraySeqTest extends SeqTestBase {
 
 	@Override
 	protected Seq<Integer> newSeq(final int length) {
-		final Array<Integer> impl = Array.of(ObjectStore.ofLength(length));
+		final Array<Integer> impl = Array.ofLength(length);
 		for (int i = 0; i < length; ++i) {
 			impl.set(i, i);
 		}
