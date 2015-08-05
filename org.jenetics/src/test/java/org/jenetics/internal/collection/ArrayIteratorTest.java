@@ -59,13 +59,13 @@ public class ArrayIteratorTest {
 		final long seed = random.seed();
 		final Random random = new Random(seed);
 
-		final Array<Integer> proxy = Array.of(ObjectStore.ofLength(1000));
-		for (int i = 0; i < proxy.length(); ++i) {
-			proxy.set(i, random.nextInt());
+		final Array<Integer> array = Array.ofLength(10);
+		for (int i = array.length(); --i >= 0;) {
+			array.set(i, random.nextInt());
 		}
 
 		random.setSeed(seed);
-		final ListIterator<Integer> it = new ArrayIterator<>(proxy);
+		final ListIterator<Integer> it = new ArrayIterator<>(array);
 		while (it.hasNext()) {
 			it.next();
 		}
@@ -77,7 +77,7 @@ public class ArrayIteratorTest {
 			++count;
 		}
 
-		Assert.assertEquals(count, proxy.length());
+		Assert.assertEquals(count, array.length());
 	}
 
 	@Test

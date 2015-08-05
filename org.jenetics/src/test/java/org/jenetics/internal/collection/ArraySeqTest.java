@@ -48,7 +48,7 @@ public class ArraySeqTest extends SeqTestBase {
 			for (int i = 0; i < length(); ++i) {
 				mapped.set(i, mapper.apply(array.get(i)));
 			}
-			return new ArrayISeq<>(mapped);
+			return new ArrayISeq<>(mapped.seal());
 		}
 
 		@Override
