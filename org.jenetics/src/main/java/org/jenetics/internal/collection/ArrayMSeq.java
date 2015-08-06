@@ -158,11 +158,14 @@ public class ArrayMSeq<T> extends ArraySeq<T> implements MSeq<T> {
 
 	@Override
 	public ISeq<T> toISeq() {
+		/*
 		if (_iseq == null) {
 			_iseq = new ArrayISeq<>(array.seal());
 		}
 
 		return _iseq;
+		*/
+		return new ArrayISeq<>(array.seal());
 	}
 
 	@Override
