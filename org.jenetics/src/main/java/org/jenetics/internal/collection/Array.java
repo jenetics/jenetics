@@ -22,13 +22,16 @@ package org.jenetics.internal.collection;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serializable;
+
 /**
  * @param <T>
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public final class Array<T> {
+public final class Array<T> implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	private final Store.Ref<T> _store;
 	private final int _start;
@@ -141,7 +144,9 @@ public final class Array<T> {
 		 * @version !__version__!
 		 * @since !__version__!
 		 */
-		public static final class Ref<T> implements Store<T> {
+		public static final class Ref<T> implements Store<T>, Serializable {
+
+			private static final long serialVersionUID = 1L;
 
 			private Store<T> _value;
 			private boolean _sealed;

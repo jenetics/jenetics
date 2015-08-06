@@ -19,12 +19,14 @@
  */
 package org.jenetics.internal.collection;
 
+import java.io.Serializable;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
  * @version 3.0
  */
-public final class CharStore implements Array.Store<Character> {
+public final class CharStore implements Array.Store<Character>, Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public final char[] _array;

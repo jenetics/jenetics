@@ -21,6 +21,8 @@ package org.jenetics.internal.collection;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serializable;
+
 import org.jenetics.internal.collection.Array.Store;
 
 /**
@@ -28,7 +30,9 @@ import org.jenetics.internal.collection.Array.Store;
  * @version !__version__!
  * @since !__version__!
  */
-public final class ObjectStore<T> implements Store<T> {
+public final class ObjectStore<T> implements Store<T>, Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private final Object[] _array;
 
