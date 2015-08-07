@@ -55,7 +55,6 @@ public final class ObjectStore<T> implements Store<T>, Serializable {
 	public ObjectStore<T> copy(final int from, final int until) {
 		final Object[] array = new Object[until - from];
 		System.arraycopy(_array, from, array, 0, until - from);
-
 		return new ObjectStore<>(array);
 	}
 

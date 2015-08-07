@@ -35,7 +35,7 @@ import org.jenetics.util.MSeq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0
+ * @version !__version__!
  */
 public class ArrayMSeq<T> extends ArraySeq<T> implements MSeq<T> {
 
@@ -147,7 +147,7 @@ public class ArrayMSeq<T> extends ArraySeq<T> implements MSeq<T> {
 
 	@Override
 	public <B> MSeq<B> map(final Function<? super T, ? extends B> mapper) {
-		final Array<B> mapped = Array.of(ObjectStore.ofLength(length()));
+		final Array<B> mapped = Array.ofLength(length());
 		for (int i = 0; i < length(); ++i) {
 			mapped.set(i, mapper.apply(array.get(i)));
 		}
