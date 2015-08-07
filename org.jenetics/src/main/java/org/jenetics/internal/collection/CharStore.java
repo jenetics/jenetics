@@ -24,7 +24,7 @@ import java.io.Serializable;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0
+ * @version !__version__!
  */
 public final class CharStore implements Array.Store<Character>, Serializable {
 	private static final long serialVersionUID = 1L;

@@ -22,7 +22,7 @@ package org.jenetics.internal.collection;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4
+ * @version !__version__!
  */
 public class ArrayMList<T> extends ArrayList<T> {
 	private static final long serialVersionUID = 1L;

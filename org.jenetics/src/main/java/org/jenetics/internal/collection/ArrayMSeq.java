@@ -41,8 +41,6 @@ public class ArrayMSeq<T> extends ArraySeq<T> implements MSeq<T> {
 
 	private static final long serialVersionUID = 1L;
 
-	private ArrayISeq<T> _iseq = null;
-
 	public ArrayMSeq(final Array<T> array) {
 		super(array);
 	}
@@ -158,13 +156,6 @@ public class ArrayMSeq<T> extends ArraySeq<T> implements MSeq<T> {
 
 	@Override
 	public ISeq<T> toISeq() {
-		/*
-		if (_iseq == null) {
-			_iseq = new ArrayISeq<>(array.seal());
-		}
-
-		return _iseq;
-		*/
 		return new ArrayISeq<>(array.seal());
 	}
 

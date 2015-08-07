@@ -27,7 +27,7 @@ import java.util.function.Consumer;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0
+ * @version !__version__!
  */
 public final class ArraySpliterator<T> implements Spliterator<T> {
 

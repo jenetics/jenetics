@@ -27,7 +27,7 @@ import org.jenetics.util.MSeq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0
+ * @version !__version__!
  */
 public class ArrayISeq<T>
 	extends ArraySeq<T>
