@@ -19,6 +19,8 @@
  */
 package org.jenetics.internal.collection;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.Serializable;
 
 /**
@@ -29,10 +31,10 @@ import java.io.Serializable;
 public final class CharStore implements Array.Store<Character>, Serializable {
 	private static final long serialVersionUID = 1L;
 
-	public final char[] _array;
+	public final char[] array;
 
-	public CharStore(final char[] chars) {
-		_array = chars;
+	private CharStore(final char[] chars) {
+		array = requireNonNull(chars);
 	}
 
 	public CharStore(final int length) {
@@ -41,24 +43,28 @@ public final class CharStore implements Array.Store<Character>, Serializable {
 
 	@Override
 	public Character get(final int index) {
-		return _array[index];
+		return array[index];
 	}
 
 	@Override
 	public void set(final int index, final Character value) {
-		_array[index] = value;
+		array[index] = value;
 	}
 
 	@Override
 	public CharStore copy(final int from, final int until) {
 		final char[] array = new char[until - from];
-		System.arraycopy(_array, from, array, 0, until - from);
+		System.arraycopy(this.array, from, array, 0, until - from);
 		return new CharStore(array);
 	}
 
 	@Override
 	public int length() {
-		return _array.length;
+		return array.length;
+	}
+
+	public static CharStore of(final char[] chars) {
+		return new CharStore(chars);
 	}
 
 }
