@@ -63,6 +63,15 @@ public final class Array<T> implements Serializable {
 	}
 
 	/**
+	 * Return the underlying array store.
+	 *
+	 * @return the underlying array store
+	 */
+	public Store<T> store() {
+		return _store._value;
+	}
+
+	/**
 	 * Return a new <i>sealed</i> array instance. The underlying store is sealed
 	 * as well, but not copied.
 	 *
