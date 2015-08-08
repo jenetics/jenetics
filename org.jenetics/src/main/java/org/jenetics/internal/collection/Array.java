@@ -71,6 +71,10 @@ public final class Array<T> implements Serializable {
 		return _store._value;
 	}
 
+	public void copyIfSealed() {
+		_store.copyIfSealed();
+	}
+
 	/**
 	 * Return a new <i>sealed</i> array instance. The underlying store is sealed
 	 * as well, but not copied.
@@ -316,11 +320,15 @@ public final class Array<T> implements Serializable {
 
 			@Override
 			public void set(final int index, final T value) {
+				copyIfSealed();
+				_value.set(index, value);
+			}
+
+			void copyIfSealed() {
 				if (_sealed) {
 					_value = copy();
 					_sealed = false;
 				}
-				_value.set(index, value);
 			}
 
 			@Override

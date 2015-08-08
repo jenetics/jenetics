@@ -122,7 +122,7 @@ public class ArrayMSeq<T> extends ArraySeq<T> implements MSeq<T> {
 		}
 	}
 
-	private void checkIndex(
+	protected void checkIndex(
 		final int start, final int end,
 		final int otherStart, final int otherLength
 	) {
