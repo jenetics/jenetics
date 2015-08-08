@@ -23,9 +23,9 @@ import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
 
+import org.jenetics.internal.collection.Array;
 import org.jenetics.internal.collection.ArrayISeq;
 import org.jenetics.internal.collection.ArrayMSeq;
-import org.jenetics.internal.collection.Array;
 import org.jenetics.internal.util.bit;
 import org.jenetics.internal.util.require;
 

@@ -19,17 +19,6 @@
  */
 package org.jenetics.internal.collection;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import org.testng.Assert;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-
-import org.jenetics.internal.math.random;
-import org.jenetics.internal.util.IntRef;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
