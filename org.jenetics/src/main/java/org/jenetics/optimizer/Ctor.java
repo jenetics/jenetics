@@ -54,4 +54,21 @@ public interface Ctor<T> {
 		}
 	}
 
+	public static <T> Ctor<T> of(
+		final Class<T> type,
+		final ISeq<DoubleFunction<Object>> parameters
+	) {
+		return new Ctor<T>() {
+			@Override
+			public Class<T> type() {
+				return type;
+			}
+
+			@Override
+			public ISeq<DoubleFunction<Object>> parameters() {
+				return parameters;
+			}
+		};
+	}
+
 }
