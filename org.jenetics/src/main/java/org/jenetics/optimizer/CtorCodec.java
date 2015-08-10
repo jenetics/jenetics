@@ -19,10 +19,58 @@
  */
 package org.jenetics.optimizer;
 
+import java.util.function.DoubleFunction;
+import java.util.function.Function;
+
+import org.jenetics.DoubleChromosome;
+import org.jenetics.DoubleGene;
+import org.jenetics.Genotype;
+import org.jenetics.engine.Codec;
+import org.jenetics.util.DoubleRange;
+import org.jenetics.util.Factory;
+import org.jenetics.util.ISeq;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class CtorCodec {
+public class CtorCodec<T> implements Codec<T, DoubleGene> {
+
+	private final Factory<Genotype<DoubleGene>> _encoding;
+	private final Function<Genotype<DoubleGene>, T> _decoder;
+
+	public CtorCodec(
+		final Class<T> type,
+		final ISeq<DoubleRange> ranges,
+		final ISeq<DoubleFunction<Object>> parameters
+	) {
+		_encoding = Genotype.of(DoubleChromosome.of(
+			ranges.stream()
+				.map(DoubleGene::of)
+				.toArray(DoubleGene[]::new)
+		));
+
+		final Ctor<T> ctor = Ctor.of(
+			type,
+			parameters
+		);
+
+		_decoder = gt -> ctor.cons(
+			gt.toSeq().stream()
+				.mapToDouble(c -> c.getGene().doubleValue())
+				.toArray()
+		);
+	}
+
+	@Override
+	public Factory<Genotype<DoubleGene>> encoding() {
+		return _encoding;
+	}
+
+	@Override
+	public Function<Genotype<DoubleGene>, T> decoder() {
+		return _decoder;
+	}
+
 }
