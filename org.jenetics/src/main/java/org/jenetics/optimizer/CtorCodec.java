@@ -21,6 +21,7 @@ package org.jenetics.optimizer;
 
 import java.util.function.DoubleFunction;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
@@ -42,14 +43,16 @@ public class CtorCodec<T> implements Codec<T, DoubleGene> {
 
 	public CtorCodec(
 		final Class<T> type,
-		final ISeq<DoubleRange> ranges,
-		final ISeq<DoubleFunction<Object>> parameters
+		final ISeq<DoubleRange> ranges
 	) {
 		_encoding = Genotype.of(DoubleChromosome.of(
 			ranges.stream()
 				.map(DoubleGene::of)
 				.toArray(DoubleGene[]::new)
 		));
+
+		final ISeq<DoubleFunction<Object>> parameters = ranges
+			.map(r -> (DoubleFunction<Object>) Double::valueOf);
 
 		final Ctor<T> ctor = Ctor.of(
 			type,
@@ -71,6 +74,37 @@ public class CtorCodec<T> implements Codec<T, DoubleGene> {
 	@Override
 	public Function<Genotype<DoubleGene>, T> decoder() {
 		return _decoder;
+	}
+
+
+	public static <T> Codec<T, DoubleGene> of(
+		final Class<T> type,
+		final ISeq<DoubleRange> parameters
+	) {
+		return Codec.of(
+			Genotype.of(DoubleChromosome.of(
+				parameters.stream()
+					.map(DoubleGene::of)
+					.toArray(DoubleGene[]::new)
+			)),
+			gt -> {
+				final Object[] args =  gt.toSeq().stream()
+					.map(c -> c.getGene().getAllele())
+					.toArray();
+
+				final Class<?>[] parameterTypes = Stream.of(args)
+					.map(Object::getClass)
+					.toArray(Class[]::new);
+
+				try {
+					return type
+						.getConstructor(parameterTypes)
+						.newInstance(args);
+				} catch (ReflectiveOperationException e) {
+					throw new RuntimeException(e);
+				}
+			}
+		);
 	}
 
 }
