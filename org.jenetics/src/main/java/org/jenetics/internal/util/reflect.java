@@ -22,6 +22,8 @@ package org.jenetics.internal.util;
 import static java.util.Arrays.stream;
 import static java.util.stream.Stream.concat;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -75,5 +77,33 @@ public class reflect {
 	@SuppressWarnings("unchecked")
 	public static <A, B extends A> ISeq<A> cast(final ISeq<B> seq) {
 		return (ISeq<A>)seq;
+	}
+
+	/**
+	 * Create an new object from the given constructor and argument list. All
+	 * thrown <i>checked</i> exception are wrapped into an
+	 * {@link RuntimeException}.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param ctor the type constructor
+	 * @param args the constructor arguments
+	 * @param <T> the return type
+	 * @return return a new instance created from the given constructor
+	 */
+	public static <T> T create(final Constructor<T> ctor, final Object... args) {
+		try {
+			return ctor.newInstance(args);
+		} catch (InstantiationException | IllegalAccessException e) {
+			throw new RuntimeException(e);
+		} catch (InvocationTargetException e) {
+			if (e.getTargetException() instanceof RuntimeException) {
+				throw (RuntimeException)e.getTargetException();
+			} else if (e.getTargetException() instanceof Error) {
+				throw (Error)e.getTargetException();
+			} else {
+				throw new RuntimeException(e.getTargetException());
+			}
+		}
 	}
 }
