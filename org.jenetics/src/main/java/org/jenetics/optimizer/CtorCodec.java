@@ -19,6 +19,8 @@
  */
 package org.jenetics.optimizer;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.function.DoubleFunction;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -79,32 +81,53 @@ public class CtorCodec<T> implements Codec<T, DoubleGene> {
 
 	public static <T> Codec<T, DoubleGene> of(
 		final Class<T> type,
-		final ISeq<DoubleRange> parameters
+		final DoubleRange... parameters
 	) {
+		final Class<?>[] parameterTypes = Stream.of(parameters)
+			.map(p -> Double.class)
+			.toArray(Class[]::new);
+
+		final Constructor<T> constructor; try {
+			constructor = type.getConstructor(parameterTypes);
+		} catch (NoSuchMethodException e) {
+			throw new IllegalArgumentException(
+				"Invalid constructor parameters.", e
+			);
+		}
+
 		return Codec.of(
 			Genotype.of(DoubleChromosome.of(
-				parameters.stream()
+				Stream.of(parameters)
 					.map(DoubleGene::of)
 					.toArray(DoubleGene[]::new)
 			)),
 			gt -> {
-				final Object[] args =  gt.toSeq().stream()
+				final Object[] args =  gt.toSeq()
 					.map(c -> c.getGene().getAllele())
 					.toArray();
 
-				final Class<?>[] parameterTypes = Stream.of(args)
-					.map(Object::getClass)
-					.toArray(Class[]::new);
-
 				try {
-					return type
-						.getConstructor(parameterTypes)
-						.newInstance(args);
-				} catch (ReflectiveOperationException e) {
+					return constructor.newInstance(args);
+				} catch (InstantiationException | IllegalAccessException e) {
 					throw new RuntimeException(e);
+				} catch (InvocationTargetException e) {
+					if (e.getTargetException() instanceof RuntimeException) {
+						throw (RuntimeException)e.getTargetException();
+					} else if (e.getTargetException() instanceof Error) {
+						throw (Error)e.getTargetException();
+					} else {
+						throw new RuntimeException(e.getTargetException());
+					}
 				}
 			}
 		);
+	}
+
+	public static <T> Codec<T, DoubleGene> of(
+		final Class<T> type,
+		final IntRange... parameters
+	) {
+		return null;
 	}
 
 }
