@@ -34,7 +34,7 @@ import org.jenetics.util.Random32;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-08-01 $</em>
+ * @version !__version__!
  */
 public class Yarn2Random extends Random32 {
 	private static final long serialVersionUID = 1L;

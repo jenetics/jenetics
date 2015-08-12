@@ -22,7 +22,7 @@ package org.jenetix.random;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-07-11 $</em>
+ * @version !__version__!
  */
 public interface ParallelRandom {
 

@@ -34,7 +34,7 @@ import org.jenetics.util.Random64;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__! &mdash; <em>$Date: 2014-08-01 $</em>
+ * @version !__version__!
  */
 public class LCG64Random extends Random64 {
 

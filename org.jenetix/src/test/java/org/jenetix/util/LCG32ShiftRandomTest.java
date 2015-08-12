@@ -21,7 +21,6 @@ package org.jenetix.util;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-05-22 $</em>
  */
 public class LCG32ShiftRandomTest {
 
