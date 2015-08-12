@@ -38,7 +38,7 @@ public abstract class MSeqTestBase extends SeqTestBase {
 	protected abstract MSeq<Integer> newSeq(final int length);
 
 	private Supplier<Integer> RandomInt(final Random random) {
-		return () -> random.nextInt();
+		return random::nextInt;
 	}
 
 	@Test

@@ -25,6 +25,7 @@ import static org.jenetics.internal.util.Equality.eq;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.regex.PatternSyntaxException;
+import java.util.stream.Collector;
 
 import org.jenetics.internal.collection.ArrayProxyISeq;
 import org.jenetics.internal.collection.CharArrayProxy;
@@ -138,7 +139,7 @@ public final class CharSeq
 	}
 
 	@Override
-	public char charAt(int index) {
+	public char charAt(final int index) {
 		return proxy.array[index];
 	}
 
@@ -148,7 +149,7 @@ public final class CharSeq
 	}
 
 	@Override
-	public CharSeq subSequence(int start, int end) {
+	public CharSeq subSequence(final int start, final int end) {
 		return new CharSeq(new String(proxy.array, start, end - start));
 	}
 
@@ -258,7 +259,7 @@ public final class CharSeq
 			char c = a;
 			while (c >= b) {
 				out.append(c);
-				c = (char) (c - 1);
+				c = (char)(c - 1);
 			}
 		}
 
@@ -266,7 +267,7 @@ public final class CharSeq
 	}
 
 	/**
-	 * Expands the character range for the given {@code pattern}. E.g
+	 * Expands the character range for the given {@code pattern}. E.g.
 	 * {@code a-zA-Z0-1} will return a string containing all upper and lower
 	 * case characters (from a to z) and all digits form 0 to 9.
 	 *
@@ -311,6 +312,16 @@ public final class CharSeq
 
 		return seq.toISeq();
 	}
+
+	public static Collector<Character, ?, CharSeq> toCharSeq() {
+		return Collector.of(
+			StringBuilder::new,
+			StringBuilder::append,
+			(a, b) -> {a.append(b); return a;},
+			CharSeq::new
+		);
+	}
+
 }
 
 abstract class CharSeqBase extends ArrayProxyISeq<Character, CharArrayProxy> {

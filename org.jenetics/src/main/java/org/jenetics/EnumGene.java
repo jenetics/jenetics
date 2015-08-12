@@ -37,7 +37,6 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.jaxb;
 import org.jenetics.internal.util.model.IndexedObject;
@@ -186,10 +185,9 @@ public final class EnumGene<A>
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(pg ->
-			eq(_alleleIndex, pg._alleleIndex) &&
-			eq(_validAlleles, pg._validAlleles)
-		);
+		return obj instanceof EnumGene &&
+			eq(((EnumGene)obj)._alleleIndex, _alleleIndex) &&
+			eq(((EnumGene)obj)._validAlleles, _validAlleles);
 	}
 
 	@Override

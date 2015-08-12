@@ -100,6 +100,18 @@ public final class Version implements Comparable<Version> {
 		return comp;
 	}
 
+	public String majorVersionString() {
+		return Integer.toString(_major);
+	}
+
+	public String minorVersionString() {
+		return format("%d.%d", _major, _minor);
+	}
+
+	public String microVersionString() {
+		return format("%d.%d.%d", _major, _minor, _micro);
+	}
+
 	@Override
 	public int hashCode() {
 		int hash = getClass().hashCode();

@@ -19,6 +19,7 @@
  */
 package org.jenetics.engine;
 
+import java.util.function.Function;
 import java.util.stream.LongStream;
 
 import org.testng.Assert;
@@ -27,6 +28,7 @@ import org.testng.annotations.Test;
 
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
+import org.jenetics.Genotype;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -98,6 +100,31 @@ public class EngineTest {
 			.collect(EvolutionResult.toBestEvolutionResult());
 
 		Assert.assertEquals(result.getInvalidCount(), populationSize);
+	}
+
+	// https://github.com/jenetics/jenetics/issues/47
+	@Test(timeOut = 15_000L)
+	public void deadLock() {
+		final Function<Genotype<DoubleGene>, Double> ff = gt -> {
+			try {
+				Thread.sleep( 50 );
+			} catch (InterruptedException ignore) {
+				Thread.currentThread().interrupt();
+			}
+			return gt.getGene().getAllele();
+		};
+
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(ff, DoubleChromosome.of(0, 1))
+			//.executor(Executors.newFixedThreadPool(10))
+			.populationSize(10)
+			.build();
+
+		final EvolutionResult<DoubleGene, Double> result = engine.stream()
+			.limit(3)
+			.collect(EvolutionResult.toBestEvolutionResult());
+
+		//Assert.assertEquals(25L, result.getTotalGenerations());
 	}
 
 }

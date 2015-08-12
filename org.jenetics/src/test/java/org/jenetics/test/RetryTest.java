@@ -17,44 +17,37 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package org.jenetics.test;
 
-import org.testng.IRetryAnalyzer;
-import org.testng.ITestResult;
+import java.io.IOException;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public abstract class Retry implements IRetryAnalyzer {
+public class RetryTest extends Retry {
 
-	public static final class One extends Retry {{
-		retry = 1;
-	}}
+	private final AtomicInteger _retryCount = new AtomicInteger();
 
-	public static final class Two extends Retry {{
-		retry = 2;
-	}}
+	@Test
+	public void method() throws IOException {
+		retry(5, () -> {
+			if (_retryCount.incrementAndGet() < 3) {
+				throw new IOException("io-error");
+			}
+		});
+	}
 
-	public static final class Three extends Retry {{
-		retry = 3;
-	}}
-
-	public static final class Four extends Retry {{
-		retry = 4;
-	}}
-
-	public static final class Five extends Retry {{
-		retry = 5;
-	}}
-
-
-	int retry;
-
-	@Override
-	public boolean retry(final ITestResult result) {
-		return
-			!result.isSuccess() &&
-			result.getMethod().getFailedInvocationNumbers().size() < retry;
+	@Test(expectedExceptions = IOException.class, dependsOnMethods = "method")
+	public void retryFailed() throws Exception {
+		_retryCount.set(0);
+		retry(2, () -> {
+			if (_retryCount.incrementAndGet() < 3) {
+				throw new IOException("io-error");
+			}
+		});
 	}
 
 }
