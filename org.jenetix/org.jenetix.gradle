@@ -108,6 +108,10 @@ nexus {
 	//snapshotRepository = "file://$buildDir/repo"
 }
 
+javadoc {
+	options.links 'http://jenetics.io/javadoc/org.jenetics/3.2'
+}
+
 idea {
 	module{
 		scopes.COMPILE.plus += [configurations.jmh]
