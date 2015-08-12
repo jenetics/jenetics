@@ -19,8 +19,9 @@
  */
 package org.jenetics.optimizer;
 
+import static org.jenetics.internal.util.reflect.create;
+
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.function.DoubleFunction;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -32,6 +33,7 @@ import org.jenetics.engine.Codec;
 import org.jenetics.util.DoubleRange;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.IntRange;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -81,23 +83,18 @@ public class CtorCodec<T> implements Codec<T, DoubleGene> {
 
 	public static <T> Codec<T, DoubleGene> of(
 		final Class<T> type,
-		final DoubleRange... parameters
+		final DoubleRange... params
 	) {
-		final Class<?>[] parameterTypes = Stream.of(parameters)
-			.map(p -> Double.class)
-			.toArray(Class[]::new);
-
-		final Constructor<T> constructor; try {
-			constructor = type.getConstructor(parameterTypes);
-		} catch (NoSuchMethodException e) {
-			throw new IllegalArgumentException(
-				"Invalid constructor parameters.", e
-			);
-		}
+		final Constructor<T> ctor = ctor(
+			type,
+			Stream.of(params)
+				.map(p -> Double.class)
+				.toArray(Class[]::new)
+		);
 
 		return Codec.of(
 			Genotype.of(DoubleChromosome.of(
-				Stream.of(parameters)
+				Stream.of(params)
 					.map(DoubleGene::of)
 					.toArray(DoubleGene[]::new)
 			)),
@@ -106,28 +103,50 @@ public class CtorCodec<T> implements Codec<T, DoubleGene> {
 					.map(c -> c.getGene().getAllele())
 					.toArray();
 
-				try {
-					return constructor.newInstance(args);
-				} catch (InstantiationException | IllegalAccessException e) {
-					throw new RuntimeException(e);
-				} catch (InvocationTargetException e) {
-					if (e.getTargetException() instanceof RuntimeException) {
-						throw (RuntimeException)e.getTargetException();
-					} else if (e.getTargetException() instanceof Error) {
-						throw (Error)e.getTargetException();
-					} else {
-						throw new RuntimeException(e.getTargetException());
-					}
-				}
+				return create(ctor, args);
 			}
 		);
 	}
 
+	private static <T> Constructor<T> ctor(
+		final Class<T> type,
+		final Class<?>... parameterTypes
+	) {
+		try {
+			return type.getConstructor(parameterTypes);
+		} catch (NoSuchMethodException e) {
+			throw new IllegalArgumentException(
+				"Invalid constructor parameters.", e
+			);
+		}
+	}
+
+
 	public static <T> Codec<T, DoubleGene> of(
 		final Class<T> type,
-		final IntRange... parameters
+		final IntRange... params
 	) {
-		return null;
+		final Constructor<T> ctor = ctor(
+			type,
+			Stream.of(params)
+				.map(p -> Integer.class)
+				.toArray(Class[]::new)
+		);
+
+		return Codec.of(
+			Genotype.of(DoubleChromosome.of(
+				Stream.of(params)
+					.map(p -> DoubleGene.of(p.getMin(), p.getMax()))
+					.toArray(DoubleGene[]::new)
+			)),
+			gt -> {
+				final Object[] args =  gt.toSeq()
+					.map(c -> c.getGene().getAllele().intValue())
+					.toArray();
+
+				return create(ctor, args);
+			}
+		);
 	}
 
 }
