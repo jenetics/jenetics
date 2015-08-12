@@ -66,17 +66,17 @@ public class reflect {
 	}
 
 	@SuppressWarnings("unchecked")
+	public static <A, B extends A> ISeq<A> cast(final ISeq<B> seq) {
+		return (ISeq<A>)seq;
+	}
+
+	@SuppressWarnings("unchecked")
 	public static <T> Optional<T> newInstance(final Class<?> type) {
 		try {
 			return Optional.of((T)type.newInstance());
 		} catch (InstantiationException | IllegalAccessException e) {
 			return Optional.empty();
 		}
-	}
-
-	@SuppressWarnings("unchecked")
-	public static <A, B extends A> ISeq<A> cast(final ISeq<B> seq) {
-		return (ISeq<A>)seq;
 	}
 
 	/**
