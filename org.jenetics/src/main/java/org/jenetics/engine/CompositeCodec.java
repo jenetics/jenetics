@@ -31,6 +31,12 @@ import org.jenetics.util.ISeq;
 import org.jenetics.util.Seq;
 
 /**
+ * Composites a list of codecs into one {@code Codec} class.
+ *
+ * <pre>{@code
+ * final Codec<
+ * }</pre>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -45,6 +51,12 @@ public final class CompositeCodec<T, G extends Gene<?, G>>
 	private final int[] _lengths;
 	private final Genotype<G> _encoding;
 
+	/**
+	 *
+	 *
+	 * @param codecs
+	 * @param decoder
+	 */
 	public CompositeCodec(
 		final ISeq<Codec<?, G>> codecs,
 		final Function<Object[], T> decoder
