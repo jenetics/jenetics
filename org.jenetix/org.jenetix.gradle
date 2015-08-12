@@ -24,18 +24,17 @@
  * @version !__version__! &mdash; <em>$Date: 2014-08-30 $</em>
  */
 
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'me.champeau.gradle:jmh-gradle-plugin:0.1.2'
-    }
+plugins {
+    id "me.champeau.gradle.jmh" version "0.2.0"
 }
 
 apply plugin: 'packaging'
 apply plugin: 'nexus'
-apply plugin: 'me.champeau.gradle.jmh'
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
 
 compileTestJava.dependsOn tasks.getByPath(':org.jenetics:compileTestJava')
 
@@ -46,14 +45,10 @@ dependencies {
 	testCompile Include.TestNG
 	testCompile project(':org.jenetics').sourceSets.test.output
 
-    jmh project(':org.jenetics')
-    jmh Include.JMH.Core
-    jmh Include.JMH.Processor
-    jmh files('build/classes/main')
-}
-
-jmhJar {
-    appendix = 'jmh'
+	jmh project(':org.jenetics')
+	jmh Include.JMH.Core
+	jmh Include.JMH.Processor
+	jmh files('build/classes/main')
 }
 
 jar.manifest.instruction('Export-Package',
@@ -63,13 +58,58 @@ jar.manifest.instruction('Export-Package',
 )
 
 packaging {
-	name = 'Jenetix'
+	name = 'Jeneticx'
 	author = 'Franz Wilhelmstötter'
 	url = 'http://jenetics.sourceforge.net'
+
+	jarjar = false
+}
+
+modifyPom {
+	project {
+		name jenetix.name
+		description jenetix.description
+		url jenetics.url
+		inceptionYear '2015'
+
+		scm {
+			url jenetics.maven.scm.url
+			connection jenetics.maven.scm.connection
+			developerConnection jenetics.maven.scm.developer_connection
+		}
+
+		licenses {
+			license {
+				name 'The Apache Software License, Version 2.0'
+				url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+				distribution 'repo'
+			}
+		}
+
+		developers {
+			developer {
+				id 'fwilhelm'
+				name 'Franz Wilhelmstötter'
+				email 'franz.wilhelmstoetter@gmx.at'
+			}
+		}
+	}
+}
+
+nexus {
+	identifier = project.identifier
+	copyrightYear = project.copyrightYear
+	attachSources = true
+	attachTests = false
+	attachJavadoc = true
+	sign = true
+	repository = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+	snapshotRepository = 'https://oss.sonatype.org/content/repositories/snapshots'
+	//snapshotRepository = "file://$buildDir/repo"
 }
 
 idea {
-    module{
-        scopes.COMPILE.plus += [configurations.jmh]
-    }
+	module{
+		scopes.COMPILE.plus += [configurations.jmh]
+	}
 }
