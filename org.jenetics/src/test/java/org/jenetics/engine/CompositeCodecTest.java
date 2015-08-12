@@ -27,9 +27,6 @@ import org.testng.annotations.Test;
 
 import org.jenetics.DoubleGene;
 import org.jenetics.Genotype;
-import org.jenetics.engine.Codec;
-import org.jenetics.engine.CompositeCodec;
-import org.jenetics.engine.codecs;
 import org.jenetics.util.DoubleRange;
 import org.jenetics.util.ISeq;
 

@@ -26,7 +26,6 @@ import java.util.function.Function;
 import org.jenetics.Chromosome;
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
-import org.jenetics.engine.Codec;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Seq;
