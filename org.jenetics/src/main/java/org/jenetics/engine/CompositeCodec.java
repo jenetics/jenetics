@@ -34,7 +34,11 @@ import org.jenetics.util.Seq;
  * Composites a list of codecs into one {@code Codec} class.
  *
  * <pre>{@code
- * final Codec<
+ * final Codec<MyObject1, DoubleGene> codec1 = ...;
+ * final Codec<MyObject2, DoubleGene> codec2 = ...;
+ * final Codec<MyObject2, DoubleGene> codec3 = ...;
+ *
+ * final Codec<MyObject1, DoubleGene> codec1 = ...;
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
