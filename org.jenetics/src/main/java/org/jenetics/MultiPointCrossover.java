@@ -123,7 +123,7 @@ public class MultiPointCrossover<
 
 	@Override
 	protected int crossover(final MSeq<G> that, final MSeq<G> other) {
-		assert (that.length() == other.length());
+		assert that.length() == other.length();
 
 		final int n = that.length();
 		final int k = min(n, _n);

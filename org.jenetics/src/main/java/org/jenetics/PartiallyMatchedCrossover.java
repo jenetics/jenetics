@@ -86,7 +86,7 @@ public final class PartiallyMatchedCrossover<T, C extends Comparable<? super C>>
 		final MSeq<EnumGene<T>> that,
 		final MSeq<EnumGene<T>> other
 	) {
-		assert (that.length() == other.length());
+		assert that.length() == other.length();
 
 		if (that.length() >= 2) {
 			final Random random = RandomRegistry.getRandom();

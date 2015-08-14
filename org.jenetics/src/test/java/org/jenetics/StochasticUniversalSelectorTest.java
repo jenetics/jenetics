@@ -34,7 +34,6 @@ import org.jenetics.internal.util.Named;
 import org.jenetics.stat.Histogram;
 import org.jenetics.util.Factory;
 import org.jenetics.util.LCG64ShiftRandom;
-import org.jenetics.util.Retry;
 import org.jenetics.util.TestData;
 
 /**
@@ -76,24 +75,23 @@ public class StochasticUniversalSelectorTest
 		);
 	}
 
-	@Test(
-		dataProvider = "expectedDistribution",
-		retryAnalyzer = Retry.Five.class
-	)
+	@Test(dataProvider = "expectedDistribution")
 	public void selectDistribution(final Named<double[]> expected, final Optimize opt) {
-		final int loops = 50;
-		final int npopulation = POPULATION_COUNT;
+		retry(3, () -> {
+			final int loops = 50;
+			final int npopulation = POPULATION_COUNT;
 
-		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
-		using(random, r -> {
-			final Histogram<Double> distribution = SelectorTester.distribution(
-				new StochasticUniversalSelector<>(),
-				opt,
-				npopulation,
-				loops
-			);
+			final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
+			using(random, r -> {
+				final Histogram<Double> distribution = SelectorTester.distribution(
+					new StochasticUniversalSelector<>(),
+					opt,
+					npopulation,
+					loops
+				);
 
-			assertDistribution(distribution, expected.value, 0.001, 5);
+				assertDistribution(distribution, expected.value, 0.001, 5);
+			});
 		});
 	}
 

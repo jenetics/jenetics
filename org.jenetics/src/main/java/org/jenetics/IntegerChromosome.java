@@ -38,6 +38,7 @@ import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.ISeq;
+import org.jenetics.util.IntRange;
 import org.jenetics.util.MSeq;
 
 /**
@@ -45,7 +46,7 @@ import org.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz  Wilhelmstötter</a>
  * @since 2.0
- * @version 3.0
+ * @version 3.2
  */
 @XmlJavaTypeAdapter(IntegerChromosome.Model.Adapter.class)
 public class IntegerChromosome
@@ -151,6 +152,20 @@ public class IntegerChromosome
 	}
 
 	/**
+	 * Create a new random {@code IntegerChromosome}.
+	 *
+	 * @since 3.2
+	 *
+	 * @param range the integer range of the chromosome.
+	 * @param length the length of the chromosome.
+	 * @return a new random {@code IntegerChromosome}
+	 * @throws NullPointerException if the given {@code range} is {@code null}
+	 */
+	public static IntegerChromosome of(final IntRange range, final int length) {
+		return new IntegerChromosome(range.getMin(), range.getMax(), length);
+	}
+
+	/**
 	 * Create a new random {@code IntegerChromosome} of length one.
 	 *
 	 * @param min the minimal value of this chromosome (inclusively).
@@ -159,6 +174,19 @@ public class IntegerChromosome
 	 */
 	public static IntegerChromosome of(final int min, final int max) {
 		return new IntegerChromosome(min, max);
+	}
+
+	/**
+	 * Create a new random {@code IntegerChromosome} of length one.
+	 *
+	 * @since 3.2
+	 *
+	 * @param range the integer range of the chromosome.
+	 * @return a new random {@code IntegerChromosome} of length one
+	 * @throws NullPointerException if the given {@code range} is {@code null}
+	 */
+	public static IntegerChromosome of(final IntRange range) {
+		return new IntegerChromosome(range.getMin(), range.getMax());
 	}
 
 	@Override

@@ -65,8 +65,7 @@ public final class MonteCarloSelector<
 		}
 
 		final Population<G, C> selection = new Population<>(count);
-
-		if (count > 0) {
+		if (count > 0 && !population.isEmpty()) {
 			final Random random = RandomRegistry.getRandom();
 			final int size = population.size();
 			for (int i = 0; i < count; ++i) {

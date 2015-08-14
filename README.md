@@ -1,10 +1,10 @@
-# Jenetics (_3.1.0_)
+# Jenetics (_3.2.0_)
 
 **Jenetics** is an **Genetic Algorithm**, respectively an **Evolutionary Algorithm**, library written in Java. It is designed with a clear separation of the several concepts of the algorithm, e.g. `Gene`, `Chromosome`, `Genotype`, `Phenotype`, `Population` and fitness `Function`. **Jenetics** allows you to minimize and maximize the given fitness function without tweaking it. In contrast to other GA implementations, the library uses the concept of an evolution stream (`EvolutionStream`) for executing the evolution steps. Since the `EvolutionStream` implements the Java Stream interface, it works smoothly with the rest of the Java Stream API.
 
 ## Documentation
 
-The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jenetics/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-3.1.0.pdf)).
+The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jenetics/3.2/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-3.2.0.pdf)).
 
 
 ## Requirements
@@ -17,19 +17,19 @@ The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jeneti
 *  **Gradle 2.x**: [Gradle](http://www.gradle.org/) is used for building the library. (Gradle is download automatically, if you are using the Gradle Wrapper script `gradlew`, located in the base directory, for building the library.)
 
 ### Test compile/execution
-*  **TestNG 8.8**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
-*  **Apache Commons Math 3.4.1**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical collectors.
+*  **TestNG 6.9.4**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
+*  **Apache Commons Math 3.5**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical collectors.
 
 ## Download
-* **Github**: <https://github.com/jenetics/jenetics/releases/download/v3.1.0/jenetics-3.1.0.zip>
+* **Github**: <https://github.com/jenetics/jenetics/releases/download/v3.2.0/jenetics-3.2.0.zip>
 *  **Sourceforge**:  <https://sourceforge.net/projects/jenetics/files/latest/download>
-*  **Maven**: `org.bitbucket.fwilhelm:org.jenetics:3.1.0` on [Maven Central](http://search.maven.org/#search|ga|1|a%3A%22org.jenetics%22)
+*  **Maven**: `org.bitbucket.fwilhelm:org.jenetics:3.2.0` on [Maven Central](http://search.maven.org/#search|ga|1|a%3A%22org.jenetics%22)
 
 ## Build Jenetics
 
 [![Build Status](https://travis-ci.org/jenetics/jenetics.svg?branch=master)](https://travis-ci.org/jenetics/jenetics)
 
-For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v3.1.0/jenetics-3.1.0.zip) (or [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download)) and extract it to some build directory.
+For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v3.2.0/jenetics-3.2.0.zip) (or [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download)) and extract it to some build directory.
 
     $ unzip jenetics-<version>.zip -d <builddir>
 
@@ -71,7 +71,7 @@ The latest Eclipse version (4.4.2) has problems compiling some _valid_ lambda ex
          .builder((Function<Genotype<BitGene>, Integer>)HelloWorld::eval, gtf)
          .build();
 
- Or you are using [IntelliJ 14](https://www.jetbrains.com/idea/download/) instead.
+ Or you are using ![IntelliJ 14](https://www.jetbrains.com/idea/download/) instead.
 
 ## Example
 
@@ -142,6 +142,23 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 
 ## Release notes
 
+### 3.2.0
+
+#### Improvements
+
+* [#24](https://github.com/jenetics/jenetics/issues/24): Stabilize statistical selector tests.
+* [#25](https://github.com/jenetics/jenetics/issues/25): Remove `testng.xml` file. The test classes are now determined automatically.
+* [#40](https://github.com/jenetics/jenetics/issues/40): Introduce `Codec` interface for defining problem encodings.
+* Add _Internal_ section in manual, which describes implementation details.
+
+#### Bug fixes
+
+* [#33](https://github.com/jenetics/jenetics/issues/33): Selectors must not change the input population. This occasionally caused `ConcurrentModificationException`.  Such selectors are now creating a defensive copy of the input population.
+* [#34](https://github.com/jenetics/jenetics/issues/34): `IndexOutOfBoundsException` when selecting populations which are too short.
+* [#35](https://github.com/jenetics/jenetics/issues/35): `IndexOutOfBoundsException` when altering populations which are too short.
+* [#39](https://github.com/jenetics/jenetics/issues/39): Numerical instabilities of `ProbabilitySelector`.
+* [#47](https://github.com/jenetics/jenetics/issues/47): `Engine` deadlock for long running fitness functions.
+
 ### 3.1.0
 
 #### Improvements
@@ -164,4 +181,8 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 ### 3.0.0
 
 * Rewrite of *engine* classes to make use of Java 8 Stream API.
+
+## Used software
+
+<a href="https://www.jetbrains.com/idea/">![IntelliJ](https://www.jetbrains.com/idea/docs/logo_intellij_idea.png)</a>
 

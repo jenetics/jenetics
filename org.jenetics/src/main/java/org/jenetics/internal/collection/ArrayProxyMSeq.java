@@ -127,7 +127,7 @@ public class ArrayProxyMSeq<T, P extends ArrayProxy<T, ?, ?>>
 			} else {
 				proxy.cloneIfSealed();
 
-				for (int i = (end - start); --i >= 0;) {
+				for (int i = end - start; --i >= 0;) {
 					final T temp = proxy.__get(i + start);
 					proxy.__set(i + start, other.get(otherStart + i));
 					other.set(otherStart + i, temp);
@@ -148,7 +148,7 @@ public class ArrayProxyMSeq<T, P extends ArrayProxy<T, ?, ?>>
 		if (otherStart < 0 || (otherStart + (end - start)) > otherLength) {
 			throw new ArrayIndexOutOfBoundsException(format(
 				"Invalid index range: [%d, %d)",
-				otherStart, (otherStart + (end - start))
+				otherStart, otherStart + end - start
 			));
 		}
 	}

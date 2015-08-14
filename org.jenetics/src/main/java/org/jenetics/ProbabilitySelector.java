@@ -49,7 +49,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0
+ * @version 3.2
  */
 public abstract class ProbabilitySelector<
 	G extends Gene<?, G>,
@@ -61,7 +61,9 @@ public abstract class ProbabilitySelector<
 
 	private static final long MAX_ULP_DISTANCE = pow(10, 10);
 
+	private final boolean _sorted;
 	private final Function<double[], double[]> _reverter;
+
 
 	/**
 	 * Create a new {@code ProbabilitySelector} with the given {@code sorting}
@@ -74,6 +76,7 @@ public abstract class ProbabilitySelector<
 	 *        {@code false} otherwise.
 	 */
 	protected ProbabilitySelector(final boolean sorted) {
+		_sorted = sorted;
 		_reverter = sorted ? array::revert : ProbabilitySelector::sortAndRevert;
 	}
 
@@ -100,23 +103,36 @@ public abstract class ProbabilitySelector<
 		}
 
 		final Population<G, C> selection = new Population<>(count);
+		if (count > 0 && !population.isEmpty()) {
+			final Population<G, C> pop = copy(population);
 
-		if (count > 0) {
-			final double[] prob = probabilities(population, count, opt);
-			assert (population.size() == prob.length)
+			final double[] prob = probabilities(pop, count, opt);
+			assert pop.size() == prob.length
 				: "Population size and probability length are not equal.";
-			assert (sum2one(prob)) : "Probabilities doesn't sum to one.";
+
+			checkAndCorrect(prob);
+			assert sum2one(prob) : "Probabilities doesn't sum to one.";
 
 			incremental(prob);
 
 			final Random random = RandomRegistry.getRandom();
 			selection.fill(
-				() -> population.get(indexOf(prob, random.nextDouble())),
+				() -> pop.get(indexOf(prob, random.nextDouble())),
 				count
 			);
 		}
 
 		return selection;
+	}
+
+	Population<G, C> copy(final Population<G, C> population) {
+		Population<G, C> pop = population;
+		if (_sorted) {
+			pop = population.copy();
+			pop.populationSort();
+		}
+
+		return pop;
 	}
 
 	/**
@@ -180,6 +196,26 @@ public abstract class ProbabilitySelector<
 	);
 
 	/**
+	 * Checks if the given probability values are finite. If not, all values are
+	 * set to the same probability.
+	 *
+	 * @param probabilities the probabilities to check.
+	 */
+	private static void checkAndCorrect(final double[] probabilities) {
+		boolean ok = true;
+		for (int i = probabilities.length; --i >= 0 && ok;) {
+			ok = Double.isFinite(probabilities[i]);
+		}
+
+		if (!ok) {
+			final double value = 1.0/probabilities.length;
+			for (int i = probabilities.length; --i >= 0;) {
+				probabilities[i] = value;
+			}
+		}
+	}
+
+	/**
 	 * Check if the given probabilities sum to one.
 	 *
 	 * @param probabilities the probabilities to check.
@@ -187,8 +223,14 @@ public abstract class ProbabilitySelector<
 	 *         range, {@code false} otherwise.
 	 */
 	static boolean sum2one(final double[] probabilities) {
-		final double sum = DoubleAdder.sum(probabilities);
+		final double sum = probabilities.length > 0
+			? DoubleAdder.sum(probabilities)
+			: 1.0;
 		return abs(ulpDistance(sum, 1.0)) < MAX_ULP_DISTANCE;
+	}
+
+	static boolean eq(final double a, final double b) {
+		return abs(ulpDistance(a, b)) < MAX_ULP_DISTANCE;
 	}
 
 	static int indexOf(final double[] incr, final double v) {

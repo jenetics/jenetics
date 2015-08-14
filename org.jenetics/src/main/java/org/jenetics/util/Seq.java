@@ -183,9 +183,9 @@ public interface Seq<T> extends Iterable<T> {
 	 *          ({@code start < 0 || end > length() || start > end}).
 	 */
 	public default int indexOf(final Object element, final int start, final int end) {
-		return element != null ?
-			indexWhere(element::equals, start, end) :
-			indexWhere(Objects::isNull, start, end);
+		return element != null
+			? indexWhere(element::equals, start, end)
+			: indexWhere(Objects::isNull, start, end);
 	}
 
 	/**
@@ -675,7 +675,7 @@ public interface Seq<T> extends Iterable<T> {
 		}
 
 		final Seq<?> other = (Seq<?>)obj;
-		boolean equals = (seq.length() == other.length());
+		boolean equals = seq.length() == other.length();
 		for (int i = seq.length(); equals && --i >= 0;) {
 			final Object element = seq.get(i);
 			if (element != null) {

@@ -76,14 +76,18 @@ public final class TruncationSelector<
 			));
 		}
 
-		population.sortWith(opt.<C>descending());
 		final Population<G, C> selection = new Population<>(count);
-		int size = count;
-		do {
-			final int length = Math.min(population.size(), size);
-			selection.addAll(population.subList(0, length));
-			size -= length;
-		} while (size > 0);
+		if (count > 0 && !population.isEmpty()) {
+			final Population<G, C> copy = population.copy();
+			copy.sortWith(opt.<C>descending());
+
+			int size = count;
+			do {
+				final int length = Math.min(copy.size(), size);
+				selection.addAll(copy.subList(0, length));
+				size -= length;
+			} while (size > 0);
+		}
 
 		return selection;
 	}

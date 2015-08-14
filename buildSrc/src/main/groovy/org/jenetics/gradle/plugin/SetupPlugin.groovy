@@ -112,13 +112,10 @@ class SetupPlugin extends JeneticsPlugin {
 	private void configureTestReporting() {
 		plugins.apply(JacocoPlugin)
 		project.test {
+			outputs.upToDateWhen { false }
 			useTestNG {
-				//parallel = 'tests' // 'methods'
-				//threadCount = Runtime.runtime.availableProcessors() + 1
-				//include '**/*Test.class'
-				suites project.file(
-                        "${project.projectDir}/src/test/resources/testng.xml"
-                    )
+				parallel = 'tests' // 'methods'
+				threadCount = Runtime.runtime.availableProcessors() + 1
 			}
 		}
 

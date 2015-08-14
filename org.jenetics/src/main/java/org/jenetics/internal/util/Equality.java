@@ -51,7 +51,7 @@ public final class Equality {
 		Objects.requireNonNull(self);
 		return self == other ?
 			p -> true :
-			(other == null || self.getClass() != other.getClass()) ?
+			other == null || self.getClass() != other.getClass() ?
 				p -> false : p -> p.test((T)other);
 	}
 
@@ -67,7 +67,7 @@ public final class Equality {
 	public static boolean ofType(final Object self, final Object other) {
 		Objects.requireNonNull(self);
 		return self == other ||
-			(other != null && self.getClass() == other.getClass());
+			other != null && self.getClass() == other.getClass();
 	}
 
 	/**
@@ -283,7 +283,7 @@ public final class Equality {
 	 *          otherwise.
 	 */
 	public static boolean eq(final Object a, final Object b) {
-		return (a != null ? a.equals(b) : b == null);
+		return a != null ? a.equals(b) : b == null;
 	}
 
 	/**

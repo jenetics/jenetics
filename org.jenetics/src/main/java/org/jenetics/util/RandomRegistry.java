@@ -110,6 +110,10 @@ public final class RandomRegistry {
 		return CONTEXT.get().get();
 	}
 
+	static Random random() {
+		return CONTEXT.get().get();
+	}
+
 	/**
 	 * Set the new global {@link Random} object for the GA. The given
 	 * {@link Random} <b>must</b> be thread safe, which is the case for the

@@ -71,7 +71,7 @@ public interface ISeq<T>
 	 * @return a {@code Collector} which collects all the input elements into an
 	 *         {@code ISeq}, in encounter order
 	 */
-	public static <T> Collector<T, ?, ISeq<T>> toISeq() {
+	static <T> Collector<T, ?, ISeq<T>> toISeq() {
 		return Collector.of(
 			(Supplier<List<T>>)ArrayList::new,
 			List::add,
@@ -89,7 +89,7 @@ public interface ISeq<T>
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
 	@SafeVarargs
-	public static <T> ISeq<T> of(final T... values) {
+	static <T> ISeq<T> of(final T... values) {
 		return MSeq.of(values).toISeq();
 	}
 
@@ -102,7 +102,7 @@ public interface ISeq<T>
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> ISeq<T> of(final Iterable<? extends T> values) {
+	static <T> ISeq<T> of(final Iterable<? extends T> values) {
 		return values instanceof ISeq<?>
 			? (ISeq<T>)values
 			: values instanceof MSeq<?>
@@ -110,7 +110,7 @@ public interface ISeq<T>
 				: MSeq.of(values).toISeq();
 	}
 
-	public static <T> ISeq<T> of(Supplier<? extends T> supplier, final int length) {
+	static <T> ISeq<T> of(Supplier<? extends T> supplier, final int length) {
 		return MSeq.<T>ofLength(length).fill(supplier).toISeq();
 	}
 
