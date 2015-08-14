@@ -54,8 +54,9 @@ public class MT19937_64Random extends Random64 {
 		void setSeed(final long s) {
 			mt[0] = s;
 			for (mti = 1; mti < N; ++mti) {
-				mt[mti] = (6364136223846793005L*(mt[mti - 1]^
-							(mt[mti - 1] >>> 62)) + mti);
+				mt[mti] = 6364136223846793005L*
+					(mt[mti - 1]^(mt[mti - 1] >>> 62)) +
+					mti;
 			}
 		}
 
@@ -119,7 +120,7 @@ public class MT19937_64Random extends Random64 {
 		x ^= (x >>> 29) & 0x5555555555555555L;
 		x ^= (x << 17) & 0x71D67FFFEDA60000L;
 		x ^= (x << 37) & 0xFFF7EEE000000000L;
-		x ^= (x >>> 43);
+		x ^= x >>> 43;
 
 		return x;
 	}
