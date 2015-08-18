@@ -44,7 +44,7 @@ import java.util.function.LongSupplier;
  * @since !__version__!
  * @version !__version__!
  */
-public abstract class Random64 extends PRNG {
+abstract class Random64 extends PRNG {
 
 	private static final long serialVersionUID = 1L;
 

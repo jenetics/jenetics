@@ -159,13 +159,12 @@ public class KISS32Random extends Random32 {
 
 		@Override
 		public boolean equals(final Object obj) {
-			return Equality.of(this, obj).test(state ->
-				eq(_x, state._x) &&
-				eq(_y, state._y) &&
-				eq(_z, state._z) &&
-				eq(_w, state._w) &&
-				eq(_c, state._c)
-			);
+			return obj instanceof State &&
+				_x == ((State)obj)._x &&
+				_y == ((State)obj)._y &&
+				_z == ((State)obj)._z &&
+				_w == ((State)obj)._w &&
+				_c == ((State)obj)._c;
 		}
 
 		@Override

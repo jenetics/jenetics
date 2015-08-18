@@ -28,7 +28,7 @@ import java.util.Random;
  * @since !__version__!
  * @version !__version__!
  */
-public abstract class Random32 extends PRNG {
+abstract class Random32 extends PRNG {
 
 	private static final long serialVersionUID = 1L;
 
@@ -62,7 +62,7 @@ public abstract class Random32 extends PRNG {
 
 	@Override
 	public long nextLong() {
-		return ((long)(nextInt()) << 32) + nextInt();
+		return ((long)nextInt() << 32) + nextInt();
 	}
 
 	@Override
