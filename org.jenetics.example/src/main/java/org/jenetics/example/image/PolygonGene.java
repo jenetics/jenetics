@@ -16,6 +16,8 @@
  */
 package org.jenetics.example.image;
 
+import static java.util.Objects.requireNonNull;
+
 import org.jenetics.Gene;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
@@ -23,37 +25,41 @@ import org.jenetics.util.MSeq;
 /**
  * Represents a fixed size polygon with its fill color.
  */
-public class PolygonGene implements Gene<Polygon, PolygonGene> {
+public final class PolygonGene implements Gene<Polygon, PolygonGene> {
+	private final Polygon _polygon;
 
-    private final Polygon polygon;
+	private PolygonGene(final Polygon polygon) {
+		_polygon = requireNonNull(polygon);
+	}
 
-    static ISeq<PolygonGene> seq(final int polygonCount, final int polygonLength) {
-      return MSeq.<PolygonGene>ofLength(polygonCount)
-        .fill(() -> new PolygonGene(Polygon.randomPolygon(polygonLength)))
-        .toISeq();
-    }
+	@Override
+	public Polygon getAllele() {
+		return _polygon;
+	}
 
-    private PolygonGene(final Polygon p) {
-      this.polygon = p;
-    }
+	@Override
+	public boolean isValid() {
+		return true;
+	}
 
-    @Override
-    public boolean isValid() {
-      return true;
-    }
+	@Override
+	public PolygonGene newInstance() {
+	  return new PolygonGene( Polygon.newRandom(_polygon.length()) );
+	}
 
-    @Override
-    public Polygon getAllele() {
-      return polygon;
-    }
+	@Override
+	public PolygonGene newInstance(final Polygon polygon) {
+		return of(polygon);
+	}
 
-    @Override
-    public PolygonGene newInstance() {
-      return new PolygonGene( Polygon.randomPolygon( polygon.getLength() ) );
-    }
+	static ISeq<PolygonGene> seq(final int polygonCount, final int polygonLength) {
+		return MSeq.<PolygonGene>ofLength(polygonCount)
+			.fill(() -> of(Polygon.newRandom(polygonLength)))
+			.toISeq();
+	}
 
-    @Override
-    public PolygonGene newInstance( Polygon value ) {
-      return new PolygonGene( value );
-    }
+	public static PolygonGene of(final Polygon polygon) {
+		return new PolygonGene(polygon);
+	}
+
 }

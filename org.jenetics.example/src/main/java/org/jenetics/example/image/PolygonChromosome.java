@@ -16,10 +16,12 @@
  */
 package org.jenetics.example.image;
 
+import static java.awt.RenderingHints.KEY_ANTIALIASING;
+import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
+
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 
 import org.jenetics.AbstractChromosome;
 import org.jenetics.Chromosome;
@@ -28,37 +30,37 @@ import org.jenetics.util.ISeq;
 /**
  * A simple chromosome representing a list of polygons.
  */
-@SuppressWarnings("serial")
 public class PolygonChromosome extends AbstractChromosome<PolygonGene> {
+	private static final long serialVersionUID = 1L;
 
-  public PolygonChromosome( ISeq<PolygonGene> genes ) {
-    super(genes);
-  }
-  
-  public PolygonChromosome( int polygonCount, int polygonLength ) {
-    super( PolygonGene.seq( polygonCount, polygonLength ) );
-  }
+	public PolygonChromosome(final ISeq<PolygonGene> genes) {
+		super(genes);
+	}
 
-  @Override
-  public Chromosome<PolygonGene> newInstance( ISeq<PolygonGene> genes ) {
-    return new PolygonChromosome(genes);
-  }
+	public PolygonChromosome(final int polygonCount, final int polygonLength) {
+		super(PolygonGene.seq(polygonCount, polygonLength));
+	}
 
-  @Override
-  public Chromosome<PolygonGene> newInstance() {
-    return new PolygonChromosome( length(), getGene().getAllele().getLength() );
-  }
+	@Override
+	public Chromosome<PolygonGene> newInstance(final ISeq<PolygonGene> genes) {
+		return new PolygonChromosome(genes);
+	}
 
-  public void draw(Graphics2D g, int width, int height) {
-    g.setBackground(Color.WHITE);
-    g.clearRect(0, 0, width, height);
+	@Override
+	public Chromosome<PolygonGene> newInstance() {
+		return new PolygonChromosome(length(), getGene().getAllele().length());
+	}
 
-    g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
+	public void draw(final Graphics2D g, final int width, final int height) {
+		g.setBackground(Color.WHITE);
+		g.clearRect(0, 0, width, height);
 
-    for (PolygonGene gene : this) {
-      gene.getAllele().draw(g, width, height);
-    }
-  }
+		g.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
+		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
+
+		for (PolygonGene gene : this) {
+			gene.getAllele().draw(g, width, height);
+		}
+	}
 
 }

@@ -21,25 +21,37 @@ import java.util.ListIterator;
 import org.jenetics.Mutator;
 import org.jenetics.util.MSeq;
 
-public class PolygonMutator<C extends Comparable<? super C>> extends Mutator<PolygonGene, C> {
-    
-    private float mutationRate;
-    private float mutationAmount;
-    
-    public PolygonMutator(float mutationRate, float mutationAmount) {
-      super(1.0);
-      this.mutationRate = mutationRate;
-      this.mutationAmount = mutationAmount;
-    }
+/**
+ * Polygon mutator class.
+ *
+ * @param <C> the fitness type
+ */
+public class PolygonMutator<C extends Comparable<? super C>>
+	extends Mutator<PolygonGene, C>
+{
 
-    @Override
-    protected int mutate( MSeq<PolygonGene> genes, double p ) {
-      ListIterator<PolygonGene> listIterator = genes.listIterator();
-      while (listIterator.hasNext()) {
-        PolygonGene gene = listIterator.next();
-        listIterator.set(gene.newInstance( gene.getAllele().mutate(mutationRate, mutationAmount)));
-      }
-      return genes.size();
-    }
+	private final float _mutationRate;
+	private final float _mutationAmount;
+
+	public PolygonMutator(final float mutationRate, final float mutationAmount) {
+		super(1.0);
+		_mutationRate = mutationRate;
+		_mutationAmount = mutationAmount;
+	}
+
+	@Override
+	protected int mutate(final MSeq<PolygonGene> genes, final double p) {
+		final ListIterator<PolygonGene> it = genes.listIterator();
+
+		while (it.hasNext()) {
+			final PolygonGene gene = it.next();
+			final PolygonGene mutated = gene.newInstance(
+				gene.getAllele().mutate(_mutationRate, _mutationAmount)
+			);
+			it.set(mutated);
+		}
+
+		return genes.size();
+	}
 
 }

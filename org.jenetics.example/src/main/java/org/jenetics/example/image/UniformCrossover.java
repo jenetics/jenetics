@@ -45,42 +45,52 @@ import org.jenetics.util.RandomRegistry;
  * @see <a href="http://www.obitko.com/tutorials/genetic-algorithms/crossover-mutation.php">Crossover (Obitko.com)</a>
  * @see <a href="http://www.tomaszgwiazda.com/uniformX.htm">Uniform crossover</a>
  */
-public class UniformCrossover<G extends Gene<?, G>, C extends Comparable<? super C>> extends Crossover<G, C> {
+public class UniformCrossover<
+	G extends Gene<?, G>,
+	C extends Comparable<? super C>
+>
+	extends Crossover<G, C>
+{
 
-  /**
-   * Constructs an alterer with a given recombination probability.
-   *
-   * @param probability the crossover probability.
-   * @throws IllegalArgumentException if the {@code probability} is not in the
-   *         valid range of {@code [0, 1]}.
-   */
-  public UniformCrossover(final double probability) {
-    super(probability);
-  }
+	/**
+	* Constructs an alterer with a given recombination probability.
+	*
+	* @param probability the crossover probability.
+	* @throws IllegalArgumentException if the {@code probability} is not in the
+	*         valid range of {@code [0, 1]}.
+	*/
+	public UniformCrossover(final double probability) {
+	super(probability);
+	}
 
-  @Override
-  protected int crossover(final MSeq<G> that, final MSeq<G> other) {
-    assert (that.length() == other.length());
+	@Override
+	protected int crossover(final MSeq<G> that, final MSeq<G> other) {
+		assert that.length() == other.length();
 
-    int alteredGenes = 0;
-    final Random random = RandomRegistry.getRandom();
-    for (int idx = 0; idx < that.length(); idx++) {
-      if (random.nextFloat() < getProbability()) {
-        crossover(that, other, idx);
-        alteredGenes++;
-      }
-    }
-    return alteredGenes;
-  }
+		int alteredGenes = 0;
+		final Random random = RandomRegistry.getRandom();
+		for (int i = 0; i < that.length(); ++i) {
+			if (random.nextFloat() < getProbability()) {
+				crossover(that, other, i);
+				alteredGenes++;
+			}
+		}
 
-  // Package private for testing purpose.
-  static <T> void crossover(final MSeq<T> that, final MSeq<T> other, final int index) {
-    assert (index >= 0) : format(
-      "Crossover index must be within [0, %d) but was %d",
-      that.length(), index
-    );
+		return alteredGenes;
+	}
 
-    that.swap(index, index+1, other, index);
-  }
+	// Package private for testing purpose.
+	static <T> void crossover(
+		final MSeq<T> that,
+		final MSeq<T> other,
+		final int index
+	) {
+		assert index >= 0 : format(
+			"Crossover index must be within [0, %d) but was %d",
+			that.length(), index
+		);
+
+		that.swap(index, index+1, other, index);
+	}
 
 }
