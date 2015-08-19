@@ -16,7 +16,7 @@
  */
 package org.jenetics.example.image;
 
-import static java.lang.String.*;
+import static java.lang.String.format;
 
 import java.util.Random;
 

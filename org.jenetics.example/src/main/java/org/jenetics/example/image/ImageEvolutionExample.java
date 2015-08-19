@@ -175,7 +175,8 @@ public class ImageEvolutionExample {
 			});
 
 			// initialize a new genetic algorithm
-			final Factory<Genotype<PolygonGene>> gtf = Genotype.of(new PolygonChromosome(POLYGON_COUNT, POLYGON_LENGTH));
+			final Factory<Genotype<PolygonGene>> gtf = 
+                    Genotype.of(new PolygonChromosome(POLYGON_COUNT, POLYGON_LENGTH));
 
 			engine = Engine
 					.builder(ImageEvolutionExample::fitness, gtf)
