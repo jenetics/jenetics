@@ -67,7 +67,7 @@ public final class Polygon {
 	 * @param mutationAmount the mutation amount
 	 * @return a new Polygon
 	 */
-	public Polygon mutate(final float mutationRate, final float mutationAmount) {
+	public Polygon mutate(final double mutationRate, final double mutationAmount) {
 		final Random random = RandomRegistry.getRandom();
 		final Polygon mutated = new Polygon(length());
 		final int size = _data.length;

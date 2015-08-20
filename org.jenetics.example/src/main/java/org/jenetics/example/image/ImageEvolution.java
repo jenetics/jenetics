@@ -27,7 +27,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import static java.lang.Math.min;
 import java.text.NumberFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,10 +34,8 @@ import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.SpinnerModel;
 
 import org.jenetics.Genotype;
 import org.jenetics.Optimize;
@@ -51,32 +48,20 @@ import org.jenetics.stat.MinMax;
 
 public final class ImageEvolution extends javax.swing.JFrame {
 
-	private static final int MIN_POPULATION_SIZE = 5;
-	private static final int MAX_POPULATION_SIZE = 250;
-	private static final int DEFAULT_POPULATION_SIZE = 30;
-
-	public static final int POPULATION_SIZE = 40;
-	public static final int TOURNAMENT_ARITY = 3;
-	public static final float MUTATION_RATE = 0.02f;
-	public static final float MUTATION_CHANGE = 0.1f;
-	public static final int POLYGON_LENGTH = 6;
-	public static final int POLYGON_COUNT = 100;
-
-	private static final Codec<PolygonChromosome, PolygonGene> CODEC = Codec.of(
-		Genotype.of(new PolygonChromosome(POLYGON_COUNT, POLYGON_LENGTH)),
-		gt -> (PolygonChromosome) gt.getChromosome()
-	);
-
 	private BufferedImage _image;
-	private Engine<PolygonGene, Double> _engine;
 	private BufferedImage _refImage;
 	private int[] _refImagePixels;
 	private ThreadLocal<BufferedImage> _workingImage;
 	private Thread _thread;
-	private final NumberFormat _fitnessFormat = NumberFormat.getNumberInstance();
 
+	// Additional Swing components.
+	private final NumberFormat _fitnessFormat = NumberFormat.getNumberInstance();
 	private final ImagePanel _origImagePanel;
 	private final PolygonPanel _painter;
+
+	// The GA engine classes.
+	private Codec<PolygonChromosome, PolygonGene> _codec;
+	private Engine<PolygonGene, Double> _engine;
 
 	/**
 	 * Creates new form ImageEvolution
@@ -90,10 +75,14 @@ public final class ImageEvolution extends javax.swing.JFrame {
 	}
 
 	private void init() {
-		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/monalisa.png")));
-		
+		setIconImage(
+			Toolkit.getDefaultToolkit()
+				.getImage(getClass().getResource("/monalisa.png"))
+		);
+
 		origImagePanel.add(_origImagePanel);
 		polygonImagePanel.add(_painter);
+		engineParamPanel.setEngineParam(engineParam());
 
 		_fitnessFormat.setMaximumIntegerDigits(1);
 		_fitnessFormat.setMinimumIntegerDigits(1);
@@ -113,25 +102,20 @@ public final class ImageEvolution extends javax.swing.JFrame {
 			throw new AssertionError(e);
 		}
 
-
 		initEngine();
 	}
 
 	private void initEngine() {
-		_engine = Engine.builder(this::fitness, CODEC)
-			.populationSize(POPULATION_SIZE)
-			.optimize(Optimize.MAXIMUM)
-			.survivorsSelector(new TruncationSelector<>())
-			.offspringSelector(new TournamentSelector<>(TOURNAMENT_ARITY))
-			.alterers(
-				new PolygonMutator<>(MUTATION_RATE, MUTATION_CHANGE),
-				new UniformCrossover<>(0.5))
-			.build();
-	}
+		final EngineParam param = engineParamPanel.getEngineParam();
+		engineParam(param);
+		System.out.println(param);
 
-	private void setImage(final BufferedImage image) {
-		_image = requireNonNull(image);
-		_refImage = resizeImage(_image, 50, 50, BufferedImage.TYPE_INT_ARGB);
+		_refImage = resizeImage(
+			_image,
+			param.getReferenceImageSize().width,
+			param.getReferenceImageSize().height,
+			BufferedImage.TYPE_INT_ARGB
+		);
 
 		_workingImage = ThreadLocal.withInitial(() -> new BufferedImage(
 			_refImage.getWidth(),
@@ -140,11 +124,27 @@ public final class ImageEvolution extends javax.swing.JFrame {
 		));
 
 		_refImagePixels = _refImage.getData().getPixels(
-			0, 0, _refImage.getWidth(), _refImage.getHeight(), (int[]) null
+			0, 0, _refImage.getWidth(), _refImage.getHeight(), (int[])null
 		);
 
-		_origImagePanel.setImage(_image);
-		_painter.setDimension(_image.getWidth(), _image.getHeight());
+		_codec = Codec.of(
+			Genotype.of(new PolygonChromosome(
+				param.getPolygonCount(), param.getPolygonLength()
+			)),
+			gt -> (PolygonChromosome) gt.getChromosome()
+		);
+
+		_engine = Engine.builder(this::fitness, _codec)
+			.populationSize(param.getPopulationSize())
+			.optimize(Optimize.MAXIMUM)
+			.survivorsSelector(new TruncationSelector<>())
+			.offspringSelector(new TournamentSelector<>(param.getTournamentSize()))
+			.alterers(
+				new PolygonMutator<>(
+					param.getMutationRate(), param.getMutationChange()
+				),
+				new UniformCrossover<>(0.5))
+			.build();
 	}
 
 	private static BufferedImage resizeImage(
@@ -158,6 +158,13 @@ public final class ImageEvolution extends javax.swing.JFrame {
 		g.drawImage(image, 0, 0, width, height, null);
 		g.dispose();
 		return resizedImage;
+	}
+
+	private void setImage(final BufferedImage image) {
+		_image = requireNonNull(image);
+
+		_origImagePanel.setImage(_image);
+		_painter.setDimension(_image.getWidth(), _image.getHeight());
 	}
 
 	/**
@@ -213,6 +220,7 @@ public final class ImageEvolution extends javax.swing.JFrame {
         resultPanel = new javax.swing.JPanel();
         bestEvolutionResultPanel = new org.jenetics.example.image.EvolutionResultPanel();
         currentevolutionResultPanel = new org.jenetics.example.image.EvolutionResultPanel();
+        engineParamPanel = new org.jenetics.example.image.EngineParamPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Image Evolution Example");
@@ -225,10 +233,10 @@ public final class ImageEvolution extends javax.swing.JFrame {
         origImagePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Source image"));
         origImagePanel.setName(""); // NOI18N
         origImagePanel.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentResized(java.awt.event.ComponentEvent evt) {
-                origImagePanelComponentResized(evt);
-            }
-        });
+			public void componentResized(java.awt.event.ComponentEvent evt) {
+				origImagePanelComponentResized(evt);
+			}
+		});
         origImagePanel.setLayout(new java.awt.BorderLayout());
         imageSplitPane.setLeftComponent(origImagePanel);
 
@@ -240,48 +248,48 @@ public final class ImageEvolution extends javax.swing.JFrame {
 
         startButton.setText("Start");
         startButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                startButtonActionPerformed(evt);
-            }
-        });
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				startButtonActionPerformed(evt);
+			}
+		});
 
         stopButton.setText("Stop");
         stopButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                stopButtonActionPerformed(evt);
-            }
-        });
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				stopButtonActionPerformed(evt);
+			}
+		});
 
         openButton.setText("Open");
         openButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                openButtonActionPerformed(evt);
-            }
-        });
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				openButtonActionPerformed(evt);
+			}
+		});
 
         javax.swing.GroupLayout buttonPanelLayout = new javax.swing.GroupLayout(buttonPanel);
         buttonPanel.setLayout(buttonPanelLayout);
         buttonPanelLayout.setHorizontalGroup(
-            buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(buttonPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(startButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(stopButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(openButton, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE))
-                .addContainerGap())
-        );
+			buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(buttonPanelLayout.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+						.addComponent(startButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(stopButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(openButton, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE))
+					.addContainerGap())
+		);
         buttonPanelLayout.setVerticalGroup(
-            buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(buttonPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(startButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(stopButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 307, Short.MAX_VALUE)
-                .addComponent(openButton)
-                .addContainerGap())
-        );
+			buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(buttonPanelLayout.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(startButton)
+					.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+					.addComponent(stopButton)
+					.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 258, Short.MAX_VALUE)
+					.addComponent(openButton)
+					.addContainerGap())
+		);
 
         resultPanel.setLayout(new java.awt.GridBagLayout());
 
@@ -304,6 +312,14 @@ public final class ImageEvolution extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         resultPanel.add(currentevolutionResultPanel, gridBagConstraints);
 
+        engineParamPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Engine parameter"));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        resultPanel.add(engineParamPanel, gridBagConstraints);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -311,11 +327,11 @@ public final class ImageEvolution extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(resultPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 772, Short.MAX_VALUE)
+                    .addComponent(resultPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 788, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(imagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(buttonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+						.addComponent(imagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+						.addComponent(buttonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -334,6 +350,8 @@ public final class ImageEvolution extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 	private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
+		initEngine();
+		
 		_thread = new Thread(() -> {
 			final MinMax<EvolutionResult<PolygonGene, Double>> best = MinMax.of();
 
@@ -354,6 +372,7 @@ public final class ImageEvolution extends javax.swing.JFrame {
 		startButton.setEnabled(false);
 		stopButton.setEnabled(true);
 		openButton.setEnabled(false);
+		engineParamPanel.setEnabled(false);
 	}//GEN-LAST:event_startButtonActionPerformed
 
 	private void stopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopButtonActionPerformed
@@ -361,6 +380,7 @@ public final class ImageEvolution extends javax.swing.JFrame {
 		stopButton.setEnabled(false);
 		startButton.setEnabled(true);
 		openButton.setEnabled(true);
+		engineParamPanel.setEnabled(true);
 	}//GEN-LAST:event_stopButtonActionPerformed
 
 	private void openButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openButtonActionPerformed
@@ -403,10 +423,10 @@ public final class ImageEvolution extends javax.swing.JFrame {
 		final Genotype<PolygonGene> gt = best
 			.getBestPhenotype()
 			.getGenotype();
-		
+
 		bestEvolutionResultPanel.update(best);
 		currentevolutionResultPanel.update(current);
-		_painter.setChromosome(CODEC.decoder().apply(gt));
+		_painter.setChromosome(_codec.decoder().apply(gt));
 		_painter.repaint();
 	}
 
@@ -414,15 +434,15 @@ public final class ImageEvolution extends javax.swing.JFrame {
 	 * Application preferences.
 	 **************************************************************************/
 
-	private static final String POPULATION_SIZE_PREF = "population_size";
+	private static final String ENGINE_PARAM_NODE = "engine_param";
 	private static final String LAST_OPEN_DIRECTORY_PREF = "last_open_directory";
 
-	private int populationSize() {
-		return appPref().getInt(POPULATION_SIZE_PREF, DEFAULT_POPULATION_SIZE);
+	private EngineParam engineParam() {
+		return EngineParam.load(appPref().node(ENGINE_PARAM_NODE));
 	}
 
-	private void populationSize(final int populationSize) {
-		appPref().putInt(POPULATION_SIZE_PREF, populationSize);
+	private void engineParam(final EngineParam param) {
+		param.store(appPref().node(ENGINE_PARAM_NODE));
 	}
 
 	private File lastOpenDirectory() {
@@ -434,10 +454,6 @@ public final class ImageEvolution extends javax.swing.JFrame {
 		appPref().put(LAST_OPEN_DIRECTORY_PREF, dir.getAbsolutePath());
 	}
 
-	private void savePrefs() {
-		prefFlush();
-	}
-	
 	private static Preferences appPref() {
 		return Preferences.userRoot().node("org/jenetics/example/image");
 	}
@@ -481,7 +497,7 @@ public final class ImageEvolution extends javax.swing.JFrame {
 		java.awt.EventQueue.invokeLater(() -> {
 			new ImageEvolution().setVisible(true);
 		});
-		
+
 		prefFlush();
 	}
 
@@ -489,6 +505,7 @@ public final class ImageEvolution extends javax.swing.JFrame {
     private org.jenetics.example.image.EvolutionResultPanel bestEvolutionResultPanel;
     private javax.swing.JPanel buttonPanel;
     private org.jenetics.example.image.EvolutionResultPanel currentevolutionResultPanel;
+    private org.jenetics.example.image.EngineParamPanel engineParamPanel;
     private javax.swing.JPanel imagePanel;
     private javax.swing.JSplitPane imageSplitPane;
     private javax.swing.JButton openButton;

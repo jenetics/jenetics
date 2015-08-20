@@ -30,10 +30,10 @@ public class PolygonMutator<C extends Comparable<? super C>>
 	extends Mutator<PolygonGene, C>
 {
 
-	private final float _mutationRate;
-	private final float _mutationAmount;
+	private final double _mutationRate;
+	private final double _mutationAmount;
 
-	public PolygonMutator(final float mutationRate, final float mutationAmount) {
+	public PolygonMutator(final double mutationRate, final double mutationAmount) {
 		super(1.0);
 		_mutationRate = mutationRate;
 		_mutationAmount = mutationAmount;
