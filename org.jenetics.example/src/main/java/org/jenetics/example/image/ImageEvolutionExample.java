@@ -375,13 +375,7 @@ public final class ImageEvolutionExample extends JFrame {
 			_engine.stream()
 				.limit(result -> !Thread.currentThread().isInterrupted())
 				.peek(best)
-				.forEach(result -> {
-					final Genotype<PolygonGene> gt = best.getMax()
-						.getBestPhenotype()
-						.getGenotype();
-
-					invokeLater(() -> onNewResult(result, best.getMax()));
-				});
+				.forEach(r -> invokeLater(() -> onNewResult(r, best.getMax())));
 		});
 		_thread.start();
 
