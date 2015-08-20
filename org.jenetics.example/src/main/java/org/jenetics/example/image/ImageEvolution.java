@@ -35,6 +35,7 @@ import java.util.prefs.Preferences;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import org.jenetics.Genotype;
@@ -46,7 +47,23 @@ import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
 import org.jenetics.stat.MinMax;
 
-public final class ImageEvolution extends javax.swing.JFrame {
+/**
+ * This example shows a more advanced use of a genetic algorithm: approximate a
+ * raster image with ~100 semi-transparent polygons of length 6.
+ * <p>
+ * The fitness function is quite simple yet expensive to compute:
+ * <ul>
+ * <li>draw the polygons of a chromosome to an image
+ * <li>compare each pixel with the corresponding reference image
+ * </ul>
+ * <p>
+ * To improve the speed of the calculation, we calculate the fitness not on the
+ * original image size, but rather on a scaled down version, which is sufficient
+ * to demonstrate the power of such a genetic algorithm.
+ *
+ * @see <a href="http://www.nihilogic.dk/labs/evolving-images/">Evolving Images with JavaScript and canvas (Nihilogic)</a>
+ */
+public final class ImageEvolution extends JFrame {
 
 	private BufferedImage _image;
 	private BufferedImage _refImage;
@@ -351,7 +368,7 @@ public final class ImageEvolution extends javax.swing.JFrame {
 
 	private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
 		initEngine();
-		
+
 		_thread = new Thread(() -> {
 			final MinMax<EvolutionResult<PolygonGene, Double>> best = MinMax.of();
 
