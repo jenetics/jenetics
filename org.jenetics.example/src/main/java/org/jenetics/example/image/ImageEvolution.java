@@ -100,10 +100,6 @@ public final class ImageEvolution extends javax.swing.JFrame {
 		_fitnessFormat.setMinimumFractionDigits(5);
 		_fitnessFormat.setMaximumFractionDigits(5);
 
-		populationSizeSlider.setMinimum(MIN_POPULATION_SIZE);
-		populationSizeSlider.setMaximum(MAX_POPULATION_SIZE);
-		populationSizeSlider.setValue(populationSize());
-
 		imageSplitPane.setDividerLocation(0.5);
 
 		startButton.setEnabled(true);
@@ -123,7 +119,7 @@ public final class ImageEvolution extends javax.swing.JFrame {
 
 	private void initEngine() {
 		_engine = Engine.builder(this::fitness, CODEC)
-			.populationSize(populationSizeSlider.getValue())
+			.populationSize(POPULATION_SIZE)
 			.optimize(Optimize.MAXIMUM)
 			.survivorsSelector(new TruncationSelector<>())
 			.offspringSelector(new TournamentSelector<>(TOURNAMENT_ARITY))
@@ -204,6 +200,7 @@ public final class ImageEvolution extends javax.swing.JFrame {
 	@SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         imagePanel = new javax.swing.JPanel();
         imageSplitPane = new javax.swing.JSplitPane();
@@ -213,14 +210,9 @@ public final class ImageEvolution extends javax.swing.JFrame {
         startButton = new javax.swing.JButton();
         stopButton = new javax.swing.JButton();
         openButton = new javax.swing.JButton();
-        statusPanel = new javax.swing.JPanel();
-        generationLabel = new javax.swing.JLabel();
-        generationTextField = new javax.swing.JTextField();
-        bestFitnessLabel = new javax.swing.JLabel();
-        bestFitnessTextField = new javax.swing.JTextField();
-        populationSizeLabel = new javax.swing.JLabel();
-        populationSizeSlider = new javax.swing.JSlider();
-        jTextField1 = new javax.swing.JTextField();
+        resultPanel = new javax.swing.JPanel();
+        bestEvolutionResultPanel = new org.jenetics.example.image.EvolutionResultPanel();
+        currentevolutionResultPanel = new org.jenetics.example.image.EvolutionResultPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Image Evolution Example");
@@ -286,69 +278,31 @@ public final class ImageEvolution extends javax.swing.JFrame {
                 .addComponent(startButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(stopButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 285, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 307, Short.MAX_VALUE)
                 .addComponent(openButton)
                 .addContainerGap())
         );
 
-        generationLabel.setText("Generation:");
+        resultPanel.setLayout(new java.awt.GridBagLayout());
 
-        generationTextField.setEditable(false);
+        bestEvolutionResultPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Best"));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        resultPanel.add(bestEvolutionResultPanel, gridBagConstraints);
 
-        bestFitnessLabel.setText("Best fitness:");
-
-        bestFitnessTextField.setEditable(false);
-
-        populationSizeLabel.setText("Population size:");
-
-        populationSizeSlider.setMajorTickSpacing(50);
-        populationSizeSlider.setPaintLabels(true);
-        populationSizeSlider.setPaintTicks(true);
-
-        jTextField1.setText("jTextField1");
-
-        javax.swing.GroupLayout statusPanelLayout = new javax.swing.GroupLayout(statusPanel);
-        statusPanel.setLayout(statusPanelLayout);
-        statusPanelLayout.setHorizontalGroup(
-            statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(statusPanelLayout.createSequentialGroup()
-                .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(bestFitnessLabel)
-                    .addComponent(generationLabel, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(generationTextField)
-                    .addComponent(bestFitnessTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE))
-                .addGap(86, 86, 86)
-                .addComponent(populationSizeLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(populationSizeSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        statusPanelLayout.setVerticalGroup(
-            statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(statusPanelLayout.createSequentialGroup()
-                .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, statusPanelLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(statusPanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(populationSizeLabel)
-                                .addComponent(generationTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(generationLabel))
-                            .addComponent(populationSizeSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(2, 2, 2)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(bestFitnessLabel)
-                    .addComponent(bestFitnessTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 45, Short.MAX_VALUE))
-        );
+        currentevolutionResultPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Current"));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        resultPanel.add(currentevolutionResultPanel, gridBagConstraints);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -357,11 +311,11 @@ public final class ImageEvolution extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(resultPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 772, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(imagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(buttonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(statusPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(buttonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -371,8 +325,8 @@ public final class ImageEvolution extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(buttonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(imagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addComponent(statusPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(resultPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -400,7 +354,6 @@ public final class ImageEvolution extends javax.swing.JFrame {
 		startButton.setEnabled(false);
 		stopButton.setEnabled(true);
 		openButton.setEnabled(false);
-		populationSizeSlider.setEnabled(false);
 	}//GEN-LAST:event_startButtonActionPerformed
 
 	private void stopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopButtonActionPerformed
@@ -408,7 +361,6 @@ public final class ImageEvolution extends javax.swing.JFrame {
 		stopButton.setEnabled(false);
 		startButton.setEnabled(true);
 		openButton.setEnabled(true);
-		populationSizeSlider.setEnabled(true);
 	}//GEN-LAST:event_stopButtonActionPerformed
 
 	private void openButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openButtonActionPerformed
@@ -451,11 +403,11 @@ public final class ImageEvolution extends javax.swing.JFrame {
 		final Genotype<PolygonGene> gt = best
 			.getBestPhenotype()
 			.getGenotype();
+		
+		bestEvolutionResultPanel.update(best);
+		currentevolutionResultPanel.update(current);
 		_painter.setChromosome(CODEC.decoder().apply(gt));
-
 		_painter.repaint();
-		generationTextField.setText(Long.toString(current.getGeneration()));
-		bestFitnessTextField.setText(_fitnessFormat.format(best.getBestFitness()));
 	}
 
 	/* *************************************************************************
@@ -483,8 +435,6 @@ public final class ImageEvolution extends javax.swing.JFrame {
 	}
 
 	private void savePrefs() {
-		populationSize(populationSizeSlider.getValue());
-		
 		prefFlush();
 	}
 	
@@ -536,21 +486,16 @@ public final class ImageEvolution extends javax.swing.JFrame {
 	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel bestFitnessLabel;
-    private javax.swing.JTextField bestFitnessTextField;
+    private org.jenetics.example.image.EvolutionResultPanel bestEvolutionResultPanel;
     private javax.swing.JPanel buttonPanel;
-    private javax.swing.JLabel generationLabel;
-    private javax.swing.JTextField generationTextField;
+    private org.jenetics.example.image.EvolutionResultPanel currentevolutionResultPanel;
     private javax.swing.JPanel imagePanel;
     private javax.swing.JSplitPane imageSplitPane;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JButton openButton;
     private javax.swing.JPanel origImagePanel;
     private javax.swing.JPanel polygonImagePanel;
-    private javax.swing.JLabel populationSizeLabel;
-    private javax.swing.JSlider populationSizeSlider;
+    private javax.swing.JPanel resultPanel;
     private javax.swing.JButton startButton;
-    private javax.swing.JPanel statusPanel;
     private javax.swing.JButton stopButton;
     // End of variables declaration//GEN-END:variables
 }
