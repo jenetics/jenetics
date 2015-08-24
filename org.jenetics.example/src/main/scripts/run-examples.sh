@@ -19,12 +19,11 @@
 #    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
 #
 
-SCRIPT_DIR=`readlink -f $0`
-SCRIPT_DIR=`dirname ${SCRIPT_DIR}`
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 
 VERSION="@__version__@"
-CLS_PATH=`readlink -f ${SCRIPT_DIR}/../lib/org.jenetics-${VERSION}.jar`
-CLS_PATH=${CLS_PATH}:`readlink -f ${SCRIPT_DIR}/../lib/org.jenetics.example-${VERSION}.jar`:.
+CLS_PATH="${SCRIPT_DIR}/../lib/org.jenetics-${VERSION}.jar"
+CLS_PATH=${CLS_PATH}:"${SCRIPT_DIR}/../lib/org.jenetics.example-${VERSION}.jar":.
 
 java -cp $CLS_PATH org.jenetics.example.Knapsack
 java -cp $CLS_PATH org.jenetics.example.OnesCounting
