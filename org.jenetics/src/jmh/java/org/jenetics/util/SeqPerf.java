@@ -19,12 +19,16 @@
  */
 package org.jenetics.util;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Mode;
+import org.openjdk.jmh.annotations.OperationsPerInvocation;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
@@ -45,55 +49,192 @@ import org.jenetics.internal.util.IntRef;
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 public class SeqPerf {
 
-	private final int index = ThreadLocalRandom.current().nextInt(1000);
+	static final int SIZE = 1000;
 
-	private final Integer[] array = new Integer[1000];
-	{
-		for (int i = 0; i < array.length; ++i) {
+	private final Random random = new Random();
+	private final int index = ThreadLocalRandom.current().nextInt(SIZE);
+
+	// The native integer array for performance testing
+	private final Integer[] array = new Integer[SIZE]; {
+		for (int i = 0; i < SIZE; ++i) {
 			array[i] = i;
 		}
 	}
-	private final MSeq<Integer> seq = MSeq.ofLength(1000);
-	{
-		for (int i = 0; i < seq.length(); ++i) {
-			seq.set(i, i);
+
+	// The ArrayList for performance testing
+	private final ArrayList<Integer> arrayList = new ArrayList<>(SIZE); {
+		for (int i = 0; i < SIZE; ++i) {
+			arrayList.add(i);
 		}
 	}
 
-	@Benchmark
-	public Integer getFromArray() {
-		return array[index];
-	}
-
-	@Benchmark
-	public int forLoopArray() {
-		final IntRef sum = new IntRef();
-		for (int i = 0; i < array.length; ++i) {
-			sum.value += array[i];
+	// The MSeq for performance testing
+	private final MSeq<Integer> mseq = MSeq.ofLength(SIZE); {
+		for (int i = 0; i < SIZE; ++i) {
+			mseq.set(i, i);
 		}
-		return sum.value;
 	}
 
-	@Benchmark
-	public Integer getFromSeq() {
-		return seq.get(index);
-	}
+	/* *************************************************************************
+	 * Native array performance tests.
+	 **************************************************************************/
 
+	@OperationsPerInvocation(SIZE)
 	@Benchmark
-	public int forLoopSeq() {
-		final IntRef sum = new IntRef();
-		for (int i = 0; i < seq.length(); ++i) {
-			sum.value += seq.get(i);
+	public int array_get() {
+		int sum = 0;
+		for (int i = 0; i < SIZE; ++i) {
+			sum += array[i];
 		}
+		return sum;
+	}
+
+	@OperationsPerInvocation(SIZE)
+	@Benchmark
+	public int array_set() {
+		final Integer value = random.nextInt();
+		for (int i = 0; i < SIZE; ++i) {
+			array[i] = value;
+		}
+		return value;
+	}
+
+	@OperationsPerInvocation(SIZE)
+	@Benchmark
+	public int array_forLoop() {
+		int sum = 0;
+		for (Integer i : array) {
+			sum += i;
+		}
+		return sum;
+	}
+
+
+	@OperationsPerInvocation(SIZE)
+	@Benchmark
+	public int array_copy() {
+		return array.clone()[0].hashCode();
+	}
+
+
+	/* *************************************************************************
+	 * ArrayList performance tests.
+	 **************************************************************************/
+
+	@OperationsPerInvocation(SIZE)
+	@Benchmark
+	public int arrayList_get() {
+		int sum = 0;
+		for (int i = 0; i < SIZE; ++i) {
+			sum += arrayList.get(i);
+		}
+		return sum;
+	}
+
+	@OperationsPerInvocation(SIZE)
+	@Benchmark
+	public int arrayList_set() {
+		final Integer value = random.nextInt();
+		for (int i = 0; i < SIZE; ++i) {
+			arrayList.set(i, value);
+		}
+		return value;
+	}
+
+	@OperationsPerInvocation(SIZE)
+	@Benchmark
+	public int arrayList_forLoop() {
+		int sum = 0;
+		for (Integer i : arrayList) {
+			sum += i;
+		}
+		return sum;
+	}
+
+	@OperationsPerInvocation(SIZE)
+	@Benchmark
+	public int arrayList_forEachLoop() {
+		final IntRef sum = new IntRef();
+		arrayList.forEach(i -> sum.value += i);
 		return sum.value;
 	}
 
+	@OperationsPerInvocation(SIZE)
 	@Benchmark
-	public int forEachLoopSeq() {
+	public int arrayList_contains() {
+		int count = 0;
+		for (int i = 0; i < SIZE; ++i) {
+			count += arrayList.contains(i) ? 1 : 0;
+		}
+		return count;
+	}
+
+	@OperationsPerInvocation(SIZE)
+	@Benchmark
+	@SuppressWarnings("unchecked")
+	public int arrayList_copy() {
+		return ((List<Integer>)arrayList.clone()).get(0);
+	}
+
+	/* *************************************************************************
+	 * MSeq performance tests.
+	 **************************************************************************/
+
+	@OperationsPerInvocation(SIZE)
+	@Benchmark
+	public int mseq_get() {
+		int sum = 0;
+		for (int i = 0; i < SIZE; ++i) {
+			sum += mseq.get(i);
+		}
+		return sum;
+	}
+
+	@OperationsPerInvocation(SIZE)
+	@Benchmark
+	public int mseq_set() {
+		final Integer value = random.nextInt();
+		for (int i = 0; i < SIZE; ++i) {
+			mseq.set(i, value);
+		}
+		return value;
+	}
+
+	@OperationsPerInvocation(SIZE)
+	@Benchmark
+	public int mseq_forLoop() {
+		int sum = 0;
+		for (Integer i : mseq) {
+			sum += i;
+		}
+		return sum;
+	}
+
+	@OperationsPerInvocation(SIZE)
+	@Benchmark
+	public int mseq_forEachLoop() {
 		final IntRef sum = new IntRef();
-		seq.forEach(i -> sum.value += i);
+		mseq.forEach(i -> sum.value += i);
 		return sum.value;
 	}
+
+	@OperationsPerInvocation(SIZE)
+	@Benchmark
+	public int mseq_contains() {
+		int count = 0;
+		for (int i = 0; i < SIZE; ++i) {
+			count += mseq.contains(i) ? 1 : 0;
+		}
+		return count;
+	}
+
+	@OperationsPerInvocation(SIZE)
+	@Benchmark
+	public int mseq_copy() {
+		return mseq.copy().get(0);
+	}
+
+
 
 	public static void main(String[] args) throws RunnerException {
 		final Options opt = new OptionsBuilder()
