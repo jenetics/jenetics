@@ -38,7 +38,7 @@ class LyxPlugin extends JeneticsPlugin {
 
 	@Override
 	public void apply(final Project project) {
-		super.apply(project)
+		this.project = project
 
 		if (hasLyxSources()) {
 			applyLyx()
@@ -46,11 +46,11 @@ class LyxPlugin extends JeneticsPlugin {
 	}
 
 	private void applyLyx() {
-		task(BUILD, dependsOn: LYX) << {
+		project.task(BUILD, dependsOn: LYX) << {
 		}
 
-		task('preparePDFGeneration') << {
-			copy {
+		project.task('preparePDFGeneration') << {
+			project.copy {
 				from("${project.projectDir}/src/main") {
 					include 'lyx/manual.lyx'
 				}
@@ -63,7 +63,7 @@ class LyxPlugin extends JeneticsPlugin {
 						.minorVersionString()
 				])
 			}
-			copy {
+			project.copy {
 				from("${project.projectDir}/src/main") {
 					exclude 'lyx/manual.lyx'
 				}
@@ -71,21 +71,21 @@ class LyxPlugin extends JeneticsPlugin {
 			}
 		}
 
-		task(LYX, type: Lyx2PDFTask, dependsOn: 'preparePDFGeneration') {
+		project.task(LYX, type: Lyx2PDFTask, dependsOn: 'preparePDFGeneration') {
 			document = new File("${project.build.temporaryDir}/lyx/manual.lyx")
 
 			doLast {
-				copy {
+				project.copy {
 					from "${project.build.temporaryDir}/lyx/manual.pdf"
 					into "${project.buildDir}/doc"
 					rename { String fileName ->
-						fileName.replace('manual.pdf', "manual-${version}.pdf")
+						fileName.replace('manual.pdf', "manual-${project.version}.pdf")
 					}
 				}
 			}
 		}
 
-		task('clean') << {
+		project.task('clean') << {
 			project.buildDir.deleteDir()
 		}
 	}
