@@ -94,8 +94,8 @@ public final class DoubleMoments implements Serializable {
 	}
 
 	/**
-	 * Return the minimum value recorded, or {@code Integer.MAX_VALUE} if no
-	 * values have been recorded.
+	 * Return the minimum value recorded, or {@code Double.POSITIVE_INFINITY} if
+	 * no values have been recorded.
 	 *
 	 * @return the minimum value, or {@code Integer.MAX_VALUE} if none
 	 */
@@ -104,8 +104,8 @@ public final class DoubleMoments implements Serializable {
 	}
 
 	/**
-	 * Return the maximum value recorded, or {@code Integer.MIN_VALUE} if no
-	 * values have been recorded.
+	 * Return the maximum value recorded, or {@code Double.NEGATIVE_INFINITY} if
+	 * no values have been recorded.
 	 *
 	 * @return the maximum value, or {@code Integer.MIN_VALUE} if none
 	 */
