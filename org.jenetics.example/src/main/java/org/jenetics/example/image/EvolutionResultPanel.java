@@ -16,13 +16,12 @@
  */
 package org.jenetics.example.image;
 
-import java.text.NumberFormat;
-import java.time.Duration;
-import java.util.stream.Collectors;
 import static java.util.stream.Collectors.averagingLong;
 
-import org.jenetics.engine.EvolutionResult;
+import java.text.NumberFormat;
+import java.time.Duration;
 
+import org.jenetics.engine.EvolutionResult;
 
 public class EvolutionResultPanel extends javax.swing.JPanel {
 
@@ -45,7 +44,7 @@ public class EvolutionResultPanel extends javax.swing.JPanel {
 		final String bestFitness = _format.format(result.getBestFitness());
 		final double age = result.getPopulation().stream()
 			.collect(averagingLong(p -> p.getAge(result.getGeneration())));
-		
+
 		_generationTextField.setText(generation);
 		_bestFitnessTextField.setText(bestFitness);
 		_populationAgeTextField.setText(_format.format(age));
@@ -57,7 +56,7 @@ public class EvolutionResultPanel extends javax.swing.JPanel {
 	private static String format(final Duration duration) {
 		final long seconds = duration.getSeconds();
 		final int millis = duration.getNano()/1_000_000;
-		
+
 		return String.format("%02d.%03d", seconds, millis);
 	}
 
