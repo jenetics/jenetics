@@ -20,7 +20,6 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static javax.swing.SwingUtilities.invokeLater;
 
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
@@ -32,11 +31,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.jenetics.Genotype;
 import org.jenetics.Optimize;
@@ -61,20 +63,21 @@ import org.jenetics.stat.MinMax;
  * original image size, but rather on a scaled down version, which is sufficient
  * to demonstrate the power of such a genetic algorithm.
  *
- * @see <a href="http://www.nihilogic.dk/labs/evolving-images/">Evolving Images with JavaScript and canvas (Nihilogic)</a>
+ * @see <a href="http://www.nihilogic.dk/labs/evolving-images/">
+ *      Evolving Images with JavaScript and canvas (Nihilogic)</a>
  */
 public final class ImageEvolutionExample extends JFrame {
+
+	// Additional Swing components.
+	private final NumberFormat _fitnessFormat = NumberFormat.getNumberInstance();
+	private final ImagePanel _origImagePanel;
+	private final PolygonPanel _painter;
 
 	private BufferedImage _image;
 	private BufferedImage _refImage;
 	private int[] _refImagePixels;
 	private ThreadLocal<BufferedImage> _workingImage;
 	private Thread _thread;
-
-	// Additional Swing components.
-	private final NumberFormat _fitnessFormat = NumberFormat.getNumberInstance();
-	private final ImagePanel _origImagePanel;
-	private final PolygonPanel _painter;
 
 	// The GA engine classes.
 	private Codec<PolygonChromosome, PolygonGene> _codec;
@@ -125,7 +128,6 @@ public final class ImageEvolutionExample extends JFrame {
 	private void initEngine() {
 		final EngineParam param = engineParamPanel.getEngineParam();
 		engineParam(param);
-		System.out.println(param);
 
 		_refImage = resizeImage(
 			_image,
@@ -190,7 +192,7 @@ public final class ImageEvolutionExample extends JFrame {
 	 * For this purpose, we first draw the polygons on the test buffer,  and
 	 * then compare the resulting image pixel by pixel with the  reference image.
 	 */
-	double fitness(final PolygonChromosome chromosome) {
+	final double fitness(final PolygonChromosome chromosome) {
 		final BufferedImage img = _workingImage.get();
 		final Graphics2D g2 = img.createGraphics();
 		final int width = img.getWidth();
@@ -388,6 +390,7 @@ public final class ImageEvolutionExample extends JFrame {
 
 	private void stopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopButtonActionPerformed
 		_thread.interrupt();
+
 		stopButton.setEnabled(false);
 		startButton.setEnabled(true);
 		openButton.setEnabled(true);
@@ -399,10 +402,19 @@ public final class ImageEvolutionExample extends JFrame {
 		final JFileChooser chooser = dir != null
 			? new JFileChooser(dir)
 			: new JFileChooser();
-		chooser.setFont(new Font("Dialog", 0, 12));
 		chooser.setDialogTitle("Choose Image");
 		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		chooser.setMultiSelectionEnabled(false);
+		chooser.addChoosableFileFilter(new FileNameExtensionFilter(
+			format(
+				"Images (%s)",
+				Stream.of(ImageIO.getReaderFileSuffixes())
+					.map(s -> format(" *.%s", s))
+					.collect(Collectors.joining(","))
+			),
+			ImageIO.getReaderFileSuffixes()
+		));
+
 		final int returnVal = chooser.showOpenDialog(this);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			final File imageFile = chooser.getSelectedFile();
@@ -473,7 +485,8 @@ public final class ImageEvolutionExample extends JFrame {
 		try {
 			appPref().flush();
 		} catch (BackingStoreException ex) {
-			Logger.getLogger(ImageEvolutionExample.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(ImageEvolutionExample.class.getName())
+				.log(Level.SEVERE, null, ex);
 		}
 	}
 
