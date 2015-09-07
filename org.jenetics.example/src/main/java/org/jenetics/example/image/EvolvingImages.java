@@ -242,7 +242,7 @@ public final class EvolvingImages extends JFrame {
         engineParamPanel = new org.jenetics.example.image.EngineParamPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Image Evolution Example");
+        setTitle("Evolving images");
 
         imagePanel.setBackground(new java.awt.Color(153, 153, 153));
         imagePanel.setLayout(new java.awt.GridLayout(1, 1));
@@ -391,8 +391,8 @@ public final class EvolvingImages extends JFrame {
 	private void stopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopButtonActionPerformed
 		_thread.interrupt();
 
-		stopButton.setEnabled(false);
 		startButton.setEnabled(true);
+		stopButton.setEnabled(false);
 		openButton.setEnabled(true);
 		engineParamPanel.setEnabled(true);
 	}//GEN-LAST:event_stopButtonActionPerformed
