@@ -26,23 +26,25 @@ import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
 
 /**
- * Perform Uniform Crossover [UX] on the specified genes. A fixed mixing
- * ratio is used to combine genes from the first and second parents, e.g. using a
+ * Perform Uniform Crossover [UX] on the specified genes. A fixed mixing ratio
+ * is used to combine genes from the first and second parents, e.g. using a
  * ratio of 0.5 would result in approximately 50% of genes coming from each
  * parent. This is typically a poor method of crossover, but empirical evidence
  * suggests that it is more exploratory and results in a larger part of the
  * problem space being searched.
  * <p>
- * This crossover policy evaluates each gene of the parent genes by chosing a
- * uniform random number {@code p} in the range [0, 1]. If {@code p} &lt; {@code ratio},
- * the parent genes are swapped. This means with a ratio of 0.7, 30% of the genes from the
- * first parent and 70% from the second parent will be selected for the first offspring (and
- * vice versa for the second offspring).
+ * This crossover policy evaluates each gene of the parent genes by choosing a
+ * uniform random number {@code p} in the range [0, 1]. If {@code p} &lt;
+ * {@code ratio}, the parent genes are swapped. This means with a ratio of 0.7,
+ * 30% of the genes from the first parent and 70% from the second parent will
+ * be selected for the first offspring (and vice versa for the second offspring).
  * <p>
  * The genes must have same lengths.
  *
- * @see <a href="http://en.wikipedia.org/wiki/Crossover_%28genetic_algorithm%29">Crossover techniques (Wikipedia)</a>
- * @see <a href="http://www.obitko.com/tutorials/genetic-algorithms/crossover-mutation.php">Crossover (Obitko.com)</a>
+ * @see <a href="http://en.wikipedia.org/wiki/Crossover_%28genetic_algorithm%29">
+ *         Crossover techniques (Wikipedia)</a>
+ * @see <a href="http://www.obitko.com/tutorials/genetic-algorithms/crossover-mutation.php">
+ *         Crossover (Obitko.com)</a>
  * @see <a href="http://www.tomaszgwiazda.com/uniformX.htm">Uniform crossover</a>
  */
 public class UniformCrossover<
@@ -90,7 +92,7 @@ public class UniformCrossover<
 			that.length(), index
 		);
 
-		that.swap(index, index+1, other, index);
+		that.swap(index, index + 1, other, index);
 	}
 
 }

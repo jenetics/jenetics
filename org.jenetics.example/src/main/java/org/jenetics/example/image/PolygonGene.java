@@ -44,7 +44,7 @@ public final class PolygonGene implements Gene<Polygon, PolygonGene> {
 
 	@Override
 	public PolygonGene newInstance() {
-	  return new PolygonGene( Polygon.newRandom(_polygon.length()) );
+	  return new PolygonGene(Polygon.newRandom(_polygon.length()));
 	}
 
 	@Override

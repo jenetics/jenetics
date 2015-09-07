@@ -110,7 +110,8 @@ final class EngineParam {
 			"Mutation change: " + _mutationChange + "\n" +
 			"Polygon length: " + _polygonLength + "\n" +
 			"Polygon count: " + _polygonCount + "\n" +
-			"Reference image size: " + _referenceImageSize.width + "x" + _referenceImageSize.height;
+			"Reference image size: " + _referenceImageSize.width +
+				"x" + _referenceImageSize.height;
 	}
 
 	public void store(final Preferences prefs) {
