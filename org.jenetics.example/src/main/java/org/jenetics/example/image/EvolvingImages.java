@@ -66,7 +66,7 @@ import org.jenetics.stat.MinMax;
  * @see <a href="http://www.nihilogic.dk/labs/evolving-images/">
  *      Evolving Images with JavaScript and canvas (Nihilogic)</a>
  */
-public final class ImageEvolutionExample extends JFrame {
+public final class EvolvingImages extends JFrame {
 
 	// Additional Swing components.
 	private final NumberFormat _fitnessFormat = NumberFormat.getNumberInstance();
@@ -86,7 +86,7 @@ public final class ImageEvolutionExample extends JFrame {
 	/**
 	 * Creates new form ImageEvolution
 	 */
-	public ImageEvolutionExample() {
+	public EvolvingImages() {
 		_origImagePanel = new ImagePanel();
 		_painter = new PolygonPanel();
 
@@ -485,7 +485,7 @@ public final class ImageEvolutionExample extends JFrame {
 		try {
 			appPref().flush();
 		} catch (BackingStoreException ex) {
-			Logger.getLogger(ImageEvolutionExample.class.getName())
+			Logger.getLogger(EvolvingImages.class.getName())
 				.log(Level.SEVERE, null, ex);
 		}
 	}
@@ -507,20 +507,22 @@ public final class ImageEvolutionExample extends JFrame {
 				}
 			}
 		} catch (ClassNotFoundException ex) {
-			java.util.logging.Logger.getLogger(ImageEvolutionExample.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+			java.util.logging.Logger.getLogger(EvolvingImages.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		} catch (InstantiationException ex) {
-			java.util.logging.Logger.getLogger(ImageEvolutionExample.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+			java.util.logging.Logger.getLogger(EvolvingImages.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		} catch (IllegalAccessException ex) {
-			java.util.logging.Logger.getLogger(ImageEvolutionExample.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+			java.util.logging.Logger.getLogger(EvolvingImages.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		} catch (javax.swing.UnsupportedLookAndFeelException ex) {
-			java.util.logging.Logger.getLogger(ImageEvolutionExample.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+			java.util.logging.Logger.getLogger(EvolvingImages.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		}
+		//</editor-fold>
+		//</editor-fold>
 		//</editor-fold>
 		//</editor-fold>
 
         /* Create and display the form */
 		java.awt.EventQueue.invokeLater(() -> {
-			new ImageEvolutionExample().setVisible(true);
+			new EvolvingImages().setVisible(true);
 		});
 
 		prefFlush();
