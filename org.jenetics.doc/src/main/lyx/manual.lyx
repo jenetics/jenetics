@@ -17130,7 +17130,7 @@ Population
 \begin_inset space ~
 \end_inset
 
-size The number of individual of the GA population.
+size The number of individuals.
 \end_layout
 
 \begin_layout Description
@@ -17148,7 +17148,11 @@ Mutation
 \begin_inset space ~
 \end_inset
 
-rate
+rate The probability that a polygon 
+\emph on
+component
+\emph default
+ (color or vertex position) is altered.
 \end_layout
 
 \begin_layout Description
@@ -17156,7 +17160,20 @@ Mutation
 \begin_inset space ~
 \end_inset
 
-change
+magnitude The average magnitude of a polygon 
+\emph on
+component
+\emph default
+ mutation.
+ Since the component values are 
+\emph on
+normalized
+\emph default
+, the magnitude is a value in the range of 
+\begin_inset Formula $[0..1]$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Description
@@ -17164,7 +17181,7 @@ Polygon
 \begin_inset space ~
 \end_inset
 
-length
+length The number of edges (or vertices) of the created polygons.
 \end_layout
 
 \begin_layout Description
@@ -17172,7 +17189,7 @@ Polygon
 \begin_inset space ~
 \end_inset
 
-count
+count The number of polygons of one individual (Genotype).
 \end_layout
 
 \begin_layout Description
@@ -17184,7 +17201,11 @@ image
 \begin_inset space ~
 \end_inset
 
-size
+size To improve the processing speed, the fitness of a given polygon set
+ (individual) is not calculated with the full sized image.
+ Instead an scaled reference image with the given size is used.
+ A smaller reference image will speed up the calculation, but will also
+ reduce the accuracy.
 \end_layout
 
 \begin_layout Section
