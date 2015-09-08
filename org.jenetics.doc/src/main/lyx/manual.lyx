@@ -17060,7 +17060,7 @@ name "fig:Evolving-images"
 
 \end_inset
 
-Evolving images: 
+Evolving images---
 \emph on
 Mona Lisa
 \emph default
@@ -17109,7 +17109,7 @@ reference "fig:Evolving-images"
 
 \end_inset
 
- show the UI after evolving the default image for about 2,000 generations.
+ show the GUI after evolving the default image for about 2,000 generations.
  With the 
 \begin_inset Quotes ald
 \end_inset
