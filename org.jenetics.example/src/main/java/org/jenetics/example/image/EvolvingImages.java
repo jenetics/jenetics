@@ -41,6 +41,7 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.jenetics.Genotype;
+import org.jenetics.MeanAlterer;
 import org.jenetics.Optimize;
 import org.jenetics.TournamentSelector;
 import org.jenetics.TruncationSelector;
@@ -159,10 +160,9 @@ public final class EvolvingImages extends JFrame {
 			.survivorsSelector(new TruncationSelector<>())
 			.offspringSelector(new TournamentSelector<>(param.getTournamentSize()))
 			.alterers(
-				new PolygonMutator<>(
-					param.getMutationRate(), param.getMutationChange()
-				),
-				new UniformCrossover<>(0.5))
+				new PolygonMutator<>(param.getMutationRate(), param.getMutationChange()),
+				new UniformCrossover<>(0.5),
+				new MeanAlterer<>(0.15))
 			.build();
 	}
 
