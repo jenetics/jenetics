@@ -101,8 +101,8 @@ public class EngineParamPanel extends JPanel {
 		return EngineParam.of(
 			(Integer)_populationSizeSpinner.getValue(),
 			(Integer)_tournamentSizeSpinner.getValue(),
-			(Double)_mutationRateSpinner.getValue(),
-			(Double)_mutationChangeSpinner.getValue(),
+			((Number)_mutationRateSpinner.getValue()).floatValue(),
+			((Number)_mutationChangeSpinner.getValue()).floatValue(),
 			(Integer)_polygonLengthSpinner.getValue(),
 			(Integer)_polygonCountSpinner.getValue(),
 			new Dimension(
@@ -115,7 +115,7 @@ public class EngineParamPanel extends JPanel {
 	@Override
 	public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
-		
+
 		_populationSizeSpinner.setEnabled(enabled);
 		_tournamentSizeSpinner.setEnabled(enabled);
 		_mutationRateSpinner.setEnabled(enabled);
@@ -125,7 +125,7 @@ public class EngineParamPanel extends JPanel {
 		_referenceImageWidthSpinner.setEnabled(enabled);
 		_referenceImageHeightSpinner.setEnabled(enabled);
 	}
-	
+
 	/**
 	 * This method is called from within the constructor to initialize the form.
 	 * WARNING: Do NOT modify this code. The content of this method is always

@@ -27,11 +27,11 @@ final class EngineParam {
 	public static final int MIN_TOURNAMENT_SIZE = 2;
 	public static final int MAX_TOURNAMENT_SIZE = Integer.MAX_VALUE;
 
-	public static final double MIN_MUTATION_RATE = 0.0;
-	public static final double MAX_MUTATION_RATE = 1.0;
+	public static final float MIN_MUTATION_RATE = 0.0F;
+	public static final float MAX_MUTATION_RATE = 1.0F;
 
-	public static final double MIN_MUTATION_CHANGE = 0.0;
-	public static final double MAX_MUTATION_CHANGE = 1.0;
+	public static final float MIN_MUTATION_CHANGE = 0.0F;
+	public static final float MAX_MUTATION_CHANGE = 1.0F;
 
 	public static final int MIN_POLYGON_LENGTH = 3;
 	public static final int MAX_POLYGON_LENGTH = Integer.MAX_VALUE;
@@ -44,13 +44,13 @@ final class EngineParam {
 		new Dimension(Short.MAX_VALUE, Short.MAX_VALUE);
 
 	public static EngineParam DEFAULT = EngineParam.of(
-		40, 3, 0.02, 0.1, 6, 100, new Dimension(50, 50)
+		40, 3, 0.02f, 0.1f, 6, 100, new Dimension(50, 50)
 	);
 
 	private final int _populationSize;
 	private final int _tournamentSize;
-	private final double _mutationRate;
-	private final double _mutationChange;
+	private final float _mutationRate;
+	private final float _mutationChange;
 
 	private final int _polygonLength;
 	private final int _polygonCount;
@@ -59,8 +59,8 @@ final class EngineParam {
 	private EngineParam(
 		final int populationSize,
 		final int tournamentSize,
-		final double mutationRate,
-		final double mutationChange,
+		final float mutationRate,
+		final float mutationChange,
 		final int polygonLength,
 		final int polygonCount,
 		final Dimension referenceImageSize
@@ -82,11 +82,11 @@ final class EngineParam {
 		return _tournamentSize;
 	}
 
-	public double getMutationRate() {
+	public float getMutationRate() {
 		return _mutationRate;
 	}
 
-	public double getMutationChange() {
+	public float getMutationChange() {
 		return _mutationChange;
 	}
 
@@ -117,8 +117,8 @@ final class EngineParam {
 	public void store(final Preferences prefs) {
 		prefs.putInt("population_size", _populationSize);
 		prefs.putInt("tournament_size", _tournamentSize);
-		prefs.putDouble("mutation_rate", _mutationRate);
-		prefs.putDouble("mutation_change", _mutationChange);
+		prefs.putFloat("mutation_rate", _mutationRate);
+		prefs.putFloat("mutation_change", _mutationChange);
 		prefs.putInt("polygon_length", _polygonLength);
 		prefs.putInt("polygon_count", _polygonCount);
 		prefs.putInt("reference_image_width", _referenceImageSize.width);
@@ -129,8 +129,8 @@ final class EngineParam {
 		return of(
 			prefs.getInt("population_size", DEFAULT._populationSize),
 			prefs.getInt("tournament_size", DEFAULT._tournamentSize),
-			prefs.getDouble("mutation_rate", DEFAULT._mutationRate),
-			prefs.getDouble("mutation_change", DEFAULT._mutationChange),
+			prefs.getFloat("mutation_rate", DEFAULT._mutationRate),
+			prefs.getFloat("mutation_change", DEFAULT._mutationChange),
 			prefs.getInt("polygon_length", DEFAULT._polygonLength),
 			prefs.getInt("polygon_count", DEFAULT._polygonCount),
 			new Dimension(
@@ -143,8 +143,8 @@ final class EngineParam {
 	public static EngineParam of(
 		final int populationSize,
 		final int tournamentSize,
-		final double mutationRate,
-		final double mutationChange,
+		final float mutationRate,
+		final float mutationChange,
 		final int polygonLength,
 		final int polygonCount,
 		final Dimension referenceImageSize
