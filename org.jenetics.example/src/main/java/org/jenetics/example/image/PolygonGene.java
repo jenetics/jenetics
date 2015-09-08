@@ -21,11 +21,16 @@ import static java.util.Objects.requireNonNull;
 import org.jenetics.Gene;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
+import org.jenetics.util.Mean;
 
 /**
  * Represents a fixed size polygon with its fill color.
  */
-public final class PolygonGene implements Gene<Polygon, PolygonGene> {
+public final class PolygonGene
+	implements
+		Gene<Polygon, PolygonGene>,
+		Mean<PolygonGene>
+{
 	private final Polygon _polygon;
 
 	private PolygonGene(final Polygon polygon) {
@@ -50,6 +55,11 @@ public final class PolygonGene implements Gene<Polygon, PolygonGene> {
 	@Override
 	public PolygonGene newInstance(final Polygon polygon) {
 		return of(polygon);
+	}
+
+	@Override
+	public PolygonGene mean(final PolygonGene other) {
+		return of(getAllele().mean(other.getAllele()));
 	}
 
 	static ISeq<PolygonGene> seq(final int polygonCount, final int polygonLength) {

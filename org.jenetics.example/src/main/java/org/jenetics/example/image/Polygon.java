@@ -17,6 +17,7 @@
 package org.jenetics.example.image;
 
 import static java.lang.Math.max;
+import static java.lang.String.format;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -25,9 +26,10 @@ import java.util.Random;
 
 import org.jenetics.internal.util.require;
 
+import org.jenetics.util.Mean;
 import org.jenetics.util.RandomRegistry;
 
-public final class Polygon {
+public final class Polygon implements Mean<Polygon> {
 
 	// The polygon in packed representation:
 	// index | data
@@ -45,14 +47,31 @@ public final class Polygon {
 	private final float[] _data;
 	private final int _length;
 
-	private Polygon(int length) {
-		final int polygonSize = 4 + 2*length;
+	private Polygon(final int length) {
+		final int polygonSize = 4 + 2*require.positive(length);
 		_data = new float[polygonSize];
 		_length = length;
 	}
 
 	public int length() {
 		return _length;
+	}
+
+	@Override
+	public Polygon mean(final Polygon other) {
+		if (other.length() != length()) {
+			throw new IllegalArgumentException(format(
+				"Polygon must have the same length: %d != %d",
+				length(), other.length()
+			));
+		}
+
+		final Polygon mean = new Polygon(length());
+		for (int i = length(); --i >= 0;) {
+			mean._data[i] = (_data[i] + other._data[i])*0.5F;
+		}
+
+		return mean;
 	}
 
 	/**
@@ -63,26 +82,22 @@ public final class Polygon {
 	 * be randomly modified in the uniform range of
 	 * {@code [-mutationAmount, +mutationAmount]}.
 	 *
-	 * @param mutationRate the mutation rate
-	 * @param mutationAmount the mutation amount
+	 * @param rate the mutation rate
+	 * @param magnitude the mutation amount
 	 * @return a new Polygon
 	 */
-	public Polygon mutate(final double mutationRate, final double mutationAmount) {
+	public Polygon mutate(final float rate, final float magnitude) {
 		final Random random = RandomRegistry.getRandom();
 		final Polygon mutated = new Polygon(length());
-		final int size = _data.length;
 
-		for (int i = 0; i < size; i++) {
-			float val = _data[i];
-			if (random.nextFloat() < mutationRate) {
-				val += random.nextFloat()*mutationAmount*2 - mutationAmount;
-				if (val < 0f) {
-					val = 0f;
-				} else if (val > 1f) {
-					val = 1f;
-				}
+		for (int i = 0; i < _data.length; ++i) {
+			float v = _data[i];
+			if (random.nextFloat() < rate) {
+				v = clamp(v + (random.nextFloat() - 0.5F)*magnitude);
+				mutated._data[i] = v;
+			} else {
+				mutated._data[i] = _data[i];
 			}
-			mutated._data[i] = val;
 		}
 
 		return mutated;
@@ -113,15 +128,20 @@ public final class Polygon {
 		p._data[0] = random.nextFloat(); // r
 		p._data[1] = random.nextFloat(); // g
 		p._data[2] = random.nextFloat(); // b
-		p._data[3] = max(0.2f, random.nextFloat()*random.nextFloat()); // a
+		p._data[3] = max(0.2F, random.nextFloat()*random.nextFloat()); // a
 
-		float px = random.nextFloat();
-		float py = random.nextFloat();
+		float px = 0.5F;
+		float py = 0.5F;
 		for (int k = 0; k < length; k++) {
-			p._data[4 + 2*k] = px + (random.nextFloat() - 0.5f);
-			p._data[5 + 2*k] = py + (random.nextFloat() - 0.5f);
+			p._data[4 + 2*k] = px = clamp(px + random.nextFloat() - 0.5F);
+			p._data[5 + 2*k] = py = clamp(py + random.nextFloat() - 0.5F);
 		}
 		return p;
+	}
+
+	private static float clamp(final float a) {
+		return a < 0F ? 0F : a > 1F ? 1F : a;
+		//return Math.abs(a%1F);
 	}
 
 	public static Polygon newRandom(final int length) {
