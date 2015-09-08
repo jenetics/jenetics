@@ -30,13 +30,13 @@ public class PolygonMutator<C extends Comparable<? super C>>
 	extends Mutator<PolygonGene, C>
 {
 
-	private final double _mutationRate;
-	private final double _mutationAmount;
+	private final float _rate;
+	private final float _magnitude;
 
-	public PolygonMutator(final double mutationRate, final double mutationAmount) {
+	public PolygonMutator(final float rate, final float magnitude) {
 		super(1.0);
-		_mutationRate = mutationRate;
-		_mutationAmount = mutationAmount;
+		_rate = rate;
+		_magnitude = magnitude;
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class PolygonMutator<C extends Comparable<? super C>>
 		while (it.hasNext()) {
 			final PolygonGene gene = it.next();
 			final PolygonGene mutated = gene.newInstance(
-				gene.getAllele().mutate(_mutationRate, _mutationAmount)
+				gene.getAllele().mutate(_rate, _magnitude)
 			);
 			it.set(mutated);
 		}
