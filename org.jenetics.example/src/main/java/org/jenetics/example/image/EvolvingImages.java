@@ -26,7 +26,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
 import java.text.NumberFormat;
+import java.util.function.BiConsumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.BackingStoreException;
@@ -69,20 +71,165 @@ import org.jenetics.stat.MinMax;
  */
 public final class EvolvingImages extends JFrame {
 
+
+	private static final class Worker {
+
+		private BufferedImage _image;
+		private BufferedImage _refImage;
+		private int[] _refImagePixels;
+		private ThreadLocal<BufferedImage> _workingImage;
+
+		private Engine<PolygonGene, Double> _engine;
+		private volatile Thread _thread;
+
+		Worker() {
+		}
+
+		synchronized void update(final EngineParam param, final BufferedImage image) {
+			if (_thread != null) {
+				throw new IllegalStateException("Evolution thread is still running.");
+			}
+
+			_image = requireNonNull(image);
+
+			_refImage = resizeImage(
+				_image,
+				param.getReferenceImageSize().width,
+				param.getReferenceImageSize().height,
+				BufferedImage.TYPE_INT_ARGB
+			);
+
+			_workingImage = ThreadLocal.withInitial(() -> new BufferedImage(
+				_refImage.getWidth(),
+				_refImage.getHeight(),
+				BufferedImage.TYPE_INT_ARGB
+			));
+
+			_refImagePixels = _refImage.getData().getPixels(
+				0, 0, _refImage.getWidth(), _refImage.getHeight(), (int[])null
+			);
+
+			final Codec<PolygonChromosome, PolygonGene> codec = Codec.of(
+				Genotype.of(new PolygonChromosome(
+					param.getPolygonCount(), param.getPolygonLength()
+				)),
+				gt -> (PolygonChromosome) gt.getChromosome()
+			);
+
+			_engine = Engine.builder(this::fitness, codec)
+				.populationSize(param.getPopulationSize())
+				.optimize(Optimize.MAXIMUM)
+				.survivorsSelector(new TruncationSelector<>())
+				.offspringSelector(new TournamentSelector<>(param.getTournamentSize()))
+				.alterers(
+					new PolygonMutator<>(param.getMutationRate(), param.getMutationChange()),
+					new UniformCrossover<>(0.5),
+					new MeanAlterer<>(0.15))
+				.build();
+		}
+
+		private static BufferedImage resizeImage(
+			final BufferedImage image,
+			final int width,
+			final int height,
+			final int type
+		) {
+			final BufferedImage resizedImage = new BufferedImage(width, height, type);
+			final Graphics2D g = resizedImage.createGraphics();
+			g.drawImage(image, 0, 0, width, height, null);
+			g.dispose();
+			return resizedImage;
+		}
+
+
+		/**
+		 * Calculate the fitness function for a Polygon chromosome.
+		 * <p>
+		 * For this purpose, we first draw the polygons on the test buffer,  and
+		 * then compare the resulting image pixel by pixel with the  reference image.
+		 */
+		final double fitness(final PolygonChromosome chromosome) {
+			final BufferedImage img = _workingImage.get();
+			final Graphics2D g2 = img.createGraphics();
+			final int width = img.getWidth();
+			final int height = img.getHeight();
+
+			chromosome.draw(g2, width, height);
+			g2.dispose();
+
+			final int[] refPixels = _refImagePixels;
+			final int[] testPixels = img.getData()
+				.getPixels(0, 0, width, height, (int[])null);
+
+			int diff = 0;
+			int p = width*height*4 - 1; // 4 channels: rgba
+			int idx = 0;
+			do {
+				if (idx++%4 != 0) { // ignore the alpha channel for fitness
+					int dp = testPixels[p] - refPixels[p];
+					diff += (dp < 0) ? -dp : dp;
+				}
+			} while (--p > 0);
+
+			return 1.0 - diff/(width*height*3.0*256);
+		}
+
+		public synchronized void start(
+			final BiConsumer<
+				EvolutionResult<PolygonGene, Double>,
+				EvolutionResult<PolygonGene, Double>> callback
+		) {
+			final Thread thread = new Thread(() -> {
+				final MinMax<EvolutionResult<PolygonGene, Double>> best = MinMax.of();
+
+				_engine.stream()
+					.limit(result -> !Thread.currentThread().isInterrupted())
+					.peek(best)
+					.forEach(r -> {
+						if (callback != null) {
+							invokeLater(() -> callback.accept(r, best.getMax()));
+						}
+					});
+			});
+			thread.start();
+			_thread = thread;
+		}
+
+		public void stop() {
+			final Thread thread = _thread;
+			if (thread != null) {
+				thread.interrupt();
+				try {
+					thread.join();
+				} catch (InterruptedException e) {
+					Thread.currentThread().interrupt();
+				} finally {
+					_thread = null;
+				}
+			}
+		}
+
+		public void join() throws InterruptedException {
+			final Thread thread = _thread;
+			if (thread != null) {
+				thread.join();
+			}
+		}
+
+		public void pause() {
+		}
+
+		public void resume() {
+		}
+
+	}
+
 	// Additional Swing components.
 	private final NumberFormat _fitnessFormat = NumberFormat.getNumberInstance();
 	private final ImagePanel _origImagePanel;
 	private final PolygonPanel _painter;
 
-	private BufferedImage _image;
-	private BufferedImage _refImage;
-	private int[] _refImagePixels;
-	private ThreadLocal<BufferedImage> _workingImage;
-	private Thread _thread;
-
-	// The GA engine classes.
-	private Codec<PolygonChromosome, PolygonGene> _codec;
-	private Engine<PolygonGene, Double> _engine;
+	private final Worker _worker = new Worker();
 
 	/**
 	 * Creates new form ImageEvolution
@@ -114,108 +261,22 @@ public final class EvolvingImages extends JFrame {
 
 		startButton.setEnabled(true);
 		stopButton.setEnabled(false);
+
 		try (InputStream in = getClass()
 			.getClassLoader()
 			.getResourceAsStream("monalisa.png"))
 		{
-			setImage(ImageIO.read(in));
+			update(ImageIO.read(in));
 		} catch (IOException e) {
 			throw new AssertionError(e);
 		}
-
-		initEngine();
 	}
 
-	private void initEngine() {
-		final EngineParam param = engineParamPanel.getEngineParam();
-		engineParam(param);
+	private void update(final BufferedImage image) {
+		_origImagePanel.setImage(image);
+		_painter.setDimension(image.getWidth(), image.getHeight());
 
-		_refImage = resizeImage(
-			_image,
-			param.getReferenceImageSize().width,
-			param.getReferenceImageSize().height,
-			BufferedImage.TYPE_INT_ARGB
-		);
-
-		_workingImage = ThreadLocal.withInitial(() -> new BufferedImage(
-			_refImage.getWidth(),
-			_refImage.getHeight(),
-			BufferedImage.TYPE_INT_ARGB
-		));
-
-		_refImagePixels = _refImage.getData().getPixels(
-			0, 0, _refImage.getWidth(), _refImage.getHeight(), (int[])null
-		);
-
-		_codec = Codec.of(
-			Genotype.of(new PolygonChromosome(
-				param.getPolygonCount(), param.getPolygonLength()
-			)),
-			gt -> (PolygonChromosome) gt.getChromosome()
-		);
-
-		_engine = Engine.builder(this::fitness, _codec)
-			.populationSize(param.getPopulationSize())
-			.optimize(Optimize.MAXIMUM)
-			.survivorsSelector(new TruncationSelector<>())
-			.offspringSelector(new TournamentSelector<>(param.getTournamentSize()))
-			.alterers(
-				new PolygonMutator<>(param.getMutationRate(), param.getMutationChange()),
-				new UniformCrossover<>(0.5),
-				new MeanAlterer<>(0.15))
-			.build();
-	}
-
-	private static BufferedImage resizeImage(
-		final BufferedImage image,
-		final int width,
-		final int height,
-		final int type
-	) {
-		final BufferedImage resizedImage = new BufferedImage(width, height, type);
-		final Graphics2D g = resizedImage.createGraphics();
-		g.drawImage(image, 0, 0, width, height, null);
-		g.dispose();
-		return resizedImage;
-	}
-
-	private void setImage(final BufferedImage image) {
-		_image = requireNonNull(image);
-
-		_origImagePanel.setImage(_image);
-		_painter.setDimension(_image.getWidth(), _image.getHeight());
-	}
-
-	/**
-	 * Calculate the fitness function for a Polygon chromosome.
-	 * <p>
-	 * For this purpose, we first draw the polygons on the test buffer,  and
-	 * then compare the resulting image pixel by pixel with the  reference image.
-	 */
-	final double fitness(final PolygonChromosome chromosome) {
-		final BufferedImage img = _workingImage.get();
-		final Graphics2D g2 = img.createGraphics();
-		final int width = img.getWidth();
-		final int height = img.getHeight();
-
-		chromosome.draw(g2, width, height);
-		g2.dispose();
-
-		final int[] refPixels = _refImagePixels;
-		final int[] testPixels = img.getData()
-			.getPixels(0, 0, width, height, (int[])null);
-
-		int diff = 0;
-		int p = width*height*4 - 1; // 4 channels: rgba
-		int idx = 0;
-		do {
-			if (idx++%4 != 0) { // ignore the alpha channel for fitness
-				int dp = testPixels[p] - refPixels[p];
-				diff += (dp < 0) ? -dp : dp;
-			}
-		} while (--p > 0);
-
-		return 1.0 - diff/(width*height*3.0*256);
+		_worker.update(engineParamPanel.getEngineParam(), image);
 	}
 
 	/**
@@ -369,17 +430,7 @@ public final class EvolvingImages extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 	private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
-		initEngine();
-
-		_thread = new Thread(() -> {
-			final MinMax<EvolutionResult<PolygonGene, Double>> best = MinMax.of();
-
-			_engine.stream()
-				.limit(result -> !Thread.currentThread().isInterrupted())
-				.peek(best)
-				.forEach(r -> invokeLater(() -> onNewResult(r, best.getMax())));
-		});
-		_thread.start();
+		_worker.start(this::onNewResult);
 
 		// Enable/Disable UI controls.
 		startButton.setEnabled(false);
@@ -389,7 +440,7 @@ public final class EvolvingImages extends JFrame {
 	}//GEN-LAST:event_startButtonActionPerformed
 
 	private void stopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopButtonActionPerformed
-		_thread.interrupt();
+		_worker.stop();
 
 		startButton.setEnabled(true);
 		stopButton.setEnabled(false);
@@ -419,7 +470,7 @@ public final class EvolvingImages extends JFrame {
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			final File imageFile = chooser.getSelectedFile();
 			try {
-				setImage(ImageIO.read(imageFile));
+				update(ImageIO.read(imageFile));
 				if (imageFile.getParentFile() != null) {
 					lastOpenDirectory(imageFile.getParentFile());
 				}
@@ -449,7 +500,7 @@ public final class EvolvingImages extends JFrame {
 
 		bestEvolutionResultPanel.update(best);
 		currentevolutionResultPanel.update(current);
-		_painter.setChromosome(_codec.decoder().apply(gt));
+		_painter.setChromosome((PolygonChromosome)gt.getChromosome());
 		_painter.repaint();
 	}
 
@@ -493,7 +544,10 @@ public final class EvolvingImages extends JFrame {
 	/**
 	 * @param args the command line arguments
 	 */
-	public static void main(String args[]) {
+	public static void main(final String args[]) {
+		// Start command line version if the right parameters are given.
+		if (cmdline(args)) return;
+
 		/* Set the Nimbus look and feel */
 		//<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -526,6 +580,89 @@ public final class EvolvingImages extends JFrame {
 		});
 
 		prefFlush();
+	}
+
+	private static boolean cmdline(final String[] args) {
+		// -p <parameter> -i <input-image> -o <output-dir> -g <generations:gap>
+		if (args.length >= 1) {
+			final BufferedImage image;
+			try (InputStream in = EvolvingImages.class
+				.getClassLoader()
+				.getResourceAsStream("monalisa.png"))
+			{
+				image = ImageIO.read(in);
+			} catch (IOException e) {
+				throw new AssertionError(e);
+			}
+
+			evolve(
+				EngineParam.DEFAULT,
+				image,
+				new File("/home/fwilhelm/tmp/MonaLisa"),
+				100_000,
+				100
+			);
+
+			return true;
+		}
+
+		return false;
+	}
+
+	private static void evolve(
+		final EngineParam params,
+		final BufferedImage image,
+		final File outputDir,
+		final long generations,
+		final int generationGap
+	) {
+		System.out.println("Starting evolution.");
+		final Worker worker = new Worker();
+		worker.update(params, image);
+
+		outputDir.mkdirs();
+		worker.start((current, best) -> {
+			final long generation = current.getGeneration();
+			//System.out.println("GEN: " + generation);
+			if (generation%generationGap == 0 || generation == 1) {
+				final File file = new File(outputDir, format("image-%06d.png", generation));
+				System.out.println("Writing " + file);
+				writeImage(
+					file,
+					(PolygonChromosome) best.getBestPhenotype().getGenotype().getChromosome(),
+					image.getWidth(), image.getHeight()
+				);
+			}
+
+			if (generation >= generations) {
+				worker.stop();
+			}
+		});
+
+		try {
+			worker.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
+
+	private static void writeImage(
+		final File file,
+		final PolygonChromosome chromosome,
+		final int width,
+		final int height
+	) {
+		try {
+			final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+			final Graphics2D graphics = image.createGraphics();
+			chromosome.draw(graphics, width, height);
+
+			ImageIO.write(image, "png", file);
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
 	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
