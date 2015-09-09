@@ -96,6 +96,7 @@ final class EvolvingImagesWorker {
 		_engine = Engine.builder(this::fitness, codec)
 			.populationSize(param.getPopulationSize())
 			.optimize(Optimize.MAXIMUM)
+			.maximalPhenotypeAge(50)
 			.survivorsSelector(new TruncationSelector<>())
 			.offspringSelector(new TournamentSelector<>(param.getTournamentSize()))
 			.alterers(

@@ -232,10 +232,11 @@ public final class EvolvingImages extends JFrame {
                 .addComponent(stopButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pauseButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 208, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 196, Short.MAX_VALUE)
                 .addComponent(openButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(saveButton))
+                .addComponent(saveButton)
+                .addContainerGap())
         );
 
         resultPanel.setLayout(new java.awt.GridBagLayout());
@@ -488,7 +489,7 @@ public final class EvolvingImages extends JFrame {
 	 */
 	public static void main(final String args[]) {
 		// Start command line version if the right parameters are given.
-		if (cmdline(args)) return;
+		if (new EvolvingImagesCmd(args).run()) return;
 
 		/* Set the Nimbus look and feel */
 		//<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -522,88 +523,6 @@ public final class EvolvingImages extends JFrame {
 		});
 
 		prefFlush();
-	}
-
-	private static boolean cmdline(final String[] args) {
-		// -p <parameter> -i <input-image> -o <output-dir> -g <generations:gap>
-		if (args.length >= 1) {
-			final BufferedImage image;
-			try (InputStream in = EvolvingImages.class
-				.getClassLoader()
-				.getResourceAsStream("monalisa.png"))
-			{
-				image = ImageIO.read(in);
-			} catch (IOException e) {
-				throw new AssertionError(e);
-			}
-
-			evolve(
-				EngineParam.DEFAULT,
-				image,
-				new File("/home/fwilhelm/tmp/MonaLisa"),
-				100_000,
-				100
-			);
-
-			return true;
-		}
-
-		return false;
-	}
-
-	private static void evolve(
-		final EngineParam params,
-		final BufferedImage image,
-		final File outputDir,
-		final long generations,
-		final int generationGap
-	) {
-		System.out.println("Starting evolution.");
-		final EvolvingImagesWorker worker = EvolvingImagesWorker.of(params, image);
-
-		outputDir.mkdirs();
-		worker.start((current, best) -> {
-			final long generation = current.getGeneration();
-			//System.out.println("GEN: " + generation);
-			if (generation%generationGap == 0 || generation == 1) {
-				final File file = new File(outputDir, format("image-%06d.png", generation));
-				System.out.println("Writing " + file);
-				writeImage(
-					file,
-					(PolygonChromosome) best.getBestPhenotype().getGenotype().getChromosome(),
-					image.getWidth(), image.getHeight()
-				);
-			}
-
-			if (generation >= generations) {
-				worker.stop();
-			}
-		});
-
-		try {
-			worker.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-	}
-
-	private static void writeImage(
-		final File file,
-		final PolygonChromosome chromosome,
-		final int width,
-		final int height
-	) {
-		try {
-			final BufferedImage image = new BufferedImage(width, height, TYPE_INT_ARGB);
-			final Graphics2D graphics = image.createGraphics();
-			chromosome.draw(graphics, width, height);
-
-			ImageIO.write(image, "png", file);
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
 	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

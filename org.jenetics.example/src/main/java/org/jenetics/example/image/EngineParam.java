@@ -58,7 +58,7 @@ final class EngineParam {
 	static {
 		final Properties props = new Properties();
 		try (final InputStream in = EngineParam.class
-				.getResourceAsStream("DefaultEngineParam.properties"))
+				.getResourceAsStream("/DefaultEngineParam.properties"))
 		{
 			props.load(in);
 		} catch (IOException e) {
