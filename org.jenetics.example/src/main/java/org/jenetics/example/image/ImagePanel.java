@@ -24,16 +24,23 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
+/**
+ * Draws an given {@code BufferedImage}.
+ */
 final class ImagePanel extends JPanel {
 
 	private BufferedImage _image;
 
-	public ImagePanel() {
+	ImagePanel() {
 	}
 
-	void setImage(final BufferedImage image) {
+	public void setImage(final BufferedImage image) {
 		_image = requireNonNull(image);
 		repaint();
+	}
+
+	public BufferedImage getImage() {
+		return _image;
 	}
 
 	@Override
