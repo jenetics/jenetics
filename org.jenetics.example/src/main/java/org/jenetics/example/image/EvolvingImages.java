@@ -117,7 +117,9 @@ public final class EvolvingImages extends JFrame {
 	}
 
 	private EngineParam getEngineParam() {
-		return engineParamPanel.getEngineParam();
+		final EngineParam param = engineParamPanel.getEngineParam();
+		engineParam(param);
+		return param;
 	}
 
 	private BufferedImage getImage() {
@@ -514,9 +516,8 @@ public final class EvolvingImages extends JFrame {
         /* Create and display the form */
 		java.awt.EventQueue.invokeLater(() -> {
 			new EvolvingImages().setVisible(true);
+			prefFlush();
 		});
-
-		prefFlush();
 	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
