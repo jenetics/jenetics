@@ -16981,7 +16981,7 @@ Evolving images
 \begin_layout Standard
 This example tries to approximate a given image by semitransparent polygons.
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Original idea by Roger Johansson 
@@ -16996,23 +16996,6 @@ http://rogeralsing.com/2008/12/07/genetic-programming-evolution-of-mona-lisa
 \end_inset
 
 .
- The current implementation is based on the 
-\begin_inset CommandInset href
-LatexCommand href
-name "code"
-target "https://github.com/apache/commons-math/blob/master/src/userguide/java/org/apache/commons/math4/userguide/genetics/ImageEvolutionExample.java"
-
-\end_inset
-
- by 
-\begin_inset CommandInset href
-LatexCommand href
-name "Thomas Neidhart"
-target "https://github.com/netomi"
-
-\end_inset
-
-, which also partially implemented the given example.
 \end_layout
 
 \end_inset
@@ -17021,7 +17004,7 @@ target "https://github.com/netomi"
 \end_layout
 
 \begin_layout LyX-Code
-$ ./gradlew compileJava
+$ ./gradlew jar
 \end_layout
 
 \begin_layout Standard
@@ -17206,6 +17189,10 @@ size To improve the processing speed, the fitness of a given polygon set
  Instead an scaled reference image with the given size is used.
  A smaller reference image will speed up the calculation, but will also
  reduce the accuracy.
+\end_layout
+
+\begin_layout Standard
+It is also possible to call the example from the command line.
 \end_layout
 
 \begin_layout Section
