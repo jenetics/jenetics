@@ -16,11 +16,10 @@
  */
 package org.jenetics.example.image;
 
-import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 import static java.lang.String.format;
+import static org.jenetics.example.image.EvolvingImagesCmd.writeImage;
 
 import java.awt.Dimension;
-import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -401,18 +400,13 @@ public final class EvolvingImages extends JFrame {
 
 			try {
 				final Dimension dim = _polygonPanel.getDimension();
-				final BufferedImage image = new BufferedImage(
-					dim.width, dim.height, TYPE_INT_ARGB
-				);
-				final Graphics2D graphics = image.createGraphics();
-				_polygonPanel.getChromosome().draw(graphics, dim.width, dim.height);
-
-				ImageIO.write(image, "png", imageFile);
+				final PolygonChromosome ch = _polygonPanel.getChromosome();
+				writeImage(imageFile, ch, dim.width, dim.height);
 
 				if (imageFile.getParentFile() != null) {
 					lastSaveDirectory(imageFile.getParentFile());
 				}
-			} catch (IOException e) {
+			} catch (Exception e) {
 				JOptionPane.showMessageDialog(
 					rootPane,
 					format("Error while saving image '%s'.", imageFile),

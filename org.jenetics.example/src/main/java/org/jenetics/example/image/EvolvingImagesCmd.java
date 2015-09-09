@@ -20,6 +20,8 @@
 package org.jenetics.example.image;
 
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
+import static java.lang.Math.max;
+import static java.lang.Math.round;
 import static java.lang.String.format;
 
 import java.awt.Graphics2D;
@@ -33,8 +35,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javax.imageio.ImageIO;
+
+import org.jenetics.Phenotype;
 
 /**
  * Command line version of the Evolving images example.
@@ -161,21 +166,30 @@ final class EvolvingImagesCmd {
 		System.out.println("Starting evolution.");
 		final EvolvingImagesWorker worker = EvolvingImagesWorker.of(params, image);
 
+		final AtomicReference<Phenotype<PolygonGene, Double>> latest =
+			new AtomicReference<>();
+
 		worker.start((current, best) -> {
 			final long generation = current.getGeneration();
-			//System.out.println("GEN: " + generation);
+
 			if (generation%generationGap == 0 || generation == 1) {
 				final File file = new File(
 					outputDir,
 					format(IMAGE_PATTERN, generation, best.getBestFitness())
 				);
 
-				System.out.println("Writing " + file);
-				writeImage(
-					file,
-					(PolygonChromosome) best.getBestPhenotype().getGenotype().getChromosome(),
-					image.getWidth(), image.getHeight()
-				);
+				final Phenotype<PolygonGene, Double> pt = best.getBestPhenotype();
+				if (latest.get() == null || latest.get().compareTo(pt) < 0) {
+					System.out.println(format("Writing '%s'.", file));
+
+					latest.set(pt);
+					final PolygonChromosome ch =
+						(PolygonChromosome)pt.getGenotype().getChromosome();
+
+					writeImage(file, ch, image.getWidth(), image.getHeight());
+				} else {
+					System.out.println("No improvement...");
+				}
 			}
 
 			if (generation >= generations) {
@@ -186,26 +200,29 @@ final class EvolvingImagesCmd {
 		try {
 			worker.join();
 		} catch (InterruptedException e) {
-			e.printStackTrace();
-			System.exit(1);
+			Thread.currentThread().interrupt();
 		}
 	}
 
-	private static void writeImage(
+	static void writeImage(
 		final File file,
 		final PolygonChromosome chromosome,
 		final int width,
 		final int height
 	) {
+		final double MIN_SIZE = 500;
+		final double scale = max(max(MIN_SIZE/width, MIN_SIZE/height), 1.0);
+		final int w = (int)round(scale*width);
+		final int h = (int)round(scale*height);
+
 		try {
-			final BufferedImage image = new BufferedImage(width, height, TYPE_INT_ARGB);
+			final BufferedImage image = new BufferedImage(w, h, TYPE_INT_ARGB);
 			final Graphics2D graphics = image.createGraphics();
-			chromosome.draw(graphics, width, height);
+			chromosome.draw(graphics, w, h);
 
 			ImageIO.write(image, "png", file);
 		} catch (IOException e) {
-			e.printStackTrace();
-			System.exit(1);
+			throw new UncheckedIOException(e);
 		}
 	}
 
