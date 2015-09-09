@@ -51,7 +51,7 @@ public class EngineParamPanel extends JPanel {
 		));
 
 		_mutationChangeSpinner.setModel(new SpinnerNumberModel(
-			EngineParam.DEFAULT.getMutationChange(),
+			EngineParam.DEFAULT.getMutationMultitude(),
 			EngineParam.MIN_MUTATION_CHANGE,
 			EngineParam.MAX_MUTATION_CHANGE,
 			0.001
@@ -90,7 +90,7 @@ public class EngineParamPanel extends JPanel {
 		_populationSizeSpinner.setValue(param.getPopulationSize());
 		_tournamentSizeSpinner.setValue(param.getTournamentSize());
 		_mutationRateSpinner.setValue(param.getMutationRate());
-		_mutationChangeSpinner.setValue(param.getMutationChange());
+		_mutationChangeSpinner.setValue(param.getMutationMultitude());
 		_polygonLengthSpinner.setValue(param.getPolygonLength());
 		_polygonCountSpinner.setValue(param.getPolygonCount());
 		_referenceImageWidthSpinner.setValue(param.getReferenceImageSize().width);

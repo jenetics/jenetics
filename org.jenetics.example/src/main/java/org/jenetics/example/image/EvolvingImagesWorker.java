@@ -99,7 +99,7 @@ final class EvolvingImagesWorker {
 			.survivorsSelector(new TruncationSelector<>())
 			.offspringSelector(new TournamentSelector<>(param.getTournamentSize()))
 			.alterers(
-				new PolygonMutator<>(param.getMutationRate(), param.getMutationChange()),
+				new PolygonMutator<>(param.getMutationRate(), param.getMutationMultitude()),
 				new UniformCrossover<>(0.5),
 				new MeanAlterer<>(0.15))
 			.build();

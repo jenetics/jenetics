@@ -16,9 +16,18 @@
  */
 package org.jenetics.example.image;
 
+import static java.lang.Float.parseFloat;
+import static java.lang.Integer.parseInt;
+
 import java.awt.Dimension;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 import java.util.prefs.Preferences;
 
+/**
+ * Collects the configurable GA engine parameters.
+ */
 final class EngineParam {
 
 	public static final int MIN_POPULATION_SIZE = 3;
@@ -43,14 +52,35 @@ final class EngineParam {
 	public static final Dimension MAX_REF_IMAGE_SIZE =
 		new Dimension(Short.MAX_VALUE, Short.MAX_VALUE);
 
-	public static EngineParam DEFAULT = EngineParam.of(
-		40, 3, 0.02f, 0.1f, 6, 100, new Dimension(50, 50)
-	);
+	public static final EngineParam DEFAULT;
+
+	// Load the default properties from the resource file.
+	static {
+		final Properties props = new Properties();
+		try (final InputStream in = EngineParam.class
+				.getResourceAsStream("DefaultEngineParam.properties"))
+		{
+			props.load(in);
+		} catch (IOException e) {
+			throw new AssertionError(e);
+		}
+
+		DEFAULT = EngineParam.load(props);
+	}
+
+	private static final String POPULATION_SIZE_KEY = "population_size";
+	private static final String TOURNAMENT_SIZE_KEY = "tournament_size";
+	private static final String MUTATION_RATE_KEY = "mutation_rate";
+	private static final String MUTATION_MULTITUDE_KEY = "mutation_multitude";
+	private static final String POLYGON_LENGTH_KEY = "polygon_length";
+	private static final String POLYGON_COUNT_KEY = "polygon_count";
+	private static final String REFERENCE_IMAGE_WIDTH_KEY = "reference_image_width";
+	private static final String REFERENCE_IMAGE_HEIGHT_KEY = "reference_image_height";
 
 	private final int _populationSize;
 	private final int _tournamentSize;
 	private final float _mutationRate;
-	private final float _mutationChange;
+	private final float _mutationMultitude;
 
 	private final int _polygonLength;
 	private final int _polygonCount;
@@ -60,7 +90,7 @@ final class EngineParam {
 		final int populationSize,
 		final int tournamentSize,
 		final float mutationRate,
-		final float mutationChange,
+		final float mutationMultitude,
 		final int polygonLength,
 		final int polygonCount,
 		final Dimension referenceImageSize
@@ -68,7 +98,7 @@ final class EngineParam {
 		_populationSize = populationSize;
 		_tournamentSize = tournamentSize;
 		_mutationRate = mutationRate;
-		_mutationChange = mutationChange;
+		_mutationMultitude = mutationMultitude;
 		_polygonLength = polygonLength;
 		_polygonCount = polygonCount;
 		_referenceImageSize = (Dimension)referenceImageSize.clone();
@@ -86,8 +116,8 @@ final class EngineParam {
 		return _mutationRate;
 	}
 
-	public float getMutationChange() {
-		return _mutationChange;
+	public float getMutationMultitude() {
+		return _mutationMultitude;
 	}
 
 	public int getPolygonLength() {
@@ -107,7 +137,7 @@ final class EngineParam {
 		return "Population size: " + _populationSize + "\n" +
 			"Tournament size: " + _tournamentSize + "\n" +
 			"Mutation rate: " + _mutationRate + "\n" +
-			"Mutation change: " + _mutationChange + "\n" +
+			"Mutation multitude: " + _mutationMultitude + "\n" +
 			"Polygon length: " + _polygonLength + "\n" +
 			"Polygon count: " + _polygonCount + "\n" +
 			"Reference image size: " + _referenceImageSize.width +
@@ -115,27 +145,53 @@ final class EngineParam {
 	}
 
 	public void store(final Preferences prefs) {
-		prefs.putInt("population_size", _populationSize);
-		prefs.putInt("tournament_size", _tournamentSize);
-		prefs.putFloat("mutation_rate", _mutationRate);
-		prefs.putFloat("mutation_change", _mutationChange);
-		prefs.putInt("polygon_length", _polygonLength);
-		prefs.putInt("polygon_count", _polygonCount);
-		prefs.putInt("reference_image_width", _referenceImageSize.width);
-		prefs.putInt("reference_image_height", _referenceImageSize.height);
+		prefs.putInt(POPULATION_SIZE_KEY, _populationSize);
+		prefs.putInt(TOURNAMENT_SIZE_KEY, _tournamentSize);
+		prefs.putFloat(MUTATION_RATE_KEY, _mutationRate);
+		prefs.putFloat(MUTATION_MULTITUDE_KEY, _mutationMultitude);
+		prefs.putInt(POLYGON_LENGTH_KEY, _polygonLength);
+		prefs.putInt(POLYGON_COUNT_KEY, _polygonCount);
+		prefs.putInt(REFERENCE_IMAGE_WIDTH_KEY, _referenceImageSize.width);
+		prefs.putInt(REFERENCE_IMAGE_HEIGHT_KEY, _referenceImageSize.height);
 	}
 
 	public static EngineParam load(final Preferences prefs) {
 		return of(
-			prefs.getInt("population_size", DEFAULT._populationSize),
-			prefs.getInt("tournament_size", DEFAULT._tournamentSize),
-			prefs.getFloat("mutation_rate", DEFAULT._mutationRate),
-			prefs.getFloat("mutation_change", DEFAULT._mutationChange),
-			prefs.getInt("polygon_length", DEFAULT._polygonLength),
-			prefs.getInt("polygon_count", DEFAULT._polygonCount),
+			prefs.getInt(POPULATION_SIZE_KEY, DEFAULT._populationSize),
+			prefs.getInt(TOURNAMENT_SIZE_KEY, DEFAULT._tournamentSize),
+			prefs.getFloat(MUTATION_RATE_KEY, DEFAULT._mutationRate),
+			prefs.getFloat(MUTATION_MULTITUDE_KEY, DEFAULT._mutationMultitude),
+			prefs.getInt(POLYGON_LENGTH_KEY, DEFAULT._polygonLength),
+			prefs.getInt(POLYGON_COUNT_KEY, DEFAULT._polygonCount),
 			new Dimension(
-				prefs.getInt("reference_image_width", DEFAULT._referenceImageSize.width),
-				prefs.getInt("reference_image_height", DEFAULT._referenceImageSize.height)
+				prefs.getInt(REFERENCE_IMAGE_WIDTH_KEY, DEFAULT._referenceImageSize.width),
+				prefs.getInt(REFERENCE_IMAGE_HEIGHT_KEY, DEFAULT._referenceImageSize.height)
+			)
+		);
+	}
+
+	public void store(final Properties props) {
+		props.put(POPULATION_SIZE_KEY, _populationSize);
+		props.put(TOURNAMENT_SIZE_KEY, _tournamentSize);
+		props.put(MUTATION_RATE_KEY, _mutationRate);
+		props.put(MUTATION_MULTITUDE_KEY, _mutationMultitude);
+		props.put(POLYGON_LENGTH_KEY, _polygonLength);
+		props.put(POLYGON_COUNT_KEY, _polygonCount);
+		props.put(REFERENCE_IMAGE_WIDTH_KEY, _referenceImageSize.width);
+		props.put(REFERENCE_IMAGE_HEIGHT_KEY, _referenceImageSize.height);
+	}
+
+	public static EngineParam load(final Properties props) {
+		return of(
+			parseInt(props.getProperty(POPULATION_SIZE_KEY)),
+			parseInt(props.getProperty(TOURNAMENT_SIZE_KEY)),
+			parseFloat(props.getProperty(MUTATION_RATE_KEY)),
+			parseFloat(props.getProperty(MUTATION_MULTITUDE_KEY)),
+			parseInt(props.getProperty(POLYGON_LENGTH_KEY)),
+			parseInt(props.getProperty(POLYGON_COUNT_KEY)),
+			new Dimension(
+				parseInt(props.getProperty(REFERENCE_IMAGE_WIDTH_KEY)),
+				parseInt(props.getProperty(REFERENCE_IMAGE_HEIGHT_KEY))
 			)
 		);
 	}
