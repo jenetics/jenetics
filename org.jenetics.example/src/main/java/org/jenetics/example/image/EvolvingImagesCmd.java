@@ -188,7 +188,10 @@ final class EvolvingImagesCmd {
 
 					writeImage(file, ch, image.getWidth(), image.getHeight());
 				} else {
-					System.out.println("No improvement...");
+					System.out.println(format(
+						"No improvement - %06d[%1.4f]",
+						generation, pt.getFitness()
+					));
 				}
 			}
 
