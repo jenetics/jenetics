@@ -202,6 +202,7 @@ final class EvolvingImagesWorker {
 	 * Stops the current evolution, if running.
 	 */
 	public void stop() {
+		resume();
 		final Thread thread = _thread;
 		if (thread != null) {
 			thread.interrupt();

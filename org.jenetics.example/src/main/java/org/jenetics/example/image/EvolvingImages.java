@@ -17,8 +17,6 @@
 package org.jenetics.example.image;
 
 import static java.lang.String.format;
-import static java.util.Objects.requireNonNull;
-import static javax.swing.SwingUtilities.invokeLater;
 
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
@@ -26,9 +24,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Path;
 import java.text.NumberFormat;
-import java.util.function.BiConsumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.BackingStoreException;
@@ -43,14 +39,7 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.jenetics.Genotype;
-import org.jenetics.MeanAlterer;
-import org.jenetics.Optimize;
-import org.jenetics.TournamentSelector;
-import org.jenetics.TruncationSelector;
-import org.jenetics.engine.Codec;
-import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
-import org.jenetics.stat.MinMax;
 
 /**
  * This example shows a more advanced use of a genetic algorithm: approximate a
@@ -108,6 +97,7 @@ public final class EvolvingImages extends JFrame {
 
 		startButton.setEnabled(true);
 		stopButton.setEnabled(false);
+		pauseButton.setEnabled(false);
 
 		try (InputStream in = getClass()
 			.getClassLoader()
@@ -150,6 +140,7 @@ public final class EvolvingImages extends JFrame {
         startButton = new javax.swing.JButton();
         stopButton = new javax.swing.JButton();
         openButton = new javax.swing.JButton();
+        pauseButton = new javax.swing.JButton();
         resultPanel = new javax.swing.JPanel();
         bestEvolutionResultPanel = new org.jenetics.example.image.EvolutionResultPanel();
         currentevolutionResultPanel = new org.jenetics.example.image.EvolutionResultPanel();
@@ -200,6 +191,13 @@ public final class EvolvingImages extends JFrame {
             }
         });
 
+        pauseButton.setText("Pause");
+        pauseButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pauseButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout buttonPanelLayout = new javax.swing.GroupLayout(buttonPanel);
         buttonPanel.setLayout(buttonPanelLayout);
         buttonPanelLayout.setHorizontalGroup(
@@ -209,7 +207,8 @@ public final class EvolvingImages extends JFrame {
                 .addGroup(buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(startButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(stopButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(openButton, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE))
+                    .addComponent(openButton, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
+                    .addComponent(pauseButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         buttonPanelLayout.setVerticalGroup(
@@ -219,7 +218,9 @@ public final class EvolvingImages extends JFrame {
                 .addComponent(startButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(stopButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 258, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pauseButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 227, Short.MAX_VALUE)
                 .addComponent(openButton)
                 .addContainerGap())
         );
@@ -289,6 +290,7 @@ public final class EvolvingImages extends JFrame {
 		// Enable/Disable UI controls.
 		startButton.setEnabled(false);
 		stopButton.setEnabled(true);
+		pauseButton.setEnabled(true);
 		openButton.setEnabled(false);
 		engineParamPanel.setEnabled(false);
 	}//GEN-LAST:event_startButtonActionPerformed
@@ -298,6 +300,8 @@ public final class EvolvingImages extends JFrame {
 
 		startButton.setEnabled(true);
 		stopButton.setEnabled(false);
+		pauseButton.setEnabled(false);
+		pauseButton.setText("Pause");
 		openButton.setEnabled(true);
 		engineParamPanel.setEnabled(true);
 	}//GEN-LAST:event_stopButtonActionPerformed
@@ -343,6 +347,20 @@ public final class EvolvingImages extends JFrame {
         origImagePanel.repaint();
 		polygonImagePanel.repaint();
     }//GEN-LAST:event_origImagePanelComponentResized
+
+    private void pauseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauseButtonActionPerformed
+        switch (pauseButton.getText()) {
+			case "Pause":
+				_worker.pause();
+				pauseButton.setText("Resume");
+				break;
+			case "Resume":
+				_worker.resume();
+				pauseButton.setText("Pause");
+				break;
+			default:
+		}
+    }//GEN-LAST:event_pauseButtonActionPerformed
 
 	private void onNewResult(
 		final EvolutionResult<PolygonGene, Double> current,
@@ -527,6 +545,7 @@ public final class EvolvingImages extends JFrame {
     private javax.swing.JSplitPane imageSplitPane;
     private javax.swing.JButton openButton;
     private javax.swing.JPanel origImagePanel;
+    private javax.swing.JButton pauseButton;
     private javax.swing.JPanel polygonImagePanel;
     private javax.swing.JPanel resultPanel;
     private javax.swing.JButton startButton;
