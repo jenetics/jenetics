@@ -91,10 +91,9 @@ public final class Polygon implements Mean<Polygon> {
 		final Polygon mutated = new Polygon(length());
 
 		for (int i = 0; i < _data.length; ++i) {
-			float v = _data[i];
 			if (random.nextFloat() < rate) {
-				v = clamp(v + (random.nextFloat() - 0.5F)*magnitude);
-				mutated._data[i] = v;
+				mutated._data[i] =
+					clamp(_data[i] + (random.nextFloat()*2F - 1F)*magnitude);
 			} else {
 				mutated._data[i] = _data[i];
 			}
