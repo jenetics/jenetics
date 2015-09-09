@@ -16,8 +16,10 @@
  */
 package org.jenetics.example.image;
 
+import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 import static java.lang.String.format;
 
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
@@ -62,8 +64,8 @@ public final class EvolvingImages extends JFrame {
 
 	// Additional Swing components.
 	private final NumberFormat _fitnessFormat = NumberFormat.getNumberInstance();
-	private final ImagePanel _origImagePanel;
-	private final PolygonPanel _painter;
+	private final ImagePanel _imagePanel;
+	private final PolygonPanel _polygonPanel;
 
 	private volatile EvolvingImagesWorker _worker;
 
@@ -71,8 +73,8 @@ public final class EvolvingImages extends JFrame {
 	 * Creates new form ImageEvolution
 	 */
 	public EvolvingImages() {
-		_origImagePanel = new ImagePanel();
-		_painter = new PolygonPanel();
+		_imagePanel = new ImagePanel();
+		_polygonPanel = new PolygonPanel();
 
 		initComponents();
 		init();
@@ -84,8 +86,8 @@ public final class EvolvingImages extends JFrame {
 				.getImage(getClass().getResource("/monalisa.png"))
 		);
 
-		origImagePanel.add(_origImagePanel);
-		polygonImagePanel.add(_painter);
+		origImagePanel.add(_imagePanel);
+		polygonImagePanel.add(_polygonPanel);
 		engineParamPanel.setEngineParam(engineParam());
 
 		_fitnessFormat.setMaximumIntegerDigits(1);
@@ -98,6 +100,7 @@ public final class EvolvingImages extends JFrame {
 		startButton.setEnabled(true);
 		stopButton.setEnabled(false);
 		pauseButton.setEnabled(false);
+		saveButton.setEnabled(false);
 
 		try (InputStream in = getClass()
 			.getClassLoader()
@@ -110,8 +113,8 @@ public final class EvolvingImages extends JFrame {
 	}
 
 	private void update(final BufferedImage image) {
-		_origImagePanel.setImage(image);
-		_painter.setDimension(image.getWidth(), image.getHeight());
+		_imagePanel.setImage(image);
+		_polygonPanel.setDimension(image.getWidth(), image.getHeight());
 	}
 
 	private EngineParam getEngineParam() {
@@ -119,7 +122,7 @@ public final class EvolvingImages extends JFrame {
 	}
 
 	private BufferedImage getImage() {
-		return _origImagePanel.getImage();
+		return _imagePanel.getImage();
 	}
 
 	/**
@@ -141,6 +144,7 @@ public final class EvolvingImages extends JFrame {
         stopButton = new javax.swing.JButton();
         openButton = new javax.swing.JButton();
         pauseButton = new javax.swing.JButton();
+        saveButton = new javax.swing.JButton();
         resultPanel = new javax.swing.JPanel();
         bestEvolutionResultPanel = new org.jenetics.example.image.EvolutionResultPanel();
         currentevolutionResultPanel = new org.jenetics.example.image.EvolutionResultPanel();
@@ -198,6 +202,13 @@ public final class EvolvingImages extends JFrame {
             }
         });
 
+        saveButton.setText("Save");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout buttonPanelLayout = new javax.swing.GroupLayout(buttonPanel);
         buttonPanel.setLayout(buttonPanelLayout);
         buttonPanelLayout.setHorizontalGroup(
@@ -208,7 +219,8 @@ public final class EvolvingImages extends JFrame {
                     .addComponent(startButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(stopButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(openButton, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
-                    .addComponent(pauseButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(pauseButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(saveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         buttonPanelLayout.setVerticalGroup(
@@ -220,9 +232,10 @@ public final class EvolvingImages extends JFrame {
                 .addComponent(stopButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pauseButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 227, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 208, Short.MAX_VALUE)
                 .addComponent(openButton)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(saveButton))
         );
 
         resultPanel.setLayout(new java.awt.GridBagLayout());
@@ -292,6 +305,7 @@ public final class EvolvingImages extends JFrame {
 		stopButton.setEnabled(true);
 		pauseButton.setEnabled(true);
 		openButton.setEnabled(false);
+		saveButton.setEnabled(true);
 		engineParamPanel.setEnabled(false);
 	}//GEN-LAST:event_startButtonActionPerformed
 
@@ -312,6 +326,7 @@ public final class EvolvingImages extends JFrame {
 			? new JFileChooser(dir)
 			: new JFileChooser();
 		chooser.setDialogTitle("Choose Image");
+		chooser.setDialogType(JFileChooser.OPEN_DIALOG);
 		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		chooser.setMultiSelectionEnabled(false);
 		chooser.addChoosableFileFilter(new FileNameExtensionFilter(
@@ -362,6 +377,51 @@ public final class EvolvingImages extends JFrame {
 		}
     }//GEN-LAST:event_pauseButtonActionPerformed
 
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+		final File dir = lastSaveDirectory();
+		final JFileChooser chooser = dir != null
+			? new JFileChooser(dir)
+			: new JFileChooser();
+		chooser.setDialogTitle("Save Polygon Image");
+		chooser.setDialogType(JFileChooser.SAVE_DIALOG);
+		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		chooser.setMultiSelectionEnabled(false);
+		chooser.addChoosableFileFilter(new FileNameExtensionFilter(
+			"Images (*.png)",
+			ImageIO.getReaderFileSuffixes()
+		));
+
+		final int returnVal = chooser.showSaveDialog(this);
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			final String name = chooser.getSelectedFile().getAbsolutePath();
+			final File imageFile = name.toLowerCase().endsWith(".png")
+				? new File(name)
+				: new File(name + ".png");
+
+			try {
+				final Dimension dim = _polygonPanel.getDimension();
+				final BufferedImage image = new BufferedImage(
+					dim.width, dim.height, TYPE_INT_ARGB
+				);
+				final Graphics2D graphics = image.createGraphics();
+				_polygonPanel.getChromosome().draw(graphics, dim.width, dim.height);
+
+				ImageIO.write(image, "png", imageFile);
+
+				if (imageFile.getParentFile() != null) {
+					lastSaveDirectory(imageFile.getParentFile());
+				}
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(
+					rootPane,
+					format("Error while saving image '%s'.", imageFile),
+					e.toString(),
+					JOptionPane.ERROR_MESSAGE
+				);
+			}
+		}
+    }//GEN-LAST:event_saveButtonActionPerformed
+
 	private void onNewResult(
 		final EvolutionResult<PolygonGene, Double> current,
 		final EvolutionResult<PolygonGene, Double> best
@@ -372,8 +432,8 @@ public final class EvolvingImages extends JFrame {
 
 		bestEvolutionResultPanel.update(best);
 		currentevolutionResultPanel.update(current);
-		_painter.setChromosome((PolygonChromosome) gt.getChromosome());
-		_painter.repaint();
+		_polygonPanel.setChromosome((PolygonChromosome)gt.getChromosome());
+		_polygonPanel.repaint();
 	}
 
 	/* *************************************************************************
@@ -382,6 +442,7 @@ public final class EvolvingImages extends JFrame {
 
 	private static final String ENGINE_PARAM_NODE = "engine_param";
 	private static final String LAST_OPEN_DIRECTORY_PREF = "last_open_directory";
+	private static final String LAST_SAVE_DIRECTORY_PREF = "last_save_directory";
 
 	private EngineParam engineParam() {
 		return EngineParam.load(appPref().node(ENGINE_PARAM_NODE));
@@ -398,6 +459,15 @@ public final class EvolvingImages extends JFrame {
 
 	private void lastOpenDirectory(final File dir) {
 		appPref().put(LAST_OPEN_DIRECTORY_PREF, dir.getAbsolutePath());
+	}
+
+	private File lastSaveDirectory() {
+		final String dirName = appPref().get(LAST_SAVE_DIRECTORY_PREF, null);
+		return dirName != null ? new File(dirName) : null;
+	}
+
+	private void lastSaveDirectory(final File dir) {
+		appPref().put(LAST_SAVE_DIRECTORY_PREF, dir.getAbsolutePath());
 	}
 
 	private static Preferences appPref() {
@@ -525,7 +595,7 @@ public final class EvolvingImages extends JFrame {
 		final int height
 	) {
 		try {
-			final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+			final BufferedImage image = new BufferedImage(width, height, TYPE_INT_ARGB);
 			final Graphics2D graphics = image.createGraphics();
 			chromosome.draw(graphics, width, height);
 
@@ -548,6 +618,7 @@ public final class EvolvingImages extends JFrame {
     private javax.swing.JButton pauseButton;
     private javax.swing.JPanel polygonImagePanel;
     private javax.swing.JPanel resultPanel;
+    private javax.swing.JButton saveButton;
     private javax.swing.JButton startButton;
     private javax.swing.JButton stopButton;
     // End of variables declaration//GEN-END:variables

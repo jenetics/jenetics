@@ -17,13 +17,18 @@
 package org.jenetics.example.image;
 
 import static java.lang.Math.min;
+import static java.util.Objects.requireNonNull;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
+/**
+ * Draws the given {@code PolygonChromosome}.
+ */
 final class PolygonPanel extends JPanel {
 	private int _width;
 	private int _height;
@@ -38,13 +43,21 @@ final class PolygonPanel extends JPanel {
 		this(10, 10);
 	}
 
-	void setDimension(final int width, final int height) {
+	public void setDimension(final int width, final int height) {
 		_width = width;
 		_height = height;
 	}
 
-	void setChromosome(final PolygonChromosome chromosome) {
-		_chromosome = chromosome;
+	public Dimension getDimension() {
+		return new Dimension(_width, _height);
+	}
+
+	public void setChromosome(final PolygonChromosome chromosome) {
+		_chromosome = requireNonNull(chromosome);
+	}
+
+	public PolygonChromosome getChromosome() {
+		return _chromosome;
 	}
 
 	@Override
