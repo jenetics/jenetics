@@ -23,6 +23,7 @@ import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 import static java.lang.Math.max;
 import static java.lang.Math.round;
 import static java.lang.String.format;
+import static java.lang.System.getProperty;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -46,26 +47,32 @@ import org.jenetics.Phenotype;
  */
 final class EvolvingImagesCmd {
 
-	private static final String PARAM_KEY = "--params";
-	private static final String IMAGE_KEY = "--image";
+	private static final String DEFAULT_IMAGE =
+		"org/jenetics/example/image/monalisa.png";
+	private static final String DEFAULT_OUTPUT_DIR = "evolving-image";
+	private static final int DEFAULT_GENERATIONS = 10_000;
+	private static final int DEFAULT_IMAGE_GENERATION = 100;
+
+	private static final String PARAM_KEY = "--engine-properties";
+	private static final String IMAGE_KEY = "--input-image";
 	private static final String OUTPUT_DIR_KEY = "--output-dir";
-	private static final String GENERATION_COUNT_KEY = "--generation-count";
-	private static final String GENERATION_IMAGE_GAP_KEY = "--image-gap";
+	private static final String GENERATION_COUNT_KEY = "--generations";
+	private static final String GENERATION_IMAGE_GAP_KEY = "--image-generation";
 
 	private static final String USAGE = "EvolvingImages evolve \n" +
-		"    [--params <engine param properties file>]\n" +
-		"    [--image <image file>]\n" +
-		"    [--output-dir <image output directory>]\n" +
-		"    [--generation-count <generation count>]\n" +
-		"    [--image-gap <generation-gap between images>]";
+		"    [--engine-properties <engine.properties>]\n" +
+		"    [--input-image <image.png>]\n" +
+		"    [--output-dir <evolving-images>]\n" +
+		"    [--generations <generation count>]\n" +
+		"    [--image-generation <generation-gap between stored images>]";
 
-	private static final String IMAGE_PATTERN = "image-%06d[%1.4f].png";
+	private static final String IMAGE_PATTERN = "image-%06d.png";
 
-	private EngineParam _param;
+	private EngineParam _engineParam;
 	private BufferedImage _image;
 	private File _outputDir;
-	private int _generationCount;
-	private int _generationImageGap;
+	private int _generations;
+	private int _imageGeneration;
 
 	public EvolvingImagesCmd(final String[] args) {
 		if (args.length >= 1 && "evolve".equalsIgnoreCase(args[0])) {
@@ -75,25 +82,28 @@ final class EvolvingImagesCmd {
 				System.exit(0);
 			}
 
-			_param = Optional.ofNullable(params.get(PARAM_KEY))
+			_engineParam = Optional
+				.ofNullable(params.get(PARAM_KEY))
 				.map(this::readEngineParam)
 				.orElse(EngineParam.DEFAULT);
-
-			_image = Optional.ofNullable(params.get(IMAGE_KEY))
+			_image = Optional
+				.ofNullable(params.get(IMAGE_KEY))
 				.map(this::readImage)
 				.orElseGet(this::defaultImage);
 
-			_outputDir = Optional.ofNullable(params.get(OUTPUT_DIR_KEY))
+			_outputDir = Optional
+				.ofNullable(params.get(OUTPUT_DIR_KEY))
 				.map(File::new)
-				.orElse(new File(System.getProperty("user.dir"), "EvolvingImages"));
-
-			_generationCount = Optional.ofNullable(params.get(GENERATION_COUNT_KEY))
+				.orElse(new File(getProperty("user.dir"), DEFAULT_OUTPUT_DIR));
+			_generations = Optional
+				.ofNullable(params.get(GENERATION_COUNT_KEY))
 				.map(Integer::parseInt)
-				.orElse(10_000);
+				.orElse(DEFAULT_GENERATIONS);
 
-			_generationImageGap = Optional.ofNullable(params.get(GENERATION_IMAGE_GAP_KEY))
+			_imageGeneration = Optional
+				.ofNullable(params.get(GENERATION_IMAGE_GAP_KEY))
 				.map(Integer::parseInt)
-				.orElse(100);
+				.orElse(DEFAULT_IMAGE_GENERATION);
 		}
 	}
 
@@ -127,7 +137,7 @@ final class EvolvingImagesCmd {
 
 	private BufferedImage defaultImage() {
 		try (InputStream in = getClass().getClassLoader()
-								.getResourceAsStream("monalisa.png"))
+								.getResourceAsStream(DEFAULT_IMAGE))
 		{
 			return ImageIO.read(in);
 		} catch (IOException e) {
@@ -136,7 +146,7 @@ final class EvolvingImagesCmd {
 	}
 
 	public boolean run() {
-		if (_param != null) {
+		if (_engineParam != null) {
 			if (!_outputDir.isDirectory()) {
 				if (!_outputDir.mkdirs()) {
 					throw new IllegalArgumentException(
@@ -146,14 +156,20 @@ final class EvolvingImagesCmd {
 			}
 
 			System.out.println("Starting evolution:");
-			System.out.println("    * Output dir:           " + _outputDir);
-			System.out.println("    * Generation count:     " + _generationCount);
-			System.out.println("    * Generation image gap: " + _generationImageGap);
+			System.out.println("* Output dir:           " + _outputDir);
+			System.out.println("* Generation count:     " + _generations);
+			System.out.println("* Generation image gap: " + _imageGeneration);
 
-			evolve(_param, _image, _outputDir, _generationCount, _generationImageGap);
+			evolve(
+				_engineParam,
+				_image,
+				_outputDir,
+				_generations,
+				_imageGeneration
+			);
 		}
 
-		return _param != null;
+		return _engineParam != null;
 	}
 
 	private static void evolve(
@@ -175,7 +191,7 @@ final class EvolvingImagesCmd {
 			if (generation%generationGap == 0 || generation == 1) {
 				final File file = new File(
 					outputDir,
-					format(IMAGE_PATTERN, generation, best.getBestFitness())
+					format(IMAGE_PATTERN, generation)
 				);
 
 				final Phenotype<PolygonGene, Double> pt = best.getBestPhenotype();
@@ -189,7 +205,7 @@ final class EvolvingImagesCmd {
 					writeImage(file, ch, image.getWidth(), image.getHeight());
 				} else {
 					System.out.println(format(
-						"No improvement - %06d[%1.4f]",
+						"No improvement - %06d [fitness=%1.4f]",
 						generation, pt.getFitness()
 					));
 				}

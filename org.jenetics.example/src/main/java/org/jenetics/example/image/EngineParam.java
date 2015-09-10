@@ -58,7 +58,7 @@ final class EngineParam {
 	static {
 		final Properties props = new Properties();
 		try (final InputStream in = EngineParam.class
-				.getResourceAsStream("/DefaultEngineParam.properties"))
+				.getResourceAsStream("/org/jenetics/example/image/engine.properties"))
 		{
 			props.load(in);
 		} catch (IOException e) {

@@ -82,7 +82,7 @@ public final class EvolvingImages extends JFrame {
 	private void init() {
 		setIconImage(
 			Toolkit.getDefaultToolkit()
-				.getImage(getClass().getResource("/monalisa.png"))
+				.getImage(getClass().getResource("/org/jenetics/example/image/monalisa.png"))
 		);
 
 		origImagePanel.add(_imagePanel);
@@ -103,7 +103,7 @@ public final class EvolvingImages extends JFrame {
 
 		try (InputStream in = getClass()
 			.getClassLoader()
-			.getResourceAsStream("monalisa.png"))
+			.getResourceAsStream("org/jenetics/example/image/monalisa.png"))
 		{
 			update(ImageIO.read(in));
 		} catch (IOException e) {
