@@ -32,7 +32,6 @@ import java.util.function.BiConsumer;
 import org.jenetics.Genotype;
 import org.jenetics.MeanAlterer;
 import org.jenetics.Optimize;
-import org.jenetics.RouletteWheelSelector;
 import org.jenetics.TournamentSelector;
 import org.jenetics.TruncationSelector;
 import org.jenetics.engine.Codec;
@@ -99,9 +98,7 @@ final class EvolvingImagesWorker {
 			.optimize(Optimize.MAXIMUM)
 			.maximalPhenotypeAge(50)
 			.survivorsSelector(new TruncationSelector<>())
-			//.survivorsSelector(new RouletteWheelSelector<>())
 			.offspringSelector(new TournamentSelector<>(param.getTournamentSize()))
-			//.selector(new TournamentSelector<>(param.getTournamentSize()))
 			.alterers(
 				new MeanAlterer<>(0.175),
 				new PolygonMutator<>(param.getMutationRate(), param.getMutationMultitude()),
