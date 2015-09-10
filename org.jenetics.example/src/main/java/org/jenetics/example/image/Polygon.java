@@ -80,7 +80,7 @@ public final class Polygon implements Mean<Polygon> {
 	 * Each component of the Polygon may be mutated according to the specified
 	 * mutation rate. In case a component is going to be mutated, its value will
 	 * be randomly modified in the uniform range of
-	 * {@code [-mutationAmount, +mutationAmount]}.
+	 * {@code [-magnitude, +magnitude]}.
 	 *
 	 * @param rate the mutation rate
 	 * @param magnitude the mutation amount
