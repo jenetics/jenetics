@@ -808,6 +808,13 @@ key "Shiffman2012"
 
 \end_inset
 
+, 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Luke2013Metaheuristics"
+
+\end_inset
+
  or 
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -18476,7 +18483,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 2.4
+: 2.6
 \end_layout
 
 \begin_layout Itemize
@@ -18488,7 +18495,7 @@ Homepage
 \emph on
  
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -18509,11 +18516,11 @@ Download
 \emph on
 
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
-http://services.gradle.org/distributions/gradle-2.2-bin.zip
+http://services.gradle.org/distributions/gradle-2.6-bin.zip
 \end_layout
 
 \end_inset
