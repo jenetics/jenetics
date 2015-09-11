@@ -4,7 +4,7 @@
 
 ## Documentation
 
-The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jenetics/3.2/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-3.2.0.pdf)).
+The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jenetics/3.2/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-3.3.0.pdf)).
 
 
 ## Requirements
@@ -21,15 +21,15 @@ The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jeneti
 *  **Apache Commons Math 3.5**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical collectors.
 
 ## Download
-* **Github**: <https://github.com/jenetics/jenetics/releases/download/v3.2.0/jenetics-3.2.0.zip>
+* **Github**: <https://github.com/jenetics/jenetics/releases/download/v3.2.0/jenetics-3.3.0.zip>
 *  **Sourceforge**:  <https://sourceforge.net/projects/jenetics/files/latest/download>
-*  **Maven**: `org.bitbucket.fwilhelm:org.jenetics:3.2.0` on [Maven Central](http://search.maven.org/#search|ga|1|a%3A%22org.jenetics%22)
+*  **Maven**: `org.bitbucket.fwilhelm:org.jenetics:3.3.0` on [Maven Central](http://search.maven.org/#search|ga|1|a%3A%22org.jenetics%22)
 
 ## Build Jenetics
 
 [![Build Status](https://travis-ci.org/jenetics/jenetics.svg?branch=master)](https://travis-ci.org/jenetics/jenetics)
 
-For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v3.2.0/jenetics-3.2.0.zip) (or [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download)) and extract it to some build directory.
+For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v3.2.0/jenetics-3.3.0.zip) (or [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download)) and extract it to some build directory.
 
     $ unzip jenetics-<version>.zip -d <builddir>
 
@@ -74,6 +74,8 @@ The latest Eclipse version (4.4.2) has problems compiling some _valid_ lambda ex
  Or you are using ![IntelliJ 14](https://www.jetbrains.com/idea/download/) instead.
 
 ## Example
+
+### Hello World (Ones counting)
 
 The minimum evolution Engine setup needs a genotype factory, `Factory<Genotype<?>>`, and a fitness `Function`. The `Genotype` implements the `Factory` interface and can therefore be used as prototype for creating the initial `Population` and for creating new random `Genotypes`.
 
@@ -121,6 +123,21 @@ In contrast to other GA implementations, the library uses the concept of an evol
 
 1. In the last step, we can create a new `EvolutionStream` from our `Engine`. The `EvolutionStream` is the model or view of the evolutionary process. It serves as a »process handle« and also allows you, among other things, to control the termination of the evolution. In our example, we simply truncate the stream after 100 generations. If you don't limit the stream, the `EvolutionStream` will not terminate and run forever. Since the `EvolutionStream` extends the `java.util.stream.Stream` interface, it integrates smoothly with the rest of the Java Stream API. The final result, the best `Genotype` in our example, is then collected with one of the predefined collectors of the `EvolutionResult` class.
 
+
+### Evolving images
+
+This example tries to approximate a given image by semitransparent polygons.  It comes with an Swing UI, where you can immediately start your own experiments. After compiling the sources with
+
+    $ ./gradlew jar
+
+you can start the example by calling
+
+    $ ./jrun org.jenetics.example.image.EvolvingImages
+    
+![Evolving image](org.jenetics.doc/src/main/resources/graphic/EvolvingImageExampleScreenShot.png)
+
+The previous image shows the GUI after evolving the default image for about 4,000 generations. With the »Open« button it is possible to load other images for polygonization. The »Save« button allows to store polygonized images in PNG format to disk. At the button of the UI, you can change some of the GA parameters of the example.
+
 ## License
 
 The library is licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
@@ -141,6 +158,13 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 
 
 ## Release notes
+
+### 3.3.0
+
+#### Improvements
+
+
+#### Bug fixes
 
 ### 3.2.0
 
