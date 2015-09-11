@@ -34,6 +34,7 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicLong;
@@ -79,7 +80,7 @@ final class EvolvingImagesCmd {
 		if (args.length >= 1 && "evolve".equalsIgnoreCase(args[0])) {
 			final Map<String, String> params = toMap(args);
 			if (params.containsKey("--help")) {
-				System.out.println(USAGE);
+				println(USAGE);
 				System.exit(0);
 			}
 
@@ -156,12 +157,12 @@ final class EvolvingImagesCmd {
 				}
 			}
 
-			System.out.println("Starting evolution:");
-			System.out.println("* Output dir:           " + _outputDir);
-			System.out.println("* Generation count:     " + _generations);
-			System.out.println("* Generation image gap: " + _imageGeneration);
-			System.out.println("Engine parameters:");
-			System.out.println(_engineParam);
+			println("Starting evolution:");
+			println("* Output dir:           " + _outputDir);
+			println("* Generation count:     " + _generations);
+			println("* Generation image gap: " + _imageGeneration);
+			println("Engine parameters:");
+			println(_engineParam);
 
 			evolve(
 				_engineParam,
@@ -182,7 +183,7 @@ final class EvolvingImagesCmd {
 		final long generations,
 		final int generationGap
 	) {
-		System.out.println("Starting evolution.");
+		println("Starting evolution.");
 		final EvolvingImagesWorker worker = EvolvingImagesWorker.of(params, image);
 
 		final AtomicReference<Phenotype<PolygonGene, Double>> latest =
@@ -205,10 +206,10 @@ final class EvolvingImagesCmd {
 
 				final Phenotype<PolygonGene, Double> pt = best.getBestPhenotype();
 				if (latest.get() == null || latest.get().compareTo(pt) < 0) {
-					System.out.println(format(
+					println(
 						"Writing '%s': fitness=%1.4f, speed=%1.2f.",
 						file, pt.getFitness(), speed
-					));
+					);
 
 					latest.set(pt);
 					final PolygonChromosome ch =
@@ -216,10 +217,10 @@ final class EvolvingImagesCmd {
 
 					writeImage(file, ch, image.getWidth(), image.getHeight());
 				} else {
-					System.out.println(format(
+					println(
 						"No improvement - %06d: fitness=%1.4f, speed=%1.2f.",
 						generation, pt.getFitness(), speed
-					));
+					);
 				}
 			}
 
@@ -255,6 +256,10 @@ final class EvolvingImagesCmd {
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
 		}
+	}
+
+	private static void println(final Object format, final Object... args) {
+		System.out.printf(Objects.toString(format) + "\n", args);
 	}
 
 }
