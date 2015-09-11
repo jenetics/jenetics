@@ -17313,7 +17313,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename ../resources/graphic/image-000001[0.7427].png
+	filename ../resources/graphic/ml-image-0000001.png
 	lyxscale 30
 	width 30col%
 
@@ -17329,7 +17329,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename ../resources/graphic/image-000100[0.8443].png
+	filename ../resources/graphic/ml-image-0000100.png
 	lyxscale 30
 	width 30col%
 
@@ -17345,7 +17345,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename ../resources/graphic/image-000200[0.8779].png
+	filename ../resources/graphic/ml-image-0001000.png
 	lyxscale 30
 	width 30col%
 
@@ -17362,7 +17362,7 @@ status open
 \begin_inset Text
 
 \begin_layout Plain Layout
-a
+1 gen.
 \end_layout
 
 \end_inset
@@ -17371,7 +17371,7 @@ a
 \begin_inset Text
 
 \begin_layout Plain Layout
-b
+100 gen.
 \end_layout
 
 \end_inset
@@ -17380,57 +17380,7 @@ b
 \begin_inset Text
 
 \begin_layout Plain Layout
-c
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename ../resources/graphic/image-000300[0.8968].png
-	lyxscale 30
-	width 30col%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename ../resources/graphic/image-000200[0.8779].png
-	lyxscale 30
-	width 30col%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename ../resources/graphic/image-000300[0.8968].png
-	lyxscale 30
-	width 30col%
-
-\end_inset
-
-
+1,000 gen.
 \end_layout
 
 \end_inset
@@ -17441,7 +17391,14 @@ c
 \begin_inset Text
 
 \begin_layout Plain Layout
-d
+\begin_inset Graphics
+	filename ../resources/graphic/ml-image-0010000.png
+	lyxscale 30
+	width 30col%
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -17450,7 +17407,14 @@ d
 \begin_inset Text
 
 \begin_layout Plain Layout
-e
+\begin_inset Graphics
+	filename ../resources/graphic/ml-image-0100000.png
+	lyxscale 30
+	width 30col%
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -17459,7 +17423,43 @@ e
 \begin_inset Text
 
 \begin_layout Plain Layout
-f
+\begin_inset Graphics
+	filename ../resources/graphic/ml-image-1000000.png
+	lyxscale 30
+	width 30col%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+10,000 gen.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+100,000 gen.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1,000,000 gen.
 \end_layout
 
 \end_inset
