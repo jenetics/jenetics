@@ -17449,7 +17449,11 @@ status open
 \begin_inset Text
 
 \begin_layout Plain Layout
-a) 1
+a) 
+\begin_inset Formula $10^{0}$
+\end_inset
+
+ generations
 \end_layout
 
 \end_inset
@@ -17458,7 +17462,11 @@ a) 1
 \begin_inset Text
 
 \begin_layout Plain Layout
-b) 100
+b) 
+\begin_inset Formula $10^{2}$
+\end_inset
+
+ generations
 \end_layout
 
 \end_inset
@@ -17467,7 +17475,11 @@ b) 100
 \begin_inset Text
 
 \begin_layout Plain Layout
-c) 1,000
+c) 
+\begin_inset Formula $10^{3}$
+\end_inset
+
+ generations
 \end_layout
 
 \end_inset
@@ -17528,7 +17540,11 @@ c) 1,000
 \begin_inset Text
 
 \begin_layout Plain Layout
-d) 10,000
+d) 
+\begin_inset Formula $10^{4}$
+\end_inset
+
+ generations
 \end_layout
 
 \end_inset
@@ -17537,7 +17553,11 @@ d) 10,000
 \begin_inset Text
 
 \begin_layout Plain Layout
-e) 100,000
+e) 
+\begin_inset Formula $10^{5}$
+\end_inset
+
+ generations
 \end_layout
 
 \end_inset
@@ -17546,7 +17566,11 @@ e) 100,000
 \begin_inset Text
 
 \begin_layout Plain Layout
-f) 1,000,000
+f) 
+\begin_inset Formula $10^{6}$
+\end_inset
+
+ generations
 \end_layout
 
 \end_inset
@@ -17587,7 +17611,7 @@ Mona Lisa
 \end_layout
 
 \begin_layout Standard
-The images in 
+The images in figure 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Evolving-Mona-Lisa"
@@ -17608,7 +17632,7 @@ reference "lis:Default-engine.properties"
 
 \end_inset
 
-).
+):
 \end_layout
 
 \begin_layout LyX-Code
