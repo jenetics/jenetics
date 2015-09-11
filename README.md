@@ -4,7 +4,7 @@
 
 ## Documentation
 
-The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jenetics/3.2/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-3.3.0.pdf)).
+The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jenetics/3.3/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-3.3.0.pdf)).
 
 
 ## Requirements
@@ -21,7 +21,7 @@ The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jeneti
 *  **Apache Commons Math 3.5**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical collectors.
 
 ## Download
-* **Github**: <https://github.com/jenetics/jenetics/releases/download/v3.2.0/jenetics-3.3.0.zip>
+* **Github**: <https://github.com/jenetics/jenetics/releases/download/v3.3.0/jenetics-3.3.0.zip>
 *  **Sourceforge**:  <https://sourceforge.net/projects/jenetics/files/latest/download>
 *  **Maven**: `org.bitbucket.fwilhelm:org.jenetics:3.3.0` on [Maven Central](http://search.maven.org/#search|ga|1|a%3A%22org.jenetics%22)
 
@@ -29,7 +29,7 @@ The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jeneti
 
 [![Build Status](https://travis-ci.org/jenetics/jenetics.svg?branch=master)](https://travis-ci.org/jenetics/jenetics)
 
-For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v3.2.0/jenetics-3.3.0.zip) (or [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download)) and extract it to some build directory.
+For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v3.3.0/jenetics-3.3.0.zip) (or [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download)) and extract it to some build directory.
 
     $ unzip jenetics-<version>.zip -d <builddir>
 
