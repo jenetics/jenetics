@@ -17227,7 +17227,12 @@ experiments
 \begin_inset Formula $n$
 \end_inset
 
- generation.
+ generations---specified with the 
+\family typewriter
+--image\SpecialChar \-
+-generation
+\family default
+ parameter.
 \end_layout
 
 \begin_layout LyX-Code
@@ -17285,7 +17290,86 @@ evolving-images
 \begin_layout Standard
 Every command line argument has proper default values, so that it is possible
  to start it without parameters.
- For a quick start, you can simply call
+ Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Default-engine.properties"
+
+\end_inset
+
+ shows the default values for the GA engine if the 
+\family typewriter
+--engine\SpecialChar \-
+-properties
+\family default
+ parameter is not specified.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+population_size=50
+\end_layout
+
+\begin_layout Plain Layout
+
+tournament_size=3
+\end_layout
+
+\begin_layout Plain Layout
+
+mutation_rate=0.02
+\end_layout
+
+\begin_layout Plain Layout
+
+mutation_multitude=0.1
+\end_layout
+
+\begin_layout Plain Layout
+
+polygon_length=4
+\end_layout
+
+\begin_layout Plain Layout
+
+polygon_count=250
+\end_layout
+
+\begin_layout Plain Layout
+
+reference_image_width=50
+\end_layout
+
+\begin_layout Plain Layout
+
+reference_image_height=50
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Default-engine.properties"
+
+\end_inset
+
+Default 
+\family typewriter
+engine.properties
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+For a quick start, you can simply call
 \end_layout
 
 \begin_layout LyX-Code
@@ -17507,7 +17591,19 @@ reference "fig:Evolving-Mona-Lisa"
 
 \end_inset
 
- where created with the command line version by calling
+ where created with the command line version using the default 
+\family typewriter
+engine\SpecialChar \-
+.properties
+\family default
+ file (listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Default-engine.properties"
+
+\end_inset
+
+).
 \end_layout
 
 \begin_layout LyX-Code
@@ -17530,50 +17626,6 @@ $ ./jrun org.jenetics.example.image.EvolvingImages evolve
         --image-generation 
 \emph on
 100
-\end_layout
-
-\begin_layout Standard
-The 
-\family typewriter
-engine.properties
-\family default
- file contains the values used for the GA
-\end_layout
-
-\begin_layout LyX-Code
-population_size=50
-\end_layout
-
-\begin_layout LyX-Code
-tournament_size=3
-\end_layout
-
-\begin_layout LyX-Code
-mutation_rate=0.02
-\end_layout
-
-\begin_layout LyX-Code
-mutation_multitude=0.1
-\end_layout
-
-\begin_layout LyX-Code
-polygon_length=4
-\end_layout
-
-\begin_layout LyX-Code
-polygon_count=250
-\end_layout
-
-\begin_layout LyX-Code
-reference_image_width=50
-\end_layout
-
-\begin_layout LyX-Code
-reference_image_height=50
-\end_layout
-
-\begin_layout Standard
-This correspond to the parameters you can choose in the UI.
 \end_layout
 
 \begin_layout Section
