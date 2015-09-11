@@ -17052,11 +17052,7 @@ name "fig:Evolving-images"
 
 \end_inset
 
-Evolving images---
-\emph on
-Mona Lisa
-\emph default
-
+Evolving images UI
 \begin_inset Index idx
 status collapsed
 
@@ -17453,7 +17449,7 @@ status open
 \begin_inset Text
 
 \begin_layout Plain Layout
-1 gen.
+a) 1
 \end_layout
 
 \end_inset
@@ -17462,7 +17458,7 @@ status open
 \begin_inset Text
 
 \begin_layout Plain Layout
-100 gen.
+b) 100
 \end_layout
 
 \end_inset
@@ -17471,7 +17467,7 @@ status open
 \begin_inset Text
 
 \begin_layout Plain Layout
-1,000 gen.
+c) 1,000
 \end_layout
 
 \end_inset
@@ -17532,7 +17528,7 @@ status open
 \begin_inset Text
 
 \begin_layout Plain Layout
-10,000 gen.
+d) 10,000
 \end_layout
 
 \end_inset
@@ -17541,7 +17537,7 @@ status open
 \begin_inset Text
 
 \begin_layout Plain Layout
-100,000 gen.
+e) 100,000
 \end_layout
 
 \end_inset
@@ -17550,7 +17546,7 @@ status open
 \begin_inset Text
 
 \begin_layout Plain Layout
-1,000,000 gen.
+f) 1,000,000
 \end_layout
 
 \end_inset
@@ -17598,7 +17594,9 @@ reference "fig:Evolving-Mona-Lisa"
 
 \end_inset
 
- where created with the command line version using the default 
+ shows the resulting polygon images after the given number of generations.
+ They where created with the command line version of the program using the
+ default 
 \family typewriter
 engine\SpecialChar \-
 .properties
