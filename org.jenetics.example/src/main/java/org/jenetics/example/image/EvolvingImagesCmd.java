@@ -36,6 +36,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 import javax.imageio.ImageIO;
@@ -159,6 +160,8 @@ final class EvolvingImagesCmd {
 			System.out.println("* Output dir:           " + _outputDir);
 			System.out.println("* Generation count:     " + _generations);
 			System.out.println("* Generation image gap: " + _imageGeneration);
+			System.out.println("Engine parameters:");
+			System.out.println(_engineParam);
 
 			evolve(
 				_engineParam,
@@ -185,10 +188,16 @@ final class EvolvingImagesCmd {
 		final AtomicReference<Phenotype<PolygonGene, Double>> latest =
 			new AtomicReference<>();
 
+		final AtomicLong time = new AtomicLong(0);
+
 		worker.start((current, best) -> {
 			final long generation = current.getGeneration();
 
 			if (generation%generationGap == 0 || generation == 1) {
+				final double duration = System.currentTimeMillis() - time.get();
+				final double speed = generationGap/(duration/1000.0);
+				time.set(System.currentTimeMillis());
+
 				final File file = new File(
 					outputDir,
 					format(IMAGE_PATTERN, generation)
@@ -196,7 +205,10 @@ final class EvolvingImagesCmd {
 
 				final Phenotype<PolygonGene, Double> pt = best.getBestPhenotype();
 				if (latest.get() == null || latest.get().compareTo(pt) < 0) {
-					System.out.println(format("Writing '%s'.", file));
+					System.out.println(format(
+						"Writing '%s': fitness=%1.4f, speed=%1.2f.",
+						file, pt.getFitness(), speed
+					));
 
 					latest.set(pt);
 					final PolygonChromosome ch =
@@ -205,8 +217,8 @@ final class EvolvingImagesCmd {
 					writeImage(file, ch, image.getWidth(), image.getHeight());
 				} else {
 					System.out.println(format(
-						"No improvement - %06d [fitness=%1.4f]",
-						generation, pt.getFitness()
+						"No improvement - %06d: fitness=%1.4f, speed=%1.2f.",
+						generation, pt.getFitness(), speed
 					));
 				}
 			}
