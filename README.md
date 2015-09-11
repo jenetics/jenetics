@@ -17,7 +17,7 @@ The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jeneti
 *  **Gradle 2.x**: [Gradle](http://www.gradle.org/) is used for building the library. (Gradle is download automatically, if you are using the Gradle Wrapper script `gradlew`, located in the base directory, for building the library.)
 
 ### Test compile/execution
-*  **TestNG 6.9.4**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
+*  **TestNG 6.9.6**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
 *  **Apache Commons Math 3.5**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical collectors.
 
 ## Download
