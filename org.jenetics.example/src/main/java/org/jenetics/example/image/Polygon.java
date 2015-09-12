@@ -110,7 +110,7 @@ public final class Polygon implements Mean<Polygon> {
 
 		final GeneralPath path = new GeneralPath();
 		path.moveTo(_data[4]*width, _data[5]*height);
-		for (int j = 1; j < _length; j++) {
+		for (int j = 1; j < _length; ++j) {
 			path.lineTo(_data[4 + j*2]*width, _data[5 + j*2]*height);
 		}
 		path.closePath();

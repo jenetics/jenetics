@@ -74,7 +74,7 @@ public class UniformCrossover<
 		for (int i = 0; i < that.length(); ++i) {
 			if (random.nextFloat() < getProbability()) {
 				crossover(that, other, i);
-				alteredGenes++;
+				++alteredGenes;
 			}
 		}
 
