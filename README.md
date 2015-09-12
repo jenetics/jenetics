@@ -71,7 +71,7 @@ The latest Eclipse version (4.4.2) has problems compiling some _valid_ lambda ex
          .builder((Function<Genotype<BitGene>, Integer>)HelloWorld::eval, gtf)
          .build();
 
- Or you are using ![IntelliJ 14](https://www.jetbrains.com/idea/download/) instead.
+ Or you are using [IntelliJ](https://www.jetbrains.com/idea/download/) instead.
 
 ## Example
 
@@ -165,6 +165,9 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 
 
 #### Bug fixes
+
+* [#52](https://github.com/jenetics/jenetics/issues/52): Immutability of ISeq violated.
+
 
 ### 3.2.0
 
