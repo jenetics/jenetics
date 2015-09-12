@@ -20,7 +20,6 @@
 package org.jenetics.example.image;
 
 import static java.util.Objects.requireNonNull;
-import static javax.swing.SwingUtilities.invokeLater;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -176,7 +175,7 @@ final class EvolvingImagesWorker {
 				.forEach(r -> {
 					waiting();
 					if (callback != null) {
-						invokeLater(() -> callback.accept(r, best.getMax()));
+						callback.accept(r, best.getMax());
 					}
 				});
 		});

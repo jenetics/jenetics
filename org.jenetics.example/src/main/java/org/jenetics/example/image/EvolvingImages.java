@@ -17,6 +17,7 @@
 package org.jenetics.example.image;
 
 import static java.lang.String.format;
+import static javax.swing.SwingUtilities.invokeLater;
 import static org.jenetics.example.image.EvolvingImagesCmd.writeImage;
 
 import java.awt.Dimension;
@@ -81,8 +82,8 @@ public final class EvolvingImages extends JFrame {
 
 	private void init() {
 		setIconImage(
-			Toolkit.getDefaultToolkit()
-				.getImage(getClass().getResource("/org/jenetics/example/image/monalisa.png"))
+			Toolkit.getDefaultToolkit().getImage(getClass().getResource(
+				"/org/jenetics/example/image/monalisa.png"))
 		);
 
 		origImagePanel.add(_imagePanel);
@@ -423,14 +424,16 @@ public final class EvolvingImages extends JFrame {
 		final EvolutionResult<PolygonGene, Double> current,
 		final EvolutionResult<PolygonGene, Double> best
 	) {
-		final Genotype<PolygonGene> gt = best
-			.getBestPhenotype()
-			.getGenotype();
+		invokeLater(() -> {
+			final Genotype<PolygonGene> gt = best
+				.getBestPhenotype()
+				.getGenotype();
 
-		bestEvolutionResultPanel.update(best);
-		currentevolutionResultPanel.update(current);
-		_polygonPanel.setChromosome((PolygonChromosome)gt.getChromosome());
-		_polygonPanel.repaint();
+			bestEvolutionResultPanel.update(best);
+			currentevolutionResultPanel.update(current);
+			_polygonPanel.setChromosome((PolygonChromosome)gt.getChromosome());
+			_polygonPanel.repaint();
+		});
 	}
 
 	/* *************************************************************************
