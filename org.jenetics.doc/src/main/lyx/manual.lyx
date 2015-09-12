@@ -17133,7 +17133,7 @@ Population
 \begin_inset space ~
 \end_inset
 
-size The number of population individuals.
+size The number of individual of the population.
 \end_layout
 
 \begin_layout Description
