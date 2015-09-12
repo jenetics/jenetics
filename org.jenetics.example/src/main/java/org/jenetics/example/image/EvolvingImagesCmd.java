@@ -32,6 +32,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -68,7 +69,7 @@ final class EvolvingImagesCmd {
 		"    [--generations <generation count>]\n" +
 		"    [--image-generation <generation-gap between stored images>]";
 
-	private static final String IMAGE_PATTERN = "image-%06d.png";
+	private static final String IMAGE_PATTERN = "image-%07d.png";
 
 	private EngineParam _engineParam;
 	private BufferedImage _image;
@@ -162,7 +163,9 @@ final class EvolvingImagesCmd {
 			println("* Generation count:     " + _generations);
 			println("* Generation image gap: " + _imageGeneration);
 			println("Engine parameters:");
+			println("");
 			println(_engineParam);
+			println("");
 
 			evolve(
 				_engineParam,
@@ -206,7 +209,7 @@ final class EvolvingImagesCmd {
 
 				final Phenotype<PolygonGene, Double> pt = best.getBestPhenotype();
 				if (latest.get() == null || latest.get().compareTo(pt) < 0) {
-					println(
+					log(
 						"Writing '%s': fitness=%1.4f, speed=%1.2f.",
 						file, pt.getFitness(), speed
 					);
@@ -217,8 +220,8 @@ final class EvolvingImagesCmd {
 
 					writeImage(file, ch, image.getWidth(), image.getHeight());
 				} else {
-					println(
-						"No improvement - %06d: fitness=%1.4f, speed=%1.2f.",
+					log(
+						"No improvement - %07d: fitness=%1.4f, speed=%1.2f.",
 						generation, pt.getFitness(), speed
 					);
 				}
@@ -260,6 +263,15 @@ final class EvolvingImagesCmd {
 
 	private static void println(final Object format, final Object... args) {
 		System.out.printf(Objects.toString(format) + "\n", args);
+	}
+
+	private static void log(final Object pattern, final Object... args) {
+		final LocalDateTime now = LocalDateTime.now();
+		final String tss = now.toLocalDate().toString() + ' ' +
+			now.toLocalTime().toString();
+
+		final String p = format("%s - ", tss) + pattern;
+		System.out.println(format(p, args));
 	}
 
 }
