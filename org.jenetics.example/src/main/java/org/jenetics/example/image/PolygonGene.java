@@ -26,7 +26,7 @@ import org.jenetics.util.Mean;
 /**
  * Represents a fixed size polygon with its fill color.
  */
-public final class PolygonGene
+final class PolygonGene
 	implements
 		Gene<Polygon, PolygonGene>,
 		Mean<PolygonGene>

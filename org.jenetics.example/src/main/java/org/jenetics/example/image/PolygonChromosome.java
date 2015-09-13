@@ -30,7 +30,7 @@ import org.jenetics.util.ISeq;
 /**
  * A simple chromosome representing a list of polygons.
  */
-public class PolygonChromosome extends AbstractChromosome<PolygonGene> {
+final class PolygonChromosome extends AbstractChromosome<PolygonGene> {
 	private static final long serialVersionUID = 1L;
 
 	public PolygonChromosome(final ISeq<PolygonGene> genes) {

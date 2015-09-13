@@ -26,7 +26,7 @@ import org.jenetics.util.MSeq;
  *
  * @param <C> the fitness type
  */
-public class PolygonMutator<C extends Comparable<? super C>>
+final class PolygonMutator<C extends Comparable<? super C>>
 	extends Mutator<PolygonGene, C>
 {
 

@@ -29,7 +29,7 @@ import org.jenetics.internal.util.require;
 import org.jenetics.util.Mean;
 import org.jenetics.util.RandomRegistry;
 
-public final class Polygon implements Mean<Polygon> {
+final class Polygon implements Mean<Polygon> {
 
 	// The polygon in packed representation:
 	// index | data

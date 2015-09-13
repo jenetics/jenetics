@@ -21,9 +21,14 @@ import static java.util.stream.Collectors.averagingLong;
 import java.text.NumberFormat;
 import java.time.Duration;
 
+import javax.swing.JPanel;
+
 import org.jenetics.engine.EvolutionResult;
 
-public class EvolutionResultPanel extends javax.swing.JPanel {
+/**
+ * Panel for showing the evolution result.
+ */
+final class EvolutionResultPanel extends JPanel {
 
 	private static final NumberFormat _format = NumberFormat.getNumberInstance();
 

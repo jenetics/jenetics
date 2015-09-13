@@ -21,7 +21,10 @@ import java.awt.Dimension;
 import javax.swing.JPanel;
 import javax.swing.SpinnerNumberModel;
 
-public class EngineParamPanel extends JPanel {
+/**
+ * Panel for showing/changing the engine parameters.
+ */
+final class EngineParamPanel extends JPanel {
 
 	/**
 	 * Creates new form EngineParamPanel

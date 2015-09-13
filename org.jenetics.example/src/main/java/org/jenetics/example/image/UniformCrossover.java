@@ -47,7 +47,7 @@ import org.jenetics.util.RandomRegistry;
  *         Crossover (Obitko.com)</a>
  * @see <a href="http://www.tomaszgwiazda.com/uniformX.htm">Uniform crossover</a>
  */
-public class UniformCrossover<
+final class UniformCrossover<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
