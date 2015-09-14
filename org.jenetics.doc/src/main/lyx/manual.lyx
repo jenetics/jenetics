@@ -17325,12 +17325,12 @@ tournament_size=3
 
 \begin_layout Plain Layout
 
-mutation_rate=0.02
+mutation_rate=0.025
 \end_layout
 
 \begin_layout Plain Layout
 
-mutation_multitude=0.1
+mutation_multitude=0.15
 \end_layout
 
 \begin_layout Plain Layout
@@ -17345,12 +17345,12 @@ polygon_count=250
 
 \begin_layout Plain Layout
 
-reference_image_width=50
+reference_image_width=60
 \end_layout
 
 \begin_layout Plain Layout
 
-reference_image_height=50
+reference_image_height=60
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
