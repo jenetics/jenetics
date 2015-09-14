@@ -168,6 +168,7 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 #### Bug fixes
 
 * [#52](https://github.com/jenetics/jenetics/issues/52): Immutability of ISeq violated.
+* [#55](https://github.com/jenetics/jenetics/issues/55): Fixing example-run script for Mac.
 
 
 ### 3.2.0
