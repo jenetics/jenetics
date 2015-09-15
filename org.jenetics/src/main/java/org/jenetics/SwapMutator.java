@@ -39,7 +39,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-28 $</em>
+ * @version 3.0
  */
 public class SwapMutator<
 	G extends Gene<?, G>,
@@ -74,10 +74,12 @@ public class SwapMutator<
 	@Override
 	protected int mutate(final MSeq<G> genes, final double p) {
 		final Random random = RandomRegistry.getRandom();
-		return genes.length() > 1 ?
-			(int)indexes(random, genes.length(), p)
-			.peek(i -> genes.swap(i, random.nextInt(genes.length())))
-			.count() : 0;
+
+		return genes.length() > 1
+			? (int)indexes(random, genes.length(), p)
+				.peek(i -> genes.swap(i, random.nextInt(genes.length())))
+				.count()
+			: 0;
 	}
 
 	@Override

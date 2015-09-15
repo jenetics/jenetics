@@ -29,7 +29,7 @@ import org.jenetics.BitGeneArray.Proxy;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0 &mdash; <em>$Date: 2014-08-01 $</em>
+ * @version 3.0
  */
 final class BitGeneArray extends ArrayProxyMSeq<BitGene, Proxy> {
 
@@ -56,7 +56,7 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene, Proxy> {
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.4
-	 * @version 1.4 &mdash; <em>$Date: 2014-08-01 $</em>
+	 * @version 1.4
 	 */
 	static final class BitGeneISeq extends ArrayProxyISeq<BitGene, Proxy> {
 		private static final long serialVersionUID = 1L;
@@ -79,7 +79,7 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene, Proxy> {
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.4
-	 * @version 3.0 &mdash; <em>$Date: 2014-08-01 $</em>
+	 * @version 3.0
 	 */
 	static final class Proxy extends ArrayProxy<BitGene, byte[], Proxy> {
 		private static final long serialVersionUID = 1L;
@@ -119,7 +119,7 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene, Proxy> {
 			final Proxy other, final int otherStart
 		) {
 			checkIndex(start, end);
-			other.checkIndex(otherStart, otherStart + (end - start));
+			other.checkIndex(otherStart, otherStart + end - start);
 			cloneIfSealed();
 			other.cloneIfSealed();
 

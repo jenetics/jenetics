@@ -21,7 +21,6 @@ package org.jenetics.internal.util;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-09-01 $</em>
  */
 public class Named<T> {
 	public final String name;

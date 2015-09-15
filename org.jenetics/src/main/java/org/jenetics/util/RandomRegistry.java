@@ -40,7 +40,7 @@ import org.jenetics.internal.util.require;
  *
  * <b>Setup of a <i>global</i> PRNG</b>
  *
- * [code]
+ * <pre>{@code
  * public class GA {
  *     public static void main(final String[] args) {
  *         // Initialize the registry with a ThreadLocal instance of the PRGN.
@@ -52,12 +52,12 @@ import org.jenetics.internal.util.require;
  *         RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadSafe(1234));
  *
  *         ...
- *         final EvolutionResult&lt;DoubleGene, Double&gt; result = stream
+ *         final EvolutionResult<DoubleGene, Double> result = stream
  *             .limit(100)
  *             .collect(toBestEvolutionResult());
  *     }
  * }
- * [/code]
+ * }</pre>
  * <p>
  *
  * <b>Setup of a <i>local</i> PRNG</b><br>
@@ -65,26 +65,26 @@ import org.jenetics.internal.util.require;
  * You can temporarily (and locally) change the implementation of the PRNG. E.g.
  * for initialize the engine stream with the same initial population.
  *
- * [code]
+ * <pre>{@code
  * public class GA {
  *     public static void main(final String[] args) {
  *         // Create a reproducible list of genotypes.
- *         final List&lt;Genotype&lt;DoubleGene&gt;&gt; genotypes =
- *             with(new LCG64ShiftRandom(123), r -&gt;
+ *         final List<Genotype<DoubleGene>> genotypes =
+ *             with(new LCG64ShiftRandom(123), r ->
  *                 Genotype.of(DoubleChromosome.of(0, 10)).instances()
  *                     .limit(50)
  *                     .collect(toList())
  *             );
  *
- *         final Engine&lt;DoubleGene, Double&gt; engine = ...;
- *         final EvolutionResult&lt;DoubleGene, Double&gt; result = engine
+ *         final Engine<DoubleGene, Double> engine = ...;
+ *         final EvolutionResult<DoubleGene, Double> result = engine
  *              // Initialize the evolution stream with the given genotypes.
  *             .stream(genotypes)
  *             .limit(100)
  *             .collect(toBestEvolutionResult());
  *     }
  * }
- * [/code]
+ * }</pre>
  * <p>
  *
  * @see Random
@@ -93,7 +93,7 @@ import org.jenetics.internal.util.require;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-20 $</em>
+ * @version 3.0
  */
 public final class RandomRegistry {
 	private RandomRegistry() {require.noInstance();}
@@ -107,6 +107,10 @@ public final class RandomRegistry {
 	 * @return the global {@link Random} object.
 	 */
 	public static Random getRandom() {
+		return CONTEXT.get().get();
+	}
+
+	static Random random() {
 		return CONTEXT.get().get();
 	}
 
@@ -157,15 +161,17 @@ public final class RandomRegistry {
 	/**
 	 * Executes the consumer code using the given {@code random} engine.
 	 *
-	 * [code]
-	 * final MSeq&lt;Integer&gt; seq = ...
-	 * using(new Random(123), r -&gt; {
+	 * <pre>{@code
+	 * final MSeq<Integer> seq = ...
+	 * using(new Random(123), r -> {
 	 *     seq.shuffle();
 	 * });
-	 * [/code]
+	 * }</pre>
 	 *
 	 * The example above shuffles the given integer {@code seq} <i>using</i> the
 	 * given {@code Random(123)} engine.
+	 *
+	 * @since 3.0
 	 *
 	 * @param random the PRNG used within the consumer
 	 * @param consumer the consumer which is executed with the <i>scope</i> of
@@ -186,15 +192,17 @@ public final class RandomRegistry {
 	/**
 	 * Executes the consumer code using the given {@code random} engine.
 	 *
-	 * [code]
-	 * final MSeq&lt;Integer&gt; seq = ...
-	 * using(new LCG64ShiftRandom.ThreadLocal(), r -&gt; {
+	 * <pre>{@code
+	 * final MSeq<Integer> seq = ...
+	 * using(new LCG64ShiftRandom.ThreadLocal(), r -> {
 	 *     seq.shuffle();
 	 * });
-	 * [/code]
+	 * }</pre>
 	 *
 	 * The example above shuffles the given integer {@code seq} <i>using</i> the
 	 * given {@code LCG64ShiftRandom.ThreadLocal()} engine.
+	 *
+	 * @since 3.0
 	 *
 	 * @param random the PRNG used within the consumer
 	 * @param consumer the consumer which is executed with the <i>scope</i> of
@@ -216,14 +224,16 @@ public final class RandomRegistry {
 	 * Opens a new {@code Scope} with the given random engine and executes the
 	 * given function within it. The following example shows how to create a
 	 * reproducible list of genotypes:
-	 * [code]
-	 * final List&lt;Genotype&lt;DoubleGene&gt;&gt; genotypes =
-	 *     with(new LCG64ShiftRandom(123), r -&gt;
+	 * <pre>{@code
+	 * final List<Genotype<DoubleGene>> genotypes =
+	 *     with(new LCG64ShiftRandom(123), r ->
 	 *         Genotype.of(DoubleChromosome.of(0, 10)).instances()
 	 *            .limit(50)
 	 *            .collect(toList())
 	 *     );
-	 * [/code]
+	 * }</pre>
+	 *
+	 * @since 3.0
 	 *
 	 * @param <R> the type of the random engine
 	 * @param <T> the function return type
@@ -243,14 +253,16 @@ public final class RandomRegistry {
 	 * Opens a new {@code Scope} with the given random engine and executes the
 	 * given function within it. The following example shows how to create a
 	 * reproducible list of genotypes:
-	 * [code]
-	 * final List&lt;Genotype&lt;DoubleGene&gt;&gt; genotypes =
-	 *     with(new LCG64ShiftRandom.ThreadLocal(), random -&gt;
+	 * <pre>{@code
+	 * final List<Genotype<DoubleGene>> genotypes =
+	 *     with(new LCG64ShiftRandom.ThreadLocal(), random ->
 	 *         Genotype.of(DoubleChromosome.of(0, 10)).instances()
 	 *            .limit(50)
 	 *            .collect(toList())
 	 *     );
-	 * [/code]
+	 * }</pre>
+	 *
+	 * @since 3.0
 	 *
 	 * @param <R> the type of the random engine
 	 * @param <T> the function return type

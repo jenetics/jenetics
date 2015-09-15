@@ -1,0 +1,17 @@
+#!/bin/bash
+
+MODULES=(
+	"org.jenetics"
+	"org.jenetics.example"
+)
+
+CLASSPATH="."
+for module in ${MODULES[@]}
+do
+	CLASSPATH="${CLASSPATH}:${module}/build/classes/main"
+	CLASSPATH="${CLASSPATH}:${module}/build/resources/main"
+	CLASSPATH="${CLASSPATH}:${module}/build/classes/test"
+	CLASSPATH="${CLASSPATH}:${module}/build/resources/test"
+done
+
+java -cp ${CLASSPATH} $*

@@ -35,7 +35,7 @@ import org.jenetics.util.Seq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0 &mdash; <em>$Date: 2014-09-11 $</em>
+ * @version 3.0
  */
 public abstract class ArrayProxySeq<T, P extends ArrayProxy<T, ?, ?>>
 	implements
