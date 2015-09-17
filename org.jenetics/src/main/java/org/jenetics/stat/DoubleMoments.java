@@ -26,7 +26,6 @@ import java.io.Serializable;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
 
-import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 /**
@@ -94,8 +93,8 @@ public final class DoubleMoments implements Serializable {
 	}
 
 	/**
-	 * Return the minimum value recorded, or {@code Integer.MAX_VALUE} if no
-	 * values have been recorded.
+	 * Return the minimum value recorded, or {@code Double.POSITIVE_INFINITY} if
+	 * no values have been recorded.
 	 *
 	 * @return the minimum value, or {@code Integer.MAX_VALUE} if none
 	 */
@@ -104,8 +103,8 @@ public final class DoubleMoments implements Serializable {
 	}
 
 	/**
-	 * Return the maximum value recorded, or {@code Integer.MIN_VALUE} if no
-	 * values have been recorded.
+	 * Return the maximum value recorded, or {@code Double.NEGATIVE_INFINITY} if
+	 * no values have been recorded.
 	 *
 	 * @return the maximum value, or {@code Integer.MIN_VALUE} if none
 	 */
@@ -184,16 +183,15 @@ public final class DoubleMoments implements Serializable {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(moments ->
-			eq(_count, moments._count) &&
-			eq(_sum, moments._sum) &&
-			eq(_min, moments._min) &&
-			eq(_max, moments._max) &&
-			eq(_mean, moments._mean) &&
-			eq(_variance, moments._variance) &&
-			eq(_skewness, moments._skewness) &&
-			eq(_kurtosis, moments._kurtosis)
-		);
+		return obj instanceof DoubleMoments &&
+			eq(_count, ((DoubleMoments)obj)._count) &&
+			eq(_sum, ((DoubleMoments)obj)._sum) &&
+			eq(_min, ((DoubleMoments)obj)._min) &&
+			eq(_max, ((DoubleMoments)obj)._max) &&
+			eq(_mean, ((DoubleMoments)obj)._mean) &&
+			eq(_variance, ((DoubleMoments)obj)._variance) &&
+			eq(_skewness, ((DoubleMoments)obj)._skewness) &&
+			eq(_kurtosis, ((DoubleMoments)obj)._kurtosis);
 	}
 
 	@Override
