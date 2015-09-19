@@ -45,7 +45,7 @@ import org.jenetics.util.Seq;
  * @version !__version__!
  * @since !__version__!
  */
-public final class CompositeCodec<T, G extends Gene<?, G>>
+final class CompositeCodec<T, G extends Gene<?, G>>
 	implements Codec<T, G>
 {
 
@@ -61,7 +61,7 @@ public final class CompositeCodec<T, G extends Gene<?, G>>
 	 * @param codecs
 	 * @param decoder
 	 */
-	public CompositeCodec(
+	CompositeCodec(
 		final ISeq<Codec<?, G>> codecs,
 		final Function<Object[], T> decoder
 	) {
