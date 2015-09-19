@@ -21,11 +21,17 @@ package org.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
 import org.jenetics.util.Factory;
+import org.jenetics.util.Function3;
+import org.jenetics.util.Function4;
+import org.jenetics.util.Function5;
+import org.jenetics.util.Function6;
+import org.jenetics.util.ISeq;
 
 /**
  * A problem {@code Codec} contains the information about how to encode a given
@@ -137,6 +143,129 @@ public interface Codec<T, G extends Gene<?, G>> {
 				return decoder;
 			}
 		};
+	}
+
+	public static <G extends Gene<?, G>, A, B, T>
+	Codec<T, G> of(
+		Codec<A, G> codec1,
+		Codec<B, G> codec2,
+		BiFunction<A, B, T> decoder
+	) {
+		@SuppressWarnings("unchecked")
+		final Function<Object[], T> decoderAdapter = v -> decoder
+			.apply((A)v[0], (B)v[1]);
+
+		return of(
+			ISeq.of(
+				codec1,
+				codec2
+			),
+			decoderAdapter
+		);
+	}
+
+	public static <G extends Gene<?, G>, A, B, C, T>
+	Codec<T, G> of(
+		Codec<A, G> codec1,
+		Codec<B, G> codec2,
+		Codec<C, G> codec3,
+		Function3<A, B, C, T> decoder
+	) {
+		@SuppressWarnings("unchecked")
+		final Function<Object[], T> decoderAdapter = v -> decoder
+			.apply((A)v[0], (B)v[1], (C)v[2]);
+
+		return of(
+			ISeq.of(
+				codec1,
+				codec2,
+				codec3
+			),
+			decoderAdapter
+		);
+	}
+
+	public static <G extends Gene<?, G>, A, B, C, D, T>
+	Codec<T, G> of(
+		Codec<A, G> codec1,
+		Codec<B, G> codec2,
+		Codec<C, G> codec3,
+		Codec<D, G> codec4,
+		Function4<A, B, C, D, T> decoder
+	) {
+		@SuppressWarnings("unchecked")
+		final Function<Object[], T> decoderAdapter = v -> decoder
+			.apply((A)v[0], (B)v[1], (C)v[2], (D)v[3]);
+
+		return of(
+			ISeq.of(
+				codec1,
+				codec2,
+				codec3,
+				codec4
+			),
+			decoderAdapter
+		);
+	}
+
+	public static <G extends Gene<?, G>, A, B, C, D, E, T>
+	Codec<T, G> of(
+		Codec<A, G> codec1,
+		Codec<B, G> codec2,
+		Codec<C, G> codec3,
+		Codec<D, G> codec4,
+		Codec<E, G> codec5,
+		Function5<A, B, C, D, E, T> decoder
+	) {
+		@SuppressWarnings("unchecked")
+		final Function<Object[], T> decoderAdapter = v -> decoder
+			.apply((A)v[0], (B)v[1], (C)v[2], (D)v[3], (E)v[4]);
+
+		return of(
+			ISeq.of(
+				codec1,
+				codec2,
+				codec3,
+				codec4,
+				codec5
+			),
+			decoderAdapter
+		);
+	}
+
+	public static <G extends Gene<?, G>, A, B, C, D, E, F, T>
+	Codec<T, G> of(
+		Codec<A, G> codec1,
+		Codec<B, G> codec2,
+		Codec<C, G> codec3,
+		Codec<D, G> codec4,
+		Codec<E, G> codec5,
+		Codec<F, G> codec6,
+		Function6<A, B, C, D, E, F, T> decoder
+	) {
+		@SuppressWarnings("unchecked")
+		final Function<Object[], T> decoderAdapter = v -> decoder
+			.apply((A)v[0], (B)v[1], (C)v[2], (D)v[3], (E)v[4], (F)v[5]);
+
+		return of(
+			ISeq.of(
+				codec1,
+				codec2,
+				codec3,
+				codec4,
+				codec5,
+				codec6
+			),
+			decoderAdapter
+		);
+	}
+
+	public static <G extends Gene<?, G>, T>
+	Codec<T, G> of(
+		final ISeq<Codec<?, G>> codecs,
+		final Function<Object[], T> decoder
+	) {
+		return new CompositeCodec<>(codecs, decoder);
 	}
 
 }
