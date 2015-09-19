@@ -147,9 +147,9 @@ public interface Codec<T, G extends Gene<?, G>> {
 
 	public static <G extends Gene<?, G>, A, B, T>
 	Codec<T, G> of(
-		Codec<A, G> codec1,
-		Codec<B, G> codec2,
-		BiFunction<A, B, T> decoder
+		final Codec<A, G> codec1,
+		final Codec<B, G> codec2,
+		final BiFunction<A, B, T> decoder
 	) {
 		@SuppressWarnings("unchecked")
 		final Function<Object[], T> decoderAdapter = v -> decoder
@@ -166,10 +166,10 @@ public interface Codec<T, G extends Gene<?, G>> {
 
 	public static <G extends Gene<?, G>, A, B, C, T>
 	Codec<T, G> of(
-		Codec<A, G> codec1,
-		Codec<B, G> codec2,
-		Codec<C, G> codec3,
-		Function3<A, B, C, T> decoder
+		final Codec<A, G> codec1,
+		final Codec<B, G> codec2,
+		final Codec<C, G> codec3,
+		final Function3<A, B, C, T> decoder
 	) {
 		@SuppressWarnings("unchecked")
 		final Function<Object[], T> decoderAdapter = v -> decoder
@@ -187,11 +187,11 @@ public interface Codec<T, G extends Gene<?, G>> {
 
 	public static <G extends Gene<?, G>, A, B, C, D, T>
 	Codec<T, G> of(
-		Codec<A, G> codec1,
-		Codec<B, G> codec2,
-		Codec<C, G> codec3,
-		Codec<D, G> codec4,
-		Function4<A, B, C, D, T> decoder
+		final Codec<A, G> codec1,
+		final Codec<B, G> codec2,
+		final Codec<C, G> codec3,
+		final Codec<D, G> codec4,
+		final Function4<A, B, C, D, T> decoder
 	) {
 		@SuppressWarnings("unchecked")
 		final Function<Object[], T> decoderAdapter = v -> decoder
@@ -210,12 +210,12 @@ public interface Codec<T, G extends Gene<?, G>> {
 
 	public static <G extends Gene<?, G>, A, B, C, D, E, T>
 	Codec<T, G> of(
-		Codec<A, G> codec1,
-		Codec<B, G> codec2,
-		Codec<C, G> codec3,
-		Codec<D, G> codec4,
-		Codec<E, G> codec5,
-		Function5<A, B, C, D, E, T> decoder
+		final Codec<A, G> codec1,
+		final Codec<B, G> codec2,
+		final Codec<C, G> codec3,
+		final Codec<D, G> codec4,
+		final Codec<E, G> codec5,
+		final Function5<A, B, C, D, E, T> decoder
 	) {
 		@SuppressWarnings("unchecked")
 		final Function<Object[], T> decoderAdapter = v -> decoder
@@ -235,13 +235,13 @@ public interface Codec<T, G extends Gene<?, G>> {
 
 	public static <G extends Gene<?, G>, A, B, C, D, E, F, T>
 	Codec<T, G> of(
-		Codec<A, G> codec1,
-		Codec<B, G> codec2,
-		Codec<C, G> codec3,
-		Codec<D, G> codec4,
-		Codec<E, G> codec5,
-		Codec<F, G> codec6,
-		Function6<A, B, C, D, E, F, T> decoder
+		final Codec<A, G> codec1,
+		final Codec<B, G> codec2,
+		final Codec<C, G> codec3,
+		final Codec<D, G> codec4,
+		final Codec<E, G> codec5,
+		final Codec<F, G> codec6,
+		final Function6<A, B, C, D, E, F, T> decoder
 	) {
 		@SuppressWarnings("unchecked")
 		final Function<Object[], T> decoderAdapter = v -> decoder
