@@ -19,7 +19,23 @@
  */
 package org.jenetics.util;
 
+import java.util.Objects;
+import java.util.function.Function;
+
 /**
+ * Represents a function that accepts 6 arguments and produces a result. This is
+ * the 6-arity specialization of {@link Function}.
+ *
+ * @param <T1> the type of the first argument to the function
+ * @param <T2> the type of the second argument to the function
+ * @param <T3> the type of the third argument to the function
+ * @param <T4> the type of the fourth argument to the function
+ * @param <T5> the type of the fifth argument to the function
+ * @param <T6> the type of the sixth argument to the function
+ * @param <R> the type of the result of the function
+ *
+ * @see Function
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -27,6 +43,41 @@ package org.jenetics.util;
 @FunctionalInterface
 public interface Function6<T1, T2, T3, T4, T5, T6, R> {
 
-	R apply(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6);
+	/**
+	 * Applies this function to the given arguments.
+	 *
+	 * @param t1 the first function argument
+	 * @param t2 the second function argument
+	 * @param t3 the third function argument
+	 * @param t4 the fourth function argument
+	 * @param t5 the fifth function argument
+	 * @param t6 the sixth function argument
+	 * @return the function result
+	 */
+	public R apply(
+		final T1 t1,
+		final T2 t2,
+		final T3 t3,
+		final T4 t4,
+		final T5 t5,
+		final T6 t6);
+
+	/**
+	 * Returns a composed function that first applies this function to its input,
+	 * and then applies the {@code after} function to the result.
+	 *
+	 * @param <V> the type of output of the {@code after} function, and of the
+	 *           composed function
+	 * @param after the function to apply after this function is applied
+	 * @return a composed function that first applies this function and then
+	 *         applies the {@code after} function
+	 * @throws NullPointerException if after is {@code null}
+	 */
+	public default <V> Function6<T1, T2, T3, T4, T5, T6, V>
+	andThen(final Function<? super R, ? extends V> after) {
+		Objects.requireNonNull(after);
+		return (T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6) ->
+			after.apply(apply(t1, t2, t3, t4, t5, t6));
+	}
 
 }

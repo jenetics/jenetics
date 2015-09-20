@@ -24,7 +24,7 @@ import java.util.function.Function;
 
 /**
  * Represents a function that accepts 5 arguments and produces a result. This is
- * the 4-arity specialization of {@link Function}.
+ * the 6-arity specialization of {@link Function}.
  *
  * @param <T1> the type of the first argument to the function
  * @param <T2> the type of the second argument to the function
