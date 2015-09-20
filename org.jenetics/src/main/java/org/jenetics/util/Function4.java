@@ -41,6 +41,15 @@ import java.util.function.Function;
 @FunctionalInterface
 public interface Function4<T1, T2, T3, T4, R> {
 
+	/**
+	 * Applies this function to the given arguments.
+	 *
+	 * @param t1 the first function argument
+	 * @param t2 the second function argument
+	 * @param t3 the third function argument
+	 * @param t4 the fourth function argument
+	 * @return the function result
+	 */
 	public R apply(final T1 t1, final T2 t2, final T3 t3, final T4 t4);
 
 	/**
