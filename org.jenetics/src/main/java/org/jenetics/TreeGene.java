@@ -19,43 +19,24 @@
  */
 package org.jenetics;
 
-import java.util.Iterator;
-
-import org.jenetics.util.ISeq;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class TreeChromosome<G extends Gene<?, G>> implements Chromosome<G> {
+public class TreeGene<A> implements Gene<A, TreeGene<A>> {
 	@Override
-	public Chromosome<G> newInstance(ISeq<G> genes) {
+	public A getAllele() {
 		return null;
 	}
 
 	@Override
-	public G getGene(int index) {
+	public TreeGene<A> newInstance() {
 		return null;
 	}
 
 	@Override
-	public int length() {
-		return 0;
-	}
-
-	@Override
-	public ISeq<G> toSeq() {
-		return null;
-	}
-
-	@Override
-	public Chromosome<G> newInstance() {
-		return null;
-	}
-
-	@Override
-	public Iterator<G> iterator() {
+	public TreeGene<A> newInstance(A value) {
 		return null;
 	}
 
