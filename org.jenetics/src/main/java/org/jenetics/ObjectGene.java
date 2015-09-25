@@ -53,7 +53,13 @@ public final class ObjectGene<A> implements Gene<A, ObjectGene<A>> {
 		return _allele;
 	}
 
-	
+	public Supplier<? extends A> getSupplier() {
+		return _supplier;
+	}
+
+	public Predicate<? super A> getValidator() {
+		return _validator;
+	}
 
 	@Override
 	public ObjectGene<A> newInstance() {
@@ -83,6 +89,17 @@ public final class ObjectGene<A> implements Gene<A, ObjectGene<A>> {
 		final Supplier<? extends A> supplier
 	) {
 		return new ObjectGene<>(allele, supplier, a -> true);
+	}
+
+	public static <A> ObjectGene<A> of(final Supplier<? extends A> supplier) {
+		return new ObjectGene<>(supplier.get(), supplier, a -> true);
+	}
+
+	public static <A> ObjectGene<A> of(
+		final Supplier<? extends A> supplier,
+		final Predicate<? super A> validator
+	) {
+		return new ObjectGene<>(supplier.get(), supplier, validator);
 	}
 
 	static <A> ISeq<ObjectGene<A>> seq(
