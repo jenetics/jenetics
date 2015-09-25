@@ -19,8 +19,6 @@
  */
 package org.jenetics;
 
-import static java.util.Objects.requireNonNull;
-
 import org.jenetics.util.ISeq;
 
 /**
@@ -28,44 +26,30 @@ import org.jenetics.util.ISeq;
  * @version !__version__!
  * @since !__version__!
  */
-public final class TreeGene<A> implements Gene<A, TreeGene<A>> {
+public class TreeNode<T> {
 
-	private TreeGene<A> _parent;
-	private ISeq<TreeGene<A>> _children;
+	ISeq<TreeNode<T>> _nodes = ISeq.of();
+	int _parent = -1;
+	int _left = -1;
+	int _right;
 
-	private final A _allele;
+	T _data;
 
-	private TreeGene(final A allele) {
-		_allele = requireNonNull(allele);
+	public T getData() {
+		return _data;
 	}
 
-
-	void swap() {
-
+	public TreeNode<T> getParent() {
+		return _nodes.get(_parent);
 	}
 
-	@Override
-	public A getAllele() {
-		return _allele;
+	public TreeNode<T> getLeft() {
+		return _nodes.get(_left);
 	}
 
-	@Override
-	public TreeGene<A> newInstance() {
-		return null;
+	public TreeNode<T> getRight() {
+		return _nodes.get(_right);
 	}
 
-	@Override
-	public TreeGene<A> newInstance(final A value) {
-		return of(value);
-	}
-
-	@Override
-	public boolean isValid() {
-		return false;
-	}
-
-	public static <A> TreeGene<A> of(final A allele) {
-		return new TreeGene<>(allele);
-	}
 
 }
