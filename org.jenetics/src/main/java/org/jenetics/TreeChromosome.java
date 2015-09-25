@@ -29,6 +29,31 @@ import org.jenetics.util.ISeq;
  * @since !__version__!
  */
 public class TreeChromosome<G extends Gene<?, G>> implements Chromosome<G> {
+
+
+	final class Node<A> implements Gene<A, Node<A>> {
+		@Override
+		public A getAllele() {
+			return null;
+		}
+
+		@Override
+		public Node<A> newInstance() {
+			return null;
+		}
+
+		@Override
+		public Node<A> newInstance(A value) {
+			return null;
+		}
+
+		@Override
+		public boolean isValid() {
+			return false;
+		}
+	}
+
+
 	@Override
 	public Chromosome<G> newInstance(ISeq<G> genes) {
 		return null;
