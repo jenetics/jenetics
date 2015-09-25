@@ -21,6 +21,7 @@ package org.jenetics;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import org.jenetics.util.ISeq;
@@ -32,25 +33,52 @@ import org.jenetics.util.ISeq;
  */
 public class ObjectChromosome<A> extends AbstractChromosome<ObjectGene<A>> {
 
-	private final Supplier<A> _supplier;
+	private final Supplier<? extends A> _supplier;
+	private final Predicate<? super A> _validator;
 
-	protected ObjectChromosome(final ISeq<ObjectGene<A>> genes, final Supplier<A> supplier) {
+	protected ObjectChromosome(
+		final ISeq<ObjectGene<A>> genes,
+		final Supplier<? extends A> supplier,
+		final Predicate<? super A> validator
+	) {
 		super(genes);
 		_supplier = requireNonNull(supplier);
+		_validator = requireNonNull(validator);
 	}
 
 	@Override
-	public Chromosome<ObjectGene<A>> newInstance(final ISeq<ObjectGene<A>> genes) {
-		return new ObjectChromosome<>(genes, _supplier);
+	public Chromosome<ObjectGene<A>> newInstance(
+		final ISeq<ObjectGene<A>> genes
+	) {
+		return new ObjectChromosome<>(genes, _supplier, _validator);
 	}
 
 	@Override
 	public Chromosome<ObjectGene<A>> newInstance() {
-		return of(length(), _supplier);
+		return of(length(), _supplier, _validator);
 	}
 
-	public static <A> ObjectChromosome<A> of(final int length, final Supplier<A> supplier) {
-		return new ObjectChromosome<A>(ObjectGene.seq(length, supplier), supplier);
+	public static <A> ObjectChromosome<A> of(
+		final int length,
+		final Supplier<? extends A> supplier,
+		final Predicate<? super A> validator
+	) {
+		return new ObjectChromosome<A>(
+			ObjectGene.seq(length, supplier, validator),
+			supplier,
+			validator
+		);
+	}
+
+	public static <A> ObjectChromosome<A> of(
+		final int length,
+		final Supplier<? extends A> supplier
+	) {
+		return new ObjectChromosome<A>(
+			ObjectGene.seq(length, supplier, a -> true),
+			supplier,
+			a -> true
+		);
 	}
 
 }

@@ -21,6 +21,7 @@ package org.jenetics;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import org.jenetics.util.ISeq;
@@ -34,11 +35,17 @@ import org.jenetics.util.MSeq;
 public final class ObjectGene<A> implements Gene<A, ObjectGene<A>> {
 
 	private final A _allele;
-	private final Supplier<A> _supplier;
+	private final Supplier<? extends A> _supplier;
+	private final Predicate<? super A> _validator;
 
-	private ObjectGene(final A allele, final Supplier<A> supplier) {
+	private ObjectGene(
+		final A allele,
+		final Supplier<? extends A> supplier,
+		final Predicate<? super A> validator
+	) {
 		_allele = requireNonNull(allele);
 		_supplier = requireNonNull(supplier);
+		_validator = requireNonNull(validator);
 	}
 
 	@Override
@@ -46,31 +53,45 @@ public final class ObjectGene<A> implements Gene<A, ObjectGene<A>> {
 		return _allele;
 	}
 
+	
+
 	@Override
 	public ObjectGene<A> newInstance() {
-		return new ObjectGene<>(_supplier.get(), _supplier);
+		return new ObjectGene<>(_supplier.get(), _supplier, _validator);
 	}
 
 	@Override
 	public ObjectGene<A> newInstance(final A value) {
-		return new ObjectGene<>(value, _supplier);
+		return new ObjectGene<>(value, _supplier, _validator);
 	}
 
 	@Override
 	public boolean isValid() {
-		return true;
+		return _validator.test(_allele);
 	}
 
-	public static <A> ObjectGene<A> of(final A allele, final Supplier<A> supplier) {
-		return new ObjectGene<>(allele, supplier);
+	public static <A> ObjectGene<A> of(
+		final A allele,
+		final Supplier<? extends A> supplier,
+		final Predicate<? super A> validator
+	) {
+		return new ObjectGene<>(allele, supplier, validator);
+	}
+
+	public static <A> ObjectGene<A> of(
+		final A allele,
+		final Supplier<? extends A> supplier
+	) {
+		return new ObjectGene<>(allele, supplier, a -> true);
 	}
 
 	static <A> ISeq<ObjectGene<A>> seq(
 		final int length,
-		final Supplier<A> supplier
+		final Supplier<? extends A> supplier,
+		final Predicate<? super A> validator
 	) {
 		return MSeq.<ObjectGene<A>>ofLength(length)
-			.fill(() -> of(supplier.get(), supplier))
+			.fill(() -> of(supplier.get(), supplier, validator))
 			.toISeq();
 	}
 
