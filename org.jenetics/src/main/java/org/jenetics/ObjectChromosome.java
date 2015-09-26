@@ -31,13 +31,13 @@ import org.jenetics.util.ISeq;
  * @version !__version__!
  * @since !__version__!
  */
-public class ObjectChromosome<A> extends AbstractChromosome<ObjectGene<A>> {
+public class ObjectChromosome<A> extends AbstractChromosome<AnyGene<A>> {
 
 	private final Supplier<? extends A> _supplier;
 	private final Predicate<? super A> _validator;
 
 	protected ObjectChromosome(
-		final ISeq<ObjectGene<A>> genes,
+		final ISeq<AnyGene<A>> genes,
 		final Supplier<? extends A> supplier,
 		final Predicate<? super A> validator
 	) {
@@ -47,14 +47,14 @@ public class ObjectChromosome<A> extends AbstractChromosome<ObjectGene<A>> {
 	}
 
 	@Override
-	public Chromosome<ObjectGene<A>> newInstance(
-		final ISeq<ObjectGene<A>> genes
+	public Chromosome<AnyGene<A>> newInstance(
+		final ISeq<AnyGene<A>> genes
 	) {
 		return new ObjectChromosome<>(genes, _supplier, _validator);
 	}
 
 	@Override
-	public Chromosome<ObjectGene<A>> newInstance() {
+	public Chromosome<AnyGene<A>> newInstance() {
 		return of(length(), _supplier, _validator);
 	}
 
@@ -64,7 +64,7 @@ public class ObjectChromosome<A> extends AbstractChromosome<ObjectGene<A>> {
 		final Predicate<? super A> validator
 	) {
 		return new ObjectChromosome<A>(
-			ObjectGene.seq(length, supplier, validator),
+			AnyGene.seq(length, supplier, validator),
 			supplier,
 			validator
 		);
@@ -75,7 +75,7 @@ public class ObjectChromosome<A> extends AbstractChromosome<ObjectGene<A>> {
 		final Supplier<? extends A> supplier
 	) {
 		return new ObjectChromosome<A>(
-			ObjectGene.seq(length, supplier, a -> true),
+			AnyGene.seq(length, supplier, a -> true),
 			supplier,
 			a -> true
 		);

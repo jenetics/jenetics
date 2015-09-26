@@ -32,13 +32,13 @@ import org.jenetics.util.MSeq;
  * @version !__version__!
  * @since !__version__!
  */
-public final class ObjectGene<A> implements Gene<A, ObjectGene<A>> {
+public final class AnyGene<A> implements Gene<A, AnyGene<A>> {
 
 	private final A _allele;
 	private final Supplier<? extends A> _supplier;
 	private final Predicate<? super A> _validator;
 
-	private ObjectGene(
+	private AnyGene(
 		final A allele,
 		final Supplier<? extends A> supplier,
 		final Predicate<? super A> validator
@@ -62,13 +62,13 @@ public final class ObjectGene<A> implements Gene<A, ObjectGene<A>> {
 	}
 
 	@Override
-	public ObjectGene<A> newInstance() {
-		return new ObjectGene<>(_supplier.get(), _supplier, _validator);
+	public AnyGene<A> newInstance() {
+		return new AnyGene<>(_supplier.get(), _supplier, _validator);
 	}
 
 	@Override
-	public ObjectGene<A> newInstance(final A value) {
-		return new ObjectGene<>(value, _supplier, _validator);
+	public AnyGene<A> newInstance(final A value) {
+		return new AnyGene<>(value, _supplier, _validator);
 	}
 
 	@Override
@@ -76,38 +76,38 @@ public final class ObjectGene<A> implements Gene<A, ObjectGene<A>> {
 		return _validator.test(_allele);
 	}
 
-	public static <A> ObjectGene<A> of(
+	public static <A> AnyGene<A> of(
 		final A allele,
 		final Supplier<? extends A> supplier,
 		final Predicate<? super A> validator
 	) {
-		return new ObjectGene<>(allele, supplier, validator);
+		return new AnyGene<>(allele, supplier, validator);
 	}
 
-	public static <A> ObjectGene<A> of(
+	public static <A> AnyGene<A> of(
 		final A allele,
 		final Supplier<? extends A> supplier
 	) {
-		return new ObjectGene<>(allele, supplier, a -> true);
+		return new AnyGene<>(allele, supplier, a -> true);
 	}
 
-	public static <A> ObjectGene<A> of(final Supplier<? extends A> supplier) {
-		return new ObjectGene<>(supplier.get(), supplier, a -> true);
+	public static <A> AnyGene<A> of(final Supplier<? extends A> supplier) {
+		return new AnyGene<>(supplier.get(), supplier, a -> true);
 	}
 
-	public static <A> ObjectGene<A> of(
+	public static <A> AnyGene<A> of(
 		final Supplier<? extends A> supplier,
 		final Predicate<? super A> validator
 	) {
-		return new ObjectGene<>(supplier.get(), supplier, validator);
+		return new AnyGene<>(supplier.get(), supplier, validator);
 	}
 
-	static <A> ISeq<ObjectGene<A>> seq(
+	static <A> ISeq<AnyGene<A>> seq(
 		final int length,
 		final Supplier<? extends A> supplier,
 		final Predicate<? super A> validator
 	) {
-		return MSeq.<ObjectGene<A>>ofLength(length)
+		return MSeq.<AnyGene<A>>ofLength(length)
 			.fill(() -> of(supplier.get(), supplier, validator))
 			.toISeq();
 	}
