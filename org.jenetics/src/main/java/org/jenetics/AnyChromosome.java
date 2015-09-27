@@ -55,13 +55,13 @@ public class AnyChromosome<A> extends AbstractChromosome<AnyGene<A>> {
 
 	@Override
 	public Chromosome<AnyGene<A>> newInstance() {
-		return of(length(), _supplier, _validator);
+		return of(_supplier, _validator, length());
 	}
 
 	public static <A> AnyChromosome<A> of(
-		final int length,
 		final Supplier<? extends A> supplier,
-		final Predicate<? super A> validator
+		final Predicate<? super A> validator,
+		final int length
 	) {
 		return new AnyChromosome<A>(
 			AnyGene.seq(length, supplier, validator),
@@ -71,8 +71,8 @@ public class AnyChromosome<A> extends AbstractChromosome<AnyGene<A>> {
 	}
 
 	public static <A> AnyChromosome<A> of(
-		final int length,
-		final Supplier<? extends A> supplier
+		final Supplier<? extends A> supplier,
+		final int length
 	) {
 		return new AnyChromosome<A>(
 			AnyGene.seq(length, supplier, a -> true),
