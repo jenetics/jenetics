@@ -48,7 +48,7 @@ public class Squares {
 			.builder(Squares::area, codecs.ofScalar(Squares::nextDimension))
 			.build();
 
-		final Phenotype<?, ?> pt = engine.stream()
+		final Phenotype<AnyGene<Dimension>, Double> pt = engine.stream()
 			.limit(50)
 			.collect(EvolutionResult.toBestPhenotype());
 
