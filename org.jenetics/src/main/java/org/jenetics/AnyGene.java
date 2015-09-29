@@ -90,6 +90,10 @@ public final class AnyGene<A> implements Gene<A, AnyGene<A>> {
 			Equality.eq(((AnyGene<?>)obj)._allele, _allele);
 	}
 
+	@Override
+	public String toString() {
+		return Objects.toString(_allele);
+	}
 
 	public static <A> AnyGene<A> of(
 		final A allele,
