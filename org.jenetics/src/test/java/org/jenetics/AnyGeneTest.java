@@ -19,10 +19,20 @@
  */
 package org.jenetics;
 
+import org.testng.annotations.Test;
+
+import org.jenetics.util.Factory;
+import org.jenetics.util.RandomRegistry;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
  */
-public class AnyGeneTest {
+@Test
+public class AnyGeneTest extends GeneTester<AnyGene<Integer>> {
+
+	@Override
+	protected Factory<AnyGene<Integer>> factory() {
+		return () -> AnyGene.of(RandomRegistry.getRandom()::nextInt);
+	}
+
 }
