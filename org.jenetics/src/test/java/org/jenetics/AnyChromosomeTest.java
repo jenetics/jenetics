@@ -19,10 +19,26 @@
  */
 package org.jenetics;
 
+import org.testng.annotations.Test;
+
+import org.jenetics.util.Factory;
+import org.jenetics.util.RandomRegistry;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
  */
-public class AnyChromosomeTest {
+@Test
+public class AnyChromosomeTest extends ChromosomeTester<AnyGene<Integer>> {
+
+	@Override
+	protected Factory<Chromosome<AnyGene<Integer>>> factory() {
+		return () -> AnyChromosome.of(RandomRegistry.getRandom()::nextInt, 10);
+	}
+
+	@Override
+	public void objectSerialize() {
+		// Ignore the serialization test. The 'AnyChromosome' shouldn't be
+		// Serializable, but the 'AbstractChromosome' is. Will be removed.
+	}
+
 }
