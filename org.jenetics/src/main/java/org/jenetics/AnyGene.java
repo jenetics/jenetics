@@ -21,8 +21,11 @@ package org.jenetics;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+
+import org.jenetics.internal.util.Equality;
 
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
@@ -75,6 +78,18 @@ public final class AnyGene<A> implements Gene<A, AnyGene<A>> {
 	public boolean isValid() {
 		return _validator.test(_allele);
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(_allele);
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof AnyGene<?> &&
+			Equality.eq(((AnyGene<?>)obj)._allele, _allele);
+	}
+
 
 	public static <A> AnyGene<A> of(
 		final A allele,
