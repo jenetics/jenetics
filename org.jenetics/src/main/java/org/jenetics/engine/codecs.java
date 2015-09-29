@@ -24,10 +24,14 @@ import static java.util.Objects.requireNonNull;
 
 import java.awt.geom.AffineTransform;
 import java.util.function.IntFunction;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import org.jenetics.internal.util.require;
 
+import org.jenetics.AnyChromosome;
+import org.jenetics.AnyGene;
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
 import org.jenetics.EnumGene;
@@ -46,7 +50,7 @@ import org.jenetics.util.LongRange;
  * This class contains factory methods for creating common  problem encodings.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.2
+ * @version !__version__!
  * @since 3.2
  */
 public final class codecs {
@@ -98,6 +102,25 @@ public final class codecs {
 		return Codec.of(
 			Genotype.of(DoubleChromosome.of(domain)),
 			gt -> gt.getChromosome().getGene().getAllele()
+		);
+	}
+
+	public static <A> Codec<A, AnyGene<A>> ofScalar(
+		final Supplier<? extends A> supplier,
+		final Predicate<? super A> verifier
+	) {
+		return Codec.of(
+			Genotype.of(AnyChromosome.of(supplier, verifier, 1)),
+			gt -> gt.getGene().getAllele()
+		);
+	}
+
+	public static <A> Codec<A, AnyGene<A>> ofScalar(
+		final Supplier<? extends A> supplier
+	) {
+		return Codec.of(
+			Genotype.of(AnyChromosome.of(supplier, 1)),
+			gt -> gt.getGene().getAllele()
 		);
 	}
 
