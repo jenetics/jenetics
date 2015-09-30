@@ -145,7 +145,7 @@ public final class AnyGene<A> implements Gene<A, AnyGene<A>> {
 	 * @param allele the actual allele instance the created gene represents.
 	 *        {@code null} values are allowed.
 	 * @param supplier the allele-supplier which is used for creating new,
-	 *        random genes
+	 *        random alleles
 	 * @param validator the validator used for validating the created gene. This
 	 *        predicate is used in the {@link #isValid()} method.
 	 * @return a new {@code AnyGene} with the given parameters
@@ -170,7 +170,7 @@ public final class AnyGene<A> implements Gene<A, AnyGene<A>> {
 	 * @param allele the actual allele instance the created gene represents.
 	 *        {@code null} values are allowed.
 	 * @param supplier the allele-supplier which is used for creating new,
-	 *        random genes
+	 *        random alleles
 	 * @return a new {@code AnyGene} with the given parameters
 	 * @throws NullPointerException if the {@code suppler} is {@code null}
 	 */
@@ -188,7 +188,7 @@ public final class AnyGene<A> implements Gene<A, AnyGene<A>> {
 	 *
 	 * @param <A> the allele type
 	 * @param supplier the allele-supplier which is used for creating new,
-	 *        random genes
+	 *        random alleles
 	 * @return a new {@code AnyGene} with the given parameters
 	 * @throws NullPointerException if one of the parameters is {@code null}
 	 */
@@ -202,7 +202,7 @@ public final class AnyGene<A> implements Gene<A, AnyGene<A>> {
 	 *
 	 * @param <A> the allele type
 	 * @param supplier the allele-supplier which is used for creating new,
-	 *        random genes
+	 *        random alleles
 	 * @param validator the validator used for validating the created gene. This
 	 *        predicate is used in the {@link #isValid()} method.
 	 * @return a new {@code AnyGene} with the given parameters
