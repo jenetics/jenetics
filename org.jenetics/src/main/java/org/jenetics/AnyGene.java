@@ -73,7 +73,7 @@ public final class AnyGene<A> implements Gene<A, AnyGene<A>> {
 		final Supplier<? extends A> supplier,
 		final Predicate<? super A> validator
 	) {
-		_allele = requireNonNull(allele);
+		_allele = allele;
 		_supplier = requireNonNull(supplier);
 		_validator = requireNonNull(validator);
 	}
@@ -132,13 +132,15 @@ public final class AnyGene<A> implements Gene<A, AnyGene<A>> {
 	 * (random) genes are created with the given allele {@code supplier}.
 	 *
 	 * @param <A> the allele type
-	 * @param allele the actual allele instance the created gene represents
+	 * @param allele the actual allele instance the created gene represents.
+	 *        {@code null} values are allowed.
 	 * @param supplier the allele-supplier which is used for creating new,
 	 *        random genes
 	 * @param validator the validator used for validating the created gene. This
 	 *        predicate is used in the {@link #isValid()} method.
 	 * @return a new {@code AnyGene} with the given parameters
-	 * @throws NullPointerException if one of the parameters is {@code null}
+	 * @throws NullPointerException if the {@code supplier} or {@code validator}
+	 *         is {@code null}
 	 */
 	public static <A> AnyGene<A> of(
 		final A allele,
@@ -155,11 +157,12 @@ public final class AnyGene<A> implements Gene<A, AnyGene<A>> {
 	 * {@code true}.
 	 *
 	 * @param <A> the allele type
-	 * @param allele the actual allele instance the created gene represents
+	 * @param allele the actual allele instance the created gene represents.
+	 *        {@code null} values are allowed.
 	 * @param supplier the allele-supplier which is used for creating new,
 	 *        random genes
 	 * @return a new {@code AnyGene} with the given parameters
-	 * @throws NullPointerException if one of the parameters is {@code null}
+	 * @throws NullPointerException if the {@code suppler} is {@code null}
 	 */
 	public static <A> AnyGene<A> of(
 		final A allele,
