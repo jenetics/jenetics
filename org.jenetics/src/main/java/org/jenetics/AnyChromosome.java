@@ -94,6 +94,26 @@ public class AnyChromosome<A> extends AbstractChromosome<AnyGene<A>> {
 	}
 
 	/**
+	 * Create a new chromosome of type {@code A} with the given parameters and
+	 * length 1.
+	 *
+	 * @param <A> the allele type
+	 * @param supplier the allele-supplier which is used for creating new,
+	 *        random alleles
+	 * @param validator the validator used for validating the created gene. This
+	 *        predicate is used in the {@link #isValid()} method.
+	 * @return a new chromosome of allele type {@code A}
+	 * @throws NullPointerException if the {@code supplier} or {@code validator}
+	 *         is {@code null}
+	 */
+	public static <A> AnyChromosome<A> of(
+		final Supplier<? extends A> supplier,
+		final Predicate<? super A> validator
+	) {
+		return of(supplier, validator, 1);
+	}
+
+	/**
 	 * Create a new chromosome of type {@code A} with the given parameters. The
 	 * {@code validator} predicate of the generated gene will always return
 	 * {@code true}.
@@ -103,8 +123,7 @@ public class AnyChromosome<A> extends AbstractChromosome<AnyGene<A>> {
 	 *        random alleles
 	 * @param length the length of the created chromosome
 	 * @return a new chromosome of allele type {@code A}
-	 * @throws NullPointerException if the {@code supplier} or {@code validator}
-	 *         is {@code null}
+	 * @throws NullPointerException if the {@code supplier} is {@code null}
 	 * @throws IllegalArgumentException if the length of the gene array is
 	 *         smaller than one.
 	 */
@@ -112,11 +131,24 @@ public class AnyChromosome<A> extends AbstractChromosome<AnyGene<A>> {
 		final Supplier<? extends A> supplier,
 		final int length
 	) {
-		return new AnyChromosome<A>(
-			AnyGene.seq(length, supplier, a -> true),
-			supplier,
-			a -> true
-		);
+		return of(supplier, a -> true, length);
+	}
+
+	/**
+	 * Create a new chromosome of type {@code A} with the given parameters and
+	 * length 1. The {@code validator} predicate of the generated gene will
+	 * always return {@code true}.
+	 *
+	 * @param <A> the allele type
+	 * @param supplier the allele-supplier which is used for creating new,
+	 *        random alleles
+	 * @return a new chromosome of allele type {@code A}
+	 * @throws NullPointerException if the {@code supplier} is {@code null}
+	 */
+	public static <A> AnyChromosome<A> of(
+		final Supplier<? extends A> supplier
+	) {
+		return of(supplier, 1);
 	}
 
 }
