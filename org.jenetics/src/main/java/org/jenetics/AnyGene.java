@@ -31,6 +31,9 @@ import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
 
 /**
+ * {@code Gene} implementation, which allows to create genes without explicit
+ * implementing the {@code Gene} interface.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -95,6 +98,24 @@ public final class AnyGene<A> implements Gene<A, AnyGene<A>> {
 		return Objects.toString(_allele);
 	}
 
+
+	/* *************************************************************************
+	 *  Static factory methods.
+	 * ************************************************************************/
+
+	/**
+	 * Create a new {@code AnyGene} instance with the given parameters. New
+	 * (random) genes are created with the given allele {@code supplier}.
+	 *
+	 * @param <A> the allele type
+	 * @param allele the actual allele instance the created gene represents
+	 * @param supplier the allele-supplier which is used for creating new,
+	 *        random genes
+	 * @param validator the validator used for validating the created gene. This
+	 *        predicate is used in the {@link #isValid()} method.
+	 * @return a new {@code AnyGene} with the given parameters
+	 * @throws NullPointerException if one of the parameters is {@code null}
+	 */
 	public static <A> AnyGene<A> of(
 		final A allele,
 		final Supplier<? extends A> supplier,
@@ -103,6 +124,19 @@ public final class AnyGene<A> implements Gene<A, AnyGene<A>> {
 		return new AnyGene<>(allele, supplier, validator);
 	}
 
+	/**
+	 * Create a new {@code AnyGene} instance with the given parameters. New
+	 * (random) genes are created with the given allele {@code supplier}. The
+	 * {@code validator} predicate of the generated gene will always return
+	 * {@code true}.
+	 *
+	 * @param <A> the allele type
+	 * @param allele the actual allele instance the created gene represents
+	 * @param supplier the allele-supplier which is used for creating new,
+	 *        random genes
+	 * @return a new {@code AnyGene} with the given parameters
+	 * @throws NullPointerException if one of the parameters is {@code null}
+	 */
 	public static <A> AnyGene<A> of(
 		final A allele,
 		final Supplier<? extends A> supplier
@@ -110,10 +144,33 @@ public final class AnyGene<A> implements Gene<A, AnyGene<A>> {
 		return new AnyGene<>(allele, supplier, a -> true);
 	}
 
+	/**
+	 * Create a new {@code AnyGene} instance with the given allele
+	 * {@code supplier}. The {@code validator} predicate of the generated gene
+	 * will always return {@code true}.
+	 *
+	 * @param <A> the allele type
+	 * @param supplier the allele-supplier which is used for creating new,
+	 *        random genes
+	 * @return a new {@code AnyGene} with the given parameters
+	 * @throws NullPointerException if one of the parameters is {@code null}
+	 */
 	public static <A> AnyGene<A> of(final Supplier<? extends A> supplier) {
 		return new AnyGene<>(supplier.get(), supplier, a -> true);
 	}
 
+	/**
+	 * Create a new {@code AnyGene} instance with the given parameters. New
+	 * (random) genes are created with the given allele {@code supplier}.
+	 *
+	 * @param <A> the allele type
+	 * @param supplier the allele-supplier which is used for creating new,
+	 *        random genes
+	 * @param validator the validator used for validating the created gene. This
+	 *        predicate is used in the {@link #isValid()} method.
+	 * @return a new {@code AnyGene} with the given parameters
+	 * @throws NullPointerException if one of the parameters is {@code null}
+	 */
 	public static <A> AnyGene<A> of(
 		final Supplier<? extends A> supplier,
 		final Predicate<? super A> validator
@@ -121,6 +178,7 @@ public final class AnyGene<A> implements Gene<A, AnyGene<A>> {
 		return new AnyGene<>(supplier.get(), supplier, validator);
 	}
 
+	// Create gene sequence.
 	static <A> ISeq<AnyGene<A>> seq(
 		final int length,
 		final Supplier<? extends A> supplier,
