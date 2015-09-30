@@ -27,6 +27,9 @@ import java.util.function.Supplier;
 import org.jenetics.util.ISeq;
 
 /**
+ * {@code Chromosome} implementation, which allows to create genes without
+ * explicit implementing the {@code Chromosome} interface.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -58,6 +61,26 @@ public class AnyChromosome<A> extends AbstractChromosome<AnyGene<A>> {
 		return of(_supplier, _validator, length());
 	}
 
+
+	/* *************************************************************************
+	 *  Static factory methods.
+	 * ************************************************************************/
+
+	/**
+	 * Create a new chromosome of type {@code A} with the given parameters.
+	 *
+	 * @param <A> the allele type
+	 * @param supplier the allele-supplier which is used for creating new,
+	 *        random alleles
+	 * @param validator the validator used for validating the created gene. This
+	 *        predicate is used in the {@link #isValid()} method.
+	 * @param length the length of the created chromosome
+	 * @return a new chromosome of allele type {@code A}
+	 * @throws NullPointerException if the {@code supplier} or {@code validator}
+	 *         is {@code null}
+	 * @throws IllegalArgumentException if the length of the gene array is
+	 *         smaller than one.
+	 */
 	public static <A> AnyChromosome<A> of(
 		final Supplier<? extends A> supplier,
 		final Predicate<? super A> validator,
@@ -70,6 +93,21 @@ public class AnyChromosome<A> extends AbstractChromosome<AnyGene<A>> {
 		);
 	}
 
+	/**
+	 * Create a new chromosome of type {@code A} with the given parameters. The
+	 * {@code validator} predicate of the generated gene will always return
+	 * {@code true}.
+	 *
+	 * @param <A> the allele type
+	 * @param supplier the allele-supplier which is used for creating new,
+	 *        random alleles
+	 * @param length the length of the created chromosome
+	 * @return a new chromosome of allele type {@code A}
+	 * @throws NullPointerException if the {@code supplier} or {@code validator}
+	 *         is {@code null}
+	 * @throws IllegalArgumentException if the length of the gene array is
+	 *         smaller than one.
+	 */
 	public static <A> AnyChromosome<A> of(
 		final Supplier<? extends A> supplier,
 		final int length
