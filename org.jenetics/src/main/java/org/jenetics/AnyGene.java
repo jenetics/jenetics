@@ -35,7 +35,7 @@ import org.jenetics.util.MSeq;
  * implementing the {@code Gene} interface.
  *
  * <pre>{@code
- * public final class Main {
+ * class Main {
  *     // First monday of 2015.
  *     private static final LocalDate MIN_MONDAY = LocalDate.of(2015, 1, 5);
  *
