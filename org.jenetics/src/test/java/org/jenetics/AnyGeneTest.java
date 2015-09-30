@@ -19,6 +19,7 @@
  */
 package org.jenetics;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import org.jenetics.util.Factory;
@@ -27,12 +28,23 @@ import org.jenetics.util.RandomRegistry;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-@Test
 public class AnyGeneTest extends GeneTester<AnyGene<Integer>> {
 
 	@Override
 	protected Factory<AnyGene<Integer>> factory() {
 		return () -> AnyGene.of(RandomRegistry.getRandom()::nextInt);
+	}
+
+	@Test
+	public void allowNullAlleles() {
+		final Integer allele = null;
+		final AnyGene<Integer> gene = AnyGene
+			.of(allele, () -> null);
+
+		Assert.assertNull(gene.getAllele());
+		for (int i = 0; i < 10; ++i) {
+			Assert.assertNull(gene.newInstance().getAllele());
+		}
 	}
 
 }
