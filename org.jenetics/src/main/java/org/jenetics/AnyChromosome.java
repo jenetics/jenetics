@@ -79,43 +79,71 @@ import org.jenetics.util.ISeq;
  */
 public class AnyChromosome<A> extends AbstractChromosome<AnyGene<A>> {
 
+	private static final Predicate<Object> TRUE = a -> true;
+
 	private final Supplier<? extends A> _supplier;
-	private final Predicate<? super A> _validator;
+	private final Predicate<? super A> _alleleValidator;
+	private final Predicate<? super ISeq<? super A>> _alleleSeqValidator;
+
+	private Boolean _valid = null;
 
 	/**
 	 * Create a new {@code AnyChromosome} from the given {@code genes}
-	 * array.
+	 * array. An chromosome is valid if both, the {@code alleleValidator} and
+	 * the {@code alleleSeqValidator} return {@code true}.
 	 *
 	 * @param genes the genes that form the chromosome.
 	 * @param supplier the allele-supplier which is used for creating new,
 	 *        random alleles
-	 * @param validator the validator used for validating the created gene. This
-	 *        predicate is used in the {@link #isValid()} method.
-	 * @throws NullPointerException if the {@code supplier} or {@code validator}
-	 *         is {@code null}
+	 * @param alleleValidator the validator used for validating the created gene.
+	 *        This predicate is used in the {@link AnyGene#isValid()} method.
+	 * @param alleleSeqValidator the validator used for validating the created
+	 *        chromosome. This predicate is used in the
+	 *        {@link AnyChromosome#isValid()} method.
+	 * @throws NullPointerException if the given arguments is {@code null}
 	 * @throws IllegalArgumentException if the length of the gene array is
 	 *         smaller than one.
 	 */
 	protected AnyChromosome(
 		final ISeq<AnyGene<A>> genes,
 		final Supplier<? extends A> supplier,
-		final Predicate<? super A> validator
+		final Predicate<? super A> alleleValidator,
+		final Predicate<? super ISeq<? super A>> alleleSeqValidator
 	) {
 		super(genes);
 		_supplier = requireNonNull(supplier);
-		_validator = requireNonNull(validator);
+		_alleleValidator = requireNonNull(alleleValidator);
+		_alleleSeqValidator = requireNonNull(alleleSeqValidator);
 	}
 
 	@Override
-	public Chromosome<AnyGene<A>> newInstance(
-		final ISeq<AnyGene<A>> genes
-	) {
-		return new AnyChromosome<>(genes, _supplier, _validator);
+	public boolean isValid() {
+		Boolean valid = (_alleleValidator == TRUE && _alleleSeqValidator == TRUE)
+			? Boolean.TRUE
+			: _valid;
+
+		if (valid == null) {
+			final ISeq<A> alleles = toSeq().map(Gene::getAllele);
+			valid = _alleleSeqValidator.test(alleles) &&
+				alleles.forAll(_alleleValidator);
+		}
+
+		return _valid = valid;
+	}
+
+	@Override
+	public Chromosome<AnyGene<A>> newInstance(final ISeq<AnyGene<A>> genes) {
+		return new AnyChromosome<>(
+			genes,
+			_supplier,
+			_alleleValidator,
+			_alleleSeqValidator
+		);
 	}
 
 	@Override
 	public Chromosome<AnyGene<A>> newInstance() {
-		return of(_supplier, _validator, length());
+		return of(_supplier, _alleleValidator, _alleleSeqValidator, length());
 	}
 
 
@@ -129,25 +157,50 @@ public class AnyChromosome<A> extends AbstractChromosome<AnyGene<A>> {
 	 * @param <A> the allele type
 	 * @param supplier the allele-supplier which is used for creating new,
 	 *        random alleles
+	 * @param alleleValidator the validator used for validating the created gene.
+	 *        This predicate is used in the {@link AnyGene#isValid()} method.
+	 * @param alleleSeqValidator the validator used for validating the created
+	 *        chromosome. This predicate is used in the
+	 *        {@link AnyChromosome#isValid()} method.
+	 * @param length the length of the created chromosome
+	 * @return a new chromosome of allele type {@code A}
+	 * @throws NullPointerException if the given arguments is {@code null}
+	 * @throws IllegalArgumentException if chromosome length is smaller than one.
+	 */
+	public static <A> AnyChromosome<A> of(
+		final Supplier<? extends A> supplier,
+		final Predicate<? super A> alleleValidator,
+		final Predicate<? super ISeq<? super A>> alleleSeqValidator,
+		final int length
+	) {
+		return new AnyChromosome<>(
+			AnyGene.seq(length, supplier, alleleValidator),
+			supplier,
+			alleleValidator,
+			alleleSeqValidator
+		);
+	}
+
+	/**
+	 * Create a new chromosome of type {@code A} with the given parameters.
+	 *
+	 * @param <A> the allele type
+	 * @param supplier the allele-supplier which is used for creating new,
+	 *        random alleles
 	 * @param validator the validator used for validating the created gene. This
-	 *        predicate is used in the {@link #isValid()} method.
+	 *        predicate is used in the {@link AnyGene#isValid()} method.
 	 * @param length the length of the created chromosome
 	 * @return a new chromosome of allele type {@code A}
 	 * @throws NullPointerException if the {@code supplier} or {@code validator}
 	 *         is {@code null}
-	 * @throws IllegalArgumentException if the length of the gene array is
-	 *         smaller than one.
+	 * @throws IllegalArgumentException if chromosome length is smaller than one.
 	 */
 	public static <A> AnyChromosome<A> of(
 		final Supplier<? extends A> supplier,
 		final Predicate<? super A> validator,
 		final int length
 	) {
-		return new AnyChromosome<>(
-			AnyGene.seq(length, supplier, validator),
-			supplier,
-			validator
-		);
+		return of(supplier, validator, TRUE, length);
 	}
 
 	/**
@@ -181,14 +234,13 @@ public class AnyChromosome<A> extends AbstractChromosome<AnyGene<A>> {
 	 * @param length the length of the created chromosome
 	 * @return a new chromosome of allele type {@code A}
 	 * @throws NullPointerException if the {@code supplier} is {@code null}
-	 * @throws IllegalArgumentException if the length of the gene array is
-	 *         smaller than one.
+	 * @throws IllegalArgumentException if chromosome length is smaller than one.
 	 */
 	public static <A> AnyChromosome<A> of(
 		final Supplier<? extends A> supplier,
 		final int length
 	) {
-		return of(supplier, a -> true, length);
+		return of(supplier, TRUE, length);
 	}
 
 	/**
@@ -202,9 +254,7 @@ public class AnyChromosome<A> extends AbstractChromosome<AnyGene<A>> {
 	 * @return a new chromosome of allele type {@code A}
 	 * @throws NullPointerException if the {@code supplier} is {@code null}
 	 */
-	public static <A> AnyChromosome<A> of(
-		final Supplier<? extends A> supplier
-	) {
+	public static <A> AnyChromosome<A> of(final Supplier<? extends A> supplier) {
 		return of(supplier, 1);
 	}
 
