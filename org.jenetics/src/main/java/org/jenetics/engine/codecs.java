@@ -105,21 +105,67 @@ public final class codecs {
 		);
 	}
 
+	/**
+	 * Return a scala {@code Codec} with the given allele {@link Supplier} and
+	 * allele {@code validator}. The {@code supplier} is responsible for
+	 * creating new random alleles, and the {@code validator} can verify it.
+	 * <p>
+	 * The following example shows a codec which creates and verifies
+	 * {@code BigInteger} objects.
+	 * <pre>{@code
+	 * final Codec<BigInteger, AnyGene<BigInteger>> codec = codecs.of(
+	 *     // Create new random 'BigInteger' object.
+	 *     () -> {
+	 *         final byte[] data = new byte[100];
+	 *         RandomRegistry.getRandom().nextBytes(data);
+	 *         return new BigInteger(data);
+	 *     },
+	 *     // Verify that bit 7 is set. (For illustration purpose.)
+	 *     bi -> bi.testBit(7);
+	 * );
+	 * }</pre>
+	 *
+	 * @see AnyGene#of(Supplier, Predicate)
+	 * @see AnyChromosome#of(Supplier, Predicate)
+	 *
+	 * @param <A> the allele type
+	 * @param supplier the allele-supplier which is used for creating new,
+	 *        random alleles
+	 * @param validator the validator used for validating the created gene. This
+	 *        predicate is used in the {@link AnyGene#isValid()} method.
+	 * @return a new {@code Codec} with the given parameters
+	 * @throws NullPointerException if one of the parameters is {@code null}
+	 */
 	public static <A> Codec<A, AnyGene<A>> ofScalar(
 		final Supplier<? extends A> supplier,
-		final Predicate<? super A> verifier
+		final Predicate<? super A> validator
 	) {
 		return Codec.of(
-			Genotype.of(AnyChromosome.of(supplier, verifier, 1)),
+			Genotype.of(AnyChromosome.of(supplier, validator)),
 			gt -> gt.getGene().getAllele()
 		);
 	}
 
+	/**
+	 * Return a scala {@code Codec} with the given allele {@link Supplier} and
+	 * allele {@code validator}. The {@code supplier} is responsible for
+	 * creating new random alleles.
+	 *
+	 * @see #ofScalar(Supplier, Predicate)
+	 * @see AnyGene#of(Supplier)
+	 * @see AnyChromosome#of(Supplier)
+	 *
+	 * @param <A> the allele type
+	 * @param supplier the allele-supplier which is used for creating new,
+	 *        random alleles
+	 * @return a new {@code Codec} with the given parameters
+	 * @throws NullPointerException if the parameter is {@code null}
+	 */
 	public static <A> Codec<A, AnyGene<A>> ofScalar(
 		final Supplier<? extends A> supplier
 	) {
 		return Codec.of(
-			Genotype.of(AnyChromosome.of(supplier, 1)),
+			Genotype.of(AnyChromosome.of(supplier)),
 			gt -> gt.getGene().getAllele()
 		);
 	}
