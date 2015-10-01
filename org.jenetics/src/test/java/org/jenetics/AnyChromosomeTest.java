@@ -19,9 +19,6 @@
  */
 package org.jenetics;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
-
 import org.testng.annotations.Test;
 
 import org.jenetics.util.Factory;
@@ -30,26 +27,18 @@ import org.jenetics.util.RandomRegistry;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class BitGeneTest extends GeneTester<BitGene> {
+@Test
+public class AnyChromosomeTest extends ChromosomeTester<AnyGene<Integer>> {
 
 	@Override
-	protected Factory<BitGene> factory() {
-		return () -> BitGene.of(RandomRegistry.getRandom().nextBoolean());
+	protected Factory<Chromosome<AnyGene<Integer>>> factory() {
+		return () -> AnyChromosome.of(RandomRegistry.getRandom()::nextInt, 10);
 	}
 
-	@Test
-	public void testGetValue() {
-		assertEquals(BitGene.FALSE.getBit(), false);
-		assertEquals(BitGene.ZERO.getBit(), false);
-		assertEquals(BitGene.TRUE.getBit(), true);
-		assertEquals(BitGene.ONE.getBit(), true);
-	}
-
-	@Test
-	public void testCompareTo() {
-		assertEquals(BitGene.ZERO.compareTo(BitGene.FALSE), 0);
-		assertTrue(BitGene.FALSE.compareTo(BitGene.ONE) < 0);
-		assertTrue(BitGene.TRUE.compareTo(BitGene.ZERO) > 0);
+	@Override
+	public void objectSerialize() {
+		// Ignore the serialization test. The 'AnyChromosome' shouldn't be
+		// Serializable, but the 'AbstractChromosome' is. Will be removed.
 	}
 
 }

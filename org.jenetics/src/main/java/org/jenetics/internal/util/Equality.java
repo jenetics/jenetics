@@ -35,6 +35,8 @@ import org.jenetics.util.Seq;
 public final class Equality {
 	private Equality() {require.noInstance();}
 
+	public static final Predicate<Object> TRUE = a -> true;
+
 	/**
 	 * Create a new {@code Equality} object for testing object equality.
 	 *

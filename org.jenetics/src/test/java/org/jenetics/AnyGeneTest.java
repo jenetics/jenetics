@@ -19,9 +19,7 @@
  */
 package org.jenetics;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
-
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import org.jenetics.util.Factory;
@@ -30,26 +28,23 @@ import org.jenetics.util.RandomRegistry;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class BitGeneTest extends GeneTester<BitGene> {
+public class AnyGeneTest extends GeneTester<AnyGene<Integer>> {
 
 	@Override
-	protected Factory<BitGene> factory() {
-		return () -> BitGene.of(RandomRegistry.getRandom().nextBoolean());
+	protected Factory<AnyGene<Integer>> factory() {
+		return () -> AnyGene.of(RandomRegistry.getRandom()::nextInt);
 	}
 
 	@Test
-	public void testGetValue() {
-		assertEquals(BitGene.FALSE.getBit(), false);
-		assertEquals(BitGene.ZERO.getBit(), false);
-		assertEquals(BitGene.TRUE.getBit(), true);
-		assertEquals(BitGene.ONE.getBit(), true);
-	}
+	public void allowNullAlleles() {
+		final Integer allele = null;
+		final AnyGene<Integer> gene = AnyGene
+			.of(allele, () -> null);
 
-	@Test
-	public void testCompareTo() {
-		assertEquals(BitGene.ZERO.compareTo(BitGene.FALSE), 0);
-		assertTrue(BitGene.FALSE.compareTo(BitGene.ONE) < 0);
-		assertTrue(BitGene.TRUE.compareTo(BitGene.ZERO) > 0);
+		Assert.assertNull(gene.getAllele());
+		for (int i = 0; i < 10; ++i) {
+			Assert.assertNull(gene.newInstance().getAllele());
+		}
 	}
 
 }

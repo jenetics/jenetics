@@ -17,39 +17,42 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package org.jenetics.example;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import java.awt.Dimension;
+import java.util.Random;
 
-import org.testng.annotations.Test;
-
-import org.jenetics.util.Factory;
+import org.jenetics.AnyGene;
+import org.jenetics.Phenotype;
+import org.jenetics.engine.Engine;
+import org.jenetics.engine.EvolutionResult;
+import org.jenetics.engine.codecs;
 import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class BitGeneTest extends GeneTester<BitGene> {
+public class Squares {
 
-	@Override
-	protected Factory<BitGene> factory() {
-		return () -> BitGene.of(RandomRegistry.getRandom().nextBoolean());
+	private static Dimension nextDimension() {
+		final Random random = RandomRegistry.getRandom();
+		return new Dimension(random.nextInt(100), random.nextInt(100));
 	}
 
-	@Test
-	public void testGetValue() {
-		assertEquals(BitGene.FALSE.getBit(), false);
-		assertEquals(BitGene.ZERO.getBit(), false);
-		assertEquals(BitGene.TRUE.getBit(), true);
-		assertEquals(BitGene.ONE.getBit(), true);
+	private static double area(final Dimension dim) {
+		return dim.getHeight()*dim.getWidth();
 	}
 
-	@Test
-	public void testCompareTo() {
-		assertEquals(BitGene.ZERO.compareTo(BitGene.FALSE), 0);
-		assertTrue(BitGene.FALSE.compareTo(BitGene.ONE) < 0);
-		assertTrue(BitGene.TRUE.compareTo(BitGene.ZERO) > 0);
+	public static void main(final String[] args) {
+		final Engine<AnyGene<Dimension>, Double> engine = Engine
+			.builder(Squares::area, codecs.ofScalar(Squares::nextDimension))
+			.build();
+
+		final Phenotype<AnyGene<Dimension>, Double> pt = engine.stream()
+			.limit(50)
+			.collect(EvolutionResult.toBestPhenotype());
+
+		System.out.println(pt);
 	}
 
 }
