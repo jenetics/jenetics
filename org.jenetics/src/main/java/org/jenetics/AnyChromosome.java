@@ -24,6 +24,8 @@ import static java.util.Objects.requireNonNull;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import org.jenetics.internal.util.Equality;
+
 import org.jenetics.util.ISeq;
 
 /**
@@ -79,8 +81,6 @@ import org.jenetics.util.ISeq;
  */
 public class AnyChromosome<A> extends AbstractChromosome<AnyGene<A>> {
 
-	private static final Predicate<Object> TRUE = a -> true;
-
 	private final Supplier<? extends A> _supplier;
 	private final Predicate<? super A> _alleleValidator;
 	private final Predicate<? super ISeq<? super A>> _alleleSeqValidator;
@@ -118,7 +118,9 @@ public class AnyChromosome<A> extends AbstractChromosome<AnyGene<A>> {
 
 	@Override
 	public boolean isValid() {
-		Boolean valid = (_alleleValidator == TRUE && _alleleSeqValidator == TRUE)
+		Boolean valid =
+			(_alleleValidator == Equality.TRUE &&
+				_alleleSeqValidator == Equality.TRUE)
 			? Boolean.TRUE
 			: _valid;
 
@@ -200,7 +202,7 @@ public class AnyChromosome<A> extends AbstractChromosome<AnyGene<A>> {
 		final Predicate<? super A> validator,
 		final int length
 	) {
-		return of(supplier, validator, TRUE, length);
+		return of(supplier, validator, Equality.TRUE, length);
 	}
 
 	/**
@@ -240,7 +242,7 @@ public class AnyChromosome<A> extends AbstractChromosome<AnyGene<A>> {
 		final Supplier<? extends A> supplier,
 		final int length
 	) {
-		return of(supplier, TRUE, length);
+		return of(supplier, Equality.TRUE, length);
 	}
 
 	/**
