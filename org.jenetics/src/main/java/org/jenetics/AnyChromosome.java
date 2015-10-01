@@ -30,6 +30,49 @@ import org.jenetics.util.ISeq;
  * {@code Chromosome} implementation, which allows to create genes without
  * explicit implementing the {@code Chromosome} interface.
  *
+ * <pre>{@code
+ * public class LastMonday {
+ *
+ *     // First monday of 2015.
+ *     private static final LocalDate MIN_MONDAY = LocalDate.of(2015, 1, 5);
+ *
+ *     // The used Codec.
+ *     private static final Codec<LocalDate, AnyGene<LocalDate>> CODEC = Codec.of(
+ *         Genotype.of(AnyChromosome.of(LastMonday::nextRandomMonday)),
+ *         gt -> gt.getGene().getAllele()
+ *     );
+ *
+ *     // Supplier of random 'LocalDate' objects. The implementation is responsible
+ *     // for guaranteeing the desired allele restriction. In this case we will
+ *     // generate only mondays.
+ *     private static LocalDate nextRandomMonday() {
+ *         return MIN_MONDAY.plusWeeks(RandomRegistry.getRandom().nextInt(1000));
+ *     }
+ *
+ *     // The fitness function: find a monday at the end of the month.
+ *     private static double fitness(final LocalDate date) {
+ *         return date.getDayOfMonth();
+ *     }
+ *
+ *     public static void main(final String[] args) {
+ *         final Engine<AnyGene<LocalDate>, Double> engine = Engine
+ *             .builder(LastMonday::fitness, CODEC)
+ *             .offspringSelector(new RouletteWheelSelector<>())
+ *             .build();
+ *
+ *         final Phenotype<AnyGene<LocalDate>, Double> best = engine.stream()
+ *             .limit(50)
+ *             .collect(EvolutionResult.toBestPhenotype());
+ *
+ *         System.out.println(best);
+ *     }
+ *
+ * }
+ * }</pre>
+ *
+ * The <i>full</i> example above shows how the {@code AnyChromosome} is used
+ * to use for an allele-type with no predefined gene- and chromosome type.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -100,7 +143,7 @@ public class AnyChromosome<A> extends AbstractChromosome<AnyGene<A>> {
 		final Predicate<? super A> validator,
 		final int length
 	) {
-		return new AnyChromosome<A>(
+		return new AnyChromosome<>(
 			AnyGene.seq(length, supplier, validator),
 			supplier,
 			validator
