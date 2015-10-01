@@ -39,6 +39,20 @@ public class AnyChromosome<A> extends AbstractChromosome<AnyGene<A>> {
 	private final Supplier<? extends A> _supplier;
 	private final Predicate<? super A> _validator;
 
+	/**
+	 * Create a new {@code AnyChromosome} from the given {@code genes}
+	 * array.
+	 *
+	 * @param genes the genes that form the chromosome.
+	 * @param supplier the allele-supplier which is used for creating new,
+	 *        random alleles
+	 * @param validator the validator used for validating the created gene. This
+	 *        predicate is used in the {@link #isValid()} method.
+	 * @throws NullPointerException if the {@code supplier} or {@code validator}
+	 *         is {@code null}
+	 * @throws IllegalArgumentException if the length of the gene array is
+	 *         smaller than one.
+	 */
 	protected AnyChromosome(
 		final ISeq<AnyGene<A>> genes,
 		final Supplier<? extends A> supplier,
@@ -95,7 +109,7 @@ public class AnyChromosome<A> extends AbstractChromosome<AnyGene<A>> {
 
 	/**
 	 * Create a new chromosome of type {@code A} with the given parameters and
-	 * length 1.
+	 * length one.
 	 *
 	 * @param <A> the allele type
 	 * @param supplier the allele-supplier which is used for creating new,
@@ -136,7 +150,7 @@ public class AnyChromosome<A> extends AbstractChromosome<AnyGene<A>> {
 
 	/**
 	 * Create a new chromosome of type {@code A} with the given parameters and
-	 * length 1. The {@code validator} predicate of the generated gene will
+	 * length one. The {@code validator} predicate of the generated gene will
 	 * always return {@code true}.
 	 *
 	 * @param <A> the allele type
