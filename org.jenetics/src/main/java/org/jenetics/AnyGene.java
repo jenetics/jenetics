@@ -56,7 +56,7 @@ import org.jenetics.util.MSeq;
  * the created dates. The usage of the {@code AnyGene} class is useful for
  * supporting custom allele types without explicit implementation of the
  * {@code Gene} interface. But the {@code AnyGene} can only be used for a subset
- * of the existing alterers and selectors.
+ * of the existing alterers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
