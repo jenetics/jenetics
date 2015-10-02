@@ -59,8 +59,8 @@ import org.jenetics.util.MSeq;
  * of the existing alterers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.3
+ * @since 3.3
  */
 public final class AnyGene<A> implements Gene<A, AnyGene<A>> {
 

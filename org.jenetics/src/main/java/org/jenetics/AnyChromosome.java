@@ -76,8 +76,8 @@ import org.jenetics.util.ISeq;
  * to use for an allele-type with no predefined gene- and chromosome type.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.3
+ * @since 3.3
  */
 public class AnyChromosome<A> extends AbstractChromosome<AnyGene<A>> {
 
