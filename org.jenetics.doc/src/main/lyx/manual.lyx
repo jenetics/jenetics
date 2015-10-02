@@ -10331,6 +10331,217 @@ height "1pt"
 
 \end_layout
 
+\begin_layout Standard
+If you want to support your own allele type, but want to avoid the effort
+ of implementing the 
+\family typewriter
+Gene
+\family default
+ interface, you can alternatively use the 
+\family typewriter
+Any\SpecialChar \-
+Gene
+\family default
+ class.
+ It can be created with 
+\family typewriter
+Any\SpecialChar \-
+Gene\SpecialChar \-
+.of(Sup\SpecialChar \-
+plier, Predi\SpecialChar \-
+cate)
+\family default
+.
+ The given 
+\family typewriter
+Supplier
+\family default
+ is responsible for creating new random alleles, as the 
+\family typewriter
+newInstance
+\family default
+ method in the 
+\family typewriter
+Gene
+\family default
+ interface.
+ Additional validity checks are performed by the given 
+\family typewriter
+Predicate
+\family default
+.
+ 
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+class LastMonday {
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Creates new random 'LocalDate' objects.
+\end_layout
+
+\begin_layout Plain Layout
+
+    private static LocalDate nextRandomMonday() {
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Random random = RandomRegistry.getRandom();
+\end_layout
+
+\begin_layout Plain Layout
+
+        LocalDate
+\end_layout
+
+\begin_layout Plain Layout
+
+            .of(2015, 1, 5)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .plusWeeks(random.nextInt(1000));
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Do some additional validity check.
+\end_layout
+
+\begin_layout Plain Layout
+
+    private static boolean isValid(final LocalDate date) {...}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Create a new gene from the random 'Supplier' and
+\end_layout
+
+\begin_layout Plain Layout
+
+    // validation 'Predicate'.
+\end_layout
+
+\begin_layout Plain Layout
+
+    private final AnyGene<LocalDate> gene = AnyGene
+\end_layout
+
+\begin_layout Plain Layout
+
+        .of(LastMonday::nextRandomMonday, LastMonday::isValid);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+The example above shows the (almost) minimal setup for creating user defined
+ 
+\family typewriter
+Gene
+\family default
+ allele types.
+ By convention, the 
+\family typewriter
+Random
+\family default
+ engine, used for creating the new 
+\family typewriter
+Local\SpecialChar \-
+Date
+\family default
+ objects, must be requested from the 
+\family typewriter
+Random\SpecialChar \-
+Registry
+\family default
+.
+ With the optional validation function, 
+\family typewriter
+isValid
+\family default
+, it is possible to reject 
+\family typewriter
+Genes
+\family default
+ whose alleles doesn't conform some criteria.
+\end_layout
+
+\begin_layout Standard
+The simple usage of the 
+\family typewriter
+AnyGene
+\family default
+ has also its downsides.
+ Since the 
+\family typewriter
+AnyGene
+\family default
+ instances are created from function objects, serialization is not supported
+ by the 
+\family typewriter
+AnyGene
+\family default
+ class.
+ It is also not possible to use some 
+\family typewriter
+Alterer
+\family default
+ implementations with the 
+\family typewriter
+AnyGene
+\family default
+, like:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+GaussianMutator
+\family default
+,
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+MeanAlterer
+\family default
+ and
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+PartiallyMatchedCrossover
+\end_layout
+
 \begin_layout Subsection
 Chromosomes
 \begin_inset Index idx
