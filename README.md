@@ -161,9 +161,10 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 
 ### 3.3.0
 
-#### Improvements
+#### Improvement
 
 * [#43](https://github.com/jenetics/jenetics/issues/43): Add _Evolving images_ example.
+* [#66](https://github.com/jenetics/jenetics/issues/66): Add `AnyGene` and `AnyChromosome` for arbitrary allele types.
 
 #### Bug fixes
 
