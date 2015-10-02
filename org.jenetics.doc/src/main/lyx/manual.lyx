@@ -10388,7 +10388,7 @@ class LastMonday {
 
 \begin_layout Plain Layout
 
-    private static LocalDate nextRandomMonday() {
+    private static LocalDate nextMonday() {
 \end_layout
 
 \begin_layout Plain Layout
@@ -10451,18 +10451,47 @@ class LastMonday {
 
 \begin_layout Plain Layout
 
-        .of(LastMonday::nextRandomMonday, LastMonday::isValid);
+        .of(LastMonday::nextMonday, LastMonday::isValid);
 \end_layout
 
 \begin_layout Plain Layout
 
 }
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:AnyGene-example"
+
+\end_inset
+
+AnyGene
+\family default
+ example
 \end_layout
 
 \end_inset
 
-The example above shows the (almost) minimal setup for creating user defined
- 
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Example listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:AnyGene-example"
+
+\end_inset
+
+ shows the (almost) minimal setup for creating user defined 
 \family typewriter
 Gene
 \family default
@@ -10592,6 +10621,269 @@ s.
  Serializable
 \family default
  interface.
+\end_layout
+
+\begin_layout Standard
+Corresponding to the 
+\family typewriter
+AnyGene
+\family default
+, it is possible to create chromosomes with arbitrary allele types with
+ the 
+\family typewriter
+AnyChromosome
+\family default
+.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public class LastMonday {
+\end_layout
+
+\begin_layout Plain Layout
+
+    // The used problem Codec.
+\end_layout
+
+\begin_layout Plain Layout
+
+    private static final Codec<LocalDate, AnyGene<LocalDate>> 
+\end_layout
+
+\begin_layout Plain Layout
+
+    CODEC = Codec.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+        Genotype.of(AnyChromosome.of(LastMonday::nextMonday)),
+\end_layout
+
+\begin_layout Plain Layout
+
+        gt -> gt.getGene().getAllele()
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Creates new random 'LocalDate' objects.
+\end_layout
+
+\begin_layout Plain Layout
+
+    private static LocalDate nextMonday() {
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Random random = RandomRegistry.getRandom();
+\end_layout
+
+\begin_layout Plain Layout
+
+        LocalDate
+\end_layout
+
+\begin_layout Plain Layout
+
+            .of(2015, 1, 5)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .plusWeeks(random.nextInt(1000));
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // The fitness function: find a monday at the end of the month.
+\end_layout
+
+\begin_layout Plain Layout
+
+    private static int fitness(final LocalDate date) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        return date.getDayOfMonth();
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    public static void main(final String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Engine<AnyGene<LocalDate>, Integer> engine = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+            .builder(LastMonday::fitness, CODEC)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .offspringSelector(new RouletteWheelSelector<>())
+\end_layout
+
+\begin_layout Plain Layout
+
+            .build();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Phenotype<AnyGene<LocalDate>, Integer> best = 
+\end_layout
+
+\begin_layout Plain Layout
+
+            engine.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+                .limit(50)
+\end_layout
+
+\begin_layout Plain Layout
+
+                .collect(EvolutionResult.toBestPhenotype());
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        System.out.println(best);
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:AnyChromosome-example"
+
+\end_inset
+
+AnyChromosome
+\family default
+ example
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:AnyChromosome-example"
+
+\end_inset
+
+ shows a full usage example of the 
+\family typewriter
+Any\SpecialChar \-
+Gene
+\family default
+ and 
+\family typewriter
+Any\SpecialChar \-
+Chromosome
+\family default
+ class.
+ The example tries to find a Monday with a maximal day of month.
+ An interesting detail is, that an 
+\family typewriter
+Codec
+\family default
+ definition is used for creating new 
+\family typewriter
+Genotypes
+\family default
+ and for converting them back to 
+\family typewriter
+LocalDate
+\family default
+ alleles.
+\end_layout
+
+\begin_layout Standard
+The convenient usage of the 
+\family typewriter
+Any\SpecialChar \-
+Chromosome
+\family default
+ has to be payed by the same restriction as for the 
+\family typewriter
+Any\SpecialChar \-
+Gene
+\family default
+: no serialization support for the chromosome and not usable for all 
+\family typewriter
+Alterer
+\family default
+ implementations.
 \end_layout
 
 \begin_layout Subsection
