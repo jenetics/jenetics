@@ -10356,7 +10356,7 @@ cate)
 \family typewriter
 Supplier
 \family default
- is responsible for creating new random alleles, as the 
+ is responsible for creating new random alleles, similar to the 
 \family typewriter
 newInstance
 \family default
@@ -10857,6 +10857,28 @@ Chromosome
 \family typewriter
 Codec
 \family default
+
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Codec"
+
+\end_inset
+
+ for a more detailed 
+\family typewriter
+Codec
+\family default
+ description.
+ 
+\end_layout
+
+\end_inset
+
  definition is used for creating new 
 \family typewriter
 Genotypes
