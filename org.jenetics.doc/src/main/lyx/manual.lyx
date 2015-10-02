@@ -9446,7 +9446,7 @@ status open
 \backslash
 lstset{basicstyle=
 \backslash
-tiny
+fontsize{6.8}{8}
 \backslash
 ttfamily}
 \end_layout
