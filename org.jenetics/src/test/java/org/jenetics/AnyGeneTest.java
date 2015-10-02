@@ -19,9 +19,12 @@
  */
 package org.jenetics;
 
+import java.util.Random;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import org.jenetics.util.ContinuousRandom;
 import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
 
@@ -44,6 +47,33 @@ public class AnyGeneTest extends GeneTester<AnyGene<Integer>> {
 		Assert.assertNull(gene.getAllele());
 		for (int i = 0; i < 10; ++i) {
 			Assert.assertNull(gene.newInstance().getAllele());
+		}
+	}
+
+	@Test
+	public void newInstance() {
+		final Random random = new ContinuousRandom(0);
+		final AnyGene<Integer> gene = AnyGene.of(random::nextInt);
+
+		for (int i = 0; i < 100; ++i) {
+			final AnyGene<Integer> g = gene.newInstance();
+			Assert.assertEquals(g.getAllele().intValue(), i + 1);
+		}
+	}
+
+	@Test
+	public void isValid() {
+		final AnyGene<Integer> gene = AnyGene.of(
+			() -> RandomRegistry.getRandom().nextInt(1000),
+			i -> i < 100
+		);
+
+		for (int i = 0; i < 5000; ++i) {
+			final AnyGene<Integer> g = gene.newInstance();
+
+			Assert.assertEquals(g.isValid(), g.getAllele() < 100);
+			Assert.assertTrue(g.getAllele() < 1000);
+			Assert.assertTrue(g.getAllele() >= 0);
 		}
 	}
 
