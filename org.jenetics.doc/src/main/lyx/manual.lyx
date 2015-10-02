@@ -16575,7 +16575,11 @@ In the classic genetic algorithm the problem is a maximization problem and
 \end_inset
 
 .
- The fitness of a Genotype is proportional to the number of ones.
+ The fitness of a 
+\family typewriter
+Genotype
+\family default
+ is proportional to the number of ones.
 \end_layout
 
 \begin_layout Standard
@@ -16595,8 +16599,12 @@ lstinputlisting{../resources/code/OnesCounting.java}
 \end_layout
 
 \begin_layout Standard
-The genotype in this example consists of one BitChromosome with a ones probabili
-ty of 0.15.
+The genotype in this example consists of one 
+\family typewriter
+Bit\SpecialChar \-
+Chromosome
+\family default
+ with a ones probability of 0.15.
  The altering of the offspring population is performed by mutation, with
  mutation probability of 0.55, and then by a single-point crossover, with
  crossover probability of 0.06.
@@ -16807,9 +16815,10 @@ The GA works with
 
 
 \family typewriter
- DoubleChromosome
+ Double\SpecialChar \-
+Chromosomes
 \family default
-s whose values are restricted to the range 
+ whose values are restricted to the range 
 \begin_inset Formula $[0,2\pi]$
 \end_inset
 
