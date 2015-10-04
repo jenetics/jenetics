@@ -10471,6 +10471,16 @@ name "lis:AnyGene-example"
 AnyGene
 \family default
  example
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+AnyGene
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -10821,6 +10831,16 @@ name "lis:AnyChromosome-example"
 AnyChromosome
 \family default
  example
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+AnyChromosome
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -10859,7 +10879,7 @@ Codec
 \family default
 
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 See section 
