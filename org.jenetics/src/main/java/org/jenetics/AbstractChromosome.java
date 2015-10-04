@@ -67,13 +67,12 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 
 	/**
 	 * Create a new {@code AbstractChromosome} from the given {@code genes}
-	 * array. The genes array is not copied, but sealed, so changes to the given
-	 * genes array doesn't effect the genes of this chromosome.
+	 * array.
 	 *
 	 * @param genes the genes that form the chromosome.
 	 * @throws NullPointerException if the given gene array is {@code null}.
 	 * @throws IllegalArgumentException if the length of the gene array is
-	 *          smaller than one.
+	 *         smaller than one.
 	 */
 	protected AbstractChromosome(final ISeq<? extends G> genes) {
 		requireNonNull(genes, "Gene array");
