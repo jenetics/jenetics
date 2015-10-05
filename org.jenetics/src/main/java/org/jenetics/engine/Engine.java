@@ -124,25 +124,27 @@ public final class Engine<
 	implements Function<EvolutionStart<G, C>, EvolutionResult<G, C>>
 {
 
-	// Needed context for population evolving.
+	// GA problem parameters.
 	private final Function<? super Genotype<G>, ? extends C> _fitnessFunction;
 	private final Function<? super C, ? extends C> _fitnessScaler;
 	private final Factory<Genotype<G>> _genotypeFactory;
+	private final Optimize _optimize;
+
+	// GA validation parameters.
+	private final Predicate<? super Phenotype<G, C>> _validator;
+	private final int _individualCreationRetries;
+
+	// GA evolution parameters.
 	private final Selector<G, C> _survivorsSelector;
 	private final Selector<G, C> _offspringSelector;
 	private final Alterer<G, C> _alterer;
-	private final Predicate<? super Phenotype<G, C>> _validator;
-	private final Optimize _optimize;
 	private final int _offspringCount;
 	private final int _survivorsCount;
 	private final long _maximalPhenotypeAge;
 
-	// Execution context for concurrent execution of evolving steps.
+	// GA evaluation parameters.
 	private final TimedExecutor _executor;
 	private final Clock _clock;
-
-	// Additional parameters.
-	private final int _individualCreationRetries;
 
 
 	/**
