@@ -17,41 +17,26 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-
+package org.jenetics.util;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.2
- * @version 3.3
  */
+public class ContinuousRandom extends Random64 {
 
-apply plugin: 'packaging'
+	private long _next;
 
+	public ContinuousRandom(final long start) {
+		_next = start;
+	}
 
-task asciidoc(type: Exec) {
-	outputs.upToDateWhen { false }
+	@Override
+	public long nextLong() {
+		return _next++;
+	}
 
-	def mainDoc = file("$projectDir/src/main/asciidoc/internals/main.adoc")
-	def outputFile = file("$buildDir/asciidoc/internals.html")
-
-	outputFile.parentFile.mkdirs()
-	inputs.dir mainDoc.parentFile
-	outputs.file outputFile
-
-	commandLine([
-		'asciidoc',
-		//'-b', 'html5',
-		//'-a', 'linkcss',
-		//'-a', 'docinfo',
-		'-a', 'toc-placement=manual',
-		'-a', "stylesdir=${projectDir}/src/main/asciidoc",
-		'-a', "scriptsdir=${projectDir}/src/main/asciidoc",
-		'-a', "stylesheet=${projectDir}/src/main/asciidoc/asciidoc.css",
-		//'--theme', 'volnitsky',
-		'-o', outputFile,
-		mainDoc
-	])
+	@Override
+	public int nextInt() {
+		return (int)nextLong();
+	}
 }
-
-//asciidoc -b html5 -a linkcss -a stylesdir=$PWD myfile.txt
-

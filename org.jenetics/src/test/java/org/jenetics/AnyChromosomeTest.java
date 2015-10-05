@@ -17,41 +17,28 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
+package org.jenetics;
 
+import org.testng.annotations.Test;
+
+import org.jenetics.util.Factory;
+import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.2
- * @version 3.3
  */
+@Test
+public class AnyChromosomeTest extends ChromosomeTester<AnyGene<Integer>> {
 
-apply plugin: 'packaging'
+	@Override
+	protected Factory<Chromosome<AnyGene<Integer>>> factory() {
+		return () -> AnyChromosome.of(RandomRegistry.getRandom()::nextInt, 10);
+	}
 
+	@Override
+	public void objectSerialize() {
+		// Ignore the serialization test. The 'AnyChromosome' shouldn't be
+		// Serializable, but the 'AbstractChromosome' is. Will be removed.
+	}
 
-task asciidoc(type: Exec) {
-	outputs.upToDateWhen { false }
-
-	def mainDoc = file("$projectDir/src/main/asciidoc/internals/main.adoc")
-	def outputFile = file("$buildDir/asciidoc/internals.html")
-
-	outputFile.parentFile.mkdirs()
-	inputs.dir mainDoc.parentFile
-	outputs.file outputFile
-
-	commandLine([
-		'asciidoc',
-		//'-b', 'html5',
-		//'-a', 'linkcss',
-		//'-a', 'docinfo',
-		'-a', 'toc-placement=manual',
-		'-a', "stylesdir=${projectDir}/src/main/asciidoc",
-		'-a', "scriptsdir=${projectDir}/src/main/asciidoc",
-		'-a', "stylesheet=${projectDir}/src/main/asciidoc/asciidoc.css",
-		//'--theme', 'volnitsky',
-		'-o', outputFile,
-		mainDoc
-	])
 }
-
-//asciidoc -b html5 -a linkcss -a stylesdir=$PWD myfile.txt
-

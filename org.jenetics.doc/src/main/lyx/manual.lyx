@@ -9446,7 +9446,7 @@ status open
 \backslash
 lstset{basicstyle=
 \backslash
-tiny
+fontsize{6.8}{8}
 \backslash
 ttfamily}
 \end_layout
@@ -10331,6 +10331,256 @@ height "1pt"
 
 \end_layout
 
+\begin_layout Standard
+If you want to support your own allele type, but want to avoid the effort
+ of implementing the 
+\family typewriter
+Gene
+\family default
+ interface, you can alternatively use the 
+\family typewriter
+Any\SpecialChar \-
+Gene
+\family default
+ class.
+ It can be created with 
+\family typewriter
+Any\SpecialChar \-
+Gene\SpecialChar \-
+.of(Sup\SpecialChar \-
+plier, Predi\SpecialChar \-
+cate)
+\family default
+.
+ The given 
+\family typewriter
+Supplier
+\family default
+ is responsible for creating new random alleles, similar to the 
+\family typewriter
+newInstance
+\family default
+ method in the 
+\family typewriter
+Gene
+\family default
+ interface.
+ Additional validity checks are performed by the given 
+\family typewriter
+Predicate
+\family default
+.
+ 
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+class LastMonday {
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Creates new random 'LocalDate' objects.
+\end_layout
+
+\begin_layout Plain Layout
+
+    private static LocalDate nextMonday() {
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Random random = RandomRegistry.getRandom();
+\end_layout
+
+\begin_layout Plain Layout
+
+        LocalDate
+\end_layout
+
+\begin_layout Plain Layout
+
+            .of(2015, 1, 5)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .plusWeeks(random.nextInt(1000));
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Do some additional validity check.
+\end_layout
+
+\begin_layout Plain Layout
+
+    private static boolean isValid(final LocalDate date) {...}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Create a new gene from the random 'Supplier' and
+\end_layout
+
+\begin_layout Plain Layout
+
+    // validation 'Predicate'.
+\end_layout
+
+\begin_layout Plain Layout
+
+    private final AnyGene<LocalDate> gene = AnyGene
+\end_layout
+
+\begin_layout Plain Layout
+
+        .of(LastMonday::nextMonday, LastMonday::isValid);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:AnyGene-example"
+
+\end_inset
+
+AnyGene
+\family default
+ example
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+AnyGene
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Example listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:AnyGene-example"
+
+\end_inset
+
+ shows the (almost) minimal setup for creating user defined 
+\family typewriter
+Gene
+\family default
+ allele types.
+ By convention, the 
+\family typewriter
+Random
+\family default
+ engine, used for creating the new 
+\family typewriter
+Local\SpecialChar \-
+Date
+\family default
+ objects, must be requested from the 
+\family typewriter
+Random\SpecialChar \-
+Registry
+\family default
+.
+ With the optional validation function, 
+\family typewriter
+isValid
+\family default
+, it is possible to reject 
+\family typewriter
+Genes
+\family default
+ whose alleles doesn't conform some criteria.
+\end_layout
+
+\begin_layout Standard
+The simple usage of the 
+\family typewriter
+AnyGene
+\family default
+ has also its downsides.
+ Since the 
+\family typewriter
+AnyGene
+\family default
+ instances are created from function objects, serialization is not supported
+ by the 
+\family typewriter
+AnyGene
+\family default
+ class.
+ It is also not possible to use some 
+\family typewriter
+Alterer
+\family default
+ implementations with the 
+\family typewriter
+AnyGene
+\family default
+, like:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+GaussianMutator
+\family default
+,
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+MeanAlterer
+\family default
+ and
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+PartiallyMatchedCrossover
+\end_layout
+
 \begin_layout Subsection
 Chromosomes
 \begin_inset Index idx
@@ -10381,6 +10631,301 @@ s.
  Serializable
 \family default
  interface.
+\end_layout
+
+\begin_layout Standard
+Corresponding to the 
+\family typewriter
+AnyGene
+\family default
+, it is possible to create chromosomes with arbitrary allele types with
+ the 
+\family typewriter
+AnyChromosome
+\family default
+.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public class LastMonday {
+\end_layout
+
+\begin_layout Plain Layout
+
+    // The used problem Codec.
+\end_layout
+
+\begin_layout Plain Layout
+
+    private static final Codec<LocalDate, AnyGene<LocalDate>> 
+\end_layout
+
+\begin_layout Plain Layout
+
+    CODEC = Codec.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+        Genotype.of(AnyChromosome.of(LastMonday::nextMonday)),
+\end_layout
+
+\begin_layout Plain Layout
+
+        gt -> gt.getGene().getAllele()
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Creates new random 'LocalDate' objects.
+\end_layout
+
+\begin_layout Plain Layout
+
+    private static LocalDate nextMonday() {
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Random random = RandomRegistry.getRandom();
+\end_layout
+
+\begin_layout Plain Layout
+
+        LocalDate
+\end_layout
+
+\begin_layout Plain Layout
+
+            .of(2015, 1, 5)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .plusWeeks(random.nextInt(1000));
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // The fitness function: find a monday at the end of the month.
+\end_layout
+
+\begin_layout Plain Layout
+
+    private static int fitness(final LocalDate date) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        return date.getDayOfMonth();
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    public static void main(final String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Engine<AnyGene<LocalDate>, Integer> engine = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+            .builder(LastMonday::fitness, CODEC)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .offspringSelector(new RouletteWheelSelector<>())
+\end_layout
+
+\begin_layout Plain Layout
+
+            .build();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Phenotype<AnyGene<LocalDate>, Integer> best = 
+\end_layout
+
+\begin_layout Plain Layout
+
+            engine.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+                .limit(50)
+\end_layout
+
+\begin_layout Plain Layout
+
+                .collect(EvolutionResult.toBestPhenotype());
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        System.out.println(best);
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:AnyChromosome-example"
+
+\end_inset
+
+AnyChromosome
+\family default
+ example
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+AnyChromosome
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:AnyChromosome-example"
+
+\end_inset
+
+ shows a full usage example of the 
+\family typewriter
+Any\SpecialChar \-
+Gene
+\family default
+ and 
+\family typewriter
+Any\SpecialChar \-
+Chromosome
+\family default
+ class.
+ The example tries to find a Monday with a maximal day of month.
+ An interesting detail is, that an 
+\family typewriter
+Codec
+\family default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Codec"
+
+\end_inset
+
+ for a more detailed 
+\family typewriter
+Codec
+\family default
+ description.
+ 
+\end_layout
+
+\end_inset
+
+ definition is used for creating new 
+\family typewriter
+Genotypes
+\family default
+ and for converting them back to 
+\family typewriter
+LocalDate
+\family default
+ alleles.
+\end_layout
+
+\begin_layout Standard
+The convenient usage of the 
+\family typewriter
+Any\SpecialChar \-
+Chromosome
+\family default
+ has to be payed by the same restriction as for the 
+\family typewriter
+Any\SpecialChar \-
+Gene
+\family default
+: no serialization support for the chromosome and not usable for all 
+\family typewriter
+Alterer
+\family default
+ implementations.
 \end_layout
 
 \begin_layout Subsection
@@ -16364,7 +16909,11 @@ In the classic genetic algorithm the problem is a maximization problem and
 \end_inset
 
 .
- The fitness of a Genotype is proportional to the number of ones.
+ The fitness of a 
+\family typewriter
+Genotype
+\family default
+ is proportional to the number of ones.
 \end_layout
 
 \begin_layout Standard
@@ -16384,8 +16933,12 @@ lstinputlisting{../resources/code/OnesCounting.java}
 \end_layout
 
 \begin_layout Standard
-The genotype in this example consists of one BitChromosome with a ones probabili
-ty of 0.15.
+The genotype in this example consists of one 
+\family typewriter
+Bit\SpecialChar \-
+Chromosome
+\family default
+ with a ones probability of 0.15.
  The altering of the offspring population is performed by mutation, with
  mutation probability of 0.55, and then by a single-point crossover, with
  crossover probability of 0.06.
@@ -16596,9 +17149,10 @@ The GA works with
 
 
 \family typewriter
- DoubleChromosome
+ Double\SpecialChar \-
+Chromosomes
 \family default
-s whose values are restricted to the range 
+ whose values are restricted to the range 
 \begin_inset Formula $[0,2\pi]$
 \end_inset
 
