@@ -110,4 +110,9 @@ public interface Alterer<
 				: new CompositeAlterer<G, C>(ISeq.of(alterers));
 	}
 
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Alterer<G, C> empty() {
+		return (p, g) -> 0;
+	}
+
 }
