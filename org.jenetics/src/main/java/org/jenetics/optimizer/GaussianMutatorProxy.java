@@ -23,8 +23,12 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import org.jenetics.Alterer;
+import org.jenetics.DoubleChromosome;
+import org.jenetics.DoubleGene;
 import org.jenetics.GaussianMutator;
+import org.jenetics.Genotype;
 import org.jenetics.NumericGene;
+import org.jenetics.engine.Codec;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -55,4 +59,14 @@ public class GaussianMutatorProxy<
 	public int argsLength() {
 		return 2;
 	}
+
+
+	public static <G extends NumericGene<?, G>, C extends Comparable<? super C>>
+	Codec<GaussianMutator<G, C>, DoubleGene> of() {
+		return Codec.of(
+			Genotype.of(DoubleChromosome.of(1, 0)),
+			gt -> new GaussianMutator<G, C>(gt.getGene().getAllele())
+		);
+	}
+
 }

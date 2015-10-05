@@ -37,6 +37,7 @@ import org.jenetics.Selector;
 import org.jenetics.engine.Codec;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.IntRange;
 import org.jenetics.util.Seq;
 
 /**
@@ -110,6 +111,7 @@ public class ParametersCodec<
 
 	@Override
 	public Function<Genotype<DoubleGene>, Parameters<G, C>> decoder() {
+		/*
 		return gt -> {
 			ISeq<double[]> values = gt.toSeq().stream()
 				.map(DoubleChromosome.class::cast)
@@ -154,6 +156,8 @@ public class ParametersCodec<
 				maxPhenotypeAge
 			);
 		};
+		*/
+		return null;
 	}
 
 	private static <T> ISeq<T> instances(
