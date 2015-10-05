@@ -84,6 +84,14 @@ public final class EvolutionParam<
 		return _survivorsSelector;
 	}
 
+	int getPopulationSize() {
+		return _offspringCount + _survivorsCount;
+	}
+
+	double getOffspringFraction() {
+		return (double)getOffspringCount()/(double)getPopulationSize();
+	}
+
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionParam<G, C> of(
 		final Selector<G, C> survivorsSelector,
