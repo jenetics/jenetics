@@ -104,12 +104,19 @@ public interface Alterer<
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Alterer<G, C> of(final Alterer<G, C>... alterers) {
 		return alterers.length == 0
-			? (p, g) -> 0
+			? empty()
 			: alterers.length == 1
 				? alterers[0]
 				: new CompositeAlterer<G, C>(ISeq.of(alterers));
 	}
 
+	/**
+	 * Return an {@code Alterer} which does nothing.
+	 *
+	 * @param <G> the gene type
+	 * @param <C> the fitness function result type
+	 * @return an {@code Alterer} which does nothing
+	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Alterer<G, C> empty() {
 		return (p, g) -> 0;
