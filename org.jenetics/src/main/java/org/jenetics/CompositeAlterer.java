@@ -68,6 +68,7 @@ public final class CompositeAlterer<
 
 		return alterers.stream()
 			.flatMap(mapper)
+			.filter(a -> !a.equals(Alterer.empty()))
 			.collect(toISeq());
 	}
 
