@@ -27,6 +27,7 @@ import org.jenetics.Gene;
 import org.jenetics.Genotype;
 import org.jenetics.MeanAlterer;
 import org.jenetics.MultiPointCrossover;
+import org.jenetics.Mutator;
 import org.jenetics.NumericGene;
 import org.jenetics.PartiallyMatchedCrossover;
 import org.jenetics.SinglePointCrossover;
@@ -45,25 +46,39 @@ import org.jenetics.util.Mean;
 public class AltererCodecs {
 
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Codec<Alterer<G, C>, DoubleGene> general() {
+	Codec<Alterer<G, C>, DoubleGene> General(final IntRange crossoverPoints) {
 		return Codec.of(
-			codecs.ofVector(DoubleRange.of(0, 1), 2),
+			codecs.ofVector(DoubleRange.of(0, 1), 4),
+			Mutator(),
 			SinglePointCrossover(),
+			MultiplePointCrossover(crossoverPoints),
 			SwapMutator(),
-			(double[] a, Alterer<G, C> b, Alterer<G, C> c) -> {
+			(final double[] a,
+			final Alterer<G, C> b,
+			final Alterer<G, C> c,
+			final Alterer<G, C> d,
+			final Alterer<G, C> e) ->
+			{
 				Alterer<G, C> alterer = Alterer.empty();
 				if (a[0] > 0.5) alterer = alterer.andThen(b);
 				if (a[1] > 0.5) alterer = alterer.andThen(c);
-
+				if (a[2] > 0.5) alterer = alterer.andThen(d);
+				if (a[3] > 0.5) alterer = alterer.andThen(e);
 				return alterer;
 			}
 		);
 	}
 
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Codec<Alterer<G, C>, DoubleGene> Mutator() {
+		return Codec.of(
+			Genotype.of(DoubleChromosome.of(0, 1)),
+			gt -> new Mutator<>(gt.getGene().doubleValue())
+		);
+	}
 
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Codec<Alterer<G, C>, DoubleGene>
-	SinglePointCrossover() {
+	Codec<Alterer<G, C>, DoubleGene> SinglePointCrossover() {
 		return Codec.of(
 			Genotype.of(DoubleChromosome.of(0, 1)),
 			gt -> new SinglePointCrossover<>(gt.getGene().doubleValue())
@@ -71,8 +86,7 @@ public class AltererCodecs {
 	}
 
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Codec<MultiPointCrossover<G, C>, DoubleGene>
-	MultiplePointCrossover(final IntRange points) {
+	Codec<Alterer<G, C>, DoubleGene> MultiplePointCrossover(final IntRange points) {
 		return Codec.of(
 			Genotype.of(
 				DoubleChromosome.of(0, 1),
@@ -86,8 +100,7 @@ public class AltererCodecs {
 	}
 
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Codec<Alterer<G, C>, DoubleGene>
-	SwapMutator() {
+	Codec<Alterer<G, C>, DoubleGene> SwapMutator() {
 		return Codec.of(
 			Genotype.of(DoubleChromosome.of(0, 1)),
 			gt -> new SwapMutator<>(gt.getGene().doubleValue())
