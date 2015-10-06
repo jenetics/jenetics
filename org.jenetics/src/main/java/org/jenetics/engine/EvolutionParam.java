@@ -48,8 +48,8 @@ public final class EvolutionParam<
 		final Selector<G, C> survivorsSelector,
 		final Selector<G, C> offspringSelector,
 		final Alterer<G, C> alterer,
-		final int offspringCount,
 		final int survivorsCount,
+		final int offspringCount,
 		final long maximalPhenotypeAge
 	) {
 		_survivorsSelector = requireNonNull(survivorsSelector);
@@ -97,16 +97,16 @@ public final class EvolutionParam<
 		final Selector<G, C> survivorsSelector,
 		final Selector<G, C> offspringSelector,
 		final Alterer<G, C> alterer,
-		final int offspringCount,
 		final int survivorsCount,
+		final int offspringCount,
 		final long maximalPhenotypeAge
 	) {
 		return new EvolutionParam<>(
 			survivorsSelector,
 			offspringSelector,
 			alterer,
-			offspringCount,
 			survivorsCount,
+			offspringCount,
 			maximalPhenotypeAge
 		);
 	}
