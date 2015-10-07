@@ -33,13 +33,8 @@ import org.jenetics.util.Seq;
 /**
  * Composites a list of codecs into one {@code Codec} class.
  *
- * <pre>{@code
- * final Codec<MyObject1, DoubleGene> codec1 = ...;
- * final Codec<MyObject2, DoubleGene> codec2 = ...;
- * final Codec<MyObject2, DoubleGene> codec3 = ...;
- *
- * final Codec<MyObject1, DoubleGene> codec1 = ...;
- * }</pre>
+ * @param <G> the gene type
+ * @param <T> the argument type of the compound codec
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -47,20 +42,23 @@ import org.jenetics.util.Seq;
  */
 final class CompositeCodec<T, G extends Gene<?, G>> implements Codec<T, G> {
 
-	private final ISeq<Codec<?, G>> _codecs;
+	private final ISeq<? extends Codec<?, G>> _codecs;
 	private final Function<Object[], T> _decoder;
 
 	private final int[] _lengths;
 	private final Genotype<G> _encoding;
 
 	/**
+	 * Combines the given {@code codecs} into one codec. This lets you divide
+	 * a problem into sub problems and combine them again.
 	 *
-	 *
-	 * @param codecs
-	 * @param decoder
+	 * @param codecs the {@code Codec} sequence of the sub-problems
+	 * @param decoder the decoder which combines the argument types from the
+	 *        given given codecs, to the argument type of the resulting codec.
+	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	CompositeCodec(
-		final ISeq<Codec<?, G>> codecs,
+		final ISeq<? extends Codec<?, G>> codecs,
 		final Function<Object[], T> decoder
 	) {
 		_codecs = requireNonNull(codecs);
