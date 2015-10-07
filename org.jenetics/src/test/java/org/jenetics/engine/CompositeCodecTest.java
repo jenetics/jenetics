@@ -21,14 +21,22 @@ package org.jenetics.engine;
 
 import static java.lang.String.format;
 
+import java.time.Duration;
+import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.function.Function;
 
 import org.testng.annotations.Test;
 
+import org.jenetics.AnyGene;
 import org.jenetics.DoubleGene;
 import org.jenetics.Genotype;
+import org.jenetics.LongChromosome;
+import org.jenetics.LongGene;
+import org.jenetics.Phenotype;
 import org.jenetics.util.DoubleRange;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -63,5 +71,37 @@ public class CompositeCodecTest {
 
 		return format("%s:::%s:::%s:::%s", v1, Arrays.toString(v2), v3, Arrays.toString(v4));
  	}
+
+	@Test
+	public void example() {
+		final Codec<LocalDate, LongGene> dateCodec1 = Codec.of(
+			Genotype.of(LongChromosome.of(0, 10_000)),
+			gt -> LocalDate.ofEpochDay(gt.getGene().longValue())
+		);
+
+		final Codec<LocalDate, LongGene> dateCodec2 = Codec.of(
+			Genotype.of(LongChromosome.of(1_000_000, 10_000_000)),
+			gt -> LocalDate.ofEpochDay(gt.getGene().longValue())
+		);
+
+		final Codec<Duration, LongGene> durationCodec = Codec.of(
+			dateCodec1,
+			dateCodec2,
+			(d1, d2) -> Duration.ofDays(d2.toEpochDay() - d1.toEpochDay())
+		);
+
+		final Engine<LongGene, Long> engine = Engine
+			.builder(Duration::toMillis, durationCodec)
+			.build();
+
+		final Phenotype<LongGene, Long> pt = engine.stream()
+			.limit(100)
+			.collect(EvolutionResult.toBestPhenotype());
+		System.out.println(pt);
+
+		final Duration duration = durationCodec.decoder()
+			.apply(pt.getGenotype());
+		System.out.println(duration);
+	}
 
 }
