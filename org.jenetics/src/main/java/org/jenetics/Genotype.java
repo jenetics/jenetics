@@ -235,9 +235,12 @@ public final class Genotype<G extends Gene<?, G>>
 	 */
 	@Override
 	public boolean isValid() {
-		if (_valid == null) {
-			_valid = _chromosomes.forAll(Verifiable::isValid);
+		Boolean valid = _valid;
+		if (valid == null) {
+			valid = _chromosomes.forAll(Verifiable::isValid);
+			_valid = valid;
 		}
+
 		return _valid;
 	}
 
