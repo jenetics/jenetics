@@ -27,10 +27,6 @@ import java.util.function.Function;
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Function3;
-import org.jenetics.util.Function4;
-import org.jenetics.util.Function5;
-import org.jenetics.util.Function6;
 import org.jenetics.util.ISeq;
 
 /**
@@ -159,102 +155,6 @@ public interface Codec<T, G extends Gene<?, G>> {
 			ISeq.of(
 				codec1,
 				codec2
-			),
-			decoderAdapter
-		);
-	}
-
-	public static <G extends Gene<?, G>, A, B, C, T>
-	Codec<T, G> of(
-		final Codec<A, G> codec1,
-		final Codec<B, G> codec2,
-		final Codec<C, G> codec3,
-		final Function3<A, B, C, T> decoder
-	) {
-		@SuppressWarnings("unchecked")
-		final Function<Object[], T> decoderAdapter = v -> decoder
-			.apply((A)v[0], (B)v[1], (C)v[2]);
-
-		return of(
-			ISeq.of(
-				codec1,
-				codec2,
-				codec3
-			),
-			decoderAdapter
-		);
-	}
-
-	public static <G extends Gene<?, G>, A, B, C, D, T>
-	Codec<T, G> of(
-		final Codec<A, G> codec1,
-		final Codec<B, G> codec2,
-		final Codec<C, G> codec3,
-		final Codec<D, G> codec4,
-		final Function4<A, B, C, D, T> decoder
-	) {
-		@SuppressWarnings("unchecked")
-		final Function<Object[], T> decoderAdapter = v -> decoder
-			.apply((A)v[0], (B)v[1], (C)v[2], (D)v[3]);
-
-		return of(
-			ISeq.of(
-				codec1,
-				codec2,
-				codec3,
-				codec4
-			),
-			decoderAdapter
-		);
-	}
-
-	public static <G extends Gene<?, G>, A, B, C, D, E, T>
-	Codec<T, G> of(
-		final Codec<A, G> codec1,
-		final Codec<B, G> codec2,
-		final Codec<C, G> codec3,
-		final Codec<D, G> codec4,
-		final Codec<E, G> codec5,
-		final Function5<A, B, C, D, E, T> decoder
-	) {
-		@SuppressWarnings("unchecked")
-		final Function<Object[], T> decoderAdapter = v -> decoder
-			.apply((A)v[0], (B)v[1], (C)v[2], (D)v[3], (E)v[4]);
-
-		return of(
-			ISeq.of(
-				codec1,
-				codec2,
-				codec3,
-				codec4,
-				codec5
-			),
-			decoderAdapter
-		);
-	}
-
-	public static <G extends Gene<?, G>, A, B, C, D, E, F, T>
-	Codec<T, G> of(
-		final Codec<A, G> codec1,
-		final Codec<B, G> codec2,
-		final Codec<C, G> codec3,
-		final Codec<D, G> codec4,
-		final Codec<E, G> codec5,
-		final Codec<F, G> codec6,
-		final Function6<A, B, C, D, E, F, T> decoder
-	) {
-		@SuppressWarnings("unchecked")
-		final Function<Object[], T> decoderAdapter = v -> decoder
-			.apply((A)v[0], (B)v[1], (C)v[2], (D)v[3], (E)v[4], (F)v[5]);
-
-		return of(
-			ISeq.of(
-				codec1,
-				codec2,
-				codec3,
-				codec4,
-				codec5,
-				codec6
 			),
 			decoderAdapter
 		);
