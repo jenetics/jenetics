@@ -25,6 +25,7 @@ import static org.jenetics.util.ISeq.toISeq;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Stream;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -193,6 +194,18 @@ public final class Genotype<G extends Gene<?, G>>
 	@Override
 	public Iterator<Chromosome<G>> iterator() {
 		return _chromosomes.iterator();
+	}
+
+	/**
+	 * Returns a sequential {@code Stream} of chromosomes with this genotype as
+	 * its source.
+	 *
+	 * @since !__version__!
+	 *
+	 * @return a sequential {@code Stream} of chromosomes
+	 */
+	public Stream<Chromosome<G>> stream() {
+		return _chromosomes.stream();
 	}
 
 	/**

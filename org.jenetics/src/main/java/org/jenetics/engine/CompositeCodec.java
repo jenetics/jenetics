@@ -28,7 +28,6 @@ import org.jenetics.Gene;
 import org.jenetics.Genotype;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
-import org.jenetics.util.Seq;
 
 /**
  * Composites a list of codecs into one {@code Codec} class.
@@ -73,8 +72,7 @@ final class CompositeCodec<T, G extends Gene<?, G>> implements Codec<T, G> {
 
 		_encoding = Genotype.of(
 				genotypes.stream()
-					.map(Genotype::toSeq)
-					.flatMap(Seq::stream)
+					.flatMap(Genotype::stream)
 					.collect(ISeq.toISeq())
 			);
 	}
