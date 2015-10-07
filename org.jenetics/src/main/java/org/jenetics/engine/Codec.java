@@ -141,8 +141,59 @@ public interface Codec<T, G extends Gene<?, G>> {
 		};
 	}
 
-	public static <G extends Gene<?, G>, A, B, T>
-	Codec<T, G> of(
+
+	/**
+	 * Converts two given {@code Codec} instances into one. This lets you divide
+	 * a problem into sub problems and combine them again. The following example
+	 * shows how to combine two codecs, which converts a {@code LongGene} to a
+	 * {@code LocalDate}, to a codec which combines the two {@code LocalDate}
+	 * object (this are the argument types of the component codecs) to a
+	 * {@code Duration}.
+	 *
+	 * <pre>{@code
+	 * final Codec<LocalDate, LongGene> dateCodec1 = Codec.of(
+	 *     Genotype.of(LongChromosome.of(0, 10_000)),
+	 *     gt -> LocalDate.ofEpochDay(gt.getGene().longValue())
+	 * );
+	 *
+	 * final Codec<LocalDate, LongGene> dateCodec2 = Codec.of(
+	 *     Genotype.of(LongChromosome.of(1_000_000, 10_000_000)),
+	 *     gt -> LocalDate.ofEpochDay(gt.getGene().longValue())
+	 * );
+	 *
+	 * final Codec<Duration, LongGene> durationCodec = Codec.of(
+	 *     dateCodec1,
+	 *     dateCodec2,
+	 *     (d1, d2) -> Duration.ofDays(d2.toEpochDay() - d1.toEpochDay())
+	 * );
+	 *
+	 * final Engine<LongGene, Long> engine = Engine
+	 *     .builder(Duration::toMillis, durationCodec)
+	 *     .build();
+	 *
+	 * final Phenotype<LongGene, Long> pt = engine.stream()
+	 *     .limit(100)
+	 *     .collect(EvolutionResult.toBestPhenotype());
+	 * System.out.println(pt);
+	 *
+	 * final Duration duration = durationCodec.decoder()
+	 *     .apply(pt.getGenotype());
+	 * System.out.println(duration);
+	 * }</pre>
+	 *
+	 * @param <G> the gene type
+	 * @param <A> the argument type of the first codec
+	 * @param <B> the argument type of the second codec
+	 * @param <T> the argument type of the compound codec
+	 * @param codec1 the first codec
+	 * @param codec2 the second codec
+	 * @param decoder the decoder which combines the two argument types from the
+	 *        given given codecs to the argument type of the resulting codec.
+	 * @return a new codec which combines the given {@code codec1} and
+	 *        {@code codec2}
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <G extends Gene<?, G>, A, B, T> Codec<T, G> of(
 		final Codec<A, G> codec1,
 		final Codec<B, G> codec2,
 		final BiFunction<A, B, T> decoder
@@ -152,16 +203,12 @@ public interface Codec<T, G extends Gene<?, G>> {
 			.apply((A)v[0], (B)v[1]);
 
 		return of(
-			ISeq.of(
-				codec1,
-				codec2
-			),
+			ISeq.of(codec1, codec2),
 			decoderAdapter
 		);
 	}
 
-	public static <G extends Gene<?, G>, T>
-	Codec<T, G> of(
+	public static <G extends Gene<?, G>, T> Codec<T, G> of(
 		final ISeq<Codec<?, G>> codecs,
 		final Function<Object[], T> decoder
 	) {
