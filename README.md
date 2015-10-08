@@ -164,6 +164,7 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 #### Improvement
 
 * [#43](https://github.com/jenetics/jenetics/issues/43): Add _Evolving images_ example.
+* [#62](https://github.com/jenetics/jenetics/issues/62): Two or more `Codec` interfaces can be combined into a single one. 
 * [#66](https://github.com/jenetics/jenetics/issues/66): Add `AnyGene` and `AnyChromosome` for arbitrary allele types.
 
 #### Bug fixes
