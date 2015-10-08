@@ -19,53 +19,26 @@
  */
 package org.jenetics;
 
-import static java.util.Objects.requireNonNull;
+import org.testng.annotations.Test;
 
-import org.jenetics.util.ISeq;
+import org.jenetics.util.Factory;
+import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
  */
-public final class TreeGene<A> implements Gene<A, TreeGene<A>> {
+@Test
+public class AnyChromosomeTest extends ChromosomeTester<AnyGene<Integer>> {
 
-	private TreeGene<A> _parent;
-	private ISeq<TreeGene<A>> _children;
-
-	private final A _allele;
-
-	private TreeGene(final A allele) {
-		_allele = requireNonNull(allele);
-	}
-
-
-	void swap() {
-
+	@Override
+	protected Factory<Chromosome<AnyGene<Integer>>> factory() {
+		return () -> AnyChromosome.of(RandomRegistry.getRandom()::nextInt, 10);
 	}
 
 	@Override
-	public A getAllele() {
-		return _allele;
-	}
-
-	@Override
-	public TreeGene<A> newInstance() {
-		return null;
-	}
-
-	@Override
-	public TreeGene<A> newInstance(final A value) {
-		return of(value);
-	}
-
-	@Override
-	public boolean isValid() {
-		return false;
-	}
-
-	public static <A> TreeGene<A> of(final A allele) {
-		return new TreeGene<>(allele);
+	public void objectSerialize() {
+		// Ignore the serialization test. The 'AnyChromosome' shouldn't be
+		// Serializable, but the 'AbstractChromosome' is. Will be removed.
 	}
 
 }

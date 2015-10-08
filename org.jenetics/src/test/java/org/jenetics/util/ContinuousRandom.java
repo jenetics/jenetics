@@ -17,39 +17,26 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
-
-import org.jenetics.util.ISeq;
+package org.jenetics.util;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
  */
-public class TreeNode<T> {
+public class ContinuousRandom extends Random64 {
 
-	ISeq<TreeNode<T>> _nodes = ISeq.of();
-	int _parent = -1;
-	int _left = -1;
-	int _right;
+	private long _next;
 
-	T _data;
-
-	public T getData() {
-		return _data;
+	public ContinuousRandom(final long start) {
+		_next = start;
 	}
 
-	public TreeNode<T> getParent() {
-		return _nodes.get(_parent);
+	@Override
+	public long nextLong() {
+		return _next++;
 	}
 
-	public TreeNode<T> getLeft() {
-		return _nodes.get(_left);
+	@Override
+	public int nextInt() {
+		return (int)nextLong();
 	}
-
-	public TreeNode<T> getRight() {
-		return _nodes.get(_right);
-	}
-
-
 }

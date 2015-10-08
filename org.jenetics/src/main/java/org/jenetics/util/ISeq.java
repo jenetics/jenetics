@@ -19,11 +19,16 @@
  */
 package org.jenetics.util;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
+
+import org.jenetics.internal.collection.ArrayProxyMSeq;
+import org.jenetics.internal.collection.ObjectArrayProxy;
 
 /**
  * Immutable, ordered, fixed sized sequence.
@@ -32,7 +37,7 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0
+ * @version 3.3
  */
 public interface ISeq<T>
 	extends
@@ -64,6 +69,27 @@ public interface ISeq<T>
 	 * ************************************************************************/
 
 	/**
+	 * Single instance of an empty {@code ISeq}.
+	 *
+	 * @since 3.3
+	 */
+	public static final ISeq<?> EMPTY =
+		new ArrayProxyMSeq<>(new ObjectArrayProxy<>(0)).toISeq();
+
+	/**
+	 * Return an empty {@code ISeq}.
+	 *
+	 * @since 3.3
+	 *
+	 * @param <T> the element type of the returned {@code ISeq}.
+	 * @return an empty {@code ISeq}.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> ISeq<T> empty() {
+		return (ISeq<T>)EMPTY;
+	}
+
+	/**
 	 * Returns a {@code Collector} that accumulates the input elements into a
 	 * new {@code ISeq}.
 	 *
@@ -90,7 +116,9 @@ public interface ISeq<T>
 	 */
 	@SafeVarargs
 	static <T> ISeq<T> of(final T... values) {
-		return MSeq.of(values).toISeq();
+		return values.length == 0
+			? empty()
+			: MSeq.of(values).toISeq();
 	}
 
 	/**
@@ -103,6 +131,8 @@ public interface ISeq<T>
 	 */
 	@SuppressWarnings("unchecked")
 	static <T> ISeq<T> of(final Iterable<? extends T> values) {
+		requireNonNull(values);
+
 		return values instanceof ISeq<?>
 			? (ISeq<T>)values
 			: values instanceof MSeq<?>
@@ -110,8 +140,31 @@ public interface ISeq<T>
 				: MSeq.of(values).toISeq();
 	}
 
-	static <T> ISeq<T> of(Supplier<? extends T> supplier, final int length) {
-		return MSeq.<T>ofLength(length).fill(supplier).toISeq();
+	/**
+	 * Creates a new sequence, which is filled with objects created be the given
+	 * {@code supplier}.
+	 *
+	 * @since 3.2
+	 *
+	 * @param <T> the element type of the sequence
+	 * @param supplier the {@code Supplier} which creates the elements, the
+	 *        returned sequence is filled with
+	 * @param length the length of the returned sequence
+	 * @return a new sequence filled with elements given by the {@code supplier}
+	 * @throws NegativeArraySizeException if the given {@code length} is
+	 *         negative
+	 * @throws NullPointerException if the given {@code supplier} is
+	 *         {@code null}
+	 */
+	static <T> ISeq<T> of(
+		final Supplier<? extends T> supplier,
+		final int length
+	) {
+		requireNonNull(supplier);
+
+		return length == 0
+			? empty()
+			: MSeq.<T>ofLength(length).fill(supplier).toISeq();
 	}
 
 }

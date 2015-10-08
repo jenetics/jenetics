@@ -24,13 +24,19 @@ import static java.util.Objects.requireNonNull;
 
 import java.awt.geom.AffineTransform;
 import java.util.function.IntFunction;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.require;
 
+import org.jenetics.AnyChromosome;
+import org.jenetics.AnyGene;
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
 import org.jenetics.EnumGene;
+import org.jenetics.Gene;
 import org.jenetics.Genotype;
 import org.jenetics.IntegerChromosome;
 import org.jenetics.IntegerGene;
@@ -46,7 +52,7 @@ import org.jenetics.util.LongRange;
  * This class contains factory methods for creating common  problem encodings.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.2
+ * @version 3.3
  * @since 3.2
  */
 public final class codecs {
@@ -98,6 +104,71 @@ public final class codecs {
 		return Codec.of(
 			Genotype.of(DoubleChromosome.of(domain)),
 			gt -> gt.getChromosome().getGene().getAllele()
+		);
+	}
+
+	/**
+	 * Return a scala {@code Codec} with the given allele {@link Supplier} and
+	 * allele {@code validator}. The {@code supplier} is responsible for
+	 * creating new random alleles, and the {@code validator} can verify it.
+	 * <p>
+	 * The following example shows a codec which creates and verifies
+	 * {@code BigInteger} objects.
+	 * <pre>{@code
+	 * final Codec<BigInteger, AnyGene<BigInteger>> codec = codecs.of(
+	 *     // Create new random 'BigInteger' object.
+	 *     () -> {
+	 *         final byte[] data = new byte[100];
+	 *         RandomRegistry.getRandom().nextBytes(data);
+	 *         return new BigInteger(data);
+	 *     },
+	 *     // Verify that bit 7 is set. (For illustration purpose.)
+	 *     bi -> bi.testBit(7)
+	 * );
+	 * }</pre>
+	 *
+	 * @see AnyGene#of(Supplier, Predicate)
+	 * @see AnyChromosome#of(Supplier, Predicate)
+	 *
+	 * @param <A> the allele type
+	 * @param supplier the allele-supplier which is used for creating new,
+	 *        random alleles
+	 * @param validator the validator used for validating the created gene. This
+	 *        predicate is used in the {@link AnyGene#isValid()} method.
+	 * @return a new {@code Codec} with the given parameters
+	 * @throws NullPointerException if one of the parameters is {@code null}
+	 */
+	public static <A> Codec<A, AnyGene<A>> ofScalar(
+		final Supplier<? extends A> supplier,
+		final Predicate<? super A> validator
+	) {
+		return Codec.of(
+			Genotype.of(AnyChromosome.of(supplier, validator)),
+			gt -> gt.getGene().getAllele()
+		);
+	}
+
+	/**
+	 * Return a scala {@code Codec} with the given allele {@link Supplier} and
+	 * allele {@code validator}. The {@code supplier} is responsible for
+	 * creating new random alleles.
+	 *
+	 * @see #ofScalar(Supplier, Predicate)
+	 * @see AnyGene#of(Supplier)
+	 * @see AnyChromosome#of(Supplier)
+	 *
+	 * @param <A> the allele type
+	 * @param supplier the allele-supplier which is used for creating new,
+	 *        random alleles
+	 * @return a new {@code Codec} with the given parameters
+	 * @throws NullPointerException if the parameter is {@code null}
+	 */
+	public static <A> Codec<A, AnyGene<A>> ofScalar(
+		final Supplier<? extends A> supplier
+	) {
+		return Codec.of(
+			Genotype.of(AnyChromosome.of(supplier)),
+			gt -> gt.getGene().getAllele()
 		);
 	}
 
@@ -269,6 +340,117 @@ public final class codecs {
 				return args;
 			}
 		);
+	}
+
+	/**
+	 * Return a scala {@code Codec} with the given allele {@link Supplier},
+	 * allele {@code validator} and {@code Chromosome} length. The
+	 * {@code supplier} is responsible for creating new random alleles, and the
+	 * {@code validator} can verify it.
+	 * <p>
+	 * The following example shows a codec which creates and verifies
+	 * {@code BigInteger} object arrays.
+	 * <pre>{@code
+	 * final Codec<BigInteger[], AnyGene<BigInteger>> codec = codecs.of(
+	 *     // Create new random 'BigInteger' object.
+	 *     () -> {
+	 *         final byte[] data = new byte[100];
+	 *         RandomRegistry.getRandom().nextBytes(data);
+	 *         return new BigInteger(data);
+	 *     },
+	 *     // The array generator.
+	 *     BigInteger[]::new,
+	 *     // Verify that bit 7 is set. (For illustration purpose.)
+	 *     bi -> bi.testBit(7),
+	 *     // The 'Chromosome' length.
+	 *     123
+	 * );
+	 * }</pre>
+	 *
+	 * @see AnyChromosome#of(Supplier, Predicate, Predicate, int)
+	 *
+	 * @param <A> the allele type
+	 * @param supplier the allele-supplier which is used for creating new,
+	 *        random alleles
+	 * @param generator the array generator used for generating arrays of type
+	 *        {@code A}
+	 * @param alleleValidator the validator used for validating the created gene.
+	 *        This predicate is used in the {@link AnyGene#isValid()} method.
+	 * @param alleleSeqValidator the validator used for validating the created
+	 *        chromosome. This predicate is used in the
+	 *        {@link AnyChromosome#isValid()} method.
+	 * @param length the vector length
+	 * @return a new {@code Codec} with the given parameters
+	 * @throws NullPointerException if one of the parameters is {@code null}
+	 * @throws IllegalArgumentException if the length of the vector is smaller
+	 *         than one.
+	 */
+	public static <A> Codec<A[], AnyGene<A>> ofVector(
+		final Supplier<? extends A> supplier,
+		final IntFunction<A[]> generator,
+		final Predicate<? super A> alleleValidator,
+		final Predicate<? super ISeq<? super A>> alleleSeqValidator,
+		final int length
+	) {
+		return Codec.of(
+			Genotype.of(AnyChromosome
+				.of(supplier, alleleValidator, alleleSeqValidator, length)),
+			gt -> gt.getChromosome().toSeq().stream()
+				.map(Gene::getAllele)
+				.toArray(generator)
+		);
+	}
+
+	/**
+	 * Return a scala {@code Codec} with the given allele {@link Supplier},
+	 * allele {@code validator} and {@code Chromosome} length. The
+	 * {@code supplier} is responsible for creating new random alleles, and the
+	 * {@code validator} can verify it.
+	 *
+	 * @param <A> the allele type
+	 * @param supplier the allele-supplier which is used for creating new,
+	 *        random alleles
+	 * @param generator the array generator used for generating arrays of type
+	 *        {@code A}
+	 * @param validator the validator used for validating the created gene. This
+	 *        predicate is used in the {@link AnyGene#isValid()} method.
+	 * @param length the vector length
+	 * @return a new {@code Codec} with the given parameters
+	 * @throws NullPointerException if one of the parameters is {@code null}
+	 * @throws IllegalArgumentException if the length of the vector is smaller
+	 *         than one.
+	 */
+	public static <A> Codec<A[], AnyGene<A>> ofVector(
+		final Supplier<? extends A> supplier,
+		final IntFunction<A[]> generator,
+		final Predicate<? super A> validator,
+		final int length
+	) {
+		return ofVector(supplier, generator, validator, Equality.TRUE, length);
+	}
+
+	/**
+	 * Return a scala {@code Codec} with the given allele {@link Supplier} and
+	 * {@code Chromosome} length. The {@code supplier} is responsible for
+	 * creating new random alleles.
+	 *
+	 * @param <A> the allele type
+	 * @param supplier the allele-supplier which is used for creating new,
+	 *        random alleles
+	 * @param generator the array generator used for generating arrays of type
+	 *        {@code A}
+	 * @param length the vector length
+	 * @return a new {@code Codec} with the given parameters
+	 * @throws NullPointerException if one of the parameters is {@code null}
+	 * @throws IllegalArgumentException if the length of the vector is smaller
+	 *         than one.
+	 */
+	public static <A> Codec<A[], AnyGene<A>> ofVector(
+		final Supplier<? extends A> supplier,
+		final IntFunction<A[]> generator,
+		final int length
+	) {
+		return ofVector(supplier, generator, Equality.TRUE, length);
 	}
 
 	/**

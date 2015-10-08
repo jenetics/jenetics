@@ -25,14 +25,16 @@ import static org.testng.Assert.assertTrue;
 import org.testng.annotations.Test;
 
 import org.jenetics.util.Factory;
+import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
 public class BitGeneTest extends GeneTester<BitGene> {
 
-	@Override protected Factory<BitGene> factory() {
-		return BitGene.FALSE;
+	@Override
+	protected Factory<BitGene> factory() {
+		return () -> BitGene.of(RandomRegistry.getRandom().nextBoolean());
 	}
 
 	@Test

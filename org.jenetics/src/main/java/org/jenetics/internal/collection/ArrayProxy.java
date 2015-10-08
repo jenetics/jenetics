@@ -23,6 +23,7 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
+import java.lang.ref.WeakReference;
 import java.util.Spliterator;
 import java.util.function.Function;
 import java.util.function.IntFunction;
@@ -54,7 +55,8 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 	 * Contains all sealed proxies, which share the same {@code array} as
 	 * {@code this} proxy instance.
 	 */
-	transient Stack<ArrayProxy<?, ?, ?>> _sealedProxies = new Stack<>();
+	transient Stack<WeakReference<ArrayProxy<?, ?, ?>>>
+		_sealedProxies = new Stack<>();
 
 	/**
 	 * Used for creating new array proxy instances.
@@ -210,7 +212,7 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 		slice._sealedProxies = _sealedProxies;
 
 		if (_isSealedProxy) {
-			_sealedProxies.push(slice);
+			_sealedProxies.push(new WeakReference<>(slice));
 		}
 
 		return slice;
@@ -243,7 +245,7 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 		final P proxy = _proxyFactory.create(array, start, end);
 		proxy._sealedProxies = _sealedProxies;
 		proxy._isSealedProxy = true;
-		_sealedProxies.push(proxy);
+		_sealedProxies.push(new WeakReference<>(proxy));
 
 		return proxy;
 	}
@@ -256,7 +258,12 @@ public abstract class ArrayProxy<T, A, P extends ArrayProxy<T, A, P>>
 		assert !_isSealedProxy : "Must not be called on sealed proxies";
 
 		if (_sealedProxies.length > 0) {
-			_sealedProxies.popAll(ArrayProxy::copyArray);
+			_sealedProxies.popAll(p -> {
+				final ArrayProxy<?, ?, ?> proxy = p.get();
+				if (proxy != null) {
+					proxy.copyArray();
+				}
+			});
 		}
 	}
 

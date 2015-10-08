@@ -164,7 +164,7 @@ public class LCG64ShiftRandom extends Random64 {
 			}
 
 			final LCG64ShiftRandom random = new TLLCG64ShiftRandom(_seed, _param);
-			random.jump((_block++)*STEP_BASE);
+			random.jump(_block++*STEP_BASE);
 			return random;
 		}
 
@@ -350,7 +350,9 @@ public class LCG64ShiftRandom extends Random64 {
 
 		@Override
 		public boolean equals(final Object obj) {
-			return Equality.of(this, obj).test(p -> a == p.a && b == p.b);
+			return obj instanceof Param &&
+				((Param)obj).a == a &&
+				((Param)obj).b == b;
 		}
 
 		@Override
@@ -382,7 +384,7 @@ public class LCG64ShiftRandom extends Random64 {
 
 		@Override
 		public boolean equals(final Object obj) {
-			return Equality.of(this, obj).test(state -> state._r == _r);
+			return obj instanceof State && ((State)obj)._r == _r;
 		}
 
 		@Override

@@ -1,0 +1,90 @@
+== PRNG testing
+
+http://jenetics.io[Jenetics] uses the http://www.phy.duke.edu/~rgb/General/dieharder.php[_dieharder_] (command line) tool for testing the randomness
+of the used PRNGs. _dieharder_ is a random number generator (RNG) testing
+suite. It is intended to test generators, not files of possibly random numbers.
+Since _dieharder_ needs a huge amount of random data, for testing the quality
+of a RNG, it is usually advisable to pipe the random numbers to the _dieharder_
+process:
+
+[source,bash]
+-----------------
+$ cat /dev/urandom | dieharder -g 200 -a
+-----------------
+
+The example above demonstrates how to stream a raw binary stream of bits to
+the stdin (raw) interface of _dieharder_. With the _DieHarder_ class, which is
+part of the _org.jenetics.internal.util_ package, it is easily possible to test
+PRNGs extending the _java.util.Random_ class. The only requirement is, that
+the PRNG must be default-constructable and part of the classpath.
+
+[source,bash]
+-----------------
+$ java -cp org.jenetics-3.2.0.jar \
+      org.jenetics.internal.util.DieHarder \
+      <random-engine-name> -a
+-----------------
+
+Calling the command above will create an instance of the given random engine
+and stream the random data (bytes) to the raw interface of dieharder process.
+
+[source,bash]
+-----------------
+#=============================================================================#
+# Testing: <random-engine-name> (2015-07-11 23:48)                            #
+#=============================================================================#
+#=============================================================================#
+# Linux 3.19.0-22-generic (amd64)                                             #
+# java version "1.8.0_45"                                                     #
+# Java(TM) SE Runtime Environment (build 1.8.0_45-b14)                        #
+# Java HotSpot(TM) 64-Bit Server VM (build 25.45-b02)                         #
+#=============================================================================#
+#=============================================================================#
+#            dieharder version 3.31.1 Copyright 2003 Robert G. Brown          #
+#=============================================================================#
+   rng_name    |rands/second|   Seed   |
+stdin_input_raw|  1.36e+07  |1583496496|
+#=============================================================================#
+        test_name   |ntup| tsamples |psamples|  p-value |Assessment
+#=============================================================================#
+   diehard_birthdays|   0|       100|     100|0.63372078|  PASSED
+      diehard_operm5|   0|   1000000|     100|0.42965082|  PASSED
+  diehard_rank_32x32|   0|     40000|     100|0.95159380|  PASSED
+    diehard_rank_6x8|   0|    100000|     100|0.70376799|  PASSED
+...
+Preparing to run test 209.  ntuple = 0
+        dab_monobit2|  12|  65000000|       1|0.76563780|  PASSED
+#=============================================================================#
+# Summary: PASSED=112, WEAK=2, FAILED=0                                       #
+#          235,031.492 MB of random data created with 41.394 MB/sec           #
+#=============================================================================#
+#=============================================================================#
+# Runtime: 1:34:37                                                            #
+#=============================================================================#
+-----------------
+
+In the listing above, a part of the created _dieharder_ report is shown. For
+testing the _LCG64ShiftRandom_ class, which is part of the _org.jenetics.util_
+package, the following command can be called:
+
+[source,bash]
+-----------------
+$ java -cp org.jenetics-3.2.0.jar \
+      org.jenetics.internal.util.DieHarder \
+      org.jenetics.util.LCG64ShiftRandom -a
+-----------------
+
+Table <<LCG64ShiftRandom-quality, _LCG64ShiftRandom_ quality>> shows the summary of the _dieharder_ tests. The full report is part of
+the source file of the https://github.com/jenetics/jenetics/blob/master/org.jenetics/src/main/java/org/jenetics/util/LCG64ShiftRandom.java[_LCG64ShiftRandom_] class.
+
+[[LCG64ShiftRandom-quality]]
+._LCG64ShiftRandom_ quality
+|===
+|Passed tests |Weak tests |Failed tests
+
+|110
+|4
+|0
+|===
+
+
