@@ -29,7 +29,6 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jenetics.AnyChromosome;
 import org.jenetics.AnyGene;
 import org.jenetics.Chromosome;
 import org.jenetics.DoubleGene;
