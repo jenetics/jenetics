@@ -63,8 +63,8 @@ public class CompositeCodecTest {
 
 		final Genotype<DoubleGene> gt = codec.encoding().newInstance();
 
-		final double sum = gt.toSeq().stream()
-			.mapToDouble(c -> c.toSeq().stream()
+		final double sum = gt.stream()
+			.mapToDouble(c -> c.stream()
 				.mapToDouble(DoubleGene::doubleValue)
 				.sum())
 			.sum();
