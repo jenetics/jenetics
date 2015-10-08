@@ -20,6 +20,7 @@
 package org.jenetics.util;
 
 import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -48,7 +49,7 @@ import org.jenetics.internal.collection.ObjectArrayProxy;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0
+ * @version 3.3
  */
 public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 
@@ -228,6 +229,23 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * ************************************************************************/
 
 	/**
+	 * Single instance of an empty {@code MSeq}.
+	 */
+	public static final MSeq<?> EMPTY =
+		new ArrayProxyMSeq<>(new ObjectArrayProxy<>(0));
+
+	/**
+	 * Return an empty {@code MSeq}.
+	 *
+	 * @param <T> the element type of the returned {@code MSeq}.
+	 * @return an empty {@code MSeq}.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> MSeq<T> empty() {
+		return (MSeq<T>)EMPTY;
+	}
+
+	/**
 	 * Returns a {@code Collector} that accumulates the input elements into a
 	 * new {@code MSeq}.
 	 *
@@ -245,30 +263,18 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	}
 
 	/**
-	 * Single instance of an empty {@code MSeq}.
-	 */
-	public static final MSeq<?> EMPTY = ofLength(0);
-
-	/**
-	 * Return an empty {@code MSeq}.
-	 *
-	 * @param <T> the element type of the new {@code MSeq}.
-	 * @return an empty {@code MSeq}.
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T> MSeq<T> empty() {
-		return (MSeq<T>)EMPTY;
-	}
-
-	/**
 	 * Create a new {@code MSeq} with the given {@code length}.
 	 *
 	 * @param length the length of the created {@code MSeq}.
 	 * @param <T> the element type of the new {@code MSeq}.
 	 * @return the new mutable sequence.
+	 * @throws NegativeArraySizeException if the given {@code length} is
+	 *         negative
 	 */
 	public static <T> MSeq<T> ofLength(final int length) {
-		return new ArrayProxyMSeq<>(new ObjectArrayProxy<>(length));
+		return length == 0
+			? empty()
+			: new ArrayProxyMSeq<>(new ObjectArrayProxy<>(length));
 	}
 
 	/**
@@ -281,10 +287,10 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 */
 	@SafeVarargs
 	public static <T> MSeq<T> of(final T... values) {
-		final ObjectArrayProxy<T> proxy = new ObjectArrayProxy<>(
-			values.clone(), 0, values.length
-		);
-		return new ArrayProxyMSeq<>(proxy);
+		return values.length == 0
+			? empty()
+			: new ArrayProxyMSeq<>(
+				new ObjectArrayProxy<>(values.clone(), 0, values.length));
 	}
 
 	/**
@@ -299,12 +305,16 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	public static <T> MSeq<T> of(final Iterable<? extends T> values) {
 		MSeq<T> mseq = null;
 		if (values instanceof ISeq<?>) {
-			mseq = ((ISeq<T>)values).copy();
+			final ISeq<T> seq = (ISeq<T>)values;
+			mseq = seq.length() == 0 ? empty() : seq.copy();
 		} else if (values instanceof MSeq<?>) {
-			mseq = (MSeq<T>)values;
+			final MSeq<T> seq = (MSeq<T>)values;
+			mseq = seq.length() == 0 ? empty() : MSeq.of(seq);
 		} else if (values instanceof Collection<?>) {
 			final Collection<T> collection = (Collection<T>)values;
-			mseq = MSeq.<T>ofLength(collection.size()).setAll(values);
+			mseq = collection.isEmpty()
+				? empty()
+				: MSeq.<T>ofLength(collection.size()).setAll(values);
 		} else {
 			int length = 0;
 			for (final T value : values) ++length;
@@ -315,6 +325,33 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 		}
 
 		return mseq;
+	}
+
+	/**
+	 * Creates a new sequence, which is filled with objects created be the given
+	 * {@code supplier}.
+	 *
+	 * @since 3.3
+	 *
+	 * @param <T> the element type of the sequence
+	 * @param supplier the {@code Supplier} which creates the elements, the
+	 *        returned sequence is filled with
+	 * @param length the length of the returned sequence
+	 * @return a new sequence filled with elements given by the {@code supplier}
+	 * @throws NegativeArraySizeException if the given {@code length} is
+	 *         negative
+	 * @throws NullPointerException if the given {@code supplier} is
+	 *         {@code null}
+	 */
+	static <T> MSeq<T> of(
+		final Supplier<? extends T> supplier,
+		final int length
+	) {
+		requireNonNull(supplier);
+
+		return length == 0
+			? empty()
+			: MSeq.<T>ofLength(length).fill(supplier);
 	}
 
 	/**
