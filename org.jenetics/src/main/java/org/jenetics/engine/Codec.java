@@ -66,6 +66,9 @@ import org.jenetics.util.ISeq;
  * );
  * }</pre>
  *
+ * Calling the {@link Codec#of(Factory, Function)} method is the usual way for
+ * creating new {@code Codec} instances.
+ *
  * @see codecs
  * @see Engine
  * @see Engine.Builder
