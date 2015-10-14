@@ -14725,12 +14725,12 @@ class Main {
 
 \begin_layout Plain Layout
 
-    static int fitness(ISeq<Integer> subset) {
+    static int fitness(ISeq<Integer> set) {
 \end_layout
 
 \begin_layout Plain Layout
 
-        final int size = subset.stream().collect(
+        final int size = set.stream().collect(
 \end_layout
 
 \begin_layout Plain Layout
@@ -14760,7 +14760,7 @@ class Main {
 
 \begin_layout Plain Layout
 
-            .builder(Main::fitness, ofSubset(SEQ))
+            .builder(Main::fitness, ofSubSet(SEQ))
 \end_layout
 
 \begin_layout Plain Layout
