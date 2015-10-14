@@ -513,7 +513,8 @@ public final class codecs {
 	 *         {@code null}. It is allowed to have {@code null} elements in the
 	 *         {@code basicSet}.
 	 */
-	public static <T> Codec<ISeq<T>, BitGene> ofSubSet(final ISeq<T> basicSet) {
+	public static <T> Codec<ISeq<T>, BitGene> ofSubset(final ISeq<T> basicSet) {
+		requireNonNull(basicSet);
 		return Codec.of(
 			Genotype.of(BitChromosome.of(basicSet.length())),
 			gt -> ((BitChromosome)gt.getChromosome()).ones()
