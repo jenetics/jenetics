@@ -529,6 +529,7 @@ public final class codecs {
 	 *
 	 *     // Fitness function directly takes an 'int' value.
 	 *     private static int fitness(final ISeq<Integer> subset) {
+	 *         assert(subset.size() <= SET.size());
 	 *         final int size = subset.stream()
 	 *             .collect(Collectors.summingInt(Integer::intValue));
 	 *         return size <= 20 ? size : 0;

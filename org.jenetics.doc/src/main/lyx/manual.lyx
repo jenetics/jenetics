@@ -14725,12 +14725,17 @@ class Main {
 
 \begin_layout Plain Layout
 
-    static int fitness(ISeq<Integer> set) {
+    static int fitness(ISeq<Integer> subset) {
 \end_layout
 
 \begin_layout Plain Layout
 
-        final int size = set.stream().collect(
+        assert(subset.size() <= SET.size());
+\end_layout
+
+\begin_layout Plain Layout
+
+        final int size = subset.stream().collect(
 \end_layout
 
 \begin_layout Plain Layout
