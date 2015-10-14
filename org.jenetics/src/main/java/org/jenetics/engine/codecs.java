@@ -515,8 +515,33 @@ public final class codecs {
 	}
 
 	/**
-	 * The subset Codec can be used for problems where it is required to find
-	 * the best subset from given basic set.
+	 * The subset {@code Codec} can be used for problems where it is required to
+	 * find the best subset from given basic set. A typical usage example of the
+	 * returned {@code Codec} is the Knapsack problem.
+	 * <p>
+	 * The following code snippet shows a simplified variation of the Knapsack
+	 * problem.
+	 * <pre>{@code
+	 * public final class Main {
+	 *     // The basic set from where to choose an 'optimal' subset.
+	 *     private final static ISeq<Integer> SET =
+	 *         ISeq.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+	 *
+	 *     // Fitness function directly takes an 'int' value.
+	 *     private static int fitness(final ISeq<Integer> subset) {
+	 *         final int size = subset.stream()
+	 *             .collect(Collectors.summingInt(Integer::intValue));
+	 *         return size <= 20 ? size : 0;
+	 *     }
+	 *
+	 *     public static void main(final String[] args) {
+	 *         final Engine<BitGene, Double> engine = Engine
+	 *             .builder(Main::fitness, codec.ofSubSet(SET))
+	 *             .build();
+	 *         ...
+	 *     }
+	 * }
+	 * }</pre>
 	 *
 	 * @param <T> the element type of the basic set
 	 * @param basicSet the basic set, from where to choose the <i>optimal</i>
