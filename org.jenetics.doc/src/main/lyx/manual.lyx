@@ -14067,12 +14067,7 @@ static double eval(final double x) {
 \end_layout
 
 \begin_layout Standard
-The 
-\family typewriter
-Codec
-\family default
- interface also allows to implement commonly used encodings.
- 
+
 \family sans
 \series bold
 \shape smallcaps
@@ -14088,124 +14083,821 @@ jenetics.\SpecialChar \-
 engine.\SpecialChar \-
 codecs
 \family default
- class:
+ class.
+ The following sub-sections shows some of the implementation of this methods.
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Subsubsection
+Scalar codecs
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Scalar-codecs"
 
-\family typewriter
-\series bold
-codecs.ofScalar
-\family default
-\series default
-: Create 
-\family typewriter
-Codec
-\family default
-s for scalar problems
-\begin_inset Foot
+\end_inset
+
+
+\begin_inset Index idx
 status collapsed
 
 \begin_layout Plain Layout
-The argument types of these problems are scalars.
+Scalar codecs
 \end_layout
 
 \end_inset
 
----
-\family typewriter
-Integer
-\family default
-, 
-\family typewriter
-Long
-\family default
- or 
-\family typewriter
-Double
-\family default
-.
-\end_layout
 
-\begin_layout Itemize
-
-\family typewriter
-\series bold
-codecs.ofVector
-\family default
-\series default
-: Create 
-\family typewriter
-Codec
-\family default
-s for vector problems---
-\family typewriter
-int[]
-\family default
-, 
-\family typewriter
-long[]
-\family default
- or 
-\family typewriter
-double[]
-\family default
-.
- It is possible to create vectors with the same range and vectors with a
- different range for every vector component.
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-\series bold
-codecs.ofPermutation
-\family default
-\series default
-: Create 
-\family typewriter
-Codec
-\family default
-s for permutation problems.
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Comment
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Codec-factory-method-ofScalar"
+
+\end_inset
+
+ shows the implementation of the 
+\family typewriter
+codecs\SpecialChar \-
+.ofScalar
+\family default
+ factory method---for 
+\family typewriter
+Integer
+\family default
+ scalars.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
 status open
 
-\begin_layout Itemize
+\begin_layout Plain Layout
+
+static Codec<Integer, IntegerGene> ofScalar(IntRange domain) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return Codec.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+        Genotype.of(IntegerChromosome.of(domain)),
+\end_layout
+
+\begin_layout Plain Layout
+
+        gt -> gt.getChromosome().getGene().getAllele()
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
 
 \family typewriter
-\series bold
-codecs.ofAffineTransform
-\family default
-\series default
-: Create 
-\family typewriter
 Codec
 \family default
-s for affine transformation.
- This 
+ factory method: 
 \family typewriter
-Codec
+ofScalar
 \family default
- uses the 
-\family typewriter
-Affine\SpecialChar \-
-Transform
-\family default
- class of the 
-\family typewriter
-java.\SpecialChar \-
-awt.\SpecialChar \-
-geom
-\family default
- package.
+
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Codec-factory-method-ofScalar"
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
 
 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The usage of the 
+\family typewriter
+Codec
+\family default
+, created by this factory method, simplifies the implementation of the fitness
+ 
+\family typewriter
+Function
+\family default
+ and the creation of the evolution 
+\family typewriter
+Engine
+\family default
+.
+ For scalar types, the saving, in complexity and lines of code, is not that
+ big, but using the factory method is still quite handy.
+ 
+\end_layout
+
+\begin_layout Standard
+The following listing demonstrates the interaction between 
+\family typewriter
+Codec
+\family default
+, fitness 
+\family typewriter
+Function
+\family default
+ and evolution 
+\family typewriter
+Engine
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+class Main {
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Fitness function directly takes an 'int' value.
+\end_layout
+
+\begin_layout Plain Layout
+
+    static double fitness(int arg) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        return ...;
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+    public static void main(String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Engine<IntegerGene, Double> engine = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+            .builder(Main::fitness, ofScalar(IntRange.of(0, 100)))
+\end_layout
+
+\begin_layout Plain Layout
+
+            .build();
+\end_layout
+
+\begin_layout Plain Layout
+
+        ...
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Vector codecs
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Vector-codecs"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Vector codecs
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In the listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Codec-factory-method-ofVector"
+
+\end_inset
+
+, the 
+\family typewriter
+ofVector
+\family default
+ factory method returns a 
+\family typewriter
+Codec
+\family default
+ for an 
+\family typewriter
+int[]
+\family default
+ array.
+ The 
+\family typewriter
+domain
+\family default
+ parameter defines the allowed range of the 
+\family typewriter
+int
+\family default
+ values and the 
+\family typewriter
+length
+\family default
+ defines the length of the encoded 
+\family typewriter
+int
+\family default
+ array.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static Codec<int[], IntegerGene> ofVector(
+\end_layout
+
+\begin_layout Plain Layout
+
+    IntRange domain, 
+\end_layout
+
+\begin_layout Plain Layout
+
+    int length
+\end_layout
+
+\begin_layout Plain Layout
+
+) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return Codec.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+        Genotype.of(IntegerChromosome.of(domain, length)),
+\end_layout
+
+\begin_layout Plain Layout
+
+        gt -> ((IntegerChromosome)gt.getChromosome()).toArray()
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+Codec
+\family default
+ factory method: 
+\family typewriter
+ofVector
+\family default
+
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Codec-factory-method-ofVector"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The usage example of the 
+\emph on
+vector
+\emph default
+ 
+\family typewriter
+Codec
+\family default
+ is almost the same as for the 
+\emph on
+scalar
+\emph default
+ 
+\family typewriter
+Codec
+\family default
+.
+ As additional parameter, we need to define the length of the desired array
+ and we define our fitness function with an 
+\family typewriter
+int[]
+\family default
+ array.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+class Main {
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Fitness function directly takes an 'int[]' array.
+\end_layout
+
+\begin_layout Plain Layout
+
+    static double fitness(int[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        return ...;
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+    public static void main(String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Engine<IntegerGene, Double> engine = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+            .builder(
+\end_layout
+
+\begin_layout Plain Layout
+
+                Main::fitness, 
+\end_layout
+
+\begin_layout Plain Layout
+
+                ofVector(IntRange.of(0, 100), 10))
+\end_layout
+
+\begin_layout Plain Layout
+
+            .build();
+\end_layout
+
+\begin_layout Plain Layout
+
+        ...
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Subset codec
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Subset-codec"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Subset codec
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The subset Codec can be used for problems where it is required to find the
+ best subset from given basic set.
+ This Codec can easily implemented with the use of a BitChromosome, as shown
+ in listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Codec-factory-method-ofSubSet"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static <T> Codec<ISeq<T>, BitGene> ofSubset(ISeq<T> basicSet) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return Codec.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+        Genotype.of(BitChromosome.of(basicSet.length())),
+\end_layout
+
+\begin_layout Plain Layout
+
+        gt -> ((BitChromosome)gt.getChromosome()).ones()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .mapToObj(basicSet::get)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .collect(ISeq.toISeq())
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+Codec
+\family default
+ factory method: 
+\family typewriter
+ofSubSet
+\family default
+
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Codec-factory-method-ofSubSet"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The following usage example of 
+\emph on
+subset
+\emph default
+ 
+\family typewriter
+Codec
+\family default
+ shows a simplified version of the Knapsack problem (see section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:0/1-Knapsack-example"
+
+\end_inset
+
+).
+ We try to find a subset, from the given basic 
+\family typewriter
+SET
+\family default
+, where the sum of the values is as big as possible, but smaller or equal
+ than 
+\begin_inset Formula $20$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+class Main {
+\end_layout
+
+\begin_layout Plain Layout
+
+    // The basic set from where to choose an 'optimal' subset.
+\end_layout
+
+\begin_layout Plain Layout
+
+    final static ISeq<Integer> SET = 
+\end_layout
+
+\begin_layout Plain Layout
+
+        ISeq.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Fitness function directly takes an 'int' value.
+\end_layout
+
+\begin_layout Plain Layout
+
+    static int fitness(ISeq<Integer> subset) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        final int size = subset.stream().collect(
+\end_layout
+
+\begin_layout Plain Layout
+
+            Collectors.summingInt(Integer::intValue));
+\end_layout
+
+\begin_layout Plain Layout
+
+        return size <= 20 ? size : 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+    public static void main(String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Engine<BitGene, Double> engine = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+            .builder(Main::fitness, ofSubset(SEQ))
+\end_layout
+
+\begin_layout Plain Layout
+
+            .build();
+\end_layout
+
+\begin_layout Plain Layout
+
+        ...
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Composite codec
+\end_layout
+
+\begin_layout Standard
+The 
+\emph on
+composite
+\emph default
+ 
+\family typewriter
+Codec
+\family default
+ factory method allows to combine two or more 
+\family typewriter
+Codec
+\family default
+s into one.
+ Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Composite-Codec-factory"
+
+\end_inset
+
+ shows the method signature of the factory method, which is implemented
+ directly in the 
+\family typewriter
+Codec
+\family default
+ interface.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static <G extends Gene<?, G>, A, B, T> Codec<T, G> of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Codec<A, G> codec1,
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Codec<B, G> codec2,
+\end_layout
+
+\begin_layout Plain Layout
+
+    final BiFunction<A, B, T> decoder
+\end_layout
+
+\begin_layout Plain Layout
+
+) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    ...
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+Composite 
+\family typewriter
+Codec
+\family default
+ factory method
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Composite-Codec-factory"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+As you can see from the method definition, the combining 
+\family typewriter
+Codec
+\family default
+s and the combined 
+\family typewriter
+Codec
+\family default
+ have the same 
+\family typewriter
+Gene
+\family default
+ type.
 \end_layout
 
 \begin_layout Subsection
