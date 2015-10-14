@@ -33,6 +33,8 @@ import org.jenetics.internal.util.require;
 
 import org.jenetics.AnyChromosome;
 import org.jenetics.AnyGene;
+import org.jenetics.BitChromosome;
+import org.jenetics.BitGene;
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
 import org.jenetics.EnumGene;
@@ -495,6 +497,28 @@ public final class codecs {
 			gt -> gt.getChromosome().toSeq().stream()
 						.mapToInt(EnumGene<Integer>::getAllele)
 						.toArray()
+		);
+	}
+
+	/**
+	 * The subset Codec can be used for problems where it is required to find
+	 * the best subset from given basic set.
+	 *
+	 * @param <T> the element type of the basic set
+	 * @param basicSet the basic set, from where to choose the <i>optimal</i>
+	 *        subset.
+	 * @return a new codec which can be used for modelling <i>subset</i>
+	 *         problems.
+	 * @throws NullPointerException if the given {@code basicSet} is
+	 *         {@code null}. It is allowed to have {@code null} elements in the
+	 *         {@code basicSet}.
+	 */
+	public static <T> Codec<ISeq<T>, BitGene> ofSubSet(final ISeq<T> basicSet) {
+		return Codec.of(
+			Genotype.of(BitChromosome.of(basicSet.length())),
+			gt -> ((BitChromosome)gt.getChromosome()).ones()
+				.mapToObj(basicSet::get)
+				.collect(ISeq.toISeq())
 		);
 	}
 
