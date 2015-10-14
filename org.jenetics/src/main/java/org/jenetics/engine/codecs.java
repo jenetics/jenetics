@@ -23,6 +23,7 @@ import static java.lang.reflect.Array.newInstance;
 import static java.util.Objects.requireNonNull;
 
 import java.awt.geom.AffineTransform;
+import java.util.Objects;
 import java.util.function.IntFunction;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -262,6 +263,7 @@ public final class codecs {
 		}
 
 		final ISeq<IntegerChromosome> chromosomes = Stream.of(domains)
+			.map(Objects::requireNonNull)
 			.map(IntegerGene::of)
 			.map(IntegerChromosome::of)
 			.collect(ISeq.toISeq());
@@ -294,6 +296,7 @@ public final class codecs {
 		}
 
 		final ISeq<LongChromosome> chromosomes = Stream.of(domains)
+			.map(Objects::requireNonNull)
 			.map(LongGene::of)
 			.map(LongChromosome::of)
 			.collect(ISeq.toISeq());
@@ -328,6 +331,7 @@ public final class codecs {
 		}
 
 		final ISeq<DoubleChromosome> chromosomes = Stream.of(domains)
+			.map(Objects::requireNonNull)
 			.map(DoubleGene::of)
 			.map(DoubleChromosome::of)
 			.collect(ISeq.toISeq());
@@ -394,6 +398,12 @@ public final class codecs {
 		final Predicate<? super ISeq<? super A>> alleleSeqValidator,
 		final int length
 	) {
+		requireNonNull(supplier);
+		requireNonNull(generator);
+		requireNonNull(alleleSeqValidator);
+		requireNonNull(alleleSeqValidator);
+		require.positive(length);
+
 		return Codec.of(
 			Genotype.of(AnyChromosome
 				.of(supplier, alleleValidator, alleleSeqValidator, length)),
@@ -479,8 +489,8 @@ public final class codecs {
 		return Codec.of(
 			Genotype.of(PermutationChromosome.of(alleles)),
 			gt -> gt.getChromosome().toSeq().stream()
-						.map(EnumGene::getAllele)
-						.toArray(newArray)
+				.map(EnumGene::getAllele)
+				.toArray(newArray)
 		);
 	}
 
@@ -490,13 +500,17 @@ public final class codecs {
 	 *
 	 * @param length the number of permutation elements
 	 * @return a permutation {@code Codec} of integers
+	 * @throws IllegalArgumentException if the {@code length} is smaller than
+	 *         one.
 	 */
 	public static Codec<int[], EnumGene<Integer>> ofPermutation(final int length) {
+		require.positive(length);
+
 		return Codec.of(
 			Genotype.of(PermutationChromosome.ofInteger(length)),
 			gt -> gt.getChromosome().toSeq().stream()
-						.mapToInt(EnumGene<Integer>::getAllele)
-						.toArray()
+				.mapToInt(EnumGene<Integer>::getAllele)
+				.toArray()
 		);
 	}
 
@@ -512,9 +526,13 @@ public final class codecs {
 	 * @throws NullPointerException if the given {@code basicSet} is
 	 *         {@code null}. It is allowed to have {@code null} elements in the
 	 *         {@code basicSet}.
+	 * @throws IllegalArgumentException if the {@code basicSet} size is smaller
+	 *         than one.
 	 */
 	public static <T> Codec<ISeq<T>, BitGene> ofSubset(final ISeq<T> basicSet) {
 		requireNonNull(basicSet);
+		require.positive(basicSet.length());
+
 		return Codec.of(
 			Genotype.of(BitChromosome.of(basicSet.length())),
 			gt -> ((BitChromosome)gt.getChromosome()).ones()
