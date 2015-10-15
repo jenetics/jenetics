@@ -14882,9 +14882,9 @@ name "lis:Composite-Codec-factory"
 
 As you can see from the method definition, the combining 
 \family typewriter
-Codec
+Codecs
 \family default
-s and the combined 
+ and the combined 
 \family typewriter
 Codec
 \family default
@@ -14893,6 +14893,28 @@ Codec
 Gene
 \family default
  type.
+ The following listing shows a full example which uses a combined 
+\family typewriter
+Codec
+\family default
+.
+ It uses the subset 
+\family typewriter
+Codec
+\family default
+, introduced in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Subset-codec"
+
+\end_inset
+
+, and combines it into a 
+\family typewriter
+Tuple
+\family default
+ of subsets.
+ 
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -15105,6 +15127,101 @@ class Main {
 \begin_layout Plain Layout
 
 }
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If you have to combine more than one Codec into one, you have to use the
+ second, more general, 
+\emph on
+combining
+\emph default
+ function: 
+\family typewriter
+Codec\SpecialChar \-
+.of(\SpecialChar \-
+ISeq<Codec<?, G>>,\SpecialChar \-
+ Function<Object[], T>\SpecialChar \-
+)
+\family default
+.
+ The example above shows how to use the general combining function.
+ It is just a little bit more verbose and requires explicit casts for the
+ 
+\emph on
+sub-codec
+\emph default
+ types.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Codec<Triple<Long, Long, Long>, LongGene>
+\end_layout
+
+\begin_layout Plain Layout
+
+    codec = Codec.of(ISeq.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+        codecs.ofScalar(LongRange.of(0, 100)),
+\end_layout
+
+\begin_layout Plain Layout
+
+        codecs.ofScalar(LongRange.of(0, 1000)),
+\end_layout
+
+\begin_layout Plain Layout
+
+        codecs.ofScalar(LongRange.of(0, 10000))),
+\end_layout
+
+\begin_layout Plain Layout
+
+        values -> {
+\end_layout
+
+\begin_layout Plain Layout
+
+            final Long first = (Long)values[0];
+\end_layout
+
+\begin_layout Plain Layout
+
+            final Long second = (Long)values[1];
+\end_layout
+
+\begin_layout Plain Layout
+
+            final Long third = (Long)values[2];
+\end_layout
+
+\begin_layout Plain Layout
+
+            return new Triple<>(first, second, third);
+\end_layout
+
+\begin_layout Plain Layout
+
+        }
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
 \end_layout
 
 \end_inset
