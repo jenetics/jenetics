@@ -14854,17 +14854,7 @@ static <G extends Gene<?, G>, A, B, T> Codec<T, G> of(
 
 \begin_layout Plain Layout
 
-) {
-\end_layout
-
-\begin_layout Plain Layout
-
-    ...
-\end_layout
-
-\begin_layout Plain Layout
-
-}
+){...}
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
@@ -14903,6 +14893,223 @@ Codec
 Gene
 \family default
  type.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+class Main {
+\end_layout
+
+\begin_layout Plain Layout
+
+    static final ISeq<Integer> SET = 
+\end_layout
+
+\begin_layout Plain Layout
+
+        ISeq.of(1, 2, 3, 4, 5, 6, 7, 8, 9);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Result type of the combined 'Codec'.
+\end_layout
+
+\begin_layout Plain Layout
+
+    static final class Tuple<A, B> {
+\end_layout
+
+\begin_layout Plain Layout
+
+        final A first;
+\end_layout
+
+\begin_layout Plain Layout
+
+        final B second;
+\end_layout
+
+\begin_layout Plain Layout
+
+        Tuple(final A first, final B second) {
+\end_layout
+
+\begin_layout Plain Layout
+
+            this.first = first;
+\end_layout
+
+\begin_layout Plain Layout
+
+            this.second = second;
+\end_layout
+
+\begin_layout Plain Layout
+
+        }
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    static int fitness(Tuple<ISeq<Integer>, ISeq<Integer>> args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        return args.first.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+                .mapToInt(Integer::intValue).sum() -
+\end_layout
+
+\begin_layout Plain Layout
+
+            args.second.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+                .mapToInt(Integer::intValue).sum();
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    public static void main(String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        // Combined 'Codec'.
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Codec<Tuple<ISeq<Integer>, ISeq<Integer>>, BitGene>
+\end_layout
+
+\begin_layout Plain Layout
+
+            codec = Codec.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+                codecs.ofSubSet(SET),
+\end_layout
+
+\begin_layout Plain Layout
+
+                codecs.ofSubSet(SET),
+\end_layout
+
+\begin_layout Plain Layout
+
+                Tuple::new
+\end_layout
+
+\begin_layout Plain Layout
+
+            );
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Engine<BitGene, Integer> engine = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+            .builder(Main::fitness, codec)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .build();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Phenotype<BitGene, Integer> pt = engine.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .limit(100)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .collect(EvolutionResult.toBestPhenotype());
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        // Use the codec for converting the result 'Genotype'.
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Tuple<ISeq<Integer>, ISeq<Integer>> result =
+\end_layout
+
+\begin_layout Plain Layout
+
+            codec.decoder().apply(pt.getGenotype());
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
