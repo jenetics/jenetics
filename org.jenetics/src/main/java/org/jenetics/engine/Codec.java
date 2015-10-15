@@ -264,7 +264,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 */
 	public static <G extends Gene<?, G>, T> Codec<T, G> of(
 		final ISeq<? extends Codec<?, G>> codecs,
-		final Function<Object[], T> decoder
+		final Function<? super Object[], ? extends T> decoder
 	) {
 		return new CompositeCodec<>(codecs, decoder);
 	}

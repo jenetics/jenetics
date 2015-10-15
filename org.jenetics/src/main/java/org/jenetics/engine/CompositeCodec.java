@@ -42,7 +42,7 @@ import org.jenetics.util.ISeq;
 final class CompositeCodec<T, G extends Gene<?, G>> implements Codec<T, G> {
 
 	private final ISeq<? extends Codec<?, G>> _codecs;
-	private final Function<Object[], T> _decoder;
+	private final Function<? super Object[], ? extends T> _decoder;
 
 	private final int[] _lengths;
 	private final Genotype<G> _encoding;
@@ -58,7 +58,7 @@ final class CompositeCodec<T, G extends Gene<?, G>> implements Codec<T, G> {
 	 */
 	CompositeCodec(
 		final ISeq<? extends Codec<?, G>> codecs,
-		final Function<Object[], T> decoder
+		final Function<? super Object[], ? extends T> decoder
 	) {
 		_codecs = requireNonNull(codecs);
 		_decoder = requireNonNull(decoder);
