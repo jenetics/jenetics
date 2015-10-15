@@ -55,8 +55,8 @@ import org.jenetics.util.LongRange;
  * This class contains factory methods for creating common  problem encodings.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.3
  * @since 3.2
+ * @version 3.3
  */
 public final class codecs {
 
