@@ -77,7 +77,7 @@ import org.jenetics.util.ISeq;
  * @param <G> the {@code Gene} type used for encoding the argument type {@code T}
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 3.3
  * @since 3.2
  */
 public interface Codec<T, G extends Gene<?, G>> {
@@ -185,7 +185,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * System.out.println(duration);
 	 * }</pre>
 	 *
-	 * @since !__version__!
+	 * @since 3.3
 	 *
 	 * @param <G> the gene type
 	 * @param <A> the argument type of the first codec
@@ -252,7 +252,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * System.out.println(duration);
 	 * }</pre>
 	 *
-	 * @since !__version__!
+	 * @since 3.3
 	 *
 	 * @param <G> the gene type
 	 * @param <T> the argument type of the compound codec
