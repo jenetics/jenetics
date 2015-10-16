@@ -31,6 +31,7 @@ import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
+import java.util.stream.Stream;
 
 import org.jenetics.internal.collection.ArrayProxyMSeq;
 import org.jenetics.internal.collection.ObjectArrayProxy;
@@ -299,33 +300,58 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @param <T> the element type
 	 * @param values the array values.
 	 * @return a new {@code MSeq} with the given values.
-	 * @throws NullPointerException if the {@code values} array is {@code null}.
+	 * @throws NullPointerException if the {@code values} object is
+	 *        {@code null}.
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> MSeq<T> of(final Iterable<? extends T> values) {
-		MSeq<T> mseq = null;
+		final MSeq<T> mseq;
 		if (values instanceof ISeq<?>) {
 			final ISeq<T> seq = (ISeq<T>)values;
-			mseq = seq.length() == 0 ? empty() : seq.copy();
+			mseq = seq.isEmpty() ? empty() : seq.copy();
 		} else if (values instanceof MSeq<?>) {
 			final MSeq<T> seq = (MSeq<T>)values;
-			mseq = seq.length() == 0 ? empty() : MSeq.of(seq);
+			mseq = seq.isEmpty() ? empty() : MSeq.of(seq);
 		} else if (values instanceof Collection<?>) {
 			final Collection<T> collection = (Collection<T>)values;
 			mseq = collection.isEmpty()
 				? empty()
 				: MSeq.<T>ofLength(collection.size()).setAll(values);
 		} else {
-			int length = 0;
-			for (final T value : values) ++length;
+			final Stream.Builder<T> builder = Stream.builder();
+			values.forEach(builder::add);
+			final Object[] objects = builder.build().toArray();
 
-			mseq = MSeq.ofLength(length);
-			int index = 0;
-			for (final T value : values) mseq.set(index++, value);
+			mseq = objects.length == 0
+				? empty()
+				: new ArrayProxyMSeq<>(
+					new ObjectArrayProxy<>(objects, 0, objects.length));
 		}
 
 		return mseq;
 	}
+
+//	/**
+//	 * Create a new {@code MSeq} instance from the remaining elements of the
+//	 * given iterator.
+//	 *
+//	 * @since 3.3
+//	 *
+//	 * @param <T> the element type.
+//	 * @return a new {@code MSeq} with the given remaining values.
+//	 * @throws NullPointerException if the {@code values} object is
+//	 *        {@code null}.
+//	 */
+//	public static <T> MSeq<T> of(final Iterator<? extends T> values) {
+//		final Stream.Builder<T> builder = Stream.builder();
+//		values.forEachRemaining(builder::add);
+//		final Object[] objects = builder.build().toArray();
+//
+//		return objects.length == 0
+//			? empty()
+//			: new ArrayProxyMSeq<>(
+//				new ObjectArrayProxy<>(objects, 0, objects.length));
+//	}
 
 	/**
 	 * Creates a new sequence, which is filled with objects created be the given

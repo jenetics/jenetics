@@ -29,6 +29,7 @@ import java.util.stream.Collector;
 
 import org.jenetics.internal.collection.ArrayProxyMSeq;
 import org.jenetics.internal.collection.ObjectArrayProxy;
+import org.jenetics.internal.util.require;
 
 /**
  * Immutable, ordered, fixed sized sequence.
@@ -97,7 +98,7 @@ public interface ISeq<T>
 	 * @return a {@code Collector} which collects all the input elements into an
 	 *         {@code ISeq}, in encounter order
 	 */
-	static <T> Collector<T, ?, ISeq<T>> toISeq() {
+	public static <T> Collector<T, ?, ISeq<T>> toISeq() {
 		return Collector.of(
 			(Supplier<List<T>>)ArrayList::new,
 			List::add,
@@ -115,7 +116,7 @@ public interface ISeq<T>
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
 	@SafeVarargs
-	static <T> ISeq<T> of(final T... values) {
+	public static <T> ISeq<T> of(final T... values) {
 		return values.length == 0
 			? empty()
 			: MSeq.of(values).toISeq();
@@ -130,7 +131,7 @@ public interface ISeq<T>
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
 	@SuppressWarnings("unchecked")
-	static <T> ISeq<T> of(final Iterable<? extends T> values) {
+	public static <T> ISeq<T> of(final Iterable<? extends T> values) {
 		requireNonNull(values);
 
 		return values instanceof ISeq<?>
@@ -139,6 +140,22 @@ public interface ISeq<T>
 				? ((MSeq<T>)values).toISeq()
 				: MSeq.of(values).toISeq();
 	}
+
+//	/**
+//	 * Create a new {@code ISeq} instance from the remaining elements of the
+//	 * given iterator.
+//	 *
+//	 * @since 3.3
+//	 *
+//	 * @param <T> the element type.
+//	 * @return a new {@code ISeq} with the given remaining values.
+//	 * @throws NullPointerException if the {@code values} object is
+//	 *        {@code null}.
+//	 */
+//	public static <T> ISeq<T> of(final Iterator<? extends T> values) {
+//		final MSeq<T> seq = MSeq.of(values);
+//		return seq.isEmpty() ? empty() : seq.toISeq();
+//	}
 
 	/**
 	 * Creates a new sequence, which is filled with objects created be the given
@@ -156,11 +173,12 @@ public interface ISeq<T>
 	 * @throws NullPointerException if the given {@code supplier} is
 	 *         {@code null}
 	 */
-	static <T> ISeq<T> of(
+	public static <T> ISeq<T> of(
 		final Supplier<? extends T> supplier,
 		final int length
 	) {
 		requireNonNull(supplier);
+		require.nonNegative(length);
 
 		return length == 0
 			? empty()
