@@ -550,8 +550,7 @@ public final class codecs {
 	 * @return a new codec which can be used for modelling <i>subset</i>
 	 *         problems.
 	 * @throws NullPointerException if the given {@code basicSet} is
-	 *         {@code null}. It is allowed to have {@code null} elements in the
-	 *         {@code basicSet}.
+	 *         {@code null}; {@code null} elements are allowed.
 	 * @throws IllegalArgumentException if the {@code basicSet} size is smaller
 	 *         than one.
 	 */
