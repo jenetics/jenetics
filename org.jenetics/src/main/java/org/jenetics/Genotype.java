@@ -94,7 +94,7 @@ public final class Genotype<G extends Gene<?, G>>
 		final ISeq<? extends Chromosome<G>> chromosomes,
 		final int ngenes
 	) {
-		if (chromosomes.length() == 0) {
+		if (chromosomes.isEmpty()) {
 			throw new IllegalArgumentException("No chromosomes given.");
 		}
 
@@ -200,7 +200,7 @@ public final class Genotype<G extends Gene<?, G>>
 	 * Returns a sequential {@code Stream} of chromosomes with this genotype as
 	 * its source.
 	 *
-	 * @since 3.3
+	 * @since !__version__!
 	 *
 	 * @return a sequential {@code Stream} of chromosomes
 	 */

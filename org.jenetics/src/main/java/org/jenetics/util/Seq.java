@@ -78,6 +78,17 @@ public interface Seq<T> extends Iterable<T> {
 	}
 
 	/**
+	 * Returns {@code true} if this sequence contains no elements.
+	 *
+	 * @since 3.3
+	 *
+	 * @return {@code true} if this sequence contains no elements
+	 */
+	public default boolean isEmpty() {
+		return length() == 0;
+	}
+
+	/**
 	 * Tests whether a predicate holds for all elements of this sequence.
 	 *
 	 * @param predicate the predicate to use to test the elements.
