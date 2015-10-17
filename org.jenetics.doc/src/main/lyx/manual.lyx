@@ -14591,7 +14591,7 @@ status open
 
 \begin_layout Plain Layout
 
-static <T> Codec<ISeq<T>, BitGene> ofSubset(ISeq<T> basicSet) {
+static <T> Codec<ISeq<T>, BitGene> ofSubSet(ISeq<T> basicSet) {
 \end_layout
 
 \begin_layout Plain Layout
