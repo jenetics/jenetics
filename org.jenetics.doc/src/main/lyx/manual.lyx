@@ -7925,6 +7925,11 @@ List<Genotype<DoubleGene>> genotypes =
 
 \begin_layout Plain Layout
 
+            .limit(100)
+\end_layout
+
+\begin_layout Plain Layout
+
             .collect(Collectors.toList())
 \end_layout
 
@@ -9341,6 +9346,11 @@ status open
 \begin_layout Plain Layout
 
 EvolutionResult<DoubleGene, Double> result = stream
+\end_layout
+
+\begin_layout Plain Layout
+
+    .limit(100)
 \end_layout
 
 \begin_layout Plain Layout
@@ -20176,7 +20186,7 @@ Download
 \emph on
 
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
