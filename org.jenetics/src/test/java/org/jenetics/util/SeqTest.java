@@ -56,4 +56,9 @@ public class SeqTest {
 		Assert.assertEquals(Seq.empty().asList().size(), 0);
 	}
 
+	@Test
+	public void zeroLengthSameAsEmpty() {
+		Assert.assertSame(Seq.of(), Seq.empty());
+	}
+
 }
