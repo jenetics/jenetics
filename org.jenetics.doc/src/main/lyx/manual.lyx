@@ -14893,7 +14893,70 @@ Codec
 Gene
 \family default
  type.
- The following listing shows a full example which uses a combined 
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+Only 
+\family typewriter
+Codec
+\family default
+s which the same 
+\family typewriter
+Gene
+\family default
+ type can be composed by the combining factory methods of the 
+\family typewriter
+Codec
+\family default
+ class.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The following listing shows a full example which uses a combined 
 \family typewriter
 Codec
 \family default
