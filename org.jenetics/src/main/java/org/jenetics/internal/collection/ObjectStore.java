@@ -19,45 +19,56 @@
  */
 package org.jenetics.internal.collection;
 
-import java.util.function.Function;
+import static java.util.Objects.requireNonNull;
 
-import org.jenetics.util.ISeq;
-import org.jenetics.util.MSeq;
+import java.io.Serializable;
+
+import org.jenetics.internal.collection.Array.Store;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.4
- * @version 3.0
+ * @version !__version__!
+ * @since !__version__!
  */
-public class ArrayProxyISeq<T, P extends ArrayProxy<T, ?, ?>>
-	extends ArrayProxySeq<T, P>
-	implements ISeq<T>
-{
+public final class ObjectStore<T> implements Store<T>, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	public ArrayProxyISeq(final P proxy) {
-		super(proxy);
+	private final Object[] _array;
+
+	private ObjectStore(final Object[] array) {
+		_array = requireNonNull(array);
 	}
 
 	@Override
-	public <B> ISeq<B> map(final Function<? super T, ? extends B> mapper) {
-		return new ArrayProxyISeq<>(proxy.map(mapper));
+	public void set(final int index, T value) {
+		_array[index] = value;
 	}
 
 	@Override
-	public ISeq<T> subSeq(final int start) {
-		return new ArrayProxyISeq<>(proxy.slice(start));
+	@SuppressWarnings("unchecked")
+	public T get(final int index) {
+		return (T)_array[index];
 	}
 
 	@Override
-	public ISeq<T> subSeq(int start, int end) {
-		return new ArrayProxyISeq<>(proxy.slice(start, end));
+	public ObjectStore<T> copy(final int from, final int until) {
+		final Object[] array = new Object[until - from];
+		System.arraycopy(_array, from, array, 0, until - from);
+		return new ObjectStore<>(array);
 	}
 
 	@Override
-	public MSeq<T> copy() {
-		return new ArrayProxyMSeq<>(proxy.copy());
+	public int length() {
+		return _array.length;
+	}
+
+	public static <T> ObjectStore<T> of(final Object[] array) {
+		return new ObjectStore<>(array);
+	}
+
+	public static <T> ObjectStore<T> ofLength(final int length) {
+		return new ObjectStore<>(new Object[length]);
 	}
 
 }

@@ -21,22 +21,22 @@ package org.jenetics.internal.collection;
 
 import org.testng.annotations.Test;
 
-import org.jenetics.util.ISeq;
-import org.jenetics.util.ISeqTestBase;
+import org.jenetics.util.MSeq;
+import org.jenetics.util.MSeqTestBase;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
 @Test
-public class ArrayProxyISeqTest extends ISeqTestBase {
+public class ArrayMSeqTest extends MSeqTestBase {
 
 	@Override
-	protected ISeq<Integer> newSeq(final int length) {
-		final ObjectArrayProxy<Integer> impl = new ObjectArrayProxy<>(length);
+	protected MSeq<Integer> newSeq(final int length) {
+		final Array<Integer> array = Array.ofLength(length);
 		for (int i = 0; i < length; ++i) {
-			impl.array[i] = i;
+			array.set(i, i);
 		}
-		return new ArrayProxyISeq<>(impl);
+		return new ArrayMSeq<>(array);
 	}
 
 }

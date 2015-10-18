@@ -22,16 +22,15 @@ package org.jenetics.internal.collection;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.AbstractList;
 import java.util.RandomAccess;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0
+ * @version !__version__!
  */
-public class ArrayProxyList<T, P extends ArrayProxy<T, ?, ?>>
+public class ArrayList<T>
 	extends AbstractList<T>
 	implements
 		RandomAccess,
@@ -39,35 +38,35 @@ public class ArrayProxyList<T, P extends ArrayProxy<T, ?, ?>>
 {
 	private static final long serialVersionUID = 1L;
 
-	public final P proxy;
+	public final Array<T> array;
 
-	public ArrayProxyList(final P proxy) {
-		this.proxy = requireNonNull(proxy, "ArrayProxy must not be null.");
+	public ArrayList(final Array<T> array) {
+		this.array = requireNonNull(array, "Array must not be null.");
 	}
 
 	@Override
 	public T get(final int index) {
-		return proxy.get(index);
+		return array.get(index);
 	}
 
 	@Override
 	public int size() {
-		return proxy.length;
+		return array.length();
 	}
 
 	@Override
 	public int indexOf(final Object element) {
 		int index = -1;
 		if (element == null) {
-			for (int i = proxy.start; i < proxy.end && index == -1; ++i) {
-				if (proxy.__get__(i) == null) {
-					index = i - proxy.start;
+			for (int i = 0; i < array.length() && index == -1; ++i) {
+				if (array.get(i) == null) {
+					index = i;
 				}
 			}
 		} else {
-			for (int i = proxy.start; i < proxy.end && index == -1; ++i) {
-				if (element.equals(proxy.__get__(i))) {
-					index = i - proxy.start;
+			for (int i = 0; i < array.length() && index == -1; ++i) {
+				if (element.equals(array.get(i))) {
+					index = i;
 				}
 			}
 		}
@@ -79,15 +78,15 @@ public class ArrayProxyList<T, P extends ArrayProxy<T, ?, ?>>
 	public int lastIndexOf(final Object element) {
 		int index = -1;
 		if (element == null) {
-			for (int i = proxy.end; --i >= proxy.start && index == -1;) {
-				if (proxy.__get__(i) == null) {
-					index = i - proxy.start;
+			for (int i = array.length(); --i >= 0 && index == -1;) {
+				if (array.get(i) == null) {
+					index = i;
 				}
 			}
 		} else {
-			for (int i = proxy.end; --i >= proxy.start && index == -1;) {
-				if (element.equals(proxy.__get__(i))) {
-					index = i - proxy.start;
+			for (int i = array.length(); --i >= 0 && index == -1;) {
+				if (element.equals(array.get(i))) {
+					index = i;
 				}
 			}
 		}
@@ -104,7 +103,7 @@ public class ArrayProxyList<T, P extends ArrayProxy<T, ?, ?>>
 	public Object[] toArray() {
 		final Object[] array = new Object[size()];
 		for (int i = size(); --i >= 0;) {
-			array[i] = proxy.__get(i);
+			array[i] = this.array.get(i);
 		}
 		return array;
 	}
@@ -113,18 +112,18 @@ public class ArrayProxyList<T, P extends ArrayProxy<T, ?, ?>>
 	@Override
 	public <E> E[] toArray(final E[] array) {
 		if (array.length < size()) {
-			final E[] copy = (E[])Array.newInstance(
+			final E[] copy = (E[])java.lang.reflect.Array.newInstance(
 				array.getClass().getComponentType(), size()
 			);
 			for (int i = size(); --i >= 0;) {
-				copy[i] = (E) proxy.__get(i);
+				copy[i] = (E) this.array.get(i);
 			}
 
 			return copy;
 		}
 
 		for (int i = size(); --i >= 0;) {
-			array[i] = (E) proxy.__get(i);
+			array[i] = (E) this.array.get(i);
 		}
 		return array;
 	}

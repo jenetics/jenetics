@@ -19,14 +19,23 @@
  */
 package org.jenetics.internal.collection;
 
-import java.io.Serializable;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 3.0
- * @version 3.0
+ * @since 1.4
+ * @version !__version__!
  */
-@FunctionalInterface
-public interface ArrayProxyFactory<A, P> extends Serializable {
-	public P create(final A array, final int start, final int end);
+public class ArrayMIterator<T> extends ArrayIterator<T> {
+
+	public ArrayMIterator(final Array<T> array) {
+		super(array);
+	}
+
+	@Override
+	public void set(final T value) {
+		if (lastElement < 0) {
+			throw new IllegalStateException();
+		}
+		array.set(lastElement, value);
+	}
+
 }

@@ -378,10 +378,7 @@ public abstract class SeqTestBase {
 
 			Assert.assertEquals(sub.length(), seq.length() - start);
 			for (int i = 0; i < sub.length(); ++i) {
-				Assert.assertEquals(
-					new Integer(sub.get(i)),
-					new Integer(seq.get(i + start))
-				);
+				Assert.assertEquals(sub.get(i), seq.get(i + start));
 			}
 		}
 	}

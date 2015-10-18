@@ -19,26 +19,50 @@
  */
 package org.jenetics.internal.collection;
 
+import java.util.function.Function;
+
+import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0
+ * @version !__version__!
  */
-public class ArrayProxyMIterator<T, P extends ArrayProxy<T, ?, ?>>
-	extends ArrayProxyIterator<T, P>
+public class ArrayISeq<T>
+	extends ArraySeq<T>
+	implements ISeq<T>
 {
 
-	public ArrayProxyMIterator(final P proxy) {
-		super(proxy);
+	private static final long serialVersionUID = 1L;
+
+	public ArrayISeq(final Array<T> array) {
+		super(array);
+		assert array.isSealed();
 	}
 
 	@Override
-	public void set(final T value) {
-		if (lastElement < 0) {
-			throw new IllegalStateException();
+	public <B> ISeq<B> map(final Function<? super T, ? extends B> mapper) {
+		final Array<B> mapped = Array.ofLength(length());
+		for (int i = 0; i < length(); ++i) {
+			mapped.set(i, mapper.apply(array.get(i)));
 		}
-		proxy.__set(lastElement, value);
+		return new ArrayISeq<>(mapped.seal());
+	}
+
+	@Override
+	public ISeq<T> subSeq(final int start) {
+		return new ArrayISeq<>(array.slice(start, length()));
+	}
+
+	@Override
+	public ISeq<T> subSeq(int start, int end) {
+		return new ArrayISeq<>(array.slice(start, end));
+	}
+
+	@Override
+	public MSeq<T> copy() {
+		return new ArrayMSeq<>(array.copy());
 	}
 
 }

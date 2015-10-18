@@ -35,45 +35,40 @@ import org.jenetics.util.MSeq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0
+ * @version !__version__!
  */
-public class ArrayProxyMSeq<T, P extends ArrayProxy<T, ?, ?>>
-	extends ArrayProxySeq<T, P>
-	implements MSeq<T>
-{
+public class ArrayMSeq<T> extends ArraySeq<T> implements MSeq<T> {
 
 	private static final long serialVersionUID = 1L;
 
-	public ArrayProxyMSeq(final P proxy) {
-		super(proxy);
+	public ArrayMSeq(final Array<T> array) {
+		super(array);
 	}
 
 	@Override
 	public MSeq<T> copy() {
-		return new ArrayProxyMSeq<>(proxy.copy());
+		return new ArrayMSeq<>(array.copy());
 	}
 
 	@Override
 	public Iterator<T> iterator() {
-		return new ArrayProxyMIterator<>(proxy);
+		return new ArrayMIterator<>(array);
 	}
 
 	@Override
 	public ListIterator<T> listIterator() {
-		return new ArrayProxyMIterator<>(proxy);
+		return new ArrayMIterator<>(array);
 	}
 
 	@Override
 	public void set(final int index, final T value) {
-		proxy.cloneIfSealed();
-		proxy.set(index, value);
+		array.set(index, value);
 	}
 
 	@Override
 	public MSeq<T> setAll(final Iterator<? extends T> it) {
-		proxy.cloneIfSealed();
-		for (int i = proxy.start; i < proxy.end && it.hasNext(); ++i) {
-			proxy.__set__(i, it.next());
+		for (int i = 0; i < array.length() && it.hasNext(); ++i) {
+			array.set(i, it.next());
 		}
 		return this;
 	}
@@ -85,24 +80,21 @@ public class ArrayProxyMSeq<T, P extends ArrayProxy<T, ?, ?>>
 
 	@Override
 	public MSeq<T> setAll(final T[] values) {
-		proxy.cloneIfSealed();
-		for (int i = 0, n = min(proxy.length, values.length); i < n; ++i) {
-			proxy.__set(i, values[i]);
+		for (int i = 0, n = min(array.length(), values.length); i < n; ++i) {
+			array.set(i, values[i]);
 		}
 		return this;
 	}
 
 	public MSeq<T> fill(final Supplier<? extends T> supplier) {
-		proxy.cloneIfSealed();
-		for (int i = proxy.start; i < proxy.end; ++i) {
-			proxy.__set__(i, supplier.get());
+		for (int i = 0; i < array.length(); ++i) {
+			array.set(i, supplier.get());
 		}
 		return this;
 	}
 
 	@Override
 	public MSeq<T> shuffle(final Random random) {
-		proxy.cloneIfSealed();
 		for (int j = length() - 1; j > 0; --j) {
 			swap(j, random.nextInt(j + 1));
 		}
@@ -111,9 +103,9 @@ public class ArrayProxyMSeq<T, P extends ArrayProxy<T, ?, ?>>
 
 	@Override
 	public void swap(final int i, final int j) {
-		final T temp = proxy.get(i);
-		proxy.__set(i, proxy.get(j));
-		proxy.__set(j, temp);
+		final T temp = array.get(i);
+		array.set(i, array.get(j));
+		array.set(j, temp);
 	}
 
 	@Override
@@ -122,29 +114,19 @@ public class ArrayProxyMSeq<T, P extends ArrayProxy<T, ?, ?>>
 		checkIndex(start, end, otherStart, other.length());
 
 		if (start < end) {
-			if (other instanceof ArrayProxyMSeq<?, ?>) {
-				__swap(start, end, (ArrayProxyMSeq<T, P>) other, otherStart);
-			} else {
-				proxy.cloneIfSealed();
-
-				for (int i = end - start; --i >= 0;) {
-					final T temp = proxy.__get(i + start);
-					proxy.__set(i + start, other.get(otherStart + i));
-					other.set(otherStart + i, temp);
-				}
+			for (int i = end - start; --i >= 0;) {
+				final T temp = array.get(i + start);
+				array.set(i + start, other.get(otherStart + i));
+				other.set(otherStart + i, temp);
 			}
 		}
 	}
 
-	private void __swap(int start, int end, ArrayProxyMSeq<T, P> other, int otherStart) {
-		proxy.swap(start, end, other.proxy, otherStart);
-	}
-
-	private void checkIndex(
+	protected void checkIndex(
 		final int start, final int end,
 		final int otherStart, final int otherLength
 	) {
-		proxy.checkIndex(start, end);
+		array.checkIndex(start, end);
 		if (otherStart < 0 || (otherStart + (end - start)) > otherLength) {
 			throw new ArrayIndexOutOfBoundsException(format(
 				"Invalid index range: [%d, %d)",
@@ -155,27 +137,31 @@ public class ArrayProxyMSeq<T, P extends ArrayProxy<T, ?, ?>>
 
 	@Override
 	public MSeq<T> subSeq(final int start, final int end) {
-		return new ArrayProxyMSeq<>(proxy.slice(start, end));
+		return new ArrayMSeq<>(array.slice(start, end));
 	}
 
 	@Override
 	public MSeq<T> subSeq(final int start) {
-		return new ArrayProxyMSeq<>(proxy.slice(start));
+		return new ArrayMSeq<>(array.slice(start, length()));
 	}
 
 	@Override
 	public <B> MSeq<B> map(final Function<? super T, ? extends B> mapper) {
-		return new ArrayProxyMSeq<>(proxy.map(mapper));
+		final Array<B> mapped = Array.ofLength(length());
+		for (int i = 0; i < length(); ++i) {
+			mapped.set(i, mapper.apply(array.get(i)));
+		}
+		return new ArrayMSeq<>(mapped);
 	}
 
 	@Override
 	public ISeq<T> toISeq() {
-		return new ArrayProxyISeq<>(proxy.seal());
+		return new ArrayISeq<>(array.seal());
 	}
 
 	@Override
 	public List<T> asList() {
-		return new ArrayProxyMList<>(proxy);
+		return new ArrayMList<>(array);
 	}
 
 }
