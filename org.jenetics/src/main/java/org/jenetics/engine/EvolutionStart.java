@@ -86,10 +86,9 @@ public final class EvolutionStart<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(es ->
-			eq(_generation, es._generation) &&
-			eq(_population, es._population)
-		);
+		return obj instanceof EvolutionStart<?, ?> &&
+			eq(_generation, ((EvolutionStart<?, ?>)obj)._generation) &&
+			eq(_population, ((EvolutionStart<?, ?>)obj)._population);
 	}
 
 	@Override

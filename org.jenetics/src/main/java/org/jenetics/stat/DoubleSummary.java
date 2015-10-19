@@ -27,7 +27,6 @@ import java.util.DoubleSummaryStatistics;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
 
-import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 /**
@@ -133,13 +132,12 @@ public final class DoubleSummary implements Serializable {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(summary ->
-			eq(_count, summary._count) &&
-			eq(_sum, summary._sum) &&
-			eq(_min, summary._min) &&
-			eq(_max, summary._max) &&
-			eq(_mean, summary._mean)
-		);
+		return obj instanceof DoubleSummary &&
+			eq(_count, ((DoubleSummary)obj)._count) &&
+			eq(_sum, ((DoubleSummary)obj)._sum) &&
+			eq(_min, ((DoubleSummary)obj)._min) &&
+			eq(_max, ((DoubleSummary)obj)._max) &&
+			eq(_mean, ((DoubleSummary)obj)._mean);
 	}
 
 	@Override
