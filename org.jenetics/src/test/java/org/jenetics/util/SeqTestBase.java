@@ -289,10 +289,7 @@ public abstract class SeqTestBase {
 	public void forAll2(final Seq<Integer> seq) {
 		final AtomicInteger counter = new AtomicInteger();
 
-		seq.forAll(value -> {
-			return counter.incrementAndGet() < seq.length()/2;
-		});
-
+		seq.forAll(value ->  counter.incrementAndGet() < seq.length()/2);
 		Assert.assertEquals(counter.get(), seq.length()/2);
 	}
 
@@ -403,7 +400,11 @@ public abstract class SeqTestBase {
 			{newSeq(33)},
 			{newSeq(35).subSeq(5)} ,
 			{newSeq(33).subSeq(8, 23)},
-			{newSeq(50).subSeq(5, 43).subSeq(10)}
+			{newSeq(50).subSeq(5, 43).subSeq(10)},
+			{newSeq(100).subSeq(1, 95).subSeq(1, 80).subSeq(1, 75)},
+			{newSeq(100).subSeq(1, 95).subSeq(1, 80).subSeq(1, 75).subSeq(1, 70)},
+			{newSeq(100).subSeq(0, 95).subSeq(1, 80).subSeq(1).subSeq(1, 70)},
+			{newSeq(100).subSeq(0, 95).subSeq(1, 80).subSeq(1).subSeq(1, 70).subSeq(0)}
 		};
 	}
 
