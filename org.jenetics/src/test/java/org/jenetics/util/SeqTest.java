@@ -76,6 +76,26 @@ public class SeqTest {
 		Assert.assertSame(Seq.of(1, 2, 3).subSeq(0, 0), Seq.empty());
 	}
 
+	@Test(expectedExceptions = ArrayIndexOutOfBoundsException.class)
+	public void subSeqOutOtBounds1() {
+		Seq.of(1, 2, 3).subSeq(5);
+	}
+
+	@Test(expectedExceptions = ArrayIndexOutOfBoundsException.class)
+	public void subSeqOutOtBounds2() {
+		Seq.of(1, 2, 3).subSeq(-5);
+	}
+
+	@Test(expectedExceptions = ArrayIndexOutOfBoundsException.class)
+	public void subSeqOutOtBounds4() {
+		Seq.of(1, 2, 3).subSeq(0, 10);
+	}
+
+	@Test(expectedExceptions = ArrayIndexOutOfBoundsException.class)
+	public void subSeqOutOtBounds5() {
+		Seq.of(1, 2, 3).subSeq(-5, 2);
+	}
+
 	@Test
 	public void mapEmptyMSeq() {
 		final Seq<Integer> integers = Seq.empty();

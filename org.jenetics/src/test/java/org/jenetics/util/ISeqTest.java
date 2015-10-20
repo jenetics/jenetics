@@ -76,6 +76,26 @@ public class ISeqTest {
 		Assert.assertSame(ISeq.of(1, 2, 3).subSeq(0, 0), ISeq.empty());
 	}
 
+	@Test(expectedExceptions = ArrayIndexOutOfBoundsException.class)
+	public void subSeqOutOtBounds1() {
+		ISeq.of(1, 2, 3).subSeq(5);
+	}
+
+	@Test(expectedExceptions = ArrayIndexOutOfBoundsException.class)
+	public void subSeqOutOtBounds2() {
+		ISeq.of(1, 2, 3).subSeq(-5);
+	}
+
+	@Test(expectedExceptions = ArrayIndexOutOfBoundsException.class)
+	public void subSeqOutOtBounds4() {
+		ISeq.of(1, 2, 3).subSeq(0, 10);
+	}
+
+	@Test(expectedExceptions = ArrayIndexOutOfBoundsException.class)
+	public void subSeqOutOtBounds5() {
+		ISeq.of(1, 2, 3).subSeq(-5, 2);
+	}
+
 	@Test
 	public void mapEmptyISeq() {
 		final ISeq<Integer> integers = ISeq.empty();
