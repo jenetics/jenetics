@@ -61,4 +61,19 @@ public class SeqTest {
 		Assert.assertSame(Seq.of(), Seq.empty());
 	}
 
+	@Test
+	public void isEmpty() {
+		Assert.assertTrue(Seq.empty().isEmpty());
+		Assert.assertEquals(Seq.empty().length(), 0);
+	}
+
+	@Test
+	public void mapEmptySeq() {
+		Assert.assertSame(Seq.of(1, 2, 3).subSeq(3), Seq.empty());
+		Assert.assertSame(Seq.of(1, 2, 3).subSeq(3, 3), Seq.empty());
+		Assert.assertSame(Seq.of(1, 2, 3).subSeq(2, 2), Seq.empty());
+		Assert.assertSame(Seq.of(1, 2, 3).subSeq(1, 1), Seq.empty());
+		Assert.assertSame(Seq.of(1, 2, 3).subSeq(0, 0), Seq.empty());
+	}
+
 }

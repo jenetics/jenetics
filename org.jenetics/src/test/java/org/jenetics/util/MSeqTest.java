@@ -187,4 +187,29 @@ public class MSeqTest {
 		Assert.assertSame(MSeq.of(), MSeq.empty());
 	}
 
+	@Test
+	public void isEmpty() {
+		Assert.assertTrue(MSeq.empty().isEmpty());
+		Assert.assertEquals(MSeq.empty().length(), 0);
+	}
+
+	@Test
+	public void mapEmptyMSeq() {
+		Assert.assertSame(MSeq.of(1, 2, 3).subSeq(3), MSeq.empty());
+		Assert.assertSame(MSeq.of(1, 2, 3).subSeq(3, 3), MSeq.empty());
+		Assert.assertSame(MSeq.of(1, 2, 3).subSeq(2, 2), MSeq.empty());
+		Assert.assertSame(MSeq.of(1, 2, 3).subSeq(1, 1), MSeq.empty());
+		Assert.assertSame(MSeq.of(1, 2, 3).subSeq(0, 0), MSeq.empty());
+	}
+
+	@Test
+	public void copyEmptyMSeq() {
+		Assert.assertSame(MSeq.empty().copy(), MSeq.empty());
+	}
+
+	@Test
+	public void toISeqEmptyMSeq() {
+		Assert.assertSame(MSeq.empty().toISeq(), ISeq.empty());
+	}
+
 }

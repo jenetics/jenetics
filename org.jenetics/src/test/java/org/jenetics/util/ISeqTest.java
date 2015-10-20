@@ -61,4 +61,24 @@ public class ISeqTest {
 		Assert.assertSame(ISeq.of(), ISeq.empty());
 	}
 
+	@Test
+	public void isEmpty() {
+		Assert.assertTrue(ISeq.empty().isEmpty());
+		Assert.assertEquals(ISeq.empty().length(), 0);
+	}
+
+	@Test
+	public void mapEmptyISeq() {
+		Assert.assertSame(ISeq.of(1, 2, 3).subSeq(3), ISeq.empty());
+		Assert.assertSame(ISeq.of(1, 2, 3).subSeq(3, 3), ISeq.empty());
+		Assert.assertSame(ISeq.of(1, 2, 3).subSeq(2, 2), ISeq.empty());
+		Assert.assertSame(ISeq.of(1, 2, 3).subSeq(1, 1), ISeq.empty());
+		Assert.assertSame(ISeq.of(1, 2, 3).subSeq(0, 0), ISeq.empty());
+	}
+
+	@Test
+	public void copyEmptyISeq() {
+		Assert.assertSame(ISeq.empty().copy(), MSeq.empty());
+	}
+
 }
