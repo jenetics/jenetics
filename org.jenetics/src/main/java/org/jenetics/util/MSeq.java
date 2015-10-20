@@ -242,9 +242,8 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @param <T> the element type of the returned {@code MSeq}.
 	 * @return an empty {@code MSeq}.
 	 */
-	@SuppressWarnings("unchecked")
 	public static <T> MSeq<T> empty() {
-		return (MSeq<T>)EMPTY;
+		return Empty.mseq();
 	}
 
 	/**

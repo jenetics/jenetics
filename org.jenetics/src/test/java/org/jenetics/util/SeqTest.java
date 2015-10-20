@@ -68,12 +68,21 @@ public class SeqTest {
 	}
 
 	@Test
-	public void mapEmptySeq() {
+	public void subSeqEmptySeq() {
 		Assert.assertSame(Seq.of(1, 2, 3).subSeq(3), Seq.empty());
 		Assert.assertSame(Seq.of(1, 2, 3).subSeq(3, 3), Seq.empty());
 		Assert.assertSame(Seq.of(1, 2, 3).subSeq(2, 2), Seq.empty());
 		Assert.assertSame(Seq.of(1, 2, 3).subSeq(1, 1), Seq.empty());
 		Assert.assertSame(Seq.of(1, 2, 3).subSeq(0, 0), Seq.empty());
+	}
+
+	@Test
+	public void mapEmptyMSeq() {
+		final Seq<Integer> integers = Seq.empty();
+		final Seq<String> strings = integers.map(Object::toString);
+
+		Assert.assertSame(integers, strings);
+		Assert.assertSame(strings, Seq.empty());
 	}
 
 }

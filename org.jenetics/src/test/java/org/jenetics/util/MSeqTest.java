@@ -194,12 +194,21 @@ public class MSeqTest {
 	}
 
 	@Test
-	public void mapEmptyMSeq() {
+	public void subSeqEmptyMSeq() {
 		Assert.assertSame(MSeq.of(1, 2, 3).subSeq(3), MSeq.empty());
 		Assert.assertSame(MSeq.of(1, 2, 3).subSeq(3, 3), MSeq.empty());
 		Assert.assertSame(MSeq.of(1, 2, 3).subSeq(2, 2), MSeq.empty());
 		Assert.assertSame(MSeq.of(1, 2, 3).subSeq(1, 1), MSeq.empty());
 		Assert.assertSame(MSeq.of(1, 2, 3).subSeq(0, 0), MSeq.empty());
+	}
+
+	@Test
+	public void mapEmptyMSeq() {
+		final MSeq<Integer> integers = MSeq.empty();
+		final MSeq<String> strings = integers.map(Object::toString);
+
+		Assert.assertSame(integers, strings);
+		Assert.assertSame(strings, MSeq.empty());
 	}
 
 	@Test

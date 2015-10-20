@@ -87,9 +87,8 @@ public interface ISeq<T>
 	 * @param <T> the element type of the returned {@code ISeq}.
 	 * @return an empty {@code ISeq}.
 	 */
-	@SuppressWarnings("unchecked")
 	public static <T> ISeq<T> empty() {
-		return (ISeq<T>)EMPTY;
+		return Empty.iseq();
 	}
 
 	/**

@@ -19,6 +19,8 @@
  */
 package org.jenetics.internal.collection;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -29,16 +31,22 @@ import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
 
 /**
+ * Contains static {@code Seq} definitions.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 public final class Empty {
 
+	/**
+	 * Empty {@code MSeq} implementation.
+	 */
 	public static final MSeq<Object> MSEQ = new MSeq<Object>() {
+
 		@Override
-		public void set(int index, Object value) {
-			throw new ArrayIndexOutOfBoundsException("Seq is empty.");
+		public void set(final int index, final Object value) {
+			throw new ArrayIndexOutOfBoundsException("MSeq is empty.");
 		}
 
 		@Override
@@ -47,18 +55,19 @@ public final class Empty {
 		}
 
 		@Override
-		public MSeq<Object> subSeq(int start, int end) {
-			throw new ArrayIndexOutOfBoundsException("Seq is empty.");
+		public MSeq<Object> subSeq(final int start, final int end) {
+			throw new ArrayIndexOutOfBoundsException("MSeq is empty.");
 		}
 
 		@Override
-		public MSeq<Object> subSeq(int start) {
-			throw new ArrayIndexOutOfBoundsException("Seq is empty.");
+		public MSeq<Object> subSeq(final int start) {
+			throw new ArrayIndexOutOfBoundsException("MSeq is empty.");
 		}
 
 		@Override
-		public <B> MSeq<B> map(Function<? super Object, ? extends B> mapper) {
-			return null;
+		public <B> MSeq<B> map(final Function<? super Object, ? extends B> mapper) {
+			requireNonNull(mapper);
+			return mseq();
 		}
 
 		@Override
@@ -72,8 +81,8 @@ public final class Empty {
 		}
 
 		@Override
-		public Object get(int index) {
-			throw new ArrayIndexOutOfBoundsException("Seq is empty.");
+		public Object get(final int index) {
+			throw new ArrayIndexOutOfBoundsException("MSeq is empty.");
 		}
 
 		@Override
@@ -88,31 +97,35 @@ public final class Empty {
 
 		@Override
 		public Iterator<Object> iterator() {
-			return listIterator();
+			return asList().iterator();
 		}
+
 	};
 
 
-
+	/**
+	 * Empty {@code ISeq} implementation.
+	 */
 	public static final ISeq<Object> ISEQ = new ISeq<Object>() {
+
 		@Override
 		public Iterator<Object> iterator() {
 			return asList().iterator();
 		}
 
 		@Override
-		public ISeq<Object> subSeq(int start, int end) {
-			throw new ArrayIndexOutOfBoundsException("Seq is empty.");
+		public ISeq<Object> subSeq(final int start, final int end) {
+			throw new ArrayIndexOutOfBoundsException("ISeq is empty.");
 		}
 
 		@Override
-		public ISeq<Object> subSeq(int start) {
-			throw new ArrayIndexOutOfBoundsException("Seq is empty.");
+		public ISeq<Object> subSeq(final int start) {
+			throw new ArrayIndexOutOfBoundsException("ISeq is empty.");
 		}
 
 		@Override
-		public Object get(int index) {
-			throw new ArrayIndexOutOfBoundsException("Seq is empty.");
+		public Object get(final int index) {
+			throw new ArrayIndexOutOfBoundsException("ISeq is empty.");
 		}
 
 		@Override
@@ -126,24 +139,25 @@ public final class Empty {
 		}
 
 		@Override
-		@SuppressWarnings("unchecked")
-		public <B> ISeq<B> map(Function<? super Object, ? extends B> mapper) {
-			return (ISeq<B>)this;
+		public <B> ISeq<B> map(final Function<? super Object, ? extends B> mapper) {
+			requireNonNull(mapper);
+			return iseq();
 		}
 
 		@Override
 		public MSeq<Object> copy() {
 			return MSEQ;
 		}
+
 	};
 
 	@SuppressWarnings("unchecked")
-	public static <T> MSeq<T> emptyMSeq() {
+	public static <T> MSeq<T> mseq() {
 		return (MSeq<T>)MSEQ;
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T> ISeq<T> emptyISeq() {
+	public static <T> ISeq<T> iseq() {
 		return (ISeq<T>)ISEQ;
 	}
 

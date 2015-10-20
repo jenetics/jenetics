@@ -57,7 +57,7 @@ public class ArrayISeq<T> extends ArraySeq<T> implements ISeq<T> {
 		}
 
 		return start == length()
-			? Empty.emptyISeq()
+			? Empty.iseq()
 			: new ArrayISeq<>(array.slice(start, length()));
 	}
 
@@ -75,14 +75,14 @@ public class ArrayISeq<T> extends ArraySeq<T> implements ISeq<T> {
 		}
 
 		return start == end
-			? Empty.emptyISeq()
+			? Empty.iseq()
 			: new ArrayISeq<>(array.slice(start, end));
 	}
 
 	@Override
 	public MSeq<T> copy() {
 		return isEmpty()
-			? Empty.emptyMSeq()
+			? Empty.mseq()
 			: new ArrayMSeq<>(array.copy());
 	}
 

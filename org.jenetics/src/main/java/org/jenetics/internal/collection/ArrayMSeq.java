@@ -150,7 +150,7 @@ public class ArrayMSeq<T> extends ArraySeq<T> implements MSeq<T> {
 		}
 
 		return start == end
-			? Empty.emptyMSeq()
+			? Empty.mseq()
 			: new ArrayMSeq<>(array.slice(start, end));
 	}
 
@@ -163,7 +163,7 @@ public class ArrayMSeq<T> extends ArraySeq<T> implements MSeq<T> {
 		}
 
 		return start == length()
-			? Empty.emptyMSeq()
+			? Empty.mseq()
 			: new ArrayMSeq<>(array.slice(start, length()));
 	}
 
@@ -179,7 +179,7 @@ public class ArrayMSeq<T> extends ArraySeq<T> implements MSeq<T> {
 	@Override
 	public ISeq<T> toISeq() {
 		return isEmpty()
-			? Empty.emptyISeq()
+			? Empty.iseq()
 			: new ArrayISeq<>(array.seal());
 	}
 

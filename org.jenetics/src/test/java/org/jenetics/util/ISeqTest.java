@@ -68,12 +68,21 @@ public class ISeqTest {
 	}
 
 	@Test
-	public void mapEmptyISeq() {
+	public void subSeqEmptyISeq() {
 		Assert.assertSame(ISeq.of(1, 2, 3).subSeq(3), ISeq.empty());
 		Assert.assertSame(ISeq.of(1, 2, 3).subSeq(3, 3), ISeq.empty());
 		Assert.assertSame(ISeq.of(1, 2, 3).subSeq(2, 2), ISeq.empty());
 		Assert.assertSame(ISeq.of(1, 2, 3).subSeq(1, 1), ISeq.empty());
 		Assert.assertSame(ISeq.of(1, 2, 3).subSeq(0, 0), ISeq.empty());
+	}
+
+	@Test
+	public void mapEmptyISeq() {
+		final ISeq<Integer> integers = ISeq.empty();
+		final ISeq<String> strings = integers.map(Object::toString);
+
+		Assert.assertSame(integers, strings);
+		Assert.assertSame(strings, ISeq.empty());
 	}
 
 	@Test
