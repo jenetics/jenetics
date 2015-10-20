@@ -28,7 +28,9 @@ import java.util.function.Supplier;
 import java.util.stream.Collector;
 
 import org.jenetics.internal.collection.Array;
+import org.jenetics.internal.collection.ArrayISeq;
 import org.jenetics.internal.collection.ArrayMSeq;
+import org.jenetics.internal.collection.Empty;
 import org.jenetics.internal.collection.ObjectStore;
 import org.jenetics.internal.util.require;
 
@@ -75,8 +77,7 @@ public interface ISeq<T>
 	 *
 	 * @since 3.3
 	 */
-	public static final ISeq<?> EMPTY =
-		new ArrayMSeq<>(Array.of(ObjectStore.ofLength(0))).toISeq();
+	public static final ISeq<?> EMPTY = Empty.ISEQ;
 
 	/**
 	 * Return an empty {@code ISeq}.

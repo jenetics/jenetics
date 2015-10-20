@@ -38,7 +38,6 @@ import org.jenetics.util.MSeq;
  * @version !__version__!
  */
 public class ArrayMSeq<T> extends ArraySeq<T> implements MSeq<T> {
-
 	private static final long serialVersionUID = 1L;
 
 	public ArrayMSeq(final Array<T> array) {
@@ -47,7 +46,9 @@ public class ArrayMSeq<T> extends ArraySeq<T> implements MSeq<T> {
 
 	@Override
 	public MSeq<T> copy() {
-		return new ArrayMSeq<>(array.copy());
+		return isEmpty()
+			? this
+			: new ArrayMSeq<>(array.copy());
 	}
 
 	@Override
@@ -137,12 +138,33 @@ public class ArrayMSeq<T> extends ArraySeq<T> implements MSeq<T> {
 
 	@Override
 	public MSeq<T> subSeq(final int start, final int end) {
-		return new ArrayMSeq<>(array.slice(start, end));
+		if (start > end) {
+			throw new ArrayIndexOutOfBoundsException(format(
+				"start[%d] > end[%d]", start, end
+			));
+		}
+		if (start < 0 || end > length()) {
+			throw new ArrayIndexOutOfBoundsException(format(
+				"Indexes (%d, %d) range: [%d..%d)", start, end, 0, length()
+			));
+		}
+
+		return start == end
+			? Empty.emptyMSeq()
+			: new ArrayMSeq<>(array.slice(start, end));
 	}
 
 	@Override
 	public MSeq<T> subSeq(final int start) {
-		return new ArrayMSeq<>(array.slice(start, length()));
+		if (start < 0 || start > length()) {
+			throw new ArrayIndexOutOfBoundsException(format(
+				"Index %d range: [%d..%d)", start, 0, length()
+			));
+		}
+
+		return start == length()
+			? Empty.emptyMSeq()
+			: new ArrayMSeq<>(array.slice(start, length()));
 	}
 
 	@Override
@@ -156,7 +178,9 @@ public class ArrayMSeq<T> extends ArraySeq<T> implements MSeq<T> {
 
 	@Override
 	public ISeq<T> toISeq() {
-		return new ArrayISeq<>(array.seal());
+		return isEmpty()
+			? Empty.emptyISeq()
+			: new ArrayISeq<>(array.seal());
 	}
 
 	@Override

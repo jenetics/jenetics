@@ -35,6 +35,7 @@ import java.util.stream.Stream;
 
 import org.jenetics.internal.collection.Array;
 import org.jenetics.internal.collection.ArrayMSeq;
+import org.jenetics.internal.collection.Empty;
 import org.jenetics.internal.collection.ObjectStore;
 
 /**
@@ -233,8 +234,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	/**
 	 * Single instance of an empty {@code MSeq}.
 	 */
-	public static final MSeq<?> EMPTY =
-		new ArrayMSeq<>(Array.of(ObjectStore.ofLength(0)));
+	public static final MSeq<?> EMPTY = Empty.MSEQ;
 
 	/**
 	 * Return an empty {@code MSeq}.

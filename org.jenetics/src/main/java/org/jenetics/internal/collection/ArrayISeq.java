@@ -19,6 +19,8 @@
  */
 package org.jenetics.internal.collection;
 
+import static java.lang.String.format;
+
 import java.util.function.Function;
 
 import org.jenetics.util.ISeq;
@@ -29,11 +31,7 @@ import org.jenetics.util.MSeq;
  * @since 1.4
  * @version !__version__!
  */
-public class ArrayISeq<T>
-	extends ArraySeq<T>
-	implements ISeq<T>
-{
-
+public class ArrayISeq<T> extends ArraySeq<T> implements ISeq<T> {
 	private static final long serialVersionUID = 1L;
 
 	public ArrayISeq(final Array<T> array) {
@@ -52,17 +50,40 @@ public class ArrayISeq<T>
 
 	@Override
 	public ISeq<T> subSeq(final int start) {
-		return new ArrayISeq<>(array.slice(start, length()));
+		if (start < 0 || start > length()) {
+			throw new ArrayIndexOutOfBoundsException(format(
+				"Index %d range: [%d..%d)", start, 0, length()
+			));
+		}
+
+		return start == length()
+			? Empty.emptyISeq()
+			: new ArrayISeq<>(array.slice(start, length()));
 	}
 
 	@Override
 	public ISeq<T> subSeq(int start, int end) {
-		return new ArrayISeq<>(array.slice(start, end));
+		if (start > end) {
+			throw new ArrayIndexOutOfBoundsException(format(
+				"start[%d] > end[%d]", start, end
+			));
+		}
+		if (start < 0 || end > length()) {
+			throw new ArrayIndexOutOfBoundsException(format(
+				"Indexes (%d, %d) range: [%d..%d)", start, end, 0, length()
+			));
+		}
+
+		return start == end
+			? Empty.emptyISeq()
+			: new ArrayISeq<>(array.slice(start, end));
 	}
 
 	@Override
 	public MSeq<T> copy() {
-		return new ArrayMSeq<>(array.copy());
+		return isEmpty()
+			? Empty.emptyMSeq()
+			: new ArrayMSeq<>(array.copy());
 	}
 
 }
