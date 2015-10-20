@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.function.Function;
 
+import org.jenetics.internal.util.require;
+
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
 
@@ -38,6 +40,8 @@ import org.jenetics.util.MSeq;
  * @since !__version__!
  */
 public final class Empty {
+
+	private Empty() {require.noInstance();}
 
 	/**
 	 * Empty {@code MSeq} implementation.
