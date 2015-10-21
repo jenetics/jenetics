@@ -47,4 +47,18 @@ public class SeqTest {
 		Assert.assertEquals(list, seq.asList());
 	}
 
+	@Test
+	public void empty() {
+		Assert.assertNotNull(Seq.EMPTY);
+		Assert.assertNotNull(Seq.empty());
+		Assert.assertSame(Seq.EMPTY, Seq.empty());
+		Assert.assertEquals(Seq.EMPTY.length(), 0);
+		Assert.assertEquals(Seq.empty().asList().size(), 0);
+	}
+
+	@Test
+	public void zeroLengthSameAsEmpty() {
+		Assert.assertSame(Seq.of(), Seq.empty());
+	}
+
 }

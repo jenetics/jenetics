@@ -38,6 +38,7 @@ public class ArrayProxyMIterator<T, P extends ArrayProxy<T, ?, ?>>
 		if (lastElement < 0) {
 			throw new IllegalStateException();
 		}
+		proxy.cloneIfSealed();
 		proxy.__set(lastElement, value);
 	}
 

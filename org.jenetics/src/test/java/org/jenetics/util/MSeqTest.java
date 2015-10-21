@@ -173,4 +173,18 @@ public class MSeqTest {
 			.toArray(Object[][]::new);
 	}
 
+	@Test
+	public void empty() {
+		Assert.assertNotNull(MSeq.EMPTY);
+		Assert.assertNotNull(MSeq.empty());
+		Assert.assertSame(MSeq.EMPTY, MSeq.empty());
+		Assert.assertEquals(MSeq.EMPTY.length(), 0);
+		Assert.assertEquals(MSeq.empty().asList().size(), 0);
+	}
+
+	@Test
+	public void zeroLengthSameAsEmpty() {
+		Assert.assertSame(MSeq.of(), MSeq.empty());
+	}
+
 }
