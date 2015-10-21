@@ -134,7 +134,7 @@ you can start the example by calling
 
     $ ./jrun org.jenetics.example.image.EvolvingImages
     
-![Evolving images](org.jenetics.doc/src/main/resources/graphic/EvolvingImagesExampleScreenShot.png)
+![Evolving images](https://raw.githubusercontent.com/jenetics/jenetics/master/org.jenetics.doc/src/main/resources/graphic/EvolvingImagesExampleScreenShot.png)
 
 The previous image shows the GUI after evolving the default image for about 4,000 generations. With the »Open« button it is possible to load other images for polygonization. The »Save« button allows to store polygonized images in PNG format to disk. At the button of the UI, you can change some of the GA parameters of the example.
 
@@ -164,6 +164,7 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 #### Improvement
 
 * [#43](https://github.com/jenetics/jenetics/issues/43): Add _Evolving images_ example.
+* [#62](https://github.com/jenetics/jenetics/issues/62): Two or more `Codec` interfaces can be combined into a single one. 
 * [#66](https://github.com/jenetics/jenetics/issues/66): Add `AnyGene` and `AnyChromosome` for arbitrary allele types.
 
 #### Bug fixes

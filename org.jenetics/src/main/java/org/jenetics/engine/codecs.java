@@ -23,6 +23,7 @@ import static java.lang.reflect.Array.newInstance;
 import static java.util.Objects.requireNonNull;
 
 import java.awt.geom.AffineTransform;
+import java.util.Objects;
 import java.util.function.IntFunction;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -33,6 +34,8 @@ import org.jenetics.internal.util.require;
 
 import org.jenetics.AnyChromosome;
 import org.jenetics.AnyGene;
+import org.jenetics.BitChromosome;
+import org.jenetics.BitGene;
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
 import org.jenetics.EnumGene;
@@ -52,8 +55,8 @@ import org.jenetics.util.LongRange;
  * This class contains factory methods for creating common  problem encodings.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.3
  * @since 3.2
+ * @version 3.3
  */
 public final class codecs {
 
@@ -260,6 +263,7 @@ public final class codecs {
 		}
 
 		final ISeq<IntegerChromosome> chromosomes = Stream.of(domains)
+			.map(Objects::requireNonNull)
 			.map(IntegerGene::of)
 			.map(IntegerChromosome::of)
 			.collect(ISeq.toISeq());
@@ -292,6 +296,7 @@ public final class codecs {
 		}
 
 		final ISeq<LongChromosome> chromosomes = Stream.of(domains)
+			.map(Objects::requireNonNull)
 			.map(LongGene::of)
 			.map(LongChromosome::of)
 			.collect(ISeq.toISeq());
@@ -326,6 +331,7 @@ public final class codecs {
 		}
 
 		final ISeq<DoubleChromosome> chromosomes = Stream.of(domains)
+			.map(Objects::requireNonNull)
 			.map(DoubleGene::of)
 			.map(DoubleChromosome::of)
 			.collect(ISeq.toISeq());
@@ -392,6 +398,12 @@ public final class codecs {
 		final Predicate<? super ISeq<? super A>> alleleSeqValidator,
 		final int length
 	) {
+		requireNonNull(supplier);
+		requireNonNull(generator);
+		requireNonNull(alleleSeqValidator);
+		requireNonNull(alleleSeqValidator);
+		require.positive(length);
+
 		return Codec.of(
 			Genotype.of(AnyChromosome
 				.of(supplier, alleleValidator, alleleSeqValidator, length)),
@@ -477,8 +489,8 @@ public final class codecs {
 		return Codec.of(
 			Genotype.of(PermutationChromosome.of(alleles)),
 			gt -> gt.getChromosome().toSeq().stream()
-						.map(EnumGene::getAllele)
-						.toArray(newArray)
+				.map(EnumGene::getAllele)
+				.toArray(newArray)
 		);
 	}
 
@@ -488,13 +500,69 @@ public final class codecs {
 	 *
 	 * @param length the number of permutation elements
 	 * @return a permutation {@code Codec} of integers
+	 * @throws IllegalArgumentException if the {@code length} is smaller than
+	 *         one.
 	 */
 	public static Codec<int[], EnumGene<Integer>> ofPermutation(final int length) {
+		require.positive(length);
+
 		return Codec.of(
 			Genotype.of(PermutationChromosome.ofInteger(length)),
 			gt -> gt.getChromosome().toSeq().stream()
-						.mapToInt(EnumGene<Integer>::getAllele)
-						.toArray()
+				.mapToInt(EnumGene<Integer>::getAllele)
+				.toArray()
+		);
+	}
+
+	/**
+	 * The subset {@code Codec} can be used for problems where it is required to
+	 * find the best subset from given basic set. A typical usage example of the
+	 * returned {@code Codec} is the Knapsack problem.
+	 * <p>
+	 * The following code snippet shows a simplified variation of the Knapsack
+	 * problem.
+	 * <pre>{@code
+	 * public final class Main {
+	 *     // The basic set from where to choose an 'optimal' subset.
+	 *     private final static ISeq<Integer> SET =
+	 *         ISeq.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+	 *
+	 *     // Fitness function directly takes an 'int' value.
+	 *     private static int fitness(final ISeq<Integer> subset) {
+	 *         assert(subset.size() <= SET.size());
+	 *         final int size = subset.stream()
+	 *             .collect(Collectors.summingInt(Integer::intValue));
+	 *         return size <= 20 ? size : 0;
+	 *     }
+	 *
+	 *     public static void main(final String[] args) {
+	 *         final Engine<BitGene, Double> engine = Engine
+	 *             .builder(Main::fitness, codec.ofSubSet(SET))
+	 *             .build();
+	 *         ...
+	 *     }
+	 * }
+	 * }</pre>
+	 *
+	 * @param <T> the element type of the basic set
+	 * @param basicSet the basic set, from where to choose the <i>optimal</i>
+	 *        subset.
+	 * @return a new codec which can be used for modelling <i>subset</i>
+	 *         problems.
+	 * @throws NullPointerException if the given {@code basicSet} is
+	 *         {@code null}; {@code null} elements are allowed.
+	 * @throws IllegalArgumentException if the {@code basicSet} size is smaller
+	 *         than one.
+	 */
+	public static <T> Codec<ISeq<T>, BitGene> ofSubSet(final ISeq<T> basicSet) {
+		requireNonNull(basicSet);
+		require.positive(basicSet.length());
+
+		return Codec.of(
+			Genotype.of(BitChromosome.of(basicSet.length())),
+			gt -> ((BitChromosome)gt.getChromosome()).ones()
+				.mapToObj(basicSet::get)
+				.collect(ISeq.toISeq())
 		);
 	}
 

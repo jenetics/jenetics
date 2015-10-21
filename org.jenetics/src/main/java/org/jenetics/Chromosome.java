@@ -19,6 +19,8 @@
  */
 package org.jenetics;
 
+import java.util.stream.Stream;
+
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Verifiable;
@@ -91,5 +93,17 @@ public interface Chromosome<G extends Gene<?, G>>
 	 * @return an immutable gene sequence.
 	 */
 	public ISeq<G> toSeq();
+
+	/**
+	 * Returns a sequential {@code Stream} of genes with this chromosome as
+	 * its source.
+	 *
+	 * @since 3.3
+	 *
+	 * @return a sequential {@code Stream} of genes
+	 */
+	public default Stream<G> stream() {
+		return toSeq().stream();
+	}
 
 }
