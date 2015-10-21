@@ -36,13 +36,13 @@ import org.jenetics.util.ISeq;
  * @param <T> the argument type of the compound codec
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.3
+ * @since 3.3
  */
 final class CompositeCodec<T, G extends Gene<?, G>> implements Codec<T, G> {
 
 	private final ISeq<? extends Codec<?, G>> _codecs;
-	private final Function<Object[], T> _decoder;
+	private final Function<? super Object[], ? extends T> _decoder;
 
 	private final int[] _lengths;
 	private final Genotype<G> _encoding;
@@ -58,13 +58,15 @@ final class CompositeCodec<T, G extends Gene<?, G>> implements Codec<T, G> {
 	 */
 	CompositeCodec(
 		final ISeq<? extends Codec<?, G>> codecs,
-		final Function<Object[], T> decoder
+		final Function<? super Object[], ? extends T> decoder
 	) {
 		_codecs = requireNonNull(codecs);
 		_decoder = requireNonNull(decoder);
 
 		final ISeq<Genotype<G>> genotypes = _codecs
-			.map(c -> c.encoding().newInstance());
+			.map(c -> c.encoding() instanceof Genotype<?>
+				? (Genotype<G>)c.encoding()
+				: c.encoding().newInstance());
 
 		_lengths = genotypes.stream()
 			.mapToInt(Genotype::length)

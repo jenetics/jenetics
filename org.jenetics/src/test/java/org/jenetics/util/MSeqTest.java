@@ -182,4 +182,9 @@ public class MSeqTest {
 		Assert.assertEquals(MSeq.empty().asList().size(), 0);
 	}
 
+	@Test
+	public void zeroLengthSameAsEmpty() {
+		Assert.assertSame(MSeq.of(), MSeq.empty());
+	}
+
 }

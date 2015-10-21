@@ -98,7 +98,7 @@ public interface Chromosome<G extends Gene<?, G>>
 	 * Returns a sequential {@code Stream} of genes with this chromosome as
 	 * its source.
 	 *
-	 * @since !__version__!
+	 * @since 3.3
 	 *
 	 * @return a sequential {@code Stream} of genes
 	 */

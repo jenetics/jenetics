@@ -522,8 +522,6 @@ public class BitChromosome extends Number
 
 	@Override
 	public boolean equals(final Object obj) {
-
-
 		return Equality.of(this, obj).test(c -> {
 			boolean equals = length() == c.length();
 			for (int i = 0, n = length(); equals && i < n; ++i) {

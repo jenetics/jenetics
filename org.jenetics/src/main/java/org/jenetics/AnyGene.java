@@ -83,24 +83,6 @@ public final class AnyGene<A> implements Gene<A, AnyGene<A>> {
 		return _allele;
 	}
 
-	/**
-	 * Return the random allele supplier of this gene.
-	 *
-	 * @return the random allele supplier of this gene
-	 */
-	public Supplier<? extends A> getSupplier() {
-		return _supplier;
-	}
-
-	/**
-	 * Return the validator predicate of this gene.
-	 *
-	 * @return the validator predicate of this gene
-	 */
-	public Predicate<? super A> getValidator() {
-		return _validator;
-	}
-
 	@Override
 	public AnyGene<A> newInstance() {
 		return new AnyGene<>(_supplier.get(), _supplier, _validator);

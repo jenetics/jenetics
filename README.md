@@ -134,7 +134,7 @@ you can start the example by calling
 
     $ ./jrun org.jenetics.example.image.EvolvingImages
     
-![Evolving images](org.jenetics.doc/src/main/resources/graphic/EvolvingImagesExampleScreenShot.png)
+![Evolving images](https://raw.githubusercontent.com/jenetics/jenetics/master/org.jenetics.doc/src/main/resources/graphic/EvolvingImagesExampleScreenShot.png)
 
 The previous image shows the GUI after evolving the default image for about 4,000 generations. With the »Open« button it is possible to load other images for polygonization. The »Save« button allows to store polygonized images in PNG format to disk. At the button of the UI, you can change some of the GA parameters of the example.
 

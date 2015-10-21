@@ -94,7 +94,7 @@ public final class Genotype<G extends Gene<?, G>>
 		final ISeq<? extends Chromosome<G>> chromosomes,
 		final int ngenes
 	) {
-		if (chromosomes.length() == 0) {
+		if (chromosomes.isEmpty()) {
 			throw new IllegalArgumentException("No chromosomes given.");
 		}
 

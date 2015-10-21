@@ -56,4 +56,9 @@ public class ISeqTest {
 		Assert.assertEquals(ISeq.empty().asList().size(), 0);
 	}
 
+	@Test
+	public void zeroLengthSameAsEmpty() {
+		Assert.assertSame(ISeq.of(), ISeq.empty());
+	}
+
 }
