@@ -25,7 +25,6 @@ import static org.jenetics.internal.math.random.indexes;
 import java.util.Random;
 
 import org.jenetics.internal.math.base;
-import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.MSeq;

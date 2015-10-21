@@ -1,3 +1,29 @@
+Jenetics-3.3.0
+
+- Improvements
+    * https://github.com/jenetics/jenetics/issues/43: Add _Evolving images_ example.
+    * https://github.com/jenetics/jenetics/issues/62: Two or more `Codec` interfaces can be combined into a single one.
+    * https://github.com/jenetics/jenetics/issues/66: Add `AnyGene` and `AnyChromosome` for arbitrary allele types.
+
+- Bug fixes
+    * https://github.com/jenetics/jenetics/issues/52: Immutability of ISeq violated.
+    * https://github.com/jenetics/jenetics/issues/55: Fixing example-run script for Mac.
+
+Jenetics-3.2.0
+
+- Improvements
+    * https://github.com/jenetics/jenetics/issues/24: Stabilize statistical selector tests.
+    * https://github.com/jenetics/jenetics/issues/25: Remove `testng.xml` file. The test classes are now determined automatically.
+    * https://github.com/jenetics/jenetics/issues/40: Introduce `Codec` interface for defining problem encodings.
+    * Add _Internal_ section in manual, which describes implementation details.
+
+- Bug fixes
+    * https://github.com/jenetics/jenetics/issues/33: Selectors must not change the input population. This occasionally caused `ConcurrentModificationException`.  Such selectors are now creating a defensive copy of the input population.
+    * https://github.com/jenetics/jenetics/issues/34: `IndexOutOfBoundsException` when selecting populations which are too short.
+    * https://github.com/jenetics/jenetics/issues/35: `IndexOutOfBoundsException` when altering populations which are too short.
+    * https://github.com/jenetics/jenetics/issues/39: Numerical instabilities of `ProbabilitySelector`.
+    * https://github.com/jenetics/jenetics/issues/47: `Engine` deadlock for long running fitness functions.
+
 Jenetics-3.1.0
 
 - Add 'combine' method to 'Quantile' object. This makes the class usable for (parallel) streams.

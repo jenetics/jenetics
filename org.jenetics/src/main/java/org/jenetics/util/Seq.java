@@ -47,7 +47,7 @@ import org.jenetics.internal.collection.SeqSpliterator;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0
+ * @version 3.3
  */
 public interface Seq<T> extends Iterable<T> {
 
@@ -75,6 +75,17 @@ public interface Seq<T> extends Iterable<T> {
 	 */
 	public default int size() {
 		return length();
+	}
+
+	/**
+	 * Returns {@code true} if this sequence contains no elements.
+	 *
+	 * @since 3.3
+	 *
+	 * @return {@code true} if this sequence contains no elements
+	 */
+	public default boolean isEmpty() {
+		return length() == 0;
 	}
 
 	/**
@@ -692,6 +703,25 @@ public interface Seq<T> extends Iterable<T> {
 	 * ************************************************************************/
 
 	/**
+	 * Single instance of an empty {@code Seq}.
+	 *
+	 * @since 3.3
+	 */
+	public static final Seq<?> EMPTY = ISeq.EMPTY;
+
+	/**
+	 * Return an empty {@code Seq}.
+	 *
+	 * @since 3.3
+	 *
+	 * @param <T> the element type of the returned {@code Seq}.
+	 * @return an empty {@code Seq}.
+	 */
+	public static <T> Seq<T> empty() {
+		return ISeq.empty();
+	}
+
+	/**
 	 * Returns a {@code Collector} that accumulates the input elements into a
 	 * new {@code Seq}.
 	 *
@@ -731,6 +761,42 @@ public interface Seq<T> extends Iterable<T> {
 	 */
 	public static <T> Seq<T> of(final Iterable<? extends T> values) {
 		return ISeq.of(values);
+	}
+
+//	/**
+//	 * Create a new {@code Seq} instance from the remaining elements of the
+//	 * given iterator.
+//	 *
+//	 * @since 3.3
+//	 *
+//	 * @param <T> the element type.
+//	 * @return a new {@code Seq} with the given remaining values.
+//	 * @throws NullPointerException if the {@code values} object is
+//	 *        {@code null}.
+//	 */
+//	public static <T> Seq<T> of(final Iterator<? extends T> values) {
+//		final MSeq<T> seq = MSeq.of(values);
+//		return seq.isEmpty() ? empty() : seq.toISeq();
+//	}
+
+	/**
+	 * Creates a new sequence, which is filled with objects created be the given
+	 * {@code supplier}.
+	 *
+	 * @since 3.3
+	 *
+	 * @param <T> the element type of the sequence
+	 * @param supplier the {@code Supplier} which creates the elements, the
+	 *        returned sequence is filled with
+	 * @param length the length of the returned sequence
+	 * @return a new sequence filled with elements given by the {@code supplier}
+	 * @throws NegativeArraySizeException if the given {@code length} is
+	 *         negative
+	 * @throws NullPointerException if the given {@code supplier} is
+	 *         {@code null}
+	 */
+	static <T> Seq<T> of(Supplier<? extends T> supplier, final int length) {
+		return ISeq.of(supplier, length);
 	}
 
 }

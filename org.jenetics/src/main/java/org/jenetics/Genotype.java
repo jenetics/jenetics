@@ -25,6 +25,7 @@ import static org.jenetics.util.ISeq.toISeq;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Stream;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -35,7 +36,6 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.jaxb;
 import org.jenetics.internal.util.reflect;
@@ -94,7 +94,7 @@ public final class Genotype<G extends Gene<?, G>>
 		final ISeq<? extends Chromosome<G>> chromosomes,
 		final int ngenes
 	) {
-		if (chromosomes.length() == 0) {
+		if (chromosomes.isEmpty()) {
 			throw new IllegalArgumentException("No chromosomes given.");
 		}
 
@@ -197,6 +197,18 @@ public final class Genotype<G extends Gene<?, G>>
 	}
 
 	/**
+	 * Returns a sequential {@code Stream} of chromosomes with this genotype as
+	 * its source.
+	 *
+	 * @since !__version__!
+	 *
+	 * @return a sequential {@code Stream} of chromosomes
+	 */
+	public Stream<Chromosome<G>> stream() {
+		return _chromosomes.stream();
+	}
+
+	/**
 	 * Getting the number of chromosomes of this genotype.
 	 *
 	 * @return number of chromosomes.
@@ -223,9 +235,12 @@ public final class Genotype<G extends Gene<?, G>>
 	 */
 	@Override
 	public boolean isValid() {
-		if (_valid == null) {
-			_valid = _chromosomes.forAll(Verifiable::isValid);
+		Boolean valid = _valid;
+		if (valid == null) {
+			valid = _chromosomes.forAll(Verifiable::isValid);
+			_valid = valid;
 		}
+
 		return _valid;
 	}
 

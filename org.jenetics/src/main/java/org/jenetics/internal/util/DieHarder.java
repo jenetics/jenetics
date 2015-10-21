@@ -41,7 +41,8 @@ import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.Random;
 
-import org.jenetics.internal.util.DieHarder.Result.Assessment;
+import org.jenetics.util.ISeq;
+import org.jenetics.util.Seq;
 
 /**
  * Class for testing a given random engine using the
@@ -89,12 +90,18 @@ public final class DieHarder {
 
 	public static void main(final String[] args) throws Exception {
 		if ( args.length < 1) {
-			println("Usage: java org.jenetics.internal.util.DieHarder <random-class-name>");
+			println("Usage: \n" +
+				"   java org.jenetics.internal.util.DieHarder <random-class-name>");
 			return;
 		}
 
-		final String randomName = args[0];
-		Random random = null;
+		test(args[0], ISeq.of(args).subSeq(1));
+	}
+
+	private static void test(final String randomName, final Seq<String> args)
+		throws IOException, InterruptedException
+	{
+		final Random random;
 		try {
 			random = (Random)Class.forName(randomName).newInstance();
 			printt(
@@ -103,15 +110,13 @@ public final class DieHarder {
 				new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date())
 			);
 		} catch (Exception e) {
-			System.out.println("Can't create random class " + randomName);
+			println("Can't create random class '%s'.", randomName);
 			return;
 		}
 
 		final List<String> dieharderArgs = new ArrayList<>();
 		dieharderArgs.add("dieharder");
-		for (int i = 1; i < args.length; ++i) {
-			dieharderArgs.add(args[i]);
-		}
+		dieharderArgs.addAll(args.asList());
 		dieharderArgs.add("-g");
 		dieharderArgs.add("200");
 
@@ -143,7 +148,7 @@ public final class DieHarder {
 		randomizerThread.interrupt();
 
 		final long millis = System.currentTimeMillis() - start;
-		final long sec = (millis)/1000;
+		final long sec = millis/1000;
 		final double megaBytes = randomizer.getCount()/(1024.0*1024.0);
 
 		// Calculate statistics.
@@ -171,7 +176,7 @@ public final class DieHarder {
 			)
 		);
 		println("#=============================================================================#");
-		printt("Runtime: %d:%02d:%02d", sec/3600, (sec%3600)/60, (sec%60));
+		printt("Runtime: %d:%02d:%02d", sec/3600, (sec%3600)/60, sec%60);
 
 	}
 
@@ -220,22 +225,6 @@ public final class DieHarder {
 	 * @version 3.0
 	 */
 	static final class Result {
-
-		static enum Assessment {
-			PASSED,
-			FAILED,
-			WEAK;
-
-			static Optional<Assessment> of(final String assessment) {
-				switch (assessment) {
-					case "PASSED": return Optional.of(PASSED);
-					case "FAILED": return Optional.of(FAILED);
-					case "WEAK": return Optional.of(WEAK);
-					default: return Optional.empty();
-				}
-			}
-		}
-
 		final String testName;
 		final int ntup;
 		final int tsamples;
@@ -319,14 +308,13 @@ public final class DieHarder {
 
 		@Override
 		public boolean equals(final Object obj) {
-			return Equality.of(this, obj).test(result ->
-				eq(testName, result.testName) &&
-				eq(ntup, result.ntup) &&
-				eq(tsamples, result.tsamples) &&
-				eq(psamples, result.psamples) &&
-				eq(pvalue, result.psamples) &&
-				eq(assessment, result.assessment)
-			);
+			return obj instanceof Result &&
+				eq(testName, ((Result)obj).testName) &&
+				eq(ntup, ((Result)obj).ntup) &&
+				eq(tsamples, ((Result)obj).tsamples) &&
+				eq(psamples, ((Result)obj).psamples) &&
+				eq(pvalue, ((Result)obj).psamples) &&
+				eq(assessment, ((Result)obj).assessment);
 		}
 
 		@Override
@@ -335,6 +323,21 @@ public final class DieHarder {
 				"%s[ntup=%d, tsamples=%d, psamples=%d, pvalue=%f, assessment=%s]",
 				testName, ntup, tsamples, psamples, pvalue, assessment
 			);
+		}
+	}
+
+	static enum Assessment {
+		PASSED,
+		FAILED,
+		WEAK;
+
+		static Optional<Assessment> of(final String assessment) {
+			switch (assessment) {
+				case "PASSED": return Optional.of(PASSED);
+				case "FAILED": return Optional.of(FAILED);
+				case "WEAK": return Optional.of(WEAK);
+				default: return Optional.empty();
+			}
 		}
 	}
 

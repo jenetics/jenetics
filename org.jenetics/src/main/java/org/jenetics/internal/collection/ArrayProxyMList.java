@@ -35,6 +35,7 @@ public class ArrayProxyMList<T, P extends ArrayProxy<T, ?, ?>>
 
 	@Override
 	public T set(final int index, final T element) {
+		proxy.cloneIfSealed();
 		final T oldElement = proxy.get(index);
 		proxy.set(index, element);
 		return oldElement;

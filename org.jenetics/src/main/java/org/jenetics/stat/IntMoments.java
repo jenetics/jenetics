@@ -26,7 +26,6 @@ import java.io.Serializable;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collector;
 
-import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 /**
@@ -184,16 +183,15 @@ public final class IntMoments implements Serializable {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(moments ->
-			eq(_count, moments._count) &&
-			eq(_sum, moments._sum) &&
-			eq(_min, moments._min) &&
-			eq(_max, moments._max) &&
-			eq(_mean, moments._mean) &&
-			eq(_variance, moments._variance) &&
-			eq(_skewness, moments._skewness) &&
-			eq(_kurtosis, moments._kurtosis)
-		);
+		return obj instanceof IntMoments &&
+			eq(_count, ((IntMoments)obj)._count) &&
+			eq(_sum, ((IntMoments)obj)._sum) &&
+			eq(_min, ((IntMoments)obj)._min) &&
+			eq(_max, ((IntMoments)obj)._max) &&
+			eq(_mean, ((IntMoments)obj)._mean) &&
+			eq(_variance, ((IntMoments)obj)._variance) &&
+			eq(_skewness, ((IntMoments)obj)._skewness) &&
+			eq(_kurtosis, ((IntMoments)obj)._kurtosis);
 	}
 
 	@Override

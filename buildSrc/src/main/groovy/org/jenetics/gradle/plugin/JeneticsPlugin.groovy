@@ -27,10 +27,9 @@ import org.gradle.api.Project
  * @since 1.5
  * @version 1.5
  */
-protected class JeneticsPlugin
-	extends ProjectAdapter
-	implements Plugin<Project>
-{
+class JeneticsPlugin implements Plugin<Project> {
+
+	Project project
 
 	@Override
 	public void apply(final Project project) {
