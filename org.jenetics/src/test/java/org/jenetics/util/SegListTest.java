@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.collection;
+package org.jenetics.util;
 
 import java.util.List;
 import java.util.Random;
@@ -25,12 +25,14 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import org.jenetics.internal.collection.Array;
+import org.jenetics.internal.collection.ObjectStore;
 import org.jenetics.internal.math.random;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class ArrayListTest {
+public class SegListTest {
 
 	@Test
 	public void size() {
