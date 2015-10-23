@@ -58,6 +58,16 @@ public abstract class ArraySeq<T>
 	}
 
 	@Override
+	public Iterator<T> iterator() {
+		return listIterator();
+	}
+
+	@Override
+	public ListIterator<T> listIterator() {
+		return new ArrayIterator<>(array);
+	}
+
+	@Override
 	public Stream<T> stream() {
 		return StreamSupport.stream(spliterator(), false);
 	}
