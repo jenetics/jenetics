@@ -37,8 +37,6 @@ import java.util.stream.Collector;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import org.jenetics.internal.collection.SeqSpliterator;
-
 /**
  * General interface for a ordered, fixed sized, object sequence.
  * <br>

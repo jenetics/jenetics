@@ -17,21 +17,19 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.collection;
+package org.jenetics.util;
 
 import static java.util.Objects.requireNonNull;
 
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
-import org.jenetics.util.Seq;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
  * @version !__version__!
  */
-public class SeqSpliterator<T> implements Spliterator<T> {
+final class SeqSpliterator<T> implements Spliterator<T> {
 
 	private final Seq<T> _seq;
 	private final int _fence;
