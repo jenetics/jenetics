@@ -138,30 +138,6 @@ public abstract class ArraySeq<T>
 	}
 
 	@Override
-	public Iterator<T> iterator() {
-		return new ArrayIterator<>(array);
-	}
-
-	public ListIterator<T> listIterator() {
-		return new ArrayIterator<>(array);
-	}
-
-	@Override
-	public List<T> asList() {
-		return new ArrayList<>(array);
-	}
-
-	@Override
-	public Object[] toArray() {
-		return asList().toArray();
-	}
-
-	@Override
-	public T[] toArray(final T[] array) {
-		return asList().toArray(array);
-	}
-
-	@Override
 	public String toString() {
 		return toString("[", ",", "]");
 	}

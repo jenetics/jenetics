@@ -56,6 +56,10 @@ import org.jenetics.internal.collection.ObjectStore;
  */
 public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 
+	public default List<T> asList() {
+		return new MSeqList<>(this);
+	}
+
 	/**
 	 * Set the {@code value} at the given {@code index}.
 	 *
@@ -207,7 +211,9 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @return a list iterator over the elements in this list (in proper
 	 *         sequence)
 	 */
-	public ListIterator<T> listIterator();
+	public default ListIterator<T> listIterator() {
+		return asList().listIterator();
+	}
 
 	@Override
 	public MSeq<T> subSeq(final int start, final int end);

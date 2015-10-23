@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Objects;
 import java.util.RandomAccess;
 import java.util.Spliterator;
@@ -112,6 +113,14 @@ public interface Seq<T> extends Iterable<T> {
 		}
 
 		return valid;
+	}
+
+	public default Iterator<T> iterator() {
+		return asList().iterator();
+	}
+
+	public default ListIterator<T> listIterator() {
+		return asList().listIterator();
 	}
 
 	/**
@@ -416,7 +425,9 @@ public interface Seq<T> extends Iterable<T> {
 	 *
 	 * @return a list view of this sequence
 	 */
-	public List<T> asList();
+	public default List<T> asList() {
+		return new SeqList<>(this);
+	}
 
 	/**
 	 * Builds a new sequence by applying a function to all elements of this

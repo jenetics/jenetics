@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.collection;
+package org.jenetics.util;
 
 import static java.util.Objects.requireNonNull;
 
@@ -27,45 +27,45 @@ import java.util.RandomAccess;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.4
  * @version !__version__!
+ * @since !__version__!
  */
-public class ArrayList<T>
+class SeqList<T>
 	extends AbstractList<T>
 	implements
-		RandomAccess,
-		Serializable
+	RandomAccess,
+	Serializable
 {
 	private static final long serialVersionUID = 1L;
 
-	public final Array<T> array;
+	public final Seq<T> seq;
 
-	public ArrayList(final Array<T> array) {
-		this.array = requireNonNull(array, "Array must not be null.");
+	public SeqList(final Seq<T> seq) {
+		this.seq = requireNonNull(seq, "Seq must not be null.");
 	}
 
 	@Override
 	public T get(final int index) {
-		return array.get(index);
+		return seq.get(index);
 	}
 
 	@Override
 	public int size() {
-		return array.length();
+		return seq.length();
 	}
 
 	@Override
 	public int indexOf(final Object element) {
 		int index = -1;
 		if (element == null) {
-			for (int i = 0; i < array.length() && index == -1; ++i) {
-				if (array.get(i) == null) {
+			for (int i = 0; i < seq.length() && index == -1; ++i) {
+				if (seq.get(i) == null) {
 					index = i;
 				}
 			}
 		} else {
-			for (int i = 0; i < array.length() && index == -1; ++i) {
-				if (element.equals(array.get(i))) {
+			for (int i = 0; i < seq.length() && index == -1; ++i) {
+				if (element.equals(seq.get(i))) {
 					index = i;
 				}
 			}
@@ -78,14 +78,14 @@ public class ArrayList<T>
 	public int lastIndexOf(final Object element) {
 		int index = -1;
 		if (element == null) {
-			for (int i = array.length(); --i >= 0 && index == -1;) {
-				if (array.get(i) == null) {
+			for (int i = seq.length(); --i >= 0 && index == -1;) {
+				if (seq.get(i) == null) {
 					index = i;
 				}
 			}
 		} else {
-			for (int i = array.length(); --i >= 0 && index == -1;) {
-				if (element.equals(array.get(i))) {
+			for (int i = seq.length(); --i >= 0 && index == -1;) {
+				if (element.equals(seq.get(i))) {
 					index = i;
 				}
 			}
@@ -103,7 +103,7 @@ public class ArrayList<T>
 	public Object[] toArray() {
 		final Object[] array = new Object[size()];
 		for (int i = size(); --i >= 0;) {
-			array[i] = this.array.get(i);
+			array[i] = this.seq.get(i);
 		}
 		return array;
 	}
@@ -116,14 +116,14 @@ public class ArrayList<T>
 				array.getClass().getComponentType(), size()
 			);
 			for (int i = size(); --i >= 0;) {
-				copy[i] = (E) this.array.get(i);
+				copy[i] = (E) this.seq.get(i);
 			}
 
 			return copy;
 		}
 
 		for (int i = size(); --i >= 0;) {
-			array[i] = (E) this.array.get(i);
+			array[i] = (E) this.seq.get(i);
 		}
 		return array;
 	}

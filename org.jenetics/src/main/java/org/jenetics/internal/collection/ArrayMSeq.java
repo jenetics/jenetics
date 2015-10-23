@@ -23,7 +23,6 @@ import static java.lang.Math.min;
 import static java.lang.String.format;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.ListIterator;
 import java.util.Random;
 import java.util.function.Function;
@@ -53,11 +52,6 @@ public class ArrayMSeq<T> extends ArraySeq<T> implements MSeq<T> {
 
 	@Override
 	public Iterator<T> iterator() {
-		return new ArrayMIterator<>(array);
-	}
-
-	@Override
-	public ListIterator<T> listIterator() {
 		return new ArrayMIterator<>(array);
 	}
 
@@ -181,11 +175,6 @@ public class ArrayMSeq<T> extends ArraySeq<T> implements MSeq<T> {
 		return isEmpty()
 			? Empty.iseq()
 			: new ArrayISeq<>(array.seal());
-	}
-
-	@Override
-	public List<T> asList() {
-		return new ArrayMList<>(array);
 	}
 
 }
