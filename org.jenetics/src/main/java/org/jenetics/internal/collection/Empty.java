@@ -25,7 +25,10 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import org.jenetics.internal.util.require;
 
@@ -72,6 +75,21 @@ public final class Empty {
 		public <B> MSeq<B> map(final Function<? super Object, ? extends B> mapper) {
 			requireNonNull(mapper);
 			return mseq();
+		}
+
+		@Override
+		public Stream<Object> stream() {
+			return Stream.empty();
+		}
+
+		@Override
+		public Stream<Object> parallelStream() {
+			return Stream.empty();
+		}
+
+		@Override
+		public Spliterator<Object> spliterator() {
+			return Spliterators.emptySpliterator();
 		}
 
 		@Override
@@ -146,6 +164,21 @@ public final class Empty {
 		public <B> ISeq<B> map(final Function<? super Object, ? extends B> mapper) {
 			requireNonNull(mapper);
 			return iseq();
+		}
+
+		@Override
+		public Stream<Object> stream() {
+			return Stream.empty();
+		}
+
+		@Override
+		public Stream<Object> parallelStream() {
+			return Stream.empty();
+		}
+
+		@Override
+		public Spliterator<Object> spliterator() {
+			return Spliterators.emptySpliterator();
 		}
 
 		@Override
