@@ -30,54 +30,55 @@ import org.jenetics.internal.math.random;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class ArrayProxyMIteratorTest {
+public class ArrayMIteratorTest {
 
 	@Test
 	public void set() {
 		long seed = random.seed();
 		final Random random = new Random(seed);
 
-		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
-		for (int i = proxy.length; --i >= 0;) {
-			proxy.set(i, random.nextInt());
+		final Array<Integer> impl = Array.of(ObjectStore.ofLength(1000));
+		for (int i = 0; i < impl.length(); ++i) {
+			impl.set(i, random.nextInt());
 		}
+
 
 		seed = org.jenetics.internal.math.random.seed();
 		random.setSeed(seed);
-		final ListIterator<Integer> it = new ArrayProxyMIterator<>(proxy);
+		final ListIterator<Integer> it = new ArrayMIterator<>(impl);
 		while (it.hasNext()) {
 			it.next();
 			it.set(random.nextInt());
 		}
 
 		random.setSeed(seed);
-		for (int i = 0; i < proxy.length; ++i) {
-			Assert.assertEquals(proxy.get(i).intValue(), random.nextInt());
+		for (int i = 0; i < impl.length(); ++i) {
+			Assert.assertEquals(impl.get(i).intValue(), random.nextInt());
 		}
 	}
 
 	@Test
 	public void setValueForward() {
-		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
-		for (int i = 0; i < proxy.length; ++i) {
+		final Array<Integer> proxy = Array.of(ObjectStore.ofLength(1000));
+		for (int i = 0; i < proxy.length(); ++i) {
 			proxy.set(i, 111);
 		}
 
-		for (int i = 0; i < proxy.length; ++i) {
+		for (int i = 0; i < proxy.length(); ++i) {
 			final Integer value = proxy.get(i);
 			Assert.assertEquals(value, new Integer(111));
 		}
 
 		int count = 0;
-		final ListIterator<Integer> it = new ArrayProxyMIterator<>(proxy);
+		final ListIterator<Integer> it = new ArrayMIterator<>(proxy);
 		while (it.hasNext()) {
 			it.next();
 			it.set(222);
 			++count;
 		}
 
-		Assert.assertEquals(count, proxy.length);
-		for (int i = 0; i < proxy.length; ++i) {
+		Assert.assertEquals(count, proxy.length());
+		for (int i = 0; i < proxy.length(); ++i) {
 			final Integer value = proxy.get(i);
 			Assert.assertEquals(value, new Integer(222));
 		}
@@ -85,17 +86,17 @@ public class ArrayProxyMIteratorTest {
 
 	@Test
 	public void setValueBackward() {
-		final ArrayProxy<Integer, ?, ?> proxy = new ObjectArrayProxy<>(1000);
-		for (int i = 0; i < proxy.length; ++i) {
+		final Array<Integer> proxy = Array.of(ObjectStore.ofLength(1000));
+		for (int i = 0; i < proxy.length(); ++i) {
 			proxy.set(i, 111);
 		}
 
-		for (int i = 0; i < proxy.length; ++i) {
+		for (int i = 0; i < proxy.length(); ++i) {
 			final Integer value = proxy.get(i);
 			Assert.assertEquals(value, new Integer(111));
 		}
 
-		final ListIterator<Integer> it = new ArrayProxyMIterator<>(proxy);
+		final ListIterator<Integer> it = new ArrayMIterator<>(proxy);
 		while (it.hasNext()) {
 			it.next();
 		}
@@ -107,8 +108,8 @@ public class ArrayProxyMIteratorTest {
 			++count;
 		}
 
-		Assert.assertEquals(count, proxy.length);
-		for (int i = 0; i < proxy.length; ++i) {
+		Assert.assertEquals(count, proxy.length());
+		for (int i = 0; i < proxy.length(); ++i) {
 			final Integer value = proxy.get(i);
 			Assert.assertEquals(value, new Integer(222));
 		}

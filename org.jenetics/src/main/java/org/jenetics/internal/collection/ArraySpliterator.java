@@ -24,46 +24,44 @@ import static java.util.Objects.requireNonNull;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
-import org.jenetics.util.Seq;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0
+ * @version 3.4
  */
-public class SeqSpliterator<T> implements Spliterator<T> {
+public final class ArraySpliterator<T> implements Spliterator<T> {
 
-	private final Seq<T> _seq;
+	private final Array<T> _array;
 	private final int _fence;
 	private int _index;
 
-	public SeqSpliterator(
-		final Seq<T> seq,
+	public ArraySpliterator(
+		final Array<T> array,
 		final int origin,
 		final int fence
 	) {
-		_seq = requireNonNull(seq);
+		_array = requireNonNull(array);
 		_index = origin;
 		_fence = fence;
 	}
 
-	public SeqSpliterator(final Seq<T> seq) {
-		this(seq, 0, seq.length());
+	public ArraySpliterator(final Array<T> array) {
+		this(array, 0, array.length());
 	}
 
 	@Override
 	public void forEachRemaining(final Consumer<? super T> action) {
 		requireNonNull(action);
 
-		Seq<T> seq;
+		Array<T> array;
 		int i;
 		int hi;
 
-		if ((seq = _seq).length() >= (hi = _fence) &&
+		if ((array = _array).length() >= (hi = _fence) &&
 			(i = _index) >= 0 && i < (_index = hi))
 		{
 			do {
-				action.accept(seq.get(i));
+				action.accept(array.get(i));
 			} while (++i < hi);
 		}
 	}
@@ -71,7 +69,7 @@ public class SeqSpliterator<T> implements Spliterator<T> {
 	@Override
 	public boolean tryAdvance(final Consumer<? super T> action) {
 		if (_index >= 0 && _index < _fence) {
-			action.accept(_seq.get(_index++));
+			action.accept(_array.get(_index++));
 			return true;
 		}
 		return false;
@@ -84,7 +82,7 @@ public class SeqSpliterator<T> implements Spliterator<T> {
 
 		return (lo >= mid)
 			? null
-			: new SeqSpliterator<>(_seq, lo, _index = mid);
+			: new ArraySpliterator<>(_array, lo, _index = mid);
 	}
 
 	@Override
@@ -96,4 +94,5 @@ public class SeqSpliterator<T> implements Spliterator<T> {
 	public int characteristics() {
 		return Spliterator.NONNULL | Spliterator.SIZED | Spliterator.SUBSIZED;
 	}
+
 }

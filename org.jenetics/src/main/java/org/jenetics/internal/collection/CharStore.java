@@ -19,18 +19,52 @@
  */
 package org.jenetics.internal.collection;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.Serializable;
 
 /**
- * Functional interface for copying arrays.
- *
- * @param <A> the array type
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.0
  * @since 3.0
+ * @version 3.4
  */
-@FunctionalInterface
-public interface ArrayCopier<A> extends Serializable {
-	public A copy(final A array, final int from, final int to);
+public final class CharStore implements Array.Store<Character>, Serializable {
+	private static final long serialVersionUID = 1L;
+
+	public final char[] array;
+
+	private CharStore(final char[] chars) {
+		array = requireNonNull(chars);
+	}
+
+	public CharStore(final int length) {
+		this(new char[length]);
+	}
+
+	@Override
+	public Character get(final int index) {
+		return array[index];
+	}
+
+	@Override
+	public void set(final int index, final Character value) {
+		array[index] = value;
+	}
+
+	@Override
+	public CharStore copy(final int from, final int until) {
+		final char[] array = new char[until - from];
+		System.arraycopy(this.array, from, array, 0, until - from);
+		return new CharStore(array);
+	}
+
+	@Override
+	public int length() {
+		return array.length;
+	}
+
+	public static CharStore of(final char[] chars) {
+		return new CharStore(chars);
+	}
+
 }

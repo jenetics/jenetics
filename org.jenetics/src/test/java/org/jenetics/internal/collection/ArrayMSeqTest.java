@@ -19,26 +19,24 @@
  */
 package org.jenetics.internal.collection;
 
+import org.testng.annotations.Test;
+
+import org.jenetics.util.MSeq;
+import org.jenetics.util.MSeqTestBase;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.4
- * @version 1.4
  */
-public class ArrayProxyMList<T, P extends ArrayProxy<T, ?, ?>>
-	extends ArrayProxyList<T, P>
-{
-	private static final long serialVersionUID = 1L;
-
-	public ArrayProxyMList(final P proxy) {
-		super(proxy);
-	}
+@Test
+public class ArrayMSeqTest extends MSeqTestBase {
 
 	@Override
-	public T set(final int index, final T element) {
-		proxy.cloneIfSealed();
-		final T oldElement = proxy.get(index);
-		proxy.set(index, element);
-		return oldElement;
+	protected MSeq<Integer> newSeq(final int length) {
+		final Array<Integer> array = Array.ofLength(length);
+		for (int i = 0; i < length; ++i) {
+			array.set(i, i);
+		}
+		return new ArrayMSeq<>(array);
 	}
 
 }

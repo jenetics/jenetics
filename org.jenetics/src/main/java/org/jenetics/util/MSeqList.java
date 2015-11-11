@@ -17,29 +17,25 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.collection;
-
+package org.jenetics.util;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.4
- * @version 3.0
+ * @version 3.4
+ * @since 3.4
  */
-public class ArrayProxyMIterator<T, P extends ArrayProxy<T, ?, ?>>
-	extends ArrayProxyIterator<T, P>
-{
+public class MSeqList<T> extends SeqList<T> {
+	private static final long serialVersionUID = 1L;
 
-	public ArrayProxyMIterator(final P proxy) {
-		super(proxy);
+	MSeqList(final MSeq<T> array) {
+		super(array);
 	}
 
 	@Override
-	public void set(final T value) {
-		if (lastElement < 0) {
-			throw new IllegalStateException();
-		}
-		proxy.cloneIfSealed();
-		proxy.__set(lastElement, value);
+	public T set(final int index, final T element) {
+		final T oldElement = seq.get(index);
+		((MSeq<T>)seq).set(index, element);
+		return oldElement;
 	}
 
 }

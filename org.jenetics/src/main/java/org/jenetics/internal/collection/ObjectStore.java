@@ -19,34 +19,55 @@
  */
 package org.jenetics.internal.collection;
 
-import java.util.Arrays;
+import static java.util.Arrays.copyOfRange;
+import static java.util.Objects.requireNonNull;
+
+import java.io.Serializable;
+
+import org.jenetics.internal.collection.Array.Store;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 3.0
- * @version 3.0
+ * @version 3.4
+ * @since 3.4
  */
-public final class CharArrayProxy
-	extends ArrayProxy<Character, char[], CharArrayProxy>
-{
+public final class ObjectStore<T> implements Store<T>, Serializable {
+
 	private static final long serialVersionUID = 1L;
 
-	public CharArrayProxy(final char[] chars, final int start, final int end) {
-		super(chars, start, end, CharArrayProxy::new, Arrays::copyOfRange);
-	}
+	private final Object[] _array;
 
-	public CharArrayProxy(final int length) {
-		this(new char[length], 0, length);
-	}
-
-	@Override
-	public Character __get__(int index) {
-		return array[index];
+	private ObjectStore(final Object[] array) {
+		_array = requireNonNull(array);
 	}
 
 	@Override
-	public void __set__(int index, Character value) {
-		array[index] = value;
+	public void set(final int index, T value) {
+		_array[index] = value;
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public T get(final int index) {
+		return (T)_array[index];
+	}
+
+	@Override
+	public ObjectStore<T> copy(final int from, final int until) {
+		return new ObjectStore<>(copyOfRange(_array, from, until));
+	}
+
+	@Override
+	public int length() {
+		return _array.length;
+	}
+
+	public static <T> ObjectStore<T> of(final Object[] array) {
+		return new ObjectStore<>(array);
+	}
+
+	public static <T> ObjectStore<T> ofLength(final int length) {
+		return new ObjectStore<>(new Object[length]);
 	}
 
 }

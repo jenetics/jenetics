@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Objects;
 import java.util.RandomAccess;
 import java.util.Spliterator;
@@ -36,8 +37,6 @@ import java.util.stream.Collector;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import org.jenetics.internal.collection.SeqSpliterator;
-
 /**
  * General interface for a ordered, fixed sized, object sequence.
  * <br>
@@ -47,7 +46,7 @@ import org.jenetics.internal.collection.SeqSpliterator;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.3
+ * @version 3.4
  */
 public interface Seq<T> extends Iterable<T> {
 
@@ -112,6 +111,14 @@ public interface Seq<T> extends Iterable<T> {
 		}
 
 		return valid;
+	}
+
+	public default Iterator<T> iterator() {
+		return asList().iterator();
+	}
+
+	public default ListIterator<T> listIterator() {
+		return asList().listIterator();
 	}
 
 	/**
@@ -416,7 +423,9 @@ public interface Seq<T> extends Iterable<T> {
 	 *
 	 * @return a list view of this sequence
 	 */
-	public List<T> asList();
+	public default List<T> asList() {
+		return new SeqList<>(this);
+	}
 
 	/**
 	 * Builds a new sequence by applying a function to all elements of this
@@ -626,7 +635,7 @@ public interface Seq<T> extends Iterable<T> {
 		final String suffix
 	) {
 		return stream()
-			.map(Object::toString)
+			.map(Objects::toString)
 			.collect(joining(separator, prefix, suffix));
 	}
 
