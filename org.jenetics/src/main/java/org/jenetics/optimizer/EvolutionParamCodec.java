@@ -26,6 +26,7 @@ import org.jenetics.Selector;
 import org.jenetics.engine.Codec;
 import org.jenetics.engine.EvolutionParam;
 import org.jenetics.engine.codecs;
+import org.jenetics.util.ISeq;
 import org.jenetics.util.IntRange;
 
 /**
@@ -35,6 +36,7 @@ import org.jenetics.util.IntRange;
  */
 public class EvolutionParamCodec {
 
+	@SuppressWarnings("unchecked")
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Codec<EvolutionParam<G, C>, DoubleGene> General(
 		final IntRange crossoverPoints,
@@ -44,24 +46,27 @@ public class EvolutionParamCodec {
 		final int survivorCount,
 		final int offspringCount
 	) {
-		return Codec.of(
+		return Codec.of(ISeq.of(
 			AltererCodecs.General(crossoverPoints),
 			SelectorCodecs.Generic(tournamentSize),
 			SelectorCodecs.Generic(tournamentSize),
 			codecs.ofScalar(populationSize.doubleRange()),
-			codecs.ofScalar(maxPhenotypeAge.doubleRange()),
-			(final Alterer<G, C> alterer,
-			final Selector<G, C> survivorSelector,
-			final Selector<G, C> offspringSelector,
-			final Double popSize,
-			final Double maxPtAge) -> EvolutionParam.of(
-				survivorSelector,
-				offspringSelector,
-				alterer,
-				survivorCount,
-				offspringCount,
-				maxPtAge.intValue()
-			)
+			codecs.ofScalar(maxPhenotypeAge.doubleRange())),
+			data -> {
+				final Alterer<G, C> alterer = (Alterer<G, C>)data[0];
+				final Selector<G, C> survivorSelector = (Selector<G, C>)data[1];
+				final Selector<G, C> offspringSelector = (Selector<G, C>)data[2];
+				final Double popSize = (Double)data[3];
+				final Double maxPtAge = (Double)data[4];
+				return EvolutionParam.of(
+					survivorSelector,
+					offspringSelector,
+					alterer,
+					survivorCount,
+					offspringCount,
+					maxPtAge.intValue()
+				);
+			}
 		);
 	}
 

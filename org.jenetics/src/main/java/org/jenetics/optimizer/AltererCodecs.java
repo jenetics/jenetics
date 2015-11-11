@@ -35,6 +35,7 @@ import org.jenetics.SwapMutator;
 import org.jenetics.engine.Codec;
 import org.jenetics.engine.codecs;
 import org.jenetics.util.DoubleRange;
+import org.jenetics.util.ISeq;
 import org.jenetics.util.IntRange;
 import org.jenetics.util.Mean;
 
@@ -45,20 +46,22 @@ import org.jenetics.util.Mean;
  */
 public class AltererCodecs {
 
+	@SuppressWarnings("unchecked")
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Codec<Alterer<G, C>, DoubleGene> General(final IntRange crossoverPoints) {
-		return Codec.of(
+		return Codec.of(ISeq.of(
 			codecs.ofVector(DoubleRange.of(0, 1), 4),
 			Mutator(),
 			SinglePointCrossover(),
 			MultiplePointCrossover(crossoverPoints),
-			SwapMutator(),
-			(final double[] a,
-			final Alterer<G, C> b,
-			final Alterer<G, C> c,
-			final Alterer<G, C> d,
-			final Alterer<G, C> e) ->
-			{
+			SwapMutator()),
+			data -> {
+				final double[] a = (double[])data[0];
+				final Alterer<G, C> b = (Alterer<G, C>)data[1];
+				final Alterer<G, C> c = (Alterer<G, C>)data[2];
+				final Alterer<G, C> d = (Alterer<G, C>)data[3];
+				final Alterer<G, C> e = (Alterer<G, C>)data[4];
+
 				Alterer<G, C> alterer = Alterer.empty();
 				if (a[0] > 0.5) alterer = alterer.andThen(b);
 				if (a[1] > 0.5) alterer = alterer.andThen(c);

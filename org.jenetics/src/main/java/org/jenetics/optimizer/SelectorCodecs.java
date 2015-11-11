@@ -42,19 +42,23 @@ import org.jenetics.util.IntRange;
  */
 public class SelectorCodecs {
 
+	@SuppressWarnings("unchecked")
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Codec<Selector<G, C>, DoubleGene> Generic(final IntRange tournamentSize) {
-		return Codec.of(
+		return Codec.of(ISeq.of(
 			codecs.ofScalar(DoubleRange.of(0, 4)),
 			ExponentialRankSelector(),
 			LinearRankSelector(),
 			TournamentSelector(tournamentSize),
-			TruncationSelector(),
-			(final Double a,
-			final Selector<G, C> s1,
-			final Selector<G, C> s2,
-			final Selector<G, C> s3,
-			final Selector<G, C> s4) -> ISeq.of(s1, s2, s3, s4).get(a.intValue())
+			TruncationSelector()),
+			data -> {
+				final Double a = (Double)data[0];
+				final Selector<G, C> s1 = (Selector<G, C>)data[1];
+				final Selector<G, C> s2 = (Selector<G, C>)data[2];
+				final Selector<G, C> s3 = (Selector<G, C>)data[3];
+				final Selector<G, C> s4 = (Selector<G, C>)data[4];
+				return ISeq.of(s1, s2, s3, s4).get(a.intValue());
+			}
 		);
 	}
 
