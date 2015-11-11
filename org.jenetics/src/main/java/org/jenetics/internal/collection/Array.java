@@ -247,6 +247,13 @@ public final class Array<T> implements Serializable {
 		public T get(final int index);
 
 		/**
+		 * Return the length of the array {@code Store}.
+		 *
+		 * @return the array store length
+		 */
+		public int length();
+
+		/**
 		 * Return a new array {@code Store} with the copied portion of the
 		 * underlying array.
 		 *
@@ -275,14 +282,6 @@ public final class Array<T> implements Serializable {
 		public default Store<T> copy() {
 			return copy(0, length());
 		}
-
-		/**
-		 * Return the length of the array {@code Store}.
-		 *
-		 * @return the array store length
-		 */
-		public int length();
-
 
 		/**
 		 * Mutable reference of an underlying array {@code Store}.
