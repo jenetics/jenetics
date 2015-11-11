@@ -30,8 +30,8 @@ import java.io.Serializable;
  *
  * @param <T> the array element type
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.4
+ * @since 3.4
  */
 public final class Array<T> implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -224,8 +224,8 @@ public final class Array<T> implements Serializable {
 	 *
 	 * @param <T> the array element type
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version !__version__!
-	 * @since !__version__!
+	 * @version 3.4
+	 * @since 3.4
 	 */
 	public interface Store<T> {
 
@@ -288,8 +288,8 @@ public final class Array<T> implements Serializable {
 		 *
 		 * @param <T> the array element type
 		 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-		 * @version !__version__!
-		 * @since !__version__!
+		 * @version 3.4
+		 * @since 3.4
 		 */
 		public static final class Ref<T> implements Store<T>, Serializable {
 			private static final long serialVersionUID = 1L;

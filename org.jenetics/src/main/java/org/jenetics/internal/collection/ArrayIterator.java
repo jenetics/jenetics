@@ -27,7 +27,7 @@ import java.util.NoSuchElementException;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version !__version__!
+ * @version 3.4
  */
 public class ArrayIterator<T> implements ListIterator<T> {
 

@@ -22,7 +22,7 @@ package org.jenetics.internal.collection;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version !__version__!
+ * @version 3.4
  */
 public class ArrayMIterator<T> extends ArrayIterator<T> {
 

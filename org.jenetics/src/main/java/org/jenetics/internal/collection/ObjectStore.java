@@ -28,8 +28,8 @@ import org.jenetics.internal.collection.Array.Store;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.4
+ * @since 3.4
  */
 public final class ObjectStore<T> implements Store<T>, Serializable {
 

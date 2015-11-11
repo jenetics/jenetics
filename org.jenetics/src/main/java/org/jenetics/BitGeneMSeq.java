@@ -34,7 +34,7 @@ import org.jenetics.util.MSeq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version !__version__!
+ * @version 3.4
  */
 final class BitGeneMSeq extends ArrayMSeq<BitGene> {
 
@@ -100,7 +100,7 @@ final class BitGeneMSeq extends ArrayMSeq<BitGene> {
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version !__version__!
+ * @version 3.4
  */
 final class BitGeneISeq extends ArrayISeq<BitGene> {
 	private static final long serialVersionUID = 1L;
@@ -130,7 +130,7 @@ final class BitGeneISeq extends ArrayISeq<BitGene> {
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version !__version__!
+ * @version 3.4
  */
 final class BitGeneStore implements Array.Store<BitGene>, Serializable {
 	private static final long serialVersionUID = 1L;

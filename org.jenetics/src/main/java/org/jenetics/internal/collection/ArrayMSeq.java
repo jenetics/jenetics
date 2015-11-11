@@ -34,7 +34,7 @@ import org.jenetics.util.MSeq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version !__version__!
+ * @version 3.4
  */
 public class ArrayMSeq<T> extends ArraySeq<T> implements MSeq<T> {
 	private static final long serialVersionUID = 1L;
