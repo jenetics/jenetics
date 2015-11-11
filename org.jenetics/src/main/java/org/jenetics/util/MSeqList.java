@@ -17,16 +17,25 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.collection;
-
-import java.io.Serializable;
+package org.jenetics.util;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 3.0
- * @version 3.0
+ * @version !__version__!
+ * @since !__version__!
  */
-@FunctionalInterface
-public interface ArrayProxyFactory<A, P> extends Serializable {
-	public P create(final A array, final int start, final int end);
+public class MSeqList<T> extends SeqList<T> {
+	private static final long serialVersionUID = 1L;
+
+	MSeqList(final MSeq<T> array) {
+		super(array);
+	}
+
+	@Override
+	public T set(final int index, final T element) {
+		final T oldElement = seq.get(index);
+		((MSeq<T>)seq).set(index, element);
+		return oldElement;
+	}
+
 }

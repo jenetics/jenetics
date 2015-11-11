@@ -29,53 +29,65 @@ import java.util.Spliterator;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0
+ * @version !__version__!
  */
-public abstract class ArrayProxySeq<T, P extends ArrayProxy<T, ?, ?>>
+public abstract class ArraySeq<T>
 	implements
 		Seq<T>,
 		Serializable
 {
 	private static final long serialVersionUID = 1L;
 
-	public final P proxy;
+	public final Array<T> array;
 
-	public ArrayProxySeq(final P proxy) {
-		this.proxy = requireNonNull(proxy, "ArrayProxy must not be null.");
+	public ArraySeq(final Array<T> array) {
+		this.array = requireNonNull(array, "Array must not be null.");
 	}
 
 	@Override
 	public final T get(final int index) {
-		return proxy.get(index);
+		array.checkIndex(index);
+		return array.get(index);
+	}
+
+	@Override
+	public Iterator<T> iterator() {
+		return listIterator();
+	}
+
+	@Override
+	public ListIterator<T> listIterator() {
+		return new ArrayIterator<>(array);
 	}
 
 	@Override
 	public Stream<T> stream() {
-		return proxy.stream();
+		return StreamSupport.stream(spliterator(), false);
 	}
 
 	@Override
 	public Stream<T> parallelStream() {
-		return proxy.parallelStream();
+		return StreamSupport.stream(spliterator(), true);
 	}
 
 	@Override
 	public Spliterator<T> spliterator() {
-		return proxy.spliterator();
+		return new ArraySpliterator<T>(array);
 	}
 
 	@Override
 	public void forEach(final Consumer<? super T> consumer) {
 		requireNonNull(consumer, "The consumer must not be null.");
 
-		for (int i = proxy.start; i < proxy.end; ++i) {
-			consumer.accept(proxy.__get__(i));
+		for (int i = 0; i < array.length(); ++i) {
+			consumer.accept(array.get(i));
 		}
 	}
 
@@ -84,8 +96,8 @@ public abstract class ArrayProxySeq<T, P extends ArrayProxy<T, ?, ?>>
 		requireNonNull(predicate, "Predicate");
 
 		boolean valid = true;
-		for (int i = proxy.start; i < proxy.end && valid; ++i) {
-			valid = predicate.test(proxy.__get__(i));
+		for (int i = 0; i < array.length() && valid; ++i) {
+			valid = predicate.test(array.get(i));
 		}
 		return valid;
 	}
@@ -96,16 +108,14 @@ public abstract class ArrayProxySeq<T, P extends ArrayProxy<T, ?, ?>>
 		final int start,
 		final int end
 	) {
-		proxy.checkIndex(start, end);
+		array.checkIndex(start, end);
 		requireNonNull(predicate, "Predicate");
 
 		int index = -1;
 
-		for (int i = start + proxy.start, n = end + proxy.start;
-				i < n && index == -1; ++i)
-		{
-			if (predicate.test(proxy.__get__(i))) {
-				index = i - proxy.start;
+		for (int i = start; i < end && index == -1; ++i) {
+			if (predicate.test(array.get(i))) {
+				index = i;
 			}
 		}
 
@@ -118,16 +128,14 @@ public abstract class ArrayProxySeq<T, P extends ArrayProxy<T, ?, ?>>
 		final int start,
 		final int end
 	) {
-		proxy.checkIndex(start, end);
+		array.checkIndex(start, end);
 		requireNonNull(predicate, "Predicate must not be null.");
 
 		int index = -1;
 
-		for (int i = end + proxy.start;
-			--i >= start + proxy.start && index == -1;)
-		{
-			if (predicate.test(proxy.__get__(i))) {
-				index = i - proxy.start;
+		for (int i = end; --i >= start && index == -1;) {
+			if (predicate.test(array.get(i))) {
+				index = i;
 			}
 		}
 
@@ -136,31 +144,7 @@ public abstract class ArrayProxySeq<T, P extends ArrayProxy<T, ?, ?>>
 
 	@Override
 	public int length() {
-		return proxy.length;
-	}
-
-	@Override
-	public Iterator<T> iterator() {
-		return new ArrayProxyIterator<>(proxy);
-	}
-
-	public ListIterator<T> listIterator() {
-		return new ArrayProxyIterator<>(proxy);
-	}
-
-	@Override
-	public List<T> asList() {
-		return new ArrayProxyList<>(proxy);
-	}
-
-	@Override
-	public Object[] toArray() {
-		return asList().toArray();
-	}
-
-	@Override
-	public T[] toArray(final T[] array) {
-		return asList().toArray(array);
+		return array.length();
 	}
 
 	@Override

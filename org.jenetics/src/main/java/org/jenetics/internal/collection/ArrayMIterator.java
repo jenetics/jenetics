@@ -22,23 +22,20 @@ package org.jenetics.internal.collection;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4
+ * @version !__version__!
  */
-public class ArrayProxyMList<T, P extends ArrayProxy<T, ?, ?>>
-	extends ArrayProxyList<T, P>
-{
-	private static final long serialVersionUID = 1L;
+public class ArrayMIterator<T> extends ArrayIterator<T> {
 
-	public ArrayProxyMList(final P proxy) {
-		super(proxy);
+	public ArrayMIterator(final Array<T> array) {
+		super(array);
 	}
 
 	@Override
-	public T set(final int index, final T element) {
-		proxy.cloneIfSealed();
-		final T oldElement = proxy.get(index);
-		proxy.set(index, element);
-		return oldElement;
+	public void set(final T value) {
+		if (lastElement < 0) {
+			throw new IllegalStateException();
+		}
+		array.set(lastElement, value);
 	}
 
 }

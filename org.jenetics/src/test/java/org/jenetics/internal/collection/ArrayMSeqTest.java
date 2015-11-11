@@ -17,29 +17,26 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
-
-import java.util.Random;
+package org.jenetics.internal.collection;
 
 import org.testng.annotations.Test;
 
-import org.jenetics.internal.collection.ArrayProxy;
-import org.jenetics.internal.collection.ArrayProxyTestBase;
+import org.jenetics.util.MSeq;
+import org.jenetics.util.MSeqTestBase;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
 @Test
-public class BitGeneArrayProxyTest extends ArrayProxyTestBase<BitGene> {
+public class ArrayMSeqTest extends MSeqTestBase {
 
 	@Override
-	public ArrayProxy<BitGene, ?, ?> newArrayProxy(final int length) {
-		return new BitGeneArray.Proxy(length);
-	}
-
-	@Override
-	public BitGene newArrayProxyElement(final Random random) {
-		return BitGene.of(random.nextBoolean());
+	protected MSeq<Integer> newSeq(final int length) {
+		final Array<Integer> array = Array.ofLength(length);
+		for (int i = 0; i < length; ++i) {
+			array.set(i, i);
+		}
+		return new ArrayMSeq<>(array);
 	}
 
 }

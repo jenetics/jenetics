@@ -31,45 +31,45 @@ import org.jenetics.util.SeqTestBase;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
 @Test
-public class ArrayProxySeqTest extends SeqTestBase {
+public class ArraySeqTest extends SeqTestBase {
 
-	private static final class ArrayProxySeqImpl<T, P extends ArrayProxy<T, ?, ?>>
-		extends ArrayProxySeq<T, P>
+	private static final class ArraySeqImpl<T>
+		extends ArraySeq<T>
 	{
 		private static final long serialVersionUID = 1L;
 
-		ArrayProxySeqImpl(final P proxy) {
-			super(proxy);
+		ArraySeqImpl(final Array<T> array) {
+			super(array.seal());
 		}
 
 		@Override
 		public <B> ISeq<B> map(final Function<? super T, ? extends B> mapper) {
-			final ObjectArrayProxy<B> p = new ObjectArrayProxy<>(proxy.length);
-			for (int i = 0; i < p.length; ++i) {
-				p.array[i] = mapper.apply(proxy.__get(i));
+			final Array<B> mapped = Array.ofLength(length());
+			for (int i = 0; i < length(); ++i) {
+				mapped.set(i, mapper.apply(array.get(i)));
 			}
-			return new ArrayProxyISeq<>(p);
+			return new ArrayISeq<>(mapped.seal());
 		}
 
 		@Override
 		public ISeq<T> subSeq(final int start) {
-			return new ArrayProxyISeq<>(proxy.slice(start));
+			return new ArrayISeq<>(array.slice(start, length()));
 		}
 
 		@Override
 		public ISeq<T> subSeq(int start, int end) {
-			return new ArrayProxyISeq<>(proxy.slice(start, end));
+			return new ArrayISeq<>(array.slice(start, end));
 		}
 
 	}
 
 	@Override
 	protected Seq<Integer> newSeq(final int length) {
-		final ObjectArrayProxy<Integer> impl = new ObjectArrayProxy<>(length);
+		final Array<Integer> impl = Array.ofLength(length);
 		for (int i = 0; i < length; ++i) {
-			impl.array[i] = i;
+			impl.set(i, i);
 		}
-		return new ArrayProxySeqImpl<>(impl);
+		return new ArraySeqImpl<>(impl);
 	}
 
 
