@@ -44,7 +44,7 @@ import org.jenetics.util.Mean;
  * @version !__version__!
  * @since !__version__!
  */
-public class AltererCodecs {
+public class AltererCodec {
 
 	@SuppressWarnings("unchecked")
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>

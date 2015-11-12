@@ -47,7 +47,7 @@ public class EvolutionParamCodec {
 		final int offspringCount
 	) {
 		return Codec.of(ISeq.of(
-			AltererCodecs.General(crossoverPoints),
+			AltererCodec.General(crossoverPoints),
 			SelectorCodec.general(tournamentSize),
 			SelectorCodec.general(tournamentSize),
 			codecs.ofScalar(populationSize.doubleRange()),
