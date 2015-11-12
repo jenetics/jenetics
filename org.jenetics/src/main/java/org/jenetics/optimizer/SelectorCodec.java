@@ -19,6 +19,8 @@
  */
 package org.jenetics.optimizer;
 
+import java.util.function.Function;
+
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
 import org.jenetics.ExponentialRankSelector;
@@ -32,6 +34,7 @@ import org.jenetics.TruncationSelector;
 import org.jenetics.engine.Codec;
 import org.jenetics.engine.codecs;
 import org.jenetics.util.DoubleRange;
+import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.IntRange;
 
@@ -40,7 +43,22 @@ import org.jenetics.util.IntRange;
  * @version !__version__!
  * @since !__version__!
  */
-public class SelectorCodecs {
+public class SelectorCodec<
+	G extends Gene<?, G>,
+	C extends Comparable<? super C>
+>
+	implements Codec<Selector<G, C>, DoubleGene>
+{
+
+	@Override
+	public Factory<Genotype<DoubleGene>> encoding() {
+		return null;
+	}
+
+	@Override
+	public Function<Genotype<DoubleGene>, Selector<G, C>> decoder() {
+		return null;
+	}
 
 	@SuppressWarnings("unchecked")
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
@@ -108,5 +126,6 @@ public class SelectorCodecs {
 			gt -> new RouletteWheelSelector<>()
 		);
 	}
+
 
 }
