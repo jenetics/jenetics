@@ -45,12 +45,19 @@ public class SelectorCodecs {
 	@SuppressWarnings("unchecked")
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Codec<Selector<G, C>, DoubleGene> Generic(final IntRange tournamentSize) {
-		return Codec.of(ISeq.of(
-			codecs.ofScalar(DoubleRange.of(0, 4)),
-			ExponentialRankSelector(),
-			LinearRankSelector(),
-			TournamentSelector(tournamentSize),
-			TruncationSelector()),
+		final TruncationSelector ts = new TruncationSelector();
+		final RouletteWheelSelector rs = new RouletteWheelSelector();
+
+		return Codec.of(
+			ISeq.of(
+				codecs.ofScalar(DoubleRange.of(0, 4)),
+				ExponentialRankSelector(),
+				LinearRankSelector(),
+				TournamentSelector(tournamentSize),
+
+				TruncationSelector(),
+				RouletteWheelSelector()
+			),
 			data -> {
 				final Double a = (Double)data[0];
 				final Selector<G, C> s1 = (Selector<G, C>)data[1];
@@ -93,10 +100,6 @@ public class SelectorCodecs {
 			gt -> new TruncationSelector<>()
 		);
 	}
-
-
-
-
 
 	public static <G extends Gene<?, G>, C extends Number & Comparable<? super C>>
 	Codec<Selector<G, C>, DoubleGene> RouletteWheelSelector() {
