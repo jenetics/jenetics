@@ -48,8 +48,8 @@ public class EvolutionParamCodec {
 	) {
 		return Codec.of(ISeq.of(
 			AltererCodecs.General(crossoverPoints),
-			SelectorCodec.Generic(tournamentSize),
-			SelectorCodec.Generic(tournamentSize),
+			SelectorCodec.general(tournamentSize),
+			SelectorCodec.general(tournamentSize),
 			codecs.ofScalar(populationSize.doubleRange()),
 			codecs.ofScalar(maxPhenotypeAge.doubleRange())),
 			data -> {
