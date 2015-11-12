@@ -92,7 +92,7 @@ public final class SelectorCodec<
 
 	@SuppressWarnings("unchecked")
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Codec<Selector<G, C>, DoubleGene> general(final IntRange tournamentSize) {
+	SelectorCodec<G, C> general(final IntRange tournamentSize) {
 		final ISeq<Codec<Selector<G, C>, DoubleGene>> codecs = ISeq.of(
 			Codec.of(
 				Genotype.of(DoubleChromosome.of(0, 1)),
