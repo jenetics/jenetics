@@ -19,13 +19,11 @@
  */
 package org.jenetics.optimizer;
 
-import static java.util.Arrays.stream;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.engine.codecs.ofVector;
 import static org.jenetics.internal.collection.seq.concat;
 
 import java.util.function.Function;
-import java.util.stream.Stream;
 
 import org.jenetics.Alterer;
 import org.jenetics.DoubleChromosome;
@@ -69,24 +67,23 @@ public final class AltererCodec<
 		requireNonNull(alterers);
 
 		final int altererCount = codecs.length() + alterers.length();
+		final Codec<double[], DoubleGene> altererIndexesCodec =
+			ofVector(DoubleRange.of(0, 1), altererCount);
 
 		_codec = Codec.of(
-			concat(
-				ISeq.of(ofVector(DoubleRange.of(0, 1), altererCount)),
-				codecs
-			),
+			concat(ISeq.of(altererIndexesCodec), codecs),
 			x -> {
-				final ISeq<Alterer<G, C>> a = Stream
-					.concat(
-						stream(x, 1, x.length).map(o -> (Alterer<G, C>) o),
-						alterers.stream())
-					.collect(ISeq.toISeq());
-
 				final double[] index = (double[])x[0];
+
 				Alterer<G, C> alterer = Alterer.empty();
-				for (int i = 0; i < index.length; ++i) {
+				for (int i = 0; i < codecs.length(); ++i) {
 					if (index[i] > 0.5) {
-						alterer = alterer.andThen(a.get(i));
+						alterer = alterer.andThen((Alterer<G, C>)x[i + 1]);
+					}
+				}
+				for (int i = 0; i < alterers.length(); ++i) {
+					if (index[codecs.length() + i] > 0.5) {
+						alterer = alterer.andThen(alterers.get(i));
 					}
 				}
 
