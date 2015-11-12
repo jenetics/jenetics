@@ -19,6 +19,15 @@
  */
 package org.jenetics.optimizer;
 
+import static java.util.Objects.requireNonNull;
+import static org.jenetics.engine.codecs.ofVector;
+import static org.jenetics.internal.collection.seq.concat;
+
+import java.util.Arrays;
+import java.util.function.Function;
+
+import org.jenetics.internal.collection.seq;
+
 import org.jenetics.Alterer;
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
@@ -35,6 +44,7 @@ import org.jenetics.SwapMutator;
 import org.jenetics.engine.Codec;
 import org.jenetics.engine.codecs;
 import org.jenetics.util.DoubleRange;
+import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.IntRange;
 import org.jenetics.util.Mean;
@@ -44,7 +54,60 @@ import org.jenetics.util.Mean;
  * @version !__version__!
  * @since !__version__!
  */
-public class AltererCodec {
+public class AltererCodec<
+	G extends Gene<?, G>,
+	C extends Comparable<? super C>
+>
+	implements Codec<Alterer<G, C>, DoubleGene>
+{
+
+	private final Codec<Alterer<G, C>, DoubleGene> _codec;
+
+	@SuppressWarnings("unchecked")
+	private AltererCodec(
+		final ISeq<Codec<Alterer<G, C>, DoubleGene>> codecs,
+		final ISeq<Alterer<G, C>> alterers
+	) {
+		requireNonNull(codecs);
+		requireNonNull(alterers);
+
+		final int altererCount = codecs.length() + alterers.length();
+
+		_codec = Codec.of(
+			concat(
+				ISeq.of(ofVector(DoubleRange.of(0, 1), altererCount)),
+				codecs
+			),
+			x -> {
+				final double[] index = (double[])x[0];
+				final ISeq<Alterer<G, C>> a = seq.concat(
+						Arrays.stream(x, 1, x.length)
+							.map(o -> (Alterer<G, C>)o)
+							.collect(ISeq.toISeq()),
+						alterers
+					);
+
+				Alterer<G, C> alterer = Alterer.empty();
+				for (int i = 0; i < index.length; ++i) {
+					if (index[i] > 0.5) {
+						alterer = alterer.andThen(a.get(i));
+					}
+				}
+
+				return alterer;
+			}
+		);
+	}
+
+	@Override
+	public Factory<Genotype<DoubleGene>> encoding() {
+		return _codec.encoding();
+	}
+
+	@Override
+	public Function<Genotype<DoubleGene>, Alterer<G, C>> decoder() {
+		return _codec.decoder();
+	}
 
 	@SuppressWarnings("unchecked")
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
