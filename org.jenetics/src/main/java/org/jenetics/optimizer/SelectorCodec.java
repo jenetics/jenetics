@@ -64,18 +64,18 @@ public final class SelectorCodec<
 		requireNonNull(selectors);
 
 		final int selectorCount = codecs.length() + selectors.length();
+		final Codec<Double, DoubleGene> selectorIndexCodec =
+			ofScalar(DoubleRange.of(0, selectorCount));
 
 		_codec = Codec.of(
-			concat(
-				ISeq.of(ofScalar(DoubleRange.of(0, selectorCount))),
-				codecs
-			),
+			concat(ISeq.of(selectorIndexCodec), codecs),
 			x -> {
-				final int i = min(((Double)x[0]).intValue(), selectorCount);
+				final int selectorIndex =
+					min(((Double)x[0]).intValue(), selectorCount);
 
-				return i < codecs.length()
-					? (Selector<G, C>)x[i]
-					: selectors.get(i - codecs.length());
+				return selectorIndex < codecs.length()
+					? (Selector<G, C>)x[selectorIndex]
+					: selectors.get(selectorIndex - codecs.length());
 			}
 		);
 	}
