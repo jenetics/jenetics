@@ -46,7 +46,7 @@ import org.jenetics.util.IntRange;
  * @version !__version__!
  * @since !__version__!
  */
-public class SelectorCodec<
+public final class SelectorCodec<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
