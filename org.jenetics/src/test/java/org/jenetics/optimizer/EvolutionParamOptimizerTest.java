@@ -69,7 +69,6 @@ public class EvolutionParamOptimizerTest {
 
 		Codec<EvolutionParam<BitGene, Double>, DoubleGene> evolutionParamCodec =
 			EvolutionParamCodec.general(
-				IntRange.of(1, 5),
 				IntRange.of(50, 500),
 				IntRange.of(10, 1000),
 				50,
