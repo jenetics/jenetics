@@ -19,8 +19,10 @@
  */
 package org.jenetics.internal.math;
 
+import static java.lang.Double.compare;
 import static java.lang.Double.doubleToLongBits;
 import static java.lang.Double.longBitsToDouble;
+import static java.lang.Float.compare;
 import static java.lang.Float.floatToIntBits;
 import static java.lang.Float.intBitsToFloat;
 import static java.lang.Math.abs;
@@ -187,14 +189,14 @@ public final class random {
 		final Random random,
 		final float min, final float max
 	) {
-		if (min >= max) {
+		if (compare(min, max) >= 0) {
 			throw new IllegalArgumentException(format(
 				"min >= max: %f >= %f.", min, max
 			));
 		}
 
 		float value = random.nextFloat();
-		if (min < max) {
+		if (compare(value, max) >= 0) {
 			value = value*(max - min) + min;
 			if (value >= max) {
 				value = intBitsToFloat(floatToIntBits(max) - 1);
@@ -220,7 +222,7 @@ public final class random {
 		final Random random,
 		final double min, final double max
 	) {
-		if (min >= max) {
+		if (compare(min, max) >= 0) {
 			throw new IllegalArgumentException(format(
 				"min >= max: %f >= %f.", min, max
 			));
@@ -229,7 +231,7 @@ public final class random {
 		double value = random.nextDouble();
 		if (min < max) {
 			value = value*(max - min) + min;
-			if (value >= max) {
+			if (compare(value, max) >= 0) {
 				value = longBitsToDouble(doubleToLongBits(max) - 1);
 			}
 		}
