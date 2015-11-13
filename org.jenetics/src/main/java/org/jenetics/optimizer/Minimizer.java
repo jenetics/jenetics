@@ -20,14 +20,6 @@
 package org.jenetics.optimizer;
 
 import java.util.function.Function;
-import java.util.function.Predicate;
-
-import org.jenetics.Gene;
-import org.jenetics.Genotype;
-import org.jenetics.Optimize;
-import org.jenetics.engine.Codec;
-import org.jenetics.engine.Engine;
-import org.jenetics.engine.EvolutionResult;
 
 /**
  * @param <T> the argument type of function to optimize
@@ -42,7 +34,7 @@ public interface Minimizer<T, R extends Comparable<? super R>> {
 
 	public T argmin(final Function<T, R> function);
 
-
+/*
 	public static <
 		T,
 		R extends Comparable<? super R>,
@@ -72,5 +64,5 @@ public interface Minimizer<T, R extends Comparable<? super R>> {
 			return codec.decoder().apply(gt);
 		};
 	}
-
+*/
 }
