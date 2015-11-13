@@ -19,6 +19,9 @@
  */
 package org.jenetics;
 
+import static java.lang.Double.compare;
+import static java.lang.Double.doubleToLongBits;
+import static java.lang.Double.longBitsToDouble;
 import static java.lang.String.format;
 import static org.jenetics.internal.math.random.indexes;
 
@@ -73,14 +76,19 @@ public final class GaussianMutator<
 	}
 
 	G mutate(final G gene, final Random random) {
-		final double std =
-			(gene.getMax().doubleValue() - gene.getMin().doubleValue())*0.25;
+		final double min = gene.getMin().doubleValue();
+		final double max = gene.getMax().doubleValue();
+		final double std = (max - min)*0.25;
 
-		return gene.newInstance(base.clamp(
+		double value = base.clamp(
 			random.nextGaussian()*std + gene.doubleValue(),
-			gene.getMin().doubleValue(),
-			gene.getMax().doubleValue()
-		));
+			min, max
+		);
+		if (compare(value, max) >= 0) {
+			value = longBitsToDouble(doubleToLongBits(max) - 1);
+		}
+
+		return gene.newInstance(value);
 	}
 
 	@Override
