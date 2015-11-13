@@ -19,6 +19,8 @@
  */
 package org.jenetics.util;
 
+import static java.lang.String.format;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -84,7 +86,7 @@ public class PRNGTest {
 		for (int i = 0; i < 1000; ++i) {
 			final float value = prng.nextFloat(min, max);
 			Assert.assertTrue(value < max);
-			Assert.assertTrue(value >= min);
+			Assert.assertTrue(value >= min, format("%s >= %s", value, min));
 		}
 	}
 

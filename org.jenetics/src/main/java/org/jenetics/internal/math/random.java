@@ -195,12 +195,9 @@ public final class random {
 			));
 		}
 
-		float value = random.nextFloat();
+		float value = random.nextFloat()*(max - min) + min;
 		if (compare(value, max) >= 0) {
-			value = value*(max - min) + min;
-			if (value >= max) {
-				value = intBitsToFloat(floatToIntBits(max) - 1);
-			}
+			value = intBitsToFloat(floatToIntBits(max) - 1);
 		}
 
 		return value;
@@ -228,12 +225,9 @@ public final class random {
 			));
 		}
 
-		double value = random.nextDouble();
-		if (min < max) {
-			value = value*(max - min) + min;
-			if (compare(value, max) >= 0) {
-				value = longBitsToDouble(doubleToLongBits(max) - 1);
-			}
+		double value = random.nextDouble()*(max - min) + min;
+		if (compare(value, max) >= 0) {
+			value = longBitsToDouble(doubleToLongBits(max) - 1);
 		}
 
 		return value;

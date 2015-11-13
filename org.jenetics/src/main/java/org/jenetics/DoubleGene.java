@@ -20,7 +20,6 @@
 package org.jenetics;
 
 import static java.lang.Double.compare;
-import static java.lang.String.format;
 import static org.jenetics.internal.math.random.nextDouble;
 import static org.jenetics.util.RandomRegistry.getRandom;
 
@@ -79,11 +78,6 @@ public final class DoubleGene
 	 */
 	DoubleGene(final Double value, final Double min, final Double max) {
 		super(value, min, max);
-		if (compare(value, min) < 0 || compare(value, max) >= 0) {
-			throw new IllegalArgumentException(format(
-				"Value %s is out of range [%s..%s): ", value, min, max
-			));
-		}
 	}
 
 	@Override
