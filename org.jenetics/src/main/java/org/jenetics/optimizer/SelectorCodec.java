@@ -71,10 +71,10 @@ public final class SelectorCodec<
 			concat(ISeq.of(selectorIndexCodec), codecs),
 			x -> {
 				final int selectorIndex =
-					min(((Double)x[0]).intValue(), selectorCount);
+					min(((Double)x[0]).intValue(), selectorCount - 1);
 
 				return selectorIndex < codecs.length()
-					? (Selector<G, C>)x[selectorIndex]
+					? (Selector<G, C>)x[selectorIndex + 1]
 					: selectors.get(selectorIndex - codecs.length());
 			}
 		);
