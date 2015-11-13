@@ -98,7 +98,7 @@ public class EvolutionParamOptimizer<
 		final Genotype<DoubleGene> gt = engine.stream()
 			.limit(limit)
 			.peek(r -> System.out.println("Generation: " + r.getTotalGenerations()))
-			.peek(r -> System.out.print(codec.decoder().apply(r.getBestPhenotype().getGenotype())))
+			.peek(r -> System.out.println(codec.decoder().apply(r.getBestPhenotype().getGenotype())))
 			.peek(r -> System.out.println("FITNESS: " + r.getBestPhenotype().getFitness() + "\n"))
 			.collect(toBestGenotype());
 

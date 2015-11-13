@@ -40,7 +40,6 @@ public class EvolutionParamCodec {
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Codec<EvolutionParam<G, C>, DoubleGene> general(
 		final IntRange crossoverPoints,
-		final IntRange tournamentSize,
 		final IntRange populationSize,
 		final IntRange maxPhenotypeAge,
 		final int survivorCount,
@@ -48,8 +47,8 @@ public class EvolutionParamCodec {
 	) {
 		return Codec.of(ISeq.of(
 			AltererCodec.general(crossoverPoints),
-			SelectorCodec.general(tournamentSize),
-			SelectorCodec.general(tournamentSize),
+			SelectorCodec.general(),
+			SelectorCodec.general(),
 			codecs.ofScalar(populationSize.doubleRange()),
 			codecs.ofScalar(maxPhenotypeAge.doubleRange())),
 			data -> {
