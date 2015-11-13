@@ -19,8 +19,11 @@
  */
 package org.jenetics.internal.math;
 
+import static java.lang.Double.doubleToLongBits;
+import static java.lang.Double.longBitsToDouble;
+import static java.lang.Float.floatToIntBits;
+import static java.lang.Float.intBitsToFloat;
 import static java.lang.Math.abs;
-import static java.lang.Math.nextDown;
 import static java.lang.String.format;
 import static org.jenetics.internal.util.require.probability;
 
@@ -194,7 +197,7 @@ public final class random {
 		if (min < max) {
 			value = value*(max - min) + min;
 			if (value >= max) {
-				value = nextDown(value);
+				value = intBitsToFloat(floatToIntBits(max) - 1);
 			}
 		}
 
@@ -227,7 +230,7 @@ public final class random {
 		if (min < max) {
 			value = value*(max - min) + min;
 			if (value >= max) {
-				value = nextDown(value);
+				value = longBitsToDouble(doubleToLongBits(max) - 1);
 			}
 		}
 
