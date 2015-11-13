@@ -70,7 +70,7 @@ public class EvolutionParamOptimizerTest {
 		Codec<EvolutionParam<BitGene, Double>, DoubleGene> evolutionParamCodec =
 			EvolutionParamCodec.General(
 				IntRange.of(1, 5),
-				IntRange.of(1, 5),
+				IntRange.of(2, 5),
 				IntRange.of(50, 500),
 				IntRange.of(10, 1000),
 				50,
@@ -103,9 +103,9 @@ final class Item_1 {
 	}
 
 	// Create a new random knapsack item.
-	static Item random() {
+	static Item_1 random() {
 		final Random r = RandomRegistry.getRandom();
-		return new Item(r.nextDouble()*100, r.nextDouble()*100);
+		return new Item_1(r.nextDouble()*100, r.nextDouble()*100);
 	}
 
 	// Create a new collector for summing up the knapsack items.
