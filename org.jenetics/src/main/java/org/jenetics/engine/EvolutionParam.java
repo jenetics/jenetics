@@ -84,11 +84,11 @@ public final class EvolutionParam<
 		return _survivorsSelector;
 	}
 
-	int getPopulationSize() {
+	public int getPopulationSize() {
 		return _offspringCount + _survivorsCount;
 	}
 
-	double getOffspringFraction() {
+	public double getOffspringFraction() {
 		return (double)getOffspringCount()/(double)getPopulationSize();
 	}
 
