@@ -103,10 +103,6 @@ public final class SelectorCodec<
 				gt -> new LinearRankSelector<>(gt.getGene().doubleValue())
 			),
 			Codec.of(
-				Genotype.of(DoubleChromosome.of(0, 1)),
-				gt -> new TruncationSelector<>()
-			),
-			Codec.of(
 				Genotype.of(DoubleChromosome.of(tournamentSize.doubleRange())),
 				gt -> new TournamentSelector<>(gt.getGene().intValue())
 			)

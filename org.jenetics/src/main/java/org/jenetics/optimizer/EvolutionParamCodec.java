@@ -38,7 +38,7 @@ public class EvolutionParamCodec {
 
 	@SuppressWarnings("unchecked")
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Codec<EvolutionParam<G, C>, DoubleGene> General(
+	Codec<EvolutionParam<G, C>, DoubleGene> general(
 		final IntRange crossoverPoints,
 		final IntRange tournamentSize,
 		final IntRange populationSize,

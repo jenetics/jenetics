@@ -92,6 +92,16 @@ public final class EvolutionParam<
 		return (double)getOffspringCount()/(double)getPopulationSize();
 	}
 
+	@Override
+	public String toString() {
+		return _alterer + "\n" +
+			_offspringSelector + "\n" +
+			_survivorsSelector + "\n" +
+			"Offspring fraction = " + getOffspringFraction() + "\n" +
+			"Phenotype age = " + _maximalPhenotypeAge + "\n" +
+			"Population size = " + getPopulationSize();
+	}
+
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionParam<G, C> of(
 		final Selector<G, C> survivorsSelector,

@@ -68,7 +68,7 @@ public class EvolutionParamOptimizerTest {
 			new EvolutionParamOptimizer<>(fitness, codec, () -> byFixedGeneration(100));
 
 		Codec<EvolutionParam<BitGene, Double>, DoubleGene> evolutionParamCodec =
-			EvolutionParamCodec.General(
+			EvolutionParamCodec.general(
 				IntRange.of(1, 5),
 				IntRange.of(2, 5),
 				IntRange.of(50, 500),
