@@ -19,22 +19,81 @@
  */
 package org.jenetics.optimizer;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.function.Function;
+
 import org.jenetics.Alterer;
 import org.jenetics.DoubleGene;
 import org.jenetics.Gene;
+import org.jenetics.Genotype;
 import org.jenetics.Selector;
 import org.jenetics.engine.Codec;
 import org.jenetics.engine.EvolutionParam;
 import org.jenetics.engine.codecs;
+import org.jenetics.util.DoubleRange;
+import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.IntRange;
+import org.jenetics.util.LongRange;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class EvolutionParamCodec {
+public class EvolutionParamCodec<
+	G extends Gene<?, G>,
+	C extends Comparable<? super C>
+>
+	implements Codec<EvolutionParam<G, C>, DoubleGene>
+{
+
+	private final Codec<Selector<G, C>, DoubleGene> _selector;
+	private final Codec<Alterer<G, C>, DoubleGene> _alterer;
+	private final IntRange _populationSize;
+	private final LongRange _maxPhenotypeAge;
+	private final DoubleRange _offspringFraction;
+
+	private final Codec<EvolutionParam<G, C>, DoubleGene> _codec;
+
+	private EvolutionParamCodec(
+		final Codec<Selector<G, C>, DoubleGene> selector,
+		final Codec<Alterer<G, C>, DoubleGene> alterer,
+		final IntRange populationSize,
+		final LongRange maxPhenotypeAge,
+		final DoubleRange offspringFraction
+	) {
+		_selector = requireNonNull(selector);
+		_alterer = requireNonNull(alterer);
+		_populationSize = requireNonNull(populationSize);
+		_maxPhenotypeAge = requireNonNull(maxPhenotypeAge);
+		_offspringFraction = requireNonNull(offspringFraction);
+
+		_codec = Codec.of(
+			ISeq.of(
+				alterer,
+				selector,
+				selector,
+				codecs.ofScalar(populationSize.doubleRange()),
+				codecs.ofScalar(maxPhenotypeAge.doubleRange()),
+				codecs.ofScalar(offspringFraction)
+			),
+			x -> {
+				return null;
+			}
+		);
+	}
+
+	@Override
+	public Factory<Genotype<DoubleGene>> encoding() {
+		return _codec.encoding();
+	}
+
+	@Override
+	public Function<Genotype<DoubleGene>, EvolutionParam<G, C>> decoder() {
+		return _codec.decoder();
+	}
 
 	@SuppressWarnings("unchecked")
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
