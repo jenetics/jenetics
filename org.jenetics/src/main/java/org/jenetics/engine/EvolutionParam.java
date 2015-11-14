@@ -32,6 +32,9 @@ import org.jenetics.Selector;
  * Collects the evolution {@code Engine} properties, which determines the
  * evolution <i>performance</i> of the GA.
  *
+ * @param <G> the gene type of the problem encoding
+ * @param <C> the fitness function return type of the problem encoding
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -170,6 +173,8 @@ public final class EvolutionParam<
 	 * @param populationSize the number of individuals of a population
 	 * @param offspringFraction the offspring fraction
 	 * @param maximalPhenotypeAge the maximal allowed phenotype age
+	 * @param <G> the gene type of the problem encoding
+	 * @param <C> the fitness function return type of the problem encoding
 	 * @throws NullPointerException if one of the reference types is {@code null}
 	 * @throws IllegalArgumentException if the population size or the maximal
 	 *         phenotype age is smaller than one.
