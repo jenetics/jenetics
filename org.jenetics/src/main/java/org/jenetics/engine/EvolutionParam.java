@@ -19,6 +19,7 @@
  */
 package org.jenetics.engine;
 
+import static java.lang.Math.round;
 import static java.util.Objects.requireNonNull;
 
 import org.jenetics.internal.util.require;
@@ -28,6 +29,9 @@ import org.jenetics.Gene;
 import org.jenetics.Selector;
 
 /**
+ * Collects the evolution {@code Engine} properties, which determines the
+ * evolution <i>performance</i> of the GA.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -40,56 +44,111 @@ public final class EvolutionParam<
 	private final Selector<G, C> _survivorsSelector;
 	private final Selector<G, C> _offspringSelector;
 	private final Alterer<G, C> _alterer;
-	private final int _offspringCount;
-	private final int _survivorsCount;
+	private final int _populationSize;
+	private final double _offspringFraction;
 	private final long _maximalPhenotypeAge;
 
+	/**
+	 * Create a new evolution parameter object with the given parameter.
+	 *
+	 * @param survivorsSelector the used survivor {@link Selector} of the GA
+	 * @param offspringSelector the used offspring {@link Selector} of the GA
+	 * @param alterer the used {@link Alterer} of the GA
+	 * @param populationSize the number of individuals of a population
+	 * @param offspringFraction the offspring fraction
+	 * @param maximalPhenotypeAge the maximal allowed phenotype age
+	 * @throws NullPointerException if one of the reference types is {@code null}
+	 * @throws IllegalArgumentException if the population size or the maximal
+	 *         phenotype age is smaller than one.
+	 * @throws IllegalArgumentException if the offspring fraction is not within
+	 *         the range [0..1].
+	 */
 	private EvolutionParam(
 		final Selector<G, C> survivorsSelector,
 		final Selector<G, C> offspringSelector,
 		final Alterer<G, C> alterer,
-		final int survivorsCount,
-		final int offspringCount,
+		final int populationSize,
+		final double offspringFraction,
 		final long maximalPhenotypeAge
 	) {
 		_survivorsSelector = requireNonNull(survivorsSelector);
 		_offspringSelector = requireNonNull(offspringSelector);
 		_alterer = requireNonNull(alterer);
-		_offspringCount = require.positive(offspringCount);
-		_survivorsCount = require.positive(survivorsCount);
+		_populationSize = require.positive(populationSize);
+		_offspringFraction = require.probability(offspringFraction);
 		_maximalPhenotypeAge = require.positive(maximalPhenotypeAge);
 	}
 
-	public Alterer<G, C> getAlterer() {
-		return _alterer;
-	}
-
-	public long getMaximalPhenotypeAge() {
-		return _maximalPhenotypeAge;
-	}
-
-	public int getOffspringCount() {
-		return _offspringCount;
-	}
-
+	/**
+	 * Return the used offspring {@link Selector} of the GA.
+	 *
+	 * @return the used offspring {@link Selector} of the GA.
+	 */
 	public Selector<G, C> getOffspringSelector() {
 		return _offspringSelector;
 	}
 
-	public int getSurvivorsCount() {
-		return _survivorsCount;
-	}
-
+	/**
+	 * Return the used survivor {@link Selector} of the GA.
+	 *
+	 * @return the used survivor {@link Selector} of the GA.
+	 */
 	public Selector<G, C> getSurvivorsSelector() {
 		return _survivorsSelector;
 	}
 
-	public int getPopulationSize() {
-		return _offspringCount + _survivorsCount;
+	/**
+	 * Return the used {@link Alterer} of the GA.
+	 *
+	 * @return the used {@link Alterer} of the GA.
+	 */
+	public Alterer<G, C> getAlterer() {
+		return _alterer;
 	}
 
+	/**
+	 * Return the number of individuals of a population.
+	 *
+	 * @return the number of individuals of a population
+	 */
+	public int getPopulationSize() {
+		return _populationSize;
+	}
+
+	/**
+	 * Return the offspring fraction.
+	 *
+	 * @return the offspring fraction.
+	 */
 	public double getOffspringFraction() {
-		return (double)getOffspringCount()/(double)getPopulationSize();
+		return _offspringFraction;
+	}
+
+	/**
+	 * Return the number of selected offsprings.
+	 *
+	 * @return the number of selected offsprings
+	 */
+	public int getOffspringCount() {
+		return (int)round(_offspringFraction*_populationSize);
+	}
+
+	/**
+	 * The number of selected survivors.
+	 *
+	 * @return the number of selected survivors
+	 */
+	public int getSurvivorsCount() {
+		return _populationSize - getOffspringCount();
+	}
+
+	/**
+	 * Return the maximal allowed phenotype age.
+	 *
+	 * @return the maximal allowed phenotype age
+	 */
+	public long getMaximalPhenotypeAge() {
+		return _maximalPhenotypeAge;
 	}
 
 	@Override
@@ -97,26 +156,41 @@ public final class EvolutionParam<
 		return _alterer + "\n" +
 			_offspringSelector + "\n" +
 			_survivorsSelector + "\n" +
+			"Population size = " + getPopulationSize() + "\n" +
 			"Offspring fraction = " + getOffspringFraction() + "\n" +
-			"Phenotype age = " + _maximalPhenotypeAge + "\n" +
-			"Population size = " + getPopulationSize();
+			"Phenotype age = " + _maximalPhenotypeAge;
 	}
 
+	/**
+	 * Return a new evolution parameter object with the given parameter.
+	 *
+	 * @param survivorsSelector the used survivor {@link Selector} of the GA
+	 * @param offspringSelector the used offspring {@link Selector} of the GA
+	 * @param alterer the used {@link Alterer} of the GA
+	 * @param populationSize the number of individuals of a population
+	 * @param offspringFraction the offspring fraction
+	 * @param maximalPhenotypeAge the maximal allowed phenotype age
+	 * @throws NullPointerException if one of the reference types is {@code null}
+	 * @throws IllegalArgumentException if the population size or the maximal
+	 *         phenotype age is smaller than one.
+	 * @throws IllegalArgumentException if the offspring fraction is not within
+	 *         the range [0..1].
+	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionParam<G, C> of(
 		final Selector<G, C> survivorsSelector,
 		final Selector<G, C> offspringSelector,
 		final Alterer<G, C> alterer,
-		final int survivorsCount,
-		final int offspringCount,
+		final int populationSize,
+		final double offspringFraction,
 		final long maximalPhenotypeAge
 	) {
 		return new EvolutionParam<>(
 			survivorsSelector,
 			offspringSelector,
 			alterer,
-			survivorsCount,
-			offspringCount,
+			populationSize,
+			offspringFraction,
 			maximalPhenotypeAge
 		);
 	}
