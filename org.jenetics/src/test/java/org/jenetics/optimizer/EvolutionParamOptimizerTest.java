@@ -31,6 +31,7 @@ import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;
 import org.jenetics.DoubleGene;
 import org.jenetics.Genotype;
+import org.jenetics.Selector;
 import org.jenetics.engine.Codec;
 import org.jenetics.engine.EvolutionParam;
 import org.jenetics.util.IntRange;
@@ -68,11 +69,9 @@ public class EvolutionParamOptimizerTest {
 			new EvolutionParamOptimizer<>(fitness, codec, () -> byFixedGeneration(100));
 
 		Codec<EvolutionParam<BitGene, Double>, DoubleGene> evolutionParamCodec =
-			EvolutionParamCodec.general(
-				IntRange.of(50, 500),
-				IntRange.of(10, 1000),
-				50,
-				70
+			EvolutionParamCodec.<BitGene, Double>of(
+				SelectorCodec.general(),
+				AltererCodec.general()
 			);
 
 		final EvolutionParam<BitGene, Double> params = optimizer

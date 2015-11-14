@@ -23,6 +23,8 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.function.Function;
 
+import org.jenetics.internal.util.require;
+
 import org.jenetics.Alterer;
 import org.jenetics.DoubleGene;
 import org.jenetics.Gene;
@@ -38,6 +40,10 @@ import org.jenetics.util.IntRange;
 import org.jenetics.util.LongRange;
 
 /**
+ *
+ * @param <G> the gene type of the problem encoding
+ * @param <C> the fitness function return type of the problem encoding
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -49,39 +55,66 @@ public class EvolutionParamCodec<
 	implements Codec<EvolutionParam<G, C>, DoubleGene>
 {
 
+	private static final IntRange POPULATION_SIZE = IntRange.of(10, 1000);
+	private static final DoubleRange OFFSPRING_FRACTION = DoubleRange.of(0, 1);
+	private static final LongRange MAXIMAL_PHENOTYPE_AGE = LongRange.of(5, 1000);
+
 	private final Codec<Selector<G, C>, DoubleGene> _selector;
 	private final Codec<Alterer<G, C>, DoubleGene> _alterer;
 	private final IntRange _populationSize;
-	private final LongRange _maxPhenotypeAge;
 	private final DoubleRange _offspringFraction;
+	private final LongRange _maximalPhenotypeAge;
 
 	private final Codec<EvolutionParam<G, C>, DoubleGene> _codec;
 
+	/**
+	 *
+	 * @param selector
+	 * @param alterer
+	 * @param populationSize
+	 * @param offspringFraction
+	 * @param maximalPhenotypeAge
+	 * @param <G> the gene type of the problem encoding
+	 * @param <C> the fitness function return type of the problem encoding
+	 */
+	@SuppressWarnings("unchecked")
 	private EvolutionParamCodec(
 		final Codec<Selector<G, C>, DoubleGene> selector,
 		final Codec<Alterer<G, C>, DoubleGene> alterer,
 		final IntRange populationSize,
-		final LongRange maxPhenotypeAge,
-		final DoubleRange offspringFraction
+		final DoubleRange offspringFraction,
+		final LongRange maximalPhenotypeAge
 	) {
 		_selector = requireNonNull(selector);
 		_alterer = requireNonNull(alterer);
 		_populationSize = requireNonNull(populationSize);
-		_maxPhenotypeAge = requireNonNull(maxPhenotypeAge);
 		_offspringFraction = requireNonNull(offspringFraction);
+		_maximalPhenotypeAge = requireNonNull(maximalPhenotypeAge);
+
+		require.positive(populationSize.getMin());
+		require.positive(populationSize.getMax());
+		require.probability(offspringFraction.getMin());
+		require.probability(offspringFraction.getMax());
+		require.positive(maximalPhenotypeAge.getMin());
+		require.positive(maximalPhenotypeAge.getMax());
 
 		_codec = Codec.of(
 			ISeq.of(
+				selector,
+				selector,
 				alterer,
-				selector,
-				selector,
 				codecs.ofScalar(populationSize.doubleRange()),
-				codecs.ofScalar(maxPhenotypeAge.doubleRange()),
-				codecs.ofScalar(offspringFraction)
+				codecs.ofScalar(offspringFraction),
+				codecs.ofScalar(maximalPhenotypeAge.doubleRange())
 			),
-			x -> {
-				return null;
-			}
+			x -> EvolutionParam.of(
+					(Selector<G, C>)x[0],
+					(Selector<G, C>)x[1],
+					(Alterer<G, C>)x[2],
+					((Double)x[3]).intValue(),
+					(Double)x[4],
+					((Double)x[5]).longValue()
+				)
 		);
 	}
 
@@ -95,35 +128,34 @@ public class EvolutionParamCodec<
 		return _codec.decoder();
 	}
 
-	@SuppressWarnings("unchecked")
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Codec<EvolutionParam<G, C>, DoubleGene> general(
+	EvolutionParamCodec<G, C> of(
+		final Codec<Selector<G, C>, DoubleGene> selector,
+		final Codec<Alterer<G, C>, DoubleGene> alterer,
 		final IntRange populationSize,
-		final IntRange maxPhenotypeAge,
-		final int survivorCount,
-		final int offspringCount
+		final DoubleRange offspringFraction,
+		final LongRange maximalPhenotypeAge
 	) {
-		return Codec.of(ISeq.of(
+		return new EvolutionParamCodec<G, C>(
+			SelectorCodec.general(),
 			AltererCodec.general(),
-			SelectorCodec.general(),
-			SelectorCodec.general(),
-			codecs.ofScalar(populationSize.doubleRange()),
-			codecs.ofScalar(maxPhenotypeAge.doubleRange())),
-			data -> {
-				final Alterer<G, C> alterer = (Alterer<G, C>)data[0];
-				final Selector<G, C> survivorSelector = (Selector<G, C>)data[1];
-				final Selector<G, C> offspringSelector = (Selector<G, C>)data[2];
-				final Double popSize = (Double)data[3];
-				final Double maxPtAge = (Double)data[4];
-				return EvolutionParam.of(
-					survivorSelector,
-					offspringSelector,
-					alterer,
-					survivorCount,
-					offspringCount,
-					maxPtAge.intValue()
-				);
-			}
+			populationSize,
+			offspringFraction,
+			maximalPhenotypeAge
+		);
+	}
+
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	EvolutionParamCodec<G, C> of(
+		final Codec<Selector<G, C>, DoubleGene> selector,
+		final Codec<Alterer<G, C>, DoubleGene> alterer
+	) {
+		return of(
+			selector,
+			alterer,
+			POPULATION_SIZE,
+			OFFSPRING_FRACTION,
+			MAXIMAL_PHENOTYPE_AGE
 		);
 	}
 
