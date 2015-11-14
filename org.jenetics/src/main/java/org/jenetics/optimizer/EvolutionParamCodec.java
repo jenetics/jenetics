@@ -40,6 +40,7 @@ import org.jenetics.util.IntRange;
 import org.jenetics.util.LongRange;
 
 /**
+ * The {@code Codec} for the evolution parameter of the GA.
  *
  * @param <G> the gene type of the problem encoding
  * @param <C> the fitness function return type of the problem encoding
@@ -68,14 +69,19 @@ public class EvolutionParamCodec<
 	private final Codec<EvolutionParam<G, C>, DoubleGene> _codec;
 
 	/**
+	 * Create a new evolution parameter {@code Codec} with the given parameters.
 	 *
-	 * @param selector
-	 * @param alterer
-	 * @param populationSize
-	 * @param offspringFraction
-	 * @param maximalPhenotypeAge
-	 * @param <G> the gene type of the problem encoding
-	 * @param <C> the fitness function return type of the problem encoding
+	 * @param selector the selector codec used for survivor and offspring
+	 *        selectors
+	 * @param alterer the alterer codec
+	 * @param populationSize the population size range
+	 * @param offspringFraction the offspring fraction range
+	 * @param maximalPhenotypeAge the maximal phenotype age range
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if the population size or the maximal
+	 *         phenotype age is smaller than one.
+	 * @throws IllegalArgumentException if the offspring fraction is not within
+	 *         the range [0..1].
 	 */
 	@SuppressWarnings("unchecked")
 	private EvolutionParamCodec(
@@ -118,6 +124,51 @@ public class EvolutionParamCodec<
 		);
 	}
 
+	/**
+	 * Return the selector codec for survivor and offspring codec.
+	 *
+	 * @return the selector codec for survivor and offspring codec
+	 */
+	public Codec<Selector<G, C>, DoubleGene> getSelector() {
+		return _selector;
+	}
+
+	/**
+	 * Return the alterer codec.
+	 *
+	 * @return the alterer codec
+	 */
+	public Codec<Alterer<G, C>, DoubleGene> getAlterer() {
+		return _alterer;
+	}
+
+	/**
+	 * Return the allowed population size range.
+	 *
+	 * @return the allowed population size range
+	 */
+	public IntRange getPopulationSize() {
+		return _populationSize;
+	}
+
+	/**
+	 * Return the allowed offspring fraction range.
+	 *
+	 * @return the allowed offspring fraction range
+	 */
+	public DoubleRange getOffspringFraction() {
+		return _offspringFraction;
+	}
+
+	/**
+	 * Return the allowed maximal phenotype age range.
+	 *
+	 * @return the allowed maximal phenotype age range
+	 */
+	public LongRange getMaximalPhenotypeAge() {
+		return _maximalPhenotypeAge;
+	}
+
 	@Override
 	public Factory<Genotype<DoubleGene>> encoding() {
 		return _codec.encoding();
@@ -128,6 +179,21 @@ public class EvolutionParamCodec<
 		return _codec.decoder();
 	}
 
+	/**
+	 * Create a new evolution parameter {@code Codec} with the given parameters.
+	 *
+	 * @param selector the selector codec used for survivor and offspring
+	 *        selectors
+	 * @param alterer the alterer codec
+	 * @param populationSize the population size range
+	 * @param offspringFraction the offspring fraction range
+	 * @param maximalPhenotypeAge the maximal phenotype age range
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if the population size or the maximal
+	 *         phenotype age is smaller than one.
+	 * @throws IllegalArgumentException if the offspring fraction is not within
+	 *         the range [0..1].
+	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionParamCodec<G, C> of(
 		final Codec<Selector<G, C>, DoubleGene> selector,
@@ -145,6 +211,14 @@ public class EvolutionParamCodec<
 		);
 	}
 
+	/**
+	 * Create a new evolution parameter {@code Codec} with the given parameters.
+	 *
+	 * @param selector the selector codec used for survivor and offspring
+	 *        selectors
+	 * @param alterer the alterer codec
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionParamCodec<G, C> of(
 		final Codec<Selector<G, C>, DoubleGene> selector,
