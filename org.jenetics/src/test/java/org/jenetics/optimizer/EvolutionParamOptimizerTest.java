@@ -68,7 +68,7 @@ public class EvolutionParamOptimizerTest {
 
 		final EvolutionParamCodec<BitGene, Double> evolutionParamCodec =
 			EvolutionParamCodec.<BitGene, Double>of(
-				SelectorCodec.general(),
+				SelectorCodec.numeric(),
 				AltererCodec.general()
 			);
 
