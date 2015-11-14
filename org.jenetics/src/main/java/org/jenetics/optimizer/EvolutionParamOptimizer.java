@@ -45,14 +45,12 @@ import org.jenetics.engine.EvolutionResult;
  * @since !__version__!
  */
 public class EvolutionParamOptimizer<
-	T,
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
 {
 
-	private final Function<T, C> _fitness;
-	private final Codec<T, G> _codec;
+	private final Codec<EvolutionParam<G, C>, DoubleGene> _codec;
 	private final Supplier<Predicate<? super EvolutionResult<?, C>>> _limit;
 
 	/**
@@ -63,27 +61,47 @@ public class EvolutionParamOptimizer<
 	 * @param limit the limit of the testing evolution {@code Engine}.
 	 */
 	public EvolutionParamOptimizer(
-		final Function<T, C> fitness,
-		final Codec<T, G> codec,
+		final Codec<EvolutionParam<G, C>, DoubleGene> codec,
 		final Supplier<Predicate<? super EvolutionResult<?, C>>> limit
 	) {
-		_fitness = requireNonNull(fitness);
 		_codec = requireNonNull(codec);
 		_limit = requireNonNull(limit);
 	}
 
 	/**
 	 *
+	 * @param fitness
 	 * @param codec
 	 * @param limit
+	 * @param <T>
 	 * @return
 	 */
-	public EvolutionParam<G, C> optimize(
-		final Codec<EvolutionParam<G, C>, DoubleGene> codec,
-		final Predicate<? super EvolutionResult<?, C>> limit
+	public <T> EvolutionParam<G, C> optimize(
+		final Function<T, C> fitness,
+		final Codec<T, G> codec,
+		final Supplier<Predicate<? super EvolutionResult<?, C>>> limit
 	) {
-		final Engine<DoubleGene, C> engine = Engine
-			.builder(codec.decoder().andThen(this::fitness), codec.encoding())
+		final Function<EvolutionParam<G, C>, C> engineFitness =
+			param -> fitness(param, fitness, codec, limit);
+
+		final Engine<DoubleGene, C> engine = engine(engineFitness);
+
+		final Genotype<DoubleGene> gt = engine.stream()
+			.limit(_limit.get())
+			.peek(r -> System.out.println("Generation: " + r.getTotalGenerations()))
+			.peek(r -> System.out.println(_codec.decoder().apply(r.getBestPhenotype().getGenotype())))
+			.peek(r -> System.out.println("FITNESS: " + r.getBestPhenotype().getFitness() + "\n"))
+			.collect(toBestGenotype());
+
+		return _codec.decoder().apply(gt);
+	}
+
+	private Engine<DoubleGene, C>
+	engine(final Function<EvolutionParam<G, C>, C> fitness) {
+		final Function<Genotype<DoubleGene>, C> ff =
+			_codec.decoder().andThen(fitness);
+
+		return Engine.builder(ff, _codec.encoding())
 			.alterers(
 				new MeanAlterer<>(0.25),
 				new GaussianMutator<>(0.25),
@@ -94,42 +112,36 @@ public class EvolutionParamOptimizer<
 			.populationSize(50)
 			.maximalPhenotypeAge(5)
 			.build();
-
-		final Genotype<DoubleGene> gt = engine.stream()
-			.limit(limit)
-			.peek(r -> System.out.println("Generation: " + r.getTotalGenerations()))
-			.peek(r -> System.out.println(codec.decoder().apply(r.getBestPhenotype().getGenotype())))
-			.peek(r -> System.out.println("FITNESS: " + r.getBestPhenotype().getFitness() + "\n"))
-			.collect(toBestGenotype());
-
-		return codec.decoder().apply(gt);
 	}
 
-	private C fitness(final EvolutionParam<G, C> params) {
-		// The fitness function used for optimizing the Engine.
-		final Function<Genotype<G>, C> ff = _fitness.compose(_codec.decoder());
-
-		final Engine<G, C> engine = Engine.builder(ff, _codec.encoding())
+	/**
+	 * Calculate the fitness of the given evolution parameters for the given
+	 * custom fitness function.
+	 *
+	 * @param params the evolution parameters to test
+	 * @param fitness the fitness function for which we want to optimize the
+	 *        evolution parameters
+	 * @param codec the fitness function codec
+	 * @param limit the evolution stream limit used for terminating the
+	 *        <i>test</i> engine
+	 * @param <T> the parameter type of the fitness function
+	 * @return the fitness value for the given evolution parameters
+	 */
+	private <T> C fitness(
+		final EvolutionParam<G, C> params,
+		final Function<T, C> fitness,
+		final Codec<T, G> codec,
+		final Supplier<Predicate<? super EvolutionResult<?, C>>> limit
+	) {
+		final Engine<G, C> engine = Engine.builder(fitness, codec)
 			.evolutionParam(params)
 			.build();
 
 		final Genotype<G> gt = engine.stream()
-			.limit(_limit.get())
+			.limit(limit.get())
 			.collect(toBestGenotype());
 
-		return ff.apply(gt);
-	}
-
-
-
-
-
-
-
-
-
-	public static void main(final String[] args) {
-
+		return fitness.compose(codec.decoder()).apply(gt);
 	}
 
 }

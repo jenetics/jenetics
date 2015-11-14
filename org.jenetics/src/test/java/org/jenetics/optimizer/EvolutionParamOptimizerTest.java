@@ -34,6 +34,7 @@ import org.jenetics.Genotype;
 import org.jenetics.Selector;
 import org.jenetics.engine.Codec;
 import org.jenetics.engine.EvolutionParam;
+import org.jenetics.engine.limit;
 import org.jenetics.util.IntRange;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
@@ -65,17 +66,20 @@ public class EvolutionParamOptimizerTest {
 			Function.<Genotype<BitGene>>identity()
 		);
 
-		final EvolutionParamOptimizer<Genotype<BitGene>, BitGene, Double> optimizer =
-			new EvolutionParamOptimizer<>(fitness, codec, () -> byFixedGeneration(100));
-
-		Codec<EvolutionParam<BitGene, Double>, DoubleGene> evolutionParamCodec =
+		final EvolutionParamCodec<BitGene, Double> evolutionParamCodec =
 			EvolutionParamCodec.<BitGene, Double>of(
 				SelectorCodec.general(),
 				AltererCodec.general()
 			);
 
+		final EvolutionParamOptimizer<BitGene, Double> optimizer =
+			new EvolutionParamOptimizer<>(evolutionParamCodec, () -> bySteadyFitness(250));
+			//new EvolutionParamOptimizer<>(fitness, codec, () -> byFixedGeneration(100));
+
+
+
 		final EvolutionParam<BitGene, Double> params = optimizer
-			.optimize(evolutionParamCodec, bySteadyFitness(250));
+			.optimize(fitness, codec, () -> byFixedGeneration(100));
 
 		System.out.println();
 		System.out.println("Best parameters:");
