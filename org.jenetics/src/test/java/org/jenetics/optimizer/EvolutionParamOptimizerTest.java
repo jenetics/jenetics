@@ -19,9 +19,11 @@
  */
 package org.jenetics.optimizer;
 
+import static org.jenetics.engine.limit.byExecutionTime;
 import static org.jenetics.engine.limit.byFixedGeneration;
 import static org.jenetics.engine.limit.bySteadyFitness;
 
+import java.time.Duration;
 import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.Collector;
@@ -74,12 +76,11 @@ public class EvolutionParamOptimizerTest {
 
 		final EvolutionParamOptimizer<BitGene, Double> optimizer =
 			new EvolutionParamOptimizer<>(evolutionParamCodec, () -> bySteadyFitness(250));
-			//new EvolutionParamOptimizer<>(fitness, codec, () -> byFixedGeneration(100));
 
 
 
 		final EvolutionParam<BitGene, Double> params = optimizer
-			.optimize(fitness, codec, () -> byFixedGeneration(100));
+			.optimize(fitness, codec, () -> byExecutionTime(Duration.ofMillis(150)));
 
 		System.out.println();
 		System.out.println("Best parameters:");
