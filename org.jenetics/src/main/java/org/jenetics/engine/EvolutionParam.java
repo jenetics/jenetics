@@ -27,6 +27,7 @@ import org.jenetics.internal.util.require;
 import org.jenetics.Alterer;
 import org.jenetics.Gene;
 import org.jenetics.Selector;
+import org.jenetics.util.Seq;
 
 /**
  * Collects the evolution {@code Engine} properties, which determines the
@@ -156,12 +157,11 @@ public final class EvolutionParam<
 
 	@Override
 	public String toString() {
-		return _alterer + "\n" +
-			_offspringSelector + "\n" +
-			_survivorsSelector + "\n" +
-			"Population size = " + getPopulationSize() + "\n" +
-			"Offspring fraction = " + getOffspringFraction() + "\n" +
-			"Phenotype age = " + _maximalPhenotypeAge;
+		return
+		"Alterer:            " + _alterer + "\n" +
+		"Selector:           " + Seq.of(_survivorsSelector, _offspringSelector) + "\n" +
+		"Population size:    " + _populationSize + "\n" +
+		"Offspring fraction: " + _offspringFraction;
 	}
 
 	/**
