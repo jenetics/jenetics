@@ -104,7 +104,7 @@ public final class CompositeAlterer<
 	public String toString() {
 		return _alterers.stream()
 			.map(Objects::toString)
-			.collect(Collectors.joining("[", ",\n", "]"));
+			.collect(Collectors.joining(",", "[", "]"));
 	}
 
 	/**
