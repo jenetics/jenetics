@@ -32,8 +32,8 @@ import org.jenetics.Gene;
 import org.jenetics.Genotype;
 import org.jenetics.MeanAlterer;
 import org.jenetics.Mutator;
-import org.jenetics.SinglePointCrossover;
 import org.jenetics.TournamentSelector;
+import org.jenetics.TruncationSelector;
 import org.jenetics.engine.Codec;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionParam;
@@ -100,12 +100,22 @@ public class EvolutionParamOptimizer<
 
 		final Genotype<DoubleGene> gt = engine.stream()
 			.limit(_limit.get())
-			.peek(r -> System.out.println("Generation: " + r.getTotalGenerations()))
-			.peek(r -> System.out.println(_codec.decoder().apply(r.getBestPhenotype().getGenotype())))
-			.peek(r -> System.out.println("FITNESS: " + r.getBestPhenotype().getFitness() + "\n"))
+			.peek(this::println)
 			.collect(toBestGenotype());
 
 		return _codec.decoder().apply(gt);
+	}
+
+	private void println(final EvolutionResult<DoubleGene, C> result) {
+		final EvolutionParam<G, C> param = _codec.decoder()
+			.apply(result.getBestPhenotype().getGenotype());
+
+		final String output =
+		"Generation:         " + result.getTotalGenerations() + "\n" +
+		param + "\n" +
+		"Fitness:            " + result.getBestFitness() + "\n";
+
+		System.out.println(output);
 	}
 
 	/**
@@ -124,12 +134,11 @@ public class EvolutionParamOptimizer<
 			.alterers(
 				new MeanAlterer<>(0.25),
 				new GaussianMutator<>(0.25),
-				new Mutator<>(0.5),
-				new SinglePointCrossover<>())
-			.offspringSelector(new TournamentSelector<>(2))
-			.survivorsSelector(new TournamentSelector<>(5))
-			.populationSize(50)
-			.maximalPhenotypeAge(5)
+				new Mutator<>(0.05))
+			.survivorsSelector(new TruncationSelector<>())
+			.offspringSelector(new TournamentSelector<>(3))
+			.populationSize(100)
+			.maximalPhenotypeAge(35)
 			.build();
 	}
 
