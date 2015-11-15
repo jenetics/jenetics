@@ -19,10 +19,10 @@
  */
 package org.jenetics;
 
-import static java.lang.String.format;
 import static org.jenetics.internal.util.Equality.eq;
 import static org.jenetics.util.ISeq.toISeq;
 
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -102,12 +102,9 @@ public final class CompositeAlterer<
 
 	@Override
 	public String toString() {
-		return format(
-			"%s:\n%s", getClass().getSimpleName(),
-			_alterers.stream()
-				.map(a -> "   - " + a)
-				.collect(Collectors.joining("\n"))
-		);
+		return _alterers.stream()
+			.map(Objects::toString)
+			.collect(Collectors.joining("[", ",\n", "]"));
 	}
 
 	/**
@@ -130,12 +127,11 @@ public final class CompositeAlterer<
 	 * of the given alterers is a CompositeAlterer the sub alterers of it are
 	 * unpacked and appended to the newly created CompositeAlterer.
 	 *
-	 * @param <T> the gene type of the alterers.
-	 *
-	 * @param <C> the fitness function result type
 	 * @param a1 the first alterer.
 	 * @param a2 the second alterer.
 	 * @return a new CompositeAlterer object.
+	 * @param <T> the gene type of the alterers.
+	 * @param <C> the fitness function result type
 	 * @throws NullPointerException if one of the given alterer is {@code null}.
 	 */
 	public static <T extends Gene<?, T>, C extends Comparable<? super C>>
