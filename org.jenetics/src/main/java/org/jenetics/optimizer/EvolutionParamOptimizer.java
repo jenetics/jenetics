@@ -40,6 +40,11 @@ import org.jenetics.engine.EvolutionParam;
 import org.jenetics.engine.EvolutionResult;
 
 /**
+ * Optimizer for finding <i>optimal</i> evolution engine parameters.
+ *
+ * @param <G> the gene type of the problem encoding
+ * @param <C> the fitness function return type of the problem encoding
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -54,11 +59,14 @@ public class EvolutionParamOptimizer<
 	private final Supplier<Predicate<? super EvolutionResult<?, C>>> _limit;
 
 	/**
+	 * Create a new evolution parameter optimizer.
 	 *
-	 * @param fitness the {@code fitness} function for which we try to find
-	 *        <i>optimal</i> evolution {@link Engine} parameters.
-	 * @param codec the evolution codec for the given <i>target</i> function.
-	 * @param limit the limit of the testing evolution {@code Engine}.
+	 * @param codec the {@code Codec} used for encoding the
+	 *        {@code EvolutionParam} class
+	 * @param limit the evolution stream limit which is used for terminating
+	 *        the optimization of the {@code EvolutionParam} object. <b><i>Note
+	 *        that this is not the terminator used for limiting the optimization
+	 *        of the custom fitness function itself.</i></b>
 	 */
 	public EvolutionParamOptimizer(
 		final Codec<EvolutionParam<G, C>, DoubleGene> codec,
@@ -69,22 +77,26 @@ public class EvolutionParamOptimizer<
 	}
 
 	/**
+	 * Return the evolution parameters which are considered to be "optimal" for
+	 * your given problem. The given parameters are the same as you will use
+	 * for a <i>normal</i> {@code Engine} instantiation.
 	 *
-	 * @param fitness
-	 * @param codec
-	 * @param limit
-	 * @param <T>
-	 * @return
+	 * @param fitness the {@code fitness} function of your problem
+	 * @param codec the evolution codec for the given <i>target</i> function.
+	 * @param limit the limit of the testing evolution {@code Engine}.
+	 * @param <T> the fitness parameter type
+	 * @return the found <i>optimal</i> evolution parameters for your given
+	 *         fitness function.
 	 */
 	public <T> EvolutionParam<G, C> optimize(
 		final Function<T, C> fitness,
 		final Codec<T, G> codec,
 		final Supplier<Predicate<? super EvolutionResult<?, C>>> limit
 	) {
-		final Function<EvolutionParam<G, C>, C> engineFitness =
-			param -> fitness(param, fitness, codec, limit);
+		final Function<EvolutionParam<G, C>, C> evolutionParamFitness =
+			param -> evolutionParamFitness(param, fitness, codec, limit);
 
-		final Engine<DoubleGene, C> engine = engine(engineFitness);
+		final Engine<DoubleGene, C> engine = engine(evolutionParamFitness);
 
 		final Genotype<DoubleGene> gt = engine.stream()
 			.limit(_limit.get())
@@ -96,6 +108,13 @@ public class EvolutionParamOptimizer<
 		return _codec.decoder().apply(gt);
 	}
 
+	/**
+	 * Create a new evolution {@code Engine} for optimizing the evolution
+	 * parameters.
+	 *
+	 * @param fitness the fitness function of given evolution parameter.
+	 * @return a new optimization evolution engine
+	 */
 	private Engine<DoubleGene, C>
 	engine(final Function<EvolutionParam<G, C>, C> fitness) {
 		final Function<Genotype<DoubleGene>, C> ff =
@@ -127,7 +146,7 @@ public class EvolutionParamOptimizer<
 	 * @param <T> the parameter type of the fitness function
 	 * @return the fitness value for the given evolution parameters
 	 */
-	private <T> C fitness(
+	private <T> C evolutionParamFitness(
 		final EvolutionParam<G, C> params,
 		final Function<T, C> fitness,
 		final Codec<T, G> codec,
