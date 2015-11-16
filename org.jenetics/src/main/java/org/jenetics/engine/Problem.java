@@ -17,12 +17,11 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.optimizer;
+package org.jenetics.engine;
 
 import java.util.function.Function;
 
 import org.jenetics.Gene;
-import org.jenetics.engine.Codec;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
