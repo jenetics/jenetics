@@ -19,25 +19,12 @@
  */
 package org.jenetics.optimizer;
 
+import static java.time.Duration.ofMillis;
 import static org.jenetics.engine.limit.byExecutionTime;
-import static org.jenetics.engine.limit.byFixedGeneration;
 import static org.jenetics.engine.limit.bySteadyFitness;
 
-import java.time.Duration;
-import java.util.Random;
-import java.util.function.Function;
-import java.util.stream.Collector;
-import java.util.stream.Stream;
-
-import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;
-import org.jenetics.DoubleGene;
-import org.jenetics.Genotype;
-import org.jenetics.Selector;
-import org.jenetics.engine.Codec;
 import org.jenetics.engine.EvolutionParam;
-import org.jenetics.engine.limit;
-import org.jenetics.util.IntRange;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
 
@@ -49,97 +36,28 @@ import org.jenetics.util.RandomRegistry;
 public class EvolutionParamOptimizerTest {
 
 	public static void main(final String[] args) {
-		final int nitems = 200;
-		final double kssize = nitems*100.0/3.0;
-
-		final FF_1 fitness =
-			RandomRegistry.with(new LCG64ShiftRandom(1234), r ->
-					new FF_1(
-						Stream.generate(Item_1::random)
-							.limit(nitems)
-							.toArray(Item_1[]::new),
-						kssize
-					)
-			);
-
 		RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
-		final Codec<Genotype<BitGene>, BitGene> codec = Codec.of(
-			Genotype.of(BitChromosome.of(nitems, 0.5)),
-			Function.<Genotype<BitGene>>identity()
-		);
 
-		final EvolutionParamCodec<BitGene, Double> evolutionParamCodec =
+		final KnapsackProblem knapsack =
+			RandomRegistry.with(new LCG64ShiftRandom(1234), r -> {
+				return KnapsackProblem.of(200, r);
+			});
+
+		final EvolutionParamCodec<BitGene, Double> codec =
 			EvolutionParamCodec.<BitGene, Double>of(
 				SelectorCodec.numeric(),
 				AltererCodec.general()
 			);
 
 		final EvolutionParamOptimizer<BitGene, Double> optimizer =
-			new EvolutionParamOptimizer<>(evolutionParamCodec, () -> bySteadyFitness(250));
-
-
+			new EvolutionParamOptimizer<>(codec, () -> bySteadyFitness(250));
 
 		final EvolutionParam<BitGene, Double> params = optimizer
-			.optimize(fitness, codec, () -> byExecutionTime(Duration.ofMillis(150)));
+			.optimize(knapsack, () -> byExecutionTime(ofMillis(150)));
 
 		System.out.println();
 		System.out.println("Best parameters:");
 		System.out.println(params);
 	}
 
-}
-
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-
-// This class represents a knapsack item, with a specific
-// "size" and "value".
-final class Item_1 {
-	public final double size;
-	public final double value;
-
-	Item_1(final double size, final double value) {
-		this.size = size;
-		this.value = value;
-	}
-
-	// Create a new random knapsack item.
-	static Item_1 random() {
-		final Random r = RandomRegistry.getRandom();
-		return new Item_1(r.nextDouble()*100, r.nextDouble()*100);
-	}
-
-	// Create a new collector for summing up the knapsack items.
-	static Collector<Item_1, ?, Item_1> toSum() {
-		return Collector.of(
-			() -> new double[2],
-			(a, b) -> {a[0] += b.size; a[1] += b.value;},
-			(a, b) -> {a[0] += b[0]; a[1] += b[1]; return a;},
-			r -> new Item_1(r[0], r[1])
-		);
-	}
-}
-
-// The knapsack fitness function class, which is parametrized with
-// the available items and the size of the knapsack.
-final class FF_1
-	implements Function<Genotype<BitGene>, Double>
-{
-	private final Item_1[] items;
-	private final double size;
-
-	public FF_1(final Item_1[] items, final double size) {
-		this.items = items;
-		this.size = size;
-	}
-
-	@Override
-	public Double apply(final Genotype<BitGene> gt) {
-		final Item_1 sum = ((BitChromosome)gt.getChromosome()).ones()
-			.mapToObj(i -> items[i])
-			.collect(Item_1.toSum());
-
-		return sum.size <= this.size ? sum.value : 0;
-	}
 }

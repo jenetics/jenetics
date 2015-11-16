@@ -22,9 +22,12 @@ package org.jenetics.optimizer;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.engine.EvolutionResult.toBestGenotype;
 
+import java.util.Comparator;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import org.jenetics.DoubleGene;
 import org.jenetics.GaussianMutator;
@@ -38,6 +41,7 @@ import org.jenetics.engine.Codec;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionParam;
 import org.jenetics.engine.EvolutionResult;
+import org.jenetics.engine.Problem;
 
 /**
  * Optimizer for finding <i>optimal</i> evolution engine parameters.
@@ -106,6 +110,13 @@ public class EvolutionParamOptimizer<
 		return _codec.decoder().apply(gt);
 	}
 
+	public <T> EvolutionParam<G, C> optimize(
+		final Problem<T, G, C> problem,
+		final Supplier<Predicate<? super EvolutionResult<?, C>>> limit
+	) {
+		return optimize(problem.fitness(), problem.codec(), limit);
+	}
+
 	private void println(final EvolutionResult<DoubleGene, C> result) {
 		final EvolutionParam<G, C> param = _codec.decoder()
 			.apply(result.getBestPhenotype().getGenotype());
@@ -165,11 +176,15 @@ public class EvolutionParamOptimizer<
 			.evolutionParam(params)
 			.build();
 
-		final Genotype<G> gt = engine.stream()
-			.limit(limit.get())
-			.collect(toBestGenotype());
+		final Stream<C> results = IntStream.range(0, 10).mapToObj(i -> {
+			final Genotype<G> gt = engine.stream()
+				.limit(limit.get())
+				.collect(toBestGenotype());
 
-		return fitness.compose(codec.decoder()).apply(gt);
+			return fitness.compose(codec.decoder()).apply(gt);
+		});
+
+		return results.min(Comparator.<C>naturalOrder()).get();
 	}
 
 }
