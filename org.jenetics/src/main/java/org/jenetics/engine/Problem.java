@@ -19,11 +19,24 @@
  */
 package org.jenetics.engine;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.function.Function;
 
 import org.jenetics.Gene;
 
 /**
+ * This interface describes a <i>problem</i> which can be solved by the GA
+ * evolution {@code Engine}. It connects the actual {@link #fitness()} function
+ * and the needed {@link #codec()}.
+ *
+ * @see Codec
+ * @see Engine
+ *
+ * @param <T> the (<i>native</i>) argument type of the problem fitness function
+ * @param <G> the gene type the evolution engine is working with
+ * @param <C> the result type of the fitness function
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -35,13 +48,38 @@ public interface Problem<
 >
 {
 
+	/**
+	 * Return the fitness function of the <i>problem</i> in the <i>native</i>
+	 * problem domain.
+	 *
+	 * @return the fitness function
+	 */
 	public Function<T, C> fitness();
 
+	/**
+	 * Return the codec, which translates the types of the problem domain into
+	 * types, which can be understand by the evolution {@code Engine}.
+	 *
+	 * @return the engine codec
+	 */
 	public Codec<T, G> codec();
 
+
+	/**
+	 *
+	 * @param fitness the problem fitness function
+	 * @param codec the evolution engine codec
+	 * @param <T> the (<i>native</i>) argument type of the problem fitness function
+	 * @param <G> the gene type the evolution engine is working with
+	 * @param <C> the result type of the fitness function
+	 * @return a new problem object from the given parameters
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
 	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
-	Problem<T, G, C> of(final Function<T, C> fitness, final Codec<T, G>
-		codec)  {
+	Problem<T, G, C> of(final Function<T, C> fitness, final Codec<T, G> codec) {
+		requireNonNull(fitness);
+		requireNonNull(codec);
+
 		return new Problem<T, G, C>() {
 			@Override
 			public Codec<T, G> codec() {
