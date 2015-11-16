@@ -22,9 +22,7 @@ package org.jenetics.optimizer;
 import java.util.function.Function;
 
 import org.jenetics.Gene;
-import org.jenetics.Genotype;
 import org.jenetics.engine.Codec;
-import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -32,63 +30,31 @@ import org.jenetics.util.Factory;
  * @since !__version__!
  */
 public interface Problem<
+	T,
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
 {
 
-	public Factory<Genotype<G>> genotype();
+	public Function<T, C> fitness();
 
-	public Function<Genotype<G>, C> function();
+	public Codec<T, G> codec();
 
-
-	/**
-	 *
-	 * @param genotype
-	 * @param function
-	 * @param <G>
-	 * @param <C>
-	 * @return
-	 */
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Problem<G, C> of(
-		final Factory<Genotype<G>> genotype,
-		final Function<Genotype<G>, C> function
-	) {
-		return new Problem<G, C>() {
+	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
+	Problem<T, G, C> of(final Function<T, C> fitness, final Codec<T, G>
+		codec)  {
+		return new Problem<T, G, C>() {
 			@Override
-			public Factory<Genotype<G>> genotype() {
-				return genotype;
+			public Codec<T, G> codec() {
+				return codec;
 			}
 
 			@Override
-			public Function<Genotype<G>, C> function() {
-				return function;
+			public Function<T, C> fitness() {
+				return fitness;
 			}
 		};
 	}
 
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>, S>
-	Problem<G, C> of(
-		final Factory<Genotype<G>> genotype,
-		final Function<S, C> function,
-		final Function<Genotype<G>, S> decoder
-	) {
-		return of(
-			genotype,
-			function.compose(decoder)
-		);
-	}
-
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>, S>
-	Problem<G, C> of(
-		final Function<S, C> function,
-		final Codec<S, G> codec
-	) {
-		return of(
-			codec.encoding(),
-			function.compose(codec.decoder())
-		);
-	}
-
 }
+
