@@ -188,6 +188,9 @@ public class EvolutionParamCodec<
 	 * @param populationSize the population size range
 	 * @param offspringFraction the offspring fraction range
 	 * @param maximalPhenotypeAge the maximal phenotype age range
+	 * @param <G> the gene type of the problem encoding
+	 * @param <C> the fitness function return type of the problem encoding
+	 * @return a new evolution parameter {@code Codec}
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if the population size or the maximal
 	 *         phenotype age is smaller than one.
@@ -217,6 +220,9 @@ public class EvolutionParamCodec<
 	 * @param selector the selector codec used for survivor and offspring
 	 *        selectors
 	 * @param alterer the alterer codec
+	 * @param <G> the gene type of the problem encoding
+	 * @param <C> the fitness function return type of the problem encoding
+	 * @return a new evolution parameter {@code Codec}
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
