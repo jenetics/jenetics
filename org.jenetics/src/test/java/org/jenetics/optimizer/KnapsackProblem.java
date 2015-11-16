@@ -19,6 +19,8 @@
  */
 package org.jenetics.optimizer;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.Collector;
@@ -36,7 +38,9 @@ import org.jenetics.util.MSeq;
  * @version !__version__!
  * @since !__version__!
  */
-public class KnapsackProblem implements Problem<ISeq<Item>, BitGene, Double> {
+public final class KnapsackProblem
+	implements Problem<ISeq<Item>, BitGene, Double>
+{
 
 	/**
 	 * This class represents a knapsack item with the specific "size" and
@@ -90,6 +94,8 @@ public class KnapsackProblem implements Problem<ISeq<Item>, BitGene, Double> {
 	}
 
 	public static KnapsackProblem of(final int itemCount, final Random random) {
+		requireNonNull(random);
+
 		final double knapsackSize = itemCount*100.0/3.0;
 		final ISeq<Item> items = MSeq.<Item>ofLength(itemCount)
 			.fill(() -> Item.random(random))
