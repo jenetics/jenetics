@@ -22,7 +22,6 @@ package org.jenetics.optimizer;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.engine.EvolutionResult.toBestGenotype;
 
-import java.util.Comparator;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -88,6 +87,7 @@ public class EvolutionParamOptimizer<
 	 *
 	 * @param fitness the {@code fitness} function of your problem
 	 * @param codec the evolution codec for the given <i>target</i> function.
+	 * @param optimize the optimization strategy
 	 * @param limit the limit of the testing evolution {@code Engine}.
 	 * @param <T> the fitness parameter type
 	 * @return the found <i>optimal</i> evolution parameters for your given
@@ -113,11 +113,28 @@ public class EvolutionParamOptimizer<
 		return _codec.decoder().apply(gt);
 	}
 
+	/**
+	 * Return the evolution parameters which are considered to be "optimal" for
+	 * your given problem. The given parameters are the same as you will use
+	 * for a <i>normal</i> {@code Engine} instantiation.
+	 *
+	 * @param problem the problem for which the evolution parameters should be
+	 *        optimized
+	 * @param limit the limit of the testing evolution {@code Engine}.
+	 * @param <T> the fitness parameter type
+	 * @return the found <i>optimal</i> evolution parameters for your given
+	 *         fitness function.
+	 */
 	public <T> EvolutionParam<G, C> optimize(
 		final Problem<T, G, C> problem,
 		final Supplier<Predicate<? super EvolutionResult<?, C>>> limit
 	) {
-		return optimize(problem.fitness(), problem.codec(), problem.optimize(), limit);
+		return optimize(
+			problem.fitness(),
+			problem.codec(),
+			problem.optimize(),
+			limit
+		);
 	}
 
 	private void println(final EvolutionResult<DoubleGene, C> result) {
@@ -137,6 +154,7 @@ public class EvolutionParamOptimizer<
 	 * parameters.
 	 *
 	 * @param fitness the fitness function of given evolution parameter.
+	 * @param optimize the optimization strategy
 	 * @return a new optimization evolution engine
 	 */
 	private Engine<DoubleGene, C> engine(
@@ -192,7 +210,6 @@ public class EvolutionParamOptimizer<
 
 			return fitness.compose(codec.decoder()).apply(gt);
 		});
-
 		return results.min(optimize.ascending()).get();
 	}
 
