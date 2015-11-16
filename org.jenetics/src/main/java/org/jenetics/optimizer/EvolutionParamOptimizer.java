@@ -35,6 +35,7 @@ import org.jenetics.Gene;
 import org.jenetics.Genotype;
 import org.jenetics.MeanAlterer;
 import org.jenetics.Mutator;
+import org.jenetics.Optimize;
 import org.jenetics.TournamentSelector;
 import org.jenetics.TruncationSelector;
 import org.jenetics.engine.Codec;
@@ -95,12 +96,14 @@ public class EvolutionParamOptimizer<
 	public <T> EvolutionParam<G, C> optimize(
 		final Function<T, C> fitness,
 		final Codec<T, G> codec,
+		final Optimize optimize,
 		final Supplier<Predicate<? super EvolutionResult<?, C>>> limit
 	) {
-		final Function<EvolutionParam<G, C>, C> evolutionParamFitness =
-			param -> evolutionParamFitness(param, fitness, codec, limit);
+		final Function<EvolutionParam<G, C>, C> evolutionParamFitness = p ->
+			evolutionParamFitness(p, fitness, codec, optimize, limit);
 
-		final Engine<DoubleGene, C> engine = engine(evolutionParamFitness);
+		final Engine<DoubleGene, C> engine =
+			engine(evolutionParamFitness, optimize);
 
 		final Genotype<DoubleGene> gt = engine.stream()
 			.limit(_limit.get())
@@ -114,7 +117,7 @@ public class EvolutionParamOptimizer<
 		final Problem<T, G, C> problem,
 		final Supplier<Predicate<? super EvolutionResult<?, C>>> limit
 	) {
-		return optimize(problem.fitness(), problem.codec(), limit);
+		return optimize(problem.fitness(), problem.codec(), problem.optimize(), limit);
 	}
 
 	private void println(final EvolutionResult<DoubleGene, C> result) {
@@ -136,8 +139,10 @@ public class EvolutionParamOptimizer<
 	 * @param fitness the fitness function of given evolution parameter.
 	 * @return a new optimization evolution engine
 	 */
-	private Engine<DoubleGene, C>
-	engine(final Function<EvolutionParam<G, C>, C> fitness) {
+	private Engine<DoubleGene, C> engine(
+		final Function<EvolutionParam<G, C>, C> fitness,
+		final Optimize optimize
+	) {
 		final Function<Genotype<DoubleGene>, C> ff =
 			_codec.decoder().andThen(fitness);
 
@@ -150,6 +155,7 @@ public class EvolutionParamOptimizer<
 			.offspringSelector(new TournamentSelector<>(3))
 			.populationSize(100)
 			.maximalPhenotypeAge(35)
+			.optimize(optimize)
 			.build();
 	}
 
@@ -161,6 +167,7 @@ public class EvolutionParamOptimizer<
 	 * @param fitness the fitness function for which we want to optimize the
 	 *        evolution parameters
 	 * @param codec the fitness function codec
+	 * @param optimize the optimization strategy
 	 * @param limit the evolution stream limit used for terminating the
 	 *        <i>test</i> engine
 	 * @param <T> the parameter type of the fitness function
@@ -170,13 +177,15 @@ public class EvolutionParamOptimizer<
 		final EvolutionParam<G, C> params,
 		final Function<T, C> fitness,
 		final Codec<T, G> codec,
+		final Optimize optimize,
 		final Supplier<Predicate<? super EvolutionResult<?, C>>> limit
 	) {
 		final Engine<G, C> engine = Engine.builder(fitness, codec)
 			.evolutionParam(params)
+			.optimize(optimize)
 			.build();
 
-		final Stream<C> results = IntStream.range(0, 10).mapToObj(i -> {
+		final Stream<C> results = IntStream.range(0, 5).mapToObj(i -> {
 			final Genotype<G> gt = engine.stream()
 				.limit(limit.get())
 				.collect(toBestGenotype());
@@ -184,7 +193,7 @@ public class EvolutionParamOptimizer<
 			return fitness.compose(codec.decoder()).apply(gt);
 		});
 
-		return results.min(Comparator.<C>naturalOrder()).get();
+		return results.min(optimize.ascending()).get();
 	}
 
 }
