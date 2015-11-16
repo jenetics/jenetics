@@ -44,6 +44,8 @@ import org.jenetics.util.IntRange;
 import org.jenetics.util.Mean;
 
 /**
+ * Alterer codec for all given alterers
+ *
  * @param <G> the gene type of the problem encoding
  * @param <C> the fitness function return type of the problem encoding
  *
@@ -117,10 +119,11 @@ public final class AltererCodec<
 	}
 
 	/**
+	 * Return the generically applicable alterer {@code Codec}.
 	 *
-	 * @param <G>
-	 * @param <C>
-	 * @return
+	 * @param <G> the gene type of the problem encoding
+	 * @param <C> the fitness function return type of the problem encoding
+	 * @return the generically applicable alterer {@code Codec}
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	AltererCodec<G, C> general() {
@@ -148,6 +151,14 @@ public final class AltererCodec<
 		return new AltererCodec<>(codecs, ISeq.empty());
 	}
 
+	/**
+	 * Return the alterer {@code Codec} for which contains alterers for
+	 * {@code NumericGene} instances.
+	 *
+	 * @param <G> the gene type of the problem encoding
+	 * @param <C> the fitness function return type of the problem encoding
+	 * @return the numeric alterer {@code Codec}
+	 */
 	public static <G extends NumericGene<?, G>, C extends Comparable<? super C>>
 	AltererCodec<G, C> numeric() {
 		final ISeq<Codec<Alterer<G, C>, DoubleGene>> codecs = ISeq.of(
@@ -178,6 +189,14 @@ public final class AltererCodec<
 		return new AltererCodec<>(codecs, ISeq.empty());
 	}
 
+	/**
+	 * Return the alterer {@code Codec} for which contains alterers for
+	 * {@code Mean} gene instances.
+	 *
+	 * @param <G> the gene type of the problem encoding
+	 * @param <C> the fitness function return type of the problem encoding
+	 * @return the {@code Mean} gene alterer {@code Codec}
+	 */
 	public static <G extends Gene<?, G> & Mean<G>, C extends Comparable<? super C>>
 	AltererCodec<G, C> mean() {
 		final ISeq<Codec<Alterer<G, C>, DoubleGene>> codecs = ISeq.of(
@@ -208,6 +227,15 @@ public final class AltererCodec<
 		return new AltererCodec<>(codecs, ISeq.empty());
 	}
 
+	/**
+	 * Return the alterer {@code Codec} for which contains alterers for
+	 * {@code Mean} gene and {@code NumericGene} instances.
+	 *
+	 * @param <G> the gene type of the problem encoding
+	 * @param <C> the fitness function return type of the problem encoding
+	 * @return the {@code Mean} gene  and {@code NumericGene} alterer
+	 *         {@code Codec}
+	 */
 	public static <G extends NumericGene<?, G> & Mean<G>, C extends Comparable<? super C>>
 	AltererCodec<G, C> numericMean() {
 		final ISeq<Codec<Alterer<G, C>, DoubleGene>> codecs = ISeq.of(
