@@ -24,6 +24,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.function.Function;
 
 import org.jenetics.Gene;
+import org.jenetics.Optimize;
 
 /**
  * This interface describes a <i>problem</i> which can be solved by the GA
@@ -64,11 +65,22 @@ public interface Problem<
 	 */
 	public Codec<T, G> codec();
 
+	/**
+	 * Return the optimization strategy of this problem. By <i>default</i>, the
+	 * given fitness function is maximized.
+	 *
+	 * @return the optimization strategy of the problem
+	 */
+	public default Optimize optimize() {
+		return Optimize.MAXIMUM;
+	}
 
 	/**
+	 * Return a new optimization <i>problem</i> with the given parameters.
 	 *
 	 * @param fitness the problem fitness function
 	 * @param codec the evolution engine codec
+	 * @param optimize the optimization strategy of the problem
 	 * @param <T> the (<i>native</i>) argument type of the problem fitness function
 	 * @param <G> the gene type the evolution engine is working with
 	 * @param <C> the result type of the fitness function
@@ -76,9 +88,14 @@ public interface Problem<
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
-	Problem<T, G, C> of(final Function<T, C> fitness, final Codec<T, G> codec) {
+	Problem<T, G, C> of(
+		final Function<T, C> fitness,
+		final Codec<T, G> codec,
+		final Optimize optimize
+	) {
 		requireNonNull(fitness);
 		requireNonNull(codec);
+		requireNonNull(optimize);
 
 		return new Problem<T, G, C>() {
 			@Override
@@ -90,7 +107,35 @@ public interface Problem<
 			public Function<T, C> fitness() {
 				return fitness;
 			}
+
+			@Override
+			public Optimize optimize() {
+				return optimize;
+			}
 		};
+	}
+
+	/**
+	 * Return a new optimization <i>problem</i> with the given parameters. The
+	 * returned <i>problem</i> tries to maximize the given fitness function.
+	 *
+	 * @param fitness the problem fitness function
+	 * @param codec the evolution engine codec
+	 * @param <T> the (<i>native</i>) argument type of the problem fitness function
+	 * @param <G> the gene type the evolution engine is working with
+	 * @param <C> the result type of the fitness function
+	 * @return a new problem object from the given parameters
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
+	Problem<T, G, C> of(
+		final Function<T, C> fitness,
+		final Codec<T, G> codec
+	) {
+		requireNonNull(fitness);
+		requireNonNull(codec);
+
+		return of(fitness, codec, Optimize.MAXIMUM);
 	}
 
 }
