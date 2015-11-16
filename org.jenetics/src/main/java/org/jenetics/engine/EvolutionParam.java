@@ -175,6 +175,7 @@ public final class EvolutionParam<
 	 * @param maximalPhenotypeAge the maximal allowed phenotype age
 	 * @param <G> the gene type of the problem encoding
 	 * @param <C> the fitness function return type of the problem encoding
+	 * @return a new evolution parameter object
 	 * @throws NullPointerException if one of the reference types is {@code null}
 	 * @throws IllegalArgumentException if the population size or the maximal
 	 *         phenotype age is smaller than one.
