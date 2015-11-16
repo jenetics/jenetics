@@ -804,7 +804,7 @@ public final class Engine<
 	 *
 	 * @since 3.2
 	 *
-	 * @param ff the fitness function
+	 * @param fitness the fitness function
 	 * @param codec the problem codec
 	 * @param <T> the fitness function input type
 	 * @param <C> the fitness function result type
@@ -813,12 +813,32 @@ public final class Engine<
 	 * @throws java.lang.NullPointerException if one of the arguments is
 	 *         {@code null}.
 	 */
-	public static <T, C extends Comparable<? super C>, G extends Gene<?, G>>
+	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
 	Builder<G, C> builder(
-		final Function<? super T, ? extends C> ff,
+		final Function<? super T, ? extends C> fitness,
 		final Codec<T, G> codec
 	) {
-		return builder(ff.compose(codec.decoder()), codec.encoding());
+		return builder(fitness.compose(codec.decoder()), codec.encoding());
+	}
+
+	/**
+	 * Create a new evolution {@code Engine.Builder} for the given
+	 * {@code problem}.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param problem the <i>problem</i> which should be optimize
+	 * @param <T> the fitness function input type
+	 * @param <C> the fitness function result type
+	 * @param <G> the gene type
+	 * @return a new engine builder
+	 * @throws java.lang.NullPointerException if one of the arguments is
+	 *         {@code null}.
+	 */
+	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
+	Builder<G, C> builder(final Problem<T, G, C> problem) {
+		return builder(problem.fitness(), problem.codec())
+			.optimize(problem.optimize());
 	}
 
 
@@ -881,7 +901,7 @@ public final class Engine<
 		 * @throws NullPointerException if the parameter is {@code null}
 		 */
 		public Builder<G, C> fitnessFunction(
-			Function<? super Genotype<G>, ? extends C> function
+			final Function<? super Genotype<G>, ? extends C> function
 		) {
 			_fitnessFunction = requireNonNull(function);
 			return this;
@@ -943,9 +963,7 @@ public final class Engine<
 		 * @return {@code this} builder, for command chaining
 		 * @throws NullPointerException if the parameter is {@code null}
 		 */
-		public Builder<G, C> offspringSelector(
-			final Selector<G, C> selector
-		) {
+		public Builder<G, C> offspringSelector(final Selector<G, C> selector) {
 			_offspringSelector = requireNonNull(selector);
 			return this;
 		}
@@ -958,9 +976,7 @@ public final class Engine<
 		 * @return {@code this} builder, for command chaining
 		 * @throws NullPointerException if the parameter is {@code null}
 		 */
-		public Builder<G, C> survivorsSelector(
-			final Selector<G, C> selector
-		) {
+		public Builder<G, C> survivorsSelector(final Selector<G, C> selector) {
 			_survivorsSelector = requireNonNull(selector);
 			return this;
 		}
@@ -1020,7 +1036,9 @@ public final class Engine<
 		 * @throws java.lang.NullPointerException if one of the alterers is
 		 *         {@code null}.
 		 */
-		public final Builder<G, C> alterers(final ISeq<? extends Alterer<G, C>> alterers) {
+		public final Builder<G, C> alterers(
+			final ISeq<? extends Alterer<G, C>> alterers
+		) {
 			if (alterers.size() >= 1) {
 				_alterer = alterers.size() == 1
 					? alterers.get(0)
