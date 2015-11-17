@@ -29,7 +29,7 @@ import org.jenetics.BitGene;
 import org.jenetics.engine.Codec;
 import org.jenetics.engine.Problem;
 import org.jenetics.engine.codecs;
-import org.jenetics.optimizer.KnapsackProblem.Item;
+import org.jenetics.optimizer.Knapsack.Item;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
 
@@ -38,9 +38,7 @@ import org.jenetics.util.MSeq;
  * @version !__version__!
  * @since !__version__!
  */
-public final class KnapsackProblem
-	implements Problem<ISeq<Item>, BitGene, Double>
-{
+public final class Knapsack implements Problem<ISeq<Item>, BitGene, Double> {
 
 	/**
 	 * This class represents a knapsack item with the specific "size" and
@@ -75,7 +73,7 @@ public final class KnapsackProblem
 	private final Codec<ISeq<Item>, BitGene> _codec;
 	private final double _knapsackSize;
 
-	private KnapsackProblem(final ISeq<Item> items, final double knapsackSize) {
+	private Knapsack(final ISeq<Item> items, final double knapsackSize) {
 		_codec = codecs.ofSubSet(items);
 		_knapsackSize = knapsackSize;
 	}
@@ -93,7 +91,7 @@ public final class KnapsackProblem
 		return _codec;
 	}
 
-	public static KnapsackProblem of(final int itemCount, final Random random) {
+	public static Knapsack of(final int itemCount, final Random random) {
 		requireNonNull(random);
 
 		final double knapsackSize = itemCount*100.0/3.0;
@@ -101,7 +99,7 @@ public final class KnapsackProblem
 			.fill(() -> Item.random(random))
 			.toISeq();
 
-		return new KnapsackProblem(items, knapsackSize);
+		return new Knapsack(items, knapsackSize);
 	}
 
 }

@@ -38,9 +38,9 @@ public class EvolutionParamOptimizerTest {
 	public static void main(final String[] args) {
 		RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
 
-		final KnapsackProblem knapsack =
+		final Knapsack knapsack =
 			RandomRegistry.with(new LCG64ShiftRandom(1234), r -> {
-				return KnapsackProblem.of(200, r);
+				return Knapsack.of(200, r);
 			});
 
 		final EvolutionParamCodec<BitGene, Double> codec =
