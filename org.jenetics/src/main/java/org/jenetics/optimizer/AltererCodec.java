@@ -25,6 +25,7 @@ import static org.jenetics.internal.collection.seq.concat;
 
 import java.util.function.Function;
 
+import org.jenetics.AbstractAlterer;
 import org.jenetics.Alterer;
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
@@ -85,13 +86,15 @@ public final class AltererCodec<
 
 				Alterer<G, C> alterer = Alterer.empty();
 				for (int i = 0; i < codecs.length(); ++i) {
-					if (index[i] > 0.5) {
-						alterer = alterer.andThen((Alterer<G, C>)x[i + 1]);
+					if (index[i] >= 0.5) {
+						alterer = alterer
+							.andThen(alterer((Alterer<G, C>)x[i + 1]));
 					}
 				}
 				for (int i = 0; i < alterers.length(); ++i) {
-					if (index[codecs.length() + i] > 0.5) {
-						alterer = alterer.andThen(alterers.get(i));
+					if (index[codecs.length() + i] >= 0.5) {
+						alterer = alterer
+							.andThen(alterer(alterers.get(i)));
 					}
 				}
 
@@ -135,7 +138,7 @@ public final class AltererCodec<
 				),
 				gt -> new MultiPointCrossover<>(
 					gt.getChromosome(0).getGene().doubleValue(),
-					gt.getChromosome(1).getGene().intValue()
+					gt.get(1, 0).intValue()
 				)
 			),
 			Codec.of(
@@ -149,6 +152,14 @@ public final class AltererCodec<
 		);
 
 		return new AltererCodec<>(codecs, ISeq.empty());
+	}
+
+	private static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Alterer<G, C> alterer(final Alterer<G, C> alterer) {
+		return alterer instanceof AbstractAlterer<?, ?>
+			? ((AbstractAlterer<?, ?>)alterer).getProbability() < 0.0000001
+				? Alterer.empty() : alterer
+			: alterer;
 	}
 
 	/**

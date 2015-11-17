@@ -60,7 +60,7 @@ public class EvolutionParamOptimizer<
 {
 
 	private final Codec<EvolutionParam<G, C>, DoubleGene> _codec;
-	private final Supplier<Predicate<? super EvolutionResult<?, C>>> _limit;
+	private final Supplier<Predicate<? super EvolutionResult<?, Measure<C>>>> _limit;
 
 	/**
 	 * Create a new evolution parameter optimizer.
@@ -74,7 +74,7 @@ public class EvolutionParamOptimizer<
 	 */
 	public EvolutionParamOptimizer(
 		final Codec<EvolutionParam<G, C>, DoubleGene> codec,
-		final Supplier<Predicate<? super EvolutionResult<?, C>>> limit
+		final Supplier<Predicate<? super EvolutionResult<?, Measure<C>>>> limit
 	) {
 		_codec = requireNonNull(codec);
 		_limit = requireNonNull(limit);
@@ -99,10 +99,10 @@ public class EvolutionParamOptimizer<
 		final Optimize optimize,
 		final Supplier<Predicate<? super EvolutionResult<?, C>>> limit
 	) {
-		final Function<EvolutionParam<G, C>, C> evolutionParamFitness = p ->
+		final Function<EvolutionParam<G, C>, Measure<C>> evolutionParamFitness = p ->
 			evolutionParamFitness(p, fitness, codec, optimize, limit);
 
-		final Engine<DoubleGene, C> engine =
+		final Engine<DoubleGene, Measure<C>> engine =
 			engine(evolutionParamFitness, optimize);
 
 		final Genotype<DoubleGene> gt = engine.stream()
@@ -137,7 +137,7 @@ public class EvolutionParamOptimizer<
 		);
 	}
 
-	private void println(final EvolutionResult<DoubleGene, C> result) {
+	private void println(final EvolutionResult<DoubleGene, Measure<C>> result) {
 		final EvolutionParam<G, C> param = _codec.decoder()
 			.apply(result.getBestPhenotype().getGenotype());
 
@@ -157,11 +157,11 @@ public class EvolutionParamOptimizer<
 	 * @param optimize the optimization strategy
 	 * @return a new optimization evolution engine
 	 */
-	private Engine<DoubleGene, C> engine(
-		final Function<EvolutionParam<G, C>, C> fitness,
+	private Engine<DoubleGene, Measure<C>> engine(
+		final Function<EvolutionParam<G, C>, Measure<C>> fitness,
 		final Optimize optimize
 	) {
-		final Function<Genotype<DoubleGene>, C> ff =
+		final Function<Genotype<DoubleGene>, Measure<C>> ff =
 			_codec.decoder().andThen(fitness);
 
 		return Engine.builder(ff, _codec.encoding())
@@ -191,7 +191,7 @@ public class EvolutionParamOptimizer<
 	 * @param <T> the parameter type of the fitness function
 	 * @return the fitness value for the given evolution parameters
 	 */
-	private <T> C evolutionParamFitness(
+	private <T> Measure<C> evolutionParamFitness(
 		final EvolutionParam<G, C> params,
 		final Function<T, C> fitness,
 		final Codec<T, G> codec,
@@ -210,7 +210,11 @@ public class EvolutionParamOptimizer<
 
 			return fitness.compose(codec.decoder()).apply(gt);
 		});
-		return results.min(optimize.ascending()).get();
+
+		return results
+			.map(c -> new Measure<>(c, params, optimize))
+			.min(optimize.ascending())
+			.get();
 	}
 
 }

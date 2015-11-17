@@ -24,6 +24,7 @@ import static org.jenetics.engine.limit.byExecutionTime;
 import static org.jenetics.engine.limit.bySteadyFitness;
 
 import org.jenetics.BitGene;
+import org.jenetics.DoubleGene;
 import org.jenetics.engine.EvolutionParam;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
@@ -38,7 +39,7 @@ public class EvolutionParamOptimizerTest {
 	public static void main(final String[] args) {
 		RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
 
-		final Knapsack knapsack =
+		final Knapsack problem =
 			RandomRegistry.with(new LCG64ShiftRandom(1234), r -> {
 				return Knapsack.of(200, r);
 			});
@@ -53,7 +54,23 @@ public class EvolutionParamOptimizerTest {
 			new EvolutionParamOptimizer<>(codec, () -> bySteadyFitness(250));
 
 		final EvolutionParam<BitGene, Double> params = optimizer
-			.optimize(knapsack, () -> byExecutionTime(ofMillis(150)));
+			.optimize(problem, () -> byExecutionTime(ofMillis(150)));
+
+		/*
+		final RealFunction problem = new RealFunction();
+
+		final EvolutionParamCodec<DoubleGene, Double> codec =
+			EvolutionParamCodec.<DoubleGene, Double>of(
+				SelectorCodec.numeric(),
+				AltererCodec.numericMean()
+			);
+
+		final EvolutionParamOptimizer<DoubleGene, Double> optimizer =
+			new EvolutionParamOptimizer<>(codec, () -> bySteadyFitness(250));
+
+		final EvolutionParam<DoubleGene, Double> params = optimizer
+			.optimize(problem, () -> byExecutionTime(ofMillis(150)));
+		*/
 
 		System.out.println();
 		System.out.println("Best parameters:");

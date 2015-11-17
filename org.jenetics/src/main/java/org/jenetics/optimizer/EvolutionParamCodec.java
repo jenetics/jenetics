@@ -56,7 +56,7 @@ public class EvolutionParamCodec<
 	implements Codec<EvolutionParam<G, C>, DoubleGene>
 {
 
-	private static final IntRange POPULATION_SIZE = IntRange.of(10, 10_000);
+	private static final IntRange POPULATION_SIZE = IntRange.of(10, 1_000);
 	private static final DoubleRange OFFSPRING_FRACTION = DoubleRange.of(0, 1);
 	private static final LongRange MAXIMAL_PHENOTYPE_AGE = LongRange.of(5, 10_000);
 

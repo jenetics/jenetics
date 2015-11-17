@@ -72,6 +72,17 @@ public final class CompositeAlterer<
 			.collect(toISeq());
 	}
 
+	/**
+	 * Return the number of alterers the {@code CompositeAlterer} consists of.
+	 *
+	 * @since !__version__!
+	 *
+	 * @return the number of alterers the {@code CompositeAlterer} consists of
+	 */
+	public int size() {
+		return _alterers.size();
+	}
+
 	@Override
 	public int alter(final Population<G, C> population, final long generation) {
 		return _alterers.stream()

@@ -19,6 +19,8 @@
  */
 package org.jenetics;
 
+import static java.util.Objects.requireNonNull;
+
 import org.jenetics.util.ISeq;
 
 /**
@@ -119,7 +121,31 @@ public interface Alterer<
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Alterer<G, C> empty() {
-		return (p, g) -> 0;
+		return new Alterer<G, C>() {
+			@Override
+			public int alter(
+				final Population<G, C> population,
+				final long generation
+			) {
+				return 0;
+			}
+
+			@Override
+			public Alterer<G, C> compose(final Alterer<G, C> before) {
+				return requireNonNull(before);
+			}
+
+			@Override
+			public Alterer<G, C> andThen(final Alterer<G, C> after) {
+				return requireNonNull(after);
+			}
+
+			@Override
+			public String toString() {
+				return "EmptyAlterer";
+			}
+
+		};
 	}
 
 }
