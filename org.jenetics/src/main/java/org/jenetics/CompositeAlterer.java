@@ -59,7 +59,7 @@ public final class CompositeAlterer<
 		_alterers = normalize(alterers);
 	}
 
-	private static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	ISeq<Alterer<G, C>> normalize(final Seq<? extends Alterer<G, C>> alterers) {
 		final Function<Alterer<G, C>, Stream<? extends Alterer<G, C>>> mapper =
 			a -> a instanceof CompositeAlterer<?, ?>
