@@ -35,7 +35,7 @@ final class EmptyAlterer<
 	implements Alterer<G, C>
 {
 
-	static final Alterer<?, ?> INSTANCE = new EmptyAlterer<>();
+	static final Alterer<?, ?> INSTANCE = new EmptyAlterer<DoubleGene, Double>();
 
 	private EmptyAlterer() {
 	}
