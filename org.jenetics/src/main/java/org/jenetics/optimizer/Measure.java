@@ -71,36 +71,24 @@ final class Measure<C extends Comparable<? super C>>
 	@Override
 	public int compareTo(final Measure<C> other) {
 		int cmp = _comparable.compareTo(other._comparable);
+
+		// Compare the population size.
 		if (cmp == 0) {
-			// Smaller population size is better.
 			cmp = _optimize.compare(
 				other._params.getPopulationSize(),
 				_params.getPopulationSize()
 			);
 		}
-		if (cmp == 0) {
-			final int as1 = _params.getAlterer() instanceof CompositeAlterer<?, ?>
-				? ((CompositeAlterer<?, ?>)_params.getAlterer()).size()
-				: 1;
-			final int as2 = other._params.getAlterer() instanceof CompositeAlterer<?, ?>
-				? ((CompositeAlterer<?, ?>)other._params.getAlterer()).size()
-				: 1;
 
+		// Compare the alterer complexity.
+		if (cmp == 0) {
 			cmp = _optimize.compare(
-				complexity(other._params.getAlterer()),
-				complexity(_params.getAlterer())
+				AltererComplexity.of(other._params.getAlterer()),
+				AltererComplexity.of(_params.getAlterer())
 			);
 		}
 
 		return cmp;
-	}
-
-	private static int complexity(final Alterer<?, ?> alterer) {
-		return alterer instanceof CompositeAlterer<?, ?>
-			? ((CompositeAlterer<?, ?>)alterer).getAlterers().stream()
-				.mapToInt(a -> COMPLEXITIES.getOrDefault(a.getClass(), 0))
-				.sum()
-			: COMPLEXITIES.getOrDefault(alterer.getClass(), 0);
 	}
 
 	@Override

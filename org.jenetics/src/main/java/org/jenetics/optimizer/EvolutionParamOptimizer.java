@@ -42,6 +42,7 @@ import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionParam;
 import org.jenetics.engine.EvolutionResult;
 import org.jenetics.engine.Problem;
+import org.jenetics.util.ISeq;
 
 /**
  * Optimizer for finding <i>optimal</i> evolution engine parameters.
@@ -203,7 +204,7 @@ public class EvolutionParamOptimizer<
 			.optimize(optimize)
 			.build();
 
-		final Stream<C> results = IntStream.range(0, 5).mapToObj(i -> {
+		final Stream<C> results = IntStream.range(0, 20).mapToObj(i -> {
 			final Genotype<G> gt = engine.stream()
 				.limit(limit.get())
 				.collect(toBestGenotype());
@@ -211,10 +212,13 @@ public class EvolutionParamOptimizer<
 			return fitness.compose(codec.decoder()).apply(gt);
 		});
 
-		return results
+		final ISeq<Measure<C>> measures = results
 			.map(c -> new Measure<>(c, params, optimize))
-			.min(optimize.ascending())
-			.get();
+			.sorted(optimize.ascending())
+			.collect(ISeq.toISeq());
+
+		// Return the median value.
+		return measures.get(measures.length()/2);
 	}
 
 }
