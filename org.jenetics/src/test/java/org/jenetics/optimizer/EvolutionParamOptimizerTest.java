@@ -25,6 +25,7 @@ import static org.jenetics.engine.limit.bySteadyFitness;
 
 import org.jenetics.BitGene;
 import org.jenetics.DoubleGene;
+import org.jenetics.Optimize;
 import org.jenetics.engine.EvolutionParam;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
@@ -54,7 +55,10 @@ public class EvolutionParamOptimizerTest {
 			new EvolutionParamOptimizer<>(codec, () -> bySteadyFitness(250));
 
 		final EvolutionParam<BitGene, Double> params = optimizer
-			.optimize(problem, () -> byExecutionTime(ofMillis(150)));
+			.optimize(
+				problem,
+				Optimize.MAXIMUM,
+				() -> byExecutionTime(ofMillis(150)));
 
 		/*
 		final RealFunction problem = new RealFunction();

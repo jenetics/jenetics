@@ -121,6 +121,7 @@ public class EvolutionParamOptimizer<
 	 *
 	 * @param problem the problem for which the evolution parameters should be
 	 *        optimized
+	 * @param optimize the optimization strategy of the problem
 	 * @param limit the limit of the testing evolution {@code Engine}.
 	 * @param <T> the fitness parameter type
 	 * @return the found <i>optimal</i> evolution parameters for your given
@@ -128,12 +129,13 @@ public class EvolutionParamOptimizer<
 	 */
 	public <T> EvolutionParam<G, C> optimize(
 		final Problem<T, G, C> problem,
+		final Optimize optimize,
 		final Supplier<Predicate<? super EvolutionResult<?, C>>> limit
 	) {
 		return optimize(
 			problem.fitness(),
 			problem.codec(),
-			problem.optimize(),
+			optimize,
 			limit
 		);
 	}
