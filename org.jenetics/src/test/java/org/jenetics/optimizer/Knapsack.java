@@ -25,6 +25,8 @@ import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.Collector;
 
+import org.jenetics.internal.util.require;
+
 import org.jenetics.BitGene;
 import org.jenetics.engine.Codec;
 import org.jenetics.engine.Problem;
@@ -73,9 +75,9 @@ public final class Knapsack implements Problem<ISeq<Item>, BitGene, Double> {
 	private final Codec<ISeq<Item>, BitGene> _codec;
 	private final double _knapsackSize;
 
-	private Knapsack(final ISeq<Item> items, final double knapsackSize) {
+	public Knapsack(final ISeq<Item> items, final double knapsackSize) {
 		_codec = codecs.ofSubSet(items);
-		_knapsackSize = knapsackSize;
+		_knapsackSize = require.positive(knapsackSize);
 	}
 
 	@Override
