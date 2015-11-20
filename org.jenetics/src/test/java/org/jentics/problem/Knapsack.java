@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.optimizer;
+package org.jentics.problem;
 
 import static java.util.Objects.requireNonNull;
 
@@ -31,7 +31,7 @@ import org.jenetics.BitGene;
 import org.jenetics.engine.Codec;
 import org.jenetics.engine.Problem;
 import org.jenetics.engine.codecs;
-import org.jenetics.optimizer.Knapsack.Item;
+import org.jentics.problem.Knapsack.Item;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
 

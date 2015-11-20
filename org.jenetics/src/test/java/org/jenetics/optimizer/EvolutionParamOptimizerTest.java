@@ -23,8 +23,9 @@ import static java.time.Duration.ofMillis;
 import static org.jenetics.engine.limit.byExecutionTime;
 import static org.jenetics.engine.limit.bySteadyFitness;
 
+import org.jentics.problem.Knapsack;
+
 import org.jenetics.BitGene;
-import org.jenetics.DoubleGene;
 import org.jenetics.Optimize;
 import org.jenetics.engine.EvolutionParam;
 import org.jenetics.util.LCG64ShiftRandom;
