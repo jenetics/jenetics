@@ -36,6 +36,6 @@ public interface Problem<
 
 	public Factory<Genotype<G>> genotype();
 
-	public Function<Genotype<G>, C> function();
+	public Function<Genotype<G>, C> fitness();
 
 }

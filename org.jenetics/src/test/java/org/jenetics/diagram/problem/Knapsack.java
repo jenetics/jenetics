@@ -149,7 +149,7 @@ public final class Knapsack
 	}
 
 	@Override
-	public Function<Genotype<BitGene>, Double> function() {
+	public Function<Genotype<BitGene>, Double> fitness() {
 		return this;
 	}
 
@@ -178,7 +178,7 @@ public final class Knapsack
 
 		// Configure and build the evolution engine.
 		return Engine
-			.builder(knapsack.function(), knapsack.genotype())
+			.builder(knapsack.fitness(), knapsack.genotype())
 			.populationSize(150)
 			.survivorsSelector(new TournamentSelector<>(5))
 			.offspringSelector(new RouletteWheelSelector<>())
