@@ -837,6 +837,7 @@ public final class Engine<
 	 */
 	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
 	Builder<G, C> builder(final Problem<T, G, C> problem) {
+		requireNonNull(problem);
 		return builder(problem.fitness(), problem.codec());
 	}
 
