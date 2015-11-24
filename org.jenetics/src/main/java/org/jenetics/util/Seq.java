@@ -23,7 +23,6 @@ import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.joining;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -443,8 +442,9 @@ public interface Seq<T> extends Iterable<T> {
 	 * @throws NullPointerException if the given {@code values} array is
 	 *         {@code null}
 	 */
+	@SuppressWarnings("unchecked")
 	public default Seq<T> append(final T... values) {
-		return append(Arrays.asList(values));
+		return append(Seq.of(values));
 	}
 
 	/**
@@ -473,8 +473,9 @@ public interface Seq<T> extends Iterable<T> {
 	 * @throws NullPointerException if the given {@code values} array is
 	 *         {@code null}
 	 */
+	@SuppressWarnings("unchecked")
 	public default Seq<T> prepend(final T... values) {
-		return prepend(Arrays.asList(values));
+		return prepend(Seq.of(values));
 	}
 
 	/**
