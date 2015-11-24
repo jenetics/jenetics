@@ -117,6 +117,28 @@ public final class Array<T> implements Serializable {
 	}
 
 	/**
+	 * Return a <i>new</i> {@code Array} object with the given values appended.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param array the values to append
+	 * @return a <i>new</i> {@code Array} object with the elements of
+	 *         {@code this} array and the given {@code array} appended.
+	 * @throws NullPointerException if the given {@code array} is {@code null}
+	 */
+	public Array<T> append(final Array<T> array) {
+		final Array<T> appended = ofLength(length() + array.length());
+		for (int i = 0; i < _length; ++i) {
+			appended.set(i, get(i));
+		}
+		for (int i = 0; i < array._length; ++i) {
+			appended.set(i + _length, array.get(i));
+		}
+
+		return appended;
+	}
+
+	/**
 	 * Return the array length.
 	 *
 	 * @return the array length
