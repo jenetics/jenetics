@@ -435,6 +435,8 @@ public interface Seq<T> extends Iterable<T> {
 	 * Return a <i>new</i> {@code Seq} object with the given {@code values}
 	 * appended.
 	 *
+	 * @since !__version__!
+	 *
 	 * @param values the values to append
 	 * @return a <i>new</i> {@code Seq} object with the elements of {@code this}
 	 *        sequences and the given {@code values} appended.
@@ -449,6 +451,8 @@ public interface Seq<T> extends Iterable<T> {
 	 * Return a <i>new</i> {@code Seq} object with the given {@code values}
 	 * appended.
 	 *
+	 * @since !__version__!
+	 *
 	 * @param values the values to append
 	 * @return a <i>new</i> {@code Seq} object with the elements of {@code this}
 	 *        sequences and the given {@code values} appended.
@@ -460,6 +464,8 @@ public interface Seq<T> extends Iterable<T> {
 	/**
 	 * Return a <i>new</i> {@code Seq} object with the given {@code values}
 	 * prepended.
+	 *
+	 * @since !__version__!
 	 *
 	 * @param values the values to append
 	 * @return a <i>new</i> {@code Seq} object with the elements of {@code this}
@@ -474,6 +480,8 @@ public interface Seq<T> extends Iterable<T> {
 	/**
 	 * Return a <i>new</i> {@code Seq} object with the given {@code values}
 	 * prepended.
+	 *
+	 * @since !__version__!
 	 *
 	 * @param values the values to append
 	 * @return a <i>new</i> {@code Seq} object with the elements of {@code this}
