@@ -21,6 +21,10 @@ package org.jenetics.optimizer;
 
 import java.util.function.Function;
 
+import org.jenetics.Gene;
+import org.jenetics.engine.Engine;
+import org.jenetics.engine.Problem;
+
 /**
  * @param <T> the argument type of function to optimize
  * @param <R> the result type of the function to optimize
@@ -33,6 +37,16 @@ import java.util.function.Function;
 public interface Minimizer<T, R extends Comparable<? super R>> {
 
 	public T argmin(final Function<T, R> function);
+
+	public default <G extends Gene<?, G>>
+	T argmin(final Problem<T, G, R> problem) {
+		return null;
+	}
+
+	public static <T, G extends Gene<?, G>, R extends Comparable<? super R>>
+	Minimizer<T, R> of(final Engine<G, R> engine) {
+		return null;
+	}
 
 /*
 	public static <

@@ -121,6 +121,28 @@ public final class AltererCodec<
 		return _codec.decoder();
 	}
 
+
+	public AltererCodec<G, C> append(final ISeq<Codec<Alterer<G, C>, DoubleGene>> codecs) {
+		return null;
+	}
+
+	/**
+	 *
+	 *
+	 * @param codecs
+	 * @param alterers
+	 * @param <G>
+	 * @param <C>
+	 * @return
+	 */
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	AltererCodec<G, C> of(
+		final ISeq<Codec<Alterer<G, C>, DoubleGene>> codecs,
+		final ISeq<Alterer<G, C>> alterers
+	) {
+		return new AltererCodec<>(codecs, alterers);
+	}
+
 	/**
 	 * Return the generically applicable alterer {@code Codec}.
 	 *

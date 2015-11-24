@@ -53,7 +53,7 @@ public class EvolutionParamOptimizerTest {
 			);
 
 		final EvolutionParamOptimizer<BitGene, Double> optimizer =
-			new EvolutionParamOptimizer<>(codec, () -> bySteadyFitness(250));
+			EvolutionParamOptimizer.of(codec, () -> bySteadyFitness(250));
 
 		final EvolutionParam<BitGene, Double> params = optimizer
 			.optimize(
