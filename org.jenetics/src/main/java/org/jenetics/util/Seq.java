@@ -23,6 +23,7 @@ import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.joining;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -417,17 +418,6 @@ public interface Seq<T> extends Iterable<T> {
 	}
 
 	/**
-	 * Returns a fixed-size list backed by the specified sequence. (Changes to
-	 * the returned list "write through" to the array.) The returned list is
-	 * fixed size, serializable and implements {@link RandomAccess}.
-	 *
-	 * @return a list view of this sequence
-	 */
-	public default List<T> asList() {
-		return new SeqList<>(this);
-	}
-
-	/**
 	 * Builds a new sequence by applying a function to all elements of this
 	 * sequence.
 	 *
@@ -440,6 +430,69 @@ public interface Seq<T> extends Iterable<T> {
 	 *         {@code null}.
 	 */
 	public <B> Seq<B> map(final Function<? super T, ? extends B> mapper);
+
+	/**
+	 * Return a <i>new</i> {@code Seq} object with the given {@code values}
+	 * appended.
+	 *
+	 * @param values the values to append
+	 * @return a <i>new</i> {@code Seq} object with the elements of {@code this}
+	 *        sequences and the given {@code values} appended.
+	 * @throws NullPointerException if the given {@code values} array is
+	 *         {@code null}
+	 */
+	public default Seq<T> append(final T... values) {
+		return append(Arrays.asList(values));
+	}
+
+	/**
+	 * Return a <i>new</i> {@code Seq} object with the given {@code values}
+	 * appended.
+	 *
+	 * @param values the values to append
+	 * @return a <i>new</i> {@code Seq} object with the elements of {@code this}
+	 *        sequences and the given {@code values} appended.
+	 * @throws NullPointerException if the given {@code values} iterable is
+	 *         {@code null}
+	 */
+	public Seq<T> append(final Iterable<? extends T> values);
+
+	/**
+	 * Return a <i>new</i> {@code Seq} object with the given {@code values}
+	 * prepended.
+	 *
+	 * @param values the values to append
+	 * @return a <i>new</i> {@code Seq} object with the elements of {@code this}
+	 *        sequences and the given {@code values} prepended.
+	 * @throws NullPointerException if the given {@code values} array is
+	 *         {@code null}
+	 */
+	public default Seq<T> prepend(final T... values) {
+		return prepend(Arrays.asList(values));
+	}
+
+	/**
+	 * Return a <i>new</i> {@code Seq} object with the given {@code values}
+	 * prepended.
+	 *
+	 * @param values the values to append
+	 * @return a <i>new</i> {@code Seq} object with the elements of {@code this}
+	 *        sequences and the given {@code values} prepended.
+	 * @throws NullPointerException if the given {@code values} array is
+	 *         {@code null}
+	 */
+	public Seq<T> prepend(final Iterable<? extends T> values);
+
+	/**
+	 * Returns a fixed-size list backed by the specified sequence. (Changes to
+	 * the returned list "write through" to the array.) The returned list is
+	 * fixed size, serializable and implements {@link RandomAccess}.
+	 *
+	 * @return a list view of this sequence
+	 */
+	public default List<T> asList() {
+		return new SeqList<>(this);
+	}
 
 	/**
 	 * Return an array containing all of the elements in this sequence in right

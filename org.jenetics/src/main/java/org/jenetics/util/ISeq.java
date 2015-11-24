@@ -22,6 +22,7 @@ package org.jenetics.util;
 import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -53,6 +54,22 @@ public interface ISeq<T>
 
 	@Override
 	public <B> ISeq<B> map(final Function<? super T, ? extends B> mapper);
+
+	@Override
+	public default ISeq<T> append(final T... values) {
+		return append(Arrays.asList(values));
+	}
+
+	@Override
+	public ISeq<T> append(final Iterable<? extends T> values);
+
+	@Override
+	public default ISeq<T> prepend(final T... values) {
+		return prepend(Arrays.asList(values));
+	}
+
+	@Override
+	public ISeq<T> prepend(final Iterable<? extends T> values);
 
 	/**
 	 * Return a shallow copy of this sequence. The sequence elements are not

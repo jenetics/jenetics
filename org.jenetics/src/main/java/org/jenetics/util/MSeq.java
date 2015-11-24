@@ -23,6 +23,7 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -223,6 +224,22 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 
 	@Override
 	public <B> MSeq<B> map(final Function<? super T, ? extends B> mapper);
+
+	@Override
+	public default MSeq<T> append(final T... values) {
+		return append(Arrays.asList(values));
+	}
+
+	@Override
+	public MSeq<T> append(final Iterable<? extends T> values);
+
+	@Override
+	public default MSeq<T> prepend(final T... values) {
+		return prepend(Arrays.asList(values));
+	}
+
+	@Override
+	public MSeq<T> prepend(final Iterable<? extends T> values);
 
 	/**
 	 * Return a read-only projection of this sequence. Changes to the original
