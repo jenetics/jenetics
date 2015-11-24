@@ -19,7 +19,10 @@
  */
 package org.jenetics.internal.collection;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import org.testng.annotations.Test;
 
@@ -49,6 +52,46 @@ public class ArraySeqTest extends SeqTestBase {
 				mapped.set(i, mapper.apply(array.get(i)));
 			}
 			return new ArrayISeq<>(mapped.seal());
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public ISeq<T> append(final Iterable<? extends T> values) {
+			requireNonNull(values);
+
+			final Stream.Builder<T> builder = Stream.builder();
+			values.forEach(builder::add);
+			final Object[] objects = builder.build().toArray();
+
+			final Array<T> appended = Array.ofLength(length() + objects.length);
+			for (int i = 0; i < length(); ++i) {
+				appended.set(i, get(i));
+			}
+			for (int i = 0; i < objects.length; ++i) {
+				appended.set(i + length(), (T)objects[i]);
+			}
+
+			return new ArrayISeq<>(appended.seal());
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public ISeq<T> prepend(final Iterable<? extends T> values) {
+			requireNonNull(values);
+
+			final Stream.Builder<T> builder = Stream.builder();
+			values.forEach(builder::add);
+			final Object[] objects = builder.build().toArray();
+
+			final Array<T> appended = Array.ofLength(length() + objects.length);
+			for (int i = 0; i < objects.length; ++i) {
+				appended.set(i, (T)objects[i]);
+			}
+			for (int i = 0; i < length(); ++i) {
+				appended.set(i + objects.length, get(i));
+			}
+
+			return new ArrayISeq<>(appended.seal());
 		}
 
 		@Override

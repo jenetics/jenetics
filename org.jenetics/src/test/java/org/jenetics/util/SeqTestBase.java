@@ -329,6 +329,24 @@ public abstract class SeqTestBase {
 	}
 
 	@Test(dataProvider = "sequences")
+	public void append(final Seq<Integer> seq) {
+		final Seq<Integer> appended = seq.append(-1000, -5000);
+
+		Assert.assertEquals(appended.length(), seq.length() + 2);
+		Assert.assertEquals(appended.get(appended.length() - 2).intValue(), -1000);
+		Assert.assertEquals(appended.get(appended.length() - 1).intValue(), -5000);
+	}
+
+	@Test(dataProvider = "sequences")
+	public void prepend(final Seq<Integer> seq) {
+		final Seq<Integer> prepended = seq.prepend(-1000, -5000);
+
+		Assert.assertEquals(prepended.length(), seq.length() + 2);
+		Assert.assertEquals(prepended.get(0).intValue(), -1000);
+		Assert.assertEquals(prepended.get(1).intValue(), -5000);
+	}
+
+	@Test(dataProvider = "sequences")
 	public void toArrayObject(final Seq<Integer> seq) {
 		final Object[] array = seq.toArray();
 		Assert.assertEquals(array.length, seq.length());

@@ -21,12 +21,14 @@ package org.jenetics.internal.collection;
 
 import static java.lang.Math.min;
 import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
@@ -173,6 +175,46 @@ public class ArrayMSeq<T> extends ArraySeq<T> implements MSeq<T> {
 			mapped.set(i, mapper.apply(array.get(i)));
 		}
 		return new ArrayMSeq<>(mapped);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public MSeq<T> append(final Iterable<? extends T> values) {
+		requireNonNull(values);
+
+		final Stream.Builder<T> builder = Stream.builder();
+		values.forEach(builder::add);
+		final Object[] objects = builder.build().toArray();
+
+		final Array<T> appended = Array.ofLength(length() + objects.length);
+		for (int i = 0; i < length(); ++i) {
+			appended.set(i, get(i));
+		}
+		for (int i = 0; i < objects.length; ++i) {
+			appended.set(i + length(), (T)objects[i]);
+		}
+
+		return new ArrayMSeq<>(appended);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public MSeq<T> prepend(final Iterable<? extends T> values) {
+		requireNonNull(values);
+
+		final Stream.Builder<T> builder = Stream.builder();
+		values.forEach(builder::add);
+		final Object[] objects = builder.build().toArray();
+
+		final Array<T> appended = Array.ofLength(length() + objects.length);
+		for (int i = 0; i < objects.length; ++i) {
+			appended.set(i, (T)objects[i]);
+		}
+		for (int i = 0; i < length(); ++i) {
+			appended.set(i + objects.length, get(i));
+		}
+
+		return new ArrayMSeq<>(appended);
 	}
 
 	@Override
