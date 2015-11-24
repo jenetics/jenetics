@@ -23,6 +23,8 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * Array implementation class. This class manages the actual array (store) and
@@ -136,6 +138,53 @@ public final class Array<T> implements Serializable {
 		}
 
 		return appended;
+	}
+
+	public Array<T> append(final Iterable<? extends T> values) {
+		final int size = size(values);
+		final Array<T> array = ofLength(_length + size);
+
+		for (int i = 0; i < _length; ++i) {
+			array.set(i, get(i));
+		}
+
+		final Iterator<? extends T> it = values.iterator();
+		for (int i = 0; i < size; ++i) {
+			array.set(_length + i, it.next());
+		}
+
+		return array;
+	}
+
+	public Array<T> prepend(final Iterable<? extends T> values) {
+		final int size = size(values);
+		final Array<T> array = ofLength(_length + size);
+
+		final Iterator<? extends T> it = values.iterator();
+		for (int i = 0; i < size; ++i) {
+			array.set(i, it.next());
+		}
+
+		for (int i = 0; i < _length; ++i) {
+			array.set(size + i, get(i));
+		}
+
+		return array;
+	}
+
+	private static int size(final Iterable<?> values) {
+		int size = 0;
+		if (values instanceof Collection<?>) {
+			size = ((Collection<?>)values).size();
+		} else {
+			final Iterator<?> it = values.iterator();
+			while (it.hasNext()) {
+				++size;
+				it.next();
+			}
+		}
+
+		return size;
 	}
 
 	/**

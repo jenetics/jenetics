@@ -23,7 +23,6 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.function.Function;
-import java.util.stream.Stream;
 
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
@@ -55,17 +54,9 @@ public class ArrayISeq<T> extends ArraySeq<T> implements ISeq<T> {
 	public ISeq<T> append(final Iterable<? extends T> values) {
 		requireNonNull(values);
 
-		final Stream.Builder<T> builder = Stream.builder();
-		values.forEach(builder::add);
-		final Object[] objects = builder.build().toArray();
-
-		final Array<T> appended = Array.ofLength(length() + objects.length);
-		for (int i = 0; i < length(); ++i) {
-			appended.set(i, get(i));
-		}
-		for (int i = 0; i < objects.length; ++i) {
-			appended.set(i + length(), (T)objects[i]);
-		}
+		final Array<T> appended = values instanceof ArrayISeq<?>
+			? array.append(((ArrayISeq<T>)values).array)
+			: array.append(values);
 
 		return new ArrayISeq<>(appended.seal());
 	}
@@ -75,19 +66,11 @@ public class ArrayISeq<T> extends ArraySeq<T> implements ISeq<T> {
 	public ISeq<T> prepend(final Iterable<? extends T> values) {
 		requireNonNull(values);
 
-		final Stream.Builder<T> builder = Stream.builder();
-		values.forEach(builder::add);
-		final Object[] objects = builder.build().toArray();
+		final Array<T> prepended = values instanceof ArrayISeq<?>
+			? ((ArrayISeq<T>)values).array.append(array)
+			: array.prepend(values);
 
-		final Array<T> appended = Array.ofLength(length() + objects.length);
-		for (int i = 0; i < objects.length; ++i) {
-			appended.set(i, (T)objects[i]);
-		}
-		for (int i = 0; i < length(); ++i) {
-			appended.set(i + objects.length, get(i));
-		}
-
-		return new ArrayISeq<>(appended.seal());
+		return new ArrayISeq<>(prepended.seal());
 	}
 
 	@Override
