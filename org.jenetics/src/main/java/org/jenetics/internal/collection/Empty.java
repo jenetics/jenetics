@@ -84,17 +84,17 @@ public final class Empty {
 
 		@Override
 		public MSeq<Object> append(final Iterable<?> values) {
-			return null;
+			return MSeq.of(values);
 		}
 
 		@Override
 		public MSeq<Object> prepend(final Object... values) {
-			return null;
+			return MSeq.of(values);
 		}
 
 		@Override
 		public MSeq<Object> prepend(final Iterable<?> values) {
-			return null;
+			return MSeq.of(values);
 		}
 
 		@Override
@@ -187,23 +187,23 @@ public final class Empty {
 		}
 
 		@Override
-		public ISeq<Object> append(Object... values) {
-			return null;
+		public ISeq<Object> append(final Object... values) {
+			return ISeq.of(values);
 		}
 
 		@Override
-		public ISeq<Object> append(Iterable<?> values) {
-			return null;
+		public ISeq<Object> append(final Iterable<?> values) {
+			return ISeq.of(values);
 		}
 
 		@Override
-		public ISeq<Object> prepend(Object... values) {
-			return null;
+		public ISeq<Object> prepend(final Object... values) {
+			return ISeq.of(values);
 		}
 
 		@Override
-		public ISeq<Object> prepend(Iterable<?> values) {
-			return null;
+		public ISeq<Object> prepend(final Iterable<?> values) {
+			return ISeq.of(values);
 		}
 
 		@Override
