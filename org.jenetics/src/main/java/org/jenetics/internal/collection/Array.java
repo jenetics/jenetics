@@ -140,6 +140,17 @@ public final class Array<T> implements Serializable {
 		return appended;
 	}
 
+	/**
+	 * Return a <i>new</i> {@code Array} with the given {@code values} appended.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param values the values to append
+	 * @return a <i>new</i> {@code Array} with the elements of {@code this}
+	 *        array and the given {@code values} appended.
+	 * @throws NullPointerException if the given {@code values} iterable is
+	 *         {@code null}
+	 */
 	public Array<T> append(final Iterable<? extends T> values) {
 		final int size = size(values);
 		final Array<T> array = ofLength(_length + size);
@@ -156,6 +167,17 @@ public final class Array<T> implements Serializable {
 		return array;
 	}
 
+	/**
+	 * Return a <i>new</i> {@code Array} with the given {@code values} prepended.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param values the values to prepend
+	 * @return a <i>new</i> {@code Array} with the elements of {@code this}
+	 *        array and the given {@code values} appended.
+	 * @throws NullPointerException if the given {@code values} iterable is
+	 *         {@code null}
+	 */
 	public Array<T> prepend(final Iterable<? extends T> values) {
 		final int size = size(values);
 		final Array<T> array = ofLength(_length + size);
