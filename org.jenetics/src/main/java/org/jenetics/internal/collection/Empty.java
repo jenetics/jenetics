@@ -78,6 +78,26 @@ public final class Empty {
 		}
 
 		@Override
+		public MSeq<Object> append(final Object... values) {
+			return MSeq.of(values);
+		}
+
+		@Override
+		public MSeq<Object> append(final Iterable<?> values) {
+			return MSeq.of(values);
+		}
+
+		@Override
+		public MSeq<Object> prepend(final Object... values) {
+			return MSeq.of(values);
+		}
+
+		@Override
+		public MSeq<Object> prepend(final Iterable<?> values) {
+			return MSeq.of(values);
+		}
+
+		@Override
 		public Stream<Object> stream() {
 			return Stream.empty();
 		}
@@ -164,6 +184,26 @@ public final class Empty {
 		public <B> ISeq<B> map(final Function<? super Object, ? extends B> mapper) {
 			requireNonNull(mapper);
 			return iseq();
+		}
+
+		@Override
+		public ISeq<Object> append(final Object... values) {
+			return ISeq.of(values);
+		}
+
+		@Override
+		public ISeq<Object> append(final Iterable<?> values) {
+			return ISeq.of(values);
+		}
+
+		@Override
+		public ISeq<Object> prepend(final Object... values) {
+			return ISeq.of(values);
+		}
+
+		@Override
+		public ISeq<Object> prepend(final Iterable<?> values) {
+			return ISeq.of(values);
 		}
 
 		@Override

@@ -49,6 +49,16 @@ public class ArrayISeq<T> extends ArraySeq<T> implements ISeq<T> {
 	}
 
 	@Override
+	public ISeq<T> append(final Iterable<? extends T> values) {
+		return new ArrayISeq<>(__append(values).seal());
+	}
+
+	@Override
+	public ISeq<T> prepend(final Iterable<? extends T> values) {
+		return new ArrayISeq<>(__prepend(values).seal());
+	}
+
+	@Override
 	public ISeq<T> subSeq(final int start) {
 		if (start < 0 || start > length()) {
 			throw new ArrayIndexOutOfBoundsException(format(

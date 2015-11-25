@@ -202,6 +202,24 @@ public class MSeqTest {
 		Assert.assertSame(MSeq.of(1, 2, 3).subSeq(0, 0), MSeq.empty());
 	}
 
+	@Test
+	public void emptySeqAppend() {
+		final MSeq<Integer> empty = MSeq.empty();
+		final MSeq<Integer> seq = MSeq.of(1, 2, 3, 4);
+		final MSeq<Integer> aseq = empty.append(seq);
+
+		Assert.assertEquals(aseq, seq);
+	}
+
+	@Test
+	public void emptySeqPrepend() {
+		final MSeq<Integer> empty = MSeq.empty();
+		final MSeq<Integer> seq = MSeq.of(1, 2, 3, 4);
+		final MSeq<Integer> aseq = empty.prepend(seq);
+
+		Assert.assertEquals(aseq, seq);
+	}
+
 	@Test(expectedExceptions = ArrayIndexOutOfBoundsException.class)
 	public void subSeqOutOtBounds1() {
 		MSeq.of(1, 2, 3).subSeq(5);

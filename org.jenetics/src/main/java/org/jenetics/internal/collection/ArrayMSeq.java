@@ -176,6 +176,16 @@ public class ArrayMSeq<T> extends ArraySeq<T> implements MSeq<T> {
 	}
 
 	@Override
+	public MSeq<T> append(final Iterable<? extends T> values) {
+		return new ArrayMSeq<>(__append(values));
+	}
+
+	@Override
+	public MSeq<T> prepend(final Iterable<? extends T> values) {
+		return new ArrayMSeq<>(__prepend(values));
+	}
+
+	@Override
 	public ISeq<T> toISeq() {
 		return isEmpty()
 			? Empty.iseq()
