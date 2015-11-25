@@ -431,14 +431,13 @@ public interface Seq<T> extends Iterable<T> {
 	public <B> Seq<B> map(final Function<? super T, ? extends B> mapper);
 
 	/**
-	 * Return a <i>new</i> {@code Seq} object with the given {@code values}
-	 * appended.
+	 * Return a <i>new</i> {@code Seq} with the given {@code values} appended.
 	 *
 	 * @since !__version__!
 	 *
 	 * @param values the values to append
-	 * @return a <i>new</i> {@code Seq} object with the elements of {@code this}
-	 *        sequences and the given {@code values} appended.
+	 * @return a <i>new</i> {@code Seq} with the elements of {@code this}
+	 *        sequence and the given {@code values} appended.
 	 * @throws NullPointerException if the given {@code values} array is
 	 *         {@code null}
 	 */
@@ -448,28 +447,26 @@ public interface Seq<T> extends Iterable<T> {
 	}
 
 	/**
-	 * Return a <i>new</i> {@code Seq} object with the given {@code values}
-	 * appended.
+	 * Return a <i>new</i> {@code Seq} with the given {@code values} appended.
 	 *
 	 * @since !__version__!
 	 *
 	 * @param values the values to append
-	 * @return a <i>new</i> {@code Seq} object with the elements of {@code this}
-	 *        sequences and the given {@code values} appended.
+	 * @return a <i>new</i> {@code Seq} with the elements of {@code this}
+	 *        sequence and the given {@code values} appended.
 	 * @throws NullPointerException if the given {@code values} iterable is
 	 *         {@code null}
 	 */
 	public Seq<T> append(final Iterable<? extends T> values);
 
 	/**
-	 * Return a <i>new</i> {@code Seq} object with the given {@code values}
-	 * prepended.
+	 * Return a <i>new</i> {@code Seq} with the given {@code values} prepended.
 	 *
 	 * @since !__version__!
 	 *
 	 * @param values the values to append
-	 * @return a <i>new</i> {@code Seq} object with the elements of {@code this}
-	 *        sequences and the given {@code values} prepended.
+	 * @return a <i>new</i> {@code Seq} with the elements of {@code this}
+	 *        sequence and the given {@code values} prepended.
 	 * @throws NullPointerException if the given {@code values} array is
 	 *         {@code null}
 	 */
@@ -479,14 +476,13 @@ public interface Seq<T> extends Iterable<T> {
 	}
 
 	/**
-	 * Return a <i>new</i> {@code Seq} object with the given {@code values}
-	 * prepended.
+	 * Return a <i>new</i> {@code Seq} with the given {@code values} prepended.
 	 *
 	 * @since !__version__!
 	 *
 	 * @param values the values to append
-	 * @return a <i>new</i> {@code Seq} object with the elements of {@code this}
-	 *        sequences and the given {@code values} prepended.
+	 * @return a <i>new</i> {@code Seq} with the elements of {@code this}
+	 *        sequence and the given {@code values} prepended.
 	 * @throws NullPointerException if the given {@code values} array is
 	 *         {@code null}
 	 */
