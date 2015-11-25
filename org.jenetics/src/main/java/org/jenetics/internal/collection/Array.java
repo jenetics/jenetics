@@ -121,7 +121,7 @@ public final class Array<T> implements Serializable {
 	/**
 	 * Return a <i>new</i> {@code Array} object with the given values appended.
 	 *
-	 * @since !__version__!
+	 * @since 3.4
 	 *
 	 * @param array the values to append
 	 * @return a <i>new</i> {@code Array} object with the elements of
@@ -147,7 +147,7 @@ public final class Array<T> implements Serializable {
 	/**
 	 * Return a <i>new</i> {@code Array} with the given {@code values} appended.
 	 *
-	 * @since !__version__!
+	 * @since 3.4
 	 *
 	 * @param values the values to append
 	 * @return a <i>new</i> {@code Array} with the elements of {@code this}
@@ -174,7 +174,7 @@ public final class Array<T> implements Serializable {
 	/**
 	 * Return a <i>new</i> {@code Array} with the given {@code values} prepended.
 	 *
-	 * @since !__version__!
+	 * @since 3.4
 	 *
 	 * @param values the values to prepend
 	 * @return a <i>new</i> {@code Array} with the elements of {@code this}
