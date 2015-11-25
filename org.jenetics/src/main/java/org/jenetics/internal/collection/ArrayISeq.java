@@ -20,7 +20,6 @@
 package org.jenetics.internal.collection;
 
 import static java.lang.String.format;
-import static java.util.Objects.requireNonNull;
 
 import java.util.function.Function;
 
@@ -49,28 +48,14 @@ public class ArrayISeq<T> extends ArraySeq<T> implements ISeq<T> {
 		return new ArrayISeq<>(mapped.seal());
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public ISeq<T> append(final Iterable<? extends T> values) {
-		requireNonNull(values);
-
-		final Array<T> appended = values instanceof ArrayISeq<?>
-			? array.append(((ArrayISeq<T>)values).array)
-			: array.append(values);
-
-		return new ArrayISeq<>(appended.seal());
+		return new ArrayISeq<>(__append(values).seal());
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public ISeq<T> prepend(final Iterable<? extends T> values) {
-		requireNonNull(values);
-
-		final Array<T> prepended = values instanceof ArrayISeq<?>
-			? ((ArrayISeq<T>)values).array.append(array)
-			: array.prepend(values);
-
-		return new ArrayISeq<>(prepended.seal());
+		return new ArrayISeq<>(__prepend(values).seal());
 	}
 
 	@Override

@@ -23,7 +23,6 @@ import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
 import java.util.Iterator;
-import java.util.List;
 import java.util.ListIterator;
 import java.util.Spliterator;
 import java.util.function.Consumer;
@@ -55,6 +54,22 @@ public abstract class ArraySeq<T>
 	public final T get(final int index) {
 		array.checkIndex(index);
 		return array.get(index);
+	}
+
+	@SuppressWarnings("unchecked")
+	final Array<T> __append(final Iterable<? extends T> values) {
+		requireNonNull(values);
+		return values instanceof ArraySeq<?>
+			? array.append(((ArraySeq<T>)values).array)
+			: array.append(values);
+	}
+
+	@SuppressWarnings("unchecked")
+	final Array<T> __prepend(final Iterable<? extends T> values) {
+		requireNonNull(values);
+		return values instanceof ArraySeq<?>
+			? ((ArraySeq<T>)values).array.append(array)
+			: array.prepend(values);
 	}
 
 	@Override

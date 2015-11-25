@@ -21,7 +21,6 @@ package org.jenetics.internal.collection;
 
 import static java.lang.Math.min;
 import static java.lang.String.format;
-import static java.util.Objects.requireNonNull;
 
 import java.util.Iterator;
 import java.util.ListIterator;
@@ -176,28 +175,14 @@ public class ArrayMSeq<T> extends ArraySeq<T> implements MSeq<T> {
 		return new ArrayMSeq<>(mapped);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public MSeq<T> append(final Iterable<? extends T> values) {
-		requireNonNull(values);
-
-		final Array<T> appended = values instanceof ArrayMSeq<?>
-			? array.append(((ArrayMSeq<T>)values).array)
-			: array.append(values);
-
-		return new ArrayMSeq<>(appended);
+		return new ArrayMSeq<>(__append(values));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public MSeq<T> prepend(final Iterable<? extends T> values) {
-		requireNonNull(values);
-
-		final Array<T> prepended = values instanceof ArrayMSeq<?>
-			? ((ArrayMSeq<T>)values).array.append(array)
-			: array.prepend(values);
-
-		return new ArrayMSeq<>(prepended);
+		return new ArrayMSeq<>(__prepend(values));
 	}
 
 	@Override
