@@ -54,6 +54,24 @@ public interface ISeq<T>
 	@Override
 	public <B> ISeq<B> map(final Function<? super T, ? extends B> mapper);
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public default ISeq<T> append(final T... values) {
+		return append(ISeq.of(values));
+	}
+
+	@Override
+	public ISeq<T> append(final Iterable<? extends T> values);
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public default ISeq<T> prepend(final T... values) {
+		return prepend(ISeq.of(values));
+	}
+
+	@Override
+	public ISeq<T> prepend(final Iterable<? extends T> values);
+
 	/**
 	 * Return a shallow copy of this sequence. The sequence elements are not
 	 * cloned.
