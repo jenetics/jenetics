@@ -58,6 +58,11 @@ public final class ObjectStore<T> implements Store<T>, Serializable {
 	}
 
 	@Override
+	public ObjectStore<T> newInstance(final int length) {
+		return ofLength(length);
+	}
+
+	@Override
 	public int length() {
 		return _array.length;
 	}

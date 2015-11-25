@@ -59,6 +59,11 @@ public final class CharStore implements Array.Store<Character>, Serializable {
 	}
 
 	@Override
+	public CharStore newInstance(final int length) {
+		return new CharStore(length);
+	}
+
+	@Override
 	public int length() {
 		return array.length;
 	}

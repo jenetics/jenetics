@@ -167,6 +167,11 @@ final class BitGeneStore implements Array.Store<BitGene>, Serializable {
 	}
 
 	@Override
+	public BitGeneStore newInstance(final int length) {
+		return ofLength(length);
+	}
+
+	@Override
 	public int length() {
 		return length;
 	}

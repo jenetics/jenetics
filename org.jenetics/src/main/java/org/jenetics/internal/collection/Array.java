@@ -129,7 +129,7 @@ public final class Array<T> implements Serializable {
 	 * @throws NullPointerException if the given {@code array} is {@code null}
 	 */
 	public Array<T> append(final Array<T> array) {
-		final Array<T> appended = ofLength(length() + array.length());
+		final Array<T> appended = newInstance(length() + array.length());
 		for (int i = 0; i < _length; ++i) {
 			appended.set(i, get(i));
 		}
@@ -138,6 +138,10 @@ public final class Array<T> implements Serializable {
 		}
 
 		return appended;
+	}
+
+	private Array<T> newInstance(final int length) {
+		return of(_store._value.newInstance(length));
 	}
 
 	/**
@@ -153,7 +157,7 @@ public final class Array<T> implements Serializable {
 	 */
 	public Array<T> append(final Iterable<? extends T> values) {
 		final int size = size(values);
-		final Array<T> array = ofLength(_length + size);
+		final Array<T> array = newInstance(_length + size);
 
 		for (int i = 0; i < _length; ++i) {
 			array.set(i, get(i));
@@ -180,7 +184,7 @@ public final class Array<T> implements Serializable {
 	 */
 	public Array<T> prepend(final Iterable<? extends T> values) {
 		final int size = size(values);
-		final Array<T> array = ofLength(_length + size);
+		final Array<T> array = newInstance(_length + size);
 
 		final Iterator<? extends T> it = values.iterator();
 		for (int i = 0; i < size; ++i) {
@@ -377,6 +381,15 @@ public final class Array<T> implements Serializable {
 		}
 
 		/**
+		 * Return a new {@code Store} of the same type and the given length.
+		 *
+		 * @param length the length of the new store
+		 * @return a new {@code Store} of the same type and the given length.
+		 * @throws NegativeArraySizeException if the length is smaller than zero
+		 */
+		public Store<T> newInstance(final int length);
+
+		/**
 		 * Mutable reference of an underlying array {@code Store}.
 		 *
 		 * @param <T> the array element type
@@ -436,6 +449,11 @@ public final class Array<T> implements Serializable {
 			@Override
 			public Store<T> copy(final int from, final int until) {
 				return _value.copy(from, until);
+			}
+
+			@Override
+			public Store<T> newInstance(final int length) {
+				return _value.newInstance(length);
 			}
 
 			public static <T> Ref<T> of(final Store<T> value) {
