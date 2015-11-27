@@ -22,7 +22,6 @@ package org.jenetics.optimizer;
 import static java.lang.Math.min;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.engine.codecs.ofScalar;
-import static org.jenetics.internal.collection.seq.concat;
 
 import java.util.function.Function;
 
@@ -96,7 +95,7 @@ public final class SelectorCodec<
 			ofScalar(DoubleRange.of(0, selectorCount));
 
 		_codec = Codec.of(
-			concat(ISeq.of(selectorIndexCodec), codecs),
+			ISeq.concat(ISeq.of(selectorIndexCodec), codecs),
 			x -> {
 				final int selectorIndex =
 					min(((Double)x[0]).intValue(), selectorCount - 1);

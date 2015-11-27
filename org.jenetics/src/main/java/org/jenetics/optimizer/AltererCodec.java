@@ -21,7 +21,6 @@ package org.jenetics.optimizer;
 
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.engine.codecs.ofVector;
-import static org.jenetics.internal.collection.seq.concat;
 
 import java.util.function.Function;
 
@@ -80,7 +79,7 @@ public final class AltererCodec<
 			ofVector(DoubleRange.of(0, 1), altererCount);
 
 		_codec = Codec.of(
-			concat(ISeq.of(altererIndexesCodec), codecs),
+			ISeq.concat(ISeq.of(altererIndexesCodec), codecs),
 			x -> {
 				final double[] index = (double[])x[0];
 
