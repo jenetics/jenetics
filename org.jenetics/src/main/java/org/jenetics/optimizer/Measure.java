@@ -24,8 +24,6 @@ import static java.util.Objects.requireNonNull;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.jenetics.Alterer;
-import org.jenetics.CompositeAlterer;
 import org.jenetics.GaussianMutator;
 import org.jenetics.MeanAlterer;
 import org.jenetics.MultiPointCrossover;
