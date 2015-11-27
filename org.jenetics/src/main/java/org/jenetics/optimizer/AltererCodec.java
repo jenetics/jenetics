@@ -120,10 +120,16 @@ public final class AltererCodec<
 		return _codec.decoder();
 	}
 
-
-	public AltererCodec<G, C> append(final ISeq<Codec<Alterer<G, C>, DoubleGene>> codecs) {
-		return null;
+	public AltererCodec<G, C> append(
+		final ISeq<Codec<Alterer<G, C>, DoubleGene>> codecs,
+		final ISeq<Alterer<G, C>> alterers
+	) {
+		return of(_codecs.append(codecs), _alterers.append(alterers));
 	}
+
+	/* *************************************************************************
+	 *  Static factory methods
+	 * ************************************************************************/
 
 	/**
 	 *
@@ -300,6 +306,40 @@ public final class AltererCodec<
 		);
 
 		return new AltererCodec<>(codecs, ISeq.empty());
+	}
+
+	/* *************************************************************************
+	 *  Static factory methods for creating alterer codecs.
+	 * ************************************************************************/
+
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Codec<Alterer<G, C>, DoubleGene> MultiPointCrossover(final IntRange points) {
+		return Codec.of(
+			Genotype.of(
+				DoubleChromosome.of(0, 1),
+				DoubleChromosome.of(points.doubleRange())
+			),
+			gt -> new MultiPointCrossover<>(
+				gt.get(0, 0).doubleValue(),
+				gt.get(1, 0).intValue()
+			)
+		);
+	}
+
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Codec<Alterer<G, C>, DoubleGene> Mutator() {
+		return Codec.of(
+			Genotype.of(DoubleChromosome.of(0, 1)),
+			gt -> new Mutator<>(gt.getGene().doubleValue())
+		);
+	}
+
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Codec<Alterer<G, C>, DoubleGene> SwapMutator() {
+		return Codec.of(
+			Genotype.of(DoubleChromosome.of(0, 1)),
+			gt -> new SwapMutator<>(gt.getGene().doubleValue())
+		);
 	}
 
 }
