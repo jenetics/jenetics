@@ -26,6 +26,7 @@ import org.jenetics.DoubleGene;
 import org.jenetics.Genotype;
 import org.jenetics.Selector;
 import org.jenetics.engine.Codec;
+import org.jenetics.util.IntRange;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -35,7 +36,7 @@ public class AltererCodecTest {
 	@Test
 	public void general() {
 		final Codec<Alterer<DoubleGene, Double>, DoubleGene> codec =
-			AltererCodec.general();
+			AltererCodec.general(IntRange.of(2, 20));
 
 		final Genotype<DoubleGene> gt = codec.encoding().newInstance();
 		codec.decoder().apply(gt);

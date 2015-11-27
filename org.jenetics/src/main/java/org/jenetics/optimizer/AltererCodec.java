@@ -186,18 +186,6 @@ public final class AltererCodec<
 	}
 
 	/**
-	 * Return the generically applicable alterer {@code Codec}.
-	 *
-	 * @param <G> the gene type of the problem encoding
-	 * @param <C> the fitness function return type of the problem encoding
-	 * @return the generically applicable alterer {@code Codec}
-	 */
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	AltererCodec<G, C> general() {
-		return general(CROSSOVER_POINTS);
-	}
-
-	/**
 	 * Return the alterer {@code Codec} for which contains alterers for
 	 * {@code NumericGene} instances.
 	 *

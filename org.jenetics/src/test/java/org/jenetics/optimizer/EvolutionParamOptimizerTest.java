@@ -28,6 +28,7 @@ import org.jentics.problem.Knapsack;
 import org.jenetics.BitGene;
 import org.jenetics.Optimize;
 import org.jenetics.engine.EvolutionParam;
+import org.jenetics.util.IntRange;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
 
@@ -49,7 +50,7 @@ public class EvolutionParamOptimizerTest {
 		final EvolutionParamCodec<BitGene, Double> codec =
 			EvolutionParamCodec.<BitGene, Double>of(
 				SelectorCodec.numeric(),
-				AltererCodec.general()
+				AltererCodec.general(IntRange.of(2, 20))
 			);
 
 		final EvolutionParamOptimizer<BitGene, Double> optimizer =
