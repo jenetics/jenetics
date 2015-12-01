@@ -147,6 +147,29 @@ public final class AltererCodec<
 	 *  Static factory methods
 	 * ************************************************************************/
 
+
+	public static final class Builder<G extends Gene<?, G>> {
+
+		public <C extends Comparable<? super C>> AltererCodec<G, C> foo() {
+			return null;
+		}
+	}
+
+	public static final class General<C extends Comparable<? super C>> {
+		public <G extends Gene<?, G>> AltererCodec<G, C> mutator() {
+			return null;
+		}
+	}
+
+	public static <G extends Gene<?, G>> Builder<G> general() {
+		return null;
+	};
+
+	static {
+		AltererCodec<DoubleGene, Double> codec = AltererCodec.<DoubleGene>general().<Double>foo();
+	}
+
+
 	/**
 	 *
 	 *
