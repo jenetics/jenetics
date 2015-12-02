@@ -207,7 +207,9 @@ public class EvolutionParamCodec<
 	) {
 		return new EvolutionParamCodec<G, C>(
 			SelectorCodec.general(),
-			AltererCodec.general(IntRange.of(2, 20)),
+			AltererCodec.<G, C>ofSwapMutator()
+				.append(AltererCodec.ofMultiPointCrossover(IntRange.of(2, 20)))
+				.append(AltererCodec.ofMutator()),
 			populationSize,
 			offspringFraction,
 			maximalPhenotypeAge

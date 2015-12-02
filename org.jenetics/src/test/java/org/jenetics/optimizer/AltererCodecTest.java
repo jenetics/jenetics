@@ -19,12 +19,12 @@
  */
 package org.jenetics.optimizer;
 
+import org.testng.Reporter;
 import org.testng.annotations.Test;
 
 import org.jenetics.Alterer;
 import org.jenetics.DoubleGene;
 import org.jenetics.Genotype;
-import org.jenetics.Selector;
 import org.jenetics.engine.Codec;
 import org.jenetics.util.IntRange;
 
@@ -33,6 +33,7 @@ import org.jenetics.util.IntRange;
  */
 public class AltererCodecTest {
 
+	/*
 	@Test
 	public void general() {
 		final Codec<Alterer<DoubleGene, Double>, DoubleGene> codec =
@@ -50,5 +51,24 @@ public class AltererCodecTest {
 		final Genotype<DoubleGene> gt = codec.encoding().newInstance();
 		codec.decoder().apply(gt);
 	}
+	*/
+
+	@Test
+	public void foo() {
+		AltererCodec<DoubleGene, Double> c =
+			AltererCodec.<DoubleGene, Double>ofSwapMutator()
+				.append(AltererCodec.ofMeanAlterer())
+				.append(AltererCodec.ofMutator());
+
+		final Genotype<DoubleGene> encoding = c.encoding().newInstance();
+		System.out.println(encoding);
+
+		final Alterer<DoubleGene, Double> alterer = c.decoder().apply(encoding);
+		System.out.println(alterer);
+		System.out.flush();
+
+		Reporter.log(c.encoding().newInstance().toString());
+	}
+
 
 }

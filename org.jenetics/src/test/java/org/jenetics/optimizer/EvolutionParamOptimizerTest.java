@@ -50,7 +50,9 @@ public class EvolutionParamOptimizerTest {
 		final EvolutionParamCodec<BitGene, Double> codec =
 			EvolutionParamCodec.<BitGene, Double>of(
 				SelectorCodec.numeric(),
-				AltererCodec.general(IntRange.of(2, 20))
+				AltererCodec.<BitGene, Double>ofMutator()
+					.append(AltererCodec.ofMultiPointCrossover(IntRange.of(2, 20)))
+					.append(AltererCodec.ofSwapMutator())
 			);
 
 		final EvolutionParamOptimizer<BitGene, Double> optimizer =

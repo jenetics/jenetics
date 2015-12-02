@@ -22,12 +22,12 @@ package org.jenetics.optimizer;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.engine.codecs.ofVector;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import org.jenetics.AbstractAlterer;
 import org.jenetics.Alterer;
+import org.jenetics.CompositeAlterer;
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
 import org.jenetics.GaussianMutator;
@@ -37,6 +37,7 @@ import org.jenetics.MeanAlterer;
 import org.jenetics.MultiPointCrossover;
 import org.jenetics.Mutator;
 import org.jenetics.NumericGene;
+import org.jenetics.SinglePointCrossover;
 import org.jenetics.SwapMutator;
 import org.jenetics.engine.Codec;
 import org.jenetics.util.DoubleRange;
@@ -64,8 +65,8 @@ public final class AltererCodec<
 
 	private static final IntRange CROSSOVER_POINTS = IntRange.of(1, 15);
 
-	private final ISeq<Codec<Alterer<G, C>, DoubleGene>> _codecs;
 	private final ISeq<Alterer<G, C>> _alterers;
+	private final ISeq<Codec<Alterer<G, C>, DoubleGene>> _codecs;
 	private final Codec<Alterer<G, C>, DoubleGene> _codec;
 
 	@SuppressWarnings("unchecked")
@@ -73,35 +74,58 @@ public final class AltererCodec<
 		final ISeq<Codec<Alterer<G, C>, DoubleGene>> codecs,
 		final ISeq<Alterer<G, C>> alterers
 	) {
-		_codecs = requireNonNull(codecs);
-		_alterers = requireNonNull(alterers);
+		_alterers = alterers.stream()
+			.flatMap(AltererCodec::flatten)
+			.collect(ISeq.toISeq());
 
-		final int altererCount = codecs.length() + alterers.length();
+		_codecs = codecs.stream()
+			.flatMap(AltererCodec::flatten)
+			.collect(ISeq.toISeq());
+
+		final int altererCount = _codecs.length() + _alterers.length();
 		final Codec<double[], DoubleGene> altererIndexesCodec =
 			ofVector(DoubleRange.of(0, 1), altererCount);
 
 		_codec = Codec.of(
-			ISeq.concat(ISeq.of(altererIndexesCodec), codecs),
+			ISeq.concat(ISeq.of(altererIndexesCodec), _codecs),
 			x -> {
 				final double[] index = (double[])x[0];
 
 				Alterer<G, C> alterer = Alterer.empty();
-				for (int i = 0; i < codecs.length(); ++i) {
+				for (int i = 0; i < _codecs.length(); ++i) {
 					if (index[i] >= 0.5) {
 						alterer = alterer
 							.andThen(normalize((Alterer<G, C>)x[i + 1]));
 					}
 				}
-				for (int i = 0; i < alterers.length(); ++i) {
-					if (index[codecs.length() + i] >= 0.5) {
+				for (int i = 0; i < _alterers.length(); ++i) {
+					if (index[_codecs.length() + i] >= 0.5) {
 						alterer = alterer
-							.andThen(normalize(alterers.get(i)));
+							.andThen(normalize(_alterers.get(i)));
 					}
 				}
 
 				return alterer;
 			}
 		);
+	}
+
+	@SuppressWarnings("unchecked")
+	private static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Stream<? extends Codec<Alterer<G, C>, DoubleGene>>
+	flatten(final Codec<Alterer<G, C>, DoubleGene> codec) {
+		return codec instanceof AltererCodec<?, ?>
+			? ((AltererCodec<G, C>)codec)._codecs.stream()
+			: Stream.of(codec);
+	}
+
+	@SuppressWarnings("unchecked")
+	private static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Stream<? extends Alterer<G, C>>
+	flatten(final Alterer<G, C> alterer) {
+		return alterer instanceof CompositeAlterer<?, ?>
+			? ((CompositeAlterer<G, C>)alterer).getAlterers().stream()
+			: Stream.of(alterer);
 	}
 
 	private static <G extends Gene<?, G>, C extends Comparable<? super C>>
@@ -112,10 +136,21 @@ public final class AltererCodec<
 			: alterer;
 	}
 
+	/**
+	 * Return all alterer codecs this {@code AltererCodec} consists of.
+	 *
+	 * @return all alterer codecs this {@code AltererCodec} consists of
+	 */
 	public ISeq<Codec<Alterer<G, C>, DoubleGene>> getCodecs() {
 		return _codecs;
 	}
 
+	/**
+	 * Return all <i>parameter less</i> alterers this {@code AltererCodec}
+	 * consists of
+	 *
+	 * @return all <i>parameter less</i> alterers
+	 */
 	public ISeq<Alterer<G, C>> getAlterers() {
 		return _alterers;
 	}
@@ -130,6 +165,27 @@ public final class AltererCodec<
 		return _codec.decoder();
 	}
 
+	/**
+	 * Return a new {@code AltererCodec} with the given {@code codec} appended.
+	 *
+	 * @param codec the alterer codec to append
+	 * @return a new {@code AltererCodec} with the given {@code codec} appended
+	 * @throws NullPointerException if the given {@code codec} is {@code null}
+	 */
+	public AltererCodec<G, C>
+	append(final Codec<Alterer<G, C>, DoubleGene> codec) {
+		return append(ISeq.of(codec), ISeq.empty());
+	}
+
+	/**
+	 * Return a new {@code AltererCodec} with the given {@code codecs} and
+	 * <i>parameter less</i> {@code alterers} appended.
+	 *
+	 * @param codecs the alterer codecs to append
+	 * @param alterers the <i>parameter less</i> alterers to append
+	 * @return a new {@code AltererCodec}
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
 	public AltererCodec<G, C> append(
 		final ISeq<Codec<Alterer<G, C>, DoubleGene>> codecs,
 		final ISeq<Alterer<G, C>> alterers
@@ -137,47 +193,20 @@ public final class AltererCodec<
 		return of(_codecs.append(codecs), _alterers.append(alterers));
 	}
 
-	public AltererCodec<G, C> append(
-		final Codec<Alterer<G, C>, DoubleGene> codec
-	) {
-		return of(_codecs.append(ISeq.of(codec)), _alterers);
-	}
-
 	/* *************************************************************************
 	 *  Static factory methods
 	 * ************************************************************************/
 
-
-	public static final class Builder<G extends Gene<?, G>> {
-
-		public <C extends Comparable<? super C>> AltererCodec<G, C> foo() {
-			return null;
-		}
-	}
-
-	public static final class General<C extends Comparable<? super C>> {
-		public <G extends Gene<?, G>> AltererCodec<G, C> mutator() {
-			return null;
-		}
-	}
-
-	public static <G extends Gene<?, G>> Builder<G> general() {
-		return null;
-	};
-
-	static {
-		AltererCodec<DoubleGene, Double> codec = AltererCodec.<DoubleGene>general().<Double>foo();
-	}
-
-
 	/**
+	 * Return a new {@code AltererCodec} with the given {@code codecs} and
+	 * <i>parameter less</i> {@code alterers}.
 	 *
-	 *
-	 * @param codecs
-	 * @param alterers
-	 * @param <G>
-	 * @param <C>
-	 * @return
+	 * @param codecs the alterer codecs
+	 * @param alterers the <i>parameter less</i> alterers
+	 * @param <G> the gene type of the problem encoding
+	 * @param <C> the fitness function return type of the problem encoding
+	 * @return a new {@code AltererCodec}
+	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	AltererCodec<G, C> of(
@@ -188,193 +217,149 @@ public final class AltererCodec<
 	}
 
 	/**
-	 * Return the generically applicable alterer {@code Codec}.
+	 * Return a new {@code AltererCodec} with the given {@code codecs}.
 	 *
-	 * @param crossoverPoints the allowed crossover points for the
-	 *        {@link MultiPointCrossover} alterer.
+	 * @param codecs the alterer codecs
 	 * @param <G> the gene type of the problem encoding
 	 * @param <C> the fitness function return type of the problem encoding
-	 * @return the generically applicable alterer {@code Codec}
+	 * @return a new {@code AltererCodec}
+	 * @throws NullPointerException if the {@code codecs} {@code null}
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	AltererCodec<G, C> general(final IntRange crossoverPoints) {
-		return AltererCodec.<G, C>of(
-			ISeq.of(
-				multiPointCrossover(crossoverPoints),
-				mutator(),
-				swapMutator()
-			),
-			ISeq.empty()
-		);
+	AltererCodec<G, C> of(
+		final ISeq<Codec<Alterer<G, C>, DoubleGene>> codecs
+	) {
+		return of(codecs, ISeq.empty());
 	}
 
 	/**
-	 * Return the alterer {@code Codec} for which contains alterers for
-	 * {@code NumericGene} instances.
+	 * Return a new {@code AltererCodec} with the given {@code codec}.
 	 *
-	 * @param crossoverPoints the allowed crossover points for the
-	 *        {@link MultiPointCrossover} alterer.
+	 * @param codec the alterer codec
 	 * @param <G> the gene type of the problem encoding
 	 * @param <C> the fitness function return type of the problem encoding
-	 * @return the numeric alterer {@code Codec}
+	 * @return a new {@code AltererCodec}
+	 * @throws NullPointerException if the {@code codec} {@code null}
 	 */
-	public static <G extends NumericGene<?, G>, C extends Comparable<? super C>>
-	AltererCodec<G, C> numeric(final IntRange crossoverPoints) {
-		return AltererCodec.<G, C>general(crossoverPoints)
-			.append(gaussianMutator());
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	AltererCodec<G, C> of(final Codec<Alterer<G, C>, DoubleGene> codec) {
+		return of(ISeq.of(codec), ISeq.empty());
 	}
 
-	/**
-	 * Return the alterer {@code Codec} for which contains alterers for
-	 * {@code NumericGene} instances.
-	 *
-	 * @param <G> the gene type of the problem encoding
-	 * @param <C> the fitness function return type of the problem encoding
-	 * @return the numeric alterer {@code Codec}
-	 */
-	public static <G extends NumericGene<?, G>, C extends Comparable<? super C>>
-	AltererCodec<G, C> numeric() {
-		return numeric(CROSSOVER_POINTS);
-	}
-
-	/**
-	 * Return the alterer {@code Codec} for which contains alterers for
-	 * {@code Mean} gene instances.
-	 *
-	 * @param crossoverPoints the allowed crossover points for the
-	 *        {@link MultiPointCrossover} alterer.
-	 * @param <G> the gene type of the problem encoding
-	 * @param <C> the fitness function return type of the problem encoding
-	 * @return the {@code Mean} gene alterer {@code Codec}
-	 */
-	public static <G extends Gene<?, G> & Mean<G>, C extends Comparable<? super C>>
-	AltererCodec<G, C> mean(final IntRange crossoverPoints) {
-		return AltererCodec.<G, C>general(crossoverPoints)
-			.append(meanAlterer());
-	}
-
-	/**
-	 * Return the alterer {@code Codec} for which contains alterers for
-	 * {@code Mean} gene instances.
-	 *
-	 * @param <G> the gene type of the problem encoding
-	 * @param <C> the fitness function return type of the problem encoding
-	 * @return the {@code Mean} gene alterer {@code Codec}
-	 */
-	public static <G extends Gene<?, G> & Mean<G>, C extends Comparable<? super C>>
-	AltererCodec<G, C> mean() {
-		return mean(CROSSOVER_POINTS);
-	}
-
-	/**
-	 * Return the alterer {@code Codec} for which contains alterers for
-	 * {@code Mean} gene and {@code NumericGene} instances.
-	 *
-	 * @param crossoverPoints the allowed crossover points for the
-	 *        {@link MultiPointCrossover} alterer.
-	 * @param <G> the gene type of the problem encoding
-	 * @param <C> the fitness function return type of the problem encoding
-	 * @return the {@code Mean} gene  and {@code NumericGene} alterer
-	 *         {@code Codec}
-	 */
-	public static <G extends NumericGene<?, G> & Mean<G>, C extends Comparable<? super C>>
-	AltererCodec<G, C> numericMean(final IntRange crossoverPoints) {
-		return AltererCodec.<G, C>numeric(crossoverPoints)
-			.append(mean(crossoverPoints));
-	}
-
-	/**
-	 * Return the alterer {@code Codec} for which contains alterers for
-	 * {@code Mean} gene and {@code NumericGene} instances.
-	 *
-	 * @param <G> the gene type of the problem encoding
-	 * @param <C> the fitness function return type of the problem encoding
-	 * @return the {@code Mean} gene  and {@code NumericGene} alterer
-	 *         {@code Codec}
-	 */
-	public static <G extends NumericGene<?, G> & Mean<G>, C extends Comparable<? super C>>
-	AltererCodec<G, C> numericMean() {
-		return numericMean(CROSSOVER_POINTS);
-	}
 
 	/* *************************************************************************
 	 *  Static factory methods for creating alterer codecs.
 	 * ************************************************************************/
 
 	/**
+	 * Return the <i>default</i> {@link Codec} of the {@link SinglePointCrossover}.
 	 *
-	 * @param points
-	 * @param <G>
-	 * @param <C>
-	 * @return
+	 * @param <G> the gene type of the problem encoding the alterer is working on
+	 * @param <C> the fitness function result type of the problem
+	 * @return the {@code Codec} of the {@code SinglePointCrossover}
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Codec<Alterer<G, C>, DoubleGene> multiPointCrossover(final IntRange points) {
-		return Codec.of(
-			Genotype.of(
-				DoubleChromosome.of(0, 1),
-				DoubleChromosome.of(points.doubleRange())
-			),
-			gt -> new MultiPointCrossover<>(
-				gt.get(0, 0).doubleValue(),
-				gt.get(1, 0).intValue()
+	AltererCodec<G, C> ofSinglePointCrossover() {
+		return of(
+			Codec.of(
+				Genotype.of(DoubleChromosome.of(0, 1)),
+				gt -> new SinglePointCrossover<>(gt.getGene().doubleValue())
 			)
 		);
 	}
 
 	/**
+	 * Return the <i>default</i> {@link Codec} of the {@link MultiPointCrossover}.
 	 *
-	 * @param <G>
-	 * @param <C>
-	 * @return
+	 * @param points the range of the desired crossover points
+	 * @param <G> the gene type of the problem encoding the alterer is working on
+	 * @param <C> the fitness function result type of the problem
+	 * @return the {@code Codec} of the {@code MultiPointCrossover}
+	 * @throws NullPointerException if the {@code points} range is {@code null}
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Codec<Alterer<G, C>, DoubleGene> mutator() {
-		return Codec.of(
-			Genotype.of(DoubleChromosome.of(0, 1)),
-			gt -> new Mutator<>(gt.getGene().doubleValue())
+	AltererCodec<G, C> ofMultiPointCrossover(final IntRange points) {
+		requireNonNull(points);
+
+		return of(
+			Codec.of(
+				Genotype.of(
+					DoubleChromosome.of(0, 1),
+					DoubleChromosome.of(points.doubleRange())
+				),
+				gt -> new MultiPointCrossover<>(
+					gt.get(0, 0).doubleValue(),
+					gt.get(1, 0).intValue()
+				)
+			)
 		);
 	}
 
 	/**
+	 * Return the <i>default</i> {@link Codec} of the {@link Mutator}.
 	 *
-	 * @param <G>
-	 * @param <C>
-	 * @return
+	 * @param <G> the gene type of the problem encoding the alterer is working on
+	 * @param <C> the fitness function result type of the problem
+	 * @return the {@code Codec} of the {@code Mutator}
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Codec<Alterer<G, C>, DoubleGene> swapMutator() {
-		return Codec.of(
-			Genotype.of(DoubleChromosome.of(0, 1)),
-			gt -> new SwapMutator<>(gt.getGene().doubleValue())
+	AltererCodec<G, C> ofMutator() {
+		return of(
+			Codec.of(
+				Genotype.of(DoubleChromosome.of(0, 1)),
+				gt -> new Mutator<>(gt.getGene().doubleValue())
+			)
 		);
 	}
 
 	/**
+	 * Return the <i>default</i> {@link Codec} of the {@link SwapMutator}.
 	 *
-	 * @param <G>
-	 * @param <C>
-	 * @return
+	 * @param <G> the gene type of the problem encoding the alterer is working on
+	 * @param <C> the fitness function result type of the problem
+	 * @return the {@code Codec} of the {@code SwapMutator}
+	 */
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	AltererCodec<G, C> ofSwapMutator() {
+		return of(
+			Codec.of(
+				Genotype.of(DoubleChromosome.of(0, 1)),
+				gt -> new SwapMutator<>(gt.getGene().doubleValue())
+			)
+		);
+	}
+
+	/**
+	 * Return the <i>default</i> {@link Codec} of the {@link GaussianMutator}.
+	 *
+	 * @param <G> the gene type of the problem encoding the alterer is working on
+	 * @param <C> the fitness function result type of the problem
+	 * @return the {@code Codec} of the {@code GaussianMutator}
 	 */
 	public static <G extends NumericGene<?, G>, C extends Comparable<? super C>>
-	Codec<Alterer<G, C>, DoubleGene> gaussianMutator() {
-		return Codec.of(
-			Genotype.of(DoubleChromosome.of(0, 1)),
-			gt -> new GaussianMutator<>(gt.getGene().doubleValue())
+	AltererCodec<G, C> ofGaussianMutator() {
+		return of(
+			Codec.of(
+				Genotype.of(DoubleChromosome.of(0, 1)),
+				gt -> new GaussianMutator<>(gt.getGene().doubleValue())
+			)
 		);
 	}
 
 	/**
+	 * Return the <i>default</i> {@link Codec} of the {@link MeanAlterer}.
 	 *
-	 * @param <G>
-	 * @param <C>
-	 * @return
+	 * @param <G> the gene type of the problem encoding the alterer is working on
+	 * @param <C> the fitness function result type of the problem
+	 * @return the {@code Codec} of the {@code MeanAlterer}
 	 */
 	public static <G extends Gene<?, G> & Mean<G>, C extends Comparable<? super C>>
-	Codec<Alterer<G, C>, DoubleGene> meanAlterer() {
-		return Codec.of(
-			Genotype.of(DoubleChromosome.of(0, 1)),
-			gt -> new MeanAlterer<>(gt.getGene().doubleValue())
+	AltererCodec<G, C> ofMeanAlterer() {
+		return of(
+			Codec.of(
+				Genotype.of(DoubleChromosome.of(0, 1)),
+				gt -> new MeanAlterer<>(gt.getGene().doubleValue())
+			)
 		);
 	}
 
