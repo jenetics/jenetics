@@ -63,57 +63,143 @@ public final class AltererCodec<
 	implements Codec<Alterer<G, C>, DoubleGene>
 {
 
-	private static final IntRange CROSSOVER_POINTS = IntRange.of(1, 15);
-
-	private final ISeq<Alterer<G, C>> _alterers;
-	private final ISeq<Codec<Alterer<G, C>, DoubleGene>> _codecs;
+	private final ISeq<? extends Codec<? extends Alterer<G, C>, DoubleGene>> _codecs;
+	private final ISeq<? extends Alterer<G, C>> _alterers;
 	private final Codec<Alterer<G, C>, DoubleGene> _codec;
 
-	@SuppressWarnings("unchecked")
+	// Primary constructor.
 	private AltererCodec(
-		final ISeq<Codec<Alterer<G, C>, DoubleGene>> codecs,
-		final ISeq<Alterer<G, C>> alterers
+		final ISeq<? extends Codec<? extends Alterer<G, C>, DoubleGene>> codecs,
+		final ISeq<? extends Alterer<G, C>> alterers,
+		final Codec<Alterer<G, C>, DoubleGene> codec
 	) {
-		_alterers = alterers.stream()
-			.flatMap(AltererCodec::flatten)
-			.collect(ISeq.toISeq());
+		_codecs = requireNonNull(codecs);
+		_alterers = requireNonNull(alterers);
+		_codec = requireNonNull(codec);
+	}
 
-		_codecs = codecs.stream()
-			.flatMap(AltererCodec::flatten)
-			.collect(ISeq.toISeq());
+	/**
+	 * Return all alterer codecs this {@code AltererCodec} consists of.
+	 *
+	 * @return all alterer codecs this {@code AltererCodec} consists of
+	 */
+	public ISeq<? extends Codec<? extends Alterer<G, C>, DoubleGene>> getCodecs() {
+		return _codecs;
+	}
 
-		final int altererCount = _codecs.length() + _alterers.length();
+	/**
+	 * Return all <i>parameter less</i> alterers this {@code AltererCodec}
+	 * consists of
+	 *
+	 * @return all <i>parameter less</i> alterers
+	 */
+	public ISeq<? extends Alterer<G, C>> getAlterers() {
+		return _alterers;
+	}
+
+	@Override
+	public Factory<Genotype<DoubleGene>> encoding() {
+		return _codec.encoding();
+	}
+
+	@Override
+	public Function<Genotype<DoubleGene>, Alterer<G, C>> decoder() {
+		return _codec.decoder();
+	}
+
+	/**
+	 * Return a new {@code AltererCodec} with the given {@code codec} appended.
+	 *
+	 * @param codec the alterer codec to append
+	 * @return a new {@code AltererCodec} with the given {@code codec} appended
+	 * @throws NullPointerException if the given {@code codec} is {@code null}
+	 */
+	public AltererCodec<G, C>
+	append(final Codec<? extends Alterer<G, C>, DoubleGene> codec) {
+		return append(ISeq.of(codec), ISeq.empty());
+	}
+
+	/**
+	 * Return a new {@code AltererCodec} with the given {@code codecs} and
+	 * <i>parameter less</i> {@code alterers} appended.
+	 *
+	 * @param codecs the alterer codecs to append
+	 * @param alterers the <i>parameter less</i> alterers to append
+	 * @return a new {@code AltererCodec}
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public AltererCodec<G, C> append(
+		final ISeq<? extends Codec<? extends Alterer<G, C>, DoubleGene>> codecs,
+		final ISeq<? extends Alterer<G, C>> alterers
+	) {
+		return of(ISeq.concat(_codec, codecs), ISeq.concat(_alterers, alterers));
+	}
+
+	/* *************************************************************************
+	 *  Static factory methods
+	 * ************************************************************************/
+
+	/**
+	 * Return a new {@code AltererCodec} with the given {@code codecs} and
+	 * <i>parameter less</i> {@code alterers}.
+	 *
+	 * @param codecs the alterer codecs
+	 * @param alterers the <i>parameter less</i> alterers
+	 * @param <G> the gene type of the problem encoding
+	 * @param <C> the fitness function return type of the problem encoding
+	 * @return a new {@code AltererCodec}
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	@SuppressWarnings("unchecked")
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	AltererCodec<G, C> of(
+		final ISeq<? extends Codec<? extends Alterer<G, C>, DoubleGene>> codecs,
+		final ISeq<? extends Alterer<G, C>> alterers
+	) {
+		final ISeq<? extends Codec<? extends Alterer<G, C>, DoubleGene>> c =
+			codecs.stream()
+				.flatMap(AltererCodec::flatten)
+				.collect(ISeq.toISeq());
+
+		final ISeq<? extends Alterer<G, C>> a =
+			alterers.stream()
+				.flatMap(AltererCodec::flatten)
+				.collect(ISeq.toISeq());
+
+		final int altererCount = c.length() + a.length();
 		final Codec<double[], DoubleGene> altererIndexesCodec =
 			ofVector(DoubleRange.of(0, 1), altererCount);
 
-		_codec = Codec.of(
-			ISeq.concat(ISeq.of(altererIndexesCodec), _codecs),
+		final Codec<Alterer<G, C>, DoubleGene> cc = Codec.of(
+			ISeq.concat(ISeq.of(altererIndexesCodec), c),
 			x -> {
 				final double[] index = (double[])x[0];
 
 				Alterer<G, C> alterer = Alterer.empty();
-				for (int i = 0; i < _codecs.length(); ++i) {
+				for (int i = 0; i < c.length(); ++i) {
 					if (index[i] >= 0.5) {
 						alterer = alterer
 							.andThen(normalize((Alterer<G, C>)x[i + 1]));
 					}
 				}
-				for (int i = 0; i < _alterers.length(); ++i) {
-					if (index[_codecs.length() + i] >= 0.5) {
+				for (int i = 0; i < a.length(); ++i) {
+					if (index[c.length() + i] >= 0.5) {
 						alterer = alterer
-							.andThen(normalize(_alterers.get(i)));
+							.andThen(normalize(a.get(i)));
 					}
 				}
 
 				return alterer;
 			}
 		);
+
+		return new AltererCodec<>(c, a, cc);
 	}
 
 	@SuppressWarnings("unchecked")
 	private static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Stream<? extends Codec<Alterer<G, C>, DoubleGene>>
-	flatten(final Codec<Alterer<G, C>, DoubleGene> codec) {
+	Stream<? extends Codec<? extends Alterer<G, C>, DoubleGene>>
+	flatten(final Codec<? extends Alterer<G, C>, DoubleGene> codec) {
 		return codec instanceof AltererCodec<?, ?>
 			? ((AltererCodec<G, C>)codec)._codecs.stream()
 			: Stream.of(codec);
@@ -137,86 +223,6 @@ public final class AltererCodec<
 	}
 
 	/**
-	 * Return all alterer codecs this {@code AltererCodec} consists of.
-	 *
-	 * @return all alterer codecs this {@code AltererCodec} consists of
-	 */
-	public ISeq<Codec<Alterer<G, C>, DoubleGene>> getCodecs() {
-		return _codecs;
-	}
-
-	/**
-	 * Return all <i>parameter less</i> alterers this {@code AltererCodec}
-	 * consists of
-	 *
-	 * @return all <i>parameter less</i> alterers
-	 */
-	public ISeq<Alterer<G, C>> getAlterers() {
-		return _alterers;
-	}
-
-	@Override
-	public Factory<Genotype<DoubleGene>> encoding() {
-		return _codec.encoding();
-	}
-
-	@Override
-	public Function<Genotype<DoubleGene>, Alterer<G, C>> decoder() {
-		return _codec.decoder();
-	}
-
-	/**
-	 * Return a new {@code AltererCodec} with the given {@code codec} appended.
-	 *
-	 * @param codec the alterer codec to append
-	 * @return a new {@code AltererCodec} with the given {@code codec} appended
-	 * @throws NullPointerException if the given {@code codec} is {@code null}
-	 */
-	public AltererCodec<G, C>
-	append(final Codec<Alterer<G, C>, DoubleGene> codec) {
-		return append(ISeq.of(codec), ISeq.empty());
-	}
-
-	/**
-	 * Return a new {@code AltererCodec} with the given {@code codecs} and
-	 * <i>parameter less</i> {@code alterers} appended.
-	 *
-	 * @param codecs the alterer codecs to append
-	 * @param alterers the <i>parameter less</i> alterers to append
-	 * @return a new {@code AltererCodec}
-	 * @throws NullPointerException if one of the arguments is {@code null}
-	 */
-	public AltererCodec<G, C> append(
-		final ISeq<Codec<Alterer<G, C>, DoubleGene>> codecs,
-		final ISeq<Alterer<G, C>> alterers
-	) {
-		return of(_codecs.append(codecs), _alterers.append(alterers));
-	}
-
-	/* *************************************************************************
-	 *  Static factory methods
-	 * ************************************************************************/
-
-	/**
-	 * Return a new {@code AltererCodec} with the given {@code codecs} and
-	 * <i>parameter less</i> {@code alterers}.
-	 *
-	 * @param codecs the alterer codecs
-	 * @param alterers the <i>parameter less</i> alterers
-	 * @param <G> the gene type of the problem encoding
-	 * @param <C> the fitness function return type of the problem encoding
-	 * @return a new {@code AltererCodec}
-	 * @throws NullPointerException if one of the arguments is {@code null}
-	 */
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	AltererCodec<G, C> of(
-		final ISeq<Codec<Alterer<G, C>, DoubleGene>> codecs,
-		final ISeq<Alterer<G, C>> alterers
-	) {
-		return new AltererCodec<>(codecs, alterers);
-	}
-
-	/**
 	 * Return a new {@code AltererCodec} with the given {@code codecs}.
 	 *
 	 * @param codecs the alterer codecs
@@ -227,7 +233,7 @@ public final class AltererCodec<
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	AltererCodec<G, C> of(
-		final ISeq<Codec<Alterer<G, C>, DoubleGene>> codecs
+		final ISeq<? extends Codec<? extends Alterer<G, C>, DoubleGene>> codecs
 	) {
 		return of(codecs, ISeq.empty());
 	}
@@ -242,7 +248,7 @@ public final class AltererCodec<
 	 * @throws NullPointerException if the {@code codec} {@code null}
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	AltererCodec<G, C> of(final Codec<Alterer<G, C>, DoubleGene> codec) {
+	AltererCodec<G, C> of(final Codec<? extends Alterer<G, C>, DoubleGene> codec) {
 		return of(ISeq.of(codec), ISeq.empty());
 	}
 
