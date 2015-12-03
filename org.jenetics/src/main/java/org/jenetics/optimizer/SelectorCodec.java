@@ -24,6 +24,7 @@ import static java.util.Objects.requireNonNull;
 import static org.jenetics.engine.codecs.ofScalar;
 
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import org.jenetics.BoltzmannSelector;
 import org.jenetics.DoubleChromosome;
@@ -32,11 +33,8 @@ import org.jenetics.ExponentialRankSelector;
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
 import org.jenetics.LinearRankSelector;
-import org.jenetics.RouletteWheelSelector;
 import org.jenetics.Selector;
-import org.jenetics.StochasticUniversalSelector;
 import org.jenetics.TournamentSelector;
-import org.jenetics.TruncationSelector;
 import org.jenetics.engine.Codec;
 import org.jenetics.util.DoubleRange;
 import org.jenetics.util.Factory;
@@ -71,8 +69,8 @@ public final class SelectorCodec<
 
 	private static final IntRange TOURNAMENT_SIZE = IntRange.of(2, 15);
 
-	private final ISeq<Codec<Selector<G, C>, DoubleGene>> _codecs;
-	private final ISeq<Selector<G, C>> _selectors;
+	private final ISeq<? extends Codec<? extends Selector<G, C>, DoubleGene>> _codecs;
+	private final ISeq<? extends Selector<G, C>> _selectors;
 	private final Codec<Selector<G, C>, DoubleGene> _codec;
 
 	/**
@@ -84,27 +82,13 @@ public final class SelectorCodec<
 	 */
 	@SuppressWarnings("unchecked")
 	private SelectorCodec(
-		final ISeq<Codec<Selector<G, C>, DoubleGene>> codecs,
-		final ISeq<Selector<G, C>> selectors
+		final ISeq<? extends Codec<? extends Selector<G, C>, DoubleGene>> codecs,
+		final ISeq<? extends Selector<G, C>> selectors,
+		final Codec<Selector<G, C>, DoubleGene> codec
 	) {
 		_codecs = requireNonNull(codecs);
 		_selectors = requireNonNull(selectors);
-
-		final int selectorCount = codecs.length() + selectors.length();
-		final Codec<Double, DoubleGene> selectorIndexCodec =
-			ofScalar(DoubleRange.of(0, selectorCount));
-
-		_codec = Codec.of(
-			ISeq.concat(ISeq.of(selectorIndexCodec), codecs),
-			x -> {
-				final int selectorIndex =
-					min(((Double)x[0]).intValue(), selectorCount - 1);
-
-				return selectorIndex < codecs.length()
-					? (Selector<G, C>)x[selectorIndex + 1]
-					: selectors.get(selectorIndex - codecs.length());
-			}
-		);
+		_codec = requireNonNull(codec);
 	}
 
 	/**
@@ -112,7 +96,7 @@ public final class SelectorCodec<
 	 *
 	 * @return the list of available selector codecs
 	 */
-	public ISeq<Codec<Selector<G, C>, DoubleGene>> getCodecs() {
+	public ISeq<? extends Codec<? extends Selector<G, C>, DoubleGene>> getCodecs() {
 		return _codecs;
 	}
 
@@ -121,7 +105,7 @@ public final class SelectorCodec<
 	 *
 	 * @return the list of available selectors
 	 */
-	public ISeq<Selector<G, C>> getSelectors() {
+	public ISeq<? extends Selector<G, C>> getSelectors() {
 		return _selectors;
 	}
 
@@ -136,75 +120,123 @@ public final class SelectorCodec<
 	}
 
 	/**
-	 * Return a selector codec which is suitable for arbitrary problem encodings.
+	 * Return a new {@code SelectorCodec} with the given {@code codec} appended.
 	 *
-	 * @param <G> the gene type of the problem encoding
-	 * @param <C> the fitness function return type of the problem encoding
-	 *
-	 * @return a selector codec which is suitable for arbitrary problem
-	 *         encodings
+	 * @param codec the alterer codec to append
+	 * @return a new {@code SelectorCodec} with the given {@code codec} appended
+	 * @throws NullPointerException if the given {@code codec} is {@code null}
 	 */
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	SelectorCodec<G, C> general() {
-		final ISeq<Codec<Selector<G, C>, DoubleGene>> codecs = ISeq.of(
-			Codec.of(
-				Genotype.of(DoubleChromosome.of(EXPONENTIAL_RANK_SELECTOR_PARAM)),
-				gt -> new ExponentialRankSelector<>(gt.getGene().doubleValue())
-			),
-			Codec.of(
-				Genotype.of(DoubleChromosome.of(LINEAR_RANK_SELECTOR_PARAM)),
-				gt -> new LinearRankSelector<>(gt.getGene().doubleValue())
-			),
-			Codec.of(
-				Genotype.of(DoubleChromosome.of(TOURNAMENT_SIZE.doubleRange())),
-				gt -> new TournamentSelector<>(gt.getGene().intValue())
-			)
-		);
-
-		final ISeq<Selector<G, C>> selectors = ISeq.of(
-			new TruncationSelector<>()
-		);
-
-		return new SelectorCodec<>(codecs, selectors);
+	public SelectorCodec<G, C>
+	append(final Codec<? extends Selector<G, C>, DoubleGene> codec) {
+		return append(ISeq.of(codec), ISeq.empty());
 	}
 
 	/**
-	 * Return a selector codec which is suitable for numerical problem encodings.
+	 * Return a new {@code SelectorCodec} with the given {@code codecs} and
+	 * <i>parameter less</i> {@code selectors} appended.
 	 *
-	 * @param <G> the gene type of the problem encoding
-	 * @param <N> the fitness function return type of the problem encoding
-	 *
-	 * @return a selector codec which is suitable for numerical problem
-	 *         encodings
+	 * @param codecs the selector codecs to append
+	 * @param selectors the <i>parameter less</i> alterers to append
+	 * @return a new {@code SelectorCodec}
+	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static <G extends Gene<?, G>, N extends Number & Comparable<? super N>>
-	SelectorCodec<G, N> numeric() {
-		final ISeq<Codec<Selector<G, N>, DoubleGene>> codecs = ISeq.of(
+	public SelectorCodec<G, C> append(
+		final ISeq<? extends Codec<? extends Selector<G, C>, DoubleGene>> codecs,
+		final ISeq<? extends Selector<G, C>> selectors
+	) {
+		return of(ISeq.concat(_codec, codecs), ISeq.concat(_selectors, selectors));
+	}
+
+	/* *************************************************************************
+	 *  Static factory methods
+	 * ************************************************************************/
+
+	@SuppressWarnings("unchecked")
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	SelectorCodec<G, C> of(
+		final ISeq<? extends Codec<? extends Selector<G, C>, DoubleGene>> codecs,
+		final ISeq<? extends Selector<G, C>> selectors
+	) {
+		final ISeq<? extends Codec<? extends Selector<G, C>, DoubleGene>> c =
+			codecs.stream()
+				.flatMap(SelectorCodec::flatten)
+				.collect(ISeq.toISeq());
+
+		final int selectorCount = c.length() + selectors.length();
+		final Codec<Double, DoubleGene> selectorIndexCodec =
+			ofScalar(DoubleRange.of(0, selectorCount));
+
+		final Codec<Selector<G, C>, DoubleGene> cc = Codec.of(
+			ISeq.concat(ISeq.of(selectorIndexCodec), c),
+			x -> {
+				final int selectorIndex =
+					min(((Double)x[0]).intValue(), selectorCount - 1);
+
+				return selectorIndex < c.length()
+					? (Selector<G, C>)x[selectorIndex + 1]
+					: selectors.get(selectorIndex - c.length());
+			}
+		);
+
+		return new SelectorCodec<>(c, selectors, cc);
+	}
+
+	@SuppressWarnings("unchecked")
+	private static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Stream<? extends Codec<? extends Selector<G, C>, DoubleGene>>
+	flatten(final Codec<? extends Selector<G, C>, DoubleGene> codec) {
+		return codec instanceof SelectorCodec<?, ?>
+			? ((SelectorCodec<G, C>)codec)._codecs.stream()
+			: Stream.of(codec);
+	}
+
+	private static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	SelectorCodec<G, C> of(final Codec<? extends Selector<G, C>, DoubleGene> codec) {
+		return of(ISeq.of(codec), ISeq.empty());
+	}
+
+	/* *************************************************************************
+	 *  Static factory methods for known selector codecs.
+	 * ************************************************************************/
+
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	SelectorCodec<G, C> ofTournamentSelector(final IntRange size){
+		return of(
 			Codec.of(
-				Genotype.of(DoubleChromosome.of(BOLTZMANN_SELECTOR_PARAM)),
-				gt -> new BoltzmannSelector<>(gt.getGene().doubleValue())
-			),
-			Codec.of(
-				Genotype.of(DoubleChromosome.of(EXPONENTIAL_RANK_SELECTOR_PARAM)),
-				gt -> new ExponentialRankSelector<>(gt.getGene().doubleValue())
-			),
-			Codec.of(
-				Genotype.of(DoubleChromosome.of(LINEAR_RANK_SELECTOR_PARAM)),
-				gt -> new LinearRankSelector<>(gt.getGene().doubleValue())
-			),
-			Codec.of(
-				Genotype.of(DoubleChromosome.of(TOURNAMENT_SIZE.doubleRange())),
+				Genotype.of(DoubleChromosome.of(size.doubleRange())),
 				gt -> new TournamentSelector<>(gt.getGene().intValue())
 			)
 		);
+	}
 
-		final ISeq<Selector<G, N>> selectors = ISeq.of(
-			new RouletteWheelSelector<G, N>(),
-			new StochasticUniversalSelector<G, N>(),
-			new TruncationSelector<G, N>()
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	SelectorCodec<G, C> ofLinearRankSelector(final DoubleRange nminus){
+		return of(
+			Codec.of(
+				Genotype.of(DoubleChromosome.of(nminus)),
+				gt -> new LinearRankSelector<>(gt.getGene().doubleValue())
+			)
 		);
+	}
 
-		return new SelectorCodec<>(codecs, selectors);
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	SelectorCodec<G, C> ofExponentialRankSelector(final DoubleRange c){
+		return of(
+			Codec.of(
+				Genotype.of(DoubleChromosome.of(c)),
+				gt -> new ExponentialRankSelector<>(gt.getGene().doubleValue())
+			)
+		);
+	}
+
+	public static <G extends Gene<?, G>, N extends Number & Comparable<? super N>>
+	SelectorCodec<G, N> ofBoltzmannSelector(final DoubleRange b){
+		return of(
+			Codec.of(
+				Genotype.of(DoubleChromosome.of(b)),
+				gt -> new BoltzmannSelector<>(gt.getGene().doubleValue())
+			)
+		);
 	}
 
 }

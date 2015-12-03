@@ -31,22 +31,22 @@ import org.jenetics.engine.Codec;
  */
 public class SelectorCodecTest {
 
-	@Test
-	public void general() {
-		final Codec<Selector<DoubleGene, Double>, DoubleGene> codec =
-			SelectorCodec.general();
-
-		final Genotype<DoubleGene> gt = codec.encoding().newInstance();
-		codec.decoder().apply(gt);
-	}
-
-	@Test
-	public void numeric() {
-		final Codec<Selector<DoubleGene, Double>, DoubleGene> codec =
-			SelectorCodec.numeric();
-
-		final Genotype<DoubleGene> gt = codec.encoding().newInstance();
-		codec.decoder().apply(gt);
-	}
+//	@Test
+//	public void general() {
+//		final Codec<Selector<DoubleGene, Double>, DoubleGene> codec =
+//			SelectorCodec.general();
+//
+//		final Genotype<DoubleGene> gt = codec.encoding().newInstance();
+//		codec.decoder().apply(gt);
+//	}
+//
+//	@Test
+//	public void numeric() {
+//		final Codec<Selector<DoubleGene, Double>, DoubleGene> codec =
+//			SelectorCodec.numeric();
+//
+//		final Genotype<DoubleGene> gt = codec.encoding().newInstance();
+//		codec.decoder().apply(gt);
+//	}
 
 }

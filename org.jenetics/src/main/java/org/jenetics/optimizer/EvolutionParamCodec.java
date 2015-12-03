@@ -30,6 +30,7 @@ import org.jenetics.DoubleGene;
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
 import org.jenetics.Selector;
+import org.jenetics.TruncationSelector;
 import org.jenetics.engine.Codec;
 import org.jenetics.engine.EvolutionParam;
 import org.jenetics.engine.codecs;
@@ -206,7 +207,17 @@ public class EvolutionParamCodec<
 		final LongRange maximalPhenotypeAge
 	) {
 		return new EvolutionParamCodec<G, C>(
-			SelectorCodec.general(),
+			SelectorCodec.<G, C>ofTournamentSelector(IntRange.of(2, 10))
+				.append(
+					ISeq.of(
+						SelectorCodec.ofExponentialRankSelector(DoubleRange.of(0, 1)),
+						SelectorCodec.ofLinearRankSelector(DoubleRange.of(0, 10)),
+						SelectorCodec.ofTournamentSelector(IntRange.of(2, 10))
+					),
+					ISeq.of(
+						new TruncationSelector<>()
+					)
+				),
 			AltererCodec.<G, C>ofSwapMutator()
 				.append(AltererCodec.ofMultiPointCrossover(IntRange.of(2, 20)))
 				.append(AltererCodec.ofMutator()),
