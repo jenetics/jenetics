@@ -247,14 +247,14 @@ public final class AltererCodec<
 	 * @return a new {@code AltererCodec}
 	 * @throws NullPointerException if the {@code codec} {@code null}
 	 */
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	private static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	AltererCodec<G, C> of(final Codec<? extends Alterer<G, C>, DoubleGene> codec) {
 		return of(ISeq.of(codec), ISeq.empty());
 	}
 
 
 	/* *************************************************************************
-	 *  Static factory methods for creating alterer codecs.
+	 *  Static factory methods for creating known alterer codecs.
 	 * ************************************************************************/
 
 	/**
