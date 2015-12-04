@@ -19,10 +19,39 @@
  */
 package org.jenetics.example.tsp;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.function.Function;
+
+import org.jenetics.EnumGene;
+import org.jenetics.engine.Codec;
+import org.jenetics.engine.Problem;
+import org.jenetics.util.ISeq;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class TSPProblem {
+public class TSPProblem implements Problem<Route, EnumGene<Integer>, Double> {
+
+	private final ISeq<Location> _points;
+
+	private TSPProblem(final ISeq<Location> points) {
+		_points = requireNonNull(points);
+	}
+
+	@Override
+	public Function<Route, Double> fitness() {
+		return null;
+	}
+
+	@Override
+	public Codec<Route, EnumGene<Integer>> codec() {
+		return null;
+	}
+
+	public static TSPProblem of(final ISeq<Location> points) {
+		return new TSPProblem(points);
+	}
 }
