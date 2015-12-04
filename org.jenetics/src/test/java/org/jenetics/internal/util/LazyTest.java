@@ -23,14 +23,16 @@ import java.io.Serializable;
 import java.util.Random;
 import java.util.function.Supplier;
 
+import org.testng.annotations.Test;
+
 import org.jenetics.util.Factory;
 import org.jenetics.util.ObjectTester;
 import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-09-19 $</em>
  */
+@Test
 public class LazyTest extends ObjectTester<Lazy<Double>> {
 
 	@Override

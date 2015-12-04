@@ -30,7 +30,6 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-05-14 $</em>
  */
 public class SeqTest {
 
@@ -46,6 +45,20 @@ public class SeqTest {
 
 		final Seq<Double> seq = list.stream().collect(toSeq());
 		Assert.assertEquals(list, seq.asList());
+	}
+
+	@Test
+	public void empty() {
+		Assert.assertNotNull(Seq.EMPTY);
+		Assert.assertNotNull(Seq.empty());
+		Assert.assertSame(Seq.EMPTY, Seq.empty());
+		Assert.assertEquals(Seq.EMPTY.length(), 0);
+		Assert.assertEquals(Seq.empty().asList().size(), 0);
+	}
+
+	@Test
+	public void zeroLengthSameAsEmpty() {
+		Assert.assertSame(Seq.of(), Seq.empty());
 	}
 
 }

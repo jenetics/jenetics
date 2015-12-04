@@ -1,0 +1,54 @@
+# Use glob syntax.
+syntax: glob
+
+################################################################################
+# Directories
+################################################################################
+
+# Build artifacts
+**/bin/**
+**/build/**
+out/**
+test-output/**
+output/**
+*.jar
+
+# Gradle
+**/.gradle/**
+.groovy/*
+gradle-app.setting
+
+## Eclipse
+.settings/**
+
+## Wiki
+wiki/**
+
+# Generated code
+src/generated
+
+################################################################################
+# Files
+################################################################################
+
+*.so
+*.dblite
+random-x86_64
+
+## Eclipse
+.classpath
+.project
+
+## IDEA
+*.iml
+*.ipr
+*.iws
+.idea/*
+classes/*
+
+## Netbeans
+.nb-gradle/**
+nbproject/**
+nbbuild/**
+build.xml
+manifest.mf

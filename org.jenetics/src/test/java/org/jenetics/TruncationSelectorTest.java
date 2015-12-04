@@ -19,23 +19,23 @@
  */
 package org.jenetics;
 
+import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 import static org.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
 
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 import org.jenetics.internal.util.Named;
 
 import org.jenetics.stat.Histogram;
-import org.jenetics.stat.StatisticsAssert;
 import org.jenetics.util.Factory;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.TestData;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-10-19 $</em>
  */
 public class TruncationSelectorTest
 	extends SelectorTester<TruncationSelector<DoubleGene, Double>>
@@ -46,22 +46,23 @@ public class TruncationSelectorTest
 		return TruncationSelector::new;
 	}
 
-	// Working, but not stable enough.
-	//@Test(dataProvider = "expectedDistribution")
+	@Test(dataProvider = "expectedDistribution")
 	public void selectDistribution(final Named<double[]> expected, final Optimize opt) {
-		final int loops = 5;
-		final int npopulation = POPULATION_COUNT;
+		retry(3, () -> {
+			final int loops = 50;
+			final int npopulation = POPULATION_COUNT;
 
-		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
-		using(random, r -> {
-			final Histogram<Double> distribution = SelectorTester.distribution(
-				new TruncationSelector<>(),
-				opt,
-				npopulation,
-				loops
-			);
+			final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
+			using(random, r -> {
+				final Histogram<Double> distribution = SelectorTester.distribution(
+					new TruncationSelector<>(),
+					opt,
+					npopulation,
+					loops
+				);
 
-			StatisticsAssert.assertDistribution(distribution, expected.value, 0.999);
+				assertDistribution(distribution, expected.value, 0.001, 10);
+			});
 		});
 	}
 

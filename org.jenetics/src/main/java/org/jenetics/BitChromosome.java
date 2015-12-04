@@ -54,7 +54,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-12-28 $</em>
+ * @version 3.0
  */
 @XmlJavaTypeAdapter(BitChromosome.Model.Adapter.class)
 public class BitChromosome extends Number
@@ -169,8 +169,8 @@ public class BitChromosome extends Number
 
 	@Override
 	public BitGene getGene() {
-		assert (_genes != null);
-		assert (_genes.length > 0);
+		assert _genes != null;
+		assert _genes.length > 0;
 		return BitGene.of(bit.get(_genes, 0));
 	}
 
@@ -187,7 +187,7 @@ public class BitChromosome extends Number
 	@Override
 	public BitGene getGene(final int index) {
 		rangeCheck(index);
-		assert(_genes != null);
+		assert _genes != null;
 		return BitGene.of(bit.get(_genes, index));
 	}
 

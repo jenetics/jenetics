@@ -51,7 +51,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-12-08 $</em>
+ * @version 3.0
  */
 public class SinglePointCrossover<
 	G extends Gene<?, G>,
@@ -81,7 +81,7 @@ public class SinglePointCrossover<
 
 	@Override
 	protected int crossover(final MSeq<G> that, final MSeq<G> other) {
-		assert (that.length() == other.length());
+		assert that.length() == other.length();
 
 		final Random random = RandomRegistry.getRandom();
 		crossover(that, other, random.nextInt(that.length()));
@@ -94,10 +94,11 @@ public class SinglePointCrossover<
 		final MSeq<T> other,
 		final int index
 	) {
-		assert (index >= 0) : format(
-			"Crossover index must be within [0, %d) but was %d",
-			that.length(), index
-		);
+		assert index >= 0 :
+			format(
+				"Crossover index must be within [0, %d) but was %d",
+				that.length(), index
+			);
 
 		that.swap(index, that.length(), other, index);
 	}

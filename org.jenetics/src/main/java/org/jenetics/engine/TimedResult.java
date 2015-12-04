@@ -31,7 +31,7 @@ import java.util.function.Supplier;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-09 $</em>
+ * @version 3.0
  */
 final class TimedResult<T> {
 
@@ -77,7 +77,7 @@ final class TimedResult<T> {
 		final Clock clock
 	) {
 		return value -> {
-			final Timer timer = Timer.of().start();
+			final Timer timer = Timer.of(clock).start();
 			final R result = function.apply(value);
 			return new TimedResult<>(timer.stop().getTime(), result);
 		};

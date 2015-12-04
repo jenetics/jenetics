@@ -26,7 +26,7 @@ import org.jenetics.util.Seq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-06-05 $</em>
+ * @version 3.0
  */
 final class DefaultHashCodeBuilder implements Hash {
 	private static final int P1 = 47;

@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
  * This object contains models not defined as native XML type.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-08-05 $</em>
+ * @version 1.6
  * @since 2.0
  */
 public final class model {

@@ -28,14 +28,13 @@ import static org.jenetics.engine.limit.bySteadyFitness;
 import java.util.stream.IntStream;
 
 import org.jenetics.EnumGene;
-import org.jenetics.Genotype;
 import org.jenetics.Optimize;
 import org.jenetics.PartiallyMatchedCrossover;
-import org.jenetics.PermutationChromosome;
 import org.jenetics.Phenotype;
 import org.jenetics.SwapMutator;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionStatistics;
+import org.jenetics.engine.codecs;
 
 public class TravelingSalesman {
 
@@ -58,17 +57,11 @@ public class TravelingSalesman {
 	}
 
 	private static double chord(int stops, int i, double r) {
-		return 2.0*r*abs(sin((PI*i)/stops));
+		return 2.0*r*abs(sin(PI*i/stops));
 	}
 
 	// Calculate the path length of the current genotype.
-	private static
-	Double dist(final Genotype<EnumGene<Integer>> gt) {
-		// Convert the genotype to the traveling path.
-		final int[] path = gt.getChromosome().toSeq().stream()
-			.mapToInt(EnumGene<Integer>::getAllele)
-			.toArray();
-
+	private static double dist(final int[] path) {
 		// Calculate the path distance.
 		return IntStream.range(0, STOPS)
 			.mapToDouble(i ->
@@ -80,7 +73,7 @@ public class TravelingSalesman {
 		final Engine<EnumGene<Integer>, Double> engine = Engine
 			.builder(
 				TravelingSalesman::dist,
-				PermutationChromosome.ofInteger(STOPS))
+				codecs.ofPermutation(STOPS))
 			.optimize(Optimize.MINIMUM)
 			.maximalPhenotypeAge(11)
 			.populationSize(500)

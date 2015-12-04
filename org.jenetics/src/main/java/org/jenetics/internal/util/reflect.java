@@ -32,7 +32,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 3.0 &mdash; <em>$Date: 2014-08-05 $</em>
+ * @version 3.0
  */
 public class reflect {
 	private reflect() {require.noInstance();}

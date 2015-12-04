@@ -23,7 +23,7 @@ package org.jenetics.internal.collection;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0 &mdash; <em>$Date: 2014-04-21 $</em>
+ * @version 3.0
  */
 public class ArrayProxyMIterator<T, P extends ArrayProxy<T, ?, ?>>
 	extends ArrayProxyIterator<T, P>
@@ -38,6 +38,7 @@ public class ArrayProxyMIterator<T, P extends ArrayProxy<T, ?, ?>>
 		if (lastElement < 0) {
 			throw new IllegalStateException();
 		}
+		proxy.cloneIfSealed();
 		proxy.__set(lastElement, value);
 	}
 

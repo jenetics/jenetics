@@ -37,11 +37,15 @@ import org.jenetics.util.MSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-01 $</em>
  */
-public class MultiPointCrossoverTest {
+public class MultiPointCrossoverTest extends AltererTester {
 
-	@Test(dataProvider = "parameters")
+	@Override
+	public Alterer<DoubleGene, Double> newAlterer(final double p) {
+		return new MultiPointCrossover<>(p);
+	}
+
+	@Test(dataProvider = "crossoverParameters")
 	public void crossover(
 		final String stringA,
 		final String stringB,
@@ -61,7 +65,7 @@ public class MultiPointCrossoverTest {
 		Assert.assertEquals(mb, CharSeq.toISeq(expectedB));
 	}
 
-	@DataProvider(name = "parameters")
+	@DataProvider(name = "crossoverParameters")
 	public Object[][] getParameters() {
 		return new Object[][] {{
 			"0123456789", "ABCDEFGHIJ",

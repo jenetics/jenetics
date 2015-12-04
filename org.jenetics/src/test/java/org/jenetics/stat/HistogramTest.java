@@ -31,7 +31,6 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-24 $</em>
  */
 public class HistogramTest {
 
@@ -41,7 +40,7 @@ public class HistogramTest {
 		final double end = 123;
 		final int elements = 10;
 
-		Histogram<Double> histogram = Histogram.of(begin, end, elements);
+		Histogram<Double> histogram = Histogram.ofDouble(begin, end, elements);
 		Assert.assertEquals(histogram.length(), elements);
 		Assert.assertEquals(histogram.getHistogram(), new long[elements]);
 	}
@@ -52,7 +51,7 @@ public class HistogramTest {
 		final long end = 1000;
 		final int elements = 9;
 
-		Histogram<Long> histogram = Histogram.of(begin, end, elements);
+		Histogram<Long> histogram = Histogram.ofLong(begin, end, elements);
 		Assert.assertEquals(histogram.length(), elements);
 		Assert.assertEquals(histogram.getHistogram(), new long[elements]);
 	}
@@ -63,7 +62,7 @@ public class HistogramTest {
 		final long end = 10;
 		final int elements = 9;
 
-		Histogram<Long> histogram = Histogram.of(begin, end, elements);
+		Histogram<Long> histogram = Histogram.ofLong(begin, end, elements);
 		for (int i = 0; i < elements*1000; ++i) {
 			histogram.accept((long)(i%elements));
 		}
@@ -157,12 +156,12 @@ public class HistogramTest {
 			values[i] = random.nextDouble(min, max);
 		}
 
-		final Histogram<Double> serial = Histogram.of(min, max, nclasses);
+		final Histogram<Double> serial = Histogram.ofDouble(min, max, nclasses);
 		Arrays.stream(values).forEach(serial::accept);
 
 		final Histogram<Double> parallel =
 			IntStream.range(0, values.length).parallel().mapToObj(i -> {
-				final Histogram<Double> hist = Histogram.of(min, max, nclasses);
+				final Histogram<Double> hist = Histogram.ofDouble(min, max, nclasses);
 				hist.accept(values[i]);
 				return hist;
 			}).collect(Histogram.toDoubleHistogram(min, max, nclasses));

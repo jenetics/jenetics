@@ -19,7 +19,7 @@
  */
 package org.jenetics;
 
-import java.io.Serializable;
+import java.util.stream.Stream;
 
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
@@ -38,14 +38,13 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-12-22 $</em>
+ * @version 3.1
  */
 public interface Chromosome<G extends Gene<?, G>>
 	extends
 		Verifiable,
 		Iterable<G>,
-		Factory<Chromosome<G>>,
-		Serializable
+		Factory<Chromosome<G>>
 {
 	/**
 	 * A factory method which creates a new {@link Chromosome} of specific type
@@ -94,5 +93,17 @@ public interface Chromosome<G extends Gene<?, G>>
 	 * @return an immutable gene sequence.
 	 */
 	public ISeq<G> toSeq();
+
+	/**
+	 * Returns a sequential {@code Stream} of genes with this chromosome as
+	 * its source.
+	 *
+	 * @since 3.3
+	 *
+	 * @return a sequential {@code Stream} of genes
+	 */
+	public default Stream<G> stream() {
+		return toSeq().stream();
+	}
 
 }

@@ -29,7 +29,6 @@ import org.jenetics.internal.math.base;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-09-03 $</em>
  */
 public class baseTest {
 

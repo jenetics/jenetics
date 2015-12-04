@@ -22,7 +22,7 @@ package org.jenetics.internal.collection;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2014-04-21 $</em>
+ * @version 1.4
  */
 public class ArrayProxyMList<T, P extends ArrayProxy<T, ?, ?>>
 	extends ArrayProxyList<T, P>
@@ -35,6 +35,7 @@ public class ArrayProxyMList<T, P extends ArrayProxy<T, ?, ?>>
 
 	@Override
 	public T set(final int index, final T element) {
+		proxy.cloneIfSealed();
 		final T oldElement = proxy.get(index);
 		proxy.set(index, element);
 		return oldElement;
