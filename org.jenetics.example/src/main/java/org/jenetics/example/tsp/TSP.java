@@ -5,6 +5,11 @@
  */
 package org.jenetics.example.tsp;
 
+import java.util.Random;
+import java.util.stream.IntStream;
+import org.jenetics.util.ISeq;
+import org.jenetics.util.RandomRegistry;
+
 /**
  *
  * @author fwilhelm
@@ -16,6 +21,18 @@ public class TSP extends javax.swing.JFrame {
 	 */
 	public TSP() {
 		initComponents();
+		init();
+	}
+	
+	private void init() {
+		final Random random = RandomRegistry.getRandom();
+		final ISeq<Location> points = IntStream.range(0, 5).mapToObj(i -> {
+			return Location.of(random.nextDouble(), random.nextDouble());
+		})
+		.collect(ISeq.toISeq());
+		
+		_mapPanel.setRoute(Route.of(points));
+		_mapPanel.repaint();
 	}
 
 	/**
@@ -27,17 +44,36 @@ public class TSP extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        _mapPanel = new org.jenetics.example.tsp.MapPanel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        javax.swing.GroupLayout _mapPanelLayout = new javax.swing.GroupLayout(_mapPanel);
+        _mapPanel.setLayout(_mapPanelLayout);
+        _mapPanelLayout.setHorizontalGroup(
+            _mapPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 546, Short.MAX_VALUE)
+        );
+        _mapPanelLayout.setVerticalGroup(
+            _mapPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 376, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 533, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(_mapPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 371, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(_mapPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -79,5 +115,6 @@ public class TSP extends javax.swing.JFrame {
 	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private org.jenetics.example.tsp.MapPanel _mapPanel;
     // End of variables declaration//GEN-END:variables
 }

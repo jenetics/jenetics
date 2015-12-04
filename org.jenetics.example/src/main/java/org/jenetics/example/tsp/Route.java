@@ -60,7 +60,7 @@ public final class Route {
 			Arrays.stream(longitudes).max().orElse(0)
 		);
 
-		_range = _min.minus(_max);
+		_range = _max.minus(_min);
 	}
 
 	public ISeq<Location> getPoints() {
@@ -85,6 +85,9 @@ public final class Route {
 			.map(p -> scale(p, width, height))
 			.collect(ISeq.toISeq());
 
+		System.out.println(_range);
+		System.out.println(points);
+
 		if (!points.isEmpty()) {
 			final GeneralPath path = new GeneralPath();
 			final Location point = points.get(0);
@@ -103,11 +106,15 @@ public final class Route {
 	}
 
 	private Location scale(final Location p, final int width, final int height) {
-		final double scaleX = _range.getLatitude()/width;
-		final double scaleY = _range.getLongitude()/height;
+		final double scaleX = width/_range.getLongitude();
+		final double scaleY = height/_range.getLatitude();
 		final double scale = Math.min(scaleX, scaleY);
 
 		return p.mult(scale);
+	}
+
+	public static Route of(final ISeq<Location> points) {
+		return new Route(points);
 	}
 
 }

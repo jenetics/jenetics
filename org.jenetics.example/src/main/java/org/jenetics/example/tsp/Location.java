@@ -104,6 +104,7 @@ public final class Location {
 	}
 
 	public static Location of(final double latitude, final double longitude) {
+		/*
 		if (latitude < -PI/2 || latitude > PI) {
 			throw new IllegalArgumentException(format(
 				"Latitude of %f not in valid range [-π/2..π/2]", latitude
@@ -114,6 +115,7 @@ public final class Location {
 				"Longitude of %f not in valid range [-π..π]", latitude
 			));
 		}
+			*/
 
 		return new Location(latitude, longitude);
 	}

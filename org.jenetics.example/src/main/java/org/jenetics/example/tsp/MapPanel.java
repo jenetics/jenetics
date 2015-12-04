@@ -19,11 +19,11 @@
  */
 package org.jenetics.example.tsp;
 
+import static java.util.Objects.requireNonNull;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
-import static java.util.Objects.requireNonNull;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -32,7 +32,7 @@ import static java.util.Objects.requireNonNull;
  */
 public class MapPanel extends javax.swing.JPanel {
 
-	private Point[] _points;
+	private Route _route;
 
 	/**
 	 * Creates new form MapPanel
@@ -41,22 +41,21 @@ public class MapPanel extends javax.swing.JPanel {
 		initComponents();
 	}
 
-	void setPoints(final Point[] points) {
-		_points = requireNonNull(points);
+	void setRoute(final Route route) {
+		_route = requireNonNull(route);
 	}
 
 	@Override
 	protected void paintComponent(final Graphics g) {
 		super.paintComponent(g);
-		/*
-		if (_chromosome != null) {
-			_chromosome.draw((Graphics2D) g, width(), height());
+		if (_route != null) {
+			_route.draw((Graphics2D) g, getWidth(), getHeight());
 		} else {
 			g.setColor(Color.white);
-			g.clearRect(0, 0, width(), height());
+			g.clearRect(0, 0, getWidth(), getHeight());
 		}
-		*/
 	}
+
 
 	/**
 	 * This method is called from within the constructor to initialize the form.
