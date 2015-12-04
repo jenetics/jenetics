@@ -43,6 +43,17 @@ public final class Location {
 		_longitude = longitude;
 	}
 
+	public Location minus(final Location other) {
+		return Location.of(
+			_latitude - other._latitude,
+			_longitude - other._longitude
+		);
+	}
+
+	public Location mult(final double factor) {
+		return Location.of(_latitude*factor, _longitude*factor);
+	}
+
 	public double dist(final Location other) {
 		final double phi1 = _latitude;
 		final double theta1 = PI/2.0 - _latitude;
