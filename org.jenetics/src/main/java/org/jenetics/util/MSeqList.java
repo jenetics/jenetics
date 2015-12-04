@@ -17,47 +17,25 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.collection;
-
-import java.util.function.Function;
-
-import org.jenetics.util.ISeq;
-import org.jenetics.util.MSeq;
+package org.jenetics.util;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.4
- * @version 3.0
+ * @version 3.4
+ * @since 3.4
  */
-public class ArrayProxyISeq<T, P extends ArrayProxy<T, ?, ?>>
-	extends ArrayProxySeq<T, P>
-	implements ISeq<T>
-{
-
+public class MSeqList<T> extends SeqList<T> {
 	private static final long serialVersionUID = 1L;
 
-	public ArrayProxyISeq(final P proxy) {
-		super(proxy);
+	MSeqList(final MSeq<T> array) {
+		super(array);
 	}
 
 	@Override
-	public <B> ISeq<B> map(final Function<? super T, ? extends B> mapper) {
-		return new ArrayProxyISeq<>(proxy.map(mapper));
-	}
-
-	@Override
-	public ISeq<T> subSeq(final int start) {
-		return new ArrayProxyISeq<>(proxy.slice(start));
-	}
-
-	@Override
-	public ISeq<T> subSeq(int start, int end) {
-		return new ArrayProxyISeq<>(proxy.slice(start, end));
-	}
-
-	@Override
-	public MSeq<T> copy() {
-		return new ArrayProxyMSeq<>(proxy.copy());
+	public T set(final int index, final T element) {
+		final T oldElement = seq.get(index);
+		((MSeq<T>)seq).set(index, element);
+		return oldElement;
 	}
 
 }

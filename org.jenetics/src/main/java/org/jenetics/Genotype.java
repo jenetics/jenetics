@@ -200,7 +200,7 @@ public final class Genotype<G extends Gene<?, G>>
 	 * Returns a sequential {@code Stream} of chromosomes with this genotype as
 	 * its source.
 	 *
-	 * @since !__version__!
+	 * @since 3.4
 	 *
 	 * @return a sequential {@code Stream} of chromosomes
 	 */

@@ -205,8 +205,8 @@ public interface Codec<T, G extends Gene<?, G>> {
 		final BiFunction<A, B, T> decoder
 	) {
 		@SuppressWarnings("unchecked")
-		final Function<Object[], T> decoderAdapter = v -> decoder
-			.apply((A)v[0], (B)v[1]);
+		final Function<Object[], T> decoderAdapter =
+			v -> decoder.apply((A)v[0], (B)v[1]);
 
 		return of(
 			ISeq.of(codec1, codec2),
