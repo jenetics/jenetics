@@ -61,6 +61,7 @@ public final class Route {
 		);
 
 		_range = _max.minus(_min);
+		System.out.println("" + _min + ":" + _max);
 	}
 
 	public ISeq<Point> getPoints() {
@@ -110,7 +111,7 @@ public final class Route {
 		final double scaleY = height/_range.getLatitude();
 		final double scale = Math.min(scaleX, scaleY);
 
-		return p.mult(scale);
+		return p.minus(_min).mult(scale);
 	}
 
 	public static Route of(final ISeq<Point> points) {

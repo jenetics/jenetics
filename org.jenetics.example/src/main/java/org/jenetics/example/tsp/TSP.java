@@ -19,7 +19,10 @@
  */
 package org.jenetics.example.tsp;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.stream.IntStream;
 
 import org.jenetics.util.ISeq;
@@ -41,6 +44,25 @@ public class TSP extends javax.swing.JFrame {
 	}
 
 	private void init() {
+		final Scanner scanner = new Scanner(getClass().getResourceAsStream(
+			"/org/jenetics/example/tsp/AustrianDistrictsCities.csv"
+		));
+		final List<Point> pts = new ArrayList<>();
+		String line = scanner.nextLine();
+		while (scanner.hasNextLine()) {
+			line = scanner.nextLine();
+			System.out.println(line);
+			if (!line.trim().isEmpty()) {
+				pts.add(Point.ofCSVLine(line.split(",")));
+			}
+		}
+
+		final ISeq<Point> points = pts.stream().collect(ISeq.toISeq());
+
+		System.out.println(points);
+		_mapPanel.setRoute(Route.of(points));
+		_mapPanel.repaint();
+/*
 		final Random random = RandomRegistry.getRandom();
 		final ISeq<Point> points = IntStream.range(0, 5).mapToObj(i -> {
 			return Point.of(random.nextDouble(), random.nextDouble());
@@ -49,6 +71,8 @@ public class TSP extends javax.swing.JFrame {
 
 		_mapPanel.setRoute(Route.of(points));
 		_mapPanel.repaint();
+
+		*/
 	}
 
 	/**

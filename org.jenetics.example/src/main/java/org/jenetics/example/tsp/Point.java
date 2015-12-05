@@ -24,11 +24,22 @@ import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static java.lang.String.format;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
+@JsonAdapter(Point.Adapter.class)
 public final class Point {
 
 	// The earth radius used for calculating distances.
@@ -36,11 +47,16 @@ public final class Point {
 
 	private final double _latitude;
 	private final double _longitude;
-	private static final double _height = 0;
+	private final double _elevation;
 
-	private Point(final double latitude, final double longitude) {
+	private Point(
+		final double latitude,
+		final double longitude,
+		final double elevation
+	) {
 		_latitude = latitude;
 		_longitude = longitude;
+		_elevation = elevation;
 	}
 
 	public Point minus(final Point other) {
@@ -57,7 +73,7 @@ public final class Point {
 	public double dist(final Point other) {
 		final double phi1 = _latitude;
 		final double theta1 = PI/2.0 - _latitude;
-		final double r1 = R + _height;
+		final double r1 = R + _elevation;
 
 		final double phi2 = other._latitude;
 		final double theta2 = PI/2.0 - other._latitude;
@@ -86,6 +102,10 @@ public final class Point {
 		return _longitude;
 	}
 
+	public double getElevation() {
+		return _elevation;
+	}
+
 	@Override
 	public int hashCode() {
 		return Double.hashCode(_latitude) + 31*Double.hashCode(_latitude);
@@ -100,7 +120,11 @@ public final class Point {
 
 	@Override
 	public String toString() {
-		return format("[lat=%f, long=%f]", _latitude, _longitude);
+		return format(
+			"[lat=%f, long=%f]",
+			Math.toDegrees(_latitude),
+			Math.toDegrees(_longitude)
+		);
 	}
 
 	public static Point of(final double latitude, final double longitude) {
@@ -117,7 +141,11 @@ public final class Point {
 		}
 			*/
 
-		return new Point(latitude, longitude);
+		return new Point(latitude, longitude, 0);
+	}
+
+	public static Point of(final double latitude, final double longitude, final double elevation) {
+		return new Point(latitude, longitude, elevation);
 	}
 
 	public static Point ofDegrees(final double latitude, final double longitude) {
@@ -132,7 +160,57 @@ public final class Point {
 			));
 		}
 
-		return new Point(Math.toRadians(latitude), Math.toRadians(longitude));
+		return new Point(Math.toRadians(latitude), Math.toRadians(longitude), 0);
+	}
+
+	public static Point ofCSVLine(final String[] values) {
+		return Point.ofDegrees(
+			Double.parseDouble(values[2]),
+			Double.parseDouble(values[3])
+		);
+	}
+
+
+
+	static final class Adapter extends TypeAdapter<Point> {
+
+		private static final String LATITUDE = "lat";
+		private static final String LONGITUDE = "long";
+		private static final String ELEVATION = "ele";
+
+		@Override
+		public void write(final JsonWriter out, final Point point)
+			throws IOException
+		{
+			out.beginObject();
+			out.name(LATITUDE).value(point.getLatitude());
+			out.name(LONGITUDE).value(point.getLongitude());
+			out.name("elevation").value(point.getElevation());
+			out.endObject();
+		}
+
+		@Override
+		public Point read(final JsonReader in) throws IOException {
+			in.beginObject();
+
+			double latitude = 0;
+			double longitude = 0;
+			double elevation = 0;
+			switch (in.nextName()) {
+				case LATITUDE: latitude = in.nextDouble(); break;
+				case LONGITUDE: longitude = in.nextDouble(); break;
+				case ELEVATION: elevation = in.nextDouble(); break;
+			}
+
+			return new Point(latitude, longitude, elevation);
+		}
+	}
+
+	public static void main(final String[] args) throws Exception {
+		final GsonBuilder builder = new GsonBuilder();
+		builder.setPrettyPrinting();
+		final Gson gson = builder.create();
+		System.out.println(gson.toJson(Point.of(123, 123)));
 	}
 
 }
