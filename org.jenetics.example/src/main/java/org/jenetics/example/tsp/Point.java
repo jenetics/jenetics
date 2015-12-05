@@ -29,7 +29,7 @@ import static java.lang.String.format;
  * @version !__version__!
  * @since !__version__!
  */
-public final class Location {
+public final class Point {
 
 	// The earth radius used for calculating distances.
 	private static final double R = 6_371_000.785;
@@ -38,23 +38,23 @@ public final class Location {
 	private final double _longitude;
 	private static final double _height = 0;
 
-	private Location(final double latitude, final double longitude) {
+	private Point(final double latitude, final double longitude) {
 		_latitude = latitude;
 		_longitude = longitude;
 	}
 
-	public Location minus(final Location other) {
-		return Location.of(
+	public Point minus(final Point other) {
+		return Point.of(
 			_latitude - other._latitude,
 			_longitude - other._longitude
 		);
 	}
 
-	public Location mult(final double factor) {
-		return Location.of(_latitude*factor, _longitude*factor);
+	public Point mult(final double factor) {
+		return Point.of(_latitude*factor, _longitude*factor);
 	}
 
-	public double dist(final Location other) {
+	public double dist(final Point other) {
 		final double phi1 = _latitude;
 		final double theta1 = PI/2.0 - _latitude;
 		final double r1 = R + _height;
@@ -93,9 +93,9 @@ public final class Location {
 
 	@Override
 	public boolean equals(final Object other) {
-		return other instanceof Location &&
-			Double.compare(((Location)other)._latitude, _latitude) == 0 &&
-			Double.compare(((Location)other)._longitude, _longitude) == 0;
+		return other instanceof Point &&
+			Double.compare(((Point)other)._latitude, _latitude) == 0 &&
+			Double.compare(((Point)other)._longitude, _longitude) == 0;
 	}
 
 	@Override
@@ -103,7 +103,7 @@ public final class Location {
 		return format("[lat=%f, long=%f]", _latitude, _longitude);
 	}
 
-	public static Location of(final double latitude, final double longitude) {
+	public static Point of(final double latitude, final double longitude) {
 		/*
 		if (latitude < -PI/2 || latitude > PI) {
 			throw new IllegalArgumentException(format(
@@ -117,10 +117,10 @@ public final class Location {
 		}
 			*/
 
-		return new Location(latitude, longitude);
+		return new Point(latitude, longitude);
 	}
 
-	public static Location ofDegrees(final double latitude, final double longitude) {
+	public static Point ofDegrees(final double latitude, final double longitude) {
 		if (latitude < -90 || latitude > 90) {
 			throw new IllegalArgumentException(format(
 				"Latitude of %f not in valid range [-90..90]", latitude
@@ -132,7 +132,7 @@ public final class Location {
 			));
 		}
 
-		return new Location(Math.toRadians(latitude), Math.toRadians(longitude));
+		return new Point(Math.toRadians(latitude), Math.toRadians(longitude));
 	}
 
 }

@@ -34,28 +34,28 @@ import org.jenetics.util.ISeq;
  */
 public final class Route {
 
-	private final ISeq<Location> _points;
-	private final Location _min;
-	private final Location _max;
-	private final Location _range;
+	private final ISeq<Point> _points;
+	private final Point _min;
+	private final Point _max;
+	private final Point _range;
 
-	private Route(final ISeq<Location> points) {
+	private Route(final ISeq<Point> points) {
 		_points = requireNonNull(points);
 
 		final double[] latitudes = _points.stream()
-			.mapToDouble(Location::getLatitude)
+			.mapToDouble(Point::getLatitude)
 			.toArray();
 
 		final double[] longitudes = _points.stream()
-			.mapToDouble(Location::getLongitude)
+			.mapToDouble(Point::getLongitude)
 			.toArray();
 
-		_min = Location.of(
+		_min = Point.of(
 			Arrays.stream(latitudes).min().orElse(0),
 			Arrays.stream(longitudes).min().orElse(0)
 		);
 
-		_max = Location.of(
+		_max = Point.of(
 			Arrays.stream(latitudes).max().orElse(0),
 			Arrays.stream(longitudes).max().orElse(0)
 		);
@@ -63,7 +63,7 @@ public final class Route {
 		_range = _max.minus(_min);
 	}
 
-	public ISeq<Location> getPoints() {
+	public ISeq<Point> getPoints() {
 		return _points;
 	}
 
@@ -81,7 +81,7 @@ public final class Route {
 	}
 
 	public void draw(final Graphics2D g, final int width, final int height) {
-		final ISeq<Location> points = _points.stream()
+		final ISeq<Point> points = _points.stream()
 			.map(p -> scale(p, width, height))
 			.collect(ISeq.toISeq());
 
@@ -90,7 +90,7 @@ public final class Route {
 
 		if (!points.isEmpty()) {
 			final GeneralPath path = new GeneralPath();
-			final Location point = points.get(0);
+			final Point point = points.get(0);
 			path.moveTo(
 				point.getLongitude(),
 				point.getLatitude()
@@ -105,7 +105,7 @@ public final class Route {
 		}
 	}
 
-	private Location scale(final Location p, final int width, final int height) {
+	private Point scale(final Point p, final int width, final int height) {
 		final double scaleX = width/_range.getLongitude();
 		final double scaleY = height/_range.getLatitude();
 		final double scale = Math.min(scaleX, scaleY);
@@ -113,7 +113,7 @@ public final class Route {
 		return p.mult(scale);
 	}
 
-	public static Route of(final ISeq<Location> points) {
+	public static Route of(final ISeq<Point> points) {
 		return new Route(points);
 	}
 

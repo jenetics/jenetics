@@ -42,8 +42,8 @@ public class TSP extends javax.swing.JFrame {
 
 	private void init() {
 		final Random random = RandomRegistry.getRandom();
-		final ISeq<Location> points = IntStream.range(0, 5).mapToObj(i -> {
-			return Location.of(random.nextDouble(), random.nextDouble());
+		final ISeq<Point> points = IntStream.range(0, 5).mapToObj(i -> {
+			return Point.of(random.nextDouble(), random.nextDouble());
 		})
 		.collect(ISeq.toISeq());
 

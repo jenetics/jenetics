@@ -35,9 +35,9 @@ import org.jenetics.util.ISeq;
  */
 public class TSPProblem implements Problem<Route, EnumGene<Integer>, Double> {
 
-	private final ISeq<Location> _points;
+	private final ISeq<Point> _points;
 
-	private TSPProblem(final ISeq<Location> points) {
+	private TSPProblem(final ISeq<Point> points) {
 		_points = requireNonNull(points);
 	}
 
@@ -51,7 +51,7 @@ public class TSPProblem implements Problem<Route, EnumGene<Integer>, Double> {
 		return null;
 	}
 
-	public static TSPProblem of(final ISeq<Location> points) {
+	public static TSPProblem of(final ISeq<Point> points) {
 		return new TSPProblem(points);
 	}
 }
