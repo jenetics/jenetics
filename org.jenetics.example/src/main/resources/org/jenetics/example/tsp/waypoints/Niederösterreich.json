@@ -1,0 +1,173 @@
+{
+  "state": "Niederösterreich",
+  "cities": [
+    {
+      "name": "Amstetten",
+      "point": {
+        "lat": 48.12502,
+        "long": 14.86934,
+        "elevation": 287.0
+      }
+    },
+    {
+      "name": "Baden",
+      "point": {
+        "lat": 48.00214,
+        "long": 16.23091,
+        "elevation": 229.0
+      }
+    },
+    {
+      "name": "Bruck an der Leitha",
+      "point": {
+        "lat": 48.02375,
+        "long": 16.77534,
+        "elevation": 156.0
+      }
+    },
+    {
+      "name": "Gänserndorf",
+      "point": {
+        "lat": 48.34067,
+        "long": 16.71754,
+        "elevation": 164.0
+      }
+    },
+    {
+      "name": "Gmünd",
+      "point": {
+        "lat": 48.77156,
+        "long": 14.98511,
+        "elevation": 490.0
+      }
+    },
+    {
+      "name": "Hollabrunn",
+      "point": {
+        "lat": 48.5625696,
+        "long": 16.0787228,
+        "elevation": 224.0
+      }
+    },
+    {
+      "name": "Horn",
+      "point": {
+        "lat": 48.66607,
+        "long": 15.65716,
+        "elevation": 313.0
+      }
+    },
+    {
+      "name": "Korneuburg",
+      "point": {
+        "lat": 48.34472,
+        "long": 16.33149,
+        "elevation": 169.0
+      }
+    },
+    {
+      "name": "Krems an der Donau",
+      "point": {
+        "lat": 48.40999,
+        "long": 15.60384,
+        "elevation": 199.0
+      }
+    },
+    {
+      "name": "Lilienfeld",
+      "point": {
+        "lat": 48.0180638,
+        "long": 15.5945498,
+        "elevation": 400.0
+      }
+    },
+    {
+      "name": "Melk",
+      "point": {
+        "lat": 48.22647,
+        "long": 15.34996,
+        "elevation": 251.0
+      }
+    },
+    {
+      "name": "Mistelbach",
+      "point": {
+        "lat": 48.56743,
+        "long": 16.5722,
+        "elevation": 200.0
+      }
+    },
+    {
+      "name": "Mödling",
+      "point": {
+        "lat": 48.08255,
+        "long": 16.2869,
+        "elevation": 220.0
+      }
+    },
+    {
+      "name": "Neunkirchen",
+      "point": {
+        "lat": 47.72607,
+        "long": 16.08121,
+        "elevation": 366.0
+      }
+    },
+    {
+      "name": "St. Pölten",
+      "point": {
+        "lat": 48.20353,
+        "long": 15.63817,
+        "elevation": 268.0
+      }
+    },
+    {
+      "name": "Scheibbs",
+      "point": {
+        "lat": 48.00804,
+        "long": 15.16781,
+        "elevation": 338.0
+      }
+    },
+    {
+      "name": "Tulln an der Donau",
+      "point": {
+        "lat": 48.3314949,
+        "long": 16.060737,
+        "elevation": 178.0
+      }
+    },
+    {
+      "name": "Waidhofen an der Thaya",
+      "point": {
+        "lat": 48.81547,
+        "long": 15.2833,
+        "elevation": 501.0
+      }
+    },
+    {
+      "name": "Waidhofen an der Ybbs",
+      "point": {
+        "lat": 47.96023,
+        "long": 14.77283,
+        "elevation": 360.0
+      }
+    },
+    {
+      "name": "Wiener Neustadt",
+      "point": {
+        "lat": 47.80279,
+        "long": 16.23318,
+        "elevation": 271.0
+      }
+    },
+    {
+      "name": "Zwettl",
+      "point": {
+        "lat": 48.6058353,
+        "long": 15.1662692,
+        "elevation": 531.0
+      }
+    }
+  ]
+}

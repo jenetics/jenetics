@@ -1,0 +1,13 @@
+{
+  "state": "Wien",
+  "cities": [
+    {
+      "name": "Wien",
+      "point": {
+        "lat": 48.2081743,
+        "long": 16.3738189,
+        "elevation": 171.0
+      }
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "state": "Salzburg",
+  "cities": [
+    {
+      "name": "Hallein",
+      "point": {
+        "lat": 47.68248,
+        "long": 13.10037,
+        "elevation": 446.0
+      }
+    },
+    {
+      "name": "Salzburg",
+      "point": {
+        "lat": 47.80949,
+        "long": 13.05501,
+        "elevation": 431.0
+      }
+    },
+    {
+      "name": "St. Johann im Pongau",
+      "point": {
+        "lat": 47.34892,
+        "long": 13.20419,
+        "elevation": 609.0
+      }
+    },
+    {
+      "name": "Tamsweg",
+      "point": {
+        "lat": 47.12955,
+        "long": 13.81036,
+        "elevation": 1018.0
+      }
+    },
+    {
+      "name": "Zell am See",
+      "point": {
+        "lat": 47.32352,
+        "long": 12.79685,
+        "elevation": 765.0
+      }
+    }
+  ]
+}

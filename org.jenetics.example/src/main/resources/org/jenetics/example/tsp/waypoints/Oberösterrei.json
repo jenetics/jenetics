@@ -1,0 +1,13 @@
+{
+  "state": "Oberösterrei",
+  "cities": [
+    {
+      "name": "Wels",
+      "point": {
+        "lat": 48.16542,
+        "long": 14.03664,
+        "elevation": 313.0
+      }
+    }
+  ]
+}
