@@ -26,8 +26,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
+
+import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -50,6 +54,17 @@ public class RouteParser {
 		System.out.println(points);
 		System.out.println("Distance: " + jsonValue(raw, "distance"));
 		System.out.println("Time: " + jsonValue(raw, "time"));
+
+		final WayPointPath path = WayPointPath.of(
+			WayPoint.of("Linz", Point.ofDegrees(48, 116)),
+			WayPoint.of("Salzpurg", Point.ofDegrees(47, 115)),
+			points.stream().collect(ISeq.toISeq())
+		);
+
+		final GsonBuilder builder = new GsonBuilder();
+		builder.setPrettyPrinting();
+		final Gson gson = builder.create();
+		System.out.println(gson.toJson(path));
 	}
 
 	private static List<Point> shapePoints(final String json) throws Exception {
