@@ -4,64 +4,64 @@
     {
       "name": "Eisenstadt",
       "point": {
-        "lat": 47.84637,
-        "long": 16.52796,
+        "latitude": 47.84637,
+        "longitude": 16.52796,
         "elevation": 169.0
       }
     },
     {
       "name": "Güssing",
       "point": {
-        "lat": 47.05932,
-        "long": 16.32449,
+        "latitude": 47.05932,
+        "longitude": 16.32449,
         "elevation": 226.0
       }
     },
     {
       "name": "Jennersdorf",
       "point": {
-        "lat": 46.93712,
-        "long": 16.12961,
+        "latitude": 46.93712,
+        "longitude": 16.12961,
         "elevation": 247.0
       }
     },
     {
       "name": "Mattersburg",
       "point": {
-        "lat": 47.73625,
-        "long": 16.39663,
+        "latitude": 47.73625,
+        "longitude": 16.39663,
         "elevation": 238.0
       }
     },
     {
       "name": "Neusiedl am See",
       "point": {
-        "lat": 47.94736,
-        "long": 16.84537,
+        "latitude": 47.94736,
+        "longitude": 16.84537,
         "elevation": 125.0
       }
     },
     {
       "name": "Oberpullendorf",
       "point": {
-        "lat": 47.49497,
-        "long": 16.50879,
+        "latitude": 47.49497,
+        "longitude": 16.50879,
         "elevation": 242.0
       }
     },
     {
       "name": "Oberwart",
       "point": {
-        "lat": 47.29482,
-        "long": 16.19914,
+        "latitude": 47.29482,
+        "longitude": 16.19914,
         "elevation": 319.0
       }
     },
     {
       "name": "Rust",
       "point": {
-        "lat": 47.80238,
-        "long": 16.67218,
+        "latitude": 47.80238,
+        "longitude": 16.67218,
         "elevation": 122.0
       }
     }

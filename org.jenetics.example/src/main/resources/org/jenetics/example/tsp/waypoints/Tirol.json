@@ -4,64 +4,64 @@
     {
       "name": "Imst",
       "point": {
-        "lat": 47.24013,
-        "long": 10.73954,
+        "latitude": 47.24013,
+        "longitude": 10.73954,
         "elevation": 796.0
       }
     },
     {
       "name": "Innsbruck",
       "point": {
-        "lat": 47.2692124,
-        "long": 11.4041024,
+        "latitude": 47.2692124,
+        "longitude": 11.4041024,
         "elevation": 576.0
       }
     },
     {
       "name": "Kitzbühel",
       "point": {
-        "lat": 47.44499,
-        "long": 12.39143,
+        "latitude": 47.44499,
+        "longitude": 12.39143,
         "elevation": 757.0
       }
     },
     {
       "name": "Kufstein",
       "point": {
-        "lat": 47.58237,
-        "long": 12.16275,
+        "latitude": 47.58237,
+        "longitude": 12.16275,
         "elevation": 491.0
       }
     },
     {
       "name": "Landeck",
       "point": {
-        "lat": 47.14057,
-        "long": 10.56558,
+        "latitude": 47.14057,
+        "longitude": 10.56558,
         "elevation": 781.0
       }
     },
     {
       "name": "Lienz",
       "point": {
-        "lat": 46.82769,
-        "long": 12.76272,
+        "latitude": 46.82769,
+        "longitude": 12.76272,
         "elevation": 676.0
       }
     },
     {
       "name": "Reutte",
       "point": {
-        "lat": 47.48879,
-        "long": 10.71865,
+        "latitude": 47.48879,
+        "longitude": 10.71865,
         "elevation": 856.0
       }
     },
     {
       "name": "Schwaz",
       "point": {
-        "lat": 47.3502,
-        "long": 11.70584,
+        "latitude": 47.3502,
+        "longitude": 11.70584,
         "elevation": 538.0
       }
     }

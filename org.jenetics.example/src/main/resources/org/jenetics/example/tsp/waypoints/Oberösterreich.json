@@ -4,120 +4,120 @@
     {
       "name": "Braunau am Inn",
       "point": {
-        "lat": 48.259124,
-        "long": 13.047988,
+        "latitude": 48.259124,
+        "longitude": 13.047988,
         "elevation": 348.0
       }
     },
     {
       "name": "Eferding",
       "point": {
-        "lat": 48.30879,
-        "long": 14.02023,
+        "latitude": 48.30879,
+        "longitude": 14.02023,
         "elevation": 269.0
       }
     },
     {
       "name": "Freistadt",
       "point": {
-        "lat": 48.50217,
-        "long": 14.50201,
+        "latitude": 48.50217,
+        "longitude": 14.50201,
         "elevation": 547.0
       }
     },
     {
       "name": "Gmunden",
       "point": {
-        "lat": 47.91839,
-        "long": 13.79933,
+        "latitude": 47.91839,
+        "longitude": 13.79933,
         "elevation": 434.0
       }
     },
     {
       "name": "Grieskirchen",
       "point": {
-        "lat": 48.23587,
-        "long": 13.82617,
+        "latitude": 48.23587,
+        "longitude": 13.82617,
         "elevation": 342.0
       }
     },
     {
       "name": "Kirchdorf an der Krems",
       "point": {
-        "lat": 47.90626,
-        "long": 14.11983,
+        "latitude": 47.90626,
+        "longitude": 14.11983,
         "elevation": 441.0
       }
     },
     {
       "name": "Linz",
       "point": {
-        "lat": 48.30694,
-        "long": 14.28583,
+        "latitude": 48.30694,
+        "longitude": 14.28583,
         "elevation": 261.0
       }
     },
     {
       "name": "Perg",
       "point": {
-        "lat": 48.24992,
-        "long": 14.63474,
+        "latitude": 48.24992,
+        "longitude": 14.63474,
         "elevation": 249.0
       }
     },
     {
       "name": "Ried im Innkreis",
       "point": {
-        "lat": 48.21272,
-        "long": 13.49272,
+        "latitude": 48.21272,
+        "longitude": 13.49272,
         "elevation": 442.0
       }
     },
     {
       "name": "Rohrbach in Oberösterreich",
       "point": {
-        "lat": 48.5724264,
-        "long": 13.9892409,
+        "latitude": 48.5724264,
+        "longitude": 13.9892409,
         "elevation": 599.0
       }
     },
     {
       "name": "Schärding",
       "point": {
-        "lat": 48.46051,
-        "long": 13.43268,
+        "latitude": 48.46051,
+        "longitude": 13.43268,
         "elevation": 308.0
       }
     },
     {
       "name": "Steyr",
       "point": {
-        "lat": 48.05009,
-        "long": 14.41827,
+        "latitude": 48.05009,
+        "longitude": 14.41827,
         "elevation": 337.0
       }
     },
     {
       "name": "Urfahr",
       "point": {
-        "lat": 48.319111,
-        "long": 14.291085,
+        "latitude": 48.319111,
+        "longitude": 14.291085,
         "elevation": 257.0
       }
     },
     {
       "name": "Vöcklabruck",
       "point": {
-        "lat": 48.00334,
-        "long": 13.65613,
+        "latitude": 48.00334,
+        "longitude": 13.65613,
         "elevation": 432.0
       }
     },
     {
       "name": "Wels",
       "point": {
-        "lat": 48.16542,
-        "long": 14.03664,
+        "latitude": 48.16542,
+        "longitude": 14.03664,
         "elevation": 313.0
       }
     }

@@ -4,64 +4,64 @@
     {
       "name": "Feldkirchen in Kärnten",
       "point": {
-        "lat": 46.7267407,
-        "long": 14.0888806,
+        "latitude": 46.7267407,
+        "longitude": 14.0888806,
         "elevation": 557.0
       }
     },
     {
       "name": "Hermagor",
       "point": {
-        "lat": 46.6273921,
-        "long": 13.3711996,
+        "latitude": 46.6273921,
+        "longitude": 13.3711996,
         "elevation": 593.0
       }
     },
     {
       "name": "Klagenfurt",
       "point": {
-        "lat": 46.6364598,
-        "long": 14.3122246,
+        "latitude": 46.6364598,
+        "longitude": 14.3122246,
         "elevation": 445.0
       }
     },
     {
       "name": "St. Veit an der Glan",
       "point": {
-        "lat": 46.76748,
-        "long": 14.36151,
+        "latitude": 46.76748,
+        "longitude": 14.36151,
         "elevation": 480.0
       }
     },
     {
       "name": "Spittal an der Drau",
       "point": {
-        "lat": 46.79968,
-        "long": 13.4928,
+        "latitude": 46.79968,
+        "longitude": 13.4928,
         "elevation": 560.0
       }
     },
     {
       "name": "Villach",
       "point": {
-        "lat": 46.60856,
-        "long": 13.85062,
+        "latitude": 46.60856,
+        "longitude": 13.85062,
         "elevation": 497.0
       }
     },
     {
       "name": "Völkermarkt",
       "point": {
-        "lat": 46.66207,
-        "long": 14.63359,
+        "latitude": 46.66207,
+        "longitude": 14.63359,
         "elevation": 464.0
       }
     },
     {
       "name": "Wolfsberg",
       "point": {
-        "lat": 46.8401,
-        "long": 14.84277,
+        "latitude": 46.8401,
+        "longitude": 14.84277,
         "elevation": 450.0
       }
     }

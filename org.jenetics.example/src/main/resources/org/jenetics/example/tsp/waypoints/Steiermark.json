@@ -4,104 +4,104 @@
     {
       "name": "Mürzzuschlag",
       "point": {
-        "lat": 47.60687,
-        "long": 15.67171,
+        "latitude": 47.60687,
+        "longitude": 15.67171,
         "elevation": 670.0
       }
     },
     {
       "name": "Deutschlandsberg",
       "point": {
-        "lat": 46.81595,
-        "long": 15.21338,
+        "latitude": 46.81595,
+        "longitude": 15.21338,
         "elevation": 371.0
       }
     },
     {
       "name": "Graz",
       "point": {
-        "lat": 47.070714,
-        "long": 15.439504,
+        "latitude": 47.070714,
+        "longitude": 15.439504,
         "elevation": 362.0
       }
     },
     {
       "name": "Gröbming",
       "point": {
-        "lat": 47.4444782,
-        "long": 13.9018725,
+        "latitude": 47.4444782,
+        "longitude": 13.9018725,
         "elevation": 768.0
       }
     },
     {
       "name": "Hartberg-Fürstenfeld",
       "point": {
-        "lat": 47.2815,
-        "long": 15.97302,
+        "latitude": 47.2815,
+        "longitude": 15.97302,
         "elevation": 345.0
       }
     },
     {
       "name": "Leibnitz",
       "point": {
-        "lat": 46.79043,
-        "long": 15.56207,
+        "latitude": 46.79043,
+        "longitude": 15.56207,
         "elevation": 271.0
       }
     },
     {
       "name": "Leoben",
       "point": {
-        "lat": 47.37639,
-        "long": 15.09113,
+        "latitude": 47.37639,
+        "longitude": 15.09113,
         "elevation": 540.0
       }
     },
     {
       "name": "Liezen",
       "point": {
-        "lat": 47.56741,
-        "long": 14.24315,
+        "latitude": 47.56741,
+        "longitude": 14.24315,
         "elevation": 663.0
       }
     },
     {
       "name": "Murau",
       "point": {
-        "lat": 47.11304,
-        "long": 14.16904,
+        "latitude": 47.11304,
+        "longitude": 14.16904,
         "elevation": 839.0
       }
     },
     {
       "name": "Murtal",
       "point": {
-        "lat": 47.1687763,
-        "long": 14.6600396,
+        "latitude": 47.1687763,
+        "longitude": 14.6600396,
         "elevation": 736.0
       }
     },
     {
       "name": "Feldbach",
       "point": {
-        "lat": 46.95279,
-        "long": 15.88784,
+        "latitude": 46.95279,
+        "longitude": 15.88784,
         "elevation": 282.0
       }
     },
     {
       "name": "Voitsberg",
       "point": {
-        "lat": 47.043268,
-        "long": 15.153633,
+        "latitude": 47.043268,
+        "longitude": 15.153633,
         "elevation": 390.0
       }
     },
     {
       "name": "Weiz",
       "point": {
-        "lat": 47.21717,
-        "long": 15.62297,
+        "latitude": 47.21717,
+        "longitude": 15.62297,
         "elevation": 469.0
       }
     }

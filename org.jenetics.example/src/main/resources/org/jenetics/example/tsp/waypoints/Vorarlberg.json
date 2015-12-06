@@ -4,24 +4,24 @@
     {
       "name": "Bludenz",
       "point": {
-        "lat": 47.15991,
-        "long": 9.80821,
+        "latitude": 47.15991,
+        "longitude": 9.80821,
         "elevation": 562.0
       }
     },
     {
       "name": "Bregenz",
       "point": {
-        "lat": 47.50075,
-        "long": 9.74231,
+        "latitude": 47.50075,
+        "longitude": 9.74231,
         "elevation": 408.0
       }
     },
     {
       "name": "Feldkirch",
       "point": {
-        "lat": 47.24128,
-        "long": 9.6019,
+        "latitude": 47.24128,
+        "longitude": 9.6019,
         "elevation": 457.0
       }
     }
