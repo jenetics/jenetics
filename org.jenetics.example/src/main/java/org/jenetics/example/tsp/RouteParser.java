@@ -44,9 +44,12 @@ public class RouteParser {
 	public static void main(final String[] args) throws Exception {
 		final String raw = new String(Files.readAllBytes(
 			new File(ROUTE_PATH, PATH).toPath()));
+		System.out.println(raw);
 
 		final List<Point> points = shapePoints(raw);
 		System.out.println(points);
+		System.out.println("Distance: " + jsonValue(raw, "distance"));
+		System.out.println("Time: " + jsonValue(raw, "time"));
 	}
 
 	private static List<Point> shapePoints(final String json) throws Exception {
@@ -78,16 +81,16 @@ public class RouteParser {
 		return "{" + raw.substring(start, end + "]".length()) + "}";
 	}
 
-	static JsonReader parse(final String raw) {
-		String result = raw;
-		if (result.startsWith("renderAdvancedNarrative(")) {
-			result = result.substring("renderAdvancedNarrative(".length());
-		}
-		if (result.endsWith(");")) {
-			result = result.substring(0, result.length() - ");".length());
-		}
+	static double jsonValue(final String raw, final String name) {
+		final String pattern = "\"" + name + "\":";
+		System.out.println("PATTERN: " + pattern);
+		final int start = raw.indexOf(pattern);
+		System.out.println("START: " + start);
+		final int end = raw.indexOf(",", start);
 
-		return new JsonReader(new StringReader(result));
+		final String numberString = raw.substring(start + pattern.length(), end);
+		System.out.println("DDDDDDD: " + name +" --- " + numberString);
+		return Double.parseDouble(numberString);
 	}
 
 }
