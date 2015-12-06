@@ -22,10 +22,10 @@ package org.jenetics.example.tsp;
 import static java.lang.Math.PI;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
+import static java.lang.Math.toRadians;
 import static java.lang.String.format;
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -71,13 +71,13 @@ public final class Point {
 	}
 
 	public double dist(final Point other) {
-		final double phi1 = _latitude;
-		final double theta1 = PI/2.0 - _latitude;
+		final double phi1 = toRadians(_latitude);
+		final double theta1 = PI/2.0 - toRadians(_latitude);
 		final double r1 = R + _elevation;
 
-		final double phi2 = other._latitude;
-		final double theta2 = PI/2.0 - other._latitude;
-		final double r2 = R + other._latitude;
+		final double phi2 = toRadians(other._latitude);
+		final double theta2 = PI/2.0 - toRadians(other._latitude);
+		final double r2 = R + toRadians(other._latitude);
 
 		final double x1 = r1*sin(theta1)*cos(phi1);
 		final double y1 = r1*sin(theta1)*sin(phi1);
@@ -121,34 +121,11 @@ public final class Point {
 	@Override
 	public String toString() {
 		return format(
-			"[lat=%f, long=%f]",
-			Math.toDegrees(_latitude),
-			Math.toDegrees(_longitude)
+			"[lat=%f, long=%f, ele=%f]", _latitude, _longitude, _elevation
 		);
 	}
 
 	public static Point of(final double latitude, final double longitude) {
-		/*
-		if (latitude < -PI/2 || latitude > PI) {
-			throw new IllegalArgumentException(format(
-				"Latitude of %f not in valid range [-π/2..π/2]", latitude
-			));
-		}
-		if (longitude < -180 || longitude > 180) {
-			throw new IllegalArgumentException(format(
-				"Longitude of %f not in valid range [-π..π]", latitude
-			));
-		}
-			*/
-
-		return new Point(latitude, longitude, 0);
-	}
-
-	public static Point of(final double latitude, final double longitude, final double elevation) {
-		return new Point(latitude, longitude, elevation);
-	}
-
-	public static Point ofDegrees(final double latitude, final double longitude) {
 		if (latitude < -90 || latitude > 90) {
 			throw new IllegalArgumentException(format(
 				"Latitude of %f not in valid range [-90..90]", latitude
@@ -160,11 +137,19 @@ public final class Point {
 			));
 		}
 
-		return new Point(Math.toRadians(latitude), Math.toRadians(longitude), 0);
+		return new Point(latitude, longitude, 0);
+	}
+
+	public static Point of(
+		final double latitude,
+		final double longitude,
+		final double elevation
+	) {
+		return new Point(latitude, longitude, elevation);
 	}
 
 	public static Point ofCSVLine(final String[] values) {
-		return Point.ofDegrees(
+		return Point.of(
 			Double.parseDouble(values[2]),
 			Double.parseDouble(values[3])
 		);
@@ -174,9 +159,9 @@ public final class Point {
 
 	static final class Adapter extends TypeAdapter<Point> {
 
-		private static final String LATITUDE = "lat";
-		private static final String LONGITUDE = "long";
-		private static final String ELEVATION = "ele";
+		private static final String LATITUDE = "latitude";
+		private static final String LONGITUDE = "longitude";
+		private static final String ELEVATION = "elevation";
 
 		@Override
 		public void write(final JsonWriter out, final Point point)
@@ -185,22 +170,25 @@ public final class Point {
 			out.beginObject();
 			out.name(LATITUDE).value(point.getLatitude());
 			out.name(LONGITUDE).value(point.getLongitude());
-			out.name("elevation").value(point.getElevation());
+			out.name(ELEVATION).value(point.getElevation());
 			out.endObject();
 		}
 
 		@Override
 		public Point read(final JsonReader in) throws IOException {
-			in.beginObject();
-
 			double latitude = 0;
 			double longitude = 0;
 			double elevation = 0;
-			switch (in.nextName()) {
-				case LATITUDE: latitude = in.nextDouble(); break;
-				case LONGITUDE: longitude = in.nextDouble(); break;
-				case ELEVATION: elevation = in.nextDouble(); break;
+
+			in.beginObject();
+			while (in.hasNext()) {
+				switch (in.nextName()) {
+					case LATITUDE: latitude = in.nextDouble(); break;
+					case LONGITUDE: longitude = in.nextDouble(); break;
+					case ELEVATION: elevation = in.nextDouble(); break;
+				}
 			}
+			in.endObject();
 
 			return new Point(latitude, longitude, elevation);
 		}

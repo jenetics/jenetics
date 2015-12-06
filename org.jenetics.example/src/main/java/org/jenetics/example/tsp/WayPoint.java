@@ -19,6 +19,7 @@
  */
 package org.jenetics.example.tsp;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.io.File;
@@ -30,8 +31,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Scanner;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -66,6 +65,11 @@ public class WayPoint {
 		return _point;
 	}
 
+	@Override
+	public String toString() {
+		return format("WayPoint[name=%s, %s]", _name, _point);
+	}
+
 	public static WayPoint of(final String name, final Point point) {
 		return new WayPoint(name, point);
 	}
@@ -73,7 +77,6 @@ public class WayPoint {
 
 
 	static final class Adapter extends TypeAdapter<WayPoint> {
-
 		private static final String NAME = "name";
 		private static final String POINT = "point";
 
@@ -90,21 +93,25 @@ public class WayPoint {
 
 		@Override
 		public WayPoint read(final JsonReader in) throws IOException {
-			in.beginObject();
-
 			String name = null;
 			Point point = null;
-			switch (in.nextName()) {
-				case NAME: name = in.nextString(); break;
-				case POINT: point = new Point.Adapter().read(in); break;
+
+			in.beginObject();
+			while (in.hasNext()) {
+				switch (in.nextName()) {
+					case NAME: name = in.nextString(); break;
+					case POINT: point = new Point.Adapter().read(in); break;
+				}
 			}
+			in.endObject();
 
 			return of(name, point);
 		}
 	}
 
 	public static void main(final String[] args) throws Exception {
-		for (Entry<String, List<WayPoint>> cities : points().entrySet()) {
+		final Map<String, List<WayPoint>> points = points();
+		for (Entry<String, List<WayPoint>> cities : points.entrySet()) {
 			final File file = new File(
 				"/home/fwilhelm/Temp",
 				cities.getKey() + ".json"
@@ -114,25 +121,31 @@ public class WayPoint {
 				.setPrettyPrinting()
 				.create();
 
-			final JsonWriter writer = gson.newJsonWriter(new FileWriter(file));
-			writer.beginObject();
-			writer.name("state").value(cities.getKey());
-			writer.name("cities");
-			writer.beginArray();
-			for (WayPoint point : cities.getValue()) {
-				new WayPoint.Adapter().write(writer, point);
+			final WayPoints wpoints = WayPoints.of(
+				cities.getKey(),
+				cities.getValue().stream().collect(ISeq.toISeq())
+			);
+
+			//System.out.println(gson.toJson(points));
+
+			try (JsonWriter writer = gson.newJsonWriter(new FileWriter(file))) {
+				final WayPoints.Adapter wpa = new WayPoints.Adapter();
+				wpa.write(writer, wpoints);
 			}
-			writer.endArray();
-			writer.endObject();
-			writer.close();
 		}
 
-		final GsonBuilder builder = new GsonBuilder();
-		builder.setPrettyPrinting();
-		final Gson gson = builder.create();
-		System.out.println(gson.toJson(
-			WayPoint.of("Some name", Point.of(123, 123))
-		));
+		final ISeq<WayPoint> all = points.values().stream()
+			.flatMap(v -> v.stream())
+			.collect(ISeq.toISeq());
+
+		final WayPoints allWayPoints = WayPoints.of("Österreich", all);
+		try (JsonWriter writer = new GsonBuilder()
+			.setPrettyPrinting()
+			.create().newJsonWriter(new FileWriter("/home/fwilhelm/Temp/Österreich.json")))
+		{
+			final WayPoints.Adapter wpa = new WayPoints.Adapter();
+			wpa.write(writer, allWayPoints);
+		}
 	}
 
 	private static Map<String, List<WayPoint>> points() throws Exception {

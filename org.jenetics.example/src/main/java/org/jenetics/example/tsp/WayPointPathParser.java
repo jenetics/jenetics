@@ -19,9 +19,18 @@
  */
 package org.jenetics.example.tsp;
 
+import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
+
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -30,6 +39,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
+import com.google.gson.stream.JsonWriter;
 
 import org.jenetics.util.ISeq;
 
@@ -40,12 +50,89 @@ import org.jenetics.util.ISeq;
  */
 public class WayPointPathParser {
 
+	/*
 	static final String ROUTE_PATH = "/home/fwilhelm/Workspace/Development/Projects/" +
 		"Jenetics/org.jenetics.example/src/main/resources/org/jenetics/example/tsp/routes/";
 
 	static final String PATH = "47.059320,16.324490--47.726070,16.081210.path";
+	*/
+
+	private final Path _basePath;
+
+	public WayPointPathParser(final Path basePath) {
+		_basePath = requireNonNull(basePath);
+	}
+
+	public WayPointPath parse(final WayPoint from, final WayPoint to)
+		throws IOException
+	{
+		final Path file = Paths.get(
+			_basePath.toString(),
+			format(
+				"%s--%s.path",
+				toString(from.getPoint()), toString(to.getPoint())
+			)
+		);
+
+		final String raw = readString(file);
+
+		final ISeq<Point> path = shapePoints(raw).stream().collect(ISeq.toISeq());
+		final double distant = jsonValue(raw, "distance");
+		final Duration time = Duration.ofMinutes((long)jsonValue(raw, "time"));
+
+		return WayPointPath.of(from, to, distant, time, path);
+	}
+
+	private static String toString(final Point point) {
+		return format("%f,%f",
+			point.getLatitude(),
+			point.getLongitude()
+		);
+	}
+
+	private static String readString(final Path file) throws IOException {
+		return  new String(Files.readAllBytes(file));
+	}
 
 	public static void main(final String[] args) throws Exception {
+		final WayPointPathParser parser = new WayPointPathParser(Paths.get(
+			Fetch.ROUTE_PATH
+		));
+
+		final Gson gson = new GsonBuilder()
+			.setPrettyPrinting()
+			.create();
+
+		try (InputStream in = WayPoints.class
+			.getResourceAsStream("/org/jenetics/example/tsp/waypoints/Österreich.json"))
+		{
+			final ISeq<WayPoint> points = WayPoints.read(in).getPoints();
+			for (int i = 0; i < points.length(); ++i) {
+				final WayPoint from = points.get(i);
+
+				for (int j = i; j < points.length(); ++j) {
+					final WayPoint to = points.get((j + 1)%points.length());
+
+					try {
+						final WayPointPath path = parser.parse(from, to);
+						final File file = new File(
+							"/home/fwilhelm/Temp/out/" +
+								from.getName() + "---" + to.getName() + ".json"
+						);
+
+						try (JsonWriter writer = gson.newJsonWriter(new FileWriter(file))) {
+							final WayPointPath.Adapter wpa = new WayPointPath.Adapter();
+							wpa.write(writer, path);
+						}
+					} catch (Exception e) {
+						System.out.println("Not found: " + from + "--" + to);
+					}
+				}
+			}
+		}
+
+
+		/*
 		final String raw = new String(Files.readAllBytes(
 			new File(ROUTE_PATH, PATH).toPath()));
 		System.out.println(raw);
@@ -56,8 +143,9 @@ public class WayPointPathParser {
 		System.out.println("Time: " + jsonValue(raw, "time"));
 
 		final WayPointPath path = WayPointPath.of(
-			WayPoint.of("Linz", Point.ofDegrees(48, 116)),
-			WayPoint.of("Salzpurg", Point.ofDegrees(47, 115)),
+			WayPoint.of("Linz", Point.of(48, 116)),
+			WayPoint.of("Salzburg", Point.of(47, 115)),
+			234, Duration.ofMinutes(234),
 			points.stream().collect(ISeq.toISeq())
 		);
 
@@ -65,9 +153,12 @@ public class WayPointPathParser {
 		builder.setPrettyPrinting();
 		final Gson gson = builder.create();
 		System.out.println(gson.toJson(path));
+		*/
 	}
 
-	private static List<Point> shapePoints(final String json) throws Exception {
+	private static List<Point> shapePoints(final String json)
+		throws IOException
+	{
 		final List<Point> points = new ArrayList<>();
 
 		try (JsonReader reader =
@@ -79,7 +170,7 @@ public class WayPointPathParser {
 			while (reader.hasNext()) {
 				final double lat = reader.nextDouble();
 				final double lng = reader.nextDouble();
-				points.add(Point.ofDegrees(lat, lng));
+				points.add(Point.of(lat, lng));
 			}
 			reader.endArray();
 			reader.endObject();
@@ -89,22 +180,19 @@ public class WayPointPathParser {
 		return points;
 	}
 
-	static String shapePointsJson(final String raw) {
+	private static String shapePointsJson(final String raw) {
 		final int start = raw.indexOf("\"shapePoints\"");
 		final int end = raw.indexOf("]", start);
 
 		return "{" + raw.substring(start, end + "]".length()) + "}";
 	}
 
-	static double jsonValue(final String raw, final String name) {
+	private static double jsonValue(final String raw, final String name) {
 		final String pattern = "\"" + name + "\":";
-		System.out.println("PATTERN: " + pattern);
 		final int start = raw.indexOf(pattern);
-		System.out.println("START: " + start);
 		final int end = raw.indexOf(",", start);
 
 		final String numberString = raw.substring(start + pattern.length(), end);
-		System.out.println("DDDDDDD: " + name +" --- " + numberString);
 		return Double.parseDouble(numberString);
 	}
 

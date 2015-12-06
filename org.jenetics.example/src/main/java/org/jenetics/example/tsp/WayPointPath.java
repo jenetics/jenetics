@@ -22,6 +22,7 @@ package org.jenetics.example.tsp;
 import static java.util.Objects.requireNonNull;
 
 import java.io.IOException;
+import java.time.Duration;
 
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
@@ -40,15 +41,21 @@ public class WayPointPath {
 
 	private final WayPoint _from;
 	private final WayPoint _to;
+	private final double _distant;
+	private final Duration _time;
 	private final ISeq<Point> _path;
 
 	private WayPointPath(
 		final WayPoint from,
 		final WayPoint to,
+		final double distant,
+		final Duration time,
 		final ISeq<Point> path
 	) {
 		_from = requireNonNull(from);
 		_to = requireNonNull(to);
+		_distant = distant;
+		_time = requireNonNull(time);
 		_path = requireNonNull(path);
 	}
 
@@ -60,6 +67,14 @@ public class WayPointPath {
 		return _to;
 	}
 
+	public double getDistant() {
+		return _distant;
+	}
+
+	public Duration getTime() {
+		return _time;
+	}
+
 	public ISeq<Point> getPath() {
 		return _path;
 	}
@@ -67,15 +82,19 @@ public class WayPointPath {
 	public static WayPointPath of(
 		final WayPoint from,
 		final WayPoint to,
+		final double distant,
+		final Duration time,
 		final ISeq<Point> path
 	) {
-		return new WayPointPath(from, to, path);
+		return new WayPointPath(from, to, distant, time, path);
 	}
 
 	static final class Adapter extends TypeAdapter<WayPointPath> {
 
 		private static final String FROM = "from";
 		private static final String TO = "to";
+		private static final String DISTANT = "distant";
+		private static final String TIME = "time";
 		private static final String PATH = "path";
 
 		@Override
@@ -90,6 +109,8 @@ public class WayPointPath {
 			wpa.write(out, path.getFrom());
 			out.name(TO);
 			wpa.write(out, path.getTo());
+			out.name(DISTANT).value(path.getDistant());
+			out.name(TIME).value(path.getTime().toMillis());
 			out.name(PATH);
 			out.beginArray();
 			for (Point point : path.getPath()) {
