@@ -1,6 +1,6 @@
 {
-  "state": "Salzburg",
-  "cities": [
+  "name": "Salzburg",
+  "way-points": [
     {
       "name": "Hallein",
       "point": {

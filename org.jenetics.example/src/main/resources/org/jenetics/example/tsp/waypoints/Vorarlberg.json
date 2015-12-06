@@ -1,6 +1,6 @@
 {
-  "state": "Vorarlberg",
-  "cities": [
+  "name": "Vorarlberg",
+  "way-points": [
     {
       "name": "Bludenz",
       "point": {

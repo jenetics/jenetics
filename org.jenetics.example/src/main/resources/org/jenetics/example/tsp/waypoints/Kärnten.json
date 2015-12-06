@@ -1,6 +1,6 @@
 {
-  "state": "Kärnten",
-  "cities": [
+  "name": "Kärnten",
+  "way-points": [
     {
       "name": "Feldkirchen in Kärnten",
       "point": {

@@ -1,6 +1,6 @@
 {
-  "state": "Tirol",
-  "cities": [
+  "name": "Tirol",
+  "way-points": [
     {
       "name": "Imst",
       "point": {

@@ -1,6 +1,6 @@
 {
-  "state": "Burgenland",
-  "cities": [
+  "name": "Burgenland",
+  "way-points": [
     {
       "name": "Eisenstadt",
       "point": {

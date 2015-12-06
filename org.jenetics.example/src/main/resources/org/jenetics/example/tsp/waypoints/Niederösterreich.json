@@ -1,6 +1,6 @@
 {
-  "state": "Niederösterreich",
-  "cities": [
+  "name": "Niederösterreich",
+  "way-points": [
     {
       "name": "Amstetten",
       "point": {

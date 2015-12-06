@@ -1,6 +1,6 @@
 {
-  "state": "Steiermark",
-  "cities": [
+  "name": "Steiermark",
+  "way-points": [
     {
       "name": "Mürzzuschlag",
       "point": {

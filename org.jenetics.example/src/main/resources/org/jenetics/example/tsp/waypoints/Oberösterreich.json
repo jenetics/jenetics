@@ -1,6 +1,6 @@
 {
-  "state": "Oberösterreich",
-  "cities": [
+  "name": "Oberösterreich",
+  "way-points": [
     {
       "name": "Braunau am Inn",
       "point": {
@@ -111,6 +111,14 @@
         "lat": 48.00334,
         "long": 13.65613,
         "elevation": 432.0
+      }
+    },
+    {
+      "name": "Wels",
+      "point": {
+        "lat": 48.16542,
+        "long": 14.03664,
+        "elevation": 313.0
       }
     }
   ]
