@@ -38,7 +38,7 @@ import org.jenetics.util.ISeq;
  * @version !__version__!
  * @since !__version__!
  */
-public class RouteParser {
+public class WayPointPathParser {
 
 	static final String ROUTE_PATH = "/home/fwilhelm/Workspace/Development/Projects/" +
 		"Jenetics/org.jenetics.example/src/main/resources/org/jenetics/example/tsp/routes/";
