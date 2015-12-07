@@ -21,6 +21,7 @@ package org.jenetics.example.tsp.gpx;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -42,7 +43,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * @since !__version__!
  */
 @XmlJavaTypeAdapter(Track.Model.Adapter.class)
-public final class Track implements Iterable<TrackSegment> {
+public final class Track implements Iterable<TrackSegment>, Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private final List<TrackSegment> _segments = new ArrayList<>();
 

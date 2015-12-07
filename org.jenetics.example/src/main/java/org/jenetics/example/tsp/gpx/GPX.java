@@ -19,7 +19,6 @@
  */
 package org.jenetics.example.tsp.gpx;
 
-import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.jaxb.adapterFor;
 import static org.jenetics.internal.util.jaxb.marshal;
@@ -27,6 +26,7 @@ import static org.jenetics.internal.util.jaxb.marshal;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -53,7 +53,10 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * @since !__version__!
  */
 @XmlJavaTypeAdapter(GPX.Model.Adapter.class)
-public class GPX {
+public class GPX implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	private final List<WayPoint> _wayPoints = new ArrayList<>();
 	private final List<Route> _routes = new ArrayList<>();
 	private final List<Track> _tracks = new ArrayList<>();
@@ -61,33 +64,73 @@ public class GPX {
 	public GPX() {
 	}
 
+	/**
+	 * Add a new way-point to the {@code GPX} object.
+	 *
+	 * @param point the way-point to add.
+	 * @return this GPX object, for method chaining
+	 * @throws NullPointerException if the given {@code point} is {@code null}
+	 */
 	public GPX addWayPoint(final WayPoint point) {
 		_wayPoints.add(requireNonNull(point));
 		return this;
 	}
 
+	/**
+	 * Add a new route to the {@code GPX} object.
+	 *
+	 * @param route the route to add
+	 * @return this GPX object, for method chaining
+	 * @throws NullPointerException if the given {@code route} is {@code null}
+	 */
 	public GPX addRoute(final Route route) {
 		_routes.add(requireNonNull(route));
 		return this;
 	}
 
+	/**
+	 * Add a new track to the {@code GPX} object.
+	 *
+	 * @param track the track to add
+	 * @return this GPX object, for method chaining
+	 * @throws NullPointerException if the given {@code point} is {@code null}
+	 */
 	public GPX addTrack(final Track track) {
 		_tracks.add(requireNonNull(track));
 		return this;
 	}
 
+	/**
+	 * Return an unmodifiable list of the {@code GPX} way-points.
+	 *
+	 * @return an unmodifiable list of the {@code GPX} way-points.
+	 */
 	public List<WayPoint> getWayPoints() {
 		return Collections.unmodifiableList(_wayPoints);
 	}
 
+	/**
+	 * Return an unmodifiable list of the {@code GPX} routes.
+	 *
+	 * @return an unmodifiable list of the {@code GPX} routes.
+	 */
 	public List<Route> getRoutes() {
 		return Collections.unmodifiableList(_routes);
 	}
 
+	/**
+	 * Return an unmodifiable list of the {@code GPX} tracks.
+	 *
+	 * @return an unmodifiable list of the {@code GPX} tracks.
+	 */
 	public List<Track> getTracks() {
 		return Collections.unmodifiableList(_tracks);
 	}
 
+
+	/**
+	 * Model class for XML serialization/deserialization.
+	 */
 	@XmlRootElement(name = "gpx")
 	@XmlType(name = "gpx.GPX")
 	@XmlAccessorType(XmlAccessType.FIELD)
