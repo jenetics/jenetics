@@ -19,10 +19,19 @@
  */
 package org.jenetics.example.tsp.mapquest;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 public class API {
+
+	private final String _apiKey;
+
+	public API(final String apiKey) {
+		_apiKey = requireNonNull(apiKey);
+	}
+
 }
