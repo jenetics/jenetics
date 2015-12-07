@@ -23,8 +23,10 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +41,7 @@ import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
+import org.jenetics.example.tsp.GPX.Location;
 import org.jenetics.util.ISeq;
 
 /**
@@ -110,30 +113,48 @@ public class WayPoint {
 	}
 
 	public static void main(final String[] args) throws Exception {
-		final Map<String, List<WayPoint>> points = points();
-		for (Entry<String, List<WayPoint>> cities : points.entrySet()) {
+		final Map<String, GPX> points = points();
+		for (Entry<String, GPX> cities : points.entrySet()) {
 			final File file = new File(
 				"/home/fwilhelm/Temp",
-				cities.getKey() + ".json"
+				cities.getKey() + ".gpx"
 			);
 
+			/*
 			final Gson gson = new GsonBuilder()
 				.setPrettyPrinting()
 				.create();
 
-			final WayPoints wpoints = WayPoints.of(
+			final GPX gpx = WayPoints.of(
 				cities.getKey(),
 				cities.getValue().stream().collect(ISeq.toISeq())
 			);
+			*/
 
 			//System.out.println(gson.toJson(points));
 
+			/*
 			try (JsonWriter writer = gson.newJsonWriter(new FileWriter(file))) {
 				final WayPoints.Adapter wpa = new WayPoints.Adapter();
 				wpa.write(writer, wpoints);
 			}
+			*/
+
+			try (OutputStream out = new FileOutputStream(file)) {
+				GPX.write(cities.getValue(), out);
+			}
 		}
 
+		final GPX gpx = new GPX();
+		points.values().stream()
+			.flatMap(g -> g.getWayPoints().stream())
+			.forEach(gpx::addWayPoint);
+
+		try (OutputStream out = new FileOutputStream("/home/fwilhelm/Temp/Österreich.gpx")) {
+			GPX.write(gpx, out);
+		}
+
+		/*
 		final ISeq<WayPoint> all = points.values().stream()
 			.flatMap(v -> v.stream())
 			.collect(ISeq.toISeq());
@@ -146,14 +167,15 @@ public class WayPoint {
 			final WayPoints.Adapter wpa = new WayPoints.Adapter();
 			wpa.write(writer, allWayPoints);
 		}
+		*/
 	}
 
-	private static Map<String, List<WayPoint>> points() throws Exception {
+	private static Map<String, GPX> points() throws Exception {
 		final Scanner scanner = new Scanner(Fetch.class.getResourceAsStream(
 			"/org/jenetics/example/tsp/AustrianDistrictsCities.csv"
 		));
 
-		final Map<String, List<WayPoint>> pts = new HashMap<>();
+		final Map<String, GPX> pts = new HashMap<>();
 		String line = scanner.nextLine();
 		while (scanner.hasNextLine()) {
 			line = scanner.nextLine();
@@ -165,12 +187,11 @@ public class WayPoint {
 				final String city = parts[0];
 				final String state = parts[1];
 				final double lat = Double.parseDouble(parts[2]);
-				final double lng = Double.parseDouble(parts[3]);
+				final double log = Double.parseDouble(parts[3]);
 				final double ele = Double.parseDouble(parts[4]);
 
-				final List<WayPoint> way = pts
-					.computeIfAbsent(state, s -> new ArrayList<>());
-				way.add(WayPoint.of(city, Point.of(lat, lng, ele)));
+				final GPX gpx = pts.computeIfAbsent(state, s -> new GPX());
+				gpx.addWayPoint(Location.of(city, lat, log, ele));
 			}
 		}
 

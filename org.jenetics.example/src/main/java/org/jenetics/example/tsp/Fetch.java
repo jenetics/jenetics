@@ -47,7 +47,7 @@ public class Fetch {
 		"Jenetics/org.jenetics.example/src/main/resources/org/jenetics/example/tsp/routes/";
 
 	static final String URL_PATTERN = "http://open.mapquestapi.com/directions/v2/route?" +
-		"key=KEY&callback=renderAdvancedNarrative&" +
+		"key=tt8nTqSZ9ni53nhGUnXfGgjn5RYvZ7vq&callback=renderAdvancedNarrative&" +
 		"avoids=Limited Access&avoids=Toll road&avoids=Approximate Seasonal Closure&" +
 		"avoids=Unpaved&avoids=Ferry&avoids=Country border crossing&outFormat=json&" +
 		"routeType=fastest&timeType=1&narrativeType=text&enhancedNarrative=false&" +
@@ -117,8 +117,8 @@ public class Fetch {
 
 	private static String toString(final Point point) {
 		return format("%f,%f",
-			Math.toDegrees(point.getLatitude()),
-			Math.toDegrees(point.getLongitude())
+			point.getLatitude(),
+			point.getLongitude()
 		);
 	}
 

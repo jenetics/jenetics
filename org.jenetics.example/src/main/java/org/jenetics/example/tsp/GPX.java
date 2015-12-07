@@ -32,6 +32,7 @@ import java.io.OutputStream;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -257,7 +258,7 @@ public class GPX {
 					model.elevation = wp.getElevation().isPresent()
 						? wp.getElevation().getAsDouble()
 						: null;
-					model.speed = wp.getElevation().isPresent()
+					model.speed = wp.getSpeed().isPresent()
 						? wp.getSpeed().getAsDouble()
 						: null;
 					model.name = wp.getName().orElse(null);
@@ -510,7 +511,19 @@ public class GPX {
 		return this;
 	}
 
-	@XmlRootElement(name = "gpx", namespace = "http://www.topografix.com/GPX/1/1")
+	public List<Location> getWayPoints() {
+		return Collections.unmodifiableList(_wayPoints);
+	}
+
+	public List<Route> getRoutes() {
+		return Collections.unmodifiableList(_routes);
+	}
+
+	public List<Track> getTracks() {
+		return Collections.unmodifiableList(_tracks);
+	}
+
+	@XmlRootElement(name = "gpx")
 	@XmlType(name = "gpx.GPX")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	static final class Model {
