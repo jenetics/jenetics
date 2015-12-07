@@ -20,8 +20,6 @@
 package org.jenetics.example.tsp.gpx;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.jaxb.adapterFor;
-import static org.jenetics.internal.util.jaxb.marshal;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -183,24 +181,56 @@ public class GPX implements Serializable {
 				return gpx;
 			}
 		}
+
+		static final Adapter ADAPTER = new Adapter();
 	}
 
 
-
-	public static void main(final String[] args) throws IOException {
-		write(WayPoint.of("Innsbruck", 34, 43, 23.0), System.out);
+	/**
+	 * Writes the given {@code gpx} object (in GPX XML format) to the given
+	 * {@code output} stream.
+	 *
+	 * @param gpx the GPX object to write to the output
+	 * @param output the output stream where the GPX object is written to
+	 * @throws IOException if the writing of the GPX object fails
+	 * @throws NullPointerException if one of the given arguments is {@code null}
+	 */
+	public static void write(final GPX gpx, final OutputStream output)
+		throws IOException
+	{
+		try {
+			final Marshaller marshaller = context().createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			marshaller.marshal(Model.ADAPTER.marshal(gpx), output);
+		} catch (Exception e) {
+			throw new IOException(e);
+		}
 	}
 
+	/**
+	 * Read an GPX object from the given {@code input} stream.
+	 *
+	 * @param input the input stream from where the GPX date is read
+	 * @return the GPX object read from the input stream
+	 * @throws IOException if the GPX object can't be read
+	 * @throws NullPointerException if the given {@code input} stream is
+	 *         {@code null}
+	 */
+	public static GPX read(final InputStream input)
+		throws IOException
+	{
+		try {
+			final Unmarshaller unmarshaller = context().createUnmarshaller();
+			final Object object = unmarshaller.unmarshal(input);
+			return Model.ADAPTER.unmarshal((Model)object);
+		} catch (Exception e) {
+			throw new IOException(e);
+		}
+	}
 
-
-
-
-
-
-
-
-
-
+	/**
+	 * Private helper class for lazy instantiation of the JAXBContext.
+	 */
 	private static final class JAXBContextHolder {
 		private static final JAXBContext CONTEXT; static {
 			try {
@@ -221,43 +251,6 @@ public class GPX implements Serializable {
 
 	private static JAXBContext context() {
 		return JAXBContextHolder.CONTEXT;
-	}
-
-
-	static void write(final Object object, final OutputStream out)
-		throws IOException
-	{
-		try {
-			final Marshaller marshaller = context().createMarshaller();
-			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-			marshaller.marshal(marshal(object), out);
-		} catch (Exception e) {
-			throw new IOException(e);
-		}
-	}
-
-	static <T> T read(final Class<T> type, final InputStream in)
-		throws IOException
-	{
-		try {
-			final Unmarshaller unmarshaller = context().createUnmarshaller();
-
-			//final XMLInputFactory factory = XMLInputFactory.newInstance();
-			//final XMLStreamReader reader = factory.createXMLStreamReader(in);
-			//try {
-			final Object object = unmarshaller.unmarshal(in);
-			final XmlAdapter<Object, Object> adapter = adapterFor(object);
-			if (adapter != null) {
-				return type.cast(adapter.unmarshal(object));
-			} else {
-				return type.cast(object);
-			}
-			//} finally {
-			//	reader.close();
-			//}
-		} catch (Exception e) {
-			throw new IOException(e);
-		}
 	}
 
 }
