@@ -21,6 +21,7 @@ package org.jenetics.example.tsp.gpx;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -37,9 +38,15 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  * Represents a GPX route.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
 @XmlJavaTypeAdapter(Route.Model.Adapter.class)
-public final class Route implements Iterable<WayPoint> {
+public final class Route implements Iterable<WayPoint>, Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private final String _name;
 	private final List<WayPoint> _points = new ArrayList<>();
@@ -56,8 +63,15 @@ public final class Route implements Iterable<WayPoint> {
 		return Optional.ofNullable(_name);
 	}
 
-	public Route add(final WayPoint wayPoint) {
-		_points.add(requireNonNull(wayPoint));
+	/**
+	 * Add a new way-point to the route.
+	 *
+	 * @param point the way-point to add to this route.
+	 * @return this track, for command chaining
+	 * @throws NullPointerException if the given way-point is {@code null}
+	 */
+	public Route add(final WayPoint point) {
+		_points.add(requireNonNull(point));
 		return this;
 	}
 
@@ -66,10 +80,19 @@ public final class Route implements Iterable<WayPoint> {
 		return _points.iterator();
 	}
 
+	/**
+	 * Return a stream of {@link WayPoint} objects this route contains.
+	 *
+	 * @return a stream of {@link WayPoint} objects this route contains
+	 */
 	public Stream<WayPoint> stream() {
 		return _points.stream();
 	}
 
+
+	/**
+	 * Model class for XML serialization/deserialization.
+	 */
 	@XmlRootElement(name = "rte")
 	@XmlType(name = "gpx.Route")
 	@XmlAccessorType(XmlAccessType.FIELD)

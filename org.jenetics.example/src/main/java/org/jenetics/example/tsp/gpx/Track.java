@@ -36,14 +36,25 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  * Represents a GPX track.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
 @XmlJavaTypeAdapter(Track.Model.Adapter.class)
 public final class Track implements Iterable<TrackSegment> {
+
 	private final List<TrackSegment> _segments = new ArrayList<>();
 
 	public Track() {
 	}
 
+	/**
+	 * Add a new track-segment to the track.
+	 *
+	 * @param segment the track-segment to add to the track.
+	 * @throws NullPointerException if the given {@code segment} is {@code null}
+	 */
 	public void add(final TrackSegment segment) {
 		_segments.add(requireNonNull(segment));
 	}
@@ -53,10 +64,19 @@ public final class Track implements Iterable<TrackSegment> {
 		return null;
 	}
 
+	/**
+	 * Return a stream of {@link TrackSegment} objects this track contains.
+	 *
+	 * @return a stream of {@link TrackSegment} objects this track contains
+	 */
 	public Stream<TrackSegment> stream() {
 		return _segments.stream();
 	}
 
+
+	/**
+	 * Model class for XML serialization/deserialization.
+	 */
 	@XmlRootElement(name = "trk")
 	@XmlType(name = "gpx.Track")
 	@XmlAccessorType(XmlAccessType.FIELD)

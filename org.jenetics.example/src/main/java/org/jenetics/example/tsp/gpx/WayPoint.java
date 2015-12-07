@@ -23,6 +23,7 @@ import static java.lang.Double.NaN;
 import static java.lang.Double.compare;
 import static java.lang.String.format;
 
+import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
@@ -39,10 +40,17 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
- * The base class for {@code WayPoint} and {@code TrackPoint} classes.
+ * Represents a way-point, route-point and/or track-point.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
 @XmlJavaTypeAdapter(WayPoint.Model.Adapter.class)
-public final class WayPoint {
+public final class WayPoint implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	final String _name;
 	final ZonedDateTime _time;
 	final double _latitude;
@@ -160,6 +168,17 @@ public final class WayPoint {
 		);
 	}
 
+	/**
+	 * Return a new {@code WayPoint} from the given input data.
+	 *
+	 * @param name the name of the way-point, maybe {@code null}
+	 * @param time the time of the way-point, maybe {@code null}
+	 * @param latitude the latitude value
+	 * @param longitude the longitude value
+	 * @param elevation the elevation value
+	 * @param speed the speed value
+	 * @return a new {@code WayPoint} from the given input data
+	 */
 	public static WayPoint of(
 		final String name,
 		final ZonedDateTime time,
@@ -171,6 +190,14 @@ public final class WayPoint {
 		return new WayPoint(name, time, latitude,longitude, elevation, speed);
 	}
 
+	/**
+	 * Return a new {@code WayPoint} from the given input data.
+	 *
+	 * @param name the name of the way-point, maybe {@code null}
+	 * @param latitude the latitude value
+	 * @param longitude the longitude value
+	 * @return a new {@code WayPoint} from the given input data
+	 */
 	public static WayPoint of(
 		final String name,
 		final double latitude,
@@ -179,6 +206,15 @@ public final class WayPoint {
 		return new WayPoint(name, null, latitude,longitude, NaN, NaN);
 	}
 
+	/**
+	 * Return a new {@code WayPoint} from the given input data.
+	 *
+	 * @param name the name of the way-point, maybe {@code null}
+	 * @param latitude the latitude value
+	 * @param longitude the longitude value
+	 * @param elevation the elevation value
+	 * @return a new {@code WayPoint} from the given input data
+	 */
 	public static WayPoint of(
 		final String name,
 		final double latitude,
@@ -188,6 +224,13 @@ public final class WayPoint {
 		return new WayPoint(name, null, latitude,longitude, elevation, NaN);
 	}
 
+	/**
+	 * Return a new {@code WayPoint} from the given input data.
+	 *
+	 * @param latitude the latitude value
+	 * @param longitude the longitude value
+	 * @return a new {@code WayPoint} from the given input data
+	 */
 	public static WayPoint of(
 		final double latitude,
 		final double longitude
@@ -195,8 +238,12 @@ public final class WayPoint {
 		return new WayPoint(null, null, latitude,longitude, NaN, NaN);
 	}
 
-	@XmlRootElement(name = "loc")
-	@XmlType(name = "gpx.Location")
+
+	/**
+	 * Model class for XML serialization/deserialization.
+	 */
+	@XmlRootElement(name = "wpt")
+	@XmlType(name = "gpx.WayPoint")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	static final class Model {
 

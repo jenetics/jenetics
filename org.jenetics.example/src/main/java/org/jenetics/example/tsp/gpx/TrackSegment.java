@@ -21,6 +21,7 @@ package org.jenetics.example.tsp.gpx;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -36,10 +37,17 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
- * Represents a GPX track segment
+ * Represents a GPX track segment.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
 @XmlJavaTypeAdapter(TrackSegment.Model.Adapter.class)
-public final class TrackSegment implements Iterable<WayPoint> {
+public final class TrackSegment implements Iterable<WayPoint>, Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	private final String _name;
 	private final List<WayPoint> _points = new ArrayList<>();
 
@@ -55,8 +63,15 @@ public final class TrackSegment implements Iterable<WayPoint> {
 		return Optional.ofNullable(_name);
 	}
 
-	public TrackSegment add(final WayPoint wayPoint) {
-		_points.add(requireNonNull(wayPoint));
+	/**
+	 * Add a new way-point to the track.
+	 *
+	 * @param point the way-point to add to this track-segment.
+	 * @return this track, for command chaining
+	 * @throws NullPointerException if the given way-point is {@code null}
+	 */
+	public TrackSegment add(final WayPoint point) {
+		_points.add(requireNonNull(point));
 		return this;
 	}
 
@@ -65,10 +80,19 @@ public final class TrackSegment implements Iterable<WayPoint> {
 		return _points.iterator();
 	}
 
+	/**
+	 * Return a stream of {@link WayPoint} objects this track-segments contains.
+	 *
+	 * @return a stream of {@link WayPoint} objects this track-segment contains
+	 */
 	public Stream<WayPoint> stream() {
 		return _points.stream();
 	}
 
+
+	/**
+	 * Model class for XML serialization/deserialization.
+	 */
 	@XmlRootElement(name = "trkseg")
 	@XmlType(name = "gpx.Track.Segment")
 	@XmlAccessorType(XmlAccessType.FIELD)
