@@ -47,7 +47,7 @@ public class Fetch {
 		"Jenetics/org.jenetics.example/src/main/resources/org/jenetics/example/tsp/routes/";
 
 	static final String URL_PATTERN = "http://open.mapquestapi.com/directions/v2/route?" +
-		"key=tt8nTqSZ9ni53nhGUnXfGgjn5RYvZ7vq&callback=renderAdvancedNarrative&" +
+		"key=${MAP_QUEST_API_KEY}&callback=renderAdvancedNarrative&" +
 		"avoids=Limited Access&avoids=Toll road&avoids=Approximate Seasonal Closure&" +
 		"avoids=Unpaved&avoids=Ferry&avoids=Country border crossing&outFormat=json&" +
 		"routeType=fastest&timeType=1&narrativeType=text&enhancedNarrative=false&" +
@@ -66,6 +66,7 @@ public class Fetch {
 
 				if (!routeFile.isFile()) {
 					final URL url = new URL(URL_PATTERN
+						.replace("${MAP_QUEST_API_KEY}", System.getenv("MAP_QUEST_API_KEY"))
 						.replace("${FROM}", from)
 						.replace("${TO}", to)
 						.replace(" ", "%20"));
