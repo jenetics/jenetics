@@ -25,6 +25,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -47,9 +48,24 @@ public final class Track implements Iterable<TrackSegment>, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	private final String _name;
 	private final List<TrackSegment> _segments = new ArrayList<>();
 
+	public Track(final String name) {
+		_name = name;
+	}
+
 	public Track() {
+		this(null);
+	}
+
+	/**
+	 * Return the name of the track.
+	 *
+	 * @return the track name
+	 */
+	public Optional<String> getName() {
+		return Optional.ofNullable(_name);
 	}
 
 	/**
@@ -85,6 +101,9 @@ public final class Track implements Iterable<TrackSegment>, Serializable {
 	@XmlAccessorType(XmlAccessType.FIELD)
 	static final class Model {
 
+		@XmlElement(name = "name", required = false, nillable = true)
+		public String name;
+
 		@XmlElement(name = "trkseg", required = false, nillable = true)
 		public List<TrackSegment> segments;
 
@@ -94,6 +113,7 @@ public final class Track implements Iterable<TrackSegment>, Serializable {
 			@Override
 			public Model marshal(final Track track) {
 				final Model model = new Model();
+				model.name = track._name;
 				model.segments = !track._segments.isEmpty()
 					? track._segments
 					: null;
@@ -103,7 +123,7 @@ public final class Track implements Iterable<TrackSegment>, Serializable {
 
 			@Override
 			public Track unmarshal(final Model model) {
-				final Track track = new Track();
+				final Track track = new Track(model.name);
 				if (model.segments != null) {
 					model.segments.forEach(track::add);
 				}

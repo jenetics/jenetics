@@ -115,6 +115,7 @@ public final class Route implements Iterable<WayPoint>, Serializable {
 			@Override
 			public Model marshal(final Route route) {
 				final Model model = new Model();
+				model.name = route._name;
 				model.points = !route._points.isEmpty()
 					? route._points
 					: null;
