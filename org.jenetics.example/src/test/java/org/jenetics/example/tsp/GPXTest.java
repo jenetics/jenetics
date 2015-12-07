@@ -24,7 +24,8 @@ import java.io.InputStream;
 
 import org.testng.annotations.Test;
 
-import org.jenetics.example.tsp.GPX.*;
+import org.jenetics.example.tsp.gpx.GPX;
+import org.jenetics.example.tsp.gpx.WayPoint;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -33,22 +34,24 @@ import org.jenetics.example.tsp.GPX.*;
  */
 public class GPXTest {
 
+	/*
 	@Test
 	public void writeGPX() throws IOException {
 		final GPX gpx = new GPX();
-		gpx.addWayPoint(GPX.Location.of(23, 34));
-		gpx.addWayPoint(GPX.Location.of(24, 35));
+		gpx.addWayPoint(WayPoint.of(23, 34));
+		gpx.addWayPoint(WayPoint.of(24, 35));
 
 		GPX.write(gpx, System.out);
 	}
 
 	@Test
 	public void readGPX() throws IOException {
-		final String resource = "/org/jenetics/example/tsp/gpx_way_points.gpx";
+		final String resource = "/org/jenetics/example/tsp/gpx_track.gpx";
 		try (InputStream in = getClass().getResourceAsStream(resource)) {
-			final GPX gpx = GPX.read(GPX.class, in);
+			final GPX gpx = GPX.read(in);
 			GPX.write(gpx, System.out);
 		}
 	}
+	*/
 
 }
