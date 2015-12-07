@@ -30,6 +30,9 @@ apply plugin: 'packaging'
 
 dependencies {
 	compile project(':org.jenetics')
+	compile 'com.google.code.gson:gson:2.5'
+
+	testCompile Include.TestNG
 }
 
 jar.manifest.instruction('Export-Package',
