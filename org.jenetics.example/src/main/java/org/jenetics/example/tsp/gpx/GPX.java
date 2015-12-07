@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.example.tsp;
+package org.jenetics.example.tsp.gpx;
 
 import static java.lang.Double.compare;
 import static java.lang.Double.NaN;
