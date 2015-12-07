@@ -21,7 +21,13 @@ package org.jenetics.example.tsp.gpx;
 
 import static java.lang.Double.NaN;
 import static java.lang.Double.compare;
+import static java.lang.Math.PI;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+import static java.lang.Math.sqrt;
+import static java.lang.Math.toRadians;
 import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -50,6 +56,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 public final class WayPoint implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	// The earth radius used for calculating distances.
+	private static final double R = 6_371_000.785;
 
 	final String _name;
 	final ZonedDateTime _time;
@@ -130,6 +139,42 @@ public final class WayPoint implements Serializable {
 		return Double.isFinite(_speed)
 			? OptionalDouble.of(_speed)
 			: OptionalDouble.empty();
+	}
+
+	/**
+	 * Return the distance between {@code this} and the {@code other}
+	 * {@code WayPoint} in meter.
+	 *
+	 * @param other the second way-point
+	 * @return the distance between {@code this} and the {@code other}
+	 *         {@code WayPoint}
+	 * @throws NullPointerException if the {@code other} way-point is
+	 *         {@code null}
+	 */
+	public double distance(final WayPoint other) {
+		requireNonNull(other);
+
+		final double phi1 = toRadians(_latitude);
+		final double theta1 = PI/2.0 - toRadians(_latitude);
+		final double r1 = R + _elevation;
+
+		final double phi2 = toRadians(other._latitude);
+		final double theta2 = PI/2.0 - toRadians(other._latitude);
+		final double r2 = R + toRadians(other._latitude);
+
+		final double x1 = r1*sin(theta1)*cos(phi1);
+		final double y1 = r1*sin(theta1)*sin(phi1);
+		final double z1 = r1*cos(theta1);
+
+		final double x2 = r2*sin(theta2)*cos(phi2);
+		final double y2 = r2*sin(theta2)*sin(phi2);
+		final double z2 = r2*cos(theta2);
+
+		return sqrt(
+			(x1 - x2)*(x1 - x2) +
+			(y1 - y2)*(y1 - y2) +
+			(z1 - z2)*(z1 - z2)
+		);
 	}
 
 	@Override
