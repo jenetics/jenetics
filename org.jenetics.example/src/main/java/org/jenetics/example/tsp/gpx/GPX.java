@@ -29,10 +29,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 import javax.xml.bind.DataBindingException;
 import javax.xml.bind.JAXBContext;
@@ -57,137 +54,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  */
 @XmlJavaTypeAdapter(GPX.Model.Adapter.class)
 public class GPX {
-	/**
-	 * Represents a GPX track.
-	 */
-	@XmlJavaTypeAdapter(Track.Model.Adapter.class)
-	public static final class Track implements Iterable<Track.Segment> {
-
-		/**
-		 * Represents a GPX track segment
-		 */
-		@XmlJavaTypeAdapter(Segment.Model.Adapter.class)
-		public static final class Segment implements Iterable<Location> {
-			private final String _name;
-			private final List<Location> _points = new ArrayList<>();
-
-			public Segment(final String name) {
-				_name = name;
-			}
-
-			public Segment() {
-				this(null);
-			}
-
-			public Optional<String> getName() {
-				return Optional.ofNullable(_name);
-			}
-
-			public Segment add(final Location location) {
-				_points.add(requireNonNull(location));
-				return this;
-			}
-
-			@Override
-			public Iterator<Location> iterator() {
-				return _points.iterator();
-			}
-
-			public Stream<Location> stream() {
-				return _points.stream();
-			}
-
-			@XmlRootElement(name = "trkseg")
-			@XmlType(name = "gpx.Track.Segment")
-			@XmlAccessorType(XmlAccessType.FIELD)
-			static final class Model {
-
-				@XmlElement(name = "name", required = false)
-				public String name;
-
-				@XmlElement(name = "trkpt", required = false, nillable = true)
-				public List<Location> points;
-
-				public static final class Adapter
-					extends XmlAdapter<Model, Segment>
-				{
-					@Override
-					public Model marshal(final Segment segment) {
-						final Model model = new Model();
-						model.points = !segment._points.isEmpty()
-							? segment._points
-							: null;
-
-						return model;
-					}
-
-					@Override
-					public Segment unmarshal(final Model model) {
-						final Segment segment = new Segment(model.name);
-						if (model.points != null) {
-							model.points.forEach(segment::add);
-						}
-
-						return segment;
-					}
-				}
-			}
-
-		}
-
-		private final List<Segment> _segments = new ArrayList<>();
-
-		public Track() {
-		}
-
-		public void add(final Segment segment) {
-			_segments.add(requireNonNull(segment));
-		}
-
-		@Override
-		public Iterator<Segment> iterator() {
-			return null;
-		}
-
-		public Stream<Segment> stream() {
-			return _segments.stream();
-		}
-
-		@XmlRootElement(name = "trk")
-		@XmlType(name = "gpx.Track")
-		@XmlAccessorType(XmlAccessType.FIELD)
-		static final class Model {
-
-			@XmlElement(name = "trkseg", required = false, nillable = true)
-			public List<Segment> segments;
-
-			public static final class Adapter
-				extends XmlAdapter<Model, Track>
-			{
-				@Override
-				public Model marshal(final Track track) {
-					final Model model = new Model();
-					model.segments = !track._segments.isEmpty()
-						? track._segments
-						: null;
-
-					return model;
-				}
-
-				@Override
-				public Track unmarshal(final Model model) {
-					final Track track = new Track();
-					if (model.segments != null) {
-						model.segments.forEach(track::add);
-					}
-
-					return track;
-				}
-			}
-		}
-
-	}
-
 	private final List<Location> _wayPoints = new ArrayList<>();
 	private final List<Route> _routes = new ArrayList<>();
 	private final List<Track> _tracks = new ArrayList<>();
