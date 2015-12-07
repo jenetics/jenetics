@@ -165,7 +165,7 @@ public class GPX {
 					Location.Model.class,
 					Route.Model.class,
 					Track.Model.class,
-					Track.Segment.Model.class,
+					TrackSegment.Model.class,
 					GPX.Model.class
 				);
 			} catch (JAXBException e) {

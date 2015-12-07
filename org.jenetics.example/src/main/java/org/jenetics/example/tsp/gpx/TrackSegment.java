@@ -24,6 +24,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -35,57 +36,71 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
- * Represents a GPX track.
+ * Represents a GPX track segment
  */
-@XmlJavaTypeAdapter(Track.Model.Adapter.class)
-public final class Track implements Iterable<TrackSegment> {
-	private final List<TrackSegment> _segments = new ArrayList<>();
+@XmlJavaTypeAdapter(TrackSegment.Model.Adapter.class)
+public final class TrackSegment implements Iterable<Location> {
+	private final String _name;
+	private final List<Location> _points = new ArrayList<>();
 
-	public Track() {
+	public TrackSegment(final String name) {
+		_name = name;
 	}
 
-	public void add(final TrackSegment segment) {
-		_segments.add(requireNonNull(segment));
+	public TrackSegment() {
+		this(null);
+	}
+
+	public Optional<String> getName() {
+		return Optional.ofNullable(_name);
+	}
+
+	public TrackSegment add(final Location location) {
+		_points.add(requireNonNull(location));
+		return this;
 	}
 
 	@Override
-	public Iterator<TrackSegment> iterator() {
-		return null;
+	public Iterator<Location> iterator() {
+		return _points.iterator();
 	}
 
-	public Stream<TrackSegment> stream() {
-		return _segments.stream();
+	public Stream<Location> stream() {
+		return _points.stream();
 	}
 
-	@XmlRootElement(name = "trk")
-	@XmlType(name = "gpx.Track")
+	@XmlRootElement(name = "trkseg")
+	@XmlType(name = "gpx.Track.Segment")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	static final class Model {
 
-		@XmlElement(name = "trkseg", required = false, nillable = true)
-		public List<TrackSegment> segments;
+		@XmlElement(name = "name", required = false)
+		public String name;
+
+		@XmlElement(name = "trkpt", required = false, nillable = true)
+		public List<Location> points;
 
 		public static final class Adapter
-			extends XmlAdapter<Model, Track>
+			extends XmlAdapter<Model, TrackSegment>
 		{
 			@Override
-			public Model marshal(final Track track) {
+			public Model marshal(final TrackSegment segment) {
 				final Model model = new Model();
-				model.segments = !track._segments.isEmpty()
-					? track._segments
+				model.points = !segment._points.isEmpty()
+					? segment._points
 					: null;
 
 				return model;
 			}
 
 			@Override
-			public Track unmarshal(final Model model) {
-				final Track track = new Track();
-				if (model.segments != null) {
-					model.segments.forEach(track::add);
+			public TrackSegment unmarshal(final Model model) {
+				final TrackSegment segment = new TrackSegment(model.name);
+				if (model.points != null) {
+					model.points.forEach(segment::add);
 				}
 
-				return track;
+				return segment;
 			}
 		}
 	}
