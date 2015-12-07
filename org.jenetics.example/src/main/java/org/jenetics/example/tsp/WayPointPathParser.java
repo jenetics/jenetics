@@ -23,9 +23,11 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.StringReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -41,6 +43,8 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 
+import org.jenetics.example.tsp.gpx.GPX;
+import org.jenetics.example.tsp.gpx.TrackSegment;
 import org.jenetics.util.ISeq;
 
 /**
@@ -116,14 +120,43 @@ public class WayPointPathParser {
 					try {
 						final WayPointPath path = parser.parse(from, to);
 						final File file = new File(
-							"/home/fwilhelm/Temp/out/" +
-								from.getName() + "---" + to.getName() + ".json"
+							"/home/fwilhelm/Temp/out.xml/" +
+								from.getName() + "---" + to.getName() + ".gpx"
 						);
 
+						final GPX gpx = new GPX();
+						gpx.addWayPoint(org.jenetics.example.tsp.gpx.WayPoint.of(
+							from.getName(),
+							from.getPoint().getLatitude(),
+							from.getPoint().getLongitude()
+						));
+						gpx.addWayPoint(org.jenetics.example.tsp.gpx.WayPoint.of(
+							to.getName(),
+							to.getPoint().getLatitude(),
+							to.getPoint().getLongitude()
+						));
+
+						final org.jenetics.example.tsp.gpx.Route route =
+							new org.jenetics.example.tsp.gpx.Route(from.getName() + "---" + to.getName());
+						path.getPath()
+							.map(p -> org.jenetics.example.tsp.gpx.WayPoint.of(
+								p.getLatitude(),
+								p.getLongitude()
+							))
+							.forEach(route::add);
+
+						gpx.addRoute(route);
+
+						try (OutputStream out = new FileOutputStream(file)) {
+							GPX.write(gpx, out);
+						}
+
+						/*
 						try (JsonWriter writer = gson.newJsonWriter(new FileWriter(file))) {
 							final WayPointPath.Adapter wpa = new WayPointPath.Adapter();
 							wpa.write(writer, path);
 						}
+						*/
 					} catch (Exception e) {
 						System.out.println("Not found: " + from + "--" + to);
 					}
