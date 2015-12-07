@@ -39,10 +39,10 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * Represents a GPX route.
  */
 @XmlJavaTypeAdapter(Route.Model.Adapter.class)
-public final class Route implements Iterable<Location> {
+public final class Route implements Iterable<WayPoint> {
 
 	private final String _name;
-	private final List<Location> _points = new ArrayList<>();
+	private final List<WayPoint> _points = new ArrayList<>();
 
 	public Route(final String name) {
 		_name = name;
@@ -56,17 +56,17 @@ public final class Route implements Iterable<Location> {
 		return Optional.ofNullable(_name);
 	}
 
-	public Route add(final Location location) {
-		_points.add(requireNonNull(location));
+	public Route add(final WayPoint wayPoint) {
+		_points.add(requireNonNull(wayPoint));
 		return this;
 	}
 
 	@Override
-	public Iterator<Location> iterator() {
+	public Iterator<WayPoint> iterator() {
 		return _points.iterator();
 	}
 
-	public Stream<Location> stream() {
+	public Stream<WayPoint> stream() {
 		return _points.stream();
 	}
 
@@ -79,7 +79,7 @@ public final class Route implements Iterable<Location> {
 		public String name;
 
 		@XmlElement(name = "rtept", required = false, nillable = true)
-		public List<Location> points;
+		public List<WayPoint> points;
 
 		public static final class Adapter
 			extends XmlAdapter<Model, Route>

@@ -39,9 +39,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * Represents a GPX track segment
  */
 @XmlJavaTypeAdapter(TrackSegment.Model.Adapter.class)
-public final class TrackSegment implements Iterable<Location> {
+public final class TrackSegment implements Iterable<WayPoint> {
 	private final String _name;
-	private final List<Location> _points = new ArrayList<>();
+	private final List<WayPoint> _points = new ArrayList<>();
 
 	public TrackSegment(final String name) {
 		_name = name;
@@ -55,17 +55,17 @@ public final class TrackSegment implements Iterable<Location> {
 		return Optional.ofNullable(_name);
 	}
 
-	public TrackSegment add(final Location location) {
-		_points.add(requireNonNull(location));
+	public TrackSegment add(final WayPoint wayPoint) {
+		_points.add(requireNonNull(wayPoint));
 		return this;
 	}
 
 	@Override
-	public Iterator<Location> iterator() {
+	public Iterator<WayPoint> iterator() {
 		return _points.iterator();
 	}
 
-	public Stream<Location> stream() {
+	public Stream<WayPoint> stream() {
 		return _points.stream();
 	}
 
@@ -78,7 +78,7 @@ public final class TrackSegment implements Iterable<Location> {
 		public String name;
 
 		@XmlElement(name = "trkpt", required = false, nillable = true)
-		public List<Location> points;
+		public List<WayPoint> points;
 
 		public static final class Adapter
 			extends XmlAdapter<Model, TrackSegment>

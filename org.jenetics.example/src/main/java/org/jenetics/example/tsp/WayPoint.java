@@ -37,7 +37,6 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 import org.jenetics.example.tsp.gpx.GPX;
-import org.jenetics.example.tsp.gpx.Location;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -186,7 +185,7 @@ public class WayPoint {
 				final double ele = Double.parseDouble(parts[4]);
 
 				final GPX gpx = pts.computeIfAbsent(state, s -> new GPX());
-				gpx.addWayPoint(Location.of(city, lat, log, ele));
+				gpx.addWayPoint(org.jenetics.example.tsp.gpx.WayPoint.of(city, lat, log, ele));
 			}
 		}
 

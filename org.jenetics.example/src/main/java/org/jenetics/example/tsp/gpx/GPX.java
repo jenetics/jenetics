@@ -54,14 +54,14 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  */
 @XmlJavaTypeAdapter(GPX.Model.Adapter.class)
 public class GPX {
-	private final List<Location> _wayPoints = new ArrayList<>();
+	private final List<WayPoint> _wayPoints = new ArrayList<>();
 	private final List<Route> _routes = new ArrayList<>();
 	private final List<Track> _tracks = new ArrayList<>();
 
 	public GPX() {
 	}
 
-	public GPX addWayPoint(final Location point) {
+	public GPX addWayPoint(final WayPoint point) {
 		_wayPoints.add(requireNonNull(point));
 		return this;
 	}
@@ -76,7 +76,7 @@ public class GPX {
 		return this;
 	}
 
-	public List<Location> getWayPoints() {
+	public List<WayPoint> getWayPoints() {
 		return Collections.unmodifiableList(_wayPoints);
 	}
 
@@ -100,7 +100,7 @@ public class GPX {
 		public String creator = "Jenetics TSP";
 
 		@XmlElement(name = "wpt", required = false, nillable = true)
-		public List<Location> wayPoints;
+		public List<WayPoint> wayPoints;
 
 		@XmlElement(name = "rte", required = false, nillable = true)
 		public List<Route> routes;
@@ -145,7 +145,7 @@ public class GPX {
 
 
 	public static void main(final String[] args) throws IOException {
-		write(Location.of("Innsbruck", 34, 43, 23.0), System.out);
+		write(WayPoint.of("Innsbruck", 34, 43, 23.0), System.out);
 	}
 
 
@@ -162,7 +162,7 @@ public class GPX {
 		private static final JAXBContext CONTEXT; static {
 			try {
 				CONTEXT = JAXBContext.newInstance(
-					Location.Model.class,
+					WayPoint.Model.class,
 					Route.Model.class,
 					Track.Model.class,
 					TrackSegment.Model.class,

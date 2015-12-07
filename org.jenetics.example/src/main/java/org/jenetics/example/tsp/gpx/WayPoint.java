@@ -41,8 +41,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 /**
  * The base class for {@code WayPoint} and {@code TrackPoint} classes.
  */
-@XmlJavaTypeAdapter(Location.Model.Adapter.class)
-public final class Location {
+@XmlJavaTypeAdapter(WayPoint.Model.Adapter.class)
+public final class WayPoint {
 	final String _name;
 	final ZonedDateTime _time;
 	final double _latitude;
@@ -50,7 +50,7 @@ public final class Location {
 	final double _elevation;
 	final double _speed;
 
-	private Location(
+	private WayPoint(
 		final String name,
 		final ZonedDateTime time,
 		final double latitude,
@@ -141,12 +141,12 @@ public final class Location {
 	public boolean equals(final Object obj) {
 		return obj != null &&
 			getClass() == obj.getClass() &&
-			compare(_latitude, ((Location)obj)._latitude) ==  0 &&
-			compare(_longitude, ((Location)obj)._latitude) == 0&&
-			compare(_elevation, ((Location)obj)._elevation) == 0&&
-			compare(_speed, ((Location)obj)._speed) == 0 &&
-			Objects.equals(_name, ((Location) obj)._name) &&
-			Objects.equals(_time, ((Location)obj)._time);
+			compare(_latitude, ((WayPoint)obj)._latitude) ==  0 &&
+			compare(_longitude, ((WayPoint)obj)._latitude) == 0&&
+			compare(_elevation, ((WayPoint)obj)._elevation) == 0&&
+			compare(_speed, ((WayPoint)obj)._speed) == 0 &&
+			Objects.equals(_name, ((WayPoint) obj)._name) &&
+			Objects.equals(_time, ((WayPoint)obj)._time);
 	}
 
 	@Override
@@ -160,7 +160,7 @@ public final class Location {
 		);
 	}
 
-	public static Location of(
+	public static WayPoint of(
 		final String name,
 		final ZonedDateTime time,
 		final double latitude,
@@ -168,31 +168,31 @@ public final class Location {
 		final double elevation,
 		final double speed
 	) {
-		return new Location(name, time, latitude,longitude, elevation, speed);
+		return new WayPoint(name, time, latitude,longitude, elevation, speed);
 	}
 
-	public static Location of(
+	public static WayPoint of(
 		final String name,
 		final double latitude,
 		final double longitude
 	) {
-		return new Location(name, null, latitude,longitude, NaN, NaN);
+		return new WayPoint(name, null, latitude,longitude, NaN, NaN);
 	}
 
-	public static Location of(
+	public static WayPoint of(
 		final String name,
 		final double latitude,
 		final double longitude,
 		final double elevation
 	) {
-		return new Location(name, null, latitude,longitude, elevation, NaN);
+		return new WayPoint(name, null, latitude,longitude, elevation, NaN);
 	}
 
-	public static Location of(
+	public static WayPoint of(
 		final double latitude,
 		final double longitude
 	) {
-		return new Location(null, null, latitude,longitude, NaN, NaN);
+		return new WayPoint(null, null, latitude,longitude, NaN, NaN);
 	}
 
 	@XmlRootElement(name = "loc")
@@ -219,13 +219,13 @@ public final class Location {
 		public String name;
 
 		public static final class Adapter
-			extends XmlAdapter<Model, Location>
+			extends XmlAdapter<Model, WayPoint>
 		{
 			private static final DateTimeFormatter DTF =
 				DateTimeFormatter.ISO_INSTANT;
 
 			@Override
-			public Model marshal(final Location wp) {
+			public Model marshal(final WayPoint wp) {
 				final Model model = new Model();
 				model.latitude = wp.getLatitude();
 				model.longitude = wp.getLongitude();
@@ -242,8 +242,8 @@ public final class Location {
 			}
 
 			@Override
-			public Location unmarshal(final Model model) {
-				return new Location(
+			public WayPoint unmarshal(final Model model) {
+				return new WayPoint(
 					model.name,
 					Optional.ofNullable(model.time)
 						.map(ZonedDateTime::parse)
