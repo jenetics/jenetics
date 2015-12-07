@@ -37,7 +37,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 import org.jenetics.example.tsp.gpx.GPX;
-import org.jenetics.example.tsp.gpx.GPX.Location;
+import org.jenetics.example.tsp.gpx.Location;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
