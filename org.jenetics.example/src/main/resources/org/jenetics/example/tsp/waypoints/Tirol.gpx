@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" version="1.1" creator="Jenetics TSP">
+    <wpt lat="47.24013" lon="10.73954">
+        <ele>796.0</ele>
+        <name>Imst</name>
+    </wpt>
+    <wpt lat="47.2692124" lon="11.4041024">
+        <ele>576.0</ele>
+        <name>Innsbruck</name>
+    </wpt>
+    <wpt lat="47.44499" lon="12.39143">
+        <ele>757.0</ele>
+        <name>Kitzbühel</name>
+    </wpt>
+    <wpt lat="47.58237" lon="12.16275">
+        <ele>491.0</ele>
+        <name>Kufstein</name>
+    </wpt>
+    <wpt lat="47.14057" lon="10.56558">
+        <ele>781.0</ele>
+        <name>Landeck</name>
+    </wpt>
+    <wpt lat="46.82769" lon="12.76272">
+        <ele>676.0</ele>
+        <name>Lienz</name>
+    </wpt>
+    <wpt lat="47.48879" lon="10.71865">
+        <ele>856.0</ele>
+        <name>Reutte</name>
+    </wpt>
+    <wpt lat="47.3502" lon="11.70584">
+        <ele>538.0</ele>
+        <name>Schwaz</name>
+    </wpt>
+</gpx>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" version="1.1" creator="Jenetics TSP">
+    <wpt lat="47.68248" lon="13.10037">
+        <ele>446.0</ele>
+        <name>Hallein</name>
+    </wpt>
+    <wpt lat="47.80949" lon="13.05501">
+        <ele>431.0</ele>
+        <name>Salzburg</name>
+    </wpt>
+    <wpt lat="47.34892" lon="13.20419">
+        <ele>609.0</ele>
+        <name>St. Johann im Pongau</name>
+    </wpt>
+    <wpt lat="47.12955" lon="13.81036">
+        <ele>1018.0</ele>
+        <name>Tamsweg</name>
+    </wpt>
+    <wpt lat="47.32352" lon="12.79685">
+        <ele>765.0</ele>
+        <name>Zell am See</name>
+    </wpt>
+</gpx>
