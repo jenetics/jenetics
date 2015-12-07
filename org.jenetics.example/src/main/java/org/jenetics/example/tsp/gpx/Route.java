@@ -59,6 +59,11 @@ public final class Route implements Iterable<WayPoint>, Serializable {
 		this(null);
 	}
 
+	/**
+	 * Return the route name.
+	 *
+	 * @return the route name
+	 */
 	public Optional<String> getName() {
 		return Optional.ofNullable(_name);
 	}
