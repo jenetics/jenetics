@@ -21,6 +21,7 @@ package org.jenetics;
 
 import static java.lang.String.format;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -84,7 +85,10 @@ import org.jenetics.util.RandomRegistry;
 @XmlJavaTypeAdapter(PartiallyMatchedCrossover.Model.Adapter.class)
 public final class PartiallyMatchedCrossover<T, C extends Comparable<? super C>>
 	extends Crossover<EnumGene<T>, C>
+	implements Serializable
 {
+
+	private static final long serialVersionUID = 1L;
 
 	public PartiallyMatchedCrossover(final double probability) {
 		super(probability);

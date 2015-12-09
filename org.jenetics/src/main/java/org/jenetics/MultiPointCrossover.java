@@ -22,6 +22,7 @@ package org.jenetics;
 import static java.lang.Math.min;
 import static java.lang.String.format;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -69,7 +70,10 @@ public class MultiPointCrossover<
 	C extends Comparable<? super C>
 >
 	extends Crossover<G, C>
+	implements Serializable
 {
+
+	private static final long serialVersionUID = 1L;
 
 	private final int _n;
 

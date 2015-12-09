@@ -220,6 +220,13 @@ public class PersistentObject<T> {
 		put("Population[DoubleGene, Integer]", nextPopulationDoubleGeneInteger(), ios);
 		put("Population[EnumGene[Integer], Double]", nextPopulationEnumGeneIntegerDouble(), ios);
 		put("Population[EnumGene[String], BigDecimal]", nextPopulationEnumGeneStringBigDecimal(), ios);
+
+		/* *********************************************************************
+		 * Populations
+		 **********************************************************************/
+
+		put("GaussianMutator", nextGaussianMutator(), ios);
+
 	}
 
 	/* *************************************************************************
@@ -600,6 +607,15 @@ public class PersistentObject<T> {
 	public static <T> Function<T, T> FitnessScaler() {
 		return (Function<T, T> & Serializable)a -> a;
 	}
+
+	/* *************************************************************************
+	 * Alterers
+	 **************************************************************************/
+
+	public static GaussianMutator<?, ?> nextGaussianMutator() {
+		return new GaussianMutator<>(random().nextDouble());
+	}
+
 
 	private static Random random() {
 		return RandomRegistry.getRandom();

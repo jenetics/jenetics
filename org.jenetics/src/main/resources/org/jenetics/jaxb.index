@@ -20,6 +20,7 @@ BoltzmannSelector$Model
 ExponentialRankSelector$Model
 MonteCarloSelector$Model
 RouletteWheelSelector$Model
+TournamentSelector$Model
 TruncationSelector
 
 CompositeAlterer$Model

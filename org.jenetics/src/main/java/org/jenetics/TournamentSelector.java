@@ -23,6 +23,7 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.maxBy;
 
+import java.io.Serializable;
 import java.util.Random;
 import java.util.stream.IntStream;
 
@@ -60,8 +61,10 @@ public class TournamentSelector<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	implements Selector<G, C>
+	implements Selector<G, C>, Serializable
 {
+
+	private static final long serialVersionUID = 1L;
 
 	private final int _sampleSize;
 

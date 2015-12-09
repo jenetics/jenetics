@@ -23,6 +23,8 @@ import static java.lang.Math.pow;
 import static java.lang.String.format;
 import static org.jenetics.internal.math.random.indexes;
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -82,7 +84,10 @@ public class Mutator<
 	C extends Comparable<? super C>
 >
 	extends AbstractAlterer<G, C>
+	implements Serializable
 {
+
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Construct a Mutation object which a given mutation probability.

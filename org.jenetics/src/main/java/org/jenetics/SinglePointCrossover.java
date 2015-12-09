@@ -69,6 +69,8 @@ public class SinglePointCrossover<
 	extends MultiPointCrossover<G, C>
 {
 
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Constructs an alterer with a given recombination probability.
 	 *

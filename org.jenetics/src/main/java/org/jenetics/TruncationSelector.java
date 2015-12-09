@@ -22,6 +22,8 @@ package org.jenetics;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -51,8 +53,10 @@ public final class TruncationSelector<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	implements Selector<G, C>
+	implements Selector<G, C>, Serializable
 {
+
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Create a new TruncationSelector object.

@@ -22,6 +22,7 @@ package org.jenetics;
 import static org.jenetics.internal.util.Equality.eq;
 import static org.jenetics.util.ISeq.toISeq;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -56,7 +57,10 @@ public final class CompositeAlterer<
 	C extends Comparable<? super C>
 >
 	extends AbstractAlterer<G, C>
+	implements Serializable
 {
+
+	private static final long serialVersionUID = 1L;
 
 	private final ISeq<? extends Alterer<G, C>> _alterers;
 

@@ -25,6 +25,7 @@ import static java.lang.Double.longBitsToDouble;
 import static java.lang.String.format;
 import static org.jenetics.internal.math.random.indexes;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -65,7 +66,10 @@ public final class GaussianMutator<
 	C extends Comparable<? super C>
 >
 	extends Mutator<G, C>
+	implements Serializable
 {
+
+	private static final long serialVersionUID = 1L;
 
 	public GaussianMutator(final double probability) {
 		super(probability);

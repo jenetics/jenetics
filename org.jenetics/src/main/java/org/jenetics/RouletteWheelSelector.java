@@ -21,6 +21,7 @@ package org.jenetics;
 
 import static org.jenetics.internal.math.statistics.min;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -53,7 +54,10 @@ public class RouletteWheelSelector<
 	N extends Number & Comparable<? super N>
 >
 	extends ProbabilitySelector<G, N>
+	implements Serializable
 {
+
+	private static final long serialVersionUID = 1L;
 
 	public RouletteWheelSelector() {
 		this(false);

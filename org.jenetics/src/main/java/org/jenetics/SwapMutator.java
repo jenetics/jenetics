@@ -55,7 +55,10 @@ public class SwapMutator<
 	C extends Comparable<? super C>
 >
 	extends Mutator<G, C>
+
 {
+
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Constructs an alterer with a given recombination probability.

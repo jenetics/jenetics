@@ -23,6 +23,7 @@ import static java.lang.Math.exp;
 import static java.lang.String.format;
 import static org.jenetics.internal.math.arithmetic.normalize;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -72,7 +73,10 @@ public final class BoltzmannSelector<
 	N extends Number & Comparable<? super N>
 >
 	extends ProbabilitySelector<G, N>
+	implements Serializable
 {
+
+	private static final long serialVersionUID = 1L;
 
 	private final double _b;
 
