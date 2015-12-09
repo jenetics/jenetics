@@ -15,3 +15,10 @@ PermutationChromosome$Model
 Genotype$Model
 Phenotype$Model
 Population$Model
+
+GaussianMutator$Model
+MeanAlterer$Model
+MultiPointCrossover$Model
+PartiallyMatchedCrossover$Model
+SinglePointCrossover$Model
+SwapMutator$Model

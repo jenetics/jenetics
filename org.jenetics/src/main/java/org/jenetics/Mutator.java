@@ -23,6 +23,14 @@ import static java.lang.Math.pow;
 import static java.lang.String.format;
 import static org.jenetics.internal.math.random.indexes;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.IntRef;
@@ -66,8 +74,9 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0
+ * @version !__version__!
  */
+@XmlJavaTypeAdapter(Mutator.Model.Adapter.class)
 public class Mutator<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
@@ -176,6 +185,35 @@ public class Mutator<
 	@Override
 	public String toString() {
 		return format("%s[p=%f]", getClass().getSimpleName(), _probability);
+	}
+
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
+
+	@XmlRootElement(name = "mutator")
+	@XmlType(name = "org.jenetics.Mutator")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	final static class Model {
+
+		@XmlAttribute(name = "probability", required = true)
+		public double probability;
+
+		public final static class Adapter
+			extends XmlAdapter<Model, Mutator<?, ?>>
+		{
+			@Override
+			public Model marshal(final Mutator<?, ?> value) {
+				final Model m = new Model();
+				m.probability = value.getProbability();
+				return m;
+			}
+
+			@Override
+			public Mutator<?, ?> unmarshal(final Model m) {
+				return new Mutator<>(m.probability);
+			}
+		}
 	}
 
 }

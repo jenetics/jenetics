@@ -27,6 +27,14 @@ import static org.jenetics.internal.math.random.indexes;
 
 import java.util.Random;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.jenetics.internal.math.base;
 import org.jenetics.internal.util.Hash;
 
@@ -49,8 +57,9 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0
+ * @version !__version__!
  */
+@XmlJavaTypeAdapter(GaussianMutator.Model.Adapter.class)
 public final class GaussianMutator<
 	G extends NumericGene<?, G>,
 	C extends Comparable<? super C>
@@ -108,6 +117,36 @@ public final class GaussianMutator<
 			getClass().getSimpleName(),
 			_probability
 		);
+	}
+
+
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
+
+	@XmlRootElement(name = "gaussian-mutator")
+	@XmlType(name = "org.jenetics.GaussianMutator")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	final static class Model {
+
+		@XmlAttribute(name = "probability", required = true)
+		public double probability;
+
+		public final static class Adapter
+			extends XmlAdapter<Model, GaussianMutator<?, ?>>
+		{
+			@Override
+			public Model marshal(final GaussianMutator<?, ?> value) {
+				final Model m = new Model();
+				m.probability = value.getProbability();
+				return m;
+			}
+
+			@Override
+			public GaussianMutator<?, ?> unmarshal(final Model m) {
+				return new GaussianMutator<>(m.probability);
+			}
+		}
 	}
 
 }

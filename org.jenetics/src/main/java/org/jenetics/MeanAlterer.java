@@ -23,6 +23,14 @@ import static java.lang.String.format;
 
 import java.util.Random;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.ISeq;
@@ -38,8 +46,9 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0
+ * @version !__version__!
  */
+@XmlJavaTypeAdapter(MeanAlterer.Model.Adapter.class)
 public final class MeanAlterer<
 	G extends Gene<?, G> & Mean<G>,
 	C extends Comparable<? super C>
@@ -119,6 +128,36 @@ public final class MeanAlterer<
 	@Override
 	public String toString() {
 		return format("%s[p=%f]", getClass().getSimpleName(), _probability);
+	}
+
+
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
+
+	@XmlRootElement(name = "mean-alterer")
+	@XmlType(name = "org.jenetics.MeanAlterer")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	final static class Model {
+
+		@XmlAttribute(name = "probability", required = true)
+		public double probability;
+
+		public final static class Adapter
+			extends XmlAdapter<Model, MeanAlterer<?, ?>>
+		{
+			@Override
+			public Model marshal(final MeanAlterer<?, ?> value) {
+				final Model m = new Model();
+				m.probability = value.getProbability();
+				return m;
+			}
+
+			@Override
+			public MeanAlterer<?, ?> unmarshal(final Model m) {
+				return new MeanAlterer<>(m.probability);
+			}
+		}
 	}
 
 }

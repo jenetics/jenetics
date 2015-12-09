@@ -23,6 +23,14 @@ import static java.lang.String.format;
 
 import java.util.Random;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.jenetics.internal.math.base;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
@@ -71,8 +79,9 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0
+ * @version !__version__!
  */
+@XmlJavaTypeAdapter(PartiallyMatchedCrossover.Model.Adapter.class)
 public final class PartiallyMatchedCrossover<T, C extends Comparable<? super C>>
 	extends Crossover<EnumGene<T>, C>
 {
@@ -133,6 +142,36 @@ public final class PartiallyMatchedCrossover<T, C extends Comparable<? super C>>
 	@Override
 	public String toString() {
 		return format("%s[p=%f]", getClass().getSimpleName(), _probability);
+	}
+
+
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
+
+	@XmlRootElement(name = "partially-matched-crossover")
+	@XmlType(name = "org.jenetics.PartiallyMatchedCrossover")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	final static class Model {
+
+		@XmlAttribute(name = "probability", required = true)
+		public double probability;
+
+		public final static class Adapter
+			extends XmlAdapter<Model, PartiallyMatchedCrossover<?, ?>>
+		{
+			@Override
+			public Model marshal(final PartiallyMatchedCrossover<?, ?> value) {
+				final Model m = new Model();
+				m.probability = value.getProbability();
+				return m;
+			}
+
+			@Override
+			public PartiallyMatchedCrossover<?, ?> unmarshal(final Model m) {
+				return new PartiallyMatchedCrossover<>(m.probability);
+			}
+		}
 	}
 
 }
