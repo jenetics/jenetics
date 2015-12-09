@@ -124,5 +124,21 @@
  * @since 1.0
  * @version 3.1
  */
+/*
+@XmlSchema(
+	namespace = "http://jenetics.io/Jenetics/1",
+	elementFormDefault = XmlNsForm.UNQUALIFIED,
+	xmlns = {
+		@XmlNs(
+			namespaceURI = "http://jenetics.io/Jenetics/1",
+			prefix = ""
+		)
+	}
+)
+*/
 package org.jenetics;
-
+/*
+import javax.xml.bind.annotation.XmlNs;
+import javax.xml.bind.annotation.XmlNsForm;
+import javax.xml.bind.annotation.XmlSchema;
+*/
