@@ -22,6 +22,11 @@ package org.jenetics;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
@@ -37,8 +42,11 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0
+ * @version !__version__!
  */
+@XmlRootElement(name = "truncation-selector")
+@XmlType(name = "org.jenetics.TruncationSelector")
+@XmlAccessorType(XmlAccessType.FIELD)
 public final class TruncationSelector<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>

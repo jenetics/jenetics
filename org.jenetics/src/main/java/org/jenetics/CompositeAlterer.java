@@ -22,12 +22,23 @@ package org.jenetics;
 import static org.jenetics.internal.util.Equality.eq;
 import static org.jenetics.util.ISeq.toISeq;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.jenetics.internal.util.Hash;
+import org.jenetics.internal.util.jaxb;
 
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Seq;
@@ -37,8 +48,9 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0
+ * @version !__version__!
  */
+@XmlJavaTypeAdapter(CompositeAlterer.Model.Adapter.class)
 public final class CompositeAlterer<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
@@ -152,4 +164,47 @@ public final class CompositeAlterer<
 	) {
 		return CompositeAlterer.of(a1, a2);
 	}
+
+
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
+
+	@XmlRootElement(name = "composite-alterer")
+	@XmlType(name = "org.jenetics.CompositeAlterer")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	static final class Model {
+
+		@XmlAttribute(name = "length", required = true)
+		public int length;
+
+		@XmlElement(name = "alterers", required = true, nillable = false)
+		public List alterers;
+
+		public static final class Adapter
+			extends XmlAdapter<Model, CompositeAlterer>
+		{
+			@Override
+			public Model marshal(final CompositeAlterer ca) throws Exception {
+				final Model model = new Model();
+				model.length = ca.size();
+				model.alterers = ca.getAlterers()
+					.map(jaxb::Marshaller)
+					.asList();
+
+				return model;
+			}
+
+			@Override
+			public CompositeAlterer unmarshal(final Model model) throws Exception {
+				final ISeq alterers = (ISeq)model.alterers.stream()
+					.map(jaxb::Unmarshaller)
+					.collect(toISeq());
+
+				return new CompositeAlterer(alterers);
+			}
+		}
+	}
+
 }

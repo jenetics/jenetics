@@ -25,6 +25,14 @@ import static org.jenetics.internal.math.arithmetic.normalize;
 
 import java.util.Arrays;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.jenetics.internal.util.Hash;
 
 /**
@@ -56,8 +64,9 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.2
+ * @version  !__version__!
  */
+@XmlJavaTypeAdapter(BoltzmannSelector.Model.Adapter.class)
 public final class BoltzmannSelector<
 	G extends Gene<?, G>,
 	N extends Number & Comparable<? super N>
@@ -139,6 +148,36 @@ public final class BoltzmannSelector<
 	@Override
 	public String toString() {
 		return format("BoltzmannSelector[b=%f]", _b);
+	}
+
+
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
+
+	@XmlRootElement(name = "boltzmann-selector")
+	@XmlType(name = "org.jenetics.BoltzmannSelector")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	final static class Model {
+
+		@XmlAttribute(name = "b", required = true)
+		public double b;
+
+		public final static class Adapter
+			extends XmlAdapter<Model, BoltzmannSelector<?, ?>>
+		{
+			@Override
+			public Model marshal(final BoltzmannSelector<?, ?> value) {
+				final Model m = new Model();
+				m.b = value._b;
+				return m;
+			}
+
+			@Override
+			public BoltzmannSelector<?, ?> unmarshal(final Model m) {
+				return new BoltzmannSelector<>(m.b);
+			}
+		}
 	}
 
 }

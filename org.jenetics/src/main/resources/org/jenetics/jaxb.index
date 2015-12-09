@@ -16,6 +16,13 @@ Genotype$Model
 Phenotype$Model
 Population$Model
 
+BoltzmannSelector$Model
+ExponentialRankSelector$Model
+MonteCarloSelector$Model
+RouletteWheelSelector$Model
+TruncationSelector
+
+CompositeAlterer$Model
 GaussianMutator$Model
 MeanAlterer$Model
 MultiPointCrossover$Model

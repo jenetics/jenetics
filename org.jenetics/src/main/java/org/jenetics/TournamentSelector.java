@@ -26,6 +26,14 @@ import static java.util.stream.Collectors.maxBy;
 import java.util.Random;
 import java.util.stream.IntStream;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
@@ -45,8 +53,9 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0
+ * @version !__version__!
  */
+@XmlJavaTypeAdapter(TournamentSelector.Model.Adapter.class)
 public class TournamentSelector<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
@@ -126,6 +135,36 @@ public class TournamentSelector<
 	@Override
 	public String toString() {
 		return format("%s[s=%d]", getClass().getSimpleName(), _sampleSize);
+	}
+
+
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
+
+	@XmlRootElement(name = "tournament-selector")
+	@XmlType(name = "org.jenetics.TournamentSelector")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	final static class Model {
+
+		@XmlAttribute(name = "samples", required = true)
+		public int samples;
+
+		public final static class Adapter
+			extends XmlAdapter<Model, TournamentSelector<?, ?>>
+		{
+			@Override
+			public Model marshal(final TournamentSelector<?, ?> value) {
+				final Model m = new Model();
+				m.samples = value._sampleSize;
+				return m;
+			}
+
+			@Override
+			public TournamentSelector<?, ?> unmarshal(final Model m) {
+				return new TournamentSelector<>(m.samples);
+			}
+		}
 	}
 
 }

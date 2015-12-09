@@ -23,6 +23,14 @@ import static java.lang.Double.compare;
 import static java.lang.Math.pow;
 import static java.lang.String.format;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.jenetics.internal.util.Hash;
 
 /**
@@ -51,8 +59,9 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0
+ * @version  !__version__!
  */
+@XmlJavaTypeAdapter(ExponentialRankSelector.Model.Adapter.class)
 public final class ExponentialRankSelector<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
@@ -126,6 +135,35 @@ public final class ExponentialRankSelector<
 	@Override
 	public String toString() {
 		return format("%s[c=%f]", getClass().getSimpleName(), _c);
+	}
+
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
+
+	@XmlRootElement(name = "exponential-rank-selector")
+	@XmlType(name = "org.jenetics.ExponentialRankSelector")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	final static class Model {
+
+		@XmlAttribute(name = "c", required = true)
+		public double c;
+
+		public final static class Adapter
+			extends XmlAdapter<Model, ExponentialRankSelector<?, ?>>
+		{
+			@Override
+			public Model marshal(final ExponentialRankSelector<?, ?> value) {
+				final Model m = new Model();
+				m.c = value._c;
+				return m;
+			}
+
+			@Override
+			public ExponentialRankSelector<?, ?> unmarshal(final Model m) {
+				return new ExponentialRankSelector<>(m.c);
+			}
+		}
 	}
 
 }
