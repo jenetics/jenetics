@@ -222,7 +222,7 @@ public class PersistentObject<T> {
 		put("Population[EnumGene[String], BigDecimal]", nextPopulationEnumGeneStringBigDecimal(), ios);
 
 		/* *********************************************************************
-		 * Populations
+		 * Alterers
 		 **********************************************************************/
 
 		put("GaussianMutator", nextGaussianMutator(), ios);
@@ -233,6 +233,17 @@ public class PersistentObject<T> {
 		put("SwapMutator", nextSwapMutator(), ios);
 		put("CompositeAlterer", nextCompositeAlterer(), ios);
 
+		/* *********************************************************************
+		 * Selectors
+		 **********************************************************************/
+
+		put("BoltzmannSelector", nextBoltzmannSelector(), ios);
+		put("ExponentialRankSelector", nextExponentialRankSelector(), ios);
+		put("MonteCarloSelector", nextMonteCarloSelector(), ios);
+		put("RouletteWheelSelector", nextRouletteWheelSelector(), ios);
+		put("StochasticUniversalSelector", nextStochasticUniversalSelector(), ios);
+		put("TournamentSelector", nextTournamentSelector(), ios);
+		put("TruncationSelector", nextTruncationSelector(), ios);
 	}
 
 	/* *************************************************************************
@@ -652,6 +663,37 @@ public class PersistentObject<T> {
 		);
 	}
 
+	/* *************************************************************************
+	 * Selectors
+	 **************************************************************************/
+
+	public static BoltzmannSelector<DoubleGene, Double> nextBoltzmannSelector() {
+		return new BoltzmannSelector<>(random().nextDouble());
+	}
+
+	public static ExponentialRankSelector<DoubleGene, Double> nextExponentialRankSelector() {
+		return new ExponentialRankSelector<>(random().nextDouble());
+	}
+
+	public static MonteCarloSelector<DoubleGene, Double> nextMonteCarloSelector() {
+		return new MonteCarloSelector<>();
+	}
+
+	public static RouletteWheelSelector<DoubleGene, Double> nextRouletteWheelSelector() {
+		return new RouletteWheelSelector<>();
+	}
+
+	public static StochasticUniversalSelector<DoubleGene, Double> nextStochasticUniversalSelector() {
+		return new StochasticUniversalSelector<>();
+	}
+
+	public static TournamentSelector<DoubleGene, Double> nextTournamentSelector() {
+		return new TournamentSelector<>(random().nextInt(10000) + 10);
+	}
+
+	public static TruncationSelector<DoubleGene, Double> nextTruncationSelector() {
+		return new TruncationSelector<>();
+	}
 
 
 	private static Random random() {

@@ -18,8 +18,9 @@ Population$Model
 
 BoltzmannSelector$Model
 ExponentialRankSelector$Model
-MonteCarloSelector$Model
-RouletteWheelSelector$Model
+MonteCarloSelector
+RouletteWheelSelector
+StochasticUniversalSelector
 TournamentSelector$Model
 TruncationSelector
 

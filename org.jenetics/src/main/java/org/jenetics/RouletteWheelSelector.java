@@ -28,8 +28,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jenetics.internal.math.DoubleAdder;
 import org.jenetics.internal.util.Equality;
@@ -48,7 +46,9 @@ import org.jenetics.internal.util.Hash;
  * @since 1.0
  * @version  !__version__!
  */
-@XmlJavaTypeAdapter(RouletteWheelSelector.Model.Adapter.class)
+@XmlRootElement(name = "roulette-wheel-selector")
+@XmlType(name = "org.jenetics.RouletteWheelSelector")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class RouletteWheelSelector<
 	G extends Gene<?, G>,
 	N extends Number & Comparable<? super N>
@@ -109,31 +109,6 @@ public class RouletteWheelSelector<
 	@Override
 	public String toString() {
 		return getClass().getSimpleName();
-	}
-
-
-	/* *************************************************************************
-	 *  JAXB object serialization
-	 * ************************************************************************/
-
-	@XmlRootElement(name = "roulette-wheel-selector")
-	@XmlType(name = "org.jenetics.RouletteWheelSelector")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	final static class Model {
-
-		public final static class Adapter
-			extends XmlAdapter<Model, RouletteWheelSelector<?, ?>>
-		{
-			@Override
-			public Model marshal(final RouletteWheelSelector<?, ?> value) {
-				return new Model();
-			}
-
-			@Override
-			public RouletteWheelSelector<?, ?> unmarshal(final Model m) {
-				return new RouletteWheelSelector<>();
-			}
-		}
 	}
 
 }

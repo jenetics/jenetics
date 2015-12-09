@@ -29,8 +29,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
@@ -47,7 +45,9 @@ import org.jenetics.util.RandomRegistry;
  * @since 1.0
  * @version  !__version__!
  */
-@XmlJavaTypeAdapter(MonteCarloSelector.Model.Adapter.class)
+@XmlRootElement(name = "monte-carlo-selector")
+@XmlType(name = "org.jenetics.MonteCarloSelector")
+@XmlAccessorType(XmlAccessType.FIELD)
 public final class MonteCarloSelector<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
@@ -101,31 +101,6 @@ public final class MonteCarloSelector<
 	@Override
 	public String toString() {
 		return format("%s", getClass().getSimpleName());
-	}
-
-
-	/* *************************************************************************
-	 *  JAXB object serialization
-	 * ************************************************************************/
-
-	@XmlRootElement(name = "monte-carlo-selector")
-	@XmlType(name = "org.jenetics.MonteCarloSelector")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	final static class Model {
-
-		public final static class Adapter
-			extends XmlAdapter<Model, MonteCarloSelector<?, ?>>
-		{
-			@Override
-			public Model marshal(final MonteCarloSelector<?, ?> value) {
-				return new Model();
-			}
-
-			@Override
-			public MonteCarloSelector<?, ?> unmarshal(final Model m) {
-				return new MonteCarloSelector<>();
-			}
-		}
 	}
 
 }
