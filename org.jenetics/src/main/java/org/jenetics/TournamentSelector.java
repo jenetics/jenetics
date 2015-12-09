@@ -148,24 +148,25 @@ public class TournamentSelector<
 	@XmlRootElement(name = "tournament-selector")
 	@XmlType(name = "org.jenetics.TournamentSelector")
 	@XmlAccessorType(XmlAccessType.FIELD)
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	final static class Model {
 
 		@XmlAttribute(name = "samples", required = true)
 		public int samples;
 
 		public final static class Adapter
-			extends XmlAdapter<Model, TournamentSelector<?, ?>>
+			extends XmlAdapter<Model, TournamentSelector>
 		{
 			@Override
-			public Model marshal(final TournamentSelector<?, ?> value) {
+			public Model marshal(final TournamentSelector value) {
 				final Model m = new Model();
 				m.samples = value._sampleSize;
 				return m;
 			}
 
 			@Override
-			public TournamentSelector<?, ?> unmarshal(final Model m) {
-				return new TournamentSelector<>(m.samples);
+			public TournamentSelector unmarshal(final Model m) {
+				return new TournamentSelector(m.samples);
 			}
 		}
 	}

@@ -156,24 +156,25 @@ public final class PartiallyMatchedCrossover<T, C extends Comparable<? super C>>
 	@XmlRootElement(name = "partially-matched-crossover")
 	@XmlType(name = "org.jenetics.PartiallyMatchedCrossover")
 	@XmlAccessorType(XmlAccessType.FIELD)
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	final static class Model {
 
 		@XmlAttribute(name = "probability", required = true)
 		public double probability;
 
 		public final static class Adapter
-			extends XmlAdapter<Model, PartiallyMatchedCrossover<?, ?>>
+			extends XmlAdapter<Model, PartiallyMatchedCrossover>
 		{
 			@Override
-			public Model marshal(final PartiallyMatchedCrossover<?, ?> value) {
+			public Model marshal(final PartiallyMatchedCrossover value) {
 				final Model m = new Model();
 				m.probability = value.getProbability();
 				return m;
 			}
 
 			@Override
-			public PartiallyMatchedCrossover<?, ?> unmarshal(final Model m) {
-				return new PartiallyMatchedCrossover<>(m.probability);
+			public PartiallyMatchedCrossover unmarshal(final Model m) {
+				return new PartiallyMatchedCrossover(m.probability);
 			}
 		}
 	}

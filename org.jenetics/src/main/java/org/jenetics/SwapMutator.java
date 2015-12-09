@@ -116,24 +116,25 @@ public class SwapMutator<
 	@XmlRootElement(name = "swap-mutator")
 	@XmlType(name = "org.jenetics.SwapMutator")
 	@XmlAccessorType(XmlAccessType.FIELD)
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	final static class Model {
 
 		@XmlAttribute(name = "probability", required = true)
 		public double probability;
 
 		public final static class Adapter
-			extends XmlAdapter<Model, SwapMutator<?, ?>>
+			extends XmlAdapter<Model, SwapMutator>
 		{
 			@Override
-			public Model marshal(final SwapMutator<?, ?> value) {
+			public Model marshal(final SwapMutator value) {
 				final Model m = new Model();
 				m.probability = value.getProbability();
 				return m;
 			}
 
 			@Override
-			public SwapMutator<?, ?> unmarshal(final Model m) {
-				return new SwapMutator<>(m.probability);
+			public SwapMutator unmarshal(final Model m) {
+				return new SwapMutator(m.probability);
 			}
 		}
 	}

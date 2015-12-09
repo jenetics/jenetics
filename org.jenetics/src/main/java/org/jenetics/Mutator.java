@@ -199,24 +199,25 @@ public class Mutator<
 	@XmlRootElement(name = "mutator")
 	@XmlType(name = "org.jenetics.Mutator")
 	@XmlAccessorType(XmlAccessType.FIELD)
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	final static class Model {
 
 		@XmlAttribute(name = "probability", required = true)
 		public double probability;
 
 		public final static class Adapter
-			extends XmlAdapter<Model, Mutator<?, ?>>
+			extends XmlAdapter<Model, Mutator>
 		{
 			@Override
-			public Model marshal(final Mutator<?, ?> value) {
+			public Model marshal(final Mutator value) {
 				final Model m = new Model();
 				m.probability = value.getProbability();
 				return m;
 			}
 
 			@Override
-			public Mutator<?, ?> unmarshal(final Model m) {
-				return new Mutator<>(m.probability);
+			public Mutator unmarshal(final Model m) {
+				return new Mutator(m.probability);
 			}
 		}
 	}

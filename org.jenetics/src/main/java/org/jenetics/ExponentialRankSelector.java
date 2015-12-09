@@ -149,24 +149,25 @@ public final class ExponentialRankSelector<
 	@XmlRootElement(name = "exponential-rank-selector")
 	@XmlType(name = "org.jenetics.ExponentialRankSelector")
 	@XmlAccessorType(XmlAccessType.FIELD)
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	final static class Model {
 
 		@XmlAttribute(name = "c", required = true)
 		public double c;
 
 		public final static class Adapter
-			extends XmlAdapter<Model, ExponentialRankSelector<?, ?>>
+			extends XmlAdapter<Model, ExponentialRankSelector>
 		{
 			@Override
-			public Model marshal(final ExponentialRankSelector<?, ?> value) {
+			public Model marshal(final ExponentialRankSelector value) {
 				final Model m = new Model();
 				m.c = value._c;
 				return m;
 			}
 
 			@Override
-			public ExponentialRankSelector<?, ?> unmarshal(final Model m) {
-				return new ExponentialRankSelector<>(m.c);
+			public ExponentialRankSelector unmarshal(final Model m) {
+				return new ExponentialRankSelector(m.c);
 			}
 		}
 	}

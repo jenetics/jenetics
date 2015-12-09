@@ -76,7 +76,7 @@ public final class BoltzmannSelector<
 	implements Serializable
 {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 3L;
 
 	private final double _b;
 
@@ -162,24 +162,25 @@ public final class BoltzmannSelector<
 	@XmlRootElement(name = "boltzmann-selector")
 	@XmlType(name = "org.jenetics.BoltzmannSelector")
 	@XmlAccessorType(XmlAccessType.FIELD)
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	final static class Model {
 
 		@XmlAttribute(name = "b", required = true)
 		public double b;
 
 		public final static class Adapter
-			extends XmlAdapter<Model, BoltzmannSelector<?, ?>>
+			extends XmlAdapter<Model, BoltzmannSelector>
 		{
 			@Override
-			public Model marshal(final BoltzmannSelector<?, ?> value) {
+			public Model marshal(final BoltzmannSelector value) {
 				final Model m = new Model();
 				m.b = value._b;
 				return m;
 			}
 
 			@Override
-			public BoltzmannSelector<?, ?> unmarshal(final Model m) {
-				return new BoltzmannSelector<>(m.b);
+			public BoltzmannSelector unmarshal(final Model m) {
+				return new BoltzmannSelector(m.b);
 			}
 		}
 	}

@@ -131,24 +131,25 @@ public final class GaussianMutator<
 	@XmlRootElement(name = "gaussian-mutator")
 	@XmlType(name = "org.jenetics.GaussianMutator")
 	@XmlAccessorType(XmlAccessType.FIELD)
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	final static class Model {
 
 		@XmlAttribute(name = "probability", required = true)
 		public double probability;
 
 		public final static class Adapter
-			extends XmlAdapter<Model, GaussianMutator<?, ?>>
+			extends XmlAdapter<Model, GaussianMutator>
 		{
 			@Override
-			public Model marshal(final GaussianMutator<?, ?> value) {
+			public Model marshal(final GaussianMutator value) {
 				final Model m = new Model();
 				m.probability = value.getProbability();
 				return m;
 			}
 
 			@Override
-			public GaussianMutator<?, ?> unmarshal(final Model m) {
-				return new GaussianMutator<>(m.probability);
+			public GaussianMutator unmarshal(final Model m) {
+				return new GaussianMutator(m.probability);
 			}
 		}
 	}

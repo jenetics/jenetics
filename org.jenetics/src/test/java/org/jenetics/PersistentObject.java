@@ -239,6 +239,7 @@ public class PersistentObject<T> {
 
 		put("BoltzmannSelector", nextBoltzmannSelector(), ios);
 		put("ExponentialRankSelector", nextExponentialRankSelector(), ios);
+		put("LinearRankSelector", nextLinearRankSelector(), ios);
 		put("MonteCarloSelector", nextMonteCarloSelector(), ios);
 		put("RouletteWheelSelector", nextRouletteWheelSelector(), ios);
 		put("StochasticUniversalSelector", nextStochasticUniversalSelector(), ios);
@@ -673,6 +674,10 @@ public class PersistentObject<T> {
 
 	public static ExponentialRankSelector<DoubleGene, Double> nextExponentialRankSelector() {
 		return new ExponentialRankSelector<>(random().nextDouble());
+	}
+
+	public static LinearRankSelector<DoubleGene, Double> nextLinearRankSelector() {
+		return new LinearRankSelector<>(random().nextDouble());
 	}
 
 	public static MonteCarloSelector<DoubleGene, Double> nextMonteCarloSelector() {

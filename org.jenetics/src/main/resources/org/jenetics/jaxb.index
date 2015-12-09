@@ -18,6 +18,7 @@ Population$Model
 
 BoltzmannSelector$Model
 ExponentialRankSelector$Model
+LinearRankSelector$Model
 MonteCarloSelector
 RouletteWheelSelector
 StochasticUniversalSelector

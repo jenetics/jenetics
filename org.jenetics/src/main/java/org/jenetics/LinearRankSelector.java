@@ -21,6 +21,16 @@ package org.jenetics;
 
 import static java.lang.String.format;
 
+import java.io.Serializable;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.jenetics.internal.util.Hash;
 
 /**
@@ -57,12 +67,17 @@ import org.jenetics.internal.util.Hash;
  * @since 1.0
  * @version  !__version__!
  */
+@XmlJavaTypeAdapter(LinearRankSelector.Model.Adapter.class)
 public final class LinearRankSelector<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
 	extends ProbabilitySelector<G, C>
+	implements Serializable
 {
+
+	private static final long serialVersionUID = 1L;
+
 	private final double _nminus;
 	private final double _nplus;
 
@@ -140,6 +155,40 @@ public final class LinearRankSelector<
 			"%s[(n-)=%f, (n+)=%f]",
 			getClass().getSimpleName(), _nminus, _nplus
 		);
+	}
+
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
+
+	@XmlRootElement(name = "linear-rank-selector")
+	@XmlType(name = "org.jenetics.LinearRankSelector")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	final static class Model {
+
+		@XmlAttribute(name = "nminus", required = true)
+		public double nminus;
+
+		@XmlAttribute(name = "nplus", required = true)
+		public double nplus;
+
+		public final static class Adapter
+			extends XmlAdapter<Model, LinearRankSelector>
+		{
+			@Override
+			public Model marshal(final LinearRankSelector value) {
+				final Model m = new Model();
+				m.nminus = value._nminus;
+				m.nplus = value._nplus;
+				return m;
+			}
+
+			@Override
+			public LinearRankSelector unmarshal(final Model m) {
+				return new LinearRankSelector(m.nminus);
+			}
+		}
 	}
 
 }

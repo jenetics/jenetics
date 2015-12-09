@@ -197,6 +197,7 @@ public class MultiPointCrossover<
 	@XmlRootElement(name = "multi-point-crossover")
 	@XmlType(name = "org.jenetics.MultiPointCrossover")
 	@XmlAccessorType(XmlAccessType.FIELD)
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	final static class Model {
 
 		@XmlAttribute(name = "probability", required = true)
@@ -206,10 +207,10 @@ public class MultiPointCrossover<
 		public int n;
 
 		public final static class Adapter
-			extends XmlAdapter<Model, MultiPointCrossover<?, ?>>
+			extends XmlAdapter<Model, MultiPointCrossover>
 		{
 			@Override
-			public Model marshal(final MultiPointCrossover<?, ?> value) {
+			public Model marshal(final MultiPointCrossover value) {
 				final Model m = new Model();
 				m.probability = value.getProbability();
 				m.n = value.getN();
@@ -217,8 +218,8 @@ public class MultiPointCrossover<
 			}
 
 			@Override
-			public MultiPointCrossover<?, ?> unmarshal(final Model m) {
-				return new MultiPointCrossover<>(m.probability, m.n);
+			public MultiPointCrossover unmarshal(final Model m) {
+				return new MultiPointCrossover(m.probability, m.n);
 			}
 		}
 	}

@@ -142,24 +142,25 @@ public final class MeanAlterer<
 	@XmlRootElement(name = "mean-alterer")
 	@XmlType(name = "org.jenetics.MeanAlterer")
 	@XmlAccessorType(XmlAccessType.FIELD)
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	final static class Model {
 
 		@XmlAttribute(name = "probability", required = true)
 		public double probability;
 
 		public final static class Adapter
-			extends XmlAdapter<Model, MeanAlterer<?, ?>>
+			extends XmlAdapter<Model, MeanAlterer>
 		{
 			@Override
-			public Model marshal(final MeanAlterer<?, ?> value) {
+			public Model marshal(final MeanAlterer value) {
 				final Model m = new Model();
 				m.probability = value.getProbability();
 				return m;
 			}
 
 			@Override
-			public MeanAlterer<?, ?> unmarshal(final Model m) {
-				return new MeanAlterer<>(m.probability);
+			public MeanAlterer unmarshal(final Model m) {
+				return new MeanAlterer(m.probability);
 			}
 		}
 	}
