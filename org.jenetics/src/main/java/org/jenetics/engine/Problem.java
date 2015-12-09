@@ -38,8 +38,8 @@ import org.jenetics.Gene;
  * @param <C> the result type of the fitness function
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.4
+ * @since 3.4
  */
 public interface Problem<
 	T,
