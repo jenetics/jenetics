@@ -136,24 +136,25 @@ public class SinglePointCrossover<
 	@XmlRootElement(name = "single-point-crossover")
 	@XmlType(name = "org.jenetics.SinglePointCrossover")
 	@XmlAccessorType(XmlAccessType.FIELD)
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	final static class Model {
 
 		@XmlAttribute(name = "probability", required = true)
 		public double probability;
 
 		public final static class Adapter
-			extends XmlAdapter<Model, SinglePointCrossover<?, ?>>
+			extends XmlAdapter<Model, SinglePointCrossover>
 		{
 			@Override
-			public Model marshal(final SinglePointCrossover<?, ?> value) {
+			public Model marshal(final SinglePointCrossover value) {
 				final Model m = new Model();
 				m.probability = value.getProbability();
 				return m;
 			}
 
 			@Override
-			public SinglePointCrossover<?, ?> unmarshal(final Model m) {
-				return new SinglePointCrossover<>(m.probability);
+			public SinglePointCrossover unmarshal(final Model m) {
+				return new SinglePointCrossover(m.probability);
 			}
 		}
 	}
