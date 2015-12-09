@@ -194,7 +194,7 @@ public final class CompositeAlterer<
 				final Model model = new Model();
 				model.length = ca.size();
 				model.alterers = ca.getAlterers()
-					.map(jaxb::Marshaller)
+					.map(a -> jaxb.Marshaller(a).apply(a))
 					.asList();
 
 				return model;
@@ -203,7 +203,7 @@ public final class CompositeAlterer<
 			@Override
 			public CompositeAlterer unmarshal(final Model model) throws Exception {
 				final ISeq alterers = (ISeq)model.alterers.stream()
-					.map(jaxb::Unmarshaller)
+					.map(a -> jaxb.Unmarshaller(a).apply(a))
 					.collect(toISeq());
 
 				return new CompositeAlterer(alterers);

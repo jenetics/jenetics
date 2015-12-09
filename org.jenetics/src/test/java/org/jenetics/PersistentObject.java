@@ -226,6 +226,12 @@ public class PersistentObject<T> {
 		 **********************************************************************/
 
 		put("GaussianMutator", nextGaussianMutator(), ios);
+		put("MeanAlterer", nextMeanAlterer(), ios);
+		put("MultiPointCrossover", nextMultiPointCrossover(), ios);
+		put("PartiallyMatchedCrossover", nextPartiallyMatchedCrossover(), ios);
+		put("SinglePointCrossover", nextSinglePointCrossover(), ios);
+		put("SwapMutator", nextSwapMutator(), ios);
+		put("CompositeAlterer", nextCompositeAlterer(), ios);
 
 	}
 
@@ -612,9 +618,40 @@ public class PersistentObject<T> {
 	 * Alterers
 	 **************************************************************************/
 
-	public static GaussianMutator<?, ?> nextGaussianMutator() {
+	public static GaussianMutator<DoubleGene, Double> nextGaussianMutator() {
 		return new GaussianMutator<>(random().nextDouble());
 	}
+
+	public static MeanAlterer<DoubleGene, Double> nextMeanAlterer() {
+		return new MeanAlterer<>(random().nextDouble());
+	}
+
+	public static MultiPointCrossover<DoubleGene, Double> nextMultiPointCrossover() {
+		return new MultiPointCrossover<>(random().nextDouble(), random().nextInt(1000) + 10);
+	}
+
+	public static PartiallyMatchedCrossover<DoubleGene, Double> nextPartiallyMatchedCrossover() {
+		return new PartiallyMatchedCrossover<>(random().nextDouble());
+	}
+
+	public static SinglePointCrossover<DoubleGene, Double> nextSinglePointCrossover() {
+		return new SinglePointCrossover<>(random().nextDouble());
+	}
+
+	public static SwapMutator<DoubleGene, Double> nextSwapMutator() {
+		return new SwapMutator<>(random().nextDouble());
+	}
+
+	public static CompositeAlterer<?, ?> nextCompositeAlterer() {
+		return CompositeAlterer.<DoubleGene, Double>of(
+			nextGaussianMutator(),
+			nextMeanAlterer(),
+			nextMultiPointCrossover(),
+			nextSinglePointCrossover(),
+			nextSwapMutator()
+		);
+	}
+
 
 
 	private static Random random() {
