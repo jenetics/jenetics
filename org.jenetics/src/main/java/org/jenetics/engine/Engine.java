@@ -708,6 +708,22 @@ public final class Engine<
 	}
 
 	/**
+	 * Return the evolution parameters used by the evolution {@code Engine}.
+	 *
+	 * @return the evolution parameters used by the evolution {@code Engine}
+	 */
+	public EvolutionParam<G, C> getEvolutionParam() {
+		return EvolutionParam.of(
+			getSurvivorsSelector(),
+			getOffspringSelector(),
+			getAlterer(),
+			getPopulationSize(),
+			(double)getOffspringCount()/(double)getPopulationSize(),
+			getMaximalPhenotypeAge()
+		);
+	}
+
+	/**
 	 * Return the {@link Clock} the engine is using for measuring the execution
 	 * time.
 	 *
