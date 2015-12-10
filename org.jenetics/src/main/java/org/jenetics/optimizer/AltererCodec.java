@@ -30,6 +30,7 @@ import org.jenetics.Alterer;
 import org.jenetics.CompositeAlterer;
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
+import org.jenetics.EnumGene;
 import org.jenetics.GaussianMutator;
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
@@ -37,6 +38,7 @@ import org.jenetics.MeanAlterer;
 import org.jenetics.MultiPointCrossover;
 import org.jenetics.Mutator;
 import org.jenetics.NumericGene;
+import org.jenetics.PartiallyMatchedCrossover;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.SwapMutator;
 import org.jenetics.engine.Codec;
@@ -365,6 +367,24 @@ public final class AltererCodec<
 			Codec.of(
 				Genotype.of(DoubleChromosome.of(0, 1)),
 				gt -> new MeanAlterer<>(gt.getGene().doubleValue())
+			)
+		);
+	}
+
+	/**
+	 * Return the <i>default</i> {@link Codec} of the
+	 * {@link PartiallyMatchedCrossover}.
+	 *
+	 * @param <T> the generic type of the {@link EnumGene}
+	 * @param <C> the fitness function result type of the problem
+	 * @return the {@code Codec} of the {@code PartiallyMatchedCrossover}
+	 */
+	public static <T, C extends Comparable<? super C>>
+	AltererCodec<EnumGene<T>, C> ofPartiallyMatchedCrossover() {
+		return of(
+			Codec.of(
+				Genotype.of(DoubleChromosome.of(0, 1)),
+				gt -> new PartiallyMatchedCrossover<>(gt.getGene().doubleValue())
 			)
 		);
 	}
