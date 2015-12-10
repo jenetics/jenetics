@@ -265,7 +265,7 @@ public final class SelectorCodec<
 	 * @param b <i>b</i> value of this BoltzmanSelector
 	 * @param <G> the gene type of the problem encoding the selector is working
 	 *            on
-	 * @param <C> the fitness function result type of the problem
+	 * @param <N> the fitness function result type of the problem
 	 * @return the <i>default</i> {@link Codec} of the {@link BoltzmannSelector}
 	 */
 	public static <G extends Gene<?, G>, N extends Number & Comparable<? super N>>
