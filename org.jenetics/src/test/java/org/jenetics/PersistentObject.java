@@ -39,6 +39,7 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.function.Function;
 
+import org.jenetics.engine.EvolutionParam;
 import org.jenetics.util.IO;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.LCG64ShiftRandom;
@@ -245,6 +246,12 @@ public class PersistentObject<T> {
 		put("StochasticUniversalSelector", nextStochasticUniversalSelector(), ios);
 		put("TournamentSelector", nextTournamentSelector(), ios);
 		put("TruncationSelector", nextTruncationSelector(), ios);
+
+		/* *********************************************************************
+		 * Evolution param
+		 **********************************************************************/
+
+		put("EvolutionParam", nextEvolutionParam(), ios);
 	}
 
 	/* *************************************************************************
@@ -654,7 +661,7 @@ public class PersistentObject<T> {
 		return new SwapMutator<>(random().nextDouble());
 	}
 
-	public static CompositeAlterer<?, ?> nextCompositeAlterer() {
+	public static CompositeAlterer<DoubleGene, Double> nextCompositeAlterer() {
 		return CompositeAlterer.<DoubleGene, Double>of(
 			nextGaussianMutator(),
 			nextMeanAlterer(),
@@ -700,6 +707,20 @@ public class PersistentObject<T> {
 		return new TruncationSelector<>();
 	}
 
+	/* *************************************************************************
+	 * Evolution param
+	 **************************************************************************/
+
+	public static EvolutionParam<DoubleGene, Double> nextEvolutionParam() {
+		return EvolutionParam.of(
+			nextExponentialRankSelector(),
+			nextTournamentSelector(),
+			nextCompositeAlterer(),
+			random().nextInt(1000) + 23,
+			random().nextDouble(),
+			random().nextInt(1000000) + 11
+		);
+	}
 
 	private static Random random() {
 		return RandomRegistry.getRandom();

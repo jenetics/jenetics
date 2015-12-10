@@ -47,7 +47,7 @@ public class jaxb {
 		private static final JAXBContext CONTEXT; static {
 			try {
 				CONTEXT = JAXBContext.newInstance(
-					"org.jenetics:org.jenetics.internal.util"
+					"org.jenetics:org.jenetics.internal.util:org.jenetics.engine"
 				);
 			} catch (JAXBException e) {
 				throw new DataBindingException(
