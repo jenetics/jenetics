@@ -91,6 +91,15 @@ public class TournamentSelector<
 		this(2);
 	}
 
+	/**
+	 * Return the sample size of the tournament selector.
+	 *
+	 * @return the sample size of the tournament selector
+	 */
+	public int getSampleSize() {
+		return _sampleSize;
+	}
+
 	@Override
 	public Population<G, C> select(
 		final Population<G, C> population,
