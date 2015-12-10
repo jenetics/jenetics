@@ -187,21 +187,24 @@ public final class EvolutionParam<
 	public boolean equals(final Object obj) {
 		return obj instanceof EvolutionParam<?, ?> &&
 				Objects.equals(
-						getSurvivorsSelector(),
-						((EvolutionParam<?, ?>)obj).getSurvivorsSelector()) &&
+					_survivorsSelector,
+					((EvolutionParam<?, ?>)obj)._survivorsSelector
+				) &&
 				Objects.equals(
-						getOffspringSelector(),
-						((EvolutionParam<?, ?>)obj).getOffspringSelector()) &&
+					_offspringSelector,
+					((EvolutionParam<?, ?>)obj)._offspringSelector
+				) &&
 				Objects.equals(
-						getAlterer(),
-						((EvolutionParam<?, ?>)obj).getAlterer()) &&
-				getPopulationSize() ==
-						((EvolutionParam<?, ?>)obj).getPopulationSize() &&
+					_alterer,
+					((EvolutionParam<?, ?>)obj)._alterer
+				) &&
+				_populationSize ==
+					((EvolutionParam<?, ?>)obj)._populationSize &&
 				Double.compare(
-						getOffspringFraction(),
-						((EvolutionParam<?, ?>)obj).getOffspringFraction()) == 0 &&
-				getMaximalPhenotypeAge() ==
-						((EvolutionParam<?, ?>)obj).getMaximalPhenotypeAge();
+					_offspringFraction,
+					((EvolutionParam<?, ?>)obj)._offspringFraction) == 0 &&
+				_maximalPhenotypeAge ==
+					((EvolutionParam<?, ?>)obj)._maximalPhenotypeAge;
 	}
 
 	@Override
@@ -286,11 +289,14 @@ public final class EvolutionParam<
 			@Override
 			public Model marshal(final EvolutionParam ep) throws Exception {
 				final Model model = new Model();
-				model.survivorSelector = jaxb.Marshaller(ep.getSurvivorsSelector())
+				model.survivorSelector = jaxb
+					.Marshaller(ep.getSurvivorsSelector())
 					.apply(ep.getSurvivorsSelector());
-				model.offspringSelector = jaxb.Marshaller(ep.getOffspringSelector())
+				model.offspringSelector = jaxb
+					.Marshaller(ep.getOffspringSelector())
 					.apply(ep.getOffspringSelector());
-				model.alterer = jaxb.Marshaller(ep.getAlterer())
+				model.alterer = jaxb
+					.Marshaller(ep.getAlterer())
 					.apply(ep.getAlterer());
 				model.populationSize = ep.getPopulationSize();
 				model.offspringFraction = ep.getOffspringFraction();
