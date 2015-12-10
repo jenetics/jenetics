@@ -21,16 +21,9 @@ package org.jenetics.optimizer;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.jenetics.GaussianMutator;
-import org.jenetics.MeanAlterer;
-import org.jenetics.MultiPointCrossover;
-import org.jenetics.Mutator;
+import org.jenetics.Alterer;
 import org.jenetics.Optimize;
-import org.jenetics.SinglePointCrossover;
-import org.jenetics.SwapMutator;
+import org.jenetics.Selector;
 import org.jenetics.engine.EvolutionParam;
 
 /**
@@ -41,16 +34,6 @@ import org.jenetics.engine.EvolutionParam;
 final class Measure<C extends Comparable<? super C>>
 	implements Comparable<Measure<C>>
 {
-
-	private static final Map<Class<?>, Integer> COMPLEXITIES = new HashMap<>();
-	static {
-		COMPLEXITIES.put(Mutator.class, 1);
-		COMPLEXITIES.put(GaussianMutator.class, 2);
-		COMPLEXITIES.put(MeanAlterer.class, 2);
-		COMPLEXITIES.put(SwapMutator.class, 2);
-		COMPLEXITIES.put(SinglePointCrossover.class, 2);
-		COMPLEXITIES.put(MultiPointCrossover.class, 3);
-	}
 
 	private final C _comparable;
 	private final EvolutionParam<?, C> _params;
@@ -68,9 +51,9 @@ final class Measure<C extends Comparable<? super C>>
 
 	@Override
 	public int compareTo(final Measure<C> other) {
-		int cmp = _comparable.compareTo(other._comparable);
+		requireNonNull(other);
 
-		// Compare the population size.
+		int cmp = _comparable.compareTo(other._comparable);
 		if (cmp == 0) {
 			cmp = _optimize.compare(
 				other._params.getPopulationSize(),
@@ -78,15 +61,29 @@ final class Measure<C extends Comparable<? super C>>
 			);
 		}
 
-		// Compare the alterer complexity.
 		if (cmp == 0) {
-			cmp = _optimize.compare(
-				AltererComplexity.of(other._params.getAlterer()),
-				AltererComplexity.of(_params.getAlterer())
-			);
+			final double complexity1 =
+				complexity(_params.getAlterer()) +
+				complexity(_params.getOffspringSelector())*0.5 +
+				complexity(_params.getSurvivorsSelector())*0.5;
+
+			final double complexity2 =
+				complexity(other._params.getAlterer()) +
+				complexity(other._params.getOffspringSelector())*0.5 +
+				complexity(other._params.getSurvivorsSelector())*0.5;
+
+			cmp = _optimize.compare(complexity2, complexity1);
 		}
 
 		return cmp;
+	}
+
+	private static double complexity(final Alterer<?, ?> alterer) {
+		return AltererComplexity.INSTANCE.complexity(alterer);
+	}
+
+	private static double complexity(final Selector<?, ?> selector) {
+		return SelectorComplexity.INSTANCE.complexity(selector);
 	}
 
 	@Override

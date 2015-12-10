@@ -19,13 +19,20 @@
  */
 package org.jenetics.optimizer;
 
+import java.util.Comparator;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public interface Complexity<T> {
+interface Complexity<T> extends Comparator<T> {
 
-	public double complexity(final T value);
+	double complexity(final T value);
+
+	@Override
+	default int compare(final T o1, final T o2) {
+		return Double.compare(complexity(o1), complexity(o2));
+	}
 
 }
