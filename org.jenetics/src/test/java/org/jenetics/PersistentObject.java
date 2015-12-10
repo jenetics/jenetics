@@ -229,6 +229,7 @@ public class PersistentObject<T> {
 		put("GaussianMutator", nextGaussianMutator(), ios);
 		put("MeanAlterer", nextMeanAlterer(), ios);
 		put("MultiPointCrossover", nextMultiPointCrossover(), ios);
+		put("Mutator", nextMutator(), ios);
 		put("PartiallyMatchedCrossover", nextPartiallyMatchedCrossover(), ios);
 		put("SinglePointCrossover", nextSinglePointCrossover(), ios);
 		put("SwapMutator", nextSwapMutator(), ios);
@@ -651,6 +652,10 @@ public class PersistentObject<T> {
 
 	public static PartiallyMatchedCrossover<DoubleGene, Double> nextPartiallyMatchedCrossover() {
 		return new PartiallyMatchedCrossover<>(random().nextDouble());
+	}
+
+	public static Mutator<DoubleGene, Double> nextMutator() {
+		return new Mutator<>(random().nextDouble());
 	}
 
 	public static SinglePointCrossover<DoubleGene, Double> nextSinglePointCrossover() {
