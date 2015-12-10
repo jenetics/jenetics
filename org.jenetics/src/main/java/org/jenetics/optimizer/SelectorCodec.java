@@ -199,6 +199,15 @@ public final class SelectorCodec<
 	 *  Static factory methods for known selector codecs.
 	 * ************************************************************************/
 
+	/**
+	 * Return the <i>default</i> {@link Codec} of the {@link TournamentSelector}.
+	 *
+	 * @param size the desired tournament size range
+	 * @param <G> the gene type of the problem encoding the selector is working
+	 *            on
+	 * @param <C> the fitness function result type of the problem
+	 * @return the <i>default</i> {@link Codec} of the {@link TournamentSelector}
+	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	SelectorCodec<G, C> ofTournamentSelector(final IntRange size){
 		return of(
@@ -209,6 +218,16 @@ public final class SelectorCodec<
 		);
 	}
 
+	/**
+	 * Return the <i>default</i> {@link Codec} of the {@link LinearRankSelector}.
+	 *
+	 * @param nminus {@code nminus/N} is the probability of the worst phenotype
+	 *         to be selected.
+	 * @param <G> the gene type of the problem encoding the selector is working
+	 *            on
+	 * @param <C> the fitness function result type of the problem
+	 * @return the <i>default</i> {@link Codec} of the {@link LinearRankSelector}
+	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	SelectorCodec<G, C> ofLinearRankSelector(final DoubleRange nminus){
 		return of(
@@ -219,6 +238,17 @@ public final class SelectorCodec<
 		);
 	}
 
+	/**
+	 * Return the <i>default</i> {@link Codec} of the
+	 * {@link ExponentialRankSelector}.
+	 *
+	 * @param c the parameter range of the selector parameter
+	 * @param <G> the gene type of the problem encoding the selector is working
+	 *            on
+	 * @param <C> the fitness function result type of the problem
+	 * @return the <i>default</i> {@link Codec} of the
+	 *         {@link ExponentialRankSelector}
+	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	SelectorCodec<G, C> ofExponentialRankSelector(final DoubleRange c){
 		return of(
@@ -229,6 +259,15 @@ public final class SelectorCodec<
 		);
 	}
 
+	/**
+	 * Return the <i>default</i> {@link Codec} of the {@link BoltzmannSelector}.
+	 *
+	 * @param b <i>b</i> value of this BoltzmanSelector
+	 * @param <G> the gene type of the problem encoding the selector is working
+	 *            on
+	 * @param <C> the fitness function result type of the problem
+	 * @return the <i>default</i> {@link Codec} of the {@link BoltzmannSelector}
+	 */
 	public static <G extends Gene<?, G>, N extends Number & Comparable<? super N>>
 	SelectorCodec<G, N> ofBoltzmannSelector(final DoubleRange b){
 		return of(
