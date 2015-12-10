@@ -29,6 +29,7 @@ CompositeAlterer$Model
 GaussianMutator$Model
 MeanAlterer$Model
 MultiPointCrossover$Model
+Mutator$Model
 PartiallyMatchedCrossover$Model
 SinglePointCrossover$Model
 SwapMutator$Model
