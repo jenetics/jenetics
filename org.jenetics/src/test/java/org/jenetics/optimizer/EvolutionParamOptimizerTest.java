@@ -19,18 +19,7 @@
  */
 package org.jenetics.optimizer;
 
-import static java.time.Duration.ofMillis;
 import static org.jenetics.engine.limit.byExecutionTime;
-import static org.jenetics.engine.limit.bySteadyFitness;
-
-import org.jentics.problem.Knapsack;
-
-import org.jenetics.BitGene;
-import org.jenetics.Optimize;
-import org.jenetics.engine.EvolutionParam;
-import org.jenetics.util.IntRange;
-import org.jenetics.util.LCG64ShiftRandom;
-import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

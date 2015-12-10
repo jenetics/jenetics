@@ -41,13 +41,20 @@ import java.util.stream.Collector;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import org.jenetics.BitGene;
 import org.jenetics.Gene;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
 import org.jenetics.engine.EvolutionStatistics;
+import org.jenetics.engine.Problem;
+import org.jenetics.problem.Knapsack;
 import org.jenetics.stat.DoubleMomentStatistics;
+import org.jenetics.util.ISeq;
+import org.jenetics.util.LCG64ShiftRandom;
 
 /**
+ * @param <P> the optimizing (varying) parameter
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz  Wilhelmstötter</a>
  */
 public class TerminationStatistics<G extends Gene<?, G>, P>
@@ -248,5 +255,37 @@ public class TerminationStatistics<G extends Gene<?, G>, P>
 
 		System.out.println(format(": %f sec.", (end - start)/1_000.0));
 	}
+
+
+
+	public static void main(final String[] args) {
+		File param = null;
+		int samples = 250;
+		int generations = 50;
+		File output = null;
+
+		for (int i = 0; i < args.length; i += 2) {
+			switch (args[i]) {
+				case "-p": param = new File(args[i + 1]); break;
+				case "-s": samples = Integer.parseInt(args[i + 1]); break;
+				case "-g": generations = Integer.parseInt(args[i + 1]); break;
+				case "-o": output = new File(args[i + 1]); break;
+				default: break;
+			}
+		}
+
+		if (param == null) {
+			System.err.println("No evolution parameter file given: -p");
+			System.exit(1);
+		}
+		if (output == null) {
+			System.err.println("No output file given: -o");
+		}
+
+		final Problem<ISeq<Knapsack.Item>, BitGene, Double> problem =
+			Knapsack.of(250, new LCG64ShiftRandom(10101));
+
+	}
+
 
 }

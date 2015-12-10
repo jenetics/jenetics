@@ -23,6 +23,7 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.Equality.eq;
 
+import java.io.IOException;
 import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.Collector;
@@ -39,6 +40,7 @@ import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.TournamentSelector;
 import org.jenetics.engine.Engine;
+import org.jenetics.util.IO;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
 
@@ -188,12 +190,13 @@ public final class Knapsack
 			.build();
 	}
 
-	public static void main(final String[] args) {
+	public static void main(final String[] args) throws IOException {
 		final Knapsack knapsack = Knapsack.of(5, new Random(12));
 
 		System.out.println(knapsack.getSize());
 		System.out.println(knapsack.getItems().stream().collect(Item.toSum()));
 		System.out.println(knapsack.getItems());
+		IO.jaxb.write(engine(new Random()).getEvolutionParam(), System.out);
 	}
 
 }
