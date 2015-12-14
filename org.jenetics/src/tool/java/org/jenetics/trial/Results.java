@@ -19,12 +19,17 @@
  */
 package org.jenetics.trial;
 
+import static java.lang.String.format;
+import static java.nio.file.StandardCopyOption.ATOMIC_MOVE;
 import static java.util.Objects.requireNonNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.jenetics.util.ISeq;
 
@@ -51,6 +56,13 @@ public class Results {
 		return _values.get(column).size();
 	}
 
+	public int rows() {
+		return _values.stream()
+			.mapToInt(List::size)
+			.max()
+			.orElse(0);
+	}
+
 	public Statistics statistics() {
 		return null;
 	}
@@ -59,10 +71,68 @@ public class Results {
 		final File parent = file.getParentFile() != null
 			? file.getParentFile()
 			: file;
+
+		final File temp = new File(parent, format("__%s", file.getName()));
+		try {
+			Files.write(temp.toPath(), toCSV().getBytes());
+			Files.move(temp.toPath(), file.toPath(), ATOMIC_MOVE);
+		} finally {
+			Files.deleteIfExists(temp.toPath());
+		}
+	}
+
+	private String toCSV() {
+		final StringBuilder out = new StringBuilder();
+		out.append(_columns.toString(","));
+
+		for (int i = 0, n = rows(); i < n; ++i) {
+			final int row = i;
+			final String line = _values.stream()
+				.map(rows -> rows.size() < row ? rows.get(row) : null)
+				.map(col -> col != null ? col.toString() : "")
+				.collect(Collectors.joining(","));
+
+			out.append(line);
+			out.append("\n");
+		}
+
+		return out.toString();
 	}
 
 	public static Results read(final File file) throws IOException {
-		return null;
+		final List<String> lines = Files.readAllLines(file.toPath()).stream()
+			.flatMap(line -> line.isEmpty() ? Stream.empty() : Stream.of(line))
+			.collect(Collectors.toList());
+
+		if (lines.isEmpty()) {
+			throw new IOException(format("File '%s' is empty.", file));
+		}
+
+		final Results results = new Results(ISeq.of(lines));
+		lines.subList(1, lines.size()).stream()
+			.map(line -> line.split(","))
+			.map(line -> Stream.of(line)
+				.map(Results::toDouble)
+				.toArray(Double[]::new))
+			.forEach(results::append);
+
+		return results;
+	}
+
+	private static Double toDouble(final String value) {
+		try {
+			return Double.parseDouble(value);
+		} catch (NumberFormatException e) {
+			return null;
+		}
+	}
+
+	private void append(final Double[] values) {
+		for (int i = 0; i < values.length; ++i) {
+			if (values[i] != null) {
+				append(i, values[i]);
+			}
+		}
 	}
 
 }
