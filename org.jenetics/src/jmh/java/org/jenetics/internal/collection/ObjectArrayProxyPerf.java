@@ -19,14 +19,10 @@
  */
 package org.jenetics.internal.collection;
 
-import java.io.Serializable;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 3.0
- * @version 3.0
+ * @version 3.4
+ * @since 3.4
  */
-@FunctionalInterface
-public interface ArrayProxyFactory<A, P> extends Serializable {
-	public P create(final A array, final int start, final int end);
+public class ObjectArrayProxyPerf {
 }

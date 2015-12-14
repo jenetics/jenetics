@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.collection;
+package org.jenetics.util;
 
 import static java.util.Objects.requireNonNull;
 
@@ -27,41 +27,41 @@ import java.util.function.Consumer;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0
+ * @version 3.4
  */
-public final class ArrayProxySpliterator<T> implements Spliterator<T> {
+final class SeqSpliterator<T> implements Spliterator<T> {
 
-	private final ArrayProxy<T, ?, ?> _proxy;
+	private final Seq<T> _seq;
 	private final int _fence;
 	private int _index;
 
-	public ArrayProxySpliterator(
-		final ArrayProxy<T, ?, ?> proxy,
+	public SeqSpliterator(
+		final Seq<T> seq,
 		final int origin,
 		final int fence
 	) {
-		_proxy = requireNonNull(proxy);
+		_seq = requireNonNull(seq);
 		_index = origin;
 		_fence = fence;
 	}
 
-	public ArrayProxySpliterator(final ArrayProxy<T, ?, ?> proxy) {
-		this(proxy, 0, proxy.length);
+	public SeqSpliterator(final Seq<T> seq) {
+		this(seq, 0, seq.length());
 	}
 
 	@Override
 	public void forEachRemaining(final Consumer<? super T> action) {
 		requireNonNull(action);
 
-		ArrayProxy<T, ?, ?> proxy;
+		Seq<T> seq;
 		int i;
 		int hi;
 
-		if ((proxy = _proxy).length >= (hi = _fence) &&
+		if ((seq = _seq).length() >= (hi = _fence) &&
 			(i = _index) >= 0 && i < (_index = hi))
 		{
 			do {
-				action.accept(proxy.__get(i));
+				action.accept(seq.get(i));
 			} while (++i < hi);
 		}
 	}
@@ -69,7 +69,7 @@ public final class ArrayProxySpliterator<T> implements Spliterator<T> {
 	@Override
 	public boolean tryAdvance(final Consumer<? super T> action) {
 		if (_index >= 0 && _index < _fence) {
-			action.accept(_proxy.__get(_index++));
+			action.accept(_seq.get(_index++));
 			return true;
 		}
 		return false;
@@ -82,7 +82,7 @@ public final class ArrayProxySpliterator<T> implements Spliterator<T> {
 
 		return (lo >= mid)
 			? null
-			: new ArrayProxySpliterator<>(_proxy, lo, _index = mid);
+			: new SeqSpliterator<>(_seq, lo, _index = mid);
 	}
 
 	@Override
@@ -94,5 +94,4 @@ public final class ArrayProxySpliterator<T> implements Spliterator<T> {
 	public int characteristics() {
 		return Spliterator.NONNULL | Spliterator.SIZED | Spliterator.SUBSIZED;
 	}
-
 }

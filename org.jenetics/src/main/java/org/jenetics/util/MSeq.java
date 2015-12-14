@@ -33,8 +33,10 @@ import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 
-import org.jenetics.internal.collection.ArrayProxyMSeq;
-import org.jenetics.internal.collection.ObjectArrayProxy;
+import org.jenetics.internal.collection.Array;
+import org.jenetics.internal.collection.ArrayMSeq;
+import org.jenetics.internal.collection.Empty;
+import org.jenetics.internal.collection.ObjectStore;
 
 /**
  * Mutable, ordered, fixed sized sequence.
@@ -50,9 +52,13 @@ import org.jenetics.internal.collection.ObjectArrayProxy;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.3
+ * @version 3.4
  */
 public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
+
+	public default List<T> asList() {
+		return new MSeqList<>(this);
+	}
 
 	/**
 	 * Set the {@code value} at the given {@code index}.
@@ -205,7 +211,9 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @return a list iterator over the elements in this list (in proper
 	 *         sequence)
 	 */
-	public ListIterator<T> listIterator();
+	public default ListIterator<T> listIterator() {
+		return asList().listIterator();
+	}
 
 	@Override
 	public MSeq<T> subSeq(final int start, final int end);
@@ -215,6 +223,24 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 
 	@Override
 	public <B> MSeq<B> map(final Function<? super T, ? extends B> mapper);
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public default MSeq<T> append(final T... values) {
+		return append(MSeq.of(values));
+	}
+
+	@Override
+	public MSeq<T> append(final Iterable<? extends T> values);
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public default MSeq<T> prepend(final T... values) {
+		return prepend(MSeq.of(values));
+	}
+
+	@Override
+	public MSeq<T> prepend(final Iterable<? extends T> values);
 
 	/**
 	 * Return a read-only projection of this sequence. Changes to the original
@@ -232,8 +258,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	/**
 	 * Single instance of an empty {@code MSeq}.
 	 */
-	public static final MSeq<?> EMPTY =
-		new ArrayProxyMSeq<>(new ObjectArrayProxy<>(0));
+	public static final MSeq<?> EMPTY = Empty.MSEQ;
 
 	/**
 	 * Return an empty {@code MSeq}.
@@ -241,9 +266,8 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @param <T> the element type of the returned {@code MSeq}.
 	 * @return an empty {@code MSeq}.
 	 */
-	@SuppressWarnings("unchecked")
 	public static <T> MSeq<T> empty() {
-		return (MSeq<T>)EMPTY;
+		return Empty.mseq();
 	}
 
 	/**
@@ -275,7 +299,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	public static <T> MSeq<T> ofLength(final int length) {
 		return length == 0
 			? empty()
-			: new ArrayProxyMSeq<>(new ObjectArrayProxy<>(length));
+			: new ArrayMSeq<>(Array.of(ObjectStore.ofLength(length)));
 	}
 
 	/**
@@ -290,8 +314,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	public static <T> MSeq<T> of(final T... values) {
 		return values.length == 0
 			? empty()
-			: new ArrayProxyMSeq<>(
-				new ObjectArrayProxy<>(values.clone(), 0, values.length));
+			: new ArrayMSeq<>(Array.of(ObjectStore.of(values.clone())));
 	}
 
 	/**
@@ -324,8 +347,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 
 			mseq = objects.length == 0
 				? empty()
-				: new ArrayProxyMSeq<>(
-					new ObjectArrayProxy<>(objects, 0, objects.length));
+				: new ArrayMSeq<>(Array.of(ObjectStore.of(objects)));
 		}
 
 		return mseq;
@@ -389,8 +411,8 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
 	public static <T> MSeq<T> of(final Seq<T> values) {
-		return values instanceof ArrayProxyMSeq<?, ?>
-			? ((ArrayProxyMSeq<T, ?>)values).copy()
+		return values instanceof ArrayMSeq<?>
+			? ((ArrayMSeq<T>)values).copy()
 			: MSeq.<T>ofLength(values.length()).setAll(values);
 	}
 

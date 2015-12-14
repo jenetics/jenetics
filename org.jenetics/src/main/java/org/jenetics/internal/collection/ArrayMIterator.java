@@ -17,29 +17,25 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
-
-import java.util.Random;
-
-import org.testng.annotations.Test;
-
-import org.jenetics.internal.collection.ArrayProxy;
-import org.jenetics.internal.collection.ArrayProxyTestBase;
+package org.jenetics.internal.collection;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.4
+ * @version 3.4
  */
-@Test
-public class BitGeneArrayProxyTest extends ArrayProxyTestBase<BitGene> {
+public class ArrayMIterator<T> extends ArrayIterator<T> {
 
-	@Override
-	public ArrayProxy<BitGene, ?, ?> newArrayProxy(final int length) {
-		return new BitGeneArray.Proxy(length);
+	public ArrayMIterator(final Array<T> array) {
+		super(array);
 	}
 
 	@Override
-	public BitGene newArrayProxyElement(final Random random) {
-		return BitGene.of(random.nextBoolean());
+	public void set(final T value) {
+		if (lastElement < 0) {
+			throw new IllegalStateException();
+		}
+		array.set(lastElement, value);
 	}
 
 }

@@ -19,34 +19,57 @@
  */
 package org.jenetics.internal.collection;
 
-import java.util.Arrays;
+import static java.util.Objects.requireNonNull;
+
+import java.io.Serializable;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0
+ * @version 3.4
  */
-public final class CharArrayProxy
-	extends ArrayProxy<Character, char[], CharArrayProxy>
-{
+public final class CharStore implements Array.Store<Character>, Serializable {
 	private static final long serialVersionUID = 1L;
 
-	public CharArrayProxy(final char[] chars, final int start, final int end) {
-		super(chars, start, end, CharArrayProxy::new, Arrays::copyOfRange);
+	public final char[] array;
+
+	private CharStore(final char[] chars) {
+		array = requireNonNull(chars);
 	}
 
-	public CharArrayProxy(final int length) {
-		this(new char[length], 0, length);
+	public CharStore(final int length) {
+		this(new char[length]);
 	}
 
 	@Override
-	public Character __get__(int index) {
+	public Character get(final int index) {
 		return array[index];
 	}
 
 	@Override
-	public void __set__(int index, Character value) {
+	public void set(final int index, final Character value) {
 		array[index] = value;
+	}
+
+	@Override
+	public CharStore copy(final int from, final int until) {
+		final char[] array = new char[until - from];
+		System.arraycopy(this.array, from, array, 0, until - from);
+		return new CharStore(array);
+	}
+
+	@Override
+	public CharStore newInstance(final int length) {
+		return new CharStore(length);
+	}
+
+	@Override
+	public int length() {
+		return array.length;
+	}
+
+	public static CharStore of(final char[] chars) {
+		return new CharStore(chars);
 	}
 
 }

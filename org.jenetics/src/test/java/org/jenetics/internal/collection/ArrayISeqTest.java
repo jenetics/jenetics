@@ -19,27 +19,24 @@
  */
 package org.jenetics.internal.collection;
 
+import org.testng.annotations.Test;
+
+import org.jenetics.util.ISeq;
+import org.jenetics.util.ISeqTestBase;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.4
- * @version 3.0
  */
-public class ArrayProxyMIterator<T, P extends ArrayProxy<T, ?, ?>>
-	extends ArrayProxyIterator<T, P>
-{
-
-	public ArrayProxyMIterator(final P proxy) {
-		super(proxy);
-	}
+@Test
+public class ArrayISeqTest extends ISeqTestBase {
 
 	@Override
-	public void set(final T value) {
-		if (lastElement < 0) {
-			throw new IllegalStateException();
+	protected ISeq<Integer> newSeq(final int length) {
+		final Array<Integer> array = Array.ofLength(length);
+		for (int i = 0; i < length; ++i) {
+			array.set(i, i);
 		}
-		proxy.cloneIfSealed();
-		proxy.__set(lastElement, value);
+		return new ArrayISeq<>(array.seal());
 	}
 
 }
