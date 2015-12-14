@@ -36,9 +36,15 @@ repositories {
 	jcenter()
 }
 
+sourceSets {
+	tool
+}
+
 dependencies {
 	testCompile Include.Apache.Commons.Math
 	testCompile Include.TestNG
+
+	toolCompile sourceSets.main.output
 
 	jmh Include.JMH.Core
 	jmh Include.JMH.Processor
