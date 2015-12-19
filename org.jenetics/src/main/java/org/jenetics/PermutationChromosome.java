@@ -49,6 +49,7 @@ import org.jenetics.internal.util.IntRef;
 import org.jenetics.internal.util.bit;
 import org.jenetics.internal.util.jaxb;
 import org.jenetics.internal.util.reflect;
+import org.jenetics.internal.util.require;
 
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
@@ -61,7 +62,7 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-12-07 $</em>
+ * @version 2.0
  */
 @XmlJavaTypeAdapter(PermutationChromosome.Model.Adapter.class)
 public final class PermutationChromosome<T>
@@ -155,6 +156,8 @@ public final class PermutationChromosome<T>
 	 * @param <T> the gene type of the chromosome
 	 * @param alleles the valid alleles used for this permutation arrays.
 	 * @return a new chromosome with the given alleles
+	 * @throws IllegalArgumentException if the given allele array is empty
+	 * @throws NullPointerException if one of the alleles is {@code null}
 	 */
 	@SafeVarargs
 	public static <T> PermutationChromosome<T> of(final T... alleles) {
@@ -166,9 +169,10 @@ public final class PermutationChromosome<T>
 	 *
 	 * @param length the chromosome length.
 	 * @return a integer permutation chromosome with the given length.
+	 * @throws IllegalArgumentException if the given length is smaller than one.
 	 */
 	public static PermutationChromosome<Integer> ofInteger(final int length) {
-		return ofInteger(0, length);
+		return ofInteger(0, require.positive(length));
 	}
 
 	/**

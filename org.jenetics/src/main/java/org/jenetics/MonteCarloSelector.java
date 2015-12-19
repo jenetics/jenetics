@@ -37,7 +37,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-06-30 $</em>
+ * @version 2.0
  */
 public final class MonteCarloSelector<
 	G extends Gene<?, G>,
@@ -65,8 +65,7 @@ public final class MonteCarloSelector<
 		}
 
 		final Population<G, C> selection = new Population<>(count);
-
-		if (count > 0) {
+		if (count > 0 && !population.isEmpty()) {
 			final Random random = RandomRegistry.getRandom();
 			final int size = population.size();
 			for (int i = 0; i < count; ++i) {

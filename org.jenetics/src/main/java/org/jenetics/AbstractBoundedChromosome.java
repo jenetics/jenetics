@@ -21,6 +21,8 @@ package org.jenetics;
 
 import static org.jenetics.internal.util.Equality.eq;
 
+import java.io.Serializable;
+
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
@@ -30,7 +32,7 @@ import org.jenetics.util.ISeq;
  * Abstract chromosome for {@code BoundedGene}s.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-12-07 $</em>
+ * @version 1.6
  * @since 1.6
  */
 abstract class AbstractBoundedChromosome<
@@ -38,7 +40,7 @@ abstract class AbstractBoundedChromosome<
 	G extends AbstractBoundedGene<A, G>
 >
 	extends AbstractChromosome<G>
-	implements BoundedChromosome<A, G>
+	implements BoundedChromosome<A, G>, Serializable
 {
 
 	private static final long serialVersionUID = 1L;

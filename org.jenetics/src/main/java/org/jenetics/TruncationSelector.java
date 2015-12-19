@@ -37,7 +37,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-12-08 $</em>
+ * @version 2.0
  */
 public final class TruncationSelector<
 	G extends Gene<?, G>,
@@ -76,14 +76,18 @@ public final class TruncationSelector<
 			));
 		}
 
-		population.sortWith(opt.<C>descending());
 		final Population<G, C> selection = new Population<>(count);
-		int size = count;
-		do {
-			final int length = Math.min(population.size(), size);
-			selection.addAll(population.subList(0, length));
-			size -= length;
-		} while (size > 0);
+		if (count > 0 && !population.isEmpty()) {
+			final Population<G, C> copy = population.copy();
+			copy.sortWith(opt.<C>descending());
+
+			int size = count;
+			do {
+				final int length = Math.min(copy.size(), size);
+				selection.addAll(copy.subList(0, length));
+				size -= length;
+			} while (size > 0);
+		}
 
 		return selection;
 	}

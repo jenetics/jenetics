@@ -41,7 +41,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-10 $</em>
+ * @version 3.0
  */
 public final class bit {
 	private bit() {require.noInstance();}
@@ -179,7 +179,7 @@ public final class bit {
 		final byte[] data, final int start, final int end,
 		final byte[] otherData, final int otherStart
 	) {
-		for (int i = (end - start); --i >= 0;) {
+		for (int i = end - start; --i >= 0;) {
 			final boolean temp = get(data, i + start);
 			set(data, i + start, get(otherData, otherStart + i));
 			set(otherData, otherStart + i, temp);
@@ -239,7 +239,7 @@ public final class bit {
 
 			for (int i = data.length; --i >= 0;) {
 				int d = data[i] & 0xFF;
-				nextCarry = (d << (8 - bits));
+				nextCarry = d << (Byte.SIZE - bits);
 
 				d >>>= bits;
 				d |= carry;
@@ -280,7 +280,7 @@ public final class bit {
 
 			for (int i = bytes; i < data.length; ++i) {
 				int d = data[i] & 0xFF;
-				nextCarry = (d >>> (8 - bits));
+				nextCarry = d >>> (Byte.SIZE - bits);
 
 				d <<= bits;
 				d |= carry;
@@ -408,7 +408,7 @@ public final class bit {
 			// Add the 'lost' bits from the next byte, if available.
 			if (data.length > copy.length + byteStart) {
 				copy[copy.length - 1] |= (byte)(data[byteStart + copy.length]
-					<< (8 - bitStart));
+					<< (Byte.SIZE - bitStart));
 			}
 
 			// Trim (delete) the overhanging bits.
@@ -475,7 +475,7 @@ public final class bit {
 		final byte[] bytes = new byte[parts.length];
 
 		for (int i = 0; i < parts.length; ++i) {
-			if (parts[i].length() != 8) {
+			if (parts[i].length() != Byte.SIZE) {
 				throw new IllegalArgumentException(
 					"Byte value doesn't contain 8 bit: " + parts[i]
 				);
@@ -516,9 +516,8 @@ public final class bit {
 	public static byte[] newArray(final int length, final double p) {
 		final byte[] bytes = newArray(length);
 
-		random.indexes(RandomRegistry.getRandom(), length, p).forEach(i -> {
-			bytes[i >>> 3] |= 1 << (i & 7);
-		});
+		random.indexes(RandomRegistry.getRandom(), length, p)
+			.forEach(i -> bytes[i >>> 3] |= 1 << (i & 7));
 
 		return bytes;
 	}
@@ -535,14 +534,14 @@ public final class bit {
 
 	public static long toLong(final byte[] data) {
 		return
-			(((long)data[0] << 56) +
+			((long)data[0] << 56) +
 			((long)(data[1] & 255) << 48) +
 			((long)(data[2] & 255) << 40) +
 			((long)(data[3] & 255) << 32) +
 			((long)(data[4] & 255) << 24) +
 			((data[5] & 255) << 16) +
 			((data[6] & 255) <<  8) +
-			((data[7] & 255)));
+			(data[7] & 255);
 	}
 
 	public static byte[] toBytes(final long value) {
@@ -554,7 +553,7 @@ public final class bit {
 		bytes[4] = (byte)(value >>> 24);
 		bytes[5] = (byte)(value >>> 16);
 		bytes[6] = (byte)(value >>>  8);
-		bytes[7] = (byte)(value);
+		bytes[7] = (byte) value;
 		return bytes;
 	}
 

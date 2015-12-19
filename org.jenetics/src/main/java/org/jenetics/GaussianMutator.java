@@ -25,7 +25,6 @@ import static org.jenetics.internal.math.random.indexes;
 import java.util.Random;
 
 import org.jenetics.internal.math.base;
-import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.MSeq;
@@ -47,7 +46,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-12-07 $</em>
+ * @version 3.0
  */
 public final class GaussianMutator<
 	G extends NumericGene<?, G>,
@@ -91,7 +90,7 @@ public final class GaussianMutator<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(super::equals);
+		return obj instanceof GaussianMutator && super.equals(obj);
 	}
 
 	@Override
