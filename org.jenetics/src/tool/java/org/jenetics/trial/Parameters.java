@@ -24,5 +24,5 @@ package org.jenetics.trial;
  * @version !__version__!
  * @since !__version__!
  */
-public class Parameter {
+public class Parameters {
 }
