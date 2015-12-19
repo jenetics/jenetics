@@ -28,12 +28,12 @@ import org.jenetics.util.ISeq;
  * @version !__version__!
  * @since !__version__!
  */
-public final class Parameters<T> {
+public final class Params<T> {
 
 	private final String _name;
 	private final ISeq<T> _params;
 
-	private Parameters(final String name, final ISeq<T> params) {
+	private Params(final String name, final ISeq<T> params) {
 		_name = requireNonNull(name);
 		_params = requireNonNull(params);
 	}
@@ -46,11 +46,11 @@ public final class Parameters<T> {
 		return _params;
 	}
 
-	public static <T> Parameters<T> of(
+	public static <T> Params<T> of(
 		final String name,
 		final ISeq<T> params
 	) {
-		return new Parameters<>(name, params);
+		return new Params<>(name, params);
 	}
 
 }
