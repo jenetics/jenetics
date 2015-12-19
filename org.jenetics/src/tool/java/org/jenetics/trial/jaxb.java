@@ -19,43 +19,39 @@
  */
 package org.jenetics.trial;
 
-import static java.util.Objects.requireNonNull;
+import javax.xml.bind.DataBindingException;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.jenetics.internal.util.require;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public final class Data {
+final class jaxb {
+	private jaxb() {require.noInstance();}
 
-	private final String _name;
-	private final int _paramCount;
-	private final List<Sample> _samples = new ArrayList<>();
-
-	Data(final String name, final int paramCount) {
-		_name = requireNonNull(name);
-		_paramCount = paramCount;
-	}
-
-	public String getName() {
-		return _name;
-	}
-
-	public Sample next() {
-		Sample sample = _samples.get(_samples.size() - 1);
-		if (sample.isFull()) {
-			sample = Sample.of(_paramCount);
-			_samples.add(sample);
+	private static final class JAXBContextHolder {
+		private static final JAXBContext CONTEXT; static {
+			try {
+				CONTEXT = JAXBContext.newInstance(
+					"org.jenetics:" +
+					"org.jenetics.internal.util:" +
+					"org.jenetics.engine:" +
+					"org.jenetics.trial"
+				);
+			} catch (JAXBException e) {
+				throw new DataBindingException(
+					"Something went wrong while creating JAXBContext.", e
+				);
+			}
 		}
-
-		return sample;
 	}
 
-	public static Data of(final String name, final int paramCount) {
-		return new Data(name, paramCount);
+	public static JAXBContext context() {
+		return JAXBContextHolder.CONTEXT;
 	}
 
 }

@@ -22,6 +22,7 @@ package org.jenetics.trial;
 import static java.util.Objects.requireNonNull;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
@@ -33,22 +34,24 @@ import org.jenetics.util.ISeq;
  * @version !__version__!
  * @since !__version__!
  */
-public class Measurement {
+public class Measurement<T> {
 
 	private final String _name;
 	private final String _description;
 
-	private final ISeq<Parameter> _parameters;
-	private final Map<String, Data> _data = new HashMap<>();
+	private final ISeq<T> _parameters;
+	private final ISeq<Data> _data;
 
 	public Measurement(
 		final String name,
 		final String description,
-		final ISeq<Parameter> parameters
+		final ISeq<T> parameters,
+		final ISeq<Data> data
 	) {
 		_name = name;
 		_description = description;
 		_parameters = requireNonNull(parameters);
+		_data = requireNonNull(data);
 	}
 
 	public Optional<String> getName() {
@@ -59,21 +62,28 @@ public class Measurement {
 		return Optional.ofNullable(_description);
 	}
 
-	public ISeq<Parameter> getParameters() {
+	public ISeq<T> getParameters() {
 		return _parameters;
 	}
 
-	public void execute(final Function<Parameter, Optional<double[]>> function) {
+	public void execute(final Function<T, double[]> function) {
+		final T param = _parameters.get(_data.get(0).next().nextIndex());
+		final double[] results = function.apply(param);
 
+		for (int i = 0; i < results.length; ++i) {
+			_data.get(i).next().add(results[i]);
+		}
 	}
 
+
+
 	public static void main(final String[] args) {
-		final Measurement measurement = null;
+		final Measurement<String> measurement = null;
 		measurement.execute(Measurement::foo);
 	}
 
-	static Optional<double[]> foo(final Parameter parameter) {
-		return Optional.empty();
+	static double[] foo(final String parameter) {
+		return null;
 	}
 
 
