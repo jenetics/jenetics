@@ -28,7 +28,6 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -38,6 +37,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.jenetics.util.ISeq;
 
 /**
+ * Collection of sample {@code Data} objects.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -45,11 +46,9 @@ import org.jenetics.util.ISeq;
 @XmlJavaTypeAdapter(DataSet.Model.Adapter.class)
 public final class DataSet {
 
-	private final int _paramCount;
 	private final ISeq<Data> _sets;
 
-	private DataSet(final int paramCount, final ISeq<Data> sets) {
-		_paramCount = paramCount;
+	private DataSet(final ISeq<Data> sets) {
 		_sets = requireNonNull(sets);
 
 		if (_sets.isEmpty()) {
@@ -57,10 +56,6 @@ public final class DataSet {
 				"Data set names must not be empty."
 			);
 		}
-	}
-
-	public int getParamCount() {
-		return _paramCount;
 	}
 
 	public ISeq<Data> getSets() {
@@ -76,6 +71,10 @@ public final class DataSet {
 		return indexes.get(0);
 	}
 
+	public int sampleSize() {
+		return _sets.get(0).sampleSize();
+	}
+
 	public void add(final double[] values) {
 		if (values.length != _sets.length()) {
 			throw new IllegalArgumentException(format(
@@ -84,26 +83,29 @@ public final class DataSet {
 		}
 
 		for (int i = 0; i < values.length; ++i) {
-			_sets.get(i).nextSample().add(values[i]);
+			_sets.get(i).currentSample().add(values[i]);
 		}
 	}
 
-	public static DataSet of(final int paramCount, final String... dataSetNames) {
+	public static DataSet of(
+		final int paramCount,
+		final String... dataSetNames
+	) {
 		return new DataSet(
-			paramCount,
 			Arrays.stream(dataSetNames)
 				.map(name -> Data.of(name, singletonList(Sample.of(paramCount))))
 				.collect(ISeq.toISeq())
 		);
 	}
 
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
+
 	@XmlRootElement(name = "data-set")
 	@XmlType(name = "org.jenetics.tool.DataSet")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	static final class Model {
-
-		@XmlAttribute(name = "param-count")
-		public int paramCount;
 
 		@XmlElement(name = "data")
 		public List<Data> dataSet;
@@ -112,14 +114,13 @@ public final class DataSet {
 			@Override
 			public Model marshal(final DataSet data) {
 				final Model model = new Model();
-				model.paramCount = data.getParamCount();
 				model.dataSet = data.getSets().asList();
 				return model;
 			}
 
 			@Override
 			public DataSet unmarshal(final Model model) {
-				return new DataSet(model.paramCount, ISeq.of(model.dataSet));
+				return new DataSet(ISeq.of(model.dataSet));
 			}
 		}
 

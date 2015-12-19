@@ -49,8 +49,8 @@ public final class Sample {
 		return _values.length;
 	}
 
-	public void add(final double value) {
-		if (value == Double.NaN) {
+	void add(final double value) {
+		if (Double.isNaN(value)) {
 			throw new IllegalArgumentException();
 		}
 

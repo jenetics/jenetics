@@ -47,19 +47,23 @@ public final class Data {
 	private final List<Sample> _samples = new ArrayList<>();
 
 	private Data(final String name, final List<Sample> samples) {
-		_name = requireNonNull(name);
-		_samples.addAll(requireNonNull(samples));
-
 		if (samples.isEmpty()) {
 			throw new IllegalArgumentException("Sample list must not be empty.");
 		}
+
+		_name = requireNonNull(name);
+		_samples.addAll(samples);
 	}
 
 	public String getName() {
 		return _name;
 	}
 
-	public Sample nextSample() {
+	public int sampleSize() {
+		return _samples.size();
+	}
+
+	public Sample currentSample() {
 		Sample sample = _samples.get(_samples.size() - 1);
 		if (sample.isFull()) {
 			sample = sample.newSample();
@@ -70,7 +74,7 @@ public final class Data {
 	}
 
 	public int nextParamIndex() {
-		return nextSample().nextIndex();
+		return currentSample().nextIndex();
 	}
 
 	public static Data of(final String name, final List<Sample> samples) {

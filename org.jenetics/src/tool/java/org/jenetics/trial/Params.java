@@ -36,6 +36,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.jenetics.util.ISeq;
 
 /**
+ * Collection of parameters the function under test is tested with.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -51,14 +53,24 @@ public final class Params<T> implements Iterable<T> {
 		_params = requireNonNull(params);
 	}
 
+	/**
+	 * Return the name of the parameter collection.
+	 *
+	 * @return the name of the parameter collection
+	 */
 	public String getName() {
 		return _name;
 	}
 
-	public ISeq<T> getParams() {
+	public ISeq<T> get() {
 		return _params;
 	}
 
+	/**
+	 * Return the number of parameters this collection contains.
+	 *
+	 * @return the number of parameters
+	 */
 	public int size() {
 		return _params.size();
 	}
@@ -68,8 +80,9 @@ public final class Params<T> implements Iterable<T> {
 		return _params.iterator();
 	}
 
-	public T nextParam(final DataSet data) {
-		return _params.get(data.getSets().get(0).nextSample().nextIndex());
+	@Override
+	public String toString() {
+		return _params.toString();
 	}
 
 	public static <T> Params<T> of(
@@ -78,6 +91,10 @@ public final class Params<T> implements Iterable<T> {
 	) {
 		return new Params<>(name, params);
 	}
+
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
 
 	@XmlRootElement(name = "params")
 	@XmlType(name = "org.jenetics.tool.Params")
@@ -96,7 +113,7 @@ public final class Params<T> implements Iterable<T> {
 			public Model marshal(final Params params) {
 				final Model model = new Model();
 				model.name = params.getName();
-				model.params = params.getParams().asList();
+				model.params = params.get().asList();
 				return model;
 			}
 

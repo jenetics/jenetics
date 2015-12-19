@@ -24,11 +24,9 @@ import static org.jenetics.internal.util.jaxb.marshal;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -43,45 +41,51 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.jenetics.util.ISeq;
 
 /**
+ * Represents an function testing measurement environment.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 @XmlJavaTypeAdapter(Measurement.Model.Adapter.class)
-public class Measurement<T> {
+public final class Measurement<T> {
 
 	private final String _name;
 	private final String _description;
 
-	private final Params<T> _parameters;
+	private final Params<T> _params;
 	private final DataSet _dataSet;
 
-	public Measurement(
+	private Measurement(
 		final String name,
 		final String description,
-		final Params<T> parameters,
-		final String... dataSetNames
+		final Params<T> params,
+		final DataSet dataSet
 	) {
-		_name = name;
+		_name = requireNonNull(name);
 		_description = description;
-		_parameters = requireNonNull(parameters);
-		_dataSet = DataSet.of(parameters.size(), dataSetNames);
+		_params = requireNonNull(params);
+		_dataSet = requireNonNull(dataSet);
 	}
 
-	public Optional<String> getName() {
-		return Optional.ofNullable(_name);
+	public String getName() {
+		return _name;
 	}
 
 	public Optional<String> getDescription() {
 		return Optional.ofNullable(_description);
 	}
 
-	public Params<T> getParameters() {
-		return _parameters;
+	public Params<T> getParams() {
+		return _params;
+	}
+
+	public int sampleSize() {
+		return _dataSet.sampleSize();
 	}
 
 	public void execute(final Function<T, double[]> function) {
-		_parameters.getParams()
+		_params.get()
 			.subSeq(_dataSet.nextParamIndex())
 			.forEach(p -> _dataSet.add(function.apply(p)));
 	}
@@ -98,8 +102,22 @@ public class Measurement<T> {
 		}
 	}
 
+	public static <T> Measurement<T> of(
+		final String name,
+		final String description,
+		final Params<T> params,
+		final String... dataSetNames
+	) {
+		return new Measurement<T>(
+			name,
+			description,
+			params,
+			DataSet.of(params.size(), dataSetNames)
+		);
+	}
+
 	public static void main(final String[] args) throws Exception {
-		final Measurement<String> measurement = new Measurement<String>(
+		final Measurement<String> measurement = Measurement.of(
 			"Some name", "Some description",
 			Params.of("Strings", ISeq.of("p1", "p2", "p3", "p4", "p5")),
 			"fitness", "generation"
@@ -118,9 +136,10 @@ public class Measurement<T> {
 		measurement.write(System.out);
 	}
 
-	static double[] foo(final String parameter) {
-		return null;
-	}
+
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
 
 	@XmlRootElement(name = "measurement")
 	@XmlType(name = "org.jenetics.tool.Measurement")
@@ -140,21 +159,27 @@ public class Measurement<T> {
 		@XmlElement(name = "data-set", required = true, nillable = false)
 		public DataSet dataSet;
 
-		public static final class Adapter extends XmlAdapter<Model, Measurement> {
+		public static final class Adapter
+			extends XmlAdapter<Model, Measurement>
+		{
 			@Override
 			public Model marshal(final Measurement data) {
 				final Model model = new Model();
 				model.name = data._name;
 				model.description = data._description;
-				model.params = data.getParameters();
+				model.params = data.getParams();
 				model.dataSet = data._dataSet;
 				return model;
 			}
 
-
 			@Override
 			public Measurement unmarshal(final Model model) {
-				return null;
+				return new Measurement(
+					model.name,
+					model.description,
+					model.params,
+					model.dataSet
+				);
 			}
 		}
 	}
