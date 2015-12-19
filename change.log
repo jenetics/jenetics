@@ -1,3 +1,14 @@
+Jenetics-3.3.0
+
+- Improvements
+    * https://github.com/jenetics/jenetics/issues/43: Add _Evolving images_ example.
+    * https://github.com/jenetics/jenetics/issues/62: Two or more `Codec` interfaces can be combined into a single one.
+    * https://github.com/jenetics/jenetics/issues/66: Add `AnyGene` and `AnyChromosome` for arbitrary allele types.
+
+- Bug fixes
+    * https://github.com/jenetics/jenetics/issues/52: Immutability of ISeq violated.
+    * https://github.com/jenetics/jenetics/issues/55: Fixing example-run script for Mac.
+
 Jenetics-3.2.0
 
 - Improvements

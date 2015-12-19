@@ -29,6 +29,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import org.jenetics.AnyGene;
 import org.jenetics.Chromosome;
 import org.jenetics.DoubleGene;
 import org.jenetics.EnumGene;
@@ -38,6 +39,7 @@ import org.jenetics.LongGene;
 import org.jenetics.util.DoubleRange;
 import org.jenetics.util.IntRange;
 import org.jenetics.util.LongRange;
+import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -392,6 +394,68 @@ public class codecsTest {
 
 		for (int i = 0; i < matrix.length; ++i) {
 			Assert.assertEquals(matrix[i], expectedMatrix[i], 0.0001);
+		}
+	}
+
+	@Test
+	public void ofAnyScalar() {
+		final Codec<Integer, AnyGene<Integer>> codec = codecs.ofScalar(
+			() -> RandomRegistry.getRandom().nextInt(1000),
+			i -> i < 100
+		);
+
+		for (int i = 0; i < 1000; ++i) {
+			final AnyGene<Integer> gene = codec.encoding()
+				.newInstance().getGene();
+
+			Assert.assertEquals(gene.isValid(), gene.getAllele() < 100);
+			Assert.assertTrue(gene.getAllele() < 1000);
+			Assert.assertTrue(gene.getAllele() >= 0);
+		}
+	}
+
+	@Test
+	public void ofAnyScalar2() {
+		final Codec<Integer, AnyGene<Integer>> codec = codecs.ofScalar(
+			() -> RandomRegistry.getRandom().nextInt(1000)
+		);
+
+		for (int i = 0; i < 1000; ++i) {
+			final AnyGene<Integer> gene = codec.encoding()
+				.newInstance().getGene();
+
+			Assert.assertTrue(gene.isValid());
+			Assert.assertTrue(gene.getAllele() < 1000);
+			Assert.assertTrue(gene.getAllele() >= 0);
+		}
+	}
+
+	@Test
+	public void ofAnyVector() {
+		final int length = 23;
+		final Codec<Integer[], AnyGene<Integer>> codec = codecs.ofVector(
+			() -> RandomRegistry.getRandom().nextInt(1000),
+			Integer[]::new,
+			i -> i < 100,
+			length
+		);
+
+		for (int i = 0; i < 100; ++i) {
+			final Chromosome<AnyGene<Integer>> ch = codec.encoding()
+				.newInstance().getChromosome();
+
+			Assert.assertEquals(ch.length(), length);
+
+			for (AnyGene<Integer> gene : ch) {
+				Assert.assertEquals(gene.isValid(), gene.getAllele() < 100);
+
+				if (!gene.isValid()) {
+					Assert.assertFalse(ch.isValid());
+				}
+
+				Assert.assertTrue(gene.getAllele() < 1000);
+				Assert.assertTrue(gene.getAllele() >= 0);
+			}
 		}
 	}
 
