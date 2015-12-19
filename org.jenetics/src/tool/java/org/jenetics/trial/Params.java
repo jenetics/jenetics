@@ -21,6 +21,18 @@ package org.jenetics.trial;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Iterator;
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.jenetics.util.ISeq;
 
 /**
@@ -28,7 +40,8 @@ import org.jenetics.util.ISeq;
  * @version !__version__!
  * @since !__version__!
  */
-public final class Params<T> {
+@XmlJavaTypeAdapter(Params.Model.Adapter.class)
+public final class Params<T> implements Iterable<T> {
 
 	private final String _name;
 	private final ISeq<T> _params;
@@ -46,11 +59,55 @@ public final class Params<T> {
 		return _params;
 	}
 
+	public int size() {
+		return _params.size();
+	}
+
+	@Override
+	public Iterator<T> iterator() {
+		return _params.iterator();
+	}
+
+	public T nextParam(final DataSet data) {
+		return _params.get(data.getSets().get(0).nextSample().nextIndex());
+	}
+
 	public static <T> Params<T> of(
 		final String name,
 		final ISeq<T> params
 	) {
 		return new Params<>(name, params);
+	}
+
+	@XmlRootElement(name = "params")
+	@XmlType(name = "org.jenetics.tool.Params")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	static final class Model {
+
+		@XmlAttribute(name = "name")
+		public String name;
+
+		@XmlElement(name = "param", required = true, nillable = false)
+		public List params;
+
+		public static final class Adapter extends XmlAdapter<Model, Params> {
+			@Override
+			public Model marshal(final Params params) {
+				final Model model = new Model();
+				model.name = params.getName();
+				model.params = params.getParams().asList();
+				return model;
+			}
+
+			@Override
+			public Params unmarshal(final Model model) {
+				return Params.of(
+					model.name,
+					ISeq.of(model.params)
+				);
+			}
+		}
 	}
 
 }

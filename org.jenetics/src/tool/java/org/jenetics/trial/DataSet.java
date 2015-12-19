@@ -19,6 +19,7 @@
  */
 package org.jenetics.trial;
 
+import static java.lang.String.format;
 import static java.util.Collections.singletonList;
 import static java.util.Objects.requireNonNull;
 
@@ -64,6 +65,27 @@ public final class DataSet {
 
 	public ISeq<Data> getSets() {
 		return _sets;
+	}
+
+	public int nextParamIndex() {
+		final ISeq<Integer> indexes = _sets.map(Data::nextParamIndex);
+		if (!indexes.forAll(i -> indexes.get(0).equals(i))) {
+			throw new IllegalStateException("Inconsistent state.");
+		}
+
+		return indexes.get(0);
+	}
+
+	public void add(final double[] values) {
+		if (values.length != _sets.length()) {
+			throw new IllegalArgumentException(format(
+				"Expected %d values, but got %d.", _sets.length(), values.length
+			));
+		}
+
+		for (int i = 0; i < values.length; ++i) {
+			_sets.get(i).nextSample().add(values[i]);
+		}
 	}
 
 	public static DataSet of(final int paramCount, final String... dataSetNames) {

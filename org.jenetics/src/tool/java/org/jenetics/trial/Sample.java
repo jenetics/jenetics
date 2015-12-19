@@ -25,7 +25,6 @@ import java.util.Arrays;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -61,7 +60,7 @@ public final class Sample {
 	public int nextIndex() {
 		int index = -1;
 		for (int i = 0; i <  _values.length && index == -1; ++i) {
-			if (_values[i] != Double.NaN) {
+			if (Double.isNaN(_values[i])) {
 				index = i;
 			}
 		}
@@ -90,6 +89,11 @@ public final class Sample {
 		Arrays.fill(values, Double.NaN);
 
 		return of(values);
+	}
+
+	@Override
+	public String toString() {
+		return Arrays.toString(_values);
 	}
 
 

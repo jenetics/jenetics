@@ -24,11 +24,9 @@ import static org.jenetics.internal.util.jaxb.marshal;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -55,13 +53,13 @@ public class Measurement<T> {
 	private final String _name;
 	private final String _description;
 
-	private final ISeq<T> _parameters;
+	private final Params<T> _parameters;
 	private final DataSet _dataSet;
 
 	public Measurement(
 		final String name,
 		final String description,
-		final ISeq<T> parameters,
+		final Params<T> parameters,
 		final String... dataSetNames
 	) {
 		_name = name;
@@ -78,19 +76,14 @@ public class Measurement<T> {
 		return Optional.ofNullable(_description);
 	}
 
-	public ISeq<T> getParameters() {
+	public Params<T> getParameters() {
 		return _parameters;
 	}
 
 	public void execute(final Function<T, double[]> function) {
-		/*
-		final T param = _parameters.get(_data.get(0).next().nextIndex());
-		final double[] results = function.apply(param);
-
-		for (int i = 0; i < results.length; ++i) {
-			_data.get(i).next().add(results[i]);
-		}
-		*/
+		_parameters.getParams()
+			.subSeq(_dataSet.nextParamIndex())
+			.forEach(p -> _dataSet.add(function.apply(p)));
 	}
 
 	public void write(final OutputStream out)
@@ -108,9 +101,19 @@ public class Measurement<T> {
 	public static void main(final String[] args) throws Exception {
 		final Measurement<String> measurement = new Measurement<String>(
 			"Some name", "Some description",
-			ISeq.of("p1", "p2", "p3", "p4", "p5"),
+			Params.of("Strings", ISeq.of("p1", "p2", "p3", "p4", "p5")),
 			"fitness", "generation"
 		);
+
+		final Random random = new Random();
+
+		for (int i = 0; i < 10; ++i) {
+			measurement.execute(p -> {
+				return new double[] {
+					random.nextDouble(), random.nextDouble()
+				};
+			});
+		}
 
 		measurement.write(System.out);
 	}
@@ -122,6 +125,7 @@ public class Measurement<T> {
 	@XmlRootElement(name = "measurement")
 	@XmlType(name = "org.jenetics.tool.Measurement")
 	@XmlAccessorType(XmlAccessType.FIELD)
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	static final class Model {
 
 		@XmlAttribute
@@ -131,7 +135,7 @@ public class Measurement<T> {
 		public String description;
 
 		@XmlElement(name = "params", required = true, nillable = false)
-		public List params;
+		public Params params;
 
 		@XmlElement(name = "data-set", required = true, nillable = false)
 		public DataSet dataSet;
@@ -142,9 +146,7 @@ public class Measurement<T> {
 				final Model model = new Model();
 				model.name = data._name;
 				model.description = data._description;
-				model.params = (List) data.getParameters().stream()
-					.map(p -> org.jenetics.internal.util.jaxb.Marshaller(p).apply(p))
-					.collect(Collectors.toList());
+				model.params = data.getParameters();
 				model.dataSet = data._dataSet;
 				return model;
 			}

@@ -24,18 +24,14 @@ import static java.util.Objects.requireNonNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -63,7 +59,7 @@ public final class Data {
 		return _name;
 	}
 
-	public Sample next() {
+	public Sample nextSample() {
 		Sample sample = _samples.get(_samples.size() - 1);
 		if (sample.isFull()) {
 			sample = sample.newSample();
@@ -71,6 +67,10 @@ public final class Data {
 		}
 
 		return sample;
+	}
+
+	public int nextParamIndex() {
+		return nextSample().nextIndex();
 	}
 
 	public static Data of(final String name, final List<Sample> samples) {
