@@ -77,6 +77,10 @@ public final class Sample {
 		return _values.clone();
 	}
 
+	public Sample newSample() {
+		return of(size());
+	}
+
 	public static Sample of(final double[] values) {
 		return new Sample(values);
 	}
@@ -99,7 +103,6 @@ public final class Sample {
 	static final class Model {
 
 		@XmlList
-		@XmlElement(name = "sample")
 		public double[] sample;
 
 		public static final class Adapter extends XmlAdapter<Model, Sample> {

@@ -37,10 +37,14 @@ final class jaxb {
 		private static final JAXBContext CONTEXT; static {
 			try {
 				CONTEXT = JAXBContext.newInstance(
-					"org.jenetics:" +
+					/*"org.jenetics:" +
 					"org.jenetics.internal.util:" +
-					"org.jenetics.engine:" +
-					"org.jenetics.trial"
+					"org.jenetics.engine:" +*/
+					//"org.jenetics.trial"
+					Sample.Model.class,
+					Data.Model.class,
+					DataSet.Model.class,
+					Measurement.Model.class
 				);
 			} catch (JAXBException e) {
 				throw new DataBindingException(

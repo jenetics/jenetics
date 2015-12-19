@@ -20,12 +20,27 @@
 package org.jenetics.trial;
 
 import static java.util.Objects.requireNonNull;
+import static org.jenetics.internal.util.jaxb.marshal;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jenetics.util.ISeq;
 
@@ -34,24 +49,25 @@ import org.jenetics.util.ISeq;
  * @version !__version__!
  * @since !__version__!
  */
+@XmlJavaTypeAdapter(Measurement.Model.Adapter.class)
 public class Measurement<T> {
 
 	private final String _name;
 	private final String _description;
 
 	private final ISeq<T> _parameters;
-	private final ISeq<Data> _data;
+	private final DataSet _dataSet;
 
 	public Measurement(
 		final String name,
 		final String description,
 		final ISeq<T> parameters,
-		final ISeq<Data> data
+		final String... dataSetNames
 	) {
 		_name = name;
 		_description = description;
 		_parameters = requireNonNull(parameters);
-		_data = requireNonNull(data);
+		_dataSet = DataSet.of(parameters.size(), dataSetNames);
 	}
 
 	public Optional<String> getName() {
@@ -67,28 +83,78 @@ public class Measurement<T> {
 	}
 
 	public void execute(final Function<T, double[]> function) {
+		/*
 		final T param = _parameters.get(_data.get(0).next().nextIndex());
 		final double[] results = function.apply(param);
 
 		for (int i = 0; i < results.length; ++i) {
 			_data.get(i).next().add(results[i]);
 		}
+		*/
 	}
 
+	public void write(final OutputStream out)
+		throws IOException
+	{
+		try {
+			final Marshaller marshaller = jaxb.context().createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			marshaller.marshal(marshal(this), out);
+		} catch (Exception e) {
+			throw new IOException(e);
+		}
+	}
 
+	public static void main(final String[] args) throws Exception {
+		final Measurement<String> measurement = new Measurement<String>(
+			"Some name", "Some description",
+			ISeq.of("p1", "p2", "p3", "p4", "p5"),
+			"fitness", "generation"
+		);
 
-	public static void main(final String[] args) {
-		final Measurement<String> measurement = null;
-		measurement.execute(Measurement::foo);
+		measurement.write(System.out);
 	}
 
 	static double[] foo(final String parameter) {
 		return null;
 	}
 
-
+	@XmlRootElement(name = "measurement")
+	@XmlType(name = "org.jenetics.tool.Measurement")
+	@XmlAccessorType(XmlAccessType.FIELD)
 	static final class Model {
 
+		@XmlAttribute
+		public String name;
+
+		@XmlAttribute
+		public String description;
+
+		@XmlElement(name = "params", required = true, nillable = false)
+		public List params;
+
+		@XmlElement(name = "data-set", required = true, nillable = false)
+		public DataSet dataSet;
+
+		public static final class Adapter extends XmlAdapter<Model, Measurement> {
+			@Override
+			public Model marshal(final Measurement data) {
+				final Model model = new Model();
+				model.name = data._name;
+				model.description = data._description;
+				model.params = (List) data.getParameters().stream()
+					.map(p -> org.jenetics.internal.util.jaxb.Marshaller(p).apply(p))
+					.collect(Collectors.toList());
+				model.dataSet = data._dataSet;
+				return model;
+			}
+
+
+			@Override
+			public Measurement unmarshal(final Model model) {
+				return null;
+			}
+		}
 	}
 
 }
