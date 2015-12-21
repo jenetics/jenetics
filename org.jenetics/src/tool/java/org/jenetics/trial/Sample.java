@@ -49,6 +49,12 @@ public final class Sample {
 		return _values.length;
 	}
 
+	/**
+	 * Insert the given value at the next <i>free</i> position.
+	 *
+	 * @param value the value to insert
+	 * @throws IndexOutOfBoundsException if all sample values has been set
+	 */
 	void add(final double value) {
 		if (Double.isNaN(value)) {
 			throw new IllegalArgumentException();

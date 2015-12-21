@@ -87,6 +87,14 @@ public final class DataSet {
 		}
 	}
 
+	/**
+	 * Create a new {@code DataSet} object with the given number of parameters
+	 * and the data set names.
+	 *
+	 * @param paramCount the number of parameters one data sample consist of
+	 * @param dataSetNames the names of the created {@code Data} sets
+	 * @return a new data set object
+	 */
 	public static DataSet of(
 		final int paramCount,
 		final String... dataSetNames
