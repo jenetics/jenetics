@@ -23,6 +23,7 @@ import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.jaxb.marshal;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Optional;
 import java.util.Random;
@@ -76,7 +77,7 @@ public final class Measurement<T> {
 		return Optional.ofNullable(_description);
 	}
 
-	public Params<T> getParams() {
+	public Params<T> getParams(Measurement<T> this) {
 		return _params;
 	}
 
@@ -84,7 +85,7 @@ public final class Measurement<T> {
 		return _dataSet.sampleSize();
 	}
 
-	public void execute(final Function<T, double[]> function) {
+	public void sample(final Function<T, double[]> function) {
 		_params.get()
 			.subSeq(_dataSet.nextParamIndex())
 			.forEach(p -> _dataSet.add(function.apply(p)));
@@ -116,6 +117,12 @@ public final class Measurement<T> {
 		);
 	}
 
+	public static <T> Measurement<T> read(final InputStream in)
+		throws IOException
+	{
+		return null;
+	}
+
 	public static void main(final String[] args) throws Exception {
 		final Measurement<String> measurement = Measurement.of(
 			"Some name", "Some description",
@@ -126,7 +133,7 @@ public final class Measurement<T> {
 		final Random random = new Random();
 
 		for (int i = 0; i < 10; ++i) {
-			measurement.execute(p -> {
+			measurement.sample(p -> {
 				return new double[] {
 					random.nextDouble(), random.nextDouble()
 				};

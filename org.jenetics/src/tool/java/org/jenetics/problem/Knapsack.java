@@ -26,7 +26,12 @@ import java.util.function.Function;
 import java.util.stream.Collector;
 
 import org.jenetics.BitGene;
+import org.jenetics.Mutator;
+import org.jenetics.RouletteWheelSelector;
+import org.jenetics.SinglePointCrossover;
+import org.jenetics.TournamentSelector;
 import org.jenetics.engine.Codec;
+import org.jenetics.engine.Engine;
 import org.jenetics.engine.Problem;
 import org.jenetics.engine.codecs;
 import org.jenetics.problem.Knapsack.Item;
@@ -100,6 +105,23 @@ public final class Knapsack implements Problem<ISeq<Item>, BitGene, Double> {
 			.toISeq();
 
 		return new Knapsack(items, knapsackSize);
+	}
+
+
+	public static Engine<BitGene, Double> engine(final Random random) {
+		// Search space fo 2²⁵⁰ ~ 10⁷⁵.
+		final Knapsack knapsack = of(250, random);
+
+		// Configure and build the evolution engine.
+		return Engine
+			.builder(knapsack.fitness(), knapsack.codec())
+			.populationSize(150)
+			.survivorsSelector(new TournamentSelector<>(5))
+			.offspringSelector(new RouletteWheelSelector<>())
+			.alterers(
+				new Mutator<>(0.03),
+				new SinglePointCrossover<>(0.125))
+			.build();
 	}
 
 }

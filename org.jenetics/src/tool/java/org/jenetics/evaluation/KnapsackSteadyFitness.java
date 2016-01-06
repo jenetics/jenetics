@@ -22,21 +22,21 @@ package org.jenetics.evaluation;
 import static java.lang.Math.log10;
 import static java.lang.Math.max;
 import static java.lang.Math.pow;
-import static java.lang.String.format;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.Duration;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
 import org.jenetics.BitGene;
-import org.jenetics.diagram.problem.Knapsack;
+import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
 import org.jenetics.engine.limit;
+import org.jenetics.problem.Knapsack;
+import org.jenetics.trial.Measurement;
+import org.jenetics.trial.Params;
+import org.jenetics.util.ISeq;
 import org.jenetics.util.LCG64ShiftRandom;
-import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -47,7 +47,50 @@ public class KnapsackSteadyFitness {
 	private static final File BASE_OUTPUT_DIR =
 		new File("org.jenetics/src/test/scripts/diagram");
 
+
+	private static final Params<Integer> GENERATIONS = Params.of(
+		"Generations",
+		IntStream.rangeClosed(1, 50)
+			.map(i -> max((int)pow(GEN_BASE, i), i))
+			.mapToObj(Integer::new)
+			.collect(ISeq.toISeq())
+	);
+
+
 	public static void main(final String[] args) throws IOException {
+		final Measurement<Integer> measurement = Measurement.of(
+			"Steady fitness", null,
+			GENERATIONS, "Generation", "Fitness"
+		);
+
+		measurement.write(System.out);
+
+		final Engine<BitGene, Double> engine = Knapsack.engine(new LCG64ShiftRandom(10101));
+
+		for (int i = 0; i < 5; ++i) {
+			measurement.sample(generations -> {
+				Predicate<? super EvolutionResult<BitGene, Double>> terminator =
+					limit.bySteadyFitness(generations);
+				try {
+					measurement.write(System.out);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				final EvolutionResult<BitGene, Double> result = engine.stream()
+					.limit(terminator)
+					.collect(EvolutionResult.toBestEvolutionResult());
+
+				return new double[]{
+					result.getTotalGenerations(),
+					result.getBestFitness()
+				};
+			});
+
+			measurement.write(System.out);
+		}
+
+
+		/*
 		final GenerationParam param = GenerationParam.of(
 			args,
 			250,
@@ -86,7 +129,7 @@ public class KnapsackSteadyFitness {
 
 		statistics.write(param.getOutputFile());
 		System.out.println("Ready");
-
+		*/
 	}
 
 }
