@@ -22,16 +22,11 @@ package org.jenetics.evaluation;
 import static java.lang.Math.log10;
 import static java.lang.Math.max;
 import static java.lang.Math.pow;
-import static java.lang.String.format;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 import org.jenetics.BitGene;
@@ -40,6 +35,7 @@ import org.jenetics.engine.EvolutionResult;
 import org.jenetics.engine.limit;
 import org.jenetics.problem.Knapsack;
 import org.jenetics.trial.Params;
+import org.jenetics.trial.Trial;
 import org.jenetics.trial.TrialMeter;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.LCG64ShiftRandom;
@@ -50,8 +46,7 @@ import org.jenetics.util.LCG64ShiftRandom;
 public class KnapsackSteadyFitness {
 
 	private static final double GEN_BASE = pow(10, log10(100)/20.0);
-
-	private static final Params<Integer> GENERATIONS = Params.of(
+	private static final Params<Integer> PARAMS = Params.of(
 		"Generations",
 		IntStream.rangeClosed(1, 50)
 			.map(i -> max((int)pow(GEN_BASE, i), i))
@@ -59,76 +54,63 @@ public class KnapsackSteadyFitness {
 			.collect(ISeq.toISeq())
 	);
 
+	private static final Supplier<TrialMeter<Integer>>
+	TRIAL_METER = () -> TrialMeter.of(
+		"Steady fitness",
+		"Create steady fitness performance measures",
+		PARAMS,
+		"Generation",
+		"Fitness",
+		"Runtime"
+	);
 
-	public static void main(final String[] args) throws IOException {
-		final Path outputPath;
-		if (args.length >= 1) {
-			outputPath = Paths.get(args[0]);
-		} else {
-			outputPath = Paths.get("trial_meter.xml");
-		}
+	private static final Engine<BitGene, Double> ENGINE =
+		Knapsack.engine(new LCG64ShiftRandom(10101));
 
-		final TrialMeter<Integer> trialMeter;
-		if (Files.exists(outputPath)) {
-			trialMeter = TrialMeter.read(outputPath);
+	private static double[] function(final int generations) {
+		final Predicate<? super EvolutionResult<BitGene, Double>>
+			terminator = limit.bySteadyFitness(generations);
 
-			info("Continue existing trial: '%s'.", outputPath.toAbsolutePath());
-			info("    " + trialMeter);
-		} else {
-			trialMeter = TrialMeter.of(
-				"Steady fitness",
-				"Create steady fitness performance measures",
-				GENERATIONS,
+		final long start = System.currentTimeMillis();
+		final EvolutionResult<BitGene, Double> result = ENGINE.stream()
+			.limit(terminator)
+			.collect(EvolutionResult.toBestEvolutionResult());
+		final long end = System.currentTimeMillis();
 
-				// Trial results
-				"Generation",
-				"Fitness",
-				"Runtime"
-			);
-
-			info("Writing results to '%s'.", outputPath.toAbsolutePath());
-		}
-
-		final Engine<BitGene, Double> engine =
-			Knapsack.engine(new LCG64ShiftRandom(10101));
-
-		for (int i = 0; i < 500; ++i) {
-			trialMeter.sample(generations -> {
-				final Predicate<? super EvolutionResult<BitGene, Double>>
-					terminator = limit.bySteadyFitness(generations);
-
-				try {
-					trialMeter.write(outputPath);
-					info(trialMeter.toString());
-				} catch (IOException e) {
-					throw new UncheckedIOException(e);
-				}
-
-				final long start = System.currentTimeMillis();
-				final EvolutionResult<BitGene, Double> result = engine.stream()
-					.limit(terminator)
-					.collect(EvolutionResult.toBestEvolutionResult());
-				final long end = System.currentTimeMillis();
-
-				return new double[] {
-					result.getTotalGenerations(),
-					result.getBestFitness(),
-					end - start
-				};
-			});
-
-			trialMeter.write(outputPath);
-		}
+		return new double[] {
+			result.getTotalGenerations(),
+			result.getBestFitness(),
+			end - start
+		};
 	}
 
-	private static final DateTimeFormatter FORMATTER =
-		DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+	public static void main(final String[] args) throws InterruptedException {
+		final Path resultPath;
+		if (args.length >= 1) {
+			resultPath = Paths.get(args[0]);
+		} else {
+			resultPath = Paths.get("trial_meter.xml");
+		}
 
-	private static void info(final String pattern, final Object... params) {
-		final LocalDateTime time = LocalDateTime.now();
-		System.out.println(
-			"" + FORMATTER.format(time) + " - " + format(pattern, params)
+		final Trial<Integer> trial = new Trial<>(
+			KnapsackSteadyFitness::function,
+			TRIAL_METER,
+			resultPath
 		);
+
+		final Thread thread = new Thread(trial);
+		thread.start();
+
+		String command;
+		do {
+			command = System.console().readLine();
+			Trial.info("Got command '" + command + "'");
+		} while (!"exit".equals(command));
+
+		Trial.info("Stopping trial...");
+		thread.interrupt();
+		thread.join();
+		Trial.info("Sopped trial.");
 	}
 
 }

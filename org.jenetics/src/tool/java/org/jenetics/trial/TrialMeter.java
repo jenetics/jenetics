@@ -19,7 +19,10 @@
  */
 package org.jenetics.trial;
 
+import static java.io.File.createTempFile;
 import static java.lang.String.format;
+import static java.nio.file.Files.deleteIfExists;
+import static java.nio.file.Files.move;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.jaxb.marshal;
@@ -30,7 +33,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.file.Files;
+import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.util.Optional;
 import java.util.Random;
@@ -107,28 +110,30 @@ public final class TrialMeter<T> {
 		);
 	}
 
-	public void write(final OutputStream out)
-		throws IOException
-	{
+	public void write(final OutputStream out) {
 		try {
 			final Marshaller marshaller = jaxb.context().createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			marshaller.marshal(marshal(this), out);
 		} catch (Exception e) {
-			throw new IOException(e);
+			throw new UncheckedIOException(new IOException(e));
 		}
 	}
 
-	public void write(final Path path) throws IOException {
-		final File tempFile = File.createTempFile("__trial_meter__", ".xml");
+	public void write(final Path path) {
 		try {
-			try (OutputStream out = new FileOutputStream(tempFile)) {
-				write(out);
-			}
+			final File tempFile = createTempFile("__trial_meter__", ".xml");
+			try {
+				try (OutputStream out = new FileOutputStream(tempFile)) {
+					write(out);
+				}
 
-			Files.move(tempFile.toPath(), path, REPLACE_EXISTING);
-		} finally {
-			Files.deleteIfExists(tempFile.toPath());
+				move(tempFile.toPath(), path, REPLACE_EXISTING);
+			} finally {
+				deleteIfExists(tempFile.toPath());
+			}
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
 		}
 	}
 
@@ -147,21 +152,21 @@ public final class TrialMeter<T> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T> TrialMeter<T> read(final InputStream in)
-		throws IOException
-	{
+	public static <T> TrialMeter<T> read(final InputStream in) {
 		try {
 			final Unmarshaller unmarshaller = jaxb.context().createUnmarshaller();
 			return (TrialMeter<T>)Model.ADAPTER
 				.unmarshal((Model)unmarshaller.unmarshal(in));
 		} catch (Exception e) {
-			throw new IOException(e);
+			throw new UncheckedIOException(new IOException(e));
 		}
 	}
 
-	public static <T> TrialMeter<T> read(final Path path) throws IOException {
+	public static <T> TrialMeter<T> read(final Path path) {
 		try (InputStream in = new FileInputStream(path.toFile())) {
 			return read(in);
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
 		}
 	}
 
