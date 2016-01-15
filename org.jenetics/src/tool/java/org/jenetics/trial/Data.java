@@ -115,7 +115,7 @@ public final class Data {
 				return Data.of(
 					model.name,
 					model.samples.stream()
-						.map(s -> Arrays.stream(s.split(" "))
+						.map(s -> Arrays.stream(s.split("\\s"))
 							.mapToDouble(Double::parseDouble).toArray())
 						.map(Sample::of)
 						.collect(Collectors.toList())
