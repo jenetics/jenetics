@@ -19,17 +19,25 @@
  */
 package org.jenetics.trial;
 
+import static java.lang.String.format;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.jaxb.marshal;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Optional;
 import java.util.Random;
 import java.util.function.Function;
 
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -77,7 +85,7 @@ public final class TrialMeter<T> {
 		return Optional.ofNullable(_description);
 	}
 
-	public Params<T> getParams(TrialMeter<T>this) {
+	public Params<T> getParams() {
 		return _params;
 	}
 
@@ -91,6 +99,14 @@ public final class TrialMeter<T> {
 			.forEach(p -> _dataSet.add(function.apply(p)));
 	}
 
+	@Override
+	public String toString() {
+		return format(
+			"TrialMeter[samples=%d, params=%d]",
+			sampleSize(), _dataSet.nextParamIndex()
+		);
+	}
+
 	public void write(final OutputStream out)
 		throws IOException
 	{
@@ -100,6 +116,19 @@ public final class TrialMeter<T> {
 			marshaller.marshal(marshal(this), out);
 		} catch (Exception e) {
 			throw new IOException(e);
+		}
+	}
+
+	public void write(final Path path) throws IOException {
+		final File tempFile = File.createTempFile("__trial_meter__", ".xml");
+		try {
+			try (OutputStream out = new FileOutputStream(tempFile)) {
+				write(out);
+			}
+
+			Files.move(tempFile.toPath(), path, REPLACE_EXISTING);
+		} finally {
+			Files.deleteIfExists(tempFile.toPath());
 		}
 	}
 
@@ -117,10 +146,23 @@ public final class TrialMeter<T> {
 		);
 	}
 
+	@SuppressWarnings("unchecked")
 	public static <T> TrialMeter<T> read(final InputStream in)
 		throws IOException
 	{
-		return null;
+		try {
+			final Unmarshaller unmarshaller = jaxb.context().createUnmarshaller();
+			return (TrialMeter<T>)Model.ADAPTER
+				.unmarshal((Model)unmarshaller.unmarshal(in));
+		} catch (Exception e) {
+			throw new IOException(e);
+		}
+	}
+
+	public static <T> TrialMeter<T> read(final Path path) throws IOException {
+		try (InputStream in = new FileInputStream(path.toFile())) {
+			return read(in);
+		}
 	}
 
 	public static void main(final String[] args) throws Exception {
@@ -189,6 +231,8 @@ public final class TrialMeter<T> {
 				);
 			}
 		}
+
+		static final Adapter ADAPTER = new Adapter();
 	}
 
 }

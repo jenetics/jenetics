@@ -22,9 +22,15 @@ package org.jenetics.evaluation;
 import static java.lang.Math.log10;
 import static java.lang.Math.max;
 import static java.lang.Math.pow;
+import static java.lang.String.format;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
@@ -33,8 +39,8 @@ import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
 import org.jenetics.engine.limit;
 import org.jenetics.problem.Knapsack;
-import org.jenetics.trial.TrialMeter;
 import org.jenetics.trial.Params;
+import org.jenetics.trial.TrialMeter;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.LCG64ShiftRandom;
 
@@ -58,23 +64,40 @@ public class KnapsackSteadyFitness {
 
 
 	public static void main(final String[] args) throws IOException {
-		final TrialMeter<Integer> trialMeter = TrialMeter.of(
-			"Steady fitness", null,
-			GENERATIONS, "Generation", "Fitness"
-		);
+		final Path outputPath;
+		if (args.length > 1) {
+			outputPath = Paths.get(args[0]);
+		} else {
+			outputPath = Paths.get("steady_fitness.xml");
+		}
 
-		trialMeter.write(System.out);
+		final TrialMeter<Integer> trialMeter;
+		if (Files.exists(outputPath)) {
+			trialMeter = TrialMeter.read(outputPath);
+
+			info("Continue existing trial: '%s'.", outputPath.toAbsolutePath());
+			info("    " + trialMeter);
+		} else {
+			trialMeter = TrialMeter.of(
+				"Steady fitness", "Create steady fitness performance measures",
+				GENERATIONS, "Generation", "Fitness"
+			);
+
+			info("Writing results to '%s'.", outputPath.toAbsolutePath());
+		}
 
 		final Engine<BitGene, Double> engine = Knapsack.engine(new LCG64ShiftRandom(10101));
 
-		for (int i = 0; i < 5; ++i) {
+		for (int i = 0; i < 500; ++i) {
 			trialMeter.sample(generations -> {
-				Predicate<? super EvolutionResult<BitGene, Double>> terminator =
-					limit.bySteadyFitness(generations);
+				final Predicate<? super EvolutionResult<BitGene, Double>>
+					terminator = limit.bySteadyFitness(generations);
+
 				try {
-					trialMeter.write(System.out);
+					trialMeter.write(outputPath);
+					info(trialMeter.toString());
 				} catch (IOException e) {
-					e.printStackTrace();
+					throw new UncheckedIOException(e);
 				}
 				final EvolutionResult<BitGene, Double> result = engine.stream()
 					.limit(terminator)
@@ -86,50 +109,13 @@ public class KnapsackSteadyFitness {
 				};
 			});
 
-			trialMeter.write(System.out);
+			trialMeter.write(outputPath);
 		}
+	}
 
-
-		/*
-		final GenerationParam param = GenerationParam.of(
-			args,
-			250,
-			50,
-			new File(BASE_OUTPUT_DIR, "SteadyFitnessTermination.dat"));
-
-		RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
-
-		final Function<Integer, Predicate<? super EvolutionResult<BitGene, Double>>>
-			terminator = limit::bySteadyFitness;
-
-		final TerminationStatistics<BitGene, Integer> statistics =
-			new TerminationStatistics<>(
-				param.getSamples(),
-				Knapsack.engine(new LCG64ShiftRandom(10101)),
-				terminator);
-
-		final long start = System.nanoTime();
-		final int generations = IntStream.rangeClosed(1, param.getGenerations())
-			.peek(i -> System.out.print(i + ": "))
-			.map(i -> max((int)pow(GEN_BASE, i), i))
-			.peek(i -> System.out.println("Generation: " + i))
-			.peek(statistics::accept)
-			.sum();
-		final long end = System.nanoTime();
-
-		System.out.println(String.format(
-			"Executed %d generations in %s",
-			generations,
-			DurationFormat.format(Duration.ofNanos(end - start))
-		));
-		System.out.println(String.format(
-			"%s sec per generation.",
-			(end - start)/(1_000_000_000.0*generations*param.getSamples())
-		));
-
-		statistics.write(param.getOutputFile());
-		System.out.println("Ready");
-		*/
+	private static void info(final String pattern, final Object... params) {
+		final LocalDateTime time = LocalDateTime.now();
+		System.out.println("" + time + " - " + format(pattern, params));
 	}
 
 }
