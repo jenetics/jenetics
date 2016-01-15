@@ -12,6 +12,8 @@ do
 	CLASSPATH="${CLASSPATH}:${module}/build/resources/main"
 	CLASSPATH="${CLASSPATH}:${module}/build/classes/test"
 	CLASSPATH="${CLASSPATH}:${module}/build/resources/test"
+	CLASSPATH="${CLASSPATH}:${module}/build/classes/tool"
+	CLASSPATH="${CLASSPATH}:${module}/build/resources/tool"
 done
 
 java -cp ${CLASSPATH} $*
