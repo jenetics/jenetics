@@ -33,7 +33,7 @@ import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
 import org.jenetics.engine.limit;
 import org.jenetics.problem.Knapsack;
-import org.jenetics.trial.Measurement;
+import org.jenetics.trial.TrialMeter;
 import org.jenetics.trial.Params;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.LCG64ShiftRandom;
@@ -58,21 +58,21 @@ public class KnapsackSteadyFitness {
 
 
 	public static void main(final String[] args) throws IOException {
-		final Measurement<Integer> measurement = Measurement.of(
+		final TrialMeter<Integer> trialMeter = TrialMeter.of(
 			"Steady fitness", null,
 			GENERATIONS, "Generation", "Fitness"
 		);
 
-		measurement.write(System.out);
+		trialMeter.write(System.out);
 
 		final Engine<BitGene, Double> engine = Knapsack.engine(new LCG64ShiftRandom(10101));
 
 		for (int i = 0; i < 5; ++i) {
-			measurement.sample(generations -> {
+			trialMeter.sample(generations -> {
 				Predicate<? super EvolutionResult<BitGene, Double>> terminator =
 					limit.bySteadyFitness(generations);
 				try {
-					measurement.write(System.out);
+					trialMeter.write(System.out);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -86,7 +86,7 @@ public class KnapsackSteadyFitness {
 				};
 			});
 
-			measurement.write(System.out);
+			trialMeter.write(System.out);
 		}
 
 

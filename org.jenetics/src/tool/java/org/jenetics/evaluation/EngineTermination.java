@@ -29,7 +29,7 @@ import org.jenetics.Gene;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
 import org.jenetics.engine.Problem;
-import org.jenetics.trial.Measurement;
+import org.jenetics.trial.TrialMeter;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -46,20 +46,20 @@ public class EngineTermination<
 	private final Engine<G, C> _engine;
 	private final Problem<T, G, C> _problem;
 	private final Function<P, Predicate<? super EvolutionResult<G, Double>>> _termination;
-	private final Measurement<P> _measurement;
+	private final TrialMeter<P> _trialMeter;
 	private final File _measurementFile;
 
 	public EngineTermination(
 		final Engine<G, C> engine,
 		final Problem<T, G, C> problem,
 		final Function<P, Predicate<? super EvolutionResult<G, Double>>> termination,
-		final Measurement<P> measurement,
+		final TrialMeter<P> trialMeter,
 		final File measurementFile
 	) {
 		_engine = requireNonNull(engine);
 		_problem = requireNonNull(problem);
 		_termination = requireNonNull(termination);
-		_measurement = requireNonNull(measurement);
+		_trialMeter = requireNonNull(trialMeter);
 		_measurementFile = requireNonNull(measurementFile);
 	}
 

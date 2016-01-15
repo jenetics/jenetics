@@ -48,8 +48,8 @@ import org.jenetics.util.ISeq;
  * @version !__version__!
  * @since !__version__!
  */
-@XmlJavaTypeAdapter(Measurement.Model.Adapter.class)
-public final class Measurement<T> {
+@XmlJavaTypeAdapter(TrialMeter.Model.Adapter.class)
+public final class TrialMeter<T> {
 
 	private final String _name;
 	private final String _description;
@@ -57,7 +57,7 @@ public final class Measurement<T> {
 	private final Params<T> _params;
 	private final DataSet _dataSet;
 
-	private Measurement(
+	private TrialMeter(
 		final String name,
 		final String description,
 		final Params<T> params,
@@ -77,7 +77,7 @@ public final class Measurement<T> {
 		return Optional.ofNullable(_description);
 	}
 
-	public Params<T> getParams(Measurement<T> this) {
+	public Params<T> getParams(TrialMeter<T>this) {
 		return _params;
 	}
 
@@ -103,13 +103,13 @@ public final class Measurement<T> {
 		}
 	}
 
-	public static <T> Measurement<T> of(
+	public static <T> TrialMeter<T> of(
 		final String name,
 		final String description,
 		final Params<T> params,
 		final String... dataSetNames
 	) {
-		return new Measurement<T>(
+		return new TrialMeter<T>(
 			name,
 			description,
 			params,
@@ -117,14 +117,14 @@ public final class Measurement<T> {
 		);
 	}
 
-	public static <T> Measurement<T> read(final InputStream in)
+	public static <T> TrialMeter<T> read(final InputStream in)
 		throws IOException
 	{
 		return null;
 	}
 
 	public static void main(final String[] args) throws Exception {
-		final Measurement<String> measurement = Measurement.of(
+		final TrialMeter<String> trialMeter = TrialMeter.of(
 			"Some name", "Some description",
 			Params.of("Strings", ISeq.of("p1", "p2", "p3", "p4", "p5")),
 			"fitness", "generation"
@@ -133,14 +133,14 @@ public final class Measurement<T> {
 		final Random random = new Random();
 
 		for (int i = 0; i < 10; ++i) {
-			measurement.sample(p -> {
+			trialMeter.sample(p -> {
 				return new double[] {
 					random.nextDouble(), random.nextDouble()
 				};
 			});
 		}
 
-		measurement.write(System.out);
+		trialMeter.write(System.out);
 	}
 
 
@@ -149,7 +149,7 @@ public final class Measurement<T> {
 	 * ************************************************************************/
 
 	@XmlRootElement(name = "measurement")
-	@XmlType(name = "org.jenetics.tool.Measurement")
+	@XmlType(name = "org.jenetics.tool.TrialMeter")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	static final class Model {
@@ -167,10 +167,10 @@ public final class Measurement<T> {
 		public DataSet dataSet;
 
 		public static final class Adapter
-			extends XmlAdapter<Model, Measurement>
+			extends XmlAdapter<Model, TrialMeter>
 		{
 			@Override
-			public Model marshal(final Measurement data) {
+			public Model marshal(final TrialMeter data) {
 				final Model model = new Model();
 				model.name = data._name;
 				model.description = data._description;
@@ -180,8 +180,8 @@ public final class Measurement<T> {
 			}
 
 			@Override
-			public Measurement unmarshal(final Model model) {
-				return new Measurement(
+			public TrialMeter unmarshal(final Model model) {
+				return new TrialMeter(
 					model.name,
 					model.description,
 					model.params,
