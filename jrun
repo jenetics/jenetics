@@ -16,4 +16,5 @@ do
 	CLASSPATH="${CLASSPATH}:${module}/build/resources/tool"
 done
 
-java -cp ${CLASSPATH} $*
+CMD="java -cp ${CLASSPATH} $1"
+$CMD "${@:2}"
