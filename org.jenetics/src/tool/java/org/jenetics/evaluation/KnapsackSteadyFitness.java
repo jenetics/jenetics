@@ -24,7 +24,6 @@ import static java.lang.Math.max;
 import static java.lang.Math.pow;
 import static java.lang.String.format;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
@@ -32,7 +31,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
@@ -52,9 +50,6 @@ import org.jenetics.util.LCG64ShiftRandom;
 public class KnapsackSteadyFitness {
 
 	private static final double GEN_BASE = pow(10, log10(100)/20.0);
-	private static final File BASE_OUTPUT_DIR =
-		new File("org.jenetics/src/test/scripts/diagram");
-
 
 	private static final Params<Integer> GENERATIONS = Params.of(
 		"Generations",
@@ -81,14 +76,21 @@ public class KnapsackSteadyFitness {
 			info("    " + trialMeter);
 		} else {
 			trialMeter = TrialMeter.of(
-				"Steady fitness", "Create steady fitness performance measures",
-				GENERATIONS, "Generation", "Fitness"
+				"Steady fitness",
+				"Create steady fitness performance measures",
+				GENERATIONS,
+
+				// Trial results
+				"Generation",
+				"Fitness",
+				"Runtime"
 			);
 
 			info("Writing results to '%s'.", outputPath.toAbsolutePath());
 		}
 
-		final Engine<BitGene, Double> engine = Knapsack.engine(new LCG64ShiftRandom(10101));
+		final Engine<BitGene, Double> engine =
+			Knapsack.engine(new LCG64ShiftRandom(10101));
 
 		for (int i = 0; i < 500; ++i) {
 			trialMeter.sample(generations -> {
@@ -101,13 +103,17 @@ public class KnapsackSteadyFitness {
 				} catch (IOException e) {
 					throw new UncheckedIOException(e);
 				}
+
+				final long start = System.currentTimeMillis();
 				final EvolutionResult<BitGene, Double> result = engine.stream()
 					.limit(terminator)
 					.collect(EvolutionResult.toBestEvolutionResult());
+				final long end = System.currentTimeMillis();
 
-				return new double[]{
+				return new double[] {
 					result.getTotalGenerations(),
-					result.getBestFitness()
+					result.getBestFitness(),
+					end - start
 				};
 			});
 
