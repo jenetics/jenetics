@@ -31,6 +31,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
@@ -68,7 +70,7 @@ public class KnapsackSteadyFitness {
 		if (args.length > 1) {
 			outputPath = Paths.get(args[0]);
 		} else {
-			outputPath = Paths.get("steady_fitness.xml");
+			outputPath = Paths.get("trial_meter.xml");
 		}
 
 		final TrialMeter<Integer> trialMeter;
@@ -113,9 +115,14 @@ public class KnapsackSteadyFitness {
 		}
 	}
 
+	private static final DateTimeFormatter FORMATTER =
+		DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+
 	private static void info(final String pattern, final Object... params) {
 		final LocalDateTime time = LocalDateTime.now();
-		System.out.println("" + time + " - " + format(pattern, params));
+		System.out.println(
+			"" + FORMATTER.format(time) + " - " + format(pattern, params)
+		);
 	}
 
 }
