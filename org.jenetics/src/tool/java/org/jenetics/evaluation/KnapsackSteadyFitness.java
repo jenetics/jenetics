@@ -67,7 +67,7 @@ public class KnapsackSteadyFitness {
 
 	public static void main(final String[] args) throws IOException {
 		final Path outputPath;
-		if (args.length > 1) {
+		if (args.length >= 1) {
 			outputPath = Paths.get(args[0]);
 		} else {
 			outputPath = Paths.get("trial_meter.xml");
