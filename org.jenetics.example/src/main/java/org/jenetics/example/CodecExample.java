@@ -47,6 +47,11 @@ public class CodecExample {
 			_2 = v2;
 			_3 = v3;
 		}
+		
+        	@Override
+        	public String toString() {
+            		return String.format("_1: %d - _2: %d - _3: %f", _1, _2, _3);
+        	}
 	}
 
 	// The fitness function. No need to know anything about GAs. Decoupling of
@@ -93,7 +98,7 @@ public class CodecExample {
 			.collect(EvolutionResult.toBestGenotype());
 
 		final Tuple param = codec.decoder().apply(gt);
-		System.out.println(param);
+		System.out.println(String.format("Result: \t%s", param));
 	}
 
 }
