@@ -31,7 +31,7 @@ import org.jenetics.util.LongRange;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.3
+ * @version 3.4
  * @since 3.3
  */
 public class CodecExample {
@@ -47,11 +47,11 @@ public class CodecExample {
 			_2 = v2;
 			_3 = v3;
 		}
-		
-        	@Override
-        	public String toString() {
-            		return String.format("_1: %d - _2: %d - _3: %f", _1, _2, _3);
-        	}
+
+		@Override
+		public String toString() {
+			return String.format("_1: %d - _2: %d - _3: %f", _1, _2, _3);
+		}
 	}
 
 	// The fitness function. No need to know anything about GAs. Decoupling of
