@@ -85,12 +85,9 @@ public class KnapsackSteadyFitness {
 	}
 
 	public static void main(final String[] args) throws InterruptedException {
-		final Path resultPath;
-		if (args.length >= 1) {
-			resultPath = Paths.get(args[0]);
-		} else {
-			resultPath = Paths.get("trial_meter.xml");
-		}
+		final Path resultPath = args.length >= 1
+			? Paths.get(args[0])
+			: Paths.get("trial_meter.xml");
 
 		final Trial<Integer> trial = new Trial<>(
 			KnapsackSteadyFitness::function,
