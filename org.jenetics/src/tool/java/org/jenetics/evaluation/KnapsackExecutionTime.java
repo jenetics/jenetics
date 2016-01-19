@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.diagram;
+package org.jenetics.evaluation;
 
 import static java.lang.Math.log10;
 import static java.lang.Math.max;
@@ -78,7 +78,7 @@ public class KnapsackExecutionTime {
 			.sum();
 		final long end = System.nanoTime();
 
-		System.out.println(format(
+		System.out.println(String.format(
 			"Executed %s execution time in %s",
 			DurationFormat.format(Duration.ofMillis(time)),
 			DurationFormat.format(Duration.ofNanos(end - start))
