@@ -40,7 +40,8 @@ final class jaxb {
 					Sample.Model.class,
 					Data.Model.class,
 					DataSet.Model.class,
-					TrialMeter.Model.class
+					TrialMeter.Model.class,
+					Env.Model.class
 				);
 			} catch (JAXBException e) {
 				throw new DataBindingException(

@@ -64,6 +64,7 @@ public final class TrialMeter<T> {
 
 	private final String _name;
 	private final String _description;
+	private final Env _env;
 
 	private final Params<T> _params;
 	private final DataSet _dataSet;
@@ -71,11 +72,13 @@ public final class TrialMeter<T> {
 	private TrialMeter(
 		final String name,
 		final String description,
+		final Env env,
 		final Params<T> params,
 		final DataSet dataSet
 	) {
 		_name = requireNonNull(name);
 		_description = description;
+		_env = requireNonNull(env);
 		_params = requireNonNull(params);
 		_dataSet = requireNonNull(dataSet);
 	}
@@ -86,6 +89,10 @@ public final class TrialMeter<T> {
 
 	public Optional<String> getDescription() {
 		return Optional.ofNullable(_description);
+	}
+
+	public Env getEnv() {
+		return _env;
 	}
 
 	public Params<T> getParams() {
@@ -137,6 +144,7 @@ public final class TrialMeter<T> {
 		}
 	}
 
+
 	public static <T> TrialMeter<T> of(
 		final String name,
 		final String description,
@@ -146,6 +154,22 @@ public final class TrialMeter<T> {
 		return new TrialMeter<T>(
 			name,
 			description,
+			Env.of(),
+			params,
+			DataSet.of(params.size(), dataSetNames)
+		);
+	}
+	public static <T> TrialMeter<T> of(
+		final String name,
+		final String description,
+		final Env env,
+		final Params<T> params,
+		final String... dataSetNames
+	) {
+		return new TrialMeter<T>(
+			name,
+			description,
+			env,
 			params,
 			DataSet.of(params.size(), dataSetNames)
 		);
@@ -207,6 +231,9 @@ public final class TrialMeter<T> {
 		@XmlAttribute
 		public String description;
 
+		@XmlElement(name = "environment", required = true, nillable = false)
+		public Env env;
+
 		@XmlElement(name = "params", required = true, nillable = false)
 		public Params params;
 
@@ -221,6 +248,7 @@ public final class TrialMeter<T> {
 				final Model model = new Model();
 				model.name = data._name;
 				model.description = data._description;
+				model.env = data._env;
 				model.params = data.getParams();
 				model.dataSet = data._dataSet;
 				return model;
@@ -231,6 +259,7 @@ public final class TrialMeter<T> {
 				return new TrialMeter(
 					model.name,
 					model.description,
+					model.env,
 					model.params,
 					model.dataSet
 				);
