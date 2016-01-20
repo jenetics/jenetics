@@ -22,21 +22,15 @@ package org.jenetics.evaluation;
 import static java.lang.Math.log10;
 import static java.lang.Math.max;
 import static java.lang.Math.pow;
-import static java.lang.String.format;
+import static org.jenetics.evaluation.engines.KNAPSACK;
 
-import java.io.File;
-import java.io.IOException;
-import java.time.Duration;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
-import org.jenetics.BitGene;
-import org.jenetics.diagram.problem.Knapsack;
-import org.jenetics.engine.EvolutionResult;
 import org.jenetics.engine.limit;
-import org.jenetics.util.LCG64ShiftRandom;
-import org.jenetics.util.RandomRegistry;
+import org.jenetics.trial.Params;
+import org.jenetics.trial.TrialMeter;
+import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -44,48 +38,35 @@ import org.jenetics.util.RandomRegistry;
 public class KnapsackFixedGeneration {
 
 	private static final double GEN_BASE = pow(10, log10(100)/20.0);
-	private static final File BASE_OUTPUT_DIR =
-		new File("org.jenetics/src/test/scripts/diagram");
+	private static final Params<Long> PARAMS = Params.of(
+		"Execution time",
+		IntStream.rangeClosed(1, 50)
+			.mapToLong(i -> max((long)pow(GEN_BASE, i), i))
+			.mapToObj(Long::new)
+			.collect(ISeq.toISeq())
+	);
 
-	public static void main(final String[] args) throws IOException {
-		final GenerationParam param = GenerationParam.of(
-			args,
-			250,
-			50,
-			new File(BASE_OUTPUT_DIR, "FixedGenerationTermination.dat"));
+	private static final Supplier<TrialMeter<Long>>
+		TRIAL_METER = () -> TrialMeter.of(
+		"Fixed generation",
+		"Create fixed generation performance measures",
+		PARAMS,
+		"Generation",
+		"Fitness",
+		"Runtime"
+	);
 
-		RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
+	public static void main(final String[] args) throws InterruptedException {
+		final Runner<?, ?, ?> runner = Runner.of(
+			KNAPSACK,
+			limit::byFixedGeneration,
+			TRIAL_METER,
+			100,
+			args
+		);
 
-		final Function<Integer, Predicate<? super EvolutionResult<BitGene, Double>>>
-			terminator = limit::byFixedGeneration;
-
-		final TerminationStatistics<BitGene, Integer> statistics =
-			new TerminationStatistics<>(
-				param.getSamples(),
-				Knapsack.engine(new LCG64ShiftRandom(10101)),
-				terminator);
-
-		final long start = System.nanoTime();
-		final int generations = IntStream.rangeClosed(1, param.getGenerations())
-			.peek(i -> System.out.print(i + ": "))
-			.map(i -> max((int)pow(GEN_BASE, i), i))
-			.peek(i -> System.out.println("Generation: " + i))
-			.peek(statistics::accept)
-			.sum();
-		final long end = System.nanoTime();
-
-		System.out.println(String.format(
-			"Executed %d generations in %s",
-			generations,
-			DurationFormat.format(Duration.ofNanos(end - start))
-		));
-		System.out.println(String.format(
-			"%s sec per generation.",
-			(end - start)/(1_000_000_000.0*generations*param.getSamples())
-		));
-
-		statistics.write(param.getOutputFile());
-		System.out.println("Ready");
+		runner.start();
+		runner.join();
 	}
 
 }
