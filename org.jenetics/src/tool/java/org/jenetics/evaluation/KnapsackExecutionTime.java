@@ -22,6 +22,7 @@ package org.jenetics.evaluation;
 import static java.lang.Math.log10;
 import static java.lang.Math.max;
 import static java.lang.Math.pow;
+import static org.jenetics.evaluation.engines.KNAPSACK;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -31,15 +32,12 @@ import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 import org.jenetics.BitGene;
-import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
 import org.jenetics.engine.limit;
-import org.jenetics.problem.Knapsack;
 import org.jenetics.trial.Params;
 import org.jenetics.trial.Trial;
 import org.jenetics.trial.TrialMeter;
 import org.jenetics.util.ISeq;
-import org.jenetics.util.LCG64ShiftRandom;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -65,15 +63,12 @@ public class KnapsackExecutionTime {
 		"Runtime"
 	);
 
-	private static final Engine<BitGene, Double> ENGINE =
-		Knapsack.engine(new LCG64ShiftRandom(10101));
-
 	private static double[] function(final long duration) {
 		final Predicate<? super EvolutionResult<BitGene, Double>>
 			terminator = limit.byExecutionTime(Duration.ofMillis(duration));
 
 		final long start = System.currentTimeMillis();
-		final EvolutionResult<BitGene, Double> result = ENGINE.stream()
+		final EvolutionResult<BitGene, Double> result = KNAPSACK.stream()
 			.limit(terminator)
 			.collect(EvolutionResult.toBestEvolutionResult());
 		final long end = System.currentTimeMillis();
