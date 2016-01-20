@@ -63,10 +63,6 @@ public class Results {
 			.orElse(0);
 	}
 
-	public Statistics statistics() {
-		return null;
-	}
-
 	public void write(final File file) throws IOException {
 		final File parent = file.getParentFile() != null
 			? file.getParentFile()
