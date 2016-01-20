@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.diagram;
+package org.jenetics.evaluation;
 
 import static java.lang.Math.log10;
 import static java.lang.Math.max;
@@ -74,12 +74,12 @@ public class KnapsackFixedGeneration {
 			.sum();
 		final long end = System.nanoTime();
 
-		System.out.println(format(
+		System.out.println(String.format(
 			"Executed %d generations in %s",
 			generations,
 			DurationFormat.format(Duration.ofNanos(end - start))
 		));
-		System.out.println(format(
+		System.out.println(String.format(
 			"%s sec per generation.",
 			(end - start)/(1_000_000_000.0*generations*param.getSamples())
 		));
