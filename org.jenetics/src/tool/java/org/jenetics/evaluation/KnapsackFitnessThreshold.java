@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.diagram;
+package org.jenetics.evaluation;
 
 import static java.lang.String.format;
 
@@ -78,7 +78,7 @@ public class KnapsackFitnessThreshold {
 
 		final long end = System.nanoTime();
 
-		System.out.println(format(
+		System.out.println(String.format(
 			"Execution finished in %s",
 			DurationFormat.format(Duration.ofNanos(end - start))
 		));
