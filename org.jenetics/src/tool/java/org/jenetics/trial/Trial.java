@@ -28,7 +28,10 @@ import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
+
+import org.jenetics.internal.util.require;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -39,16 +42,18 @@ public class Trial<T> implements Runnable {
 
 	private final Function<T, double[]> _function;
 	private final Supplier<TrialMeter<T>> _trialMeter;
+	private final Predicate<Integer> _stop;
 	private final Path _resultPath;
 
 	public Trial(
 		final Function<T, double[]> function,
 		final Supplier<TrialMeter<T>> trialMeter,
+		final Predicate<Integer> stop,
 		final Path resultPath
 	) {
 		_function = requireNonNull(function);
-
 		_trialMeter = requireNonNull(trialMeter);
+		_stop = requireNonNull(stop);
 		_resultPath = requireNonNull(resultPath);
 	}
 
@@ -66,7 +71,8 @@ public class Trial<T> implements Runnable {
 			info("Writing results to '%s'.", _resultPath.toAbsolutePath());
 		}
 
-		while (!Thread.currentThread().isInterrupted()) {
+		int count = 0;
+		while (!_stop.test(count++) && !Thread.currentThread().isInterrupted()) {
 			trialMeter.sample(param -> {
 				trialMeter.write(_resultPath);
 				info(trialMeter.toString());

@@ -24,17 +24,11 @@ import static java.lang.Math.max;
 import static java.lang.Math.pow;
 import static org.jenetics.evaluation.engines.KNAPSACK;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
-import org.jenetics.BitGene;
-import org.jenetics.engine.EvolutionResult;
 import org.jenetics.engine.limit;
 import org.jenetics.trial.Params;
-import org.jenetics.trial.Trial;
 import org.jenetics.trial.TrialMeter;
 import org.jenetics.util.ISeq;
 
@@ -62,47 +56,17 @@ public class KnapsackSteadyFitness {
 		"Runtime"
 	);
 
-	private static double[] function(final int generations) {
-		final Predicate<? super EvolutionResult<BitGene, Double>>
-			terminator = limit.bySteadyFitness(generations);
-
-		final long start = System.currentTimeMillis();
-		final EvolutionResult<BitGene, Double> result = KNAPSACK.stream()
-			.limit(terminator)
-			.collect(EvolutionResult.toBestEvolutionResult());
-		final long end = System.currentTimeMillis();
-
-		return new double[] {
-			result.getTotalGenerations(),
-			result.getBestFitness(),
-			end - start
-		};
-	}
-
 	public static void main(final String[] args) throws InterruptedException {
-		final Path resultPath = args.length >= 1
-			? Paths.get(args[0])
-			: Paths.get("trial_meter.xml");
-
-		final Trial<Integer> trial = new Trial<>(
-			KnapsackSteadyFitness::function,
+		final Runner<?, ?, ?> runner = Runner.of(
+			KNAPSACK,
+			limit::bySteadyFitness,
 			TRIAL_METER,
-			resultPath
+			100,
+			args
 		);
 
-		final Thread thread = new Thread(trial);
-		thread.start();
-
-		String command;
-		do {
-			command = System.console().readLine();
-			Trial.info("Got command '" + command + "'");
-		} while (!"exit".equals(command));
-
-		Trial.info("Stopping trial...");
-		thread.interrupt();
-		thread.join();
-		Trial.info("Sopped trial.");
+		runner.start();
+		runner.join();
 	}
 
 }
