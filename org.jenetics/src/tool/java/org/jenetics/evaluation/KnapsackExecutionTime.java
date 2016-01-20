@@ -22,21 +22,24 @@ package org.jenetics.evaluation;
 import static java.lang.Math.log10;
 import static java.lang.Math.max;
 import static java.lang.Math.pow;
-import static java.lang.String.format;
 
-import java.io.File;
-import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
-import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.LongStream;
+import java.util.function.Supplier;
+import java.util.stream.IntStream;
 
 import org.jenetics.BitGene;
-import org.jenetics.diagram.problem.Knapsack;
+import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
 import org.jenetics.engine.limit;
+import org.jenetics.problem.Knapsack;
+import org.jenetics.trial.Params;
+import org.jenetics.trial.Trial;
+import org.jenetics.trial.TrialMeter;
+import org.jenetics.util.ISeq;
 import org.jenetics.util.LCG64ShiftRandom;
-import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -44,49 +47,68 @@ import org.jenetics.util.RandomRegistry;
 public class KnapsackExecutionTime {
 
 	private static final double GEN_BASE = pow(10, log10(100)/20.0);
-	private static final File BASE_OUTPUT_DIR =
-		new File("org.jenetics/src/test/scripts/diagram");
+	private static final Params<Long> PARAMS = Params.of(
+		"Execution time",
+		IntStream.rangeClosed(1, 50)
+			.mapToLong(i -> max((long)pow(GEN_BASE, i), i))
+			.mapToObj(Long::new)
+			.collect(ISeq.toISeq())
+	);
 
-	public static void main(final String[] args) throws IOException {
-		final GenerationParam param = GenerationParam.of(
-			args,
-			250,
-			50,
-			new File(BASE_OUTPUT_DIR, "ExecutionTimeTermination.dat"));
+	private static final Supplier<TrialMeter<Long>>
+		TRIAL_METER = () -> TrialMeter.of(
+		"Execution time",
+		"Create execution time performance measures",
+		PARAMS,
+		"Generation",
+		"Fitness",
+		"Runtime"
+	);
 
-		RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
+	private static final Engine<BitGene, Double> ENGINE =
+		Knapsack.engine(new LCG64ShiftRandom(10101));
 
-		final Function<Duration, Predicate<? super EvolutionResult<BitGene, Double>>>
-			terminator = limit::byExecutionTime;
+	private static double[] function(final long duration) {
+		final Predicate<? super EvolutionResult<BitGene, Double>>
+			terminator = limit.byExecutionTime(Duration.ofMillis(duration));
 
-		final TerminationStatistics<BitGene, Duration> statistics =
-			new TerminationStatistics<>(
-				param.getSamples(),
-				Knapsack.engine(new LCG64ShiftRandom(10101)),
-				terminator,
-				Duration::toMillis);
+		final long start = System.currentTimeMillis();
+		final EvolutionResult<BitGene, Double> result = ENGINE.stream()
+			.limit(terminator)
+			.collect(EvolutionResult.toBestEvolutionResult());
+		final long end = System.currentTimeMillis();
 
-		statistics.warmup(Knapsack.engine(new LCG64ShiftRandom(10101)));
+		return new double[] {
+			result.getTotalGenerations(),
+			result.getBestFitness(),
+			end - start
+		};
+	}
 
-		final long start = System.nanoTime();
-		final long time = LongStream.rangeClosed(1, param.getGenerations())
-			.peek(i -> System.out.print(i + ": "))
-			.map(i -> max((long) pow(GEN_BASE, i), i))
-			.peek(i -> System.out.println(
-				"Execution time: " + DurationFormat.format(Duration.ofMillis(i))))
-			.peek(d -> statistics.accept(Duration.ofMillis(d)))
-			.sum();
-		final long end = System.nanoTime();
+	public static void main(final String[] args) throws InterruptedException {
+		final Path resultPath = args.length >= 1
+			? Paths.get(args[0])
+			: Paths.get("trial_meter.xml");
 
-		System.out.println(String.format(
-			"Executed %s execution time in %s",
-			DurationFormat.format(Duration.ofMillis(time)),
-			DurationFormat.format(Duration.ofNanos(end - start))
-		));
+		final Trial<Long> trial = new Trial<>(
+			KnapsackExecutionTime::function,
+			TRIAL_METER,
+			resultPath
+		);
 
-		statistics.write(param.getOutputFile());
-		System.out.println("Ready");
+		final Thread thread = new Thread(trial);
+		thread.start();
 
+		String command;
+		do {
+			command = System.console().readLine();
+			Trial.info("Got command '" + command + "'");
+		} while (!"exit".equals(command));
+
+		Trial.info("Stopping trial...");
+		thread.interrupt();
+		thread.join();
+		Trial.info("Sopped trial.");
 	}
 
 }
