@@ -19,22 +19,15 @@
  */
 package org.jenetics.evaluation;
 
-import static java.lang.String.format;
+import static org.jenetics.evaluation.engines.KNAPSACK;
 
-import java.io.File;
-import java.io.IOException;
-import java.time.Duration;
-import java.util.function.Function;
-import java.util.function.IntFunction;
-import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
-import org.jenetics.BitGene;
-import org.jenetics.diagram.problem.Knapsack;
-import org.jenetics.engine.EvolutionResult;
 import org.jenetics.engine.limit;
-import org.jenetics.util.LCG64ShiftRandom;
-import org.jenetics.util.RandomRegistry;
+import org.jenetics.trial.Params;
+import org.jenetics.trial.TrialMeter;
+import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -45,47 +38,35 @@ public class KnapsackFitnessThreshold {
 	private static final double MAX_FITNESS = 10900; //11000;
 	private static final int POINTS = 20;
 
-	private static final File BASE_OUTPUT_DIR =
-		new File("org.jenetics/src/test/scripts/diagram");
 
-	public static void main(final String[] args) throws IOException {
-		final GenerationParam param = GenerationParam.of(
-			args,
-			250,
-			50,
-			new File(BASE_OUTPUT_DIR, "FitnessThresholdTermination.dat"));
-
-		RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
-
-		final Function<Double, Predicate<? super EvolutionResult<BitGene, Double>>>
-			terminator = limit::byFitnessThreshold;
-
-		final TerminationStatistics<BitGene, Double>
-			statistics = new TerminationStatistics<>(
-				param.getSamples(),
-				Knapsack.engine(new LCG64ShiftRandom(10101)),
-				terminator);
-
-		final IntFunction<Double> parameter = i ->
-			MIN_FITNESS + (MAX_FITNESS - MIN_FITNESS)/POINTS*i;
-
-		final long start = System.nanoTime();
-
+	private static final Params<Double> PARAMS = Params.of(
+		"Execution time",
 		IntStream.rangeClosed(0, POINTS)
-			.mapToObj(parameter)
-			.peek(th -> System.out.println("Fitness threshold: " + th))
-			.forEach(statistics);
+			.mapToDouble(i -> MIN_FITNESS + (MAX_FITNESS - MIN_FITNESS)/POINTS*i)
+			.mapToObj(Double::new)
+			.collect(ISeq.toISeq())
+	);
 
-		final long end = System.nanoTime();
+	private static final Supplier<TrialMeter<Double>>
+		TRIAL_METER = () -> TrialMeter.of(
+		"Fitness threshold",
+		"Create fitness threshold performance measures",
+		PARAMS,
+		"Generation",
+		"Fitness",
+		"Runtime"
+	);
 
-		System.out.println(String.format(
-			"Execution finished in %s",
-			DurationFormat.format(Duration.ofNanos(end - start))
-		));
+	public static void main(final String[] args) throws InterruptedException {
+		final Runner<?, ?, ?> runner = Runner.of(
+			KNAPSACK,
+			limit::byFitnessThreshold,
+			TRIAL_METER,
+			100,
+			args
+		);
 
-		statistics.write(param.getOutputFile());
-		System.out.println("Ready");
-
+		runner.start();
+		runner.join();
 	}
-
 }

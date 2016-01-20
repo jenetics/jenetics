@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<measurement xmlns="http://jenetics.io/Jenetics/trail/1" name="Fitness threshold" description="Create fitness threshold performance measures">
+    <environment>
+        <os-name>Linux</os-name>
+        <os-version>4.2.0-25-generic</os-version>
+        <os-architecture>amd64</os-architecture>
+        <java-version>1.8.0_72</java-version>
+        <java-runtime-name>Java(TM) SE Runtime Environment</java-runtime-name>
+        <java-runtime-version>1.8.0_72-b15</java-runtime-version>
+        <java-vm-name>Java HotSpot(TM) 64-Bit Server VM</java-vm-name>
+        <java-vm-version>25.72-b15</java-vm-version>
+    </environment>
+    <params name="Execution time">
+        <param xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">7000.0</param>
+        <param xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">7195.0</param>
+        <param xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">7390.0</param>
+        <param xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">7585.0</param>
+        <param xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">7780.0</param>
+        <param xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">7975.0</param>
+        <param xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">8170.0</param>
+        <param xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">8365.0</param>
+        <param xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">8560.0</param>
+        <param xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">8755.0</param>
+        <param xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">8950.0</param>
+        <param xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">9145.0</param>
+        <param xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">9340.0</param>
+        <param xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">9535.0</param>
+        <param xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">9730.0</param>
+        <param xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">9925.0</param>
+        <param xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">10120.0</param>
+        <param xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">10315.0</param>
+        <param xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">10510.0</param>
+        <param xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">10705.0</param>
+        <param xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">10900.0</param>
+    </params>
+    <data-set>
+        <data name="Generation">
+            <sample>2.0 3.0 2.0 10.0 16.0 14.0 15.0 18.0 49.0 86.0 59.0 128.0 113.0 223.0 564.0 783.0 1451.0 3586.0 7124.0 16587.0 123938.0</sample>
+            <sample>1.0 2.0 6.0 9.0 8.0 22.0 17.0 30.0 30.0 65.0 87.0 102.0 108.0 331.0 424.0 1488.0 2156.0 7361.0 5624.0 10847.0 NaN</sample>
+        </data>
+        <data name="Fitness">
+            <sample>7178.991926742194 7412.771203882312 7546.191792562628 7663.77482389951 7846.362775449744 8176.417924781936 8212.267203690166 8419.053435375004 8699.173232211628 8810.951897200714 8974.736970088316 9198.64300832808 9344.906507012345 9601.709275204867 9739.656350719348 9939.820394413297 10144.438790812725 10327.732928726173 10520.000436700999 10717.21512781736 10902.219605969345</sample>
+            <sample>7092.9252941298355 7232.205746226974 7469.850911626472 7756.947696437337 7817.752366779487 8176.259387008993 8172.685327501561 8379.98192896917 8671.399470705614 8825.903305420825 8964.83210548697 9171.43470963481 9380.41023397781 9545.419617768332 9769.899596351266 9952.08133716338 10143.77625094634 10363.387873220421 10513.448916244408 10712.076485891323 NaN</sample>
+        </data>
+        <data name="Runtime">
+            <sample>109.0 27.0 17.0 47.0 51.0 46.0 29.0 36.0 61.0 125.0 60.0 163.0 145.0 208.0 383.0 442.0 681.0 1539.0 2962.0 7259.0 51647.0</sample>
+            <sample>2.0 2.0 4.0 5.0 5.0 11.0 8.0 13.0 18.0 33.0 34.0 39.0 42.0 128.0 155.0 588.0 866.0 2869.0 2188.0 4329.0 NaN</sample>
+        </data>
+    </data-set>
+</measurement>
