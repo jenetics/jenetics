@@ -17,13 +17,13 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.diagram;
+package org.jenetics.trial;
 
 import static java.lang.String.format;
 import static java.util.Collections.synchronizedList;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.joining;
-import static org.jenetics.diagram.CandleStickPoint.toCandleStickPoint;
+import static org.jenetics.trial.CandleStickPoint.toCandleStickPoint;
 import static org.jenetics.engine.EvolutionResult.toBestEvolutionResult;
 
 import java.io.File;
