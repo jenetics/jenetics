@@ -27,7 +27,7 @@ import org.jenetics.stat.DoubleMomentStatistics;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public final class CandleStickPoint {
+public final class SampleSummary {
 	public final double mean;
 	public final double variance;
 	public final double skewness;
@@ -38,7 +38,7 @@ public final class CandleStickPoint {
 	public final double min;
 	public final double max;
 
-	private CandleStickPoint(
+	private SampleSummary(
 		final double mean,
 		final double variance,
 		final double skewness,
@@ -60,7 +60,7 @@ public final class CandleStickPoint {
 		this.max = max;
 	}
 
-	public static CandleStickPoint of(
+	public static SampleSummary of(
 		final double mean,
 		final double variance,
 		final double skewness,
@@ -71,7 +71,7 @@ public final class CandleStickPoint {
 		final double min,
 		final double max
 	) {
-		return new CandleStickPoint(
+		return new SampleSummary(
 			mean,
 			variance,
 			skewness,
@@ -84,7 +84,7 @@ public final class CandleStickPoint {
 		);
 	}
 
-	public static <T> Collector<T, ?, CandleStickPoint>
+	public static <T> Collector<T, ?, SampleSummary>
 	toCandleStickPoint(final ToDoubleFunction<T> function) {
 		return Collector.of(
 			Statistics::new,
@@ -94,7 +94,7 @@ public final class CandleStickPoint {
 		);
 	}
 
-	public static <T> Collector<T, ?, CandleStickPoint[]>
+	public static <T> Collector<T, ?, SampleSummary[]>
 	toCandleStickPoint(final ToDoubleFunction<T> f1, final ToDoubleFunction<T> f2) {
 		return Collector.of(
 			() -> new Statistics[]{new Statistics(), new Statistics()},
@@ -107,7 +107,7 @@ public final class CandleStickPoint {
 				a[1].combine(b[1]);
 				return a;
 			},
-			s -> new CandleStickPoint[]{s[0].toPoint(), s[1].toPoint()}
+			s -> new SampleSummary[]{s[0].toPoint(), s[1].toPoint()}
 		);
 	}
 
@@ -127,8 +127,8 @@ public final class CandleStickPoint {
 			return this;
 		}
 
-		CandleStickPoint toPoint() {
-			return CandleStickPoint.of(
+		SampleSummary toPoint() {
+			return SampleSummary.of(
 				data.getMean(),
 				data.getVariance(),
 				data.getSkewness(),

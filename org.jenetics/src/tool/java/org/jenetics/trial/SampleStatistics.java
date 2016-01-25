@@ -23,7 +23,7 @@ import static java.lang.String.format;
 import static java.util.Collections.synchronizedList;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.joining;
-import static org.jenetics.trial.CandleStickPoint.toCandleStickPoint;
+import static org.jenetics.trial.SampleSummary.toCandleStickPoint;
 import static org.jenetics.engine.EvolutionResult.toBestEvolutionResult;
 
 import java.io.File;
@@ -115,7 +115,7 @@ public class SampleStatistics<G extends Gene<?, G>, P>
 	}
 
 	private Object[] exec(final P parameter) {
-		final CandleStickPoint[] result = IntStream.range(0, _samples)
+		final SampleSummary[] result = IntStream.range(0, _samples)
 			.mapToObj(i -> toResult(parameter))
 			.collect(toCandleStickPoint(a -> a._1, a -> a._2));
 
