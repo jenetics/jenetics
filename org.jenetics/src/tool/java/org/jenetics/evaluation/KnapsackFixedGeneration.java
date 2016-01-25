@@ -61,7 +61,6 @@ public class KnapsackFixedGeneration {
 			KNAPSACK,
 			limit::byFixedGeneration,
 			TRIAL_METER,
-			100,
 			args
 		);
 

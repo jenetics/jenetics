@@ -62,7 +62,6 @@ public class KnapsackExecutionTime {
 			KNAPSACK,
 			duration -> limit.byExecutionTime(Duration.ofMillis(duration)),
 			TRIAL_METER,
-			100,
 			args
 		);
 

@@ -62,7 +62,6 @@ public class KnapsackFitnessThreshold {
 			KNAPSACK,
 			limit::byFitnessThreshold,
 			TRIAL_METER,
-			100,
 			args
 		);
 

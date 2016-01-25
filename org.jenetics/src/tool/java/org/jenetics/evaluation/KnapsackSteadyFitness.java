@@ -61,7 +61,6 @@ public class KnapsackSteadyFitness {
 			KNAPSACK,
 			limit::bySteadyFitness,
 			TRIAL_METER,
-			100,
 			args
 		);
 
