@@ -1,8 +1,10 @@
 #!/bin/bash
 
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+
 MODULES=(
-	"org.jenetics"
-	"org.jenetics.example"
+	"${SCRIPT_DIR}/org.jenetics"
+	"${SCRIPT_DIR}/org.jenetics.example"
 )
 
 CLASSPATH="."
