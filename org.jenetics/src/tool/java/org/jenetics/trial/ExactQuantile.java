@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.diagram;
+package org.jenetics.trial;
 
 import java.util.function.DoubleConsumer;
 import java.util.stream.DoubleStream;
