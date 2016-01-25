@@ -50,7 +50,7 @@ import org.jenetics.stat.DoubleMomentStatistics;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz  Wilhelmstötter</a>
  */
-public class TerminationStatistics<G extends Gene<?, G>, P>
+public class SampleStatistics<G extends Gene<?, G>, P>
 	implements Consumer<P>
 {
 
@@ -83,7 +83,7 @@ public class TerminationStatistics<G extends Gene<?, G>, P>
 
 	private final List<Object[]> _result = synchronizedList(new ArrayList<>());
 
-	public TerminationStatistics(
+	public SampleStatistics(
 		final int samples,
 		final Engine<G, Double> engine,
 		final Function<P, Predicate<? super EvolutionResult<G, Double>>> limit,
@@ -95,12 +95,12 @@ public class TerminationStatistics<G extends Gene<?, G>, P>
 		_parameterConverter = requireNonNull(parameterConverter);
 	}
 
-	public TerminationStatistics(
+	public SampleStatistics(
 		final int samples,
 		final Engine<G, Double> engine,
 		final Function<P, Predicate<? super EvolutionResult<G, Double>>> limit
 	) {
-		this(samples, engine, limit, TerminationStatistics::defaultParameterConverter);
+		this(samples, engine, limit, SampleStatistics::defaultParameterConverter);
 	}
 
 	private static Comparable<?> defaultParameterConverter(final Object parameter) {
@@ -214,8 +214,8 @@ public class TerminationStatistics<G extends Gene<?, G>, P>
 
 	private static Collector<int[], ?, int[]> toWidth(final int length) {
 		return Collector.of(() -> new int[length],
-			TerminationStatistics::max,
-			TerminationStatistics::max
+			SampleStatistics::max,
+			SampleStatistics::max
 		);
 	}
 
