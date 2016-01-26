@@ -20,6 +20,7 @@
 package org.jenetics.trial;
 
 import static java.util.Objects.requireNonNull;
+import static org.jenetics.trial.SampleSummary.toSampleSummary;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,6 +64,10 @@ public final class Data {
 		return _samples.size();
 	}
 
+	public int sampleSize() {
+		return _samples.get(0).size();
+	}
+
 	public Sample currentSample() {
 		Sample sample = _samples.get(_samples.size() - 1);
 		if (sample.isFull()) {
@@ -78,7 +83,8 @@ public final class Data {
 	}
 
 	public SampleSummary summary() {
-		return null;
+		return _samples.stream()
+			.collect(toSampleSummary(sampleSize()));
 	}
 
 	public static Data of(final String name, final List<Sample> samples) {

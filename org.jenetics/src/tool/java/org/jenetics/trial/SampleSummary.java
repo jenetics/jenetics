@@ -21,7 +21,10 @@ package org.jenetics.trial;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.stream.Collector;
 import java.util.stream.IntStream;
+
+import org.jenetics.internal.util.require;
 
 import org.jenetics.stat.DoubleMomentStatistics;
 import org.jenetics.util.ISeq;
@@ -72,6 +75,18 @@ public class SampleSummary {
 			quantile.quantile(0.75),
 			moment.getMin(),
 			moment.getMax()
+		);
+	}
+
+	public static Collector<Sample, ?, SampleSummary>
+	toSampleSummary(final int size) {
+		require.positive(size);
+
+		return Collector.of(
+			() -> new SampleStatistics(size),
+			SampleStatistics::accept,
+			SampleStatistics::combine,
+			SampleSummary::of
 		);
 	}
 
