@@ -82,6 +82,10 @@ public final class Sample {
 		return _values.clone();
 	}
 
+	public double get(final int index) {
+		return _values[index];
+	}
+
 	public Sample newSample() {
 		return of(size());
 	}
