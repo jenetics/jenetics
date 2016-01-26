@@ -22,7 +22,7 @@ package org.jenetics.trial;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public final class SampleSummary {
+public final class SampleSummaryPoint {
 	public final double mean;
 	public final double variance;
 	public final double skewness;
@@ -33,7 +33,7 @@ public final class SampleSummary {
 	public final double min;
 	public final double max;
 
-	private SampleSummary(
+	private SampleSummaryPoint(
 		final double mean,
 		final double variance,
 		final double skewness,
@@ -55,7 +55,7 @@ public final class SampleSummary {
 		this.max = max;
 	}
 
-	public static SampleSummary of(
+	public static SampleSummaryPoint of(
 		final double mean,
 		final double variance,
 		final double skewness,
@@ -66,7 +66,7 @@ public final class SampleSummary {
 		final double min,
 		final double max
 	) {
-		return new SampleSummary(
+		return new SampleSummaryPoint(
 			mean,
 			variance,
 			skewness,
