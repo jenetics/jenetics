@@ -59,7 +59,7 @@ public final class Data {
 		return _name;
 	}
 
-	public int sampleSize() {
+	public int dataSize() {
 		return _samples.size();
 	}
 
@@ -75,6 +75,10 @@ public final class Data {
 
 	public int nextParamIndex() {
 		return currentSample().nextIndex();
+	}
+
+	public SampleSummary summary() {
+		return null;
 	}
 
 	public static Data of(final String name, final List<Sample> samples) {

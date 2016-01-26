@@ -29,6 +29,18 @@ import java.io.Serializable;
 public final class SampleSummaryPoint implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	public static SampleSummaryPoint NaN = of(
+		Double.NaN,
+		Double.NaN,
+		Double.NaN,
+		Double.NaN,
+		Double.NaN,
+		Double.NaN,
+		Double.NaN,
+		Double.NaN,
+		Double.NaN
+	);
+
 	private final double _mean;
 	private final double _variance;
 	private final double _skewness;

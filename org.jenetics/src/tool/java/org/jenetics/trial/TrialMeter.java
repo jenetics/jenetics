@@ -99,8 +99,8 @@ public final class TrialMeter<T> {
 		return _params;
 	}
 
-	public int sampleSize() {
-		return _dataSet.sampleSize();
+	public int dataSize() {
+		return _dataSet.dataSize();
 	}
 
 	public void sample(final Function<T, double[]> function) {
@@ -113,7 +113,7 @@ public final class TrialMeter<T> {
 	public String toString() {
 		return format(
 			"TrialMeter[samples=%d, params=%d]",
-			sampleSize(), _dataSet.nextParamIndex()
+			dataSize(), _dataSet.nextParamIndex()
 		);
 	}
 

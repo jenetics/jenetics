@@ -71,8 +71,8 @@ public final class DataSet {
 		return indexes.get(0);
 	}
 
-	public int sampleSize() {
-		return _sets.get(0).sampleSize();
+	public int dataSize() {
+		return _sets.get(0).dataSize();
 	}
 
 	public void add(final double[] values) {
