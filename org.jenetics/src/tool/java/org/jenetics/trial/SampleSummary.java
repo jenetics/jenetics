@@ -19,11 +19,6 @@
  */
 package org.jenetics.trial;
 
-import java.util.function.ToDoubleFunction;
-import java.util.stream.Collector;
-
-import org.jenetics.stat.DoubleMomentStatistics;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
@@ -83,64 +78,5 @@ public final class SampleSummary {
 			max
 		);
 	}
-
-	public static <T> Collector<T, ?, SampleSummary>
-	toCandleStickPoint(final ToDoubleFunction<T> function) {
-		return Collector.of(
-			Statistics::new,
-			(r, t) -> r.accept(function.applyAsDouble(t)),
-			Statistics::combine,
-			Statistics::toPoint
-		);
-	}
-
-	public static <T> Collector<T, ?, SampleSummary[]>
-	toCandleStickPoint(final ToDoubleFunction<T> f1, final ToDoubleFunction<T> f2) {
-		return Collector.of(
-			() -> new Statistics[]{new Statistics(), new Statistics()},
-			(r, t) -> {
-				r[0].accept(f1.applyAsDouble(t));
-				r[1].accept(f2.applyAsDouble(t));
-			},
-			(a, b) -> {
-				a[0].combine(b[0]);
-				a[1].combine(b[1]);
-				return a;
-			},
-			s -> new SampleSummary[]{s[0].toPoint(), s[1].toPoint()}
-		);
-	}
-
-	private static final class Statistics {
-		private final DoubleMomentStatistics data = new DoubleMomentStatistics();
-		private final ExactQuantile quantile = new ExactQuantile();
-
-		void accept(final double value) {
-			data.accept(value);
-			quantile.accept(value);
-		}
-
-		Statistics combine(final Statistics other) {
-			data.combine(other.data);
-			quantile.combine(other.quantile);
-
-			return this;
-		}
-
-		SampleSummary toPoint() {
-			return SampleSummary.of(
-				data.getMean(),
-				data.getVariance(),
-				data.getSkewness(),
-				data.getKurtosis(),
-				quantile.quantile(0.5),
-				quantile.quantile(0.25),
-				quantile.quantile(0.75),
-				data.getMin(),
-				data.getMax()
-			);
-		}
-	}
-
 
 }
