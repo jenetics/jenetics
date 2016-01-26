@@ -19,19 +19,25 @@
  */
 package org.jenetics.trial;
 
+import java.io.Serializable;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
-public final class SampleSummaryPoint {
-	public final double mean;
-	public final double variance;
-	public final double skewness;
-	public final double kurtosis;
-	public final double median;
-	public final double low;
-	public final double high;
-	public final double min;
-	public final double max;
+public final class SampleSummaryPoint implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	private final double _mean;
+	private final double _variance;
+	private final double _skewness;
+	private final double _kurtosis;
+	private final double _median;
+	private final double _low;
+	private final double _high;
+	private final double _min;
+	private final double _max;
 
 	private SampleSummaryPoint(
 		final double mean,
@@ -44,15 +50,51 @@ public final class SampleSummaryPoint {
 		final double min,
 		final double max
 	) {
-		this.mean = mean;
-		this.variance = variance;
-		this.skewness = skewness;
-		this.kurtosis = kurtosis;
-		this.median = median;
-		this.low = low;
-		this.high = high;
-		this.min = min;
-		this.max = max;
+		_mean = mean;
+		_variance = variance;
+		_skewness = skewness;
+		_kurtosis = kurtosis;
+		_median = median;
+		_low = low;
+		_high = high;
+		_min = min;
+		_max = max;
+	}
+
+	public double getHigh() {
+		return _high;
+	}
+
+	public double getKurtosis() {
+		return _kurtosis;
+	}
+
+	public double getLow() {
+		return _low;
+	}
+
+	public double getMax() {
+		return _max;
+	}
+
+	public double getMean() {
+		return _mean;
+	}
+
+	public double getMedian() {
+		return _median;
+	}
+
+	public double getMin() {
+		return _min;
+	}
+
+	public double getSkewness() {
+		return _skewness;
+	}
+
+	public double getVariance() {
+		return _variance;
 	}
 
 	public static SampleSummaryPoint of(
