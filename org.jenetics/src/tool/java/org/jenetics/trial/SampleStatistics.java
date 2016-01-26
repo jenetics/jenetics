@@ -20,40 +20,62 @@
 package org.jenetics.trial;
 
 import static java.lang.String.format;
-import static java.util.Collections.synchronizedList;
-import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.joining;
-import static org.jenetics.trial.SampleSummary.toCandleStickPoint;
-import static org.jenetics.engine.EvolutionResult.toBestEvolutionResult;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UncheckedIOException;
-import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.stream.Collector;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
-import org.jenetics.Gene;
-import org.jenetics.engine.Engine;
-import org.jenetics.engine.EvolutionResult;
-import org.jenetics.engine.EvolutionStatistics;
+import org.jenetics.internal.util.require;
+
 import org.jenetics.stat.DoubleMomentStatistics;
+import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz  Wilhelmstötter</a>
  */
-public class SampleStatistics<G extends Gene<?, G>, P>
-	implements Consumer<P>
-{
+public class SampleStatistics implements Consumer<Sample> {
 
+	private final int _size;
+	private final ISeq<DoubleMomentStatistics> _moments;
+	private final ISeq<ExactQuantile> _quantiles;
+
+	public SampleStatistics(final int size) {
+		_size = require.positive(size);
+		_moments = MSeq.of(DoubleMomentStatistics::new, size).toISeq();
+		_quantiles = MSeq.of(ExactQuantile::new, size).toISeq();
+	}
+
+	@Override
+	public void accept(final Sample sample) {
+		if (sample.size() != _size) {
+			throw new IllegalArgumentException(format(
+				"Expected sample size of %d, but got %d.",
+				_moments.size(), sample.size()
+			));
+		}
+
+		for (int i = 0; i < _size; ++i) {
+			_moments.get(i).accept(sample.get(i));
+			_quantiles.get(i).accept(sample.get(i));
+		}
+	}
+
+	public SampleStatistics combine(final SampleStatistics statistics) {
+		if (statistics._size != _size) {
+			throw new IllegalArgumentException(format(
+				"Expected sample size of %d, but got %d.",
+				_size, statistics._size
+			));
+		}
+
+		for (int i = 0; i < _size; ++i) {
+			_moments.get(i).combine(statistics._moments.get(i));
+			_quantiles.get(i).combine(statistics._quantiles.get(i));
+		}
+
+		return this;
+	}
+
+	/*
 	private static final String[] HEADER = {
 		"1-P",
 		"2-TG-mean",
@@ -248,5 +270,6 @@ public class SampleStatistics<G extends Gene<?, G>, P>
 
 		System.out.println(format(": %f sec.", (end - start)/1_000.0));
 	}
+	*/
 
 }
