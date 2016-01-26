@@ -391,7 +391,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @throws NullPointerException if the given {@code supplier} is
 	 *         {@code null}
 	 */
-	static <T> MSeq<T> of(
+	public static <T> MSeq<T> of(
 		final Supplier<? extends T> supplier,
 		final int length
 	) {
