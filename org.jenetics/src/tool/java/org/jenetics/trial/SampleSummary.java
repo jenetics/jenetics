@@ -50,7 +50,7 @@ public class SampleSummary {
 		return new SampleSummary(points);
 	}
 
-	public static SampleSummary of(final SampleStatistics statistics) {
+	public static SampleSummary of(final SampleSummaryStatistics statistics) {
 		final ISeq<DoubleMomentStatistics> moments = statistics.getMoments();
 		final ISeq<ExactQuantile> quantiles = statistics.getQuantiles();
 
@@ -83,9 +83,9 @@ public class SampleSummary {
 		require.positive(size);
 
 		return Collector.of(
-			() -> new SampleStatistics(size),
-			SampleStatistics::accept,
-			SampleStatistics::combine,
+			() -> new SampleSummaryStatistics(size),
+			SampleSummaryStatistics::accept,
+			SampleSummaryStatistics::combine,
 			SampleSummary::of
 		);
 	}

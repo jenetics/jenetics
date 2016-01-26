@@ -35,13 +35,13 @@ import org.jenetics.util.MSeq;
  * @version !__version__!
  * @since !__version__!
  */
-public class SampleStatistics implements Consumer<Sample> {
+public class SampleSummaryStatistics implements Consumer<Sample> {
 
 	private final int _size;
 	private final ISeq<DoubleMomentStatistics> _moments;
 	private final ISeq<ExactQuantile> _quantiles;
 
-	public SampleStatistics(final int size) {
+	public SampleSummaryStatistics(final int size) {
 		_size = require.positive(size);
 		_moments = MSeq.of(DoubleMomentStatistics::new, size).toISeq();
 		_quantiles = MSeq.of(ExactQuantile::new, size).toISeq();
@@ -62,7 +62,7 @@ public class SampleStatistics implements Consumer<Sample> {
 		}
 	}
 
-	public SampleStatistics combine(final SampleStatistics statistics) {
+	public SampleSummaryStatistics combine(final SampleSummaryStatistics statistics) {
 		if (statistics._size != _size) {
 			throw new IllegalArgumentException(format(
 				"Expected sample size of %d, but got %d.",
@@ -86,14 +86,14 @@ public class SampleStatistics implements Consumer<Sample> {
 		return _quantiles;
 	}
 
-	public static Collector<Sample, ?, SampleStatistics>
+	public static Collector<Sample, ?, SampleSummaryStatistics>
 	toSampleStatistics(final int size) {
 		require.positive(size);
 
 		return Collector.of(
-			() -> new SampleStatistics(size),
-			SampleStatistics::accept,
-			SampleStatistics::combine
+			() -> new SampleSummaryStatistics(size),
+			SampleSummaryStatistics::accept,
+			SampleSummaryStatistics::combine
 		);
 	}
 
