@@ -24,12 +24,12 @@ import static java.util.Objects.requireNonNull;
 import java.io.Console;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import org.jenetics.internal.util.Args;
 import org.jenetics.internal.util.require;
 
 import org.jenetics.Gene;
@@ -37,7 +37,6 @@ import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
 import org.jenetics.trial.Trial;
 import org.jenetics.trial.TrialMeter;
-import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -145,25 +144,20 @@ public class Runner<
 		final Engine<G, N> engine,
 		final Function<? super P, Predicate<? super EvolutionResult<G, N>>> terminator,
 		final Supplier<TrialMeter<P>> trialMeter,
-		final String[] args
+		final String[] arguments
 	) {
+		final Args args = Args.of(arguments);
+
 		return new Runner<>(
 			engine,
 			terminator,
 			trialMeter,
-			arg("sample-count", args)
-				.map(Integer::parseInt)
+			args.intArg("sample-count")
 				.orElse(50),
-			arg("result-file", args)
+			args.arg("result-file")
 				.map(f -> Paths.get(f))
 				.orElse(Paths.get("trial_meter.xml"))
 		);
 	}
 
-	private static Optional<String> arg(final String name, final String[] args) {
-		final int index = ISeq.of(args).indexOf("--" + name);
-		return index >= 0 && index < args.length - 1
-			? Optional.of(args[index + 1])
-			: Optional.empty();
-	}
 }
