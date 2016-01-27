@@ -20,15 +20,15 @@ TESTS=(
 )
 
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-RESULT_BASE_PATH=`read_link "../resources/org/jenetics/trail"`
+RESULT_BASE_PATH=`read_link "${SCRIPT_DIR}/../resources/org/jenetics/trail"`
+JRUN=`read_link "${SCRIPT_DIR}/../../../../jrun"`
 
-JRUN=`read_link "../../../../jrun"`
+while true; do
+    for test in ${TESTS[@]}
+    do
+        CLASS="org.jenetics.evaluation.${test%%:*}"
+        RESULT="${RESULT_BASE_PATH}/${test#*:}"
 
-
-for test in ${TESTS[@]}
-do
-    CLASS="org.jenetics.evaluation.${test%%:*}"
-    RESULT="${RESULT_BASE_PATH}/${test#*:}"
-
-    ${JRUN} ${CLASS} --result-file ${RESULT} --sample-count 5
+        ${JRUN} ${CLASS} --result-file ${RESULT} --sample-count 1
+    done
 done
