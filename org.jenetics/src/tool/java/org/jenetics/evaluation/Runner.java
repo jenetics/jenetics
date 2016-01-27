@@ -21,6 +21,7 @@ package org.jenetics.evaluation;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.Console;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
@@ -100,7 +101,7 @@ public class Runner<
 		final Trial<P> trial = new Trial<>(
 			this::fitness,
 			_trialMeter,
-			count -> count >= _sampleCount && _stop.get(),
+			count -> count >= _sampleCount || _stop.get(),
 			_resultPath
 		);
 
@@ -114,19 +115,22 @@ public class Runner<
 		}
 
 		try {
-			final Thread interrupter = new Thread(() -> {
-				String command;
-				do {
-					command = System.console().readLine();
-					Trial.info("Got command '" + command + "'");
-				} while (!"exit".equals(command));
+			final Console console = System.console();
+			if (console != null) {
+				final Thread interrupter = new Thread(() -> {
+					String command;
+					do {
+						command = console.readLine();
+						Trial.info("Got command '" + command + "'");
+					} while (!"exit".equals(command));
 
-				Trial.info("Stopping trial...");
-				_trialThread.interrupt();
-			});
-			interrupter.setName("Console read thread");
-			interrupter.setDaemon(true);
-			interrupter.start();
+					Trial.info("Stopping trial...");
+					_trialThread.interrupt();
+				});
+				interrupter.setName("Console read thread");
+				interrupter.setDaemon(true);
+				interrupter.start();
+			}
 
 			_trialThread.join();
 			Trial.info("Sopped trial.");
@@ -158,7 +162,7 @@ public class Runner<
 
 	private static Optional<String> arg(final String name, final String[] args) {
 		final int index = ISeq.of(args).indexOf("--" + name);
-		return index >= 0 && index < args.length - 2
+		return index >= 0 && index < args.length - 1
 			? Optional.of(args[index + 1])
 			: Optional.empty();
 	}
