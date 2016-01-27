@@ -33,7 +33,11 @@ final class ExactQuantile implements DoubleConsumer {
 	private final Stream.Builder<ExactQuantile> _collectors = Stream.builder();
 	private final DoubleStream.Builder _data = DoubleStream.builder();
 
-	private final Lazy<double[]> _array = Lazy.of(this::toArray);
+	private final Lazy<double[]> _array = Lazy.of(() ->
+		_collectors.build()
+			.flatMapToDouble(c -> c._data.build())
+			.sorted()
+			.toArray());
 
 	ExactQuantile() {
 		_collectors.accept(this);
@@ -41,19 +45,24 @@ final class ExactQuantile implements DoubleConsumer {
 
 	@Override
 	public void accept(final double value) {
+		if (_array.isEvaluated()) {
+			throw new IllegalStateException(
+				"Quantile has already been evaluated."
+			);
+		}
+
 		_data.accept(value);
 	}
 
 	public ExactQuantile combine(final ExactQuantile other) {
+		if (_array.isEvaluated()) {
+			throw new IllegalStateException(
+				"Quantile has already been evaluated."
+			);
+		}
+
 		_collectors.accept(other);
 		return this;
-	}
-
-	private double[] toArray() {
-		return _collectors.build()
-			.flatMapToDouble(c -> c._data.build())
-			.sorted()
-			.toArray();
 	}
 
 	public double quantile(final double p) {
