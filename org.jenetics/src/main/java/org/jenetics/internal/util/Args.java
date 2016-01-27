@@ -28,7 +28,7 @@ import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__! &mdash; <em>$Date$</em>
+ * @version !__version__!
  * @since !__version__!
  */
 public class Args {
