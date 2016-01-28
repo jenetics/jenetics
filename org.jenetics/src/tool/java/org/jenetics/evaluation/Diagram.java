@@ -19,13 +19,22 @@
  */
 package org.jenetics.evaluation;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Stream.concat;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
+import org.jenetics.trial.Gnuplot;
 import org.jenetics.trial.IO;
 import org.jenetics.trial.Params;
 import org.jenetics.trial.SampleSummary;
@@ -61,13 +70,59 @@ public class Diagram {
 		}
 	}
 
-	public static <T> void create(
+	public static void create(
 		final Template template,
-		final Params<T> params,
+		final Params<?> params,
+		final SampleSummary generation,
+		final SampleSummary fitness,
+		final Path output
+	)
+		throws IOException
+	{
+		if (params.size() != generation.size() || params.size() != fitness.size()) {
+			throw new IllegalArgumentException(format(
+				"Parameters have different size: [%s, %s, %s].",
+				params.size(), generation.size(), fitness.size()
+			));
+		}
+
+		final Path templatePath = File
+			.createTempFile("__diagram_template__", "__").toPath();
+		try {
+			IO.write(template.text(), templatePath);
+
+			final Path dataPath = File
+				.createTempFile("__diagram_data__", "__").toPath();
+			try {
+				final String data = IntStream.range(0, params.size())
+					.mapToObj(i -> toLineString(i, params, generation, fitness))
+					.collect(Collectors.joining("\n"));
+				IO.write(data, dataPath);
+
+
+				final Gnuplot gnuplot = new Gnuplot(templatePath);
+				gnuplot.create(dataPath, output);
+			} finally {
+				Files.deleteIfExists(dataPath);
+			}
+		} finally {
+			Files.deleteIfExists(templatePath);
+		}
+	}
+
+	private static String toLineString(
+		final int index,
+		final Params<?> params,
 		final SampleSummary generation,
 		final SampleSummary fitness
 	) {
-
+		return concat(concat(
+				Stream.of(params.get().get(index).toString()),
+				DoubleStream.of(generation.getPoints().get(index).toArray())
+					.mapToObj(Double::toString)),
+				DoubleStream.of(fitness.getPoints().get(index).toArray())
+					.mapToObj(Double::toString))
+			.collect(Collectors.joining(" "));
 	}
 
 }

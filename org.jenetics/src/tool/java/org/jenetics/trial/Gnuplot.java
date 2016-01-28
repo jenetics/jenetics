@@ -54,7 +54,7 @@ public class Gnuplot {
 	}
 
 	public void create(final Path data, final Path output)
-		throws IOException, InterruptedException
+		throws IOException
 	{
 		setParam(DATA_NAME, data.toString());
 		setParam(OUTPUT_NAME, output.toString());
@@ -64,7 +64,11 @@ public class Gnuplot {
 			.start();
 
 		System.out.println(IO.toText(process.getErrorStream()));
-		System.out.println(process.waitFor());
+		try {
+			System.out.println(process.waitFor());
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+		}
 	}
 
 	private List<String> command() {
