@@ -20,10 +20,12 @@
 package org.jenetics.trial;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.nio.file.Path;
 import java.util.stream.Collectors;
 
 /**
@@ -38,6 +40,14 @@ public class IO {
 		final BufferedReader buffer = new BufferedReader(reader);
 
 		return buffer.lines().collect(Collectors.joining("\n"));
+	}
+
+	public static void write(final String value, final Path path)
+		throws IOException
+	{
+		try (OutputStream out = new FileOutputStream(path.toFile())) {
+			out.write(value.getBytes("UTF-8"));
+		}
 	}
 
 }
