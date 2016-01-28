@@ -19,10 +19,25 @@
  */
 package org.jenetics.trial;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.stream.Collectors;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 public class IO {
+
+	public static String toText(final InputStream stream) throws IOException {
+		final InputStreamReader reader = new InputStreamReader(stream);
+		final BufferedReader buffer = new BufferedReader(reader);
+
+		return buffer.lines().collect(Collectors.joining("\n"));
+	}
+
 }
