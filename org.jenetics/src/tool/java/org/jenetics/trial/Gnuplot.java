@@ -44,26 +44,16 @@ public class Gnuplot {
 	private final Path _template;
 
 	private final Map<String, String> _parameters = new HashMap<>();
-	private Path _input;
-	private Path _output;
 
 	public Gnuplot(final Path template) {
 		_template = requireNonNull(template);
 	}
 
-	public void setParam(final String name, final String value) {
+	private void setParam(final String name, final String value) {
 		_parameters.put(name, value);
 	}
 
-	public void setInput(final Path input) {
-		_input = requireNonNull(input);
-	}
-
-	public void setOutput(final Path output) {
-		_output = requireNonNull(output);
-	}
-
-	public void execute(final Path data, final Path output)
+	public void create(final Path data, final Path output)
 		throws IOException, InterruptedException
 	{
 		setParam(DATA_NAME, data.toString());
@@ -99,7 +89,7 @@ public class Gnuplot {
 		final Path output = Paths.get(base, "knapsack_execution_time.svg");
 
 		final Gnuplot gnuplot = new Gnuplot(Paths.get(base, "sub_fitness.gp"));
-		gnuplot.execute(data, output);
+		gnuplot.create(data, output);
 	}
 
 }
