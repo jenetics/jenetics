@@ -61,6 +61,10 @@ public class SampleSummary {
 		);
 	}
 
+	public int size() {
+		return _points.size();
+	}
+
 	private static SampleSummaryPoint toPoint(
 		final DoubleMomentStatistics moment,
 		final ExactQuantile quantile

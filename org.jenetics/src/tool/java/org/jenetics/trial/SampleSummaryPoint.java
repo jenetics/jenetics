@@ -109,6 +109,13 @@ public final class SampleSummaryPoint implements Serializable {
 		return _variance;
 	}
 
+	public double[] toArray() {
+		return new double[] {
+			_mean, _variance, _skewness, _kurtosis,
+			_median, _low, _high, _min, _max
+		};
+	}
+
 	public static SampleSummaryPoint of(
 		final double mean,
 		final double variance,
