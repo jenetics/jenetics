@@ -62,6 +62,13 @@ public final class DataSet {
 		return _sets;
 	}
 
+	public Data getSet(final String name) {
+		return _sets.stream()
+			.filter(d -> d.getName().equals(name))
+			.findFirst()
+			.get();
+	}
+
 	public int nextParamIndex() {
 		final ISeq<Integer> indexes = _sets.map(Data::nextParamIndex);
 		if (!indexes.forAll(i -> indexes.get(0).equals(i))) {

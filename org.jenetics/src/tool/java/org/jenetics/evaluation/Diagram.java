@@ -29,6 +29,8 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
@@ -38,6 +40,7 @@ import org.jenetics.trial.Gnuplot;
 import org.jenetics.trial.IO;
 import org.jenetics.trial.Params;
 import org.jenetics.trial.SampleSummary;
+import org.jenetics.trial.TrialMeter;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -52,7 +55,7 @@ public class Diagram {
 		FIXED_GENERATION("fixed_generation_termination.gp"),
 		STEADY_FITNESS("steady_fitness_termination.gp");
 
-		private static final String BASE = "org/jenetics/evaluation";
+		private static final String BASE = "/org/jenetics/evaluation";
 
 		private final String _path;
 
@@ -62,7 +65,8 @@ public class Diagram {
 
 		public String text() {
 			final String rsc = BASE + "/" + _path;
-			try (InputStream stream = getClass().getResourceAsStream(rsc)) {
+			System.out.println(rsc);
+			try (InputStream stream = Diagram.class.getResourceAsStream(rsc)) {
 				return IO.toText(stream);
 			} catch (IOException e) {
 				throw new UncheckedIOException(e);
@@ -123,6 +127,25 @@ public class Diagram {
 				DoubleStream.of(fitness.getPoints().get(index).toArray())
 					.mapToObj(Double::toString))
 			.collect(Collectors.joining(" "));
+	}
+
+	public static void main(final String[] args) throws Exception {
+		final TrialMeter<Integer> trial = TrialMeter.read(Paths.get(
+			"/home/fwilhelm/Workspace/Development/Projects/Jenetics/org.jenetics/src/tool/resources/org/jenetics/trail/",
+			"knapsack_steady_fitness-perf.xml"
+		));
+
+		final Params<Integer> params = trial.getParams();
+		final SampleSummary generation = trial.getDataSet().getSet("Generation").summary();
+		final SampleSummary fitness = trial.getDataSet().getSet("Fitness").summary();
+
+		create(
+			Template.STEADY_FITNESS,
+			params,
+			generation,
+			fitness,
+			Paths.get("/home/fwilhelm/test.svg")
+		);
 	}
 
 }

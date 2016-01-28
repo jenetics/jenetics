@@ -99,6 +99,10 @@ public final class TrialMeter<T> {
 		return _params;
 	}
 
+	public DataSet getDataSet() {
+		return _dataSet;
+	}
+
 	public int dataSize() {
 		return _dataSet.dataSize();
 	}
