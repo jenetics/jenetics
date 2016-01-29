@@ -24,6 +24,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.stream.DoubleStream;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -34,7 +35,8 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
- * The sample class contains the results of one test run of all parameters.
+ * The sample class contains the results of one test run of all parameters. This
+ * class is <i>mutable</i> and <b>not</b> thread safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -108,8 +110,18 @@ public final class Sample implements Serializable {
 	 *
 	 * @return the sample {@code double} values (slots).
 	 */
-	public double[] getValues() {
+	public double[] values() {
 		return _values.clone();
+	}
+
+	/**
+	 * Returns a sequential {@link DoubleStream} with the <i>slot</i> values of
+	 * this {@code Sample} object.
+	 *
+	 * @return a {@code DoubleStream} for the sample values
+	 */
+	public DoubleStream stream() {
+		return Arrays.stream(_values);
 	}
 
 	/**

@@ -113,9 +113,8 @@ public final class Data {
 				final Model model = new Model();
 				model.name = data._name;
 				model.samples = data._samples.stream()
-					.map(s -> Arrays.stream(s.getValues())
-						.mapToObj(Double::toString)
-						.collect(Collectors.joining(" ")))
+					.map(s -> s.stream().mapToObj(Double::toString)
+								.collect(Collectors.joining(" ")))
 					.collect(Collectors.toList());
 				return model;
 			}
