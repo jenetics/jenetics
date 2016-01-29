@@ -135,6 +135,17 @@ public final class Sample implements Serializable {
 	}
 
 	@Override
+	public int hashCode() {
+		return Arrays.hashCode(_values);
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof Sample &&
+			Arrays.equals(_values, ((Sample)obj)._values);
+	}
+
+	@Override
 	public String toString() {
 		return Arrays.toString(_values);
 	}
