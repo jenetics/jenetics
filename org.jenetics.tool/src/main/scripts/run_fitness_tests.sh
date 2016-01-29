@@ -20,7 +20,7 @@ TESTS=(
 )
 
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-RESULT_BASE_PATH=`read_link "${SCRIPT_DIR}/../resources/org/jenetics/trail"`
+RESULT_BASE_PATH=`read_link "${SCRIPT_DIR}/../resources/org/jenetics/trial"`
 JRUN=`read_link "${SCRIPT_DIR}/../../../../jrun"`
 
 while true; do

@@ -5,11 +5,11 @@
  */
 
 @XmlSchema(
-	namespace = "http://jenetics.io/Jenetics/trail/1",
+	namespace = "http://jenetics.io/Jenetics/trial/1",
 	elementFormDefault = XmlNsForm.QUALIFIED,
 	xmlns = {
 		@XmlNs(
-			namespaceURI = "http://jenetics.io/Jenetics/trail/1",
+			namespaceURI = "http://jenetics.io/Jenetics/trial/1",
 			prefix = ""
 		)
 	}

@@ -131,7 +131,7 @@ public class Diagram {
 	public static void main(final String[] args) throws Exception {
 		final TrialMeter<Integer> trial = TrialMeter.read(Paths.get(
 			"/home/fwilhelm/Workspace/Development/Projects/Jenetics/org.jenetics.tool/" +
-				"src/main/resources/org/jenetics/tool/trail/",
+				"src/main/resources/org/jenetics/tool/trial/",
 			"knapsack_steady_fitness-perf.xml"
 		));
 
