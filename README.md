@@ -215,5 +215,5 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 
 ## Used software
 
-<a href="https://www.jetbrains.com/idea/">![IntelliJ](https://www.jetbrains.com/idea/docs/logo_intellij_idea.png)</a>
+<a href="https://www.jetbrains.com/idea/">![IntelliJ](http://jenetics.io/img/icon_IntelliJIDEA.png)</a>
 
