@@ -54,7 +54,7 @@ public class Diagram {
 		FIXED_GENERATION("fixed_generation_termination.gp"),
 		STEADY_FITNESS("steady_fitness_termination.gp");
 
-		private static final String BASE = "/org/jenetics/evaluation";
+		private static final String BASE = "/org/jenetics/tool/evaluation";
 
 		private final String _path;
 
@@ -130,7 +130,8 @@ public class Diagram {
 
 	public static void main(final String[] args) throws Exception {
 		final TrialMeter<Integer> trial = TrialMeter.read(Paths.get(
-			"/home/fwilhelm/Workspace/Development/Projects/Jenetics/org.jenetics/src/tool/resources/org/jenetics/trail/",
+			"/home/fwilhelm/Workspace/Development/Projects/Jenetics/org.jenetics.tool/" +
+				"src/main/resources/org/jenetics/tool/trail/",
 			"knapsack_steady_fitness-perf.xml"
 		));
 
