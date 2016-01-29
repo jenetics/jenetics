@@ -17,9 +17,9 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.evaluation;
+package org.jenetics.tool.evaluation;
 
-import static org.jenetics.evaluation.engines.KNAPSACK;
+import static org.jenetics.tool.evaluation.engines.KNAPSACK;
 
 import java.util.function.Supplier;
 import java.util.stream.IntStream;

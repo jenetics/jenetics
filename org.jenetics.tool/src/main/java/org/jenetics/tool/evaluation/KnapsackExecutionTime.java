@@ -17,13 +17,14 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.evaluation;
+package org.jenetics.tool.evaluation;
 
 import static java.lang.Math.log10;
 import static java.lang.Math.max;
 import static java.lang.Math.pow;
-import static org.jenetics.evaluation.engines.KNAPSACK;
+import static org.jenetics.tool.evaluation.engines.KNAPSACK;
 
+import java.time.Duration;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
@@ -37,21 +38,21 @@ import org.jenetics.util.ISeq;
  * @version !__version__!
  * @since !__version__!
  */
-public class KnapsackSteadyFitness {
+public class KnapsackExecutionTime {
 
 	private static final double GEN_BASE = pow(10, log10(100)/20.0);
-	private static final Params<Integer> PARAMS = Params.of(
-		"Generations",
+	private static final Params<Long> PARAMS = Params.of(
+		"Execution time",
 		IntStream.rangeClosed(1, 50)
-			.map(i -> max((int)pow(GEN_BASE, i), i))
-			.mapToObj(Integer::new)
+			.mapToLong(i -> max((long)pow(GEN_BASE, i), i))
+			.mapToObj(Long::new)
 			.collect(ISeq.toISeq())
 	);
 
-	private static final Supplier<TrialMeter<Integer>>
-	TRIAL_METER = () -> TrialMeter.of(
-		"Steady fitness",
-		"Create steady fitness performance measures",
+	private static final Supplier<TrialMeter<Long>>
+		TRIAL_METER = () -> TrialMeter.of(
+		"Execution time",
+		"Create execution time performance measures",
 		PARAMS,
 		"Generation",
 		"Fitness",
@@ -61,7 +62,7 @@ public class KnapsackSteadyFitness {
 	public static void main(final String[] args) throws InterruptedException {
 		final Runner<?, ?, ?> runner = Runner.of(
 			KNAPSACK,
-			limit::bySteadyFitness,
+			duration -> limit.byExecutionTime(Duration.ofMillis(duration)),
 			TRIAL_METER,
 			args
 		);

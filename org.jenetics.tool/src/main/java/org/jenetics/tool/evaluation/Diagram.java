@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.evaluation;
+package org.jenetics.tool.evaluation;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
