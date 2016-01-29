@@ -29,7 +29,7 @@ import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.TournamentSelector;
 import org.jenetics.engine.Engine;
-import org.jenetics.problem.Knapsack;
+import org.jenetics.tool.problem.Knapsack;
 import org.jenetics.util.LCG64ShiftRandom;
 
 /**
