@@ -25,8 +25,8 @@ import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 import org.jenetics.engine.limit;
-import org.jenetics.trial.Params;
-import org.jenetics.trial.TrialMeter;
+import org.jenetics.tool.trial.Params;
+import org.jenetics.tool.trial.TrialMeter;
 import org.jenetics.util.ISeq;
 
 /**

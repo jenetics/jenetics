@@ -30,17 +30,16 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import org.jenetics.trial.Gnuplot;
-import org.jenetics.trial.IO;
-import org.jenetics.trial.Params;
-import org.jenetics.trial.SampleSummary;
-import org.jenetics.trial.TrialMeter;
+import org.jenetics.tool.trial.Gnuplot;
+import org.jenetics.tool.trial.IO;
+import org.jenetics.tool.trial.Params;
+import org.jenetics.tool.trial.SampleSummary;
+import org.jenetics.tool.trial.TrialMeter;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

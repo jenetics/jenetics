@@ -14,7 +14,7 @@
 		)
 	}
 )
-package org.jenetics.trial;
+package org.jenetics.tool.trial;
 
 import javax.xml.bind.annotation.XmlNs;
 import javax.xml.bind.annotation.XmlNsForm;

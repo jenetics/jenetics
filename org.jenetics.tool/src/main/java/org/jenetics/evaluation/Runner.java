@@ -35,8 +35,8 @@ import org.jenetics.internal.util.require;
 import org.jenetics.Gene;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
-import org.jenetics.trial.Trial;
-import org.jenetics.trial.TrialMeter;
+import org.jenetics.tool.trial.Trial;
+import org.jenetics.tool.trial.TrialMeter;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

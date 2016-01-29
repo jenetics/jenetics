@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.trial;
+package org.jenetics.tool.trial;
 
 import static java.io.File.createTempFile;
 import static java.lang.String.format;
@@ -199,7 +199,7 @@ public final class TrialMeter<T> {
 	}
 
 	public static void main(final String[] args) throws Exception {
-		final TrialMeter<String> trialMeter = TrialMeter.of(
+		final TrialMeter<String> trialMeter = of(
 			"Some name", "Some description",
 			Params.of("Strings", ISeq.of("p1", "p2", "p3", "p4", "p5")),
 			"fitness", "generation"

@@ -17,37 +17,42 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.trial;
+package org.jenetics.tool.trial;
 
-import java.io.BufferedReader;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.nio.file.Path;
-import java.util.stream.Collectors;
+import javax.xml.bind.DataBindingException;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+
+import org.jenetics.internal.util.require;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class IO {
+final class jaxb {
+	private jaxb() {require.noInstance();}
 
-	public static String toText(final InputStream stream) throws IOException {
-		final InputStreamReader reader = new InputStreamReader(stream);
-		final BufferedReader buffer = new BufferedReader(reader);
-
-		return buffer.lines().collect(Collectors.joining("\n"));
+	private static final class JAXBContextHolder {
+		private static final JAXBContext CONTEXT; static {
+			try {
+				CONTEXT = JAXBContext.newInstance(
+					Sample.Model.class,
+					Data.Model.class,
+					DataSet.Model.class,
+					TrialMeter.Model.class,
+					Env.Model.class
+				);
+			} catch (JAXBException e) {
+				throw new DataBindingException(
+					"Something went wrong while creating JAXBContext.", e
+				);
+			}
+		}
 	}
 
-	public static void write(final String value, final Path path)
-		throws IOException
-	{
-		try (OutputStream out = new FileOutputStream(path.toFile())) {
-			out.write(value.getBytes("UTF-8"));
-		}
+	public static JAXBContext context() {
+		return JAXBContextHolder.CONTEXT;
 	}
 
 }

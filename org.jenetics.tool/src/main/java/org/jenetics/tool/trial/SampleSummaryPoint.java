@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.trial;
+package org.jenetics.tool.trial;
 
 import java.io.Serializable;
 

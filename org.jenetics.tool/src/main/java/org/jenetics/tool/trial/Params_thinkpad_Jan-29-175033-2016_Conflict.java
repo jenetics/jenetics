@@ -17,15 +17,12 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.trial;
+package org.jenetics.tool.trial;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.trial.SampleSummary.toSampleSummary;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -36,102 +33,98 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.jenetics.util.ISeq;
+
 /**
+ * Collection of parameters the function under test is tested with.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-@XmlJavaTypeAdapter(Data.Model.Adapter.class)
-public final class Data {
+@XmlJavaTypeAdapter(Params.Model.Adapter.class)
+public final class Params<T> implements Iterable<T> {
 
 	private final String _name;
-	private final List<Sample> _samples = new ArrayList<>();
+	private final ISeq<T> _params;
 
-	private Data(final String name, final List<Sample> samples) {
-		if (samples.isEmpty()) {
-			throw new IllegalArgumentException("Sample list must not be empty.");
-		}
-
+	private Params(final String name, final ISeq<T> params) {
 		_name = requireNonNull(name);
-		_samples.addAll(samples);
+		_params = requireNonNull(params);
 	}
 
+	/**
+	 * Return the name of the parameter collection.
+	 *
+	 * @return the name of the parameter collection
+	 */
 	public String getName() {
 		return _name;
 	}
 
-	public int dataSize() {
-		return _samples.size();
+	public ISeq<T> get() {
+		return _params;
 	}
 
-	public int sampleSize() {
-		return _samples.get(0).size();
+	/**
+	 * Return the number of parameters this collection contains.
+	 *
+	 * @return the number of parameters
+	 */
+	public int size() {
+		return _params.size();
 	}
 
-	public Sample currentSample() {
-		Sample sample = _samples.get(_samples.size() - 1);
-		if (sample.isFull()) {
-			sample = sample.newSample();
-			_samples.add(sample);
-		}
-
-		return sample;
+	@Override
+	public Iterator<T> iterator() {
+		return _params.iterator();
 	}
 
-	public int nextParamIndex() {
-		return currentSample().nextIndex();
+	@Override
+	public String toString() {
+		return _params.toString();
 	}
 
-	public SampleSummary summary() {
-		return _samples.stream()
-			.collect(toSampleSummary(sampleSize()));
+	public static <T> Params<T> of(
+		final String name,
+		final ISeq<T> params
+	) {
+		return new Params<>(name, params);
 	}
-
-	public static Data of(final String name, final List<Sample> samples) {
-		return new Data(name, samples);
-	}
-
 
 	/* *************************************************************************
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "data")
-	@XmlType(name = "org.jenetics.tool.Data")
+	@XmlRootElement(name = "params")
+	@XmlType(name = "org.jenetics.tool.Params")
 	@XmlAccessorType(XmlAccessType.FIELD)
-	final static class Model {
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	static final class Model {
 
-		@XmlAttribute
+		@XmlAttribute(name = "name")
 		public String name;
 
-		@XmlElement(name = "sample")
-		public List<String> samples;
+		@XmlElement(name = "param", required = true, nillable = false)
+		public List params;
 
-		public static final class Adapter extends XmlAdapter<Model, Data> {
+		public static final class Adapter extends XmlAdapter<Model, Params> {
 			@Override
-			public Model marshal(final Data data) {
+			public Model marshal(final Params params) {
 				final Model model = new Model();
-				model.name = data._name;
-				model.samples = data._samples.stream()
-					.map(s -> Arrays.stream(s.getValues())
-						.mapToObj(Double::toString)
-						.collect(Collectors.joining(" ")))
-					.collect(Collectors.toList());
+				model.name = params.getName();
+				model.params = params.get().asList();
 				return model;
 			}
 
 			@Override
-			public Data unmarshal(final Model model) {
-				return Data.of(
+			public Params unmarshal(final Model model) {
+				return Params.of(
 					model.name,
-					model.samples.stream()
-						.map(s -> Arrays.stream(s.split("\\s"))
-							.mapToDouble(Double::parseDouble).toArray())
-						.map(Sample::of)
-						.collect(Collectors.toList())
+					ISeq.of(model.params)
 				);
 			}
 		}
-
 	}
+
 }
