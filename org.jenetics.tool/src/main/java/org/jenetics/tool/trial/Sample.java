@@ -68,6 +68,8 @@ public final class Sample implements Serializable {
 	 *
 	 * @param value the value to insert
 	 * @throws IndexOutOfBoundsException if all sample values has been set
+	 * @throws IllegalArgumentException if the given value is not a number,
+	 *         {@code Double.isNaN(value)} returns {@code true}
 	 */
 	void add(final double value) {
 		if (Double.isNaN(value)) {
