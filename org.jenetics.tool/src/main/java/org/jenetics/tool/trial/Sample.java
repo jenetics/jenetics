@@ -19,8 +19,10 @@
  */
 package org.jenetics.tool.trial;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -32,12 +34,16 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
+ * The sample class contains the results of one test run of all parameters.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 @XmlJavaTypeAdapter(Sample.Model.Adapter.class)
-public final class Sample {
+public final class Sample implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private final double[] _values;
 
@@ -45,12 +51,18 @@ public final class Sample {
 		_values = requireNonNull(values);
 	}
 
+	/**
+	 * Return the number of {@code double} <i>slots</i> the {@code Sample} class
+	 * stores.
+	 *
+	 * @return the number of {@code double} <i>slots</i>
+	 */
 	public int size() {
 		return _values.length;
 	}
 
 	/**
-	 * Insert the given value at the next <i>free</i> position.
+	 * Insert the given value at the next free <i>slot</i> (position).
 	 *
 	 * @param value the value to insert
 	 * @throws IndexOutOfBoundsException if all sample values has been set
@@ -63,6 +75,13 @@ public final class Sample {
 		_values[nextIndex()] = value;
 	}
 
+	/**
+	 * Return the index of the next free {@code double} <i>slot</i>. If all
+	 * <i>slots</i> are occupied, {@code -1} is returned.
+	 *
+	 * @return the index of the next free {@code double} <i>slot</i>, or
+	 *         {@code -1} if all <i>slots</i> are occupied
+	 */
 	public int nextIndex() {
 		int index = -1;
 		for (int i = 0; i <  _values.length && index == -1; ++i) {
@@ -74,36 +93,88 @@ public final class Sample {
 		return index;
 	}
 
+	/**
+	 * Test whether all sample <i>slots</i> are occupied.
+	 *
+	 * @return {@code true} if all sample <i>slots</i> are occupied,
+	 *         {@code false} otherwise
+	 */
 	public boolean isFull() {
 		return nextIndex() == -1;
 	}
 
+	/**
+	 * Return the sample {@code double} values (slots).
+	 *
+	 * @return the sample {@code double} values (slots).
+	 */
 	public double[] getValues() {
 		return _values.clone();
 	}
 
+	/**
+	 * Return the <i>slot</i> value at the given position.
+	 *
+	 * @param index the value index
+	 * @return the sample value at the given {@code index}
+	 * @throws IndexOutOfBoundsException if the {@code index} is out of range
+	 *         {@code (index < 0 || index >= size())}
+	 */
 	public double get(final int index) {
 		return _values[index];
 	}
 
+	/**
+	 * Create a new {@code Sample} object, with all slots available, with the
+	 * same size as {@code this} one.
+	 *
+	 * @return a new empty {@code Sample} object
+	 */
 	public Sample newSample() {
 		return of(size());
-	}
-
-	public static Sample of(final double[] values) {
-		return new Sample(values);
-	}
-
-	public static Sample of(final int length) {
-		final double[] values = new double[length];
-		Arrays.fill(values, Double.NaN);
-
-		return of(values);
 	}
 
 	@Override
 	public String toString() {
 		return Arrays.toString(_values);
+	}
+
+	/**
+	 * Create a new {@code Sample} object with the {@code values}.
+	 *
+	 * @param values the slot values of the created {@code Sample} object
+	 * @return a new {@code Sample} object with the {@code values}
+	 * @throws IllegalArgumentException if the length of the given {@code values}
+	 *         is zero
+	 */
+	public static Sample of(final double[] values) {
+		if (values.length == 0) {
+			throw new IllegalArgumentException(
+				"The given values must not be empty."
+			);
+		}
+
+		return new Sample(values);
+	}
+
+	/**
+	 * Create a new {@code Sample} object of the given {@code length}.
+	 *
+	 * @param length the length of the new {@code Sample} object
+	 * @return a new {@code Sample} object of the given {@code length}
+	 * @throws IllegalArgumentException if the given {@code length} is smaller
+	 *         then one
+	 */
+	public static Sample of(final int length) {
+		if (length < 1) {
+			throw new IllegalArgumentException(format(
+				"Length must not be smaller than one, but was %d.", length
+			));
+		}
+
+		final double[] values = new double[length];
+		Arrays.fill(values, Double.NaN);
+		return of(values);
 	}
 
 
