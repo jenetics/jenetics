@@ -33,8 +33,14 @@ dependencies {
 }
 
 jar.manifest.instruction('Export-Package',
-	'org.jenetics.example'
+	'org.jenetics.tool'
 )
+
+javadoc {
+	options {
+		links 'http://jenetics.io/javadoc/org.jenetics'
+	}
+}
 
 packaging {
 	name = 'Jenetics tools'
