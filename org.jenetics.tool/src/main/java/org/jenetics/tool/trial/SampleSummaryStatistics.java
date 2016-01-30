@@ -37,40 +37,40 @@ import org.jenetics.util.MSeq;
  */
 public class SampleSummaryStatistics implements Consumer<Sample> {
 
-	private final int _size;
+	private final int _parameterCount;
 	private final ISeq<DoubleMomentStatistics> _moments;
 	private final ISeq<ExactQuantile> _quantiles;
 
-	public SampleSummaryStatistics(final int size) {
-		_size = require.positive(size);
-		_moments = MSeq.of(DoubleMomentStatistics::new, size).toISeq();
-		_quantiles = MSeq.of(ExactQuantile::new, size).toISeq();
+	public SampleSummaryStatistics(final int parameterCount) {
+		_parameterCount = require.positive(parameterCount);
+		_moments = MSeq.of(DoubleMomentStatistics::new, parameterCount).toISeq();
+		_quantiles = MSeq.of(ExactQuantile::new, parameterCount).toISeq();
 	}
 
 	@Override
 	public void accept(final Sample sample) {
-		if (sample.size() != _size) {
+		if (sample.size() != _parameterCount) {
 			throw new IllegalArgumentException(format(
 				"Expected sample size of %d, but got %d.",
 				_moments.size(), sample.size()
 			));
 		}
 
-		for (int i = 0; i < _size; ++i) {
+		for (int i = 0; i < _parameterCount; ++i) {
 			_moments.get(i).accept(sample.get(i));
 			_quantiles.get(i).accept(sample.get(i));
 		}
 	}
 
 	public SampleSummaryStatistics combine(final SampleSummaryStatistics statistics) {
-		if (statistics._size != _size) {
+		if (statistics._parameterCount != _parameterCount) {
 			throw new IllegalArgumentException(format(
 				"Expected sample size of %d, but got %d.",
-				_size, statistics._size
+				_parameterCount, statistics._parameterCount
 			));
 		}
 
-		for (int i = 0; i < _size; ++i) {
+		for (int i = 0; i < _parameterCount; ++i) {
 			_moments.get(i).combine(statistics._moments.get(i));
 			_quantiles.get(i).combine(statistics._quantiles.get(i));
 		}

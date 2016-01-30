@@ -3,7 +3,6 @@
  * @version !__version__!
  * @since !__version__!
  */
-
 @XmlSchema(
 	namespace = "http://jenetics.io/Jenetics/trial/1",
 	elementFormDefault = XmlNsForm.QUALIFIED,

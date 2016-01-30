@@ -82,10 +82,10 @@ public class Diagram {
 	)
 		throws IOException
 	{
-		if (params.size() != generation.size() || params.size() != fitness.size()) {
+		if (params.size() != generation.parameterCount() || params.size() != fitness.parameterCount()) {
 			throw new IllegalArgumentException(format(
 				"Parameters have different size: [%s, %s, %s].",
-				params.size(), generation.size(), fitness.size()
+				params.size(), generation.parameterCount(), fitness.parameterCount()
 			));
 		}
 
@@ -120,7 +120,7 @@ public class Diagram {
 		final SampleSummary fitness
 	) {
 		return concat(concat(
-				Stream.of(params.get().get(index).toString()),
+				Stream.of(params.get(index).toString()),
 				DoubleStream.of(generation.getPoints().get(index).toArray())
 					.mapToObj(Double::toString)),
 				DoubleStream.of(fitness.getPoints().get(index).toArray())

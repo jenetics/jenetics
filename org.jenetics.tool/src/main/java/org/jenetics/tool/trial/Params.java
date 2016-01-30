@@ -21,8 +21,10 @@ package org.jenetics.tool.trial;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Stream;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -43,7 +45,9 @@ import org.jenetics.util.ISeq;
  * @since !__version__!
  */
 @XmlJavaTypeAdapter(Params.Model.Adapter.class)
-public final class Params<T> implements Iterable<T> {
+public final class Params<T> implements Iterable<T>, Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private final String _name;
 	private final ISeq<T> _params;
@@ -62,8 +66,16 @@ public final class Params<T> implements Iterable<T> {
 		return _name;
 	}
 
-	public ISeq<T> get() {
-		return _params;
+	/**
+	 * Return the parameter with the given {@code index}.
+	 *
+	 * @param index the parameter index
+	 * @return the parameter with the given {@code index}
+	 * @throws IndexOutOfBoundsException if the {@code index} is out of range
+	 *         {@code (index < 0 || index >= size())}
+	 */
+	public T get(final int index) {
+		return _params.get(index);
 	}
 
 	/**
@@ -75,9 +87,38 @@ public final class Params<T> implements Iterable<T> {
 		return _params.size();
 	}
 
+	/**
+	 * Return the parameter values.
+	 *
+	 * @return the parameter values
+	 */
+	public ISeq<T> values() {
+		return _params;
+	}
+
+	/**
+	 * Return the parameter values as stream.
+	 *
+	 * @return the parameter values as stream
+	 */
+	public Stream<T> stream() {
+		return _params.stream();
+	}
+
 	@Override
 	public Iterator<T> iterator() {
 		return _params.iterator();
+	}
+
+	@Override
+	public int hashCode() {
+		return _params.hashCode();
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof Params<?> &&
+			_params.equals(((Params<?>)obj)._params);
 	}
 
 	@Override
@@ -85,6 +126,15 @@ public final class Params<T> implements Iterable<T> {
 		return _params.toString();
 	}
 
+	/**
+	 * Return a new parameters object.
+	 *
+	 * @param name the name of the parameters
+	 * @param params the actual parameters
+	 * @param <T> the parameter type
+	 * @throws NullPointerException if one of the parameters is {@code null}
+	 * @return a new parameters object
+	 */
 	public static <T> Params<T> of(
 		final String name,
 		final ISeq<T> params
@@ -113,7 +163,7 @@ public final class Params<T> implements Iterable<T> {
 			public Model marshal(final Params params) {
 				final Model model = new Model();
 				model.name = params.getName();
-				model.params = params.get().asList();
+				model.params = params.values().asList();
 				return model;
 			}
 

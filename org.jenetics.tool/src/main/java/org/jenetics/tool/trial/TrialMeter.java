@@ -108,7 +108,7 @@ public final class TrialMeter<T> {
 	}
 
 	public void sample(final Function<T, double[]> function) {
-		_params.get()
+		_params.values()
 			.subSeq(_dataSet.nextParamIndex())
 			.forEach(p -> _dataSet.add(function.apply(p)));
 	}
