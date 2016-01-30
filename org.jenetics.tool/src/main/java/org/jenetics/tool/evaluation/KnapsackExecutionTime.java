@@ -28,6 +28,7 @@ import java.time.Duration;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
+import org.jenetics.BitGene;
 import org.jenetics.engine.limit;
 import org.jenetics.tool.trial.Params;
 import org.jenetics.tool.trial.TrialMeter;
@@ -60,7 +61,7 @@ public class KnapsackExecutionTime {
 	);
 
 	public static void main(final String[] args) throws InterruptedException {
-		final Runner<?, ?, ?> runner = Runner.of(
+		final Runner<Long, BitGene, Double> runner = Runner.of(
 			KNAPSACK,
 			duration -> limit.byExecutionTime(Duration.ofMillis(duration)),
 			TRIAL_METER,

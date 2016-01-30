@@ -27,6 +27,7 @@ import static org.jenetics.tool.evaluation.engines.KNAPSACK;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
+import org.jenetics.BitGene;
 import org.jenetics.engine.limit;
 import org.jenetics.tool.trial.Params;
 import org.jenetics.tool.trial.TrialMeter;
@@ -59,7 +60,7 @@ public class KnapsackFixedGeneration {
 	);
 
 	public static void main(final String[] args) throws InterruptedException {
-		final Runner<?, ?, ?> runner = Runner.of(
+		final Runner<Long, BitGene, Double> runner = Runner.of(
 			KNAPSACK,
 			limit::byFixedGeneration,
 			TRIAL_METER,
