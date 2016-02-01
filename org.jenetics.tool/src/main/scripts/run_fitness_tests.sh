@@ -13,20 +13,20 @@ function read_link() {
 }
 
 TESTS=(
-	"KnapsackExecutionTime:knapsack_execution_time-perf.xml"
-	"KnapsackFitnessThreshold:knapsack_fitness_threshold-perf.xml"
-	"KnapsackFixedGeneration:knapsack_fixed_generation-perf.xml"
-	"KnapsackSteadyFitness:knapsack_steady_fitness-perf.xml"
+	"KnapsackExecutionTime:Knapsack-execution_time_termination.xml"
+	"KnapsackFitnessThreshold:Knapsack-fitness_threshold_termination.xml"
+	"KnapsackFixedGeneration:Knapsack-fixed_generation_termination.xml"
+	"KnapsackSteadyFitness:Knapsack-steady_fitness_termination.xml"
 )
 
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-RESULT_BASE_PATH=`read_link "${SCRIPT_DIR}/../resources/org/jenetics/trial"`
+RESULT_BASE_PATH=`read_link "${SCRIPT_DIR}/../result/org/jenetics/tool/evaluation"`
 JRUN=`read_link "${SCRIPT_DIR}/../../../../jrun"`
 
 while true; do
     for test in ${TESTS[@]}
     do
-        CLASS="org.jenetics.evaluation.${test%%:*}"
+        CLASS="org.jenetics.evaluation.tool.${test%%:*}"
         RESULT="${RESULT_BASE_PATH}/${test#*:}"
 
         ${JRUN} ${CLASS} --result-file ${RESULT} --sample-count 1
