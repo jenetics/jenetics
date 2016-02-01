@@ -42,6 +42,8 @@ import org.jenetics.tool.trial.SampleSummary;
 import org.jenetics.tool.trial.TrialMeter;
 
 /**
+ * Helper class for creating Gnuplot diagrams from result files.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
