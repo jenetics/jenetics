@@ -48,24 +48,44 @@ import org.jenetics.tool.trial.TrialMeter;
  */
 public class Diagram {
 
+	/**
+	 * The available Gnuplot templates.
+	 */
 	public static enum Template {
-		EXECUTION_TIME("execution_time_termination.gp"),
-		FITNESS_THRESHOLD("fitness_threshold_termination.gp"),
-		FIXED_GENERATION("fixed_generation_termination.gp"),
-		STEADY_FITNESS("steady_fitness_termination.gp");
 
-		private static final String BASE = "/org/jenetics/tool/evaluation";
+		/**
+		 * Template for execution time termination diagrams.
+		 */
+		EXECUTION_TIME("execution_time_termination.gp"),
+
+		/**
+		 * Template for fitness threshold termination diagrams.
+		 */
+		FITNESS_THRESHOLD("fitness_threshold_termination.gp"),
+
+		/**
+		 * Template for fixed generation termination diagrams.
+		 */
+		FIXED_GENERATION("fixed_generation_termination.gp"),
+
+		/**
+		 * Template for steady fitness termination diagrams,
+		 */
+		STEADY_FITNESS("steady_fitness_termination.gp");
 
 		private final String _path;
 
 		private Template(final String path) {
-			_path = requireNonNull(path);
+			_path = "/org/jenetics/tool/evaluation" + requireNonNull(path);
 		}
 
-		public String text() {
-			final String rsc = BASE + "/" + _path;
-			System.out.println(rsc);
-			try (InputStream stream = Diagram.class.getResourceAsStream(rsc)) {
+		/**
+		 * Return the template content as string.
+		 *
+		 * @return the template content
+		 */
+		public String content() {
+			try (InputStream stream = Diagram.class.getResourceAsStream(_path)) {
 				return IO.toText(stream);
 			} catch (IOException e) {
 				throw new UncheckedIOException(e);
@@ -73,6 +93,19 @@ public class Diagram {
 		}
 	}
 
+	/**
+	 * Create a performance diagram.
+	 *
+	 * @param template the Gnuplot template to use
+	 * @param params the diagram parameters (x-axis)
+	 * @param generation the generation summary data
+	 * @param fitness the fitness summary data
+	 * @param output the output file
+	 * @throws IOException if the diagram generation fails
+	 * @throws NullPointerException of one of the parameters is {@code null}
+	 * @throws IllegalArgumentException if the {@params}, {@code generation} and
+	 *         {@code fitness} doesn't have the same parameter count
+	 */
 	public static void create(
 		final Template template,
 		final Params<?> params,
@@ -82,7 +115,9 @@ public class Diagram {
 	)
 		throws IOException
 	{
-		if (params.size() != generation.parameterCount() || params.size() != fitness.parameterCount()) {
+		if (params.size() != generation.parameterCount() ||
+			params.size() != fitness.parameterCount())
+		{
 			throw new IllegalArgumentException(format(
 				"Parameters have different size: [%s, %s, %s].",
 				params.size(), generation.parameterCount(), fitness.parameterCount()
@@ -92,7 +127,7 @@ public class Diagram {
 		final Path templatePath = File
 			.createTempFile("__diagram_template__", "__").toPath();
 		try {
-			IO.write(template.text(), templatePath);
+			IO.write(template.content(), templatePath);
 
 			final Path dataPath = File
 				.createTempFile("__diagram_data__", "__").toPath();
