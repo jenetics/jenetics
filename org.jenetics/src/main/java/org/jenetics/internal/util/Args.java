@@ -27,6 +27,8 @@ import java.util.function.Function;
 import org.jenetics.util.ISeq;
 
 /**
+ * Helper class for parsing command line arguments.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -39,6 +41,12 @@ public class Args {
 		_args = ISeq.of(requireNonNull(args));
 	}
 
+	/**
+	 * Return the parameter with the given name.
+	 *
+	 * @param name the parameter name
+	 * @return the parameter with the given name, if any
+	 */
 	public Optional<String> arg(final String name) {
 		int index = _args.indexOf("--" + name);
 		if (index == -1) index = _args.indexOf("-" + name);
@@ -48,16 +56,34 @@ public class Args {
 			: Optional.empty();
 	}
 
+	/**
+	 * Return the int-argument with the given name.
+	 *
+	 * @param name the argument name
+	 * @return the int argument value, if any
+	 */
 	public Optional<Integer> intArg(final String name) {
 		return arg(name)
 			.flatMap(s -> parse(s, Integer::new));
 	}
 
+	/**
+	 * Return the long-argument with the given name.
+	 *
+	 * @param name the argument name
+	 * @return the long argument value, if any
+	 */
 	public Optional<Long> longArg(final String name) {
 		return arg(name)
 			.flatMap(s -> parse(s, Long::new));
 	}
 
+	/**
+	 * Return the double-argument with the given name.
+	 *
+	 * @param name the argument name
+	 * @return the double argument value, if any
+	 */
 	public Optional<Double> doubleArg(final String name) {
 		return arg(name)
 			.flatMap(s -> parse(s, Double::new));
@@ -81,6 +107,12 @@ public class Args {
 		return _args.toString();
 	}
 
+	/**
+	 * Wraps the given argument array into an {@code Args} object.
+	 *
+	 * @param args the underlying command line arguments
+	 * @return the wrapped argument object
+	 */
 	public static Args of(final String[] args) {
 		return new Args(args);
 	}
