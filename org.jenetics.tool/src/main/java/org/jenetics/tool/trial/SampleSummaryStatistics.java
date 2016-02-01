@@ -31,6 +31,28 @@ import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
 
 /**
+ * A state object for collecting statistics such as count, min, max, sum, mean,
+ * variance, skewness and kurtosis. The design of this class is similar to the
+ * {@link java.util.DoubleSummaryStatistics} class.
+ * <p>
+ * <pre>{@code
+ * final Stream<Sample> stream = ...
+ * final SampleSummaryStatistics statistics = stream.collect(
+ *         () -> new SampleSummaryStatistics(parameterCount),
+ *         SampleSummaryStatistics::accept,
+ *         SampleSummaryStatistics::combine
+ *     );
+ * }</pre>
+ *
+ * <p>
+ * <b>Implementation note:</b>
+ * <i>This implementation is not thread safe. However, it is safe to use
+ * {@link #toSampleStatistics(int)}  on a parallel stream,
+ * because the parallel implementation of
+ * {@link java.util.stream.Stream#collect Stream.collect()}
+ * provides the necessary partitioning, isolation, and merging of results for
+ * safe and efficient parallel execution.</i>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz  Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -41,6 +63,14 @@ public class SampleSummaryStatistics implements Consumer<Sample> {
 	private final ISeq<DoubleMomentStatistics> _moments;
 	private final ISeq<ExactQuantile> _quantiles;
 
+	/**
+	 * Create a new statistics object with the given expected parameter count of
+	 * the accepted samples.
+	 *
+	 * @param parameterCount the parameter count or sample size, respectively
+	 * @throws IllegalArgumentException if the given {@code parameterCount}
+	 *         is smaller then one
+	 */
 	public SampleSummaryStatistics(final int parameterCount) {
 		_parameterCount = require.positive(parameterCount);
 		_moments = MSeq.of(DoubleMomentStatistics::new, parameterCount).toISeq();
@@ -62,36 +92,74 @@ public class SampleSummaryStatistics implements Consumer<Sample> {
 		}
 	}
 
-	public SampleSummaryStatistics combine(final SampleSummaryStatistics statistics) {
-		if (statistics._parameterCount != _parameterCount) {
+	/**
+	 * Combine two {@code SampleSummaryStatistics} statistic objects.
+	 *
+	 * @param other the other {@code SampleSummaryStatistics} statistics to
+	 *        combine with {@code this} one.
+	 * @return {@code this} statistics object
+	 * @throws IllegalArgumentException if the {@code parameterCount} of the
+	 *         {@code other} statistics object is different to {@code this} one
+	 * @throws NullPointerException if the other statistical summary is
+	 *         {@code null}.
+	 */
+	public SampleSummaryStatistics combine(final SampleSummaryStatistics other) {
+		if (other._parameterCount != _parameterCount) {
 			throw new IllegalArgumentException(format(
 				"Expected sample size of %d, but got %d.",
-				_parameterCount, statistics._parameterCount
+				_parameterCount, other._parameterCount
 			));
 		}
 
 		for (int i = 0; i < _parameterCount; ++i) {
-			_moments.get(i).combine(statistics._moments.get(i));
-			_quantiles.get(i).combine(statistics._quantiles.get(i));
+			_moments.get(i).combine(other._moments.get(i));
+			_quantiles.get(i).combine(other._quantiles.get(i));
 		}
 
 		return this;
 	}
 
+	/**
+	 * Return the <i>raw</i> {@code DoubleMomentStatistics} objects.
+	 *
+	 * @return the <i>raw</i> {@code DoubleMomentStatistics} objects
+	 */
 	public ISeq<DoubleMomentStatistics> getMoments() {
 		return _moments;
 	}
 
+	/**
+	 * Return the quantile object.
+	 *
+	 * @return the quantile object
+	 */
 	public ISeq<ExactQuantile> getQuantiles() {
 		return _quantiles;
 	}
 
+	/**
+	 * Return a {@code Collector} which applies an double-producing mapping
+	 * function to each input element, and returns moments-statistics for the
+	 * resulting values.
+	 *
+	 * <pre>{@code
+	 * final Stream<Sample> stream = ...
+	 * final SampleSummaryStatistics statistics = stream
+	 *     .collect(toDoubleMomentStatistics(parameterCount));
+	 * }</pre>
+	 *
+	 * @param parameterCount the number of parameter of the accumulated
+	 *        {@code Sample} objects
+	 * @return a {@code Collector} implementing the sample reduction
+	 * @throws IllegalArgumentException if the given {@code parameterCount}
+	 *         is smaller then one
+	 */
 	public static Collector<Sample, ?, SampleSummaryStatistics>
-	toSampleStatistics(final int size) {
-		require.positive(size);
+	toSampleStatistics(final int parameterCount) {
+		require.positive(parameterCount);
 
 		return Collector.of(
-			() -> new SampleSummaryStatistics(size),
+			() -> new SampleSummaryStatistics(parameterCount),
 			SampleSummaryStatistics::accept,
 			SampleSummaryStatistics::combine
 		);

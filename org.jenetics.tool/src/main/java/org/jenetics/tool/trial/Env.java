@@ -21,6 +21,8 @@ package org.jenetics.tool.trial;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -32,12 +34,16 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.jenetics.internal.util.Hash;
 
 /**
+ * Represents the collected runtime information.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 @XmlJavaTypeAdapter(Env.Model.Adapter.class)
-public final class Env {
+public final class Env implements Serializable  {
+
+	private static final long serialVersionUID = 1L;
 
 	private final String _osName;
 	private final String _osVersion;
@@ -68,34 +74,74 @@ public final class Env {
 		_javaVMVersion = requireNonNull(javaVMVersion);
 	}
 
+	/**
+	 * The OS architecture.
+	 *
+	 * @return the OS architecture
+	 */
 	public String getOSArch() {
 		return _osArch;
 	}
 
+	/**
+	 * The OS name.
+	 *
+	 * @return the OS name
+	 */
 	public String getOSName() {
 		return _osName;
 	}
 
+	/**
+	 * The OS version.
+	 *
+	 * @return the OS version
+	 */
 	public String getOSVersion() {
 		return _osVersion;
 	}
 
+	/**
+	 * The Java runtime name.
+	 *
+	 * @return the Java runtime name
+	 */
 	public String getJavaRuntimeName() {
 		return _javaRuntimeName;
 	}
 
+	/**
+	 * The Java runtime version.
+	 *
+	 * @return the Java runtime version
+	 */
 	public String getJavaRuntimeVersion() {
 		return _javaRuntimeVersion;
 	}
 
+	/**
+	 * The Java version.
+	 *
+	 * @return the Java version
+	 */
 	public String getJavaVersion() {
 		return _javaVersion;
 	}
 
+	/**
+	 * The Java VM name.
+	 *
+	 * @return the Java VM name
+	 */
 	public String getJavaVMName() {
 		return _javaVMName;
 	}
 
+	/**
+	 * Return the Java VM version.
+	 *
+	 * @return the Java VM version
+	 */
 	public String getJavaVMVersion() {
 		return _javaVMVersion;
 	}
@@ -126,6 +172,33 @@ public final class Env {
 			_javaVMVersion.equals(((Env)obj)._javaVMVersion);
 	}
 
+	@Override
+	public String toString() {
+		return
+			"OS name:              " + _osName + "\n" +
+			"OS version:           " + _osVersion + "\n" +
+			"OS architecture:      " + _osArch + "\n" +
+			"Java version:         " + _javaVersion + "\n" +
+			"Java runtime name:    " + _javaRuntimeName + "\n" +
+			"Java runtime version: " + _javaRuntimeName + "\n" +
+			"VM name:              " + _javaVMName + "\n" +
+			"VM version:           " + _javaVMVersion;
+	}
+
+	/**
+	 * Return a new {@code Env} object with the given parameters.
+	 *
+	 * @param osName the OS name
+	 * @param osVersion the OS version
+	 * @param osArch the OS architecture
+	 * @param javaVersion the Java version
+	 * @param javaRuntimeName the Java runtime name
+	 * @param javaRuntimeVersion the Java runtime version
+	 * @param javaVMName the Java VM name
+	 * @param javaVMVersion the Java VM version
+	 * @throws  NullPointerException if one of the parameters is {@code null}
+	 * @return a new {@code Env} object
+	 */
 	public static Env of(
 		final String osName,
 		final String osVersion,
@@ -148,6 +221,11 @@ public final class Env {
 		);
 	}
 
+	/**
+	 * Return the <i>current</i> environment values.
+	 *
+	 * @return the <i>current</i> environment values
+	 */
 	public static Env of() {
 		return of(
 			System.getProperty("os.name"),

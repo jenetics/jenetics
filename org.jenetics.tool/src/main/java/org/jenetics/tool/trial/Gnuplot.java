@@ -32,6 +32,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
+ * Helper class for creating <i>Gnuplot</i> graphs.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -45,19 +47,27 @@ public class Gnuplot {
 
 	private final Map<String, String> _parameters = new HashMap<>();
 
+	/**
+	 * Create a new {@code Gnuplot} object with the given <i>template</i> path.
+	 *
+	 * @param template the Gnuplot template path
+	 */
 	public Gnuplot(final Path template) {
 		_template = requireNonNull(template);
 	}
 
-	private void setParam(final String name, final String value) {
-		_parameters.put(name, value);
-	}
-
+	/**
+	 * Generate the Gnuplot graph.
+	 *
+	 * @param data the input data file
+	 * @param output the output path of the graph
+	 * @throws IOException if the Gnuplot generation fails
+	 */
 	public void create(final Path data, final Path output)
 		throws IOException
 	{
-		setParam(DATA_NAME, data.toString());
-		setParam(OUTPUT_NAME, output.toString());
+		_parameters.put(DATA_NAME, data.toString());
+		_parameters.put(OUTPUT_NAME, output.toString());
 
 		final Process process = new ProcessBuilder()
 			.command(command())
@@ -65,7 +75,7 @@ public class Gnuplot {
 
 		System.out.println(IO.toText(process.getErrorStream()));
 		try {
-			System.out.println(process.waitFor());
+			System.out.println("Result: " + process.waitFor());
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 		}

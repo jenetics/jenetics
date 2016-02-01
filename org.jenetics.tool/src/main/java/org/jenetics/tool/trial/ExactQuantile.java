@@ -26,6 +26,8 @@ import java.util.stream.Stream;
 import org.jenetics.internal.util.Lazy;
 
 /**
+ * A state object for collecting quantiles.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!

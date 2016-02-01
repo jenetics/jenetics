@@ -33,7 +33,10 @@ dependencies {
 }
 
 jar.manifest.instruction('Export-Package',
-	'org.jenetics.tool'
+	'org.jenetics.tool',
+	'org.jenetics.tool.evaluation',
+	'org.jenetics.tool.problem',
+	'org.jenetics.tool.trial'
 )
 
 javadoc {
@@ -43,7 +46,7 @@ javadoc {
 }
 
 packaging {
-	name = 'Jenetics tools'
+	name = 'Jenetics Tools'
 	author = 'Franz Wilhelmstötter'
 	url = 'http://jenetics.sourceforge.net'
 	jarjar = false

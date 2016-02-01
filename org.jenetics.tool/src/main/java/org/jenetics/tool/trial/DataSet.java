@@ -20,9 +20,9 @@
 package org.jenetics.tool.trial;
 
 import static java.lang.String.format;
-import static java.util.Collections.singletonList;
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
@@ -44,7 +44,9 @@ import org.jenetics.util.ISeq;
  * @since !__version__!
  */
 @XmlJavaTypeAdapter(DataSet.Model.Adapter.class)
-public final class DataSet {
+public final class DataSet implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private final ISeq<Data> _sets;
 
@@ -98,17 +100,17 @@ public final class DataSet {
 	 * Create a new {@code DataSet} object with the given number of parameters
 	 * and the data set names.
 	 *
-	 * @param paramCount the number of parameters one data sample consist of
+	 * @param parameterCount the number of parameters one data sample consist of
 	 * @param dataSetNames the names of the created {@code Data} sets
 	 * @return a new data set object
 	 */
 	public static DataSet of(
-		final int paramCount,
+		final int parameterCount,
 		final String... dataSetNames
 	) {
 		return new DataSet(
 			Arrays.stream(dataSetNames)
-				.map(name -> Data.of(name, singletonList(Sample.of(paramCount))))
+				.map(name -> Data.of(name, parameterCount))
 				.collect(ISeq.toISeq())
 		);
 	}

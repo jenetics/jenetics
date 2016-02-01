@@ -19,9 +19,12 @@
  */
 package org.jenetics.tool.trial;
 
+import static java.lang.String.format;
+import static java.util.Collections.singletonList;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.tool.trial.SampleSummary.toSampleSummary;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,12 +40,19 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
+ * This class collects a list of {@link Sample} result objects into on
+ * {@code Data} object.
+ *
+ * @see Sample
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 @XmlJavaTypeAdapter(Data.Model.Adapter.class)
-public final class Data {
+public final class Data implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private final String _name;
 	private final List<Sample> _samples = new ArrayList<>();
@@ -51,23 +61,51 @@ public final class Data {
 		if (samples.isEmpty()) {
 			throw new IllegalArgumentException("Sample list must not be empty.");
 		}
+		if (!samples.stream().allMatch(s -> samples.get(0).size() == s.size())) {
+			throw new IllegalArgumentException(
+				"All sample object must have the same size."
+			);
+		}
 
 		_name = requireNonNull(name);
 		_samples.addAll(samples);
 	}
 
+	/**
+	 * Return the name of the sample {@code Data} collections.
+	 *
+	 * @return the name of the sample {@code Data} collections
+	 */
 	public String getName() {
 		return _name;
 	}
 
+	/**
+	 * The number of {@link Sample} objects this {@code Data} class contains.
+	 *
+	 * @return the size of the data object
+	 */
 	public int dataSize() {
 		return _samples.size();
 	}
 
+	/**
+	 * The number of values of an {@link Sample} object.
+	 *
+	 * @see Sample#size()
+	 *
+	 * @return number of values of an {@link Sample} object
+	 */
 	public int sampleSize() {
 		return _samples.get(0).size();
 	}
 
+	/**
+	 * Return the current {@link Sample} object. A newly created object is
+	 * returned on demand.
+	 *
+	 * @return the current {@link Sample} object
+	 */
 	public Sample currentSample() {
 		Sample sample = _samples.get(_samples.size() - 1);
 		if (sample.isFull()) {
@@ -78,17 +116,68 @@ public final class Data {
 		return sample;
 	}
 
+	/**
+	 * Return the index of the next parameter index to calculate.
+	 *
+	 * @return the index of the next parameter index to calculate
+	 */
 	public int nextParamIndex() {
 		return currentSample().nextIndex();
 	}
 
+	/**
+	 * Calculate the sample summary of this data object.
+	 *
+	 * @return the sample summary of this data object
+	 */
 	public SampleSummary summary() {
 		return _samples.stream()
+			.filter(Sample::isFull)
 			.collect(toSampleSummary(sampleSize()));
 	}
 
+	@Override
+	public int hashCode() {
+		return (37*_name.hashCode() + 17)*_samples.hashCode()*37 + 17;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof Data &&
+			_name.equals(((Data)obj)._name) &&
+			_samples.equals(((Data)obj)._samples);
+	}
+
+	@Override
+	public String toString() {
+		return format("Data[name=%s, size=%d]", _name, dataSize());
+	}
+
+	/**
+	 * Create a new {@code Data} object with the given parameters.
+	 *
+	 * @param name the name of the data object
+	 * @param samples the sample list of the data object
+	 * @throws NullPointerException if one of the parameters is {@code null}
+	 * @return a new {@code Data} object with the given parameters
+	 */
 	public static Data of(final String name, final List<Sample> samples) {
 		return new Data(name, samples);
+	}
+
+	/**
+	 * Return a new {@code Data} object with the given name and the given number
+	 * of parameters.
+	 *
+	 * @param name the name of the data object
+	 * @param parameterCount the parameter count of the created samples
+	 * @throws NullPointerException if the data {@code name} is {@code null}
+	 * @throws IllegalArgumentException if the given {@code parameterCount} is
+	 *         smaller then one
+	 * @return a new {@code Data} object with the given parameters
+	 */
+	public static Data of(final String name, final int parameterCount) {
+		return of(name, singletonList(Sample.of(parameterCount)));
 	}
 
 
