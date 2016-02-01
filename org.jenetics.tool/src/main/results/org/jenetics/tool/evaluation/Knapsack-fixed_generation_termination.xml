@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<measurement xmlns="http://jenetics.io/Jenetics/trail/1" name="Fixed generation" description="Create fixed generation performance measures">
+<measurement xmlns="http://jenetics.io/Jenetics/trial/1" name="Fixed generation" description="Create fixed generation performance measures">
     <environment>
         <os-name>Linux</os-name>
         <os-version>3.13.0-74-generic</os-version>
