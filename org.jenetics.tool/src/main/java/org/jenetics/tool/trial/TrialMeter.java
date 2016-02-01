@@ -103,6 +103,10 @@ public final class TrialMeter<T> {
 		return _dataSet;
 	}
 
+	public Data getData(final String name) {
+		return _dataSet.get(name);
+	}
+
 	public int dataSize() {
 		return _dataSet.dataSize();
 	}
