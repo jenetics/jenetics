@@ -2,14 +2,14 @@
 
 function read_link() {
     local path=$1
-    if [ -d $path ] ; then
+    if [ -d ${path} ] ; then
         local abspath=$(cd $path; pwd)
     else
-        local prefix=$(cd $(dirname -- $path); pwd)
-        local suffix=$(basename $path)
+        local prefix=$(cd $(dirname -- ${path}); pwd)
+        local suffix=$(basename ${path})
         local abspath="$prefix/$suffix"
     fi
-    echo $abspath
+    echo ${abspath}
 }
 
 TESTS=(
