@@ -60,11 +60,11 @@ public final class DataSet implements Serializable {
 		}
 	}
 
-	public ISeq<Data> getSets() {
+	public ISeq<Data> values() {
 		return _sets;
 	}
 
-	public Data getSet(final String name) {
+	public Data get(final String name) {
 		return _sets.stream()
 			.filter(d -> d.getName().equals(name))
 			.findFirst()
@@ -131,7 +131,7 @@ public final class DataSet implements Serializable {
 			@Override
 			public Model marshal(final DataSet data) {
 				final Model model = new Model();
-				model.dataSet = data.getSets().asList();
+				model.dataSet = data.values().asList();
 				return model;
 			}
 
