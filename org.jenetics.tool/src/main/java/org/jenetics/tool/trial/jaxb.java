@@ -30,7 +30,7 @@ import org.jenetics.internal.util.require;
  * @version !__version__!
  * @since !__version__!
  */
-final class jaxb {
+public final class jaxb {
 	private jaxb() {require.noInstance();}
 
 	private static final class JAXBContextHolder {
