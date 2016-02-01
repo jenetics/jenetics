@@ -19,21 +19,24 @@
  */
 package org.jenetics.tool.evaluation;
 
+import static java.io.File.createTempFile;
 import static java.lang.String.format;
+import static java.nio.file.Files.deleteIfExists;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Stream.concat;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+
+import org.jenetics.internal.util.Args;
 
 import org.jenetics.tool.trial.Gnuplot;
 import org.jenetics.tool.trial.IO;
@@ -58,27 +61,34 @@ public class Diagram {
 		/**
 		 * Template for execution time termination diagrams.
 		 */
-		EXECUTION_TIME("execution_time_termination.gp"),
+		EXECUTION_TIME("execution_time_termination"),
 
 		/**
 		 * Template for fitness threshold termination diagrams.
 		 */
-		FITNESS_THRESHOLD("fitness_threshold_termination.gp"),
+		FITNESS_THRESHOLD("fitness_threshold_termination"),
 
 		/**
 		 * Template for fixed generation termination diagrams.
 		 */
-		FIXED_GENERATION("fixed_generation_termination.gp"),
+		FIXED_GENERATION("fixed_generation_termination"),
 
 		/**
 		 * Template for steady fitness termination diagrams,
 		 */
-		STEADY_FITNESS("steady_fitness_termination.gp");
+		STEADY_FITNESS("steady_fitness_termination");
 
+		private final String _name;
 		private final String _path;
 
-		private Template(final String path) {
-			_path = "/org/jenetics/tool/evaluation/" + requireNonNull(path);
+		private Template(final String name) {
+			_name = requireNonNull(name);
+			_path = "/org/jenetics/tool/evaluation/" +
+				requireNonNull(name) + ".gp";
+		}
+
+		public String getName() {
+			return _name;
 		}
 
 		/**
@@ -126,13 +136,11 @@ public class Diagram {
 			));
 		}
 
-		final Path templatePath = File
-			.createTempFile("__diagram_template__", "__").toPath();
+		final Path templatePath = tempPath();
 		try {
 			IO.write(template.content(), templatePath);
 
-			final Path dataPath = File
-				.createTempFile("__diagram_data__", "__").toPath();
+			final Path dataPath = tempPath();
 			try {
 				final String data = IntStream.range(0, params.size())
 					.mapToObj(i -> toLineString(i, params, generation, fitness))
@@ -143,11 +151,15 @@ public class Diagram {
 				final Gnuplot gnuplot = new Gnuplot(templatePath);
 				gnuplot.create(dataPath, output);
 			} finally {
-				Files.deleteIfExists(dataPath);
+				deleteIfExists(dataPath);
 			}
 		} finally {
-			Files.deleteIfExists(templatePath);
+			deleteIfExists(templatePath);
 		}
+	}
+
+	private static Path tempPath() throws IOException {
+		return createTempFile("__diagram_template__", "__").toPath();
 	}
 
 	private static String toLineString(
@@ -165,24 +177,41 @@ public class Diagram {
 			.collect(Collectors.joining(" "));
 	}
 
-	public static void main(final String[] args) throws Exception {
-		final TrialMeter<Integer> trial = TrialMeter.read(Paths.get(
-			"/home/fwilhelm/Workspace/Development/Projects/Jenetics/org.jenetics.tool/" +
-				"src/main/results/org/jenetics/tool/evaluation/",
-			"Knapsack-steady_fitness_termination.xml"
-		));
+	public static void main(final String[] arguments) throws Exception {
+		final Args args = Args.of(arguments);
 
+		final Path input = args.arg("input")
+			.map(Paths::get)
+			.map(Path::toAbsolutePath)
+			.get();
+
+		final TrialMeter<Integer> trial = TrialMeter.read(input);
 		final Params<Integer> params = trial.getParams();
-		final SampleSummary generation = trial.getDataSet().getSet("Generation").summary();
-		final SampleSummary fitness = trial.getDataSet().getSet("Fitness").summary();
+		final SampleSummary generation = trial.getData("Generation").summary();
+		final SampleSummary fitness = trial.getData("Fitness").summary();
 
 		create(
-			Template.STEADY_FITNESS,
+			template(input),
 			params,
 			generation,
 			fitness,
-			Paths.get("/home/fwilhelm/test.svg")
+			output(input)
 		);
+	}
+
+	private static Template template(final Path path) {
+		final String name = path.getFileName().toString()
+			.split("-")[1]
+			.split("\\.")[0];
+
+		return Arrays.stream(Template.values())
+			.filter(t -> t.getName().equals(name))
+			.findFirst().get();
+	}
+
+	private static Path output(final Path path) {
+		final String name = path.getFileName().toString().split("\\.")[0];
+		return Paths.get(path.getParent().toString(), name + ".svg");
 	}
 
 }
