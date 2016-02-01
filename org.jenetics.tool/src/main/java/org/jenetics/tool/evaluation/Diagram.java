@@ -76,7 +76,7 @@ public class Diagram {
 		private final String _path;
 
 		private Template(final String path) {
-			_path = "/org/jenetics/tool/evaluation" + requireNonNull(path);
+			_path = "/org/jenetics/tool/evaluation/" + requireNonNull(path);
 		}
 
 		/**
@@ -166,8 +166,8 @@ public class Diagram {
 	public static void main(final String[] args) throws Exception {
 		final TrialMeter<Integer> trial = TrialMeter.read(Paths.get(
 			"/home/fwilhelm/Workspace/Development/Projects/Jenetics/org.jenetics.tool/" +
-				"src/main/resources/org/jenetics/tool/trial/",
-			"knapsack_steady_fitness-perf.xml"
+				"src/main/results/org/jenetics/tool/evaluation/",
+			"Knapsack-steady_fitness_termination.xml"
 		));
 
 		final Params<Integer> params = trial.getParams();
