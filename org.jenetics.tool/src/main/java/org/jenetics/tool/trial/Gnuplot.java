@@ -75,7 +75,7 @@ public class Gnuplot {
 
 		System.out.println(IO.toText(process.getErrorStream()));
 		try {
-			System.out.println("Result: " + process.waitFor());
+			process.waitFor();
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 		}
