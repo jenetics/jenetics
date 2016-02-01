@@ -76,6 +76,11 @@ public class Args {
 		return value;
 	}
 
+	@Override
+	public String toString() {
+		return _args.toString();
+	}
+
 	public static Args of(final String[] args) {
 		return new Args(args);
 	}
