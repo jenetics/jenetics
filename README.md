@@ -67,9 +67,11 @@ for creating the project files for Eclipse or IntelliJ, respectively. Whereas th
 
 The latest Eclipse version (4.4.2) has problems compiling some _valid_ lambda expressions; e.g. the `HelloWorld::eval` function in the example below. If you have such problems when trying to compile the library with Eclipse, you can fix this by adding an explicit cast to the method reference:
 
-     Engine
-         .builder((Function<Genotype<BitGene>, Integer>)HelloWorld::eval, gtf)
-         .build();
+```java
+ Engine
+     .builder((Function<Genotype<BitGene>, Integer>)HelloWorld::eval, gtf)
+     .build();
+```
 
  Or you are using [IntelliJ](https://www.jetbrains.com/idea/download/) instead.
 
@@ -79,39 +81,41 @@ The latest Eclipse version (4.4.2) has problems compiling some _valid_ lambda ex
 
 The minimum evolution Engine setup needs a genotype factory, `Factory<Genotype<?>>`, and a fitness `Function`. The `Genotype` implements the `Factory` interface and can therefore be used as prototype for creating the initial `Population` and for creating new random `Genotypes`.
 
-	import org.jenetics.BitChromosome;
-	import org.jenetics.BitGene;
-	import org.jenetics.Genotype;
-	import org.jenetics.engine.Engine;
-	import org.jenetics.engine.EvolutionResult;
-	import org.jenetics.util.Factory;
+```java
+import org.jenetics.BitChromosome;
+import org.jenetics.BitGene;
+import org.jenetics.Genotype;
+import org.jenetics.engine.Engine;
+import org.jenetics.engine.EvolutionResult;
+import org.jenetics.util.Factory;
 
-	public class HelloWorld {
-		// 2.) Definition of the fitness function.
-		private static Integer eval(Genotype<BitGene> gt) {
-			return ((BitChromosome)gt.getChromosome()).bitCount();
-		}
+public class HelloWorld {
+    // 2.) Definition of the fitness function.
+    private static Integer eval(Genotype<BitGene> gt) {
+        return ((BitChromosome)gt.getChromosome()).bitCount();
+    }
 
-		public static void main(String[] args) {
-			// 1.) Define the genotype (factory) suitable
-			//     for the problem.
-			Factory<Genotype<BitGene>> gtf =
-				Genotype.of(BitChromosome.of(10, 0.5));
+    public static void main(String[] args) {
+        // 1.) Define the genotype (factory) suitable
+        //     for the problem.
+        Factory<Genotype<BitGene>> gtf =
+            Genotype.of(BitChromosome.of(10, 0.5));
 
-			// 3.) Create the execution environment.
-			Engine<BitGene, Integer> engine = Engine
-				.builder(HelloWorld::eval, gtf)
-				.build();
+        // 3.) Create the execution environment.
+        Engine<BitGene, Integer> engine = Engine
+            .builder(HelloWorld::eval, gtf)
+            .build();
 
-			// 4.) Start the execution (evolution) and
-			//     collect the result.
-			Genotype<BitGene> result = engine.stream()
-				.limit(100)
-				.collect(EvolutionResult.toBestGenotype());
+        // 4.) Start the execution (evolution) and
+        //     collect the result.
+        Genotype<BitGene> result = engine.stream()
+            .limit(100)
+            .collect(EvolutionResult.toBestGenotype());
 
-			System.out.println("Hello World:\n" + result);
-		}
-	}
+        System.out.println("Hello World:\n" + result);
+    }
+}
+```
 
 In contrast to other GA implementations, the library uses the concept of an evolution stream (`EvolutionStream`) for executing the evolution steps. Since the `EvolutionStream` implements the Java Stream interface, it works smoothly with the rest of the Java streaming API. Now let's have a closer look at listing above and discuss this simple program step by step:
 
@@ -215,5 +219,5 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 
 ## Used software
 
-<a href="https://www.jetbrains.com/idea/">![IntelliJ](https://www.jetbrains.com/idea/docs/logo_intellij_idea.png)</a>
+<a href="https://www.jetbrains.com/idea/">![IntelliJ](http://jenetics.io/img/icon_IntelliJIDEA.png)</a>
 
