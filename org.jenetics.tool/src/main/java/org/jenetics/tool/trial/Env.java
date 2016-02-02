@@ -244,7 +244,7 @@ public final class Env implements Serializable  {
 	 * ************************************************************************/
 
 	@XmlRootElement(name = "environment")
-	@XmlType(name = "org.jenetics.tool.Env")
+	@XmlType(name = "org.jenetics.tool.trial.Env")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	static final class Model {
 

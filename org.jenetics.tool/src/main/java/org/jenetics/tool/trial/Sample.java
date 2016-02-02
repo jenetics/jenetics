@@ -208,7 +208,7 @@ public final class Sample implements Serializable {
 	 * ************************************************************************/
 
 	@XmlRootElement(name = "sample")
-	@XmlType(name = "org.jenetics.tool.Sample")
+	@XmlType(name = "org.jenetics.tool.trial.Sample")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	static final class Model {
 

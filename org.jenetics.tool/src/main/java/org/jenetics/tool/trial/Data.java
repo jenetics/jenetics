@@ -186,7 +186,7 @@ public final class Data implements Serializable {
 	 * ************************************************************************/
 
 	@XmlRootElement(name = "data")
-	@XmlType(name = "org.jenetics.tool.Data")
+	@XmlType(name = "org.jenetics.tool.trial.Data")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
 

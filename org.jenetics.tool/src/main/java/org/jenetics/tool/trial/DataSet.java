@@ -120,7 +120,7 @@ public final class DataSet implements Serializable {
 	 * ************************************************************************/
 
 	@XmlRootElement(name = "data-set")
-	@XmlType(name = "org.jenetics.tool.DataSet")
+	@XmlType(name = "org.jenetics.tool.trial.DataSet")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	static final class Model {
 

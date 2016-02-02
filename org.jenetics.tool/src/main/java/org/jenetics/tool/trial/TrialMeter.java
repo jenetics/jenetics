@@ -152,7 +152,16 @@ public final class TrialMeter<T> {
 		}
 	}
 
-
+	/**
+	 * Return a new trial measure environment.
+	 *
+	 * @param name the trial meter name
+	 * @param description the trial meter description, maybe {@code null}
+	 * @param params the parameters which are tested by this trial meter
+	 * @param dataSetNames the names of the calculated data sets
+	 * @param <T> the parameter type
+	 * @return a new trial measure environment
+	 */
 	public static <T> TrialMeter<T> of(
 		final String name,
 		final String description,
@@ -167,6 +176,18 @@ public final class TrialMeter<T> {
 			DataSet.of(params.size(), dataSetNames)
 		);
 	}
+
+	/**
+	 * Return a new trial measure environment.
+	 *
+	 * @param name the trial meter name
+	 * @param description the trial meter description, maybe {@code null}
+	 * @param env the environment information
+	 * @param params the parameters which are tested by this trial meter
+	 * @param dataSetNames the names of the calculated data sets
+	 * @param <T> the parameter type
+	 * @return a new trial measure environment
+	 */
 	public static <T> TrialMeter<T> of(
 		final String name,
 		final String description,
@@ -183,6 +204,15 @@ public final class TrialMeter<T> {
 		);
 	}
 
+	/**
+	 * Read existing {@code TrialMeter} (intermediate) results from the given
+	 * input stream.
+	 *
+	 * @param in the {@link InputStream} to read from
+	 * @param <T> the parameter type
+	 * @throws UncheckedIOException if reading the {@code TrialMeter} fails
+	 * @return the {@code TrialMeter} object read from the input stream
+	 */
 	@SuppressWarnings("unchecked")
 	public static <T> TrialMeter<T> read(final InputStream in) {
 		try {
@@ -194,6 +224,15 @@ public final class TrialMeter<T> {
 		}
 	}
 
+	/**
+	 * Read existing {@code TrialMeter} (intermediate) results from the given
+	 * path.
+	 *
+	 * @param path the path the {@code TrialMeter} is read
+	 * @param <T> the parameter type
+	 * @throws UncheckedIOException if reading the {@code TrialMeter} fails
+	 * @return the {@code TrialMeter} object read from the input stream
+	 */
 	public static <T> TrialMeter<T> read(final Path path) {
 		try (InputStream in = new FileInputStream(path.toFile())) {
 			return read(in);
@@ -228,7 +267,7 @@ public final class TrialMeter<T> {
 	 * ************************************************************************/
 
 	@XmlRootElement(name = "measurement")
-	@XmlType(name = "org.jenetics.tool.TrialMeter")
+	@XmlType(name = "org.jenetics.tool.trial.TrialMeter")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	static final class Model {
