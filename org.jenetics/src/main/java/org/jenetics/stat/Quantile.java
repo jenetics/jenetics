@@ -266,7 +266,7 @@ public class Quantile implements DoubleConsumer {
 	}
 
 	private void update(double value) {
-		assert (_initialized);
+		assert _initialized;
 
 		// If min or max, handle as special case; otherwise, ...
 		if (_quantile == 0.0) {

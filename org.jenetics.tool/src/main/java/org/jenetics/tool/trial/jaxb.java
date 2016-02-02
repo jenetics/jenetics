@@ -17,24 +17,42 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
+package org.jenetics.tool.trial;
+
+import javax.xml.bind.DataBindingException;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+
+import org.jenetics.internal.util.require;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.2
  * @version !__version__!
+ * @since !__version__!
  */
+public final class jaxb {
+	private jaxb() {require.noInstance();}
 
-// The Jenetics projects.
-include 'org.jenetics'
-include 'org.jenetics.doc'
-include 'org.jenetics.example'
-include 'org.jenetics.tool'
+	private static final class JAXBContextHolder {
+		private static final JAXBContext CONTEXT; static {
+			try {
+				CONTEXT = JAXBContext.newInstance(
+					Sample.Model.class,
+					Data.Model.class,
+					DataSet.Model.class,
+					TrialMeter.Model.class,
+					Env.Model.class
+				);
+			} catch (JAXBException e) {
+				throw new DataBindingException(
+					"Something went wrong while creating JAXBContext.", e
+				);
+			}
+		}
+	}
 
-rootProject.name = 'jenetics'
+	public static JAXBContext context() {
+		return JAXBContextHolder.CONTEXT;
+	}
 
-// Rename the build scripts of the projects to ${project.name}.gradle
-rootProject.children.each {
-	it.buildFileName = it.name + '.gradle'
 }
-
-
