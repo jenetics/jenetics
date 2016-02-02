@@ -36,7 +36,6 @@ import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.util.Optional;
-import java.util.Random;
 import java.util.function.Function;
 
 import javax.xml.bind.Marshaller;
@@ -49,8 +48,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.jenetics.util.ISeq;
 
 /**
  * Represents an function testing measurement environment.
@@ -91,26 +88,59 @@ public final class TrialMeter<T> {
 		return Optional.ofNullable(_description);
 	}
 
+	/**
+	 * The trial meter environment information.
+	 *
+	 * @return the trial meter environment information
+	 */
 	public Env getEnv() {
 		return _env;
 	}
 
+	/**
+	 * Return the testing parameters.
+	 *
+	 * @return the testing parameters
+	 */
 	public Params<T> getParams() {
 		return _params;
 	}
 
+	/**
+	 * Return the current trail {@link DataSet}.
+	 *
+	 * @return the current trail data set
+	 */
 	public DataSet getDataSet() {
 		return _dataSet;
 	}
 
+	/**
+	 * Return the test data with the given name
+	 *
+	 * @param name the data name
+	 * @return the test {@link Data} with the given name
+	 * @throws NullPointerException if the given {@code name} is {@code null}
+	 */
 	public Data getData(final String name) {
 		return _dataSet.get(name);
 	}
 
+	/**
+	 * Return the number of test data results.
+	 *
+	 * @return the number of test data results.
+	 */
 	public int dataSize() {
 		return _dataSet.dataSize();
 	}
 
+	/**
+	 * Calculates the test values for all parameters. The length of the
+	 * resulting {@code double[]} array must be {@link #dataSize()}.
+	 *
+	 * @param function the test function
+	 */
 	public void sample(final Function<T, double[]> function) {
 		_params.values()
 			.subSeq(_dataSet.nextParamIndex())
@@ -120,11 +150,18 @@ public final class TrialMeter<T> {
 	@Override
 	public String toString() {
 		return format(
-			"TrialMeter[samples=%d, params=%d]",
+			"TrialMeter[sample=%d, param=%d]",
 			dataSize(), _dataSet.nextParamIndex()
 		);
 	}
 
+	/**
+	 * Writes the current {@code TrialMeter} object (the calculated samples +
+	 * the parameters) to the given output stream.
+	 *
+	 * @param out the output stream where to write the trial meter
+	 * @throws UncheckedIOException if the marshalling fails
+	 */
 	public void write(final OutputStream out) {
 		try {
 			final Marshaller marshaller = jaxb.context().createMarshaller();
@@ -135,6 +172,13 @@ public final class TrialMeter<T> {
 		}
 	}
 
+	/**
+	 * Writes the current {@code TrialMeter} object (the calculated samples +
+	 * the parameters) to the given path.
+	 *
+	 * @param path the output path
+	 * @throws UncheckedIOException if the marshalling fails
+	 */
 	public void write(final Path path) {
 		try {
 			final File tempFile = createTempFile("__trial_meter__", ".xml");
@@ -239,26 +283,6 @@ public final class TrialMeter<T> {
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
 		}
-	}
-
-	public static void main(final String[] args) throws Exception {
-		final TrialMeter<String> trialMeter = of(
-			"Some name", "Some description",
-			Params.of("Strings", ISeq.of("p1", "p2", "p3", "p4", "p5")),
-			"fitness", "generation"
-		);
-
-		final Random random = new Random();
-
-		for (int i = 0; i < 10; ++i) {
-			trialMeter.sample(p -> {
-				return new double[] {
-					random.nextDouble(), random.nextDouble()
-				};
-			});
-		}
-
-		trialMeter.write(System.out);
 	}
 
 
