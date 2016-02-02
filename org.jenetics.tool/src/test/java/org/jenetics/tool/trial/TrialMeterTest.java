@@ -17,24 +17,40 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
+package org.jenetics.tool.trial;
+
+import java.util.Random;
+
+import org.testng.annotations.Test;
+
+import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.2
  * @version !__version__!
+ * @since !__version__!
  */
+public class TrialMeterTest {
 
-// The Jenetics projects.
-include 'org.jenetics'
-include 'org.jenetics.doc'
-include 'org.jenetics.example'
-include 'org.jenetics.tool'
+	@Test
+	public void measure() {
+		final TrialMeter<String> trialMeter = TrialMeter.of(
+			"Some name", "Some description",
+			Params.of("Strings", ISeq.of("p1", "p2", "p3", "p4", "p5")),
+			"fitness", "generation"
+		);
 
-rootProject.name = 'jenetics'
+		final Random random = new Random();
 
-// Rename the build scripts of the projects to ${project.name}.gradle
-rootProject.children.each {
-	it.buildFileName = it.name + '.gradle'
+		for (int i = 0; i < 10; ++i) {
+			trialMeter.sample(p -> {
+				return new double[] {
+					random.nextDouble(), random.nextDouble()
+				};
+			});
+		}
+
+		trialMeter.write(System.out);
+	}
+
 }
-
-

@@ -18,23 +18,55 @@
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 
+import org.apache.tools.ant.filters.ReplaceTokens
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.2
+ * @since !__version__!
  * @version !__version__!
  */
 
-// The Jenetics projects.
-include 'org.jenetics'
-include 'org.jenetics.doc'
-include 'org.jenetics.example'
-include 'org.jenetics.tool'
+apply plugin: 'packaging'
 
-rootProject.name = 'jenetics'
+dependencies {
+	compile project(':org.jenetics')
 
-// Rename the build scripts of the projects to ${project.name}.gradle
-rootProject.children.each {
-	it.buildFileName = it.name + '.gradle'
+	testCompile Include.TestNG
+}
+
+jar.manifest.instruction('Export-Package',
+	'org.jenetics.tool',
+	'org.jenetics.tool.evaluation',
+	'org.jenetics.tool.problem',
+	'org.jenetics.tool.trial'
+)
+
+javadoc {
+	options {
+		links 'http://jenetics.io/javadoc/org.jenetics'
+	}
+}
+
+packaging {
+	name = 'Jenetics Tools'
+	author = 'Franz Wilhelmstötter'
+	url = 'http://jenetics.sourceforge.net'
+	jarjar = false
+	javadoc = false
+
+	doLast {
+		copy {
+			from('src/main/scripts') {
+				include '**/*'
+			}
+			into exportScriptDir
+			filter(ReplaceTokens, tokens: [
+				__identifier__: identifier,
+				__year__: copyrightYear,
+				__version__: version
+			])
+		}
+	}
 }
 
 

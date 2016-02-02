@@ -17,24 +17,37 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
+package org.jenetics.tool.trial;
+
+import java.io.BufferedReader;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.nio.file.Path;
+import java.util.stream.Collectors;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.2
  * @version !__version__!
+ * @since !__version__!
  */
+public class IO {
 
-// The Jenetics projects.
-include 'org.jenetics'
-include 'org.jenetics.doc'
-include 'org.jenetics.example'
-include 'org.jenetics.tool'
+	public static String toText(final InputStream stream) throws IOException {
+		final InputStreamReader reader = new InputStreamReader(stream);
+		final BufferedReader buffer = new BufferedReader(reader);
 
-rootProject.name = 'jenetics'
+		return buffer.lines().collect(Collectors.joining("\n"));
+	}
 
-// Rename the build scripts of the projects to ${project.name}.gradle
-rootProject.children.each {
-	it.buildFileName = it.name + '.gradle'
+	public static void write(final String value, final Path path)
+		throws IOException
+	{
+		try (OutputStream out = new FileOutputStream(path.toFile())) {
+			out.write(value.getBytes("UTF-8"));
+		}
+	}
+
 }
-
-
