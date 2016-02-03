@@ -17,24 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.optimizer;
-
-import static java.util.Objects.requireNonNull;
-
-import java.util.function.DoubleFunction;
-import java.util.function.Function;
-import java.util.function.IntFunction;
-import java.util.function.LongFunction;
-
-import org.jenetics.DoubleGene;
-import org.jenetics.Gene;
-import org.jenetics.Genotype;
-import org.jenetics.MeanAlterer;
-import org.jenetics.Mutator;
-import org.jenetics.Optimize;
-import org.jenetics.engine.Engine;
-import org.jenetics.engine.EvolutionResult;
-import org.jenetics.engine.limit;
+package org.jenetics.tool.optimizer;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

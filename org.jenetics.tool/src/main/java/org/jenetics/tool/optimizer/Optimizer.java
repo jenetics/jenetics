@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.optimizer;
+package org.jenetics.tool.optimizer;
 
 /**
  *
