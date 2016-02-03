@@ -40,8 +40,8 @@ import org.jenetics.util.ISeq;
  * JAXB helper methods.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6
- * @since 2.0
+ * @version !__version__!
+ * @since 1.6
  */
 public class jaxb {
 	private jaxb() {require.noInstance();}
@@ -49,13 +49,13 @@ public class jaxb {
 	@SuppressWarnings("unchecked")
 	private static ISeq<Class<?>> jaxbClasses(final String pkg) {
 		try {
-			final Field field = Class.forName(pkg + ".jaxb")
+			final Field field = Class
+				.forName(pkg + ".jaxb")
 				.getField("CLASSES");
 			field.setAccessible(true);
 
 			return (ISeq<Class<?>>)field.get(null);
 		} catch (ReflectiveOperationException e) {
-			e.printStackTrace();
 			throw new AssertionError(e.getMessage());
 		}
 	}
@@ -63,13 +63,6 @@ public class jaxb {
 	private static final class JAXBContextHolder {
 		private static final JAXBContext CONTEXT; static {
 			try {
-				/*
-				CONTEXT = JAXBContext.newInstance(
-					"org.jenetics:" +
-					"org.jenetics.internal.util:" +
-					"org.jenetics.engine"
-				);
-				*/
 				CONTEXT = JAXBContext.newInstance(
 					jaxbClasses("org.jenetics")
 						.append(jaxbClasses("org.jenetics.engine"))

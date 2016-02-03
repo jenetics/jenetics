@@ -24,6 +24,8 @@ import org.jenetics.internal.util.require;
 import org.jenetics.util.ISeq;
 
 /**
+ * Defining all JAXB marshalling classes in this package.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -31,6 +33,9 @@ import org.jenetics.util.ISeq;
 final class jaxb {
 	private jaxb() {require.noInstance();}
 
+	/**
+	 * The JAXB classes of this package.
+	 */
 	public static final ISeq<Class<?>> CLASSES = ISeq.of(
 		EvolutionParam.Model.class
 	);
