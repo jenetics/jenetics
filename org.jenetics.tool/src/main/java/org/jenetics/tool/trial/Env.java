@@ -37,8 +37,8 @@ import org.jenetics.internal.util.Hash;
  * Represents the collected runtime information.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.4
+ * @since 3.4
  */
 @XmlJavaTypeAdapter(Env.Model.Adapter.class)
 public final class Env implements Serializable  {

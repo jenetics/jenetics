@@ -39,8 +39,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * class is <i>mutable</i> and <b>not</b> thread safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.4
+ * @since 3.4
  */
 @XmlJavaTypeAdapter(Sample.Model.Adapter.class)
 public final class Sample implements Serializable {

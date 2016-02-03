@@ -40,8 +40,8 @@ import org.jenetics.util.ISeq;
  * Collection of sample {@code Data} objects.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.4
+ * @since 3.4
  */
 @XmlJavaTypeAdapter(DataSet.Model.Adapter.class)
 public final class DataSet implements Serializable {

@@ -30,8 +30,8 @@ import java.util.stream.Collectors;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.4
+ * @since 3.4
  */
 public class IO {
 
