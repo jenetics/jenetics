@@ -22,6 +22,7 @@ package org.jenetics.internal.util;
 import static org.jenetics.internal.util.reflect.classOf;
 import static org.jenetics.internal.util.reflect.innerClasses;
 
+import java.lang.reflect.Field;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
@@ -33,6 +34,8 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.jenetics.internal.util.model.CharacterModel;
 
+import org.jenetics.util.ISeq;
+
 /**
  * JAXB helper methods.
  *
@@ -43,13 +46,35 @@ import org.jenetics.internal.util.model.CharacterModel;
 public class jaxb {
 	private jaxb() {require.noInstance();}
 
+	@SuppressWarnings("unchecked")
+	private static ISeq<Class<?>> jaxbClasses(final String pkg) {
+		try {
+			final Field field = Class.forName(pkg + ".jaxb")
+				.getField("CLASSES");
+			field.setAccessible(true);
+
+			return (ISeq<Class<?>>)field.get(null);
+		} catch (ReflectiveOperationException e) {
+			e.printStackTrace();
+			throw new AssertionError(e.getMessage());
+		}
+	}
+
 	private static final class JAXBContextHolder {
 		private static final JAXBContext CONTEXT; static {
 			try {
+				/*
 				CONTEXT = JAXBContext.newInstance(
 					"org.jenetics:" +
 					"org.jenetics.internal.util:" +
 					"org.jenetics.engine"
+				);
+				*/
+				CONTEXT = JAXBContext.newInstance(
+					jaxbClasses("org.jenetics")
+						.append(jaxbClasses("org.jenetics.engine"))
+						.append(model.CharacterModel.class)
+						.toArray(new Class<?>[0])
 				);
 			} catch (JAXBException e) {
 				throw new DataBindingException(
