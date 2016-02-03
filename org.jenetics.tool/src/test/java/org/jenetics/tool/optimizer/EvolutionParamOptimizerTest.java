@@ -19,7 +19,19 @@
  */
 package org.jenetics.tool.optimizer;
 
+import static java.time.Duration.ofMillis;
 import static org.jenetics.engine.limit.byExecutionTime;
+import static org.jenetics.engine.limit.bySteadyFitness;
+
+import org.jenetics.BitGene;
+import org.jenetics.Optimize;
+import org.jenetics.engine.EvolutionParam;
+import org.jenetics.tool.problem.Knapsack;
+import org.jenetics.util.DoubleRange;
+import org.jenetics.util.ISeq;
+import org.jenetics.util.IntRange;
+import org.jenetics.util.LCG64ShiftRandom;
+import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -28,50 +40,55 @@ import static org.jenetics.engine.limit.byExecutionTime;
  */
 public class EvolutionParamOptimizerTest {
 
-//	public static void main(final String[] args) {
-//		RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
-//
-//		final Knapsack problem =
-//			RandomRegistry.with(new LCG64ShiftRandom(1234), r -> {
-//				return Knapsack.of(200, r);
-//			});
-//
-//		final EvolutionParamCodec<BitGene, Double> codec =
-//			EvolutionParamCodec.<BitGene, Double>of(
-//				SelectorCodec.numeric(),
-//				AltererCodec.<BitGene, Double>ofMutator()
-//					.append(AltererCodec.ofMultiPointCrossover(IntRange.of(2, 20)))
-//					.append(AltererCodec.ofSwapMutator())
-//			);
-//
-//		final EvolutionParamOptimizer<BitGene, Double> optimizer =
-//			EvolutionParamOptimizer.of(codec, () -> bySteadyFitness(250));
-//
-//		final EvolutionParam<BitGene, Double> params = optimizer
-//			.optimize(
-//				problem,
-//				Optimize.MAXIMUM,
-//				() -> byExecutionTime(ofMillis(150)));
-//
-//		/*
-//		final RealFunction problem = new RealFunction();
-//
-//		final EvolutionParamCodec<DoubleGene, Double> codec =
-//			EvolutionParamCodec.<DoubleGene, Double>of(
-//				SelectorCodec.numeric(),
-//				AltererCodec.numericMean()
-//			);
-//
-//		final EvolutionParamOptimizer<DoubleGene, Double> optimizer =
-//			new EvolutionParamOptimizer<>(codec, () -> bySteadyFitness(250));
-//
-//		final EvolutionParam<DoubleGene, Double> params = optimizer
-//			.optimize(problem, () -> byExecutionTime(ofMillis(150)));
-//		*/
-//
-//		System.out.println();
-//		System.out.println("Best parameters:");
-//		System.out.println(params);
-//	}
+	public static void main(final String[] args) {
+		RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
+
+		final Knapsack problem =
+			RandomRegistry.with(new LCG64ShiftRandom(1234), r -> {
+				return Knapsack.of(200, r);
+			});
+
+		final ISeq<SelectorCodec<BitGene, Double>> selectors = ISeq.of(
+			SelectorCodec.<BitGene, Double>ofBoltzmannSelector(DoubleRange.of(0, 3)),
+			SelectorCodec.<BitGene, Double>ofTournamentSelector(IntRange.of(2, 5))
+		);
+
+		final EvolutionParamCodec<BitGene, Double> codec =
+			EvolutionParamCodec.of(
+				SelectorCodec.of(selectors, ISeq.empty()),
+				AltererCodec.<BitGene, Double>ofMutator()
+					.append(AltererCodec.ofMultiPointCrossover(IntRange.of(2, 20)))
+					.append(AltererCodec.ofSwapMutator())
+			);
+
+		final EvolutionParamOptimizer<BitGene, Double> optimizer =
+			EvolutionParamOptimizer.of(codec, () -> bySteadyFitness(250));
+
+		final EvolutionParam<BitGene, Double> params = optimizer
+			.optimize(
+				problem,
+				Optimize.MAXIMUM,
+				() -> byExecutionTime(ofMillis(150)));
+
+		/*
+		final RealFunction problem = new RealFunction();
+
+		final EvolutionParamCodec<DoubleGene, Double> codec =
+			EvolutionParamCodec.<DoubleGene, Double>of(
+				SelectorCodec.numeric(),
+				AltererCodec.numericMean()
+			);
+
+		final EvolutionParamOptimizer<DoubleGene, Double> optimizer =
+			new EvolutionParamOptimizer<>(codec, () -> bySteadyFitness(250));
+
+		final EvolutionParam<DoubleGene, Double> params = optimizer
+			.optimize(problem, () -> byExecutionTime(ofMillis(150)));
+		*/
+
+		System.out.println();
+		System.out.println("Best parameters:");
+		System.out.println(params);
+	}
 
 }
