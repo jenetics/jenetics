@@ -41,8 +41,8 @@ import org.jenetics.util.ISeq;
  * Collection of parameters the function under test is tested with.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.4
+ * @since 3.4
  */
 @XmlJavaTypeAdapter(Params.Model.Adapter.class)
 public final class Params<T> implements Iterable<T>, Serializable {
