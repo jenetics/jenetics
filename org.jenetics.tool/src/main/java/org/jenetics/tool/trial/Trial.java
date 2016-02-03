@@ -19,7 +19,6 @@
  */
 package org.jenetics.tool.trial;
 
-
 import static java.lang.String.format;
 import static java.nio.file.Files.exists;
 import static java.util.Objects.requireNonNull;
@@ -69,8 +68,9 @@ public class Trial<T> implements Runnable {
 			info("Writing results to '%s'.", _resultPath.toAbsolutePath());
 		}
 
-		int count = 0;
-		while (!_stop.test(count++) && !Thread.currentThread().isInterrupted()) {
+		while (!_stop.test(trialMeter.dataSize()) &&
+			!Thread.currentThread().isInterrupted())
+		{
 			trialMeter.sample(param -> {
 				trialMeter.write(_resultPath);
 				info(trialMeter.toString());
@@ -90,6 +90,7 @@ public class Trial<T> implements Runnable {
 		System.out.println(
 			"" + FORMATTER.format(time) + " - " + format(pattern, params)
 		);
+		System.out.flush();
 	}
 
 }

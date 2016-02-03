@@ -13,8 +13,8 @@ read_link() {
 }
 
 TESTS=(
-	"KnapsackExecutionTime:Knapsack-execution_time_termination.xml"
 	"KnapsackFitnessThreshold:Knapsack-fitness_threshold_termination.xml"
+	"KnapsackExecutionTime:Knapsack-execution_time_termination.xml"
 	"KnapsackFixedGeneration:Knapsack-fixed_generation_termination.xml"
 	"KnapsackSteadyFitness:Knapsack-steady_fitness_termination.xml"
 )
@@ -23,12 +23,10 @@ SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 RESULT_BASE_PATH=`read_link "${SCRIPT_DIR}/../results/org/jenetics/tool/evaluation"`
 JRUN=`read_link "${SCRIPT_DIR}/../../../../jrun"`
 
-while true; do
-	for test in ${TESTS[@]}
-	do
-		CLASS="org.jenetics.tool.evaluation.${test%%:*}"
-		RESULT="${RESULT_BASE_PATH}/${test#*:}"
+for test in ${TESTS[@]}
+do
+    CLASS="org.jenetics.tool.evaluation.${test%%:*}"
+    RESULT="${RESULT_BASE_PATH}/${test#*:}"
 
-		${JRUN} ${CLASS} --result-file ${RESULT} --sample-count 1
-	done
+    ${JRUN} ${CLASS} --result-file ${RESULT} --sample-count 1000
 done
