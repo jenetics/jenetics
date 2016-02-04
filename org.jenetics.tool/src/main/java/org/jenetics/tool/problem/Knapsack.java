@@ -155,7 +155,7 @@ public final class Knapsack implements Problem<ISeq<Item>, BitGene, Double> {
 	 *
 	 * @param items the basic {@link Set} of knapsack items.
 	 * @param knapsackSize the maximal knapsack size
-	 * @throws NullPointerException if the {@code item} set is {@code null}
+	 * @throws NullPointerException if the {@code items} set is {@code null}
 	 */
 	public Knapsack(final Set<Item> items, final double knapsackSize) {
 		_codec = codecs.ofSubSet(ISeq.of(items));
