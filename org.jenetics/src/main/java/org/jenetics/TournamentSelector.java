@@ -26,6 +26,7 @@ import static java.util.stream.Collectors.maxBy;
 import java.io.Serializable;
 import java.util.Random;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -129,8 +130,8 @@ public class TournamentSelector<
 		final Random random
 	) {
 		final int N = population.size();
-		return IntStream.range(0, sampleSize)
-			.mapToObj(i -> population.get(random.nextInt(N)))
+		return Stream.generate(() -> population.get(random.nextInt(N)))
+			.limit(sampleSize)
 			.collect(maxBy(opt.ascending())).get();
 	}
 

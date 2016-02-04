@@ -84,6 +84,11 @@ public final class TrialMeter<T> {
 		return _name;
 	}
 
+	/**
+	 * Return the optional description string.
+	 *
+	 * @return the optional description string
+	 */
 	public Optional<String> getDescription() {
 		return Optional.ofNullable(_description);
 	}

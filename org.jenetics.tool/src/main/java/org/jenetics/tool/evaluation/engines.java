@@ -33,6 +33,8 @@ import org.jenetics.tool.problem.Knapsack;
 import org.jenetics.util.LCG64ShiftRandom;
 
 /**
+ * Definition of commonly used testing {@link Engine} objects.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version 3.4
  * @since 3.4
@@ -40,16 +42,29 @@ import org.jenetics.util.LCG64ShiftRandom;
 public final class engines {
 	private engines() {require.noInstance();}
 
+	/**
+	 * The test {@link Knapsack} {@link Engine} used for the evolution
+	 * performance tests.
+	 */
 	public static Engine<BitGene, Double>
 		KNAPSACK = knapsack(new LCG64ShiftRandom(10101));
 
+	/**
+	 * Create a new {@link Engine} for solving the {@link Knapsack} problem. The
+	 * engine is used for testing purpose.
+	 *
+	 * @see Knapsack#of(int, Random)
+	 *
+	 * @param random the random engine used for creating the {@link Knapsack}
+	 *        problem instance
+	 * @return a new {@link Knapsack} solving evolution {@link Engine}
+	 */
 	public static Engine<BitGene, Double> knapsack(final Random random) {
 		// Search space fo 2²⁵⁰ ~ 10⁷⁵.
 		final Knapsack knapsack = Knapsack.of(250, random);
 
 		// Configure and build the evolution engine.
-		return Engine
-			.builder(knapsack.fitness(), knapsack.codec())
+		return Engine.builder(knapsack)
 			.populationSize(150)
 			.survivorsSelector(new TournamentSelector<>(5))
 			.offspringSelector(new RouletteWheelSelector<>())

@@ -772,6 +772,21 @@ public final class Engine<
 	}
 
 	/**
+	 * Create a new evolution {@code Engine.Builder} for the given
+	 * {@link Problem}.
+	 *
+	 * @param problem the problem to be solved by the evolution {@code Engine}
+	 * @param <T> the (<i>native</i>) argument type of the problem fitness function
+	 * @param <G> the gene type the evolution engine is working with
+	 * @param <C> the result type of the fitness function
+	 * @return Create a new evolution {@code Engine.Builder}
+	 */
+	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
+	Builder<G, C> builder(final Problem<T, G, C> problem) {
+		return builder(problem.fitness(), problem.codec());
+	}
+
+	/**
 	 * Create a new evolution {@code Engine.Builder} with the given fitness
 	 * function and genotype factory.
 	 *

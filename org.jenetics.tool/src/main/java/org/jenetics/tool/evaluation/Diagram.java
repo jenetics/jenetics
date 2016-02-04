@@ -115,8 +115,8 @@ public class Diagram {
 	 * @param output the output file
 	 * @throws IOException if the diagram generation fails
 	 * @throws NullPointerException of one of the parameters is {@code null}
-	 * @throws IllegalArgumentException if the {@params}, {@code generation} and
-	 *         {@code fitness} doesn't have the same parameter count
+	 * @throws IllegalArgumentException if the {@code params}, {@code generation}
+	 *         and {@code fitness} doesn't have the same parameter count
 	 */
 	public static void create(
 		final Template template,
