@@ -64,8 +64,7 @@ public final class engines {
 		final Knapsack knapsack = Knapsack.of(250, random);
 
 		// Configure and build the evolution engine.
-		return Engine
-			.builder(knapsack.fitness(), knapsack.codec())
+		return Engine.builder(knapsack)
 			.populationSize(150)
 			.survivorsSelector(new TournamentSelector<>(5))
 			.offspringSelector(new RouletteWheelSelector<>())
