@@ -755,6 +755,8 @@ public final class Engine<
 	 * Create a new evolution {@code Engine.Builder} for the given
 	 * {@link Problem}.
 	 *
+	 * @since 3.4
+	 *
 	 * @param problem the problem to be solved by the evolution {@code Engine}
 	 * @param <T> the (<i>native</i>) argument type of the problem fitness function
 	 * @param <G> the gene type the evolution engine is working with
