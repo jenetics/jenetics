@@ -27,7 +27,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collector;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.jenetics.internal.util.require;
@@ -157,8 +156,8 @@ public final class Knapsack implements Problem<ISeq<Item>, BitGene, Double> {
 	 * @param knapsackSize the maximal knapsack size
 	 * @throws NullPointerException if the {@code items} set is {@code null}
 	 */
-	public Knapsack(final Set<Item> items, final double knapsackSize) {
-		_codec = codecs.ofSubSet(ISeq.of(items));
+	public Knapsack(final ISeq<Item> items, final double knapsackSize) {
+		_codec = codecs.ofSubSet(items);
 		_knapsackSize = knapsackSize;
 	}
 
@@ -191,7 +190,7 @@ public final class Knapsack implements Problem<ISeq<Item>, BitGene, Double> {
 		return new Knapsack(
 			Stream.generate(() -> Item.random(random))
 				.limit(itemCount)
-				.collect(Collectors.toSet()),
+				.collect(ISeq.toISeq()),
 			itemCount*100.0/3.0
 		);
 	}
