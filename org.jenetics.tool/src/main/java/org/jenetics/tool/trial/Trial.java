@@ -72,7 +72,7 @@ public class Trial<T> implements Runnable {
 			!Thread.currentThread().isInterrupted())
 		{
 			trialMeter.sample(param -> {
-				trialMeter.write(_resultPath);
+				//trialMeter.write(_resultPath);
 				info(trialMeter.toString());
 
 				return _function.apply(param);
