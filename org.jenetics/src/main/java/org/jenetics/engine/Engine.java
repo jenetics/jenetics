@@ -775,6 +775,8 @@ public final class Engine<
 	 * Create a new evolution {@code Engine.Builder} for the given
 	 * {@link Problem}.
 	 *
+	 * @since 3.4
+	 *
 	 * @param problem the problem to be solved by the evolution {@code Engine}
 	 * @param <T> the (<i>native</i>) argument type of the problem fitness function
 	 * @param <G> the gene type the evolution engine is working with
@@ -850,26 +852,6 @@ public final class Engine<
 		final Codec<T, G> codec
 	) {
 		return builder(fitness.compose(codec.decoder()), codec.encoding());
-	}
-
-	/**
-	 * Create a new evolution {@code Engine.Builder} for the given
-	 * {@code problem}.
-	 *
-	 * @since !__version__!
-	 *
-	 * @param problem the <i>problem</i> which should be optimize
-	 * @param <T> the fitness function input type
-	 * @param <C> the fitness function result type
-	 * @param <G> the gene type
-	 * @return a new engine builder
-	 * @throws java.lang.NullPointerException if one of the arguments is
-	 *         {@code null}.
-	 */
-	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
-	Builder<G, C> builder(final Problem<T, G, C> problem) {
-		requireNonNull(problem);
-		return builder(problem.fitness(), problem.codec());
 	}
 
 
