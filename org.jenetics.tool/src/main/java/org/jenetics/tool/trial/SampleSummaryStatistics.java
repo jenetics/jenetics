@@ -34,7 +34,7 @@ import org.jenetics.util.MSeq;
  * A state object for collecting statistics such as count, min, max, sum, mean,
  * variance, skewness and kurtosis. The design of this class is similar to the
  * {@link java.util.DoubleSummaryStatistics} class.
- * <p>
+ *
  * <pre>{@code
  * final Stream<Sample> stream = ...
  * final SampleSummaryStatistics statistics = stream.collect(
