@@ -196,6 +196,7 @@ public final class EnumGene<A>
 		return Objects.toString(getAllele());
 	}
 
+
 	/* *************************************************************************
 	 *  Static object creation methods
 	 * ************************************************************************/
@@ -204,8 +205,11 @@ public final class EnumGene<A>
 	 * Create a new enum gene from the given valid genes and the chosen allele
 	 * index.
 	 *
+	 * @param <A> the allele type
 	 * @param alleleIndex the index of the allele for this gene.
 	 * @param validAlleles the sequence of valid alleles.
+	 * @return a new {@code EnumGene} with the given with the allele
+	 *        {@code validAlleles.get(alleleIndex)}
 	 * @throws IllegalArgumentException if the give valid alleles sequence is
 	 *         empty
 	 * @throws NullPointerException if the valid alleles seq is {@code null}.
@@ -223,7 +227,8 @@ public final class EnumGene<A>
 	 *
 	 * @param <A> the allele type
 	 * @param validAlleles the sequence of valid alleles.
-	 * @return a new {@code EnumGene} with the given parameter
+	 * @return a new {@code EnumGene} with an randomly chosen allele from the
+	 *         sequence of valid alleles
 	 * @throws java.lang.IllegalArgumentException if the give valid alleles
 	 *         sequence is empty
 	 * @throws NullPointerException if the valid alleles seq is {@code null}.
@@ -242,7 +247,8 @@ public final class EnumGene<A>
 	 * @param <A> the allele type
 	 * @param alleleIndex the index of the allele for this gene.
 	 * @param validAlleles the array of valid alleles.
-	 * @return a new {@code EnumGene} with the given parameter
+	 * @return a new {@code EnumGene} with the given with the allele
+	 *        {@code validAlleles[alleleIndex]}
 	 * @throws java.lang.IllegalArgumentException if the give valid alleles
 	 *         array is empty of the allele index is out of range.
 	 */
@@ -260,9 +266,9 @@ public final class EnumGene<A>
 	 *
 	 * @param <A> the allele type
 	 * @param validAlleles the array of valid alleles.
-	 * @return a new {@code EnumGene} with the given parameter
-	 * @throws java.lang.IllegalArgumentException if the give valid alleles
-	 *         array is empty
+	 * @return a new {@code EnumGene} with an randomly chosen allele from the
+	 *         sequence of valid alleles
+	 * @throws IllegalArgumentException if the give valid alleles array is empty
 	 */
 	@SafeVarargs
 	public static <A> EnumGene<A> of(final A... validAlleles) {
