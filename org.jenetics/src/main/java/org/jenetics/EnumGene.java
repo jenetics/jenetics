@@ -205,6 +205,8 @@ public final class EnumGene<A>
 	 * Create a new enum gene from the given valid genes and the chosen allele
 	 * index.
 	 *
+	 * @since !__version__!
+	 *
 	 * @param <A> the allele type
 	 * @param alleleIndex the index of the allele for this gene.
 	 * @param validAlleles the sequence of valid alleles.
