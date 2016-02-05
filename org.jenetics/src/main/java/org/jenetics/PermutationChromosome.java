@@ -21,7 +21,6 @@ package org.jenetics;
 
 import static java.lang.String.format;
 import static org.jenetics.internal.util.bit.getAndSet;
-import static org.jenetics.util.MSeq.toMSeq;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -43,17 +42,17 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.jenetics.internal.math.base;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
-import org.jenetics.internal.util.IntRef;
+import org.jenetics.internal.util.array;
 import org.jenetics.internal.util.bit;
 import org.jenetics.internal.util.jaxb;
-import org.jenetics.internal.util.reflect;
 import org.jenetics.internal.util.require;
 
 import org.jenetics.util.ISeq;
+import org.jenetics.util.IntRange;
 import org.jenetics.util.MSeq;
-import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Seq;
 
 /**
@@ -62,7 +61,7 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0
+ * @version !__version__!
  */
 @XmlJavaTypeAdapter(PermutationChromosome.Model.Adapter.class)
 public final class PermutationChromosome<T>
@@ -73,9 +72,17 @@ public final class PermutationChromosome<T>
 
 	private ISeq<T> _validAlleles;
 
-	public PermutationChromosome(final ISeq<EnumGene<T>> genes) {
+	private PermutationChromosome(
+		final ISeq<EnumGene<T>> genes,
+		final boolean valid
+	) {
 		super(genes);
 		_validAlleles = genes.get(0).getValidAlleles();
+		_valid = valid;
+	}
+
+	public PermutationChromosome(final ISeq<EnumGene<T>> genes) {
+		this(genes, false);
 	}
 
 	public ISeq<T> getValidAlleles() {
@@ -100,7 +107,7 @@ public final class PermutationChromosome<T>
 	 */
 	@Override
 	public PermutationChromosome<T> newInstance() {
-		return of(_validAlleles);
+		return of(_validAlleles, length());
 	}
 
 	@Override
@@ -128,25 +135,51 @@ public final class PermutationChromosome<T>
 	}
 
 	/**
+	 * Create a new, random chromosome with the given valid alleles and the
+	 * desired length.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param validAlleles the base-set of the valid alleles
+	 * @param length the length of the created chromosomes
+	 * @param <T> the allele type
+	 * @return a new chromosome with the given valid alleles and the desired
+	 *         length
+	 * @throws IllegalArgumentException if the given {@code length} is smaller
+	 *         than one or greater than {@code validAlleles.length()}
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <T> PermutationChromosome<T> of(
+		final ISeq<? extends T> validAlleles,
+		final int length
+	) {
+		require.positive(length);
+		if (length > validAlleles.size()) {
+			throw new IllegalArgumentException(format(
+				"The sub-set size must be be greater then the base-set: %d > %d",
+				length, validAlleles.size()
+			));
+		}
+
+		final int[] subset = array.shuffle(base.subset(validAlleles.size(), length));
+		return new PermutationChromosome<>(
+			IntStream.of(subset)
+				.mapToObj(i -> EnumGene.of(i, validAlleles))
+				.collect(ISeq.toISeq()),
+			true
+		);
+	}
+
+	/**
 	 * Create a new, random chromosome with the given valid alleles.
 	 *
 	 * @param <T> the gene type of the chromosome
-	 * @param alleles the valid alleles used for this permutation arrays.
+	 * @param validAlleles the valid alleles used for this permutation arrays.
 	 * @return a new chromosome with the given alleles
 	 */
-	public static <T> PermutationChromosome<T> of(final ISeq<? extends T> alleles) {
-		final ISeq<EnumGene<T>> genes = IntStream.range(0, alleles.length())
-			.mapToObj(index -> new EnumGene<>(index, alleles))
-			.collect(toMSeq())
-			.shuffle(RandomRegistry.getRandom())
-			.toISeq();
-
-		final PermutationChromosome<T> chromosome =
-			new PermutationChromosome<>(genes);
-		chromosome._validAlleles = reflect.cast(alleles);
-		chromosome._valid = true;
-
-		return chromosome;
+	public static <T> PermutationChromosome<T>
+	of(final ISeq<? extends T> validAlleles) {
+		return of(validAlleles, validAlleles.size());
 	}
 
 	/**
@@ -176,9 +209,10 @@ public final class PermutationChromosome<T>
 	}
 
 	/**
-	 * Create a integer permutation chromosome with the given length.
+	 * Create an integer permutation chromosome with the given range.
 	 *
 	 * @since 2.0
+	 *
 	 * @param start the start of the integer range (inclusively) of the returned
 	 *        chromosome.
 	 * @param end the end of the integer range (exclusively) of the returned
@@ -195,12 +229,30 @@ public final class PermutationChromosome<T>
 			));
 		}
 
-		final IntRef index = new IntRef(start);
-		final ISeq<Integer> alleles = MSeq.<Integer>ofLength(end - start)
-			.fill(() -> index.value++)
-			.toISeq();
+		return of(
+			IntStream.range(start, end)
+				.mapToObj(Integer::new)
+				.collect(ISeq.toISeq())
+		);
+	}
 
-		return of(alleles);
+	/**
+	 * Create an integer permutation chromosome with the given range and length
+	 *
+	 * @since !__version__!
+	 *
+	 * @param range the value range
+	 * @param length the chromosome length
+	 * @return a new integer permutation chromosome
+	 */
+	public static PermutationChromosome<Integer>
+	ofInteger(final IntRange range, final int length) {
+		return of(
+			IntStream.range(range.getMin(), range.getMax())
+				.mapToObj(Integer::new)
+				.collect(ISeq.toISeq()),
+			length
+		);
 	}
 
 	/* *************************************************************************

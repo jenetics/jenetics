@@ -554,7 +554,9 @@ public final class codecs {
 	 * @throws IllegalArgumentException if the {@code basicSet} size is smaller
 	 *         than one.
 	 */
-	public static <T> Codec<ISeq<T>, BitGene> ofSubSet(final ISeq<T> basicSet) {
+	public static <T> Codec<ISeq<T>, BitGene> ofSubSet(
+		final ISeq<? extends T> basicSet
+	) {
 		requireNonNull(basicSet);
 		require.positive(basicSet.length());
 

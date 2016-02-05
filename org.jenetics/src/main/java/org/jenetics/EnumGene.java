@@ -73,7 +73,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0
+ * @version !__version__!
  */
 @XmlJavaTypeAdapter(EnumGene.Model.Adapter.class)
 public final class EnumGene<A>
@@ -91,6 +91,7 @@ public final class EnumGene<A>
 	/**
 	 * Create a new enum gene from the given valid genes and the chosen allele
 	 * index.
+	 *
 	 * @param alleleIndex the index of the allele for this gene.
 	 * @param validAlleles the sequence of valid alleles.
 	 * @throws IllegalArgumentException if the give valid alleles sequence is
@@ -98,7 +99,7 @@ public final class EnumGene<A>
 	 * @throws NullPointerException if the valid alleles seq is {@code null}.
 	 */
 	EnumGene(final int alleleIndex, final ISeq<? extends A> validAlleles) {
-		if (validAlleles.length() == 0) {
+		if (validAlleles.isEmpty()) {
 			throw new IllegalArgumentException(
 				"Array of valid alleles must be greater than zero."
 			);
@@ -198,6 +199,23 @@ public final class EnumGene<A>
 	/* *************************************************************************
 	 *  Static object creation methods
 	 * ************************************************************************/
+
+	/**
+	 * Create a new enum gene from the given valid genes and the chosen allele
+	 * index.
+	 *
+	 * @param alleleIndex the index of the allele for this gene.
+	 * @param validAlleles the sequence of valid alleles.
+	 * @throws IllegalArgumentException if the give valid alleles sequence is
+	 *         empty
+	 * @throws NullPointerException if the valid alleles seq is {@code null}.
+	 */
+	public static <A> EnumGene<A> of(
+		final int alleleIndex,
+		final ISeq<? extends A> validAlleles
+	) {
+		return new EnumGene<>(alleleIndex, validAlleles);
+	}
 
 	/**
 	 * Return a new enum gene with an allele randomly chosen from the given

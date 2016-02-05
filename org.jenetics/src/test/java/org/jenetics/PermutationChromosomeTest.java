@@ -20,13 +20,17 @@
 package org.jenetics;
 
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.IntRange;
 import org.jenetics.util.MSeq;
+import org.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -70,6 +74,33 @@ public class PermutationChromosomeTest
 
 		for (int i = 0; i < c.length(); ++i) {
 			Assert.assertEquals(genes.get(i).intValue(), i + 100);
+		}
+	}
+
+	@Test
+	public void ofIntegerRangeLength() {
+		final PermutationChromosome<Integer> c1 = PermutationChromosome
+			.ofInteger(IntRange.of(0, 56), 7);
+		final PermutationChromosome<Integer> c2 = PermutationChromosome
+			.ofInteger(IntRange.of(0, 56), 7);
+
+		final MSeq<EnumGene<Integer>> m1 = c1.toSeq().copy();
+		final MSeq<EnumGene<Integer>> m2 = c2.toSeq().copy();
+		assertUnique(m1);
+		assertUnique(m2);
+
+		PartiallyMatchedCrossover<Integer, Double> pmx =
+			new PartiallyMatchedCrossover<>(1);
+
+		pmx.crossover(m1, m2);
+		assertUnique(m1);
+		assertUnique(m2);
+	}
+
+	private static <T> void assertUnique(final Seq<T> seq) {
+		final Set<T> set = new HashSet<>(seq.asList());
+		if (seq.size() > set.size()) {
+			throw new AssertionError("Sequence elements are not unique: " + seq);
 		}
 	}
 
