@@ -119,6 +119,9 @@ class SetupPlugin extends JeneticsPlugin {
 					Runtime.runtime.availableProcessors() + 1,
 					4
 				)
+				if (project.hasProperty('excludeGroups')) {
+					excludeGroups project.excludeGroups
+				}
 			}
 		}
 
