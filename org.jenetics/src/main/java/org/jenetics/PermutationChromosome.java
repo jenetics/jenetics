@@ -74,28 +74,47 @@ public final class PermutationChromosome<T>
 
 	private PermutationChromosome(
 		final ISeq<EnumGene<T>> genes,
-		final boolean valid
+		final Boolean valid
 	) {
 		super(genes);
+
+		assert !genes.isEmpty();
 		_validAlleles = genes.get(0).getValidAlleles();
 		_valid = valid;
 	}
 
+	/**
+	 * Create a new {@code PermutationChromosome} from the given {@code genes}.
+	 * If the given {@code genes} sequence contains duplicate entries, the
+	 * created {@code PermutationChromosome} will be invalid
+	 * ({@code ch.isValid() == false}).
+	 *
+	 * @param genes the enum genes the new chromosome consists of
+	 * @throws NullPointerException if the given {@code genes} are null
+	 * @throws IllegalArgumentException if the given {@code genes} sequence is
+	 *         {@code null}
+	 */
 	public PermutationChromosome(final ISeq<EnumGene<T>> genes) {
-		this(genes, false);
+		this(genes, null);
 	}
 
+	/**
+	 * Return the sequence of valid alleles of this chromosome.
+	 *
+	 * @return the sequence of valid alleles of this chromosome
+	 */
 	public ISeq<T> getValidAlleles() {
 		return _validAlleles;
 	}
 
 	/**
-	 * Check if this chromosome represents still a valid permutation.
+	 * Check if this chromosome represents still a valid permutation (or subset)
+	 * of the given valid alleles.
 	 */
 	@Override
 	public boolean isValid() {
 		if (_valid == null) {
-			final byte[] check = bit.newArray(length());
+			final byte[] check = bit.newArray(_validAlleles.length());
 			_valid = _genes.forAll(g -> !getAndSet(check, g.getAlleleIndex()));
 		}
 
@@ -137,6 +156,16 @@ public final class PermutationChromosome<T>
 	/**
 	 * Create a new, random chromosome with the given valid alleles and the
 	 * desired length.
+	 * <p>
+	 * The following example shows how to create a {@code PermutationChromosome}
+	 * for encoding a sub-set problem (of a fixed {@code length}).
+	 * <pre>{@code
+	 * final ISeq<String> basicSet = ISeq.of("a", "b", "c", "d", "e", "f");
+	 *
+	 * // The chromosome has a length of 3 and will only contain values from the
+	 * // given basic-set, with no duplicates.
+	 * final PermutationChromosome<String> ch = PermutationChromosome.of(basicSet, 3);
+	 * }</pre>
 	 *
 	 * @since !__version__!
 	 *
@@ -229,11 +258,7 @@ public final class PermutationChromosome<T>
 			));
 		}
 
-		return of(
-			IntStream.range(start, end)
-				.mapToObj(Integer::new)
-				.collect(ISeq.toISeq())
-		);
+		return ofInteger(IntRange.of(start, end), end - start);
 	}
 
 	/**
