@@ -115,7 +115,7 @@ class SetupPlugin extends JeneticsPlugin {
 			outputs.upToDateWhen { false }
 			useTestNG {
 				parallel = 'tests' // 'methods'
-				threadCount = Runtime.runtime.availableProcessors() + 1
+				threadCount = 2 //Runtime.runtime.availableProcessors() + 1
 			}
 		}
 
