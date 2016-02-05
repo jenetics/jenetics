@@ -56,7 +56,7 @@ import org.jenetics.util.LongRange;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.2
- * @version 3.3
+ * @version !__version__!
  */
 public final class codecs {
 
@@ -516,8 +516,8 @@ public final class codecs {
 
 	/**
 	 * The subset {@code Codec} can be used for problems where it is required to
-	 * find the best subset from given basic set. A typical usage example of the
-	 * returned {@code Codec} is the Knapsack problem.
+	 * find the best subset (of variable size) from given basic set. A typical
+	 * usage example of the returned {@code Codec} is the Knapsack problem.
 	 * <p>
 	 * The following code snippet shows a simplified variation of the Knapsack
 	 * problem.
@@ -564,6 +564,41 @@ public final class codecs {
 			Genotype.of(BitChromosome.of(basicSet.length())),
 			gt -> ((BitChromosome)gt.getChromosome()).ones()
 				.mapToObj(basicSet::get)
+				.collect(ISeq.toISeq())
+		);
+	}
+
+	/**
+	 * The subset {@code Codec} can be used for problems where it is required to
+	 * find the best subset (of fixed size) from given basic set.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param <T> the element type of the basic set
+	 * @param basicSet the basic set, from where to choose the <i>optimal</i>
+	 *        subset.
+	 * @param size the length of the desired subsets
+	 * @return a new codec which can be used for modelling <i>subset</i>
+	 *         problems.
+	 * @throws NullPointerException if the given {@code basicSet} is
+	 *         {@code null}; {@code null} elements are allowed.
+	 * @throws IllegalArgumentException if the {@code basicSet} size is smaller
+	 *         than one.
+	 * @throws IllegalArgumentException if the subset {@code size} size is
+	 *         smaller than one.
+	 */
+	public static <T> Codec<ISeq<T>, EnumGene<T>> ofSubSet(
+		final ISeq<? extends T> basicSet,
+		final int size
+	) {
+		requireNonNull(basicSet);
+		require.positive(basicSet.length());
+		require.positive(size);
+
+		return Codec.of(
+			Genotype.of(PermutationChromosome.of(basicSet, size)),
+			gt -> gt.getChromosome().stream()
+				.map(EnumGene::getAllele)
 				.collect(ISeq.toISeq())
 		);
 	}
