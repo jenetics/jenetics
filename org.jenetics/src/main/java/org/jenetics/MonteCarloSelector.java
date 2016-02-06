@@ -22,7 +22,13 @@ package org.jenetics;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serializable;
 import java.util.Random;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
@@ -37,14 +43,19 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0
+ * @version  !__version__!
  */
+@XmlRootElement(name = "monte-carlo-selector")
+@XmlType(name = "org.jenetics.MonteCarloSelector")
+@XmlAccessorType(XmlAccessType.FIELD)
 public final class MonteCarloSelector<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	implements Selector<G, C>
+	implements Selector<G, C>, Serializable
 {
+
+	private static final long serialVersionUID = 1L;
 
 	public MonteCarloSelector() {
 	}

@@ -24,6 +24,14 @@ import static org.jenetics.internal.math.random.indexes;
 
 import java.util.Random;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
@@ -39,14 +47,18 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0
+ * @version !__version__!
  */
+@XmlJavaTypeAdapter(SwapMutator.Model.Adapter.class)
 public class SwapMutator<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
 	extends Mutator<G, C>
+
 {
+
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Constructs an alterer with a given recombination probability.
@@ -95,6 +107,36 @@ public class SwapMutator<
 	@Override
 	public String toString() {
 		return format("%s[p=%f]", getClass().getSimpleName(), _probability);
+	}
+
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
+
+	@XmlRootElement(name = "swap-mutator")
+	@XmlType(name = "org.jenetics.SwapMutator")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	final static class Model {
+
+		@XmlAttribute(name = "probability", required = true)
+		public double probability;
+
+		public final static class Adapter
+			extends XmlAdapter<Model, SwapMutator>
+		{
+			@Override
+			public Model marshal(final SwapMutator value) {
+				final Model m = new Model();
+				m.probability = value.getProbability();
+				return m;
+			}
+
+			@Override
+			public SwapMutator unmarshal(final Model m) {
+				return new SwapMutator(m.probability);
+			}
+		}
 	}
 
 }

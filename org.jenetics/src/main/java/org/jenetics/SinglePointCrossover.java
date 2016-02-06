@@ -23,6 +23,14 @@ import static java.lang.String.format;
 
 import java.util.Random;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
@@ -51,14 +59,17 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0
+ * @version !__version__!
  */
+@XmlJavaTypeAdapter(SinglePointCrossover.Model.Adapter.class)
 public class SinglePointCrossover<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
 	extends MultiPointCrossover<G, C>
 {
+
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Constructs an alterer with a given recombination probability.
@@ -116,6 +127,36 @@ public class SinglePointCrossover<
 	@Override
 	public String toString() {
 		return format("%s[p=%f]", getClass().getSimpleName(), _probability);
+	}
+
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
+
+	@XmlRootElement(name = "single-point-crossover")
+	@XmlType(name = "org.jenetics.SinglePointCrossover")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	final static class Model {
+
+		@XmlAttribute(name = "probability", required = true)
+		public double probability;
+
+		public final static class Adapter
+			extends XmlAdapter<Model, SinglePointCrossover>
+		{
+			@Override
+			public Model marshal(final SinglePointCrossover value) {
+				final Model m = new Model();
+				m.probability = value.getProbability();
+				return m;
+			}
+
+			@Override
+			public SinglePointCrossover unmarshal(final Model m) {
+				return new SinglePointCrossover(m.probability);
+			}
+		}
 	}
 
 }

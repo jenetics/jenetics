@@ -21,7 +21,13 @@ package org.jenetics;
 
 import static org.jenetics.internal.math.statistics.min;
 
+import java.io.Serializable;
 import java.util.Arrays;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 import org.jenetics.internal.math.DoubleAdder;
 import org.jenetics.internal.util.Equality;
@@ -38,14 +44,20 @@ import org.jenetics.internal.util.Hash;
  *      </a>
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.2
+ * @version  !__version__!
  */
+@XmlRootElement(name = "roulette-wheel-selector")
+@XmlType(name = "org.jenetics.RouletteWheelSelector")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class RouletteWheelSelector<
 	G extends Gene<?, G>,
 	N extends Number & Comparable<? super N>
 >
 	extends ProbabilitySelector<G, N>
+	implements Serializable
 {
+
+	private static final long serialVersionUID = 1L;
 
 	public RouletteWheelSelector() {
 		this(false);

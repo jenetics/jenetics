@@ -41,6 +41,7 @@ import org.jenetics.internal.util.require;
 
 import org.jenetics.Alterer;
 import org.jenetics.Chromosome;
+import org.jenetics.CompositeAlterer;
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
 import org.jenetics.Mutator;
@@ -52,6 +53,7 @@ import org.jenetics.SinglePointCrossover;
 import org.jenetics.TournamentSelector;
 import org.jenetics.util.Copyable;
 import org.jenetics.util.Factory;
+import org.jenetics.util.ISeq;
 import org.jenetics.util.NanoClock;
 
 /**
@@ -122,25 +124,27 @@ public final class Engine<
 	implements Function<EvolutionStart<G, C>, EvolutionResult<G, C>>
 {
 
-	// Needed context for population evolving.
+	// GA problem parameters.
 	private final Function<? super Genotype<G>, ? extends C> _fitnessFunction;
 	private final Function<? super C, ? extends C> _fitnessScaler;
 	private final Factory<Genotype<G>> _genotypeFactory;
+	private final Optimize _optimize;
+
+	// GA validation parameters.
+	private final Predicate<? super Phenotype<G, C>> _validator;
+	private final int _individualCreationRetries;
+
+	// GA evolution parameters.
 	private final Selector<G, C> _survivorsSelector;
 	private final Selector<G, C> _offspringSelector;
 	private final Alterer<G, C> _alterer;
-	private final Predicate<? super Phenotype<G, C>> _validator;
-	private final Optimize _optimize;
 	private final int _offspringCount;
 	private final int _survivorsCount;
 	private final long _maximalPhenotypeAge;
 
-	// Execution context for concurrent execution of evolving steps.
+	// GA evaluation parameters.
 	private final TimedExecutor _executor;
 	private final Clock _clock;
-
-	// Additional parameters.
-	private final int _individualCreationRetries;
 
 
 	/**
@@ -191,8 +195,8 @@ public final class Engine<
 		_validator = requireNonNull(validator);
 		_optimize = requireNonNull(optimize);
 
-		_offspringCount = require.positive(offspringCount);
-		_survivorsCount = require.positive(survivorsCount);
+		_offspringCount = require.nonNegative(offspringCount);
+		_survivorsCount = require.nonNegative(survivorsCount);
 		_maximalPhenotypeAge = require.positive(maximalPhenotypeAge);
 
 		_executor = new TimedExecutor(requireNonNull(executor));
@@ -704,6 +708,22 @@ public final class Engine<
 	}
 
 	/**
+	 * Return the evolution parameters used by the evolution {@code Engine}.
+	 *
+	 * @return the evolution parameters used by the evolution {@code Engine}
+	 */
+	public EvolutionParam<G, C> getEvolutionParam() {
+		return EvolutionParam.of(
+			getSurvivorsSelector(),
+			getOffspringSelector(),
+			getAlterer(),
+			getPopulationSize(),
+			(double)getOffspringCount()/(double)getPopulationSize(),
+			getMaximalPhenotypeAge()
+		);
+	}
+
+	/**
 	 * Return the {@link Clock} the engine is using for measuring the execution
 	 * time.
 	 *
@@ -817,7 +837,7 @@ public final class Engine<
 	 *
 	 * @since 3.2
 	 *
-	 * @param ff the fitness function
+	 * @param fitness the fitness function
 	 * @param codec the problem codec
 	 * @param <T> the fitness function input type
 	 * @param <C> the fitness function result type
@@ -828,10 +848,10 @@ public final class Engine<
 	 */
 	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
 	Builder<G, C> builder(
-		final Function<? super T, ? extends C> ff,
+		final Function<? super T, ? extends C> fitness,
 		final Codec<T, G> codec
 	) {
-		return builder(ff.compose(codec.decoder()), codec.encoding());
+		return builder(fitness.compose(codec.decoder()), codec.encoding());
 	}
 
 
@@ -891,9 +911,10 @@ public final class Engine<
 		 *
 		 * @param function the fitness function to use in the GA {@code Engine}
 		 * @return {@code this} builder, for command chaining
+		 * @throws NullPointerException if the parameter is {@code null}
 		 */
 		public Builder<G, C> fitnessFunction(
-			Function<? super Genotype<G>, ? extends C> function
+			final Function<? super Genotype<G>, ? extends C> function
 		) {
 			_fitnessFunction = requireNonNull(function);
 			return this;
@@ -905,6 +926,7 @@ public final class Engine<
 		 *
 		 * @param scaler the fitness scale to use in the GA {@code Engine}
 		 * @return {@code this} builder, for command chaining
+		 * @throws NullPointerException if the parameter is {@code null}
 		 */
 		public Builder<G, C> fitnessScaler(
 			final Function<? super C, ? extends C> scaler
@@ -919,6 +941,7 @@ public final class Engine<
 		 * @param genotypeFactory the genotype factory for creating new
 		 *        individuals.
 		 * @return {@code this} builder, for command chaining
+		 * @throws NullPointerException if the parameter is {@code null}
 		 */
 		public Builder<G, C> genotypeFactory(
 			final Factory<Genotype<G>> genotypeFactory
@@ -928,15 +951,32 @@ public final class Engine<
 		}
 
 		/**
+		 * Initializes the build with the given {@code EvolutionParam}.
+		 *
+		 * @since !__version__!
+		 *
+		 * @param param the evolution parameter
+		 * @return {@code this} builder, for command chaining
+		 * @throws NullPointerException if the parameter is {@code null}
+		 */
+		public Builder<G, C> evolutionParam(final EvolutionParam<G, C> param) {
+			survivorsSelector(param.getSurvivorsSelector());
+			offspringSelector(param.getOffspringSelector());
+			alterers(param.getAlterer());
+			populationSize(param.getPopulationSize());
+			offspringFraction(param.getOffspringFraction());
+			return this;
+		}
+
+		/**
 		 * The selector used for selecting the offspring population. <i>Default
 		 * values is set to {@code TournamentSelector<>(3)}.</i>
 		 *
 		 * @param selector used for selecting the offspring population
 		 * @return {@code this} builder, for command chaining
+		 * @throws NullPointerException if the parameter is {@code null}
 		 */
-		public Builder<G, C> offspringSelector(
-			final Selector<G, C> selector
-		) {
+		public Builder<G, C> offspringSelector(final Selector<G, C> selector) {
 			_offspringSelector = requireNonNull(selector);
 			return this;
 		}
@@ -947,10 +987,9 @@ public final class Engine<
 		 *
 		 * @param selector used for selecting survivors population
 		 * @return {@code this} builder, for command chaining
+		 * @throws NullPointerException if the parameter is {@code null}
 		 */
-		public Builder<G, C> survivorsSelector(
-			final Selector<G, C> selector
-		) {
+		public Builder<G, C> survivorsSelector(final Selector<G, C> selector) {
 			_survivorsSelector = requireNonNull(selector);
 			return this;
 		}
@@ -962,6 +1001,7 @@ public final class Engine<
 		 *
 		 * @param selector used for selecting survivors and offspring population
 		 * @return {@code this} builder, for command chaining
+		 * @throws NullPointerException if the parameter is {@code null}
 		 */
 		public Builder<G, C> selector(final Selector<G, C> selector) {
 			_offspringSelector = requireNonNull(selector);
@@ -993,6 +1033,30 @@ public final class Engine<
 			_alterer = rest.length == 0 ?
 				first :
 				Alterer.of(rest).compose(first);
+
+			return this;
+		}
+
+		/**
+		 * The alterers used for alter the offspring population. <i>Default
+		 * values is set to {@code new SinglePointCrossover<>(0.2)} followed by
+		 * {@code new Mutator<>(0.15)}.</i>
+		 *
+		 * @since !__version__!
+		 *
+		 * @param alterers the alterers to add
+		 * @return {@code this} builder, for command chaining
+		 * @throws java.lang.NullPointerException if one of the alterers is
+		 *         {@code null}.
+		 */
+		public final Builder<G, C> alterers(
+			final ISeq<? extends Alterer<G, C>> alterers
+		) {
+			if (alterers.size() >= 1) {
+				_alterer = alterers.size() == 1
+					? alterers.get(0)
+					: new CompositeAlterer<>(alterers);
+			}
 
 			return this;
 		}
@@ -1055,6 +1119,7 @@ public final class Engine<
 		 *
 		 * @param optimize the optimization strategy used by the engine
 		 * @return {@code this} builder, for command chaining
+		 * @throws NullPointerException if the parameter is {@code null}
 		 */
 		public Builder<G, C> optimize(final Optimize optimize) {
 			_optimize = requireNonNull(optimize);
@@ -1115,6 +1180,7 @@ public final class Engine<
 		 *
 		 * @param executor the executor used by the engine
 		 * @return {@code this} builder, for command chaining
+		 * @throws NullPointerException if the parameter is {@code null}
 		 */
 		public Builder<G, C> executor(final Executor executor) {
 			_executor = requireNonNull(executor);
@@ -1126,6 +1192,7 @@ public final class Engine<
 		 *
 		 * @param clock the clock used for calculating the execution durations
 		 * @return {@code this} builder, for command chaining
+		 * @throws NullPointerException if the parameter is {@code null}
 		 */
 		public Builder<G, C> clock(final Clock clock) {
 			_clock = requireNonNull(clock);

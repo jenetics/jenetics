@@ -39,6 +39,7 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.function.Function;
 
+import org.jenetics.engine.EvolutionParam;
 import org.jenetics.util.IO;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.LCG64ShiftRandom;
@@ -220,6 +221,38 @@ public class PersistentObject<T> {
 		put("Population[DoubleGene, Integer]", nextPopulationDoubleGeneInteger(), ios);
 		put("Population[EnumGene[Integer], Double]", nextPopulationEnumGeneIntegerDouble(), ios);
 		put("Population[EnumGene[String], BigDecimal]", nextPopulationEnumGeneStringBigDecimal(), ios);
+
+		/* *********************************************************************
+		 * Alterers
+		 **********************************************************************/
+
+		put("GaussianMutator", nextGaussianMutator(), ios);
+		put("MeanAlterer", nextMeanAlterer(), ios);
+		put("MultiPointCrossover", nextMultiPointCrossover(), ios);
+		put("Mutator", nextMutator(), ios);
+		put("PartiallyMatchedCrossover", nextPartiallyMatchedCrossover(), ios);
+		put("SinglePointCrossover", nextSinglePointCrossover(), ios);
+		put("SwapMutator", nextSwapMutator(), ios);
+		put("CompositeAlterer", nextCompositeAlterer(), ios);
+
+		/* *********************************************************************
+		 * Selectors
+		 **********************************************************************/
+
+		put("BoltzmannSelector", nextBoltzmannSelector(), ios);
+		put("ExponentialRankSelector", nextExponentialRankSelector(), ios);
+		put("LinearRankSelector", nextLinearRankSelector(), ios);
+		put("MonteCarloSelector", nextMonteCarloSelector(), ios);
+		put("RouletteWheelSelector", nextRouletteWheelSelector(), ios);
+		put("StochasticUniversalSelector", nextStochasticUniversalSelector(), ios);
+		put("TournamentSelector", nextTournamentSelector(), ios);
+		put("TruncationSelector", nextTruncationSelector(), ios);
+
+		/* *********************************************************************
+		 * Evolution param
+		 **********************************************************************/
+
+		put("EvolutionParam", nextEvolutionParam(), ios);
 	}
 
 	/* *************************************************************************
@@ -599,6 +632,99 @@ public class PersistentObject<T> {
 
 	public static <T> Function<T, T> FitnessScaler() {
 		return (Function<T, T> & Serializable)a -> a;
+	}
+
+	/* *************************************************************************
+	 * Alterers
+	 **************************************************************************/
+
+	public static GaussianMutator<DoubleGene, Double> nextGaussianMutator() {
+		return new GaussianMutator<>(random().nextDouble());
+	}
+
+	public static MeanAlterer<DoubleGene, Double> nextMeanAlterer() {
+		return new MeanAlterer<>(random().nextDouble());
+	}
+
+	public static MultiPointCrossover<DoubleGene, Double> nextMultiPointCrossover() {
+		return new MultiPointCrossover<>(random().nextDouble(), random().nextInt(1000) + 10);
+	}
+
+	public static PartiallyMatchedCrossover<DoubleGene, Double> nextPartiallyMatchedCrossover() {
+		return new PartiallyMatchedCrossover<>(random().nextDouble());
+	}
+
+	public static Mutator<DoubleGene, Double> nextMutator() {
+		return new Mutator<>(random().nextDouble());
+	}
+
+	public static SinglePointCrossover<DoubleGene, Double> nextSinglePointCrossover() {
+		return new SinglePointCrossover<>(random().nextDouble());
+	}
+
+	public static SwapMutator<DoubleGene, Double> nextSwapMutator() {
+		return new SwapMutator<>(random().nextDouble());
+	}
+
+	public static CompositeAlterer<DoubleGene, Double> nextCompositeAlterer() {
+		return CompositeAlterer.<DoubleGene, Double>of(
+			nextGaussianMutator(),
+			nextMeanAlterer(),
+			nextMultiPointCrossover(),
+			nextSinglePointCrossover(),
+			nextSwapMutator()
+		);
+	}
+
+	/* *************************************************************************
+	 * Selectors
+	 **************************************************************************/
+
+	public static BoltzmannSelector<DoubleGene, Double> nextBoltzmannSelector() {
+		return new BoltzmannSelector<>(random().nextDouble());
+	}
+
+	public static ExponentialRankSelector<DoubleGene, Double> nextExponentialRankSelector() {
+		return new ExponentialRankSelector<>(random().nextDouble());
+	}
+
+	public static LinearRankSelector<DoubleGene, Double> nextLinearRankSelector() {
+		return new LinearRankSelector<>(random().nextDouble());
+	}
+
+	public static MonteCarloSelector<DoubleGene, Double> nextMonteCarloSelector() {
+		return new MonteCarloSelector<>();
+	}
+
+	public static RouletteWheelSelector<DoubleGene, Double> nextRouletteWheelSelector() {
+		return new RouletteWheelSelector<>();
+	}
+
+	public static StochasticUniversalSelector<DoubleGene, Double> nextStochasticUniversalSelector() {
+		return new StochasticUniversalSelector<>();
+	}
+
+	public static TournamentSelector<DoubleGene, Double> nextTournamentSelector() {
+		return new TournamentSelector<>(random().nextInt(10000) + 10);
+	}
+
+	public static TruncationSelector<DoubleGene, Double> nextTruncationSelector() {
+		return new TruncationSelector<>();
+	}
+
+	/* *************************************************************************
+	 * Evolution param
+	 **************************************************************************/
+
+	public static EvolutionParam<DoubleGene, Double> nextEvolutionParam() {
+		return EvolutionParam.of(
+			nextExponentialRankSelector(),
+			nextTournamentSelector(),
+			nextCompositeAlterer(),
+			random().nextInt(1000) + 23,
+			random().nextDouble(),
+			random().nextInt(1000000) + 11
+		);
 	}
 
 	private static Random random() {

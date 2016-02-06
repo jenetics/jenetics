@@ -19,6 +19,8 @@
  */
 package org.jenetics;
 
+import static org.jenetics.CompositeAlterer.normalize;
+
 import org.jenetics.util.ISeq;
 
 /**
@@ -103,11 +105,25 @@ public interface Alterer<
 	@SafeVarargs
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Alterer<G, C> of(final Alterer<G, C>... alterers) {
-		return alterers.length == 0
-			? (p, g) -> 0
-			: alterers.length == 1
-				? alterers[0]
-				: new CompositeAlterer<G, C>(ISeq.of(alterers));
+		final ISeq<Alterer<G, C>> seq = normalize(ISeq.of(alterers));
+
+		return seq.isEmpty()
+			? empty()
+			: seq.length() == 1
+				? seq.get(0)
+				: new CompositeAlterer<G, C>(seq);
+	}
+
+	/**
+	 * Return an {@code Alterer} which does nothing.
+	 *
+	 * @param <G> the gene type
+	 * @param <C> the fitness function result type
+	 * @return an {@code Alterer} which does nothing
+	 */
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Alterer<G, C> empty() {
+		return EmptyAlterer.instance();
 	}
 
 }

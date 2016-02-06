@@ -19,6 +19,7 @@
  */
 package org.jenetics;
 
+import static java.lang.Double.compare;
 import static org.jenetics.internal.math.random.nextDouble;
 import static org.jenetics.util.RandomRegistry.getRandom;
 
@@ -77,6 +78,11 @@ public final class DoubleGene
 	 */
 	DoubleGene(final Double value, final Double min, final Double max) {
 		super(value, min, max);
+	}
+
+	@Override
+	public boolean isValid() {
+		return compare(_value, _min) >= 0 && compare(_value, _max) < 0;
 	}
 
 	@Override

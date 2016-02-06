@@ -19,10 +19,22 @@
  */
 package org.jenetics;
 
+import static java.lang.Double.compare;
+import static java.lang.Double.doubleToLongBits;
+import static java.lang.Double.longBitsToDouble;
 import static java.lang.String.format;
 import static org.jenetics.internal.math.random.indexes;
 
+import java.io.Serializable;
 import java.util.Random;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jenetics.internal.math.base;
 import org.jenetics.internal.util.Hash;
@@ -46,14 +58,18 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0
+ * @version !__version__!
  */
+@XmlJavaTypeAdapter(GaussianMutator.Model.Adapter.class)
 public final class GaussianMutator<
 	G extends NumericGene<?, G>,
 	C extends Comparable<? super C>
 >
 	extends Mutator<G, C>
+	implements Serializable
 {
+
+	private static final long serialVersionUID = 1L;
 
 	public GaussianMutator(final double probability) {
 		super(probability);
@@ -73,14 +89,19 @@ public final class GaussianMutator<
 	}
 
 	G mutate(final G gene, final Random random) {
-		final double std =
-			(gene.getMax().doubleValue() - gene.getMin().doubleValue())*0.25;
+		final double min = gene.getMin().doubleValue();
+		final double max = gene.getMax().doubleValue();
+		final double std = (max - min)*0.25;
 
-		return gene.newInstance(base.clamp(
+		double value = base.clamp(
 			random.nextGaussian()*std + gene.doubleValue(),
-			gene.getMin().doubleValue(),
-			gene.getMax().doubleValue()
-		));
+			min, max
+		);
+		if (compare(value, max) >= 0) {
+			value = longBitsToDouble(doubleToLongBits(max) - 1);
+		}
+
+		return gene.newInstance(value);
 	}
 
 	@Override
@@ -100,6 +121,37 @@ public final class GaussianMutator<
 			getClass().getSimpleName(),
 			_probability
 		);
+	}
+
+
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
+
+	@XmlRootElement(name = "gaussian-mutator")
+	@XmlType(name = "org.jenetics.GaussianMutator")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	final static class Model {
+
+		@XmlAttribute(name = "probability", required = true)
+		public double probability;
+
+		public final static class Adapter
+			extends XmlAdapter<Model, GaussianMutator>
+		{
+			@Override
+			public Model marshal(final GaussianMutator value) {
+				final Model m = new Model();
+				m.probability = value.getProbability();
+				return m;
+			}
+
+			@Override
+			public GaussianMutator unmarshal(final Model m) {
+				return new GaussianMutator(m.probability);
+			}
+		}
 	}
 
 }

@@ -21,6 +21,11 @@ package org.jenetics;
 
 import static java.util.Objects.requireNonNull;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
@@ -46,8 +51,11 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.2
+ * @version !__version__!
  */
+@XmlRootElement(name = "stochastic-universal-selector")
+@XmlType(name = "org.jenetics.StochasticUniversalSelector")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class StochasticUniversalSelector<
 	G extends Gene<?, G>,
 	N extends Number & Comparable<? super N>

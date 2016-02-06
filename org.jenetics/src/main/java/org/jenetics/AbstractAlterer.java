@@ -21,6 +21,8 @@ package org.jenetics;
 
 import static org.jenetics.internal.util.Equality.eq;
 
+import java.io.Serializable;
+
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.require;
@@ -36,8 +38,10 @@ public abstract class AbstractAlterer<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	implements Alterer<G, C>
+	implements Alterer<G, C>, Serializable
 {
+
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * The altering probability.

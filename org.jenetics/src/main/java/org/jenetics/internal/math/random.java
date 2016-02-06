@@ -19,8 +19,13 @@
  */
 package org.jenetics.internal.math;
 
+import static java.lang.Double.compare;
+import static java.lang.Double.doubleToLongBits;
+import static java.lang.Double.longBitsToDouble;
+import static java.lang.Float.compare;
+import static java.lang.Float.floatToIntBits;
+import static java.lang.Float.intBitsToFloat;
 import static java.lang.Math.abs;
-import static java.lang.Math.nextDown;
 import static java.lang.String.format;
 import static org.jenetics.internal.util.require.probability;
 
@@ -184,18 +189,15 @@ public final class random {
 		final Random random,
 		final float min, final float max
 	) {
-		if (min >= max) {
+		if (compare(min, max) >= 0) {
 			throw new IllegalArgumentException(format(
 				"min >= max: %f >= %f.", min, max
 			));
 		}
 
-		float value = random.nextFloat();
-		if (min < max) {
-			value = value*(max - min) + min;
-			if (value >= max) {
-				value = nextDown(value);
-			}
+		float value = random.nextFloat()*(max - min) + min;
+		if (compare(value, max) >= 0) {
+			value = intBitsToFloat(floatToIntBits(max) - 1);
 		}
 
 		return value;
@@ -217,18 +219,15 @@ public final class random {
 		final Random random,
 		final double min, final double max
 	) {
-		if (min >= max) {
+		if (compare(min, max) >= 0) {
 			throw new IllegalArgumentException(format(
 				"min >= max: %f >= %f.", min, max
 			));
 		}
 
-		double value = random.nextDouble();
-		if (min < max) {
-			value = value*(max - min) + min;
-			if (value >= max) {
-				value = nextDown(value);
-			}
+		double value = random.nextDouble()*(max - min) + min;
+		if (compare(value, max) >= 0) {
+			value = longBitsToDouble(doubleToLongBits(max) - 1);
 		}
 
 		return value;

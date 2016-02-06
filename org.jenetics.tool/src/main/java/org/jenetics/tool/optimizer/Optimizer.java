@@ -17,42 +17,16 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.tool.trial;
-
-import javax.xml.bind.DataBindingException;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-
-import org.jenetics.internal.util.require;
+package org.jenetics.tool.optimizer;
 
 /**
+ *
+ * @param <T> the argument type of function to optimize
+ * @param <R> the result type of the function to optimize
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.4
- * @since 3.4
+ * @version !__version__!
+ * @since !__version__!
  */
-public final class jaxb {
-	private jaxb() {require.noInstance();}
-
-	private static final class JAXBContextHolder {
-		private static final JAXBContext CONTEXT; static {
-			try {
-				CONTEXT = JAXBContext.newInstance(
-					Sample.Model.class,
-					Data.Model.class,
-					DataSet.Model.class,
-					TrialMeter.Model.class,
-					Env.Model.class
-				);
-			} catch (JAXBException e) {
-				throw new DataBindingException(
-					"Something went wrong while creating JAXBContext.", e
-				);
-			}
-		}
-	}
-
-	public static JAXBContext context() {
-		return JAXBContextHolder.CONTEXT;
-	}
-
-}
+public interface Optimizer<T, R extends Comparable<? super R>>
+	extends Minimizer<T, R>, Maximizer<T, R> {}

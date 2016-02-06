@@ -22,7 +22,16 @@ package org.jenetics;
 import static java.lang.Math.min;
 import static java.lang.String.format;
 
+import java.io.Serializable;
 import java.util.Random;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jenetics.internal.math.base;
 import org.jenetics.internal.util.Equality;
@@ -53,14 +62,18 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 3.0 &mdash; <em>$Date: 2014-08-01 $ </em>
+ * @version !__version__!
  */
+@XmlJavaTypeAdapter(MultiPointCrossover.Model.Adapter.class)
 public class MultiPointCrossover<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
 	extends Crossover<G, C>
+	implements Serializable
 {
+
+	private static final long serialVersionUID = 1L;
 
 	private final int _n;
 
@@ -176,8 +189,39 @@ public class MultiPointCrossover<
 		);
 	}
 
-	//public static <G extends Gene<?, G>> MultiPointCrossover<G> zip() {
-	//	return new MultiPointCrossover<>(Integer.MAX_VALUE);
-	//}
+
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
+
+	@XmlRootElement(name = "multi-point-crossover")
+	@XmlType(name = "org.jenetics.MultiPointCrossover")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	final static class Model {
+
+		@XmlAttribute(name = "probability", required = true)
+		public double probability;
+
+		@XmlAttribute(name = "n", required = true)
+		public int n;
+
+		public final static class Adapter
+			extends XmlAdapter<Model, MultiPointCrossover>
+		{
+			@Override
+			public Model marshal(final MultiPointCrossover value) {
+				final Model m = new Model();
+				m.probability = value.getProbability();
+				m.n = value.getN();
+				return m;
+			}
+
+			@Override
+			public MultiPointCrossover unmarshal(final Model m) {
+				return new MultiPointCrossover(m.probability, m.n);
+			}
+		}
+	}
 
 }
