@@ -56,7 +56,7 @@ import org.jenetics.util.LongRange;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.2
- * @version !__version__!
+ * @version 3.4
  */
 public final class codecs {
 
@@ -572,7 +572,7 @@ public final class codecs {
 	 * The subset {@code Codec} can be used for problems where it is required to
 	 * find the best subset (of fixed size) from given basic set.
 	 *
-	 * @since !__version__!
+	 * @since 3.4
 	 *
 	 * @param <T> the element type of the basic set
 	 * @param basicSet the basic set, from where to choose the <i>optimal</i>

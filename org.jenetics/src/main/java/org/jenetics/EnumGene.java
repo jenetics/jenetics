@@ -73,7 +73,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version !__version__!
+ * @version 3.4
  */
 @XmlJavaTypeAdapter(EnumGene.Model.Adapter.class)
 public final class EnumGene<A>
@@ -205,7 +205,7 @@ public final class EnumGene<A>
 	 * Create a new enum gene from the given valid genes and the chosen allele
 	 * index.
 	 *
-	 * @since !__version__!
+	 * @since 3.4
 	 *
 	 * @param <A> the allele type
 	 * @param alleleIndex the index of the allele for this gene.

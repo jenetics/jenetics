@@ -86,7 +86,7 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version !__version__!
+ * @version 3.4
  */
 @XmlJavaTypeAdapter(PermutationChromosome.Model.Adapter.class)
 public final class PermutationChromosome<T>
@@ -192,7 +192,7 @@ public final class PermutationChromosome<T>
 	 * final PermutationChromosome<String> ch = PermutationChromosome.of(basicSet, 3);
 	 * }</pre>
 	 *
-	 * @since !__version__!
+	 * @since 3.4
 	 *
 	 * @param validAlleles the base-set of the valid alleles
 	 * @param length the length of the created chromosomes
@@ -289,7 +289,7 @@ public final class PermutationChromosome<T>
 	/**
 	 * Create an integer permutation chromosome with the given range and length
 	 *
-	 * @since !__version__!
+	 * @since 3.4
 	 *
 	 * @param range the value range
 	 * @param length the chromosome length
