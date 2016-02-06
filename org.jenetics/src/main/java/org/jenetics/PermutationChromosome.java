@@ -56,8 +56,33 @@ import org.jenetics.util.MSeq;
 import org.jenetics.util.Seq;
 
 /**
- * The mutable methods of the {@link AbstractChromosome} has been overridden so
+ * This chromosome can be used to model permutations of a given (sub) set of
+ * alleles.
+ *
+ * <pre>{@code
+ * final ISeq<String> alleles = ISeq.of("one", "two", "three", "four", "five");
+ *
+ * // Create a new randomly permuted chromosome from the given alleles.
+ * final PermutationChromosome<String> ch1 = PermutationChromosome.of(alleles);
+ * System.out.println(ch1);
+ * System.out.println(ch1.newInstance());
+ *
+ * // Create a new randomly permuted chromosome from a subset of the given alleles.
+ * final PermutationChromosome<String> ch2 = PermutationChromosome.of(alleles, 3);
+ * System.out.println(ch2);
+ * System.out.println(ch2.newInstance());
+ *
+ * // Console output:
+ * // > three|two|one|five|four
+ * // > two|one|four|five|three
+ * // > three|one|five
+ * // > five|three|one
+ * }</pre>
+ *
+ * <i>
+ * The factory methods of the {@link AbstractChromosome} has been overridden so
  * that no invalid permutation will be created.
+ * </i>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
