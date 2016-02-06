@@ -24,6 +24,7 @@ import static java.util.Objects.requireNonNull;
 import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import javax.xml.bind.DataBindingException;
 import javax.xml.bind.JAXBContext;
@@ -40,6 +41,8 @@ import org.jenetics.util.ISeq;
  */
 public final class JAXBContextCache {
 	private JAXBContextCache() {require.noInstance();}
+
+	private static final Set<String> PACKAGES = new HashSet<>();
 
 	private static final Set<Class<?>> CLASSES = new HashSet<>();
 	static {
@@ -65,14 +68,28 @@ public final class JAXBContextCache {
 		return _context;
 	}
 
-	public static synchronized void addPackage(final String pkg) {
-		final ISeq<Class<?>> classes = jaxbClasses(pkg).stream()
-			.filter(cls -> !CLASSES.contains(cls))
-			.collect(ISeq.toISeq());
+	public static JAXBContext context(final String... packages) {
+		Stream.of(packages).forEach(JAXBContextCache::addPackage);
+		return context();
+	}
 
-		if (!classes.isEmpty()) {
-			_context = null;
-			CLASSES.addAll(classes.asList());
+	public static JAXBContext context(final Class<?>... classes) {
+		Stream.of(classes).forEach(JAXBContextCache::addClass);
+		return context();
+	}
+
+	public static synchronized void addPackage(final String pkg) {
+		if (!PACKAGES.contains(pkg)) {
+			PACKAGES.add(pkg);
+
+			final ISeq<Class<?>> classes = jaxbClasses(pkg).stream()
+				.filter(cls -> !CLASSES.contains(cls))
+				.collect(ISeq.toISeq());
+
+			if (!classes.isEmpty()) {
+				_context = null;
+				CLASSES.addAll(classes.asList());
+			}
 		}
 	}
 

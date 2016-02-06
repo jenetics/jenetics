@@ -49,6 +49,8 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.jenetics.internal.util.JAXBContextCache;
+
 /**
  * Represents an function testing measurement environment.
  *
@@ -169,7 +171,10 @@ public final class TrialMeter<T> {
 	 */
 	public void write(final OutputStream out) {
 		try {
-			final Marshaller marshaller = JAXBRegistry.context().createMarshaller();
+			final Marshaller marshaller = JAXBContextCache
+				.context("org.jenetics.tool.trial")
+				.createMarshaller();
+
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			marshaller.marshal(marshal(this), out);
 		} catch (Exception e) {
@@ -265,7 +270,10 @@ public final class TrialMeter<T> {
 	@SuppressWarnings("unchecked")
 	public static <T> TrialMeter<T> read(final InputStream in) {
 		try {
-			final Unmarshaller unmarshaller = JAXBRegistry.context().createUnmarshaller();
+			final Unmarshaller unmarshaller = JAXBContextCache
+				.context("org.jenetics.tool.trial")
+				.createUnmarshaller();
+
 			return (TrialMeter<T>)Model.ADAPTER
 				.unmarshal((Model)unmarshaller.unmarshal(in));
 		} catch (Exception e) {
