@@ -26,7 +26,7 @@ import javax.xml.bind.SchemaOutputResolver;
 import javax.xml.transform.Result;
 import javax.xml.transform.stream.StreamResult;
 
-import org.jenetics.tool.trial.jaxb;
+import org.jenetics.tool.trial.JAXBRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -55,7 +55,7 @@ public class JAXB {
 
 	public static void main(final String[] args) throws Exception {
 		final SchemaOutputResolver resolver = new Resolver();
-		jaxb.context().generateSchema(resolver);
+		JAXBRegistry.context().generateSchema(resolver);
 	}
 
 }

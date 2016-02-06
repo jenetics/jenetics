@@ -28,8 +28,8 @@ import org.jenetics.util.ISeq;
  * @version 3.4
  * @since 3.4
  */
-public final class jaxb {
-	private jaxb() {require.noInstance();}
+final class JAXBRegistry {
+	private JAXBRegistry() {require.noInstance();}
 
 	/**
 	 * The JAXB classes of this package.
