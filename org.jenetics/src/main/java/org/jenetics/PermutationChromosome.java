@@ -91,6 +91,7 @@ import org.jenetics.util.Seq;
  * </i>
  *
  * @see PartiallyMatchedCrossover
+ * @see SwapMutator
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
