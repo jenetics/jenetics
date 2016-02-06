@@ -41,12 +41,8 @@ import org.jenetics.util.RandomRegistry;
 public class EvolutionParamOptimizerTest {
 
 	public static void main(final String[] args) {
-		RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
-
-		final Knapsack problem =
-			RandomRegistry.with(new LCG64ShiftRandom(1234), r -> {
-				return Knapsack.of(200, r);
-			});
+		// The problem fow which to optimize the EvolutionParams.
+		final Knapsack problem = Knapsack.of(25, new LCG64ShiftRandom(10101));
 
 		final ISeq<SelectorCodec<BitGene, Double>> selectors = ISeq.of(
 			SelectorCodec.<BitGene, Double>ofBoltzmannSelector(DoubleRange.of(0, 3)),

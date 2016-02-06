@@ -78,6 +78,8 @@ public final class SelectorCodec<
 	 *
 	 * @param codecs the available selector codecs to choose from
 	 * @param selectors the available selectors to choose from
+	 * @param codec the codec created from the {@code codecs} sequence and the
+	 *        {@code selectors} codec
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	@SuppressWarnings("unchecked")
