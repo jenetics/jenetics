@@ -75,7 +75,9 @@ public final class IntRange implements Serializable {
 	 * An equivalent sequence of increasing values can be produced sequentially
 	 * using a {@code for} loop as follows:
 	 * <pre>{@code
-	 *     for (int i = range.getMin(); i < range.getMax(); ++i) { ... }
+	 * for (int i = range.getMin(); i < range.getMax(); ++i) {
+	 *     ...
+	 * }
 	 * }</pre>
 	 *
 	 * @return a sequential {@link IntStream} for the range of {@code int}
