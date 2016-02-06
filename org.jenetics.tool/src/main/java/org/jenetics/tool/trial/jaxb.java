@@ -19,11 +19,9 @@
  */
 package org.jenetics.tool.trial;
 
-import javax.xml.bind.DataBindingException;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-
 import org.jenetics.internal.util.require;
+
+import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -33,26 +31,15 @@ import org.jenetics.internal.util.require;
 public final class jaxb {
 	private jaxb() {require.noInstance();}
 
-	private static final class JAXBContextHolder {
-		private static final JAXBContext CONTEXT; static {
-			try {
-				CONTEXT = JAXBContext.newInstance(
-					Sample.Model.class,
-					Data.Model.class,
-					DataSet.Model.class,
-					TrialMeter.Model.class,
-					Env.Model.class
-				);
-			} catch (JAXBException e) {
-				throw new DataBindingException(
-					"Something went wrong while creating JAXBContext.", e
-				);
-			}
-		}
-	}
-
-	public static JAXBContext context() {
-		return JAXBContextHolder.CONTEXT;
-	}
+	/**
+	 * The JAXB classes of this package.
+	 */
+	public static final ISeq<Class<?>> CLASSES = ISeq.of(
+		Sample.Model.class,
+		Data.Model.class,
+		DataSet.Model.class,
+		TrialMeter.Model.class,
+		Env.Model.class
+	);
 
 }
