@@ -91,7 +91,7 @@ public final class JAXBContextCache {
 
 		try {
 			final Field field = Class
-				.forName(pkg + ".jaxb")
+				.forName(pkg + ".JAXBRegistry")
 				.getField("CLASSES");
 			field.setAccessible(true);
 

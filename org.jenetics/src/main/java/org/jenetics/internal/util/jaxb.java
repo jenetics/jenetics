@@ -30,8 +30,6 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.jenetics.internal.util.model.CharacterModel;
 
-import org.jenetics.util.ISeq;
-
 /**
  * JAXB helper methods.
  *
@@ -42,17 +40,6 @@ import org.jenetics.util.ISeq;
 public class jaxb {
 	private jaxb() {require.noInstance();}
 
-
-	/**
-	 * The JAXB classes of this package.
-	 */
-	public static final ISeq<Class<?>> CLASSES = ISeq.of(
-		model.CharacterModel.class
-	);
-
-	/* *************************************************************************
-	 * Some JAXB helper methods.
-	 **************************************************************************/
 
 	private static final XmlAdapter<Object, Object> IDENTITY_ADAPTER =
 		new XmlAdapter<Object, Object>() {
