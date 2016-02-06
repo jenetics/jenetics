@@ -300,7 +300,7 @@ public final class PermutationChromosome<T>
 	public static PermutationChromosome<Integer>
 	ofInteger(final IntRange range, final int length) {
 		return of(
-			IntStream.range(range.getMin(), range.getMax())
+			range.stream()
 				.mapToObj(Integer::new)
 				.collect(ISeq.toISeq()),
 			length
