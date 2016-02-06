@@ -17,8 +17,8 @@ The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jeneti
 *  **Gradle 2.x**: [Gradle](http://www.gradle.org/) is used for building the library. (Gradle is download automatically, if you are using the Gradle Wrapper script `gradlew`, located in the base directory, for building the library.)
 
 ### Test compile/execution
-*  **TestNG 6.9.6**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
-*  **Apache Commons Math 3.5**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical collectors.
+*  **TestNG 6.9.10**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
+*  **Apache Commons Math 3.6**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical collectors.
 
 ## Download
 * **Github**: <https://github.com/jenetics/jenetics/releases/download/v3.4.0/jenetics-3.4.0.zip>
@@ -132,7 +132,7 @@ In contrast to other GA implementations, the library uses the concept of an evol
 
 This example tries to approximate a given image by semitransparent polygons.  It comes with an Swing UI, where you can immediately start your own experiments. After compiling the sources with
 
-    $ ./gradlew jar
+    $ ./gradlew compileTestJava
 
 you can start the example by calling
 
@@ -146,7 +146,7 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 The library is licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
 
-	Copyright 2007-2015 Franz Wilhelmstötter
+	Copyright 2007-2016 Franz Wilhelmstötter
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -162,6 +162,12 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 
 
 ## Release notes
+
+### 3.4.0
+
+#### Improvement
+
+xxx
 
 ### 3.3.0
 
