@@ -117,7 +117,7 @@ public final class PermutationChromosome<T>
 	 * @param genes the enum genes the new chromosome consists of
 	 * @throws NullPointerException if the given {@code genes} are null
 	 * @throws IllegalArgumentException if the given {@code genes} sequence is
-	 *         {@code null}
+	 *         empty
 	 */
 	public PermutationChromosome(final ISeq<EnumGene<T>> genes) {
 		this(genes, null);
@@ -294,6 +294,8 @@ public final class PermutationChromosome<T>
 	 * @param range the value range
 	 * @param length the chromosome length
 	 * @return a new integer permutation chromosome
+	 * @throws NullPointerException if the given {@code range} is {@code null}
+	 * @throws IllegalArgumentException if the given length is smaller than one.
 	 */
 	public static PermutationChromosome<Integer>
 	ofInteger(final IntRange range, final int length) {
