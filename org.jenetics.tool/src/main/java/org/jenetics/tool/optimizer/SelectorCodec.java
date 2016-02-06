@@ -121,17 +121,10 @@ public final class SelectorCodec<
 		return _codec.decoder();
 	}
 
-	/**
-	 * Return a new {@code SelectorCodec} with the given {@code codec} appended.
-	 *
-	 * @param codec the alterer codec to append
-	 * @return a new {@code SelectorCodec} with the given {@code codec} appended
-	 * @throws NullPointerException if the given {@code codec} is {@code null}
-	 */
-	public SelectorCodec<G, C>
-	append(final Codec<? extends Selector<G, C>, DoubleGene> codec) {
-		return append(ISeq.of(codec), ISeq.empty());
-	}
+
+	/* *************************************************************************
+	 *  Append methods
+	 * ************************************************************************/
 
 	/**
 	 * Return a new {@code SelectorCodec} with the given {@code codecs} and
@@ -142,17 +135,52 @@ public final class SelectorCodec<
 	 * @return a new {@code SelectorCodec}
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public SelectorCodec<G, C> append(
+	public SelectorCodec<G, C> and(
 		final ISeq<? extends Codec<? extends Selector<G, C>, DoubleGene>> codecs,
 		final ISeq<? extends Selector<G, C>> selectors
 	) {
 		return of(ISeq.concat(_codec, codecs), ISeq.concat(_selectors, selectors));
 	}
 
+	/**
+	 * Return a new {@code SelectorCodec} with the given {@code codec} appended.
+	 *
+	 * @param codec the alterer codec to append
+	 * @return a new {@code SelectorCodec} with the given {@code codec} appended
+	 * @throws NullPointerException if the given {@code codec} is {@code null}
+	 */
+	public SelectorCodec<G, C>
+	and(final Codec<? extends Selector<G, C>, DoubleGene> codec) {
+		return and(ISeq.of(codec), ISeq.empty());
+	}
+
+	/**
+	 * Return a new {@code SelectorCodec} with the given {@code selector}
+	 * appended.
+	 *
+	 * @param selector the selector to append
+	 * @return a new {@code SelectorCodec} with the given {@code selector}
+	 * @throws NullPointerException if the given {@code selector} is {@code null}
+	 */
+	public SelectorCodec<G, C> and(final Selector<G, C> selector) {
+		return and(ISeq.empty(), ISeq.of(selector));
+	}
+
 	/* *************************************************************************
 	 *  Static factory methods
 	 * ************************************************************************/
 
+	/**
+	 * Creates a new {@code SelectorCodec} object which concatenates the given
+	 * sequence of existing selector codecs and the sequence of selectors.
+	 *
+	 * @param codecs the {@code Selector} codecs the new codec consists of
+	 * @param selectors the parameterless selectors new codec consists of
+	 * @param <G> the gene type of the problem encoding
+	 * @param <C> the fitness function return type of the problem encoding
+	 * @return a new selector codec
+	 * @throws NullPointerException if one of teh arguments is {@code null}
+	 */
 	@SuppressWarnings("unchecked")
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	SelectorCodec<G, C> of(
@@ -196,6 +224,20 @@ public final class SelectorCodec<
 	SelectorCodec<G, C> of(final Codec<? extends Selector<G, C>, DoubleGene> codec) {
 		return of(ISeq.of(codec), ISeq.empty());
 	}
+
+	/**
+	 * Create a new {@code SelectorCodec} from the given {@link Selector}.
+	 *
+	 * @param selector the (parameterless) selector object
+	 * @param <G> the gene type of the problem encoding
+	 * @param <C> the fitness function return type of the problem encoding
+	 * @return a new {@code SelectorCodec}
+	 */
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	SelectorCodec<G, C> of(final Selector<G, C> selector) {
+		return of(ISeq.empty(), ISeq.of(selector));
+	}
+
 
 	/* *************************************************************************
 	 *  Static factory methods for known selector codecs.
