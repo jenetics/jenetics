@@ -70,6 +70,7 @@ import org.jenetics.util.RandomRegistry;
  * }</pre>
  *
  * @see PermutationChromosome
+ * @see PartiallyMatchedCrossover
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
@@ -155,6 +156,7 @@ public final class EnumGene<A>
 	 * Create a new gene from the given {@code value} and the gene context.
 	 *
 	 * @since 1.6
+	 *
 	 * @param value the value of the new gene.
 	 * @return a new gene with the given value.
 	 */

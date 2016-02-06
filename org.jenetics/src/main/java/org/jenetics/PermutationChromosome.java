@@ -79,10 +79,18 @@ import org.jenetics.util.Seq;
  * // > five|three|one
  * }</pre>
  *
- * <i>
+ * Usable {@link Alterer} for this chromosome:
+ * <ul>
+ *     <li>{@link PartiallyMatchedCrossover}</li>
+ *     <li>{@link SwapMutator}</li>
+ * </ul>
+ * <p>
+ * <i><b>Implementation note:</b>
  * The factory methods of the {@link AbstractChromosome} has been overridden so
  * that no invalid permutation will be created.
  * </i>
+ *
+ * @see PartiallyMatchedCrossover
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
