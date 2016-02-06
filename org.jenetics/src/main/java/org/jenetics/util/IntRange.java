@@ -80,6 +80,8 @@ public final class IntRange implements Serializable {
 	 * }
 	 * }</pre>
 	 *
+	 * @since 3.4
+	 *
 	 * @return a sequential {@link IntStream} for the range of {@code int}
 	 *         elements
 	 */

@@ -80,6 +80,8 @@ public final class LongRange implements Serializable {
 	 * }
 	 * }</pre>
 	 *
+	 * @since 3.4
+	 *
 	 * @return a sequential {@link LongStream} for the range of {@code long}
 	 *         elements
 	 */
