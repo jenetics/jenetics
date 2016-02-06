@@ -22,9 +22,8 @@ package org.jenetics.internal.util;
 import static java.util.Objects.requireNonNull;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.xml.bind.DataBindingException;
 import javax.xml.bind.JAXBContext;
@@ -42,7 +41,7 @@ import org.jenetics.util.ISeq;
 public final class JAXBContextCache {
 	private JAXBContextCache() {require.noInstance();}
 
-	private static final List<Class<?>> CLASSES = new ArrayList<>();
+	private static final Set<Class<?>> CLASSES = new HashSet<>();
 	static {
 		addPackage("org.jenetics");
 		addPackage("org.jenetics.engine");
@@ -67,33 +66,38 @@ public final class JAXBContextCache {
 	}
 
 	public static synchronized void addPackage(final String pkg) {
-		requireNonNull(pkg);
+		final ISeq<Class<?>> classes = jaxbClasses(pkg).stream()
+			.filter(cls -> !CLASSES.contains(cls))
+			.collect(ISeq.toISeq());
 
-		final List<Class<?>> classes = jaxbClasses(pkg);
 		if (!classes.isEmpty()) {
 			_context = null;
-			CLASSES.addAll(jaxbClasses(pkg));
+			CLASSES.addAll(classes.asList());
 		}
 	}
 
 	public static synchronized void addClass(final Class<?> cls) {
 		requireNonNull(cls);
 
-		_context = null;
-		CLASSES.add(cls);
+		if (!CLASSES.contains(cls)) {
+			_context = null;
+			CLASSES.add(cls);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
-	private static List<Class<?>> jaxbClasses(final String pkg) {
+	private static ISeq<Class<?>> jaxbClasses(final String pkg) {
+		requireNonNull(pkg);
+
 		try {
 			final Field field = Class
 				.forName(pkg + ".jaxb")
 				.getField("CLASSES");
 			field.setAccessible(true);
 
-			return ((ISeq<Class<?>>)field.get(null)).asList();
+			return (ISeq<Class<?>>)field.get(null);
 		} catch (ReflectiveOperationException e) {
-			return Collections.emptyList();
+			return ISeq.empty();
 		}
 	}
 }
