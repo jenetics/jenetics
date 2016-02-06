@@ -22,19 +22,14 @@ package org.jenetics.internal.util;
 import static org.jenetics.internal.util.reflect.classOf;
 import static org.jenetics.internal.util.reflect.innerClasses;
 
-import java.lang.reflect.Field;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
 
-import javax.xml.bind.DataBindingException;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.jenetics.internal.util.model.CharacterModel;
 
-import org.jenetics.engine.EvolutionParam;
 import org.jenetics.util.ISeq;
 
 /**
