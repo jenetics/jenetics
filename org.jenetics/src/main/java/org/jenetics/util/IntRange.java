@@ -22,6 +22,7 @@ package org.jenetics.util;
 import static java.lang.String.format;
 
 import java.io.Serializable;
+import java.util.stream.IntStream;
 
 /**
  * Integer range class.
@@ -66,6 +67,26 @@ public final class IntRange implements Serializable {
 		return _max;
 	}
 
+	/**
+	 * Returns a sequential ordered {@code IntStream} from {@link #getMin()}
+	 * (inclusive) to {@link #getMax()} (exclusive) by an incremental step of
+	 * {@code 1}.
+	 * <p>
+	 * An equivalent sequence of increasing values can be produced sequentially
+	 * using a {@code for} loop as follows:
+	 * <pre>{@code
+	 * for (int i = range.getMin(); i < range.getMax(); ++i) {
+	 *     ...
+	 * }
+	 * }</pre>
+	 *
+	 * @return a sequential {@link IntStream} for the range of {@code int}
+	 *         elements
+	 */
+	public IntStream stream() {
+		return IntStream.range(_min, _max);
+	}
+	
 	/**
 	 * Returns the range of this {@code IntRange} as a {@code LongRange} after
 	 * a widening primitive conversion.
