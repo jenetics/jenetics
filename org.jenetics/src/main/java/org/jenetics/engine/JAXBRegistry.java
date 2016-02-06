@@ -30,8 +30,8 @@ import org.jenetics.util.ISeq;
  * @version !__version__!
  * @since !__version__!
  */
-final class jaxb {
-	private jaxb() {require.noInstance();}
+final class JAXBRegistry {
+	private JAXBRegistry() {require.noInstance();}
 
 	/**
 	 * The JAXB classes of this package.
