@@ -19,8 +19,8 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.internal.util.JAXBContextCache.context;
 import static org.jenetics.internal.util.jaxb.adapterFor;
-import static org.jenetics.internal.util.jaxb.context;
 import static org.jenetics.internal.util.jaxb.marshal;
 
 import java.io.File;
