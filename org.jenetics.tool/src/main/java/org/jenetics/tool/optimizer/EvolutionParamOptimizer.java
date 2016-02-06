@@ -54,7 +54,7 @@ import org.jenetics.util.ISeq;
  * @version !__version__!
  * @since !__version__!
  */
-public final class EvolutionParamOptimizer<
+public class EvolutionParamOptimizer<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
@@ -73,7 +73,7 @@ public final class EvolutionParamOptimizer<
 	 *        that this is not the terminator used for limiting the optimization
 	 *        of the custom fitness function itself.</i></b>
 	 */
-	private EvolutionParamOptimizer(
+	public EvolutionParamOptimizer(
 		final Codec<EvolutionParam<G, C>, DoubleGene> codec,
 		final Supplier<Predicate<? super EvolutionResult<?, Measure<C>>>> limit
 	) {
@@ -221,14 +221,6 @@ public final class EvolutionParamOptimizer<
 
 		// Return the median value.
 		return measures.get(measures.length()/2);
-	}
-
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	EvolutionParamOptimizer<G, C> of(
-		final Codec<EvolutionParam<G, C>, DoubleGene> codec,
-		final Supplier<Predicate<? super EvolutionResult<?, Measure<C>>>> limit
-	) {
-		return new EvolutionParamOptimizer<>(codec, limit);
 	}
 
 }

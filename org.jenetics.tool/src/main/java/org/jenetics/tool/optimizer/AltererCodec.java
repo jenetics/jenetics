@@ -109,6 +109,11 @@ public final class AltererCodec<
 		return _codec.decoder();
 	}
 
+
+	/* *************************************************************************
+	 *  Append methods
+	 * ************************************************************************/
+
 	/**
 	 * Return a new {@code AltererCodec} with the given {@code codec} appended.
 	 *
@@ -117,8 +122,19 @@ public final class AltererCodec<
 	 * @throws NullPointerException if the given {@code codec} is {@code null}
 	 */
 	public AltererCodec<G, C>
-	append(final Codec<? extends Alterer<G, C>, DoubleGene> codec) {
-		return append(ISeq.of(codec), ISeq.empty());
+	and(final Codec<? extends Alterer<G, C>, DoubleGene> codec) {
+		return and(ISeq.of(requireNonNull(codec)), ISeq.empty());
+	}
+
+	/**
+	 * Return a new {@code AltererCodec} with the given {@code alterer} appended.
+	 *
+	 * @param alterer the (parameterless) alterer
+	 * @return a new {@code AltererCodec} with the given {@code alterer} appended
+	 * @throws NullPointerException if the given {@code codec} is {@code null}
+	 */
+	public AltererCodec<G, C> and(final Alterer<G, C> alterer) {
+		return and(ISeq.empty(), ISeq.of(requireNonNull(alterer)));
 	}
 
 	/**
@@ -130,7 +146,7 @@ public final class AltererCodec<
 	 * @return a new {@code AltererCodec}
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public AltererCodec<G, C> append(
+	private AltererCodec<G, C> and(
 		final ISeq<? extends Codec<? extends Alterer<G, C>, DoubleGene>> codecs,
 		final ISeq<? extends Alterer<G, C>> alterers
 	) {
@@ -225,22 +241,6 @@ public final class AltererCodec<
 	}
 
 	/**
-	 * Return a new {@code AltererCodec} with the given {@code codecs}.
-	 *
-	 * @param codecs the alterer codecs
-	 * @param <G> the gene type of the problem encoding
-	 * @param <C> the fitness function return type of the problem encoding
-	 * @return a new {@code AltererCodec}
-	 * @throws NullPointerException if the {@code codecs} {@code null}
-	 */
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	AltererCodec<G, C> of(
-		final ISeq<? extends Codec<? extends Alterer<G, C>, DoubleGene>> codecs
-	) {
-		return of(codecs, ISeq.empty());
-	}
-
-	/**
 	 * Return a new {@code AltererCodec} with the given {@code codec}.
 	 *
 	 * @param codec the alterer codec
@@ -251,7 +251,21 @@ public final class AltererCodec<
 	 */
 	private static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	AltererCodec<G, C> of(final Codec<? extends Alterer<G, C>, DoubleGene> codec) {
-		return of(ISeq.of(codec), ISeq.empty());
+		return of(ISeq.of(requireNonNull(codec)), ISeq.empty());
+	}
+
+	/**
+	 * Return a new {@code AltererCodec} with the given {@code codec}.
+	 *
+	 * @param alterer the (parameterless) alterer object
+	 * @param <G> the gene type of the problem encoding
+	 * @param <C> the fitness function return type of the problem encoding
+	 * @return a new {@code AltererCodec}
+	 * @throws NullPointerException if the {@code alterer} {@code null}
+	 */
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	AltererCodec<G, C> of(final Alterer<G, C> alterer) {
+		return of(ISeq.empty(), ISeq.of(requireNonNull(alterer)));
 	}
 
 
@@ -261,6 +275,7 @@ public final class AltererCodec<
 
 	/**
 	 * Return the <i>default</i> {@link Codec} of the {@link SinglePointCrossover}.
+	 * The returned codec also varies the alter probability.
 	 *
 	 * @param <G> the gene type of the problem encoding the alterer is working on
 	 * @param <C> the fitness function result type of the problem
@@ -278,6 +293,7 @@ public final class AltererCodec<
 
 	/**
 	 * Return the <i>default</i> {@link Codec} of the {@link MultiPointCrossover}.
+	 * The returned codec also varies the alter probability.
 	 *
 	 * @param points the range of the desired crossover points
 	 * @param <G> the gene type of the problem encoding the alterer is working on
@@ -305,6 +321,7 @@ public final class AltererCodec<
 
 	/**
 	 * Return the <i>default</i> {@link Codec} of the {@link Mutator}.
+	 * The returned codec also varies the alter probability.
 	 *
 	 * @param <G> the gene type of the problem encoding the alterer is working on
 	 * @param <C> the fitness function result type of the problem
@@ -322,6 +339,7 @@ public final class AltererCodec<
 
 	/**
 	 * Return the <i>default</i> {@link Codec} of the {@link SwapMutator}.
+	 * The returned codec also varies the alter probability.
 	 *
 	 * @param <G> the gene type of the problem encoding the alterer is working on
 	 * @param <C> the fitness function result type of the problem
@@ -339,6 +357,7 @@ public final class AltererCodec<
 
 	/**
 	 * Return the <i>default</i> {@link Codec} of the {@link GaussianMutator}.
+	 * The returned codec also varies the alter probability.
 	 *
 	 * @param <G> the gene type of the problem encoding the alterer is working on
 	 * @param <C> the fitness function result type of the problem
@@ -356,6 +375,7 @@ public final class AltererCodec<
 
 	/**
 	 * Return the <i>default</i> {@link Codec} of the {@link MeanAlterer}.
+	 * The returned codec also varies the alter probability.
 	 *
 	 * @param <G> the gene type of the problem encoding the alterer is working on
 	 * @param <C> the fitness function result type of the problem
@@ -373,7 +393,8 @@ public final class AltererCodec<
 
 	/**
 	 * Return the <i>default</i> {@link Codec} of the
-	 * {@link PartiallyMatchedCrossover}.
+	 * {@link PartiallyMatchedCrossover}. The returned codec also varies the
+	 * alter probability.
 	 *
 	 * @param <T> the generic type of the {@link EnumGene}
 	 * @param <C> the fitness function result type of the problem

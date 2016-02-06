@@ -25,8 +25,6 @@ import org.testng.annotations.Test;
 import org.jenetics.Alterer;
 import org.jenetics.DoubleGene;
 import org.jenetics.Genotype;
-import org.jenetics.engine.Codec;
-import org.jenetics.util.IntRange;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -57,8 +55,8 @@ public class AltererCodecTest {
 	public void foo() {
 		AltererCodec<DoubleGene, Double> c =
 			AltererCodec.<DoubleGene, Double>ofSwapMutator()
-				.append(AltererCodec.ofMeanAlterer())
-				.append(AltererCodec.ofMutator());
+				.and(AltererCodec.ofMeanAlterer())
+				.and(AltererCodec.ofMutator());
 
 		final Genotype<DoubleGene> encoding = c.encoding().newInstance();
 		System.out.println(encoding);

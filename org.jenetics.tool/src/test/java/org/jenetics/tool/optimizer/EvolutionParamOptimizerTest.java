@@ -22,16 +22,24 @@ package org.jenetics.tool.optimizer;
 import static java.time.Duration.ofMillis;
 import static org.jenetics.engine.limit.byExecutionTime;
 import static org.jenetics.engine.limit.bySteadyFitness;
+import static org.jenetics.tool.optimizer.AltererCodec.ofMultiPointCrossover;
+import static org.jenetics.tool.optimizer.AltererCodec.ofSwapMutator;
+import static org.jenetics.tool.optimizer.SelectorCodec.ofBoltzmannSelector;
+import static org.jenetics.tool.optimizer.SelectorCodec.ofExponentialRankSelector;
+import static org.jenetics.tool.optimizer.SelectorCodec.ofLinearRankSelector;
+import static org.jenetics.tool.optimizer.SelectorCodec.ofTournamentSelector;
 
 import org.jenetics.BitGene;
 import org.jenetics.Optimize;
+import org.jenetics.RouletteWheelSelector;
+import org.jenetics.StochasticUniversalSelector;
+import org.jenetics.TruncationSelector;
 import org.jenetics.engine.EvolutionParam;
 import org.jenetics.tool.problem.Knapsack;
 import org.jenetics.util.DoubleRange;
-import org.jenetics.util.ISeq;
 import org.jenetics.util.IntRange;
 import org.jenetics.util.LCG64ShiftRandom;
-import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.LongRange;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -44,43 +52,33 @@ public class EvolutionParamOptimizerTest {
 		// The problem fow which to optimize the EvolutionParams.
 		final Knapsack problem = Knapsack.of(25, new LCG64ShiftRandom(10101));
 
-		final ISeq<SelectorCodec<BitGene, Double>> selectors = ISeq.of(
-			SelectorCodec.<BitGene, Double>ofBoltzmannSelector(DoubleRange.of(0, 3)),
-			SelectorCodec.<BitGene, Double>ofTournamentSelector(IntRange.of(2, 5))
-		);
+		final IntRange populationSize = IntRange.of(10, 1_000);
+		final DoubleRange offspringFraction = DoubleRange.of(0, 1);
+		final LongRange maximalPhenotypeAge = LongRange.of(5, 10_000);
 
 		final EvolutionParamCodec<BitGene, Double> codec =
 			EvolutionParamCodec.of(
-				SelectorCodec.of(selectors, ISeq.empty()),
+				SelectorCodec
+					.of(new RouletteWheelSelector<BitGene, Double>())
+					.and(new TruncationSelector<>())
+					.and(new StochasticUniversalSelector<>())
+					.and(ofBoltzmannSelector(DoubleRange.of(0, 3)))
+					.and(ofExponentialRankSelector(DoubleRange.of(0, 1)))
+					.and(ofLinearRankSelector(DoubleRange.of(0, 3)))
+					.and(ofTournamentSelector(IntRange.of(2, 10))),
 				AltererCodec.<BitGene, Double>ofMutator()
-					.append(AltererCodec.ofMultiPointCrossover(IntRange.of(2, 20)))
-					.append(AltererCodec.ofSwapMutator())
+					.and(ofMultiPointCrossover(IntRange.of(2, 20)))
+					.and(ofSwapMutator())
 			);
 
 		final EvolutionParamOptimizer<BitGene, Double> optimizer =
-			EvolutionParamOptimizer.of(codec, () -> bySteadyFitness(250));
+			new EvolutionParamOptimizer<>(codec, () -> bySteadyFitness(250));
 
 		final EvolutionParam<BitGene, Double> params = optimizer
 			.optimize(
 				problem,
 				Optimize.MAXIMUM,
 				() -> byExecutionTime(ofMillis(150)));
-
-		/*
-		final RealFunction problem = new RealFunction();
-
-		final EvolutionParamCodec<DoubleGene, Double> codec =
-			EvolutionParamCodec.<DoubleGene, Double>of(
-				SelectorCodec.numeric(),
-				AltererCodec.numericMean()
-			);
-
-		final EvolutionParamOptimizer<DoubleGene, Double> optimizer =
-			new EvolutionParamOptimizer<>(codec, () -> bySteadyFitness(250));
-
-		final EvolutionParam<DoubleGene, Double> params = optimizer
-			.optimize(problem, () -> byExecutionTime(ofMillis(150)));
-		*/
 
 		System.out.println();
 		System.out.println("Best parameters:");
