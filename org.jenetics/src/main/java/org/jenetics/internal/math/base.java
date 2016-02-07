@@ -252,7 +252,7 @@ public final class base {
 		if (!arithmetic.isMultiplicationSave(n, k)) {
 			throw new IllegalArgumentException(format(
 				"n*sub.length > Integer.MAX_VALUE (%s*%s = %s > %s)",
-				n, sub.length, (long)n*(long)k, Integer.MAX_VALUE
+				n, k, (long)n*(long)k, Integer.MAX_VALUE
 			));
 		}
 

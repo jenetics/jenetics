@@ -19,6 +19,7 @@
  */
 package org.jenetics.engine;
 
+import static java.lang.String.format;
 import static java.lang.reflect.Array.newInstance;
 import static java.util.Objects.requireNonNull;
 
@@ -29,6 +30,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import org.jenetics.internal.math.arithmetic;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.require;
 
@@ -582,10 +584,9 @@ public final class codecs {
 	 *         problems.
 	 * @throws NullPointerException if the given {@code basicSet} is
 	 *         {@code null}; {@code null} elements are allowed.
-	 * @throws IllegalArgumentException if the {@code basicSet} size is smaller
-	 *         than one.
-	 * @throws IllegalArgumentException if the subset {@code size} size is
-	 *         smaller than one.
+	 * @throws IllegalArgumentException if {@code basicSet.size() < size},
+	 *         {@code size <= 0} or {@code basicSet.size()*size} will cause an
+	 *         integer overflow.
 	 */
 	public static <T> Codec<ISeq<T>, EnumGene<T>> ofSubSet(
 		final ISeq<? extends T> basicSet,
@@ -594,6 +595,15 @@ public final class codecs {
 		requireNonNull(basicSet);
 		require.positive(basicSet.length());
 		require.positive(size);
+
+		final int n = basicSet.size();
+		final int k = size;
+		if (!arithmetic.isMultiplicationSave(n, k)) {
+			throw new IllegalArgumentException(format(
+				"n*sub.length > Integer.MAX_VALUE (%s*%s = %s > %s)",
+				n, k, (long)n*(long)k, Integer.MAX_VALUE
+			));
+		}
 
 		return Codec.of(
 			Genotype.of(PermutationChromosome.of(basicSet, size)),

@@ -208,8 +208,9 @@ public final class PermutationChromosome<T>
 	 * @param <T> the allele type
 	 * @return a new chromosome with the given valid alleles and the desired
 	 *         length
-	 * @throws IllegalArgumentException if the given {@code length} is smaller
-	 *         than one or greater than {@code validAlleles.length()}
+	 * @throws IllegalArgumentException if {@code validAlleles.size() < length},
+	 *         {@code length <= 0} or {@code validAlleles.size()*length} will
+	 *         cause an integer overflow.
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static <T> PermutationChromosome<T> of(
