@@ -85,10 +85,28 @@ import org.jenetics.util.Seq;
  *     <li>{@link SwapMutator}</li>
  * </ul>
  * <p>
- * <i><b>Implementation note:</b>
+ * <em><b>Implementation note 1:</b>
  * The factory methods of the {@link AbstractChromosome} has been overridden so
  * that no invalid permutation will be created.
- * </i>
+ * </em>
+ *
+ * <p>
+ * <em><b>Implementation note 2:</b>
+ * This class uses an algorithm for choosing subsets which is based on a
+ * FORTRAN77 version, originally implemented by Albert Nijenhuis, Herbert Wilf.
+ * The actual Java implementation is based on the  C++ version by John Burkardt.
+ * </em>
+ * <br>
+ * <em><a href="https://people.scs.fsu.edu/~burkardt/c_src/subset/subset.html">
+ *  Reference:</a></em>
+ *   Albert Nijenhuis, Herbert Wilf,
+ *   Combinatorial Algorithms for Computers and Calculators,
+ *   Second Edition,
+ *   Academic Press, 1978,
+ *   ISBN: 0-12-519260-6,
+ *   LC: QA164.N54.
+ * </p>
+ *
  *
  * @see PartiallyMatchedCrossover
  * @see SwapMutator
@@ -106,6 +124,7 @@ public final class PermutationChromosome<T>
 
 	private ISeq<T> _validAlleles;
 
+	// Private primary constructor.
 	private PermutationChromosome(
 		final ISeq<EnumGene<T>> genes,
 		final Boolean valid
@@ -203,32 +222,32 @@ public final class PermutationChromosome<T>
 	 *
 	 * @since 3.4
 	 *
-	 * @param validAlleles the base-set of the valid alleles
+	 * @param alleles the base-set of the valid alleles
 	 * @param length the length of the created chromosomes
 	 * @param <T> the allele type
 	 * @return a new chromosome with the given valid alleles and the desired
 	 *         length
-	 * @throws IllegalArgumentException if {@code validAlleles.size() < length},
-	 *         {@code length <= 0} or {@code validAlleles.size()*length} will
+	 * @throws IllegalArgumentException if {@code alleles.size() < length},
+	 *         {@code length <= 0} or {@code alleles.size()*length} will
 	 *         cause an integer overflow.
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static <T> PermutationChromosome<T> of(
-		final ISeq<? extends T> validAlleles,
+		final ISeq<? extends T> alleles,
 		final int length
 	) {
 		require.positive(length);
-		if (length > validAlleles.size()) {
+		if (length > alleles.size()) {
 			throw new IllegalArgumentException(format(
 				"The sub-set size must be be greater then the base-set: %d > %d",
-				length, validAlleles.size()
+				length, alleles.size()
 			));
 		}
 
-		final int[] subset = array.shuffle(base.subset(validAlleles.size(), length));
+		final int[] subset = array.shuffle(base.subset(alleles.size(), length));
 		return new PermutationChromosome<>(
 			IntStream.of(subset)
-				.mapToObj(i -> EnumGene.of(i, validAlleles))
+				.mapToObj(i -> EnumGene.of(i, alleles))
 				.collect(ISeq.toISeq()),
 			true
 		);
@@ -238,12 +257,14 @@ public final class PermutationChromosome<T>
 	 * Create a new, random chromosome with the given valid alleles.
 	 *
 	 * @param <T> the gene type of the chromosome
-	 * @param validAlleles the valid alleles used for this permutation arrays.
+	 * @param alleles the valid alleles used for this permutation arrays.
 	 * @return a new chromosome with the given alleles
+	 * @throws IllegalArgumentException if the given allele sequence is empty or
+	 *         {@code allele.length()^2} will cause an integer overflow.
 	 */
 	public static <T> PermutationChromosome<T>
-	of(final ISeq<? extends T> validAlleles) {
-		return of(validAlleles, validAlleles.size());
+	of(final ISeq<? extends T> alleles) {
+		return of(alleles, alleles.size());
 	}
 
 	/**
@@ -253,7 +274,8 @@ public final class PermutationChromosome<T>
 	 * @param <T> the gene type of the chromosome
 	 * @param alleles the valid alleles used for this permutation arrays.
 	 * @return a new chromosome with the given alleles
-	 * @throws IllegalArgumentException if the given allele array is empty
+	 * @throws IllegalArgumentException if the given allele array is empty or
+	 *         {@code allele.length^2} will cause an integer overflow.
 	 * @throws NullPointerException if one of the alleles is {@code null}
 	 */
 	@SafeVarargs
@@ -266,7 +288,8 @@ public final class PermutationChromosome<T>
 	 *
 	 * @param length the chromosome length.
 	 * @return a integer permutation chromosome with the given length.
-	 * @throws IllegalArgumentException if the given length is smaller than one.
+	 * @throws IllegalArgumentException if {@code length <= 0} or
+	 *         {@code length^2} will cause an integer overflow.
 	 */
 	public static PermutationChromosome<Integer> ofInteger(final int length) {
 		return ofInteger(0, require.positive(length));
@@ -283,7 +306,9 @@ public final class PermutationChromosome<T>
 	 *        chromosome.
 	 * @return a integer permutation chromosome with the given integer range
 	 *         values.
-	 * @throws java.lang.IllegalArgumentException if {@code end <= start}
+	 * @throws IllegalArgumentException if
+	 *         {@code start >= end}, {@code start <= 0} or
+	 *         {@code (end - start)^2} will cause an integer overflow.
 	 */
 	public static PermutationChromosome<Integer>
 	ofInteger(final int start, final int end) {
@@ -305,7 +330,11 @@ public final class PermutationChromosome<T>
 	 * @param length the chromosome length
 	 * @return a new integer permutation chromosome
 	 * @throws NullPointerException if the given {@code range} is {@code null}
-	 * @throws IllegalArgumentException if the given length is smaller than one.
+	 * @throws IllegalArgumentException if
+	 *         {@code range.getMax() - range.getMin() < length},
+	 *         {@code length <= 0} or
+	 *         {@code (range.getMax() - range.getMin())*length} will cause an
+	 *         integer overflow.
 	 */
 	public static PermutationChromosome<Integer>
 	ofInteger(final IntRange range, final int length) {
