@@ -167,7 +167,11 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 
 #### Improvement
 
-xxx
+* [#68](https://github.com/jenetics/jenetics/issues/68): Improve implementations of `Seq` interfaces.
+* [#73](https://github.com/jenetics/jenetics/issues/73): Add additional methods to `Seq` interface: `Seq.append` and `Seq.prepend`.
+* [#79](https://github.com/jenetics/jenetics/issues/79): Improve evolution performance measuring. Code resides now in (experimental) `org.jenetics.tool` module. 
+* [#85](https://github.com/jenetics/jenetics/issues/85): Add support for fixed-sized subsets in `PermutationChromosome` class.
+
 
 ### 3.3.0
 
