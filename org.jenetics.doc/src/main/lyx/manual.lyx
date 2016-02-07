@@ -14580,9 +14580,28 @@ Subset codec
 \end_layout
 
 \begin_layout Standard
-The subset Codec can be used for problems where it is required to find the
- best subset from given basic set.
- This Codec can easily implemented with the use of a BitChromosome, as shown
+There are currently two kinds of subset codecs you can choose from: finding
+ subsets with 
+\emph on
+variable
+\emph default
+ size and with 
+\emph on
+fixed
+\emph default
+ size.
+\end_layout
+
+\begin_layout Paragraph
+Variable-sized subsets
+\end_layout
+
+\begin_layout Standard
+A Codec for 
+\emph on
+variable-sized
+\emph default
+ subsets can be easily implemented with the use of a BitChromosome, as shown
  in listing 
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -14803,6 +14822,48 @@ class Main {
 
 \end_layout
 
+\begin_layout Paragraph
+Fixed-size subsets
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The algorithm for choosing subsets based on a FORTRAN77 version, originally
+ implemented by Albert Nijenhuis, Herbert Wilf.
+ The actual Java implementation is based on the C++ version by John Burkardt.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Nijenhuis1978"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "JSSv068c01"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The second kind of subset codec allows you to find the 
+\emph on
+best
+\emph default
+ subset of a given, fixed size.
+\end_layout
+
+\begin_layout Enumerate
+Subset sum problem: https://en.wikipedia.org/wiki/Subset_sum_problem
+\end_layout
+
 \begin_layout Subsubsection
 Composite codec
 \end_layout
@@ -14868,7 +14929,6 @@ static <G extends Gene<?, G>, A, B, T> Codec<T, G> of(
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-
 Composite 
 \family typewriter
 Codec
