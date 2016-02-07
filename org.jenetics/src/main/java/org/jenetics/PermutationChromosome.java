@@ -259,8 +259,7 @@ public final class PermutationChromosome<T>
 	 * @param <T> the gene type of the chromosome
 	 * @param alleles the valid alleles used for this permutation arrays.
 	 * @return a new chromosome with the given alleles
-	 * @throws IllegalArgumentException if the given allele sequence is empty or
-	 *         {@code allele.length()^2} will cause an integer overflow.
+	 * @throws IllegalArgumentException if the given allele sequence is empty.
 	 */
 	public static <T> PermutationChromosome<T>
 	of(final ISeq<? extends T> alleles) {
@@ -274,8 +273,7 @@ public final class PermutationChromosome<T>
 	 * @param <T> the gene type of the chromosome
 	 * @param alleles the valid alleles used for this permutation arrays.
 	 * @return a new chromosome with the given alleles
-	 * @throws IllegalArgumentException if the given allele array is empty or
-	 *         {@code allele.length^2} will cause an integer overflow.
+	 * @throws IllegalArgumentException if the given allele array is empty.
 	 * @throws NullPointerException if one of the alleles is {@code null}
 	 */
 	@SafeVarargs
@@ -288,8 +286,7 @@ public final class PermutationChromosome<T>
 	 *
 	 * @param length the chromosome length.
 	 * @return a integer permutation chromosome with the given length.
-	 * @throws IllegalArgumentException if {@code length <= 0} or
-	 *         {@code length^2} will cause an integer overflow.
+	 * @throws IllegalArgumentException if {@code length <= 0}.
 	 */
 	public static PermutationChromosome<Integer> ofInteger(final int length) {
 		return ofInteger(0, require.positive(length));
@@ -306,9 +303,8 @@ public final class PermutationChromosome<T>
 	 *        chromosome.
 	 * @return a integer permutation chromosome with the given integer range
 	 *         values.
-	 * @throws IllegalArgumentException if
-	 *         {@code start >= end}, {@code start <= 0} or
-	 *         {@code (end - start)^2} will cause an integer overflow.
+	 * @throws IllegalArgumentException if {@code start >= end} or
+	 *         {@code start <= 0}
 	 */
 	public static PermutationChromosome<Integer>
 	ofInteger(final int start, final int end) {
