@@ -97,7 +97,7 @@ import org.jenetics.util.Seq;
  * The actual Java implementation is based on the  C++ version by John Burkardt.
  * </em>
  * <br>
- * <em><a href="https://people.scs.fsu.edu/~burkardt/c_src/subset/subset.html">
+ * <em><a href="https://people.sc.fsu.edu/~burkardt/c_src/subset/subset.html">
  *  Reference:</a></em>
  *   Albert Nijenhuis, Herbert Wilf,
  *   Combinatorial Algorithms for Computers and Calculators,
