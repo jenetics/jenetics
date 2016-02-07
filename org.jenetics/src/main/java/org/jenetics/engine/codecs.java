@@ -518,7 +518,7 @@ public final class codecs {
 
 	/**
 	 * The subset {@code Codec} can be used for problems where it is required to
-	 * find the best subset (of variable size) from given basic set. A typical
+	 * find the best <b>variable-sized</b> subset from given basic set. A typical
 	 * usage example of the returned {@code Codec} is the Knapsack problem.
 	 * <p>
 	 * The following code snippet shows a simplified variation of the Knapsack
@@ -572,7 +572,7 @@ public final class codecs {
 
 	/**
 	 * The subset {@code Codec} can be used for problems where it is required to
-	 * find the best subset (of fixed size) from given basic set.
+	 * find the best <b>fixed-size</b> subset from given basic set.
 	 *
 	 * @since 3.4
 	 *
