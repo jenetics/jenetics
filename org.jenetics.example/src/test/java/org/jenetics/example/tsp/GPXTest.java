@@ -17,48 +17,41 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
+package org.jenetics.example.tsp;
 
-import org.apache.tools.ant.filters.ReplaceTokens
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.testng.annotations.Test;
+
+import org.jenetics.example.tsp.gpx.GPX;
+import org.jenetics.example.tsp.gpx.WayPoint;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.2
- * @version 2.0
+ * @version !__version__!
+ * @since !__version__!
  */
+public class GPXTest {
 
-apply plugin: 'packaging'
+	/*
+	@Test
+	public void writeGPX() throws IOException {
+		final GPX gpx = new GPX();
+		gpx.addWayPoint(WayPoint.of(23, 34));
+		gpx.addWayPoint(WayPoint.of(24, 35));
 
-dependencies {
-	compile project(':org.jenetics')
-	compile 'com.google.code.gson:gson:2.5'
+		GPX.write(gpx, System.out);
+	}
 
-	testCompile Include.TestNG
-}
-
-jar.manifest.instruction('Export-Package',
-	'org.jenetics.example'
-)
-
-packaging {
-	name = 'Jenetics examples'
-	author = 'Franz Wilhelmstötter'
-	url = 'http://jenetics.sourceforge.net'
-	jarjar = false
-	javadoc = false
-
-	doLast {
-		copy {
-			from('src/main/scripts') {
-				include '**/*'
-			}
-			into exportScriptDir
-			filter(ReplaceTokens, tokens: [
-				__identifier__: identifier,
-				__year__: copyrightYear,
-				__version__: version
-			])
+	@Test
+	public void readGPX() throws IOException {
+		final String resource = "/org/jenetics/example/tsp/gpx_track.gpx";
+		try (InputStream in = getClass().getResourceAsStream(resource)) {
+			final GPX gpx = GPX.read(in);
+			GPX.write(gpx, System.out);
 		}
 	}
+	*/
+
 }
-
-

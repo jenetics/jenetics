@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" version="1.1" creator="Jenetics TSP">
+    <wpt lat="46.7267407" lon="14.0888806">
+        <ele>557.0</ele>
+        <name>Feldkirchen in Kärnten</name>
+    </wpt>
+    <wpt lat="46.6273921" lon="13.3711996">
+        <ele>593.0</ele>
+        <name>Hermagor</name>
+    </wpt>
+    <wpt lat="46.6364598" lon="14.3122246">
+        <ele>445.0</ele>
+        <name>Klagenfurt</name>
+    </wpt>
+    <wpt lat="46.76748" lon="14.36151">
+        <ele>480.0</ele>
+        <name>St. Veit an der Glan</name>
+    </wpt>
+    <wpt lat="46.79968" lon="13.4928">
+        <ele>560.0</ele>
+        <name>Spittal an der Drau</name>
+    </wpt>
+    <wpt lat="46.60856" lon="13.85062">
+        <ele>497.0</ele>
+        <name>Villach</name>
+    </wpt>
+    <wpt lat="46.66207" lon="14.63359">
+        <ele>464.0</ele>
+        <name>Völkermarkt</name>
+    </wpt>
+    <wpt lat="46.8401" lon="14.84277">
+        <ele>450.0</ele>
+        <name>Wolfsberg</name>
+    </wpt>
+</gpx>

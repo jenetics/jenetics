@@ -28,7 +28,7 @@ import org.jenetics.engine.EvolutionResult;
 /**
  * Panel for showing the evolution result.
  */
-final class EvolutionResultPanel extends JPanel {
+public final class EvolutionResultPanel extends JPanel {
 
 	private static final NumberFormat _format = NumberFormat.getNumberInstance();
 

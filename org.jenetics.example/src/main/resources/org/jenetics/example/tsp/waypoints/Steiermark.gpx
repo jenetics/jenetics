@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" version="1.1" creator="Jenetics TSP">
+    <wpt lat="47.60687" lon="15.67171">
+        <ele>670.0</ele>
+        <name>Mürzzuschlag</name>
+    </wpt>
+    <wpt lat="46.81595" lon="15.21338">
+        <ele>371.0</ele>
+        <name>Deutschlandsberg</name>
+    </wpt>
+    <wpt lat="47.070714" lon="15.439504">
+        <ele>362.0</ele>
+        <name>Graz</name>
+    </wpt>
+    <wpt lat="47.4444782" lon="13.9018725">
+        <ele>768.0</ele>
+        <name>Gröbming</name>
+    </wpt>
+    <wpt lat="47.2815" lon="15.97302">
+        <ele>345.0</ele>
+        <name>Hartberg-Fürstenfeld</name>
+    </wpt>
+    <wpt lat="46.79043" lon="15.56207">
+        <ele>271.0</ele>
+        <name>Leibnitz</name>
+    </wpt>
+    <wpt lat="47.37639" lon="15.09113">
+        <ele>540.0</ele>
+        <name>Leoben</name>
+    </wpt>
+    <wpt lat="47.56741" lon="14.24315">
+        <ele>663.0</ele>
+        <name>Liezen</name>
+    </wpt>
+    <wpt lat="47.11304" lon="14.16904">
+        <ele>839.0</ele>
+        <name>Murau</name>
+    </wpt>
+    <wpt lat="47.1687763" lon="14.6600396">
+        <ele>736.0</ele>
+        <name>Murtal</name>
+    </wpt>
+    <wpt lat="46.95279" lon="15.88784">
+        <ele>282.0</ele>
+        <name>Feldbach</name>
+    </wpt>
+    <wpt lat="47.043268" lon="15.153633">
+        <ele>390.0</ele>
+        <name>Voitsberg</name>
+    </wpt>
+    <wpt lat="47.21717" lon="15.62297">
+        <ele>469.0</ele>
+        <name>Weiz</name>
+    </wpt>
+</gpx>

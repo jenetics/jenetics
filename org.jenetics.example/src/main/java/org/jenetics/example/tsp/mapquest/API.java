@@ -17,48 +17,21 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
+package org.jenetics.example.tsp.mapquest;
 
-import org.apache.tools.ant.filters.ReplaceTokens
+import static java.util.Objects.requireNonNull;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.2
- * @version 2.0
+ * @version !__version__!
+ * @since !__version__!
  */
+public class API {
 
-apply plugin: 'packaging'
+	private final String _apiKey;
 
-dependencies {
-	compile project(':org.jenetics')
-	compile 'com.google.code.gson:gson:2.5'
-
-	testCompile Include.TestNG
-}
-
-jar.manifest.instruction('Export-Package',
-	'org.jenetics.example'
-)
-
-packaging {
-	name = 'Jenetics examples'
-	author = 'Franz Wilhelmstötter'
-	url = 'http://jenetics.sourceforge.net'
-	jarjar = false
-	javadoc = false
-
-	doLast {
-		copy {
-			from('src/main/scripts') {
-				include '**/*'
-			}
-			into exportScriptDir
-			filter(ReplaceTokens, tokens: [
-				__identifier__: identifier,
-				__year__: copyrightYear,
-				__version__: version
-			])
-		}
+	public API(final String apiKey) {
+		_apiKey = requireNonNull(apiKey);
 	}
+
 }
-
-

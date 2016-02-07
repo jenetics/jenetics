@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" version="1.1" creator="Jenetics TSP">
+    <wpt lat="48.259124" lon="13.047988">
+        <ele>348.0</ele>
+        <name>Braunau am Inn</name>
+    </wpt>
+    <wpt lat="48.30879" lon="14.02023">
+        <ele>269.0</ele>
+        <name>Eferding</name>
+    </wpt>
+    <wpt lat="48.50217" lon="14.50201">
+        <ele>547.0</ele>
+        <name>Freistadt</name>
+    </wpt>
+    <wpt lat="47.91839" lon="13.79933">
+        <ele>434.0</ele>
+        <name>Gmunden</name>
+    </wpt>
+    <wpt lat="48.23587" lon="13.82617">
+        <ele>342.0</ele>
+        <name>Grieskirchen</name>
+    </wpt>
+    <wpt lat="47.90626" lon="14.11983">
+        <ele>441.0</ele>
+        <name>Kirchdorf an der Krems</name>
+    </wpt>
+    <wpt lat="48.30694" lon="14.28583">
+        <ele>261.0</ele>
+        <name>Linz</name>
+    </wpt>
+    <wpt lat="48.24992" lon="14.63474">
+        <ele>249.0</ele>
+        <name>Perg</name>
+    </wpt>
+    <wpt lat="48.21272" lon="13.49272">
+        <ele>442.0</ele>
+        <name>Ried im Innkreis</name>
+    </wpt>
+    <wpt lat="48.5724264" lon="13.9892409">
+        <ele>599.0</ele>
+        <name>Rohrbach in Oberösterreich</name>
+    </wpt>
+    <wpt lat="48.46051" lon="13.43268">
+        <ele>308.0</ele>
+        <name>Schärding</name>
+    </wpt>
+    <wpt lat="48.05009" lon="14.41827">
+        <ele>337.0</ele>
+        <name>Steyr</name>
+    </wpt>
+    <wpt lat="48.319111" lon="14.291085">
+        <ele>257.0</ele>
+        <name>Urfahr</name>
+    </wpt>
+    <wpt lat="48.00334" lon="13.65613">
+        <ele>432.0</ele>
+        <name>Vöcklabruck</name>
+    </wpt>
+    <wpt lat="48.16542" lon="14.03664">
+        <ele>313.0</ele>
+        <name>Wels</name>
+    </wpt>
+</gpx>

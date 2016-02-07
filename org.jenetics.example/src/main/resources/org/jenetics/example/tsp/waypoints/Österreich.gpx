@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" version="1.1" creator="Jenetics TSP">
+    <wpt lat="48.2081743" lon="16.3738189">
+        <ele>171.0</ele>
+        <name>Wien</name>
+    </wpt>
+    <wpt lat="48.259124" lon="13.047988">
+        <ele>348.0</ele>
+        <name>Braunau am Inn</name>
+    </wpt>
+    <wpt lat="48.30879" lon="14.02023">
+        <ele>269.0</ele>
+        <name>Eferding</name>
+    </wpt>
+    <wpt lat="48.50217" lon="14.50201">
+        <ele>547.0</ele>
+        <name>Freistadt</name>
+    </wpt>
+    <wpt lat="47.91839" lon="13.79933">
+        <ele>434.0</ele>
+        <name>Gmunden</name>
+    </wpt>
+    <wpt lat="48.23587" lon="13.82617">
+        <ele>342.0</ele>
+        <name>Grieskirchen</name>
+    </wpt>
+    <wpt lat="47.90626" lon="14.11983">
+        <ele>441.0</ele>
+        <name>Kirchdorf an der Krems</name>
+    </wpt>
+    <wpt lat="48.30694" lon="14.28583">
+        <ele>261.0</ele>
+        <name>Linz</name>
+    </wpt>
+    <wpt lat="48.24992" lon="14.63474">
+        <ele>249.0</ele>
+        <name>Perg</name>
+    </wpt>
+    <wpt lat="48.21272" lon="13.49272">
+        <ele>442.0</ele>
+        <name>Ried im Innkreis</name>
+    </wpt>
+    <wpt lat="48.5724264" lon="13.9892409">
+        <ele>599.0</ele>
+        <name>Rohrbach in Oberösterreich</name>
+    </wpt>
+    <wpt lat="48.46051" lon="13.43268">
+        <ele>308.0</ele>
+        <name>Schärding</name>
+    </wpt>
+    <wpt lat="48.05009" lon="14.41827">
+        <ele>337.0</ele>
+        <name>Steyr</name>
+    </wpt>
+    <wpt lat="48.319111" lon="14.291085">
+        <ele>257.0</ele>
+        <name>Urfahr</name>
+    </wpt>
+    <wpt lat="48.00334" lon="13.65613">
+        <ele>432.0</ele>
+        <name>Vöcklabruck</name>
+    </wpt>
+    <wpt lat="48.16542" lon="14.03664">
+        <ele>313.0</ele>
+        <name>Wels</name>
+    </wpt>
+    <wpt lat="46.7267407" lon="14.0888806">
+        <ele>557.0</ele>
+        <name>Feldkirchen in Kärnten</name>
+    </wpt>
+    <wpt lat="46.6273921" lon="13.3711996">
+        <ele>593.0</ele>
+        <name>Hermagor</name>
+    </wpt>
+    <wpt lat="46.6364598" lon="14.3122246">
+        <ele>445.0</ele>
+        <name>Klagenfurt</name>
+    </wpt>
+    <wpt lat="46.76748" lon="14.36151">
+        <ele>480.0</ele>
+        <name>St. Veit an der Glan</name>
+    </wpt>
+    <wpt lat="46.79968" lon="13.4928">
+        <ele>560.0</ele>
+        <name>Spittal an der Drau</name>
+    </wpt>
+    <wpt lat="46.60856" lon="13.85062">
+        <ele>497.0</ele>
+        <name>Villach</name>
+    </wpt>
+    <wpt lat="46.66207" lon="14.63359">
+        <ele>464.0</ele>
+        <name>Völkermarkt</name>
+    </wpt>
+    <wpt lat="46.8401" lon="14.84277">
+        <ele>450.0</ele>
+        <name>Wolfsberg</name>
+    </wpt>
+    <wpt lat="47.60687" lon="15.67171">
+        <ele>670.0</ele>
+        <name>Mürzzuschlag</name>
+    </wpt>
+    <wpt lat="46.81595" lon="15.21338">
+        <ele>371.0</ele>
+        <name>Deutschlandsberg</name>
+    </wpt>
+    <wpt lat="47.070714" lon="15.439504">
+        <ele>362.0</ele>
+        <name>Graz</name>
+    </wpt>
+    <wpt lat="47.4444782" lon="13.9018725">
+        <ele>768.0</ele>
+        <name>Gröbming</name>
+    </wpt>
+    <wpt lat="47.2815" lon="15.97302">
+        <ele>345.0</ele>
+        <name>Hartberg-Fürstenfeld</name>
+    </wpt>
+    <wpt lat="46.79043" lon="15.56207">
+        <ele>271.0</ele>
+        <name>Leibnitz</name>
+    </wpt>
+    <wpt lat="47.37639" lon="15.09113">
+        <ele>540.0</ele>
+        <name>Leoben</name>
+    </wpt>
+    <wpt lat="47.56741" lon="14.24315">
+        <ele>663.0</ele>
+        <name>Liezen</name>
+    </wpt>
+    <wpt lat="47.11304" lon="14.16904">
+        <ele>839.0</ele>
+        <name>Murau</name>
+    </wpt>
+    <wpt lat="47.1687763" lon="14.6600396">
+        <ele>736.0</ele>
+        <name>Murtal</name>
+    </wpt>
+    <wpt lat="46.95279" lon="15.88784">
+        <ele>282.0</ele>
+        <name>Feldbach</name>
+    </wpt>
+    <wpt lat="47.043268" lon="15.153633">
+        <ele>390.0</ele>
+        <name>Voitsberg</name>
+    </wpt>
+    <wpt lat="47.21717" lon="15.62297">
+        <ele>469.0</ele>
+        <name>Weiz</name>
+    </wpt>
+    <wpt lat="48.12502" lon="14.86934">
+        <ele>287.0</ele>
+        <name>Amstetten</name>
+    </wpt>
+    <wpt lat="48.00214" lon="16.23091">
+        <ele>229.0</ele>
+        <name>Baden</name>
+    </wpt>
+    <wpt lat="48.02375" lon="16.77534">
+        <ele>156.0</ele>
+        <name>Bruck an der Leitha</name>
+    </wpt>
+    <wpt lat="48.34067" lon="16.71754">
+        <ele>164.0</ele>
+        <name>Gänserndorf</name>
+    </wpt>
+    <wpt lat="48.77156" lon="14.98511">
+        <ele>490.0</ele>
+        <name>Gmünd</name>
+    </wpt>
+    <wpt lat="48.5625696" lon="16.0787228">
+        <ele>224.0</ele>
+        <name>Hollabrunn</name>
+    </wpt>
+    <wpt lat="48.66607" lon="15.65716">
+        <ele>313.0</ele>
+        <name>Horn</name>
+    </wpt>
+    <wpt lat="48.34472" lon="16.33149">
+        <ele>169.0</ele>
+        <name>Korneuburg</name>
+    </wpt>
+    <wpt lat="48.40999" lon="15.60384">
+        <ele>199.0</ele>
+        <name>Krems an der Donau</name>
+    </wpt>
+    <wpt lat="48.0180638" lon="15.5945498">
+        <ele>400.0</ele>
+        <name>Lilienfeld</name>
+    </wpt>
+    <wpt lat="48.22647" lon="15.34996">
+        <ele>251.0</ele>
+        <name>Melk</name>
+    </wpt>
+    <wpt lat="48.56743" lon="16.5722">
+        <ele>200.0</ele>
+        <name>Mistelbach</name>
+    </wpt>
+    <wpt lat="48.08255" lon="16.2869">
+        <ele>220.0</ele>
+        <name>Mödling</name>
+    </wpt>
+    <wpt lat="47.72607" lon="16.08121">
+        <ele>366.0</ele>
+        <name>Neunkirchen</name>
+    </wpt>
+    <wpt lat="48.20353" lon="15.63817">
+        <ele>268.0</ele>
+        <name>St. Pölten</name>
+    </wpt>
+    <wpt lat="48.00804" lon="15.16781">
+        <ele>338.0</ele>
+        <name>Scheibbs</name>
+    </wpt>
+    <wpt lat="48.3314949" lon="16.060737">
+        <ele>178.0</ele>
+        <name>Tulln an der Donau</name>
+    </wpt>
+    <wpt lat="48.81547" lon="15.2833">
+        <ele>501.0</ele>
+        <name>Waidhofen an der Thaya</name>
+    </wpt>
+    <wpt lat="47.96023" lon="14.77283">
+        <ele>360.0</ele>
+        <name>Waidhofen an der Ybbs</name>
+    </wpt>
+    <wpt lat="47.80279" lon="16.23318">
+        <ele>271.0</ele>
+        <name>Wiener Neustadt</name>
+    </wpt>
+    <wpt lat="48.6058353" lon="15.1662692">
+        <ele>531.0</ele>
+        <name>Zwettl</name>
+    </wpt>
+    <wpt lat="47.15991" lon="9.80821">
+        <ele>562.0</ele>
+        <name>Bludenz</name>
+    </wpt>
+    <wpt lat="47.50075" lon="9.74231">
+        <ele>408.0</ele>
+        <name>Bregenz</name>
+    </wpt>
+    <wpt lat="47.24128" lon="9.6019">
+        <ele>457.0</ele>
+        <name>Feldkirch</name>
+    </wpt>
+    <wpt lat="47.68248" lon="13.10037">
+        <ele>446.0</ele>
+        <name>Hallein</name>
+    </wpt>
+    <wpt lat="47.80949" lon="13.05501">
+        <ele>431.0</ele>
+        <name>Salzburg</name>
+    </wpt>
+    <wpt lat="47.34892" lon="13.20419">
+        <ele>609.0</ele>
+        <name>St. Johann im Pongau</name>
+    </wpt>
+    <wpt lat="47.12955" lon="13.81036">
+        <ele>1018.0</ele>
+        <name>Tamsweg</name>
+    </wpt>
+    <wpt lat="47.32352" lon="12.79685">
+        <ele>765.0</ele>
+        <name>Zell am See</name>
+    </wpt>
+    <wpt lat="47.24013" lon="10.73954">
+        <ele>796.0</ele>
+        <name>Imst</name>
+    </wpt>
+    <wpt lat="47.2692124" lon="11.4041024">
+        <ele>576.0</ele>
+        <name>Innsbruck</name>
+    </wpt>
+    <wpt lat="47.44499" lon="12.39143">
+        <ele>757.0</ele>
+        <name>Kitzbühel</name>
+    </wpt>
+    <wpt lat="47.58237" lon="12.16275">
+        <ele>491.0</ele>
+        <name>Kufstein</name>
+    </wpt>
+    <wpt lat="47.14057" lon="10.56558">
+        <ele>781.0</ele>
+        <name>Landeck</name>
+    </wpt>
+    <wpt lat="46.82769" lon="12.76272">
+        <ele>676.0</ele>
+        <name>Lienz</name>
+    </wpt>
+    <wpt lat="47.48879" lon="10.71865">
+        <ele>856.0</ele>
+        <name>Reutte</name>
+    </wpt>
+    <wpt lat="47.3502" lon="11.70584">
+        <ele>538.0</ele>
+        <name>Schwaz</name>
+    </wpt>
+    <wpt lat="47.84637" lon="16.52796">
+        <ele>169.0</ele>
+        <name>Eisenstadt</name>
+    </wpt>
+    <wpt lat="47.05932" lon="16.32449">
+        <ele>226.0</ele>
+        <name>Güssing</name>
+    </wpt>
+    <wpt lat="46.93712" lon="16.12961">
+        <ele>247.0</ele>
+        <name>Jennersdorf</name>
+    </wpt>
+    <wpt lat="47.73625" lon="16.39663">
+        <ele>238.0</ele>
+        <name>Mattersburg</name>
+    </wpt>
+    <wpt lat="47.94736" lon="16.84537">
+        <ele>125.0</ele>
+        <name>Neusiedl am See</name>
+    </wpt>
+    <wpt lat="47.49497" lon="16.50879">
+        <ele>242.0</ele>
+        <name>Oberpullendorf</name>
+    </wpt>
+    <wpt lat="47.29482" lon="16.19914">
+        <ele>319.0</ele>
+        <name>Oberwart</name>
+    </wpt>
+    <wpt lat="47.80238" lon="16.67218">
+        <ele>122.0</ele>
+        <name>Rust</name>
+    </wpt>
+</gpx>
