@@ -159,15 +159,11 @@ class PackagingPlugin implements Plugin<Project> {
 		// Copy the test-reports
 		if (_project.tasks.findByPath('testReport') != null) {
 			_project.tasks.findByPath('testReport').doLast {
-				_project.copy {
-					from("${_project.buildDir}/reports") {
-						include 'tests/**'
-						include 'jacoco/**'
-						include '*.gradle'
-						exclude '.gradle'
-					}
-					into _exportReportDir
-				}
+				copyDir(
+					new File(_project.buildDir, 'reports'),
+					_project.name,
+					_exportReportDir
+				)
 			}
 		}
 
