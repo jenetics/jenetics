@@ -14837,15 +14837,15 @@ key "Nijenhuis1978"
 
 \end_inset
 
-
-\end_layout
+, 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "JSSv068c01"
 
 \end_inset
 
 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "JSSv068c01"
+\end_layout
 
 \end_inset
 
@@ -14858,10 +14858,183 @@ The second kind of subset codec allows you to find the
 best
 \emph default
  subset of a given, fixed size.
+ A classical usage for this encoding is the Subset sum problem
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Subset_sum_problem
 \end_layout
 
-\begin_layout Enumerate
-Subset sum problem: https://en.wikipedia.org/wiki/Subset_sum_problem
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+: 
+\emph on
+
+\begin_inset Newline newline
+\end_inset
+
+Given a set (or multi-set) of integers, is there a non-empty subset whose
+ sum is zero? For example, given the set 
+\begin_inset Formula $\left\{ -7,-3,-2,5,8\right\} $
+\end_inset
+
+, the answer is yes because the subset 
+\begin_inset Formula $\left\{ -3,\text{-}2,5\right\} $
+\end_inset
+
+ sums to zero.
+ The problem is NP-complete
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+
+\emph on
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/NP-completeness
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public class SubsetSum
+\end_layout
+
+\begin_layout Plain Layout
+
+    implements Problem<ISeq<Integer>, EnumGene<Integer>, Integer> 
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    private final ISeq<Integer> _basicSet;
+\end_layout
+
+\begin_layout Plain Layout
+
+    private final int _size;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	public SubsetSum(ISeq<Integer> basicSet, int size) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        _basicSet = basicSet;
+\end_layout
+
+\begin_layout Plain Layout
+
+        _size = size;
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	@Override
+\end_layout
+
+\begin_layout Plain Layout
+
+    public Function<ISeq<Integer>, Integer> fitness() {
+\end_layout
+
+\begin_layout Plain Layout
+
+        return subset -> abs(
+\end_layout
+
+\begin_layout Plain Layout
+
+            subset.stream().mapToInt(Integer::intValue).sum());
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	@Override
+\end_layout
+
+\begin_layout Plain Layout
+
+    public Codec<ISeq<Integer>, EnumGene<Integer>> codec() {
+\end_layout
+
+\begin_layout Plain Layout
+
+        return codecs.ofSubSet(_basicSet, _size);
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
