@@ -468,35 +468,6 @@ public final class codecs {
 	}
 
 	/**
-	 * Create a permutation {@code Codec} with the given alleles.
-	 *
-	 * @param alleles the alleles of the permutation
-	 * @param <T> the allele type
-	 * @return a new permutation {@code Codec}
-	 * @throws IllegalArgumentException if the given allele array is empty
-	 * @throws NullPointerException if one of the alleles is {@code null}
-	 */
-	@SafeVarargs
-	public static <T> Codec<T[], EnumGene<T>> ofPermutation(final T... alleles) {
-		if (alleles.length == 0) {
-			throw new IllegalArgumentException("Empty alleles are not allowed.");
-		}
-
-		final IntFunction<T[]> newArray = length -> {
-			@SuppressWarnings("unchecked")
-			final T[] values = (T[])newInstance(alleles[0].getClass(), length);
-			return values;
-		};
-
-		return Codec.of(
-			Genotype.of(PermutationChromosome.of(alleles)),
-			gt -> gt.getChromosome().toSeq().stream()
-				.map(EnumGene::getAllele)
-				.toArray(newArray)
-		);
-	}
-
-	/**
 	 * Create a permutation {@code Codec} of integer in the range
 	 * {@code [0, length)}.
 	 *
@@ -514,6 +485,36 @@ public final class codecs {
 				.mapToInt(EnumGene<Integer>::getAllele)
 				.toArray()
 		);
+	}
+
+	/**
+	 * Create a permutation {@code Codec} with the given alleles.
+	 *
+	 * @param alleles the alleles of the permutation
+	 * @param <T> the allele type
+	 * @return a new permutation {@code Codec}
+	 * @throws IllegalArgumentException if the given allele array is empty
+	 * @throws NullPointerException if one of the alleles is {@code null}
+	 */
+	@SafeVarargs
+	public static <T> Codec<T[], EnumGene<T>> ofPermutation(final T... alleles) {
+		if (alleles.length == 0) {
+			throw new IllegalArgumentException(
+				"Empty allele array is not allowed."
+			);
+		}
+
+		return Codec.of(
+			Genotype.of(PermutationChromosome.of(alleles)),
+			gt -> gt.getChromosome().toSeq().stream()
+				.map(EnumGene::getAllele)
+				.toArray(length -> newArray(alleles[0].getClass(), length))
+		);
+	}
+
+	@SuppressWarnings("unchecked")
+	private static <T> T[] newArray(final Class<?> type, final int length) {
+		return (T[])newInstance(type, length);
 	}
 
 	/**
