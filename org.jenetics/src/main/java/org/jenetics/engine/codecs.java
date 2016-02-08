@@ -19,7 +19,6 @@
  */
 package org.jenetics.engine;
 
-import static java.lang.String.format;
 import static java.lang.reflect.Array.newInstance;
 import static java.util.Objects.requireNonNull;
 
@@ -30,7 +29,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import org.jenetics.internal.math.arithmetic;
+import org.jenetics.internal.math.base;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.require;
 
@@ -577,6 +576,9 @@ public final class codecs {
 	 *
 	 * @since 3.4
 	 *
+	 * @see PermutationChromosome
+	 * @see PermutationChromosome#of(ISeq, int)
+	 *
 	 * @param <T> the element type of the basic set
 	 * @param basicSet the basic set, from where to choose the <i>optimal</i>
 	 *        subset.
@@ -594,17 +596,7 @@ public final class codecs {
 		final int size
 	) {
 		requireNonNull(basicSet);
-		require.positive(basicSet.length());
-		require.positive(size);
-
-		final int n = basicSet.size();
-		final int k = size;
-		if (!arithmetic.isMultiplicationSave(n, k)) {
-			throw new IllegalArgumentException(format(
-				"n*sub.length > Integer.MAX_VALUE (%s*%s = %s > %s)",
-				n, k, (long)n*(long)k, Integer.MAX_VALUE
-			));
-		}
+		base.checkSubSet(basicSet.size(), size);
 
 		return Codec.of(
 			Genotype.of(PermutationChromosome.of(basicSet, size)),
