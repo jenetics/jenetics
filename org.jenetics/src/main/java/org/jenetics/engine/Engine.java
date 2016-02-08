@@ -1068,7 +1068,7 @@ public final class Engine<
 		 *
 		 * @return {@code this} builder, for command chaining
 		 */
-		public Builder<G, C> maximize() {
+		public Builder<G, C> maximizing() {
 			return optimize(Optimize.MAXIMUM);
 		}
 
@@ -1079,7 +1079,7 @@ public final class Engine<
 		 *
 		 * @return {@code this} builder, for command chaining
 		 */
-		public Builder<G, C> minimize() {
+		public Builder<G, C> minimizing() {
 			return optimize(Optimize.MINIMUM);
 		}
 
