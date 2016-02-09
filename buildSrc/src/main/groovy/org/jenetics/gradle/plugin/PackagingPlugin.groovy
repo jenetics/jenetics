@@ -248,12 +248,20 @@ class PackagingPlugin implements Plugin<Project> {
 		copyDir(source, source.name, target)
 	}
 
-	private void copyDir(final File source, final String sinto, final File target) {
+	private void copyDir(
+		final File source,
+		final String sinto,
+		final File target
+	) {
 		// Copy the text files with text pattern replacement.
 		_project.copy {
 			from(source.absoluteFile) {
 				includes = TEXT_FILE_PATTERN
 				excludes = IGNORED_FILES
+				exclude { details ->
+					details.file.absolutePath.contains('src/main/results') ||
+					details.file.absolutePath.contains('src/test/results')
+				}
 				into sinto
 			}
 			includeEmptyDirs = false
@@ -265,6 +273,10 @@ class PackagingPlugin implements Plugin<Project> {
 		_project.copy {
 			from(source.absoluteFile) {
 				excludes = TEXT_FILE_PATTERN + IGNORED_FILES
+				exclude { details ->
+					details.file.absolutePath.contains('src/main/results') ||
+					details.file.absolutePath.contains('src/test/results')
+				}
 				into sinto
 			}
 			includeEmptyDirs = false
