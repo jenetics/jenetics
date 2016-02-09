@@ -27,7 +27,7 @@ import org.gradle.api.tasks.bundling.Jar
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5
+ * @version 3.4
  */
 class PackagingPlugin implements Plugin<Project> {
 
