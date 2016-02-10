@@ -1,10 +1,10 @@
-# Jenetics (_3.3.0_)
+# Jenetics (_3.4.0_)
 
 **Jenetics** is an **Genetic Algorithm**, respectively an **Evolutionary Algorithm**, library written in Java. It is designed with a clear separation of the several concepts of the algorithm, e.g. `Gene`, `Chromosome`, `Genotype`, `Phenotype`, `Population` and fitness `Function`. **Jenetics** allows you to minimize and maximize the given fitness function without tweaking it. In contrast to other GA implementations, the library uses the concept of an evolution stream (`EvolutionStream`) for executing the evolution steps. Since the `EvolutionStream` implements the Java Stream interface, it works smoothly with the rest of the Java Stream API.
 
 ## Documentation
 
-The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jenetics/3.3/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-3.3.0.pdf)).
+The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jenetics/3.4/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-3.4.0.pdf)).
 
 
 ## Requirements
@@ -17,19 +17,19 @@ The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jeneti
 *  **Gradle 2.x**: [Gradle](http://www.gradle.org/) is used for building the library. (Gradle is download automatically, if you are using the Gradle Wrapper script `gradlew`, located in the base directory, for building the library.)
 
 ### Test compile/execution
-*  **TestNG 6.9.6**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
-*  **Apache Commons Math 3.5**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical collectors.
+*  **TestNG 6.9.10**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
+*  **Apache Commons Math 3.6**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical collectors.
 
 ## Download
-* **Github**: <https://github.com/jenetics/jenetics/releases/download/v3.3.0/jenetics-3.3.0.zip>
+* **Github**: <https://github.com/jenetics/jenetics/releases/download/v3.4.0/jenetics-3.4.0.zip>
 *  **Sourceforge**:  <https://sourceforge.net/projects/jenetics/files/latest/download>
-*  **Maven**: `org.bitbucket.fwilhelm:org.jenetics:3.3.0` on [Maven Central](http://search.maven.org/#search|ga|1|a%3A%22org.jenetics%22)
+*  **Maven**: `org.bitbucket.fwilhelm:org.jenetics:3.4.0` on [Maven Central](http://search.maven.org/#search|ga|1|a%3A%22org.jenetics%22)
 
 ## Build Jenetics
 
 [![Build Status](https://travis-ci.org/jenetics/jenetics.svg?branch=master)](https://travis-ci.org/jenetics/jenetics)
 
-For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v3.3.0/jenetics-3.3.0.zip) (or [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download)) and extract it to some build directory.
+For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v3.4.0/jenetics-3.4.0.zip) (or [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download)) and extract it to some build directory.
 
     $ unzip jenetics-<version>.zip -d <builddir>
 
@@ -132,7 +132,7 @@ In contrast to other GA implementations, the library uses the concept of an evol
 
 This example tries to approximate a given image by semitransparent polygons.  It comes with an Swing UI, where you can immediately start your own experiments. After compiling the sources with
 
-    $ ./gradlew jar
+    $ ./gradlew compileTestJava
 
 you can start the example by calling
 
@@ -146,7 +146,7 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 The library is licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
 
-	Copyright 2007-2015 Franz Wilhelmstötter
+	Copyright 2007-2016 Franz Wilhelmstötter
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -162,6 +162,15 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 
 
 ## Release notes
+
+### 3.4.0
+
+#### Improvement
+
+* [#68](https://github.com/jenetics/jenetics/issues/68): Improve implementations of `Seq` interfaces. *Note*: The changes of this issue changes the Java serialization of the `Genes` and `Chromosomes`. `Gene`/`Chromosomes` which has been serialized with version 3.3 can't be loaded with version 3.4. As a workaround, it is still possible to write the `Genes`/`Chromosomes` in XML format and load it with version 3.4.
+* [#73](https://github.com/jenetics/jenetics/issues/73): Add additional methods to `Seq` interface: `Seq.append` and `Seq.prepend`.
+* [#79](https://github.com/jenetics/jenetics/issues/79): Improve evolution performance measuring. Code resides now in (experimental) `org.jenetics.tool` module. 
+* [#85](https://github.com/jenetics/jenetics/issues/85): Add support for fixed-sized subsets in `PermutationChromosome` class. See also [codecs.ofSubSet(ISeq, int)](http://jenetics.io/javadoc/org.jenetics/3.4/org/jenetics/engine/codecs.html#ofSubSet-org.jenetics.util.ISeq-int-).
 
 ### 3.3.0
 
