@@ -270,6 +270,7 @@ public final class PermutationChromosome<T>
 	 * Create a new, random chromosome with the given valid alleles.
 	 *
 	 * @since 2.0
+	 *
 	 * @param <T> the gene type of the chromosome
 	 * @param alleles the valid alleles used for this permutation arrays.
 	 * @return a new chromosome with the given alleles
@@ -336,7 +337,7 @@ public final class PermutationChromosome<T>
 	ofInteger(final IntRange range, final int length) {
 		return of(
 			range.stream()
-				.mapToObj(Integer::new)
+				.mapToObj(i -> i)
 				.collect(ISeq.toISeq()),
 			length
 		);
