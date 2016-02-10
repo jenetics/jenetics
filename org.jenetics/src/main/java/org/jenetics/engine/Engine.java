@@ -1127,6 +1127,28 @@ public final class Engine<
 		}
 
 		/**
+		 * Set to a fitness maximizing strategy.
+		 *
+		 * @since 3.4
+		 *
+		 * @return {@code this} builder, for command chaining
+		 */
+		public Builder<G, C> maximizing() {
+			return optimize(Optimize.MAXIMUM);
+		}
+
+		/**
+		 * Set to a fitness minimizing strategy.
+		 *
+		 * @since 3.4
+		 *
+		 * @return {@code this} builder, for command chaining
+		 */
+		public Builder<G, C> minimizing() {
+			return optimize(Optimize.MINIMUM);
+		}
+
+		/**
 		 * The offspring fraction. <i>Default values is set to {@code 0.6}.</i>
 		 *
 		 * @param fraction the offspring fraction

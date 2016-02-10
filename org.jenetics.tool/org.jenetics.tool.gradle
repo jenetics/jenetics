@@ -52,21 +52,7 @@ packaging {
 	author = 'Franz Wilhelmstötter'
 	url = 'http://jenetics.sourceforge.net'
 	jarjar = false
-	javadoc = false
-
-	doLast {
-		copy {
-			from('src/main/scripts') {
-				include '**/*'
-			}
-			into exportScriptDir
-			filter(ReplaceTokens, tokens: [
-				__identifier__: identifier,
-				__year__: copyrightYear,
-				__version__: version
-			])
-		}
-	}
+	javadoc = true
 }
 
 
