@@ -49,6 +49,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import org.jenetics.internal.util.Args;
+import org.jenetics.internal.util.JAXBContextCache;
 import org.jenetics.internal.util.require;
 
 import org.jenetics.BitGene;
@@ -177,6 +178,13 @@ public class EvolutionParamOptimizer<
 			.peek(result -> callback.accept(
 					result,
 					_codec.decoder().apply(result.getBestPhenotype().getGenotype())))
+			.peek(result -> {
+				try {
+					IO.jaxb.write(result.getBestPhenotype().getGenotype(), System.out);
+				} catch (IOException e) {
+					throw new UncheckedIOException(e);
+				}
+			})
 			.collect(toBestGenotype());
 
 		return _codec.decoder().apply(gt);
