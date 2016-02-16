@@ -27,8 +27,18 @@ import java.io.Serializable;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.Lazy;
+import org.jenetics.internal.util.jaxb;
 
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
@@ -47,8 +57,9 @@ import org.jenetics.stat.MinMax;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0
+ * @version !__version__!
  */
+@XmlJavaTypeAdapter(EvolutionStart.Model.Adapter.class)
 public final class EvolutionResult<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
@@ -414,6 +425,61 @@ public final class EvolutionResult<
 			invalidCount,
 			alterCount
 		);
+	}
+
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
+
+	@XmlRootElement(name = "evolution-result")
+	@XmlType(name = "org.jenetics.engine.EvolutionResult")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	final static class Model {
+
+		@XmlElement(name = "optimize", required = true, nillable = false)
+		public String optimize;
+
+		@XmlElement(name = "population", required = true, nillable = false)
+		public Object population;
+
+		@XmlElement(name = "generation", required = true)
+		public long generation;
+
+		@XmlElement(name = "total-generation", required = true)
+		public long totalGenerations;
+
+		@XmlElement(name = "generation", required = true)
+		public EvolutionDurations durations;
+
+		@XmlElement(name = "kill-count", required = true)
+		public int killCount;
+
+		@XmlElement(name = "invalid-count", required = true)
+		public int invalidCount;
+
+		@XmlElement(name = "alter-count", required = true)
+		public int alterCount;
+
+		public final static class Adapter
+			extends XmlAdapter<Model, EvolutionStart>
+		{
+			@Override
+			public Model marshal(final EvolutionStart start) throws Exception {
+				final Model m = new Model();
+				m.generation = start.getGeneration();
+				m.population = jaxb.marshal(start.getPopulation());
+				return m;
+			}
+
+			@Override
+			public EvolutionStart unmarshal(final Model m) throws Exception {
+				return EvolutionStart.of(
+					(Population)jaxb.unmarshal(m.population),
+					m.generation
+				);
+			}
+		}
 	}
 
 }

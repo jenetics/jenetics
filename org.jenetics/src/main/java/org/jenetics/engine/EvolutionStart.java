@@ -141,7 +141,7 @@ public final class EvolutionStart<
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "phenotype")
+	@XmlRootElement(name = "evolution-start")
 	@XmlType(name = "org.jenetics.engine.EvolutionStart")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	@SuppressWarnings({ "unchecked", "rawtypes" })

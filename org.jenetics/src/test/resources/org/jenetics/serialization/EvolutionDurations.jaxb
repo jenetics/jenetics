@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<evolution-duration>
+    <offspring-selection>8069223231273077030</offspring-selection>
+    <survivors-selection>4111772314810463982</survivors-selection>
+    <offspring-alterer>380826747604496445</offspring-alterer>
+    <offspring-filter>6246972533032081786</offspring-filter>
+    <survivor-filter>3112874395405942084</survivor-filter>
+    <evaluation>5979631888971550264</evaluation>
+    <evolve>6973556321379081737</evolve>
+</evolution-duration>

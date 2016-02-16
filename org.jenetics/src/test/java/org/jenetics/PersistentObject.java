@@ -33,12 +33,14 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.function.Function;
 
+import org.jenetics.engine.EvolutionDurations;
 import org.jenetics.engine.EvolutionParam;
 import org.jenetics.engine.EvolutionStart;
 import org.jenetics.util.IO;
@@ -256,6 +258,7 @@ public class PersistentObject<T> {
 
 		put("EvolutionParam", nextEvolutionParam(), ios);
 		put("EvolutionStart", nextEvolutionStart(), ios);
+		put("EvolutionDurations", nextEvolutionDurations(), ios);
 	}
 
 	/* *************************************************************************
@@ -741,6 +744,18 @@ public class PersistentObject<T> {
 		return EvolutionStart.of(
 			nextPopulationDoubleGeneDouble(),
 			Math.abs(random().nextLong())
+		);
+	}
+
+	public static EvolutionDurations nextEvolutionDurations() {
+		return EvolutionDurations.of(
+			Duration.ofNanos(Math.abs(random().nextLong())),
+			Duration.ofNanos(Math.abs(random().nextLong())),
+			Duration.ofNanos(Math.abs(random().nextLong())),
+			Duration.ofNanos(Math.abs(random().nextLong())),
+			Duration.ofNanos(Math.abs(random().nextLong())),
+			Duration.ofNanos(Math.abs(random().nextLong())),
+			Duration.ofNanos(Math.abs(random().nextLong()))
 		);
 	}
 
