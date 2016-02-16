@@ -29,7 +29,6 @@ import java.util.stream.Collector;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -449,8 +448,8 @@ public final class EvolutionResult<
 		@XmlElement(name = "total-generation", required = true)
 		public long totalGenerations;
 
-		@XmlElement(name = "generation", required = true)
-		public EvolutionDurations durations;
+		@XmlElement(name = "evolution-durations", required = true)
+		public EvolutionDurations.Model durations;
 
 		@XmlElement(name = "kill-count", required = true)
 		public int killCount;
@@ -462,21 +461,33 @@ public final class EvolutionResult<
 		public int alterCount;
 
 		public final static class Adapter
-			extends XmlAdapter<Model, EvolutionStart>
+			extends XmlAdapter<Model, EvolutionResult>
 		{
 			@Override
-			public Model marshal(final EvolutionStart start) throws Exception {
+			public Model marshal(final EvolutionResult result) throws Exception {
 				final Model m = new Model();
-				m.generation = start.getGeneration();
-				m.population = jaxb.marshal(start.getPopulation());
+				m.optimize = result.getOptimize().name();
+				m.population = jaxb.marshal(result.getPopulation());
+				m.generation = result.getGeneration();
+				m.totalGenerations = result.getTotalGenerations();
+				m.durations = EvolutionDurations.Model.ADAPTER.marshal(result.getDurations());
+				m.killCount = result.getKillCount();
+				m.invalidCount = result.getInvalidCount();
+				m.alterCount = result.getAlterCount();
 				return m;
 			}
 
 			@Override
-			public EvolutionStart unmarshal(final Model m) throws Exception {
-				return EvolutionStart.of(
+			public EvolutionResult unmarshal(final Model m) throws Exception {
+				return EvolutionResult.of(
+					Optimize.valueOf(m.optimize),
 					(Population)jaxb.unmarshal(m.population),
-					m.generation
+					m.generation,
+					m.totalGenerations,
+					EvolutionDurations.Model.ADAPTER.unmarshal(m.durations),
+					m.killCount,
+					m.invalidCount,
+					m.alterCount
 				);
 			}
 		}

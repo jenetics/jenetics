@@ -304,6 +304,8 @@ public final class EvolutionDurations
 				);
 			}
 		}
+
+		public static final Adapter ADAPTER = new Adapter();
 	}
 
 }

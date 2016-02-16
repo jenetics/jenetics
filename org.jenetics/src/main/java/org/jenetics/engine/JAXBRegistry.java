@@ -39,6 +39,7 @@ final class JAXBRegistry {
 	public static final ISeq<Class<?>> CLASSES = ISeq.of(
 		EvolutionDurations.Model.class,
 		EvolutionParam.Model.class,
+		EvolutionResult.Model.class,
 		EvolutionStart.Model.class
 	);
 }

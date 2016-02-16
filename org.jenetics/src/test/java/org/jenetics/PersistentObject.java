@@ -42,6 +42,7 @@ import java.util.function.Function;
 
 import org.jenetics.engine.EvolutionDurations;
 import org.jenetics.engine.EvolutionParam;
+import org.jenetics.engine.EvolutionResult;
 import org.jenetics.engine.EvolutionStart;
 import org.jenetics.util.IO;
 import org.jenetics.util.ISeq;
@@ -259,6 +260,7 @@ public class PersistentObject<T> {
 		put("EvolutionParam", nextEvolutionParam(), ios);
 		put("EvolutionStart", nextEvolutionStart(), ios);
 		put("EvolutionDurations", nextEvolutionDurations(), ios);
+		put("EvolutionResult", nextEvolutionResult(), ios);
 	}
 
 	/* *************************************************************************
@@ -756,6 +758,19 @@ public class PersistentObject<T> {
 			Duration.ofNanos(Math.abs(random().nextLong())),
 			Duration.ofNanos(Math.abs(random().nextLong())),
 			Duration.ofNanos(Math.abs(random().nextLong()))
+		);
+	}
+
+	public static EvolutionResult<DoubleGene, Double> nextEvolutionResult() {
+		return EvolutionResult.of(
+			random().nextBoolean() ? Optimize.MAXIMUM : Optimize.MINIMUM,
+			nextPopulationDoubleGeneDouble(),
+			random().nextInt(100000),
+			random().nextInt(100000),
+			nextEvolutionDurations(),
+			random().nextInt(1000),
+			random().nextInt(1000),
+			random().nextInt(1000)
 		);
 	}
 
