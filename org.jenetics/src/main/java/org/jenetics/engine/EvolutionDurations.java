@@ -249,7 +249,7 @@ public final class EvolutionDurations
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "evolution-duration")
+	@XmlRootElement(name = "evolution-durations")
 	@XmlType(name = "org.jenetics.engine.EvolutionDurations")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	final static class Model {
