@@ -19,6 +19,9 @@
  */
 package org.jenetics.tool.optimizer;
 
+import static java.lang.Math.log10;
+import static java.lang.Math.max;
+import static java.lang.Math.pow;
 import static java.time.Duration.ofMillis;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.engine.EvolutionResult.toBestGenotype;
@@ -31,14 +34,21 @@ import static org.jenetics.tool.optimizer.SelectorCodec.ofExponentialRankSelecto
 import static org.jenetics.tool.optimizer.SelectorCodec.ofLinearRankSelector;
 import static org.jenetics.tool.optimizer.SelectorCodec.ofTournamentSelector;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Properties;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import org.jenetics.internal.util.Args;
 import org.jenetics.internal.util.require;
 
 import org.jenetics.BitGene;
@@ -59,6 +69,7 @@ import org.jenetics.engine.EvolutionParam;
 import org.jenetics.engine.EvolutionResult;
 import org.jenetics.engine.Problem;
 import org.jenetics.tool.problem.Knapsack;
+import org.jenetics.tool.trial.Params;
 import org.jenetics.util.DoubleRange;
 import org.jenetics.util.IO;
 import org.jenetics.util.ISeq;
@@ -277,14 +288,36 @@ public class EvolutionParamOptimizer<
 	}
 
 
+
 	/* *************************************************************************
-	 *
+	 * Test main method
 	 **************************************************************************/
 
+	private static final double GEN_BASE = pow(10, log10(100)/20.0);
+	private static final Params<Long> PARAMS = Params.of(
+		"Sample count",
+		IntStream.rangeClosed(1, 30)
+			.mapToLong(i -> max((long)pow(GEN_BASE, i), i))
+			.mapToObj(Long::new)
+			.collect(ISeq.toISeq())
+	);
 
-	
+	public static void main(final String[] args) throws IOException {
+		final Args command = Args.of(args);
+		final Path dir = command.arg("dir")
+			.map(d -> Paths.get(d))
+			.orElse(Paths.get(".").toAbsolutePath());
 
-	public static void main(final String[] args) {
+		final Path progressPath = Paths.get(dir.toString(), "progress.properties");
+		final Properties progress = new Properties();
+		if (Files.exists(progressPath)) {
+			try (FileInputStream in = new FileInputStream(progressPath.toFile())) {
+				progress.load(in);
+			}
+		} else {
+			//progress.setProperty("", "");
+		}
+
 		// The problem fow which to optimize the EvolutionParams.
 		final Knapsack problem = Knapsack.of(250, new LCG64ShiftRandom(10101));
 
