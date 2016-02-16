@@ -306,7 +306,7 @@ public final class SelectorCodec<
 	/**
 	 * Return the <i>default</i> {@link Codec} of the {@link BoltzmannSelector}.
 	 *
-	 * @param b <i>b</i> value of this BoltzmanSelector
+	 * @param b <i>b</i> value of this BoltzmannSelector
 	 * @param <G> the gene type of the problem encoding the selector is working
 	 *            on
 	 * @param <N> the fitness function result type of the problem

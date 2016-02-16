@@ -19,15 +19,29 @@
  */
 package org.jenetics.tool.optimizer;
 
+import static java.time.Duration.ofMillis;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.engine.EvolutionResult.toBestGenotype;
+import static org.jenetics.engine.limit.byExecutionTime;
+import static org.jenetics.engine.limit.byFixedGeneration;
+import static org.jenetics.tool.optimizer.AltererCodec.ofMultiPointCrossover;
+import static org.jenetics.tool.optimizer.AltererCodec.ofSwapMutator;
+import static org.jenetics.tool.optimizer.SelectorCodec.ofBoltzmannSelector;
+import static org.jenetics.tool.optimizer.SelectorCodec.ofExponentialRankSelector;
+import static org.jenetics.tool.optimizer.SelectorCodec.ofLinearRankSelector;
+import static org.jenetics.tool.optimizer.SelectorCodec.ofTournamentSelector;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import org.jenetics.internal.util.require;
+
+import org.jenetics.BitGene;
 import org.jenetics.DoubleGene;
 import org.jenetics.GaussianMutator;
 import org.jenetics.Gene;
@@ -35,6 +49,8 @@ import org.jenetics.Genotype;
 import org.jenetics.MeanAlterer;
 import org.jenetics.Mutator;
 import org.jenetics.Optimize;
+import org.jenetics.RouletteWheelSelector;
+import org.jenetics.StochasticUniversalSelector;
 import org.jenetics.TournamentSelector;
 import org.jenetics.TruncationSelector;
 import org.jenetics.engine.Codec;
@@ -42,7 +58,13 @@ import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionParam;
 import org.jenetics.engine.EvolutionResult;
 import org.jenetics.engine.Problem;
+import org.jenetics.tool.problem.Knapsack;
+import org.jenetics.util.DoubleRange;
+import org.jenetics.util.IO;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.IntRange;
+import org.jenetics.util.LCG64ShiftRandom;
+import org.jenetics.util.LongRange;
 
 /**
  * Optimizer for finding <i>optimal</i> evolution engine parameters.
@@ -62,6 +84,7 @@ public class EvolutionParamOptimizer<
 
 	private final Codec<EvolutionParam<G, C>, DoubleGene> _codec;
 	private final Supplier<Predicate<? super EvolutionResult<?, Measure<C>>>> _limit;
+	private final int _sampleCount;
 
 	/**
 	 * Create a new evolution parameter optimizer.
@@ -72,13 +95,42 @@ public class EvolutionParamOptimizer<
 	 *        the optimization of the {@code EvolutionParam} object. <b><i>Note
 	 *        that this is not the terminator used for limiting the optimization
 	 *        of the custom fitness function itself.</i></b>
+	 * @param sampleCount the number of fitness samples used for calculating the
+	 *        fitness of the evolution parameter
+	 * @throws NullPointerException if the {@code codec} or {@code limit} is
+	 *         {@code null}
+	 * @throws IllegalArgumentException if the given {@code sampleCount} is
+	 *         smaller than 1
+	 */
+	public EvolutionParamOptimizer(
+		final Codec<EvolutionParam<G, C>, DoubleGene> codec,
+		final Supplier<Predicate<? super EvolutionResult<?, Measure<C>>>> limit,
+		final int sampleCount
+	) {
+		_codec = requireNonNull(codec);
+		_limit = requireNonNull(limit);
+		_sampleCount = require.positive(sampleCount);
+	}
+
+	/**
+	 * Create a new evolution parameter optimizer.
+	 *
+	 * @param codec the {@code Codec} used for encoding the
+	 *        {@code EvolutionParam} class
+	 * @param limit the evolution stream limit which is used for terminating
+	 *        the optimization of the {@code EvolutionParam} object. <b><i>Note
+	 *        that this is not the terminator used for limiting the optimization
+	 *        of the custom fitness function itself.</i></b>
+	 * @throws NullPointerException if the {@code codec} or {@code limit} is
+	 *         {@code null}
+	 * @throws IllegalArgumentException if the given {@code sampleCount} is
+	 *         smaller than 1
 	 */
 	public EvolutionParamOptimizer(
 		final Codec<EvolutionParam<G, C>, DoubleGene> codec,
 		final Supplier<Predicate<? super EvolutionResult<?, Measure<C>>>> limit
 	) {
-		_codec = requireNonNull(codec);
-		_limit = requireNonNull(limit);
+		this(codec, limit, 10);
 	}
 
 	/**
@@ -86,29 +138,34 @@ public class EvolutionParamOptimizer<
 	 * your given problem. The given parameters are the same as you will use
 	 * for a <i>normal</i> {@code Engine} instantiation.
 	 *
-	 * @param fitness the {@code fitness} function of your problem
-	 * @param codec the evolution codec for the given <i>target</i> function.
-	 * @param optimize the optimization strategy
-	 * @param limit the limit of the testing evolution {@code Engine}.
+	 * @param problem the problem for which the evolution parameters should be
+	 *        optimized
+	 * @param optimize the optimization strategy of the problem
+	 * @param limit the limit of the testing evolution {@code Engine}
+	 * @param callback Callback of intermediate results
 	 * @param <T> the fitness parameter type
 	 * @return the found <i>optimal</i> evolution parameters for your given
 	 *         fitness function.
 	 */
 	public <T> EvolutionParam<G, C> optimize(
-		final Function<T, C> fitness,
-		final Codec<T, G> codec,
+		final Problem<T, G, C> problem,
 		final Optimize optimize,
-		final Supplier<Predicate<? super EvolutionResult<?, C>>> limit
+		final Supplier<Predicate<? super EvolutionResult<?, C>>> limit,
+		final BiConsumer<EvolutionResult<?, ?>, EvolutionParam<G, C>> callback
 	) {
-		final Function<EvolutionParam<G, C>, Measure<C>> evolutionParamFitness = p ->
-			evolutionParamFitness(p, fitness, codec, optimize, limit);
+		final Function<EvolutionParam<G, C>, Measure<C>>
+		evolutionParamFitness = p -> evolutionParamFitness(
+			p, problem.fitness(), problem.codec(), optimize, limit
+		);
 
 		final Engine<DoubleGene, Measure<C>> engine =
 			engine(evolutionParamFitness, optimize);
 
 		final Genotype<DoubleGene> gt = engine.stream()
 			.limit(_limit.get())
-			.peek(this::println)
+			.peek(result -> callback.accept(
+					result,
+					_codec.decoder().apply(result.getBestPhenotype().getGenotype())))
 			.collect(toBestGenotype());
 
 		return _codec.decoder().apply(gt);
@@ -122,7 +179,8 @@ public class EvolutionParamOptimizer<
 	 * @param problem the problem for which the evolution parameters should be
 	 *        optimized
 	 * @param optimize the optimization strategy of the problem
-	 * @param limit the limit of the testing evolution {@code Engine}.
+	 * @param limit the limit of the testing evolution {@code Engine}
+	 * @param callback Callback of intermediate results
 	 * @param <T> the fitness parameter type
 	 * @return the found <i>optimal</i> evolution parameters for your given
 	 *         fitness function.
@@ -132,18 +190,13 @@ public class EvolutionParamOptimizer<
 		final Optimize optimize,
 		final Supplier<Predicate<? super EvolutionResult<?, C>>> limit
 	) {
-		return optimize(
-			problem.fitness(),
-			problem.codec(),
-			optimize,
-			limit
-		);
+		return optimize(problem, optimize, limit, this::println);
 	}
 
-	private void println(final EvolutionResult<DoubleGene, Measure<C>> result) {
-		final EvolutionParam<G, C> param = _codec.decoder()
-			.apply(result.getBestPhenotype().getGenotype());
-
+	private void println(
+		final EvolutionResult<?, ?> result,
+		final EvolutionParam<G, C> param
+	) {
 		final String output =
 		"Generation:         " + result.getTotalGenerations() + "\n" +
 		param + "\n" +
@@ -206,13 +259,13 @@ public class EvolutionParamOptimizer<
 			.optimize(optimize)
 			.build();
 
-		final Stream<C> results = IntStream.range(0, 20).mapToObj(i -> {
-			final Genotype<G> gt = engine.stream()
-				.limit(limit.get())
-				.collect(toBestGenotype());
-
-			return fitness.compose(codec.decoder()).apply(gt);
-		});
+		final Stream<C> results = Stream.generate(() -> {
+					final Genotype<G> gt = engine.stream()
+						.limit(limit.get())
+						.collect(toBestGenotype());
+					return fitness.compose(codec.decoder()).apply(gt);
+				})
+			.limit(_sampleCount);
 
 		final ISeq<Measure<C>> measures = results
 			.map(c -> new Measure<>(c, params, optimize))
@@ -221,6 +274,65 @@ public class EvolutionParamOptimizer<
 
 		// Return the median value.
 		return measures.get(measures.length()/2);
+	}
+
+
+	/* *************************************************************************
+	 *
+	 **************************************************************************/
+
+
+	
+
+	public static void main(final String[] args) {
+		// The problem fow which to optimize the EvolutionParams.
+		final Knapsack problem = Knapsack.of(250, new LCG64ShiftRandom(10101));
+
+		final IntRange populationSize = IntRange.of(10, 1_000);
+		final DoubleRange offspringFraction = DoubleRange.of(0, 1);
+		final LongRange maximalPhenotypeAge = LongRange.of(5, 10_000);
+
+		final EvolutionParamCodec<BitGene, Double> codec =
+			EvolutionParamCodec.of(
+				SelectorCodec
+					.of(new RouletteWheelSelector<BitGene, Double>())
+					.and(new TruncationSelector<>())
+					.and(new StochasticUniversalSelector<>())
+					.and(ofBoltzmannSelector(DoubleRange.of(0, 3)))
+					.and(ofExponentialRankSelector(DoubleRange.of(0, 1)))
+					.and(ofLinearRankSelector(DoubleRange.of(0, 3)))
+					.and(ofTournamentSelector(IntRange.of(2, 10))),
+				AltererCodec.<BitGene, Double>ofMutator()
+					.and(ofMultiPointCrossover(IntRange.of(2, 20)))
+					.and(ofSwapMutator()),
+				populationSize,
+				offspringFraction,
+				maximalPhenotypeAge
+			);
+
+		final EvolutionParamOptimizer<BitGene, Double>
+		optimizer = new EvolutionParamOptimizer<>(
+			codec,
+			() -> byFixedGeneration(100),
+			5
+		);
+
+		final EvolutionParam<BitGene, Double> params = optimizer.optimize(
+			problem,
+			Optimize.MAXIMUM,
+			() -> byExecutionTime(ofMillis(150)),
+			(r, p) -> {
+				try {
+					IO.jaxb.write(p, System.out);
+				} catch(IOException e) {
+					throw new UncheckedIOException(e);
+				}
+			}
+		);
+
+		System.out.println();
+		System.out.println("Best parameters:");
+		System.out.println(params);
 	}
 
 }
