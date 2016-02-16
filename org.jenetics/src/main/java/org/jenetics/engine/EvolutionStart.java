@@ -23,7 +23,19 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.Equality.eq;
 
+import java.io.Serializable;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.jenetics.internal.util.Hash;
+import org.jenetics.internal.util.jaxb;
 import org.jenetics.internal.util.require;
 
 import org.jenetics.Gene;
@@ -39,13 +51,17 @@ import org.jenetics.Population;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.1
- * @version 3.1
+ * @version !__version__!
  */
+@XmlJavaTypeAdapter(EvolutionStart.Model.Adapter.class)
 public final class EvolutionStart<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
+	implements Serializable
 {
+
+	private static final long serialVersionUID = 1L;
 
 	private final Population<G, C> _population;
 	private final long _generation;
@@ -118,6 +134,44 @@ public final class EvolutionStart<
 		final long generation
 	) {
 		return new EvolutionStart<>(population, generation);
+	}
+
+
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
+
+	@XmlRootElement(name = "phenotype")
+	@XmlType(name = "org.jenetics.engine.EvolutionStart")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	final static class Model {
+
+		@XmlAttribute(name = "generation", required = true)
+		public long generation;
+
+		@XmlElement(name = "population", required = true, nillable = false)
+		public Object population;
+
+		public final static class Adapter
+			extends XmlAdapter<Model, EvolutionStart>
+		{
+			@Override
+			public Model marshal(final EvolutionStart start) throws Exception {
+				final Model m = new Model();
+				m.generation = start.getGeneration();
+				m.population = jaxb.marshal(start.getPopulation());
+				return m;
+			}
+
+			@Override
+			public EvolutionStart unmarshal(final Model m) throws Exception {
+				return EvolutionStart.of(
+					(Population)jaxb.unmarshal(m.population),
+					m.generation
+				);
+			}
+		}
 	}
 
 }

@@ -40,6 +40,7 @@ import java.util.Random;
 import java.util.function.Function;
 
 import org.jenetics.engine.EvolutionParam;
+import org.jenetics.engine.EvolutionStart;
 import org.jenetics.util.IO;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.LCG64ShiftRandom;
@@ -219,6 +220,7 @@ public class PersistentObject<T> {
 		put("Population[IntegerGene, Integer]", nextPopulationIntegerGeneInteger(), ios);
 		put("Population[LongGene, Integer]", nextPopulationLongGeneInteger(), ios);
 		put("Population[DoubleGene, Integer]", nextPopulationDoubleGeneInteger(), ios);
+		put("Population[DoubleGene, Double]", nextPopulationDoubleGeneDouble(), ios);
 		put("Population[EnumGene[Integer], Double]", nextPopulationEnumGeneIntegerDouble(), ios);
 		put("Population[EnumGene[String], BigDecimal]", nextPopulationEnumGeneStringBigDecimal(), ios);
 
@@ -253,6 +255,7 @@ public class PersistentObject<T> {
 		 **********************************************************************/
 
 		put("EvolutionParam", nextEvolutionParam(), ios);
+		put("EvolutionStart", nextEvolutionStart(), ios);
 	}
 
 	/* *************************************************************************
@@ -577,50 +580,57 @@ public class PersistentObject<T> {
 	 **************************************************************************/
 
 	public static Population<BitGene, Integer> nextPopulationBitGeneInteger() {
-		final ISeq<Phenotype<BitGene, Integer>> seq = ISeq.of(PersistentObject::nextPhenotypeBitGeneInteger, 7
-		);
+		final ISeq<Phenotype<BitGene, Integer>> seq =
+			ISeq.of(PersistentObject::nextPhenotypeBitGeneInteger, 7);
 
 		return new Population<>(seq.asList());
 	}
 
 	public static Population<CharacterGene, Integer> nextPopulationCharacterGeneInteger() {
-		final ISeq<Phenotype<CharacterGene, Integer>> seq = ISeq.of(PersistentObject::nextPhenotypeCharacterGeneInteger, 7
-		);
+		final ISeq<Phenotype<CharacterGene, Integer>> seq =
+			ISeq.of(PersistentObject::nextPhenotypeCharacterGeneInteger, 7);
 
 		return new Population<>(seq.asList());
 	}
 
 	public static Population<IntegerGene, Integer> nextPopulationIntegerGeneInteger() {
-		final ISeq<Phenotype<IntegerGene, Integer>> seq = ISeq.of(PersistentObject::nextPhenotypeIntegerGeneInteger, 7
-		);
+		final ISeq<Phenotype<IntegerGene, Integer>> seq =
+			ISeq.of(PersistentObject::nextPhenotypeIntegerGeneInteger, 7);
 
 		return new Population<>(seq.asList());
 	}
 
 	public static Population<LongGene, Integer> nextPopulationLongGeneInteger() {
-		final ISeq<Phenotype<LongGene, Integer>> seq = ISeq.of(PersistentObject::nextPhenotypeLongGeneInteger, 7
-		);
+		final ISeq<Phenotype<LongGene, Integer>> seq =
+			ISeq.of(PersistentObject::nextPhenotypeLongGeneInteger, 7);
 
 		return new Population<>(seq.asList());
 	}
 
 	public static Population<DoubleGene, Integer> nextPopulationDoubleGeneInteger() {
-		final ISeq<Phenotype<DoubleGene, Integer>> seq = ISeq.of(PersistentObject::nextPhenotypeDoubleGeneInteger, 7
-		);
+		final ISeq<Phenotype<DoubleGene, Integer>> seq =
+			ISeq.of(PersistentObject::nextPhenotypeDoubleGeneInteger, 7);
+
+		return new Population<>(seq.asList());
+	}
+
+	public static Population<DoubleGene, Double> nextPopulationDoubleGeneDouble() {
+		final ISeq<Phenotype<DoubleGene, Double>> seq =
+			ISeq.of(PersistentObject::nextPhenotypeDoubleGeneDouble, 7);
 
 		return new Population<>(seq.asList());
 	}
 
 	public static Population<EnumGene<Integer>, Double> nextPopulationEnumGeneIntegerDouble() {
-		final ISeq<Phenotype<EnumGene<Integer>, Double>> seq = ISeq.of(PersistentObject::nextPhenotypeEnumGeneIntegerDouble, 7
-		);
+		final ISeq<Phenotype<EnumGene<Integer>, Double>> seq =
+			ISeq.of(PersistentObject::nextPhenotypeEnumGeneIntegerDouble, 7);
 
 		return new Population<>(seq.asList());
 	}
 
 	public static Population<EnumGene<String>, BigDecimal> nextPopulationEnumGeneStringBigDecimal() {
-		final ISeq<Phenotype<EnumGene<String>, BigDecimal>> seq = ISeq.of(PersistentObject::nextPhenotypeEnumGeneStringBigDecimal, 7
-		);
+		final ISeq<Phenotype<EnumGene<String>, BigDecimal>> seq =
+			ISeq.of(PersistentObject::nextPhenotypeEnumGeneStringBigDecimal, 7);
 
 		return new Population<>(seq.asList());
 	}
@@ -713,7 +723,7 @@ public class PersistentObject<T> {
 	}
 
 	/* *************************************************************************
-	 * Evolution param
+	 * Engine objects
 	 **************************************************************************/
 
 	public static EvolutionParam<DoubleGene, Double> nextEvolutionParam() {
@@ -724,6 +734,13 @@ public class PersistentObject<T> {
 			random().nextInt(1000) + 23,
 			random().nextDouble(),
 			random().nextInt(1000000) + 11
+		);
+	}
+
+	public static EvolutionStart<DoubleGene, Double> nextEvolutionStart() {
+		return EvolutionStart.of(
+			nextPopulationDoubleGeneDouble(),
+			Math.abs(random().nextLong())
 		);
 	}
 

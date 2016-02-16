@@ -37,6 +37,7 @@ final class JAXBRegistry {
 	 * The JAXB classes of this package.
 	 */
 	public static final ISeq<Class<?>> CLASSES = ISeq.of(
-		EvolutionParam.Model.class
+		EvolutionParam.Model.class,
+		EvolutionStart.Model.class
 	);
 }
