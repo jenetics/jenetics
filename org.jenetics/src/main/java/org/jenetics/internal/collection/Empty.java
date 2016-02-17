@@ -142,6 +142,21 @@ public final class Empty {
 			return asList().iterator();
 		}
 
+		@Override
+		public int hashCode() {
+			return 1;
+		}
+
+		@Override
+		public boolean equals(final Object obj) {
+			return (obj instanceof MSeq<?>) && ((MSeq<?>)obj).isEmpty();
+		}
+
+		@Override
+		public String toString() {
+			return "[]";
+		}
+
 	};
 
 
@@ -224,6 +239,21 @@ public final class Empty {
 		@Override
 		public MSeq<Object> copy() {
 			return MSEQ;
+		}
+
+		@Override
+		public int hashCode() {
+			return 1;
+		}
+
+		@Override
+		public boolean equals(final Object obj) {
+			return (obj instanceof ISeq<?>) && ((ISeq<?>)obj).isEmpty();
+		}
+
+		@Override
+		public String toString() {
+			return "[]";
 		}
 
 	};
