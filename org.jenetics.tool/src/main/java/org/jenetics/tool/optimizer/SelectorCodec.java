@@ -202,7 +202,7 @@ public final class SelectorCodec<
 		// Remove duplicate selector entries.
 		final ISeq<? extends Selector<G, C>> s = selectors.stream()
 			.distinct()
-			.collect(ISeq.toISeq());
+			.collect(ISeq.<Selector<G, C>>toISeq());
 
 		// Codecs and selectors must not be empty at the same time.
 		if (c.isEmpty() && s.isEmpty()) {
