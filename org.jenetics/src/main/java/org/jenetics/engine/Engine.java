@@ -419,20 +419,6 @@ public final class Engine<
 	}
 
 	/**
-	 * Create a new <b>infinite</b> evolution iterator with a newly created
-	 * population. This is an alternative way for evolution. It lets the user
-	 * start, stop and resume the evolution process whenever desired.
-	 *
-	 * @return a new <b>infinite</b> evolution iterator
-	 */
-	public Iterator<EvolutionResult<G, C>> iterator() {
-		return new EvolutionIterator<>(
-			this::evolve,
-			this::evolutionStart
-		);
-	}
-
-	/**
 	 * Create a new <b>infinite</b> evolution stream with a newly created
 	 * population.
 	 *
@@ -472,6 +458,67 @@ public final class Engine<
 		return EvolutionStream.of(
 			() -> evolutionStart(genotypes, 1),
 			this::evolve
+		);
+	}
+
+	/**
+	 * Create a new <b>infinite</b> evolution stream with the given initial
+	 * population. If an empty {@code Population} is given, the engines genotype
+	 * factory is used for creating the population. The given population might
+	 * be the result of an other engine and this method allows to start the
+	 * evolution with the outcome of an different engine. The fitness function
+	 * and the fitness scaler are replaced by the one defined for this engine.
+	 *
+	 * @param population the initial individuals used for the evolution stream.
+	 *        Missing individuals are created and individuals not needed are
+	 *        skipped.
+	 * @param generation the generation the stream starts from; must be greater
+	 *        than zero.
+	 * @return a new evolution stream.
+	 * @throws NullPointerException if the given {@code population} is
+	 *         {@code null}.
+	 * @throws IllegalArgumentException if the given {@code generation} is smaller
+	 *        then one
+	 */
+	public EvolutionStream<G, C> stream(
+		final Population<G, C> population,
+		final long generation
+	) {
+		return stream(EvolutionStart.of(population, generation));
+	}
+
+	/**
+	 * Create a new <b>infinite</b> evolution stream with the given evolution
+	 * {@code start}.
+	 *
+	 * @since !__version__!
+	 *
+	 * @see #stream(Population, long)
+	 *
+	 * @param start the evolution start
+	 * @return a new evolution stream.
+	 * @throws NullPointerException if the given {@code start} is {@code null}.
+	 */
+	public EvolutionStream<G, C> stream(final EvolutionStart<G, C> start) {
+		requireNonNull(start);
+
+		return EvolutionStream.of(
+			() -> evolutionStart(start.getPopulation(), start.getGeneration()),
+			this::evolve
+		);
+	}
+
+	/**
+	 * Create a new <b>infinite</b> evolution iterator with a newly created
+	 * population. This is an alternative way for evolution. It lets the user
+	 * start, stop and resume the evolution process whenever desired.
+	 *
+	 * @return a new <b>infinite</b> evolution iterator
+	 */
+	public Iterator<EvolutionResult<G, C>> iterator() {
+		return new EvolutionIterator<>(
+			this::evolve,
+			this::evolutionStart
 		);
 	}
 
@@ -517,38 +564,6 @@ public final class Engine<
 	}
 
 	/**
-	 * Create a new <b>infinite</b> evolution stream with the given initial
-	 * population. If an empty {@code Population} is given, the engines genotype
-	 * factory is used for creating the population. The given population might
-	 * be the result of an other engine and this method allows to start the
-	 * evolution with the outcome of an different engine. The fitness function
-	 * and the fitness scaler are replaced by the one defined for this engine.
-	 *
-	 * @param population the initial individuals used for the evolution stream.
-	 *        Missing individuals are created and individuals not needed are
-	 *        skipped.
-	 * @param generation the generation the stream starts from; must be greater
-	 *        than zero.
-	 * @return a new evolution stream.
-	 * @throws java.lang.NullPointerException if the given {@code population} is
-	 *         {@code null}.
-	 * @throws IllegalArgumentException if the given {@code generation} is smaller
-	 *        then one
-	 */
-	public EvolutionStream<G, C> stream(
-		final Population<G, C> population,
-		final long generation
-	) {
-		requireNonNull(population);
-		require.positive(generation);
-
-		return EvolutionStream.of(
-			() -> evolutionStart(population, generation),
-			this::evolve
-		);
-	}
-
-	/**
 	 * Create a new <b>infinite</b> evolution iterator with the given initial
 	 * population. If an empty {@code Population} is given, the engines genotype
 	 * factory is used for creating the population. The given population might
@@ -571,12 +586,28 @@ public final class Engine<
 		final Population<G, C> population,
 		final long generation
 	) {
-		requireNonNull(population);
-		require.positive(generation);
+		return iterator(EvolutionStart.of(population, generation));
+	}
+
+	/**
+	 * Create a new <b>infinite</b> evolution iterator with the given initial
+	 *{@code start}.
+	 *
+	 * @since !__version__!
+	 *
+	 * @see #iterator(Population, long)
+	 *
+	 * @param start the evolution start
+	 * @return a new evolution stream.
+	 * @throws NullPointerException if the given {@code start} is {@code null}.
+	 */
+	public Iterator<EvolutionResult<G, C>>
+	iterator(final EvolutionStart<G, C> start) {
+		requireNonNull(start);
 
 		return new EvolutionIterator<>(
 			this::evolve,
-			() -> evolutionStart(population, generation)
+			() -> evolutionStart(start.getPopulation(), start.getGeneration())
 		);
 	}
 
