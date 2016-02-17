@@ -20,8 +20,8 @@
 package org.jenetics.tool.optimizer;
 
 import static java.lang.Math.min;
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.engine.codecs.ofScalar;
 
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -42,7 +42,20 @@ import org.jenetics.util.ISeq;
 import org.jenetics.util.IntRange;
 
 /**
- * Selector codec of all given selectors.
+ * Selector codec of all given selectors. The following example shows how to
+ * create a {@code SelectorCodec} with <i>all</i> available codecs.
+ *
+ * <pre>{@code
+ * final Codec<Selector<DoubleGene, Double>, DoubleGene> codec =
+ *     SelectorCodec
+ *         .of(new RouletteWheelSelector<DoubleGene, Double>())
+ *         .and(new TruncationSelector<>())
+ *         .and(new StochasticUniversalSelector<>())
+ *         .and(ofBoltzmannSelector(DoubleRange.of(0, 3)))
+ *         .and(ofExponentialRankSelector(DoubleRange.of(0, 1)))
+ *         .and(ofLinearRankSelector(DoubleRange.of(0, 3)))
+ *         .and(ofTournamentSelector(IntRange.of(2, 10)));
+ * }</pre>
  *
  * @param <G> the gene type of the problem encoding
  * @param <C> the fitness function return type of the problem encoding
@@ -58,17 +71,6 @@ public final class SelectorCodec<
 	implements Codec<Selector<G, C>, DoubleGene>
 {
 
-	private static final DoubleRange
-		BOLTZMANN_SELECTOR_PARAM = DoubleRange.of(0, 3);
-
-	private static final DoubleRange
-		EXPONENTIAL_RANK_SELECTOR_PARAM = DoubleRange.of(0, 1);
-
-	private static final DoubleRange
-		LINEAR_RANK_SELECTOR_PARAM = DoubleRange.of(0, 5);
-
-	private static final IntRange TOURNAMENT_SIZE = IntRange.of(2, 15);
-
 	private final ISeq<? extends Codec<? extends Selector<G, C>, DoubleGene>> _codecs;
 	private final ISeq<? extends Selector<G, C>> _selectors;
 	private final Codec<Selector<G, C>, DoubleGene> _codec;
@@ -82,7 +84,6 @@ public final class SelectorCodec<
 	 *        {@code selectors} codec
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	@SuppressWarnings("unchecked")
 	private SelectorCodec(
 		final ISeq<? extends Codec<? extends Selector<G, C>, DoubleGene>> codecs,
 		final ISeq<? extends Selector<G, C>> selectors,
@@ -134,12 +135,14 @@ public final class SelectorCodec<
 	 * @param selectors the <i>parameter less</i> alterers to append
 	 * @return a new {@code SelectorCodec}
 	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if the {@code codecs} and
+	 *        {@code selectors} sequences are <i>empty</i>
 	 */
 	public SelectorCodec<G, C> and(
 		final ISeq<? extends Codec<? extends Selector<G, C>, DoubleGene>> codecs,
 		final ISeq<? extends Selector<G, C>> selectors
 	) {
-		return of(ISeq.concat(_codec, codecs), ISeq.concat(_selectors, selectors));
+		return of(ISeq.concat(_codecs, codecs), ISeq.concat(_selectors, selectors));
 	}
 
 	/**
@@ -166,6 +169,7 @@ public final class SelectorCodec<
 		return and(ISeq.empty(), ISeq.of(selector));
 	}
 
+
 	/* *************************************************************************
 	 *  Static factory methods
 	 * ************************************************************************/
@@ -180,6 +184,8 @@ public final class SelectorCodec<
 	 * @param <C> the fitness function return type of the problem encoding
 	 * @return a new selector codec
 	 * @throws NullPointerException if one of teh arguments is {@code null}
+	 * @throws IllegalArgumentException if the {@code codecs} and
+	 *        {@code selectors} sequences are <i>empty</i>
 	 */
 	@SuppressWarnings("unchecked")
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
@@ -187,28 +193,52 @@ public final class SelectorCodec<
 		final ISeq<? extends Codec<? extends Selector<G, C>, DoubleGene>> codecs,
 		final ISeq<? extends Selector<G, C>> selectors
 	) {
+		// Flattening the given codecs.
 		final ISeq<? extends Codec<? extends Selector<G, C>, DoubleGene>> c =
 			codecs.stream()
 				.flatMap(SelectorCodec::flatten)
 				.collect(ISeq.toISeq());
 
-		final int selectorCount = c.length() + selectors.length();
-		final Codec<Double, DoubleGene> selectorIndexCodec =
-			ofScalar(DoubleRange.of(0, selectorCount));
+		// Remove duplicate selector entries.
+		final ISeq<? extends Selector<G, C>> s = selectors.stream()
+			.distinct()
+			.collect(ISeq.toISeq());
 
-		final Codec<Selector<G, C>, DoubleGene> cc = Codec.of(
-			ISeq.concat(ISeq.of(selectorIndexCodec), c),
-			x -> {
-				final int selectorIndex =
-					min(((Double)x[0]).intValue(), selectorCount - 1);
+		// Codecs and selectors must not be empty at the same time.
+		if (c.isEmpty() && s.isEmpty()) {
+			throw new IllegalArgumentException("Codecs and selectors are empty.");
+		}
 
-				return selectorIndex < c.length()
-					? (Selector<G, C>)x[selectorIndex + 1]
-					: selectors.get(selectorIndex - c.length());
-			}
-		);
+		final Codec<Selector<G, C>, DoubleGene> cc;
+		if (c.isEmpty()) {
+			cc = Codec.of(
+				Genotype.of(DoubleChromosome.of(DoubleRange.of(0, s.length()))),
+				gt -> {
+					final int index = gt.getChromosome().getGene().getAllele().intValue();
+					return s.get(index);
+				}
+			);
+		} else {
+			final int count = c.length() + s.length();
+			final Codec<Integer, DoubleGene> selectorIndexCodec = Codec.of(
+				Genotype.of(DoubleChromosome.of(DoubleRange.of(0, count))),
+				gt -> gt.getChromosome().getGene().getAllele().intValue()
+			);
 
-		return new SelectorCodec<>(c, selectors, cc);
+			cc = Codec.of(
+				ISeq.concat(ISeq.of(selectorIndexCodec), c),
+				x -> {
+					final int selectorIndex =
+						min((Integer)x[0], count - 1);
+
+					return selectorIndex < c.length()
+						? (Selector<G, C>)x[selectorIndex + 1]
+						: s.get(selectorIndex - c.length());
+				}
+			);
+		}
+
+		return new SelectorCodec<>(c, s, cc);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -319,6 +349,13 @@ public final class SelectorCodec<
 				Genotype.of(DoubleChromosome.of(b)),
 				gt -> new BoltzmannSelector<>(gt.getGene().doubleValue())
 			)
+		);
+	}
+
+	@Override
+	public String toString() {
+		return format("SelectorCodec[selectors=%s, codecs=%s]",
+			_selectors, _codecs
 		);
 	}
 
