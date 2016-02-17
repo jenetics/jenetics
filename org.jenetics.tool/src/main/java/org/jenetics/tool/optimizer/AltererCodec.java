@@ -49,7 +49,15 @@ import org.jenetics.util.IntRange;
 import org.jenetics.util.Mean;
 
 /**
- * Alterer codec for all given alterers
+ * Alterer codec for all given alterers. The following example shows how to
+ * create an codec:
+ *
+ * <pre>{@code
+ * AltererCodec<DoubleGene, Double> codec =
+ *     AltererCodec.<DoubleGene, Double>ofSwapMutator()
+ *         .and(AltererCodec.ofMeanAlterer())
+ *         .and(AltererCodec.ofMutator());
+ * }</pre>
  *
  * @param <G> the gene type of the problem encoding
  * @param <C> the fitness function return type of the problem encoding
@@ -64,6 +72,8 @@ public final class AltererCodec<
 >
 	implements Codec<Alterer<G, C>, DoubleGene>
 {
+
+	private static final double ALTERER_PROBABILITY_EPSILON = 0.000_001;
 
 	private final ISeq<? extends Codec<? extends Alterer<G, C>, DoubleGene>> _codecs;
 	private final ISeq<? extends Alterer<G, C>> _alterers;
@@ -150,7 +160,7 @@ public final class AltererCodec<
 		final ISeq<? extends Codec<? extends Alterer<G, C>, DoubleGene>> codecs,
 		final ISeq<? extends Alterer<G, C>> alterers
 	) {
-		return of(ISeq.concat(_codec, codecs), ISeq.concat(_alterers, alterers));
+		return of(ISeq.concat(_codecs, codecs), ISeq.concat(_alterers, alterers));
 	}
 
 	/* *************************************************************************
@@ -167,6 +177,8 @@ public final class AltererCodec<
 	 * @param <C> the fitness function return type of the problem encoding
 	 * @return a new {@code AltererCodec}
 	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if the {@code codecs} and
+	 *        {@code alterers} sequences are <i>empty</i>
 	 */
 	@SuppressWarnings("unchecked")
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
@@ -174,19 +186,25 @@ public final class AltererCodec<
 		final ISeq<? extends Codec<? extends Alterer<G, C>, DoubleGene>> codecs,
 		final ISeq<? extends Alterer<G, C>> alterers
 	) {
+		// Flattening the alterer codecs.
 		final ISeq<? extends Codec<? extends Alterer<G, C>, DoubleGene>> c =
 			codecs.stream()
 				.flatMap(AltererCodec::flatten)
 				.collect(ISeq.toISeq());
 
-		final ISeq<? extends Alterer<G, C>> a =
-			alterers.stream()
-				.flatMap(AltererCodec::flatten)
-				.collect(ISeq.toISeq());
+		// Remove duplicate alterer.
+		final ISeq<? extends Alterer<G, C>> a = alterers.stream()
+			.flatMap(AltererCodec::flatten)
+			.distinct()
+			.collect(ISeq.toISeq());
 
-		final int altererCount = c.length() + a.length();
+		// Codecs and selectors must not be empty at the same time.
+		if (c.isEmpty() && a.isEmpty()) {
+			throw new IllegalArgumentException("Codecs and alterers are empty.");
+		}
+
 		final Codec<double[], DoubleGene> altererIndexesCodec =
-			ofVector(DoubleRange.of(0, 1), altererCount);
+			ofVector(DoubleRange.of(0, 1),  c.length() + a.length());
 
 		final Codec<Alterer<G, C>, DoubleGene> cc = Codec.of(
 			ISeq.concat(ISeq.of(altererIndexesCodec), c),
@@ -214,6 +232,7 @@ public final class AltererCodec<
 		return new AltererCodec<>(c, a, cc);
 	}
 
+	// Flattening of the alterer codecs.
 	@SuppressWarnings("unchecked")
 	private static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Stream<? extends Codec<? extends Alterer<G, C>, DoubleGene>>
@@ -223,6 +242,7 @@ public final class AltererCodec<
 			: Stream.of(codec);
 	}
 
+	// Flattening of the alterers.
 	@SuppressWarnings("unchecked")
 	private static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Stream<? extends Alterer<G, C>>
@@ -232,11 +252,15 @@ public final class AltererCodec<
 			: Stream.of(alterer);
 	}
 
+	// 'Remove' alterers with an alter probability smaller the the defined
+	// ALTERER_PROBABILITY_EPSILON value.
 	private static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Alterer<G, C> normalize(final Alterer<G, C> alterer) {
 		return alterer instanceof AbstractAlterer<?, ?>
-			? ((AbstractAlterer<?, ?>)alterer).getProbability() < 0.0000001
-			? Alterer.empty() : alterer
+			? ((AbstractAlterer<?, ?>)alterer).getProbability() <
+						ALTERER_PROBABILITY_EPSILON
+				? Alterer.empty()
+				: alterer
 			: alterer;
 	}
 

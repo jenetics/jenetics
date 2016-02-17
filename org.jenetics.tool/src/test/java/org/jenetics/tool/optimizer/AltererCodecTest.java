@@ -19,54 +19,86 @@
  */
 package org.jenetics.tool.optimizer;
 
-import org.testng.Reporter;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import org.jenetics.Alterer;
 import org.jenetics.DoubleGene;
 import org.jenetics.Genotype;
+import org.jenetics.MeanAlterer;
+import org.jenetics.Mutator;
+import org.jenetics.SwapMutator;
+import org.jenetics.engine.Codec;
+import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
 public class AltererCodecTest {
 
-	/*
 	@Test
-	public void general() {
-		final Codec<Alterer<DoubleGene, Double>, DoubleGene> codec =
-			AltererCodec.general(IntRange.of(2, 20));
-
-		final Genotype<DoubleGene> gt = codec.encoding().newInstance();
-		codec.decoder().apply(gt);
-	}
-
-	@Test
-	public void numeric() {
-		final Codec<Alterer<DoubleGene, Double>, DoubleGene> codec =
-			AltererCodec.numeric();
-
-		final Genotype<DoubleGene> gt = codec.encoding().newInstance();
-		codec.decoder().apply(gt);
-	}
-	*/
-
-	@Test
-	public void foo() {
-		AltererCodec<DoubleGene, Double> c =
+	public void altererCodec() {
+		AltererCodec<DoubleGene, Double> codec =
 			AltererCodec.<DoubleGene, Double>ofSwapMutator()
 				.and(AltererCodec.ofMeanAlterer())
 				.and(AltererCodec.ofMutator());
 
-		final Genotype<DoubleGene> encoding = c.encoding().newInstance();
-		System.out.println(encoding);
-
-		final Alterer<DoubleGene, Double> alterer = c.decoder().apply(encoding);
-		System.out.println(alterer);
-		System.out.flush();
-
-		Reporter.log(c.encoding().newInstance().toString());
+		final Genotype<DoubleGene> gt = codec.encoding().newInstance();
+		Assert.assertEquals(gt.length(), 4);
 	}
 
+	@Test(dataProvider = "alterers")
+	public void altererCodecs(final ISeq<Codec<Alterer<DoubleGene, Double>, DoubleGene>> alterers) {
+		AltererCodec<DoubleGene, Double> codec =
+			AltererCodec.of(alterers, ISeq.empty());
+
+		final Genotype<DoubleGene> gt = codec.encoding().newInstance();
+		Assert.assertEquals(gt.length(), alterers.length() + 1);
+	}
+
+	@SuppressWarnings("rawtype")
+	@DataProvider(name = "alterers")
+	public Object[][] alterers() {
+		return new Object[][] {
+			{ISeq.of(AltererCodec.ofSinglePointCrossover())},
+			{ISeq.of(
+				AltererCodec.ofSinglePointCrossover(),
+				AltererCodec.ofMutator()
+			)},
+			{ISeq.of(
+				AltererCodec.ofSinglePointCrossover(),
+				AltererCodec.ofMutator(),
+				AltererCodec.ofSwapMutator()
+			)}
+		};
+	}
+
+	@Test
+	public void altererCodecSelection() {
+		AltererCodec<DoubleGene, Double> codec =
+			AltererCodec.<DoubleGene, Double>ofSwapMutator()
+				.and(AltererCodec.ofMeanAlterer())
+				.and(AltererCodec.ofMutator());
+
+		final int samples = 10000;
+		final Map<Class<?>, AtomicInteger> histogram = new HashMap<>();
+		for (int i = 0; i < samples; ++i) {
+			final Genotype<DoubleGene> gt = codec.encoding().newInstance();
+			final Alterer<DoubleGene, Double> alterer = codec.decoder().apply(gt);
+
+			histogram
+				.computeIfAbsent(alterer.getClass(), key -> new AtomicInteger())
+				.incrementAndGet();
+		}
+
+		Assert.assertTrue(histogram.get(SwapMutator.class).intValue() > samples/9);
+		Assert.assertTrue(histogram.get(Mutator.class).intValue() > samples/9);
+		Assert.assertTrue(histogram.get(MeanAlterer.class).intValue() > samples/9);
+	}
 
 }
