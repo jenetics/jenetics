@@ -124,7 +124,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * @return a new {@code Codec} object with the given parameters.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	public static <G extends Gene<?, G>, T> Codec<T, G> of(
+	public static <T, G extends Gene<?, G>> Codec<T, G> of(
 		final Factory<Genotype<G>> encoding,
 		final Function<Genotype<G>, T> decoder
 	) {
@@ -199,7 +199,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 *        {@code codec2}
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static <G extends Gene<?, G>, A, B, T> Codec<T, G> of(
+	public static <A, B, T, G extends Gene<?, G>> Codec<T, G> of(
 		final Codec<A, G> codec1,
 		final Codec<B, G> codec2,
 		final BiFunction<A, B, T> decoder
