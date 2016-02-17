@@ -453,10 +453,35 @@ public final class Engine<
 	public EvolutionStream<G, C> stream(
 		final Iterable<Genotype<G>> genotypes
 	) {
+		return stream(genotypes, 1);
+	}
+
+	/**
+	 * Create a new <b>infinite</b> evolution stream with the given initial
+	 * individuals. If an empty {@code Iterable} is given, the engines genotype
+	 * factory is used for creating the population.
+	 *
+	 * @see !__version__!
+	 *
+	 * @param genotypes the initial individuals used for the evolution stream.
+	 *        Missing individuals are created and individuals not needed are
+	 *        skipped.
+	 * @param generation the generation the iterator starts from; must be greater
+	 *        than zero.
+	 * @return a new evolution stream.
+	 * @throws NullPointerException if the given {@code genotypes} is
+	 *         {@code null}.
+	 * @throws IllegalArgumentException if the given {@code generation} is
+	 *         smaller then one
+	 */
+	public EvolutionStream<G, C> stream(
+		final Iterable<Genotype<G>> genotypes,
+		final long generation
+	) {
 		requireNonNull(genotypes);
 
 		return EvolutionStream.of(
-			() -> evolutionStart(genotypes, 1),
+			() -> evolutionStart(genotypes, generation),
 			this::evolve
 		);
 	}
@@ -537,11 +562,36 @@ public final class Engine<
 	public Iterator<EvolutionResult<G, C>> iterator(
 		final Iterable<Genotype<G>> genotypes
 	) {
+		return iterator(genotypes, 1);
+	}
+
+	/**
+	 * Create a new <b>infinite</b> evolution iterator with the given initial
+	 * individuals. If an empty {@code Iterable} is given, the engines genotype
+	 * factory is used for creating the population.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param genotypes the initial individuals used for the evolution iterator.
+	 *        Missing individuals are created and individuals not needed are
+	 *        skipped.
+	 * @param generation the generation the iterator starts from; must be greater
+	 *        than zero.
+	 * @return a new <b>infinite</b> evolution iterator
+	 * @throws NullPointerException if the given {@code genotypes} is
+	 *        {@code null}
+	 * @throws IllegalArgumentException if the given {@code generation} is
+	 *         smaller then one
+	 */
+	public Iterator<EvolutionResult<G, C>> iterator(
+		final Iterable<Genotype<G>> genotypes,
+		final long generation
+	) {
 		requireNonNull(genotypes);
 
 		return new EvolutionIterator<>(
 			this::evolve,
-			() -> evolutionStart(genotypes, 1)
+			() -> evolutionStart(genotypes, generation)
 		);
 	}
 
