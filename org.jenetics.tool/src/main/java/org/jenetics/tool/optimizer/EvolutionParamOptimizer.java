@@ -49,7 +49,6 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import org.jenetics.internal.util.Args;
-import org.jenetics.internal.util.JAXBContextCache;
 import org.jenetics.internal.util.require;
 
 import org.jenetics.BitGene;
@@ -68,6 +67,7 @@ import org.jenetics.engine.Codec;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionParam;
 import org.jenetics.engine.EvolutionResult;
+import org.jenetics.engine.EvolutionStart;
 import org.jenetics.engine.Problem;
 import org.jenetics.tool.problem.Knapsack;
 import org.jenetics.tool.trial.Params;
@@ -173,17 +173,20 @@ public class EvolutionParamOptimizer<
 		final Engine<DoubleGene, Measure<C>> engine =
 			engine(evolutionParamFitness, optimize);
 
+
 		final Genotype<DoubleGene> gt = engine.stream()
 			.limit(_limit.get())
 			.peek(result -> callback.accept(
 					result,
 					_codec.decoder().apply(result.getBestPhenotype().getGenotype())))
 			.peek(result -> {
+				/*
 				try {
-					IO.jaxb.write(result.getBestPhenotype().getGenotype(), System.out);
+					IO.jaxb.write(ISeq.of(result.getPopulation()).map(pt -> pt.getGenotype()).asList(), System.out);
 				} catch (IOException e) {
 					throw new UncheckedIOException(e);
 				}
+				*/
 			})
 			.collect(toBestGenotype());
 
@@ -199,7 +202,6 @@ public class EvolutionParamOptimizer<
 	 *        optimized
 	 * @param optimize the optimization strategy of the problem
 	 * @param limit the limit of the testing evolution {@code Engine}
-	 * @param callback Callback of intermediate results
 	 * @param <T> the fitness parameter type
 	 * @return the found <i>optimal</i> evolution parameters for your given
 	 *         fitness function.
