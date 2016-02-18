@@ -165,32 +165,34 @@ public class EvolutionParamOptimizer<
 		final Supplier<Predicate<? super EvolutionResult<?, C>>> limit,
 		final BiConsumer<EvolutionResult<?, ?>, EvolutionParam<G, C>> callback
 	) {
-		final Function<EvolutionParam<G, C>, EvolutionParamFitnessComparator<C>>
-		evolutionParamFitness = p -> evolutionParamFitness(
-			p, problem.fitness(), problem.codec(), optimize, limit
-		);
+//		final Function<EvolutionParam<G, C>, ComparableAdapter<C>>
+//		evolutionParamFitness = p -> evolutionParamFitness(
+//			p, problem.fitness(), problem.codec(), optimize, limit
+//		);
+//
+//		final Engine<DoubleGene, ComparableAdapter<C>> engine =
+//			engine(evolutionParamFitness, optimize);
+//
+//
+//		final Genotype<DoubleGene> gt = engine.stream()
+//			.limit(_limit.get())
+//			.peek(result -> callback.accept(
+//					result,
+//					_codec.decoder().apply(result.getBestPhenotype().getGenotype())))
+//			.peek(result -> {
+//				/*
+//				try {
+//					IO.jaxb.write(ISeq.of(result.getPopulation()).map(pt -> pt.getGenotype()).asList(), System.out);
+//				} catch (IOException e) {
+//					throw new UncheckedIOException(e);
+//				}
+//				*/
+//			})
+//			.collect(toBestGenotype());
+//
+//		return _codec.decoder().apply(gt);
 
-		final Engine<DoubleGene, EvolutionParamFitnessComparator<C>> engine =
-			engine(evolutionParamFitness, optimize);
-
-
-		final Genotype<DoubleGene> gt = engine.stream()
-			.limit(_limit.get())
-			.peek(result -> callback.accept(
-					result,
-					_codec.decoder().apply(result.getBestPhenotype().getGenotype())))
-			.peek(result -> {
-				/*
-				try {
-					IO.jaxb.write(ISeq.of(result.getPopulation()).map(pt -> pt.getGenotype()).asList(), System.out);
-				} catch (IOException e) {
-					throw new UncheckedIOException(e);
-				}
-				*/
-			})
-			.collect(toBestGenotype());
-
-		return _codec.decoder().apply(gt);
+		return null;
 	}
 
 	public <T> Stream<OptimizerResult<C>> stream(
@@ -201,17 +203,19 @@ public class EvolutionParamOptimizer<
 
 
 
-		final Function<EvolutionParam<G, C>, EvolutionParamFitnessComparator<C>> evolutionParamFitness =
-			p -> evolutionParamFitness(
-					p, problem.fitness(), problem.codec(), optimize, limit
-				);
+//		final Function<EvolutionParam<G, C>, EvolutionParamFitnessComparator<C>> evolutionParamFitness =
+//			p -> evolutionParamFitness(
+//					p, problem.fitness(), problem.codec(), optimize, limit
+//				);
+//
+//		final Engine<DoubleGene, EvolutionParamFitnessComparator<C>> engine =
+//			engine(evolutionParamFitness, optimize);
+//
+//		EvolutionStream<DoubleGene, EvolutionParamFitnessComparator<C>> stream = engine.stream();
+//
+//		return stream.map(this::toOptimizerResult);
 
-		final Engine<DoubleGene, EvolutionParamFitnessComparator<C>> engine =
-			engine(evolutionParamFitness, optimize);
-
-		EvolutionStream<DoubleGene, EvolutionParamFitnessComparator<C>> stream = engine.stream();
-
-		return stream.map(this::toOptimizerResult);
+		return null;
 	}
 
 	private OptimizerResult<C> toOptimizerResult(
@@ -298,13 +302,14 @@ public class EvolutionParamOptimizer<
 	 * @param <T> the parameter type of the fitness function
 	 * @return the fitness value for the given evolution parameters
 	 */
-	private <T> EvolutionParamFitnessComparator<C> evolutionParamFitness(
+	private <T> ComparableAdapter<C> evolutionParamFitness(
 		final EvolutionParam<G, C> params,
 		final Function<T, C> fitness,
 		final Codec<T, G> codec,
 		final Optimize optimize,
 		final Supplier<Predicate<? super EvolutionResult<?, C>>> limit
 	) {
+		/*
 		final Engine<G, C> engine = Engine.builder(fitness, codec)
 			.evolutionParam(params)
 			.optimize(optimize)
@@ -324,7 +329,9 @@ public class EvolutionParamOptimizer<
 			.collect(ISeq.toISeq());
 
 		// Return the median value.
-		return measures.get(measures.length()/2);
+		//return measures.get(measures.length()/2);
+		*/
+		return null;
 	}
 
 
