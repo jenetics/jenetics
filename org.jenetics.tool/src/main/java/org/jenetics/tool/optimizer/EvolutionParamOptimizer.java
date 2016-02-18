@@ -68,6 +68,7 @@ import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionParam;
 import org.jenetics.engine.EvolutionResult;
 import org.jenetics.engine.EvolutionStart;
+import org.jenetics.engine.EvolutionStream;
 import org.jenetics.engine.Problem;
 import org.jenetics.tool.problem.Knapsack;
 import org.jenetics.tool.trial.Params;
@@ -191,6 +192,36 @@ public class EvolutionParamOptimizer<
 			.collect(toBestGenotype());
 
 		return _codec.decoder().apply(gt);
+	}
+
+	public <T> Stream<OptimizerResult<C>> stream(
+		final Problem<T, G, C> problem,
+		final Optimize optimize,
+		final Supplier<Predicate<? super EvolutionResult<?, C>>> limit
+	) {
+
+
+
+		final Function<EvolutionParam<G, C>, Measure<C>> evolutionParamFitness =
+			p -> evolutionParamFitness(
+					p, problem.fitness(), problem.codec(), optimize, limit
+				);
+
+		final Engine<DoubleGene, Measure<C>> engine =
+			engine(evolutionParamFitness, optimize);
+
+		EvolutionStream<DoubleGene, Measure<C>> stream = engine.stream();
+
+		return stream.map(this::toOptimizerResult);
+	}
+
+	private OptimizerResult<C> toOptimizerResult(
+		final EvolutionResult<DoubleGene,  Measure<C>> result
+	) {
+		return OptimizerResult.of(
+			null, //result,
+			null //_codec.decoder().apply(result.getBestPhenotype().getGenotype())
+		);
 	}
 
 	/**
