@@ -22,6 +22,7 @@ package org.jenetics.tool.optimizer;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 /**
@@ -35,8 +36,10 @@ import java.util.Comparator;
  * @since !__version__!
  */
 public final class ComparableAdapter<T>
-	implements Comparable<ComparableAdapter<T>>
+	implements Comparable<ComparableAdapter<T>>, Serializable
 {
+
+	private static final long serialVersionUID = 1L;
 
 	private final T _adoptee;
 	private final Comparator<? super T> _comparator;
