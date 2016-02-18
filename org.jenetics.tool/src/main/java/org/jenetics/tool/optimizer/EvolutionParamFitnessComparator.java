@@ -31,15 +31,15 @@ import org.jenetics.engine.EvolutionParam;
  * @version !__version__!
  * @since !__version__!
  */
-final class Measure<C extends Comparable<? super C>>
-	implements Comparable<Measure<C>>
+final class EvolutionParamFitnessComparator<C extends Comparable<? super C>>
+	implements Comparable<EvolutionParamFitnessComparator<C>>
 {
 
 	private final C _comparable;
 	private final EvolutionParam<?, C> _params;
 	private final Optimize _optimize;
 
-	Measure(
+	EvolutionParamFitnessComparator(
 		final C comparable,
 		final EvolutionParam<?, C> params,
 		final Optimize optimize
@@ -50,7 +50,7 @@ final class Measure<C extends Comparable<? super C>>
 	}
 
 	@Override
-	public int compareTo(final Measure<C> other) {
+	public int compareTo(final EvolutionParamFitnessComparator<C> other) {
 		requireNonNull(other);
 
 		int cmp = _comparable.compareTo(other._comparable);

@@ -67,7 +67,6 @@ import org.jenetics.engine.Codec;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionParam;
 import org.jenetics.engine.EvolutionResult;
-import org.jenetics.engine.EvolutionStart;
 import org.jenetics.engine.EvolutionStream;
 import org.jenetics.engine.Problem;
 import org.jenetics.tool.problem.Knapsack;
@@ -96,7 +95,7 @@ public class EvolutionParamOptimizer<
 {
 
 	private final Codec<EvolutionParam<G, C>, DoubleGene> _codec;
-	private final Supplier<Predicate<? super EvolutionResult<?, Measure<C>>>> _limit;
+	private final Supplier<Predicate<? super EvolutionResult<?, EvolutionParamFitnessComparator<C>>>> _limit;
 	private final int _sampleCount;
 
 	/**
@@ -117,7 +116,7 @@ public class EvolutionParamOptimizer<
 	 */
 	public EvolutionParamOptimizer(
 		final Codec<EvolutionParam<G, C>, DoubleGene> codec,
-		final Supplier<Predicate<? super EvolutionResult<?, Measure<C>>>> limit,
+		final Supplier<Predicate<? super EvolutionResult<?, EvolutionParamFitnessComparator<C>>>> limit,
 		final int sampleCount
 	) {
 		_codec = requireNonNull(codec);
@@ -141,7 +140,7 @@ public class EvolutionParamOptimizer<
 	 */
 	public EvolutionParamOptimizer(
 		final Codec<EvolutionParam<G, C>, DoubleGene> codec,
-		final Supplier<Predicate<? super EvolutionResult<?, Measure<C>>>> limit
+		final Supplier<Predicate<? super EvolutionResult<?, EvolutionParamFitnessComparator<C>>>> limit
 	) {
 		this(codec, limit, 10);
 	}
@@ -166,12 +165,12 @@ public class EvolutionParamOptimizer<
 		final Supplier<Predicate<? super EvolutionResult<?, C>>> limit,
 		final BiConsumer<EvolutionResult<?, ?>, EvolutionParam<G, C>> callback
 	) {
-		final Function<EvolutionParam<G, C>, Measure<C>>
+		final Function<EvolutionParam<G, C>, EvolutionParamFitnessComparator<C>>
 		evolutionParamFitness = p -> evolutionParamFitness(
 			p, problem.fitness(), problem.codec(), optimize, limit
 		);
 
-		final Engine<DoubleGene, Measure<C>> engine =
+		final Engine<DoubleGene, EvolutionParamFitnessComparator<C>> engine =
 			engine(evolutionParamFitness, optimize);
 
 
@@ -202,21 +201,21 @@ public class EvolutionParamOptimizer<
 
 
 
-		final Function<EvolutionParam<G, C>, Measure<C>> evolutionParamFitness =
+		final Function<EvolutionParam<G, C>, EvolutionParamFitnessComparator<C>> evolutionParamFitness =
 			p -> evolutionParamFitness(
 					p, problem.fitness(), problem.codec(), optimize, limit
 				);
 
-		final Engine<DoubleGene, Measure<C>> engine =
+		final Engine<DoubleGene, EvolutionParamFitnessComparator<C>> engine =
 			engine(evolutionParamFitness, optimize);
 
-		EvolutionStream<DoubleGene, Measure<C>> stream = engine.stream();
+		EvolutionStream<DoubleGene, EvolutionParamFitnessComparator<C>> stream = engine.stream();
 
 		return stream.map(this::toOptimizerResult);
 	}
 
 	private OptimizerResult<C> toOptimizerResult(
-		final EvolutionResult<DoubleGene,  Measure<C>> result
+		final EvolutionResult<DoubleGene, EvolutionParamFitnessComparator<C>> result
 	) {
 		return OptimizerResult.of(
 			null, //result,
@@ -265,11 +264,11 @@ public class EvolutionParamOptimizer<
 	 * @param optimize the optimization strategy
 	 * @return a new optimization evolution engine
 	 */
-	private Engine<DoubleGene, Measure<C>> engine(
-		final Function<EvolutionParam<G, C>, Measure<C>> fitness,
+	private Engine<DoubleGene, EvolutionParamFitnessComparator<C>> engine(
+		final Function<EvolutionParam<G, C>, EvolutionParamFitnessComparator<C>> fitness,
 		final Optimize optimize
 	) {
-		final Function<Genotype<DoubleGene>, Measure<C>> ff =
+		final Function<Genotype<DoubleGene>, EvolutionParamFitnessComparator<C>> ff =
 			_codec.decoder().andThen(fitness);
 
 		return Engine.builder(ff, _codec.encoding())
@@ -299,7 +298,7 @@ public class EvolutionParamOptimizer<
 	 * @param <T> the parameter type of the fitness function
 	 * @return the fitness value for the given evolution parameters
 	 */
-	private <T> Measure<C> evolutionParamFitness(
+	private <T> EvolutionParamFitnessComparator<C> evolutionParamFitness(
 		final EvolutionParam<G, C> params,
 		final Function<T, C> fitness,
 		final Codec<T, G> codec,
@@ -319,8 +318,8 @@ public class EvolutionParamOptimizer<
 				})
 			.limit(_sampleCount);
 
-		final ISeq<Measure<C>> measures = results
-			.map(c -> new Measure<>(c, params, optimize))
+		final ISeq<EvolutionParamFitnessComparator<C>> measures = results
+			.map(c -> new EvolutionParamFitnessComparator<>(c, params, optimize))
 			.sorted(optimize.ascending())
 			.collect(ISeq.toISeq());
 
