@@ -19,10 +19,41 @@
  */
 package org.jenetix.json;
 
+import java.text.DateFormat;
+
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import org.jenetics.DoubleGene;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 public class DoubleGeneAdapterTest {
+
+	private final static Gson GSON = new GsonBuilder()
+		.registerTypeAdapter(DoubleGene.class, new DoubleGeneAdapter())
+		.enableComplexMapKeySerialization()
+		.serializeNulls()
+		.setDateFormat(DateFormat.LONG)
+		.setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+		.setPrettyPrinting()
+		.setVersion(1.0)
+		.create();
+
+	@Test(invocationCount = 3)
+	public void marshalling() {
+		final DoubleGene expected = DoubleGene.of(-1999, 299383);
+		final String json = GSON.toJson(expected);
+
+		final DoubleGene actual = GSON.fromJson(json, DoubleGene.class);
+		Assert.assertEquals(actual, expected);
+	}
+
 }
