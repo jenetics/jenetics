@@ -33,7 +33,7 @@ import org.jenetics.engine.EvolutionParam;
  * @version !__version__!
  * @since !__version__!
  */
-final class EvolutionParamFitnessComparator<C extends Comparable<? super C>>
+final class OptimizerResultComparator<C extends Comparable<? super C>>
 	implements Comparator<C>
 {
 
@@ -41,7 +41,7 @@ final class EvolutionParamFitnessComparator<C extends Comparable<? super C>>
 	private final EvolutionParam<?, C> _params;
 	private final Optimize _optimize;
 
-	EvolutionParamFitnessComparator(
+	OptimizerResultComparator(
 		final C comparable,
 		final EvolutionParam<?, C> params,
 		final Optimize optimize
@@ -81,7 +81,7 @@ final class EvolutionParamFitnessComparator<C extends Comparable<? super C>>
 		return cmp;
 	}
 
-	public int compareTo(final EvolutionParamFitnessComparator<C> other) {
+	public int compareTo(final OptimizerResultComparator<C> other) {
 		requireNonNull(other);
 
 		int cmp = _comparable.compareTo(other._comparable);

@@ -67,7 +67,6 @@ import org.jenetics.engine.Codec;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionParam;
 import org.jenetics.engine.EvolutionResult;
-import org.jenetics.engine.EvolutionStream;
 import org.jenetics.engine.Problem;
 import org.jenetics.tool.problem.Knapsack;
 import org.jenetics.tool.trial.Params;
@@ -95,7 +94,7 @@ public class EvolutionParamOptimizer<
 {
 
 	private final Codec<EvolutionParam<G, C>, DoubleGene> _codec;
-	private final Supplier<Predicate<? super EvolutionResult<?, EvolutionParamFitnessComparator<C>>>> _limit;
+	private final Supplier<Predicate<? super EvolutionResult<?, OptimizerResultComparator<C>>>> _limit;
 	private final int _sampleCount;
 
 	/**
@@ -116,7 +115,7 @@ public class EvolutionParamOptimizer<
 	 */
 	public EvolutionParamOptimizer(
 		final Codec<EvolutionParam<G, C>, DoubleGene> codec,
-		final Supplier<Predicate<? super EvolutionResult<?, EvolutionParamFitnessComparator<C>>>> limit,
+		final Supplier<Predicate<? super EvolutionResult<?, OptimizerResultComparator<C>>>> limit,
 		final int sampleCount
 	) {
 		_codec = requireNonNull(codec);
@@ -140,7 +139,7 @@ public class EvolutionParamOptimizer<
 	 */
 	public EvolutionParamOptimizer(
 		final Codec<EvolutionParam<G, C>, DoubleGene> codec,
-		final Supplier<Predicate<? super EvolutionResult<?, EvolutionParamFitnessComparator<C>>>> limit
+		final Supplier<Predicate<? super EvolutionResult<?, OptimizerResultComparator<C>>>> limit
 	) {
 		this(codec, limit, 10);
 	}
@@ -219,7 +218,7 @@ public class EvolutionParamOptimizer<
 	}
 
 	private OptimizerResult<C> toOptimizerResult(
-		final EvolutionResult<DoubleGene, EvolutionParamFitnessComparator<C>> result
+		final EvolutionResult<DoubleGene, OptimizerResultComparator<C>> result
 	) {
 		return OptimizerResult.of(
 			null, //result,
@@ -268,11 +267,11 @@ public class EvolutionParamOptimizer<
 	 * @param optimize the optimization strategy
 	 * @return a new optimization evolution engine
 	 */
-	private Engine<DoubleGene, EvolutionParamFitnessComparator<C>> engine(
-		final Function<EvolutionParam<G, C>, EvolutionParamFitnessComparator<C>> fitness,
+	private Engine<DoubleGene, OptimizerResultComparator<C>> engine(
+		final Function<EvolutionParam<G, C>, OptimizerResultComparator<C>> fitness,
 		final Optimize optimize
 	) {
-		final Function<Genotype<DoubleGene>, EvolutionParamFitnessComparator<C>> ff =
+		final Function<Genotype<DoubleGene>, OptimizerResultComparator<C>> ff =
 			_codec.decoder().andThen(fitness);
 
 		return Engine.builder(ff, _codec.encoding())
@@ -322,8 +321,8 @@ public class EvolutionParamOptimizer<
 				})
 			.limit(_sampleCount);
 
-		final ISeq<EvolutionParamFitnessComparator<C>> measures = results
-			.map(c -> new EvolutionParamFitnessComparator<>(c, params, optimize))
+		final ISeq<OptimizerResultComparator<C>> measures = results
+			.map(c -> new OptimizerResultComparator<>(c, params, optimize))
 			.sorted(optimize.ascending())
 			.collect(ISeq.toISeq());
 
