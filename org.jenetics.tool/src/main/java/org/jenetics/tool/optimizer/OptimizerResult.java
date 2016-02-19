@@ -21,7 +21,8 @@ package org.jenetics.tool.optimizer;
 
 import static java.util.Objects.requireNonNull;
 
-import org.jenetics.DoubleGene;
+import org.jenetics.Alterer;
+import org.jenetics.Selector;
 import org.jenetics.engine.EvolutionParam;
 import org.jenetics.engine.EvolutionResult;
 
@@ -30,24 +31,23 @@ import org.jenetics.engine.EvolutionResult;
  * @version !__version__!
  * @since !__version__!
  */
-public final class OptimizerResult<C extends Comparable<? super C>> {
+public final class OptimizerResult<C extends Comparable<? super C>>
+	implements Comparable<OptimizerResult<C>>
+{
 
-	private final C _fitness;
 	private final EvolutionResult<?, C> _result;
 	private final EvolutionParam<?, C> _param;
 
 	private OptimizerResult(
-		final C fitness,
 		final EvolutionResult<?, C> result,
 		final EvolutionParam<?, C> param
 	) {
-		_fitness = requireNonNull(fitness);
 		_result = requireNonNull(result);
 		_param = requireNonNull(param);
 	}
 
 	public C getFitness() {
-		return _fitness;
+		return _result.getBestFitness();
 	}
 
 	public EvolutionResult<?, C> getResult() {
@@ -58,12 +58,46 @@ public final class OptimizerResult<C extends Comparable<? super C>> {
 		return _param;
 	}
 
+	@Override
+	public int compareTo(final OptimizerResult<C> other) {
+		int cmp = getFitness().compareTo(other.getFitness());
+		if (cmp == 0) {
+			cmp = _result.getOptimize().compare(
+				other.getParam().getPopulationSize(),
+				getParam().getPopulationSize()
+			);
+		}
+
+		if (cmp == 0) {
+			final double complexity1 =
+				complexity(getParam().getAlterer()) +
+				complexity(getParam().getOffspringSelector())*0.5 +
+				complexity(getParam().getSurvivorsSelector())*0.5;
+
+			final double complexity2 =
+				complexity(other.getParam().getAlterer()) +
+				complexity(other.getParam().getOffspringSelector())*0.5 +
+				complexity(other.getParam().getSurvivorsSelector())*0.5;
+
+			cmp = _result.getOptimize().compare(complexity2, complexity1);
+		}
+
+		return cmp;
+	}
+
+	private static double complexity(final Alterer<?, ?> alterer) {
+		return AltererComplexity.INSTANCE.complexity(alterer);
+	}
+
+	private static double complexity(final Selector<?, ?> selector) {
+		return SelectorComplexity.INSTANCE.complexity(selector);
+	}
+
 	public static <C extends Comparable<? super C>> OptimizerResult<C> of(
-		final C fitness,
 		final EvolutionResult<?, C> result,
 		final EvolutionParam<?, C> param
 	) {
-		return new OptimizerResult<>(fitness, result, param);
+		return new OptimizerResult<>(result, param);
 	}
 
 }

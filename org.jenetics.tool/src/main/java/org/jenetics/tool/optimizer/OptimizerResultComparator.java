@@ -26,7 +26,6 @@ import java.util.Comparator;
 import org.jenetics.Alterer;
 import org.jenetics.Optimize;
 import org.jenetics.Selector;
-import org.jenetics.engine.EvolutionParam;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -34,74 +33,35 @@ import org.jenetics.engine.EvolutionParam;
  * @since !__version__!
  */
 final class OptimizerResultComparator<C extends Comparable<? super C>>
-	implements Comparator<C>
+	implements Comparator<OptimizerResult<C>>
 {
 
-	private final C _comparable;
-	private final EvolutionParam<?, C> _params;
 	private final Optimize _optimize;
 
-	OptimizerResultComparator(
-		final C comparable,
-		final EvolutionParam<?, C> params,
-		final Optimize optimize
-	) {
-		_comparable = requireNonNull(comparable);
-		_params = requireNonNull(params);
+	OptimizerResultComparator(final Optimize optimize) {
 		_optimize = requireNonNull(optimize);
 	}
 
 	@Override
-	public int compare(final C that, final C other) {
-		requireNonNull(that);
-		requireNonNull(other);
-
-		int cmp = that.compareTo(other);
+	public int compare(final OptimizerResult<C> that, final OptimizerResult<C> other) {
+		int cmp = that.getFitness().compareTo(other.getFitness());
 		if (cmp == 0) {
 			cmp = _optimize.compare(
-				other._params.getPopulationSize(),
-				_params.getPopulationSize()
+				other.getParam().getPopulationSize(),
+				that.getParam().getPopulationSize()
 			);
 		}
 
 		if (cmp == 0) {
 			final double complexity1 =
-				complexity(_params.getAlterer()) +
-					complexity(_params.getOffspringSelector())*0.5 +
-					complexity(_params.getSurvivorsSelector())*0.5;
+				complexity(that.getParam().getAlterer()) +
+				complexity(that.getParam().getOffspringSelector())*0.5 +
+				complexity(that.getParam().getSurvivorsSelector())*0.5;
 
 			final double complexity2 =
-				complexity(other._params.getAlterer()) +
-					complexity(other._params.getOffspringSelector())*0.5 +
-					complexity(other._params.getSurvivorsSelector())*0.5;
-
-			cmp = _optimize.compare(complexity2, complexity1);
-		}
-
-		return cmp;
-	}
-
-	public int compareTo(final OptimizerResultComparator<C> other) {
-		requireNonNull(other);
-
-		int cmp = _comparable.compareTo(other._comparable);
-		if (cmp == 0) {
-			cmp = _optimize.compare(
-				other._params.getPopulationSize(),
-				_params.getPopulationSize()
-			);
-		}
-
-		if (cmp == 0) {
-			final double complexity1 =
-				complexity(_params.getAlterer()) +
-				complexity(_params.getOffspringSelector())*0.5 +
-				complexity(_params.getSurvivorsSelector())*0.5;
-
-			final double complexity2 =
-				complexity(other._params.getAlterer()) +
-				complexity(other._params.getOffspringSelector())*0.5 +
-				complexity(other._params.getSurvivorsSelector())*0.5;
+				complexity(other.getParam().getAlterer()) +
+				complexity(other.getParam().getOffspringSelector())*0.5 +
+				complexity(other.getParam().getSurvivorsSelector())*0.5;
 
 			cmp = _optimize.compare(complexity2, complexity1);
 		}
@@ -115,11 +75,6 @@ final class OptimizerResultComparator<C extends Comparable<? super C>>
 
 	private static double complexity(final Selector<?, ?> selector) {
 		return SelectorComplexity.INSTANCE.complexity(selector);
-	}
-
-	@Override
-	public String toString() {
-		return _comparable.toString();
 	}
 
 }
