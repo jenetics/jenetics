@@ -22,6 +22,7 @@ package org.jenetics.util;
 import static java.lang.String.format;
 
 import java.io.Serializable;
+import java.util.stream.LongStream;
 
 /**
  * Long range class.
@@ -64,6 +65,28 @@ public final class LongRange implements Serializable {
 	 */
 	public long getMax() {
 		return _max;
+	}
+
+	/**
+	 * Returns a sequential ordered {@code LongStream} from {@link #getMin()}
+	 * (inclusive) to {@link #getMax()} (exclusive) by an incremental step of
+	 * {@code 1}.
+	 * <p>
+	 * An equivalent sequence of increasing values can be produced sequentially
+	 * using a {@code for} loop as follows:
+	 * <pre>{@code
+	 * for (long i = range.getMin(); i < range.getMax(); ++i) {
+	 *     ...
+	 * }
+	 * }</pre>
+	 *
+	 * @since 3.4
+	 *
+	 * @return a sequential {@link LongStream} for the range of {@code long}
+	 *         elements
+	 */
+	public LongStream stream() {
+		return LongStream.range(_min, _max);
 	}
 
 	/**
