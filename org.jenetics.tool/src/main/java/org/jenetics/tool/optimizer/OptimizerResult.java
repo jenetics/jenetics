@@ -30,24 +30,40 @@ import org.jenetics.engine.EvolutionResult;
  * @version !__version__!
  * @since !__version__!
  */
-public class OptimizerResult<C extends Comparable<? super C>> {
+public final class OptimizerResult<C extends Comparable<? super C>> {
 
+	private final C _fitness;
 	private final EvolutionResult<?, C> _result;
 	private final EvolutionParam<?, C> _param;
 
 	private OptimizerResult(
+		final C fitness,
 		final EvolutionResult<?, C> result,
 		final EvolutionParam<?, C> param
 	) {
+		_fitness = requireNonNull(fitness);
 		_result = requireNonNull(result);
 		_param = requireNonNull(param);
 	}
 
+	public C getFitness() {
+		return _fitness;
+	}
+
+	public EvolutionResult<?, C> getResult() {
+		return _result;
+	}
+
+	public EvolutionParam<?, C> getParam() {
+		return _param;
+	}
+
 	public static <C extends Comparable<? super C>> OptimizerResult<C> of(
+		final C fitness,
 		final EvolutionResult<?, C> result,
 		final EvolutionParam<?, C> param
 	) {
-		return new OptimizerResult<>(result, param);
+		return new OptimizerResult<>(fitness, result, param);
 	}
 
 }

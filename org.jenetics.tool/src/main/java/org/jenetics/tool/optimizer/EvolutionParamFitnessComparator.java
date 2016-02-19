@@ -21,6 +21,8 @@ package org.jenetics.tool.optimizer;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Comparator;
+
 import org.jenetics.Alterer;
 import org.jenetics.Optimize;
 import org.jenetics.Selector;
@@ -32,7 +34,7 @@ import org.jenetics.engine.EvolutionParam;
  * @since !__version__!
  */
 final class EvolutionParamFitnessComparator<C extends Comparable<? super C>>
-	implements Comparable<EvolutionParamFitnessComparator<C>>
+	implements Comparator<C>
 {
 
 	private final C _comparable;
@@ -50,6 +52,35 @@ final class EvolutionParamFitnessComparator<C extends Comparable<? super C>>
 	}
 
 	@Override
+	public int compare(final C that, final C other) {
+		requireNonNull(that);
+		requireNonNull(other);
+
+		int cmp = that.compareTo(other);
+		if (cmp == 0) {
+			cmp = _optimize.compare(
+				other._params.getPopulationSize(),
+				_params.getPopulationSize()
+			);
+		}
+
+		if (cmp == 0) {
+			final double complexity1 =
+				complexity(_params.getAlterer()) +
+					complexity(_params.getOffspringSelector())*0.5 +
+					complexity(_params.getSurvivorsSelector())*0.5;
+
+			final double complexity2 =
+				complexity(other._params.getAlterer()) +
+					complexity(other._params.getOffspringSelector())*0.5 +
+					complexity(other._params.getSurvivorsSelector())*0.5;
+
+			cmp = _optimize.compare(complexity2, complexity1);
+		}
+
+		return cmp;
+	}
+
 	public int compareTo(final EvolutionParamFitnessComparator<C> other) {
 		requireNonNull(other);
 

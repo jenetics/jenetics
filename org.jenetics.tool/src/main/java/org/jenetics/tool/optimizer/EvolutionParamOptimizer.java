@@ -165,32 +165,32 @@ public class EvolutionParamOptimizer<
 		final Supplier<Predicate<? super EvolutionResult<?, C>>> limit,
 		final BiConsumer<EvolutionResult<?, ?>, EvolutionParam<G, C>> callback
 	) {
-//		final Function<EvolutionParam<G, C>, ComparableAdapter<C>>
-//		evolutionParamFitness = p -> evolutionParamFitness(
-//			p, problem.fitness(), problem.codec(), optimize, limit
-//		);
-//
-//		final Engine<DoubleGene, ComparableAdapter<C>> engine =
-//			engine(evolutionParamFitness, optimize);
-//
-//
-//		final Genotype<DoubleGene> gt = engine.stream()
-//			.limit(_limit.get())
-//			.peek(result -> callback.accept(
-//					result,
-//					_codec.decoder().apply(result.getBestPhenotype().getGenotype())))
-//			.peek(result -> {
-//				/*
-//				try {
-//					IO.jaxb.write(ISeq.of(result.getPopulation()).map(pt -> pt.getGenotype()).asList(), System.out);
-//				} catch (IOException e) {
-//					throw new UncheckedIOException(e);
-//				}
-//				*/
-//			})
-//			.collect(toBestGenotype());
-//
-//		return _codec.decoder().apply(gt);
+		final Function<EvolutionParam<G, C>, ComparableAdapter<C>>
+		evolutionParamFitness = p -> evolutionParamFitness(
+			p, problem.fitness(), problem.codec(), optimize, limit
+		);
+
+		final Engine<DoubleGene, ComparableAdapter<C>> engine =
+			engine(evolutionParamFitness, optimize);
+
+
+		final Genotype<DoubleGene> gt = engine.stream()
+			.limit(_limit.get())
+			.peek(result -> callback.accept(
+					result,
+					_codec.decoder().apply(result.getBestPhenotype().getGenotype())))
+			.peek(result -> {
+				/*
+				try {
+					IO.jaxb.write(ISeq.of(result.getPopulation()).map(pt -> pt.getGenotype()).asList(), System.out);
+				} catch (IOException e) {
+					throw new UncheckedIOException(e);
+				}
+				*/
+			})
+			.collect(toBestGenotype());
+
+		return _codec.decoder().apply(gt);
 
 		return null;
 	}
@@ -309,7 +309,6 @@ public class EvolutionParamOptimizer<
 		final Optimize optimize,
 		final Supplier<Predicate<? super EvolutionResult<?, C>>> limit
 	) {
-		/*
 		final Engine<G, C> engine = Engine.builder(fitness, codec)
 			.evolutionParam(params)
 			.optimize(optimize)
@@ -330,7 +329,6 @@ public class EvolutionParamOptimizer<
 
 		// Return the median value.
 		//return measures.get(measures.length()/2);
-		*/
 		return null;
 	}
 
