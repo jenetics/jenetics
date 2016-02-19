@@ -35,6 +35,7 @@ compileTestJava.dependsOn tasks.getByPath(':org.jenetics:compileTestJava')
 
 dependencies {
 	compile project(':org.jenetics')
+	compile Include.Gson
 	compile Include.Jettison
     compile Include.Eclipse.Persistence.Moxy
 
