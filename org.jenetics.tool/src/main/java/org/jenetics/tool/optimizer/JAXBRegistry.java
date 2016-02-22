@@ -35,5 +35,6 @@ final class JAXBRegistry {
 	 * The JAXB classes of this package.
 	 */
 	public static final ISeq<Class<?>> CLASSES = ISeq.of(
+		OptimizerFitness.Model.class
 	);
 }
