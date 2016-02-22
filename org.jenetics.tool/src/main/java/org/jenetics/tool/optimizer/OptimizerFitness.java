@@ -21,6 +21,16 @@ package org.jenetics.tool.optimizer;
 
 import static java.util.Objects.requireNonNull;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import org.jenetics.internal.util.jaxb;
+
 import org.jenetics.Alterer;
 import org.jenetics.Selector;
 import org.jenetics.engine.EvolutionParam;
@@ -31,14 +41,15 @@ import org.jenetics.engine.EvolutionResult;
  * @version !__version__!
  * @since !__version__!
  */
-public final class OptimizerResult<C extends Comparable<? super C>>
-	implements Comparable<OptimizerResult<C>>
+@XmlJavaTypeAdapter(OptimizerFitness.Model.Adapter.class)
+public final class OptimizerFitness<C extends Comparable<? super C>>
+	implements Comparable<OptimizerFitness<C>>
 {
 
 	private final EvolutionResult<?, C> _result;
 	private final EvolutionParam<?, C> _param;
 
-	private OptimizerResult(
+	private OptimizerFitness(
 		final EvolutionResult<?, C> result,
 		final EvolutionParam<?, C> param
 	) {
@@ -59,7 +70,7 @@ public final class OptimizerResult<C extends Comparable<? super C>>
 	}
 
 	@Override
-	public int compareTo(final OptimizerResult<C> other) {
+	public int compareTo(final OptimizerFitness<C> other) {
 		int cmp = getFitness().compareTo(other.getFitness());
 		if (cmp == 0) {
 			cmp = _result.getOptimize().compare(
@@ -93,11 +104,49 @@ public final class OptimizerResult<C extends Comparable<? super C>>
 		return SelectorComplexity.INSTANCE.complexity(selector);
 	}
 
-	public static <C extends Comparable<? super C>> OptimizerResult<C> of(
+	public static <C extends Comparable<? super C>> OptimizerFitness<C> of(
 		final EvolutionResult<?, C> result,
 		final EvolutionParam<?, C> param
 	) {
-		return new OptimizerResult<>(result, param);
+		return new OptimizerFitness<>(result, param);
+	}
+
+
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
+
+	@XmlRootElement(name = "optimizer-result")
+	@XmlType(name = "org.jenetics.tool.optimizer.OptimizerResult")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	final static class Model {
+
+		@XmlElement(name = "result", required = true, nillable = false)
+		public Object result;
+
+		@XmlElement(name = "param", required = true, nillable = false)
+		public Object param;
+
+		public final static class Adapter
+			extends XmlAdapter<Model, OptimizerFitness>
+		{
+			@Override
+			public Model marshal(final OptimizerFitness result) throws Exception {
+				final Model m = new Model();
+				m.result = jaxb.marshal(result.getResult());
+				m.param = jaxb.marshal(result.getParam());
+				return m;
+			}
+
+			@Override
+			public OptimizerFitness unmarshal(final Model m) throws Exception {
+				return OptimizerFitness.of(
+					(EvolutionResult)jaxb.unmarshal(m.result),
+					(EvolutionParam)jaxb.unmarshal(m.param)
+				);
+			}
+		}
 	}
 
 }
