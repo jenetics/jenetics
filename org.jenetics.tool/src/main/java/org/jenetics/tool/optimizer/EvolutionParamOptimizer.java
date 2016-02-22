@@ -59,6 +59,7 @@ import org.jenetics.Genotype;
 import org.jenetics.MeanAlterer;
 import org.jenetics.Mutator;
 import org.jenetics.Optimize;
+import org.jenetics.Phenotype;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.StochasticUniversalSelector;
 import org.jenetics.TournamentSelector;
@@ -97,7 +98,7 @@ public class EvolutionParamOptimizer<
 	}
 
 	private final Codec<EvolutionParam<G, C>, DoubleGene> _codec;
-	private final Supplier<Predicate<? super EvolutionResult<?, OptimizerFitness<C>>>> _limit;
+	private final Supplier<Predicate<? super EvolutionResult<?, OptimizerFitness<G, C>>>> _limit;
 	private final int _sampleCount;
 
 	/**
@@ -118,7 +119,7 @@ public class EvolutionParamOptimizer<
 	 */
 	public EvolutionParamOptimizer(
 		final Codec<EvolutionParam<G, C>, DoubleGene> codec,
-		final Supplier<Predicate<? super EvolutionResult<?, OptimizerFitness<C>>>> limit,
+		final Supplier<Predicate<? super EvolutionResult<?, OptimizerFitness<G, C>>>> limit,
 		final int sampleCount
 	) {
 		_codec = requireNonNull(codec);
@@ -142,7 +143,7 @@ public class EvolutionParamOptimizer<
 	 */
 	public EvolutionParamOptimizer(
 		final Codec<EvolutionParam<G, C>, DoubleGene> codec,
-		final Supplier<Predicate<? super EvolutionResult<?, OptimizerFitness<C>>>> limit
+		final Supplier<Predicate<? super EvolutionResult<?, OptimizerFitness<G, C>>>> limit
 	) {
 		this(codec, limit, 10);
 	}
@@ -160,27 +161,36 @@ public class EvolutionParamOptimizer<
 	 * @return the found <i>optimal</i> evolution parameters for your given
 	 *         fitness function.
 	 */
-	public <T> Stream<OptimizerFitness<C>> stream(
+	public <T> Stream<OptimizerResult<G, C>> stream(
 		final Problem<T, G, C> problem,
 		final Optimize optimize,
 		final Supplier<Predicate<? super EvolutionResult<?, C>>> limit
 	) {
-		final Function<EvolutionParam<G, C>, OptimizerFitness<C>>
+		final Function<EvolutionParam<G, C>, OptimizerFitness<G, C>>
 		evolutionParamFitness = p -> evolutionParamFitness(
 					p, problem.fitness(), problem.codec(), optimize, limit
 				);
 
-		final Engine<DoubleGene, OptimizerFitness<C>> engine =
+		final Engine<DoubleGene, OptimizerFitness<G, C>> engine =
 			engine(evolutionParamFitness, optimize);
 
-		return engine.stream().map(result -> {
-			return OptimizerFitness.of(
-				result,
-				result.ge()
+		return engine.stream().map((EvolutionResult<DoubleGene, OptimizerFitness<G, C>> result) -> {
+			final ISeq<Genotype<DoubleGene>> genotypes = result.getPopulation()
+				.stream()
+				.map(Phenotype::getGenotype)
+				.collect(ISeq.toISeq());
+
+			final EvolutionParam<G, C> params = _codec.decoder()
+				.apply(result.getBestPhenotype().getGenotype());
+
+			return new OptimizerResult<G, C>(
+				genotypes,
+				params,
+				result.getBestFitness().getFitness(),
+				result.getTotalGenerations()
 			);
 		});
 	}
-
 
 
 	/**
@@ -191,11 +201,11 @@ public class EvolutionParamOptimizer<
 	 * @param optimize the optimization strategy
 	 * @return a new optimization evolution engine
 	 */
-	private Engine<DoubleGene, OptimizerFitness<C>> engine(
-		final Function<EvolutionParam<G, C>, OptimizerFitness<C>> fitness,
+	private Engine<DoubleGene, OptimizerFitness<G, C>> engine(
+		final Function<EvolutionParam<G, C>, OptimizerFitness<G, C>> fitness,
 		final Optimize optimize
 	) {
-		final Function<Genotype<DoubleGene>, OptimizerFitness<C>> ff =
+		final Function<Genotype<DoubleGene>, OptimizerFitness<G, C>> ff =
 			_codec.decoder().andThen(fitness);
 
 		return Engine.builder(ff, _codec.encoding())
@@ -225,7 +235,7 @@ public class EvolutionParamOptimizer<
 	 * @param <T> the parameter type of the fitness function
 	 * @return the fitness value for the given evolution parameters
 	 */
-	private <T> OptimizerFitness<C> evolutionParamFitness(
+	private <T> OptimizerFitness<G, C> evolutionParamFitness(
 		final EvolutionParam<G, C> param,
 		final Function<T, C> fitness,
 		final Codec<T, G> codec,
@@ -238,7 +248,7 @@ public class EvolutionParamOptimizer<
 			.optimize(optimize)
 			.build();
 
-		final ISeq<OptimizerFitness<C>> results = Stream.generate(() ->
+		final ISeq<OptimizerFitness<G, C>> results = Stream.generate(() ->
 				engine.stream()
 					.limit(limit.get())
 					.collect(toBestEvolutionResult()))
@@ -314,7 +324,7 @@ public class EvolutionParamOptimizer<
 		);
 
 
-		Stream<OptimizerFitness<Double>> stream = optimizer.stream(
+		Stream<OptimizerResult<BitGene, Double>> stream = optimizer.stream(
 			problem,
 			Optimize.MAXIMUM,
 			() -> byExecutionTime(ofMillis(150))

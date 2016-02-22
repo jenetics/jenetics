@@ -32,6 +32,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.jenetics.internal.util.jaxb;
 
 import org.jenetics.Alterer;
+import org.jenetics.Gene;
 import org.jenetics.Selector;
 import org.jenetics.engine.EvolutionParam;
 import org.jenetics.engine.EvolutionResult;
@@ -42,16 +43,19 @@ import org.jenetics.engine.EvolutionResult;
  * @since !__version__!
  */
 @XmlJavaTypeAdapter(OptimizerFitness.Model.Adapter.class)
-public final class OptimizerFitness<C extends Comparable<? super C>>
-	implements Comparable<OptimizerFitness<C>>
+public final class OptimizerFitness<
+	G extends Gene<?, G>,
+	C extends Comparable<? super C>>
+	implements Comparable<OptimizerFitness<G, C>
+>
 {
 
-	private final EvolutionResult<?, C> _result;
-	private final EvolutionParam<?, C> _param;
+	private final EvolutionResult<G, C> _result;
+	private final EvolutionParam<G, C> _param;
 
 	private OptimizerFitness(
-		final EvolutionResult<?, C> result,
-		final EvolutionParam<?, C> param
+		final EvolutionResult<G, C> result,
+		final EvolutionParam<G, C> param
 	) {
 		_result = requireNonNull(result);
 		_param = requireNonNull(param);
@@ -61,16 +65,16 @@ public final class OptimizerFitness<C extends Comparable<? super C>>
 		return _result.getBestFitness();
 	}
 
-	public EvolutionResult<?, C> getResult() {
+	public EvolutionResult<G, C> getResult() {
 		return _result;
 	}
 
-	public EvolutionParam<?, C> getParam() {
+	public EvolutionParam<G, C> getParam() {
 		return _param;
 	}
 
 	@Override
-	public int compareTo(final OptimizerFitness<C> other) {
+	public int compareTo(final OptimizerFitness<G, C> other) {
 		int cmp = getFitness().compareTo(other.getFitness());
 		if (cmp == 0) {
 			cmp = _result.getOptimize().compare(
@@ -104,9 +108,10 @@ public final class OptimizerFitness<C extends Comparable<? super C>>
 		return SelectorComplexity.INSTANCE.complexity(selector);
 	}
 
-	public static <C extends Comparable<? super C>> OptimizerFitness<C> of(
-		final EvolutionResult<?, C> result,
-		final EvolutionParam<?, C> param
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	OptimizerFitness<G, C> of(
+		final EvolutionResult<G, C> result,
+		final EvolutionParam<G, C> param
 	) {
 		return new OptimizerFitness<>(result, param);
 	}
@@ -116,8 +121,8 @@ public final class OptimizerFitness<C extends Comparable<? super C>>
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "optimizer-result")
-	@XmlType(name = "org.jenetics.tool.optimizer.OptimizerResult")
+	@XmlRootElement(name = "optimizer-fitness")
+	@XmlType(name = "org.jenetics.tool.optimizer.OptimizerFitness")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	final static class Model {
