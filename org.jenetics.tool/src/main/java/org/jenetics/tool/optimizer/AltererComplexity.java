@@ -70,7 +70,7 @@ final class AltererComplexity implements Complexity<Alterer<?, ?>> {
 		);
 		put(
 			MultiPointCrossover.class,
-			a -> 1.0 + recombinationComplexity(a) + a.getN()*0.2
+			a -> 1.0 + recombinationComplexity(a) + a.getN()*0.25
 		);
 		put(
 			MeanAlterer.class, a -> 1.5 + recombinationComplexity(a)

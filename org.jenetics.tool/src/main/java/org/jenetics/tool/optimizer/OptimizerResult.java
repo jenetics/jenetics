@@ -65,17 +65,20 @@ public class OptimizerResult<
 	private final ISeq<Genotype<DoubleGene>> _genotypes;
 	private final EvolutionParam<G, C> _param;
 	private final C _fitness;
+	private final C _rawFitness;
 	private long _generation;
 
 	public OptimizerResult(
 		final ISeq<Genotype<DoubleGene>> genotypes,
 		final EvolutionParam<G, C> param,
 		final C fitness,
+		final C rawFitness,
 		final long generation
 	) {
 		_genotypes = requireNonNull(genotypes);
 		_param = requireNonNull(param);
 		_fitness = requireNonNull(fitness);
+		_rawFitness = requireNonNull(rawFitness);
 		_generation = generation;
 	}
 
@@ -89,6 +92,10 @@ public class OptimizerResult<
 
 	public C getFitness() {
 		return _fitness;
+	}
+
+	public C getRawFitness() {
+		return _rawFitness;
 	}
 
 	public long getGeneration() {
@@ -136,6 +143,9 @@ public class OptimizerResult<
 		@XmlElement(name = "best-fitness", required = true, nillable = false)
 		public Object fitness;
 
+		@XmlElement(name = "best-raw-fitness", required = true, nillable = false)
+		public Object rawFitness;
+
 		@XmlElement(name = "generation", required = true, nillable = false)
 		public long generation;
 
@@ -152,6 +162,7 @@ public class OptimizerResult<
 				}
 				m.param = jaxb.marshal(result.getParam());
 				m.fitness = result.getFitness();
+				m.rawFitness = result.getRawFitness();
 				m.generation = result.getGeneration();
 				return m;
 			}
@@ -164,6 +175,7 @@ public class OptimizerResult<
 						.collect(ISeq.toISeq()),
 					(EvolutionParam)jaxb.unmarshal(m.param),
 					(Comparable)m.fitness,
+					(Comparable)m.rawFitness,
 					m.generation
 				);
 			}

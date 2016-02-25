@@ -57,6 +57,7 @@ import org.jenetics.GaussianMutator;
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
 import org.jenetics.MeanAlterer;
+import org.jenetics.MonteCarloSelector;
 import org.jenetics.Mutator;
 import org.jenetics.Optimize;
 import org.jenetics.Phenotype;
@@ -147,6 +148,7 @@ public class EvolutionParamOptimizer<
 	 */
 	public <T> Stream<OptimizerResult<G, C>> stream(
 		final Problem<T, G, C> problem,
+		final Function<C, C> scaler,
 		final Optimize optimize,
 		final Supplier<Predicate<? super EvolutionResult<?, C>>> limit,
 		final Iterable<Genotype<DoubleGene>> initialGenotypes,
@@ -154,7 +156,7 @@ public class EvolutionParamOptimizer<
 	) {
 		final Function<EvolutionParam<G, C>, OptimizerFitness<G, C>>
 		evolutionParamFitness = p -> evolutionParamFitness(
-					p, problem.fitness(), problem.codec(), optimize, limit
+					p, problem.fitness(), problem.codec(), scaler, optimize, limit
 				);
 
 		final Engine<DoubleGene, OptimizerFitness<G, C>> engine =
@@ -173,7 +175,8 @@ public class EvolutionParamOptimizer<
 				return new OptimizerResult<G, C>(
 					genotypes,
 					params,
-					result.getBestFitness().getFitness(),
+					result.getBestPhenotype().getFitness().getFitness(),
+					result.getBestPhenotype().getRawFitness().getFitness(),
 					result.getTotalGenerations()
 				);
 			});
@@ -181,10 +184,11 @@ public class EvolutionParamOptimizer<
 
 	public <T> Stream<OptimizerResult<G, C>> stream(
 		final Problem<T, G, C> problem,
+		final Function<C, C> scaler,
 		final Optimize optimize,
 		final Supplier<Predicate<? super EvolutionResult<?, C>>> limit
 	) {
-		return stream(problem, optimize, limit, Collections.emptyList(), 1);
+		return stream(problem, scaler, optimize, limit, Collections.emptyList(), 1);
 	}
 
 
@@ -205,9 +209,9 @@ public class EvolutionParamOptimizer<
 
 		return Engine.builder(ff, _codec.encoding())
 			.alterers(
-				new MeanAlterer<>(0.25),
-				new GaussianMutator<>(0.25),
-				new Mutator<>(0.05))
+				new MeanAlterer<>(0.15),
+				new GaussianMutator<>(0.15),
+				new Mutator<>(0.10))
 			.survivorsSelector(new TruncationSelector<>())
 			.offspringSelector(new TournamentSelector<>(3))
 			.populationSize(100)
@@ -234,12 +238,14 @@ public class EvolutionParamOptimizer<
 		final EvolutionParam<G, C> param,
 		final Function<T, C> fitness,
 		final Codec<T, G> codec,
+		final Function<C, C> scaler,
 		final Optimize optimize,
 		final Supplier<Predicate<? super EvolutionResult<?, C>>> limit
 	) {
 		// The evolution engine of the target problem.
 		final Engine<G, C> engine = Engine.builder(fitness, codec)
 			.evolutionParam(param)
+			.fitnessScaler(scaler)
 			.optimize(optimize)
 			.build();
 
@@ -311,6 +317,7 @@ public class EvolutionParamOptimizer<
 					.of(new RouletteWheelSelector<BitGene, Double>())
 					.and(new TruncationSelector<>())
 					.and(new StochasticUniversalSelector<>())
+					.and(new MonteCarloSelector<>())
 					.and(ofBoltzmannSelector(DoubleRange.of(0, 3)))
 					.and(ofExponentialRankSelector(DoubleRange.of(0, 1)))
 					.and(ofLinearRankSelector(DoubleRange.of(0, 3)))
@@ -324,23 +331,24 @@ public class EvolutionParamOptimizer<
 			);
 
 		final EvolutionParamOptimizer<BitGene, Double> optimizer =
-			new EvolutionParamOptimizer<>(codec, 25);
+			new EvolutionParamOptimizer<>(codec, 50);
 
 		Stream<OptimizerResult<BitGene, Double>> stream = optimizer.stream(
 			problem,
+			f -> Math.rint(f/5.0),
 			Optimize.MAXIMUM,
-			() -> byExecutionTime(ofMillis(150)),
+			() -> byExecutionTime(ofMillis(50)),
 			startPopulation,
 			generation + 1
 		);
 
 		stream.limit(1000).forEach(r -> {
 			System.out.println(format(
-				"Generation=%d, Fitness=%f",
-				r.getGeneration(), r.getFitness()
+				"Generation=%d, Fitness=%f, Raw fitness=%f",
+				r.getGeneration(), r.getFitness(), r.getRawFitness()*5
 			));
 
-			r.write(new File("C:\\Users\\franz\\results"));
+			r.write(dir.toFile());
 		});
 
 	}

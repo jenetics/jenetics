@@ -51,7 +51,7 @@ final class SelectorComplexity implements Complexity<Selector<?, ?>> {
 		put(RouletteWheelSelector.class, s -> 1.5);
 		put(StochasticUniversalSelector.class, s -> 1.3);
 		put(TournamentSelector.class, s -> 1 + s.getSampleSize()*0.15);
-		put(TruncationSelector.class, a -> 1.5);
+		put(TruncationSelector.class, a -> 1.75);
 	}
 
 	private static <T> void put(final Class<T> t, final Complexity<T> c) {

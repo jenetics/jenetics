@@ -33,6 +33,7 @@ import org.jenetics.internal.util.jaxb;
 
 import org.jenetics.Alterer;
 import org.jenetics.Gene;
+import org.jenetics.Optimize;
 import org.jenetics.Selector;
 import org.jenetics.engine.EvolutionParam;
 import org.jenetics.engine.EvolutionResult;
@@ -76,12 +77,6 @@ public final class OptimizerFitness<
 	@Override
 	public int compareTo(final OptimizerFitness<G, C> other) {
 		int cmp = getFitness().compareTo(other.getFitness());
-		if (cmp == 0) {
-			cmp = _result.getOptimize().compare(
-				other.getParam().getPopulationSize(),
-				getParam().getPopulationSize()
-			);
-		}
 
 		if (cmp == 0) {
 			final double complexity1 =
@@ -94,10 +89,16 @@ public final class OptimizerFitness<
 				complexity(other.getParam().getOffspringSelector())*0.5 +
 				complexity(other.getParam().getSurvivorsSelector())*0.5;
 
-			cmp = _result.getOptimize().compare(complexity2, complexity1);
+			cmp = Double.compare(complexity2, complexity1);
 		}
 
-		return cmp;
+		if (cmp == 0) {
+			cmp = other.getParam().getPopulationSize() -
+				getParam().getPopulationSize();
+		}
+
+		return _result.getOptimize() == Optimize.MAXIMUM
+			? cmp : -cmp;
 	}
 
 	private static double complexity(final Alterer<?, ?> alterer) {
