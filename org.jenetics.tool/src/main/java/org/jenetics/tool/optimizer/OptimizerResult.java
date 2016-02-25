@@ -19,9 +19,13 @@
  */
 package org.jenetics.tool.optimizer;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -32,12 +36,15 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.jenetics.internal.util.JAXBContextCache;
 import org.jenetics.internal.util.jaxb;
 
 import org.jenetics.DoubleGene;
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
+import org.jenetics.Optimize;
 import org.jenetics.engine.EvolutionParam;
+import org.jenetics.util.IO;
 import org.jenetics.util.ISeq;
 
 /**
@@ -50,6 +57,10 @@ public class OptimizerResult<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 > {
+
+	static {
+		JAXBContextCache.addPackage("org.jenetics.tool.optimizer");
+	}
 
 	private final ISeq<Genotype<DoubleGene>> _genotypes;
 	private final EvolutionParam<G, C> _param;
@@ -84,6 +95,28 @@ public class OptimizerResult<
 		return _generation;
 	}
 
+	public void write(final File dir) {
+		if (!dir.exists()) {
+			dir.mkdirs();
+		}
+		final File file = new File(dir, format("%07d.xml", _generation));
+		try {
+			IO.jaxb.write(this, file);
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	OptimizerResult<G, C> read(final File file) {
+		try {
+			return (OptimizerResult<G, C>)IO.jaxb.read(file);
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
+		}
+	}
+
 	/* *************************************************************************
 	 *  JAXB object serialization
 	 * ************************************************************************/
@@ -97,10 +130,10 @@ public class OptimizerResult<
 		@XmlElement(name = "genotype", required = true)
 		public List genotypes;
 
-		@XmlElement(name = "param", required = true, nillable = false)
+		@XmlElement(name = "best-param", required = true, nillable = false)
 		public Object param;
 
-		@XmlElement(name = "fitness", required = true, nillable = false)
+		@XmlElement(name = "best-fitness", required = true, nillable = false)
 		public Object fitness;
 
 		@XmlElement(name = "generation", required = true, nillable = false)

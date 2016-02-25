@@ -22,11 +22,11 @@ package org.jenetics.tool.optimizer;
 import static java.lang.Math.log10;
 import static java.lang.Math.max;
 import static java.lang.Math.pow;
+import static java.lang.String.format;
 import static java.time.Duration.ofMillis;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.engine.EvolutionResult.toBestEvolutionResult;
 import static org.jenetics.engine.limit.byExecutionTime;
-import static org.jenetics.engine.limit.byFixedGeneration;
 import static org.jenetics.tool.optimizer.AltererCodec.ofMultiPointCrossover;
 import static org.jenetics.tool.optimizer.AltererCodec.ofSwapMutator;
 import static org.jenetics.tool.optimizer.SelectorCodec.ofBoltzmannSelector;
@@ -34,13 +34,14 @@ import static org.jenetics.tool.optimizer.SelectorCodec.ofExponentialRankSelecto
 import static org.jenetics.tool.optimizer.SelectorCodec.ofLinearRankSelector;
 import static org.jenetics.tool.optimizer.SelectorCodec.ofTournamentSelector;
 
-import java.io.FileInputStream;
+import java.io.File;
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Properties;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -48,7 +49,6 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import org.jenetics.internal.util.Args;
-import org.jenetics.internal.util.JAXBContextCache;
 import org.jenetics.internal.util.require;
 
 import org.jenetics.BitGene;
@@ -72,7 +72,6 @@ import org.jenetics.engine.Problem;
 import org.jenetics.tool.problem.Knapsack;
 import org.jenetics.tool.trial.Params;
 import org.jenetics.util.DoubleRange;
-import org.jenetics.util.IO;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.IntRange;
 import org.jenetics.util.LCG64ShiftRandom;
@@ -93,12 +92,8 @@ public class EvolutionParamOptimizer<
 	C extends Comparable<? super C>
 >
 {
-	static {
-		JAXBContextCache.addPackage("org.jenetics.tool.optimizer");
-	}
 
 	private final Codec<EvolutionParam<G, C>, DoubleGene> _codec;
-	private final Supplier<Predicate<? super EvolutionResult<?, OptimizerFitness<G, C>>>> _limit;
 	private final int _sampleCount;
 
 	/**
@@ -106,10 +101,6 @@ public class EvolutionParamOptimizer<
 	 *
 	 * @param codec the {@code Codec} used for encoding the
 	 *        {@code EvolutionParam} class
-	 * @param limit the evolution stream limit which is used for terminating
-	 *        the optimization of the {@code EvolutionParam} object. <b><i>Note
-	 *        that this is not the terminator used for limiting the optimization
-	 *        of the custom fitness function itself.</i></b>
 	 * @param sampleCount the number of fitness samples used for calculating the
 	 *        fitness of the evolution parameter
 	 * @throws NullPointerException if the {@code codec} or {@code limit} is
@@ -119,11 +110,9 @@ public class EvolutionParamOptimizer<
 	 */
 	public EvolutionParamOptimizer(
 		final Codec<EvolutionParam<G, C>, DoubleGene> codec,
-		final Supplier<Predicate<? super EvolutionResult<?, OptimizerFitness<G, C>>>> limit,
 		final int sampleCount
 	) {
 		_codec = requireNonNull(codec);
-		_limit = requireNonNull(limit);
 		_sampleCount = require.positive(sampleCount);
 	}
 
@@ -132,20 +121,15 @@ public class EvolutionParamOptimizer<
 	 *
 	 * @param codec the {@code Codec} used for encoding the
 	 *        {@code EvolutionParam} class
-	 * @param limit the evolution stream limit which is used for terminating
-	 *        the optimization of the {@code EvolutionParam} object. <b><i>Note
-	 *        that this is not the terminator used for limiting the optimization
-	 *        of the custom fitness function itself.</i></b>
 	 * @throws NullPointerException if the {@code codec} or {@code limit} is
 	 *         {@code null}
 	 * @throws IllegalArgumentException if the given {@code sampleCount} is
 	 *         smaller than 1
 	 */
 	public EvolutionParamOptimizer(
-		final Codec<EvolutionParam<G, C>, DoubleGene> codec,
-		final Supplier<Predicate<? super EvolutionResult<?, OptimizerFitness<G, C>>>> limit
+		final Codec<EvolutionParam<G, C>, DoubleGene> codec
 	) {
-		this(codec, limit, 10);
+		this(codec, 10);
 	}
 
 	/**
@@ -164,7 +148,9 @@ public class EvolutionParamOptimizer<
 	public <T> Stream<OptimizerResult<G, C>> stream(
 		final Problem<T, G, C> problem,
 		final Optimize optimize,
-		final Supplier<Predicate<? super EvolutionResult<?, C>>> limit
+		final Supplier<Predicate<? super EvolutionResult<?, C>>> limit,
+		final Iterable<Genotype<DoubleGene>> initialGenotypes,
+		final long generation
 	) {
 		final Function<EvolutionParam<G, C>, OptimizerFitness<G, C>>
 		evolutionParamFitness = p -> evolutionParamFitness(
@@ -174,22 +160,31 @@ public class EvolutionParamOptimizer<
 		final Engine<DoubleGene, OptimizerFitness<G, C>> engine =
 			engine(evolutionParamFitness, optimize);
 
-		return engine.stream().map((EvolutionResult<DoubleGene, OptimizerFitness<G, C>> result) -> {
-			final ISeq<Genotype<DoubleGene>> genotypes = result.getPopulation()
-				.stream()
-				.map(Phenotype::getGenotype)
-				.collect(ISeq.toISeq());
+		return engine.stream(initialGenotypes, generation)
+			.map((EvolutionResult<DoubleGene, OptimizerFitness<G, C>> result) -> {
+				final ISeq<Genotype<DoubleGene>> genotypes = result.getPopulation()
+					.stream()
+					.map(Phenotype::getGenotype)
+					.collect(ISeq.toISeq());
 
-			final EvolutionParam<G, C> params = _codec.decoder()
-				.apply(result.getBestPhenotype().getGenotype());
+				final EvolutionParam<G, C> params = _codec.decoder()
+					.apply(result.getBestPhenotype().getGenotype());
 
-			return new OptimizerResult<G, C>(
-				genotypes,
-				params,
-				result.getBestFitness().getFitness(),
-				result.getTotalGenerations()
-			);
-		});
+				return new OptimizerResult<G, C>(
+					genotypes,
+					params,
+					result.getBestFitness().getFitness(),
+					result.getTotalGenerations()
+				);
+			});
+	}
+
+	public <T> Stream<OptimizerResult<G, C>> stream(
+		final Problem<T, G, C> problem,
+		final Optimize optimize,
+		final Supplier<Predicate<? super EvolutionResult<?, C>>> limit
+	) {
+		return stream(problem, optimize, limit, Collections.emptyList(), 1);
 	}
 
 
@@ -277,19 +272,31 @@ public class EvolutionParamOptimizer<
 
 	public static void main(final String[] args) throws IOException {
 		final Args command = Args.of(args);
-		final Path dir = command.arg("dir")
+		final Path dir = command.arg("d")
 			.map(d -> Paths.get(d))
-			.orElse(Paths.get(".").toAbsolutePath());
+			.orElse(Paths.get("C:\\Users\\franz\\results").toAbsolutePath());
 
-		final Path progressPath = Paths.get(dir.toString(), "progress.properties");
-		final Properties progress = new Properties();
-		if (Files.exists(progressPath)) {
-			try (FileInputStream in = new FileInputStream(progressPath.toFile())) {
-				progress.load(in);
-			}
+		final ISeq<Genotype<DoubleGene>> startPopulation;
+		final long generation;
+		if (Files.exists(dir)) {
+			final Optional<OptimizerResult<BitGene, Double>> result =
+			Stream.of(dir.toFile().listFiles(f -> f.toString().endsWith("xml")))
+				.sorted(Comparator.reverseOrder())
+				.findFirst()
+				.map(OptimizerResult::read);
+
+			startPopulation = result
+				.map(OptimizerResult::getGenotypes)
+				.orElse(ISeq.empty());
+			generation = result
+				.map(OptimizerResult::getGeneration)
+				.orElse(0L);
 		} else {
-			//progress.setProperty("", "");
+			startPopulation = ISeq.empty();
+			generation = 0L;
 		}
+
+		System.out.println("Continue at generation " + (generation + 1) + ".");
 
 		// The problem fow which to optimize the EvolutionParams.
 		final Knapsack problem = Knapsack.of(250, new LCG64ShiftRandom(10101));
@@ -316,26 +323,24 @@ public class EvolutionParamOptimizer<
 				maximalPhenotypeAge
 			);
 
-		final EvolutionParamOptimizer<BitGene, Double>
-		optimizer = new EvolutionParamOptimizer<>(
-			codec,
-			() -> byFixedGeneration(100),
-			5
-		);
-
+		final EvolutionParamOptimizer<BitGene, Double> optimizer =
+			new EvolutionParamOptimizer<>(codec, 25);
 
 		Stream<OptimizerResult<BitGene, Double>> stream = optimizer.stream(
 			problem,
 			Optimize.MAXIMUM,
-			() -> byExecutionTime(ofMillis(150))
+			() -> byExecutionTime(ofMillis(150)),
+			startPopulation,
+			generation + 1
 		);
 
-		stream.limit(100).forEach(r -> {
-			try {
-				IO.jaxb.write(r, System.out);
-			} catch (IOException e) {
-				throw new UncheckedIOException(e);
-			}
+		stream.limit(1000).forEach(r -> {
+			System.out.println(format(
+				"Generation=%d, Fitness=%f",
+				r.getGeneration(), r.getFitness()
+			));
+
+			r.write(new File("C:\\Users\\franz\\results"));
 		});
 
 	}
