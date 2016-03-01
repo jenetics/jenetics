@@ -39,7 +39,7 @@ import org.jenetics.util.ISeq;
  * @version !__version__!
  * @since !__version__!
  */
-public class SelectorComparisonKnapsack {
+public class KnapsackSelectorComparison {
 
 	private static final double GEN_BASE = pow(10, log10(100)/20.0);
 	private static final Params<Long> PARAMS = Params.of(
