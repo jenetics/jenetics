@@ -50,7 +50,7 @@ public class KnapsackFixedGeneration {
 	);
 
 	private static final Supplier<TrialMeter<Long>>
-		TRIAL_METER = () -> TrialMeter.of(
+	TRIAL_METER = () -> TrialMeter.of(
 		"Fixed generation",
 		"Create fixed generation performance measures",
 		PARAMS,
