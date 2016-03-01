@@ -28,6 +28,7 @@ import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 import org.jenetics.BitGene;
+import org.jenetics.MonteCarloSelector;
 import org.jenetics.engine.limit;
 import org.jenetics.tool.trial.Params;
 import org.jenetics.tool.trial.TrialMeter;
@@ -35,10 +36,10 @@ import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.4
- * @since 3.4
+ * @version !__version__!
+ * @since !__version__!
  */
-public class KnapsackFixedGeneration {
+public class SelectorComparisonKnapsack {
 
 	private static final double GEN_BASE = pow(10, log10(100)/20.0);
 	private static final Params<Long> PARAMS = Params.of(
@@ -51,16 +52,22 @@ public class KnapsackFixedGeneration {
 
 	private static final Supplier<TrialMeter<Long>>
 	TRIAL_METER = () -> TrialMeter.of(
-		"Fixed generation",
-		"Create fixed generation performance measures",
+		"Fixed generation", "Create fixed generation performance measures",
 		PARAMS,
-		"Generation",
-		"Fitness",
-		"Runtime"
+		"Generation 1",
+		"Fitness 1",
+		"Runtime 1",
+		"Generation 2",
+		"Fitness 2",
+		"Runtime 2"
 	);
 
 	public static void main(final String[] args) throws InterruptedException {
-		final Runner<Long, BitGene, Double> runner = Runner.of(
+		final Runner2<Long, BitGene, Double> runner = Runner2.of(
+			KNAPSACK.builder()
+				.selector(new MonteCarloSelector<>())
+				.build(),
+			limit::byFixedGeneration,
 			KNAPSACK,
 			limit::byFixedGeneration,
 			TRIAL_METER,
