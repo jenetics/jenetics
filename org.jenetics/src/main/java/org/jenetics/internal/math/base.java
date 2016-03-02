@@ -239,25 +239,10 @@ public final class base {
 		requireNonNull(sub, "Sub set array");
 
 		final int k = sub.length;
-		if (k <= 0) {
-			throw new IllegalArgumentException(format(
-				"Subset size smaller or equal zero: %s", k
-			));
-		}
-		if (n < k) {
-			throw new IllegalArgumentException(format(
-				"n smaller than k: %s < %s.", n, k
-			));
-		}
-		if (!arithmetic.isMultiplicationSave(n, k)) {
-			throw new IllegalArgumentException(format(
-				"n*sub.length > Integer.MAX_VALUE (%s*%s = %s > %s)",
-				n, sub.length, (long)n*(long)k, Integer.MAX_VALUE
-			));
-		}
+		checkSubSet(n, k);
 
 		if (sub.length == n) {
-			for (int i = 0; i < sub.length; ++i) {
+			for (int i = 0; i < k; ++i) {
 				sub[i] = i;
 			}
 			return sub;
@@ -327,6 +312,25 @@ public final class base {
 		}
 
 		return sub;
+	}
+
+	public static void checkSubSet(final int n, final int k) {
+		if (k <= 0) {
+			throw new IllegalArgumentException(format(
+				"Subset size smaller or equal zero: %s", k
+			));
+		}
+		if (n < k) {
+			throw new IllegalArgumentException(format(
+				"n smaller than k: %s < %s.", n, k
+			));
+		}
+		if (!arithmetic.isMultiplicationSave(n, k)) {
+			throw new IllegalArgumentException(format(
+				"n*sub.length > Integer.MAX_VALUE (%s*%s = %s > %s)",
+				n, k, (long)n*(long)k, Integer.MAX_VALUE
+			));
+		}
 	}
 
 	private static int nextInt(final Random random, final int a, final int b) {
