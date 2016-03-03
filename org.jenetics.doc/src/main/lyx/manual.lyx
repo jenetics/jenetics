@@ -16109,7 +16109,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/diagram/FixedGenerationTermination.svg
+	filename ../resources/diagram/Knapsack-fixed_generation_termination.svg
 	lyxscale 80
 	width 100text%
 
@@ -16477,7 +16477,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/diagram/SteadyFitnessTermination.svg
+	filename ../resources/diagram/Knapsack-steady_fitness_termination.svg
 	lyxscale 80
 	width 100text%
 
@@ -16640,7 +16640,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/diagram/ExecutionTimeTermination.svg
+	filename ../resources/diagram/Knapsack-execution_time_termination.svg
 	lyxscale 80
 	width 100text%
 
@@ -16736,7 +16736,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/diagram/FitnessThresholdTermination.svg
+	filename ../resources/diagram/Knapsack-fitness_threshold_termination.svg
 	lyxscale 80
 	width 100text%
 
