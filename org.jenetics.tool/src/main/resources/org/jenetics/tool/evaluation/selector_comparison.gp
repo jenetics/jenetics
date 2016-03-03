@@ -22,5 +22,7 @@ set tmargin 1
 set format x "10^{%L}"
 set format y " %2.1f"
 
-plot data using 1:(0.001*$2) with lines lt rgb "blue" notitle axes x1y1, \
-     data using 1:(0.001*$11) with lines lt rgb "red"  notitle axes x1y1
+set key bottom
+
+plot data using 1:(0.001*$2) with lines lt rgb "blue" title "MonteCarloSelector" axes x1y1, \
+     data using 1:(0.001*$11) with lines lt rgb "red" title "\"Evolutionary\"-Selector" axes x1y1
