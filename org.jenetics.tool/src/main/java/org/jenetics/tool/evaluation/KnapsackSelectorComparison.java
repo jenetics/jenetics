@@ -54,12 +54,12 @@ public class KnapsackSelectorComparison {
 	TRIAL_METER = () -> TrialMeter.of(
 		"Fixed generation", "Create fixed generation performance measures",
 		PARAMS,
-		"Generation 1",
-		"Fitness 1",
-		"Runtime 1",
-		"Generation 2",
-		"Fitness 2",
-		"Runtime 2"
+		"Generation1",
+		"Fitness1",
+		"Runtime1",
+		"Generation2",
+		"Fitness2",
+		"Runtime2"
 	);
 
 	public static void main(final String[] args) throws InterruptedException {

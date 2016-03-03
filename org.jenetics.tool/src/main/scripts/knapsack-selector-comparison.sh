@@ -13,7 +13,7 @@ read_link() {
 }
 
 TESTS=(
-	"KnapsackSelectorComparison:Knapsack-selector-comparison.xml"
+	"KnapsackSelectorComparison:Knapsack-selector_comparison.xml"
 )
 
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
