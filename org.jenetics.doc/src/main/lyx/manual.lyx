@@ -16847,19 +16847,43 @@ A termination method that stops the evolution when a user-specified percentage
 
 \begin_layout Subsection
 Evolution performance
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+Evolution!performance
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-The 
+This section contains an empirical 
+\emph on
+proof
+\emph default
+, that 
+\emph on
+evolutionary
+\emph default
+ selectors deliver significantly better fitness results than a random search.
+ The 
 \family typewriter
 MonteCarloSelector
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Monte Carlo selector
+\end_layout
+
+\end_inset
+
+
 \family default
- can be used to make sure how the given 
-\family typewriter
-Selector
-\family default
- implementations are performing, compared to a random search.
- 
+ is used for creating the comparison (random search) fitness values.
 \end_layout
 
 \begin_layout Standard
@@ -16912,7 +16936,11 @@ reference "fig:Selector-performance-Knapsack"
 \emph on
 evolution
 \emph default
- performance the Selector
+ performance of the 
+\family typewriter
+Selector
+\family default
+
 \begin_inset Foot
 status collapsed
 
@@ -16965,6 +16993,16 @@ s is much better than a random search.
 
 \begin_layout Section
 Internals
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Internals
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -17000,6 +17038,26 @@ internal
 
 \begin_layout Subsection
 PRNG testing
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+PRNG testing
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Random!testing
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -17367,10 +17425,10 @@ Seeding
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
-Random!Seeding
+Random!seeding
 \end_layout
 
 \end_inset
