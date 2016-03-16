@@ -18427,7 +18427,7 @@ status open
 
 
 \backslash
-lstinputlisting{../resources/code/OnesCounting.java}
+lstinputlisting{../java/OnesCounting.java}
 \end_layout
 
 \end_inset
@@ -18637,7 +18637,7 @@ status open
 
 
 \backslash
-lstinputlisting{../resources/code/RealFunction.java}
+lstinputlisting{../java/RealFunction.java}
 \end_layout
 
 \end_inset
@@ -18790,7 +18790,7 @@ status open
 
 
 \backslash
-lstinputlisting{../resources/code/Knapsack.java}
+lstinputlisting{../java/Knapsack.java}
 \end_layout
 
 \end_inset
@@ -18923,7 +18923,7 @@ status open
 
 
 \backslash
-lstinputlisting{../resources/code/TravelingSalesman.java}
+lstinputlisting{../java/TravelingSalesman.java}
 \end_layout
 
 \end_inset
