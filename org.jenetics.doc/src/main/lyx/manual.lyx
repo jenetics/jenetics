@@ -18923,7 +18923,7 @@ status open
 
 
 \backslash
-lstinputlisting{../resources/code/TravelingSalesman.java}
+lstinputlisting{../java/TravelingSalesman.java}
 \end_layout
 
 \end_inset
