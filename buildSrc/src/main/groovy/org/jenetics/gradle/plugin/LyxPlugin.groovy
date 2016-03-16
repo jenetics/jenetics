@@ -29,7 +29,7 @@ import org.jenetics.gradle.task.Lyx2PDFTask
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5
+ * @version 3.5
  */
 class LyxPlugin extends JeneticsPlugin {
 
