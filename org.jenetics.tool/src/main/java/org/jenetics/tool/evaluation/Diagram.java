@@ -76,7 +76,12 @@ public class Diagram {
 		/**
 		 * Template for steady fitness termination diagrams,
 		 */
-		STEADY_FITNESS("steady_fitness_termination");
+		STEADY_FITNESS("steady_fitness_termination"),
+
+		/**
+		 * Template for comparing different selectors.
+		 */
+		SELECTOR_COMPARISON("selector_comparison");
 
 		private final String _name;
 		private final String _path;
@@ -110,9 +115,9 @@ public class Diagram {
 	 *
 	 * @param template the Gnuplot template to use
 	 * @param params the diagram parameters (x-axis)
-	 * @param generation the generation summary data
-	 * @param fitness the fitness summary data
 	 * @param output the output file
+	 * @param summary the first summary data
+	 * @param summaries the rest of the summary data
 	 * @throws IOException if the diagram generation fails
 	 * @throws NullPointerException of one of the parameters is {@code null}
 	 * @throws IllegalArgumentException if the {@code params}, {@code generation}
@@ -121,20 +126,22 @@ public class Diagram {
 	public static void create(
 		final Template template,
 		final Params<?> params,
-		final SampleSummary generation,
-		final SampleSummary fitness,
-		final Path output
+		final Path output,
+		final SampleSummary summary,
+		final SampleSummary... summaries
 	)
 		throws IOException
 	{
-		if (params.size() != generation.parameterCount() ||
-			params.size() != fitness.parameterCount())
-		{
-			throw new IllegalArgumentException(format(
-				"Parameters have different size: [%s, %s, %s].",
-				params.size(), generation.parameterCount(), fitness.parameterCount()
-			));
-		}
+		final Stream<SampleSummary> summaryStream = Stream.concat(
+			Stream.of(summary), Stream.of(summaries)
+		);
+		summaryStream.forEach(s -> {
+			if (params.size() != s.parameterCount()) {
+				throw new IllegalArgumentException(format(
+					"Parameters have different size: %d", params.size()
+				));
+			}
+		});
 
 		final Path templatePath = tempPath();
 		try {
@@ -143,10 +150,9 @@ public class Diagram {
 			final Path dataPath = tempPath();
 			try {
 				final String data = IntStream.range(0, params.size())
-					.mapToObj(i -> toLineString(i, params, generation, fitness))
+					.mapToObj(i -> toLineString(i, params, summary, summaries))
 					.collect(Collectors.joining("\n"));
 				IO.write(data, dataPath);
-
 
 				final Gnuplot gnuplot = new Gnuplot(templatePath);
 				gnuplot.create(dataPath, output);
@@ -165,14 +171,15 @@ public class Diagram {
 	private static String toLineString(
 		final int index,
 		final Params<?> params,
-		final SampleSummary generation,
-		final SampleSummary fitness
+		final SampleSummary summary,
+		final SampleSummary... summaries
 	) {
 		return concat(concat(
 				Stream.of(params.get(index).toString()),
-				DoubleStream.of(generation.getPoints().get(index).toArray())
+				DoubleStream.of(summary.getPoints().get(index).toArray())
 					.mapToObj(Double::toString)),
-				DoubleStream.of(fitness.getPoints().get(index).toArray())
+				Stream.of(summaries)
+					.flatMapToDouble(s -> DoubleStream.of(s.getPoints().get(index).toArray()))
 					.mapToObj(Double::toString))
 			.collect(Collectors.joining(" "));
 	}
@@ -185,17 +192,23 @@ public class Diagram {
 			.map(Path::toAbsolutePath)
 			.get();
 
+		final String[] samples = args.arg("samples")
+			.map(s -> s.split(","))
+			.orElse(new String[]{"Generation", "Fitness"});
+
 		final TrialMeter<Integer> trial = TrialMeter.read(input);
 		final Params<Integer> params = trial.getParams();
-		final SampleSummary generation = trial.getData("Generation").summary();
-		final SampleSummary fitness = trial.getData("Fitness").summary();
+		final SampleSummary summary = trial.getData(samples[0]).summary();
+		final SampleSummary[] summaries = Arrays.stream(samples, 1, samples.length)
+			.map(s -> trial.getData(s).summary())
+			.toArray(SampleSummary[]::new);
 
 		create(
 			template(input),
 			params,
-			generation,
-			fitness,
-			output(input)
+			output(input),
+			summary,
+			summaries
 		);
 	}
 
