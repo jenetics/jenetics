@@ -18790,7 +18790,7 @@ status open
 
 
 \backslash
-lstinputlisting{../resources/code/Knapsack.java}
+lstinputlisting{../java/Knapsack.java}
 \end_layout
 
 \end_inset
