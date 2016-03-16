@@ -18,39 +18,43 @@ import org.jenetics.engine.codecs;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
 
-// This class represents a knapsack item, with a specific
-// "size" and "value".
-final class Item {
-	public final double size;
-	public final double value;
-
-	Item(final double size, final double value) {
-		this.size = size;
-		this.value = value;
-	}
-
-	// Create a new random knapsack item.
-	static Item random() {
-		final Random r = RandomRegistry.getRandom();
-		return new Item(r.nextDouble()*100, r.nextDouble()*100);
-	}
-
-	// Create a new collector for summing up the knapsack items.
-	static Collector<Item, ?, Item> toSum() {
-		return Collector.of(
-			() -> new double[2],
-			(a, b) -> {a[0] += b.size; a[1] += b.value;},
-			(a, b) -> {a[0] += b[0]; a[1] += b[1]; return a;},
-			r -> new Item(r[0], r[1])
-		);
-	}
-}
-
 // The main class.
 public class Knapsack {
 
+	// This class represents a knapsack item, with a specific
+	// "size" and "value".
+	final static class Item {
+		public final double size;
+		public final double value;
+
+		Item(final double size, final double value) {
+			this.size = size;
+			this.value = value;
+		}
+
+		// Create a new random knapsack item.
+		static Item random() {
+			final Random r = RandomRegistry.getRandom();
+			return new Item(
+				r.nextDouble()*100,
+				r.nextDouble()*100
+			);
+		}
+
+		// Collector for summing up the knapsack items.
+		static Collector<Item, ?, Item> toSum() {
+			return Collector.of(
+				() -> new double[2],
+				(a, b) -> {a[0] += b.size; a[1] += b.value;},
+				(a, b) -> {a[0] += b[0]; a[1] += b[1]; return a;},
+				r -> new Item(r[0], r[1])
+			);
+		}
+	}
+
 	// Creating the fitness function.
-	public static Function<ISeq<Item>, Double> fitness(final double size) {
+	static Function<ISeq<Item>, Double>
+	fitness(final double size) {
 		return items -> {
 			final Item sum = items.stream().collect(Item.toSum());
 			return sum.size <= size ? sum.value : 0;
