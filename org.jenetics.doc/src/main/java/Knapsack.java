@@ -6,9 +6,7 @@ import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 
-import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;
-import org.jenetics.Genotype;
 import org.jenetics.Mutator;
 import org.jenetics.Phenotype;
 import org.jenetics.RouletteWheelSelector;
@@ -16,6 +14,8 @@ import org.jenetics.SinglePointCrossover;
 import org.jenetics.TournamentSelector;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionStatistics;
+import org.jenetics.engine.codecs;
+import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
 
 // This class represents a knapsack item, with a specific
@@ -46,46 +46,29 @@ final class Item {
 	}
 }
 
-// The knapsack fitness function class, which is parametrized with
-// the available items and the size of the knapsack.
-final class FF
-	implements Function<Genotype<BitGene>, Double>
-{
-	private final Item[] items;
-	private final double size;
-
-	public FF(final Item[] items, final double size) {
-		this.items = items;
-		this.size = size;
-	}
-
-	@Override
-	public Double apply(final Genotype<BitGene> gt) {
-		final Item sum = ((BitChromosome)gt.getChromosome()).ones()
-			.mapToObj(i -> items[i])
-			.collect(Item.toSum());
-
-		return sum.size <= this.size ? sum.value : 0;
-	}
-}
-
 // The main class.
 public class Knapsack {
+
+	// Creating the fitness function.
+	public static Function<ISeq<Item>, Double> fitness(final double size) {
+		return items -> {
+			final Item sum = items.stream().collect(Item.toSum());
+			return sum.size <= size ? sum.value : 0;
+		};
+	}
 
 	public static void main(final String[] args) {
 		final int nitems = 15;
 		final double kssize = nitems*100.0/3.0;
 
-		final FF ff = new FF(
+		final ISeq<Item> items =
 			Stream.generate(Item::random)
 				.limit(nitems)
-				.toArray(Item[]::new),
-			kssize
-		);
+				.collect(ISeq.toISeq());
 
 		// Configure and build the evolution engine.
 		final Engine<BitGene, Double> engine = Engine
-			.builder(ff, BitChromosome.of(nitems, 0.5))
+			.builder(fitness(kssize), codecs.ofSubSet(items))
 			.populationSize(500)
 			.survivorsSelector(new TournamentSelector<>(5))
 			.offspringSelector(new RouletteWheelSelector<>())
