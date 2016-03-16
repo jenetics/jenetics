@@ -18637,7 +18637,7 @@ status open
 
 
 \backslash
-lstinputlisting{../resources/code/RealFunction.java}
+lstinputlisting{../java/RealFunction.java}
 \end_layout
 
 \end_inset
