@@ -85,7 +85,7 @@ class LyxPlugin extends JeneticsPlugin {
 			}
 		}
 
-		project.task('clean') << {
+		project.task('clean', overwrite: true) << {
 			project.buildDir.deleteDir()
 		}
 	}
