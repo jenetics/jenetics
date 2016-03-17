@@ -4,31 +4,30 @@ import static java.lang.Math.sin;
 import static org.jenetics.engine.EvolutionResult.toBestPhenotype;
 import static org.jenetics.engine.limit.bySteadyFitness;
 
-import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
-import org.jenetics.Genotype;
 import org.jenetics.MeanAlterer;
 import org.jenetics.Mutator;
 import org.jenetics.Optimize;
 import org.jenetics.Phenotype;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionStatistics;
+import org.jenetics.engine.codecs;
+import org.jenetics.util.DoubleRange;
 
 public class RealFunction {
 
-	// This method calculates the fitness for a given genotype.
-	private static Double eval(final Genotype<DoubleGene> gt) {
-		final double x = gt.getGene().doubleValue();
+	// The fitness function.
+	private static double fitness(final double x) {
 		return cos(0.5 + sin(x))*cos(x);
 	}
 
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		final Engine<DoubleGene, Double> engine = Engine
 			// Create a new builder with the given fitness
 			// function and chromosome.
 			.builder(
-				RealFunction::eval,
-				DoubleChromosome.of(0.0, 2.0*PI))
+				RealFunction::fitness,
+				codecs.ofScalar(DoubleRange.of(0.0, 2.0*PI)))
 			.populationSize(500)
 			.optimize(Optimize.MINIMUM)
 			.alterers(

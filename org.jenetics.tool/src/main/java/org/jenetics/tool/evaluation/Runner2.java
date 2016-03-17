@@ -37,9 +37,9 @@ import org.jenetics.tool.trial.TrialMeter;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version 3.5
- * @since 3.4
+ * @since 3.5
  */
-public class Runner<
+public class Runner2<
 	P,
 	G extends Gene<?, G>,
 	N extends Number &  Comparable<? super N>
@@ -47,52 +47,77 @@ public class Runner<
 	extends AbstractRunner<P>
 {
 
-	private final Engine<G, N> _engine;
-	private final Function<? super P, Predicate<? super EvolutionResult<G, N>>> _terminator;
+	private final Engine<G, N> _engine1;
+	private final Function<? super P, Predicate<? super EvolutionResult<G, N>>> _terminator1;
+	private final Engine<G, N> _engine2;
+	private final Function<? super P, Predicate<? super EvolutionResult<G, N>>> _terminator2;
 
-	public Runner(
-		final Engine<G, N> engine,
-		final Function<? super P, Predicate<? super EvolutionResult<G, N>>> terminator,
+	public Runner2(
+		final Engine<G, N> engine1,
+		final Function<? super P, Predicate<? super EvolutionResult<G, N>>> terminator1,
+		final Engine<G, N> engine2,
+		final Function<? super P, Predicate<? super EvolutionResult<G, N>>> terminator2,
 		final Supplier<TrialMeter<P>> trialMeter,
 		final int sampleCount,
 		final Path resultPath
 	) {
 		super(trialMeter, sampleCount, resultPath);
-		_engine = requireNonNull(engine);
-		_terminator = requireNonNull(terminator);
+		_engine1 = requireNonNull(engine1);
+		_terminator1 = requireNonNull(terminator1);
+		_engine2 = requireNonNull(engine2);
+		_terminator2 = requireNonNull(terminator2);
 	}
 
 	protected double[] fitness(final P param) {
-		final Predicate<? super EvolutionResult<G, N>> terminator =
-			_terminator.apply(param);
+		final Predicate<? super EvolutionResult<G, N>> terminator1 =
+			_terminator1.apply(param);
 
-		final long start = System.currentTimeMillis();
-		final EvolutionResult<G, N> result = _engine.stream()
-			.limit(terminator)
+		final long start1 = System.currentTimeMillis();
+		final EvolutionResult<G, N> result1 = _engine1.stream()
+			.limit(terminator1)
 			.collect(EvolutionResult.toBestEvolutionResult());
-		final long end = System.currentTimeMillis();
+		final long end1 = System.currentTimeMillis();
+
+		final Predicate<? super EvolutionResult<G, N>> terminator2 =
+			_terminator2.apply(param);
+
+		final long start2 = System.currentTimeMillis();
+		final EvolutionResult<G, N> result2 = _engine2.stream()
+			.limit(terminator2)
+			.collect(EvolutionResult.toBestEvolutionResult());
+		final long end2 = System.currentTimeMillis();
 
 		return new double[] {
-			result.getTotalGenerations(),
-			result.getBestFitness() != null
-				? result.getBestFitness().doubleValue()
+			result1.getTotalGenerations(),
+			result1.getBestFitness() != null
+				? result1.getBestFitness().doubleValue()
 				: Double.NEGATIVE_INFINITY,
-			end - start
+			end1 - start1,
+
+			result2.getTotalGenerations(),
+			result2.getBestFitness() != null
+				? result2.getBestFitness().doubleValue()
+				: Double.NEGATIVE_INFINITY,
+			end2 - start2
 		};
 	}
 
 	public static <P, G extends Gene<?, G>, N extends Number &  Comparable<? super N>>
-	Runner<P, G, N> of(
-		final Engine<G, N> engine,
-		final Function<? super P, Predicate<? super EvolutionResult<G, N>>> terminator,
+	Runner2<P, G, N> of(
+		final Engine<G, N> engine1,
+		final Function<? super P, Predicate<? super EvolutionResult<G, N>>> terminator1,
+		final Engine<G, N> engine2,
+		final Function<? super P, Predicate<? super EvolutionResult<G, N>>> terminator2,
 		final Supplier<TrialMeter<P>> trialMeter,
 		final String[] arguments
 	) {
 		final Args args = Args.of(arguments);
 
-		return new Runner<>(
-			engine,
-			terminator,
+		return new Runner2<>(
+			engine1,
+			terminator1,
+			engine2,
+			terminator2,
 			trialMeter,
 			args.intArg("sample-count")
 				.orElse(50),
@@ -101,5 +126,4 @@ public class Runner<
 				.orElse(Paths.get("trial_meter.xml"))
 		);
 	}
-
 }
