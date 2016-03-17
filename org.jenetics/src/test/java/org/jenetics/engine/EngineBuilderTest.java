@@ -86,9 +86,14 @@ public class EngineBuilderTest {
 		final Factory<Genotype<DoubleGene>> genotypeFactory =
 			Genotype.of(DoubleChromosome.of(0, 1));
 
-		Engine.builder(fitnessFunction, genotypeFactory)
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(fitnessFunction, genotypeFactory)
 			.offspringFraction(0)
 			.build();
+
+		engine.stream()
+			.limit(10)
+			.collect(EvolutionResult.toBestEvolutionResult());
 	}
 
 	@Test
@@ -98,9 +103,14 @@ public class EngineBuilderTest {
 		final Factory<Genotype<DoubleGene>> genotypeFactory =
 			Genotype.of(DoubleChromosome.of(0, 1));
 
-		Engine.builder(fitnessFunction, genotypeFactory)
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(fitnessFunction, genotypeFactory)
 			.offspringFraction(1)
 			.build();
+
+		engine.stream()
+			.limit(10)
+			.collect(EvolutionResult.toBestEvolutionResult());
 	}
 
 }
