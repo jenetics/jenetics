@@ -79,4 +79,38 @@ public class EngineBuilderTest {
 		Assert.assertEquals(engine.getMaximalPhenotypeAge(), phenotypeAge);
 	}
 
+	@Test
+	public void offspringFractionZero() {
+		final Function<Genotype<DoubleGene>, Double> fitnessFunction =
+			gt -> gt.getGene().getAllele();
+		final Factory<Genotype<DoubleGene>> genotypeFactory =
+			Genotype.of(DoubleChromosome.of(0, 1));
+
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(fitnessFunction, genotypeFactory)
+			.offspringFraction(0)
+			.build();
+
+		engine.stream()
+			.limit(10)
+			.collect(EvolutionResult.toBestEvolutionResult());
+	}
+
+	@Test
+	public void offspringFractionOne() {
+		final Function<Genotype<DoubleGene>, Double> fitnessFunction =
+			gt -> gt.getGene().getAllele();
+		final Factory<Genotype<DoubleGene>> genotypeFactory =
+			Genotype.of(DoubleChromosome.of(0, 1));
+
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(fitnessFunction, genotypeFactory)
+			.offspringFraction(1)
+			.build();
+
+		engine.stream()
+			.limit(10)
+			.collect(EvolutionResult.toBestEvolutionResult());
+	}
+
 }
