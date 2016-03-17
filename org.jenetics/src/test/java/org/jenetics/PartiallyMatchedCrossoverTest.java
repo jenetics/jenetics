@@ -85,7 +85,7 @@ public class PartiallyMatchedCrossoverTest {
 
 	}
 
-	@Test(dataProvider = "alterProbabilityParameters")
+	@Test(dataProvider = "alterProbabilityParameters", groups = {"statistics"})
 	public void alterProbability(
 		final Integer ngenes,
 		final Integer nchromosomes,

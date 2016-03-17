@@ -24,7 +24,7 @@ package org.jenetics.util;
  * @version 3.4
  * @since 3.4
  */
-public class MSeqList<T> extends SeqList<T> {
+final class MSeqList<T> extends SeqList<T> {
 	private static final long serialVersionUID = 1L;
 
 	MSeqList(final MSeq<T> array) {

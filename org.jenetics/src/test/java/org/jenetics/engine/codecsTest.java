@@ -37,6 +37,7 @@ import org.jenetics.Genotype;
 import org.jenetics.IntegerGene;
 import org.jenetics.LongGene;
 import org.jenetics.util.DoubleRange;
+import org.jenetics.util.ISeq;
 import org.jenetics.util.IntRange;
 import org.jenetics.util.LongRange;
 import org.jenetics.util.RandomRegistry;
@@ -456,6 +457,24 @@ public class codecsTest {
 				Assert.assertTrue(gene.getAllele() < 1000);
 				Assert.assertTrue(gene.getAllele() >= 0);
 			}
+		}
+	}
+
+	@Test
+	public void ofSubSet() {
+		final Codec<ISeq<String>, EnumGene<String>> codec = codecs.ofSubSet(
+			ISeq.of("1", "2", "3", "4", "5"), 3
+		);
+
+		for (int i = 0; i < 100; ++i) {
+			final Genotype<EnumGene<String>> gt = codec.encoding().newInstance();
+			final Chromosome<EnumGene<String>> ch = gt.getChromosome();
+
+			Assert.assertEquals(ch.length(), 3);
+			Assert.assertTrue(ch.isValid());
+
+			final ISeq<String> permutation = codec.decoder().apply(gt);
+			Assert.assertEquals(permutation.length(), 3);
 		}
 	}
 

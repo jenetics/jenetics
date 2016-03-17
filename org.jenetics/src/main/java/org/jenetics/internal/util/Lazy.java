@@ -30,7 +30,7 @@ import java.util.function.Supplier;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0
+ * @version 3.4
  */
 public final class Lazy<T> implements Supplier<T>, Serializable {
 	private static final long serialVersionUID = 1L;
@@ -47,6 +47,16 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
 	@Override
 	public T get() {
 		return _evaluated ? _value : evaluate();
+	}
+
+	/**
+	 * Return the evaluation state of the {@code Lazy} variable.
+	 *
+	 * @return {@code true} is the {@code Lazy} variable has been evaluated,
+	 *         {@code false} otherwise
+	 */
+	public synchronized boolean isEvaluated() {
+		return _evaluated;
 	}
 
 	private synchronized T evaluate() {

@@ -191,8 +191,8 @@ public final class Engine<
 		_validator = requireNonNull(validator);
 		_optimize = requireNonNull(optimize);
 
-		_offspringCount = require.positive(offspringCount);
-		_survivorsCount = require.positive(survivorsCount);
+		_offspringCount = require.nonNegative(offspringCount);
+		_survivorsCount = require.nonNegative(survivorsCount);
 		_maximalPhenotypeAge = require.positive(maximalPhenotypeAge);
 
 		_executor = new TimedExecutor(requireNonNull(executor));
@@ -347,12 +347,16 @@ public final class Engine<
 
 	// Selects the survivors population. A new population object is returned.
 	private Population<G, C> selectSurvivors(final Population<G, C> population) {
-		return _survivorsSelector.select(population, _survivorsCount, _optimize);
+		return _survivorsCount > 0
+			?_survivorsSelector.select(population, _survivorsCount, _optimize)
+			: Population.empty();
 	}
 
 	// Selects the offspring population. A new population object is returned.
 	private Population<G, C> selectOffspring(final Population<G, C> population) {
-		return _offspringSelector.select(population, _offspringCount, _optimize);
+		return _offspringCount > 0
+			? _offspringSelector.select(population, _offspringCount, _optimize)
+			: Population.empty();
 	}
 
 	// Filters out invalid and to old individuals. Filtering is done in place.
@@ -752,6 +756,23 @@ public final class Engine<
 	}
 
 	/**
+	 * Create a new evolution {@code Engine.Builder} for the given
+	 * {@link Problem}.
+	 *
+	 * @since 3.4
+	 *
+	 * @param problem the problem to be solved by the evolution {@code Engine}
+	 * @param <T> the (<i>native</i>) argument type of the problem fitness function
+	 * @param <G> the gene type the evolution engine is working with
+	 * @param <C> the result type of the fitness function
+	 * @return Create a new evolution {@code Engine.Builder}
+	 */
+	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
+	Builder<G, C> builder(final Problem<T, G, C> problem) {
+		return builder(problem.fitness(), problem.codec());
+	}
+
+	/**
 	 * Create a new evolution {@code Engine.Builder} with the given fitness
 	 * function and genotype factory.
 	 *
@@ -809,7 +830,7 @@ public final class Engine<
 	 * @throws java.lang.NullPointerException if one of the arguments is
 	 *         {@code null}.
 	 */
-	public static <T, C extends Comparable<? super C>, G extends Gene<?, G>>
+	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
 	Builder<G, C> builder(
 		final Function<? super T, ? extends C> ff,
 		final Codec<T, G> codec
@@ -1042,6 +1063,28 @@ public final class Engine<
 		public Builder<G, C> optimize(final Optimize optimize) {
 			_optimize = requireNonNull(optimize);
 			return this;
+		}
+
+		/**
+		 * Set to a fitness maximizing strategy.
+		 *
+		 * @since 3.4
+		 *
+		 * @return {@code this} builder, for command chaining
+		 */
+		public Builder<G, C> maximizing() {
+			return optimize(Optimize.MAXIMUM);
+		}
+
+		/**
+		 * Set to a fitness minimizing strategy.
+		 *
+		 * @since 3.4
+		 *
+		 * @return {@code this} builder, for command chaining
+		 */
+		public Builder<G, C> minimizing() {
+			return optimize(Optimize.MINIMUM);
 		}
 
 		/**

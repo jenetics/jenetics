@@ -57,7 +57,7 @@ public class MeanAltererTest extends AltererTester {
 		Assert.assertEquals(diff(p1, p2), ngenes);
 	}
 
-	@Test(dataProvider = "alterProbabilityParameters")
+	@Test(dataProvider = "alterProbabilityParameters", groups = {"statistics"})
 	public void alterProbability(
 		final Integer ngenes,
 		final Integer nchromosomes,

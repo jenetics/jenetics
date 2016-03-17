@@ -46,7 +46,7 @@ public class TruncationSelectorTest
 		return TruncationSelector::new;
 	}
 
-	@Test(dataProvider = "expectedDistribution")
+	@Test(dataProvider = "expectedDistribution", groups = {"statistics"})
 	public void selectDistribution(final Named<double[]> expected, final Optimize opt) {
 		retry(3, () -> {
 			final int loops = 50;
