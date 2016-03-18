@@ -2,17 +2,45 @@ package org.jenetix;
 
 import java.util.stream.IntStream;
 
+import org.jenetics.internal.util.IntRef;
+
 import org.jenetics.Chromosome;
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
 import org.jenetics.Mutator;
 import org.jenetics.Phenotype;
 import org.jenetics.Population;
-import org.jenetics.internal.util.IntRef;
 import org.jenetics.util.MSeq;
 
 /**
- * @author Franz Wilhelmstötter <franz.wilhelmstoetter@emarsys.com>
+ * Mutator implementation which is part of the
+ * <a href="https://en.wikipedia.org/wiki/Weasel_program">Weasel program</a>
+ * algorithm. The <i>Weasel program</i> is an thought experiment by Richard
+ * Dawkins to illustrate the functioning of the evolution: random <i>mutation</i>
+ * combined with non-random cumulative <i>selection</i>.
+ * <p>
+ * The mutator mutates the genes of <i>every</i> chromosome of <i>every</i>
+ * genotype in the population with the given mutation probability.
+ * </p>
+ * {@link org.jenetics.engine.Engine} setup for the <i>Weasel program:</i>
+ * <pre>{@code
+ * final Engine<CharacterGene, Integer> engine = Engine
+ *     .builder(fitness, gtf)
+ *      // Set the 'WeaselSelector'.
+ *     .selector(new WeaselSelector<>())
+ *      // Disable survivors selector.
+ *     .offspringFraction(1)
+ *      // Set the 'WeaselMutator'.
+ *     .alterers(new WeaselMutator<>(0.05))
+ *     .build();
+ * }</pre>
+ *
+ * @see <a href="https://en.wikipedia.org/wiki/Weasel_program">Weasel program</a>
+ * @see WeaselSelector
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since !__version__!
+ * @version !__version__!
  */
 public class WeaselMutator<
 	G extends Gene<?, G>,
@@ -38,8 +66,7 @@ public class WeaselMutator<
 
 			final Genotype<G> gt = pt.getGenotype();
 			final Genotype<G> mgt = mutate(gt, alterations);
-			// Is package private.
-			final Phenotype<G, C> mpt = null; //pt.newInstance(mgt, generation);
+			final Phenotype<G, C> mpt = pt.newInstance(mgt, generation);
 			population.set(i, mpt);
 		}
 
@@ -56,8 +83,7 @@ public class WeaselMutator<
 			.map(i -> mutate(chromosomes, i))
 			.sum();
 
-		// Is package private.
-		return null; //genotype.newInstance(chromosomes.toISeq());
+		return Genotype.of(chromosomes);
 	}
 
 	private int mutate(final MSeq<Chromosome<G>> c, final int index) {
