@@ -279,7 +279,7 @@ public final class Phenotype<
 	 * @return New {@link Phenotype} with the same fitness {@link Function}.
 	 * @throws NullPointerException if the {@code genotype} is {@code null}.
 	 */
-	Phenotype<G, C> newInstance(
+	public Phenotype<G, C> newInstance(
 		final Genotype<G> genotype,
 		final long generation
 	) {
