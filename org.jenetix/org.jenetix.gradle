@@ -33,11 +33,6 @@ apply plugin: 'nexus'
 
 description = 'Jenetix - Java Genetic Algorithm Library Extension'
 
-repositories {
-    mavenCentral()
-    jcenter()
-}
-
 compileTestJava.dependsOn tasks.getByPath(':org.jenetics:compileTestJava')
 
 dependencies {
@@ -59,6 +54,12 @@ jar.manifest.instruction('Export-Package',
 	'org.jenetix.random'
 )
 
+javadoc {
+	options {
+		links 'http://jenetics.io/javadoc/org.jenetics'
+	}
+}
+
 packaging {
 	name = 'Jeneticx'
 	author = 'Franz Wilhelmstötter'
@@ -67,52 +68,49 @@ packaging {
 	jarjar = false
 }
 
-modifyPom {
-	project {
-		name jenetix.name
-		description jenetix.description
-		url jenetics.url
-		inceptionYear '2015'
+//modifyPom {
+//	project {
+//		name jenetix.name
+//		description jenetix.description
+//		url jenetics.url
+//		inceptionYear '2015'
+//
+//		scm {
+//			url jenetics.maven.scm.url
+//			connection jenetics.maven.scm.connection
+//			developerConnection jenetics.maven.scm.developer_connection
+//		}
+//
+//		licenses {
+//			license {
+//				name 'The Apache Software License, Version 2.0'
+//				url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+//				distribution 'repo'
+//			}
+//		}
+//
+//		developers {
+//			developer {
+//				id 'fwilhelm'
+//				name 'Franz Wilhelmstötter'
+//				email 'franz.wilhelmstoetter@gmx.at'
+//			}
+//		}
+//	}
+//}
+//
+//nexus {
+//	identifier = project.identifier
+//	copyrightYear = project.copyrightYear
+//	attachSources = true
+//	attachTests = false
+//	attachJavadoc = true
+//	sign = true
+//	repository = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+//	snapshotRepository = 'https://oss.sonatype.org/content/repositories/snapshots'
+//	//snapshotRepository = "file://$buildDir/repo"
+//}
 
-		scm {
-			url jenetics.maven.scm.url
-			connection jenetics.maven.scm.connection
-			developerConnection jenetics.maven.scm.developer_connection
-		}
-
-		licenses {
-			license {
-				name 'The Apache Software License, Version 2.0'
-				url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-				distribution 'repo'
-			}
-		}
-
-		developers {
-			developer {
-				id 'fwilhelm'
-				name 'Franz Wilhelmstötter'
-				email 'franz.wilhelmstoetter@gmx.at'
-			}
-		}
-	}
-}
-
-nexus {
-	identifier = project.identifier
-	copyrightYear = project.copyrightYear
-	attachSources = true
-	attachTests = false
-	attachJavadoc = true
-	sign = true
-	repository = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
-	snapshotRepository = 'https://oss.sonatype.org/content/repositories/snapshots'
-	//snapshotRepository = "file://$buildDir/repo"
-}
-
-javadoc {
-	options.links 'http://jenetics.io/javadoc/org.jenetics/3.2'
-}
 
 idea {
 	module{
