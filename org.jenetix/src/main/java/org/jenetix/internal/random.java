@@ -71,7 +71,7 @@ public class random {
 		} else {
 			do {
 				result = new BigInteger(n.bitLength(), random);
-			} while (result.compareTo(n) >= 0);
+			} while (result.compareTo(n) > 0);
 		}
 
 		return result;
