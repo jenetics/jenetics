@@ -20,7 +20,7 @@
 package org.jenetix;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.math.random.nextBigInteger;
+import static org.jenetix.internal.random.nextBigInteger;
 
 import java.math.BigInteger;
 
@@ -118,7 +118,7 @@ public final class BigIntegerGene implements
 	}
 
 
-		/* *************************************************************************
+	/* *************************************************************************
 	 *  JAXB object serialization
 	 * ************************************************************************/
 
