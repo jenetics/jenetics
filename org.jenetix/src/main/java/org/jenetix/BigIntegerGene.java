@@ -22,6 +22,7 @@ package org.jenetix;
 import static java.util.Objects.requireNonNull;
 import static org.jenetix.internal.random.nextBigInteger;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -43,9 +44,11 @@ import org.jenetics.util.RandomRegistry;
  * @version !__version__!
  */
 @XmlJavaTypeAdapter(BigIntegerGene.Model.Adapter.class)
-public final class BigIntegerGene implements
-	NumericGene<BigInteger, BigIntegerGene>,
-	Mean<BigIntegerGene>
+public final class BigIntegerGene
+	implements
+		NumericGene<BigInteger, BigIntegerGene>,
+		Mean<BigIntegerGene>,
+		Serializable
 {
 	private static final long serialVersionUID = 1L;
 

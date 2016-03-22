@@ -70,7 +70,7 @@ public class random {
 			result = BigInteger.valueOf(nextLong(random, n.longValue()));
 		} else {
 			do {
-				result = new BigInteger(n.bitLength(), random);
+				result = new BigInteger(n.bitLength(), random).mod(n);
 			} while (result.compareTo(n) > 0);
 		}
 
@@ -108,19 +108,5 @@ public class random {
 	public static BigInteger nextBigInteger(final Random random) {
 		return new BigInteger(100, random);
 	}
-
-	public static BigDecimal nextBigDecimal(final Random random) {
-		final StringBuilder out = new StringBuilder();
-		for (int i = 0; i < 10; ++i) {
-			out.append(Long.toString(abs(random.nextLong())));
-		}
-		out.append(".");
-		for (int i = 0; i < 20; ++i) {
-			out.append(Long.toString(abs(random.nextLong())));
-		}
-
-		return new BigDecimal(out.toString());
-	}
-
 
 }
