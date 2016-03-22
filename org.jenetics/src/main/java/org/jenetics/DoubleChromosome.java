@@ -218,11 +218,11 @@ public class DoubleChromosome
 		out.defaultWriteObject();
 
 		out.writeInt(length());
-		out.writeDouble(_min.doubleValue());
-		out.writeDouble(_max.doubleValue());
+		out.writeDouble(_min);
+		out.writeDouble(_max);
 
 		for (DoubleGene gene : _genes) {
-			out.writeDouble(gene.getAllele().doubleValue());
+			out.writeDouble(gene.getAllele());
 		}
 	}
 
