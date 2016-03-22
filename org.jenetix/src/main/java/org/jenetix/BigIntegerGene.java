@@ -20,10 +20,12 @@
 package org.jenetix;
 
 import static java.util.Objects.requireNonNull;
+import static org.jenetics.util.RandomRegistry.getRandom;
 import static org.jenetix.internal.random.nextBigInteger;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.Random;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -35,6 +37,8 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jenetics.NumericGene;
+import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 import org.jenetics.util.Mean;
 import org.jenetics.util.RandomRegistry;
 
@@ -102,6 +106,19 @@ public final class BigIntegerGene
 	@Override
 	public BigIntegerGene newInstance() {
 		return of(_min, _max);
+	}
+
+	static ISeq<BigIntegerGene> seq(
+		final BigInteger minimum,
+		final BigInteger maximum,
+		final int length
+	) {
+		final Random r = getRandom();
+
+		return MSeq.<BigIntegerGene>ofLength(length)
+			.fill(() -> new BigIntegerGene(
+				nextBigInteger(r, minimum, maximum), minimum, maximum))
+			.toISeq();
 	}
 
 	public static BigIntegerGene of(
