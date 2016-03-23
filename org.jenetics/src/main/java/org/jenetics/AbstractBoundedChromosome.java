@@ -59,8 +59,7 @@ abstract class AbstractBoundedChromosome<
 	 * Create a new chromosome from the given genes array.
 	 *
 	 * @param genes the genes of the new chromosome.
-	 * @throws IllegalArgumentException if the {@code genes.length()} is smaller
-	 *         than one.
+	 * @throws IllegalArgumentException if the gene sequence is empty
 	 * @throws NullPointerException if the {@code genes} are {@code null}.
 	 */
 	protected AbstractBoundedChromosome(final ISeq<? extends G> genes) {
