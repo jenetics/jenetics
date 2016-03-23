@@ -20,11 +20,11 @@
 package org.jenetics;
 
 import static java.lang.String.format;
+import static org.jenetics.internal.math.base.clamp;
 import static org.jenetics.internal.math.random.indexes;
 
 import java.util.Random;
 
-import org.jenetics.internal.math.base;
 import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.MSeq;
@@ -76,7 +76,7 @@ public final class GaussianMutator<
 		final double std =
 			(gene.getMax().doubleValue() - gene.getMin().doubleValue())*0.25;
 
-		return gene.newInstance(base.clamp(
+		return gene.newInstance(clamp(
 			random.nextGaussian()*std + gene.doubleValue(),
 			gene.getMin().doubleValue(),
 			gene.getMax().doubleValue()
