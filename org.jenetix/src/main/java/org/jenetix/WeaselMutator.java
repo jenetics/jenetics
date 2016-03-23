@@ -45,7 +45,7 @@ import org.jenetics.util.MSeq;
 public class WeaselMutator<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
-	>
+>
 	extends Mutator<G, C>
 {
 
