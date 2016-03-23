@@ -233,11 +233,11 @@ public class IntegerChromosome
 		out.defaultWriteObject();
 
 		out.writeInt(length());
-		out.writeInt(_min.intValue());
-		out.writeInt(_max.intValue());
+		out.writeInt(_min);
+		out.writeInt(_max);
 
 		for (IntegerGene gene : _genes) {
-			out.writeInt(gene.getAllele().intValue());
+			out.writeInt(gene.getAllele());
 		}
 	}
 

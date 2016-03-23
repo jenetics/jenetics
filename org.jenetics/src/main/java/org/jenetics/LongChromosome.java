@@ -228,11 +228,11 @@ public class LongChromosome
 		out.defaultWriteObject();
 
 		out.writeInt(length());
-		out.writeLong(_min.longValue());
-		out.writeLong(_max.longValue());
+		out.writeLong(_min);
+		out.writeLong(_max);
 
 		for (LongGene gene : _genes) {
-			out.writeLong(gene.getAllele().longValue());
+			out.writeLong(gene.getAllele());
 		}
 	}
 
