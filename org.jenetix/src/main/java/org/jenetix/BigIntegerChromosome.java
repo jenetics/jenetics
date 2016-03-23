@@ -33,6 +33,8 @@ import org.jenetics.NumericChromosome;
 import org.jenetics.util.ISeq;
 
 /**
+ * Numeric chromosome implementation which holds arbitrary sized integer numbers.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -46,14 +48,7 @@ public class BigIntegerChromosome
 
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * The minimum value of this {@code BoundedChromosome}.
-	 */
 	private BigInteger _min;
-
-	/**
-	 * The maximum value of this {@code BoundedChromosome}.
-	 */
 	private BigInteger _max;
 
 	/**
@@ -63,6 +58,7 @@ public class BigIntegerChromosome
 	 * @throws IllegalArgumentException if the {@code genes.length()} is smaller
 	 *         than one.
 	 * @throws NullPointerException if the {@code genes} are {@code null}.
+	 * @throws IllegalArgumentException if the gene sequence is empty
 	 */
 	protected BigIntegerChromosome(final ISeq<BigIntegerGene> genes) {
 		super(genes);
@@ -71,12 +67,15 @@ public class BigIntegerChromosome
 	}
 
 	/**
-	 * Create a new random {@code DoubleChromosome}.
+	 * Create a new random {@code BigIntegerChromosome} with the given
+	 * {@code length}.
 	 *
-	 * @param min the min value of the {@link DoubleGene}s (inclusively).
-	 * @param max the max value of the {@link DoubleGene}s (exclusively).
+	 * @param min the min value of the {@link BigIntegerGene}s (inclusively).
+	 * @param max the max value of the {@link BigIntegerGene}s (inclusively).
 	 * @param length the length of the chromosome.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws IllegalArgumentException if the {@code length} is smaller than
+	 *         one.
 	 */
 	public BigIntegerChromosome(
 		final BigInteger min,
@@ -135,6 +134,10 @@ public class BigIntegerChromosome
 		);
 	}
 
+	/* *************************************************************************
+	 * Static factory methods.
+	 **************************************************************************/
+
 	/**
 	 * Create a new {@code DoubleChromosome} with the given genes.
 	 *
@@ -142,6 +145,8 @@ public class BigIntegerChromosome
 	 * @return a new chromosome with the given genes.
 	 * @throws IllegalArgumentException if the length of the genes array is
 	 *         empty.
+	 * @throws NullPointerException if the given {@code genes} array is
+	 *         {@code null}
 	 */
 	public static BigIntegerChromosome of(final BigIntegerGene... genes) {
 		return new BigIntegerChromosome(ISeq.of(genes));

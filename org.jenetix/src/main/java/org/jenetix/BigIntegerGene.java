@@ -36,6 +36,8 @@ import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.jenetics.internal.util.require;
+
 import org.jenetics.NumericGene;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
@@ -43,6 +45,15 @@ import org.jenetics.util.Mean;
 import org.jenetics.util.RandomRegistry;
 
 /**
+ * Numeric chromosome implementation which holds an arbitrary sized integer
+ * number.
+ *
+ * <p>This is a <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/doc-files/ValueBased.html">
+ * value-based</a> class; use of identity-sensitive operations (including
+ * reference equality ({@code ==}), identity hash code, or synchronization) on
+ * instances of {@code IntegerGene} may have unpredictable results and should
+ * be avoided.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
  * @version !__version__!
@@ -108,11 +119,17 @@ public final class BigIntegerGene
 		return of(_min, _max);
 	}
 
+	/* *************************************************************************
+	 * Static factory methods.
+	 **************************************************************************/
+
 	static ISeq<BigIntegerGene> seq(
 		final BigInteger minimum,
 		final BigInteger maximum,
 		final int length
 	) {
+		require.positive(length);
+
 		final Random r = getRandom();
 
 		return MSeq.<BigIntegerGene>ofLength(length)
@@ -121,6 +138,18 @@ public final class BigIntegerGene
 			.toISeq();
 	}
 
+	/**
+	 * Create a new random {@code BigIntegerGene} with the given value and the
+	 * given range. If the {@code value} isn't within the interval [min, max],
+	 * no exception is thrown. In this case the method
+	 * {@link BigIntegerGene#isValid()} returns {@code false}.
+	 *
+	 * @param value the value of the gene.
+	 * @param min the minimal valid value of this gene (inclusively).
+	 * @param max the maximal valid value of this gene (inclusively).
+	 * @return a new random {@code BigIntegerGene}
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
 	public static BigIntegerGene of(
 		final BigInteger value,
 		final BigInteger min,
@@ -129,6 +158,15 @@ public final class BigIntegerGene
 		return new BigIntegerGene(value, min, max);
 	}
 
+	/**
+	 * Create a new random {@code BigIntegerGene}. It is guaranteed that the
+	 * value of the {@code BigIntegerGene} lies in the interval [min, max].
+	 *
+	 * @param min the minimal valid value of this gene (inclusively).
+	 * @param max the maximal valid value of this gene (inclusively).
+	 * @return a new random {@code BigIntegerGene}
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
 	public static BigIntegerGene of(final BigInteger min, final BigInteger max) {
 		return of(
 			nextBigInteger(RandomRegistry.getRandom(), min, max),
