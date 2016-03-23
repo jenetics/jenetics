@@ -34,6 +34,8 @@ import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.jenetics.internal.util.require;
+
 import org.jenetics.util.ISeq;
 import org.jenetics.util.IntRange;
 import org.jenetics.util.MSeq;
@@ -147,6 +149,8 @@ public final class IntegerGene
 		final Integer maximum,
 		final int length
 	) {
+		require.positive(length);
+
 		final int min = minimum;
 		final int max = maximum;
 		final Random r = getRandom();
