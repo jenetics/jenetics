@@ -19,6 +19,8 @@
  */
 package org.jenetix;
 
+import static org.jenetics.internal.math.base.clamp;
+
 import java.util.Random;
 
 import org.jenetics.internal.math.random;
@@ -126,7 +128,9 @@ public class SimulatedBinaryCrossover<
 			? ((v1 - v2)*0.5) - beta*0.5*Math.abs(v1 - v2)
 			: ((v1 - v2)*0.5) + beta*0.5*Math.abs(v1 - v2);
 
-		that.set(i, that.get(i).newInstance(v));
+		final double min = that.get(i).getMin().doubleValue();
+		final double max = that.get(i).getMax().doubleValue();
+		that.set(i, that.get(i).newInstance(clamp(v, min, max)));
 	}
 
 }
