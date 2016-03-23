@@ -19,6 +19,8 @@
  */
 package org.jenetix;
 
+import static java.lang.Math.abs;
+import static java.lang.Math.pow;
 import static org.jenetics.internal.math.base.clamp;
 
 import java.util.Random;
@@ -112,10 +114,10 @@ public class SimulatedBinaryCrossover<
 		final double beta;
 		if (u < 0.5) {
 			// If u is smaller than 0.5 perform a contracting crossover.
-			beta = Math.pow(2*u, 1.0/(_contiguity + 1));
+			beta = pow(2*u, 1.0/(_contiguity + 1));
 		} else if (u > 0.5) {
 			// Otherwise perform an expanding crossover.
-			beta = Math.pow(0.5 / (1.0 - u), 1.0/(_contiguity + 1));
+			beta = pow(0.5 / (1.0 - u), 1.0/(_contiguity + 1));
 		} else if (u == 0.5) {
 			beta = 1;
 		} else {
@@ -124,9 +126,9 @@ public class SimulatedBinaryCrossover<
 
 		final double v1 = that.get(i).doubleValue();
 		final double v2 = other.get(i).doubleValue();
-		final double v = random.nextDouble() < 0.5
-			? ((v1 - v2)*0.5) - beta*0.5*Math.abs(v1 - v2)
-			: ((v1 - v2)*0.5) + beta*0.5*Math.abs(v1 - v2);
+		final double v = random.nextBoolean()
+			? ((v1 - v2)*0.5) - beta*0.5*abs(v1 - v2)
+			: ((v1 - v2)*0.5) + beta*0.5*abs(v1 - v2);
 
 		final double min = that.get(i).getMin().doubleValue();
 		final double max = that.get(i).getMax().doubleValue();
