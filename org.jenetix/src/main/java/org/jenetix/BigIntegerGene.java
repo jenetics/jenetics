@@ -36,6 +36,7 @@ import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.require;
 
 import org.jenetics.NumericGene;
@@ -117,6 +118,27 @@ public final class BigIntegerGene
 	@Override
 	public BigIntegerGene newInstance() {
 		return of(_min, _max);
+	}
+
+	@Override
+	public int hashCode() {
+		return Hash.of(getClass())
+			.and(_value)
+			.and(_min)
+			.and(_max).value();
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof BigIntegerGene &&
+			((BigIntegerGene)obj)._value.equals(_value) &&
+			((BigIntegerGene)obj)._min.equals(_min) &&
+			((BigIntegerGene)obj)._max.equals(_max);
+	}
+
+	@Override
+	public String toString() {
+		return String.format("[%s]", _value);
 	}
 
 	/* *************************************************************************
