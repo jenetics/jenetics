@@ -43,7 +43,7 @@ import org.jenetics.stat.MinMax;
 public class WeaselSelector<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
-	>
+>
 	implements Selector<G, C>
 {
 	@Override
