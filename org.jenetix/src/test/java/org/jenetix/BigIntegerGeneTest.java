@@ -21,19 +21,23 @@ package org.jenetix;
 
 import java.math.BigInteger;
 
-import org.jenetics.util.IO;
+import org.testng.annotations.Test;
+
+import org.jenetics.NumericGeneTester;
+import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class BigIntegerGeneTest {
+@Test
+public class BigIntegerGeneTest
+	extends NumericGeneTester<BigInteger, BigIntegerGene>
+{
 
-	public static void main(final String[] args) throws Exception {
-		final BigIntegerGene gene = BigIntegerGene.of(
-			BigInteger.valueOf(0), BigInteger.valueOf(Long.MAX_VALUE)
-		);
+	private final BigIntegerGene _factory = BigIntegerGene
+		.of(BigInteger.ZERO, BigInteger.valueOf(Long.MAX_VALUE));
 
-		IO.jaxb.write(gene, System.out);
+	@Override protected Factory<BigIntegerGene> factory() {
+		return _factory;
 	}
-
 }
