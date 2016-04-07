@@ -48,8 +48,8 @@ public class BigIntegerChromosome
 
 	private static final long serialVersionUID = 1L;
 
-	private BigInteger _min;
-	private BigInteger _max;
+	private final BigInteger _min;
+	private final BigInteger _max;
 
 	/**
 	 * Create a new chromosome from the given genes array.
@@ -109,12 +109,12 @@ public class BigIntegerChromosome
 
 	@Override
 	public BigIntegerChromosome newInstance(final ISeq<BigIntegerGene> genes) {
-		return null;
+		return new BigIntegerChromosome(genes);
 	}
 
 	@Override
 	public BigIntegerChromosome newInstance() {
-		return null;
+		return new BigIntegerChromosome(_min, _max, length());
 	}
 
 	@Override
