@@ -21,6 +21,9 @@ package org.jenetix;
 
 import static org.jenetics.internal.util.Equality.eq;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.math.BigInteger;
 
@@ -31,6 +34,7 @@ import org.jenetics.AbstractChromosome;
 import org.jenetics.DoubleGene;
 import org.jenetics.NumericChromosome;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 
 /**
  * Numeric chromosome implementation which holds arbitrary sized integer numbers.
@@ -48,8 +52,8 @@ public class BigIntegerChromosome
 
 	private static final long serialVersionUID = 1L;
 
-	private final BigInteger _min;
-	private final BigInteger _max;
+	private BigInteger _min;
+	private BigInteger _max;
 
 	/**
 	 * Create a new chromosome from the given genes array.
@@ -173,6 +177,41 @@ public class BigIntegerChromosome
 	 */
 	public static BigIntegerChromosome of(final BigInteger min, final BigInteger max) {
 		return new BigIntegerChromosome(min, max);
+	}
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private void writeObject(final ObjectOutputStream out)
+		throws IOException
+	{
+		out.defaultWriteObject();
+
+		out.writeInt(length());
+		out.writeObject(_min);
+		out.writeObject(_max);
+
+		for (BigIntegerGene gene : _genes) {
+			out.writeObject(gene.getAllele());
+		}
+	}
+
+	private void readObject(final ObjectInputStream in)
+		throws IOException, ClassNotFoundException
+	{
+		in.defaultReadObject();
+
+		final MSeq<BigIntegerGene> genes = MSeq.ofLength(in.readInt());
+		_min = (BigInteger)in.readObject();
+		_max = (BigInteger)in.readObject();
+
+		for (int i = 0; i < genes.length(); ++i) {
+			final BigInteger value = (BigInteger)in.readObject();
+			genes.set(i, BigIntegerGene.of(value, _min, _max));
+		}
+
+		_genes = genes.toISeq();
 	}
 
 }
