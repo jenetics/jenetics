@@ -17,25 +17,27 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
+package org.jenetix;
+
+import java.math.BigInteger;
+
+import org.testng.annotations.Test;
+
+import org.jenetics.NumericGeneTester;
+import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.2
- * @version 3.4
  */
+@Test
+public class BigIntegerGeneTest
+	extends NumericGeneTester<BigInteger, BigIntegerGene>
+{
 
-// The Jenetics projects.
-include 'org.jenetics'
-include 'org.jenetics.doc'
-include 'org.jenetics.example'
-include 'org.jenetics.tool'
-include 'org.jenetix'
+	private final BigIntegerGene _factory = BigIntegerGene
+		.of(BigInteger.ZERO, BigInteger.valueOf(Long.MAX_VALUE));
 
-rootProject.name = 'jenetics'
-
-// Rename the build scripts of the projects to ${project.name}.gradle
-rootProject.children.each {
-	it.buildFileName = it.name + '.gradle'
+	@Override protected Factory<BigIntegerGene> factory() {
+		return _factory;
+	}
 }
-
-

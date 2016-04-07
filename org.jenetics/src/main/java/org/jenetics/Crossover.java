@@ -49,9 +49,9 @@ public abstract class Crossover<
 	/**
 	 * Constructs an alterer with a given recombination probability.
 	 *
-	 * @param probability The recombination probability.
+	 * @param probability the recombination probability
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
-	 *          valid range of {@code [0, 1]}.
+	 *          valid range of {@code [0, 1]}
 	 */
 	protected Crossover(final double probability) {
 		super(probability, 2);

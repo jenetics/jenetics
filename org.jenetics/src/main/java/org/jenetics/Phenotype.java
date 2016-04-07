@@ -274,12 +274,14 @@ public final class Phenotype<
 	 * Factory method for creating a new {@link Phenotype} with the same
 	 * {@link Function} and age as this {@link Phenotype}.
 	 *
+	 * @since !__version__!
+	 *
 	 * @param genotype the new genotype of the new phenotype.
 	 * @param generation date of birth (generation) of the new phenotype.
 	 * @return New {@link Phenotype} with the same fitness {@link Function}.
 	 * @throws NullPointerException if the {@code genotype} is {@code null}.
 	 */
-	Phenotype<G, C> newInstance(
+	public Phenotype<G, C> newInstance(
 		final Genotype<G> genotype,
 		final long generation
 	) {

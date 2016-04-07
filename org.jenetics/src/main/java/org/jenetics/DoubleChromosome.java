@@ -59,7 +59,13 @@ public class DoubleChromosome
 {
 	private static final long serialVersionUID = 1L;
 
-
+	/**
+	 * Create a new chromosome from the given genes array.
+	 *
+	 * @param genes the genes of the new chromosome.
+	 * @throws IllegalArgumentException if the gene sequence is empty
+	 * @throws NullPointerException if the {@code genes} are {@code null}.
+	 */
 	protected DoubleChromosome(final ISeq<DoubleGene> genes) {
 		super(genes);
 	}
@@ -71,6 +77,7 @@ public class DoubleChromosome
 	 * @param max the max value of the {@link DoubleGene}s (exclusively).
 	 * @param length the length of the chromosome.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws IllegalArgumentException if the length is smaller than one
 	 */
 	public DoubleChromosome(final Double min,final Double max,final int length) {
 		this(DoubleGene.seq(min, max, length));
@@ -144,8 +151,14 @@ public class DoubleChromosome
 	 * @param max the max value of the {@link DoubleGene}s (exclusively).
 	 * @param length the length of the chromosome.
 	 * @return a new {@code DoubleChromosome} with the given parameter
+	 * @throws IllegalArgumentException if the {@code length} is smaller than
+	 *         one.
 	 */
-	public static DoubleChromosome of(final double min, double max, final int length) {
+	public static DoubleChromosome of(
+		final double min,
+		double max,
+		final int length
+	) {
 		return new DoubleChromosome(min, max, length);
 	}
 
@@ -158,6 +171,8 @@ public class DoubleChromosome
 	 * @param length the length of the chromosome.
 	 * @return a new random {@code DoubleChromosome}
 	 * @throws NullPointerException if the given {@code range} is {@code null}
+	 * @throws IllegalArgumentException if the {@code length} is smaller than
+	 *         one.
 	 */
 	public static DoubleChromosome of(final DoubleRange range, final int length) {
 		return new DoubleChromosome(range.getMin(), range.getMax(), length);
@@ -218,11 +233,11 @@ public class DoubleChromosome
 		out.defaultWriteObject();
 
 		out.writeInt(length());
-		out.writeDouble(_min.doubleValue());
-		out.writeDouble(_max.doubleValue());
+		out.writeDouble(_min);
+		out.writeDouble(_max);
 
 		for (DoubleGene gene : _genes) {
-			out.writeDouble(gene.getAllele().doubleValue());
+			out.writeDouble(gene.getAllele());
 		}
 	}
 
