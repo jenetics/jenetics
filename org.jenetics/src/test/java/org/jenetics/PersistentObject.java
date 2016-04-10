@@ -112,7 +112,7 @@ public class PersistentObject<T> {
 	public static final List<PersistentObject<?>> VALUES = new ArrayList<>();
 
 	private static <T> void put(final String name, final T value, final String... ios) {
-		VALUES.add(new PersistentObject<T>(name, value, ios));
+		VALUES.add(new PersistentObject<>(name, value, ios));
 		RandomRegistry.getRandom().setSeed(SEED);
 	}
 
@@ -239,19 +239,19 @@ public class PersistentObject<T> {
 	}
 
 	public static EnumGene<Boolean> nextEnumGeneBoolean() {
-		return EnumGene.of(ISeq.<Boolean>of(random()::nextBoolean, 5));
+		return EnumGene.of(ISeq.of(random()::nextBoolean, 5));
 	}
 
 	public static EnumGene<Byte> nextEnumGeneByte() {
-		return EnumGene.of(ISeq.<Byte>of(() -> nextByte(random()), 5));
+		return EnumGene.of(ISeq.of(() -> nextByte(random()), 5));
 	}
 
 	public static EnumGene<Character> nextEnumGeneCharacter() {
-		return EnumGene.of(ISeq.<Character>of(() -> nextCharacter(random()), 5));
+		return EnumGene.of(ISeq.of(() -> nextCharacter(random()), 5));
 	}
 
 	public static EnumGene<Short> nextEnumGeneShort() {
-		return EnumGene.of(ISeq.<Short>of(() -> nextShort(random()), 5));
+		return EnumGene.of(ISeq.of(() -> nextShort(random()), 5));
 	}
 
 	public static EnumGene<Integer> nextEnumGeneInteger() {
@@ -259,15 +259,15 @@ public class PersistentObject<T> {
 	}
 
 	public static EnumGene<Long> nextEnumGeneLong() {
-		return EnumGene.of(ISeq.<Long>of(random()::nextLong, 5));
+		return EnumGene.of(ISeq.of(random()::nextLong, 5));
 	}
 
 	public static EnumGene<Float> nextEnumGeneFloat() {
-		return EnumGene.of(ISeq.<Float>of(random()::nextFloat, 5));
+		return EnumGene.of(ISeq.of(random()::nextFloat, 5));
 	}
 
 	public static EnumGene<Double> nextEnumGeneDouble() {
-		return EnumGene.of(ISeq.<Double>of(random()::nextDouble, 5));
+		return EnumGene.of(ISeq.of(random()::nextDouble, 5));
 	}
 
 //	public static EnumGene<BigInteger> nextEnumGeneBigInteger() {
