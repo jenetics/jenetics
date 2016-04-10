@@ -307,11 +307,11 @@ public class PersistentObject<T> {
 	}
 
 	public static PermutationChromosome<Byte> nextBytePermutationChromosome() {
-		return PermutationChromosome.of(ISeq.<Byte>of(() -> nextByte(random()), 15));
+		return PermutationChromosome.of(ISeq.of(() -> nextByte(random()), 15));
 	}
 
 	public static PermutationChromosome<Short> nextShortPermutationChromosome() {
-		return PermutationChromosome.of(ISeq.<Short>of(() -> nextShort(random()), 15));
+		return PermutationChromosome.of(ISeq.of(() -> nextShort(random()), 15));
 	}
 
 	public static PermutationChromosome<Integer> nextIntegerPermutationChromosome() {
@@ -319,19 +319,19 @@ public class PersistentObject<T> {
 	}
 
 	public static PermutationChromosome<Long> nextLongPermutationChromosome() {
-		return PermutationChromosome.of(ISeq.<Long>of(random()::nextLong, 15));
+		return PermutationChromosome.of(ISeq.of(random()::nextLong, 15));
 	}
 
 	public static PermutationChromosome<Float> nextFloatPermutationChromosome() {
-		return PermutationChromosome.of(ISeq.<Float>of(random()::nextFloat, 15));
+		return PermutationChromosome.of(ISeq.of(random()::nextFloat, 15));
 	}
 
 	public static PermutationChromosome<Double> nextDoublePermutationChromosome() {
-		return PermutationChromosome.of(ISeq.<Double>of(random()::nextDouble, 15));
+		return PermutationChromosome.of(ISeq.of(random()::nextDouble, 15));
 	}
 
 	public static PermutationChromosome<Character> nextCharacterPermutationChromosome() {
-		return PermutationChromosome.of(ISeq.<Character>of(() -> nextCharacter(random()), 15));
+		return PermutationChromosome.of(ISeq.of(() -> nextCharacter(random()), 15));
 	}
 
 	public static PermutationChromosome<String> nextStringPermutationChromosome() {
