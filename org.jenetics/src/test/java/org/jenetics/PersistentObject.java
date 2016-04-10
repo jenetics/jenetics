@@ -223,7 +223,6 @@ public class PersistentObject<T> {
 		put("Population[DoubleGene, Integer]", nextPopulationDoubleGeneInteger(), ios);
 		put("Population[DoubleGene, Double]", nextPopulationDoubleGeneDouble(), ios);
 		put("Population[EnumGene[Integer], Double]", nextPopulationEnumGeneIntegerDouble(), ios);
-		put("Population[EnumGene[String], BigDecimal]", nextPopulationEnumGeneStringBigDecimal(), ios);
 
 		/* *********************************************************************
 		 * Alterers
@@ -627,13 +626,6 @@ public class PersistentObject<T> {
 	public static Population<EnumGene<Integer>, Double> nextPopulationEnumGeneIntegerDouble() {
 		final ISeq<Phenotype<EnumGene<Integer>, Double>> seq =
 			ISeq.of(PersistentObject::nextPhenotypeEnumGeneIntegerDouble, 7);
-
-		return new Population<>(seq.asList());
-	}
-
-	public static Population<EnumGene<String>, BigDecimal> nextPopulationEnumGeneStringBigDecimal() {
-		final ISeq<Phenotype<EnumGene<String>, BigDecimal>> seq =
-			ISeq.of(PersistentObject::nextPhenotypeEnumGeneStringBigDecimal, 7);
 
 		return new Population<>(seq.asList());
 	}
