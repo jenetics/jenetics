@@ -351,12 +351,16 @@ public final class Engine<
 
 	// Selects the survivors population. A new population object is returned.
 	private Population<G, C> selectSurvivors(final Population<G, C> population) {
-		return _survivorsSelector.select(population, _survivorsCount, _optimize);
+		return _survivorsCount > 0
+			?_survivorsSelector.select(population, _survivorsCount, _optimize)
+			: Population.empty();
 	}
 
 	// Selects the offspring population. A new population object is returned.
 	private Population<G, C> selectOffspring(final Population<G, C> population) {
-		return _offspringSelector.select(population, _offspringCount, _optimize);
+		return _offspringCount > 0
+			? _offspringSelector.select(population, _offspringCount, _optimize)
+			: Population.empty();
 	}
 
 	// Filters out invalid and to old individuals. Filtering is done in place.

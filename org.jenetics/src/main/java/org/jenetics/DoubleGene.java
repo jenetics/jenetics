@@ -35,6 +35,8 @@ import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.jenetics.internal.util.require;
+
 import org.jenetics.util.DoubleRange;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
@@ -157,6 +159,8 @@ public final class DoubleGene
 		final Double maximum,
 		final int length
 	) {
+		require.positive(length);
+
 		final double min = minimum;
 		final double max = maximum;
 		final Random r = getRandom();

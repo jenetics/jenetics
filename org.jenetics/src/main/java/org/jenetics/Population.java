@@ -74,6 +74,11 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 {
 	private static final long serialVersionUID = 2L;
 
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	private static final Population<?, ?> EMPTY =
+		new Population(Collections.EMPTY_LIST);
+
+
 	private final List<Phenotype<G, C>> _population;
 
 	/**
@@ -324,6 +329,19 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		return _population.stream()
 			.map(Object::toString)
 			.collect(joining("\n", "", "\n"));
+	}
+
+	/**
+	 * Return an empty population.
+	 *
+	 * @param <G> the gene type
+	 * @param <C> the fitness result type
+	 * @return an empty population
+	 */
+	@SuppressWarnings("unchecked")
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Population<G, C> empty() {
+		return (Population<G, C>)EMPTY;
 	}
 
 	/**

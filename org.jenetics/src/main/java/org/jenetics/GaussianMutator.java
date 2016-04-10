@@ -23,6 +23,7 @@ import static java.lang.Double.compare;
 import static java.lang.Double.doubleToLongBits;
 import static java.lang.Double.longBitsToDouble;
 import static java.lang.String.format;
+import static org.jenetics.internal.math.base.clamp;
 import static org.jenetics.internal.math.random.indexes;
 
 import java.io.Serializable;

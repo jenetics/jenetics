@@ -19,8 +19,6 @@
  */
 package org.jenetics;
 
-import static org.jenetics.internal.math.random.nextBigDecimal;
-import static org.jenetics.internal.math.random.nextBigInteger;
 import static org.jenetics.internal.math.random.nextByte;
 import static org.jenetics.internal.math.random.nextCharacter;
 import static org.jenetics.internal.math.random.nextShort;
@@ -147,8 +145,8 @@ public class PersistentObject<T> {
 		put("EnumGene[Long]", nextEnumGeneLong(), ios);
 		put("EnumGene[Float]", nextEnumGeneFloat(), ios);
 		put("EnumGene[Double]", nextEnumGeneDouble(), ios);
-		put("EnumGene[BigInteger]", nextEnumGeneBigInteger(), ios);
-		put("EnumGene[BigDecimal]", nextEnumGeneBigDecimal(), ios);
+//		put("EnumGene[BigInteger]", nextEnumGeneBigInteger(), ios);
+//		put("EnumGene[BigDecimal]", nextEnumGeneBigDecimal(), ios);
 		put("EnumGene[String]", nextEnumGeneString(), ios);
 
 		/* *********************************************************************
@@ -212,7 +210,7 @@ public class PersistentObject<T> {
 		put("Phenotype[EnumGene[Long], Double]", nextPhenotypeEnumGeneLongDouble(), ios);
 		put("Phenotype[EnumGene[Float], Double]", nextPhenotypeEnumGeneFloatDouble(), ios);
 		put("Phenotype[EnumGene[Double], Double]", nextPhenotypeEnumGeneDoubleDouble(), ios);
-		put("Phenotype[EnumGene[String], BigDecimal]", nextPhenotypeEnumGeneStringBigDecimal(), ios);
+//		put("Phenotype[EnumGene[String], BigDecimal]", nextPhenotypeEnumGeneStringBigDecimal(), ios);
 
 		/* *********************************************************************
 		 * Populations
@@ -315,13 +313,13 @@ public class PersistentObject<T> {
 		return EnumGene.of(ISeq.<Double>of(random()::nextDouble, 5));
 	}
 
-	public static EnumGene<BigInteger> nextEnumGeneBigInteger() {
-		return EnumGene.of(ISeq.of(() -> nextBigInteger(random()), 5));
-	}
-
-	public static EnumGene<BigDecimal> nextEnumGeneBigDecimal() {
-		return EnumGene.of(ISeq.of(() -> nextBigDecimal(random()), 5));
-	}
+//	public static EnumGene<BigInteger> nextEnumGeneBigInteger() {
+//		return EnumGene.of(ISeq.of(() -> nextBigInteger(random()), 5));
+//	}
+//
+//	public static EnumGene<BigDecimal> nextEnumGeneBigDecimal() {
+//		return EnumGene.of(ISeq.of(() -> nextBigDecimal(random()), 5));
+//	}
 
 	public static EnumGene<String> nextEnumGeneString() {
 		return EnumGene.of(ISeq.of(() -> nextString(random()), 5));
@@ -572,13 +570,13 @@ public class PersistentObject<T> {
 		).evaluate();
 	}
 
-	public static Phenotype<EnumGene<String>, BigDecimal> nextPhenotypeEnumGeneStringBigDecimal() {
-		return Phenotype.of(
-			nextGenotypeEnumGeneString(),
-			Math.abs(random().nextInt()), FitnessFunction(nextBigDecimal(random())),
-			FitnessScaler()
-		).evaluate();
-	}
+//	public static Phenotype<EnumGene<String>, BigDecimal> nextPhenotypeEnumGeneStringBigDecimal() {
+//		return Phenotype.of(
+//			nextGenotypeEnumGeneString(),
+//			Math.abs(random().nextInt()), FitnessFunction(nextBigDecimal(random())),
+//			FitnessScaler()
+//		).evaluate();
+//	}
 
 	/* *************************************************************************
 	 * Populations
