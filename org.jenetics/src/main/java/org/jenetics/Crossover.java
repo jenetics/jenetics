@@ -96,7 +96,6 @@ public abstract class Crossover<
 		return getOrder();
 	}
 
-
 	/**
 	 * Template method which performs the crossover. The arguments given are
 	 * mutable non null arrays of the same length.
@@ -106,6 +105,5 @@ public abstract class Crossover<
 	 * @return the number of altered genes
 	 */
 	protected abstract int crossover(final MSeq<G> that, final MSeq<G> other);
-
 
 }
