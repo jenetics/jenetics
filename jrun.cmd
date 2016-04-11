@@ -1,5 +1,5 @@
 @echo off
-setlocal EnableDelayedExpansion 
+setlocal EnableDelayedExpansion
 
 set SCRIPT_DIR=%~dp0
 
@@ -7,6 +7,7 @@ set MODULES=(^
 	%SCRIPT_DIR%org.jenetics^
 	%SCRIPT_DIR%org.jenetics.example^
 	%SCRIPT_DIR%org.jenetics.tool^
+	%SCRIPT_DIR%org.jenetix^
 )
 
 set CLASSPATH=.
