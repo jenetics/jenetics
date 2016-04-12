@@ -152,6 +152,32 @@ public final class JAXBContextCache {
 		}
 	}
 
+	/**
+	 * De-register the given class.
+	 *
+	 * @param cls the class to de-register
+	 */
+	public static synchronized void removeClass(final Class<?> cls) {
+		requireNonNull(cls);
+
+		if (CLASSES.contains(cls)) {
+			_context = null;
+			CLASSES.remove(cls);
+		}
+	}
+
+	/**
+	 * Check is the given class is already registered.
+	 *
+	 * @param cls the class to check
+	 * @return {@code true} if the given class is already registered,
+	 *         {@code false} otherwise.
+	 */
+	public static synchronized boolean contains(final Class<?> cls) {
+		requireNonNull(cls);
+		return CLASSES.contains(cls);
+	}
+
 	@SuppressWarnings("unchecked")
 	private static ISeq<Class<?>> jaxbClasses(final String pkg) {
 		requireNonNull(pkg);
