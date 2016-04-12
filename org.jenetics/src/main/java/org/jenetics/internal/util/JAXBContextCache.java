@@ -33,7 +33,25 @@ import javax.xml.bind.JAXBException;
 import org.jenetics.util.ISeq;
 
 /**
- * Caches the JAXB classes and lets you add additional one.
+ * Caches the JAXB classes and lets you add additional one. You can either add
+ * a <em>JAXB</em> class directly, or the package where you have put in a
+ * {@code JAXBRegistry} class:
+ * <pre>{@code
+ * // Class may be package private
+ * final class JAXBRegistry {
+ *     private JAXBRegistry() {require.noInstance();}
+ *
+ *     // Must contain static final field 'CLASSES'.
+ *     public static final ISeq<Class<?>> CLASSES = ISeq.of(
+ *         BitGene.Model.class,
+ *         EnumGene.Model.class,
+ *         CharacterGene.Model.class,
+ *         IntegerGene.Model.class,
+ *         LongGene.Model.class,
+ *         DoubleGene.Model.class
+ *     )
+ * }
+ * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
