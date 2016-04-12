@@ -19,8 +19,8 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.internal.util.jaxb.adapterFor;
 import static org.jenetics.internal.util.JAXBContextCache.context;
+import static org.jenetics.internal.util.jaxb.adapterFor;
 import static org.jenetics.internal.util.jaxb.marshal;
 
 import java.io.File;
@@ -32,10 +32,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.nio.file.Path;
+import java.util.Arrays;
 
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
+
+import org.jenetics.internal.util.JAXBContextCache;
+import org.jenetics.internal.util.require;
 
 /**
  * Class for object serialization. The following example shows how to write and
@@ -65,6 +69,23 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 public abstract class IO {
 
 	protected IO() {
+	}
+
+	/**
+	 * Helper class for <em>JAXB</em> handling.
+	 */
+	public static final class jaxb {
+		private jaxb() {require.noInstance();}
+
+		/**
+		 * Registers the given <em>JAXB</em> model classes. This allows to use
+		 * the {@code IO.jaxb} class with own <em>JAXB</em> marshallings.
+		 *
+		 * @param classes the <em>JAXB</em> model classes to register
+		 */
+		public static void register(final Class<?>... classes) {
+			Arrays.asList(classes).forEach(JAXBContextCache::add);
+		}
 	}
 
 	/**
