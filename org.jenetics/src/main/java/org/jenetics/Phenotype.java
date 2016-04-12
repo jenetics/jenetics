@@ -274,7 +274,7 @@ public final class Phenotype<
 	 * Factory method for creating a new {@link Phenotype} with the same
 	 * {@link Function} and age as this {@link Phenotype}.
 	 *
-	 * @since !__version__!
+	 * @since 3.5
 	 *
 	 * @param genotype the new genotype of the new phenotype.
 	 * @param generation date of birth (generation) of the new phenotype.

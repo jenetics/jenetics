@@ -84,7 +84,7 @@ import org.jenetics.internal.util.require;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version !__version__!
+ * @version 3.5
  */
 public abstract class IO {
 
@@ -114,8 +114,8 @@ public abstract class IO {
 	 * once.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @since !__version__!
-	 * @version !__version__!
+	 * @since 3.5
+	 * @version 3.5
 	 */
 	public static final class JAXB {
 		private JAXB() {require.noInstance();}

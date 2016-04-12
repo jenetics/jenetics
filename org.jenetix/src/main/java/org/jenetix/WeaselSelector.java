@@ -37,8 +37,8 @@ import org.jenetics.stat.MinMax;
  * @see WeaselMutator
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__!
+ * @since 3.5
+ * @version 3.5
  */
 public class WeaselSelector<
 	G extends Gene<?, G>,

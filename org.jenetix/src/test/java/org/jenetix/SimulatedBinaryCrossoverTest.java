@@ -21,8 +21,8 @@ package org.jenetix;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.5
+ * @since 3.5
  */
 public class SimulatedBinaryCrossoverTest {
 }
