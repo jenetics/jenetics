@@ -80,7 +80,7 @@ import org.jenetics.internal.util.require;
  * IO.jaxb.write(data, "data.xml");
  * }</pre>
  *
- * It is safe to call {@code IO.jaxb.register(DataClass.class)} more than once.
+ * It is safe to call {@code IO.JAXB.register(DataClass.class)} more than once.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
@@ -110,7 +110,7 @@ public abstract class IO {
 	 * IO.jaxb.write(data, "data.xml");
 	 * }</pre>
 	 *
-	 * It is safe to call {@code IO.jaxb.register(DataClass.class)} more than
+	 * It is safe to call {@code IO.JAXB.register(DataClass.class)} more than
 	 * once.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
