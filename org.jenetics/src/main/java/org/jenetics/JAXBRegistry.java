@@ -53,24 +53,24 @@ final class JAXBRegistry {
 
 		Genotype.Model.class,
 		Phenotype.Model.class,
-		Population.Model.class,
+		Population.Model.class
 
-		BoltzmannSelector.Model.class,
-		ExponentialRankSelector.Model.class,
-		LinearRankSelector.Model.class,
-		MonteCarloSelector.class,
-		RouletteWheelSelector.class,
-		StochasticUniversalSelector.class,
-		TournamentSelector.Model.class,
-		TruncationSelector.class,
-
-		CompositeAlterer.Model.class,
-		GaussianMutator.Model.class,
-		MeanAlterer.Model.class,
-		MultiPointCrossover.Model.class,
-		Mutator.Model.class,
-		PartiallyMatchedCrossover.Model.class,
-		SinglePointCrossover.Model.class,
-		SwapMutator.Model.class
+//		BoltzmannSelector.Model.class,
+//		ExponentialRankSelector.Model.class,
+//		LinearRankSelector.Model.class,
+//		MonteCarloSelector.class,
+//		RouletteWheelSelector.class,
+//		StochasticUniversalSelector.class,
+//		TournamentSelector.Model.class,
+//		TruncationSelector.class,
+//
+//		CompositeAlterer.Model.class,
+//		GaussianMutator.Model.class,
+//		MeanAlterer.Model.class,
+//		MultiPointCrossover.Model.class,
+//		Mutator.Model.class,
+//		PartiallyMatchedCrossover.Model.class,
+//		SinglePointCrossover.Model.class,
+//		SwapMutator.Model.class
 	);
 }
