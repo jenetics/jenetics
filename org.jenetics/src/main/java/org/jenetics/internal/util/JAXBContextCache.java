@@ -114,7 +114,7 @@ public final class JAXBContextCache {
 	 * @return the {@code JAXBContext}
 	 */
 	public static JAXBContext context(final Class<?>... classes) {
-		Stream.of(classes).forEach(JAXBContextCache::addClass);
+		Stream.of(classes).forEach(JAXBContextCache::add);
 		return context();
 	}
 
@@ -143,7 +143,7 @@ public final class JAXBContextCache {
 	 *
 	 * @param cls the class to register
 	 */
-	public static synchronized void addClass(final Class<?> cls) {
+	public static synchronized void add(final Class<?> cls) {
 		requireNonNull(cls);
 
 		if (!CLASSES.contains(cls)) {
@@ -157,7 +157,7 @@ public final class JAXBContextCache {
 	 *
 	 * @param cls the class to de-register
 	 */
-	public static synchronized void removeClass(final Class<?> cls) {
+	public static synchronized void remove(final Class<?> cls) {
 		requireNonNull(cls);
 
 		if (CLASSES.contains(cls)) {
