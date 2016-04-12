@@ -36,6 +36,7 @@ import org.jenetics.util.ISeq;
  * Caches the JAXB classes and lets you add additional one. You can either add
  * a <em>JAXB</em> class directly, or the package where you have put in a
  * {@code JAXBRegistry} class:
+ *
  * <pre>{@code
  * // Class may be package private
  * final class JAXBRegistry {
@@ -71,6 +72,12 @@ public final class JAXBContextCache {
 
 	private static JAXBContext _context;
 
+	/**
+	 * Return a {@code JAXBContext} with the currently registered classes. This
+	 * method is <em>synchronized</em>.
+	 *
+	 * @return the {@code JAXBContext} with the currently registered classes
+	 */
 	public static synchronized JAXBContext context() {
 		if (_context == null) {
 			try {
@@ -86,16 +93,36 @@ public final class JAXBContextCache {
 		return _context;
 	}
 
+	/**
+	 * Return a {@code JAXBContext} with the currently registered classes plus
+	 * the registered classes in the given packages. This method is
+	 * <em>synchronized</em>.
+	 *
+	 * @param packages the additional packages of the return {@code JAXBContext}
+	 * @return the {@code JAXBContext}
+	 */
 	public static JAXBContext context(final String... packages) {
 		Stream.of(packages).forEach(JAXBContextCache::addPackage);
 		return context();
 	}
 
+	/**
+	 * Return a {@code JAXBContext} with the currently registered classes plus
+	 * the given classes. This method is <em>synchronized</em>.
+	 *
+	 * @param classes the additional classes of the return {@code JAXBContext}
+	 * @return the {@code JAXBContext}
+	 */
 	public static JAXBContext context(final Class<?>... classes) {
 		Stream.of(classes).forEach(JAXBContextCache::addClass);
 		return context();
 	}
 
+	/**
+	 * Register the given source package.
+	 *
+	 * @param pkg the package to register
+	 */
 	public static synchronized void addPackage(final String pkg) {
 		if (!PACKAGES.contains(pkg)) {
 			PACKAGES.add(pkg);
@@ -111,6 +138,11 @@ public final class JAXBContextCache {
 		}
 	}
 
+	/**
+	 * Register the given class.
+	 *
+	 * @param cls the class to register
+	 */
 	public static synchronized void addClass(final Class<?> cls) {
 		requireNonNull(cls);
 
