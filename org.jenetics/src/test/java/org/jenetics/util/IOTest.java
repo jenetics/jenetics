@@ -19,10 +19,53 @@
  */
 package org.jenetics.util;
 
+import java.io.IOException;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlValue;
+
+import org.testng.annotations.Test;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 public class IOTest {
+
+	@XmlRootElement(name = "data-class")
+	@XmlType(name = "DataClass")
+	@XmlAccessorType(XmlAccessType.FIELD)
+	public static final class DataClass {
+		@XmlAttribute public String name;
+		@XmlValue public String value;
+	}
+
+	@Test
+	public void jaxbRegister() throws IOException {
+		IO.JAXB.register(DataClass.class);
+
+		final DataClass data = new DataClass();
+		data.name = "name";
+		data.value = "value";
+
+		IO.jaxb.write(data, System.out);
+		System.out.flush();
+	}
+
+	@Test(expectedExceptions = IOException.class)
+	public void jaxbDeregister() throws IOException {
+		IO.JAXB.deregister(DataClass.class);
+
+		final DataClass data = new DataClass();
+		data.name = "name";
+		data.value = "value";
+
+		IO.jaxb.write(data, System.out);
+	}
+
 }
