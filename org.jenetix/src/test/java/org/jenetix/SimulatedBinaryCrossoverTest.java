@@ -17,23 +17,12 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.util;
-
-import org.jenetics.util.ISeq;
+package org.jenetix;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version 3.5
  * @since 3.5
  */
-final class JAXBRegistry {
-	private JAXBRegistry() {require.noInstance();}
-
-	/**
-	 * The JAXB classes of this package.
-	 */
-	public static final ISeq<Class<?>> CLASSES = ISeq.of(
-		model.CharacterModel.class
-	);
-
+public class SimulatedBinaryCrossoverTest {
 }

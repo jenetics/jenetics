@@ -40,7 +40,6 @@ import org.jenetics.internal.util.model.CharacterModel;
 public class jaxb {
 	private jaxb() {require.noInstance();}
 
-
 	private static final XmlAdapter<Object, Object> IDENTITY_ADAPTER =
 		new XmlAdapter<Object, Object>() {
 			@Override public Object unmarshal(final Object value) {

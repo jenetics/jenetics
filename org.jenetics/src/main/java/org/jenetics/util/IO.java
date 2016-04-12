@@ -32,10 +32,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.nio.file.Path;
+import java.util.Arrays;
 
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
+
+import org.jenetics.internal.util.JAXBContextCache;
+import org.jenetics.internal.util.require;
 
 /**
  * Class for object serialization. The following example shows how to write and
@@ -58,13 +62,98 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
  *     .stream(population, 1);
  * }</pre>
  *
+ * The {@code jaxb} marshalling also allows to read and write own classes. For
+ * this you have to register your {@code @XmlType}d class first.
+ * <pre>{@code
+ * // The user defined 'JAXB' model class.
+ * \@XmlRootElement(name = "data-class")
+ * \@XmlType(name = "DataClass")
+ * \@XmlAccessorType(XmlAccessType.FIELD)
+ * public static final class DataClass {
+ *     \@XmlAttribute public String name;
+ *     \@XmlValue public String value;
+ * }
+ *
+ * // Register the 'JAXB' model class.
+ * IO.JAXB.register(DataClass.class);
+ * final DataClass data = ...;
+ * IO.jaxb.write(data, "data.xml");
+ * }</pre>
+ *
+ * It is safe to call {@code IO.JAXB.register(DataClass.class)} more than once.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0
+ * @version 3.5
  */
 public abstract class IO {
 
 	protected IO() {
+	}
+
+	/**
+	 * Helper class for <em>JAXB</em> class registering/de-registering.
+	 *
+	 * <pre>{@code
+	 * // The user defined 'JAXB' model class.
+	 * \@XmlRootElement(name = "data-class")
+	 * \@XmlType(name = "DataClass")
+	 * \@XmlAccessorType(XmlAccessType.FIELD)
+	 * public static final class DataClass {
+	 *     \@XmlAttribute public String name;
+	 *     \@XmlValue public String value;
+	 * }
+	 *
+	 * // Register the 'JAXB' model class.
+	 * IO.JAXB.register(DataClass.class);
+	 * final DataClass data = ...;
+	 * IO.jaxb.write(data, "data.xml");
+	 * }</pre>
+	 *
+	 * It is safe to call {@code IO.JAXB.register(DataClass.class)} more than
+	 * once.
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since 3.5
+	 * @version 3.5
+	 */
+	public static final class JAXB {
+		private JAXB() {require.noInstance();}
+
+		/**
+		 * Registers the given <em>JAXB</em> model classes. This allows to use
+		 * the {@code IO.jaxb} class with own <em>JAXB</em> marshallings.
+		 * <p>
+		 * <em>It is safe to call this method more than once for a given class.
+		 * The class is registered only once.</em>
+		 *
+		 * @param classes the <em>JAXB</em> model classes to register
+		 * @throws NullPointerException if one of the classes is {@code null}
+		 */
+		public static void register(final Class<?>... classes) {
+			Arrays.asList(classes).forEach(JAXBContextCache::add);
+		}
+
+		/**
+		 * De-registers the given <em>JAXB</em> model classes.
+		 *
+		 * @param classes the <em>JAXB</em> model classes to register
+		 * @throws NullPointerException if one of the classes is {@code null}
+		 */
+		public static void deregister(final Class<?>... classes) {
+			Arrays.asList(classes).forEach(JAXBContextCache::remove);
+		}
+
+		/**
+		 * Check is the given class is already registered.
+		 *
+		 * @param cls the class to check
+		 * @return {@code true} if the given class is already registered,
+		 *         {@code false} otherwise.
+		 */
+		public static boolean contains(final Class<?> cls) {
+			return JAXBContextCache.contains(cls);
+		}
 	}
 
 	/**

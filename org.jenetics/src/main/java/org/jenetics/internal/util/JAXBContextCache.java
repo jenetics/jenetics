@@ -33,11 +33,30 @@ import javax.xml.bind.JAXBException;
 import org.jenetics.util.ISeq;
 
 /**
- * Caches the JAXB classes and lets you add additional one.
+ * Caches the JAXB classes and lets you add additional one. You can either add
+ * a <em>JAXB</em> class directly, or the package where you have put in a
+ * {@code JAXBRegistry} class:
+ *
+ * <pre>{@code
+ * // Class may be package private
+ * final class JAXBRegistry {
+ *     private JAXBRegistry() {require.noInstance();}
+ *
+ *     // Must contain static final field 'CLASSES'.
+ *     public static final ISeq<Class<?>> CLASSES = ISeq.of(
+ *         BitGene.Model.class,
+ *         EnumGene.Model.class,
+ *         CharacterGene.Model.class,
+ *         IntegerGene.Model.class,
+ *         LongGene.Model.class,
+ *         DoubleGene.Model.class
+ *     )
+ * }
+ * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.5
+ * @since 3.5
  */
 public final class JAXBContextCache {
 	private JAXBContextCache() {require.noInstance();}
@@ -53,6 +72,12 @@ public final class JAXBContextCache {
 
 	private static JAXBContext _context;
 
+	/**
+	 * Return a {@code JAXBContext} with the currently registered classes. This
+	 * method is <em>synchronized</em>.
+	 *
+	 * @return the {@code JAXBContext} with the currently registered classes
+	 */
 	public static synchronized JAXBContext context() {
 		if (_context == null) {
 			try {
@@ -68,16 +93,36 @@ public final class JAXBContextCache {
 		return _context;
 	}
 
+	/**
+	 * Return a {@code JAXBContext} with the currently registered classes plus
+	 * the registered classes in the given packages. This method is
+	 * <em>synchronized</em>.
+	 *
+	 * @param packages the additional packages of the return {@code JAXBContext}
+	 * @return the {@code JAXBContext}
+	 */
 	public static JAXBContext context(final String... packages) {
 		Stream.of(packages).forEach(JAXBContextCache::addPackage);
 		return context();
 	}
 
+	/**
+	 * Return a {@code JAXBContext} with the currently registered classes plus
+	 * the given classes. This method is <em>synchronized</em>.
+	 *
+	 * @param classes the additional classes of the return {@code JAXBContext}
+	 * @return the {@code JAXBContext}
+	 */
 	public static JAXBContext context(final Class<?>... classes) {
-		Stream.of(classes).forEach(JAXBContextCache::addClass);
+		Stream.of(classes).forEach(JAXBContextCache::add);
 		return context();
 	}
 
+	/**
+	 * Register the given source package.
+	 *
+	 * @param pkg the package to register
+	 */
 	public static synchronized void addPackage(final String pkg) {
 		if (!PACKAGES.contains(pkg)) {
 			PACKAGES.add(pkg);
@@ -93,13 +138,44 @@ public final class JAXBContextCache {
 		}
 	}
 
-	public static synchronized void addClass(final Class<?> cls) {
+	/**
+	 * Register the given class.
+	 *
+	 * @param cls the class to register
+	 */
+	public static synchronized void add(final Class<?> cls) {
 		requireNonNull(cls);
 
 		if (!CLASSES.contains(cls)) {
 			_context = null;
 			CLASSES.add(cls);
 		}
+	}
+
+	/**
+	 * De-register the given class.
+	 *
+	 * @param cls the class to de-register
+	 */
+	public static synchronized void remove(final Class<?> cls) {
+		requireNonNull(cls);
+
+		if (CLASSES.contains(cls)) {
+			_context = null;
+			CLASSES.remove(cls);
+		}
+	}
+
+	/**
+	 * Check is the given class is already registered.
+	 *
+	 * @param cls the class to check
+	 * @return {@code true} if the given class is already registered,
+	 *         {@code false} otherwise.
+	 */
+	public static synchronized boolean contains(final Class<?> cls) {
+		requireNonNull(cls);
+		return CLASSES.contains(cls);
 	}
 
 	@SuppressWarnings("unchecked")

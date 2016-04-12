@@ -44,8 +44,8 @@ import org.jenetics.util.RandomRegistry;
  * binary crossover for continuous search space. Complex Systems, 9, pp. 115-148.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__!
+ * @since 3.5
+ * @version 3.5
  */
 public class SimulatedBinaryCrossover<
 	G extends NumericGene<?, G>,

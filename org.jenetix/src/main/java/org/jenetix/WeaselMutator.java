@@ -39,8 +39,8 @@ import org.jenetics.util.MSeq;
  * @see WeaselSelector
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__!
+ * @since 3.5
+ * @version 3.5
  */
 public class WeaselMutator<
 	G extends Gene<?, G>,
