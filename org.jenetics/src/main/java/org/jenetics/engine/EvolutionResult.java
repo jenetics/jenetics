@@ -81,7 +81,7 @@ public final class EvolutionResult<
 		final int alterCount
 	) {
 		_optimize = requireNonNull(optimize);
-		_population = requireNonNull(population);
+		_population = requireNonNull(population).copy();
 		_generation = generation;
 		_totalGenerations = totalGenerations;
 		_durations = requireNonNull(durations);
@@ -116,7 +116,7 @@ public final class EvolutionResult<
 	 * @return the population after the evolution step
 	 */
 	public Population<G, C> getPopulation() {
-		return _population;
+		return _population.copy();
 	}
 
 	/**
