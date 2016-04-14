@@ -16104,12 +16104,12 @@ This kind of termination method should always be applied---usually additional
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/diagram/FixedGenerationTermination.svg
+	filename ../resources/diagram/Knapsack-fixed_generation_termination.svg
 	lyxscale 80
 	width 100text%
 
@@ -16477,7 +16477,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/diagram/SteadyFitnessTermination.svg
+	filename ../resources/diagram/Knapsack-steady_fitness_termination.svg
 	lyxscale 80
 	width 100text%
 
@@ -16640,7 +16640,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/diagram/ExecutionTimeTermination.svg
+	filename ../resources/diagram/Knapsack-execution_time_termination.svg
 	lyxscale 80
 	width 100text%
 
@@ -16736,7 +16736,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/diagram/FitnessThresholdTermination.svg
+	filename ../resources/diagram/Knapsack-fitness_threshold_termination.svg
 	lyxscale 80
 	width 100text%
 
@@ -16800,7 +16800,7 @@ easily
 
 \begin_layout Standard
 \begin_inset Note Comment
-status open
+status collapsed
 
 \begin_layout Subsubsection
 Fitness convergence
@@ -16845,8 +16845,164 @@ A termination method that stops the evolution when a user-specified percentage
 
 \end_layout
 
+\begin_layout Subsection
+Evolution performance
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+Evolution!performance
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This section contains an empirical 
+\emph on
+proof
+\emph default
+, that 
+\emph on
+evolutionary
+\emph default
+ selectors deliver significantly better fitness results than a random search.
+ The 
+\family typewriter
+MonteCarloSelector
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Monte Carlo selector
+\end_layout
+
+\end_inset
+
+
+\family default
+ is used for creating the comparison (random search) fitness values.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/diagram/Knapsack-selector_comparison.svg
+	lyxscale 80
+	width 100text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Selector-performance-Knapsack"
+
+\end_inset
+
+Selector-performance (Knapsack)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Diagram 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Selector-performance-Knapsack"
+
+\end_inset
+
+ shows the 
+\emph on
+evolution
+\emph default
+ performance of the 
+\family typewriter
+Selector
+\family default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The termination tests are using a 
+\family typewriter
+Tournament\SpecialChar \-
+Selector
+\family default
+, with tournament-size 5, for selecting the survivors, and a 
+\family typewriter
+Roulette\SpecialChar \-
+Wheel\SpecialChar \-
+Selector
+\family default
+ for selecting the offspring.
+\end_layout
+
+\end_inset
+
+ used by the examples in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Termination"
+
+\end_inset
+
+.
+ The lower blue line shows the (mean) fitness values of the 
+\emph on
+Knapsack
+\emph default
+ problem when using the 
+\family typewriter
+Monte\SpecialChar \-
+Carlo\SpecialChar \-
+Selector
+\family default
+ for selecting the survivors and offspring population.
+ It can be easily seen, that the performance of the 
+\emph on
+real
+\emph default
+ evolutionary 
+\family typewriter
+Selector
+\family default
+s is much better than a random search.
+\end_layout
+
 \begin_layout Section
 Internals
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Internals
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -16882,6 +17038,26 @@ internal
 
 \begin_layout Subsection
 PRNG testing
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+PRNG testing
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Random!testing
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -17249,10 +17425,10 @@ Seeding
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
-Random!Seeding
+Random!seeding
 \end_layout
 
 \end_inset
@@ -18251,7 +18427,7 @@ status open
 
 
 \backslash
-lstinputlisting{../resources/code/OnesCounting.java}
+lstinputlisting{../java/OnesCounting.java}
 \end_layout
 
 \end_inset
@@ -18461,7 +18637,7 @@ status open
 
 
 \backslash
-lstinputlisting{../resources/code/RealFunction.java}
+lstinputlisting{../java/RealFunction.java}
 \end_layout
 
 \end_inset
@@ -18614,7 +18790,7 @@ status open
 
 
 \backslash
-lstinputlisting{../resources/code/Knapsack.java}
+lstinputlisting{../java/Knapsack.java}
 \end_layout
 
 \end_inset
@@ -18747,7 +18923,7 @@ status open
 
 
 \backslash
-lstinputlisting{../resources/code/TravelingSalesman.java}
+lstinputlisting{../java/TravelingSalesman.java}
 \end_layout
 
 \end_inset

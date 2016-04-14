@@ -42,7 +42,7 @@ public class KnapsackFixedGeneration {
 
 	private static final double GEN_BASE = pow(10, log10(100)/20.0);
 	private static final Params<Long> PARAMS = Params.of(
-		"Execution time",
+		"Fixed generation",
 		IntStream.rangeClosed(1, 50)
 			.mapToLong(i -> max((long)pow(GEN_BASE, i), i))
 			.mapToObj(Long::new)
@@ -50,7 +50,7 @@ public class KnapsackFixedGeneration {
 	);
 
 	private static final Supplier<TrialMeter<Long>>
-		TRIAL_METER = () -> TrialMeter.of(
+	TRIAL_METER = () -> TrialMeter.of(
 		"Fixed generation",
 		"Create fixed generation performance measures",
 		PARAMS,
