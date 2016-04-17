@@ -18305,18 +18305,117 @@ Weasel program
 \end_layout
 
 \begin_layout Standard
-In The Blind Watchmaker 
+The Weasel program is thought experiment from Richard Dawkins, in which
+ he tries to illustrate the function genetic 
+\emph on
+mutation
+\emph default
+ and 
+\emph on
+selection
+\emph default
+.
+ For this reason he chooses the well known example of typewriting monkeys.
+\end_layout
+
+\begin_layout Quote
+I don't know who it was first pointed out that, given enough time, a monkey
+ bashing away at random on a typewriter could produce all the works of Shakespea
+re.
+ The operative phrase is, of course, given enough time.
+ Let us limit the task facing our monkey somewhat.
+ Suppose that he has to produce, not the complete works of Shakespeare but
+ just the short sentence 
+\begin_inset Quotes ald
+\end_inset
+
+Methinks it is like a weasel
+\begin_inset Quotes ard
+\end_inset
+
+, and we shall make it relatively easy by giving him a typewriter with a
+ restricted keyboard, one with just the 26 (uppercase) letters, and a space
+ bar.
+ How long will he take to write this one little sentence? 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "r.dawkins1986the-blind-watch"
 
 \end_inset
 
-, Richard Dawkins discusses a very simple genetic algorithm (GA) to evolve
- the phrase "METHINKS IT IS LIKE A WEASEL" starting from randomly generated
- strings.
- Despite the fact that Dr.
- Dawkins was very careful to point out the limitations of this simulation:
+
+\end_layout
+
+\begin_layout Standard
+The search space of the 28 character long target string is 
+\begin_inset Formula $27^{28}\approx10^{40}$
+\end_inset
+
+.
+ If we are trying 
+\begin_inset Formula $1,000,000$
+\end_inset
+
+ different strings per second, it would take about 
+\begin_inset Formula $10^{26}$
+\end_inset
+
+ years (in average) generating the correct string.
+ Although Dawkins did not provide the source code for his program, a 
+\begin_inset Quotes ald
+\end_inset
+
+Weasel
+\begin_inset Quotes ard
+\end_inset
+
+ style algorithm could run as follows:
+\end_layout
+
+\begin_layout Enumerate
+Start with a random string of 28 characters.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Make 
+\begin_inset Formula $n$
+\end_inset
+
+ copies of the string (reproduce).
+ 
+\end_layout
+
+\begin_layout Enumerate
+Mutate the characters with an mutation probability of 5%.
+\end_layout
+
+\begin_layout Enumerate
+Compare each new string with the target string 
+\begin_inset Quotes ald
+\end_inset
+
+METHINKS IT IS LIKE A WEASEL
+\begin_inset Quotes ard
+\end_inset
+
+, and give each a score (the number of letters in the string that are correct
+ and in the correct position).
+ 
+\end_layout
+
+\begin_layout Enumerate
+If any of the new strings has a perfect score (
+\begin_inset Formula $28$
+\end_inset
+
+), halt.
+ Otherwise, take the highest scoring string, and go to step 2.
+\end_layout
+
+\begin_layout Standard
+Richard Dawkins was also very careful to point out the limitations of this
+ simulation:
 \end_layout
 
 \begin_layout Quote
@@ -18359,41 +18458,22 @@ key "r.dawkins1986the-blind-watch"
 \end_layout
 
 \begin_layout Standard
-The building blocks of the Weasel program are the special WeaselSelector
- and WeaselMutator.
-\end_layout
-
-\begin_layout Standard
-Although Dawkins did not provide the source code for his program, a "Weasel"
- style algorithm could run as follows.
-\end_layout
-
-\begin_layout Enumerate
-Start with a random string of 28 characters.
+The building blocks of the 
+\emph on
+Weasel
+\emph default
+ program are the special 
+\family typewriter
+Weasel\SpecialChar \-
+Selector
+\family default
+ and 
+\family typewriter
+Weasel\SpecialChar \-
+Mutator
+\family default
+.
  
-\end_layout
-
-\begin_layout Enumerate
-Make 100 copies of the string (reproduce).
- 
-\end_layout
-
-\begin_layout Enumerate
-For each character in each of the 100 copies, with a probability of 5%,
- replace (mutate) the character with a new random character.
- 
-\end_layout
-
-\begin_layout Enumerate
-Compare each new string with the target string "METHINKS IT IS LIKE A WEASEL",
- and give each a score (the number of letters in the string that are correct
- and in the correct position).
- 
-\end_layout
-
-\begin_layout Enumerate
-If any of the new strings has a perfect score (28), halt.
- Otherwise, take the highest scoring string, and go to step 2.
 \end_layout
 
 \begin_layout Standard
@@ -18407,7 +18487,7 @@ character
 
  is any uppercase letter, or a space.
  The number of copies per generation, and the chance of mutation per letter
- are not specified in Dawkins's book; 100 copies and a 5% mutation rate
+ are not specified in Dawkins`s book; 100 copies and a 5% mutation rate
  are examples.
  Correct letters are not "locked".
  Each correct letter may become incorrect in subsequent generations.
@@ -18449,7 +18529,7 @@ public class WeaselProgram {
 
 \begin_layout Plain Layout
 
-        "methinks it is like a weasel";
+        "METHINKS IT IS LIKE A WEASEL";
 \end_layout
 
 \begin_layout Plain Layout
@@ -18458,7 +18538,7 @@ public class WeaselProgram {
 
 \begin_layout Plain Layout
 
-	private static int score(Genotype<CharacterGene> gt) {
+	private static int score(final Genotype<CharacterGene> gt) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -18497,12 +18577,12 @@ public class WeaselProgram {
 
 \begin_layout Plain Layout
 
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 \end_layout
 
 \begin_layout Plain Layout
 
-		final CharSeq chars = CharSeq.of("a-z ");
+		final CharSeq chars = CharSeq.of("A-Z ");
 \end_layout
 
 \begin_layout Plain Layout
@@ -18532,7 +18612,7 @@ public class WeaselProgram {
 
 \begin_layout Plain Layout
 
-			.populationSize(200)
+			.populationSize(150)
 \end_layout
 
 \begin_layout Plain Layout
@@ -18572,7 +18652,17 @@ public class WeaselProgram {
 
 \begin_layout Plain Layout
 
-			.peek(r -> System.out.println(r.getBestPhenotype()))
+			.peek(r -> System.out.println(
+\end_layout
+
+\begin_layout Plain Layout
+
+				r.getTotalGenerations() + ": " + 
+\end_layout
+
+\begin_layout Plain Layout
+
+				r.getBestPhenotype()))
 \end_layout
 
 \begin_layout Plain Layout
@@ -18599,7 +18689,9 @@ public class WeaselProgram {
 
 \family typewriter
 Weasel program
-\end_layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Weasel-program"
 
 \end_inset
 
@@ -18609,6 +18701,81 @@ Weasel program
 \end_inset
 
 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Weasel-program"
+
+\end_inset
+
+ shows how-to implement the WeaselProgram with Jenetics.
+ The important part is, that you set the Selector to the WeaselSelector
+ and the alterer to the WeaselMutator.
+ It is also essential to set the offspring-fraction to one, which fulfills
+ step 
+\begin_inset Formula $2$
+\end_inset
+
+ of the algorithm.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+scriptsize
+\backslash
+ttfamily}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstinputlisting{../resources/code/WeaselProgram.out}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+footnotesize}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The (shortened) output of the Weasel program (listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Weasel-program"
+
+\end_inset
+
+) shows, that we reach the optimal solution in generation 
+\begin_inset Formula $46$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -18777,7 +18944,7 @@ Chromosome
  The tournament selector is used for both, the offspring- and the survivor
  selection---this is the default selector.
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 For the other default values (population size, maximal age, ...) have a look
