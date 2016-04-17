@@ -19,25 +19,25 @@ import org.jenetics.util.Factory;
  */
 public class WeaselProgram {
 
-	private static final String TARGET_STRING = "methinks it is like a weasel";
+	private static final String TARGET = "METHINKS IT IS LIKE A WEASEL";
 
-	private static Integer evaluate(final Genotype<CharacterGene> gt) {
+	private static int score(final Genotype<CharacterGene> gt) {
 		final CharSequence source = (CharSequence)gt.getChromosome();
 
-		return IntStream.range(0, TARGET_STRING.length())
-			.map(i -> source.charAt(i) == TARGET_STRING.charAt(i) ? 1 : 0)
+		return IntStream.range(0, TARGET.length())
+			.map(i -> source.charAt(i) == TARGET.charAt(i) ? 1 : 0)
 			.sum();
 	}
 
 	public static void main(String[] args) throws Exception {
-		final CharSeq chars = CharSeq.of("a-z ");
+		final CharSeq chars = CharSeq.of("A-Z ");
 		final Factory<Genotype<CharacterGene>> gtf = Genotype.of(
-			new CharacterChromosome(chars, TARGET_STRING.length())
+			new CharacterChromosome(chars, TARGET.length())
 		);
 
 		final Engine<CharacterGene, Integer> engine = Engine
-			.builder(WeaselProgram::evaluate, gtf)
-			.populationSize(200)
+			.builder(WeaselProgram::score, gtf)
+			.populationSize(150)
 			.selector(new WeaselSelector<>())
 			.offspringFraction(1)
 			.alterers(new WeaselMutator<>(0.05))
@@ -45,7 +45,8 @@ public class WeaselProgram {
 
 		final Phenotype<CharacterGene, Integer> result = engine.stream()
 			.limit(50)
-			.peek(r -> System.out.println(r.getBestPhenotype()))
+			.peek(r -> System.out.println(
+				r.getTotalGenerations() + ": " + r.getBestPhenotype()))
 			.collect(toBestPhenotype());
 
 		System.out.println(result);
