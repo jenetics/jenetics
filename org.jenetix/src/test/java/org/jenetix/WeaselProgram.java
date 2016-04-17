@@ -1,6 +1,7 @@
 package org.jenetix;
 
 import static org.jenetics.engine.EvolutionResult.toBestPhenotype;
+import static org.jenetics.engine.limit.byFitnessThreshold;
 
 import java.util.stream.IntStream;
 
@@ -44,7 +45,7 @@ public class WeaselProgram {
 			.build();
 
 		final Phenotype<CharacterGene, Integer> result = engine.stream()
-			.limit(50)
+			.limit(byFitnessThreshold(27))
 			.peek(r -> System.out.println(
 				r.getTotalGenerations() + ": " + r.getBestPhenotype()))
 			.collect(toBestPhenotype());
