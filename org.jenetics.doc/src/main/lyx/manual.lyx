@@ -18697,7 +18697,7 @@ public class WeaselProgram {
 
 \begin_layout Plain Layout
 
-			.limit(byFitnessThreshold(27))
+			.limit(byFitnessThreshold(TARGET.length() - 1))
 \end_layout
 
 \begin_layout Plain Layout
