@@ -45,7 +45,7 @@ public class WeaselProgram {
 			.build();
 
 		final Phenotype<CharacterGene, Integer> result = engine.stream()
-			.limit(byFitnessThreshold(27))
+			.limit(byFitnessThreshold(TARGET.length() - 1))
 			.peek(r -> System.out.println(
 				r.getTotalGenerations() + ": " + r.getBestPhenotype()))
 			.collect(toBestPhenotype());
