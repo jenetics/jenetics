@@ -18302,11 +18302,41 @@ This section describes some features of incubating modules, which are currently
 
 \begin_layout Subsection
 Weasel program
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Weasel program
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-The Weasel program is thought experiment from Richard Dawkins, in which
- he tries to illustrate the function genetic 
+The Weasel program
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Weasel_program
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ is thought experiment from Richard Dawkins, in which he tries to illustrate
+ the function genetic 
 \emph on
 mutation
 \emph default
@@ -18339,7 +18369,7 @@ Methinks it is like a weasel
  How long will he take to write this one little sentence? 
 \begin_inset CommandInset citation
 LatexCommand cite
-key "r.dawkins1986the-blind-watch"
+key "dawkins1986"
 
 \end_inset
 
@@ -18450,7 +18480,7 @@ progeny
  
 \begin_inset CommandInset citation
 LatexCommand cite
-key "r.dawkins1986the-blind-watch"
+key "dawkins1986"
 
 \end_inset
 
@@ -18466,12 +18496,32 @@ Weasel
 \family typewriter
 Weasel\SpecialChar \-
 Selector
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+WeaselSelector
+\end_layout
+
+\end_inset
+
+
 \family default
  and 
 \family typewriter
 Weasel\SpecialChar \-
 Mutator
 \family default
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+WeaselMutator
+\end_layout
+
+\end_inset
+
 .
  
 \end_layout
@@ -18647,7 +18697,7 @@ public class WeaselProgram {
 
 \begin_layout Plain Layout
 
-			.limit(50)
+			.limit(byFitnessThreshold(27))
 \end_layout
 
 \begin_layout Plain Layout
