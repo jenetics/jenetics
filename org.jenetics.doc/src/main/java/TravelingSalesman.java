@@ -20,7 +20,6 @@ public class TravelingSalesman {
 
 	// Problem initialization:
 	// Calculating the adjacence matrix of the "city" distances.
-
 	private static final int STOPS = 20;
 	private static final double[][] ADJACENCE = matrix(STOPS);
 
@@ -90,5 +89,4 @@ public class TravelingSalesman {
 		System.out.println(statistics);
 		System.out.println(best);
 	}
-
 }

@@ -22,11 +22,16 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 3.3
+ * @version 3.5
  */
 
 apply plugin: 'packaging'
 
+dependencies {
+	compile project(':org.jenetics')
+
+	testCompile Include.TestNG
+}
 
 task asciidoc(type: Exec) {
 	outputs.upToDateWhen { false }

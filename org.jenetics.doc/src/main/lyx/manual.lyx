@@ -16104,12 +16104,12 @@ This kind of termination method should always be applied---usually additional
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/diagram/FixedGenerationTermination.svg
+	filename ../resources/diagram/Knapsack-fixed_generation_termination.svg
 	lyxscale 80
 	width 100text%
 
@@ -16477,7 +16477,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/diagram/SteadyFitnessTermination.svg
+	filename ../resources/diagram/Knapsack-steady_fitness_termination.svg
 	lyxscale 80
 	width 100text%
 
@@ -16640,7 +16640,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/diagram/ExecutionTimeTermination.svg
+	filename ../resources/diagram/Knapsack-execution_time_termination.svg
 	lyxscale 80
 	width 100text%
 
@@ -16736,7 +16736,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/diagram/FitnessThresholdTermination.svg
+	filename ../resources/diagram/Knapsack-fitness_threshold_termination.svg
 	lyxscale 80
 	width 100text%
 
@@ -16800,7 +16800,7 @@ easily
 
 \begin_layout Standard
 \begin_inset Note Comment
-status open
+status collapsed
 
 \begin_layout Subsubsection
 Fitness convergence
@@ -16845,8 +16845,164 @@ A termination method that stops the evolution when a user-specified percentage
 
 \end_layout
 
+\begin_layout Subsection
+Evolution performance
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+Evolution!performance
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This section contains an empirical 
+\emph on
+proof
+\emph default
+, that 
+\emph on
+evolutionary
+\emph default
+ selectors deliver significantly better fitness results than a random search.
+ The 
+\family typewriter
+MonteCarloSelector
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Monte Carlo selector
+\end_layout
+
+\end_inset
+
+
+\family default
+ is used for creating the comparison (random search) fitness values.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/diagram/Knapsack-selector_comparison.svg
+	lyxscale 80
+	width 100text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Selector-performance-Knapsack"
+
+\end_inset
+
+Selector-performance (Knapsack)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Diagram 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Selector-performance-Knapsack"
+
+\end_inset
+
+ shows the 
+\emph on
+evolution
+\emph default
+ performance of the 
+\family typewriter
+Selector
+\family default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The termination tests are using a 
+\family typewriter
+Tournament\SpecialChar \-
+Selector
+\family default
+, with tournament-size 5, for selecting the survivors, and a 
+\family typewriter
+Roulette\SpecialChar \-
+Wheel\SpecialChar \-
+Selector
+\family default
+ for selecting the offspring.
+\end_layout
+
+\end_inset
+
+ used by the examples in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Termination"
+
+\end_inset
+
+.
+ The lower blue line shows the (mean) fitness values of the 
+\emph on
+Knapsack
+\emph default
+ problem when using the 
+\family typewriter
+Monte\SpecialChar \-
+Carlo\SpecialChar \-
+Selector
+\family default
+ for selecting the survivors and offspring population.
+ It can be easily seen, that the performance of the 
+\emph on
+real
+\emph default
+ evolutionary 
+\family typewriter
+Selector
+\family default
+s is much better than a random search.
+\end_layout
+
 \begin_layout Section
 Internals
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Internals
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -16882,6 +17038,26 @@ internal
 
 \begin_layout Subsection
 PRNG testing
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+PRNG testing
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Random!testing
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -17249,10 +17425,10 @@ Seeding
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
-Random!Seeding
+Random!seeding
 \end_layout
 
 \end_inset
@@ -18111,6 +18287,547 @@ How does this method perform on operating systems other than Linux?
 How does this method perform on other JVM implementations?
 \end_layout
 
+\begin_layout Section
+Incubation
+\end_layout
+
+\begin_layout Standard
+This section describes some features of incubating modules, which are currently
+ not part of the release.
+ If you find it useful, you can build the module on the command line.
+ Be aware, that it is not guaranteed that the modules will ever be part
+ of the official release.
+ It is also possible that classes/interfaces can change without notice.
+\end_layout
+
+\begin_layout Subsection
+Weasel program
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Weasel program
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The Weasel program
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Weasel_program
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ is thought experiment from Richard Dawkins, in which he tries to illustrate
+ the function genetic 
+\emph on
+mutation
+\emph default
+ and 
+\emph on
+selection
+\emph default
+.
+ For this reason he chooses the well known example of typewriting monkeys.
+\end_layout
+
+\begin_layout Quote
+I don't know who it was first pointed out that, given enough time, a monkey
+ bashing away at random on a typewriter could produce all the works of Shakespea
+re.
+ The operative phrase is, of course, given enough time.
+ Let us limit the task facing our monkey somewhat.
+ Suppose that he has to produce, not the complete works of Shakespeare but
+ just the short sentence 
+\begin_inset Quotes ald
+\end_inset
+
+Methinks it is like a weasel
+\begin_inset Quotes ard
+\end_inset
+
+, and we shall make it relatively easy by giving him a typewriter with a
+ restricted keyboard, one with just the 26 (uppercase) letters, and a space
+ bar.
+ How long will he take to write this one little sentence? 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "dawkins1986"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The search space of the 28 character long target string is 
+\begin_inset Formula $27^{28}\approx10^{40}$
+\end_inset
+
+.
+ If we are trying 
+\begin_inset Formula $1,000,000$
+\end_inset
+
+ different strings per second, it would take about 
+\begin_inset Formula $10^{26}$
+\end_inset
+
+ years (in average) generating the correct string.
+ Although Dawkins did not provide the source code for his program, a 
+\begin_inset Quotes ald
+\end_inset
+
+Weasel
+\begin_inset Quotes ard
+\end_inset
+
+ style algorithm could run as follows:
+\end_layout
+
+\begin_layout Enumerate
+Start with a random string of 28 characters.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Make 
+\begin_inset Formula $n$
+\end_inset
+
+ copies of the string (reproduce).
+ 
+\end_layout
+
+\begin_layout Enumerate
+Mutate the characters with an mutation probability of 5%.
+\end_layout
+
+\begin_layout Enumerate
+Compare each new string with the target string 
+\begin_inset Quotes ald
+\end_inset
+
+METHINKS IT IS LIKE A WEASEL
+\begin_inset Quotes ard
+\end_inset
+
+, and give each a score (the number of letters in the string that are correct
+ and in the correct position).
+ 
+\end_layout
+
+\begin_layout Enumerate
+If any of the new strings has a perfect score (
+\begin_inset Formula $28$
+\end_inset
+
+), halt.
+ Otherwise, take the highest scoring string, and go to step 2.
+\end_layout
+
+\begin_layout Standard
+Richard Dawkins was also very careful to point out the limitations of this
+ simulation:
+\end_layout
+
+\begin_layout Quote
+Although the monkey/Shakespeare model is useful for explaining the distinction
+ between single-step selection and cumulative selection, it is misleading
+ in important ways.
+ One of these is that, in each generation of selective 
+\begin_inset Quotes ald
+\end_inset
+
+breeding
+\begin_inset Quotes ard
+\end_inset
+
+, the mutant 
+\begin_inset Quotes ald
+\end_inset
+
+progeny
+\begin_inset Quotes ard
+\end_inset
+
+ phrases were judged according to the criterion of resemblance to a distant
+ ideal target, the phrase METHINKS IT IS LIKE A WEASEL.
+ Life isn't like that.
+ Evolution has no long-term goal.
+ There is no long-distance target, no final perfection to serve as a criterion
+ for selection, although human vanity cherishes the absurd notion that our
+ species is the final goal of evolution.
+ In real life, the criterion for selection is always short-term, either
+ simple survival or, more generally, reproductive success.
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "dawkins1986"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The building blocks of the 
+\emph on
+Weasel
+\emph default
+ program are the special 
+\family typewriter
+Weasel\SpecialChar \-
+Selector
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+WeaselSelector
+\end_layout
+
+\end_inset
+
+
+\family default
+ and 
+\family typewriter
+Weasel\SpecialChar \-
+Mutator
+\family default
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+WeaselMutator
+\end_layout
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+For these purposes, a 
+\begin_inset Quotes ald
+\end_inset
+
+character
+\begin_inset Quotes ard
+\end_inset
+
+ is any uppercase letter, or a space.
+ The number of copies per generation, and the chance of mutation per letter
+ are not specified in Dawkins`s book; 100 copies and a 5% mutation rate
+ are examples.
+ Correct letters are not "locked".
+ Each correct letter may become incorrect in subsequent generations.
+ The terms of the program and the existence of the target phrase do however
+ mean that such 
+\begin_inset Quotes ald
+\end_inset
+
+negative mutations
+\begin_inset Quotes ard
+\end_inset
+
+ will quickly be 
+\begin_inset Quotes ald
+\end_inset
+
+corrected
+\begin_inset Quotes ard
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public class WeaselProgram {
+\end_layout
+
+\begin_layout Plain Layout
+
+	private static final String TARGET = 
+\end_layout
+
+\begin_layout Plain Layout
+
+        "METHINKS IT IS LIKE A WEASEL";
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	private static int score(final Genotype<CharacterGene> gt) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		final CharSequence source = 
+\end_layout
+
+\begin_layout Plain Layout
+
+            (CharSequence)gt.getChromosome();
+\end_layout
+
+\begin_layout Plain Layout
+
+		return IntStream.range(0, TARGET.length())
+\end_layout
+
+\begin_layout Plain Layout
+
+			.map(i -> source.charAt(i) == TARGET.charAt(i) ? 1 : 0)
+\end_layout
+
+\begin_layout Plain Layout
+
+			.sum();
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	public static void main(final String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		final CharSeq chars = CharSeq.of("A-Z ");
+\end_layout
+
+\begin_layout Plain Layout
+
+		final Factory<Genotype<CharacterGene>> gtf = Genotype.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+			new CharacterChromosome(chars, TARGET.length())
+\end_layout
+
+\begin_layout Plain Layout
+
+		);
+\end_layout
+
+\begin_layout Plain Layout
+
+		final Engine<CharacterGene, Integer> engine = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+			.builder(WeaselProgram::score, gtf)
+\end_layout
+
+\begin_layout Plain Layout
+
+			.populationSize(150)
+\end_layout
+
+\begin_layout Plain Layout
+
+			.selector(new WeaselSelector<>())
+\end_layout
+
+\begin_layout Plain Layout
+
+			.offspringFraction(1)
+\end_layout
+
+\begin_layout Plain Layout
+
+			.alterers(new WeaselMutator<>(0.05))
+\end_layout
+
+\begin_layout Plain Layout
+
+			.build();
+\end_layout
+
+\begin_layout Plain Layout
+
+		final Phenotype<CharacterGene, Integer> result = engine
+\end_layout
+
+\begin_layout Plain Layout
+
+            .stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+			.limit(byFitnessThreshold(TARGET.length() - 1))
+\end_layout
+
+\begin_layout Plain Layout
+
+			.peek(r -> System.out.println(
+\end_layout
+
+\begin_layout Plain Layout
+
+				r.getTotalGenerations() + ": " + 
+\end_layout
+
+\begin_layout Plain Layout
+
+				r.getBestPhenotype()))
+\end_layout
+
+\begin_layout Plain Layout
+
+			.collect(toBestPhenotype());
+\end_layout
+
+\begin_layout Plain Layout
+
+		System.out.println(result);
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+Weasel program
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Weasel-program"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Weasel-program"
+
+\end_inset
+
+ shows how-to implement the WeaselProgram with Jenetics.
+ The important part is, that you set the Selector to the WeaselSelector
+ and the alterer to the WeaselMutator.
+ It is also essential to set the offspring-fraction to one, which fulfills
+ step 
+\begin_inset Formula $2$
+\end_inset
+
+ of the algorithm.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+scriptsize
+\backslash
+ttfamily}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstinputlisting{../resources/code/WeaselProgram.out}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+footnotesize}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The (shortened) output of the Weasel program (listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Weasel-program"
+
+\end_inset
+
+) shows, that we reach the optimal solution in generation 
+\begin_inset Formula $46$
+\end_inset
+
+.
+\end_layout
+
 \begin_layout Standard
 \begin_inset Newpage pagebreak
 \end_inset
@@ -18251,7 +18968,7 @@ status open
 
 
 \backslash
-lstinputlisting{../resources/code/OnesCounting.java}
+lstinputlisting{../java/OnesCounting.java}
 \end_layout
 
 \end_inset
@@ -18277,7 +18994,7 @@ Chromosome
  The tournament selector is used for both, the offspring- and the survivor
  selection---this is the default selector.
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 For the other default values (population size, maximal age, ...) have a look
@@ -18461,7 +19178,7 @@ status open
 
 
 \backslash
-lstinputlisting{../resources/code/RealFunction.java}
+lstinputlisting{../java/RealFunction.java}
 \end_layout
 
 \end_inset
@@ -18618,7 +19335,7 @@ status open
 
 
 \backslash
-lstinputlisting{../resources/code/Knapsack.java}
+lstinputlisting{../java/Knapsack.java}
 \end_layout
 
 \end_inset
@@ -18751,7 +19468,7 @@ status open
 
 
 \backslash
-lstinputlisting{../resources/code/TravelingSalesman.java}
+lstinputlisting{../java/TravelingSalesman.java}
 \end_layout
 
 \end_inset

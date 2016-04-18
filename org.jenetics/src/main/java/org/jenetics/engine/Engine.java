@@ -191,8 +191,8 @@ public final class Engine<
 		_validator = requireNonNull(validator);
 		_optimize = requireNonNull(optimize);
 
-		_offspringCount = require.positive(offspringCount);
-		_survivorsCount = require.positive(survivorsCount);
+		_offspringCount = require.nonNegative(offspringCount);
+		_survivorsCount = require.nonNegative(survivorsCount);
 		_maximalPhenotypeAge = require.positive(maximalPhenotypeAge);
 
 		_executor = new TimedExecutor(requireNonNull(executor));
@@ -250,22 +250,24 @@ public final class Engine<
 	public EvolutionResult<G, C> evolve(final EvolutionStart<G, C> start) {
 		final Timer timer = Timer.of().start();
 
+		final Population<G, C> startPopulation = start.getPopulation();
+
 		// Initial evaluation of the population.
 		final Timer evaluateTimer = Timer.of(_clock).start();
-		evaluate(start.getPopulation());
+		evaluate(startPopulation);
 		evaluateTimer.stop();
 
 		// Select the offspring population.
 		final CompletableFuture<TimedResult<Population<G, C>>> offspring =
 			_executor.async(() ->
-				selectOffspring(start.getPopulation()),
+				selectOffspring(startPopulation),
 				_clock
 			);
 
 		// Select the survivor population.
 		final CompletableFuture<TimedResult<Population<G, C>>> survivors =
 			_executor.async(() ->
-				selectSurvivors(start.getPopulation()),
+				selectSurvivors(startPopulation),
 				_clock
 			);
 
@@ -347,12 +349,16 @@ public final class Engine<
 
 	// Selects the survivors population. A new population object is returned.
 	private Population<G, C> selectSurvivors(final Population<G, C> population) {
-		return _survivorsSelector.select(population, _survivorsCount, _optimize);
+		return _survivorsCount > 0
+			?_survivorsSelector.select(population, _survivorsCount, _optimize)
+			: Population.empty();
 	}
 
 	// Selects the offspring population. A new population object is returned.
 	private Population<G, C> selectOffspring(final Population<G, C> population) {
-		return _offspringSelector.select(population, _offspringCount, _optimize);
+		return _offspringCount > 0
+			? _offspringSelector.select(population, _offspringCount, _optimize)
+			: Population.empty();
 	}
 
 	// Filters out invalid and to old individuals. Filtering is done in place.

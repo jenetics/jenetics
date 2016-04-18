@@ -6,6 +6,7 @@ MODULES=(
 	"${SCRIPT_DIR}/org.jenetics"
 	"${SCRIPT_DIR}/org.jenetics.example"
 	"${SCRIPT_DIR}/org.jenetics.tool"
+	"${SCRIPT_DIR}/org.jenetix"
 )
 
 CLASSPATH="."
