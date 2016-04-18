@@ -19387,7 +19387,7 @@ Engine
  setup for the real-function in section 
 \begin_inset CommandInset ref
 LatexCommand vref
-reference "sub:Real-function"
+reference "sub:Real-function-example"
 
 \end_inset
 
