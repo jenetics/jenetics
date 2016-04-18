@@ -167,6 +167,17 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 
 #### Improvement
 
+* [#81](https://github.com/jenetics/jenetics/issues/81): It is now easier to register user-defined JAXB marshallings -- `org.jenetics.util.IO.JAXB.register`
+* [#90](https://github.com/jenetics/jenetics/issues/90), [#91](https://github.com/jenetics/jenetics/issues/91): The manual contains now a section where the performance of the `MonteCarloSelector` and an evolutionary `Selector` is compared (fig. 6.8, page 52).
+* [#96](https://github.com/jenetics/jenetics/issues/96): Merge branch with incubation module `org.jenetix`, which contains experimental classes.
+* [#101](https://github.com/jenetics/jenetics/issues/101): Add manual example for solving the *Rastrigin* function.
+
+#### Bug fixes
+
+* [#92](https://github.com/jenetics/jenetics/issues/92): Fix example code in user manual.
+* [#94](https://github.com/jenetics/jenetics/issues/94): Inconsistent pre-condition check of `Engine.Builder.build` method.
+* [#99](https://github.com/jenetics/jenetics/issues/99): `EvolutionResult` was not completely immutable.
+
 ### 3.4.0
 
 #### Improvement
