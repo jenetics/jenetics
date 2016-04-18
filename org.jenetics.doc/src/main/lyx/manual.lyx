@@ -19130,11 +19130,11 @@ status open
 \begin_layout Plain Layout
 \begin_inset CommandInset label
 LatexCommand label
-name "fig:Real-function-2D"
+name "fig:Real-function"
 
 \end_inset
 
-Real function 2D
+Real function
 \end_layout
 
 \end_inset
@@ -19162,7 +19162,7 @@ reference "eq:Example-real-function"
 , is shown in figure 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "fig:Real-function-2D"
+reference "fig:Real-function"
 
 \end_inset
 
@@ -19254,6 +19254,233 @@ exact
 
 \begin_layout Subsection
 Rastrigin function
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Rastrigin-function"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Examples!Rastrigin function
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Rastrigin function
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The Rastrigin's function
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Rastrigin_function
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ is often used to test the optimization performance of genetic algorithm.
+\begin_inset Formula 
+\begin{equation}
+f\left(\mathbf{x}\right)=An+\sum_{i=1}^{n}\left(x_{i}^{2}-A\cos\left(2\pi x_{i}\right)\right).\label{eq:Rastrigin-function}
+\end{equation}
+
+\end_inset
+
+As the plot in figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Rastrigin-function"
+
+\end_inset
+
+ shows, Rastrigin's function has many local minima, which makes it difficult
+ for standard, gradient-based methods to find the global minimum.
+ If we set 
+\begin_inset Formula $A=10$
+\end_inset
+
+ and 
+\begin_inset Formula $x_{i}\in\left[-5.12,5.12\right]$
+\end_inset
+
+, the function has only one global minimum at 
+\begin_inset Formula $\mathbf{x}=\mathbf{0}$
+\end_inset
+
+ with 
+\begin_inset Formula $f\left(\mathbf{x}\right)=0$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/fwilhelm/Workspace/Development/Projects/Jenetics/org.jenetics.doc/src/main/resources/graphic/RastriginFunction.png
+	lyxscale 50
+	width 100text%
+	clip
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Rastrigin-function"
+
+\end_inset
+
+Rastrigin function
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+The following listing shows the 
+\family typewriter
+Engine
+\family default
+ setup for solving the Rastrigin function, which is very similar to the
+ setup for the real-function in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Real-function"
+
+\end_inset
+
+.
+ Beside the different fitness function, the 
+\family typewriter
+Codec
+\family default
+ for 
+\family typewriter
+double
+\family default
+ vectors is used, instead of the 
+\family typewriter
+double
+\family default
+ scalar 
+\family typewriter
+Codec
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstinputlisting{../java/RastriginFunction.java}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The console output of the program shows, that 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ finds the 
+\emph on
+optimal
+\emph default
+ solution after 
+\begin_inset Formula $38$
+\end_inset
+
+ generations.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+scriptsize
+\backslash
+ttfamily}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstinputlisting{../resources/code/RastriginFunction.out}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+footnotesize}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
