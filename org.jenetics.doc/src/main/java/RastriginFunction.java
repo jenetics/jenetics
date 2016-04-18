@@ -14,7 +14,6 @@ import org.jenetics.engine.codecs;
 import org.jenetics.util.DoubleRange;
 
 public class RastriginFunction {
-
 	private static final double A = 10;
 	private static final double R = 5.12;
 	private static final int N = 2;
@@ -52,5 +51,4 @@ public class RastriginFunction {
 		System.out.println(statistics);
 		System.out.println(best);
 	}
-
 }
