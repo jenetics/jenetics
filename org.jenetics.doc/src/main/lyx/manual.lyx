@@ -15536,6 +15536,221 @@ final Codec<Triple<Long, Long, Long>, LongGene>
 \end_layout
 
 \begin_layout Subsection
+Problem
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Problem
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+Problem
+\family default
+ interface is a further abstraction level, which allows to 
+\emph on
+bind
+\emph default
+ the problem encoding and the fitness function into one class.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface Problem<
+\end_layout
+
+\begin_layout Plain Layout
+
+    T,
+\end_layout
+
+\begin_layout Plain Layout
+
+    G extends Gene<?, G>,
+\end_layout
+
+\begin_layout Plain Layout
+
+    C extends Comparable<? super C>
+\end_layout
+
+\begin_layout Plain Layout
+
+> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    public Function<T, C> fitness();
+\end_layout
+
+\begin_layout Plain Layout
+
+    public Codec<T, G> codec();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+Problem
+\family default
+ interface
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Problem-interface"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Problem-interface"
+
+\end_inset
+
+ shows the 
+\family typewriter
+Problem
+\family default
+ interface.
+ The generic type 
+\family typewriter
+T
+\family default
+ represents the 
+\emph on
+native
+\emph default
+ argument type of the fitness function and 
+\family typewriter
+C
+\family default
+ the 
+\family typewriter
+Comparable
+\family default
+ result of the fitness function.
+ 
+\family typewriter
+G
+\family default
+ is the 
+\family typewriter
+Gene
+\family default
+ type, which is used by the evolution 
+\family typewriter
+Engine
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Problem<ISeq<Item>, BitGene, Double> knapsack = ...
+\end_layout
+
+\begin_layout Plain Layout
+
+final Engine<BitGene, Double> engine = Engine.bulder(knapsack)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .populationSize(150)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .survivorsSelector(newTournamentSelector<>(5))
+\end_layout
+
+\begin_layout Plain Layout
+
+    .offspringSelector(new RouletteWheelSelector<>())
+\end_layout
+
+\begin_layout Plain Layout
+
+    .alterers(
+\end_layout
+
+\begin_layout Plain Layout
+
+        new Mutator<>(0.03),
+\end_layout
+
+\begin_layout Plain Layout
+
+        new SinglePointCrossover<>(0.125))
+\end_layout
+
+\begin_layout Plain Layout
+
+    .build();
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The listing above shows how a new 
+\family typewriter
+Engine
+\family default
+ is created by using a predefined 
+\family typewriter
+Problem
+\family default
+ instance.
+ This allows the complete decoupling of problem and 
+\family typewriter
+Engine
+\family default
+ definition.
+\end_layout
+
+\begin_layout Subsection
 Validation
 \begin_inset CommandInset label
 LatexCommand label
@@ -16871,7 +17086,9 @@ evolutionary
  selectors deliver significantly better fitness results than a random search.
  The 
 \family typewriter
-MonteCarloSelector
+Monte\SpecialChar \-
+Carlo\SpecialChar \-
+Selector
 \begin_inset Index idx
 status collapsed
 
@@ -16938,7 +17155,8 @@ evolution
 \emph default
  performance of the 
 \family typewriter
-Selector
+Selec\SpecialChar \-
+tor
 \family default
 
 \begin_inset Foot
