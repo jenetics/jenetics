@@ -33,6 +33,14 @@ dependencies {
 	testCompile Include.TestNG
 }
 
+packaging {
+	name = 'Jenetics doc'
+	author = 'Franz Wilhelmstötter'
+	url = 'http://jenetics.sourceforge.net'
+
+	jarjar = false
+}
+
 task asciidoc(type: Exec) {
 	outputs.upToDateWhen { false }
 
