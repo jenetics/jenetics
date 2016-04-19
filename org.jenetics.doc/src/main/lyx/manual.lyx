@@ -18292,12 +18292,52 @@ Incubation
 \end_layout
 
 \begin_layout Standard
-This section describes some features of incubating modules, which are currently
- not part of the release.
- If you find it useful, you can build the module on the command line.
- Be aware, that it is not guaranteed that the modules will ever be part
- of the official release.
- It is also possible that classes/interfaces can change without notice.
+This section describes the classes in the 
+\emph on
+not-yet
+\emph default
+ released modules.
+ Incubating features and experimental genetic operators will be implemented
+ in this modules.
+ If you find this classes useful, you must build the module yourself, since
+ they are not yet available in the global maven repository.
+ With
+\end_layout
+
+\begin_layout LyX-Code
+$ ./gradlew 
+\emph on
+<module>
+\emph default
+:jar
+\end_layout
+
+\begin_layout Standard
+it is possible to create a module JAR which can be added to your project
+ classpath.
+ Be aware that interface and/or implementation of incubating modules can
+ be changed without noticing.
+\end_layout
+
+\begin_layout Standard
+Currently incubation modules:
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+org.jenetics.tool
+\family default
+ Contains utility classes for measuring the evolution performance.
+ This classes where used for creating the diagrams in this manual.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+org.jenetix
+\family default
+ Contains non-standard selector and mutator classes.
 \end_layout
 
 \begin_layout Subsection
@@ -18336,7 +18376,7 @@ https://en.wikipedia.org/wiki/Weasel_program
 \end_inset
 
  is thought experiment from Richard Dawkins, in which he tries to illustrate
- the function genetic 
+ the function of genetic 
 \emph on
 mutation
 \emph default
@@ -18345,6 +18385,19 @@ mutation
 selection
 \emph default
 .
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The classes are located in the 
+\family typewriter
+org.jenetix
+\family default
+ module.
+\end_layout
+
+\end_inset
+
  For this reason he chooses the well known example of typewriting monkeys.
 \end_layout
 
@@ -18382,15 +18435,19 @@ The search space of the 28 character long target string is
 \end_inset
 
 .
- If we are trying 
+ If the monkey writes 
 \begin_inset Formula $1,000,000$
 \end_inset
 
- different strings per second, it would take about 
+ different 
+\emph on
+sentences
+\emph default
+ per second, it would take about 
 \begin_inset Formula $10^{26}$
 \end_inset
 
- years (in average) generating the correct string.
+ years (in average) writing the correct one.
  Although Dawkins did not provide the source code for his program, a 
 \begin_inset Quotes ald
 \end_inset
@@ -18488,11 +18545,15 @@ key "dawkins1986"
 \end_layout
 
 \begin_layout Standard
-The building blocks of the 
-\emph on
-Weasel
-\emph default
- program are the special 
+If you want to write a Weasel program with the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library, you need to use the special 
 \family typewriter
 Weasel\SpecialChar \-
 Selector
@@ -18520,42 +18581,6 @@ status collapsed
 WeaselMutator
 \end_layout
 
-\end_inset
-
-.
- 
-\end_layout
-
-\begin_layout Standard
-For these purposes, a 
-\begin_inset Quotes ald
-\end_inset
-
-character
-\begin_inset Quotes ard
-\end_inset
-
- is any uppercase letter, or a space.
- The number of copies per generation, and the chance of mutation per letter
- are not specified in Dawkins`s book; 100 copies and a 5% mutation rate
- are examples.
- Correct letters are not "locked".
- Each correct letter may become incorrect in subsequent generations.
- The terms of the program and the existence of the target phrase do however
- mean that such 
-\begin_inset Quotes ald
-\end_inset
-
-negative mutations
-\begin_inset Quotes ard
-\end_inset
-
- will quickly be 
-\begin_inset Quotes ald
-\end_inset
-
-corrected
-\begin_inset Quotes ard
 \end_inset
 
 .
@@ -18766,15 +18791,48 @@ reference "lis:Weasel-program"
 
 \end_inset
 
- shows how-to implement the WeaselProgram with Jenetics.
- The important part is, that you set the Selector to the WeaselSelector
- and the alterer to the WeaselMutator.
- It is also essential to set the offspring-fraction to one, which fulfills
- step 
-\begin_inset Formula $2$
+ shows how-to implement the 
+\family typewriter
+Weasel\SpecialChar \-
+Program
+\family default
+ with 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+.
+ Step (1) and (2) of the algorithm is done implicitly when the initial populatio
+n is created.
+ The third step is done by the 
+\family typewriter
+Weasel\SpecialChar \-
+Mutator
+\family default
+, with mutation probability of 0.05.
+ Step (4) is done by the WeaselSelector together with the configured offspring-f
+raction of one.
+ The evolution stream is limited by the 
+\family typewriter
+limit\SpecialChar \-
+.by\SpecialChar \-
+Fitness\SpecialChar \-
+Threshold
+\family default
+, which is set to 
+\begin_inset Formula $score_{max}-1$
 \end_inset
 
- of the algorithm.
+.
+ In the current example this value is set to 
+\family typewriter
+TARGET\SpecialChar \-
+.length()
+\family default
+ - 1 = 27.
 \end_layout
 
 \begin_layout Standard
@@ -19321,7 +19379,7 @@ reference "fig:Rastrigin-function"
 
  shows, Rastrigin's function has many local minima, which makes it difficult
  for standard, gradient-based methods to find the global minimum.
- If we set 
+ If 
 \begin_inset Formula $A=10$
 \end_inset
 
