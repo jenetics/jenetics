@@ -21392,7 +21392,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 2.7
+: 2.11
 \end_layout
 
 \begin_layout Itemize
@@ -21425,11 +21425,11 @@ Download
 \emph on
 
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
-http://services.gradle.org/distributions/gradle-2.7-bin.zip
+http://services.gradle.org/distributions/gradle-2.11-bin.zip
 \end_layout
 
 \end_inset
