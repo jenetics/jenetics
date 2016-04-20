@@ -41,7 +41,6 @@ public class DataClass {
 	}
 
 	public DataClass() {
-		this("", "");
 	}
 
 	public static void main(final String[] args) throws IOException {

@@ -9612,12 +9612,12 @@ public class DataClass {
 
 \begin_layout Plain Layout
 
-    public DataClass() {
+    // Default constructor needed by JAXB.
 \end_layout
 
 \begin_layout Plain Layout
 
-        this("", "");
+    public DataClass() {
 \end_layout
 
 \begin_layout Plain Layout
