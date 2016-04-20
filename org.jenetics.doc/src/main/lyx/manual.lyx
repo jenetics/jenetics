@@ -9132,7 +9132,7 @@ The default PRNG used by the
 \begin_layout Subsection
 Serialization
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Serialization
@@ -9513,7 +9513,7 @@ IO
 \family default
  class can also be used for serializing own JAXB
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 JAXB
@@ -9523,7 +9523,7 @@ JAXB
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Serialization!JAXB
@@ -9535,7 +9535,7 @@ Serialization!JAXB
  Listing 
 \begin_inset CommandInset ref
 LatexCommand vref
-reference "lis:DataClassJAXB-marshalling"
+reference "lis:DataClassJAXB-serialization"
 
 \end_inset
 
@@ -9636,7 +9636,7 @@ public class DataClass {
 
 \begin_layout Plain Layout
 
-        // Registering the class before marshalling.
+        // Registering the class before serialization.
 \end_layout
 
 \begin_layout Plain Layout
@@ -9677,7 +9677,7 @@ public class DataClass {
 \begin_layout Plain Layout
 \begin_inset CommandInset label
 LatexCommand label
-name "lis:DataClassJAXB-marshalling"
+name "lis:DataClassJAXB-serialization"
 
 \end_inset
 
@@ -9687,7 +9687,7 @@ name "lis:DataClassJAXB-marshalling"
 DataClass
 \family default
 \emph default
- JAXB marshaling
+ JAXB serialization
 \end_layout
 
 \end_inset
