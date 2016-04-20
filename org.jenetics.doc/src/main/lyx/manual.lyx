@@ -9132,7 +9132,7 @@ The default PRNG used by the
 \begin_layout Subsection
 Serialization
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Serialization
@@ -9504,6 +9504,244 @@ Engine
 \emph default
 -calculating the fitness values.
  
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+IO
+\family default
+ class can also be used for serializing own JAXB
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+JAXB
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+Serialization!JAXB
+\end_layout
+
+\end_inset
+
+ annotated classes.
+ Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:DataClassJAXB-marshalling"
+
+\end_inset
+
+ shows how an user-defined JAXB class can be marshaled with the 
+\family typewriter
+IO
+\family default
+ helper class.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+@XmlRootElement(name = "data-class")
+\end_layout
+
+\begin_layout Plain Layout
+
+@XmlType(name = "DataClass")
+\end_layout
+
+\begin_layout Plain Layout
+
+@XmlAccessorType(XmlAccessType.FIELD)
+\end_layout
+
+\begin_layout Plain Layout
+
+public class DataClass {
+\end_layout
+
+\begin_layout Plain Layout
+
+    @XmlAttribute public String name;
+\end_layout
+
+\begin_layout Plain Layout
+
+    @XmlValue public String value;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    public DataClass(final String name, final String value) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        this.name = name;
+\end_layout
+
+\begin_layout Plain Layout
+
+        this.value = value;
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    public DataClass() {
+\end_layout
+
+\begin_layout Plain Layout
+
+        this("", "");
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    public static void main(final String[] args) throws Exception {
+\end_layout
+
+\begin_layout Plain Layout
+
+        // Registering the class before marshalling.
+\end_layout
+
+\begin_layout Plain Layout
+
+        IO.JAXB.register(DataClass.class);
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\end_layout
+
+\begin_layout Plain Layout
+
+        final DataClass data = 
+\end_layout
+
+\begin_layout Plain Layout
+
+            new DataClass("some name", "some value");
+\end_layout
+
+\begin_layout Plain Layout
+
+        IO.jaxb.write(data, System.out);
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:DataClassJAXB-marshalling"
+
+\end_inset
+
+
+\family typewriter
+\emph on
+DataClass
+\family default
+\emph default
+ JAXB marshaling
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The output of the marshaled 
+\family typewriter
+DataClass
+\family default
+ looks like expected.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+fontsize{6.8}{8}
+\backslash
+ttfamily}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstinputlisting[language=XML]{../resources/code/DataClass.xml}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+footnotesize}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -19097,7 +19335,7 @@ reference "lis:Weasel-program"
 
 \end_inset
 
-) shows, that we reach the optimal solution in generation 
+) shows, that the optimal solution is reached in generation 
 \begin_inset Formula $46$
 \end_inset
 
