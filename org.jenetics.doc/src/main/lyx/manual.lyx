@@ -898,7 +898,7 @@ import org.jenetics.util.Factory;
 
 \begin_layout Plain Layout
 
-public class HelloWorld {
+public final class HelloWorld {
 \end_layout
 
 \begin_layout Plain Layout
@@ -908,7 +908,7 @@ public class HelloWorld {
 
 \begin_layout Plain Layout
 
-    private static Integer eval(Genotype<BitGene> gt) {
+    private static Integer eval(final Genotype<BitGene> gt) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -927,7 +927,7 @@ public class HelloWorld {
 
 \begin_layout Plain Layout
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -942,7 +942,7 @@ public class HelloWorld {
 
 \begin_layout Plain Layout
 
-        Factory<Genotype<BitGene>> gtf =
+        final Factory<Genotype<BitGene>> gtf =
 \end_layout
 
 \begin_layout Plain Layout
@@ -961,7 +961,7 @@ public class HelloWorld {
 
 \begin_layout Plain Layout
 
-        Engine<BitGene, Integer> engine = Engine
+        final Engine<BitGene, Integer> engine = Engine
 \end_layout
 
 \begin_layout Plain Layout
@@ -990,7 +990,7 @@ public class HelloWorld {
 
 \begin_layout Plain Layout
 
-        Genotype<BitGene> result = engine.stream()
+        final Genotype<BitGene> result = engine.stream()
 \end_layout
 
 \begin_layout Plain Layout
@@ -15923,12 +15923,91 @@ status open
 
 \begin_layout Plain Layout
 
-final Problem<ISeq<Item>, BitGene, Double> knapsack = ...
+// Definition of the Ones counting problem.
 \end_layout
 
 \begin_layout Plain Layout
 
-final Engine<BitGene, Double> engine = Engine.bulder(knapsack)
+final Problem<ISeq<BitGene>, BitGene, Integer> ONES_COUNTING =
+\end_layout
+
+\begin_layout Plain Layout
+
+    Problem.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+        // Fitness Function<ISeq<BitGene>, Integer>
+\end_layout
+
+\begin_layout Plain Layout
+
+        genes -> (int)genes.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .filter(BitGene::getBit).count(),
+\end_layout
+
+\begin_layout Plain Layout
+
+        Codec.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+            // Genotype Factory<Genotype<BitGene>>
+\end_layout
+
+\begin_layout Plain Layout
+
+            Genotype.of(BitChromosome.of(20, 0.15)),
+\end_layout
+
+\begin_layout Plain Layout
+
+            // Genotype conversion
+\end_layout
+
+\begin_layout Plain Layout
+
+            // Function<Genotype<BitGene>, <BitGene>>
+\end_layout
+
+\begin_layout Plain Layout
+
+            gt -> gt.getChromosome().toSeq()
+\end_layout
+
+\begin_layout Plain Layout
+
+        )
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+// Engine creation for Problem solving.
+\end_layout
+
+\begin_layout Plain Layout
+
+final Engine<BitGene, Integer> engine = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+    .bulder(ONES_COUNTING)
 \end_layout
 
 \begin_layout Plain Layout
@@ -19998,7 +20077,7 @@ footnotesize}
 \end_layout
 
 \begin_layout Subsection
-0/1 Knapsack
+q0/1 Knapsack
 \begin_inset CommandInset label
 LatexCommand label
 name "sub:0/1-Knapsack-example"
