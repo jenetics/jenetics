@@ -61,11 +61,12 @@ javadoc {
 }
 
 packaging {
-	name = 'Jeneticx'
+	name = 'Jenetix'
 	author = 'Franz Wilhelmstötter'
 	url = 'http://jenetics.sourceforge.net'
 
 	jarjar = false
+	javadoc = true
 }
 
 //modifyPom {
