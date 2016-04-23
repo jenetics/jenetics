@@ -35,6 +35,11 @@ description = 'Jenetix - Java Genetic Algorithm Library Extension'
 
 compileTestJava.dependsOn tasks.getByPath(':org.jenetics:compileTestJava')
 
+repositories {
+	mavenCentral()
+	jcenter()
+}
+
 dependencies {
 	compile project(':org.jenetics')
 
