@@ -322,6 +322,18 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	}
 
 	/**
+	 * Reverses the order of the elements this sequence (in place).
+	 *
+	 * @return this sequence with reverse order or the elements
+	 */
+	public default MSeq<T> reverse() {
+		for (int i = 0, j = length() - 1; i < j; ++i, --j) {
+			swap(i, j);
+		}
+		return this;
+	}
+
+	/**
 	 * Returns a list iterator over the elements in this sequence (in proper
 	 * sequence).
 	 *
