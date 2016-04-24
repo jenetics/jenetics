@@ -34,6 +34,8 @@ import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.jenetics.internal.util.require;
+
 import org.jenetics.util.ISeq;
 import org.jenetics.util.LongRange;
 import org.jenetics.util.MSeq;
@@ -147,6 +149,8 @@ public final class LongGene
 		final Long maximum,
 		final int length
 	) {
+		require.positive(length);
+
 		final long min = minimum;
 		final long max = maximum;
 		final Random r = getRandom();

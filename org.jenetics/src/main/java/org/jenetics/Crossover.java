@@ -49,9 +49,9 @@ public abstract class Crossover<
 	/**
 	 * Constructs an alterer with a given recombination probability.
 	 *
-	 * @param probability The recombination probability.
+	 * @param probability the recombination probability
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
-	 *          valid range of {@code [0, 1]}.
+	 *          valid range of {@code [0, 1]}
 	 */
 	protected Crossover(final double probability) {
 		super(probability, 2);
@@ -96,7 +96,6 @@ public abstract class Crossover<
 		return getOrder();
 	}
 
-
 	/**
 	 * Template method which performs the crossover. The arguments given are
 	 * mutable non null arrays of the same length.
@@ -106,6 +105,5 @@ public abstract class Crossover<
 	 * @return the number of altered genes
 	 */
 	protected abstract int crossover(final MSeq<G> that, final MSeq<G> other);
-
 
 }

@@ -60,7 +60,7 @@ public final class engines {
 	 * @return a new {@link Knapsack} solving evolution {@link Engine}
 	 */
 	public static Engine<BitGene, Double> knapsack(final Random random) {
-		// Search space fo 2²⁵⁰ ~ 10⁷⁵.
+		// Search space fo 2^250 ~ 10^75.
 		final Knapsack knapsack = Knapsack.of(250, random);
 
 		// Configure and build the evolution engine.

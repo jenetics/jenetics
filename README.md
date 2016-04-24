@@ -1,10 +1,10 @@
-# Jenetics (_3.4.0_)
+# Jenetics (_3.5.0_)
 
 **Jenetics** is an **Genetic Algorithm**, respectively an **Evolutionary Algorithm**, library written in Java. It is designed with a clear separation of the several concepts of the algorithm, e.g. `Gene`, `Chromosome`, `Genotype`, `Phenotype`, `Population` and fitness `Function`. **Jenetics** allows you to minimize and maximize the given fitness function without tweaking it. In contrast to other GA implementations, the library uses the concept of an evolution stream (`EvolutionStream`) for executing the evolution steps. Since the `EvolutionStream` implements the Java Stream interface, it works smoothly with the rest of the Java Stream API.
 
 ## Documentation
 
-The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jenetics/3.4/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-3.4.0.pdf)).
+The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jenetics/3.5/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-3.5.0.pdf)).
 
 
 ## Requirements
@@ -21,15 +21,15 @@ The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jeneti
 *  **Apache Commons Math 3.6**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical collectors.
 
 ## Download
-* **Github**: <https://github.com/jenetics/jenetics/releases/download/v3.4.0/jenetics-3.4.0.zip>
+* **Github**: <https://github.com/jenetics/jenetics/releases/download/v3.5.0/jenetics-3.5.0.zip>
 *  **Sourceforge**:  <https://sourceforge.net/projects/jenetics/files/latest/download>
-*  **Maven**: `org.bitbucket.fwilhelm:org.jenetics:3.4.0` on [Maven Central](http://search.maven.org/#search|ga|1|a%3A%22org.jenetics%22)
+*  **Maven**: `org.bitbucket.fwilhelm:org.jenetics:3.5.0` on [Maven Central](http://search.maven.org/#search|ga|1|a%3A%22org.jenetics%22)
 
 ## Build Jenetics
 
 [![Build Status](https://travis-ci.org/jenetics/jenetics.svg?branch=master)](https://travis-ci.org/jenetics/jenetics)
 
-For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v3.4.0/jenetics-3.4.0.zip) (or [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download)) and extract it to some build directory.
+For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v3.5.0/jenetics-3.5.0.zip) (or [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download)) and extract it to some build directory.
 
     $ unzip jenetics-<version>.zip -d <builddir>
 
@@ -162,6 +162,21 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 
 
 ## Release notes
+
+### 3.5.0
+
+#### Improvement
+
+* [#81](https://github.com/jenetics/jenetics/issues/81): It is now easier to register user-defined JAXB marshallings -- `org.jenetics.util.IO.JAXB.register`
+* [#90](https://github.com/jenetics/jenetics/issues/90), [#91](https://github.com/jenetics/jenetics/issues/91): The manual contains now a section where the performance of the `MonteCarloSelector` and an evolutionary `Selector` is compared (fig. 6.8, page 52).
+* [#96](https://github.com/jenetics/jenetics/issues/96): Merge branch with incubation module `org.jenetix`, which contains experimental classes.
+* [#101](https://github.com/jenetics/jenetics/issues/101): Add manual example for solving the *Rastrigin* function.
+
+#### Bug fixes
+
+* [#92](https://github.com/jenetics/jenetics/issues/92): Fix example code in user manual.
+* [#94](https://github.com/jenetics/jenetics/issues/94): Inconsistent pre-condition check of `Engine.Builder.build` method.
+* [#99](https://github.com/jenetics/jenetics/issues/99): `EvolutionResult` was not completely immutable.
 
 ### 3.4.0
 

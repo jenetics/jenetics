@@ -247,7 +247,7 @@ public class CharacterChromosome
 		out.writeObject(_validCharacters);
 
 		for (CharacterGene gene : _genes) {
-			out.writeChar(gene.getAllele().charValue());
+			out.writeChar(gene.getAllele());
 		}
 	}
 
