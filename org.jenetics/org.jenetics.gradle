@@ -31,6 +31,8 @@ plugins {
 apply plugin: 'packaging'
 apply plugin: 'nexus'
 
+description = 'Jenetics - Java Genetic Algorithm Library'
+
 repositories {
 	mavenCentral()
 	jcenter()
@@ -121,7 +123,3 @@ idea {
 		scopes.COMPILE.plus += [configurations.jmh]
 	}
 }
-
-
-
-

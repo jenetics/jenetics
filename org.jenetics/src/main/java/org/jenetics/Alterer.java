@@ -107,7 +107,7 @@ public interface Alterer<
 			? (p, g) -> 0
 			: alterers.length == 1
 				? alterers[0]
-				: new CompositeAlterer<G, C>(ISeq.of(alterers));
+				: new CompositeAlterer<>(ISeq.of(alterers));
 	}
 
 }

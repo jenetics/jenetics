@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
  */
 public abstract class NumericChromosomeTester<
 	N extends Number & Comparable<N>,
-	G extends AbstractNumericGene<N, G>
+	G extends NumericGene<N, G>
 >
 	extends ChromosomeTester<G>
 {
