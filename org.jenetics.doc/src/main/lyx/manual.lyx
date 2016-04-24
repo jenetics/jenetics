@@ -19877,7 +19877,7 @@ Rastrigin function
 \end_layout
 
 \begin_layout Standard
-The Rastrigin's function
+The Rastrigin function
 \begin_inset Foot
 status collapsed
 
@@ -19912,7 +19912,7 @@ reference "fig:Rastrigin-function"
 
 \end_inset
 
- shows, Rastrigin's function has many local minima, which makes it difficult
+ shows, the Rastrigin function has many local minima, which makes it difficult
  for standard, gradient-based methods to find the global minimum.
  If 
 \begin_inset Formula $A=10$
@@ -20077,7 +20077,7 @@ footnotesize}
 \end_layout
 
 \begin_layout Subsection
-q0/1 Knapsack
+0/1 Knapsack
 \begin_inset CommandInset label
 LatexCommand label
 name "sub:0/1-Knapsack-example"
