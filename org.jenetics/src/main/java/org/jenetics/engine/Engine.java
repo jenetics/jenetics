@@ -254,22 +254,24 @@ public final class Engine<
 	public EvolutionResult<G, C> evolve(final EvolutionStart<G, C> start) {
 		final Timer timer = Timer.of().start();
 
+		final Population<G, C> startPopulation = start.getPopulation();
+
 		// Initial evaluation of the population.
 		final Timer evaluateTimer = Timer.of(_clock).start();
-		evaluate(start.getPopulation());
+		evaluate(startPopulation);
 		evaluateTimer.stop();
 
 		// Select the offspring population.
 		final CompletableFuture<TimedResult<Population<G, C>>> offspring =
 			_executor.async(() ->
-				selectOffspring(start.getPopulation()),
+				selectOffspring(startPopulation),
 				_clock
 			);
 
 		// Select the survivor population.
 		final CompletableFuture<TimedResult<Population<G, C>>> survivors =
 			_executor.async(() ->
-				selectSurvivors(start.getPopulation()),
+				selectSurvivors(startPopulation),
 				_clock
 			);
 

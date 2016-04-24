@@ -19,7 +19,12 @@
  */
 package org.jenetics.util;
 
+import static java.lang.String.format;
+
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -43,6 +48,15 @@ public class IOTest {
 	public static final class DataClass {
 		@XmlAttribute public String name;
 		@XmlValue public String value;
+	}
+
+	public static void main(final String[] args) throws IOException {
+		final DataClass data = new DataClass();
+		data.name = "name";
+		data.value = "value";
+
+		IO.JAXB.register(DataClass.class);
+		IO.jaxb.write(data, System.out);
 	}
 
 	@Test

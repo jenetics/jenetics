@@ -20,8 +20,8 @@
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__!
+ * @since 3.5
+ * @version 3.5
  */
 
 plugins {
@@ -29,11 +29,15 @@ plugins {
 }
 
 apply plugin: 'packaging'
-apply plugin: 'nexus'
 
 description = 'Jenetix - Java Genetic Algorithm Library Extension'
 
 compileTestJava.dependsOn tasks.getByPath(':org.jenetics:compileTestJava')
+
+repositories {
+	mavenCentral()
+	jcenter()
+}
 
 dependencies {
 	compile project(':org.jenetics')
@@ -61,11 +65,12 @@ javadoc {
 }
 
 packaging {
-	name = 'Jeneticx'
+	name = 'Jenetix'
 	author = 'Franz Wilhelmstötter'
 	url = 'http://jenetics.sourceforge.net'
 
 	jarjar = false
+	javadoc = true
 }
 
 //modifyPom {

@@ -17,47 +17,32 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
+package org.jenetics.tool.problem;
 
-import org.apache.tools.ant.filters.ReplaceTokens
+import org.jenetics.BitChromosome;
+import org.jenetics.BitGene;
+import org.jenetics.Genotype;
+import org.jenetics.engine.Codec;
+import org.jenetics.engine.Problem;
+import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 3.4
- * @version 3.4
+ * @version 3.5
+ * @since 3.5
  */
+public class OnesCounting {
 
-apply plugin: 'packaging'
+	Problem<ISeq<BitGene>, BitGene, Integer> ONES_COUNTING =
+		Problem.of(
+			// Function<ISeq<BitGene>, Integer>
+			genes -> (int)genes.stream().filter(BitGene::getBit).count(),
+			Codec.of(
+				// Factory<Genotype<BitGene>>
+				Genotype.of(BitChromosome.of(20, 0.15)),
+				// Function<Genotype<BitGene>, <BitGene>>
+				gt -> gt.getChromosome().toSeq()
+			)
+		);
 
-repositories {
-	mavenCentral()
-	jcenter()
 }
-
-dependencies {
-	compile project(':org.jenetics')
-
-	testCompile Include.TestNG
-}
-
-jar.manifest.instruction('Export-Package',
-	'org.jenetics.tool',
-	'org.jenetics.tool.evaluation',
-	'org.jenetics.tool.problem',
-	'org.jenetics.tool.trial'
-)
-
-javadoc {
-	options {
-		links 'http://jenetics.io/javadoc/org.jenetics'
-	}
-}
-
-packaging {
-	name = 'Jenetics Tools'
-	author = 'Franz Wilhelmstötter'
-	url = 'http://jenetics.sourceforge.net'
-	jarjar = false
-	javadoc = true
-}
-
-
