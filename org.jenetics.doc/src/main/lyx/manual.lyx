@@ -18864,6 +18864,31 @@ Currently incubation modules:
 org.jenetics.tool
 \family default
  Contains utility classes for measuring the evolution performance.
+\family typewriter
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://jenetics.io/javadoc/org.jenetics.tool/@__minor_version__@/index.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\family default
  This classes where used for creating the diagrams in this manual.
 \end_layout
 
@@ -18873,10 +18898,54 @@ org.jenetics.tool
 org.jenetix
 \family default
  Contains non-standard selector and mutator classes.
+\family typewriter
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://jenetics.io/javadoc/org.jenetix/@__minor_version__@/index.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\family default
+ The classes needed for the 
+\emph on
+Weasel program
+\emph default
+ (see section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Weasel-program"
+
+\end_inset
+
+) are part of this module.
 \end_layout
 
 \begin_layout Subsection
 Weasel program
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Weasel-program"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
