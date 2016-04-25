@@ -22,6 +22,7 @@ package org.jenetics.internal.collection;
 import static java.lang.Math.min;
 import static java.lang.String.format;
 
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Random;
@@ -90,6 +91,16 @@ public class ArrayMSeq<T> extends ArraySeq<T> implements MSeq<T> {
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, supplier.get());
 		}
+		return this;
+	}
+
+	@Override
+	public ArrayMSeq<T> sort(
+		final int start,
+		final int end,
+		final Comparator<? super T> comparator
+	) {
+		array.sort(start, end, comparator);
 		return this;
 	}
 
