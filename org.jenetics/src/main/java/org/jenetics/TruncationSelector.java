@@ -25,6 +25,9 @@ import static java.util.Objects.requireNonNull;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
+import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
+
 /**
  * In truncation selection individuals are sorted according to their fitness.
  * Only the n  best individuals are selected. The truncation selection is a very
@@ -62,8 +65,8 @@ public final class TruncationSelector<
 	 * @throws NullPointerException if the {@code population} is {@code null}.
 	 */
 	@Override
-	public Population<G, C> select(
-		final Population<G, C> population,
+	public ISeq<Phenotype<G, C>> select(
+		final ISeq<Phenotype<G, C>> population,
 		final int count,
 		final Optimize opt
 	) {
@@ -76,20 +79,24 @@ public final class TruncationSelector<
 			));
 		}
 
-		final Population<G, C> selection = new Population<>(count);
+		final MSeq<Phenotype<G, C>> selection = MSeq.ofLength(count);
 		if (count > 0 && !population.isEmpty()) {
-			final Population<G, C> copy = population.copy();
-			copy.sortWith(opt.<C>descending());
+			final MSeq<Phenotype<G, C>> copy = population.copy();
+			copy.sort((a, b) ->
+				opt.<C>descending().compare(a.getFitness(), b.getFitness()));
 
 			int size = count;
 			do {
 				final int length = Math.min(copy.size(), size);
-				selection.addAll(copy.subList(0, length));
+				for (int i = 0; i < length; ++i) {
+					selection.set((count - size) + i, copy.get(i));
+				}
+
 				size -= length;
 			} while (size > 0);
 		}
 
-		return selection;
+		return selection.toISeq();
 	}
 
 	@Override

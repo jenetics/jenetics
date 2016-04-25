@@ -27,6 +27,8 @@ import java.util.Arrays;
 
 import org.jenetics.internal.util.Hash;
 
+import org.jenetics.util.ISeq;
+
 /**
  * <p>
  * In this {@code Selector}, the probability for selection is defined as.
@@ -87,7 +89,7 @@ public final class BoltzmannSelector<
 
 	@Override
 	protected double[] probabilities(
-		final Population<G, N> population,
+		final ISeq<Phenotype<G, N>> population,
 		final int count
 	) {
 		assert population != null : "Population must not be null. ";

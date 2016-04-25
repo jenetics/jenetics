@@ -24,6 +24,8 @@ import static java.util.Objects.requireNonNull;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
+import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -65,8 +67,8 @@ public class StochasticUniversalSelector<
 	 * by this method.)
 	 */
 	@Override
-	public Population<G, N> select(
-		final Population<G, N> population,
+	public ISeq<Phenotype<G, N>> select(
+		final ISeq<Phenotype<G, N>> population,
 		final int count,
 		final Optimize opt
 	) {
@@ -78,12 +80,16 @@ public class StochasticUniversalSelector<
 			);
 		}
 
-		final Population<G, N> selection = new Population<>(count);
 		if (count == 0 || population.isEmpty()) {
-			return selection;
+			return ISeq.empty();
 		}
 
-		final Population<G, N> pop = copy(population);
+		final MSeq<Phenotype<G, N>> selection = MSeq.ofLength(count);
+
+		final ISeq<Phenotype<G, N>> pop = _sorted
+			? population.copy().sort(POPULATION_COMPARATOR).toISeq()
+			: population;
+
 		final double[] probabilities = probabilities(pop, count, opt);
 		assert  pop.size() == probabilities.length;
 
@@ -102,10 +108,11 @@ public class StochasticUniversalSelector<
 				prop += probabilities[j];
 				++j;
 			}
-			selection.add(pop.get(j%pop.size()));
+
+			selection.set(i, pop.get(j%pop.size()));
 		}
 
-		return selection;
+		return selection.toISeq();
 	}
 
 	@Override

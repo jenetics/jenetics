@@ -23,6 +23,8 @@ import static java.lang.String.format;
 
 import org.jenetics.internal.util.Hash;
 
+import org.jenetics.util.ISeq;
+
 /**
  * <p>
  * In linear-ranking selection the individuals are sorted according to their
@@ -95,12 +97,12 @@ public final class LinearRankSelector<
 
 	/**
 	 * This method sorts the population in descending order while calculating the
-	 * selection probabilities. (The method {@link Population#populationSort()} is called
-	 * by this method.)
+	 * selection probabilities. (The method {@link Population#populationSort()}
+	 * is called by this method.)
 	 */
 	@Override
 	protected double[] probabilities(
-		final Population<G, C> population,
+		final ISeq<Phenotype<G, C>> population,
 		final int count
 	) {
 		assert population != null : "Population must not be null. ";

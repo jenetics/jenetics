@@ -24,12 +24,13 @@ import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.maxBy;
 
 import java.util.Random;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
+import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -81,8 +82,8 @@ public class TournamentSelector<
 	}
 
 	@Override
-	public Population<G, C> select(
-		final Population<G, C> population,
+	public ISeq<Phenotype<G, C>> select(
+		final ISeq<Phenotype<G, C>> population,
 		final int count,
 		final Optimize opt
 	) {
@@ -97,13 +98,14 @@ public class TournamentSelector<
 
 		final Random random = RandomRegistry.getRandom();
 		return population.isEmpty()
-			? new Population<>(0)
-			: new Population<G, C>(count)
-				.fill(() -> select(population, opt, _sampleSize, random), count);
+			? ISeq.empty()
+			: MSeq.<Phenotype<G, C>>ofLength(count)
+				.fill(() -> select(population, opt, _sampleSize, random))
+				.toISeq();
 	}
 
 	private Phenotype<G, C> select(
-		final Population<G, C> population,
+		final ISeq<Phenotype<G, C>> population,
 		final Optimize opt,
 		final int sampleSize,
 		final Random random

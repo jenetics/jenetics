@@ -26,6 +26,7 @@ import static org.jenetics.internal.math.arithmetic.pow;
 import static org.jenetics.internal.math.base.ulpDistance;
 import static org.jenetics.internal.util.IndexSorter.sort;
 
+import java.util.Comparator;
 import java.util.Random;
 import java.util.function.Function;
 
@@ -33,6 +34,7 @@ import org.jenetics.internal.math.DoubleAdder;
 import org.jenetics.internal.util.array;
 
 import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -50,7 +52,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.2
+ * @version !__version__!
  */
 public abstract class ProbabilitySelector<
 	G extends Gene<?, G>,
@@ -62,15 +64,18 @@ public abstract class ProbabilitySelector<
 
 	private static final long MAX_ULP_DISTANCE = pow(10, 10);
 
-	private final boolean _sorted;
-	private final Function<double[], double[]> _reverter;
+	protected final Comparator<Phenotype<G, C>> POPULATION_COMPARATOR = (a, b) ->
+		Optimize.MAXIMUM.<C>descending().compare(a.getFitness(), b.getFitness());
+
+	protected final boolean _sorted;
+	protected final Function<double[], double[]> _reverter;
 
 
 	/**
 	 * Create a new {@code ProbabilitySelector} with the given {@code sorting}
 	 * flag. <em>This flag must set to {@code true} if the selector
 	 * implementation is sorting the population in the
-	 * {@link #probabilities(Population, int)} method.</em>
+	 * {@link #probabilities(ISeq, int)} method.</em>
 	 *
 	 * @param sorted {@code true} if the implementation is sorting the
 	 *        population when calculating the selection probabilities,
@@ -89,8 +94,8 @@ public abstract class ProbabilitySelector<
 	}
 
 	@Override
-	public Population<G, C> select(
-		final Population<G, C> population,
+	public ISeq<Phenotype<G, C>> select(
+		final ISeq<Phenotype<G, C>> population,
 		final int count,
 		final Optimize opt
 	) {
@@ -103,9 +108,12 @@ public abstract class ProbabilitySelector<
 			));
 		}
 
-		final Population<G, C> selection = new Population<>(count);
+		final MSeq<Phenotype<G, C>> selection = MSeq.ofLength(count);
 		if (count > 0 && !population.isEmpty()) {
-			final Population<G, C> pop = copy(population);
+			final ISeq<Phenotype<G, C>> pop = _sorted
+				? population.copy().sort(POPULATION_COMPARATOR).toISeq()
+				: population;
+
 
 			final double[] prob = probabilities(pop, count, opt);
 			assert pop.size() == prob.length
@@ -117,22 +125,10 @@ public abstract class ProbabilitySelector<
 			incremental(prob);
 
 			final Random random = RandomRegistry.getRandom();
-			selection.fill(
-				() -> pop.get(indexOf(prob, random.nextDouble())),
-				count
-			);
+			selection.fill(() -> pop.get(indexOf(prob, random.nextDouble())));
 		}
 
-		return selection;
-	}
-
-	@Override
-	public ISeq<Phenotype<G, C>> select(
-		final ISeq<Phenotype<G, C>> population,
-		final int count,
-		final Optimize opt
-	) {
-		throw new UnsupportedOperationException();
+		return selection.toISeq();
 	}
 
 	Population<G, C> copy(final Population<G, C> population) {
@@ -147,7 +143,7 @@ public abstract class ProbabilitySelector<
 
 	/**
 	 * This method takes the probabilities from the
-	 * {@link #probabilities(Population, int)} method and inverts it if needed.
+	 * {@link #probabilities(ISeq, int)} method and inverts it if needed.
 	 *
 	 * @param population The population.
 	 * @param count The number of phenotypes to select.
@@ -158,7 +154,7 @@ public abstract class ProbabilitySelector<
 	 * @return Probability array.
 	 */
 	protected final double[] probabilities(
-		final Population<G, C> population,
+		final ISeq<Phenotype<G, C>> population,
 		final int count,
 		final Optimize opt
 	) {
@@ -201,7 +197,7 @@ public abstract class ProbabilitySelector<
 	 *         in the base class.
 	 */
 	protected abstract double[] probabilities(
-		final Population<G, C> population,
+		final ISeq<Phenotype<G, C>> population,
 		final int count
 	);
 

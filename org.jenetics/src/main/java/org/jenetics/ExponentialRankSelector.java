@@ -24,6 +24,8 @@ import static java.lang.String.format;
 
 import org.jenetics.internal.util.Hash;
 
+import org.jenetics.util.ISeq;
+
 /**
  * <p>
  * An alternative to the "weak" {@code LinearRankSelector} is to assign
@@ -93,7 +95,7 @@ public final class ExponentialRankSelector<
 	 */
 	@Override
 	protected double[] probabilities(
-		final Population<G, C> population,
+		final ISeq<Phenotype<G, C>> population,
 		final int count
 	) {
 		assert population != null : "Population must not be null. ";

@@ -52,6 +52,7 @@ import org.jenetics.SinglePointCrossover;
 import org.jenetics.TournamentSelector;
 import org.jenetics.util.Copyable;
 import org.jenetics.util.Factory;
+import org.jenetics.util.ISeq;
 import org.jenetics.util.NanoClock;
 
 /**
@@ -226,7 +227,7 @@ public final class Engine<
 	 *         smaller then one
 	 */
 	public EvolutionResult<G, C> evolve(
-		final Population<G, C> population,
+		final ISeq<Phenotype<G, C>> population,
 		final long generation
 	) {
 		return evolve(EvolutionStart.of(population, generation));
@@ -240,7 +241,7 @@ public final class Engine<
 	 * <em>This method is thread-safe.</em>
 	 *
 	 * @since 3.1
-	 * @see #evolve(org.jenetics.Population, long)
+	 * @see #evolve(ISeq, long)
 	 *
 	 * @param start the evolution start object
 	 * @return the evolution result
@@ -250,7 +251,7 @@ public final class Engine<
 	public EvolutionResult<G, C> evolve(final EvolutionStart<G, C> start) {
 		final Timer timer = Timer.of().start();
 
-		final Population<G, C> startPopulation = start.getPopulation();
+		final ISeq<Phenotype<G, C>> startPopulation = start.getPopulation();
 
 		// Initial evaluation of the population.
 		final Timer evaluateTimer = Timer.of(_clock).start();
@@ -258,14 +259,14 @@ public final class Engine<
 		evaluateTimer.stop();
 
 		// Select the offspring population.
-		final CompletableFuture<TimedResult<Population<G, C>>> offspring =
+		final CompletableFuture<TimedResult<ISeq<Phenotype<G, C>>>> offspring =
 			_executor.async(() ->
 				selectOffspring(startPopulation),
 				_clock
 			);
 
 		// Select the survivor population.
-		final CompletableFuture<TimedResult<Population<G, C>>> survivors =
+		final CompletableFuture<TimedResult<ISeq<Phenotype<G, C>>>> survivors =
 			_executor.async(() ->
 				selectSurvivors(startPopulation),
 				_clock
@@ -348,17 +349,17 @@ public final class Engine<
 	}
 
 	// Selects the survivors population. A new population object is returned.
-	private Population<G, C> selectSurvivors(final Population<G, C> population) {
+	private ISeq<Phenotype<G, C>> selectSurvivors(final ISeq<Phenotype<G, C>> population) {
 		return _survivorsCount > 0
 			?_survivorsSelector.select(population, _survivorsCount, _optimize)
-			: Population.empty();
+			: ISeq.empty();
 	}
 
 	// Selects the offspring population. A new population object is returned.
-	private Population<G, C> selectOffspring(final Population<G, C> population) {
+	private ISeq<Phenotype<G, C>> selectOffspring(final ISeq<Phenotype<G, C>> population) {
 		return _offspringCount > 0
 			? _offspringSelector.select(population, _offspringCount, _optimize)
-			: Population.empty();
+			: ISeq.empty();
 	}
 
 	// Filters out invalid and to old individuals. Filtering is done in place.
@@ -413,9 +414,9 @@ public final class Engine<
 	}
 
 	// Evaluates the fitness function of the give population concurrently.
-	private Population<G, C> evaluate(final Population<G, C> population) {
+	private ISeq<Phenotype<G, C>> evaluate(final ISeq<Phenotype<G, C>> population) {
 		try (Concurrency c = Concurrency.with(_executor.get())) {
-			c.execute(population);
+			c.execute(population.asList());
 		}
 		return population;
 	}

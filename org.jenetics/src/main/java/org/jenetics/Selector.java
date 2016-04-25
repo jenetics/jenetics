@@ -39,7 +39,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0
+ * @version !__version__!
  */
 @FunctionalInterface
 public interface Selector<
@@ -60,18 +60,10 @@ public interface Selector<
 	 * @throws NullPointerException if the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the select count is smaller than zero.
 	 */
-	public Population<G, C> select(
-		final Population<G, C> population,
-		final int count,
-		final Optimize opt
-	);
-
-	public default ISeq<Phenotype<G, C>> select(
+	public ISeq<Phenotype<G, C>> select(
 		final ISeq<Phenotype<G, C>> population,
 		final int count,
 		final Optimize opt
-	) {
-		throw new UnsupportedOperationException();
-	}
+	);
 
 }
