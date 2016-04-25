@@ -115,7 +115,7 @@ class TestUtils {
 	/**
 	 *  Create a population of DoubleGenes
 	 */
-	public static Population<DoubleGene, Double> newDoubleGenePopulation(
+	public static ISeq<Phenotype<DoubleGene, Double>> newDoubleGenePopulation(
 		final int ngenes,
 		final int nchromosomes,
 		final int npopulation
@@ -127,14 +127,13 @@ class TestUtils {
 		}
 
 		final Genotype<DoubleGene> genotype = new Genotype<>(chromosomes.toISeq());
-		final Population<DoubleGene, Double> population =
-			new Population<>(npopulation);
+		final MSeq<Phenotype<DoubleGene, Double>> population = MSeq.ofLength(npopulation);
 
 		for (int i = 0; i < npopulation; ++i) {
-			population.add(Phenotype.of(genotype.newInstance(), 0, FF).evaluate());
+			population.set(i, Phenotype.of(genotype.newInstance(), 0, FF).evaluate());
 		}
 
-		return population;
+		return population.toISeq();
 	}
 
 	public static Population<EnumGene<Double>, Double> newPermutationDoubleGenePopulation(
