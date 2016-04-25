@@ -23,8 +23,7 @@ import static java.util.Objects.requireNonNull;
 
 import org.jenetics.Gene;
 import org.jenetics.Phenotype;
-import org.jenetics.util.ISeq;
-import org.jenetics.util.Seq;
+import org.jenetics.util.MSeq;
 
 /**
  * Represent the result of the validation/filtering step.
@@ -41,12 +40,12 @@ final class FilterResult<
 	C extends Comparable<? super C>
 > {
 
-	final Seq<Phenotype<G, C>> population;
+	final MSeq<Phenotype<G, C>> population;
 	final int killCount;
 	final int invalidCount;
 
 	FilterResult(
-		final Seq<Phenotype<G, C>> population,
+		final MSeq<Phenotype<G, C>> population,
 		final int killCount,
 		final int invalidCount
 	) {
