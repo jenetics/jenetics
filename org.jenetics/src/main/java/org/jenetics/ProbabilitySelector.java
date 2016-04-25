@@ -32,6 +32,7 @@ import java.util.function.Function;
 import org.jenetics.internal.math.DoubleAdder;
 import org.jenetics.internal.util.array;
 
+import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -123,6 +124,15 @@ public abstract class ProbabilitySelector<
 		}
 
 		return selection;
+	}
+
+	@Override
+	public ISeq<Phenotype<G, C>> select(
+		final ISeq<Phenotype<G, C>> population,
+		final int count,
+		final Optimize opt
+	) {
+		throw new UnsupportedOperationException();
 	}
 
 	Population<G, C> copy(final Population<G, C> population) {

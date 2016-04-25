@@ -19,6 +19,8 @@
  */
 package org.jenetics;
 
+import org.jenetics.util.ISeq;
+
 /**
  * Selectors are responsible for selecting a given number of individuals from
  * the population. The selectors are used to divide the population into
@@ -63,5 +65,13 @@ public interface Selector<
 		final int count,
 		final Optimize opt
 	);
+
+	public default ISeq<Phenotype<G, C>> select(
+		final ISeq<Phenotype<G, C>> population,
+		final int count,
+		final Optimize opt
+	) {
+		throw new UnsupportedOperationException();
+	}
 
 }
