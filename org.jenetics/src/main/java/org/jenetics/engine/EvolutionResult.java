@@ -34,8 +34,8 @@ import org.jenetics.Gene;
 import org.jenetics.Genotype;
 import org.jenetics.Optimize;
 import org.jenetics.Phenotype;
-import org.jenetics.Population;
 import org.jenetics.stat.MinMax;
+import org.jenetics.util.ISeq;
 
 /**
  * Represents a state of the GA after an evolution step.
@@ -58,7 +58,7 @@ public final class EvolutionResult<
 	private static final long serialVersionUID = 1L;
 
 	private final Optimize _optimize;
-	private final Population<G, C> _population;
+	private final ISeq<Phenotype<G, C>> _population;
 	private final long _generation;
 	private final long _totalGenerations;
 
@@ -72,7 +72,7 @@ public final class EvolutionResult<
 
 	private EvolutionResult(
 		final Optimize optimize,
-		final Population<G, C> population,
+		final ISeq<Phenotype<G, C>> population,
 		final long generation,
 		final long totalGenerations,
 		final EvolutionDurations durations,
@@ -81,7 +81,7 @@ public final class EvolutionResult<
 		final int alterCount
 	) {
 		_optimize = requireNonNull(optimize);
-		_population = requireNonNull(population).copy();
+		_population = requireNonNull(population);
 		_generation = generation;
 		_totalGenerations = totalGenerations;
 		_durations = requireNonNull(durations);
@@ -115,8 +115,8 @@ public final class EvolutionResult<
 	 *
 	 * @return the population after the evolution step
 	 */
-	public Population<G, C> getPopulation() {
-		return _population.copy();
+	public ISeq<Phenotype<G, C>> getPopulation() {
+		return _population;
 	}
 
 	/**
@@ -357,7 +357,7 @@ public final class EvolutionResult<
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionResult<G, C> of(
 		final Optimize optimize,
-		final Population<G, C> population,
+		final ISeq<Phenotype<G, C>> population,
 		final long generation,
 		final long totalGenerations,
 		final EvolutionDurations durations,
@@ -397,7 +397,7 @@ public final class EvolutionResult<
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionResult<G, C> of(
 		final Optimize optimize,
-		final Population<G, C> population,
+		final ISeq<Phenotype<G, C>> population,
 		final long generation,
 		final EvolutionDurations durations,
 		final int killCount,

@@ -22,7 +22,6 @@ package org.jenetics.engine;
 import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.Population.toPopulation;
 import static org.jenetics.internal.util.require.probability;
 
 import java.time.Clock;
@@ -46,14 +45,15 @@ import org.jenetics.Genotype;
 import org.jenetics.Mutator;
 import org.jenetics.Optimize;
 import org.jenetics.Phenotype;
-import org.jenetics.Population;
 import org.jenetics.Selector;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.TournamentSelector;
 import org.jenetics.util.Copyable;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 import org.jenetics.util.NanoClock;
+import org.jenetics.util.Seq;
 
 /**
  * Genetic algorithm <em>engine</em> which is the main class. The following
@@ -275,14 +275,14 @@ public final class Engine<
 		// Altering the offspring population.
 		final CompletableFuture<TimedResult<AlterResult<G, C>>> alteredOffspring =
 			_executor.thenApply(offspring, p ->
-				alter(p.result, start.getGeneration()),
+				alter(p.result.copy(), start.getGeneration()),
 				_clock
 			);
 
 		// Filter and replace invalid and to old survivor individuals.
 		final CompletableFuture<TimedResult<FilterResult<G, C>>> filteredSurvivors =
 			_executor.thenApply(survivors, pop ->
-				filter(pop.result, start.getGeneration()),
+				filter(pop.result.copy(), start.getGeneration()),
 				_clock
 			);
 
@@ -294,17 +294,14 @@ public final class Engine<
 			);
 
 		// Combining survivors and offspring to the new population.
-		final CompletableFuture<Population<G, C>> population =
-			filteredSurvivors.thenCombineAsync(filteredOffspring, (s, o) -> {
-					final Population<G, C> pop = s.result.population;
-					pop.addAll(o.result.population);
-					return pop;
-				},
+		final CompletableFuture<ISeq<Phenotype<G, C>>> population =
+			filteredSurvivors.thenCombineAsync(filteredOffspring, (s, o) ->
+				ISeq.of(s.result.population.append(o.result.population)),
 				_executor.get()
 			);
 
 		// Evaluate the fitness-function and wait for result.
-		final TimedResult<Population<G, C>> result = population
+		final TimedResult<ISeq<Phenotype<G, C>>> result = population
 			.thenApply(TimedResult.of(this::evaluate, _clock))
 			.join();
 
@@ -364,7 +361,7 @@ public final class Engine<
 
 	// Filters out invalid and to old individuals. Filtering is done in place.
 	private FilterResult<G, C> filter(
-		final Population<G, C> population,
+		final MSeq<Phenotype<G, C>> population,
 		final long generation
 	) {
 		int killCount = 0;
@@ -404,10 +401,10 @@ public final class Engine<
 
 	// Alters the given population. The altering is done in place.
 	private AlterResult<G, C> alter(
-		final Population<G,C> population,
+		final MSeq<Phenotype<G, C>> population,
 		final long generation
 	) {
-		return new AlterResult<>(
+		return new AlterResult<G, C>(
 			population,
 			_alterer.alter(population, generation)
 		);
@@ -449,8 +446,9 @@ public final class Engine<
 		final int generation = 1;
 		final int size = _offspringCount + _survivorsCount;
 
-		final Population<G, C> population = new Population<G, C>(size)
-			.fill(() -> newPhenotype(generation), size);
+		final ISeq<Phenotype<G, C>> population = MSeq.<Phenotype<G, C>>ofLength(size)
+			.fill(() -> newPhenotype(generation))
+			.toISeq();
 
 		return EvolutionStart.of(population, generation);
 	}
@@ -512,9 +510,9 @@ public final class Engine<
 			Stream.generate(() -> newPhenotype(generation))
 		);
 
-		final Population<G, C> population = stream
+		final ISeq<Phenotype<G, C>> population = stream
 			.limit(getPopulationSize())
-			.collect(toPopulation());
+			.collect(ISeq.toISeq());
 
 		return EvolutionStart.of(population, generation);
 	}
@@ -539,7 +537,7 @@ public final class Engine<
 	 *        then one
 	 */
 	public EvolutionStream<G, C> stream(
-		final Population<G, C> population,
+		final ISeq<Phenotype<G, C>> population,
 		final long generation
 	) {
 		requireNonNull(population);
@@ -571,7 +569,7 @@ public final class Engine<
 	 *        then one
 	 */
 	public Iterator<EvolutionResult<G, C>> iterator(
-		final Population<G, C> population,
+		final ISeq<Phenotype<G, C>> population,
 		final long generation
 	) {
 		requireNonNull(population);
@@ -584,7 +582,7 @@ public final class Engine<
 	}
 
 	private EvolutionStart<G, C> evolutionStart(
-		final Population<G, C> population,
+		final Seq<Phenotype<G, C>> population,
 		final long generation
 	) {
 		final Stream<Phenotype<G, C>> stream = Stream.concat(
@@ -596,9 +594,9 @@ public final class Engine<
 			Stream.generate(() -> newPhenotype(generation))
 		);
 
-		final Population<G, C> pop = stream
+		final ISeq<Phenotype<G, C>> pop = stream
 			.limit(getPopulationSize())
-			.collect(toPopulation());
+			.collect(ISeq.toISeq());
 
 		return EvolutionStart.of(pop, generation);
 	}

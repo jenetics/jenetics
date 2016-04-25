@@ -59,7 +59,7 @@ public abstract class Crossover<
 
 	@Override
 	protected final int recombine(
-		final Population<G, C> population,
+		final MSeq<Phenotype<G, C>> population,
 		final int[] individuals,
 		final long generation
 	) {

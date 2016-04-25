@@ -30,6 +30,7 @@ import java.util.stream.Stream;
 import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 import org.jenetics.util.Seq;
 
 /**
@@ -72,7 +73,7 @@ final class CompositeAlterer<
 	}
 
 	@Override
-	public int alter(final Population<G, C> population, final long generation) {
+	public int alter(final MSeq<Phenotype<G, C>> population, final long generation) {
 		return _alterers.stream()
 			.mapToInt(a -> a.alter(population, generation))
 			.sum();

@@ -67,7 +67,7 @@ public final class MeanAlterer<
 
 	@Override
 	protected int recombine(
-		final Population<G, C> population,
+		final MSeq<Phenotype<G, C>> population,
 		final int[] individuals,
 		final long generation
 	) {
