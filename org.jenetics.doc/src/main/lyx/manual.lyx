@@ -15481,7 +15481,7 @@ public class TSM {
 
 \begin_layout Plain Layout
 
-    static final Point[] POINTS = new Point[] {
+    static final ISeq<Point> POINTS = ISeq.of(
 \end_layout
 
 \begin_layout Plain Layout
@@ -15491,7 +15491,7 @@ public class TSM {
 
 \begin_layout Plain Layout
 
-    };
+    );
 \end_layout
 
 \begin_layout Plain Layout
@@ -15505,7 +15505,7 @@ public class TSM {
 
 \begin_layout Plain Layout
 
-    static final Codec<Point[], EnumGene<Point>> CODEC =
+    static final Codec<ISeq<Point>, EnumGene<Point>> CODEC =
 \end_layout
 
 \begin_layout Plain Layout
@@ -15524,7 +15524,7 @@ public class TSM {
 
 \begin_layout Plain Layout
 
-    static double dist(final Point[] p) {
+    static double dist(final ISeq<Point> p) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -15534,7 +15534,12 @@ public class TSM {
 
 \begin_layout Plain Layout
 
-            .mapToDouble(i -> p[i].distance(p[(i + i)%p.length]))
+            .mapToDouble(i -> p.get(i)
+\end_layout
+
+\begin_layout Plain Layout
+
+                .distance(p.get(i + i%p.length())))
 \end_layout
 
 \begin_layout Plain Layout
@@ -15592,7 +15597,7 @@ public class TSM {
 
 \begin_layout Plain Layout
 
-        final Point[] result = CODEC.decoder().apply(
+        final ISeq<Point> result = CODEC.decoder().apply(
 \end_layout
 
 \begin_layout Plain Layout
@@ -15621,7 +15626,7 @@ public class TSM {
 
 \begin_layout Plain Layout
 
-        System.out.println(Arrays.toString(result));
+        System.out.println(result);
 \end_layout
 
 \begin_layout Plain Layout
