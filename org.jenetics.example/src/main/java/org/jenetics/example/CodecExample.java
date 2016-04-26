@@ -31,8 +31,8 @@ import org.jenetics.util.LongRange;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.4
+ * @since 3.3
  */
 public class CodecExample {
 
@@ -46,6 +46,11 @@ public class CodecExample {
 			_1 = v1;
 			_2 = v2;
 			_3 = v3;
+		}
+
+		@Override
+		public String toString() {
+			return String.format("_1: %d - _2: %d - _3: %f", _1, _2, _3);
 		}
 	}
 
@@ -93,7 +98,7 @@ public class CodecExample {
 			.collect(EvolutionResult.toBestGenotype());
 
 		final Tuple param = codec.decoder().apply(gt);
-		System.out.println(param);
+		System.out.println(String.format("Result: \t%s", param));
 	}
 
 }

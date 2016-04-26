@@ -22,11 +22,29 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version !__version__!
+ * @version 3.5
  */
 
 apply plugin: 'packaging'
 
+repositories {
+	mavenCentral()
+	jcenter()
+}
+
+dependencies {
+	compile project(':org.jenetics')
+
+	testCompile Include.TestNG
+}
+
+packaging {
+	name = 'Jenetics doc'
+	author = 'Franz Wilhelmstötter'
+	url = 'http://jenetics.sourceforge.net'
+
+	jarjar = false
+}
 
 task asciidoc(type: Exec) {
 	outputs.upToDateWhen { false }

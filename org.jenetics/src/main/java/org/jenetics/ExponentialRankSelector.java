@@ -21,7 +21,6 @@ package org.jenetics;
 
 import static java.lang.Math.pow;
 import static java.lang.String.format;
-import static org.jenetics.internal.util.Equality.eq;
 
 import org.jenetics.internal.util.Hash;
 

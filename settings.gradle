@@ -21,13 +21,15 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4
+ * @version 3.4
  */
 
 // The Jenetics projects.
 include 'org.jenetics'
-include 'org.jenetics.example'
 include 'org.jenetics.doc'
+include 'org.jenetics.example'
+include 'org.jenetics.tool'
+include 'org.jenetix'
 
 rootProject.name = 'jenetics'
 

@@ -94,7 +94,7 @@ public final class arithmetic {
 		return result;
 	}
 
-	static boolean isMultiplicationSave(final int a, final int b) {
+	public static boolean isMultiplicationSave(final int a, final int b) {
 		final long m = (long)a*(long)b;
 		return (int)m == m;
 	}

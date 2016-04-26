@@ -119,7 +119,7 @@ public class SinglePointCrossoverTest extends AltererTester {
 		});
 	}
 
-	@Test(dataProvider = "alterProbabilityParameters")
+	@Test(dataProvider = "alterProbabilityParameters", groups = {"statistics"})
 	public void alterProbability(
 		final Integer ngenes,
 		final Integer nchromosomes,

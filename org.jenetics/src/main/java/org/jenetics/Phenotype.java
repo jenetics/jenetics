@@ -35,7 +35,6 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.jaxb;
 
@@ -244,12 +243,11 @@ public final class Phenotype<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(pt ->
-			eq(getFitness(), pt.getFitness()) &&
-			eq(getRawFitness(), pt.getRawFitness()) &&
-			eq(_genotype, pt._genotype) &&
-			eq(_generation, pt._generation)
-		);
+		return obj instanceof Phenotype<?, ?> &&
+			eq(getFitness(), ((Phenotype<?, ?>)obj).getFitness()) &&
+			eq(getRawFitness(), ((Phenotype<?, ?>)obj).getRawFitness()) &&
+			eq(_genotype, ((Phenotype<?, ?>)obj)._genotype) &&
+			eq(_generation, ((Phenotype<?, ?>)obj)._generation);
 	}
 
 	@Override
@@ -276,12 +274,14 @@ public final class Phenotype<
 	 * Factory method for creating a new {@link Phenotype} with the same
 	 * {@link Function} and age as this {@link Phenotype}.
 	 *
+	 * @since 3.5
+	 *
 	 * @param genotype the new genotype of the new phenotype.
 	 * @param generation date of birth (generation) of the new phenotype.
 	 * @return New {@link Phenotype} with the same fitness {@link Function}.
 	 * @throws NullPointerException if the {@code genotype} is {@code null}.
 	 */
-	Phenotype<G, C> newInstance(
+	public Phenotype<G, C> newInstance(
 		final Genotype<G> genotype,
 		final long generation
 	) {

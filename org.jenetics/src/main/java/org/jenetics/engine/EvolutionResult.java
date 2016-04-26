@@ -27,7 +27,6 @@ import java.io.Serializable;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 
-import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.Lazy;
 
@@ -82,7 +81,7 @@ public final class EvolutionResult<
 		final int alterCount
 	) {
 		_optimize = requireNonNull(optimize);
-		_population = requireNonNull(population);
+		_population = requireNonNull(population).copy();
 		_generation = generation;
 		_totalGenerations = totalGenerations;
 		_durations = requireNonNull(durations);
@@ -117,7 +116,7 @@ public final class EvolutionResult<
 	 * @return the population after the evolution step
 	 */
 	public Population<G, C> getPopulation() {
-		return _population;
+		return _population.copy();
 	}
 
 	/**
@@ -262,19 +261,17 @@ public final class EvolutionResult<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(result ->
-			eq(_optimize, result._optimize) &&
-			eq(_population, result._population) &&
-			eq(_generation, result._generation) &&
-			eq(_totalGenerations, result._totalGenerations) &&
-			eq(_durations, result._durations) &&
-			eq(_killCount, result._killCount) &&
-			eq(_invalidCount, result._invalidCount) &&
-			eq(_alterCount, result._alterCount) &&
-			eq(getBestFitness(), result.getBestFitness())
-		);
+		return obj instanceof EvolutionResult<?, ?> &&
+			eq(_optimize, ((EvolutionResult<?, ?>)obj)._optimize) &&
+			eq(_population, ((EvolutionResult<?, ?>)obj)._population) &&
+			eq(_generation, ((EvolutionResult<?, ?>)obj)._generation) &&
+			eq(_totalGenerations, ((EvolutionResult<?, ?>)obj)._totalGenerations) &&
+			eq(_durations, ((EvolutionResult<?, ?>)obj)._durations) &&
+			eq(_killCount, ((EvolutionResult<?, ?>)obj)._killCount) &&
+			eq(_invalidCount, ((EvolutionResult<?, ?>)obj)._invalidCount) &&
+			eq(_alterCount, ((EvolutionResult<?, ?>)obj)._alterCount) &&
+			eq(getBestFitness(), ((EvolutionResult<?, ?>)obj).getBestFitness());
 	}
-
 
 
 	/* *************************************************************************

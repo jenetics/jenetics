@@ -898,7 +898,7 @@ import org.jenetics.util.Factory;
 
 \begin_layout Plain Layout
 
-public class HelloWorld {
+public final class HelloWorld {
 \end_layout
 
 \begin_layout Plain Layout
@@ -908,7 +908,7 @@ public class HelloWorld {
 
 \begin_layout Plain Layout
 
-    private static Integer eval(Genotype<BitGene> gt) {
+    private static Integer eval(final Genotype<BitGene> gt) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -927,7 +927,7 @@ public class HelloWorld {
 
 \begin_layout Plain Layout
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -942,7 +942,7 @@ public class HelloWorld {
 
 \begin_layout Plain Layout
 
-        Factory<Genotype<BitGene>> gtf =
+        final Factory<Genotype<BitGene>> gtf =
 \end_layout
 
 \begin_layout Plain Layout
@@ -961,7 +961,7 @@ public class HelloWorld {
 
 \begin_layout Plain Layout
 
-        Engine<BitGene, Integer> engine = Engine
+        final Engine<BitGene, Integer> engine = Engine
 \end_layout
 
 \begin_layout Plain Layout
@@ -990,7 +990,7 @@ public class HelloWorld {
 
 \begin_layout Plain Layout
 
-        Genotype<BitGene> result = engine.stream()
+        final Genotype<BitGene> result = engine.stream()
 \end_layout
 
 \begin_layout Plain Layout
@@ -7925,6 +7925,11 @@ List<Genotype<DoubleGene>> genotypes =
 
 \begin_layout Plain Layout
 
+            .limit(100)
+\end_layout
+
+\begin_layout Plain Layout
+
             .collect(Collectors.toList())
 \end_layout
 
@@ -9345,6 +9350,11 @@ EvolutionResult<DoubleGene, Double> result = stream
 
 \begin_layout Plain Layout
 
+    .limit(100)
+\end_layout
+
+\begin_layout Plain Layout
+
     .collect(toBestEvolutionResult());
 \end_layout
 
@@ -9446,7 +9456,7 @@ status open
 \backslash
 lstset{basicstyle=
 \backslash
-tiny
+fontsize{6.8}{8}
 \backslash
 ttfamily}
 \end_layout
@@ -9494,6 +9504,244 @@ Engine
 \emph default
 -calculating the fitness values.
  
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+IO
+\family default
+ class can also be used for serializing own JAXB
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+JAXB
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Serialization!JAXB
+\end_layout
+
+\end_inset
+
+ annotated classes.
+ Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:DataClassJAXB-serialization"
+
+\end_inset
+
+ shows how an user-defined JAXB class can be marshaled with the 
+\family typewriter
+IO
+\family default
+ helper class.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+@XmlRootElement(name = "data-class")
+\end_layout
+
+\begin_layout Plain Layout
+
+@XmlType(name = "DataClass")
+\end_layout
+
+\begin_layout Plain Layout
+
+@XmlAccessorType(XmlAccessType.FIELD)
+\end_layout
+
+\begin_layout Plain Layout
+
+public class DataClass {
+\end_layout
+
+\begin_layout Plain Layout
+
+    @XmlAttribute public String name;
+\end_layout
+
+\begin_layout Plain Layout
+
+    @XmlValue public String value;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    public DataClass(final String name, final String value) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        this.name = name;
+\end_layout
+
+\begin_layout Plain Layout
+
+        this.value = value;
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Default constructor needed by JAXB.
+\end_layout
+
+\begin_layout Plain Layout
+
+    public DataClass() {
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    public static void main(final String[] args) throws Exception {
+\end_layout
+
+\begin_layout Plain Layout
+
+        // Registering the class before serialization.
+\end_layout
+
+\begin_layout Plain Layout
+
+        IO.JAXB.register(DataClass.class);
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\end_layout
+
+\begin_layout Plain Layout
+
+        final DataClass data = 
+\end_layout
+
+\begin_layout Plain Layout
+
+            new DataClass("some name", "some value");
+\end_layout
+
+\begin_layout Plain Layout
+
+        IO.jaxb.write(data, System.out);
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:DataClassJAXB-serialization"
+
+\end_inset
+
+
+\family typewriter
+\emph on
+DataClass
+\family default
+\emph default
+ JAXB serialization
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The output of the marshaled 
+\family typewriter
+DataClass
+\family default
+ looks like expected.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+fontsize{6.8}{8}
+\backslash
+ttfamily}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstinputlisting[language=XML]{../resources/code/DataClass.xml}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+footnotesize}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -10065,7 +10313,7 @@ DoubleChromosome chromosome = ...
 
 \begin_layout Plain Layout
 
-DoubleMomentStatistics statistics = chromosome.toSeq().stream() 
+DoubleMomentStatistics statistics = chromosome.stream() 
 \end_layout
 
 \begin_layout Plain Layout
@@ -10089,7 +10337,7 @@ DoubleMomentStatistics statistics = chromosome.toSeq().stream()
 
 \begin_layout Plain Layout
 
-DoubleMoments moments = chromosome.toSeq().stream() 
+DoubleMoments moments = chromosome.stream() 
 \end_layout
 
 \begin_layout Plain Layout
@@ -10331,6 +10579,256 @@ height "1pt"
 
 \end_layout
 
+\begin_layout Standard
+If you want to support your own allele type, but want to avoid the effort
+ of implementing the 
+\family typewriter
+Gene
+\family default
+ interface, you can alternatively use the 
+\family typewriter
+Any\SpecialChar \-
+Gene
+\family default
+ class.
+ It can be created with 
+\family typewriter
+Any\SpecialChar \-
+Gene\SpecialChar \-
+.of(Sup\SpecialChar \-
+plier, Predi\SpecialChar \-
+cate)
+\family default
+.
+ The given 
+\family typewriter
+Supplier
+\family default
+ is responsible for creating new random alleles, similar to the 
+\family typewriter
+newInstance
+\family default
+ method in the 
+\family typewriter
+Gene
+\family default
+ interface.
+ Additional validity checks are performed by the given 
+\family typewriter
+Predicate
+\family default
+.
+ 
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+class LastMonday {
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Creates new random 'LocalDate' objects.
+\end_layout
+
+\begin_layout Plain Layout
+
+    private static LocalDate nextMonday() {
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Random random = RandomRegistry.getRandom();
+\end_layout
+
+\begin_layout Plain Layout
+
+        LocalDate
+\end_layout
+
+\begin_layout Plain Layout
+
+            .of(2015, 1, 5)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .plusWeeks(random.nextInt(1000));
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Do some additional validity check.
+\end_layout
+
+\begin_layout Plain Layout
+
+    private static boolean isValid(final LocalDate date) {...}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Create a new gene from the random 'Supplier' and
+\end_layout
+
+\begin_layout Plain Layout
+
+    // validation 'Predicate'.
+\end_layout
+
+\begin_layout Plain Layout
+
+    private final AnyGene<LocalDate> gene = AnyGene
+\end_layout
+
+\begin_layout Plain Layout
+
+        .of(LastMonday::nextMonday, LastMonday::isValid);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:AnyGene-example"
+
+\end_inset
+
+AnyGene
+\family default
+ example
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+AnyGene
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Example listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:AnyGene-example"
+
+\end_inset
+
+ shows the (almost) minimal setup for creating user defined 
+\family typewriter
+Gene
+\family default
+ allele types.
+ By convention, the 
+\family typewriter
+Random
+\family default
+ engine, used for creating the new 
+\family typewriter
+Local\SpecialChar \-
+Date
+\family default
+ objects, must be requested from the 
+\family typewriter
+Random\SpecialChar \-
+Registry
+\family default
+.
+ With the optional validation function, 
+\family typewriter
+isValid
+\family default
+, it is possible to reject 
+\family typewriter
+Genes
+\family default
+ whose alleles doesn't conform some criteria.
+\end_layout
+
+\begin_layout Standard
+The simple usage of the 
+\family typewriter
+AnyGene
+\family default
+ has also its downsides.
+ Since the 
+\family typewriter
+AnyGene
+\family default
+ instances are created from function objects, serialization is not supported
+ by the 
+\family typewriter
+AnyGene
+\family default
+ class.
+ It is also not possible to use some 
+\family typewriter
+Alterer
+\family default
+ implementations with the 
+\family typewriter
+AnyGene
+\family default
+, like:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+GaussianMutator
+\family default
+,
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+MeanAlterer
+\family default
+ and
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+PartiallyMatchedCrossover
+\end_layout
+
 \begin_layout Subsection
 Chromosomes
 \begin_inset Index idx
@@ -10381,6 +10879,301 @@ s.
  Serializable
 \family default
  interface.
+\end_layout
+
+\begin_layout Standard
+Corresponding to the 
+\family typewriter
+AnyGene
+\family default
+, it is possible to create chromosomes with arbitrary allele types with
+ the 
+\family typewriter
+AnyChromosome
+\family default
+.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public class LastMonday {
+\end_layout
+
+\begin_layout Plain Layout
+
+    // The used problem Codec.
+\end_layout
+
+\begin_layout Plain Layout
+
+    private static final Codec<LocalDate, AnyGene<LocalDate>> 
+\end_layout
+
+\begin_layout Plain Layout
+
+    CODEC = Codec.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+        Genotype.of(AnyChromosome.of(LastMonday::nextMonday)),
+\end_layout
+
+\begin_layout Plain Layout
+
+        gt -> gt.getGene().getAllele()
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Creates new random 'LocalDate' objects.
+\end_layout
+
+\begin_layout Plain Layout
+
+    private static LocalDate nextMonday() {
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Random random = RandomRegistry.getRandom();
+\end_layout
+
+\begin_layout Plain Layout
+
+        LocalDate
+\end_layout
+
+\begin_layout Plain Layout
+
+            .of(2015, 1, 5)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .plusWeeks(random.nextInt(1000));
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // The fitness function: find a monday at the end of the month.
+\end_layout
+
+\begin_layout Plain Layout
+
+    private static int fitness(final LocalDate date) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        return date.getDayOfMonth();
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    public static void main(final String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Engine<AnyGene<LocalDate>, Integer> engine = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+            .builder(LastMonday::fitness, CODEC)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .offspringSelector(new RouletteWheelSelector<>())
+\end_layout
+
+\begin_layout Plain Layout
+
+            .build();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Phenotype<AnyGene<LocalDate>, Integer> best = 
+\end_layout
+
+\begin_layout Plain Layout
+
+            engine.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+                .limit(50)
+\end_layout
+
+\begin_layout Plain Layout
+
+                .collect(EvolutionResult.toBestPhenotype());
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        System.out.println(best);
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:AnyChromosome-example"
+
+\end_inset
+
+AnyChromosome
+\family default
+ example
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+AnyChromosome
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:AnyChromosome-example"
+
+\end_inset
+
+ shows a full usage example of the 
+\family typewriter
+Any\SpecialChar \-
+Gene
+\family default
+ and 
+\family typewriter
+Any\SpecialChar \-
+Chromosome
+\family default
+ class.
+ The example tries to find a Monday with a maximal day of month.
+ An interesting detail is, that an 
+\family typewriter
+Codec
+\family default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Codec"
+
+\end_inset
+
+ for a more detailed 
+\family typewriter
+Codec
+\family default
+ description.
+ 
+\end_layout
+
+\end_inset
+
+ definition is used for creating new 
+\family typewriter
+Genotypes
+\family default
+ and for converting them back to 
+\family typewriter
+LocalDate
+\family default
+ alleles.
+\end_layout
+
+\begin_layout Standard
+The convenient usage of the 
+\family typewriter
+Any\SpecialChar \-
+Chromosome
+\family default
+ has to be payed by the same restriction as for the 
+\family typewriter
+Any\SpecialChar \-
+Gene
+\family default
+: no serialization support for the chromosome and not usable for all 
+\family typewriter
+Alterer
+\family default
+ implementations.
 \end_layout
 
 \begin_layout Subsection
@@ -13522,12 +14315,7 @@ static double eval(final double x) {
 \end_layout
 
 \begin_layout Standard
-The 
-\family typewriter
-Codec
-\family default
- interface also allows to implement commonly used encodings.
- 
+
 \family sans
 \series bold
 \shape smallcaps
@@ -13543,124 +14331,1740 @@ jenetics.\SpecialChar \-
 engine.\SpecialChar \-
 codecs
 \family default
- class:
+ class.
+ The following sub-sections shows some of the implementation of this methods.
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Subsubsection
+Scalar codecs
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Scalar-codecs"
 
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Scalar codecs
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Codec-factory-method-ofScalar"
+
+\end_inset
+
+ shows the implementation of the 
 \family typewriter
-\series bold
-codecs.ofScalar
+codecs\SpecialChar \-
+.ofScalar
 \family default
-\series default
-: Create 
+ factory method---for 
+\family typewriter
+Integer
+\family default
+ scalars.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static Codec<Integer, IntegerGene> ofScalar(IntRange domain) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return Codec.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+        Genotype.of(IntegerChromosome.of(domain)),
+\end_layout
+
+\begin_layout Plain Layout
+
+        gt -> gt.getChromosome().getGene().getAllele()
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
 \family typewriter
 Codec
 \family default
-s for scalar problems
+ factory method: 
+\family typewriter
+ofScalar
+\family default
+
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Codec-factory-method-ofScalar"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The usage of the 
+\family typewriter
+Codec
+\family default
+, created by this factory method, simplifies the implementation of the fitness
+ 
+\family typewriter
+Function
+\family default
+ and the creation of the evolution 
+\family typewriter
+Engine
+\family default
+.
+ For scalar types, the saving, in complexity and lines of code, is not that
+ big, but using the factory method is still quite handy.
+ 
+\end_layout
+
+\begin_layout Standard
+The following listing demonstrates the interaction between 
+\family typewriter
+Codec
+\family default
+, fitness 
+\family typewriter
+Function
+\family default
+ and evolution 
+\family typewriter
+Engine
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+class Main {
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Fitness function directly takes an 'int' value.
+\end_layout
+
+\begin_layout Plain Layout
+
+    static double fitness(int arg) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        return ...;
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+    public static void main(String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Engine<IntegerGene, Double> engine = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+            .builder(Main::fitness, ofScalar(IntRange.of(0, 100)))
+\end_layout
+
+\begin_layout Plain Layout
+
+            .build();
+\end_layout
+
+\begin_layout Plain Layout
+
+        ...
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Vector codecs
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Vector-codecs"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Vector codecs
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In the listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Codec-factory-method-ofVector"
+
+\end_inset
+
+, the 
+\family typewriter
+ofVector
+\family default
+ factory method returns a 
+\family typewriter
+Codec
+\family default
+ for an 
+\family typewriter
+int[]
+\family default
+ array.
+ The 
+\family typewriter
+domain
+\family default
+ parameter defines the allowed range of the 
+\family typewriter
+int
+\family default
+ values and the 
+\family typewriter
+length
+\family default
+ defines the length of the encoded 
+\family typewriter
+int
+\family default
+ array.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static Codec<int[], IntegerGene> ofVector(
+\end_layout
+
+\begin_layout Plain Layout
+
+    IntRange domain, 
+\end_layout
+
+\begin_layout Plain Layout
+
+    int length
+\end_layout
+
+\begin_layout Plain Layout
+
+) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return Codec.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+        Genotype.of(IntegerChromosome.of(domain, length)),
+\end_layout
+
+\begin_layout Plain Layout
+
+        gt -> ((IntegerChromosome)gt.getChromosome()).toArray()
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+Codec
+\family default
+ factory method: 
+\family typewriter
+ofVector
+\family default
+
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Codec-factory-method-ofVector"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The usage example of the 
+\emph on
+vector
+\emph default
+ 
+\family typewriter
+Codec
+\family default
+ is almost the same as for the 
+\emph on
+scalar
+\emph default
+ 
+\family typewriter
+Codec
+\family default
+.
+ As additional parameter, we need to define the length of the desired array
+ and we define our fitness function with an 
+\family typewriter
+int[]
+\family default
+ array.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+class Main {
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Fitness function directly takes an 'int[]' array.
+\end_layout
+
+\begin_layout Plain Layout
+
+    static double fitness(int[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        return ...;
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+    public static void main(String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Engine<IntegerGene, Double> engine = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+            .builder(
+\end_layout
+
+\begin_layout Plain Layout
+
+                Main::fitness, 
+\end_layout
+
+\begin_layout Plain Layout
+
+                ofVector(IntRange.of(0, 100), 10))
+\end_layout
+
+\begin_layout Plain Layout
+
+            .build();
+\end_layout
+
+\begin_layout Plain Layout
+
+        ...
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Subset codec
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Subset-codec"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Subset codec
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+There are currently two kinds of subset codecs you can choose from: finding
+ subsets with 
+\emph on
+variable
+\emph default
+ size and with 
+\emph on
+fixed
+\emph default
+ size.
+\end_layout
+
+\begin_layout Paragraph
+Variable-sized subsets
+\end_layout
+
+\begin_layout Standard
+A Codec for 
+\emph on
+variable-sized
+\emph default
+ subsets can be easily implemented with the use of a BitChromosome, as shown
+ in listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Codec-factory-method-ofSubSet"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static <T> Codec<ISeq<T>, BitGene> ofSubSet(ISeq<T> basicSet) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return Codec.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+        Genotype.of(BitChromosome.of(basicSet.length())),
+\end_layout
+
+\begin_layout Plain Layout
+
+        gt -> ((BitChromosome)gt.getChromosome()).ones()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .mapToObj(basicSet::get)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .collect(ISeq.toISeq())
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+Codec
+\family default
+ factory method: 
+\family typewriter
+ofSubSet
+\family default
+
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Codec-factory-method-ofSubSet"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The following usage example of 
+\emph on
+subset
+\emph default
+ 
+\family typewriter
+Codec
+\family default
+ shows a simplified version of the Knapsack problem (see section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:0/1-Knapsack-example"
+
+\end_inset
+
+).
+ We try to find a subset, from the given basic 
+\family typewriter
+SET
+\family default
+, where the sum of the values is as big as possible, but smaller or equal
+ than 
+\begin_inset Formula $20$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+class Main {
+\end_layout
+
+\begin_layout Plain Layout
+
+    // The basic set from where to choose an 'optimal' subset.
+\end_layout
+
+\begin_layout Plain Layout
+
+    final static ISeq<Integer> SET = 
+\end_layout
+
+\begin_layout Plain Layout
+
+        ISeq.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Fitness function directly takes an 'int' value.
+\end_layout
+
+\begin_layout Plain Layout
+
+    static int fitness(ISeq<Integer> subset) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        assert(subset.size() <= SET.size());
+\end_layout
+
+\begin_layout Plain Layout
+
+        final int size = subset.stream().collect(
+\end_layout
+
+\begin_layout Plain Layout
+
+            Collectors.summingInt(Integer::intValue));
+\end_layout
+
+\begin_layout Plain Layout
+
+        return size <= 20 ? size : 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+    public static void main(String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Engine<BitGene, Double> engine = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+            .builder(Main::fitness, ofSubSet(SET))
+\end_layout
+
+\begin_layout Plain Layout
+
+            .build();
+\end_layout
+
+\begin_layout Plain Layout
+
+        ...
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+Fixed-size subsets
 \begin_inset Foot
 status collapsed
 
 \begin_layout Plain Layout
-The argument types of these problems are scalars.
+The algorithm for choosing subsets based on a FORTRAN77 version, originally
+ implemented by Albert Nijenhuis, Herbert Wilf.
+ The actual Java implementation is based on the C++ version by John Burkardt.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Nijenhuis1978"
+
+\end_inset
+
+, 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "JSSv068c01"
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
 
----
-\family typewriter
-Integer
-\family default
-, 
-\family typewriter
-Long
-\family default
- or 
-\family typewriter
-Double
-\family default
-.
-\end_layout
 
-\begin_layout Itemize
-
-\family typewriter
-\series bold
-codecs.ofVector
-\family default
-\series default
-: Create 
-\family typewriter
-Codec
-\family default
-s for vector problems---
-\family typewriter
-int[]
-\family default
-, 
-\family typewriter
-long[]
-\family default
- or 
-\family typewriter
-double[]
-\family default
-.
- It is possible to create vectors with the same range and vectors with a
- different range for every vector component.
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-\series bold
-codecs.ofPermutation
-\family default
-\series default
-: Create 
-\family typewriter
-Codec
-\family default
-s for permutation problems.
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Comment
+The second kind of subset codec allows you to find the 
+\emph on
+best
+\emph default
+ subset of a given, fixed size.
+ A classical usage for this encoding is the Subset sum problem
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
 status open
 
-\begin_layout Itemize
+\begin_layout Plain Layout
 
-\family typewriter
-\series bold
-codecs.ofAffineTransform
-\family default
-\series default
-: Create 
-\family typewriter
-Codec
-\family default
-s for affine transformation.
- This 
-\family typewriter
-Codec
-\family default
- uses the 
-\family typewriter
-Affine\SpecialChar \-
-Transform
-\family default
- class of the 
-\family typewriter
-java.\SpecialChar \-
-awt.\SpecialChar \-
-geom
-\family default
- package.
+https://en.wikipedia.org/wiki/Subset_sum_problem
 \end_layout
 
 \end_inset
 
 
+\end_layout
+
+\end_inset
+
+: 
+\emph on
+
+\begin_inset Newline newline
+\end_inset
+
+Given a set (or multi-set) of integers, is there a non-empty subset whose
+ sum is zero? For example, given the set 
+\begin_inset Formula $\left\{ -7,-3,-2,5,8\right\} $
+\end_inset
+
+, the answer is yes because the subset 
+\begin_inset Formula $\left\{ -3,\text{-}2,5\right\} $
+\end_inset
+
+ sums to zero.
+ The problem is NP-complete
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+
+\emph on
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/NP-completeness
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public class SubsetSum
+\end_layout
+
+\begin_layout Plain Layout
+
+    implements Problem<ISeq<Integer>, EnumGene<Integer>, Integer> 
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    private final ISeq<Integer> _basicSet;
+\end_layout
+
+\begin_layout Plain Layout
+
+    private final int _size;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	public SubsetSum(ISeq<Integer> basicSet, int size) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        _basicSet = basicSet;
+\end_layout
+
+\begin_layout Plain Layout
+
+        _size = size;
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	@Override
+\end_layout
+
+\begin_layout Plain Layout
+
+    public Function<ISeq<Integer>, Integer> fitness() {
+\end_layout
+
+\begin_layout Plain Layout
+
+        return subset -> abs(
+\end_layout
+
+\begin_layout Plain Layout
+
+            subset.stream().mapToInt(Integer::intValue).sum());
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	@Override
+\end_layout
+
+\begin_layout Plain Layout
+
+    public Codec<ISeq<Integer>, EnumGene<Integer>> codec() {
+\end_layout
+
+\begin_layout Plain Layout
+
+        return codecs.ofSubSet(_basicSet, _size);
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Composite codec
+\end_layout
+
+\begin_layout Standard
+The 
+\emph on
+composite
+\emph default
+ 
+\family typewriter
+Codec
+\family default
+ factory method allows to combine two or more 
+\family typewriter
+Codec
+\family default
+s into one.
+ Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Composite-Codec-factory"
+
+\end_inset
+
+ shows the method signature of the factory method, which is implemented
+ directly in the 
+\family typewriter
+Codec
+\family default
+ interface.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static <G extends Gene<?, G>, A, B, T> Codec<T, G> of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Codec<A, G> codec1,
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Codec<B, G> codec2,
+\end_layout
+
+\begin_layout Plain Layout
+
+    final BiFunction<A, B, T> decoder
+\end_layout
+
+\begin_layout Plain Layout
+
+){...}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Composite 
+\family typewriter
+Codec
+\family default
+ factory method
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Composite-Codec-factory"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+As you can see from the method definition, the combining 
+\family typewriter
+Codecs
+\family default
+ and the combined 
+\family typewriter
+Codec
+\family default
+ have the same 
+\family typewriter
+Gene
+\family default
+ type.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+Only 
+\family typewriter
+Codec
+\family default
+s which the same 
+\family typewriter
+Gene
+\family default
+ type can be composed by the combining factory methods of the 
+\family typewriter
+Codec
+\family default
+ class.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The following listing shows a full example which uses a combined 
+\family typewriter
+Codec
+\family default
+.
+ It uses the subset 
+\family typewriter
+Codec
+\family default
+, introduced in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Subset-codec"
+
+\end_inset
+
+, and combines it into a 
+\family typewriter
+Tuple
+\family default
+ of subsets.
+ 
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+class Main {
+\end_layout
+
+\begin_layout Plain Layout
+
+    static final ISeq<Integer> SET = 
+\end_layout
+
+\begin_layout Plain Layout
+
+        ISeq.of(1, 2, 3, 4, 5, 6, 7, 8, 9);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Result type of the combined 'Codec'.
+\end_layout
+
+\begin_layout Plain Layout
+
+    static final class Tuple<A, B> {
+\end_layout
+
+\begin_layout Plain Layout
+
+        final A first;
+\end_layout
+
+\begin_layout Plain Layout
+
+        final B second;
+\end_layout
+
+\begin_layout Plain Layout
+
+        Tuple(final A first, final B second) {
+\end_layout
+
+\begin_layout Plain Layout
+
+            this.first = first;
+\end_layout
+
+\begin_layout Plain Layout
+
+            this.second = second;
+\end_layout
+
+\begin_layout Plain Layout
+
+        }
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    static int fitness(Tuple<ISeq<Integer>, ISeq<Integer>> args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        return args.first.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+                .mapToInt(Integer::intValue).sum() -
+\end_layout
+
+\begin_layout Plain Layout
+
+            args.second.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+                .mapToInt(Integer::intValue).sum();
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    public static void main(String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        // Combined 'Codec'.
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Codec<Tuple<ISeq<Integer>, ISeq<Integer>>, BitGene>
+\end_layout
+
+\begin_layout Plain Layout
+
+            codec = Codec.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+                codecs.ofSubSet(SET),
+\end_layout
+
+\begin_layout Plain Layout
+
+                codecs.ofSubSet(SET),
+\end_layout
+
+\begin_layout Plain Layout
+
+                Tuple::new
+\end_layout
+
+\begin_layout Plain Layout
+
+            );
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Engine<BitGene, Integer> engine = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+            .builder(Main::fitness, codec)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .build();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Phenotype<BitGene, Integer> pt = engine.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .limit(100)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .collect(EvolutionResult.toBestPhenotype());
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        // Use the codec for converting the result 'Genotype'.
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Tuple<ISeq<Integer>, ISeq<Integer>> result =
+\end_layout
+
+\begin_layout Plain Layout
+
+            codec.decoder().apply(pt.getGenotype());
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If you have to combine more than one Codec into one, you have to use the
+ second, more general, 
+\emph on
+combining
+\emph default
+ function: 
+\family typewriter
+Codec\SpecialChar \-
+.of(\SpecialChar \-
+ISeq<Codec<?, G>>,\SpecialChar \-
+ Function<Object[], T>\SpecialChar \-
+)
+\family default
+.
+ The example above shows how to use the general combining function.
+ It is just a little bit more verbose and requires explicit casts for the
+ 
+\emph on
+sub-codec
+\emph default
+ types.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Codec<Triple<Long, Long, Long>, LongGene>
+\end_layout
+
+\begin_layout Plain Layout
+
+    codec = Codec.of(ISeq.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+        codecs.ofScalar(LongRange.of(0, 100)),
+\end_layout
+
+\begin_layout Plain Layout
+
+        codecs.ofScalar(LongRange.of(0, 1000)),
+\end_layout
+
+\begin_layout Plain Layout
+
+        codecs.ofScalar(LongRange.of(0, 10000))),
+\end_layout
+
+\begin_layout Plain Layout
+
+        values -> {
+\end_layout
+
+\begin_layout Plain Layout
+
+            final Long first = (Long)values[0];
+\end_layout
+
+\begin_layout Plain Layout
+
+            final Long second = (Long)values[1];
+\end_layout
+
+\begin_layout Plain Layout
+
+            final Long third = (Long)values[2];
+\end_layout
+
+\begin_layout Plain Layout
+
+            return new Triple<>(first, second, third);
+\end_layout
+
+\begin_layout Plain Layout
+
+        }
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Problem
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Problem
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+Problem
+\family default
+ interface is a further abstraction level, which allows to 
+\emph on
+bind
+\emph default
+ the problem encoding and the fitness function into one class.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface Problem<
+\end_layout
+
+\begin_layout Plain Layout
+
+    T,
+\end_layout
+
+\begin_layout Plain Layout
+
+    G extends Gene<?, G>,
+\end_layout
+
+\begin_layout Plain Layout
+
+    C extends Comparable<? super C>
+\end_layout
+
+\begin_layout Plain Layout
+
+> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    public Function<T, C> fitness();
+\end_layout
+
+\begin_layout Plain Layout
+
+    public Codec<T, G> codec();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+Problem
+\family default
+ interface
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Problem-interface"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Problem-interface"
+
+\end_inset
+
+ shows the 
+\family typewriter
+Problem
+\family default
+ interface.
+ The generic type 
+\family typewriter
+T
+\family default
+ represents the 
+\emph on
+native
+\emph default
+ argument type of the fitness function and 
+\family typewriter
+C
+\family default
+ the 
+\family typewriter
+Comparable
+\family default
+ result of the fitness function.
+ 
+\family typewriter
+G
+\family default
+ is the 
+\family typewriter
+Gene
+\family default
+ type, which is used by the evolution 
+\family typewriter
+Engine
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+// Definition of the Ones counting problem.
+\end_layout
+
+\begin_layout Plain Layout
+
+final Problem<ISeq<BitGene>, BitGene, Integer> ONES_COUNTING =
+\end_layout
+
+\begin_layout Plain Layout
+
+    Problem.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+        // Fitness Function<ISeq<BitGene>, Integer>
+\end_layout
+
+\begin_layout Plain Layout
+
+        genes -> (int)genes.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .filter(BitGene::getBit).count(),
+\end_layout
+
+\begin_layout Plain Layout
+
+        Codec.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+            // Genotype Factory<Genotype<BitGene>>
+\end_layout
+
+\begin_layout Plain Layout
+
+            Genotype.of(BitChromosome.of(20, 0.15)),
+\end_layout
+
+\begin_layout Plain Layout
+
+            // Genotype conversion
+\end_layout
+
+\begin_layout Plain Layout
+
+            // Function<Genotype<BitGene>, <BitGene>>
+\end_layout
+
+\begin_layout Plain Layout
+
+            gt -> gt.getChromosome().toSeq()
+\end_layout
+
+\begin_layout Plain Layout
+
+        )
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+// Engine creation for Problem solving.
+\end_layout
+
+\begin_layout Plain Layout
+
+final Engine<BitGene, Integer> engine = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+    .bulder(ONES_COUNTING)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .populationSize(150)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .survivorsSelector(newTournamentSelector<>(5))
+\end_layout
+
+\begin_layout Plain Layout
+
+    .offspringSelector(new RouletteWheelSelector<>())
+\end_layout
+
+\begin_layout Plain Layout
+
+    .alterers(
+\end_layout
+
+\begin_layout Plain Layout
+
+        new Mutator<>(0.03),
+\end_layout
+
+\begin_layout Plain Layout
+
+        new SinglePointCrossover<>(0.125))
+\end_layout
+
+\begin_layout Plain Layout
+
+    .build();
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The listing above shows how a new 
+\family typewriter
+Engine
+\family default
+ is created by using a predefined 
+\family typewriter
+Problem
+\family default
+ instance.
+ This allows the complete decoupling of problem and 
+\family typewriter
+Engine
+\family default
+ definition.
 \end_layout
 
 \begin_layout Subsection
@@ -14232,12 +16636,12 @@ This kind of termination method should always be applied---usually additional
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/diagram/FixedGenerationTermination.svg
+	filename ../resources/diagram/Knapsack-fixed_generation_termination.svg
 	lyxscale 80
 	width 100text%
 
@@ -14605,7 +17009,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/diagram/SteadyFitnessTermination.svg
+	filename ../resources/diagram/Knapsack-steady_fitness_termination.svg
 	lyxscale 80
 	width 100text%
 
@@ -14768,7 +17172,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/diagram/ExecutionTimeTermination.svg
+	filename ../resources/diagram/Knapsack-execution_time_termination.svg
 	lyxscale 80
 	width 100text%
 
@@ -14864,7 +17268,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/diagram/FitnessThresholdTermination.svg
+	filename ../resources/diagram/Knapsack-fitness_threshold_termination.svg
 	lyxscale 80
 	width 100text%
 
@@ -14928,7 +17332,7 @@ easily
 
 \begin_layout Standard
 \begin_inset Note Comment
-status open
+status collapsed
 
 \begin_layout Subsubsection
 Fitness convergence
@@ -14973,8 +17377,167 @@ A termination method that stops the evolution when a user-specified percentage
 
 \end_layout
 
+\begin_layout Subsection
+Evolution performance
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+Evolution!performance
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This section contains an empirical 
+\emph on
+proof
+\emph default
+, that 
+\emph on
+evolutionary
+\emph default
+ selectors deliver significantly better fitness results than a random search.
+ The 
+\family typewriter
+Monte\SpecialChar \-
+Carlo\SpecialChar \-
+Selector
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Monte Carlo selector
+\end_layout
+
+\end_inset
+
+
+\family default
+ is used for creating the comparison (random search) fitness values.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/diagram/Knapsack-selector_comparison.svg
+	lyxscale 80
+	width 100text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Selector-performance-Knapsack"
+
+\end_inset
+
+Selector-performance (Knapsack)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Diagram 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Selector-performance-Knapsack"
+
+\end_inset
+
+ shows the 
+\emph on
+evolution
+\emph default
+ performance of the 
+\family typewriter
+Selec\SpecialChar \-
+tor
+\family default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The termination tests are using a 
+\family typewriter
+Tournament\SpecialChar \-
+Selector
+\family default
+, with tournament-size 5, for selecting the survivors, and a 
+\family typewriter
+Roulette\SpecialChar \-
+Wheel\SpecialChar \-
+Selector
+\family default
+ for selecting the offspring.
+\end_layout
+
+\end_inset
+
+ used by the examples in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Termination"
+
+\end_inset
+
+.
+ The lower blue line shows the (mean) fitness values of the 
+\emph on
+Knapsack
+\emph default
+ problem when using the 
+\family typewriter
+Monte\SpecialChar \-
+Carlo\SpecialChar \-
+Selector
+\family default
+ for selecting the survivors and offspring population.
+ It can be easily seen, that the performance of the 
+\emph on
+real
+\emph default
+ evolutionary 
+\family typewriter
+Selector
+\family default
+s is much better than a random search.
+\end_layout
+
 \begin_layout Section
 Internals
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Internals
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -15010,6 +17573,26 @@ internal
 
 \begin_layout Subsection
 PRNG testing
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+PRNG testing
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Random!testing
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -15377,10 +17960,10 @@ Seeding
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
-Random!Seeding
+Random!seeding
 \end_layout
 
 \end_inset
@@ -16239,6 +18822,674 @@ How does this method perform on operating systems other than Linux?
 How does this method perform on other JVM implementations?
 \end_layout
 
+\begin_layout Section
+Incubation
+\end_layout
+
+\begin_layout Standard
+This section describes the classes in the 
+\emph on
+not-yet
+\emph default
+ released modules.
+ Incubating features and experimental genetic operators will be implemented
+ in this modules.
+ If you find this classes useful, you must build the module yourself, since
+ they are not yet available in the global maven repository.
+ With
+\end_layout
+
+\begin_layout LyX-Code
+$ ./gradlew 
+\emph on
+<module>
+\emph default
+:jar
+\end_layout
+
+\begin_layout Standard
+it is possible to create a module JAR which can be added to your project
+ classpath.
+ Be aware that interface and/or implementation of incubating modules can
+ be changed without noticing.
+\end_layout
+
+\begin_layout Standard
+Currently incubation modules:
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+org.jenetics.tool
+\family default
+ Contains utility classes for measuring the evolution performance.
+\family typewriter
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://jenetics.io/javadoc/org.jenetics.tool/@__minor_version__@/index.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\family default
+ This classes where used for creating the diagrams in this manual.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+org.jenetix
+\family default
+ Contains non-standard selector and mutator classes.
+\family typewriter
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://jenetics.io/javadoc/org.jenetix/@__minor_version__@/index.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\family default
+ The classes needed for the 
+\emph on
+Weasel program
+\emph default
+ (see section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Weasel-program"
+
+\end_inset
+
+) are part of this module.
+\end_layout
+
+\begin_layout Subsection
+Weasel program
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Weasel-program"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Weasel program
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The Weasel program
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Weasel_program
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ is thought experiment from Richard Dawkins, in which he tries to illustrate
+ the function of genetic 
+\emph on
+mutation
+\emph default
+ and 
+\emph on
+selection
+\emph default
+.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The classes are located in the 
+\family typewriter
+org.jenetix
+\family default
+ module.
+\end_layout
+
+\end_inset
+
+ For this reason he chooses the well known example of typewriting monkeys.
+\end_layout
+
+\begin_layout Quote
+I don't know who it was first pointed out that, given enough time, a monkey
+ bashing away at random on a typewriter could produce all the works of Shakespea
+re.
+ The operative phrase is, of course, given enough time.
+ Let us limit the task facing our monkey somewhat.
+ Suppose that he has to produce, not the complete works of Shakespeare but
+ just the short sentence 
+\begin_inset Quotes ald
+\end_inset
+
+Methinks it is like a weasel
+\begin_inset Quotes ard
+\end_inset
+
+, and we shall make it relatively easy by giving him a typewriter with a
+ restricted keyboard, one with just the 26 (uppercase) letters, and a space
+ bar.
+ How long will he take to write this one little sentence? 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "dawkins1986"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The search space of the 28 character long target string is 
+\begin_inset Formula $27^{28}\approx10^{40}$
+\end_inset
+
+.
+ If the monkey writes 
+\begin_inset Formula $1,000,000$
+\end_inset
+
+ different 
+\emph on
+sentences
+\emph default
+ per second, it would take about 
+\begin_inset Formula $10^{26}$
+\end_inset
+
+ years (in average) writing the correct one.
+ Although Dawkins did not provide the source code for his program, a 
+\begin_inset Quotes ald
+\end_inset
+
+Weasel
+\begin_inset Quotes ard
+\end_inset
+
+ style algorithm could run as follows:
+\end_layout
+
+\begin_layout Enumerate
+Start with a random string of 28 characters.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Make 
+\begin_inset Formula $n$
+\end_inset
+
+ copies of the string (reproduce).
+ 
+\end_layout
+
+\begin_layout Enumerate
+Mutate the characters with an mutation probability of 5%.
+\end_layout
+
+\begin_layout Enumerate
+Compare each new string with the target string 
+\begin_inset Quotes ald
+\end_inset
+
+METHINKS IT IS LIKE A WEASEL
+\begin_inset Quotes ard
+\end_inset
+
+, and give each a score (the number of letters in the string that are correct
+ and in the correct position).
+ 
+\end_layout
+
+\begin_layout Enumerate
+If any of the new strings has a perfect score (
+\begin_inset Formula $28$
+\end_inset
+
+), halt.
+ Otherwise, take the highest scoring string, and go to step 2.
+\end_layout
+
+\begin_layout Standard
+Richard Dawkins was also very careful to point out the limitations of this
+ simulation:
+\end_layout
+
+\begin_layout Quote
+Although the monkey/Shakespeare model is useful for explaining the distinction
+ between single-step selection and cumulative selection, it is misleading
+ in important ways.
+ One of these is that, in each generation of selective 
+\begin_inset Quotes ald
+\end_inset
+
+breeding
+\begin_inset Quotes ard
+\end_inset
+
+, the mutant 
+\begin_inset Quotes ald
+\end_inset
+
+progeny
+\begin_inset Quotes ard
+\end_inset
+
+ phrases were judged according to the criterion of resemblance to a distant
+ ideal target, the phrase METHINKS IT IS LIKE A WEASEL.
+ Life isn't like that.
+ Evolution has no long-term goal.
+ There is no long-distance target, no final perfection to serve as a criterion
+ for selection, although human vanity cherishes the absurd notion that our
+ species is the final goal of evolution.
+ In real life, the criterion for selection is always short-term, either
+ simple survival or, more generally, reproductive success.
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "dawkins1986"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If you want to write a Weasel program with the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library, you need to use the special 
+\family typewriter
+Weasel\SpecialChar \-
+Selector
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+WeaselSelector
+\end_layout
+
+\end_inset
+
+
+\family default
+ and 
+\family typewriter
+Weasel\SpecialChar \-
+Mutator
+\family default
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+WeaselMutator
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public class WeaselProgram {
+\end_layout
+
+\begin_layout Plain Layout
+
+	private static final String TARGET = 
+\end_layout
+
+\begin_layout Plain Layout
+
+        "METHINKS IT IS LIKE A WEASEL";
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	private static int score(final Genotype<CharacterGene> gt) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		final CharSequence source = 
+\end_layout
+
+\begin_layout Plain Layout
+
+            (CharSequence)gt.getChromosome();
+\end_layout
+
+\begin_layout Plain Layout
+
+		return IntStream.range(0, TARGET.length())
+\end_layout
+
+\begin_layout Plain Layout
+
+			.map(i -> source.charAt(i) == TARGET.charAt(i) ? 1 : 0)
+\end_layout
+
+\begin_layout Plain Layout
+
+			.sum();
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	public static void main(final String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		final CharSeq chars = CharSeq.of("A-Z ");
+\end_layout
+
+\begin_layout Plain Layout
+
+		final Factory<Genotype<CharacterGene>> gtf = Genotype.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+			new CharacterChromosome(chars, TARGET.length())
+\end_layout
+
+\begin_layout Plain Layout
+
+		);
+\end_layout
+
+\begin_layout Plain Layout
+
+		final Engine<CharacterGene, Integer> engine = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+			.builder(WeaselProgram::score, gtf)
+\end_layout
+
+\begin_layout Plain Layout
+
+			.populationSize(150)
+\end_layout
+
+\begin_layout Plain Layout
+
+			.selector(new WeaselSelector<>())
+\end_layout
+
+\begin_layout Plain Layout
+
+			.offspringFraction(1)
+\end_layout
+
+\begin_layout Plain Layout
+
+			.alterers(new WeaselMutator<>(0.05))
+\end_layout
+
+\begin_layout Plain Layout
+
+			.build();
+\end_layout
+
+\begin_layout Plain Layout
+
+		final Phenotype<CharacterGene, Integer> result = engine
+\end_layout
+
+\begin_layout Plain Layout
+
+            .stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+			.limit(byFitnessThreshold(TARGET.length() - 1))
+\end_layout
+
+\begin_layout Plain Layout
+
+			.peek(r -> System.out.println(
+\end_layout
+
+\begin_layout Plain Layout
+
+				r.getTotalGenerations() + ": " + 
+\end_layout
+
+\begin_layout Plain Layout
+
+				r.getBestPhenotype()))
+\end_layout
+
+\begin_layout Plain Layout
+
+			.collect(toBestPhenotype());
+\end_layout
+
+\begin_layout Plain Layout
+
+		System.out.println(result);
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+Weasel program
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Weasel-program"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Weasel-program"
+
+\end_inset
+
+ shows how-to implement the 
+\family typewriter
+Weasel\SpecialChar \-
+Program
+\family default
+ with 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+.
+ Step (1) and (2) of the algorithm is done implicitly when the initial populatio
+n is created.
+ The third step is done by the 
+\family typewriter
+Weasel\SpecialChar \-
+Mutator
+\family default
+, with mutation probability of 0.05.
+ Step (4) is done by the WeaselSelector together with the configured offspring-f
+raction of one.
+ The evolution stream is limited by the 
+\family typewriter
+limit\SpecialChar \-
+.by\SpecialChar \-
+Fitness\SpecialChar \-
+Threshold
+\family default
+, which is set to 
+\begin_inset Formula $score_{max}-1$
+\end_inset
+
+.
+ In the current example this value is set to 
+\family typewriter
+TARGET\SpecialChar \-
+.length()
+\family default
+ - 1 = 27.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+scriptsize
+\backslash
+ttfamily}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstinputlisting{../resources/code/WeaselProgram.out}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+footnotesize}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The (shortened) output of the Weasel program (listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Weasel-program"
+
+\end_inset
+
+) shows, that the optimal solution is reached in generation 
+\begin_inset Formula $46$
+\end_inset
+
+.
+\end_layout
+
 \begin_layout Standard
 \begin_inset Newpage pagebreak
 \end_inset
@@ -16364,7 +19615,11 @@ In the classic genetic algorithm the problem is a maximization problem and
 \end_inset
 
 .
- The fitness of a Genotype is proportional to the number of ones.
+ The fitness of a 
+\family typewriter
+Genotype
+\family default
+ is proportional to the number of ones.
 \end_layout
 
 \begin_layout Standard
@@ -16375,7 +19630,7 @@ status open
 
 
 \backslash
-lstinputlisting{../resources/code/OnesCounting.java}
+lstinputlisting{../java/OnesCounting.java}
 \end_layout
 
 \end_inset
@@ -16384,8 +19639,12 @@ lstinputlisting{../resources/code/OnesCounting.java}
 \end_layout
 
 \begin_layout Standard
-The genotype in this example consists of one BitChromosome with a ones probabili
-ty of 0.15.
+The genotype in this example consists of one 
+\family typewriter
+Bit\SpecialChar \-
+Chromosome
+\family default
+ with a ones probability of 0.15.
  The altering of the offspring population is performed by mutation, with
  mutation probability of 0.55, and then by a single-point crossover, with
  crossover probability of 0.06.
@@ -16397,7 +19656,7 @@ ty of 0.15.
  The tournament selector is used for both, the offspring- and the survivor
  selection---this is the default selector.
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 For the other default values (population size, maximal age, ...) have a look
@@ -16518,7 +19777,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/graphic/RealFunction2D.svg
+	filename ../resources/graphic/RealFunction.svg
 	lyxscale 70
 	width 100text%
 
@@ -16533,11 +19792,11 @@ status open
 \begin_layout Plain Layout
 \begin_inset CommandInset label
 LatexCommand label
-name "fig:Real-function-2D"
+name "fig:Real-function"
 
 \end_inset
 
-Real function 2D
+Real function
 \end_layout
 
 \end_inset
@@ -16565,7 +19824,7 @@ reference "eq:Example-real-function"
 , is shown in figure 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "fig:Real-function-2D"
+reference "fig:Real-function"
 
 \end_inset
 
@@ -16581,7 +19840,7 @@ status open
 
 
 \backslash
-lstinputlisting{../resources/code/RealFunction.java}
+lstinputlisting{../java/RealFunction.java}
 \end_layout
 
 \end_inset
@@ -16596,9 +19855,10 @@ The GA works with
 
 
 \family typewriter
- DoubleChromosome
+ Double\SpecialChar \-
+Chromosomes
 \family default
-s whose values are restricted to the range 
+ whose values are restricted to the range 
 \begin_inset Formula $[0,2\pi]$
 \end_inset
 
@@ -16652,6 +19912,237 @@ exact
 \end_inset
 
  You can also see, that we reached the final result after 19 generations.
+\end_layout
+
+\begin_layout Subsection
+Rastrigin function
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Rastrigin-function"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Examples!Rastrigin function
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Rastrigin function
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The Rastrigin function
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Rastrigin_function
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ is often used to test the optimization performance of genetic algorithm.
+\begin_inset Formula 
+\begin{equation}
+f\left(\mathbf{x}\right)=An+\sum_{i=1}^{n}\left(x_{i}^{2}-A\cos\left(2\pi x_{i}\right)\right).\label{eq:Rastrigin-function}
+\end{equation}
+
+\end_inset
+
+As the plot in figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Rastrigin-function"
+
+\end_inset
+
+ shows, the Rastrigin function has many local minima, which makes it difficult
+ for standard, gradient-based methods to find the global minimum.
+ If 
+\begin_inset Formula $A=10$
+\end_inset
+
+ and 
+\begin_inset Formula $x_{i}\in\left[-5.12,5.12\right]$
+\end_inset
+
+, the function has only one global minimum at 
+\begin_inset Formula $\mathbf{x}=\mathbf{0}$
+\end_inset
+
+ with 
+\begin_inset Formula $f\left(\mathbf{x}\right)=0$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/fwilhelm/Workspace/Development/Projects/Jenetics/org.jenetics.doc/src/main/resources/graphic/RastriginFunction.png
+	lyxscale 50
+	width 100text%
+	clip
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Rastrigin-function"
+
+\end_inset
+
+Rastrigin function
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+The following listing shows the 
+\family typewriter
+Engine
+\family default
+ setup for solving the Rastrigin function, which is very similar to the
+ setup for the real-function in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Real-function-example"
+
+\end_inset
+
+.
+ Beside the different fitness function, the 
+\family typewriter
+Codec
+\family default
+ for 
+\family typewriter
+double
+\family default
+ vectors is used, instead of the 
+\family typewriter
+double
+\family default
+ scalar 
+\family typewriter
+Codec
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstinputlisting{../java/RastriginFunction.java}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The console output of the program shows, that 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ finds the 
+\emph on
+optimal
+\emph default
+ solution after 
+\begin_inset Formula $38$
+\end_inset
+
+ generations.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+scriptsize
+\backslash
+ttfamily}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstinputlisting{../resources/code/RastriginFunction.out}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+footnotesize}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -16733,7 +20224,7 @@ status open
 
 
 \backslash
-lstinputlisting{../resources/code/Knapsack.java}
+lstinputlisting{../java/Knapsack.java}
 \end_layout
 
 \end_inset
@@ -16866,7 +20357,7 @@ status open
 
 
 \backslash
-lstinputlisting{../resources/code/TravelingSalesman.java}
+lstinputlisting{../java/TravelingSalesman.java}
 \end_layout
 
 \end_inset
@@ -18204,7 +21695,7 @@ Version
 \series default
 :
 \emph on
- 6.9.6
+ 6.9.11
 \end_layout
 
 \begin_layout Itemize
@@ -18285,7 +21776,7 @@ Version
 \series default
 :
 \emph on
- 3.5
+ 3.6.1
 \end_layout
 
 \begin_layout Itemize
@@ -18297,7 +21788,7 @@ Homepage
 \emph on
  
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -18322,7 +21813,7 @@ status collapsed
 
 \begin_layout Plain Layout
 
-http://tweedo.com/mirror/apache/commons/math/binaries/commons-math3-3.5-bin.zip
+http://tweedo.com/mirror/apache/commons/math/binaries/commons-math3-3.6.1-bin.zip
 \end_layout
 
 \end_inset
@@ -18505,7 +21996,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 2.6
+: 2.11
 \end_layout
 
 \begin_layout Itemize
@@ -18517,7 +22008,7 @@ Homepage
 \emph on
  
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -18538,11 +22029,11 @@ Download
 \emph on
 
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
-http://services.gradle.org/distributions/gradle-2.6-bin.zip
+http://services.gradle.org/distributions/gradle-2.11-bin.zip
 \end_layout
 
 \end_inset

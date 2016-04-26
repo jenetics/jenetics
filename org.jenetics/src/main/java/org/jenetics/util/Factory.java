@@ -41,6 +41,8 @@ public interface Factory<T> {
 	/**
 	 * Return a new stream of object instances, created by this factory.
 	 *
+	 * @since 3.0
+	 *
 	 * @return a stream of objects, created by this factory
 	 */
 	public default Stream<T> instances() {

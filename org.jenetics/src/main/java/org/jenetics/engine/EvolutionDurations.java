@@ -25,7 +25,6 @@ import static org.jenetics.internal.util.Equality.eq;
 import java.io.Serializable;
 import java.time.Duration;
 
-import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 /**
@@ -179,15 +178,21 @@ public final class EvolutionDurations
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(d ->
-			eq(_offspringSelectionDuration, d._offspringSelectionDuration) &&
-			eq(_survivorsSelectionDuration, d._survivorsSelectionDuration) &&
-			eq(_offspringAlterDuration, d._offspringAlterDuration) &&
-			eq(_offspringFilterDuration, d._offspringFilterDuration) &&
-			eq(_survivorFilterDuration, d._survivorFilterDuration) &&
-			eq(_evaluationDuration, d._evaluationDuration) &&
-			eq(_evolveDuration, d._evolveDuration)
-		);
+		return obj instanceof EvolutionDurations &&
+			eq(_offspringSelectionDuration,
+				((EvolutionDurations)obj)._offspringSelectionDuration) &&
+			eq(_survivorsSelectionDuration,
+				((EvolutionDurations)obj)._survivorsSelectionDuration) &&
+			eq(_offspringAlterDuration,
+				((EvolutionDurations)obj)._offspringAlterDuration) &&
+			eq(_offspringFilterDuration,
+				((EvolutionDurations)obj)._offspringFilterDuration) &&
+			eq(_survivorFilterDuration,
+				((EvolutionDurations)obj)._survivorFilterDuration) &&
+			eq(_evaluationDuration,
+				((EvolutionDurations)obj)._evaluationDuration) &&
+			eq(_evolveDuration,
+				((EvolutionDurations)obj)._evolveDuration);
 	}
 
 	/**

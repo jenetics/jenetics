@@ -65,7 +65,7 @@ public class BoltzmannSelectorTest
 		selector.probabilities(population, 10);
 	}
 
-	@Test(dataProvider = "expectedDistribution")
+	@Test(dataProvider = "expectedDistribution", groups = {"statistics"})
 	public void selectDistribution(
 		final Double b,
 		final Named<double[]> expected,

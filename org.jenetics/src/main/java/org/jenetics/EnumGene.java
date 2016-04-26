@@ -70,10 +70,11 @@ import org.jenetics.util.RandomRegistry;
  * }</pre>
  *
  * @see PermutationChromosome
+ * @see PartiallyMatchedCrossover
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0
+ * @version 3.4
  */
 @XmlJavaTypeAdapter(EnumGene.Model.Adapter.class)
 public final class EnumGene<A>
@@ -91,6 +92,7 @@ public final class EnumGene<A>
 	/**
 	 * Create a new enum gene from the given valid genes and the chosen allele
 	 * index.
+	 *
 	 * @param alleleIndex the index of the allele for this gene.
 	 * @param validAlleles the sequence of valid alleles.
 	 * @throws IllegalArgumentException if the give valid alleles sequence is
@@ -98,7 +100,7 @@ public final class EnumGene<A>
 	 * @throws NullPointerException if the valid alleles seq is {@code null}.
 	 */
 	EnumGene(final int alleleIndex, final ISeq<? extends A> validAlleles) {
-		if (validAlleles.length() == 0) {
+		if (validAlleles.isEmpty()) {
 			throw new IllegalArgumentException(
 				"Array of valid alleles must be greater than zero."
 			);
@@ -154,6 +156,7 @@ public final class EnumGene<A>
 	 * Create a new gene from the given {@code value} and the gene context.
 	 *
 	 * @since 1.6
+	 *
 	 * @param value the value of the new gene.
 	 * @return a new gene with the given value.
 	 */
@@ -195,9 +198,32 @@ public final class EnumGene<A>
 		return Objects.toString(getAllele());
 	}
 
+
 	/* *************************************************************************
 	 *  Static object creation methods
 	 * ************************************************************************/
+
+	/**
+	 * Create a new enum gene from the given valid genes and the chosen allele
+	 * index.
+	 *
+	 * @since 3.4
+	 *
+	 * @param <A> the allele type
+	 * @param alleleIndex the index of the allele for this gene.
+	 * @param validAlleles the sequence of valid alleles.
+	 * @return a new {@code EnumGene} with the given with the allele
+	 *        {@code validAlleles.get(alleleIndex)}
+	 * @throws IllegalArgumentException if the give valid alleles sequence is
+	 *         empty
+	 * @throws NullPointerException if the valid alleles seq is {@code null}.
+	 */
+	public static <A> EnumGene<A> of(
+		final int alleleIndex,
+		final ISeq<? extends A> validAlleles
+	) {
+		return new EnumGene<>(alleleIndex, validAlleles);
+	}
 
 	/**
 	 * Return a new enum gene with an allele randomly chosen from the given
@@ -205,7 +231,8 @@ public final class EnumGene<A>
 	 *
 	 * @param <A> the allele type
 	 * @param validAlleles the sequence of valid alleles.
-	 * @return a new {@code EnumGene} with the given parameter
+	 * @return a new {@code EnumGene} with an randomly chosen allele from the
+	 *         sequence of valid alleles
 	 * @throws java.lang.IllegalArgumentException if the give valid alleles
 	 *         sequence is empty
 	 * @throws NullPointerException if the valid alleles seq is {@code null}.
@@ -224,7 +251,8 @@ public final class EnumGene<A>
 	 * @param <A> the allele type
 	 * @param alleleIndex the index of the allele for this gene.
 	 * @param validAlleles the array of valid alleles.
-	 * @return a new {@code EnumGene} with the given parameter
+	 * @return a new {@code EnumGene} with the given with the allele
+	 *        {@code validAlleles[alleleIndex]}
 	 * @throws java.lang.IllegalArgumentException if the give valid alleles
 	 *         array is empty of the allele index is out of range.
 	 */
@@ -242,9 +270,9 @@ public final class EnumGene<A>
 	 *
 	 * @param <A> the allele type
 	 * @param validAlleles the array of valid alleles.
-	 * @return a new {@code EnumGene} with the given parameter
-	 * @throws java.lang.IllegalArgumentException if the give valid alleles
-	 *         array is empty
+	 * @return a new {@code EnumGene} with an randomly chosen allele from the
+	 *         sequence of valid alleles
+	 * @throws IllegalArgumentException if the give valid alleles array is empty
 	 */
 	@SafeVarargs
 	public static <A> EnumGene<A> of(final A... validAlleles) {

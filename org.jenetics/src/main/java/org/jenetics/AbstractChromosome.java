@@ -67,19 +67,18 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 
 	/**
 	 * Create a new {@code AbstractChromosome} from the given {@code genes}
-	 * array. The genes array is not copied, but sealed, so changes to the given
-	 * genes array doesn't effect the genes of this chromosome.
+	 * array.
 	 *
 	 * @param genes the genes that form the chromosome.
 	 * @throws NullPointerException if the given gene array is {@code null}.
-	 * @throws IllegalArgumentException if the length of the gene array is
-	 *          smaller than one.
+	 * @throws IllegalArgumentException if the length of the gene sequence is
+	 *         empty.
 	 */
 	protected AbstractChromosome(final ISeq<? extends G> genes) {
 		requireNonNull(genes, "Gene array");
 		assert genes.forAll(Objects::nonNull) : "Found at least on null gene.";
 
-		if (genes.length() == 0) {
+		if (genes.isEmpty()) {
 			throw new IllegalArgumentException(
 				"The genes sequence must contain at least one gene."
 			);
