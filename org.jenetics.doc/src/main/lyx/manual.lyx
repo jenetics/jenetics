@@ -14336,10 +14336,10 @@ codecs
 \end_layout
 
 \begin_layout Subsubsection
-Scalar codecs
+Scalar codec
 \begin_inset CommandInset label
 LatexCommand label
-name "sub:Scalar-codecs"
+name "sub:Scalar-codec"
 
 \end_inset
 
@@ -14348,7 +14348,17 @@ name "sub:Scalar-codecs"
 status collapsed
 
 \begin_layout Plain Layout
-Scalar codecs
+Scalar codec
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Codec!Scalar
 \end_layout
 
 \end_inset
@@ -14549,10 +14559,10 @@ class Main {
 \end_layout
 
 \begin_layout Subsubsection
-Vector codecs
+Vector codec
 \begin_inset CommandInset label
 LatexCommand label
-name "sub:Vector-codecs"
+name "sub:Vector-codec"
 
 \end_inset
 
@@ -14561,7 +14571,17 @@ name "sub:Vector-codecs"
 status collapsed
 
 \begin_layout Plain Layout
-Vector codecs
+Vector codec
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Codec!Vector
 \end_layout
 
 \end_inset
@@ -14810,6 +14830,16 @@ status collapsed
 
 \begin_layout Plain Layout
 Subset codec
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Codec!Subset
 \end_layout
 
 \end_inset
@@ -15258,6 +15288,340 @@ public class SubsetSum
 \begin_layout Plain Layout
 
         return codecs.ofSubSet(_basicSet, _size);
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Permutation codec
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Permutation-codec"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Permutation codec
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Codec!Permutation
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This kind of codec can be used for problems where optimal solution depends
+ on the order of the input elements.
+ A classical example for such problems is the Knapsack problem (chapter
+ 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Traveling-salesman-example"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static <T> Codec<T[], EnumGene<T>> ofPermutation(T...
+ alleles) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return Codec.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+        Genotype.of(PermutationChromosome.of(alleles)),
+\end_layout
+
+\begin_layout Plain Layout
+
+        gt -> gt.getChromosome().toSeq().stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .map(EnumGene::getAllele)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .toArray(length -> (T[])Array.newInstance(
+\end_layout
+
+\begin_layout Plain Layout
+
+                 alleles[0].getClass(), length))
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+Codec
+\family default
+ factory method: 
+\family typewriter
+ofPermutation
+\family default
+
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Codec-factory-method-ofPermutation"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Codec-factory-method-ofPermutation"
+
+\end_inset
+
+ shows the implementation of a permutation codec, where the order of the
+ given alleles influences the value of the fitness function.
+ An alternate formulation of the traveling salesman problem is shown in
+ the following listing.
+ It uses the permutation codec in listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Codec-factory-method-ofPermutation"
+
+\end_inset
+
+ and uses
+\family typewriter
+ java\SpecialChar \-
+.awt\SpecialChar \-
+.geom
+\family default
+ 
+\family typewriter
+Point
+\family default
+s for representing the city locations.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public class TSM {
+\end_layout
+
+\begin_layout Plain Layout
+
+    // The locations to visit.
+\end_layout
+
+\begin_layout Plain Layout
+
+    static final Point[] POINTS = new Point[] {
+\end_layout
+
+\begin_layout Plain Layout
+
+        new Point(0, 0), new Point(1, 2), new Point(4, 5) // ...
+\end_layout
+
+\begin_layout Plain Layout
+
+    };
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // The permutation codec.
+\end_layout
+
+\begin_layout Plain Layout
+
+    static final Codec<Point[], EnumGene<Point>> CODEC =
+\end_layout
+
+\begin_layout Plain Layout
+
+        codecs.ofPermutation(POINTS);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // The fitness function (in the problem domain).
+\end_layout
+
+\begin_layout Plain Layout
+
+    static double dist(final Point[] p) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        return IntStream.range(0, p.length)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .mapToDouble(i -> p[i].distance(p[(i + i)%p.length]))
+\end_layout
+
+\begin_layout Plain Layout
+
+            .sum();
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // The evolution engine.
+\end_layout
+
+\begin_layout Plain Layout
+
+    static final Engine<EnumGene<Point>, Double> ENGINE = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+        .builder(TSM::dist, CODEC)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .optimize(Optimize.MINIMUM)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .build();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Find the solution.
+\end_layout
+
+\begin_layout Plain Layout
+
+    public static void main(final String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Point[] result = CODEC.decoder().apply(
+\end_layout
+
+\begin_layout Plain Layout
+
+            ENGINE.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+                .limit(10)
+\end_layout
+
+\begin_layout Plain Layout
+
+                .collect(EvolutionResult.toBestGenotype())
+\end_layout
+
+\begin_layout Plain Layout
+
+        );
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        System.out.println(Arrays.toString(result));
 \end_layout
 
 \begin_layout Plain Layout
@@ -20455,7 +20819,7 @@ The listing above shows the output generated by our example.
 \begin_layout Subsection
 Evolving images
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Examples!Evolving images
@@ -20465,7 +20829,7 @@ Examples!Evolving images
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Evolving images
