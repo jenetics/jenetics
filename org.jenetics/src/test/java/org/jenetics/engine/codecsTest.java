@@ -338,19 +338,18 @@ public class codecsTest {
 
 	@Test
 	public void ofPermutation() {
-		final Codec<String[], EnumGene<String>> codec = codecs.ofPermutation(
-			"foo", "bar", "zoo"
-		);
+		final Codec<ISeq<String>, EnumGene<String>> codec = codecs
+			.ofPermutation(ISeq.of("foo", "bar", "zoo"));
 
 		final Genotype<EnumGene<String>> gt = codec.encoding().newInstance();
 		Assert.assertEquals(gt.length(), 1);
 
-		final Function<Genotype<EnumGene<String>>, String[]> f = codec.decoder();
-		final String[] value = f.apply(gt);
-		Assert.assertEquals(value.length, gt.getChromosome().length());
+		final Function<Genotype<EnumGene<String>>, ISeq<String>> f = codec.decoder();
+		final ISeq<String> value = f.apply(gt);
+		Assert.assertEquals(value.length(), gt.getChromosome().length());
 
-		for (int i = 0; i < value.length; ++i) {
-			Assert.assertEquals(value[i], gt.get(0, i).toString());
+		for (int i = 0; i < value.length(); ++i) {
+			Assert.assertEquals(value.get(i), gt.get(0, i).toString());
 		}
 	}
 

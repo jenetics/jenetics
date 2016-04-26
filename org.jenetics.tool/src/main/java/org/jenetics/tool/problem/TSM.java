@@ -20,7 +20,6 @@
 package org.jenetics.tool.problem;
 
 import java.awt.Point;
-import java.util.Arrays;
 import java.util.stream.IntStream;
 
 import org.jenetics.EnumGene;
@@ -29,6 +28,7 @@ import org.jenetics.engine.Codec;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
 import org.jenetics.engine.codecs;
+import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -37,18 +37,18 @@ import org.jenetics.engine.codecs;
  */
 public class TSM {
 	// The locations to visit.
-	static final Point[] POINTS = new Point[] {
+	static final ISeq<Point> POINTS = ISeq.of(
 		new Point(0, 0), new Point(1, 2), new Point(4, 5) // ...
-	};
+	);
 
 	// The permutation codec.
-	static final Codec<Point[], EnumGene<Point>> CODEC =
+	static final Codec<ISeq<Point>, EnumGene<Point>> CODEC =
 		codecs.ofPermutation(POINTS);
 
 	// The fitness function (in the problem domain).
-	static double dist(final Point[] p) {
-		return IntStream.range(0, p.length)
-			.mapToDouble(i -> p[i].distance(p[(i + i)%p.length]))
+	static double dist(final ISeq<Point> p) {
+		return IntStream.range(0, p.length())
+			.mapToDouble(i -> p.get(i).distance(p.get(i + i%p.length())))
 			.sum();
 	}
 
@@ -60,12 +60,12 @@ public class TSM {
 
 	// Find the solution.
 	public static void main(final String[] args) {
-		final Point[] result = CODEC.decoder().apply(
+		final ISeq<Point> result = CODEC.decoder().apply(
 			ENGINE.stream()
 				.limit(10)
 				.collect(EvolutionResult.toBestGenotype())
 		);
 
-		System.out.println(Arrays.toString(result));
+		System.out.println(result);
 	}
 }

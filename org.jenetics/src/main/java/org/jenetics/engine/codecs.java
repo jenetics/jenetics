@@ -494,7 +494,10 @@ public final class codecs {
 	 * @return a new permutation {@code Codec}
 	 * @throws IllegalArgumentException if the given allele array is empty
 	 * @throws NullPointerException if one of the alleles is {@code null}
+	 *
+	 * @deprecated Use {@link #ofPermutation(ISeq)} instead
 	 */
+	@Deprecated
 	@SafeVarargs
 	public static <T> Codec<T[], EnumGene<T>> ofPermutation(final T... alleles) {
 		if (alleles.length == 0) {
@@ -514,6 +517,29 @@ public final class codecs {
 	@SuppressWarnings("unchecked")
 	private static <T> T[] newArray(final Class<?> type, final int length) {
 		return (T[])newInstance(type, length);
+	}
+
+	/**
+	 * Create a permutation {@code Codec} with the given alleles.
+	 *
+	 * @param alleles the alleles of the permutation
+	 * @param <T> the allele type
+	 * @return a new permutation {@code Codec}
+	 * @throws IllegalArgumentException if the given allele array is empty
+	 * @throws NullPointerException if one of the alleles is {@code null}
+	 */
+	public static <T> Codec<ISeq<T>, EnumGene<T>>
+	ofPermutation(final ISeq<T> alleles) {
+		if (alleles.isEmpty()) {
+			throw new IllegalArgumentException(
+				"Empty allele array is not allowed."
+			);
+		}
+
+		return Codec.of(
+			Genotype.of(PermutationChromosome.of(alleles)),
+			gt -> gt.getChromosome().toSeq().map(EnumGene::getAllele)
+		);
 	}
 
 	/**
