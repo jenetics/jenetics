@@ -106,11 +106,11 @@ public class codecsTest {
 		final Genotype<DoubleGene> gt = codec.encoding().newInstance();
 		Assert.assertEquals(gt.length(), 1);
 		Assert.assertEquals(gt.getChromosome().length(), 1);
-		Assert.assertEquals(gt.getGene().getMin().doubleValue(), domain.getMin());
-		Assert.assertEquals(gt.getGene().getMax().doubleValue(), domain.getMax());
+		Assert.assertEquals(gt.getGene().getMin(), domain.getMin());
+		Assert.assertEquals(gt.getGene().getMax(), domain.getMax());
 
 		final Function<Genotype<DoubleGene>, Double> f = codec.decoder();
-		Assert.assertEquals(f.apply(gt).doubleValue(), gt.getGene().doubleValue());
+		Assert.assertEquals(f.apply(gt), gt.getGene().doubleValue());
 	}
 
 	@DataProvider(name = "doubleScalarData")
@@ -199,8 +199,8 @@ public class codecsTest {
 		Assert.assertEquals(gt.length(), 1);
 		Assert.assertEquals(gt.getChromosome().length(), length);
 		for (DoubleGene gene : gt.getChromosome()) {
-			Assert.assertEquals(gene.getMin().doubleValue(), domain.getMin());
-			Assert.assertEquals(gene.getMax().doubleValue(), domain.getMax());
+			Assert.assertEquals(gene.getMin(), domain.getMin());
+			Assert.assertEquals(gene.getMax(), domain.getMax());
 		}
 
 		final Function<Genotype<DoubleGene>, double[]> f = codec.decoder();
@@ -311,8 +311,8 @@ public class codecsTest {
 			Assert.assertEquals(ch.length(), 1);
 
 			final DoubleGene gene = ch.getGene();
-			Assert.assertEquals(gene.getMin().doubleValue(), domain[i].getMin());
-			Assert.assertEquals(gene.getMax().doubleValue(), domain[i].getMax());
+			Assert.assertEquals(gene.getMin(), domain[i].getMin());
+			Assert.assertEquals(gene.getMax(), domain[i].getMax());
 		}
 
 		final Function<Genotype<DoubleGene>, double[]> f = codec.decoder();
