@@ -23,10 +23,11 @@ import static java.lang.Math.max;
 
 import org.jenetics.Gene;
 import org.jenetics.Optimize;
-import org.jenetics.Population;
+import org.jenetics.Phenotype;
 import org.jenetics.Selector;
 import org.jenetics.TournamentSelector;
 import org.jenetics.TruncationSelector;
+import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -43,23 +44,14 @@ public class CombinedSelector<
 	private final TournamentSelector<G, C> _s2 = new TournamentSelector<>(3);
 
 	@Override
-	public Population<G, C> select(
-		final Population<G, C> population,
+	public ISeq<Phenotype<G, C>> select(
+		final ISeq<Phenotype<G, C>> population,
 		final int count,
 		final Optimize opt
 	) {
 		return population.isEmpty() || count <= 0
-			? new Population<>(0)
-			: append(
-				_s1.select(population, 1, opt),
-				_s2.select(population, max(0, count - 1), opt));
-	}
-
-	private Population<G, C> append(
-		final Population<G, C> p1,
-		final Population<G, C> p2
-	) {
-		p1.addAll(p2);
-		return p2;
+			? ISeq.empty()
+			: _s1.select(population, 1, opt)
+				.append(_s2.select(population, max(0, count - 1), opt));
 	}
 }

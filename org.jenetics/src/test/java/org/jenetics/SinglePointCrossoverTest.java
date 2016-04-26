@@ -126,12 +126,12 @@ public class SinglePointCrossoverTest extends AltererTester {
 		final Integer npopulation,
 		final Double p
 	) {
-		final Population<DoubleGene, Double> population = newDoubleGenePopulation(
-				ngenes, nchromosomes, npopulation
-			);
+		final ISeq<Phenotype<DoubleGene, Double>> population =
+			newDoubleGenePopulation(ngenes, nchromosomes, npopulation);
 
 		// The mutator to test.
-		final SinglePointCrossover<DoubleGene, Double> crossover = new SinglePointCrossover<>(p);
+		final SinglePointCrossover<DoubleGene, Double> crossover =
+			new SinglePointCrossover<>(p);
 
 		final long nallgenes = ngenes*nchromosomes*npopulation;
 		final long N = 200;
@@ -145,7 +145,7 @@ public class SinglePointCrossoverTest extends AltererTester {
 		final LongMomentStatistics variance = new LongMomentStatistics();
 
 		for (int i = 0; i < N; ++i) {
-			final long alterations = crossover.alter(population, 1);
+			final long alterations = crossover.alter(population.copy(), 1);
 			histogram.accept(alterations);
 			variance.accept(alterations);
 		}

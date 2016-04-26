@@ -23,7 +23,9 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
+import org.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -45,18 +47,18 @@ public class CompositeAltererTest {
 		final Integer nchromosomes,
 		final Integer npopulation
 	) {
-		final Population<DoubleGene, Double> p1 = population(
-					ngenes, nchromosomes, npopulation
-				);
-		final Population<DoubleGene, Double> p2 = p1.copy();
+		final ISeq<Phenotype<DoubleGene, Double>> p1 =
+			population(ngenes, nchromosomes, npopulation);
+
+		final MSeq<Phenotype<DoubleGene, Double>> p2 = p1.copy();
 		Assert.assertEquals(p2, p1);
 
 		final Alterer<DoubleGene, Double> mutator = newAlterer(0.01);
 
-		Assert.assertEquals(mutator.alter(p1, 1), diff(p1, p2));
+		Assert.assertEquals(mutator.alter(p2, 1), diff(p1, p2));
 	}
 
-	public static Population<DoubleGene, Double> population(
+	public static ISeq<Phenotype<DoubleGene, Double>> population(
 		final int ngenes,
 		final int nchromosomes,
 		final int npopulation
@@ -68,21 +70,21 @@ public class CompositeAltererTest {
 		}
 
 		final Genotype<DoubleGene> genotype = new Genotype<>(chromosomes.toISeq());
-		final Population<DoubleGene, Double> population = new Population<>(npopulation);
+		final MSeq<Phenotype<DoubleGene, Double>> population = MSeq.ofLength(npopulation);
 
 		for (int i = 0; i < npopulation; ++i) {
-			population.add(Phenotype.of(genotype.newInstance(), 0, TestUtils.FF));
+			population.set(i, Phenotype.of(genotype.newInstance(), 0, TestUtils.FF));
 		}
 
-		return population;
+		return population.toISeq();
 	}
 
 	/*
 	 * Count the number of different genes.
 	 */
 	public int diff(
-		final Population<DoubleGene, Double> p1,
-		final Population<DoubleGene, Double> p2
+		final Seq<Phenotype<DoubleGene, Double>> p1,
+		final Seq<Phenotype<DoubleGene, Double>> p2
 	) {
 		int count = 0;
 		for (int i = 0; i < p1.size(); ++i) {

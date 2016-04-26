@@ -33,6 +33,7 @@ import org.jenetics.internal.util.Named;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.util.Factory;
+import org.jenetics.util.ISeq;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.TestData;
 
@@ -58,7 +59,7 @@ public class BoltzmannSelectorTest
 		final BoltzmannSelector<DoubleGene, Double> selector = new BoltzmannSelector<>(2);
 
 		// Create population with zero fitness.
-		final Population<DoubleGene, Double> population =
+		final ISeq<Phenotype<DoubleGene, Double>> population =
 			TestUtils.newDoublePopulation(20, 0, 0);
 
 		// Must select without exception.

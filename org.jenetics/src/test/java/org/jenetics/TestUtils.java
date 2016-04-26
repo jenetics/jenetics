@@ -27,6 +27,7 @@ import org.jenetics.internal.util.require;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -136,7 +137,8 @@ class TestUtils {
 		return population.toISeq();
 	}
 
-	public static Population<EnumGene<Double>, Double> newPermutationDoubleGenePopulation(
+	public static ISeq<Phenotype<EnumGene<Double>, Double>>
+	newPermutationDoubleGenePopulation(
 		final int ngenes,
 		final int nchromosomes,
 		final int npopulation
@@ -155,14 +157,14 @@ class TestUtils {
 		}
 
 		final Genotype<EnumGene<Double>> genotype = new Genotype<>(chromosomes.toISeq());
-		final Population<EnumGene<Double>, Double> population =
-			new Population<>(npopulation);
+		final MSeq<Phenotype<EnumGene<Double>, Double>> population =
+			MSeq.ofLength(npopulation);
 
 		for (int i = 0; i < npopulation; ++i) {
-			population.add(Phenotype.of(genotype.newInstance(), 0, PFF));
+			population.set(i, Phenotype.of(genotype.newInstance(), 0, PFF));
 		}
 
-		return population;
+		return population.toISeq();
 	}
 
 	private static final Function<Genotype<EnumGene<Double>>, Double>
@@ -172,8 +174,8 @@ class TestUtils {
 	 * Count the number of different genes.
 	 */
 	public static int diff (
-		final Population<DoubleGene, Double> p1,
-		final Population<DoubleGene, Double> p2
+		final Seq<Phenotype<DoubleGene, Double>> p1,
+		final Seq<Phenotype<DoubleGene, Double>> p2
 	) {
 		int count = 0;
 		for (int i = 0; i < p1.size(); ++i) {
@@ -219,22 +221,21 @@ class TestUtils {
 		return newDoublePhenotype(0, 10);
 	}
 
-	public static Population<DoubleGene, Double> newDoublePopulation(
+	public static ISeq<Phenotype<DoubleGene, Double>> newDoublePopulation(
 		final int length,
 		final double min,
 		final double max
 	) {
-		final Population<DoubleGene, Double> population =
-			new Population<>(length);
-
+		final MSeq<Phenotype<DoubleGene, Double>> population = MSeq.ofLength(length);
 		for (int i = 0; i < length; ++i) {
-			population.add(newDoublePhenotype(min, max));
+			population.set(i, newDoublePhenotype(min, max));
 		}
 
-		return population;
+		return population.toISeq();
 	}
 
-	public static Population<DoubleGene, Double> newDoublePopulation(final int length) {
+	public static ISeq<Phenotype<DoubleGene, Double>>
+	newDoublePopulation(final int length) {
 		return newDoublePopulation(length, 0, 10);
 	}
 

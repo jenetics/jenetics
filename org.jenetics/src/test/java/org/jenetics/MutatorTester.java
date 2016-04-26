@@ -28,6 +28,8 @@ import org.testng.annotations.Test;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.LongMomentStatistics;
+import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 import org.jenetics.util.Range;
 
 /**
@@ -41,15 +43,15 @@ public abstract class MutatorTester extends AltererTester {
 		final Integer nchromosomes,
 		final Integer npopulation
 	) {
-		final Population<DoubleGene, Double> p1 = newDoubleGenePopulation(
-					ngenes, nchromosomes, npopulation
-				);
-		final Population<DoubleGene, Double> p2 = p1.copy();
+		final ISeq<Phenotype<DoubleGene, Double>> p1 =
+			newDoubleGenePopulation(ngenes, nchromosomes, npopulation);
+
+		final MSeq<Phenotype<DoubleGene, Double>> p2 = p1.copy();
 		Assert.assertEquals(p2, p1);
 
 		final Alterer<DoubleGene, Double> mutator = newAlterer(0.01);
 
-		int mutations = mutator.alter(p1, 1);
+		int mutations = mutator.alter(p2, 1);
 		int difference = diff(p1, p2);
 
 		Assert.assertEquals(
@@ -65,9 +67,8 @@ public abstract class MutatorTester extends AltererTester {
 		final Integer npopulation,
 		final Double p
 	) {
-		final Population<DoubleGene, Double> population = newDoubleGenePopulation(
-				ngenes, nchromosomes, npopulation
-			);
+		final ISeq<Phenotype<DoubleGene, Double>> population =
+			newDoubleGenePopulation(ngenes, nchromosomes, npopulation);
 
 		// The mutator to test.
 		final Alterer<DoubleGene, Double> mutator = newAlterer(p);
@@ -84,7 +85,7 @@ public abstract class MutatorTester extends AltererTester {
 		final LongMomentStatistics variance = new LongMomentStatistics();
 
 		for (int i = 0; i < N; ++i) {
-			final long alterations = mutator.alter(population, 1);
+			final long alterations = mutator.alter(population.copy(), 1);
 			histogram.accept(alterations);
 			variance.accept(alterations);
 		}
