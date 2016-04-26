@@ -24,6 +24,7 @@ import static java.lang.Math.sin;
 
 import java.awt.geom.AffineTransform;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -433,12 +434,12 @@ public class codecsTest {
 	@Test
 	public void ofAnyVector() {
 		final int length = 23;
-		final Codec<Integer[], AnyGene<Integer>> codec = codecs.ofVector(
-			() -> RandomRegistry.getRandom().nextInt(1000),
-			Integer[]::new,
-			i -> i < 100,
-			length
-		);
+		final Codec<ISeq<Integer>, AnyGene<Integer>> codec =
+			codecs.ofVector(
+				() -> RandomRegistry.getRandom().nextInt(1000),
+				(Predicate<Integer>) i -> i < 100,
+				length
+			);
 
 		for (int i = 0; i < 100; ++i) {
 			final Chromosome<AnyGene<Integer>> ch = codec.encoding()
