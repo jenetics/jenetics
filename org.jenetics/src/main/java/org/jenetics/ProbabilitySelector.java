@@ -108,7 +108,9 @@ public abstract class ProbabilitySelector<
 			));
 		}
 
-		final MSeq<Phenotype<G, C>> selection = MSeq.ofLength(count);
+		final MSeq<Phenotype<G, C>> selection = MSeq
+			.ofLength(population.isEmpty() ? 0 : count);
+
 		if (count > 0 && !population.isEmpty()) {
 			final ISeq<Phenotype<G, C>> pop = _sorted
 				? population.copy().sort(POPULATION_COMPARATOR).toISeq()

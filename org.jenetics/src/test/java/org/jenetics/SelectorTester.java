@@ -167,7 +167,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 			selector().select(population, count, opt);
 
 		if (size == 0) {
-			Assert.assertEquals( selection.size(), 0 );
+			Assert.assertEquals(selection.size(), 0);
 		} else {
 			Assert.assertEquals(selection.size(), count.intValue());
 		}
