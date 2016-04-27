@@ -23,8 +23,6 @@ import static java.util.Objects.requireNonNull;
 
 import org.jenetics.Gene;
 import org.jenetics.Phenotype;
-import org.jenetics.Population;
-import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
 
 /**
@@ -35,7 +33,7 @@ import org.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0
+ * @version !__version__!
  */
 final class AlterResult<
 	G extends Gene<?, G>,

@@ -40,7 +40,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.1
- * @version 3.1
+ * @version !__version__!
  */
 public final class EvolutionStart<
 	G extends Gene<?, G>,

@@ -58,7 +58,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.2
+ * @version !__version__!
  */
 public final class BoltzmannSelector<
 	G extends Gene<?, G>,
