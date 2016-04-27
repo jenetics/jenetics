@@ -63,8 +63,7 @@ public class StochasticUniversalSelector<
 
 	/**
 	 * This method sorts the population in descending order while calculating the
-	 * selection probabilities. (The method {@link Population#populationSort()} is called
-	 * by this method.)
+	 * selection probabilities.
 	 */
 	@Override
 	public ISeq<Phenotype<G, N>> select(

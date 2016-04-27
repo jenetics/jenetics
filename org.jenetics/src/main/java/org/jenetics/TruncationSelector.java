@@ -57,10 +57,9 @@ public final class TruncationSelector<
 
 	/**
 	 * This method sorts the population in descending order while calculating
-	 * the selection probabilities. (The method
-	 * {@link Population#sortWith(java.util.Comparator)} )} is called by this
-	 * method.) If the selection size is greater the the population size, the
-	 * whole population is duplicated until the desired sample size is reached.
+	 * the selection probabilities. If the selection size is greater the the
+	 * population size, the whole population is duplicated until the desired
+	 * sample size is reached.
 	 *
 	 * @throws NullPointerException if the {@code population} is {@code null}.
 	 */
