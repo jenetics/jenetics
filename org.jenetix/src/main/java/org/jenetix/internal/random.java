@@ -19,11 +19,9 @@
  */
 package org.jenetix.internal;
 
-import static java.lang.Math.abs;
 import static java.lang.String.format;
 import static org.jenetics.internal.math.random.nextLong;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Random;
 
