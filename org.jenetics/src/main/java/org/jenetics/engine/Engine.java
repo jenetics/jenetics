@@ -114,7 +114,7 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.2
+ * @version !__version__!
  */
 public final class Engine<
 	G extends Gene<?, G>,
@@ -411,7 +411,7 @@ public final class Engine<
 	// Evaluates the fitness function of the give population concurrently.
 	private ISeq<Phenotype<G, C>> evaluate(final ISeq<Phenotype<G, C>> population) {
 		try (Concurrency c = Concurrency.with(_executor.get())) {
-			c.execute(population.asList());
+			c.execute(population);
 		}
 		return population;
 	}

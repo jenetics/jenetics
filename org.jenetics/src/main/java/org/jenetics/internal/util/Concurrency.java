@@ -21,7 +21,6 @@ package org.jenetics.internal.util;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.List;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
@@ -33,9 +32,11 @@ import java.util.concurrent.FutureTask;
 
 import org.jenetics.internal.collection.Stack;
 
+import org.jenetics.util.Seq;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0
+ * @version !__version__!
  * @since 2.0
  */
 public abstract class Concurrency implements Executor, AutoCloseable {
@@ -44,7 +45,7 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 
 	public static final Concurrency SERIAL_EXECUTOR = new SerialConcurrency();
 
-	public abstract void execute(final List<? extends Runnable> runnables);
+	public abstract void execute(final Seq<? extends Runnable> runnables);
 
 	@Override
 	public abstract void close();
@@ -104,7 +105,7 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 		}
 
 		@Override
-		public void execute(final List<? extends Runnable> runnables) {
+		public void execute(final Seq<? extends Runnable> runnables) {
 			_tasks.push(_pool.submit(new RunnablesAction(runnables)));
 		}
 
@@ -138,7 +139,7 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 		}
 
 		@Override
-		public void execute(final List<? extends Runnable> runnables) {
+		public void execute(final Seq<? extends Runnable> runnables) {
 			final int[] parts = partition(runnables.size(), CORES + 1);
 			for (int i = 0; i < parts.length - 1; ++i) {
 				execute(new RunnablesRunnable(runnables, parts[i], parts[i + 1]));
@@ -183,7 +184,7 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 		}
 
 		@Override
-		public void execute(final List<? extends Runnable> runnables) {
+		public void execute(final Seq<? extends Runnable> runnables) {
 			final int[] parts = partition(runnables.size(), CORES + 1);
 			for (int i = 0; i < parts.length - 1; ++i) {
 				execute(new RunnablesRunnable(runnables, parts[i], parts[i + 1]));
@@ -215,10 +216,8 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 		}
 
 		@Override
-		public void execute(final List<? extends Runnable> runnables) {
-			for (final Runnable runnable : runnables) {
-				runnable.run();
-			}
+		public void execute(final Seq<? extends Runnable> runnables) {
+			runnables.forEach(Runnable::run);
 		}
 
 		@Override
