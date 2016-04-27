@@ -540,45 +540,45 @@ public class PersistentObject<T> {
 	 **************************************************************************/
 
 	public static Population<BitGene, Integer> nextPopulationBitGeneInteger() {
-		final ISeq<Phenotype<BitGene, Integer>> seq = ISeq.of(PersistentObject::nextPhenotypeBitGeneInteger, 7
-		);
+		final ISeq<Phenotype<BitGene, Integer>> seq = ISeq
+			.of(PersistentObject::nextPhenotypeBitGeneInteger, 7);
 
-		return new Population<>(seq.asList());
+		return new Population<>(seq);
 	}
 
 	public static Population<CharacterGene, Integer> nextPopulationCharacterGeneInteger() {
-		final ISeq<Phenotype<CharacterGene, Integer>> seq = ISeq.of(PersistentObject::nextPhenotypeCharacterGeneInteger, 7
-		);
+		final ISeq<Phenotype<CharacterGene, Integer>> seq = ISeq
+			.of(PersistentObject::nextPhenotypeCharacterGeneInteger, 7);
 
-		return new Population<>(seq.asList());
+		return new Population<>(seq);
 	}
 
 	public static Population<IntegerGene, Integer> nextPopulationIntegerGeneInteger() {
-		final ISeq<Phenotype<IntegerGene, Integer>> seq = ISeq.of(PersistentObject::nextPhenotypeIntegerGeneInteger, 7
-		);
+		final ISeq<Phenotype<IntegerGene, Integer>> seq = ISeq
+			.of(PersistentObject::nextPhenotypeIntegerGeneInteger, 7);
 
-		return new Population<>(seq.asList());
+		return new Population<>(seq);
 	}
 
 	public static Population<LongGene, Integer> nextPopulationLongGeneInteger() {
-		final ISeq<Phenotype<LongGene, Integer>> seq = ISeq.of(PersistentObject::nextPhenotypeLongGeneInteger, 7
-		);
+		final ISeq<Phenotype<LongGene, Integer>> seq = ISeq
+			.of(PersistentObject::nextPhenotypeLongGeneInteger, 7);
 
-		return new Population<>(seq.asList());
+		return new Population<>(seq);
 	}
 
 	public static Population<DoubleGene, Integer> nextPopulationDoubleGeneInteger() {
-		final ISeq<Phenotype<DoubleGene, Integer>> seq = ISeq.of(PersistentObject::nextPhenotypeDoubleGeneInteger, 7
-		);
+		final ISeq<Phenotype<DoubleGene, Integer>> seq = ISeq
+			.of(PersistentObject::nextPhenotypeDoubleGeneInteger, 7);
 
-		return new Population<>(seq.asList());
+		return new Population<>(seq);
 	}
 
 	public static Population<EnumGene<Integer>, Double> nextPopulationEnumGeneIntegerDouble() {
-		final ISeq<Phenotype<EnumGene<Integer>, Double>> seq = ISeq.of(PersistentObject::nextPhenotypeEnumGeneIntegerDouble, 7
-		);
+		final ISeq<Phenotype<EnumGene<Integer>, Double>> seq = ISeq
+			.of(PersistentObject::nextPhenotypeEnumGeneIntegerDouble, 7);
 
-		return new Population<>(seq.asList());
+		return new Population<>(seq);
 	}
 
 //	public static Population<EnumGene<String>, BigDecimal> nextPopulationEnumGeneStringBigDecimal() {

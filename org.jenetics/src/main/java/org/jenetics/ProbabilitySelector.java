@@ -133,16 +133,6 @@ public abstract class ProbabilitySelector<
 		return selection.toISeq();
 	}
 
-	Population<G, C> copy(final Population<G, C> population) {
-		Population<G, C> pop = population;
-		if (_sorted) {
-			pop = population.copy();
-			pop.populationSort();
-		}
-
-		return pop;
-	}
-
 	/**
 	 * This method takes the probabilities from the
 	 * {@link #probabilities(ISeq, int)} method and inverts it if needed.
