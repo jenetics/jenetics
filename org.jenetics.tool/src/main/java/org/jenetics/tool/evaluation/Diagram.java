@@ -63,6 +63,8 @@ public class Diagram {
 		 */
 		EXECUTION_TIME("execution_time_termination"),
 
+		GENERATIO_POPULATION_SIZE("generation_population_size"),
+
 		/**
 		 * Template for fitness threshold termination diagrams.
 		 */
@@ -175,7 +177,7 @@ public class Diagram {
 		final SampleSummary... summaries
 	) {
 		return concat(concat(
-				Stream.of(params.get(index).toString()),
+				Stream.of(params.get(index).toString().split(":")),
 				DoubleStream.of(summary.getPoints().get(index).toArray())
 					.mapToObj(Double::toString)),
 				Stream.of(summaries)
