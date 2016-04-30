@@ -16,6 +16,9 @@ set logscale x
 set logscale y
 set autoscale z
 
+#set xrange[10:9000]
+#set yrange[10:9000]
+
 set xlabel "Generation" font ",12"
 set ylabel "Population size" font ",12"
 set zlabel "Fitness" rotate left
@@ -24,6 +27,8 @@ set bmargin
 set origin 0.0, 0.0
 set tmargin 1
 set pm3d
+set cntrparam levels auto 10
+set contour
 
 set format x "10^{%L}"
 set format y "10^{%L}"
@@ -31,7 +36,9 @@ set format z " %2.1f"
 
 set key bottom
 set hidden3d
-set dgrid3d 30,30
+set dgrid3d 20,20
 
-#plot data using 1:(0.001*$2) with lines lt rgb "blue"
-splot data using 1:2:(0.001*$12) with lines notitle
+min(x,y) = (x < y) ? x : y
+max(x,y) = (x > y) ? x : y
+
+splot data using 1:2:(min($3/max($2*$1,1),1)) with lines notitle
