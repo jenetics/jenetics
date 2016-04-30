@@ -40,7 +40,7 @@ import org.jenetics.util.ISeq;
  * @version !__version__!
  * @since !__version__!
  */
-public class KnapsackPopulationSizeGenerations {
+public class KnapsackGenerationPopulationSize {
 
 	private static final double GEN_BASE = pow(10, log10(100)/20.0);
 	private static final ISeq<String> GENERATIONS = IntStream.rangeClosed(1, 40)
