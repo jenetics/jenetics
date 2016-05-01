@@ -83,7 +83,9 @@ public class Diagram {
 		/**
 		 * Template for comparing different selectors.
 		 */
-		SELECTOR_COMPARISON("selector_comparison");
+		SELECTOR_COMPARISON("selector_comparison"),
+
+		POPULATION_SIZE("population_size");
 
 		private final String _name;
 		private final String _path;

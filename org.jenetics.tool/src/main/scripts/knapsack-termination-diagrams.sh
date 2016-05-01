@@ -14,7 +14,8 @@ read_link() {
 
 RESULTS=(
 	#"Knapsack-execution_time_termination.xml:Generation,Fitness"
-	"Knapsack-generation_population_size.xml:Fitness"
+	#"Knapsack-generation_population_size.xml:Fitness",
+	"Knapsack-population_size.xml:Generation,Fitness"
 	#"Knapsack-fitness_threshold_termination.xml:Generation,Fitness"
 	#"Knapsack-fixed_generation_termination.xml:Generation,Fitness"
 	#"Knapsack-steady_fitness_termination.xml:Generation,Fitness"
