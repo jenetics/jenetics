@@ -63,7 +63,7 @@ public class KnapsackPopulationSize {
 	public static void main(final String[] args) throws InterruptedException {
 		final Runner<Integer, BitGene, Double> runner = Runner.of(
 			engines::KNAPSACK,
-			size -> limit.byExecutionTime(Duration.ofMillis(1000)),
+			size -> limit.byExecutionTime(Duration.ofMillis(200)),
 			TRIAL_METER,
 			args
 		);

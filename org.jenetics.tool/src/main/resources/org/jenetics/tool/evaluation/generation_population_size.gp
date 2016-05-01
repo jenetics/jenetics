@@ -41,4 +41,4 @@ set dgrid3d 20,20
 min(x,y) = (x < y) ? x : y
 max(x,y) = (x > y) ? x : y
 
-splot data using 1:2:(min($3/max($2*$1,1),1)) with lines notitle
+splot data using 1:2:($20) with lines notitle
