@@ -30,7 +30,7 @@ set ylabel "Fitness" font ",12"
 set lmargin 12
 set rmargin 4
 
-plot data using 1:(0.001*$11) with lines lt rgb "blue" notitle axes x1y1
+plot data using 1:(0.001*$12) with lines lt rgb "blue" notitle axes x1y1
 
 
 ################################################################################

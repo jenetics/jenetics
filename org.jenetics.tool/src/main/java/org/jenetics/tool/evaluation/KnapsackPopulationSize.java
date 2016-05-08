@@ -22,15 +22,20 @@ package org.jenetics.tool.evaluation;
 import static java.lang.Math.log10;
 import static java.lang.Math.max;
 import static java.lang.Math.pow;
+import static java.lang.Math.round;
+import static java.lang.String.format;
+import static org.jenetics.tool.evaluation.engines.KNAPSACK;
 
 import java.time.Duration;
 import java.util.function.Supplier;
+import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
 import org.jenetics.BitGene;
 import org.jenetics.engine.limit;
 import org.jenetics.tool.trial.Params;
 import org.jenetics.tool.trial.TrialMeter;
+import org.jenetics.tool.trial.Tuple2;
 import org.jenetics.util.ISeq;
 
 /**
@@ -40,17 +45,20 @@ import org.jenetics.util.ISeq;
  */
 public class KnapsackPopulationSize {
 
-	private static final double BASE = pow(10, log10(100)/20.0);
+	private static final int SIZE = 30;
 
-	private static final Params<Integer> PARAMS = Params.of(
+	private static final double BASE = pow(10, log10(100)/20.0);
+	private static final double MAX = (long)pow(BASE, SIZE);
+
+	private static final Params<Tuple2<Long, Integer>> PARAMS = Params.of(
 		"Generation/Population size",
-		IntStream.rangeClosed(1, 50)
+		IntStream.rangeClosed(1, SIZE)
 			.mapToLong(i -> max((long)pow(BASE, i), i))
-			.mapToObj(i -> (int)i)
+			.mapToObj(ps -> format("%s:%s", round(max(MAX/ps, 1)), ps))
 			.collect(ISeq.toISeq())
 	);
 
-	private static final Supplier<TrialMeter<Integer>>
+	private static final Supplier<TrialMeter<Tuple2<Long, Integer>>>
 		TRIAL_METER = () -> TrialMeter.of(
 		"Execution time",
 		"Create execution time performance measures",
@@ -61,15 +69,23 @@ public class KnapsackPopulationSize {
 	);
 
 	public static void main(final String[] args) throws InterruptedException {
-		final Runner<Integer, BitGene, Double> runner = Runner.of(
-			engines::KNAPSACK,
-			size -> limit.byExecutionTime(Duration.ofMillis(200)),
+		final Runner<Tuple2<Long, Integer>, BitGene, Double> runner = Runner.of(
+			param -> KNAPSACK(param._2),
+			param -> limit.byFixedGeneration(param._1),
 			TRIAL_METER,
 			args
 		);
 
 		runner.start();
 		runner.join();
+	}
+
+	private static long toGeneration(final String param) {
+		return Long.parseLong(param.split(Pattern.quote(":"))[0]);
+	}
+
+	private static int toPopulationSize(final String param) {
+		return Integer.parseInt(param.split(Pattern.quote(":"))[1]);
 	}
 
 }
