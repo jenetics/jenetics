@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Objects;
 import java.util.RandomAccess;
 import java.util.Spliterator;
@@ -36,8 +37,6 @@ import java.util.stream.Collector;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import org.jenetics.internal.collection.SeqSpliterator;
-
 /**
  * General interface for a ordered, fixed sized, object sequence.
  * <br>
@@ -47,7 +46,7 @@ import org.jenetics.internal.collection.SeqSpliterator;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.3
+ * @version 3.4
  */
 public interface Seq<T> extends Iterable<T> {
 
@@ -112,6 +111,14 @@ public interface Seq<T> extends Iterable<T> {
 		}
 
 		return valid;
+	}
+
+	public default Iterator<T> iterator() {
+		return asList().iterator();
+	}
+
+	public default ListIterator<T> listIterator() {
+		return asList().listIterator();
 	}
 
 	/**
@@ -410,15 +417,6 @@ public interface Seq<T> extends Iterable<T> {
 	}
 
 	/**
-	 * Returns a fixed-size list backed by the specified sequence. (Changes to
-	 * the returned list "write through" to the array.) The returned list is
-	 * fixed size, serializable and implements {@link RandomAccess}.
-	 *
-	 * @return a list view of this sequence
-	 */
-	public List<T> asList();
-
-	/**
 	 * Builds a new sequence by applying a function to all elements of this
 	 * sequence.
 	 *
@@ -431,6 +429,75 @@ public interface Seq<T> extends Iterable<T> {
 	 *         {@code null}.
 	 */
 	public <B> Seq<B> map(final Function<? super T, ? extends B> mapper);
+
+	/**
+	 * Return a <i>new</i> {@code Seq} with the given {@code values} appended.
+	 *
+	 * @since 3.4
+	 *
+	 * @param values the values to append
+	 * @return a <i>new</i> {@code Seq} with the elements of {@code this}
+	 *        sequence and the given {@code values} appended.
+	 * @throws NullPointerException if the given {@code values} array is
+	 *         {@code null}
+	 */
+	@SuppressWarnings("unchecked")
+	public default Seq<T> append(final T... values) {
+		return append(Seq.of(values));
+	}
+
+	/**
+	 * Return a <i>new</i> {@code Seq} with the given {@code values} appended.
+	 *
+	 * @since 3.4
+	 *
+	 * @param values the values to append
+	 * @return a <i>new</i> {@code Seq} with the elements of {@code this}
+	 *        sequence and the given {@code values} appended.
+	 * @throws NullPointerException if the given {@code values} iterable is
+	 *         {@code null}
+	 */
+	public Seq<T> append(final Iterable<? extends T> values);
+
+	/**
+	 * Return a <i>new</i> {@code Seq} with the given {@code values} prepended.
+	 *
+	 * @since 3.4
+	 *
+	 * @param values the values to append
+	 * @return a <i>new</i> {@code Seq} with the elements of {@code this}
+	 *        sequence and the given {@code values} prepended.
+	 * @throws NullPointerException if the given {@code values} array is
+	 *         {@code null}
+	 */
+	@SuppressWarnings("unchecked")
+	public default Seq<T> prepend(final T... values) {
+		return prepend(Seq.of(values));
+	}
+
+	/**
+	 * Return a <i>new</i> {@code Seq} with the given {@code values} prepended.
+	 *
+	 * @since 3.4
+	 *
+	 * @param values the values to append
+	 * @return a <i>new</i> {@code Seq} with the elements of {@code this}
+	 *        sequence and the given {@code values} prepended.
+	 * @throws NullPointerException if the given {@code values} array is
+	 *         {@code null}
+	 */
+	public Seq<T> prepend(final Iterable<? extends T> values);
+
+	/**
+	 * Returns a fixed-size list backed by the specified sequence. (Changes to
+	 * the returned list "write through" to the array.) The returned list is
+	 * fixed size, serializable and implements {@link RandomAccess}.
+	 *
+	 * @return a list view of this sequence
+	 */
+	public default List<T> asList() {
+		return new SeqList<>(this);
+	}
 
 	/**
 	 * Return an array containing all of the elements in this sequence in right
@@ -626,7 +693,7 @@ public interface Seq<T> extends Iterable<T> {
 		final String suffix
 	) {
 		return stream()
-			.map(Object::toString)
+			.map(Objects::toString)
 			.collect(joining(separator, prefix, suffix));
 	}
 

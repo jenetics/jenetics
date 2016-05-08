@@ -27,8 +27,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 
-import org.jenetics.internal.collection.ArrayProxyMSeq;
-import org.jenetics.internal.collection.ObjectArrayProxy;
+import org.jenetics.internal.collection.Empty;
 import org.jenetics.internal.util.require;
 
 /**
@@ -38,7 +37,7 @@ import org.jenetics.internal.util.require;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.3
+ * @version 3.4
  */
 public interface ISeq<T>
 	extends
@@ -54,6 +53,24 @@ public interface ISeq<T>
 
 	@Override
 	public <B> ISeq<B> map(final Function<? super T, ? extends B> mapper);
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public default ISeq<T> append(final T... values) {
+		return append(ISeq.of(values));
+	}
+
+	@Override
+	public ISeq<T> append(final Iterable<? extends T> values);
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public default ISeq<T> prepend(final T... values) {
+		return prepend(ISeq.of(values));
+	}
+
+	@Override
+	public ISeq<T> prepend(final Iterable<? extends T> values);
 
 	/**
 	 * Return a shallow copy of this sequence. The sequence elements are not
@@ -74,8 +91,7 @@ public interface ISeq<T>
 	 *
 	 * @since 3.3
 	 */
-	public static final ISeq<?> EMPTY =
-		new ArrayProxyMSeq<>(new ObjectArrayProxy<>(0)).toISeq();
+	public static final ISeq<?> EMPTY = Empty.ISEQ;
 
 	/**
 	 * Return an empty {@code ISeq}.
@@ -85,9 +101,8 @@ public interface ISeq<T>
 	 * @param <T> the element type of the returned {@code ISeq}.
 	 * @return an empty {@code ISeq}.
 	 */
-	@SuppressWarnings("unchecked")
 	public static <T> ISeq<T> empty() {
-		return (ISeq<T>)EMPTY;
+		return Empty.iseq();
 	}
 
 	/**

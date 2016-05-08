@@ -27,8 +27,9 @@ import java.util.Arrays;
 import java.util.regex.PatternSyntaxException;
 import java.util.stream.Collector;
 
-import org.jenetics.internal.collection.ArrayProxyISeq;
-import org.jenetics.internal.collection.CharArrayProxy;
+import org.jenetics.internal.collection.Array;
+import org.jenetics.internal.collection.ArrayISeq;
+import org.jenetics.internal.collection.CharStore;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
@@ -135,22 +136,22 @@ public final class CharSeq
 	 *          {@code false} otherwise.
 	 */
 	public boolean contains(final char c) {
-		return Arrays.binarySearch(proxy.array, c) >= 0;
+		return Arrays.binarySearch(array, c) >= 0;
 	}
 
 	@Override
 	public char charAt(final int index) {
-		return proxy.array[index];
+		return array[index];
 	}
 
 	@Override
 	public int length() {
-		return proxy.array.length;
+		return array.length;
 	}
 
 	@Override
 	public CharSeq subSequence(final int start, final int end) {
-		return new CharSeq(new String(proxy.array, start, end - start));
+		return new CharSeq(new String(array, start, end - start));
 	}
 
 	/**
@@ -160,19 +161,18 @@ public final class CharSeq
 	 *          otherwise.
 	 */
 	public boolean isEmpty() {
-		return proxy.array.length == 0;
+		return array.length == 0;
 	}
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass())
-			.and(proxy.array).value();
+		return Hash.of(getClass()).and(array).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return Equality.of(this, obj).test(ch ->
-			eq(proxy.array, ch.proxy.array)
+			eq(array, ch.array)
 		);
 	}
 
@@ -180,12 +180,12 @@ public final class CharSeq
 	public int compareTo(final CharSeq set) {
 		int result = 0;
 
-		final int n = Math.min(proxy.array.length, set.proxy.array.length);
+		final int n = Math.min(array.length, set.array.length);
 		for (int i = 0; i < n && result == 0; ++i) {
-			result = proxy.array[i] - set.proxy.array[i];
+			result = array[i] - set.array[i];
 		}
 		if (result == 0) {
-			result = proxy.array.length - set.proxy.array.length;
+			result = array.length - set.array.length;
 		}
 
 		return result;
@@ -193,7 +193,7 @@ public final class CharSeq
 
 	@Override
 	public String toString() {
-		return new String(proxy.array);
+		return new String(array);
 	}
 
 	/**
@@ -324,9 +324,13 @@ public final class CharSeq
 
 }
 
-abstract class CharSeqBase extends ArrayProxyISeq<Character, CharArrayProxy> {
+abstract class CharSeqBase extends ArrayISeq<Character> {
 	private static final long serialVersionUID = 1L;
+
+	final char[] array;
+
 	protected CharSeqBase(final char[] characters) {
-		super(new CharArrayProxy(characters, 0, characters.length));
+		super(Array.of(CharStore.of(characters)).seal());
+		array = characters;
 	}
 }

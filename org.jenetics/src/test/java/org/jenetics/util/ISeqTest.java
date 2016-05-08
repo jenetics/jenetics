@@ -61,4 +61,53 @@ public class ISeqTest {
 		Assert.assertSame(ISeq.of(), ISeq.empty());
 	}
 
+	@Test
+	public void isEmpty() {
+		Assert.assertTrue(ISeq.empty().isEmpty());
+		Assert.assertEquals(ISeq.empty().length(), 0);
+	}
+
+	@Test
+	public void subSeqEmptyISeq() {
+		Assert.assertSame(ISeq.of(1, 2, 3).subSeq(3), ISeq.empty());
+		Assert.assertSame(ISeq.of(1, 2, 3).subSeq(3, 3), ISeq.empty());
+		Assert.assertSame(ISeq.of(1, 2, 3).subSeq(2, 2), ISeq.empty());
+		Assert.assertSame(ISeq.of(1, 2, 3).subSeq(1, 1), ISeq.empty());
+		Assert.assertSame(ISeq.of(1, 2, 3).subSeq(0, 0), ISeq.empty());
+	}
+
+	@Test(expectedExceptions = ArrayIndexOutOfBoundsException.class)
+	public void subSeqOutOtBounds1() {
+		ISeq.of(1, 2, 3).subSeq(5);
+	}
+
+	@Test(expectedExceptions = ArrayIndexOutOfBoundsException.class)
+	public void subSeqOutOtBounds2() {
+		ISeq.of(1, 2, 3).subSeq(-5);
+	}
+
+	@Test(expectedExceptions = ArrayIndexOutOfBoundsException.class)
+	public void subSeqOutOtBounds4() {
+		ISeq.of(1, 2, 3).subSeq(0, 10);
+	}
+
+	@Test(expectedExceptions = ArrayIndexOutOfBoundsException.class)
+	public void subSeqOutOtBounds5() {
+		ISeq.of(1, 2, 3).subSeq(-5, 2);
+	}
+
+	@Test
+	public void mapEmptyISeq() {
+		final ISeq<Integer> integers = ISeq.empty();
+		final ISeq<String> strings = integers.map(Object::toString);
+
+		Assert.assertSame(integers, strings);
+		Assert.assertSame(strings, ISeq.empty());
+	}
+
+	@Test
+	public void copyEmptyISeq() {
+		Assert.assertSame(ISeq.empty().copy(), MSeq.empty());
+	}
+
 }

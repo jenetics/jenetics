@@ -58,7 +58,7 @@ public class LinearRankSelectorTest
 		return new LinearRankSelector<>(0.0);
 	}
 
-	@Test(dataProvider = "expectedDistribution")
+	@Test(dataProvider = "expectedDistribution", groups = {"statistics"})
 	public void selectDistribution(
 		final Double nminus,
 		final Named<double[]> expected,

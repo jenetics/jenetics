@@ -53,7 +53,7 @@ public class ExponentialRankSelectorTest
 		return ExponentialRankSelector::new;
 	}
 
-	@Test(dataProvider = "expectedDistribution")
+	@Test(dataProvider = "expectedDistribution", groups = {"statistics"})
 	public void selectDistribution(
 		final Double c,
 		final Named<double[]> expected,

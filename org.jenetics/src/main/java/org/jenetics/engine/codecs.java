@@ -29,6 +29,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import org.jenetics.internal.math.base;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.require;
 
@@ -56,7 +57,7 @@ import org.jenetics.util.LongRange;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.2
- * @version 3.3
+ * @version 3.4
  */
 public final class codecs {
 
@@ -466,35 +467,6 @@ public final class codecs {
 	}
 
 	/**
-	 * Create a permutation {@code Codec} with the given alleles.
-	 *
-	 * @param alleles the alleles of the permutation
-	 * @param <T> the allele type
-	 * @return a new permutation {@code Codec}
-	 * @throws IllegalArgumentException if the given allele array is empty
-	 * @throws NullPointerException if one of the alleles is {@code null}
-	 */
-	@SafeVarargs
-	public static <T> Codec<T[], EnumGene<T>> ofPermutation(final T... alleles) {
-		if (alleles.length == 0) {
-			throw new IllegalArgumentException("Empty alleles are not allowed.");
-		}
-
-		final IntFunction<T[]> newArray = length -> {
-			@SuppressWarnings("unchecked")
-			final T[] values = (T[])newInstance(alleles[0].getClass(), length);
-			return values;
-		};
-
-		return Codec.of(
-			Genotype.of(PermutationChromosome.of(alleles)),
-			gt -> gt.getChromosome().toSeq().stream()
-				.map(EnumGene::getAllele)
-				.toArray(newArray)
-		);
-	}
-
-	/**
 	 * Create a permutation {@code Codec} of integer in the range
 	 * {@code [0, length)}.
 	 *
@@ -515,9 +487,39 @@ public final class codecs {
 	}
 
 	/**
+	 * Create a permutation {@code Codec} with the given alleles.
+	 *
+	 * @param alleles the alleles of the permutation
+	 * @param <T> the allele type
+	 * @return a new permutation {@code Codec}
+	 * @throws IllegalArgumentException if the given allele array is empty
+	 * @throws NullPointerException if one of the alleles is {@code null}
+	 */
+	@SafeVarargs
+	public static <T> Codec<T[], EnumGene<T>> ofPermutation(final T... alleles) {
+		if (alleles.length == 0) {
+			throw new IllegalArgumentException(
+				"Empty allele array is not allowed."
+			);
+		}
+
+		return Codec.of(
+			Genotype.of(PermutationChromosome.of(alleles)),
+			gt -> gt.getChromosome().toSeq().stream()
+				.map(EnumGene::getAllele)
+				.toArray(length -> newArray(alleles[0].getClass(), length))
+		);
+	}
+
+	@SuppressWarnings("unchecked")
+	private static <T> T[] newArray(final Class<?> type, final int length) {
+		return (T[])newInstance(type, length);
+	}
+
+	/**
 	 * The subset {@code Codec} can be used for problems where it is required to
-	 * find the best subset from given basic set. A typical usage example of the
-	 * returned {@code Codec} is the Knapsack problem.
+	 * find the best <b>variable-sized</b> subset from given basic set. A typical
+	 * usage example of the returned {@code Codec} is the Knapsack problem.
 	 * <p>
 	 * The following code snippet shows a simplified variation of the Knapsack
 	 * problem.
@@ -554,14 +556,52 @@ public final class codecs {
 	 * @throws IllegalArgumentException if the {@code basicSet} size is smaller
 	 *         than one.
 	 */
-	public static <T> Codec<ISeq<T>, BitGene> ofSubSet(final ISeq<T> basicSet) {
+	public static <T> Codec<ISeq<T>, BitGene> ofSubSet(
+		final ISeq<? extends T> basicSet
+	) {
 		requireNonNull(basicSet);
 		require.positive(basicSet.length());
 
 		return Codec.of(
 			Genotype.of(BitChromosome.of(basicSet.length())),
 			gt -> ((BitChromosome)gt.getChromosome()).ones()
-				.mapToObj(basicSet::get)
+				.<T>mapToObj(basicSet::get)
+				.collect(ISeq.toISeq())
+		);
+	}
+
+	/**
+	 * The subset {@code Codec} can be used for problems where it is required to
+	 * find the best <b>fixed-size</b> subset from given basic set.
+	 *
+	 * @since 3.4
+	 *
+	 * @see PermutationChromosome
+	 * @see PermutationChromosome#of(ISeq, int)
+	 *
+	 * @param <T> the element type of the basic set
+	 * @param basicSet the basic set, from where to choose the <i>optimal</i>
+	 *        subset.
+	 * @param size the length of the desired subsets
+	 * @return a new codec which can be used for modelling <i>subset</i>
+	 *         problems.
+	 * @throws NullPointerException if the given {@code basicSet} is
+	 *         {@code null}; {@code null} elements are allowed.
+	 * @throws IllegalArgumentException if {@code basicSet.size() < size},
+	 *         {@code size <= 0} or {@code basicSet.size()*size} will cause an
+	 *         integer overflow.
+	 */
+	public static <T> Codec<ISeq<T>, EnumGene<T>> ofSubSet(
+		final ISeq<? extends T> basicSet,
+		final int size
+	) {
+		requireNonNull(basicSet);
+		base.checkSubSet(basicSet.size(), size);
+
+		return Codec.of(
+			Genotype.of(PermutationChromosome.of(basicSet, size)),
+			gt -> gt.getChromosome().stream()
+				.map(EnumGene::getAllele)
 				.collect(ISeq.toISeq())
 		);
 	}

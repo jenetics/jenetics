@@ -1,8 +1,12 @@
 #!/bin/bash
 
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+
 MODULES=(
-	"org.jenetics"
-	"org.jenetics.example"
+	"${SCRIPT_DIR}/org.jenetics"
+	"${SCRIPT_DIR}/org.jenetics.example"
+	"${SCRIPT_DIR}/org.jenetics.tool"
+	"${SCRIPT_DIR}/org.jenetix"
 )
 
 CLASSPATH="."
@@ -14,4 +18,5 @@ do
 	CLASSPATH="${CLASSPATH}:${module}/build/resources/test"
 done
 
-java -cp ${CLASSPATH} $*
+CMD="java -cp ${CLASSPATH} $1"
+$CMD "${@:2}"
