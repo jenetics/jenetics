@@ -43,7 +43,7 @@ import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
 
-public class DynamicGenotypes {
+public class DynamicGenotype {
 
 	// Explicit Genotype factory instead of Genotype templates.
 	private static final Factory<Genotype<DoubleGene>> ENCODING = () -> {
@@ -151,7 +151,7 @@ public class DynamicGenotypes {
 
 	public static void main(final String[] args) {
 		final Engine<DoubleGene, Double> engine = Engine
-			.builder(DynamicGenotypes::fitness, ENCODING)
+			.builder(DynamicGenotype::fitness, ENCODING)
 			.alterers(new DynamicMutator<>(0.25))
 			.build();
 
