@@ -31,6 +31,7 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ForkJoinPool;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -131,6 +132,7 @@ public final class Engine<
 	private final Alterer<G, C> _alterer;
 	private final Predicate<? super Phenotype<G, C>> _validator;
 	private final Optimize _optimize;
+	private final Consumer<EvolutionResult<G,C>> _evolutionReporter;
 	private final int _offspringCount;
 	private final int _survivorsCount;
 	private final long _maximalPhenotypeAge;
@@ -175,6 +177,7 @@ public final class Engine<
 		final Alterer<G, C> alterer,
 		final Predicate<? super Phenotype<G, C>> validator,
 		final Optimize optimize,
+		final Consumer<EvolutionResult<G,C>> evolutionReporter,
 		final int offspringCount,
 		final int survivorsCount,
 		final long maximalPhenotypeAge,
@@ -190,6 +193,7 @@ public final class Engine<
 		_alterer = requireNonNull(alterer);
 		_validator = requireNonNull(validator);
 		_optimize = requireNonNull(optimize);
+		_evolutionReporter = requireNonNull(evolutionReporter);
 
 		_offspringCount = require.nonNegative(offspringCount);
 		_survivorsCount = require.nonNegative(survivorsCount);
@@ -325,7 +329,7 @@ public final class Engine<
 			filteredOffspring.join().result.invalidCount +
 			filteredSurvivors.join().result.invalidCount;
 
-		return EvolutionResult.of(
+		EvolutionResult<G,C> evolutionResult = EvolutionResult.of(
 			_optimize,
 			result.result,
 			start.getGeneration(),
@@ -334,6 +338,10 @@ public final class Engine<
 			invalidCount,
 			alteredOffspring.join().result.alterCount
 		);
+		
+		_evolutionReporter.accept(evolutionResult);
+		 
+		 return evolutionResult;
 	}
 
 	/**
@@ -754,7 +762,8 @@ public final class Engine<
 			.phenotypeValidator(_validator)
 			.populationSize(getPopulationSize())
 			.survivorsSelector(_survivorsSelector)
-			.individualCreationRetries(_individualCreationRetries);
+			.individualCreationRetries(_individualCreationRetries)
+			.evolutionReporter(_evolutionReporter);
 	}
 
 	/**
@@ -875,6 +884,7 @@ public final class Engine<
 		);
 		private Predicate<? super Phenotype<G, C>> _validator = Phenotype::isValid;
 		private Optimize _optimize = Optimize.MAXIMUM;
+		private Consumer<EvolutionResult<G,C>> _evolutionReporter = a -> {};
 		private double _offspringFraction = 0.6;
 		private int _populationSize = 50;
 		private long _maximalPhenotypeAge = 70;
@@ -1066,6 +1076,17 @@ public final class Engine<
 			_optimize = requireNonNull(optimize);
 			return this;
 		}
+		
+		/**
+		 * The evolution reporter used by the engine. <i>Default does nothing.</i>
+		 *
+		 * @param evolutionReporter the evolution reporter used by the engine
+		 * @return {@code this} builder, for command chaining
+		 */
+		public Builder<G, C> evolutionReporter(final Consumer<EvolutionResult<G,C>> evolutionReporter) {
+			_evolutionReporter = requireNonNull(evolutionReporter);
+			return this;
+		}
 
 		/**
 		 * Set to a fitness maximizing strategy.
@@ -1198,6 +1219,7 @@ public final class Engine<
 				_alterer,
 				_validator,
 				_optimize,
+				_evolutionReporter,
 				getOffspringCount(),
 				getSurvivorsCount(),
 				_maximalPhenotypeAge,
@@ -1378,6 +1400,7 @@ public final class Engine<
 				.offspringSelector(_offspringSelector)
 				.phenotypeValidator(_validator)
 				.optimize(_optimize)
+				.evolutionReporter(_evolutionReporter)
 				.populationSize(_populationSize)
 				.survivorsSelector(_survivorsSelector)
 				.individualCreationRetries(_individualCreationRetries);
