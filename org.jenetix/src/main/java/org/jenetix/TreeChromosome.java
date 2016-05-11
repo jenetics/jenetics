@@ -19,25 +19,43 @@
  */
 package org.jenetix;
 
-import java.util.Iterator;
+import static java.util.Objects.requireNonNull;
 
+import java.util.Iterator;
+import java.util.Optional;
+
+import org.jenetics.AbstractChromosome;
 import org.jenetics.Chromosome;
-import org.jenetics.Gene;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.IntRange;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class TreeChromosome<G extends Gene<?, G>> implements Chromosome<G> {
+public class TreeChromosome<A> extends AbstractChromosome<TreeGene<A>> {
 
-	public G getRoot() {
-		return null;
+	private final IntRange _childCount;
+	private final IntRange _depth;
+
+	protected TreeChromosome(
+		final IntRange childCount,
+		final IntRange depth,
+		final ISeq<TreeGene<A>> genes
+	) {
+		super(genes);
+
+		_childCount = requireNonNull(childCount);
+		_depth = requireNonNull(depth);
+	}
+
+	public TreeGene<A> getRoot() {
+		return _genes.get(0);
 	}
 
 	@Override
-	public G getGene(final int index) {
+	public TreeGene<A> getGene(final int index) {
 		return null;
 	}
 
@@ -46,18 +64,26 @@ public class TreeChromosome<G extends Gene<?, G>> implements Chromosome<G> {
 	}
 
 	@Override
-	public Iterator<G> iterator() {
-		return null;
+	public Iterator<TreeGene<A>> iterator() {
+		return new Iterator<TreeGene<A>>() {
+			@Override
+			public boolean hasNext() {
+				return false;
+			}
+
+			@Override
+			public TreeGene<A> next() {
+				return null;
+			}
+		};
 	}
 
-	@Override
-	public ISeq<G> toSeq() {
-		return null;
+	public Optional<TreeGene<A>> getParent(final TreeGene<A> gene) {
+		return gene.getParent(_genes);
 	}
 
-	@Override
-	public int length() {
-		return 0;
+	public ISeq<TreeGene<A>> getChildren(final TreeGene<A> gene) {
+		return gene.getChildren(_genes);
 	}
 
 	@Override
@@ -66,12 +92,12 @@ public class TreeChromosome<G extends Gene<?, G>> implements Chromosome<G> {
 	}
 
 	@Override
-	public Chromosome<G> newInstance(final ISeq<G> genes) {
+	public Chromosome<TreeGene<A>> newInstance(final ISeq<TreeGene<A>> genes) {
 		return null;
 	}
 
 	@Override
-	public Chromosome<G> newInstance() {
+	public TreeChromosome<A> newInstance() {
 		return null;
 	}
 

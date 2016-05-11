@@ -19,29 +19,35 @@
  */
 package org.jenetix;
 
-import java.util.Optional;
+import java.util.stream.Stream;
 
-import org.jenetics.util.ISeq;
+import org.jenetix.internal.MTreeNodeImpl;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public interface TreeNode<T> {
+public interface MTreeNode<T> extends TreeNode<T> {
 
-	public T getValue();
+	public MTreeNode<T> setValue(final T value);
 
-	public Optional<TreeNode<? super T>> getParent();
+	public MTreeNode<T> setParent(final MTreeNode<? super T> parent);
 
-	public ISeq<TreeNode<? extends T>> getChildren();
+	public MTreeNode<T> add(final MTreeNode<? extends T> node);
 
-	public default boolean isRoot() {
-		return !getParent().isPresent();
-	}
+	public MTreeNode<T> addAll(final MTreeNode<? extends T>... nodes);
 
-	public default boolean isLeaf() {
-		return getChildren().isEmpty();
+	public MTreeNode<T> add(final int index, final MTreeNode<? extends T> node);
+
+	public MTreeNode<T> remove(final MTreeNode<? extends T> node);
+
+	public MTreeNode<T> remove(final int index);
+
+	public MTreeNode<T> removeFromParent();
+
+	public static <T> MTreeNode<T> of(final T value) {
+		return new MTreeNodeImpl<>(value);
 	}
 
 }
