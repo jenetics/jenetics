@@ -36,12 +36,12 @@ final class MTreeNodeImpl<T> implements MTreeNode<T> {
 	private MTreeNode<? super T> _parent;
 	private final List<MTreeNode<? extends T>> _children = new ArrayList<>();
 
-	public MTreeNodeImpl(final T value) {
+	MTreeNodeImpl(final T value) {
 		_value = value;
 	}
 
 	@Override
-	public Optional<TreeNode<? super T>> getParent() {
+	public Optional<MTreeNode<? super T>> getParent() {
 		return Optional.ofNullable(_parent);
 	}
 
@@ -63,23 +63,24 @@ final class MTreeNodeImpl<T> implements MTreeNode<T> {
 	}
 
 	@Override
-	public ISeq<TreeNode<? extends T>> getChildren() {
+	public ISeq<MTreeNode<? extends T>> getChildren() {
 		return ISeq.of(_children);
+	}
+
+	@Override
+	public MTreeNode<? extends T> getChild(final int index) {
+		return _children.get(index);
+	}
+
+	@Override
+	public int childrenCount() {
+		return _children.size();
 	}
 
 	@Override
 	public MTreeNode<T> add(final MTreeNode<? extends T> node) {
 		node.setParent(this);
 		_children.add(node);
-		return this;
-	}
-
-	@SafeVarargs
-	@Override
-	public final MTreeNode<T> addAll(final MTreeNode<? extends T>... nodes) {
-		for (MTreeNode<? extends T> node : nodes) {
-			add(node);
-		}
 		return this;
 	}
 
@@ -110,16 +111,6 @@ final class MTreeNodeImpl<T> implements MTreeNode<T> {
 	}
 
 	@Override
-	public boolean isRoot() {
-		return _parent == null;
-	}
-
-	@Override
-	public boolean isLeaf() {
-		return _children.isEmpty();
-	}
-
-	@Override
 	public String toString() {
 		return toString(this, new StringBuilder(), 0).toString();
 	}
@@ -135,15 +126,12 @@ final class MTreeNodeImpl<T> implements MTreeNode<T> {
 	}
 
 	public static void main(final String[] args) {
-		final MTreeNode<Integer> tree =
-			MTreeNode.of(0).addAll(
-				MTreeNode.of(1),
-				MTreeNode.of(2).addAll(
-					MTreeNode.of(3),
-					MTreeNode.of(4)
-				),
-				MTreeNode.of(5)
-			);
+		final MTreeNode<Integer> tree = MTreeNode.of(0)
+			.add(MTreeNode.of(1))
+			.add(MTreeNode.of(2)
+				.add(MTreeNode.of(3))
+				.add(MTreeNode.of(4)))
+			.add(MTreeNode.of(5));
 
 		System.out.println(tree);
 	}

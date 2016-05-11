@@ -32,16 +32,20 @@ public interface TreeNode<T> {
 
 	public T getValue();
 
-	public Optional<TreeNode<? super T>> getParent();
+	public Optional<? extends TreeNode<? super T>> getParent();
 
-	public ISeq<TreeNode<? extends T>> getChildren();
+	public ISeq<? extends TreeNode<? extends T>> getChildren();
+
+	public TreeNode<? extends T> getChild(final int index);
+
+	public int childrenCount();
 
 	public default boolean isRoot() {
 		return !getParent().isPresent();
 	}
 
 	public default boolean isLeaf() {
-		return getChildren().isEmpty();
+		return childrenCount() == 0;
 	}
 
 }

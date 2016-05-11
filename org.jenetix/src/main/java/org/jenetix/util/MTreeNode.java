@@ -19,6 +19,10 @@
  */
 package org.jenetix.util;
 
+import java.util.Optional;
+
+import org.jenetics.util.ISeq;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -26,13 +30,17 @@ package org.jenetix.util;
  */
 public interface MTreeNode<T> extends TreeNode<T> {
 
+	@Override
+	public Optional<? extends MTreeNode<? super T>> getParent();
+
+	@Override
+	public ISeq<? extends MTreeNode<? extends T>> getChildren();
+
 	public MTreeNode<T> setValue(final T value);
 
 	public MTreeNode<T> setParent(final MTreeNode<? super T> parent);
 
 	public MTreeNode<T> add(final MTreeNode<? extends T> node);
-
-	public MTreeNode<T> addAll(final MTreeNode<? extends T>... nodes);
 
 	public MTreeNode<T> add(final int index, final MTreeNode<? extends T> node);
 
