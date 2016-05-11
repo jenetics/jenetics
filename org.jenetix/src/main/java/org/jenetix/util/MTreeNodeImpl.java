@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetix.internal;
+package org.jenetix.util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,15 +25,12 @@ import java.util.Optional;
 
 import org.jenetics.util.ISeq;
 
-import org.jenetix.MTreeNode;
-import org.jenetix.TreeNode;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public final class MTreeNodeImpl<T> implements MTreeNode<T> {
+final class MTreeNodeImpl<T> implements MTreeNode<T> {
 
 	private T _value;
 	private MTreeNode<? super T> _parent;
