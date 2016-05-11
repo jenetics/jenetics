@@ -20,6 +20,7 @@
 package org.jenetix.util;
 
 import java.util.Optional;
+import java.util.function.ObjIntConsumer;
 
 import org.jenetics.util.ISeq;
 
@@ -46,6 +47,10 @@ public interface TreeNode<T> {
 
 	public default boolean isLeaf() {
 		return childrenCount() == 0;
+	}
+
+	public default void forEach(final ObjIntConsumer<? super T> consumer) {
+
 	}
 
 }

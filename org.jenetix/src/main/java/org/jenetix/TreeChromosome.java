@@ -29,6 +29,8 @@ import org.jenetics.Chromosome;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.IntRange;
 
+import org.jenetix.util.TreeNode;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -98,6 +100,13 @@ public class TreeChromosome<A> extends AbstractChromosome<TreeGene<A>> {
 
 	@Override
 	public TreeChromosome<A> newInstance() {
+		return null;
+	}
+
+
+	public static <A> TreeChromosome<A> of(final TreeNode<A> tree) {
+
+
 		return null;
 	}
 
