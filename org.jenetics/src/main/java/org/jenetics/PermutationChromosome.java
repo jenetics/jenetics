@@ -222,9 +222,9 @@ public final class PermutationChromosome<T>
 	 *
 	 * @since 3.4
 	 *
+	 * @param <T> the allele type
 	 * @param alleles the base-set of the valid alleles
 	 * @param length the length of the created chromosomes
-	 * @param <T> the allele type
 	 * @return a new chromosome with the given valid alleles and the desired
 	 *         length
 	 * @throws IllegalArgumentException if {@code alleles.size() < length},
