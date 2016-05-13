@@ -31,7 +31,7 @@ import org.jenetics.util.ISeq;
 public interface MTreeNode<T> extends TreeNode<T> {
 
 	@Override
-	public Optional<? extends MTreeNode<? super T>> getParent();
+	public MTreeNode<? super T> getParent();
 
 	@Override
 	public ISeq<? extends MTreeNode<? extends T>> getChildren();

@@ -33,13 +33,21 @@ public interface TreeNode<T> {
 
 	public T getValue();
 
-	public Optional<? extends TreeNode<? super T>> getParent();
+	public TreeNode<? super T> getParent();
 
 	public ISeq<? extends TreeNode<? extends T>> getChildren();
 
+	/**
+	 * Return the child at the given child {@code index}.
+	 *
+	 * @param index the child index
+	 * @return the child tree-node at the given child {@code index}
+	 * @throws  ArrayIndexOutOfBoundsException  if the given {@code index} is
+	 *          out of bounds
+	 */
 	public TreeNode<? extends T> getChild(final int index);
 
-	public int childrenCount();
+	public int getChildCount();
 
 	public default boolean isRoot() {
 		return !getParent().isPresent();
