@@ -50,11 +50,11 @@ public interface TreeNode<T> {
 	public int getChildCount();
 
 	public default boolean isRoot() {
-		return !getParent().isPresent();
+		return getParent() == null;
 	}
 
 	public default boolean isLeaf() {
-		return childrenCount() == 0;
+		return getChildCount() == 0;
 	}
 
 	public default void forEach(final ObjIntConsumer<? super T> consumer) {
