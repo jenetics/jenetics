@@ -1149,24 +1149,22 @@ public class MutableTreeNode<T> implements Serializable  {
 
 
 	final class BreadthFirstIterator implements Iterator<MutableTreeNode<T>> {
-		protected BreadthFirstIterator.Queue _queue;
+		final Queue<Iterator<MutableTreeNode<T>>> _queue = new Queue<>();
 
 		public BreadthFirstIterator(final MutableTreeNode<T> root) {
-			_queue = new BreadthFirstIterator.Queue();
 			_queue.enqueue(singletonList(root).iterator());
 		}
 
 		@Override
 		public boolean hasNext() {
-			return (!_queue.isEmpty() &&
-				((Enumeration) _queue.firstObject()).hasMoreElements());
+			return !_queue.isEmpty() && _queue.firstObject().hasNext();
 		}
 
 		@Override
 		public MutableTreeNode<T> next() {
-			Iterator enumer = (Iterator) _queue.firstObject();
-			MutableTreeNode<T> node = (MutableTreeNode<T>)enumer.next();
-			Iterator children = node.children();
+			final Iterator<MutableTreeNode<T>> enumer = _queue.firstObject();
+			final MutableTreeNode<T> node = enumer.next();
+			final Iterator<MutableTreeNode<T>> children = node.children();
 
 			if (!enumer.hasNext()) {
 				_queue.dequeue();
@@ -1175,60 +1173,6 @@ public class MutableTreeNode<T> implements Serializable  {
 				_queue.enqueue(children);
 			}
 			return node;
-		}
-
-
-		// A simple queue with a linked list data structure.
-		final class Queue {
-			BreadthFirstIterator.Queue.QNode head; // null if empty
-			BreadthFirstIterator.Queue.QNode tail;
-
-			final class QNode {
-				public Object   object;
-				public BreadthFirstIterator.Queue.QNode next;   // null if end
-				public QNode(Object object, BreadthFirstIterator.Queue.QNode next) {
-					this.object = object;
-					this.next = next;
-				}
-			}
-
-			public void enqueue(Object anObject) {
-				if (head == null) {
-					head = tail = new BreadthFirstIterator.Queue.QNode(anObject, null);
-				} else {
-					tail.next = new BreadthFirstIterator.Queue.QNode(anObject, null);
-					tail = tail.next;
-				}
-			}
-
-			public Object dequeue() {
-				if (head == null) {
-					throw new NoSuchElementException("No more elements");
-				}
-
-				Object retval = head.object;
-				BreadthFirstIterator.Queue.QNode oldHead = head;
-				head = head.next;
-				if (head == null) {
-					tail = null;
-				} else {
-					oldHead.next = null;
-				}
-				return retval;
-			}
-
-			public Object firstObject() {
-				if (head == null) {
-					throw new NoSuchElementException("No more elements");
-				}
-
-				return head.object;
-			}
-
-			public boolean isEmpty() {
-				return head == null;
-			}
-
 		}
 
 	}
