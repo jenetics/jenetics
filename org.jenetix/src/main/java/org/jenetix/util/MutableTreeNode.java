@@ -30,8 +30,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Stack;
 import java.util.stream.IntStream;
+
+import org.jenetics.internal.collection.Stack;
 
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
@@ -108,7 +109,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 *
 	 * @return  an int giving the number of children of this node
 	 */
-	public int getChildCount() {
+	public int childCount() {
 		return _children.size();
 	}
 
@@ -233,7 +234,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * {@code null}. If this node has no children, this method does nothing.
 	 */
 	public void removeAllChildren() {
-		for (int i = getChildCount() - 1; i >= 0; i--) {
+		for (int i = childCount() - 1; i >= 0; i--) {
 			remove(i);
 		}
 	}
@@ -249,9 +250,9 @@ public class MutableTreeNode<T> implements Serializable  {
 		requireNonNull(child);
 
 		if(child != null && child.getParent() == this) {
-			insert(getChildCount() - 1, child);
+			insert(childCount() - 1, child);
 		} else {
-			insert(getChildCount(), child);
+			insert(childCount(), child);
 		}
 	}
 
@@ -482,7 +483,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 *        {@code null} if this node is last
 	 */
 	public MutableTreeNode<T> getNextNode() {
-		if (getChildCount() == 0) {
+		if (childCount() == 0) {
 			MutableTreeNode<T> next = getNextSibling();
 
 			if (next == null) {
@@ -525,7 +526,7 @@ public class MutableTreeNode<T> implements Serializable  {
 
 		MutableTreeNode<T> prev = getPreviousSibling();
 		if (prev != null) {
-			if (prev.getChildCount() == 0)
+			if (prev.childCount() == 0)
 				return prev;
 			else
 				return prev.getLastLeaf();
@@ -596,64 +597,46 @@ public class MutableTreeNode<T> implements Serializable  {
 		return postorderIterator();
 	}
 
-
-
-
-
-
-
 	/**
-	 * Creates and returns an enumeration that follows the path from
-	 * <code>ancestor</code> to this node.  The enumeration's
-	 * <code>nextElement()</code> method first returns <code>ancestor</code>,
-	 * then the child of <code>ancestor</code> that is an ancestor of this
-	 * node, and so on, and finally returns this node.  Creation of the
-	 * enumeration is O(m) where m is the number of nodes between this node
-	 * and <code>ancestor</code>, inclusive.  Each <code>nextElement()</code>
-	 * message is O(1).<P>
-	 *
+	 * Return an iterator that follows the path from {@code ancestor} to
+	 * {@code this} node. The iterator return {@code ancestor} as first element,
+	 * The creation of the iterator is O(m), where m is the number of nodes
+	 * between {@code this} node and the {@code ancestor}, inclusive.
+	 * <p>
 	 * Modifying the tree by inserting, removing, or moving a node invalidates
-	 * any enumerations created before the modification.
+	 * any iterator created before the modification.
 	 *
-	 * @see             #isNodeAncestor
-	 * @see             #isNodeDescendant
-	 * @exception       IllegalArgumentException if <code>ancestor</code> is
-	 *                                          not an ancestor of this node
-	 * @return  an enumeration for following the path from an ancestor of
-	 *          this node to this one
+	 * @see #isNodeAncestor
+	 * @see #isNodeDescendant
+	 * @param ancestor the ancestor node
+	 * @return an iterator for following the path from an ancestor of {@code this}
+	 *         node to this one
+	 * @throws IllegalArgumentException if the {@code ancestor} is not an
+	 *         ancestor of this node
+	 * @throws NullPointerException if the given {@code ancestor} is {@code null}
 	 */
-	public Iterator<MutableTreeNode<T>> pathFromAncestorEnumeration(MutableTreeNode<T> ancestor) {
-		return new PathBetweenNodesIterator(ancestor, this);
+	public Iterator<MutableTreeNode<T>> pathFromAncestorIterator(
+		final MutableTreeNode<T> ancestor
+	) {
+		return new PathIterator(ancestor, this);
 	}
 
 
-	//
-	//  Child Queries
-	//
+	/* *************************************************************************
+	 * Child query operations
+	 **************************************************************************/
 
 	/**
-	 * Returns true if <code>aNode</code> is a child of this node.  If
-	 * <code>aNode</code> is null, this method returns false.
+	 * Return {@code true} if the given {@code node} is a child of {@code this}
+	 * node.
 	 *
-	 * @return  true if <code>aNode</code> is a child of this node; false if
-	 *                  <code>aNode</code> is null
+	 * @return  {@code true} if {@code node}is a child, {@code false} otherwise
+	 * @throws NullPointerException if the given {@code node} is {@ocde null}
 	 */
-	public boolean isNodeChild(MutableTreeNode<T> aNode) {
-		boolean retval;
-
-		if (aNode == null) {
-			retval = false;
-		} else {
-			if (getChildCount() == 0) {
-				retval = false;
-			} else {
-				retval = (aNode.getParent() == this);
-			}
-		}
-
-		return retval;
+	public boolean isNodeChild(final MutableTreeNode<T> node) {
+		requireNonNull(node);
+		return childCount() == 0 ? false : node.getParent() == this;
 	}
-
 
 	/**
 	 * Returns this node's first child.  If this node has no children,
@@ -663,7 +646,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * @exception       NoSuchElementException  if this node has no children
 	 */
 	public MutableTreeNode<T> getFirstChild() {
-		if (getChildCount() == 0) {
+		if (childCount() == 0) {
 			throw new NoSuchElementException("node has no children");
 		}
 		return getChild(0);
@@ -678,10 +661,10 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * @exception       NoSuchElementException  if this node has no children
 	 */
 	public MutableTreeNode<T> getLastChild() {
-		if (getChildCount() == 0) {
+		if (childCount() == 0) {
 			throw new NoSuchElementException("node has no children");
 		}
-		return getChild(getChildCount()-1);
+		return getChild(childCount()-1);
 	}
 
 
@@ -710,7 +693,7 @@ public class MutableTreeNode<T> implements Serializable  {
 			throw new IllegalArgumentException("node is not a child");
 		}
 
-		if (index < getChildCount() - 1) {
+		if (index < childCount() - 1) {
 			return getChild(index + 1);
 		} else {
 			return null;
@@ -796,7 +779,7 @@ public class MutableTreeNode<T> implements Serializable  {
 		if (myParent == null) {
 			return 1;
 		} else {
-			return myParent.getChildCount();
+			return myParent.childCount();
 		}
 	}
 
@@ -871,7 +854,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * @return  true if this node has no children
 	 */
 	public boolean isLeaf() {
-		return (getChildCount() == 0);
+		return (childCount() == 0);
 	}
 
 
@@ -993,30 +976,18 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * @see     #isNodeAncestor
 	 * @return  the number of leaves beneath this node
 	 */
-	public int getLeafCount() {
+	public int leafCount() {
+		final Iterator<MutableTreeNode<T>> it = breadthFirstIterator();
 		int count = 0;
-
-		MutableTreeNode<T> node;
-		Iterator<MutableTreeNode<T>> enum_ = breadthFirstIterator(); // order matters not
-
-		while (enum_.hasNext()) {
-			node = (MutableTreeNode<T>)enum_.next();
-			if (node.isLeaf()) {
-				count++;
+		while (it.hasNext()) {
+			if (it.next().isLeaf()) {
+				++count;
 			}
 		}
 
-		if (count < 1) {
-			throw new Error("tree has zero leaves");
-		}
-
+		assert count >= 1;
 		return count;
 	}
-
-
-	//
-	//  Overrides
-	//
 
 	@Override
 	public String toString() {
@@ -1033,7 +1004,7 @@ public class MutableTreeNode<T> implements Serializable  {
 		}
 
 		out.append("+- ").append(node.getValue()).append("\n");
-		IntStream.range(0, node.getChildCount())
+		IntStream.range(0, node.childCount())
 			.forEach(i -> toString(node.getChild(i), out, level + 1));
 
 		return out;
@@ -1046,29 +1017,29 @@ public class MutableTreeNode<T> implements Serializable  {
 	private static final class PreorderIterator<T>
 		implements Iterator<MutableTreeNode<T>>
 	{
-		private final Deque<Iterator<MutableTreeNode<T>>> _stack = new LinkedList<>();
+		private final Deque<Iterator<MutableTreeNode<T>>> _deque = new LinkedList<>();
 
 		public PreorderIterator(final MutableTreeNode<T> root) {
 			requireNonNull(root);
-			_stack.push(singletonList(root).iterator());
+			_deque.push(singletonList(root).iterator());
 		}
 
 		@Override
 		public boolean hasNext() {
-			return !_stack.isEmpty() && _stack.peek().hasNext();
+			return !_deque.isEmpty() && _deque.peek().hasNext();
 		}
 
 		@Override
 		public MutableTreeNode<T> next() {
-			final Iterator<MutableTreeNode<T>> enumer = _stack.peek();
+			final Iterator<MutableTreeNode<T>> enumer = _deque.peek();
 			final MutableTreeNode<T> node = enumer.next();
 			final Iterator<MutableTreeNode<T>> children = node.children();
 
 			if (!enumer.hasNext()) {
-				_stack.pop();
+				_deque.pop();
 			}
 			if (children.hasNext()) {
-				_stack.push(children);
+				_deque.push(children);
 			}
 			return node;
 		}
@@ -1149,17 +1120,19 @@ public class MutableTreeNode<T> implements Serializable  {
 
 	}
 
-	private static final class PathBetweenNodesIterator<T>
+	/**
+	 * Path (between nodes) iterator.
+	 */
+	private static final class PathIterator<T>
 		implements Iterator<MutableTreeNode<T>>
 	{
-		private final Stack<MutableTreeNode<T>> stack = new Stack<>();
+		private final Stack<MutableTreeNode<T>> _stack = new Stack<>();
 
-		public PathBetweenNodesIterator(
+		public PathIterator(
 			final MutableTreeNode<T> ancestor,
 			final MutableTreeNode<T> descendant
 		) {
-			requireNonNull(ancestor);
-			stack.push(requireNonNull(descendant));
+			_stack.push(requireNonNull(descendant));
 
 			MutableTreeNode<T> current = descendant;
 			while (current != ancestor) {
@@ -1170,22 +1143,22 @@ public class MutableTreeNode<T> implements Serializable  {
 						descendant + "."
 					);
 				}
-				stack.push(current);
+				_stack.push(current);
 			}
 		}
 
 		@Override
 		public boolean hasNext() {
-			return stack.size() > 0;
+			return _stack.length > 0;
 		}
 
 		@Override
 		public MutableTreeNode<T> next() {
-			if (stack.empty()) {
-				throw new NoSuchElementException("No more elements");
+			if (_stack.length == 0) {
+				throw new NoSuchElementException("No more elements.");
 			}
 
-			return stack.pop();
+			return _stack.pop();
 		}
 
 	}

@@ -109,7 +109,7 @@ public class MutableTreeNodeTest {
 		final MutableTreeNode<Integer> tree = newTree(5, new Random(123));
 		final DefaultMutableTreeNode stree = newSwingTree(5, new Random(123));
 
-		Assert.assertEquals(tree.getChildCount(), stree.getChildCount());
+		Assert.assertEquals(tree.childCount(), stree.getChildCount());
 		Assert.assertEquals(
 			tree.getChild(1).getValue(),
 			((DefaultMutableTreeNode)stree.getChildAt(1)).getUserObject()
@@ -209,6 +209,24 @@ public class MutableTreeNodeTest {
 	}
 
 	@Test
+	public void pathFromAncestorIterator() {
+		final MutableTreeNode<Integer> tree = newTree(15, new Random(123));
+		final DefaultMutableTreeNode stree = newSwingTree(15, new Random(123));
+
+		final Iterator<MutableTreeNode<Integer>> treeIt =
+			tree.getFirstLeaf().pathFromAncestorIterator(tree);
+		final Enumeration<?> streeIt =
+			stree.getFirstLeaf().pathFromAncestorEnumeration(stree);
+
+		while (treeIt.hasNext()) {
+			final MutableTreeNode<Integer> node = treeIt.next();
+			final DefaultMutableTreeNode snode = (DefaultMutableTreeNode)streeIt.nextElement();
+
+			Assert.assertEquals(node.getValue(), snode.getUserObject());
+		}
+	}
+
+	@Test
 	public void getPath() {
 		final MutableTreeNode<Integer> tree = newTree(5, new Random(123));
 		final DefaultMutableTreeNode stree = newSwingTree(5, new Random(123));
@@ -231,9 +249,9 @@ public class MutableTreeNodeTest {
 		final MutableTreeNode<Integer> t1,
 		final DefaultMutableTreeNode t2
 	) {
-		return t1.getChildCount() == t2.getChildCount() &&
+		return t1.childCount() == t2.getChildCount() &&
 			Objects.equals(t1.getValue(), t2.getUserObject()) &&
-			IntStream.range(0, t1.getChildCount())
+			IntStream.range(0, t1.childCount())
 				.allMatch(i -> equals(
 					t1.getChild(i),
 					(DefaultMutableTreeNode) t2.getChildAt(i)));
