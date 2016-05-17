@@ -633,7 +633,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	public Iterator<MutableTreeNode<T>> pathFromAncestorIterator(
 		final MutableTreeNode<T> ancestor
 	) {
-		return new PathIterator(ancestor, this);
+		return new PathIterator<>(ancestor, this);
 	}
 
 
@@ -771,8 +771,7 @@ public class MutableTreeNode<T> implements Serializable  {
 			MutableTreeNode<T> myParent = getParent();
 			retval = (myParent != null && myParent == anotherNode.getParent());
 
-			if (retval && !((MutableTreeNode<T>)getParent())
-				.isNodeChild(anotherNode)) {
+			if (retval && !getParent().isNodeChild(anotherNode)) {
 				throw new Error("sibling has different parent");
 			}
 		}
@@ -812,12 +811,12 @@ public class MutableTreeNode<T> implements Serializable  {
 	public MutableTreeNode<T> getNextSibling() {
 		MutableTreeNode<T> retval;
 
-		MutableTreeNode<T> myParent = (MutableTreeNode<T>)getParent();
+		MutableTreeNode<T> myParent = getParent();
 
 		if (myParent == null) {
 			retval = null;
 		} else {
-			retval = (MutableTreeNode<T>)myParent.getChildAfter(this);      // linear search
+			retval = myParent.getChildAfter(this);      // linear search
 		}
 
 		if (retval != null && !isNodeSibling(retval)) {
@@ -839,12 +838,12 @@ public class MutableTreeNode<T> implements Serializable  {
 	public MutableTreeNode<T> getPreviousSibling() {
 		MutableTreeNode<T> retval;
 
-		MutableTreeNode<T> myParent = (MutableTreeNode<T>)getParent();
+		MutableTreeNode<T> myParent = getParent();
 
 		if (myParent == null) {
 			retval = null;
 		} else {
-			retval = (MutableTreeNode<T>)myParent.getChildBefore(this);     // linear search
+			retval = myParent.getChildBefore(this);     // linear search
 		}
 
 		if (retval != null && !isNodeSibling(retval)) {
@@ -886,7 +885,7 @@ public class MutableTreeNode<T> implements Serializable  {
 		MutableTreeNode<T> node = this;
 
 		while (!node.isLeaf()) {
-			node = (MutableTreeNode<T>)node.getFirstChild();
+			node = node.getFirstChild();
 		}
 
 		return node;
@@ -906,7 +905,7 @@ public class MutableTreeNode<T> implements Serializable  {
 		MutableTreeNode<T> node = this;
 
 		while (!node.isLeaf()) {
-			node = (MutableTreeNode<T>)node.getLastChild();
+			node = node.getLastChild();
 		}
 
 		return node;
@@ -934,7 +933,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 */
 	public MutableTreeNode<T> getNextLeaf() {
 		MutableTreeNode<T> nextSibling;
-		MutableTreeNode<T> myParent = (MutableTreeNode<T>)getParent();
+		MutableTreeNode<T> myParent = getParent();
 
 		if (myParent == null)
 			return null;
@@ -969,7 +968,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 */
 	public MutableTreeNode<T> getPreviousLeaf() {
 		MutableTreeNode<T> previousSibling;
-		MutableTreeNode<T> myParent = (MutableTreeNode<T>)getParent();
+		MutableTreeNode<T> myParent = getParent();
 
 		if (myParent == null)
 			return null;
@@ -1079,7 +1078,7 @@ public class MutableTreeNode<T> implements Serializable  {
 			if (_subtree.hasNext()) {
 				result = _subtree.next();
 			} else if (_children.hasNext()) {
-				_subtree = new PostorderIterator(_children.next());
+				_subtree = new PostorderIterator<>(_children.next());
 				result = _subtree.next();
 			} else {
 				result = _root;
