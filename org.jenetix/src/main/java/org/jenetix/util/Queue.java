@@ -29,53 +29,53 @@ import java.util.NoSuchElementException;
 final class Queue<T> {
 
 	private static final class Node<T> {
-		T _object;
-		Node<T> _next;
+		private final T _value;
+		private Node<T> _next;
 
-		Node(final T object, final Node<T> next) {
-			_object = object;
+		Node(final T value, final Node<T> next) {
+			_value = value;
 			_next = next;
 		}
 	}
 
-	Node<T> head;
-	Node<T> tail;
+	private Node<T> _head;
+	private Node<T> _tail;
 
-	public void enqueue(final T value) {
-		if (head == null) {
-			head = tail = new Node<>(value, null);
+	void enqueue(final T value) {
+		if (_head == null) {
+			_head = _tail = new Node<>(value, null);
 		} else {
-			tail._next = new Node<>(value, null);
-			tail = tail._next;
+			_tail._next = new Node<>(value, null);
+			_tail = _tail._next;
 		}
 	}
 
-	public T dequeue() {
-		if (head == null) {
+	T dequeue() {
+		if (_head == null) {
 			throw new NoSuchElementException("No more elements.");
 		}
 
-		final T result = head._object;
-		final Node<T> oldHead = head;
-		head = head._next;
-		if (head == null) {
-			tail = null;
+		final T result = _head._value;
+		final Node<T> head = _head;
+		_head = _head._next;
+		if (_head == null) {
+			_tail = null;
 		} else {
-			oldHead._next = null;
+			head._next = null;
 		}
 
 		return result;
 	}
 
-	public T firstObject() {
-		if (head == null) {
+	T firstObject() {
+		if (_head == null) {
 			throw new NoSuchElementException("No more elements.");
 		}
-		return head._object;
+		return _head._value;
 	}
 
-	public boolean isEmpty() {
-		return head == null;
+	boolean isEmpty() {
+		return _head == null;
 	}
 
 }
