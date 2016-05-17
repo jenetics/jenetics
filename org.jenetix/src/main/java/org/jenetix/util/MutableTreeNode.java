@@ -133,7 +133,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 */
 	public void insert(final int index, final MutableTreeNode<T> child) {
 		requireNonNull(child);
-		if (isNodeAncestor(child)) {
+		if (isAncestor(child)) {
 			throw new IllegalArgumentException("The new child is an ancestor.");
 		}
 
@@ -168,7 +168,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * @return the index of the node in this node's child array, or {@code -1}
 	 *         if the node could not be found
 	 */
-	public int getIndex(MutableTreeNode<T> child) {
+	public int getIndex(final MutableTreeNode<T> child) {
 		requireNonNull(child);
 		return _children.indexOf(child);
 	}
@@ -276,7 +276,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * @return {@code true} if the given {@code node} is an ancestor of
 	 *         {@code this} node, {@code false} otherwise
 	 */
-	public boolean isNodeAncestor(final MutableTreeNode<T> node) {
+	public boolean isAncestor(final MutableTreeNode<T> node) {
 		if (node == null) {
 			return false;
 		}
@@ -303,8 +303,8 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * @param node the node to test as descendant of this node
 	 * @return {@code true} if this node is an ancestor of the given {@code node}
 	 */
-	public boolean isNodeDescendant(final MutableTreeNode<T> node) {
-		return node != null ? node.isNodeAncestor(this) : null;
+	public boolean isDescendant(final MutableTreeNode<T> node) {
+		return node != null ? node.isAncestor(this) : null;
 	}
 
 	/**
@@ -324,8 +324,8 @@ public class MutableTreeNode<T> implements Serializable  {
 			return null;
 		}
 
-		final int level1 = getLevel();
-		final int level2 = node.getLevel();
+		final int level1 = level();
+		final int level2 = node.level();
 
 		MutableTreeNode<T> node1;
 		MutableTreeNode<T> node2;
@@ -366,19 +366,19 @@ public class MutableTreeNode<T> implements Serializable  {
 	 *         node, {@code false} otherwise. If the given {@code node} node is
 	 *         {@code null}, {@code false} is returned.
 	 */
-	public boolean isNodeRelated(final MutableTreeNode<T> node) {
+	public boolean isRelated(final MutableTreeNode<T> node) {
 		return node != null && getRoot() == node.getRoot();
 	}
 
 	/**
 	 * Returns the depth of the tree rooted at this node -- the longest
 	 * distance from this node to a leaf. If this node has no children, 0 is
-	 * returned. This operation is much more expensive than {@link #getLevel()}
+	 * returned. This operation is much more expensive than {@link #level()}
 	 * because it must effectively traverse the entire tree rooted at this node.
 	 *
 	 * @return the depth of the tree whose root is this node
 	 */
-	public int getDepth() {
+	public int depth() {
 		final Iterator<MutableTreeNode<T>> it = breadthFirstIterator();
 
 		MutableTreeNode<T> last = null;
@@ -387,7 +387,7 @@ public class MutableTreeNode<T> implements Serializable  {
 		}
 
 		assert last != null;
-		return last.getLevel() - getLevel();
+		return last.level() - level();
 	}
 
 	/**
@@ -396,7 +396,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 *
 	 * @return the number of levels above this node
 	 */
-	public int getLevel() {
+	public int level() {
 		MutableTreeNode<T> ancestor = this;
 		int levels = 0;
 		while ((ancestor = ancestor.getParent()) != null) {
@@ -621,8 +621,8 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * Modifying the tree by inserting, removing, or moving a node invalidates
 	 * any iterator created before the modification.
 	 *
-	 * @see #isNodeAncestor
-	 * @see #isNodeDescendant
+	 * @see #isAncestor
+	 * @see #isDescendant
 	 * @param ancestor the ancestor node
 	 * @return an iterator for following the path from an ancestor of {@code this}
 	 *         node to this one
@@ -878,7 +878,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * Returns this node if it is a leaf.
 	 *
 	 * @see     #isLeaf
-	 * @see     #isNodeDescendant
+	 * @see     #isDescendant
 	 * @return  the first leaf in the subtree rooted at this node
 	 */
 	public MutableTreeNode<T> getFirstLeaf() {
@@ -898,7 +898,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * Returns this node if it is a leaf.
 	 *
 	 * @see     #isLeaf
-	 * @see     #isNodeDescendant
+	 * @see     #isDescendant
 	 * @return  the last leaf in the subtree rooted at this node
 	 */
 	public MutableTreeNode<T> getLastLeaf() {
@@ -987,7 +987,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * If this node is a leaf, returns <code>1</code>.  This method is O(n)
 	 * where n is the number of descendants of this node.
 	 *
-	 * @see     #isNodeAncestor
+	 * @see     #isAncestor
 	 * @return  the number of leaves beneath this node
 	 */
 	public int leafCount() {
@@ -1057,7 +1057,7 @@ public class MutableTreeNode<T> implements Serializable  {
 		implements Iterator<MutableTreeNode<T>>
 	{
 		private MutableTreeNode<T> _root;
-		private Iterator<MutableTreeNode<T>> _children;
+		private final Iterator<MutableTreeNode<T>> _children;
 		private Iterator<MutableTreeNode<T>> _subtree;
 
 		public PostorderIterator(final MutableTreeNode<T> root) {
@@ -1110,11 +1110,11 @@ public class MutableTreeNode<T> implements Serializable  {
 
 		@Override
 		public MutableTreeNode<T> next() {
-			final Iterator<MutableTreeNode<T>> enumer = _queue.firstObject();
-			final MutableTreeNode<T> node = enumer.next();
+			final Iterator<MutableTreeNode<T>> it = _queue.firstObject();
+			final MutableTreeNode<T> node = it.next();
 			final Iterator<MutableTreeNode<T>> children = node.children();
 
-			if (!enumer.hasNext()) {
+			if (!it.hasNext()) {
 				_queue.dequeue();
 			}
 			if (children.hasNext()) {
