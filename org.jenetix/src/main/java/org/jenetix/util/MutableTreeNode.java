@@ -30,7 +30,11 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.jenetics.internal.collection.Stack;
 
@@ -581,6 +585,17 @@ public class MutableTreeNode<T> implements Serializable  {
 		return new BreadthFirstIterator<>(this);
 	}
 
+	public Stream<MutableTreeNode<T>> stream() {
+		final Spliterator<MutableTreeNode<T>> spliterator =
+			Spliterators.spliterator(
+				breadthFirstIterator(),
+				Long.MAX_VALUE,
+				Spliterator.ORDERED | Spliterator.SIZED
+			);
+
+		return StreamSupport.stream(spliterator, false);
+	}
+
 	/**
 	 * Return an iterator that traverses the subtree rooted at {@code this} node
 	 * in depth-first order. The first node returned by the iterator is the
@@ -977,16 +992,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * @return  the number of leaves beneath this node
 	 */
 	public int leafCount() {
-		final Iterator<MutableTreeNode<T>> it = breadthFirstIterator();
-		int count = 0;
-		while (it.hasNext()) {
-			if (it.next().isLeaf()) {
-				++count;
-			}
-		}
-
-		assert count >= 1;
-		return count;
+		return (int)stream().filter(n -> n.isLeaf()).count();
 	}
 
 	@Override
