@@ -30,6 +30,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.stream.IntStream;
@@ -76,12 +77,12 @@ public class MutableTreeNode<T> implements Serializable  {
 	 **************************************************************************/
 
 	/**
-	 * Returns this node's parent or {@code null} if this node has no parent.
+	 * Returns this node's parent if available.
 	 *
-	 * @return the tree-node, or {@code null} if this node has no parent
+	 * @return the tree-node, or an empty value if this node has no parent
 	 */
-	public MutableTreeNode<T> getParent() {
-		return _parent;
+	public Optional<MutableTreeNode<T>> getParent() {
+		return Optional.ofNullable(_parent);
 	}
 
 	/**
@@ -100,9 +101,9 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * Returns the child at the specified index in this node's child array.
 	 *
 	 * @param index   an index into this node's child array
+	 * @return the tree-node in this node's child array at the specified index
 	 * @throws ArrayIndexOutOfBoundsException  if the {@code index} is out of
 	 *         bounds
-	 * @return the tree-node in this node's child array at the specified index
 	 */
 	public MutableTreeNode<T> getChild(final int index) {
 		return _children.get(index);
@@ -111,7 +112,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	/**
 	 * Returns the number of children of this node.
 	 *
-	 * @return  an int giving the number of children of this node
+	 * @return the number of children of this node
 	 */
 	public int childCount() {
 		return _children.size();
@@ -137,8 +138,8 @@ public class MutableTreeNode<T> implements Serializable  {
 			throw new IllegalArgumentException("The new child is an ancestor.");
 		}
 
-		if (child.getParent() != null) {
-			child.getParent().remove(child);
+		if (child._parent != null) {
+			child._parent.remove(child);
 		}
 		child.setParent(this);
 		_children.add(index, child);
@@ -169,8 +170,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 *         if the node could not be found
 	 */
 	public int getIndex(final MutableTreeNode<T> child) {
-		requireNonNull(child);
-		return _children.indexOf(child);
+		return _children.indexOf(requireNonNull(child));
 	}
 
 	/**
@@ -227,7 +227,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	public void remove(final MutableTreeNode<T> child) {
 		requireNonNull(child);
 
-		if (!isNodeChild(child)) {
+		if (!isChild(child)) {
 			throw new IllegalArgumentException("The given child is not a child.");
 		}
 		remove(getIndex(child));
@@ -253,7 +253,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	public void add(final MutableTreeNode<T> child) {
 		requireNonNull(child);
 
-		if(child != null && child.getParent() == this) {
+		if(child != null && child._parent == this) {
 			insert(childCount() - 1, child);
 		} else {
 			insert(childCount(), child);
@@ -286,7 +286,7 @@ public class MutableTreeNode<T> implements Serializable  {
 			if (ancestor == node) {
 				return true;
 			}
-		} while((ancestor = ancestor.getParent()) != null);
+		} while((ancestor = ancestor._parent) != null);
 
 		return false;
 	}
@@ -341,7 +341,7 @@ public class MutableTreeNode<T> implements Serializable  {
 		}
 
 		while (diff > 0) {
-			node1 = node1.getParent();
+			node1 = node1._parent;
 			--diff;
 		}
 
@@ -349,8 +349,8 @@ public class MutableTreeNode<T> implements Serializable  {
 			if (node1 == node2) {
 				return node1;
 			}
-			node1 = node1.getParent();
-			node2 = node2.getParent();
+			node1 = node1._parent;
+			node2 = node2._parent;
 		} while (node1 != null);
 
 		assert node1 == null;
@@ -399,7 +399,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	public int level() {
 		MutableTreeNode<T> ancestor = this;
 		int levels = 0;
-		while ((ancestor = ancestor.getParent()) != null) {
+		while ((ancestor = ancestor._parent) != null) {
 			++levels;
 		}
 
@@ -441,7 +441,7 @@ public class MutableTreeNode<T> implements Serializable  {
 				path = MSeq.ofLength(depth);
 			}
 		} else {
-			path = getPathToRoot(node.getParent(), depth + 1);
+			path = getPathToRoot(node._parent, depth + 1);
 			path.set(path.length() - depth - 1, node);
 		}
 
@@ -460,7 +460,7 @@ public class MutableTreeNode<T> implements Serializable  {
 
 		do {
 			prev = anc;
-			anc = anc.getParent();
+			anc = anc._parent;
 		} while (anc != null);
 
 		return prev;
@@ -473,7 +473,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 *         otherwise
 	 */
 	public boolean isRoot() {
-		return getParent() == null;
+		return _parent == null;
 	}
 
 	/**
@@ -491,7 +491,7 @@ public class MutableTreeNode<T> implements Serializable  {
 			MutableTreeNode<T> next = getNextSibling();
 
 			if (next == null) {
-				MutableTreeNode<T> node = getParent();
+				MutableTreeNode<T> node = _parent;
 
 				do {
 					if (node == null) {
@@ -503,7 +503,7 @@ public class MutableTreeNode<T> implements Serializable  {
 						return next;
 					}
 
-					node = node.getParent();
+					node = node._parent;
 				} while(true);
 			} else {
 				return next;
@@ -524,7 +524,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 *         {@code null} if this node is the first
 	 */
 	public MutableTreeNode<T> getPreviousNode() {
-		if (getParent() == null) {
+		if (_parent == null) {
 			return null;
 		}
 
@@ -535,7 +535,7 @@ public class MutableTreeNode<T> implements Serializable  {
 			else
 				return prev.getLastLeaf();
 		} else {
-			return getParent();
+			return _parent;
 		}
 	}
 
@@ -648,40 +648,36 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * @return  {@code true} if {@code node}is a child, {@code false} otherwise
 	 * @throws NullPointerException if the given {@code node} is {@ocde null}
 	 */
-	public boolean isNodeChild(final MutableTreeNode<T> node) {
+	public boolean isChild(final MutableTreeNode<T> node) {
 		requireNonNull(node);
-		return childCount() == 0 ? false : node.getParent() == this;
+		return childCount() == 0 ? false : node._parent == this;
 	}
 
 	/**
-	 * Returns this node's first child.  If this node has no children,
-	 * throws NoSuchElementException.
+	 * Return the first child of {@code this} node.
 	 *
-	 * @return  the first child of this node
-	 * @exception       NoSuchElementException  if this node has no children
+	 * @return the first child of this node
+	 * @throws NoSuchElementException if {@code this} node has no children
 	 */
 	public MutableTreeNode<T> getFirstChild() {
 		if (childCount() == 0) {
-			throw new NoSuchElementException("node has no children");
+			throw new NoSuchElementException("Node has no children.");
 		}
 		return getChild(0);
 	}
 
-
 	/**
-	 * Returns this node's last child.  If this node has no children,
-	 * throws NoSuchElementException.
+	 * Return the last child of {@code this} node.
 	 *
-	 * @return  the last child of this node
-	 * @exception       NoSuchElementException  if this node has no children
+	 * @return the last child of this node
+	 * @throws NoSuchElementException if {@code this} node has no children
 	 */
 	public MutableTreeNode<T> getLastChild() {
 		if (childCount() == 0) {
-			throw new NoSuchElementException("node has no children");
+			throw new NoSuchElementException("Node has no children.");
 		}
-		return getChild(childCount()-1);
+		return getChild(childCount() - 1);
 	}
-
 
 	/**
 	 * Returns the child in this node's child array that immediately
@@ -768,10 +764,10 @@ public class MutableTreeNode<T> implements Serializable  {
 		} else if (anotherNode == this) {
 			retval = true;
 		} else {
-			MutableTreeNode<T> myParent = getParent();
-			retval = (myParent != null && myParent == anotherNode.getParent());
+			MutableTreeNode<T> myParent = _parent;
+			retval = (myParent != null && myParent == anotherNode._parent);
 
-			if (retval && !getParent().isNodeChild(anotherNode)) {
+			if (retval && !_parent.isChild(anotherNode)) {
 				throw new Error("sibling has different parent");
 			}
 		}
@@ -779,24 +775,16 @@ public class MutableTreeNode<T> implements Serializable  {
 		return retval;
 	}
 
-
 	/**
-	 * Returns the number of siblings of this node.  A node is its own sibling
-	 * (if it has no parent or no siblings, this method returns
-	 * <code>1</code>).
+	 * Return the number of siblings of {@code this} node. A node is its own
+	 * sibling (if it has no parent or no siblings, this method returns
+	 * {@code 1}).
 	 *
-	 * @return  the number of siblings of this node
+	 * @return the number of siblings of {@code this} node
 	 */
-	public int getSiblingCount() {
-		MutableTreeNode<T> myParent = getParent();
-
-		if (myParent == null) {
-			return 1;
-		} else {
-			return myParent.childCount();
-		}
+	public int siblingCount() {
+		return _parent != null ? 1 : _parent.childCount();
 	}
-
 
 	/**
 	 * Returns the next sibling of this node in the parent's children array.
@@ -811,7 +799,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	public MutableTreeNode<T> getNextSibling() {
 		MutableTreeNode<T> retval;
 
-		MutableTreeNode<T> myParent = getParent();
+		MutableTreeNode<T> myParent = _parent;
 
 		if (myParent == null) {
 			retval = null;
@@ -838,7 +826,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	public MutableTreeNode<T> getPreviousSibling() {
 		MutableTreeNode<T> retval;
 
-		MutableTreeNode<T> myParent = getParent();
+		MutableTreeNode<T> myParent = _parent;
 
 		if (myParent == null) {
 			retval = null;
@@ -933,7 +921,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 */
 	public MutableTreeNode<T> getNextLeaf() {
 		MutableTreeNode<T> nextSibling;
-		MutableTreeNode<T> myParent = getParent();
+		MutableTreeNode<T> myParent = _parent;
 
 		if (myParent == null)
 			return null;
@@ -968,7 +956,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 */
 	public MutableTreeNode<T> getPreviousLeaf() {
 		MutableTreeNode<T> previousSibling;
-		MutableTreeNode<T> myParent = getParent();
+		MutableTreeNode<T> myParent = _parent;
 
 		if (myParent == null)
 			return null;
@@ -1141,7 +1129,7 @@ public class MutableTreeNode<T> implements Serializable  {
 
 			MutableTreeNode<T> current = descendant;
 			while (current != ancestor) {
-				current = current.getParent();
+				current = current._parent;
 				if (current == null && descendant != ancestor) {
 					throw new IllegalArgumentException(
 						"Node " + ancestor + " is not an ancestor of " +
