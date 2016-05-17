@@ -19,6 +19,8 @@
  */
 package org.jenetix.util;
 
+import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Random;
 import java.util.stream.IntStream;
@@ -27,6 +29,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -100,6 +104,129 @@ public class MutableTreeNodeTest {
 		Assert.assertFalse(equals(tree, stree));
 	}
 
+	@Test
+	public void getChild() {
+		final MutableTreeNode<Integer> tree = newTree(5, new Random(123));
+		final DefaultMutableTreeNode stree = newSwingTree(5, new Random(123));
+
+		Assert.assertEquals(tree.getChildCount(), stree.getChildCount());
+		Assert.assertEquals(
+			tree.getChild(1).getValue(),
+			((DefaultMutableTreeNode)stree.getChildAt(1)).getUserObject()
+		);
+	}
+
+	@Test
+	public void insert() {
+		final Random random = new Random(123);
+
+		final MutableTreeNode<Integer> tree = newTree(5, random);
+		final MutableTreeNode<Integer> tree1 = newTree(2, random);
+
+		random.setSeed(123);
+		final DefaultMutableTreeNode stree = newSwingTree(5, random);
+		final DefaultMutableTreeNode stree1 = newSwingTree(2, random);
+
+		tree.getChild(1).insert(0, tree1);
+		Assert.assertFalse(equals(tree, stree));
+
+		((DefaultMutableTreeNode)stree.getChildAt(1)).insert(stree1, 0);
+		Assert.assertTrue(equals(tree, stree));
+	}
+
+	@Test
+	public void remove() {
+		final MutableTreeNode<Integer> tree = newTree(5, new Random(123));
+		final DefaultMutableTreeNode stree = newSwingTree(5, new Random(123));
+
+		tree.remove(0);
+		stree.remove(0);
+		Assert.assertTrue(equals(tree, stree));
+	}
+
+	@Test
+	public void preorderIterator() {
+		final MutableTreeNode<Integer> tree = newTree(5, new Random(123));
+		final DefaultMutableTreeNode stree = newSwingTree(5, new Random(123));
+
+		final Iterator<MutableTreeNode<Integer>> treeIt = tree.preorderIterator();
+		final Enumeration<?> streeIt = stree.preorderEnumeration();
+
+		while (treeIt.hasNext()) {
+			final MutableTreeNode<Integer> node = treeIt.next();
+			final DefaultMutableTreeNode snode = (DefaultMutableTreeNode)streeIt.nextElement();
+
+			Assert.assertEquals(node.getValue(), snode.getUserObject());
+		}
+	}
+
+	@Test
+	public void postorderIterator() {
+		final MutableTreeNode<Integer> tree = newTree(5, new Random(123));
+		final DefaultMutableTreeNode stree = newSwingTree(5, new Random(123));
+
+		final Iterator<MutableTreeNode<Integer>> treeIt = tree.postorderIterator();
+		final Enumeration<?> streeIt = stree.postorderEnumeration();
+
+		while (treeIt.hasNext()) {
+			final MutableTreeNode<Integer> node = treeIt.next();
+			final DefaultMutableTreeNode snode = (DefaultMutableTreeNode)streeIt.nextElement();
+
+			Assert.assertEquals(node.getValue(), snode.getUserObject());
+		}
+	}
+
+	@Test
+	public void breathFirstIterator() {
+		final MutableTreeNode<Integer> tree = newTree(5, new Random(123));
+		final DefaultMutableTreeNode stree = newSwingTree(5, new Random(123));
+
+		final Iterator<MutableTreeNode<Integer>> treeIt = tree.breadthFirstIterator();
+		final Enumeration<?> streeIt = stree.breadthFirstEnumeration();
+
+		while (treeIt.hasNext()) {
+			final MutableTreeNode<Integer> node = treeIt.next();
+			final DefaultMutableTreeNode snode = (DefaultMutableTreeNode)streeIt.nextElement();
+
+			Assert.assertEquals(node.getValue(), snode.getUserObject());
+		}
+	}
+
+	@Test
+	public void depthFirstIterator() {
+		final MutableTreeNode<Integer> tree = newTree(5, new Random(123));
+		final DefaultMutableTreeNode stree = newSwingTree(5, new Random(123));
+
+		final Iterator<MutableTreeNode<Integer>> treeIt = tree.depthFirstIterator();
+		final Enumeration<?> streeIt = stree.depthFirstEnumeration();
+
+		while (treeIt.hasNext()) {
+			final MutableTreeNode<Integer> node = treeIt.next();
+			final DefaultMutableTreeNode snode = (DefaultMutableTreeNode)streeIt.nextElement();
+
+			Assert.assertEquals(node.getValue(), snode.getUserObject());
+		}
+	}
+
+	@Test
+	public void getPath() {
+		final MutableTreeNode<Integer> tree = newTree(5, new Random(123));
+		final DefaultMutableTreeNode stree = newSwingTree(5, new Random(123));
+
+		final Iterator<MutableTreeNode<Integer>> treeIt = tree.breadthFirstIterator();
+		final Enumeration<?> streeIt = stree.breadthFirstEnumeration();
+
+		while (treeIt.hasNext()) {
+			final MutableTreeNode<Integer> node = treeIt.next();
+			final DefaultMutableTreeNode snode = (DefaultMutableTreeNode)streeIt.nextElement();
+
+			Assert.assertEquals(
+				node.getPath().map(MutableTreeNode::getValue),
+				ISeq.of(snode.getUserObjectPath())
+			);
+		}
+	}
+
 	private static boolean equals(
 		final MutableTreeNode<Integer> t1,
 		final DefaultMutableTreeNode t2
@@ -107,8 +234,9 @@ public class MutableTreeNodeTest {
 		return t1.getChildCount() == t2.getChildCount() &&
 			Objects.equals(t1.getValue(), t2.getUserObject()) &&
 			IntStream.range(0, t1.getChildCount())
-				.allMatch(i -> t1.getChild(i).getValue()
-					.equals(((DefaultMutableTreeNode)t2.getChildAt(i)).getUserObject()));
+				.allMatch(i -> equals(
+					t1.getChild(i),
+					(DefaultMutableTreeNode) t2.getChildAt(i)));
 	}
 
 }

@@ -26,13 +26,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Deque;
-import java.util.EmptyStackException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Stack;
 import java.util.stream.IntStream;
+
+import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -63,9 +65,10 @@ public class MutableTreeNode<T> implements Serializable  {
 		_value = value;
 	}
 
-	//
-	//  Primitives
-	//
+
+	/* *************************************************************************
+	 * Basic operations
+	 **************************************************************************/
 
 	/**
 	 * Returns this node's parent or {@code null} if this node has no parent.
@@ -193,9 +196,9 @@ public class MutableTreeNode<T> implements Serializable  {
 	}
 
 
-	//
-	//  Derived methods
-	//
+	/* *************************************************************************
+	 * Derived operations
+	 **************************************************************************/
 
 	/**
 	 * Removes the subtree rooted at this node from the tree, giving this node a
@@ -252,9 +255,9 @@ public class MutableTreeNode<T> implements Serializable  {
 		}
 	}
 
-	//
-	//  Tree Queries
-	//
+	/* *************************************************************************
+	 * Query operations
+	 **************************************************************************/
 
 	/**
 	 * Return {@code true} if the given {@code node} is an ancestor of
@@ -316,12 +319,12 @@ public class MutableTreeNode<T> implements Serializable  {
 			return null;
 		}
 
-		int level1, level2, diff;
-		MutableTreeNode<T> node1, node2;
+		final int level1 = getLevel();
+		final int level2 = node.getLevel();
 
-		level1 = getLevel();
-		level2 = node.getLevel();
-
+		MutableTreeNode<T> node1;
+		MutableTreeNode<T> node2;
+		int diff;
 		if (level2 > level1) {
 			diff = level2 - level1;
 			node1 = node;
@@ -332,16 +335,10 @@ public class MutableTreeNode<T> implements Serializable  {
 			node2 = node;
 		}
 
-		// Go up the tree until the nodes are at the same level
 		while (diff > 0) {
 			node1 = node1.getParent();
-			diff--;
+			--diff;
 		}
-
-		// Move up the tree until we find a common ancestor.  Since we know
-		// that both nodes are at the same level, we won't cross paths
-		// unknowingly (if there is a common ancestor, both nodes hit it in
-		// the same iteration).
 
 		do {
 			if (node1 == node2) {
@@ -349,13 +346,10 @@ public class MutableTreeNode<T> implements Serializable  {
 			}
 			node1 = node1.getParent();
 			node2 = node2.getParent();
-		} while (node1 != null);// only need to check one -- they're at the
-		// same level so if one is null, the other is
+		} while (node1 != null);
 
-		if (node1 != null || node2 != null) {
-			throw new Error ("nodes should be null");
-		}
-
+		assert node1 == null;
+		assert node2 == null;
 		return null;
 	}
 
@@ -368,7 +362,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 *         {@code null}, {@code false} is returned.
 	 */
 	public boolean isNodeRelated(final MutableTreeNode<T> node) {
-		return (node != null) && (getRoot() == node.getRoot());
+		return node != null && getRoot() == node.getRoot();
 	}
 
 	/**
@@ -380,272 +374,233 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * @return the depth of the tree whose root is this node
 	 */
 	public int getDepth() {
-		Object  last = null;
-		Iterator<MutableTreeNode<T>>     enum_ = breadthFirstEnumeration();
+		final Iterator<MutableTreeNode<T>> it = breadthFirstIterator();
 
-		while (enum_.hasNext()) {
-			last = enum_.next();
+		MutableTreeNode<T> last = null;
+		while (it.hasNext()) {
+			last = it.next();
 		}
 
-		if (last == null) {
-			throw new Error ("nodes should be null");
-		}
-
-		return ((MutableTreeNode<T>)last).getLevel() - getLevel();
+		assert last != null;
+		return last.getLevel() - getLevel();
 	}
 
-
-
-
-
-
-
-
-
-
 	/**
-	 * Returns the number of levels above this node -- the distance from
-	 * the root to this node.  If this node is the root, returns 0.
+	 * Returns the number of levels above this node -- the distance from the
+	 * root to this node. If this node is the root, returns 0.
 	 *
-	 * @see     #getDepth
-	 * @return  the number of levels above this node
+	 * @return the number of levels above this node
 	 */
 	public int getLevel() {
-		MutableTreeNode<T> ancestor;
+		MutableTreeNode<T> ancestor = this;
 		int levels = 0;
-
-		ancestor = this;
-		while((ancestor = ancestor.getParent()) != null){
-			levels++;
+		while ((ancestor = ancestor.getParent()) != null) {
+			++levels;
 		}
 
 		return levels;
 	}
 
-
 	/**
-	 * Returns the path from the root, to get to this node.  The last
-	 * element in the path is this node.
+	 * Returns the path from the root, to get to this node. The last element in
+	 * the path is this node.
 	 *
 	 * @return an array of TreeNode objects giving the path, where the
 	 *         first element in the path is the root and the last
 	 *         element is this node.
 	 */
-	public MutableTreeNode<T>[] getPath() {
-		return getPathToRoot(this, 0);
+	public ISeq<MutableTreeNode<T>> getPath() {
+		return getPathToRoot(this, 0).toISeq();
 	}
 
 	/**
-	 * Builds the parents of node up to and including the root node,
-	 * where the original node is the last element in the returned array.
-	 * The length of the returned array gives the node's depth in the
-	 * tree.
+	 * Builds the parents of node up to and including the root node, where the
+	 * original node is the last element in the returned array. The length of
+	 * the returned array gives the node's depth in the tree.
 	 *
-	 * @param aNode  the TreeNode to get the path for
+	 * @param node the node to get the path for
 	 * @param depth  an int giving the number of steps already taken towards
 	 *        the root (on recursive calls), used to size the returned array
-	 * @return an array of TreeNodes giving the path from the root to the
-	 *         specified node
+	 * @return an array of nodes giving the path from the root to the specified
+	 *         node
 	 */
-	protected MutableTreeNode<T>[] getPathToRoot(MutableTreeNode<T> aNode, int depth) {
-		MutableTreeNode<T>[]              retNodes;
+	private MSeq<MutableTreeNode<T>> getPathToRoot(
+		final MutableTreeNode<T> node,
+		final int depth
+	) {
+		MSeq<MutableTreeNode<T>> path = MSeq.empty();
+		if (node == null) {
+			if (depth == 0) {
+				path = MSeq.empty();
+			} else {
+				path = MSeq.ofLength(depth);
+			}
+		} else {
+			path = getPathToRoot(node.getParent(), depth + 1);
+			path.set(path.length() - depth - 1, node);
+		}
 
-        /* Check for null, in case someone passed in a null node, or
-           they passed in an element that isn't rooted at root. */
-		if(aNode == null) {
-			if(depth == 0)
-				return null;
-			else
-				retNodes = new MutableTreeNode[depth];
-		}
-		else {
-			depth++;
-			retNodes = getPathToRoot(aNode.getParent(), depth);
-			retNodes[retNodes.length - depth] = aNode;
-		}
-		return retNodes;
+		return path;
 	}
 
 	/**
-	 * Returns the user object path, from the root, to get to this node.
-	 * If some of the TreeNodes in the path have null user objects, the
-	 * returned path will contain nulls.
-	 */
-	public Object[] getUserObjectPath() {
-		MutableTreeNode<T>[]          realPath = getPath();
-		Object[]            retPath = new Object[realPath.length];
-
-		for(int counter = 0; counter < realPath.length; counter++)
-			retPath[counter] = ((MutableTreeNode<T>)realPath[counter])
-				.getValue();
-		return retPath;
-	}
-
-	/**
-	 * Returns the root of the tree that contains this node.  The root is
-	 * the ancestor with a null parent.
+	 * Returns the root of the tree that contains this node. The root is the
+	 * ancestor with a {@code null} parent.
 	 *
-	 * @see     #isNodeAncestor
-	 * @return  the root of the tree that contains this node
+	 * @return the root of the tree that contains this node
 	 */
 	public MutableTreeNode<T> getRoot() {
-		MutableTreeNode<T> ancestor = this;
-		MutableTreeNode<T> previous;
+		MutableTreeNode<T> anc = this;
+		MutableTreeNode<T> prev;
 
 		do {
-			previous = ancestor;
-			ancestor = ancestor.getParent();
-		} while (ancestor != null);
+			prev = anc;
+			anc = anc.getParent();
+		} while (anc != null);
 
-		return previous;
+		return prev;
 	}
 
-
 	/**
-	 * Returns true if this node is the root of the tree.  The root is
-	 * the only node in the tree with a null parent; every tree has exactly
-	 * one root.
+	 * Returns {@code true} if this node is the root of the tree.
 	 *
-	 * @return  true if this node is the root of its tree
+	 * @return {@code true} if this node is the root of its tree, {@code false}
+	 *         otherwise
 	 */
 	public boolean isRoot() {
 		return getParent() == null;
 	}
 
-
 	/**
-	 * Returns the node that follows this node in a preorder traversal of this
-	 * node's tree.  Returns null if this node is the last node of the
-	 * traversal.  This is an inefficient way to traverse the entire tree; use
-	 * an enumeration, instead.
+	 * Return the node that follows {@code this} node in a preorder traversal of
+	 * {@code this} tree node. Return {@code null} if this node is the last node
+	 * of the traversal. This is an inefficient way to traverse the entire tree;
+	 * use an iterator, instead.
 	 *
-	 * @see     #preorderEnumeration
-	 * @return  the node that follows this node in a preorder traversal, or
-	 *          null if this node is last
+	 * @see #preorderIterator
+	 * @return the node that follows this node in a preorder traversal, or
+	 *        {@code null} if this node is last
 	 */
 	public MutableTreeNode<T> getNextNode() {
 		if (getChildCount() == 0) {
-			// No children, so look for nextSibling
-			MutableTreeNode<T> nextSibling = getNextSibling();
+			MutableTreeNode<T> next = getNextSibling();
 
-			if (nextSibling == null) {
-				MutableTreeNode<T> aNode = (MutableTreeNode<T>)getParent();
+			if (next == null) {
+				MutableTreeNode<T> node = getParent();
 
 				do {
-					if (aNode == null) {
+					if (node == null) {
 						return null;
 					}
 
-					nextSibling = aNode.getNextSibling();
-					if (nextSibling != null) {
-						return nextSibling;
+					next = node.getNextSibling();
+					if (next != null) {
+						return next;
 					}
 
-					aNode = (MutableTreeNode<T>)aNode.getParent();
+					node = node.getParent();
 				} while(true);
 			} else {
-				return nextSibling;
+				return next;
 			}
 		} else {
-			return (MutableTreeNode<T>) getChild(0);
+			return getChild(0);
 		}
 	}
-
 
 	/**
 	 * Returns the node that precedes this node in a preorder traversal of
-	 * this node's tree.  Returns <code>null</code> if this node is the
-	 * first node of the traversal -- the root of the tree.
-	 * This is an inefficient way to
-	 * traverse the entire tree; use an enumeration, instead.
+	 * {@code this} tree node. Returns {@code null} if this node is the first
+	 * node of the traversal -- the root of the tree. This is an inefficient way
+	 * to traverse the entire tree; use an iterator, instead.
 	 *
-	 * @see     #preorderEnumeration
-	 * @return  the node that precedes this node in a preorder traversal, or
-	 *          null if this node is the first
+	 * @see #preorderIterator
+	 * @return the node that precedes this node in a preorder traversal, or
+	 *         {@code null} if this node is the first
 	 */
 	public MutableTreeNode<T> getPreviousNode() {
-		MutableTreeNode<T> previousSibling;
-		MutableTreeNode<T> myParent = (MutableTreeNode<T>)getParent();
-
-		if (myParent == null) {
+		if (getParent() == null) {
 			return null;
 		}
 
-		previousSibling = getPreviousSibling();
-
-		if (previousSibling != null) {
-			if (previousSibling.getChildCount() == 0)
-				return previousSibling;
+		MutableTreeNode<T> prev = getPreviousSibling();
+		if (prev != null) {
+			if (prev.getChildCount() == 0)
+				return prev;
 			else
-				return previousSibling.getLastLeaf();
+				return prev.getLastLeaf();
 		} else {
-			return myParent;
+			return getParent();
 		}
 	}
 
 	/**
-	 * Creates and returns an enumeration that traverses the subtree rooted at
-	 * this node in preorder.  The first node returned by the enumeration's
-	 * <code>nextElement()</code> method is this node.<P>
-	 *
+	 * Return an iterator that traverses the subtree rooted at {@code this}
+	 * node in preorder. The first node returned by the iterator is {@code this}
+	 * node.
+	 * <p>
 	 * Modifying the tree by inserting, removing, or moving a node invalidates
-	 * any enumerations created before the modification.
+	 * any iterator created before the modification.
 	 *
-	 * @see     #postorderEnumeration
-	 * @return  an enumeration for traversing the tree in preorder
+	 * @see #postorderIterator
+	 * @return an iterator for traversing the tree in preorder
 	 */
-	public Iterator<MutableTreeNode<T>> preorderEnumeration() {
-		return new PreorderIterator(this);
+	public Iterator<MutableTreeNode<T>> preorderIterator() {
+		return new PreorderIterator<>(this);
 	}
 
 	/**
-	 * Creates and returns an enumeration that traverses the subtree rooted at
-	 * this node in postorder.  The first node returned by the enumeration's
-	 * <code>nextElement()</code> method is the leftmost leaf.  This is the
-	 * same as a depth-first traversal.<P>
-	 *
+	 * Return an iterator that traverses the subtree rooted at {@code this}
+	 * node in postorder. The first node returned by the iterator is the
+	 * leftmost leaf.  This is the same as a depth-first traversal.
+	 * <p>
 	 * Modifying the tree by inserting, removing, or moving a node invalidates
-	 * any enumerations created before the modification.
+	 * any iterator created before the modification.
 	 *
-	 * @see     #depthFirstEnumeration
-	 * @see     #preorderEnumeration
-	 * @return  an enumeration for traversing the tree in postorder
+	 * @see #depthFirstIterator
+	 * @see #preorderIterator
+	 * @return an iterator for traversing the tree in postorder
 	 */
-	public Iterator<MutableTreeNode<T>> postorderEnumeration() {
-		return new PostorderIterator(this);
+	public Iterator<MutableTreeNode<T>> postorderIterator() {
+		return new PostorderIterator<>(this);
 	}
 
 	/**
-	 * Creates and returns an enumeration that traverses the subtree rooted at
-	 * this node in breadth-first order.  The first node returned by the
-	 * enumeration's <code>nextElement()</code> method is this node.<P>
-	 *
+	 * Return an iterator that traverses the subtree rooted at {@code this}
+	 * node in breadth-first order. The first node returned by the iterator is
+	 * {@code this} node.
+	 * <p>
 	 * Modifying the tree by inserting, removing, or moving a node invalidates
-	 * any enumerations created before the modification.
+	 * any iterator created before the modification.
 	 *
-	 * @see     #depthFirstEnumeration
-	 * @return  an enumeration for traversing the tree in breadth-first order
+	 * @see #depthFirstIterator
+	 * @return an iterator for traversing the tree in breadth-first order
 	 */
-	public Iterator<MutableTreeNode<T>> breadthFirstEnumeration() {
-		return new BreadthFirstIterator(this);
+	public Iterator<MutableTreeNode<T>> breadthFirstIterator() {
+		return new BreadthFirstIterator<>(this);
 	}
 
 	/**
-	 * Creates and returns an enumeration that traverses the subtree rooted at
-	 * this node in depth-first order.  The first node returned by the
-	 * enumeration's <code>nextElement()</code> method is the leftmost leaf.
-	 * This is the same as a postorder traversal.<P>
-	 *
+	 * Return an iterator that traverses the subtree rooted at {@code this} node
+	 * in depth-first order. The first node returned by the iterator is the
+	 * leftmost leaf. This is the same as a postorder traversal.
+	 * <p>
 	 * Modifying the tree by inserting, removing, or moving a node invalidates
-	 * any enumerations created before the modification.
+	 * any iterator created before the modification.
 	 *
-	 * @see     #breadthFirstEnumeration
-	 * @see     #postorderEnumeration
-	 * @return  an enumeration for traversing the tree in depth-first order
+	 * @see #breadthFirstIterator
+	 * @see #postorderIterator
+	 * @return an iterator for traversing the tree in depth-first order
 	 */
-	public Iterator<MutableTreeNode<T>> depthFirstEnumeration() {
-		return postorderEnumeration();
+	public Iterator<MutableTreeNode<T>> depthFirstIterator() {
+		return postorderIterator();
 	}
+
+
+
+
+
+
 
 	/**
 	 * Creates and returns an enumeration that follows the path from
@@ -975,7 +930,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * to enumerate the nodes in the tree and use <code>isLeaf</code>
 	 * on each node to determine which are leaves.
 	 *
-	 * @see     #depthFirstEnumeration
+	 * @see     #depthFirstIterator
 	 * @see     #isLeaf
 	 * @return  returns the next leaf past this node
 	 */
@@ -1010,7 +965,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * to enumerate the nodes in the tree and use <code>isLeaf</code>
 	 * on each node to determine which are leaves.
 	 *
-	 * @see             #depthFirstEnumeration
+	 * @see             #depthFirstIterator
 	 * @see             #isLeaf
 	 * @return  returns the leaf before this node
 	 */
@@ -1042,7 +997,7 @@ public class MutableTreeNode<T> implements Serializable  {
 		int count = 0;
 
 		MutableTreeNode<T> node;
-		Iterator<MutableTreeNode<T>> enum_ = breadthFirstEnumeration(); // order matters not
+		Iterator<MutableTreeNode<T>> enum_ = breadthFirstIterator(); // order matters not
 
 		while (enum_.hasNext()) {
 			node = (MutableTreeNode<T>)enum_.next();
@@ -1084,10 +1039,17 @@ public class MutableTreeNode<T> implements Serializable  {
 		return out;
 	}
 
-	private final class PreorderIterator implements Iterator<MutableTreeNode<T>> {
+
+	/**
+	 * Preorder iterator of the tree.
+	 */
+	private static final class PreorderIterator<T>
+		implements Iterator<MutableTreeNode<T>>
+	{
 		private final Deque<Iterator<MutableTreeNode<T>>> _stack = new LinkedList<>();
 
 		public PreorderIterator(final MutableTreeNode<T> root) {
+			requireNonNull(root);
 			_stack.push(singletonList(root).iterator());
 		}
 
@@ -1096,6 +1058,7 @@ public class MutableTreeNode<T> implements Serializable  {
 			return !_stack.isEmpty() && _stack.peek().hasNext();
 		}
 
+		@Override
 		public MutableTreeNode<T> next() {
 			final Iterator<MutableTreeNode<T>> enumer = _stack.peek();
 			final MutableTreeNode<T> node = enumer.next();
@@ -1111,13 +1074,18 @@ public class MutableTreeNode<T> implements Serializable  {
 		}
 	}
 
-	final class PostorderIterator implements Iterator<MutableTreeNode<T>> {
-		protected MutableTreeNode<T> _root;
-		protected Iterator<MutableTreeNode<T>> _children;
-		protected Iterator<MutableTreeNode<T>> _subtree;
+	/**
+	 * Postorder iterator of the tree.
+	 */
+	private static final class PostorderIterator<T>
+		implements Iterator<MutableTreeNode<T>>
+	{
+		private MutableTreeNode<T> _root;
+		private Iterator<MutableTreeNode<T>> _children;
+		private Iterator<MutableTreeNode<T>> _subtree;
 
 		public PostorderIterator(final MutableTreeNode<T> root) {
-			_root = root;
+			_root = requireNonNull(root);
 			_children = _root.children();
 			_subtree = Collections.emptyIterator();
 		}
@@ -1146,11 +1114,16 @@ public class MutableTreeNode<T> implements Serializable  {
 
 	}
 
-
-	final class BreadthFirstIterator implements Iterator<MutableTreeNode<T>> {
-		final Queue<Iterator<MutableTreeNode<T>>> _queue = new Queue<>();
+	/**
+	 * Breath first iterator of the tree.
+	 */
+	private static final class BreadthFirstIterator<T>
+		implements Iterator<MutableTreeNode<T>>
+	{
+		private final Queue<Iterator<MutableTreeNode<T>>> _queue = new Queue<>();
 
 		public BreadthFirstIterator(final MutableTreeNode<T> root) {
+			requireNonNull(root);
 			_queue.enqueue(singletonList(root).iterator());
 		}
 
@@ -1176,29 +1149,26 @@ public class MutableTreeNode<T> implements Serializable  {
 
 	}
 
-	final class PathBetweenNodesIterator implements Iterator<MutableTreeNode<T>> {
-		protected Stack<MutableTreeNode<T>> stack;
+	private static final class PathBetweenNodesIterator<T>
+		implements Iterator<MutableTreeNode<T>>
+	{
+		private final Stack<MutableTreeNode<T>> stack = new Stack<>();
 
-		public PathBetweenNodesIterator(MutableTreeNode<T> ancestor,
-			MutableTreeNode<T> descendant)
-		{
-			super();
+		public PathBetweenNodesIterator(
+			final MutableTreeNode<T> ancestor,
+			final MutableTreeNode<T> descendant
+		) {
+			requireNonNull(ancestor);
+			stack.push(requireNonNull(descendant));
 
-			if (ancestor == null || descendant == null) {
-				throw new IllegalArgumentException("argument is null");
-			}
-
-			MutableTreeNode<T> current;
-
-			stack = new Stack<MutableTreeNode<T>>();
-			stack.push(descendant);
-
-			current = descendant;
+			MutableTreeNode<T> current = descendant;
 			while (current != ancestor) {
 				current = current.getParent();
 				if (current == null && descendant != ancestor) {
-					throw new IllegalArgumentException("node " + ancestor +
-						" is not an ancestor of " + descendant);
+					throw new IllegalArgumentException(
+						"Node " + ancestor + " is not an ancestor of " +
+						descendant + "."
+					);
 				}
 				stack.push(current);
 			}
@@ -1211,15 +1181,13 @@ public class MutableTreeNode<T> implements Serializable  {
 
 		@Override
 		public MutableTreeNode<T> next() {
-			try {
-				return stack.pop();
-			} catch (EmptyStackException e) {
+			if (stack.empty()) {
 				throw new NoSuchElementException("No more elements");
 			}
+
+			return stack.pop();
 		}
 
 	}
-
-
 
 }
