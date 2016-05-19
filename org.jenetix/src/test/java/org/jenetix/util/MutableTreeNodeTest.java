@@ -26,7 +26,9 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Random;
+import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -44,12 +46,12 @@ import org.jenetics.util.ISeq;
  */
 public class MutableTreeNodeTest {
 
-	private static final class TestMethod {
+	private static final class AccessorMethod {
 		final String _name;
 		final Function<MutableTreeNode<Integer>, Object> _method1;
 		final Function<DefaultMutableTreeNode, Object> _method2;
 
-		private TestMethod(
+		private AccessorMethod(
 			final String name,
 			final Function<MutableTreeNode<Integer>, Object> method1,
 			final Function<DefaultMutableTreeNode, Object> method2
@@ -64,12 +66,41 @@ public class MutableTreeNodeTest {
 			return format("NodeMethod[%s]", _name);
 		}
 
-		public static TestMethod of(
+		static AccessorMethod of(
 			final String name,
 			final Function<MutableTreeNode<Integer>, Object> method1,
 			final Function<DefaultMutableTreeNode, Object> method2
 		) {
-			return new TestMethod(name, method1, method2);
+			return new AccessorMethod(name, method1, method2);
+		}
+	}
+
+	private static final class QueryMethod {
+		final String _name;
+		final BiFunction<MutableTreeNode<Integer>, MutableTreeNode<Integer>, Object> _method1;
+		final BiFunction<DefaultMutableTreeNode, DefaultMutableTreeNode, Object> _method2;
+
+		private QueryMethod(
+			final String name,
+			final BiFunction<MutableTreeNode<Integer>, MutableTreeNode<Integer>, Object> method1,
+			final BiFunction<DefaultMutableTreeNode, DefaultMutableTreeNode, Object> method2
+		) {
+			_name = requireNonNull(name);
+			_method1 = requireNonNull(method1);
+			_method2 = requireNonNull(method2);
+		}
+
+		@Override
+		public String toString() {
+			return format("NodeMethod[%s]", _name);
+		}
+
+		static QueryMethod of(
+			final String name,
+			final BiFunction<MutableTreeNode<Integer>, MutableTreeNode<Integer>, Object> method1,
+			final BiFunction<DefaultMutableTreeNode, DefaultMutableTreeNode, Object> method2
+		) {
+			return new QueryMethod(name, method1, method2);
 		}
 	}
 
@@ -280,8 +311,48 @@ public class MutableTreeNodeTest {
 		}
 	}
 
-	@Test(dataProvider = "nodeMethods")
-	public void nodeMethod(final TestMethod method) {
+	@Test(dataProvider = "nodeQueryMethods")
+	public void nodeQueryMethod(final QueryMethod method) {
+		final Iterator<MutableTreeNode<Integer>> tree = newTree(5, new Random(123))
+			.breadthFirstIterator();
+		final Enumeration<?> swing = newSwingTree(5, new Random(123))
+			.breadthFirstEnumeration();
+
+		while (tree.hasNext()) {
+			final MutableTreeNode<Integer> node1 = tree.next();
+			final DefaultMutableTreeNode node2 = (DefaultMutableTreeNode)swing.nextElement();
+
+			final Iterator<MutableTreeNode<Integer>> tree1 = node1.breadthFirstIterator();
+			final Enumeration<?> swing1 = node2.breadthFirstEnumeration();
+
+			while (tree1.hasNext()) {
+				final MutableTreeNode<Integer> node21 = tree1.next();
+				final DefaultMutableTreeNode node22 = (DefaultMutableTreeNode)swing1.nextElement();
+
+				assertEqualNodes(
+					Try(() -> method._method1.apply(node1, node21)),
+					Try(() -> method._method2.apply(node2, node22))
+				);
+			}
+		}
+	}
+
+	@DataProvider
+	public Object[][] nodeQueryMethods() {
+		return new Object[][] {
+			{QueryMethod.of("isAncestor", MutableTreeNode::isAncestor, DefaultMutableTreeNode::isNodeAncestor)},
+			{QueryMethod.of("isDescendant", MutableTreeNode::isDescendant, DefaultMutableTreeNode::isNodeDescendant)},
+			{QueryMethod.of("sharedAncestor", MutableTreeNode::sharedAncestor, DefaultMutableTreeNode::getSharedAncestor)},
+			{QueryMethod.of("isRelated", MutableTreeNode::isRelated, DefaultMutableTreeNode::isNodeRelated)},
+			{QueryMethod.of("isChild", MutableTreeNode::isChild, DefaultMutableTreeNode::isNodeChild)},
+			{QueryMethod.of("childAfter", MutableTreeNode::childAfter, DefaultMutableTreeNode::getChildAfter)},
+			{QueryMethod.of("childBefore", MutableTreeNode::childBefore, DefaultMutableTreeNode::getChildBefore)},
+			{QueryMethod.of("isNodeSibling", MutableTreeNode::isNodeSibling, DefaultMutableTreeNode::isNodeSibling)}
+		};
+	}
+
+	@Test(dataProvider = "nodeAccessorMethods")
+	public void nodeAccessorMethod(final AccessorMethod method) {
 		final Iterator<MutableTreeNode<Integer>> tree = newTree(15, new Random(123))
 			.breadthFirstIterator();
 		final Enumeration<?> swing = newSwingTree(15, new Random(123))
@@ -292,24 +363,44 @@ public class MutableTreeNodeTest {
 			final DefaultMutableTreeNode node2 = (DefaultMutableTreeNode)swing.nextElement();
 
 			assertEqualNodes(
-				method._method1.apply(node1),
-				method._method2.apply(node2)
+				Try(() -> method._method1.apply(node1)),
+				Try(() -> method._method2.apply(node2))
 			);
 		}
 	}
 
-	@DataProvider(name = "nodeMethods")
-	public Object[][] nodeMethods() {
+	@DataProvider
+	public Object[][] nodeAccessorMethods() {
 		return new Object[][] {
-			{TestMethod.of("nextSibling", MutableTreeNode::nextSibling, DefaultMutableTreeNode::getNextSibling)},
-			{TestMethod.of("previousSibling", MutableTreeNode::previousSibling, DefaultMutableTreeNode::getPreviousSibling)},
-			{TestMethod.of("isLeaf", MutableTreeNode::isLeaf, DefaultMutableTreeNode::isLeaf)},
-			{TestMethod.of("firstLeaf", MutableTreeNode::firstLeaf, DefaultMutableTreeNode::getFirstLeaf)},
-			{TestMethod.of("lastLeaf", MutableTreeNode::lastLeaf, DefaultMutableTreeNode::getLastLeaf)},
-			{TestMethod.of("nextLeaf", MutableTreeNode::nextLeaf, DefaultMutableTreeNode::getNextLeaf)},
-			{TestMethod.of("nextLeaf", MutableTreeNode::previousLeaf, DefaultMutableTreeNode::getPreviousLeaf)},
-			{TestMethod.of("leafCount", MutableTreeNode::leafCount, DefaultMutableTreeNode::getLeafCount)}
+			{AccessorMethod.of("depth", MutableTreeNode::depth, DefaultMutableTreeNode::getDepth)},
+			{AccessorMethod.of("level", MutableTreeNode::level, DefaultMutableTreeNode::getLevel)},
+			{AccessorMethod.of("getRoot", MutableTreeNode::getRoot, DefaultMutableTreeNode::getRoot)},
+			{AccessorMethod.of("isRoot", MutableTreeNode::isRoot, DefaultMutableTreeNode::isRoot)},
+			{AccessorMethod.of("nextNode", MutableTreeNode::nextNode, DefaultMutableTreeNode::getNextNode)},
+			{AccessorMethod.of("previousNode", MutableTreeNode::previousNode, DefaultMutableTreeNode::getPreviousNode)},
+			{AccessorMethod.of("firstChild", MutableTreeNode::firstChild, DefaultMutableTreeNode::getFirstChild)},
+			{AccessorMethod.of("lastChild", MutableTreeNode::lastChild, DefaultMutableTreeNode::getLastChild)},
+			{AccessorMethod.of("siblingCount", MutableTreeNode::siblingCount, DefaultMutableTreeNode::getSiblingCount)},
+			{AccessorMethod.of("nextSibling", MutableTreeNode::nextSibling, DefaultMutableTreeNode::getNextSibling)},
+			{AccessorMethod.of("previousSibling", MutableTreeNode::previousSibling, DefaultMutableTreeNode::getPreviousSibling)},
+			{AccessorMethod.of("isLeaf", MutableTreeNode::isLeaf, DefaultMutableTreeNode::isLeaf)},
+			{AccessorMethod.of("firstLeaf", MutableTreeNode::firstLeaf, DefaultMutableTreeNode::getFirstLeaf)},
+			{AccessorMethod.of("lastLeaf", MutableTreeNode::lastLeaf, DefaultMutableTreeNode::getLastLeaf)},
+			{AccessorMethod.of("nextLeaf", MutableTreeNode::nextLeaf, DefaultMutableTreeNode::getNextLeaf)},
+			{AccessorMethod.of("nextLeaf", MutableTreeNode::previousLeaf, DefaultMutableTreeNode::getPreviousLeaf)},
+			{AccessorMethod.of("leafCount", MutableTreeNode::leafCount, DefaultMutableTreeNode::getLeafCount)}
 		};
+	}
+
+	private static <T> Object Try(final Supplier<T> supplier) {
+		Object result;
+		try {
+			result = supplier.get();
+		} catch (Exception e) {
+			result = e.getClass();
+		}
+
+		return result;
 	}
 
 	private static void assertEqualNodes(final Object o1, final Object o2) {
