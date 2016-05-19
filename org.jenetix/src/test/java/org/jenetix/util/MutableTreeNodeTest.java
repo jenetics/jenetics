@@ -19,15 +19,20 @@
  */
 package org.jenetix.util;
 
+import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
+
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Random;
+import java.util.function.Function;
 import java.util.stream.IntStream;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import org.jenetics.util.ISeq;
@@ -38,6 +43,36 @@ import org.jenetics.util.ISeq;
  * @since !__version__!
  */
 public class MutableTreeNodeTest {
+
+	private static final class TestMethod {
+		final String _name;
+		final Function<MutableTreeNode<Integer>, Object> _method1;
+		final Function<DefaultMutableTreeNode, Object> _method2;
+
+		private TestMethod(
+			final String name,
+			final Function<MutableTreeNode<Integer>, Object> method1,
+			final Function<DefaultMutableTreeNode, Object> method2
+		) {
+			_name = requireNonNull(name);
+			_method1 = requireNonNull(method1);
+			_method2 = requireNonNull(method2);
+		}
+
+		@Override
+		public String toString() {
+			return format("NodeMethod[%s]", _name);
+		}
+
+		public static TestMethod of(
+			final String name,
+			final Function<MutableTreeNode<Integer>, Object> method1,
+			final Function<DefaultMutableTreeNode, Object> method2
+		) {
+			return new TestMethod(name, method1, method2);
+		}
+	}
+
 
 	public MutableTreeNode<Integer> newTree(final int levels, final Random random) {
 		final MutableTreeNode<Integer> root = new MutableTreeNode<>(0);
@@ -53,7 +88,7 @@ public class MutableTreeNodeTest {
 	) {
 		for (int i = 0, n = random.nextInt(5); i < n; ++i) {
 			final MutableTreeNode<Integer> child = new MutableTreeNode<>();
-			child.setValue(random.nextInt(1_000_000));
+			child.setValue(random.nextInt());
 
 			if (random.nextDouble() < 0.8 && level > 0) {
 				fill(child, level - 1, random);
@@ -77,7 +112,7 @@ public class MutableTreeNodeTest {
 	) {
 		for (int i = 0, n = random.nextInt(5); i < n; ++i) {
 			final DefaultMutableTreeNode child = new DefaultMutableTreeNode();
-			child.setUserObject(random.nextInt(1_000_000));
+			child.setUserObject(random.nextInt());
 
 			if (random.nextDouble() < 0.8 && level > 0) {
 				fill(child, level - 1, random);
@@ -214,7 +249,7 @@ public class MutableTreeNodeTest {
 		final DefaultMutableTreeNode stree = newSwingTree(15, new Random(123));
 
 		final Iterator<MutableTreeNode<Integer>> treeIt =
-			tree.getFirstLeaf().pathFromAncestorIterator(tree);
+			tree.firstLeaf().pathFromAncestorIterator(tree);
 		final Enumeration<?> streeIt =
 			stree.getFirstLeaf().pathFromAncestorEnumeration(stree);
 
@@ -242,6 +277,51 @@ public class MutableTreeNodeTest {
 				node.getPath().map(MutableTreeNode::getValue),
 				ISeq.of(snode.getUserObjectPath())
 			);
+		}
+	}
+
+	@Test(dataProvider = "nodeMethods")
+	public void nodeMethod(final TestMethod method) {
+		final Iterator<MutableTreeNode<Integer>> tree = newTree(15, new Random(123))
+			.breadthFirstIterator();
+		final Enumeration<?> swing = newSwingTree(15, new Random(123))
+			.breadthFirstEnumeration();
+
+		while (tree.hasNext()) {
+			final MutableTreeNode<Integer> node1 = tree.next();
+			final DefaultMutableTreeNode node2 = (DefaultMutableTreeNode)swing.nextElement();
+
+			assertEqualNodes(
+				method._method1.apply(node1),
+				method._method2.apply(node2)
+			);
+		}
+	}
+
+	@DataProvider(name = "nodeMethods")
+	public Object[][] nodeMethods() {
+		return new Object[][] {
+			{TestMethod.of("nextSibling", MutableTreeNode::nextSibling, DefaultMutableTreeNode::getNextSibling)},
+			{TestMethod.of("previousSibling", MutableTreeNode::previousSibling, DefaultMutableTreeNode::getPreviousSibling)},
+			{TestMethod.of("isLeaf", MutableTreeNode::isLeaf, DefaultMutableTreeNode::isLeaf)},
+			{TestMethod.of("firstLeaf", MutableTreeNode::firstLeaf, DefaultMutableTreeNode::getFirstLeaf)},
+			{TestMethod.of("lastLeaf", MutableTreeNode::lastLeaf, DefaultMutableTreeNode::getLastLeaf)},
+			{TestMethod.of("nextLeaf", MutableTreeNode::nextLeaf, DefaultMutableTreeNode::getNextLeaf)},
+			{TestMethod.of("nextLeaf", MutableTreeNode::previousLeaf, DefaultMutableTreeNode::getPreviousLeaf)},
+			{TestMethod.of("leafCount", MutableTreeNode::leafCount, DefaultMutableTreeNode::getLeafCount)}
+		};
+	}
+
+	private static void assertEqualNodes(final Object o1, final Object o2) {
+		if (o1 instanceof MutableTreeNode<?> && o2 instanceof DefaultMutableTreeNode) {
+			final MutableTreeNode<?> n1 = (MutableTreeNode<?>)o1;
+			final DefaultMutableTreeNode n2 = (DefaultMutableTreeNode)o2;
+
+			final Object v1 = n1.getValue();
+			final Object v2 = n2.getUserObject();
+			Assert.assertEquals(v1, v2);
+		} else {
+			Assert.assertEquals(o1, o2);
 		}
 	}
 
