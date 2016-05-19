@@ -54,6 +54,8 @@ public class MutableTreeNode<T> implements Serializable  {
 	private MutableTreeNode<T> _parent;
 	private final List<MutableTreeNode<T>> _children = new ArrayList<>();
 
+	private int _size = 1;
+
 	/**
 	 * Create a new tree node with no parent and children.
 	 */
@@ -94,6 +96,12 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * @param parent this node's new parent
 	 */
 	public void setParent(final MutableTreeNode<T> parent) {
+		if (parent == null) {
+			_size -= _parent._size;
+		} else {
+			_size += parent._size;
+		}
+
 		_parent = parent;
 	}
 
@@ -110,12 +118,22 @@ public class MutableTreeNode<T> implements Serializable  {
 	}
 
 	/**
-	 * Returns the number of children of this node.
+	 * Returns the number of children of {@code this} node.
 	 *
-	 * @return the number of children of this node
+	 * @return the number of children of {@code this} node
 	 */
 	public int childCount() {
 		return _children.size();
+	}
+
+	/**
+	 * Return the number of nodes of {@code this} node (sub-tree). This node is
+	 * included.
+	 *
+	 * @return he number of nodes of {@code this} node (sub-tree)
+	 */
+	public int size() {
+		return _size;
 	}
 
 	/**
@@ -304,7 +322,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * @return {@code true} if this node is an ancestor of the given {@code node}
 	 */
 	public boolean isDescendant(final MutableTreeNode<T> node) {
-		return node != null ? node.isAncestor(this) : null;
+		return node != null && node.isAncestor(this);
 	}
 
 	/**
@@ -433,7 +451,7 @@ public class MutableTreeNode<T> implements Serializable  {
 		final MutableTreeNode<T> node,
 		final int depth
 	) {
-		MSeq<MutableTreeNode<T>> path = MSeq.empty();
+		MSeq<MutableTreeNode<T>> path;
 		if (node == null) {
 			if (depth == 0) {
 				path = MSeq.empty();
@@ -477,18 +495,18 @@ public class MutableTreeNode<T> implements Serializable  {
 	}
 
 	/**
-	 * Return the node that follows {@code this} node in a preorder traversal of
+	 * Return the node that follows {@code this} node in a pre-order traversal of
 	 * {@code this} tree node. Return {@code null} if this node is the last node
 	 * of the traversal. This is an inefficient way to traverse the entire tree;
 	 * use an iterator, instead.
 	 *
 	 * @see #preorderIterator
-	 * @return the node that follows this node in a preorder traversal, or
+	 * @return the node that follows this node in a pre-order traversal, or
 	 *        {@code null} if this node is last
 	 */
 	public MutableTreeNode<T> getNextNode() {
 		if (childCount() == 0) {
-			MutableTreeNode<T> next = getNextSibling();
+			MutableTreeNode<T> next = nextSibling();
 
 			if (next == null) {
 				MutableTreeNode<T> node = _parent;
@@ -498,7 +516,7 @@ public class MutableTreeNode<T> implements Serializable  {
 						return null;
 					}
 
-					next = node.getNextSibling();
+					next = node.nextSibling();
 					if (next != null) {
 						return next;
 					}
@@ -514,13 +532,13 @@ public class MutableTreeNode<T> implements Serializable  {
 	}
 
 	/**
-	 * Returns the node that precedes this node in a preorder traversal of
+	 * Returns the node that precedes this node in a pre-order traversal of
 	 * {@code this} tree node. Returns {@code null} if this node is the first
 	 * node of the traversal -- the root of the tree. This is an inefficient way
 	 * to traverse the entire tree; use an iterator, instead.
 	 *
 	 * @see #preorderIterator
-	 * @return the node that precedes this node in a preorder traversal, or
+	 * @return the node that precedes this node in a pre-order traversal, or
 	 *         {@code null} if this node is the first
 	 */
 	public MutableTreeNode<T> getPreviousNode() {
@@ -528,12 +546,12 @@ public class MutableTreeNode<T> implements Serializable  {
 			return null;
 		}
 
-		MutableTreeNode<T> prev = getPreviousSibling();
+		MutableTreeNode<T> prev = previousSibling();
 		if (prev != null) {
 			if (prev.childCount() == 0)
 				return prev;
 			else
-				return prev.getLastLeaf();
+				return prev.lastLeaf();
 		} else {
 			return _parent;
 		}
@@ -541,14 +559,14 @@ public class MutableTreeNode<T> implements Serializable  {
 
 	/**
 	 * Return an iterator that traverses the subtree rooted at {@code this}
-	 * node in preorder. The first node returned by the iterator is {@code this}
+	 * node in pre-order. The first node returned by the iterator is {@code this}
 	 * node.
 	 * <p>
 	 * Modifying the tree by inserting, removing, or moving a node invalidates
 	 * any iterator created before the modification.
 	 *
 	 * @see #postorderIterator
-	 * @return an iterator for traversing the tree in preorder
+	 * @return an iterator for traversing the tree in pre-order
 	 */
 	public Iterator<MutableTreeNode<T>> preorderIterator() {
 		return new PreorderIterator<>(this);
@@ -556,7 +574,7 @@ public class MutableTreeNode<T> implements Serializable  {
 
 	/**
 	 * Return an iterator that traverses the subtree rooted at {@code this}
-	 * node in postorder. The first node returned by the iterator is the
+	 * node in post-order. The first node returned by the iterator is the
 	 * leftmost leaf.  This is the same as a depth-first traversal.
 	 * <p>
 	 * Modifying the tree by inserting, removing, or moving a node invalidates
@@ -564,7 +582,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 *
 	 * @see #depthFirstIterator
 	 * @see #preorderIterator
-	 * @return an iterator for traversing the tree in postorder
+	 * @return an iterator for traversing the tree in post-order
 	 */
 	public Iterator<MutableTreeNode<T>> postorderIterator() {
 		return new PostorderIterator<>(this);
@@ -796,82 +814,69 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * @see     #_children
 	 * @return  the sibling of this node that immediately follows this node
 	 */
-	public MutableTreeNode<T> getNextSibling() {
-		MutableTreeNode<T> retval;
+	public MutableTreeNode<T> nextSibling() {
+		final MutableTreeNode<T> parent = _parent;
+		final MutableTreeNode<T> sibling;
 
-		MutableTreeNode<T> myParent = _parent;
-
-		if (myParent == null) {
-			retval = null;
+		if (parent == null) {
+			sibling = null;
 		} else {
-			retval = myParent.getChildAfter(this);      // linear search
+			sibling = parent.getChildAfter(this);
 		}
+		assert sibling == null || isNodeSibling(sibling);
 
-		if (retval != null && !isNodeSibling(retval)) {
-			throw new Error("child of parent is not a sibling");
-		}
-
-		return retval;
+		return sibling;
 	}
 
 
 	/**
-	 * Returns the previous sibling of this node in the parent's children
-	 * array.  Returns null if this node has no parent or is the parent's
-	 * first child.  This method performs a linear search that is O(n) where n
+	 * Return the previous sibling of {@code this} node in the parent's children
+	 * list, or {@code null} if this node has no parent or is the parent's first
+	 * child. This method performs a linear search that is O(n) where n
 	 * is the number of children.
 	 *
-	 * @return  the sibling of this node that immediately precedes this node
+	 * @return the sibling of {@code this} node that immediately precedes this
+	 *         node
 	 */
-	public MutableTreeNode<T> getPreviousSibling() {
-		MutableTreeNode<T> retval;
+	public MutableTreeNode<T> previousSibling() {
+		final MutableTreeNode<T> parent = _parent;
+		final MutableTreeNode<T> sibling;
 
-		MutableTreeNode<T> myParent = _parent;
-
-		if (myParent == null) {
-			retval = null;
+		if (parent != null) {
+			sibling = parent.getChildBefore(this);
 		} else {
-			retval = myParent.getChildBefore(this);     // linear search
+			sibling = null;
 		}
+		assert sibling == null || isNodeSibling(sibling);
 
-		if (retval != null && !isNodeSibling(retval)) {
-			throw new Error("child of parent is not a sibling");
-		}
-
-		return retval;
+		return sibling;
 	}
 
-
-
-	//
-	//  Leaf Queries
-	//
+	/* *************************************************************************
+	 * Leaf query operations
+	 **************************************************************************/
 
 	/**
-	 * Returns true if this node has no children.  To distinguish between
-	 * nodes that have no children and nodes that <i>cannot</i> have
-	 * children (e.g. to distinguish files from empty directories), use this
-	 * method in conjunction with <code>getAllowsChildren</code>
+	 * Return {@code true} if {@code this} node has no children.
 	 *
-	 * @return  true if this node has no children
+	 * @return {@code true} if {@code this} node has no children, {@code false}
+	 *         otherwise
 	 */
 	public boolean isLeaf() {
-		return (childCount() == 0);
+		return childCount() == 0;
 	}
 
-
 	/**
-	 * Finds and returns the first leaf that is a descendant of this node --
-	 * either this node or its first child's first leaf.
-	 * Returns this node if it is a leaf.
+	 * Return the first leaf that is a descendant of {@code this} node; either
+	 * this node or its first child's first leaf. {@code this} node is returned
+	 * if it is a leaf.
 	 *
-	 * @see     #isLeaf
-	 * @see     #isDescendant
-	 * @return  the first leaf in the subtree rooted at this node
+	 * @see #isLeaf
+	 * @see  #isDescendant
+	 * @return the first leaf in the subtree rooted at this node
 	 */
-	public MutableTreeNode<T> getFirstLeaf() {
+	public MutableTreeNode<T> firstLeaf() {
 		MutableTreeNode<T> node = this;
-
 		while (!node.isLeaf()) {
 			node = node.getFirstChild();
 		}
@@ -879,107 +884,103 @@ public class MutableTreeNode<T> implements Serializable  {
 		return node;
 	}
 
-
 	/**
-	 * Finds and returns the last leaf that is a descendant of this node --
-	 * either this node or its last child's last leaf.
-	 * Returns this node if it is a leaf.
+	 * Return the last leaf that is a descendant of this node; either
+	 * {@code this} node or its last child's last leaf. Returns {@code this}
+	 * node if it is a leaf.
 	 *
-	 * @see     #isLeaf
-	 * @see     #isDescendant
-	 * @return  the last leaf in the subtree rooted at this node
+	 * @see #isLeaf
+	 * @see #isDescendant
+	 * @return the last leaf in this subtree
 	 */
-	public MutableTreeNode<T> getLastLeaf() {
-		MutableTreeNode<T> node = this;
-
-		while (!node.isLeaf()) {
-			node = node.getLastChild();
+	public MutableTreeNode<T> lastLeaf() {
+		MutableTreeNode<T> leaf = this;
+		while (!leaf.isLeaf()) {
+			leaf = leaf.getLastChild();
 		}
 
-		return node;
+		return leaf;
+	}
+
+	/**
+	 * Returns the leaf after {@code this} node or {@code null} if this node is
+	 * the last leaf in the tree.
+	 * <p>
+	 * In order to determine the next node, this method first performs a linear
+	 * search in the parent's child-list in order to find the current node.
+	 * <p>
+	 * That implementation makes the operation suitable for short traversals
+	 * from a known position. But to traverse all of the leaves in the tree, you
+	 * should use {@link #depthFirstIterator()} to iterator the nodes in the
+	 * tree and use {@link #isLeaf()} on each node to determine which are leaves.
+	 *
+	 * @see #depthFirstIterator
+	 * @see #isLeaf
+	 * @return return the next leaf past this node
+	 */
+	public MutableTreeNode<T> nextLeaf() {
+		MutableTreeNode<T> leaf = null;
+		MutableTreeNode<T> sibling = null;
+		MutableTreeNode<T> parent = _parent;
+
+		if (parent != null) {
+			sibling = nextSibling();
+			if (sibling != null) {
+				leaf = sibling.firstLeaf();
+			} else {
+				leaf = parent.nextLeaf();
+			}
+		}
+
+		return leaf;
 	}
 
 
 	/**
-	 * Returns the leaf after this node or null if this node is the
-	 * last leaf in the tree.
+	 * Return the leaf before {@code this} node or {@code null} if {@code this}
+	 * node is the first leaf in the tree.
 	 * <p>
-	 * In this implementation of the <code>MutableNode</code> interface,
-	 * this operation is very inefficient. In order to determine the
-	 * next node, this method first performs a linear search in the
-	 * parent's child-list in order to find the current node.
+	 * In order to determine the previous node, this method first performs a
+	 * linear search in the parent's child-list in order to find the current
+	 * node.
 	 * <p>
-	 * That implementation makes the operation suitable for short
-	 * traversals from a known position. But to traverse all of the
-	 * leaves in the tree, you should use <code>depthFirstEnumeration</code>
-	 * to enumerate the nodes in the tree and use <code>isLeaf</code>
-	 * on each node to determine which are leaves.
+	 * That implementation makes the operation suitable for short traversals
+	 * from a known position. But to traverse all of the leaves in the tree, you
+	 * should use {@link #depthFirstIterator()} to iterate the nodes in the tree
+	 * and use {@link #isLeaf()} on each node to determine which are leaves.
 	 *
-	 * @see     #depthFirstIterator
-	 * @see     #isLeaf
-	 * @return  returns the next leaf past this node
+	 * @see #depthFirstIterator
+	 * @see #isLeaf
+	 * @return returns the leaf before {@code this} node
 	 */
-	public MutableTreeNode<T> getNextLeaf() {
-		MutableTreeNode<T> nextSibling;
-		MutableTreeNode<T> myParent = _parent;
+	public MutableTreeNode<T> previousLeaf() {
+		MutableTreeNode<T> leaf = null;
+		MutableTreeNode<T> sibling = null;
+		MutableTreeNode<T> parent = _parent;
 
-		if (myParent == null)
-			return null;
+		if (parent != null) {
+			sibling = previousSibling();
+			if (sibling != null) {
+				leaf = sibling.lastLeaf();
+			} else {
+				leaf = parent.previousLeaf();
+			}
+		}
 
-		nextSibling = getNextSibling(); // linear search
-
-		if (nextSibling != null)
-			return nextSibling.getFirstLeaf();
-
-		return myParent.getNextLeaf();  // tail recursion
-	}
-
-
-	/**
-	 * Returns the leaf before this node or null if this node is the
-	 * first leaf in the tree.
-	 * <p>
-	 * In this implementation of the <code>MutableNode</code> interface,
-	 * this operation is very inefficient. In order to determine the
-	 * previous node, this method first performs a linear search in the
-	 * parent's child-list in order to find the current node.
-	 * <p>
-	 * That implementation makes the operation suitable for short
-	 * traversals from a known position. But to traverse all of the
-	 * leaves in the tree, you should use <code>depthFirstEnumeration</code>
-	 * to enumerate the nodes in the tree and use <code>isLeaf</code>
-	 * on each node to determine which are leaves.
-	 *
-	 * @see             #depthFirstIterator
-	 * @see             #isLeaf
-	 * @return  returns the leaf before this node
-	 */
-	public MutableTreeNode<T> getPreviousLeaf() {
-		MutableTreeNode<T> previousSibling;
-		MutableTreeNode<T> myParent = _parent;
-
-		if (myParent == null)
-			return null;
-
-		previousSibling = getPreviousSibling(); // linear search
-
-		if (previousSibling != null)
-			return previousSibling.getLastLeaf();
-
-		return myParent.getPreviousLeaf();              // tail recursion
+		return leaf;
 	}
 
 
 	/**
 	 * Returns the total number of leaves that are descendants of this node.
-	 * If this node is a leaf, returns <code>1</code>.  This method is O(n)
-	 * where n is the number of descendants of this node.
+	 * If this node is a leaf, returns {@code 1}. This method is {@code O(n)},
+	 * where n is the number of descendants of {@code this} node.
 	 *
-	 * @see     #isAncestor
-	 * @return  the number of leaves beneath this node
+	 * @see #isLeaf()
+	 * @return the number of leaves beneath this node
 	 */
 	public int leafCount() {
-		return (int)stream().filter(n -> n.isLeaf()).count();
+		return (int)stream().filter(MutableTreeNode::isLeaf).count();
 	}
 
 	@Override
@@ -1125,6 +1126,7 @@ public class MutableTreeNode<T> implements Serializable  {
 			final MutableTreeNode<T> ancestor,
 			final MutableTreeNode<T> descendant
 		) {
+			requireNonNull(ancestor);
 			_stack.push(requireNonNull(descendant));
 
 			MutableTreeNode<T> current = descendant;
