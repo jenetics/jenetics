@@ -107,14 +107,14 @@ public class MutableTreeNodeTest {
 	}
 
 
-	public MutableTreeNode<Integer> newTree(final int levels, final Random random) {
+	public static MutableTreeNode<Integer> newTree(final int levels, final Random random) {
 		final MutableTreeNode<Integer> root = new MutableTreeNode<>(0);
-		fill(root, 5, random);
+		fill(root, levels, random);
 
 		return root;
 	}
 
-	private void fill(
+	private static void fill(
 		final MutableTreeNode<Integer> node,
 		final int level,
 		final Random random
@@ -133,7 +133,7 @@ public class MutableTreeNodeTest {
 
 	public DefaultMutableTreeNode newSwingTree(final int levels, final Random random) {
 		final DefaultMutableTreeNode root = new DefaultMutableTreeNode(0);
-		fill(root, 5, random);
+		fill(root, levels, random);
 
 		return root;
 	}

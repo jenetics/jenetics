@@ -21,14 +21,19 @@ package org.jenetix;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Optional;
 
 import org.jenetics.AbstractChromosome;
 import org.jenetics.Chromosome;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.IntRange;
+import org.jenetics.util.MSeq;
+import org.jenetics.util.Seq;
 
+import org.jenetix.util.MutableTreeNode;
 import org.jenetix.util.TreeNode;
 
 /**
@@ -58,7 +63,7 @@ public class TreeChromosome<A> extends AbstractChromosome<TreeGene<A>> {
 
 	@Override
 	public TreeGene<A> getGene(final int index) {
-		return null;
+		return _genes.get(index);
 	}
 
 	public boolean isLeaf(final int index) {
@@ -103,11 +108,45 @@ public class TreeChromosome<A> extends AbstractChromosome<TreeGene<A>> {
 		return null;
 	}
 
+	public MutableTreeNode<A> toTree() {
+		final MutableTreeNode<A> root = new MutableTreeNode<>();
+		toTree(getGene(0), root);
+		return root;
+	}
 
-	public static <A> TreeChromosome<A> of(final TreeNode<A> tree) {
+	private void toTree(final TreeGene<A> gene, final MutableTreeNode<A> parent) {
+		requireNonNull(gene);
+		parent.setValue(gene.getAllele());
 
+		gene.getChildren(toSeq()).forEach(g -> {
+			final MutableTreeNode<A> node = new MutableTreeNode<A>();
+			parent.add(node);
+			toTree(g, node);
+		});
+	}
 
-		return null;
+	public static <A> TreeChromosome<A> of(final MutableTreeNode<A> tree) {
+		final ISeq<MutableTreeNode<A>> nodes = tree.stream()
+			.collect(ISeq.toISeq());
+
+		final ISeq<TreeGene<A>> genes = nodes.map(n -> toTreeGene(n, nodes));
+		return new TreeChromosome<>(IntRange.of(1, 23), IntRange.of(2, 23), genes);
+	}
+
+	private static <A> TreeGene<A> toTreeGene(
+		final MutableTreeNode<A> node,
+		final Seq<MutableTreeNode<A>> nodes
+	) {
+		final int[] childIndexes = node.childStream()
+			.mapToInt(nodes::indexOf)
+			.toArray();
+
+		return new TreeGene<>(
+			node.getValue(),
+			() -> null,
+			nodes.indexOf(node.getParent()),
+			childIndexes
+		);
 	}
 
 }

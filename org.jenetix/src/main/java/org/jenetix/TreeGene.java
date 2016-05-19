@@ -21,6 +21,7 @@ package org.jenetix;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -43,7 +44,7 @@ public final class TreeGene<A>
 	private final int _parent;
 	private final int[] _children;
 
-	private TreeGene(
+	TreeGene(
 		final A value,
 		final Factory<A> factory,
 		final int parent,
@@ -86,6 +87,11 @@ public final class TreeGene<A>
 	@Override
 	public boolean isValid() {
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return Objects.toString(_value);
 	}
 
 }

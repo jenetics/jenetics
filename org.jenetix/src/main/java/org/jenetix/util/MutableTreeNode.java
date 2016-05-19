@@ -200,6 +200,10 @@ public class MutableTreeNode<T> implements Serializable  {
 		return _children.iterator();
 	}
 
+	public Stream<MutableTreeNode<T>> childStream() {
+		return _children.stream();
+	}
+
 	/**
 	 * Sets the user object for this node.
 	 *
