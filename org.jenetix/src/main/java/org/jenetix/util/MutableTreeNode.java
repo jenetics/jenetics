@@ -128,7 +128,7 @@ public class MutableTreeNode<T> implements Serializable  {
 
 	/**
 	 * Return the number of nodes of {@code this} node (sub-tree). This node is
-	 * included.
+	 * included.child != null &&
 	 *
 	 * @return he number of nodes of {@code this} node (sub-tree)
 	 */
@@ -271,7 +271,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	public void add(final MutableTreeNode<T> child) {
 		requireNonNull(child);
 
-		if(child != null && child._parent == this) {
+		if (child._parent == this) {
 			insert(childCount() - 1, child);
 		} else {
 			insert(childCount(), child);
@@ -750,7 +750,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * @return {@code true} if the {@code node} is a sibling of {@code this}
 	 *         node
 	 */
-	public boolean isNodeSibling(final MutableTreeNode<T> node) {
+	public boolean isSibling(final MutableTreeNode<T> node) {
 		boolean result;
 		if (node == null) {
 			result = false;
@@ -797,7 +797,7 @@ public class MutableTreeNode<T> implements Serializable  {
 		} else {
 			sibling = parent.childAfter(this);
 		}
-		assert sibling == null || isNodeSibling(sibling);
+		assert sibling == null || isSibling(sibling);
 
 		return sibling;
 	}
@@ -821,7 +821,7 @@ public class MutableTreeNode<T> implements Serializable  {
 		} else {
 			sibling = null;
 		}
-		assert sibling == null || isNodeSibling(sibling);
+		assert sibling == null || isSibling(sibling);
 
 		return sibling;
 	}

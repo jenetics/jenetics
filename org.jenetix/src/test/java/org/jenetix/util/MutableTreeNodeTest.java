@@ -25,9 +25,11 @@ import static java.util.Objects.requireNonNull;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Random;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.ObjIntConsumer;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
@@ -347,7 +349,7 @@ public class MutableTreeNodeTest {
 			{QueryMethod.of("isChild", MutableTreeNode::isChild, DefaultMutableTreeNode::isNodeChild)},
 			{QueryMethod.of("childAfter", MutableTreeNode::childAfter, DefaultMutableTreeNode::getChildAfter)},
 			{QueryMethod.of("childBefore", MutableTreeNode::childBefore, DefaultMutableTreeNode::getChildBefore)},
-			{QueryMethod.of("isNodeSibling", MutableTreeNode::isNodeSibling, DefaultMutableTreeNode::isNodeSibling)}
+			{QueryMethod.of("isNodeSibling", MutableTreeNode::isSibling, DefaultMutableTreeNode::isNodeSibling)}
 		};
 	}
 
@@ -372,6 +374,7 @@ public class MutableTreeNodeTest {
 	@DataProvider
 	public Object[][] nodeAccessorMethods() {
 		return new Object[][] {
+			{AccessorMethod.of("getParent", MutableTreeNode::getParent, DefaultMutableTreeNode::getParent)},
 			{AccessorMethod.of("depth", MutableTreeNode::depth, DefaultMutableTreeNode::getDepth)},
 			{AccessorMethod.of("level", MutableTreeNode::level, DefaultMutableTreeNode::getLevel)},
 			{AccessorMethod.of("getRoot", MutableTreeNode::getRoot, DefaultMutableTreeNode::getRoot)},
@@ -404,16 +407,25 @@ public class MutableTreeNodeTest {
 	}
 
 	private static void assertEqualNodes(final Object o1, final Object o2) {
-		if (o1 instanceof MutableTreeNode<?> && o2 instanceof DefaultMutableTreeNode) {
-			final MutableTreeNode<?> n1 = (MutableTreeNode<?>)o1;
-			final DefaultMutableTreeNode n2 = (DefaultMutableTreeNode)o2;
+		final Object uo1 = unwrap(o1);
+		final Object uo2 = unwrap(o2);
+
+		if (uo1 instanceof MutableTreeNode<?> && uo2 instanceof DefaultMutableTreeNode) {
+			final MutableTreeNode<?> n1 = (MutableTreeNode<?>)uo1;
+			final DefaultMutableTreeNode n2 = (DefaultMutableTreeNode)uo2;
 
 			final Object v1 = n1.getValue();
 			final Object v2 = n2.getUserObject();
 			Assert.assertEquals(v1, v2);
 		} else {
-			Assert.assertEquals(o1, o2);
+			Assert.assertEquals(uo1, uo1);
 		}
+	}
+
+	private static Object unwrap(final Object object) {
+		return object instanceof Optional<?>
+			? ((Optional<?>)object).orElse(null)
+			: object;
 	}
 
 	private static boolean equals(
