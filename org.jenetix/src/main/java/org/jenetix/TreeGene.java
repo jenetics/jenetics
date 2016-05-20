@@ -25,10 +25,10 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
+import org.jenetics.Chromosome;
 import org.jenetics.Gene;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
-import org.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -56,16 +56,16 @@ public final class TreeGene<A>
 		_children = requireNonNull(children);
 	}
 
-	public Optional<TreeGene<A>> getParent(final Seq<TreeGene<A>> genes) {
-		return _parent < 0 || _parent >= genes.length()
+	public Optional<TreeGene<A>> getParent(final Chromosome<TreeGene<A>> chromosome) {
+		return _parent < 0 || _parent >= chromosome.length()
 			? Optional.empty()
-			: Optional.of(genes.get(_parent));
+			: Optional.of(chromosome.getGene(_parent));
 	}
 
-	public ISeq<TreeGene<A>> getChildren(final Seq<TreeGene<A>> genes) {
+	public ISeq<TreeGene<A>> getChildren(final Chromosome<TreeGene<A>> chromosome) {
 		return IntStream.of(_children)
-			.filter(i -> i >= 0 && i < genes.length())
-			.mapToObj(genes::get)
+			.filter(i -> i >= 0 && i < chromosome.length())
+			.mapToObj(chromosome::getGene)
 			.collect(ISeq.toISeq());
 	}
 

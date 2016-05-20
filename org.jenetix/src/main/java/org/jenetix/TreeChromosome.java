@@ -21,20 +21,15 @@ package org.jenetix;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Optional;
 
 import org.jenetics.AbstractChromosome;
-import org.jenetics.Chromosome;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.IntRange;
-import org.jenetics.util.MSeq;
 import org.jenetics.util.Seq;
 
 import org.jenetix.util.MutableTreeNode;
-import org.jenetix.util.TreeNode;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -86,11 +81,11 @@ public class TreeChromosome<A> extends AbstractChromosome<TreeGene<A>> {
 	}
 
 	public Optional<TreeGene<A>> getParent(final TreeGene<A> gene) {
-		return gene.getParent(_genes);
+		return gene.getParent(this);
 	}
 
 	public ISeq<TreeGene<A>> getChildren(final TreeGene<A> gene) {
-		return gene.getChildren(_genes);
+		return gene.getChildren(this);
 	}
 
 	@Override
@@ -118,7 +113,7 @@ public class TreeChromosome<A> extends AbstractChromosome<TreeGene<A>> {
 		requireNonNull(gene);
 		parent.setValue(gene.getAllele());
 
-		gene.getChildren(toSeq()).forEach(g -> {
+		gene.getChildren(this).forEach(g -> {
 			final MutableTreeNode<A> node = new MutableTreeNode<A>();
 			parent.add(node);
 			toTree(g, node);
