@@ -99,8 +99,8 @@ public class TreeChromosome<A> extends AbstractChromosome<TreeGene<A>> {
 	}
 
 	@Override
-	public Chromosome<TreeGene<A>> newInstance(final ISeq<TreeGene<A>> genes) {
-		return null;
+	public TreeChromosome<A> newInstance(final ISeq<TreeGene<A>> genes) {
+		return new TreeChromosome<>(_childCount, _depth, genes);
 	}
 
 	@Override
