@@ -20,12 +20,13 @@
 package org.jenetix;
 
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import org.jenetics.SwapMutator;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 
 import org.jenetix.util.MutableTreeNode;
 import org.jenetix.util.MutableTreeNodeTest;
@@ -59,6 +60,26 @@ public class TreeChromosomeTest {
 		System.out.println(seq2);
 
 		Assert.assertEquals(seq1, seq2);
+	}
+
+	@Test
+	public void swap() {
+		final MutableTreeNode<Integer> tree =
+			MutableTreeNodeTest.newTree(5, new Random(123));
+
+		final SwapMutator<TreeGene<Integer>, Integer> mutator = new SwapMutator<>();
+		final TreeChromosome<Integer> chromosome = TreeChromosome.of(tree);
+		System.out.println(chromosome);
+
+		for (int i = 0; i < 30; ++i) {
+			final MSeq<TreeGene<Integer>> genes = chromosome.toSeq().copy();
+			genes.shuffle();
+			final TreeChromosome<Integer> sc = chromosome.newInstance(genes.toISeq());
+			System.out.println(sc);
+			System.out.flush();
+			System.out.println(sc.toTree());
+			System.out.flush();
+		}
 	}
 
 }
