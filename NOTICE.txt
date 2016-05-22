@@ -1,5 +1,5 @@
 Jenetics: Java Genetic Algorithm Library
-Copyright (c) 2007-2015 Franz Wilhelmstötter
+Copyright (c) 2007-2016 Franz Wilhelmstötter
 
 ===============================================================================
 Apache Commons Math
