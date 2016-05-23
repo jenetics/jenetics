@@ -1132,7 +1132,7 @@ public class MutableTreeNode<T> implements Serializable  {
 			MutableTreeNode<T> current = descendant;
 			while (current != ancestor) {
 				current = current._parent;
-				if (current == null && descendant != ancestor) {
+				if (current == null) {
 					throw new IllegalArgumentException(
 						"Node " + ancestor + " is not an ancestor of " +
 						descendant + "."
