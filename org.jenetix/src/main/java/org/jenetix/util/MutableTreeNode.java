@@ -54,8 +54,6 @@ public class MutableTreeNode<T> implements Serializable  {
 	private MutableTreeNode<T> _parent;
 	private final List<MutableTreeNode<T>> _children = new ArrayList<>();
 
-	private int _size = 1;
-
 	/**
 	 * Create a new tree node with no parent and children.
 	 */
@@ -96,12 +94,6 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * @param parent this node's new parent
 	 */
 	public void setParent(final MutableTreeNode<T> parent) {
-		if (parent == null) {
-			_size -= _parent._size;
-		} else {
-			_size += parent._size;
-		}
-
 		_parent = parent;
 	}
 
@@ -133,7 +125,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * @return he number of nodes of {@code this} node (sub-tree)
 	 */
 	public int size() {
-		return _size;
+		return (int)stream().count();
 	}
 
 	/**
@@ -228,8 +220,9 @@ public class MutableTreeNode<T> implements Serializable  {
 	 **************************************************************************/
 
 	/**
-	 * Removes the subtree rooted at this node from the tree, giving this node a
-	 * {@code null}. Does nothing if this node is the root of its tree.
+	 * Removes the subtree rooted at {@code this} node from the tree, giving
+	 * {@codde this} node a {@code null} parent. Does nothing if {@code this}
+	 * node is the root of its tree.
 	 */
 	public void removeFromParent() {
 		if (_parent != null) {
@@ -238,8 +231,8 @@ public class MutableTreeNode<T> implements Serializable  {
 	}
 
 	/**
-	 * Remove the {@code child} from this node's child array, giving it a
-	 * {@code null} parent.
+	 * Remove the {@code child} from {@code this} node's child array, giving it
+	 * a {@code null} parent.
 	 *
 	 * @param child the child of this node to remove
 	 * @throws NullPointerException if the given {@code child} is {@code null}
@@ -256,8 +249,9 @@ public class MutableTreeNode<T> implements Serializable  {
 	}
 
 	/**
-	 * Removes all children fo this node and setting their parents to
-	 * {@code null}. If this node has no children, this method does nothing.
+	 * Removes all children fo {@code this} node and setting their parents to
+	 * {@code null}. If {@code this} node has no children, this method does
+	 * nothing.
 	 */
 	public void removeAllChildren() {
 		for (int i = childCount() - 1; i >= 0; i--) {
@@ -288,39 +282,31 @@ public class MutableTreeNode<T> implements Serializable  {
 
 	/**
 	 * Return {@code true} if the given {@code node} is an ancestor of
-	 * {@code this} node -- if it is {@code this} node, {@code this} node's
-	 * parent, or an ancestor of {@code this} node's parent. If the given
-	 * {@code node} is {@code null}, this method returns {@code false}. This
-	 * operation is at worst {@code O(h)} where {@code h} is the distance from
-	 * the root to {@code this} node.
+	 * {@code this} node. If the given {@code node} is {@code null}, this method
+	 * returns {@code false}. This operation is at worst {@code O(h)} where
+	 * {@code h} is the distance from the root to {@code this} node.
 	 *
 	 * @param node the node to test
 	 * @return {@code true} if the given {@code node} is an ancestor of
 	 *         {@code this} node, {@code false} otherwise
 	 */
 	public boolean isAncestor(final MutableTreeNode<T> node) {
-		if (node == null) {
-			return false;
+		boolean result = false;
+		if (node != null) {
+			MutableTreeNode<T> ancestor = this;
+			do {
+				result = ancestor == node;
+			} while(!result && (ancestor = ancestor._parent) != null);
 		}
 
-		MutableTreeNode<T> ancestor = this;
-		do {
-			if (ancestor == node) {
-				return true;
-			}
-		} while((ancestor = ancestor._parent) != null);
-
-		return false;
+		return result;
 	}
 
 	/**
 	 * Return {@code true} if the given {@code node} is a descendant of
-	 * {@code this} node -- if it is {@code this} node, one of {@code this}
-	 * node's children, or a descendant of one of {@code this} node's children.
-	 * A node is considered a descendant of itself. If the given {@code node} is
-	 * {@code null}, {@code false} is returned. This operation is at worst
-	 * {@code O(h)} where {@code h} is the distance from the root to
-	 * {@code this} node.
+	 * {@code this} node. If the given {@code node} is {@code null},
+	 * {@code false} is returned. This operation is at worst {@code O(h)} where
+	 * {@code h} is the distance from the root to {@code this} node.
 	 *
 	 * @param node the node to test as descendant of this node
 	 * @return {@code true} if this node is an ancestor of the given {@code node}
@@ -336,7 +322,8 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * @param node {@code node} to find common ancestor with
 	 * @return nearest ancestor common to this node and the given {@code node}
 	 */
-	public Optional<MutableTreeNode<T>> sharedAncestor(final MutableTreeNode<T> node) {
+	public Optional<MutableTreeNode<T>>
+	sharedAncestor(final MutableTreeNode<T> node) {
 		MutableTreeNode<T> ancestor = null;
 
 		if (node == this) {
