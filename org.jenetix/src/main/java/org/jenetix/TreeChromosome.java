@@ -121,7 +121,7 @@ public class TreeChromosome<A> extends AbstractChromosome<TreeGene<A>> {
 	}
 
 	public static <A> TreeChromosome<A> of(final MutableTreeNode<A> tree) {
-		final ISeq<MutableTreeNode<A>> nodes = tree.stream()
+		final ISeq<MutableTreeNode<A>> nodes = tree.breathFirstStream()
 			.collect(ISeq.toISeq());
 
 		final ISeq<TreeGene<A>> genes = nodes.map(n -> toTreeGene(n, nodes));

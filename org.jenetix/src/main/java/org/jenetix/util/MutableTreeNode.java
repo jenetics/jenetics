@@ -125,7 +125,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * @return he number of nodes of {@code this} node (sub-tree)
 	 */
 	public int size() {
-		return (int)stream().count();
+		return (int) breathFirstStream().count();
 	}
 
 	/**
@@ -539,8 +539,8 @@ public class MutableTreeNode<T> implements Serializable  {
 	}
 
 	/**
-	 * Return an iterator that traverses the subtree rooted at {@code this}
-	 * node in pre-order. The first node returned by the iterator is {@code this}
+	 * Return an iterator that traverses the subtree rooted at {@code this} node
+	 * in pre-order. The first node returned by the iterator is {@code this}
 	 * node.
 	 * <p>
 	 * Modifying the tree by inserting, removing, or moving a node invalidates
@@ -554,12 +554,30 @@ public class MutableTreeNode<T> implements Serializable  {
 	}
 
 	/**
-	 * Return an iterator that traverses the subtree rooted at {@code this}
-	 * node in post-order. The first node returned by the iterator is the
-	 * leftmost leaf.  This is the same as a depth-first traversal.
+	 * Return a stream that traverses the subtree rooted at {@code this} node
+	 * in pre-order. The first node returned by the stream is {@code this} node.
 	 * <p>
 	 * Modifying the tree by inserting, removing, or moving a node invalidates
 	 * any iterator created before the modification.
+	 *
+	 * @see #preorderIterator
+	 * @return a stream for traversing the tree in pre-order
+	 */
+	public Stream<MutableTreeNode<T>> preorderStream() {
+		final Spliterator<MutableTreeNode<T>> spliterator =
+			Spliterators.spliterator(
+				preorderIterator(),
+				Long.MAX_VALUE,
+				Spliterator.ORDERED | Spliterator.SIZED
+			);
+
+		return StreamSupport.stream(spliterator, false);
+	}
+
+	/**
+	 * Return an iterator that traverses the subtree rooted at {@code this}
+	 * node in post-order. The first node returned by the iterator is the
+	 * leftmost leaf.  This is the same as a depth-first traversal.
 	 *
 	 * @see #depthFirstIterator
 	 * @see #preorderIterator
@@ -567,6 +585,26 @@ public class MutableTreeNode<T> implements Serializable  {
 	 */
 	public Iterator<MutableTreeNode<T>> postorderIterator() {
 		return new PostorderIterator<>(this);
+	}
+
+	/**
+	 * Return a stream that traverses the subtree rooted at {@code this} node in
+	 * post-order. The first node returned by the iterator is the leftmost leaf.
+	 * This is the same as a depth-first traversal.
+	 *
+	 * @see #depthFirstIterator
+	 * @see #preorderIterator
+	 * @return a stream for traversing the tree in post-order
+	 */
+	public Stream<MutableTreeNode<T>> postorderStream() {
+		final Spliterator<MutableTreeNode<T>> spliterator =
+			Spliterators.spliterator(
+				postorderIterator(),
+				Long.MAX_VALUE,
+				Spliterator.ORDERED | Spliterator.SIZED
+			);
+
+		return StreamSupport.stream(spliterator, false);
 	}
 
 	/**
@@ -584,7 +622,15 @@ public class MutableTreeNode<T> implements Serializable  {
 		return new BreadthFirstIterator<>(this);
 	}
 
-	public Stream<MutableTreeNode<T>> stream() {
+	/**
+	 * Return a stream that traverses the subtree rooted at {@code this} node in
+	 * breadth-first order. The first node returned by the stream is
+	 * {@code this} node.
+	 *
+	 * @see #depthFirstIterator
+	 * @return a stream for traversing the tree in breadth-first order
+	 */
+	public Stream<MutableTreeNode<T>> breathFirstStream() {
 		final Spliterator<MutableTreeNode<T>> spliterator =
 			Spliterators.spliterator(
 				breadthFirstIterator(),
@@ -934,7 +980,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * @return the number of leaves beneath this node
 	 */
 	public int leafCount() {
-		return (int)stream().filter(MutableTreeNode::isLeaf).count();
+		return (int)breathFirstStream().filter(MutableTreeNode::isLeaf).count();
 	}
 
 	@Override

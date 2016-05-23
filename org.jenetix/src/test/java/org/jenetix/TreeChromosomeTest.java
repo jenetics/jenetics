@@ -49,10 +49,10 @@ public class TreeChromosomeTest {
 
 		final MutableTreeNode<Integer> tree2 = chromosome.toTree();
 
-		final ISeq<Integer> seq1 = tree.stream()
+		final ISeq<Integer> seq1 = tree.breathFirstStream()
 			.map(MutableTreeNode::getValue)
 			.collect(ISeq.toISeq());
-		final ISeq<Integer> seq2 = tree2.stream()
+		final ISeq<Integer> seq2 = tree2.breathFirstStream()
 			.map(MutableTreeNode::getValue)
 			.collect(ISeq.toISeq());
 
