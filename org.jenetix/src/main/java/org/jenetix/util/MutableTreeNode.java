@@ -282,22 +282,22 @@ public class MutableTreeNode<T> implements Serializable  {
 
 	/**
 	 * Return {@code true} if the given {@code node} is an ancestor of
-	 * {@code this} node. If the given {@code node} is {@code null}, this method
-	 * returns {@code false}. This operation is at worst {@code O(h)} where
-	 * {@code h} is the distance from the root to {@code this} node.
+	 * {@code this} node. This operation is at worst {@code O(h)} where {@code h}
+	 * is the distance from the root to {@code this} node.
 	 *
 	 * @param node the node to test
 	 * @return {@code true} if the given {@code node} is an ancestor of
 	 *         {@code this} node, {@code false} otherwise
+	 * @throws NullPointerException if the given {@code node} is {@code null}
 	 */
 	public boolean isAncestor(final MutableTreeNode<T> node) {
+		requireNonNull(node);
+
 		boolean result = false;
-		if (node != null) {
-			MutableTreeNode<T> ancestor = this;
-			do {
-				result = ancestor == node;
-			} while(!result && (ancestor = ancestor._parent) != null);
-		}
+		MutableTreeNode<T> ancestor = this;
+		do {
+			result = ancestor == node;
+		} while(!result && (ancestor = ancestor._parent) != null);
 
 		return result;
 	}
@@ -310,9 +310,10 @@ public class MutableTreeNode<T> implements Serializable  {
 	 *
 	 * @param node the node to test as descendant of this node
 	 * @return {@code true} if this node is an ancestor of the given {@code node}
+	 * @throws NullPointerException if the given {@code node} is {@code null}
 	 */
 	public boolean isDescendant(final MutableTreeNode<T> node) {
-		return node != null && node.isAncestor(this);
+		return requireNonNull(node).isAncestor(this);
 	}
 
 	/**
@@ -320,16 +321,17 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * A node is considered an ancestor of itself.
 	 *
 	 * @param node {@code node} to find common ancestor with
-	 * @return nearest ancestor common to this node and the given {@code node}
+	 * @return nearest ancestor common to this node and the given {@code node},
+	 *         or {@link Optional#empty()} if no common ancestor exists.
+	 * @throws NullPointerException if the given {@code node} is {@code null}
 	 */
 	public Optional<MutableTreeNode<T>>
 	sharedAncestor(final MutableTreeNode<T> node) {
-		MutableTreeNode<T> ancestor = null;
+		requireNonNull(node);
 
+		MutableTreeNode<T> ancestor = null;
 		if (node == this) {
 			ancestor = this;
-		} else if (node == null) {
-			ancestor = null;
 		} else {
 			final int level1 = level();
 			final int level2 = node.level();
@@ -369,18 +371,19 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * {@code this} node..
 	 *
 	 * @return true if the given {@code node} is in the same tree as {@code this}
-	 *         node, {@code false} otherwise. If the given {@code node} node is
-	 *         {@code null}, {@code false} is returned.
+	 *         node, {@code false} otherwise.
+	 * @throws NullPointerException if the given {@code node} is {@code null}
 	 */
 	public boolean isRelated(final MutableTreeNode<T> node) {
-		return node != null && getRoot() == node.getRoot();
+		return getRoot() == node.getRoot();
 	}
 
 	/**
-	 * Returns the depth of the tree rooted at this node -- the longest
-	 * distance from this node to a leaf. If this node has no children, 0 is
-	 * returned. This operation is much more expensive than {@link #level()}
-	 * because it must effectively traverse the entire tree rooted at this node.
+	 * Returns the depth of the tree rooted at this node. The <i>depth</i> of a
+	 * tree is the longest distance from {@code this} node to a leaf. If
+	 * {@code this} node has no children, 0 is returned. This operation is much
+	 * more expensive than {@link #level()} because it must effectively traverse
+	 * the entire tree rooted at {@code this} node.
 	 *
 	 * @return the depth of the tree whose root is this node
 	 */
@@ -397,8 +400,9 @@ public class MutableTreeNode<T> implements Serializable  {
 	}
 
 	/**
-	 * Returns the number of levels above this node -- the distance from the
-	 * root to this node. If this node is the root, returns 0.
+	 * Returns the number of levels above this node. The <i>level</i> of a tree
+	 * is the distance from the root to {@code this} node. If {@code this} node
+	 * is the root, returns 0.
 	 *
 	 * @return the number of levels above this node
 	 */
@@ -469,7 +473,6 @@ public class MutableTreeNode<T> implements Serializable  {
 			anc = anc._parent;
 		} while (anc != null);
 
-		assert prev != null;
 		return prev;
 	}
 
@@ -494,30 +497,18 @@ public class MutableTreeNode<T> implements Serializable  {
 	 *        {@code Optional.empty()} if this node is last
 	 */
 	public Optional<MutableTreeNode<T>> nextNode() {
+		Optional<MutableTreeNode<T>> next = Optional.empty();
+
 		if (childCount() == 0) {
-			Optional<MutableTreeNode<T>> next = nextSibling();
-
-			if (!next.isPresent()) {
-				MutableTreeNode<T> node = _parent;
-
-				do {
-					if (node == null) {
-						return Optional.empty();
-					}
-
-					next = node.nextSibling();
-					if (next.isPresent()) {
-						return next;
-					}
-
-					node = node._parent;
-				} while(true);
-			} else {
-				return next;
+			MutableTreeNode<T> node = this;
+			while (node != null && !(next = node.nextSibling()).isPresent()) {
+				node = node._parent;
 			}
 		} else {
-			return Optional.of(getChild(0));
+			next = Optional.of(getChild(0));
 		}
+
+		return next;
 	}
 
 	/**
@@ -536,11 +527,9 @@ public class MutableTreeNode<T> implements Serializable  {
 		if (_parent != null) {
 			final Optional<MutableTreeNode<T>> prev = previousSibling();
 			if (prev.isPresent()) {
-				if (prev.get().childCount() == 0) {
-					node = prev;
-				} else {
-					node = prev.map(MutableTreeNode::lastLeaf);
-				}
+				node = prev.get().childCount() == 0
+					? prev
+					: prev.map(MutableTreeNode::lastLeaf);
 			} else {
 				node = getParent();
 			}
