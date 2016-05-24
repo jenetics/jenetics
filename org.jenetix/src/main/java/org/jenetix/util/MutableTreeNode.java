@@ -33,6 +33,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Spliterator;
 import java.util.Spliterators;
+import java.util.function.Consumer;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -119,10 +120,9 @@ public class MutableTreeNode<T> implements Serializable  {
 	}
 
 	/**
-	 * Return the number of nodes of {@code this} node (sub-tree). This node is
-	 * included.child != null &&
+	 * Return the number of nodes of {@code this} node (sub-tree).
 	 *
-	 * @return he number of nodes of {@code this} node (sub-tree)
+	 * @return the number of nodes of {@code this} node (sub-tree)
 	 */
 	public int size() {
 		return (int)breathFirstStream().count();
@@ -368,8 +368,9 @@ public class MutableTreeNode<T> implements Serializable  {
 
 	/**
 	 * Returns true if and only if the given {@code node} is in the same tree as
-	 * {@code this} node..
+	 * {@code this} node.
 	 *
+	 * @param node the other node to check
 	 * @return true if the given {@code node} is in the same tree as {@code this}
 	 *         node, {@code false} otherwise.
 	 * @throws NullPointerException if the given {@code node} is {@code null}
@@ -686,6 +687,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * Return {@code true} if the given {@code node} is a child of {@code this}
 	 * node.
 	 *
+	 * @param node the other node to check
 	 * @return  {@code true} if {@code node}is a child, {@code false} otherwise
 	 * @throws NullPointerException if the given {@code node} is {@code null}
 	 */
@@ -723,6 +725,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * method performs a linear search of this node's children for {@code child}
 	 * and is {@code O(n)} where n is the number of children.
 	 *
+	 * @param child the child node
 	 * @return  the child of this node that immediately follows the {@code child},
 	 *          or {@code Optional.empty()} if the given {@code node} is the
 	 *          first node.
@@ -746,6 +749,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * method performs a linear search of this node's children for {@code child}
 	 * and is {@code O(n)} where n is the number of children.
 	 *
+	 * @param child the child node
 	 * @return  the child of this node that immediately precedes the {@code child},
 	 *          or {@code null} if the given {@code node} is the first node.
 	 * @throws NullPointerException if the given {@code child} is {@code null}
@@ -950,6 +954,28 @@ public class MutableTreeNode<T> implements Serializable  {
 		return out;
 	}
 
+	private static final class Preorder<T> implements Spliterator<MutableTreeNode<T>> {
+
+		@Override
+		public boolean tryAdvance(final Consumer<? super MutableTreeNode<T>> action) {
+			return false;
+		}
+
+		@Override
+		public Spliterator<MutableTreeNode<T>> trySplit() {
+			return null;
+		}
+
+		@Override
+		public long estimateSize() {
+			return Long.MAX_VALUE;
+		}
+
+		@Override
+		public int characteristics() {
+			return Spliterator.NONNULL | Spliterator.SIZED | Spliterator.SUBSIZED;
+		}
+	}
 
 	/**
 	 * Preorder iterator of the tree.
@@ -959,7 +985,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	{
 		private final Deque<Iterator<MutableTreeNode<T>>> _deque = new LinkedList<>();
 
-		public PreorderIterator(final MutableTreeNode<T> root) {
+		PreorderIterator(final MutableTreeNode<T> root) {
 			requireNonNull(root);
 			_deque.push(singletonList(root).iterator());
 		}
@@ -971,11 +997,11 @@ public class MutableTreeNode<T> implements Serializable  {
 
 		@Override
 		public MutableTreeNode<T> next() {
-			final Iterator<MutableTreeNode<T>> enumer = _deque.peek();
-			final MutableTreeNode<T> node = enumer.next();
+			final Iterator<MutableTreeNode<T>> it = _deque.peek();
+			final MutableTreeNode<T> node = it.next();
 			final Iterator<MutableTreeNode<T>> children = node.children();
 
-			if (!enumer.hasNext()) {
+			if (!it.hasNext()) {
 				_deque.pop();
 			}
 			if (children.hasNext()) {
