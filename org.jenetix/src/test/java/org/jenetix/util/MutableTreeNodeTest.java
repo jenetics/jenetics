@@ -390,7 +390,7 @@ public class MutableTreeNodeTest {
 			{AccessorMethod.of("firstLeaf", MutableTreeNode::firstLeaf, DefaultMutableTreeNode::getFirstLeaf)},
 			{AccessorMethod.of("lastLeaf", MutableTreeNode::lastLeaf, DefaultMutableTreeNode::getLastLeaf)},
 			{AccessorMethod.of("nextLeaf", MutableTreeNode::nextLeaf, DefaultMutableTreeNode::getNextLeaf)},
-			{AccessorMethod.of("nextLeaf", MutableTreeNode::previousLeaf, DefaultMutableTreeNode::getPreviousLeaf)},
+			{AccessorMethod.of("previousLeaf", MutableTreeNode::previousLeaf, DefaultMutableTreeNode::getPreviousLeaf)},
 			{AccessorMethod.of("leafCount", MutableTreeNode::leafCount, DefaultMutableTreeNode::getLeafCount)}
 		};
 	}
