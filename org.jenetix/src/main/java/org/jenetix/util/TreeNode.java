@@ -21,9 +21,9 @@ package org.jenetix.util;
 
 import static java.util.Collections.singletonList;
 import static java.util.Objects.requireNonNull;
+import static java.util.Spliterators.spliteratorUnknownSize;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.Iterator;
@@ -31,9 +31,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.Spliterator;
-import java.util.Spliterators;
-import java.util.function.Consumer;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -57,7 +54,7 @@ public final class TreeNode<T> implements Serializable  {
 
 	private T _value;
 	private TreeNode<T> _parent;
-	private final List<TreeNode<T>> _children = new ArrayList<>();
+	private final List<TreeNode<T>> _children = new LinkedList<>();
 
 	/**
 	 * Create a new tree node with no parent and children, but with the given
@@ -134,12 +131,13 @@ public final class TreeNode<T> implements Serializable  {
 	 * @param index the index in the child array where this node is to be
 	 *        inserted
 	 * @param child the sub-node to be inserted
+	 * @return {@code this} tree-node, for method chaining
 	 * @throws ArrayIndexOutOfBoundsException if {@code index} is out of bounds
 	 * @throws IllegalArgumentException if {@code child} is an ancestor of
 	 *         {@code this} node
 	 * @throws NullPointerException if the given {@code child} is {@code null}
 	 */
-	public void insert(final int index, final TreeNode<T> child) {
+	public TreeNode<T> insert(final int index, final TreeNode<T> child) {
 		requireNonNull(child);
 		if (isAncestor(child)) {
 			throw new IllegalArgumentException("The new child is an ancestor.");
@@ -150,6 +148,8 @@ public final class TreeNode<T> implements Serializable  {
 		}
 		child.setParent(this);
 		_children.add(index, child);
+
+		return this;
 	}
 
 	/**
@@ -158,11 +158,13 @@ public final class TreeNode<T> implements Serializable  {
 	 * a {@code MutableTreeNode}.
 	 *
 	 * @param index the index in this node's child array of the child to remove
+	 * @return {@code this} tree-node, for method chaining
 	 * @throws ArrayIndexOutOfBoundsException  if the {@code index} is out of
 	 *         bounds
 	 */
-	public void remove(final int index) {
+	public TreeNode<T> remove(final int index) {
 		_children.remove(index).setParent(null);
+		return this;
 	}
 
 	/**
@@ -261,9 +263,10 @@ public final class TreeNode<T> implements Serializable  {
 	 * this node by adding it to the end of this node's child array.
 	 *
 	 * @param child the new child added to this node
+	 * @return {@code this} tree-node, for method chaining
 	 * @throws NullPointerException if the given {@code child} is {@code null}
 	 */
-	public void add(final TreeNode<T> child) {
+	public TreeNode<T> add(final TreeNode<T> child) {
 		requireNonNull(child);
 
 		if (child._parent == this) {
@@ -271,6 +274,8 @@ public final class TreeNode<T> implements Serializable  {
 		} else {
 			insert(childCount(), child);
 		}
+
+		return this;
 	}
 
 	/* *************************************************************************
@@ -558,14 +563,8 @@ public final class TreeNode<T> implements Serializable  {
 	 * @return a stream for traversing the tree in pre-order
 	 */
 	public Stream<TreeNode<T>> preorderStream() {
-		final Spliterator<TreeNode<T>> spliterator =
-			Spliterators.spliterator(
-				preorderIterator(),
-				Long.MAX_VALUE,
-				Spliterator.ORDERED | Spliterator.SIZED
-			);
-
-		return StreamSupport.stream(spliterator, false);
+		return StreamSupport
+			.stream(spliteratorUnknownSize(preorderIterator(), 0), false);
 	}
 
 	/**
@@ -591,14 +590,8 @@ public final class TreeNode<T> implements Serializable  {
 	 * @return a stream for traversing the tree in post-order
 	 */
 	public Stream<TreeNode<T>> postorderStream() {
-		final Spliterator<TreeNode<T>> spliterator =
-			Spliterators.spliterator(
-				postorderIterator(),
-				Long.MAX_VALUE,
-				Spliterator.ORDERED | Spliterator.SIZED
-			);
-
-		return StreamSupport.stream(spliterator, false);
+		return StreamSupport
+			.stream(spliteratorUnknownSize(postorderIterator(), 0), false);
 	}
 
 	/**
@@ -625,14 +618,8 @@ public final class TreeNode<T> implements Serializable  {
 	 * @return a stream for traversing the tree in breadth-first order
 	 */
 	public Stream<TreeNode<T>> breathFirstStream() {
-		final Spliterator<TreeNode<T>> spliterator =
-			Spliterators.spliterator(
-				breadthFirstIterator(),
-				Long.MAX_VALUE,
-				Spliterator.ORDERED | Spliterator.SIZED
-			);
-
-		return StreamSupport.stream(spliterator, false);
+		return StreamSupport
+			.stream(spliteratorUnknownSize(breadthFirstIterator(), 0), false);
 	}
 
 	/**
@@ -649,6 +636,19 @@ public final class TreeNode<T> implements Serializable  {
 	 */
 	public Iterator<TreeNode<T>> depthFirstIterator() {
 		return postorderIterator();
+	}
+
+	/**
+	 * Return a stream that traverses the subtree rooted at {@code this} node in
+	 * depth-first. The first node returned by the iterator is the leftmost leaf.
+	 * This is the same as a post-order traversal.
+	 *
+	 * @see #depthFirstIterator
+	 * @see #preorderIterator
+	 * @return a stream for traversing the tree in post-order
+	 */
+	public Stream<TreeNode<T>> depthFirstStream() {
+		return postorderStream();
 	}
 
 	/**
@@ -982,29 +982,6 @@ public final class TreeNode<T> implements Serializable  {
 	 * Iterator implementations.
 	 **************************************************************************/
 
-	private static final class Preorder<T> implements Spliterator<TreeNode<T>> {
-
-		@Override
-		public boolean tryAdvance(final Consumer<? super TreeNode<T>> action) {
-			return false;
-		}
-
-		@Override
-		public Spliterator<TreeNode<T>> trySplit() {
-			return null;
-		}
-
-		@Override
-		public long estimateSize() {
-			return Long.MAX_VALUE;
-		}
-
-		@Override
-		public int characteristics() {
-			return Spliterator.NONNULL | Spliterator.SIZED | Spliterator.SUBSIZED;
-		}
-	}
-
 	/**
 	 * Preorder iterator of the tree.
 	 */
@@ -1049,7 +1026,7 @@ public final class TreeNode<T> implements Serializable  {
 		private final Iterator<TreeNode<T>> _children;
 		private Iterator<TreeNode<T>> _subtree;
 
-		public PostorderIterator(final TreeNode<T> root) {
+		PostorderIterator(final TreeNode<T> root) {
 			_root = requireNonNull(root);
 			_children = _root.children();
 			_subtree = Collections.emptyIterator();
@@ -1087,7 +1064,7 @@ public final class TreeNode<T> implements Serializable  {
 	{
 		private final Queue<Iterator<TreeNode<T>>> _queue = new Queue<>();
 
-		public BreadthFirstIterator(final TreeNode<T> root) {
+		BreadthFirstIterator(final TreeNode<T> root) {
 			requireNonNull(root);
 			_queue.enqueue(singletonList(root).iterator());
 		}
@@ -1122,7 +1099,7 @@ public final class TreeNode<T> implements Serializable  {
 	{
 		private final Stack<TreeNode<T>> _stack = new Stack<>();
 
-		public PathIterator(
+		PathIterator(
 			final TreeNode<T> ancestor,
 			final TreeNode<T> descendant
 		) {
