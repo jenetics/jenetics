@@ -293,7 +293,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	public boolean isAncestor(final MutableTreeNode<T> node) {
 		requireNonNull(node);
 
-		boolean result = false;
+		boolean result;
 		MutableTreeNode<T> ancestor = this;
 		do {
 			result = ancestor == node;
@@ -777,17 +777,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 */
 	public boolean isSibling(final MutableTreeNode<T> node) {
 		requireNonNull(node);
-
-		final boolean result;
-		if (node == this) {
-			result = true;
-		} else {
-			final MutableTreeNode<T> parent = _parent;
-			result = parent != null && parent == node._parent;
-			assert !result || _parent.isChild(node);
-		}
-
-		return result;
+		return node == this || _parent != null && _parent == node._parent;
 	}
 
 	/**
@@ -798,7 +788,8 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * @return the number of siblings of {@code this} node
 	 */
 	public int siblingCount() {
-		return _parent != null ? _parent.childCount() : 1;
+		final MutableTreeNode<T> parent = _parent;
+		return parent != null ? parent.childCount() : 1;
 	}
 
 	/**
@@ -859,12 +850,12 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * @return the first leaf in the subtree rooted at this node
 	 */
 	public MutableTreeNode<T> firstLeaf() {
-		MutableTreeNode<T> node = this;
-		while (!node.isLeaf()) {
-			node = node.firstChild().orElseThrow(AssertionError::new);
+		MutableTreeNode<T> leaf = this;
+		while (!leaf.isLeaf()) {
+			leaf = leaf.firstChild().orElseThrow(AssertionError::new);
 		}
 
-		return node;
+		return leaf;
 	}
 
 	/**
@@ -928,22 +919,13 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * @return returns the leaf before {@code this} node
 	 */
 	public Optional<MutableTreeNode<T>> previousLeaf() {
-		MutableTreeNode<T> parent = _parent;
-		Optional<MutableTreeNode<T>> leaf = Optional.empty();
-		Optional<MutableTreeNode<T>> sibling = Optional.empty();
-
-		if (parent != null) {
-			sibling = previousSibling();
-			if (sibling != null) {
-				leaf = sibling.map(MutableTreeNode::lastLeaf);
-			} else {
-				leaf = parent.previousLeaf();
-			}
-		}
-
-		return leaf;
+		final MutableTreeNode<T> parent = _parent;
+		return parent != null
+			? previousSibling()
+				.map(s -> Optional.of(s.lastLeaf()))
+				.orElse(parent.previousLeaf())
+			: Optional.empty();
 	}
-
 
 	/**
 	 * Returns the total number of leaves that are descendants of this node.
@@ -954,7 +936,9 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * @return the number of leaves beneath this node
 	 */
 	public int leafCount() {
-		return (int)breathFirstStream().filter(MutableTreeNode::isLeaf).count();
+		return (int)breathFirstStream()
+			.filter(MutableTreeNode::isLeaf)
+			.count();
 	}
 
 	@Override
