@@ -776,8 +776,8 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * @throws NullPointerException if the given {@code node} is {@code null}
 	 */
 	public boolean isSibling(final MutableTreeNode<T> node) {
-		requireNonNull(node);
-		return node == this || _parent != null && _parent == node._parent;
+		return requireNonNull(node) == this ||
+			_parent != null && _parent == node._parent;
 	}
 
 	/**
@@ -804,10 +804,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 *         {@code this} node
 	 */
 	public Optional<MutableTreeNode<T>> nextSibling() {
-		final MutableTreeNode<T> parent = _parent;
-		return parent != null
-			? parent.childAfter(this)
-			: Optional.empty();
+		return getParent().flatMap(p -> p.childAfter(this));
 	}
 
 	/**
@@ -820,10 +817,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 *         node
 	 */
 	public Optional<MutableTreeNode<T>> previousSibling() {
-		final MutableTreeNode<T> parent = _parent;
-		return parent != null
-			? parent.childBefore(this)
-			: Optional.empty();
+		return getParent().flatMap(p -> p.childBefore(this));
 	}
 
 	/* *************************************************************************
@@ -893,12 +887,9 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * @return return the next leaf past this node
 	 */
 	public Optional<MutableTreeNode<T>> nextLeaf() {
-		final MutableTreeNode<T> parent = _parent;
-		return parent != null
-			? nextSibling()
-				.map(s -> Optional.of(s.firstLeaf()))
-				.orElse(parent.nextLeaf())
-			: Optional.empty();
+		return nextSibling()
+			.map(s -> Optional.of(s.firstLeaf()))
+			.orElse(getParent().flatMap(MutableTreeNode::nextLeaf));
 	}
 
 	/**
@@ -919,12 +910,9 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * @return returns the leaf before {@code this} node
 	 */
 	public Optional<MutableTreeNode<T>> previousLeaf() {
-		final MutableTreeNode<T> parent = _parent;
-		return parent != null
-			? previousSibling()
-				.map(s -> Optional.of(s.lastLeaf()))
-				.orElse(parent.previousLeaf())
-			: Optional.empty();
+		return previousSibling()
+			.map(s -> Optional.of(s.lastLeaf()))
+			.orElse(getParent().flatMap(MutableTreeNode::previousLeaf));
 	}
 
 	/**
