@@ -183,15 +183,11 @@ public final class TreeNode<T> implements Serializable  {
 	}
 
 	/**
-	 * Return a forward-order iterator of this node's children.
+	 * Return a forward-order stream of this node's children.
 	 *
-	 * @return an iterator of this node's children
+	 * @return a stream of children of {@code this} node
 	 */
-	public Iterator<TreeNode<T>> children() {
-		return _children.iterator();
-	}
-
-	public Stream<TreeNode<T>> childStream() {
+	public Stream<TreeNode<T>> children() {
 		return _children.stream();
 	}
 
@@ -1004,7 +1000,7 @@ public final class TreeNode<T> implements Serializable  {
 		public TreeNode<T> next() {
 			final Iterator<TreeNode<T>> it = _deque.peek();
 			final TreeNode<T> node = it.next();
-			final Iterator<TreeNode<T>> children = node.children();
+			final Iterator<TreeNode<T>> children = node._children.iterator();
 
 			if (!it.hasNext()) {
 				_deque.pop();
@@ -1028,7 +1024,7 @@ public final class TreeNode<T> implements Serializable  {
 
 		PostorderIterator(final TreeNode<T> root) {
 			_root = requireNonNull(root);
-			_children = _root.children();
+			_children = _root._children.iterator();
 			_subtree = Collections.emptyIterator();
 		}
 
@@ -1078,7 +1074,7 @@ public final class TreeNode<T> implements Serializable  {
 		public TreeNode<T> next() {
 			final Iterator<TreeNode<T>> it = _queue.firstObject();
 			final TreeNode<T> node = it.next();
-			final Iterator<TreeNode<T>> children = node.children();
+			final Iterator<TreeNode<T>> children = node._children.iterator();
 
 			if (!it.hasNext()) {
 				_queue.dequeue();

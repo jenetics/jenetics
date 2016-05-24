@@ -24,6 +24,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import org.jenetics.Chromosome;
 import org.jenetics.Gene;
@@ -62,11 +63,12 @@ public final class TreeGene<A>
 			: Optional.of(chromosome.getGene(_parent));
 	}
 
-	public ISeq<TreeGene<A>> getChildren(final Chromosome<TreeGene<A>> chromosome) {
+	public Stream<TreeGene<A>> children(final Chromosome<TreeGene<A>> chromosome) {
+		requireNonNull(chromosome);
+
 		return IntStream.of(_children)
 			.filter(i -> i >= 0 && i < chromosome.length())
-			.mapToObj(chromosome::getGene)
-			.collect(ISeq.toISeq());
+			.mapToObj(chromosome::getGene);
 	}
 
 	@Override

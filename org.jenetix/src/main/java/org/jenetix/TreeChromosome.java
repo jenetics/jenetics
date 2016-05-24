@@ -21,8 +21,11 @@ package org.jenetix;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.jenetics.AbstractChromosome;
 import org.jenetics.util.ISeq;
@@ -84,8 +87,8 @@ public class TreeChromosome<A> extends AbstractChromosome<TreeGene<A>> {
 		return gene.getParent(this);
 	}
 
-	public ISeq<TreeGene<A>> getChildren(final TreeGene<A> gene) {
-		return gene.getChildren(this);
+	public Stream<TreeGene<A>> getChildren(final TreeGene<A> gene) {
+		return gene.children(this);
 	}
 
 	@Override
@@ -113,7 +116,7 @@ public class TreeChromosome<A> extends AbstractChromosome<TreeGene<A>> {
 		requireNonNull(gene);
 		parent.setValue(gene.getAllele());
 
-		gene.getChildren(this).forEach(g -> {
+		gene.children(this).forEachOrdered(g -> {
 			final TreeNode<A> node = TreeNode.of();
 			parent.add(node);
 			toTree(g, node);
@@ -121,25 +124,31 @@ public class TreeChromosome<A> extends AbstractChromosome<TreeGene<A>> {
 	}
 
 	public static <A> TreeChromosome<A> of(final TreeNode<A> tree) {
-		final ISeq<TreeNode<A>> nodes = tree.breathFirstStream()
+		final ISeq<TreeNode<A>> nodes = tree
+			.breathFirstStream()
 			.collect(ISeq.toISeq());
 
-		final ISeq<TreeGene<A>> genes = nodes.map(n -> toTreeGene(n, nodes));
+		final Map<TreeNode<A>, Integer> indexes = new HashMap<>();
+		for (int i = 0; i < nodes.length(); ++i) {
+			indexes.put(nodes.get(i), i);
+		}
+
+		final ISeq<TreeGene<A>> genes = nodes.map(n -> toTreeGene(n, indexes));
 		return new TreeChromosome<>(IntRange.of(1, 23), IntRange.of(2, 23), genes);
 	}
 
 	private static <A> TreeGene<A> toTreeGene(
 		final TreeNode<A> node,
-		final Seq<TreeNode<A>> nodes
+		final Map<TreeNode<A>, Integer> indexes
 	) {
-		final int[] childIndexes = node.childStream()
-			.mapToInt(nodes::indexOf)
+		final int[] childIndexes = node.children()
+			.mapToInt(indexes::get)
 			.toArray();
 
 		return new TreeGene<>(
 			node.getValue(),
 			() -> null,
-			nodes.indexOf(node.getParent()),
+			node.getParent().map(indexes::get).orElse(-1),
 			childIndexes
 		);
 	}
