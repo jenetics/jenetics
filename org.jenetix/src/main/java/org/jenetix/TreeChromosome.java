@@ -104,7 +104,7 @@ public class TreeChromosome<A> extends AbstractChromosome<TreeGene<A>> {
 	}
 
 	public TreeNode<A> toTree() {
-		final TreeNode<A> root = new TreeNode<>();
+		final TreeNode<A> root = TreeNode.of();
 		toTree(getGene(0), root);
 		return root;
 	}
@@ -114,7 +114,7 @@ public class TreeChromosome<A> extends AbstractChromosome<TreeGene<A>> {
 		parent.setValue(gene.getAllele());
 
 		gene.getChildren(this).forEach(g -> {
-			final TreeNode<A> node = new TreeNode<A>();
+			final TreeNode<A> node = TreeNode.of();
 			parent.add(node);
 			toTree(g, node);
 		});

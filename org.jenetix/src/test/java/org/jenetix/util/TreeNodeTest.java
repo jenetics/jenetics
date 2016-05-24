@@ -107,7 +107,7 @@ public class TreeNodeTest {
 
 
 	public static TreeNode<Integer> newTree(final int levels, final Random random) {
-		final TreeNode<Integer> root = new TreeNode<>(0);
+		final TreeNode<Integer> root = TreeNode.of(0);
 		fill(root, levels, random);
 
 		return root;
@@ -119,7 +119,7 @@ public class TreeNodeTest {
 		final Random random
 	) {
 		for (int i = 0, n = random.nextInt(5); i < n; ++i) {
-			final TreeNode<Integer> child = new TreeNode<>();
+			final TreeNode<Integer> child = TreeNode.of();
 			child.setValue(random.nextInt());
 
 			if (random.nextDouble() < 0.8 && level > 0) {

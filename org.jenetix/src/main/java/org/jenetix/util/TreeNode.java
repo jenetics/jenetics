@@ -44,11 +44,15 @@ import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
 
 /**
+ * A general purpose node in a tree data-structure.
+ *
+ * @param <T> the value type of the tree node
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class TreeNode<T> implements Serializable  {
+public final class TreeNode<T> implements Serializable  {
 	private static final long serialVersionUID = -1L;
 
 	private T _value;
@@ -56,19 +60,12 @@ public class TreeNode<T> implements Serializable  {
 	private final List<TreeNode<T>> _children = new ArrayList<>();
 
 	/**
-	 * Create a new tree node with no parent and children.
-	 */
-	public TreeNode() {
-		this(null);
-	}
-
-	/**
 	 * Create a new tree node with no parent and children, but with the given
 	 * user {@code value}.
 	 *
 	 * @param value the user value of the new tree node
 	 */
-	public TreeNode(final T value) {
+	private TreeNode(final T value) {
 		_value = value;
 	}
 
@@ -953,6 +950,37 @@ public class TreeNode<T> implements Serializable  {
 
 		return out;
 	}
+
+
+	/* *************************************************************************
+	 * Static factory methods.
+	 **************************************************************************/
+
+	/**
+	 * Return a new {@code TreeNode} with the given node {@code value}.
+	 *
+	 * @param value the node value
+	 * @param <T> the tree-node type
+	 * @return a new tree-node
+	 */
+	public static <T> TreeNode<T> of(final T value) {
+		return new TreeNode<>(value);
+	}
+
+	/**
+	 * Return a new {@code TreeNode} with a {@code null} tree value.
+	 *
+	 * @param <T> the tree-node type
+	 * @return a new tree-node
+	 */
+	public static <T> TreeNode<T> of() {
+		return new TreeNode<>(null);
+	}
+
+
+	/* *************************************************************************
+	 * Iterator implementations.
+	 **************************************************************************/
 
 	private static final class Preorder<T> implements Spliterator<TreeNode<T>> {
 
