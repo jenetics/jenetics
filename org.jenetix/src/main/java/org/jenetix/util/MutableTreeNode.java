@@ -125,7 +125,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * @return he number of nodes of {@code this} node (sub-tree)
 	 */
 	public int size() {
-		return (int) breathFirstStream().count();
+		return (int)breathFirstStream().count();
 	}
 
 	/**
@@ -221,7 +221,7 @@ public class MutableTreeNode<T> implements Serializable  {
 
 	/**
 	 * Removes the subtree rooted at {@code this} node from the tree, giving
-	 * {@codde this} node a {@code null} parent. Does nothing if {@code this}
+	 * {@code this} node a {@code null} parent. Does nothing if {@code this}
 	 * node is the root of its tree.
 	 */
 	public void removeFromParent() {
@@ -425,7 +425,7 @@ public class MutableTreeNode<T> implements Serializable  {
 	 *         element is this node.
 	 */
 	public ISeq<MutableTreeNode<T>> getPath() {
-		return getPathToRoot(this, 0).toISeq();
+		return pathToRoot(this, 0).toISeq();
 	}
 
 	/**
@@ -439,19 +439,15 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * @return an array of nodes giving the path from the root to the specified
 	 *         node
 	 */
-	private MSeq<MutableTreeNode<T>> getPathToRoot(
+	private MSeq<MutableTreeNode<T>> pathToRoot(
 		final MutableTreeNode<T> node,
 		final int depth
 	) {
 		MSeq<MutableTreeNode<T>> path;
 		if (node == null) {
-			if (depth == 0) {
-				path = MSeq.empty();
-			} else {
-				path = MSeq.ofLength(depth);
-			}
+			path = depth == 0 ? MSeq.empty() : MSeq.ofLength(depth);
 		} else {
-			path = getPathToRoot(node._parent, depth + 1);
+			path = pathToRoot(node._parent, depth + 1);
 			path.set(path.length() - depth - 1, node);
 		}
 
@@ -774,20 +770,20 @@ public class MutableTreeNode<T> implements Serializable  {
 	/**
 	 * Test if the given {@code node} is a sibling of {@code this} node.
 	 *
-	 * @param node     node to test as sibling of this node
+	 * @param node node to test as sibling of this node
 	 * @return {@code true} if the {@code node} is a sibling of {@code this}
 	 *         node
+	 * @throws NullPointerException if the given {@code node} is {@code null}
 	 */
 	public boolean isSibling(final MutableTreeNode<T> node) {
-		boolean result;
-		if (node == null) {
-			result = false;
-		} else if (node == this) {
+		requireNonNull(node);
+
+		final boolean result;
+		if (node == this) {
 			result = true;
 		} else {
 			final MutableTreeNode<T> parent = _parent;
 			result = parent != null && parent == node._parent;
-
 			assert !result || _parent.isChild(node);
 		}
 
@@ -818,16 +814,9 @@ public class MutableTreeNode<T> implements Serializable  {
 	 */
 	public Optional<MutableTreeNode<T>> nextSibling() {
 		final MutableTreeNode<T> parent = _parent;
-		final MutableTreeNode<T> sibling;
-
-		if (parent == null) {
-			sibling = null;
-		} else {
-			sibling = parent.childAfter(this).orElse(null);
-		}
-		assert sibling == null || isSibling(sibling);
-
-		return Optional.ofNullable(sibling);
+		return parent != null
+			? parent.childAfter(this)
+			: Optional.empty();
 	}
 
 	/**
@@ -841,15 +830,9 @@ public class MutableTreeNode<T> implements Serializable  {
 	 */
 	public Optional<MutableTreeNode<T>> previousSibling() {
 		final MutableTreeNode<T> parent = _parent;
-		final Optional<MutableTreeNode<T>> sibling;
-
-		if (parent != null) {
-			sibling = parent.childBefore(this);
-		} else {
-			sibling = Optional.empty();
-		}
-
-		return sibling;
+		return parent != null
+			? parent.childBefore(this)
+			: Optional.empty();
 	}
 
 	/* *************************************************************************
@@ -919,22 +902,13 @@ public class MutableTreeNode<T> implements Serializable  {
 	 * @return return the next leaf past this node
 	 */
 	public Optional<MutableTreeNode<T>> nextLeaf() {
-		MutableTreeNode<T> parent = _parent;
-		Optional<MutableTreeNode<T>> leaf = Optional.empty();
-		Optional<MutableTreeNode<T>> sibling = Optional.empty();
-
-		if (parent != null) {
-			sibling = nextSibling();
-			if (sibling.isPresent()) {
-				leaf = sibling.map(MutableTreeNode::firstLeaf);
-			} else {
-				leaf = parent.nextLeaf();
-			}
-		}
-
-		return leaf;
+		final MutableTreeNode<T> parent = _parent;
+		return parent != null
+			? nextSibling()
+				.map(s -> Optional.of(s.firstLeaf()))
+				.orElse(parent.nextLeaf())
+			: Optional.empty();
 	}
-
 
 	/**
 	 * Return the leaf before {@code this} node or {@code null} if {@code this}
