@@ -29,7 +29,7 @@ import org.jenetics.util.ISeq;
 import org.jenetics.util.IntRange;
 import org.jenetics.util.Seq;
 
-import org.jenetix.util.MutableTreeNode;
+import org.jenetix.util.TreeNode;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -103,25 +103,25 @@ public class TreeChromosome<A> extends AbstractChromosome<TreeGene<A>> {
 		return null;
 	}
 
-	public MutableTreeNode<A> toTree() {
-		final MutableTreeNode<A> root = new MutableTreeNode<>();
+	public TreeNode<A> toTree() {
+		final TreeNode<A> root = new TreeNode<>();
 		toTree(getGene(0), root);
 		return root;
 	}
 
-	private void toTree(final TreeGene<A> gene, final MutableTreeNode<A> parent) {
+	private void toTree(final TreeGene<A> gene, final TreeNode<A> parent) {
 		requireNonNull(gene);
 		parent.setValue(gene.getAllele());
 
 		gene.getChildren(this).forEach(g -> {
-			final MutableTreeNode<A> node = new MutableTreeNode<A>();
+			final TreeNode<A> node = new TreeNode<A>();
 			parent.add(node);
 			toTree(g, node);
 		});
 	}
 
-	public static <A> TreeChromosome<A> of(final MutableTreeNode<A> tree) {
-		final ISeq<MutableTreeNode<A>> nodes = tree.breathFirstStream()
+	public static <A> TreeChromosome<A> of(final TreeNode<A> tree) {
+		final ISeq<TreeNode<A>> nodes = tree.breathFirstStream()
 			.collect(ISeq.toISeq());
 
 		final ISeq<TreeGene<A>> genes = nodes.map(n -> toTreeGene(n, nodes));
@@ -129,8 +129,8 @@ public class TreeChromosome<A> extends AbstractChromosome<TreeGene<A>> {
 	}
 
 	private static <A> TreeGene<A> toTreeGene(
-		final MutableTreeNode<A> node,
-		final Seq<MutableTreeNode<A>> nodes
+		final TreeNode<A> node,
+		final Seq<TreeNode<A>> nodes
 	) {
 		final int[] childIndexes = node.childStream()
 			.mapToInt(nodes::indexOf)

@@ -28,8 +28,8 @@ import org.jenetics.SwapMutator;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
 
-import org.jenetix.util.MutableTreeNode;
-import org.jenetix.util.MutableTreeNodeTest;
+import org.jenetix.util.TreeNode;
+import org.jenetix.util.TreeNodeTest;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -40,20 +40,20 @@ public class TreeChromosomeTest {
 
 	@Test
 	public void create() {
-		final MutableTreeNode<Integer> tree =
-			MutableTreeNodeTest.newTree(3, new Random(123));
+		final TreeNode<Integer> tree =
+			TreeNodeTest.newTree(3, new Random(123));
 
 		final TreeChromosome<Integer> chromosome = TreeChromosome.of(tree);
 		System.out.println(chromosome.length());
 		System.out.println(chromosome);
 
-		final MutableTreeNode<Integer> tree2 = chromosome.toTree();
+		final TreeNode<Integer> tree2 = chromosome.toTree();
 
 		final ISeq<Integer> seq1 = tree.breathFirstStream()
-			.map(MutableTreeNode::getValue)
+			.map(TreeNode::getValue)
 			.collect(ISeq.toISeq());
 		final ISeq<Integer> seq2 = tree2.breathFirstStream()
-			.map(MutableTreeNode::getValue)
+			.map(TreeNode::getValue)
 			.collect(ISeq.toISeq());
 
 		System.out.println(seq1);
@@ -64,8 +64,8 @@ public class TreeChromosomeTest {
 
 	@Test
 	public void swap() {
-		final MutableTreeNode<Integer> tree =
-			MutableTreeNodeTest.newTree(5, new Random(123));
+		final TreeNode<Integer> tree =
+			TreeNodeTest.newTree(5, new Random(123));
 
 		final SwapMutator<TreeGene<Integer>, Integer> mutator = new SwapMutator<>();
 		final TreeChromosome<Integer> chromosome = TreeChromosome.of(tree);
