@@ -20,7 +20,6 @@
 package org.jenetix.util;
 
 import static java.util.Collections.singletonList;
-import static java.util.Objects.equals;
 import static java.util.Objects.requireNonNull;
 import static java.util.Spliterators.spliteratorUnknownSize;
 
@@ -34,8 +33,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.ObjIntConsumer;
-import java.util.stream.Collector;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -945,6 +942,20 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 			target.add(targetChild);
 			fill(child, targetChild);
 		});
+	}
+
+	@Override
+	public int hashCode() {
+		return hash(this);
+	}
+
+	private static int hash(final TreeNode<?> node) {
+		int hash = 31*Objects.hashCode(node.getValue()) + 17;
+		for (TreeNode<?> child : node._children) {
+			hash += 31*hash(child) + 17;
+		}
+
+		return hash;
 	}
 
 	@Override
