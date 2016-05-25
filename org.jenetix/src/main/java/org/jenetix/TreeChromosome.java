@@ -21,16 +21,16 @@ package org.jenetix;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.jenetics.AbstractChromosome;
+import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.IntRange;
-import org.jenetics.util.Seq;
 
 import org.jenetix.util.TreeNode;
 
@@ -55,40 +55,40 @@ public class TreeChromosome<A> extends AbstractChromosome<TreeGene<A>> {
 		_depth = requireNonNull(depth);
 	}
 
+	/**
+	 * Return the root gene
+	 *
+	 * @return the root tree gene
+	 */
 	public TreeGene<A> getRoot() {
 		return _genes.get(0);
+	}
+
+	/**
+	 * Return the parent gene of the given tree {@code gene}.
+	 *
+	 * @param gene the {@code gene} from where to fetch the parent
+	 * @return the parent gene of the given tree {@code gene}
+	 * @throws NullPointerException if the given {@code gene} is {@code null}
+	 */
+	public Optional<TreeGene<A>> getParent(final TreeGene<A> gene) {
+		return gene.getParent(this);
+	}
+
+	/**
+	 * Return the child tree nodes from the given {@code gene}.
+	 *
+	 * @param gene the {@code gene} from where to fetch the child tree-nodes
+	 * @return the child nodes of the given tree {@code gene}
+	 * @throws NullPointerException if the given {@code gene} is {@code null}
+	 */
+	public Stream<TreeGene<A>> children(final TreeGene<A> gene) {
+		return gene.children(this);
 	}
 
 	@Override
 	public TreeGene<A> getGene(final int index) {
 		return _genes.get(index);
-	}
-
-	public boolean isLeaf(final int index) {
-		return false;
-	}
-
-	@Override
-	public Iterator<TreeGene<A>> iterator() {
-		return new Iterator<TreeGene<A>>() {
-			@Override
-			public boolean hasNext() {
-				return false;
-			}
-
-			@Override
-			public TreeGene<A> next() {
-				return null;
-			}
-		};
-	}
-
-	public Optional<TreeGene<A>> getParent(final TreeGene<A> gene) {
-		return gene.getParent(this);
-	}
-
-	public Stream<TreeGene<A>> getChildren(final TreeGene<A> gene) {
-		return gene.children(this);
 	}
 
 	@Override
@@ -123,34 +123,39 @@ public class TreeChromosome<A> extends AbstractChromosome<TreeGene<A>> {
 		});
 	}
 
-	public static <A> TreeChromosome<A> of(final TreeNode<A> tree) {
+	/* *************************************************************************
+	 * Static factory methods.
+	 **************************************************************************/
+
+	/**
+	 * Create a new {@code TreeChromosome} from the given tree-node.
+	 *
+	 * @param tree source tree
+	 * @param factory the allele factor used for creating new {@code TreeGene}
+	 *        instances
+	 * @param <A> the allele (tree value) type
+	 * @return
+	 */
+	public static <A> TreeChromosome<A> of(
+		final TreeNode<A> tree,
+		final Factory<A> factory
+	) {
+		requireNonNull(tree);
+		requireNonNull(factory);
+
 		final ISeq<TreeNode<A>> nodes = tree
 			.breathFirstStream()
 			.collect(ISeq.toISeq());
 
-		final Map<TreeNode<A>, Integer> indexes = new HashMap<>();
+		final Map<TreeNode<A>, Integer> indexes = new LinkedHashMap<>();
 		for (int i = 0; i < nodes.length(); ++i) {
 			indexes.put(nodes.get(i), i);
 		}
 
-		final ISeq<TreeGene<A>> genes = nodes.map(n -> toTreeGene(n, indexes));
+		final ISeq<TreeGene<A>> genes = nodes
+			.map(n -> TreeGene.toTreeGene(n, indexes::get, factory));
+
 		return new TreeChromosome<>(IntRange.of(1, 23), IntRange.of(2, 23), genes);
-	}
-
-	private static <A> TreeGene<A> toTreeGene(
-		final TreeNode<A> node,
-		final Map<TreeNode<A>, Integer> indexes
-	) {
-		final int[] childIndexes = node.children()
-			.mapToInt(indexes::get)
-			.toArray();
-
-		return new TreeGene<>(
-			node.getValue(),
-			() -> null,
-			node.getParent().map(indexes::get).orElse(-1),
-			childIndexes
-		);
 	}
 
 }

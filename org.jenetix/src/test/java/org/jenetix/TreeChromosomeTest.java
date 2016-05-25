@@ -27,6 +27,7 @@ import org.testng.annotations.Test;
 import org.jenetics.SwapMutator;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
+import org.jenetics.util.RandomRegistry;
 
 import org.jenetix.util.TreeNode;
 import org.jenetix.util.TreeNodeTest;
@@ -43,7 +44,10 @@ public class TreeChromosomeTest {
 		final TreeNode<Integer> tree =
 			TreeNodeTest.newTree(3, new Random(123));
 
-		final TreeChromosome<Integer> chromosome = TreeChromosome.of(tree);
+		final TreeChromosome<Integer> chromosome = TreeChromosome.of(
+			tree,
+			RandomRegistry.getRandom()::nextInt
+		);
 		System.out.println(chromosome.length());
 		System.out.println(chromosome);
 
@@ -68,7 +72,11 @@ public class TreeChromosomeTest {
 			TreeNodeTest.newTree(5, new Random(123));
 
 		final SwapMutator<TreeGene<Integer>, Integer> mutator = new SwapMutator<>();
-		final TreeChromosome<Integer> chromosome = TreeChromosome.of(tree);
+		final TreeChromosome<Integer> chromosome = TreeChromosome.of(
+			tree,
+			RandomRegistry.getRandom()::nextInt
+		);
+
 		System.out.println(chromosome);
 
 		for (int i = 0; i < 30; ++i) {
