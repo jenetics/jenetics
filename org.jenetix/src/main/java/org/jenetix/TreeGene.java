@@ -45,7 +45,6 @@ public final class TreeGene<A>
 {
 
 	private final A _value;
-	private final int _parent;
 	private final int[] _children;
 	private final Factory<A> _factory;
 
@@ -53,19 +52,16 @@ public final class TreeGene<A>
 	 * Create a new {@code TreeGene} instance for the given parameters.
 	 *
 	 * @param value the tree-gene value (allele)
-	 * @param parent the gene index (within the chromosome) of the parent gene
 	 * @param children the gene indexes of the child genes
 	 * @param factory the allele factor used for creating new {@code TreeGene}
 	 *        instances
 	 */
 	private TreeGene(
 		final A value,
-		final int parent,
 		final int[] children,
 		final Factory<A> factory
 	) {
 		_value = value;
-		_parent = parent;
 		_children = requireNonNull(children);
 		_factory = requireNonNull(factory);
 	}
@@ -80,9 +76,29 @@ public final class TreeGene<A>
 	 */
 	public Optional<TreeGene<A>>
 	getParent(final Chromosome<TreeGene<A>> chromosome) {
-		return _parent < 0 || _parent >= chromosome.length()
-			? Optional.empty()
-			: Optional.of(chromosome.getGene(_parent));
+		final Optional<Integer> index = IntStream.range(0, chromosome.length())
+			.filter(i -> chromosome.getGene(i) == this)
+			.mapToObj(Integer::valueOf)
+			.findFirst();
+
+		return index.flatMap(i -> parentFor(i, chromosome));
+	}
+
+	private Optional<TreeGene<A>> parentFor(
+		final int child,
+		final Chromosome<TreeGene<A>> chromosome
+	) {
+		return chromosome.stream()
+			.filter(g -> contains(g._children, child))
+			.findFirst();
+	}
+
+	private static boolean contains(final int[] array, final int value) {
+		boolean found = false;
+		for (int i = 0; i < array.length && !found; ++i) {
+			found = array[i] == value;
+		}
+		return found;
 	}
 
 	/**
@@ -124,7 +140,7 @@ public final class TreeGene<A>
 
 	@Override
 	public TreeGene<A> newInstance(final A value) {
-		return TreeGene.of(value, _parent, _children, _factory);
+		return TreeGene.of(value, _children, _factory);
 	}
 
 	@Override
@@ -146,7 +162,6 @@ public final class TreeGene<A>
 	 * Create a new {@code TreeGene} instance for the given parameters.
 	 *
 	 * @param value the tree-gene value (allele)
-	 * @param parent the gene index (within the chromosome) of the parent gene
 	 * @param children the gene indexes of the child genes
 	 * @param factory the allele factor used for creating new {@code TreeGene}
 	 *        instances
@@ -155,11 +170,10 @@ public final class TreeGene<A>
 	 */
 	public static <A> TreeGene<A> of(
 		final A value,
-		final int parent,
 		final int[] children,
 		final Factory<A> factory
 	) {
-		return new TreeGene<>(value, parent, children, factory);
+		return new TreeGene<>(value, children, factory);
 	}
 
 	/**
@@ -184,9 +198,6 @@ public final class TreeGene<A>
 
 		return TreeGene.of(
 			node.getValue(),
-			node.getParent()
-				.map(index::applyAsInt)
-				.orElse(-1),
 			indexes,
 			factory
 		);

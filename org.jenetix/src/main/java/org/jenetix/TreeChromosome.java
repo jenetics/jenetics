@@ -134,7 +134,7 @@ public class TreeChromosome<A> extends AbstractChromosome<TreeGene<A>> {
 	 * @param factory the allele factor used for creating new {@code TreeGene}
 	 *        instances
 	 * @param <A> the allele (tree value) type
-	 * @return
+	 * @return a new tree-chromosome
 	 */
 	public static <A> TreeChromosome<A> of(
 		final TreeNode<A> tree,
@@ -153,7 +153,7 @@ public class TreeChromosome<A> extends AbstractChromosome<TreeGene<A>> {
 		}
 
 		final ISeq<TreeGene<A>> genes = nodes
-			.map(n -> TreeGene.toTreeGene(n, indexes::get, factory));
+			.map(node -> TreeGene.toTreeGene(node, indexes::get, factory));
 
 		return new TreeChromosome<>(IntRange.of(1, 23), IntRange.of(2, 23), genes);
 	}
