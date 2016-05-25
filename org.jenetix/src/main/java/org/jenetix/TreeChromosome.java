@@ -21,7 +21,6 @@ package org.jenetix;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -30,7 +29,6 @@ import java.util.stream.Stream;
 import org.jenetics.AbstractChromosome;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
-import org.jenetics.util.IntRange;
 
 import org.jenetix.util.TreeNode;
 
@@ -41,27 +39,23 @@ import org.jenetix.util.TreeNode;
  */
 public class TreeChromosome<A> extends AbstractChromosome<TreeGene<A>> {
 
-	private final IntRange _childCount;
-	private final IntRange _depth;
+	protected final Factory<TreeChromosome<A>> _factory;
 
 	protected TreeChromosome(
-		final IntRange childCount,
-		final IntRange depth,
-		final ISeq<TreeGene<A>> genes
+		final ISeq<TreeGene<A>> genes,
+		final Factory<TreeChromosome<A>> factory
 	) {
 		super(genes);
-
-		_childCount = requireNonNull(childCount);
-		_depth = requireNonNull(depth);
+		_factory = requireNonNull(factory);
 	}
 
 	/**
-	 * Return the root gene
+	 * Return the root gene of this chromosome.
 	 *
-	 * @return the root tree gene
+	 * @return the root tree gene of this chromosome
 	 */
 	public TreeGene<A> getRoot() {
-		return _genes.get(0);
+		return getGene();
 	}
 
 	/**
@@ -98,7 +92,7 @@ public class TreeChromosome<A> extends AbstractChromosome<TreeGene<A>> {
 
 	@Override
 	public TreeChromosome<A> newInstance(final ISeq<TreeGene<A>> genes) {
-		return new TreeChromosome<>(_childCount, _depth, genes);
+		return new TreeChromosome<>(genes, _factory);
 	}
 
 	@Override
@@ -106,22 +100,10 @@ public class TreeChromosome<A> extends AbstractChromosome<TreeGene<A>> {
 		return null;
 	}
 
-	public TreeNode<A> toTree() {
-		final TreeNode<A> root = TreeNode.of();
-		toTree(getGene(0), root);
-		return root;
+	public TreeNode<A> toTreeNode() {
+		return getRoot().toTreeNode(this);
 	}
 
-	private void toTree(final TreeGene<A> gene, final TreeNode<A> parent) {
-		requireNonNull(gene);
-		parent.setValue(gene.getAllele());
-
-		gene.children(this).forEachOrdered(g -> {
-			final TreeNode<A> node = TreeNode.of();
-			parent.add(node);
-			toTree(g, node);
-		});
-	}
 
 	/* *************************************************************************
 	 * Static factory methods.
@@ -155,7 +137,7 @@ public class TreeChromosome<A> extends AbstractChromosome<TreeGene<A>> {
 		final ISeq<TreeGene<A>> genes = nodes
 			.map(node -> TreeGene.toTreeGene(node, indexes::get, factory));
 
-		return new TreeChromosome<>(IntRange.of(1, 23), IntRange.of(2, 23), genes);
+		return new TreeChromosome<>(genes, null);
 	}
 
 }

@@ -51,7 +51,7 @@ public class TreeChromosomeTest {
 		System.out.println(chromosome.length());
 		System.out.println(chromosome);
 
-		final TreeNode<Integer> tree2 = chromosome.toTree();
+		final TreeNode<Integer> tree2 = chromosome.toTreeNode();
 
 		final ISeq<Integer> seq1 = tree.breathFirstStream()
 			.map(TreeNode::getValue)
@@ -85,7 +85,7 @@ public class TreeChromosomeTest {
 			final TreeChromosome<Integer> sc = chromosome.newInstance(genes.toISeq());
 			System.out.println(sc);
 			System.out.flush();
-			System.out.println(sc.toTree());
+			System.out.println(sc.toTreeNode());
 			System.out.flush();
 		}
 	}

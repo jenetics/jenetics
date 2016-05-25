@@ -67,6 +67,19 @@ public final class TreeGene<A>
 	}
 
 	/**
+	 * Return the root gene from the given {@code chromosome}
+	 *
+	 * @param chromosome the chromosome from where to fetch the root gene
+	 * @return the root tree gene
+	 * @throws NullPointerException if the given {@code chromosome} is
+	 *        {@code null}
+	 */
+	public static <A> TreeGene<A>
+	getRoot(final Chromosome<TreeGene<A>> chromosome) {
+		return chromosome.getGene();
+	}
+
+	/**
 	 * Return the (optional) parent gene of this tree-gene.
 	 *
 	 * @param chromosome the chromosome from where to fetch the gene
@@ -126,6 +139,32 @@ public final class TreeGene<A>
 	 */
 	public boolean isLeaf() {
 		return _children.length == 0;
+	}
+
+	/**
+	 * Return a {@link TreeNode} with {@code this} tree-gene as root.
+	 *
+	 * @param chromosome the chromosome which {@code this} tree-gene is part of
+	 * @return a {@link TreeNode} with {@code this} tree-gene as root
+	 */
+	public TreeNode<A> toTreeNode(final Chromosome<TreeGene<A>> chromosome) {
+		final TreeNode<A> root = TreeNode.of();
+		fill(this, root, chromosome);
+		return root;
+	}
+
+	private static <A> void fill(
+		final TreeGene<A> gene,
+		final TreeNode<A> parent,
+		final Chromosome<TreeGene<A>> chromosome
+	) {
+		parent.setValue(gene.getAllele());
+
+		gene.children(chromosome).forEachOrdered(g -> {
+			final TreeNode<A> node = TreeNode.of();
+			parent.add(node);
+			fill(g, node, chromosome);
+		});
 	}
 
 	@Override

@@ -212,6 +212,30 @@ public class TreeNodeTest {
 	}
 
 	@Test
+	public void copy() {
+		final TreeNode<Integer> tree = newTree(6, new Random(123));
+		final TreeNode<Integer> copy = tree.copy();
+
+		Assert.assertEquals(copy, tree);
+	}
+
+	@Test
+	public void equals() {
+		final TreeNode<Integer> tree1 = newTree(6, new Random(123));
+		final TreeNode<Integer> tree2 = newTree(6, new Random(123));
+
+		Assert.assertEquals(tree2, tree1);
+	}
+
+	@Test
+	public void nonEquals() {
+		final TreeNode<Integer> tree1 = newTree(6, new Random(123));
+		final TreeNode<Integer> tree2 = newTree(6, new Random(1232));
+
+		Assert.assertNotEquals(tree2, tree1);
+	}
+
+	@Test
 	public void preorderIterator() {
 		final TreeNode<Integer> tree = newTree(5, new Random(123));
 		final DefaultMutableTreeNode stree = newSwingTree(5, new Random(123));

@@ -20,23 +20,29 @@
 package org.jenetix.util;
 
 import static java.util.Collections.singletonList;
+import static java.util.Objects.equals;
 import static java.util.Objects.requireNonNull;
 import static java.util.Spliterators.spliteratorUnknownSize;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.function.ObjIntConsumer;
+import java.util.stream.Collector;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import org.jenetics.internal.collection.Stack;
 
+import org.jenetics.util.Copyable;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
 
@@ -49,7 +55,7 @@ import org.jenetics.util.MSeq;
  * @version !__version__!
  * @since !__version__!
  */
-public final class TreeNode<T> implements Serializable  {
+public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 	private static final long serialVersionUID = -1L;
 
 	private T _value;
@@ -924,6 +930,55 @@ public final class TreeNode<T> implements Serializable  {
 		return (int)breathFirstStream()
 			.filter(TreeNode::isLeaf)
 			.count();
+	}
+
+	@Override
+	public TreeNode<T> copy() {
+		final TreeNode<T> target = TreeNode.of(getValue());
+		fill(this, target);
+		return target;
+	}
+
+	private static <T> void fill(final TreeNode<T> source, final TreeNode<T> target) {
+		source.children().forEachOrdered(child -> {
+			final TreeNode<T> targetChild = TreeNode.of(child.getValue());
+			target.add(targetChild);
+			fill(child, targetChild);
+		});
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof TreeNode<?> && equals(this, (TreeNode<?>)obj);
+	}
+
+	private static boolean equals(
+		final TreeNode<?> that,
+		final TreeNode<?> other
+	) {
+		boolean equals = that.childCount() == other.childCount();
+		if (equals) {
+			equals = Objects.equals(that.getValue(), other.getValue());
+			if (equals && !that._children.isEmpty()) {
+				equals = equals(that._children, other._children);
+			}
+		}
+
+		return equals;
+	}
+
+	private static boolean equals(
+		final Collection<? extends TreeNode<?>> that,
+		final Collection<? extends TreeNode<?>> other
+	) {
+		boolean equals = true;
+		final Iterator<? extends TreeNode<?>> it1 = that.iterator();
+		final Iterator<? extends TreeNode<?>> it2 = other.iterator();
+		while (it1.hasNext() && equals) {
+			equals = equals(it1.next(), it2.next());
+		}
+
+		return equals;
 	}
 
 	@Override
