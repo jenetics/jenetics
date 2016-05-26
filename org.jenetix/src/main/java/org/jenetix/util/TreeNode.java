@@ -334,8 +334,7 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 	 *         or {@link Optional#empty()} if no common ancestor exists.
 	 * @throws NullPointerException if the given {@code node} is {@code null}
 	 */
-	public Optional<TreeNode<T>>
-	sharedAncestor(final TreeNode<T> node) {
+	public Optional<TreeNode<T>> sharedAncestor(final TreeNode<T> node) {
 		requireNonNull(node);
 
 		TreeNode<T> ancestor = null;
@@ -385,7 +384,7 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 	 * @throws NullPointerException if the given {@code node} is {@code null}
 	 */
 	public boolean isRelated(final TreeNode<T> node) {
-		return getRoot() == node.getRoot();
+		return node.getRoot() == getRoot();
 	}
 
 	/**
@@ -556,7 +555,7 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 	 * @return an iterator for traversing the tree in pre-order
 	 */
 	public Iterator<TreeNode<T>> preorderIterator() {
-		return new PreorderIterator<>(this);
+		return new Preorder<>(this);
 	}
 
 	/**
@@ -584,7 +583,7 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 	 * @return an iterator for traversing the tree in post-order
 	 */
 	public Iterator<TreeNode<T>> postorderIterator() {
-		return new PostorderIterator<>(this);
+		return new Postorder<>(this);
 	}
 
 	/**
@@ -613,7 +612,7 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 	 * @return an iterator for traversing the tree in breadth-first order
 	 */
 	public Iterator<TreeNode<T>> breadthFirstIterator() {
-		return new BreadthFirstIterator<>(this);
+		return new BreadthFirst<>(this);
 	}
 
 	/**
@@ -1055,12 +1054,10 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 	/**
 	 * Preorder iterator of the tree.
 	 */
-	private static final class PreorderIterator<T>
-		implements Iterator<TreeNode<T>>
-	{
+	private static final class Preorder<T> implements Iterator<TreeNode<T>> {
 		private final Deque<Iterator<TreeNode<T>>> _deque = new LinkedList<>();
 
-		PreorderIterator(final TreeNode<T> root) {
+		Preorder(final TreeNode<T> root) {
 			requireNonNull(root);
 			_deque.push(singletonList(root).iterator());
 		}
@@ -1089,14 +1086,12 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 	/**
 	 * Postorder iterator of the tree.
 	 */
-	private static final class PostorderIterator<T>
-		implements Iterator<TreeNode<T>>
-	{
+	private static final class Postorder<T> implements Iterator<TreeNode<T>> {
 		private TreeNode<T> _root;
 		private final Iterator<TreeNode<T>> _children;
 		private Iterator<TreeNode<T>> _subtree;
 
-		PostorderIterator(final TreeNode<T> root) {
+		Postorder(final TreeNode<T> root) {
 			_root = requireNonNull(root);
 			_children = _root._children.iterator();
 			_subtree = Collections.emptyIterator();
@@ -1114,7 +1109,7 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 			if (_subtree.hasNext()) {
 				result = _subtree.next();
 			} else if (_children.hasNext()) {
-				_subtree = new PostorderIterator<>(_children.next());
+				_subtree = new Postorder<>(_children.next());
 				result = _subtree.next();
 			} else {
 				result = _root;
@@ -1129,12 +1124,10 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 	/**
 	 * Breath first iterator of the tree.
 	 */
-	private static final class BreadthFirstIterator<T>
-		implements Iterator<TreeNode<T>>
-	{
+	private static final class BreadthFirst<T> implements Iterator<TreeNode<T>> {
 		private final Queue<Iterator<TreeNode<T>>> _queue = new LinkedList<>();
 
-		BreadthFirstIterator(final TreeNode<T> root) {
+		BreadthFirst(final TreeNode<T> root) {
 			requireNonNull(root);
 			_queue.add(singletonList(root).iterator());
 		}
