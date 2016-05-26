@@ -1,3 +1,8 @@
+Jenetics-3.5.1
+
+- Bug fixes
+    * https://github.com/jenetics/jenetics/issues/111: Dead lock for single-threaded executors.
+
 Jenetics-3.5.0
 
 - Improvement
