@@ -33,11 +33,10 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Queue;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-
-import org.jenetics.internal.collection.Stack;
 
 import org.jenetics.util.Copyable;
 import org.jenetics.util.ISeq;
@@ -73,6 +72,24 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 	/* *************************************************************************
 	 * Basic operations
 	 **************************************************************************/
+
+	/**
+	 * Sets the user object for this node.
+	 *
+	 * @param value the node {@code value}
+	 */
+	public void setValue(final T value) {
+		_value = value;
+	}
+
+	/**
+	 * Return the node value
+	 *
+	 * @return the node value
+	 */
+	public T getValue() {
+		return _value;
+	}
 
 	/**
 	 * Returns this node's parent if available.
@@ -186,30 +203,21 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 	}
 
 	/**
+	 * Return a forward-order iterator of this node's children.
+	 *
+	 * @return an iterator of children of {@code this} node
+	 */
+	public Iterator<TreeNode<T>> childIterator() {
+		return _children.iterator();
+	}
+
+	/**
 	 * Return a forward-order stream of this node's children.
 	 *
 	 * @return a stream of children of {@code this} node
 	 */
 	public Stream<TreeNode<T>> childStream() {
 		return _children.stream();
-	}
-
-	/**
-	 * Sets the user object for this node.
-	 *
-	 * @param value the node {@code value}
-	 */
-	public void setValue(final T value) {
-		_value = value;
-	}
-
-	/**
-	 * Return the node value
-	 *
-	 * @return the node value
-	 */
-	public T getValue() {
-		return _value;
 	}
 
 
@@ -1124,29 +1132,29 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 	private static final class BreadthFirstIterator<T>
 		implements Iterator<TreeNode<T>>
 	{
-		private final Queue<Iterator<TreeNode<T>>> _queue = new Queue<>();
+		private final Queue<Iterator<TreeNode<T>>> _queue = new LinkedList<>();
 
 		BreadthFirstIterator(final TreeNode<T> root) {
 			requireNonNull(root);
-			_queue.enqueue(singletonList(root).iterator());
+			_queue.add(singletonList(root).iterator());
 		}
 
 		@Override
 		public boolean hasNext() {
-			return !_queue.isEmpty() && _queue.firstObject().hasNext();
+			return !_queue.isEmpty() && _queue.peek().hasNext();
 		}
 
 		@Override
 		public TreeNode<T> next() {
-			final Iterator<TreeNode<T>> it = _queue.firstObject();
+			final Iterator<TreeNode<T>> it = _queue.peek();
 			final TreeNode<T> node = it.next();
 			final Iterator<TreeNode<T>> children = node._children.iterator();
 
 			if (!it.hasNext()) {
-				_queue.dequeue();
+				_queue.poll();
 			}
 			if (children.hasNext()) {
-				_queue.enqueue(children);
+				_queue.add(children);
 			}
 			return node;
 		}
@@ -1159,7 +1167,7 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 	private static final class PathIterator<T>
 		implements Iterator<TreeNode<T>>
 	{
-		private final Stack<TreeNode<T>> _stack = new Stack<>();
+		private final Deque<TreeNode<T>> _stack = new LinkedList<>();
 
 		PathIterator(
 			final TreeNode<T> ancestor,
@@ -1183,12 +1191,12 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 
 		@Override
 		public boolean hasNext() {
-			return _stack.length > 0;
+			return !_stack.isEmpty();
 		}
 
 		@Override
 		public TreeNode<T> next() {
-			if (_stack.length == 0) {
+			if (_stack.isEmpty()) {
 				throw new NoSuchElementException("No more elements.");
 			}
 
