@@ -190,7 +190,7 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 	 *
 	 * @return a stream of children of {@code this} node
 	 */
-	public Stream<TreeNode<T>> children() {
+	public Stream<TreeNode<T>> childStream() {
 		return _children.stream();
 	}
 
@@ -799,7 +799,7 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 	 * {@code O(n)} where n is the number of children; to traverse the entire
 	 * array, use the iterator of the parent instead.
 	 *
-	 * @see #children()
+	 * @see #childStream()
 	 * @return the sibling of {@code this} node that immediately follows
 	 *         {@code this} node
 	 */
@@ -937,7 +937,7 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 	}
 
 	private static <T> void fill(final TreeNode<T> source, final TreeNode<T> target) {
-		source.children().forEachOrdered(child -> {
+		source.childStream().forEachOrdered(child -> {
 			final TreeNode<T> targetChild = TreeNode.of(child.getValue());
 			target.add(targetChild);
 			fill(child, targetChild);

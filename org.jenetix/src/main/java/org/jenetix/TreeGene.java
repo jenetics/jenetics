@@ -231,7 +231,7 @@ public final class TreeGene<A>
 		final ToIntFunction<TreeNode<A>> index,
 		final Factory<A> factory
 	) {
-		final int[] indexes = node.children()
+		final int[] indexes = node.childStream()
 			.mapToInt(index)
 			.toArray();
 
