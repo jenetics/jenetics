@@ -41,7 +41,7 @@ import org.jenetix.util.TreeNode;
  * @since !__version__!
  */
 public final class GeneralTreeGene<A>
-	implements Gene<A, GeneralTreeGene<A>>
+	implements TreeGene<A, GeneralTreeGene<A>>
 {
 
 	private final A _value;
@@ -79,14 +79,7 @@ public final class GeneralTreeGene<A>
 		return chromosome.getGene();
 	}
 
-	/**
-	 * Return the (optional) parent gene of this tree-gene.
-	 *
-	 * @param chromosome the chromosome from where to fetch the gene
-	 * @return the parent gene, if available
-	 * @throws NullPointerException if the given {@code chromosome} is
-	 *        {@code null}
-	 */
+	@Override
 	public Optional<GeneralTreeGene<A>>
 	getParent(final Chromosome<GeneralTreeGene<A>> chromosome) {
 		final Optional<Integer> index = IntStream.range(0, chromosome.length())
@@ -114,14 +107,7 @@ public final class GeneralTreeGene<A>
 		return found;
 	}
 
-	/**
-	 * Return the children stream of the {@code this} tree-gene.
-	 *
-	 * @param chromosome the chromosome from where to fetch the gene
-	 * @return the node children
-	 * @throws NullPointerException if the given {@code chromosome} is
-	 *        {@code null}
-	 */
+	@Override
 	public Stream<GeneralTreeGene<A>>
 	children(final Chromosome<GeneralTreeGene<A>> chromosome) {
 		requireNonNull(chromosome);
@@ -131,12 +117,7 @@ public final class GeneralTreeGene<A>
 			.mapToObj(chromosome::getGene);
 	}
 
-	/**
-	 * Test whether {@code this} gene is a leaf.
-	 *
-	 * @return {@code true} if {@code this} gene is a leaf, {@code false}
-	 *         otherwise
-	 */
+	@Override
 	public boolean isLeaf() {
 		return _children.length == 0;
 	}
@@ -147,6 +128,7 @@ public final class GeneralTreeGene<A>
 	 * @param chromosome the chromosome which {@code this} tree-gene is part of
 	 * @return a {@link TreeNode} with {@code this} tree-gene as root
 	 */
+	@Override
 	public TreeNode<A> toTreeNode(final Chromosome<GeneralTreeGene<A>> chromosome) {
 		final TreeNode<A> root = TreeNode.of();
 		fill(this, root, chromosome);
