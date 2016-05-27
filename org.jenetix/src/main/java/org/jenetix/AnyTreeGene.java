@@ -28,7 +28,6 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import org.jenetics.Chromosome;
-import org.jenetics.Gene;
 import org.jenetics.util.Factory;
 
 import org.jenetix.util.TreeNode;
@@ -40,8 +39,8 @@ import org.jenetix.util.TreeNode;
  * @version !__version__!
  * @since !__version__!
  */
-public final class GeneralTreeGene<A>
-	implements TreeGene<A, GeneralTreeGene<A>>
+public final class AnyTreeGene<A>
+	implements TreeGene<A, AnyTreeGene<A>>
 {
 
 	private final A _value;
@@ -56,7 +55,7 @@ public final class GeneralTreeGene<A>
 	 * @param factory the allele factor used for creating new {@code TreeGene}
 	 *        instances
 	 */
-	private GeneralTreeGene(
+	private AnyTreeGene(
 		final A value,
 		final int[] children,
 		final Factory<A> factory
@@ -74,14 +73,14 @@ public final class GeneralTreeGene<A>
 	 * @throws NullPointerException if the given {@code chromosome} is
 	 *        {@code null}
 	 */
-	public static <A> GeneralTreeGene<A>
-	getRoot(final Chromosome<GeneralTreeGene<A>> chromosome) {
+	public static <A> AnyTreeGene<A>
+	getRoot(final Chromosome<AnyTreeGene<A>> chromosome) {
 		return chromosome.getGene();
 	}
 
 	@Override
-	public Optional<GeneralTreeGene<A>>
-	getParent(final Chromosome<GeneralTreeGene<A>> chromosome) {
+	public Optional<AnyTreeGene<A>>
+	getParent(final Chromosome<AnyTreeGene<A>> chromosome) {
 		final Optional<Integer> index = IntStream.range(0, chromosome.length())
 			.filter(i -> chromosome.getGene(i) == this)
 			.mapToObj(Integer::valueOf)
@@ -90,9 +89,9 @@ public final class GeneralTreeGene<A>
 		return index.flatMap(i -> parentFor(i, chromosome));
 	}
 
-	private Optional<GeneralTreeGene<A>> parentFor(
+	private Optional<AnyTreeGene<A>> parentFor(
 		final int child,
-		final Chromosome<GeneralTreeGene<A>> chromosome
+		final Chromosome<AnyTreeGene<A>> chromosome
 	) {
 		return chromosome.stream()
 			.filter(g -> contains(g._children, child))
@@ -108,16 +107,16 @@ public final class GeneralTreeGene<A>
 	}
 
 	@Override
-	public GeneralTreeGene<A> getChild(
+	public AnyTreeGene<A> getChild(
 		final int index,
-		final Chromosome<GeneralTreeGene<A>> chromosome
+		final Chromosome<AnyTreeGene<A>> chromosome
 	) {
 		return chromosome.getGene(_children[index]);
 	}
 
 	@Override
-	public Stream<GeneralTreeGene<A>>
-	children(final Chromosome<GeneralTreeGene<A>> chromosome) {
+	public Stream<AnyTreeGene<A>>
+	children(final Chromosome<AnyTreeGene<A>> chromosome) {
 		requireNonNull(chromosome);
 
 		return IntStream.of(_children)
@@ -137,16 +136,16 @@ public final class GeneralTreeGene<A>
 	 * @return a {@link TreeNode} with {@code this} tree-gene as root
 	 */
 	@Override
-	public TreeNode<A> toTreeNode(final Chromosome<GeneralTreeGene<A>> chromosome) {
+	public TreeNode<A> toTreeNode(final Chromosome<AnyTreeGene<A>> chromosome) {
 		final TreeNode<A> root = TreeNode.of();
 		fill(this, root, chromosome);
 		return root;
 	}
 
 	private static <A> void fill(
-		final GeneralTreeGene<A> gene,
+		final AnyTreeGene<A> gene,
 		final TreeNode<A> parent,
-		final Chromosome<GeneralTreeGene<A>> chromosome
+		final Chromosome<AnyTreeGene<A>> chromosome
 	) {
 		parent.setValue(gene.getAllele());
 
@@ -163,13 +162,13 @@ public final class GeneralTreeGene<A>
 	}
 
 	@Override
-	public GeneralTreeGene<A> newInstance() {
+	public AnyTreeGene<A> newInstance() {
 		return newInstance(_factory.newInstance());
 	}
 
 	@Override
-	public GeneralTreeGene<A> newInstance(final A value) {
-		return GeneralTreeGene.of(value, _children, _factory);
+	public AnyTreeGene<A> newInstance(final A value) {
+		return AnyTreeGene.of(value, _children, _factory);
 	}
 
 	@Override
@@ -197,12 +196,12 @@ public final class GeneralTreeGene<A>
 	 * @param <A> the allele type
 	 * @return a new {@code TreeGene} instance
 	 */
-	public static <A> GeneralTreeGene<A> of(
+	public static <A> AnyTreeGene<A> of(
 		final A value,
 		final int[] children,
 		final Factory<A> factory
 	) {
-		return new GeneralTreeGene<>(value, children, factory);
+		return new AnyTreeGene<>(value, children, factory);
 	}
 
 	/**
@@ -216,7 +215,7 @@ public final class GeneralTreeGene<A>
 	 * @param <A> the allele type
 	 * @return a new {@code TreeGene} instance
 	 */
-	public static <A> GeneralTreeGene<A> toTreeGene(
+	public static <A> AnyTreeGene<A> toTreeGene(
 		final TreeNode<A> node,
 		final ToIntFunction<TreeNode<A>> index,
 		final Factory<A> factory
@@ -225,7 +224,7 @@ public final class GeneralTreeGene<A>
 			.mapToInt(index)
 			.toArray();
 
-		return GeneralTreeGene.of(
+		return AnyTreeGene.of(
 			node.getValue(),
 			indexes,
 			factory

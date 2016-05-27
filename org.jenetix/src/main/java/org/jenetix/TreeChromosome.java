@@ -37,12 +37,12 @@ import org.jenetix.util.TreeNode;
  * @version !__version__!
  * @since !__version__!
  */
-public class TreeChromosome<A> extends AbstractChromosome<GeneralTreeGene<A>> {
+public class TreeChromosome<A> extends AbstractChromosome<AnyTreeGene<A>> {
 
 	protected final Factory<TreeChromosome<A>> _factory;
 
 	protected TreeChromosome(
-		final ISeq<GeneralTreeGene<A>> genes,
+		final ISeq<AnyTreeGene<A>> genes,
 		final Factory<TreeChromosome<A>> factory
 	) {
 		super(genes);
@@ -54,7 +54,7 @@ public class TreeChromosome<A> extends AbstractChromosome<GeneralTreeGene<A>> {
 	 *
 	 * @return the root tree gene of this chromosome
 	 */
-	public GeneralTreeGene<A> getRoot() {
+	public AnyTreeGene<A> getRoot() {
 		return getGene();
 	}
 
@@ -65,7 +65,7 @@ public class TreeChromosome<A> extends AbstractChromosome<GeneralTreeGene<A>> {
 	 * @return the parent gene of the given tree {@code gene}
 	 * @throws NullPointerException if the given {@code gene} is {@code null}
 	 */
-	public Optional<GeneralTreeGene<A>> getParent(final GeneralTreeGene<A> gene) {
+	public Optional<AnyTreeGene<A>> getParent(final AnyTreeGene<A> gene) {
 		return gene.getParent(this);
 	}
 
@@ -76,12 +76,12 @@ public class TreeChromosome<A> extends AbstractChromosome<GeneralTreeGene<A>> {
 	 * @return the child nodes of the given tree {@code gene}
 	 * @throws NullPointerException if the given {@code gene} is {@code null}
 	 */
-	public Stream<GeneralTreeGene<A>> children(final GeneralTreeGene<A> gene) {
+	public Stream<AnyTreeGene<A>> children(final AnyTreeGene<A> gene) {
 		return gene.children(this);
 	}
 
 	@Override
-	public GeneralTreeGene<A> getGene(final int index) {
+	public AnyTreeGene<A> getGene(final int index) {
 		return _genes.get(index);
 	}
 
@@ -91,7 +91,7 @@ public class TreeChromosome<A> extends AbstractChromosome<GeneralTreeGene<A>> {
 	}
 
 	@Override
-	public TreeChromosome<A> newInstance(final ISeq<GeneralTreeGene<A>> genes) {
+	public TreeChromosome<A> newInstance(final ISeq<AnyTreeGene<A>> genes) {
 		return new TreeChromosome<>(genes, _factory);
 	}
 
@@ -134,8 +134,8 @@ public class TreeChromosome<A> extends AbstractChromosome<GeneralTreeGene<A>> {
 			indexes.put(nodes.get(i), i);
 		}
 
-		final ISeq<GeneralTreeGene<A>> genes = nodes
-			.map(node -> GeneralTreeGene.toTreeGene(node, indexes::get, factory));
+		final ISeq<AnyTreeGene<A>> genes = nodes
+			.map(node -> AnyTreeGene.toTreeGene(node, indexes::get, factory));
 
 		return new TreeChromosome<>(genes, null);
 	}
