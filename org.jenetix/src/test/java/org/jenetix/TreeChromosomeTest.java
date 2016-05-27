@@ -71,7 +71,7 @@ public class TreeChromosomeTest {
 		final TreeNode<Integer> tree =
 			TreeNodeTest.newTree(5, new Random(123));
 
-		final SwapMutator<TreeGene<Integer>, Integer> mutator = new SwapMutator<>();
+		final SwapMutator<GeneralTreeGene<Integer>, Integer> mutator = new SwapMutator<>();
 		final TreeChromosome<Integer> chromosome = TreeChromosome.of(
 			tree,
 			RandomRegistry.getRandom()::nextInt
@@ -80,7 +80,7 @@ public class TreeChromosomeTest {
 		System.out.println(chromosome);
 
 		for (int i = 0; i < 30; ++i) {
-			final MSeq<TreeGene<Integer>> genes = chromosome.toSeq().copy();
+			final MSeq<GeneralTreeGene<Integer>> genes = chromosome.toSeq().copy();
 			genes.shuffle();
 			final TreeChromosome<Integer> sc = chromosome.newInstance(genes.toISeq());
 			System.out.println(sc);
