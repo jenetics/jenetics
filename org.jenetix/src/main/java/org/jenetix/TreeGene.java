@@ -44,7 +44,7 @@ public interface TreeGene<A, G extends TreeGene<A, G>> extends Gene<A, G> {
 	 * @throws NullPointerException if the given {@code chromosome} is
 	 *        {@code null}
 	 */
-	public Optional<G> getParent(final Chromosome<G> chromosome);
+	public Optional<G> getParent(final Chromosome<? extends G> chromosome);
 
 	/**
 	 * Returns the child at the specified index in this node's child array.
@@ -55,7 +55,7 @@ public interface TreeGene<A, G extends TreeGene<A, G>> extends Gene<A, G> {
 	 * @throws ArrayIndexOutOfBoundsException  if the {@code index} is out of
 	 *         bounds
 	 */
-	public G getChild(final int index, final Chromosome<G> chromosome);
+	public G getChild(final int index, final Chromosome<? extends G> chromosome);
 
 	/**
 	 * Return the children stream of the {@code this} tree-gene.
@@ -65,7 +65,7 @@ public interface TreeGene<A, G extends TreeGene<A, G>> extends Gene<A, G> {
 	 * @throws NullPointerException if the given {@code chromosome} is
 	 *        {@code null}
 	 */
-	public Stream<G> children(final Chromosome<G> chromosome);
+	public Stream<G> children(final Chromosome<? extends G> chromosome);
 
 	/**
 	 * Test whether {@code this} gene is a leaf.
@@ -93,7 +93,7 @@ public interface TreeGene<A, G extends TreeGene<A, G>> extends Gene<A, G> {
 	 *        {@code null}
 	 */
 	public static <A, G extends TreeGene<A, G>> G
-	getRoot(final Chromosome<G> chromosome) {
+	getRoot(final Chromosome<? extends G> chromosome) {
 		return chromosome.getGene();
 	}
 
@@ -106,10 +106,8 @@ public interface TreeGene<A, G extends TreeGene<A, G>> extends Gene<A, G> {
 	 *        {@code null}
 	 */
 	@SuppressWarnings("unchecked")
-	public default TreeNode<A> toTreeNode(final Chromosome<G> chromosome) {
-		return TreeGenes.toTreeNode((G)this, chromosome);
+	public default TreeNode<A> toTreeNode(final Chromosome<? extends G> chromosome) {
+		return TreeGenes.<A, G>toTreeNode((G)this, chromosome);
 	}
-
-
 
 }

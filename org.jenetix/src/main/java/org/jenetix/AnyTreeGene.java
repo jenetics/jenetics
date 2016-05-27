@@ -19,15 +19,9 @@
  */
 package org.jenetix;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.ToIntFunction;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
-import org.jenetics.Chromosome;
 import org.jenetics.util.Factory;
 
 import org.jenetix.util.TreeNode;
@@ -40,12 +34,8 @@ import org.jenetix.util.TreeNode;
  * @since !__version__!
  */
 public final class AnyTreeGene<A>
-	implements TreeGene<A, AnyTreeGene<A>>
+	extends AbstractTreeGene<A, AnyTreeGene<A>>
 {
-
-	private final A _value;
-	private final int[] _children;
-	private final Factory<A> _factory;
 
 	/**
 	 * Create a new {@code TreeGene} instance for the given parameters.
@@ -55,125 +45,17 @@ public final class AnyTreeGene<A>
 	 * @param factory the allele factor used for creating new {@code TreeGene}
 	 *        instances
 	 */
-	private AnyTreeGene(
+	public AnyTreeGene(
 		final A value,
 		final int[] children,
 		final Factory<A> factory
 	) {
-		_value = value;
-		_children = requireNonNull(children);
-		_factory = requireNonNull(factory);
-	}
-
-	/**
-	 * Return the root gene from the given {@code chromosome}
-	 *
-	 * @param chromosome the chromosome from where to fetch the root gene
-	 * @return the root tree gene
-	 * @throws NullPointerException if the given {@code chromosome} is
-	 *        {@code null}
-	 */
-	public static <A> AnyTreeGene<A>
-	getRoot(final Chromosome<AnyTreeGene<A>> chromosome) {
-		return chromosome.getGene();
-	}
-
-	@Override
-	public Optional<AnyTreeGene<A>>
-	getParent(final Chromosome<AnyTreeGene<A>> chromosome) {
-		final Optional<Integer> index = IntStream.range(0, chromosome.length())
-			.filter(i -> chromosome.getGene(i) == this)
-			.mapToObj(Integer::valueOf)
-			.findFirst();
-
-		return index.flatMap(i -> parentFor(i, chromosome));
-	}
-
-	private Optional<AnyTreeGene<A>> parentFor(
-		final int child,
-		final Chromosome<AnyTreeGene<A>> chromosome
-	) {
-		return chromosome.stream()
-			.filter(g -> contains(g._children, child))
-			.findFirst();
-	}
-
-	private static boolean contains(final int[] array, final int value) {
-		boolean found = false;
-		for (int i = 0; i < array.length && !found; ++i) {
-			found = array[i] == value;
-		}
-		return found;
-	}
-
-	@Override
-	public AnyTreeGene<A> getChild(
-		final int index,
-		final Chromosome<AnyTreeGene<A>> chromosome
-	) {
-		return chromosome.getGene(_children[index]);
-	}
-
-	@Override
-	public Stream<AnyTreeGene<A>>
-	children(final Chromosome<AnyTreeGene<A>> chromosome) {
-		requireNonNull(chromosome);
-
-		return IntStream.of(_children)
-			.filter(i -> i >= 0 && i < chromosome.length())
-			.mapToObj(chromosome::getGene);
-	}
-
-	@Override
-	public int childCount() {
-		return _children.length;
-	}
-
-	/**
-	 * Return a {@link TreeNode} with {@code this} tree-gene as root.
-	 *
-	 * @param chromosome the chromosome which {@code this} tree-gene is part of
-	 * @return a {@link TreeNode} with {@code this} tree-gene as root
-	 */
-	@Override
-	public TreeNode<A> toTreeNode(final Chromosome<AnyTreeGene<A>> chromosome) {
-		final TreeNode<A> root = TreeNode.of();
-		fill(this, root, chromosome);
-		return root;
-	}
-
-	private static <A> void fill(
-		final AnyTreeGene<A> gene,
-		final TreeNode<A> parent,
-		final Chromosome<AnyTreeGene<A>> chromosome
-	) {
-		parent.setValue(gene.getAllele());
-
-		gene.children(chromosome).forEachOrdered(g -> {
-			final TreeNode<A> node = TreeNode.of();
-			parent.add(node);
-			fill(g, node, chromosome);
-		});
-	}
-
-	@Override
-	public A getAllele() {
-		return _value;
-	}
-
-	@Override
-	public AnyTreeGene<A> newInstance() {
-		return newInstance(_factory.newInstance());
+		super(value, children, factory);
 	}
 
 	@Override
 	public AnyTreeGene<A> newInstance(final A value) {
 		return AnyTreeGene.of(value, _children, _factory);
-	}
-
-	@Override
-	public boolean isValid() {
-		return true;
 	}
 
 	@Override

@@ -19,6 +19,8 @@
  */
 package org.jenetix;
 
+import static java.util.Objects.requireNonNull;
+
 import org.jenetics.internal.util.require;
 
 import org.jenetics.Chromosome;
@@ -44,23 +46,25 @@ final class TreeGenes {
 	 * @throws NullPointerException if one of the given arguments is {@code null}
 	 */
 	public static <A, G extends TreeGene<A, G>> TreeNode<A>
-	toTreeNode(final G gene, final Chromosome<G> chromosome) {
+	toTreeNode(final G gene, final Chromosome<? extends G> chromosome) {
+		requireNonNull(chromosome);
+
 		final TreeNode<A> root = TreeNode.of();
-		fill(gene, root, chromosome);
+		TreeGenes.<A, G>fill(gene, root, chromosome);
 		return root;
 	}
 
 	private static <A, G extends TreeGene<A, G>> void fill(
 		final G gene,
 		final TreeNode<A> parent,
-		final Chromosome<G> chromosome
+		final Chromosome<? extends G> chromosome
 	) {
 		parent.setValue(gene.getAllele());
 
-		gene.children(chromosome).forEachOrdered(g -> {
+		gene.children(chromosome).forEachOrdered(child -> {
 			final TreeNode<A> node = TreeNode.of();
 			parent.add(node);
-			fill(g, node, chromosome);
+			TreeGenes.<A, G>fill(child, node, chromosome);
 		});
 	}
 
