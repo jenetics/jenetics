@@ -47,6 +47,17 @@ public interface TreeGene<A, G extends TreeGene<A, G>> extends Gene<A, G> {
 	public Optional<G> getParent(final Chromosome<G> chromosome);
 
 	/**
+	 * Returns the child at the specified index in this node's child array.
+	 *
+	 * @param index   an index into this node's child array
+	 * @param chromosome the chromosome from where to fetch the gene
+	 * @return the tree-gene in this node's child array at the specified index
+	 * @throws ArrayIndexOutOfBoundsException  if the {@code index} is out of
+	 *         bounds
+	 */
+	public G getChild(final int index, final Chromosome<G> chromosome);
+
+	/**
 	 * Return the children stream of the {@code this} tree-gene.
 	 *
 	 * @param chromosome the chromosome from where to fetch the gene
@@ -62,7 +73,29 @@ public interface TreeGene<A, G extends TreeGene<A, G>> extends Gene<A, G> {
 	 * @return {@code true} if {@code this} gene is a leaf, {@code false}
 	 *         otherwise
 	 */
-	public boolean isLeaf();
+	public default boolean isLeaf() {
+		return childCount() == 0;
+	}
+
+	/**
+	 * Returns the number of children of {@code this} gene.
+	 *
+	 * @return the number of children of {@code this} gene
+	 */
+	public int childCount();
+
+	/**
+	 * Return the root gene from the given {@code chromosome}
+	 *
+	 * @param chromosome the chromosome from where to fetch the root gene
+	 * @return the root tree gene
+	 * @throws NullPointerException if the given {@code chromosome} is
+	 *        {@code null}
+	 */
+	public static <A, G extends TreeGene<A, G>> G
+	getRoot(final Chromosome<G> chromosome) {
+		return chromosome.getGene();
+	}
 
 	/**
 	 * Return a {@link TreeNode} with {@code this} tree-gene as root.

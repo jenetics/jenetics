@@ -108,6 +108,14 @@ public final class GeneralTreeGene<A>
 	}
 
 	@Override
+	public GeneralTreeGene<A> getChild(
+		final int index,
+		final Chromosome<GeneralTreeGene<A>> chromosome
+	) {
+		return chromosome.getGene(_children[index]);
+	}
+
+	@Override
 	public Stream<GeneralTreeGene<A>>
 	children(final Chromosome<GeneralTreeGene<A>> chromosome) {
 		requireNonNull(chromosome);
@@ -118,8 +126,8 @@ public final class GeneralTreeGene<A>
 	}
 
 	@Override
-	public boolean isLeaf() {
-		return _children.length == 0;
+	public int childCount() {
+		return _children.length;
 	}
 
 	/**
