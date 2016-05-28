@@ -35,6 +35,8 @@ public interface TreeChromosome<A, G extends TreeGene<A, G>>
 	 *
 	 * @return the root gene of the {@code TreeChromosome}
 	 */
-	public G getRoot();
+	public default G getRoot() {
+		return getGene();
+	}
 
 }

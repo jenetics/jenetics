@@ -85,19 +85,6 @@ public interface TreeGene<A, G extends TreeGene<A, G>> extends Gene<A, G> {
 	public int childCount();
 
 	/**
-	 * Return the root gene from the given {@code chromosome}
-	 *
-	 * @param chromosome the chromosome from where to fetch the root gene
-	 * @return the root tree gene
-	 * @throws NullPointerException if the given {@code chromosome} is
-	 *        {@code null}
-	 */
-	public static <A, G extends TreeGene<A, G>> G
-	getRoot(final Chromosome<? extends G> chromosome) {
-		return chromosome.getGene();
-	}
-
-	/**
 	 * Return a {@link TreeNode} with {@code this} tree-gene as root.
 	 *
 	 * @param chromosome the chromosome which {@code this} tree-gene is part of
