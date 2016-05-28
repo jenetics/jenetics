@@ -137,7 +137,7 @@ public class TreeChromosome<A> extends AbstractChromosome<AnyTreeGene<A>> {
 		final ISeq<AnyTreeGene<A>> genes = nodes
 			.map(node -> AnyTreeGene.toTreeGene(node, indexes::get, factory));
 
-		return new TreeChromosome<>(genes, null);
+		return new TreeChromosome<>(genes, () -> null);
 	}
 
 }
