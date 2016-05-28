@@ -37,14 +37,14 @@ import org.jenetix.util.TreeNodeTest;
  * @version !__version__!
  * @since !__version__!
  */
-public class TreeChromosomeTest {
+public class AbstractTreeChromosomeTest {
 
 	@Test
 	public void create() {
 		final TreeNode<Integer> tree =
 			TreeNodeTest.newTree(3, new Random(123));
 
-		final TreeChromosome<Integer> chromosome = TreeChromosome.of(
+		final AbstractTreeChromosome<Integer> chromosome = AbstractTreeChromosome.of(
 			tree,
 			RandomRegistry.getRandom()::nextInt
 		);
@@ -72,7 +72,7 @@ public class TreeChromosomeTest {
 			TreeNodeTest.newTree(5, new Random(123));
 
 		final SwapMutator<AnyTreeGene<Integer>, Integer> mutator = new SwapMutator<>();
-		final TreeChromosome<Integer> chromosome = TreeChromosome.of(
+		final AbstractTreeChromosome<Integer> chromosome = AbstractTreeChromosome.of(
 			tree,
 			RandomRegistry.getRandom()::nextInt
 		);
@@ -82,7 +82,7 @@ public class TreeChromosomeTest {
 		for (int i = 0; i < 30; ++i) {
 			final MSeq<AnyTreeGene<Integer>> genes = chromosome.toSeq().copy();
 			genes.shuffle();
-			final TreeChromosome<Integer> sc = chromosome.newInstance(genes.toISeq());
+			final AbstractTreeChromosome<Integer> sc = chromosome.newInstance(genes.toISeq());
 			System.out.println(sc);
 			System.out.flush();
 			System.out.println(sc.toTreeNode());

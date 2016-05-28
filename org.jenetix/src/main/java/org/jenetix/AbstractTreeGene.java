@@ -27,7 +27,6 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import org.jenetics.Chromosome;
-import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -39,24 +38,19 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 {
 	protected final A _value;
 	protected final int[] _children;
-	protected final Factory<A> _factory;
 
 	/**
 	 * Create a new {@code AbstractTreeGene} instance for the given parameters.
 	 *
 	 * @param value the tree-gene value (allele)
 	 * @param children the gene indexes of the child genes
-	 * @param factory the allele factor used for creating new
-	 *        {@code AbstractTreeGene} instances
 	 */
 	protected AbstractTreeGene(
 		final A value,
-		final int[] children,
-		final Factory<A> factory
+		final int[] children
 	) {
 		_value = value;
 		_children = requireNonNull(children);
-		_factory = requireNonNull(factory);
 	}
 
 	@Override
@@ -110,11 +104,6 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	@Override
 	public A getAllele() {
 		return _value;
-	}
-
-	@Override
-	public G newInstance() {
-		return newInstance(_factory.newInstance());
 	}
 
 	@Override

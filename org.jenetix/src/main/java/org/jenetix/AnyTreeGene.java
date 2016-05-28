@@ -19,6 +19,8 @@
  */
 package org.jenetix;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Objects;
 import java.util.function.ToIntFunction;
 
@@ -37,6 +39,8 @@ public final class AnyTreeGene<A>
 	extends AbstractTreeGene<A, AnyTreeGene<A>>
 {
 
+	private final Factory<A> _factory;
+
 	/**
 	 * Create a new {@code TreeGene} instance for the given parameters.
 	 *
@@ -50,7 +54,13 @@ public final class AnyTreeGene<A>
 		final int[] children,
 		final Factory<A> factory
 	) {
-		super(value, children, factory);
+		super(value, children);
+		_factory = requireNonNull(factory);
+	}
+
+	@Override
+	public AnyTreeGene<A> newInstance() {
+		return newInstance(_factory.newInstance());
 	}
 
 	@Override
@@ -91,7 +101,7 @@ public final class AnyTreeGene<A>
 	 *
 	 * @param node the tree {@code node} to convert
 	 * @param index the index function which returns the gene index within the
-	 *        {@link TreeChromosome} for a given tree {@code node}.
+	 *        {@link AbstractTreeChromosome} for a given tree {@code node}.
 	 * @param factory the allele factor used for creating new {@code TreeGene}
 	 *        instances
 	 * @param <A> the allele type

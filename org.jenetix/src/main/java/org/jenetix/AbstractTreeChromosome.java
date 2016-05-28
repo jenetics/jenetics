@@ -37,13 +37,13 @@ import org.jenetix.util.TreeNode;
  * @version !__version__!
  * @since !__version__!
  */
-public class TreeChromosome<A> extends AbstractChromosome<AnyTreeGene<A>> {
+public class AbstractTreeChromosome<A> extends AbstractChromosome<AnyTreeGene<A>> {
 
-	protected final Factory<TreeChromosome<A>> _factory;
+	protected final Factory<AbstractTreeChromosome<A>> _factory;
 
-	protected TreeChromosome(
+	protected AbstractTreeChromosome(
 		final ISeq<AnyTreeGene<A>> genes,
-		final Factory<TreeChromosome<A>> factory
+		final Factory<AbstractTreeChromosome<A>> factory
 	) {
 		super(genes);
 		_factory = requireNonNull(factory);
@@ -91,12 +91,12 @@ public class TreeChromosome<A> extends AbstractChromosome<AnyTreeGene<A>> {
 	}
 
 	@Override
-	public TreeChromosome<A> newInstance(final ISeq<AnyTreeGene<A>> genes) {
-		return new TreeChromosome<>(genes, _factory);
+	public AbstractTreeChromosome<A> newInstance(final ISeq<AnyTreeGene<A>> genes) {
+		return new AbstractTreeChromosome<>(genes, _factory);
 	}
 
 	@Override
-	public TreeChromosome<A> newInstance() {
+	public AbstractTreeChromosome<A> newInstance() {
 		return null;
 	}
 
@@ -118,7 +118,7 @@ public class TreeChromosome<A> extends AbstractChromosome<AnyTreeGene<A>> {
 	 * @param <A> the allele (tree value) type
 	 * @return a new tree-chromosome
 	 */
-	public static <A> TreeChromosome<A> of(
+	public static <A> AbstractTreeChromosome<A> of(
 		final TreeNode<A> tree,
 		final Factory<A> factory
 	) {
@@ -137,7 +137,7 @@ public class TreeChromosome<A> extends AbstractChromosome<AnyTreeGene<A>> {
 		final ISeq<AnyTreeGene<A>> genes = nodes
 			.map(node -> AnyTreeGene.toTreeGene(node, indexes::get, factory));
 
-		return new TreeChromosome<>(genes, () -> null);
+		return new AbstractTreeChromosome<>(genes, () -> null);
 	}
 
 }
