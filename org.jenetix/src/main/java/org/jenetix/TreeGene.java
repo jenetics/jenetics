@@ -85,7 +85,7 @@ public interface TreeGene<A, G extends TreeGene<A, G>> extends Gene<A, G> {
 	public int childCount();
 
 	/**
-	 * Return a {@link TreeNode} with {@code this} tree-gene as root.
+	 * Return a new {@link TreeNode} with represents {@code this} tree-gene.
 	 *
 	 * @param chromosome the chromosome which {@code this} tree-gene is part of
 	 * @return a {@link TreeNode} with {@code this} tree-gene as root
@@ -93,7 +93,8 @@ public interface TreeGene<A, G extends TreeGene<A, G>> extends Gene<A, G> {
 	 *        {@code null}
 	 */
 	@SuppressWarnings("unchecked")
-	public default TreeNode<A> toTreeNode(final Chromosome<? extends G> chromosome) {
+	public default TreeNode<A>
+	toTreeNode(final Chromosome<? extends G> chromosome) {
 		return TreeGenes.<A, G>toTreeNode((G)this, chromosome);
 	}
 
