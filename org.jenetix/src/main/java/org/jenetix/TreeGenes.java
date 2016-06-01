@@ -21,9 +21,18 @@ package org.jenetix;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.BiFunction;
+import java.util.function.Supplier;
+import java.util.stream.Collector;
+
 import org.jenetics.internal.util.require;
 
 import org.jenetics.Chromosome;
+import org.jenetics.util.ISeq;
 
 import org.jenetix.util.TreeNode;
 
@@ -66,6 +75,37 @@ final class TreeGenes {
 			parent.add(node);
 			TreeGenes.<A, G>fill(child, node, chromosome);
 		});
+	}
+
+	/**
+	 *
+	 * @param newGene
+	 * @param <A>
+	 * @param <G>
+	 * @return
+	 */
+	public static <A, G extends TreeGene<A, G>>
+	Collector<TreeNode<A>, ?, ISeq<G>>
+	toTreeGene(final BiFunction<A, int[], G> newGene) {
+		return Collector.of(
+			(Supplier<List<TreeNode<A>>>)ArrayList::new,
+			List::add,
+			(left, right) -> { left.addAll(right); return left; },
+			nodes -> {
+				final Map<TreeNode<A>, Integer> indexes = new LinkedHashMap<>();
+				for (int i = 0; i < nodes.size(); ++i) {
+					indexes.put(nodes.get(i), i);
+				}
+
+				return nodes.stream()
+					.map(node -> newGene.apply(
+						node.getValue(),
+						node.childStream()
+							.mapToInt(indexes::get)
+							.toArray()))
+					.collect(ISeq.toISeq());
+			}
+		);
 	}
 
 }

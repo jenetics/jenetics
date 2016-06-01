@@ -21,6 +21,7 @@ package org.jenetix;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.IntStream;
@@ -29,6 +30,8 @@ import java.util.stream.Stream;
 import org.jenetics.Chromosome;
 
 /**
+ * Abstract implementation of the {@link TreeGene} interface.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -36,14 +39,24 @@ import org.jenetics.Chromosome;
 public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	implements TreeGene<A, G>
 {
+
+	/**
+	 * The allele of the tree-gene.
+	 */
 	protected final A _value;
+
+	/**
+	 * The chromosome indexes of the tree-gene children.
+	 */
 	protected final int[] _children;
 
 	/**
 	 * Create a new {@code AbstractTreeGene} instance for the given parameters.
 	 *
 	 * @param value the tree-gene value (allele)
-	 * @param children the gene indexes of the child genes
+	 * @param children the gene indexes of the child genes. The given int[]
+	 *        array is <b>not</b> copied and it's the responsibility of the
+	 *        implementor to not change the indexes after gene creation.
 	 */
 	protected AbstractTreeGene(
 		final A value,
@@ -109,6 +122,21 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	@Override
 	public boolean isValid() {
 		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 31;
+		hash += 31*Objects.hashCode(_value) + 17;
+		hash += 31*Arrays.hashCode(_children) + 17;
+		return hash;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof AbstractTreeGene<?, ?> &&
+			Objects.equals(((AbstractTreeGene<?, ?>)obj)._value, _value) &&
+			Arrays.equals(((AbstractTreeGene<?, ?>)obj)._children, _children);
 	}
 
 	@Override
