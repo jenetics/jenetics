@@ -30,7 +30,6 @@ import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Queue;
@@ -1153,49 +1152,4 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 		}
 
 	}
-
-	/**
-	 * Path (between nodes) iterator.
-	 */
-	private static final class PathIterator<T>
-		implements Iterator<TreeNode<T>>
-	{
-		private final Deque<TreeNode<T>> _stack = new LinkedList<>();
-
-		PathIterator(
-			final TreeNode<T> ancestor,
-			final TreeNode<T> descendant
-		) {
-			requireNonNull(ancestor);
-			_stack.push(requireNonNull(descendant));
-
-			TreeNode<T> current = descendant;
-			while (current != ancestor) {
-				current = current._parent;
-				if (current == null) {
-					throw new IllegalArgumentException(
-						"Node " + ancestor + " is not an ancestor of " +
-						descendant + "."
-					);
-				}
-				_stack.push(current);
-			}
-		}
-
-		@Override
-		public boolean hasNext() {
-			return !_stack.isEmpty();
-		}
-
-		@Override
-		public TreeNode<T> next() {
-			if (_stack.isEmpty()) {
-				throw new NoSuchElementException("No more elements.");
-			}
-
-			return _stack.pop();
-		}
-
-	}
-
 }
