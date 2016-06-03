@@ -550,7 +550,7 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 	 * @return an iterator for traversing the tree in pre-order
 	 */
 	public Iterator<TreeNode<T>> preorderIterator() {
-		return new Preorder<>(this);
+		return new TreeNodePreorderIterator<>(this);
 	}
 
 	/**

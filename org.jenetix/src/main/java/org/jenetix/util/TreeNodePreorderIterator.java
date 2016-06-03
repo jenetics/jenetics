@@ -29,10 +29,10 @@ import java.util.LinkedList;
 /**
  * Preorder iterator of the tree.
  */
-final class Preorder<T> implements Iterator<TreeNode<T>> {
+final class TreeNodePreorderIterator<T> implements Iterator<TreeNode<T>> {
 	private final Deque<Iterator<TreeNode<T>>> _deque = new LinkedList<>();
 
-	Preorder(final TreeNode<T> root) {
+	TreeNodePreorderIterator(final TreeNode<T> root) {
 		requireNonNull(root);
 		_deque.push(singletonList(root).iterator());
 	}
