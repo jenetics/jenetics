@@ -610,7 +610,7 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 	 * @return an iterator for traversing the tree in breadth-first order
 	 */
 	public Iterator<TreeNode<T>> breadthFirstIterator() {
-		return new BreadthFirst<>(this);
+		return new TreeNodeBreadthFirstIterator<>(this);
 	}
 
 	/**

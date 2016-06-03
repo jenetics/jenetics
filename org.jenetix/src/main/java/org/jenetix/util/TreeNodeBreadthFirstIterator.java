@@ -29,10 +29,10 @@ import java.util.Queue;
 /**
  * Breath first iterator of the tree.
  */
-final class BreadthFirst<T> implements Iterator<TreeNode<T>> {
+final class TreeNodeBreadthFirstIterator<T> implements Iterator<TreeNode<T>> {
 	private final Queue<Iterator<TreeNode<T>>> _queue = new LinkedList<>();
 
-	BreadthFirst(final TreeNode<T> root) {
+	TreeNodeBreadthFirstIterator(final TreeNode<T> root) {
 		requireNonNull(root);
 		_queue.add(singletonList(root).iterator());
 	}
