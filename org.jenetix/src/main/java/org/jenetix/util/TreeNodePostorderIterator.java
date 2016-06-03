@@ -27,12 +27,12 @@ import java.util.Iterator;
 /**
  * Postorder iterator of the tree.
  */
-final class Postorder<T> implements Iterator<TreeNode<T>> {
+final class TreeNodePostorderIterator<T> implements Iterator<TreeNode<T>> {
 	private TreeNode<T> _root;
 	private final Iterator<TreeNode<T>> _children;
 	private Iterator<TreeNode<T>> _subtree;
 
-	Postorder(final TreeNode<T> root) {
+	TreeNodePostorderIterator(final TreeNode<T> root) {
 		_root = requireNonNull(root);
 		_children = _root.childIterator();
 		_subtree = Collections.emptyIterator();
@@ -50,7 +50,7 @@ final class Postorder<T> implements Iterator<TreeNode<T>> {
 		if (_subtree.hasNext()) {
 			result = _subtree.next();
 		} else if (_children.hasNext()) {
-			_subtree = new Postorder<>(_children.next());
+			_subtree = new TreeNodePostorderIterator<>(_children.next());
 			result = _subtree.next();
 		} else {
 			result = _root;
