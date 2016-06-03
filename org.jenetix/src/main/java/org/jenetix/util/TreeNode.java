@@ -32,7 +32,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Queue;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -1116,39 +1115,6 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 			}
 
 			return result;
-		}
-
-	}
-
-	/**
-	 * Breath first iterator of the tree.
-	 */
-	private static final class BreadthFirst<T> implements Iterator<TreeNode<T>> {
-		private final Queue<Iterator<TreeNode<T>>> _queue = new LinkedList<>();
-
-		BreadthFirst(final TreeNode<T> root) {
-			requireNonNull(root);
-			_queue.add(singletonList(root).iterator());
-		}
-
-		@Override
-		public boolean hasNext() {
-			return !_queue.isEmpty() && _queue.peek().hasNext();
-		}
-
-		@Override
-		public TreeNode<T> next() {
-			final Iterator<TreeNode<T>> it = _queue.peek();
-			final TreeNode<T> node = it.next();
-			final Iterator<TreeNode<T>> children = node._children.iterator();
-
-			if (!it.hasNext()) {
-				_queue.poll();
-			}
-			if (children.hasNext()) {
-				_queue.add(children);
-			}
-			return node;
 		}
 
 	}
