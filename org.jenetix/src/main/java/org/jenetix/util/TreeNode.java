@@ -25,7 +25,6 @@ import static java.util.Spliterators.spliteratorUnknownSize;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -1079,43 +1078,5 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 			}
 			return node;
 		}
-	}
-
-	/**
-	 * Postorder iterator of the tree.
-	 */
-	private static final class Postorder<T> implements Iterator<TreeNode<T>> {
-		private TreeNode<T> _root;
-		private final Iterator<TreeNode<T>> _children;
-		private Iterator<TreeNode<T>> _subtree;
-
-		Postorder(final TreeNode<T> root) {
-			_root = requireNonNull(root);
-			_children = _root._children.iterator();
-			_subtree = Collections.emptyIterator();
-		}
-
-		@Override
-		public boolean hasNext() {
-			return _root != null;
-		}
-
-		@Override
-		public TreeNode<T> next() {
-			TreeNode<T> result;
-
-			if (_subtree.hasNext()) {
-				result = _subtree.next();
-			} else if (_children.hasNext()) {
-				_subtree = new Postorder<>(_children.next());
-				result = _subtree.next();
-			} else {
-				result = _root;
-				_root = null;
-			}
-
-			return result;
-		}
-
 	}
 }
