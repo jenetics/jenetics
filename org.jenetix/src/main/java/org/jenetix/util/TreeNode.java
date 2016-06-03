@@ -677,7 +677,7 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 	public Iterator<TreeNode<T>> pathFromAncestorIterator(
 		final TreeNode<T> ancestor
 	) {
-		return new PathIterator<>(ancestor, this);
+		return new TreeNodePathIterator<>(ancestor, this);
 	}
 
 

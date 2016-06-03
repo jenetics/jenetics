@@ -30,12 +30,12 @@ import java.util.NoSuchElementException;
 /**
  * Path (between nodes) iterator.
  */
-final class PathIterator<T>
+final class TreeNodePathIterator<T>
 	implements Iterator<TreeNode<T>>
 {
 	private final Deque<TreeNode<T>> _stack = new LinkedList<>();
 
-	PathIterator(
+	TreeNodePathIterator(
 		final TreeNode<T> ancestor,
 		final TreeNode<T> descendant
 	) {
