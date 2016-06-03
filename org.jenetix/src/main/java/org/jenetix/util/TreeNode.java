@@ -19,13 +19,11 @@
  */
 package org.jenetix.util;
 
-import static java.util.Collections.singletonList;
 import static java.util.Objects.requireNonNull;
 import static java.util.Spliterators.spliteratorUnknownSize;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -1043,40 +1041,4 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 		return new TreeNode<>(null);
 	}
 
-
-	/* *************************************************************************
-	 * Iterator implementations.
-	 **************************************************************************/
-
-	/**
-	 * Preorder iterator of the tree.
-	 */
-	private static final class Preorder<T> implements Iterator<TreeNode<T>> {
-		private final Deque<Iterator<TreeNode<T>>> _deque = new LinkedList<>();
-
-		Preorder(final TreeNode<T> root) {
-			requireNonNull(root);
-			_deque.push(singletonList(root).iterator());
-		}
-
-		@Override
-		public boolean hasNext() {
-			return !_deque.isEmpty() && _deque.peek().hasNext();
-		}
-
-		@Override
-		public TreeNode<T> next() {
-			final Iterator<TreeNode<T>> it = _deque.peek();
-			final TreeNode<T> node = it.next();
-			final Iterator<TreeNode<T>> children = node._children.iterator();
-
-			if (!it.hasNext()) {
-				_deque.pop();
-			}
-			if (children.hasNext()) {
-				_deque.push(children);
-			}
-			return node;
-		}
-	}
 }
