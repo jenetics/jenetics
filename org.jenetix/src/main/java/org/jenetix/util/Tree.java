@@ -17,55 +17,28 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetix;
+package org.jenetix.util;
 
 import java.util.Optional;
 import java.util.stream.Stream;
-
-import org.jenetics.Chromosome;
-
-import org.jenetix.util.TreeNode;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public interface TreeChromosome<A, G extends TreeGene<A, G>>
-	extends Chromosome<G>
-{
+public interface Tree<A, T extends Tree<A, T>> {
 
-	/**
-	 * Return the root gene of the {@code TreeChromosome}.
-	 *
-	 * @return the root gene of the {@code TreeChromosome}
-	 */
-	public default G getRoot() {
-		return getGene();
-	}
+	public Optional<T> getParent();
 
-	public default Optional<G> getParent(final G child) {
-		return child.getParent(toSeq());
-	}
+	public Stream<T> children();
 
-	public default G getChild(final G parent, final int index) {
-		return parent.getChild(index, toSeq());
-	}
+	public T getChild(final int index);
 
-	public default int childCount(final G parent) {
-		return parent.childCount();
-	}
+	public int childCount();
 
-	public default Stream<G> children(final G parent) {
-		return parent.children(toSeq());
-	}
-
-	public default boolean isLeaf(final G gene) {
-		return gene.isLeaf();
-	}
-
-	public default TreeNode<A> toTree() {
-		return getRoot().toTreeNode(toSeq());
+	public default boolean isLeaf() {
+		return childCount() == 0;
 	}
 
 }

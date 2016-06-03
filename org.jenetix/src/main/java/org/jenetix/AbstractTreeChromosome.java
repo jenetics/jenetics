@@ -66,7 +66,7 @@ public class AbstractTreeChromosome<A> extends AbstractChromosome<AnyTreeGene<A>
 	 * @throws NullPointerException if the given {@code gene} is {@code null}
 	 */
 	public Optional<AnyTreeGene<A>> getParent(final AnyTreeGene<A> gene) {
-		return gene.getParent(this);
+		return gene.getParent(toSeq());
 	}
 
 	/**
@@ -77,7 +77,7 @@ public class AbstractTreeChromosome<A> extends AbstractChromosome<AnyTreeGene<A>
 	 * @throws NullPointerException if the given {@code gene} is {@code null}
 	 */
 	public Stream<AnyTreeGene<A>> children(final AnyTreeGene<A> gene) {
-		return gene.children(this);
+		return gene.children(toSeq());
 	}
 
 	@Override
@@ -101,7 +101,7 @@ public class AbstractTreeChromosome<A> extends AbstractChromosome<AnyTreeGene<A>
 	}
 
 	public TreeNode<A> toTreeNode() {
-		return getRoot().toTreeNode(this);
+		return getRoot().toTreeNode(toSeq());
 	}
 
 

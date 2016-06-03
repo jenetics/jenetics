@@ -22,8 +22,8 @@ package org.jenetix;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import org.jenetics.Chromosome;
 import org.jenetics.Gene;
+import org.jenetics.util.Seq;
 
 import org.jenetix.util.TreeNode;
 
@@ -39,33 +39,35 @@ public interface TreeGene<A, G extends TreeGene<A, G>> extends Gene<A, G> {
 	/**
 	 * Return the (optional) parent gene of this tree-gene.
 	 *
-	 * @param chromosome the chromosome from where to fetch the gene
+	 * @param genes the gene sequence from where to fetch the gene
 	 * @return the parent gene, if available
-	 * @throws NullPointerException if the given {@code chromosome} is
+	 * @throws NullPointerException if the given {@code genes} sequence is
 	 *        {@code null}
 	 */
-	public Optional<G> getParent(final Chromosome<? extends G> chromosome);
+	public Optional<G> getParent(final Seq<? extends G> genes);
 
 	/**
 	 * Returns the child at the specified index in this node's child array.
 	 *
 	 * @param index   an index into this node's child array
-	 * @param chromosome the chromosome from where to fetch the gene
+	 * @param genes the gene sequence from where to fetch the gene
 	 * @return the tree-gene in this node's child array at the specified index
 	 * @throws ArrayIndexOutOfBoundsException  if the {@code index} is out of
 	 *         bounds
+	 * @throws NullPointerException if the given {@code genes} sequence is
+	 *        {@code null}
 	 */
-	public G getChild(final int index, final Chromosome<? extends G> chromosome);
+	public G getChild(final int index, final Seq<? extends G> genes);
 
 	/**
 	 * Return the children stream of the {@code this} tree-gene.
 	 *
-	 * @param chromosome the chromosome from where to fetch the gene
+	 * @param genes the gene sequence from where to fetch the gene
 	 * @return the node children
-	 * @throws NullPointerException if the given {@code chromosome} is
+	 * @throws NullPointerException if the given {@code gene} sequence is
 	 *        {@code null}
 	 */
-	public Stream<G> children(final Chromosome<? extends G> chromosome);
+	public Stream<G> children(final Seq<? extends G> genes);
 
 	/**
 	 * Test whether {@code this} gene is a leaf.
@@ -87,15 +89,14 @@ public interface TreeGene<A, G extends TreeGene<A, G>> extends Gene<A, G> {
 	/**
 	 * Return a new {@link TreeNode} with represents {@code this} tree-gene.
 	 *
-	 * @param chromosome the chromosome which {@code this} tree-gene is part of
+	 * @param genes the gene sequence which {@code this} tree-gene is part of
 	 * @return a {@link TreeNode} with {@code this} tree-gene as root
-	 * @throws NullPointerException if the given {@code chromosome} is
+	 * @throws NullPointerException if the given {@code genes} sequence is
 	 *        {@code null}
 	 */
 	@SuppressWarnings("unchecked")
-	public default TreeNode<A>
-	toTreeNode(final Chromosome<? extends G> chromosome) {
-		return TreeGenes.<A, G>toTreeNode((G)this, chromosome);
+	public default TreeNode<A> toTreeNode(final Seq<? extends G> genes) {
+		return TreeGenes.<A, G>toTreeNode((G)this, genes);
 	}
 
 }

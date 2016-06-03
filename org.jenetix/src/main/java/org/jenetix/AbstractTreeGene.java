@@ -27,7 +27,7 @@ import java.util.Optional;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import org.jenetics.Chromosome;
+import org.jenetics.util.Seq;
 
 /**
  * Abstract implementation of the {@link TreeGene} interface.
@@ -67,21 +67,20 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	}
 
 	@Override
-	public Optional<G> getParent(final Chromosome<? extends G> chromosome) {
-		final Optional<Integer> index = IntStream.range(0, chromosome.length())
-			.filter(i -> chromosome.getGene(i) == this)
+	public Optional<G> getParent(final Seq<? extends G> genes) {
+		// Find the index of 'this' gene in the gene sequence.
+		final Optional<Integer> index = IntStream.range(0, genes.length())
+			.filter(i -> genes.get(i) == this)
 			.mapToObj(Integer::valueOf)
 			.findFirst();
 
-		return index.flatMap(i -> parentFor(i, chromosome));
+		return index.flatMap(i -> parentFor(i, genes));
 	}
 
 	@SuppressWarnings("unchecked")
-	private Optional<G> parentFor(
-		final int child,
-		final Chromosome<? extends G> chromosome
-	) {
-		return (Optional<G>)chromosome.stream()
+	private Optional<G>
+	parentFor(final int child, final Seq<? extends G> genes) {
+		return (Optional<G>)genes.stream()
 			.filter(g -> contains(g._children, child))
 			.findFirst();
 	}
@@ -95,18 +94,17 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	}
 
 	@Override
-	public G getChild(final int index, final Chromosome<? extends G> chromosome) {
-		return chromosome.getGene(_children[index]);
+	public G getChild(final int index, final Seq<? extends G> genes) {
+		return genes.get(_children[index]);
 	}
 
 	@Override
-	public Stream<G>
-	children(final Chromosome<? extends G> chromosome) {
-		requireNonNull(chromosome);
+	public Stream<G> children(final Seq<? extends G> genes) {
+		requireNonNull(genes);
 
 		return IntStream.of(_children)
-			.filter(i -> i >= 0 && i < chromosome.length())
-			.mapToObj(chromosome::getGene);
+			.filter(i -> i >= 0 && i < genes.length())
+			.mapToObj(genes::get);
 	}
 
 	@Override
