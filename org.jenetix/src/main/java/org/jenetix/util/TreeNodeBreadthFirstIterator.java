@@ -38,6 +38,13 @@ import java.util.Queue;
 final class TreeNodeBreadthFirstIterator<T> implements Iterator<TreeNode<T>> {
 	private final Queue<Iterator<TreeNode<T>>> _queue = new LinkedList<>();
 
+	/**
+	 * Create a new breath-first iterator from the given {@code root} element.
+	 *
+	 * @param root the root element of the tree
+	 * @throws NullPointerException if the given {@code root} node is
+	 *         {@code null}
+	 */
 	TreeNodeBreadthFirstIterator(final TreeNode<T> root) {
 		requireNonNull(root);
 		_queue.add(singletonList(root).iterator());

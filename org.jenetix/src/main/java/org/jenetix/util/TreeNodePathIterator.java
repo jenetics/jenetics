@@ -38,6 +38,13 @@ final class TreeNodePathIterator<T>
 {
 	private final Deque<TreeNode<T>> _stack = new LinkedList<>();
 
+	/**
+	 * Create an iterator between two tree nodes.
+	 *
+	 * @param ancestor the ancestor tree node
+	 * @param descendant the descendant tree node
+	 * @throws NullPointerException if one of the nodes is {@code null}
+	 */
 	TreeNodePathIterator(
 		final TreeNode<T> ancestor,
 		final TreeNode<T> descendant

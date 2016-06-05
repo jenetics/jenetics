@@ -36,6 +36,13 @@ final class TreeNodePostorderIterator<T> implements Iterator<TreeNode<T>> {
 	private final Iterator<TreeNode<T>> _children;
 	private Iterator<TreeNode<T>> _subtree;
 
+	/**
+	 * Create a new postorder iterator of the given tree {@code root}.
+	 *
+	 * @param root the root node of the tree
+	 * @throws NullPointerException if the given {@code root} node is
+	 *        {@code null}
+	 */
 	TreeNodePostorderIterator(final TreeNode<T> root) {
 		_root = requireNonNull(root);
 		_children = _root.childIterator();
