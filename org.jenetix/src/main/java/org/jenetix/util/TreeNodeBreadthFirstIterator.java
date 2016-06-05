@@ -27,7 +27,13 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 /**
- * Breath first iterator of the tree.
+ * Breadth-first search (BFS) traversing of the tree. It starts at the tree root
+ * and explores the neighbor nodes first, before moving to the next level
+ * neighbors.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
 final class TreeNodeBreadthFirstIterator<T> implements Iterator<TreeNode<T>> {
 	private final Queue<Iterator<TreeNode<T>>> _queue = new LinkedList<>();
@@ -46,14 +52,15 @@ final class TreeNodeBreadthFirstIterator<T> implements Iterator<TreeNode<T>> {
 	public TreeNode<T> next() {
 		final Iterator<TreeNode<T>> it = _queue.peek();
 		final TreeNode<T> node = it.next();
-		final Iterator<TreeNode<T>> children = node.childIterator();
-
 		if (!it.hasNext()) {
 			_queue.poll();
 		}
+
+		final Iterator<TreeNode<T>> children = node.childIterator();
 		if (children.hasNext()) {
 			_queue.add(children);
 		}
+
 		return node;
 	}
 

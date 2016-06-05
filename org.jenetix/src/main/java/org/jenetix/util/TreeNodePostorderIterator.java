@@ -26,6 +26,10 @@ import java.util.Iterator;
 
 /**
  * Postorder iterator of the tree.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
 final class TreeNodePostorderIterator<T> implements Iterator<TreeNode<T>> {
 	private TreeNode<T> _root;
@@ -45,8 +49,7 @@ final class TreeNodePostorderIterator<T> implements Iterator<TreeNode<T>> {
 
 	@Override
 	public TreeNode<T> next() {
-		TreeNode<T> result;
-
+		final TreeNode<T> result;
 		if (_subtree.hasNext()) {
 			result = _subtree.next();
 		} else if (_children.hasNext()) {

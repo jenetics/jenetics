@@ -25,10 +25,13 @@ import static java.util.Objects.requireNonNull;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.NoSuchElementException;
 
 /**
  * Path (between nodes) iterator.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
 final class TreeNodePathIterator<T>
 	implements Iterator<TreeNode<T>>
@@ -47,7 +50,7 @@ final class TreeNodePathIterator<T>
 			current = current.getParent().orElseThrow(() ->
 				new IllegalArgumentException(format(
 					"Node %s is not an ancestor of %s.",
-					ancestor, descendant
+					ancestor.getValue(), descendant.getValue()
 				))
 			);
 
@@ -62,10 +65,6 @@ final class TreeNodePathIterator<T>
 
 	@Override
 	public TreeNode<T> next() {
-		if (_stack.isEmpty()) {
-			throw new NoSuchElementException("No more elements.");
-		}
-
 		return _stack.pop();
 	}
 

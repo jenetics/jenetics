@@ -28,6 +28,10 @@ import java.util.LinkedList;
 
 /**
  * Preorder iterator of the tree.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
 final class TreeNodePreorderIterator<T> implements Iterator<TreeNode<T>> {
 	private final Deque<Iterator<TreeNode<T>>> _deque = new LinkedList<>();
@@ -46,14 +50,15 @@ final class TreeNodePreorderIterator<T> implements Iterator<TreeNode<T>> {
 	public TreeNode<T> next() {
 		final Iterator<TreeNode<T>> it = _deque.peek();
 		final TreeNode<T> node = it.next();
-		final Iterator<TreeNode<T>> children = node.childIterator();
-
 		if (!it.hasNext()) {
 			_deque.pop();
 		}
+
+		final Iterator<TreeNode<T>> children = node.childIterator();
 		if (children.hasNext()) {
 			_deque.push(children);
 		}
+
 		return node;
 	}
 }

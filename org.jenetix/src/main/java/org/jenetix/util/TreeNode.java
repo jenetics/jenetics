@@ -23,9 +23,9 @@ import static java.util.Objects.requireNonNull;
 import static java.util.Spliterators.spliteratorUnknownSize;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -51,7 +51,7 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 
 	private T _value;
 	private TreeNode<T> _parent;
-	private final List<TreeNode<T>> _children = new LinkedList<>();
+	private final List<TreeNode<T>> _children = new ArrayList<>();
 
 	/**
 	 * Create a new tree node with no parent and children, but with the given
@@ -447,7 +447,7 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 		final TreeNode<T> node,
 		final int depth
 	) {
-		MSeq<TreeNode<T>> path;
+		final MSeq<TreeNode<T>> path;
 		if (node == null) {
 			path = depth == 0 ? MSeq.empty() : MSeq.ofLength(depth);
 		} else {
@@ -891,7 +891,7 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 	public Optional<TreeNode<T>> nextLeaf() {
 		return nextSibling()
 			.map(s -> Optional.of(s.firstLeaf()))
-			.orElse(getParent().flatMap(TreeNode::nextLeaf));
+			.orElseGet(() -> getParent().flatMap(TreeNode::nextLeaf));
 	}
 
 	/**
@@ -914,7 +914,7 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 	public Optional<TreeNode<T>> previousLeaf() {
 		return previousSibling()
 			.map(s -> Optional.of(s.lastLeaf()))
-			.orElse(getParent().flatMap(TreeNode::previousLeaf));
+			.orElseGet(() -> getParent().flatMap(TreeNode::previousLeaf));
 	}
 
 	/**

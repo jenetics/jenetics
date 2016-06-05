@@ -236,6 +236,16 @@ public class TreeNodeTest {
 	}
 
 	@Test
+	public void size() {
+		final TreeNode<Integer> tree = newTree(6, new Random(123));
+
+		Assert.assertEquals(
+			tree.size(),
+			(int)tree.breathFirstStream().count()
+		);
+	}
+
+	@Test
 	public void preorderIterator() {
 		final TreeNode<Integer> tree = newTree(5, new Random(123));
 		final DefaultMutableTreeNode stree = newSwingTree(5, new Random(123));
