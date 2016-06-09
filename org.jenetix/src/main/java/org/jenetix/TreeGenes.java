@@ -96,7 +96,7 @@ final class TreeGenes {
 	 * final ISeq<MyTreeGene> linearizedTree = root
 	 *     .breathFirstStream()
 	 *     // It is assumed that 'MyTreeGene' has a (Integer, int[]) constructor.
-	 *     .collect(toTreeGene(MyTreeGene::new));
+	 *     .collect(toTreeGeneISeq(MyTreeGene::new));
 	 * }</pre>
 	 *
 	 * @param newGene the factory function, which creates a new tree-gene
@@ -109,7 +109,7 @@ final class TreeGenes {
 	 * @throws NullPointerException if the given gene factory is {@code null}
 	 */
 	static <A, G extends TreeGene<A, G>> Collector<TreeNode<A>, ?, ISeq<G>>
-	toTreeGene(final BiFunction<A, int[], G> newGene) {
+	toTreeGeneISeq(final BiFunction<A, int[], G> newGene) {
 		requireNonNull(newGene);
 
 		return Collector.of(

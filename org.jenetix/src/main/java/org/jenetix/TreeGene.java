@@ -20,9 +20,12 @@
 package org.jenetix;
 
 import java.util.Optional;
+import java.util.function.BiFunction;
+import java.util.stream.Collector;
 import java.util.stream.Stream;
 
 import org.jenetics.Gene;
+import org.jenetics.util.ISeq;
 import org.jenetics.util.Seq;
 
 import org.jenetix.util.TreeNode;
@@ -97,6 +100,41 @@ public interface TreeGene<A, G extends TreeGene<A, G>> extends Gene<A, G> {
 	@SuppressWarnings("unchecked")
 	public default TreeNode<A> toTreeNode(final Seq<? extends G> genes) {
 		return TreeGenes.<A, G>toTreeNode((G)this, genes);
+	}
+
+	/**
+	 * Return a collector, which collects a {@link TreeNode} stream into a
+	 * sequence of {@link TreeGene}s. The collection process is also referred as
+	 * <em>node linearization</em>.
+	 *
+	 * <pre>{@code
+	 * final TreeNode<Integer> root =
+	 * TreeNode.of(0)
+	 *     .add(TreeNode.of(-1)
+	 *         .add(TreeNode.of(-2))
+	 *         .add(TreeNode.of(-3)))
+	 *     .add(TreeNode.of(1)
+	 *         .add(TreeNode.of(2))
+	 *          .add(TreeNode.of(3)));
+	 *
+	 * final ISeq<MyTreeGene> linearizedTree = root
+	 *     .breathFirstStream()
+	 *     // It is assumed that 'MyTreeGene' has a (Integer, int[]) constructor.
+	 *     .collect(toLinearizedGenes(MyTreeGene::new));
+	 * }</pre>
+	 *
+	 * @param newGene the factory function, which creates a new tree-gene
+	 *        instance from the given allele and children indexes. The index
+	 *        values fits the the returned tree-gene sequence.
+	 * @param <A> the allele type
+	 * @param <G> the gene type
+	 * @return a linearized {@code TreeGene} representation of the
+	 *         <em>collected</em> {@code TreeNode} stream
+	 * @throws NullPointerException if the given gene factory is {@code null}
+	 */
+	public static <A, G extends TreeGene<A, G>> Collector<TreeNode<A>, ?, ISeq<G>>
+	toLinearizedGenes(final BiFunction<A, int[], G> newGene) {
+		return TreeGenes.toTreeGeneISeq(newGene);
 	}
 
 }

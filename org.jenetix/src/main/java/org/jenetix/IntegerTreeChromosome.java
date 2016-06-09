@@ -17,38 +17,38 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package org.jenetix;
+
+import org.jenetics.AbstractChromosome;
+import org.jenetics.Chromosome;
+import org.jenetics.NumericChromosome;
+import org.jenetics.util.ISeq;
 
 /**
- * Chromosome interface for {@code BoundedGene}s.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
- * @since 1.6
+ * @since !__version__!
  */
-public interface BoundedChromosome<
-	A extends Comparable<? super A>,
-	G extends BoundedGene<A, G>
->
-	extends Chromosome<G>
+public class IntegerTreeChromosome
+	extends AbstractChromosome<IntegerTreeGene>
+	implements
+		TreeChromosome<Integer, IntegerTreeGene>,
+		NumericChromosome<Integer, IntegerTreeGene>
 {
 
-	/**
-	 * Return the minimum value of this {@code BoundedChromosome}.
-	 *
-	 * @return the minimum value of this {@code BoundedChromosome}.
-	 */
-	public default A getMin() {
-		return getGene().getMin();
+	protected IntegerTreeChromosome(final ISeq<? extends IntegerTreeGene> genes) {
+		super(genes);
 	}
 
-	/**
-	 * Return the maximum value of this {@code BoundedChromosome}.
-	 *
-	 * @return the maximum value of this {@code BoundedChromosome}.
-	 */
-	public default A getMax() {
-		return getGene().getMax();
+	@Override
+	public Chromosome<IntegerTreeGene>
+	newInstance(final ISeq<IntegerTreeGene> genes) {
+		return null;
+	}
+
+	@Override
+	public Chromosome<IntegerTreeGene> newInstance() {
+		return null;
 	}
 
 }
