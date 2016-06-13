@@ -179,7 +179,7 @@ public final class IntegerTreeGene
 	 *         .add(TreeNode.of(-3)))
 	 *     .add(TreeNode.of(1)
 	 *         .add(TreeNode.of(2))
-	 *          .add(TreeNode.of(3)));
+	 *         .add(TreeNode.of(3)));
 	 *
 	 * final ISeq<IntegerTreeGene> linearizedTree = root
 	 *     .breathFirstStream()
