@@ -23,10 +23,8 @@ import static java.lang.Math.log10;
 import static java.lang.Math.max;
 import static java.lang.Math.pow;
 import static java.lang.Math.round;
-import static java.lang.String.format;
 import static org.jenetics.tool.evaluation.engines.KNAPSACK;
 
-import java.time.Duration;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
@@ -53,8 +51,7 @@ public class KnapsackPopulationSize {
 	private static final Params<Tuple2<Long, Integer>> PARAMS = Params.of(
 		"Generation/Population size",
 		IntStream.rangeClosed(1, SIZE)
-			.mapToLong(i -> max((long)pow(BASE, i), i))
-			.mapToObj(ps -> format("%s:%s", round(max(MAX/ps, 1)), ps))
+			.mapToObj(i -> Tuple2.of(round(max(MAX/i, 1)), i))
 			.collect(ISeq.toISeq())
 	);
 

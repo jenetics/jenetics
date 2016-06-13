@@ -30,7 +30,7 @@ import org.jenetics.Phenotype;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
 
-@SuppressWarnings({"raw", "unchecked"})
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class MixedGenotype {
 
 	private static final Genotype ENCODING = Genotype.of(
