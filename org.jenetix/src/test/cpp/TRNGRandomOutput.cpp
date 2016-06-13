@@ -35,7 +35,7 @@
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-07-19 $</em>
+ * @version 3.0
  */
 
 template<class Random, typename seed_type, typename signed_seed_type>
