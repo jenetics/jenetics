@@ -73,7 +73,7 @@ final class TreeGenes {
 
 		gene.children(chromosome).forEachOrdered(child -> {
 			final TreeNode<A> node = TreeNode.of();
-			parent.add(node);
+			parent.attach(node);
 			TreeGenes.<A, G>fill(child, node, chromosome);
 		});
 	}

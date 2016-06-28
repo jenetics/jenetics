@@ -21,6 +21,7 @@ package org.jenetix.util;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.Spliterators.spliteratorUnknownSize;
+import static org.jenetics.internal.math.random.nextInt;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -29,12 +30,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Random;
+import java.util.function.IntSupplier;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import org.jenetics.util.Copyable;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.IntRange;
 import org.jenetics.util.MSeq;
 
 /**
@@ -46,12 +50,19 @@ import org.jenetics.util.MSeq;
  * @version !__version__!
  * @since !__version__!
  */
-public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
+public final class TreeNode<T>
+	implements
+		Iterable<TreeNode<T>>,
+		Copyable<TreeNode<T>>,
+		Serializable
+{
 	private static final long serialVersionUID = -1L;
 
 	private T _value;
 	private TreeNode<T> _parent;
 	private final List<TreeNode<T>> _children = new ArrayList<>();
+
+	private int _size = 1;
 
 	/**
 	 * Create a new tree node with no parent and children, but with the given
@@ -103,7 +114,7 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 	 *
 	 * @param parent this node's new parent
 	 */
-	public void setParent(final TreeNode<T> parent) {
+	void setParent(final TreeNode<T> parent) {
 		_parent = parent;
 	}
 
@@ -134,7 +145,8 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 	 * @return the number of nodes of {@code this} node (sub-tree)
 	 */
 	public int size() {
-		return (int)breathFirstStream().count();
+		//return (int)breathFirstStream().count();
+		return _size;
 	}
 
 	/**
@@ -161,8 +173,15 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 		if (child._parent != null) {
 			child._parent.remove(child);
 		}
+
 		child.setParent(this);
 		_children.add(index, child);
+
+		TreeNode<T> parent = this;
+		while (parent != null) {
+			parent._size += child.size();
+			parent = parent._parent;
+		}
 
 		return this;
 	}
@@ -178,7 +197,18 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 	 *         bounds
 	 */
 	public TreeNode<T> remove(final int index) {
-		_children.remove(index).setParent(null);
+		final TreeNode<T> child = _children.remove(index);
+		assert child._parent == this;
+
+		TreeNode<T> parent = this;
+		while (parent != null) {
+			parent._size -= child.size();
+			parent = parent._parent;
+		}
+
+		child.setParent(null);
+		//_size -= child.size();
+
 		return this;
 	}
 
@@ -221,14 +251,18 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 	 **************************************************************************/
 
 	/**
-	 * Removes the subtree rooted at {@code this} node from the tree, giving
+	 * Detaches the subtree rooted at {@code this} node from the tree, giving
 	 * {@code this} node a {@code null} parent. Does nothing if {@code this}
 	 * node is the root of its tree.
+	 *
+	 * @return {@code this}
 	 */
-	public void removeFromParent() {
+	public TreeNode<T> detach() {
 		if (_parent != null) {
 			_parent.remove(this);
 		}
+
+		return this;
 	}
 
 	/**
@@ -268,7 +302,7 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 	 * @return {@code this} tree-node, for method chaining
 	 * @throws NullPointerException if the given {@code child} is {@code null}
 	 */
-	public TreeNode<T> add(final TreeNode<T> child) {
+	public TreeNode<T> attach(final TreeNode<T> child) {
 		requireNonNull(child);
 
 		if (child._parent == this) {
@@ -610,6 +644,11 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 		return new TreeNodeBreadthFirstIterator<>(this);
 	}
 
+	@Override
+	public Iterator<TreeNode<T>> iterator() {
+		return new TreeNodeBreadthFirstIterator<>(this);
+	}
+
 	/**
 	 * Return a stream that traverses the subtree rooted at {@code this} node in
 	 * breadth-first order. The first node returned by the stream is
@@ -941,7 +980,7 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 	private static <T> void fill(final TreeNode<T> source, final TreeNode<T> target) {
 		source.childStream().forEachOrdered(child -> {
 			final TreeNode<T> targetChild = TreeNode.of(child.getValue());
-			target.add(targetChild);
+			target.attach(targetChild);
 			fill(child, targetChild);
 		});
 	}
@@ -1008,13 +1047,16 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 			out.append("  ");
 		}
 
-		out.append("+- ").append(node.getValue()).append("\n");
+		out.append("+- ").append(node.getValue() + ": " + node.s() + " : " + node.size()).append("\n");
 		IntStream.range(0, node.childCount())
 			.forEach(i -> toString(node.getChild(i), out, level + 1));
 
 		return out;
 	}
 
+	private int s() {
+		return (int)breathFirstStream().count();
+	}
 
 	/* *************************************************************************
 	 * Static factory methods.
@@ -1039,6 +1081,45 @@ public final class TreeNode<T> implements Copyable<TreeNode<T>>, Serializable  {
 	 */
 	public static <T> TreeNode<T> of() {
 		return new TreeNode<>(null);
+	}
+
+	public static <T> TreeNode<T> ofShape(
+		final IntRange childCount,
+		final IntRange leafLevel,
+		final Random random
+	) {
+		return ofShape(() -> nextInt(random, childCount), leafLevel, random);
+	}
+
+	public static <T> TreeNode<T> ofShape(
+		final IntSupplier childCount,
+		final IntRange leafLevel,
+		final Random random
+	) {
+		final TreeNode<T> root = TreeNode.of();
+		addChildren(root, 0, childCount, leafLevel, random);
+		return root;
+	}
+
+	private static <T> void addChildren(
+		final TreeNode<T> node,
+		final int nodeLevel,
+		final IntSupplier childCount,
+		final IntRange leafLevel,
+		final Random random
+	) {
+		assert node.level() == nodeLevel;
+
+		for (int i = 0, n = childCount.getAsInt(); i < n; ++i) {
+			final TreeNode<T> child = TreeNode.of();
+			node.attach(child);
+
+			final int d = nextInt(random, leafLevel);
+
+			if (nodeLevel < d) {
+				addChildren(child, nodeLevel + 1, childCount, leafLevel, random);
+			}
+		}
 	}
 
 }

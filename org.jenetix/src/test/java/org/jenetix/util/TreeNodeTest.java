@@ -39,6 +39,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import org.jenetics.util.ISeq;
+import org.jenetics.util.IntRange;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -126,7 +127,7 @@ public class TreeNodeTest {
 				fill(child, level - 1, random);
 			}
 
-			node.add(child);
+			node.attach(child);
 		}
 	}
 
@@ -152,6 +153,19 @@ public class TreeNodeTest {
 
 			node.add(child);
 		}
+	}
+
+	@Test
+	public void ofShape() {
+		final Random random = new Random();
+		final TreeNode<Integer> tree = TreeNode.ofShape(
+			IntRange.of(1, 2),
+			IntRange.of(2, 3),
+			random
+		);
+		tree.breathFirstStream().forEach(n -> n.setValue(random.nextInt()));
+
+		System.out.println(tree);
 	}
 
 	@Test
@@ -212,6 +226,23 @@ public class TreeNodeTest {
 	}
 
 	@Test
+	public void detach() {
+		final TreeNode<Integer> tree = TreeNode.of(0)
+			.attach(TreeNode.of(1)
+				.attach(TreeNode.of(3))
+				.attach(TreeNode.of(4)))
+			.attach(TreeNode.of(2)
+				.attach(TreeNode.of(5))
+				.attach(TreeNode.of(6)));
+
+		Assert.assertEquals(tree.size(), 7);
+
+		final TreeNode<Integer> detached = tree.getChild(1).detach();
+		Assert.assertEquals(tree.size(), 4);
+		Assert.assertEquals(detached.size(), 3);
+	}
+
+	@Test
 	public void copy() {
 		final TreeNode<Integer> tree = newTree(6, new Random(123));
 		final TreeNode<Integer> copy = tree.copy();
@@ -237,8 +268,44 @@ public class TreeNodeTest {
 
 	@Test
 	public void size() {
-		final TreeNode<Integer> tree = newTree(6, new Random(123));
+		final TreeNode<Integer> tree = newTree(2, new Random(123));
+		checkTreeSize(tree);
 
+		for (int i = 0, n = tree.size(); i < n; ++i) {
+			final TreeNode<Integer> node = get(tree, i);
+			checkTreeSize(node);
+
+			final Optional<TreeNode<Integer>> parent = node.getParent();
+			node.detach();
+			checkTreeSize(node);
+			checkTreeSize(tree);
+
+			//System.out.println("" + node.size() + ":" + tree.size() + ":" + n);
+			parent.ifPresent(p -> {
+				Assert.assertEquals(node.size() + tree.size(), n);
+				p.attach(node);
+				checkTreeSize(p);
+			});
+
+			checkTreeSize(tree);
+			Assert.assertEquals(tree.size(), n);
+		}
+	}
+
+	private static <T> TreeNode<T> get(final TreeNode<T> tree, final int index) {
+		int i = 0;
+		final Iterator<TreeNode<T>> it = tree.depthFirstIterator();
+		while (it.hasNext()) {
+			final TreeNode<T> node = it.next();
+			if (i++ == index) {
+				return node;
+			}
+		}
+
+		throw new AssertionError();
+	}
+
+	private static void checkTreeSize(final TreeNode<?> tree) {
 		Assert.assertEquals(
 			tree.size(),
 			(int)tree.breathFirstStream().count()
