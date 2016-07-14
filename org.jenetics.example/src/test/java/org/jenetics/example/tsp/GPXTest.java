@@ -19,8 +19,14 @@
  */
 package org.jenetics.example.tsp;
 
+import static org.jenetics.internal.util.jaxb.context;
+import static org.jenetics.internal.util.jaxb.marshal;
+
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+
+import javax.xml.bind.Marshaller;
 
 import org.testng.annotations.Test;
 
@@ -53,5 +59,17 @@ public class GPXTest {
 		}
 	}
 	*/
+
+	public static void write(final Object object, final OutputStream out)
+		throws IOException
+	{
+		try {
+			final Marshaller marshaller = context().createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			marshaller.marshal(marshal(object), out);
+		} catch (Exception e) {
+			throw new IOException(e);
+		}
+	}
 
 }
