@@ -898,7 +898,7 @@ import org.jenetics.util.Factory;
 
 \begin_layout Plain Layout
 
-public class HelloWorld {
+public final class HelloWorld {
 \end_layout
 
 \begin_layout Plain Layout
@@ -908,7 +908,7 @@ public class HelloWorld {
 
 \begin_layout Plain Layout
 
-    private static Integer eval(Genotype<BitGene> gt) {
+    private static Integer eval(final Genotype<BitGene> gt) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -927,7 +927,7 @@ public class HelloWorld {
 
 \begin_layout Plain Layout
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -942,7 +942,7 @@ public class HelloWorld {
 
 \begin_layout Plain Layout
 
-        Factory<Genotype<BitGene>> gtf =
+        final Factory<Genotype<BitGene>> gtf =
 \end_layout
 
 \begin_layout Plain Layout
@@ -961,7 +961,7 @@ public class HelloWorld {
 
 \begin_layout Plain Layout
 
-        Engine<BitGene, Integer> engine = Engine
+        final Engine<BitGene, Integer> engine = Engine
 \end_layout
 
 \begin_layout Plain Layout
@@ -990,7 +990,7 @@ public class HelloWorld {
 
 \begin_layout Plain Layout
 
-        Genotype<BitGene> result = engine.stream()
+        final Genotype<BitGene> result = engine.stream()
 \end_layout
 
 \begin_layout Plain Layout
@@ -9506,6 +9506,244 @@ Engine
  
 \end_layout
 
+\begin_layout Standard
+The 
+\family typewriter
+IO
+\family default
+ class can also be used for serializing own JAXB
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+JAXB
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Serialization!JAXB
+\end_layout
+
+\end_inset
+
+ annotated classes.
+ Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:DataClassJAXB-serialization"
+
+\end_inset
+
+ shows how an user-defined JAXB class can be marshaled with the 
+\family typewriter
+IO
+\family default
+ helper class.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+@XmlRootElement(name = "data-class")
+\end_layout
+
+\begin_layout Plain Layout
+
+@XmlType(name = "DataClass")
+\end_layout
+
+\begin_layout Plain Layout
+
+@XmlAccessorType(XmlAccessType.FIELD)
+\end_layout
+
+\begin_layout Plain Layout
+
+public class DataClass {
+\end_layout
+
+\begin_layout Plain Layout
+
+    @XmlAttribute public String name;
+\end_layout
+
+\begin_layout Plain Layout
+
+    @XmlValue public String value;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    public DataClass(final String name, final String value) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        this.name = name;
+\end_layout
+
+\begin_layout Plain Layout
+
+        this.value = value;
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Default constructor needed by JAXB.
+\end_layout
+
+\begin_layout Plain Layout
+
+    public DataClass() {
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    public static void main(final String[] args) throws Exception {
+\end_layout
+
+\begin_layout Plain Layout
+
+        // Registering the class before serialization.
+\end_layout
+
+\begin_layout Plain Layout
+
+        IO.JAXB.register(DataClass.class);
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\end_layout
+
+\begin_layout Plain Layout
+
+        final DataClass data = 
+\end_layout
+
+\begin_layout Plain Layout
+
+            new DataClass("some name", "some value");
+\end_layout
+
+\begin_layout Plain Layout
+
+        IO.jaxb.write(data, System.out);
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:DataClassJAXB-serialization"
+
+\end_inset
+
+
+\family typewriter
+\emph on
+DataClass
+\family default
+\emph default
+ JAXB serialization
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The output of the marshaled 
+\family typewriter
+DataClass
+\family default
+ looks like expected.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+fontsize{6.8}{8}
+\backslash
+ttfamily}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstinputlisting[language=XML]{../resources/code/DataClass.xml}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+footnotesize}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsection
 Utility classes
 \end_layout
@@ -14098,10 +14336,10 @@ codecs
 \end_layout
 
 \begin_layout Subsubsection
-Scalar codecs
+Scalar codec
 \begin_inset CommandInset label
 LatexCommand label
-name "sub:Scalar-codecs"
+name "sub:Scalar-codec"
 
 \end_inset
 
@@ -14110,7 +14348,17 @@ name "sub:Scalar-codecs"
 status collapsed
 
 \begin_layout Plain Layout
-Scalar codecs
+Scalar codec
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Codec!Scalar
 \end_layout
 
 \end_inset
@@ -14311,10 +14559,10 @@ class Main {
 \end_layout
 
 \begin_layout Subsubsection
-Vector codecs
+Vector codec
 \begin_inset CommandInset label
 LatexCommand label
-name "sub:Vector-codecs"
+name "sub:Vector-codec"
 
 \end_inset
 
@@ -14323,7 +14571,17 @@ name "sub:Vector-codecs"
 status collapsed
 
 \begin_layout Plain Layout
-Vector codecs
+Vector codec
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Codec!Vector
 \end_layout
 
 \end_inset
@@ -14577,12 +14835,41 @@ Subset codec
 \end_inset
 
 
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Codec!Subset
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-The subset Codec can be used for problems where it is required to find the
- best subset from given basic set.
- This Codec can easily implemented with the use of a BitChromosome, as shown
+There are currently two kinds of subset codecs you can choose from: finding
+ subsets with 
+\emph on
+variable
+\emph default
+ size and with 
+\emph on
+fixed
+\emph default
+ size.
+\end_layout
+
+\begin_layout Paragraph
+Variable-sized subsets
+\end_layout
+
+\begin_layout Standard
+A Codec for 
+\emph on
+variable-sized
+\emph default
+ subsets can be easily implemented with the use of a BitChromosome, as shown
  in listing 
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -14803,6 +15090,560 @@ class Main {
 
 \end_layout
 
+\begin_layout Paragraph
+Fixed-size subsets
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The algorithm for choosing subsets based on a FORTRAN77 version, originally
+ implemented by Albert Nijenhuis, Herbert Wilf.
+ The actual Java implementation is based on the C++ version by John Burkardt.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Nijenhuis1978"
+
+\end_inset
+
+, 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "JSSv068c01"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The second kind of subset codec allows you to find the 
+\emph on
+best
+\emph default
+ subset of a given, fixed size.
+ A classical usage for this encoding is the Subset sum problem
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Subset_sum_problem
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+: 
+\emph on
+
+\begin_inset Newline newline
+\end_inset
+
+Given a set (or multi-set) of integers, is there a non-empty subset whose
+ sum is zero? For example, given the set 
+\begin_inset Formula $\left\{ -7,-3,-2,5,8\right\} $
+\end_inset
+
+, the answer is yes because the subset 
+\begin_inset Formula $\left\{ -3,\text{-}2,5\right\} $
+\end_inset
+
+ sums to zero.
+ The problem is NP-complete
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+
+\emph on
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/NP-completeness
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public class SubsetSum
+\end_layout
+
+\begin_layout Plain Layout
+
+    implements Problem<ISeq<Integer>, EnumGene<Integer>, Integer> 
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    private final ISeq<Integer> _basicSet;
+\end_layout
+
+\begin_layout Plain Layout
+
+    private final int _size;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	public SubsetSum(ISeq<Integer> basicSet, int size) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        _basicSet = basicSet;
+\end_layout
+
+\begin_layout Plain Layout
+
+        _size = size;
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	@Override
+\end_layout
+
+\begin_layout Plain Layout
+
+    public Function<ISeq<Integer>, Integer> fitness() {
+\end_layout
+
+\begin_layout Plain Layout
+
+        return subset -> abs(
+\end_layout
+
+\begin_layout Plain Layout
+
+            subset.stream().mapToInt(Integer::intValue).sum());
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	@Override
+\end_layout
+
+\begin_layout Plain Layout
+
+    public Codec<ISeq<Integer>, EnumGene<Integer>> codec() {
+\end_layout
+
+\begin_layout Plain Layout
+
+        return codecs.ofSubSet(_basicSet, _size);
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Permutation codec
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Permutation-codec"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Permutation codec
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Codec!Permutation
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This kind of codec can be used for problems where optimal solution depends
+ on the order of the input elements.
+ A classical example for such problems is the Knapsack problem (chapter
+ 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Traveling-salesman-example"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static <T> Codec<T[], EnumGene<T>> ofPermutation(T...
+ alleles) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return Codec.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+        Genotype.of(PermutationChromosome.of(alleles)),
+\end_layout
+
+\begin_layout Plain Layout
+
+        gt -> gt.getChromosome().toSeq().stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .map(EnumGene::getAllele)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .toArray(length -> (T[])Array.newInstance(
+\end_layout
+
+\begin_layout Plain Layout
+
+                 alleles[0].getClass(), length))
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+Codec
+\family default
+ factory method: 
+\family typewriter
+ofPermutation
+\family default
+
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Codec-factory-method-ofPermutation"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Codec-factory-method-ofPermutation"
+
+\end_inset
+
+ shows the implementation of a permutation codec, where the order of the
+ given alleles influences the value of the fitness function.
+ An alternate formulation of the traveling salesman problem is shown in
+ the following listing.
+ It uses the permutation codec in listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Codec-factory-method-ofPermutation"
+
+\end_inset
+
+ and uses
+\family typewriter
+ java\SpecialChar \-
+.awt\SpecialChar \-
+.geom
+\family default
+ 
+\family typewriter
+Point
+\family default
+s for representing the city locations.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public class TSM {
+\end_layout
+
+\begin_layout Plain Layout
+
+    // The locations to visit.
+\end_layout
+
+\begin_layout Plain Layout
+
+    static final ISeq<Point> POINTS = ISeq.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+        new Point(0, 0), new Point(1, 2), new Point(4, 5) // ...
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // The permutation codec.
+\end_layout
+
+\begin_layout Plain Layout
+
+    static final Codec<ISeq<Point>, EnumGene<Point>> CODEC =
+\end_layout
+
+\begin_layout Plain Layout
+
+        codecs.ofPermutation(POINTS);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // The fitness function (in the problem domain).
+\end_layout
+
+\begin_layout Plain Layout
+
+    static double dist(final ISeq<Point> p) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        return IntStream.range(0, p.length)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .mapToDouble(i -> p.get(i)
+\end_layout
+
+\begin_layout Plain Layout
+
+                .distance(p.get(i + i%p.length())))
+\end_layout
+
+\begin_layout Plain Layout
+
+            .sum();
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // The evolution engine.
+\end_layout
+
+\begin_layout Plain Layout
+
+    static final Engine<EnumGene<Point>, Double> ENGINE = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+        .builder(TSM::dist, CODEC)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .optimize(Optimize.MINIMUM)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .build();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Find the solution.
+\end_layout
+
+\begin_layout Plain Layout
+
+    public static void main(final String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        final ISeq<Point> result = CODEC.decoder().apply(
+\end_layout
+
+\begin_layout Plain Layout
+
+            ENGINE.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+                .limit(10)
+\end_layout
+
+\begin_layout Plain Layout
+
+                .collect(EvolutionResult.toBestGenotype())
+\end_layout
+
+\begin_layout Plain Layout
+
+        );
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        System.out.println(result);
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsubsection
 Composite codec
 \end_layout
@@ -14868,7 +15709,6 @@ static <G extends Gene<?, G>, A, B, T> Codec<T, G> of(
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-
 Composite 
 \family typewriter
 Codec
@@ -15300,6 +16140,300 @@ final Codec<Triple<Long, Long, Long>, LongGene>
 \end_inset
 
 
+\end_layout
+
+\begin_layout Subsection
+Problem
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Problem
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+Problem
+\family default
+ interface is a further abstraction level, which allows to 
+\emph on
+bind
+\emph default
+ the problem encoding and the fitness function into one class.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface Problem<
+\end_layout
+
+\begin_layout Plain Layout
+
+    T,
+\end_layout
+
+\begin_layout Plain Layout
+
+    G extends Gene<?, G>,
+\end_layout
+
+\begin_layout Plain Layout
+
+    C extends Comparable<? super C>
+\end_layout
+
+\begin_layout Plain Layout
+
+> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    public Function<T, C> fitness();
+\end_layout
+
+\begin_layout Plain Layout
+
+    public Codec<T, G> codec();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+Problem
+\family default
+ interface
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Problem-interface"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Problem-interface"
+
+\end_inset
+
+ shows the 
+\family typewriter
+Problem
+\family default
+ interface.
+ The generic type 
+\family typewriter
+T
+\family default
+ represents the 
+\emph on
+native
+\emph default
+ argument type of the fitness function and 
+\family typewriter
+C
+\family default
+ the 
+\family typewriter
+Comparable
+\family default
+ result of the fitness function.
+ 
+\family typewriter
+G
+\family default
+ is the 
+\family typewriter
+Gene
+\family default
+ type, which is used by the evolution 
+\family typewriter
+Engine
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+// Definition of the Ones counting problem.
+\end_layout
+
+\begin_layout Plain Layout
+
+final Problem<ISeq<BitGene>, BitGene, Integer> ONES_COUNTING =
+\end_layout
+
+\begin_layout Plain Layout
+
+    Problem.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+        // Fitness Function<ISeq<BitGene>, Integer>
+\end_layout
+
+\begin_layout Plain Layout
+
+        genes -> (int)genes.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .filter(BitGene::getBit).count(),
+\end_layout
+
+\begin_layout Plain Layout
+
+        Codec.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+            // Genotype Factory<Genotype<BitGene>>
+\end_layout
+
+\begin_layout Plain Layout
+
+            Genotype.of(BitChromosome.of(20, 0.15)),
+\end_layout
+
+\begin_layout Plain Layout
+
+            // Genotype conversion
+\end_layout
+
+\begin_layout Plain Layout
+
+            // Function<Genotype<BitGene>, <BitGene>>
+\end_layout
+
+\begin_layout Plain Layout
+
+            gt -> gt.getChromosome().toSeq()
+\end_layout
+
+\begin_layout Plain Layout
+
+        )
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+// Engine creation for Problem solving.
+\end_layout
+
+\begin_layout Plain Layout
+
+final Engine<BitGene, Integer> engine = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+    .bulder(ONES_COUNTING)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .populationSize(150)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .survivorsSelector(newTournamentSelector<>(5))
+\end_layout
+
+\begin_layout Plain Layout
+
+    .offspringSelector(new RouletteWheelSelector<>())
+\end_layout
+
+\begin_layout Plain Layout
+
+    .alterers(
+\end_layout
+
+\begin_layout Plain Layout
+
+        new Mutator<>(0.03),
+\end_layout
+
+\begin_layout Plain Layout
+
+        new SinglePointCrossover<>(0.125))
+\end_layout
+
+\begin_layout Plain Layout
+
+    .build();
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The listing above shows how a new 
+\family typewriter
+Engine
+\family default
+ is created by using a predefined 
+\family typewriter
+Problem
+\family default
+ instance.
+ This allows the complete decoupling of problem and 
+\family typewriter
+Engine
+\family default
+ definition.
 \end_layout
 
 \begin_layout Subsection
@@ -15871,12 +17005,12 @@ This kind of termination method should always be applied---usually additional
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/diagram/FixedGenerationTermination.svg
+	filename ../resources/diagram/Knapsack-fixed_generation_termination.svg
 	lyxscale 80
 	width 100text%
 
@@ -16244,7 +17378,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/diagram/SteadyFitnessTermination.svg
+	filename ../resources/diagram/Knapsack-steady_fitness_termination.svg
 	lyxscale 80
 	width 100text%
 
@@ -16407,7 +17541,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/diagram/ExecutionTimeTermination.svg
+	filename ../resources/diagram/Knapsack-execution_time_termination.svg
 	lyxscale 80
 	width 100text%
 
@@ -16503,7 +17637,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/diagram/FitnessThresholdTermination.svg
+	filename ../resources/diagram/Knapsack-fitness_threshold_termination.svg
 	lyxscale 80
 	width 100text%
 
@@ -16567,7 +17701,7 @@ easily
 
 \begin_layout Standard
 \begin_inset Note Comment
-status open
+status collapsed
 
 \begin_layout Subsubsection
 Fitness convergence
@@ -16612,8 +17746,167 @@ A termination method that stops the evolution when a user-specified percentage
 
 \end_layout
 
+\begin_layout Subsection
+Evolution performance
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+Evolution!performance
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This section contains an empirical 
+\emph on
+proof
+\emph default
+, that 
+\emph on
+evolutionary
+\emph default
+ selectors deliver significantly better fitness results than a random search.
+ The 
+\family typewriter
+Monte\SpecialChar \-
+Carlo\SpecialChar \-
+Selector
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Monte Carlo selector
+\end_layout
+
+\end_inset
+
+
+\family default
+ is used for creating the comparison (random search) fitness values.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/diagram/Knapsack-selector_comparison.svg
+	lyxscale 80
+	width 100text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Selector-performance-Knapsack"
+
+\end_inset
+
+Selector-performance (Knapsack)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Diagram 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Selector-performance-Knapsack"
+
+\end_inset
+
+ shows the 
+\emph on
+evolution
+\emph default
+ performance of the 
+\family typewriter
+Selec\SpecialChar \-
+tor
+\family default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The termination tests are using a 
+\family typewriter
+Tournament\SpecialChar \-
+Selector
+\family default
+, with tournament-size 5, for selecting the survivors, and a 
+\family typewriter
+Roulette\SpecialChar \-
+Wheel\SpecialChar \-
+Selector
+\family default
+ for selecting the offspring.
+\end_layout
+
+\end_inset
+
+ used by the examples in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Termination"
+
+\end_inset
+
+.
+ The lower blue line shows the (mean) fitness values of the 
+\emph on
+Knapsack
+\emph default
+ problem when using the 
+\family typewriter
+Monte\SpecialChar \-
+Carlo\SpecialChar \-
+Selector
+\family default
+ for selecting the survivors and offspring population.
+ It can be easily seen, that the performance of the 
+\emph on
+real
+\emph default
+ evolutionary 
+\family typewriter
+Selector
+\family default
+s is much better than a random search.
+\end_layout
+
 \begin_layout Section
 Internals
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Internals
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -16649,6 +17942,26 @@ internal
 
 \begin_layout Subsection
 PRNG testing
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+PRNG testing
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Random!testing
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -17016,10 +18329,10 @@ Seeding
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
-Random!Seeding
+Random!seeding
 \end_layout
 
 \end_inset
@@ -17878,6 +19191,674 @@ How does this method perform on operating systems other than Linux?
 How does this method perform on other JVM implementations?
 \end_layout
 
+\begin_layout Section
+Incubation
+\end_layout
+
+\begin_layout Standard
+This section describes the classes in the 
+\emph on
+not-yet
+\emph default
+ released modules.
+ Incubating features and experimental genetic operators will be implemented
+ in this modules.
+ If you find this classes useful, you must build the module yourself, since
+ they are not yet available in the global maven repository.
+ With
+\end_layout
+
+\begin_layout LyX-Code
+$ ./gradlew 
+\emph on
+<module>
+\emph default
+:jar
+\end_layout
+
+\begin_layout Standard
+it is possible to create a module JAR which can be added to your project
+ classpath.
+ Be aware that interface and/or implementation of incubating modules can
+ be changed without noticing.
+\end_layout
+
+\begin_layout Standard
+Currently incubation modules:
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+org.jenetics.tool
+\family default
+ Contains utility classes for measuring the evolution performance.
+\family typewriter
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://jenetics.io/javadoc/org.jenetics.tool/@__minor_version__@/index.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\family default
+ This classes where used for creating the diagrams in this manual.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+org.jenetix
+\family default
+ Contains non-standard selector and mutator classes.
+\family typewriter
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://jenetics.io/javadoc/org.jenetix/@__minor_version__@/index.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\family default
+ The classes needed for the 
+\emph on
+Weasel program
+\emph default
+ (see section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Weasel-program"
+
+\end_inset
+
+) are part of this module.
+\end_layout
+
+\begin_layout Subsection
+Weasel program
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Weasel-program"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Weasel program
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The Weasel program
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Weasel_program
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ is thought experiment from Richard Dawkins, in which he tries to illustrate
+ the function of genetic 
+\emph on
+mutation
+\emph default
+ and 
+\emph on
+selection
+\emph default
+.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The classes are located in the 
+\family typewriter
+org.jenetix
+\family default
+ module.
+\end_layout
+
+\end_inset
+
+ For this reason he chooses the well known example of typewriting monkeys.
+\end_layout
+
+\begin_layout Quote
+I don't know who it was first pointed out that, given enough time, a monkey
+ bashing away at random on a typewriter could produce all the works of Shakespea
+re.
+ The operative phrase is, of course, given enough time.
+ Let us limit the task facing our monkey somewhat.
+ Suppose that he has to produce, not the complete works of Shakespeare but
+ just the short sentence 
+\begin_inset Quotes ald
+\end_inset
+
+Methinks it is like a weasel
+\begin_inset Quotes ard
+\end_inset
+
+, and we shall make it relatively easy by giving him a typewriter with a
+ restricted keyboard, one with just the 26 (uppercase) letters, and a space
+ bar.
+ How long will he take to write this one little sentence? 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "dawkins1986"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The search space of the 28 character long target string is 
+\begin_inset Formula $27^{28}\approx10^{40}$
+\end_inset
+
+.
+ If the monkey writes 
+\begin_inset Formula $1,000,000$
+\end_inset
+
+ different 
+\emph on
+sentences
+\emph default
+ per second, it would take about 
+\begin_inset Formula $10^{26}$
+\end_inset
+
+ years (in average) writing the correct one.
+ Although Dawkins did not provide the source code for his program, a 
+\begin_inset Quotes ald
+\end_inset
+
+Weasel
+\begin_inset Quotes ard
+\end_inset
+
+ style algorithm could run as follows:
+\end_layout
+
+\begin_layout Enumerate
+Start with a random string of 28 characters.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Make 
+\begin_inset Formula $n$
+\end_inset
+
+ copies of the string (reproduce).
+ 
+\end_layout
+
+\begin_layout Enumerate
+Mutate the characters with an mutation probability of 5%.
+\end_layout
+
+\begin_layout Enumerate
+Compare each new string with the target string 
+\begin_inset Quotes ald
+\end_inset
+
+METHINKS IT IS LIKE A WEASEL
+\begin_inset Quotes ard
+\end_inset
+
+, and give each a score (the number of letters in the string that are correct
+ and in the correct position).
+ 
+\end_layout
+
+\begin_layout Enumerate
+If any of the new strings has a perfect score (
+\begin_inset Formula $28$
+\end_inset
+
+), halt.
+ Otherwise, take the highest scoring string, and go to step 2.
+\end_layout
+
+\begin_layout Standard
+Richard Dawkins was also very careful to point out the limitations of this
+ simulation:
+\end_layout
+
+\begin_layout Quote
+Although the monkey/Shakespeare model is useful for explaining the distinction
+ between single-step selection and cumulative selection, it is misleading
+ in important ways.
+ One of these is that, in each generation of selective 
+\begin_inset Quotes ald
+\end_inset
+
+breeding
+\begin_inset Quotes ard
+\end_inset
+
+, the mutant 
+\begin_inset Quotes ald
+\end_inset
+
+progeny
+\begin_inset Quotes ard
+\end_inset
+
+ phrases were judged according to the criterion of resemblance to a distant
+ ideal target, the phrase METHINKS IT IS LIKE A WEASEL.
+ Life isn't like that.
+ Evolution has no long-term goal.
+ There is no long-distance target, no final perfection to serve as a criterion
+ for selection, although human vanity cherishes the absurd notion that our
+ species is the final goal of evolution.
+ In real life, the criterion for selection is always short-term, either
+ simple survival or, more generally, reproductive success.
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "dawkins1986"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If you want to write a Weasel program with the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library, you need to use the special 
+\family typewriter
+Weasel\SpecialChar \-
+Selector
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+WeaselSelector
+\end_layout
+
+\end_inset
+
+
+\family default
+ and 
+\family typewriter
+Weasel\SpecialChar \-
+Mutator
+\family default
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+WeaselMutator
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public class WeaselProgram {
+\end_layout
+
+\begin_layout Plain Layout
+
+	private static final String TARGET = 
+\end_layout
+
+\begin_layout Plain Layout
+
+        "METHINKS IT IS LIKE A WEASEL";
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	private static int score(final Genotype<CharacterGene> gt) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		final CharSequence source = 
+\end_layout
+
+\begin_layout Plain Layout
+
+            (CharSequence)gt.getChromosome();
+\end_layout
+
+\begin_layout Plain Layout
+
+		return IntStream.range(0, TARGET.length())
+\end_layout
+
+\begin_layout Plain Layout
+
+			.map(i -> source.charAt(i) == TARGET.charAt(i) ? 1 : 0)
+\end_layout
+
+\begin_layout Plain Layout
+
+			.sum();
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	public static void main(final String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		final CharSeq chars = CharSeq.of("A-Z ");
+\end_layout
+
+\begin_layout Plain Layout
+
+		final Factory<Genotype<CharacterGene>> gtf = Genotype.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+			new CharacterChromosome(chars, TARGET.length())
+\end_layout
+
+\begin_layout Plain Layout
+
+		);
+\end_layout
+
+\begin_layout Plain Layout
+
+		final Engine<CharacterGene, Integer> engine = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+			.builder(WeaselProgram::score, gtf)
+\end_layout
+
+\begin_layout Plain Layout
+
+			.populationSize(150)
+\end_layout
+
+\begin_layout Plain Layout
+
+			.selector(new WeaselSelector<>())
+\end_layout
+
+\begin_layout Plain Layout
+
+			.offspringFraction(1)
+\end_layout
+
+\begin_layout Plain Layout
+
+			.alterers(new WeaselMutator<>(0.05))
+\end_layout
+
+\begin_layout Plain Layout
+
+			.build();
+\end_layout
+
+\begin_layout Plain Layout
+
+		final Phenotype<CharacterGene, Integer> result = engine
+\end_layout
+
+\begin_layout Plain Layout
+
+            .stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+			.limit(byFitnessThreshold(TARGET.length() - 1))
+\end_layout
+
+\begin_layout Plain Layout
+
+			.peek(r -> System.out.println(
+\end_layout
+
+\begin_layout Plain Layout
+
+				r.getTotalGenerations() + ": " + 
+\end_layout
+
+\begin_layout Plain Layout
+
+				r.getBestPhenotype()))
+\end_layout
+
+\begin_layout Plain Layout
+
+			.collect(toBestPhenotype());
+\end_layout
+
+\begin_layout Plain Layout
+
+		System.out.println(result);
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+Weasel program
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Weasel-program"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Weasel-program"
+
+\end_inset
+
+ shows how-to implement the 
+\family typewriter
+Weasel\SpecialChar \-
+Program
+\family default
+ with 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+.
+ Step (1) and (2) of the algorithm is done implicitly when the initial populatio
+n is created.
+ The third step is done by the 
+\family typewriter
+Weasel\SpecialChar \-
+Mutator
+\family default
+, with mutation probability of 0.05.
+ Step (4) is done by the WeaselSelector together with the configured offspring-f
+raction of one.
+ The evolution stream is limited by the 
+\family typewriter
+limit\SpecialChar \-
+.by\SpecialChar \-
+Fitness\SpecialChar \-
+Threshold
+\family default
+, which is set to 
+\begin_inset Formula $score_{max}-1$
+\end_inset
+
+.
+ In the current example this value is set to 
+\family typewriter
+TARGET\SpecialChar \-
+.length()
+\family default
+ - 1 = 27.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+scriptsize
+\backslash
+ttfamily}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstinputlisting{../resources/code/WeaselProgram.out}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+footnotesize}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The (shortened) output of the Weasel program (listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Weasel-program"
+
+\end_inset
+
+) shows, that the optimal solution is reached in generation 
+\begin_inset Formula $46$
+\end_inset
+
+.
+\end_layout
+
 \begin_layout Standard
 \begin_inset Newpage pagebreak
 \end_inset
@@ -18018,7 +19999,7 @@ status open
 
 
 \backslash
-lstinputlisting{../resources/code/OnesCounting.java}
+lstinputlisting{../java/OnesCounting.java}
 \end_layout
 
 \end_inset
@@ -18044,7 +20025,7 @@ Chromosome
  The tournament selector is used for both, the offspring- and the survivor
  selection---this is the default selector.
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 For the other default values (population size, maximal age, ...) have a look
@@ -18165,7 +20146,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/graphic/RealFunction2D.svg
+	filename ../resources/graphic/RealFunction.svg
 	lyxscale 70
 	width 100text%
 
@@ -18180,11 +20161,11 @@ status open
 \begin_layout Plain Layout
 \begin_inset CommandInset label
 LatexCommand label
-name "fig:Real-function-2D"
+name "fig:Real-function"
 
 \end_inset
 
-Real function 2D
+Real function
 \end_layout
 
 \end_inset
@@ -18212,7 +20193,7 @@ reference "eq:Example-real-function"
 , is shown in figure 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "fig:Real-function-2D"
+reference "fig:Real-function"
 
 \end_inset
 
@@ -18228,7 +20209,7 @@ status open
 
 
 \backslash
-lstinputlisting{../resources/code/RealFunction.java}
+lstinputlisting{../java/RealFunction.java}
 \end_layout
 
 \end_inset
@@ -18300,6 +20281,237 @@ exact
 \end_inset
 
  You can also see, that we reached the final result after 19 generations.
+\end_layout
+
+\begin_layout Subsection
+Rastrigin function
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Rastrigin-function"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Examples!Rastrigin function
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Rastrigin function
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The Rastrigin function
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Rastrigin_function
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ is often used to test the optimization performance of genetic algorithm.
+\begin_inset Formula 
+\begin{equation}
+f\left(\mathbf{x}\right)=An+\sum_{i=1}^{n}\left(x_{i}^{2}-A\cos\left(2\pi x_{i}\right)\right).\label{eq:Rastrigin-function}
+\end{equation}
+
+\end_inset
+
+As the plot in figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Rastrigin-function"
+
+\end_inset
+
+ shows, the Rastrigin function has many local minima, which makes it difficult
+ for standard, gradient-based methods to find the global minimum.
+ If 
+\begin_inset Formula $A=10$
+\end_inset
+
+ and 
+\begin_inset Formula $x_{i}\in\left[-5.12,5.12\right]$
+\end_inset
+
+, the function has only one global minimum at 
+\begin_inset Formula $\mathbf{x}=\mathbf{0}$
+\end_inset
+
+ with 
+\begin_inset Formula $f\left(\mathbf{x}\right)=0$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/fwilhelm/Workspace/Development/Projects/Jenetics/org.jenetics.doc/src/main/resources/graphic/RastriginFunction.png
+	lyxscale 50
+	width 100text%
+	clip
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Rastrigin-function"
+
+\end_inset
+
+Rastrigin function
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+The following listing shows the 
+\family typewriter
+Engine
+\family default
+ setup for solving the Rastrigin function, which is very similar to the
+ setup for the real-function in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Real-function-example"
+
+\end_inset
+
+.
+ Beside the different fitness function, the 
+\family typewriter
+Codec
+\family default
+ for 
+\family typewriter
+double
+\family default
+ vectors is used, instead of the 
+\family typewriter
+double
+\family default
+ scalar 
+\family typewriter
+Codec
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstinputlisting{../java/RastriginFunction.java}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The console output of the program shows, that 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ finds the 
+\emph on
+optimal
+\emph default
+ solution after 
+\begin_inset Formula $38$
+\end_inset
+
+ generations.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+scriptsize
+\backslash
+ttfamily}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstinputlisting{../resources/code/RastriginFunction.out}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+footnotesize}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -18381,7 +20593,7 @@ status open
 
 
 \backslash
-lstinputlisting{../resources/code/Knapsack.java}
+lstinputlisting{../java/Knapsack.java}
 \end_layout
 
 \end_inset
@@ -18514,7 +20726,7 @@ status open
 
 
 \backslash
-lstinputlisting{../resources/code/TravelingSalesman.java}
+lstinputlisting{../java/TravelingSalesman.java}
 \end_layout
 
 \end_inset
@@ -18612,7 +20824,7 @@ The listing above shows the output generated by our example.
 \begin_layout Subsection
 Evolving images
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Examples!Evolving images
@@ -18622,7 +20834,7 @@ Examples!Evolving images
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Evolving images
@@ -19852,7 +22064,7 @@ Version
 \series default
 :
 \emph on
- 6.9.8
+ 6.9.11
 \end_layout
 
 \begin_layout Itemize
@@ -19864,7 +22076,7 @@ Homepage
 \emph on
  
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -19933,7 +22145,7 @@ Version
 \series default
 :
 \emph on
- 3.5
+ 3.6.1
 \end_layout
 
 \begin_layout Itemize
@@ -19945,7 +22157,7 @@ Homepage
 \emph on
  
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -19970,7 +22182,7 @@ status collapsed
 
 \begin_layout Plain Layout
 
-http://tweedo.com/mirror/apache/commons/math/binaries/commons-math3-3.5-bin.zip
+http://tweedo.com/mirror/apache/commons/math/binaries/commons-math3-3.6.1-bin.zip
 \end_layout
 
 \end_inset
@@ -20153,7 +22365,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 2.7
+: 2.11
 \end_layout
 
 \begin_layout Itemize
@@ -20165,7 +22377,7 @@ Homepage
 \emph on
  
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -20190,7 +22402,7 @@ status collapsed
 
 \begin_layout Plain Layout
 
-http://services.gradle.org/distributions/gradle-2.7-bin.zip
+http://services.gradle.org/distributions/gradle-2.11-bin.zip
 \end_layout
 
 \end_inset

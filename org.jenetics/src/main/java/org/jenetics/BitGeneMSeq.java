@@ -22,6 +22,7 @@ package org.jenetics;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
 import org.jenetics.internal.collection.Array;
 import org.jenetics.internal.collection.ArrayISeq;
@@ -147,6 +148,13 @@ final class BitGeneStore implements Array.Store<BitGene>, Serializable {
 	@Override
 	public BitGene get(final int index) {
 		return BitGene.of(bit.get(array, index));
+	}
+
+	@Override
+	public void sort(
+		final int from, final int until, final Comparator<? super BitGene> comparator
+	) {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override

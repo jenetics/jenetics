@@ -69,14 +69,26 @@ public final class array {
 	 * @param array the array to shuffle
 	 * @param random the PRNG
 	 */
-	public static void shuffle(final double[] array, final Random random) {
+	public static double[] shuffle(final double[] array, final Random random) {
 		for (int j = array.length - 1; j > 0; --j) {
 			swap(array, j, random.nextInt(j + 1));
 		}
+		return array;
 	}
 
-	public static void shuffle(final double[] array) {
-		shuffle(array, RandomRegistry.getRandom());
+	public static double[] shuffle(final double[] array) {
+		return shuffle(array, RandomRegistry.getRandom());
+	}
+
+	public static int[] shuffle(final int[] array, final Random random) {
+		for (int j = array.length - 1; j > 0; --j) {
+			swap(array, j, random.nextInt(j + 1));
+		}
+		return array;
+	}
+
+	public static int[] shuffle(final int[] array) {
+		return shuffle(array, RandomRegistry.getRandom());
 	}
 
 }

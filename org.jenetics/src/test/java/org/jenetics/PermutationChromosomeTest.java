@@ -20,13 +20,20 @@
 package org.jenetics;
 
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.IntStream;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import org.jenetics.internal.math.base;
+
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.IntRange;
 import org.jenetics.util.MSeq;
+import org.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -71,6 +78,67 @@ public class PermutationChromosomeTest
 		for (int i = 0; i < c.length(); ++i) {
 			Assert.assertEquals(genes.get(i).intValue(), i + 100);
 		}
+	}
+
+	@Test
+	public void ofIntegerRangeLength() {
+		final PermutationChromosome<Integer> c1 = PermutationChromosome
+			.ofInteger(IntRange.of(0, 2000), 1000);
+		Assert.assertTrue(c1.isValid());
+
+		final PermutationChromosome<Integer> c2 = PermutationChromosome
+			.ofInteger(IntRange.of(0, 2000), 1000);
+		Assert.assertTrue(c2.isValid());
+
+		final MSeq<EnumGene<Integer>> m1 = c1.toSeq().copy();
+		final MSeq<EnumGene<Integer>> m2 = c2.toSeq().copy();
+		assertUnique(m1);
+		assertUnique(m2);
+
+		PartiallyMatchedCrossover<Integer, Double> pmx =
+			new PartiallyMatchedCrossover<>(1);
+
+		pmx.crossover(m1, m2);
+		assertUnique(m1);
+		assertUnique(m2);
+	}
+
+	private static <T> void assertUnique(final Seq<T> seq) {
+		final Set<T> set = new HashSet<>(seq.asList());
+		if (seq.size() > set.size()) {
+			throw new AssertionError("Sequence elements are not unique: " + seq);
+		}
+	}
+
+	@Test
+	public void isValid() {
+		final ISeq<Integer> alleles = IntStream.range(0, 100)
+			.mapToObj(Integer::new)
+			.collect(ISeq.toISeq());
+
+		final ISeq<EnumGene<Integer>> genes = IntStream.of(base.subset(100, 10))
+			.mapToObj(i -> EnumGene.of(i, alleles))
+			.collect(ISeq.toISeq());
+
+		final PermutationChromosome<Integer> ch = new PermutationChromosome<>(genes);
+		Assert.assertTrue(ch.isValid());
+		Assert.assertEquals(ch.length(), 10);
+	}
+
+	@Test
+	public void isNotValid() {
+		final ISeq<Integer> alleles = IntStream.range(0, 100)
+			.mapToObj(Integer::new)
+			.collect(ISeq.toISeq());
+
+		final ISeq<EnumGene<Integer>> genes = IntStream.of(base.subset(100, 10))
+			.mapToObj(i -> EnumGene.of(i%3, alleles))
+			.collect(ISeq.toISeq());
+
+		final PermutationChromosome<Integer> ch = new PermutationChromosome<>(genes);
+		System.out.println(ch);
+		Assert.assertFalse(ch.isValid());
+		Assert.assertEquals(ch.length(), 10);
 	}
 
 }

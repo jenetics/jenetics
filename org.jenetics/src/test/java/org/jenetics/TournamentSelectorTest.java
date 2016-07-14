@@ -48,7 +48,7 @@ public class TournamentSelectorTest
 		return () -> new TournamentSelector<>(3);
 	}
 
-	@Test(dataProvider = "expectedDistribution")
+	@Test(dataProvider = "expectedDistribution", groups = {"statistics"})
 	public void selectDistribution(
 		final Integer tournamentSize,
 		final Named<double[]> expected,

@@ -26,9 +26,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
 
-import javax.xml.bind.DataBindingException;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.jenetics.internal.util.model.CharacterModel;
@@ -42,24 +39,6 @@ import org.jenetics.internal.util.model.CharacterModel;
  */
 public class jaxb {
 	private jaxb() {require.noInstance();}
-
-	private static final class JAXBContextHolder {
-		private static final JAXBContext CONTEXT; static {
-			try {
-				CONTEXT = JAXBContext.newInstance(
-					"org.jenetics:org.jenetics.internal.util"
-				);
-			} catch (JAXBException e) {
-				throw new DataBindingException(
-					"Something went wrong while creating JAXBContext.", e
-				);
-			}
-		}
-	}
-
-	public static JAXBContext context() {
-		return JAXBContextHolder.CONTEXT;
-	}
 
 	private static final XmlAdapter<Object, Object> IDENTITY_ADAPTER =
 		new XmlAdapter<Object, Object>() {

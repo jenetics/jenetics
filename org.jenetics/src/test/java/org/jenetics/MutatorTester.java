@@ -58,7 +58,7 @@ public abstract class MutatorTester extends AltererTester {
 		);
 	}
 
-	@Test(dataProvider = "alterProbabilityParameters")
+	@Test(dataProvider = "alterProbabilityParameters", groups = {"statistics"})
 	public void alterProbability(
 		final Integer ngenes,
 		final Integer nchromosomes,
