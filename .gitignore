@@ -12,6 +12,7 @@ out/**
 test-output/**
 output/**
 *.jar
+*evSOLve*
 
 # Gradle
 **/.gradle/**
