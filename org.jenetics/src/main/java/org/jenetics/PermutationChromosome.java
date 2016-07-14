@@ -245,9 +245,9 @@ public final class PermutationChromosome<T>
 		}
 
 		final int[] subset = array.shuffle(base.subset(alleles.size(), length));
-		return new PermutationChromosome<>(
+		return new PermutationChromosome<T>(
 			IntStream.of(subset)
-				.mapToObj(i -> EnumGene.of(i, alleles))
+				.mapToObj(i -> EnumGene.<T>of(i, alleles))
 				.collect(ISeq.toISeq()),
 			true
 		);
