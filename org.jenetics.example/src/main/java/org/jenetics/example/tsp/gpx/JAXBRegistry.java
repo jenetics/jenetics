@@ -17,46 +17,24 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.example.tsp;
+package org.jenetics.example.tsp.gpx;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import org.jenetics.internal.util.require;
 
-import javax.xml.bind.Marshaller;
-
-import org.testng.annotations.Test;
-
-import org.jenetics.example.tsp.gpx.GPX;
-import org.jenetics.example.tsp.gpx.Link;
-import org.jenetics.example.tsp.gpx.WayPoint;
-import org.jenetics.util.IO;
+import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class GPXTest {
+final class JAXBRegistry {
+	private JAXBRegistry() {require.noInstance();}
 
-	/*
-	@Test
-	public void writeGPX() throws IOException {
-		final GPX gpx = new GPX();
-		gpx.addWayPoint(WayPoint.of(23, 34));
-		gpx.addWayPoint(WayPoint.of(24, 35));
-
-		GPX.write(gpx, System.out);
-	}
-
-	@Test
-	public void readGPX() throws IOException {
-		final String resource = "/org/jenetics/example/tsp/gpx_track.gpx";
-		try (InputStream in = getClass().getResourceAsStream(resource)) {
-			final GPX gpx = GPX.read(in);
-			GPX.write(gpx, System.out);
-		}
-	}
-	*/
-
+	/**
+	 * The JAXB classes of this package.
+	 */
+	public static final ISeq<Class<?>> CLASSES = ISeq.of(
+		Link.Model.class
+	);
 }

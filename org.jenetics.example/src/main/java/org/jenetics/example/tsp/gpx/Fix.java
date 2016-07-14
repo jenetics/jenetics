@@ -17,46 +17,42 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.example.tsp;
+package org.jenetics.example.tsp.gpx;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import javax.xml.bind.Marshaller;
-
-import org.testng.annotations.Test;
-
-import org.jenetics.example.tsp.gpx.GPX;
-import org.jenetics.example.tsp.gpx.Link;
-import org.jenetics.example.tsp.gpx.WayPoint;
-import org.jenetics.util.IO;
+import static java.util.Objects.requireNonNull;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class GPXTest {
+public enum Fix {
 
-	/*
-	@Test
-	public void writeGPX() throws IOException {
-		final GPX gpx = new GPX();
-		gpx.addWayPoint(WayPoint.of(23, 34));
-		gpx.addWayPoint(WayPoint.of(24, 35));
+	NONE("none"),
+	DIM_2("2d"),
+	DIM_3("3d"),
+	DGPS("dgps"),
+	PPS("pps");
 
-		GPX.write(gpx, System.out);
+	private final String _value;
+
+	private Fix(final String value) {
+		_value = requireNonNull(value);
 	}
 
-	@Test
-	public void readGPX() throws IOException {
-		final String resource = "/org/jenetics/example/tsp/gpx_track.gpx";
-		try (InputStream in = getClass().getResourceAsStream(resource)) {
-			final GPX gpx = GPX.read(in);
-			GPX.write(gpx, System.out);
+	public String getValue() {
+		return _value;
+	}
+
+	public static Fix of(final String value) {
+		switch (value) {
+			case "none": return Fix.NONE;
+			case "2d": return Fix.DIM_2;
+			case "3d": return Fix.DIM_3;
+			case "dgps": return Fix.DGPS;
+			case "pps": return Fix.PPS;
+			default: throw new IllegalArgumentException(value);
 		}
 	}
-	*/
 
 }

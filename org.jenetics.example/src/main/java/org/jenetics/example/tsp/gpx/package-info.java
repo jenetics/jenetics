@@ -26,7 +26,7 @@
 
 @XmlSchema(
 	namespace = "http://www.topografix.com/GPX/1/1",
-	elementFormDefault = XmlNsForm.QUALIFIED,
+	elementFormDefault = XmlNsForm.UNQUALIFIED,
 	xmlns = {
 		@XmlNs(
 			namespaceURI = "http://www.topografix.com/GPX/1/1",

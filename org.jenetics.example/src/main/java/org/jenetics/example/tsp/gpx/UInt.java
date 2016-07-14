@@ -17,46 +17,53 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.example.tsp;
+package org.jenetics.example.tsp.gpx;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import static java.lang.String.format;
 
-import javax.xml.bind.Marshaller;
-
-import org.testng.annotations.Test;
-
-import org.jenetics.example.tsp.gpx.GPX;
-import org.jenetics.example.tsp.gpx.Link;
-import org.jenetics.example.tsp.gpx.WayPoint;
-import org.jenetics.util.IO;
+import java.io.Serializable;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class GPXTest {
+public final class UInt implements Serializable {
 
-	/*
-	@Test
-	public void writeGPX() throws IOException {
-		final GPX gpx = new GPX();
-		gpx.addWayPoint(WayPoint.of(23, 34));
-		gpx.addWayPoint(WayPoint.of(24, 35));
+	private static final long serialVersionUID = 1L;
 
-		GPX.write(gpx, System.out);
-	}
+	private final int _value;
 
-	@Test
-	public void readGPX() throws IOException {
-		final String resource = "/org/jenetics/example/tsp/gpx_track.gpx";
-		try (InputStream in = getClass().getResourceAsStream(resource)) {
-			final GPX gpx = GPX.read(in);
-			GPX.write(gpx, System.out);
+	private UInt(final int value) {
+		if (value < 0) {
+			throw new IllegalArgumentException(format("%d is negative.", value));
 		}
+		_value = value;
 	}
-	*/
+
+	public int getValue() {
+		return _value;
+	}
+
+	@Override
+	public int hashCode() {
+		return Integer.hashCode(_value);
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof UInt &&
+			((UInt)obj)._value == _value;
+	}
+
+	@Override
+	public String toString() {
+		return Integer.toString(_value);
+	}
+
+
+	public static UInt of(final int value) {
+		return new UInt(value);
+	}
 
 }

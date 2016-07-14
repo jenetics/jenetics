@@ -146,6 +146,8 @@ public final class Link implements Serializable {
 			}
 		}
 
+		static final Adapter ADAPTER = new Adapter();
+
 	}
 
 
