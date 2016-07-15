@@ -51,7 +51,7 @@ public enum Fix {
 	 * {@code 2d}. {@code 3d}, {@code dgps} or {@code pps}.
 	 *
 	 * @return the string representation of the GPS {@code Fix}
-     */
+	 */
 	public String getValue() {
 		return _value;
 	}
@@ -62,7 +62,7 @@ public enum Fix {
 	 * @param name the GPS fix names
 	 * @return the GPS fix for the given value, or {@code Optional.empty()} if
 	 *         the given {@code name} is invalid
-     */
+	 */
 	public static Optional<Fix> ofName(final String name) {
 		switch (name) {
 			case "none": return Optional.of(Fix.NONE);

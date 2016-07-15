@@ -58,7 +58,7 @@ public final class DGPSStation extends Number implements Serializable {
 	 * Return the differential GPS station number.
 	 *
 	 * @return the differential GPS station number
-     */
+	 */
 	public int intValue() {
 		return _value;
 	}

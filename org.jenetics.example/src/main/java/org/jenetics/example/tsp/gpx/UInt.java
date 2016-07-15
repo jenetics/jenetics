@@ -56,7 +56,7 @@ public final class UInt implements Serializable {
 	 * Return the unsigned integer value.
 	 *
 	 * @return the unsigned integer value
-     */
+	 */
 	public int getValue() {
 		return _value;
 	}

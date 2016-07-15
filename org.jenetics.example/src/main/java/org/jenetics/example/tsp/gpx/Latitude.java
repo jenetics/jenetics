@@ -58,7 +58,7 @@ public final class Latitude extends Number implements Serializable {
 	 * Return the latitude value in decimal degrees.
 	 *
 	 * @return the latitude value in decimal degrees
-     */
+	 */
 	@Override
 	public double doubleValue() {
 		return _value;
@@ -68,7 +68,7 @@ public final class Latitude extends Number implements Serializable {
 	 * Return the latitude value in radians.
 	 *
 	 * @return the latitude value in radians
-     */
+	 */
 	public double toRadians() {
 		return Math.toRadians(_value);
 	}
