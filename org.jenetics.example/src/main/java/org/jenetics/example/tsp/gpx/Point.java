@@ -19,12 +19,6 @@
  */
 package org.jenetics.example.tsp.gpx;
 
-import static java.lang.Math.atan;
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
-import static java.lang.Math.sqrt;
-import static java.lang.Math.tan;
-
 import java.time.ZonedDateTime;
 import java.util.Optional;
 

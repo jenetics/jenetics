@@ -31,6 +31,8 @@ import static java.lang.Math.tan;
 import org.jenetics.internal.util.require;
 
 /**
+ * Some {@code Point} helper function.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!

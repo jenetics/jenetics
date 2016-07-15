@@ -724,14 +724,38 @@ public final class WayPoint implements Point, Serializable {
 	 *  Static object creation methods
 	 * ************************************************************************/
 
+	/**
+	 * Return a new {@code WayPoint} builder.
+	 *
+	 * @return a new {@code WayPoint} builder
+	 */
 	public static Builder builder() {
 		return new Builder();
 	}
 
+	/**
+	 * Create a new {@code WayPoint} with the given {@code latitude} and
+	 * {@code longitude} value.
+	 *
+	 * @param latitude the latitude of the point
+	 * @param longitude the longitude of the point
+	 * @return a new {@code WayPoint}
+	 * @throws NullPointerException if one of the given arguments is {@code null}
+	 */
 	public static WayPoint of(final Latitude latitude, final Longitude longitude) {
 		return builder().build(latitude, longitude);
 	}
 
+	/**
+	 * Create a new {@code WayPoint} with the given {@code latitude} and
+	 * {@code longitude} value.
+	 *
+	 * @param latitude the latitude of the point
+	 * @param longitude the longitude of the point
+	 * @return a new {@code WayPoint}
+	 * @throws IllegalAccessException if the given latitude or longitude is not
+	 *         in the valid range.
+	 */
 	public static WayPoint of(final double latitude, final double longitude) {
 		return builder().build(latitude, longitude);
 	}
