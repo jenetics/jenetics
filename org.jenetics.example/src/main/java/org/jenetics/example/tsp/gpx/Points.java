@@ -131,7 +131,7 @@ final class Points {
 			double cosalpha = cos(alpha);
 			double cos2alpha = cosalpha*cosalpha;
 
-			// eq. 18 Careful! cos2alpha might be almost 0!
+			// Eq. 18 Careful! cos2alpha might be almost 0!
 			double cos2sigmam = cos2alpha == 0.0
 				? 0.0
 				: cossigma - 2*sinU1sinU2/cos2alpha;
