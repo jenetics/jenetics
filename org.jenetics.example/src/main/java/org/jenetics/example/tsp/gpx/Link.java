@@ -129,6 +129,7 @@ public final class Link implements Serializable {
 	 * @param text the text of the hyperlink (optional)
 	 * @param type the mime type of the content, e.g. {@code image/jpeg}
 	 *        (optional)
+	 * @return a new {@code Link} object with the given parameters
 	 * @throws NullPointerException if the given {@code href} is {@code null}
 	 */
 	public static Link of(final URI href, final String text, final String type) {
@@ -142,6 +143,7 @@ public final class Link implements Serializable {
 	 * @param text the text of the hyperlink (optional)
 	 * @param type the mime type of the content, e.g. {@code image/jpeg}
 	 *        (optional)
+	 * @return a new {@code Link} object with the given parameters
 	 * @throws NullPointerException if the given {@code href} is {@code null}
 	 * @throws IllegalArgumentException if the given {@code href} is not a valid
 	 *         URL
@@ -158,6 +160,7 @@ public final class Link implements Serializable {
 	 * Create a new {@code Link} object with the given {@code href}.
 	 *
 	 * @param href the hyperlink (mandatory)
+	 * @return a new {@code Link} object with the given {@code href}
 	 * @throws NullPointerException if the given {@code href} is {@code null}
 	 */
 	public static Link of(final URI href) {
@@ -168,6 +171,7 @@ public final class Link implements Serializable {
 	 * Create a new {@code Link} object with the given {@code href}.
 	 *
 	 * @param href the hyperlink (mandatory)
+	 * @return a new {@code Link} object with the given {@code href}
 	 * @throws NullPointerException if the given {@code href} is {@code null}
 	 * @throws IllegalArgumentException if the given {@code href} is not a valid
 	 *         URL

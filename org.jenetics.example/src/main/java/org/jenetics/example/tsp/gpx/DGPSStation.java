@@ -88,6 +88,7 @@ public final class DGPSStation implements Serializable {
 	 * Create a new {@code DGPSStation} object.
 	 *
 	 * @param value the differential GPS station number
+	 * @return a new {@code DGPSStation} object
 	 * @throws IllegalArgumentException if the given station number is not in the
 	 *         range of {@code [0..1023]}
 	 */

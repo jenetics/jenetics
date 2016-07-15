@@ -97,6 +97,7 @@ public class Longitude implements Serializable {
 	 * Create a new (decimal degrees) {@code Longitude} object.
 	 *
 	 * @param degrees the longitude value in decimal degrees
+	 * @return a new (decimal degrees) {@code Longitude} object
 	 * @throws IllegalArgumentException if the given value is not within the
 	 *         range of {@code [-180..180]}
 	 */
@@ -108,6 +109,7 @@ public class Longitude implements Serializable {
 	 * Create a new {@code Longitude} value for the given {@code radians}.
 	 *
 	 * @param radians the longitude value in radians
+	 * @return a new {@code Longitude} value for the given {@code radians}
 	 * @throws IllegalArgumentException if the given radians is not within the
 	 *         range of {@code [-2*Pi..2*Pi]}
 	 */

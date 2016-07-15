@@ -75,7 +75,7 @@ final class FF
 	private final Item[] items;
 	private final double size;
 
-	public FF(final Item[] items, final double size) {
+	FF(final Item[] items, final double size) {
 		this.items = items;
 		this.size = size;
 	}

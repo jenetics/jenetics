@@ -97,6 +97,7 @@ public final class Latitude implements Serializable {
 	 * Create a new (decimal degrees) {@code Latitude} object.
 	 *
 	 * @param degrees the latitude value in decimal degrees
+	 * @return a new (decimal degrees) {@code Latitude} object
 	 * @throws IllegalArgumentException if the given value is not within the
 	 *         range of {@code [-90..90]}
 	 */
@@ -108,6 +109,7 @@ public final class Latitude implements Serializable {
 	 * Create a new {@code Latitude} value for the given {@code radians}.
 	 *
 	 * @param radians the latitude value in radians
+	 * @return  a new {@code Latitude} value for the given {@code radians}
 	 * @throws IllegalArgumentException if the given radians is not within the
 	 *         range of {@code [-Pi..Pi]}
 	 */

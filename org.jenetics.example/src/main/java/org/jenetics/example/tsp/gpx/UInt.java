@@ -86,6 +86,7 @@ public final class UInt implements Serializable {
 	 * Create a new unsigned integer object with the given value.
 	 *
 	 * @param value the {@code UInt} value
+	 * @return a new unsigned integer object with the given value
 	 * @throws IllegalArgumentException if the given {@code value} is smaller
 	 *         than zero
 	 */

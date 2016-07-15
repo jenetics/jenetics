@@ -101,6 +101,7 @@ public final class Degrees implements Serializable {
 	 * value.
 	 *
 	 * @param degrees the decimal degree value
+	 * @return a new {@code Degrees} object
 	 * @throws IllegalArgumentException if the give value is not within the
 	 *         range of {@code [0..360]}
 	 */
@@ -112,6 +113,7 @@ public final class Degrees implements Serializable {
 	 * Create a new {@code Degrees} object with the given radians value.
 	 *
 	 * @param radians the radians value
+	 * @return a new {@code Degrees} object
 	 * @throws IllegalArgumentException if the give value is not within the
 	 *         range of {@code [0..2*Pi]}
 	 */
