@@ -31,9 +31,6 @@ import java.util.Optional;
  */
 public interface Point {
 
-	// The earth radius used for calculating distances.
-	public static final double R = 6_371_000.785;
-
 	/**
 	 * The latitude of the point, WGS84 datum.
 	 *
