@@ -185,7 +185,7 @@ public class WayPoint {
 				final double ele = Double.parseDouble(parts[4]);
 
 				final GPX gpx = pts.computeIfAbsent(state, s -> new GPX());
-				gpx.addWayPoint(org.jenetics.example.tsp.gpx.WayPoint.of(city, lat, log, ele));
+				//gpx.addWayPoint(org.jenetics.example.tsp.gpx.WayPoint.of(city, lat, log, ele));
 			}
 		}
 

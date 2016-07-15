@@ -98,71 +98,71 @@ public class WayPointPathParser {
 		return  new String(Files.readAllBytes(file));
 	}
 
-	public static void main(final String[] args) throws Exception {
-		final WayPointPathParser parser = new WayPointPathParser(Paths.get(
-			Fetch.ROUTE_PATH
-		));
-
-		final Gson gson = new GsonBuilder()
-			.setPrettyPrinting()
-			.create();
-
-		try (InputStream in = WayPoints.class
-			.getResourceAsStream("/org/jenetics/example/tsp/waypoints/Österreich.json"))
-		{
-			final ISeq<WayPoint> points = WayPoints.read(in).getPoints();
-			for (int i = 0; i < points.length(); ++i) {
-				final WayPoint from = points.get(i);
-
-				for (int j = i; j < points.length(); ++j) {
-					final WayPoint to = points.get((j + 1)%points.length());
-
-					try {
-						final WayPointPath path = parser.parse(from, to);
-						final File file = new File(
-							"/home/fwilhelm/Temp/out.xml/" +
-								from.getName() + "---" + to.getName() + ".gpx"
-						);
-
-						final GPX gpx = new GPX();
-						gpx.addWayPoint(org.jenetics.example.tsp.gpx.WayPoint.of(
-							from.getName(),
-							from.getPoint().getLatitude(),
-							from.getPoint().getLongitude()
-						));
-						gpx.addWayPoint(org.jenetics.example.tsp.gpx.WayPoint.of(
-							to.getName(),
-							to.getPoint().getLatitude(),
-							to.getPoint().getLongitude()
-						));
-
-						final org.jenetics.example.tsp.gpx.Route route =
-							new org.jenetics.example.tsp.gpx.Route(from.getName() + "---" + to.getName());
-						path.getPath()
-							.map(p -> org.jenetics.example.tsp.gpx.WayPoint.of(
-								p.getLatitude(),
-								p.getLongitude()
-							))
-							.forEach(route::add);
-
-						gpx.addRoute(route);
-
-						try (OutputStream out = new FileOutputStream(file)) {
-							GPX.write(gpx, out);
-						}
-
-						/*
-						try (JsonWriter writer = gson.newJsonWriter(new FileWriter(file))) {
-							final WayPointPath.Adapter wpa = new WayPointPath.Adapter();
-							wpa.write(writer, path);
-						}
-						*/
-					} catch (Exception e) {
-						System.out.println("Not found: " + from + "--" + to);
-					}
-				}
-			}
-		}
+//	public static void main(final String[] args) throws Exception {
+//		final WayPointPathParser parser = new WayPointPathParser(Paths.get(
+//			Fetch.ROUTE_PATH
+//		));
+//
+//		final Gson gson = new GsonBuilder()
+//			.setPrettyPrinting()
+//			.create();
+//
+//		try (InputStream in = WayPoints.class
+//			.getResourceAsStream("/org/jenetics/example/tsp/waypoints/Österreich.json"))
+//		{
+//			final ISeq<WayPoint> points = WayPoints.read(in).getPoints();
+//			for (int i = 0; i < points.length(); ++i) {
+//				final WayPoint from = points.get(i);
+//
+//				for (int j = i; j < points.length(); ++j) {
+//					final WayPoint to = points.get((j + 1)%points.length());
+//
+//					try {
+//						final WayPointPath path = parser.parse(from, to);
+//						final File file = new File(
+//							"/home/fwilhelm/Temp/out.xml/" +
+//								from.getName() + "---" + to.getName() + ".gpx"
+//						);
+//
+//						final GPX gpx = new GPX();
+//						gpx.addWayPoint(org.jenetics.example.tsp.gpx.WayPoint.of(
+//							from.getName(),
+//							from.getPoint().getLatitude(),
+//							from.getPoint().getLongitude()
+//						));
+//						gpx.addWayPoint(org.jenetics.example.tsp.gpx.WayPoint.of(
+//							to.getName(),
+//							to.getPoint().getLatitude(),
+//							to.getPoint().getLongitude()
+//						));
+//
+//						final org.jenetics.example.tsp.gpx.Route route =
+//							new org.jenetics.example.tsp.gpx.Route(from.getName() + "---" + to.getName());
+//						path.getPath()
+//							.map(p -> org.jenetics.example.tsp.gpx.WayPoint.of(
+//								p.getLatitude(),
+//								p.getLongitude()
+//							))
+//							.forEach(route::add);
+//
+//						gpx.addRoute(route);
+//
+//						try (OutputStream out = new FileOutputStream(file)) {
+//							GPX.write(gpx, out);
+//						}
+//
+//						/*
+//						try (JsonWriter writer = gson.newJsonWriter(new FileWriter(file))) {
+//							final WayPointPath.Adapter wpa = new WayPointPath.Adapter();
+//							wpa.write(writer, path);
+//						}
+//						*/
+//					} catch (Exception e) {
+//						System.out.println("Not found: " + from + "--" + to);
+//					}
+//				}
+//			}
+//		}
 
 
 		/*
@@ -187,7 +187,7 @@ public class WayPointPathParser {
 		final Gson gson = builder.create();
 		System.out.println(gson.toJson(path));
 		*/
-	}
+	//}
 
 	private static List<Point> shapePoints(final String json)
 		throws IOException
