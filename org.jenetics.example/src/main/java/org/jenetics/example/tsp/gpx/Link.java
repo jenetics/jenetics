@@ -19,6 +19,8 @@
  */
 package org.jenetics.example.tsp.gpx;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -35,6 +37,9 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
+ * Represents a link to an external resource (Web page, digital photo, video
+ * clip, etc) with additional information.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -48,21 +53,44 @@ public final class Link implements Serializable {
 	private final String _text;
 	private final String _type;
 
-
+	/**
+	 * Create a new {@code Link} object with the given parameters.
+	 *
+	 * @param href the hyperlink (mandatory)
+	 * @param text the text of the hyperlink (optional)
+	 * @param type the mime type of the content, e.g. {@code image/jpeg}
+	 *        (optional)
+	 * @throws NullPointerException if the given {@code href} is {@code null}
+	 */
 	private Link(final URI href, final String text, final String type) {
-		_href = Objects.requireNonNull(href);
+		_href = requireNonNull(href);
 		_text = text;
 		_type = type;
 	}
 
+	/**
+	 * Return the hyperlink.
+	 *
+	 * @return the hyperlink
+	 */
 	public URI getHref() {
 		return _href;
 	}
 
+	/**
+	 * Return the hyperlink text.
+	 *
+	 * @return the hyperlink text
+	 */
 	public Optional<String> getText() {
 		return Optional.ofNullable(_text);
 	}
 
+	/**
+	 * Return the mime type of the hyperlink
+	 *
+	 * @return the mime type
+	 */
 	public Optional<String> getType() {
 		return Optional.ofNullable(_type);
 	}
@@ -89,30 +117,73 @@ public final class Link implements Serializable {
 		return _href.toString();
 	}
 
+
+	/* *************************************************************************
+	 *  Static object creation methods
+	 * ************************************************************************/
+
+	/**
+	 * Create a new {@code Link} object with the given parameters.
+	 *
+	 * @param href the hyperlink (mandatory)
+	 * @param text the text of the hyperlink (optional)
+	 * @param type the mime type of the content, e.g. {@code image/jpeg}
+	 *        (optional)
+	 * @throws NullPointerException if the given {@code href} is {@code null}
+	 */
 	public static Link of(final URI href, final String text, final String type) {
 		return new Link(href, text, type);
 	}
 
+	/**
+	 * Create a new {@code Link} object with the given parameters.
+	 *
+	 * @param href the hyperlink (mandatory)
+	 * @param text the text of the hyperlink (optional)
+	 * @param type the mime type of the content, e.g. {@code image/jpeg}
+	 *        (optional)
+	 * @throws NullPointerException if the given {@code href} is {@code null}
+	 * @throws IllegalArgumentException if the given {@code href} is not a valid
+	 *         URL
+	 */
 	public static Link of(final String href, final String text, final String type) {
 		try {
-			return new Link(new URI(href), text, type);
+			return new Link(new URI(requireNonNull(href)), text, type);
 		} catch (URISyntaxException e) {
 			throw new IllegalArgumentException(e);
 		}
 	}
 
+	/**
+	 * Create a new {@code Link} object with the given {@code href}.
+	 *
+	 * @param href the hyperlink (mandatory)
+	 * @throws NullPointerException if the given {@code href} is {@code null}
+	 */
 	public static Link of(final URI href) {
 		return new Link(href, null, null);
 	}
 
+	/**
+	 * Create a new {@code Link} object with the given {@code href}.
+	 *
+	 * @param href the hyperlink (mandatory)
+	 * @throws NullPointerException if the given {@code href} is {@code null}
+	 * @throws IllegalArgumentException if the given {@code href} is not a valid
+	 *         URL
+	 */
 	public static Link of(final String href) {
 		try {
-			return new Link(new URI(href), null, null);
+			return new Link(new URI(requireNonNull(href)), null, null);
 		} catch (URISyntaxException e) {
 			throw new IllegalArgumentException(e);
 		}
 	}
 
+
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
 
 	@XmlRootElement(name = "link")
 	@XmlType(name = "gpx.Link")

@@ -21,7 +21,13 @@ package org.jenetics.example.tsp.gpx;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Optional;
+
 /**
+ * Type of GPS fix. {@code none} means GPS had no fix. To signify "the fix info
+ * is unknown, leave out {@code Fix} entirely. {@code pps} = military signal
+ * used.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -36,22 +42,35 @@ public enum Fix {
 
 	private final String _value;
 
-	private Fix(final String value) {
+	Fix(final String value) {
 		_value = requireNonNull(value);
 	}
 
+	/**
+	 * Return the string representation of the GPS {@code Fix}. {@code none},
+	 * {@code 2d}. {@code 3d}, {@code dgps} or {@code pps}.
+	 *
+	 * @return the string representation of the GPS {@code Fix}
+     */
 	public String getValue() {
 		return _value;
 	}
 
-	public static Fix of(final String value) {
+	/**
+	 * Return the {@code Fix} constant for the given fix {@code value}.
+	 *
+	 * @param value the GPS fix value
+	 * @return the GPS fix for the given value, or {@code Optional.empty()} if
+	 *         the given {@code value} is invalid
+     */
+	public static Optional<Fix> of(final String value) {
 		switch (value) {
-			case "none": return Fix.NONE;
-			case "2d": return Fix.DIM_2;
-			case "3d": return Fix.DIM_3;
-			case "dgps": return Fix.DGPS;
-			case "pps": return Fix.PPS;
-			default: throw new IllegalArgumentException(value);
+			case "none": return Optional.of(Fix.NONE);
+			case "2d": return Optional.of(Fix.DIM_2);
+			case "3d": return Optional.of(Fix.DIM_3);
+			case "dgps": return Optional.of(Fix.DGPS);
+			case "pps": return Optional.of(Fix.PPS);
+			default: return Optional.empty();
 		}
 	}
 

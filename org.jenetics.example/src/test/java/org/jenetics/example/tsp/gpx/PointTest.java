@@ -40,7 +40,7 @@ public class PointTest {
 		IO.JAXB.register(Point.Model.class);
 
 		final Point point = Point.builder()
-			.ageofdgpsdata(3.4)
+			.ageOfDGPSAge(3.4)
 			.comment("Some point")
 			.fix(Fix.DGPS)
 			.elevation(234.4)

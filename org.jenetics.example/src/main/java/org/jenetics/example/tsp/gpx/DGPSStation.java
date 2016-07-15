@@ -24,7 +24,10 @@ import static java.lang.String.format;
 import java.io.Serializable;
 
 /**
- * Represents a differential GPS station. 0 <= value <= 1023
+ * Represents a differential GPS station. This object only holds int values in
+ * the range of {@code [0..1023]}.
+ *
+ * @see <a href="https://en.wikipedia.org/wiki/Value_object">Value object</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -36,6 +39,13 @@ public final class DGPSStation implements Serializable {
 
 	private final int _value;
 
+	/**
+	 * Create a new {@code DGPSStation} object.
+	 *
+	 * @param value the differential GPS station number
+	 * @throws IllegalArgumentException if the given station number is not in the
+	 *         range of {@code [0..1023]}
+	 */
 	private DGPSStation(final int value) {
 		if (value < 0 || value > 1023) {
 			throw new IllegalArgumentException(format("%f is out of range [0, 1023]."));
@@ -44,6 +54,11 @@ public final class DGPSStation implements Serializable {
 		_value = value;
 	}
 
+	/**
+	 * Return the differential GPS station number.
+	 *
+	 * @return the differential GPS station number
+     */
 	public int getValue() {
 		return _value;
 	}
@@ -64,6 +79,18 @@ public final class DGPSStation implements Serializable {
 		return Integer.toString(_value);
 	}
 
+
+	/* *************************************************************************
+	 *  Static object creation methods
+	 * ************************************************************************/
+
+	/**
+	 * Create a new {@code DGPSStation} object.
+	 *
+	 * @param value the differential GPS station number
+	 * @throws IllegalArgumentException if the given station number is not in the
+	 *         range of {@code [0..1023]}
+	 */
 	public static DGPSStation of(final int value) {
 		return new DGPSStation(value);
 	}

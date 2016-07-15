@@ -24,6 +24,10 @@ import static java.lang.String.format;
 import java.io.Serializable;
 
 /**
+ * Represents an unsigned integer value.
+ *
+ * @see <a href="https://en.wikipedia.org/wiki/Value_object">Value object</a>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -34,6 +38,13 @@ public final class UInt implements Serializable {
 
 	private final int _value;
 
+	/**
+	 * Create a new unsigned integer object with the given value.
+	 *
+	 * @param value the {@code UInt} value
+	 * @throws IllegalArgumentException if the given {@code value} is smaller
+	 *         than zero
+	 */
 	private UInt(final int value) {
 		if (value < 0) {
 			throw new IllegalArgumentException(format("%d is negative.", value));
@@ -41,6 +52,11 @@ public final class UInt implements Serializable {
 		_value = value;
 	}
 
+	/**
+	 * Return the unsigned integer value.
+	 *
+	 * @return the unsigned integer value
+     */
 	public int getValue() {
 		return _value;
 	}
@@ -62,6 +78,17 @@ public final class UInt implements Serializable {
 	}
 
 
+	/* *************************************************************************
+	 *  Static object creation methods
+	 * ************************************************************************/
+
+	/**
+	 * Create a new unsigned integer object with the given value.
+	 *
+	 * @param value the {@code UInt} value
+	 * @throws IllegalArgumentException if the given {@code value} is smaller
+	 *         than zero
+	 */
 	public static UInt of(final int value) {
 		return new UInt(value);
 	}

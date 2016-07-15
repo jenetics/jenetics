@@ -24,8 +24,8 @@ import static java.lang.String.format;
 import java.io.Serializable;
 
 /**
- * The latitude of the point. Decimal degrees, WGS84 datum.
- * -90.0 <= value <= 90.0
+ * The latitude of the point. Decimal degrees, WGS84 datum, which must be within
+ * the range of {@code [-90..90]}.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -37,15 +37,39 @@ public final class Latitude implements Serializable {
 
 	private final double _value;
 
+	/**
+	 * Create a new (decimal degrees) {@code Latitude} value.
+	 *
+	 * @param value the latitude value in decimal degrees
+	 * @throws IllegalArgumentException if the given value is not within the
+	 *         range of {@code [-90..90]}
+	 */
 	private Latitude(final double value) {
 		if (value < -90 || value > 90) {
-			throw new IllegalArgumentException(format("%f is not in range [-90, 90].", value));
+			throw new IllegalArgumentException(format(
+				"%f is not in range [-90, 90].", value
+			));
 		}
+
 		_value = value;
 	}
 
+	/**
+	 * Return the latitude value in decimal degrees.
+	 *
+	 * @return the latitude value in decimal degrees
+     */
 	public double getValue() {
 		return _value;
+	}
+
+	/**
+	 * Return the latitude value in radians.
+	 *
+	 * @return the latitude value in radians
+     */
+	public double toRadians() {
+		return Math.toRadians(_value);
 	}
 
 	@Override
@@ -65,8 +89,30 @@ public final class Latitude implements Serializable {
 	}
 
 
-	public static Latitude of(final double value) {
-		return new Latitude(value);
+	/* *************************************************************************
+	 *  Static object creation methods
+	 * ************************************************************************/
+
+	/**
+	 * Create a new (decimal degrees) {@code Latitude} object.
+	 *
+	 * @param degrees the latitude value in decimal degrees
+	 * @throws IllegalArgumentException if the given value is not within the
+	 *         range of {@code [-90..90]}
+	 */
+	public static Latitude of(final double degrees) {
+		return new Latitude(degrees);
+	}
+
+	/**
+	 * Create a new {@code Latitude} value for the given {@code radians}.
+	 *
+	 * @param radians the latitude value in radians
+	 * @throws IllegalArgumentException if the given radians is not within the
+	 *         range of {@code [-Pi..Pi]}
+	 */
+	public static Latitude ofRadians(final double radians) {
+		return new Latitude(Math.toDegrees(radians));
 	}
 
 }

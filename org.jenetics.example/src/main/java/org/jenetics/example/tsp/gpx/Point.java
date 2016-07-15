@@ -41,6 +41,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.jenetics.util.ISeq;
 
 /**
+ * A {@code WayPoint} represents a way-point, point of interest, or named
+ * feature on a map.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -54,9 +57,9 @@ public final class Point implements Serializable {
 	private final Longitude _longitude;
 
 	private final Double _elevation;
-	private final Double _speed;
+	private final Speed _speed;
 	private final ZonedDateTime _time;
-	private final Degrees _magvar;
+	private final Degrees _magneticVariation;
 	private final Double _geoidHeight;
 	private final String _name;
 	private final String _comment;
@@ -70,16 +73,55 @@ public final class Point implements Serializable {
 	private final Double _hdop;
 	private final Double _vdop;
 	private final Double _pdop;
-	private final Double _ageofdgpsdata;
-	private final DGPSStation _dgpsid;
+	private final Double _ageOfGPSData;
+	private final DGPSStation _dgpsID;
 
+	/**
+	 * Create a new way-point with the given parameter.
+	 *
+	 * @param latitude the latitude of the point, WGS84 datum (mandatory)
+	 * @param longitude the longitude of the point, WGS84 datum (mandatory)
+	 * @param elevation the elevation (in meters) of the point (optional)
+	 * @param speed the current GPS speed (optional)
+	 * @param time creation/modification timestamp for element. Conforms to ISO
+	 *        8601 specification for date/time representation. Fractional seconds
+	 *        are allowed for millisecond timing in tracklogs. (optional)
+	 * @param magneticVariation the magnetic variation at the point (optional)
+	 * @param geoidHeight height (in meters) of geoid (mean sea level) above
+	 *        WGS84 earth ellipsoid. As defined in NMEA GGA message. (optional)
+	 * @param name the GPS name of the way-point. This field will be transferred
+	 *        to and from the GPS. GPX does not place restrictions on the length
+	 *        of this field or the characters contained in it. It is up to the
+	 *        receiving application to validate the field before sending it to
+	 *        the GPS. (optional)
+	 * @param comment GPS way-point comment. Sent to GPS as comment (optional)
+	 * @param description a text description of the element. Holds additional
+	 *        information about the element intended for the user, not the GPS.
+	 *        (optional)
+	 * @param source source of data. Included to give user some idea of
+	 *        reliability and accuracy of data. "Garmin eTrex", "USGS quad
+	 *        Boston North", e.g. (optional)
+	 * @param links links to additional information about the way-point. May be
+	 *        empty, but not {@code null}.
+	 * @param symbol text of GPS symbol name. For interchange with other
+	 *        programs, use the exact spelling of the symbol as displayed on the
+	 *        GPS. If the GPS abbreviates words, spell them out. (optional)
+	 * @param type type (classification) of the way-point (optional)
+	 * @param fix type of GPX fix (optional)
+	 * @param sat number of satellites used to calculate the GPX fix (optional)
+     * @param hdop horizontal dilution of precision (optional)
+     * @param vdop vertical dilution of precision (optional)
+     * @param pdop position dilution of precision. (optional)
+     * @param ageOfGPSData number of seconds since last DGPS update (optional)
+     * @param dgpsID ID of DGPS station used in differential correction (optional)
+     */
 	private Point(
 		final Latitude latitude,
 		final Longitude longitude,
 		final Double elevation,
-		final Double speed,
+		final Speed speed,
 		final ZonedDateTime time,
-		final Degrees magvar,
+		final Degrees magneticVariation,
 		final Double geoidHeight,
 		final String name,
 		final String comment,
@@ -93,8 +135,8 @@ public final class Point implements Serializable {
 		final Double hdop,
 		final Double vdop,
 		final Double pdop,
-		final Double ageofdgpsdata,
-		final DGPSStation dgpsid
+		final Double ageOfGPSData,
+		final DGPSStation dgpsID
 	) {
 		_latitude = requireNonNull(latitude);
 		_longitude = requireNonNull(longitude);
@@ -102,7 +144,7 @@ public final class Point implements Serializable {
 		_elevation = elevation;
 		_speed = speed;
 		_time = time;
-		_magvar = magvar;
+		_magneticVariation = magneticVariation;
 		_geoidHeight = geoidHeight;
 		_name = name;
 		_comment = comment;
@@ -116,92 +158,206 @@ public final class Point implements Serializable {
 		_hdop = hdop;
 		_vdop = vdop;
 		_pdop = pdop;
-		_ageofdgpsdata = ageofdgpsdata;
-		_dgpsid = dgpsid;
+		_ageOfGPSData = ageOfGPSData;
+		_dgpsID = dgpsID;
 	}
 
+	/**
+	 * The latitude of the point, WGS84 datum.
+	 *
+	 * @return the latitude of the point
+     */
 	public Latitude getLatitude() {
 		return _latitude;
 	}
 
+	/**
+	 * The longitude of the point, WGS84 datum.
+	 *
+	 * @return the longitude of the point
+	 */
 	public Longitude getLongitude() {
 		return _longitude;
 	}
 
+	/**
+	 * The elevation (in meters) of the point.
+	 *
+	 * @return the elevation (in meters) of the point
+     */
 	public Optional<Double> getElevation() {
 		return Optional.ofNullable(_elevation);
 	}
 
-	public Optional<Double> getSpeed() {
+	/**
+	 * The current GPS speed.
+	 *
+	 * @return the current GPS speed
+     */
+	public Optional<Speed> getSpeed() {
 		return Optional.ofNullable(_speed);
 	}
 
+	/**
+	 * Creation/modification timestamp for the point.
+	 *
+	 * @return creation/modification timestamp for the point
+     */
 	public Optional<ZonedDateTime> getTime() {
 		return Optional.ofNullable(_time);
 	}
 
-	public Optional<Degrees> getMagvar() {
-		return Optional.ofNullable(_magvar);
+	/**
+	 * The magnetic variation at the point.
+	 *
+	 * @return the magnetic variation at the point
+     */
+	public Optional<Degrees> getMagneticVariation() {
+		return Optional.ofNullable(_magneticVariation);
 	}
 
+	/**
+	 * The height (in meters) of geoid (mean sea level) above WGS84 earth
+	 * ellipsoid. As defined in NMEA GGA message.
+	 *
+	 * @return the height (in meters) of geoid (mean sea level) above WGS84
+	 *         earth ellipsoid
+     */
 	public Optional<Double> getGeoidHeight() {
 		return Optional.ofNullable(_geoidHeight);
 	}
 
+	/**
+	 * The GPS name of the way-point. This field will be transferred to and from
+	 * the GPS. GPX does not place restrictions on the length of this field or
+	 * the characters contained in it. It is up to the receiving application to
+	 * validate the field before sending it to the GPS.
+	 *
+	 * @return the GPS name of the way-point
+     */
 	public Optional<String> getName() {
 		return Optional.ofNullable(_name);
 	}
 
+	/**
+	 * The GPS way-point comment.
+	 *
+	 * @return the GPS way-point comment
+     */
 	public Optional<String> getComment() {
 		return Optional.ofNullable(_comment);
 	}
 
+	/**
+	 * Return a text description of the element. Holds additional information
+	 * about the element intended for the user, not the GPS.
+	 *
+	 * @return a text description of the element
+     */
 	public Optional<String> getDescription() {
 		return Optional.ofNullable(_description);
 	}
 
+	/**
+	 * Return the source of data. Included to give user some idea of reliability
+	 * and accuracy of data. "Garmin eTrex", "USGS quad Boston North", e.g.
+	 *
+	 * @return the source of the data
+     */
 	public Optional<String> getSource() {
 		return Optional.ofNullable(_source);
 	}
 
+	/**
+	 * Return the links to additional information about the way-point.
+	 *
+	 * @return the links to additional information about the way-point
+     */
 	public ISeq<Link> getLinks() {
 		return _links;
 	}
 
+	/**
+	 * Return the text of GPS symbol name. For interchange with other programs,
+	 * use the exact spelling of the symbol as displayed on the GPS. If the GPS
+	 * abbreviates words, spell them out.
+	 *
+	 * @return the text of GPS symbol name
+     */
 	public Optional<String> getSymbol() {
 		return Optional.ofNullable(_symbol);
 	}
 
+	/**
+	 * Return the type (classification) of the way-point.
+	 *
+	 * @return the type (classification) of the way-point
+     */
 	public Optional<String> getType() {
 		return Optional.ofNullable(_type);
 	}
 
+	/**
+	 * Return the type of GPX fix.
+	 *
+	 * @return the type of GPX fix
+     */
 	public Optional<Fix> getFix() {
 		return Optional.ofNullable(_fix);
 	}
 
+	/**
+	 * Return the number of satellites used to calculate the GPX fix.
+	 *
+	 * @return the number of satellites used to calculate the GPX fix
+     */
 	public Optional<UInt> getSat() {
 		return Optional.ofNullable(_sat);
 	}
 
+	/**
+	 * Return the horizontal dilution of precision.
+	 *
+	 * @return the horizontal dilution of precision
+	 */
 	public Optional<Double> getHdop() {
 		return Optional.ofNullable(_hdop);
 	}
 
+	/**
+	 * Return the vertical dilution of precision.
+	 *
+	 * @return the vertical dilution of precision
+	 */
 	public Optional<Double> getVdop() {
 		return Optional.ofNullable(_vdop);
 	}
 
+	/**
+	 * Return the position dilution of precision.
+	 *
+	 * @return the position dilution of precision
+	 */
 	public Optional<Double> getPdop() {
 		return Optional.ofNullable(_pdop);
 	}
 
-	public Optional<Double> getAgeofdgpsdata() {
-		return Optional.ofNullable(_ageofdgpsdata);
+	/**
+	 * Return the number of seconds since last DGPS update.
+	 *
+	 * @return number of seconds since last DGPS update
+     */
+	public Optional<Double> getAgeOfGPSData() {
+		return Optional.ofNullable(_ageOfGPSData);
 	}
 
-	public Optional<DGPSStation> getDgpsid() {
-		return Optional.ofNullable(_dgpsid);
+	/**
+	 * Return the ID of DGPS station used in differential correction.
+	 *
+	 * @return the ID of DGPS station used in differential correction
+     */
+	public Optional<DGPSStation> getDGPSID() {
+		return Optional.ofNullable(_dgpsID);
 	}
 
 	@Override
@@ -212,7 +368,7 @@ public final class Point implements Serializable {
 		hash += 17*Objects.hashCode(_elevation) + 31;
 		hash += 17*Objects.hashCode(_speed) + 31;
 		hash += 17*Objects.hashCode(_time) + 31;
-		hash += 17*Objects.hashCode(_magvar) + 31;
+		hash += 17*Objects.hashCode(_magneticVariation) + 31;
 		hash += 17*Objects.hashCode(_geoidHeight) + 31;
 		hash += 17*Objects.hashCode(_name) + 31;
 		hash += 17*Objects.hashCode(_comment) + 31;
@@ -226,8 +382,8 @@ public final class Point implements Serializable {
 		hash += 17*Objects.hashCode(_hdop) + 31;
 		hash += 17*Objects.hashCode(_vdop) + 31;
 		hash += 17*Objects.hashCode(_pdop) + 31;
-		hash += 17*Objects.hashCode(_ageofdgpsdata) + 31;
-		hash += 17*Objects.hashCode(_dgpsid) + 31;
+		hash += 17*Objects.hashCode(_ageOfGPSData) + 31;
+		hash += 17*Objects.hashCode(_dgpsID) + 31;
 
 		return hash;
 	}
@@ -240,7 +396,7 @@ public final class Point implements Serializable {
 			Objects.equals(((Point)obj)._elevation, _elevation) &&
 			Objects.equals(((Point)obj)._speed, _speed) &&
 			Objects.equals(((Point)obj)._time, _time) &&
-			Objects.equals(((Point)obj)._magvar, _magvar) &&
+			Objects.equals(((Point)obj)._magneticVariation, _magneticVariation) &&
 			Objects.equals(((Point)obj)._geoidHeight, _geoidHeight) &&
 			Objects.equals(((Point)obj)._name, _name) &&
 			Objects.equals(((Point)obj)._comment, _comment) &&
@@ -254,8 +410,8 @@ public final class Point implements Serializable {
 			Objects.equals(((Point)obj)._hdop, _hdop) &&
 			Objects.equals(((Point)obj)._vdop, _vdop) &&
 			Objects.equals(((Point)obj)._pdop, _pdop) &&
-			Objects.equals(((Point)obj)._ageofdgpsdata, _ageofdgpsdata) &&
-			Objects.equals(((Point)obj)._dgpsid, _dgpsid);
+			Objects.equals(((Point)obj)._ageOfGPSData, _ageOfGPSData) &&
+			Objects.equals(((Point)obj)._dgpsID, _dgpsID);
 	}
 
 	@Override
@@ -264,11 +420,14 @@ public final class Point implements Serializable {
 	}
 
 
+	/**
+	 * Builder for creating a way-point with different parameters.
+	 */
 	public static final class Builder {
 		private Double _elevation;
-		private Double _speed;
+		private Speed _speed;
 		private ZonedDateTime _time;
-		private Degrees _magvar;
+		private Degrees _magneticVariation;
 		private Double _geoidHeight;
 		private String _name;
 		private String _comment;
@@ -282,111 +441,261 @@ public final class Point implements Serializable {
 		private Double _hdop;
 		private Double _vdop;
 		private Double _pdop;
-		private Double _ageofdgpsdata;
-		private DGPSStation _dgpsid;
+		private Double _ageOfDGPSData;
+		private DGPSStation _dgpsID;
 
-
+		/**
+		 * Set the elevation (in meters) of the point.
+		 *
+		 * @param elevation the elevation of the point, in meters
+		 * @return {@code this} {@code Builder} for method chaining
+		 */
 		public Builder elevation(final Double elevation) {
 			_elevation = elevation;
 			return this;
 		}
 
-		public Builder speed(final Double speed) {
+		/**
+		 * Set the current GPS speed.
+		 *
+		 * @param speed the current GPS speed
+         * @return {@code this} {@code Builder} for method chaining
+         */
+		public Builder speed(final Speed speed) {
 			_speed = speed;
 			return this;
 		}
 
+		/**
+		 * Set the current GPS speed.
+		 *
+		 * @param meterPerSecond the current GPS speed in m/s
+		 * @return {@code this} {@code Builder} for method chaining
+		 */
+		public Builder speed(final double meterPerSecond) {
+			_speed = Speed.of(meterPerSecond);
+			return this;
+		}
+
+		/**
+		 * Set the creation/modification timestamp for the point.
+		 *
+		 * @param time the creation/modification timestamp for the point
+         * @return {@code this} {@code Builder} for method chaining
+         */
 		public Builder time(final ZonedDateTime time) {
 			_time = time;
 			return this;
 		}
 
-		public Builder magvar(final Degrees magvar) {
-			_magvar = magvar;
+		/**
+		 * Set the magnetic variation at the point.
+		 *
+		 * @param variation the magnetic variation
+         * @return {@code this} {@code Builder} for method chaining
+         */
+		public Builder magneticVariation(final Degrees variation) {
+			_magneticVariation = variation;
 			return this;
 		}
 
-		public Builder magvar(final double magvar) {
-			_magvar = Degrees.of(magvar);
+		/**
+		 * Set the magnetic variation at the point.
+		 *
+		 * @param variation the magnetic variation
+		 * @return {@code this} {@code Builder} for method chaining
+		 * @throws IllegalArgumentException if the give value is not within the
+		 *         range of {@code [0..360]}
+		 */
+		public Builder magneticVariation(final double variation) {
+			_magneticVariation = Degrees.of(variation);
 			return this;
 		}
 
+		/**
+		 * Set the height (in meters) of geoid (mean sea level) above WGS84 earth
+		 * ellipsoid. As defined in NMEA GGA message.
+		 *
+		 * @param geoidHeight the height (in meters) of geoid (mean sea level)
+		 *        above WGS84 earth ellipsoid
+         * @return {@code this} {@code Builder} for method chaining
+         */
 		public Builder geoidHeight(final Double geoidHeight) {
 			_geoidHeight = geoidHeight;
 			return this;
 		}
 
+		/**
+		 * Set the GPS name of the way-point. This field will be transferred to
+		 * and from the GPS. GPX does not place restrictions on the length of
+		 * this field or the characters contained in it. It is up to the
+		 * receiving application to validate the field before sending it to the
+		 * GPS.
+		 *
+		 * @param name the GPS name of the way-point
+         * @return {@code this} {@code Builder} for method chaining
+         */
 		public Builder name(final String name) {
 			_name = name;
 			return this;
 		}
 
+		/**
+		 * Set the GPS way-point comment.
+		 *
+		 * @param comment the GPS way-point comment.
+         * @return {@code this} {@code Builder} for method chaining
+         */
 		public Builder comment(final String comment) {
 			_comment = comment;
 			return this;
 		}
 
+		/**
+		 * Set the links to additional information about the way-point.
+		 *
+		 * @param links the links to additional information about the way-point
+         * @return {@code this} {@code Builder} for method chaining
+         */
 		public Builder links(final ISeq<Link> links) {
 			_links = links;
 			return this;
 		}
 
+		/**
+		 * Set the text of GPS symbol name. For interchange with other programs,
+		 * use the exact spelling of the symbol as displayed on the GPS. If the
+		 * GPS abbreviates words, spell them out.
+		 *
+		 * @param symbol the text of GPS symbol name
+         * @return {@code this} {@code Builder} for method chaining
+         */
 		public Builder symbol(final String symbol) {
 			_symbol = symbol;
 			return this;
 		}
 
+		/**
+		 * Set the type (classification) of the way-point.
+		 *
+		 * @param type the type (classification) of the way-point
+         * @return {@code this} {@code Builder} for method chaining
+         */
 		public Builder type(final String type) {
 			_type = type;
 			return this;
 		}
 
+		/**
+		 * Set the type of GPX fix.
+		 *
+		 * @param fix the type of GPX fix
+         * @return {@code this} {@code Builder} for method chaining
+         */
 		public Builder fix(final Fix fix) {
 			_fix = fix;
 			return this;
 		}
 
+		/**
+		 * Set the number of satellites used to calculate the GPX fix.
+		 *
+		 * @param sat the number of satellites used to calculate the GPX fix
+         * @return {@code this} {@code Builder} for method chaining
+         */
 		public Builder sat(final UInt sat) {
 			_sat = sat;
 			return this;
 		}
 
+		/**
+		 * Set the number of satellites used to calculate the GPX fix.
+		 *
+		 * @param sat the number of satellites used to calculate the GPX fix
+		 * @return {@code this} {@code Builder} for method chaining
+		 * @throws IllegalArgumentException if the given {@code value} is smaller
+		 *         than zero
+		 */
 		public Builder sat(final int sat) {
 			_sat = UInt.of(sat);
 			return this;
 		}
 
+		/**
+		 * Set the horizontal dilution of precision.
+		 *
+		 * @param hdop the horizontal dilution of precision
+         * @return {@code this} {@code Builder} for method chaining
+         */
 		public Builder hdop(final Double hdop) {
 			_hdop = hdop;
 			return this;
 		}
 
+		/**
+		 * Set the vertical dilution of precision.
+		 *
+		 * @param vdop the vertical dilution of precision
+		 * @return {@code this} {@code Builder} for method chaining
+		 */
 		public Builder vdop(final Double vdop) {
 			_vdop = vdop;
 			return this;
 		}
 
+		/**
+		 * Set the position dilution of precision.
+		 *
+		 * @param pdop the position dilution of precision
+		 * @return {@code this} {@code Builder} for method chaining
+		 */
 		public Builder pdop(final Double pdop) {
 			_pdop = pdop;
 			return this;
 		}
 
-		public Builder ageofdgpsdata(final Double age) {
-			_ageofdgpsdata = age;
+		/**
+		 * Set the number of seconds since last DGPS update.
+		 *
+		 * @param age the number of seconds since last DGPS update
+         * @return {@code this} {@code Builder} for method chaining
+         */
+		public Builder ageOfDGPSAge(final Double age) {
+			_ageOfDGPSData = age;
 			return this;
 		}
 
+		/**
+		 * Set the ID of DGPS station used in differential correction.
+		 *
+		 * @param station the ID of DGPS station used in differential correction
+		 * @return {@code this} {@code Builder} for method chaining
+		 */
 		public Builder dgpsStation(final DGPSStation station) {
-			_dgpsid = station;
+			_dgpsID = station;
 			return this;
 		}
 
-		public Builder dgpsid(final int station) {
-			_dgpsid = DGPSStation.of(station);
+		/**
+		 * Set the ID of DGPS station used in differential correction.
+		 *
+		 * @param station the ID of DGPS station used in differential correction
+		 * @return {@code this} {@code Builder} for method chaining
+		 * @throws IllegalArgumentException if the given station number is not in the
+		 *         range of {@code [0..1023]}
+		 */
+		public Builder dgpsStation(final int station) {
+			_dgpsID = DGPSStation.of(station);
 			return this;
 		}
 
-
+		/**
+		 * Create a new way-point with the given latitude and longitude value.
+		 *
+		 * @param latitude the latitude of the way-point
+		 * @param longitude the longitude of the way-point
+         * @return a newly created way-point
+         */
 		public Point build(final Latitude latitude, final Longitude longitude) {
 			return new Point(
 				latitude,
@@ -394,7 +703,7 @@ public final class Point implements Serializable {
 				_elevation,
 				_speed,
 				_time,
-				_magvar,
+				_magneticVariation,
 				_geoidHeight,
 				_name,
 				_comment,
@@ -408,20 +717,37 @@ public final class Point implements Serializable {
 				_hdop,
 				_vdop,
 				_pdop,
-				_ageofdgpsdata,
-				_dgpsid
+				_ageOfDGPSData,
+				_dgpsID
 			);
 		}
 
+		/**
+		 * Create a new way-point with the given latitude and longitude value.
+		 *
+		 * @param latitude the latitude of the way-point
+		 * @param longitude the longitude of the way-point
+		 * @return a newly created way-point
+		 */
 		public Point build(final double latitude, final double longitude) {
 			return build(Latitude.of(latitude), Longitude.of(longitude));
 		}
 
 	}
 
+
+	/* *************************************************************************
+	 *  Static object creation methods
+	 * ************************************************************************/
+
 	public static Builder builder() {
 		return new Builder();
 	}
+
+
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
 
 	@XmlRootElement(name = "wpt")
 	@XmlType(name = "gpx.WayPoint")
@@ -504,9 +830,9 @@ public final class Point implements Serializable {
 				model.latitude = point.getLatitude().getValue();
 				model.longitude = point.getLongitude().getValue();
 				model.elevation = point.getElevation().orElse(null);
-				model.speed = point.getSpeed().orElse(null);
+				model.speed = point.getSpeed().map(Speed::getValue).orElse(null);
 				model.time = point.getTime().map(DTF::format).orElse(null);
-				model.magvar = point.getMagvar().map(Degrees::getValue).orElse(null);
+				model.magvar = point.getMagneticVariation().map(Degrees::getValue).orElse(null);
 				model.geoidheight = point.getGeoidHeight().orElse(null);
 				model.name = point.getName().orElse(null);
 				model.cmt = point.getComment().orElse(null);
@@ -519,8 +845,8 @@ public final class Point implements Serializable {
 				model.hdop = point.getHdop().orElse(null);
 				model.vdop = point.getVdop().orElse(null);
 				model.pdop = point.getPdop().orElse(null);
-				model.ageofdgpsdata = point.getAgeofdgpsdata().orElse(null);
-				model.dgpsid = point.getDgpsid().map(DGPSStation::getValue).orElse(null);
+				model.ageofdgpsdata = point.getAgeOfGPSData().orElse(null);
+				model.dgpsid = point.getDGPSID().map(DGPSStation::getValue).orElse(null);
 
 				return model;
 			}
@@ -531,7 +857,9 @@ public final class Point implements Serializable {
 					Latitude.of(model.latitude),
 					Longitude.of(model.longitude),
 					model.elevation,
-					model.speed,
+					Optional.ofNullable(model.speed)
+						.map(Speed::of)
+						.orElse(null),
 					Optional.ofNullable(model.time)
 						.map(t -> ZonedDateTime.parse(t, DTF))
 						.orElse(null),
@@ -549,7 +877,7 @@ public final class Point implements Serializable {
 					model.sym,
 					model.type,
 					Optional.ofNullable(model.fix)
-						.map(Fix::of)
+						.flatMap(Fix::of)
 						.orElse(null),
 					Optional.ofNullable(model.sat)
 						.map(UInt::of)
@@ -564,6 +892,8 @@ public final class Point implements Serializable {
 				);
 			}
 		}
+
+		public static final Adapter ADAPTER = new Adapter();
 
 	}
 }

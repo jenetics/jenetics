@@ -24,6 +24,9 @@ import static java.lang.String.format;
 import java.io.Serializable;
 
 /**
+ * The longitude of the point. Decimal degrees, WGS84 datum, which must be within
+ * the range of {@code [-180..180]}.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -34,15 +37,39 @@ public class Longitude implements Serializable {
 
 	private final double _value;
 
+	/**
+	 * Create a new (decimal degrees) {@code Longitude} value.
+	 *
+	 * @param value the longitude value in decimal degrees
+	 * @throws IllegalArgumentException if the given value is not within the
+	 *         range of {@code [-180..180]}
+	 */
 	private Longitude(final double value) {
-		if (value < -90 || value > 90) {
-			throw new IllegalArgumentException(format("%f is not in range [-90, 90].", value));
+		if (value < -180 || value > 180) {
+			throw new IllegalArgumentException(format(
+				"%f is not in range [-180, 180].", value
+			));
 		}
+
 		_value = value;
 	}
 
+	/**
+	 * Return the longitude value in decimal degrees.
+	 *
+	 * @return the longitude value in decimal degrees
+	 */
 	public double getValue() {
 		return _value;
+	}
+
+	/**
+	 * Return the longitude value in radians.
+	 *
+	 * @return the longitude value in radians
+	 */
+	public double toRadians() {
+		return Math.toRadians(_value);
 	}
 
 	@Override
@@ -62,8 +89,30 @@ public class Longitude implements Serializable {
 	}
 
 
-	public static Longitude of(final double value) {
-		return new Longitude(value);
+	/* *************************************************************************
+	 *  Static object creation methods
+	 * ************************************************************************/
+
+	/**
+	 * Create a new (decimal degrees) {@code Longitude} object.
+	 *
+	 * @param degrees the longitude value in decimal degrees
+	 * @throws IllegalArgumentException if the given value is not within the
+	 *         range of {@code [-180..180]}
+	 */
+	public static Longitude of(final double degrees) {
+		return new Longitude(degrees);
+	}
+
+	/**
+	 * Create a new {@code Longitude} value for the given {@code radians}.
+	 *
+	 * @param radians the longitude value in radians
+	 * @throws IllegalArgumentException if the given radians is not within the
+	 *         range of {@code [-2*Pi..2*Pi]}
+	 */
+	public static Longitude ofRadians(final double radians) {
+		return new Longitude(Math.toDegrees(radians));
 	}
 
 }
