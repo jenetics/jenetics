@@ -57,11 +57,11 @@ public final class WayPoint implements Point, Serializable {
 	private final Latitude _latitude;
 	private final Longitude _longitude;
 
-	private final Double _elevation;
+	private final Length _elevation;
 	private final Speed _speed;
 	private final ZonedDateTime _time;
 	private final Degrees _magneticVariation;
-	private final Double _geoidHeight;
+	private final Length _geoidHeight;
 	private final String _name;
 	private final String _comment;
 	private final String _description;
@@ -119,11 +119,11 @@ public final class WayPoint implements Point, Serializable {
 	private WayPoint(
 		final Latitude latitude,
 		final Longitude longitude,
-		final Double elevation,
+		final Length elevation,
 		final Speed speed,
 		final ZonedDateTime time,
 		final Degrees magneticVariation,
-		final Double geoidHeight,
+		final Length geoidHeight,
 		final String name,
 		final String comment,
 		final String description,
@@ -174,7 +174,7 @@ public final class WayPoint implements Point, Serializable {
 	}
 
 	@Override
-	public Optional<Double> getElevation() {
+	public Optional<Length> getElevation() {
 		return Optional.ofNullable(_elevation);
 	}
 
@@ -208,7 +208,7 @@ public final class WayPoint implements Point, Serializable {
 	 * @return the height (in meters) of geoid (mean sea level) above WGS84
 	 *         earth ellipsoid
 	 */
-	public Optional<Double> getGeoidHeight() {
+	public Optional<Length> getGeoidHeight() {
 		return Optional.ofNullable(_geoidHeight);
 	}
 
@@ -409,11 +409,11 @@ public final class WayPoint implements Point, Serializable {
 	 * Builder for creating a way-point with different parameters.
 	 */
 	public static final class Builder {
-		private Double _elevation;
+		private Length _elevation;
 		private Speed _speed;
 		private ZonedDateTime _time;
 		private Degrees _magneticVariation;
-		private Double _geoidHeight;
+		private Length _geoidHeight;
 		private String _name;
 		private String _comment;
 		private String _description;
@@ -430,13 +430,24 @@ public final class WayPoint implements Point, Serializable {
 		private DGPSStation _dgpsID;
 
 		/**
-		 * Set the elevation (in meters) of the point.
+		 * Set the elevation  of the point.
 		 *
-		 * @param elevation the elevation of the point, in meters
+		 * @param elevation the elevation of the point
 		 * @return {@code this} {@code Builder} for method chaining
 		 */
-		public Builder elevation(final Double elevation) {
+		public Builder elevation(final Length elevation) {
 			_elevation = elevation;
+			return this;
+		}
+
+		/**
+		 * Set the elevation (in meters) of the point.
+		 *
+		 * @param meters the elevation of the point, in meters
+		 * @return {@code this} {@code Builder} for method chaining
+		 */
+		public Builder elevation(final double meters) {
+			_elevation = Length.ofMeters(meters);
 			return this;
 		}
 
@@ -505,7 +516,7 @@ public final class WayPoint implements Point, Serializable {
 		 *        above WGS84 earth ellipsoid
 		 * @return {@code this} {@code Builder} for method chaining
 		 */
-		public Builder geoidHeight(final Double geoidHeight) {
+		public Builder geoidHeight(final Length geoidHeight) {
 			_geoidHeight = geoidHeight;
 			return this;
 		}
@@ -765,7 +776,7 @@ public final class WayPoint implements Point, Serializable {
 	 * @param latitude the latitude of the point
 	 * @param longitude the longitude of the point
 	 * @return a new {@code WayPoint}
-	 * @throws IllegalAccessException if the given latitude or longitude is not
+	 * @throws IllegalArgumentException if the given latitude or longitude is not
 	 *         in the valid range.
 	 */
 	public static WayPoint of(final double latitude, final double longitude) {
@@ -857,7 +868,9 @@ public final class WayPoint implements Point, Serializable {
 				final WayPoint.Model model = new WayPoint.Model();
 				model.latitude = point.getLatitude().doubleValue();
 				model.longitude = point.getLongitude().doubleValue();
-				model.elevation = point.getElevation().orElse(null);
+				model.elevation = point.getElevation()
+					.map(Length::doubleValue)
+					.orElse(null);
 				model.speed = point.getSpeed()
 					.map(Speed::doubleValue)
 					.orElse(null);
@@ -865,9 +878,11 @@ public final class WayPoint implements Point, Serializable {
 					.map(DTF::format)
 					.orElse(null);
 				model.magvar = point.getMagneticVariation()
-					.map(Degrees::getValue)
+					.map(Degrees::doubleValue)
 					.orElse(null);
-				model.geoidheight = point.getGeoidHeight().orElse(null);
+				model.geoidheight = point.getGeoidHeight()
+					.map(Length::doubleValue)
+					.orElse(null);
 				model.name = point.getName().orElse(null);
 				model.cmt = point.getComment().orElse(null);
 				model.src = point.getSource().orElse(null);
@@ -889,7 +904,7 @@ public final class WayPoint implements Point, Serializable {
 					.map(d -> d.toMillis()/1000.0)
 					.orElse(null);
 				model.dgpsid = point.getDGPSID()
-					.map(DGPSStation::getValue)
+					.map(DGPSStation::intValue)
 					.orElse(null);
 
 				return model;
@@ -900,7 +915,9 @@ public final class WayPoint implements Point, Serializable {
 				return new WayPoint(
 					Latitude.of(model.latitude),
 					Longitude.of(model.longitude),
-					model.elevation,
+					Optional.ofNullable(model.elevation)
+						.map(Length::ofMeters)
+						.orElse(null),
 					Optional.ofNullable(model.speed)
 						.map(Speed::of)
 						.orElse(null),
@@ -910,7 +927,9 @@ public final class WayPoint implements Point, Serializable {
 					Optional.ofNullable(model.magvar)
 						.map(Degrees::of)
 						.orElse(null),
-					model.geoidheight,
+					Optional.ofNullable(model.geoidheight)
+						.map(Length::ofMeters)
+						.orElse(null),
 					model.name,
 					model.cmt,
 					model.desc,
@@ -943,5 +962,3 @@ public final class WayPoint implements Point, Serializable {
 
 	}
 }
-
-

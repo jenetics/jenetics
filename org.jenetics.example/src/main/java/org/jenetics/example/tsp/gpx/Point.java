@@ -53,7 +53,7 @@ public interface Point {
 	 *
 	 * @return the elevation (in meters) of the point
 	 */
-	public Optional<Double> getElevation();
+	public Optional<Length> getElevation();
 
 	/**
 	 * Creation/modification timestamp for the point.
