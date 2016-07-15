@@ -856,10 +856,10 @@ public final class WayPoint implements Point, Serializable {
 			public WayPoint.Model marshal(final WayPoint point) {
 				final WayPoint.Model model = new WayPoint.Model();
 				model.latitude = point.getLatitude().doubleValue();
-				model.longitude = point.getLongitude().getValue();
+				model.longitude = point.getLongitude().doubleValue();
 				model.elevation = point.getElevation().orElse(null);
 				model.speed = point.getSpeed()
-					.map(Speed::getValue)
+					.map(Speed::doubleValue)
 					.orElse(null);
 				model.time = point.getTime()
 					.map(DTF::format)

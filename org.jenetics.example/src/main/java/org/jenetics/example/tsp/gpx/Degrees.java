@@ -33,7 +33,7 @@ import java.io.Serializable;
  * @version !__version__!
  * @since !__version__!
  */
-public final class Degrees implements Serializable {
+public final class Degrees extends Number implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -61,8 +61,9 @@ public final class Degrees implements Serializable {
 	 * Return the decimal degree value.
 	 *
 	 * @return the decimal degree value
-     */
-	public double getValue() {
+	 */
+	@Override
+	public double doubleValue() {
 		return _value;
 	}
 
@@ -70,9 +71,24 @@ public final class Degrees implements Serializable {
 	 * Return the degrees in radians.
 	 *
 	 * @return the degrees in radians
-     */
+	 */
 	public double toRadians() {
 		return Math.toRadians(_value);
+	}
+
+	@Override
+	public int intValue() {
+		return (int)doubleValue();
+	}
+
+	@Override
+	public long longValue() {
+		return (long)doubleValue();
+	}
+
+	@Override
+	public float floatValue() {
+		return (float)doubleValue();
 	}
 
 	@Override

@@ -30,7 +30,7 @@ import java.io.Serializable;
  * @version !__version__!
  * @since !__version__!
  */
-public final class Speed implements Serializable {
+public final class Speed extends Number implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -52,7 +52,8 @@ public final class Speed implements Serializable {
 	 *
 	 * @return the GPS speed value in m/s
 	 */
-	public double getValue() {
+	@Override
+	public double doubleValue() {
 		return _value;
 	}
 
@@ -63,6 +64,21 @@ public final class Speed implements Serializable {
 	 */
 	public double toKmH() {
 		return _value*MPS_TO_KMH_FACTOR;
+	}
+
+	@Override
+	public int intValue() {
+		return (int)doubleValue();
+	}
+
+	@Override
+	public long longValue() {
+		return (long)doubleValue();
+	}
+
+	@Override
+	public float floatValue() {
+		return (float)doubleValue();
 	}
 
 	@Override

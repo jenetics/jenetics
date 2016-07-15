@@ -31,7 +31,7 @@ import java.io.Serializable;
  * @version !__version__!
  * @since !__version__!
  */
-public final class Latitude implements Serializable {
+public final class Latitude extends Number implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -59,6 +59,7 @@ public final class Latitude implements Serializable {
 	 *
 	 * @return the latitude value in decimal degrees
      */
+	@Override
 	public double doubleValue() {
 		return _value;
 	}
@@ -70,6 +71,21 @@ public final class Latitude implements Serializable {
      */
 	public double toRadians() {
 		return Math.toRadians(_value);
+	}
+
+	@Override
+	public int intValue() {
+		return (int)doubleValue();
+	}
+
+	@Override
+	public long longValue() {
+		return (long)doubleValue();
+	}
+
+	@Override
+	public float floatValue() {
+		return (float)doubleValue();
 	}
 
 	@Override

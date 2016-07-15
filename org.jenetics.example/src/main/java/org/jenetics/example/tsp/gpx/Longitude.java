@@ -31,7 +31,7 @@ import java.io.Serializable;
  * @version !__version__!
  * @since !__version__!
  */
-public class Longitude implements Serializable {
+public class Longitude extends Number implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -59,7 +59,8 @@ public class Longitude implements Serializable {
 	 *
 	 * @return the longitude value in decimal degrees
 	 */
-	public double getValue() {
+	@Override
+	public double doubleValue() {
 		return _value;
 	}
 
@@ -70,6 +71,21 @@ public class Longitude implements Serializable {
 	 */
 	public double toRadians() {
 		return Math.toRadians(_value);
+	}
+
+	@Override
+	public int intValue() {
+		return (int)doubleValue();
+	}
+
+	@Override
+	public long longValue() {
+		return (long)doubleValue();
+	}
+
+	@Override
+	public float floatValue() {
+		return (float)doubleValue();
 	}
 
 	@Override

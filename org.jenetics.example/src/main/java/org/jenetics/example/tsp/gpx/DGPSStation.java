@@ -33,7 +33,7 @@ import java.io.Serializable;
  * @version !__version__!
  * @since !__version__!
  */
-public final class DGPSStation implements Serializable {
+public final class DGPSStation extends Number implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -59,8 +59,23 @@ public final class DGPSStation implements Serializable {
 	 *
 	 * @return the differential GPS station number
      */
-	public int getValue() {
+	public int intValue() {
 		return _value;
+	}
+
+	@Override
+	public double doubleValue() {
+		return (double)_value;
+	}
+
+	@Override
+	public long longValue() {
+		return (long)_value;
+	}
+
+	@Override
+	public float floatValue() {
+		return (float)_value;
 	}
 
 	@Override
