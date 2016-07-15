@@ -19,22 +19,15 @@
  */
 package org.jenetics.example.tsp.gpx;
 
-import static java.lang.Double.NaN;
-import static java.lang.Double.compare;
-import static java.lang.Math.PI;
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
-import static java.lang.Math.sqrt;
-import static java.lang.Math.toRadians;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.OptionalDouble;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -45,8 +38,11 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.jenetics.util.ISeq;
+
 /**
- * Represents a way-point, route-point and/or track-point.
+ * A {@code WayPoint} represents a way-point, point of interest, or named
+ * feature on a map.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -57,236 +53,702 @@ public final class WayPoint implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	// The earth radius used for calculating distances.
-	private static final double R = 6_371_000.785;
+	private final Latitude _latitude;
+	private final Longitude _longitude;
 
-	final String _name;
-	final ZonedDateTime _time;
-	final double _latitude;
-	final double _longitude;
-	final double _elevation;
-	final double _speed;
+	private final Double _elevation;
+	private final Speed _speed;
+	private final ZonedDateTime _time;
+	private final Degrees _magneticVariation;
+	private final Double _geoidHeight;
+	private final String _name;
+	private final String _comment;
+	private final String _description;
+	private final String _source;
+	private final ISeq<Link> _links;
+	private final String _symbol;
+	private final String _type;
+	private final Fix _fix;
+	private final UInt _sat;
+	private final Double _hdop;
+	private final Double _vdop;
+	private final Double _pdop;
+	private final Double _ageOfGPSData;
+	private final DGPSStation _dgpsID;
 
+	/**
+	 * Create a new way-point with the given parameter.
+	 *
+	 * @param latitude the latitude of the point, WGS84 datum (mandatory)
+	 * @param longitude the longitude of the point, WGS84 datum (mandatory)
+	 * @param elevation the elevation (in meters) of the point (optional)
+	 * @param speed the current GPS speed (optional)
+	 * @param time creation/modification timestamp for element. Conforms to ISO
+	 *        8601 specification for date/time representation. Fractional seconds
+	 *        are allowed for millisecond timing in tracklogs. (optional)
+	 * @param magneticVariation the magnetic variation at the point (optional)
+	 * @param geoidHeight height (in meters) of geoid (mean sea level) above
+	 *        WGS84 earth ellipsoid. As defined in NMEA GGA message. (optional)
+	 * @param name the GPS name of the way-point. This field will be transferred
+	 *        to and from the GPS. GPX does not place restrictions on the length
+	 *        of this field or the characters contained in it. It is up to the
+	 *        receiving application to validate the field before sending it to
+	 *        the GPS. (optional)
+	 * @param comment GPS way-point comment. Sent to GPS as comment (optional)
+	 * @param description a text description of the element. Holds additional
+	 *        information about the element intended for the user, not the GPS.
+	 *        (optional)
+	 * @param source source of data. Included to give user some idea of
+	 *        reliability and accuracy of data. "Garmin eTrex", "USGS quad
+	 *        Boston North", e.g. (optional)
+	 * @param links links to additional information about the way-point. May be
+	 *        empty, but not {@code null}.
+	 * @param symbol text of GPS symbol name. For interchange with other
+	 *        programs, use the exact spelling of the symbol as displayed on the
+	 *        GPS. If the GPS abbreviates words, spell them out. (optional)
+	 * @param type type (classification) of the way-point (optional)
+	 * @param fix type of GPX fix (optional)
+	 * @param sat number of satellites used to calculate the GPX fix (optional)
+     * @param hdop horizontal dilution of precision (optional)
+     * @param vdop vertical dilution of precision (optional)
+     * @param pdop position dilution of precision. (optional)
+     * @param ageOfGPSData number of seconds since last DGPS update (optional)
+     * @param dgpsID ID of DGPS station used in differential correction (optional)
+     */
 	private WayPoint(
-		final String name,
+		final Latitude latitude,
+		final Longitude longitude,
+		final Double elevation,
+		final Speed speed,
 		final ZonedDateTime time,
-		final double latitude,
-		final double longitude,
-		final double elevation,
-		final double speed
+		final Degrees magneticVariation,
+		final Double geoidHeight,
+		final String name,
+		final String comment,
+		final String description,
+		final String source,
+		final ISeq<Link> links,
+		final String symbol,
+		final String type,
+		final Fix fix,
+		final UInt sat,
+		final Double hdop,
+		final Double vdop,
+		final Double pdop,
+		final Double ageOfGPSData,
+		final DGPSStation dgpsID
 	) {
-		_name = name;
-		_time = time;
-		_latitude = latitude;
-		_longitude = longitude;
+		_latitude = requireNonNull(latitude);
+		_longitude = requireNonNull(longitude);
+
 		_elevation = elevation;
 		_speed = speed;
+		_time = time;
+		_magneticVariation = magneticVariation;
+		_geoidHeight = geoidHeight;
+		_name = name;
+		_comment = comment;
+		_description = description;
+		_source = source;
+		_links = requireNonNull(links);
+		_symbol = symbol;
+		_type = type;
+		_fix = fix;
+		_sat = sat;
+		_hdop = hdop;
+		_vdop = vdop;
+		_pdop = pdop;
+		_ageOfGPSData = ageOfGPSData;
+		_dgpsID = dgpsID;
 	}
 
 	/**
-	 * Return the name of the way point.
+	 * The latitude of the point, WGS84 datum.
 	 *
-	 * @return the name of the way point
-	 */
-	public Optional<String> getName() {
-		return Optional.ofNullable(_name);
+	 * @return the latitude of the point
+     */
+	public Latitude getLatitude() {
+		return _latitude;
 	}
 
 	/**
-	 * Return the timestamp of the location.
+	 * The longitude of the point, WGS84 datum.
 	 *
-	 * @return the timestamp of the location
+	 * @return the longitude of the point
 	 */
+	public Longitude getLongitude() {
+		return _longitude;
+	}
+
+	/**
+	 * The elevation (in meters) of the point.
+	 *
+	 * @return the elevation (in meters) of the point
+     */
+	public Optional<Double> getElevation() {
+		return Optional.ofNullable(_elevation);
+	}
+
+	/**
+	 * The current GPS speed.
+	 *
+	 * @return the current GPS speed
+     */
+	public Optional<Speed> getSpeed() {
+		return Optional.ofNullable(_speed);
+	}
+
+	/**
+	 * Creation/modification timestamp for the point.
+	 *
+	 * @return creation/modification timestamp for the point
+     */
 	public Optional<ZonedDateTime> getTime() {
 		return Optional.ofNullable(_time);
 	}
 
 	/**
-	 * Return the latitude value of the location.
+	 * The magnetic variation at the point.
 	 *
-	 * @return the latitude value of the location
-	 */
-	public double getLatitude() {
-		return _latitude;
+	 * @return the magnetic variation at the point
+     */
+	public Optional<Degrees> getMagneticVariation() {
+		return Optional.ofNullable(_magneticVariation);
 	}
 
 	/**
-	 * Return the longitude value of the location.
+	 * The height (in meters) of geoid (mean sea level) above WGS84 earth
+	 * ellipsoid. As defined in NMEA GGA message.
 	 *
-	 * @return the longitude value of the location
-	 */
-	public double getLongitude() {
-		return _longitude;
+	 * @return the height (in meters) of geoid (mean sea level) above WGS84
+	 *         earth ellipsoid
+     */
+	public Optional<Double> getGeoidHeight() {
+		return Optional.ofNullable(_geoidHeight);
 	}
 
 	/**
-	 * Return the elevation of the location.
+	 * The GPS name of the way-point. This field will be transferred to and from
+	 * the GPS. GPX does not place restrictions on the length of this field or
+	 * the characters contained in it. It is up to the receiving application to
+	 * validate the field before sending it to the GPS.
 	 *
-	 * @return the elevation of the location.
-	 */
-	public OptionalDouble getElevation() {
-		return Double.isFinite(_elevation)
-			? OptionalDouble.of(_elevation)
-			: OptionalDouble.empty();
+	 * @return the GPS name of the way-point
+     */
+	public Optional<String> getName() {
+		return Optional.ofNullable(_name);
 	}
 
 	/**
-	 * Return the elevation of the location.
+	 * The GPS way-point comment.
 	 *
-	 * @return the elevation of the location.
-	 */
-	public OptionalDouble getSpeed() {
-		return Double.isFinite(_speed)
-			? OptionalDouble.of(_speed)
-			: OptionalDouble.empty();
+	 * @return the GPS way-point comment
+     */
+	public Optional<String> getComment() {
+		return Optional.ofNullable(_comment);
 	}
 
 	/**
-	 * Return the distance between {@code this} and the {@code other}
-	 * {@code WayPoint} in meter.
+	 * Return a text description of the element. Holds additional information
+	 * about the element intended for the user, not the GPS.
 	 *
-	 * @param other the second way-point
-	 * @return the distance between {@code this} and the {@code other}
-	 *         {@code WayPoint}
-	 * @throws NullPointerException if the {@code other} way-point is
-	 *         {@code null}
+	 * @return a text description of the element
+     */
+	public Optional<String> getDescription() {
+		return Optional.ofNullable(_description);
+	}
+
+	/**
+	 * Return the source of data. Included to give user some idea of reliability
+	 * and accuracy of data. "Garmin eTrex", "USGS quad Boston North", e.g.
+	 *
+	 * @return the source of the data
+     */
+	public Optional<String> getSource() {
+		return Optional.ofNullable(_source);
+	}
+
+	/**
+	 * Return the links to additional information about the way-point.
+	 *
+	 * @return the links to additional information about the way-point
+     */
+	public ISeq<Link> getLinks() {
+		return _links;
+	}
+
+	/**
+	 * Return the text of GPS symbol name. For interchange with other programs,
+	 * use the exact spelling of the symbol as displayed on the GPS. If the GPS
+	 * abbreviates words, spell them out.
+	 *
+	 * @return the text of GPS symbol name
+     */
+	public Optional<String> getSymbol() {
+		return Optional.ofNullable(_symbol);
+	}
+
+	/**
+	 * Return the type (classification) of the way-point.
+	 *
+	 * @return the type (classification) of the way-point
+     */
+	public Optional<String> getType() {
+		return Optional.ofNullable(_type);
+	}
+
+	/**
+	 * Return the type of GPX fix.
+	 *
+	 * @return the type of GPX fix
+     */
+	public Optional<Fix> getFix() {
+		return Optional.ofNullable(_fix);
+	}
+
+	/**
+	 * Return the number of satellites used to calculate the GPX fix.
+	 *
+	 * @return the number of satellites used to calculate the GPX fix
+     */
+	public Optional<UInt> getSat() {
+		return Optional.ofNullable(_sat);
+	}
+
+	/**
+	 * Return the horizontal dilution of precision.
+	 *
+	 * @return the horizontal dilution of precision
 	 */
-	public double distance(final WayPoint other) {
-		requireNonNull(other);
+	public Optional<Double> getHdop() {
+		return Optional.ofNullable(_hdop);
+	}
 
-		final double phi1 = toRadians(_latitude);
-		final double theta1 = PI/2.0 - toRadians(_latitude);
-		final double r1 = R + _elevation;
+	/**
+	 * Return the vertical dilution of precision.
+	 *
+	 * @return the vertical dilution of precision
+	 */
+	public Optional<Double> getVdop() {
+		return Optional.ofNullable(_vdop);
+	}
 
-		final double phi2 = toRadians(other._latitude);
-		final double theta2 = PI/2.0 - toRadians(other._latitude);
-		final double r2 = R + toRadians(other._latitude);
+	/**
+	 * Return the position dilution of precision.
+	 *
+	 * @return the position dilution of precision
+	 */
+	public Optional<Double> getPdop() {
+		return Optional.ofNullable(_pdop);
+	}
 
-		final double x1 = r1*sin(theta1)*cos(phi1);
-		final double y1 = r1*sin(theta1)*sin(phi1);
-		final double z1 = r1*cos(theta1);
+	/**
+	 * Return the number of seconds since last DGPS update.
+	 *
+	 * @return number of seconds since last DGPS update
+     */
+	public Optional<Double> getAgeOfGPSData() {
+		return Optional.ofNullable(_ageOfGPSData);
+	}
 
-		final double x2 = r2*sin(theta2)*cos(phi2);
-		final double y2 = r2*sin(theta2)*sin(phi2);
-		final double z2 = r2*cos(theta2);
-
-		return sqrt(
-			(x1 - x2)*(x1 - x2) +
-			(y1 - y2)*(y1 - y2) +
-			(z1 - z2)*(z1 - z2)
-		);
+	/**
+	 * Return the ID of DGPS station used in differential correction.
+	 *
+	 * @return the ID of DGPS station used in differential correction
+     */
+	public Optional<DGPSStation> getDGPSID() {
+		return Optional.ofNullable(_dgpsID);
 	}
 
 	@Override
 	public int hashCode() {
-		int hash = getClass().hashCode();
-		hash += 31*Double.hashCode(_latitude) + 17;
-		hash += 31*Double.hashCode(_latitude) + 17;
-		hash += 31*Double.hashCode(_elevation) + 17;
-		hash += 31*Double.hashCode(_speed) + 17;
-		hash += 31*getName().map(String::hashCode).orElse(0) + 17;
-		hash += 31*getTime().map(ZonedDateTime::hashCode).orElse(0) + 17;
+		int hash = 37;
+		hash += 17*_latitude.hashCode() + 31;
+		hash += 17*_longitude.hashCode() + 31;
+		hash += 17*Objects.hashCode(_elevation) + 31;
+		hash += 17*Objects.hashCode(_speed) + 31;
+		hash += 17*Objects.hashCode(_time) + 31;
+		hash += 17*Objects.hashCode(_magneticVariation) + 31;
+		hash += 17*Objects.hashCode(_geoidHeight) + 31;
+		hash += 17*Objects.hashCode(_name) + 31;
+		hash += 17*Objects.hashCode(_comment) + 31;
+		hash += 17*Objects.hashCode(_description) + 31;
+		hash += 17*Objects.hashCode(_source) + 31;
+		hash += 17*Objects.hashCode(_links) + 31;
+		hash += 17*Objects.hashCode(_symbol) + 31;
+		hash += 17*Objects.hashCode(_type) + 31;
+		hash += 17*Objects.hashCode(_fix) + 31;
+		hash += 17*Objects.hashCode(_sat) + 31;
+		hash += 17*Objects.hashCode(_hdop) + 31;
+		hash += 17*Objects.hashCode(_vdop) + 31;
+		hash += 17*Objects.hashCode(_pdop) + 31;
+		hash += 17*Objects.hashCode(_ageOfGPSData) + 31;
+		hash += 17*Objects.hashCode(_dgpsID) + 31;
 
 		return hash;
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj != null &&
-			getClass() == obj.getClass() &&
-			compare(_latitude, ((WayPoint)obj)._latitude) ==  0 &&
-			compare(_longitude, ((WayPoint)obj)._latitude) == 0&&
-			compare(_elevation, ((WayPoint)obj)._elevation) == 0&&
-			compare(_speed, ((WayPoint)obj)._speed) == 0 &&
-			Objects.equals(_name, ((WayPoint) obj)._name) &&
-			Objects.equals(_time, ((WayPoint)obj)._time);
+		return obj instanceof WayPoint &&
+			((WayPoint)obj)._latitude.equals(_latitude) &&
+			((WayPoint)obj)._longitude.equals(_longitude) &&
+			Objects.equals(((WayPoint)obj)._elevation, _elevation) &&
+			Objects.equals(((WayPoint)obj)._speed, _speed) &&
+			Objects.equals(((WayPoint)obj)._time, _time) &&
+			Objects.equals(((WayPoint)obj)._magneticVariation, _magneticVariation) &&
+			Objects.equals(((WayPoint)obj)._geoidHeight, _geoidHeight) &&
+			Objects.equals(((WayPoint)obj)._name, _name) &&
+			Objects.equals(((WayPoint)obj)._comment, _comment) &&
+			Objects.equals(((WayPoint)obj)._description, _description) &&
+			Objects.equals(((WayPoint)obj)._source, _source) &&
+			Objects.equals(((WayPoint)obj)._links, _links) &&
+			Objects.equals(((WayPoint)obj)._symbol, _symbol) &&
+			Objects.equals(((WayPoint)obj)._type, _type) &&
+			Objects.equals(((WayPoint)obj)._fix, _fix) &&
+			Objects.equals(((WayPoint)obj)._sat, _sat) &&
+			Objects.equals(((WayPoint)obj)._hdop, _hdop) &&
+			Objects.equals(((WayPoint)obj)._vdop, _vdop) &&
+			Objects.equals(((WayPoint)obj)._pdop, _pdop) &&
+			Objects.equals(((WayPoint)obj)._ageOfGPSData, _ageOfGPSData) &&
+			Objects.equals(((WayPoint)obj)._dgpsID, _dgpsID);
 	}
 
 	@Override
 	public String toString() {
-		return format(
-			"%s[lat=%f, lon=%f, ele=%f]",
-			getName().orElse(getClass().getName()),
-			getLatitude(),
-			getLongitude(),
-			getElevation().orElse(0.0)
-		);
-	}
-
-	/**
-	 * Return a new {@code WayPoint} from the given input data.
-	 *
-	 * @param name the name of the way-point, maybe {@code null}
-	 * @param time the time of the way-point, maybe {@code null}
-	 * @param latitude the latitude value
-	 * @param longitude the longitude value
-	 * @param elevation the elevation value
-	 * @param speed the speed value
-	 * @return a new {@code WayPoint} from the given input data
-	 */
-	public static WayPoint of(
-		final String name,
-		final ZonedDateTime time,
-		final double latitude,
-		final double longitude,
-		final double elevation,
-		final double speed
-	) {
-		return new WayPoint(name, time, latitude,longitude, elevation, speed);
-	}
-
-	/**
-	 * Return a new {@code WayPoint} from the given input data.
-	 *
-	 * @param name the name of the way-point, maybe {@code null}
-	 * @param latitude the latitude value
-	 * @param longitude the longitude value
-	 * @return a new {@code WayPoint} from the given input data
-	 */
-	public static WayPoint of(
-		final String name,
-		final double latitude,
-		final double longitude
-	) {
-		return new WayPoint(name, null, latitude,longitude, NaN, NaN);
-	}
-
-	/**
-	 * Return a new {@code WayPoint} from the given input data.
-	 *
-	 * @param name the name of the way-point, maybe {@code null}
-	 * @param latitude the latitude value
-	 * @param longitude the longitude value
-	 * @param elevation the elevation value
-	 * @return a new {@code WayPoint} from the given input data
-	 */
-	public static WayPoint of(
-		final String name,
-		final double latitude,
-		final double longitude,
-		final double elevation
-	) {
-		return new WayPoint(name, null, latitude,longitude, elevation, NaN);
-	}
-
-	/**
-	 * Return a new {@code WayPoint} from the given input data.
-	 *
-	 * @param latitude the latitude value
-	 * @param longitude the longitude value
-	 * @return a new {@code WayPoint} from the given input data
-	 */
-	public static WayPoint of(
-		final double latitude,
-		final double longitude
-	) {
-		return new WayPoint(null, null, latitude,longitude, NaN, NaN);
+		return format("[lat=%s, lon=%s]", _latitude, _latitude);
 	}
 
 
 	/**
-	 * Model class for XML serialization/deserialization.
+	 * Builder for creating a way-point with different parameters.
 	 */
+	public static final class Builder {
+		private Double _elevation;
+		private Speed _speed;
+		private ZonedDateTime _time;
+		private Degrees _magneticVariation;
+		private Double _geoidHeight;
+		private String _name;
+		private String _comment;
+		private String _description;
+		private String _source;
+		private ISeq<Link> _links;
+		private String _symbol;
+		private String _type;
+		private Fix _fix;
+		private UInt _sat;
+		private Double _hdop;
+		private Double _vdop;
+		private Double _pdop;
+		private Double _ageOfDGPSData;
+		private DGPSStation _dgpsID;
+
+		/**
+		 * Set the elevation (in meters) of the point.
+		 *
+		 * @param elevation the elevation of the point, in meters
+		 * @return {@code this} {@code Builder} for method chaining
+		 */
+		public Builder elevation(final Double elevation) {
+			_elevation = elevation;
+			return this;
+		}
+
+		/**
+		 * Set the current GPS speed.
+		 *
+		 * @param speed the current GPS speed
+         * @return {@code this} {@code Builder} for method chaining
+         */
+		public Builder speed(final Speed speed) {
+			_speed = speed;
+			return this;
+		}
+
+		/**
+		 * Set the current GPS speed.
+		 *
+		 * @param meterPerSecond the current GPS speed in m/s
+		 * @return {@code this} {@code Builder} for method chaining
+		 */
+		public Builder speed(final double meterPerSecond) {
+			_speed = Speed.of(meterPerSecond);
+			return this;
+		}
+
+		/**
+		 * Set the creation/modification timestamp for the point.
+		 *
+		 * @param time the creation/modification timestamp for the point
+         * @return {@code this} {@code Builder} for method chaining
+         */
+		public Builder time(final ZonedDateTime time) {
+			_time = time;
+			return this;
+		}
+
+		/**
+		 * Set the magnetic variation at the point.
+		 *
+		 * @param variation the magnetic variation
+         * @return {@code this} {@code Builder} for method chaining
+         */
+		public Builder magneticVariation(final Degrees variation) {
+			_magneticVariation = variation;
+			return this;
+		}
+
+		/**
+		 * Set the magnetic variation at the point.
+		 *
+		 * @param variation the magnetic variation
+		 * @return {@code this} {@code Builder} for method chaining
+		 * @throws IllegalArgumentException if the give value is not within the
+		 *         range of {@code [0..360]}
+		 */
+		public Builder magneticVariation(final double variation) {
+			_magneticVariation = Degrees.of(variation);
+			return this;
+		}
+
+		/**
+		 * Set the height (in meters) of geoid (mean sea level) above WGS84 earth
+		 * ellipsoid. As defined in NMEA GGA message.
+		 *
+		 * @param geoidHeight the height (in meters) of geoid (mean sea level)
+		 *        above WGS84 earth ellipsoid
+         * @return {@code this} {@code Builder} for method chaining
+         */
+		public Builder geoidHeight(final Double geoidHeight) {
+			_geoidHeight = geoidHeight;
+			return this;
+		}
+
+		/**
+		 * Set the GPS name of the way-point. This field will be transferred to
+		 * and from the GPS. GPX does not place restrictions on the length of
+		 * this field or the characters contained in it. It is up to the
+		 * receiving application to validate the field before sending it to the
+		 * GPS.
+		 *
+		 * @param name the GPS name of the way-point
+         * @return {@code this} {@code Builder} for method chaining
+         */
+		public Builder name(final String name) {
+			_name = name;
+			return this;
+		}
+
+		/**
+		 * Set the GPS way-point comment.
+		 *
+		 * @param comment the GPS way-point comment.
+         * @return {@code this} {@code Builder} for method chaining
+         */
+		public Builder comment(final String comment) {
+			_comment = comment;
+			return this;
+		}
+
+		/**
+		 * Set the links to additional information about the way-point.
+		 *
+		 * @param links the links to additional information about the way-point
+         * @return {@code this} {@code Builder} for method chaining
+         */
+		public Builder links(final ISeq<Link> links) {
+			_links = links;
+			return this;
+		}
+
+		/**
+		 * Set the text of GPS symbol name. For interchange with other programs,
+		 * use the exact spelling of the symbol as displayed on the GPS. If the
+		 * GPS abbreviates words, spell them out.
+		 *
+		 * @param symbol the text of GPS symbol name
+         * @return {@code this} {@code Builder} for method chaining
+         */
+		public Builder symbol(final String symbol) {
+			_symbol = symbol;
+			return this;
+		}
+
+		/**
+		 * Set the type (classification) of the way-point.
+		 *
+		 * @param type the type (classification) of the way-point
+         * @return {@code this} {@code Builder} for method chaining
+         */
+		public Builder type(final String type) {
+			_type = type;
+			return this;
+		}
+
+		/**
+		 * Set the type of GPX fix.
+		 *
+		 * @param fix the type of GPX fix
+         * @return {@code this} {@code Builder} for method chaining
+         */
+		public Builder fix(final Fix fix) {
+			_fix = fix;
+			return this;
+		}
+
+		/**
+		 * Set the number of satellites used to calculate the GPX fix.
+		 *
+		 * @param sat the number of satellites used to calculate the GPX fix
+         * @return {@code this} {@code Builder} for method chaining
+         */
+		public Builder sat(final UInt sat) {
+			_sat = sat;
+			return this;
+		}
+
+		/**
+		 * Set the number of satellites used to calculate the GPX fix.
+		 *
+		 * @param sat the number of satellites used to calculate the GPX fix
+		 * @return {@code this} {@code Builder} for method chaining
+		 * @throws IllegalArgumentException if the given {@code value} is smaller
+		 *         than zero
+		 */
+		public Builder sat(final int sat) {
+			_sat = UInt.of(sat);
+			return this;
+		}
+
+		/**
+		 * Set the horizontal dilution of precision.
+		 *
+		 * @param hdop the horizontal dilution of precision
+         * @return {@code this} {@code Builder} for method chaining
+         */
+		public Builder hdop(final Double hdop) {
+			_hdop = hdop;
+			return this;
+		}
+
+		/**
+		 * Set the vertical dilution of precision.
+		 *
+		 * @param vdop the vertical dilution of precision
+		 * @return {@code this} {@code Builder} for method chaining
+		 */
+		public Builder vdop(final Double vdop) {
+			_vdop = vdop;
+			return this;
+		}
+
+		/**
+		 * Set the position dilution of precision.
+		 *
+		 * @param pdop the position dilution of precision
+		 * @return {@code this} {@code Builder} for method chaining
+		 */
+		public Builder pdop(final Double pdop) {
+			_pdop = pdop;
+			return this;
+		}
+
+		/**
+		 * Set the number of seconds since last DGPS update.
+		 *
+		 * @param age the number of seconds since last DGPS update
+         * @return {@code this} {@code Builder} for method chaining
+         */
+		public Builder ageOfDGPSAge(final Double age) {
+			_ageOfDGPSData = age;
+			return this;
+		}
+
+		/**
+		 * Set the ID of DGPS station used in differential correction.
+		 *
+		 * @param station the ID of DGPS station used in differential correction
+		 * @return {@code this} {@code Builder} for method chaining
+		 */
+		public Builder dgpsStation(final DGPSStation station) {
+			_dgpsID = station;
+			return this;
+		}
+
+		/**
+		 * Set the ID of DGPS station used in differential correction.
+		 *
+		 * @param station the ID of DGPS station used in differential correction
+		 * @return {@code this} {@code Builder} for method chaining
+		 * @throws IllegalArgumentException if the given station number is not in the
+		 *         range of {@code [0..1023]}
+		 */
+		public Builder dgpsStation(final int station) {
+			_dgpsID = DGPSStation.of(station);
+			return this;
+		}
+
+		/**
+		 * Create a new way-point with the given latitude and longitude value.
+		 *
+		 * @param latitude the latitude of the way-point
+		 * @param longitude the longitude of the way-point
+         * @return a newly created way-point
+         */
+		public WayPoint build(final Latitude latitude, final Longitude longitude) {
+			return new WayPoint(
+				latitude,
+				longitude,
+				_elevation,
+				_speed,
+				_time,
+				_magneticVariation,
+				_geoidHeight,
+				_name,
+				_comment,
+				_description,
+				_source,
+				_links != null ? _links : ISeq.empty(),
+				_symbol,
+				_type,
+				_fix,
+				_sat,
+				_hdop,
+				_vdop,
+				_pdop,
+				_ageOfDGPSData,
+				_dgpsID
+			);
+		}
+
+		/**
+		 * Create a new way-point with the given latitude and longitude value.
+		 *
+		 * @param latitude the latitude of the way-point
+		 * @param longitude the longitude of the way-point
+		 * @return a newly created way-point
+		 */
+		public WayPoint build(final double latitude, final double longitude) {
+			return build(Latitude.of(latitude), Longitude.of(longitude));
+		}
+
+	}
+
+
+	/* *************************************************************************
+	 *  Static object creation methods
+	 * ************************************************************************/
+
+	public static Builder builder() {
+		return new Builder();
+	}
+
+
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
+
 	@XmlRootElement(name = "wpt")
 	@XmlType(name = "gpx.WayPoint")
 	@XmlAccessorType(XmlAccessType.FIELD)
@@ -298,55 +760,142 @@ public final class WayPoint implements Serializable {
 		@XmlAttribute(name = "lon", required = true)
 		public double longitude;
 
-		@XmlElement(name = "ele", required = false)
+		@XmlElement(name = "ele")
 		public Double elevation;
 
-		@XmlElement(name = "speed", required = false)
+		@XmlElement(name = "speed")
 		public Double speed;
 
-		@XmlElement(name = "time", required = false)
+		@XmlElement(name = "time")
 		public String time;
 
-		@XmlElement(name = "name", required = false)
+		@XmlElement(name = "magvar")
+		public Double magvar;
+
+		@XmlElement(name = "geoidheight")
+		public Double geoidheight;
+
+		@XmlElement(name = "name")
 		public String name;
+
+		@XmlElement(name = "cmt")
+		public String cmt;
+
+		@XmlElement(name = "desc")
+		public String desc;
+
+		@XmlElement(name = "src")
+		public String src;
+
+		@XmlElement(name = "link")
+		public List<Link.Model> link;
+
+		@XmlElement(name = "sym")
+		public String sym;
+
+		@XmlElement(name = "type")
+		public String type;
+
+		@XmlElement(name = "fix")
+		public String fix;
+
+		@XmlElement(name = "sat")
+		public Integer sat;
+
+		@XmlElement(name = "hdop")
+		public Double hdop;
+
+		@XmlElement(name = "vdop")
+		public Double vdop;
+
+		@XmlElement(name = "pdop")
+		public Double pdop;
+
+		@XmlElement(name = "ageofdgpsdata")
+		public Double ageofdgpsdata;
+
+		@XmlElement(name = "dgpsid")
+		public Integer dgpsid;
+
 
 		public static final class Adapter
 			extends XmlAdapter<Model, WayPoint>
 		{
-			private static final DateTimeFormatter DTF =
-				DateTimeFormatter.ISO_INSTANT;
+			private static final DateTimeFormatter
+			DTF = DateTimeFormatter.ISO_INSTANT;
 
 			@Override
-			public Model marshal(final WayPoint wp) {
-				final Model model = new Model();
-				model.latitude = wp.getLatitude();
-				model.longitude = wp.getLongitude();
-				model.elevation = wp.getElevation().isPresent()
-					? wp.getElevation().getAsDouble()
-					: null;
-				model.speed = wp.getSpeed().isPresent()
-					? wp.getSpeed().getAsDouble()
-					: null;
-				model.name = wp.getName().orElse(null);
-				model.time = wp.getTime().map(DTF::format).orElse(null);
+			public WayPoint.Model marshal(final WayPoint point) {
+				final WayPoint.Model model = new WayPoint.Model();
+				model.latitude = point.getLatitude().getValue();
+				model.longitude = point.getLongitude().getValue();
+				model.elevation = point.getElevation().orElse(null);
+				model.speed = point.getSpeed().map(Speed::getValue).orElse(null);
+				model.time = point.getTime().map(DTF::format).orElse(null);
+				model.magvar = point.getMagneticVariation().map(Degrees::getValue).orElse(null);
+				model.geoidheight = point.getGeoidHeight().orElse(null);
+				model.name = point.getName().orElse(null);
+				model.cmt = point.getComment().orElse(null);
+				model.src = point.getSource().orElse(null);
+				model.link = point.getLinks().map(Link.Model.ADAPTER::marshal).asList();
+				model.sym = point.getSymbol().orElse(null);
+				model.type = point.getType().orElse(null);
+				model.fix = point.getFix().map(Fix::getValue).orElse(null);
+				model.sat = point.getSat().map(UInt::getValue).orElse(null);
+				model.hdop = point.getHdop().orElse(null);
+				model.vdop = point.getVdop().orElse(null);
+				model.pdop = point.getPdop().orElse(null);
+				model.ageofdgpsdata = point.getAgeOfGPSData().orElse(null);
+				model.dgpsid = point.getDGPSID().map(DGPSStation::getValue).orElse(null);
 
 				return model;
 			}
 
 			@Override
-			public WayPoint unmarshal(final Model model) {
+			public WayPoint unmarshal(final WayPoint.Model model) {
 				return new WayPoint(
-					model.name,
-					Optional.ofNullable(model.time)
-						.map(ZonedDateTime::parse)
+					Latitude.of(model.latitude),
+					Longitude.of(model.longitude),
+					model.elevation,
+					Optional.ofNullable(model.speed)
+						.map(Speed::of)
 						.orElse(null),
-					model.latitude,
-					model.longitude,
-					model.elevation != null ? model.elevation : Double.NaN,
-					model.speed != null ? model.speed : Double.NaN
+					Optional.ofNullable(model.time)
+						.map(t -> ZonedDateTime.parse(t, DTF))
+						.orElse(null),
+					Optional.ofNullable(model.magvar)
+						.map(Degrees::of)
+						.orElse(null),
+					model.geoidheight,
+					model.name,
+					model.cmt,
+					model.desc,
+					model.src,
+					model.link.stream()
+						.map(Link.Model.ADAPTER::unmarshal)
+						.collect(ISeq.toISeq()),
+					model.sym,
+					model.type,
+					Optional.ofNullable(model.fix)
+						.flatMap(Fix::of)
+						.orElse(null),
+					Optional.ofNullable(model.sat)
+						.map(UInt::of)
+						.orElse(null),
+					model.hdop,
+					model.vdop,
+					model.pdop,
+					model.ageofdgpsdata,
+					Optional.ofNullable(model.dgpsid)
+						.map(DGPSStation::of)
+						.orElse(null)
 				);
 			}
 		}
-	}
 
+		public static final Adapter ADAPTER = new Adapter();
+
+	}
 }
+
+

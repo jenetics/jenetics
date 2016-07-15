@@ -37,9 +37,9 @@ public class PointTest {
 	@Test
 	public void jaxb() throws IOException {
 		IO.JAXB.register(Link.Model.class);
-		IO.JAXB.register(Point.Model.class);
+		IO.JAXB.register(WayPoint.Model.class);
 
-		final Point point = Point.builder()
+		final WayPoint point = WayPoint.builder()
 			.ageOfDGPSAge(3.4)
 			.comment("Some point")
 			.fix(Fix.DGPS)
