@@ -50,25 +50,34 @@ public interface Point {
 	 *
 	 * @return the elevation (in meters) of the point
 	 */
-	public Optional<Length> getElevation();
+	public default Optional<Length> getElevation() {
+		return Optional.empty();
+	}
 
 	/**
 	 * Creation/modification timestamp for the point.
 	 *
 	 * @return creation/modification timestamp for the point
 	 */
-	public Optional<ZonedDateTime> getTime();
+	public default Optional<ZonedDateTime> getTime() {
+		return Optional.empty();
+	}
 
 	/**
-	 * Return the distance between {@code this} and the {@code other}
-	 * {@code WayPoint}.
+	 * Calculate the distance between points on an ellipsoidal earth model.
 	 *
-	 * @param other the second way-point
-	 * @return the distance between {@code this} and the {@code other}
-	 * {@code WayPoint}
-	 * @throws NullPointerException if the {@code other} way-point is {@code null}
+	 * @see <a href="http://www.ngs.noaa.gov/PUBS_LIB/inverse.pdf">DIRECT AND
+	 *               INVERSE SOLUTIONS OF GEODESICS 0 THE ELLIPSOID
+	 *               WITH APPLICATION OF NESTED EQUATIONS</a>
+	 * @see <a href="http://www.movable-type.co.uk/scripts/latlong-vincenty.html">
+	 *     Vincenty solutions of geodesics on the ellipsoid</a>
+	 *
+	 * @param end the end point
+	 * @return the distance between {@code this} and {@code end} in meters
+	 * @throws NullPointerException if the {@code end} point is {@code null}
 	 */
-	public default Length distance(final Point other) {
-		return Points.distance(this, other);
+	public default Length distance(final Point end) {
+		return Points.distance(this, end);
 	}
+
 }
