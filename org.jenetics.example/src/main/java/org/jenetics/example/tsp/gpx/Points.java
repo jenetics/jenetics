@@ -77,21 +77,21 @@ final class Points {
 		final double omega = lon2 - lon1;
 
 		final double tanphi1 = tan(lat1);
-		final double tanU1 = (1.0 - F) * tanphi1;
+		final double tanU1 = (1.0 - F)*tanphi1;
 		final double U1 = atan(tanU1);
 		final double sinU1 = sin(U1);
 		final double cosU1 = cos(U1);
 
 		final double tanphi2 = tan(lat2);
-		final double tanU2 = (1.0 - F) * tanphi2;
+		final double tanU2 = (1.0 - F)*tanphi2;
 		final double U2 = atan(tanU2);
 		final double sinU2 = sin(U2);
 		final double cosU2 = cos(U2);
 
-		final double sinU1sinU2 = sinU1 * sinU2;
-		final double cosU1sinU2 = cosU1 * sinU2;
-		final double sinU1cosU2 = sinU1 * cosU2;
-		final double cosU1cosU2 = cosU1 * cosU2;
+		final double sinU1sinU2 = sinU1*sinU2;
+		final double cosU1sinU2 = cosU1*sinU2;
+		final double sinU1cosU2 = sinU1*cosU2;
+		final double cosU1cosU2 = cosU1*cosU2;
 
 		// Eq. 13
 		double lambda = omega;
@@ -135,7 +135,7 @@ final class Points {
 			double cos2sigmam = cos2alpha == 0.0
 				? 0.0
 				: cossigma - 2*sinU1sinU2/cos2alpha;
-			double u2 = cos2alpha *AABBBB;
+			double u2 = cos2alpha*AABBBB;
 
 			double cos2sigmam2 = cos2sigmam*cos2sigmam;
 
@@ -160,7 +160,7 @@ final class Points {
 
 			++iteration;
 		} while (iteration < DISTANCE_MAX_ITERATION &&
-			(abs((lambda - lambda0) / lambda) < 0.0000000000001));
+			(abs((lambda - lambda0)/lambda) > 1E-12));
 
 		// Eq. 19
 		return Length.ofMeters(B*a*(sigma - deltasigma));
