@@ -770,6 +770,45 @@ public final class WayPoint implements Point, Serializable {
 	}
 
 	/**
+	 * Create a new {@code WayPoint} with the given parameters.
+	 *
+	 * @param latitude the latitude of the point
+	 * @param longitude the longitude of the point
+	 * @param time the timestamp of the way-point
+	 * @return a new {@code WayPoint}
+	 * @throws NullPointerException if one of the given arguments is {@code null}
+	 */
+	public static WayPoint of(
+		final Latitude latitude,
+		final Longitude longitude,
+		final ZonedDateTime time
+	) {
+		return builder().time(time).build(latitude, longitude);
+	}
+
+	/**
+	 * Create a new {@code WayPoint} with the given parameters.
+	 *
+	 * @param latitude the latitude of the point
+	 * @param longitude the longitude of the point
+	 * @param elevation the elevation of the point
+	 * @param time the timestamp of the way-point
+	 * @return a new {@code WayPoint}
+	 * @throws NullPointerException if one of the given arguments is {@code null}
+	 */
+	public static WayPoint of(
+		final Latitude latitude,
+		final Longitude longitude,
+		final Length elevation,
+		final ZonedDateTime time
+	) {
+		return builder()
+			.elevation(elevation)
+			.time(time)
+			.build(latitude, longitude);
+	}
+
+	/**
 	 * Create a new {@code WayPoint} with the given {@code latitude} and
 	 * {@code longitude} value.
 	 *
@@ -781,6 +820,47 @@ public final class WayPoint implements Point, Serializable {
 	 */
 	public static WayPoint of(final double latitude, final double longitude) {
 		return builder().build(latitude, longitude);
+	}
+
+	/**
+	 * Create a new {@code WayPoint} with the given parameters.
+	 *
+	 * @param latitude the latitude of the point
+	 * @param longitude the longitude of the point
+	 * @param time the timestamp of the way-point
+	 * @return a new {@code WayPoint}
+	 * @throws IllegalArgumentException if the given latitude or longitude is not
+	 *         in the valid range.
+	 */
+	public static WayPoint of(
+		final double latitude,
+		final double longitude,
+		final ZonedDateTime time
+	) {
+		return builder().time(time).build(latitude, longitude);
+	}
+
+	/**
+	 * Create a new {@code WayPoint} with the given parameters.
+	 *
+	 * @param latitude the latitude of the point
+	 * @param longitude the longitude of the point
+	 * @param elevation the elevation of the point
+	 * @param time the timestamp of the way-point
+	 * @return a new {@code WayPoint}
+	 * @throws IllegalArgumentException if the given latitude or longitude is not
+	 *         in the valid range.
+	 */
+	public static WayPoint of(
+		final double latitude,
+		final double longitude,
+		final double elevation,
+		final ZonedDateTime time
+	) {
+		return builder()
+			.elevation(elevation)
+			.time(time)
+			.build(latitude, longitude);
 	}
 
 
