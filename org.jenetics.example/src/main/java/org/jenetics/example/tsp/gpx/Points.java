@@ -68,7 +68,7 @@ final class Points {
 	 * @return the distance between {@code start} and {@code end} in meters
 	 * @throws NullPointerException if one of the points is {@code null}
 	 */
-	static double distance(final Point start, final Point end) {
+	static Length distance(final Point start, final Point end) {
 		final double lat1 = start.getLatitude().toRadians();
 		final double lon1 = start.getLongitude().toRadians();
 		final double lat2 = end.getLatitude().toRadians();
@@ -163,7 +163,7 @@ final class Points {
 			(abs((lambda - lambda0) / lambda) < 0.0000000000001));
 
 		// Eq. 19
-		return B*a*(sigma - deltasigma);
+		return Length.ofMeters(B*a*(sigma - deltasigma));
 	}
 
 	public static void main(final String[] args) {

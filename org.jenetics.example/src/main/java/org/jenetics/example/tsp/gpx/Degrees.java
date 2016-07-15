@@ -76,6 +76,15 @@ public final class Degrees extends Number implements Serializable {
 		return Math.toRadians(_value);
 	}
 
+	/**
+	 * Return the decimal degree value.
+	 *
+	 * @return the decimal degree value
+	 */
+	public double toDegrees() {
+		return _value;
+	}
+
 	@Override
 	public int intValue() {
 		return (int)doubleValue();
@@ -121,7 +130,7 @@ public final class Degrees extends Number implements Serializable {
 	 * @throws IllegalArgumentException if the give value is not within the
 	 *         range of {@code [0..360]}
 	 */
-	public static Degrees of(final double degrees) {
+	public static Degrees ofDegrees(final double degrees) {
 		return new Degrees(degrees);
 	}
 

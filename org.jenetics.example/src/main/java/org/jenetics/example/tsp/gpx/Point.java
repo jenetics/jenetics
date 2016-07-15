@@ -61,14 +61,14 @@ public interface Point {
 
 	/**
 	 * Return the distance between {@code this} and the {@code other}
-	 * {@code WayPoint} in meter.
+	 * {@code WayPoint}.
 	 *
 	 * @param other the second way-point
 	 * @return the distance between {@code this} and the {@code other}
 	 * {@code WayPoint}
 	 * @throws NullPointerException if the {@code other} way-point is {@code null}
 	 */
-	public default double distance(final Point other) {
+	public default Length distance(final Point other) {
 		return Points.distance(this, other);
 	}
 }

@@ -407,6 +407,8 @@ public final class WayPoint implements Point, Serializable {
 
 	/**
 	 * Builder for creating a way-point with different parameters.
+	 *
+	 * @see  #builder()
 	 */
 	public static final class Builder {
 		private Length _elevation;
@@ -428,6 +430,9 @@ public final class WayPoint implements Point, Serializable {
 		private Double _pdop;
 		private Duration _ageOfDGPSData;
 		private DGPSStation _dgpsID;
+
+		Builder() {
+		}
 
 		/**
 		 * Set the elevation  of the point.
@@ -504,7 +509,7 @@ public final class WayPoint implements Point, Serializable {
 		 *         range of {@code [0..360]}
 		 */
 		public Builder magneticVariation(final double variation) {
-			_magneticVariation = Degrees.of(variation);
+			_magneticVariation = Degrees.ofDegrees(variation);
 			return this;
 		}
 
@@ -737,7 +742,7 @@ public final class WayPoint implements Point, Serializable {
 		 * @return a newly created way-point
 		 */
 		public WayPoint build(final double latitude, final double longitude) {
-			return build(Latitude.of(latitude), Longitude.of(longitude));
+			return build(Latitude.ofDegrees(latitude), Longitude.ofDegrees(longitude));
 		}
 
 	}
@@ -993,8 +998,8 @@ public final class WayPoint implements Point, Serializable {
 			@Override
 			public WayPoint unmarshal(final WayPoint.Model model) {
 				return new WayPoint(
-					Latitude.of(model.latitude),
-					Longitude.of(model.longitude),
+					Latitude.ofDegrees(model.latitude),
+					Longitude.ofDegrees(model.longitude),
 					Optional.ofNullable(model.elevation)
 						.map(Length::ofMeters)
 						.orElse(null),
@@ -1005,7 +1010,7 @@ public final class WayPoint implements Point, Serializable {
 						.map(t -> ZonedDateTime.parse(t, DTF))
 						.orElse(null),
 					Optional.ofNullable(model.magvar)
-						.map(Degrees::of)
+						.map(Degrees::ofDegrees)
 						.orElse(null),
 					Optional.ofNullable(model.geoidheight)
 						.map(Length::ofMeters)

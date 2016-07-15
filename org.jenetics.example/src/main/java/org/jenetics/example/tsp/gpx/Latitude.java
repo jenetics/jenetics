@@ -73,6 +73,15 @@ public final class Latitude extends Number implements Serializable {
 		return Math.toRadians(_value);
 	}
 
+	/**
+	 * Return the latitude in decimal degree.
+	 *
+	 * @return the latitude in decimal degree
+	 */
+	public double toDegrees() {
+		return _value;
+	}
+
 	@Override
 	public int intValue() {
 		return (int)doubleValue();
@@ -117,7 +126,7 @@ public final class Latitude extends Number implements Serializable {
 	 * @throws IllegalArgumentException if the given value is not within the
 	 *         range of {@code [-90..90]}
 	 */
-	public static Latitude of(final double degrees) {
+	public static Latitude ofDegrees(final double degrees) {
 		return new Latitude(degrees);
 	}
 

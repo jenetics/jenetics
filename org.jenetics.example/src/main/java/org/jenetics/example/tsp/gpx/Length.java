@@ -46,15 +46,29 @@ public final class Length extends Number implements Serializable {
 	}
 
 	/**
-	 * Return the value of the length in meter.
+	 * Return the length in meter.
 	 *
-	 * @return the value of the length in meter
+	 * @return the length in meter
 	 */
 	@Override
 	public double doubleValue() {
 		return _value;
 	}
 
+	/**
+	 * Return the length in meter.
+	 *
+	 * @return the length in meter
+	 */
+	public double toMeters() {
+		return _value;
+	}
+
+	/**
+	 * Return the length in kilometers.
+	 *
+	 * @return the length in kilometers
+	 */
 	public double toKilometer() {
 		return _value/1000.0;
 	}
@@ -95,10 +109,22 @@ public final class Length extends Number implements Serializable {
 	 *  Static object creation methods
 	 * ************************************************************************/
 
+	/**
+	 * Create a new {@code Length} object with the given value in meters.
+	 *
+	 * @param meters the length in meters
+	 * @return a new {@code Length} object with the given value in meters.
+	 */
 	public static Length ofMeters(final double meters) {
 		return new Length(meters);
 	}
 
+	/**
+	 * Create a new {@code Length} object with the given value in km.
+	 *
+	 * @param km the length in kilometers
+	 * @return a new {@code Length} object with the given value in kilometers.
+	 */
 	public static Length ofKilometers(final double km) {
 		return new Length(km*1000);
 	}

@@ -73,6 +73,15 @@ public class Longitude extends Number implements Serializable {
 		return Math.toRadians(_value);
 	}
 
+	/**
+	 * Return the longitude in decimal degree.
+	 *
+	 * @return the longitude in decimal degree
+	 */
+	public double toDegrees() {
+		return _value;
+	}
+
 	@Override
 	public int intValue() {
 		return (int)doubleValue();
@@ -117,7 +126,7 @@ public class Longitude extends Number implements Serializable {
 	 * @throws IllegalArgumentException if the given value is not within the
 	 *         range of {@code [-180..180]}
 	 */
-	public static Longitude of(final double degrees) {
+	public static Longitude ofDegrees(final double degrees) {
 		return new Longitude(degrees);
 	}
 
