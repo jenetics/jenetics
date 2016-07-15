@@ -23,6 +23,7 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
+import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -73,7 +74,7 @@ public final class WayPoint implements Point, Serializable {
 	private final Double _hdop;
 	private final Double _vdop;
 	private final Double _pdop;
-	private final Double _ageOfGPSData;
+	private final Duration _ageOfGPSData;
 	private final DGPSStation _dgpsID;
 
 	/**
@@ -135,7 +136,7 @@ public final class WayPoint implements Point, Serializable {
 		final Double hdop,
 		final Double vdop,
 		final Double pdop,
-		final Double ageOfGPSData,
+		final Duration ageOfGPSData,
 		final DGPSStation dgpsID
 	) {
 		_latitude = requireNonNull(latitude);
@@ -331,7 +332,7 @@ public final class WayPoint implements Point, Serializable {
 	 *
 	 * @return number of seconds since last DGPS update
 	 */
-	public Optional<Double> getAgeOfGPSData() {
+	public Optional<Duration> getAgeOfGPSData() {
 		return Optional.ofNullable(_ageOfGPSData);
 	}
 
@@ -425,7 +426,7 @@ public final class WayPoint implements Point, Serializable {
 		private Double _hdop;
 		private Double _vdop;
 		private Double _pdop;
-		private Double _ageOfDGPSData;
+		private Duration _ageOfDGPSData;
 		private DGPSStation _dgpsID;
 
 		/**
@@ -639,13 +640,24 @@ public final class WayPoint implements Point, Serializable {
 		}
 
 		/**
-		 * Set the number of seconds since last DGPS update.
+		 * Set the age since last DGPS update.
 		 *
-		 * @param age the number of seconds since last DGPS update
+		 * @param age the age since last DGPS update
 		 * @return {@code this} {@code Builder} for method chaining
 		 */
-		public Builder ageOfDGPSAge(final Double age) {
+		public Builder ageOfDGPSAge(final Duration age) {
 			_ageOfDGPSData = age;
+			return this;
+		}
+
+		/**
+		 * Set the number of seconds since last DGPS update.
+		 *
+		 * @param seconds the age since last DGPS update
+		 * @return {@code this} {@code Builder} for method chaining
+		 */
+		public Builder ageOfDGPSAge(final double seconds) {
+			_ageOfDGPSData = Duration.ofMillis((long)(seconds/1000.0));
 			return this;
 		}
 
@@ -846,23 +858,39 @@ public final class WayPoint implements Point, Serializable {
 				model.latitude = point.getLatitude().doubleValue();
 				model.longitude = point.getLongitude().getValue();
 				model.elevation = point.getElevation().orElse(null);
-				model.speed = point.getSpeed().map(Speed::getValue).orElse(null);
-				model.time = point.getTime().map(DTF::format).orElse(null);
-				model.magvar = point.getMagneticVariation().map(Degrees::getValue).orElse(null);
+				model.speed = point.getSpeed()
+					.map(Speed::getValue)
+					.orElse(null);
+				model.time = point.getTime()
+					.map(DTF::format)
+					.orElse(null);
+				model.magvar = point.getMagneticVariation()
+					.map(Degrees::getValue)
+					.orElse(null);
 				model.geoidheight = point.getGeoidHeight().orElse(null);
 				model.name = point.getName().orElse(null);
 				model.cmt = point.getComment().orElse(null);
 				model.src = point.getSource().orElse(null);
-				model.link = point.getLinks().map(Link.Model.ADAPTER::marshal).asList();
+				model.link = point.getLinks()
+					.map(Link.Model.ADAPTER::marshal)
+					.asList();
 				model.sym = point.getSymbol().orElse(null);
 				model.type = point.getType().orElse(null);
-				model.fix = point.getFix().map(Fix::getValue).orElse(null);
-				model.sat = point.getSat().map(UInt::getValue).orElse(null);
+				model.fix = point.getFix()
+					.map(Fix::getValue)
+					.orElse(null);
+				model.sat = point.getSat()
+					.map(UInt::getValue)
+					.orElse(null);
 				model.hdop = point.getHdop().orElse(null);
 				model.vdop = point.getVdop().orElse(null);
 				model.pdop = point.getPdop().orElse(null);
-				model.ageofdgpsdata = point.getAgeOfGPSData().orElse(null);
-				model.dgpsid = point.getDGPSID().map(DGPSStation::getValue).orElse(null);
+				model.ageofdgpsdata = point.getAgeOfGPSData()
+					.map(d -> d.toMillis()/1000.0)
+					.orElse(null);
+				model.dgpsid = point.getDGPSID()
+					.map(DGPSStation::getValue)
+					.orElse(null);
 
 				return model;
 			}
@@ -901,7 +929,9 @@ public final class WayPoint implements Point, Serializable {
 					model.hdop,
 					model.vdop,
 					model.pdop,
-					model.ageofdgpsdata,
+					Optional.ofNullable(model.ageofdgpsdata)
+						.map(d -> Duration.ofMillis((long)(d*1000.0)))
+						.orElse(null),
 					Optional.ofNullable(model.dgpsid)
 						.map(DGPSStation::of)
 						.orElse(null)
