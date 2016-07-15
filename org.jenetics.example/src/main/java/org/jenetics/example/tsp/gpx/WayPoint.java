@@ -49,7 +49,7 @@ import org.jenetics.util.ISeq;
  * @since !__version__!
  */
 @XmlJavaTypeAdapter(WayPoint.Model.Adapter.class)
-public final class WayPoint implements Serializable {
+public final class WayPoint implements Point, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -162,29 +162,17 @@ public final class WayPoint implements Serializable {
 		_dgpsID = dgpsID;
 	}
 
-	/**
-	 * The latitude of the point, WGS84 datum.
-	 *
-	 * @return the latitude of the point
-	 */
+	@Override
 	public Latitude getLatitude() {
 		return _latitude;
 	}
 
-	/**
-	 * The longitude of the point, WGS84 datum.
-	 *
-	 * @return the longitude of the point
-	 */
+	@Override
 	public Longitude getLongitude() {
 		return _longitude;
 	}
 
-	/**
-	 * The elevation (in meters) of the point.
-	 *
-	 * @return the elevation (in meters) of the point
-	 */
+	@Override
 	public Optional<Double> getElevation() {
 		return Optional.ofNullable(_elevation);
 	}
@@ -198,11 +186,7 @@ public final class WayPoint implements Serializable {
 		return Optional.ofNullable(_speed);
 	}
 
-	/**
-	 * Creation/modification timestamp for the point.
-	 *
-	 * @return creation/modification timestamp for the point
-	 */
+	@Override
 	public Optional<ZonedDateTime> getTime() {
 		return Optional.ofNullable(_time);
 	}
@@ -744,6 +728,14 @@ public final class WayPoint implements Serializable {
 		return new Builder();
 	}
 
+	public static WayPoint of(final Latitude latitude, final Longitude longitude) {
+		return builder().build(latitude, longitude);
+	}
+
+	public static WayPoint of(final double latitude, final double longitude) {
+		return builder().build(latitude, longitude);
+	}
+
 
 	/* *************************************************************************
 	 *  JAXB object serialization
@@ -827,7 +819,7 @@ public final class WayPoint implements Serializable {
 			@Override
 			public WayPoint.Model marshal(final WayPoint point) {
 				final WayPoint.Model model = new WayPoint.Model();
-				model.latitude = point.getLatitude().getValue();
+				model.latitude = point.getLatitude().doubleValue();
 				model.longitude = point.getLongitude().getValue();
 				model.elevation = point.getElevation().orElse(null);
 				model.speed = point.getSpeed().map(Speed::getValue).orElse(null);

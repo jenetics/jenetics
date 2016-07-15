@@ -59,7 +59,7 @@ public final class Latitude implements Serializable {
 	 *
 	 * @return the latitude value in decimal degrees
      */
-	public double getValue() {
+	public double doubleValue() {
 		return _value;
 	}
 

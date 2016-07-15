@@ -19,6 +19,12 @@
  */
 package org.jenetics.example.tsp.gpx;
 
+import static java.lang.Math.atan;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+import static java.lang.Math.sqrt;
+import static java.lang.Math.tan;
+
 import java.time.ZonedDateTime;
 import java.util.Optional;
 
@@ -30,6 +36,9 @@ import java.util.Optional;
  * @since !__version__!
  */
 public interface Point {
+
+	// The earth radius used for calculating distances.
+	public static final double R = 6_371_000.785;
 
 	/**
 	 * The latitude of the point, WGS84 datum.
@@ -59,4 +68,16 @@ public interface Point {
 	 */
 	public Optional<ZonedDateTime> getTime();
 
+	/**
+	 * Return the distance between {@code this} and the {@code other}
+	 * {@code WayPoint} in meter.
+	 *
+	 * @param other the second way-point
+	 * @return the distance between {@code this} and the {@code other}
+	 * {@code WayPoint}
+	 * @throws NullPointerException if the {@code other} way-point is {@code null}
+	 */
+	public default double distance(final Point other) {
+		return Points.distance(this, other);
+	}
 }
