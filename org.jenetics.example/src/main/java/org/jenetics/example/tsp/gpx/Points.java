@@ -124,7 +124,7 @@ final class Points {
 			sigma = atan2(sinsigma, cossigma);
 
 			// Eq. 17 Careful! sin2sigma might be almost 0!
-			double sinalpha = (sin2sigma == 0)
+			double sinalpha = Double.compare(sin2sigma, 0.0) == 0
 				? 0.0
 				: cosU1cosU2*sinlambda/sinsigma;
 			double alpha = asin(sinalpha);
@@ -132,7 +132,7 @@ final class Points {
 			double cos2alpha = cosalpha*cosalpha;
 
 			// Eq. 18 Careful! cos2alpha might be almost 0!
-			double cos2sigmam = cos2alpha == 0.0
+			double cos2sigmam = Double.compare(cos2alpha, 0.0) == 0
 				? 0.0
 				: cossigma - 2*sinU1sinU2/cos2alpha;
 			double u2 = cos2alpha*AABBBB;
