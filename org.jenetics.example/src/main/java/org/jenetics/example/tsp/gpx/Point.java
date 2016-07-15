@@ -19,13 +19,44 @@
  */
 package org.jenetics.example.tsp.gpx;
 
+import java.time.ZonedDateTime;
+import java.util.Optional;
+
 /**
+ * A geographic point with optional elevation and time.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 public interface Point {
 
+	/**
+	 * The latitude of the point, WGS84 datum.
+	 *
+	 * @return the latitude of the point
+	 */
+	public Latitude getLatitude();
 
+	/**
+	 * The longitude of the point, WGS84 datum.
+	 *
+	 * @return the longitude of the point
+	 */
+	public Longitude getLongitude();
+
+	/**
+	 * The elevation (in meters) of the point.
+	 *
+	 * @return the elevation (in meters) of the point
+	 */
+	public Optional<Double> getElevation();
+
+	/**
+	 * Creation/modification timestamp for the point.
+	 *
+	 * @return creation/modification timestamp for the point
+	 */
+	public Optional<ZonedDateTime> getTime();
 
 }
