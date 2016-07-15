@@ -109,12 +109,12 @@ public final class WayPoint implements Serializable {
 	 * @param type type (classification) of the way-point (optional)
 	 * @param fix type of GPX fix (optional)
 	 * @param sat number of satellites used to calculate the GPX fix (optional)
-     * @param hdop horizontal dilution of precision (optional)
-     * @param vdop vertical dilution of precision (optional)
-     * @param pdop position dilution of precision. (optional)
-     * @param ageOfGPSData number of seconds since last DGPS update (optional)
-     * @param dgpsID ID of DGPS station used in differential correction (optional)
-     */
+	 * @param hdop horizontal dilution of precision (optional)
+	 * @param vdop vertical dilution of precision (optional)
+	 * @param pdop position dilution of precision. (optional)
+	 * @param ageOfGPSData number of seconds since last DGPS update (optional)
+	 * @param dgpsID ID of DGPS station used in differential correction (optional)
+	 */
 	private WayPoint(
 		final Latitude latitude,
 		final Longitude longitude,
@@ -166,7 +166,7 @@ public final class WayPoint implements Serializable {
 	 * The latitude of the point, WGS84 datum.
 	 *
 	 * @return the latitude of the point
-     */
+	 */
 	public Latitude getLatitude() {
 		return _latitude;
 	}
@@ -184,7 +184,7 @@ public final class WayPoint implements Serializable {
 	 * The elevation (in meters) of the point.
 	 *
 	 * @return the elevation (in meters) of the point
-     */
+	 */
 	public Optional<Double> getElevation() {
 		return Optional.ofNullable(_elevation);
 	}
@@ -193,7 +193,7 @@ public final class WayPoint implements Serializable {
 	 * The current GPS speed.
 	 *
 	 * @return the current GPS speed
-     */
+	 */
 	public Optional<Speed> getSpeed() {
 		return Optional.ofNullable(_speed);
 	}
@@ -202,7 +202,7 @@ public final class WayPoint implements Serializable {
 	 * Creation/modification timestamp for the point.
 	 *
 	 * @return creation/modification timestamp for the point
-     */
+	 */
 	public Optional<ZonedDateTime> getTime() {
 		return Optional.ofNullable(_time);
 	}
@@ -211,7 +211,7 @@ public final class WayPoint implements Serializable {
 	 * The magnetic variation at the point.
 	 *
 	 * @return the magnetic variation at the point
-     */
+	 */
 	public Optional<Degrees> getMagneticVariation() {
 		return Optional.ofNullable(_magneticVariation);
 	}
@@ -222,7 +222,7 @@ public final class WayPoint implements Serializable {
 	 *
 	 * @return the height (in meters) of geoid (mean sea level) above WGS84
 	 *         earth ellipsoid
-     */
+	 */
 	public Optional<Double> getGeoidHeight() {
 		return Optional.ofNullable(_geoidHeight);
 	}
@@ -234,7 +234,7 @@ public final class WayPoint implements Serializable {
 	 * validate the field before sending it to the GPS.
 	 *
 	 * @return the GPS name of the way-point
-     */
+	 */
 	public Optional<String> getName() {
 		return Optional.ofNullable(_name);
 	}
@@ -243,7 +243,7 @@ public final class WayPoint implements Serializable {
 	 * The GPS way-point comment.
 	 *
 	 * @return the GPS way-point comment
-     */
+	 */
 	public Optional<String> getComment() {
 		return Optional.ofNullable(_comment);
 	}
@@ -253,7 +253,7 @@ public final class WayPoint implements Serializable {
 	 * about the element intended for the user, not the GPS.
 	 *
 	 * @return a text description of the element
-     */
+	 */
 	public Optional<String> getDescription() {
 		return Optional.ofNullable(_description);
 	}
@@ -263,7 +263,7 @@ public final class WayPoint implements Serializable {
 	 * and accuracy of data. "Garmin eTrex", "USGS quad Boston North", e.g.
 	 *
 	 * @return the source of the data
-     */
+	 */
 	public Optional<String> getSource() {
 		return Optional.ofNullable(_source);
 	}
@@ -272,7 +272,7 @@ public final class WayPoint implements Serializable {
 	 * Return the links to additional information about the way-point.
 	 *
 	 * @return the links to additional information about the way-point
-     */
+	 */
 	public ISeq<Link> getLinks() {
 		return _links;
 	}
@@ -283,7 +283,7 @@ public final class WayPoint implements Serializable {
 	 * abbreviates words, spell them out.
 	 *
 	 * @return the text of GPS symbol name
-     */
+	 */
 	public Optional<String> getSymbol() {
 		return Optional.ofNullable(_symbol);
 	}
@@ -292,7 +292,7 @@ public final class WayPoint implements Serializable {
 	 * Return the type (classification) of the way-point.
 	 *
 	 * @return the type (classification) of the way-point
-     */
+	 */
 	public Optional<String> getType() {
 		return Optional.ofNullable(_type);
 	}
@@ -301,7 +301,7 @@ public final class WayPoint implements Serializable {
 	 * Return the type of GPX fix.
 	 *
 	 * @return the type of GPX fix
-     */
+	 */
 	public Optional<Fix> getFix() {
 		return Optional.ofNullable(_fix);
 	}
@@ -310,7 +310,7 @@ public final class WayPoint implements Serializable {
 	 * Return the number of satellites used to calculate the GPX fix.
 	 *
 	 * @return the number of satellites used to calculate the GPX fix
-     */
+	 */
 	public Optional<UInt> getSat() {
 		return Optional.ofNullable(_sat);
 	}
@@ -346,7 +346,7 @@ public final class WayPoint implements Serializable {
 	 * Return the number of seconds since last DGPS update.
 	 *
 	 * @return number of seconds since last DGPS update
-     */
+	 */
 	public Optional<Double> getAgeOfGPSData() {
 		return Optional.ofNullable(_ageOfGPSData);
 	}
@@ -355,7 +355,7 @@ public final class WayPoint implements Serializable {
 	 * Return the ID of DGPS station used in differential correction.
 	 *
 	 * @return the ID of DGPS station used in differential correction
-     */
+	 */
 	public Optional<DGPSStation> getDGPSID() {
 		return Optional.ofNullable(_dgpsID);
 	}
@@ -459,8 +459,8 @@ public final class WayPoint implements Serializable {
 		 * Set the current GPS speed.
 		 *
 		 * @param speed the current GPS speed
-         * @return {@code this} {@code Builder} for method chaining
-         */
+		 * @return {@code this} {@code Builder} for method chaining
+		 */
 		public Builder speed(final Speed speed) {
 			_speed = speed;
 			return this;
@@ -481,8 +481,8 @@ public final class WayPoint implements Serializable {
 		 * Set the creation/modification timestamp for the point.
 		 *
 		 * @param time the creation/modification timestamp for the point
-         * @return {@code this} {@code Builder} for method chaining
-         */
+		 * @return {@code this} {@code Builder} for method chaining
+		 */
 		public Builder time(final ZonedDateTime time) {
 			_time = time;
 			return this;
@@ -492,8 +492,8 @@ public final class WayPoint implements Serializable {
 		 * Set the magnetic variation at the point.
 		 *
 		 * @param variation the magnetic variation
-         * @return {@code this} {@code Builder} for method chaining
-         */
+		 * @return {@code this} {@code Builder} for method chaining
+		 */
 		public Builder magneticVariation(final Degrees variation) {
 			_magneticVariation = variation;
 			return this;
@@ -518,8 +518,8 @@ public final class WayPoint implements Serializable {
 		 *
 		 * @param geoidHeight the height (in meters) of geoid (mean sea level)
 		 *        above WGS84 earth ellipsoid
-         * @return {@code this} {@code Builder} for method chaining
-         */
+		 * @return {@code this} {@code Builder} for method chaining
+		 */
 		public Builder geoidHeight(final Double geoidHeight) {
 			_geoidHeight = geoidHeight;
 			return this;
@@ -533,8 +533,8 @@ public final class WayPoint implements Serializable {
 		 * GPS.
 		 *
 		 * @param name the GPS name of the way-point
-         * @return {@code this} {@code Builder} for method chaining
-         */
+		 * @return {@code this} {@code Builder} for method chaining
+		 */
 		public Builder name(final String name) {
 			_name = name;
 			return this;
@@ -544,8 +544,8 @@ public final class WayPoint implements Serializable {
 		 * Set the GPS way-point comment.
 		 *
 		 * @param comment the GPS way-point comment.
-         * @return {@code this} {@code Builder} for method chaining
-         */
+		 * @return {@code this} {@code Builder} for method chaining
+		 */
 		public Builder comment(final String comment) {
 			_comment = comment;
 			return this;
@@ -555,8 +555,8 @@ public final class WayPoint implements Serializable {
 		 * Set the links to additional information about the way-point.
 		 *
 		 * @param links the links to additional information about the way-point
-         * @return {@code this} {@code Builder} for method chaining
-         */
+		 * @return {@code this} {@code Builder} for method chaining
+		 */
 		public Builder links(final ISeq<Link> links) {
 			_links = links;
 			return this;
@@ -568,8 +568,8 @@ public final class WayPoint implements Serializable {
 		 * GPS abbreviates words, spell them out.
 		 *
 		 * @param symbol the text of GPS symbol name
-         * @return {@code this} {@code Builder} for method chaining
-         */
+		 * @return {@code this} {@code Builder} for method chaining
+		 */
 		public Builder symbol(final String symbol) {
 			_symbol = symbol;
 			return this;
@@ -579,8 +579,8 @@ public final class WayPoint implements Serializable {
 		 * Set the type (classification) of the way-point.
 		 *
 		 * @param type the type (classification) of the way-point
-         * @return {@code this} {@code Builder} for method chaining
-         */
+		 * @return {@code this} {@code Builder} for method chaining
+		 */
 		public Builder type(final String type) {
 			_type = type;
 			return this;
@@ -590,8 +590,8 @@ public final class WayPoint implements Serializable {
 		 * Set the type of GPX fix.
 		 *
 		 * @param fix the type of GPX fix
-         * @return {@code this} {@code Builder} for method chaining
-         */
+		 * @return {@code this} {@code Builder} for method chaining
+		 */
 		public Builder fix(final Fix fix) {
 			_fix = fix;
 			return this;
@@ -601,8 +601,8 @@ public final class WayPoint implements Serializable {
 		 * Set the number of satellites used to calculate the GPX fix.
 		 *
 		 * @param sat the number of satellites used to calculate the GPX fix
-         * @return {@code this} {@code Builder} for method chaining
-         */
+		 * @return {@code this} {@code Builder} for method chaining
+		 */
 		public Builder sat(final UInt sat) {
 			_sat = sat;
 			return this;
@@ -625,8 +625,8 @@ public final class WayPoint implements Serializable {
 		 * Set the horizontal dilution of precision.
 		 *
 		 * @param hdop the horizontal dilution of precision
-         * @return {@code this} {@code Builder} for method chaining
-         */
+		 * @return {@code this} {@code Builder} for method chaining
+		 */
 		public Builder hdop(final Double hdop) {
 			_hdop = hdop;
 			return this;
@@ -658,8 +658,8 @@ public final class WayPoint implements Serializable {
 		 * Set the number of seconds since last DGPS update.
 		 *
 		 * @param age the number of seconds since last DGPS update
-         * @return {@code this} {@code Builder} for method chaining
-         */
+		 * @return {@code this} {@code Builder} for method chaining
+		 */
 		public Builder ageOfDGPSAge(final Double age) {
 			_ageOfDGPSData = age;
 			return this;
@@ -694,8 +694,8 @@ public final class WayPoint implements Serializable {
 		 *
 		 * @param latitude the latitude of the way-point
 		 * @param longitude the longitude of the way-point
-         * @return a newly created way-point
-         */
+		 * @return a newly created way-point
+		 */
 		public WayPoint build(final Latitude latitude, final Longitude longitude) {
 			return new WayPoint(
 				latitude,
