@@ -59,12 +59,12 @@ public enum Fix {
 	/**
 	 * Return the {@code Fix} constant for the given fix {@code value}.
 	 *
-	 * @param value the GPS fix value
+	 * @param name the GPS fix names
 	 * @return the GPS fix for the given value, or {@code Optional.empty()} if
-	 *         the given {@code value} is invalid
+	 *         the given {@code name} is invalid
      */
-	public static Optional<Fix> of(final String value) {
-		switch (value) {
+	public static Optional<Fix> ofName(final String name) {
+		switch (name) {
 			case "none": return Optional.of(Fix.NONE);
 			case "2d": return Optional.of(Fix.DIM_2);
 			case "3d": return Optional.of(Fix.DIM_3);

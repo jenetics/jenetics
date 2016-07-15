@@ -1025,7 +1025,7 @@ public final class WayPoint implements Point, Serializable {
 					model.sym,
 					model.type,
 					Optional.ofNullable(model.fix)
-						.flatMap(Fix::of)
+						.flatMap(Fix::ofName)
 						.orElse(null),
 					Optional.ofNullable(model.sat)
 						.map(UInt::of)
