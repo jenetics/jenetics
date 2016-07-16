@@ -37,6 +37,7 @@ final class JAXBRegistry {
 	public static final ISeq<Class<?>> CLASSES = ISeq.of(
 		Email.Model.class,
 		Link.Model.class,
+		Person.Model.class,
 		WayPoint.Model.class
 	);
 }
