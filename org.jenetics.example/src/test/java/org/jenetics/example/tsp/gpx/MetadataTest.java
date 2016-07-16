@@ -19,10 +19,53 @@
  */
 package org.jenetics.example.tsp.gpx;
 
+import java.io.IOException;
+import java.time.ZonedDateTime;
+
+import org.testng.annotations.Test;
+
+import org.jenetics.internal.util.JAXBContextCache;
+
+import org.jenetics.util.IO;
+import org.jenetics.util.ISeq;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 public class MetadataTest {
+
+	@Test
+	public void jaxb() throws IOException {
+		JAXBContextCache.addPackage("org.jenetics.example.tsp.gpx");
+
+		final Metadata object = Metadata.of(
+			"Franz Wilhelmsötter",
+			"Some importend description",
+			Person.of(
+				"Franz Wilhelmstötter",
+				Email.of("franz.wilhelmstoetter", "gmail.com"),
+				Link.of("http://jenetics.io")
+			),
+			Copyright.of("Me", 1982, "http://jenetics.io"),
+			ISeq.of(
+				Link.of("http://jenetics.io/1", "foo", "bar"),
+				Link.of("http://jenetics.io/2", "foo", "bar"),
+				Link.of("http://jenetics.io/3", "foo", "bar")
+			),
+			ZonedDateTime.now(),
+			"foo, bar",
+			Bounds.of(
+				Latitude.ofDegrees(43.32),
+				Longitude.ofDegrees(13.23),
+				Latitude.ofDegrees(45.3232),
+				Longitude.ofDegrees(11.21923)
+			)
+		);
+
+		IO.jaxb.write(object, System.out);
+	}
+
+
 }

@@ -19,10 +19,28 @@
  */
 package org.jenetics.example.tsp.gpx;
 
+import java.io.IOException;
+
+import org.testng.annotations.Test;
+
+import org.jenetics.internal.util.JAXBContextCache;
+
+import org.jenetics.util.IO;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 public class CopyrightTest {
+
+	@Test
+	public void jaxb() throws IOException {
+		JAXBContextCache.addPackage("org.jenetics.example.tsp.gpx");
+
+		final Object object = Copyright.of("Me", 1982, "http://jenetics.io");
+
+		IO.jaxb.write(object, System.out);
+	}
+
 }

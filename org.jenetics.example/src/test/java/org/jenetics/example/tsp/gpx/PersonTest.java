@@ -19,10 +19,32 @@
  */
 package org.jenetics.example.tsp.gpx;
 
+import java.io.IOException;
+
+import org.testng.annotations.Test;
+
+import org.jenetics.internal.util.JAXBContextCache;
+
+import org.jenetics.util.IO;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 public class PersonTest {
+
+	@Test
+	public void jaxb() throws IOException {
+		JAXBContextCache.addPackage("org.jenetics.example.tsp.gpx");
+
+		final Object object = Person.of(
+			"Franz Wilhelmstötter",
+			Email.of("franz.wilhelmstoetter", "gmail.com"),
+			Link.of("http://jenetics.io")
+		);
+
+		IO.jaxb.write(object, System.out);
+	}
+
 }

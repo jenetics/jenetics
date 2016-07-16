@@ -19,10 +19,33 @@
  */
 package org.jenetics.example.tsp.gpx;
 
+import java.io.IOException;
+
+import org.testng.annotations.Test;
+
+import org.jenetics.internal.util.JAXBContextCache;
+
+import org.jenetics.util.IO;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 public class BoundsTest {
+
+	@Test
+	public void jaxb() throws IOException {
+		JAXBContextCache.addPackage("org.jenetics.example.tsp.gpx");
+
+		final Bounds object = Bounds.of(
+			Latitude.ofDegrees(43.32),
+			Longitude.ofDegrees(13.23),
+			Latitude.ofDegrees(45.3232),
+			Longitude.ofDegrees(11.21923)
+		);
+
+		IO.jaxb.write(object, System.out);
+	}
+
 }
