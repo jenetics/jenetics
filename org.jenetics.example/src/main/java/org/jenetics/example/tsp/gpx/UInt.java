@@ -32,7 +32,7 @@ import java.io.Serializable;
  * @version !__version__!
  * @since !__version__!
  */
-public final class UInt implements Serializable {
+public final class UInt extends Number implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -58,6 +58,26 @@ public final class UInt implements Serializable {
 	 * @return the unsigned integer value
 	 */
 	public int getValue() {
+		return _value;
+	}
+
+	@Override
+	public int intValue() {
+		return _value;
+	}
+
+	@Override
+	public long longValue() {
+		return _value;
+	}
+
+	@Override
+	public float floatValue() {
+		return _value;
+	}
+
+	@Override
+	public double doubleValue() {
 		return _value;
 	}
 
