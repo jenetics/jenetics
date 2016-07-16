@@ -206,7 +206,7 @@ public final class Bounds implements Serializable {
 			}
 		}
 
-		static final Email.Model.Adapter ADAPTER = new Email.Model.Adapter();
+		static final Adapter ADAPTER = new Adapter();
 
 	}
 
