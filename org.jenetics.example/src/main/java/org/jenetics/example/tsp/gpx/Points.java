@@ -54,14 +54,19 @@ final class Points {
 	private static final double F = 1.0/298.257223563;
 
 	// The maximal iteration of the 'distance'
-	private static final int DISTANCE_MAX_ITERATION = 20;
+	private static final int DISTANCE_ITERATION_MAX = 20;
+
+	// The epsilon of the result, when to stop iteration.
+	private static final double DISTANCE_ITERATION_EPSILON = 1E-12;
 
 	/**
 	 * Calculate the distance between points on an ellipsoidal earth model.
 	 *
 	 * @see <a href="http://www.ngs.noaa.gov/PUBS_LIB/inverse.pdf">DIRECT AND
 	 *               INVERSE SOLUTIONS OF GEODESICS 0 THE ELLIPSOID
-	 *      WITH APPLICATION OF NESTED EQUATIONS</a>
+	 *               WITH APPLICATION OF NESTED EQUATIONS</a>
+	 * @see <a href="http://www.movable-type.co.uk/scripts/latlong-vincenty.html">
+	 *     Vincenty solutions of geodesics on the ellipsoid</a>
 	 *
 	 * @param start the start point
 	 * @param end the end point
@@ -97,10 +102,10 @@ final class Points {
 		double lambda = omega;
 
 		// Intermediates we'll need to compute distance 's'
-		double a = 0.0;
-		double b = 0.0;
-		double sigma = 0.0;
-		double deltasigma = 0.0;
+		double a;
+		double b;
+		double sigma;
+		double deltasigma;
 		double lambda0;
 
 		int iteration = 0;
@@ -124,7 +129,7 @@ final class Points {
 			sigma = atan2(sinsigma, cossigma);
 
 			// Eq. 17 Careful! sin2sigma might be almost 0!
-			double sinalpha = Double.compare(sin2sigma, 0.0) == 0
+			double sinalpha = sin2sigma == 0.0
 				? 0.0
 				: cosU1cosU2*sinlambda/sinsigma;
 			double alpha = asin(sinalpha);
@@ -132,7 +137,7 @@ final class Points {
 			double cos2alpha = cosalpha*cosalpha;
 
 			// Eq. 18 Careful! cos2alpha might be almost 0!
-			double cos2sigmam = Double.compare(cos2alpha, 0.0) == 0
+			double cos2sigmam = cos2alpha == 0.0
 				? 0.0
 				: cossigma - 2*sinU1sinU2/cos2alpha;
 			double u2 = cos2alpha*AABBBB;
@@ -158,12 +163,18 @@ final class Points {
 				(sigma + C*sinsigma*(cos2sigmam +
 					C*cossigma*(-1 + 2*cos2sigmam2)));
 
-			++iteration;
-		} while (iteration < DISTANCE_MAX_ITERATION &&
-			(abs((lambda - lambda0)/lambda) > 1E-12));
+		} while (iteration++ < DISTANCE_ITERATION_MAX &&
+			(abs((lambda - lambda0)/lambda) > DISTANCE_ITERATION_EPSILON));
 
 		// Eq. 19
-		return Length.ofMeters(B*a*(sigma - deltasigma));
+		final double s = B*a*(sigma - deltasigma);
+
+		// The difference in elevation.
+		final double e =
+			start.getElevation().map(Length::toMeters).orElse(0.0) -
+			end.getElevation().map(Length::toMeters).orElse(0.0);
+
+		return Length.ofMeters(sqrt(s*s + e*e));
 	}
 
 	public static void main(final String[] args) {
@@ -171,6 +182,8 @@ final class Points {
 		final Point end = WayPoint.of(47.3502, 11.70584);
 
 		System.out.println(distance(start, end));
+		System.out.println(distance(end, end));
+		System.out.println(distance(end, start));
 	}
 
 }
