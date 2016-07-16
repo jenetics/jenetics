@@ -39,6 +39,7 @@ final class JAXBRegistry {
 		Link.Model.class,
 		Person.Model.class,
 		Copyright.Model.class,
+		Bounds.Model.class,
 		WayPoint.Model.class
 	);
 }

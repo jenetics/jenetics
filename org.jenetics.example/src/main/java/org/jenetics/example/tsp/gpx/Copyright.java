@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  * Information about the copyright holder and any license governing use of this
@@ -45,6 +46,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
  * @version !__version__!
  * @since !__version__!
  */
+@XmlJavaTypeAdapter(Copyright.Model.Adapter.class)
 public final class Copyright implements Serializable {
 
 	private static final long serialVersionUID = 1L;
