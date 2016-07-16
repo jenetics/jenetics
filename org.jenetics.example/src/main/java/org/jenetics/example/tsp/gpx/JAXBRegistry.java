@@ -38,6 +38,7 @@ final class JAXBRegistry {
 		Email.Model.class,
 		Link.Model.class,
 		Person.Model.class,
+		Copyright.Model.class,
 		WayPoint.Model.class
 	);
 }
