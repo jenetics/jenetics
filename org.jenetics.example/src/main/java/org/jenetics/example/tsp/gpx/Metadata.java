@@ -19,6 +19,8 @@
  */
 package org.jenetics.example.tsp.gpx;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -72,6 +74,8 @@ public final class Metadata implements Serializable {
 	 *        databases can use this information to classify the data.
 	 * @param bounds minimum and maximum coordinates which describe the extent
 	 *        of the coordinates in the file
+	 * @throws NullPointerException if the given {@code links} sequence is
+	 *        {@code null}
 	 */
 	private Metadata(
 		final String name,
@@ -87,7 +91,7 @@ public final class Metadata implements Serializable {
 		_description = description;
 		_author = author;
 		_copyright = copyright;
-		_links = links;
+		_links = requireNonNull(links);
 		_time = time;
 		_keywords = keywords;
 		_bounds = bounds;
@@ -135,7 +139,7 @@ public final class Metadata implements Serializable {
 	 * @return the URLs associated with the location described in the file
 	 */
 	public ISeq<Link> getLinks() {
-		return _links != null ? _links : ISeq.empty();
+		return _links;
 	}
 
 	/**
@@ -173,6 +177,24 @@ public final class Metadata implements Serializable {
 	 *  Static object creation methods
 	 * ************************************************************************/
 
+	/**
+	 * Create a new {@code Metadata} object with the given parameters.
+	 *
+	 * @param name the name of the GPX file
+	 * @param description a description of the contents of the GPX file
+	 * @param author the person or organization who created the GPX file
+	 * @param copyright copyright and license information governing use of the
+	 *        file
+	 * @param links URLs associated with the location described in the file
+	 * @param time the creation date of the file
+	 * @param keywords keywords associated with the file. Search engines or
+	 *        databases can use this information to classify the data.
+	 * @param bounds minimum and maximum coordinates which describe the extent
+	 *        of the coordinates in the file
+	 * @return a new {@code Metadata} object with the given parameters
+	 * @throws NullPointerException if the given {@code links} sequence is
+	 *        {@code null}
+	 */
 	public static Metadata of(
 		final String name,
 		final String description,
@@ -290,15 +312,3 @@ public final class Metadata implements Serializable {
 	}
 
 }
-
-/*
-<name> xsd:string </name> [0..1] ?
-<desc> xsd:string </desc> [0..1] ?
-<author> personType </author> [0..1] ?
-<copyright> copyrightType </copyright> [0..1] ?
-<link> linkType </link> [0..*] ?
-<time> xsd:dateTime </time> [0..1] ?
-<keywords> xsd:string </keywords> [0..1] ?
-<bounds> boundsType </bounds> [0..1] ?
-<extensions> extensionsType </extensions> [0..1] ?
- */
