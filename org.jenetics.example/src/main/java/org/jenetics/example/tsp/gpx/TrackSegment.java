@@ -36,8 +36,13 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.jenetics.util.ISeq;
+
 /**
- * Represents a GPX track segment.
+ * A Track Segment holds a list of Track Points which are logically connected in
+ * order. To represent a single GPS track where GPS reception was lost, or the
+ * GPS receiver was turned off, start a new Track Segment for each continuous
+ * span of track data.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -48,31 +53,37 @@ public final class TrackSegment implements Iterable<WayPoint>, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private final String _name;
-	private final List<WayPoint> _points = new ArrayList<>();
+	private final ISeq<WayPoint> _points;
 
-	public TrackSegment(final String name) {
-		_name = name;
-	}
-
-	public TrackSegment() {
-		this(null);
-	}
-
-	public Optional<String> getName() {
-		return Optional.ofNullable(_name);
+	/**
+	 * Create a new track-segment with the given points.
+	 *
+	 * @param points the points of the track-segment
+	 * @throws NullPointerException if the given {@code points} sequence is
+	 *        {@code null}
+	 */
+	private TrackSegment(final ISeq<WayPoint> points) {
+		_points = requireNonNull(points);
 	}
 
 	/**
-	 * Add a new way-point to the track.
+	 * Return the track-points of this segment.
 	 *
-	 * @param point the way-point to add to this track-segment.
-	 * @return this track, for command chaining
-	 * @throws NullPointerException if the given way-point is {@code null}
+	 * @return the track-points of this segment
 	 */
-	public TrackSegment add(final WayPoint point) {
-		_points.add(requireNonNull(point));
-		return this;
+	public ISeq<WayPoint> getPoints() {
+		return _points;
+	}
+
+	/**
+	 * Return {@code true} if {@code this} track-segment doesn't contain any
+	 * track-point.
+	 *
+	 * @return {@code true} if {@code this} track-segment is empty, {@code false}
+	 *         otherwise
+	 */
+	public boolean isEmpty() {
+		return _points.isEmpty();
 	}
 
 	@Override
@@ -90,6 +101,23 @@ public final class TrackSegment implements Iterable<WayPoint>, Serializable {
 	}
 
 
+	/* *************************************************************************
+	 *  Static object creation methods
+	 * ************************************************************************/
+
+	/**
+	 * Create a new track-segment with the given points.
+	 *
+	 * @param points the points of the track-segment
+	 * @return a new track-segment with the given points
+	 * @throws NullPointerException if the given {@code points} sequence is
+	 *        {@code null}
+	 */
+	public static TrackSegment of(final ISeq<WayPoint> points) {
+		return new TrackSegment(points);
+	}
+
+
 	/**
 	 * Model class for XML serialization/deserialization.
 	 */
@@ -98,10 +126,7 @@ public final class TrackSegment implements Iterable<WayPoint>, Serializable {
 	@XmlAccessorType(XmlAccessType.FIELD)
 	static final class Model {
 
-		@XmlElement(name = "name", required = false)
-		public String name;
-
-		@XmlElement(name = "trkpt", required = false, nillable = true)
+		@XmlElement(name = "trkpt", nillable = true)
 		public List<WayPoint> points;
 
 		public static final class Adapter
@@ -110,21 +135,17 @@ public final class TrackSegment implements Iterable<WayPoint>, Serializable {
 			@Override
 			public Model marshal(final TrackSegment segment) {
 				final Model model = new Model();
-				model.points = !segment._points.isEmpty()
-					? segment._points
-					: null;
-
+				model.points = segment._points.asList();
 				return model;
 			}
 
 			@Override
 			public TrackSegment unmarshal(final Model model) {
-				final TrackSegment segment = new TrackSegment(model.name);
-				if (model.points != null) {
-					model.points.forEach(segment::add);
-				}
-
-				return segment;
+				return new TrackSegment(
+					model.points != null
+						? ISeq.of(model.points)
+						: ISeq.empty()
+				);
 			}
 		}
 	}
