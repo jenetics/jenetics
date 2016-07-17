@@ -22,7 +22,6 @@ package org.jenetics.example.tsp.gpx;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -36,8 +35,10 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.jenetics.util.ISeq;
+
 /**
- * Represents a GPX track.
+ * Represents a GPX track - an ordered list of points describing a path.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -49,18 +50,54 @@ public final class Track implements Iterable<TrackSegment>, Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private final String _name;
-	private final List<TrackSegment> _segments = new ArrayList<>();
+	private final String _comment;
+	private final String _description;
+	private final String _source;
+	private final ISeq<Link> _links;
+	private final UInt _number;
+	private final String _type;
+	private final ISeq<TrackSegment> _segments;
 
-	public Track(final String name) {
+	/**
+	 * Create a new {@code Track} with the given parameters.
+	 *
+	 * @param name the GPS name of the track
+	 * @param comment the GPS comment for the track
+	 * @param description user description of the track
+	 * @param source the source of data. Included to give user some idea of
+	 *        reliability and accuracy of data.
+	 * @param links the links to external information about track
+	 * @param number the GPS track number
+	 * @param type the type (classification) of track
+	 * @param segments the track-segments holds a list of track-points which are
+	 *        logically connected in order. To represent a single GPS track
+	 *        where GPS reception was lost, or the GPS receiver was turned off,
+	 *        start a new track-segment for each continuous span of track data.
+	 * @throws NullPointerException if the {@code links} or the {@code segments}
+	 *         sequence is {@code null}
+	 */
+	private Track(
+		final String name,
+		final String comment,
+		final String description,
+		final String source,
+		final ISeq<Link> links,
+		final UInt number,
+		final String type,
+		final ISeq<TrackSegment> segments
+	) {
 		_name = name;
-	}
-
-	public Track() {
-		this(null);
+		_comment = comment;
+		_description = description;
+		_source = source;
+		_links = requireNonNull(links);
+		_number = number;
+		_type = type;
+		_segments = requireNonNull(segments);
 	}
 
 	/**
-	 * Return the name of the track.
+	 * Return the track name.
 	 *
 	 * @return the track name
 	 */
@@ -69,18 +106,72 @@ public final class Track implements Iterable<TrackSegment>, Serializable {
 	}
 
 	/**
-	 * Add a new track-segment to the track.
+	 * Return the GPS comment of the track.
 	 *
-	 * @param segment the track-segment to add to the track.
-	 * @throws NullPointerException if the given {@code segment} is {@code null}
+	 * @return the GPS comment of the track
 	 */
-	public void add(final TrackSegment segment) {
-		_segments.add(requireNonNull(segment));
+	public Optional<String> getComment() {
+		return Optional.ofNullable(_comment);
+	}
+
+	/**
+	 * Return the text description of the track.
+	 *
+	 * @return the text description of the track
+	 */
+	public Optional<String> getDescription() {
+		return Optional.ofNullable(_description);
+	}
+
+	/**
+	 * Return the source of data. Included to give user some idea of reliability
+	 * and accuracy of data.
+	 *
+	 * @return the source of data
+	 */
+	public Optional<String> getSource() {
+		return Optional.ofNullable(_source);
+	}
+
+	/**
+	 * Return the links to external information about the track.
+	 *
+	 * @return the links to external information about the track
+	 */
+	public ISeq<Link> getLinks() {
+		return _links;
+	}
+
+	/**
+	 * Return the GPS track number.
+	 *
+	 * @return the GPS track number
+	 */
+	public Optional<UInt> getNumber() {
+		return Optional.ofNullable(_number);
+	}
+
+	/**
+	 * Return the type (classification) of the track.
+	 *
+	 * @return the type (classification) of the track
+	 */
+	public Optional<String> getType() {
+		return Optional.ofNullable(_type);
+	}
+
+	/**
+	 * Return the sequence of route points.
+	 *
+	 * @return the sequence of route points
+	 */
+	public ISeq<TrackSegment> getSegments() {
+		return _segments;
 	}
 
 	@Override
 	public Iterator<TrackSegment> iterator() {
-		return null;
+		return _segments.iterator();
 	}
 
 	/**
@@ -93,19 +184,83 @@ public final class Track implements Iterable<TrackSegment>, Serializable {
 	}
 
 
+	/* *************************************************************************
+	 *  Static object creation methods
+	 * ************************************************************************/
+
 	/**
-	 * Model class for XML serialization/deserialization.
+	 * Create a new {@code Track} with the given parameters.
+	 *
+	 * @param name the GPS name of the track
+	 * @param comment the GPS comment for the track
+	 * @param description user description of the track
+	 * @param source the source of data. Included to give user some idea of
+	 *        reliability and accuracy of data.
+	 * @param links the links to external information about track
+	 * @param number the GPS track number
+	 * @param type the type (classification) of track
+	 * @param segments the track-segments holds a list of track-points which are
+	 *        logically connected in order. To represent a single GPS track
+	 *        where GPS reception was lost, or the GPS receiver was turned off,
+	 *        start a new track-segment for each continuous span of track data.
+	 * @return a new {@code Track} with the given parameters
+	 * @throws NullPointerException if the {@code links} or the {@code segments}
+	 *         sequence is {@code null}
 	 */
+	public static Track of(
+		final String name,
+		final String comment,
+		final String description,
+		final String source,
+		final ISeq<Link> links,
+		final UInt number,
+		final String type,
+		final ISeq<TrackSegment> segments
+	) {
+		return new Track(
+			name,
+			comment,
+			description,
+			source,
+			links,
+			number,
+			type,
+			segments
+		);
+	}
+
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
+
 	@XmlRootElement(name = "trk")
 	@XmlType(name = "gpx.Track")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	static final class Model {
 
-		@XmlElement(name = "name", required = false, nillable = true)
+		@XmlElement(name = "name")
 		public String name;
 
-		@XmlElement(name = "trkseg", required = false, nillable = true)
-		public List<TrackSegment> segments;
+		@XmlElement(name = "cmt")
+		public String cmt;
+
+		@XmlElement(name = "desc")
+		public String desc;
+
+		@XmlElement(name = "src")
+		public String src;
+
+		@XmlElement(name = "link")
+		public List<Link.Model> link;
+
+		@XmlElement(name = "number")
+		public Integer number;
+
+		@XmlElement(name = "type")
+		public String type;
+
+		@XmlElement(name = "trkseg", nillable = true)
+		public List<TrackSegment.Model> segments;
 
 		public static final class Adapter
 			extends XmlAdapter<Model, Track>
@@ -114,21 +269,41 @@ public final class Track implements Iterable<TrackSegment>, Serializable {
 			public Model marshal(final Track track) {
 				final Model model = new Model();
 				model.name = track._name;
-				model.segments = !track._segments.isEmpty()
-					? track._segments
-					: null;
+				model.cmt = track._comment;
+				model.desc = track._description;
+				model.src = track._source;
+				model.link = track._links
+					.map(Link.Model.ADAPTER::marshal)
+					.asList();
+				model.number = Optional.ofNullable(track._number)
+					.map(UInt::intValue)
+					.orElse(null);
+				model.type = track._type;
+				model.segments = track._segments
+					.map(TrackSegment.Model.ADAPTER::marshal)
+					.asList();
 
 				return model;
 			}
 
 			@Override
 			public Track unmarshal(final Model model) {
-				final Track track = new Track(model.name);
-				if (model.segments != null) {
-					model.segments.forEach(track::add);
-				}
-
-				return track;
+				return Track.of(
+					model.name,
+					model.cmt,
+					model.desc,
+					model.src,
+					model.link.stream()
+						.map(Link.Model.ADAPTER::unmarshal)
+						.collect(ISeq.toISeq()),
+					Optional.ofNullable(model.number)
+						.map(UInt::of)
+						.orElse(null),
+					model.type,
+					model.segments.stream()
+						.map(TrackSegment.Model.ADAPTER::unmarshal)
+						.collect(ISeq.toISeq())
+				);
 			}
 		}
 	}
