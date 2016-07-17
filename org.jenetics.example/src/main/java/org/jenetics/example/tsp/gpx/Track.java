@@ -19,11 +19,13 @@
  */
 package org.jenetics.example.tsp.gpx;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -183,6 +185,36 @@ public final class Track implements Iterable<TrackSegment>, Serializable {
 		return _segments.stream();
 	}
 
+	@Override
+	public int hashCode() {
+		int hash = 31;
+		hash += 17*Objects.hashCode(_name) + 37;
+		hash += 17*Objects.hashCode(_comment) + 37;
+		hash += 17*Objects.hashCode(_description) + 37;
+		hash += 17*Objects.hashCode(_source) + 37;
+		hash += 17*Objects.hashCode(_links) + 37;
+		hash += 17*Objects.hashCode(_number) + 37;
+		hash += 17*Objects.hashCode(_segments) + 37;
+
+		return hash;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof Track &&
+			Objects.equals(((Track)obj)._name, _name) &&
+			Objects.equals(((Track)obj)._comment, _comment) &&
+			Objects.equals(((Track)obj)._description, _description) &&
+			Objects.equals(((Track)obj)._source, _source) &&
+			Objects.equals(((Track)obj)._links, _links) &&
+			Objects.equals(((Track)obj)._number, _number) &&
+			Objects.equals(((Track)obj)._segments, _segments);
+	}
+
+	@Override
+	public String toString() {
+		return format("Track[name=%s, segments=%s]", _name, _segments);
+	}
 
 	/* *************************************************************************
 	 *  Static object creation methods
