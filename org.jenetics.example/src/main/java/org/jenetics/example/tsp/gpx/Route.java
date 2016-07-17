@@ -72,6 +72,8 @@ public final class Route implements Iterable<WayPoint>, Serializable {
 	 * @param number the GPS route number
 	 * @param type the type (classification) of the route
 	 * @param points the sequence of route points
+	 * @throws NullPointerException if the {@code links} or the {@code points}
+	 *         sequence is {@code null}
 	 */
 	private Route(
 		final String name,
@@ -87,10 +89,10 @@ public final class Route implements Iterable<WayPoint>, Serializable {
 		_comment = comment;
 		_description = description;
 		_source = source;
-		_links = links;
+		_links = requireNonNull(links);
 		_number = number;
 		_type = type;
-		_points = points;
+		_points = requireNonNull(points);
 	}
 
 	/**
@@ -136,7 +138,7 @@ public final class Route implements Iterable<WayPoint>, Serializable {
 	 * @return the links to external information about the route
 	 */
 	public ISeq<Link> getLinks() {
-		return _links != null ? _links : ISeq.empty();
+		return _links;
 	}
 
 	/**
@@ -163,7 +165,7 @@ public final class Route implements Iterable<WayPoint>, Serializable {
 	 * @return the sequence of route points
 	 */
 	public ISeq<WayPoint> getPoints() {
-		return _points != null ? _points : ISeq.empty();
+		return _points;
 	}
 
 	@Override
