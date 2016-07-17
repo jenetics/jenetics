@@ -25,10 +25,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
-import java.time.chrono.IsoChronology;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.xml.bind.DataBindingException;
@@ -152,6 +150,28 @@ public final class GPX implements Serializable {
 		return _tracks;
 	}
 
+	@Override
+	public int hashCode() {
+		int hash = 37;
+		hash += 17*Objects.hashCode(getVersion()) + 31;
+		hash += 17*Objects.hashCode(_creator) + 31;
+		hash += 17*Objects.hashCode(_metadata) + 31;
+		hash += 17*Objects.hashCode(_wayPoints) + 31;
+		hash += 17*Objects.hashCode(_routes) + 31;
+		hash += 17*Objects.hashCode(_tracks) + 31;
+		return hash;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof GPX &&
+			Objects.equals(((GPX)obj).getVersion(), getVersion()) &&
+			Objects.equals(((GPX)obj)._creator, _creator) &&
+			Objects.equals(((GPX)obj)._metadata, _metadata) &&
+			Objects.equals(((GPX)obj)._wayPoints, _wayPoints) &&
+			Objects.equals(((GPX)obj)._routes, _routes) &&
+			Objects.equals(((GPX)obj)._tracks, _tracks);
+	}
 
 	/* *************************************************************************
 	 *  Static object creation methods
