@@ -139,10 +139,10 @@ public class WayPoint {
 			}
 		}
 
-		final GPX gpx = new GPX();
-		points.values().stream()
-			.flatMap(g -> g.getWayPoints().stream())
-			.forEach(gpx::addWayPoint);
+		final GPX gpx = null;//new GPX();
+		//points.values().stream()
+		//	.flatMap(g -> g.getWayPoints().stream())
+		//	.forEach(gpx::addWayPoint);
 
 		try (OutputStream out = new FileOutputStream("/home/fwilhelm/Temp/Österreich.gpx")) {
 			GPX.write(gpx, out);
@@ -184,7 +184,7 @@ public class WayPoint {
 				final double log = Double.parseDouble(parts[3]);
 				final double ele = Double.parseDouble(parts[4]);
 
-				final GPX gpx = pts.computeIfAbsent(state, s -> new GPX());
+				//final GPX gpx = pts.computeIfAbsent(state, s -> new GPX());
 				//gpx.addWayPoint(org.jenetics.example.tsp.gpx.WayPoint.of(city, lat, log, ele));
 			}
 		}

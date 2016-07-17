@@ -25,9 +25,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.time.chrono.IsoChronology;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import javax.xml.bind.DataBindingException;
 import javax.xml.bind.JAXBContext;
@@ -43,59 +45,84 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.jenetics.util.ISeq;
+
 /**
- * This class allows to read and write GPS points in GPX format.
+ * GPX documents contain a metadata header, followed by way-points, routes, and
+ * tracks. You can add your own elements to the extensions section of the GPX
+ * document.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 @XmlJavaTypeAdapter(GPX.Model.Adapter.class)
-public class GPX implements Serializable {
+public final class GPX implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private final List<WayPoint> _wayPoints = new ArrayList<>();
-	private final List<Route> _routes = new ArrayList<>();
-	private final List<Track> _tracks = new ArrayList<>();
+	public static final String VERSION = "1.1";
 
-	public GPX() {
+	private final String _creator;
+	private final Metadata _metadata;
+	private final ISeq<WayPoint> _wayPoints;;
+	private final ISeq<Route> _routes;
+	private final ISeq<Track> _tracks;
+
+	/**
+	 * Create a new {@code GPX} object with the given data.
+	 *
+	 * @param creator the name or URL of the software that created your GPX
+	 *        document. This allows others to inform the creator of a GPX
+	 *        instance document that fails to validate.
+	 * @param metadata the metadata about the GPS file
+	 * @param wayPoints the way-points
+	 * @param routes the routes
+	 * @param tracks the tracks
+	 * @throws NullPointerException if the {@code creator}, {code wayPoints},
+	 *         {@code routes} or {@code tracks} is {@code null}
+	 */
+	private GPX(
+		final String creator,
+		final Metadata metadata,
+		final ISeq<WayPoint> wayPoints,
+		final ISeq<Route> routes,
+		final ISeq<Track> tracks
+	) {
+		_creator = requireNonNull(creator);
+		_metadata = metadata;
+		_wayPoints = requireNonNull(wayPoints);
+		_routes = requireNonNull(routes);
+		_tracks = requireNonNull(tracks);
 	}
 
 	/**
-	 * Add a new way-point to the {@code GPX} object.
+	 * Return the version number of the GPX file.
 	 *
-	 * @param point the way-point to add.
-	 * @return this GPX object, for method chaining
-	 * @throws NullPointerException if the given {@code point} is {@code null}
+	 * @return the version number of the GPX file
 	 */
-	public GPX addWayPoint(final WayPoint point) {
-		_wayPoints.add(requireNonNull(point));
-		return this;
+	public String getVersion() {
+		return VERSION;
 	}
 
 	/**
-	 * Add a new route to the {@code GPX} object.
+	 * Return the name or URL of the software that created your GPX document.
+	 * This allows others to inform the creator of a GPX instance document that
+	 * fails to validate.
 	 *
-	 * @param route the route to add
-	 * @return this GPX object, for method chaining
-	 * @throws NullPointerException if the given {@code route} is {@code null}
+	 * @return the name or URL of the software that created your GPX document
 	 */
-	public GPX addRoute(final Route route) {
-		_routes.add(requireNonNull(route));
-		return this;
+	public String getCreator() {
+		return _creator;
 	}
 
 	/**
-	 * Add a new track to the {@code GPX} object.
+	 * Return the metadata of the GPX file.
 	 *
-	 * @param track the track to add
-	 * @return this GPX object, for method chaining
-	 * @throws NullPointerException if the given {@code point} is {@code null}
+	 * @return the metadata of the GPX file
 	 */
-	public GPX addTrack(final Track track) {
-		_tracks.add(requireNonNull(track));
-		return this;
+	public Optional<Metadata> getMetadata() {
+		return Optional.ofNullable(_metadata);
 	}
 
 	/**
@@ -103,8 +130,8 @@ public class GPX implements Serializable {
 	 *
 	 * @return an unmodifiable list of the {@code GPX} way-points.
 	 */
-	public List<WayPoint> getWayPoints() {
-		return Collections.unmodifiableList(_wayPoints);
+	public ISeq<WayPoint> getWayPoints() {
+		return _wayPoints;
 	}
 
 	/**
@@ -112,8 +139,8 @@ public class GPX implements Serializable {
 	 *
 	 * @return an unmodifiable list of the {@code GPX} routes.
 	 */
-	public List<Route> getRoutes() {
-		return Collections.unmodifiableList(_routes);
+	public ISeq<Route> getRoutes() {
+		return _routes;
 	}
 
 	/**
@@ -121,32 +148,70 @@ public class GPX implements Serializable {
 	 *
 	 * @return an unmodifiable list of the {@code GPX} tracks.
 	 */
-	public List<Track> getTracks() {
-		return Collections.unmodifiableList(_tracks);
+	public ISeq<Track> getTracks() {
+		return _tracks;
 	}
 
 
+	/* *************************************************************************
+	 *  Static object creation methods
+	 * ************************************************************************/
+
 	/**
-	 * Model class for XML serialization/deserialization.
+	 * Create a new {@code GPX} object with the given data.
+	 *
+	 * @param creator the name or URL of the software that created your GPX
+	 *        document. This allows others to inform the creator of a GPX
+	 *        instance document that fails to validate.
+	 * @param metadata the metadata about the GPS file
+	 * @param wayPoints the way-points
+	 * @param routes the routes
+	 * @param tracks the tracks
+	 * @return a new {@code GPX} object with the given data
+	 * @throws NullPointerException if the {@code creator}, {code wayPoints},
+	 *         {@code routes} or {@code tracks} is {@code null}
 	 */
+	public static GPX of(
+		final String creator,
+		final Metadata metadata,
+		final ISeq<WayPoint> wayPoints,
+		final ISeq<Route> routes,
+		final ISeq<Track> tracks
+	) {
+		return new GPX(
+			creator,
+			metadata,
+			wayPoints,
+			routes,
+			tracks
+		);
+	}
+
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
+
 	@XmlRootElement(name = "gpx")
 	@XmlType(name = "gpx.GPX")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	static final class Model {
 
-		@XmlAttribute(name = "version", required = false)
-		public String version = "1.1";
+		@XmlAttribute(name = "version", required = true)
+		public String version;
 
-		@XmlAttribute(name = "creator", required = false)
-		public String creator = "Jenetics TSP";
+		@XmlAttribute(name = "creator", required = true)
+		public String creator;
 
-		@XmlElement(name = "wpt", required = false, nillable = true)
+		@XmlElement(name = "metadata", nillable = true)
+		public Metadata metadata;
+
+		@XmlElement(name = "wpt", nillable = true)
 		public List<WayPoint> wayPoints;
 
-		@XmlElement(name = "rte", required = false, nillable = true)
+		@XmlElement(name = "rte", nillable = true)
 		public List<Route> routes;
 
-		@XmlElement(name = "trk", required = false, nillable = true)
+		@XmlElement(name = "trk", nillable = true)
 		public List<Track> tracks;
 
 		public static final class Adapter
@@ -155,30 +220,31 @@ public class GPX implements Serializable {
 			@Override
 			public Model marshal(final GPX gpx) {
 				final Model model = new Model();
-				model.wayPoints = !gpx._wayPoints.isEmpty()
-					? gpx._wayPoints : null;
-				model.routes = !gpx._routes.isEmpty()
-					? gpx._routes : null;
-				model.tracks = !gpx._tracks.isEmpty()
-					? gpx._tracks : null;
+				model.version = gpx.getVersion();
+				model.creator = gpx._creator;
+				model.metadata = gpx._metadata;
+				model.wayPoints = gpx._wayPoints.asList();
+				model.routes = gpx._routes.asList();
+				model.tracks = gpx._tracks.asList();
 
 				return model;
 			}
 
 			@Override
 			public GPX unmarshal(final Model model) {
-				final GPX gpx = new GPX();
-				if (model.wayPoints != null) {
-					model.wayPoints.forEach(gpx::addWayPoint);
-				}
-				if (model.routes != null) {
-					model.routes.forEach(gpx::addRoute);
-				}
-				if (model.tracks != null) {
-					model.tracks.forEach(gpx::addTrack);
-				}
-
-				return gpx;
+				return GPX.of(
+					model.creator,
+					model.metadata,
+					model.wayPoints != null
+						? ISeq.of(model.wayPoints)
+						: ISeq.empty(),
+					model.routes != null
+						? ISeq.of(model.routes)
+						: ISeq.empty(),
+					model.tracks != null
+						? ISeq.of(model.tracks)
+						: ISeq.empty()
+				);
 			}
 		}
 
