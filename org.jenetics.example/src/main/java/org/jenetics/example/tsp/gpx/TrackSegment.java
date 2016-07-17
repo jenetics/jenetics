@@ -22,10 +22,8 @@ package org.jenetics.example.tsp.gpx;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -118,11 +116,12 @@ public final class TrackSegment implements Iterable<WayPoint>, Serializable {
 	}
 
 
-	/**
-	 * Model class for XML serialization/deserialization.
-	 */
+	/* *************************************************************************
+	 *  JAXB object serialization
+	 * ************************************************************************/
+
 	@XmlRootElement(name = "trkseg")
-	@XmlType(name = "gpx.Track.Segment")
+	@XmlType(name = "gpx.TrackSegment")
 	@XmlAccessorType(XmlAccessType.FIELD)
 	static final class Model {
 
@@ -148,6 +147,8 @@ public final class TrackSegment implements Iterable<WayPoint>, Serializable {
 				);
 			}
 		}
+
+		public static final Adapter ADAPTER = new Adapter();
 	}
 
 }
