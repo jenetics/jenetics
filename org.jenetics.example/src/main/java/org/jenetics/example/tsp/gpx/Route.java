@@ -19,12 +19,14 @@
  */
 package org.jenetics.example.tsp.gpx;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -182,6 +184,36 @@ public final class Route implements Iterable<WayPoint>, Serializable {
 		return _points.stream();
 	}
 
+	@Override
+	public int hashCode() {
+		int hash = 31;
+		hash += 17*Objects.hashCode(_name) + 37;
+		hash += 17*Objects.hashCode(_comment) + 37;
+		hash += 17*Objects.hashCode(_description) + 37;
+		hash += 17*Objects.hashCode(_source) + 37;
+		hash += 17*Objects.hashCode(_links) + 37;
+		hash += 17*Objects.hashCode(_number) + 37;
+		hash += 17*Objects.hashCode(_points) + 37;
+
+		return hash;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof Route &&
+			Objects.equals(((Route)obj)._name, _name) &&
+			Objects.equals(((Route)obj)._comment, _comment) &&
+			Objects.equals(((Route)obj)._description, _description) &&
+			Objects.equals(((Route)obj)._source, _source) &&
+			Objects.equals(((Route)obj)._links, _links) &&
+			Objects.equals(((Route)obj)._number, _number) &&
+			Objects.equals(((Route)obj)._points, _points);
+	}
+
+	@Override
+	public String toString() {
+		return format("Rout[name=%s, points=%s]", _name, _points.size());
+	}
 
 	/* *************************************************************************
 	 *  Static object creation methods
