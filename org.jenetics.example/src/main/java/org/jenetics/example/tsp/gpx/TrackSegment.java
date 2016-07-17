@@ -19,6 +19,7 @@
  */
 package org.jenetics.example.tsp.gpx;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
@@ -96,6 +97,22 @@ public final class TrackSegment implements Iterable<WayPoint>, Serializable {
 	 */
 	public Stream<WayPoint> stream() {
 		return _points.stream();
+	}
+
+	@Override
+	public int hashCode() {
+		return _points.hashCode();
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof TrackSegment &&
+			((TrackSegment)obj)._points.equals(_points);
+	}
+
+	@Override
+	public String toString() {
+		return format("TrackSegment[points=%s]", _points.size());
 	}
 
 
