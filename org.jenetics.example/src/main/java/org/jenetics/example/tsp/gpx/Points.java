@@ -112,37 +112,37 @@ final class Points {
 		do {
 			lambda0 = lambda;
 
-			double sinlambda = sin(lambda);
-			double coslambda = cos(lambda);
+			final double sinlambda = sin(lambda);
+			final double coslambda = cos(lambda);
 
 			// Eq. 14
-			double sin2sigma =
+			final double sin2sigma =
 				(cosU2*sinlambda*cosU2*sinlambda) +
 					(cosU1sinU2 - sinU1cosU2*coslambda)*
 						(cosU1sinU2 - sinU1cosU2*coslambda);
-			double sinsigma = sqrt(sin2sigma);
+			final double sinsigma = sqrt(sin2sigma);
 
 			// Eq. 15
-			double cossigma = sinU1sinU2 + (cosU1cosU2*coslambda);
+			final double cossigma = sinU1sinU2 + (cosU1cosU2*coslambda);
 
 			// Eq. 16
 			sigma = atan2(sinsigma, cossigma);
 
 			// Eq. 17 Careful! sin2sigma might be almost 0!
-			double sinalpha = sin2sigma == 0.0
+			final double sinalpha = sin2sigma == 0.0
 				? 0.0
 				: cosU1cosU2*sinlambda/sinsigma;
-			double alpha = asin(sinalpha);
-			double cosalpha = cos(alpha);
+			final double alpha = asin(sinalpha);
+			final double cosalpha = cos(alpha);
 			double cos2alpha = cosalpha*cosalpha;
 
 			// Eq. 18 Careful! cos2alpha might be almost 0!
-			double cos2sigmam = cos2alpha == 0.0
+			final double cos2sigmam = cos2alpha == 0.0
 				? 0.0
 				: cossigma - 2*sinU1sinU2/cos2alpha;
-			double u2 = cos2alpha*AABBBB;
+			final double u2 = cos2alpha*AABBBB;
 
-			double cos2sigmam2 = cos2sigmam*cos2sigmam;
+			final double cos2sigmam2 = cos2sigmam*cos2sigmam;
 
 			// Eq. 3
 			a = 1.0 + u2/16384*(4096 + u2*(-768 + u2*(320 - 175*u2)));
@@ -156,7 +156,7 @@ final class Points {
 					b/6*cos2sigmam*(-3 + 4*sin2sigma)*(-3 + 4*cos2sigmam2)));
 
 			// Eq. 10
-			double C = F/16*cos2alpha*(4 + F*(4 - 3*cos2alpha));
+			final double C = F/16*cos2alpha*(4 + F*(4 - 3*cos2alpha));
 
 			// Eq. 11
 			lambda = omega + (1 - C)*F*sinalpha*
