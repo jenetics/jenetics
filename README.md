@@ -142,6 +142,11 @@ you can start the example by calling
 
 The previous image shows the GUI after evolving the default image for about 4,000 generations. With the »Open« button it is possible to load other images for polygonization. The »Save« button allows to store polygonized images in PNG format to disk. At the button of the UI, you can change some of the GA parameters of the example.
 
+## Citations
+
+* Andreas Holzinger (Editor), Igo Jurisica (Editor). [Interactive Knowledge Discovery and Data Mining in Biomedical Informatics.](http://www.springer.com/computer/database+management+%26+information+retrieval/book/978-3-662-43967-8) _Lecture Notes in Computer Science, Vol. 8401._ [Springer](http://www.springer.com), 2014
+* Lyazid Toumi , Abdelouahab Moussaoui, Ahmet Ugur. [Particle swarm optimization for bitmap join indexes selection problem in data warehouses.](http://link.springer.com/article/10.1007%2Fs11227-013-1058-9) _[The Journal of Supercomputing](http://link.springer.com/journal/11227), May 2014, Volume 68, [Issue 2](http://link.springer.com/journal/11227/68/2/page/1), pp 672-708_
+
 ## License
 
 The library is licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
