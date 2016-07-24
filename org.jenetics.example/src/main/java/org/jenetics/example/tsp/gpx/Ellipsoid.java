@@ -30,5 +30,18 @@ public final class Ellipsoid implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	public final double A;
+	public final double B;
+	public final double F;
+
+	private Ellipsoid(final double a, final double b, final double f) {
+		A = a;
+		B = b;
+		F = f;
+	}
+
+	public static Ellipsoid of(final double a, final double b, final double f) {
+		return new Ellipsoid(a, b, f);
+	}
 
 }
