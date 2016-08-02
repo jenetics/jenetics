@@ -52,6 +52,7 @@ import org.jenetics.util.MSeq;
  */
 public final class TreeNode<T>
 	implements
+		Tree<T, TreeNode<T>>,
 		Iterable<TreeNode<T>>,
 		Copyable<TreeNode<T>>,
 		Serializable
@@ -91,6 +92,7 @@ public final class TreeNode<T>
 	 *
 	 * @return the node value
 	 */
+	@Override
 	public T getValue() {
 		return _value;
 	}
@@ -100,6 +102,7 @@ public final class TreeNode<T>
 	 *
 	 * @return the tree-node, or an empty value if this node has no parent
 	 */
+	@Override
 	public Optional<TreeNode<T>> getParent() {
 		return Optional.ofNullable(_parent);
 	}
@@ -124,6 +127,7 @@ public final class TreeNode<T>
 	 * @throws ArrayIndexOutOfBoundsException  if the {@code index} is out of
 	 *         bounds
 	 */
+	@Override
 	public TreeNode<T> getChild(final int index) {
 		return _children.get(index);
 	}
@@ -133,6 +137,7 @@ public final class TreeNode<T>
 	 *
 	 * @return the number of children of {@code this} node
 	 */
+	@Override
 	public int childCount() {
 		return _children.size();
 	}
@@ -315,42 +320,6 @@ public final class TreeNode<T>
 	/* *************************************************************************
 	 * Query operations
 	 **************************************************************************/
-
-	/**
-	 * Return {@code true} if the given {@code node} is an ancestor of
-	 * {@code this} node. This operation is at worst {@code O(h)} where {@code h}
-	 * is the distance from the root to {@code this} node.
-	 *
-	 * @param node the node to test
-	 * @return {@code true} if the given {@code node} is an ancestor of
-	 *         {@code this} node, {@code false} otherwise
-	 * @throws NullPointerException if the given {@code node} is {@code null}
-	 */
-	public boolean isAncestor(final TreeNode<T> node) {
-		requireNonNull(node);
-
-		boolean result;
-		TreeNode<T> ancestor = this;
-		do {
-			result = ancestor == node;
-		} while(!result && (ancestor = ancestor._parent) != null);
-
-		return result;
-	}
-
-	/**
-	 * Return {@code true} if the given {@code node} is a descendant of
-	 * {@code this} node. If the given {@code node} is {@code null},
-	 * {@code false} is returned. This operation is at worst {@code O(h)} where
-	 * {@code h} is the distance from the root to {@code this} node.
-	 *
-	 * @param node the node to test as descendant of this node
-	 * @return {@code true} if this node is an ancestor of the given {@code node}
-	 * @throws NullPointerException if the given {@code node} is {@code null}
-	 */
-	public boolean isDescendant(final TreeNode<T> node) {
-		return requireNonNull(node).isAncestor(this);
-	}
 
 	/**
 	 * Returns the nearest common ancestor to this node and the given {@code node}.

@@ -40,7 +40,7 @@ public interface Tree<V, T extends Tree<V, T>> {
 
 	public V getValue();
 
-	public Optional<T> parent();
+	public Optional<T> getParent();
 
 	public T getChild(final int index);
 
@@ -62,7 +62,7 @@ public interface Tree<V, T extends Tree<V, T>> {
 	}
 
 	public default boolean isRoot() {
-		return !parent().isPresent();
+		return !getParent().isPresent();
 	}
 
 	public default boolean isLeaf() {
@@ -84,7 +84,7 @@ public interface Tree<V, T extends Tree<V, T>> {
 	 *         {@code this} node, {@code false} otherwise
 	 * @throws NullPointerException if the given {@code node} is {@code null}
 	 */
-	public default boolean isAncestor(final T node) {
+	public default boolean isAncestor(final Tree<V, ?> node) {
 		requireNonNull(node);
 
 		@SuppressWarnings("unchecked")
@@ -93,7 +93,7 @@ public interface Tree<V, T extends Tree<V, T>> {
 		do {
 			result = ancestor.filter(a -> a == node).isPresent();
 		} while(!result &&
-				(ancestor = ancestor.flatMap(Tree<V, T>::parent)).isPresent());
+				(ancestor = ancestor.flatMap(Tree<V, T>::getParent)).isPresent());
 
 		return result;
 	}
@@ -108,9 +108,8 @@ public interface Tree<V, T extends Tree<V, T>> {
 	 * @return {@code true} if this node is an ancestor of the given {@code node}
 	 * @throws NullPointerException if the given {@code node} is {@code null}
 	 */
-	@SuppressWarnings("unchecked")
-	public default boolean isDescendant(final T node) {
-		return requireNonNull(node).isAncestor((T)this);
+	public default boolean isDescendant(final Tree<V, ?> node) {
+		return requireNonNull(node).isAncestor(this);
 	}
 
 }
