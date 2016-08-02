@@ -62,8 +62,6 @@ public final class TreeNode<T>
 	private TreeNode<T> _parent;
 	private final List<TreeNode<T>> _children = new ArrayList<>();
 
-	private int _size = 1;
-
 	/**
 	 * Create a new tree node with no parent and children, but with the given
 	 * user {@code value}.
@@ -145,8 +143,7 @@ public final class TreeNode<T>
 	 * @return the number of nodes of {@code this} node (sub-tree)
 	 */
 	public int size() {
-		//return (int)breathFirstStream().count();
-		return _size;
+		return (int)breathFirstStream().count();
 	}
 
 	/**
@@ -179,7 +176,6 @@ public final class TreeNode<T>
 
 		TreeNode<T> parent = this;
 		while (parent != null) {
-			parent._size += child.size();
 			parent = parent._parent;
 		}
 
@@ -202,12 +198,10 @@ public final class TreeNode<T>
 
 		TreeNode<T> parent = this;
 		while (parent != null) {
-			parent._size -= child.size();
 			parent = parent._parent;
 		}
 
 		child.setParent(null);
-		//_size -= child.size();
 
 		return this;
 	}
