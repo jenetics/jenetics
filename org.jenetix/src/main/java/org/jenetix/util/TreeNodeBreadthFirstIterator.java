@@ -35,8 +35,10 @@ import java.util.Queue;
  * @version !__version__!
  * @since !__version__!
  */
-final class TreeNodeBreadthFirstIterator<T> implements Iterator<TreeNode<T>> {
-	private final Queue<Iterator<TreeNode<T>>> _queue = new LinkedList<>();
+final class TreeNodeBreadthFirstIterator<V, T extends Tree<V, T>>
+	implements Iterator<T>
+{
+	private final Queue<Iterator<T>> _queue = new LinkedList<>();
 
 	/**
 	 * Create a new breath-first iterator from the given {@code root} element.
@@ -45,7 +47,7 @@ final class TreeNodeBreadthFirstIterator<T> implements Iterator<TreeNode<T>> {
 	 * @throws NullPointerException if the given {@code root} node is
 	 *         {@code null}
 	 */
-	TreeNodeBreadthFirstIterator(final TreeNode<T> root) {
+	TreeNodeBreadthFirstIterator(final T root) {
 		requireNonNull(root);
 		_queue.add(singletonList(root).iterator());
 	}
@@ -56,14 +58,14 @@ final class TreeNodeBreadthFirstIterator<T> implements Iterator<TreeNode<T>> {
 	}
 
 	@Override
-	public TreeNode<T> next() {
-		final Iterator<TreeNode<T>> it = _queue.peek();
-		final TreeNode<T> node = it.next();
+	public T next() {
+		final Iterator<T> it = _queue.peek();
+		final T node = it.next();
 		if (!it.hasNext()) {
 			_queue.poll();
 		}
 
-		final Iterator<TreeNode<T>> children = node.childIterator();
+		final Iterator<T> children = node.childIterator();
 		if (children.hasNext()) {
 			_queue.add(children);
 		}

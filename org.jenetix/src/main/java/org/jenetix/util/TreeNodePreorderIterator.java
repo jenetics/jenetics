@@ -33,8 +33,10 @@ import java.util.LinkedList;
  * @version !__version__!
  * @since !__version__!
  */
-final class TreeNodePreorderIterator<T> implements Iterator<TreeNode<T>> {
-	private final Deque<Iterator<TreeNode<T>>> _deque = new LinkedList<>();
+final class TreeNodePreorderIterator<V, T extends Tree<V, T>>
+	implements Iterator<T>
+{
+	private final Deque<Iterator<T>> _deque = new LinkedList<>();
 
 	/**
 	 * Create a new preorder iterator of the given tree {@code root}.
@@ -43,7 +45,7 @@ final class TreeNodePreorderIterator<T> implements Iterator<TreeNode<T>> {
 	 * @throws NullPointerException if the given {@code root} node is
 	 *        {@code null}
 	 */
-	TreeNodePreorderIterator(final TreeNode<T> root) {
+	TreeNodePreorderIterator(final T root) {
 		requireNonNull(root);
 		_deque.push(singletonList(root).iterator());
 	}
@@ -54,14 +56,14 @@ final class TreeNodePreorderIterator<T> implements Iterator<TreeNode<T>> {
 	}
 
 	@Override
-	public TreeNode<T> next() {
-		final Iterator<TreeNode<T>> it = _deque.peek();
-		final TreeNode<T> node = it.next();
+	public T next() {
+		final Iterator<T> it = _deque.peek();
+		final T node = it.next();
 		if (!it.hasNext()) {
 			_deque.pop();
 		}
 
-		final Iterator<TreeNode<T>> children = node.childIterator();
+		final Iterator<T> children = node.childIterator();
 		if (children.hasNext()) {
 			_deque.push(children);
 		}

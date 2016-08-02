@@ -33,10 +33,10 @@ import java.util.LinkedList;
  * @version !__version__!
  * @since !__version__!
  */
-final class TreeNodePathIterator<T>
-	implements Iterator<TreeNode<T>>
+final class TreeNodePathIterator<V, T extends Tree<V, T>>
+	implements Iterator<T>
 {
-	private final Deque<TreeNode<T>> _stack = new LinkedList<>();
+	private final Deque<T> _stack = new LinkedList<>();
 
 	/**
 	 * Create an iterator between two tree nodes.
@@ -46,13 +46,13 @@ final class TreeNodePathIterator<T>
 	 * @throws NullPointerException if one of the nodes is {@code null}
 	 */
 	TreeNodePathIterator(
-		final TreeNode<T> ancestor,
-		final TreeNode<T> descendant
+		final T ancestor,
+		final T descendant
 	) {
 		requireNonNull(ancestor);
 		_stack.push(requireNonNull(descendant));
 
-		TreeNode<T> current = descendant;
+		T current = descendant;
 		while (current != ancestor) {
 			current = current.getParent().orElseThrow(() ->
 				new IllegalArgumentException(format(
@@ -71,7 +71,7 @@ final class TreeNodePathIterator<T>
 	}
 
 	@Override
-	public TreeNode<T> next() {
+	public T next() {
 		return _stack.pop();
 	}
 

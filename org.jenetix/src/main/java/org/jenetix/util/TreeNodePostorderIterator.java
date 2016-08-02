@@ -31,10 +31,13 @@ import java.util.Iterator;
  * @version !__version__!
  * @since !__version__!
  */
-final class TreeNodePostorderIterator<T> implements Iterator<TreeNode<T>> {
-	private TreeNode<T> _root;
-	private final Iterator<TreeNode<T>> _children;
-	private Iterator<TreeNode<T>> _subtree;
+final class TreeNodePostorderIterator<V, T extends Tree<V, T>>
+	implements Iterator<T>
+{
+
+	private T _root;
+	private final Iterator<T> _children;
+	private Iterator<T> _subtree;
 
 	/**
 	 * Create a new postorder iterator of the given tree {@code root}.
@@ -43,7 +46,7 @@ final class TreeNodePostorderIterator<T> implements Iterator<TreeNode<T>> {
 	 * @throws NullPointerException if the given {@code root} node is
 	 *        {@code null}
 	 */
-	TreeNodePostorderIterator(final TreeNode<T> root) {
+	TreeNodePostorderIterator(final T root) {
 		_root = requireNonNull(root);
 		_children = _root.childIterator();
 		_subtree = Collections.emptyIterator();
@@ -55,8 +58,8 @@ final class TreeNodePostorderIterator<T> implements Iterator<TreeNode<T>> {
 	}
 
 	@Override
-	public TreeNode<T> next() {
-		final TreeNode<T> result;
+	public T next() {
+		final T result;
 		if (_subtree.hasNext()) {
 			result = _subtree.next();
 		} else if (_children.hasNext()) {
