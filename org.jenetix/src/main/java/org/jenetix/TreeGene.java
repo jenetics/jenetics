@@ -46,7 +46,11 @@ public interface TreeGene<A, G extends TreeGene<A, G>> extends Gene<A, G> {
 	}
 
 	public default G foo() {
-		return asTree(null).parent().map(p -> p.getValue()).orElse(null);
+		final Tree<G, ?> tree = asTree(null);
+
+		tree.isAncestor(tree);
+
+		return asTree(null).getParent().map(p -> p.getValue()).orElse(null);
 	}
 
 	/**
