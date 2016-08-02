@@ -246,6 +246,10 @@ public final class TreeNode<T>
 	}
 
 
+	public Stream<TreeNode<T>> str() {
+		return Stream.concat(Stream.of(this), childStream().flatMap(c -> c.str()));
+	}
+
 	/* *************************************************************************
 	 * Derived operations
 	 **************************************************************************/

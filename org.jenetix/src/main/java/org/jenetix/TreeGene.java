@@ -28,6 +28,7 @@ import org.jenetics.Gene;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Seq;
 
+import org.jenetix.util.Tree;
 import org.jenetix.util.TreeNode;
 
 /**
@@ -38,6 +39,15 @@ import org.jenetix.util.TreeNode;
  * @since !__version__!
  */
 public interface TreeGene<A, G extends TreeGene<A, G>> extends Gene<A, G> {
+
+
+	public default Tree<G, ?> asTree(final Seq<? extends G> genes) {
+		return null;
+	}
+
+	public default G foo() {
+		return asTree(null).parent().map(p -> p.getValue()).orElse(null);
+	}
 
 	/**
 	 * Return the (optional) parent gene of this tree-gene.

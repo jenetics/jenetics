@@ -19,26 +19,98 @@
  */
 package org.jenetix.util;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Optional;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
+ * General purpose tree structure.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public interface Tree<A, T extends Tree<A, T>> {
+public interface Tree<V, T extends Tree<V, T>> {
 
-	public Optional<T> getParent();
+	/* *************************************************************************
+	 * Basic operations
+	 **************************************************************************/
 
-	public Stream<T> children();
+	public V getValue();
+
+	public Optional<T> parent();
 
 	public T getChild(final int index);
 
 	public int childCount();
 
+
+	/* *************************************************************************
+	 * Derived operations
+	 **************************************************************************/
+
+	public default Stream<T> children() {
+		return IntStream.range(0, childCount()).mapToObj(this::getChild);
+	}
+
+	public default Stream<T> nodes() {
+		@SuppressWarnings("unchecked")
+		final Stream<T> start = (Stream<T>)Stream.of(this);
+		return Stream.concat(start, children());
+	}
+
+	public default boolean isRoot() {
+		return !parent().isPresent();
+	}
+
 	public default boolean isLeaf() {
 		return childCount() == 0;
+	}
+
+
+	/* *************************************************************************
+	 * Query operations
+	 **************************************************************************/
+
+	/**
+	 * Return {@code true} if the given {@code node} is an ancestor of
+	 * {@code this} node. This operation is at worst {@code O(h)} where {@code h}
+	 * is the distance from the root to {@code this} node.
+	 *
+	 * @param node the node to test
+	 * @return {@code true} if the given {@code node} is an ancestor of
+	 *         {@code this} node, {@code false} otherwise
+	 * @throws NullPointerException if the given {@code node} is {@code null}
+	 */
+	public default boolean isAncestor(final T node) {
+		requireNonNull(node);
+
+		@SuppressWarnings("unchecked")
+		Optional<T> ancestor = Optional.of((T)this);
+		boolean result;
+		do {
+			result = ancestor.filter(a -> a == node).isPresent();
+		} while(!result &&
+				(ancestor = ancestor.flatMap(Tree<V, T>::parent)).isPresent());
+
+		return result;
+	}
+
+	/**
+	 * Return {@code true} if the given {@code node} is a descendant of
+	 * {@code this} node. If the given {@code node} is {@code null},
+	 * {@code false} is returned. This operation is at worst {@code O(h)} where
+	 * {@code h} is the distance from the root to {@code this} node.
+	 *
+	 * @param node the node to test as descendant of this node
+	 * @return {@code true} if this node is an ancestor of the given {@code node}
+	 * @throws NullPointerException if the given {@code node} is {@code null}
+	 */
+	@SuppressWarnings("unchecked")
+	public default boolean isDescendant(final T node) {
+		return requireNonNull(node).isAncestor((T)this);
 	}
 
 }

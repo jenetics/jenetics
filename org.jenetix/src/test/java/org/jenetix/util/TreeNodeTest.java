@@ -177,6 +177,13 @@ public class TreeNodeTest {
 	}
 
 	@Test
+	public void str() {
+		final TreeNode<Integer> tree = newTree(5, new Random(123));
+		System.out.println("SIZE: " + tree.breathFirstStream().count());
+		System.out.println("SIZE: " + tree.str().count());
+	}
+
+	@Test
 	public void inequality() {
 		final TreeNode<Integer> tree = newTree(5, new Random(123));
 		final DefaultMutableTreeNode stree = newSwingTree(5, new Random(123));
