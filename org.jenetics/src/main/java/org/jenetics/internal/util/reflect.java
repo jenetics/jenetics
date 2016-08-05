@@ -33,12 +33,22 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 3.0
+ * @version !__version__!
  */
 public class reflect {
 	private reflect() {require.noInstance();}
 
-
+	/**
+	 * Reflectively sets the field with the given {@code name} to the new
+	 * {@code value}. The new value is set to the first found field in the
+	 * whole class hierarchy.
+	 *
+	 * @param target the object which owns the field
+	 * @param name the field name
+	 * @param value the new field value
+	 * @throws IllegalArgumentException if no field with the given {@code name}
+	 *         can be found or it's not allowed to set the field
+	 */
 	public static void setField(
 		final Object target,
 		final String name,
@@ -55,7 +65,10 @@ public class reflect {
 		}
 	}
 
-	private static Optional<Field> findField(final Class<?> cls, final String name) {
+	private static Optional<Field> findField(
+		final Class<?> cls,
+		final String name
+	) {
 		return allFields(cls)
 			.filter(f -> f.getName().equals(name))
 			.findFirst();
