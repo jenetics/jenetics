@@ -250,15 +250,12 @@ public class IntegerChromosome
 		final MSeq<IntegerGene> genes = MSeq.ofLength(in.readInt());
 		reflect.setField(this, "_min", in.readInt());
 		reflect.setField(this, "_max", in.readInt());
-		//_min = in.readInt();
-		//_max = in.readInt();
 
 		for (int i = 0; i < genes.length(); ++i) {
 			genes.set(i, new IntegerGene(in.readInt(), _min, _max));
 		}
 
 		reflect.setField(this, "_genes", genes.toISeq());
-		//_genes = genes.toISeq();
 	}
 
 	/* *************************************************************************

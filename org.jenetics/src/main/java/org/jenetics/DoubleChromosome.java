@@ -250,15 +250,12 @@ public class DoubleChromosome
 		final MSeq<DoubleGene> genes = MSeq.ofLength(in.readInt());
 		reflect.setField(this, "_min", in.readDouble());
 		reflect.setField(this, "_max", in.readDouble());
-		//_min = in.readDouble();
-		//_max = in.readDouble();
 
 		for (int i = 0; i < genes.length(); ++i) {
 			genes.set(i, new DoubleGene(in.readDouble(), _min, _max));
 		}
 
 		reflect.setField(this, "_genes", genes.toISeq());
-		//_genes = genes.toISeq();
 	}
 
 	/* *************************************************************************

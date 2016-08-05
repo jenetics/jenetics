@@ -245,15 +245,12 @@ public class LongChromosome
 		final MSeq<LongGene> genes = MSeq.ofLength(in.readInt());
 		reflect.setField(this, "_min", in.readLong());
 		reflect.setField(this, "_max", in.readLong());
-		//_min = in.readLong();
-		//_max = in.readLong();
 
 		for (int i = 0; i < genes.length(); ++i) {
 			genes.set(i, new LongGene(in.readLong(), _min, _max));
 		}
 
 		reflect.setField(this, "_genes", genes.toISeq());
-		//_genes = genes.toISeq();
 	}
 
 	/* *************************************************************************

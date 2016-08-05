@@ -373,7 +373,6 @@ public final class PermutationChromosome<T>
 		}
 
 		reflect.setField(this, "_genes", genes.toISeq());
-		//_genes = genes.toISeq();
 	}
 
 	/* *************************************************************************

@@ -206,8 +206,6 @@ public class BigIntegerChromosome
 		final MSeq<BigIntegerGene> genes = MSeq.ofLength(in.readInt());
 		reflect.setField(this, "_min", in.readObject());
 		reflect.setField(this, "_max", in.readObject());
-		//_min = (BigInteger)in.readObject();
-		//_max = (BigInteger)in.readObject();
 
 		for (int i = 0; i < genes.length(); ++i) {
 			final BigInteger value = (BigInteger)in.readObject();
@@ -215,7 +213,6 @@ public class BigIntegerChromosome
 		}
 
 		reflect.setField(this, "_genes", genes.toISeq());
-		//_genes = genes.toISeq();
 	}
 
 }

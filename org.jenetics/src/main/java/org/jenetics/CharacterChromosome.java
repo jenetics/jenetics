@@ -269,7 +269,6 @@ public class CharacterChromosome
 			genes.set(i, gene);
 		}
 		reflect.setField(this, "_genes", genes.toISeq());
-		//_genes = genes.toISeq();
 	}
 
 	/* *************************************************************************
