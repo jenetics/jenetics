@@ -200,4 +200,34 @@ public interface ISeq<T>
 			: MSeq.<T>ofLength(length).fill(supplier).toISeq();
 	}
 
+	/**
+	 * Allows a safe (without compile warning) upcast from {@code B} to
+	 * {@code A}. Since {@code ISeq} instances are immutable, an <i>upcast</i>
+	 * will be always safe.
+	 *
+	 * <pre>{@code
+	 * // The sequence which we want to case.
+	 * final ISeq<? extends Number> ints = ISeq.of(1, 2, 3, 4, 5);
+	 *
+	 * // This casts are possible without warning.
+	 * final ISeq<Object> objects = ISeq.upcast(ints);
+	 * final ISeq<Number> numbers = ISeq.upcast(ints);
+	 *
+	 * // This cast will, of course, still fail.
+	 * final ISeq<String> strings = ISeq.upcast(ints);
+	 * final ISeq<Integer> integers = ISeq.upcast(ints);
+	 * }</pre>
+	 *
+	 * @since 3.6
+	 *
+	 * @param seq the sequence to cast safely
+	 * @param <A> the <i>super</i> object type
+	 * @param <B> the <i>sub</i> object type
+	 * @return the casted instance of {@code seq}
+	 */
+	@SuppressWarnings("unchecked")
+	public static <A, B extends A> ISeq<A> upcast(final ISeq<B> seq) {
+		return (ISeq<A>)seq;
+	}
+
 }
