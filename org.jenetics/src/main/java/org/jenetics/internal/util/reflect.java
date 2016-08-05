@@ -45,7 +45,7 @@ public class reflect {
 		final Object value
 	) {
 		final Field field = findField(target.getClass(), name)
-			.orElseThrow(() -> new IllegalArgumentException(name + " not found,"));
+			.orElseThrow(() -> new IllegalArgumentException(name + " not found."));
 
 		try {
 			field.setAccessible(true);
