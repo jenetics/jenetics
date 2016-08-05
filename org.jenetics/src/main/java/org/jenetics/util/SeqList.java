@@ -33,8 +33,8 @@ import java.util.RandomAccess;
 class SeqList<T>
 	extends AbstractList<T>
 	implements
-	RandomAccess,
-	Serializable
+		RandomAccess,
+		Serializable
 {
 	private static final long serialVersionUID = 1L;
 
