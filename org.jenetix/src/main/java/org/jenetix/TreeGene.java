@@ -40,9 +40,33 @@ import org.jenetix.util.TreeNode;
  */
 public interface TreeGene<A, G extends TreeGene<A, G>> extends Gene<A, G> {
 
+	public class Tr {
 
+	}
+
+	@SuppressWarnings("unchecked")
 	public default Tree<G, ?> asTree(final Seq<? extends G> genes) {
-		return null;
+		return new Tree() {
+			@Override
+			public G getValue() {
+				return null;
+			}
+
+			@Override
+			public Optional<Tree<G, ?>> getParent() {
+				return TreeGene.this.getParent(genes).map(p -> p.asTree(genes));
+			}
+
+			@Override
+			public Tree<G, ?> getChild(int index) {
+				return null;
+			}
+
+			@Override
+			public int childCount() {
+				return 0;
+			}
+		};
 	}
 
 	public default G foo() {

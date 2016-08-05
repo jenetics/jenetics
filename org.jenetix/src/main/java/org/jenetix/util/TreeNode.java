@@ -143,15 +143,6 @@ public final class TreeNode<T>
 	}
 
 	/**
-	 * Return the number of nodes of {@code this} node (sub-tree).
-	 *
-	 * @return the number of nodes of {@code this} node (sub-tree)
-	 */
-	public int size() {
-		return (int)breathFirstStream().count();
-	}
-
-	/**
 	 * Removes the {@code child} from its present parent (if it has one), sets
 	 * the child's parent to this node, and then adds the child to this node's
 	 * child array at index {@code index}. The new {@code child} must not be
@@ -209,20 +200,6 @@ public final class TreeNode<T>
 		child.setParent(null);
 
 		return this;
-	}
-
-	/**
-	 * Return a forward-order stream of this node's children.
-	 *
-	 * @return a stream of children of {@code this} node
-	 */
-	public Stream<TreeNode<T>> childStream() {
-		return _children.stream();
-	}
-
-
-	public Stream<TreeNode<T>> str() {
-		return Stream.concat(Stream.of(this), childStream().flatMap(c -> c.str()));
 	}
 
 	/* *************************************************************************

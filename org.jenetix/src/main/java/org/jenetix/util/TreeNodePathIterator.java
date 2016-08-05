@@ -46,7 +46,7 @@ final class TreeNodePathIterator<V, T extends Tree<V, T>>
 	 * @throws NullPointerException if one of the nodes is {@code null}
 	 */
 	TreeNodePathIterator(
-		final T ancestor,
+		final Tree<V, ?> ancestor,
 		final T descendant
 	) {
 		requireNonNull(ancestor);
