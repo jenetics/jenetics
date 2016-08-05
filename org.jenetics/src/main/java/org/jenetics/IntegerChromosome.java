@@ -36,6 +36,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
+import org.jenetics.internal.util.reflect;
 
 import org.jenetics.util.ISeq;
 import org.jenetics.util.IntRange;
@@ -247,14 +248,14 @@ public class IntegerChromosome
 		in.defaultReadObject();
 
 		final MSeq<IntegerGene> genes = MSeq.ofLength(in.readInt());
-		_min = in.readInt();
-		_max = in.readInt();
+		reflect.setField(this, "_min", in.readInt());
+		reflect.setField(this, "_max", in.readInt());
 
 		for (int i = 0; i < genes.length(); ++i) {
 			genes.set(i, new IntegerGene(in.readInt(), _min, _max));
 		}
 
-		_genes = genes.toISeq();
+		reflect.setField(this, "_genes", genes.toISeq());
 	}
 
 	/* *************************************************************************

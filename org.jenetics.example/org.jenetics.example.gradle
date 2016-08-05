@@ -30,6 +30,8 @@ apply plugin: 'packaging'
 
 dependencies {
 	compile project(':org.jenetics')
+
+	testCompile Include.TestNG
 }
 
 jar.manifest.instruction('Export-Package',
