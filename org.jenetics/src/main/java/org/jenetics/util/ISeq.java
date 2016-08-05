@@ -153,7 +153,7 @@ public interface ISeq<T>
 			? (ISeq<T>)values
 			: values instanceof MSeq<?>
 				? ((MSeq<T>)values).toISeq()
-				: MSeq.of(values).toISeq();
+				: MSeq.<T>of(values).toISeq();
 	}
 
 //	/**
