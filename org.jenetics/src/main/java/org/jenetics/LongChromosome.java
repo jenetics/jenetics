@@ -38,6 +38,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
+import org.jenetics.internal.util.reflect;
 
 import org.jenetics.util.ISeq;
 import org.jenetics.util.LongRange;
@@ -242,14 +243,17 @@ public class LongChromosome
 		in.defaultReadObject();
 
 		final MSeq<LongGene> genes = MSeq.ofLength(in.readInt());
-		_min = in.readLong();
-		_max = in.readLong();
+		reflect.setField(this, "_min", in.readLong());
+		reflect.setField(this, "_max", in.readLong());
+		//_min = in.readLong();
+		//_max = in.readLong();
 
 		for (int i = 0; i < genes.length(); ++i) {
 			genes.set(i, new LongGene(in.readLong(), _min, _max));
 		}
 
-		_genes = genes.toISeq();
+		reflect.setField(this, "_genes", genes.toISeq());
+		//_genes = genes.toISeq();
 	}
 
 	/* *************************************************************************

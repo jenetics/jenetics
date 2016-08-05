@@ -38,6 +38,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
+import org.jenetics.internal.util.reflect;
 
 import org.jenetics.util.DoubleRange;
 import org.jenetics.util.ISeq;
@@ -247,14 +248,17 @@ public class DoubleChromosome
 		in.defaultReadObject();
 
 		final MSeq<DoubleGene> genes = MSeq.ofLength(in.readInt());
-		_min = in.readDouble();
-		_max = in.readDouble();
+		reflect.setField(this, "_min", in.readDouble());
+		reflect.setField(this, "_max", in.readDouble());
+		//_min = in.readDouble();
+		//_max = in.readDouble();
 
 		for (int i = 0; i < genes.length(); ++i) {
 			genes.set(i, new DoubleGene(in.readDouble(), _min, _max));
 		}
 
-		_genes = genes.toISeq();
+		reflect.setField(this, "_genes", genes.toISeq());
+		//_genes = genes.toISeq();
 	}
 
 	/* *************************************************************************

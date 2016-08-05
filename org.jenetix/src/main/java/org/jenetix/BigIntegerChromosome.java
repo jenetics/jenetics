@@ -29,6 +29,7 @@ import java.math.BigInteger;
 
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
+import org.jenetics.internal.util.reflect;
 
 import org.jenetics.AbstractChromosome;
 import org.jenetics.DoubleGene;
@@ -52,8 +53,8 @@ public class BigIntegerChromosome
 
 	private static final long serialVersionUID = 1L;
 
-	private BigInteger _min;
-	private BigInteger _max;
+	private final BigInteger _min;
+	private final BigInteger _max;
 
 	/**
 	 * Create a new chromosome from the given genes array.
@@ -203,15 +204,18 @@ public class BigIntegerChromosome
 		in.defaultReadObject();
 
 		final MSeq<BigIntegerGene> genes = MSeq.ofLength(in.readInt());
-		_min = (BigInteger)in.readObject();
-		_max = (BigInteger)in.readObject();
+		reflect.setField(this, "_min", in.readObject());
+		reflect.setField(this, "_max", in.readObject());
+		//_min = (BigInteger)in.readObject();
+		//_max = (BigInteger)in.readObject();
 
 		for (int i = 0; i < genes.length(); ++i) {
 			final BigInteger value = (BigInteger)in.readObject();
 			genes.set(i, BigIntegerGene.of(value, _min, _max));
 		}
 
-		_genes = genes.toISeq();
+		reflect.setField(this, "_genes", genes.toISeq());
+		//_genes = genes.toISeq();
 	}
 
 }

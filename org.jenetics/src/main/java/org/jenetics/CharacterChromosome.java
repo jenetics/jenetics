@@ -41,6 +41,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.IntRef;
+import org.jenetics.internal.util.reflect;
 
 import org.jenetics.util.CharSeq;
 import org.jenetics.util.ISeq;
@@ -267,8 +268,8 @@ public class CharacterChromosome
 			);
 			genes.set(i, gene);
 		}
-
-		_genes = genes.toISeq();
+		reflect.setField(this, "_genes", genes.toISeq());
+		//_genes = genes.toISeq();
 	}
 
 	/* *************************************************************************
