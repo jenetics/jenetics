@@ -40,7 +40,7 @@ class SeqList<T>
 
 	public final Seq<T> seq;
 
-	public SeqList(final Seq<T> seq) {
+	SeqList(final Seq<T> seq) {
 		this.seq = requireNonNull(seq, "Seq must not be null.");
 	}
 

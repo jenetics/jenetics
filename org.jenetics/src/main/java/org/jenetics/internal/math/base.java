@@ -55,7 +55,7 @@ public final class base {
 	 *        </ul>
 	 */
 	public static double clamp(final double v, final double lo, final double hi) {
-		return v < lo ? lo : (v > hi ? hi : v);
+		return v < lo ? lo : v > hi ? hi : v;
 	}
 
 	/**
