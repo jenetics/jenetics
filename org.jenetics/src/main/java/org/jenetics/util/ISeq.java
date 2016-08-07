@@ -37,7 +37,7 @@ import org.jenetics.internal.util.require;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.4
+ * @version 3.6
  */
 public interface ISeq<T>
 	extends
@@ -221,9 +221,9 @@ public interface ISeq<T>
 	 * @since 3.6
 	 *
 	 * @param seq the sequence to cast safely
-	 * @param <A> the <i>super</i> object type
-	 * @param <B> the <i>sub</i> object type
-	 * @return the casted instance of {@code seq}
+	 * @param <A> the <i>super</i>-object type
+	 * @param <B> the <i>sub</i>-object type
+	 * @return the casted instance of the given {@code seq}
 	 */
 	@SuppressWarnings("unchecked")
 	public static <A, B extends A> ISeq<A> upcast(final ISeq<B> seq) {
