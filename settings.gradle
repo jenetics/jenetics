@@ -30,6 +30,7 @@ include 'org.jenetics.doc'
 include 'org.jenetics.example'
 include 'org.jenetics.random'
 include 'org.jenetics.tool'
+include 'org.jenetix'
 
 rootProject.name = 'jenetics'
 
