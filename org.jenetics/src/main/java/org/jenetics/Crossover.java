@@ -42,7 +42,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version !__version__!
+ * @version 3.6
  */
 public abstract class Crossover<
 	G extends Gene<?, G>,
