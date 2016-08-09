@@ -70,6 +70,58 @@ public abstract class MSeqTestBase extends SeqTestBase {
 	}
 
 	@Test(dataProvider = "sequences")
+	public void reverse(final MSeq<Integer> seq) {
+		final ISeq<Integer> original = seq.toISeq();
+
+		seq.reverse();
+		Assert.assertNotEquals(seq, original);
+		for (int i = 0; i < seq.length(); ++i) {
+			Assert.assertEquals(seq.get(i), original.get(seq.length() - i - 1));
+		}
+
+		Assert.assertEquals(original, seq.reverse());
+	}
+
+	@Test(dataProvider = "sequences")
+	public void sort(final MSeq<Integer> seq) {
+		seq.shuffle(new Random(23));
+		Assert.assertFalse(seq.isSorted());
+
+		seq.sort();
+		Assert.assertTrue(seq.isSorted());
+	}
+
+	@Test(dataProvider = "sequences")
+	public void sortWithComparator(final MSeq<Integer> seq) {
+		seq.shuffle(new Random(23));
+		Assert.assertFalse(seq.isSorted());
+
+		seq.sort((a, b) -> b.compareTo(a));
+		Assert.assertTrue(seq.isSorted((a, b) -> b.compareTo(a)));
+		Assert.assertTrue(seq.reverse().isSorted());
+	}
+
+	@Test(dataProvider = "sequences")
+	public void sortWithStart(final MSeq<Integer> seq) {
+		seq.shuffle(new Random(23));
+		Assert.assertFalse(seq.isSorted());
+
+		seq.sort(2);
+		Assert.assertTrue(seq.subSeq(2).isSorted());
+		Assert.assertFalse(seq.isSorted());
+	}
+
+	@Test(dataProvider = "sequences")
+	public void sortWithEnd(final MSeq<Integer> seq) {
+		seq.shuffle(new Random(23));
+		Assert.assertFalse(seq.isSorted());
+
+		seq.sort(0, seq.length() - 2);
+		Assert.assertTrue(seq.subSeq(0, seq.length() - 2).isSorted());
+		Assert.assertFalse(seq.isSorted());
+	}
+
+	@Test(dataProvider = "sequences")
 	public void fill(final MSeq<Integer> seq) {
 		final long seed = random.seed();
 		final Random random = new Random(seed);
