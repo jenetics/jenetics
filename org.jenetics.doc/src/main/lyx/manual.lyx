@@ -4270,7 +4270,7 @@ Alterer
 \family default
 \series default
 \shape default
- are
+ are:
 \end_layout
 
 \begin_layout Enumerate
@@ -11337,6 +11337,280 @@ Selector
 \end_inset
 
 .
+ Another way for re-using existing 
+\family typewriter
+Selector
+\family default
+ implementation is by composition.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public class ElitistSelector<
+\end_layout
+
+\begin_layout Plain Layout
+
+    G extends Gene<?, G>,
+\end_layout
+
+\begin_layout Plain Layout
+
+    C extends Comparable<? super C>
+\end_layout
+
+\begin_layout Plain Layout
+
+>
+\end_layout
+
+\begin_layout Plain Layout
+
+    implements Selector<G, C>
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    private final TruncationSelector<G, C> 
+\end_layout
+
+\begin_layout Plain Layout
+
+    _elite = new TruncationSelector<>();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    private final TournamentSelector<G, C> 
+\end_layout
+
+\begin_layout Plain Layout
+
+    _rest = new TournamentSelector<>(3);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    public ElitistSelector() {
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    @Override
+\end_layout
+
+\begin_layout Plain Layout
+
+    public Population<G, C> select(
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Population<G, C> population,
+\end_layout
+
+\begin_layout Plain Layout
+
+        final int count,
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Optimize opt
+\end_layout
+
+\begin_layout Plain Layout
+
+    ) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        return population.isEmpty() || count <= 0
+\end_layout
+
+\begin_layout Plain Layout
+
+            ? new Population<>(0)
+\end_layout
+
+\begin_layout Plain Layout
+
+            : append(
+\end_layout
+
+\begin_layout Plain Layout
+
+                _elite.select(population, 1, opt),
+\end_layout
+
+\begin_layout Plain Layout
+
+                _rest.select(population, max(0, count - 1), opt));
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    private Population<G, C> append(
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Population<G, C> p1,
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Population<G, C> p2
+\end_layout
+
+\begin_layout Plain Layout
+
+    ) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        p1.addAll(p2);
+\end_layout
+
+\begin_layout Plain Layout
+
+        return p2;
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Elite-selector"
+
+\end_inset
+
+Elitist selector
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Selector!Elitist
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Elitism
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Elite-selector"
+
+\end_inset
+
+ shows how an 
+\emph on
+elitist
+\emph default
+ selector could be implemented by using the existing 
+\family typewriter
+Trun\SpecialChar \-
+cation
+\family default
+- and 
+\family typewriter
+Tour\SpecialChar \-
+nament\SpecialChar \-
+Selector
+\family default
+.
+ With 
+\emph on
+elitist
+\emph default
+ selection, the quality of the best solution in each generation monotonically
+ increases over time.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Baluja95removingthe"
+
+\end_inset
+
+ Although this is not necessary, since the evolution 
+\family typewriter
+Engine
+\family default
+/
+\family typewriter
+Stream
+\family default
+ doesn't throw away the best solution found during the evolution process.
 \end_layout
 
 \begin_layout Subsection
@@ -11480,6 +11754,65 @@ The first parameter of the
 \family default
  of the newly created individuals and the return value is the number of
  genes that has been altered.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90text%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+To maximize the range of application of an 
+\family typewriter
+Alterer
+\family default
+, it is recommended that they can handle 
+\family typewriter
+Genotype
+\family default
+s and 
+\family typewriter
+Chromosome
+\family default
+s with variable length.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
