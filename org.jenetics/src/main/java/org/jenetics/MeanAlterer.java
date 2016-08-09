@@ -19,6 +19,7 @@
  */
 package org.jenetics;
 
+import static java.lang.Math.min;
 import static java.lang.String.format;
 
 import java.util.Random;
@@ -38,7 +39,7 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0
+ * @version !__version__!
  */
 public final class MeanAlterer<
 	G extends Gene<?, G> & Mean<G>,
@@ -78,7 +79,9 @@ public final class MeanAlterer<
 		final Genotype<G> gt1 = pt1.getGenotype();
 		final Genotype<G> gt2 = pt2.getGenotype();
 
-		final int cindex = random.nextInt(gt1.length());
+		//Choosing the Chromosome index for crossover.
+		final int cindex = random.nextInt(min(gt1.length(), gt2.length()));
+
 		final MSeq<Chromosome<G>> c1 = gt1.toSeq().copy();
 		final ISeq<Chromosome<G>> c2 = gt2.toSeq();
 
