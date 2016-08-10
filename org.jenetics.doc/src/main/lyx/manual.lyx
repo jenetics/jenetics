@@ -11513,7 +11513,7 @@ public class ElitistSelector<
 
 \begin_layout Plain Layout
 
-        return p2;
+        return p1;
 \end_layout
 
 \begin_layout Plain Layout
