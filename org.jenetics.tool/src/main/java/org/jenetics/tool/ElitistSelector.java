@@ -60,6 +60,6 @@ public class ElitistSelector<
 		final Population<G, C> p2
 	) {
 		p1.addAll(p2);
-		return p2;
+		return p1;
 	}
 }
