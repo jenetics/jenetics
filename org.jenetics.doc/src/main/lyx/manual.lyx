@@ -1499,6 +1499,16 @@ Jenetics
 \emph on
 Evolution Stream
 \emph default
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Evolution!Stream
+\end_layout
+
+\end_inset
+
 , implemented via the Java 8 Stream API.
  Therefore it is no longer necessary (and advised) to perform the evolution
  steps in an 
@@ -4663,7 +4673,12 @@ void recombine(final Population<G, C> pop) {
 
 \begin_layout Plain Layout
 
-    final int chIndex = random.nextInt(gt1.length());
+    final int chIndex = 
+\end_layout
+
+\begin_layout Plain Layout
+
+        random.nextInt(min(gt1.length(), gt2.length()));
 \end_layout
 
 \begin_layout Plain Layout
@@ -6004,7 +6019,12 @@ public final class Engine<
 
 \begin_layout Plain Layout
 
-> 
+>
+\end_layout
+
+\begin_layout Plain Layout
+
+    implements Function<EvolutionStart<G,C>, EvolutionResult<G,C>>
 \end_layout
 
 \begin_layout Plain Layout
@@ -8807,7 +8827,7 @@ reference "tab:PRNG-performance"
 \family default
 generation speed for the different PRNG implementations.
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Measured on a Intel(R) Core(TM) i5-3427U CPU @ 1.80GHz with Java(TM) SE Runtime
@@ -10872,6 +10892,8 @@ s when creating new, combined
 Chromosome
 \family default
 s.
+ It is allowed, that the newly created chromosome has a different length
+ than the original one.
  The other methods should be self-explanatory.
  The chromosome has the same serialization mechanism as the gene.
  For the minimal case it can extends the
@@ -11080,7 +11102,7 @@ AnyChromosome
 \family default
  example
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 AnyChromosome
@@ -11382,7 +11404,7 @@ public class ElitistSelector<
 
 \begin_layout Plain Layout
 
-    private final TruncationSelector<G, C> 
+    private final TruncationSelector<G, C>
 \end_layout
 
 \begin_layout Plain Layout
@@ -11396,7 +11418,7 @@ public class ElitistSelector<
 
 \begin_layout Plain Layout
 
-    private final TournamentSelector<G, C> 
+    private final TournamentSelector<G, C>
 \end_layout
 
 \begin_layout Plain Layout
@@ -15838,12 +15860,12 @@ public class TSM {
 
 \begin_layout Plain Layout
 
-    static final Codec<ISeq<Point>, EnumGene<Point>> CODEC =
+    static final Codec<ISeq<Point>, EnumGene<Point>>
 \end_layout
 
 \begin_layout Plain Layout
 
-        codecs.ofPermutation(POINTS);
+    CODEC = codecs.ofPermutation(POINTS);
 \end_layout
 
 \begin_layout Plain Layout
@@ -20038,7 +20060,7 @@ public class WeaselProgram {
 
 \begin_layout Plain Layout
 
-				r.getTotalGenerations() + ": " + 
+				r.getTotalGenerations() + ": " +
 \end_layout
 
 \begin_layout Plain Layout
