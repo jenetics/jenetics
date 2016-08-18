@@ -19,13 +19,18 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.stat.StatisticsAssert.assertUniformDistribution;
+
 import java.util.Random;
+import java.util.stream.IntStream;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import org.jenetics.internal.math.DoubleAdder;
 import org.jenetics.internal.math.base;
+
+import org.jenetics.stat.Histogram;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -50,16 +55,45 @@ public class baseTest {
 			int[] sub = new int[i];
 			base.subset(1000, sub, random);
 
-			Assert.assertTrue(isSortedd(sub));
+			Assert.assertTrue(isSortedAndUnique(sub));
 		}
 	}
 
-	private static boolean isSortedd(int[] array) {
+	private static boolean isSortedAndUnique(final int[] array) {
 		boolean sorted = true;
 		for (int i = 0; i < array.length - 1 && sorted; ++i) {
 			sorted = array[i] < array[i + 1];
 		}
 		return sorted;
+	}
+
+	@Test(invocationCount = 20, successPercentage = 95)
+	public void subSetDistribution() {
+		final int[] sub = new int[3];
+		final int n = 100_000;
+
+		final Random random = new Random();
+		final Histogram<Integer> histogram = Histogram.ofInteger(0, n, 13);
+
+		IntStream.range(0, 10_000)
+			.flatMap(i -> IntStream.of(base.subset(n, sub, random)))
+			.forEach(histogram::accept);
+
+		assertUniformDistribution(histogram);
+	}
+
+	// https://en.wikipedia.org/wiki/Reservoir_sampling
+	static void subset(final int n, final int sub[], final Random random) {
+		for (int i = 0; i < sub.length; ++i) {
+			sub[i] = i;
+		}
+
+		for (int i = sub.length; i < n; ++i) {
+			final int j = random.nextInt(i);
+			if (j < sub.length) {
+				sub[j] = i;
+			}
+		}
 	}
 
 }
