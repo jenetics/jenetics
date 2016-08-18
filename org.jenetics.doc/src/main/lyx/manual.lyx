@@ -8557,7 +8557,7 @@ Leapfrogging
 \family typewriter
 LCG64ShiftRandom
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Random!LCG64ShiftRandom
@@ -8567,7 +8567,7 @@ Random!LCG64ShiftRandom
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 PRNG!
@@ -8579,7 +8579,7 @@ LCG64ShiftRandom
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 LCG64ShiftRandom
@@ -10518,7 +10518,6 @@ Gene
  normal
 \emph default
  genes there is no more work to do for using the Java serialization mechanism.
- 
 \end_layout
 
 \begin_layout Standard
@@ -11253,12 +11252,7 @@ public interface Selector<
 
 \begin_layout Plain Layout
 
->
-\end_layout
-
-\begin_layout Plain Layout
-
-{
+> {
 \end_layout
 
 \begin_layout Plain Layout
@@ -11698,12 +11692,7 @@ public interface Alterer<
 
 \begin_layout Plain Layout
 
->
-\end_layout
-
-\begin_layout Plain Layout
-
-{
+> {
 \end_layout
 
 \begin_layout Plain Layout
@@ -18056,7 +18045,7 @@ easily
 
 \begin_layout Standard
 \begin_inset Note Comment
-status collapsed
+status open
 
 \begin_layout Subsubsection
 Fitness convergence
@@ -18104,7 +18093,7 @@ A termination method that stops the evolution when a user-specified percentage
 \begin_layout Subsection
 Evolution performance
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Evolution!performance
@@ -19553,7 +19542,7 @@ Incubation
 \begin_layout Standard
 This section describes the classes in the 
 \emph on
-not-yet
+not yet
 \emph default
  released modules.
  Incubating features and experimental genetic operators will be implemented
