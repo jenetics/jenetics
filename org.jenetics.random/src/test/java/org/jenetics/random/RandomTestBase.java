@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.random;
+package org.jenetics.util;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -61,16 +61,16 @@ public abstract class RandomTestBase {
 		}
 	}
 
-//	@Test(dataProvider = "seededPRNGPair")
-//	public void sameByteLongValueSequence(final Random rand1, final Random rand2) {
-//		final byte[] bytes = new byte[8];
-//		for (int i = 0; i < 1234; ++i) {
-//			rand1.nextBytes(bytes);
-//			org.jenetics.internal.util.bit.reverse(bytes);
-//
-//			Assert.assertEquals(org.jenetics.internal.util.bit.toLong(bytes), rand2.nextLong());
-//		}
-//	}
+	@Test(dataProvider = "seededPRNGPair")
+	public void sameByteLongValueSequence(final Random rand1, final Random rand2) {
+		final byte[] bytes = new byte[8];
+		for (int i = 0; i < 1234; ++i) {
+			rand1.nextBytes(bytes);
+			org.jenetics.internal.util.bit.reverse(bytes);
+
+			Assert.assertEquals(org.jenetics.internal.util.bit.toLong(bytes), rand2.nextLong());
+		}
+	}
 
 	@Test(dataProvider = "seededPRNGPair")
 	public void sameByteSequence(final Random rand1, final Random rand2) {
