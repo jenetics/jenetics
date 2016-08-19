@@ -192,22 +192,22 @@ public class RandomIndexStreamTest {
 	}
 
 
-//	public static void main(final String[] args) {
-//		final int delta = 500;
-//
-//		for (int i = 0; i <= delta; ++i) {
-//			final double p = (double)(i)/(double)delta;
-//			final Random random = new LCG64ShiftRandom.ThreadSafe(0);
-//			final IndexStream stream = ReferenceRandomStream(delta, p, random);
-//
-//			System.out.print(Double.toString(p));
-//			System.out.print(",");
-//			for (int j = stream.next(); j != -1; j = stream.next()) {
-//				System.out.print(j);
-//				System.out.print(",");
-//			}
-//			System.out.println();
-//		}
-//	}
+	public static void main(final String[] args) {
+		final int delta = 500;
+
+		for (int i = 0; i <= delta; ++i) {
+			final double p = (double)(i)/(double)delta;
+			final Random random = new Random(0);
+			final IndexStream stream = ReferenceRandomStream(delta, p, random);
+
+			System.out.print(Double.toString(p));
+			System.out.print(",");
+			for (int j = stream.next(); j != -1; j = stream.next()) {
+				System.out.print(j);
+				System.out.print(",");
+			}
+			System.out.println();
+		}
+	}
 
 }
