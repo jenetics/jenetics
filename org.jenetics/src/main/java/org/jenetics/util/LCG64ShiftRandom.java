@@ -77,7 +77,7 @@ import org.jenetics.internal.util.Hash;
  * @since 1.1
  * @version 2.0
  */
-public class LCG64ShiftRandom extends Random64 {
+public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 
 	private static final long serialVersionUID = 1L;
 
@@ -457,17 +457,7 @@ public class LCG64ShiftRandom extends Random64 {
 		if (_state != null) _state.setSeed(seed);
 	}
 
-	/**
-	 * Changes the internal state of the PRNG in a way that future calls to
-	 * {@link #nextLong()} will generated the s<sup>th</sup> sub-stream of
-	 * p<sup>th</sup> sub-streams. <i>s</i> must be within the range of
-	 * {@code [0, p-1)}. This method is mainly used for <i>parallelization</i>
-	 * via <i>leap-frogging</i>.
-	 *
-	 * @param p the overall number of sub-streams
-	 * @param s the s<sup>th</sup> sub-stream
-	 * @throws IllegalArgumentException if {@code p < 1 || s >= p}.
-	 */
+	@Override
 	public void split(final int p, final int s) {
 		if (p < 1) {
 			throw new IllegalArgumentException(format(
@@ -489,13 +479,7 @@ public class LCG64ShiftRandom extends Random64 {
 		}
 	}
 
-	/**
-	 * Changes the internal state of the PRNG in such a way that the engine
-	 * <i>jumps</i> 2<sup>s</sup> steps ahead.
-	 *
-	 * @param s the 2<sup>s</sup> steps to jump ahead.
-	 * @throws IllegalArgumentException if {@code s < 0}.
-	 */
+	@Override
 	public void jump2(final int s) {
 		if (s < 0) {
 			throw new IllegalArgumentException(format(
@@ -514,13 +498,7 @@ public class LCG64ShiftRandom extends Random64 {
 					f(1L << s, _param.a)*_param.b;
 	}
 
-	/**
-	 * Changes the internal state of the PRNG in such a way that the engine
-	 * <i>jumps</i> s steps ahead.
-	 *
-	 * @param step the steps to jump ahead.
-	 * @throws IllegalArgumentException if {@code s < 0}.
-	 */
+	@Override
 	public void jump(final long step) {
 		if (step < 0) {
 			throw new IllegalArgumentException(format(
