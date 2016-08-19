@@ -17,15 +17,13 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package org.jenetics.random;
 
 import static java.lang.Math.min;
 
 import java.util.Objects;
 import java.util.Random;
 import java.util.function.LongSupplier;
-
-import org.jenetics.internal.math.random;
 
 /**
  * An abstract base class which eases the implementation of {@code Random}
@@ -43,8 +41,8 @@ import org.jenetics.internal.math.random;
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.1
- * @version 2.0
+ * @since !__version__!
+ * @version !__version__!
  */
 public abstract class Random64 extends PRNG {
 
@@ -55,7 +53,7 @@ public abstract class Random64 extends PRNG {
 	}
 
 	protected Random64() {
-		this(random.seed());
+		this(PRNG.seed());
 	}
 
 	/**
@@ -98,7 +96,7 @@ public abstract class Random64 extends PRNG {
 
 	@Override
 	public float nextFloat() {
-		return random.toFloat2(nextLong());
+		return PRNG.toFloat2(nextLong());
 	}
 
 	/**
@@ -107,7 +105,7 @@ public abstract class Random64 extends PRNG {
 	 */
 	@Override
 	public double nextDouble() {
-		return random.toDouble2(nextLong());
+		return PRNG.toDouble2(nextLong());
 	}
 
 

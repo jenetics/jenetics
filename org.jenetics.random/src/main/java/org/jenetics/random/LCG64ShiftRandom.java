@@ -17,18 +17,13 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package org.jenetics.random;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
-
-import org.jenetics.internal.math.arithmetic;
-import org.jenetics.internal.math.random;
-import org.jenetics.internal.util.Equality;
-import org.jenetics.internal.util.Hash;
+import java.util.Objects;
 
 /**
  * This class implements a linear congruential PRNG with additional bit-shift
@@ -71,11 +66,10 @@ import org.jenetics.internal.util.Hash;
  * {@link LCG64ShiftRandom.ThreadSafe} or {@link LCG64ShiftRandom.ThreadLocal}.
  *
  * @see <a href="http://numbercrunch.de/trng/">TRNG</a>
- * @see RandomRegistry
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 2.0
+ * @version !__version__!
  */
 public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 
@@ -117,7 +111,7 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 		private static final long STEP_BASE = 1L << 56;
 
 		private int _block = 0;
-		private long _seed = random.seed();
+		private long _seed = PRNG.seed();
 
 		private final Param _param;
 
@@ -160,7 +154,7 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 		protected synchronized LCG64ShiftRandom initialValue() {
 			if (_block > 127) {
 				_block = 0;
-				_seed = random.seed();
+				_seed = PRNG.seed();
 			}
 
 			final LCG64ShiftRandom random = new TLLCG64ShiftRandom(_seed, _param);
@@ -246,7 +240,7 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 		 * @throws NullPointerException if the given {@code param} is null.
 		 */
 		public ThreadSafe(final Param param) {
-			this(param, random.seed());
+			this(param, PRNG.seed());
 		}
 
 		/**
@@ -254,7 +248,7 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 		 * a safe seed.
 		 */
 		public ThreadSafe() {
-			this(Param.DEFAULT, random.seed());
+			this(Param.DEFAULT, PRNG.seed());
 		}
 
 		@Override
@@ -379,7 +373,7 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 
 		@Override
 		public int hashCode() {
-			return Hash.of(getClass()).and(_r).value();
+			return Long.hashCode(_r);
 		}
 
 		@Override
@@ -416,7 +410,7 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 	 * @throws NullPointerException if the given {@code param} is null.
 	 */
 	public LCG64ShiftRandom(final Param param) {
-		this(param, random.seed());
+		this(param, PRNG.seed());
 	}
 
 	/**
@@ -434,7 +428,7 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 	 * seed.
 	 */
 	public LCG64ShiftRandom() {
-		this(Param.DEFAULT, random.seed());
+		this(Param.DEFAULT, PRNG.seed());
 	}
 
 	@Override
@@ -473,7 +467,7 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 		if (p > 1) {
 			jump(s + 1);
 			final long b = _param.b*f(p, _param.a);
-			final long a = arithmetic.pow(_param.a, p);
+			final long a = math.pow(_param.a, p);
 			_param = Param.of(a, b);
 			backward();
 		}
@@ -494,7 +488,7 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 			));
 		}
 
-		_state._r = _state._r*arithmetic.pow(_param.a, 1L << s) +
+		_state._r = _state._r*math.pow(_param.a, 1L << s) +
 					f(1L << s, _param.a)*_param.b;
 	}
 
@@ -535,17 +529,17 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass())
-			.and(_param)
-			.and(_state).value();
+		int hash = 31;
+		hash += 17*_param.hashCode() + 37;
+		hash += 17*_state.hashCode() + 37;
+		return hash;
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(random ->
-			eq(_param, random._param) &&
-			eq(_state, random._state)
-		);
+		return obj instanceof LCG64ShiftRandom &&
+			Objects.equals(((LCG64ShiftRandom)obj)._param, _param) &&
+			Objects.equals(((LCG64ShiftRandom)obj)._state, _state);
 	}
 
 	@Override

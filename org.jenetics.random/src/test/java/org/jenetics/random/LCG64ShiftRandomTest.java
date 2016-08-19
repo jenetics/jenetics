@@ -17,12 +17,10 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package org.jenetics.random;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import org.jenetics.internal.math.random;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -32,7 +30,7 @@ public class LCG64ShiftRandomTest extends Random64TestBase {
 
 	@Override @DataProvider(name = "seededPRNGPair")
 	protected Object[][] getSeededPRNGPair() {
-		final long seed = random.seed();
+		final long seed = PRNG.seed();
 		return new Object[][]{
 			{new LCG64ShiftRandom(seed), new LCG64ShiftRandom(seed)},
 			{new LCG64ShiftRandom.ThreadSafe(seed), new LCG64ShiftRandom.ThreadSafe(seed)}
@@ -41,7 +39,7 @@ public class LCG64ShiftRandomTest extends Random64TestBase {
 
 	@Override @DataProvider(name = "PRNG")
 	protected Object[][] getPRNG() {
-		final long seed = random.seed();
+		final long seed = PRNG.seed();
 		return new Object[][]{
 			{new LCG64ShiftRandom(seed)},
 			{new LCG64ShiftRandom.ThreadSafe(seed)},

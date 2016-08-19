@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package org.jenetics.random;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -66,9 +66,9 @@ public abstract class RandomTestBase {
 		final byte[] bytes = new byte[8];
 		for (int i = 0; i < 1234; ++i) {
 			rand1.nextBytes(bytes);
-			org.jenetics.internal.util.bit.reverse(bytes);
+			reverse(bytes);
 
-			Assert.assertEquals(org.jenetics.internal.util.bit.toLong(bytes), rand2.nextLong());
+			Assert.assertEquals(toLong(bytes), rand2.nextLong());
 		}
 	}
 
@@ -207,5 +207,33 @@ public abstract class RandomTestBase {
 		return (Random)in.readObject();
 	}
 
+	public static byte[] reverse(final byte[] array) {
+		int i = 0;
+		int j = array.length;
+
+		while (i < j) {
+			swap(array, i++, --j);
+		}
+
+		return array;
+	}
+
+	private static void swap(final byte[] array, final int i, final int j) {
+		final byte temp = array[i];
+		array[i] = array[j];
+		array[j] = temp;
+	}
+
+	public static long toLong(final byte[] data) {
+		return
+			((long)data[0] << 56) +
+				((long)(data[1] & 255) << 48) +
+				((long)(data[2] & 255) << 40) +
+				((long)(data[3] & 255) << 32) +
+				((long)(data[4] & 255) << 24) +
+				((data[5] & 255) << 16) +
+				((data[6] & 255) <<  8) +
+				(data[7] & 255);
+	}
 
 }

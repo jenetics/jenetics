@@ -17,19 +17,15 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package org.jenetics.random;
 
 import java.util.Random;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.internal.util.bit;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@
- * @since @__version__@
  */
 public abstract class Random64TestBase extends RandomTestBase {
 
@@ -38,9 +34,9 @@ public abstract class Random64TestBase extends RandomTestBase {
 		final byte[] bytes = new byte[8];
 		for (int i = 0; i < 1234; ++i) {
 			rand1.nextBytes(bytes);
-			bit.reverse(bytes);
+			Random64TestBase.reverse(bytes);
 
-			Assert.assertEquals(bit.toLong(bytes), rand2.nextLong());
+			Assert.assertEquals(Random64TestBase.toLong(bytes), rand2.nextLong());
 		}
 	}
 

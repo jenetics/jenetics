@@ -33,6 +33,29 @@ final class math {
 	private math() {}
 
 	/**
+	 * Binary exponentiation algorithm.
+	 *
+	 * @param b the base number.
+	 * @param e the exponent.
+	 * @return {@code b^e}.
+	 */
+	public static long pow(final long b, final long e) {
+		long base = b;
+		long exp = e;
+		long result = 1;
+
+		while (exp != 0) {
+			if ((exp & 1) != 0) {
+				result *= base;
+			}
+			exp >>>= 1;
+			base *= base;
+		}
+
+		return result;
+	}
+
+	/**
 	 * Returns a pseudo-random, uniformly distributed int value between min
 	 * and max (min and max included).
 	 *
