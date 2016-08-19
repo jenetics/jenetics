@@ -373,7 +373,6 @@ public abstract class PRNG extends Random {
 	 * PRNGs. This method uses a combination of {@code System.nanoTime()}
 	 * and {@code new Object().hashCode()} calls to create a reasonable safe
 	 * seed value:
-	 * <p>
 	 * <pre>{@code
 	 * public static long seed() {
 	 *     return seed(System.nanoTime());
@@ -399,7 +398,6 @@ public abstract class PRNG extends Random {
 	 * Uses the given {@code base} value to create a reasonable safe seed
 	 * value. This is done by combining it with values of
 	 * {@code new Object().hashCode()}:
-	 * <p>
 	 * <pre>{@code
 	 * public static long seed(final long base) {
 	 *     final long objectHashSeed = ((long)(new Object().hashCode()) << 32) |
