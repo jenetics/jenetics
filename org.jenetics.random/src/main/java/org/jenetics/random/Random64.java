@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.random;
+package org.jenetics.util;
 
 import static java.lang.Math.min;
 
@@ -25,12 +25,14 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.function.LongSupplier;
 
+import org.jenetics.internal.math.random;
+
 /**
  * An abstract base class which eases the implementation of {@code Random}
  * objects which natively creates random {@code long} values. All other
  * {@code Random} functions are optimized using this {@code long} values.
  *
- * [code]
+ * <pre>{@code
  * public class MyRandom64 extends Random64 {
  *     \@Override
  *     public long nextLong() {
@@ -38,13 +40,13 @@ import java.util.function.LongSupplier;
  *         ...
  *     }
  * }
- * [/code]
+ * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__!
+ * @since 1.1
+ * @version 2.0
  */
-abstract class Random64 extends PRNG {
+public abstract class Random64 extends PRNG {
 
 	private static final long serialVersionUID = 1L;
 
@@ -53,7 +55,7 @@ abstract class Random64 extends PRNG {
 	}
 
 	protected Random64() {
-		this(math.seed());
+		this(random.seed());
 	}
 
 	/**
@@ -96,7 +98,7 @@ abstract class Random64 extends PRNG {
 
 	@Override
 	public float nextFloat() {
-		return math.toFloat2(nextLong());
+		return random.toFloat2(nextLong());
 	}
 
 	/**
@@ -105,7 +107,7 @@ abstract class Random64 extends PRNG {
 	 */
 	@Override
 	public double nextDouble() {
-		return math.toDouble2(nextLong());
+		return random.toDouble2(nextLong());
 	}
 
 

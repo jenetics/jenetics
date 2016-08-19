@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.random;
+package org.jenetics.util;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -27,17 +27,11 @@ package org.jenetics.random;
 public interface ParallelRandom {
 
 	/**
-	 * Moves the random engine one step forward. This method will change the
-	 * internal state of the object.
-	 */
-	public void step();
-
-	/**
 	 * Changes the internal state of the PRNG in a way that future calls to
-	 * {@link java.util.Random#nextLong()} will generated the s<sup>th</sup>
-	 * sub-stream of p<sup>th</sup> sub-streams. <i>s</i> must be within the
-	 * range of {@code [0, p-1)}. This method is mainly used for
-	 * <i>parallelization</i> via <i>leapfrogging</i>.
+	 * {@link #nextLong()} will generated the s<sup>th</sup> sub-stream of
+	 * p<sup>th</sup> sub-streams. <i>s</i> must be within the range of
+	 * {@code [0, p-1)}. This method is mainly used for <i>parallelization</i>
+	 * via <i>leap-frogging</i>.
 	 *
 	 * @param p the overall number of sub-streams
 	 * @param s the s<sup>th</sup> sub-stream
@@ -61,34 +55,28 @@ public interface ParallelRandom {
 	 * @param step the steps to jump ahead.
 	 * @throws IllegalArgumentException if {@code s < 0}.
 	 */
-	public default void jump(final long step) {
-		if (step < 0) {
-			throw new IllegalArgumentException(String.format(
-				"step must be positive but was %d", step
-			));
-		}
+	public void jump(final long step);
 
-		if (step < 16) {
-			for (int i = 0; i < step; ++i) {
-				step();
-			}
-		} else {
-			long s = step;
-			int i = 0;
-			while (s > 0) {
-				if (s%2 == 1) {
-					jump2(i);
-				}
-				++i;
-				s >>= 1;
-			}
-		}
-	}
+	/*
+	 * Duplicate the java.util.Random interface.
+	 */
 
-	public default void backward() {
-		for (int i = 0; i < Long.SIZE; ++i) {
-			jump2(i);
-		}
-	}
+	public void setSeed(final long seed);
+
+	public void nextBytes(final byte[] bytes);
+
+	public int nextInt();
+
+	public int nextInt(int n);
+
+	public long nextLong();
+
+	public boolean nextBoolean();
+
+	public float nextFloat();
+
+	public double nextDouble();
+
+	public double nextGaussian();
 
 }
