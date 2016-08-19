@@ -44,7 +44,7 @@ public class RandomIndexStreamTest {
 		final TestData data = TestData.of("/org/jenetics/util/IndexStream.Random");
 
 		for (String[] line : data) {
-			final Random random = new LCG64ShiftRandom.ThreadSafe(0);
+			final Random random = new Random(0);
 			final double p = Double.parseDouble(line[0]);
 
 			final OfInt it = indexes(random, 500, p).iterator();
@@ -62,8 +62,8 @@ public class RandomIndexStreamTest {
 		final int size = 5000;
 		final double p = 0.5;
 
-		final Random random1 = new LCG64ShiftRandom(0);
-		final Random random2 = new LCG64ShiftRandom(0);
+		final Random random1 = new Random(0);
+		final Random random2 = new Random(0);
 
 		for (int j = 0; j < 1; ++j) {
 			final OfInt it = indexes(random1, size, p).iterator();
@@ -85,7 +85,7 @@ public class RandomIndexStreamTest {
 		final double mean = n*p;
 		final double var = n*p*(1 - p);
 
-		final Random random = new LCG64ShiftRandom();
+		final Random random = new Random();
 		final Range<Long> domain = new Range<>(0L, n.longValue());
 
 		final Histogram<Long> histogram = Histogram.ofLong(domain.getMin(), domain.getMax(), 10);

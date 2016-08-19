@@ -19,6 +19,8 @@
  */
 package org.jenetics.util;
 
+import org.jenetics.internal.util.Random64;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */

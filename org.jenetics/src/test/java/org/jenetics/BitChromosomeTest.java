@@ -35,7 +35,6 @@ import org.testng.annotations.Test;
 import org.jenetics.internal.util.bit;
 
 import org.jenetics.util.Factory;
-import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -152,7 +151,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
 	@Test(invocationCount = 5)
 	public void toBigInteger() {
-		final LCG64ShiftRandom random = new LCG64ShiftRandom();
+		final Random random = new Random();
 		final BigInteger value = new BigInteger(1056, random);
 		final BitChromosome chromosome = BitChromosome.of(value);
 

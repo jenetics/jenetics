@@ -143,7 +143,7 @@ public class baseRandomTest {
 
 	@Test(invocationCount = 5)
 	public void toFloat_int() {
-		final Random random = new LCG64ShiftRandom();
+		final Random random = new Random();
 		final Histogram<Double> histogram = Histogram.ofDouble(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
@@ -155,7 +155,7 @@ public class baseRandomTest {
 
 	@Test(invocationCount = 5)
 	public void toFloat_long() {
-		final Random random = new LCG64ShiftRandom();
+		final Random random = new Random();
 		final Histogram<Double> histogram = Histogram.ofDouble(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
@@ -167,7 +167,7 @@ public class baseRandomTest {
 
 	@Test(invocationCount = 5)
 	public void toDouble_long() {
-		final Random random = new LCG64ShiftRandom();
+		final Random random = new Random();
 		final Histogram<Double> histogram = Histogram.ofDouble(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
@@ -179,7 +179,7 @@ public class baseRandomTest {
 
 	@Test(invocationCount = 5)
 	public void toDouble_int_int() {
-		final Random random = new LCG64ShiftRandom();
+		final Random random = new Random();
 		final Histogram<Double> histogram = Histogram.ofDouble(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
@@ -192,7 +192,7 @@ public class baseRandomTest {
 
 	@Test(invocationCount = 5)
 	public void toFloat2_int() {
-		final Random random = new LCG64ShiftRandom();
+		final Random random = new Random();
 		final Histogram<Double> histogram = Histogram.ofDouble(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
@@ -204,7 +204,7 @@ public class baseRandomTest {
 
 	@Test(invocationCount = 5)
 	public void toFloat2_long() {
-		final Random random = new LCG64ShiftRandom();
+		final Random random = new Random();
 		final Histogram<Double> histogram = Histogram.ofDouble(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
@@ -216,7 +216,7 @@ public class baseRandomTest {
 
 	@Test(invocationCount = 5)
 	public void toDouble2_long() {
-		final Random random = new LCG64ShiftRandom();
+		final Random random = new Random();
 		final Histogram<Double> histogram = Histogram.ofDouble(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
@@ -228,7 +228,7 @@ public class baseRandomTest {
 
 	@Test(invocationCount = 5)
 	public void toDouble2_int_int() {
-		final Random random = new LCG64ShiftRandom();
+		final Random random = new Random();
 		final Histogram<Double> histogram = Histogram.ofDouble(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
