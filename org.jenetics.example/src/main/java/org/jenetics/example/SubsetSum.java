@@ -35,11 +35,10 @@ import org.jenetics.engine.Problem;
 import org.jenetics.engine.codecs;
 import org.jenetics.engine.limit;
 import org.jenetics.util.ISeq;
-import org.jenetics.util.LCG64ShiftRandom;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.4
+ * @version !__version__!
  * @since 3.4
  */
 public class SubsetSum
@@ -80,7 +79,7 @@ public class SubsetSum
 
 
 	public static void main(final String[] args) {
-		final SubsetSum problem = of(500, 15, new LCG64ShiftRandom(101010));
+		final SubsetSum problem = of(500, 15, new Random(101010));
 
 		final Engine<EnumGene<Integer>, Integer> engine = Engine.builder(problem)
 			.minimizing()
