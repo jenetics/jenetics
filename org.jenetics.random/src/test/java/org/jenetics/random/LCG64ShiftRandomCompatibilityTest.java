@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package org.jenetics.random;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -70,7 +70,7 @@ public class LCG64ShiftRandomCompatibilityTest {
 
 	@DataProvider(name = "data")
 	public Object[][] data() {
-		return TestData.list("/org/jenetics/util/LCG64ShiftRandom")
+		return TestData.list("/org/jenetics/random/LCG64ShiftRandom")
 			.map(data -> new Object[]{data})
 			.toArray(Object[][]::new);
 	}

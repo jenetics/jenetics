@@ -23,6 +23,7 @@ import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 import static org.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
+import java.util.Random;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -31,7 +32,6 @@ import org.jenetics.internal.util.Named;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.util.Factory;
-import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.TestData;
 
 /**
@@ -52,7 +52,7 @@ public class TruncationSelectorTest
 			final int loops = 50;
 			final int npopulation = POPULATION_COUNT;
 
-			final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
+			final Random random = new Random();
 			using(random, r -> {
 				final Histogram<Double> distribution = SelectorTester.distribution(
 					new TruncationSelector<>(),
@@ -89,7 +89,7 @@ public class TruncationSelectorTest
 	}
 
 	private static void writeDistributionData(final Optimize opt) {
-		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
+		final Random random = new Random();
 		using(random, r -> {
 			final int npopulation = POPULATION_COUNT;
 			//final int loops = 2_500_000;

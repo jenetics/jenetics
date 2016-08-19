@@ -30,7 +30,7 @@ import java.util.function.LongSupplier;
  * objects which natively creates random {@code long} values. All other
  * {@code Random} functions are optimized using this {@code long} values.
  *
- * [code]
+ * <pre>{@code
  * public class MyRandom64 extends Random64 {
  *     \@Override
  *     public long nextLong() {
@@ -38,13 +38,13 @@ import java.util.function.LongSupplier;
  *         ...
  *     }
  * }
- * [/code]
+ * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
  * @version !__version__!
  */
-abstract class Random64 extends PRNG {
+public abstract class Random64 extends PRNG {
 
 	private static final long serialVersionUID = 1L;
 
@@ -53,7 +53,7 @@ abstract class Random64 extends PRNG {
 	}
 
 	protected Random64() {
-		this(math.seed());
+		this(PRNG.seed());
 	}
 
 	/**
@@ -96,7 +96,7 @@ abstract class Random64 extends PRNG {
 
 	@Override
 	public float nextFloat() {
-		return math.toFloat2(nextLong());
+		return PRNG.toFloat2(nextLong());
 	}
 
 	/**
@@ -105,7 +105,7 @@ abstract class Random64 extends PRNG {
 	 */
 	@Override
 	public double nextDouble() {
-		return math.toDouble2(nextLong());
+		return PRNG.toDouble2(nextLong());
 	}
 
 

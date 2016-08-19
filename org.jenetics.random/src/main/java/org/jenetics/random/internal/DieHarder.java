@@ -17,14 +17,14 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.util;
+package org.jenetics.random.internal;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static java.util.regex.Pattern.quote;
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
-import static org.jenetics.internal.util.Equality.eq;
+import static org.jenetics.random.internal.util.Equality.eq;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -33,6 +33,7 @@ import java.io.OutputStream;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -41,8 +42,7 @@ import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.Random;
 
-import org.jenetics.util.ISeq;
-import org.jenetics.util.Seq;
+import org.jenetics.random.internal.util.Hash;
 
 /**
  * Class for testing a given random engine using the
@@ -89,16 +89,16 @@ public final class DieHarder {
 	}
 
 	public static void main(final String[] args) throws Exception {
-		if ( args.length < 1) {
+		if (args.length < 1) {
 			println("Usage: \n" +
 				"   java org.jenetics.internal.util.DieHarder <random-class-name>");
 			return;
 		}
 
-		test(args[0], ISeq.of(args).subSeq(1));
+		test(args[0], Arrays.asList(args).subList(1, args.length));
 	}
 
-	private static void test(final String randomName, final Seq<String> args)
+	private static void test(final String randomName, final List<String> args)
 		throws IOException, InterruptedException
 	{
 		final Random random;
@@ -116,7 +116,7 @@ public final class DieHarder {
 
 		final List<String> dieharderArgs = new ArrayList<>();
 		dieharderArgs.add("dieharder");
-		dieharderArgs.addAll(args.asList());
+		dieharderArgs.addAll(args);
 		dieharderArgs.add("-g");
 		dieharderArgs.add("200");
 

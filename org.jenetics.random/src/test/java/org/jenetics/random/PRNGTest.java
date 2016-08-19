@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package org.jenetics.random;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
  */
 public class PRNGTest {
 
-	private final PRNG prng = new PRNG(System.currentTimeMillis()){
+	private final PRNG prng = new PRNG(System.currentTimeMillis()) {
 		private static final long serialVersionUID = 1L;
 	};
 
