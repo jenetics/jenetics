@@ -19,12 +19,14 @@
  */
 package org.jenetics.util;
 
-import org.jenetics.internal.util.Random64;
+import static java.lang.Math.min;
+
+import java.util.Random;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class ContinuousRandom extends Random64 {
+public class ContinuousRandom extends Random {
 
 	private long _next;
 
@@ -41,4 +43,26 @@ public class ContinuousRandom extends Random64 {
 	public int nextInt() {
 		return (int)nextLong();
 	}
+
+	@Override
+	public boolean nextBoolean() {
+		return (nextLong() & 0x8000000000000000L) != 0L;
+	}
+
+	@Override
+	protected int next(final int bits) {
+		return (int)(nextLong() >>> (Long.SIZE - bits));
+	}
+
+	@Override
+	public void nextBytes(final byte[] bytes) {
+		for (int i = 0, len = bytes.length; i < len;) {
+			int n = min(len - i, Long.BYTES);
+
+			for (long x = nextLong(); --n >= 0; x >>= Byte.SIZE) {
+				bytes[i++] = (byte)x;
+			}
+		}
+	}
+
 }

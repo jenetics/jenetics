@@ -17,9 +17,10 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.util;
+package org.jenetics.random.internal;
 
-import org.jenetics.internal.math.random;
+import org.jenetics.random.PRNG;
+import org.jenetics.random.Random64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -32,7 +33,7 @@ public final class SeedRandom extends Random64 {
 
 	@Override
 	public long nextLong() {
-		return random.seed();
+		return PRNG.seed();
 	}
 
 }
