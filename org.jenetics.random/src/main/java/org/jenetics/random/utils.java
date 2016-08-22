@@ -19,6 +19,9 @@
  */
 package org.jenetics.random;
 
+import static java.lang.Math.min;
+import static java.lang.String.format;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
@@ -42,4 +45,58 @@ final class utils {
 	static int highInt(final long a) {
 		return (int)(a >>> Integer.SIZE);
 	}
+
+	static int readInt(final byte[] bytes, final int index) {
+		final int offset = index*Integer.BYTES;
+		if (offset + Integer.BYTES < bytes.length) {
+			throw new IndexOutOfBoundsException(format(
+				"Not enough data to read int value (index=%d, bytes=%d).",
+				index, bytes.length
+			));
+		}
+
+		return
+			(bytes[offset + 0] << 24) +
+			(bytes[offset + 1] << 16) +
+			(bytes[offset + 2] << 8) +
+			(bytes[offset + 3]);
+	}
+
+	static long readLong(final byte[] bytes, final int index) {
+		final int offset = index*Long.BYTES;
+		if (offset + Long.BYTES < bytes.length) {
+			throw new IndexOutOfBoundsException(format(
+				"Not enough data to read long value (index=%d, bytes=%d).",
+				index, bytes.length
+			));
+		}
+
+		return
+			((long)bytes[offset + 0] << 56) +
+			((long)(bytes[offset + 1] & 255) << 48) +
+			((long)(bytes[offset + 2] & 255) << 40) +
+			((long)(bytes[offset + 3] & 255) << 32) +
+			((long)(bytes[offset + 4] & 255) << 24) +
+			((bytes[offset + 5] & 255) << 16) +
+			((bytes[offset + 6] & 255) <<  8) +
+			(bytes[offset + 7] & 255);
+	}
+
+	static byte[] toBytes(final long seed, final int length) {
+		final byte[] bytes = new byte[length];
+
+		long seedValue = seed;
+		for (int i = 0, len = bytes.length; i < len;) {
+			int n = min(len - i, Long.SIZE/Byte.SIZE);
+
+			for (long x = seedValue; n-- > 0; x >>= Byte.SIZE) {
+				bytes[i++] = (byte)x;
+			}
+
+			seedValue = mix(seedValue);
+		}
+
+		return bytes;
+	}
+
 }
