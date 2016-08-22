@@ -20,15 +20,12 @@
 package org.jenetics.random;
 
 import static java.lang.String.format;
-import static org.jenetics.random.internal.util.Equality.eq;
 import static org.jenetics.random.utils.highInt;
 import static org.jenetics.random.utils.lowInt;
 import static org.jenetics.random.utils.mix;
 
 import java.io.Serializable;
-
-import org.jenetics.random.internal.util.Equality;
-import org.jenetics.random.internal.util.Hash;
+import java.util.Objects;
 
 /**
  * Implementation of an simple PRNG as proposed in
@@ -36,6 +33,34 @@ import org.jenetics.random.internal.util.Hash;
  * Good Practice in (Pseudo) Random Number Generation for Bioinformatics
  * Applications</a> (JKISS32, page 3) by <em><a href="mailto:d.jones@cs.ucl.ac.uk">
  * David Jones</a>, UCL Bioinformatics Group</em>.
+ * <pre>{@code
+ * private long seed1 = ...;
+ * private long seed2 = ...;
+ * private int x = (int)(seed1 >>> Integer.SIZE);
+ * private int y = (int)seed1;
+ * private int z = (int)(seed2 >>> Integer.SIZE);
+ * private int w = (int)seed2;
+ * private int c = 0;
+ *
+ * int nextInt() {
+ *     int t;
+ *     y ^= (y<<5);
+ *     y ^= (y>>>7);
+ *     y ^= (y<<22);
+ *
+ *     t = z + w + c;
+ *     z = w;
+ *     c = t >>> 31;
+ *     w = t&2147483647;
+ *     x += 1411392427;
+ *
+ *     return x + y + w;
+ * }
+ * }</pre>
+ *
+ * <p>
+ * The period of this <i>PRNG</i> is &asymp; 2<sup>121</sup>
+ * &asymp; 2.6&sdot;10<sup>36</sup>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
@@ -58,7 +83,7 @@ public class KISS32Random extends Random32 {
 	{
 		@Override
 		protected KISS32Random initialValue() {
-			return new TLKISS32Random(math.seed());
+			return new TLKISS32Random();
 		}
 	}
 
@@ -67,8 +92,8 @@ public class KISS32Random extends Random32 {
 
 		private final Boolean _sentry = Boolean.TRUE;
 
-		private TLKISS32Random(final long seed) {
-			super(seed);
+		private TLKISS32Random() {
+			super(PRNG.seed(), PRNG.seed());
 		}
 
 		@Override
@@ -97,7 +122,17 @@ public class KISS32Random extends Random32 {
 		/**
 		 * Create a new PRNG instance with the given seed.
 		 *
-		 * @param seed the seed of the PRNG.
+		 * @param seed1 the seed of the PRNG
+		 * @param seed2 the seed of the PRNG
+		 */
+		public ThreadSafe(final long seed1, final long seed2) {
+			super(seed1, seed2);
+		}
+
+		/**
+		 * Create a new PRNG instance with the given seed.
+		 *
+		 * @param seed the seed of the PRNG
 		 */
 		public ThreadSafe(final long seed) {
 			super(seed);
@@ -107,7 +142,7 @@ public class KISS32Random extends Random32 {
 		 * Create a new PRNG instance with a safe seed.
 		 */
 		public ThreadSafe() {
-			this(math.seed());
+			super();
 		}
 
 		@Override
@@ -123,6 +158,10 @@ public class KISS32Random extends Random32 {
 
 	/**
 	 * The state of this random engine.
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since !__version__!
+	 * @version !__version__!
 	 */
 	private static final class State implements Serializable {
 		private static final long serialVersionUID = 1L;
@@ -133,28 +172,35 @@ public class KISS32Random extends Random32 {
 		int _w = 456789123;
 		int _c = 0;
 
+		State(final long seed1, final long seed2) {
+			setSeed(seed1, seed2);
+		}
+
 		State(final long seed) {
 			setSeed(seed);
 		}
 
-		void setSeed(final long seed) {
-			final long a = seed;
-			final long b = mix(seed);
+		void setSeed(final long seed1, final long seed2) {
+			_x = highInt(seed1);
+			_y = lowInt(seed1);
+			_z = highInt(seed2);
+			_w = lowInt(seed2);
+		}
 
-			_x = highInt(a);
-			_y = lowInt(a);
-			_z = highInt(b);
-			_w = lowInt(b);
+		void setSeed(final long seed) {
+			setSeed(seed, mix(seed));
 		}
 
 		@Override
 		public int hashCode() {
-			return Hash.of(getClass())
-				.and(_x)
-				.and(_y)
-				.and(_z)
-				.and(_w)
-				.and(_c).value();
+			int hash = 31;
+			hash += 37*_x + 17;
+			hash += 37*_y + 17;
+			hash += 37*_z + 17;
+			hash += 37*_w + 17;
+			hash += 37*_c + 17;
+
+			return hash;
 		}
 
 		@Override
@@ -176,12 +222,33 @@ public class KISS32Random extends Random32 {
 
 	private final State _state;
 
+	/**
+	 * Create a new <em>not</em> thread-safe instance of the {@code KISS32Random}
+	 * engine.
+	 *
+	 * @param seed1 the random seed value
+	 * @param seed2 the random seed value
+	 */
+	public KISS32Random(final long seed1, final long seed2) {
+		_state = new State(seed1, seed2);
+	}
+
+	/**
+	 * Create a new <em>not</em> thread-safe instance of the {@code KISS32Random}
+	 * engine.
+	 *
+	 * @param seed the random seed value
+	 */
 	public KISS32Random(final long seed) {
 		_state = new State(seed);
 	}
 
+	/**
+	 * Create a new <em>not</em> thread-safe instance of the {@code KISS32Random}
+	 * engine.
+	 */
 	public KISS32Random() {
-		this(math.seed());
+		_state = new State(PRNG.seed(), PRNG.seed());
 	}
 
 	@Override
@@ -195,7 +262,7 @@ public class KISS32Random extends Random32 {
 		_state._y ^= _state._y >>> 7;
 		_state._y ^= _state._y << 22;
 
-		int t = _state._z + _state._w + _state._c;
+		final int t = _state._z + _state._w + _state._c;
 		_state._z = _state._w;
 		_state._c = t >>> 31;
 		_state._w = t&2147483647;
@@ -209,15 +276,15 @@ public class KISS32Random extends Random32 {
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass())
-			.and(_state).value();
+		int hash = 37;
+		hash += 31*_state.hashCode() + 17;
+		return hash;
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(random ->
-			eq(_state, random._state)
-		);
+		return getClass() == obj.getClass() &&
+			Objects.equals(((KISS32Random)obj)._state, _state);
 	}
 
 	@Override
