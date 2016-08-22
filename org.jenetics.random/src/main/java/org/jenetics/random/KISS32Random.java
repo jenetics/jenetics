@@ -20,12 +20,12 @@
 package org.jenetics.random;
 
 import static java.lang.String.format;
-import static org.jenetics.random.utils.highInt;
-import static org.jenetics.random.utils.lowInt;
-import static org.jenetics.random.utils.mix;
+import static org.jenetics.random.utils.readInt;
+import static org.jenetics.random.utils.toBytes;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Random;
 
 /**
  * Implementation of an simple PRNG as proposed in
@@ -33,25 +33,22 @@ import java.util.Objects;
  * Good Practice in (Pseudo) Random Number Generation for Bioinformatics
  * Applications</a> (JKISS32, page 3) by <em><a href="mailto:d.jones@cs.ucl.ac.uk">
  * David Jones</a>, UCL Bioinformatics Group</em>.
+ * <p>
+ * The following listing shows the actual PRNG implementation.
  * <pre>{@code
- * private long seed1 = ...;
- * private long seed2 = ...;
- * private int x = (int)(seed1 >>> Integer.SIZE);
- * private int y = (int)seed1;
- * private int z = (int)(seed2 >>> Integer.SIZE);
- * private int w = (int)seed2;
+ * private int x, y, z, w = <init with seeds>
  * private int c = 0;
  *
  * int nextInt() {
  *     int t;
- *     y ^= (y<<5);
- *     y ^= (y>>>7);
- *     y ^= (y<<22);
+ *     y ^= y << 5;
+ *     y ^= y >>> 7;
+ *     y ^= y << 22;
  *
  *     t = z + w + c;
  *     z = w;
  *     c = t >>> 31;
- *     w = t&2147483647;
+ *     w = t & 2147483647;
  *     x += 1411392427;
  *
  *     return x + y + w;
@@ -93,17 +90,15 @@ public class KISS32Random extends Random32 {
 		private final Boolean _sentry = Boolean.TRUE;
 
 		private TLKISS32Random() {
-			super(PRNG.seed(), PRNG.seed());
+			super(KISS32Random.seedBytes());
 		}
 
 		@Override
-		public void setSeed(final long seed) {
-			if (_sentry != null) {
-				throw new UnsupportedOperationException(
-					"The 'setSeed(long)' method is not supported " +
-						"for thread local instances."
-				);
-			}
+		public void setSeed(final byte[] seed) {
+			throw new UnsupportedOperationException(
+				"The 'setSeed(long)' method is not supported " +
+					"for thread local instances."
+			);
 		}
 	}
 
@@ -120,32 +115,51 @@ public class KISS32Random extends Random32 {
 		private static final long serialVersionUID = 1L;
 
 		/**
-		 * Create a new PRNG instance with the given seed.
+		 * Create a new thread-safe instance of the {@code KISS32Random}
+		 * engine.
 		 *
-		 * @param seed1 the seed of the PRNG
-		 * @param seed2 the seed of the PRNG
+		 * <pre>{@code
+		 * final byte[] seed = KISS32Random.seedBytes();
+		 * final Random random = new KISS32Random.ThreadSafe(seed);
+		 * }</pre>
+		 *
+		 * @see #seedBytes()
+		 *
+		 * @param seed the random seed value. The seed must be (at least)
+		 *        {@link #SEED_BYTES} long.
+		 * @throws IllegalArgumentException if the given seed is shorter than
+		 *         {@link #SEED_BYTES}
 		 */
-		public ThreadSafe(final long seed1, final long seed2) {
-			super(seed1, seed2);
+		public ThreadSafe(final byte[] seed) {
+			super(seed);
 		}
 
 		/**
-		 * Create a new PRNG instance with the given seed.
+		 * Create a new thread-safe instance of the {@code KISS32Random}
+		 * engine. The constructed PRNG is equivalent with
+		 * <pre>{@code
+		 * final long seed = ...;
+		 * final Random random = new KISS32Random.ThreadSafe();
+		 * random.setSeed(seed);
+		 * }</pre>
+		 * which is there for compatibility reasons with the Java {@link Random}
+		 * engine.
 		 *
-		 * @param seed the seed of the PRNG
+		 * @param seed the random seed value
 		 */
 		public ThreadSafe(final long seed) {
 			super(seed);
 		}
 
 		/**
-		 * Create a new PRNG instance with a safe seed.
+		 * Create a new thread-safe instance of the {@code KISS32Random}
+		 * engine. The PRNG is initialized with {@link #seedBytes()}.
 		 */
 		public ThreadSafe() {
 		}
 
 		@Override
-		public synchronized void setSeed(final long seed) {
+		public synchronized void setSeed(final byte[] seed) {
 			super.setSeed(seed);
 		}
 
@@ -155,8 +169,9 @@ public class KISS32Random extends Random32 {
 		}
 	}
 
+
 	/**
-	 * The state of this random engine.
+	 * The internal state of random engine.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since !__version__!
@@ -171,23 +186,21 @@ public class KISS32Random extends Random32 {
 		int _w = 456789123;
 		int _c = 0;
 
-		State(final long seed1, final long seed2) {
-			setSeed(seed1, seed2);
-		}
-
-		State(final long seed) {
+		State(final byte[] seed) {
 			setSeed(seed);
 		}
 
-		void setSeed(final long seed1, final long seed2) {
-			_x = highInt(seed1);
-			_y = lowInt(seed1);
-			_z = highInt(seed2);
-			_w = lowInt(seed2);
-		}
+		void setSeed(final byte[] seed) {
+			if (seed.length < SEED_BYTES) {
+				throw new IllegalArgumentException(format(
+					"Required 16 seed bytes, but got %d.", seed.length
+				));
+			}
 
-		void setSeed(final long seed) {
-			setSeed(seed, mix(seed));
+			_x = readInt(seed, 0);
+			_y = readInt(seed, 1);
+			_z = readInt(seed, 2);
+			_w = readInt(seed, 3);
 		}
 
 		@Override
@@ -219,35 +232,60 @@ public class KISS32Random extends Random32 {
 
 	}
 
+	/* *************************************************************************
+	 * Main class.
+	 * ************************************************************************/
+
+	/**
+	 * The number of seed bytes (16) this PRNG requires.
+	 */
+	public static int SEED_BYTES = 16;
+
 	private final State _state;
 
 	/**
 	 * Create a new <em>not</em> thread-safe instance of the {@code KISS32Random}
 	 * engine.
 	 *
-	 * @param seed1 the random seed value
-	 * @param seed2 the random seed value
-	 */
-	public KISS32Random(final long seed1, final long seed2) {
-		_state = new State(seed1, seed2);
-	}
-
-	/**
-	 * Create a new <em>not</em> thread-safe instance of the {@code KISS32Random}
-	 * engine.
+	 * <pre>{@code
+	 * final byte[] seed = KISS32Random.seedBytes();
+	 * final Random random = new KISS32Random(seed);
+	 * }</pre>
 	 *
-	 * @param seed the random seed value
+	 * @see #seedBytes()
+	 *
+	 * @param seed the random seed value. The seed must be (at least)
+	 *        {@link #SEED_BYTES} long.
+	 * @throws IllegalArgumentException if the given seed is shorter than
+	 *         {@link #SEED_BYTES}
 	 */
-	public KISS32Random(final long seed) {
+	public KISS32Random(final byte[] seed) {
 		_state = new State(seed);
 	}
 
 	/**
 	 * Create a new <em>not</em> thread-safe instance of the {@code KISS32Random}
+	 * engine. The constructed PRNG is equivalent with
+	 * <pre>{@code
+	 * final long seed = ...;
+	 * final Random random = new KISS32Random();
+	 * random.setSeed(seed);
+	 * }</pre>
+	 * which is there for compatibility reasons with the Java {@link Random}
 	 * engine.
+	 *
+	 * @param seed the random seed value
+	 */
+	public KISS32Random(final long seed) {
+		this(toBytes(seed, SEED_BYTES));
+	}
+
+	/**
+	 * Create a new <em>not</em> thread-safe instance of the {@code KISS32Random}
+	 * engine. The PRNG is initialized with {@link #seedBytes()}.
 	 */
 	public KISS32Random() {
-		_state = new State(PRNG.seed(), PRNG.seed());
+		this(seedBytes());
 	}
 
 	@Override
@@ -268,9 +306,23 @@ public class KISS32Random extends Random32 {
 		_state._x += 1411392427;
 	}
 
+	/**
+	 * Initializes the PRNg with the given seed.
+	 *
+	 * @see #seedBytes()
+	 *
+	 * @param seed the random seed value. The seed must be (at least)
+	 *        {@link #SEED_BYTES} big.
+	 * @throws IllegalArgumentException if the given seed is shorter than
+	 *         {@link #SEED_BYTES}
+	 */
+	public void setSeed(final byte[] seed) {
+		if (_state != null) _state.setSeed(seed);
+	}
+
 	@Override
 	public void setSeed(final long seed) {
-		if (_state != null) _state.setSeed(seed);
+		setSeed(toBytes(seed, SEED_BYTES));
 	}
 
 	@Override
@@ -289,6 +341,19 @@ public class KISS32Random extends Random32 {
 	@Override
 	public String toString() {
 		return format("%s[%s]", getClass().getSimpleName(), _state);
+	}
+
+
+	/**
+	 * Create a new <em>seed</em> byte array suitable for this PRNG. The
+	 * returned seed array is {@link #SEED_BYTES} long.
+	 *
+	 * @see PRNG#seedBytes(int)
+	 *
+	 * @return a new <em>seed</em> byte array of length {@link #SEED_BYTES}
+	 */
+	public static byte[] seedBytes() {
+		return PRNG.seedBytes(SEED_BYTES);
 	}
 
 }
