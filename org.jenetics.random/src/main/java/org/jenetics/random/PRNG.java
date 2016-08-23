@@ -333,7 +333,7 @@ public abstract class PRNG extends Random {
 	/**
 	 * Create a new <em>seed</em> byte array of the given length.
 	 *
-	 * @see #seed(byte[])
+	 * @see #seedBytes(byte[])
 	 * @see #seed()
 	 *
 	 * @param length the length of the returned byte array.
@@ -342,7 +342,7 @@ public abstract class PRNG extends Random {
 	 *         than zero.
 	 */
 	public static byte[] seedBytes(final int length) {
-		return seed(new byte[length]);
+		return seedBytes(new byte[length]);
 	}
 
 	/**
@@ -356,7 +356,7 @@ public abstract class PRNG extends Random {
 	 * @throws NullPointerException if the {@code seed} array is
 	 *         {@code null}.
 	 */
-	public static byte[] seed(final byte[] seed) {
+	public static byte[] seedBytes(final byte[] seed) {
 		for (int i = 0, len = seed.length; i < len;) {
 			int n = Math.min(len - i, Long.SIZE/Byte.SIZE);
 
