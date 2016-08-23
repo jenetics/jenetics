@@ -534,10 +534,10 @@ public final class bit {
 
 	public static int toInt(final byte[] data) {
 		return
-			(data[0] << 24) +
-			(data[1] << 16) +
-			(data[2] << 8) +
-			(data[3]);
+			((data[0] & 255) << 24) +
+			((data[1] & 255) << 16) +
+			((data[2] & 255) << 8) +
+			(data[3] & 255);
 	}
 
 	public static long toLong(final byte[] data) {
