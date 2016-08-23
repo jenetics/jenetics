@@ -132,7 +132,7 @@ public abstract class Random64 extends PRNG {
 			@Override
 			public void setSeed(final long seed) {
 				throw new UnsupportedOperationException(
-					"The 'setSeed(long)' method is not supported this instance."
+					"The 'setSeed(long)' method is not supported."
 				);
 			}
 		};
