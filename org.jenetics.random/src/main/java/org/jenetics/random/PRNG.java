@@ -347,7 +347,17 @@ public abstract class PRNG extends Random {
 
 	/**
 	 * Fills the given byte array with random bytes, created by successive
-	 * calls of the {@link #seed()} method.
+	 * calls of the {@link #seed()} method. The given {@code seed} array is
+	 * filled as follows:
+	 * <pre>{@code
+	 * for (int i = 0, len = seed.length; i < len;) {
+	 *     int n = Math.min(len - i, Long.SIZE/Byte.SIZE);
+	 *
+	 *     for (long x = seed(); n-- > 0; x >>= Byte.SIZE) {
+	 *         seed[i++] = (byte)x;
+	 *     }
+	 * }
+	 * }</pre>
 	 *
 	 * @see #seed()
 	 *
