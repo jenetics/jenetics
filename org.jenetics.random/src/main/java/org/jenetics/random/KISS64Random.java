@@ -21,7 +21,6 @@ package org.jenetics.random;
 
 import static java.lang.String.format;
 import static org.jenetics.random.internal.util.Equality.eq;
-import static org.jenetics.random.utils.mix;
 
 import java.io.Serializable;
 
@@ -138,7 +137,7 @@ public class KISS64Random extends Random64 {
 
 		void setSeed(final long seed) {
 			_x ^= seed;
-			_y ^= mix(seed);
+			_y ^= seed; //mix(seed);
 			if (_y == 0L) _y = 0xdeadbeef;
 		}
 

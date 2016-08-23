@@ -21,7 +21,6 @@ package org.jenetics.random;
 
 import static java.lang.String.format;
 import static org.jenetics.random.utils.readInt;
-import static org.jenetics.random.utils.toBytes;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -95,10 +94,12 @@ public class KISS32Random extends Random32 {
 
 		@Override
 		public void setSeed(final byte[] seed) {
-			throw new UnsupportedOperationException(
-				"The 'setSeed(long)' method is not supported " +
-					"for thread local instances."
-			);
+			if (_sentry != null) {
+				throw new UnsupportedOperationException(
+					"The 'setSeed(long)' method is not supported " +
+						"for thread local instances."
+				);
+			}
 		}
 	}
 
@@ -167,6 +168,7 @@ public class KISS32Random extends Random32 {
 		public synchronized int nextInt() {
 			return super.nextInt();
 		}
+
 	}
 
 
@@ -259,7 +261,7 @@ public class KISS32Random extends Random32 {
 	 * @throws IllegalArgumentException if the given seed is shorter than
 	 *         {@link #SEED_BYTES}
 	 */
-	public KISS32Random(final byte[] seed) {
+	KISS32Random(final byte[] seed) {
 		_state = new State(seed);
 	}
 
@@ -276,15 +278,15 @@ public class KISS32Random extends Random32 {
 	 *
 	 * @param seed the random seed value
 	 */
-	public KISS32Random(final long seed) {
-		this(toBytes(seed, SEED_BYTES));
+	KISS32Random(final long seed) {
+		this(seedBytes(seed, SEED_BYTES));
 	}
 
 	/**
 	 * Create a new <em>not</em> thread-safe instance of the {@code KISS32Random}
 	 * engine. The PRNG is initialized with {@link #seedBytes()}.
 	 */
-	public KISS32Random() {
+	KISS32Random() {
 		this(seedBytes());
 	}
 
@@ -322,7 +324,7 @@ public class KISS32Random extends Random32 {
 
 	@Override
 	public void setSeed(final long seed) {
-		setSeed(toBytes(seed, SEED_BYTES));
+		setSeed(seedBytes(seed, SEED_BYTES));
 	}
 
 	@Override
@@ -334,7 +336,7 @@ public class KISS32Random extends Random32 {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return getClass() == obj.getClass() &&
+		return obj instanceof KISS32Random &&
 			Objects.equals(((KISS32Random)obj)._state, _state);
 	}
 
@@ -343,6 +345,29 @@ public class KISS32Random extends Random32 {
 		return format("%s[%s]", getClass().getSimpleName(), _state);
 	}
 
+	public static KISS32Random of() {
+		return null;
+	}
+
+	public static KISS32Random of(final long seed) {
+		return null;
+	}
+
+	public static KISS32Random of(final byte[] seed) {
+		return null;
+	}
+
+	public static KISS32Random ofThreadSafe() {
+		return null;
+	}
+
+	public static KISS32Random ofThreadSafe(final long seed) {
+		return null;
+	}
+
+	public static KISS32Random ofThreadSafe(final byte[] seed) {
+		return null;
+	}
 
 	/**
 	 * Create a new <em>seed</em> byte array suitable for this PRNG. The

@@ -53,10 +53,10 @@ public abstract class Random32 extends PRNG {
 	@Override
 	public void nextBytes(final byte[] bytes) {
 		for (int i = 0, len = bytes.length; i < len;) {
-			int n = min(len - i, 8);
+			int n = Math.min(len - i, Integer.BYTES);
 
-			for (long x = nextLong(); --n >= 0; x >>= Byte.SIZE) {
-				bytes[8 - i++] = (byte)x;
+			for (int x = nextInt(); --n >= 0; x >>= Byte.SIZE) {
+				bytes[i++] = (byte)x;
 			}
 		}
 	}

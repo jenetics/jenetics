@@ -19,7 +19,6 @@
  */
 package org.jenetics.random;
 
-import static java.lang.Math.min;
 import static java.lang.String.format;
 
 /**
@@ -29,14 +28,6 @@ import static java.lang.String.format;
  */
 final class utils {
 	private utils() {}
-
-	static long mix(final long a) {
-		long c = a^Long.rotateLeft(a, 7);
-		c ^= c << 17;
-		c ^= c >>> 31;
-		c ^= c << 8;
-		return c;
-	}
 
 	static int lowInt(final long a) {
 		return (int)a;
@@ -48,7 +39,7 @@ final class utils {
 
 	static int readInt(final byte[] bytes, final int index) {
 		final int offset = index*Integer.BYTES;
-		if (offset + Integer.BYTES < bytes.length) {
+		if (offset + Integer.BYTES > bytes.length) {
 			throw new IndexOutOfBoundsException(format(
 				"Not enough data to read int value (index=%d, bytes=%d).",
 				index, bytes.length
@@ -64,7 +55,7 @@ final class utils {
 
 	static long readLong(final byte[] bytes, final int index) {
 		final int offset = index*Long.BYTES;
-		if (offset + Long.BYTES < bytes.length) {
+		if (offset + Long.BYTES > bytes.length) {
 			throw new IndexOutOfBoundsException(format(
 				"Not enough data to read long value (index=%d, bytes=%d).",
 				index, bytes.length
@@ -82,20 +73,12 @@ final class utils {
 			(bytes[offset + 7] & 255);
 	}
 
-	static byte[] toBytes(final long seed, final int length) {
-		final byte[] bytes = new byte[length];
-
-		long seedValue = seed;
-		for (int i = 0, len = bytes.length; i < len;) {
-			int n = min(len - i, Long.SIZE/Byte.SIZE);
-
-			for (long x = seedValue; n-- > 0; x >>= Byte.SIZE) {
-				bytes[i++] = (byte)x;
-			}
-
-			seedValue = mix(seedValue);
-		}
-
+	public static byte[] toBytes(final int value) {
+		final byte[] bytes = new byte[4];
+		bytes[0] = (byte)(value >>> 24);
+		bytes[1] = (byte)(value >>> 16);
+		bytes[2] = (byte)(value >>>  8);
+		bytes[3] = (byte) value;
 		return bytes;
 	}
 
